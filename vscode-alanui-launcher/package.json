@@ -1,0 +1,36 @@
+{
+  "name": "alanui-launcher",
+  "displayName": "AlanUI Launcher",
+  "description": "Adds a status bar button to launch Arclight App on Local 3000.",
+  "version": "0.0.1",
+  "publisher": "your-publisher-name",
+  "engines": {
+    "vscode": "^1.50.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "alanui-launcher.launchApp",
+        "title": "Launch Arclight App on Local 3000"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/node": "^14.14.6",
+    "@types/vscode": "^1.50.0",
+    "typescript": "^4.0.0",
+    "vscode": "^1.1.37"
+  }
+}

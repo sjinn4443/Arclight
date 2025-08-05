@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cataract</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- FontAwesome for info icon (if not already included) -->
+  <link href="https://fonts.googleapis.com/css?family=Quicksand:400,700" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+  <header class="app-bar">
+    <h1>
+      <span class="normal-text">Cataract</span>
+    </h1>
+  </header>
+
+  <!-- Info icon -->
+  <i id="info-icon" class="fas fa-info-circle" onclick="toggleInfoBox()"></i>
+
+  <!-- Hidden info box (styled with .info-box from your CSS) -->
+  <div id="info-popup" class="info-box" style="display: none;">
+    <p>
+      Identify and signpost cataracts — the most common cause of treatable blindness globally — in seconds.
+    </p>
+    <br>
+    <p>
+    <p>
+      <li>take a good history; test vision (pinhole if no glasses); check pupils; look at front of eye</li>
+      <li>look at fundal reflex</li>
+      <li>examine back of the eye</li>
+      <br>Exclude other disease...
+    </p>
+  </div>
+
+  <main>
+    <form id="cataractForm">
+      <!-- Top section: History & Questions -->
+      <section id="top-section">
+        <h2>History</h2>
+        <div class="question-group">
+          <span><strong>Loss:</strong></span>
+          <span>Gradual <span class="small-text">(mths)</span><input type="radio" name="onset" value="gradual" id="onset-gradual"></span>
+          <span>Sudden <span class="small-text">(days)</span><input type="radio" name="onset" value="sudden" id="onset-sudden"></span>
+        </div>
+
+
+        <div class="question-group">
+          <span><strong>Eyes:</strong></span>
+          <span>1<input type="radio" name="eyes" value="one" id="eyes-one"></span>
+          <span>2<input type="radio" name="eyes" value="two" id="eyes-two"></span>
+          <span id="pain-label"><strong>Pain/Redness:</strong></span>
+          <span><input type="radio" name="pain" value="yes" id="pain-yes"></span>
+        </div>
+
+
+        <div class="question-group">
+          <span><strong>VA:</strong></span>
+          <span>
+            <select id="distanceVA" name="distanceVA">
+              <option value=""></option>
+              <option value="6/6">6/6</option>
+              <option value="6/12">6/12</option>
+              <option value="6/36">6/36</option>
+              <option value="6/60">6/60</option>
+              <option value="HM">HM</option>
+            </select>
+          </span>
+          <span><strong>Near VA:</strong></span>
+          <span>
+            <select id="nearVA" name="nearVA">
+              <option value=""></option>
+              <option value="N5">N5</option>
+              <option value="N8">N8</option>
+              <option value="N12">N12</option>
+              <option value="N18">N18</option>
+              <option value="N36">N36</option>
+            </select>
+          </span>
+        </div>
+
+        <div class="question-group">
+          <span id="pupil-label"><strong>Pupils:</strong> black, round, equal | <em>reacts</em></span>
+
+          <span><input type="radio" name="pupil" value="normal" id="pupil-normal"></span>
+        </div>
+
+        <div class="question-group">
+          <span id="front-label"><strong>Front of Eye:</strong> corneal scar, distortion seen</span>
+          <span><input type="radio" name="front" value="present" id="front-present"></span>
+        </div>
+
+      </section>
+
+      <section id="fundal-section" class="disabled">
+        <h2>Fundal Reflex</h2>
+        <div class="button-group">
+          <div class="button-item">
+            <button type="button" class="fundal-btn" data-value="normal">
+              <img src="normal.png" alt="Normal">
+            </button>
+            <div class="button-label"><em>Normal</em></div>
+
+          </div>
+          <div class="button-item">
+            <button type="button" class="fundal-btn" data-value="dark">
+              <img src="dark.png" alt="Dark Yellow">
+            </button>
+            <div class="button-label">Dark</div>
+          </div>
+          <div class="button-item">
+            <button type="button" class="fundal-btn" data-value="patches">
+              <img src="patches.png" alt="Patches">
+            </button>
+            <div class="button-label">Patches</div>
+          </div>
+          <div class="button-item">
+            <button type="button" class="fundal-btn" data-value="spots">
+              <img src="spots.png" alt="Spots">
+            </button>
+            <div class="button-label">Spots</div>
+          </div>
+          <div class="button-item">
+            <button type="button" class="fundal-btn" data-value="white">
+              <img src="white.png" alt="White-Mature">
+            </button>
+            <div class="button-label">Black</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="back-section" class="disabled">
+        <h2>Back of Eye</h2>
+        <div class="button-group">
+          <div class="button-item">
+            <button type="button" class="back-btn" data-value="normal">
+              <img src="normal2.png" alt="Disc Cupping">
+            </button>
+            <div class="button-label"><em>Normal</em></div>
+          </div>
+          <div class="button-item">
+            <button type="button" class="back-btn" data-value="cupping">
+              <img src="cupping.png" alt="Diabetic">
+            </button>
+            <div class="button-label">Cupped</div>
+          </div>
+          <div class="button-item">
+            <button type="button" class="back-btn" data-value="diabetic">
+              <img src="drscar.png" alt="Scarring">
+            </button>
+            <div class="button-label">DR/Scar</div>
+          </div>
+          <div class="button-item">
+            <button type="button" class="back-btn" data-value="detached">
+              <img src="detached.png" alt="Detached">
+            </button>
+            <div class="button-label">Detached</div>
+          </div>
+          <div class="button-item">
+            <button type="button" class="back-btn" data-value="poor view">
+              <img src="poorview.png" alt="Poor view">
+            </button>
+            <div class="button-label" style="font-style: italic;">Poor view</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Result section -->
+      <section id="result-section" class="disabled">
+        <h2>Action</h2>
+        <div id="result"></div>
+      </section>
+    </form>
+  </main>
+
+  <!-- Include your main JavaScript -->
+  <script src="script.js?v=1.0"></script>
+
+  <!-- Inline script for the info pop-up toggle -->
+  <script>
+    /**
+     * Toggles the visibility of the info pop-up.
+     */
+    function toggleInfoBox() {
+      const infoPopup = document.getElementById('info-popup');
+      // Toggle display between block and none
+      if (infoPopup.style.display === 'block') {
+        infoPopup.style.display = 'none';
+      } else {
+        infoPopup.style.display = 'block';
+      }
+    }
+  </script>
+</body>
+</html>

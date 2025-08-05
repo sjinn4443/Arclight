@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Squint</title>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- App Bar -->
+  <header class="app-bar">
+    <h1>Squint/Palsy</h1>
+  </header>
+
+<!-- Sidebar Menu -->
+<!-- Sidebar Menu -->
+<div id="sidebar" class="sidebar">
+  <div class="sidebar-header">
+    <h2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Conditions</h2>
+
+    <span id="close-sidebar" class="close-btn">&times;</span>
+  </div>
+  <ul class="conditions-list">
+    <li>3rd nerve palsy</li>
+    <li>4th nerve palsy</li>
+    <li>6th nerve palsy</li>
+    <li>Horner’s syndrome</li>
+    <li>Mixed squint</li>
+    <li>
+      Exotropia 
+      <label><input type="radio" name="exotropia" value="small"> S</label>
+      <label><input type="radio" name="exotropia" value="medium"> M</label>
+      <label><input type="radio" name="exotropia" value="large"> L</label>
+    </li>
+    <li>
+      Esotropia 
+      <label><input type="radio" name="esotropia" value="small"> S</label>
+      <label><input type="radio" name="esotropia" value="medium"> M</label>
+      <label><input type="radio" name="esotropia" value="large"> L</label>
+    </li>
+    <li>
+      Hypertropia 
+      <label><input type="radio" name="hypertropia" value="small"> S</label>
+      <label><input type="radio" name="hypertropia" value="medium"> M</label>
+      <label><input type="radio" name="hypertropia" value="large"> L</label>
+    </li>
+    <li>
+      Hypotropia 
+      <label><input type="radio" name="hypotropia" value="small"> S</label>
+      <label><input type="radio" name="hypotropia" value="medium"> M</label>
+      <label><input type="radio" name="hypotropia" value="large"> L</label>
+    </li>
+    <li>
+      Ptosis 
+      <label><input type="radio" name="ptosis" value="slight"> Slight</label>
+      <label><input type="radio" name="ptosis" value="moderate"> Mod</label>
+      <label><input type="radio" name="ptosis" value="severe"> Severe</label>
+    </li>
+    <li>Benign anisocoria</li>
+    <li>Adie’s pupil</li>
+    <li>Unilateral dilated pupil</li>
+    <li>Bilateral dilated pupils</li>
+    <li>Unilateral constricted pupil</li>
+    <li>Bilateral constricted pupils</li>
+  </ul>
+  <div class="sidebar-footer">
+    <button id="textMeBtn">Test me!</button>
+  </div>
+</div>
+
+
+<!-- Sidebar Toggle Button -->
+<div id="sidebar-toggle" class="sidebar-toggle">&#9776;</div>
+
+
+<!-- Toggle Controls -->
+<div class="toggle-container" style="padding: 0 15px;">
+  <div class="toggle-group">
+    <div class="toggle-reflex">
+      <span class="toggle-label">reflex&nbsp;&nbsp;</span>
+      <label class="switch">
+        <input type="checkbox" id="toggle-reflex">
+        <span class="toggle-slider"></span>
+      </label>
+    </div>
+    <div class="toggle-iris">
+      <span class="toggle-label"></span>
+      <select id="iris-colour">
+        <option value="dark-brown">dark</option>
+        <option value="light-brown">brown</option>
+        <option value="green" selected>green</option>
+        <option value="blue">blue</option>
+      </select>
+    </div>
+    <div class="toggle-sudden">
+      <span class="toggle-label">sudden&nbsp;</span>
+      <label class="switch">
+        <input type="checkbox" id="toggle-sudden">
+        <span class="toggle-slider"></span>
+      </label>
+    </div>
+  </div>
+</div>
+
+<!-- Reflex Colour Slider (Inline Label) -->
+<div class="toggle-reflex-color">
+  <span class="toggle-label">reflex colour</span>
+  <div class="slider-wrapper" style="width: 150px;">
+    <input type="range" id="reflex-color-slider" class="slider" min="0" max="100" value="66" title="Reflex Color">
+  </div>
+</div>
+
+
+
+
+  <!-- Main Content -->
+  <main>
+    <!-- Eyes Wrapper with full-width grey background -->
+    <div class="eyes-wrapper">
+      <div class="eyes-container">
+        <!-- Left Eye -->
+        <div class="eye" data-eye="left" id="left-eye">
+          <div class="eye-inner">
+            <div class="iris">
+              <div class="pupil"></div>
+            </div>
+          </div>
+          <!-- Upper eyelid overlay for ptosis and blink simulation -->
+          <div class="upper-eyelid"></div>
+          <!-- Lower eyelid overlay for blink simulation -->
+          <div class="lower-eyelid"></div>
+        </div>
+        <!-- Right Eye -->
+        <div class="eye" data-eye="right" id="right-eye">
+          <div class="eye-inner">
+            <div class="iris">
+              <div class="pupil"></div>
+            </div>
+          </div>
+          <!-- Upper eyelid overlay for ptosis and blink simulation -->
+          <div class="upper-eyelid"></div>
+          <!-- Lower eyelid overlay for blink simulation -->
+          <div class="lower-eyelid"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pupil Size Sliders -->
+    <div class="slider-title">pupil size</div>
+    <div class="sliders-container">
+      <div class="slider-wrapper">
+        <input type="range" class="slider" min="10" max="55" value="32" data-eye="left" title="Pupil size (small > large)">
+        <div class="slider-tick"></div>
+        <button class="fade-button" data-eye="left">faded</button>
+      </div>
+      <div class="slider-wrapper">
+        <input type="range" class="slider" min="10" max="55" value="32" data-eye="right" title="Pupil size (small > large)">
+        <div class="slider-tick"></div>
+        <button class="fade-button" data-eye="right">faded</button>
+      </div>
+    </div>
+
+    <!-- Upper Eyelid Ptosis Slider -->
+    <div class="slider-title">upper lid</div>
+    <div class="sliders-container">
+      <div class="slider-wrapper">
+        <input type="range" class="vertical-eye-slider" min="0" max="30" value="0" data-eye="left" title="Upper eyelid ptosis">
+      </div>
+      <div class="slider-wrapper">
+        <input type="range" class="vertical-eye-slider" min="0" max="30" value="0" data-eye="right" title="Upper eyelid ptosis">
+      </div>
+    </div>
+
+<!-- Output Display -->
+<div class="output" style="display: none;">
+  <p id="right-output">RE: neutral</p>
+  <p id="left-output">LE: neutral</p>
+</div>
+
+<!-- Analysis Display Wrapper -->
+<div class="analysis-wrapper">
+  <div id="palsy-img-container"></div>
+
+  <!-- Analysis container (visible by default) -->
+  <div class="analysis" id="analysisContainer">
+    <p id="analysis-output">Analysis: neutral</p>
+  </div>
+
+  <!-- Analysis placeholder (hidden by default) -->
+  <div class="analysis" id="analysisPlaceholder" style="display: none;">
+    <p>Analysis hidden</p>
+    <button id="showAnswerBtn">Show</button>
+  </div>
+</div>
+
+
+
+  </main>
+
+  <script src="script.js"></script>
+  <script src="analysis.js"></script>
+
+</body>
+</html>

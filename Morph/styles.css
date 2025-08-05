@@ -1,0 +1,378 @@
+/* 
+  RESET / BASE 
+  Ensures no default margins/padding. 
+  Sets the page to occupy full width/height with a black background. 
+*/
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* Prevent scroll bars if desired. */
+    background-color: #000;
+  }
+  
+  /* 
+    HEADER (Fixed at the top) 
+    This remains fixed, so content below scrolls while the header stays in place.
+  */
+  header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #fff;
+    padding: 5px 0;
+    z-index: 200; /* Ensures the header is on top of other elements. */
+  }
+  
+  .header-content {
+    display: flex;
+    align-items: center;
+    margin-left: 20px; /* Creates spacing from left edge for the logo/title. */
+  }
+  
+  .header-content img {
+    margin-right: 10px; /* Spacing between logo and text. */
+    width: 60px;        /* Adjust if you want the logo bigger or smaller. */
+    height: auto;
+  }
+  
+  header h1 {
+    margin: 0;
+    font-size: 25px;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 900;
+    color: #000; /* Black text for contrast on white header background. */
+  }
+  
+  /* 
+    SIDEBAR (Absolute, does not push main content) 
+    Positioned partially down the page (top: 50px) and from the left.
+  */
+  .sidebar-left {
+    position: absolute;
+    top: 50px;   /* Below the header. */
+    left: 5px;   /* Slight space from the browser edge. */
+    width: 70px; /* Enough width for 55px button + side margins. */
+    height: 200px; /* Shorter height; can be increased for more content. */
+    background-color: #000;
+    overflow: visible;
+    z-index: 100; /* Keeps it above main content if overlapping. */
+    /* overflow-y: auto;  // Uncomment if you want a scrollable sidebar. */
+  }
+  
+  /* 
+    CONDITION BUTTONS CONTAINER 
+    Lays out condition buttons vertically with a small gap. 
+  */
+  .condition-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Align each button horizontally centered. */
+    gap: 3px;           /* Vertical space between condition buttons. */
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* 
+    BUTTONS (Condition & Mode) 
+    Shared styles for conditions and adult/child modes.
+  */
+  .condition-button,
+  .mode-button {
+    margin: 3px 10px 3px 2px; /* Spacing around each button (T,R,B,L). */
+    padding: 5px;             /* Internal space around the text. */
+    font-size: 12px;
+    width: 55px;              /* Fixed button width. */
+    text-align: center;
+    border-radius: 8px;
+    border: 2px solid transparent;
+    background-color: #222;   /* Dark background for the button. */
+    color: #ff0404;           /* Red text default (used by condition buttons). */
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s;
+  }
+  
+  /* Overrides text colour for Adult/Child mode buttons. */
+  .mode-button {
+    color: #fff; /* White text for mode buttons. */
+  }
+  
+  /* Hover and active states change background and border for feedback. */
+  .condition-button:hover,
+  .mode-button:hover {
+    background-color: #333;
+  }
+  .condition-button.active,
+  .mode-button.active {
+    background-color: #555;
+    border-color: #fff;
+  }
+  
+/* TOOLTIP for Condition Buttons */
+.condition-button {
+    position: relative; /* Needed for the absolutely positioned tooltip */
+  }
+  
+  .condition-button::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    left: 130%;
+    top: 50%;
+    transform: translate(0, -50%);
+    display: inline-block;
+    text-align: left;
+    font-style: italic;
+    font-size: 10px;
+    background-color: #333;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 4px;
+    z-index: 10;
+    
+    width: max-content;
+    max-width: 250px !important;
+    overflow-wrap: break-word;
+    white-space: normal;
+    
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+    margin-left: 10px;
+  }
+  
+  
+  
+  /* When hovered, fade in immediately, 
+     then trigger a 3s fadeout animation. */
+  .condition-button:hover::after {
+    opacity: 1;
+    animation: fadeoutTooltip 3s forwards;
+  }
+  
+  /* Keyframes for fadeout after 3s */
+  @keyframes fadeoutTooltip {
+    0% {
+      opacity: 1;
+      visibility: visible;
+    }
+    90% {
+      opacity: 1; 
+      visibility: visible;
+    }
+    100% {
+      opacity: 0;
+      visibility: hidden;
+    }
+  }
+
+  
+
+
+  /* 
+    MAIN CONTENT (Below the fixed header) 
+    Occupies the remainder of the page height after header. 
+  */
+  .main-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    margin-top: 55px; /* Accounts for header height. */
+    box-sizing: border-box;
+  }
+  
+  /* 
+    BUTTON CONTAINER (Sliders, FOV, Refractive, etc.) 
+    Positioned with margins to the right of the sidebar. 
+  */
+  .button-container {
+    margin: 30px 10px 10px 70px; /* top, right, bottom, left for overall placement. */
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* 
+    FOV & REFRACTIVE BUTTON GROUPS 
+    Lays out each group horizontally with wrapping. 
+  */
+  .button-group {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin: 5px;
+  }
+  
+  /* 
+    Additional margin-bottom for each slider-container and button-group 
+    to create vertical spacing between sections.
+  */
+  .slider-container,
+  .button-group {
+    margin-bottom: 20px; /* Adjust as needed for vertical spacing. */
+  }
+  
+  /* 
+    FOV Buttons 
+    Circular buttons for different field-of-view options. 
+  */
+  .fov-button {
+    margin: 5px;
+    padding: 0;
+    font-size: 15px;
+    cursor: pointer;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    background-color: #222;
+    color: #3deefb; /* Distinct colour for FOV buttons. */
+    width: 35px;
+    height: 35px;
+    line-height: 36px;
+    text-align: center;
+    transition: background-color 0.2s, border-color 0.2s;
+  }
+  .fov-button:hover {
+    background-color: #333;
+  }
+  .fov-button.active {
+    background-color: #555;
+    border-color: #fff;
+  }
+  
+  /* 
+    REFRACTIVE Buttons 
+    Similar styling but with a rectangular shape and green text. 
+  */
+  .refractive-button {
+    margin: 5px;
+    padding: 2px 3px;
+    font-size: 12px;
+    cursor: pointer;
+    border-radius: 8px;
+    border: 2px solid transparent;
+    background-color: #222;
+    color: #00ba09;
+    transition: background-color 0.2s, border-color 0.2s;
+  }
+  .refractive-button:hover {
+    background-color: #333;
+  }
+  .refractive-button.active {
+    background-color: #555;
+    border-color: #fff;
+  }
+  
+  /* 
+    SLIDER CONTAINER (Cataract, Zoom) 
+    Holds label + range input side-by-side. 
+  */
+  .slider-container {
+    display: flex;
+    align-items: center;
+    color: #fff; /* White text for labels. */
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+  }
+  .slider-container label {
+    margin-right: 5px;
+  }
+  .slider-container input[type="range"] {
+    vertical-align: middle;
+    width: 125%; /* Slightly wider range input. */
+  }
+  
+  /* 
+    CANVAS AREA (Full width, flex-based centring) 
+    The main interactive region for drawing the eye conditions. 
+  */
+  .canvas-container {
+    position: relative;
+    background-color: #000;
+    width: 100%;
+    flex-grow: 1; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 20px; /* Extra space above the canvas if desired. */
+  }
+  
+  canvas {
+    display: block;
+    background-color: #000;
+    cursor: crosshair;
+    touch-action: none;
+    width: 100vw;
+    height: auto; /* Maintains aspect ratio. */
+  }
+  
+  /* 
+    TOGGLE BUTTON (for conditions) 
+    Used to collapse/expand the condition button list. 
+  */
+  .toggle-button {
+    background: transparent;
+    border: none;
+    outline: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .header-content {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  padding: 10px 0;
+}
+
+
+
+header {
+  background: white;
+  height: 46px; /* Adjust appbar height as needed */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-content {
+  display: grid;
+  grid-template-columns: max-content 1fr max-content;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  padding: 0 40px;
+}
+
+.logo-container {
+  width: 80px; /* Adjust to your logo's width */
+  display: flex;
+  align-items: center; /* Vertically centres the logo */
+}
+
+.title-container {
+  text-align: center;
+}
+
+.title-container h1 {
+  font-size: 24px; /* Adjust font size as needed */
+  margin: 0;
+  white-space: nowrap; /* Prevents text wrapping to a new line */
+  font-weight: normal; /* Arclight in normal weight */
+}
+
+.title-container h1 strong {
+  font-weight: bold; /* Morph in bold */
+}
+
+.spacer {
+  width: 80px; /* Same width as .logo-container to balance layout */
+}
+
+.fov-button[data-degree="25"],
+.fov-button[data-degree="35"],
+.fov-button[data-degree="45"] {
+  color: #003cff; /* Darker blue text */
+}

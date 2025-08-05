@@ -1,0 +1,490 @@
+/* ===============================================
+   CSS VARIABLES
+   =============================================== */
+   :root {
+    --iris-dark-brown: #2b0f08;
+    --iris-light-brown: #692811;
+    --iris-green: #1d4e23;
+    --iris-blue: #3a4f65;
+  }
+  
+  /* ===============================================
+     BASIC RESET
+     =============================================== */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* ===============================================
+     BODY STYLES
+     =============================================== */
+  body {
+    font-family: 'Quicksand', sans-serif;
+    background: #f5f5f5;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  /* ===============================================
+     APP BAR
+     =============================================== */
+  .app-bar {
+    background: rgb(112, 0, 112);
+    color: #fff;
+    height: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .app-bar h1 {
+    font-size: 24px;
+    font-weight: 100;
+  }
+  
+  /* ===============================================
+     MAIN CONTENT
+     =============================================== */
+  main {
+    flex: 1;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  main .eyes-wrapper {
+    width: 100%;
+    margin: 20px -30px 20px -30px; /* counter main padding */
+    background: #e0e0e0;
+    padding: 30px 0;
+  }
+  
+  /* ===============================================
+     EYES & EYE ELEMENTS
+     =============================================== */
+  .eyes-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    margin-bottom: 0;
+  }
+  .eye {
+    position: relative;
+    width: 140px;
+    height: 75px;
+    border: 6px solid #000;
+    border-radius: 50%;
+    overflow: hidden;
+    background: #fff;
+  }
+  .eye-inner {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transform-origin: bottom; /* lower part remains fixed */
+    transition: transform 0.1s ease;
+  }
+  
+  /* ===============================================
+     IRIS & PUPIL ELEMENTS
+     =============================================== */
+  .iris {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    background: var(--iris-green);
+    border-radius: 50%;
+    left: calc(50% - 40px);
+    top: calc(50% - 40px);
+    touch-action: none;
+    transition: background 0.3s ease, transform 0.1s ease;
+  }
+  .iris.faded::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: white;
+    opacity: 0.2;
+    pointer-events: none;
+    border-radius: 50%;
+  }
+  .iris .pupil {
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    background: #000;
+    border-radius: 50%;
+    left: calc(50% - 16px);
+    top: calc(50% - 16px);
+    z-index: 2;
+  }
+  
+  
+  /* ===============================================
+     EYELID OVERLAYS (BLINK & PTOSIS)
+     =============================================== */
+  .upper-eyelid,
+  .lower-eyelid {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    background: #000;
+    z-index: 20;
+  }
+  .upper-eyelid {
+    top: 0;
+    height: 0; /* Controlled via JS (0 to ~52.5px for blink/ptosis) */
+    pointer-events: none;
+    transition: height 0.2s ease;
+    z-index: 20;
+    /* Inverted curve: bottom edge curves inward */
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 80%, 0 100%);
+  }
+  .lower-eyelid {
+    bottom: 0;
+    height: 0; /* Controlled via JS (0 to ~22.5px for blink) */
+    pointer-events: none;
+    transition: height 0.2s ease;
+    z-index: 20;
+    /* Inverted curve: top edge curves inward */
+    clip-path: polygon(0 100%, 100% 100%, 100% 0, 50% 20%, 0 0);
+  }
+  
+  /* ===============================================
+     CORNEAL REFLEX
+     =============================================== */
+  .eye::after {
+    content: "";
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: #fff;
+    border: 2px solid #000;
+    border-radius: 50%;
+    top: 50%;
+    z-index: 10;
+  }
+  .eye[data-eye="left"]::after {
+    left: calc(50% + 5px);
+    transform: translate(-50%, -50%);
+  }
+  .eye[data-eye="right"]::after {
+    left: calc(50% - 5px);
+    transform: translate(-50%, -50%);
+  }
+  
+  /* ===============================================
+     SLIDER CONTROLS
+     =============================================== */
+  .slider-title {
+    font-size: 14px;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  .sliders-container {
+    width: 100%;
+    padding: 0 30px; /* side padding */
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+  .slider-wrapper {
+    position: relative;
+    width: 200px;
+    max-width: 100%;
+    text-align: center;
+  }
+  .slider {
+    width: 100%;
+  }
+
+  
+  /* ===============================================
+     FADE BUTTON
+     =============================================== */
+     .fade-button {
+      margin-top: 10px;
+      padding: 5px 10px;
+      border: 1px solid #000;
+      border-radius: 12px;
+      font-size: 12px;
+      font-style: italic;
+      cursor: pointer;
+      background: #d3d3d3;
+      color: grey;
+      transition: background 0.2s ease;
+    }
+    
+  .fade-button.active {
+    background: #fafafa;
+  }
+  
+/* ===============================================
+   OUTPUT DISPLAY
+   =============================================== */
+   .output {
+    width: 100vw;
+    margin-top: 1%;
+    background: #ccc; /* grey background */
+    text-align: center;
+    font-size: 12px;
+    padding: 10px 20px;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .output p {
+    margin: 8px 0;
+  }
+  
+  
+  /* ===============================================
+     RESPONSIVE ADJUSTMENTS
+     =============================================== */
+  @media screen and (max-width: 480px) {
+    .slider-wrapper {
+      width: 100%;
+    }
+  }
+  
+  /* ===============================================
+     TOGGLE CONTROLS (REFLEX & IRIS COLOUR)
+     =============================================== */
+  .toggle-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+  }
+  .toggle-group {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .toggle-reflex,
+  .toggle-iris {
+    display: flex;
+    align-items: center;
+  }
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+    vertical-align: middle;
+  }
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  .toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+    border-radius: 24px;
+  }
+  .toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: 0.4s;
+    border-radius: 50%;
+  }
+  .switch input:checked + .toggle-slider {
+    background-color: #2196F3;
+  }
+  .switch input:checked + .toggle-slider:before {
+    transform: translateX(26px);
+  }
+  .toggle-label {
+    font-size: 14px;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+  .toggle-iris label {
+    margin-right: 10px;
+  }
+  
+  .toggle-reflex-color {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 0px auto; /* adjust vertical spacing as needed */
+    /* remove any inline padding if present */
+  }
+  .toggle-reflex-color .slider {
+    vertical-align: middle;
+    margin: 0;
+  }
+  
+  .toggle-reflex-color .toggle-label {
+    line-height: 24px; /* or match the slider's height */
+  }
+  
+
+  /* ===============================================
+     REFLEX MODE OVERRIDES
+     =============================================== */
+  .reflex-on .iris {
+    background: black;
+  }
+  .reflex-on .iris .pupil {
+    background: rgb(153, 41, 0); /* dulled base reflex colour */
+    border: 1.5px solid #fff;
+  }
+  
+
+  .reflex-on main .eyes-wrapper {
+    background: #2e2e2e;
+  }
+  .reflex-on .eye {
+    background: #484848;
+  }
+  
+  /* ===============================================
+     VERTICAL EYE SLIDER (UPPER LID PTOSIS)
+     (Make vertical slider look the same as the pupil slider)
+     =============================================== */
+  .vertical-eye-slider {
+    width: 100%;
+  }
+  .analysis {
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    padding: 10px;
+    margin: 10px 10px 10px auto;
+    max-width: 280px;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 0.9rem;
+    text-align: center;
+    color: #333;
+  }
+  
+  .analysis-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px auto;
+    max-width: 350px;
+  }
+  
+  #palsy-img-container {
+    margin-right: 10px;
+  }
+  
+  .palsy-img-outside {
+    max-width: 40px;
+    padding-left: 5px;
+    height: auto;
+  }
+  
+  
+  #analysis-output {
+    margin: 0;
+  }
+  
+
+  /* Sidebar styles */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -250px; /* Hidden by default */
+  width: 250px;
+  height: 100%;
+  background: #fff;
+  border-right: 1px solid #ccc;
+  box-shadow: 2px 0 5px rgba(255, 255, 255, 0.1);
+  transition: left 0.3s ease;
+  z-index: 1000;
+  padding: 15px;
+}
+
+.sidebar.open {
+  left: 0;
+}
+
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+}
+
+.sidebar-header h2 {
+  font-size: 18px;
+  margin: 0;
+}
+
+.close-btn {
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.conditions-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.conditions-list li {
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+
+.conditions-list li:hover {
+  background: #f0f0f0;
+}
+
+.sidebar-footer {
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  text-align: center;
+}
+
+.sidebar-footer button {
+  padding: 8px 16px;
+  font-size: 14px;
+  border: none;
+  background: #2196F3;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+/* Sidebar toggle button */
+.sidebar-toggle {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  font-size: 24px;
+  color: #fff; /* White colour for visibility */
+  cursor: pointer;
+  z-index: 1100;
+}
+
