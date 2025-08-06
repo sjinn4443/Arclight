@@ -19,122 +19,150 @@
   </div>
 </div>
 
- <!-- Splash Screen with Language Dropdown -->
+
+<!-- Splash Screen (logo only) -->
 <div id="splashScreen" class="page active" style="background-color: black;">
   <div class="splash-container">
     <img src="images/logo.png" alt="Arclight Project Logo" id="splashLogo" />
-    <div id="languageContainer" style="display: none; margin-top: 30px;">
-      <select id="splashLanguageDropdown">
-        <option disabled selected>What's your preferred language?</option>
-        <option>English</option>
-        <option>Afrikaans</option>
-        <option>Amharic</option>
-        <option>Arabic</option>
-        <option>Bengali</option>
-        <option>Berber</option>
-        <option>French</option>
-        <option>Fula</option>
-        <option>German</option>
-        <option>Hausa</option>
-        <option>Hindi</option>
-        <option>Igbo</option>
-        <option>Indonesian</option>
-        <option>Italian</option>
-        <option>Japanese</option>
-        <option>Kinyarwanda</option>
-        <option>Korean</option>
-        <option>Lingala</option>
-        <option>Mandarin Chinese</option>
-        <option>Marathi</option>
-        <option>Oromo</option>
-        <option>Portuguese</option>
-        <option>Russian</option>
-        <option>Shona</option>
-        <option>Somali</option>
-        <option>Spanish</option>
-        <option>Standard Arabic</option>
-        <option>Swahili</option>
-        <option>Telugu</option>
-        <option>Thai</option>
-        <option>Tigrinya</option>
-        <option>Tswana</option>
-        <option>Turkish</option>
-        <option>Urdu</option>
-        <option>Vietnamese</option>
-        <option>Wolof</option>
-        <option>Xhosa</option>
-        <option>Yoruba</option>
-        <option>Zulu</option>
-      </select>
-    </div>
-    <button id="installBtn" class="install-button" style="display:none; margin-top: 40px;">Add Arclight to Home Screen</button>
   </div>
 </div>
 
+<!-- Language & Install Page -->
+<div id="languageInstallPage" class="page">
+  <div class="lang-install">
+    <div class="lang-install__body">
+      <label class="lang-install__label" for="prefLang">Choose your preferred language</label>
+      <div class="lang-install__select-wrap">
+        <select id="prefLang" class="lang-install__select">
+          <option selected>English</option>
+          <option>Afrikaans</option>
+          <option>Amharic</option>
+          <option>Arabic</option>
+          <option>Bengali</option>
+          <option>Berber</option>
+          <option>French</option>
+          <option>Fula</option>
+          <option>German</option>
+          <option>Hausa</option>
+          <option>Hindi</option>
+          <option>Igbo</option>
+          <option>Indonesian</option>
+          <option>Italian</option>
+          <option>Japanese</option>
+          <option>Kinyarwanda</option>
+          <option>Korean</option>
+          <option>Lingala</option>
+          <option>Mandarin Chinese</option>
+          <option>Marathi</option>
+          <option>Oromo</option>
+          <option>Portuguese</option>
+          <option>Russian</option>
+          <option>Shona</option>
+          <option>Somali</option>
+          <option>Spanish</option>
+          <option>Standard Arabic</option>
+          <option>Swahili</option>
+          <option>Telugu</option>
+          <option>Thai</option>
+          <option>Tigrinya</option>
+          <option>Tswana</option>
+          <option>Turkish</option>
+          <option>Urdu</option>
+          <option>Vietnamese</option>
+          <option>Wolof</option>
+          <option>Xhosa</option>
+          <option>Yoruba</option>
+          <option>Zulu</option>
+        </select>
+      </div>
+
+      <button id="installAppBtn" class="btn-lg-grey">Install the App</button>
+      <div class="lang-install__hint">for offline access</div>
+
+      <div class="lang-install__divider">
+        <span></span>or<span></span>
+      </div>
+
+      <button id="useOnlineBtn" class="btn-outline-light">Use App Without Installing</button>
+      <div class="lang-install__hint">for online experience</div>
+    </div>
+  </div>
+</div>
+
+
+
 <!-- Onboarding Page -->
 <div id="onboarding" class="page">
-  <div class="container">
-    <div class="card">
-      <h1>Welcome to Arclight</h1>
-      <input type="text" id="username" class="fixed-input" placeholder="Enter your name" />
-      <select id="fieldSelect">
-        <option disabled selected>Which field are you working in?</option>
+  <div class="container onboarding-container">
+    <h1 class="onb-title">Create Account</h1>
+
+    <div class="form-field">
+      <label for="username">Name</label>
+      <input type="text" id="username" class="onb-input" placeholder="Enter your name" />
+    </div>
+
+    <div class="form-field">
+      <label for="fieldSelect">Which field do you work in?</label>
+      <select id="fieldSelect" class="onb-input">
+        <option disabled selected>Select</option>
         <option value="eyes">Eyes</option>
         <option value="ears">Ears</option>
         <option value="skin">Skin</option>
       </select>
-      
-      <select id="jobSelect" class="hidden">
-      <option value="" disabled selected>What best describes your current role?</option>
+    </div>
 
-      <optgroup label="Eyes" style="display: none;">
-        <option>Ophthalmologist</option>
-        <option>Optometrist</option>
-        <option>Ophthalmic Clinical Officer</option>
-        <option>Ophthalmic Nurse</option>
-        <option>Orthoptist</option>
-        <option>General Practitioner</option>
-        <option>Clinical Officer</option>
-        <option>Primary Health Care Nurse</option>
-        <option>Community Health Worker</option>
-        <option>Village Health Worker</option>
-        <option>Lady Community Health Worker</option>
-        <option>Health Extension Worker</option>
-        <option>Medical Student</option>
-        <option>Eye Care Practitioner - Other</option>
-      </optgroup>
+    <div class="form-field">
+      <label for="jobSelect">Select your job role</label>
+      <select id="jobSelect" class="onb-input">
+        <option disabled selected>Select</option>
+        <optgroup label="Eyes">
+          <option>Ophthalmologist</option>
+          <option>Optometrist</option>
+          <option>Ophthalmic Clinical Officer</option>
+          <option>Ophthalmic Nurse</option>
+          <option>Orthoptist</option>
+          <option>General Practitioner</option>
+          <option>Clinical Officer</option>
+          <option>Primary Health Care Nurse</option>
+          <option>Community Health Worker</option>
+          <option>Village Health Worker</option>
+          <option>Lady Community Health Worker</option>
+          <option>Health Extension Worker</option>
+          <option>Medical Student</option>
+          <option>Eye Care Practitioner - Other</option>
+        </optgroup>
+        <optgroup label="Ears">
+          <option>ENT Specialist</option>
+          <option>Audiologist</option>
+          <option>Ear Care Practitioner</option>
+          <option>General Practitioner</option>
+          <option>Clinical Officer</option>
+          <option>Primary Health Care Nurse</option>
+          <option>Community Health Worker</option>
+          <option>Village Health Worker</option>
+          <option>Lady Community Health Worker</option>
+          <option>Health Extension Worker</option>
+          <option>Medical Student</option>
+        </optgroup>
+        <optgroup label="Skin">
+          <option>Dermatologist</option>
+          <option>General Practitioner</option>
+          <option>Clinical Officer</option>
+          <option>Primary Health Care Nurse</option>
+          <option>Community Health Worker</option>
+          <option>Village Health Worker</option>
+          <option>Lady Community Health Worker</option>
+          <option>Health Extension Worker</option>
+          <option>Medical Student</option>
+        </optgroup>
+      </select>
+    </div>
 
-      <optgroup label="Ears" style="display: none;">
-        <option>ENT Specialist</option>
-        <option>Audiologist</option>
-        <option>Ear Care Practitioner</option>
-        <option>General Practitioner</option>
-        <option>Clinical Officer</option>
-        <option>Primary Health Care Nurse</option>
-        <option>Community Health Worker</option>
-        <option>Village Health Worker</option>
-        <option>Lady Community Health Worker</option>
-        <option>Health Extension Worker</option>
-        <option>Medical Student</option>
-      </optgroup>
-
-      <optgroup label="Skin" style="display: none;">
-        <option>Dermatologist</option>
-        <option>General Practitioner</option>
-        <option>Clinical Officer</option>
-        <option>Primary Health Care Nurse</option>
-        <option>Community Health Worker</option>
-        <option>Village Health Worker</option>
-        <option>Lady Community Health Worker</option>
-        <option>Health Extension Worker</option>
-        <option>Medical Student</option>
-      </optgroup>
-    </select>
-
-
-      <select id="studentYearSelect" class="hidden">
-        <option disabled selected>How many years have you studied?</option>
-        <option value="1">Less than 1 year</option>
+    <div class="form-field hidden" id="studentYearField">
+      <label for="studentYearSelect">How many years have you studied?</label>
+      <select id="studentYearSelect" class="onb-input">
+        <option disabled selected>Select</option>
+        <option value="lt1">Less than 1 year</option>
         <option value="1">1 year</option>
         <option value="2">2 years</option>
         <option value="3">3 years</option>
@@ -142,64 +170,180 @@
         <option value="5">5 years</option>
         <option value="6">6+ years</option>
       </select>
-      <select id="location">
-        <option disabled selected>Where are you located at?</option>
-        <option>Algeria</option>
-        <option>Bangladesh</option>
-        <option>Brazil</option>
-        <option>China</option>
-        <option>DR Congo</option>
-        <option>Egypt</option>
-        <option>Ethiopia</option>
-        <option>France</option>
-        <option>Germany</option>
-        <option>Ghana</option>
-        <option>India</option>
-        <option>Indonesia</option>
-        <option>Iran</option>
-        <option>Japan</option>
-        <option>Kenya</option>
-        <option>Mexico</option>
-        <option>Morocco</option>
-        <option>Nigeria</option>
-        <option>Pakistan</option>
-        <option>Philippines</option>
-        <option>Russia</option>
-        <option>South Africa</option>
-        <option>Sudan</option>
-        <option>Tanzania</option>
-        <option>Thailand</option>
-        <option>Turkey</option>
-        <option>UK</option>
-        <option>Uganda</option>
-        <option>United States</option>
-        <option>Vietnam</option>
-        <option>Zambia</option>
-        <option>Zimbabwe</option>
-      </select>
-      <select id="interest">
-        <option disabled selected>What is your professional interest?</option>
-        <option>Eye diagnosis</option>
-        <option>Ear screening</option>
-        <option>Skin recognition</option>
-        <option>Student education</option>
-        <option>Rural fieldwork</option>
-        <option>Community training</option>
-        <option>Patient communication</option>
-        <option>Low-resource tools</option>
-        <option>Infection detection</option>
-        <option>Self-directed learning</option>
-        <option>Teaching tools</option>
-        <option>Eyes – Other</option>
-        <option>Ears – Other</option>
-        <option>Skin – Other</option>
-      </select>
-      <button id="completeOnboardingBtn">Join Us!</button>
     </div>
+
+
+    <div class="form-field">
+      <label for="location">Where are you located?</label>
+      <select id="location" class="onb-input">
+        <option disabled selected>Select</option>
+        <option>Algeria</option><option>Bangladesh</option><option>Brazil</option>
+        <option>China</option><option>DR Congo</option><option>Egypt</option>
+        <option>Ethiopia</option><option>France</option><option>Germany</option>
+        <option>Ghana</option><option>India</option><option>Indonesia</option>
+        <option>Iran</option><option>Japan</option><option>Kenya</option>
+        <option>Mexico</option><option>Morocco</option><option>Nigeria</option>
+        <option>Pakistan</option><option>Philippines</option><option>Russia</option>
+        <option>South Africa</option><option>Sudan</option><option>Tanzania</option>
+        <option>Thailand</option><option>Turkey</option><option>UK</option>
+        <option>Uganda</option><option>United States</option><option>Vietnam</option>
+        <option>Zambia</option><option>Zimbabwe</option>
+      </select>
+    </div>
+
+    <button id="completeOnboardingBtn" class="onb-cta">Continue</button>
   </div>
 </div>
 
-<!-- Module Selector -->
+
+<!-- Professional Interest Page -->
+<div id="proInterestPage" class="page">
+  <div class="container interest-container">
+    <h1 class="interest-title">What is your<br/>professional interest?</h1>
+    <p class="interest-sub">
+      Your answer will help us offer<br/>
+      more relevant content in the future
+    </p>
+
+    <!-- Group 1 -->
+    <div class="interest-group">
+      <div class="interest-group-title">Education & Learning</div>
+      <div class="chip-row">
+        <button type="button" class="chip">Student education</button>
+        <button type="button" class="chip">Teaching tools</button>
+        <button type="button" class="chip">Self-directed learning</button>
+      </div>
+    </div>
+
+    <!-- Group 2 -->
+    <div class="interest-group">
+      <div class="interest-group-title">Community &amp; Rural Health, Fieldwork</div>
+      <div class="chip-row">
+        <button type="button" class="chip">Community training</button>
+        <button type="button" class="chip">Patient communication</button>
+      </div>
+    </div>
+
+    <!-- Group 3 -->
+    <div class="interest-group">
+      <div class="interest-group-title">Global Health &amp; Innovation</div>
+      <div class="chip-row">
+        <button type="button" class="chip">Low-resource tools</button>
+        <button type="button" class="chip">Infection detection</button>
+      </div>
+    </div>
+
+    <!-- bottom CTA -->
+    <button id="interestSubmitBtn" class="onb-cta interest-cta">Join us!</button>
+  </div>
+</div>
+
+
+
+<!-- Intro Page -->
+<div id="introPage" class="page">
+  <div class="container intro-container">
+    <!-- Progress bar -->
+    <div class="intro-progress">
+      <div class="intro-progress__track">
+        <div class="intro-progress__fill"></div>
+      </div>
+    </div>
+
+    <!-- Text -->
+    <h1 class="intro-title">Welcome to<br/>the Arclight App!</h1>
+    <p class="intro-sub">
+      Here’s a quick look at the app’s features<br/>
+      to help you get the most out of it
+    </p>
+
+    <!-- Center phone image -->
+    <img src="images/onboarding.png" alt="App preview" class="intro-hero" />
+
+    <!-- Buttons -->
+    <button id="seeWhatBtn" class="onb-cta intro-primary">Let’s see what this app can do!</button>
+    <button id="skipBtn" class="btn-outline intro-outline">Skip and continue</button>
+  </div>
+</div>
+
+
+<!-- Unified Dashboard -->
+<div id="unifiedDashboard" class="page">
+  <div class="container unified-container">
+
+    <!-- Greeting + search (like your mock) -->
+    <div class="unified-top">
+      <div class="hello">Hello Sujin!</div>
+      <div class="icons">
+        <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" class="bell-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/>
+      <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+    </svg>
+    </span>
+        <span class="icon">☰</span>
+      </div>
+    </div>
+
+    <div class="search-wrap">
+  <input type="search" placeholder="Search for contents" />
+  <span class="search-icon" aria-hidden="true">
+    <!-- inline SVG for magnifier -->
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="11" cy="11" r="8"></circle>
+      <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+    </svg>
+  </span>
+</div>
+
+
+    <!-- Horizontal category slider -->
+    <div class="category-carousel" id="categoryCarousel">
+      <button class="category-card" data-target="learningModules"><span>Eyes</span></button>
+      <button class="category-card" data-target="earsLearningModules"><span>Ears</span></button>
+      <button class="category-card" data-target="skinModules"><span>Skin</span></button>
+      <button class="category-card" data-target="teachModules"><span>How to Teach</span></button>
+    </div>
+
+    <div class="carousel-dots" id="carouselDots">
+      <button class="dot active" aria-label="Eyes"></button>
+      <button class="dot" aria-label="Ears"></button>
+      <button class="dot" aria-label="Skin"></button>
+      <button class="dot" aria-label="How to Teach"></button>
+    </div>
+
+
+    <!-- Quick actions (optional) -->
+    <div class="quick-actions">
+      <button class="pill">Atoms Card</button>
+      <button class="pill">My Notes</button>
+      <button class="pill">ALAN</button>
+      <button class="pill">Download Contents</button>
+    </div>
+
+    <!-- Recommended for you (placeholder) -->
+    <h3 class="section-title">Recommended for you <span class="see-all">See all ></span></h3>
+    <div class="learning-placeholder" id="recommendedPlaceholder"></div>
+
+
+  </div>
+</div>
+
+<!-- Simple placeholder pages (you can replace later) -->
+<div id="skinModules" class="page"><div class="container"><h1>Skin Modules</h1><p>Coming soon.</p></div></div>
+<div id="teachModules" class="page"><div class="container"><h1>How to Teach</h1><p>Coming soon.</p></div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Module Selector 
 <div id="selectModule" class="page">
   <div class="container">
     <div class="card">
@@ -211,7 +355,7 @@
       <p class="note">*Please note that only Eyes and Ears module is available at the moment</p>
     </div>
   </div>
-</div>
+</div>-->
 
 <!-- Eye Dashboard -->
 <div id="dashboard" class="page">

@@ -49,6 +49,11 @@ document.addEventListener('DOMContentLoaded', () => {
   initializeQuizzes();
   initializeVideoPlayers();
   initializeMisc();
+  initializeProfessionalInterest();
+  initializeIntroPage();
+  initializeLanguageInstallPage();
+  initializeUnifiedDashboard();
+
 
   // Set the initial page to be the splash screen.
   showPage('splashScreen');
@@ -86,6 +91,27 @@ function showPage(pageId, skipHistory = false) {
   updateDashboardSwitch(pageId);
   updateBottomNavBar(pageId);
 }
+
+function initializeIntroPage() {
+  const seeWhatBtn = document.getElementById('seeWhatBtn');
+  const skipBtn = document.getElementById('skipBtn');
+
+  if (seeWhatBtn) seeWhatBtn.addEventListener('click', () => showPage('unifiedDashboard'));
+  if (skipBtn)   skipBtn.addEventListener('click', () => showPage('unifiedDashboard'));
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /**
  * Initializes general page navigation buttons like the global back and home buttons.
@@ -154,33 +180,13 @@ function updateBottomNavBar(pageId) {
 }
 
 // --- ONBOARDING & SPLASH SCREEN ---
-
-/**
- * Initializes event listeners for the splash screen and onboarding process.
- */
 function initializeOnboarding() {
-  // Splash screen language selection
+  // Splash: logo-only, then go to Language & Install page
   window.addEventListener('load', () => {
-    const languageBox = document.getElementById('languageContainer');
     setTimeout(() => {
-      if (languageBox) languageBox.style.display = 'block';
-    }, 5000); // Show after 5 seconds
+      showPage('languageInstallPage');
+    }, 1800); // ~1.8s splash
   });
-
-  const splashDropdown = document.getElementById('splashLanguageDropdown');
-  if (splashDropdown) {
-    splashDropdown.addEventListener('change', () => {
-      const splash = document.getElementById('splashScreen');
-      const onboarding = document.getElementById('onboarding');
-      if (splash && onboarding) {
-        splash.classList.add('fade-out');
-        setTimeout(() => {
-          splash.classList.remove('active', 'fade-out');
-          onboarding.classList.add('active');
-        }, 500);
-      }
-    });
-  }
 
   // Onboarding form logic
   const completeOnboardingBtn = document.getElementById('completeOnboardingBtn');
@@ -189,37 +195,43 @@ function initializeOnboarding() {
   }
 
   const fieldSelect = document.getElementById('fieldSelect');
-  if (fieldSelect) {
-    fieldSelect.addEventListener('change', handleFieldSelection);
-  }
+  if (fieldSelect) fieldSelect.addEventListener('change', handleFieldSelection);
 
   const jobSelect = document.getElementById('jobSelect');
   if (jobSelect) {
     jobSelect.addEventListener('change', () => {
-      const studentYearSelect = document.getElementById('studentYearSelect');
-      if (studentYearSelect) {
-        studentYearSelect.classList.toggle('hidden', jobSelect.value !== "Medical Student");
-      }
+      const studentYearField = document.getElementById('studentYearField');
+      if (!studentYearField) return;
+      const isMedStudent = jobSelect.value === 'Medical Student';
+      studentYearField.classList.toggle('hidden', !isMedStudent);
+      const inner = document.getElementById('studentYearSelect');
+      if (inner) inner.classList.remove('hidden');
     });
   }
 }
+
 
 /**
  * Handles the logic for completing the onboarding form.
  */
 function completeOnboarding() {
-  const username = document.getElementById('username').value;
-  const job = document.getElementById('jobSelect').value;
-  const language = document.getElementById('splashLanguageDropdown').value;
+  const username = document.getElementById('username')?.value.trim();
+  const job = document.getElementById('jobSelect')?.value;
 
-  if (!username || !job || !language || language === "What's your preferred language?") {
+  // Language is on the previous page now; it's optional here.
+  // If you want to require it, read it from 'prefLang' instead:
+  // const language = document.getElementById('prefLang')?.value;
+
+  if (!username || !job) {
     alert("Please complete all fields.");
     return;
   }
 
-  alert("Welcome! You're now registered to Arclight Eye and Ear Care App!");
-  showPage('selectModule');
+  localStorage.setItem('username', username);
+  // Go to "What is your professional interest?"
+  showPage('proInterestPage');
 }
+
 
 /**
  * Populates the job role dropdown based on the selected field.
@@ -245,6 +257,150 @@ function handleFieldSelection() {
   jobSelect.classList.remove('hidden');
   studentYearSelect.classList.add('hidden');
 }
+
+// Make the visible text grey only when placeholder is selected
+function paintSelectColor(el) {
+  const opt = el.options[el.selectedIndex];
+  const isPlaceholder = !opt || opt.disabled;
+  el.style.color = isPlaceholder ? '#ccccd1' : '#000000';
+}
+
+['fieldSelect','jobSelect','studentYearSelect','location'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) {
+    paintSelectColor(el);            // initial paint
+    el.addEventListener('change', () => paintSelectColor(el));
+  }
+});
+
+
+function initializeUnifiedDashboard() {
+  // 1) Greeting
+  const usernameDisplay = document.querySelector('#unifiedDashboard .hello');
+  if (usernameDisplay) {
+    const storedName = localStorage.getItem('username') || 'Guest';
+    usernameDisplay.textContent = `Hello ${storedName}!`;
+  }
+
+  // 2) Carousel wiring
+  const carousel = document.getElementById('categoryCarousel');
+  if (!carousel) return;
+
+  // Click routing
+  carousel.querySelectorAll('.category-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const target = card.dataset.target;
+      if (target === 'learningModules') {
+        showLearningModules();
+      } else if (target === 'earsLearningModules') {
+        showEarsLearningModules();
+      } else {
+        showPage(target);
+      }
+    });
+  });
+
+  // --- Dots: update on scroll and click ---
+  const dots = Array.from(document.querySelectorAll('#carouselDots .dot'));
+
+  const getActiveIndex = () => {
+    const cards = Array.from(carousel.querySelectorAll('.category-card'));
+    const mid = carousel.scrollLeft + carousel.offsetWidth / 2;
+    let best = 0, bestDist = Infinity;
+    cards.forEach((card, i) => {
+      const center = card.offsetLeft + card.offsetWidth / 2;
+      const d = Math.abs(center - mid);
+      if (d < bestDist) { bestDist = d; best = i; }
+    });
+    return best;
+  };
+
+  const paintDots = (i) => {
+    dots.forEach((d, idx) => d.classList.toggle('active', idx === i));
+  };
+
+  const centerCardByIndex = (i) => {
+    const cards = carousel.querySelectorAll('.category-card');
+    if (!cards.length) return;
+    const clamped = Math.max(0, Math.min(i, cards.length - 1));
+    const card = cards[clamped];
+    const left = card.offsetLeft - (carousel.offsetWidth / 2) + (card.offsetWidth / 2);
+    carousel.scrollTo({ left, behavior: 'smooth' });
+  };
+
+  // Scroll listener to update dots
+  let rafId = null;
+  const onScroll = () => {
+    if (rafId) return;
+    rafId = requestAnimationFrame(() => {
+      rafId = null;
+      paintDots(getActiveIndex());
+    });
+  };
+  carousel.addEventListener('scroll', onScroll, { passive: true });
+
+  // Click dots to center specific card
+  dots.forEach((dot, i) => dot.addEventListener('click', () => centerCardByIndex(i)));
+
+  // Start centered on the 2nd card (index 1) and paint dots
+  requestAnimationFrame(() => {
+    centerCardByIndex(1);
+    paintDots(1);
+  });
+}
+
+  // 3) Center a specific card on load (index 1 = second card)
+  const centerCard = (index = 1) => {
+    const cards = carousel.querySelectorAll('.category-card');
+    if (!cards.length) return;
+    const i = Math.max(0, Math.min(index, cards.length - 1));
+    const card = cards[i];
+    const centerOffset = card.offsetLeft - (carousel.offsetWidth / 2) + (card.offsetWidth / 2);
+    carousel.scrollTo({ left: centerOffset, behavior: 'auto' });
+  };
+
+  // Wait for layout, then center
+  requestAnimationFrame(() => centerCard(1));
+
+
+// === Recommended modules ===
+const recommendedContainer = document.getElementById('recommendedPlaceholder');
+if (recommendedContainer) {
+  // Example: array of module objects (replace with your real list)
+  const allModules = [
+  { title: "Direct Ophthalmoscopy", img: "images/direct-ophthalmoscopy.jpg", target: "learningModules" },
+  { title: "Cataract", img: "images/cataract.jpg", target: "learningModules" },
+  { title: "Pupil Exam", img: "images/pupil-exam.jpg", target: "learningModules" },
+  { title: "Visual Acuity", img: "images/visual-acuity.jpg", target: "learningModules" }
+];
+
+
+  // Pick 2 random unique modules
+  const shuffled = allModules.sort(() => Math.random() - 0.5);
+const picks = shuffled.slice(0, 2);
+
+
+  // Render cards
+  recommendedContainer.innerHTML = picks.map(m => `
+    <div class="module-card" data-target="${m.target}">
+      <img src="${m.img}" alt="${m.title}" />
+      <div class="module-title">${m.title}</div>
+    </div>
+  `).join('');
+
+  // Click events for cards
+  recommendedContainer.querySelectorAll('.module-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const target = card.dataset.target;
+      if (target === 'learningModules') showLearningModules();
+      else if (target === 'earsLearningModules') showEarsLearningModules();
+      else showPage(target);
+    });
+  });
+}
+
+
+
 
 
 // --- DASHBOARD ---
@@ -1128,5 +1284,56 @@ function initializeMisc() {
       zoomLevel = e.deltaY < 0 ? zoomLevel + 0.1 : Math.max(0.5, zoomLevel - 0.1);
       earHealthImage.style.transform = `scale(${zoomLevel})`;
     }, { passive: false });
+  }
+}
+
+function initializeProfessionalInterest() {
+  // Let user toggle chips on/off
+  document.querySelectorAll('#proInterestPage .chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      chip.classList.toggle('selected');
+    });
+  });
+
+  // When they click "Join us!", go to intro page
+  const submit = document.getElementById('interestSubmitBtn');
+  if (submit) {
+    submit.addEventListener('click', () => {
+      showPage('introPage');
+    });
+  }
+}
+
+function initializeLanguageInstallPage() {
+  const installBtn = document.getElementById('installAppBtn');
+  const useOnlineBtn = document.getElementById('useOnlineBtn');
+  const langSelect = document.getElementById('prefLang');
+
+  // (Optional) remember language choice
+  if (langSelect) {
+    langSelect.addEventListener('change', () => {
+      // localStorage.setItem('prefLang', langSelect.value);
+    });
+  }
+
+  // Install path → trigger your PWA install prompt, then proceed
+  if (installBtn) {
+    installBtn.addEventListener('click', async () => {
+      try {
+        if (typeof handleInstallPrompt === 'function') {
+          await handleInstallPrompt();
+        }
+      } catch (e) {
+        console.warn('Install prompt failed or was dismissed:', e);
+      } finally {
+        // After install (or dismissal), move to onboarding
+        showPage('onboarding');
+      }
+    });
+  }
+
+  // Use without installing → go straight to Onboarding
+  if (useOnlineBtn) {
+    useOnlineBtn.addEventListener('click', () => showPage('onboarding'));
   }
 }
