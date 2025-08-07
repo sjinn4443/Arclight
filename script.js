@@ -368,16 +368,30 @@ const recommendedContainer = document.getElementById('recommendedPlaceholder');
 if (recommendedContainer) {
   // Example: array of module objects (replace with your real list)
   const allModules = [
-  { title: "Direct Ophthalmoscopy", img: "images/direct-ophthalmoscopy.jpg", target: "learningModules" },
-  { title: "Cataract", img: "images/cataract.jpg", target: "learningModules" },
-  { title: "Pupil Exam", img: "images/pupil-exam.jpg", target: "learningModules" },
-  { title: "Visual Acuity", img: "images/visual-acuity.jpg", target: "learningModules" }
+  { title: "Direct Ophthalmoscopy", img: "images/direct-ophthalmoscopy.jpg", target: "directOphthalmoscopy" },
+  { title: "Cataract", img: "images/cataract.jpg", target: "cataractPage" },
+  { title: "Pupil Exam", img: "images/pupil-exam.jpg", target: "pupilsPage" },
+  { title: "Visual Acuity", img: "images/visual-acuity.jpg", target: "visualAcuityPage" }
 ];
 
 
   // Pick 2 random unique modules
   const shuffled = allModules.sort(() => Math.random() - 0.5);
 const picks = shuffled.slice(0, 2);
+
+// Add inside initializeUnifiedDashboard(), after the recommendedContainer code
+document.querySelectorAll('.quick-actions .pill').forEach(btn => {
+  if (btn.textContent.trim() === 'Atoms Card') {
+    btn.addEventListener('click', () => goToAtomsCard('eyes')); // or 'ears' as needed
+  }
+});
+
+document.querySelectorAll('.quick-actions .pill').forEach(btn => {
+  if (btn.textContent.trim() === 'Download Contents') {
+    btn.addEventListener('click', showOfflineContentModal);
+  }
+});
+
 
 
   // Render cards
@@ -399,6 +413,75 @@ const picks = shuffled.slice(0, 2);
   });
 }
 
+const menuBtn = document.getElementById('menuBtn'); // <- now using ID
+const menuOverlay = document.getElementById('menuOverlay');
+const closeMenuBtn = document.getElementById('closeMenuBtn');
+
+if (menuBtn && menuOverlay && closeMenuBtn) {
+  menuBtn.addEventListener('click', () => {
+    menuOverlay.classList.remove('hidden');
+  });
+
+  closeMenuBtn.addEventListener('click', () => {
+    menuOverlay.classList.add('hidden');
+  });
+}
+
+// Example: Set user's name in menu (assuming you store it in localStorage at registration)
+const menuUsernameEl = document.getElementById('menuUsername');
+const savedUsername = localStorage.getItem('username'); // e.g. set during registration
+
+if (menuUsernameEl && savedUsername) {
+  menuUsernameEl.textContent = `${savedUsername}`;
+}
+
+
+// Tab switching logic
+const tabs = document.querySelectorAll('.menu-tabs .tab');
+const tabContents = {
+  'Learning': document.getElementById('learningTab'),
+  'Community': document.getElementById('communityTab'),
+  'Links': document.getElementById('linksTab'),
+};
+
+tabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    // Highlight active tab
+    tabs.forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+
+    // Hide all tab content
+    Object.values(tabContents).forEach(section => {
+      if (section) section.classList.add('hidden');
+    });
+
+    // Show selected tab content
+    const label = tab.textContent.trim();
+    if (tabContents[label]) {
+      tabContents[label].classList.remove('hidden');
+    }
+  });
+});
+
+
+// Show download contents popup
+document.getElementById('downloadedContentsBtn')?.addEventListener('click', () => {
+  document.getElementById('offlineContentModal').style.display = 'block';
+});
+
+// Atoms Card: Eyes
+document.getElementById('atomsCardEyesBtn')?.addEventListener('click', () => {
+  showPage('atomsCardPage');
+  document.getElementById('eyesTab')?.click();
+  document.getElementById('menuOverlay')?.classList.add('hidden');
+});
+
+// Atoms Card: Ears
+document.getElementById('atomsCardEarsBtn')?.addEventListener('click', () => {
+  showPage('atomsCardPage');
+  document.getElementById('earsTab')?.click();
+  document.getElementById('menuOverlay')?.classList.add('hidden');
+});
 
 
 
