@@ -169,7 +169,7 @@ function updateBottomNavBar(pageId) {
     'howToExamineEarPage', 'earConditionsPage', 'earFlowchartPage', 'pupilFullExamPage',
     'rapdPage', 'rapdTestVideoPage', 'phoneAttachmentVideoPage', 'visualAcuityPage',
     'fundalReflexPage', 'interactiveLearningPage', 'miresPage', 'morphPage',
-    'squintPalsyPage', 'cataractPage', 'eyesCatalogPage'
+    'squintPalsyPage', 'cataractPage', 'eyesCatalogPage', 'likedPage'
   ];
 
   const shouldShowNav = showHomePages.includes(pageId);
@@ -349,19 +349,6 @@ function initializeUnifiedDashboard() {
   });
 }
 
-  // 3) Center a specific card on load (index 1 = second card)
-  const centerCard = (index = 1) => {
-    const cards = carousel.querySelectorAll('.category-card');
-    if (!cards.length) return;
-    const i = Math.max(0, Math.min(index, cards.length - 1));
-    const card = cards[i];
-    const centerOffset = card.offsetLeft - (carousel.offsetWidth / 2) + (card.offsetWidth / 2);
-    carousel.scrollTo({ left: centerOffset, behavior: 'auto' });
-  };
-
-  // Wait for layout, then center
-  requestAnimationFrame(() => centerCard(1));
-
 
 // === Recommended modules ===
 const recommendedContainer = document.getElementById('recommendedPlaceholder');
@@ -413,19 +400,20 @@ document.querySelectorAll('.quick-actions .pill').forEach(btn => {
   });
 }
 
-const menuBtn = document.getElementById('menuBtn'); // <- now using ID
+// replace the single getElementById block:
+const menuButtons = document.querySelectorAll('.menuBtn');
 const menuOverlay = document.getElementById('menuOverlay');
 const closeMenuBtn = document.getElementById('closeMenuBtn');
 
-if (menuBtn && menuOverlay && closeMenuBtn) {
-  menuBtn.addEventListener('click', () => {
-    menuOverlay.classList.remove('hidden');
+if (menuButtons.length && menuOverlay && closeMenuBtn) {
+  menuButtons.forEach(btn => {
+    btn.addEventListener('click', () => menuOverlay.classList.remove('hidden'));
   });
-
   closeMenuBtn.addEventListener('click', () => {
     menuOverlay.classList.add('hidden');
   });
 }
+
 
 // Example: Set user's name in menu (assuming you store it in localStorage at registration)
 const menuUsernameEl = document.getElementById('menuUsername');
@@ -842,39 +830,49 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
+// --- Likes (persisted) ---
+  const LIKES_KEY = 'eyesLikes';
+  const getLikes = () => new Set(JSON.parse(localStorage.getItem(LIKES_KEY) || '[]'));
+  const saveLikes = (set) => localStorage.setItem(LIKES_KEY, JSON.stringify([...set]));
+
+
 function getAllEyesItems() {
   const s = window.EYES_SECTIONS || {};
   return Object.values(s).flat(); // flatten core/disease/pec/extended/tools
 }
 
 function showLikedPage() {
-  // 1) Always open the page first so the user sees it
-  showPage('likedPage');
-
-  // 2) Then populate the list (or show an empty state)
   const listEl = document.getElementById('likedList');
   if (!listEl) return;
 
-  const likes = getLikes();                // uses your global helper
-  const all = getAllEyesItems();           // full catalog
-  const items = all.filter(i => likes.has(i.label));
+  const likes = getLikes();
+  const all = getAllEyesItems(); // uses window.EYES_SECTIONS
+    if (!all.length) {
+      listEl.innerHTML = `<p class="note">Loading… open Eyes once or try again in a second.</p>`;
+      showPage('likedPage');
+      return;
+    }
 
-  // If the catalog hasn’t been initialised yet
-  if (!all || all.length === 0) {
-    listEl.innerHTML = `<p class="note">Loading content… try again in a moment.</p>`;
-    return;
-  }
+  const items = getAllEyesItems().filter(i => likes.has(i.label));
 
   listEl.innerHTML = items.length
-    ? items.map(i => `
-        <div class="module-card" data-target="${i.target || 'comingSoon'}" data-title="${i.soon ? i.label : ''}">
-          <img src="images/placeholder.jpg" alt="${i.label}">
-          <div class="module-title">${i.label}</div>
-        </div>
-      `).join('')
-    : `<p class="note">Nothing liked yet. Tap the heart on any Eyes card to add it here.</p>`;
+  ? items.map(i => `
+      <button class="eyes-card liked"
+              data-target="${i.target || 'comingSoon'}"
+              data-title="${i.soon ? i.label : ''}"
+              data-label="${i.label}">
+        <span class="heart-btn" aria-label="Like ${i.label}" role="button" tabindex="-1">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 1 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/>
+          </svg>
+        </span>
+        <span>${i.label}</span>
+        ${i.tags?.length ? `<div class="tag-row">${i.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>` : ''}
+      </button>
+    `).join('')
+  : `<p class="note">Nothing liked yet. Tap the heart on any Eyes card to add it here.</p>`;
 
-  // Keep the existing click-to-navigate behaviour
+  // Click to navigate (same logic as the Eyes page)
   listEl.onclick = (e) => {
     const card = e.target.closest('.module-card');
     if (!card) return;
@@ -886,6 +884,8 @@ function showLikedPage() {
     }
     showPage(target);
   };
+
+  showPage('likedPage');
 }
 
 
@@ -1525,10 +1525,6 @@ function initializeEyesCatalog() {
   };
 
   window.EYES_SECTIONS = sections;
-
-  // --- Likes (persisted) ---
-  window.LIKES_KEY = 'eyesLikes'; window.getLikes = () => new Set(JSON.parse(localStorage.getItem(window.LIKES_KEY) || '[]')); window.saveLikes = (set) => localStorage.setItem(window.LIKES_KEY, JSON.stringify([...set]));
-
 
   // --- Render helper (adds heart icon) ---
   const render = (containerId, items) => {

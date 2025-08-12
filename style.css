@@ -704,6 +704,76 @@ body.quiz-mode {
 
 
 
+/* --- Liked page: match Unified Dashboard / Eyes --- */
+#likedPage{
+  background:#fff;              /* same as .eyes-container background */
+  min-height:100vh;
+}
+
+#likedPage .header{
+  background:#fff;              /* match sticky white header */
+  border-bottom:1px solid #eee; /* same subtle divider as quiz/unified headers */
+}
+
+#likedPage .container{
+  padding:16px;                 /* you already set this, keep consistent */
+  padding-bottom:72px;          /* avoid overlap with bottom bar */
+}
+
+/* Card grid like Eyes catalogue */
+#likedList{
+  display:grid;
+  grid-template-columns: 1fr;   /* single column on phones */
+  gap:12px;
+}
+
+@media (min-width:480px){
+  #likedList{ grid-template-columns: 1fr 1fr; } /* two-up like catalogue */
+}
+
+/* Reuse your “Recommended Modules” card look */
+#likedList .module-card{
+  background:#fff;
+  border:1px solid #e5e5ea;
+  border-radius:12px;
+  overflow:hidden;
+  box-shadow:0 2px 6px rgba(0,0,0,0.05);
+}
+
+#likedList .module-card img{
+  width:100%;
+  height:100px;                 /* same thumbnail strip height */
+  object-fit:cover;
+}
+
+#likedList .module-title{
+  font-size:14px;
+  font-weight:600;
+  padding:8px 10px;
+  color:#111;
+}
+
+/* Liked grid: match Eyes catalogue layout */
+#likedList{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 8px 0 16px;
+}
+@media (max-width: 360px){
+  #likedList{ grid-template-columns: 1fr; }
+}
+
+/* Slightly shorter tiles on Liked (optional, looks closer to your shot) */
+#likedList .eyes-card{
+  height: 120px;
+  width: 69%;
+  padding: 18px;
+  border-radius: 16px;
+  margin-left: 15%;
+}
+
+
 
 
 
@@ -1632,27 +1702,4 @@ select.onb-input {
 .eyes-card.liked .heart-btn svg{
   fill:#E41E26;        /* your primary red */
   stroke:#E41E26;
-}
-
-.liked-list-container {
-  margin-top: 10px;
-}
-
-.liked-list-container .module-card {
-  display: flex;
-  align-items: center;
-  background: white;
-  border-radius: 12px;
-  padding: 12px;
-  margin-bottom: 12px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
-  cursor: pointer;
-}
-
-.liked-list-container .module-card img {
-  width: 80px;
-  height: 80px;
-  object-fit: cover;
-  border-radius: 8px;
-  margin-right: 12px;
 }
