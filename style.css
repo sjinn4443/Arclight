@@ -914,7 +914,7 @@ select.onb-input {
   height: 38px;
   border: none;
   border-radius: 14px;
-  background: #6f6f72;     /* matches your .btn-secondary palette */
+  background: #E41E26;     /* matches your .btn-secondary palette */
   color: #fff;
   font-weight: 100;
   font-size: 13px;
@@ -1000,9 +1000,9 @@ select.onb-input {
 
 /* selected state */
 .chip.selected {
-  background: #111;
+  background: #6f6f72;
   color: #fff;
-  border-color: #111;
+  border-color: #6f6f72;
 }
 
 /* bottom CTA like the screenshot (grey, rounded, anchored) */
@@ -1012,7 +1012,7 @@ select.onb-input {
   height: 38px;
   border: none;
   border-radius: 14px;
-  background: #6f6f72;     /* matches your .btn-secondary palette */
+  background: #E41E26;     /* matches your .btn-secondary palette */
   color: #fff;
   font-weight: 100;
   font-size: 13px;
@@ -1041,7 +1041,7 @@ select.onb-input {
 .intro-progress__fill {
   width: 12%;            /* small progress like mock */
   height: 100%;
-  background: #111;      /* dark fill */
+  background: #E41E26;      /* dark fill */
   border-radius: 999px;
 }
 
@@ -1076,7 +1076,7 @@ select.onb-input {
 
 /* primary CTA (re-use onb-cta tone) */
 .intro-primary {
-  background: #6f6f72;
+  background: #E41E26;
   margin-top: 21%;
 }
 
@@ -1158,7 +1158,7 @@ select.onb-input {
   width: 100%;
   height: 39px;
   border-radius: 14px;
-  background: #6f6f72;
+  background: #E41E26;
   color: #fff;
   border: none;
   font-size: 12px;
@@ -1269,7 +1269,7 @@ select.onb-input {
   width:8px; height:8px; border-radius:50%;
   background:#cfcfd6; border:none; padding:0; cursor:pointer;
 }
-.carousel-dots .dot.active{ background:#111; }
+.carousel-dots .dot.active{ background:#E41E26; }
 
 
 .category-carousel::-webkit-scrollbar{ display:none; }
@@ -1279,7 +1279,7 @@ select.onb-input {
   background: #bfbfbf; /* slightly darker gray */
   border: none;
   border-radius: 18px;
-  height: 160px;
+  height: 148px;
   display: flex;
   align-items: flex-start; /* top-left text */
   justify-content: flex-start;
@@ -1502,4 +1502,157 @@ select.onb-input {
 }
 .menu-item a:hover {
   text-decoration: underline;
+}
+
+
+
+/* Eyes Catalog */
+.catalog-h2 {
+  font-size: 13px;
+  font-weight: 600;
+  margin: 38px 2px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.catalog-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 8px 0 16px;
+}
+
+.catalog-card {
+  background: #e0e0e0; /* placeholder grey like wireframe */
+  border: none;
+  border-radius: 16px;
+  min-height: 120px;
+  padding: 12px;
+  text-align: left;
+  position: relative;
+  box-shadow: none;
+}
+
+.catalog-card .cc-title {
+  font-size: 14px;
+  color: #111;
+  line-height: 1.2;
+}
+
+.catalog-card .cc-tags {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  display: flex;
+  gap: 6px;
+}
+
+.catalog-card .tag {
+  display: inline-block;
+  font-size: 11px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: #6f6f72;
+  color: #fff;
+  line-height: 1;
+}
+
+/* keep with your existing "See all >" look */
+.catalog-h2 .see-all { color:#bbb; font-weight:500; font-size:12px; }
+
+/* Eyes page container = white background */
+.eyes-container { background:#fff; min-height:100vh; padding-bottom:100px; }
+
+/* Top bar: 'Eyes' + bell + menu (mirrors unified top) */
+.eyes-top{
+  display:flex; align-items:center; justify-content:space-between;
+  margin: 8px 2px 10px;
+}
+.eyes-title{ font-size:13px; font-weight:500; color:#111; }
+.eyes-top .icons{ display:flex; gap:10px; }
+.eyes-top .icon{ font-size:18px; }
+
+/* Horizontal slider like Unified Dashboard */
+.eyes-carousel{
+  display:grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 70%;
+  gap: 14px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: 0px 0px 4px;
+  margin: 6px 0 16px;
+}
+.eyes-carousel::-webkit-scrollbar{ display:none; }
+
+.eyes-card{
+  scroll-snap-align: center;
+  background: #e0e0e0;            /* wireframe-style grey */
+  border-radius: 18px;
+  height: 148px;
+  display:flex;
+  align-items:flex-start;
+  justify-content:flex-start;
+  padding:25px 18px;
+  font-size:13px;
+  font-weight:500;
+  color:#000;
+  border:none;
+  box-shadow:none;
+  position: relative;
+  cursor: pointer;
+}
+
+/* optional tiny tag row at bottom-left */
+.eyes-card .tag-row{
+  position:absolute; left:18px; bottom:12px; display:flex; gap:6px;
+}
+.eyes-card .tag{
+  background:#6f6f72; color:#fff; border-radius:9px; padding:6px 15px; font-size:10px; 
+  font-weight: 200;
+}
+
+/* Headings + 'See all >' already styled */
+
+
+
+/* Heart on Eyes cards */
+.eyes-card .heart-btn{
+  position:absolute;
+  top:10px; right:10px;
+  width:28px; height:28px;
+  border:none; background:transparent;
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; padding:0;
+}
+.eyes-card .heart-btn svg{
+  width:18px; height:18px; stroke:#222; fill:none;
+}
+.eyes-card.liked .heart-btn svg{
+  fill:#E41E26;        /* your primary red */
+  stroke:#E41E26;
+}
+
+.liked-list-container {
+  margin-top: 10px;
+}
+
+.liked-list-container .module-card {
+  display: flex;
+  align-items: center;
+  background: white;
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  cursor: pointer;
+}
+
+.liked-list-container .module-card img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-right: 12px;
 }
