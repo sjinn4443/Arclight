@@ -333,13 +333,49 @@
 <div id="teachModules" class="page"><div class="container"><h1>How to Teach</h1><p>Coming soon.</p></div></div>
 
 
-<!-- Liked Page-->
+<!-- My Learning (formerly "Liked") -->
 <div class="page" id="likedPage">
-  <div class="header">
-    <button id="likedBackBtn" class="back-icon" title="Go back">←</button>
-    <h3>Liked</h3>
+  <div class="ml-header">
+    <div class="ml-topbar">
+      <div class="ml-title">My Learning</div>
+      <div class="ml-icons">
+        <span class="icon">
+          <svg xmlns="http://www.w3.org/2000/svg" class="bell-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+          </svg>
+        </span>
+        <span class="icon menuBtn">☰</span>
+      </div>
+    </div>
+
+    <div class="ml-tabs">
+      <button class="ml-tab">In progress</button>
+      <button class="ml-tab active">Liked</button>
+      <button class="ml-tab">Notes</button>
+    </div>
+
+    <div class="search-wrap">
+      <input type="search" id="mlSearch" placeholder="Search for contents" />
+      <span class="search-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+      </span>
+    </div>
+
+    <div class="ml-chip-row">
+      <button class="ml-chip active" data-filter="eyes">Eyes</button>
+      <button class="ml-chip" data-filter="ears">Ears</button>
+      <button class="ml-chip" data-filter="skin">Skin</button>
+      <button class="ml-chip" data-filter="teach">How to Teach</button>
+    </div>
   </div>
-  <div class="container" id="likedList"></div>
+
+  <div class="container ml-container">
+  <div id="likedMasonry" class="ml-masonry"></div>
+</div>
 </div>
 
 
@@ -636,30 +672,131 @@
 
 <!-- Pupils Page -->
 <div id="pupilsPage" class="page">
-  <div class="container">
-    <h1>Pupils</h1>
-    <div class="module-card">
-      <div class="module-info">
-        <h3>Pupil Full Examination</h3>
-        <p>Video</p>
-      </div>
+  <div class="container pupils-container">
+
+  <!-- Pupils top bar -->
+  <div class="pupils-topbar">
+    <div class="pupils-topbar__title">Eyes</div>
+    <div class="pupils-topbar__icons">
+      <span class="icon">
+        <svg xmlns="http://www.w3.org/2000/svg" class="bell-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/>
+          <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+        </svg>
+      </span>
+      <span class="icon menuBtn">☰</span>
     </div>
-    <div class="module-card">
-      <div class="module-info">
-        <h3>Primary Eye Care Examination</h3>
-        <p>Video</p>
+  </div>
+
+
+    <!-- Subheading (like your mock) -->
+    <h2 class="pupils-subtitle">Pupils</h2>
+
+    <div class="pupils-timeline">
+      <div class="tl-line"></div>
+
+      <!-- 1) Pupil Full Examination -->
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <button class="pupil-card module-card">
+          <h3>Pupil Full Examination</h3>
+
+          <!-- Video learning (row 1) -->
+          <div class="lesson-row">
+            <div class="thumb"></div>
+            <div class="lesson-main">
+              <div class="lesson-top">
+                <span class="lesson-type">Video learning</span>
+                <span class="lesson-meta">| 02:25</span>
+              </div>
+              <div class="lesson-progress">
+                <div class="lesson-progress__fill" style="width: 28%;"></div>
+              </div>
+            </div>
+            <span class="lesson-cta">Start &gt;</span>
+          </div>
+
+          <!-- Quiz (row 2) -->
+          <div class="lesson-row">
+            <div class="thumb"></div>
+            <div class="lesson-main">
+              <div class="lesson-top">
+                <span class="lesson-type">Quiz</span>
+                <span class="lesson-meta">| 10 Questions</span>
+              </div>
+              <div class="lesson-progress">
+                <div class="lesson-progress__fill" style="width: 0%;"></div>
+              </div>
+            </div>
+            <span class="lesson-cta">Start &gt;</span>
+          </div>
+        </button>
       </div>
-    </div>
-    <div class="module-card">
-      <div class="module-info">
-        <h3>RAPD Test</h3>
-        <p>Video | App</p>
+
+      <!-- 2) Primary Eye Care Examination -->
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <button class="pupil-card module-card">
+          <h3>Primary Eye Care Examination</h3>
+
+          <div class="lesson-row">
+            <div class="thumb"></div>
+            <div class="lesson-main">
+              <div class="lesson-top">
+                <span class="lesson-type">Video learning</span>
+                <span class="lesson-meta">| 02:20</span>
+              </div>
+              <div class="lesson-progress">
+                <div class="lesson-progress__fill" style="width: 0%;"></div>
+              </div>
+            </div>
+            <span class="lesson-cta">Start &gt;</span>
+          </div>
+        </button>
       </div>
-    </div>
-    <div class="module-card">
-      <div class="module-info">
-        <h3>Pupil Pathways Explained</h3>
-        <p>Video</p>
+
+      <!-- 3) RAPD Test -->
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <button class="pupil-card module-card">
+          <h3>RAPD Test</h3>
+
+          <div class="lesson-row">
+            <div class="thumb"></div>
+            <div class="lesson-main">
+              <div class="lesson-top">
+                <span class="lesson-type">Video learning</span>
+                <span class="lesson-meta">| 08:01</span>
+              </div>
+              <div class="lesson-progress">
+                <div class="lesson-progress__fill" style="width: 0%;"></div>
+              </div>
+            </div>
+            <span class="lesson-cta">Start &gt;</span>
+          </div>
+        </button>
+      </div>
+
+      <!-- 4) Pupil Pathways Explained -->
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <button class="pupil-card module-card">
+          <h3>Pupil Pathways Explained</h3>
+
+          <div class="lesson-row">
+            <div class="thumb"></div>
+            <div class="lesson-main">
+              <div class="lesson-top">
+                <span class="lesson-type">Video learning</span>
+                <span class="lesson-meta">| 03:12</span>
+              </div>
+              <div class="lesson-progress">
+                <div class="lesson-progress__fill" style="width: 0%;"></div>
+              </div>
+            </div>
+            <span class="lesson-cta">Start &gt;</span>
+          </div>
+        </button>
       </div>
     </div>
   </div>
