@@ -1351,30 +1351,9 @@ function initializePWA() {
   if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('service-worker.js')
-        .then(reg => {
-          console.log('Service Worker registered successfully.', reg);
-
-          reg.addEventListener('updatefound', () => {
-            const newWorker = reg.installing;
-            newWorker.addEventListener('statechange', () => {
-              if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                // New service worker is installed and waiting to activate
-                // Prompt user to refresh for new content
-                if (confirm('New content is available! Click OK to refresh and get the latest version.')) {
-                  window.location.reload();
-                }
-              }
-            });
-          });
-        })
+        .then(reg => console.log('Service Worker registered successfully.', reg))
         .catch(err => console.error('Service worker registration failed: ', err));
     });
-
-    // Ensure the page reloads when a new service worker takes control
-    navigator.serviceWorker.addEventListener('controllerchange', () => {
-      window.location.reload();
-    });
-
   } else {
     console.log('Service worker not registered (not on https or localhost).');
   }
