@@ -208,70 +208,29 @@ function initializeOnboarding() {
       if (inner) inner.classList.remove('hidden');
     });
   }
-
-    // Name input validation UI
-  wireNameValidation();
 }
-
-
-// --- Name validation helpers ---
-function isValidName(value) {
-  // Letters incl. accents + spaces; min length 2
-  return /^[A-Za-zÀ-ÖØ-öø-ÿ\s]{2,}$/.test((value || "").trim());
-}
-function showNameTooltip(show) {
-  const tip = document.getElementById('usernameTooltip');
-  if (tip) tip.classList.toggle('hidden', !show);
-}
-function wireNameValidation() {
-  const input = document.getElementById('username');
-  const btn   = document.getElementById('completeOnboardingBtn');
-  if (!input || !btn) return;
-
-  // initial state
-  btn.disabled = true;
-  showNameTooltip(false);
-
-  input.addEventListener('input', () => {
-    const ok = isValidName(input.value);
-    // show bubble only when something is typed but still invalid
-    showNameTooltip(input.value.length > 0 && !ok);
-    btn.disabled = !ok;
-  });
-
-  input.addEventListener('blur', () => {
-    const ok = isValidName(input.value);
-    showNameTooltip(!ok && input.value.length > 0);
-  });
-}
-
 
 
 /**
  * Handles the logic for completing the onboarding form.
  */
 function completeOnboarding() {
-  const usernameEl = document.getElementById('username');
+  const username = document.getElementById('username')?.value.trim();
   const job = document.getElementById('jobSelect')?.value;
 
-  const username = usernameEl?.value.trim() || "";
-  const nameOK = isValidName(username);
+  // Language is on the previous page now; it's optional here.
+  // If you want to require it, read it from 'prefLang' instead:
+  // const language = document.getElementById('prefLang')?.value;
 
-  if (!nameOK) {
-    showNameTooltip(true);          // show speech bubble
-    usernameEl?.focus();
-    return;                         // 1) block going to next page
-  }
-
-  if (!job) {
+  if (!username || !job) {
     alert("Please complete all fields.");
     return;
   }
 
   localStorage.setItem('username', username);
+  // Go to "What is your professional interest?"
   showPage('proInterestPage');
 }
-
 
 
 /**
