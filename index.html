@@ -31,17 +31,17 @@
 <div id="languageInstallPage" class="page">
   <div class="lang-install">
     <div class="lang-install__body">
-      <label class="lang-install__label" for="prefLang">Choose your preferred language</label>
+      <label class="lang-install__label" for="prefLang">Choose your language</label>
       <div class="lang-install__select-wrap">
         <select id="prefLang" class="lang-install__select">
           <option selected>English</option>
-          <option>Afrikaans</option>
+          <!-- <option>Afrikaans</option>
           <option>Amharic</option>
           <option>Arabic</option>
           <option>Bengali</option>
-          <option>Berber</option>
-          <option>French</option>
-          <option>Fula</option>
+          <option>Berber</option> --> <bold></bold>
+          <option>French <strong>Français</strong></option>
+          <!--<option>Fula</option>
           <option>German</option>
           <option>Hausa</option>
           <option>Hindi</option>
@@ -49,20 +49,20 @@
           <option>Indonesian</option>
           <option>Italian</option>
           <option>Japanese</option>
-          <option>Kinyarwanda</option>
-          <option>Korean</option>
-          <option>Lingala</option>
+          <option>Kinyarwanda</option>-->
+          <option>Korean <strong>한국어</strong></option>
+          <!--<option>Lingala</option>
           <option>Mandarin Chinese</option>
           <option>Marathi</option>
-          <option>Oromo</option>
-          <option>Portuguese</option>
-          <option>Russian</option>
+          <option>Oromo</option>-->
+          <option>Portuguese <strong>Português</strong></option>
+          <!--<option>Russian</option>
           <option>Shona</option>
-          <option>Somali</option>
-          <option>Spanish</option>
-          <option>Standard Arabic</option>
-          <option>Swahili</option>
-          <option>Telugu</option>
+          <option>Somali</option>-->
+          <option>Spanish <strong>Español</strong></option>
+          <!--<option>Standard Arabic</option>-->
+          <option>Swahili <strong>Kiswahili</strong></option>
+          <!--<option>Telugu</option>
           <option>Thai</option>
           <option>Tigrinya</option>
           <option>Tswana</option>
@@ -72,11 +72,11 @@
           <option>Wolof</option>
           <option>Xhosa</option>
           <option>Yoruba</option>
-          <option>Zulu</option>
+          <option>Zulu</option>-->
         </select>
       </div>
 
-      <button id="installAppBtn" class="btn-lg-grey">Install the App</button>
+      <button id="installAppBtn" class="btn-lg-grey">Install</button>
       <div class="lang-install__hint">for offline access</div>
 
       <div class="lang-install__divider">
@@ -97,14 +97,26 @@
     <h1 class="onb-title">Create Account</h1>
 
     <div class="form-field">
-      <label for="username">Name</label>
-      <input type="text" id="username" class="onb-input" placeholder="Enter your name" />
+    <label for="username">Name</label>
+    <input
+      type="text"
+      id="username"
+      class="onb-input"
+      placeholder="Enter your name"
+      autocomplete="name"
+    />
+    <!-- NEW: speech bubble -->
+    <div id="usernameTooltip" class="tooltip hidden">
+      Name must be at least 2 letters, no numbers or special characters
     </div>
+  </div>
+
+
 
     <div class="form-field">
       <label for="fieldSelect">Which field do you work in?</label>
       <select id="fieldSelect" class="onb-input">
-        <option disabled selected>Select</option>
+        <option value="" disabled selected hidden>Select</option>
         <option value="eyes">Eyes</option>
         <option value="ears">Ears</option>
         <option value="skin">Skin</option>
@@ -114,7 +126,7 @@
     <div class="form-field">
       <label for="jobSelect">Select your job role</label>
       <select id="jobSelect" class="onb-input">
-        <option disabled selected>Select</option>
+       <option value="" disabled selected hidden>Select</option>
         <optgroup label="Eyes">
           <option>Ophthalmologist</option>
           <option>Optometrist</option>
@@ -161,7 +173,7 @@
     <div class="form-field hidden" id="studentYearField">
       <label for="studentYearSelect">How many years have you studied?</label>
       <select id="studentYearSelect" class="onb-input">
-        <option disabled selected>Select</option>
+        <option value="" disabled selected hidden>Select</option>
         <option value="lt1">Less than 1 year</option>
         <option value="1">1 year</option>
         <option value="2">2 years</option>
@@ -173,10 +185,10 @@
     </div>
 
 
-    <div class="form-field">
+    <!--<div class="form-field">
       <label for="location">Where are you located?</label>
       <select id="location" class="onb-input">
-        <option disabled selected>Select</option>
+        <option value="" disabled selected hidden>Select</option>
         <option>Algeria</option><option>Bangladesh</option><option>Brazil</option>
         <option>China</option><option>DR Congo</option><option>Egypt</option>
         <option>Ethiopia</option><option>France</option><option>Germany</option>
@@ -189,7 +201,7 @@
         <option>Uganda</option><option>United States</option><option>Vietnam</option>
         <option>Zambia</option><option>Zimbabwe</option>
       </select>
-    </div>
+    </div>-->
 
     <button id="completeOnboardingBtn" class="onb-cta">Continue</button>
   </div>

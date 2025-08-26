@@ -940,7 +940,7 @@ input:checked + .slider:before {
   display: block;
   width: 100%;
   height: 35px;
-  padding: 8px 8px;
+  padding: 11px 8px;
   border-radius: 10px;
   border: 1px solid #e5e5ea;
   background: #FFFFFF;
@@ -1001,17 +1001,14 @@ select.onb-input {
 
 /* Special style for username input only */
 #username.onb-input {
-  background: #f3f3f5;        /* softer grey background */
-  border: 0px solid #d6d6da;  /* slightly darker border */
+  background: #ffffff;        /* softer grey background */
+  border: 0px solid #e5e5ea;  /* slightly darker border */
   font-weight: 500;
   color: #333; 
   width: 95%;   
   height: 60%;            /* darker text color */
 }
 
-#username.onb-input::placeholder {
-  color: #9a9aa0;             /* softer placeholder tone */
-}
 
 #username.onb-input:focus {
   border-color: var(--primary-color);
@@ -1231,7 +1228,7 @@ select.onb-input {
   background: #E41E26;
   color: #fff;
   border: none;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 500;
   margin-top: 35%;
 }
@@ -1243,7 +1240,7 @@ select.onb-input {
   background: #6f6f72;
   color: #fff;
   border: none;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 500;
 }
 
@@ -2048,4 +2045,49 @@ select.onb-input {
   .pupil-card{ padding:14px 12px; }
   .lesson-row{ grid-template-columns: 46px 1fr auto; }
   .lesson-row .thumb{ width:46px; height:32px; }
+}
+
+.option strong {
+  font-weight: bold;
+}
+
+/* Icon before the label text */
+.lang-install__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;              /* space between icon and text */
+}
+
+.lang-install__label::before {
+  content: "";
+  width: 16px;
+  height: 16px;
+  background: url("images/language.png") no-repeat center / contain;
+}
+
+/* Name tooltip */
+.form-field { position: relative; }        /* make the container a positioning context */
+.tooltip {
+  position: absolute;
+  bottom: 100%;            /* sit above the input */
+  left: 2px;
+  transform: translateY(-6px);
+  background: #333;
+  color: #fff;
+  padding: 8px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  line-height: 1.35;
+  max-width: 280px;
+  z-index: 1000;
+  box-shadow: 0 2px 10px rgba(0,0,0,.15);
+}
+.tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 14px;
+  border-width: 6px 6px 0 6px;
+  border-style: solid;
+  border-color: #333 transparent transparent transparent;
 }

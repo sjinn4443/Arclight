@@ -14,7 +14,7 @@
  * first load.
  */
 
-const CACHE_NAME = 'arclight-static-v5';
+const CACHE_NAME = 'arclight-static-v6';
 
 // List of files to precache.
 // Keep them **relative** so the PWA can be hosted from *any* folder or origin.
@@ -98,6 +98,7 @@ const ASSETS = [
 
 // INSTALL – precache everything listed above
 self.addEventListener('install', event => {
+  self.skipWaiting(); // Force the new service worker to activate immediately
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache =>
       Promise.all(

@@ -43,20 +43,6 @@ function activate(context) {
     statusBarItem.show();
     // Register the command
     const disposable = vscode.commands.registerCommand('alanui-launcher.launchApp', () => __awaiter(this, void 0, void 0, function* () {
-        // Run 'npm start' in the workspace root
-        const workspaceFolders = vscode.workspace.workspaceFolders;
-        if (!workspaceFolders) {
-            vscode.window.showErrorMessage('No workspace folder open.');
-            return;
-        }
-        const rootPath = workspaceFolders[0].uri.fsPath;
-        // Check if a terminal named "arclight-app" already exists
-        let terminal = vscode.window.terminals.find(t => t.name === 'arclight-app');
-        if (!terminal) {
-            terminal = vscode.window.createTerminal({ name: 'arclight-app', cwd: rootPath });
-        }
-        terminal.show();
-        terminal.sendText('npm start');
         // Open http://localhost:3000 in the default browser
         const url = 'http://localhost:3000';
         let openCmd = '';

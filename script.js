@@ -208,29 +208,70 @@ function initializeOnboarding() {
       if (inner) inner.classList.remove('hidden');
     });
   }
+
+    // Name input validation UI
+  wireNameValidation();
 }
+
+
+// --- Name validation helpers ---
+function isValidName(value) {
+  // Letters incl. accents + spaces; min length 2
+  return /^[A-Za-zÀ-ÖØ-öø-ÿ\s]{2,}$/.test((value || "").trim());
+}
+function showNameTooltip(show) {
+  const tip = document.getElementById('usernameTooltip');
+  if (tip) tip.classList.toggle('hidden', !show);
+}
+function wireNameValidation() {
+  const input = document.getElementById('username');
+  const btn   = document.getElementById('completeOnboardingBtn');
+  if (!input || !btn) return;
+
+  // initial state
+  btn.disabled = true;
+  showNameTooltip(false);
+
+  input.addEventListener('input', () => {
+    const ok = isValidName(input.value);
+    // show bubble only when something is typed but still invalid
+    showNameTooltip(input.value.length > 0 && !ok);
+    btn.disabled = !ok;
+  });
+
+  input.addEventListener('blur', () => {
+    const ok = isValidName(input.value);
+    showNameTooltip(!ok && input.value.length > 0);
+  });
+}
+
 
 
 /**
  * Handles the logic for completing the onboarding form.
  */
 function completeOnboarding() {
-  const username = document.getElementById('username')?.value.trim();
+  const usernameEl = document.getElementById('username');
   const job = document.getElementById('jobSelect')?.value;
 
-  // Language is on the previous page now; it's optional here.
-  // If you want to require it, read it from 'prefLang' instead:
-  // const language = document.getElementById('prefLang')?.value;
+  const username = usernameEl?.value.trim() || "";
+  const nameOK = isValidName(username);
 
-  if (!username || !job) {
+  if (!nameOK) {
+    showNameTooltip(true);          // show speech bubble
+    usernameEl?.focus();
+    return;                         // 1) block going to next page
+  }
+
+  if (!job) {
     alert("Please complete all fields.");
     return;
   }
 
   localStorage.setItem('username', username);
-  // Go to "What is your professional interest?"
   showPage('proInterestPage');
 }
+
 
 
 /**
@@ -1351,9 +1392,30 @@ function initializePWA() {
   if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('service-worker.js')
-        .then(reg => console.log('Service Worker registered successfully.', reg))
+        .then(reg => {
+          console.log('Service Worker registered successfully.', reg);
+
+          reg.addEventListener('updatefound', () => {
+            const newWorker = reg.installing;
+            newWorker.addEventListener('statechange', () => {
+              if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                // New service worker is installed and waiting to activate
+                // Prompt user to refresh for new content
+                if (confirm('New content is available! Click OK to refresh and get the latest version.')) {
+                  window.location.reload();
+                }
+              }
+            });
+          });
+        })
         .catch(err => console.error('Service worker registration failed: ', err));
     });
+
+    // Ensure the page reloads when a new service worker takes control
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      window.location.reload();
+    });
+
   } else {
     console.log('Service worker not registered (not on https or localhost).');
   }
