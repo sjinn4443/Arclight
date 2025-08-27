@@ -1,5 +1,3 @@
-// Splash, language, and user registration flow
-
 // js/onboarding.js (ES module)
 // Splash, language, and user registration + Professional Interest → Intro
 import { showPage } from './navigation.js';

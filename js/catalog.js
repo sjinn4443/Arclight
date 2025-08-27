@@ -2,6 +2,120 @@
 
 // js/catalog.js (ES module)
 import { showPage } from './navigation.js';
+const EYES_LIKES_KEY = 'eyesLikes';
+
+
+
+function eyesGetLikes() {
+  try { return new Set(JSON.parse(localStorage.getItem(EYES_LIKES_KEY) || '[]')); }
+  catch { return new Set(); }
+}
+function eyesSaveLikes(set) {
+  localStorage.setItem(EYES_LIKES_KEY, JSON.stringify([...set]));
+}
+
+// Original items (no images): label, target, soon?, tags?
+const EYES_SECTIONS = {
+  coreCarousel: [
+    { label: 'History Taking', target: 'comingSoon', soon: true, tags:['Quiz','Interactive'] },
+    { label: 'Visual Acuity', target: 'visualAcuityPage', tags:['Case Study'] },
+    { label: 'Pupils', target: 'pupilsPage', tags:['Video'] },
+    { label: 'Front of Eye', target: 'frontOfEyePage', tags:['Video','Quiz'] },
+    { label: 'Fundal Reflex', target: 'fundalReflexPage', tags:['Video'] },
+    { label: 'Ophthalmoscopy', target: 'directOphthalmoscopy', tags:['Video','Quiz'] },
+    { label: 'Interactive Learning', target: 'interactiveLearningPage', tags:['Simulation'] },
+  ],
+  diseaseCarousel: [
+    { label: 'Uncorrected Refractive Error', target: 'comingSoon', soon:true, tags:['Quiz'] },
+    { label: 'Cataract', target: 'cataractPage', tags:['Case Study','Interactive'] },
+    { label: 'Glaucoma', target: 'comingSoon', soon:true },
+    { label: 'Red Eye', target: 'comingSoon', soon:true },
+    { label: 'Trauma', target: 'comingSoon', soon:true },
+    { label: 'Infections', target: 'comingSoon', soon:true },
+  ],
+  pecCarousel: [
+    { label: 'Refraction', target: 'comingSoon', soon:true },
+    { label: 'Near Vision', target: 'comingSoon', soon:true },
+    { label: 'Pinhole', target: 'comingSoon', soon:true },
+  ],
+  extendedCarousel: [
+    { label: 'Fundus Exam', target: 'fundusExamPage', tags:['Video'] },
+    { label: 'Visual Fields', target: 'comingSoon', soon:true },
+    { label: 'Colour Vision', target: 'comingSoon', soon:true },
+  ],
+  toolsCarousel: [
+    { label: 'How to Use Arclight', target: 'comingSoon', soon:true },
+    { label: 'Torch Techniques', target: 'comingSoon', soon:true },
+  ],
+};
+
+// Flatten all Eyes catalog items into one array (label, target, tags, soon?)
+export function getAllEyesItems() {
+   return Object.values(EYES_SECTIONS).flat();
+}
+
+
+function renderEyesCarousel(containerId, items = []) {
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  const likes = eyesGetLikes();
+
+    el.innerHTML = items.map(i => `
+    <button class="eyes-card ${likes.has(i.label) ? 'liked' : ''}"
+            data-target="${i.target}" data-title="${i.soon ? i.label : ''}"
+            data-label="${i.label}">
+      <span class="heart-btn" aria-label="Like ${i.label}" role="button" tabindex="-1">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 1 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/>
+        </svg>
+      </span>
+      <span>${i.label}</span>
+      ${i.tags?.length ? (
+        '<div class="tag-row">' + i.tags.map(t => '<span class="tag">' + t + '</span>').join('') + '</div>'
+      ) : ''}
+    </button>
+  `).join('');
+}
+
+function renderAllEyesCarousels() {
+  try {
+    Object.entries(EYES_SECTIONS).forEach(([id, list]) => renderEyesCarousel(id, list));
+  } catch (e) {
+    console.error('Eyes carousels failed to render:', e);
+  }
+}
+
+// Event delegation (heart + navigate), scoped to Eyes page only
+function wireEyesClicks() {
+  const eyesPage = document.getElementById('eyesCatalogPage');
+  if (!eyesPage) return;
+
+  eyesPage.addEventListener('click', (e) => {
+    // heart toggle
+    const heart = e.target.closest?.('.heart-btn');
+    if (heart) {
+      e.preventDefault();
+      const card = heart.closest('.eyes-card');
+      const label = card?.getAttribute('data-label');
+      if (!label) return;
+      const likes = eyesGetLikes();
+      if (likes.has(label)) { likes.delete(label); card.classList.remove('liked'); }
+      else { likes.add(label); card.classList.add('liked'); }
+      eyesSaveLikes(likes);
+      return; // don’t fall through to navigation
+    }
+    // navigate
+    const btn = e.target.closest?.('.eyes-card');
+    if (!btn) return;
+    const target = btn.getAttribute('data-target') || 'comingSoon';
+    if (target === 'comingSoon') {
+      const title = btn.getAttribute('data-title') || 'Coming soon';
+      const h = document.getElementById('comingSoonTitle');
+      if (h) h.textContent = title;
+    }
+    showPage(target);
+  });
+}
 
 /**
  * Call once on DOMContentLoaded from main.js.
@@ -13,6 +127,8 @@ import { showPage } from './navigation.js';
  * - Card routing + save/unsave (localStorage)
  */
 export function initializeCatalog() {
+   renderAllEyesCarousels();
+  wireEyesClicks();
   const page = document.getElementById('eyesCatalogPage');
   if (!page) return;
 

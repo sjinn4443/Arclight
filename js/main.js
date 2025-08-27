@@ -10,6 +10,7 @@ import { initializeQuizzes } from './quiz.js';
 import { initializeLearning } from './learning.js';
 import { initializeCatalog } from './catalog.js';
 import { initializePWA } from './pwa.js';
+import { initializeMyLearning } from './mylearning.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   initializePWA();              // ← register SW + install + offline
@@ -21,6 +22,15 @@ document.addEventListener('DOMContentLoaded', () => {
   initializeVideo();
   initializeQuizzes();
   initializeLearning();
+  initializeMyLearning();   
   initializeCatalog();
   showPage('splashScreen');
 });
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.getRegistrations().then(regs => {
+    regs.forEach(reg => {
+      if (reg.active?.scriptURL.endsWith('service-worker.js')) reg.unregister();
+    });
+  });
+}

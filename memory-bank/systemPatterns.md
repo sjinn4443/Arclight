@@ -22,7 +22,7 @@ The Arclight application is structured as a client-side web application, primari
 - **`index.html`:** The main entry point of the application, serving as the landing page and navigation hub.
 - **Module Directories:** Each directory (e.g., `AnteriorSegmentQuiz/`, `Cataract/`) contains its own `index.html`, `script.js`, and `style.css` (or similar) files, representing a distinct educational component.
 - **`images/` and `videos/`:** Centralized directories for multimedia assets, shared across various modules.
-- **`service-worker.js`:** Manages caching and offline capabilities for the entire application.
+- **`sw.js`:** Manages caching and offline capabilities for the entire application.
 - **`manifest.json`:** Provides metadata for PWA installation.
 
 ## Critical Implementation Paths

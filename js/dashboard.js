@@ -177,4 +177,20 @@ function initializeMenuOverlay() {
       if (e.target === overlay) overlay.classList.add('hidden');
     });
   }
+
+    // Open "My Learning" (Liked) from the menu
+  const likedMenuItem = document.getElementById('likedMenuItem');
+  if (likedMenuItem) {
+    likedMenuItem.addEventListener('click', () => {
+  overlay?.classList.add('hidden');
+  if (window.showLikedPage) {
+    window.showLikedPage();
+  } else {
+    showPage('likedPage');
+  }
+});
+
+
+  }
+
 }
