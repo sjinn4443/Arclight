@@ -1,0 +1,65 @@
+
+<!-- Unified Dashboard -->
+<div id="unifiedDashboard" class="page">
+  <div class="container unified-container">
+
+    <!-- Greeting + search (like your mock) -->
+    <div class="unified-top">
+      <div class="hello">Hello Sujin!</div>
+      <div class="icons">
+        <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" class="bell-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/>
+      <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+    </svg>
+    </span>
+        <span class="icon menuBtn">☰</span>
+      </div>
+    </div>
+
+    <div class="search-wrap">
+  <input type="search" placeholder="Search for contents" />
+  <span class="search-icon" aria-hidden="true">
+    <!-- inline SVG for magnifier -->
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="11" cy="11" r="8"></circle>
+      <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+    </svg>
+  </span>
+</div>
+
+
+    <!-- Horizontal category slider -->
+    <div class="category-carousel" id="categoryCarousel">
+      <button class="category-card" data-target="eyesCatalogPage"><span>Eyes</span></button>
+      <button class="category-card" data-target="earsLearningModules"><span>Ears</span></button>
+      <button class="category-card" data-target="skinModules"><span>Skin</span></button>
+      <button class="category-card" data-target="teachModules"><span>How to Teach</span></button>
+    </div>
+
+    <div class="carousel-dots" id="carouselDots">
+      <button class="dot active" aria-label="Eyes"></button>
+      <button class="dot" aria-label="Ears"></button>
+      <button class="dot" aria-label="Skin"></button>
+      <button class="dot" aria-label="How to Teach"></button>
+    </div>
+
+
+    <!-- Quick actions (optional) -->
+    <div class="quick-actions">
+      <button class="pill">Atoms Card</button>
+      <button class="pill">My Notes</button>
+      <button class="pill">ALAN</button>
+      <button class="pill">Download Contents</button>
+    </div>
+
+    <!-- Recommended for you (placeholder) -->
+    <h3 class="section-title">Recommended for you <span class="see-all">See all ></span></h3>
+    <div class="learning-placeholder" id="recommendedPlaceholder"></div>
+
+
+  </div>
+</div>
+
+<!-- Simple placeholder pages (you can replace later) -->
+<div id="skinModules" class="page"><div class="container"><h1>Skin Modules</h1><p>Coming soon.</p></div></div>
+<div id="teachModules" class="page"><div class="container"><h1>How to Teach</h1><p>Coming soon.</p></div></div>

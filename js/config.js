@@ -1,0 +1,15 @@
+export const ROUTES = {
+  languageinstall: "html/languageinstall.html",
+  onboarding: "html/onboarding.html",
+  interest: "html/interest.html",
+  intro: "html/intro.html",
+  dashboard: "html/dashboard.html",
+  mylearning: "html/mylearning.html",
+  eyes: "html/eyes.html",
+  ears: "html/ears.html",
+  videos: "html/videos.html",
+  atomscard: "html/atomscard.html",
+  quizzes: "html/quizzes.html",
+  menu: "html/menu.html",
+  offline: "html/offline.html",
+};

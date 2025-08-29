@@ -1,0 +1,116 @@
+
+<!-- Onboarding Page -->
+<div id="onboarding" class="page">
+  <div class="container onboarding-container">
+    <h1 class="onb-title">Create Account</h1>
+
+    <div class="form-field">
+    <label for="username">Name</label>
+    <input
+      type="text"
+      id="username"
+      class="onb-input"
+      placeholder="Enter your name"
+      autocomplete="name"
+    />
+    <!-- NEW: speech bubble -->
+    <div id="usernameTooltip" class="tooltip hidden">
+      Name must be at least 2 letters, no numbers or special characters
+    </div>
+  </div>
+
+
+
+    <div class="form-field">
+      <label for="fieldSelect">Which field do you work in?</label>
+      <select id="fieldSelect" class="onb-input">
+        <option value="" disabled selected hidden>Select</option>
+        <option value="eyes">Eyes</option>
+        <option value="ears">Ears</option>
+        <option value="skin">Skin</option>
+      </select>
+    </div>
+
+    <div class="form-field">
+      <label for="jobSelect">Select your job role</label>
+      <select id="jobSelect" class="onb-input">
+       <option value="" disabled selected hidden>Select</option>
+        <optgroup label="Eyes">
+          <option>Ophthalmologist</option>
+          <option>Optometrist</option>
+          <option>Ophthalmic Clinical Officer</option>
+          <option>Ophthalmic Nurse</option>
+          <option>Orthoptist</option>
+          <option>General Practitioner</option>
+          <option>Clinical Officer</option>
+          <option>Primary Health Care Nurse</option>
+          <option>Community Health Worker</option>
+          <option>Village Health Worker</option>
+          <option>Lady Community Health Worker</option>
+          <option>Health Extension Worker</option>
+          <option>Medical Student</option>
+          <option>Eye Care Practitioner - Other</option>
+        </optgroup>
+        <optgroup label="Ears">
+          <option>ENT Specialist</option>
+          <option>Audiologist</option>
+          <option>Ear Care Practitioner</option>
+          <option>General Practitioner</option>
+          <option>Clinical Officer</option>
+          <option>Primary Health Care Nurse</option>
+          <option>Community Health Worker</option>
+          <option>Village Health Worker</option>
+          <option>Lady Community Health Worker</option>
+          <option>Health Extension Worker</option>
+          <option>Medical Student</option>
+        </optgroup>
+        <optgroup label="Skin">
+          <option>Dermatologist</option>
+          <option>General Practitioner</option>
+          <option>Clinical Officer</option>
+          <option>Primary Health Care Nurse</option>
+          <option>Community Health Worker</option>
+          <option>Village Health Worker</option>
+          <option>Lady Community Health Worker</option>
+          <option>Health Extension Worker</option>
+          <option>Medical Student</option>
+        </optgroup>
+      </select>
+    </div>
+
+    <div class="form-field hidden" id="studentYearField">
+      <label for="studentYearSelect">How many years have you studied?</label>
+      <select id="studentYearSelect" class="onb-input">
+        <option value="" disabled selected hidden>Select</option>
+        <option value="lt1">Less than 1 year</option>
+        <option value="1">1 year</option>
+        <option value="2">2 years</option>
+        <option value="3">3 years</option>
+        <option value="4">4 years</option>
+        <option value="5">5 years</option>
+        <option value="6">6+ years</option>
+      </select>
+    </div>
+
+
+    <!--<div class="form-field">
+      <label for="location">Where are you located?</label>
+      <select id="location" class="onb-input">
+        <option value="" disabled selected hidden>Select</option>
+        <option>Algeria</option><option>Bangladesh</option><option>Brazil</option>
+        <option>China</option><option>DR Congo</option><option>Egypt</option>
+        <option>Ethiopia</option><option>France</option><option>Germany</option>
+        <option>Ghana</option><option>India</option><option>Indonesia</option>
+        <option>Iran</option><option>Japan</option><option>Kenya</option>
+        <option>Mexico</option><option>Morocco</option><option>Nigeria</option>
+        <option>Pakistan</option><option>Philippines</option><option>Russia</option>
+        <option>South Africa</option><option>Sudan</option><option>Tanzania</option>
+        <option>Thailand</option><option>Turkey</option><option>UK</option>
+        <option>Uganda</option><option>United States</option><option>Vietnam</option>
+        <option>Zambia</option><option>Zimbabwe</option>
+      </select>
+    </div>-->
+
+    <button id="completeOnboardingBtn" class="onb-cta">Continue</button>
+  </div>
+</div>

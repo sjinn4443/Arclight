@@ -1,0 +1,24 @@
+
+<!-- Atoms Card Page -->
+<div id="atomsCardPage" class="page">
+  <div class="atoms-title-bar">Atoms Card</div>
+  <div class="top-right-icons">
+    <button id="closeTOCBtn" title="Close Table of Contents">✖</button>
+    <button id="tocToggleBtn" title="Table of Contents" style="
+      position: fixed; top: 60px; left: 10px; z-index: 4000; display: block;
+      background: #b4342a; color: white; border: none; border-radius: 6px;
+      padding: 8px 12px; font-size: 18px; width: 40px; height: 40px;
+      line-height: 1; display: flex; align-items: center; justify-content: center;">
+      ☰
+    </button>
+  </div>
+  <div id="tocDropdown" class="toc-dropdown active">
+    <div class="toc-tab">
+      <button id="eyesTab" class="active">Eyes</button>
+      <button id="earsTab">Ears</button>
+    </div>
+    <ul id="tocList"></ul>
+  </div>
+  <div style="width: 100vw; height: 100vh; overflow: hidden; display: flex; justify-content: center; align-items: center;" id="atomsImageContainer"></div>
+</div>
+
