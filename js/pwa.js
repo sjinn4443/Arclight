@@ -1,95 +1,41 @@
+// js/pwa.js
 let deferredPrompt = null;
+
 export function initializePWA() {
-  // basic install prompt handlers
-  deferredPrompt = null;
-  const installPopup = document.getElementById('installPopup');
-  const confirmBtn = document.getElementById('installConfirmBtn');
-  const dismissBtn = document.getElementById('installDismissBtn');
-
+  // 1) Capture beforeinstallprompt so we can trigger later
   window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
-    if (installPopup) installPopup.style.display = 'block';
+    // (optional) show any in-app “Install” UI if you have it
+    // document.getElementById('installPopup')?.style && (document.getElementById('installPopup').style.display = 'block');
+    console.log('[pwa] beforeinstallprompt captured');
   });
 
-  if (confirmBtn) {
-    confirmBtn.onclick = async () => {
-      if (deferredPrompt) {
-        deferredPrompt.prompt();
-        await deferredPrompt.userChoice;
-        installPopup.style.display = 'none';
-        deferredPrompt = null;
-      }
-    };
-  }
-  if (dismissBtn) {
-    dismissBtn.onclick = () => {
-      if (installPopup) installPopup.style.display = 'none';
-    };
-  }
-}
-
-
-// ==== AUTO-MIGRATED FROM legacy script.js (2025-07-15) ====
-// The following functions were ported automatically. Review selectors and
-// ensure they are invoked from main.js on `page:loaded` where relevant.
-// Functions: initializePWA, handleInstallPrompt
-
-function initializePWAImpl() {
-  window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    const installBtn = document.getElementById('installBtn');
-    if (installBtn) installBtn.style.display = 'block';
-  });
-
-  const installBtn = document.getElementById('installBtn');
-  if (installBtn) installBtn.addEventListener('click', handleInstallPrompt);
-
-  // Register Service Worker
+  // 2) Register Service Worker (required for install prompt on Chrome)
   if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('service-worker.js')
-        .then(reg => {
-          console.log('Service Worker registered successfully.', reg);
-
-          reg.addEventListener('updatefound', () => {
-            const newWorker = reg.installing;
-            newWorker.addEventListener('statechange', () => {
-              if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                // New service worker is installed and waiting to activate
-                // Prompt user to refresh for new content
-                if (confirm('New content is available! Click OK to refresh and get the latest version.')) {
-                  window.location.reload();
-                }
-              }
-            });
-          });
-        })
-        .catch(err => console.error('Service worker registration failed: ', err));
-    });
-
-    // Ensure the page reloads when a new service worker takes control
-    navigator.serviceWorker.addEventListener('controllerchange', () => {
-      window.location.reload();
-    });
-
-  } else {
-    console.log('Service worker not registered (not on https or localhost).');
+    navigator.serviceWorker.register('sw.js')
+      .then((reg) => console.log('[pwa] SW registered', reg.scope))
+      .catch((err) => console.warn('[pwa] SW register failed', err));
   }
 }
 
-async function handleInstallPrompt() {
+// Query if prompt is available
+export function canInstall() {
+  return !!deferredPrompt;
+}
+
+// Trigger the native install prompt; resolves when user accepts/dismisses
+export async function promptInstall() {
   if (!deferredPrompt) {
-    alert("App is already installed or this browser doesn't support installation.");
-    return;
+    // On some platforms, prompt may not be available (already installed, not eligible, etc.)
+    throw new Error('Install prompt not available');
   }
   deferredPrompt.prompt();
-  const { outcome } = await deferredPrompt.userChoice;
-  console.log(`User ${outcome} the install prompt.`);
-  deferredPrompt = null;
-  const installBtn = document.getElementById('installBtn');
-  if (installBtn) installBtn.style.display = 'none';
-  const installIconBtn = document.getElementById('installIconBtn');
-  if (installIconBtn) installIconBtn.style.display = 'none';
+  try {
+    const { outcome } = await deferredPrompt.userChoice; // 'accepted' | 'dismissed'
+    console.log('[pwa] userChoice:', outcome);
+    return outcome;
+  } finally {
+    deferredPrompt = null; // can only be used once
+  }
 }

@@ -576,6 +576,13 @@ body.quiz-mode {
   animation: fadeIn 2s ease-in forwards;
 }
 
+#splashScreen {
+  position: fixed; inset: 0;
+  display: flex;          /* keep visible initially */
+  align-items: center; justify-content: center;
+  background: #000; z-index: 5000;
+}
+
 @keyframes fadeIn {
   to {
     opacity: 1;

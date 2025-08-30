@@ -1,41 +1,54 @@
+// js/languageinstall.js
 import { loadPage } from './navigation.js';
-export function initializeLanguageInstall() { initializeLanguageInstallPage(); }
+import { promptInstall, canInstall } from './pwa.js';
 
-
-// ==== AUTO-MIGRATED FROM legacy script.js (2025-07-15) ====
-// The following functions were ported automatically. Review selectors and
-// ensure they are invoked from main.js on `page:loaded` where relevant.
-// Functions: initializeLanguageInstallPage
-
-function initializeLanguageInstallPage() {
-  const installBtn = document.getElementById('installAppBtn');
+export function initializeLanguageInstall() {
+  const installBtn   = document.getElementById('installAppBtn');
   const useOnlineBtn = document.getElementById('useOnlineBtn');
-  const langSelect = document.getElementById('prefLang');
+  const langSelect   = document.getElementById('prefLang');
 
-  // (Optional) remember language choice
+  // (Optional) remember language
   if (langSelect) {
+    const saved = localStorage.getItem('prefLang');
+    if (saved) langSelect.value = saved;
     langSelect.addEventListener('change', () => {
-      // localStorage.setItem('prefLang', langSelect.value);
+      localStorage.setItem('prefLang', langSelect.value);
     });
   }
 
-  // Install path → trigger your PWA install prompt, then proceed
+  // Install → show native PWA prompt; then warm the cache; then continue
   if (installBtn) {
     installBtn.addEventListener('click', async () => {
       try {
-        if (typeof handleInstallPrompt === 'function') {
-          await handleInstallPrompt();
+        if (!canInstall()) {
+          // Fallback UX when prompt isn't available yet
+          alert('To install, use your browser menu: “Install app” / “Add to Home screen”.');
+        } else {
+          await promptInstall(); // native “Install app?” dialog
+        }
+        // After prompt (accepted or dismissed), kick off asset caching
+        try {
+          const sw = await navigator.serviceWorker.ready;
+          const pagesToCache = [
+            'index.html','style.css',
+            'html/languageinstall.html','html/onboarding.html','html/dashboard.html',
+            'html/eyes.html','html/ears.html','html/menu.html','html/quizzes.html','html/videos.html'
+          ];
+          sw.active?.postMessage({ type: 'CACHE_ASSETS', payload: pagesToCache });
+          console.log('[install] sent CACHE_ASSETS to SW:', pagesToCache.length);
+        } catch (err) {
+          console.warn('[install] could not warm cache:', err);
         }
       } catch (e) {
-        console.warn('Install prompt failed or was dismissed:', e);
+        console.warn('Install prompt failed or not available:', e);
       } finally {
-        // After install (or dismissal), move to onboarding
+        // Proceed in flow regardless of outcome (matches your pre-split behavior)
         loadPage('onboarding');
       }
     });
   }
 
-  // Use without installing → go straight to Onboarding
+  // Use without installing → straight to onboarding
   if (useOnlineBtn) {
     useOnlineBtn.addEventListener('click', () => loadPage('onboarding'));
   }

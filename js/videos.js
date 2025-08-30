@@ -1,14 +1,13 @@
-function show(sectionId) {
+// js/videos.js
+function show(id) {
   document.querySelectorAll('#page-content .page').forEach(p => p.style.display = 'none');
-  const target = document.getElementById(sectionId);
-  if (target) target.style.display = 'block';
+  const el = document.getElementById(id);
+  if (el) el.style.display = 'block';
+}
+export function initializeVideos() {
+  if (document.getElementById('learningModules')) show('learningModules');
 }
 
-export function initializeVideos() {
-  // default to show the 'learningModules' hub
-  if (document.getElementById('learningModules')) {
-    show('learningModules');
-  }
 
   const pc = document.getElementById('page-content');
   if (!pc) return;
@@ -42,7 +41,6 @@ export function initializeVideos() {
   if (anteriorSegmentCard) anteriorSegmentCard.onclick = () => show('frontOfEyePage');
   if (ophthalmoscopyCard) ophthalmoscopyCard.onclick = () => show('directOphthalmoscopy');
   if (interactiveLearningCard) interactiveLearningCard.onclick = () => show('interactiveLearningPage');
-}
 
 
 // ==== AUTO-MIGRATED FROM legacy script.js (2025-07-15) ====

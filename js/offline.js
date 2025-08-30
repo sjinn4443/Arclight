@@ -1,40 +1,49 @@
-export function initializeOffline() {}
-
-
-// ==== AUTO-MIGRATED FROM legacy script.js (2025-07-15) ====
-// The following functions were ported automatically. Review selectors and
-// ensure they are invoked from main.js on `page:loaded` where relevant.
-// Functions: showOfflineContentModal, closeOfflineContentModal, downloadSelectedAssets
-
-function showOfflineContentModal() {
-  document.getElementById('offlineContentModal').style.display = 'flex';
+// js/offline.js
+export function initializeOffline() {
+  wireOfflineModal();
+  showOfflineContentModal();
 }
 
-function closeOfflineContentModal() {
-  document.getElementById('offlineContentModal').style.display = 'none';
+export function showOfflineContentModal() {
+  const el = document.getElementById('offlineContentModal');
+  if (el) el.style.display = 'flex';
 }
-
-async function downloadSelectedAssets() {
+export function closeOfflineContentModal() {
+  const el = document.getElementById('offlineContentModal');
+  if (el) el.style.display = 'none';
+}
+export async function downloadSelectedAssets() {
   const selected = Array.from(document.querySelectorAll('#offlineContentModal input:checked')).map(cb => cb.value);
   const assetMap = {
     cataract: ['./cataractPage.html', './videos/Cataract.mp4'],
     visualAcuity: ['./visualAcuityPage.html', './videos/VisualAcuity.mp4'],
-    // ... Add all other asset mappings here ...
+    directOphthalmoscopy: ['./directOphthalmoscopy.html', './videos/DirectOphthalmoscopy.mp4'],
+    frontOfEye: ['./frontOfEye.html'],
+    interactiveLearning: ['./interactiveLearning.html'],
+    atomsCard: ['./atomscard.html'],
+    pupils: ['./pupilsPage.html'],
+    fundalReflex: ['./fundalReflexPage.html'],
   };
-
-  const assetsToCache = selected.flatMap(key => assetMap[key] || []);
-  if (assetsToCache.length === 0) {
-    alert("No assets selected for download.");
+  const assetsToCache = selected.flatMap(k => assetMap[k] || []);
+  if (!assetsToCache.length) {
+    alert('No assets selected for download.');
     return;
   }
-
   try {
     const sw = await navigator.serviceWorker.ready;
-    sw.active.postMessage({ type: 'CACHE_ASSETS', payload: assetsToCache });
+    sw.active?.postMessage({ type: 'CACHE_ASSETS', payload: assetsToCache });
     alert('Download started in the background.');
     closeOfflineContentModal();
-  } catch (error) {
-    console.error("Failed to send message to service worker:", error);
-    alert("Could not start download. Service worker not ready.");
+  } catch (err) {
+    console.error(err);
+    alert('Could not start download. Service worker not ready.');
   }
+}
+
+function wireOfflineModal() {
+  document.getElementById('closeOfflineContentModalBtn')?.addEventListener('click', closeOfflineContentModal);
+  document.getElementById('downloadSelectedAssetsBtn')?.addEventListener('click', downloadSelectedAssets);
+  document.querySelectorAll('.showOfflineContentModalBtn').forEach(btn => {
+    btn.addEventListener('click', showOfflineContentModal);
+  });
 }
