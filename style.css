@@ -2098,3 +2098,103 @@ select.onb-input {
   border-style: solid;
   border-color: #333 transparent transparent transparent;
 }
+
+/* Global: prevent background scroll while menu is open */
+body[data-menu-open="true"] { overflow: hidden; }
+
+/* ==== Eyes Catalog — baseline parity (cards + hearts) ==== */
+.eyes-carousel { margin-bottom: 10px; }
+
+.eyes-track {
+  display: flex;
+  gap: 12px;
+  padding: 6px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scroll-padding-inline: 12px;
+}
+
+.eyes-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 220px;
+  height: 120px;
+  padding: 14px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #ffffff, #fafbff);
+  border: 1px solid #e6e8ef;
+  box-shadow: 0 2px 8px rgba(17,24,39,0.06);
+  scroll-snap-align: center;
+  text-align: left;
+}
+
+.eyes-card__icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  background: #eef2ff; /* soft indigoish */
+  font-size: 26px;
+  line-height: 1;
+  flex: 0 0 auto;
+}
+
+.eyes-card__title {
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1.2;
+  color: #111827;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 52vw;
+}
+
+/* Heart button (top-right) */
+.heart-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  border: none;
+  background: transparent;
+  padding: 4px;
+  line-height: 0;
+  cursor: pointer;
+}
+.heart-btn .heart { display: block; }
+.heart-btn .heart.filled { color: #ef4444; } /* red fill when liked */
+
+.eyes-card__soon {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  font-size: 11px;
+  line-height: 1;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: #fff1f2;
+  border: 1px solid #fecaca;
+  color: #b91c1c;
+}
+
+.eyes-dots {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  padding: 8px 0 2px;
+}
+.eyes-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  border: none; background: #d3d3d8;
+}
+.eyes-dot:focus { outline: 2px solid #9ca3af; outline-offset: 2px; }
+
+@media (max-width: 360px){
+  .eyes-card { min-width: 200px; height: 112px; }
+  .eyes-card__icon { width: 52px; height: 52px; }
+  .eyes-card__title { max-width: 60vw; }
+}

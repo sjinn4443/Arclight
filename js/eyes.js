@@ -1,154 +1,139 @@
 // js/eyes.js
 import { loadPage } from './navigation.js';
+import { openMenu } from './menu.js';
 
+/* ---- Likes persistence (labels) ---- */
+const LIKES_KEY = 'likedEyes_v1';
+function getLikes() {
+  try { return new Set(JSON.parse(localStorage.getItem(LIKES_KEY)) || []); }
+  catch { return new Set(); }
+}
+function saveLikes(set) {
+  try { localStorage.setItem(LIKES_KEY, JSON.stringify([...set])); } catch {}
+}
+
+/* Helper to navigate: prefer baseline showPage, else use loadPage */
+function go(target) {
+  if (typeof window.showPage === 'function') window.showPage(target);
+  else loadPage(target);
+}
+
+/* ---- PUBLIC: called by router on page 'eyes' ---- */
 export function initializeEyes() {
+  initializeEyesCatalog();
+}
+
+/* ---- Your requested structure (with heart icons) ---- */
+export function initializeEyesCatalog() {
   const page = document.getElementById('eyesCatalogPage');
   if (!page) return;
 
+  // ☰ uses global overlay menu (baseline parity)
   page.querySelector('.menuBtn')?.addEventListener('click', (e) => {
     e.preventDefault();
-    loadPage('menu');
+    openMenu();
   }, { once: true });
 
+  // --- exact lists you already set up ---
   const sections = {
     coreCarousel: [
-      { label: 'History Taking',         target: 'atomscard',  soon: true, tags:['Quiz','Interactive'] },
-      { label: 'Visual Acuity',          target: 'videos',                 tags:['Case Study'] },
-      { label: 'Pupils',                 target: 'videos',                 tags:['Video'] },
-      { label: 'Front of Eye',           target: 'videos',                 tags:['Video','Quiz'] },
-      { label: 'Fundal Reflex',          target: 'atomscard',  soon: true, tags:['Video'] },
-      { label: 'Direct Ophthalmoscopy',  target: 'videos',                 tags:['Video','Quiz'] },
-      { label: 'Interactive Learning',   target: 'quizzes',                tags:['Simulation'] },
+      { label: 'History Taking', target: 'comingSoon', soon: true, tags:['Quiz','Interactive'] },
+      { label: 'Visual Acuity', target: 'visualAcuityPage', tags:['Case Study'] },
+      { label: 'Pupils', target: 'pupilsPage', tags:['Video'] },
+      { label: 'Front of Eye', target: 'frontOfEyePage', tags:['Video','Quiz'] },
+      { label: 'Fundal Reflex', target: 'fundalReflexPage', tags:['Video'] },
+      { label: 'Ophthalmoscopy', target: 'directOphthalmoscopy', tags:['Video','Quiz'] },
+      { label: 'Interactive Learning', target: 'interactiveLearningPage', tags:['Simulation'] },
     ],
     diseaseCarousel: [
-      { label: 'Uncorrected Refractive Error', target: 'quizzes', soon: true, tags: ['Quiz'] },
-      { label: 'Cataract',                      target: 'videos',                tags: ['Case Study','Interactive'] },
-      { label: 'Glaucoma',                      target: 'quizzes', soon: true },
-      { label: 'Diabetic Retinopathy',          target: 'quizzes', soon: true },
+      { label: 'Uncorrected Refractive Error', target: 'comingSoon', soon:true, tags:['Quiz'] },
+      { label: 'Cataract', target: 'cataractPage', tags:['Case Study','Interactive'] },
+      { label: 'Glaucoma', target: 'comingSoon', soon:true },
+      { label: 'Diabetic Retinopathy', target: 'comingSoon', soon:true },
+      { label: 'Corneal Disease', target: 'comingSoon', soon:true },
+      { label: 'Childhood Eye Screening', target: 'childhoodEyeScreeningPage', tags:['Video'] },
+      { label: 'Retinopathy of Prematurity', target: 'comingSoon', soon:true },
+      { label: 'Retinal Disease', target: 'comingSoon', soon:true },
+      { label: 'Optic Nerve Disease', target: 'comingSoon', soon:true },
     ],
     pecCarousel: [
-      { label: 'CAPOS',                         target: 'videos',                tags: ['Video'] },
-      { label: 'Lid Eversion',                  target: 'videos',                tags: ['Video'] },
-      { label: 'Instillation of Eye Drops',     target: 'videos',                tags: ['Video'] },
-      { label: 'Fluorescein Staining',          target: 'videos',                tags: ['Video'] },
+      { label: 'WHO PEC', target: 'comingSoon', soon:true },
+    ],
+    extendedCarousel: [
+      { label: 'Ptosis', target: 'comingSoon', soon:true },
+      { label: 'Proptosis', target: 'comingSoon', soon:true },
+      { label: 'Eye Movements/Squint', target: 'squintPalsyPage' },
+      { label: 'Cranial Nerve Examination', target: 'comingSoon', soon:true },
+    ],
+    toolsCarousel: [
+      { label: 'Arclight Overview', target: 'howToUseArclightVideoPage' },
+      { label: 'Binocular Indirect Ophthalmoscope Overview', target: 'comingSoon', soon:true },
     ],
   };
 
-  setupCarousel('coreCarousel', sections.coreCarousel);
-  setupCarousel('diseaseCarousel', sections.diseaseCarousel);
-  setupCarousel('pecCarousel', sections.pecCarousel);
-}
+  window.EYES_SECTIONS = sections; // (optional) for debugging
 
-/* === Baseline-parity carousel with dots and centered start === */
-function setupCarousel(containerId, items) {
-  const container = document.getElementById(containerId);
-  if (!container) return;
+  // --- Render helper (adds heart icon) ---
+  const render = (containerId, items) => {
+    const el = document.getElementById(containerId);
+    if (!el) return;
 
-  // track
-  const track = document.createElement('div');
-  track.className = 'eyes-track';
-  Object.assign(track.style, {
-    display: 'flex',
-    overflowX: 'auto',
-    scrollSnapType: 'x mandatory',
-    gap: '10px',
-    padding: '4px',
-  });
+    const likes = getLikes();
 
-  // cards
-  items.forEach((it) => {
-    const card = document.createElement('button');
-    card.type = 'button';
-    card.className = 'eyes-card';
-    Object.assign(card.style, {
-      minWidth: '220px',
-      scrollSnapAlign: 'center',
-      border: '1px solid #e3e3e6',
-      borderRadius: '12px',
-      padding: '12px',
-      background: '#fff',
-      textAlign: 'left',
-    });
-    card.innerHTML = `
-      <div style="font-weight:600;margin-bottom:4px">${escapeHTML(it.label)}</div>
-      <div style="font-size:12px;color:#666">${escapeHTML((it.tags||[]).join(' • '))}${it.soon ? ' — <i>Coming soon</i>' : ''}</div>
-    `;
-    if (!it.soon && it.target) {
-      card.addEventListener('click', () => loadPage(it.target));
-    } else {
-      card.disabled = true;
-      card.style.opacity = '0.6';
-      card.style.cursor = 'not-allowed';
+    // Make the container the scroller (matches your baseline)
+    el.classList.add('eyes-track');
+
+    el.innerHTML = items.map(i => `
+      <button class="eyes-card ${likes.has(i.label) ? 'liked' : ''}"
+              data-target="${i.target}" data-title="${i.soon ? i.label : ''}"
+              data-label="${i.label}">
+        <span class="heart-btn" aria-label="Like ${i.label}" role="button" tabindex="-1">
+          <svg viewBox="0 0 24 24"
+               fill="${likes.has(i.label) ? 'currentColor' : 'none'}"
+               stroke="currentColor" stroke-width="2">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 1 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/>
+          </svg>
+        </span>
+        <span class="eyes-card__title">${i.label}</span>
+        ${i.tags?.length ? `<div class="tag-row">${i.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>` : ''}
+        ${i.soon ? `<span class="eyes-card__soon">Soon</span>` : ''}
+      </button>
+    `).join('');
+  };
+
+  Object.entries(sections).forEach(([id, list]) => render(id, list));
+
+  // --- Click handling (heart vs navigate) ---
+  page.addEventListener('click', (e) => {
+    const heart = e.target.closest('.heart-btn');
+    if (heart) {
+      e.stopPropagation(); e.preventDefault();
+      const card = heart.closest('.eyes-card');
+      const label = card?.getAttribute('data-label');
+      if (!label) return;
+
+      const likes = getLikes();
+      const nowLiked = !likes.has(label);
+      if (nowLiked) likes.add(label);
+      else likes.delete(label);
+      saveLikes(likes);
+
+      // Reflect UI state (class + SVG fill)
+      card.classList.toggle('liked', nowLiked);
+      const svg = heart.querySelector('svg');
+      if (svg) svg.setAttribute('fill', nowLiked ? 'currentColor' : 'none');
+      return;
     }
-    track.appendChild(card);
-  });
 
-  // dots
-  const dotsWrap = document.createElement('div');
-  Object.assign(dotsWrap.style, { display: 'flex', gap: '6px', justifyContent: 'center', marginTop: '8px' });
+    const btn = e.target.closest('.eyes-card');
+    if (!btn) return;
 
-  const cards = Array.from(track.children);
-  const dots  = cards.map((_, i) => {
-    const d = document.createElement('button');
-    d.type = 'button';
-    Object.assign(d.style, {
-      width: '8px', height: '8px',
-      borderRadius: '50%',
-      border: '0',
-      background: '#d3d3d8',
-    });
-    d.addEventListener('click', () => centerCardByIndex(i));
-    dotsWrap.appendChild(d);
-    return d;
-  });
-
-  // helpers
-  const getActiveIndex = () => {
-    if (!cards.length) return 0;
-    let min = Infinity, idx = 0;
-    const center = track.scrollLeft + track.clientWidth / 2;
-    cards.forEach((card, i) => {
-      const left = card.offsetLeft + card.offsetWidth / 2;
-      const dist = Math.abs(left - center);
-      if (dist < min) { min = dist; idx = i; }
-    });
-    return idx;
-  };
-
-  const paintDots = (i) => {
-    dots.forEach((d, j) => d.style.background = (i === j) ? '#666' : '#d3d3d8');
-  };
-
-  const centerCardByIndex = (i) => {
-    const card = cards[i];
-    if (!card) return;
-    const left = card.offsetLeft - (track.offsetWidth / 2) + (card.offsetWidth / 2);
-    track.scrollTo({ left, behavior: 'smooth' });
-  };
-
-  // scroll listener with rAF (baseline pattern)
-  let rafId = null;
-  const onScroll = () => {
-    if (rafId) return;
-    rafId = requestAnimationFrame(() => {
-      rafId = null;
-      paintDots(getActiveIndex());
-    });
-  };
-  track.addEventListener('scroll', onScroll, { passive: true });
-
-  // mount
-  container.innerHTML = '';
-  container.appendChild(track);
-  container.appendChild(dotsWrap);
-
-  // start centered on 2nd card like baseline
-  requestAnimationFrame(() => {
-    centerCardByIndex(Math.min(1, cards.length - 1));
-    paintDots(Math.min(1, cards.length - 1));
-  });
-}
-
-function escapeHTML(s) {
-  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    const target = btn.getAttribute('data-target') || 'comingSoon';
+    if (target === 'comingSoon') {
+      const title = btn.getAttribute('data-title') || 'Coming soon';
+      const h = document.getElementById('comingSoonTitle');
+      if (h) h.textContent = title;
+    }
+    go(target);
+  }, { passive: false });
 }

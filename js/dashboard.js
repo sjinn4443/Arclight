@@ -1,5 +1,6 @@
 // js/dashboard.js
 import { loadPage } from './navigation.js';
+import { openMenu } from './menu.js';
 
 const wired = new WeakSet();
 
@@ -14,12 +15,13 @@ export function initializeDashboard() {
   if (helloEl) helloEl.textContent = `Hello ${username || 'there'}!`;
 
   // 2) ☰ → Menu route (overlay lives in menu.html)
-  root.querySelectorAll('.menuBtn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.preventDefault();
-      loadPage('menu');
-    });
-  });
+   const menuBtn = root.querySelector('.menuBtn');
+ if (menuBtn) {
+   menuBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    openMenu();
+   });
+ }
 
   // 3) Category cards
   // inside initializeDashboard()

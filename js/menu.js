@@ -1,28 +1,58 @@
 // js/menu.js
-import { loadPage, goBack } from './navigation.js';
+let overlay, closeBtn;
 
-const wired = new WeakSet();
+export async function initializeMenu() {
+  if (overlay) return; // already initialized
 
-export function initializeMenu() {
-  const overlay = document.getElementById('menuOverlay');
-  if (!overlay || wired.has(overlay)) return;
-  wired.add(overlay);
+  // Fetch the template
+  const res = await fetch('html/menu.html');
+  const html = await res.text();
 
-  // Show overlay
-  overlay.classList.remove('hidden');
+  // Parse and extract the overlay element
+  const tmp = document.createElement('div');
+  tmp.innerHTML = html;
+  const found = tmp.querySelector('#menuOverlay');
+  if (!found) {
+    console.error('[menu] #menuOverlay not found in html/menu.html');
+    return;
+  }
 
-  // Close → go back
-  document.getElementById('closeMenuBtn')?.addEventListener('click', (e) => {
-    e.preventDefault();
-    goBack();
+  // Ensure it starts hidden
+  found.classList.add('hidden');
+
+  // Append directly under <body> (critical for overlay)
+  document.body.appendChild(found);
+
+  // Wire refs & handlers
+  overlay  = found;
+  closeBtn = overlay.querySelector('#closeMenuBtn');
+
+  closeBtn?.addEventListener('click', closeMenu);
+  overlay.addEventListener('click', (e) => {
+    // click outside the panel closes
+    if (e.target === overlay) closeMenu();
   });
 
-  // Username
-  const el = document.getElementById('menuUsername');
-  if (el) el.textContent = localStorage.getItem('username') || '';
+  // Esc to close
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeMenu();
+  });
 
-  // Common routes
-  document.getElementById('atomsCardEyesBtn')?.addEventListener('click', () => loadPage('atomscard'));
-  document.getElementById('atomsCardEarsBtn')?.addEventListener('click', () => loadPage('atomscard'));
-  document.getElementById('downloadedContentsBtn')?.addEventListener('click', () => loadPage('offline'));
+  // Close if any link-like element inside is clicked
+  overlay.addEventListener('click', (e) => {
+    const a = e.target.closest('a,[data-route],[data-close-menu]');
+    if (a) closeMenu();
+  });
+}
+
+export function openMenu() {
+  if (!overlay) return;
+  document.body.setAttribute('data-menu-open', 'true');
+  overlay.classList.remove('hidden');
+}
+
+export function closeMenu() {
+  if (!overlay) return;
+  document.body.removeAttribute('data-menu-open');
+  overlay.classList.add('hidden');
 }

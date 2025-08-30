@@ -1,5 +1,6 @@
 // js/navigation.js
 import { ROUTES } from './config.js';
+import { closeMenu } from './menu.js';
 
 export let currentPageName = null;
 const historyStack = [];
@@ -31,6 +32,8 @@ export async function loadPage(routeName, options = {}) {
   // Inject
   container.innerHTML = html;
   currentPageName = routeName;
+
+  try { closeMenu(); } catch {}
 
   // Debug (optional)
   console.log('[router] loaded route:', routeName, 'bytes=', html.length);
