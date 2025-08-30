@@ -1,8 +1,9 @@
+<!-- THE CHANGES - activeContext.md | 2025-08-30, SJ -->
 # Active Context
 
 ## Current Work Focus
 
-The current focus is on ensuring the application's core structure and PWA capabilities are robust, including proper service worker registration and update mechanisms, and a comprehensive navigation system.
+The current focus is on ensuring the application's core structure and PWA capabilities are robust, including proper service worker registration and update mechanisms, and a comprehensive navigation system. Ongoing refinement of existing features and integration of new content across various modules.
 
 ## Recent Changes
 
@@ -15,6 +16,7 @@ The current focus is on ensuring the application's core structure and PWA capabi
 - Added video players with time-based event handling and interactive toolbars for various learning modules.
 - Introduced an offline content management modal to allow users to select and download specific assets for offline use.
 - Updated the `README.md` file to include a changelog section with dates and descriptions of recent changes.
+- **2025-08-30:** General application refinement and content integration across various modules, including updates to video playback, navigation, onboarding, and PWA features.
 
 ## Next Steps
 
