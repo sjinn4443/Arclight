@@ -3,6 +3,7 @@ import { initializeOnboarding } from './onboarding.js';
 import { initializeDashboard } from './dashboard.js';
 import { initializeLearningModules } from './learningModules.js';
 import { initializeTOC } from './toc.js';
+import { initializeLanguageInstall } from './languageinstall.js';
 import { initializePWA } from './pwa.js';
 import { initializeQuizzes } from './quizzes.js';
 import { initializeVideoPlayers, initializeToolbar } from './video.js';
@@ -16,11 +17,12 @@ initializePWA();
 
 // bootstrap: go to onboarding or dashboard (simplified)
 loadPage('dashboard');
+const page = e.detail.routeName;
 
 // hook initializers on page load
 window.addEventListener('page:loaded', (e) => {
-  const page = e.detail.routeName;
-  if (page === 'onboarding') initializeOnboarding();
+if (page === 'languageinstall') initializeLanguageInstall();
+if (page === 'onboarding') initializeOnboarding();
   if (page === 'dashboard') initializeDashboard();
   if (page === 'videos') initializeVideos();
   if (page === 'ears') initializeEars();
@@ -31,4 +33,10 @@ window.addEventListener('page:loaded', (e) => {
   initializeVideoPlayers();
   initializeToolbar();
   initializeMisc();
+});
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  // First page: language & install
+  loadPage('languageinstall');
 });

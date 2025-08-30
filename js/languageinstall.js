@@ -1,4 +1,5 @@
-export function initializeLanguageInstall() {}
+import { loadPage } from './navigation.js';
+export function initializeLanguageInstall() { initializeLanguageInstallPage(); }
 
 
 // ==== AUTO-MIGRATED FROM legacy script.js (2025-07-15) ====
@@ -29,13 +30,13 @@ function initializeLanguageInstallPage() {
         console.warn('Install prompt failed or was dismissed:', e);
       } finally {
         // After install (or dismissal), move to onboarding
-        showPage('onboarding');
+        loadPage('onboarding');
       }
     });
   }
 
   // Use without installing → go straight to Onboarding
   if (useOnlineBtn) {
-    useOnlineBtn.addEventListener('click', () => showPage('onboarding'));
+    useOnlineBtn.addEventListener('click', () => loadPage('onboarding'));
   }
 }

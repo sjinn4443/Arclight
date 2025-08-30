@@ -1,6 +1,7 @@
+let deferredPrompt = null;
 export function initializePWA() {
   // basic install prompt handlers
-  let deferredPrompt = null;
+  deferredPrompt = null;
   const installPopup = document.getElementById('installPopup');
   const confirmBtn = document.getElementById('installConfirmBtn');
   const dismissBtn = document.getElementById('installDismissBtn');

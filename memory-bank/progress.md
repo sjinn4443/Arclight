@@ -26,7 +26,7 @@
 
 ## Current Status
 
-The project has significantly advanced beyond its initial setup phase. The foundational structure is robust, and many core features, including advanced navigation, PWA capabilities, interactive learning modules, and content management, are now implemented. The application is a feature-rich PWA with a strong emphasis on interactive learning and offline capabilities. The next steps involve completing content population, refining existing features, and ensuring comprehensive testing and optimization.
+The project has significantly advanced beyond its initial setup phase. The foundational structure is robust, and many core features, including advanced navigation, PWA capabilities, interactive learning modules, and content management, are now implemented. The application is a feature-rich PWA with a strong emphasis on interactive learning and offline capabilities. The README.md file has been updated to include a changelog. The next steps involve completing content population, refining existing features, and ensuring comprehensive testing and optimization.
 
 ## Known Issues
 

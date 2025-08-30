@@ -1,73 +1,59 @@
-# Arclight_App Test Suite
+# Arclight App
 
-Welcome to the test suite for **Arclight_App**—an interactive educational platform designed to support clinical learning in ophthalmology and related fields. This suite ensures the reliability, accessibility, and user experience of Arclight_App, which features clinical quizzes, interactive case studies, chatbot-driven guidance, and a multilingual, user-friendly interface for learners and practitioners.
+This project is the Arclight App, a comprehensive educational and diagnostic tool designed to support eye health professionals and learners. It includes interactive quizzes, case studies, instructional videos, and detailed anatomical images to facilitate learning and assessment in ophthalmology and related fields.
 
-## About Arclight_App
+## Features
 
-Arclight_App provides a comprehensive set of tools for clinical education, including interactive quizzes, case-based learning modules, clinical image galleries, and a responsive chatbot to guide users through key concepts in eye health. The app is designed for accessibility, robust user experience, and support for multiple languages.
+- Interactive quizzes on various eye health topics
+- Case studies with images and detailed explanations
+- Instructional videos for practical demonstrations
+- Anatomical diagrams and images for reference
+- Responsive design for use on multiple devices
 
-## Test Suite Overview
+## Getting Started
 
-This folder contains automated tests covering:
-
-- **Backend API**: Data handling, authentication, and record management.
-- **Frontend Chatbot**: Chat logic, sidebar updates, and localStorage persistence.
-- **UI/UX Integration**: User flows, accessibility, and interface interactions.
-- **Quiz and Case Modules**: Functionality for quizzes, case navigation, and scoring.
-- **Clinical Image Display**: Rendering and accessibility of clinical images.
-
-## Structure
-
-
-- `ui.test.js` — UI/UX integration and user flow tests (Jest + jsdom)
-  - **Tests:**
-    1. Home page loads and displays main elements
-    2. Navigation links work and route to the correct sections/pages
-    3. Main interactive button triggers the expected action
-    4. Responsive layout adapts correctly on mobile and desktop
-    5. Error messages display when invalid input is submitted
-    6. Splash screen appears on page load with language selection
-
-## Setup
-
-1. **Install dependencies (from project root):**
-   ```bash
-   npm install --save-dev jest supertest jsdom
+1. Clone the repository:
    ```
-
-2. **(Optional) Add a test script to your package.json:**
-   ```json
-   "scripts": {
-     "test": "jest"
-   }
+   git clone https://github.com/sjinn4443/Arclight.git
    ```
+2. Open the project in your preferred code editor.
+3. Open `index.html` in a web browser to start using the app.
+4. For development, you can run a local server to serve the files.
 
-## Running Tests
+## Project Structure
 
-- To run all tests in detail (recommended):
-  ```bash
-  npx jest --verbose
-  ```
-- To run a specific test file:
-  ```bash
-  npx jest --verbose tests/api.test.js
-  npx jest --verbose tests/chatbot.test.js
-  npx jest --verbose tests/ui.test.js
-  ```
+- `index.html` - Main entry point of the app
+- `style.css` - Global styles
+- `js/` - JavaScript files for different modules and features
+- `images/` - Image assets used throughout the app
+- `memory-bank/` - Documentation and project context files
+- Various folders for specific modules like `AnteriorSegmentQuiz`, `Cataract`, `Morph`, `Squint`, etc.
 
-## Notes
+## Memory Bank
 
-- Backend tests use a temporary directory for all data, so your real files are never touched.
-- Frontend and UI tests use jsdom to simulate the DOM and localStorage.
-- All major user flows, UI elements, and backend logic are covered.
-- **Accessibility requirements are enforced by automated tests in `ui.test.js`.**
-- For full browser/E2E automation, consider Playwright or Cypress.
+The `memory-bank/` directory contains essential project documentation that guides development and maintains project knowledge. It includes:
 
-## Expanding the Suite
+- `projectbrief.md` - Core project requirements and goals
+- `productContext.md` - User experience and problem context
+- `activeContext.md` - Current work focus and recent changes
+- `systemPatterns.md` - Architecture and design patterns
+- `techContext.md` - Technologies and development setup
+- `progress.md` - Status and known issues
 
-- Add more tests for edge cases, error handling, and new features as you develop.
-- Keep tests in sync with your codebase for best results.
+Maintaining the Memory Bank is critical for project continuity and knowledge sharing.
 
----
+## Contributing
 
-This test suite is essential for maintaining the high standards of quality, accessibility, and reliability that define Arclight_App.
+Please follow the existing code patterns and update the Memory Bank when making significant changes. Write tests for new features and ensure the app works across different environments.
+
+## License
+
+[Specify your license here]
+
+## Changelog
+
+### 26/08/25
+- Placeholder for changes made on 26/08/25.
+
+### 27/08/25
+- Placeholder for changes made on 27/08/25.

@@ -8,12 +8,13 @@ The current focus is on ensuring the application's core structure and PWA capabi
 
 - Configured VS Code launch settings by creating `.vscode/launch.json` to enable easy debugging and running of the application on `http://localhost:3000`.
 - Implemented logic in `script.js` to prompt users to refresh the page when a new service worker version is detected, ensuring they always access the latest application version.
-- Enhanced the navigation system to include a unified dashboard, language/install page, onboarding, and professional interest pages, along with detailed module pages for Eyes and Ears.
+- Enhanced the navigation system to include a unified dashboard, language/install page, onboarding, and professional interest pages, along with detailed module pages for Eyes and Ears content.
 - Integrated a "My Learning" (Liked) page with masonry layout and search functionality.
 - Developed a dynamic Table of Contents (TOC) for the "Atoms Card" section, supporting both Eyes and Ears content with image display and zoom functionality.
 - Implemented a quiz system for "Direct Ophthalmoscopy" and "Anterior Segment Quiz" modules.
 - Added video players with time-based event handling and interactive toolbars for various learning modules.
 - Introduced an offline content management modal to allow users to select and download specific assets for offline use.
+- Updated the `README.md` file to include a changelog section with dates and descriptions of recent changes.
 
 ## Next Steps
 

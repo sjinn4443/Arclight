@@ -13,6 +13,8 @@ export async function loadPage(routeName, options = {}) {
   const html = await fetch(url).then(r => r.text());
   container.innerHTML = html;
   currentPageName = routeName;
+  const splash = document.getElementById('splashScreen');
+  if (splash) splash.style.display = 'none';
 
   if (options.push !== false) {
     historyStack.push(routeName);
