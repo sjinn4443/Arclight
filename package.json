@@ -8,7 +8,9 @@
     "test:ci": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --verbose",
     "build": "node scripts/build.js",
     "check-translations": "node scripts/check-translations.cjs",
-    "test:a11y": "node scripts/test-a11y.mjs"
+    "test:a11y": "node scripts/test-a11y.mjs",
+    "lint": "eslint . --ext .js,.ts",
+    "type-check": "tsc --noEmit"
   },
   "keywords": [],
   "author": "",

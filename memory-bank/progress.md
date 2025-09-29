@@ -32,7 +32,7 @@
 - **Testing:** While a comprehensive test suite is in place, continue to develop and expand automated tests for new features, edge cases, error handling, and PWA functionalities. Keep tests in sync with the codebase.
 - **Performance Optimization:** Further optimize media loading and overall application performance, particularly with the increased content and dynamic elements.
 - **Deployment Pipeline:** Established a GitHub Actions CI/CD pipeline for continuous integration and deployment to Railway.
-- **GitHub Actions CI/CD Pipeline:** Set up at `.github/workflows/ci-cd.yml` for continuous integration and deployment to Railway.
+- **GitHub Actions CI/CD Pipeline:** Set up at `.github/workflows/ci-cd.yml` for continuous integration and deployment to Railway, including linting, type checking, and Lighthouse CI for performance and best practices.
 
 ## Current Status
 
