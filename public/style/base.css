@@ -1,0 +1,124 @@
+/* base.css - Provides foundational styles, CSS variables, global tag resets, layout primitives, and keyframe animations for the Arclight application. */
+
+/* ============================================= Variables ============================================= */
+:root {
+  --primary-color: #b4342a;
+  --bg-color: #f5f5f5;
+  --card-bg: #ffffff;
+  --font-color: #333;
+  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Helvetica, Arial, sans-serif;
+}
+
+/* ============================================= Global tags ============================================= */
+.unified-container {
+  background: #fff;
+  min-height: 100vh;
+  padding-bottom: 13.5135vh;
+}
+
+.container {
+  padding-top: 2.7027vh;
+  padding-right: 5.5556vw;
+  padding-bottom: 2.7027vh;
+  padding-left: 5.5556vw;
+  padding-bottom: 100%;
+}
+
+body {
+  font-family: var(--font-family);
+  margin: 0;
+  padding: 0;
+  background: var(--bg-color);
+  color: var(--font-color);
+  font-size: 0.875rem;
+}
+
+h1 {
+  font-size: 1.5rem;
+  margin-bottom: 2.7027vh;
+}
+
+/* ============================================= Layout primitives & helpers ============================================= */
+.container {
+  padding-top: 2.7027vh;
+  padding-right: 5.5556vw;
+  padding-bottom: 2.7027vh;
+  padding-left: 5.5556vw;
+  padding-bottom: 100%;
+}
+
+.page {
+  display: none;
+}
+
+.page.active {
+  display: block;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* ============================================= Global animations and keyframes ============================================= */
+@keyframes spinPause {
+  0% {
+    transform: rotate(0deg);
+  }
+  12% {
+    transform: rotate(90deg);
+  }
+  25% {
+    transform: rotate(180deg);
+  }
+  38.462% {
+    transform: rotate(270deg);
+  } /* ~0.5s */
+  57% {
+    transform: rotate(330deg);
+  }
+  76.923% {
+    transform: rotate(360deg);
+  } /* ~1.0s */
+  77% {
+    transform: rotate(363deg);
+  }
+  100% {
+    transform: rotate(363deg);
+  }
+}
+
+@keyframes shiftRight {
+  from {
+    left: -9.7222vw;
+  }
+  to {
+    left: -4.1667vw;
+  }
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeSplashOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+/* ============================================= Motion accessibility ============================================= */
+@media (prefers-reduced-motion: reduce) {
+  .logo-one {
+    animation: none !important;
+  }
+}
+
+/* ============================================= Sitewide resets ============================================= */
+/* Sitewide resets - the body rule already handles margin and padding reset. */

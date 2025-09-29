@@ -1,0 +1,1893 @@
+/*
+  components.css - Styles for reusable UI components such as buttons, inputs, cards, and progress bars.
+*/
+
+/* ============================================= Buttons ============================================= */
+button {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding-top: 1.6216vh;
+  padding-right: 3.3333vw;
+  padding-bottom: 1.6216vh;
+  padding-left: 3.3333vw;
+  width: 100%;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 1.3514vh;
+}
+
+button:disabled {
+  background-color: #ccc;
+}
+
+.quiz-btn,
+.start-btn {
+  width: 89.1667vw;
+  margin-top: 2.4324vh;
+  margin-right: 5vw;
+  margin-bottom: 2.4324vh;
+  margin-left: 5vw;
+  padding-top: 1.3514vh;
+  padding-right: 2.7778vw;
+  padding-bottom: 1.3514vh;
+  padding-left: 2.7778vw;
+  font-size: 0.9375rem;
+  background-color: #e41e26;
+  color: white;
+  border: none;
+  border-radius: 12px;
+}
+
+.btn-outline {
+  display: block;
+  width: 100%;
+  height: 44%;
+  border-radius: 14px;
+  background: #fff;
+  border: 1px solid #d9d9dd;
+  color: #111;
+  font-weight: 400;
+  font-size: 0.8125rem;
+  margin-top: 5%;
+}
+
+.btn-lg-grey {
+  width: 100%;
+  height: 5.2703vh;
+  border-radius: 14px;
+  background: #e41e26;
+  color: #fff;
+  border: none;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  margin-top: 35%;
+}
+
+.btn-outline-light {
+  width: 100%;
+  height: 5.2703vh;
+  border-radius: 14px;
+  background: #6f6f72;
+  color: #fff;
+  border: none;
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+
+/* Top-left global back button */
+#backBtnGlobal.top-back {
+  position: fixed;
+  top: 2.973vh;
+  left: 5vw;
+  z-index: 5000;
+  margin: 0;
+}
+
+/* keyboard focus ring */
+#backBtnGlobal:focus {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+/* ============================================= Inputs & Forms ============================================= */
+.fixed-input {
+  display: block;
+  padding-top: 1.3514vh;
+  padding-right: 2.7778vw;
+  padding-bottom: 1.3514vh;
+  padding-left: 2.7778vw;
+  margin-top: 1.3514vh;
+  margin-right: 0vw;
+  margin-bottom: 1.3514vh;
+  margin-left: 0vw;
+  width: 96.47%;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 0.875rem;
+}
+
+select,
+input {
+  display: block;
+  padding-top: 1.3514vh;
+  padding-right: 2.7778vw;
+  padding-bottom: 1.3514vh;
+  padding-left: 2.7778vw;
+  margin-top: 1.3514vh;
+  margin-right: 0vw;
+  margin-bottom: 1.3514vh;
+  margin-left: 0vw;
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 0.75rem;
+}
+
+textarea {
+  width: 100%;
+  height: 10.8108vh;
+  border-radius: 5px;
+  padding-top: 0.6757vh;
+  padding-right: 1.3889vw;
+  padding-bottom: 0.6757vh;
+  padding-left: 1.3889vw;
+  font-size: 0.875rem;
+  border: 1px solid #ccc;
+  resize: none;
+}
+
+.form-field {
+  position: relative;
+}
+
+/* ============================================= Cards ============================================= */
+.card {
+  background: var(--card-bg);
+  padding-top: 2.7027vh;
+  padding-right: 5.5556vw;
+  padding-bottom: 2.7027vh;
+  padding-left: 5.5556vw;
+  border-radius: 16px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  margin-bottom: 2.7027vh;
+}
+
+.module-card {
+  align-items: center;
+}
+
+.module-card img {
+  width: 22.2222vw;
+  height: 10.8108vh;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-right: 3.3333vw;
+}
+
+.module-info h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.module-info p {
+  font-size: 0.75rem;
+  color: #777;
+  margin-top: 0.5405vh;
+  margin-right: 0vw;
+  margin-bottom: 0.5405vh;
+  margin-left: 0vw;
+}
+
+/* ============================================= Progress bars ============================================= */
+.progress-bar {
+  background: #eee;
+  border-radius: 6px;
+  height: 0.8108vh;
+  margin-top: 0.8108vh;
+  margin-right: 0vw;
+  margin-bottom: 0.8108vh;
+  margin-left: 0vw;
+  width: 100%;
+}
+
+.progress {
+  background: #a18cff;
+  height: 100%;
+  border-radius: 6px;
+}
+
+.status {
+  font-size: 0.75rem;
+  color: #777;
+}
+
+p.note {
+  font-size: 0.75rem;
+  color: #666;
+  text-align: center;
+  margin-top: 1.3514vh;
+}
+
+/* ============================================= Headers & Toolbars ============================================= */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 0.6757vh;
+  padding-right: 1.3889vw;
+  padding-bottom: 0.6757vh;
+  padding-left: 1.3889vw;
+  background-color: white;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  position: relative;
+}
+
+.header h3 {
+  font-size: 1rem;
+  margin: 0 auto;
+}
+
+.header button {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  position: absolute;
+  left: 2.7778vw;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 0.6757vh;
+  padding-right: 2.7778vw;
+  padding-bottom: 0.6757vh;
+  padding-left: 2.7778vw;
+  font-size: 1rem;
+}
+
+.toolbar button {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  color: black;
+}
+
+.content-box {
+  background: white;
+  padding-top: 1.3514vh;
+  padding-right: 2.7778vw;
+  padding-bottom: 1.3514vh;
+  padding-left: 2.7778vw;
+  margin-top: 0.6757vh;
+  margin-right: 1.3889vw;
+  margin-bottom: 0.6757vh;
+  margin-left: 1.3889vw;
+  margin-left: 5.5556vw;
+  border-radius: 5px;
+  font-size: 0.875rem;
+  width: 83.3333vw;
+}
+
+.link {
+  color: blue;
+  text-decoration: underline;
+}
+
+/* ============================================= Quiz Components ============================================= */
+body.quiz-mode {
+  background-color: #f3f4f6;
+}
+
+.quiz-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.quiz-header {
+  background: white;
+  padding-top: 2.1622vh;
+  padding-right: 4.4444vw;
+  padding-bottom: 2.1622vh;
+  padding-left: 4.4444vw;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.quiz-header.small {
+  padding-top: 1.0811vh;
+  padding-right: 2.2222vw;
+  padding-bottom: 1.0811vh;
+  padding-left: 2.2222vw;
+  position: relative;
+}
+
+.quiz-header-row {
+  display: flex;
+  align-items: center;
+  gap: 3.3333vw;
+  justify-content: start;
+}
+
+.quiz-header-row.centered {
+  justify-content: center;
+  position: relative;
+}
+
+.quiz-header-row.centered .back-icon {
+  position: absolute;
+  left: 2.7778vw;
+  margin-top: 0vh;
+}
+
+.quiz-header-row h2 {
+  font-size: 1rem;
+  margin: 0;
+}
+
+.back-icon {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  color: black;
+  cursor: pointer;
+  padding: 0;
+  width: auto;
+  height: auto;
+  line-height: 1;
+}
+
+.quiz-scroll {
+  overflow-y: auto;
+  flex-grow: 1;
+  padding-top: 2.1622vh;
+  padding-right: 4.4444vw;
+  padding-bottom: 2.1622vh;
+  padding-left: 4.4444vw;
+  margin-bottom: 6.7568vh;
+}
+
+.quiz-block {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  padding-top: 2.1622vh;
+  padding-right: 4.4444vw;
+  padding-bottom: 2.1622vh;
+  padding-left: 4.4444vw;
+  margin-bottom: 2.7027vh;
+}
+
+.quiz-block p {
+  font-weight: bold;
+  margin-bottom: 1.3514vh;
+  font-size: 0.9375rem;
+}
+
+.radio-label {
+  display: flex;
+  align-items: center;
+  gap: 2.2222vw;
+  padding-top: 1.3514vh;
+  padding-right: 3.3333vw;
+  padding-bottom: 1.3514vh;
+  padding-left: 3.3333vw;
+  margin-top: 0.2703vh;
+  margin-right: 0vw;
+  margin-bottom: 0.2703vh;
+  margin-left: 0vw;
+  background: #f9f9f9;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  text-align: left;
+  color: #333;
+  transition: background-color 0.2s;
+  cursor: pointer;
+}
+
+.radio-label input[type="radio"] {
+  width: 4.4444vw;
+  height: 2.1622vh;
+  flex-shrink: 0;
+  margin: 0;
+}
+
+.radio-label:hover {
+  background-color: #eee;
+}
+
+.quiz-block label.correct {
+  background-color: #e6f4ea;
+  color: #1a7f37;
+  font-weight: bold;
+}
+
+.quiz-block label.wrong {
+  background-color: #fcebea;
+  color: #d93025;
+  font-weight: bold;
+}
+
+.quiz-footer {
+  position: fixed;
+  bottom: 0;
+  z-index: 4000;
+  width: 100%;
+  background: #f3f4f6;
+  padding-top: 1.3514vh;
+  padding-right: 4.4444vw;
+  padding-bottom: 1.3514vh;
+  padding-left: 4.4444vw;
+  box-shadow: 0 -1px 4px rgba(0, 0, 0, 0.05);
+  text-align: center;
+}
+
+.quiz-footer .start-btn {
+  background-color: var(--primary-color);
+  color: white;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  padding-top: 1.6216vh;
+  padding-right: 3.3333vw;
+  padding-bottom: 1.6216vh;
+  padding-left: 3.3333vw;
+  width: 100%;
+  max-width: 88.8889vw;
+  margin: 2 auto;
+  display: block;
+  border: none;
+}
+
+#scoreResult {
+  margin-top: 1.6216vh;
+  font-size: 0.9375rem;
+  text-align: center;
+}
+
+.quiz-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.quiz-modal-content {
+  background: white;
+  padding-top: 2.7027vh;
+  padding-right: 8.3333vw;
+  padding-bottom: 2.7027vh;
+  padding-left: 8.3333vw;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.quiz-modal-content button {
+  margin-top: 2.1622vh;
+  background-color: var(--primary-color);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 1rem;
+  padding-top: 1.3514vh;
+  padding-right: 4.4444vw;
+  padding-bottom: 1.3514vh;
+  padding-left: 4.4444vw;
+  cursor: pointer;
+}
+
+.quiz-modal.hidden {
+  display: none;
+}
+
+/* ============================================= Vertical Menu ============================================= */
+.vertical-menu button {
+  background-color: var(--card-bg);
+  color: var(--font-color);
+  border: 1px solid #ccc;
+  padding-top: 1.8919vh;
+  padding-right: 5.5556vw;
+  padding-bottom: 1.8919vh;
+  padding-left: 5.5556vw;
+  font-size: 1rem;
+  margin-bottom: 1.3514vh;
+  border-radius: 12px;
+  text-align: center;
+  width: 100%;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 8.1081vh;
+  box-sizing: border-box;
+}
+
+/* ============================================= Atoms Card related components ============================================= */
+.atoms-title-bar {
+  height: 7.4324vh;
+  background-color: #b4342a;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  font-weight: bold;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 4000;
+}
+
+#closeTOCBtn {
+  position: fixed;
+  top: calc(7.4324vh + 30vh);
+  right: 2.7778vw;
+  transform: translateY(-35%);
+  width: clamp(2.5rem, 6vw, 3rem);
+  height: clamp(2.5rem, 6vw, 3rem);
+  font-size: clamp(1rem, 3vw, 1.25rem);
+  background: var(--primary-color);
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 4000;
+}
+
+.top-right-icons {
+  position: fixed;
+  top: 0.1351vh;
+  left: 2.7778vw;
+  display: flex;
+  flex-direction: column;
+  gap: 2.2222vw;
+  z-index: 2000;
+  margin-top: 35.1351vh;
+  margin-left: 83.3333vw;
+}
+
+.top-right-icons button {
+  background: #b4342a;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding-top: 1.0811vh;
+  padding-right: 3.3333vw;
+  padding-bottom: 1.0811vh;
+  padding-left: 3.3333vw;
+  font-size: 1.125rem;
+  cursor: pointer;
+  width: 11.1111vw;
+  height: 5.4054vh;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#tocDropdown {
+  position: fixed;
+  top: 7.4324vh;
+  right: 0;
+  width: 100%;
+  height: 30vh;
+  background: white;
+  border-bottom: 2px solid #b4342a;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  z-index: 2999;
+  transform-origin: top;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+#tocDropdown.active {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+  top: 7.4324vh;
+}
+
+#tocDropdown.slide-up {
+  transform: translateY(-100%);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.toc-tab {
+  display: flex;
+  gap: 1.6667vw;
+  padding-top: 1.3514vh;
+  padding-right: 2.7778vw;
+  padding-bottom: 1.3514vh;
+  padding-left: 2.7778vw;
+  border-bottom: 1px solid #ddd;
+}
+
+.toc-tab button {
+  flex: 1;
+  background: #b4342a;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding-top: 0.8108vh;
+  padding-right: 1.6667vw;
+  padding-bottom: 0.8108vh;
+  padding-left: 1.6667vw;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+/* List styling */
+#tocList {
+  list-style: none;
+  padding-top: 1.3514vh;
+  padding-right: 2.7778vw;
+  padding-bottom: 1.3514vh;
+  padding-left: 2.7778vw;
+  margin: 0;
+}
+
+#tocList li {
+  padding-top: 0.8108vh;
+  padding-right: 1.1111vw;
+  padding-bottom: 0.8108vh;
+  padding-left: 1.1111vw;
+  border-bottom: 1px solid #eee;
+  font-size: 0.875rem;
+}
+
+#atomsImageContainer img {
+  cursor: zoom-in;
+  transition: transform 0.2s ease-in-out;
+}
+
+#atomsImageContainer img.zoomed {
+  transform: scale(2);
+  cursor: zoom-out;
+}
+
+#atomsImageContainer img {
+  margin-top: 1.3514vh;
+  margin-right: 0vw;
+  margin-bottom: 1.3514vh;
+  margin-left: 0vw;
+}
+
+#atomsImageContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 7.4324vh;
+  gap: 5.5556vw;
+}
+
+.toc-tab button {
+  flex: 1;
+  background: #ccc;
+  color: black;
+  border: none;
+  border-radius: 6px;
+  padding-top: 0.8108vh;
+  padding-right: 1.6667vw;
+  padding-bottom: 0.8108vh;
+  padding-left: 1.6667vw;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.toc-tab button.active {
+  background: var(--primary-color);
+  color: white;
+}
+
+/* ============================================= Bottom Bar Navigation ============================================= */
+#homeButtonContainer {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+}
+#backBtnGlobal {
+  grid-column: 1;
+  justify-self: start;
+}
+#homeBtn {
+  grid-column: 2;
+  justify-self: center;
+}
+
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 6.7568vh;
+  background-color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 2.7778vw;
+  border-top: 1px solid #ccc;
+  z-index: 9999;
+}
+
+.nav-icon {
+  font-size: 1.5rem;
+  color: black;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 19.4444vw;
+}
+
+/* ============================================= Slide Toggle Switch ============================================= */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 16.6667vw;
+  height: 4.5946vh;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 3.5135vh;
+  width: 7.2222vw;
+  left: 1.1111vw;
+  bottom: 0.5405vh;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider:before {
+  transform: translateX(7.2222vw);
+}
+
+.install-button {
+  position: fixed;
+  bottom: 5.4054vh;
+  left: 50%;
+  transform: translateX(-50%);
+  padding-top: 1.8919vh;
+  padding-right: 7.7778vw;
+  padding-bottom: 1.8919vh;
+  padding-left: 7.7778vw;
+  font-size: 1rem;
+  background-color: #b4342a;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 5000;
+}
+
+/* ============================================= Modals ============================================= */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.modal-box {
+  width: 50%;
+  height: 50%;
+  background: white;
+  border-radius: 12px;
+  padding-top: 2.1622vh;
+  padding-right: 4.4444vw;
+  padding-bottom: 2.1622vh;
+  padding-left: 4.4444vw;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+  font-size: 1rem;
+  margin-bottom: 1.3514vh;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #555;
+}
+
+.modal-content {
+  overflow-y: auto;
+  flex-grow: 1;
+  padding-right: 2.2222vw;
+  text-align: left;
+}
+
+.modal-content label {
+  display: flex;
+  align-items: center;
+  gap: 2.2222vw;
+  margin-bottom: 1.3514vh;
+  font-size: 0.875rem;
+}
+
+#offlineContentModal label {
+  justify-content: flex-start;
+  text-align: left;
+  z-index: 20000;
+}
+
+/* ============================================= Tooltips ============================================= */
+.tooltip {
+  position: absolute;
+  bottom: 100%;
+  left: 0.5556vw;
+  transform: translateY(-0.8108vh);
+  background: #333;
+  color: #fff;
+  padding-top: 1.0811vh;
+  padding-right: 2.7778vw;
+  padding-bottom: 1.0811vh;
+  padding-left: 2.7778vw;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  line-height: 1.35;
+  max-width: 77.7778vw;
+  z-index: 1000;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+}
+.tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  right: 3.8889vw;
+  border-width: 6px 6px 0 6px;
+  border-style: solid;
+  border-color: #333 transparent transparent transparent;
+}
+
+.option strong {
+  font-weight: bold;
+}
+
+/* ============================================= Menu ============================================= */
+.menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 10000;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.menu-panel {
+  width: 58%;
+  margin-top: 8%;
+  border-radius: 24px 0px 0px 24px;
+  height: 84%;
+  background: #f2f2f2;
+  padding-top: 2.7027vh;
+  padding-right: 5.5556vw;
+  padding-bottom: 2.7027vh;
+  padding-left: 5.5556vw;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  z-index: 10500;
+}
+
+.menu-header {
+  background: #c5c5c5;
+  padding-top: 3.7838vh;
+  padding-right: 5.5556vw;
+  padding-bottom: 2.1622vh;
+  padding-left: 5.5556vw;
+  border-top-left-radius: 22px;
+  margin: -10%;
+}
+
+.menu-close {
+  position: absolute;
+  top: 3%;
+  right: -42%;
+  font-size: 2.3125rem;
+  border: none;
+  background: none;
+  color: #333;
+  cursor: pointer;
+}
+
+.menu-header {
+  margin-bottom: 1.3514vh;
+}
+
+.user-profile {
+  width: 15.5556vw;
+  height: 7.5676vh;
+  border-radius: 50%;
+  background: white;
+  margin-left: 1.6667vw;
+  margin-bottom: 0.5405vh;
+}
+
+#menuUsername {
+  font-weight: 500;
+  font-size: 1rem;
+  margin-left: 39%;
+  color: #111;
+  margin-top: -25%;
+}
+
+.menu-sub {
+  font-size: 0.6875rem;
+  color: #666;
+  margin-left: 39%;
+  margin-top: 1%;
+}
+
+.menu-search-wrap {
+  position: relative;
+  margin-top: 2.027vh;
+}
+
+.menu-search {
+  margin-top: 26%;
+  width: 100%;
+  padding-top: 0.9459vh;
+  padding-right: 3.3333vw;
+  padding-bottom: 0.9459vh;
+  padding-left: 3.3333vw;
+  border-radius: 10px;
+  border: 0px solid #ccc;
+  font-size: 0.75rem;
+  background: white;
+  color: #ccc;
+}
+
+.menu-search-icon {
+  position: absolute;
+  right: 2.7778vw;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Tabs with underlines */
+.menu-tabs {
+  display: flex;
+  gap: 0;
+  padding-top: -0.5405vh;
+  padding-right: 2.7778vw;
+  padding-bottom: -0.5405vh;
+  padding-left: 2.7778vw;
+  border-bottom: 1px solid #ccc;
+  background: #f2f2f2;
+  margin-top: -5%;
+}
+.menu-tabs .tab {
+  background: none;
+  border: none;
+  font-size: 0.8125rem;
+  color: #999;
+  padding-top: 1.0811vh;
+  padding-right: 2.7778vw;
+  padding-bottom: 1.0811vh;
+  padding-left: 2.7778vw;
+  border-bottom: 2px solid transparent;
+}
+.menu-tabs .tab.active {
+  color: #000;
+  font-weight: bold;
+}
+
+/* Sections with dividers */
+.menu-section {
+  padding-top: 1.7568vh;
+  padding-right: 2.7778vw;
+  padding-bottom: 1.7568vh;
+  padding-left: 2.7778vw;
+}
+.menu-section strong {
+  display: block;
+  font-size: 0.5625rem;
+  color: #c5c5c5;
+  margin-bottom: 1.0811vh;
+  letter-spacing: 0.0312rem;
+}
+
+/* Menu items */
+.menu-item {
+  font-size: 0.75rem;
+  color: #111;
+  padding-top: 0.5405vh;
+  padding-right: 0vw;
+  padding-bottom: 0.5405vh;
+  padding-left: 0vw;
+  cursor: pointer;
+  font-weight: 600;
+}
+.menu-item:hover {
+  text-decoration: underline;
+}
+
+.menu-item a {
+  font-size: 0.75rem;
+  color: #111;
+  padding-top: 0.5405vh;
+  padding-right: 0vw;
+  padding-bottom: 0.5405vh;
+  padding-left: 0vw;
+  cursor: pointer;
+  font-weight: 600;
+}
+.menu-item a:hover {
+  text-decoration: underline;
+}
+
+/* ============================================= Catalog components ============================================= */
+.catalog-h2 {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  margin-top: 5.1351vh;
+  margin-right: 0.5556vw;
+  margin-bottom: 1.0811vh;
+  margin-left: 0.5556vw;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.catalog-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.7778vw;
+  margin-top: 1.0811vh;
+  margin-right: 0vw;
+  margin-bottom: 2.1622vh;
+  margin-left: 0vw;
+}
+
+.catalog-card {
+  background: #e0e0e0;
+  border: none;
+  border-radius: 16px;
+  min-height: 16.2162vh;
+  padding-top: 1.6216vh;
+  padding-right: 3.3333vw;
+  padding-bottom: 1.6216vh;
+  padding-left: 3.3333vw;
+  text-align: left;
+  position: relative;
+  box-shadow: none;
+}
+
+.catalog-card .cc-title {
+  font-size: 0.875rem;
+  color: #111;
+  line-height: 1.2;
+}
+
+.catalog-card .cc-tags {
+  position: absolute;
+  left: 2.7778vw;
+  bottom: 1.3514vh;
+  display: flex;
+  gap: 1.6667vw;
+}
+
+.catalog-card .tag {
+  display: inline-block;
+  font-size: 0.6875rem;
+  padding-top: 0.5405vh;
+  padding-right: 2.2222vw;
+  padding-bottom: 0.5405vh;
+  padding-left: 2.2222vw;
+  border-radius: 999px;
+  background: #6f6f72;
+  color: #fff;
+  line-height: 1;
+}
+
+.catalog-h2 .see-all {
+  color: #fff;
+  font-weight: 500;
+  font-size: 0.75rem;
+}
+
+/* Dashboard: Recommended module cards */
+.module-card {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 12px;
+  padding-top: 1.2162vh;
+  padding-right: 2.5vw;
+  padding-bottom: 1.2162vh;
+  padding-left: 2.5vw;
+  margin-bottom: 1.2162vh;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  cursor: pointer;
+}
+
+.module-card .module-info h3 {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: #111;
+}
+
+.module-card .module-info p {
+  font-size: 0.75rem;
+  color: #777;
+  margin-top: 0.5405vh;
+  margin-right: 0vw;
+  margin-bottom: 0.5405vh;
+  margin-left: 0vw;
+}
+
+/* Optional: a little spacing between image and text  */
+.module-card .module-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6667vw;
+}
+
+/* ============================================= Eyes page components ============================================= */
+.eyes-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1.0811vh;
+  margin-right: 0.5556vw;
+  margin-bottom: 1.3514vh;
+  margin-left: 0.5556vw;
+}
+.eyes-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #000000;
+  margin-left: 7.7778vw;
+  z-index: 1;
+}
+.eyes-top .icons {
+  display: flex;
+  gap: 2.7778vw;
+}
+.eyes-top .icon {
+  font-size: 1.1875rem;
+}
+
+.eyes-carousel {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 70%;
+  gap: 3.8889vw;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-top: 0vh;
+  padding-right: 0vw;
+  padding-bottom: 0.5405vh;
+  padding-left: 0vw;
+  margin-top: 0.8108vh;
+  margin-right: 0vw;
+  margin-bottom: 2.1622vh;
+  margin-left: 0vw;
+}
+.eyes-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.eyes-card {
+  scroll-snap-align: center;
+  background: #000000;
+  border-radius: 18px;
+  height: 20vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding-top: 3.3784vh;
+  padding-right: 5vw;
+  padding-bottom: 3.3784vh;
+  padding-left: 5vw;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #ffffff;
+  border: none;
+  box-shadow: none;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.eyes-card .eyes-card__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.eyes-card .eyes-card__title {
+  color: #ffffff !important;
+  position: relative;
+  z-index: 1;
+}
+
+.eyes-card .tag-row {
+  position: absolute;
+  left: 5vw;
+  bottom: 1.6216vh;
+  display: flex;
+  gap: 1.6667vw;
+  z-index: 1;
+}
+.eyes-card .tag {
+  background: #e41e26;
+  color: #fff;
+  border-radius: 9px;
+  padding-top: 0.8108vh;
+  padding-right: 4.1667vw;
+  padding-bottom: 0.8108vh;
+  padding-left: 4.1667vw;
+  font-size: 0.625rem;
+  font-weight: 200;
+  z-index: 1;
+}
+
+.eyes-card .heart-btn {
+  position: absolute;
+  top: 1.3514vh;
+  right: 2.7778vw;
+  width: 7.7778vw;
+  height: 3.7838vh;
+  border: none;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  z-index: 1;
+}
+.eyes-card .heart-btn svg {
+  width: 5vw;
+  height: 2.4324vh;
+  stroke: #ffffff;
+  stroke-width: 2;
+  fill: none;
+}
+.eyes-card.liked .heart-btn svg {
+  fill: #e41e26;
+  stroke: #e41e26;
+}
+
+/* ============================================= My Learning (Liked) components ============================================= */
+.ml-header {
+  background: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  padding-top: 1.0811vh;
+  padding-right: 3.3333vw;
+  padding-bottom: 0vh;
+  padding-left: 3.3333vw;
+  border-bottom: 1px solid #eee;
+}
+
+.ml-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 2.973vh;
+  margin-right: 3.3333vw;
+  margin-bottom: 0.8108vh;
+  margin-left: 3.3333vw;
+}
+
+.ml-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #111;
+  margin-left: 7.7778vw;
+}
+.ml-tabs {
+  display: flex;
+  gap: 4.4444vw;
+  justify-content: space-around;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.8108vh;
+}
+.ml-tab {
+  background: none;
+  border: none;
+  color: #9aa0a6;
+  font-size: 0.75rem;
+  padding-top: 1.0811vh;
+  padding-right: 0vw;
+  padding-bottom: 1.0811vh;
+  padding-left: 0vw;
+  border-bottom: 2px solid transparent;
+  width: 33%;
+}
+
+.ml-tab.active {
+  color: #e41e26;
+  font-weight: 600;
+}
+
+.ml-chip-row {
+  display: flex;
+  gap: 2.7778vw;
+  padding-top: 0.8108vh;
+  padding-right: 0.5556vw;
+  padding-bottom: 1.3514vh;
+  padding-left: 0.5556vw;
+}
+
+.ml-chip {
+  background: #fff;
+  border: 1px solid #d9d9dd;
+  border-radius: 11px;
+  padding-top: 0.2703vh;
+  padding-right: 0.5556vw;
+  padding-bottom: 0.2703vh;
+  padding-left: 0.5556vw;
+  font-size: 0.75rem;
+  width: 24%;
+  color: #111;
+}
+
+.ml-chip.active {
+  background: #949494;
+  color: #fff;
+}
+
+.ml-container {
+  background: #fff;
+  padding-top: 0.8108vh;
+}
+.ml-section-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-top: 1.3514vh;
+  margin-right: 0.5556vw;
+  margin-bottom: 1.0811vh;
+  margin-left: 0.5556vw;
+}
+
+.ml-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3.3333vw;
+}
+@media (max-width: 22.5em) {
+  .ml-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.ml-tile {
+  position: relative;
+  background: #c5c5c5;
+  border-radius: 16px;
+  padding-top: 1.8919vh;
+  padding-right: 3.8889vw;
+  padding-bottom: 1.8919vh;
+  padding-left: 3.8889vw;
+  min-height: 18.9189vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.ml-tile h4 {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: #111;
+}
+.ml-heart {
+  position: absolute;
+  right: 3.3333vw;
+  top: 1.6216vh;
+  font-size: 1.125rem;
+  color: #e11d48;
+}
+.ml-badges {
+  display: flex;
+  gap: 1.6667vw;
+}
+.ml-badge {
+  background: #666;
+  color: #fff;
+  border-radius: 9999px;
+  font-size: 0.6875rem;
+  padding-top: 0.8108vh;
+  padding-right: 2.2222vw;
+  padding-bottom: 0.8108vh;
+  padding-left: 2.2222vw;
+}
+
+/* My Learning polish */
+#likedPage .ml-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+#likedPage .ml-icons {
+  display: flex;
+  align-items: center;
+  gap: 2.7778vw;
+}
+
+#likedPage .icon.menuBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.125rem;
+  line-height: 1;
+}
+
+#likedPage .ml-tabs {
+  position: relative;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.8108vh;
+}
+#likedPage .ml-tab {
+  position: relative;
+  background: none;
+  border: none;
+  color: #9aa0a6;
+  padding-top: 1.0811vh;
+  padding-right: 0vw;
+  padding-bottom: 1.0811vh;
+  padding-left: 0vw;
+  width: 33%;
+}
+#likedPage .ml-tab.active {
+  color: #e41e26;
+  font-weight: 600;
+}
+#likedPage .ml-tab.active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.9459vh;
+  height: 0.2703vh;
+  background: #e41e26;
+  border-radius: 2px;
+}
+
+/* My Learning: Masonry layout */
+.ml-masonry {
+  column-count: 2;
+  column-gap: 3.3333vw;
+  padding-top: 0.8108vh;
+}
+@media (min-width: 30em) {
+  .ml-masonry {
+    column-count: 3;
+  }
+}
+
+/* Masonry card */
+.ml-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  break-inside: avoid;
+  background: #c5c5c5;
+  border-radius: 16px;
+  padding-top: 1.6216vh;
+  padding-right: 3.3333vw;
+  padding-bottom: 1.6216vh;
+  padding-left: 3.3333vw;
+  margin-top: 0vh;
+  margin-right: 0vw;
+  margin-bottom: 1.6216vh;
+  margin-left: 0vw;
+  position: relative;
+  color: #111;
+  min-height: 18.9189vh;
+}
+
+/* Title row with heart icon */
+.ml-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Random height buckets for variety */
+.ml-card.size-s {
+  min-height: 16.2162vh;
+}
+.ml-card.size-m {
+  min-height: 21.6216vh;
+}
+.ml-card.size-l {
+  min-height: 29.7297vh;
+}
+
+.ml-card h4 {
+  margin-top: 4%;
+  font-size: 0.8125rem;
+  line-height: 1.25;
+  font-weight: 600;
+  text-align: left;
+}
+
+.ml-heart {
+  font-size: 1rem;
+  color: #e11d48;
+  margin-left: 1.6667vw;
+}
+
+/* Badges pinned at bottom */
+.ml-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.6667vw;
+  margin-top: 1.0811vh;
+}
+
+.ml-badge {
+  background: #666;
+  color: #fff;
+  border-radius: 9999px;
+  font-size: 0.6875rem;
+  padding-top: 0.8108vh;
+  padding-right: 2.2222vw;
+  padding-bottom: 0.8108vh;
+  padding-left: 2.2222vw;
+}
+
+#pupilsPage .eyes-topbar__title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #111;
+  top: 4.5946vh;
+}
+#pupilsPage .eyes-topbar__icons {
+  display: flex;
+  align-items: center;
+  gap: 2.7778vw;
+}
+#pupilsPage .bell-icon {
+  width: 5.5556vw;
+  height: 2.7027vh;
+  display: block;
+}
+
+.tl-item {
+  position: relative;
+  margin-top: 1.8919vh;
+  margin-right: 0vw;
+  margin-bottom: 1.8919vh;
+  margin-left: 0vw;
+}
+
+.thumb {
+  width: 11.6667vw;
+  height: 4.0541vh;
+  border-radius: 8px;
+  background: #d3d3d3;
+}
+
+#pupilsPage .pupil-card h3 {
+  margin-top: 1.0811vh;
+  margin-right: 1.6667vw;
+  margin-bottom: 1.8919vh;
+  margin-left: 1.6667vw;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #111;
+}
+
+#pupilsPage .lesson-row {
+  display: grid;
+  grid-template-columns: 2.75rem 1fr auto;
+  align-items: center;
+  gap: 2.7778vw;
+  background: #fff;
+  border-radius: 12px;
+  min-height: 6.8919vh;
+  padding-top: 1.3514vh;
+  padding-right: 3.3333vw;
+  padding-bottom: 1.3514vh;
+  padding-left: 3.3333vw;
+  margin-top: 2.1622vh;
+  margin-right: 0vw;
+  margin-bottom: 2.1622vh;
+  margin-left: 0vw;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  width: 88%;
+}
+
+#pupilsPage .thumb {
+  width: 13.0556vw;
+  height: 6.4865vh;
+  border-radius: 8px;
+  background: #dcdcdc;
+  border: 1px solid #e5e5ea;
+}
+
+#pupilsPage .lesson-top {
+  display: flex;
+  align-items: center;
+  gap: 1.6667vw;
+  font-size: 0.75rem;
+  color: #777;
+  margin-top: -11%;
+  margin-left: 5%;
+}
+#pupilsPage .lesson-type {
+  font-weight: 600;
+  color: #111;
+  font-size: 0.6875rem;
+}
+#pupilsPage .lesson-meta {
+  color: #bbb;
+  font-size: 0.6875rem;
+}
+
+#pupilsPage .lesson-progress {
+  width: 100%;
+  height: 0.8108vh;
+  background: #e9e9e9;
+  border-radius: 999px;
+  margin-top: 5%;
+  overflow: hidden;
+  margin-left: 5%;
+}
+#pupilsPage .lesson-progress__fill {
+  height: 100%;
+  background: #111;
+  border-radius: 999px;
+  transition: width 0.25s ease;
+}
+
+#pupilsPage .lesson-cta {
+  font-size: 0.6875rem;
+  color: #bbb;
+  margin-bottom: -103%;
+}
+
+#pupilsPage .eyes-topbar {
+  position: fixed;
+  top: 0;
+  background: #fff;
+  z-index: 1000;
+}
+
+.eyes-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1.0811vh;
+  margin-right: 0.5556vw;
+  margin-bottom: 0.8108vh;
+  margin-left: 0.5556vw;
+}
+.eyes-topbar__title {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #111;
+}
+.eyes-topbar__icons {
+  display: flex;
+  gap: 2.7778vw;
+}
+
+.pupils-subtitle {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #111;
+  margin-top: 2.8378vh;
+  margin-right: 1.1111vw;
+  margin-bottom: 1.6216vh;
+  margin-left: 1.1111vw;
+}
+
+.lesson-row {
+  display: grid;
+  grid-template-columns: 3.25rem 1fr auto;
+  align-items: center;
+  gap: 2.7778vw;
+  background: #fff;
+  border-radius: 12px;
+  padding-top: 1.3514vh;
+  padding-right: 2.7778vw;
+  padding-bottom: 1.3514vh;
+  padding-left: 2.7778vw;
+  margin-top: 1.3514vh;
+}
+.lesson-main {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6667vw;
+}
+.lesson-meta {
+  opacity: 0.65;
+}
+
+@media (max-width: 21.25em) {
+  .pupil-card {
+    padding-top: 1.8919vh;
+    padding-right: 3.3333vw;
+    padding-bottom: 1.8919vh;
+    padding-left: 3.3333vw;
+  }
+  .lesson-row {
+    grid-template-columns: 2.875rem 1fr auto;
+  }
+  .lesson-row .thumb {
+    width: 12.7778vw;
+    height: 4.3243vh;
+  }
+}
+
+/* ============================================= Pupils page ============================================= */
+#pupilsPage .pupils-timeline {
+  counter-reset: pupils-step;
+}
+
+#pupilsPage .pupils-timeline .tl-item {
+  display: flex;
+  gap: 2.7778vw;
+  margin-top: 0.8108vh;
+  margin-right: 0vw;
+  margin-bottom: 0.8108vh;
+  margin-left: 0vw;
+  counter-increment: pupils-step;
+}
+
+#pupilsPage .pupils-timeline .tl-item::before {
+  content: counter(pupils-step);
+  flex: 0 0 auto;
+  width: 8.3333vw;
+  height: 4.0541vh;
+  border-radius: 6px;
+  background: #111;
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 0.8333vw;
+  z-index: 500;
+}
+
+#pupilsPage .pupil-card {
+  z-index: 1;
+  position: relative;
+  flex: 1;
+  background: #f4f4f4;
+  padding-top: 1.3514vh;
+  padding-right: 2.7778vw;
+  padding-bottom: 1.3514vh;
+  padding-left: 2.7778vw;
+  border-radius: 8px;
+}
+
+/* ============================================= Canonical Eyes Topbar ============================================= */
+.eyes-topbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 8.3784vh;
+  padding-top: 0vh;
+  padding-right: 3.3333vw;
+  padding-bottom: 0vh;
+  padding-left: 3.3333vw;
+  margin: 0;
+}
+
+.eyes-topbar__title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #111;
+  line-height: 1;
+}
+
+.eyes-topbar__icons {
+  display: flex;
+  gap: 2.7778vw;
+}
+
+/* Any page using this topbar should add spacing for content below it */
+.page.has-eyes-topbar {
+  background: #fff;
+  min-height: 100vh;
+  padding-bottom: 13.5135vh;
+  padding-top: 8.3784vh;
+}
+
+.video-container {
+  padding-top: 2.7027vh;
+  padding-right: 5.5556vw;
+  padding-bottom: 2.7027vh;
+  padding-left: 5.5556vw;
+  padding-bottom: 6.4865vh;
+}
+
+.video-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 0.6757vh;
+  padding-right: 1.3889vw;
+  padding-bottom: 0.6757vh;
+  padding-left: 1.3889vw;
+  background-color: white;
+  position: sticky;
+  top: 2.5676vh;
+  width: 86%;
+  left: 5.5556vw;
+  height: 4.4595vh;
+  z-index: 100;
+  position: relative;
+}

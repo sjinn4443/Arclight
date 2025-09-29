@@ -1,0 +1,194 @@
+/* Page background + base */
+html,
+body {
+  background: #f5f7fb;
+}
+#app {
+  padding: 12px;
+}
+
+/* Card look */
+.card {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.06);
+  max-width: 420px;
+  margin: 0 auto;
+  padding: 18px 16px 20px;
+  margin-top: 50px;
+}
+
+/* Title + subtitle */
+#caseTitle {
+  font-size: 22px;
+  font-weight: 800;
+  margin: 2px 0 6px;
+  color: #222;
+}
+#caseSubtitle {
+  font-size: 14px;
+  color: #6b7a89;
+  margin: -2px 0 10px;
+}
+
+/* Case image */
+.case-image {
+  width: 100%;
+  max-height: 160px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin: 8px 0 14px;
+  border: 1px solid #e5e7eb;
+}
+
+/* One question at a time */
+.question {
+  margin: 10px 0 12px;
+}
+.question h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 19px;
+}
+
+/* Options: radio + label as a pill */
+.options {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.options li {
+  margin: 0;
+  padding: 0;
+}
+.options input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.options label {
+  display: block;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid #eef0f4;
+  background: #f9fafb;
+  color: #334155;
+  font-size: 15px;
+  cursor: pointer;
+}
+.options label:hover {
+  background: #f3f4f6;
+}
+.options input[type="radio"]:checked + label {
+  background: #e9ecef;
+  border-color: #cfd6dd;
+  color: #111827;
+  box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.04);
+}
+
+/* Navigation controls: chevrons + Next Case */
+.nav-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 26px;
+  margin-bottom: -29px;
+}
+#prevQuestionBtn,
+#nextQuestionBtn {
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  color: #111;
+  cursor: pointer;
+  line-height: 36px;
+  text-align: center;
+  padding: 0;
+  position: relative;
+  font-size: 0; /* hide any residual text just in case */
+}
+#prevQuestionBtn::before,
+#nextQuestionBtn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px; /* visible arrow size */
+  line-height: 1;
+  color: #111;
+}
+#prevQuestionBtn::before {
+  content: "‹";
+}
+#nextQuestionBtn::before {
+  content: "›";
+}
+#prevQuestionBtn:disabled,
+#nextQuestionBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+#prevQuestionBtn,
+#nextQuestionBtn {
+  color: inherit;
+} /* hide actual text if desired */
+#prevQuestionBtn span,
+#nextQuestionBtn span {
+  display: none;
+}
+
+/* Next Case button: grey until ready */
+#nextCaseBtn.floating-next {
+  position: fixed;
+  right: 29px;
+  bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  min-width: 136px;
+  height: 42px;
+  padding: 0 18px;
+  border-radius: 14px;
+  border: none;
+  background: #bbb;
+  color: #fff;
+  font-weight: 500;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+  font-size: 14px;
+}
+#nextCaseBtn.floating-next.ready {
+  background: #d93025;
+  color: #fff;
+  cursor: pointer;
+}
+#nextCaseBtn.floating-next:not(.ready) {
+  cursor: not-allowed;
+}
+
+/* --- 3) Selected option turns #62a6ff --- */
+/* Radios are visually hidden; labels carry the look. */
+.options input[type="radio"]:checked + label {
+  background: #62a6ff69; /* requested color */
+  border-color: #62a6ff;
+  color: #fff; /* contrast on blue */
+  box-shadow: none;
+}
+
+/* Optional: hover/active polish for options */
+.options label:hover {
+  filter: brightness(0.98);
+}
+/* Small screens */
+@media (max-width: 420px) {
+  .card {
+    border-radius: 16px;
+    padding: 23px;
+    height: 552px;
+  }
+}

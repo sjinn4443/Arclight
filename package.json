@@ -1,0 +1,28 @@
+{
+  "name": "arclight-app",
+  "version": "1.0.0",
+  "main": "public/sw.js",
+  "scripts": {
+    "test": "jest",
+    "start": "node server.js",
+    "test:ci": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --verbose",
+    "build": "node scripts/build.js",
+    "check-translations": "node scripts/check-translations.cjs",
+    "test:a11y": "node scripts/test-a11y.mjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "express": "^4.18.2",
+    "http-server": "^14.1.1",
+    "sharp": "^0.34.3"
+  },
+  "devDependencies": {
+    "jest": "^30.0.0",
+    "jest-environment-jsdom": "^30.0.0",
+    "typescript": "^5.8.3",
+    "vscode": "^1.1.37"
+  }
+}

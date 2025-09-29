@@ -1,0 +1,64 @@
+<!-- Language Install Page — Allows users to select their preferred language and provides options to install the app for offline use or continue using it online. -->
+<div id="languageInstallPage" class="page">
+  <div class="lang-install">
+    <div class="lang-install__body">
+      <label class="lang-install__label" for="prefLang"
+        >Choose your language</label
+      >
+      <div class="lang-install__select-wrap">
+        <select id="prefLang" name="language" class="lang-install__select">
+          <option value="en" data-native="English" selected>English</option>
+          <option value="fr" data-native="Français">French</option>
+          <option value="ko" data-native="한국어">Korean</option>
+          <option value="pt" data-native="Português">Portuguese</option>
+          <option value="es" data-native="Español">Spanish</option>
+          <option value="sw" data-native="Kiswahili">Swahili</option>
+        </select>
+      </div>
+
+      <button id="installAppBtn" class="btn-lg-grey">Install</button>
+      <div class="lang-install__hint">for offline access</div>
+
+      <div class="lang-install__divider"><span></span>or<span></span></div>
+
+      <button id="useOnlineBtn" class="btn-outline-light">
+        Use App Without Installing
+      </button>
+      <div class="lang-install__hint">for online experience</div>
+    </div>
+  </div>
+  <!-- Download App Modal -->
+  <div
+    id="downloadAppModal"
+    class="modal-overlay hidden"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="downloadAppTitle"
+  >
+    <div class="modal-box download-modal">
+      <div class="modal-header">
+        <span id="downloadAppTitle">Download the app?</span>
+        <button
+          id="closeDownloadAppModalBtn"
+          class="modal-close"
+          aria-label="Close"
+        >
+          ×
+        </button>
+      </div>
+
+      <div class="modal-content">
+        This will download the app’s core pages and media for offline use.
+      </div>
+
+      <div class="modal-footer btn-row">
+        <button id="notNowBtn" class="btn-outline-light" type="button">
+          Not now
+        </button>
+        <button id="downloadAllBtn" class="btn-lg-grey" type="button">
+          Download now
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

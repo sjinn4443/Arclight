@@ -1,0 +1,77 @@
+<!-- Index Page — Main entry page for the Arclight app. Contains all .page sections and loads scripts/styles. -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Arclight Eye and Ear Care App</title>
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="favicons/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="favicons/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="favicons/favicon-16x16.png"
+    />
+    <link rel="manifest" href="favicons/site.webmanifest" />
+    <link rel="manifest" href="manifest.json" />
+    <link rel="stylesheet" href="style/base.css" />
+    <link rel="stylesheet" href="style/components.css" />
+    <link rel="stylesheet" href="style/pages.css" />
+    <link rel="stylesheet" href="style/responsive.css" />
+    <meta name="theme-color" content="#b4342a" />
+  </head>
+
+  <body>
+    <!-- Global Top-Left Back Button -->
+    <div
+      class="nav-icon top-back"
+      id="backBtnGlobal"
+      aria-label="Back"
+      role="button"
+      tabindex="0"
+    >
+      &lt;
+    </div>
+
+    <div id="splashScreenContainer" class="splash-full-screen"></div>
+
+    <div id="page-content"></div>
+
+    <div
+      id="installPopup"
+      style="
+        display: none;
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: white;
+        border: 1px solid #ccc;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        z-index: 9999;
+      "
+    >
+      <p>Install this app for a better experience!</p>
+      <button id="installConfirmBtn">Install</button>
+      <button id="installDismissBtn">Maybe later</button>
+    </div>
+
+    <script defer type="module" src="js/main.js"></script>
+    <script src="js/quiz-launcher.js"></script>
+  </body>
+</html>

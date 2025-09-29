@@ -1,0 +1,1201 @@
+/*
+  pages.css - Styles specific to individual pages, including splash screen, language install, onboarding, and dashboard.
+*/
+
+/* ============================================= Splash Screen ============================================= */
+.splash-body {
+  height: 100%;
+  margin: 0;
+  background: #000;
+  display: grid;
+  place-content: center;
+}
+
+.splash-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+}
+
+/* control overlap amount responsively */
+.splash-wrap {
+  --overlap: clamp(0.75rem, 6vw, 4rem);
+}
+
+/* Logo 1 */
+.logo-one {
+  position: relative;
+  z-index: 2;
+  margin-right: calc(var(--overlap) * -1);
+  max-width: min(60vw, 55.5556vw);
+  width: 5%;
+  height: auto;
+  animation-name: spinPause, shiftRight;
+  animation-duration: 1.3s, 0.8s; /* spin 1.3s total; shift stays 0.8s */
+  animation-timing-function: linear, ease;
+  animation-delay: 0s, 3.9s; /* 3 iterations × 1.3s = 3.9s before move-right */
+  animation-iteration-count: 3, 1; /* spin repeats 3×; shift once */
+  animation-fill-mode: none, forwards;
+  will-change: transform;
+  top: -0.6757vh;
+  left: -9.7222vw;
+}
+
+/* Logo 2 */
+.logo-two {
+  position: relative;
+  z-index: 1;
+  max-width: min(70vw, 77.7778vw);
+  width: 48%;
+  height: auto;
+  right: -9.1667vw;
+}
+
+.splash-container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: black;
+}
+
+#splashLogo {
+  opacity: 0;
+  width: 60%;
+  max-width: 166.6667vw;
+  animation: fadeIn 2s ease-in forwards;
+}
+
+#splashLanguageDropdown {
+  margin-top: 2.7027vh;
+  padding-top: 1.6216vh;
+  padding-right: 3.3333vw;
+  padding-bottom: 1.6216vh;
+  padding-left: 3.3333vw;
+  font-size: 0.875rem;
+  border-radius: 8px;
+  width: 77.7778vw;
+  text-align: left;
+}
+
+/* full-screen overlay host for the injected splash */
+.splash-full-screen {
+  position: fixed;
+  inset: 0;
+  display: none;
+  place-content: center;
+  background: #000;
+  z-index: 9999;
+}
+
+.splash-full-screen.active {
+  display: grid;
+}
+
+.splash-full-screen.fade-out {
+  animation: fadeSplashOut 0.5s ease-out forwards;
+}
+
+/* ============================================= Mid Splash (Interest -> Intro) — centered logo-one only ============================================= */
+.splash-wrap.mid {
+  display: grid;
+  place-items: center;
+  gap: 0;
+}
+
+/* Override the first-splash layout for this context */
+.splash-wrap.mid .logo-one.mid-only {
+  position: relative;
+  z-index: 2;
+  margin-right: calc(var(--overlap) * -1);
+  max-width: min(60vw, 55.5556vw);
+  width: 10%;
+  height: auto;
+  animation-name: spinPause;
+  animation-duration: 1.3s; /* spin 1.3s total; shift stays 0.8s */
+  animation-timing-function: linear;
+  animation-delay: 0s; /* 3 iterations × 1.3s = 3.9s before move-right */
+  animation-iteration-count: 3; /* spin repeats 3×; shift once */
+  animation-fill-mode: none;
+  will-change: transform;
+  top: -0.6757vh;
+  left: -1.3889vw;
+}
+
+/* Motion for the mid splash (distinct from first splash) */
+@keyframes midSpin {
+  0% {
+    transform: rotate(0deg) scale(0.96);
+    opacity: 0;
+  }
+  12% {
+    /* fade in quickly */
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes midHold {
+  0%,
+  100% {
+    transform: rotate(360deg) scale(1);
+    opacity: 1;
+  }
+}
+
+/* ============================================= Language & Install Page ============================================= */
+.lang-install {
+  background: #000;
+  min-height: 100vh;
+  width: 100%;
+  display: grid;
+  place-items: center;
+  color: #fff;
+}
+
+.lang-install__body {
+  width: 70%;
+  max-width: 360px;
+  padding: 0 20px;
+  text-align: left;
+  margin-top: 51%;
+}
+
+.lang-install__label {
+  display: block;
+  margin: 5vh 0 10px 4px;
+  font-size: 12px;
+  color: #cfcfd6;
+}
+
+.lang-install__select-wrap {
+  position: relative;
+  margin-bottom: 48px;
+}
+
+.lang-install__select {
+  width: 100%;
+  height: 40px;
+  border-radius: 13px;
+  background: transparent;
+  color: #fff;
+  padding: 8px 40px 8px 14px;
+  border: 1px solid #fff;
+  outline: none;
+  font-size: 12px;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='white' xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 20% 5;
+}
+
+.lang-install__select option {
+  color: #000;
+  background: #fff;
+}
+
+.lang-install__hint {
+  text-align: left;
+  color: #bdbdbf;
+  font-size: 12px;
+  margin-top: 9px;
+  margin-bottom: 22px;
+  margin-left: 5%;
+}
+
+.lang-install__divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #bdbdbf;
+  font-size: 12px;
+  justify-content: center;
+  margin: 10px 0 18px;
+}
+.lang-install__divider span {
+  display: block;
+  height: 1px;
+  background: #bdbdbf;
+  width: 45%;
+}
+
+/* Keep the global bottom bar hidden on this page */
+#languageInstallPage + .bottom-bar,
+#languageInstallPage .bottom-bar {
+  display: none;
+}
+
+.lang-install__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.lang-install__label::before {
+  content: "";
+  width: 27px;
+  height: 20px;
+  background: url("../images/icon/base/language.webp") no-repeat center /
+    contain;
+}
+
+/* ============================================= Onboarding Page ============================================= */
+.onboarding-container {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 20% 20px 100px;
+  background: #fff;
+}
+
+.onb-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #111;
+  margin: 12px 0 18px 2px;
+  text-align: left;
+}
+
+#onboarding .card {
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+}
+
+.form-field label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #222;
+  margin: 6% 0 6px 2px;
+}
+
+.onb-input {
+  display: block;
+  width: 100%;
+  height: 35px;
+  padding: 9px 8px;
+  border-radius: 10px;
+  border: 1px solid #e5e5ea;
+  background: #ffffff;
+  font-size: 12px;
+  color: #ccccd1;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.onb-input:focus {
+  border-color: #cfcfd6;
+  background: #fff;
+}
+
+.onb-input::placeholder {
+  color: #a3a3aa;
+}
+
+select.onb-input {
+  color: #ccccd1;
+  padding-right: 36px;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 16px 16px;
+}
+select.onb-input option {
+  color: #000000;
+}
+select.onb-input.has-value {
+  color: #62a6ff;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='blue' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 16px 16px;
+}
+
+.onb-input.filled {
+  border-color: #62a6ff;
+  color: #62a6ff;
+}
+
+#username.onb-input.filled {
+  border-color: #62a6ff;
+  color: #62a6ff;
+}
+
+.onb-cta {
+  display: block;
+  width: 100%;
+  height: 38px;
+  border: none;
+  border-radius: 14px;
+  background: #e41e26;
+  color: #fff;
+  font-weight: 100;
+  font-size: 13px;
+  margin-top: 65px;
+  cursor: pointer;
+}
+.onb-cta:disabled {
+  background: #bdbdbf;
+}
+
+@media (max-width: 420px) {
+  .onboarding-container {
+    padding-bottom: 100%;
+  }
+}
+
+/* special casing for username */
+#username.onb-input {
+  background: #ffffff;
+  border: 1px solid #e5e5ea;
+  font-weight: 500;
+  color: #ccccd1;
+  width: 95%;
+  height: 60%;
+}
+#username.onb-input:focus {
+  border-color: var(--primary-color);
+  background: #f3f3f5;
+}
+
+.onb-input:-webkit-autofill,
+.onb-input:-webkit-autofill:focus {
+  -webkit-text-fill-color: #62a6ff;
+}
+
+/* ============================================= Professional Interest Page ============================================= */
+.interest-container {
+  background: #fff;
+  padding-bottom: 100%;
+}
+
+.interest-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #111;
+  margin: 20% 0 8px 2px;
+  line-height: 1.25;
+}
+
+.interest-sub {
+  font-size: 12px;
+  color: #666;
+  margin: 0 0 18px 2px;
+  line-height: 1.4;
+}
+
+.interest-group {
+  margin: 18px 0;
+}
+.interest-group-title {
+  font-size: 12px;
+  font-weight: 650;
+  color: #000;
+  margin: 10% 0 10px 2px;
+}
+
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+}
+
+.chip {
+  background: #fff;
+  border: 1px solid #d9d9dd;
+  color: #111;
+  border-radius: 21px;
+  padding: 10px 14px;
+  font-size: 12px;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: none;
+  width: auto;
+  margin-top: 0%;
+}
+
+.chip.selected {
+  background: #6f6f72;
+  color: #fff;
+  border-color: #6f6f72;
+}
+
+.interest-cta {
+  display: block;
+  width: 100%;
+  height: 38px;
+  border: none;
+  border-radius: 14px;
+  background: #e41e26;
+  color: #fff;
+  font-weight: 100;
+  font-size: 13px;
+  margin-top: 65px;
+  cursor: pointer;
+}
+
+/* ============================================= Intro Page (Welcome) ============================================= */
+#introPage {
+  background: #fff;
+}
+
+.intro-container {
+  background: #fff;
+  min-height: 100vh;
+  padding: 24px 20px 100px;
+}
+
+.intro-progress {
+  margin: 4px 0 12px;
+}
+.intro-progress__track {
+  width: 100%;
+  height: 3px;
+  background: #e6e6e8;
+  border-radius: 999px;
+  overflow: hidden;
+}
+.intro-progress__fill {
+  width: 12%;
+  height: 100%;
+  background: #e41e26;
+  border-radius: 999px;
+}
+
+.intro-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #111;
+  line-height: 1.25;
+  margin: 14% 0 8px 2px;
+  text-align: left;
+  margin-left: 5%;
+}
+.intro-sub {
+  font-size: 12px;
+  color: #000000;
+  line-height: 1.45;
+  margin: 7% 0 18px 2px;
+  text-align: left;
+  margin-left: 5%;
+}
+
+.intro-hero {
+  display: block;
+  margin: 12% auto 28px;
+  max-width: 220px;
+  width: 41%;
+  height: auto;
+  border-radius: 14px;
+}
+
+.intro-primary {
+  background: #e41e26;
+  margin-top: 21%;
+}
+
+@media (max-width: 420px) {
+  .intro-container {
+    padding-bottom: 120px;
+    padding-top: 17%;
+  }
+}
+
+/* ============================================= Unified Dashboard ============================================= */
+.unified-container {
+  background: #fff;
+  min-height: 100vh;
+  padding-bottom: 13.5135vh;
+}
+
+.unified-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1.0811vh;
+  margin-right: 0.5556vw;
+  margin-bottom: 1.3514vh;
+  margin-left: 0.5556vw;
+}
+.unified-top .hello {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #111;
+}
+
+.unified-top .icons {
+  display: flex;
+  gap: 2.7778vw;
+}
+.unified-top .icon {
+  font-size: 1.125rem;
+}
+
+/*.bell-icon {
+  display: block;
+  margin-top: 16%;
+  height: 75%;
+}*/
+
+.search-wrap {
+  position: relative;
+  margin-top: 0.8108vh;
+  margin-right: 0vw;
+  margin-bottom: 1.8919vh;
+  margin-left: 0vw;
+}
+.search-wrap input[type="search"] {
+  width: 100%;
+  height: 4.8649vh;
+  border-radius: 12px;
+  border: 1px solid #e5e5ea;
+  padding-top: 0vh;
+  padding-right: 10vw;
+  padding-bottom: 0vh;
+  padding-left: 3.3333vw;
+  font-size: 0.75rem;
+  outline: none;
+}
+.search-wrap .search-icon {
+  position: absolute;
+  right: 2.7778vw;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9aa0a6;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.category-carousel {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 70%;
+  gap: 3.8889vw;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-top: 1.0811vh;
+  padding-right: 1.6667vw;
+  padding-bottom: 0.5405vh;
+  padding-left: 1.6667vw;
+  margin-top: 0.8108vh;
+  margin-right: 0vw;
+  margin-bottom: 0.8108vh;
+  margin-left: 0vw;
+}
+
+.carousel-dots {
+  display: flex;
+  gap: 2.2222vw;
+  justify-content: center;
+  align-items: center;
+  margin-top: 0.1351vh;
+  margin-right: 0vw;
+  margin-bottom: 1.6216vh;
+  margin-left: 0vw;
+}
+.carousel-dots .dot {
+  width: 2.2222vw;
+  height: 1.0811vh;
+  border-radius: 50%;
+  background: #cfcfd6;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+.carousel-dots .dot.active {
+  background: #e41e26;
+}
+
+.category-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.category-card {
+  scroll-snap-align: center;
+  background: #ffffff;
+  border: none;
+  border-radius: 18px;
+  height: 20vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding-top: 1.6216vh;
+  padding-right: 0vw;
+  padding-bottom: 0vh;
+  padding-left: 4.4444vw;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #000;
+  box-shadow: none;
+}
+
+.category-card img {
+  width: 108%;
+  height: 108%;
+  object-fit: cover;
+  border-radius: 18px;
+  margin-left: -4.1667vw;
+  margin-top: -1.6216vh;
+}
+
+.quick-actions {
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.6667vw;
+  padding-top: 1.0811vh;
+  padding-right: 0.5556vw;
+  padding-bottom: 1.6216vh;
+  padding-left: 0.5556vw;
+}
+
+.quick-actions .pill {
+  background: #fff;
+  border: 1px solid #d9d9dd;
+  color: #111;
+  border-radius: 12px;
+  padding-top: 1.0811vh;
+  padding-right: 3.3333vw;
+  padding-bottom: 1.0811vh;
+  padding-left: 3.3333vw;
+  font-size: 0.75rem;
+  width: max-content;
+}
+
+.section-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.see-all {
+  color: #bbb;
+  font-weight: 500;
+  font-size: 0.75rem;
+}
+
+@media (min-width: 30em) {
+  .category-carousel {
+    grid-auto-columns: 50%;
+  }
+}
+
+/* --- Liked page: match Unified Dashboard / Eyes --- */
+#likedPage {
+  background: #fff;
+  min-height: 100vh;
+}
+
+#likedPage .header {
+  background: #fff;
+  border-bottom: 1px solid #eee;
+}
+
+#likedPage .container {
+  padding-top: 2.1622vh;
+  padding-right: 4.4444vw;
+  padding-bottom: 2.1622vh;
+  padding-left: 4.4444vw;
+  padding-bottom: 9.7297vh;
+}
+
+/* Card grid */
+#likedList {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3.3333vw;
+}
+
+@media (min-width: 30em) {
+  #likedList {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+#likedList .module-card {
+  background: #fff;
+  border: 1px solid #e5e5ea;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+#likedList .module-card img {
+  width: 100%;
+  height: 13.5135vh;
+  object-fit: cover;
+}
+
+#likedList .module-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  padding-top: 1.0811vh;
+  padding-right: 2.7778vw;
+  padding-bottom: 1.0811vh;
+  padding-left: 2.7778vw;
+  color: #111;
+}
+
+/* Liked grid: match Eyes catalogue layout */
+#likedList {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.7778vw;
+  margin-top: 1.0811vh;
+  margin-right: 0vw;
+  margin-bottom: 2.1622vh;
+  margin-left: 0vw;
+}
+@media (max-width: 22.5em) {
+  #likedList {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Slightly shorter tiles on Liked */
+#likedList .eyes-card {
+  height: 16.2162vh;
+  width: 69%;
+  padding-top: 2.4324vh;
+  padding-right: 5vw;
+  padding-bottom: 2.4324vh;
+  padding-left: 5vw;
+  border-radius: 16px;
+  margin-left: 15%;
+}
+
+/* Eyes page container */
+.eyes-container {
+  background: #fff;
+  min-height: 100vh;
+  padding-bottom: 13.5135vh;
+}
+
+/* My Learning polish */
+#likedPage .ml-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+#likedPage .ml-icons {
+  display: flex;
+  align-items: center;
+  gap: 2.7778vw;
+}
+
+#likedPage .icon.menuBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.125rem;
+  line-height: 1;
+}
+
+#likedPage .ml-tabs {
+  position: relative;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.8108vh;
+}
+#likedPage .ml-tab {
+  position: relative;
+  background: none;
+  border: none;
+  color: #9aa0a6;
+  padding-top: 1.0811vh;
+  padding-right: 0vw;
+  padding-bottom: 1.0811vh;
+  padding-left: 0vw;
+  width: 33%;
+}
+#likedPage .ml-tab.active {
+  color: #e41e26;
+  font-weight: 600;
+}
+#likedPage .ml-tab.active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.9459vh;
+  height: 0.2703vh;
+  background: #e41e26;
+  border-radius: 2px;
+}
+
+/* My Learning: Masonry layout */
+.ml-masonry {
+  column-count: 2;
+  column-gap: 3.3333vw;
+  padding-top: 0.8108vh;
+}
+@media (min-width: 30em) {
+  .ml-masonry {
+    column-count: 3;
+  }
+}
+
+/* Masonry card */
+.ml-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  break-inside: avoid;
+  background: #c5c5c5;
+  border-radius: 16px;
+  padding-top: 1.6216vh;
+  padding-right: 3.3333vw;
+  padding-bottom: 1.6216vh;
+  padding-left: 3.3333vw;
+  margin-top: 0vh;
+  margin-right: 0vw;
+  margin-bottom: 1.6216vh;
+  margin-left: 0vw;
+  position: relative;
+  color: #111;
+  min-height: 18.9189vh;
+}
+
+/* Title row with heart icon */
+.ml-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Random height buckets for variety */
+.ml-card.size-s {
+  min-height: 16.2162vh;
+}
+.ml-card.size-m {
+  min-height: 21.6216vh;
+}
+.ml-card.size-l {
+  min-height: 29.7297vh;
+}
+
+.ml-card h4 {
+  margin-top: 4%;
+  font-size: 0.8125rem;
+  line-height: 1.25;
+  font-weight: 600;
+  text-align: left;
+}
+
+.ml-heart {
+  font-size: 1rem;
+  color: #e11d48;
+  margin-left: 1.6667vw;
+}
+
+/* Badges pinned at bottom */
+.ml-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.6667vw;
+  margin-top: 1.0811vh;
+}
+
+.ml-badge {
+  background: #666;
+  color: #fff;
+  border-radius: 9999px;
+  font-size: 0.6875rem;
+  padding-top: 0.8108vh;
+  padding-right: 2.2222vw;
+  padding-bottom: 0.8108vh;
+  padding-left: 2.2222vw;
+}
+
+/* Eyes catalog: carousel dots */
+.catalog-h2 {
+  position: relative;
+}
+.catalog-h2 .carousel-dots {
+  position: absolute;
+  right: 0;
+  top: -0.8108vh; /* puts dots above the See all > spot */
+  display: flex;
+  gap: 1.9444vw;
+  align-items: center;
+}
+.catalog-h2 .carousel-dots .dot {
+  width: 1.6667vw;
+  height: 0.8108vh;
+  border-radius: 50%;
+  border: 0;
+  background: #cfcfd6;
+  cursor: pointer;
+}
+.catalog-h2 .carousel-dots .dot.active {
+  background: #e41e26; /* active color (matches dashboard) */
+}
+
+/* ============================================= Pupils Page ============================================= */
+.pupils-container {
+  background: #fff;
+  min-height: 100vh;
+  padding-bottom: 13.5135vh;
+}
+
+/* ===== Pupils top bar ===== */
+#pupilsPage .eyes-topbar {
+  position: fixed;
+  width: 100%;
+  z-index: 1000;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 8.3784vh;
+  padding-top: 0vh;
+  padding-right: 3.3333vw;
+  padding-bottom: 0vh;
+  padding-left: 3.3333vw;
+  margin: 0;
+}
+
+#pupilsPage .eyes-topbar__title {
+  position: static;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #111;
+  margin-top: 2.5676vh;
+  margin-left: 1.6667vw;
+  line-height: 1;
+}
+
+#pupilsPage .eyes-topbar__icons {
+  position: absolute;
+  left: 3.3333vw;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  gap: 2.7778vw;
+}
+
+#pupilsPage .icon.menuBtn {
+  font-size: 1.0625rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2.5676vh;
+  margin-left: 82.5vw;
+}
+
+#pupilsPage .pupils-subtitle {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #111;
+  margin-top: 7.1622vh;
+  margin-right: 5vw;
+  margin-bottom: 2.1622vh;
+  margin-left: 5vw;
+}
+
+.tl-item {
+  position: relative;
+  margin-top: 1.8919vh;
+  margin-right: 0vw;
+  margin-bottom: 1.8919vh;
+  margin-left: 0vw;
+}
+
+/* Inner lesson rows (white rounded chips) */
+
+.thumb {
+  width: 11.6667vw;
+  height: 4.0541vh;
+  border-radius: 8px;
+  background: #d3d3d3;
+}
+
+/* tighten the base module-card shadow/padding for this page only */
+#pupilsPage .module-card {
+  box-shadow: none;
+}
+
+/* ===== Pupils card polish ===== */
+/* Outer grey card */
+#pupilsPage .pupil-card {
+  background: #c5c5c5;
+  border: none;
+  border-top-left-radius: 0;
+  border-top-right-radius: 18px;
+  border-bottom-right-radius: 18px;
+  border-bottom-left-radius: 18px;
+  padding-top: 1.8919vh;
+  padding-right: 3.8889vw;
+  padding-bottom: 1.8919vh;
+  padding-left: 3.8889vw;
+  margin-left: -5%;
+  z-index: 500;
+}
+
+#pupilsPage .pupil-card h3 {
+  margin-top: 1.0811vh;
+  margin-right: 1.6667vw;
+  margin-bottom: 1.8919vh;
+  margin-left: 1.6667vw;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #111;
+}
+
+/* White lesson boxes stacked under title */
+#pupilsPage .lesson-row {
+  display: grid;
+  grid-template-columns: 2.75rem 1fr auto;
+  align-items: center;
+  gap: 2.7778vw;
+  background: #fff;
+  border-radius: 12px;
+  min-height: 6.8919vh;
+  padding-top: 1.3514vh;
+  padding-right: 3.3333vw;
+  padding-bottom: 1.3514vh;
+  padding-left: 3.3333vw;
+  margin-top: 2.1622vh;
+  margin-right: 0vw;
+  margin-bottom: 2.1622vh;
+  margin-left: 0vw;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  width: 88%;
+}
+
+#pupilsPage .thumb {
+  width: 13.0556vw;
+  height: 6.4865vh;
+  border-radius: 8px;
+  background: #dcdcdc;
+  border: 1px solid #e5e5ea;
+}
+
+/* Title row within the white box */
+#pupilsPage .lesson-top {
+  display: flex;
+  align-items: center;
+  gap: 1.6667vw;
+  font-size: 0.75rem;
+  color: #777;
+  margin-top: -11%;
+  margin-left: 5%;
+}
+#pupilsPage .lesson-type {
+  font-weight: 600;
+  color: #111;
+  font-size: 0.6875rem;
+}
+#pupilsPage .lesson-meta {
+  color: #bbb;
+  font-size: 0.6875rem;
+}
+
+/* Darker, thicker progress */
+#pupilsPage .lesson-progress {
+  width: 100%;
+  height: 0.8108vh;
+  background: #e9e9e9;
+  border-radius: 999px;
+  margin-top: 5%;
+  overflow: hidden;
+  margin-left: 5%;
+}
+#pupilsPage .lesson-progress__fill {
+  height: 100%;
+  background: #111;
+  border-radius: 999px;
+  transition: width 0.25s ease;
+}
+
+#pupilsPage .lesson-cta {
+  font-size: 0.6875rem;
+  color: #bbb;
+  margin-bottom: -103%;
+}
+
+#pupilsPage .eyes-topbar {
+  position: fixed;
+  top: 0;
+  background: #fff;
+  z-index: 1000;
+}
+
+/* ===== Pupils timeline layout ===== */
+.pupils-container {
+  background: #fff;
+  min-height: 100vh;
+  padding-bottom: 13.5135vh;
+}
+
+.pupils-subtitle {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #111;
+  margin-top: 2.8378vh;
+  margin-right: 1.1111vw;
+  margin-bottom: 1.6216vh;
+  margin-left: 1.1111vw;
+}
+
+/* Module card */
+.pupil-card {
+  display: block;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  margin-top: 0vh;
+}
+
+/* Lesson rows (white pills inside the card) */
+@media (max-width: 21.25em) {
+  .pupil-card {
+    padding-top: 1.8919vh;
+    padding-right: 3.3333vw;
+    padding-bottom: 1.8919vh;
+    padding-left: 3.3333vw;
+  }
+  .lesson-row {
+    grid-template-columns: 2.875rem 1fr auto;
+  }
+  .lesson-row .thumb {
+    width: 12.7778vw;
+    height: 4.3243vh;
+  }
+}
+
+#learningModules {
+  display: none !important;
+}
+
+/* Disabled Eyes cards (no navigation) */
+.eyes-card.is-disabled {
+  opacity: 0.5;
+  pointer-events: none;
+  cursor: default;
+}
+
+.eyes-card.is-disabled .heart-btn,
+.eyes-card.is-disabled .heart-btn * {
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+/* Special style for Coming Soon tag */
+.tag.coming-tag {
+  background-color: #ccc;
+  color: #333;
+  font-weight: 500;
+  opacity: 0.9;
+}

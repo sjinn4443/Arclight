@@ -1,0 +1,294 @@
+/* ==========================================================================
+   1. Basic Reset & Mobile-First Styling
+   ========================================================================== */
+   * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: Arial, sans-serif;
+    line-height: 1.5;
+    background-color: #f5f5f5;
+  }
+
+  /* ==========================================================================
+     2. App Bar (Header)
+     ========================================================================== */
+  .app-bar {
+    height: 55px;
+    background-color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0px;
+  }
+
+  .app-bar h1 {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 25px;
+    font-weight: 300;
+    color: rgb(255, 85, 0);
+    text-align: center;
+  }
+
+  /* ==========================================================================
+     3. Section Styling
+     ========================================================================== */
+  section {
+    background: #fff;
+    padding: 15px;
+    margin-bottom: 0px;
+    border-radius: 0px;
+  }
+
+  h2 {
+    margin-bottom: 10px;
+    font-size: 16px;
+    color: #0a0078;
+  }
+
+  /* Spacing between preceding text and radio buttons in question groups */
+  .question-group span input[type="radio"] {
+    margin-left: 2px;
+  }
+
+  /* ==========================================================================
+     4. Form & Question Group Styling
+     ========================================================================== */
+  /* Container for groups of questions */
+  .question-group {
+    margin-bottom: 5px;
+    font-size: 14px;
+  }
+
+  .question-group span {
+    display: inline-block;
+    margin-right: 15px;
+    vertical-align: middle;
+  }
+
+  /* Ensure radio buttons align with text */
+  input[type="radio"] {
+    vertical-align: middle;
+  }
+
+  .question-group label {
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  /* Spacing for form controls */
+  select,
+  input[type="radio"],
+  input[type="checkbox"] {
+    margin-right: 5px;
+  }
+
+  /* ==========================================================================
+     5. Button Groups & Items
+     ========================================================================== */
+  /* Container for button groups */
+  .button-group {
+    width: 100%;
+    display: flex;
+    gap: 3px;              /* 3px gap between buttons */
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    padding: 0 3px;        /* 3px side padding */
+  }
+
+  /* Container for individual button items */
+  .button-item {
+    text-align: center;
+  }
+
+  /* Layout: five items per row.
+     Total spacing: (4 gaps * 3px) + (2 sides * 3px) = 12px + 6px = 18px.
+     Each button gets: calc((100% - 18px) / 5) plus 1px.
+  */
+  .button-group .button-item {
+    flex: 0 0 calc((100% - 18px) / 5 + 1px);
+  }
+
+  /* Button styling */
+  .button-item button {
+    width: 100%;
+    aspect-ratio: 1; /* Maintain square shape */
+    padding: 0;
+    border: 1px solid #000000;
+    background-color: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 15px;
+    box-sizing: border-box;
+    overflow: hidden; /* Prevent content from spilling over rounded corners */
+  }
+
+  /* Indicate selected button */
+  .button-item button.selected {
+    border: 5px solid rgb(0, 0, 0);
+  }
+
+  /* Image styling within buttons */
+  .button-item button img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+
+  /* Label below buttons (standard font) */
+  .button-label {
+    margin-top: 5px;
+    font-size: 12px;
+    font-style: normal;
+  }
+
+  /* Only the "Normal" button label should be italic */
+  .button-label.normal {
+    font-style: italic;
+  }
+
+  /* ==========================================================================
+     6. Utility Classes
+     ========================================================================== */
+  .normal-text {
+    font-weight: normal;
+  }
+
+  .bold-text {
+    font-weight: bold;
+  }
+
+  /* Disabled section styling */
+  .disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  /* ==========================================================================
+     7. Calculate Button Styling
+     ========================================================================== */
+  #calculateBtn {
+    width: 100%;
+    padding: 10px;
+    background-color: green;
+    color: #fff;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 3px;
+    margin-top: 10px;
+  }
+
+  #calculateBtn:disabled {
+    background-color: grey;
+  }
+
+  /* ==========================================================================
+     8. Responsive Tweaks
+     ========================================================================== */
+  @media (min-width: 600px) {
+    .button-group button {
+      max-width: 150px;
+    }
+  }
+
+  /* ==========================================================================
+     9. Additional Options Styling
+     ========================================================================== */
+  .options label {
+    display: inline-block;
+    margin-right: 15px;
+  }
+
+  /* ==========================================================================
+     10. Info Box (Overlaid Popup)
+     ========================================================================== */
+  .info-box {
+    position: fixed;
+    top: 100px;       /* Adjust vertical position as needed */
+    right: 20px;      /* Adjust horizontal position as needed */
+    z-index: 1000;    /* Ensure it appears above other content */
+    background-color: #f7f7f7;
+    border: 1px solid #ccc;
+    padding: 20px;
+    font-size: 13px;
+    border-radius: 20px;
+    text-align: left;
+    width: 100%;
+    max-width: 320px;
+    display: none;    /* Hidden by default */
+  }
+
+  /* Global icon & popup defaults */
+  #info-icon {
+    position: absolute;
+    top: 75px;       /* Adjust as needed */
+    right: 20px;
+    font-size: 1rem;
+    color: black;
+    cursor: pointer;
+  }
+
+  /* ==========================================================================
+     11. Colours for Feedback
+     ========================================================================== */
+  .serious {
+    color: red;
+  }
+
+  .good {
+    color: green;
+  }
+
+  .warning {
+    color: orange;
+  }
+
+  /* ==========================================================================
+     12. Animations & Small Text
+     ========================================================================== */
+  @keyframes zoomAnimation {
+    0% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    30% {
+      transform: scale(1.25);  /* Zoom large */
+    }
+    60% {
+      transform: scale(1.0);   /* Go smaller */
+    }
+    100% {
+      transform: scale(1.0);
+      opacity: 1;
+    }
+  }
+
+  .small-text {
+    font-size: 0.8em;
+  }
+
+  .explanation-text {
+    font-size: 0.85em;
+    color: #333;
+  }
+
+  /* ==========================================================================
+     13. Custom Section Background Colours
+     ========================================================================== */
+  #fundal-section {
+    background-color: #f0f0f0; /* faint grey */
+  }
+
+  #back-section {
+    background-color: #e0e0e0; /* slightly darker grey */
+  }
+
+  #result-section {
+    background-color: #d0d0d0; /* even darker grey */
+  }

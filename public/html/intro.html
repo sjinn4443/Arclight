@@ -1,0 +1,55 @@
+<!-- Intro Page — Introduces users to the Arclight app with a welcome message, feature overview, and options to explore or skip the introduction. -->
+<div id="introPage" class="page">
+  <div class="container intro-container">
+    <!-- Progress bar -->
+    <div class="intro-progress">
+      <div class="intro-progress__track">
+        <div class="intro-progress__fill"></div>
+      </div>
+    </div>
+
+    <!-- Text -->
+    <h1 class="intro-title">Welcome to<br />the Arclight App!</h1>
+    <p class="intro-sub">
+      Here’s a quick overview of the features<br />
+      to help you get started
+    </p>
+
+    <!-- Center phone image -->
+    <img
+      src="images/onboarding/onboarding.webp"
+      alt="App preview"
+      class="intro-hero"
+    />
+
+    <!-- Buttons -->
+    <button id="exploreBtn" class="onb-cta intro-primary">
+      Explore the App
+    </button>
+    <button id="skipBtn" class="btn-outline intro-outline">
+      Skip and Continue
+    </button>
+  </div>
+</div>
+
+<!-- Placeholder Page -->
+<section id="introExplorePage" class="page" hidden>
+  <div class="container intro-container">
+    <!-- Progress bar -->
+    <div class="intro-progress">
+      <div class="intro-progress__track">
+        <div class="intro-progress__fill" style="width: 100%"></div>
+      </div>
+    </div>
+    <p class="intro-sub">
+      Placeholder page — feature details will be added here soon.
+    </p>
+
+    <!-- Keep the same button styling block -->
+    <div class="intro-actions">
+      <button id="seeWhatBtn" class="onb-cta intro-primary">
+        Continue to Dashboard
+      </button>
+    </div>
+  </div>
+</section>
