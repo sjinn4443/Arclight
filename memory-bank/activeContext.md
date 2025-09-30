@@ -37,7 +37,7 @@ The current focus is on ensuring the application's core structure and PWA capabi
 - Further optimize media loading and overall application performance.
 - Established a GitHub Actions CI/CD pipeline for continuous integration and deployment to Railway.
 - Continue populating all educational modules with comprehensive content (text, images, videos, quizzes).
-- Set up GitHub Actions CI/CD pipeline at `.github/workflows/ci-cd.yml` for continuous integration and deployment to Railway, including type checking and Lighthouse CI for performance and best practices.
+- Set up GitHub Actions CI/CD pipeline at `.github/workflows/ci-cd.yml` for continuous integration and deployment to Railway, including linting, type checking, and Lighthouse CI for performance and best practices.
 
 ## Active Decisions and Considerations
 
