@@ -164,7 +164,7 @@
   max-width: 360px;
   padding: 0 20px;
   text-align: left;
-  margin-top: 51%;
+  margin-top: 203px;
 }
 
 .lang-install__label {
@@ -251,7 +251,7 @@
 .onboarding-container {
   max-width: 100%;
   margin: 0 auto;
-  padding: 20% 20px 100px;
+  padding: 89px 21px 100px;
   background: #fff;
 }
 
@@ -350,7 +350,7 @@ select.onb-input.has-value {
 
 @media (max-width: 420px) {
   .onboarding-container {
-    padding-bottom: 100%;
+    padding-bottom: 100svh;
   }
 }
 
@@ -360,7 +360,7 @@ select.onb-input.has-value {
   border: 1px solid #e5e5ea;
   font-weight: 500;
   color: #ccccd1;
-  width: 95%;
+  width: 98%;
   height: 60%;
 }
 #username.onb-input:focus {
@@ -510,35 +510,31 @@ select.onb-input.has-value {
     padding-top: 17%;
   }
 }
-
 /* ============================================= Unified Dashboard ============================================= */
 .unified-container {
   background: #fff;
   min-height: 100vh;
-  padding-bottom: 13.5135vh;
+  padding-bottom: 100px;
 }
 
 .unified-top {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 1.0811vh;
-  margin-right: 0.5556vw;
-  margin-bottom: 1.3514vh;
-  margin-left: 0.5556vw;
+  margin: 8px 2px 10px;
 }
 .unified-top .hello {
-  font-size: 0.8125rem;
+  font-size: 13px;
   font-weight: 500;
   color: #111;
 }
 
 .unified-top .icons {
   display: flex;
-  gap: 2.7778vw;
+  gap: 10px;
 }
 .unified-top .icon {
-  font-size: 1.125rem;
+  font-size: 18px;
 }
 
 /*.bell-icon {
@@ -549,26 +545,20 @@ select.onb-input.has-value {
 
 .search-wrap {
   position: relative;
-  margin-top: 0.8108vh;
-  margin-right: 0vw;
-  margin-bottom: 1.8919vh;
-  margin-left: 0vw;
+  margin: 6px 0 14px;
 }
 .search-wrap input[type="search"] {
   width: 100%;
-  height: 4.8649vh;
+  height: 36px;
   border-radius: 12px;
   border: 1px solid #e5e5ea;
-  padding-top: 0vh;
-  padding-right: 10vw;
-  padding-bottom: 0vh;
-  padding-left: 3.3333vw;
-  font-size: 0.75rem;
+  padding: 0 36px 0 12px;
+  font-size: 12px;
   outline: none;
 }
 .search-wrap .search-icon {
   position: absolute;
-  right: 2.7778vw;
+  right: 10px;
   top: 50%;
   transform: translateY(-50%);
   color: #9aa0a6;
@@ -582,32 +572,23 @@ select.onb-input.has-value {
   display: grid;
   grid-auto-flow: column;
   grid-auto-columns: 70%;
-  gap: 3.8889vw;
+  gap: 14px;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
-  padding-top: 1.0811vh;
-  padding-right: 1.6667vw;
-  padding-bottom: 0.5405vh;
-  padding-left: 1.6667vw;
-  margin-top: 0.8108vh;
-  margin-right: 0vw;
-  margin-bottom: 0.8108vh;
-  margin-left: 0vw;
+  padding: 8px 6px 4px;
+  margin: 6px 0 6px;
 }
 
 .carousel-dots {
   display: flex;
-  gap: 2.2222vw;
+  gap: 8px;
   justify-content: center;
   align-items: center;
-  margin-top: 0.1351vh;
-  margin-right: 0vw;
-  margin-bottom: 1.6216vh;
-  margin-left: 0vw;
+  margin: 1px 0 12px;
 }
 .carousel-dots .dot {
-  width: 2.2222vw;
-  height: 1.0811vh;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   background: #cfcfd6;
   border: none;
@@ -627,15 +608,12 @@ select.onb-input.has-value {
   background: #ffffff;
   border: none;
   border-radius: 18px;
-  height: 20vh;
+  height: 148px;
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
-  padding-top: 1.6216vh;
-  padding-right: 0vw;
-  padding-bottom: 0vh;
-  padding-left: 4.4444vw;
-  font-size: 1rem;
+  padding: 12px 0 0 16px;
+  font-size: 16px;
   font-weight: 600;
   color: #000;
   box-shadow: none;
@@ -646,17 +624,14 @@ select.onb-input.has-value {
   height: 108%;
   object-fit: cover;
   border-radius: 18px;
-  margin-left: -4.1667vw;
-  margin-top: -1.6216vh;
+  margin-left: -15px;
+  margin-top: -12px;
 }
 
 .quick-actions {
   grid-template-columns: repeat(2, 1fr);
-  gap: 1.6667vw;
-  padding-top: 1.0811vh;
-  padding-right: 0.5556vw;
-  padding-bottom: 1.6216vh;
-  padding-left: 0.5556vw;
+  gap: 6px;
+  padding: 8px 2px 12px;
 }
 
 .quick-actions .pill {
@@ -664,16 +639,13 @@ select.onb-input.has-value {
   border: 1px solid #d9d9dd;
   color: #111;
   border-radius: 12px;
-  padding-top: 1.0811vh;
-  padding-right: 3.3333vw;
-  padding-bottom: 1.0811vh;
-  padding-left: 3.3333vw;
-  font-size: 0.75rem;
+  padding: 8px 12px;
+  font-size: 12px;
   width: max-content;
 }
 
 .section-title {
-  font-size: 0.875rem;
+  font-size: 14px;
   font-weight: 600;
   display: flex;
   justify-content: space-between;
@@ -682,10 +654,10 @@ select.onb-input.has-value {
 .see-all {
   color: #bbb;
   font-weight: 500;
-  font-size: 0.75rem;
+  font-size: 12px;
 }
 
-@media (min-width: 30em) {
+@media (min-width: 480px) {
   .category-carousel {
     grid-auto-columns: 50%;
   }
@@ -703,21 +675,18 @@ select.onb-input.has-value {
 }
 
 #likedPage .container {
-  padding-top: 2.1622vh;
-  padding-right: 4.4444vw;
-  padding-bottom: 2.1622vh;
-  padding-left: 4.4444vw;
-  padding-bottom: 9.7297vh;
+  padding: 16px;
+  padding-bottom: 72px;
 }
 
 /* Card grid */
 #likedList {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 3.3333vw;
+  gap: 12px;
 }
 
-@media (min-width: 30em) {
+@media (min-width: 480px) {
   #likedList {
     grid-template-columns: 1fr 1fr;
   }
@@ -733,17 +702,14 @@ select.onb-input.has-value {
 
 #likedList .module-card img {
   width: 100%;
-  height: 13.5135vh;
+  height: 100px;
   object-fit: cover;
 }
 
 #likedList .module-title {
-  font-size: 0.875rem;
+  font-size: 14px;
   font-weight: 600;
-  padding-top: 1.0811vh;
-  padding-right: 2.7778vw;
-  padding-bottom: 1.0811vh;
-  padding-left: 2.7778vw;
+  padding: 8px 10px;
   color: #111;
 }
 
@@ -751,13 +717,10 @@ select.onb-input.has-value {
 #likedList {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 2.7778vw;
-  margin-top: 1.0811vh;
-  margin-right: 0vw;
-  margin-bottom: 2.1622vh;
-  margin-left: 0vw;
+  gap: 10px;
+  margin: 8px 0 16px;
 }
-@media (max-width: 22.5em) {
+@media (max-width: 360px) {
   #likedList {
     grid-template-columns: 1fr;
   }
@@ -765,12 +728,9 @@ select.onb-input.has-value {
 
 /* Slightly shorter tiles on Liked */
 #likedList .eyes-card {
-  height: 16.2162vh;
+  height: 120px;
   width: 69%;
-  padding-top: 2.4324vh;
-  padding-right: 5vw;
-  padding-bottom: 2.4324vh;
-  padding-left: 5vw;
+  padding: 18px;
   border-radius: 16px;
   margin-left: 15%;
 }
@@ -779,7 +739,7 @@ select.onb-input.has-value {
 .eyes-container {
   background: #fff;
   min-height: 100vh;
-  padding-bottom: 13.5135vh;
+  padding-bottom: 100px;
 }
 
 /* My Learning polish */
@@ -791,31 +751,28 @@ select.onb-input.has-value {
 #likedPage .ml-icons {
   display: flex;
   align-items: center;
-  gap: 2.7778vw;
+  gap: 10px;
 }
 
 #likedPage .icon.menuBtn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.125rem;
+  font-size: 18px;
   line-height: 1;
 }
 
 #likedPage .ml-tabs {
   position: relative;
   border-bottom: 1px solid #eee;
-  padding-bottom: 0.8108vh;
+  padding-bottom: 6px;
 }
 #likedPage .ml-tab {
   position: relative;
   background: none;
   border: none;
   color: #9aa0a6;
-  padding-top: 1.0811vh;
-  padding-right: 0vw;
-  padding-bottom: 1.0811vh;
-  padding-left: 0vw;
+  padding: 8px 0;
   width: 33%;
 }
 #likedPage .ml-tab.active {
@@ -827,8 +784,8 @@ select.onb-input.has-value {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: -0.9459vh;
-  height: 0.2703vh;
+  bottom: -7px;
+  height: 2px;
   background: #e41e26;
   border-radius: 2px;
 }
@@ -836,10 +793,10 @@ select.onb-input.has-value {
 /* My Learning: Masonry layout */
 .ml-masonry {
   column-count: 2;
-  column-gap: 3.3333vw;
-  padding-top: 0.8108vh;
+  column-gap: 12px;
+  padding-top: 6px;
 }
-@media (min-width: 30em) {
+@media (min-width: 480px) {
   .ml-masonry {
     column-count: 3;
   }
@@ -853,17 +810,11 @@ select.onb-input.has-value {
   break-inside: avoid;
   background: #c5c5c5;
   border-radius: 16px;
-  padding-top: 1.6216vh;
-  padding-right: 3.3333vw;
-  padding-bottom: 1.6216vh;
-  padding-left: 3.3333vw;
-  margin-top: 0vh;
-  margin-right: 0vw;
-  margin-bottom: 1.6216vh;
-  margin-left: 0vw;
+  padding: 12px;
+  margin: 0 0 12px;
   position: relative;
   color: #111;
-  min-height: 18.9189vh;
+  min-height: 140px;
 }
 
 /* Title row with heart icon */
@@ -875,46 +826,43 @@ select.onb-input.has-value {
 
 /* Random height buckets for variety */
 .ml-card.size-s {
-  min-height: 16.2162vh;
+  min-height: 120px;
 }
 .ml-card.size-m {
-  min-height: 21.6216vh;
+  min-height: 160px;
 }
 .ml-card.size-l {
-  min-height: 29.7297vh;
+  min-height: 220px;
 }
 
 .ml-card h4 {
   margin-top: 4%;
-  font-size: 0.8125rem;
+  font-size: 13px;
   line-height: 1.25;
   font-weight: 600;
   text-align: left;
 }
 
 .ml-heart {
-  font-size: 1rem;
+  font-size: 16px;
   color: #e11d48;
-  margin-left: 1.6667vw;
+  margin-left: 6px;
 }
 
 /* Badges pinned at bottom */
 .ml-badges {
   display: flex;
   flex-wrap: wrap;
-  gap: 1.6667vw;
-  margin-top: 1.0811vh;
+  gap: 6px;
+  margin-top: 8px;
 }
 
 .ml-badge {
   background: #666;
   color: #fff;
   border-radius: 9999px;
-  font-size: 0.6875rem;
-  padding-top: 0.8108vh;
-  padding-right: 2.2222vw;
-  padding-bottom: 0.8108vh;
-  padding-left: 2.2222vw;
+  font-size: 11px;
+  padding: 6px 8px;
 }
 
 /* Eyes catalog: carousel dots */
@@ -924,14 +872,14 @@ select.onb-input.has-value {
 .catalog-h2 .carousel-dots {
   position: absolute;
   right: 0;
-  top: -0.8108vh; /* puts dots above the See all > spot */
+  top: -6px; /* puts dots above the See all > spot */
   display: flex;
-  gap: 1.9444vw;
+  gap: 7px;
   align-items: center;
 }
 .catalog-h2 .carousel-dots .dot {
-  width: 1.6667vw;
-  height: 0.8108vh;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   border: 0;
   background: #cfcfd6;
@@ -945,7 +893,7 @@ select.onb-input.has-value {
 .pupils-container {
   background: #fff;
   min-height: 100vh;
-  padding-bottom: 13.5135vh;
+  padding-bottom: 100px;
 }
 
 /* ===== Pupils top bar ===== */
@@ -957,66 +905,57 @@ select.onb-input.has-value {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 8.3784vh;
-  padding-top: 0vh;
-  padding-right: 3.3333vw;
-  padding-bottom: 0vh;
-  padding-left: 3.3333vw;
+  height: 62px;
+  padding: 0 12px;
   margin: 0;
 }
 
 #pupilsPage .eyes-topbar__title {
   position: static;
-  font-size: 0.875rem;
+  font-size: 14px;
   font-weight: 600;
   color: #111;
-  margin-top: 2.5676vh;
-  margin-left: 1.6667vw;
+  margin-top: 19px;
+  margin-left: 6px;
   line-height: 1;
 }
 
 #pupilsPage .eyes-topbar__icons {
   position: absolute;
-  left: 3.3333vw;
+  left: 12px;
   top: 50%;
   transform: translateY(-50%);
   display: flex;
-  gap: 2.7778vw;
+  gap: 10px;
 }
 
 #pupilsPage .icon.menuBtn {
-  font-size: 1.0625rem;
+  font-size: 17px;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin-top: 2.5676vh;
-  margin-left: 82.5vw;
+  margin-top: 19px;
+  margin-left: 297px;
 }
 
 #pupilsPage .pupils-subtitle {
-  font-size: 0.8125rem;
+  font-size: 13px;
   font-weight: 600;
   color: #111;
-  margin-top: 7.1622vh;
-  margin-right: 5vw;
-  margin-bottom: 2.1622vh;
-  margin-left: 5vw;
+  margin: 53px 18px 16px;
 }
 
 .tl-item {
   position: relative;
-  margin-top: 1.8919vh;
-  margin-right: 0vw;
-  margin-bottom: 1.8919vh;
-  margin-left: 0vw;
+  margin: 14px 0;
 }
 
 /* Inner lesson rows (white rounded chips) */
 
 .thumb {
-  width: 11.6667vw;
-  height: 4.0541vh;
+  width: 42px;
+  height: 30px;
   border-radius: 8px;
   background: #d3d3d3;
 }
@@ -1035,20 +974,14 @@ select.onb-input.has-value {
   border-top-right-radius: 18px;
   border-bottom-right-radius: 18px;
   border-bottom-left-radius: 18px;
-  padding-top: 1.8919vh;
-  padding-right: 3.8889vw;
-  padding-bottom: 1.8919vh;
-  padding-left: 3.8889vw;
+  padding: 14px;
   margin-left: -5%;
   z-index: 500;
 }
 
 #pupilsPage .pupil-card h3 {
-  margin-top: 1.0811vh;
-  margin-right: 1.6667vw;
-  margin-bottom: 1.8919vh;
-  margin-left: 1.6667vw;
-  font-size: 0.75rem;
+  margin: 8px 6px 14px;
+  font-size: 12px;
   font-weight: 500;
   color: #111;
 }
@@ -1056,27 +989,21 @@ select.onb-input.has-value {
 /* White lesson boxes stacked under title */
 #pupilsPage .lesson-row {
   display: grid;
-  grid-template-columns: 2.75rem 1fr auto;
+  grid-template-columns: 44px 1fr auto;
   align-items: center;
-  gap: 2.7778vw;
+  gap: 10px;
   background: #fff;
   border-radius: 12px;
-  min-height: 6.8919vh;
-  padding-top: 1.3514vh;
-  padding-right: 3.3333vw;
-  padding-bottom: 1.3514vh;
-  padding-left: 3.3333vw;
-  margin-top: 2.1622vh;
-  margin-right: 0vw;
-  margin-bottom: 2.1622vh;
-  margin-left: 0vw;
+  min-height: 51px;
+  padding: 10px 12px;
+  margin: 16px 0;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
   width: 88%;
 }
 
 #pupilsPage .thumb {
-  width: 13.0556vw;
-  height: 6.4865vh;
+  width: 47px;
+  height: 48px;
   border-radius: 8px;
   background: #dcdcdc;
   border: 1px solid #e5e5ea;
@@ -1086,8 +1013,8 @@ select.onb-input.has-value {
 #pupilsPage .lesson-top {
   display: flex;
   align-items: center;
-  gap: 1.6667vw;
-  font-size: 0.75rem;
+  gap: 6px;
+  font-size: 12px;
   color: #777;
   margin-top: -11%;
   margin-left: 5%;
@@ -1095,17 +1022,17 @@ select.onb-input.has-value {
 #pupilsPage .lesson-type {
   font-weight: 600;
   color: #111;
-  font-size: 0.6875rem;
+  font-size: 11px;
 }
 #pupilsPage .lesson-meta {
   color: #bbb;
-  font-size: 0.6875rem;
+  font-size: 11px;
 }
 
 /* Darker, thicker progress */
 #pupilsPage .lesson-progress {
   width: 100%;
-  height: 0.8108vh;
+  height: 6px;
   background: #e9e9e9;
   border-radius: 999px;
   margin-top: 5%;
@@ -1120,7 +1047,7 @@ select.onb-input.has-value {
 }
 
 #pupilsPage .lesson-cta {
-  font-size: 0.6875rem;
+  font-size: 11px;
   color: #bbb;
   margin-bottom: -103%;
 }
@@ -1136,17 +1063,14 @@ select.onb-input.has-value {
 .pupils-container {
   background: #fff;
   min-height: 100vh;
-  padding-bottom: 13.5135vh;
+  padding-bottom: 100px;
 }
 
 .pupils-subtitle {
-  font-size: 0.8125rem;
+  font-size: 13px;
   font-weight: 600;
   color: #111;
-  margin-top: 2.8378vh;
-  margin-right: 1.1111vw;
-  margin-bottom: 1.6216vh;
-  margin-left: 1.1111vw;
+  margin: 21px 4px 12px;
 }
 
 /* Module card */
@@ -1155,23 +1079,20 @@ select.onb-input.has-value {
   width: 100%;
   text-align: left;
   cursor: pointer;
-  margin-top: 0vh;
+  margin-top: 0px;
 }
 
 /* Lesson rows (white pills inside the card) */
-@media (max-width: 21.25em) {
+@media (max-width: 340px) {
   .pupil-card {
-    padding-top: 1.8919vh;
-    padding-right: 3.3333vw;
-    padding-bottom: 1.8919vh;
-    padding-left: 3.3333vw;
+    padding: 14px 12px;
   }
   .lesson-row {
-    grid-template-columns: 2.875rem 1fr auto;
+    grid-template-columns: 46px 1fr auto;
   }
   .lesson-row .thumb {
-    width: 12.7778vw;
-    height: 4.3243vh;
+    width: 46px;
+    height: 32px;
   }
 }
 
@@ -1198,4 +1119,380 @@ select.onb-input.has-value {
   color: #333;
   font-weight: 500;
   opacity: 0.9;
+}
+
+/* ===== Onboarding inputs — normalize sizes across text/select ===== */
+
+/* 공통 규격: 높이 35px, 좌우/상하 패딩, 라인하이트/라운드 통일 */
+#onboarding .onb-input,
+#onboarding select.onb-input {
+  box-sizing: border-box;
+  width: 100%;
+  height: 2.1875rem; /* 35px */
+  padding: 0.5625rem 0.5rem; /* 9px 8px */
+  line-height: 1.25rem; /* 20px — placeholder 시 세로정렬 안정화 */
+  border-radius: 0.625rem; /* 10px */
+  border: 1px solid #e5e5ea;
+  background: #fff;
+  font-size: 0.75rem; /* 12px (기존과 동일) */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+/* select 전용: 드롭다운 화살표 공간 및 아이콘 위치 고정 */
+#onboarding select.onb-input {
+  padding-right: 2.5rem; /* 화살표 공간 */
+  background-repeat: no-repeat;
+  background-position: right 0.625rem center; /* 10px */
+  background-size: 1rem 1rem; /* 16px */
+}
+
+/* username(텍스트 인풋)도 정확히 동일 폭/높이 강제 */
+#onboarding #username.onb-input {
+  width: 100% !important;
+  height: 2.1875rem !important; /* 35px */
+  padding: 0.5625rem 0.5rem !important;
+  line-height: 1.25rem !important;
+}
+
+/* 값이 채워졌을 때(파란 테두리/문자색) 스타일은 그대로 유지 */
+#onboarding .onb-input.filled,
+#onboarding select.onb-input.has-value,
+#onboarding #username.onb-input.filled {
+  border-color: #62a6ff;
+  color: #62a6ff;
+}
+
+/* ===== Restore dropdown triangle for selects on Onboarding (single-line, URL-encoded) ===== */
+#onboarding select.onb-input {
+  padding-right: 2.5rem; /* space for arrow */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  /* gray arrow */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23999' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.625rem center; /* 10px from right */
+  background-size: 1rem 1rem; /* 16px */
+}
+
+/* hide legacy Edge/IE arrow */
+#onboarding select.onb-input::-ms-expand {
+  display: none;
+}
+
+/* when a value is selected (your code adds .has-value), make arrow + text blue */
+#onboarding select.onb-input.has-value {
+  color: #62a6ff;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%2362a6ff' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+}
+
+/* focus-visible outline (keeps arrow) */
+#onboarding select.onb-input:focus-visible {
+  outline: 2px solid #62a6ff;
+  outline-offset: 2px;
+}
+
+/* ===== Onboarding: full-bleed white background while keeping content width ===== */
+
+/* 1) 페이지 전체(배경) 흰색 + 풀 높이 */
+#onboarding {
+  background: #fff; /* body의 회색 대신 page 전체를 흰색으로 */
+  min-height: 100svh; /* 주소창 변동 대응 */
+}
+@supports not (height: 1svh) {
+  #onboarding {
+    min-height: 100vh;
+  }
+}
+
+/* 2) 컨테이너는 화면 전체 폭을 차지하게 (배경을 줄이지 않도록) */
+#onboarding .onboarding-container {
+  width: 100%;
+  max-width: none; /* media query의 36vw 제한을 이 페이지에서는 해제 */
+  margin: 0;
+  /* 사용자가 지정한 패딩/최소높이 그대로 유지 */
+  padding-top: 29.0541vh;
+  padding-right: 8.3333vw;
+  padding-bottom: 4.0541vh;
+  padding-left: 0.3333vw;
+  min-height: 100svh;
+}
+
+/* 3) 대신 내부 콘텐츠(제목/폼/버튼)는 넓은 화면에서만 36vw로 고정해 중앙 정렬 */
+@media (min-width: 56.25em) {
+  /* ≥ 900px */
+  #onboarding .onboarding-container > * {
+    max-width: 36vw; /* 기존 레이아웃 의도 유지 */
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+/* =========================
+   Onboarding — full-bleed white + fixed content width (S8+ baseline)
+   ========================= */
+
+/* 0) page background always white, full height */
+#onboarding {
+  background: #fff;
+  min-height: 100svh;
+}
+@supports not (height: 1svh) {
+  #onboarding {
+    min-height: 100vh;
+  }
+}
+
+/* 1) let the background container fill the screen width, don't constrain here */
+#onboarding .onboarding-container {
+  width: 100%;
+  max-width: none; /* ignore any global .container max-width for this page */
+  margin: 0;
+  padding-top: clamp(48px, 10vh, 120px);
+  padding-right: 5.5556vw; /* 20px @ 360 baseline */
+  padding-bottom: 13.5135vh; /* 100px baseline */
+  padding-left: 4.5556vw;
+  min-height: 100%;
+  box-sizing: border-box;
+}
+
+/* 2) FIXED content column width based on Galaxy S8+ (360 CSS px)
+      - all direct children (title, fields, button) share the same width
+      - on tiny screens, it shrinks to fit; on large screens, it never exceeds 360px
+*/
+#onboarding {
+  --col: min(92vw, 360px); /* 360px cap so it looks the same on big screens */
+}
+
+#onboarding .onboarding-container > * {
+  width: var(--col);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* 3) Inputs/selects: make sure they fill the column exactly and keep uniform height */
+#onboarding .onb-input,
+#onboarding select.onb-input {
+  width: 100%;
+  height: 35px;
+  padding: 9px 8px;
+  line-height: 20px;
+  border-radius: 10px;
+  border: 1px solid #e5e5ea;
+  background: #fff;
+  font-size: 12px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  box-sizing: border-box;
+}
+
+/* 4) Select triangle (URL-encoded SVG, single line) */
+#onboarding select.onb-input {
+  padding-right: 2.5rem; /* room for arrow */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23999' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.625rem center;
+  background-size: 1rem 1rem;
+}
+#onboarding select.onb-input::-ms-expand {
+  display: none;
+}
+#onboarding select.onb-input.has-value {
+  color: #62a6ff;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%2362a6ff' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+}
+
+/* 5) Button: same visual width everywhere (matches column), consistent height */
+#onboarding .onb-cta {
+  display: block;
+  width: var(--col);
+  height: 38px;
+  border: none;
+  border-radius: 14px;
+  margin-top: 17.027vh;
+  box-sizing: border-box;
+}
+
+/* 6) If you had global media queries shrinking .container, keep them but ignore on this page */
+@media (min-width: 37.5em) {
+  #onboarding .onboarding-container {
+    /* keep our own measurements; don't inherit other pages' .container rules */
+    padding-top: clamp(56px, 12vh, 140px);
+  }
+}
+@media (min-width: 56.25em) {
+  /* background still full width */
+  #onboarding .onboarding-container {
+    max-width: none;
+  }
+
+  /* content stays the same fixed column (360px), centered */
+  #onboarding .onboarding-container > * {
+    max-width: 360px;
+  }
+}
+
+/* =========================
+   Interest — full-bleed white + fixed content width (S8+ baseline)
+   ========================= */
+
+/* 0) page background always white, full height */
+#interest {
+  background: #fff;
+  min-height: 100svh;
+}
+@supports not (height: 1svh) {
+  #interest {
+    min-height: 100vh;
+  }
+}
+
+/* 1) let the white container fill the viewport width (don’t constrain here) */
+#interest .interest-container {
+  width: 100%;
+  max-width: none; /* stop any global container max-width from shrinking background */
+  margin: 0;
+  /* comfortable top spacing that scales a bit with viewport height */
+  padding-top: clamp(48px, 10vh, 120px);
+  padding-right: 5.5556vw; /* 20px @ 360 baseline */
+  padding-bottom: 13.5135vh; /* 100px baseline */
+  padding-left: 5.5556vw;
+  min-height: 100%;
+  box-sizing: border-box;
+}
+
+/* 2) FIXED content column width based on Galaxy S8+ (360 CSS px)
+      — all direct children (title, paragraphs, groups, CTA) use the same column
+      — on tiny screens it can shrink a bit; on large screens it never exceeds 360px
+*/
+#interest {
+  --col: min(92vw, 360px);
+}
+
+#interest .interest-container > * {
+  width: var(--col);
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+}
+
+/* 3) Headings & helper text sizing (keeps original feel) */
+#interest h1,
+#interest .interest-title {
+  width: var(--col);
+  margin-left: auto;
+  margin-right: auto;
+}
+#interest p,
+#interest .interest-sub {
+  width: var(--col);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* 4) Chip groups sit within the fixed column; chips wrap naturally */
+#interest .chip-group,
+#interest .interest-group {
+  width: var(--col);
+  margin-left: auto;
+  margin-right: auto;
+}
+#interest .chip {
+  display: inline-flex;
+  align-items: center;
+  height: 2.125rem; /* ~34px */
+  padding: 0 0.75rem; /* horizontal padding only */
+  border-radius: 1.3125rem; /* ~21px pill */
+  font-size: 0.875rem; /* 14px */
+  line-height: 1;
+  white-space: nowrap;
+  margin: 0 0.5rem 0.75rem 0; /* spacing between chips */
+  box-sizing: border-box;
+}
+
+/* 5) CTA button keeps the same visual width everywhere */
+#interest .interest-cta,
+#interest .onb-cta {
+  /* if Interest reuses the same button class */
+  display: block;
+  width: var(--col);
+  height: 42px; /* a touch taller than onboarding; set to 38px if you prefer exact match */
+  border: none;
+  border-radius: 14px;
+  margin: 2rem auto 0 auto;
+  box-sizing: border-box;
+}
+
+/* 6) wide-screen: keep background full width; content column remains capped at 360px */
+@media (min-width: 56.25em) {
+  #interest .interest-container {
+    max-width: none;
+  }
+  #interest .interest-container > * {
+    max-width: 360px;
+  }
+}
+
+/* =========================
+   Interest page — fix background full width
+   ========================= */
+
+/* 페이지 전체 배경을 흰색으로 고정 */
+#interest {
+  background: #fff;
+  min-height: 100svh;
+}
+@supports not (height: 1svh) {
+  #interest {
+    min-height: 100vh;
+  }
+}
+
+/* 컨테이너는 화면 전체 폭을 차지 */
+#interest .interest-container {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding-top: clamp(48px, 10vh, 120px);
+  padding-right: 5.5556vw;
+  padding-bottom: 13.5135vh;
+  padding-left: 5.5556vw;
+  min-height: 100%;
+  box-sizing: border-box;
+}
+
+/* 고정된 콘텐츠 column (Galaxy S8+ 기준 360px cap) */
+#interest {
+  --col: min(92vw, 360px);
+}
+#interest .interest-container > * {
+  width: var(--col);
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+}
+
+/* CTA 버튼도 동일한 column 너비 */
+#interest .interest-cta,
+#interest .onb-cta {
+  display: block;
+  width: var(--col);
+  height: 42px;
+  border-radius: 14px;
+  margin: 2rem auto 0 auto;
+  box-sizing: border-box;
+}
+
+/* 큰 화면에서도 배경은 풀폭, 콘텐츠는 360px로 제한 */
+@media (min-width: 56.25em) {
+  #interest .interest-container {
+    max-width: none;
+  }
+  #interest .interest-container > * {
+    max-width: 360px;
+  }
 }

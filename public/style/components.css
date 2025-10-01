@@ -8,14 +8,11 @@ button {
   color: white;
   border: none;
   border-radius: 12px;
-  padding-top: 1.6216vh;
-  padding-right: 3.3333vw;
-  padding-bottom: 1.6216vh;
-  padding-left: 3.3333vw;
+  padding: 12px;
   width: 100%;
-  font-size: 1rem;
+  font-size: 16px;
   cursor: pointer;
-  margin-top: 1.3514vh;
+  margin-top: 10px;
 }
 
 button:disabled {
@@ -24,16 +21,10 @@ button:disabled {
 
 .quiz-btn,
 .start-btn {
-  width: 89.1667vw;
-  margin-top: 2.4324vh;
-  margin-right: 5vw;
-  margin-bottom: 2.4324vh;
-  margin-left: 5vw;
-  padding-top: 1.3514vh;
-  padding-right: 2.7778vw;
-  padding-bottom: 1.3514vh;
-  padding-left: 2.7778vw;
-  font-size: 0.9375rem;
+  width: 321px;
+  margin: 18px;
+  padding: 10px;
+  font-size: 15px;
   background-color: #e41e26;
   color: white;
   border: none;
@@ -49,38 +40,38 @@ button:disabled {
   border: 1px solid #d9d9dd;
   color: #111;
   font-weight: 400;
-  font-size: 0.8125rem;
+  font-size: 13px;
   margin-top: 5%;
 }
 
 .btn-lg-grey {
   width: 100%;
-  height: 5.2703vh;
+  height: 39px;
   border-radius: 14px;
   background: #e41e26;
   color: #fff;
   border: none;
-  font-size: 0.8125rem;
+  font-size: 13px;
   font-weight: 500;
   margin-top: 35%;
 }
 
 .btn-outline-light {
   width: 100%;
-  height: 5.2703vh;
+  height: 39px;
   border-radius: 14px;
   background: #6f6f72;
   color: #fff;
   border: none;
-  font-size: 0.8125rem;
+  font-size: 13px;
   font-weight: 500;
 }
 
 /* Top-left global back button */
 #backBtnGlobal.top-back {
   position: fixed;
-  top: 2.973vh;
-  left: 5vw;
+  top: 22px;
+  left: 18px;
   z-index: 5000;
   margin: 0;
 }
@@ -94,46 +85,31 @@ button:disabled {
 /* ============================================= Inputs & Forms ============================================= */
 .fixed-input {
   display: block;
-  padding-top: 1.3514vh;
-  padding-right: 2.7778vw;
-  padding-bottom: 1.3514vh;
-  padding-left: 2.7778vw;
-  margin-top: 1.3514vh;
-  margin-right: 0vw;
-  margin-bottom: 1.3514vh;
-  margin-left: 0vw;
+  padding: 10px;
+  margin: 10px 0;
   width: 96.47%;
   border-radius: 8px;
   border: 1px solid #ccc;
-  font-size: 0.875rem;
+  font-size: 14px;
 }
 
 select,
 input {
   display: block;
-  padding-top: 1.3514vh;
-  padding-right: 2.7778vw;
-  padding-bottom: 1.3514vh;
-  padding-left: 2.7778vw;
-  margin-top: 1.3514vh;
-  margin-right: 0vw;
-  margin-bottom: 1.3514vh;
-  margin-left: 0vw;
+  padding: 10px;
+  margin: 10px 0;
   width: 100%;
   border-radius: 8px;
   border: 1px solid #ccc;
-  font-size: 0.75rem;
+  font-size: 12px;
 }
 
 textarea {
   width: 100%;
-  height: 10.8108vh;
+  height: 80px;
   border-radius: 5px;
-  padding-top: 0.6757vh;
-  padding-right: 1.3889vw;
-  padding-bottom: 0.6757vh;
-  padding-left: 1.3889vw;
-  font-size: 0.875rem;
+  padding: 5px;
+  font-size: 14px;
   border: 1px solid #ccc;
   resize: none;
 }
@@ -145,13 +121,10 @@ textarea {
 /* ============================================= Cards ============================================= */
 .card {
   background: var(--card-bg);
-  padding-top: 2.7027vh;
-  padding-right: 5.5556vw;
-  padding-bottom: 2.7027vh;
-  padding-left: 5.5556vw;
+  padding: 20px;
   border-radius: 16px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-  margin-bottom: 2.7027vh;
+  margin-bottom: 20px;
 }
 
 .module-card {
@@ -159,36 +132,30 @@ textarea {
 }
 
 .module-card img {
-  width: 22.2222vw;
-  height: 10.8108vh;
+  width: 80px;
+  height: 80px;
   object-fit: cover;
   border-radius: 8px;
-  margin-right: 3.3333vw;
+  margin-right: 12px;
 }
 
 .module-info h3 {
   margin: 0;
-  font-size: 1rem;
+  font-size: 16px;
 }
 
 .module-info p {
-  font-size: 0.75rem;
+  font-size: 12px;
   color: #777;
-  margin-top: 0.5405vh;
-  margin-right: 0vw;
-  margin-bottom: 0.5405vh;
-  margin-left: 0vw;
+  margin: 4px 0;
 }
 
 /* ============================================= Progress bars ============================================= */
 .progress-bar {
   background: #eee;
   border-radius: 6px;
-  height: 0.8108vh;
-  margin-top: 0.8108vh;
-  margin-right: 0vw;
-  margin-bottom: 0.8108vh;
-  margin-left: 0vw;
+  height: 6px;
+  margin: 6px 0;
   width: 100%;
 }
 
@@ -199,15 +166,15 @@ textarea {
 }
 
 .status {
-  font-size: 0.75rem;
+  font-size: 12px;
   color: #777;
 }
 
 p.note {
-  font-size: 0.75rem;
+  font-size: 12px;
   color: #666;
   text-align: center;
-  margin-top: 1.3514vh;
+  margin-top: 10px;
 }
 
 /* ============================================= Headers & Toolbars ============================================= */
@@ -215,10 +182,7 @@ p.note {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-top: 0.6757vh;
-  padding-right: 1.3889vw;
-  padding-bottom: 0.6757vh;
-  padding-left: 1.3889vw;
+  padding: 5px;
   background-color: white;
   position: sticky;
   top: 0;
@@ -227,16 +191,16 @@ p.note {
 }
 
 .header h3 {
-  font-size: 1rem;
+  font-size: 16px;
   margin: 0 auto;
 }
 
 .header button {
   background: none;
   border: none;
-  font-size: 1rem;
+  font-size: 16px;
   position: absolute;
-  left: 2.7778vw;
+  left: 10px;
   top: 50%;
   transform: translateY(-50%);
 }
@@ -244,34 +208,25 @@ p.note {
 .toolbar {
   display: flex;
   justify-content: space-between;
-  padding-top: 0.6757vh;
-  padding-right: 2.7778vw;
-  padding-bottom: 0.6757vh;
-  padding-left: 2.7778vw;
-  font-size: 1rem;
+  padding: 5px 10px;
+  font-size: 16px;
 }
 
 .toolbar button {
   background: none;
   border: none;
-  font-size: 1rem;
+  font-size: 16px;
   color: black;
 }
 
 .content-box {
   background: white;
-  padding-top: 1.3514vh;
-  padding-right: 2.7778vw;
-  padding-bottom: 1.3514vh;
-  padding-left: 2.7778vw;
-  margin-top: 0.6757vh;
-  margin-right: 1.3889vw;
-  margin-bottom: 0.6757vh;
-  margin-left: 1.3889vw;
-  margin-left: 5.5556vw;
+  padding: 10px;
+  margin: 5px;
+  margin-left: 20px;
   border-radius: 5px;
-  font-size: 0.875rem;
-  width: 83.3333vw;
+  font-size: 14px;
+  width: 300px;
 }
 
 .link {
@@ -292,10 +247,7 @@ body.quiz-mode {
 
 .quiz-header {
   background: white;
-  padding-top: 2.1622vh;
-  padding-right: 4.4444vw;
-  padding-bottom: 2.1622vh;
-  padding-left: 4.4444vw;
+  padding: 16px;
   text-align: center;
   border-bottom: 1px solid #eee;
   position: sticky;
@@ -304,17 +256,14 @@ body.quiz-mode {
 }
 
 .quiz-header.small {
-  padding-top: 1.0811vh;
-  padding-right: 2.2222vw;
-  padding-bottom: 1.0811vh;
-  padding-left: 2.2222vw;
+  padding: 8px;
   position: relative;
 }
 
 .quiz-header-row {
   display: flex;
   align-items: center;
-  gap: 3.3333vw;
+  gap: 12px;
   justify-content: start;
 }
 
@@ -325,19 +274,19 @@ body.quiz-mode {
 
 .quiz-header-row.centered .back-icon {
   position: absolute;
-  left: 2.7778vw;
-  margin-top: 0vh;
+  left: 10px;
+  margin-top: 0px;
 }
 
 .quiz-header-row h2 {
-  font-size: 1rem;
+  font-size: 16px;
   margin: 0;
 }
 
 .back-icon {
   background: none;
   border: none;
-  font-size: 1.25rem;
+  font-size: 20px;
   color: black;
   cursor: pointer;
   padding: 0;
@@ -349,45 +298,33 @@ body.quiz-mode {
 .quiz-scroll {
   overflow-y: auto;
   flex-grow: 1;
-  padding-top: 2.1622vh;
-  padding-right: 4.4444vw;
-  padding-bottom: 2.1622vh;
-  padding-left: 4.4444vw;
-  margin-bottom: 6.7568vh;
+  padding: 16px;
+  margin-bottom: 50px;
 }
 
 .quiz-block {
   background: #fff;
   border-radius: 16px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  padding-top: 2.1622vh;
-  padding-right: 4.4444vw;
-  padding-bottom: 2.1622vh;
-  padding-left: 4.4444vw;
-  margin-bottom: 2.7027vh;
+  padding: 16px;
+  margin-bottom: 20px;
 }
 
 .quiz-block p {
   font-weight: bold;
-  margin-bottom: 1.3514vh;
-  font-size: 0.9375rem;
+  margin-bottom: 10px;
+  font-size: 15px;
 }
 
 .radio-label {
   display: flex;
   align-items: center;
-  gap: 2.2222vw;
-  padding-top: 1.3514vh;
-  padding-right: 3.3333vw;
-  padding-bottom: 1.3514vh;
-  padding-left: 3.3333vw;
-  margin-top: 0.2703vh;
-  margin-right: 0vw;
-  margin-bottom: 0.2703vh;
-  margin-left: 0vw;
+  gap: 8px;
+  padding: 10px 12px;
+  margin: 2px 0;
   background: #f9f9f9;
   border-radius: 8px;
-  font-size: 0.875rem;
+  font-size: 14px;
   text-align: left;
   color: #333;
   transition: background-color 0.2s;
@@ -395,8 +332,8 @@ body.quiz-mode {
 }
 
 .radio-label input[type="radio"] {
-  width: 4.4444vw;
-  height: 2.1622vh;
+  width: 16px;
+  height: 16px;
   flex-shrink: 0;
   margin: 0;
 }
@@ -423,10 +360,7 @@ body.quiz-mode {
   z-index: 4000;
   width: 100%;
   background: #f3f4f6;
-  padding-top: 1.3514vh;
-  padding-right: 4.4444vw;
-  padding-bottom: 1.3514vh;
-  padding-left: 4.4444vw;
+  padding: 10px 16px;
   box-shadow: 0 -1px 4px rgba(0, 0, 0, 0.05);
   text-align: center;
 }
@@ -435,21 +369,18 @@ body.quiz-mode {
   background-color: var(--primary-color);
   color: white;
   border-radius: 12px;
-  font-size: 0.875rem;
-  padding-top: 1.6216vh;
-  padding-right: 3.3333vw;
-  padding-bottom: 1.6216vh;
-  padding-left: 3.3333vw;
+  font-size: 14px;
+  padding: 12px;
   width: 100%;
-  max-width: 88.8889vw;
+  max-width: 320px;
   margin: 2 auto;
   display: block;
   border: none;
 }
 
 #scoreResult {
-  margin-top: 1.6216vh;
-  font-size: 0.9375rem;
+  margin-top: 12px;
+  font-size: 15px;
   text-align: center;
 }
 
@@ -468,26 +399,20 @@ body.quiz-mode {
 
 .quiz-modal-content {
   background: white;
-  padding-top: 2.7027vh;
-  padding-right: 8.3333vw;
-  padding-bottom: 2.7027vh;
-  padding-left: 8.3333vw;
+  padding: 20px 30px;
   border-radius: 16px;
   text-align: center;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .quiz-modal-content button {
-  margin-top: 2.1622vh;
+  margin-top: 16px;
   background-color: var(--primary-color);
   border: none;
   border-radius: 8px;
   color: white;
-  font-size: 1rem;
-  padding-top: 1.3514vh;
-  padding-right: 4.4444vw;
-  padding-bottom: 1.3514vh;
-  padding-left: 4.4444vw;
+  font-size: 16px;
+  padding: 10px 16px;
   cursor: pointer;
 }
 
@@ -500,12 +425,9 @@ body.quiz-mode {
   background-color: var(--card-bg);
   color: var(--font-color);
   border: 1px solid #ccc;
-  padding-top: 1.8919vh;
-  padding-right: 5.5556vw;
-  padding-bottom: 1.8919vh;
-  padding-left: 5.5556vw;
-  font-size: 1rem;
-  margin-bottom: 1.3514vh;
+  padding: 14px 20px;
+  font-size: 16px;
+  margin-bottom: 10px;
   border-radius: 12px;
   text-align: center;
   width: 100%;
@@ -513,19 +435,19 @@ body.quiz-mode {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 8.1081vh;
+  height: 60px;
   box-sizing: border-box;
 }
 
 /* ============================================= Atoms Card related components ============================================= */
 .atoms-title-bar {
-  height: 7.4324vh;
+  height: 55px;
   background-color: #b4342a;
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.25rem;
+  font-size: 20px;
   font-weight: bold;
   position: fixed;
   top: 0;
@@ -535,8 +457,8 @@ body.quiz-mode {
 
 #closeTOCBtn {
   position: fixed;
-  top: calc(7.4324vh + 30vh);
-  right: 2.7778vw;
+  top: calc(55px + 30vh);
+  right: 10px;
   transform: translateY(-35%);
   width: clamp(2.5rem, 6vw, 3rem);
   height: clamp(2.5rem, 6vw, 3rem);
@@ -553,14 +475,14 @@ body.quiz-mode {
 
 .top-right-icons {
   position: fixed;
-  top: 0.1351vh;
-  left: 2.7778vw;
+  top: 1px;
+  left: 10px;
   display: flex;
   flex-direction: column;
-  gap: 2.2222vw;
+  gap: 8px;
   z-index: 2000;
-  margin-top: 35.1351vh;
-  margin-left: 83.3333vw;
+  margin-top: 260px;
+  margin-left: 300px;
 }
 
 .top-right-icons button {
@@ -568,14 +490,11 @@ body.quiz-mode {
   color: white;
   border: none;
   border-radius: 6px;
-  padding-top: 1.0811vh;
-  padding-right: 3.3333vw;
-  padding-bottom: 1.0811vh;
-  padding-left: 3.3333vw;
-  font-size: 1.125rem;
+  padding: 8px 12px;
+  font-size: 18px;
   cursor: pointer;
-  width: 11.1111vw;
-  height: 5.4054vh;
+  width: 40px;
+  height: 40px;
   line-height: 1;
   display: flex;
   align-items: center;
@@ -584,7 +503,7 @@ body.quiz-mode {
 
 #tocDropdown {
   position: fixed;
-  top: 7.4324vh;
+  top: 55px;
   right: 0;
   width: 100%;
   height: 30vh;
@@ -604,7 +523,7 @@ body.quiz-mode {
   opacity: 1;
   transform: translateY(0);
   pointer-events: auto;
-  top: 7.4324vh;
+  top: 55px;
 }
 
 #tocDropdown.slide-up {
@@ -616,11 +535,8 @@ body.quiz-mode {
 
 .toc-tab {
   display: flex;
-  gap: 1.6667vw;
-  padding-top: 1.3514vh;
-  padding-right: 2.7778vw;
-  padding-bottom: 1.3514vh;
-  padding-left: 2.7778vw;
+  gap: 6px;
+  padding: 10px;
   border-bottom: 1px solid #ddd;
 }
 
@@ -630,31 +546,22 @@ body.quiz-mode {
   color: white;
   border: none;
   border-radius: 6px;
-  padding-top: 0.8108vh;
-  padding-right: 1.6667vw;
-  padding-bottom: 0.8108vh;
-  padding-left: 1.6667vw;
-  font-size: 0.875rem;
+  padding: 6px;
+  font-size: 14px;
   cursor: pointer;
 }
 
 /* List styling */
 #tocList {
   list-style: none;
-  padding-top: 1.3514vh;
-  padding-right: 2.7778vw;
-  padding-bottom: 1.3514vh;
-  padding-left: 2.7778vw;
+  padding: 10px;
   margin: 0;
 }
 
 #tocList li {
-  padding-top: 0.8108vh;
-  padding-right: 1.1111vw;
-  padding-bottom: 0.8108vh;
-  padding-left: 1.1111vw;
+  padding: 6px 4px;
   border-bottom: 1px solid #eee;
-  font-size: 0.875rem;
+  font-size: 14px;
 }
 
 #atomsImageContainer img {
@@ -668,10 +575,7 @@ body.quiz-mode {
 }
 
 #atomsImageContainer img {
-  margin-top: 1.3514vh;
-  margin-right: 0vw;
-  margin-bottom: 1.3514vh;
-  margin-left: 0vw;
+  margin: 10px 0;
 }
 
 #atomsImageContainer {
@@ -679,8 +583,8 @@ body.quiz-mode {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding-top: 7.4324vh;
-  gap: 5.5556vw;
+  padding-top: 55px;
+  gap: 20px;
 }
 
 .toc-tab button {
@@ -689,11 +593,8 @@ body.quiz-mode {
   color: black;
   border: none;
   border-radius: 6px;
-  padding-top: 0.8108vh;
-  padding-right: 1.6667vw;
-  padding-bottom: 0.8108vh;
-  padding-left: 1.6667vw;
-  font-size: 0.875rem;
+  padding: 6px;
+  font-size: 14px;
   cursor: pointer;
 }
 
@@ -722,32 +623,32 @@ body.quiz-mode {
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 6.7568vh;
+  height: 50px;
   background-color: white;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-left: 2.7778vw;
+  padding-left: 10px;
   border-top: 1px solid #ccc;
   z-index: 9999;
 }
 
 .nav-icon {
-  font-size: 1.5rem;
+  font-size: 24px;
   color: black;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 19.4444vw;
+  margin-right: 70px;
 }
 
 /* ============================================= Slide Toggle Switch ============================================= */
 .switch {
   position: relative;
   display: inline-block;
-  width: 16.6667vw;
-  height: 4.5946vh;
+  width: 60px;
+  height: 34px;
 }
 
 .switch input {
@@ -771,29 +672,26 @@ body.quiz-mode {
 .slider:before {
   position: absolute;
   content: "";
-  height: 3.5135vh;
-  width: 7.2222vw;
-  left: 1.1111vw;
-  bottom: 0.5405vh;
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
   background-color: white;
   transition: 0.4s;
   border-radius: 50%;
 }
 
 input:checked + .slider:before {
-  transform: translateX(7.2222vw);
+  transform: translateX(26px);
 }
 
 .install-button {
   position: fixed;
-  bottom: 5.4054vh;
+  bottom: 40px;
   left: 50%;
   transform: translateX(-50%);
-  padding-top: 1.8919vh;
-  padding-right: 7.7778vw;
-  padding-bottom: 1.8919vh;
-  padding-left: 7.7778vw;
-  font-size: 1rem;
+  padding: 14px 28px;
+  font-size: 16px;
   background-color: #b4342a;
   color: white;
   border: none;
@@ -821,10 +719,7 @@ input:checked + .slider:before {
   height: 50%;
   background: white;
   border-radius: 12px;
-  padding-top: 2.1622vh;
-  padding-right: 4.4444vw;
-  padding-bottom: 2.1622vh;
-  padding-left: 4.4444vw;
+  padding: 16px;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -835,14 +730,14 @@ input:checked + .slider:before {
   justify-content: space-between;
   align-items: center;
   font-weight: bold;
-  font-size: 1rem;
-  margin-bottom: 1.3514vh;
+  font-size: 16px;
+  margin-bottom: 10px;
 }
 
 .modal-close {
   background: none;
   border: none;
-  font-size: 1.5rem;
+  font-size: 24px;
   cursor: pointer;
   color: #555;
 }
@@ -850,16 +745,16 @@ input:checked + .slider:before {
 .modal-content {
   overflow-y: auto;
   flex-grow: 1;
-  padding-right: 2.2222vw;
+  padding-right: 8px;
   text-align: left;
 }
 
 .modal-content label {
   display: flex;
   align-items: center;
-  gap: 2.2222vw;
-  margin-bottom: 1.3514vh;
-  font-size: 0.875rem;
+  gap: 8px;
+  margin-bottom: 10px;
+  font-size: 14px;
 }
 
 #offlineContentModal label {
@@ -872,18 +767,15 @@ input:checked + .slider:before {
 .tooltip {
   position: absolute;
   bottom: 100%;
-  left: 0.5556vw;
-  transform: translateY(-0.8108vh);
+  left: 2px;
+  transform: translateY(-6px);
   background: #333;
   color: #fff;
-  padding-top: 1.0811vh;
-  padding-right: 2.7778vw;
-  padding-bottom: 1.0811vh;
-  padding-left: 2.7778vw;
+  padding: 8px 10px;
   border-radius: 8px;
-  font-size: 0.75rem;
+  font-size: 12px;
   line-height: 1.35;
-  max-width: 77.7778vw;
+  max-width: 280px;
   z-index: 1000;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
 }
@@ -891,7 +783,7 @@ input:checked + .slider:before {
   content: "";
   position: absolute;
   top: 100%;
-  right: 3.8889vw;
+  right: 14px;
   border-width: 6px 6px 0 6px;
   border-style: solid;
   border-color: #333 transparent transparent transparent;
@@ -920,10 +812,7 @@ input:checked + .slider:before {
   border-radius: 24px 0px 0px 24px;
   height: 84%;
   background: #f2f2f2;
-  padding-top: 2.7027vh;
-  padding-right: 5.5556vw;
-  padding-bottom: 2.7027vh;
-  padding-left: 5.5556vw;
+  padding: 20px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
@@ -932,10 +821,7 @@ input:checked + .slider:before {
 
 .menu-header {
   background: #c5c5c5;
-  padding-top: 3.7838vh;
-  padding-right: 5.5556vw;
-  padding-bottom: 2.1622vh;
-  padding-left: 5.5556vw;
+  padding: 28px 20px 16px;
   border-top-left-radius: 22px;
   margin: -10%;
 }
@@ -944,7 +830,7 @@ input:checked + .slider:before {
   position: absolute;
   top: 3%;
   right: -42%;
-  font-size: 2.3125rem;
+  font-size: 37px;
   border: none;
   background: none;
   color: #333;
@@ -952,28 +838,28 @@ input:checked + .slider:before {
 }
 
 .menu-header {
-  margin-bottom: 1.3514vh;
+  margin-bottom: 10px;
 }
 
 .user-profile {
-  width: 15.5556vw;
-  height: 7.5676vh;
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
   background: white;
-  margin-left: 1.6667vw;
-  margin-bottom: 0.5405vh;
+  margin-left: 6px;
+  margin-bottom: 4px;
 }
 
 #menuUsername {
   font-weight: 500;
-  font-size: 1rem;
+  font-size: 16px;
   margin-left: 39%;
   color: #111;
   margin-top: -25%;
 }
 
 .menu-sub {
-  font-size: 0.6875rem;
+  font-size: 11px;
   color: #666;
   margin-left: 39%;
   margin-top: 1%;
@@ -981,26 +867,23 @@ input:checked + .slider:before {
 
 .menu-search-wrap {
   position: relative;
-  margin-top: 2.027vh;
+  margin-top: 15px;
 }
 
 .menu-search {
   margin-top: 26%;
   width: 100%;
-  padding-top: 0.9459vh;
-  padding-right: 3.3333vw;
-  padding-bottom: 0.9459vh;
-  padding-left: 3.3333vw;
+  padding: 7px 12px;
   border-radius: 10px;
   border: 0px solid #ccc;
-  font-size: 0.75rem;
+  font-size: 12px;
   background: white;
   color: #ccc;
 }
 
 .menu-search-icon {
   position: absolute;
-  right: 2.7778vw;
+  right: 10px;
   top: 50%;
   transform: translateY(-50%);
   pointer-events: none;
@@ -1013,10 +896,7 @@ input:checked + .slider:before {
 .menu-tabs {
   display: flex;
   gap: 0;
-  padding-top: -0.5405vh;
-  padding-right: 2.7778vw;
-  padding-bottom: -0.5405vh;
-  padding-left: 2.7778vw;
+  padding: -4px 10px;
   border-bottom: 1px solid #ccc;
   background: #f2f2f2;
   margin-top: -5%;
@@ -1024,12 +904,9 @@ input:checked + .slider:before {
 .menu-tabs .tab {
   background: none;
   border: none;
-  font-size: 0.8125rem;
+  font-size: 13px;
   color: #999;
-  padding-top: 1.0811vh;
-  padding-right: 2.7778vw;
-  padding-bottom: 1.0811vh;
-  padding-left: 2.7778vw;
+  padding: 8px 10px;
   border-bottom: 2px solid transparent;
 }
 .menu-tabs .tab.active {
@@ -1039,27 +916,21 @@ input:checked + .slider:before {
 
 /* Sections with dividers */
 .menu-section {
-  padding-top: 1.7568vh;
-  padding-right: 2.7778vw;
-  padding-bottom: 1.7568vh;
-  padding-left: 2.7778vw;
+  padding: 13px 10px;
 }
 .menu-section strong {
   display: block;
-  font-size: 0.5625rem;
+  font-size: 9px;
   color: #c5c5c5;
-  margin-bottom: 1.0811vh;
-  letter-spacing: 0.0312rem;
+  margin-bottom: 8px;
+  letter-spacing: 0.5px;
 }
 
 /* Menu items */
 .menu-item {
-  font-size: 0.75rem;
+  font-size: 12px;
   color: #111;
-  padding-top: 0.5405vh;
-  padding-right: 0vw;
-  padding-bottom: 0.5405vh;
-  padding-left: 0vw;
+  padding: 4px 0;
   cursor: pointer;
   font-weight: 600;
 }
@@ -1068,12 +939,9 @@ input:checked + .slider:before {
 }
 
 .menu-item a {
-  font-size: 0.75rem;
+  font-size: 12px;
   color: #111;
-  padding-top: 0.5405vh;
-  padding-right: 0vw;
-  padding-bottom: 0.5405vh;
-  padding-left: 0vw;
+  padding: 4px 0;
   cursor: pointer;
   font-weight: 600;
 }
@@ -1083,12 +951,9 @@ input:checked + .slider:before {
 
 /* ============================================= Catalog components ============================================= */
 .catalog-h2 {
-  font-size: 0.8125rem;
+  font-size: 13px;
   font-weight: 600;
-  margin-top: 5.1351vh;
-  margin-right: 0.5556vw;
-  margin-bottom: 1.0811vh;
-  margin-left: 0.5556vw;
+  margin: 38px 2px 8px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1097,48 +962,39 @@ input:checked + .slider:before {
 .catalog-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 2.7778vw;
-  margin-top: 1.0811vh;
-  margin-right: 0vw;
-  margin-bottom: 2.1622vh;
-  margin-left: 0vw;
+  gap: 10px;
+  margin: 8px 0 16px;
 }
 
 .catalog-card {
   background: #e0e0e0;
   border: none;
   border-radius: 16px;
-  min-height: 16.2162vh;
-  padding-top: 1.6216vh;
-  padding-right: 3.3333vw;
-  padding-bottom: 1.6216vh;
-  padding-left: 3.3333vw;
+  min-height: 120px;
+  padding: 12px;
   text-align: left;
   position: relative;
   box-shadow: none;
 }
 
 .catalog-card .cc-title {
-  font-size: 0.875rem;
+  font-size: 14px;
   color: #111;
   line-height: 1.2;
 }
 
 .catalog-card .cc-tags {
   position: absolute;
-  left: 2.7778vw;
-  bottom: 1.3514vh;
+  left: 10px;
+  bottom: 10px;
   display: flex;
-  gap: 1.6667vw;
+  gap: 6px;
 }
 
 .catalog-card .tag {
   display: inline-block;
-  font-size: 0.6875rem;
-  padding-top: 0.5405vh;
-  padding-right: 2.2222vw;
-  padding-bottom: 0.5405vh;
-  padding-left: 2.2222vw;
+  font-size: 11px;
+  padding: 4px 8px;
   border-radius: 999px;
   background: #6f6f72;
   color: #fff;
@@ -1148,7 +1004,7 @@ input:checked + .slider:before {
 .catalog-h2 .see-all {
   color: #fff;
   font-weight: 500;
-  font-size: 0.75rem;
+  font-size: 12px;
 }
 
 /* Dashboard: Recommended module cards */
@@ -1157,35 +1013,29 @@ input:checked + .slider:before {
   align-items: center;
   background: #fff;
   border-radius: 12px;
-  padding-top: 1.2162vh;
-  padding-right: 2.5vw;
-  padding-bottom: 1.2162vh;
-  padding-left: 2.5vw;
-  margin-bottom: 1.2162vh;
+  padding: 9px;
+  margin-bottom: 9px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
   cursor: pointer;
 }
 
 .module-card .module-info h3 {
   margin: 0;
-  font-size: 0.8125rem;
+  font-size: 13px;
   color: #111;
 }
 
 .module-card .module-info p {
-  font-size: 0.75rem;
+  font-size: 12px;
   color: #777;
-  margin-top: 0.5405vh;
-  margin-right: 0vw;
-  margin-bottom: 0.5405vh;
-  margin-left: 0vw;
+  margin: 4px 0;
 }
 
 /* Optional: a little spacing between image and text  */
 .module-card .module-info {
   display: flex;
   flex-direction: column;
-  gap: 1.6667vw;
+  gap: 6px;
 }
 
 /* ============================================= Eyes page components ============================================= */
@@ -1193,41 +1043,32 @@ input:checked + .slider:before {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 1.0811vh;
-  margin-right: 0.5556vw;
-  margin-bottom: 1.3514vh;
-  margin-left: 0.5556vw;
+  margin: 8px 2px 10px;
 }
 .eyes-title {
-  font-size: 0.875rem;
+  font-size: 14px;
   font-weight: 600;
   color: #000000;
-  margin-left: 7.7778vw;
+  margin-left: 28px;
   z-index: 1;
 }
 .eyes-top .icons {
   display: flex;
-  gap: 2.7778vw;
+  gap: 10px;
 }
 .eyes-top .icon {
-  font-size: 1.1875rem;
+  font-size: 19px;
 }
 
 .eyes-carousel {
   display: grid;
   grid-auto-flow: column;
   grid-auto-columns: 70%;
-  gap: 3.8889vw;
+  gap: 14px;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
-  padding-top: 0vh;
-  padding-right: 0vw;
-  padding-bottom: 0.5405vh;
-  padding-left: 0vw;
-  margin-top: 0.8108vh;
-  margin-right: 0vw;
-  margin-bottom: 2.1622vh;
-  margin-left: 0vw;
+  padding: 0px 0px 4px;
+  margin: 6px 0 16px;
 }
 .eyes-carousel::-webkit-scrollbar {
   display: none;
@@ -1237,15 +1078,12 @@ input:checked + .slider:before {
   scroll-snap-align: center;
   background: #000000;
   border-radius: 18px;
-  height: 20vh;
+  height: 148px;
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
-  padding-top: 3.3784vh;
-  padding-right: 5vw;
-  padding-bottom: 3.3784vh;
-  padding-left: 5vw;
-  font-size: 0.8125rem;
+  padding: 25px 18px;
+  font-size: 13px;
   font-weight: 500;
   color: #ffffff;
   border: none;
@@ -1273,31 +1111,28 @@ input:checked + .slider:before {
 
 .eyes-card .tag-row {
   position: absolute;
-  left: 5vw;
-  bottom: 1.6216vh;
+  left: 18px;
+  bottom: 12px;
   display: flex;
-  gap: 1.6667vw;
+  gap: 6px;
   z-index: 1;
 }
 .eyes-card .tag {
   background: #e41e26;
   color: #fff;
   border-radius: 9px;
-  padding-top: 0.8108vh;
-  padding-right: 4.1667vw;
-  padding-bottom: 0.8108vh;
-  padding-left: 4.1667vw;
-  font-size: 0.625rem;
+  padding: 6px 15px;
+  font-size: 10px;
   font-weight: 200;
   z-index: 1;
 }
 
 .eyes-card .heart-btn {
   position: absolute;
-  top: 1.3514vh;
-  right: 2.7778vw;
-  width: 7.7778vw;
-  height: 3.7838vh;
+  top: 10px;
+  right: 10px;
+  width: 28px;
+  height: 28px;
   border: none;
   background: transparent;
   display: flex;
@@ -1308,8 +1143,8 @@ input:checked + .slider:before {
   z-index: 1;
 }
 .eyes-card .heart-btn svg {
-  width: 5vw;
-  height: 2.4324vh;
+  width: 18px;
+  height: 18px;
   stroke: #ffffff;
   stroke-width: 2;
   fill: none;
@@ -1325,10 +1160,7 @@ input:checked + .slider:before {
   position: sticky;
   top: 0;
   z-index: 200;
-  padding-top: 1.0811vh;
-  padding-right: 3.3333vw;
-  padding-bottom: 0vh;
-  padding-left: 3.3333vw;
+  padding: 8px 12px 0;
   border-bottom: 1px solid #eee;
 }
 
@@ -1336,34 +1168,28 @@ input:checked + .slider:before {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 2.973vh;
-  margin-right: 3.3333vw;
-  margin-bottom: 0.8108vh;
-  margin-left: 3.3333vw;
+  margin: 22px 12px 6px;
 }
 
 .ml-title {
-  font-size: 0.875rem;
+  font-size: 14px;
   font-weight: 600;
   color: #111;
-  margin-left: 7.7778vw;
+  margin-left: 28px;
 }
 .ml-tabs {
   display: flex;
-  gap: 4.4444vw;
+  gap: 16px;
   justify-content: space-around;
   border-bottom: 1px solid #eee;
-  padding-bottom: 0.8108vh;
+  padding-bottom: 6px;
 }
 .ml-tab {
   background: none;
   border: none;
   color: #9aa0a6;
-  font-size: 0.75rem;
-  padding-top: 1.0811vh;
-  padding-right: 0vw;
-  padding-bottom: 1.0811vh;
-  padding-left: 0vw;
+  font-size: 12px;
+  padding: 8px 0;
   border-bottom: 2px solid transparent;
   width: 33%;
 }
@@ -1375,22 +1201,16 @@ input:checked + .slider:before {
 
 .ml-chip-row {
   display: flex;
-  gap: 2.7778vw;
-  padding-top: 0.8108vh;
-  padding-right: 0.5556vw;
-  padding-bottom: 1.3514vh;
-  padding-left: 0.5556vw;
+  gap: 10px;
+  padding: 6px 2px 10px;
 }
 
 .ml-chip {
   background: #fff;
   border: 1px solid #d9d9dd;
   border-radius: 11px;
-  padding-top: 0.2703vh;
-  padding-right: 0.5556vw;
-  padding-bottom: 0.2703vh;
-  padding-left: 0.5556vw;
-  font-size: 0.75rem;
+  padding: 2px;
+  font-size: 12px;
   width: 24%;
   color: #111;
 }
@@ -1402,23 +1222,20 @@ input:checked + .slider:before {
 
 .ml-container {
   background: #fff;
-  padding-top: 0.8108vh;
+  padding-top: 6px;
 }
 .ml-section-title {
-  font-size: 0.875rem;
+  font-size: 14px;
   font-weight: 600;
-  margin-top: 1.3514vh;
-  margin-right: 0.5556vw;
-  margin-bottom: 1.0811vh;
-  margin-left: 0.5556vw;
+  margin: 10px 2px 8px;
 }
 
 .ml-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 3.3333vw;
+  gap: 12px;
 }
-@media (max-width: 22.5em) {
+@media (max-width: 360px) {
   .ml-grid {
     grid-template-columns: 1fr;
   }
@@ -1428,40 +1245,34 @@ input:checked + .slider:before {
   position: relative;
   background: #c5c5c5;
   border-radius: 16px;
-  padding-top: 1.8919vh;
-  padding-right: 3.8889vw;
-  padding-bottom: 1.8919vh;
-  padding-left: 3.8889vw;
-  min-height: 18.9189vh;
+  padding: 14px;
+  min-height: 140px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
 .ml-tile h4 {
   margin: 0;
-  font-size: 0.8125rem;
+  font-size: 13px;
   color: #111;
 }
 .ml-heart {
   position: absolute;
-  right: 3.3333vw;
-  top: 1.6216vh;
-  font-size: 1.125rem;
+  right: 12px;
+  top: 12px;
+  font-size: 18px;
   color: #e11d48;
 }
 .ml-badges {
   display: flex;
-  gap: 1.6667vw;
+  gap: 6px;
 }
 .ml-badge {
   background: #666;
   color: #fff;
   border-radius: 9999px;
-  font-size: 0.6875rem;
-  padding-top: 0.8108vh;
-  padding-right: 2.2222vw;
-  padding-bottom: 0.8108vh;
-  padding-left: 2.2222vw;
+  font-size: 11px;
+  padding: 6px 8px;
 }
 
 /* My Learning polish */
@@ -1473,31 +1284,28 @@ input:checked + .slider:before {
 #likedPage .ml-icons {
   display: flex;
   align-items: center;
-  gap: 2.7778vw;
+  gap: 10px;
 }
 
 #likedPage .icon.menuBtn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.125rem;
+  font-size: 18px;
   line-height: 1;
 }
 
 #likedPage .ml-tabs {
   position: relative;
   border-bottom: 1px solid #eee;
-  padding-bottom: 0.8108vh;
+  padding-bottom: 6px;
 }
 #likedPage .ml-tab {
   position: relative;
   background: none;
   border: none;
   color: #9aa0a6;
-  padding-top: 1.0811vh;
-  padding-right: 0vw;
-  padding-bottom: 1.0811vh;
-  padding-left: 0vw;
+  padding: 8px 0;
   width: 33%;
 }
 #likedPage .ml-tab.active {
@@ -1509,8 +1317,8 @@ input:checked + .slider:before {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: -0.9459vh;
-  height: 0.2703vh;
+  bottom: -7px;
+  height: 2px;
   background: #e41e26;
   border-radius: 2px;
 }
@@ -1518,10 +1326,10 @@ input:checked + .slider:before {
 /* My Learning: Masonry layout */
 .ml-masonry {
   column-count: 2;
-  column-gap: 3.3333vw;
-  padding-top: 0.8108vh;
+  column-gap: 12px;
+  padding-top: 6px;
 }
-@media (min-width: 30em) {
+@media (min-width: 480px) {
   .ml-masonry {
     column-count: 3;
   }
@@ -1535,17 +1343,11 @@ input:checked + .slider:before {
   break-inside: avoid;
   background: #c5c5c5;
   border-radius: 16px;
-  padding-top: 1.6216vh;
-  padding-right: 3.3333vw;
-  padding-bottom: 1.6216vh;
-  padding-left: 3.3333vw;
-  margin-top: 0vh;
-  margin-right: 0vw;
-  margin-bottom: 1.6216vh;
-  margin-left: 0vw;
+  padding: 12px;
+  margin: 0 0 12px;
   position: relative;
   color: #111;
-  min-height: 18.9189vh;
+  min-height: 140px;
 }
 
 /* Title row with heart icon */
@@ -1557,113 +1359,98 @@ input:checked + .slider:before {
 
 /* Random height buckets for variety */
 .ml-card.size-s {
-  min-height: 16.2162vh;
+  min-height: 120px;
 }
 .ml-card.size-m {
-  min-height: 21.6216vh;
+  min-height: 160px;
 }
 .ml-card.size-l {
-  min-height: 29.7297vh;
+  min-height: 220px;
 }
 
 .ml-card h4 {
   margin-top: 4%;
-  font-size: 0.8125rem;
+  font-size: 13px;
   line-height: 1.25;
   font-weight: 600;
   text-align: left;
 }
 
 .ml-heart {
-  font-size: 1rem;
+  font-size: 16px;
   color: #e11d48;
-  margin-left: 1.6667vw;
+  margin-left: 6px;
 }
 
 /* Badges pinned at bottom */
 .ml-badges {
   display: flex;
   flex-wrap: wrap;
-  gap: 1.6667vw;
-  margin-top: 1.0811vh;
+  gap: 6px;
+  margin-top: 8px;
 }
 
 .ml-badge {
   background: #666;
   color: #fff;
   border-radius: 9999px;
-  font-size: 0.6875rem;
-  padding-top: 0.8108vh;
-  padding-right: 2.2222vw;
-  padding-bottom: 0.8108vh;
-  padding-left: 2.2222vw;
+  font-size: 11px;
+  padding: 6px 8px;
 }
 
 #pupilsPage .eyes-topbar__title {
-  font-size: 0.875rem;
+  font-size: 14px;
   font-weight: 600;
   color: #111;
-  top: 4.5946vh;
+  top: 34px;
 }
 #pupilsPage .eyes-topbar__icons {
   display: flex;
   align-items: center;
-  gap: 2.7778vw;
+  gap: 10px;
 }
 #pupilsPage .bell-icon {
-  width: 5.5556vw;
-  height: 2.7027vh;
+  width: 20px;
+  height: 20px;
   display: block;
 }
 
 .tl-item {
   position: relative;
-  margin-top: 1.8919vh;
-  margin-right: 0vw;
-  margin-bottom: 1.8919vh;
-  margin-left: 0vw;
+  margin: 14px 0;
 }
 
 .thumb {
-  width: 11.6667vw;
-  height: 4.0541vh;
+  width: 42px;
+  height: 30px;
   border-radius: 8px;
   background: #d3d3d3;
 }
 
 #pupilsPage .pupil-card h3 {
-  margin-top: 1.0811vh;
-  margin-right: 1.6667vw;
-  margin-bottom: 1.8919vh;
-  margin-left: 1.6667vw;
-  font-size: 0.75rem;
+  margin: 8px 6px 14px;
+  font-size: 12px;
   font-weight: 500;
   color: #111;
 }
 
 #pupilsPage .lesson-row {
   display: grid;
-  grid-template-columns: 2.75rem 1fr auto;
+  grid-template-columns: 44px 1fr auto;
   align-items: center;
-  gap: 2.7778vw;
+  gap: 10px;
   background: #fff;
   border-radius: 12px;
-  min-height: 6.8919vh;
-  padding-top: 1.3514vh;
-  padding-right: 3.3333vw;
-  padding-bottom: 1.3514vh;
-  padding-left: 3.3333vw;
-  margin-top: 2.1622vh;
-  margin-right: 0vw;
-  margin-bottom: 2.1622vh;
-  margin-left: 0vw;
+  min-height: 51px;
+  padding: 10px 12px;
+  margin: 16px 0;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
   width: 88%;
 }
 
 #pupilsPage .thumb {
-  width: 13.0556vw;
-  height: 6.4865vh;
+  width: 47px;
+  height: 48px;
   border-radius: 8px;
   background: #dcdcdc;
   border: 1px solid #e5e5ea;
@@ -1672,8 +1459,8 @@ input:checked + .slider:before {
 #pupilsPage .lesson-top {
   display: flex;
   align-items: center;
-  gap: 1.6667vw;
-  font-size: 0.75rem;
+  gap: 6px;
+  font-size: 12px;
   color: #777;
   margin-top: -11%;
   margin-left: 5%;
@@ -1681,16 +1468,16 @@ input:checked + .slider:before {
 #pupilsPage .lesson-type {
   font-weight: 600;
   color: #111;
-  font-size: 0.6875rem;
+  font-size: 11px;
 }
 #pupilsPage .lesson-meta {
   color: #bbb;
-  font-size: 0.6875rem;
+  font-size: 11px;
 }
 
 #pupilsPage .lesson-progress {
   width: 100%;
-  height: 0.8108vh;
+  height: 6px;
   background: #e9e9e9;
   border-radius: 999px;
   margin-top: 5%;
@@ -1705,7 +1492,7 @@ input:checked + .slider:before {
 }
 
 #pupilsPage .lesson-cta {
-  font-size: 0.6875rem;
+  font-size: 11px;
   color: #bbb;
   margin-bottom: -103%;
 }
@@ -1721,66 +1508,54 @@ input:checked + .slider:before {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 1.0811vh;
-  margin-right: 0.5556vw;
-  margin-bottom: 0.8108vh;
-  margin-left: 0.5556vw;
+  margin: 8px 2px 6px;
 }
 .eyes-topbar__title {
-  font-size: 0.8125rem;
+  font-size: 13px;
   font-weight: 500;
   color: #111;
 }
 .eyes-topbar__icons {
   display: flex;
-  gap: 2.7778vw;
+  gap: 10px;
 }
 
 .pupils-subtitle {
-  font-size: 0.8125rem;
+  font-size: 13px;
   font-weight: 600;
   color: #111;
-  margin-top: 2.8378vh;
-  margin-right: 1.1111vw;
-  margin-bottom: 1.6216vh;
-  margin-left: 1.1111vw;
+  margin: 21px 4px 12px;
 }
 
 .lesson-row {
   display: grid;
-  grid-template-columns: 3.25rem 1fr auto;
+  grid-template-columns: 52px 1fr auto;
   align-items: center;
-  gap: 2.7778vw;
+  gap: 10px;
   background: #fff;
   border-radius: 12px;
-  padding-top: 1.3514vh;
-  padding-right: 2.7778vw;
-  padding-bottom: 1.3514vh;
-  padding-left: 2.7778vw;
-  margin-top: 1.3514vh;
+  padding: 10px;
+  margin-top: 10px;
 }
 .lesson-main {
   display: flex;
   flex-direction: column;
-  gap: 1.6667vw;
+  gap: 6px;
 }
 .lesson-meta {
   opacity: 0.65;
 }
 
-@media (max-width: 21.25em) {
+@media (max-width: 340px) {
   .pupil-card {
-    padding-top: 1.8919vh;
-    padding-right: 3.3333vw;
-    padding-bottom: 1.8919vh;
-    padding-left: 3.3333vw;
+    padding: 14px 12px;
   }
   .lesson-row {
-    grid-template-columns: 2.875rem 1fr auto;
+    grid-template-columns: 46px 1fr auto;
   }
   .lesson-row .thumb {
-    width: 12.7778vw;
-    height: 4.3243vh;
+    width: 46px;
+    height: 32px;
   }
 }
 
@@ -1791,28 +1566,25 @@ input:checked + .slider:before {
 
 #pupilsPage .pupils-timeline .tl-item {
   display: flex;
-  gap: 2.7778vw;
-  margin-top: 0.8108vh;
-  margin-right: 0vw;
-  margin-bottom: 0.8108vh;
-  margin-left: 0vw;
+  gap: 10px;
+  margin: 6px 0;
   counter-increment: pupils-step;
 }
 
 #pupilsPage .pupils-timeline .tl-item::before {
   content: counter(pupils-step);
   flex: 0 0 auto;
-  width: 8.3333vw;
-  height: 4.0541vh;
+  width: 30px;
+  height: 30px;
   border-radius: 6px;
   background: #111;
   color: #fff;
-  font-size: 0.875rem;
+  font-size: 14px;
   font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-left: 0.8333vw;
+  margin-left: 3px;
   z-index: 500;
 }
 
@@ -1821,10 +1593,7 @@ input:checked + .slider:before {
   position: relative;
   flex: 1;
   background: #f4f4f4;
-  padding-top: 1.3514vh;
-  padding-right: 2.7778vw;
-  padding-bottom: 1.3514vh;
-  padding-left: 2.7778vw;
+  padding: 10px;
   border-radius: 8px;
 }
 
@@ -1838,16 +1607,13 @@ input:checked + .slider:before {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 8.3784vh;
-  padding-top: 0vh;
-  padding-right: 3.3333vw;
-  padding-bottom: 0vh;
-  padding-left: 3.3333vw;
+  height: 62px;
+  padding: 0 12px;
   margin: 0;
 }
 
 .eyes-topbar__title {
-  font-size: 0.875rem;
+  font-size: 14px;
   font-weight: 600;
   color: #111;
   line-height: 1;
@@ -1855,39 +1621,33 @@ input:checked + .slider:before {
 
 .eyes-topbar__icons {
   display: flex;
-  gap: 2.7778vw;
+  gap: 10px;
 }
 
 /* Any page using this topbar should add spacing for content below it */
 .page.has-eyes-topbar {
   background: #fff;
   min-height: 100vh;
-  padding-bottom: 13.5135vh;
-  padding-top: 8.3784vh;
+  padding-bottom: 100px;
+  padding-top: 62px;
 }
 
 .video-container {
-  padding-top: 2.7027vh;
-  padding-right: 5.5556vw;
-  padding-bottom: 2.7027vh;
-  padding-left: 5.5556vw;
-  padding-bottom: 6.4865vh;
+  padding: 20px;
+  padding-bottom: 48px;
 }
 
 .video-header {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-top: 0.6757vh;
-  padding-right: 1.3889vw;
-  padding-bottom: 0.6757vh;
-  padding-left: 1.3889vw;
+  padding: 5px;
   background-color: white;
   position: sticky;
-  top: 2.5676vh;
+  top: 19px;
   width: 86%;
-  left: 5.5556vw;
-  height: 4.4595vh;
+  left: 20px;
+  height: 33px;
   z-index: 100;
   position: relative;
 }
