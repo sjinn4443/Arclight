@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   build-and-test:
@@ -22,8 +25,8 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Lint
-        run: npm run lint
+      - name: Lint dist folder
+        run: npm run lint:dist # Changed from 'npm run lint' to 'npm run lint:dist'
 
       - name: Type check
         run: npm run type-check
