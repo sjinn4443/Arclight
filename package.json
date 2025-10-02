@@ -10,7 +10,9 @@
     "check-translations": "node scripts/check-translations.cjs",
     "test:a11y": "node scripts/test-a11y.mjs",
     "lint": "eslint . --ext .js,.ts",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "keywords": [],
   "author": "",
@@ -22,8 +24,12 @@
     "sharp": "^0.34.3"
   },
   "devDependencies": {
+    "esbuild": "^0.25.10",
+    "fs-extra": "^11.3.2",
     "jest": "^30.0.0",
     "jest-environment-jsdom": "^30.0.0",
+    "prettier": "^3.6.2",
+    "terser": "^5.44.0",
     "typescript": "^5.8.3",
     "vscode": "^1.1.37"
   }
