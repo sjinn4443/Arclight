@@ -1,5 +1,5 @@
 console.log(
-  "Running test-a11y script: performing accessibility checks on dist."
+  "Running test-a11y script: performing accessibility checks on dist.",
 );
 // Placeholder for actual accessibility testing logic
 // In a real scenario, this would involve:

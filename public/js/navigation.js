@@ -135,7 +135,7 @@ export async function loadPage(routeName, options = {}) {
   console.log("[router] loaded route:", routeName, "bytes=", html.length);
   console.log(
     "[router] .page count:",
-    container.querySelectorAll(".page").length
+    container.querySelectorAll(".page").length,
   );
 
   // 🔑 Make something visible
@@ -158,14 +158,14 @@ export async function loadPage(routeName, options = {}) {
 
   // Notify initializers
   window.dispatchEvent(
-    new CustomEvent("page:loaded", { detail: { routeName } })
+    new CustomEvent("page:loaded", { detail: { routeName } }),
   );
 
   // Toggle fixed UI (optional)
   const searchContainer = document.getElementById("fixedSearchContainer");
   if (searchContainer) {
     searchContainer.style.display = ["dashboard", "earsDashboard"].includes(
-      routeName
+      routeName,
     )
       ? "block"
       : "none";
@@ -251,7 +251,7 @@ export function initializePageNavigation() {
       e.preventDefault();
       goToDirectOphthalmoscopyQuiz();
     },
-    true
+    true,
   );
 
   // Also expose a global for manual triggering / compatibility with old.zip

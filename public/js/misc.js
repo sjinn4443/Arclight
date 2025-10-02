@@ -48,7 +48,7 @@ function initializeMiscImpl() {
           e.deltaY < 0 ? zoomLevel + 0.1 : Math.max(0.5, zoomLevel - 0.1);
         earHealthImage.style.transform = `scale(${zoomLevel})`;
       },
-      { passive: false }
+      { passive: false },
     );
   }
 }

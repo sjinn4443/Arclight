@@ -513,7 +513,9 @@ body.quiz-mode {
   overflow-y: auto;
   z-index: 2999;
   transform-origin: top;
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    opacity 0.3s ease;
   opacity: 1;
   transform: translateY(0);
   pointer-events: auto;
@@ -530,7 +532,9 @@ body.quiz-mode {
   transform: translateY(-100%);
   opacity: 0;
   pointer-events: none;
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    opacity 0.3s ease;
 }
 
 .toc-tab {

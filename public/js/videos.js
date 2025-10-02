@@ -36,7 +36,7 @@ function show(id) {
         "#cataractPage.page, " +
         "#arclightPage.page, " +
         "#howToUseArclightVideoPage.page, " +
-        "#phoneAttachmentVideoPage.page"
+        "#phoneAttachmentVideoPage.page",
     )
     .forEach((p) => (p.style.display = "none"));
 
@@ -141,7 +141,7 @@ const pc = document.getElementById("page-content") || document;
       const target = hit.getAttribute("data-page");
       if (target) show(target);
     },
-    { passive: true }
+    { passive: true },
   );
 }
 
@@ -161,7 +161,7 @@ Object.entries(bindings).forEach(([cardId, pageId]) => {
 
 // Section buttons at top of the "intermediate" videos page
 const showCoreBtn = document.getElementById(
-  "showCoreClinicalOphthalmicExaminationBtn"
+  "showCoreClinicalOphthalmicExaminationBtn",
 );
 const showDiseasesBtn = document.getElementById("showDiseasesBtn");
 const showArclightBtn = document.getElementById("showArclightBtn");
@@ -393,7 +393,7 @@ async function openAnteriorSegmentQuiz() {
 document.addEventListener("click", (e) => {
   if (e.target.closest("#caseBasedLearningCard")) {
     openAnteriorSegmentQuiz().catch((err) =>
-      console.error("Failed to open Anterior Segment Quiz:", err)
+      console.error("Failed to open Anterior Segment Quiz:", err),
     );
   }
 });

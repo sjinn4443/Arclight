@@ -17,7 +17,7 @@ export function closeOfflineContentModal() {
 }
 export async function downloadSelectedAssets() {
   const selected = Array.from(
-    document.querySelectorAll("#offlineContentModal input:checked")
+    document.querySelectorAll("#offlineContentModal input:checked"),
   ).map((cb) => cb.value);
   const assetMap = {
     cataract: ["./cataractPage.html", "./videos/Cataract.mp4"],

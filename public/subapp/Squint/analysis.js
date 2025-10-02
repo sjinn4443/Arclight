@@ -31,57 +31,60 @@
 
 /**
  * Transform the generated output text into a clinical diagnosis.
- * 
+ *
  * @param {string} text - The output from script.js (e.g. "RE: small in and med up and small ptosis")
  * @param {string} prefix - The eye prefix ("RE" or "LE")
  * @returns {string} - A diagnosis string, for example, "Small Esotropia, Medium Hypertropia, Slight Ptosis"
  */
 function transformOutput(text, prefix) {
-    const colonIndex = text.indexOf(":");
-    if (colonIndex === -1) return text;
-    let content = text.substring(colonIndex + 1).trim().toLowerCase();
-  
-    // When there is no input, default to "nil"
-    if (content === "neutral" || content === "normal") return prefix + ": nil";
-  
-    let segments = content.split(" and ");
-    let diagnoses = [];
-  
-    segments.forEach(segment => {
-      segment = segment.trim();
-      let grade = "";
-      if (segment.startsWith("small")) {
-        grade = "Small";
-      } else if (segment.startsWith("medium") || segment.startsWith("med")) {
-        grade = "Medium";
-      } else if (segment.startsWith("large")) {
-        grade = "Large";
+  const colonIndex = text.indexOf(":");
+  if (colonIndex === -1) return text;
+  let content = text
+    .substring(colonIndex + 1)
+    .trim()
+    .toLowerCase();
+
+  // When there is no input, default to "nil"
+  if (content === "neutral" || content === "normal") return prefix + ": nil";
+
+  let segments = content.split(" and ");
+  let diagnoses = [];
+
+  segments.forEach((segment) => {
+    segment = segment.trim();
+    let grade = "";
+    if (segment.startsWith("small")) {
+      grade = "Small";
+    } else if (segment.startsWith("medium") || segment.startsWith("med")) {
+      grade = "Medium";
+    } else if (segment.startsWith("large")) {
+      grade = "Large";
+    }
+
+    if (segment.includes(" in") && !segment.includes("out")) {
+      // Removed extra annotation for large esotropia.
+      diagnoses.push(grade + " Esotropia");
+    } else if (segment.includes(" out")) {
+      // Removed extra annotation for large exotropia.
+      diagnoses.push(grade + " Exotropia");
+    } else if (segment.includes(" up")) {
+      diagnoses.push(grade + " Hypertropia");
+    } else if (segment.includes(" down")) {
+      diagnoses.push(grade + " Hypotropia");
+    } else if (segment.includes("ptosis")) {
+      if (grade === "Small") {
+        diagnoses.push("Slight Ptosis");
+      } else {
+        diagnoses.push(grade + " Ptosis");
       }
-  
-      if (segment.includes(" in") && !segment.includes("out")) {
-        // Removed extra annotation for large esotropia.
-        diagnoses.push(grade + " Esotropia");
-      } else if (segment.includes(" out")) {
-        // Removed extra annotation for large exotropia.
-        diagnoses.push(grade + " Exotropia");
-      } else if (segment.includes(" up")) {
-        diagnoses.push(grade + " Hypertropia");
-      } else if (segment.includes(" down")) {
-        diagnoses.push(grade + " Hypotropia");
-      } else if (segment.includes("ptosis")) {
-        if (grade === "Small") {
-          diagnoses.push("Slight Ptosis");
-        } else {
-          diagnoses.push(grade + " Ptosis");
-        }
-      }
-    });
-  
-    if (diagnoses.length === 0) diagnoses.push("nil");
-  
-    return prefix + ": " + diagnoses.join(", ");
-  }
-  
+    }
+  });
+
+  if (diagnoses.length === 0) diagnoses.push("nil");
+
+  return prefix + ": " + diagnoses.join(", ");
+}
+
 /**
  * Determine a condition category based on the generated output text.
  *
@@ -90,197 +93,226 @@ function transformOutput(text, prefix) {
  * @returns {string} - The condition classification.
  */
 function determineCondition(text, eyeType) {
-    let content = text.toLowerCase();
-  
-    // If the output is neutral, return empty.
-    if (content.includes("nil") || content.includes("normal") || content.includes("neutral")) {
-      return "";
-    }
-  
-    // Flags for detected features.
-    // Include "lid" as an indicator for ptosis.
-    let hasPtosis = content.includes("ptosis") || content.includes("lid");
-    let hasSudden = content.includes("sudden");
-    let hasDilated = content.includes("dilated");
-  
-    // Determine ptosis grade.
-    let hasMedOrLargePtosis = content.includes("med ptosis") || content.includes("large ptosis");
-  
-    // Determine horizontal deviation.
-    let horizontal = null;
-    if (content.includes(" in") && !content.includes("out")) {
-      horizontal = "eso";
-    } else if (content.includes(" out")) {
-      horizontal = "exo";
-    }
-  
-    // Determine vertical deviation.
-    let vertical = null;
-    if (content.includes(" up")) {
-      vertical = "hyper";
-    } else if (content.includes(" down")) {
-      vertical = "hypo";
-    }
-  
-    // Flag for larger pupil.
-    let hasLargePupil = content.includes("larger pupil") || hasDilated;
-  
-    // 3rd nerve palsy condition (displayed in red):
-    // Must be down (hypo) and out (exo) with no conflicting " in " indicator, and the sudden toggle must be ON.
-    const extraInfo = "; Sudden: vertical diplopia+ptosis; <span style='color:red;'>aneurysm</span>, <span style='color:orange;'>tumour, trauma</span>";
-    if (vertical === "hypo" && horizontal === "exo" && !content.includes(" in ") && hasSudden) {
-      if (!hasPtosis) {
-        return "<span style='color:red;'>possible 3rd nerve palsy</span>" + extraInfo;
-      } else {
-        if (hasLargePupil && hasMedOrLargePtosis) {
-          return "<span style='color:red;'>definite 3rd nerve palsy</span>" + extraInfo;
-        } else {
-          return "<span style='color:red;'>probable 3rd nerve palsy</span>" + extraInfo;
-        }
-      }
-    }
-  
-    // 4th nerve palsy: up and out (not sudden).
-    const subtleText = "; Subtle: angled diplopia+head tilt; 'congenital', trauma; look for nasal upshoot";
-    if (vertical === "hyper" && horizontal === "exo") {
-      if (content.includes("small up")) {
-        return "possible 4th nerve palsy" + subtleText;
-      } else if (content.includes("med up") || content.includes("medium up")) {
-        return "probable 4th nerve palsy" + subtleText;
-      } else if (content.includes("large up")) {
-        return "definite 4th nerve palsy" + subtleText;
-      } else {
-        return "4th nerve palsy" + subtleText;
-      }
-    }
-  
-    // 6th nerve palsy: inwards (eso) and sudden, only if there is no medium or large vertical deviation.
-    if (horizontal === "eso" && hasSudden &&
-        !content.includes("med up") && !content.includes("medium up") &&
-        !content.includes("large up") &&
-        !content.includes("med down") && !content.includes("medium down") &&
-        !content.includes("large down")) {
-      const extraText = "; Sudden: horizontal diplopia+head turn; " +
-                        "<span style='color:red;'>SOL/IIH - ICP</span>, " +
-                        "<span style='color:orange;'>Temporal arteritis</span>, ear";
-      if (content.includes("small in")) {
-        return "<span style='color:red;'>possible 6th nerve palsy</span>" + extraText;
-      } else if (content.includes("med in") || content.includes("medium in")) {
-        return "<span style='color:red;'>probable 6th nerve palsy</span>" + extraText;
-      } else if (content.includes("large in")) {
-        return "<span style='color:red;'>definite 6th nerve palsy</span>" + extraText;
-      } else {
-        return "<span style='color:red;'>6th nerve palsy</span>" + extraText;
-      }
-    }
-  
-    // Horner syndrome block:
-    // If a smaller pupil is detected, then:
-    //   - With no ptosis/lid evidence → possible Horner syndrome
-    //   - With ptosis/lid → probable Horner syndrome, unless "faded" is also present, then definite.
-    if (content.includes("smaller pupil")) {
-      const extraText = "; CAD, stroke, lung <i>> physical</i>";
-      let hornerOutput = "";
-      if (hasPtosis) {
-        if (content.includes("faded")) {
-          hornerOutput = "definite Horner" + extraText;
-        } else {
-          hornerOutput = "probable Horner" + extraText;
-        }
-      } else {
-        hornerOutput = "possible Horner" + extraText;
-      }
-      return hornerOutput;
-    }
-  
-    // Fallback conditions.
-    if (horizontal && vertical) {
-      return "Mixed " + horizontal.toUpperCase() + " & " + vertical.toUpperCase();
-    }
-    if (horizontal) {
-      return horizontal.toUpperCase();
-    }
-    if (vertical) {
-      return vertical.toUpperCase();
-    }
-  
-    if (hasPtosis || hasSudden || hasDilated) {
-      return "Palsy";
-    }
-  
+  let content = text.toLowerCase();
+
+  // If the output is neutral, return empty.
+  if (
+    content.includes("nil") ||
+    content.includes("normal") ||
+    content.includes("neutral")
+  ) {
     return "";
   }
-  
-  
-  /**
-   * Returns a numeric score for the pupil size based on key phrases.
-   * Score scale (for anisocoria purposes):
-   *   - "dilated pupil"  => 3
-   *   - "larger pupil"   => 2 (if "slightly larger pupil" is found, then 1)
-   *   - "slightly smaller pupil" => -1
-   *   - "smaller pupil"  => -2
-   *   - Otherwise 0 (neutral)
-   *
-   * @param {string} text - The lower-cased output text for one eye.
-   * @returns {number} - The pupil score.
-   */
-  function getPupilScore(text) {
-    if (text.includes("dilated pupil")) {
-      return 3;
-    } else if (text.includes("larger pupil")) {
-      return text.includes("slightly larger pupil") ? 1 : 2;
-    } else if (text.includes("slightly smaller pupil")) {
-      return -1;
-    } else if (text.includes("smaller pupil")) {
-      return -2;
-    }
-    return 0;
+
+  // Flags for detected features.
+  // Include "lid" as an indicator for ptosis.
+  let hasPtosis = content.includes("ptosis") || content.includes("lid");
+  let hasSudden = content.includes("sudden");
+  let hasDilated = content.includes("dilated");
+
+  // Determine ptosis grade.
+  let hasMedOrLargePtosis =
+    content.includes("med ptosis") || content.includes("large ptosis");
+
+  // Determine horizontal deviation.
+  let horizontal = null;
+  if (content.includes(" in") && !content.includes("out")) {
+    horizontal = "eso";
+  } else if (content.includes(" out")) {
+    horizontal = "exo";
   }
-  
-  /**
-   * Determine pupil condition based on the output text for both eyes.
-   *
-   * This function compares the numeric pupil scores for both eyes.
-   * If the scores are equal (difference is zero), then anisocoria is considered neutral.
-   * Otherwise, if the absolute difference is 1, it reports "Slightly larger — <i>benign anisocoria</i>".
-   * If the difference is 2 or more, it reports "Unilateral larger — <i>possible Adie; sluggish, viral</i>".
-   *
-   * @param {string} rightText - The output text for the right eye.
-   * @param {string} leftText - The output text for the left eye.
-   * @returns {string} - A string describing the pupil condition.
-   */
-  function determinePupilCondition(rightText, leftText) {
-    const rText = rightText.toLowerCase();
-    const lText = leftText.toLowerCase();
-  
-    // Check for pinhole pupils.
-    if (rText.includes("pinhole pupil") && lText.includes("pinhole pupil")) {
-      return "Bilateral pinhole — <i>likely old age or drugs</i>";
+
+  // Determine vertical deviation.
+  let vertical = null;
+  if (content.includes(" up")) {
+    vertical = "hyper";
+  } else if (content.includes(" down")) {
+    vertical = "hypo";
+  }
+
+  // Flag for larger pupil.
+  let hasLargePupil = content.includes("larger pupil") || hasDilated;
+
+  // 3rd nerve palsy condition (displayed in red):
+  // Must be down (hypo) and out (exo) with no conflicting " in " indicator, and the sudden toggle must be ON.
+  const extraInfo =
+    "; Sudden: vertical diplopia+ptosis; <span style='color:red;'>aneurysm</span>, <span style='color:orange;'>tumour, trauma</span>";
+  if (
+    vertical === "hypo" &&
+    horizontal === "exo" &&
+    !content.includes(" in ") &&
+    hasSudden
+  ) {
+    if (!hasPtosis) {
+      return (
+        "<span style='color:red;'>possible 3rd nerve palsy</span>" + extraInfo
+      );
+    } else {
+      if (hasLargePupil && hasMedOrLargePtosis) {
+        return (
+          "<span style='color:red;'>definite 3rd nerve palsy</span>" + extraInfo
+        );
+      } else {
+        return (
+          "<span style='color:red;'>probable 3rd nerve palsy</span>" + extraInfo
+        );
+      }
     }
-    // Check for bilateral dilated pupils.
-    if (rText.includes("dilated pupil") && lText.includes("dilated pupil")) {
-      return "Bilateral dilated — <i>consider drugs or trauma</i>";
+  }
+
+  // 4th nerve palsy: up and out (not sudden).
+  const subtleText =
+    "; Subtle: angled diplopia+head tilt; 'congenital', trauma; look for nasal upshoot";
+  if (vertical === "hyper" && horizontal === "exo") {
+    if (content.includes("small up")) {
+      return "possible 4th nerve palsy" + subtleText;
+    } else if (content.includes("med up") || content.includes("medium up")) {
+      return "probable 4th nerve palsy" + subtleText;
+    } else if (content.includes("large up")) {
+      return "definite 4th nerve palsy" + subtleText;
+    } else {
+      return "4th nerve palsy" + subtleText;
     }
-  
-    // Get numeric pupil scores.
-    const scoreRight = getPupilScore(rText);
-    const scoreLeft = getPupilScore(lText);
-  
-    // If scores are equal, the pupils are symmetric.
-    if (scoreRight === scoreLeft) {
-      return "";
+  }
+
+  // 6th nerve palsy: inwards (eso) and sudden, only if there is no medium or large vertical deviation.
+  if (
+    horizontal === "eso" &&
+    hasSudden &&
+    !content.includes("med up") &&
+    !content.includes("medium up") &&
+    !content.includes("large up") &&
+    !content.includes("med down") &&
+    !content.includes("medium down") &&
+    !content.includes("large down")
+  ) {
+    const extraText =
+      "; Sudden: horizontal diplopia+head turn; " +
+      "<span style='color:red;'>SOL/IIH - ICP</span>, " +
+      "<span style='color:orange;'>Temporal arteritis</span>, ear";
+    if (content.includes("small in")) {
+      return (
+        "<span style='color:red;'>possible 6th nerve palsy</span>" + extraText
+      );
+    } else if (content.includes("med in") || content.includes("medium in")) {
+      return (
+        "<span style='color:red;'>probable 6th nerve palsy</span>" + extraText
+      );
+    } else if (content.includes("large in")) {
+      return (
+        "<span style='color:red;'>definite 6th nerve palsy</span>" + extraText
+      );
+    } else {
+      return "<span style='color:red;'>6th nerve palsy</span>" + extraText;
     }
-  
-    const diff = Math.abs(scoreRight - scoreLeft);
-    if (diff === 1) {
-      return "Slightly larger — <i>benign anisocoria</i>";
-    } else if (diff >= 2) {
-      return "Unilateral larger — <i>possible Adie; sluggish, viral</i>";
+  }
+
+  // Horner syndrome block:
+  // If a smaller pupil is detected, then:
+  //   - With no ptosis/lid evidence → possible Horner syndrome
+  //   - With ptosis/lid → probable Horner syndrome, unless "faded" is also present, then definite.
+  if (content.includes("smaller pupil")) {
+    const extraText = "; CAD, stroke, lung <i>> physical</i>";
+    let hornerOutput = "";
+    if (hasPtosis) {
+      if (content.includes("faded")) {
+        hornerOutput = "definite Horner" + extraText;
+      } else {
+        hornerOutput = "probable Horner" + extraText;
+      }
+    } else {
+      hornerOutput = "possible Horner" + extraText;
     }
-  
+    return hornerOutput;
+  }
+
+  // Fallback conditions.
+  if (horizontal && vertical) {
+    return "Mixed " + horizontal.toUpperCase() + " & " + vertical.toUpperCase();
+  }
+  if (horizontal) {
+    return horizontal.toUpperCase();
+  }
+  if (vertical) {
+    return vertical.toUpperCase();
+  }
+
+  if (hasPtosis || hasSudden || hasDilated) {
+    return "Palsy";
+  }
+
+  return "";
+}
+
+/**
+ * Returns a numeric score for the pupil size based on key phrases.
+ * Score scale (for anisocoria purposes):
+ *   - "dilated pupil"  => 3
+ *   - "larger pupil"   => 2 (if "slightly larger pupil" is found, then 1)
+ *   - "slightly smaller pupil" => -1
+ *   - "smaller pupil"  => -2
+ *   - Otherwise 0 (neutral)
+ *
+ * @param {string} text - The lower-cased output text for one eye.
+ * @returns {number} - The pupil score.
+ */
+function getPupilScore(text) {
+  if (text.includes("dilated pupil")) {
+    return 3;
+  } else if (text.includes("larger pupil")) {
+    return text.includes("slightly larger pupil") ? 1 : 2;
+  } else if (text.includes("slightly smaller pupil")) {
+    return -1;
+  } else if (text.includes("smaller pupil")) {
+    return -2;
+  }
+  return 0;
+}
+
+/**
+ * Determine pupil condition based on the output text for both eyes.
+ *
+ * This function compares the numeric pupil scores for both eyes.
+ * If the scores are equal (difference is zero), then anisocoria is considered neutral.
+ * Otherwise, if the absolute difference is 1, it reports "Slightly larger — <i>benign anisocoria</i>".
+ * If the difference is 2 or more, it reports "Unilateral larger — <i>possible Adie; sluggish, viral</i>".
+ *
+ * @param {string} rightText - The output text for the right eye.
+ * @param {string} leftText - The output text for the left eye.
+ * @returns {string} - A string describing the pupil condition.
+ */
+function determinePupilCondition(rightText, leftText) {
+  const rText = rightText.toLowerCase();
+  const lText = leftText.toLowerCase();
+
+  // Check for pinhole pupils.
+  if (rText.includes("pinhole pupil") && lText.includes("pinhole pupil")) {
+    return "Bilateral pinhole — <i>likely old age or drugs</i>";
+  }
+  // Check for bilateral dilated pupils.
+  if (rText.includes("dilated pupil") && lText.includes("dilated pupil")) {
+    return "Bilateral dilated — <i>consider drugs or trauma</i>";
+  }
+
+  // Get numeric pupil scores.
+  const scoreRight = getPupilScore(rText);
+  const scoreLeft = getPupilScore(lText);
+
+  // If scores are equal, the pupils are symmetric.
+  if (scoreRight === scoreLeft) {
     return "";
   }
-  
+
+  const diff = Math.abs(scoreRight - scoreLeft);
+  if (diff === 1) {
+    return "Slightly larger — <i>benign anisocoria</i>";
+  } else if (diff >= 2) {
+    return "Unilateral larger — <i>possible Adie; sluggish, viral</i>";
+  }
+
+  return "";
+}
+
 // Global cache variables
 let lastAnalysisHTML = "";
 let lastPalsyImageHTML = "";
@@ -313,7 +345,10 @@ function updateAnalysisOutput() {
   // Final conditions for Horner syndrome.
   let finalConditionRight = conditionRight;
   let finalConditionLeft = conditionLeft;
-  if (conditionRight.toLowerCase().includes("horner") && conditionLeft.toLowerCase().includes("horner")) {
+  if (
+    conditionRight.toLowerCase().includes("horner") &&
+    conditionLeft.toLowerCase().includes("horner")
+  ) {
     if (scoreRight === scoreLeft) {
       finalConditionRight = "";
       finalConditionLeft = "";
@@ -337,9 +372,11 @@ function updateAnalysisOutput() {
   if (finalConditionLeft) {
     outputHTML += " (" + finalConditionLeft + ")";
   }
-  if (pupilCondition &&
-      !finalConditionRight.toLowerCase().includes("3rd nerve palsy") &&
-      !finalConditionLeft.toLowerCase().includes("3rd nerve palsy")) {
+  if (
+    pupilCondition &&
+    !finalConditionRight.toLowerCase().includes("3rd nerve palsy") &&
+    !finalConditionLeft.toLowerCase().includes("3rd nerve palsy")
+  ) {
     outputHTML += "<br><strong>Pupils:</strong> " + pupilCondition;
   }
 
@@ -354,12 +391,24 @@ function updateAnalysisOutput() {
   const conditionRightLower = finalConditionRight.toLowerCase();
   const conditionLeftLower = finalConditionLeft.toLowerCase();
 
-  if (conditionRightLower.includes("3rd nerve palsy") || conditionLeftLower.includes("3rd nerve palsy")) {
-    palsyImageHTML = '<img src="3.png" alt="3rd nerve palsy" class="palsy-img-outside">';
-  } else if (conditionRightLower.includes("4th nerve palsy") || conditionLeftLower.includes("4th nerve palsy")) {
-    palsyImageHTML = '<img src="4.png" alt="4th nerve palsy" class="palsy-img-outside">';
-  } else if (conditionRightLower.includes("6th nerve palsy") || conditionLeftLower.includes("6th nerve palsy")) {
-    palsyImageHTML = '<img src="6.png" alt="6th nerve palsy" class="palsy-img-outside">';
+  if (
+    conditionRightLower.includes("3rd nerve palsy") ||
+    conditionLeftLower.includes("3rd nerve palsy")
+  ) {
+    palsyImageHTML =
+      '<img src="3.png" alt="3rd nerve palsy" class="palsy-img-outside">';
+  } else if (
+    conditionRightLower.includes("4th nerve palsy") ||
+    conditionLeftLower.includes("4th nerve palsy")
+  ) {
+    palsyImageHTML =
+      '<img src="4.png" alt="4th nerve palsy" class="palsy-img-outside">';
+  } else if (
+    conditionRightLower.includes("6th nerve palsy") ||
+    conditionLeftLower.includes("6th nerve palsy")
+  ) {
+    palsyImageHTML =
+      '<img src="6.png" alt="6th nerve palsy" class="palsy-img-outside">';
   }
 
   // Update the palsy image container only if content has changed.
@@ -369,11 +418,8 @@ function updateAnalysisOutput() {
   }
 }
 
-  
-  
-  // Initialise analysis once the document has loaded, then update every 500ms.
-  document.addEventListener('DOMContentLoaded', function() {
-    updateAnalysisOutput();
-    setInterval(updateAnalysisOutput, 500);
-  });
-  
+// Initialise analysis once the document has loaded, then update every 500ms.
+document.addEventListener("DOMContentLoaded", function () {
+  updateAnalysisOutput();
+  setInterval(updateAnalysisOutput, 500);
+});

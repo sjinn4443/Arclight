@@ -40,6 +40,7 @@ Package the extension:
 \`\`\`sh
 vsce package
 \`\`\`
+
 - If prompted about missing `repository` or `LICENSE`, type `y` to continue.
 - This creates a `.vsix` file (e.g., `alanui-launcher-0.0.1.vsix`).
 
@@ -50,6 +51,7 @@ From the root project directory, run:
 code --install-extension vscode-alanui-launcher/alanui-launcher-0.0.1.vsix
 \`\`\`
 Or, in VSCode:
+
 - Open the Command Palette (Ctrl+Shift+P)
 - Choose "Extensions: Install from VSIX..." and select the `.vsix` file
 

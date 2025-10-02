@@ -14,7 +14,7 @@ async function convertImagesInDirectory(directoryPaths) {
           const inputPath = path.join(directoryPath, file.name);
           const outputPath = path.join(
             directoryPath,
-            path.basename(file.name, ".png") + ".webp"
+            path.basename(file.name, ".png") + ".webp",
           );
           await sharp(inputPath).toFile(outputPath);
           console.log(`Converted ${inputPath} to ${outputPath}`);

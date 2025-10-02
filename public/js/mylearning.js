@@ -108,7 +108,7 @@ function go(target) {
     try {
       sessionStorage.setItem(
         "fromRoute",
-        window.currentPageName || "mylearning"
+        window.currentPageName || "mylearning",
       );
     } catch {}
     (async () => {
@@ -183,7 +183,7 @@ function toKey(v) {
 function getItemKey(item) {
   // Try common fields used around the app
   return toKey(
-    item?.label || item?.id || item?.key || item?.slug || item?.dataLabel
+    item?.label || item?.id || item?.key || item?.slug || item?.dataLabel,
   );
 }
 

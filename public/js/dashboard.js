@@ -131,7 +131,7 @@ export function initializeDashboard() {
 
     // Clicking a dot recenters to that card
     dots.forEach((dot, i) =>
-      dot.addEventListener("click", () => centerCardByIndex(i))
+      dot.addEventListener("click", () => centerCardByIndex(i)),
     );
 
     // Initial sync once the layout is ready
@@ -229,8 +229,8 @@ function renderRecommendations(host) {
     .map(
       (m) => `
     <div class="module-card" data-route="${m.route || ""}" ${
-        m.page ? `data-page="${m.page}"` : ""
-      }>
+      m.page ? `data-page="${m.page}"` : ""
+    }>
       <img src="${m.img}" alt="${m.title}" />
       <div class="module-info">
         <h3>${m.title}</h3>
@@ -240,7 +240,7 @@ function renderRecommendations(host) {
         }%;"></div></div>
       </div>
     </div>
-  `
+  `,
     )
     .join("");
 

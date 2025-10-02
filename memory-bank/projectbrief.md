@@ -13,6 +13,7 @@ This document serves as the foundational brief for the Arclight project.
 ## Project Scope
 
 The project encompasses the development of:
+
 - A main landing page with navigation to different educational modules.
 - Modules for Anterior Segment Quiz, Cataract, Mires, Morph, and Squint, each with specific interactive elements and content.
 - A robust image and video library to support the educational content.

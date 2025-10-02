@@ -12,7 +12,8 @@
     "lint": "eslint . --ext .js,.ts",
     "type-check": "tsc --noEmit",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "format:dist": "prettier --write dist/"
   },
   "keywords": [],
   "author": "",

@@ -146,9 +146,8 @@ function launchQuiz() {
       });
       if (selected === answer) correct++;
     });
-    quizPage.querySelector(
-      "#quizScoreText"
-    ).innerText = `You got ${correct} out of ${questions.length} correct.`;
+    quizPage.querySelector("#quizScoreText").innerText =
+      `You got ${correct} out of ${questions.length} correct.`;
     quizPage.querySelector("#quizModal").classList.remove("hidden");
   };
 

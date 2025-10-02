@@ -105,9 +105,11 @@ Open your project in VSCode and confirm everything looks as expected.
 ## Example: Full Reset to the Most Recent Commit
 
 1. See the latest commit hash:
+
    ```powershell
    git log --oneline -1 origin/main
    ```
+
    (Suppose it shows `3606cbe Update README`)
 
 2. Reset to that commit:

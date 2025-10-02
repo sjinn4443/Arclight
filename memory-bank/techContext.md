@@ -1,4 +1,5 @@
 <!-- THE CHANGES - techContext.md | 2025-08-31, SJ -->
+
 # Tech Context
 
 ## Technologies Used
@@ -12,6 +13,7 @@
 ## Development Setup
 
 The project is a standard web application that can be served by any static file server.
+
 - **Local Development:** Can be run by opening `index.html` directly in a browser or by using a simple local HTTP server (e.g., `http-server`, Python's `SimpleHTTPServer`, or Node.js `serve`).
 - **No Build Step:** The project does not currently use a complex build pipeline (e.g., Webpack, Parcel). Files are served directly as written.
 - **Dependencies:** Minimal external dependencies. `package.json` exists, but primarily for development tools or potential future Node.js based server components (`server.js`).
@@ -26,33 +28,33 @@ The project is a standard web application that can be served by any static file 
 ## Dependencies
 
 - **`package.json`:** Lists development dependencies and scripts. Key dependencies include:
-    - `http-server` or similar for local serving.
-    - **Testing Frameworks:** `jest`, `supertest`, `jsdom` for automated tests.
+  - `http-server` or similar for local serving.
+  - **Testing Frameworks:** `jest`, `supertest`, `jsdom` for automated tests.
 
 ## Testing Setup
 
 The project includes a comprehensive test suite to ensure reliability, accessibility, and user experience.
 
 - **Frameworks:**
-    - **Jest:** Primary testing framework.
-    - **Supertest:** Used for backend API testing.
-    - **JSDOM:** Simulates the DOM and localStorage for frontend and UI tests.
+  - **Jest:** Primary testing framework.
+  - **Supertest:** Used for backend API testing.
+  - **JSDOM:** Simulates the DOM and localStorage for frontend and UI tests.
 - **Test Files:**
-    - `tests/ui.test.js`: Contains UI/UX integration and user flow tests.
+  - `tests/ui.test.js`: Contains UI/UX integration and user flow tests.
 - **Test Coverage:**
-    - Backend API: Data handling, authentication, record management.
-    - Frontend Chatbot: Chat logic, sidebar updates, localStorage persistence.
-    - UI/UX Integration: User flows, accessibility, interface interactions.
-    - Quiz and Case Modules: Functionality for quizzes, case navigation, scoring.
-    - Clinical Image Display: Rendering and accessibility of clinical images.
+  - Backend API: Data handling, authentication, record management.
+  - Frontend Chatbot: Chat logic, sidebar updates, localStorage persistence.
+  - UI/UX Integration: User flows, accessibility, interface interactions.
+  - Quiz and Case Modules: Functionality for quizzes, case navigation, scoring.
+  - Clinical Image Display: Rendering and accessibility of clinical images.
 - **Execution:**
-    - `npm install --save-dev jest supertest jsdom` (from project root)
-    - `npx jest --verbose` to run all tests.
-    - `npx jest --verbose tests/ui.test.js` to run specific UI tests.
+  - `npm install --save-dev jest supertest jsdom` (from project root)
+  - `npx jest --verbose` to run all tests.
+  - `npx jest --verbose tests/ui.test.js` to run specific UI tests.
 - **Notes:**
-    - Backend tests use a temporary directory for data.
-    - Accessibility requirements are enforced by automated tests in `ui.test.js`.
-    - For full browser/E2E automation, Playwright or Cypress are considerations for future expansion.
+  - Backend tests use a temporary directory for data.
+  - Accessibility requirements are enforced by automated tests in `ui.test.js`.
+  - For full browser/E2E automation, Playwright or Cypress are considerations for future expansion.
 - **Internal Dependencies:** Modules link to shared assets in `images/` and `videos/`. JavaScript files within modules might interact with the main `script.js` or `service-worker.js`.
 
 ## Tool Usage Patterns

@@ -1,4 +1,5 @@
 <!-- THE CHANGES - productContext.md | 2025-08-31, SJ -->
+
 # Product Context
 
 ## Why this project exists
@@ -15,6 +16,7 @@ The Arclight project is an interactive educational platform designed to support 
 ## How it should work
 
 The application should function as a self-contained educational resource. Users should be able to:
+
 - Navigate easily between different modules (e.g., Anterior Segment Quiz, Cataract, Mires).
 - Interact with quizzes and receive immediate feedback.
 - View high-quality images and videos related to medical conditions.

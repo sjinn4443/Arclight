@@ -1,130 +1,172 @@
 <!-- index.html — Interactive tool for health workers to visualize and simulate various eye conditions (e.g., normal, swollen disc, cupped disc, CRVO, AMD) with adjustable cataract, field of view, refractive error, and zoom effects. -->
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Morph a tool for health workers to visualize and simulate various eye conditions.">
-  <title>Morph</title>
-  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-  <!-- Left Sidebar: Condition & Mode Buttons -->
-  <div class="sidebar-left">
-    <!-- Toggle Button for collapsing the condition buttons -->
-    <button class="toggle-button" id="toggleConditions" aria-label="Toggle Conditions"></button>
-    
-    <!-- Container for condition buttons with tooltips -->
-    <div class="condition-buttons" id="conditionButtons">
-      <button data-image="ret180.jpg" class="condition-button active" 
-              data-tooltip="Normal appearance of the optic nerve head with no signs of pathology.">
-        Normal
-      </button>
-      <button data-image="S.png" class="condition-button" 
-              data-tooltip="Swollen optic disc, suggestive of papilloedema and increased nerve head size.">
-        Swollen Disc
-      </button>
-      <button data-image="C.png" class="condition-button" 
-              data-tooltip="Cupped optic disc showing excavation, often associated with glaucomatous changes.">
-        Cupped Disc
-      </button>
-      <button data-image="crvo.png" class="condition-button" 
-              data-tooltip="Central Retinal Vein Occlusion – blockage of the main retinal vein leading to retinal congestion.">
-        CRVO
-      </button>
-      <button data-image="zyx.png" class="condition-button" 
-              data-tooltip="Age-related Macular Degeneration – deterioration of the macula influenced by age, genetics and environmental factors.">
-        AMD
-      </button>
-    </div>
-    
-    <!-- Mode Buttons below the condition buttons, visually separated -->
-    <div class="mode-button-group" style="margin-top: 20px;">
-      <button data-mode="adult" class="mode-button active" id="adultButton">Adult</button>
-      <button data-mode="child" class="mode-button">Child</button>
-    </div>
-  </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Morph a tool for health workers to visualize and simulate various eye conditions."
+    />
+    <title>Morph</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- Left Sidebar: Condition & Mode Buttons -->
+    <div class="sidebar-left">
+      <!-- Toggle Button for collapsing the condition buttons -->
+      <button
+        class="toggle-button"
+        id="toggleConditions"
+        aria-label="Toggle Conditions"
+      ></button>
 
-  <!-- Main Content Area -->
-  <div class="main-content">
-<header>
-  <div class="header-content">
-    <div class="logo-container">
-      <img src="morph.png" alt="Morph Logo" class="logo">
-    </div>
-    <div class="title-container">
-      <h1>Morph </h1>
-    </div>
-    <div class="spacer"></div>
-  </div>
-</header>
-
-    
-    <div class="button-container">
-      <!-- Cataract Effect Slider -->
-      <div class="slider-container">
-        <label for="cataractSlider">Cataract:</label>
-        <input type="range" id="cataractSlider" min="0" max="1" step="0.01" value="0">
-      </div>
-
-      <!-- Field of View (FOV) Buttons -->
-      <div class="button-group">
-        <button data-degree="5" class="fov-button active">5°</button>
-        <button data-degree="8" class="fov-button">8°</button>
-        <button data-degree="15" class="fov-button">15°</button>
-        <button data-degree="25" class="fov-button">25°</button>
-        <button data-degree="35" class="fov-button">35°</button>
-        <button data-degree="45" class="fov-button">45°</button>
-      </div>
-
-      <!-- Refractive Error Buttons -->
-      <div class="button-group">
-        <button data-refractive="highPlus" class="refractive-button">High +</button>
-        <button data-refractive="mediumPlus" class="refractive-button">Med +</button>
-        <button data-refractive="plano" class="refractive-button active">Plano</button>
-        <button data-refractive="mediumMinus" class="refractive-button">Med -</button>
-        <button data-refractive="highMinus" class="refractive-button">High -</button>
-      </div>
-
-      <!-- Zoom Slider -->
-      <div class="slider-container">
-        <label for="zoomSlider">Zoom:</label>
-        <input 
-          type="range" 
-          id="zoomSlider" 
-          min="0.5" 
-          max="3.0" 
-          step="0.01" 
-          value="1.2"  
-          list="zoomTicks"
+      <!-- Container for condition buttons with tooltips -->
+      <div class="condition-buttons" id="conditionButtons">
+        <button
+          data-image="ret180.jpg"
+          class="condition-button active"
+          data-tooltip="Normal appearance of the optic nerve head with no signs of pathology."
         >
-        <datalist id="zoomTicks">
-          <option value="1.0" label="Default"></option>
-        </datalist>
+          Normal
+        </button>
+        <button
+          data-image="S.png"
+          class="condition-button"
+          data-tooltip="Swollen optic disc, suggestive of papilloedema and increased nerve head size."
+        >
+          Swollen Disc
+        </button>
+        <button
+          data-image="C.png"
+          class="condition-button"
+          data-tooltip="Cupped optic disc showing excavation, often associated with glaucomatous changes."
+        >
+          Cupped Disc
+        </button>
+        <button
+          data-image="crvo.png"
+          class="condition-button"
+          data-tooltip="Central Retinal Vein Occlusion – blockage of the main retinal vein leading to retinal congestion."
+        >
+          CRVO
+        </button>
+        <button
+          data-image="zyx.png"
+          class="condition-button"
+          data-tooltip="Age-related Macular Degeneration – deterioration of the macula influenced by age, genetics and environmental factors."
+        >
+          AMD
+        </button>
       </div>
 
-      <!-- Canvas Container for Rendering the Image and Effects -->
-      <div class="canvas-container">
-        <canvas id="fundusCanvas"></canvas>
+      <!-- Mode Buttons below the condition buttons, visually separated -->
+      <div class="mode-button-group" style="margin-top: 20px">
+        <button data-mode="adult" class="mode-button active" id="adultButton">
+          Adult
+        </button>
+        <button data-mode="child" class="mode-button">Child</button>
       </div>
     </div>
-  </div>
-  <div class="vertical-scroll-container">
-    <div class="vertical-scroll-content"></div>
-  </div>
-  
-</body>
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+      <header>
+        <div class="header-content">
+          <div class="logo-container">
+            <img src="morph.png" alt="Morph Logo" class="logo" />
+          </div>
+          <div class="title-container">
+            <h1>Morph</h1>
+          </div>
+          <div class="spacer"></div>
+        </div>
+      </header>
+
+      <div class="button-container">
+        <!-- Cataract Effect Slider -->
+        <div class="slider-container">
+          <label for="cataractSlider">Cataract:</label>
+          <input
+            type="range"
+            id="cataractSlider"
+            min="0"
+            max="1"
+            step="0.01"
+            value="0"
+          />
+        </div>
+
+        <!-- Field of View (FOV) Buttons -->
+        <div class="button-group">
+          <button data-degree="5" class="fov-button active">5°</button>
+          <button data-degree="8" class="fov-button">8°</button>
+          <button data-degree="15" class="fov-button">15°</button>
+          <button data-degree="25" class="fov-button">25°</button>
+          <button data-degree="35" class="fov-button">35°</button>
+          <button data-degree="45" class="fov-button">45°</button>
+        </div>
+
+        <!-- Refractive Error Buttons -->
+        <div class="button-group">
+          <button data-refractive="highPlus" class="refractive-button">
+            High +
+          </button>
+          <button data-refractive="mediumPlus" class="refractive-button">
+            Med +
+          </button>
+          <button data-refractive="plano" class="refractive-button active">
+            Plano
+          </button>
+          <button data-refractive="mediumMinus" class="refractive-button">
+            Med -
+          </button>
+          <button data-refractive="highMinus" class="refractive-button">
+            High -
+          </button>
+        </div>
+
+        <!-- Zoom Slider -->
+        <div class="slider-container">
+          <label for="zoomSlider">Zoom:</label>
+          <input
+            type="range"
+            id="zoomSlider"
+            min="0.5"
+            max="3.0"
+            step="0.01"
+            value="1.2"
+            list="zoomTicks"
+          />
+          <datalist id="zoomTicks">
+            <option value="1.0" label="Default"></option>
+          </datalist>
+        </div>
+
+        <!-- Canvas Container for Rendering the Image and Effects -->
+        <div class="canvas-container">
+          <canvas id="fundusCanvas"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="vertical-scroll-container">
+      <div class="vertical-scroll-content"></div>
+    </div>
+  </body>
 </html>
 
 <script>
   // Retrieve the canvas element and its 2D context
-  const canvas = document.getElementById('fundusCanvas');
-  const ctx = canvas.getContext('2d');
+  const canvas = document.getElementById("fundusCanvas");
+  const ctx = canvas.getContext("2d");
 
   // Create a new image and set its default source
   const img = new Image();
-  img.src = 'ret180.jpg'; // Default image path
+  img.src = "ret180.jpg"; // Default image path
 
   // Initialise the field of view (FOV) settings
   const initialDegree = 5; // Base FOV in degrees
@@ -153,9 +195,9 @@
   let isAdultMode = true;
 
   // Cataract effect variables
-  const cataractSlider = document.getElementById('cataractSlider');
+  const cataractSlider = document.getElementById("cataractSlider");
   let cataractLevel = parseFloat(cataractSlider.value);
-  cataractSlider.addEventListener('input', function() {
+  cataractSlider.addEventListener("input", function () {
     cataractLevel = parseFloat(this.value);
     draw();
   });
@@ -171,7 +213,7 @@
   let imageOffsetY = 0;
 
   // When the image loads, initialise canvas dimensions and start effects
-  img.onload = function() {
+  img.onload = function () {
     canvas.width = img.naturalWidth;
     canvas.height = img.naturalHeight;
     circleX = canvas.width / 2;
@@ -225,27 +267,35 @@
 
     ctx.drawImage(
       img,
-      0, 0, img.width, img.height,
-      finalOffsetX, finalOffsetY, scaledWidth, scaledHeight
+      0,
+      0,
+      img.width,
+      img.height,
+      finalOffsetX,
+      finalOffsetY,
+      scaledWidth,
+      scaledHeight,
     );
 
     // Remove filters
-    ctx.filter = 'none';
+    ctx.filter = "none";
     if (cataractLevel > 0) {
-      ctx.globalCompositeOperation = 'multiply';
+      ctx.globalCompositeOperation = "multiply";
       const yellowOpacity = cataractLevel;
       ctx.fillStyle = `rgba(255, 255, 0, ${yellowOpacity})`;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
 
     // Corneal reflex effect
-    const activeFOVButton = document.querySelector('.fov-button.active');
-    const activeFOV = activeFOVButton ? parseInt(activeFOVButton.getAttribute('data-degree'), 10) : null;
+    const activeFOVButton = document.querySelector(".fov-button.active");
+    const activeFOV = activeFOVButton
+      ? parseInt(activeFOVButton.getAttribute("data-degree"), 10)
+      : null;
     if ([5, 8, 15].includes(activeFOV)) {
-      const fixedEllipseWidth = 0.30 * (2 * initialRadius);
-      const fixedEllipseHeight = 0.20 * (2 * initialRadius);
+      const fixedEllipseWidth = 0.3 * (2 * initialRadius);
+      const fixedEllipseHeight = 0.2 * (2 * initialRadius);
       const fixedEllipseX = circleX;
-      const fixedEllipseY = circleY + (0.45 * initialRadius);
+      const fixedEllipseY = circleY + 0.45 * initialRadius;
       ctx.beginPath();
       ctx.ellipse(
         fixedEllipseX + cornealJitterOffset.x * windowScale,
@@ -254,19 +304,18 @@
         (fixedEllipseHeight / 2) * windowScale,
         0,
         0,
-        2 * Math.PI
+        2 * Math.PI,
       );
-      ctx.fillStyle = 'white';
+      ctx.fillStyle = "white";
       ctx.fill();
     }
 
     ctx.restore();
-    
 
     // Outline of the circle window
     ctx.beginPath();
     ctx.arc(circleX, circleY, circleRadius * windowScale, 0, Math.PI * 2, true);
-    ctx.strokeStyle = 'white';
+    ctx.strokeStyle = "white";
     ctx.lineWidth = 15 * windowScale;
     ctx.stroke();
   }
@@ -335,11 +384,13 @@
       } else {
         cornealTargetOffset = {
           x: (Math.random() - 0.5) * 20,
-          y: (Math.random() - 0.5) * 20
+          y: (Math.random() - 0.5) * 20,
         };
       }
-      cornealJitterOffset.x += (cornealTargetOffset.x - cornealJitterOffset.x) * 0.2;
-      cornealJitterOffset.y += (cornealTargetOffset.y - cornealJitterOffset.y) * 0.2;
+      cornealJitterOffset.x +=
+        (cornealTargetOffset.x - cornealJitterOffset.x) * 0.2;
+      cornealJitterOffset.y +=
+        (cornealTargetOffset.y - cornealJitterOffset.y) * 0.2;
       draw();
       cornealAnimationId = requestAnimationFrame(animateCornealReflex);
     }
@@ -353,51 +404,51 @@
   }
 
   // MOUSE/TAP DRAG
-  canvas.addEventListener('mousedown', function(e) {
+  canvas.addEventListener("mousedown", function (e) {
     isDragging = true;
     stopJitter();
     velocityX = 0;
     velocityY = 0;
     updatePosition(e); // Pass the full mouse event
-    canvas.style.cursor = 'none';
+    canvas.style.cursor = "none";
     startCornealReflexAnimation();
   });
 
-  canvas.addEventListener('mousemove', function(e) {
+  canvas.addEventListener("mousemove", function (e) {
     if (isDragging) {
       updatePosition(e);
     }
   });
 
-  canvas.addEventListener('mouseup', function() {
+  canvas.addEventListener("mouseup", function () {
     isDragging = false;
     startJitter();
-    canvas.style.cursor = 'crosshair';
+    canvas.style.cursor = "crosshair";
     stopCornealReflexAnimation();
   });
 
-  canvas.addEventListener('touchstart', function(e) {
+  canvas.addEventListener("touchstart", function (e) {
     e.preventDefault();
     isDragging = true;
     stopJitter();
     velocityX = 0;
     velocityY = 0;
     updatePosition(e); // Pass the full event
-    canvas.style.cursor = 'none';
+    canvas.style.cursor = "none";
     startCornealReflexAnimation();
   });
 
-  canvas.addEventListener('touchmove', function(e) {
+  canvas.addEventListener("touchmove", function (e) {
     e.preventDefault();
     if (isDragging) {
       updatePosition(e); // Pass the full event
     }
   });
 
-  canvas.addEventListener('touchend', function() {
+  canvas.addEventListener("touchend", function () {
     isDragging = false;
     startJitter();
-    canvas.style.cursor = 'crosshair';
+    canvas.style.cursor = "crosshair";
     stopCornealReflexAnimation();
   });
 
@@ -408,7 +459,7 @@
     const scaleY = canvas.height / rect.height;
 
     let pointerX, pointerY;
-    if (event.type && event.type.startsWith('touch')) {
+    if (event.type && event.type.startsWith("touch")) {
       // Touch event => use the first touch
       const touch = event.touches[0];
       pointerX = touch.clientX;
@@ -427,8 +478,8 @@
     y -= circleRadius;
 
     // Extra offset for touch so finger doesn't cover the circle
-    if (event.type && event.type.startsWith('touch')) {
-      y -= 300; 
+    if (event.type && event.type.startsWith("touch")) {
+      y -= 300;
     }
 
     circleX = x;
@@ -438,12 +489,12 @@
   }
 
   // FOV Buttons
-  const fovButtons = document.querySelectorAll('.fov-button');
-  fovButtons.forEach(button => {
-    button.addEventListener('click', function() {
-      fovButtons.forEach(btn => btn.classList.remove('active'));
-      this.classList.add('active');
-      const selectedDegree = parseInt(this.getAttribute('data-degree'), 10);
+  const fovButtons = document.querySelectorAll(".fov-button");
+  fovButtons.forEach((button) => {
+    button.addEventListener("click", function () {
+      fovButtons.forEach((btn) => btn.classList.remove("active"));
+      this.classList.add("active");
+      const selectedDegree = parseInt(this.getAttribute("data-degree"), 10);
       circleRadius = (selectedDegree / initialDegree) * initialRadius;
       checkBoundaries();
       draw();
@@ -451,27 +502,27 @@
   });
 
   // Refractive Error Buttons – these now update imageScale only (affecting the background image)
-  const refractiveButtons = document.querySelectorAll('.refractive-button');
-  refractiveButtons.forEach(button => {
-    button.addEventListener('click', function() {
-      refractiveButtons.forEach(btn => btn.classList.remove('active'));
-      this.classList.add('active');
-      const refractiveType = this.getAttribute('data-refractive');
+  const refractiveButtons = document.querySelectorAll(".refractive-button");
+  refractiveButtons.forEach((button) => {
+    button.addEventListener("click", function () {
+      refractiveButtons.forEach((btn) => btn.classList.remove("active"));
+      this.classList.add("active");
+      const refractiveType = this.getAttribute("data-refractive");
       switch (refractiveType) {
-        case 'highPlus':
-          imageScale = 0.70;
+        case "highPlus":
+          imageScale = 0.7;
           break;
-        case 'mediumPlus':
+        case "mediumPlus":
           imageScale = 0.85;
           break;
-        case 'plano':
+        case "plano":
           imageScale = 1.0;
           break;
-        case 'mediumMinus':
+        case "mediumMinus":
           imageScale = 1.15;
           break;
-        case 'highMinus':
-          imageScale = 1.30;
+        case "highMinus":
+          imageScale = 1.3;
           break;
         default:
           imageScale = 1.0;
@@ -482,34 +533,33 @@
   });
 
   // Condition Buttons
-  const conditionButtons = document.querySelectorAll('.condition-button');
-  conditionButtons.forEach(button => {
-    button.addEventListener('click', function() {
-      conditionButtons.forEach(btn => btn.classList.remove('active'));
-      this.classList.add('active');
-      const imagePath = this.getAttribute('data-image');
+  const conditionButtons = document.querySelectorAll(".condition-button");
+  conditionButtons.forEach((button) => {
+    button.addEventListener("click", function () {
+      conditionButtons.forEach((btn) => btn.classList.remove("active"));
+      this.classList.add("active");
+      const imagePath = this.getAttribute("data-image");
       img.src = imagePath;
-      img.onload = function() {
-  resizeCanvas();
-  circleX = canvas.width / 2;
-  circleY = canvas.height / 2;
-  imageOffsetX = 0;
-  imageOffsetY = 0;
-  checkBoundaries();
-  draw();
-};
-
+      img.onload = function () {
+        resizeCanvas();
+        circleX = canvas.width / 2;
+        circleY = canvas.height / 2;
+        imageOffsetX = 0;
+        imageOffsetY = 0;
+        checkBoundaries();
+        draw();
+      };
     });
   });
 
   // Mode Buttons
-  const modeButtons = document.querySelectorAll('.mode-button');
-  modeButtons.forEach(button => {
-    button.addEventListener('click', function() {
-      modeButtons.forEach(btn => btn.classList.remove('active'));
-      this.classList.add('active');
-      const mode = this.getAttribute('data-mode');
-      if (mode === 'child') {
+  const modeButtons = document.querySelectorAll(".mode-button");
+  modeButtons.forEach((button) => {
+    button.addEventListener("click", function () {
+      modeButtons.forEach((btn) => btn.classList.remove("active"));
+      this.classList.add("active");
+      const mode = this.getAttribute("data-mode");
+      if (mode === "child") {
         isChildMode = true;
         isAdultMode = false;
         stopAdultJitter();
@@ -585,171 +635,181 @@
   }
 
   // Toggle condition buttons visibility
-  const toggleButton = document.getElementById('toggleConditions');
-  const conditionButtonsContainer = document.getElementById('conditionButtons');
-  toggleButton.addEventListener('click', function() {
-    conditionButtonsContainer.classList.toggle('collapsed');
-    toggleButton.classList.toggle('active');
+  const toggleButton = document.getElementById("toggleConditions");
+  const conditionButtonsContainer = document.getElementById("conditionButtons");
+  toggleButton.addEventListener("click", function () {
+    conditionButtonsContainer.classList.toggle("collapsed");
+    toggleButton.classList.toggle("active");
   });
 
   // Zoom Slider Event (updates zoomFactor and triggers redraw)
-  const zoomSlider = document.getElementById('zoomSlider');
-  zoomSlider.addEventListener('input', function() {
+  const zoomSlider = document.getElementById("zoomSlider");
+  zoomSlider.addEventListener("input", function () {
     zoomFactor = parseFloat(this.value);
     checkBoundaries();
     draw();
   });
 
-
-  
   function resizeCanvas() {
-  const header = document.querySelector('header');
-  const headerHeight = header ? header.offsetHeight : 0;
-  
-  // Set canvas dimensions: full window width and available height
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight - headerHeight;
-  
-  // Calculate scale factor based solely on height so the image fills the canvas vertically
-  const scaleFactor = canvas.height / img.naturalHeight;
-  const drawnImageWidth = img.naturalWidth * scaleFactor;
-  
-  // Centre the drawn image horizontally (waste space on sides is expected)
-  const imageDrawOffsetX = (canvas.width - drawnImageWidth) / 2;
-  
-  // Centre the circle within the drawn image if not dragging
-  if (!isDragging) {
-    circleX = imageDrawOffsetX + drawnImageWidth / 2;
-    circleY = canvas.height / 2;
+    const header = document.querySelector("header");
+    const headerHeight = header ? header.offsetHeight : 0;
+
+    // Set canvas dimensions: full window width and available height
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight - headerHeight;
+
+    // Calculate scale factor based solely on height so the image fills the canvas vertically
+    const scaleFactor = canvas.height / img.naturalHeight;
+    const drawnImageWidth = img.naturalWidth * scaleFactor;
+
+    // Centre the drawn image horizontally (waste space on sides is expected)
+    const imageDrawOffsetX = (canvas.width - drawnImageWidth) / 2;
+
+    // Centre the circle within the drawn image if not dragging
+    if (!isDragging) {
+      circleX = imageDrawOffsetX + drawnImageWidth / 2;
+      circleY = canvas.height / 2;
+    }
+    draw();
   }
-  draw();
-}
 
-window.addEventListener('resize', resizeCanvas);
-resizeCanvas();
+  window.addEventListener("resize", resizeCanvas);
+  resizeCanvas();
 
-function draw() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.save();
-  
-  // Scale factor to fill the canvas vertically
-  const scaleFactor = canvas.height / img.naturalHeight;
-  const drawnImageWidth = img.naturalWidth * scaleFactor;
-  const drawnImageHeight = canvas.height;
-  const imageDrawOffsetX = (canvas.width - drawnImageWidth) / 2;
-  const imageDrawOffsetY = 0;
-  
-  // Apply zoom and refractive offsets
-  const backgroundScale = imageScale * zoomFactor;
-  const scaledWidth = drawnImageWidth * backgroundScale;
-  const scaledHeight = drawnImageHeight * backgroundScale;
-  const offsetXPos = imageDrawOffsetX + (drawnImageWidth - scaledWidth) / 2 + imageOffsetX;
-  const offsetYPos = imageDrawOffsetY + (drawnImageHeight - scaledHeight) / 2 + imageOffsetY;
-  
-  // Determine effective circle radius based on zoom and canvas scaling
-  const windowScale = zoomFactor;
-  const effectiveCircleRadius = circleRadius * windowScale * scaleFactor;
-  
-  // Create circular clipping path for the interactive area
-  ctx.beginPath();
-  ctx.arc(circleX, circleY, effectiveCircleRadius, 0, Math.PI * 2, true);
-  ctx.closePath();
-  ctx.clip();
-  
-  // Apply cataract filter
-  const maxBlur = 15;
-  const cataractBlurAmount = cataractLevel * maxBlur;
-  const minBrightness = 0;
-  const brightnessValue = 1 - cataractLevel * (1 - minBrightness);
-  ctx.filter = `blur(${cataractBlurAmount}px) brightness(${brightnessValue})`;
-  
-  // Draw the background image
-  ctx.drawImage(
-    img,
-    0, 0, img.naturalWidth, img.naturalHeight,
-    offsetXPos, offsetYPos, scaledWidth, scaledHeight
-  );
-  
-  // Remove filter and add cataract overlay if needed
-  ctx.filter = 'none';
-  if (cataractLevel > 0) {
-    ctx.globalCompositeOperation = 'multiply';
-    const yellowOpacity = cataractLevel;
-    ctx.fillStyle = `rgba(255, 255, 0, ${yellowOpacity})`;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.globalCompositeOperation = 'source-over';
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.save();
+
+    // Scale factor to fill the canvas vertically
+    const scaleFactor = canvas.height / img.naturalHeight;
+    const drawnImageWidth = img.naturalWidth * scaleFactor;
+    const drawnImageHeight = canvas.height;
+    const imageDrawOffsetX = (canvas.width - drawnImageWidth) / 2;
+    const imageDrawOffsetY = 0;
+
+    // Apply zoom and refractive offsets
+    const backgroundScale = imageScale * zoomFactor;
+    const scaledWidth = drawnImageWidth * backgroundScale;
+    const scaledHeight = drawnImageHeight * backgroundScale;
+    const offsetXPos =
+      imageDrawOffsetX + (drawnImageWidth - scaledWidth) / 2 + imageOffsetX;
+    const offsetYPos =
+      imageDrawOffsetY + (drawnImageHeight - scaledHeight) / 2 + imageOffsetY;
+
+    // Determine effective circle radius based on zoom and canvas scaling
+    const windowScale = zoomFactor;
+    const effectiveCircleRadius = circleRadius * windowScale * scaleFactor;
+
+    // Create circular clipping path for the interactive area
+    ctx.beginPath();
+    ctx.arc(circleX, circleY, effectiveCircleRadius, 0, Math.PI * 2, true);
+    ctx.closePath();
+    ctx.clip();
+
+    // Apply cataract filter
+    const maxBlur = 15;
+    const cataractBlurAmount = cataractLevel * maxBlur;
+    const minBrightness = 0;
+    const brightnessValue = 1 - cataractLevel * (1 - minBrightness);
+    ctx.filter = `blur(${cataractBlurAmount}px) brightness(${brightnessValue})`;
+
+    // Draw the background image
+    ctx.drawImage(
+      img,
+      0,
+      0,
+      img.naturalWidth,
+      img.naturalHeight,
+      offsetXPos,
+      offsetYPos,
+      scaledWidth,
+      scaledHeight,
+    );
+
+    // Remove filter and add cataract overlay if needed
+    ctx.filter = "none";
+    if (cataractLevel > 0) {
+      ctx.globalCompositeOperation = "multiply";
+      const yellowOpacity = cataractLevel;
+      ctx.fillStyle = `rgba(255, 255, 0, ${yellowOpacity})`;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.globalCompositeOperation = "source-over";
+    }
+
+    // Draw corneal reflex effect for selected FOVs (5°, 8° or 15°)
+    const activeFOVButton = document.querySelector(".fov-button.active");
+    const activeFOV = activeFOVButton
+      ? parseInt(activeFOVButton.getAttribute("data-degree"), 10)
+      : null;
+    if ([5, 8, 15].includes(activeFOV)) {
+      // Increase the corneal reflex size using a scale factor
+      const reflexScaleFactor = 1.3; // Adjust this value as needed
+      const effectiveEllipseWidth =
+        0.6 * effectiveCircleRadius * reflexScaleFactor;
+      const effectiveEllipseHeight =
+        0.4 * effectiveCircleRadius * reflexScaleFactor;
+      // Position the ellipse relative to the circle centre, applying jitter offsets
+      const ellipseCenterX =
+        circleX + cornealJitterOffset.x * windowScale * scaleFactor;
+      const ellipseCenterY =
+        circleY +
+        0.45 * effectiveCircleRadius +
+        cornealJitterOffset.y * windowScale * scaleFactor;
+
+      ctx.beginPath();
+      ctx.ellipse(
+        ellipseCenterX,
+        ellipseCenterY,
+        effectiveEllipseWidth / 2,
+        effectiveEllipseHeight / 2,
+        0,
+        0,
+        2 * Math.PI,
+      );
+      ctx.fillStyle = "white";
+      ctx.fill();
+    } // <-- closing curly brace for the if block
+
+    ctx.restore();
+
+    // Draw the outline of the circular window
+    ctx.beginPath();
+    ctx.arc(circleX, circleY, effectiveCircleRadius, 0, Math.PI * 2, true);
+    ctx.strokeStyle = "white";
+    ctx.lineWidth = 15 * windowScale * scaleFactor;
+    ctx.stroke();
   }
-  
-// Draw corneal reflex effect for selected FOVs (5°, 8° or 15°)
-const activeFOVButton = document.querySelector('.fov-button.active');
-const activeFOV = activeFOVButton ? parseInt(activeFOVButton.getAttribute('data-degree'), 10) : null;
-if ([5, 8, 15].includes(activeFOV)) {
-  // Increase the corneal reflex size using a scale factor
-  const reflexScaleFactor = 1.3; // Adjust this value as needed
-  const effectiveEllipseWidth = 0.6 * effectiveCircleRadius * reflexScaleFactor;
-  const effectiveEllipseHeight = 0.4 * effectiveCircleRadius * reflexScaleFactor;
-  // Position the ellipse relative to the circle centre, applying jitter offsets
-  const ellipseCenterX = circleX + cornealJitterOffset.x * windowScale * scaleFactor;
-  const ellipseCenterY = circleY + (0.45 * effectiveCircleRadius) + cornealJitterOffset.y * windowScale * scaleFactor;
 
-  ctx.beginPath();
-  ctx.ellipse(
-    ellipseCenterX,
-    ellipseCenterY,
-    effectiveEllipseWidth / 2,
-    effectiveEllipseHeight / 2,
-    0,
-    0,
-    2 * Math.PI
-  );
-  ctx.fillStyle = 'white';
-  ctx.fill();
-} // <-- closing curly brace for the if block
+  function checkBoundaries() {
+    // Calculate scale factor based on canvas height
+    const scaleFactor = canvas.height / img.naturalHeight;
+    const drawnImageWidth = img.naturalWidth * scaleFactor;
+    const imageDrawOffsetX = (canvas.width - drawnImageWidth) / 2;
+    const windowScale = zoomFactor;
+    const effectiveCircleRadius = circleRadius * windowScale * scaleFactor;
 
-  
-  ctx.restore();
-  
-  // Draw the outline of the circular window
-  ctx.beginPath();
-  ctx.arc(circleX, circleY, effectiveCircleRadius, 0, Math.PI * 2, true);
-  ctx.strokeStyle = 'white';
-  ctx.lineWidth = 15 * windowScale * scaleFactor;
-  ctx.stroke();
-}
+    // Set boundaries so the circle stays within the visible (drawn) image
+    const minX = imageDrawOffsetX + effectiveCircleRadius;
+    const maxX = imageDrawOffsetX + drawnImageWidth - effectiveCircleRadius;
+    const minY = effectiveCircleRadius; // top of the drawn image
+    const maxY = canvas.height - effectiveCircleRadius;
 
-
-function checkBoundaries() {
-  // Calculate scale factor based on canvas height
-  const scaleFactor = canvas.height / img.naturalHeight;
-  const drawnImageWidth = img.naturalWidth * scaleFactor;
-  const imageDrawOffsetX = (canvas.width - drawnImageWidth) / 2;
-  const windowScale = zoomFactor;
-  const effectiveCircleRadius = circleRadius * windowScale * scaleFactor;
-  
-  // Set boundaries so the circle stays within the visible (drawn) image
-  const minX = imageDrawOffsetX + effectiveCircleRadius;
-  const maxX = imageDrawOffsetX + drawnImageWidth - effectiveCircleRadius;
-  const minY = effectiveCircleRadius; // top of the drawn image
-  const maxY = canvas.height - effectiveCircleRadius;
-  
-  if (circleX < minX) {
-    circleX = minX;
-    velocityX *= -0.5;
+    if (circleX < minX) {
+      circleX = minX;
+      velocityX *= -0.5;
+    }
+    if (circleX > maxX) {
+      circleX = maxX;
+      velocityX *= -0.5;
+    }
+    if (circleY < minY) {
+      circleY = minY;
+      velocityY *= -0.5;
+    }
+    if (circleY > maxY) {
+      circleY = maxY;
+      velocityY *= -0.5;
+    }
   }
-  if (circleX > maxX) {
-    circleX = maxX;
-    velocityX *= -0.5;
-  }
-  if (circleY < minY) {
-    circleY = minY;
-    velocityY *= -0.5;
-  }
-  if (circleY > maxY) {
-    circleY = maxY;
-    velocityY *= -0.5;
-  }
-}
-document.addEventListener('fullscreenchange', resizeCanvas);
-
-  
+  document.addEventListener("fullscreenchange", resizeCanvas);
 </script>
