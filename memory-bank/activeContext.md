@@ -1,4 +1,4 @@
-<!-- THE CHANGES - activeContext.md | 2025-09-04, Cline -->
+<!-- THE CHANGES - activeContext.md | 2025-10-02, Cline -->
 
 # Active Context
 
@@ -17,16 +17,9 @@ The current focus is on ensuring the application's core structure and PWA capabi
 - Added video players with time-based event handling and interactive toolbars for various learning modules.
 - Introduced an offline content management modal to allow users to select and download specific assets for offline use.
 - Updated the `README.md` file to include a changelog section with dates and descriptions of recent changes.
-- **2025-09-02:** Read all memory bank files and `README.md` as part of a memory bank update task.
-- **2025-09-02:** Added JSDoc comments to all JavaScript files in `Arclight_App/public/js/`.
-- **2025-09-02:** Updated `README.md` to reflect the addition of JSDoc comments.
-- **2025-08-31:** Updated memory bank and README.md dates. General application refinement and content integration across various modules, including updates to video playback, navigation, onboarding, and PWA features.
-- **2025-09-02:** Updated comments in HTML files in `Arclight_App/public/html` to use "Page" suffix (e.g., `intro.html` to `Intro Page`).
-- **2025-09-03:** Refactored CSS by removing duplicate and unscoped styles from `pages.css` for `.module-card`, `.ml-*` cluster, `.eyes-topbar`, and `.lesson-row`. Verified `.bottom-bar` and Language-Install page rules.
-- **2025-09-04:** Converted CSS breakpoints from pixels to `em` units in `responsive.css`.
-- **2025-09-04:** Updated full-screen sections in `pages.css` from `vh` to `dvh` units.
-- **2025-09-04:** Replaced fixed widths/heights with percentage-based widths and `max-width` in `components.css` for elements like `.module-card img`, `.content-box`, `.user-profile`, and `.eyes-card`.
-- Updated README.md to reflect the changes.
+- Set up Jest for unit, UI, and API testing. Configured a Git `pre-push` hook to run tests automatically before pushing to GitHub. Updated `tests/README.md` with detailed testing information.
+- Set up GitHub Actions CI/CD pipeline at `.github/workflows/ci-cd.yml` for continuous integration and deployment to Railway, including linting, type checking, and Lighthouse CI for performance and best practices.
+- Performed a memory bank update, reading all memory bank files and the `README.md`.
 
 ## Next Steps
 
@@ -35,9 +28,6 @@ The current focus is on ensuring the application's core structure and PWA capabi
 - Implement robust client-side error handling and enhance accessibility features across the application.
 - Expand automated tests to cover new features, edge cases, and error handling.
 - Further optimize media loading and overall application performance.
-- Established a GitHub Actions CI/CD pipeline for continuous integration and deployment to Railway.
-- Continue populating all educational modules with comprehensive content (text, images, videos, quizzes).
-- Set up GitHub Actions CI/CD pipeline at `.github/workflows/ci-cd.yml` for continuous integration and deployment to Railway, including linting, type checking, and Lighthouse CI for performance and best practices.
 
 ## Active Decisions and Considerations
 

@@ -23,8 +23,8 @@ This project is the Arclight App, a comprehensive educational and diagnostic too
 ## Project Structure
 
 - `index.html` - Main entry point of the app
-- `style.css` - Global styles
-- `js/` - JavaScript files for different modules and features
+- `style/` - Directory containing `base.css`, `components.css`, `pages.css`, and `responsive.css` for global styles
+- `public/js/` - Directory containing JavaScript files for different modules and features
 - `images/` - Image assets used throughout the app
 - `.github/workflows/ci-cd.yml` - GitHub Actions CI/CD workflow
 - `memory-bank/` - Documentation and project context files
@@ -43,6 +43,13 @@ The `memory-bank/` directory contains essential project documentation that guide
 
 Maintaining the Memory Bank is critical for project continuity and knowledge sharing.
 
+## Testing
+
+The project uses Jest for comprehensive testing, including UI, API, and unit tests.
+
+- **Running Tests:** Execute all tests using `npm test`.
+- **Pre-push Hook:** A Git `pre-push` hook is configured to automatically run all tests before pushing changes to GitHub. This ensures that only code passing all tests is pushed to the repository.
+
 ## Contributing
 
 Please follow the existing code patterns and update the Memory Bank when making significant changes. Write tests for new features and ensure the app works across different environments.
@@ -52,6 +59,12 @@ Please follow the existing code patterns and update the Memory Bank when making 
 [Specify your license here]
 
 ## Changelog
+
+### 02/10/25
+
+- Set up Jest for unit, UI, and API testing.
+- Configured a Git `pre-push` hook to run tests automatically before pushing to GitHub.
+- Updated `tests/README.md` with detailed testing information.
 
 ### 26/08/25
 
