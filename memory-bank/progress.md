@@ -41,9 +41,12 @@
 - **Converted PNG images to WebP format in public/images/icon/eyes/disease directory.**
 - **Testing Setup:** Jest for unit, UI, and API testing, with a Git `pre-push` hook to run tests automatically. `tests/README.md` updated with detailed testing information.
 - **CI/CD Pipeline:** GitHub Actions CI/CD pipeline at `.github/workflows/ci-cd.yml` for continuous integration and deployment to Railway, including linting, type checking, and Lighthouse CI.
+- **Security Enhancements:** Implemented a `security` folder containing configurations for rate limiting, Content Security Policy (CSP), CORS allowlist, and CSRF protection.
+- **Module System Fix:** Resolved ES module / CommonJS conflict by renaming `server.js` to `server.cjs` and updating related `require` paths and `package.json` scripts.
 
 ## What's Left to Build
 
+- **Security Testing:** Thoroughly test all implemented security measures and ensure they are correctly configured for production environments (e.g., strong `SESSION_SECRET`).
 - **Full Content Population:** Ensure all educational modules are fully populated with comprehensive content (text, images, videos, quizzes).
 - **Interactive Elements:** Refine all interactive elements within quizzes and case studies for a more engaging user experience.
 - **Robust Error Handling:** Implement client-side error handling for a smoother user experience across all new features.
@@ -53,7 +56,7 @@
 
 ## Current Status
 
-The project has significantly advanced beyond its initial setup phase. The foundational structure is robust, and many core features, including advanced navigation, PWA capabilities, interactive learning modules, and content management, are now implemented. The application is a feature-rich PWA with a strong emphasis on interactive learning and offline capabilities. The `README.md` file has been updated to include a changelog and accurate project structure details. The testing setup with Jest and a pre-push hook is fully functional, and a CI/CD pipeline is established. The next steps involve completing content population, refining existing features, and ensuring comprehensive testing and optimization.
+The project has significantly advanced beyond its initial setup phase. The foundational structure is robust, and many core features, including advanced navigation, PWA capabilities, interactive learning modules, and content management, are now implemented. The application is a feature-rich PWA with a strong emphasis on interactive learning and offline capabilities. The `README.md` file has been updated to include a changelog and accurate project structure details. The testing setup with Jest and a pre-push hook is fully functional, and a CI/CD pipeline is established. Critical security measures have been implemented, and module resolution issues have been addressed. The next steps involve completing content population, refining existing features, and ensuring comprehensive testing and optimization, particularly for the new security features.
 
 ## Known Issues
 

@@ -87,3 +87,12 @@ Please follow the existing code patterns and update the Memory Bank when making 
 ### 31/08/25
 
 - Updated memory bank and README.md dates. General application refinement and content integration across various modules, including updates to video playback, navigation, onboarding, and PWA features.
+
+### 04/10/25
+
+- Created a `security` folder and implemented the following security measures:
+  - **Rate Limiting**: Using `express-rate-limit` to control request frequency.
+  - **Content Security Policy (CSP)**: Configured with `helmet` to prevent XSS, allowing `'self'`, `https://fonts.googleapis.com` for styles, and `https://fonts.gstatic.com` for fonts.
+  - **CORS Allowlist**: Implemented with `cors` to restrict cross-origin requests to `http://localhost:3000`.
+  - **CSRF Protection**: Set up using `csurf`, `express-session`, and `cookie-parser` to guard against CSRF attacks.
+- Resolved ES module / CommonJS conflict by renaming `server.js` to `server.cjs` and updating all related `require` paths and `package.json` scripts.
