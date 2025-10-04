@@ -24,7 +24,7 @@
   "dependencies": {
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
-    "csurf": "^1.11.0",
+    "csurf": "^1.2.2",
     "express": "^4.18.2",
     "express-rate-limit": "^8.1.0",
     "express-session": "^1.18.2",
@@ -46,6 +46,6 @@
     "supertest": "^7.1.4",
     "terser": "^5.44.0",
     "typescript": "^5.8.3",
-    "vscode": "^1.1.37"
+    "vscode": "^1.1.34"
   }
 }
