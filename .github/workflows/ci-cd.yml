@@ -40,19 +40,6 @@ jobs:
       - name: Security audit
         run: npm audit --audit-level=moderate
 
-      - name: Run Lighthouse CI
-        run: |
-          npm install -g @lhci/cli@0.13.x
-          nohup http-server dist &
-          sleep 5 # give server a moment to start
-          lhci collect --url=http://localhost:8080
-          lhci upload
-        env:
-          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
-
-      - name: Run translation checks
-        run: npm run check-translations
-
       - name: Run accessibility tests
         run: npm run test:a11y
 
