@@ -148,7 +148,6 @@
     opacity: 1;
   }
 }
-
 /* ============================================= Language & Install Page ============================================= */
 .lang-install {
   background: #000;
@@ -164,7 +163,7 @@
   max-width: 360px;
   padding: 0 20px;
   text-align: left;
-  margin-top: 203px;
+  margin-top: 189px;
 }
 
 .lang-install__label {
@@ -251,7 +250,7 @@
 .onboarding-container {
   max-width: 100%;
   margin: 0 auto;
-  padding: 89px 21px 100px;
+  padding: 20% 20px 100px;
   background: #fff;
 }
 
@@ -350,7 +349,7 @@ select.onb-input.has-value {
 
 @media (max-width: 420px) {
   .onboarding-container {
-    padding-bottom: 100svh;
+    padding-bottom: 100%;
   }
 }
 
@@ -360,7 +359,7 @@ select.onb-input.has-value {
   border: 1px solid #e5e5ea;
   font-weight: 500;
   color: #ccccd1;
-  width: 98%;
+  width: 95%;
   height: 60%;
 }
 #username.onb-input:focus {
@@ -510,6 +509,7 @@ select.onb-input.has-value {
     padding-top: 17%;
   }
 }
+
 /* ============================================= Unified Dashboard ============================================= */
 .unified-container {
   background: #fff;
@@ -1121,378 +1121,104 @@ select.onb-input.has-value {
   opacity: 0.9;
 }
 
-/* ===== Onboarding inputs — normalize sizes across text/select ===== */
+/* =============================================
+   Unified Container Placement (DESKTOP/TABLET)
+   Keep Galaxy S8+ (≤400px) exactly as original.
+   ============================================= */
+@media (min-width: 401px) {
+  /* Neutralize the global .container padding on these pages */
+  #onboarding .container,
+  #proInterestPage .container,
+  #introPage .container {
+    padding-top: 0 !important;
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+    padding-bottom: 0 !important;
+  }
 
-/* 공통 규격: 높이 35px, 좌우/상하 패딩, 라인하이트/라운드 통일 */
-#onboarding .onb-input,
-#onboarding select.onb-input {
-  box-sizing: border-box;
-  width: 100%;
-  height: 2.1875rem; /* 35px */
-  padding: 0.5625rem 0.5rem; /* 9px 8px */
-  line-height: 1.25rem; /* 20px — placeholder 시 세로정렬 안정화 */
-  border-radius: 0.625rem; /* 10px */
-  border: 1px solid #e5e5ea;
-  background: #fff;
-  font-size: 0.75rem; /* 12px (기존과 동일) */
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-}
+  /* Desktop/tablet geometry (centered card) */
+  .onboarding-container,
+  .interest-container,
+  .intro-container {
+    /* grows a little on big screens but never crazy-wide */
+    width: 70% !important;
+    max-width: 420px !important; /* allow a touch wider than phone */
+    padding: 0 20px !important;
+    margin: 203px auto 0 !important;
+    text-align: left;
+  }
 
-/* select 전용: 드롭다운 화살표 공간 및 아이콘 위치 고정 */
-#onboarding select.onb-input {
-  padding-right: 2.5rem; /* 화살표 공간 */
-  background-repeat: no-repeat;
-  background-position: right 0.625rem center; /* 10px */
-  background-size: 1rem 1rem; /* 16px */
-}
+  /* Remove page-specific stretching that fought the unified layout */
+  .intro-container {
+    min-height: 0 !important;
+  }
+  .interest-container {
+    padding-bottom: 0 !important;
+  }
 
-/* username(텍스트 인풋)도 정확히 동일 폭/높이 강제 */
-#onboarding #username.onb-input {
-  width: 100% !important;
-  height: 2.1875rem !important; /* 35px */
-  padding: 0.5625rem 0.5rem !important;
-  line-height: 1.25rem !important;
-}
-
-/* 값이 채워졌을 때(파란 테두리/문자색) 스타일은 그대로 유지 */
-#onboarding .onb-input.filled,
-#onboarding select.onb-input.has-value,
-#onboarding #username.onb-input.filled {
-  border-color: #62a6ff;
-  color: #62a6ff;
-}
-
-/* ===== Restore dropdown triangle for selects on Onboarding (single-line, URL-encoded) ===== */
-#onboarding select.onb-input {
-  padding-right: 2.5rem; /* space for arrow */
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-
-  /* gray arrow */
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23999' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 0.625rem center; /* 10px from right */
-  background-size: 1rem 1rem; /* 16px */
-}
-
-/* hide legacy Edge/IE arrow */
-#onboarding select.onb-input::-ms-expand {
-  display: none;
-}
-
-/* when a value is selected (your code adds .has-value), make arrow + text blue */
-#onboarding select.onb-input.has-value {
-  color: #62a6ff;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%2362a6ff' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
-}
-
-/* focus-visible outline (keeps arrow) */
-#onboarding select.onb-input:focus-visible {
-  outline: 2px solid #62a6ff;
-  outline-offset: 2px;
-}
-
-/* ===== Onboarding: full-bleed white background while keeping content width ===== */
-
-/* 1) 페이지 전체(배경) 흰색 + 풀 높이 */
-#onboarding {
-  background: #fff; /* body의 회색 대신 page 전체를 흰색으로 */
-  min-height: 100svh; /* 주소창 변동 대응 */
-}
-@supports not (height: 1svh) {
-  #onboarding {
-    min-height: 100vh;
+  /* Kill % based top spacing that shifts per device; keep it tight on big screens */
+  .interest-title {
+    margin-top: 12px !important;
   }
 }
 
-/* 2) 컨테이너는 화면 전체 폭을 차지하게 (배경을 줄이지 않도록) */
-#onboarding .onboarding-container {
-  width: 100%;
-  max-width: none; /* media query의 36vw 제한을 이 페이지에서는 해제 */
-  margin: 0;
-  /* 사용자가 지정한 패딩/최소높이 그대로 유지 */
-  padding-top: 29.0541vh;
-  padding-right: 8.3333vw;
-  padding-bottom: 4.0541vh;
-  padding-left: 0.3333vw;
-  min-height: 100svh;
+/* =============================================
+   Ensure full-page white background for
+   Onboarding, Interest, and Intro pages
+   ============================================= */
+
+#onboarding,
+#proInterestPage,
+#introPage {
+  background-color: #ffffff !important; /* full screen white */
+  min-height: 100vh; /* stretch to full viewport height */
 }
 
-/* 3) 대신 내부 콘텐츠(제목/폼/버튼)는 넓은 화면에서만 36vw로 고정해 중앙 정렬 */
-@media (min-width: 56.25em) {
-  /* ≥ 900px */
-  #onboarding .onboarding-container > * {
-    max-width: 36vw; /* 기존 레이아웃 의도 유지 */
-    margin-left: auto;
-    margin-right: auto;
+/* === Force the entire app shell to white (kills the gray top band) === */
+html,
+body,
+#app,
+#page-content,
+.page {
+  background-color: #ffffff !important;
+}
+
+/* Make sure the three pages still fill the viewport */
+#onboarding,
+#proInterestPage,
+#introPage {
+  min-height: 100vh !important;
+}
+
+/* If a header/top spacer exists on these pages, make it white and shadowless */
+#onboarding .header,
+#proInterestPage .header,
+#introPage .header,
+#onboarding .top-bar,
+#proInterestPage .top-bar,
+#introPage .top-bar,
+#onboarding .statusbar-spacer,
+#proInterestPage .statusbar-spacer,
+#introPage .statusbar-spacer {
+  background: #ffffff !important;
+  box-shadow: none !important;
+}
+
+/* Some builds put a background on the first container row—neutralize it */
+.page > .container:first-child {
+  background: #ffffff !important;
+}
+
+/* =============================================
+   Intro vertical tweak ONLY for larger screens
+   (mobile ≤400px stays exactly like original)
+   ============================================= */
+@media (min-width: 401px) {
+  .intro-container {
+    margin-top: 160px !important; /* slightly higher than the others */
+    padding-top: 0 !important;
   }
-}
-
-/* =========================
-   Onboarding — full-bleed white + fixed content width (S8+ baseline)
-   ========================= */
-
-/* 0) page background always white, full height */
-#onboarding {
-  background: #fff;
-  min-height: 100svh;
-}
-@supports not (height: 1svh) {
-  #onboarding {
-    min-height: 100vh;
-  }
-}
-
-/* 1) let the background container fill the screen width, don't constrain here */
-#onboarding .onboarding-container {
-  width: 100%;
-  max-width: none; /* ignore any global .container max-width for this page */
-  margin: 0;
-  padding-top: clamp(48px, 10vh, 120px);
-  padding-right: 5.5556vw; /* 20px @ 360 baseline */
-  padding-bottom: 13.5135vh; /* 100px baseline */
-  padding-left: 4.5556vw;
-  min-height: 100%;
-  box-sizing: border-box;
-}
-
-/* 2) FIXED content column width based on Galaxy S8+ (360 CSS px)
-      - all direct children (title, fields, button) share the same width
-      - on tiny screens, it shrinks to fit; on large screens, it never exceeds 360px
-*/
-#onboarding {
-  --col: min(92vw, 360px); /* 360px cap so it looks the same on big screens */
-}
-
-#onboarding .onboarding-container > * {
-  width: var(--col);
-  margin-left: auto;
-  margin-right: auto;
-}
-
-/* 3) Inputs/selects: make sure they fill the column exactly and keep uniform height */
-#onboarding .onb-input,
-#onboarding select.onb-input {
-  width: 100%;
-  height: 35px;
-  padding: 9px 8px;
-  line-height: 20px;
-  border-radius: 10px;
-  border: 1px solid #e5e5ea;
-  background: #fff;
-  font-size: 12px;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  box-sizing: border-box;
-}
-
-/* 4) Select triangle (URL-encoded SVG, single line) */
-#onboarding select.onb-input {
-  padding-right: 2.5rem; /* room for arrow */
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23999' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 0.625rem center;
-  background-size: 1rem 1rem;
-}
-#onboarding select.onb-input::-ms-expand {
-  display: none;
-}
-#onboarding select.onb-input.has-value {
-  color: #62a6ff;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%2362a6ff' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
-}
-
-/* 5) Button: same visual width everywhere (matches column), consistent height */
-#onboarding .onb-cta {
-  display: block;
-  width: var(--col);
-  height: 38px;
-  border: none;
-  border-radius: 14px;
-  margin-top: 17.027vh;
-  box-sizing: border-box;
-}
-
-/* 6) If you had global media queries shrinking .container, keep them but ignore on this page */
-@media (min-width: 37.5em) {
-  #onboarding .onboarding-container {
-    /* keep our own measurements; don't inherit other pages' .container rules */
-    padding-top: clamp(56px, 12vh, 140px);
-  }
-}
-@media (min-width: 56.25em) {
-  /* background still full width */
-  #onboarding .onboarding-container {
-    max-width: none;
-  }
-
-  /* content stays the same fixed column (360px), centered */
-  #onboarding .onboarding-container > * {
-    max-width: 360px;
-  }
-}
-
-/* =========================
-   Interest — full-bleed white + fixed content width (S8+ baseline)
-   ========================= */
-
-/* 0) page background always white, full height */
-#interest {
-  background: #fff;
-  min-height: 100svh;
-}
-@supports not (height: 1svh) {
-  #interest {
-    min-height: 100vh;
-  }
-}
-
-/* 1) let the white container fill the viewport width (don’t constrain here) */
-#interest .interest-container {
-  width: 100%;
-  max-width: none; /* stop any global container max-width from shrinking background */
-  margin: 0;
-  /* comfortable top spacing that scales a bit with viewport height */
-  padding-top: clamp(48px, 10vh, 120px);
-  padding-right: 5.5556vw; /* 20px @ 360 baseline */
-  padding-bottom: 13.5135vh; /* 100px baseline */
-  padding-left: 5.5556vw;
-  min-height: 100%;
-  box-sizing: border-box;
-}
-
-/* 2) FIXED content column width based on Galaxy S8+ (360 CSS px)
-      — all direct children (title, paragraphs, groups, CTA) use the same column
-      — on tiny screens it can shrink a bit; on large screens it never exceeds 360px
-*/
-#interest {
-  --col: min(92vw, 360px);
-}
-
-#interest .interest-container > * {
-  width: var(--col);
-  margin-left: auto;
-  margin-right: auto;
-  box-sizing: border-box;
-}
-
-/* 3) Headings & helper text sizing (keeps original feel) */
-#interest h1,
-#interest .interest-title {
-  width: var(--col);
-  margin-left: auto;
-  margin-right: auto;
-}
-#interest p,
-#interest .interest-sub {
-  width: var(--col);
-  margin-left: auto;
-  margin-right: auto;
-}
-
-/* 4) Chip groups sit within the fixed column; chips wrap naturally */
-#interest .chip-group,
-#interest .interest-group {
-  width: var(--col);
-  margin-left: auto;
-  margin-right: auto;
-}
-#interest .chip {
-  display: inline-flex;
-  align-items: center;
-  height: 2.125rem; /* ~34px */
-  padding: 0 0.75rem; /* horizontal padding only */
-  border-radius: 1.3125rem; /* ~21px pill */
-  font-size: 0.875rem; /* 14px */
-  line-height: 1;
-  white-space: nowrap;
-  margin: 0 0.5rem 0.75rem 0; /* spacing between chips */
-  box-sizing: border-box;
-}
-
-/* 5) CTA button keeps the same visual width everywhere */
-#interest .interest-cta,
-#interest .onb-cta {
-  /* if Interest reuses the same button class */
-  display: block;
-  width: var(--col);
-  height: 42px; /* a touch taller than onboarding; set to 38px if you prefer exact match */
-  border: none;
-  border-radius: 14px;
-  margin: 2rem auto 0 auto;
-  box-sizing: border-box;
-}
-
-/* 6) wide-screen: keep background full width; content column remains capped at 360px */
-@media (min-width: 56.25em) {
-  #interest .interest-container {
-    max-width: none;
-  }
-  #interest .interest-container > * {
-    max-width: 360px;
-  }
-}
-
-/* =========================
-   Interest page — fix background full width
-   ========================= */
-
-/* 페이지 전체 배경을 흰색으로 고정 */
-#interest {
-  background: #fff;
-  min-height: 100svh;
-}
-@supports not (height: 1svh) {
-  #interest {
-    min-height: 100vh;
-  }
-}
-
-/* 컨테이너는 화면 전체 폭을 차지 */
-#interest .interest-container {
-  width: 100%;
-  max-width: none;
-  margin: 0;
-  padding-top: clamp(48px, 10vh, 120px);
-  padding-right: 5.5556vw;
-  padding-bottom: 13.5135vh;
-  padding-left: 5.5556vw;
-  min-height: 100%;
-  box-sizing: border-box;
-}
-
-/* 고정된 콘텐츠 column (Galaxy S8+ 기준 360px cap) */
-#interest {
-  --col: min(92vw, 360px);
-}
-#interest .interest-container > * {
-  width: var(--col);
-  margin-left: auto;
-  margin-right: auto;
-  box-sizing: border-box;
-}
-
-/* CTA 버튼도 동일한 column 너비 */
-#interest .interest-cta,
-#interest .onb-cta {
-  display: block;
-  width: var(--col);
-  height: 42px;
-  border-radius: 14px;
-  margin: 2rem auto 0 auto;
-  box-sizing: border-box;
-}
-
-/* 큰 화면에서도 배경은 풀폭, 콘텐츠는 360px로 제한 */
-@media (min-width: 56.25em) {
-  #interest .interest-container {
-    max-width: none;
-  }
-  #interest .interest-container > * {
-    max-width: 360px;
+  .intro-title {
+    margin-top: 8px !important;
   }
 }

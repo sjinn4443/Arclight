@@ -3,7 +3,7 @@
 /* ============================================= Variables ============================================= */
 :root {
   --primary-color: #b4342a;
-  /*--bg-color: #f5f5f5;*/
+  --bg-color: #f5f5f5;
   --card-bg: #ffffff;
   --font-color: #333;
   --font-family:
@@ -15,14 +15,11 @@
 .unified-container {
   background: #fff;
   min-height: 100vh;
-  padding-bottom: 13.5135vh;
+  padding-bottom: 100px;
 }
 
 .container {
-  padding-top: 2.7027vh;
-  padding-right: 5.5556vw;
-  padding-bottom: 2.7027vh;
-  padding-left: 5.5556vw;
+  padding: 20px;
   padding-bottom: 100%;
 }
 
@@ -32,20 +29,17 @@ body {
   padding: 0;
   background: var(--bg-color);
   color: var(--font-color);
-  font-size: 0.875rem;
+  font-size: 14px;
 }
 
 h1 {
-  font-size: 1.5rem;
-  margin-bottom: 2.7027vh;
+  font-size: 24px;
+  margin-bottom: 20px;
 }
 
 /* ============================================= Layout primitives & helpers ============================================= */
 .container {
-  padding-top: 2.7027vh;
-  padding-right: 5.5556vw;
-  padding-bottom: 2.7027vh;
-  padding-left: 5.5556vw;
+  padding: 20px;
   padding-bottom: 100%;
 }
 
@@ -66,24 +60,31 @@ h1 {
   0% {
     transform: rotate(0deg);
   }
+
   12% {
     transform: rotate(90deg);
   }
+
   25% {
     transform: rotate(180deg);
   }
+
   38.462% {
     transform: rotate(270deg);
   } /* ~0.5s */
+
   57% {
     transform: rotate(330deg);
   }
+
   76.923% {
     transform: rotate(360deg);
   } /* ~1.0s */
+
   77% {
     transform: rotate(363deg);
   }
+
   100% {
     transform: rotate(363deg);
   }
@@ -91,10 +92,10 @@ h1 {
 
 @keyframes shiftRight {
   from {
-    left: -9.7222vw;
+    left: -35px;
   }
   to {
-    left: -4.1667vw;
+    left: -15px;
   }
 }
 
