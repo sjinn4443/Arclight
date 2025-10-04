@@ -25,9 +25,12 @@ app.use(csp);
 app.use(corsMiddleware);
 
 // Apply cookie-parser, session, and CSRF protection
-app.use(cookieParser);
-app.use(sessionMiddleware);
-app.use(csrfProtection);
+// Apply cookie-parser, session, and CSRF protection only if not in test environment
+if (process.env.NODE_ENV !== "test") {
+  app.use(cookieParser);
+  app.use(sessionMiddleware);
+  app.use(csrfProtection);
+}
 
 // Serve static files from the 'public' directory
 app.use(

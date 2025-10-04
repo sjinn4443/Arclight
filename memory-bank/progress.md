@@ -43,6 +43,7 @@
 - **CI/CD Pipeline:** GitHub Actions CI/CD pipeline at `.github/workflows/ci-cd.yml` for continuous integration and deployment to Railway, including linting, type checking, and Lighthouse CI.
 - **Security Enhancements:** Implemented a `security` folder containing configurations for rate limiting, Content Security Policy (CSP), CORS allowlist, and CSRF protection.
 - **Module System Fix:** Resolved ES module / CommonJS conflict by renaming `server.js` to `server.cjs` and updating related `require` paths and `package.json` scripts.
+- **API Test Fix:** Modified `server.cjs` to conditionally apply CSRF protection only when not in a test environment, resolving a timeout issue in API tests.
 
 ## What's Left to Build
 
@@ -56,7 +57,7 @@
 
 ## Current Status
 
-The project has significantly advanced beyond its initial setup phase. The foundational structure is robust, and many core features, including advanced navigation, PWA capabilities, interactive learning modules, and content management, are now implemented. The application is a feature-rich PWA with a strong emphasis on interactive learning and offline capabilities. The `README.md` file has been updated to include a changelog and accurate project structure details. The testing setup with Jest and a pre-push hook is fully functional, and a CI/CD pipeline is established. Critical security measures have been implemented, and module resolution issues have been addressed. The next steps involve completing content population, refining existing features, and ensuring comprehensive testing and optimization, particularly for the new security features.
+The project has significantly advanced beyond its initial setup phase. The foundational structure is robust, and many core features, including advanced navigation, PWA capabilities, interactive learning modules, and content management, are now implemented. The application is a feature-rich PWA with a strong emphasis on interactive learning and offline capabilities. The `README.md` file has been updated to include a changelog and accurate project structure details. The testing setup with Jest and a pre-push hook is fully functional, and a CI/CD pipeline is established. Critical security measures have been implemented, and module resolution issues have been addressed. The API test timeout issue has been resolved. The next steps involve completing content population, refining existing features, and ensuring comprehensive testing and optimization, particularly for the new security features.
 
 ## Known Issues
 

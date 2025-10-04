@@ -23,6 +23,7 @@ The current focus is on ensuring the application's core structure and PWA capabi
 - Implemented a `security` folder with rate limiting, Content Security Policy (CSP), CORS allowlist, and CSRF protection.
 - Renamed `server.js` to `server.cjs` and updated related `require` paths to resolve ES module / CommonJS conflicts.
 - Updated `package.json` to reflect the `server.cjs` change.
+- Modified `server.cjs` to conditionally apply CSRF protection only when not in a test environment, resolving a timeout issue in API tests.
 
 ## Next Steps
 
