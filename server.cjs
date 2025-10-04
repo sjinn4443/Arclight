@@ -15,6 +15,17 @@ console.log("__dirname:", __dirname);
 console.log("Static path:", path.join(__dirname, "public"));
 console.log("Index path:", path.join(__dirname, "public", "index.html"));
 
+// Serve static files from the 'public' directory first
+app.use(
+  express.static(path.join(__dirname, "public"), {
+    setHeaders: (res, path) => {
+      if (path.endsWith(".js")) {
+        res.setHeader("Content-Type", "application/javascript");
+      }
+    },
+  })
+);
+
 // Apply the general rate limit to all requests
 app.use(generalRateLimiter);
 
@@ -31,17 +42,6 @@ if (process.env.NODE_ENV !== "test") {
   app.use(sessionMiddleware);
   app.use(csrfProtection);
 }
-
-// Serve static files from the 'public' directory
-app.use(
-  express.static(path.join(__dirname, "public"), {
-    setHeaders: (res, path) => {
-      if (path.endsWith(".js")) {
-        res.setHeader("Content-Type", "application/javascript");
-      }
-    },
-  }),
-);
 
 // Fallback to index.html for SPA routing
 app.get("*", (req, res) => {

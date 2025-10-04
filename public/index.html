@@ -43,7 +43,7 @@
       role="button"
       tabindex="0"
     >
-      &lt;
+      <
     </div>
 
     <div id="splashScreenContainer" class="splash-full-screen"></div>
@@ -71,6 +71,22 @@
       <button id="installDismissBtn">Maybe later</button>
     </div>
 
+    <script>
+      // Script to unregister all service workers for troubleshooting
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker
+          .getRegistrations()
+          .then(function (registrations) {
+            for (let registration of registrations) {
+              registration.unregister();
+              console.log("Service Worker unregistered:", registration.scope);
+            }
+          })
+          .catch(function (err) {
+            console.error("Service Worker unregistration failed:", err);
+          });
+      }
+    </script>
     <script defer type="module" src="js/main.js"></script>
     <script src="js/quiz-launcher.js"></script>
   </body>
