@@ -23,7 +23,7 @@ app.use(
         res.setHeader("Content-Type", "application/javascript");
       }
     },
-  })
+  }),
 );
 
 // Apply the general rate limit to all requests
