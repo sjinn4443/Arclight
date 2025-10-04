@@ -1,6 +1,8 @@
 // eslint.config.js
 export default [
   {
+    // Ignore the dist folder
+    ignores: ["dist/**"],
     // Target JavaScript files.
     files: ["**/*.js"],
     languageOptions: {

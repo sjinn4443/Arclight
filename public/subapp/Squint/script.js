@@ -59,16 +59,6 @@ function brightenColor(color, factor) {
 // -----------------------------
 // Core Functionality
 // -----------------------------
-/**
- * Update the iris transform using its micro saccade and background jitter offsets.
- * This function combines both offsets and sets the CSS transform property.
- */
-function updateIrisTransform(iris) {
-  const totalX = (iris.microOffset?.x || 0) + (iris.backgroundOffset?.x || 0);
-  const totalY = (iris.microOffset?.y || 0) + (iris.backgroundOffset?.y || 0);
-  iris.style.transform = `translate(${totalX}px, ${totalY}px)`;
-}
-
 // -----------------------------
 // Output Logic Functions
 // -----------------------------
@@ -153,7 +143,7 @@ function updateEyeOutput(eye, dx, dy) {
 
   // ----- Upper Eyelid Ptosis -----
   let lidSlider = document.querySelector(
-    `.vertical-eye-slider[data-eye="${eyeType}"]`,
+    `.vertical-eye-slider[data-eye="${eyeType}"]`
   );
   if (lidSlider) {
     let sliderValue = parseFloat(lidSlider.value);
@@ -315,7 +305,7 @@ function initDraggable(draggable) {
       if (pupil) {
         const distance = Math.sqrt(dx * dx + dy * dy);
         const maxDistance = Math.sqrt(
-          maxOffsetX * maxOffsetX + maxOffsetY * maxOffsetY,
+          maxOffsetX * maxOffsetX + maxOffsetY * maxOffsetY
         );
         let factor = 1 + Math.min(distance / maxDistance, 1);
         const brightColor = brightenColor(baseReflexColor, factor);
@@ -526,13 +516,13 @@ function getReflexColor(val) {
   }
   let factor = (val - lowerStop.value) / (upperStop.value - lowerStop.value);
   let r = Math.round(
-    lowerStop.color.r + (upperStop.color.r - lowerStop.color.r) * factor,
+    lowerStop.color.r + (upperStop.color.r - lowerStop.color.r) * factor
   );
   let g = Math.round(
-    lowerStop.color.g + (upperStop.color.g - lowerStop.color.g) * factor,
+    lowerStop.color.g + (upperStop.color.g - lowerStop.color.g) * factor
   );
   let b = Math.round(
-    lowerStop.color.b + (upperStop.color.b - lowerStop.color.b) * factor,
+    lowerStop.color.b + (upperStop.color.b - lowerStop.color.b) * factor
   );
   return `rgb(${r}, ${g}, ${b})`;
 }
@@ -710,7 +700,7 @@ document.addEventListener("DOMContentLoaded", function () {
     .getElementById("toggle-sudden")
     .addEventListener("change", function () {
       const suddenLabel = document.querySelector(
-        ".toggle-sudden .toggle-label",
+        ".toggle-sudden .toggle-label"
       );
       if (this.checked) {
         suddenLabel.style.color = "red";
@@ -776,7 +766,7 @@ document.addEventListener("DOMContentLoaded", function () {
       touchStartX = e.changedTouches[0].screenX;
       touchStartY = e.changedTouches[0].screenY;
     },
-    false,
+    false
   );
 
   document.addEventListener(
@@ -804,7 +794,7 @@ document.addEventListener("DOMContentLoaded", function () {
       touchStartX = null;
       touchStartY = null;
     },
-    false,
+    false
   );
 
   // "Text me" button event
@@ -863,7 +853,7 @@ document.addEventListener("DOMContentLoaded", function () {
         iris.conditionApplied = false; // Clear any previously applied condition.
 
         var ptosisSlider = document.querySelector(
-          `.vertical-eye-slider[data-eye="${eye.getAttribute("data-eye")}"]`,
+          `.vertical-eye-slider[data-eye="${eye.getAttribute("data-eye")}"]`
         );
         if (ptosisSlider) {
           ptosisSlider.value = 0;
@@ -871,7 +861,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         var pupilSlider = document.querySelector(
-          `.slider[data-eye="${eye.getAttribute("data-eye")}"]`,
+          `.slider[data-eye="${eye.getAttribute("data-eye")}"]`
         );
         if (pupilSlider) {
           pupilSlider.value = 32;
@@ -890,7 +880,7 @@ document.addEventListener("DOMContentLoaded", function () {
           rIris.style.transform = "translate(30px,30px)";
           rIris.conditionApplied = true;
           var rPtosis = document.querySelector(
-            '.vertical-eye-slider[data-eye="right"]',
+            '.vertical-eye-slider[data-eye="right"]'
           );
           if (rPtosis) {
             rPtosis.value = 20;
@@ -909,7 +899,7 @@ document.addEventListener("DOMContentLoaded", function () {
           rIris.style.transform = "translate(30px,-20px)";
           rIris.conditionApplied = true;
           var rPtosis = document.querySelector(
-            '.vertical-eye-slider[data-eye="right"]',
+            '.vertical-eye-slider[data-eye="right"]'
           );
           if (rPtosis) {
             rPtosis.value = 10;
@@ -931,7 +921,7 @@ document.addEventListener("DOMContentLoaded", function () {
           rIris.classList.add("faded");
           rIris.conditionApplied = true;
           var rPtosis = document.querySelector(
-            '.vertical-eye-slider[data-eye="right"]',
+            '.vertical-eye-slider[data-eye="right"]'
           );
           if (rPtosis) {
             rPtosis.value = 20;
@@ -1049,7 +1039,7 @@ document.addEventListener("DOMContentLoaded", function () {
       case "slight ptosis":
         if (rightEye) {
           var rPtosis = document.querySelector(
-            '.vertical-eye-slider[data-eye="right"]',
+            '.vertical-eye-slider[data-eye="right"]'
           );
           if (rPtosis) {
             rPtosis.value = 5;
@@ -1060,7 +1050,7 @@ document.addEventListener("DOMContentLoaded", function () {
       case "moderate ptosis":
         if (rightEye) {
           var rPtosis = document.querySelector(
-            '.vertical-eye-slider[data-eye="right"]',
+            '.vertical-eye-slider[data-eye="right"]'
           );
           if (rPtosis) {
             rPtosis.value = 15;
@@ -1071,7 +1061,7 @@ document.addEventListener("DOMContentLoaded", function () {
       case "severe ptosis":
         if (rightEye) {
           var rPtosis = document.querySelector(
-            '.vertical-eye-slider[data-eye="right"]',
+            '.vertical-eye-slider[data-eye="right"]'
           );
           if (rPtosis) {
             rPtosis.value = 25;
@@ -1181,8 +1171,8 @@ document.addEventListener("DOMContentLoaded", function () {
 async function downloadSelectedAssets() {
   const selected = Array.from(
     document.querySelectorAll(
-      '#offlineContentModal input[type="checkbox"]:checked',
-    ),
+      '#offlineContentModal input[type="checkbox"]:checked'
+    )
   ).map((cb) => cb.value);
 
   const assetMap = {
