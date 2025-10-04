@@ -40,7 +40,7 @@ app.use(
         res.setHeader("Content-Type", "application/javascript");
       }
     },
-  })
+  }),
 );
 
 // Fallback to index.html for SPA routing
