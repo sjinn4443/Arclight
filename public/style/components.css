@@ -1080,7 +1080,7 @@ input:checked + .slider:before {
 
 .eyes-card {
   scroll-snap-align: center;
-  background: #000000;
+  background: #fff;
   border-radius: 18px;
   height: 148px;
   display: flex;
