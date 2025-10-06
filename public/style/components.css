@@ -70,9 +70,9 @@ button:disabled {
 /* Top-left global back button */
 #backBtnGlobal.top-back {
   position: fixed;
-  top: 22px;
+  top: 24px;
   left: 18px;
-  z-index: 5000;
+  z-index: 1;
   margin: 0;
 }
 
@@ -1654,4 +1654,63 @@ input:checked + .slider:before {
   height: 33px;
   z-index: 100;
   position: relative;
+}
+
+/* components.css */
+#backBtnGlobal {
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* draw the icon */
+#backBtnGlobal::before {
+  content: "";
+  width: 18px;
+  height: 18px;
+  background: currentColor; /* uses .nav-icon color (black) */
+  display: block;
+
+  /* mask the SVG chevron */
+  -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="%23000" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>')
+    center / contain no-repeat;
+  mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="%23000" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>')
+    center / contain no-repeat;
+}
+
+#backBtnGlobal:hover {
+  background: rgba(255, 255, 255, 1);
+}
+
+#backBtnGlobal.top-back {
+  position: fixed;
+  top: 24px;
+  left: max(18px, calc((100vw - var(--container-w, 92vw)) / 2 + 18px));
+}
+
+:root {
+  --container-w: 100vw;
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --container-w: 82vw;
+  }
+}
+
+@media (min-width: 1080px) {
+  :root {
+    --container-w: 84vw;
+  }
+}
+
+@media (min-width: 1440px) {
+  :root {
+    --container-w: 80vw;
+  }
 }
