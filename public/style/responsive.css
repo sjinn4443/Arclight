@@ -158,11 +158,34 @@ input {
   .eyes-carousel {
     grid-auto-columns: 29%;
   }
+
+  .menu-panel {
+    position: relative;
+    width: min(58vw, 220px);
+    margin-top: 3%;
+  }
+
+  .menu-close {
+    top: -2px;
+    left: 106px;
+    font-size: min(6vw, 28px);
+    z-index: 11000;
+  }
 }
 
 /* Large desktop (e.g., ≥1440px) */
 @media (min-width: 1440px) {
   .eyes-carousel {
     grid-auto-columns: 16%;
+  }
+
+  .menu-panel {
+    width: 220px;
+    margin-top: 1%;
+  }
+  .menu-close {
+    font-size: 28px;
+    top: 14px;
+    right: 14px;
   }
 }
