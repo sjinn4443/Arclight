@@ -107,6 +107,37 @@ input {
     aspect-ratio: 1 / 1;
     object-fit: cover;
   }
+
+  .pupils-container {
+    max-width: 76vw;
+  }
+
+  #pupilsPage .pupil-card {
+    margin-left: -2%;
+  }
+
+  #pupilsPage .lesson-type,
+  .lesson-meta {
+    margin-top: 5vh;
+  }
+
+  #pupilsPage .lesson-progress {
+    margin-top: 2%;
+  }
+
+  #pupilsPage .lesson-cta {
+    margin-top: 47%;
+  }
+
+  #pupilsPage .lesson-main {
+    margin-top: -2vh;
+    margin-left: -1vh;
+  }
+
+  #pupilsPage .thumb {
+    width: 5vw;
+    height: 4vh;
+  }
 }
 
 /* XL desktop: no-crop mode (full image visible) */
@@ -171,6 +202,10 @@ input {
     font-size: min(6vw, 28px);
     z-index: 11000;
   }
+
+  .ml-chip-row {
+    margin: 0 auto;
+  }
 }
 
 /* Large desktop (e.g., ≥1440px) */
@@ -187,5 +222,36 @@ input {
     font-size: 28px;
     top: 14px;
     right: 14px;
+  }
+
+  .pupils-container {
+    max-width: 37vw;
+  }
+
+  #pupilsPage .pupil-card {
+    margin-left: -2%;
+  }
+
+  #pupilsPage .lesson-type,
+  .lesson-meta {
+    margin-top: 5vh;
+  }
+
+  #pupilsPage .lesson-progress {
+    margin-top: 2%;
+  }
+
+  #pupilsPage .lesson-cta {
+    margin-top: 45%;
+  }
+
+  #pupilsPage .lesson-main {
+    margin-top: -1vh;
+    margin-left: -1vh;
+  }
+
+  #pupilsPage .thumb {
+    width: 3vw;
+    height: 4vh;
   }
 }

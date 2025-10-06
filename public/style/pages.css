@@ -906,7 +906,7 @@ select.onb-input.has-value {
   align-items: center;
   justify-content: space-between;
   height: 62px;
-  padding: 0 12px;
+  padding: 0 25px;
   margin: 0;
 }
 
@@ -935,15 +935,15 @@ select.onb-input.has-value {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin-top: 19px;
-  margin-left: 297px;
+  margin-top: 16px;
+  margin-left: 240px;
 }
 
 #pupilsPage .pupils-subtitle {
   font-size: 13px;
   font-weight: 600;
   color: #111;
-  margin: 53px 18px 16px;
+  margin: 16px 18px 16px;
 }
 
 .tl-item {
@@ -1219,4 +1219,40 @@ body,
 /* keep the title tight to the top like the other pages */
 #onboarding .onb-title {
   margin-top: 0;
+}
+
+/* Make Pupils header match Eyes page header look & layout */
+#pupilsPage .eyes-topbar {
+  position: static; /* not fixed; same as Eyes page */
+  width: auto;
+  z-index: auto;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: auto;
+  padding: 0; /* Eyes top has tight spacing */
+  margin: 1px 2px 10px; /* matches .eyes-top */
+  box-shadow: none; /* ensure no lingering shadow */
+}
+
+/* Title styling to match .eyes-title on Eyes page */
+#pupilsPage .eyes-topbar__title {
+  position: static;
+  font-size: 14px;
+  font-weight: 600;
+  color: #000;
+  margin: 0 0 0 28px; /* left indent like Eyes */
+  line-height: 1;
+}
+
+/* Icons sit inline on the right like Eyes page */
+#pupilsPage .eyes-topbar__icons {
+  position: static; /* was absolute */
+  left: auto;
+  top: auto;
+  transform: none;
+  display: flex;
+  gap: 10px;
+  margin-right: 0;
 }
