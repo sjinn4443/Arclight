@@ -659,7 +659,7 @@ select.onb-input.has-value {
 
 @media (min-width: 480px) {
   .category-carousel {
-    grid-auto-columns: 50%;
+    grid-auto-columns: 29%;
   }
 }
 
@@ -1121,12 +1121,8 @@ select.onb-input.has-value {
   opacity: 0.9;
 }
 
-/* =============================================
-   Unified Container Placement (DESKTOP/TABLET)
-   Keep Galaxy S8+ (≤400px) exactly as original.
-   ============================================= */
+/* DESKTOP/TABLET placement */
 @media (min-width: 401px) {
-  /* Neutralize the global .container padding on these pages */
   #onboarding .container,
   #proInterestPage .container,
   #introPage .container {
@@ -1136,30 +1132,30 @@ select.onb-input.has-value {
     padding-bottom: 0 !important;
   }
 
-  /* Desktop/tablet geometry (centered card) */
   .onboarding-container,
   .interest-container,
   .intro-container {
-    /* grows a little on big screens but never crazy-wide */
     width: 70% !important;
-    max-width: 420px !important; /* allow a touch wider than phone */
+    max-width: 420px !important;
     padding: 0 20px !important;
-    margin: 203px auto 0 !important;
+
+    /* use one shared value for all three */
+    margin: clamp(96px, 12vh, 160px) auto 0 !important;
     text-align: left;
   }
 
-  /* Remove page-specific stretching that fought the unified layout */
+  /* keep these neutral */
   .intro-container {
     min-height: 0 !important;
   }
   .interest-container {
     padding-bottom: 0 !important;
   }
+}
 
-  /* Kill % based top spacing that shifts per device; keep it tight on big screens */
-  .interest-title {
-    margin-top: 12px !important;
-  }
+/* Kill % based top spacing that shifts per device; keep it tight on big screens */
+.interest-title {
+  margin-top: 12px !important;
 }
 
 /* =============================================
@@ -1209,16 +1205,18 @@ body,
   background: #ffffff !important;
 }
 
-/* =============================================
-   Intro vertical tweak ONLY for larger screens
-   (mobile ≤400px stays exactly like original)
-   ============================================= */
-@media (min-width: 401px) {
-  .intro-container {
-    margin-top: 160px !important; /* slightly higher than the others */
-    padding-top: 0 !important;
-  }
-  .intro-title {
-    margin-top: 8px !important;
-  }
+/* Onboarding: align layout with intro/interest */
+/* Onboarding (base) */
+.onboarding-container {
+  max-width: 100%;
+  margin: 0 auto;
+  background: #fff;
+  min-height: 100vh;
+  padding: 24px 20px 100px;
+  display: block;
+}
+
+/* keep the title tight to the top like the other pages */
+#onboarding .onb-title {
+  margin-top: 0;
 }

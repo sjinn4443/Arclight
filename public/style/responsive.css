@@ -62,18 +62,62 @@ input {
     font-size: 1rem;
   }
 }
-@media (min-width: 37.5em) {
-  .container {
-    padding-top: 19vh;
-    padding-right: 8.3333vw;
-    padding-bottom: 4.0541vh;
-    padding-left: 8.3333vw;
-    min-height: 100svh;
+
+/* Desktop alignment for the three “card” pages */
+@media (min-width: 48em) {
+  /* Reset the top padding that creates the empty gap */
+  #onboarding .container,
+  #introPage .container,
+  #proInterestPage .container,
+  .onboarding-container,
+  .intro-container,
+  .interest-container {
+    padding-top: 0 !important;
+  }
+
+  /* Optional: consistent vertical start for all three (tweak to taste) */
+  .onboarding-container,
+  .intro-container,
+  .interest-container {
+    margin-top: clamp(96px, 12vh, 160px) !important;
   }
 }
+
 @media (min-width: 56.25em) {
   .container {
-    max-width: 36vw;
+    max-width: 76vw;
     margin: 0 auto;
+  }
+}
+
+/* Desktop: make cards bigger (taller) and prevent over-stretching */
+@media (min-width: 1024px) {
+  #categoryCarousel {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    padding: 27px 0;
+  }
+
+  #categoryCarousel .category-card {
+    max-width: 260px;
+    margin: 0 auto;
+    overflow: hidden;
+  }
+
+  #categoryCarousel .category-card img {
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+  }
+}
+
+/* XL desktop: no-crop mode (full image visible) */
+@media (min-width: 1440px) {
+  #categoryCarousel .category-card {
+    background: #fff;
+  }
+  #categoryCarousel .category-card img {
+    aspect-ratio: 16 / 9;
+    object-fit: contain;
+    display: block;
+    width: 100%;
   }
 }
