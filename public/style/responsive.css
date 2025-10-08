@@ -262,4 +262,13 @@ input {
     width: 3vw;
     height: 4vh;
   }
+
+  .category-card__title {
+    left: 42px;
+  }
+
+  .unified-container {
+    max-width: 76vw;
+    margin-top: -9vh;
+  }
 }
