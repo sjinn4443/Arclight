@@ -250,6 +250,7 @@
 .onboarding-container {
   max-width: 100%;
   margin: 0 auto;
+  margin-top: 10vh;
   padding: 20% 20px 100px;
   background: #fff;
 }
@@ -376,6 +377,7 @@ select.onb-input.has-value {
 .interest-container {
   background: #fff;
   padding-bottom: 100%;
+  margin-top: 10vh;
 }
 
 .interest-title {
@@ -1214,6 +1216,7 @@ body,
   min-height: 100vh;
   padding: 24px 20px 100px;
   display: block;
+  margin-top: 10vh;
 }
 
 /* keep the title tight to the top like the other pages */

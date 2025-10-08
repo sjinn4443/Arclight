@@ -85,7 +85,7 @@ input {
 
 @media (min-width: 56.25em) {
   .container {
-    max-width: 76vw;
+    /*max-width: 76vw;*/
     margin: 0 auto;
   }
 }
@@ -137,6 +137,10 @@ input {
   #pupilsPage .thumb {
     width: 5vw;
     height: 4vh;
+  }
+
+  .container {
+    padding: -2vw;
   }
 }
 
@@ -205,6 +209,10 @@ input {
 
   .ml-chip-row {
     margin: 0 auto;
+  }
+
+  .container {
+    padding: 7vw;
   }
 }
 
