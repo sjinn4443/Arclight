@@ -72,10 +72,9 @@ export function initializeOnboarding() {
       jobSelect
         .querySelectorAll("optgroup")
         .forEach((g) => (g.style.display = "none"));
-      const label = selected
-        ? selected.charAt(0).toUpperCase() + selected.slice(1)
-        : "";
-      const show = jobSelect.querySelector(`optgroup[label="${label}"]`);
+      const show = jobSelect.querySelector(
+        `optgroup[data-field="${selected}"]`
+      );
       if (show) show.style.display = "block";
       jobSelect.value = "";
       studentYearField?.classList.add("hidden");
@@ -89,7 +88,7 @@ export function initializeOnboarding() {
   // --- Show student year when "Medical Student" ---
   if (jobSelect && studentYearField) {
     jobSelect.addEventListener("change", () => {
-      const isMedStudent = jobSelect.value === "Medical Student";
+      const isMedStudent = jobSelect.value === "medical_student";
       studentYearField.classList.toggle("hidden", !isMedStudent);
       if (!isMedStudent && studentYearSelect) studentYearSelect.value = "";
       // Re-sync states
