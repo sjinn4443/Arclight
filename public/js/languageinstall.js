@@ -4,6 +4,7 @@
 
 import { loadPage } from "./navigation.js";
 import { initializePWA, canInstall, promptInstall } from "./pwa.js";
+import { setLanguage, getLanguage } from "./i18n.js";
 
 /**
  * Initializes the language installation page.
@@ -42,6 +43,16 @@ export function initializeLanguageInstall() {
     buildCustomLangSelect(langSelect);
   }
 
+  // Set initial select value from saved pref
+  if (langSelect) {
+    const saved = getLanguage();
+    if (saved) langSelect.value = saved;
+    // Update app language immediately when changed
+    langSelect.addEventListener("change", async (e) => {
+      await setLanguage(e.target.value);
+    });
+  }
+
   // Install flow
   if (installBtn) {
     installBtn.addEventListener("click", async () => {
@@ -56,7 +67,7 @@ export function initializeLanguageInstall() {
           }
 
           alert(
-            "To install, use your browser menu: “Install app” / “Add to Home screen”.",
+            "To install, use your browser menu: “Install app” / “Add to Home screen”."
           );
           return; // stay on language page
         }
@@ -76,7 +87,7 @@ export function initializeLanguageInstall() {
         if (!accepted) {
           // User cancelled → stay on language page
           console.log(
-            "[install] user dismissed install prompt; staying on page",
+            "[install] user dismissed install prompt; staying on page"
           );
           return;
         }
@@ -102,7 +113,7 @@ export function initializeLanguageInstall() {
           });
           console.log(
             "[install] sent CACHE_ASSETS to SW:",
-            pagesToCache.length,
+            pagesToCache.length
           );
         } catch (err) {
           console.warn("[install] could not warm cache:", err);

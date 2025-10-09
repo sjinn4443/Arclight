@@ -2,29 +2,89 @@
 <div id="languageInstallPage" class="page">
   <div class="lang-install">
     <div class="lang-install__body">
-      <label class="lang-install__label" for="prefLang"
+      <label
+        class="lang-install__label"
+        for="prefLang"
+        data-i18n="languageInstall.title"
         >Choose your language</label
       >
       <div class="lang-install__select-wrap">
         <select id="prefLang" name="language" class="lang-install__select">
-          <option value="en" data-native="English" selected>English</option>
-          <option value="fr" data-native="Français">French</option>
-          <option value="ko" data-native="한국어">Korean</option>
-          <option value="pt" data-native="Português">Portuguese</option>
-          <option value="es" data-native="Español">Spanish</option>
-          <option value="sw" data-native="Kiswahili">Swahili</option>
+          <option
+            value="en"
+            data-native="English"
+            selected
+            data-i18n="languageInstall.english"
+          >
+            English
+          </option>
+          <option
+            value="fr"
+            data-native="Français"
+            data-i18n="languageInstall.french"
+          >
+            French
+          </option>
+          <option
+            value="ko"
+            data-native="한국어"
+            data-i18n="languageInstall.korean"
+          >
+            Korean
+          </option>
+          <option
+            value="pt"
+            data-native="Português"
+            data-i18n="languageInstall.portuguese"
+          >
+            Portuguese
+          </option>
+          <option
+            value="es"
+            data-native="Español"
+            data-i18n="languageInstall.spanish"
+          >
+            Spanish
+          </option>
+          <option
+            value="sw"
+            data-native="Kiswahili"
+            data-i18n="languageInstall.swahili"
+          >
+            Swahili
+          </option>
         </select>
       </div>
 
-      <button id="installAppBtn" class="btn-lg-grey">Install</button>
-      <div class="lang-install__hint">for offline access</div>
+      <button
+        id="installAppBtn"
+        class="btn-lg-grey"
+        data-i18n="languageInstall.install_button"
+      >
+        Install
+      </button>
+      <div class="lang-install__hint" data-i18n="languageInstall.install_hint">
+        for offline access
+      </div>
 
-      <div class="lang-install__divider"><span></span>or<span></span></div>
+      <div class="lang-install__divider">
+        <span></span><span data-i18n="languageInstall.divider_or">or</span
+        ><span></span>
+      </div>
 
-      <button id="useOnlineBtn" class="btn-outline-light">
+      <button
+        id="useOnlineBtn"
+        class="btn-outline-light"
+        data-i18n="languageInstall.use_online_button"
+      >
         Use App Without Installing
       </button>
-      <div class="lang-install__hint">for online experience</div>
+      <div
+        class="lang-install__hint"
+        data-i18n="languageInstall.use_online_hint"
+      >
+        for online experience
+      </div>
     </div>
   </div>
   <!-- Download App Modal -->

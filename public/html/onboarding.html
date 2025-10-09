@@ -1,57 +1,102 @@
 <!-- Onboarding Page — Guides new users through account creation, collecting their name, field of work, job role, and experience level to personalize their app experience. -->
 <div id="onboarding" class="page">
   <div class="container onboarding-container">
-    <h1 class="onb-title">Create Account</h1>
+    <h1 class="onb-title" data-i18n="onboarding.title">Create Account</h1>
 
     <div class="form-field">
-      <label for="username">Name</label>
+      <label for="username" data-i18n="onboarding.username_label">Name</label>
       <input
         type="text"
         id="username"
         class="onb-input"
         placeholder="Enter your name"
+        data-i18n="onboarding.username_placeholder:placeholder"
         autocomplete="name"
       />
       <!-- NEW: speech bubble -->
-      <div id="usernameTooltip" class="tooltip hidden">
+      <div
+        id="usernameTooltip"
+        class="tooltip hidden"
+        data-i18n="onboarding.username_tooltip"
+      >
         Name must be at least 2 letters, no numbers or special characters
       </div>
     </div>
 
     <div class="form-field">
-      <label for="fieldSelect">Which field do you work in?</label>
+      <label for="fieldSelect" data-i18n="onboarding.field_label"
+        >Which field do you work in?</label
+      >
       <select id="fieldSelect" class="onb-input">
-        <option value="" disabled selected hidden>Select</option>
-        <option value="eyes">Eyes</option>
-        <option value="ears">Ears</option>
-        <option value="skin">Skin</option>
+        <option
+          value=""
+          disabled
+          selected
+          hidden
+          data-i18n="onboarding.field_placeholder:placeholder"
+        >
+          Select
+        </option>
+        <option value="eyes" data-i18n="onboarding.field_eyes">Eyes</option>
+        <option value="ears" data-i18n="onboarding.field_ears">Ears</option>
+        <option value="skin" data-i18n="onboarding.field_skin">Skin</option>
       </select>
     </div>
 
     <div class="form-field">
-      <label for="jobSelect">Select your job role</label>
+      <label for="jobSelect" data-i18n="onboarding.job_label"
+        >Select your job role</label
+      >
       <select id="jobSelect" class="onb-input">
         <option value="" disabled selected hidden>Select</option>
         <optgroup label="Eyes">
-          <option>Ophthalmologist</option>
-          <option>Optometrist</option>
-          <option>Ophthalmic Clinical Officer</option>
-          <option>Ophthalmic Nurse</option>
-          <option>Orthoptist</option>
-          <option>General Practitioner</option>
-          <option>Clinical Officer</option>
-          <option>Primary Health Care Nurse</option>
-          <option>Community Health Worker</option>
-          <option>Village Health Worker</option>
-          <option>Lady Community Health Worker</option>
-          <option>Health Extension Worker</option>
-          <option>Medical Student</option>
-          <option>Eye Care Practitioner - Other</option>
+          <option data-i18n="onboarding.job_ophthalmologist">
+            Ophthalmologist
+          </option>
+          <option data-i18n="onboarding.job_optometrist">Optometrist</option>
+          <option data-i18n="onboarding.job_ophthalmic_clinical_officer">
+            Ophthalmic Clinical Officer
+          </option>
+          <option data-i18n="onboarding.job_ophthalmic_nurse">
+            Ophthalmic Nurse
+          </option>
+          <option data-i18n="onboarding.job_orthoptist">Orthoptist</option>
+          <option data-i18n="onboarding.job_general_practitioner">
+            General Practitioner
+          </option>
+          <option data-i18n="onboarding.job_clinical_officer">
+            Clinical Officer
+          </option>
+          <option data-i18n="onboarding.job_primary_health_care_nurse">
+            Primary Health Care Nurse
+          </option>
+          <option data-i18n="onboarding.job_community_health_worker">
+            Community Health Worker
+          </option>
+          <option data-i18n="onboarding.job_village_health_worker">
+            Village Health Worker
+          </option>
+          <option data-i18n="onboarding.job_lady_community_health_worker">
+            Lady Community Health Worker
+          </option>
+          <option data-i18n="onboarding.job_health_extension_worker">
+            Health Extension Worker
+          </option>
+          <option data-i18n="onboarding.job_medical_student">
+            Medical Student
+          </option>
+          <option data-i18n="onboarding.job_eye_care_practitioner_other">
+            Eye Care Practitioner - Other
+          </option>
         </optgroup>
         <optgroup label="Ears">
-          <option>ENT Specialist</option>
-          <option>Audiologist</option>
-          <option>Ear Care Practitioner</option>
+          <option data-i18n="onboarding.job_ent_specialist">
+            ENT Specialist
+          </option>
+          <option data-i18n="onboarding.job_audiologist">Audiologist</option>
+          <option data-i18n="onboarding.job_ear_care_practitioner">
+            Ear Care Practitioner
+          </option>
           <option>General Practitioner</option>
           <option>Clinical Officer</option>
           <option>Primary Health Care Nurse</option>
@@ -62,7 +107,9 @@
           <option>Medical Student</option>
         </optgroup>
         <optgroup label="Skin">
-          <option>Dermatologist</option>
+          <option data-i18n="onboarding.job_dermatologist">
+            Dermatologist
+          </option>
           <option>General Practitioner</option>
           <option>Clinical Officer</option>
           <option>Primary Health Care Nurse</option>
@@ -76,17 +123,39 @@
     </div>
 
     <div class="form-field hidden" id="studentYearField">
-      <label for="studentYearSelect">What is your experience level?</label>
+      <label for="studentYearSelect" data-i18n="onboarding.experience_label"
+        >What is your experience level?</label
+      >
       <select id="studentYearSelect" class="onb-input">
-        <option value="" disabled selected hidden>Select</option>
-        <option value="lt1">Pre-clinical</option>
-        <option value="1">Early clinical</option>
-        <option value="2">Final year / Senior medical student</option>
-        <option value="3">Shadowing</option>
-        <option value="4">Supervised participation</option>
-        <option value="5">Electives / Clerkships</option>
-        <option value="6">Simulation training</option>
-        <option value="7">Others</option>
+        <option
+          value=""
+          disabled
+          selected
+          hidden
+          data-i18n="onboarding.experience_placeholder:placeholder"
+        >
+          Select
+        </option>
+        <option value="lt1" data-i18n="onboarding.experience_lt1">
+          Pre-clinical
+        </option>
+        <option value="1" data-i18n="onboarding.experience_1">
+          Early clinical
+        </option>
+        <option value="2" data-i18n="onboarding.experience_2">
+          Final year / Senior medical student
+        </option>
+        <option value="3" data-i18n="onboarding.experience_3">Shadowing</option>
+        <option value="4" data-i18n="onboarding.experience_4">
+          Supervised participation
+        </option>
+        <option value="5" data-i18n="onboarding.experience_5">
+          Electives / Clerkships
+        </option>
+        <option value="6" data-i18n="onboarding.experience_6">
+          Simulation training
+        </option>
+        <option value="7" data-i18n="onboarding.experience_7">Others</option>
       </select>
     </div>
 
@@ -108,7 +177,19 @@
       </select>
     </div>-->
 
-    <button id="completeOnboardingBtn" class="onb-cta">Continue</button>
-    <button id="skipContinueBtn" class="primary-btn">Skip and Continue</button>
+    <button
+      id="completeOnboardingBtn"
+      class="onb-cta"
+      data-i18n="onboarding.continue_button"
+    >
+      Continue
+    </button>
+    <button
+      id="skipContinueBtn"
+      class="primary-btn"
+      data-i18n="onboarding.skip_button"
+    >
+      Skip and Continue
+    </button>
   </div>
 </div>

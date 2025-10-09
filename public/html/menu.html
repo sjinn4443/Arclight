@@ -4,10 +4,15 @@
     <button class="menu-close" id="closeMenuBtn">×</button>
     <div class="menu-header">
       <div class="user-profile"></div>
-      <div id="menuUsername" id="menuUsername"></div>
-      <div class="menu-sub">My profile ></div>
+      <div id="menuUsername"></div>
+      <div class="menu-sub" data-i18n="menu.my_profile_link">My profile ></div>
       <div class="menu-search-wrap">
-        <input type="search" class="menu-search" placeholder="Search" />
+        <input
+          type="search"
+          class="menu-search"
+          placeholder="Search"
+          data-i18n="menu.search_placeholder:placeholder"
+        />
         <span class="menu-search-icon">
           <svg
             width="18"
@@ -25,9 +30,13 @@
       </div>
     </div>
     <div class="menu-tabs">
-      <button class="tab active">Learning</button>
-      <button class="tab">Community</button>
-      <button class="tab">Links</button>
+      <button class="tab active" data-i18n="menu.learning_tab_title">
+        Learning
+      </button>
+      <button class="tab" data-i18n="menu.community_tab_title">
+        Community
+      </button>
+      <button class="tab" data-i18n="menu.links_tab_title">Links</button>
     </div>
     <div class="menu-tab-content" id="learningTab">
       <div class="menu-section">

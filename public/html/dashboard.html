@@ -3,19 +3,23 @@
   <div class="container unified-container">
     <!-- Greeting + search (like your mock) -->
     <div class="unified-top">
-      <div class="hello">Hello Sujin!</div>
+      <div class="hello" data-i18n="dashboard.greeting">Hello Sujin!</div>
       <div class="icons">
         <!-- <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" class="bell-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/>
       <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
     </svg>
     </span> -->
-        <span class="icon menuBtn">☰</span>
+        <span class="icon menuBtn" data-i18n="dashboard.menu_button">☰</span>
       </div>
     </div>
 
     <div class="search-wrap">
-      <input type="search" placeholder="Search for contents" />
+      <input
+        type="search"
+        placeholder="Search for contents"
+        data-i18n="dashboard.search_placeholder:placeholder"
+      />
       <span class="search-icon" aria-hidden="true">
         <!-- inline SVG for magnifier -->
         <svg
@@ -47,7 +51,9 @@
           src="images/icon/dashboard/eyes.webp"
           alt="Eyes"
         />
-        <span class="category-card__title">Eyes</span>
+        <span class="category-card__title" data-i18n="dashboard.category_eyes"
+          >Eyes</span
+        >
       </button>
 
       <button
@@ -61,7 +67,9 @@
           src="images/icon/dashboard/ears.webp"
           alt="Ears"
         />
-        <span class="category-card__title">Ears</span>
+        <span class="category-card__title" data-i18n="dashboard.category_ears"
+          >Ears</span
+        >
       </button>
 
       <button
@@ -75,7 +83,9 @@
           src="images/icon/dashboard/skin.webp"
           alt="Skin"
         />
-        <span class="category-card__title">Skin</span>
+        <span class="category-card__title" data-i18n="dashboard.category_skin"
+          >Skin</span
+        >
       </button>
 
       <button
@@ -89,7 +99,9 @@
           src="images/icon/dashboard/teach.webp"
           alt="How to Teach"
         />
-        <span class="category-card__title">How to Teach</span>
+        <span class="category-card__title" data-i18n="dashboard.category_teach"
+          >How to Teach</span
+        >
       </button>
     </div>
 
@@ -102,15 +114,22 @@
 
     <!-- Quick actions (optional) -->
     <div class="quick-actions">
-      <button class="pill">Atoms Card</button>
-      <button class="pill">My Notes</button>
-      <button class="pill">Alan</button>
-      <button class="pill">Download Contents</button>
+      <button class="pill" data-i18n="dashboard.quick_action_atoms_card">
+        Atoms Card
+      </button>
+      <button class="pill" data-i18n="dashboard.quick_action_my_notes">
+        My Notes
+      </button>
+      <button class="pill" data-i18n="dashboard.quick_action_alan">Alan</button>
+      <button class="pill" data-i18n="dashboard.quick_action_download_contents">
+        Download Contents
+      </button>
     </div>
 
     <!-- Recommended for you (placeholder) -->
-    <h3 class="section-title">
-      Recommended for you <span class="see-all">See all ></span>
+    <h3 class="section-title" data-i18n="dashboard.recommended_title">
+      Recommended for you
+      <span class="see-all" data-i18n="dashboard.see_all">See all ></span>
     </h3>
     <div class="learning-placeholder" id="recommendedPlaceholder"></div>
   </div>
@@ -119,13 +138,13 @@
 <!-- Simple placeholder pages (you can replace later) -->
 <div id="skinModules" class="page">
   <div class="container">
-    <h1>Skin Modules</h1>
-    <p>Coming soon.</p>
+    <h1 data-i18n="dashboard.coming_soon_title">Skin Modules</h1>
+    <p data-i18n="dashboard.coming_soon_note">Coming soon.</p>
   </div>
 </div>
 <div id="teachModules" class="page">
   <div class="container">
-    <h1>How to Teach</h1>
-    <p>Coming soon.</p>
+    <h1 data-i18n="dashboard.coming_soon_title">How to Teach</h1>
+    <p data-i18n="dashboard.coming_soon_note">Coming soon.</p>
   </div>
 </div>
