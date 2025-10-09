@@ -14,13 +14,16 @@
       background: #fff;
     "
   >
-    <div style="font-weight: 600">Front of Eye</div>
+    <div style="font-weight: 600" data-i18n="quizzes.frontOfEyeTitle">
+      Front of Eye
+    </div>
   </div>
 
   <iframe
     id="anteriorQuizFrame"
     src="AnteriorSegmentQuiz/html/index.html"
     title="Anterior Segment Quiz"
+    data-i18n="quizzes.anteriorSegmentQuizTitle:title"
     style="
       width: 100%;
       height: calc(100vh - 56px);
@@ -50,6 +53,7 @@
       id="searchCourses"
       type="text"
       placeholder="Search courses..."
+      data-i18n="quizzes.searchCoursesPlaceholder:placeholder"
       style="
         width: 70%;
         padding: 6px 3px 6px 12px;
@@ -93,9 +97,15 @@
     z-index: 9999;
   "
 >
-  <p>Install this app for a better experience!</p>
-  <button id="installConfirmBtn">Install</button>
-  <button id="installDismissBtn">Maybe later</button>
+  <p data-i18n="quizzes.installPrompt">
+    Install this app for a better experience!
+  </p>
+  <button id="installConfirmBtn" data-i18n="quizzes.installButton">
+    Install
+  </button>
+  <button id="installDismissBtn" data-i18n="quizzes.maybeLaterButton">
+    Maybe later
+  </button>
 </div>
 
 <div id="directOphthalmoscopyQuizPage" class="page"></div>

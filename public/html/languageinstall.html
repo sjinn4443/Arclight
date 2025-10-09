@@ -97,25 +97,38 @@
   >
     <div class="modal-box download-modal">
       <div class="modal-header">
-        <span id="downloadAppTitle">Download the app?</span>
+        <span id="downloadAppTitle" data-i18n="languageInstall.downloadAppTitle"
+          >Download the app?</span
+        >
         <button
           id="closeDownloadAppModalBtn"
           class="modal-close"
           aria-label="Close"
+          data-i18n="languageInstall.closeButton:aria-label"
         >
           ×
         </button>
       </div>
 
-      <div class="modal-content">
+      <div class="modal-content" data-i18n="languageInstall.downloadAppContent">
         This will download the app’s core pages and media for offline use.
       </div>
 
       <div class="modal-footer btn-row">
-        <button id="notNowBtn" class="btn-outline-light" type="button">
+        <button
+          id="notNowBtn"
+          class="btn-outline-light"
+          type="button"
+          data-i18n="languageInstall.notNowButton"
+        >
           Not now
         </button>
-        <button id="downloadAllBtn" class="btn-lg-grey" type="button">
+        <button
+          id="downloadAllBtn"
+          class="btn-lg-grey"
+          type="button"
+          data-i18n="languageInstall.downloadNowButton"
+        >
           Download now
         </button>
       </div>

@@ -1,7 +1,14 @@
 <!-- Menu Page — Provides a slide-out menu with user profile, search, learning content, community links, external resources, and offline content management. -->
 <div id="menuOverlay" class="menu-overlay hidden">
   <div class="menu-panel">
-    <button class="menu-close" id="closeMenuBtn">×</button>
+    <button
+      class="menu-close"
+      id="closeMenuBtn"
+      aria-label="Close"
+      data-i18n="menu.closeButton"
+    >
+      ×
+    </button>
     <div class="menu-header">
       <div class="user-profile"></div>
       <div id="menuUsername"></div>
@@ -40,48 +47,82 @@
     </div>
     <div class="menu-tab-content" id="learningTab">
       <div class="menu-section">
-        <strong>My learning</strong>
-        <div class="menu-item">In progress</div>
-        <div class="menu-item" id="likedMenuItem" data-route="mylearning">
+        <strong data-i18n="menu.my_learning_section_title">My learning</strong>
+        <div class="menu-item" data-i18n="menu.in_progress_item">
+          In progress
+        </div>
+        <div
+          class="menu-item"
+          id="likedMenuItem"
+          data-route="mylearning"
+          data-i18n="menu.liked_item"
+        >
           Liked
         </div>
-        <div class="menu-item">Notes</div>
+        <div class="menu-item" data-i18n="menu.notes_item">Notes</div>
       </div>
       <div class="menu-section">
-        <strong>Contents</strong>
-        <div class="menu-item" id="startDownloadBtn">Start downloading</div>
-        <div class="menu-item" id="downloadedContentsBtn">
+        <strong data-i18n="menu.contents_section_title">Contents</strong>
+        <div
+          class="menu-item"
+          id="startDownloadBtn"
+          data-i18n="menu.start_downloading_item"
+        >
+          Start downloading
+        </div>
+        <div
+          class="menu-item"
+          id="downloadedContentsBtn"
+          data-i18n="menu.downloaded_contents_item"
+        >
           Downloaded contents
         </div>
       </div>
       <div class="menu-section">
-        <strong>Atoms Card</strong>
-        <div class="menu-item" id="atomsCardEyesBtn">Eyes</div>
-        <div class="menu-item" id="atomsCardEarsBtn">Ears</div>
+        <strong data-i18n="menu.atoms_card_section_title">Atoms Card</strong>
+        <div
+          class="menu-item"
+          id="atomsCardEyesBtn"
+          data-i18n="menu.atoms_card_eyes_item"
+        >
+          Eyes
+        </div>
+        <div
+          class="menu-item"
+          id="atomsCardEarsBtn"
+          data-i18n="menu.atoms_card_ears_item"
+        >
+          Ears
+        </div>
       </div>
       <div class="menu-section">
-        <strong>ALAN</strong>
-        <div class="menu-item">ALAN</div>
+        <strong data-i18n="menu.alan_section_title">ALAN</strong>
+        <div class="menu-item" data-i18n="menu.alan_item">ALAN</div>
       </div>
     </div>
 
     <!-- Tab Content: Community -->
     <div class="menu-tab-content hidden" id="communityTab">
       <div class="menu-section">
-        <strong>Community</strong>
-        <div class="menu-item">Forum</div>
-        <div class="menu-item">Leaderboard</div>
+        <strong data-i18n="menu.community_section_title">Community</strong>
+        <div class="menu-item" data-i18n="menu.forum_item">Forum</div>
+        <div class="menu-item" data-i18n="menu.leaderboard_item">
+          Leaderboard
+        </div>
       </div>
     </div>
 
     <!-- Tab Content: Links -->
     <div class="menu-tab-content hidden" id="linksTab">
       <div class="menu-section">
-        <strong>External Links</strong>
+        <strong data-i18n="menu.external_links_section_title"
+          >External Links</strong
+        >
         <div class="menu-item">
           <a
             href="https://medicine.st-andrews.ac.uk/arclight/devices/arclight/"
             target="_blank"
+            data-i18n="menu.arclight_project_link"
             >Arclight Project</a
           >
         </div>
@@ -89,22 +130,39 @@
           <a
             href="https://arclightprojectshop.co.uk/?srsltid=AfmBOoog82AZ0K8MUui_J9YFnH47X9xyw9uXVTk_WEPXz6jEwilyn55i"
             target="_blank"
+            data-i18n="menu.arclight_shop_link"
             >Arclight Shop</a
           >
         </div>
         <div class="menu-item">
-          <a href="https://www.youtube.com/@arclightproject" target="_blank"
+          <a
+            href="https://www.youtube.com/@arclightproject"
+            target="_blank"
+            data-i18n="menu.arclight_youtube_link"
             >Arclight Youtube</a
           >
         </div>
         <div class="menu-item">
-          <a href="https://www.who.int" target="_blank">WHO</a>
+          <a
+            href="https://www.who.int"
+            target="_blank"
+            data-i18n="menu.who_link"
+            >WHO</a
+          >
         </div>
         <div class="menu-item">
-          <a href="https://cybersight.org" target="_blank">Cybersight: Orbis</a>
+          <a
+            href="https://cybersight.org"
+            target="_blank"
+            data-i18n="menu.cybersight_link"
+            >Cybersight: Orbis</a
+          >
         </div>
         <div class="menu-item">
-          <a href="https://www.rcophth.ac.uk/training/inspire/" target="_blank"
+          <a
+            href="https://www.rcophth.ac.uk/training/inspire/"
+            target="_blank"
+            data-i18n="menu.inspire_rco_link"
             >Inspire: RCO</a
           >
         </div>
@@ -112,19 +170,31 @@
           <a
             href="https://aapos.org/glossary/retinopathy-of-prematurity"
             target="_blank"
+            data-i18n="menu.retinopathy_of_prematurity_link"
             >Retinopathy of Prematurity: AAPOS</a
           >
         </div>
         <div class="menu-item">
-          <a href="https://cviscotland.org" target="_blank"
+          <a
+            href="https://cviscotland.org"
+            target="_blank"
+            data-i18n="menu.cvi_scotland_link"
             >CVI Scotland & CVI SIM</a
           >
         </div>
         <div class="menu-item">
-          <a href="https://www.sightsim.com" target="_blank">SightSIM</a>
+          <a
+            href="https://www.sightsim.com"
+            target="_blank"
+            data-i18n="menu.sightsim_link"
+            >SightSIM</a
+          >
         </div>
         <div class="menu-item">
-          <a href="https://www.cehjournal.org" target="_blank"
+          <a
+            href="https://www.cehjournal.org"
+            target="_blank"
+            data-i18n="menu.community_eye_health_journal_link"
             >Community Eye Health Journal</a
           >
         </div>
@@ -135,62 +205,118 @@
     <div id="offlineContentModal" style="display: none" class="modal-overlay">
       <div class="modal-box">
         <div class="modal-header">
-          <span class="modal-title">Manage Offline Contents</span>
-          <button id="closeOfflineContentModalBtn" class="modal-close">
+          <span
+            class="modal-title"
+            data-i18n="menu.manage_offline_contents_title"
+            >Manage Offline Contents</span
+          >
+          <button
+            id="closeOfflineContentModalBtn"
+            class="modal-close"
+            aria-label="Close"
+            data-i18n="menu.closeButton"
+          >
             ×
           </button>
         </div>
         <div class="modal-content">
-          <label><input type="checkbox" value="cataract" /> Cataract</label
+          <label
+            ><input type="checkbox" value="cataract" />
+            <span data-i18n="menu.cataract_checkbox">Cataract</span></label
           ><br />
           <label
-            ><input type="checkbox" value="visualAcuity" /> Visual Acuity</label
+            ><input type="checkbox" value="visualAcuity" />
+            <span data-i18n="menu.visual_acuity_checkbox"
+              >Visual Acuity</span
+            ></label
           ><br />
           <label
-            ><input type="checkbox" value="directOphthalmoscopy" /> Direct
-            Ophthalmoscopy</label
+            ><input type="checkbox" value="directOphthalmoscopy" />
+            <span data-i18n="menu.direct_ophthalmoscopy_checkbox"
+              >Direct Ophthalmoscopy</span
+            ></label
           ><br />
           <label
-            ><input type="checkbox" value="frontOfEye" /> Front of Eye</label
+            ><input type="checkbox" value="frontOfEye" />
+            <span data-i18n="menu.front_of_eye_checkbox"
+              >Front of Eye</span
+            ></label
           ><br />
           <label
-            ><input type="checkbox" value="interactiveLearning" /> Interactive
-            Learning</label
-          ><br />
-          <label><input type="checkbox" value="atomsCard" /> Atoms Card</label
-          ><br />
-          <label><input type="checkbox" value="pupils" /> Pupils</label><br />
-          <label
-            ><input type="checkbox" value="fundalReflex" /> Fundal Reflex</label
-          ><br />
-          <label><input type="checkbox" value="rapd" /> RAPD Test</label><br />
-          <label
-            ><input type="checkbox" value="childhoodEyeScreening" /> Childhood
-            Eye Screening</label
+            ><input type="checkbox" value="interactiveLearning" />
+            <span data-i18n="menu.interactive_learning_checkbox"
+              >Interactive Learning</span
+            ></label
           ><br />
           <label
-            ><input type="checkbox" value="howToUseArclight" /> How to Use
-            Arclight</label
+            ><input type="checkbox" value="atomsCard" />
+            <span data-i18n="menu.atoms_card_checkbox">Atoms Card</span></label
           ><br />
           <label
-            ><input type="checkbox" value="mobilePhoneAttachment" /> Mobile
-            Phone Attachment</label
-          ><br />
-          <label><input type="checkbox" value="mires" /> Mires</label><br />
-          <label><input type="checkbox" value="morph" /> Morph</label><br />
-          <label
-            ><input type="checkbox" value="squintPalsy" /> Squint / Palsy</label
+            ><input type="checkbox" value="pupils" />
+            <span data-i18n="menu.pupils_checkbox">Pupils</span></label
           ><br />
           <label
-            ><input type="checkbox" value="caseBasedLearning" /> Case Based
-            Learning</label
+            ><input type="checkbox" value="fundalReflex" />
+            <span data-i18n="menu.fundal_reflex_checkbox"
+              >Fundal Reflex</span
+            ></label
           ><br />
           <label
-            ><input type="checkbox" value="anteriorSegmentVideo" /> Anterior
-            Segment Video</label
+            ><input type="checkbox" value="rapd" />
+            <span data-i18n="menu.rapd_test_checkbox">RAPD Test</span></label
+          ><br />
+          <label
+            ><input type="checkbox" value="childhoodEyeScreening" />
+            <span data-i18n="menu.childhood_eye_screening_checkbox"
+              >Childhood Eye Screening</span
+            ></label
+          ><br />
+          <label
+            ><input type="checkbox" value="howToUseArclight" />
+            <span data-i18n="menu.how_to_use_arclight_checkbox"
+              >How to Use Arclight</span
+            ></label
+          ><br />
+          <label
+            ><input type="checkbox" value="mobilePhoneAttachment" />
+            <span data-i18n="menu.mobile_phone_attachment_checkbox"
+              >Mobile Phone Attachment</span
+            ></label
+          ><br />
+          <label
+            ><input type="checkbox" value="mires" />
+            <span data-i18n="menu.mires_checkbox">Mires</span></label
+          ><br />
+          <label
+            ><input type="checkbox" value="morph" />
+            <span data-i18n="menu.morph_checkbox">Morph</span></label
+          ><br />
+          <label
+            ><input type="checkbox" value="squintPalsy" />
+            <span data-i18n="menu.squint_palsy_checkbox"
+              >Squint / Palsy</span
+            ></label
+          ><br />
+          <label
+            ><input type="checkbox" value="caseBasedLearning" />
+            <span data-i18n="menu.case_based_learning_checkbox"
+              >Case Based Learning</span
+            ></label
+          ><br />
+          <label
+            ><input type="checkbox" value="anteriorSegmentVideo" />
+            <span data-i18n="menu.anterior_segment_video_checkbox"
+              >Anterior Segment Video</span
+            ></label
           ><br />
           <br />
-          <button id="downloadSelectedAssetsBtn">Download Selected</button>
+          <button
+            id="downloadSelectedAssetsBtn"
+            data-i18n="menu.download_selected_button"
+          >
+            Download Selected
+          </button>
         </div>
       </div>
     </div>

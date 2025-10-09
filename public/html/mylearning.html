@@ -2,20 +2,25 @@
 <div class="page" id="likedPage">
   <div class="ml-header">
     <div class="ml-topbar">
-      <div class="ml-title">My Learning</div>
+      <div class="ml-title" data-i18n="myLearningTitle">My Learning</div>
       <div class="ml-icons">
-        <span class="icon menuBtn">☰</span>
+        <span class="icon menuBtn" data-i18n="menuButton">☰</span>
       </div>
     </div>
 
     <div class="ml-tabs">
-      <button class="ml-tab">In progress</button>
-      <button class="ml-tab active">Liked</button>
-      <button class="ml-tab">Notes</button>
+      <button class="ml-tab" data-i18n="inProgressTab">In progress</button>
+      <button class="ml-tab active" data-i18n="likedTab">Liked</button>
+      <button class="ml-tab" data-i18n="notesTab">Notes</button>
     </div>
 
     <div class="search-wrap">
-      <input type="search" id="mlSearch" placeholder="Search for contents" />
+      <input
+        type="search"
+        id="mlSearch"
+        placeholder="Search for contents"
+        data-i18n="searchPlaceholder:placeholder"
+      />
       <span class="search-icon" aria-hidden="true">
         <svg
           viewBox="0 0 24 24"
@@ -34,10 +39,18 @@
     </div>
 
     <div class="ml-chip-row">
-      <button class="ml-chip active" data-filter="eyes">Eyes</button>
-      <button class="ml-chip" data-filter="ears">Ears</button>
-      <button class="ml-chip" data-filter="skin">Skin</button>
-      <button class="ml-chip" data-filter="teach">How to Teach</button>
+      <button class="ml-chip active" data-filter="eyes" data-i18n="eyesFilter">
+        Eyes
+      </button>
+      <button class="ml-chip" data-filter="ears" data-i18n="earsFilter">
+        Ears
+      </button>
+      <button class="ml-chip" data-filter="skin" data-i18n="skinFilter">
+        Skin
+      </button>
+      <button class="ml-chip" data-filter="teach" data-i18n="howToTeachFilter">
+        How to Teach
+      </button>
     </div>
   </div>
 

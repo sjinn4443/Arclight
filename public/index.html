@@ -7,7 +7,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1, viewport-fit=cover"
     />
-    <title>Arclight Eye and Ear Care App</title>
+    <title data-i18n="appTitle">Arclight Eye and Ear Care App</title>
     <link
       rel="apple-touch-icon"
       sizes="180x180"
@@ -42,6 +42,7 @@
       aria-label="Back"
       role="button"
       tabindex="0"
+      data-i18n="backButton"
     ></div>
 
     <div id="splashScreenContainer" class="splash-full-screen"></div>
@@ -64,9 +65,11 @@
         z-index: 9999;
       "
     >
-      <p>Install this app for a better experience!</p>
-      <button id="installConfirmBtn">Install</button>
-      <button id="installDismissBtn">Maybe later</button>
+      <p data-i18n="installPrompt">Install this app for a better experience!</p>
+      <button id="installConfirmBtn" data-i18n="installButton">Install</button>
+      <button id="installDismissBtn" data-i18n="maybeLaterButton">
+        Maybe later
+      </button>
     </div>
 
     <script>

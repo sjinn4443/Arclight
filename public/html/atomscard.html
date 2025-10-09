@@ -1,11 +1,18 @@
 <!-- Atoms Card Page — Displays detailed information about anatomical structures (Atoms) for eyes and ears, with a toggleable table of contents. -->
 <div id="atomsCardPage" class="page">
-  <div class="atoms-title-bar">Atoms Card</div>
+  <div class="atoms-title-bar" data-i18n="atomsCardTitle">Atoms Card</div>
   <div class="top-right-icons">
-    <button id="closeTOCBtn" title="Close Table of Contents">✖</button>
+    <button
+      id="closeTOCBtn"
+      title="Close Table of Contents"
+      data-i18n="closeTOCBtnTitle"
+    >
+      ✖
+    </button>
     <button
       id="tocToggleBtn"
       title="Table of Contents"
+      data-i18n="tocToggleBtnTitle"
       style="
         position: fixed;
         top: 60px;
@@ -31,8 +38,8 @@
   </div>
   <div id="tocDropdown" class="toc-dropdown active">
     <div class="toc-tab">
-      <button id="eyesTab" class="active">Eyes</button>
-      <button id="earsTab">Ears</button>
+      <button id="eyesTab" class="active" data-i18n="eyesTab">Eyes</button>
+      <button id="earsTab" data-i18n="earsTab">Ears</button>
     </div>
     <ul id="tocList"></ul>
   </div>

@@ -1,123 +1,177 @@
-<!--Ears Page to be added-->
-
-<!-- Ears Catalog Page 
+<!-- Ears Catalog Page -->
 <div id="earsCatalogPage" class="page">
   <div class="container ears-container">
     <div class="ears-top">
-      <div class="ears-title">Ears</div>
+      <div class="ears-title" data-i18n="earsCatalogTitle">Ears</div>
       <div class="icons">
-        <span class="icon menuBtn">☰</span>
+        <span class="icon menuBtn" data-i18n="menuButton">☰</span>
       </div>
     </div>
- 
-     Learning Modules 
-    <h2 class="catalog-h2">Learning Modules <span class="see-all">See all ></span></h2>
+
+    <!-- Learning Modules -->
+    <h2 class="catalog-h2" data-i18n="learningModulesTitle">
+      Learning Modules <span class="see-all" data-i18n="seeAll">See all ></span>
+    </h2>
     <div id="earsLearningCarousel" class="ears-carousel"></div>
   </div>
 </div>
 
- Ears Learning Modules Page 
+<!-- Ears Learning Modules Page -->
 <div id="earsLearningModules" class="page hidden">
   <div class="container">
-    <h1>Learning Modules</h1>
-    <div class="module-card" data-page="otoscopyPage" style="cursor:pointer;">
+    <h1 data-i18n="learningModulesTitle">Learning Modules</h1>
+    <div class="module-card" data-page="otoscopyPage" style="cursor: pointer">
       <div class="module-info">
-        <h3>Otoscopy</h3>
-        <p>Video Learning | PDF</p>
-        <div class="progress-bar"><div class="progress" style="width: 0%;"></div></div>
-        <span class="status">Start!</span>
+        <h3 data-i18n="otoscopyModuleTitle">Otoscopy</h3>
+        <p data-i18n="videoLearningPdf">Video Learning | PDF</p>
+        <div class="progress-bar">
+          <div class="progress" style="width: 0%"></div>
+        </div>
+        <span class="status" data-i18n="startStatus">Start!</span>
       </div>
     </div>
-    <div class="module-card" data-page="earHealthPage" style="cursor:pointer;">
+    <div class="module-card" data-page="earHealthPage" style="cursor: pointer">
       <div class="module-info">
-        <h3>Ear Health & Hearing Loss</h3>
-        <p>Visual Content</p>
-        <div class="progress-bar"><div class="progress" style="width: 0%;"></div></div>
-        <span class="status">Start!</span>
+        <h3 data-i18n="earHealthModuleTitle">Ear Health & Hearing Loss</h3>
+        <p data-i18n="visualContent">Visual Content</p>
+        <div class="progress-bar">
+          <div class="progress" style="width: 0%"></div>
+        </div>
+        <span class="status" data-i18n="startStatus">Start!</span>
       </div>
     </div>
   </div>
 </div>
 
- Otoscopy Page 
+<!-- Otoscopy Page -->
 <div id="otoscopyPage" class="page hidden">
   <div class="container">
-    <h1>Otoscopy</h1>
-    <div class="module-card" data-page="howToExamineEarPage" style="cursor:pointer;">
+    <h1 data-i18n="otoscopyPageTitle">Otoscopy</h1>
+    <div
+      class="module-card"
+      data-page="howToExamineEarPage"
+      style="cursor: pointer"
+    >
       <div class="module-info">
-        <h3>How to Examine the Ear</h3>
-        <p>Video Learning</p>
+        <h3 data-i18n="howToExamineEarTitle">How to Examine the Ear</h3>
+        <p data-i18n="videoLearning">Video Learning</p>
       </div>
     </div>
-    <div class="module-card" data-page="earConditionsPage" style="cursor:pointer;">
+    <div
+      class="module-card"
+      data-page="earConditionsPage"
+      style="cursor: pointer"
+    >
       <div class="module-info">
-        <h3>Otoscopy Poster</h3>
-        <p>Visual Content</p>
+        <h3 data-i18n="otoscopyPosterTitle">Otoscopy Poster</h3>
+        <p data-i18n="visualContent">Visual Content</p>
       </div>
     </div>
-    <div class="module-card" data-page="earFlowchartPage" style="cursor:pointer;">
+    <div
+      class="module-card"
+      data-page="earFlowchartPage"
+      style="cursor: pointer"
+    >
       <div class="module-info">
-        <h3>Common Ear Conditions: Flowchart</h3>
-        <p>Visual Content</p>
+        <h3 data-i18n="commonEarConditionsTitle">
+          Common Ear Conditions: Flowchart
+        </h3>
+        <p data-i18n="visualContent">Visual Content</p>
       </div>
     </div>
   </div>
 </div>
 
- Ear Health & Hearing Loss Page 
+<!-- Ear Health & Hearing Loss Page -->
 <div id="earHealthPage" class="page hidden">
   <div class="container">
     <div class="header">
-      <button data-page="earsLearningModules">←</button>
-      <h3>Ear Health & Hearing Loss</h3>
+      <button data-page="earsLearningModules" data-i18n="backButton">←</button>
+      <h3 data-i18n="earHealthAndHearingLossTitle">
+        Ear Health & Hearing Loss
+      </h3>
     </div>
-    <div class="pdf-container" style="overflow: auto; max-height: 80vh; text-align: center;">
-      <img id="earHealthImage" src="images/Ears/HealthandDeafness.jpg"
-           style="max-width: 100%; max-height: 100%; transition: transform 0.2s ease;" />
+    <div
+      class="pdf-container"
+      style="overflow: auto; max-height: 80vh; text-align: center"
+    >
+      <img
+        id="earHealthImage"
+        src="images/Ears/HealthandDeafness.jpg"
+        style="
+          max-width: 100%;
+          max-height: 100%;
+          transition: transform 0.2s ease;
+        "
+      />
     </div>
   </div>
 </div>
 
- How to Examine the Ear Page 
+<!-- How to Examine the Ear Page -->
 <div id="howToExamineEarPage" class="page hidden">
   <div class="container">
     <div class="header">
-      <button data-page="otoscopyPage">←</button>
-      <h3>How to Examine the Ear</h3>
+      <button data-page="otoscopyPage" data-i18n="backButton">←</button>
+      <h3 data-i18n="howToExamineEarTitle">How to Examine the Ear</h3>
     </div>
     <div class="video-container">
-      <video id="howToEarVideo" controls style="width: 100%; max-width: 100%;">
-        <source src="videos/Otoscopy/Instructional.mp4" type="video/mp4">
-        Your browser does not support the video tag.
+      <video id="howToEarVideo" controls style="width: 100%; max-width: 100%">
+        <source src="videos/Otoscopy/Instructional.mp4" type="video/mp4" />
+        <span data-i18n="videoNotSupported"
+          >Your browser does not support the video tag.</span
+        >
       </video>
     </div>
   </div>
 </div>
 
- Otoscopy Poster Page 
+<!-- Otoscopy Poster Page -->
 <div id="earConditionsPage" class="page hidden">
   <div class="container">
     <div class="header">
-      <button data-page="otoscopyPage">←</button>
-      <h3>Otoscopy Poster</h3>
+      <button data-page="otoscopyPage" data-i18n="backButton">←</button>
+      <h3 data-i18n="otoscopyPosterTitle">Otoscopy Poster</h3>
     </div>
-    <div class="pdf-container" style="overflow:auto; max-height:80vh; text-align:center;">
-      <img id="earConditionsImage" src="images/Ears/OtoscopyENT.jpg"
-           style="max-width:100%; max-height:100%; transition:transform 0.2s ease;" />
+    <div
+      class="pdf-container"
+      style="overflow: auto; max-height: 80vh; text-align: center"
+    >
+      <img
+        id="earConditionsImage"
+        src="images/Ears/OtoscopyENT.jpg"
+        style="
+          max-width: 100%;
+          max-height: 100%;
+          transition: transform 0.2s ease;
+        "
+      />
     </div>
   </div>
 </div>
 
- Common Ear Conditions: Flowchart Page 
+<!-- Common Ear Conditions: Flowchart Page -->
 <div id="earFlowchartPage" class="page hidden">
   <div class="container">
     <div class="header">
-      <button data-page="otoscopyPage">←</button>
-      <h3>Common Ear Conditions: Flowchart</h3>
+      <button data-page="otoscopyPage" data-i18n="backButton">←</button>
+      <h3 data-i18n="commonEarConditionsTitle">
+        Common Ear Conditions: Flowchart
+      </h3>
     </div>
-    <div class="pdf-container" style="overflow:auto; max-height:80vh; text-align:center;">
-      <img id="earFlowchartImage" src="images/Ears/TeachingPoster.jpg"
-           style="max-width:100%; max-height:100%; transition:transform 0.2s ease;" />
+    <div
+      class="pdf-container"
+      style="overflow: auto; max-height: 80vh; text-align: center"
+    >
+      <img
+        id="earFlowchartImage"
+        src="images/Ears/TeachingPoster.jpg"
+        style="
+          max-width: 100%;
+          max-height: 100%;
+          transition: transform 0.2s ease;
+        "
+      />
     </div>
   </div>
-</div> -->
+</div>

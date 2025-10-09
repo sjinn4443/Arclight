@@ -2,55 +2,118 @@
 <div id="offlineContentModal" style="display: none" class="modal-overlay">
   <div class="modal-box">
     <div class="modal-header">
-      <span class="modal-title">Manage Offline Contents</span>
-      <button id="closeOfflineContentModalBtn" class="modal-close">×</button>
+      <span
+        class="modal-title"
+        data-i18n="offline.manage_offline_contents_title"
+        >Manage Offline Contents</span
+      >
+      <button
+        id="closeOfflineContentModalBtn"
+        class="modal-close"
+        aria-label="Close"
+        data-i18n="offline.closeButton"
+      >
+        ×
+      </button>
     </div>
     <div class="modal-content">
-      <label><input type="checkbox" value="cataract" /> Cataract</label><br />
-      <label><input type="checkbox" value="visualAcuity" /> Visual Acuity</label
+      <label
+        ><input type="checkbox" value="cataract" />
+        <span data-i18n="offline.cataract_checkbox">Cataract</span></label
       ><br />
       <label
-        ><input type="checkbox" value="directOphthalmoscopy" /> Direct
-        Ophthalmoscopy</label
-      ><br />
-      <label><input type="checkbox" value="frontOfEye" /> Front of Eye</label
-      ><br />
-      <label
-        ><input type="checkbox" value="interactiveLearning" /> Interactive
-        Learning</label
-      ><br />
-      <label><input type="checkbox" value="atomsCard" /> Atoms Card</label
-      ><br />
-      <label><input type="checkbox" value="pupils" /> Pupils</label><br />
-      <label><input type="checkbox" value="fundalReflex" /> Fundal Reflex</label
-      ><br />
-      <label><input type="checkbox" value="rapd" /> RAPD Test</label><br />
-      <label
-        ><input type="checkbox" value="childhoodEyeScreening" /> Childhood Eye
-        Screening</label
+        ><input type="checkbox" value="visualAcuity" />
+        <span data-i18n="offline.visual_acuity_checkbox"
+          >Visual Acuity</span
+        ></label
       ><br />
       <label
-        ><input type="checkbox" value="howToUseArclight" /> How to Use
-        Arclight</label
+        ><input type="checkbox" value="directOphthalmoscopy" />
+        <span data-i18n="offline.direct_ophthalmoscopy_checkbox"
+          >Direct Ophthalmoscopy</span
+        ></label
       ><br />
       <label
-        ><input type="checkbox" value="mobilePhoneAttachment" /> Mobile Phone
-        Attachment</label
-      ><br />
-      <label><input type="checkbox" value="mires" /> Mires</label><br />
-      <label><input type="checkbox" value="morph" /> Morph</label><br />
-      <label><input type="checkbox" value="squintPalsy" /> Squint / Palsy</label
+        ><input type="checkbox" value="frontOfEye" />
+        <span data-i18n="offline.front_of_eye_checkbox"
+          >Front of Eye</span
+        ></label
       ><br />
       <label
-        ><input type="checkbox" value="caseBasedLearning" /> Case Based
-        Learning</label
+        ><input type="checkbox" value="interactiveLearning" />
+        <span data-i18n="offline.interactive_learning_checkbox"
+          >Interactive Learning</span
+        ></label
       ><br />
       <label
-        ><input type="checkbox" value="anteriorSegmentVideo" /> Anterior Segment
-        Video</label
+        ><input type="checkbox" value="atomsCard" />
+        <span data-i18n="offline.atoms_card_checkbox">Atoms Card</span></label
+      ><br />
+      <label
+        ><input type="checkbox" value="pupils" />
+        <span data-i18n="offline.pupils_checkbox">Pupils</span></label
+      ><br />
+      <label
+        ><input type="checkbox" value="fundalReflex" />
+        <span data-i18n="offline.fundal_reflex_checkbox"
+          >Fundal Reflex</span
+        ></label
+      ><br />
+      <label
+        ><input type="checkbox" value="rapd" />
+        <span data-i18n="offline.rapd_test_checkbox">RAPD Test</span></label
+      ><br />
+      <label
+        ><input type="checkbox" value="childhoodEyeScreening" />
+        <span data-i18n="offline.childhood_eye_screening_checkbox"
+          >Childhood Eye Screening</span
+        ></label
+      ><br />
+      <label
+        ><input type="checkbox" value="howToUseArclight" />
+        <span data-i18n="offline.how_to_use_arclight_checkbox"
+          >How to Use Arclight</span
+        ></label
+      ><br />
+      <label
+        ><input type="checkbox" value="mobilePhoneAttachment" />
+        <span data-i18n="offline.mobile_phone_attachment_checkbox"
+          >Mobile Phone Attachment</span
+        ></label
+      ><br />
+      <label
+        ><input type="checkbox" value="mires" />
+        <span data-i18n="offline.mires_checkbox">Mires</span></label
+      ><br />
+      <label
+        ><input type="checkbox" value="morph" />
+        <span data-i18n="offline.morph_checkbox">Morph</span></label
+      ><br />
+      <label
+        ><input type="checkbox" value="squintPalsy" />
+        <span data-i18n="offline.squint_palsy_checkbox"
+          >Squint / Palsy</span
+        ></label
+      ><br />
+      <label
+        ><input type="checkbox" value="caseBasedLearning" />
+        <span data-i18n="offline.case_based_learning_checkbox"
+          >Case Based Learning</span
+        ></label
+      ><br />
+      <label
+        ><input type="checkbox" value="anteriorSegmentVideo" />
+        <span data-i18n="offline.anterior_segment_video_checkbox"
+          >Anterior Segment Video</span
+        ></label
       ><br />
       <br />
-      <button id="downloadSelectedAssetsBtn">Download Selected</button>
+      <button
+        id="downloadSelectedAssetsBtn"
+        data-i18n="offline.download_selected_button"
+      >
+        Download Selected
+      </button>
     </div>
   </div>
 </div>
