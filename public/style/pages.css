@@ -373,6 +373,20 @@ select.onb-input.has-value {
   -webkit-text-fill-color: #62a6ff;
 }
 
+#skipContinueBtn {
+  display: block;
+  width: 100%;
+  height: 38px;
+  border: none;
+  border-radius: 14px;
+  background: #bdbdbf91;
+  color: #fff;
+  font-weight: 100;
+  font-size: 13px;
+  cursor: pointer;
+  margin-top: 12px; /* adds small spacing under Continue */
+}
+
 /* ============================================= Professional Interest Page ============================================= */
 .interest-container {
   background: #fff;

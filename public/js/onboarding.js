@@ -144,4 +144,151 @@ export function initializeOnboarding() {
     }
     loadPage("interest");
   });
+
+  // Skip and Continue button logic — onboarding path: custom intro + return tweaks
+  const skip = document.getElementById("skipContinueBtn");
+  if (skip) {
+    let locked = false;
+
+    // Hide #skipBtn on the intro page exactly once after navigation
+    function hideIntroSkipButtonOnce() {
+      const immediate = document.getElementById("skipBtn");
+      if (immediate) {
+        immediate.style.display = "none";
+        return;
+      }
+      const obs = new MutationObserver((_, o) => {
+        const btn = document.getElementById("skipBtn");
+        if (btn) {
+          btn.style.display = "none";
+          o.disconnect();
+        }
+      });
+      obs.observe(document.documentElement || document.body, {
+        childList: true,
+        subtree: true,
+      });
+      setTimeout(() => obs.disconnect(), 4000);
+    }
+
+    // Replace #seeWhatBtn with "Create Account" that routes back to onboarding
+    function replaceIntroPrimaryCtaOnce() {
+      const trySwap = () => {
+        const oldBtn = document.getElementById("seeWhatBtn");
+        if (!oldBtn) return false;
+
+        const createBtn = document.createElement("button");
+        createBtn.id = "createAccountBtn";
+        createBtn.className = oldBtn.className || "onb-cta intro-primary";
+        createBtn.textContent = "Create Account";
+
+        // When clicked -> go to onboarding + mark that it came from skip path
+        createBtn.addEventListener("click", () => {
+          // Remember in localStorage that user came back from skip path
+          localStorage.setItem("cameFromSkipPath", "true");
+          loadPage("onboarding");
+        });
+
+        oldBtn.replaceWith(createBtn);
+        return true;
+      };
+
+      if (trySwap()) return;
+      const obs = new MutationObserver((_, o) => {
+        if (trySwap()) o.disconnect();
+      });
+      obs.observe(document.documentElement || document.body, {
+        childList: true,
+        subtree: true,
+      });
+      setTimeout(() => obs.disconnect(), 4000);
+    }
+
+    // Hide #skipContinueBtn on onboarding if came from skip path
+    function hideSkipContinueBtnIfReturned() {
+      if (localStorage.getItem("cameFromSkipPath") === "true") {
+        const btn = document.getElementById("skipContinueBtn");
+        if (btn) btn.style.display = "none";
+        // Clear the flag so it only hides once
+        localStorage.removeItem("cameFromSkipPath");
+      }
+    }
+
+    // Run this check immediately (handles returning user instantly)
+    hideSkipContinueBtnIfReturned();
+
+    skip.addEventListener("click", () => {
+      if (locked) return;
+      locked = true;
+
+      const splashContainer = document.getElementById("splashScreenContainer");
+      const pageContainer = document.getElementById("page-content");
+
+      // If overlay isn't present, just navigate and apply intro tweaks
+      if (!splashContainer) {
+        loadPage("intro");
+        hideIntroSkipButtonOnce();
+        replaceIntroPrimaryCtaOnce();
+        locked = false;
+        return;
+      }
+
+      // Clean overlay state
+      splashContainer.classList.remove("fade-out");
+      splashContainer.innerHTML = "";
+
+      // Load mid-splash and animate
+      fetch("html/splashscreen_mid.html")
+        .then((r) => r.text())
+        .then((html) => {
+          splashContainer.innerHTML = html;
+          if (pageContainer) pageContainer.style.display = "none";
+          splashContainer.classList.add("active");
+
+          const logo =
+            splashContainer.querySelector(".logo-one.mid-only") ||
+            splashContainer.querySelector(".logo-one");
+
+          const EXPECTED_MS = 4700 + 300;
+
+          const finish = () => {
+            splashContainer.classList.add("fade-out");
+            setTimeout(() => {
+              if (pageContainer) pageContainer.style.display = "";
+              splashContainer.classList.remove("active", "fade-out");
+              splashContainer.innerHTML = "";
+
+              loadPage("intro");
+              hideIntroSkipButtonOnce();
+              replaceIntroPrimaryCtaOnce();
+
+              locked = false;
+            }, 300);
+          };
+
+          const fallback = setTimeout(finish, EXPECTED_MS);
+
+          if (logo) {
+            const onAnimationEnd = (e) => {
+              if (e.animationName === "midHold") {
+                logo.removeEventListener("animationend", onAnimationEnd);
+                clearTimeout(fallback);
+                finish();
+              }
+            };
+            logo.addEventListener("animationend", onAnimationEnd);
+          } else {
+            clearTimeout(fallback);
+            finish();
+          }
+        })
+        .catch(() => {
+          if (pageContainer) pageContainer.style.display = "";
+          loadPage("intro");
+          hideIntroSkipButtonOnce();
+          replaceIntroPrimaryCtaOnce();
+          locked = false;
+        });
+    });
+  }
 }
