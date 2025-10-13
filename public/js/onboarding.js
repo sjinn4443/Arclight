@@ -73,7 +73,7 @@ export function initializeOnboarding() {
         .querySelectorAll("optgroup")
         .forEach((g) => (g.style.display = "none"));
       const show = jobSelect.querySelector(
-        `optgroup[data-field="${selected}"]`
+        `optgroup[data-field="${selected}"]`,
       );
       if (show) show.style.display = "block";
       jobSelect.value = "";
