@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const path = require("path");
 const app = express();
@@ -11,6 +12,9 @@ const {
   csrfProtection,
 } = require("./security/csrf.cjs");
 
+const geoip = require("geoip-lite");
+const fs = require("fs");
+
 console.log("__dirname:", __dirname);
 console.log("Static path:", path.join(__dirname, "public"));
 console.log("Index path:", path.join(__dirname, "public", "index.html"));
@@ -23,7 +27,7 @@ app.use(
         res.setHeader("Content-Type", "application/javascript");
       }
     },
-  }),
+  })
 );
 
 // Apply the general rate limit to all requests
@@ -42,6 +46,40 @@ if (process.env.NODE_ENV !== "test") {
   app.use(sessionMiddleware);
   app.use(csrfProtection);
 }
+
+app.post("/track", (req, res) => {
+  // Determine the client IP address
+  // X-Forwarded-For header is the standard for identifying the originating IP address through proxies.
+  // We take the first IP in the list, as it's the most upstream.
+  // Fallback to req.socket.remoteAddress if the header is not present.
+  const ip =
+    req.headers["x-forwarded-for"]?.split(",")[0] || req.socket.remoteAddress;
+
+  // Perform geolocation lookup
+  const geo = geoip.lookup(ip);
+
+  // Prepare log entry
+  const logEntry = {
+    timestamp: new Date().toISOString(),
+    ip: ip,
+    geo: geo, // Contains country, region, city, etc.
+  };
+
+  // Log to ip_logs.jsonl file
+  fs.appendFile(
+    "logs/ip_logs.jsonl",
+    JSON.stringify(logEntry) + "\n",
+    (err) => {
+      if (err) {
+        console.error("Error writing to log file:", err);
+        // Send an error response to the client
+        return res.status(500).send("Error logging tracking data.");
+      }
+      // Send a success response to the client
+      res.status(200).send("Tracking data received.");
+    }
+  );
+});
 
 // Fallback to index.html for SPA routing
 app.get("*", (req, res) => {

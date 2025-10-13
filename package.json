@@ -5,6 +5,7 @@
   "scripts": {
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules node_modules/jest/bin/jest.js --config jest.config.js",
     "start": "node server.cjs",
+    "start:track": "cross-env PORT=3001 node server.cjs",
     "test:ci": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --verbose",
     "build": "node scripts/build.cjs",
     "check-translations": "node scripts/check-translations.cjs",
@@ -24,14 +25,20 @@
   "dependencies": {
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
     "express": "^4.18.2",
     "express-rate-limit": "^8.1.0",
     "express-session": "^1.18.2",
+    "geoip-lite": "^1.4.10",
     "helmet": "^8.1.0",
     "http-server": "^14.1.1",
+    "morgan": "^1.10.1",
     "sharp": "^0.34.3"
   },
   "devDependencies": {
+    "@babel/core": "^7.24.7",
+    "@babel/preset-env": "^7.24.7",
+    "babel-jest": "^29.7.0",
     "clean-css-cli": "^5.6.3",
     "cross-env": "^10.1.0",
     "esbuild": "^0.25.10",
@@ -41,14 +48,11 @@
     "jest": "^30.2.0",
     "jest-environment-jsdom": "^30.0.0",
     "jsdom": "^27.0.0",
-    "mocha": "^10.0.0",
     "mkdirp": "^3.0.1",
+    "mocha": "^10.0.0",
     "prettier": "^3.6.2",
     "supertest": "^7.1.4",
     "terser": "^5.44.0",
-    "typescript": "^5.8.3",
-    "babel-jest": "^29.7.0",
-    "@babel/core": "^7.24.7",
-    "@babel/preset-env": "^7.24.7"
+    "typescript": "^5.8.3"
   }
 }

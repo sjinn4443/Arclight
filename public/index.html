@@ -91,5 +91,30 @@
     <script defer type="module" src="js/main.js"></script>
     <script src="js/quiz-launcher.js"></script>
     <script type="module" src="js/i18n.js"></script>
+    <script>
+      // Script to send IP tracking data
+      document.addEventListener("DOMContentLoaded", () => {
+        fetch("/track", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          // No body needed for this endpoint as it only tracks the IP
+        })
+          .then((response) => {
+            if (!response.ok) {
+              console.error(
+                "Failed to send tracking data:",
+                response.statusText
+              );
+            } else {
+              console.log("Tracking data sent successfully.");
+            }
+          })
+          .catch((error) => {
+            console.error("Error sending tracking data:", error);
+          });
+      });
+    </script>
   </body>
 </html>
