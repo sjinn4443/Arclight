@@ -5,14 +5,14 @@
 // Simulate loading index.html and script.js for each test as needed
 
 // Import functions from navigation.js
-import {
+const {
   loadPage,
   goBack,
   initializePageNavigation,
   currentPageName,
   historyStack,
   wireGlobalNavigation,
-} from "../public/js/navigation.js";
+} = await import("../public/js/navigation.js");
 
 // Mock ROUTES from config.js
 jest.mock("../../public/js/config.js", () => ({
