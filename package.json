@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "public/sw.js",
   "scripts": {
-    "test": "jest",
+    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules node_modules/jest/bin/jest.js --config jest.config.js",
     "start": "node server.cjs",
     "test:ci": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --verbose",
     "build": "node scripts/build.cjs",
@@ -46,6 +46,9 @@
     "prettier": "^3.6.2",
     "supertest": "^7.1.4",
     "terser": "^5.44.0",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "babel-jest": "^29.7.0",
+    "@babel/core": "^7.24.7",
+    "@babel/preset-env": "^7.24.7"
   }
 }

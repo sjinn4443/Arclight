@@ -91,7 +91,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 export let currentPageName = null;
-const historyStack = [];
+export const historyStack = [];
 
 /**
  * Loads a new page fragment into the '#page-content' container based on the given route name.
