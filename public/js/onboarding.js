@@ -73,7 +73,7 @@ export function initializeOnboarding() {
         .querySelectorAll("optgroup")
         .forEach((g) => (g.style.display = "none"));
       const show = jobSelect.querySelector(
-        `optgroup[data-field="${selected}"]`,
+        `optgroup[data-field="${selected}"]`
       );
       if (show) show.style.display = "block";
       jobSelect.value = "";
@@ -183,12 +183,42 @@ export function initializeOnboarding() {
 
         // When clicked -> go to onboarding + mark that it came from skip path
         createBtn.addEventListener("click", () => {
-          // Remember in localStorage that user came back from skip path
           localStorage.setItem("cameFromSkipPath", "true");
           loadPage("onboarding");
         });
 
-        oldBtn.replaceWith(createBtn);
+        // Create "Continue as Guest" that visually matches #skipContinueBtn
+        const guestBtn = document.createElement("button");
+        guestBtn.id = "continueAsGuestBtn";
+
+        // Copy the same style or classes from #skipContinueBtn if it exists
+        const skipStyleRef = document.getElementById("skipContinueBtn");
+        if (skipStyleRef) {
+          guestBtn.className = skipStyleRef.className;
+        } else {
+          // Fallback: mimic same styling manually if not found
+          guestBtn.className = "btn-outline intro-outline";
+        }
+
+        guestBtn.textContent = "Continue as Guest";
+        guestBtn.addEventListener("click", () => {
+          // Mark session as guest & reset quota
+          localStorage.setItem("guestMode", "true");
+          localStorage.setItem("guestClicks", "0");
+          // Optional: remember when started (can help you tune funnels later)
+          localStorage.setItem("guestStartAt", String(Date.now()));
+
+          loadPage("dashboard");
+        });
+
+        // Group both buttons side by side
+        const btnGroup = document.createElement("div");
+        btnGroup.className =
+          oldBtn.parentElement?.className || "intro-cta-group";
+        btnGroup.appendChild(createBtn);
+        btnGroup.appendChild(guestBtn);
+
+        oldBtn.replaceWith(btnGroup);
         return true;
       };
 

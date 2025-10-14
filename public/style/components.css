@@ -4,13 +4,13 @@
 
 /* ============================================= Buttons ============================================= */
 button {
-  background-color: var(--primary-color);
+  background-color: #e41e26;
   color: white;
   border: none;
   border-radius: 12px;
   padding: 12px;
   width: 100%;
-  font-size: 16px;
+  font-size: 14px;
   cursor: pointer;
   margin-top: 10px;
 }
@@ -36,10 +36,10 @@ button:disabled {
   width: 100%;
   height: 44%;
   border-radius: 14px;
-  background: #fff;
+  background: #d9d9dd;
   border: 1px solid #d9d9dd;
-  color: #111;
-  font-weight: 400;
+  color: #fff;
+  font-weight: 500;
   font-size: 13px;
   margin-top: 5%;
 }
@@ -1912,3 +1912,107 @@ input:checked + .slider:before {
     --container-w: 91vw;
   }
 }
+
+/* === Guest Mode Modal === */
+#guestGateModal {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  animation: guestModalFadeIn 0.3s ease-out;
+}
+
+#guestGateModal.fade-out {
+  animation: guestModalFadeOut 0.25s ease-in forwards;
+}
+
+@keyframes guestModalFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes guestModalFadeOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+
+.guest-modal {
+  background: #fff;
+  max-width: 440px;
+  width: 92%;
+  border-radius: 14px;
+  padding: 24px 28px 32px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+  position: relative;
+  text-align: left;
+  font-family: system-ui, sans-serif;
+  animation: guestModalCardIn 0.3s ease-out;
+}
+
+@keyframes guestModalCardIn {
+  from {
+    transform: translateY(8px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.guest-modal__close {
+  position: absolute;
+  top: -1px;
+  right: -155px;
+  background: transparent;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  line-height: 1;
+  color: #666;
+  transition: color 0.2s;
+}
+
+.guest-modal__close:hover {
+  color: #000;
+}
+
+.guest-modal__title {
+  margin: 12px 0 19px;
+  font-size: 17px;
+  font-weight: 600;
+  color: #111;
+}
+
+.guest-modal__text {
+  margin: 0 0 22px;
+  color: #444;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.guest-modal__cta {
+  padding: 10px 18px;
+  font-size: 14px;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+/* Uses existing theme’s primary button colors */

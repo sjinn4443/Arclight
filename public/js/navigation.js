@@ -5,6 +5,174 @@
 import { ROUTES } from "./config.js";
 import { closeMenu } from "./menu.js";
 
+// === Guest Mode Guard ===
+const MAX_GUEST_CLICKS = 10;
+
+// Identify guest mode
+function isGuestMode() {
+  return localStorage.getItem("guestMode") === "true";
+}
+
+function getGuestClicks() {
+  const n = parseInt(localStorage.getItem("guestClicks") || "0", 10);
+  return Number.isFinite(n) ? n : 0;
+}
+
+function setGuestClicks(n) {
+  localStorage.setItem("guestClicks", String(n));
+}
+
+// When a guest tries to do something after cap, show modal
+function ensureGuestModal() {
+  // Prevent duplicates
+  if (document.getElementById("guestGateModal")) return;
+
+  const modal = document.createElement("div");
+  modal.id = "guestGateModal";
+  modal.setAttribute("role", "dialog");
+  modal.setAttribute("aria-modal", "true");
+
+  modal.innerHTML = `
+    <div class="guest-modal">
+      <button id="guestModalClose" class="guest-modal__close" aria-label="Close">&times;</button>
+      <h2 class="guest-modal__title">Enjoying Arclight?</h2>
+      <p class="guest-modal__text">
+        You’ve reached the end of guest access.<br> 
+        Create a free account to keep exploring all features without limits.
+      </p>
+      <button id="guestSignupBtn" class="guest-modal__cta btn-primary">
+        Create Account
+      </button>
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+
+  // Cache elements
+  const signupBtn = modal.querySelector("#guestSignupBtn");
+  const closeBtn = modal.querySelector("#guestModalClose");
+
+  // === CREATE ACCOUNT ===
+  signupBtn?.addEventListener("click", async (e) => {
+    e.preventDefault();
+    try {
+      // Reset/mark guest path states
+      localStorage.setItem("guestMode", "false");
+      localStorage.removeItem("guestClicks");
+      localStorage.setItem("cameFromSkipPath", "true");
+
+      // Close modal visually
+      modal.classList.add("fade-out");
+      setTimeout(async () => {
+        modal.remove();
+
+        // Navigate directly to onboarding using the local function
+        await loadPage("onboarding");
+      }, 250);
+    } catch (err) {
+      console.error("Navigation to onboarding failed:", err);
+    }
+  });
+
+  // === CLOSE MODAL (X button) ===
+  closeBtn?.addEventListener("click", (e) => {
+    e.preventDefault();
+    modal.classList.add("fade-out");
+    setTimeout(() => modal.remove(), 250);
+  });
+}
+
+// Increment the guest click count; returns true if allowed, false if blocked
+function guestClickAllowed() {
+  if (!isGuestMode()) return true;
+
+  const current = getGuestClicks();
+  if (current >= MAX_GUEST_CLICKS) {
+    ensureGuestModal();
+    return false;
+  }
+  setGuestClicks(current + 1);
+  return true;
+}
+
+// Decide which UI interactions count as a "click"
+function isCountableClick(target) {
+  if (!target) return false;
+
+  // Never count (or block) clicks inside the guest modal itself
+  if (target.closest("#guestGateModal")) return false;
+
+  // If developer explicitly marks an element as free for guests
+  // (e.g., onboarding, language install, Help, etc.), don't count it
+  if (target.closest("[data-guest-free='true']")) return false;
+
+  // Count clicks on buttons, links, cards, and any element with data-track
+  if (
+    target.closest(
+      "button, a, .card, [role='button'], [data-track], [data-clickable]"
+    )
+  ) {
+    return true;
+  }
+  return false;
+}
+
+// Block action if over cap (capture phase to stop early)
+document.addEventListener(
+  "click",
+  (e) => {
+    if (!isGuestMode()) return;
+
+    const t = e.target;
+    if (!isCountableClick(t)) return;
+
+    // If over cap, prevent the action and show modal
+    const current = getGuestClicks();
+    if (current >= MAX_GUEST_CLICKS) {
+      e.preventDefault();
+      e.stopPropagation();
+      ensureGuestModal();
+      return;
+    }
+
+    // Otherwise, increment and allow
+    setGuestClicks(current + 1);
+  },
+  true // capture
+);
+
+// === Feature Gating: disable anything marked with data-requires-auth ===
+function applyGuestFeatureGating(root = document) {
+  if (!isGuestMode()) return;
+  const gated = root.querySelectorAll("[data-requires-auth]");
+  gated.forEach((el) => {
+    el.setAttribute("aria-disabled", "true");
+    el.setAttribute("tabindex", "-1");
+    // Visual treatment
+    el.style.pointerEvents = "none";
+    el.style.opacity = "0.5";
+    el.style.filter = "grayscale(40%)";
+    // Optional: add a tooltip-like title
+    if (!el.getAttribute("title")) {
+      el.setAttribute("title", "Sign up to use this feature");
+    }
+  });
+}
+
+// Run gating whenever a page shows
+document.addEventListener("page:shown", (e) => {
+  applyGuestFeatureGating(document);
+});
+
+// Also run once on initial load (if the app bootstraps without dispatching)
+if (document.readyState !== "loading") {
+  applyGuestFeatureGating(document);
+} else {
+  document.addEventListener("DOMContentLoaded", () =>
+    applyGuestFeatureGating(document)
+  );
+}
+
 // Routes where the top-left back button should be hidden
 const EXCLUDED_BACK_ROUTES = [
   "splashscreen",
