@@ -16,13 +16,11 @@ The current focus is on ensuring the application's core structure and PWA capabi
 - Implemented a quiz system for "Direct Ophthalmoscopy" and "Anterior Segment Quiz" modules.
 - Added video players with time-based event handling and interactive toolbars for various learning modules.
 - Introduced an offline content management modal to allow users to select and download specific assets for offline use.
-- Updated the `README.md` file to include a changelog section with dates and descriptions of recent changes.
+- Updated the `README.md` file to include details on enhanced security features (rate limiting, CSP, CORS, CSRF), the automated CI/CD pipeline, and an updated changelog.
 - Set up Jest for unit, UI, and API testing. Configured a Git `pre-push` hook to run tests automatically before pushing to GitHub. Updated `tests/README.md` with detailed testing information.
 - Set up GitHub Actions CI/CD pipeline at `.github/workflows/ci-cd.yml` for continuous integration and deployment to Railway, including linting, type checking, and Lighthouse CI for performance and best practices.
-- Performed a memory bank update, reading all memory bank files and the `README.md`.
 - Implemented a `security` folder with rate limiting, Content Security Policy (CSP), CORS allowlist, and CSRF protection.
 - Renamed `server.js` to `server.cjs` and updated related `require` paths to resolve ES module / CommonJS conflicts.
-- Updated `package.json` to reflect the `server.cjs` change.
 - Modified `server.cjs` to conditionally apply CSRF protection only when not in a test environment, resolving a timeout issue in API tests.
 - Removed "Run Lighthouse CI" and "Run translation checks" from the GitHub Actions CI/CD pipeline.
 

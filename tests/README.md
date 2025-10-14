@@ -12,16 +12,20 @@ This folder contains various tests for the project, including UI tests, API test
 
 ### UI Tests
 
-1. **Test 1:** Home page loads successfully and displays the main elements.
-2. **Test 2:** Navigation links work and route to the correct sections/pages.
-3. **Test 3:** Main interactive button triggers the expected action.
-4. **Test 4:** Responsive layout adapts correctly on mobile and desktop.
-5. **Test 5:** Error messages display when invalid input is submitted.
-6. **Test 6:** Splash screen appears on page load.
+1.  **Test 1:** Home page loads successfully and displays the main elements.
+2.  **Test 2:** Navigation links work and route to the correct sections/pages.
+3.  **Test 3:** Main interactive button triggers the expected action.
+4.  **Test 4:** Responsive layout adapts correctly on mobile and desktop.
+5.  **Test 5:** Error messages display when invalid input is submitted.
+6.  **Test 6:** Splash screen appears on page load.
 
 ### API Tests
 
-- **`api.test.js`**: Contains tests for the backend API endpoints, ensuring they respond as expected. Currently, it verifies the static file serving of `server.js`.
+- **`api.test.js`**: Contains tests for the backend API endpoints, ensuring they respond as expected. This includes verification of static file serving and security feature implementations.
+
+### Security Tests
+
+- Tests are in place to cover the implemented security measures: Rate Limiting, Content Security Policy (CSP), CORS allowlist, and CSRF protection.
 
 ### Sample Unit Tests
 
@@ -29,4 +33,4 @@ This folder contains various tests for the project, including UI tests, API test
 
 ---
 
-Each test is implemented in a separate file in this directory.
+Each test is implemented in a separate file in this directory. The `npm test` command runs all tests, and a Git `pre-push` hook ensures tests are executed before pushing changes.

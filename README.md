@@ -9,6 +9,8 @@ This project is the Arclight App, a comprehensive educational and diagnostic too
 - Instructional videos for practical demonstrations
 - Anatomical diagrams and images for reference
 - Responsive design for use on multiple devices
+- **Enhanced Security:** Implemented rate limiting, Content Security Policy (CSP), CORS allowlist, and CSRF protection.
+- **Automated CI/CD:** GitHub Actions pipeline for continuous integration and deployment.
 
 ## Getting Started
 
@@ -26,6 +28,7 @@ This project is the Arclight App, a comprehensive educational and diagnostic too
 - `style/` - Directory containing `base.css`, `components.css`, `pages.css`, and `responsive.css` for global styles
 - `public/js/` - Directory containing JavaScript files for different modules and features
 - `images/` - Image assets used throughout the app
+- `security/` - Directory containing security configurations (rate limiting, CSP, CORS, CSRF)
 - `.github/workflows/ci-cd.yml` - GitHub Actions CI/CD workflow
 - `memory-bank/` - Documentation and project context files
 - Various folders for specific modules like `AnteriorSegmentQuiz`, `Cataract`, `Morph`, `Squint`, etc.
@@ -60,35 +63,7 @@ Please follow the existing code patterns and update the Memory Bank when making 
 
 ## Changelog
 
-### 02/10/25
-
-- Set up Jest for unit, UI, and API testing.
-- Configured a Git `pre-push` hook to run tests automatically before pushing to GitHub.
-- Updated `tests/README.md` with detailed testing information.
-
-### 26/08/25
-
-- Placeholder for changes made on 26/08/25.
-
-### 27/08/25
-
-- Placeholder for changes made on 27/08/25.
-
-### 02/09/25
-
-- Performed a memory bank update, reading all memory bank files and the README.md.
-- Added JSDoc comments to all JavaScript files in `Arclight_App/public/js/`.
-
-### 29/09/25
-
-- Set up GitHub Actions CI/CD pipeline at `.github/workflows/ci-cd.yml` for continuous integration and deployment to Railway.
-- Updated memory bank files (`activeContext.md`, `progress.md`) to reflect the new CI/CD setup.
-
-### 31/08/25
-
-- Updated memory bank and README.md dates. General application refinement and content integration across various modules, including updates to video playback, navigation, onboarding, and PWA features.
-
-### 04/10/25
+### 2025-10-04
 
 - Created a `security` folder and implemented the following security measures:
   - **Rate Limiting**: Using `express-rate-limit` to control request frequency.
@@ -96,3 +71,31 @@ Please follow the existing code patterns and update the Memory Bank when making 
   - **CORS Allowlist**: Implemented with `cors` to restrict cross-origin requests to `http://localhost:3000`.
   - **CSRF Protection**: Set up using `csurf`, `express-session`, and `cookie-parser` to guard against CSRF attacks.
 - Resolved ES module / CommonJS conflict by renaming `server.js` to `server.cjs` and updating all related `require` paths and `package.json` scripts.
+
+### 2025-09-29
+
+- Set up GitHub Actions CI/CD pipeline at `.github/workflows/ci-cd.yml` for continuous integration and deployment to Railway.
+- Updated memory bank files (`activeContext.md`, `progress.md`) to reflect the new CI/CD setup.
+
+### 2025-09-02
+
+- Performed a memory bank update, reading all memory bank files and the README.md.
+- Added JSDoc comments to all JavaScript files in `Arclight_App/public/js/`.
+
+### 2025-08-26
+
+- Placeholder for changes made on 2025-08-26.
+
+### 2025-08-27
+
+- Placeholder for changes made on 2025-08-27.
+
+### 2025-08-02
+
+- Set up Jest for unit, UI, and API testing.
+- Configured a Git `pre-push` hook to run tests automatically before pushing changes to GitHub.
+- Updated `tests/README.md` with detailed testing information.
+
+### 2025-08-31
+
+- Updated memory bank and README.md dates. General application refinement and content integration across various modules, including updates to video playback, navigation, onboarding, and PWA features.
