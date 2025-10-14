@@ -125,9 +125,7 @@ export function initializeEyes() {
       if (typeof goToVideosSection === "function") {
         goToVideosSection("pupilsPage");
       }
-    } catch {
-      /* ok, sessionStorage fallback will take over */
-    }
+    } catch {}
 
     // Compress the history so Back goes straight to the previous page (no blank Videos root)
     try {
@@ -162,7 +160,7 @@ export function initializeEyesCatalog() {
         e.preventDefault();
         openMenu();
       },
-      { once: true },
+      { once: true }
     );
   }
 
@@ -287,7 +285,7 @@ export function initializeEyesCatalog() {
   window.getAllEyesItems = () => {
     const out = [];
     Object.values(sections).forEach((list) =>
-      (list || []).forEach((i) => out.push(i)),
+      (list || []).forEach((i) => out.push(i))
     );
     return out;
   };
@@ -313,7 +311,7 @@ export function initializeEyesCatalog() {
   /**
    * Renders a list of items into a specified container as clickable cards with 'like' functionality.
    * @param {string} containerId - The ID of the container element to render items into.
-   * @param {Array<Object>} items - An array of item objects, each with `label`, `target`, and optional `tags`.
+   * @param {Array<Object>} items - An array of item objects, each with `label`, `target`, and `tags`.
    */
   // Renders a carousel with disabled states for missing targets
   const render = (containerId, items) => {
@@ -386,7 +384,7 @@ export function initializeEyesCatalog() {
 
   Object.entries(sections).forEach(([id, list]) => render(id, list));
 
-  // === Carousel dots per section (like Dashboard) ===
+  // === Carousel dots per section ===
   // For each carousel on the Eyes page, inject a dot strip above "See all >"
   const setupDotsForCarousel = (carouselEl) => {
     if (!carouselEl) return;
@@ -415,7 +413,7 @@ export function initializeEyesCatalog() {
         (_, i) =>
           `<button class="dot" type="button" aria-label="Go to item ${
             i + 1
-          }"></button>`,
+          }"></button>`
       )
       .join("");
     const dots = Array.from(dotsWrap.querySelectorAll(".dot"));
@@ -450,7 +448,7 @@ export function initializeEyesCatalog() {
 
     // Click any dot to center that item
     dots.forEach((dot, i) =>
-      dot.addEventListener("click", () => centerCardByIndex(i)),
+      dot.addEventListener("click", () => centerCardByIndex(i))
     );
 
     // Sync the active dot while scrolling (throttled with rAF)
@@ -588,6 +586,6 @@ export function initializeEyesCatalog() {
       // Non-video targets
       go(target);
     },
-    { passive: false },
+    { passive: false }
   );
 }

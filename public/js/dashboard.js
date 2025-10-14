@@ -42,7 +42,6 @@ export function initializeDashboard() {
     earsLearningModules: "ears",
   };
 
-  // Targets we want to disable (stay on Dashboard)
   const DISABLED_TARGETS = new Set([
     "earsLearningModules",
     "skinModules",
@@ -83,8 +82,6 @@ export function initializeDashboard() {
   if (carousel && dots.length) {
     // Helper to get the live list of cards
     const cards = () => Array.from(carousel.querySelectorAll(".category-card"));
-
-    // Which card is closest to the horizontal midpoint of the carousel?
     const getActiveIndex = () => {
       const cs = cards();
       if (!cs.length) return 0;
@@ -131,7 +128,7 @@ export function initializeDashboard() {
 
     // Clicking a dot recenters to that card
     dots.forEach((dot, i) =>
-      dot.addEventListener("click", () => centerCardByIndex(i)),
+      dot.addEventListener("click", () => centerCardByIndex(i))
     );
 
     // Initial sync once the layout is ready
@@ -240,7 +237,7 @@ function renderRecommendations(host) {
         }%;"></div></div>
       </div>
     </div>
-  `,
+  `
     )
     .join("");
 

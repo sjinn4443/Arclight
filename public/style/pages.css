@@ -348,12 +348,6 @@ select.onb-input.has-value {
   background: #bdbdbf;
 }
 
-@media (max-width: 420px) {
-  .onboarding-container {
-    padding-bottom: 100%;
-  }
-}
-
 /* special casing for username */
 #username.onb-input {
   background: #ffffff;
@@ -519,13 +513,6 @@ select.onb-input.has-value {
   margin-top: 21%;
 }
 
-@media (max-width: 420px) {
-  .intro-container {
-    padding-bottom: 120px;
-    padding-top: 17%;
-  }
-}
-
 /* ============================================= Unified Dashboard ============================================= */
 .unified-container {
   background: #fff;
@@ -582,6 +569,11 @@ select.onb-input.has-value {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.search-icon svg {
+  width: 18px;
+  height: 18px;
 }
 
 .category-carousel {
@@ -698,12 +690,6 @@ select.onb-input.has-value {
   font-size: 12px;
 }
 
-@media (min-width: 480px) {
-  .category-carousel {
-    grid-auto-columns: 29%;
-  }
-}
-
 /* --- Liked page: match Unified Dashboard / Eyes --- */
 #likedPage {
   background: #fff;
@@ -725,12 +711,6 @@ select.onb-input.has-value {
   display: grid;
   grid-template-columns: 1fr;
   gap: 12px;
-}
-
-@media (min-width: 480px) {
-  #likedList {
-    grid-template-columns: 1fr 1fr;
-  }
 }
 
 #likedList .module-card {
@@ -760,11 +740,6 @@ select.onb-input.has-value {
   grid-template-columns: 1fr 1fr;
   gap: 10px;
   margin: 8px 0 16px;
-}
-@media (max-width: 360px) {
-  #likedList {
-    grid-template-columns: 1fr;
-  }
 }
 
 /* Slightly shorter tiles on Liked */
@@ -836,11 +811,6 @@ select.onb-input.has-value {
   column-count: 2;
   column-gap: 12px;
   padding-top: 6px;
-}
-@media (min-width: 480px) {
-  .ml-masonry {
-    column-count: 3;
-  }
 }
 
 /* Masonry card */
@@ -928,13 +898,6 @@ select.onb-input.has-value {
 }
 .catalog-h2 .carousel-dots .dot.active {
   background: #e41e26; /* active color (matches dashboard) */
-}
-
-/* ============================================= Pupils Page ============================================= */
-.pupils-container {
-  background: #fff;
-  min-height: 100vh;
-  padding-bottom: 100px;
 }
 
 /* ===== Pupils top bar ===== */
@@ -1124,18 +1087,6 @@ select.onb-input.has-value {
 }
 
 /* Lesson rows (white pills inside the card) */
-@media (max-width: 340px) {
-  .pupil-card {
-    padding: 14px 12px;
-  }
-  .lesson-row {
-    grid-template-columns: 46px 1fr auto;
-  }
-  .lesson-row .thumb {
-    width: 46px;
-    height: 32px;
-  }
-}
 
 #learningModules {
   display: none !important;
@@ -1163,36 +1114,6 @@ select.onb-input.has-value {
 }
 
 /* DESKTOP/TABLET placement */
-@media (min-width: 401px) {
-  #onboarding .container,
-  #proInterestPage .container,
-  #introPage .container {
-    padding-top: 0 !important;
-    padding-right: 0 !important;
-    padding-left: 0 !important;
-    padding-bottom: 0 !important;
-  }
-
-  .onboarding-container,
-  .interest-container,
-  .intro-container {
-    width: 70% !important;
-    max-width: 420px !important;
-    padding: 0 20px !important;
-
-    /* use one shared value for all three */
-    margin: clamp(96px, 12vh, 160px) auto 0 !important;
-    text-align: left;
-  }
-
-  /* keep these neutral */
-  .intro-container {
-    min-height: 0 !important;
-  }
-  .interest-container {
-    padding-bottom: 0 !important;
-  }
-}
 
 /* Kill % based top spacing that shifts per device; keep it tight on big screens */
 .interest-title {

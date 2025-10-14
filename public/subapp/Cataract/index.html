@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Cataract</title>
     <link rel="stylesheet" href="style.css" />
-    <!-- FontAwesome for info icon (if not already included) -->
+    <!-- FontAwesome for info icon -->
     <link
       href="https://fonts.googleapis.com/css?family=Quicksand:400,700"
       rel="stylesheet"
@@ -30,7 +30,7 @@
     <!-- Info icon -->
     <i id="info-icon" class="fas fa-info-circle" onclick="toggleInfoBox()"></i>
 
-    <!-- Hidden info box (styled with .info-box from your CSS) -->
+    <!-- Hidden info box -->
     <div id="info-popup" class="info-box" style="display: none">
       <p>
         Identify and signpost cataracts — the most common cause of treatable
@@ -225,14 +225,10 @@
       </form>
     </main>
 
-    <!-- Include your main JavaScript -->
     <script src="script.js?v=1.0"></script>
 
     <!-- Inline script for the info pop-up toggle -->
     <script>
-      /**
-       * Toggles the visibility of the info pop-up.
-       */
       function toggleInfoBox() {
         const infoPopup = document.getElementById("info-popup");
         // Toggle display between block and none

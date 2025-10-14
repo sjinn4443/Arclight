@@ -107,7 +107,7 @@ function handleTOCItemClick(e) {
   const topic = e.target.textContent.trim();
   const container = document.getElementById("atomsImageContainer");
   if (!container) return;
-  container.innerHTML = ""; // Clear previous content
+  container.innerHTML = "";
 
   // Special handling for Anatomy (different for eyes vs ears)
   if (topic === "Anatomy") {
@@ -198,7 +198,7 @@ export function initializeAtomsCard() {
   if (box) box.innerHTML = "";
 }
 
-// Optional: support direct navigation
+// Support direct navigation
 export function goToAtomsCard(type = "eyes") {
   const evt = new CustomEvent("page:navigate", {
     detail: { pageId: "atomsCardPage" },

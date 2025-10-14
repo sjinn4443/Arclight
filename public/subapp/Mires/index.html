@@ -41,7 +41,7 @@
           <li>Z/X: zoom</li>
         </ul>
       </div>
-      <!-- Toggle Button (now in normal document flow, 30px below the box) -->
+      <!-- Toggle Button -->
       <button
         id="toggleButton"
         class="on"
@@ -232,7 +232,7 @@
         topSemiCircle.setAttribute("transform", `translate(${separation}, 0)`);
         bottomSemiCircle.setAttribute(
           "transform",
-          `translate(${-separation}, 0)`,
+          `translate(${-separation}, 0)`
         );
         if (!isMobileDevice()) {
           separationSlider.value = separation;
@@ -283,7 +283,7 @@
         const centreY = blueCircleRect.height / 2;
 
         const distanceFromCentre = Math.sqrt(
-          miresPosition.left ** 2 + miresPosition.top ** 2,
+          miresPosition.left ** 2 + miresPosition.top ** 2
         );
         const maxDistance = blueCircleRect.width / 2 - miresRect.width / 2;
         const minDriftSpeed = 5;
@@ -415,7 +415,7 @@
         if (event.touches.length === 2) {
           initialPinchDistance = getDistance(
             event.touches[0],
-            event.touches[1],
+            event.touches[1]
           );
           initialScale = scale;
         }
@@ -425,7 +425,7 @@
         if (event.touches.length === 2 && initialPinchDistance !== null) {
           const newPinchDistance = getDistance(
             event.touches[0],
-            event.touches[1],
+            event.touches[1]
           );
           const pinchChange = newPinchDistance - initialPinchDistance;
           scale = initialScale + pinchChange * 0.01;

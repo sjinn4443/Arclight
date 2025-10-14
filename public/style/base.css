@@ -116,11 +116,6 @@ h1 {
 }
 
 /* ============================================= Motion accessibility ============================================= */
-@media (prefers-reduced-motion: reduce) {
-  .logo-one {
-    animation: none !important;
-  }
-}
 
 /* ============================================= Sitewide resets ============================================= */
 /* Sitewide resets - the body rule already handles margin and padding reset. */

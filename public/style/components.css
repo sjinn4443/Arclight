@@ -896,6 +896,15 @@ input:checked + .slider:before {
   justify-content: center;
 }
 
+.menu-search-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.menu-search {
+  padding: 7px 36px 7px 12px;
+}
+
 /* Tabs with underlines */
 .menu-tabs {
   display: flex;
@@ -1228,7 +1237,7 @@ input:checked + .slider:before {
   margin: 4px 0;
 }
 
-/* Optional: a little spacing between image and text  */
+/* A little spacing between image and text  */
 .module-card .module-info {
   display: flex;
   flex-direction: column;
@@ -1439,11 +1448,6 @@ input:checked + .slider:before {
   grid-template-columns: 1fr 1fr;
   gap: 12px;
 }
-@media (max-width: 360px) {
-  .ml-grid {
-    grid-template-columns: 1fr;
-  }
-}
 
 .ml-tile {
   position: relative;
@@ -1532,11 +1536,6 @@ input:checked + .slider:before {
   column-count: 2;
   column-gap: 12px;
   padding-top: 6px;
-}
-@media (min-width: 480px) {
-  .ml-masonry {
-    column-count: 3;
-  }
 }
 
 /* Masonry card */
@@ -1750,19 +1749,6 @@ input:checked + .slider:before {
   opacity: 0.65;
 }
 
-@media (max-width: 340px) {
-  .pupil-card {
-    padding: 14px 12px;
-  }
-  .lesson-row {
-    grid-template-columns: 46px 1fr auto;
-  }
-  .lesson-row .thumb {
-    width: 46px;
-    height: 32px;
-  }
-}
-
 /* ============================================= Pupils page ============================================= */
 #pupilsPage .pupils-timeline {
   counter-reset: pupils-step;
@@ -1893,24 +1879,6 @@ input:checked + .slider:before {
 
 :root {
   --container-w: 100vw;
-}
-
-@media (min-width: 1024px) {
-  :root {
-    --container-w: 92vw;
-  }
-}
-
-@media (min-width: 1080px) {
-  :root {
-    --container-w: 84vw;
-  }
-}
-
-@media (min-width: 1440px) {
-  :root {
-    --container-w: 91vw;
-  }
 }
 
 /* === Guest Mode Modal === */
