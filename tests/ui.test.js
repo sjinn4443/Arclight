@@ -14,25 +14,6 @@ const {
   wireGlobalNavigation,
 } = await import("../public/js/navigation.js");
 
-// Mock ROUTES from config.js
-jest.mock("../../public/js/config.js", () => ({
-  ROUTES: {
-    dashboard: "/public/html/dashboard.html",
-    page1: "/public/html/page1.html",
-    page2: "/public/html/page2.html",
-    about: "/public/html/about.html",
-    splashscreen: "/public/html/splashscreen.html",
-    languageinstall: "/public/html/languageinstall.html",
-    onboarding: "/public/html/onboarding.html",
-    interest: "/public/html/interest.html",
-    intro: "/public/html/intro.html",
-    videos: "/public/html/videos.html",
-    quizzes: "/public/html/quizzes.html",
-    directOphthalmoscopyQuizPage:
-      "/public/html/directOphthalmoscopyQuizPage.html",
-  },
-}));
-
 // Mock fetch
 global.fetch = jest.fn();
 
@@ -244,7 +225,7 @@ describe("UI Integration Tests", () => {
     expect(currentPageName).toBe("page2");
     expect(historyStack).toEqual(["page1", "page2"]); // History should be popped
     expect(
-      document.getElementById("page-content").querySelector(".page.active").id,
+      document.getElementById("page-content").querySelector(".page.active").id
     ).toBe("page2-content");
 
     // Go back to page 1
@@ -254,7 +235,7 @@ describe("UI Integration Tests", () => {
     expect(currentPageName).toBe("page1");
     expect(historyStack).toEqual(["page1"]);
     expect(
-      document.getElementById("page-content").querySelector(".page.active").id,
+      document.getElementById("page-content").querySelector(".page.active").id
     ).toBe("page1-content");
   });
 
@@ -282,7 +263,7 @@ describe("UI Integration Tests", () => {
     expect(currentPageName).toBe("dashboard");
     expect(historyStack).toEqual(["dashboard"]); // History state after goBack with replace:true
     expect(
-      document.getElementById("page-content").querySelector(".page.active").id,
+      document.getElementById("page-content").querySelector(".page.active").id
     ).toBe("dashboard-content");
   });
 
@@ -294,7 +275,7 @@ describe("UI Integration Tests", () => {
 
     // Dispatch the page:loaded event to trigger updateGlobalBackVisibility
     document.dispatchEvent(
-      new CustomEvent("page:loaded", { detail: { routeName: "splashscreen" } }),
+      new CustomEvent("page:loaded", { detail: { routeName: "splashscreen" } })
     );
 
     expect(document.getElementById("backBtnGlobal").style.display).toBe("none");
@@ -308,7 +289,7 @@ describe("UI Integration Tests", () => {
     });
     await loadPage("onboarding");
     document.dispatchEvent(
-      new CustomEvent("page:loaded", { detail: { routeName: "onboarding" } }),
+      new CustomEvent("page:loaded", { detail: { routeName: "onboarding" } })
     );
     expect(document.getElementById("backBtnGlobal").style.display).toBe("none");
   });
@@ -324,7 +305,7 @@ describe("UI Integration Tests", () => {
 
     // Dispatch the page:loaded event
     document.dispatchEvent(
-      new CustomEvent("page:loaded", { detail: { routeName: "dashboard" } }),
+      new CustomEvent("page:loaded", { detail: { routeName: "dashboard" } })
     );
 
     expect(document.getElementById("backBtnGlobal").style.display).toBe("flex"); // Assuming default display is flex

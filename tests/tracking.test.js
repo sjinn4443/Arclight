@@ -1,7 +1,11 @@
-const request = require("supertest");
-const app = require("../server.cjs"); // Import the Express app
-const fs = require("fs");
-const path = require("path");
+import request from "supertest";
+import app from "../server.cjs"; // Import the Express app
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Ensure the logs directory and file exist before tests run
 const logDir = path.join(__dirname, "../logs");
