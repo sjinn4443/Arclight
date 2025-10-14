@@ -6,7 +6,7 @@
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules node_modules/jest/bin/jest.js --config jest.config.js",
     "start": "node server.cjs",
     "start:track": "cross-env PORT=3001 node server.cjs",
-    "test:ci": "cross-env jest --verbose",
+    "test:ci": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --verbose",
     "build": "node scripts/build.cjs",
     "check-translations": "node scripts/check-translations.cjs",
     "test:a11y": "node scripts/test-a11y.mjs",

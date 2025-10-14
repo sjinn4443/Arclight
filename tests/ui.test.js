@@ -1,43 +1,85 @@
 /**
  * @jest-environment jsdom
  */
+import {
+  jest,
+  describe,
+  test,
+  expect,
+  beforeAll,
+  beforeEach,
+} from "@jest/globals";
 
 // Simulate loading index.html and script.js for each test as needed
 
 // Import functions from navigation.js
-const {
-  loadPage,
+let loadPage,
   goBack,
   initializePageNavigation,
   currentPageName,
   historyStack,
   wireGlobalNavigation,
-} = await import("../public/js/navigation.js");
+  navigation;
 
 // Mock fetch
-global.fetch = jest.fn();
 
 describe("UI Integration Tests", () => {
-  beforeEach(() => {
+  beforeAll(async () => {
+    global.fetch = jest.fn();
+    navigation = await import("../public/js/navigation.js");
+    loadPage = navigation.loadPage;
+    goBack = navigation.goBack;
+    initializePageNavigation = navigation.initializePageNavigation;
+    currentPageName = navigation.currentPageName;
+    historyStack = navigation.historyStack;
+    wireGlobalNavigation = navigation.wireGlobalNavigation;
+  });
+  beforeEach(async () => {
+    // Mock the initial page load
+    fetch.mockResolvedValueOnce({
+      ok: true,
+      text: async () =>
+        '<div><h1 id="mainTitle"></h1><button id="mainButton"></button><nav><a href="#home" id="navHome">Home</a><a href="#about" id="navAbout">About</a><a href="#" id="navDashboard" data-route="dashboard">Dashboard</a><a href="#" id="navPage1" data-route="page1">Page 1</a><a href="#" id="navPage2" data-route="page2">Page 2</a></nav><form id="testForm"><input id="testInput" /><div id="errorMsg" style="display: none;"></div><button id="submitBtn"></button></form><div id="splashScreen" style="display: block;"><select id="splashLanguageDropdown"><option disabled selected>What\\\'s your preferred language?</option><option>English</option></select></div></div>',
+    });
+
     // Minimal HTML structure for all tests
     document.body.innerHTML = `
-      <div id="splashScreen" style="display: block;">
-        <select id="splashLanguageDropdown">
-          <option disabled selected>What's your preferred language?</option>
-          <option>English</option>
-        </select>
-      </div>
-      <nav>
-        <a href="#home" id="navHome">Home</a>
-        <a href="#about" id="navAbout">About</a>
-        <a href="#" id="navDashboard" data-route="dashboard">Dashboard</a>
-        <a href="#" id="navPage1" data-route="page1">Page 1</a>
-        <a href="#" id="navPage2" data-route="page2">Page 2</a>
-      </nav>
-      <main id="page-content">
-        <!-- Page content will be loaded here -->
-      </main>
-      <button id="backBtnGlobal">Back</button>
+    <!-- Global Top-Left Back Button -->
+    <div
+      class="nav-icon top-back"
+      id="backBtnGlobal"
+      aria-label="Back"
+      role="button"
+      tabindex="0"
+      data-i18n="backButton"
+    ></div>
+
+    <div id="splashScreenContainer" class="splash-full-screen"></div>
+
+    <div id="page-content"></div>
+
+    <div
+      id="installPopup"
+      style="
+        display: none;
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: white;
+        border: 1px solid #ccc;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        z-index: 9999;
+      "
+    >
+      <p data-i18n="installPrompt">Install this app for a better experience!</p>
+      <button id="installConfirmBtn" data-i18n="installButton">Install</button>
+      <button id="installDismissBtn" data-i18n="maybeLaterButton">
+        Maybe later
+      </button>
+    </div>
     `;
     // Reset window size for responsive tests
     window.innerWidth = 1024;
@@ -48,11 +90,16 @@ describe("UI Integration Tests", () => {
 
     // Reset global state that might be affected by navigation.js
     currentPageName = null;
-    historyStack.length = 0; // Clear the history stack
+    if (historyStack) {
+      historyStack.length = 0; // Clear the history stack
+    }
 
     // Initialize navigation listeners
     wireGlobalNavigation(); // For data-page clicks
     initializePageNavigation(); // For data-route clicks and back button
+
+    // Load the initial page content
+    await loadPage("intro");
   });
 
   test("Home page loads and displays main elements", () => {
@@ -151,7 +198,7 @@ describe("UI Integration Tests", () => {
     expect(pageContent.querySelector(".page.active")).not.toBeNull();
     expect(pageContent.querySelector(".page.active").id).toBe("page1-content");
     expect(currentPageName).toBe("page1");
-    expect(historyStack).toEqual(["page1"]);
+    expect(historyStack).toEqual(["intro", "page1"]);
   });
 
   test("loadPage replaces content and correctly applies active class for subsequent loads", async () => {
@@ -168,7 +215,7 @@ describe("UI Integration Tests", () => {
     expect(pageContent.querySelector(".page.active")).not.toBeNull();
     expect(pageContent.querySelector(".page.active").id).toBe("page1-content");
     expect(currentPageName).toBe("page1");
-    expect(historyStack).toEqual(["page1"]);
+    expect(historyStack).toEqual(["intro", "page1"]);
 
     // Load page 2
     fetch.mockResolvedValueOnce({ ok: true, text: async () => mockHtmlPage2 });
@@ -178,21 +225,23 @@ describe("UI Integration Tests", () => {
     expect(pageContent.querySelector(".page.active")).not.toBeNull();
     expect(pageContent.querySelector(".page.active").id).toBe("page2-content");
     expect(currentPageName).toBe("page2");
-    expect(historyStack).toEqual(["page1", "page2"]); // History should grow
+    expect(historyStack).toEqual(["intro", "page1", "page2"]); // History should grow
   });
 
   test("Navigation links with data-route attribute trigger loadPage", async () => {
-    // Spy on loadPage to check if it's called
-    const loadPageSpy = jest.spyOn(global, "loadPage");
+    // Mock the fetch for page1.html
+    fetch.mockResolvedValueOnce({
+      ok: true,
+      text: async () => "<div>Page 1 Content</div>",
+    });
 
     // Trigger click on navPage1
     document.getElementById("navPage1").click();
 
-    // Expect loadPage to have been called with 'page1'
-    expect(loadPageSpy).toHaveBeenCalledWith("page1");
-
-    // Clean up spy
-    loadPageSpy.mockRestore();
+    // Expect fetch to have been called to load page1.html
+    expect(fetch).toHaveBeenCalledWith("/public/html/page1.html", {
+      cache: "no-store",
+    });
   });
 
   test("goBack navigates to the previous page in history", async () => {
@@ -216,26 +265,26 @@ describe("UI Integration Tests", () => {
     await loadPage("page3"); // Assuming page3 exists in ROUTES
 
     expect(currentPageName).toBe("page3");
-    expect(historyStack).toEqual(["page1", "page2", "page3"]);
+    expect(historyStack).toEqual(["intro", "page1", "page2", "page3"]);
 
     // Go back to page 2
     fetch.mockResolvedValueOnce({ ok: true, text: async () => mockHtmlPage2 }); // Mock fetch for page2 again
-    goBack();
+    await goBack();
 
     expect(currentPageName).toBe("page2");
-    expect(historyStack).toEqual(["page1", "page2"]); // History should be popped
+    expect(historyStack).toEqual(["intro", "page1", "page2"]); // History should be popped
     expect(
-      document.getElementById("page-content").querySelector(".page.active").id,
+      document.getElementById("page-content").querySelector(".page.active").id
     ).toBe("page2-content");
 
     // Go back to page 1
     fetch.mockResolvedValueOnce({ ok: true, text: async () => mockHtmlPage1 }); // Mock fetch for page1 again
-    goBack();
+    await goBack();
 
     expect(currentPageName).toBe("page1");
-    expect(historyStack).toEqual(["page1"]);
+    expect(historyStack).toEqual(["intro", "page1"]);
     expect(
-      document.getElementById("page-content").querySelector(".page.active").id,
+      document.getElementById("page-content").querySelector(".page.active").id
     ).toBe("page1-content");
   });
 
@@ -243,27 +292,21 @@ describe("UI Integration Tests", () => {
     const mockHtmlDashboard =
       '<div class="page" id="dashboard-content">Dashboard Content</div>';
 
-    // Load dashboard directly
-    fetch.mockResolvedValueOnce({
-      ok: true,
-      text: async () => mockHtmlDashboard,
-    });
-    await loadPage("dashboard");
+    // Clear history and set current page to something else
+    historyStack.length = 0;
+    currentPageName = "somepage";
 
-    expect(currentPageName).toBe("dashboard");
-    expect(historyStack).toEqual(["dashboard"]);
-
-    // Go back when history is empty (after popping dashboard)
+    // Go back when history is empty
     fetch.mockResolvedValueOnce({
       ok: true,
       text: async () => mockHtmlDashboard,
     }); // Mock fetch for dashboard again
-    goBack();
+    await goBack();
 
     expect(currentPageName).toBe("dashboard");
     expect(historyStack).toEqual(["dashboard"]); // History state after goBack with replace:true
     expect(
-      document.getElementById("page-content").querySelector(".page.active").id,
+      document.getElementById("page-content").querySelector(".page.active").id
     ).toBe("dashboard-content");
   });
 
@@ -275,7 +318,7 @@ describe("UI Integration Tests", () => {
 
     // Dispatch the page:loaded event to trigger updateGlobalBackVisibility
     document.dispatchEvent(
-      new CustomEvent("page:loaded", { detail: { routeName: "splashscreen" } }),
+      new CustomEvent("page:loaded", { detail: { routeName: "splashscreen" } })
     );
 
     expect(document.getElementById("backBtnGlobal").style.display).toBe("none");
@@ -289,7 +332,7 @@ describe("UI Integration Tests", () => {
     });
     await loadPage("onboarding");
     document.dispatchEvent(
-      new CustomEvent("page:loaded", { detail: { routeName: "onboarding" } }),
+      new CustomEvent("page:loaded", { detail: { routeName: "onboarding" } })
     );
     expect(document.getElementById("backBtnGlobal").style.display).toBe("none");
   });
@@ -305,7 +348,7 @@ describe("UI Integration Tests", () => {
 
     // Dispatch the page:loaded event
     document.dispatchEvent(
-      new CustomEvent("page:loaded", { detail: { routeName: "dashboard" } }),
+      new CustomEvent("page:loaded", { detail: { routeName: "dashboard" } })
     );
 
     expect(document.getElementById("backBtnGlobal").style.display).toBe("flex"); // Assuming default display is flex
