@@ -182,7 +182,7 @@ export async function setLanguage(lang) {
   await loadTranslations(next);
   applyTranslations(document);
   window.dispatchEvent(
-    new CustomEvent("i18n:languageChanged", { detail: { lang: next } }),
+    new CustomEvent("i18n:languageChanged", { detail: { lang: next } })
   );
 }
 
@@ -196,3 +196,9 @@ export async function setLanguage(lang) {
   window.addEventListener("page:loaded", () => applyTranslations(document));
   document.addEventListener("page:shown", () => applyTranslations(document));
 })();
+
+// i18n.js (near bottom; only if you don't already expose these)
+window.I18N = window.I18N || {};
+window.I18N.setLanguage = window.I18N.setLanguage || setLanguage; // your existing function
+window.I18N.applyTranslations =
+  window.I18N.applyTranslations || applyTranslations; // your existing function

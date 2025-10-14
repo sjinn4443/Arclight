@@ -272,3 +272,41 @@ input {
     margin-top: -9vh;
   }
 }
+
+/* Base (mobile-first): compact */
+.lang-install__modal {
+  width: min(286px, 90vw);
+  padding: 20px 22px;
+}
+
+/* ≥ 480px: a bit wider */
+@media (min-width: 480px) {
+  .lang-install__modal {
+    width: min(286px, 90vw);
+    padding: 22px 24px;
+  }
+}
+
+/* ≥ 1024px: keep same as tablet (do not scale up) */
+@media (min-width: 1024px) {
+  .lang-install__modal {
+    width: 340px; /* unchanged */
+    padding: 24px 28px; /* unchanged */
+  }
+}
+
+/* ≥ 1440px: keep same as tablet/desktop */
+@media (min-width: 1440px) {
+  .lang-install__modal {
+    width: 340px; /* unchanged */
+    padding: 24px 28px; /* unchanged */
+  }
+}
+
+/* Optional: tighten select on very small screens */
+@media (max-width: 360px) {
+  #languagePickerSelect.lang-install__select {
+    font-size: 12px;
+    padding: 8px 32px 8px 10px;
+  }
+}

@@ -72,6 +72,94 @@
       </button>
     </div>
 
+    <!-- Language Picker Modal (lightweight) -->
+    <div id="languagePickerOverlay" class="lang-install__overlay" hidden>
+      <div class="lang-install__modal">
+        <button class="close-btn" id="closeLangPickerBtn" aria-label="Close">
+          &times;
+        </button>
+        <h3
+          class="lang-install__title"
+          data-i18n="languageInstall.select_language"
+        >
+          Select Language
+        </h3>
+
+        <!-- Hidden select remains the source of truth / fallback -->
+        <div class="lang-install__select-wrap" hidden>
+          <select
+            id="languagePickerSelect"
+            name="language"
+            class="lang-install__select"
+          >
+            <option
+              value="en"
+              data-native="English"
+              selected
+              data-i18n="languageInstall.english"
+            >
+              English
+            </option>
+            <option
+              value="fr"
+              data-native="Français"
+              data-i18n="languageInstall.french"
+            >
+              French
+            </option>
+            <option
+              value="ko"
+              data-native="한국어"
+              data-i18n="languageInstall.korean"
+            >
+              Korean
+            </option>
+            <option
+              value="pt"
+              data-native="Português"
+              data-i18n="languageInstall.portuguese"
+            >
+              Portuguese
+            </option>
+            <option
+              value="es"
+              data-native="Español"
+              data-i18n="languageInstall.spanish"
+            >
+              Spanish
+            </option>
+            <option
+              value="sw"
+              data-native="Kiswahili"
+              data-i18n="languageInstall.swahili"
+            >
+              Swahili
+            </option>
+          </select>
+        </div>
+
+        <!-- Custom dropdown: collapsed bar + dropdown list -->
+        <div class="lang-picker">
+          <button
+            id="langPickerToggle"
+            class="lang-picker__toggle"
+            type="button"
+            aria-haspopup="listbox"
+            aria-expanded="false"
+          >
+            <span id="langPickerCurrent">English</span>
+          </button>
+
+          <ul
+            id="languagePickerList"
+            class="lang-install__list lang-picker__dropdown"
+            role="listbox"
+            hidden
+          ></ul>
+        </div>
+      </div>
+    </div>
+
     <script>
       // Script to unregister all service workers for troubleshooting
       if ("serviceWorker" in navigator) {
@@ -91,6 +179,7 @@
     <script defer type="module" src="js/main.js"></script>
     <script src="js/quiz-launcher.js"></script>
     <script type="module" src="js/i18n.js"></script>
+    <script src="js/language-picker.js" defer></script>
     <script>
       // Script to send IP tracking data
       document.addEventListener("DOMContentLoaded", () => {
@@ -105,7 +194,7 @@
             if (!response.ok) {
               console.error(
                 "Failed to send tracking data:",
-                response.statusText,
+                response.statusText
               );
             } else {
               console.log("Tracking data sent successfully.");
