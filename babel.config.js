@@ -5,7 +5,7 @@ export default {
         [
           "@babel/preset-env",
           {
-            modules: false,
+            modules: "commonjs",
           },
         ],
       ],

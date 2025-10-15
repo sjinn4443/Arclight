@@ -3,6 +3,10 @@ const express = require("express");
 const path = require("path");
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// Trust proxy headers to correctly identify client IP when behind a proxy
+app.set("trust proxy", true);
+
 const { generalRateLimiter } = require("./security/rateLimit.cjs");
 const csp = require("./security/csp.cjs");
 const corsMiddleware = require("./security/cors.cjs");
@@ -27,7 +31,7 @@ app.use(
         res.setHeader("Content-Type", "application/javascript");
       }
     },
-  }),
+  })
 );
 
 // Apply the general rate limit to all requests
@@ -77,7 +81,7 @@ app.post("/track", (req, res) => {
       }
       // Send a success response to the client
       res.status(200).send("Tracking data received.");
-    },
+    }
   );
 });
 

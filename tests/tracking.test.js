@@ -1,23 +1,30 @@
-import request from "supertest";
-import app from "../server.cjs"; // Import the Express app
-import fs from "fs";
-import path from "path";
-import { fileURLToPath } from "url";
+const request = require("supertest");
+const app = require("../server.cjs"); // Import the Express app
+const fs = require("fs");
+const path = require("path");
+const os = require("os");
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+let logDir;
+let logFile;
+let appendFileSpy;
 
-// Ensure the logs directory and file exist before tests run
-const logDir = path.join(__dirname, "../logs");
-const logFile = path.join(logDir, "ip_logs.jsonl");
-
-beforeAll(async () => {
-  // Create logs directory if it doesn't exist
-  if (!fs.existsSync(logDir)) {
-    fs.mkdirSync(logDir);
-  }
-  // Clear the log file before each test suite run
+beforeAll(() => {
+  logDir = fs.mkdtempSync(path.join(os.tmpdir(), "iplogs-"));
+  logFile = path.join(logDir, "ip_logs.jsonl");
   fs.writeFileSync(logFile, "");
+
+  // Mock fs.appendFile to write to the temporary log file
+  appendFileSpy = jest
+    .spyOn(fs, "appendFile")
+    .mockImplementation((file, data, callback) => {
+      fs.appendFileSync(logFile, data); // Use sync version for simplicity in mock
+      callback(null); // Call callback with no error
+    });
+});
+
+afterAll(() => {
+  appendFileSpy.mockRestore(); // Restore original fs.appendFile
+  fs.rmSync(logDir, { recursive: true, force: true });
 });
 
 describe("IP Tracking Endpoint", () => {

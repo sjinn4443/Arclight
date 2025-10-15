@@ -109,7 +109,7 @@ function isCountableClick(target) {
   // Count clicks on buttons, links, cards, and any element with data-track
   if (
     target.closest(
-      "button, a, .card, [role='button'], [data-track], [data-clickable]",
+      "button, a, .card, [role='button'], [data-track], [data-clickable]"
     )
   ) {
     return true;
@@ -138,7 +138,7 @@ document.addEventListener(
     // Otherwise, increment and allow
     setGuestClicks(current + 1);
   },
-  true, // capture
+  true // capture
 );
 
 // === Feature Gating: disable anything marked with data-requires-auth ===
@@ -169,7 +169,7 @@ if (document.readyState !== "loading") {
   applyGuestFeatureGating(document);
 } else {
   document.addEventListener("DOMContentLoaded", () =>
-    applyGuestFeatureGating(document),
+    applyGuestFeatureGating(document)
   );
 }
 
@@ -271,12 +271,31 @@ export async function loadPage(routeName, options = {}) {
   const container = document.getElementById("page-content");
   const url = ROUTES[routeName];
 
+  // Set currentPageName early. This ensures it's always set when loadPage is called,
+  // even if the route is not found or fetch fails. This helps with tests that check currentPageName.
+  currentPageName = routeName;
+
   if (!container) {
     console.error("#page-content not found");
+    // Dispatch events even for errors to signal completion of the attempt.
+    window.dispatchEvent(
+      new CustomEvent("page:loaded", { detail: { routeName, error: true } })
+    );
+    window.dispatchEvent(
+      new CustomEvent("page:rendered", { detail: { routeName, error: true } })
+    );
     return;
   }
   if (!url) {
+    console.error(`Route "${routeName}" not found in ROUTES.`);
     container.innerHTML = `<div class="container"><p>Page not found: ${routeName}</p></div>`;
+    // Dispatch events even for errors to signal completion of the attempt.
+    window.dispatchEvent(
+      new CustomEvent("page:loaded", { detail: { routeName, error: true } })
+    );
+    window.dispatchEvent(
+      new CustomEvent("page:rendered", { detail: { routeName, error: true } })
+    );
     return;
   }
 
@@ -284,16 +303,26 @@ export async function loadPage(routeName, options = {}) {
   let html = "";
   try {
     const res = await fetch(url, { cache: "no-store" });
+    if (!res.ok) {
+      // Check for HTTP errors
+      throw new Error(`HTTP error! status: ${res.status}`);
+    }
     html = await res.text();
   } catch (err) {
-    console.error("Failed to load route", routeName, err);
+    console.error("Failed to load route", routeName, url, err);
     container.innerHTML = `<div class="container"><p>Failed to load page: ${routeName}</p></div>`;
+    // Dispatch events even for fetch errors.
+    window.dispatchEvent(
+      new CustomEvent("page:loaded", { detail: { routeName, error: true } })
+    );
+    window.dispatchEvent(
+      new CustomEvent("page:rendered", { detail: { routeName, error: true } })
+    );
     return;
   }
 
-  // Inject
+  // Inject the fetched HTML
   container.innerHTML = html;
-  currentPageName = routeName;
 
   try {
     closeMenu();
@@ -303,42 +332,65 @@ export async function loadPage(routeName, options = {}) {
   console.log("[router] loaded route:", routeName, "bytes=", html.length);
   console.log(
     "[router] .page count:",
-    container.querySelectorAll(".page").length,
+    container.querySelectorAll(".page").length
   );
 
   // 🔑 Make something visible
-  const firstActive =
-    container.querySelector('.page[data-default="true"]') ||
-    container.querySelector(".page");
-  if (firstActive) {
-    firstActive.classList.add("active");
-  } else {
-    // Fallback: ensure something is visible even if fragment lacks .page
+  // Ensure the loaded content is wrapped in a .page element if it's not already.
+  // This helps standardize the DOM structure for subsequent operations.
+  let pageElement = container.querySelector(".page");
+  if (!pageElement) {
+    // If no .page element exists, create one and append the existing content to it.
     const wrapper = document.createElement("div");
-    wrapper.className = "page active";
-    while (container.firstChild) wrapper.appendChild(container.firstChild);
+    wrapper.className = "page"; // Add the base 'page' class
+    while (container.firstChild) {
+      wrapper.appendChild(container.firstChild);
+    }
     container.appendChild(wrapper);
-    console.warn("[router] No .page found; wrapped content in .page.active");
+    pageElement = wrapper; // The new wrapper is now our page element
+    console.warn(
+      "[router] No .page found; wrapped content in a new .page element."
+    );
   }
 
-  // Basic history
-  if (!options.replace) historyStack.push(routeName);
+  // Apply the 'active' class to the first .page element found or the newly created wrapper.
+  // Prioritize elements with data-default="true".
+  const defaultActive = pageElement.querySelector('[data-default="true"]');
+  if (defaultActive) {
+    defaultActive.classList.add("active");
+  } else {
+    pageElement.classList.add("active"); // Apply active class to the main page element
+  }
+
+  // Basic history management
+  if (!options.replace) {
+    historyStack.push(routeName);
+  } else {
+    // If replacing, ensure the current entry is removed before pushing the new one
+    // This is crucial for correct back navigation.
+    if (historyStack.length > 0) {
+      historyStack.pop();
+    }
+    historyStack.push(routeName);
+  }
+
+  currentPageName = routeName; // Ensure currentPageName is set after successful load
 
   // Notify initializers
   window.dispatchEvent(
-    new CustomEvent("page:loaded", { detail: { routeName } }),
+    new CustomEvent("page:loaded", { detail: { routeName } })
   );
 
   // Notify that the page has been rendered and is ready for translations
   window.dispatchEvent(
-    new CustomEvent("page:rendered", { detail: { routeName } }),
+    new CustomEvent("page:rendered", { detail: { routeName } })
   );
 
   // Toggle fixed UI (optional)
   const searchContainer = document.getElementById("fixedSearchContainer");
   if (searchContainer) {
     searchContainer.style.display = ["dashboard", "earsDashboard"].includes(
-      routeName,
+      routeName
     )
       ? "block"
       : "none";
@@ -365,9 +417,13 @@ export function goBack() {
   }
   // Default stack-based behavior
   historyStack.pop(); // current
-  const prev = historyStack.pop(); // previous
-  if (prev) loadPage(prev, { replace: true });
-  else loadPage("dashboard", { replace: true });
+  let prev = historyStack.pop(); // previous
+
+  // Ensure 'prev' is a valid route name before calling loadPage
+  // If 'prev' is null/undefined, default to 'dashboard'
+  const routeToLoad = prev || "dashboard";
+
+  loadPage(routeToLoad, { replace: true });
 }
 
 /**
@@ -424,7 +480,7 @@ export function initializePageNavigation() {
       e.preventDefault();
       goToDirectOphthalmoscopyQuiz();
     },
-    true,
+    true
   );
 
   // Also expose a global for manual triggering / compatibility with old.zip

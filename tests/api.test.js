@@ -1,5 +1,5 @@
-import request from "supertest";
-import app from "../server.cjs"; // Adjust path if necessary
+const request = require("supertest");
+const app = require("../server.cjs"); // Adjust path if necessary
 
 describe("GET /", () => {
   test("should return the index.html file", async () => {
