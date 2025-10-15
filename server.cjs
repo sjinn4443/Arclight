@@ -18,7 +18,6 @@ const {
 
 const geoip = require("geoip-lite");
 const fs = require("fs");
-const path = require("path"); // Ensure path is imported
 
 // ✅ 로그 파일 경로/디렉터리 보장
 const LOG_FILE = path.join(__dirname, "logs", "ip_logs.jsonl");
@@ -36,7 +35,7 @@ app.use(
         res.setHeader("Content-Type", "application/javascript");
       }
     },
-  })
+  }),
 );
 
 // ✅ 이 줄 추가: JSON 바디 파싱 (CSRF 미들웨어보다 먼저!)
