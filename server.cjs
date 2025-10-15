@@ -5,7 +5,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Trust proxy headers to correctly identify client IP when behind a proxy
-app.set("trust proxy", true);
+app.set("trust proxy", 1); // 프록시 1단만 신뢰(권장)
 
 const { generalRateLimiter } = require("./security/rateLimit.cjs");
 const csp = require("./security/csp.cjs");
@@ -53,7 +53,11 @@ app.use(corsMiddleware);
 if (process.env.NODE_ENV !== "test") {
   app.use(cookieParser);
   app.use(sessionMiddleware);
-  app.use(csrfProtection);
+  // /track은 예외
+  app.use((req, res, next) => {
+    if (req.path === "/track") return next();
+    return csrfProtection(req, res, next);
+  });
 }
 
 app.post("/track", (req, res) => {
@@ -72,6 +76,7 @@ app.post("/track", (req, res) => {
     timestamp: new Date().toISOString(),
     ip: ip,
     geo: geo, // Contains country, region, city, etc.
+    body: req.body || null,
   };
 
   // Log to ip_logs.jsonl file
