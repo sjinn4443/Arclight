@@ -160,7 +160,7 @@ export function initializeEyesCatalog() {
         e.preventDefault();
         openMenu();
       },
-      { once: true }
+      { once: true },
     );
   }
 
@@ -285,7 +285,7 @@ export function initializeEyesCatalog() {
   window.getAllEyesItems = () => {
     const out = [];
     Object.values(sections).forEach((list) =>
-      (list || []).forEach((i) => out.push(i))
+      (list || []).forEach((i) => out.push(i)),
     );
     return out;
   };
@@ -413,7 +413,7 @@ export function initializeEyesCatalog() {
         (_, i) =>
           `<button class="dot" type="button" aria-label="Go to item ${
             i + 1
-          }"></button>`
+          }"></button>`,
       )
       .join("");
     const dots = Array.from(dotsWrap.querySelectorAll(".dot"));
@@ -448,7 +448,7 @@ export function initializeEyesCatalog() {
 
     // Click any dot to center that item
     dots.forEach((dot, i) =>
-      dot.addEventListener("click", () => centerCardByIndex(i))
+      dot.addEventListener("click", () => centerCardByIndex(i)),
     );
 
     // Sync the active dot while scrolling (throttled with rAF)
@@ -586,6 +586,6 @@ export function initializeEyesCatalog() {
       // Non-video targets
       go(target);
     },
-    { passive: false }
+    { passive: false },
   );
 }

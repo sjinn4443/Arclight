@@ -128,7 +128,7 @@ export function initializeDashboard() {
 
     // Clicking a dot recenters to that card
     dots.forEach((dot, i) =>
-      dot.addEventListener("click", () => centerCardByIndex(i))
+      dot.addEventListener("click", () => centerCardByIndex(i)),
     );
 
     // Initial sync once the layout is ready
@@ -237,7 +237,7 @@ function renderRecommendations(host) {
         }%;"></div></div>
       </div>
     </div>
-  `
+  `,
     )
     .join("");
 

@@ -182,7 +182,7 @@ export async function setLanguage(lang) {
   await loadTranslations(next);
   applyTranslations(document);
   window.dispatchEvent(
-    new CustomEvent("i18n:languageChanged", { detail: { lang: next } })
+    new CustomEvent("i18n:languageChanged", { detail: { lang: next } }),
   );
 }
 

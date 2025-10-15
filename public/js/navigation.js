@@ -109,7 +109,7 @@ function isCountableClick(target) {
   // Count clicks on buttons, links, cards, and any element with data-track
   if (
     target.closest(
-      "button, a, .card, [role='button'], [data-track], [data-clickable]"
+      "button, a, .card, [role='button'], [data-track], [data-clickable]",
     )
   ) {
     return true;
@@ -138,7 +138,7 @@ document.addEventListener(
     // Otherwise, increment and allow
     setGuestClicks(current + 1);
   },
-  true // capture
+  true, // capture
 );
 
 // === Feature Gating: disable anything marked with data-requires-auth ===
@@ -169,7 +169,7 @@ if (document.readyState !== "loading") {
   applyGuestFeatureGating(document);
 } else {
   document.addEventListener("DOMContentLoaded", () =>
-    applyGuestFeatureGating(document)
+    applyGuestFeatureGating(document),
   );
 }
 
@@ -303,7 +303,7 @@ export async function loadPage(routeName, options = {}) {
   console.log("[router] loaded route:", routeName, "bytes=", html.length);
   console.log(
     "[router] .page count:",
-    container.querySelectorAll(".page").length
+    container.querySelectorAll(".page").length,
   );
 
   // 🔑 Make something visible
@@ -326,19 +326,19 @@ export async function loadPage(routeName, options = {}) {
 
   // Notify initializers
   window.dispatchEvent(
-    new CustomEvent("page:loaded", { detail: { routeName } })
+    new CustomEvent("page:loaded", { detail: { routeName } }),
   );
 
   // Notify that the page has been rendered and is ready for translations
   window.dispatchEvent(
-    new CustomEvent("page:rendered", { detail: { routeName } })
+    new CustomEvent("page:rendered", { detail: { routeName } }),
   );
 
   // Toggle fixed UI (optional)
   const searchContainer = document.getElementById("fixedSearchContainer");
   if (searchContainer) {
     searchContainer.style.display = ["dashboard", "earsDashboard"].includes(
-      routeName
+      routeName,
     )
       ? "block"
       : "none";
@@ -424,7 +424,7 @@ export function initializePageNavigation() {
       e.preventDefault();
       goToDirectOphthalmoscopyQuiz();
     },
-    true
+    true,
   );
 
   // Also expose a global for manual triggering / compatibility with old.zip
