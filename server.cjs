@@ -5,7 +5,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Trust proxy headers to correctly identify client IP when behind a proxy
-app.set("trust proxy", 1); // 프록시 1단만 신뢰(권장)
+app.set("trust proxy", 1);
 
 const { generalRateLimiter } = require("./security/rateLimit.cjs");
 const csp = require("./security/csp.cjs");
@@ -34,7 +34,7 @@ app.use(
         res.setHeader("Content-Type", "application/javascript");
       }
     },
-  }),
+  })
 );
 
 app.use(express.json());
@@ -53,7 +53,6 @@ app.use(corsMiddleware);
 if (process.env.NODE_ENV !== "test") {
   app.use(cookieParser);
   app.use(sessionMiddleware);
-  // /track은 예외
   app.use((req, res, next) => {
     if (req.path === "/track") return next();
     return csrfProtection(req, res, next);
@@ -86,7 +85,6 @@ app.post("/track", (req, res) => {
       // Send an error response to the client
       return res.status(500).send("Error logging tracking data.");
     }
-    // ✅ Railway 대시보드의 View logs에서 바로 보이게 콘솔 출력
     console.log("TRACK_LOG:", JSON.stringify(logEntry));
     // Send a success response to the client
     res.status(200).send("Tracking data received.");

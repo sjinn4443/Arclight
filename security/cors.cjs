@@ -1,14 +1,10 @@
 const cors = require("cors");
 
-const whitelist = [
-  "https://arclight.up.railway.app", // 배포 도메인
-  "http://localhost:3000", // 로컬 개발
-  // 필요 시 추가 도메인…
-];
+const whitelist = ["https://arclight.up.railway.app", "http://localhost:3000"];
 
 const corsOptions = {
   origin: function (origin, callback) {
-    if (!origin) return callback(null, true); // 앱 자체 콜/서버-서버 콜 허용
+    if (!origin) return callback(null, true);
     if (whitelist.indexOf(origin) !== -1) return callback(null, true);
     return callback(new Error("Not allowed by CORS"));
   },
