@@ -31,7 +31,7 @@ app.use(
         res.setHeader("Content-Type", "application/javascript");
       }
     },
-  })
+  }),
 );
 
 // Apply the general rate limit to all requests
@@ -81,7 +81,7 @@ app.post("/track", (req, res) => {
       }
       // Send a success response to the client
       res.status(200).send("Tracking data received.");
-    }
+    },
   );
 });
 

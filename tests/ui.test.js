@@ -7,7 +7,7 @@ global.fetch = jest.fn(() =>
   Promise.resolve({
     ok: true,
     text: async () => "<html><body>Default mocked content</body></html>",
-  })
+  }),
 );
 
 // Mock the ROUTES object from config.js
@@ -27,7 +27,7 @@ jest.mock(
       videos: "html/videos.html", // Added for goBack test
     },
   }),
-  { virtual: true }
+  { virtual: true },
 );
 
 // Mock the navigation.js module to control its state and behavior for tests
@@ -64,7 +64,7 @@ jest.mock(
 
     return mockNavigation;
   },
-  { virtual: true }
+  { virtual: true },
 );
 
 // Import the mocked navigation module after setting up the mock
@@ -128,12 +128,12 @@ describe("UI Integration Tests", () => {
         window.dispatchEvent(
           new CustomEvent("page:loaded", {
             detail: { routeName, error: true },
-          })
+          }),
         );
         window.dispatchEvent(
           new CustomEvent("page:rendered", {
             detail: { routeName, error: true },
-          })
+          }),
         );
         return;
       }
@@ -143,12 +143,12 @@ describe("UI Integration Tests", () => {
         window.dispatchEvent(
           new CustomEvent("page:loaded", {
             detail: { routeName, error: true },
-          })
+          }),
         );
         window.dispatchEvent(
           new CustomEvent("page:rendered", {
             detail: { routeName, error: true },
-          })
+          }),
         );
         return;
       }
@@ -166,12 +166,12 @@ describe("UI Integration Tests", () => {
         window.dispatchEvent(
           new CustomEvent("page:loaded", {
             detail: { routeName, error: true },
-          })
+          }),
         );
         window.dispatchEvent(
           new CustomEvent("page:rendered", {
             detail: { routeName, error: true },
-          })
+          }),
         );
         return;
       }
@@ -188,7 +188,7 @@ describe("UI Integration Tests", () => {
         container.appendChild(wrapper);
         pageElement = wrapper;
         console.warn(
-          "[router] No .page found; wrapped content in a new .page element."
+          "[router] No .page found; wrapped content in a new .page element.",
         );
       }
 
@@ -206,10 +206,10 @@ describe("UI Integration Tests", () => {
       // The history stack is assumed to be managed by the caller (e.g., goBack).
 
       window.dispatchEvent(
-        new CustomEvent("page:loaded", { detail: { routeName } })
+        new CustomEvent("page:loaded", { detail: { routeName } }),
       );
       window.dispatchEvent(
-        new CustomEvent("page:rendered", { detail: { routeName } })
+        new CustomEvent("page:rendered", { detail: { routeName } }),
       );
     });
 
@@ -498,7 +498,7 @@ describe("UI Integration Tests", () => {
     expect(navigation.currentPageName).toBe("page2");
     expect(navigation.historyStack).toEqual(["intro", "page1", "page2"]); // History should be popped
     expect(
-      document.getElementById("page-content").querySelector(".page.active").id
+      document.getElementById("page-content").querySelector(".page.active").id,
     ).toBe("page2-content");
 
     // Go back to page 1
@@ -508,7 +508,7 @@ describe("UI Integration Tests", () => {
     expect(navigation.currentPageName).toBe("page1");
     expect(navigation.historyStack).toEqual(["intro", "page1"]);
     expect(
-      document.getElementById("page-content").querySelector(".page.active").id
+      document.getElementById("page-content").querySelector(".page.active").id,
     ).toBe("page1-content");
   });
 
@@ -530,7 +530,7 @@ describe("UI Integration Tests", () => {
     expect(navigation.currentPageName).toBe("dashboard");
     expect(navigation.historyStack).toEqual(["dashboard"]); // History is explicitly set to dashboard in goBack mock
     expect(
-      document.getElementById("page-content").querySelector(".page.active").id
+      document.getElementById("page-content").querySelector(".page.active").id,
     ).toBe("dashboard-content");
   });
 
@@ -542,7 +542,7 @@ describe("UI Integration Tests", () => {
 
     // Dispatch the page:loaded event to trigger updateGlobalBackVisibility
     window.dispatchEvent(
-      new CustomEvent("page:loaded", { detail: { routeName: "splashscreen" } })
+      new CustomEvent("page:loaded", { detail: { routeName: "splashscreen" } }),
     );
 
     // The actual navigation.js logic for updateGlobalBackVisibility is called via event listener.
@@ -561,7 +561,7 @@ describe("UI Integration Tests", () => {
     });
     await navigation.loadPage("onboarding");
     window.dispatchEvent(
-      new CustomEvent("page:loaded", { detail: { routeName: "onboarding" } })
+      new CustomEvent("page:loaded", { detail: { routeName: "onboarding" } }),
     );
     expect(document.getElementById("backBtnGlobal").style.display).toBe("none");
   });
@@ -574,7 +574,7 @@ describe("UI Integration Tests", () => {
 
     // Dispatch the page:loaded event
     window.dispatchEvent(
-      new CustomEvent("page:loaded", { detail: { routeName: "page1" } })
+      new CustomEvent("page:loaded", { detail: { routeName: "page1" } }),
     );
 
     // Dashboard is excluded, but page1 is not. So back button should be visible.
@@ -599,13 +599,13 @@ describe("UI Integration Tests", () => {
       expect.objectContaining({
         type: "page:loaded",
         detail: { routeName: "page1", error: true },
-      })
+      }),
     );
     expect(window.dispatchEvent).toHaveBeenCalledWith(
       expect.objectContaining({
         type: "page:rendered",
         detail: { routeName: "page1", error: true },
-      })
+      }),
     );
   });
 
@@ -615,7 +615,7 @@ describe("UI Integration Tests", () => {
 
     const pageContent = document.getElementById("page-content");
     expect(pageContent.innerHTML).toContain(
-      "Page not found: nonexistent-route"
+      "Page not found: nonexistent-route",
     );
     expect(navigation.currentPageName).toBe("nonexistent-route"); // Should still set currentPageName
     // Check if error events were dispatched
@@ -623,13 +623,13 @@ describe("UI Integration Tests", () => {
       expect.objectContaining({
         type: "page:loaded",
         detail: { routeName: "nonexistent-route", error: true },
-      })
+      }),
     );
     expect(window.dispatchEvent).toHaveBeenCalledWith(
       expect.objectContaining({
         type: "page:rendered",
         detail: { routeName: "nonexistent-route", error: true },
-      })
+      }),
     );
   });
 });
