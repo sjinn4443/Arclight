@@ -19,7 +19,6 @@ const {
 const geoip = require("geoip-lite");
 const fs = require("fs");
 
-// ✅ 로그 파일 경로/디렉터리 보장
 const LOG_FILE = path.join(__dirname, "logs", "ip_logs.jsonl");
 fs.mkdirSync(path.dirname(LOG_FILE), { recursive: true });
 
@@ -35,10 +34,9 @@ app.use(
         res.setHeader("Content-Type", "application/javascript");
       }
     },
-  }),
+  })
 );
 
-// ✅ 이 줄 추가: JSON 바디 파싱 (CSRF 미들웨어보다 먼저!)
 app.use(express.json());
 
 // Apply the general rate limit to all requests
@@ -91,7 +89,6 @@ app.post("/track", (req, res) => {
 });
 
 // Fallback to index.html for SPA routing
-// 관리자용 원시 로그 보기 (절대로 공개 엔드포인트로 두지 마세요)
 app.get("/admin/logs", (req, res) => {
   if (req.headers.authorization !== `Bearer ${process.env.ADMIN_TOKEN}`) {
     return res.status(403).send("Forbidden");
