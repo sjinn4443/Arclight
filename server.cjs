@@ -18,6 +18,11 @@ const {
 
 const geoip = require("geoip-lite");
 const fs = require("fs");
+const path = require("path"); // Ensure path is imported
+
+// ✅ 로그 파일 경로/디렉터리 보장
+const LOG_FILE = path.join(__dirname, "logs", "ip_logs.jsonl");
+fs.mkdirSync(path.dirname(LOG_FILE), { recursive: true });
 
 console.log("__dirname:", __dirname);
 console.log("Static path:", path.join(__dirname, "public"));
@@ -31,8 +36,11 @@ app.use(
         res.setHeader("Content-Type", "application/javascript");
       }
     },
-  }),
+  })
 );
+
+// ✅ 이 줄 추가: JSON 바디 파싱 (CSRF 미들웨어보다 먼저!)
+app.use(express.json());
 
 // Apply the general rate limit to all requests
 app.use(generalRateLimiter);
@@ -70,22 +78,30 @@ app.post("/track", (req, res) => {
   };
 
   // Log to ip_logs.jsonl file
-  fs.appendFile(
-    "logs/ip_logs.jsonl",
-    JSON.stringify(logEntry) + "\n",
-    (err) => {
-      if (err) {
-        console.error("Error writing to log file:", err);
-        // Send an error response to the client
-        return res.status(500).send("Error logging tracking data.");
-      }
-      // Send a success response to the client
-      res.status(200).send("Tracking data received.");
-    },
-  );
+  fs.appendFile(LOG_FILE, JSON.stringify(logEntry) + "\n", (err) => {
+    if (err) {
+      console.error("Error writing to log file:", err);
+      // Send an error response to the client
+      return res.status(500).send("Error logging tracking data.");
+    }
+    // ✅ Railway 대시보드의 View logs에서 바로 보이게 콘솔 출력
+    console.log("TRACK_LOG:", JSON.stringify(logEntry));
+    // Send a success response to the client
+    res.status(200).send("Tracking data received.");
+  });
 });
 
 // Fallback to index.html for SPA routing
+// 관리자용 원시 로그 보기 (절대로 공개 엔드포인트로 두지 마세요)
+app.get("/admin/logs", (req, res) => {
+  if (req.headers.authorization !== `Bearer ${process.env.ADMIN_TOKEN}`) {
+    return res.status(403).send("Forbidden");
+  }
+  if (!fs.existsSync(LOG_FILE)) return res.type("text/plain").send("");
+  const content = fs.readFileSync(LOG_FILE, "utf8");
+  res.type("text/plain").send(content);
+});
+
 app.get("*", (req, res) => {
   // Pass the CSRF token to the client-side
   res.cookie("XSRF-TOKEN", req.csrfToken());
