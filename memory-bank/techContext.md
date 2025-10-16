@@ -4,22 +4,24 @@
 
 ## Technologies Used
 
-- **HTML5:** For structuring the web content.
-- **CSS3:** For styling and layout, including responsive design.
-- **JavaScript (ES6+):** For interactive elements, dynamic content, and application logic.
-- **Service Worker API:** For implementing Progressive Web App (PWA) features, including offline caching.
-- **Web Manifest:** For PWA metadata and installation prompts.
-- **Jest:** For comprehensive testing (unit, UI, API).
-- **GitHub Actions:** For CI/CD pipeline.
-- **Security Libraries:** `express-rate-limit`, `helmet`, `cors`, `csurf`, `express-session`, `cookie-parser` for implementing security measures.
+- **Core:** HTML5, CSS3, JavaScript (ES6+)
+- **PWA:** Service Worker API, Web Manifest
+- **Build & Bundling:** `esbuild`, `clean-css`, `html-minifier-terser`
+- **Image Processing:** `sharp`
+- **Testing:** `Jest`, `Supertest`, `JSDOM`, `babel-jest`, `eslint`, `prettier`, `husky`
+- **Security:** `express-rate-limit`, `helmet`, `cors`, `csurf`, `express-session`, `cookie-parser`
+- **Utilities:** `node-fetch`, `geoip-lite`, `fs-extra`, `mkdirp`
 
 ## Development Setup
 
-The project is a standard web application that can be served by any static file server.
+The project utilizes a modern development workflow:
 
-- **Local Development:** Can be run by opening `index.html` directly in a browser or by using a simple local HTTP server (e.g., `http-server`, Python's `SimpleHTTPServer`, or Node.js `serve`). The server is now configured as `server.cjs`.
-- **No Complex Build Step:** The project does not currently use a complex build pipeline (e.g., Webpack, Parcel) for the main application. Files are served directly as written.
-- **Dependencies:** `package.json` lists development dependencies and scripts for testing and CI/CD.
+- **Local Server:** `server.cjs` handles local development and API serving.
+- **Build Process:** `scripts/build.cjs` automates the bundling and minification of JS, CSS, and HTML assets using `esbuild`, `clean-css`, and `html-minifier-terser`.
+- **Image Conversion:** `convertImage.js` can be used to convert PNG images to WebP format.
+- **Translation Checks:** `scripts/check-translations.cjs` is a placeholder for translation consistency checks.
+- **Accessibility Testing:** `scripts/test-a11y.mjs` is a placeholder for accessibility checks.
+- **Dependencies:** Managed via `package.json`, including development dependencies for testing, linting, and building.
 
 ## Technical Constraints
 
@@ -30,11 +32,10 @@ The project is a standard web application that can be served by any static file 
 
 ## Dependencies
 
-- **`package.json`:** Lists development dependencies and scripts. Key dependencies include:
-  - `http-server` or similar for local serving.
-  - **Testing Frameworks:** `jest`, `supertest`, `jsdom` for automated tests.
-  - **ESLint:** For code linting.
-  - **Security Libraries:** `express-rate-limit`, `helmet`, `cors`, `csurf`, `express-session`, `cookie-parser`.
+- **`package.json`:** Lists project dependencies and development scripts. Key dependencies include:
+  - **Runtime:** `express`, `cookie-parser`, `cors`, `dotenv`, `express-rate-limit`, `express-session`, `helmet`, `geoip-lite`, `http-server`, `morgan`, `node-fetch`, `sharp`.
+  - **Testing:** `jest`, `supertest`, `jsdom`, `jest-environment-jsdom`, `babel-jest`.
+  - **Build/Dev Tools:** `esbuild`, `clean-css-cli`, `html-minifier-terser`, `terser`, `fs-extra`, `mkdirp`, `prettier`, `eslint`, `husky`, `lint-staged`, `cross-env`, `typescript`.
 
 ## Testing Setup
 
@@ -69,6 +70,9 @@ The project includes a comprehensive test suite to ensure reliability, accessibi
 
 - **Text Editors/IDEs:** Standard web development environments (e.g., VS Code).
 - **Browser Developer Tools:** For debugging and performance analysis.
-- **CLI:** For running local servers, managing packages (npm/yarn), and executing tests.
+- **CLI:** For running local servers, managing packages (npm/yarn), executing tests, and running build/utility scripts.
 - **Git:** For version control.
 - **GitHub Actions:** For automated CI/CD.
+- **Linters/Formatters:** ESLint and Prettier are used for code quality and consistency.
+- **Build Tools:** `esbuild` is used for bundling and minifying assets.
+- **Image Processing:** `sharp` is available for image optimization.

@@ -25,7 +25,7 @@ This folder contains various tests for the project, including UI tests, API test
 
 ### Security Tests
 
-- Tests are in place to cover the implemented security measures: Rate Limiting, Content Security Policy (CSP), CORS allowlist, and CSRF protection.
+- Tests are in place to cover the implemented security measures: Rate Limiting, Content Security Policy (CSP), CORS allowlist, and CSRF protection. For detailed information on these measures and their configurations, please refer to `security/README.md`.
 
 ### Sample Unit Tests
 
