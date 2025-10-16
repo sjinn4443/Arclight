@@ -34,7 +34,11 @@ describe("IP Tracking Endpoint", () => {
       .set("X-Forwarded-For", "8.8.8.8"); // Simulate a request with a known IP
 
     expect(response.status).toBe(200);
-    expect(response.text).toBe("Tracking data received.");
+    expect(response.body.ok).toBe(true);
+    expect(response.body.ip).toBe("8.8.8.8");
+    expect(response.body.country).toBe("US");
+    expect(response.body.city).toBe("");
+    expect(response.body.timezone).toBe("America/Chicago");
 
     // Read the log file and check its content
     const logContent = fs.readFileSync(logFile, "utf8");
@@ -56,7 +60,11 @@ describe("IP Tracking Endpoint", () => {
     const response = await request(app).post("/track");
 
     expect(response.status).toBe(200);
-    expect(response.text).toBe("Tracking data received.");
+    expect(response.body.ok).toBe(true);
+    expect(response.body.ip).not.toBeUndefined();
+    expect(response.body.country).toBeNull();
+    expect(response.body.city).toBeNull();
+    expect(response.body.timezone).toBeNull();
 
     const logContent = fs.readFileSync(logFile, "utf8");
     const logEntries = logContent.trim().split("\n");
