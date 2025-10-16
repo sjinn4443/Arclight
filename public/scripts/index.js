@@ -7,21 +7,31 @@ import {
 import { pushLocalStorageToServer } from "./home-data.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
-  // Seed from IP
-  await initializeLocation();
-  // Update menu immediately if it's already in the DOM
+  // Get the user’s location from IP
+  const data = await initializeLocation();
+
+  // Update the visible text
   const locEl = document.getElementById("profileLocation");
-  if (locEl) locEl.textContent = `Location: ${getCurrentCountryCode()}`;
+  if (locEl && data?.iso2) {
+    locEl.textContent = `Location: ${data.iso2}`;
+    locEl.style.visibility = "visible";
+  }
 
   // Optionally push to server (guarded)
   // await pushLocalStorageToServer();
 });
 
 // Keep UI in sync if location changes later (e.g., after precise geolocation)
-document.addEventListener("location:updated", (ev) => {
+document.addEventListener("location:updated", (e) => {
   const locEl = document.getElementById("profileLocation");
-  if (locEl && ev.detail?.iso2) {
-    locEl.textContent = `Location: ${ev.detail.iso2}`;
+  if (locEl && e.detail?.iso2) {
+    // If we also have city name, show both
+    if (e.detail.area) {
+      locEl.textContent = `Location: ${e.detail.area}, ${e.detail.iso2}`;
+    } else {
+      locEl.textContent = `Location: ${e.detail.iso2}`;
+    }
+    locEl.style.visibility = "visible";
   }
 });
 
