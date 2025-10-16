@@ -1,6 +1,10 @@
 const cors = require("cors");
 
-const whitelist = ["https://arclight.up.railway.app", "http://localhost:3000"];
+const whitelist = [
+  "https://arclight.up.railway.app",
+  "http://localhost:3000",
+  process.env.RAILWAY_APP_URL, // Add Railway app URL from environment variable
+];
 
 const corsOptions = {
   origin: function (origin, callback) {

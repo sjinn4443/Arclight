@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test Track Endpoint</title>
+  </head>
+  <body>
+    <h1>Testing /track Endpoint</h1>
+    <button id="sendTrack">Send Track Event</button>
+    <pre id="response"></pre>
+
+    <script>
+      document
+        .getElementById("sendTrack")
+        .addEventListener("click", async () => {
+          const responseElement = document.getElementById("response");
+          responseElement.textContent = "Sending track event...";
+
+          try {
+            const response = await fetch("http://localhost:3000/track", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                event: "page_view",
+                path: "/test_track.html",
+                data: "some_additional_data",
+              }),
+            });
+
+            const data = await response.json();
+            responseElement.textContent =
+              "Response: " + JSON.stringify(data, null, 2);
+          } catch (error) {
+            responseElement.textContent = "Error: " + error.message;
+            console.error("Error sending track event:", error);
+          }
+        });
+    </script>
+  </body>
+</html>

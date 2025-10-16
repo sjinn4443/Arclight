@@ -10,6 +10,7 @@ const csp = helmet.contentSecurityPolicy({
     fontSrc: ["'self'", "https://fonts.gstatic.com"], // Allow Google Fonts font files
     manifestSrc: ["'self'"], // Web app manifest from same origin
     workerSrc: ["'self'"], // Service worker from same origin
+    connectSrc: ["'self'", process.env.RAILWAY_APP_URL], // Allow connections to self and Railway app URL
     objectSrc: ["'none'"], // Disallow <object>, <embed>, <applet>
     baseUri: ["'self'"], // Base URI for relative URLs
     formAction: ["'self'"], // Forms can only submit to the same origin

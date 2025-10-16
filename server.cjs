@@ -16,8 +16,8 @@ const {
   csrfProtection,
 } = require("./security/csrf.cjs");
 
-const geoip = require("geoip-lite");
 const fs = require("fs");
+const { enrichIp } = require("./utils/ipEnricher.cjs");
 
 const LOG_FILE = path.join(__dirname, "logs", "ip_logs.jsonl");
 fs.mkdirSync(path.dirname(LOG_FILE), { recursive: true });
@@ -34,7 +34,7 @@ app.use(
         res.setHeader("Content-Type", "application/javascript");
       }
     },
-  }),
+  })
 );
 
 app.use(express.json());
@@ -67,34 +67,29 @@ app.post("/track", (req, res) => {
   const ip =
     req.headers["x-forwarded-for"]?.split(",")[0] || req.socket.remoteAddress;
 
-  // Perform geolocation lookup
-  const geo = geoip.lookup(ip);
+  // Respond immediately to the client
+  res.status(200).json({ ok: true, message: "Tracking request received" });
 
-  // Prepare log entry
-  const logEntry = {
-    timestamp: new Date().toISOString(),
-    ip: ip,
-    geo: geo, // Contains country, region, city, etc.
-    body: req.body || null,
-  };
+  // Perform geolocation lookup and logging in the background
+  (async () => {
+    const geo = await enrichIp(ip);
 
-  // Log to ip_logs.jsonl file
-  fs.appendFile(LOG_FILE, JSON.stringify(logEntry) + "\n", (err) => {
-    if (err) {
-      console.error("Error writing to log file:", err);
-      return res.status(500).json({ ok: false, error: "log-failed" });
-    }
+    const logEntry = {
+      timestamp: new Date().toISOString(),
+      ip: ip,
+      geo: geo,
+      body: req.body || null,
+    };
 
-    console.log("TRACK_LOG:", JSON.stringify(logEntry));
-    res.status(200).json({
-      ok: true,
-      ip: logEntry.ip,
-      country: logEntry.geo?.country ?? null,
-      city: logEntry.geo?.city ?? null,
-      timezone: logEntry.geo?.timezone ?? null,
+    fs.appendFile(LOG_FILE, JSON.stringify(logEntry) + "\n", (err) => {
+      if (err) {
+        console.error("Error writing to log file:", err);
+      } else {
+        console.log("TRACK_LOG:", JSON.stringify(logEntry));
+      }
     });
-  });
-}); // Missing closing brace for app.post
+  })();
+});
 
 // Fallback to index.html for SPA routing
 app.get("/admin/logs", (req, res) => {

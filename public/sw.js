@@ -21,7 +21,7 @@ self.addEventListener("install", (event) => {
     caches
       .open(CACHE_NAME)
       .then((cache) => cache.addAll(CORE_ASSETS))
-      .catch(() => {}),
+      .catch(() => {})
   );
   self.skipWaiting();
 });
@@ -31,10 +31,10 @@ self.addEventListener("activate", (event) => {
     (async () => {
       const keys = await caches.keys();
       await Promise.all(
-        keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k)),
+        keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k))
       );
       await self.clients.claim();
-    })(),
+    })()
   );
 });
 
@@ -46,9 +46,15 @@ self.addEventListener("activate", (event) => {
 self.addEventListener("fetch", (event) => {
   const req = event.request;
 
-  // Only handle same-origin GET
-  if (req.method !== "GET" || new URL(req.url).origin !== location.origin)
+  // Bypass service worker for non-GET requests and the /track path
+  const url = new URL(req.url);
+  if (
+    req.method !== "GET" ||
+    url.origin !== location.origin ||
+    url.pathname === "/track"
+  ) {
     return;
+  }
 
   if (req.mode === "navigate") {
     // HTML navigation: try network, fallback to cached shell
@@ -65,7 +71,7 @@ self.addEventListener("fetch", (event) => {
             (await cache.match(req)) || (await cache.match("/index.html"));
           return cached || Response.error();
         }
-      })(),
+      })()
     );
     return;
   }
@@ -83,7 +89,7 @@ self.addEventListener("fetch", (event) => {
       } catch {
         return cached || Response.error();
       }
-    })(),
+    })()
   );
 });
 
@@ -104,7 +110,7 @@ self.addEventListener("message", async (event) => {
             if (res && (res.ok || res.type === "opaque"))
               await cache.put(url, res.clone());
           } catch {}
-        }),
+        })
       );
       ports?.[0]?.postMessage?.({ type: "CACHE_DONE" });
     } catch (err) {
