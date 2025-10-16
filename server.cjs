@@ -59,7 +59,7 @@ if (process.env.NODE_ENV !== "test") {
   });
 }
 
-app.post("/track", (req, res) => {
+app.post("/track", async (req, res) => {
   // Determine the client IP address
   // X-Forwarded-For header is the standard for identifying the originating IP address through proxies.
   // We take the first IP in the list, as it's the most upstream.
@@ -67,28 +67,29 @@ app.post("/track", (req, res) => {
   const ip =
     req.headers["x-forwarded-for"]?.split(",")[0] || req.socket.remoteAddress;
 
-  // Respond immediately to the client
-  res.status(200).json({ ok: true, message: "Tracking request received" });
+  // Perform geolocation lookup
+  const geo = await enrichIp(ip);
 
-  // Perform geolocation lookup and logging in the background
-  (async () => {
-    const geo = await enrichIp(ip);
+  const logEntry = {
+    timestamp: new Date().toISOString(),
+    ip: ip,
+    geo: geo,
+    body: req.body || null,
+  };
 
-    const logEntry = {
-      timestamp: new Date().toISOString(),
-      ip: ip,
-      geo: geo,
-      body: req.body || null,
-    };
+  // Log the entry to file in the background
+  fs.appendFile(LOG_FILE, JSON.stringify(logEntry) + "\n", (err) => {
+    if (err) {
+      console.error("Error writing to log file:", err);
+    } else {
+      console.log("TRACK_LOG:", JSON.stringify(logEntry));
+    }
+  });
 
-    fs.appendFile(LOG_FILE, JSON.stringify(logEntry) + "\n", (err) => {
-      if (err) {
-        console.error("Error writing to log file:", err);
-      } else {
-        console.log("TRACK_LOG:", JSON.stringify(logEntry));
-      }
-    });
-  })();
+  // Respond to the client with the tracking data
+  res
+    .status(200)
+    .json({ ok: true, ip: ip, geo: geo, message: "Tracking request received" });
 });
 
 // Fallback to index.html for SPA routing

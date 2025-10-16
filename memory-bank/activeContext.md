@@ -23,6 +23,8 @@ The current focus is on ensuring the application's core structure and PWA capabi
 - Renamed `server.js` to `server.cjs` and updated related `require` paths to resolve ES module / CommonJS conflicts.
 - Modified `server.cjs` to conditionally apply CSRF protection only when not in a test environment, resolving a timeout issue in API tests.
 - Removed "Run Lighthouse CI" and "Run translation checks" from the GitHub Actions CI/CD pipeline.
+- Modified `server.cjs` to include IP and geolocation data in the response body of the `/track` endpoint.
+- Updated `tests/tracking.test.js` to mock the `enrichIp` function, ensuring consistent and predictable geolocation data for testing, and adjusted assertions to match the mocked data.
 
 ## Next Steps
 

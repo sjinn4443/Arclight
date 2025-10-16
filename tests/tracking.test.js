@@ -4,6 +4,12 @@ const fs = require("fs");
 const path = require("path");
 const os = require("os");
 
+// Mock the ipEnricher module
+jest.mock("../utils/ipEnricher.cjs", () => ({
+  enrichIp: jest.fn(),
+}));
+const { enrichIp } = require("../utils/ipEnricher.cjs");
+
 let logDir;
 let logFile;
 let appendFileSpy;
@@ -20,11 +26,36 @@ beforeAll(() => {
       fs.appendFileSync(logFile, data); // Use sync version for simplicity in mock
       callback(null); // Call callback with no error
     });
+
+  // Mock implementation for enrichIp
+  enrichIp.mockImplementation((ip) => {
+    if (ip === "8.8.8.8") {
+      return {
+        source: "mock",
+        country: "US",
+        city: "Mountain View",
+        lat: 37.406,
+        lon: -122.0785,
+        timezone: "America/Los_Angeles",
+      };
+    } else {
+      // For local IPs or unknown IPs
+      return {
+        source: "mock",
+        country: null,
+        city: null,
+        lat: null,
+        lon: null,
+        timezone: null,
+      };
+    }
+  });
 });
 
 afterAll(() => {
   appendFileSpy.mockRestore(); // Restore original fs.appendFile
   fs.rmSync(logDir, { recursive: true, force: true });
+  jest.restoreAllMocks(); // Restore all mocks, including enrichIp
 });
 
 describe("IP Tracking Endpoint", () => {
@@ -36,9 +67,9 @@ describe("IP Tracking Endpoint", () => {
     expect(response.status).toBe(200);
     expect(response.body.ok).toBe(true);
     expect(response.body.ip).toBe("8.8.8.8");
-    expect(response.body.country).toBe("US");
-    expect(response.body.city).toBe("");
-    expect(response.body.timezone).toBe("America/Chicago");
+    expect(response.body.geo.country).toBe("US");
+    expect(response.body.geo.city).toBe("Mountain View");
+    expect(response.body.geo.timezone).toBe("America/Los_Angeles");
 
     // Read the log file and check its content
     const logContent = fs.readFileSync(logFile, "utf8");
@@ -62,9 +93,9 @@ describe("IP Tracking Endpoint", () => {
     expect(response.status).toBe(200);
     expect(response.body.ok).toBe(true);
     expect(response.body.ip).not.toBeUndefined();
-    expect(response.body.country).toBeNull();
-    expect(response.body.city).toBeNull();
-    expect(response.body.timezone).toBeNull();
+    expect(response.body.geo.country).toBeNull();
+    expect(response.body.geo.city).toBeNull();
+    expect(response.body.geo.timezone).toBeNull();
 
     const logContent = fs.readFileSync(logFile, "utf8");
     const logEntries = logContent.trim().split("\n");
