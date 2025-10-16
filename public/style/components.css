@@ -875,7 +875,7 @@ input:checked + .slider:before {
 }
 
 .menu-search {
-  margin-top: 26%;
+  margin-top: 11%;
   width: 100%;
   padding: 7px 12px;
   border-radius: 10px;
@@ -968,6 +968,14 @@ input:checked + .slider:before {
   height: 15px;
   margin-right: 6px;
   vertical-align: text-bottom;
+}
+
+.profile-location {
+  font-size: 11px;
+  color: #666;
+  margin-top: 15px;
+  margin-left: 81px;
+  letter-spacing: 0.2px;
 }
 
 /* Language picker overlay */

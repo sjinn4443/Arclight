@@ -41,6 +41,9 @@ export async function initializeMenu() {
     nameEl.textContent = name || "Your name";
   }
 
+  const locEl = document.getElementById("profileLocation");
+  if (locEl) locEl.textContent = "Location: GB";
+
   // 6) Handlers
   closeBtn?.addEventListener("click", closeMenu);
 
@@ -58,6 +61,12 @@ export async function initializeMenu() {
     if (a) closeMenu();
   });
 }
+
+// ---- Event listener for location updates ----
+document.addEventListener("location:updated", (ev) => {
+  const el = document.getElementById("profileLocation");
+  if (el && ev.detail?.iso2) el.textContent = `Location: ${ev.detail.iso2}`;
+});
 
 /**
  * Opens the global overlay menu.
