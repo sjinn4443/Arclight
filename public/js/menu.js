@@ -4,6 +4,32 @@
 
 let overlay, closeBtn;
 
+// --- Render the profile location from localStorage (or fallback) ---
+function renderProfileLocation() {
+  // Try ID first; fall back to class (in case ID changed)
+  const el =
+    document.getElementById("profileLocation") ||
+    document.querySelector(".profile-location");
+  if (!el) return;
+
+  // Read cached geo
+  let iso = "GB";
+  let area = null;
+  try {
+    const data = JSON.parse(localStorage.getItem("profileGeo") || "null");
+    if (data) {
+      if (data.iso2) iso = data.iso2;
+      if (data.area) area = data.area;
+    }
+  } catch (_) {
+    /* ignore */
+  }
+
+  // Write text + make visible (in case you hid it while loading)
+  el.textContent = area ? `Location: ${area}, ${iso}` : `Location: ${iso}`;
+  el.style.visibility = "visible";
+}
+
 /**
  * Initializes the global overlay menu.
  * Fetches the menu HTML, appends it to the body, and sets up event listeners
@@ -41,8 +67,8 @@ export async function initializeMenu() {
     nameEl.textContent = name || "Your name";
   }
 
-  const locEl = document.getElementById("profileLocation");
-  if (locEl) locEl.textContent = "Location: GB";
+  // Removed: const locEl = document.getElementById("profileLocation"); if (locEl) locEl.textContent = "Location: GB";
+  // This is now handled by renderProfileLocation called by listeners.
 
   // 6) Handlers
   closeBtn?.addEventListener("click", closeMenu);
@@ -62,11 +88,23 @@ export async function initializeMenu() {
   });
 }
 
-// ---- Event listener for location updates ----
-document.addEventListener("location:updated", (ev) => {
-  const el = document.getElementById("profileLocation");
-  if (el && ev.detail?.iso2) el.textContent = `Location: ${ev.detail.iso2}`;
+// ---- Event listeners for location updates and rendering ----
+
+// A) When the app fires our custom "location:updated" event (IP seed or precise GPS)
+document.addEventListener("location:updated", renderProfileLocation);
+
+// B) When pages/partials are shown (your app’s nav lifecycle).
+// If your app emits 'page:shown' with detail.pageId === 'menu' (or similar),
+// update when the menu overlay appears.
+document.addEventListener("page:shown", (e) => {
+  // If you know the page/overlay id, check it here; otherwise just render if the node exists.
+  // Example guard (adjust to your real page id if you have one):
+  // if (e.detail?.pageId !== 'menu') return;
+  renderProfileLocation();
 });
+
+// C) Also try right after DOM is ready (covers cases where menu HTML is already in DOM)
+document.addEventListener("DOMContentLoaded", renderProfileLocation);
 
 /**
  * Opens the global overlay menu.
@@ -80,6 +118,9 @@ export function openMenu() {
   if (nameEl) {
     nameEl.textContent = name || "Your name";
   }
+
+  // D) Call renderProfileLocation at the end of openMenu()
+  renderProfileLocation();
 
   document.body.setAttribute("data-menu-open", "true");
   overlay.classList.remove("hidden");
