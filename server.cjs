@@ -34,7 +34,7 @@ app.use(
         res.setHeader("Content-Type", "application/javascript");
       }
     },
-  }),
+  })
 );
 
 app.use(express.json());
@@ -82,14 +82,19 @@ app.post("/track", (req, res) => {
   fs.appendFile(LOG_FILE, JSON.stringify(logEntry) + "\n", (err) => {
     if (err) {
       console.error("Error writing to log file:", err);
-      // Send an error response to the client
-      return res.status(500).send("Error logging tracking data.");
+      return res.status(500).json({ ok: false, error: "log-failed" });
     }
+
     console.log("TRACK_LOG:", JSON.stringify(logEntry));
-    // Send a success response to the client
-    res.status(200).send("Tracking data received.");
+    res.status(200).json({
+      ok: true,
+      ip: logEntry.ip,
+      country: logEntry.geo?.country ?? null,
+      city: logEntry.geo?.city ?? null,
+      timezone: logEntry.geo?.timezone ?? null,
+    });
   });
-});
+}); // Missing closing brace for app.post
 
 // Fallback to index.html for SPA routing
 app.get("/admin/logs", (req, res) => {
