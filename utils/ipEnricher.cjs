@@ -4,7 +4,7 @@ const geoip = require("geoip-lite");
 async function enrichIp(ip) {
   try {
     const r = await fetch(
-      `https://ipinfo.io/${ip}?token=${process.env.IPINFO_TOKEN}`
+      `https://ipinfo.io/${ip}?token=${process.env.IPINFO_TOKEN}`,
     );
     if (r.ok) {
       const d = await r.json();
@@ -26,7 +26,7 @@ async function enrichIp(ip) {
 
   try {
     const r2 = await fetch(
-      `https://api.bigdatacloud.net/data/ip-geolocation-full?ip=${ip}&key=${process.env.BDCLOUD_KEY}`
+      `https://api.bigdatacloud.net/data/ip-geolocation-full?ip=${ip}&key=${process.env.BDCLOUD_KEY}`,
     );
     if (r2.ok) {
       const d2 = await r2.json();
