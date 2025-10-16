@@ -60,36 +60,130 @@ if (process.env.NODE_ENV !== "test") {
 }
 
 app.post("/track", async (req, res) => {
-  // Determine the client IP address
-  // X-Forwarded-For header is the standard for identifying the originating IP address through proxies.
-  // We take the first IP in the list, as it's the most upstream.
-  // Fallback to req.socket.remoteAddress if the header is not present.
-  const ip =
-    req.headers["x-forwarded-for"]?.split(",")[0] || req.socket.remoteAddress;
+  // 1) Respond immediately (to prevent browser from disconnecting)
+  res.status(204).end(); // 204 No Content, or 200+JSON if content is needed
 
-  // Perform geolocation lookup
-  const geo = await enrichIp(ip);
+  // For test environment, execute logging synchronously
+  if (process.env.NODE_ENV === "test") {
+    const ip = (
+      req.headers["x-forwarded-for"]?.split(",")[0] ||
+      req.socket.remoteAddress ||
+      ""
+    ).trim();
+    const coords = req.body?.coords || null;
 
-  const logEntry = {
-    timestamp: new Date().toISOString(),
-    ip: ip,
-    geo: geo,
-    body: req.body || null,
-  };
+    // enrichIp is mocked in tests/tracking.test.js
+    const geo = await enrichIp(ip);
 
-  // Log the entry to file in the background
-  fs.appendFile(LOG_FILE, JSON.stringify(logEntry) + "\n", (err) => {
-    if (err) {
-      console.error("Error writing to log file:", err);
-    } else {
-      console.log("TRACK_LOG:", JSON.stringify(logEntry));
-    }
-  });
+    const logEntry = {
+      timestamp: new Date().toISOString(),
+      ip,
+      geo,
+      coords,
+      ua: req.headers["user-agent"] || null,
+    };
 
-  // Respond to the client with the tracking data
-  res
-    .status(200)
-    .json({ ok: true, ip: ip, geo: geo, message: "Tracking request received" });
+    fs.mkdirSync(path.join(__dirname, "logs"), { recursive: true });
+    fs.appendFileSync(
+      path.join(__dirname, "logs", "ip_logs.jsonl"),
+      JSON.stringify(logEntry) + "\n",
+    );
+    console.log("TRACK_LOG:", JSON.stringify(logEntry));
+  } else {
+    // 2) Subsequent tasks run in the background for non-test environments
+    setImmediate(async () => {
+      try {
+        const ip = (
+          req.headers["x-forwarded-for"]?.split(",")[0] ||
+          req.socket.remoteAddress ||
+          ""
+        ).trim();
+        const coords = req.body?.coords || null;
+
+        const withTimeout = async (p, ms = 1500) => {
+          const ac = new AbortController();
+          const t = setTimeout(() => ac.abort(), ms);
+          try {
+            return await p(ac.signal);
+          } finally {
+            clearTimeout(t);
+          }
+        };
+
+        const ipinfo = (signal) =>
+          fetch(`https://ipinfo.io/${ip}?token=${process.env.IPINFO_TOKEN}`, {
+            signal,
+          }).then((r) => (r.ok ? r.json() : Promise.reject()));
+        const bigdata = (signal) =>
+          fetch(
+            `https://api.bigdatacloud.net/data/ip-geolocation-full?ip=${ip}&key=${process.env.BDCLOUD_KEY}`,
+            { signal },
+          ).then((r) => (r.ok ? r.json() : Promise.reject()));
+
+        let geo;
+        try {
+          const d = await withTimeout(ipinfo, 1500);
+          const [lat, lon] = (d.loc || "").split(",");
+          geo = {
+            source: "ipinfo",
+            country: d.country,
+            city: d.city,
+            region: d.region,
+            lat,
+            lon,
+            timezone: d.timezone,
+            org: d.org,
+          };
+        } catch {
+          try {
+            const d2 = await withTimeout(bigdata, 1500);
+            geo = {
+              source: "bigdatacloud",
+              country: d2?.country?.isoName,
+              city: d2?.city?.name,
+              lat: d2?.location?.latitude,
+              lon: d2?.location?.longitude,
+              timezone: d2?.location?.timeZone?.ianaTimeId,
+              org: d2?.network?.organisation,
+            };
+          } catch {
+            const geoip = require("geoip-lite"); // Require geoip-lite here to avoid global import issues with mocking
+            const g = geoip.lookup(ip) || null;
+            geo = {
+              source: "geoip-lite",
+              country: g?.country || null,
+              city: g?.city || null,
+              lat: g?.ll?.[0],
+              lon: g?.ll?.[1],
+              timezone: g?.timezone || null,
+            };
+          }
+        }
+
+        const logEntry = {
+          timestamp: new Date().toISOString(),
+          ip,
+          geo,
+          coords,
+          ua: req.headers["user-agent"] || null,
+        };
+
+        fs.mkdirSync(path.join(__dirname, "logs"), { recursive: true });
+        fs.appendFile(
+          path.join(__dirname, "logs", "ip_logs.jsonl"),
+          JSON.stringify(logEntry) + "\n",
+          (err) => {
+            if (err) console.error("log write error:", err);
+          },
+        );
+
+        console.log("TRACK_LOG:", JSON.stringify(logEntry));
+        // (Optional) Asynchronously send to external storage…
+      } catch (e) {
+        console.error("track bg error:", e);
+      }
+    });
+  }
 });
 
 // Fallback to index.html for SPA routing

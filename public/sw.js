@@ -48,11 +48,13 @@ self.addEventListener("fetch", (event) => {
 
   // Bypass service worker for non-GET requests and the /track path
   const url = new URL(req.url);
-  if (
-    req.method !== "GET" ||
-    url.origin !== location.origin ||
-    url.pathname === "/track"
-  ) {
+  if (req.method !== "GET" || url.origin !== location.origin) {
+    // Bypass service worker for non-GET requests or cross-origin requests
+    return;
+  }
+
+  if (url.pathname === "/track") {
+    // Bypass service worker for /track endpoint
     return;
   }
 

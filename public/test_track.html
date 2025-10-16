@@ -28,6 +28,7 @@
                 path: "/test_track.html",
                 data: "some_additional_data",
               }),
+              keepalive: true, // Add keepalive to ensure request attempts to complete
             });
 
             const data = await response.json();
