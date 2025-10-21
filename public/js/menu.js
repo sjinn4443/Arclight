@@ -67,6 +67,13 @@ export async function initializeMenu() {
     nameEl.textContent = name || "Your name";
   }
 
+  // 5b) Wire the "i" info button to open the info popup
+  const infoBtn = overlay.querySelector(".info-icon");
+  infoBtn?.addEventListener("click", (e) => {
+    e.preventDefault();
+    showInfoModal();
+  });
+
   // Removed: const locEl = document.getElementById("profileLocation"); if (locEl) locEl.textContent = "Location: GB";
   // This is now handled by renderProfileLocation called by listeners.
 
@@ -134,4 +141,41 @@ export function closeMenu() {
   if (!overlay) return;
   document.body.removeAttribute("data-menu-open");
   overlay.classList.add("hidden");
+}
+
+function showInfoModal() {
+  // Prevent duplicates
+  if (document.getElementById("infoModalOverlay")) return;
+
+  const modal = document.createElement("div");
+  modal.id = "infoModalOverlay";
+  modal.setAttribute("role", "dialog");
+  modal.setAttribute("aria-modal", "true");
+  modal.setAttribute("aria-labelledby", "infoModalTitle");
+
+  modal.innerHTML = `
+    <div class="guest-modal">
+      <button class="guest-modal__close" aria-label="Close">&times;</button>
+      <h2 id="infoModalTitle" class="guest-modal__title">About location data</h2>
+      <p class="guest-modal__text">
+        Location data helps us understand usage and improve Arclight App. Your IP address provides an approximate
+        country/city on first load. <br> You can optionally provide more precise GPS data using the 'Check Location'
+        button. This data is handled as per our privacy guidelines.
+      </p>
+       </div>
+  `;
+
+  document.body.appendChild(modal);
+
+  const close = () => {
+    modal.classList.add("fade-out");
+    setTimeout(() => modal.remove(), 250); // match guest modal timing
+  };
+
+  // Close on ×, OK, or clicking the dim background
+  modal.querySelector(".guest-modal__close")?.addEventListener("click", close);
+  modal.querySelector(".guest-modal__cta")?.addEventListener("click", close);
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) close();
+  });
 }

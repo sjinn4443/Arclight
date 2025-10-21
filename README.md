@@ -47,8 +47,6 @@ This project is the Arclight App, a comprehensive educational and diagnostic too
 
 ## Key Technical Decisions
 
-## Key Technical Decisions
-
 - **PWA First:** Prioritizing offline access and fast loading times through service worker implementation.
 - **Modular Design:** Each educational module is self-contained, allowing for easier development, maintenance, and potential future expansion.
 - **Static Content Delivery:** The application primarily serves static HTML, CSS, JavaScript, images, and videos, simplifying deployment and reducing server-side dependencies.
@@ -64,26 +62,37 @@ This project is the Arclight App, a comprehensive educational and diagnostic too
 
 ## Getting Started
 
-## Getting Started
-
 1. Clone the repository:
-   ```
+   ```bash
    git clone https://github.com/sjinn4443/Arclight.git
    ```
-2. Open the project in your preferred code editor.
-3. Open `index.html` in a web browser to start using the app.
-4. For development, you can run a local server (e.g., using `http-server` or `npm start`) to serve the files, and then access the app at `http://localhost:3000`.
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Open the project in your preferred code editor.
+4. For development, you can run a local server using `npm start` and then access the app at `http://localhost:3000`.
+5. Alternatively, you can open `public/index.html` directly in a web browser to start using the app, though some features (like API tracking) may not function without a server.
 
 ## Project Structure
 
-- `index.html` - Main entry point of the app
-- `style/` - Directory containing `base.css`, `components.css`, `pages.css`, and `responsive.css` for global styles
-- `public/js/` - Directory containing JavaScript files for different modules and features
-- `images/` - Image assets used throughout the app
-- `security/` - Directory containing security configurations (rate limiting, CSP, CORS, CSRF)
-- `.github/workflows/ci-cd.yml` - GitHub Actions CI/CD workflow
-- `memory-bank/` - Documentation and project context files
-- Various folders for specific modules like `AnteriorSegmentQuiz`, `Cataract`, `Morph`, `Squint`, etc.
+- `public/index.html` - Main entry point of the app.
+- `public/style/` - Directory containing `base.css`, `components.css`, `pages.css`, and `responsive.css` for global styles.
+- `public/js/` - Directory containing JavaScript files for different modules and features.
+- `public/images/` - Image assets used throughout the app.
+- `public/videos/` - Video assets used throughout the app.
+- `public/favicons/` - Favicon assets.
+- `public/html/` - Additional HTML pages for various sections of the app.
+- `public/subapp/` - Contains sub-applications or modules like `Cataract`, `Mires`, `Morph`, `Squint`.
+- `public/translation/` - Translation files for multi-language support.
+- `security/` - Directory containing server-side security configurations (rate limiting, CSP, CORS, CSRF).
+- `securitytest/` - Scripts for testing security configurations.
+- `scripts/` - Utility scripts for build processes, translation checks, and accessibility tests.
+- `tests/` - Contains Jest test files for UI, API, and unit tests.
+- `.github/workflows/ci-cd.yml` - GitHub Actions CI/CD workflow.
+- `memory-bank/` - Documentation and project context files.
+- `vscode-alanui-launcher/` - Custom VSCode extension for launching the app.
+- Other root-level files like `server.cjs` (local development server), `package.json`, `jest.config.js`, etc.
 
 ## Memory Bank
 
@@ -114,6 +123,45 @@ Please follow the existing code patterns and update the Memory Bank when making 
 [Specify your license here]
 
 ## Changelog
+
+### 2025-10-04
+
+- Created a `security` folder and implemented the following security measures:
+  - **Rate Limiting**: Using `express-rate-limit` to control request frequency.
+  - **Content Security Policy (CSP)**: Configured with `helmet` to prevent XSS, allowing `'self'`, `https://fonts.googleapis.com` for styles, and `https://fonts.gstatic.com` for fonts.
+  - **CORS Allowlist**: Implemented with `cors` to restrict cross-origin requests to `http://localhost:3000`.
+  - **CSRF Protection**: Set up using `csurf`, `express-session`, and `cookie-parser` to guard against CSRF attacks.
+- Resolved ES module / CommonJS conflict by renaming `server.js` to `server.cjs` and updating all related `require` paths and `package.json` scripts.
+
+### 2025-09-29
+
+- Set up GitHub Actions CI/CD pipeline at `.github/workflows/ci-cd.yml` for continuous integration and deployment to Railway.
+- Updated memory bank files (`activeContext.md`, `progress.md`) to reflect the new CI/CD setup.
+
+### 2025-09-02
+
+- Performed a memory bank update, reading all memory bank files and the README.md.
+- Added JSDoc comments to all JavaScript files in `Arclight_App/public/js/`.
+
+### 2025-08-26
+
+- Placeholder for changes made on 2025-08-26.
+
+### 2025-08-27
+
+- Placeholder for changes made on 2025-08-27.
+
+### 2025-08-02
+
+- Set up Jest for unit, UI, and API testing.
+- Configured a Git `pre-push` hook to run tests automatically before pushing changes to GitHub.
+- Updated `tests/README.md` with detailed testing information.
+
+### 2025-10-21
+
+- Updated `README.md` files across the project to reflect the latest changes and provide more detailed information for each directory.
+- Consolidated duplicate "Key Technical Decisions" and "Getting Started" sections in the root `README.md`.
+- Enhanced the "Project Structure" in the root `README.md` for better clarity and completeness.
 
 ### 2025-10-04
 

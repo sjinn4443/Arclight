@@ -1992,3 +1992,64 @@ input:checked + .slider:before {
 }
 
 /* Uses existing theme’s primary button colors */
+/* ===== Location Buttons ===== */
+/* Smaller circular i next to text */
+.info-icon {
+  background: #c5c5c500;
+  color: #666666;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  margin-top: -28px;
+  margin-left: 98px;
+}
+
+.info-icon:hover {
+  background: #e0e0e000;
+}
+
+/* Check Location button (on its own row) */
+.check-location-btn {
+  display: block;
+  margin: -13px 3px -8px 78px; /* aligns under Location */
+  background-color: #8f8f8f;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  height: 32px; /* consistent height */
+  line-height: 9px; /* vertically centers text */
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    transform 0.1s ease;
+
+  width: 140px; /* slightly longer */
+}
+
+.check-location-btn:hover {
+  background-color: #5a5a5a;
+}
+
+.check-location-btn:active {
+  transform: translateY(1px);
+}
+
+/* === Info Modal (matches guest modal overlay) === */
+#infoModalOverlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10001;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  animation: guestModalFadeIn 0.3s ease-out; /* reuse existing keyframes */
+}
+#infoModalOverlay.fade-out {
+  animation: guestModalFadeOut 0.25s ease-in forwards; /* reuse existing keyframes */
+}
