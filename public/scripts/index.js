@@ -7,32 +7,53 @@ import {
 import { pushLocalStorageToServer } from "./home-data.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
-  // Get the user’s location from IP
-  const data = await initializeLocation();
-
-  // Update the visible text
+  // Get the element where we show the location
   const locEl = document.getElementById("profileLocation");
-  if (locEl && data?.iso2) {
-    locEl.textContent = `Location: ${data.iso2}`;
+
+  // Helper to safely update the text
+  const updateLocationText = (payload = {}) => {
+    if (!locEl || !payload.iso2) return;
+    const city =
+      payload.area ||
+      payload.city ||
+      payload.town ||
+      payload.locality ||
+      payload.region;
+    const text = city
+      ? `Location: ${city}, ${payload.iso2}`
+      : `Location: ${payload.iso2}`;
+    locEl.textContent = text;
     locEl.style.visibility = "visible";
+  };
+
+  try {
+    const data = await initializeLocation();
+    console.debug("initializeLocation() →", data);
+    updateLocationText(data);
+  } catch (err) {
+    console.warn("initializeLocation() failed:", err);
   }
 
-  // Optionally push to server (guarded)
-  // await pushLocalStorageToServer();
-});
+  document.addEventListener("location:updated", (ev) => {
+    const el = document.getElementById("profileLocation");
+    if (!el) return;
 
-// Keep UI in sync if location changes later (e.g., after precise geolocation)
-document.addEventListener("location:updated", (e) => {
-  const locEl = document.getElementById("profileLocation");
-  if (locEl && e.detail?.iso2) {
-    // If we also have city name, show both
-    if (e.detail.area) {
-      locEl.textContent = `Location: ${e.detail.area}, ${e.detail.iso2}`;
-    } else {
-      locEl.textContent = `Location: ${e.detail.iso2}`;
+    const geo = ev.detail || {};
+    const city = geo.city && String(geo.city).trim();
+    const country = (geo.country || geo.iso2 || "").toString().trim();
+
+    let text = "Location: —";
+    if (city && country) {
+      text = `Location: ${city}, ${country}`;
+    } else if (country) {
+      text = `Location: ${country}`;
+    } else if (city) {
+      text = `Location: ${city}`;
     }
-    locEl.style.visibility = "visible";
-  }
+
+    el.textContent = text;
+    el.style.visibility = "visible";
+  });
 });
 
 // Optional: wire a button to request precise location later

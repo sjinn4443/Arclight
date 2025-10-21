@@ -1,9 +1,25 @@
 // public/scripts/location-service.js
 
-const GEO_CACHE_KEY = "profileGeo"; // stores { iso2, country, lat, lon, area, classification, ts }
+const GEO_CACHE_KEY = "profileGeo"; // stores { iso2, country, city, lat, lon, area, classification, ts }
 const GEO_CACHE_TTL_MS = 24 * 60 * 60 * 1000; // 24 hours
 
-// ---- Classification: HI/MI/LI/VLI (starter set; extend as needed) ----
+// ---------- City normalizer ----------
+function normalizeCity(fromIp, fromReverse) {
+  const pick = (obj) => {
+    if (!obj || typeof obj !== "object") return null;
+    return (
+      obj.city ||
+      obj.locality ||
+      obj.town ||
+      obj.village ||
+      obj.principalSubdivisionLocality ||
+      null
+    );
+  };
+  return pick(fromReverse) || pick(fromIp) || null;
+}
+
+// ---------- Classification ----------
 function classifyCountry(iso2) {
   if (!iso2) return "MI";
   const HI = new Set([
@@ -54,7 +70,7 @@ function classifyCountry(iso2) {
     "UG",
     "YE",
     "ZM",
-  ]); // example
+  ]);
   const VLI = new Set(["SS", "SO", "YE"]);
   if (VLI.has(iso2)) return "VLI";
   if (LI.has(iso2)) return "LI";
@@ -62,7 +78,7 @@ function classifyCountry(iso2) {
   return "MI";
 }
 
-// ---- Storage helpers ----
+// ---------- Storage ----------
 function _readCache() {
   try {
     return JSON.parse(localStorage.getItem(GEO_CACHE_KEY) || "null");
@@ -82,42 +98,90 @@ function getCachedGeo() {
   return data;
 }
 
-// ---- Stage 1: Seed from IP (ipinfo.io) ----
+// ---------- Reverse geocode (BigDataCloud, no key) ----------
+async function reverseGeocode(lat, lon, lang = "en") {
+  const ctrl = new AbortController();
+  const timeout = setTimeout(() => ctrl.abort(), 8000);
+  try {
+    const res = await fetch(
+      `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${encodeURIComponent(lat)}&longitude=${encodeURIComponent(lon)}&localityLanguage=${encodeURIComponent(lang)}`,
+      { signal: ctrl.signal },
+    );
+    if (!res.ok) throw new Error(`Reverse geocode failed: ${res.status}`);
+    return await res.json(); // { city, locality, principalSubdivision, countryName, countryCode, ... }
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+// ---------- Core: initialize from IP (and refine if lat/lon present) ----------
 export async function initializeLocation() {
-  // Return cached (fresh) if available
+  // 1) Serve fresh cache if present
   const cached = getCachedGeo();
   if (cached) {
     dispatchLocationUpdated(cached);
     return cached;
   }
 
+  // 2) Seed from ipinfo
+  let base = null;
   try {
-    const res = await fetch("https://ipinfo.io/json?token="); // add token if you have one; works w/out for light usage
+    const res = await fetch("https://ipinfo.io/json?token=90ea1cfb8870ee");
     if (!res.ok) throw new Error("ipinfo failed");
-    const info = await res.json();
-    // ipinfo: { country: "GB", loc: "lat,lon", city: "Dundee", ... }
-    const iso2 = (info && info.country) || "GB";
-    const [lat, lon] =
-      info && info.loc ? info.loc.split(",").map(parseFloat) : [null, null];
-    const area = info && info.city ? info.city : null;
-    const classification = classifyCountry(iso2);
+    const info = await res.json(); // { country: "GB", loc: "56.46,-2.97", city: "Dundee", ... }
+
+    const iso2 = (
+      info && info.country ? String(info.country) : "GB"
+    ).toUpperCase();
+    const [rawLat, rawLon] = info?.loc
+      ? info.loc.split(",").map((v) => parseFloat(v))
+      : [null, null];
+    const lat = Number.isFinite(rawLat) ? rawLat : null;
+    const lon = Number.isFinite(rawLon) ? rawLon : null;
+
+    // Try to get proper country name & improved city via reverse geocode when coords exist
+    let reverse = null;
+    if (lat != null && lon != null) {
+      try {
+        reverse = await reverseGeocode(lat, lon);
+      } catch (e) {
+        /* non-fatal */
+      }
+    }
+
+    // Make a readable country name from ISO2 (e.g., "GB" -> "United Kingdom")
+    let countryName = null;
+    try {
+      countryName =
+        new Intl.DisplayNames(["en"], { type: "region" }).of(iso2) || iso2;
+    } catch {
+      countryName = iso2; // fallback if Intl not supported
+    }
+
+    // Prefer reverse-geocoded locality; fall back to ipinfo city
+    const city = normalizeCity({ city: info?.city || null }, reverse);
+    const friendlyCountry = reverse?.countryName || countryName;
+
     const payload = {
-      iso2,
-      country: iso2,
-      lat: Number.isFinite(lat) ? lat : null,
-      lon: Number.isFinite(lon) ? lon : null,
-      area, // rough city from IP
-      classification,
+      iso2, // "GB"
+      country: friendlyCountry, // "United Kingdom"
+      city: city || null, // "Dundee"
+      lat,
+      lon,
+      area: city || null, // back-compat
+      classification: classifyCountry(iso2),
       ts: Date.now(),
     };
+
     _writeCache(payload);
     dispatchLocationUpdated(payload);
-    return payload;
+    return payload; // <-- important: return the object you just saved/dispatched
   } catch (err) {
-    // fallback to GB for styling
+    // 3) Fallback (no IP info)
     const fallback = {
       iso2: "GB",
       country: "GB",
+      city: null,
       lat: null,
       lon: null,
       area: null,
@@ -130,59 +194,88 @@ export async function initializeLocation() {
   }
 }
 
-// ---- Stage 2: precise browser geolocation + reverse geocode ----
+// ---------- Precise browser geolocation path (ONE definition) ----------
 export async function refineWithBrowserLocation() {
-  const pos = await new Promise((resolve, reject) => {
-    if (!navigator.geolocation)
-      return reject(new Error("geolocation unsupported"));
-    navigator.geolocation.getCurrentPosition(resolve, reject, {
-      enableHighAccuracy: true,
-      timeout: 12000,
-    });
+  return new Promise((resolve) => {
+    if (!navigator.geolocation) {
+      console.warn("geolocation unsupported");
+      return resolve(null);
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      async (pos) => {
+        const lat = pos.coords.latitude;
+        const lon = pos.coords.longitude;
+
+        let reverse = null;
+        try {
+          reverse = await reverseGeocode(lat, lon); // BigDataCloud
+        } catch (e) {
+          console.warn("Reverse geocode failed", e);
+        }
+
+        const saved = JSON.parse(localStorage.getItem("profileGeo") || "{}");
+
+        // ISO2 from reverse (preferred) or saved cache, then convert to readable name
+        const iso2 = (reverse?.countryCode || saved.iso2 || "GB").toUpperCase();
+
+        let countryName;
+        try {
+          countryName =
+            new Intl.DisplayNames(["en"], { type: "region" }).of(iso2) || iso2;
+        } catch {
+          countryName = iso2;
+        }
+
+        // Prefer reverse-geocoded locality for city; fall back to saved city
+        const city =
+          (reverse?.city ||
+            reverse?.locality ||
+            reverse?.principalSubdivisionLocality ||
+            null) ??
+          saved.city ??
+          null;
+
+        const merged = {
+          ...saved,
+          iso2,
+          country: reverse?.countryName || countryName, // prefer BigDataCloud’s full name
+          city,
+          lat,
+          lon,
+          area: city ?? saved.area ?? null, // keep "area" for back-compat
+          classification: classifyCountry(iso2),
+          ts: Date.now(),
+        };
+
+        localStorage.setItem("profileGeo", JSON.stringify(merged));
+        document.dispatchEvent(
+          new CustomEvent("location:updated", { detail: merged }),
+        );
+        resolve(merged);
+      },
+      (err) => {
+        console.warn("Browser geolocation denied/failed", err);
+        resolve(null);
+      },
+      { enableHighAccuracy: false, timeout: 12000, maximumAge: 0 },
+    );
   });
-
-  const lat = pos.coords.latitude;
-  const lon = pos.coords.longitude;
-
-  // Reverse geocode (no key required for this endpoint)
-  const url = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${encodeURIComponent(lat)}&longitude=${encodeURIComponent(lon)}&localityLanguage=en`;
-  const r = await fetch(url);
-  const data = await r.json();
-
-  // BigDataCloud fields: { countryCode, countryName, city, locality, principalSubdivision, ... }
-  const iso2 = (data && data.countryCode) || getCachedGeo()?.iso2 || "GB";
-  const area =
-    data?.city || data?.locality || data?.principalSubdivision || null;
-  const classification = classifyCountry(iso2);
-
-  const merged = {
-    ...(getCachedGeo() || {}),
-    iso2,
-    country: iso2,
-    lat,
-    lon,
-    area,
-    classification,
-    ts: Date.now(),
-  };
-
-  _writeCache(merged);
-  dispatchLocationUpdated(merged);
-  return merged;
 }
 
-// ---- Utils to read current values for UI ----
+// ---------- Read helpers for UI ----------
 export function getCurrentCountryCode() {
   return getCachedGeo()?.iso2 || "GB";
 }
 export function getCurrentArea() {
-  return getCachedGeo()?.area || null;
+  const g = getCachedGeo();
+  return g?.city || g?.area || null; // prefer city
 }
 export function getCurrentClassification() {
   return getCachedGeo()?.classification || null;
 }
 
-// ---- Event to notify UI pieces ----
+// ---------- Event dispatcher ----------
 export function dispatchLocationUpdated(detail) {
   document.dispatchEvent(new CustomEvent("location:updated", { detail }));
 }
