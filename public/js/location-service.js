@@ -99,20 +99,6 @@ function getCachedGeo() {
 }
 
 // ---------- Reverse geocode (BigDataCloud, no key) ----------
-async function reverseGeocode(lat, lon, lang = "en") {
-  const ctrl = new AbortController();
-  const timeout = setTimeout(() => ctrl.abort(), 8000);
-  try {
-    const res = await fetch(
-      `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${encodeURIComponent(lat)}&longitude=${encodeURIComponent(lon)}&localityLanguage=${encodeURIComponent(lang)}`,
-      { signal: ctrl.signal },
-    );
-    if (!res.ok) throw new Error(`Reverse geocode failed: ${res.status}`);
-    return await res.json(); // { city, locality, principalSubdivision, countryName, countryCode, ... }
-  } finally {
-    clearTimeout(timeout);
-  }
-}
 
 // ---------- Core: initialize from IP (and refine if lat/lon present) ----------
 export async function initializeLocation() {
@@ -279,3 +265,127 @@ export function getCurrentClassification() {
 export function dispatchLocationUpdated(detail) {
   document.dispatchEvent(new CustomEvent("location:updated", { detail }));
 }
+
+// ===== Precise Location Flow =====
+
+// LocalStorage key used by the app
+const LS_KEY_USER_LOCATION = "userLocation"; // { lat, lon, area, source, ts }
+
+function setUIBusy(isBusy) {
+  const btn = document.querySelector(
+    '#checkLocationBtn, [data-action="checklocation"]',
+  );
+  if (!btn) return;
+  btn.disabled = !!isBusy;
+  btn.dataset.loading = isBusy ? "1" : "0"; // if you style [data-loading="1"] as a spinner
+}
+
+// Update whatever node currently shows the IP-based location.
+// We try a few selectors to match your existing UI without changing markup.
+function updateLocationUI(area, from = "gps") {
+  const nodes = [
+    document.querySelector("#ipLocationText"),
+    document.querySelector('[data-role="ip-location-text"]'),
+    document.querySelector(".ip-location .text"),
+    document.querySelector("#locationText"),
+  ].filter(Boolean);
+
+  nodes.forEach((n) => (n.textContent = area || "Location unavailable"));
+
+  // Tiny inline feedback
+  const toast = document.createElement("span");
+  toast.textContent = from === "gps" ? " ✓ updated" : " ✓";
+  toast.style.marginLeft = "6px";
+  toast.style.opacity = "0.85";
+  nodes[0]?.appendChild(toast);
+  setTimeout(() => toast.remove(), 1500);
+}
+
+// Safe wrapper to store the latest location
+function saveLocationToLocalStorage({ lat, lon, area, source }) {
+  try {
+    const payload = {
+      lat,
+      lon,
+      area,
+      source, // 'gps' | 'ip'
+      ts: Date.now(),
+    };
+    localStorage.setItem(LS_KEY_USER_LOCATION, JSON.stringify(payload));
+  } catch (_) {}
+}
+
+// Free reverse-geocode (no key required)
+async function reverseGeocode(lat, lon, lang = "en") {
+  const url = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${encodeURIComponent(lat)}&longitude=${encodeURIComponent(lon)}&localityLanguage=${encodeURIComponent(lang)}`;
+  const r = await fetch(url, { method: "GET" });
+  if (!r.ok) throw new Error("reverse geocode failed");
+  const d = await r.json();
+
+  // Compose a friendly area string (e.g., “Shoreditch, London, GB”)
+  const parts = [
+    d.locality || d.city || d.localityInfo?.administrative?.[0]?.name,
+    d.principalSubdivision || d.region,
+    d.countryCode,
+  ].filter(Boolean);
+
+  return {
+    area: parts.join(", "),
+    raw: d,
+  };
+}
+
+async function requestPreciseLocation() {
+  if (!("geolocation" in navigator)) {
+    throw new Error("Geolocation not supported");
+  }
+  return new Promise((resolve, reject) => {
+    navigator.geolocation.getCurrentPosition(
+      (pos) => resolve(pos.coords),
+      (err) => reject(err),
+      {
+        enableHighAccuracy: true,
+        timeout: 15000, // 15s
+        maximumAge: 0,
+      },
+    );
+  });
+}
+
+// Main entry when user clicks "Check Location"
+export async function handleCheckLocationClick() {
+  try {
+    setUIBusy(true);
+
+    // 1) Get precise GPS
+    const coords = await requestPreciseLocation();
+
+    // 2) Reverse-geocode to a readable area
+    const { area } = await reverseGeocode(coords.latitude, coords.longitude);
+
+    // 3) Save to localStorage
+    saveLocationToLocalStorage({
+      lat: coords.latitude,
+      lon: coords.longitude,
+      area,
+      source: "gps",
+    });
+
+    // 4) Update the same UI spot where IP result appears
+    updateLocationUI(area, "gps");
+  } catch (err) {
+    console.error("checklocation failed:", err);
+    // Show friendly error
+    updateLocationUI("Unable to get precise location");
+  } finally {
+    setUIBusy(false);
+  }
+}
+
+document.addEventListener("click", (e) => {
+  const t = e.target;
+  if (t.matches('#checkLocationBtn, [data-action="checklocation"]')) {
+    e.preventDefault();
+    handleCheckLocationClick();
+  }
+});
