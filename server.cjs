@@ -2,7 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const path = require("path");
 const app = express();
-const PORT = process.env.PORT || 3003;
+const PORT = process.env.PORT || 3000;
 
 // Trust proxy headers to correctly identify client IP when behind a proxy
 app.set("trust proxy", 1);
@@ -18,6 +18,7 @@ const {
 
 const fs = require("fs");
 const { enrichIp } = require("./utils/ipEnricher.cjs");
+const devRouter = require("./dev_dashboard/routes/dev.cjs");
 
 const LOG_FILE = path.join(__dirname, "logs", "ip_logs.jsonl");
 fs.mkdirSync(path.dirname(LOG_FILE), { recursive: true });
@@ -58,6 +59,7 @@ if (process.env.NODE_ENV !== "test") {
     return csrfProtection(req, res, next);
   });
 }
+app.use("/dev", devRouter);
 
 app.post("/track", async (req, res) => {
   // 1) Respond immediately (to prevent browser from disconnecting)

@@ -4,7 +4,7 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Launch Arclight_App on Local 3003",
+      "name": "Launch Arclight_App on Local 3000",
       "program": "${workspaceFolder}/server.cjs",
       "cwd": "${workspaceFolder}/Arclight_App",
       "runtimeArgs": ["--inspect-brk"],
@@ -12,7 +12,7 @@
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
       "env": {
-        "PORT": "3003"
+        "PORT": "3000"
       }
     }
   ]
