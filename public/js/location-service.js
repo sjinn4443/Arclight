@@ -1,4 +1,4 @@
-// public/scripts/location-service.js
+// public/js/location-service.js
 
 const GEO_CACHE_KEY = "profileGeo"; // stores { iso2, country, city, lat, lon, area, classification, ts }
 const GEO_CACHE_TTL_MS = 24 * 60 * 60 * 1000; // 24 hours
@@ -105,7 +105,7 @@ async function reverseGeocode(lat, lon, lang = "en") {
   try {
     const res = await fetch(
       `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${encodeURIComponent(lat)}&longitude=${encodeURIComponent(lon)}&localityLanguage=${encodeURIComponent(lang)}`,
-      { signal: ctrl.signal },
+      { signal: ctrl.signal }
     );
     if (!res.ok) throw new Error(`Reverse geocode failed: ${res.status}`);
     return await res.json(); // { city, locality, principalSubdivision, countryName, countryCode, ... }
@@ -250,7 +250,7 @@ export async function refineWithBrowserLocation() {
 
         localStorage.setItem("profileGeo", JSON.stringify(merged));
         document.dispatchEvent(
-          new CustomEvent("location:updated", { detail: merged }),
+          new CustomEvent("location:updated", { detail: merged })
         );
         resolve(merged);
       },
@@ -258,7 +258,7 @@ export async function refineWithBrowserLocation() {
         console.warn("Browser geolocation denied/failed", err);
         resolve(null);
       },
-      { enableHighAccuracy: false, timeout: 12000, maximumAge: 0 },
+      { enableHighAccuracy: false, timeout: 12000, maximumAge: 0 }
     );
   });
 }

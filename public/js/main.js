@@ -7,6 +7,7 @@ import { initializeMenu, closeMenu, openMenu } from "./menu.js";
 import { initializePWA } from "./pwa.js";
 import { wireGlobalNavigation } from "./navigation.js";
 import { initializeVideoPlayers, initializeToolbar } from "./video.js";
+import { initializeLocation } from "./location-service.js";
 
 // === App bootstrap ===
 /**
@@ -15,6 +16,7 @@ import { initializeVideoPlayers, initializeToolbar } from "./video.js";
  */
 document.addEventListener("DOMContentLoaded", () => {
   // Init global systems once
+  initializeLocation().catch((e) => console.warn("[geo] init failed", e));
   initializeMenu();
 
   document.addEventListener("click", (e) => {
@@ -101,7 +103,7 @@ window.addEventListener("page:loaded", (e) => {
       btn.addEventListener("click", (ev) => {
         ev.preventDefault();
         openMenu();
-      }),
+      })
     );
   } catch {}
 });
@@ -176,7 +178,7 @@ const routeName =
   document.body?.dataset?.route ||
   (location.pathname.split("/").pop() || "index.html").replace(
     /\.html$/i,
-    "",
+    ""
   ) ||
   "index";
 
@@ -300,7 +302,7 @@ document.addEventListener("DOMContentLoaded", initializePupilsMenu);
     document;
 
   const cards = eyesRoot.querySelectorAll(
-    "[data-card-id], [data-key], [data-image-name], .eyes-card, .card",
+    "[data-card-id], [data-key], [data-image-name], .eyes-card, .card"
   );
 
   function normalizeName(s) {
@@ -330,7 +332,7 @@ document.addEventListener("DOMContentLoaded", initializePupilsMenu);
       if (hasPrefix && hasExt) return explicit; // already full filename
       const base = hasPrefix ? explicit.slice(PREFIX.length) : explicit;
       const normalized = normalizeName(
-        base.replace(new RegExp(EXT + "$", "i"), ""),
+        base.replace(new RegExp(EXT + "$", "i"), "")
       );
       return PREFIX + normalized + EXT;
     }
@@ -355,7 +357,7 @@ document.addEventListener("DOMContentLoaded", initializePupilsMenu);
       imgEl.setAttribute(
         "alt",
         imgEl.getAttribute("alt") ||
-          filename.replace(/^car_/, "").replace(/\.webp$/i, ""),
+          filename.replace(/^car_/, "").replace(/\.webp$/i, "")
       );
       return;
     }
