@@ -15,9 +15,7 @@
     "lint": "eslint . --ext .js,.ts",
     "type-check": "tsc --noEmit",
     "format": "prettier --write .",
-    "format:check": "prettier --check .",
-    "format:dist": "prettier --write dist/",
-    "lint:dist": "eslint dist/ --fix"
+    "format:check": "prettier --check ."
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,cjs,css,html,json,md}": "prettier --write"
