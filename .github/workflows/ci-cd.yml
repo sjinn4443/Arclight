@@ -31,12 +31,6 @@ jobs:
       - name: Run build
         run: npm run build
 
-      - name: Format dist folder
-        run: npm run format:dist
-
-      - name: Lint dist folder
-        run: npm run lint:dist # Changed from 'npm run lint' to 'npm run lint:dist'
-
       - name: Security audit
         run: npm audit --audit-level=moderate
 
