@@ -19,7 +19,7 @@ export function initializeLearningModules() {
  * Initializes event listeners for various buttons and cards within the learning modules.
  * This function maps button IDs to their respective handlers and card IDs to page navigation.
  */
-function initializeLearningModulesImpl() {
+function _initializeLearningModulesImpl() {
   const buttonMappings = {
     showLearningModulesBtn: showLearningModules,
     showEarsLearningModulesBtn: showEarsLearningModules,

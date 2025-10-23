@@ -57,14 +57,14 @@ export function initializeIntro() {
     // Update helpers
     try {
       window.currentPageName = TARGET_ID;
-    } catch (e) {}
+    } catch (_e) {}
     try {
       window.historyStack && window.historyStack.push(TARGET_ID);
-    } catch (e) {}
+    } catch (_e) {}
     try {
       typeof window.updateBottomNavBar === "function" &&
         window.updateBottomNavBar(TARGET_ID);
-    } catch (e) {}
+    } catch (_e) {}
   }
 
   function onExploreClick(ev) {

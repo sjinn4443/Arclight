@@ -4,7 +4,7 @@ const csp = helmet.contentSecurityPolicy({
   directives: {
     defaultSrc: ["'self'"],
     scriptSrc: ["'self'"], // All scripts should be served from the same origin
-    styleSrc: ["'self'", "https://fonts.googleapis.com"], // Allow Google Fonts stylesheets
+    styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"], // Allow Google Fonts stylesheets
     imgSrc: ["'self'", "data:", "https://*.tile.openstreetmap.org"], // Images from same origin, data URIs, and OSM tiles
     connectSrc: [
       "'self'",

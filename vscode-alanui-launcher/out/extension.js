@@ -61,7 +61,7 @@ exports.deactivate = deactivate;
 const vscode = __importStar(require("vscode"));
 const child_process = __importStar(require("child_process"));
 function activate(context) {
-  console.log(
+  console.warn(
     'Congratulations, your extension "vscode-alanui-launcher" is now active!',
   );
   const disposable = vscode.commands.registerCommand(
@@ -119,7 +119,7 @@ function activate(context) {
               return;
             }
             if (stdout) {
-              console.log(`stdout: ${stdout}`);
+              console.warn(`stdout: ${stdout}`);
             }
             if (stderr) {
               console.warn(`stderr: ${stderr}`);

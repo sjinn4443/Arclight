@@ -19,10 +19,10 @@ export function initializeQuizzes() {
 
 function initializeQuizzesImpl() {
   // This function could be expanded if more quizzes are added.
-  // For now, the quiz logic is self-contained in launchQuiz and the IIFE.
+  // For now, the quiz logic is self-contained in _launchQuiz and the IIFE.
 }
 
-function launchQuiz() {
+function _launchQuiz() {
   const previousPage =
     document.querySelector(".page.active")?.id || "dashboard";
   const quizPageId = "directOphthalmoscopyQuizPage";
@@ -165,7 +165,7 @@ function launchQuiz() {
   showPage(quizPageId);
 }
 
-function renderQuestion(caseIndex, questionIndex) {
+function _renderQuestion(caseIndex, questionIndex) {
   const c = cases[caseIndex];
   const q = c.questions[questionIndex];
   elements.caseTitle.textContent = `Case ${caseIndex + 1}`;
@@ -200,7 +200,7 @@ function updateButtons() {
   elements.nextCaseBtn.style.display = allAnswered ? "block" : "none";
 }
 
-function showScore() {
+function _showScore() {
   elements.quizCard.style.display = "none";
   elements.scoreCard.style.display = "block";
   let correctCount = 0;
@@ -214,7 +214,7 @@ function showScore() {
   } correct.`;
 }
 
-function buildReview() {
+function _buildReview() {
   elements.reviewContent.innerHTML = "";
   cases.forEach((c, caseIdx) => {
     const caseDiv = document.createElement("div");

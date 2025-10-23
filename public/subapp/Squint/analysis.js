@@ -89,10 +89,10 @@ function transformOutput(text, prefix) {
  * Determine a condition category based on the generated output text.
  *
  * @param {string} text - The output text from script.js.
- * @param {string} eyeType - The eye identifier ("LE" or "RE")
+ * @param {string} _eyeType - The eye identifier ("LE" or "RE")
  * @returns {string} - The condition classification.
  */
-function determineCondition(text, eyeType) {
+function determineCondition(text, _eyeType) {
   let content = text.toLowerCase();
 
   // If the output is neutral, return empty.
@@ -314,8 +314,6 @@ function determinePupilCondition(rightText, leftText) {
 }
 
 // Global cache variables
-let lastAnalysisHTML = "";
-let lastPalsyImageHTML = "";
 
 function updateAnalysisOutput() {
   // Reset any global Horner flag if used.

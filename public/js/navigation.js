@@ -82,19 +82,6 @@ function ensureGuestModal() {
   });
 }
 
-// Increment the guest click count; returns true if allowed, false if blocked
-function guestClickAllowed() {
-  if (!isGuestMode()) return true;
-
-  const current = getGuestClicks();
-  if (current >= MAX_GUEST_CLICKS) {
-    ensureGuestModal();
-    return false;
-  }
-  setGuestClicks(current + 1);
-  return true;
-}
-
 // Decide which UI interactions count as a "click"
 function isCountableClick(target) {
   if (!target) return false;
@@ -193,8 +180,8 @@ function updateGlobalBackVisibility(routeName) {
 }
 
 // Keep the back button visible only on allowed routes
-window.addEventListener("page:loaded", (e) => {
-  const routeName = e?.detail?.routeName;
+window.addEventListener("page:loaded", (_e) => {
+  const routeName = _e?.detail?.routeName;
   updateGlobalBackVisibility(routeName);
 });
 
@@ -329,8 +316,8 @@ export async function loadPage(routeName, options = {}) {
   } catch {}
 
   // Debug (optional)
-  console.log("[router] loaded route:", routeName, "bytes=", html.length);
-  console.log(
+  console.warn("[router] loaded route:", routeName, "bytes=", html.length);
+  console.warn(
     "[router] .page count:",
     container.querySelectorAll(".page").length,
   );
@@ -411,7 +398,7 @@ export function goBack() {
         loadPage(ret, { replace: true });
         return;
       }
-    } catch (e) {
+    } catch (_e) {
       /* fall through */
     }
   }

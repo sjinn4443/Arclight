@@ -290,29 +290,6 @@ export function initializeEyesCatalog() {
     return out;
   };
 
-  /**
-   * Navigates to a specific video section. If already on the videos page, it uses `window.showPage`.
-   * Otherwise, it constructs a URL to navigate to the videos page with the target section.
-   * @param {string} targetId - The ID of the video section to navigate to.
-   */
-  function goToVideos(targetId) {
-    if (!targetId) return;
-    const onVideos =
-      /\/videos\.html(\?|#|$)/i.test(location.pathname) ||
-      /videos\.html/i.test(location.href);
-    if (onVideos && typeof window.showPage === "function") {
-      window.showPage(targetId); // baseline behavior when already there
-    } else {
-      location.href = `videos.html#${encodeURIComponent(targetId)}`; // bridge
-    }
-  }
-
-  // --- Render helper (heart INSIDE the button, baseline-style) ---
-  /**
-   * Renders a list of items into a specified container as clickable cards with 'like' functionality.
-   * @param {string} containerId - The ID of the container element to render items into.
-   * @param {Array<Object>} items - An array of item objects, each with `label`, `target`, and `tags`.
-   */
   // Renders a carousel with disabled states for missing targets
   const render = (containerId, items) => {
     const el = pageEl.querySelector(`#${containerId}`);
@@ -320,7 +297,7 @@ export function initializeEyesCatalog() {
     const likes = getLikes();
 
     // Helper: can this item actually navigate?
-    const isNavigable = (target, tags = []) => {
+    const isNavigable = (target, _tags = []) => {
       if (!target || target === "comingSoon") return false;
 
       // Video sections handled on /videos via goToVideosSection

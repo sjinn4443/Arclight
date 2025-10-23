@@ -238,7 +238,7 @@ describe("UI Integration Tests", () => {
     });
 
     // Spy on window.dispatchEvent
-    const dispatchSpy = jest.spyOn(window, "dispatchEvent");
+    jest.spyOn(window, "dispatchEvent");
     jest.spyOn(navigation, "loadPage");
 
     // Mock the event listeners for page:loaded and page:rendered

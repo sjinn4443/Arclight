@@ -30,7 +30,7 @@ function sendOne() {
     .finally(() => {
       inFlight--;
       if (sent >= tot && inFlight === 0) {
-        console.log("Done. Summary:", codes);
+        console.warn("Done. Summary:", codes);
       } else if (sent < tot) {
         sendOne();
       }

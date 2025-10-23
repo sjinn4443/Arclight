@@ -24,7 +24,7 @@ export function initializeMisc() {
  * Implementation for miscellaneous initializations, including image zoom for Atoms Card and Ear Health images.
  * This function is part of the auto-migrated legacy script.
  */
-function initializeMiscImpl() {
+function _initializeMiscImpl() {
   // Atom image zoom
   const atomsImgContainer = document.getElementById("atomsImageContainer");
   if (atomsImgContainer) {

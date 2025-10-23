@@ -2,9 +2,9 @@
 import {
   initializeLocation,
   refineWithBrowserLocation,
-  getCurrentCountryCode,
+  _getCurrentCountryCode,
 } from "./location-service.js";
-import { pushLocalStorageToServer } from "./home-data.js";
+import { _pushLocalStorageToServer } from "./home-data.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
   // Get the element where we show the location
@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   try {
     const data = await initializeLocation();
-    console.debug("initializeLocation() →", data);
+    console.warn("initializeLocation() →", data);
     updateLocationText(data);
   } catch (err) {
     console.warn("initializeLocation() failed:", err);

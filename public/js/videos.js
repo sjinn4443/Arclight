@@ -54,7 +54,6 @@ export function initializeVideos() {
     document.body;
 
   // Always hide first; we’ll reveal only when the target section exists.
-  const suppress = true;
   if (root) root.style.visibility = "hidden";
 
   // Resolve the target (global → sessionStorage)
@@ -62,7 +61,7 @@ export function initializeVideos() {
   if (!pending) {
     try {
       pending = sessionStorage.getItem("gotoSubPage") || "";
-    } catch (e) {}
+    } catch (_e) {}
   }
 
   // Utility: wait until an element with this id exists (then resolve).
@@ -80,7 +79,7 @@ export function initializeVideos() {
   const reveal = () => {
     try {
       sessionStorage.removeItem("gotoSubPage");
-    } catch (e) {}
+    } catch (_e) {}
     window.__videosPendingTarget = "";
     window.__videosSuppressFlash = false;
     if (root) {
@@ -189,7 +188,7 @@ export function goToVideosSection(sectionId, opts = {}) {
   // Clear the pending hint once we navigated
   try {
     delete window.__videosPendingTarget;
-  } catch (_) {
+  } catch {
     window.__videosPendingTarget = null;
   }
 }
@@ -198,7 +197,7 @@ export function goToVideosSection(sectionId, opts = {}) {
 document.addEventListener("DOMContentLoaded", () => {
   try {
     initializeVideoPlayers();
-  } catch (e) {}
+  } catch (_e) {}
 });
 
 // --- Direct Ophthalmoscopy toolbar wiring + nav-aware pausing ---
@@ -224,10 +223,12 @@ function bindDirectOphthalmoscopyToolbar() {
   wire(tsBtn, () => {
     if (!video) return;
     const t = Math.floor(video.currentTime || 0);
-    console.log("Timestamp:", t);
+    console.warn("Timestamp:", t);
     try {
       if (navigator.clipboard) navigator.clipboard.writeText(String(t));
-    } catch (_) {}
+    } catch {
+      /* ignore */
+    }
   });
 
   wire(noteBtn, () => {
@@ -274,7 +275,7 @@ window.addEventListener("page:loaded", (e) => {
 });
 
 // Util: wait for an element to appear
-function waitForEl(selector, timeout = 4000) {
+function _waitForEl(selector, timeout = 4000) {
   return new Promise((resolve, reject) => {
     const el = document.querySelector(selector);
     if (el) return resolve(el);
@@ -306,7 +307,9 @@ async function resolveQuizUrl() {
     try {
       const r = await fetch(url, { method: "HEAD" });
       if (r.ok) return url;
-    } catch (_) {}
+    } catch {
+      /* ignore */
+    }
   }
   return null;
 }
@@ -321,7 +324,7 @@ async function tryLoadQuizFragment() {
       // tiny breath for DOM injection
       await new Promise((r) => setTimeout(r, 0));
       if (document.getElementById("anteriorSegmentQuizPage")) return;
-    } catch (_) {
+    } catch {
       // keep trying the next key
     }
   }
@@ -373,7 +376,7 @@ async function openAnteriorSegmentQuiz() {
       Make sure the <code>AnteriorSegmentQuiz/</code> folder is deployed next to your app root.
     </div>`;
   } else {
-    iframe.onload = () => console.log("Quiz iframe loaded:", quizUrl);
+    iframe.onload = () => console.warn("Quiz iframe loaded:", quizUrl);
     iframe.onerror = () => console.error("Quiz iframe failed:", quizUrl);
     iframe.src = quizUrl;
   }

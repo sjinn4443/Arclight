@@ -3,7 +3,7 @@
  */
 
 import { loadPage } from "./navigation.js";
-import { initializePWA, canInstall, promptInstall } from "./pwa.js";
+import { _initializePWA, canInstall, promptInstall } from "./pwa.js";
 import { setLanguage, getLanguage } from "./i18n.js";
 
 /**
@@ -86,7 +86,7 @@ export function initializeLanguageInstall() {
 
         if (!accepted) {
           // User cancelled → stay on language page
-          console.log(
+          console.warn(
             "[install] user dismissed install prompt; staying on page",
           );
           return;
@@ -111,7 +111,7 @@ export function initializeLanguageInstall() {
             type: "CACHE_ASSETS",
             payload: pagesToCache,
           });
-          console.log(
+          console.warn(
             "[install] sent CACHE_ASSETS to SW:",
             pagesToCache.length,
           );

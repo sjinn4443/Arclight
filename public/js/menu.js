@@ -21,7 +21,7 @@ function renderProfileLocation() {
       if (data.iso2) iso = data.iso2;
       if (data.area) area = data.area;
     }
-  } catch (_) {
+  } catch {
     /* ignore */
   }
 

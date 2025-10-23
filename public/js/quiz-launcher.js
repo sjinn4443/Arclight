@@ -1,4 +1,4 @@
-function launchQuiz() {
+function _launchQuiz() {
   const previousPage =
     document.querySelector(".page.active")?.id || "dashboard";
   const quizPageId = "directOphthalmoscopyQuizPage";

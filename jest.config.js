@@ -1,10 +1,25 @@
-module.exports = {
+export default {
   transform: {
-    "^.+\\.(js|jsx|ts|tsx)$": "babel-jest",
+    "^.+\\.(js|jsx|ts|tsx)$": [
+      "babel-jest",
+      {
+        presets: [
+          [
+            "@babel/preset-env",
+            {
+              // Allow ES modules
+              targets: {
+                node: "current",
+              },
+            },
+          ],
+        ],
+        // sourceType: "module", // Removed to avoid conflicts with modules: "commonjs"
+      },
+    ],
   },
-  testEnvironment: "jsdom",
+  testEnvironment: "node", // Use Node.js environment for tests
   setupFilesAfterEnv: ["./tests/jest.setup.js"],
   moduleFileExtensions: ["js", "json", "jsx", "ts", "tsx", "node"],
-  transformIgnorePatterns: ["node_modules/(?!(module-to-ignore)/)"],
   testTimeout: 30000, // Increase global test timeout to 30 seconds
 };

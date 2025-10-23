@@ -10,7 +10,7 @@ export function initializePWA() {
     e.preventDefault();
     deferredPrompt = e;
     // document.getElementById('installPopup')?.style && (document.getElementById('installPopup').style.display = 'block');
-    console.log("[pwa] beforeinstallprompt captured");
+    console.warn("[pwa] beforeinstallprompt captured");
   });
 
   // 2) Register Service Worker (required for install prompt on Chrome)
@@ -20,7 +20,7 @@ export function initializePWA() {
   ) {
     navigator.serviceWorker
       .register("sw.js")
-      .then((reg) => console.log("[pwa] SW registered", reg.scope))
+      .then((reg) => console.warn("[pwa] SW registered", reg.scope))
       .catch((err) => console.warn("[pwa] SW register failed", err));
   }
 }
@@ -39,7 +39,7 @@ export async function promptInstall() {
   deferredPrompt.prompt();
   try {
     const { outcome } = await deferredPrompt.userChoice; // 'accepted' | 'dismissed'
-    console.log("[pwa] userChoice:", outcome);
+    console.warn("[pwa] userChoice:", outcome);
     return outcome;
   } finally {
     deferredPrompt = null; // can only be used once

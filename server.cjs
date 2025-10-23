@@ -52,7 +52,7 @@ app.use(corsMiddleware);
 // Apply cookie-parser, session, and CSRF protection
 // Apply cookie-parser, session, and CSRF protection only if not in test environment
 if (process.env.NODE_ENV !== "test") {
-  app.use(cookieParser);
+  app.use(cookieParser());
   app.use(sessionMiddleware);
   app.use((req, res, next) => {
     if (req.path === "/track") return next();

@@ -1168,7 +1168,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-async function downloadSelectedAssets() {
+async function _downloadSelectedAssets() {
   const selected = Array.from(
     document.querySelectorAll(
       '#offlineContentModal input[type="checkbox"]:checked',

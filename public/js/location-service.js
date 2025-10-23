@@ -110,7 +110,6 @@ export async function initializeLocation() {
   }
 
   // 2) Seed from ipinfo
-  let base = null;
   try {
     const res = await fetch("https://ipinfo.io/json?token=90ea1cfb8870ee");
     if (!res.ok) throw new Error("ipinfo failed");
@@ -130,7 +129,7 @@ export async function initializeLocation() {
     if (lat != null && lon != null) {
       try {
         reverse = await reverseGeocode(lat, lon);
-      } catch (e) {
+      } catch (_e) {
         /* non-fatal */
       }
     }
@@ -240,8 +239,8 @@ export async function refineWithBrowserLocation() {
         );
         resolve(merged);
       },
-      (err) => {
-        console.warn("Browser geolocation denied/failed", err);
+      (_err) => {
+        console.warn("Browser geolocation denied/failed", _err);
         resolve(null);
       },
       { enableHighAccuracy: false, timeout: 12000, maximumAge: 0 },

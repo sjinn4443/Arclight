@@ -11,7 +11,7 @@ export function initializeTOC() {
 // ensure they are invoked from main.js on `page:loaded` where relevant.
 // Functions: initializeTOC
 
-function initializeTOCImpl() {
+function _initializeTOCImpl() {
   const tocToggleBtn = document.getElementById("tocToggleBtn");
   if (tocToggleBtn) {
     tocToggleBtn.addEventListener("click", openTOC);

@@ -17,10 +17,10 @@ async function convertImagesInDirectory(directoryPaths) {
             path.basename(file.name, ".png") + ".webp",
           );
           await sharp(inputPath).toFile(outputPath);
-          console.log(`Converted ${inputPath} to ${outputPath}`);
+          console.warn(`Converted ${inputPath} to ${outputPath}`);
         }
       }
-      console.log(`Image conversion complete in ${directoryPath}!`);
+      console.warn(`Image conversion complete in ${directoryPath}!`);
     } catch (error) {
       console.error(`Error converting images in ${directoryPath}:`, error);
     }
