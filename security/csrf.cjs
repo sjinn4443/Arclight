@@ -1,9 +1,23 @@
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const crypto = require("crypto");
+const redis = require("redis");
+const { RedisStore } = require("connect-redis"); // Correctly import RedisStore from the module
+
+// Configure Redis client
+const redisClient = redis.createClient({
+  url: process.env.REDIS_URL,
+});
+
+redisClient.on("error", (err) => console.error("Redis Client Error", err));
+redisClient.connect().catch(console.error);
+
+// Create a new RedisStore instance
+const redisStore = new RedisStore({ client: redisClient });
 
 // Configure session middleware
 const sessionMiddleware = session({
+  store: redisStore, // Use the instantiated RedisStore
   secret: process.env.SESSION_SECRET || "supersecretkey", // Replace with a strong, unique secret from environment variables
   resave: false,
   saveUninitialized: true,
