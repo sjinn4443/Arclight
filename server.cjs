@@ -4,6 +4,14 @@ const path = require("path");
 const app = express();
 const PORT = process.env.PORT || 3000;
 const HOST = "0.0.0.0";
+console.log(
+  "BOOT => NODE_ENV:",
+  process.env.NODE_ENV,
+  "PORT env:",
+  process.env.PORT,
+  "resolved:",
+  PORT,
+);
 
 // Trust proxy headers to correctly identify client IP when behind a proxy
 app.set("trust proxy", 1);
@@ -20,6 +28,7 @@ const {
 const fs = require("fs");
 const { enrichIp } = require("./utils/ipEnricher.cjs");
 const devRouter = require("./dev_dashboard/routes/dev.cjs");
+const requireDevAuth = require("./security/requireDevAuth.cjs"); // Import requireDevAuth
 const os = require("os"); // Import os module
 
 let _logFile = path.join(__dirname, "logs", "ip_logs.jsonl");
@@ -77,7 +86,20 @@ if (process.env.NODE_ENV !== "test") {
     return csrfProtection(req, res, next);
   });
 }
-app.use("/dev", devRouter);
+// static & index
+app.get("/", (_req, res) =>
+  res.sendFile(path.join(__dirname, "public/index.html")),
+);
+
+// protect only /dev
+app.use(
+  "/dev",
+  express.urlencoded({ extended: false }),
+  requireDevAuth, // your gate
+  devRouter,
+);
+
+app.get("/health", (_req, res) => res.status(200).send("OK"));
 
 app.post("/track", async (req, res) => {
   // In a test environment, we write the log synchronously and wait for it to
@@ -214,8 +236,8 @@ module.exports.setLogFileForTesting = setLogFileForTesting;
 module.exports.getLogFilePath = getLogFilePath;
 
 if (require.main === module) {
-  app.listen(PORT, HOST, () => {
-    console.log(`Server running at http://localhost:${PORT}`);
-    console.log(`Server listening on http://${HOST}:${PORT}`);
+  app.listen(PORT, "0.0.0.0", () => {
+    const url = `http://localhost:${PORT}`;
+    console.log(`Server listening on 0.0.0.0:${PORT} (visit ${url} locally)`);
   });
 }
