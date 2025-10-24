@@ -2,6 +2,8 @@
  * @jest-environment jsdom
  */
 
+import { jest, describe, beforeEach, it, expect } from "@jest/globals";
+
 // Declare variables that will be imported/mocked
 let mockedRoutes; // Declare mockedRoutes here
 let mockLoadPage = jest.fn();
@@ -52,16 +54,22 @@ describe("UI Integration Tests", () => {
     // Mock the navigation.js module to control its state and behavior for tests
     jest.unstable_mockModule(
       "../public/js/navigation.js",
-      () => ({
-        // Directly expose the mock functions
-        loadPage: mockLoadPage,
-        goBack: mockGoBack,
-        initializePageNavigation: mockInitializePageNavigation,
-        wireGlobalNavigation: mockWireGlobalNavigation,
-        // Expose internal state for direct manipulation in tests
-        currentPageName: null,
-        historyStack: [],
-      }),
+      () => {
+        // Define state variables that can be mutated within the mock's scope
+        let currentPageName = null;
+        let historyStack = [];
+
+        // Return an object that exports the mock functions and the mutable state
+        return {
+          loadPage: mockLoadPage,
+          goBack: mockGoBack,
+          initializePageNavigation: mockInitializePageNavigation,
+          wireGlobalNavigation: mockWireGlobalNavigation,
+          // Export the state variables directly, allowing assignment
+          currentPageName: currentPageName,
+          historyStack: historyStack,
+        };
+      },
       { virtual: true },
     );
 

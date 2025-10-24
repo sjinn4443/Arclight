@@ -7,6 +7,16 @@ let logDir;
 let logFile;
 let app; // Declare app here
 
+import {
+  jest,
+  beforeAll,
+  beforeEach,
+  afterAll,
+  describe,
+  it,
+  expect,
+} from "@jest/globals";
+
 // Declare the mock function here
 const mockEnrichIp = jest.fn();
 

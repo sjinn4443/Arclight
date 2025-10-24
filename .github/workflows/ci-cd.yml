@@ -40,6 +40,7 @@ jobs:
       - name: Run Jest tests
         run: npm run test:ci
         env:
+          MASTER_KEY: ${{ secrets.TEST_MASTER_KEY }}
           MASTER_PASSWORD_HASH: ${{ secrets.TEST_MASTER_PASSWORD_HASH }}
           PASSWORD_SALT: ${{ secrets.TEST_PASSWORD_SALT }}
           ONE_TIME_PASSWORD_HASHES: ${{ secrets.TEST_ONE_TIME_PASSWORD_HASHES }}
