@@ -22,8 +22,7 @@ const { generalRateLimiter } = require("./security/rateLimit.cjs");
 const csp = require("./security/csp.cjs");
 const corsMiddleware = require("./security/cors.cjs");
 const session = require("express-session");
-const connectRedis = require("connect-redis");
-const { createClient } = require("redis");
+const crypto = require("crypto");
 
 const { cookieParser, csrfProtection } = require("./security/csrf.cjs");
 
@@ -84,35 +83,24 @@ app.use(csp);
 // Apply CORS allowlist
 app.use(corsMiddleware);
 
-let sessionStore;
-
-// Redis 설정 제거 (Remove Redis configuration)
-if (process.env.REDIS_URL) {
-  console.log("Using Redis for session store");
-  const RedisStore = connectRedis(session);
-  const redisClient = createClient({
-    url: process.env.REDIS_URL,
-    legacyMode: true,
-  });
-  redisClient.connect().catch(console.error);
-  sessionStore = new RedisStore({ client: redisClient });
-} else {
-  console.warn("REDIS_URL not found - using default MemoryStore");
-  sessionStore = undefined; // express-session의 기본 MemoryStore 사용
-}
+const prod = process.env.NODE_ENV === "production";
 
 // Apply cookie-parser, session, and CSRF protection only if not in test environment
 if (process.env.NODE_ENV !== "test") {
   app.use(cookieParser());
   app.use(
     session({
-      store: sessionStore,
-      secret: process.env.SESSION_SECRET || "fallback-secret",
+      // store 지정 없음 → 기본 MemoryStore (프로덕션 비권장이지만 단일 인스턴스/간단 용도면 OK)
+      secret:
+        process.env.SESSION_SECRET || crypto.randomBytes(32).toString("hex"),
       resave: false,
       saveUninitialized: false,
+      name: "sid",
       cookie: {
-        secure: process.env.NODE_ENV === "production",
-        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+        httpOnly: true,
+        secure: prod,
+        sameSite: prod ? "none" : "lax",
+        maxAge: 1000 * 60 * 60 * 24 * 7,
       },
     }),
   );
@@ -121,6 +109,8 @@ if (process.env.NODE_ENV !== "test") {
     return csrfProtection(req, res, next);
   });
 }
+
+app.get("/healthz", (_req, res) => res.status(200).send("ok"));
 
 // THEN protect /dev only (not global!)
 if (process.env.NODE_ENV !== "production") {
