@@ -3,6 +3,7 @@ const express = require("express");
 const path = require("path");
 const app = express();
 const PORT = process.env.PORT || 3000;
+const HOST = "0.0.0.0";
 
 // Trust proxy headers to correctly identify client IP when behind a proxy
 app.set("trust proxy", 1);
@@ -213,7 +214,8 @@ module.exports.setLogFileForTesting = setLogFileForTesting;
 module.exports.getLogFilePath = getLogFilePath;
 
 if (require.main === module) {
-  app.listen(PORT, () => {
+  app.listen(PORT, HOST, () => {
     console.log(`Server running at http://localhost:${PORT}`);
+    console.log(`Server listening on http://${HOST}:${PORT}`);
   });
 }
