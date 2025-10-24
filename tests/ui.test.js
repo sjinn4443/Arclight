@@ -55,11 +55,7 @@ describe("UI Integration Tests", () => {
     jest.unstable_mockModule(
       "../public/js/navigation.js",
       () => {
-        // Mocked functions
-        const mockLoadPage = jest.fn();
-        const mockGoBack = jest.fn();
-        const mockInitializePageNavigation = jest.fn();
-        const mockWireGlobalNavigation = jest.fn();
+        // Use the OUTER jest.fn()s defined at the top of the file
 
         let _state = {
           currentPageName: null,
@@ -77,8 +73,8 @@ describe("UI Integration Tests", () => {
         };
 
         return {
-          loadPage: mockLoadPage,
-          goBack: mockGoBack,
+          loadPage: mockLoadPage, // outer reference
+          goBack: mockGoBack, // outer reference
           initializePageNavigation: mockInitializePageNavigation,
           wireGlobalNavigation: mockWireGlobalNavigation,
           getState: getState, // Expose getter
