@@ -4,6 +4,8 @@ const path = require("path");
 const app = express();
 const PORT = process.env.PORT || 3000;
 const HOST = "0.0.0.0";
+
+// Quick sanity logs (keep them)
 console.log(
   "BOOT => NODE_ENV:",
   process.env.NODE_ENV,
@@ -13,7 +15,7 @@ console.log(
   PORT,
 );
 
-// Trust proxy headers to correctly identify client IP when behind a proxy
+// trust proxy helps cookies/sessions behind proxies (not required for 502, but good)
 app.set("trust proxy", 1);
 
 const { generalRateLimiter } = require("./security/rateLimit.cjs");
@@ -54,7 +56,7 @@ console.log("__dirname:", __dirname);
 console.log("Static path:", path.join(__dirname, "public"));
 console.log("Index path:", path.join(__dirname, "public", "index.html"));
 
-// Serve static files from the 'public' directory first
+// static + index FIRST
 app.use(
   express.static(path.join(__dirname, "public"), {
     setHeaders: (res, path) => {
@@ -64,6 +66,12 @@ app.use(
     },
   }),
 );
+app.get("/", (_req, res) => {
+  res.sendFile(path.join(__dirname, "public/index.html"));
+});
+
+// Add a health endpoint and use it for Railway’s healthcheck
+app.get("/health", (_req, res) => res.status(200).send("OK"));
 
 app.use(express.json());
 
@@ -86,20 +94,14 @@ if (process.env.NODE_ENV !== "test") {
     return csrfProtection(req, res, next);
   });
 }
-// static & index
-app.get("/", (_req, res) =>
-  res.sendFile(path.join(__dirname, "public/index.html")),
-);
 
-// protect only /dev
+// THEN protect /dev only (not global!)
 app.use(
   "/dev",
   express.urlencoded({ extended: false }),
-  requireDevAuth, // your gate
+  requireDevAuth, // your password gate
   devRouter,
 );
-
-app.get("/health", (_req, res) => res.status(200).send("OK"));
 
 app.post("/track", async (req, res) => {
   // In a test environment, we write the log synchronously and wait for it to
