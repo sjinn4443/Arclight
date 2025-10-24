@@ -45,9 +45,9 @@ beforeAll(async () => {
     };
   });
 
-  // Mock the ipEnricher module using unstable_mockModule
-  jest.unstable_mockModule("../utils/ipEnricher.cjs", () => ({
-    enrichIp: mockEnrichIp, // Use the declared mock function
+  // Mock the ipEnricher module for CommonJS require in server.cjs
+  jest.doMock("../utils/ipEnricher.cjs", () => ({
+    enrichIp: mockEnrichIp,
   }));
 
   // Dynamically import app after dotenv has configured environment variables

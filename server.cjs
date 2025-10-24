@@ -82,11 +82,13 @@ app.post("/track", async (req, res) => {
   // In a test environment, we write the log synchronously and wait for it to
   // finish before sending the response. This makes tests deterministic.
   if (process.env.NODE_ENV === "test") {
-    const ip = (
-      req.headers["x-forwarded-for"]?.split(",")[0] ||
-      req.socket.remoteAddress ||
-      ""
-    ).trim();
+    // Prefer X-Forwarded-For (first IP), fall back to X-Real-IP, then socket
+    const xfwd = req.get("x-forwarded-for");
+    const real = req.get("x-real-ip");
+    const ip =
+      (xfwd && xfwd.split(",")[0].trim()) ||
+      (real && real.trim()) ||
+      (req.socket?.remoteAddress || "").replace(/^::ffff:/, ""); // normalize IPv4-mapped IPv6
     const coords = req.body?.coords || null;
 
     // enrichIp is mocked in tests/tracking.test.js
@@ -108,96 +110,86 @@ app.post("/track", async (req, res) => {
   // client, and perform logging/enrichment in the background.
   res.status(204).end();
 
-  setImmediate(async () => {
+  // Prefer X-Forwarded-For (first IP), fall back to X-Real-IP, then socket
+  const xfwd = req.get("x-forwarded-for");
+  const real = req.get("x-real-ip");
+  const ip =
+    (xfwd && xfwd.split(",")[0].trim()) ||
+    (real && real.trim()) ||
+    (req.socket?.remoteAddress || "").replace(/^::ffff:/, ""); // normalize IPv4-mapped IPv6
+  const coords = req.body?.coords || null;
+
+  const withTimeout = async (p, ms = 1500) => {
+    const ac = new AbortController();
+    const t = setTimeout(() => ac.abort(), ms);
     try {
-      const ip = (
-        req.headers["x-forwarded-for"]?.split(",")[0] ||
-        req.socket.remoteAddress ||
-        ""
-      ).trim();
-      const coords = req.body?.coords || null;
-
-      const withTimeout = async (p, ms = 1500) => {
-        const ac = new AbortController();
-        const t = setTimeout(() => ac.abort(), ms);
-        try {
-          return await p(ac.signal);
-        } finally {
-          clearTimeout(t);
-        }
-      };
-
-      const ipinfo = (signal) =>
-        fetch(`https://ipinfo.io/${ip}?token=${process.env.IPINFO_TOKEN}`, {
-          signal,
-        }).then((r) => (r.ok ? r.json() : Promise.reject()));
-      const bigdata = (signal) =>
-        fetch(
-          `https://api.bigdatacloud.net/data/ip-geolocation-full?ip=${ip}&key=${process.env.BDCLOUD_KEY}`,
-          { signal },
-        ).then((r) => (r.ok ? r.json() : Promise.reject()));
-
-      let geo;
-      try {
-        const d = await withTimeout(ipinfo, 1500);
-        const [lat, lon] = (d.loc || "").split(",");
-        geo = {
-          source: "ipinfo",
-          country: d.country,
-          city: d.city,
-          region: d.region,
-          lat,
-          lon,
-          timezone: d.timezone,
-          org: d.org,
-        };
-      } catch {
-        try {
-          const d2 = await withTimeout(bigdata, 1500);
-          geo = {
-            source: "bigdatacloud",
-            country: d2?.country?.isoName,
-            city: d2?.city?.name,
-            lat: d2?.location?.latitude,
-            lon: d2?.location?.longitude,
-            timezone: d2?.location?.timeZone?.ianaTimeId,
-            org: d2?.network?.organisation,
-          };
-        } catch {
-          const geoip = require("geoip-lite"); // Require geoip-lite here to avoid global import issues with mocking
-          const g = geoip.lookup(ip) || null;
-          geo = {
-            source: "geoip-lite",
-            country: g?.country || null,
-            city: g?.city || null,
-            lat: g?.ll?.[0],
-            lon: g?.ll?.[1],
-            timezone: g?.timezone || null,
-          };
-        }
-      }
-
-      const logEntry = {
-        timestamp: new Date().toISOString(),
-        ip,
-        geo,
-        coords,
-        ua: req.headers["user-agent"] || null,
-      };
-
-      // In non-test environments, ensure the directory exists before writing.
-      fs.mkdirSync(path.dirname(getLogFilePath()), { recursive: true });
-      fs.appendFile(
-        getLogFilePath(),
-        JSON.stringify(logEntry) + "\n",
-        (err) => {
-          if (err) console.error("log write error:", err);
-        },
-      );
-    } catch (e) {
-      console.error("track bg error:", e);
+      return await p(ac.signal);
+    } finally {
+      clearTimeout(t);
     }
-  });
+  };
+
+  const ipinfo = (signal) =>
+    fetch(`https://ipinfo.io/${ip}?token=${process.env.IPINFO_TOKEN}`, {
+      signal,
+    }).then((r) => (r.ok ? r.json() : Promise.reject()));
+  const bigdata = (signal) =>
+    fetch(
+      `https://api.bigdatacloud.net/data/ip-geolocation-full?ip=${ip}&key=${process.env.BDCLOUD_KEY}`,
+      { signal },
+    ).then((r) => (r.ok ? r.json() : Promise.reject()));
+
+  let geo;
+  try {
+    const d = await withTimeout(ipinfo, 1500);
+    const [lat, lon] = (d.loc || "").split(",");
+    geo = {
+      source: "ipinfo",
+      country: d.country,
+      city: d.city,
+      region: d.region,
+      lat,
+      lon,
+      timezone: d.timezone,
+      org: d.org,
+    };
+  } catch {
+    try {
+      const d2 = await withTimeout(bigdata, 1500);
+      geo = {
+        source: "bigdatacloud",
+        country: d2?.country?.isoName,
+        city: d2?.city?.name,
+        lat: d2?.location?.latitude,
+        lon: d2?.location?.longitude,
+        timezone: d2?.location?.timeZone?.ianaTimeId,
+        org: d2?.network?.organisation,
+      };
+    } catch {
+      const geoip = require("geoip-lite"); // Require geoip-lite here to avoid global import issues with mocking
+      const g = geoip.lookup(ip) || null;
+      geo = {
+        source: "geoip-lite",
+        country: g?.country || null,
+        city: g?.city || null,
+        lat: g?.ll?.[0],
+        lon: g?.ll?.[1],
+        timezone: g?.timezone || null,
+      };
+    }
+  }
+
+  const logEntry = {
+    timestamp: new Date().toISOString(),
+    ip,
+    geo,
+    coords,
+    ua: req.headers["user-agent"] || null,
+  };
+
+  // In non-test environments, ensure the directory exists before writing.
+  fs.mkdirSync(path.dirname(getLogFilePath()), { recursive: true });
+  fs.appendFileSync(getLogFilePath(), JSON.stringify(logEntry) + "\n", "utf8");
 });
 
 // Fallback to index.html for SPA routing

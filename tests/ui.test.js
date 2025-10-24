@@ -2,7 +2,14 @@
  * @jest-environment jsdom
  */
 
-import { jest, describe, beforeEach, it, expect } from "@jest/globals";
+import {
+  jest,
+  describe,
+  beforeAll,
+  beforeEach,
+  it,
+  expect,
+} from "@jest/globals";
 
 // Declare variables that will be imported/mocked
 let mockedRoutes; // Declare mockedRoutes here
@@ -10,6 +17,20 @@ let mockLoadPage = jest.fn();
 let mockGoBack = jest.fn();
 let mockInitializePageNavigation = jest.fn();
 let mockWireGlobalNavigation = jest.fn();
+
+// Put this near the top, after declaring mockedRoutes
+mockedRoutes = {
+  intro: "html/intro.html",
+  dashboard: "html/dashboard.html",
+  splashscreen: "html/splashscreen.html",
+  languageinstall: "html/languageinstall.html",
+  onboarding: "html/onboarding.html",
+  interest: "html/interest.html",
+  page1: "html/page1.html",
+  page2: "html/page2.html",
+  page3: "html/page3.html",
+  videos: "html/videos.html",
+};
 
 // This variable will hold the *actual* mocked navigation module
 let mockedNavigationModule;
@@ -27,66 +48,20 @@ describe("UI Integration Tests", () => {
     // Reset modules to ensure the mock is applied correctly
     jest.resetModules();
 
-    // Mock the ROUTES object from config.js
-    jest.unstable_mockModule(
-      "../public/js/config.js",
-      () => ({
-        ROUTES: {
-          intro: "html/intro.html",
-          dashboard: "html/dashboard.html",
-          splashscreen: "html/splashscreen.html",
-          languageinstall: "html/languageinstall.html",
-          onboarding: "html/onboarding.html",
-          interest: "html/interest.html",
-          page1: "html/page1.html",
-          page2: "html/page2.html",
-          page3: "html/page3.html",
-          videos: "html/videos.html", // Added for goBack test
-        },
-      }),
-      { virtual: true },
-    );
-
-    // Get the mocked config.js
-    const configModule = await import("../public/js/config.js");
-    mockedRoutes = configModule.ROUTES;
-
-    // Mock the navigation.js module to control its state and behavior for tests
-    jest.unstable_mockModule(
-      "../public/js/navigation.js",
-      () => {
-        // Use the OUTER jest.fn()s defined at the top of the file
-
-        let _state = {
-          currentPageName: null,
-          historyStack: [],
-        };
-
-        // Function to set the state
-        const setState = (newState) => {
-          _state = { ...newState }; // Ensure a new object is assigned
-        };
-
-        // Function to get the state
-        const getState = () => {
-          return _state;
-        };
-
-        return {
-          loadPage: mockLoadPage, // outer reference
-          goBack: mockGoBack, // outer reference
-          initializePageNavigation: mockInitializePageNavigation,
-          wireGlobalNavigation: mockWireGlobalNavigation,
-          getState: getState, // Expose getter
-          setState: setState, // Expose setter
-        };
-      },
-      { virtual: true },
-    );
-
-    // Import the mocked navigation module after setting up the mock
-    // This is the object the tests should interact with
-    mockedNavigationModule = await import("../public/js/navigation.js");
+    // Build our “navigation module” inline for the tests (Option A)
+    let _state = { currentPageName: null, historyStack: [] };
+    const setState = (newState) => {
+      _state = { ...newState };
+    };
+    const getState = () => _state;
+    mockedNavigationModule = {
+      loadPage: mockLoadPage,
+      goBack: mockGoBack,
+      initializePageNavigation: mockInitializePageNavigation,
+      wireGlobalNavigation: mockWireGlobalNavigation,
+      getState,
+      setState,
+    };
 
     // Mock the global back button visibility logic
     global.updateGlobalBackVisibility = jest.fn((routeName) => {
@@ -113,45 +88,27 @@ describe("UI Integration Tests", () => {
     // Reset mocks and state before each test
     jest.clearAllMocks(); // Clears mock calls and instances
 
-    // Reset mock navigation state
+    // reset history
     mockedNavigationModule.setState({
       currentPageName: null,
-      historyStack: [],
-    });
-    // Ensure historyStack is correctly initialized if needed
-    const currentState = mockedNavigationModule.getState();
-    mockedNavigationModule.setState({
-      ...currentState,
-      historyStack: [...currentState.historyStack, "intro"],
+      historyStack: ["intro"],
     });
 
     // Reset fetch mock
     fetch.mockClear();
 
-    // Mock the implementation of loadPage and goBack here, where `document` is available
+    // (Re)wire the mock
     mockLoadPage.mockImplementation(async (routeName, options = {}) => {
-      const currentState = mockedNavigationModule.getState();
+      // update state
+      const current = mockedNavigationModule.getState();
       mockedNavigationModule.setState({
-        ...currentState,
+        ...current,
         currentPageName: routeName,
       });
-      const url = mockedRoutes[routeName]; // Use the pre-fetched mockedRoutes
+
+      const url = mockedRoutes[routeName]; // <-- uses the inline map
       const container = document.getElementById("page-content");
 
-      if (!container) {
-        console.error("#page-content not found");
-        window.dispatchEvent(
-          new CustomEvent("page:loaded", {
-            detail: { routeName, error: true },
-          }),
-        );
-        window.dispatchEvent(
-          new CustomEvent("page:rendered", {
-            detail: { routeName, error: true },
-          }),
-        );
-        return;
-      }
       if (!url) {
         console.error(`Route "${routeName}" not found in ROUTES.`);
         container.innerHTML = `<div class="container"><p>Page not found: ${routeName}</p></div>`;
@@ -168,14 +125,34 @@ describe("UI Integration Tests", () => {
         return;
       }
 
-      let html = "";
       try {
-        // Ensure fetch is called with the global mock
-        const res = await global.fetch(url, { cache: "no-store" });
-        if (!res.ok) {
-          throw new Error(`HTTP error! status: ${res.status}`);
+        const res = await fetch(url, { cache: "no-store" });
+        const html = await res.text();
+        container.innerHTML = html.includes('class="page"')
+          ? html
+          : `<div class="page" id="${routeName}-content">${html}</div>`;
+
+        // apply .active
+        const pageEl = container.querySelector(".page");
+        if (pageEl) pageEl.classList.add("active");
+
+        // history (don’t push when replace:true)
+        if (!options.replace) {
+          mockedNavigationModule.setState({
+            ...mockedNavigationModule.getState(),
+            historyStack: [
+              ...mockedNavigationModule.getState().historyStack,
+              routeName,
+            ],
+          });
         }
-        html = await res.text();
+
+        window.dispatchEvent(
+          new CustomEvent("page:loaded", { detail: { routeName } }),
+        );
+        window.dispatchEvent(
+          new CustomEvent("page:rendered", { detail: { routeName } }),
+        );
       } catch (err) {
         console.error("Failed to load route", routeName, url, err);
         container.innerHTML = `<div class="container"><p>Failed to load page: ${routeName}</p></div>`;
@@ -189,48 +166,7 @@ describe("UI Integration Tests", () => {
             detail: { routeName, error: true },
           }),
         );
-        return;
       }
-
-      container.innerHTML = html;
-
-      let pageElement = container.querySelector(".page");
-      if (!pageElement) {
-        const wrapper = document.createElement("div");
-        wrapper.className = "page";
-        while (container.firstChild) {
-          wrapper.appendChild(container.firstChild);
-        }
-        container.appendChild(wrapper);
-        pageElement = wrapper;
-        console.warn(
-          "[router] No .page found; wrapped content in a new .page element.",
-        );
-      }
-
-      const defaultActive = pageElement.querySelector('[data-default="true"]');
-      if (defaultActive) {
-        defaultActive.classList.add("active");
-      } else {
-        pageElement.classList.add("active");
-      }
-
-      if (!options.replace) {
-        const currentState = mockedNavigationModule.getState();
-        mockedNavigationModule.setState({
-          ...currentState,
-          historyStack: [...currentState.historyStack, routeName],
-        });
-      }
-      // If options.replace is true, we don't push to history.
-      // The history stack is assumed to be managed by the caller (e.g., goBack).
-
-      window.dispatchEvent(
-        new CustomEvent("page:loaded", { detail: { routeName } }),
-      );
-      window.dispatchEvent(
-        new CustomEvent("page:rendered", { detail: { routeName } }),
-      );
     });
 
     mockGoBack.mockImplementation(async () => {
