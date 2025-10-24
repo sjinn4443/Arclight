@@ -50,7 +50,7 @@ beforeAll(async () => {
     enrichIp: mockEnrichIp, // Use the declared mock function
   }));
 
-  // Dynamically import app after all mocks are set up
+  // Dynamically import app after dotenv has configured environment variables
   const appModule = await import("../server.cjs");
   app = appModule.default;
 });

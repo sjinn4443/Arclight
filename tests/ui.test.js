@@ -55,19 +55,27 @@ describe("UI Integration Tests", () => {
     jest.unstable_mockModule(
       "../public/js/navigation.js",
       () => {
-        // Define state variables that can be mutated within the mock's scope
-        let currentPageName = null;
-        let historyStack = [];
+        // Mocked functions
+        const mockLoadPage = jest.fn();
+        const mockGoBack = jest.fn();
+        const mockInitializePageNavigation = jest.fn();
+        const mockWireGlobalNavigation = jest.fn();
 
-        // Return an object that exports the mock functions and the mutable state
+        // Mutable state object
+        let state = {
+          // Use 'let' to allow reassignment
+          currentPageName: null,
+          historyStack: [],
+        };
+
+        // Return the module exports, ensuring state is mutable
         return {
           loadPage: mockLoadPage,
           goBack: mockGoBack,
           initializePageNavigation: mockInitializePageNavigation,
           wireGlobalNavigation: mockWireGlobalNavigation,
-          // Export the state variables directly, allowing assignment
-          currentPageName: currentPageName,
-          historyStack: historyStack,
+          // Export the state object directly. Jest's mock factory should allow this to be reassigned.
+          state: state,
         };
       },
       { virtual: true },
@@ -102,17 +110,20 @@ describe("UI Integration Tests", () => {
     // Reset mocks and state before each test
     jest.clearAllMocks(); // Clears mock calls and instances
 
-    // Reset mock navigation state directly on the mocked module
-    mockedNavigationModule.currentPageName = null;
-    mockedNavigationModule.historyStack = []; // Reset history stack
-    mockedNavigationModule.historyStack.push("intro"); // Start with a clean history
+    // Reset mock navigation state by re-assigning the state object
+    // This directly manipulates the state property of the mocked module
+    mockedNavigationModule.state = {
+      currentPageName: null,
+      historyStack: [],
+    };
+    mockedNavigationModule.state.historyStack.push("intro"); // Start with a clean history
 
     // Reset fetch mock
     fetch.mockClear();
 
     // Mock the implementation of loadPage and goBack here, where `document` is available
     mockLoadPage.mockImplementation(async (routeName, options = {}) => {
-      mockedNavigationModule.currentPageName = routeName;
+      mockedNavigationModule.state.currentPageName = routeName;
       const url = mockedRoutes[routeName]; // Use the pre-fetched mockedRoutes
       const container = document.getElementById("page-content");
 
@@ -194,7 +205,7 @@ describe("UI Integration Tests", () => {
       }
 
       if (!options.replace) {
-        mockedNavigationModule.historyStack.push(routeName);
+        mockedNavigationModule.state.historyStack.push(routeName);
       }
       // If options.replace is true, we don't push to history.
       // The history stack is assumed to be managed by the caller (e.g., goBack).
@@ -208,16 +219,16 @@ describe("UI Integration Tests", () => {
     });
 
     mockGoBack.mockImplementation(async () => {
-      if (mockedNavigationModule.historyStack.length > 1) {
-        mockedNavigationModule.historyStack.pop(); // Remove the current page
+      if (mockedNavigationModule.state.historyStack.length > 1) {
+        mockedNavigationModule.state.historyStack.pop(); // Remove the current page
         const previousRoute =
-          mockedNavigationModule.historyStack[
-            mockedNavigationModule.historyStack.length - 1
+          mockedNavigationModule.state.historyStack[
+            mockedNavigationModule.state.historyStack.length - 1
           ];
         await mockLoadPage(previousRoute, { replace: true }); // Use mockLoadPage here
       } else {
         // If history is empty or only one item, go to dashboard and set history
-        mockedNavigationModule.historyStack = ["dashboard"];
+        mockedNavigationModule.state.historyStack = ["dashboard"];
         await mockLoadPage("dashboard", { replace: true }); // Use mockLoadPage here
       }
     });
@@ -409,8 +420,11 @@ describe("UI Integration Tests", () => {
     // Check that the .page.active element is correctly applied
     expect(pageContent.querySelector(".page.active")).not.toBeNull();
     expect(pageContent.querySelector(".page.active").id).toBe("page1-content");
-    expect(mockedNavigationModule.currentPageName).toBe("page1");
-    expect(mockedNavigationModule.historyStack).toEqual(["intro", "page1"]); // Assuming 'intro' was the initial state or loaded before tests
+    expect(mockedNavigationModule.state.currentPageName).toBe("page1");
+    expect(mockedNavigationModule.state.historyStack).toEqual([
+      "intro",
+      "page1",
+    ]); // Assuming 'intro' was the initial state or loaded before tests
   });
 
   test("loadPage replaces content and correctly applies active class for subsequent loads", async () => {
@@ -426,8 +440,11 @@ describe("UI Integration Tests", () => {
     let pageContent = document.getElementById("page-content");
     expect(pageContent.querySelector(".page.active")).not.toBeNull();
     expect(pageContent.querySelector(".page.active").id).toBe("page1-content");
-    expect(mockedNavigationModule.currentPageName).toBe("page1");
-    expect(mockedNavigationModule.historyStack).toEqual(["intro", "page1"]);
+    expect(mockedNavigationModule.state.currentPageName).toBe("page1");
+    expect(mockedNavigationModule.state.historyStack).toEqual([
+      "intro",
+      "page1",
+    ]);
 
     // Load page 2, replacing the current history entry
     fetch.mockResolvedValueOnce({ ok: true, text: async () => mockHtmlPage2 });
@@ -436,8 +453,11 @@ describe("UI Integration Tests", () => {
     // Check that page 1 is no longer active and page 2 is active
     expect(pageContent.querySelector(".page.active")).not.toBeNull();
     expect(pageContent.querySelector(".page.active").id).toBe("page2-content");
-    expect(mockedNavigationModule.currentPageName).toBe("page2");
-    expect(mockedNavigationModule.historyStack).toEqual(["intro", "page1"]); // With replace:true, loadPage does not push to history
+    expect(mockedNavigationModule.state.currentPageName).toBe("page2");
+    expect(mockedNavigationModule.state.historyStack).toEqual([
+      "intro",
+      "page1",
+    ]); // With replace:true, loadPage does not push to history
   });
 
   test("Navigation links with data-route attribute trigger loadPage", async () => {
@@ -455,7 +475,7 @@ describe("UI Integration Tests", () => {
     expect(fetch).toHaveBeenCalledWith("html/page1.html", {
       cache: "no-store",
     });
-    expect(mockedNavigationModule.currentPageName).toBe("page1");
+    expect(mockedNavigationModule.state.currentPageName).toBe("page1");
   });
 
   test("goBack navigates to the previous page in history", async () => {
@@ -478,8 +498,8 @@ describe("UI Integration Tests", () => {
     fetch.mockResolvedValueOnce({ ok: true, text: async () => mockHtmlPage3 });
     await mockedNavigationModule.loadPage("page3");
 
-    expect(mockedNavigationModule.currentPageName).toBe("page3");
-    expect(mockedNavigationModule.historyStack).toEqual([
+    expect(mockedNavigationModule.state.currentPageName).toBe("page3");
+    expect(mockedNavigationModule.state.historyStack).toEqual([
       "intro",
       "page1",
       "page2",
@@ -490,8 +510,8 @@ describe("UI Integration Tests", () => {
     fetch.mockResolvedValueOnce({ ok: true, text: async () => mockHtmlPage2 }); // Mock fetch for page2 again
     await mockedNavigationModule.goBack();
 
-    expect(mockedNavigationModule.currentPageName).toBe("page2");
-    expect(mockedNavigationModule.historyStack).toEqual([
+    expect(mockedNavigationModule.state.currentPageName).toBe("page2");
+    expect(mockedNavigationModule.state.historyStack).toEqual([
       "intro",
       "page1",
       "page2",
@@ -504,8 +524,11 @@ describe("UI Integration Tests", () => {
     fetch.mockResolvedValueOnce({ ok: true, text: async () => mockHtmlPage1 }); // Mock fetch for page1 again
     await mockedNavigationModule.goBack();
 
-    expect(mockedNavigationModule.currentPageName).toBe("page1");
-    expect(mockedNavigationModule.historyStack).toEqual(["intro", "page1"]);
+    expect(mockedNavigationModule.state.currentPageName).toBe("page1");
+    expect(mockedNavigationModule.state.historyStack).toEqual([
+      "intro",
+      "page1",
+    ]);
     expect(
       document.getElementById("page-content").querySelector(".page.active").id,
     ).toBe("page1-content");
@@ -516,8 +539,8 @@ describe("UI Integration Tests", () => {
       '<div class="page" id="dashboard-content">Dashboard Content</div>';
 
     // Ensure history is empty and currentPageName is null before this test
-    mockedNavigationModule.currentPageName = null;
-    mockedNavigationModule.historyStack = [];
+    mockedNavigationModule.state.currentPageName = null;
+    mockedNavigationModule.state.historyStack = [];
 
     // Go back when history is empty
     fetch.mockResolvedValueOnce({
@@ -526,8 +549,8 @@ describe("UI Integration Tests", () => {
     });
     await mockedNavigationModule.goBack();
 
-    expect(mockedNavigationModule.currentPageName).toBe("dashboard");
-    expect(mockedNavigationModule.historyStack).toEqual(["dashboard"]); // History is explicitly set to dashboard in goBack mock
+    expect(mockedNavigationModule.state.currentPageName).toBe("dashboard");
+    expect(mockedNavigationModule.state.historyStack).toEqual(["dashboard"]); // History is explicitly set to dashboard in goBack mock
     expect(
       document.getElementById("page-content").querySelector(".page.active").id,
     ).toBe("dashboard-content");
@@ -592,7 +615,7 @@ describe("UI Integration Tests", () => {
       cache: "no-store",
     });
     expect(pageContent.innerHTML).toContain("Failed to load page: page1");
-    expect(mockedNavigationModule.currentPageName).toBe("page1"); // Should still set currentPageName
+    expect(mockedNavigationModule.state.currentPageName).toBe("page1"); // Should still set currentPageName
     // Check if error events were dispatched
     expect(window.dispatchEvent).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -616,7 +639,9 @@ describe("UI Integration Tests", () => {
     expect(pageContent.innerHTML).toContain(
       "Page not found: nonexistent-route",
     );
-    expect(mockedNavigationModule.currentPageName).toBe("nonexistent-route"); // Should still set currentPageName
+    expect(mockedNavigationModule.state.currentPageName).toBe(
+      "nonexistent-route",
+    ); // Should still set currentPageName
     // Check if error events were dispatched
     expect(window.dispatchEvent).toHaveBeenCalledWith(
       expect.objectContaining({

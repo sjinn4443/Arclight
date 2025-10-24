@@ -1,7 +1,14 @@
 import request from "supertest";
-import app from "../server.cjs"; // Adjust path if necessary
+
+let app; // Declare app here
 
 describe("GET /", () => {
+  beforeAll(async () => {
+    // Dynamically import app after dotenv has configured environment variables
+    const appModule = await import("../server.cjs");
+    app = appModule.default;
+  });
+
   test("should return the index.html file", async () => {
     const response = await request(app).get("/");
     expect(response.statusCode).toBe(200);
