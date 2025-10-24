@@ -1,39 +1,56 @@
-const request = require("supertest");
-const app = require("../server.cjs"); // Import the Express app
-const fs = require("fs");
-const path = require("path");
-const os = require("os");
-
-// Mock the ipEnricher module
-jest.mock("../utils/ipEnricher.cjs", () => ({
-  enrichIp: jest.fn(),
-}));
-const { enrichIp } = require("../utils/ipEnricher.cjs");
+import request from "supertest";
+import fs from "fs";
+import path from "path";
+import os from "os";
 
 let logDir;
 let logFile;
-let appendFileSpy;
-let originalAppendFileSync;
+let app; // Declare app here
 
-beforeAll(() => {
+// Declare the mock function here
+const mockEnrichIp = jest.fn();
+
+beforeAll(async () => {
+  jest.resetModules(); // Reset module registry to ensure server.cjs is re-evaluated
   jest.useFakeTimers({ legacyFakeTimers: true });
   logDir = fs.mkdtempSync(path.join(os.tmpdir(), "iplogs-"));
   logFile = path.join(logDir, "ip_logs.jsonl");
 
-  originalAppendFileSync = jest.requireActual("fs").appendFileSync; // Store the actual implementation
+  // Mock the path module to redirect LOG_FILE in server.cjs
+  jest.doMock("path", () => {
+    const originalPath = jest.requireActual("path");
+    return {
+      ...originalPath,
+      join: jest.fn((...args) => {
+        // Intercept the specific path for ip_logs.jsonl
+        if (
+          args.length === 3 &&
+          args[1] === "logs" &&
+          args[2] === "ip_logs.jsonl"
+        ) {
+          return logFile;
+        }
+        return originalPath.join(...args);
+      }),
+    };
+  });
 
-  // Mock fs.appendFileSync to write to the temporary log file
-  appendFileSpy = jest
-    .spyOn(fs, "appendFileSync")
-    .mockImplementation((file, data) => {
-      originalAppendFileSync(logFile, data); // Use the stored actual implementation
-    });
+  // Mock the ipEnricher module using unstable_mockModule
+  jest.unstable_mockModule("../utils/ipEnricher.cjs", () => ({
+    enrichIp: mockEnrichIp, // Use the declared mock function
+  }));
+
+  // Dynamically import app after all mocks are set up
+  const appModule = await import("../server.cjs");
+  app = appModule.default;
 });
 
 beforeEach(() => {
   fs.writeFileSync(logFile, ""); // Clear the log file before each test
+  mockEnrichIp.mockClear(); // Clear calls for this mock
   // Mock implementation for enrichIp
-  enrichIp.mockImplementation((ip) => {
+  mockEnrichIp.mockImplementation((ip) => {
+    // Use mockEnrichIp directly
     if (ip === "8.8.8.8") {
       return {
         source: "mock",
@@ -58,9 +75,8 @@ beforeEach(() => {
 });
 
 afterAll(() => {
-  appendFileSpy.mockRestore(); // Restore original fs.appendFile
   fs.rmSync(logDir, { recursive: true, force: true });
-  jest.restoreAllMocks(); // Restore all mocks, including enrichIp
+  jest.restoreAllMocks(); // Restore all mocks
 });
 
 describe("IP Tracking Endpoint", () => {
@@ -77,7 +93,7 @@ describe("IP Tracking Endpoint", () => {
 
     // Read the log file and check its content
     const logContent = fs.readFileSync(logFile, "utf8");
-    const logEntries = logContent.trim().split("\n");
+    const logEntries = logContent.trim().split("\n").filter(Boolean); // Filter out empty strings
     expect(logEntries.length).toBe(1);
 
     const loggedData = JSON.parse(logEntries[0]);
@@ -103,7 +119,7 @@ describe("IP Tracking Endpoint", () => {
     await new Promise(process.nextTick);
 
     const logContent = fs.readFileSync(logFile, "utf8");
-    const logEntries = logContent.trim().split("\n");
+    const logEntries = logContent.trim().split("\n").filter(Boolean); // Filter out empty strings
     expect(logEntries.length).toBe(1); // Should be 1 as log file is cleared before each test
 
     const loggedData = JSON.parse(logEntries[0]); // Check the first (and only) entry

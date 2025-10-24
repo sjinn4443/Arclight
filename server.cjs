@@ -19,9 +19,26 @@ const {
 const fs = require("fs");
 const { enrichIp } = require("./utils/ipEnricher.cjs");
 const devRouter = require("./dev_dashboard/routes/dev.cjs");
+const os = require("os"); // Import os module
 
-const LOG_FILE = path.join(__dirname, "logs", "ip_logs.jsonl");
-fs.mkdirSync(path.dirname(LOG_FILE), { recursive: true });
+let _logFile = path.join(__dirname, "logs", "ip_logs.jsonl");
+
+// Function to get the current log file path
+function getLogFilePath() {
+  return _logFile;
+}
+
+// Function to allow tests to set the log file path
+function setLogFileForTesting(testLogFilePath) {
+  _logFile = testLogFilePath;
+  // In test environment, the test runner is responsible for creating the directory.
+  // We do not call fs.mkdirSync here to avoid conflicts with test setup.
+}
+
+// Only create the default log directory if not in test environment
+if (process.env.NODE_ENV !== "test") {
+  fs.mkdirSync(path.dirname(_logFile), { recursive: true });
+}
 
 console.log("__dirname:", __dirname);
 console.log("Static path:", path.join(__dirname, "public"));
@@ -85,12 +102,10 @@ app.post("/track", async (req, res) => {
       ua: req.headers["user-agent"] || null,
     };
 
-    fs.mkdirSync(path.join(__dirname, "logs"), { recursive: true });
-    fs.appendFileSync(
-      path.join(__dirname, "logs", "ip_logs.jsonl"),
-      JSON.stringify(logEntry) + "\n",
-    );
-    console.log("TRACK_LOG:", JSON.stringify(logEntry));
+    // In test environment, LOG_FILE is already set to the temporary file
+    // and the directory is created by the test setup via setLogFileForTesting.
+    fs.appendFileSync(getLogFilePath(), JSON.stringify(logEntry) + "\n");
+    // console.log("TRACK_LOG:", JSON.stringify(logEntry)); // Removed debug log
   } else {
     // 2) Subsequent tasks run in the background for non-test environments
     setImmediate(async () => {
@@ -170,16 +185,17 @@ app.post("/track", async (req, res) => {
           ua: req.headers["user-agent"] || null,
         };
 
-        fs.mkdirSync(path.join(__dirname, "logs"), { recursive: true });
+        // In non-test environments, ensure the directory exists before writing.
+        fs.mkdirSync(path.dirname(getLogFilePath()), { recursive: true });
         fs.appendFile(
-          path.join(__dirname, "logs", "ip_logs.jsonl"),
+          getLogFilePath(),
           JSON.stringify(logEntry) + "\n",
           (err) => {
             if (err) console.error("log write error:", err);
           },
         );
 
-        console.log("TRACK_LOG:", JSON.stringify(logEntry));
+        // console.log("TRACK_LOG:", JSON.stringify(logEntry)); // Removed debug log
         // (Optional) Asynchronously send to external storage…
       } catch (e) {
         console.error("track bg error:", e);
@@ -193,8 +209,8 @@ app.get("/admin/logs", (req, res) => {
   if (req.headers.authorization !== `Bearer ${process.env.ADMIN_TOKEN}`) {
     return res.status(403).send("Forbidden");
   }
-  if (!fs.existsSync(LOG_FILE)) return res.type("text/plain").send("");
-  const content = fs.readFileSync(LOG_FILE, "utf8");
+  if (!fs.existsSync(getLogFilePath())) return res.type("text/plain").send("");
+  const content = fs.readFileSync(getLogFilePath(), "utf8");
   res.type("text/plain").send(content);
 });
 
@@ -205,6 +221,8 @@ app.get("*", (req, res) => {
 });
 
 module.exports = app;
+module.exports.setLogFileForTesting = setLogFileForTesting;
+module.exports.getLogFilePath = getLogFilePath;
 
 if (require.main === module) {
   app.listen(PORT, () => {
