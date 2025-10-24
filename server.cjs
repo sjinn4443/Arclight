@@ -103,7 +103,7 @@ if (process.env.NODE_ENV !== "production") {
     requireDevAuth, // your password gate
     devRouter,
   );
-  console.log("[dev] dev router loaded");
+  console.log("[dev] dev router loaded (only in non-production environments)");
 }
 
 app.post("/track", async (req, res) => {
