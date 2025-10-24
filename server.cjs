@@ -20,7 +20,7 @@ app.set("trust proxy", 1);
 
 const { generalRateLimiter } = require("./security/rateLimit.cjs");
 const csp = require("./security/csp.cjs");
-const corsMiddleware = require("./security/cors.cjs");
+const cors = require("cors");
 const session = require("express-session");
 const crypto = require("crypto");
 
@@ -81,7 +81,19 @@ app.use(generalRateLimiter);
 app.use(csp);
 
 // Apply CORS allowlist
-app.use(corsMiddleware);
+const allowed = (process.env.CORS_ORIGIN || "")
+  .split(",")
+  .map((s) => s.trim())
+  .filter(Boolean);
+app.use(
+  cors({
+    origin: (origin, cb) =>
+      !origin || allowed.includes(origin)
+        ? cb(null, true)
+        : cb(new Error("CORS blocked")),
+    credentials: true,
+  }),
+);
 
 const prod = process.env.NODE_ENV === "production";
 
