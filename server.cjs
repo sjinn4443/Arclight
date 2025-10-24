@@ -96,12 +96,15 @@ if (process.env.NODE_ENV !== "test") {
 }
 
 // THEN protect /dev only (not global!)
-app.use(
-  "/dev",
-  express.urlencoded({ extended: false }),
-  requireDevAuth, // your password gate
-  devRouter,
-);
+if (process.env.NODE_ENV !== "production") {
+  app.use(
+    "/dev",
+    express.urlencoded({ extended: false }),
+    requireDevAuth, // your password gate
+    devRouter,
+  );
+  console.log("[dev] dev router loaded");
+}
 
 app.post("/track", async (req, res) => {
   // In a test environment, we write the log synchronously and wait for it to
