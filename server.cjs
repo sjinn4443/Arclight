@@ -21,11 +21,11 @@ app.set("trust proxy", 1);
 const { generalRateLimiter } = require("./security/rateLimit.cjs");
 const csp = require("./security/csp.cjs");
 const corsMiddleware = require("./security/cors.cjs");
-const {
-  cookieParser,
-  sessionMiddleware,
-  csrfProtection,
-} = require("./security/csrf.cjs");
+const session = require("express-session");
+const connectRedis = require("connect-redis");
+const { createClient } = require("redis");
+
+const { cookieParser, csrfProtection } = require("./security/csrf.cjs");
 
 const fs = require("fs");
 const { enrichIp } = require("./utils/ipEnricher.cjs");
@@ -84,11 +84,38 @@ app.use(csp);
 // Apply CORS allowlist
 app.use(corsMiddleware);
 
-// Apply cookie-parser, session, and CSRF protection
+let sessionStore;
+
+// Redis 설정 제거 (Remove Redis configuration)
+if (process.env.REDIS_URL) {
+  console.log("Using Redis for session store");
+  const RedisStore = connectRedis(session);
+  const redisClient = createClient({
+    url: process.env.REDIS_URL,
+    legacyMode: true,
+  });
+  redisClient.connect().catch(console.error);
+  sessionStore = new RedisStore({ client: redisClient });
+} else {
+  console.warn("REDIS_URL not found - using default MemoryStore");
+  sessionStore = undefined; // express-session의 기본 MemoryStore 사용
+}
+
 // Apply cookie-parser, session, and CSRF protection only if not in test environment
 if (process.env.NODE_ENV !== "test") {
   app.use(cookieParser());
-  app.use(sessionMiddleware);
+  app.use(
+    session({
+      store: sessionStore,
+      secret: process.env.SESSION_SECRET || "fallback-secret",
+      resave: false,
+      saveUninitialized: false,
+      cookie: {
+        secure: process.env.NODE_ENV === "production",
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      },
+    }),
+  );
   app.use((req, res, next) => {
     if (req.path === "/track") return next();
     return csrfProtection(req, res, next);
