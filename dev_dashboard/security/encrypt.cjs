@@ -3,7 +3,11 @@ const crypto = require("crypto");
 const keyB64 = process.env.MASTER_KEY;
 if (!keyB64) throw new Error("MASTER_KEY missing");
 const key = Buffer.from(keyB64, "base64");
-if (key.length !== 32) throw new Error("MASTER_KEY must decode to 32 bytes");
+if (key.length !== 32) {
+  throw new Error(
+    `MASTER_KEY must decode to 32 bytes, got ${key.length}. Check your Base64 value.`,
+  );
+}
 
 function encryptField(plain) {
   const iv = crypto.randomBytes(12); // 96-bit nonce
