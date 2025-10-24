@@ -79,10 +79,8 @@ if (process.env.NODE_ENV !== "test") {
 app.use("/dev", devRouter);
 
 app.post("/track", async (req, res) => {
-  // 1) Respond immediately (to prevent browser from disconnecting)
-  res.status(204).end(); // 204 No Content, or 200+JSON if content is needed
-
-  // For test environment, execute logging synchronously
+  // In a test environment, we write the log synchronously and wait for it to
+  // finish before sending the response. This makes tests deterministic.
   if (process.env.NODE_ENV === "test") {
     const ip = (
       req.headers["x-forwarded-for"]?.split(",")[0] ||
@@ -102,106 +100,104 @@ app.post("/track", async (req, res) => {
       ua: req.headers["user-agent"] || null,
     };
 
-    // In test environment, LOG_FILE is already set to the temporary file
-    // and the directory is created by the test setup via setLogFileForTesting.
     fs.appendFileSync(getLogFilePath(), JSON.stringify(logEntry) + "\n");
-    // console.log("TRACK_LOG:", JSON.stringify(logEntry)); // Removed debug log
-  } else {
-    // 2) Subsequent tasks run in the background for non-test environments
-    setImmediate(async () => {
-      try {
-        const ip = (
-          req.headers["x-forwarded-for"]?.split(",")[0] ||
-          req.socket.remoteAddress ||
-          ""
-        ).trim();
-        const coords = req.body?.coords || null;
+    return res.status(204).end();
+  }
 
-        const withTimeout = async (p, ms = 1500) => {
-          const ac = new AbortController();
-          const t = setTimeout(() => ac.abort(), ms);
-          try {
-            return await p(ac.signal);
-          } finally {
-            clearTimeout(t);
-          }
-        };
+  // In production/development, we respond immediately to avoid delaying the
+  // client, and perform logging/enrichment in the background.
+  res.status(204).end();
 
-        const ipinfo = (signal) =>
-          fetch(`https://ipinfo.io/${ip}?token=${process.env.IPINFO_TOKEN}`, {
-            signal,
-          }).then((r) => (r.ok ? r.json() : Promise.reject()));
-        const bigdata = (signal) =>
-          fetch(
-            `https://api.bigdatacloud.net/data/ip-geolocation-full?ip=${ip}&key=${process.env.BDCLOUD_KEY}`,
-            { signal },
-          ).then((r) => (r.ok ? r.json() : Promise.reject()));
+  setImmediate(async () => {
+    try {
+      const ip = (
+        req.headers["x-forwarded-for"]?.split(",")[0] ||
+        req.socket.remoteAddress ||
+        ""
+      ).trim();
+      const coords = req.body?.coords || null;
 
-        let geo;
+      const withTimeout = async (p, ms = 1500) => {
+        const ac = new AbortController();
+        const t = setTimeout(() => ac.abort(), ms);
         try {
-          const d = await withTimeout(ipinfo, 1500);
-          const [lat, lon] = (d.loc || "").split(",");
+          return await p(ac.signal);
+        } finally {
+          clearTimeout(t);
+        }
+      };
+
+      const ipinfo = (signal) =>
+        fetch(`https://ipinfo.io/${ip}?token=${process.env.IPINFO_TOKEN}`, {
+          signal,
+        }).then((r) => (r.ok ? r.json() : Promise.reject()));
+      const bigdata = (signal) =>
+        fetch(
+          `https://api.bigdatacloud.net/data/ip-geolocation-full?ip=${ip}&key=${process.env.BDCLOUD_KEY}`,
+          { signal },
+        ).then((r) => (r.ok ? r.json() : Promise.reject()));
+
+      let geo;
+      try {
+        const d = await withTimeout(ipinfo, 1500);
+        const [lat, lon] = (d.loc || "").split(",");
+        geo = {
+          source: "ipinfo",
+          country: d.country,
+          city: d.city,
+          region: d.region,
+          lat,
+          lon,
+          timezone: d.timezone,
+          org: d.org,
+        };
+      } catch {
+        try {
+          const d2 = await withTimeout(bigdata, 1500);
           geo = {
-            source: "ipinfo",
-            country: d.country,
-            city: d.city,
-            region: d.region,
-            lat,
-            lon,
-            timezone: d.timezone,
-            org: d.org,
+            source: "bigdatacloud",
+            country: d2?.country?.isoName,
+            city: d2?.city?.name,
+            lat: d2?.location?.latitude,
+            lon: d2?.location?.longitude,
+            timezone: d2?.location?.timeZone?.ianaTimeId,
+            org: d2?.network?.organisation,
           };
         } catch {
-          try {
-            const d2 = await withTimeout(bigdata, 1500);
-            geo = {
-              source: "bigdatacloud",
-              country: d2?.country?.isoName,
-              city: d2?.city?.name,
-              lat: d2?.location?.latitude,
-              lon: d2?.location?.longitude,
-              timezone: d2?.location?.timeZone?.ianaTimeId,
-              org: d2?.network?.organisation,
-            };
-          } catch {
-            const geoip = require("geoip-lite"); // Require geoip-lite here to avoid global import issues with mocking
-            const g = geoip.lookup(ip) || null;
-            geo = {
-              source: "geoip-lite",
-              country: g?.country || null,
-              city: g?.city || null,
-              lat: g?.ll?.[0],
-              lon: g?.ll?.[1],
-              timezone: g?.timezone || null,
-            };
-          }
+          const geoip = require("geoip-lite"); // Require geoip-lite here to avoid global import issues with mocking
+          const g = geoip.lookup(ip) || null;
+          geo = {
+            source: "geoip-lite",
+            country: g?.country || null,
+            city: g?.city || null,
+            lat: g?.ll?.[0],
+            lon: g?.ll?.[1],
+            timezone: g?.timezone || null,
+          };
         }
-
-        const logEntry = {
-          timestamp: new Date().toISOString(),
-          ip,
-          geo,
-          coords,
-          ua: req.headers["user-agent"] || null,
-        };
-
-        // In non-test environments, ensure the directory exists before writing.
-        fs.mkdirSync(path.dirname(getLogFilePath()), { recursive: true });
-        fs.appendFile(
-          getLogFilePath(),
-          JSON.stringify(logEntry) + "\n",
-          (err) => {
-            if (err) console.error("log write error:", err);
-          },
-        );
-
-        // console.log("TRACK_LOG:", JSON.stringify(logEntry)); // Removed debug log
-        // (Optional) Asynchronously send to external storage…
-      } catch (e) {
-        console.error("track bg error:", e);
       }
-    });
-  }
+
+      const logEntry = {
+        timestamp: new Date().toISOString(),
+        ip,
+        geo,
+        coords,
+        ua: req.headers["user-agent"] || null,
+      };
+
+      // In non-test environments, ensure the directory exists before writing.
+      fs.mkdirSync(path.dirname(getLogFilePath()), { recursive: true });
+      fs.appendFile(
+        getLogFilePath(),
+        JSON.stringify(logEntry) + "\n",
+        (err) => {
+          if (err) console.error("log write error:", err);
+        },
+      );
+    } catch (e) {
+      console.error("track bg error:", e);
+    }
+  });
 });
 
 // Fallback to index.html for SPA routing
