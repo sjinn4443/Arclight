@@ -152,15 +152,46 @@ const {
   generalRateLimiter,
   sensitiveRateLimiter,
 } = require("./security/rateLimit.cjs");
+const ipEnricher = require("./utils/ipEnricher.cjs"); // Import the ipEnricher module
+const fs = require("fs"); // Import fs for file operations
+
+// Determine the log file path. The test mocks path.join to redirect this.
+// We'll use path.join here, assuming the test setup will intercept it.
+const LOG_FILE = path.join(__dirname, "logs", "ip_logs.jsonl");
+
+// Ensure the log directory exists
+if (!fs.existsSync(path.join(__dirname, "logs"))) {
+  fs.mkdirSync(path.join(__dirname, "logs"));
+}
+
 app.use(generalRateLimiter);
-app.post(
-  "/track",
-  sensitiveRateLimiter,
-  /* your handler */ async (req, res) => {
-    // ... log ip/geodata etc
+app.post("/track", sensitiveRateLimiter, async (req, res) => {
+  const ip =
+    req.headers["x-forwarded-for"]?.split(",")[0] || req.socket.remoteAddress;
+  let enrichedData;
+  try {
+    enrichedData = await ipEnricher.enrichIp(ip);
+  } catch (error) {
+    console.error(`Error enriching IP ${ip}:`, error);
+    // If enrichment fails, still log the IP and proceed with 204
+    enrichedData = { error: "IP enrichment failed" };
+  }
+
+  const logEntry = {
+    ip: ip,
+    geo: enrichedData,
+    timestamp: new Date().toISOString(),
+  };
+
+  // Append the log entry to the file
+  fs.appendFile(LOG_FILE, JSON.stringify(logEntry) + "\n", (err) => {
+    if (err) {
+      console.error("Failed to write to ip_logs.jsonl:", err);
+      // Even if logging fails, we should still respond with 204
+    }
     res.status(204).end();
-  },
-);
+  });
+});
 
 // --- Health ---------------------------------------------------------------
 app.get("/healthz", (_req, res) => res.status(200).send("ok"));

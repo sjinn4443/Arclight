@@ -11,10 +11,13 @@ export default {
               targets: {
                 node: "current",
               },
+              // Use "commonjs" to ensure compatibility with Node.js's module system
+              // and to resolve potential parsing issues with mixed module types.
+              modules: "commonjs",
             },
           ],
         ],
-        // sourceType: "module", // Removed to avoid conflicts with modules: "commonjs"
+        sourceType: "module", // Ensure ES Module syntax is parsed correctly
       },
     ],
   },
