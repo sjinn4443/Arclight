@@ -15,10 +15,13 @@ console.log(
   PORT,
 );
 
-// trust proxy helps cookies/sessions behind proxies (not required for 502, but good)
+// Behind Railway's proxy so set trust proxy for secure cookies, req.ip, rate limits
 app.set("trust proxy", 1);
 
-const { generalRateLimiter } = require("./security/rateLimit.cjs");
+const {
+  generalRateLimiter,
+  sensitiveRateLimiter,
+} = require("./security/rateLimit.cjs");
 const csp = require("./security/csp.cjs");
 const redis = require("redis");
 // Support both modern and older connect-redis shapes
@@ -43,7 +46,11 @@ const devRouter = require("./dev_dashboard/routes/dev.cjs");
 const requireDevAuth = require("./security/requireDevAuth.cjs"); // Import requireDevAuth
 const os = require("os"); // Import os module
 
-let _logFile = path.join(__dirname, "logs", "ip_logs.jsonl");
+// On Railway, write logs to /tmp which is ephemeral storage
+let _logFile =
+  process.env.NODE_ENV === "production"
+    ? path.join("/tmp", "logs", "ip_logs.jsonl")
+    : path.join(__dirname, "logs", "ip_logs.jsonl");
 
 // Function to get the current log file path
 function getLogFilePath() {
@@ -90,6 +97,12 @@ app.use(generalRateLimiter);
 
 // Apply CSP
 app.use(csp);
+
+app.get("/healthz", (req, res) => res.status(200).send("ok"));
+app.get("/readyz", (req, res) => {
+  // optionally confirm Redis if using
+  res.status(200).json({ up: true });
+});
 
 // Apply CORS allowlist
 const allowed = (process.env.CORS_ORIGIN || "")
@@ -145,12 +158,15 @@ if (process.env.NODE_ENV !== "test") {
     }),
   );
   app.use((req, res, next) => {
-    if (req.path === "/track") return next();
+    if (
+      req.path === "/track" ||
+      req.path === "/healthz" ||
+      req.path === "/readyz"
+    )
+      return next();
     return csrfProtection(req, res, next);
   });
 }
-
-app.get("/healthz", (_req, res) => res.status(200).send("ok"));
 
 // THEN protect /dev only (not global!)
 if (process.env.NODE_ENV !== "production") {
@@ -163,7 +179,7 @@ if (process.env.NODE_ENV !== "production") {
   console.log("[dev] dev router loaded (only in non-production environments)");
 }
 
-app.post("/track", async (req, res) => {
+app.post("/track", sensitiveRateLimiter, async (req, res) => {
   // In a test environment, we write the log synchronously and wait for it to
   // finish before sending the response. This makes tests deterministic.
   if (process.env.NODE_ENV === "test") {
@@ -297,8 +313,19 @@ module.exports = app;
 module.exports.setLogFileForTesting = setLogFileForTesting;
 module.exports.getLogFilePath = getLogFilePath;
 
+const server = require("http").createServer(app);
+process.on("SIGTERM", () => {
+  console.log("SIGTERM received: closing server");
+  server.close(() => {
+    console.log("HTTP server closed");
+    process.exit(0);
+  });
+  // Optionally, set a timeout to force-exit
+  setTimeout(() => process.exit(1), 10000).unref();
+});
+
 if (require.main === module) {
-  app.listen(PORT, "0.0.0.0", () => {
+  server.listen(PORT, "0.0.0.0", () => {
     const url = `http://localhost:${PORT}`;
     console.log(`Server listening on 0.0.0.0:${PORT} (visit ${url} locally)`);
   });

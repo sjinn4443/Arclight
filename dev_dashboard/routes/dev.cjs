@@ -1,4 +1,6 @@
-console.log("[dev] dev router file loaded");
+if (process.env.NODE_ENV !== "production") {
+  console.log("[dev] dev router file loaded");
+}
 
 const express = require("express");
 const fs = require("fs");
@@ -6,7 +8,9 @@ const path = require("path");
 const { decryptField } = require("../security/encrypt.cjs");
 
 const router = express.Router();
-console.log("[dev] dev router created");
+if (process.env.NODE_ENV !== "production") {
+  console.log("[dev] dev router created");
+}
 
 router.get("/", (req, res) => {
   const jsonPath = path.join(__dirname, "..", "data", "users.json");

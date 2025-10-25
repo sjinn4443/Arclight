@@ -25,6 +25,15 @@ The current focus is on ensuring the application's core structure and PWA capabi
 - Removed "Run Lighthouse CI" and "Run translation checks" from the GitHub Actions CI/CD pipeline.
 - Modified `server.cjs` to include IP and geolocation data in the response body of the `/track` endpoint.
 - Updated `tests/tracking.test.js` to mock the `enrichIp` function, ensuring consistent and predictable geolocation data for testing, and adjusted assertions to match the mocked data.
+- Configured `server.cjs` to trust the Railway proxy for secure cookies, `req.ip`, and rate limits.
+- Refactored `csrf.cjs` to remove redundant session/Redis initialization, ensuring a single source of truth for sessions in `server.cjs`.
+- Enhanced `cors.cjs` allowlist to filter out undefined entries and optionally allow Railway subdomains via regex, including `/dev` dashboard URL.
+- Updated `csp.cjs` to include `arclight.up.railway.app/dev` in `connectSrc` for the dev dashboard.
+- Applied `sensitiveRateLimiter` to the `/track` endpoint in `server.cjs`.
+- Added `/healthz` and `/readyz` endpoints to `server.cjs` for health checks and monitoring, and ensured CSRF protection skips these routes.
+- Implemented graceful shutdown in `server.cjs` to handle `SIGTERM` signals, ensuring fewer 502s during redeploys.
+- Modified `dev_dashboard/routes/dev.cjs` to hide the "[dev] dev router loaded" log in production environments.
+- Configured `server.cjs` to write log files to `/tmp` in production for ephemeral storage on Railway.
 
 ## Next Steps
 

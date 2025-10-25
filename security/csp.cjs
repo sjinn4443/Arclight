@@ -12,8 +12,9 @@ const csp = helmet.contentSecurityPolicy({
       "https://ipapi.co", // optional alternative
       "https://api.bigdatacloud.net",
       "https://nominatim.openstreetmap.org", // if you reverse geocode GPS
-      // add any other domain your location-service calls
-    ],
+      process.env.RAILWAY_APP_URL, // if frontend calls the API at this origin
+      "https://arclight.up.railway.app/dev", // Allow dev dashboard
+    ].filter(Boolean),
     mediaSrc: ["'self'"], // Videos and audio from same origin
     fontSrc: ["'self'", "https://fonts.gstatic.com"], // Allow Google Fonts font files
     manifestSrc: ["'self'"], // Web app manifest from same origin
