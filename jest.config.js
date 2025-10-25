@@ -18,6 +18,10 @@ export default {
           ],
         ],
         sourceType: "module", // Ensure ES Module syntax is parsed correctly
+        plugins: [
+          // Explicitly transform ES Modules to CommonJS
+          "@babel/plugin-transform-modules-commonjs",
+        ],
       },
     ],
   },
