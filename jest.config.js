@@ -11,17 +11,13 @@ export default {
               targets: {
                 node: "current",
               },
-              // Use "commonjs" to ensure compatibility with Node.js's module system
-              // and to resolve potential parsing issues with mixed module types.
-              modules: "commonjs",
+              // Do not transform modules, preserve ES Module syntax
+              modules: false,
             },
           ],
         ],
         sourceType: "module", // Ensure ES Module syntax is parsed correctly
-        plugins: [
-          // Explicitly transform ES Modules to CommonJS
-          "@babel/plugin-transform-modules-commonjs",
-        ],
+        // Removed: "@babel/plugin-transform-modules-commonjs",
       },
     ],
   },
