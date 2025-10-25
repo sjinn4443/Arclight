@@ -25,15 +25,25 @@ The current focus is on ensuring the application's core structure and PWA capabi
 - Removed "Run Lighthouse CI" and "Run translation checks" from the GitHub Actions CI/CD pipeline.
 - Modified `server.cjs` to include IP and geolocation data in the response body of the `/track` endpoint.
 - Updated `tests/tracking.test.js` to mock the `enrichIp` function, ensuring consistent and predictable geolocation data for testing, and adjusted assertions to match the mocked data.
-- Configured `server.cjs` to trust the Railway proxy for secure cookies, `req.ip`, and rate limits.
-- Refactored `csrf.cjs` to remove redundant session/Redis initialization, ensuring a single source of truth for sessions in `server.cjs`.
-- Enhanced `cors.cjs` allowlist to filter out undefined entries and optionally allow Railway subdomains via regex, including `/dev` dashboard URL.
-- Updated `csp.cjs` to include `arclight.up.railway.app/dev` in `connectSrc` for the dev dashboard.
+- Configured `server.cjs` to trust the Railway proxy for secure cookies, real client IPs, and rate limits.
+- Refactored `server.cjs` to be the single source of truth for session management, including RedisStore setup.
+- Updated `csrf.cjs` to be middleware-only, removing its separate session/Redis initialization.
+- Enhanced `cors.cjs` allowlist to filter out undefined entries and support Railway subdomains via regex, and confirmed it explicitly allows no-Origin requests.
+- Updated `csp.cjs` to tolerate missing `RAILWAY_APP_URL` in `connectSrc` and removed the explicit `/dev` dashboard entry as it's now handled by the Railway subdomain regex.
 - Applied `sensitiveRateLimiter` to the `/track` endpoint in `server.cjs`.
 - Added `/healthz` and `/readyz` endpoints to `server.cjs` for health checks and monitoring, and ensured CSRF protection skips these routes.
-- Implemented graceful shutdown in `server.cjs` to handle `SIGTERM` signals, ensuring fewer 502s during redeploys.
+- Implemented graceful shutdown in `server.cjs` to handle `SIGTERM` signals, ensuring fewer 502s during redeploys, and added stronger error logging for listen issues.
 - Modified `dev_dashboard/routes/dev.cjs` to hide the "[dev] dev router loaded" log in production environments.
 - Configured `server.cjs` to write log files to `/tmp` in production for ephemeral storage on Railway.
+- Added a `/csrf-token` helper route in `server.cjs` for SPA clients to fetch CSRF tokens.
+- Made the static/SPA fallback in `server.cjs` safe even if the `public/` folder is missing, returning a 200 status to prevent Railway's probe from marking it dead.
+- Updated `server.cjs` with new CORS configuration to explicitly allow `http://localhost:3000`, `http://127.0.0.1:3000`, `RAILWAY_PUBLIC_DOMAIN`, and `RAILWAY_URL`, and configured `methods` and `allowedHeaders`.
+- Updated `server.cjs` with new Helmet CSP configuration to include `http://localhost:3000`, `http://127.0.0.1:3000`, `RAILWAY_URL`, and optional websockets/HMR in `connectSrc`.
+- Adjusted CSRF middleware setup in `server.cjs` for correct order and global application, including exemptions for `/healthz`, `/readyz`, `/track`, and test environments.
+- Emptied `security/csrf.cjs` as its functionality is now handled directly in `server.cjs`.
+- Emptied `security/cors.cjs` as its functionality is now handled directly in `server.cjs`.
+- Emptied `security/csp.cjs` as its functionality is now handled directly in `server.cjs`.
+- Updated `.env` to include `SESSION_SECRET=please-set-a-long-random-value` and `RAILWAY_URL=https://arclight.up.railway.app`.
 
 ## Next Steps
 
