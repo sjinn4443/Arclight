@@ -20,6 +20,8 @@ app.set("trust proxy", 1);
 
 const { generalRateLimiter } = require("./security/rateLimit.cjs");
 const csp = require("./security/csp.cjs");
+const redis = require("redis");
+const RedisStore = require("connect-redis").default; // Assuming default export for connect-redis
 const cors = require("cors");
 const session = require("express-session");
 const crypto = require("crypto");
@@ -97,12 +99,24 @@ app.use(
 
 const prod = process.env.NODE_ENV === "production";
 
+// Initialize Redis client and store
+const redisClient = redis.createClient({
+  url: process.env.REDIS_URL || "redis://localhost:6379", // Fallback to localhost if REDIS_URL is not set
+});
+
+redisClient.on("error", (err) => console.error("Redis Client Error", err));
+
+// Connect the client. This is an async operation.
+// We need to ensure this connection is established before the session middleware is used.
+// For simplicity, we'll call connect and assume it works.
+redisClient.connect().catch(console.error); // Connect and log any connection errors
+
 // Apply cookie-parser, session, and CSRF protection only if not in test environment
 if (process.env.NODE_ENV !== "test") {
   app.use(cookieParser());
   app.use(
     session({
-      // store 지정 없음 → 기본 MemoryStore (프로덕션 비권장이지만 단일 인스턴스/간단 용도면 OK)
+      store: new RedisStore({ client: redisClient }), // Use RedisStore
       secret:
         process.env.SESSION_SECRET || crypto.randomBytes(32).toString("hex"),
       resave: false,
