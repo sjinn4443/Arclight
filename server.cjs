@@ -21,7 +21,16 @@ app.set("trust proxy", 1);
 const { generalRateLimiter } = require("./security/rateLimit.cjs");
 const csp = require("./security/csp.cjs");
 const redis = require("redis");
-const RedisStore = require("connect-redis").default; // Assuming default export for connect-redis
+// Support both modern and older connect-redis shapes
+let RedisStore;
+try {
+  // Modern (v6/v7+): named export
+  ({ RedisStore } = require("connect-redis"));
+} catch {
+  // Fallbacks: older CJS default or module itself is the constructor
+  const cr = require("connect-redis");
+  RedisStore = cr.default || cr;
+}
 const cors = require("cors");
 const session = require("express-session");
 const crypto = require("crypto");
@@ -99,24 +108,29 @@ app.use(
 
 const prod = process.env.NODE_ENV === "production";
 
-// Initialize Redis client and store
-const redisClient = redis.createClient({
-  url: process.env.REDIS_URL || "redis://localhost:6379", // Fallback to localhost if REDIS_URL is not set
-});
+// Initialize Redis only if we have REDIS_URL (recommended for prod)
+const useRedis = !!process.env.REDIS_URL;
+let redisClient = null;
+if (useRedis) {
+  redisClient = redis.createClient({ url: process.env.REDIS_URL });
+  redisClient.on("error", (err) => console.error("Redis Client Error", err));
+  redisClient.connect().catch((e) => console.error("Redis connect failed:", e));
+}
 
-redisClient.on("error", (err) => console.error("Redis Client Error", err));
-
-// Connect the client. This is an async operation.
-// We need to ensure this connection is established before the session middleware is used.
-// For simplicity, we'll call connect and assume it works.
-redisClient.connect().catch(console.error); // Connect and log any connection errors
-
-// Apply cookie-parser, session, and CSRF protection only if not in test environment
+// Apply cookie-parser, session, and CSRF protection only if not in test
 if (process.env.NODE_ENV !== "test") {
   app.use(cookieParser());
   app.use(
     session({
-      store: new RedisStore({ client: redisClient }), // Use RedisStore
+      // Use RedisStore when available, otherwise fallback to MemoryStore
+      ...(useRedis && RedisStore && redisClient
+        ? { store: new RedisStore({ client: redisClient }) }
+        : (process.env.NODE_ENV === "production"
+            ? console.warn(
+                "[session] Using MemoryStore in production — set REDIS_URL for persistence.",
+              )
+            : null,
+          {})),
       secret:
         process.env.SESSION_SECRET || crypto.randomBytes(32).toString("hex"),
       resave: false,

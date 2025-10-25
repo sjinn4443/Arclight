@@ -9,7 +9,7 @@ This project is the Arclight App, a comprehensive educational and diagnostic too
 - Instructional videos for practical demonstrations
 - Anatomical diagrams and images for reference
 - Responsive design for use on multiple devices
-- **Enhanced Security:** Implemented rate limiting, Content Security Policy (CSP), CORS allowlist, and CSRF protection.
+- **Enhanced Security:** Implemented rate limiting, Content Security Policy (CSP), CORS allowlist, CSRF protection, and production-ready session management using Redis.
 - **Automated CI/CD:** GitHub Actions pipeline for continuous integration and deployment.
 
 ## Data Tracking and Logging
@@ -58,7 +58,7 @@ This project is the Arclight App, a comprehensive educational and diagnostic too
 - **Service Worker API, Web Manifest**
 - **Jest** for testing
 - **GitHub Actions** for CI/CD
-- **Security Libraries** (e.g., `express-rate-limit`, `helmet`, `cors`, `csurf`, `express-session`, `cookie-parser`)
+- **Security Libraries** (e.g., `express-rate-limit`, `helmet`, `cors`, `csurf`, `express-session`, `cookie-parser`, `redis`, `connect-redis`)
 
 ## Getting Started
 
