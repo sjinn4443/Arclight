@@ -1,7 +1,5 @@
-const dotenv = require("dotenv");
-const { TextEncoder, TextDecoder } = require("util");
-
-dotenv.config();
+import { TextEncoder, TextDecoder } from "util";
+import fetch from "node-fetch";
 
 // Ensure tests always have a valid 32-byte Base64 key
 if (!process.env.MASTER_KEY) {
@@ -10,4 +8,4 @@ if (!process.env.MASTER_KEY) {
 
 global.TextEncoder = TextEncoder;
 global.TextDecoder = TextDecoder;
-global.fetch = require("node-fetch");
+global.fetch = fetch;
