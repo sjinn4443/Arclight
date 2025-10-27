@@ -65,7 +65,11 @@ if (haveRedis && RedisStore && createClient) {
 app.use(
   session({
     name: "sid",
-    secret: process.env.SESSION_SECRET, // must be set in Railway
+    secret:
+      process.env.SESSION_SECRET ||
+      (process.env.NODE_ENV === "test"
+        ? "test-secret"
+        : crypto.randomBytes(32).toString("hex")), // Use a test secret for tests, or generate a random one if not set
     resave: false,
     saveUninitialized: false,
     store,
