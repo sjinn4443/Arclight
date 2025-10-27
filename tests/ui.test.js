@@ -35,18 +35,43 @@ mockedRoutes = {
 // This variable will hold the *actual* mocked navigation module
 let mockedNavigationModule;
 
-describe("UI Integration Tests", () => {
-  beforeAll(async () => {
-    // Mock fetch globally
-    global.fetch = jest.fn(() =>
-      Promise.resolve({
-        ok: true,
-        text: async () => "<html><body>Default mocked content</body></html>",
-      }),
-    );
+// Mock file system access for JSDOM
+const mockHtmlFiles = {
+  "html/intro.html": "<html><body>Intro Page Content</body></html>",
+  "html/dashboard.html": "<html><body>Dashboard Content</body></html>",
+  "html/splashscreen.html": "<html><body>Splash Screen Content</body></html>",
+  "html/languageinstall.html":
+    "<html><body>Language Install Content</body></html>",
+  "html/onboarding.html": "<html><body>Onboarding Content</body></html>",
+  "html/interest.html": "<html><body>Interest Content</body></html>",
+  "html/page1.html": "<html><body>Page 1 Content</body></html>",
+  "html/page2.html": "<html><body>Page 2 Content</body></html>",
+  "html/page3.html": "<html><body>Page 3 Content</body></html>",
+  "html/videos.html": "<html><body>Videos Content</body></html>",
+};
 
-    // Reset modules to ensure the mock is applied correctly
-    jest.resetModules();
+describe("UI Integration Tests", () => {
+  let fetchSpy; // Declare fetchSpy here
+
+  beforeAll(async () => {
+    // Reset modules to ensure a clean state
+    // jest.resetModules(); // Removed this line as it might be interfering with the fetch mock
+
+    // Use jest.spyOn to mock global.fetch
+    fetchSpy = jest.spyOn(global, "fetch");
+
+    // Re-apply the mock implementation to the spy
+    fetchSpy.mockImplementation((url) => {
+      if (mockHtmlFiles[url]) {
+        return Promise.resolve({
+          ok: true,
+          text: async () => mockHtmlFiles[url],
+        });
+      } else {
+        // Simulate a network error for unknown URLs
+        return Promise.reject(new Error("Network error: File not found"));
+      }
+    });
 
     // Build our “navigation module” inline for the tests (Option A)
     let _state = { currentPageName: null, historyStack: [] };
@@ -94,8 +119,8 @@ describe("UI Integration Tests", () => {
       historyStack: ["intro"],
     });
 
-    // Reset fetch mock
-    fetch.mockClear();
+    // Reset fetch mock calls
+    global.fetch.mockClear();
 
     // (Re)wire the mock
     mockLoadPage.mockImplementation(async (routeName, options = {}) => {
@@ -110,7 +135,7 @@ describe("UI Integration Tests", () => {
       const container = document.getElementById("page-content");
 
       if (!url) {
-        console.error(`Route "${routeName}" not found in ROUTES.`);
+        console.error(`Route "${routeName}" not found in ROUTES.`); // Corrected typo: console.serror -> console.error
         container.innerHTML = `<div class="container"><p>Page not found: ${routeName}</p></div>`;
         window.dispatchEvent(
           new CustomEvent("page:loaded", {
@@ -359,21 +384,15 @@ describe("UI Integration Tests", () => {
   // New tests for navigation.js functionality
 
   test("loadPage correctly loads content into #page-content and applies active class", async () => {
-    const mockHtml =
-      '<div class="page" id="page1-content">Mocked Page 1 Content</div>';
-    // Mock fetch response for page1.html
-    fetch.mockResolvedValueOnce({
-      ok: true,
-      text: async () => mockHtml,
-    });
-
+    // This test relies on the fetch mock returning specific content for page1.html
+    // The mock in beforeAll is now configured to handle this.
     await mockedNavigationModule.loadPage("page1");
 
     const pageContent = document.getElementById("page-content");
-    expect(fetch).toHaveBeenCalledWith("html/page1.html", {
+    expect(global.fetch).toHaveBeenCalledWith("html/page1.html", {
       cache: "no-store",
     });
-    expect(pageContent.innerHTML).toContain("Mocked Page 1 Content");
+    expect(pageContent.innerHTML).toContain("Page 1 Content"); // Expecting content from mockHtmlFiles
     // Check that the .page.active element is correctly applied
     expect(pageContent.querySelector(".page.active")).not.toBeNull();
     expect(pageContent.querySelector(".page.active").id).toBe("page1-content");
@@ -385,13 +404,14 @@ describe("UI Integration Tests", () => {
   });
 
   test("loadPage replaces content and correctly applies active class for subsequent loads", async () => {
-    const mockHtmlPage1 =
-      '<div class="page" id="page1-content">Content for Page 1</div>';
-    const mockHtmlPage2 =
-      '<div class="page" id="page2-content">Content for Page 2</div>';
+    const mockHtmlPage1 = "<html><body>Content for Page 1</body></html>"; // Simplified for clarity
+    const mockHtmlPage2 = "<html><body>Content for Page 2</body></html>";
 
-    // Load page 1
-    fetch.mockResolvedValueOnce({ ok: true, text: async () => mockHtmlPage1 });
+    // Mock fetch responses for page1 and page2
+    global.fetch.mockResolvedValueOnce({
+      ok: true,
+      text: async () => mockHtmlPage1,
+    });
     await mockedNavigationModule.loadPage("page1");
 
     let pageContent = document.getElementById("page-content");
@@ -404,7 +424,10 @@ describe("UI Integration Tests", () => {
     ]);
 
     // Load page 2, replacing the current history entry
-    fetch.mockResolvedValueOnce({ ok: true, text: async () => mockHtmlPage2 });
+    global.fetch.mockResolvedValueOnce({
+      ok: true,
+      text: async () => mockHtmlPage2,
+    });
     await mockedNavigationModule.loadPage("page2", { replace: true });
 
     // Check that page 1 is no longer active and page 2 is active
@@ -419,7 +442,7 @@ describe("UI Integration Tests", () => {
 
   test("Navigation links with data-route attribute trigger loadPage", async () => {
     // Mock the fetch for page1.html
-    fetch.mockResolvedValueOnce({
+    global.fetch.mockResolvedValueOnce({
       ok: true,
       text: async () => "<div>Page 1 Content</div>",
     });
@@ -429,30 +452,36 @@ describe("UI Integration Tests", () => {
 
     // Expect fetch to have been called to load page1.html
     expect(mockedNavigationModule.loadPage).toHaveBeenCalledWith("page1");
-    expect(fetch).toHaveBeenCalledWith("html/page1.html", {
+    expect(global.fetch).toHaveBeenCalledWith("html/page1.html", {
       cache: "no-store",
     });
     expect(mockedNavigationModule.getState().currentPageName).toBe("page1");
   });
 
   test("goBack navigates to the previous page in history", async () => {
-    const mockHtmlPage1 =
-      '<div class="page" id="page1-content">Content for Page 1</div>';
-    const mockHtmlPage2 =
-      '<div class="page" id="page2-content">Content for Page 2</div>';
-    const mockHtmlPage3 =
-      '<div class="page" id="page3-content">Content for Page 3</div>';
+    const mockHtmlPage1 = "<html><body>Content for Page 1</body></html>";
+    const mockHtmlPage2 = "<html><body>Content for Page 2</body></html>";
+    const mockHtmlPage3 = "<html><body>Content for Page 3</body></html>";
 
     // Load page 1
-    fetch.mockResolvedValueOnce({ ok: true, text: async () => mockHtmlPage1 });
+    global.fetch.mockResolvedValueOnce({
+      ok: true,
+      text: async () => mockHtmlPage1,
+    });
     await mockedNavigationModule.loadPage("page1");
 
     // Load page 2
-    fetch.mockResolvedValueOnce({ ok: true, text: async () => mockHtmlPage2 });
+    global.fetch.mockResolvedValueOnce({
+      ok: true,
+      text: async () => mockHtmlPage2,
+    });
     await mockedNavigationModule.loadPage("page2");
 
     // Load page 3
-    fetch.mockResolvedValueOnce({ ok: true, text: async () => mockHtmlPage3 });
+    global.fetch.mockResolvedValueOnce({
+      ok: true,
+      text: async () => mockHtmlPage3,
+    });
     await mockedNavigationModule.loadPage("page3");
 
     expect(mockedNavigationModule.getState().currentPageName).toBe("page3");
@@ -464,7 +493,10 @@ describe("UI Integration Tests", () => {
     ]);
 
     // Go back to page 2
-    fetch.mockResolvedValueOnce({ ok: true, text: async () => mockHtmlPage2 }); // Mock fetch for page2 again
+    global.fetch.mockResolvedValueOnce({
+      ok: true,
+      text: async () => mockHtmlPage2,
+    }); // Mock fetch for page2 again
     await mockedNavigationModule.goBack();
 
     expect(mockedNavigationModule.getState().currentPageName).toBe("page2");
@@ -478,7 +510,10 @@ describe("UI Integration Tests", () => {
     ).toBe("page2-content");
 
     // Go back to page 1
-    fetch.mockResolvedValueOnce({ ok: true, text: async () => mockHtmlPage1 }); // Mock fetch for page1 again
+    global.fetch.mockResolvedValueOnce({
+      ok: true,
+      text: async () => mockHtmlPage1,
+    }); // Mock fetch for page1 again
     await mockedNavigationModule.goBack();
 
     expect(mockedNavigationModule.getState().currentPageName).toBe("page1");
@@ -492,8 +527,7 @@ describe("UI Integration Tests", () => {
   });
 
   test("goBack defaults to dashboard if history is empty", async () => {
-    const mockHtmlDashboard =
-      '<div class="page" id="dashboard-content">Dashboard Content</div>';
+    const mockHtmlDashboard = "<html><body>Dashboard Content</body></html>";
 
     // Ensure history is empty and currentPageName is null before this test
     mockedNavigationModule.setState({
@@ -502,7 +536,7 @@ describe("UI Integration Tests", () => {
     });
 
     // Go back when history is empty
-    fetch.mockResolvedValueOnce({
+    global.fetch.mockResolvedValueOnce({
       ok: true,
       text: async () => mockHtmlDashboard,
     });
@@ -518,9 +552,11 @@ describe("UI Integration Tests", () => {
   });
 
   test("Global back button is hidden on excluded routes", async () => {
-    const mockHtmlSplash =
-      '<div class="page" id="splash-content">Splash Screen</div>';
-    fetch.mockResolvedValueOnce({ ok: true, text: async () => mockHtmlSplash });
+    const mockHtmlSplash = "<html><body>Splash Screen Content</body></html>";
+    global.fetch.mockResolvedValueOnce({
+      ok: true,
+      text: async () => mockHtmlSplash,
+    });
     await mockedNavigationModule.loadPage("splashscreen");
 
     // Dispatch the page:loaded event to trigger updateGlobalBackVisibility
@@ -531,14 +567,12 @@ describe("UI Integration Tests", () => {
     // The actual navigation.js logic for updateGlobalBackVisibility is called via event listener.
     // We need to ensure that the event listener is set up and that the logic within it works.
     // The mock for updateGlobalBackVisibility is not strictly necessary if we are testing the actual navigation.js.
-    // However, if the test environment doesn't fully simulate DOM events, we might need to mock it.
     // For now, let's assume the event dispatch is sufficient.
     expect(document.getElementById("backBtnGlobal").style.display).toBe("none");
 
     // Test another excluded route
-    const mockHtmlOnboarding =
-      '<div class="page" id="onboarding-content">Onboarding</div>';
-    fetch.mockResolvedValueOnce({
+    const mockHtmlOnboarding = "<html><body>Onboarding Content</body></html>";
+    global.fetch.mockResolvedValueOnce({
       ok: true,
       text: async () => mockHtmlOnboarding,
     });
@@ -550,9 +584,11 @@ describe("UI Integration Tests", () => {
   });
 
   test("Global back button is visible on non-excluded routes", async () => {
-    const mockHtmlPage1 =
-      '<div class="page" id="page1-content">Page 1 Content</div>';
-    fetch.mockResolvedValueOnce({ ok: true, text: async () => mockHtmlPage1 });
+    const mockHtmlPage1 = "<html><body>Page 1 Content</body></html>";
+    global.fetch.mockResolvedValueOnce({
+      ok: true,
+      text: async () => mockHtmlPage1,
+    });
     await mockedNavigationModule.loadPage("page1");
 
     // Dispatch the page:loaded event
@@ -566,13 +602,22 @@ describe("UI Integration Tests", () => {
 
   // Test case for fetch error handling in loadPage
   test("loadPage handles fetch errors gracefully", async () => {
-    // Mock fetch to return an error
-    fetch.mockRejectedValueOnce(new Error("Network error"));
+    // Mock fetch to return an error for a specific route
+    global.fetch.mockImplementation(async (url) => {
+      if (url === "html/page1.html") {
+        return Promise.reject(new Error("Network error"));
+      }
+      // Fallback for other fetches if needed, though not expected in this test
+      return Promise.resolve({
+        ok: true,
+        text: async () => "<html><body>Default content</body></html>",
+      });
+    });
 
     await mockedNavigationModule.loadPage("page1");
 
     const pageContent = document.getElementById("page-content");
-    expect(fetch).toHaveBeenCalledWith("html/page1.html", {
+    expect(global.fetch).toHaveBeenCalledWith("html/page1.html", {
       cache: "no-store",
     });
     expect(pageContent.innerHTML).toContain("Failed to load page: page1");

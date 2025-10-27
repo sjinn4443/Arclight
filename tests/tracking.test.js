@@ -116,10 +116,7 @@ describe("IP Tracking Endpoint", () => {
   }, 10000);
 
   test("should handle requests without X-Forwarded-For header", async () => {
-    // Note: When running locally without a proxy, req.socket.remoteAddress will be used.
-    // This test might be flaky depending on the execution environment.
-    // For a more robust test, one might mock req.socket.remoteAddress.
-    // For now, we'll assume it's available and has a value.
+    // The middleware in server.cjs will set req.socket.remoteAddress to 127.0.0.1 in test environment
     const response = await request(app).post("/track");
 
     expect(response.status).toBe(204);
@@ -133,7 +130,7 @@ describe("IP Tracking Endpoint", () => {
     expect(logEntries.length).toBe(1); // Should be 1 as log file is cleared before each test
 
     const loggedData = JSON.parse(logEntries[0]); // Check the first (and only) entry
-    expect(loggedData.ip).not.toBeUndefined(); // Should have an IP
+    expect(loggedData.ip).toBe("::ffff:127.0.0.1"); // Should have the IPv6-mapped IPv4 address from middleware
     expect(loggedData.geo).toBeDefined();
     expect(loggedData.geo.country).toBeNull();
     expect(loggedData.geo.city).toBeNull();

@@ -92,9 +92,9 @@ export function initializeEyes() {
 
   const root = document; // delegate across the Eyes page
 
-  root.addEventListener("click", async (e) => {
+  root.addEventListener("click", async (_e) => {
     // Find the clicked Eyes card
-    const card = e.target.closest(".eyes-card");
+    const card = _e.target.closest(".eyes-card");
     if (!card) return;
 
     // Work out what this card targets
@@ -105,7 +105,7 @@ export function initializeEyes() {
     // Only handle the Pupils card
     if (target !== "pupilsPage" && label !== "pupils") return;
 
-    e.preventDefault();
+    _e.preventDefault();
 
     // Direct to Pupils without flashing Learning Modules
     // inside the Pupils click handler in eyes.js
@@ -113,11 +113,15 @@ export function initializeEyes() {
     window.__videosSuppressFlash = true;
     try {
       sessionStorage.setItem("gotoSubPage", "pupilsPage");
-    } catch (e) {}
+    } catch {
+      // Intentionally empty
+    }
 
     try {
       sessionStorage.setItem("fromRoute", window.currentPageName || "eyes");
-    } catch (e) {}
+    } catch {
+      // Intentionally empty
+    }
     await loadPage("videos");
 
     try {
@@ -125,7 +129,9 @@ export function initializeEyes() {
       if (typeof goToVideosSection === "function") {
         goToVideosSection("pupilsPage");
       }
-    } catch {}
+    } catch {
+      // Intentionally empty
+    }
 
     // Compress the history so Back goes straight to the previous page (no blank Videos root)
     try {
@@ -137,7 +143,9 @@ export function initializeEyes() {
       const base = location.pathname + location.search;
       const hash = "#videos/pupilsPage";
       history.replaceState(st, "", base + hash);
-    } catch {}
+    } catch {
+      // Intentionally empty
+    }
   });
 }
 
@@ -156,8 +164,8 @@ export function initializeEyesCatalog() {
   if (menuBtn) {
     menuBtn.addEventListener(
       "click",
-      (e) => {
-        e.preventDefault();
+      (_e) => {
+        _e.preventDefault();
         openMenu();
       },
       { once: true },
@@ -297,7 +305,7 @@ export function initializeEyesCatalog() {
     const likes = getLikes();
 
     // Helper: can this item actually navigate?
-    const isNavigable = (target, _tags = []) => {
+    const isNavigable = (target) => {
       if (!target || target === "comingSoon") return false;
 
       // Video sections handled on /videos via goToVideosSection
@@ -442,6 +450,7 @@ export function initializeEyesCatalog() {
     // Initial sync once layout has settled
     requestAnimationFrame(() => paintDots(getActiveIndex()));
   };
+  // This comment is intentionally placed here to satisfy the linter for the empty block statement.
 
   // Apply to every Eyes carousel section
   pageEl
@@ -457,23 +466,23 @@ export function initializeEyesCatalog() {
 
   /**
    * Consumes an event to prevent default behavior and stop propagation.
-   * @param {Event} e - The event object.
+   * @param {Event} _e - The event object.
    */
-  const consume = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (typeof e.stopImmediatePropagation === "function")
-      e.stopImmediatePropagation();
+  const consume = (_e) => {
+    _e.preventDefault();
+    _e.stopPropagation();
+    if (typeof _e.stopImmediatePropagation === "function")
+      _e.stopImmediatePropagation();
   };
 
   /**
    * Handles the toggling of a 'like' state for a module card.
    * Updates the card's visual state and persists the like status.
-   * @param {Event} e - The event object from the heart button click/keydown.
+   * @param {Event} _e - The event object from the heart button click/keydown.
    */
-  const onHeartToggle = (e) => {
-    consume(e);
-    const heart = e.currentTarget; // .heart-btn
+  const onHeartToggle = (_e) => {
+    consume(_e);
+    const heart = _e.currentTarget; // .heart-btn
     const card = heart.closest(".eyes-card");
     const label = card?.getAttribute("data-label");
     if (!label) return;
@@ -485,16 +494,16 @@ export function initializeEyesCatalog() {
   pageEl.querySelectorAll(".heart-btn").forEach((hb) => {
     hb.addEventListener("pointerdown", consume, { capture: true });
     hb.addEventListener("click", onHeartToggle, { capture: true });
-    hb.addEventListener("keydown", (e) => {
-      if (e.key === "Enter" || e.key === " ") onHeartToggle(e);
+    hb.addEventListener("keydown", (_e) => {
+      if (_e.key === "Enter" || _e.key === " ") onHeartToggle(_e);
     });
   });
 
   // Delegated handler for card navigation
   pageEl.addEventListener(
     "click",
-    async (e) => {
-      const card = e.target.closest?.(".eyes-card");
+    async (_e) => {
+      const card = _e.target.closest?.(".eyes-card");
       if (!card) return;
 
       // If disabled, do nothing
@@ -502,8 +511,8 @@ export function initializeEyesCatalog() {
         card.getAttribute("aria-disabled") === "true" ||
         card.dataset.disabled === "true"
       ) {
-        e.preventDefault();
-        e.stopPropagation();
+        _e.preventDefault();
+        _e.stopPropagation();
         return;
       }
 
@@ -513,7 +522,7 @@ export function initializeEyesCatalog() {
 
       const label = (card.getAttribute("data-label") || "").toLowerCase();
 
-      e.preventDefault();
+      _e.preventDefault();
 
       // Direct-open Pupils
       if (target === "pupilsPage" || label === "pupils") {
@@ -522,7 +531,9 @@ export function initializeEyesCatalog() {
           window.__videosSuppressFlash = true;
           // Fallback for older code paths:
           sessionStorage.setItem("gotoSubPage", "pupilsPage");
-        } catch {}
+        } catch {
+          // Intentionally empty
+        }
         await loadPage("videos");
 
         try {
@@ -544,7 +555,9 @@ export function initializeEyesCatalog() {
           window.__videosPendingTarget = target;
           window.__videosSuppressFlash = true;
           sessionStorage.setItem("gotoSubPage", target);
-        } catch {}
+        } catch {
+          // Intentionally empty
+        }
         await loadPage("videos");
 
         try {

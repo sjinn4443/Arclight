@@ -1,5 +1,5 @@
-import dotenv from "dotenv";
-import { TextEncoder, TextDecoder } from "util";
+const dotenv = require("dotenv");
+const { TextEncoder, TextDecoder } = require("util");
 
 dotenv.config();
 
@@ -10,3 +10,4 @@ if (!process.env.MASTER_KEY) {
 
 global.TextEncoder = TextEncoder;
 global.TextDecoder = TextDecoder;
+global.fetch = require("node-fetch");

@@ -5,6 +5,8 @@ const crypto = require("crypto");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const http = require("http");
+const fs = require("fs"); // Import fs for file operations
+const fsp = require("fs").promises; // Import fs.promises for async file operations
 
 // Bind to the dynamic port Railway gives you; fall back only if truly absent.
 const HOST = process.env.HOST || "0.0.0.0";
@@ -27,6 +29,16 @@ app.use(express.static(STATIC_ROOT, { etag: true, lastModified: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+// Middleware to set a default remoteAddress for testing if not present
+if (process.env.NODE_ENV === "test") {
+  app.use((req, res, next) => {
+    if (!req.socket.remoteAddress) {
+      req.socket.remoteAddress = "127.0.0.1"; // Default IP for tests
+    }
+    next();
+  });
+}
 
 // --- Sessions (single source of truth) -----------------------------------
 // (If you previously configured sessions in csrf.cjs, remove it there.)
@@ -153,7 +165,6 @@ const {
   sensitiveRateLimiter,
 } = require("./security/rateLimit.cjs");
 const ipEnricher = require("./utils/ipEnricher.cjs"); // Import the ipEnricher module
-const fs = require("fs"); // Import fs for file operations
 
 // Determine the log file path. The test mocks path.join to redirect this.
 // We'll use path.join here, assuming the test setup will intercept it.
@@ -168,12 +179,13 @@ app.use(generalRateLimiter);
 app.post("/track", sensitiveRateLimiter, async (req, res) => {
   const ip =
     req.headers["x-forwarded-for"]?.split(",")[0] || req.socket.remoteAddress;
+  console.log(`[TRACK] Received request for IP: ${ip}`); // Debug log
   let enrichedData;
   try {
     enrichedData = await ipEnricher.enrichIp(ip);
+    console.log(`[TRACK] Enriched data for ${ip}:`, enrichedData); // Debug log
   } catch (error) {
-    console.error(`Error enriching IP ${ip}:`, error);
-    // If enrichment fails, still log the IP and proceed with 204
+    console.error(`[TRACK] Error enriching IP ${ip}:`, error);
     enrichedData = { error: "IP enrichment failed" };
   }
 
@@ -182,15 +194,17 @@ app.post("/track", sensitiveRateLimiter, async (req, res) => {
     geo: enrichedData,
     timestamp: new Date().toISOString(),
   };
+  console.log(`[TRACK] Log entry:`, logEntry); // Debug log
 
   // Append the log entry to the file
-  fs.appendFile(LOG_FILE, JSON.stringify(logEntry) + "\n", (err) => {
-    if (err) {
-      console.error("Failed to write to ip_logs.jsonl:", err);
-      // Even if logging fails, we should still respond with 204
-    }
-    res.status(204).end();
-  });
+  try {
+    await fsp.appendFile(LOG_FILE, JSON.stringify(logEntry) + "\n");
+    console.log(`[TRACK] Successfully wrote to ${LOG_FILE}`); // Debug log
+  } catch (err) {
+    console.error("[TRACK] Failed to write to ip_logs.jsonl:", err); // Debug log
+  }
+
+  res.status(204).end();
 });
 
 // --- Health ---------------------------------------------------------------
