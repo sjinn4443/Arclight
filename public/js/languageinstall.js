@@ -3,7 +3,7 @@
  */
 
 import { loadPage } from "./navigation.js";
-import { _initializePWA, canInstall, promptInstall } from "./pwa.js";
+import { initializePWA, canInstall, promptInstall } from "./pwa.js";
 import { setLanguage, getLanguage } from "./i18n.js";
 
 /**
