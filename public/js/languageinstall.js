@@ -6,6 +6,8 @@ import { loadPage } from "./navigation.js";
 import { initializePWA, canInstall, promptInstall } from "./pwa.js";
 import { setLanguage, getLanguage } from "./i18n.js";
 
+initializePWA();
+
 /**
  * Initializes the language installation page.
  * Sets up language preference handling, builds a custom language selection dropdown,
