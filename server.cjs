@@ -25,6 +25,12 @@ console.log("Static path:", STATIC_ROOT);
 console.log("Index path:", path.join(STATIC_ROOT, "index.html"));
 app.use(express.static(STATIC_ROOT, { etag: true, lastModified: true }));
 
+app.use("/manifest.json", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "manifest.json"), {
+    headers: { "Content-Type": "application/manifest+json" },
+  });
+});
+
 // --- Parsers --------------------------------------------------------------
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
