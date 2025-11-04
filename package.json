@@ -6,7 +6,9 @@
   "scripts": {
     "prepare": "husky install",
     "test": "cross-env NODE_ENV=test node_modules/jest/bin/jest.js --config jest.config.js",
+    "dev": "NODE_ENV=development nodemon server.cjs",
     "start": "node server.cjs",
+    "start:prod": "NODE_ENV=production node server.cjs",
     "start:track": "cross-env PORT=3001 node server.cjs",
     "test:ci": "cross-env NODE_OPTIONS=--experimental-vm-modules node -r dotenv/config node_modules/jest/bin/jest.js --verbose",
     "build": "node scripts/build.cjs",
@@ -38,6 +40,7 @@
     "http-server": "^14.1.1",
     "morgan": "^1.10.1",
     "node-fetch": "^2.7.0",
+    "pg": "^8.16.3",
     "redis": "^5.9.0",
     "sharp": "^0.34.3"
   },

@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Arclight Dev Dashboard</title>
+    <meta name="robots" content="noindex,nofollow" />
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        margin: 16px;
+      }
+      .toolbar {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        margin-bottom: 12px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed;
+      }
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      thead th {
+        position: sticky;
+        top: 0;
+        background: #fafafa;
+        z-index: 1;
+      }
+      th:nth-child(1) {
+        width: 60px;
+        text-align: right;
+      }
+      th:nth-child(9) {
+        width: 120px;
+        text-align: right;
+      }
+      td:nth-child(1),
+      td:nth-child(9) {
+        text-align: right;
+      }
+      .status {
+        font-size: 0.9rem;
+        opacity: 0.8;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="toolbar">
+      <button id="refreshBtn" type="button">Refresh data</button>
+      <span id="status" class="status">Loaded 0 rows</span>
+    </div>
+
+    <form
+      id="profileForm"
+      style="
+        margin-bottom: 20px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      "
+    >
+      <input name="name" placeholder="Name" />
+      <input name="aims" placeholder="Aims" />
+      <input name="interest" placeholder="Interest" />
+      <input name="experience" placeholder="Experience" />
+      <input name="contact" placeholder="Contact" />
+      <input name="country" placeholder="Country" />
+      <input name="area" placeholder="Area" />
+      <input name="language" placeholder="Language (e.g. en, fr)" />
+      <button type="submit" style="grid-column: span 2">Save Profile</button>
+    </form>
+
+    <table id="users">
+      <thead>
+        <tr>
+          <th>No. <small>(몇 번째 사용자인지)</small></th>
+          <th>Name</th>
+          <th>Aims</th>
+          <th>Interest</th>
+          <th>Experience</th>
+          <th>Contact</th>
+          <th>Country</th>
+          <th>Area</th>
+          <th>Language</th>
+          <th>Refresh count</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <script type="module" src="/js/dev_dashboard.js"></script>
+  </body>
+</html>

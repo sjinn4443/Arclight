@@ -5,6 +5,7 @@
 import { loadPage } from "./navigation.js";
 import { initializePWA, canInstall, promptInstall } from "./pwa.js";
 import { setLanguage, getLanguage } from "./i18n.js";
+import { saveProfile } from "./telemetry.js";
 
 initializePWA();
 
@@ -35,8 +36,11 @@ export function initializeLanguageInstall() {
     }
 
     // Persist future user choices
-    langSelect.addEventListener("change", () => {
+    langSelect.addEventListener("change", async () => {
       localStorage.setItem("prefLang", langSelect.value);
+      try {
+        await saveProfile({ language: langSelect.value });
+      } catch {}
     });
   }
 
@@ -121,6 +125,11 @@ export function initializeLanguageInstall() {
           console.warn("[install] could not warm cache:", err);
         }
 
+        try {
+          const chosen =
+            (langSelect && langSelect.value) || getLanguage() || "en";
+          await saveProfile({ language: chosen });
+        } catch {}
         loadPage("onboarding");
         return;
       } catch (e) {
@@ -141,7 +150,14 @@ export function initializeLanguageInstall() {
     });
   }
   if (useOnlineBtn) {
-    useOnlineBtn.addEventListener("click", () => loadPage("onboarding"));
+    useOnlineBtn.addEventListener("click", async () => {
+      try {
+        const chosen =
+          (langSelect && langSelect.value) || getLanguage() || "en";
+        await saveProfile({ language: chosen });
+      } catch {}
+      loadPage("onboarding");
+    });
   }
 }
 

@@ -52,9 +52,20 @@ self.addEventListener("fetch", (event) => {
     // Bypass service worker for non-GET requests or cross-origin requests
     return;
   }
+  // Always bypass the API
+  if (
+    url.pathname.startsWith("/api/app/") ||
+    url.pathname.startsWith("/api/dev/")
+  ) {
+    return;
+  }
 
-  if (url.pathname === "/track") {
-    // Bypass service worker for /track endpoint
+  if (
+    url.pathname === "/track" ||
+    url.pathname === "/dev_dashboard.html" ||
+    url.pathname.startsWith("/api/dev/")
+  ) {
+    // Bypass service worker for /track endpoint, dev dashboard page, and dev API calls
     return;
   }
 

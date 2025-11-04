@@ -3,6 +3,7 @@
  */
 
 import { loadPage } from "./navigation.js";
+import { saveProfile } from "./telemetry.js";
 
 /**
  * Initializes the professional interest page.
@@ -20,9 +21,19 @@ export function initializeInterest() {
   if (submit) {
     let locked = false;
 
-    submit.addEventListener("click", () => {
+    submit.addEventListener("click", async () => {
       if (locked) return;
       locked = true;
+
+      const selected = Array.from(
+        document.querySelectorAll("#proInterestPage .chip.selected"),
+      )
+        .map((c) => c.textContent.trim())
+        .filter(Boolean);
+      try {
+        // Treat these as “aims” (fits your wording: “What do you want to achieve?”)
+        await saveProfile({ aims: selected.join(", ") || null });
+      } catch {}
 
       const splashContainer = document.getElementById("splashScreenContainer");
       const pageContainer = document.getElementById("page-content");

@@ -2,6 +2,7 @@
  * @fileoverview This file contains onboarding related functions and logic, Including name input, professional field selection, and job role/student year details.
  */
 import { loadPage } from "./navigation.js";
+import { saveProfile } from "./telemetry.js";
 
 export function initializeOnboarding() {
   const nameInput = document.getElementById("username");
@@ -128,11 +129,26 @@ export function initializeOnboarding() {
   checkForm();
 
   // --- Continue ---
-  continueBtn?.addEventListener("click", (e) => {
+  continueBtn?.addEventListener("click", async (e) => {
     if (!checkForm()) {
       e.preventDefault();
       return;
     }
+    try {
+      await saveProfile({
+        name: (nameInput?.value || "").trim() || null,
+        aims: null, // you’ll fill aims via the Interests page
+        interest: null,
+        experience: studentYearSelect?.value || null,
+        contact: null, // add later if you collect it
+        country: null, // add later if you collect it
+        area: null, // add later if you collect it
+        language:
+          document.documentElement.getAttribute("lang") ||
+          localStorage.getItem("prefLang") ||
+          "en",
+      });
+    } catch {}
     const name = nameInput?.value?.trim();
     if (name) localStorage.setItem("username", name);
     if (fieldSelect?.value)
