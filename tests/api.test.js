@@ -1,5 +1,5 @@
-import request from "supertest";
-import { app, closeServer } from "../server.cjs";
+const request = require("supertest");
+const { app, closeServer } = require("../server.cjs");
 
 let server;
 

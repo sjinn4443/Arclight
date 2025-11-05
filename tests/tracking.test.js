@@ -1,24 +1,15 @@
-import request from "supertest";
-import fs from "fs";
-import path from "path";
-import os from "os";
+const request = require("supertest");
+const fs = require("fs");
+const path = require("path");
+const os = require("os");
 
 let logDir;
 let logFile;
 let app;
 let server;
 
-import {
-  jest,
-  beforeAll,
-  beforeEach,
-  afterAll,
-  describe,
-  it,
-  expect,
-} from "@jest/globals";
-
-// Declare the mock function here
+// Use require for CommonJS modules
+const jestGlobals = require("@jest/globals");
 const mockEnrichIp = jest.fn();
 
 beforeAll(async () => {
@@ -43,7 +34,8 @@ beforeAll(async () => {
     enrichIp: mockEnrichIp,
   }));
 
-  const { app: importedApp } = await import("../server.cjs");
+  // Use require for CommonJS modules
+  const { app: importedApp } = require("../server.cjs");
   app = importedApp;
   server = app.listen(3002); // Use a different port for testing
 });
@@ -107,7 +99,7 @@ describe("IP Tracking Endpoint", () => {
     expect(loggedData.geo.country).toBe("US"); // GeoIP for 8.8.8.8 is US
     expect(loggedData.geo.city).toBe("Mountain View");
     expect(loggedData.geo.timezone).toBe("America/Los_Angeles");
-    expect(loggedData.timestamp).toBeDefined(); // This assertion should now pass
+    expect(loggedData.ts).toBeDefined(); // This assertion should now pass
   }, 10000);
 
   test("should handle requests without X-Forwarded-For header", async () => {
@@ -131,7 +123,7 @@ describe("IP Tracking Endpoint", () => {
     expect(loggedData.geo.country).toBeNull();
     expect(loggedData.geo.city).toBeNull();
     expect(loggedData.geo.timezone).toBeNull();
-    expect(loggedData.timestamp).toBeDefined(); // This assertion should now pass
+    expect(loggedData.ts).toBeDefined(); // This assertion should now pass
   }, 10000);
 
   // Add more tests as needed, e.g., for invalid IPs, rate limiting, etc.
