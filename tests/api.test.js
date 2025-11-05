@@ -1,12 +1,15 @@
 import request from "supertest";
+import { app, closeServer } from "../server.cjs";
 
-let app; // Declare app here
+let server;
 
 describe("GET /", () => {
-  beforeAll(async () => {
-    // Dynamically import app after dotenv has configured environment variables
-    const appModule = await import("../server.cjs");
-    app = appModule.default;
+  beforeAll(() => {
+    server = app.listen(3001); // Use a different port for testing
+  });
+
+  afterAll((done) => {
+    server.close(done);
   });
 
   test("should return the index.html file", async () => {

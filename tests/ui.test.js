@@ -135,7 +135,7 @@ describe("UI Integration Tests", () => {
       const container = document.getElementById("page-content");
 
       if (!url) {
-        console.error(`Route "${routeName}" not found in ROUTES.`); // Corrected typo: console.serror -> console.error
+        console.error(`Route "${routeName}" not found in ROUTES.`);
         container.innerHTML = `<div class="container"><p>Page not found: ${routeName}</p></div>`;
         window.dispatchEvent(
           new CustomEvent("page:loaded", {
@@ -151,6 +151,7 @@ describe("UI Integration Tests", () => {
       }
 
       try {
+        // Ensure fetch is called with the correct URL and options
         const res = await fetch(url, { cache: "no-store" });
         const html = await res.text();
         container.innerHTML = html.includes('class="page"')

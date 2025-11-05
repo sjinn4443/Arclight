@@ -1,21 +1,50 @@
+function getAnonId() {
+  const KEY = "arclight_anon_id";
+  let id = localStorage.getItem(KEY);
+  if (!id) {
+    id = ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) =>
+      (
+        c ^
+        (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))
+      ).toString(16),
+    );
+    localStorage.setItem(KEY, id);
+  }
+  return id;
+}
+
+// NEW: store a stable per-account id when the user signs in
+export function setUserId(id) {
+  if (!id) return;
+  localStorage.setItem("arclight_user_id", String(id));
+}
+function getUserId() {
+  return localStorage.getItem("arclight_user_id") || null;
+}
+
 export async function saveProfile(fields) {
+  const body = { anon_id: getAnonId(), user_id: getUserId(), ...fields };
   await fetch("/api/app/profile", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     credentials: "same-origin",
-    body: JSON.stringify(fields),
+    body: JSON.stringify(body),
   });
 }
 
 export async function bumpRefresh() {
+  const body = { anon_id: getAnonId(), user_id: getUserId() };
   await fetch("/api/app/refresh", {
     method: "POST",
     credentials: "same-origin",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
   });
 }
 
-// Also expose as a global for non-module scripts
+// keep the global export if you use non-module scripts
 window.ARCLIGHT = Object.assign(window.ARCLIGHT || {}, {
   saveProfile,
   bumpRefresh,
+  setUserId,
 });

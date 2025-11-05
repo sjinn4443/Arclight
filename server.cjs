@@ -70,10 +70,24 @@ app.get("/api/dev/users", basicAuth, async (req, res) => {
   }
 });
 
-// --- Start server ---
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Arclight app listening on http://localhost:${PORT}`);
+app.post("/track", async (req, res) => {
+  try {
+    const ip = req.ip;
+    await storage.saveIp(ip);
+    res.status(204).send();
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: "save failed" });
+  }
 });
 
-module.exports = app;
+// --- Start server ---
+const PORT = process.env.PORT || 3000;
+let server;
+if (require.main === module) {
+  server = app.listen(PORT, () => {
+    console.log(`Arclight app listening on http://localhost:${PORT}`);
+  });
+}
+
+module.exports = { app, closeServer: () => server.close() };

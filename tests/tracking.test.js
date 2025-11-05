@@ -5,7 +5,8 @@ import os from "os";
 
 let logDir;
 let logFile;
-let app; // Declare app here
+let app;
+let server;
 
 import {
   jest,
@@ -27,32 +28,24 @@ beforeAll(async () => {
   logFile = path.join(logDir, "ip_logs.jsonl");
 
   // Mock the path module to redirect LOG_FILE in server.cjs
-  jest.doMock("path", () => {
-    const originalPath = jest.requireActual("path");
-    return {
-      ...originalPath,
-      join: jest.fn((...args) => {
-        // Intercept the specific path for ip_logs.jsonl
-        if (
-          args.length === 3 &&
-          args[1] === "logs" &&
-          args[2] === "ip_logs.jsonl"
-        ) {
-          return logFile;
-        }
-        return originalPath.join(...args);
-      }),
-    };
-  });
+  jest.doMock("path", () => ({
+    ...jest.requireActual("path"),
+    join: (...args) => {
+      if (args[args.length - 1] === "telemetry.ndjson") {
+        return logFile;
+      }
+      return jest.requireActual("path").join(...args);
+    },
+  }));
 
   // Mock the ipEnricher module for CommonJS require in server.cjs
   jest.doMock("../utils/ipEnricher.cjs", () => ({
     enrichIp: mockEnrichIp,
   }));
 
-  // Dynamically import app after dotenv has configured environment variables
-  const appModule = await import("../server.cjs");
-  app = appModule.default;
+  const { app: importedApp } = await import("../server.cjs");
+  app = importedApp;
+  server = app.listen(3002); // Use a different port for testing
 });
 
 beforeEach(() => {
@@ -84,9 +77,10 @@ beforeEach(() => {
   });
 });
 
-afterAll(() => {
+afterAll((done) => {
   fs.rmSync(logDir, { recursive: true, force: true });
   jest.restoreAllMocks(); // Restore all mocks
+  server.close(done);
 });
 
 describe("IP Tracking Endpoint", () => {
@@ -98,7 +92,8 @@ describe("IP Tracking Endpoint", () => {
     expect(response.status).toBe(204);
     expect(response.body).toEqual({}); // Expect empty body for 204 No Content
 
-    // Allow any pending microtasks to complete
+    // Allow any pending microtasks to complete and advance timers
+    jest.advanceTimersByTime(1000); // Advance timers by 1 second to ensure Date.now() is updated
     await new Promise(process.nextTick);
 
     // Read the log file and check its content
@@ -112,7 +107,7 @@ describe("IP Tracking Endpoint", () => {
     expect(loggedData.geo.country).toBe("US"); // GeoIP for 8.8.8.8 is US
     expect(loggedData.geo.city).toBe("Mountain View");
     expect(loggedData.geo.timezone).toBe("America/Los_Angeles");
-    expect(loggedData.timestamp).toBeDefined();
+    expect(loggedData.timestamp).toBeDefined(); // This assertion should now pass
   }, 10000);
 
   test("should handle requests without X-Forwarded-For header", async () => {
@@ -122,7 +117,8 @@ describe("IP Tracking Endpoint", () => {
     expect(response.status).toBe(204);
     expect(response.body).toEqual({}); // Expect empty body for 204 No Content
 
-    // Allow any pending microtasks to complete
+    // Allow any pending microtasks to complete and advance timers
+    jest.advanceTimersByTime(1000); // Advance timers by 1 second to ensure Date.now() is updated
     await new Promise(process.nextTick);
 
     const logContent = fs.readFileSync(logFile, "utf8");
@@ -135,7 +131,7 @@ describe("IP Tracking Endpoint", () => {
     expect(loggedData.geo.country).toBeNull();
     expect(loggedData.geo.city).toBeNull();
     expect(loggedData.geo.timezone).toBeNull();
-    expect(loggedData.timestamp).toBeDefined();
+    expect(loggedData.timestamp).toBeDefined(); // This assertion should now pass
   }, 10000);
 
   // Add more tests as needed, e.g., for invalid IPs, rate limiting, etc.
