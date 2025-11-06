@@ -39,7 +39,7 @@ h1 {
 
 /* ============================================= Layout primitives & helpers ============================================= */
 body {
-  font-family: -apple-system, BlinkMacSystemFont, Arial, Helvetica;
+  font-family: Arial;
 }
 
 .container {
