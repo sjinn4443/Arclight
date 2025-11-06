@@ -57,9 +57,27 @@ input {
 }
 
 /* ============================================= Breakpoints ============================================= */
+/* phone */
 @media (max-width: 37.5em) {
   body {
     font-size: 1rem;
+  }
+
+  #backBtnGlobal::before {
+    width: 24px;
+    height: 23px;
+  }
+
+  .unified-top .icon {
+    font-size: 21px;
+  }
+
+  .eyes-top .icon {
+    font-size: 21px;
+  }
+
+  .lang-install__body {
+    margin-top: 93px;
   }
 }
 
@@ -291,6 +309,23 @@ input {
   .container {
     padding: 7vw;
   }
+
+  #backBtnGlobal::before {
+    width: 24px;
+    height: 23px;
+  }
+
+  .unified-top .icon {
+    font-size: 21px;
+  }
+
+  .eyes-top .icon {
+    font-size: 21px;
+  }
+
+  .eyes-carousel {
+    gap: 61px;
+  }
 }
 
 /* Base (mobile-first): compact */
@@ -379,6 +414,23 @@ input {
     padding-bottom: 120px;
     padding-top: 17%;
   }
+
+  #backBtnGlobal::before {
+    width: 24px;
+    height: 23px;
+  }
+
+  .unified-top .icon {
+    font-size: 21px;
+  }
+
+  .eyes-top .icon {
+    font-size: 21px;
+  }
+
+  .lang-install__body {
+    margin-top: 93px;
+  }
 }
 
 /* Moved from: public/style/pages.css */
@@ -400,6 +452,23 @@ input {
   #likedList {
     grid-template-columns: 1fr;
   }
+
+  #backBtnGlobal::before {
+    width: 24px;
+    height: 23px;
+  }
+
+  .unified-top .icon {
+    font-size: 21px;
+  }
+
+  .eyes-top .icon {
+    font-size: 21px;
+  }
+
+  .lang-install__body {
+    margin-top: 93px;
+  }
 }
 
 /* Moved from: public/style/pages.css */
@@ -420,6 +489,23 @@ input {
   .lesson-row .thumb {
     width: 46px;
     height: 32px;
+  }
+
+  #backBtnGlobal::before {
+    width: 24px;
+    height: 23px;
+  }
+
+  .unified-top .icon {
+    font-size: 21px;
+  }
+
+  .eyes-top .icon {
+    font-size: 21px;
+  }
+
+  .lang-install__body {
+    margin-top: 93px;
   }
 }
 
@@ -514,5 +600,22 @@ input {
 @media screen and (max-width: 480px) {
   .slider-wrapper {
     width: 100%;
+  }
+
+  #backBtnGlobal::before {
+    width: 24px;
+    height: 23px;
+  }
+
+  .unified-top .icon {
+    font-size: 21px;
+  }
+
+  .eyes-top .icon {
+    font-size: 21px;
+  }
+
+  .lang-install__body {
+    margin-top: 93px;
   }
 }
