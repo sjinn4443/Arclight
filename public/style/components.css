@@ -2053,3 +2053,12 @@ input:checked + .slider:before {
 #infoModalOverlay.fade-out {
   animation: guestModalFadeOut 0.25s ease-in forwards; /* reuse existing keyframes */
 }
+
+/* === Location Button Animations === */
+.check-location-btn.checking-location {
+  background-color: #e41e26 !important; /* Use !important to override existing styles */
+}
+
+#profileLocation.highlighted {
+  color: #e41e26 !important; /* Use !important to override existing styles */
+}

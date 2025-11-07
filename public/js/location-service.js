@@ -280,6 +280,13 @@ function setUIBusy(isBusy) {
   if (!btn) return;
   btn.disabled = !!isBusy;
   btn.dataset.loading = isBusy ? "1" : "0"; // if you style [data-loading="1"] as a spinner
+
+  // Add/remove animation classes
+  if (isBusy) {
+    btn.classList.add("checking-location");
+  } else {
+    btn.classList.remove("checking-location");
+  }
 }
 
 // Update whatever node currently shows the IP-based location.
@@ -290,6 +297,7 @@ function updateLocationUI(area, from = "gps") {
     document.querySelector('[data-role="ip-location-text"]'),
     document.querySelector(".ip-location .text"),
     document.querySelector("#locationText"),
+    document.querySelector("#profileLocation"), // Added to target the actual display element
   ].filter(Boolean);
 
   nodes.forEach((n) => (n.textContent = area || "Location unavailable"));
@@ -299,8 +307,22 @@ function updateLocationUI(area, from = "gps") {
   toast.textContent = from === "gps" ? " ✓ updated" : " ✓";
   toast.style.marginLeft = "6px";
   toast.style.opacity = "0.85";
-  nodes[0]?.appendChild(toast);
-  setTimeout(() => toast.remove(), 1500);
+  // Ensure we append to a valid node if available
+  if (nodes.length > 0) {
+    nodes[0].appendChild(toast);
+    setTimeout(() => toast.remove(), 1500);
+  }
+
+  // Highlight the profile location briefly on successful update
+  if (from === "gps" && area) {
+    const profileLocationEl = document.querySelector("#profileLocation");
+    if (profileLocationEl) {
+      profileLocationEl.classList.add("highlighted");
+      setTimeout(() => {
+        profileLocationEl.classList.remove("highlighted");
+      }, 1000); // Highlight for 1 second
+    }
+  }
 }
 
 // Safe wrapper to store the latest location
@@ -335,6 +357,13 @@ async function reverseGeocode(lat, lon, lang = "en") {
 
   return {
     area: parts.join(", "),
+    // fields expected elsewhere in the code:
+    countryName: d.countryName,
+    countryCode: d.countryCode,
+    city: d.city || d.locality || d.principalSubdivisionLocality || null,
+    locality: d.locality ?? null,
+    principalSubdivisionLocality: d.principalSubdivisionLocality ?? null,
+    region: d.principalSubdivision || d.region || null,
     raw: d,
   };
 }

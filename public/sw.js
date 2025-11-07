@@ -14,6 +14,15 @@ const CORE_ASSETS = [
   "js/mylearning.js",
   "js/catalog.js",
   "js/pwa.js",
+  "html/interest.html", // Added for interest page
+  "js/interest.js", // Added for interest page script
+  "favicons/favicon-32x32.png", // Added favicon
+  "favicons/favicon-16x16.png", // Added favicon
+  "favicons/site.webmanifest", // Added manifest
+  "favicons/apple-touch-icon.png", // Added favicon
+  "favicons/android-chrome-192x192.png", // Added favicon
+  "favicons/android-chrome-512x512.png", // Added favicon
+  "favicons/favicon.ico", // Added favicon
 ];
 
 self.addEventListener("install", (event) => {
