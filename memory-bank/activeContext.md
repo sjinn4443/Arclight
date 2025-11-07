@@ -67,3 +67,25 @@ The current focus is on ensuring the application's core structure and PWA capabi
 - Prioritizing clear and concise documentation.
 - Using vanilla HTML, CSS, and JavaScript to keep the codebase lightweight and maintainable.
 - Implementing a component-based approach for UI elements where appropriate (e.g., module cards, quiz blocks).
+
+## Key JavaScript Files
+
+The following JavaScript files are integral to the application's functionality:
+
+- `main.js`: The primary script for core application logic and service worker registration (often referred to as `script.js` in older documentation).
+- `index.js`: Main entry point for client-side application logic.
+- `catalog-index.js`: Manages the catalog of learning modules.
+- `config.js`: Handles application configuration settings.
+- `dashboard.js`: Controls the main user dashboard functionality.
+- `dev_dashboard.js`: Specific scripts for the development dashboard.
+- `home-data.js`: Manages data related to the home screen.
+- `i18n.js`: Handles internationalization and localization.
+- `intro.js`: Manages the introductory screens/flows.
+- `language-picker.js`: Provides functionality for language selection.
+- `learningModules.js`: Contains logic for various learning modules.
+- `location-service.js`: Manages location-based services or data.
+- `menu.js`: Controls the application's navigation menu.
+- `misc.js`: Contains miscellaneous utility functions.
+- `navigation.js`: Manages overall application navigation.
+- `pwa.js`: Handles Progressive Web App specific functionalities.
+- `telemetry.js`: Manages telemetry and analytics data collection.

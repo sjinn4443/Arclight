@@ -33,7 +33,9 @@ export function initializeInterest() {
       try {
         // Treat these as “aims” (fits your wording: “What do you want to achieve?”)
         await saveProfile({ aims: selected.join(", ") || null });
-      } catch {}
+      } catch {
+        void 0;
+      }
 
       const splashContainer = document.getElementById("splashScreenContainer");
       const pageContainer = document.getElementById("page-content");

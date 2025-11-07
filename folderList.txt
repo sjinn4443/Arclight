@@ -53,6 +53,14 @@ public/js/navigation.js
 public/js/offline.js
 public/js/onboarding.js
 public/js/pwa.js
+public/js/dev_dashboard.js
+public/js/home-data.js
+public/js/i18n.js
+public/js/index.js
+public/js/language-picker.js
+public/js/location-service.js
+public/js/quiz-launcher.js
+public/js/telemetry.js
 public/js/quizzes.js
 public/js/toc.js
 public/js/video.js

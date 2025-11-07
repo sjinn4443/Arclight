@@ -9,11 +9,27 @@
 
 const LANG_ALIAS = {
   en: "english",
+  am: "amharic",
+  ar: "arabic",
+  bn: "bangla",
+  ny: "chichewa",
+  zh: "chinese",
   fr: "french",
+  ha: "hausa",
+  hi: "hindi",
+  ig: "igbo",
+  id: "indonesian",
+  rw: "kinyarwanda",
   ko: "korean",
+  ln: "lingala",
+  fa: "persian",
   pt: "portuguese",
+  sn: "shona",
   es: "spanish",
   sw: "swahili",
+  ur: "urdu",
+  yo: "yoruba",
+  zu: "zulu",
 };
 
 const CACHE = { lang: null, dict: {}, fetched: new Map() };

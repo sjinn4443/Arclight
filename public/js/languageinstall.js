@@ -40,7 +40,9 @@ export function initializeLanguageInstall() {
       localStorage.setItem("prefLang", langSelect.value);
       try {
         await saveProfile({ language: langSelect.value });
-      } catch {}
+      } catch {
+        void 0;
+      }
     });
   }
 
@@ -129,7 +131,9 @@ export function initializeLanguageInstall() {
           const chosen =
             (langSelect && langSelect.value) || getLanguage() || "en";
           await saveProfile({ language: chosen });
-        } catch {}
+        } catch {
+          void 0;
+        }
         loadPage("onboarding");
         return;
       } catch (e) {
@@ -155,7 +159,9 @@ export function initializeLanguageInstall() {
         const chosen =
           (langSelect && langSelect.value) || getLanguage() || "en";
         await saveProfile({ language: chosen });
-      } catch {}
+      } catch {
+        void 0;
+      }
       loadPage("onboarding");
     });
   }

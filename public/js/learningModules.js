@@ -2,6 +2,9 @@
  * @fileoverview This file contains a placeholder for shared logic across various learning modules and handles navigation within these modules.
  */
 
+import { loadPage } from "./navigation.js"; // Import loadPage for navigation
+import { goToAtomsCard } from "./atomscard.js"; // Import goToAtomsCard
+
 /**
  * Placeholder function for shared learning modules logic.
  * Currently, it does not contain any specific implementation but serves as an entry point.
@@ -64,7 +67,7 @@ function _initializeLearningModulesImpl() {
     if (!card) return;
     const id = card.id;
     if (id && cardMappings[id]) {
-      show(cardMappings[id]); // e.g., ophthalmoscopyCard -> directOphthalmoscopy
+      loadPage(cardMappings[id]); // e.g., ophthalmoscopyCard -> directOphthalmoscopy
     }
   });
 
@@ -72,7 +75,7 @@ function _initializeLearningModulesImpl() {
   Object.keys(cardMappings).forEach((cardId) => {
     const el = document.getElementById(cardId);
     if (el) {
-      el.addEventListener("click", () => show(cardMappings[cardId]));
+      el.addEventListener("click", () => loadPage(cardMappings[cardId]));
     }
   });
   // --- end auto-wiring ---//
@@ -84,7 +87,7 @@ function _initializeLearningModulesImpl() {
       if (btn && !btn.__wired) {
         btn.__wired = true;
         // Return to the learning modules hub (matches previous app flow)
-        btn.addEventListener("click", () => show("learningModules"));
+        btn.addEventListener("click", () => loadPage("learningModules"));
       }
     }
     document.addEventListener("DOMContentLoaded", attach);
@@ -95,13 +98,13 @@ function _initializeLearningModulesImpl() {
   for (const [elementId, pageId] of Object.entries(cardMappings)) {
     const card = document.getElementById(elementId);
     if (card) {
-      card.addEventListener("click", () => showPage(pageId));
+      card.addEventListener("click", () => loadPage(pageId));
     }
   }
 
   document.querySelectorAll("[data-page]").forEach((element) => {
     element.addEventListener("click", () => {
-      showPage(element.dataset.page);
+      loadPage(element.dataset.page);
     });
   });
 
@@ -115,7 +118,7 @@ function _initializeLearningModulesImpl() {
         "RAPD Test": "rapdPage",
         "Pupil Pathways Explained": "pupilPathwaysPage",
       };
-      if (pageMap[title]) showPage(pageMap[title]);
+      if (pageMap[title]) loadPage(pageMap[title]);
     });
   });
 
@@ -129,7 +132,7 @@ function _initializeLearningModulesImpl() {
           "Assessment of Eyes and Vision": "assessmentVisionPage",
           "Normal and Abnormal Findings": "normalAbnormalPage",
         };
-        if (pageMap[title]) showPage(pageMap[title]);
+        if (pageMap[title]) loadPage(pageMap[title]);
       });
     });
 }
@@ -138,33 +141,33 @@ function _initializeLearningModulesImpl() {
  * Displays the 'learningModules' page.
  */
 function showLearningModules() {
-  showPage("learningModules");
+  loadPage("learningModules");
 }
 
 /**
  * Displays the 'earsLearningModules' page.
  */
 function showEarsLearningModules() {
-  showPage("earsLearningModules");
+  loadPage("earsLearningModules");
 }
 
 /**
  * Displays the 'coreClinicalOphthalmicExamination' page.
  */
 function showCoreClinicalOphthalmicExamination() {
-  showPage("coreClinicalOphthalmicExamination");
+  loadPage("coreClinicalOphthalmicExamination");
 }
 
 /**
  * Displays the 'arclightPage' page.
  */
 function showArclight() {
-  showPage("arclightPage");
+  loadPage("arclightPage");
 }
 
 /**
  * Displays the 'diseasesPage' page.
  */
 function showDiseases() {
-  showPage("diseasesPage");
+  loadPage("diseasesPage");
 }

@@ -89,7 +89,9 @@ function _readCache() {
 function _writeCache(obj) {
   try {
     localStorage.setItem(GEO_CACHE_KEY, JSON.stringify(obj));
-  } catch {}
+  } catch {
+    void 0;
+  }
 }
 function getCachedGeo() {
   const data = _readCache();
@@ -129,8 +131,9 @@ export async function initializeLocation() {
     if (lat != null && lon != null) {
       try {
         reverse = await reverseGeocode(lat, lon);
-      } catch (_e) {
+      } catch (_) {
         /* non-fatal */
+        void 0;
       }
     }
 
@@ -239,8 +242,8 @@ export async function refineWithBrowserLocation() {
         );
         resolve(merged);
       },
-      (_err) => {
-        console.warn("Browser geolocation denied/failed", _err);
+      (_) => {
+        console.warn("Browser geolocation denied/failed", _);
         resolve(null);
       },
       { enableHighAccuracy: false, timeout: 12000, maximumAge: 0 },
@@ -311,7 +314,9 @@ function saveLocationToLocalStorage({ lat, lon, area, source }) {
       ts: Date.now(),
     };
     localStorage.setItem(LS_KEY_USER_LOCATION, JSON.stringify(payload));
-  } catch (_) {}
+  } catch (_) {
+    void 0;
+  }
 }
 
 // Free reverse-geocode (no key required)

@@ -94,6 +94,42 @@ This project is the Arclight App, a comprehensive educational and diagnostic too
 - `vscode-alanui-launcher/` - Custom VSCode extension for launching the app.
 - Other root-level files like `server.cjs` (local development server), `package.json`, `jest.config.js`, etc.
 
+## Key JavaScript Files
+
+The following JavaScript files are integral to the application's functionality:
+
+- `atomscard.js`: Manages the "Atoms Card" section, including dynamic Table of Contents and image display.
+- `catalog-index.js`: Manages the catalog of learning modules.
+- `config.js`: Handles application configuration settings.
+- `dashboard.js`: Controls the main user dashboard functionality.
+- `dev_dashboard.js`: Specific scripts for the development dashboard.
+- `ears.js`: Contains logic and content for the "Ears" module.
+- `eyes.js`: Contains logic and content for the "Eyes" module.
+- `home-data.js`: Manages data related to the home screen.
+- `i18n.js`: Handles internationalization and localization.
+- `index.js`: Main entry point for client-side application logic.
+- `interest.js`: Manages the professional interest pages.
+- `intro.js`: Manages the introductory screens/flows.
+- `language-picker.js`: Provides functionality for language selection.
+- `languageinstall.js`: Handles the language installation page.
+- `learningModules.js`: Contains logic for various learning modules.
+- `likes.js`: Manages the "My Learning" (Liked) page functionality.
+- `location-service.js`: Manages location-based services or data.
+- `main.js`: The primary script for core application logic and service worker registration.
+- `menu.js`: Controls the application's navigation menu.
+- `misc.js`: Contains miscellaneous utility functions.
+- `mylearning.js`: Manages the "My Learning" page.
+- `navigation.js`: Manages overall application navigation.
+- `offline.js`: Handles offline content management and service worker interactions.
+- `onboarding.js`: Manages the onboarding process.
+- `pwa.js`: Handles Progressive Web App specific functionalities.
+- `quiz-launcher.js`: Launches and manages quizzes.
+- `quizzes.js`: Contains core quiz logic and functionality.
+- `telemetry.js`: Manages telemetry and analytics data collection.
+- `toc.js`: Manages dynamic Table of Contents.
+- `video.js`: Handles video player functionality.
+- `videos.js`: Manages video content and playback.
+
 ## Memory Bank
 
 The `memory-bank/` directory contains essential project documentation that guides development and maintains project knowledge. It includes:

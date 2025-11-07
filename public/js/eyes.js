@@ -114,13 +114,13 @@ export function initializeEyes() {
     try {
       sessionStorage.setItem("gotoSubPage", "pupilsPage");
     } catch {
-      // Intentionally empty
+      void 0; // Intentionally empty
     }
 
     try {
       sessionStorage.setItem("fromRoute", window.currentPageName || "eyes");
     } catch {
-      // Intentionally empty
+      void 0; // Intentionally empty
     }
     await loadPage("videos");
 
@@ -130,7 +130,7 @@ export function initializeEyes() {
         goToVideosSection("pupilsPage");
       }
     } catch {
-      // Intentionally empty
+      void 0; // Intentionally empty
     }
 
     // Compress the history so Back goes straight to the previous page (no blank Videos root)
@@ -144,7 +144,7 @@ export function initializeEyes() {
       const hash = "#videos/pupilsPage";
       history.replaceState(st, "", base + hash);
     } catch {
-      // Intentionally empty
+      void 0; // Intentionally empty
     }
   });
 }
@@ -461,7 +461,9 @@ export function initializeEyesCatalog() {
   pageEl.querySelectorAll(".heart-btn, .heart-btn *").forEach((n) => {
     try {
       n.style.pointerEvents = "auto";
-    } catch {}
+    } catch {
+      void 0;
+    }
   });
 
   /**
@@ -532,7 +534,7 @@ export function initializeEyesCatalog() {
           // Fallback for older code paths:
           sessionStorage.setItem("gotoSubPage", "pupilsPage");
         } catch {
-          // Intentionally empty
+          void 0; // Intentionally empty
         }
         await loadPage("videos");
 
@@ -556,7 +558,7 @@ export function initializeEyesCatalog() {
           window.__videosSuppressFlash = true;
           sessionStorage.setItem("gotoSubPage", target);
         } catch {
-          // Intentionally empty
+          void 0; // Intentionally empty
         }
         await loadPage("videos");
 

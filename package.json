@@ -6,7 +6,7 @@
   "scripts": {
     "prepare": "husky install",
     "test": "cross-env NODE_ENV=test node_modules/jest/bin/jest.js --config jest.config.js",
-    "dev": "NODE_ENV=development nodemon server.cjs",
+    "dev": "cross-env NODE_ENV=development nodemon server.cjs",
     "start": "node server.cjs",
     "start:prod": "NODE_ENV=production node server.cjs",
     "start:track": "cross-env PORT=3001 node server.cjs",

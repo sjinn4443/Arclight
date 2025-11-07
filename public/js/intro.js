@@ -57,14 +57,20 @@ export function initializeIntro() {
     // Update helpers
     try {
       window.currentPageName = TARGET_ID;
-    } catch (_e) {}
+    } catch (_) {
+      void 0;
+    }
     try {
       window.historyStack && window.historyStack.push(TARGET_ID);
-    } catch (_e) {}
+    } catch (_) {
+      void 0;
+    }
     try {
       typeof window.updateBottomNavBar === "function" &&
         window.updateBottomNavBar(TARGET_ID);
-    } catch (_e) {}
+    } catch (_) {
+      void 0;
+    }
   }
 
   function onExploreClick(ev) {

@@ -94,7 +94,9 @@
         window.I18N.applyTranslations?.();
         try {
           localStorage.setItem("prefLang", code);
-        } catch {}
+        } catch {
+          void 0;
+        }
         document.documentElement.setAttribute("lang", code);
         currentEl.textContent = englishLabel || currentEl.textContent;
       } finally {
@@ -105,8 +107,11 @@
     // Minimal fallback
     try {
       localStorage.setItem("prefLang", code);
-    } catch {}
-    if (typeof applyTranslations === "function") applyTranslations();
+    } catch {
+      void 0;
+    }
+    // Ensure applyTranslations is called from window.I18N if available
+    window.I18N?.applyTranslations?.();
     document.documentElement.setAttribute("lang", code);
     currentEl.textContent = englishLabel || currentEl.textContent;
     closeModal();
