@@ -3,6 +3,7 @@
  */
 import { loadPage } from "./navigation.js";
 import { saveProfile } from "./telemetry.js";
+import { getCurrentCountryCode, getCurrentArea } from "./location-service.js";
 
 export function initializeOnboarding() {
   const nameInput = document.getElementById("username");
@@ -136,13 +137,13 @@ export function initializeOnboarding() {
     }
     try {
       await saveProfile({
-        name: (nameInput?.value || "").trim() || null,
+        name: (nameInput?.value || "").trim(), // Save the trimmed name directly
         aims: null, // you’ll fill aims via the Interests page
         interest: null,
-        experience: studentYearSelect?.value || null,
+        experience: jobSelect?.value || null, // Save the selected role to experience
         contact: null, // add later if you collect it
-        country: null, // add later if you collect it
-        area: null, // add later if you collect it
+        country: getCurrentCountryCode(), // Save the user's country code
+        area: getCurrentArea(), // Save the user's area (city/locality)
         language:
           document.documentElement.getAttribute("lang") ||
           localStorage.getItem("prefLang") ||
