@@ -2,6 +2,8 @@
  * @fileoverview This file manages the application's global overlay menu. Handles menu initialization, opening, and closing, including fetching menu content and setting up event listeners.
  */
 
+import { getCurrentCountryCode, getCurrentArea } from "./location-service.js";
+
 let overlay, closeBtn;
 
 // --- Render the profile location from localStorage (or fallback) ---
@@ -13,17 +15,8 @@ function renderProfileLocation() {
   if (!el) return;
 
   // Read cached geo
-  let iso = "GB";
-  let area = null;
-  try {
-    const data = JSON.parse(localStorage.getItem("profileGeo") || "null");
-    if (data) {
-      if (data.iso2) iso = data.iso2;
-      if (data.area) area = data.area;
-    }
-  } catch {
-    /* ignore */
-  }
+  let iso = getCurrentCountryCode();
+  let area = getCurrentArea();
 
   // Write text + make visible (in case you hid it while loading)
   el.textContent = area ? `Location: ${area}, ${iso}` : `Location: ${iso}`;

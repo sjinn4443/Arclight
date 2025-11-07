@@ -96,6 +96,9 @@ function _writeCache(obj) {
 function getCachedGeo() {
   const data = _readCache();
   if (!data) return null;
+  // If a precise location was set, always return it regardless of TTL
+  if (data.isPrecise) return data;
+  // Otherwise, apply TTL for non-precise (IP-based) data
   if (!data.ts || Date.now() - data.ts > GEO_CACHE_TTL_MS) return null;
   return data;
 }
@@ -104,14 +107,14 @@ function getCachedGeo() {
 
 // ---------- Core: initialize from IP (and refine if lat/lon present) ----------
 export async function initializeLocation() {
-  // 1) Serve fresh cache if present
-  const cached = getCachedGeo();
-  if (cached) {
-    dispatchLocationUpdated(cached);
-    return cached;
+  // 1) Check for a previously saved precise location
+  const rawCached = _readCache();
+  if (rawCached?.isPrecise) {
+    dispatchLocationUpdated(rawCached);
+    return rawCached;
   }
 
-  // 2) Seed from ipinfo
+  // 2) If no precise location, seed from ipinfo (always fresh)
   try {
     const res = await fetch("https://ipinfo.io/json?token=90ea1cfb8870ee");
     if (!res.ok) throw new Error("ipinfo failed");
@@ -216,24 +219,17 @@ export async function refineWithBrowserLocation() {
         }
 
         // Prefer reverse-geocoded locality for city; fall back to saved city
-        const city =
-          (reverse?.city ||
-            reverse?.locality ||
-            reverse?.principalSubdivisionLocality ||
-            null) ??
-          saved.city ??
-          null;
-
         const merged = {
           ...saved,
           iso2,
           country: reverse?.countryName || countryName, // prefer BigDataCloud’s full name
-          city,
+          city: reverse?.city || saved.city || null, // prefer reverse geocoded city
           lat,
           lon,
-          area: city ?? saved.area ?? null, // keep "area" for back-compat
+          area: reverse?.area ?? saved.area ?? null, // Use the detailed area from reverseGeocode
           classification: classifyCountry(iso2),
           ts: Date.now(),
+          isPrecise: true, // Mark this as a precise, user-confirmed location
         };
 
         localStorage.setItem("profileGeo", JSON.stringify(merged));

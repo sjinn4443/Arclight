@@ -51,3 +51,6 @@ document.getElementById("refreshBtn").addEventListener("click", load);
 bumpRefresh().catch(() => {});
 
 load();
+
+// Listen for location updates and refresh the dashboard
+document.addEventListener("location:updated", load);
