@@ -5,7 +5,7 @@
 import { loadPage } from "./navigation.js";
 import { initializePWA, canInstall, promptInstall } from "./pwa.js";
 import { setLanguage, getLanguage } from "./i18n.js";
-import { saveProfile } from "./telemetry.js";
+import { saveProfile, bumpRefresh } from "./telemetry.js"; // Import bumpRefresh
 
 initializePWA();
 
@@ -40,6 +40,21 @@ export function initializeLanguageInstall() {
       localStorage.setItem("prefLang", langSelect.value);
       try {
         await saveProfile({ language: langSelect.value });
+        // Tell the rest of the app immediately (Dev Dashboard can listen to this)
+        document.dispatchEvent(
+          new CustomEvent("language:updated", {
+            detail: { code: langSelect.value },
+          }),
+        );
+
+        // Best effort: ping backend to speed up visibility server-side.
+        // But don't block the UI if the server 500s.
+        try {
+          await bumpRefresh();
+          document.dispatchEvent(new CustomEvent("telemetry:refreshed"));
+        } catch (err) {
+          console.warn("bumpRefresh failed after language update:", err);
+        }
       } catch {
         void 0;
       }
@@ -131,6 +146,21 @@ export function initializeLanguageInstall() {
           const chosen =
             (langSelect && langSelect.value) || getLanguage() || "en";
           await saveProfile({ language: chosen });
+          // Tell the rest of the app immediately (Dev Dashboard can listen to this)
+          document.dispatchEvent(
+            new CustomEvent("language:updated", {
+              detail: { code: chosen },
+            }),
+          );
+
+          // Best effort: ping backend to speed up visibility server-side.
+          // But don't block the UI if the server 500s.
+          try {
+            await bumpRefresh();
+            document.dispatchEvent(new CustomEvent("telemetry:refreshed"));
+          } catch (err) {
+            console.warn("bumpRefresh failed after language update:", err);
+          }
         } catch {
           void 0;
         }
@@ -159,6 +189,21 @@ export function initializeLanguageInstall() {
         const chosen =
           (langSelect && langSelect.value) || getLanguage() || "en";
         await saveProfile({ language: chosen });
+        // Tell the rest of the app immediately (Dev Dashboard can listen to this)
+        document.dispatchEvent(
+          new CustomEvent("language:updated", {
+            detail: { code: chosen },
+          }),
+        );
+
+        // Best effort: ping backend to speed up visibility server-side.
+        // But don't block the UI if the server 500s.
+        try {
+          await bumpRefresh();
+          document.dispatchEvent(new CustomEvent("telemetry:refreshed"));
+        } catch (err) {
+          console.warn("bumpRefresh failed after language update:", err);
+        }
       } catch {
         void 0;
       }

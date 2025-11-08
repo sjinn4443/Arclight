@@ -21,4 +21,5 @@ export const ROUTES = {
   quizzes: "html/quizzes.html",
   menu: "html/menu.html",
   offline: "html/offline.html",
+  dev_dashboard: "html/dev_dashboard.html",
 };

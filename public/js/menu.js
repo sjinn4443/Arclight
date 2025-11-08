@@ -2,11 +2,15 @@
  * @fileoverview This file manages the application's global overlay menu. Handles menu initialization, opening, and closing, including fetching menu content and setting up event listeners.
  */
 
-import { getCurrentCountryCode, getCurrentArea } from "./location-service.js";
+import {
+  getCurrentCountryCode,
+  getCurrentArea,
+  updateLocationUI,
+} from "./location-service.js";
 
 let overlay, closeBtn;
 
-// --- Render the profile location from localStorage (or fallback) ---
+// --- Render the profile location from localStorage (prefer precise) ---
 function renderProfileLocation() {
   // Try ID first; fall back to class (in case ID changed)
   const el =
@@ -14,13 +18,45 @@ function renderProfileLocation() {
     document.querySelector(".profile-location");
   if (!el) return;
 
-  // Read cached geo
-  let iso = getCurrentCountryCode();
-  let area = getCurrentArea();
+  // Read the caches we maintain
+  let profGeo = null;
+  let userLoc = null;
+  try {
+    profGeo = JSON.parse(localStorage.getItem("profileGeo") || "null");
+    userLoc = JSON.parse(localStorage.getItem("userLocation") || "null");
+  } catch {
+    /* ignore parse errors */
+  }
 
-  // Write text + make visible (in case you hid it while loading)
-  el.textContent = area ? `Location: ${area}, ${iso}` : `Location: ${iso}`;
-  el.style.visibility = "visible";
+  // Determine the best label to show: area [, region] , ISO
+  const iso = (profGeo?.iso2 || getCurrentCountryCode() || "GB").toUpperCase();
+
+  // Prefer the most recent precise area first
+  const area =
+    (profGeo?.isPrecise && (profGeo?.area || profGeo?.city)) ||
+    userLoc?.area ||
+    profGeo?.area ||
+    profGeo?.city ||
+    null;
+
+  // Optional region/state if present (helps get "Scotland" in e.g. Glasgow, Scotland, GB)
+  const region =
+    profGeo?.region ||
+    profGeo?.state ||
+    profGeo?.admin1 ||
+    profGeo?.admin ||
+    null;
+
+  const labelParts = [area, region, iso].filter(Boolean);
+  const label = labelParts.length ? labelParts.join(", ") : iso;
+
+  // Use the shared renderer so all location badges stay in sync
+  updateLocationUI(label, "cache");
+
+  // Ensure the profile location becomes visible if the HTML hid it
+  if (el.id === "profileLocation") {
+    el.style.visibility = "visible";
+  }
 }
 
 /**
@@ -67,9 +103,6 @@ export async function initializeMenu() {
     showInfoModal();
   });
 
-  // Removed: const locEl = document.getElementById("profileLocation"); if (locEl) locEl.textContent = "Location: GB";
-  // This is now handled by renderProfileLocation called by listeners.
-
   // 6) Handlers
   closeBtn?.addEventListener("click", closeMenu);
 
@@ -91,7 +124,8 @@ export async function initializeMenu() {
 // ---- Event listeners for location updates and rendering ----
 
 // A) When the app fires our custom "location:updated" event (IP seed or precise GPS)
-document.addEventListener("location:updated", renderProfileLocation);
+// This listener is now handled by location-service.js itself, which calls updateLocationUI.
+// We keep this here to ensure it's called when the menu is opened.
 
 // B) When pages/partials are shown (your app’s nav lifecycle).
 // If your app emits 'page:shown' with detail.pageId === 'menu' (or similar),
@@ -106,6 +140,11 @@ document.addEventListener("page:shown", (e) => {
 // C) Also try right after DOM is ready (covers cases where menu HTML is already in DOM)
 document.addEventListener("DOMContentLoaded", renderProfileLocation);
 
+// Re-render whenever location changes anywhere in the app
+document.addEventListener("location:updated", () => {
+  renderProfileLocation();
+});
+
 /**
  * Opens the global overlay menu.
  * Adds a 'data-menu-open' attribute to the body and removes the 'hidden' class from the overlay.
@@ -119,7 +158,7 @@ export function openMenu() {
     nameEl.textContent = name || "Your name";
   }
 
-  // D) Call renderProfileLocation at the end of openMenu()
+  // D) Call renderProfileLocation at the end of openMenu() to ensure it's updated when menu opens
   renderProfileLocation();
 
   document.body.setAttribute("data-menu-open", "true");

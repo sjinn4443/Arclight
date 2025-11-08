@@ -34,7 +34,7 @@ const LANG_ALIAS = {
 
 const CACHE = { lang: null, dict: {}, fetched: new Map() };
 
-function get(obj, path) {
+export function get(obj, path) {
   return path
     .split(".")
     .reduce((o, k) => (o && k in o ? o[k] : undefined), obj);
@@ -42,7 +42,7 @@ function get(obj, path) {
 
 function langToPath(lang) {
   const alias = LANG_ALIAS[lang] || LANG_ALIAS.en;
-  return `translation/${alias}.json`;
+  return `/translation/${alias}.json`;
 }
 
 export function getLanguage() {
@@ -52,11 +52,10 @@ export function getLanguage() {
   return htmlLang || "en";
 }
 
-async function loadTranslations(lang) {
+// New function to fetch a specific language dictionary without affecting global CACHE
+export async function fetchDictionary(lang) {
   if (CACHE.fetched.has(lang)) {
-    CACHE.dict = await CACHE.fetched.get(lang);
-    CACHE.lang = lang;
-    return;
+    return CACHE.fetched.get(lang);
   }
 
   const p = (async () => {
@@ -64,7 +63,6 @@ async function loadTranslations(lang) {
     try {
       const res = await fetch(path, { cache: "no-store" });
       if (!res.ok) {
-        // English can be a no-op if file is missing
         if (lang === "en") return {};
         throw new Error(`Fetch failed: ${res.status}`);
       }
@@ -76,7 +74,11 @@ async function loadTranslations(lang) {
   })();
 
   CACHE.fetched.set(lang, p);
-  CACHE.dict = await p;
+  return p;
+}
+
+async function loadTranslations(lang) {
+  CACHE.dict = await fetchDictionary(lang);
   CACHE.lang = lang;
 }
 

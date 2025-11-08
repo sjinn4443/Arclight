@@ -10,7 +10,12 @@ function ensureDir() {
 }
 function writeLine(obj) {
   ensureDir();
-  fs.appendFileSync(file, JSON.stringify(obj) + "\n", "utf8");
+  try {
+    fs.appendFileSync(file, JSON.stringify(obj) + "\n", "utf8");
+  } catch (e) {
+    console.error("Failed to write to telemetry.ndjson:", e);
+    throw e; // Re-throw to propagate the error to the caller
+  }
 }
 
 async function init() {
@@ -20,7 +25,12 @@ async function init() {
 async function saveProfile(f) {
   const anon = (f.anon_id || "").toString().slice(0, 80);
   const uid = (f.user_id || f.email || "").toString().slice(0, 120); // may be empty
-  if (!anon && !uid) throw new Error("identifier required");
+  // If no identifier is present, we cannot log this event.
+  // This might happen if localStorage is unavailable or cleared unexpectedly.
+  if (!anon && !uid) {
+    console.warn("Skipping telemetry event: no identifier found.");
+    return;
+  }
 
   writeLine({
     type: "profile",
@@ -41,7 +51,12 @@ async function saveProfile(f) {
 async function bumpRefresh(f) {
   const anon = (f.anon_id || "").toString().slice(0, 80);
   const uid = (f.user_id || f.email || "").toString().slice(0, 120);
-  if (!anon && !uid) throw new Error("identifier required");
+  // If no identifier is present, we cannot log this event.
+  // This might happen if localStorage is unavailable or cleared unexpectedly.
+  if (!anon && !uid) {
+    console.warn("Skipping telemetry event: no identifier found.");
+    return;
+  }
 
   writeLine({
     type: "refresh",

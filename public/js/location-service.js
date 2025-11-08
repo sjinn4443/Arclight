@@ -1,7 +1,17 @@
-// public/js/location-service.js
+/**
+ * @fileoverview This file manages location services, including IP-based geolocation,
+ * precise browser geolocation, reverse geocoding, and updating UI elements related to location.
+ * It also handles caching of location data and dispatching location update events.
+ */
 
-const GEO_CACHE_KEY = "profileGeo"; // stores { iso2, country, city, lat, lon, area, classification, ts }
+import { bumpRefresh } from "./telemetry.js";
+
+// ---------- Constants ----------
+const GEO_CACHE_KEY = "profileGeo"; // stores { iso2, country, city, lat, lon, area, classification, ts, isPrecise }
 const GEO_CACHE_TTL_MS = 24 * 60 * 60 * 1000; // 24 hours
+
+// LocalStorage key used by the app for user-selected location
+const LS_KEY_USER_LOCATION = "userLocation"; // { lat, lon, area, source, ts }
 
 // ---------- City normalizer ----------
 function normalizeCity(fromIp, fromReverse) {
@@ -104,6 +114,31 @@ function getCachedGeo() {
 }
 
 // ---------- Reverse geocode (BigDataCloud, no key) ----------
+async function reverseGeocode(lat, lon, lang = "en") {
+  const url = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${encodeURIComponent(lat)}&longitude=${encodeURIComponent(lon)}&localityLanguage=${encodeURIComponent(lang)}`;
+  const r = await fetch(url, { method: "GET" });
+  if (!r.ok) throw new Error("reverse geocode failed");
+  const d = await r.json();
+
+  // Compose a friendly area string (e.g., “Shoreditch, London, GB”)
+  const parts = [
+    d.locality || d.city || d.localityInfo?.administrative?.[0]?.name,
+    d.principalSubdivision || d.region,
+    d.countryCode,
+  ].filter(Boolean);
+
+  return {
+    area: parts.join(", "),
+    // fields expected elsewhere in the code:
+    countryName: d.countryName,
+    countryCode: d.countryCode,
+    city: d.city || d.locality || d.principalSubdivisionLocality || null,
+    locality: d.locality ?? null,
+    principalSubdivisionLocality: d.principalSubdivisionLocality ?? null,
+    region: d.principalSubdivision || d.region || null,
+    raw: d,
+  };
+}
 
 // ---------- Core: initialize from IP (and refine if lat/lon present) ----------
 export async function initializeLocation() {
@@ -249,11 +284,12 @@ export async function refineWithBrowserLocation() {
 
 // ---------- Read helpers for UI ----------
 export function getCurrentCountryCode() {
-  return getCachedGeo()?.iso2 || "GB";
+  const data = _readCache(); // Directly read from localStorage
+  return data?.iso2 || "GB";
 }
 export function getCurrentArea() {
-  const g = getCachedGeo();
-  return g?.city || g?.area || null; // prefer city
+  const data = _readCache(); // Directly read from localStorage
+  return data?.area || data?.city || null; // Prefer area, then city
 }
 export function getCurrentClassification() {
   return getCachedGeo()?.classification || null;
@@ -266,9 +302,7 @@ export function dispatchLocationUpdated(detail) {
 
 // ===== Precise Location Flow =====
 
-// LocalStorage key used by the app
-const LS_KEY_USER_LOCATION = "userLocation"; // { lat, lon, area, source, ts }
-
+// Set UI busy state (e.g., disable button, show spinner)
 function setUIBusy(isBusy) {
   const btn = document.querySelector(
     '#checkLocationBtn, [data-action="checklocation"]',
@@ -285,31 +319,37 @@ function setUIBusy(isBusy) {
   }
 }
 
-// Update whatever node currently shows the IP-based location.
-// We try a few selectors to match your existing UI without changing markup.
-function updateLocationUI(area, from = "gps") {
+// Update the UI elements that display location information.
+// This function now also handles making the profile location visible and highlighting it.
+export function updateLocationUI(area, from = "gps") {
   const nodes = [
     document.querySelector("#ipLocationText"),
     document.querySelector('[data-role="ip-location-text"]'),
     document.querySelector(".ip-location .text"),
     document.querySelector("#locationText"),
-    document.querySelector("#profileLocation"), // Added to target the actual display element
+    document.querySelector("#profileLocation"), // Target the menu label element
   ].filter(Boolean);
 
-  nodes.forEach((n) => (n.textContent = area || "Location unavailable"));
+  nodes.forEach((n) => {
+    n.textContent = area || "Location unavailable";
+    // Ensure the profile location becomes visible if the HTML hid it
+    if (n.id === "profileLocation") {
+      n.style.visibility = "visible";
+    }
+  });
 
-  // Tiny inline feedback
+  // Tiny inline feedback toast
   const toast = document.createElement("span");
   toast.textContent = from === "gps" ? " ✓ updated" : " ✓";
   toast.style.marginLeft = "6px";
   toast.style.opacity = "0.85";
-  // Ensure we append to a valid node if available
+  // Append toast to the first valid node found
   if (nodes.length > 0) {
     nodes[0].appendChild(toast);
     setTimeout(() => toast.remove(), 1500);
   }
 
-  // Highlight the profile location briefly on successful update
+  // Highlight the profile location briefly on successful GPS update
   if (from === "gps" && area) {
     const profileLocationEl = document.querySelector("#profileLocation");
     if (profileLocationEl) {
@@ -321,8 +361,8 @@ function updateLocationUI(area, from = "gps") {
   }
 }
 
-// Safe wrapper to store the latest location
-function saveLocationToLocalStorage({ lat, lon, area, source }) {
+// Safe wrapper to store the latest user-selected location
+function saveUserLocationToLocalStorage({ lat, lon, area, source }) {
   try {
     const payload = {
       lat,
@@ -337,33 +377,99 @@ function saveLocationToLocalStorage({ lat, lon, area, source }) {
   }
 }
 
-// Free reverse-geocode (no key required)
-async function reverseGeocode(lat, lon, lang = "en") {
-  const url = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${encodeURIComponent(lat)}&longitude=${encodeURIComponent(lon)}&localityLanguage=${encodeURIComponent(lang)}`;
-  const r = await fetch(url, { method: "GET" });
-  if (!r.ok) throw new Error("reverse geocode failed");
-  const d = await r.json();
+// Main entry when user clicks "Check Location"
+export async function handleCheckLocationClick() {
+  try {
+    setUIBusy(true);
 
-  // Compose a friendly area string (e.g., “Shoreditch, London, GB”)
-  const parts = [
-    d.locality || d.city || d.localityInfo?.administrative?.[0]?.name,
-    d.principalSubdivision || d.region,
-    d.countryCode,
-  ].filter(Boolean);
+    // 1) Get precise GPS
+    const coords = await requestPreciseLocation();
 
-  return {
-    area: parts.join(", "),
-    // fields expected elsewhere in the code:
-    countryName: d.countryName,
-    countryCode: d.countryCode,
-    city: d.city || d.locality || d.principalSubdivisionLocality || null,
-    locality: d.locality ?? null,
-    principalSubdivisionLocality: d.principalSubdivisionLocality ?? null,
-    region: d.principalSubdivision || d.region || null,
-    raw: d,
-  };
+    // 2) Reverse-geocode to a readable area
+    const { area, countryCode, countryName, city } = await reverseGeocode(
+      coords.latitude,
+      coords.longitude,
+    );
+
+    // 3) Save precise location to localStorage for userLocation
+    saveUserLocationToLocalStorage({
+      lat: coords.latitude,
+      lon: coords.longitude,
+      area,
+      source: "gps",
+    });
+
+    // 4) ALSO update profileGeo (the menu reads this) and dispatch the app-wide event
+    const prev = JSON.parse(localStorage.getItem(GEO_CACHE_KEY) || "{}");
+    const iso2 = (countryCode || prev.iso2 || "GB").toUpperCase();
+
+    let countryDisplayName;
+    try {
+      countryDisplayName =
+        new Intl.DisplayNames(["en"], { type: "region" }).of(iso2) || iso2;
+    } catch {
+      countryDisplayName = iso2;
+    }
+
+    const precise = {
+      ...prev,
+      iso2,
+      country: countryName || countryDisplayName, // prefer BigDataCloud’s full name
+      city: city || prev.city || null, // prefer reverse geocoded city
+      lat: coords.latitude,
+      lon: coords.longitude,
+      area: area ?? prev.area ?? null, // Use the detailed area from reverseGeocode
+      classification: classifyCountry(iso2),
+      ts: Date.now(),
+      isPrecise: true, // persist as the authoritative, user-confirmed location
+    };
+
+    localStorage.setItem(GEO_CACHE_KEY, JSON.stringify(precise));
+    document.dispatchEvent(
+      new CustomEvent("location:updated", { detail: precise }),
+    );
+
+    // Notify backend so Dev Dashboard reflects the new location
+    try {
+      await bumpRefresh({
+        reason: "location_precise",
+        geo: {
+          iso2: precise.iso2,
+          country: precise.country,
+          city: precise.city || null,
+          lat: precise.lat,
+          lon: precise.lon,
+          area: precise.area || null,
+          isPrecise: true,
+          ts: precise.ts,
+        },
+      });
+      // Optional: let the app know telemetry finished
+      document.dispatchEvent(new CustomEvent("telemetry:refreshed"));
+    } catch (e) {
+      console.warn("bumpRefresh failed after precise location update:", e);
+    }
+
+    // 5) Update the visible UI immediately
+    updateLocationUI(area, "gps");
+  } catch (err) {
+    console.error("checklocation failed:", err);
+    updateLocationUI("Unable to get precise location");
+  } finally {
+    setUIBusy(false);
+  }
 }
 
+// Event listener for the "Check Location" button
+document.addEventListener("click", (e) => {
+  const t = e.target;
+  if (t.matches('#checkLocationBtn, [data-action="checklocation"]')) {
+    e.preventDefault();
+    handleCheckLocationClick();
+  }
+});
+
+// ---------- Helper to request precise browser location ----------
 async function requestPreciseLocation() {
   if (!("geolocation" in navigator)) {
     throw new Error("Geolocation not supported");
@@ -381,40 +487,42 @@ async function requestPreciseLocation() {
   });
 }
 
-// Main entry when user clicks "Check Location"
-export async function handleCheckLocationClick() {
+// ---- Hydrate the menu label from cache on load (prefer precise) ----
+function hydrateProfileLocationFromCache() {
   try {
-    setUIBusy(true);
+    const userLoc = JSON.parse(
+      localStorage.getItem(LS_KEY_USER_LOCATION) || "null",
+    );
+    const profGeo = JSON.parse(localStorage.getItem(GEO_CACHE_KEY) || "null");
 
-    // 1) Get precise GPS
-    const coords = await requestPreciseLocation();
+    // Prefer the most recent precise/user-confirmed area, then any cached area/city
+    const area =
+      (profGeo?.isPrecise && profGeo?.area) ||
+      userLoc?.area ||
+      profGeo?.area ||
+      profGeo?.city ||
+      null;
 
-    // 2) Reverse-geocode to a readable area
-    const { area } = await reverseGeocode(coords.latitude, coords.longitude);
-
-    // 3) Save to localStorage
-    saveLocationToLocalStorage({
-      lat: coords.latitude,
-      lon: coords.longitude,
-      area,
-      source: "gps",
-    });
-
-    // 4) Update the same UI spot where IP result appears
-    updateLocationUI(area, "gps");
-  } catch (err) {
-    console.error("checklocation failed:", err);
-    // Show friendly error
-    updateLocationUI("Unable to get precise location");
-  } finally {
-    setUIBusy(false);
+    if (area) {
+      updateLocationUI(area, "cache"); // Use 'cache' to indicate source
+    }
+  } catch (e) {
+    console.error("Failed to hydrate profile location from cache:", e);
+    /* noop */
   }
 }
 
-document.addEventListener("click", (e) => {
-  const t = e.target;
-  if (t.matches('#checkLocationBtn, [data-action="checklocation"]')) {
-    e.preventDefault();
-    handleCheckLocationClick();
+// Run hydrate once the DOM is ready
+document.addEventListener("DOMContentLoaded", hydrateProfileLocationFromCache);
+
+// Also listen for app-wide location updates to refresh the menu label if needed
+document.addEventListener("location:updated", (e) => {
+  const newest = e?.detail;
+  if (!newest) return;
+  const area = newest.area || newest.city || null;
+  if (area) {
+    // Use 'event' to indicate source, or 'cache' if it's from profileGeo.isPrecise
+    const source = newest.isPrecise ? "cache" : "event";
+    updateLocationUI(area, source);
   }
 });

@@ -21,6 +21,10 @@ const storage = require("./storage/index.cjs"); // auto-picks NDJSON or PG
 
 app.use(express.json({ limit: "100kb" }));
 app.use("/js", express.static(path.join(__dirname, "public", "js"))); // Explicit route for /js
+app.use(
+  "/favicons",
+  express.static(path.join(__dirname, "public", "favicons")),
+); // Explicit route for favicons
 app.use(express.static(path.join(__dirname, "public")));
 
 // Initialise storage (creates table locally on PG or folders for NDJSON)
@@ -42,7 +46,7 @@ app.post("/api/app/profile", async (req, res) => {
 
 app.post("/api/app/refresh", async (req, res) => {
   try {
-    await storage.bumpRefresh();
+    await storage.bumpRefresh(req.body || {});
     res.json({ ok: true });
   } catch (e) {
     console.error(e);

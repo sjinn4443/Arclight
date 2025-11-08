@@ -245,3 +245,9 @@
 {"type":"profile","ts":"2025-11-07T23:42:22.393Z","anon_id":"1081d0b5-761f-4211-9dc2-f6dfa088e707","user_id":null,"name":null,"aims":null,"interest":null,"experience":null,"contact":null,"country":null,"area":null,"language":"en"}
 {"type":"profile","ts":"2025-11-07T23:42:28.626Z","anon_id":"1081d0b5-761f-4211-9dc2-f6dfa088e707","user_id":null,"name":"test","aims":null,"interest":null,"experience":"audiologist","contact":null,"country":"GB","area":"Glasgow","language":"en"}
 {"type":"profile","ts":"2025-11-07T23:42:30.357Z","anon_id":"1081d0b5-761f-4211-9dc2-f6dfa088e707","user_id":null,"name":null,"aims":"Refresher Practice","interest":null,"experience":null,"contact":null,"country":null,"area":null,"language":null}
+{"type":"ip","ts":"2025-11-08T01:17:50.364Z","ip":"::1","geo":{}}
+{"type":"ip","ts":"2025-11-08T01:17:50.387Z","ip":"::1","geo":{}}
+{"type":"profile","ts":"2025-11-08T01:17:59.406Z","anon_id":"b86c513b-3fa2-440e-beb0-fb15d1b337b7","user_id":null,"name":null,"aims":null,"interest":null,"experience":null,"contact":null,"country":null,"area":null,"language":"ko"}
+{"type":"profile","ts":"2025-11-08T01:18:00.103Z","anon_id":"b86c513b-3fa2-440e-beb0-fb15d1b337b7","user_id":null,"name":null,"aims":null,"interest":null,"experience":null,"contact":null,"country":null,"area":null,"language":"ko"}
+{"type":"profile","ts":"2025-11-08T01:18:08.969Z","anon_id":"b86c513b-3fa2-440e-beb0-fb15d1b337b7","user_id":null,"name":"kor","aims":null,"interest":null,"experience":"ophthalmologist","contact":null,"country":"GB","area":"London","language":"en"}
+{"type":"profile","ts":"2025-11-08T01:18:10.588Z","anon_id":"b86c513b-3fa2-440e-beb0-fb15d1b337b7","user_id":null,"name":null,"aims":"타인에게 가르치기","interest":null,"experience":null,"contact":null,"country":null,"area":null,"language":null}
