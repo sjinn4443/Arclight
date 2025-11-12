@@ -99,6 +99,8 @@ export function applyTranslations(root = document) {
   nodes.forEach((el) => {
     const spec = (el.getAttribute("data-i18n") || "").trim();
     if (!spec) return;
+    // Do not translate inside regions explicitly marked to be skipped
+    if (el.closest("[data-i18n-skip]")) return;
 
     const [path, rawTarget = "text"] = spec.split(":");
     const target = (rawTarget || "text").toLowerCase();

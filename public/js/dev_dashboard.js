@@ -113,9 +113,9 @@ async function renderUsers(users) {
       <tr>
         <td>${i + 1}</td>
         <td>${u.name || "—"}</td>
-        <td>${aimsEn}</td>
-        <td>${interestEn}</td>
-        <td>${expEn}</td>
+        <td ${aimsKey ? `data-i18n="${aimsKey}"` : ""}>${aimsEn}</td>
+        <td ${interestKey ? `data-i18n="${interestKey}"` : ""}>${interestEn}</td>
+        <td ${expKey ? `data-i18n="${expKey}"` : ""}>${expEn}</td>
         <td>${u.contact || "—"}</td>
         <td>${u.country || "—"}</td>
         <td>${u.area || "—"}</td>
@@ -129,10 +129,6 @@ async function renderUsers(users) {
   const status = document.getElementById("status");
   tbody.innerHTML = rows.join("");
   status.textContent = `Loaded ${sorted.length} row${sorted.length === 1 ? "" : "s"}`;
-  // Ensure dev dashboard cells never get auto-translated by the i18n engine
-  tbody
-    .querySelectorAll("[data-i18n]")
-    .forEach((el) => el.removeAttribute("data-i18n"));
 }
 
 async function load() {
