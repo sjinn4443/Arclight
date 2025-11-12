@@ -14,6 +14,9 @@ const prod = process.env.NODE_ENV === "production";
 
 const app = express();
 
+// Use the port from the environment variable, defaulting to 3001 if not set
+const PORT = process.env.PORT || 3001;
+
 // Behind Railway → needed for secure cookies, real client IPs, rate limits
 app.set("trust proxy", 1);
 
@@ -86,7 +89,6 @@ app.post("/track", async (req, res) => {
 });
 
 // --- Start server ---
-const PORT = process.env.PORT || 3000;
 let server;
 if (require.main === module) {
   server = app.listen(PORT, () => {

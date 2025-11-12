@@ -350,3 +350,16 @@
 {"type":"refresh","ts":"2025-11-12T18:50:33.765Z","anon_id":"b0e6c429-5dee-4829-a6d5-333494598c35","user_id":null}
 {"type":"profile","ts":"2025-11-12T18:50:43.858Z","anon_id":"b0e6c429-5dee-4829-a6d5-333494598c35","user_id":null,"name":"mar","aims":null,"interest":null,"experience":"ophthalmologist","contact":null,"country":"GB","area":null,"language":"en"}
 {"type":"profile","ts":"2025-11-12T18:50:46.123Z","anon_id":"b0e6c429-5dee-4829-a6d5-333494598c35","user_id":null,"name":null,"aims":"복습 연습, 학업을 위해","interest":null,"experience":null,"contact":null,"country":null,"area":null,"language":null}
+{"type":"ip","ts":"2025-11-12T19:04:37.010Z","ip":"::1","geo":{}}
+{"type":"ip","ts":"2025-11-12T19:04:37.055Z","ip":"::1","geo":{}}
+{"type":"refresh","ts":"2025-11-12T19:04:47.951Z","anon_id":"542dfde8-4e59-4a67-bbf6-8b16eaa77694","user_id":null}
+{"type":"refresh","ts":"2025-11-12T19:05:05.583Z","anon_id":"db3ff7be-0a26-4503-aade-2f6082005995","user_id":null}
+{"type":"ip","ts":"2025-11-12T19:05:08.279Z","ip":"::1","geo":{}}
+{"type":"ip","ts":"2025-11-12T19:05:08.293Z","ip":"::1","geo":{}}
+{"type":"profile","ts":"2025-11-12T19:05:20.181Z","anon_id":"db3ff7be-0a26-4503-aade-2f6082005995","user_id":null,"name":null,"aims":null,"interest":null,"experience":null,"contact":null,"country":null,"area":null,"language":"ko"}
+{"type":"refresh","ts":"2025-11-12T19:05:20.188Z","anon_id":"db3ff7be-0a26-4503-aade-2f6082005995","user_id":null}
+{"type":"profile","ts":"2025-11-12T19:05:21.192Z","anon_id":"db3ff7be-0a26-4503-aade-2f6082005995","user_id":null,"name":null,"aims":null,"interest":null,"experience":null,"contact":null,"country":null,"area":null,"language":"ko"}
+{"type":"refresh","ts":"2025-11-12T19:05:21.199Z","anon_id":"db3ff7be-0a26-4503-aade-2f6082005995","user_id":null}
+{"type":"profile","ts":"2025-11-12T19:05:28.238Z","anon_id":"db3ff7be-0a26-4503-aade-2f6082005995","user_id":null,"name":"june","aims":null,"interest":null,"experience":"audiologist","contact":null,"country":"GB","area":"London","language":"en"}
+{"type":"profile","ts":"2025-11-12T19:05:30.055Z","anon_id":"db3ff7be-0a26-4503-aade-2f6082005995","user_id":null,"name":null,"aims":"복습 연습, 학업을 위해","interest":null,"experience":null,"contact":null,"country":null,"area":null,"language":null}
+{"type":"refresh","ts":"2025-11-12T19:05:35.819Z","anon_id":"db3ff7be-0a26-4503-aade-2f6082005995","user_id":null}

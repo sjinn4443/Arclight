@@ -1,5 +1,10 @@
 import { bumpRefresh } from "./telemetry.js";
-import { fetchDictionary, get, applyTranslations } from "./i18n.js";
+import {
+  fetchDictionary,
+  get,
+  applyTranslations,
+  setLanguage,
+} from "./i18n.js";
 
 // 모든 언어 라벨 -> i18n 키 역인덱스
 const REVERSE = new Map();
@@ -101,6 +106,8 @@ async function fetchUsers() {
 let englishDict = {};
 
 async function loadEnglishDictionary() {
+  // Force the language to English for the dev dashboard
+  await setLanguage("en");
   englishDict = await fetchDictionary("en");
   // 영어만 로딩하고 끝내지 말고, 역인덱스도 구축
   await buildReverseIndex();
