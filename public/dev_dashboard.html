@@ -56,23 +56,27 @@
   </head>
   <body>
     <div class="toolbar">
-      <button id="refreshBtn" type="button">Refresh data</button>
-      <span id="status" class="status">Loaded 0 rows</span>
+      <button id="refreshBtn" type="button" data-i18n="devDashboard.refresh">
+        Refresh data
+      </button>
+      <span id="status" class="status" data-i18n="devDashboard.loaded"
+        >Loaded 0 rows</span
+      >
     </div>
 
-    <table id="users" data-i18n-skip>
+    <table id="users">
       <thead>
         <tr>
-          <th>No. <small>(몇 번째 사용자인지)</small></th>
-          <th>Name</th>
-          <th>Aims</th>
-          <th>Interest</th>
-          <th>Experience</th>
-          <th>Contact</th>
-          <th>Country</th>
-          <th>Area</th>
-          <th>Language</th>
-          <th>Refresh count</th>
+          <th data-i18n="devDashboard.num">No.</th>
+          <th data-i18n="devDashboard.name">Name</th>
+          <th data-i18n="devDashboard.aims">Aims</th>
+          <th data-i18n="devDashboard.interest">Interest</th>
+          <th data-i18n="devDashboard.experience">Experience</th>
+          <th data-i18n="devDashboard.contact">Contact</th>
+          <th data-i18n="devDashboard.country">Country</th>
+          <th data-i18n="devDashboard.area">Area</th>
+          <th data-i18n="devDashboard.language">Language</th>
+          <th data-i18n="devDashboard.refreshCount">Refresh count</th>
         </tr>
       </thead>
       <tbody></tbody>

@@ -294,3 +294,59 @@
 {"type":"refresh","ts":"2025-11-12T16:59:41.337Z","anon_id":"ae668ed9-3ae1-44db-ab77-a0f09ba30753","user_id":null}
 {"type":"profile","ts":"2025-11-12T16:59:46.207Z","anon_id":"ae668ed9-3ae1-44db-ab77-a0f09ba30753","user_id":null,"name":"kortest","aims":null,"interest":null,"experience":"ophthalmic_clinical_officer","contact":null,"country":"GB","area":"London","language":"en"}
 {"type":"profile","ts":"2025-11-12T16:59:48.762Z","anon_id":"ae668ed9-3ae1-44db-ab77-a0f09ba30753","user_id":null,"name":null,"aims":"복습 연습, 학업을 위해, 공중 보건","interest":null,"experience":null,"contact":null,"country":null,"area":null,"language":null}
+{"type":"ip","ts":"2025-11-12T17:44:52.448Z","ip":"::1","geo":{}}
+{"type":"ip","ts":"2025-11-12T17:44:52.483Z","ip":"::1","geo":{}}
+{"type":"ip","ts":"2025-11-12T17:45:04.012Z","ip":"::1","geo":{}}
+{"type":"ip","ts":"2025-11-12T17:45:04.019Z","ip":"::1","geo":{}}
+{"type":"ip","ts":"2025-11-12T17:45:06.237Z","ip":"::1","geo":{}}
+{"type":"ip","ts":"2025-11-12T17:45:06.267Z","ip":"::1","geo":{}}
+{"type":"refresh","ts":"2025-11-12T17:45:08.851Z","anon_id":"d1395a34-4c89-49ae-b0cb-a44d197f1a3c","user_id":null}
+{"type":"refresh","ts":"2025-11-12T17:45:16.935Z","anon_id":"0dc793cc-e888-460b-8c31-56d90523b462","user_id":null}
+{"type":"profile","ts":"2025-11-12T17:45:21.267Z","anon_id":"0dc793cc-e888-460b-8c31-56d90523b462","user_id":null,"name":null,"aims":null,"interest":null,"experience":null,"contact":null,"country":null,"area":null,"language":"ko"}
+{"type":"refresh","ts":"2025-11-12T17:45:21.273Z","anon_id":"0dc793cc-e888-460b-8c31-56d90523b462","user_id":null}
+{"type":"profile","ts":"2025-11-12T17:45:22.017Z","anon_id":"0dc793cc-e888-460b-8c31-56d90523b462","user_id":null,"name":null,"aims":null,"interest":null,"experience":null,"contact":null,"country":null,"area":null,"language":"ko"}
+{"type":"refresh","ts":"2025-11-12T17:45:22.022Z","anon_id":"0dc793cc-e888-460b-8c31-56d90523b462","user_id":null}
+{"type":"profile","ts":"2025-11-12T17:45:35.582Z","anon_id":"0dc793cc-e888-460b-8c31-56d90523b462","user_id":null,"name":"languagetestdev","aims":null,"interest":null,"experience":"optometrist","contact":null,"country":"GB","area":null,"language":"en"}
+{"type":"profile","ts":"2025-11-12T17:45:37.313Z","anon_id":"0dc793cc-e888-460b-8c31-56d90523b462","user_id":null,"name":null,"aims":"복습 연습, 학업을 위해","interest":null,"experience":null,"contact":null,"country":null,"area":null,"language":null}
+{"type":"refresh","ts":"2025-11-12T17:45:45.809Z","anon_id":"0dc793cc-e888-460b-8c31-56d90523b462","user_id":null}
+{"type":"refresh","ts":"2025-11-12T17:45:50.121Z","anon_id":"0dc793cc-e888-460b-8c31-56d90523b462","user_id":null}
+{"type":"ip","ts":"2025-11-12T17:54:28.101Z","ip":"::1","geo":{}}
+{"type":"ip","ts":"2025-11-12T17:54:28.115Z","ip":"::1","geo":{}}
+{"type":"refresh","ts":"2025-11-12T17:54:34.317Z","anon_id":"886b7f92-01c5-4579-9b3c-ede1b3e5f7d2","user_id":null}
+{"type":"profile","ts":"2025-11-12T17:54:47.479Z","anon_id":"886b7f92-01c5-4579-9b3c-ede1b3e5f7d2","user_id":null,"name":null,"aims":null,"interest":null,"experience":null,"contact":null,"country":null,"area":null,"language":"ko"}
+{"type":"refresh","ts":"2025-11-12T17:54:47.486Z","anon_id":"886b7f92-01c5-4579-9b3c-ede1b3e5f7d2","user_id":null}
+{"type":"profile","ts":"2025-11-12T17:54:48.284Z","anon_id":"886b7f92-01c5-4579-9b3c-ede1b3e5f7d2","user_id":null,"name":null,"aims":null,"interest":null,"experience":null,"contact":null,"country":null,"area":null,"language":"ko"}
+{"type":"refresh","ts":"2025-11-12T17:54:48.291Z","anon_id":"886b7f92-01c5-4579-9b3c-ede1b3e5f7d2","user_id":null}
+{"type":"profile","ts":"2025-11-12T17:55:03.431Z","anon_id":"886b7f92-01c5-4579-9b3c-ede1b3e5f7d2","user_id":null,"name":"devdash","aims":null,"interest":null,"experience":"optometrist","contact":null,"country":"GB","area":null,"language":"en"}
+{"type":"profile","ts":"2025-11-12T17:55:05.191Z","anon_id":"886b7f92-01c5-4579-9b3c-ede1b3e5f7d2","user_id":null,"name":null,"aims":"복습 연습, 학업을 위해","interest":null,"experience":null,"contact":null,"country":null,"area":null,"language":null}
+{"type":"refresh","ts":"2025-11-12T17:59:16.681Z","anon_id":"886b7f92-01c5-4579-9b3c-ede1b3e5f7d2","user_id":null}
+{"type":"ip","ts":"2025-11-12T18:04:18.528Z","ip":"::1","geo":{}}
+{"type":"ip","ts":"2025-11-12T18:04:18.548Z","ip":"::1","geo":{}}
+{"type":"refresh","ts":"2025-11-12T18:04:42.613Z","anon_id":"faf2c671-0d1d-455a-adfe-19bc837c75fb","user_id":null}
+{"type":"refresh","ts":"2025-11-12T18:04:47.880Z","anon_id":"faf2c671-0d1d-455a-adfe-19bc837c75fb","user_id":null}
+{"type":"ip","ts":"2025-11-12T18:04:54.354Z","ip":"::1","geo":{}}
+{"type":"ip","ts":"2025-11-12T18:04:54.367Z","ip":"::1","geo":{}}
+{"type":"profile","ts":"2025-11-12T18:05:01.514Z","anon_id":"faf2c671-0d1d-455a-adfe-19bc837c75fb","user_id":null,"name":null,"aims":null,"interest":null,"experience":null,"contact":null,"country":null,"area":null,"language":"ko"}
+{"type":"refresh","ts":"2025-11-12T18:05:01.520Z","anon_id":"faf2c671-0d1d-455a-adfe-19bc837c75fb","user_id":null}
+{"type":"profile","ts":"2025-11-12T18:05:02.274Z","anon_id":"faf2c671-0d1d-455a-adfe-19bc837c75fb","user_id":null,"name":null,"aims":null,"interest":null,"experience":null,"contact":null,"country":null,"area":null,"language":"ko"}
+{"type":"refresh","ts":"2025-11-12T18:05:02.280Z","anon_id":"faf2c671-0d1d-455a-adfe-19bc837c75fb","user_id":null}
+{"type":"profile","ts":"2025-11-12T18:05:12.154Z","anon_id":"faf2c671-0d1d-455a-adfe-19bc837c75fb","user_id":null,"name":"feb","aims":null,"interest":null,"experience":"optometrist","contact":null,"country":"GB","area":"London","language":"en"}
+{"type":"profile","ts":"2025-11-12T18:05:13.974Z","anon_id":"faf2c671-0d1d-455a-adfe-19bc837c75fb","user_id":null,"name":null,"aims":"복습 연습, 학업을 위해","interest":null,"experience":null,"contact":null,"country":null,"area":null,"language":null}
+{"type":"refresh","ts":"2025-11-12T18:05:23.363Z","anon_id":"faf2c671-0d1d-455a-adfe-19bc837c75fb","user_id":null}
+{"type":"refresh","ts":"2025-11-12T18:05:30.764Z","anon_id":"faf2c671-0d1d-455a-adfe-19bc837c75fb","user_id":null}
+{"type":"refresh","ts":"2025-11-12T18:05:34.867Z","anon_id":"faf2c671-0d1d-455a-adfe-19bc837c75fb","user_id":null}
+{"type":"refresh","ts":"2025-11-12T18:49:23.315Z","anon_id":"92218fdd-54c7-4ca7-8e0b-f60fa9437d7a","user_id":null}
+{"type":"ip","ts":"2025-11-12T18:49:57.912Z","ip":"::1","geo":{}}
+{"type":"ip","ts":"2025-11-12T18:49:57.935Z","ip":"::1","geo":{}}
+{"type":"ip","ts":"2025-11-12T18:50:09.120Z","ip":"::1","geo":{}}
+{"type":"ip","ts":"2025-11-12T18:50:09.132Z","ip":"::1","geo":{}}
+{"type":"ip","ts":"2025-11-12T18:50:12.772Z","ip":"::1","geo":{}}
+{"type":"ip","ts":"2025-11-12T18:50:12.807Z","ip":"::1","geo":{}}
+{"type":"refresh","ts":"2025-11-12T18:50:18.592Z","anon_id":"299413b0-55cb-46a5-9c86-0353964e7590","user_id":null}
+{"type":"refresh","ts":"2025-11-12T18:50:22.863Z","anon_id":"b0e6c429-5dee-4829-a6d5-333494598c35","user_id":null}
+{"type":"profile","ts":"2025-11-12T18:50:32.973Z","anon_id":"b0e6c429-5dee-4829-a6d5-333494598c35","user_id":null,"name":null,"aims":null,"interest":null,"experience":null,"contact":null,"country":null,"area":null,"language":"ko"}
+{"type":"refresh","ts":"2025-11-12T18:50:32.980Z","anon_id":"b0e6c429-5dee-4829-a6d5-333494598c35","user_id":null}
+{"type":"profile","ts":"2025-11-12T18:50:33.758Z","anon_id":"b0e6c429-5dee-4829-a6d5-333494598c35","user_id":null,"name":null,"aims":null,"interest":null,"experience":null,"contact":null,"country":null,"area":null,"language":"ko"}
+{"type":"refresh","ts":"2025-11-12T18:50:33.765Z","anon_id":"b0e6c429-5dee-4829-a6d5-333494598c35","user_id":null}
+{"type":"profile","ts":"2025-11-12T18:50:43.858Z","anon_id":"b0e6c429-5dee-4829-a6d5-333494598c35","user_id":null,"name":"mar","aims":null,"interest":null,"experience":"ophthalmologist","contact":null,"country":"GB","area":null,"language":"en"}
+{"type":"profile","ts":"2025-11-12T18:50:46.123Z","anon_id":"b0e6c429-5dee-4829-a6d5-333494598c35","user_id":null,"name":null,"aims":"복습 연습, 학업을 위해","interest":null,"experience":null,"contact":null,"country":null,"area":null,"language":null}

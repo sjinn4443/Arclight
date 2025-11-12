@@ -1,48 +1,72 @@
 import { bumpRefresh } from "./telemetry.js";
-import { fetchDictionary, get } from "./i18n.js";
+import { fetchDictionary, get, applyTranslations } from "./i18n.js";
 
-// Cache per-language dictionaries for reverse lookups
-const dictCache = new Map();
-async function getDict(lang) {
-  if (!lang) return {};
-  if (!dictCache.has(lang)) dictCache.set(lang, fetchDictionary(lang));
-  return await dictCache.get(lang);
-}
+// 모든 언어 라벨 -> i18n 키 역인덱스
+const REVERSE = new Map();
 
-// Flatten nested dict -> { "a.b.c": "Label", ... }
-function flattenDict(obj, prefix = "", out = {}) {
+// 번역 파일 평탄화: { "a.b.c": "Label", ... }
+function flat(obj, p = "", out = {}) {
   for (const [k, v] of Object.entries(obj || {})) {
-    const path = prefix ? `${prefix}.${k}` : k;
-    if (v && typeof v === "object") flattenDict(v, path, out);
+    const path = p ? `${p}.${k}` : k;
+    if (v && typeof v === "object") flat(v, path, out);
     else out[path] = v;
   }
   return out;
 }
 
-/**
- * Turn any stored value into an English label:
- * - If it's an i18n key, read English directly.
- * - Otherwise, treat it as a translated literal in the user's language,
- *   find the key via reverse lookup, then show the English string.
- */
-async function englishLabelFor(value, userLang) {
+// 지원 언어 목록(필요한 것만 넣어도 됩니다)
+const LANGS = [
+  "en",
+  "am",
+  "ar",
+  "bn",
+  "ny",
+  "zh",
+  "fr",
+  "ha",
+  "hi",
+  "ig",
+  "id",
+  "rw",
+  "ko",
+  "ln",
+  "fa",
+  "pt",
+  "sn",
+  "es",
+  "sw",
+  "ur",
+  "yo",
+  "zu",
+];
+
+// 한 번만: 모든 언어 사전을 읽어 역인덱스 구축
+async function buildReverseIndex() {
+  const dicts = await Promise.all(LANGS.map((l) => fetchDictionary(l)));
+  dicts.forEach((dict) => {
+    const f = flat(dict);
+    for (const [key, label] of Object.entries(f)) {
+      if (label) {
+        const s = String(label).trim();
+        if (s && !REVERSE.has(s)) REVERSE.set(s, key);
+      }
+    }
+  });
+}
+
+// 어떤 값이 와도 영어로 바꿔주는 함수
+function englishFromAny(value, englishDict) {
   if (!value) return "—";
-
-  // Try as key
-  const direct = get(englishDict, value);
-  if (direct != null) return direct;
-
-  // Legacy: it's a literal in userLang → find its key then show English
-  const langDict = await getDict(userLang);
-  const flat = flattenDict(langDict);
-  const hit = Object.entries(flat).find(([, label]) => label === value);
-  if (hit) {
-    const key = hit[0];
+  // 1) 키로 바로 시도
+  const fromKey = get(englishDict, value);
+  if (fromKey != null) return fromKey;
+  // 2) 라벨(예: '복습 연습')이면 역인덱스로 키 찾기 → 영어
+  const key = REVERSE.get(String(value).trim());
+  if (key) {
     const en = get(englishDict, key);
     if (en != null) return en;
   }
-
-  // Fallback: show original
+  // 3) 실패 시 원문 유지
   return value;
 }
 
@@ -78,6 +102,10 @@ let englishDict = {};
 
 async function loadEnglishDictionary() {
   englishDict = await fetchDictionary("en");
+  // 영어만 로딩하고 끝내지 말고, 역인덱스도 구축
+  await buildReverseIndex();
+  // 정적 UI 번역
+  applyTranslations(document.body);
 }
 
 async function renderUsers(users) {
@@ -98,24 +126,17 @@ async function renderUsers(users) {
   for (let i = 0; i < sorted.length; i++) {
     const u = sorted[i];
 
-    const aimsEn = await englishLabelFor(u.aims, u.language);
-    const interestEn = await englishLabelFor(u.interest, u.language);
-    const expEn = await englishLabelFor(u.experience, u.language);
-
-    // Keep data-i18n attribute only when the value is actually a key
-    const aimsKey = get(englishDict, u.aims || "") != null ? u.aims : null;
-    const interestKey =
-      get(englishDict, u.interest || "") != null ? u.interest : null;
-    const expKey =
-      get(englishDict, u.experience || "") != null ? u.experience : null;
+    const aimsEn = englishFromAny(u.aims, englishDict);
+    const interestEn = englishFromAny(u.interest, englishDict);
+    const expEn = englishFromAny(u.experience, englishDict);
 
     rows.push(`
       <tr>
         <td>${i + 1}</td>
         <td>${u.name || "—"}</td>
-        <td ${aimsKey ? `data-i18n="${aimsKey}"` : ""}>${aimsEn}</td>
-        <td ${interestKey ? `data-i18n="${interestKey}"` : ""}>${interestEn}</td>
-        <td ${expKey ? `data-i18n="${expKey}"` : ""}>${expEn}</td>
+        <td>${aimsEn}</td>
+        <td>${interestEn}</td>
+        <td>${expEn}</td>
         <td>${u.contact || "—"}</td>
         <td>${u.country || "—"}</td>
         <td>${u.area || "—"}</td>
