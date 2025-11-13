@@ -210,6 +210,62 @@ export function initializeLanguageInstall() {
       loadPage("onboarding");
     });
   }
+
+  // --- Info buttons for offline vs online hint text ---
+  const offlineInfoBtn = document.getElementById("offlineInfoBtn");
+  const onlineInfoBtn = document.getElementById("onlineInfoBtn");
+
+  if (offlineInfoBtn) {
+    offlineInfoBtn.addEventListener("click", () => {
+      showLanguageHintModal(
+        "install the app on your device for offline access",
+      );
+    });
+  }
+
+  if (onlineInfoBtn) {
+    onlineInfoBtn.addEventListener("click", () => {
+      showLanguageHintModal("continue using the app without installing");
+    });
+  }
+}
+
+/**
+ * Shows a small info modal explaining the selected language install option.
+ * Reuses the guest modal look and feel.
+ * @param {string} message - Body text to show inside the modal.
+ */
+function showLanguageHintModal(message) {
+  // Prevent duplicates
+  if (document.getElementById("hintModalOverlay")) return;
+
+  const modal = document.createElement("div");
+  modal.id = "hintModalOverlay";
+  modal.setAttribute("role", "dialog");
+  modal.setAttribute("aria-modal", "true");
+
+  modal.innerHTML = `
+    <div class="guest-modal">
+      <button class="guest-modal__close" aria-label="Close">&times;</button>
+      <h2 class="guest-modal__title"></h2>
+      <p class="guest-modal__text">${message}</p>
+      <button class="guest-modal__cta" type="button">OK</button>
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+
+  const close = () => {
+    modal.classList.add("fade-out");
+    setTimeout(() => modal.remove(), 250);
+  };
+
+  modal.querySelector(".guest-modal__close")?.addEventListener("click", close);
+  modal.querySelector(".guest-modal__cta")?.addEventListener("click", close);
+
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) close();
+  });
 }
 
 /**
@@ -253,6 +309,8 @@ function buildCustomLangSelect(selectEl) {
   caret.style.position = "absolute";
   caret.style.right = "12px";
   caret.style.pointerEvents = "none";
+  caret.style.fontSize = "20px"; // 원하는 크기
+  caret.style.width = "15px";
 
   // Label (two-column inside the "select" box)
   const label = document.createElement("div");

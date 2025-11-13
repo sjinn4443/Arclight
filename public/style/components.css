@@ -2054,6 +2054,53 @@ input:checked + .slider:before {
   animation: guestModalFadeOut 0.25s ease-in forwards; /* reuse existing keyframes */
 }
 
+/* Language Install: hint + info icon row */
+.lang-install__hint-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.lang-install__hint-row .lang-install__hint {
+  margin-top: 0;
+}
+
+/* Inline info icon next to hint text (language install only) */
+.lang-install__info-icon {
+  background: transparent;
+  color: #c5c5c5;
+  width: auto;
+  padding: 0 4px;
+  margin-top: -20px !important;
+  border-radius: 999px;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.lang-install__info-icon:focus {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+}
+
+/* Hint modal overlay (reuses guest modal animations) */
+#hintModalOverlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10001;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  animation: guestModalFadeIn 0.3s ease-out;
+}
+
+#hintModalOverlay.fade-out {
+  animation: guestModalFadeOut 0.25s ease-in forwards;
+}
+
 /* === Location Button Animations === */
 .check-location-btn.checking-location {
   background-color: #e41e26 !important; /* Use !important to override existing styles */

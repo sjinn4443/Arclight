@@ -172,12 +172,26 @@
       >
         Install
       </button>
-      <div class="lang-install__hint" data-i18n="languageInstall.install_hint">
-        for offline access
+      <div class="lang-install__hint-row">
+        <div
+          class="lang-install__hint"
+          data-i18n="languageInstall.install_hint"
+        >
+          for offline access
+        </div>
+        <button
+          type="button"
+          id="offlineInfoBtn"
+          class="lang-install__info-icon"
+          aria-label="More information about offline access"
+        >
+          ⓘ
+        </button>
       </div>
 
       <div class="lang-install__divider">
-        <span></span><span data-i18n="languageInstall.divider_or">or</span
+        <span></span
+        ><span data-i18n="languageInstall.divider_or"><!--or--></span
         ><span></span>
       </div>
 
@@ -188,11 +202,21 @@
       >
         Use App Without Installing
       </button>
-      <div
-        class="lang-install__hint"
-        data-i18n="languageInstall.use_online_hint"
-      >
-        for online experience
+      <div class="lang-install__hint-row">
+        <div
+          class="lang-install__hint"
+          data-i18n="languageInstall.use_online_hint"
+        >
+          for online experience
+        </div>
+        <button
+          type="button"
+          id="onlineInfoBtn"
+          class="lang-install__info-icon"
+          aria-label="More information about using the app online"
+        >
+          ⓘ
+        </button>
       </div>
     </div>
   </div>

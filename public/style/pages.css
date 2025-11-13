@@ -223,7 +223,12 @@
   display: block;
   height: 1px;
   background: #bdbdbf;
-  width: 45%;
+  flex: 1;
+}
+.lang-install__divider span:nth-child(2) {
+  flex: 0;
+  height: auto;
+  background: none;
 }
 
 /* Keep the global bottom bar hidden on this page */
@@ -339,7 +344,7 @@ select.onb-input.has-value {
   border-radius: 14px;
   background: #e41e26;
   color: #fff;
-  font-weight: 100;
+  font-weight: 600; /* Changed from 100 to 600 */
   font-size: 13px;
   margin-top: 65px;
   cursor: pointer;
@@ -375,7 +380,7 @@ select.onb-input.has-value {
   border-radius: 14px;
   background: #bdbdbf91;
   color: #fff;
-  font-weight: 100;
+  font-weight: 400; /* Changed from 100 to 400 */
   font-size: 13px;
   cursor: pointer;
   margin-top: 12px; /* adds small spacing under Continue */
@@ -447,10 +452,11 @@ select.onb-input.has-value {
   border-radius: 14px;
   background: #e41e26;
   color: #fff;
-  font-weight: 100;
+  font-weight: 600; /* Changed from 100 to 600 */
   font-size: 13px;
   margin-top: 65px;
   cursor: pointer;
+  white-space: normal !important; /* Added to fix "Join us !" display */
 }
 
 /* ============================================= Intro Page (Welcome) ============================================= */
@@ -508,6 +514,41 @@ select.onb-input.has-value {
   border-radius: 14px;
 }
 
+.intro-hero-wrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.intro-arrow {
+  background: rgba(255, 255, 255, 0.85);
+  border: #000;
+  font-size: 1.1rem;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 0px 3px rgba(0, 0, 0, 0.15);
+  color: black;
+}
+
+.intro-arrow-left {
+  margin-right: 10px;
+}
+
+.intro-arrow-right {
+  margin-left: 10px;
+}
+
+.intro-arrow:hover {
+  background: #ffffff;
+}
+
 .intro-primary {
   background: #e41e26;
   margin-top: 21%;
@@ -524,7 +565,8 @@ select.onb-input.has-value {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 8px 2px 10px;
+  /*        top right bottom left  */
+  margin: 8px 0 10px 2px;
 }
 .unified-top .hello {
   font-size: 13px;
@@ -559,12 +601,36 @@ select.onb-input.has-value {
   font-size: 12px;
   outline: none;
 }
+
+/* === Unified dashboard: compact search next to menu === */
+.unified-top .icons {
+  display: flex;
+  align-items: center;
+  gap: 6px; /* search + ☰ 사이 간격 */
+}
+
+/* 상단에 올라간 검색은 줄 간격/마진 제거 */
+.unified-top .search-wrap {
+  margin: 0;
+}
+
+/* 길이 절반 정도로 줄이기 */
+.search-wrap--compact {
+  width: 50%;
+  max-width: 180px; /* 너무 길어지지 않도록 상한 */
+}
+
+/* 높이도 살짝 줄여서 상단바에 맞추기 */
+.search-wrap--compact input[type="search"] {
+  height: 30px;
+  font-size: 11px;
+}
 .search-wrap .search-icon {
   position: absolute;
   right: 10px;
   top: 50%;
   transform: translateY(-50%);
-  color: #9aa0a6;
+  color: #000;
   pointer-events: none;
   display: flex;
   align-items: center;
@@ -583,7 +649,7 @@ select.onb-input.has-value {
   gap: 14px;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
-  padding: 8px 6px 4px;
+  padding: -1px 6px 4px;
   margin: 6px 0 6px;
 }
 
@@ -1218,4 +1284,44 @@ body,
   display: flex;
   gap: 10px;
   margin-right: 0;
+}
+
+/* ====== Collapsible compact search ====== */
+.search-wrap--compact {
+  position: relative;
+  width: auto;
+  max-width: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* 기본은 input 숨김 */
+.search-collapsed input[type="search"] {
+  width: 0;
+  opacity: 0;
+  padding: 0;
+  border: none;
+  transition: all 0.25s ease;
+  pointer-events: none;
+}
+
+/* 펼쳐졌을 때 */
+.search-expanded input[type="search"] {
+  width: 140px; /* 나타났을 때 박스 길이 */
+  opacity: 1;
+  padding: 0 36px 0 12px;
+  border: 1px solid #e5e5ea;
+  height: 30px;
+  border-radius: 12px;
+  pointer-events: auto;
+  transition: all 0.25s ease;
+}
+
+/* 아이콘은 항상 표시 */
+.search-wrap--compact .search-icon {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  pointer-events: auto !important;
 }

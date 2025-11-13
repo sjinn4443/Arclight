@@ -32,6 +32,22 @@ export function initializeDashboard() {
     });
   }
 
+  // 2b) Compact search toggle (icon → show/hide box)
+  const searchWrap = root.querySelector(".search-wrap--compact");
+  const toggleBtn = root.querySelector("#dashboardSearchToggle");
+
+  if (searchWrap && toggleBtn) {
+    toggleBtn.addEventListener("click", () => {
+      if (searchWrap.classList.contains("search-collapsed")) {
+        searchWrap.classList.remove("search-collapsed");
+        searchWrap.classList.add("search-expanded");
+      } else {
+        searchWrap.classList.remove("search-expanded");
+        searchWrap.classList.add("search-collapsed");
+      }
+    });
+  }
+
   // 3) Category cards
   const LEGACY_TO_ROUTE = {
     eyesModules: "eyes",

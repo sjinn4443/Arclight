@@ -447,8 +447,11 @@ export function initializeEyesCatalog() {
     };
     carouselEl.addEventListener("scroll", onScroll, { passive: true });
 
-    // Initial sync once layout has settled
-    requestAnimationFrame(() => paintDots(getActiveIndex()));
+    // Initial sync: always activate the first dot on load
+    requestAnimationFrame(() => {
+      paintDots(0);
+      centerCardByIndex(0); // ← 첫 카드로 스크롤 맞추기
+    });
   };
   // This comment is intentionally placed here to satisfy the linter for the empty block statement.
 

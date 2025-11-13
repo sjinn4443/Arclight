@@ -2,7 +2,7 @@
   "onboarding": {
     "title": "Create Account",
     "username_label": "Name",
-    "username_placeholder": "Enter your name",
+    "username_placeholder": "Enter",
     "username_tooltip": "Name must be at least 2 characters long and cannot contain numbers or special characters.",
     "field_label": "What field do you work in?",
     "field_placeholder": "Select",
@@ -54,7 +54,7 @@
     "quick_action_atoms_card": "Atoms Card",
     "quick_action_my_notes": "My Notes",
     "quick_action_alan": "Alan",
-    "quick_action_download_contents": "Download Contents",
+    "quick_action_download_contents": "Download",
     "recommended_title": "Recommended Content",
     "see_all": "See All >",
     "coming_soon": "Coming Soon."
@@ -165,13 +165,13 @@
     "group_global_health_innovation": "Global Health & Innovation",
     "chip_low_resource_kits": "Low Resource Kits",
     "chip_public_health": "Public Health",
-    "submit_button": "Join Us!"
+    "submit_button": "Join Us !"
   },
   "intro": {
     "title": "Welcome to the Arclight App!",
     "subtitle": "Here's a brief overview of features to help you get started.",
     "explore_button": "Explore App",
-    "skip_button": "Skip and Continue",
+    "skip_button": "Go Straight to App ",
     "placeholder_page_title": "Placeholder Page",
     "placeholder_page_note": "Feature details will be added soon.",
     "continue_to_dashboard_button": "Continue to Dashboard",

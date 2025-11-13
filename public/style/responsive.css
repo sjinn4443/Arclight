@@ -79,6 +79,10 @@ input {
   .lang-install__body {
     margin-top: 93px;
   }
+
+  .onboarding-container {
+    margin-top: 14vh;
+  }
 }
 
 @media (min-width: 48em) {
@@ -166,6 +170,10 @@ input {
   :root {
     --container-w: 92vw;
   }
+
+  .category-carousel {
+    grid-auto-columns: 21%;
+  }
 }
 
 /* ============================================= XL desktop: no-crop mode (full image visible) ============================================= */
@@ -247,6 +255,10 @@ input {
 
   :root {
     --container-w: 91vw;
+  }
+
+  .category-carousel {
+    grid-auto-columns: 26%;
   }
 }
 

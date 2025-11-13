@@ -9,6 +9,26 @@ import { wireGlobalNavigation } from "./navigation.js";
 import { initializeVideoPlayers, initializeToolbar } from "./video.js";
 import { initializeLocation } from "./location-service.js";
 
+// --- Onboarding Persistence ---
+const ONBOARDING_DONE_KEY = "arclight:onboarded";
+
+function markOnboardingDone() {
+  try {
+    localStorage.setItem(ONBOARDING_DONE_KEY, "1");
+  } catch (e) {
+    console.warn("Failed to persist onboarding state", e);
+  }
+}
+
+function isOnboardingDone() {
+  try {
+    return localStorage.getItem(ONBOARDING_DONE_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
+// --- End Onboarding Persistence ---
+
 // === App bootstrap ===
 /**
  * Initializes global systems and sets up event listeners for page loading.
@@ -108,70 +128,89 @@ window.addEventListener("page:loaded", (e) => {
   } catch {}
 });
 
-/**
- * Handles the initial splash screen display and transitions to the language installation page.
- * This function runs once the DOM is fully loaded.
- */
 document.addEventListener("DOMContentLoaded", () => {
   wireGlobalNavigation();
 
-  // Baseline parity: Splash → LanguageInstall after ~1.8s
   const splashContainer = document.getElementById("splashScreenContainer");
-  if (splashContainer) {
-    fetch("html/splashscreen.html")
-      .then((response) => response.text())
-      .then((html) => {
-        splashContainer.innerHTML = html;
-        splashContainer.classList.add("active");
+  const onboarded = isOnboardingDone(); // ✅ 온보딩 여부 확인
 
-        const logo = splashContainer.querySelector(".logo-one");
-
-        // Safety fallback in case animation doesn't fire (e.g., prefers-reduced-motion)
-        const MAX_WAIT_MS = 8000;
-        const fallback = setTimeout(done, MAX_WAIT_MS);
-
-        /**
-         * Handles the 'animationend' event for the splash screen logo.
-         * Specifically listens for the 'shiftRight' animation to complete.
-         * @param {AnimationEvent} e - The animation event object.
-         */
-        function onAnimationEnd(e) {
-          if (e.animationName === "shiftRight") {
-            logo.removeEventListener("animationend", onAnimationEnd);
-            clearTimeout(fallback);
-            done();
-          }
-        }
-
-        /**
-         * Completes the splash screen sequence by fading out the overlay
-         * and navigating to the language installation page.
-         */
-        function done() {
-          splashContainer.classList.remove("active");
-          splashContainer.classList.add("fade-out");
-          loadPage("languageinstall");
-        }
-
-        // If we find the animated element, wait for the final anim to end.
-        // Otherwise, just fall back immediately.
-        if (logo) {
-          logo.addEventListener("animationend", onAnimationEnd, {
-            once: false,
-          });
-        } else {
-          clearTimeout(fallback);
-          done();
-        }
-      })
-      .catch((error) => {
-        console.error("Failed to load splashscreen.html:", error);
-        loadPage("languageinstall"); // fallback if splash not present
-      });
-  } else {
-    // fallback if no splash container present
-    loadPage("languageinstall");
+  // splash 컨테이너가 없으면 바로 fallback
+  if (!splashContainer) {
+    const fallbackRoute = onboarded ? "dashboard" : "languageinstall";
+    loadPage(fallbackRoute);
+    return;
   }
+
+  // ✅ 온보딩 상태에 따라 어떤 스플래쉬를 쓸지 결정
+  const useMidSplash = onboarded;
+  const splashUrl = useMidSplash
+    ? "html/splashscreen_mid.html"
+    : "html/splashscreen.html";
+
+  fetch(splashUrl)
+    .then((response) => response.text())
+    .then((html) => {
+      splashContainer.innerHTML = html;
+      splashContainer.classList.add("active");
+
+      // mid 전용 로고(class="logo-one mid-only")가 있으면 그걸 우선 사용
+      const logo =
+        splashContainer.querySelector(".logo-one.mid-only") ||
+        splashContainer.querySelector(".logo-one");
+
+      // ⏱ 타이머 설정
+      const MAX_MAIN_WAIT_MS = 8000; // 메인 스플래쉬 안전망
+      const MID_EXPECTED_MS = 4700 + 300; // mid splash (interest에서 쓰던 값과 맞춤)
+      let finished = false;
+
+      const fallback = setTimeout(
+        () => {
+          done();
+        },
+        useMidSplash ? MID_EXPECTED_MS : MAX_MAIN_WAIT_MS,
+      );
+
+      function done() {
+        if (finished) return;
+        finished = true;
+        clearTimeout(fallback);
+
+        // 페이드아웃
+        splashContainer.classList.add("fade-out");
+
+        const nextRoute = useMidSplash ? "dashboard" : "languageinstall";
+
+        loadPage(nextRoute)
+          .catch((err) => {
+            console.error(`Failed to load ${nextRoute} route:`, err);
+          })
+          .finally(() => {
+            requestAnimationFrame(() => {
+              splashContainer.classList.remove("active");
+              setTimeout(() => {
+                splashContainer.remove();
+              }, 300);
+            });
+          });
+      }
+
+      if (logo) {
+        logo.addEventListener("animationend", (e) => {
+          // 메인 스플래쉬일 때는 shiftRight 끝날 때만 잡기 (기존 동작 유지)
+          if (!useMidSplash && e.animationName !== "shiftRight") return;
+          // mid splash는 어떤 animationend든 한 번만 받으면 OK (fallback과 중복 방지용 finished 플래그 있음)
+          done();
+        });
+      } else {
+        // 로고 못 찾으면 그냥 즉시 진행
+        done();
+      }
+    })
+    .catch((error) => {
+      console.error("Failed to load splash:", error);
+      const fallbackRoute = onboarded ? "dashboard" : "languageinstall";
+      loadPage(fallbackRoute);
+    });
 });
 
 const routeName =
@@ -206,6 +245,22 @@ window.addEventListener("page:loaded", async (e) => {
   if (page === "onboarding") {
     const { initializeOnboarding } = await import("./onboarding.js");
     initializeOnboarding?.();
+
+    // Add event listeners to mark onboarding as done when buttons are clicked
+    const completeBtn = document.getElementById("completeOnboardingBtn");
+    const skipBtn = document.getElementById("skipContinueBtn");
+
+    const onFinishOnboarding = () => {
+      markOnboardingDone();
+    };
+
+    if (completeBtn) {
+      completeBtn.addEventListener("click", onFinishOnboarding);
+    }
+    if (skipBtn) {
+      skipBtn.addEventListener("click", onFinishOnboarding);
+    }
+
     return;
   }
 
