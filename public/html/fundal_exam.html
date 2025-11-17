@@ -1,0 +1,180 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Fundal Exam</title>
+
+    <!-- LOAD LOTTIE FIRST -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.9.6/lottie.min.js"></script>
+
+    <style>
+      body {
+        margin: 0;
+        background: black;
+        colour: white;
+        font-family:
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+        text-align: centre;
+      }
+
+      #lottie-container {
+        width: 90vw;
+        max-width: 800px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: centre;
+        align-items: centre;
+        min-height: 80vh;
+        overflow: hidden;
+      }
+
+      #status {
+        margin: 1rem 0 2rem;
+        colour: #ccc;
+        font-size: 0.9rem;
+      }
+
+      .lottie-svg {
+        width: 100%;
+        height: auto;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="lottie-container"></div>
+    <div id="status">Loading Fundal_Exam.json…</div>
+
+    <script>
+      const container = document.getElementById("lottie-container");
+      const statusEl = document.getElementById("status");
+
+      // Frame segments – add or adjust these as needed
+      const SEGMENTS = [
+        [0, 201], // #1
+        [201, 272],
+        [272, 451],
+        [451, 526],
+        [526, 771],
+        [771, 852],
+        [852, 1020],
+        [1020, 1403],
+        [1403, 1676],
+
+        [1676, 2011], //#2
+        [2011, 2122],
+
+        [2122, 2245], //#3
+        [2245, 2458],
+        [2458, 2584],
+        [2584, 2793],
+        [2793, 2973],
+        [2973, 3296],
+        [3296, 3693],
+        [3693, 3868],
+        [3868, 4084],
+        [4084, 4174],
+        [4174, 4461],
+
+        [4461, 4573], //#4
+        [4573, 4669],
+        [4669, 4925],
+
+        [4925, 5237], //#5
+        [5237, 5467],
+        [5467, 5716],
+        [5716, 5943],
+        [5943, 6321],
+      ];
+
+      let currentSegment = 0;
+      let isPlaying = false;
+      let isThrottled = false;
+
+      // Load the Fundal Exam animation
+      const anim = lottie.loadAnimation({
+        container: container,
+        renderer: "svg",
+        loop: false,
+        autoplay: false,
+        path: "Fundal_Exam.json",
+      });
+
+      // When JSON & SVG are ready
+      anim.addEventListener("DOMLoaded", () => {
+        // Make the SVG responsive inside our container
+        const svg = container.querySelector("svg");
+        if (svg) svg.classList.add("lottie-svg");
+
+        statusEl.textContent = "Loaded. Scroll to move through sections.";
+        playSegment(0); // auto-play first section
+      });
+
+      // Play a single segment by index
+      function playSegment(index) {
+        if (index < 0 || index >= SEGMENTS.length) return;
+
+        const [start, end] = SEGMENTS[index];
+        isPlaying = true;
+        currentSegment = index;
+
+        statusEl.textContent = `Playing section ${
+          index + 1
+        } of ${SEGMENTS.length}…`;
+        anim.playSegments([start, end], true);
+      }
+
+      // When a segment finishes
+      anim.addEventListener("complete", () => {
+        isPlaying = false;
+        statusEl.textContent = `Section ${
+          currentSegment + 1
+        } complete. Scroll up/down for the next section.`;
+      });
+
+      // Optional: load failure feedback
+      anim.addEventListener("data_failed", () => {
+        statusEl.textContent =
+          "Could not load Fundal_Exam.json – check file name / location.";
+        console.error("Lottie: failed to load Fundal_Exam.json");
+      });
+
+      // Scroll to move between sections
+      window.addEventListener(
+        "wheel",
+        (event) => {
+          event.preventDefault();
+
+          if (isThrottled || isPlaying) return;
+
+          if (event.deltaY > 0) {
+            // Scroll down → next section
+            if (currentSegment < SEGMENTS.length - 1) {
+              playSegment(currentSegment + 1);
+            } else {
+              statusEl.textContent = "You’re at the final section.";
+            }
+          } else if (event.deltaY < 0) {
+            // Scroll up → previous section
+            if (currentSegment > 0) {
+              playSegment(currentSegment - 1);
+            } else {
+              statusEl.textContent = "You’re at the first section.";
+            }
+          }
+
+          // Simple 300ms throttle so we don’t spam scrolls
+          isThrottled = true;
+          setTimeout(() => {
+            isThrottled = false;
+          }, 300);
+        },
+        { passive: false },
+      );
+    </script>
+  </body>
+</html>
