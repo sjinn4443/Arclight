@@ -621,3 +621,25 @@
 {"type":"ip","ts":"2025-11-17T15:54:37.807Z","ip":"::1","geo":{}}
 {"type":"ip","ts":"2025-11-17T15:54:37.839Z","ip":"::1","geo":{}}
 {"type":"refresh","ts":"2025-11-17T15:54:40.681Z","anon_id":"9e2060e2-45dc-4bbd-80f9-5d5a17e00902","user_id":null}
+{"type":"ip","ts":"2025-11-17T21:40:21.995Z","ip":"::1","geo":{}}
+{"type":"ip","ts":"2025-11-17T21:40:22.004Z","ip":"::ffff:127.0.0.1","geo":{}}
+{"type":"ip","ts":"2025-11-17T21:47:03.105Z","ip":"::1","geo":{}}
+{"type":"ip","ts":"2025-11-17T21:47:03.121Z","ip":"::1","geo":{}}
+{"type":"ip","ts":"2025-11-17T22:08:24.236Z","ip":"::1","geo":{}}
+{"type":"ip","ts":"2025-11-17T22:08:28.226Z","ip":"::1","geo":{}}
+{"type":"ip","ts":"2025-11-17T22:08:29.340Z","ip":"::1","geo":{}}
+{"type":"ip","ts":"2025-11-17T22:09:54.586Z","ip":"::1","geo":{}}
+{"type":"ip","ts":"2025-11-17T22:09:55.634Z","ip":"::1","geo":{}}
+{"type":"ip","ts":"2025-11-17T22:13:45.177Z","ip":"::1","geo":{}}
+{"type":"ip","ts":"2025-11-17T22:13:45.192Z","ip":"::1","geo":{}}
+{"type":"ip","ts":"2025-11-17T22:15:38.856Z","ip":"::1","geo":{}}
+{"type":"ip","ts":"2025-11-17T22:15:38.871Z","ip":"::1","geo":{}}
+{"type":"ip","ts":"2025-11-17T22:19:20.056Z","ip":"::1","geo":{}}
+{"type":"ip","ts":"2025-11-17T22:19:20.063Z","ip":"::1","geo":{}}
+{"type":"profile","ts":"2025-11-17T22:20:33.226Z","anon_id":"0ff08236-5d91-4436-9dfb-9d26bd56e728","user_id":null,"name":null,"aims":null,"interest":null,"experience":null,"contact":null,"country":null,"area":null,"language":"ko"}
+{"type":"refresh","ts":"2025-11-17T22:20:33.266Z","anon_id":"0ff08236-5d91-4436-9dfb-9d26bd56e728","user_id":null}
+{"type":"profile","ts":"2025-11-17T22:20:35.133Z","anon_id":"0ff08236-5d91-4436-9dfb-9d26bd56e728","user_id":null,"name":null,"aims":null,"interest":null,"experience":null,"contact":null,"country":null,"area":null,"language":"ko"}
+{"type":"refresh","ts":"2025-11-17T22:20:35.140Z","anon_id":"0ff08236-5d91-4436-9dfb-9d26bd56e728","user_id":null}
+{"type":"profile","ts":"2025-11-17T22:20:48.014Z","anon_id":"0ff08236-5d91-4436-9dfb-9d26bd56e728","user_id":null,"name":"sentrytest","aims":null,"interest":null,"experience":"clinical_officer","contact":null,"country":"GB","area":"Glasgow","language":"en"}
+{"type":"profile","ts":"2025-11-17T22:20:50.789Z","anon_id":"0ff08236-5d91-4436-9dfb-9d26bd56e728","user_id":null,"name":null,"aims":"핵심 기본 사항 학습, 복습 연습, 전문가 교육, 학업을 위해","interest":null,"experience":null,"contact":null,"country":null,"area":null,"language":null}
+{"type":"refresh","ts":"2025-11-17T22:20:55.572Z","anon_id":"0ff08236-5d91-4436-9dfb-9d26bd56e728","user_id":null}

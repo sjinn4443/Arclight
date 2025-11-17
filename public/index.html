@@ -26,22 +26,17 @@
       href="favicons/favicon-16x16.png"
     />
     <link rel="manifest" href="manifest.json" />
-
-    <!-- Sentry Loader Script -->
     <script
-      src="https://js-de.sentry-cdn.com/283a0d9e09961e3dc90ebc2337e81642.min.js"
+      src="https://browser.sentry-cdn.com/8.26.0/bundle.tracing.replay.min.js"
       crossorigin="anonymous"
     ></script>
-
-    <!-- Sentry initialisation -->
     <script>
-      if (window.Sentry && Sentry.init) {
-        Sentry.init({
-          // Tracing/session replay defaults are already enabled automatically
-          // You may add your own tags here later
-          environment: "production", // or "development" during local testing
-        });
-      }
+      Sentry.init({
+        dsn: "https://203a0d9e09961e3dc90ebc2337e81642@o4510382478196736.ingest.de.sentry.io/4510382482325584",
+        tracesSampleRate: 1.0,
+        replaysSessionSampleRate: 0.1,
+        replaysOnErrorSampleRate: 1.0,
+      });
     </script>
 
     <link rel="stylesheet" href="style/base.css" />
