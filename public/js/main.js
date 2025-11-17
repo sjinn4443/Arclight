@@ -9,6 +9,20 @@ import { wireGlobalNavigation } from "./navigation.js";
 import { initializeVideoPlayers, initializeToolbar } from "./video.js";
 import { initializeLocation } from "./location-service.js";
 
+function withSentry(fn) {
+  return (...args) => {
+    try {
+      return fn(...args);
+    } catch (err) {
+      console.error("[app] uncaught error in handler", err);
+      if (window.Sentry && Sentry.captureException) {
+        Sentry.captureException(err);
+      }
+      throw err; // rethrow so normal behaviour stays the same
+    }
+  };
+}
+
 // --- Onboarding Persistence ---
 const ONBOARDING_DONE_KEY = "arclight:onboarded";
 
@@ -321,6 +335,26 @@ window.addEventListener("page:loaded", async (e) => {
     const { initializeEars } = await import("./ears.js");
     initializeEars?.();
   }
+});
+
+// ---- Sentry: navigation + context wiring ----
+if (window.Sentry) {
+  // Basic app tag so you can filter in Sentry
+  Sentry.setTag("app", "arclight-browser");
+}
+
+// Whenever a route is loaded via your router, log it as breadcrumb + tag
+window.addEventListener("page:loaded", (e) => {
+  const routeName = e?.detail?.routeName || "unknown";
+  if (!window.Sentry) return;
+
+  Sentry.setTag("route", routeName);
+  Sentry.addBreadcrumb({
+    category: "navigation",
+    message: `Route loaded: ${routeName}`,
+    level: "info",
+    data: { routeName },
+  });
 });
 
 function initializePupilsMenu() {

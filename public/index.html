@@ -26,6 +26,24 @@
       href="favicons/favicon-16x16.png"
     />
     <link rel="manifest" href="manifest.json" />
+
+    <!-- Sentry Loader Script -->
+    <script
+      src="https://js-de.sentry-cdn.com/283a0d9e09961e3dc90ebc2337e81642.min.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- Sentry initialisation -->
+    <script>
+      if (window.Sentry && Sentry.init) {
+        Sentry.init({
+          // Tracing/session replay defaults are already enabled automatically
+          // You may add your own tags here later
+          environment: "production", // or "development" during local testing
+        });
+      }
+    </script>
+
     <link rel="stylesheet" href="style/base.css" />
     <link rel="stylesheet" href="style/components.css" />
     <link rel="stylesheet" href="style/pages.css" />
