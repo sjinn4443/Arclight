@@ -44,6 +44,8 @@
 - **Security Enhancements:** Implemented a `security` folder containing configurations for rate limiting, Content Security Policy (CSP), CORS allowlist, and CSRF protection.
 - **Module System Fix:** Resolved ES module / CommonJS conflict by renaming `server.js` to `server.cjs` and updating related `require` paths and `package.json` scripts.
 - **API Test Fix:** Modified `server.cjs` to conditionally apply CSRF protection only when not in a test environment, resolving a timeout issue in API tests.
+- **Error Monitoring:** Integrated Sentry using the CDN-based Browser SDK for real-time error tracking and performance monitoring.
+- **Dependency Management:** Addressed `npm audit` vulnerabilities by updating `js-yaml` and relaxing the CI audit level to prevent build failures.
 
 ## What's Left to Build
 

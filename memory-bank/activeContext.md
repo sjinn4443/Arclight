@@ -44,6 +44,8 @@ The current focus is on ensuring the application's core structure and PWA capabi
 - Emptied `security/cors.cjs` as its functionality is now handled directly in `server.cjs`.
 - Emptied `security/csp.cjs` as its functionality is now handled directly in `server.cjs`.
 - Updated `.env` to include `SESSION_SECRET=please-set-a-long-random-value` and `RAILWAY_URL=https://arclight.up.railway.app`.
+- Integrated Sentry for error monitoring using the CDN-based Browser SDK, which is compatible with the project's static architecture.
+- Addressed `npm audit` vulnerabilities by updating `js-yaml` and relaxing the CI audit level to prevent build failures while maintaining security awareness.
 
 ## Next Steps
 

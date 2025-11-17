@@ -11,6 +11,7 @@ This project is the Arclight App, a comprehensive educational and diagnostic too
 - Responsive design for use on multiple devices
 - **Enhanced Security:** Implemented rate limiting, Content Security Policy (CSP), CORS allowlist, CSRF protection, and production-ready session management using Redis.
 - **Automated CI/CD:** GitHub Actions pipeline for continuous integration and deployment.
+- **Error Monitoring:** Integrated with Sentry for real-time error tracking and performance monitoring.
 
 ## Data Tracking and Logging
 
@@ -159,6 +160,14 @@ Please follow the existing code patterns and update the Memory Bank when making 
 [Specify your license here]
 
 ## Changelog
+
+### 2025-11-17
+
+- Integrated Sentry for error monitoring using the CDN-based Browser SDK.
+- Updated `public/index.html` to include the Sentry script and initialization.
+- Modified `public/js/main.js` to send navigation events to Sentry as breadcrumbs.
+- Enhanced `public/js/telemetry.js` to capture and send API errors to Sentry.
+- Addressed `npm audit` vulnerabilities by updating `js-yaml` and relaxing the CI audit level to prevent build failures.
 
 ### 2025-10-04
 

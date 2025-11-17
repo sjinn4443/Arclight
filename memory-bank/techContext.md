@@ -9,6 +9,7 @@
 - **Build & Bundling:** `esbuild`, `clean-css`, `html-minifier-terser`
 - **Image Processing:** `sharp`
 - **Testing:** `Jest`, `Supertest`, `JSDOM`, `babel-jest`, `eslint`, `prettier`, `husky`
+- **Monitoring:** `Sentry`
 - **Security:** `express-rate-limit`, `helmet`, `cors`, `csurf`, `express-session`, `cookie-parser`
 - **Utilities:** `node-fetch`, `geoip-lite`, `fs-extra`, `mkdirp`
 
