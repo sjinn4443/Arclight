@@ -643,3 +643,34 @@
 {"type":"profile","ts":"2025-11-17T22:20:48.014Z","anon_id":"0ff08236-5d91-4436-9dfb-9d26bd56e728","user_id":null,"name":"sentrytest","aims":null,"interest":null,"experience":"clinical_officer","contact":null,"country":"GB","area":"Glasgow","language":"en"}
 {"type":"profile","ts":"2025-11-17T22:20:50.789Z","anon_id":"0ff08236-5d91-4436-9dfb-9d26bd56e728","user_id":null,"name":null,"aims":"핵심 기본 사항 학습, 복습 연습, 전문가 교육, 학업을 위해","interest":null,"experience":null,"contact":null,"country":null,"area":null,"language":null}
 {"type":"refresh","ts":"2025-11-17T22:20:55.572Z","anon_id":"0ff08236-5d91-4436-9dfb-9d26bd56e728","user_id":null}
+{"type":"ip","ts":"2025-11-18T22:18:25.705Z","ip":"::1","geo":{}}
+{"type":"ip","ts":"2025-11-18T22:18:25.713Z","ip":"::1","geo":{}}
+{"type":"ip","ts":"2025-11-18T22:55:36.393Z","ip":"::1","geo":{}}
+{"type":"ip","ts":"2025-11-18T22:55:36.401Z","ip":"::1","geo":{}}
+{"type":"ip","ts":"2025-11-19T15:19:04.750Z","ip":"::1","geo":{}}
+{"type":"ip","ts":"2025-11-19T15:19:04.761Z","ip":"::1","geo":{}}
+{"type":"ip","ts":"2025-11-19T15:19:23.080Z","ip":"::1","geo":{}}
+{"type":"ip","ts":"2025-11-19T15:19:23.206Z","ip":"::1","geo":{}}
+{"type":"ip","ts":"2025-11-19T15:19:25.271Z","ip":"::1","geo":{}}
+{"type":"ip","ts":"2025-11-19T15:19:25.285Z","ip":"::1","geo":{}}
+{"type":"profile","ts":"2025-11-19T15:23:16.688Z","anon_id":"1cf0d274-a2b6-4e94-b72e-488858789236","user_id":null,"name":null,"aims":null,"interest":null,"experience":null,"contact":null,"country":null,"area":null,"language":"en"}
+{"type":"refresh","ts":"2025-11-19T15:23:16.714Z","anon_id":"1cf0d274-a2b6-4e94-b72e-488858789236","user_id":null}
+{"type":"ip","ts":"2025-11-19T15:26:33.387Z","ip":"::1","geo":{}}
+{"type":"ip","ts":"2025-11-19T15:26:33.400Z","ip":"::1","geo":{}}
+{"type":"profile","ts":"2025-11-19T15:29:53.858Z","anon_id":"1cf0d274-a2b6-4e94-b72e-488858789236","user_id":null,"name":null,"aims":null,"interest":null,"experience":null,"contact":null,"country":null,"area":null,"language":"en"}
+{"type":"refresh","ts":"2025-11-19T15:29:53.868Z","anon_id":"1cf0d274-a2b6-4e94-b72e-488858789236","user_id":null}
+{"type":"profile","ts":"2025-11-19T15:32:22.403Z","anon_id":"1cf0d274-a2b6-4e94-b72e-488858789236","user_id":null,"name":"Su Jin","aims":null,"interest":null,"experience":"dermatologist","contact":null,"country":"GB","area":"Glasgow","language":"en"}
+{"type":"ip","ts":"2025-11-19T15:34:28.714Z","ip":"::1","geo":{}}
+{"type":"ip","ts":"2025-11-19T15:34:28.730Z","ip":"::1","geo":{}}
+{"type":"ip","ts":"2025-11-19T15:34:35.269Z","ip":"::1","geo":{}}
+{"type":"ip","ts":"2025-11-19T15:34:35.281Z","ip":"::1","geo":{}}
+{"type":"ip","ts":"2025-11-19T15:35:09.790Z","ip":"::1","geo":{}}
+{"type":"ip","ts":"2025-11-19T15:35:09.814Z","ip":"::1","geo":{}}
+{"type":"profile","ts":"2025-11-19T15:35:15.822Z","anon_id":"d428ca81-9f6a-4692-affe-1e2276290cba","user_id":null,"name":null,"aims":null,"interest":null,"experience":null,"contact":null,"country":null,"area":null,"language":"en"}
+{"type":"refresh","ts":"2025-11-19T15:35:15.842Z","anon_id":"d428ca81-9f6a-4692-affe-1e2276290cba","user_id":null}
+{"type":"profile","ts":"2025-11-19T15:36:56.829Z","anon_id":"d428ca81-9f6a-4692-affe-1e2276290cba","user_id":null,"name":"Su Jin","aims":null,"interest":null,"experience":"optometrist","contact":null,"country":"GB","area":"Glasgow","language":"en"}
+{"type":"profile","ts":"2025-11-19T15:37:35.344Z","anon_id":"d428ca81-9f6a-4692-affe-1e2276290cba","user_id":null,"name":null,"aims":"Refresher Practice, For My Studies","interest":null,"experience":null,"contact":null,"country":null,"area":null,"language":null}
+{"type":"ip","ts":"2025-11-19T15:40:27.299Z","ip":"::1","geo":{}}
+{"type":"ip","ts":"2025-11-19T15:40:27.316Z","ip":"::1","geo":{}}
+{"type":"refresh","ts":"2025-11-19T15:53:34.689Z","anon_id":"d428ca81-9f6a-4692-affe-1e2276290cba","user_id":null}
+{"type":"refresh","ts":"2025-11-19T16:06:53.880Z","anon_id":"d428ca81-9f6a-4692-affe-1e2276290cba","user_id":null}
