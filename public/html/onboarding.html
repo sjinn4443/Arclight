@@ -27,20 +27,27 @@
       <label for="fieldSelect" data-i18n="onboarding.field_label"
         >Which field do you work in?</label
       >
-      <select id="fieldSelect" class="onb-input">
-        <option
-          value=""
-          disabled
-          selected
-          hidden
-          data-i18n="onboarding.field_placeholder:placeholder"
-        >
-          Select
-        </option>
-        <option value="eyes" data-i18n="onboarding.field_eyes">Eyes</option>
-        <option value="ears" data-i18n="onboarding.field_ears">Ears</option>
-        <option value="skin" data-i18n="onboarding.field_skin">Skin</option>
-      </select>
+      <div class="onb-select-wrap">
+        <select id="fieldSelect" class="onb-input">
+          <option
+            value=""
+            disabled
+            selected
+            hidden
+            data-i18n="onboarding.field_placeholder:placeholder"
+          >
+            Select
+          </option>
+          <option value="eyes" data-i18n="onboarding.field_eyes">Eyes</option>
+          <option value="ears" data-i18n="onboarding.field_ears">Ears</option>
+          <option value="skin" data-i18n="onboarding.field_skin">Skin</option>
+        </select>
+        <span class="onb-select-caret" aria-hidden="true">
+          <svg viewBox="0 0 24 24" focusable="false">
+            <path d="M7 10l5 5 5-5z" fill="currentColor"></path>
+          </svg>
+        </span>
+      </div>
     </div>
 
     <div class="form-field">
@@ -48,276 +55,292 @@
         >Select your job role</label
       >
 
-      <select
-        id="jobSelect"
-        name="jobRole"
-        class="onb-input"
-        required
-        aria-required="true"
-      >
-        <option
-          value=""
-          disabled
-          selected
-          hidden
-          data-i18n="onboarding.job_role_placeholder"
+      <div class="onb-select-wrap">
+        <select
+          id="jobSelect"
+          name="jobRole"
+          class="onb-input"
+          required
+          aria-required="true"
         >
-          Select
-        </option>
+          <option
+            value=""
+            disabled
+            selected
+            hidden
+            data-i18n="onboarding.job_role_placeholder"
+          >
+            Select
+          </option>
 
-        <optgroup
-          label="Eyes"
-          data-i18n="onboarding.job_group_eyes:label"
-          data-field="eyes"
-        >
-          <option
-            value="ophthalmologist"
-            data-i18n="onboarding.job_ophthalmologist"
+          <optgroup
+            label="Eyes"
+            data-i18n="onboarding.job_group_eyes:label"
+            data-field="eyes"
           >
-            Ophthalmologist
-          </option>
-          <option value="optometrist" data-i18n="onboarding.job_optometrist">
-            Optometrist
-          </option>
-          <option
-            value="ophthalmic_clinical_officer"
-            data-i18n="onboarding.job_ophthalmic_clinical_officer"
-          >
-            Ophthalmic Clinical Officer
-          </option>
-          <option
-            value="ophthalmic_nurse"
-            data-i18n="onboarding.job_ophthalmic_nurse"
-          >
-            Ophthalmic Nurse
-          </option>
-          <option value="orthoptist" data-i18n="onboarding.job_orthoptist">
-            Orthoptist
-          </option>
-          <option
-            value="general_practitioner"
-            data-i18n="onboarding.job_general_practitioner"
-          >
-            General Practitioner
-          </option>
-          <option
-            value="clinical_officer"
-            data-i18n="onboarding.job_clinical_officer"
-          >
-            Clinical Officer
-          </option>
-          <option
-            value="primary_health_care_nurse"
-            data-i18n="onboarding.job_primary_health_care_nurse"
-          >
-            Primary Health Care Nurse
-          </option>
-          <option
-            value="community_health_worker"
-            data-i18n="onboarding.job_community_health_worker"
-          >
-            Community Health Worker
-          </option>
-          <option
-            value="village_health_worker"
-            data-i18n="onboarding.job_village_health_worker"
-          >
-            Village Health Worker
-          </option>
-          <option
-            value="lady_community_health_worker"
-            data-i18n="onboarding.job_lady_community_health_worker"
-          >
-            Lady Community Health Worker
-          </option>
-          <option
-            value="health_extension_worker"
-            data-i18n="onboarding.job_health_extension_worker"
-          >
-            Health Extension Worker
-          </option>
-          <option
-            value="medical_student"
-            data-i18n="onboarding.job_medical_student"
-          >
-            Medical Student
-          </option>
-          <option
-            value="eye_care_practitioner_other"
-            data-i18n="onboarding.job_eye_care_practitioner_other"
-          >
-            Eye Care Practitioner - Other
-          </option>
-        </optgroup>
+            <option
+              value="ophthalmologist"
+              data-i18n="onboarding.job_ophthalmologist"
+            >
+              Ophthalmologist
+            </option>
+            <option value="optometrist" data-i18n="onboarding.job_optometrist">
+              Optometrist
+            </option>
+            <option
+              value="ophthalmic_clinical_officer"
+              data-i18n="onboarding.job_ophthalmic_clinical_officer"
+            >
+              Ophthalmic Clinical Officer
+            </option>
+            <option
+              value="ophthalmic_nurse"
+              data-i18n="onboarding.job_ophthalmic_nurse"
+            >
+              Ophthalmic Nurse
+            </option>
+            <option value="orthoptist" data-i18n="onboarding.job_orthoptist">
+              Orthoptist
+            </option>
+            <option
+              value="general_practitioner"
+              data-i18n="onboarding.job_general_practitioner"
+            >
+              General Practitioner
+            </option>
+            <option
+              value="clinical_officer"
+              data-i18n="onboarding.job_clinical_officer"
+            >
+              Clinical Officer
+            </option>
+            <option
+              value="primary_health_care_nurse"
+              data-i18n="onboarding.job_primary_health_care_nurse"
+            >
+              Primary Health Care Nurse
+            </option>
+            <option
+              value="community_health_worker"
+              data-i18n="onboarding.job_community_health_worker"
+            >
+              Community Health Worker
+            </option>
+            <option
+              value="village_health_worker"
+              data-i18n="onboarding.job_village_health_worker"
+            >
+              Village Health Worker
+            </option>
+            <option
+              value="lady_community_health_worker"
+              data-i18n="onboarding.job_lady_community_health_worker"
+            >
+              Lady Community Health Worker
+            </option>
+            <option
+              value="health_extension_worker"
+              data-i18n="onboarding.job_health_extension_worker"
+            >
+              Health Extension Worker
+            </option>
+            <option
+              value="medical_student"
+              data-i18n="onboarding.job_medical_student"
+            >
+              Medical Student
+            </option>
+            <option
+              value="eye_care_practitioner_other"
+              data-i18n="onboarding.job_eye_care_practitioner_other"
+            >
+              Eye Care Practitioner - Other
+            </option>
+          </optgroup>
 
-        <optgroup
-          label="Ears"
-          data-i18n="onboarding.job_group_ears:label"
-          data-field="ears"
-        >
-          <option
-            value="ent_specialist"
-            data-i18n="onboarding.job_ent_specialist"
+          <optgroup
+            label="Ears"
+            data-i18n="onboarding.job_group_ears:label"
+            data-field="ears"
           >
-            ENT Specialist
-          </option>
-          <option value="audiologist" data-i18n="onboarding.job_audiologist">
-            Audiologist
-          </option>
-          <option
-            value="ear_care_practitioner"
-            data-i18n="onboarding.job_ear_care_practitioner"
-          >
-            Ear Care Practitioner
-          </option>
-          <option
-            value="general_practitioner"
-            data-i18n="onboarding.job_general_practitioner"
-          >
-            General Practitioner
-          </option>
-          <option
-            value="clinical_officer"
-            data-i18n="onboarding.job_clinical_officer"
-          >
-            Clinical Officer
-          </option>
-          <option
-            value="primary_health_care_nurse"
-            data-i18n="onboarding.job_primary_health_care_nurse"
-          >
-            Primary Health Care Nurse
-          </option>
-          <option
-            value="community_health_worker"
-            data-i18n="onboarding.job_community_health_worker"
-          >
-            Community Health Worker
-          </option>
-          <option
-            value="village_health_worker"
-            data-i18n="onboarding.job_village_health_worker"
-          >
-            Village Health Worker
-          </option>
-          <option
-            value="lady_community_health_worker"
-            data-i18n="onboarding.job_lady_community_health_worker"
-          >
-            Lady Community Health Worker
-          </option>
-          <option
-            value="health_extension_worker"
-            data-i18n="onboarding.job_health_extension_worker"
-          >
-            Health Extension Worker
-          </option>
-          <option
-            value="medical_student"
-            data-i18n="onboarding.job_medical_student"
-          >
-            Medical Student
-          </option>
-        </optgroup>
+            <option
+              value="ent_specialist"
+              data-i18n="onboarding.job_ent_specialist"
+            >
+              ENT Specialist
+            </option>
+            <option value="audiologist" data-i18n="onboarding.job_audiologist">
+              Audiologist
+            </option>
+            <option
+              value="ear_care_practitioner"
+              data-i18n="onboarding.job_ear_care_practitioner"
+            >
+              Ear Care Practitioner
+            </option>
+            <option
+              value="general_practitioner"
+              data-i18n="onboarding.job_general_practitioner"
+            >
+              General Practitioner
+            </option>
+            <option
+              value="clinical_officer"
+              data-i18n="onboarding.job_clinical_officer"
+            >
+              Clinical Officer
+            </option>
+            <option
+              value="primary_health_care_nurse"
+              data-i18n="onboarding.job_primary_health_care_nurse"
+            >
+              Primary Health Care Nurse
+            </option>
+            <option
+              value="community_health_worker"
+              data-i18n="onboarding.job_community_health_worker"
+            >
+              Community Health Worker
+            </option>
+            <option
+              value="village_health_worker"
+              data-i18n="onboarding.job_village_health_worker"
+            >
+              Village Health Worker
+            </option>
+            <option
+              value="lady_community_health_worker"
+              data-i18n="onboarding.job_lady_community_health_worker"
+            >
+              Lady Community Health Worker
+            </option>
+            <option
+              value="health_extension_worker"
+              data-i18n="onboarding.job_health_extension_worker"
+            >
+              Health Extension Worker
+            </option>
+            <option
+              value="medical_student"
+              data-i18n="onboarding.job_medical_student"
+            >
+              Medical Student
+            </option>
+          </optgroup>
 
-        <optgroup
-          label="Skin"
-          data-i18n="onboarding.job_group_skin:label"
-          data-field="skin"
-        >
-          <option
-            value="dermatologist"
-            data-i18n="onboarding.job_dermatologist"
+          <optgroup
+            label="Skin"
+            data-i18n="onboarding.job_group_skin:label"
+            data-field="skin"
           >
-            Dermatologist
-          </option>
-          <option
-            value="general_practitioner"
-            data-i18n="onboarding.job_general_practitioner"
-          >
-            General Practitioner
-          </option>
-          <option
-            value="clinical_officer"
-            data-i18n="onboarding.job_clinical_officer"
-          >
-            Clinical Officer
-          </option>
-          <option
-            value="primary_health_care_nurse"
-            data-i18n="onboarding.job_primary_health_care_nurse"
-          >
-            Primary Health Care Nurse
-          </option>
-          <option
-            value="community_health_worker"
-            data-i18n="onboarding.job_community_health_worker"
-          >
-            Community Health Worker
-          </option>
-          <option
-            value="village_health_worker"
-            data-i18n="onboarding.job_village_health_worker"
-          >
-            Village Health Worker
-          </option>
-          <option
-            value="lady_community_health_worker"
-            data-i18n="onboarding.job_lady_community_health_worker"
-          >
-            Lady Community Health Worker
-          </option>
-          <option
-            value="health_extension_worker"
-            data-i18n="onboarding.job_health_extension_worker"
-          >
-            Health Extension Worker
-          </option>
-          <option
-            value="medical_student"
-            data-i18n="onboarding.job_medical_student"
-          >
-            Medical Student
-          </option>
-        </optgroup>
-      </select>
+            <option
+              value="dermatologist"
+              data-i18n="onboarding.job_dermatologist"
+            >
+              Dermatologist
+            </option>
+            <option
+              value="general_practitioner"
+              data-i18n="onboarding.job_general_practitioner"
+            >
+              General Practitioner
+            </option>
+            <option
+              value="clinical_officer"
+              data-i18n="onboarding.job_clinical_officer"
+            >
+              Clinical Officer
+            </option>
+            <option
+              value="primary_health_care_nurse"
+              data-i18n="onboarding.job_primary_health_care_nurse"
+            >
+              Primary Health Care Nurse
+            </option>
+            <option
+              value="community_health_worker"
+              data-i18n="onboarding.job_community_health_worker"
+            >
+              Community Health Worker
+            </option>
+            <option
+              value="village_health_worker"
+              data-i18n="onboarding.job_village_health_worker"
+            >
+              Village Health Worker
+            </option>
+            <option
+              value="lady_community_health_worker"
+              data-i18n="onboarding.job_lady_community_health_worker"
+            >
+              Lady Community Health Worker
+            </option>
+            <option
+              value="health_extension_worker"
+              data-i18n="onboarding.job_health_extension_worker"
+            >
+              Health Extension Worker
+            </option>
+            <option
+              value="medical_student"
+              data-i18n="onboarding.job_medical_student"
+            >
+              Medical Student
+            </option>
+          </optgroup>
+        </select>
+        <span class="onb-select-caret" aria-hidden="true">
+          <svg viewBox="0 0 24 24" focusable="false">
+            <path d="M7 10l5 5 5-5z" fill="currentColor"></path>
+          </svg>
+        </span>
+      </div>
     </div>
 
     <div class="form-field hidden" id="studentYearField">
       <label for="studentYearSelect" data-i18n="onboarding.experience_label"
         >What is your experience level?</label
       >
-      <select id="studentYearSelect" class="onb-input">
-        <option
-          value=""
-          disabled
-          selected
-          hidden
-          data-i18n="onboarding.experience_placeholder:placeholder"
-        >
-          Select
-        </option>
-        <option value="lt1" data-i18n="onboarding.experience_lt1">
-          Pre-clinical
-        </option>
-        <option value="1" data-i18n="onboarding.experience_1">
-          Early clinical
-        </option>
-        <option value="2" data-i18n="onboarding.experience_2">
-          Final year / Senior medical student
-        </option>
-        <option value="3" data-i18n="onboarding.experience_3">Shadowing</option>
-        <option value="4" data-i18n="onboarding.experience_4">
-          Supervised participation
-        </option>
-        <option value="5" data-i18n="onboarding.experience_5">
-          Electives / Clerkships
-        </option>
-        <option value="6" data-i18n="onboarding.experience_6">
-          Simulation training
-        </option>
-        <option value="7" data-i18n="onboarding.experience_7">Others</option>
-      </select>
+      <div class="onb-select-wrap">
+        <select id="studentYearSelect" class="onb-input">
+          <option
+            value=""
+            disabled
+            selected
+            hidden
+            data-i18n="onboarding.experience_placeholder:placeholder"
+          >
+            Select
+          </option>
+          <option value="lt1" data-i18n="onboarding.experience_lt1">
+            Pre-clinical
+          </option>
+          <option value="1" data-i18n="onboarding.experience_1">
+            Early clinical
+          </option>
+          <option value="2" data-i18n="onboarding.experience_2">
+            Final year / Senior medical student
+          </option>
+          <option value="3" data-i18n="onboarding.experience_3">
+            Shadowing
+          </option>
+          <option value="4" data-i18n="onboarding.experience_4">
+            Supervised participation
+          </option>
+          <option value="5" data-i18n="onboarding.experience_5">
+            Electives / Clerkships
+          </option>
+          <option value="6" data-i18n="onboarding.experience_6">
+            Simulation training
+          </option>
+          <option value="7" data-i18n="onboarding.experience_7">Others</option>
+        </select>
+        <span class="onb-select-caret" aria-hidden="true">
+          <svg viewBox="0 0 24 24" focusable="false">
+            <path d="M7 10l5 5 5-5z" fill="currentColor"></path>
+          </svg>
+        </span>
+      </div>
     </div>
 
     <button

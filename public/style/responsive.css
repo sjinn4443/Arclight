@@ -598,6 +598,11 @@ input {
     width: 200px;
     height: 200px;
   }
+
+  .info-icon {
+    width: 13px;
+    height: 13px;
+  }
 }
 
 /* Moved from: public/subapp/Mires/styles.css */

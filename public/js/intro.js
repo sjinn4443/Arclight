@@ -79,9 +79,22 @@ export function initializeIntro() {
   }
 
   ready(() => {
-    const btn =
+    const exploreBtn =
       document.getElementById(EXPLORE_BTN_ID) ||
       document.querySelector("#introPage .primary"); // backup selector
-    if (btn) btn.addEventListener("click", onExploreClick, { passive: false });
+
+    const arrowRightBtn = document.querySelector(
+      "#introPage .intro-arrow-right",
+    );
+
+    if (exploreBtn) {
+      exploreBtn.addEventListener("click", onExploreClick, { passive: false });
+    }
+
+    if (arrowRightBtn) {
+      arrowRightBtn.addEventListener("click", onExploreClick, {
+        passive: false,
+      });
+    }
   });
 })();

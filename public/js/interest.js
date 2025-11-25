@@ -12,12 +12,31 @@ import { saveProfile } from "./telemetry.js";
  * and then navigate to the introduction page.
  */
 export function initializeInterest() {
-  document.querySelectorAll("#proInterestPage .chip").forEach((chip) => {
-    chip.addEventListener("click", () => chip.classList.toggle("selected"));
+  const chips = Array.from(document.querySelectorAll("#proInterestPage .chip"));
+  const submit = document.getElementById("interestSubmitBtn");
+
+  const updateSubmitState = () => {
+    const selectedCount = document.querySelectorAll(
+      "#proInterestPage .chip.selected",
+    ).length;
+
+    if (submit) {
+      submit.disabled = selectedCount < 2;
+    }
+  };
+
+  // initialise button as grey/disabled
+  updateSubmitState();
+
+  // toggle chips + refresh button state
+  chips.forEach((chip) => {
+    chip.addEventListener("click", () => {
+      chip.classList.toggle("selected");
+      updateSubmitState();
+    });
   });
 
   // Inside initializeInterest() after "Join Us!" button:
-  const submit = document.getElementById("interestSubmitBtn");
   if (submit) {
     let locked = false;
 

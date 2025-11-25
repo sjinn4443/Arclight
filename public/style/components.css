@@ -2058,7 +2058,7 @@ input:checked + .slider:before {
 .lang-install__hint-row {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 2px;
   margin-top: 6px;
 }
 
@@ -2108,4 +2108,32 @@ input:checked + .slider:before {
 
 #profileLocation.highlighted {
   color: #e41e26 !important; /* Use !important to override existing styles */
+}
+
+/* Shared SVG sizing for info buttons */
+.info-icon__svg {
+  width: 0.9em;
+  height: 1.1em;
+  display: block;
+}
+
+/* If you want a consistent tappable area */
+.info-icon,
+.lang-install__info-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  padding: 0.25rem;
+  border-radius: 999px;
+  color: inherit; /* icon uses currentColor */
+}
+
+/* Optional hover/focus affordance */
+.info-icon:hover,
+.lang-install__info-icon:hover,
+.info-icon:focus-visible,
+.lang-install__info-icon:focus-visible {
+  background: rgba(0, 0, 0, 0.06);
+  outline: none;
 }

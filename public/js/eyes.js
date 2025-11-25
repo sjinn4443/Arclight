@@ -35,8 +35,8 @@ const EYES_IMAGE_MAP = {
   Glaucoma: "images/icon/eyes/disease/car_glaucoma.webp",
   "Diabetic Retinopathy": "images/icon/eyes/disease/car_diabetic.webp",
   "Corneal Disease": "images/icon/eyes/disease/car_corneal.webp",
-  "Childhood Eye Screening": "images/icon/eyes/disease/car_childhood.png",
-  "Retinopathy of Prematurity": "images/icon/eyes/disease/car_rop.png",
+  "Childhood Eye Screening": "images/icon/eyes/disease/car_childhood.webp",
+  "Retinopathy of Prematurity": "images/icon/eyes/disease/car_rop.webp",
   "Retinal Disease": "images/icon/eyes/disease/car_retinal.webp",
   "Optic Nerve Disease": "images/icon/eyes/disease/car_opticnerv.webp",
 

@@ -34,6 +34,7 @@ This directory contains the comprehensive test suite for the Arclight applicatio
       - Verifying that the `/track` endpoint returns `204 No Content`.
       - Ensuring IP and mocked geolocation data are correctly logged to `logs/ip_logs.jsonl`.
       - Handling requests without `X-Forwarded-For` headers, logging local IPs and null geolocation data.
+
 - **Test Coverage:**
   - Backend API: Data handling, authentication, record management.
   - Frontend Chatbot: Chat logic, sidebar updates, localStorage persistence.

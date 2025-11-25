@@ -309,8 +309,8 @@ function buildCustomLangSelect(selectEl) {
   caret.style.position = "absolute";
   caret.style.right = "12px";
   caret.style.pointerEvents = "none";
-  caret.style.fontSize = "20px"; // 원하는 크기
-  caret.style.width = "15px";
+  caret.style.fontSize = "22px"; // 원하는 크기
+  caret.style.width = "17px";
 
   // Label (two-column inside the "select" box)
   const label = document.createElement("div");
