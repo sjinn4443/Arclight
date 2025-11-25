@@ -79,18 +79,66 @@ export function initializeIntro() {
   }
 
   ready(() => {
-    const exploreBtn =
-      document.getElementById(EXPLORE_BTN_ID) ||
-      document.querySelector("#introPage .primary"); // backup selector
-
     const arrowRightBtn = document.querySelector(
       "#introPage .intro-arrow-right",
     );
 
-    if (exploreBtn) {
-      exploreBtn.addEventListener("click", onExploreClick, { passive: false });
+    function isGuestMode() {
+      return localStorage.getItem("guestMode") === "true";
     }
 
+    function ensureGuestButtons() {
+      const skipBtn = document.getElementById("skipBtn");
+      if (!skipBtn) return;
+
+      // If not guest, strip guest UI if it exists
+      if (!isGuestMode()) {
+        document.getElementById("createAccountBtn")?.remove();
+        document.getElementById("continueAsGuestBtn")?.remove();
+        document.getElementById(EXPLORE_BTN_ID)?.remove();
+        return;
+      }
+
+      // Guest mode: remove Explore button if still around
+      document.getElementById(EXPLORE_BTN_ID)?.remove();
+
+      // Don’t duplicate if already inserted
+      if (document.getElementById("createAccountBtn")) return;
+
+      // Create Account button
+      const createBtn = document.createElement("button");
+      createBtn.id = "createAccountBtn";
+      createBtn.className = "onb-cta intro-primary";
+      createBtn.setAttribute("data-i18n", "intro.create_account_button");
+      createBtn.textContent = "Create Account";
+      createBtn.addEventListener("click", () => {
+        // Optional: keep behaviour consistent with onboarding skip-path
+        localStorage.setItem("cameFromSkipPath", "true");
+        loadPage("onboarding");
+      });
+
+      // Continue as Guest button (same as Explore / > arrow)
+      const guestBtn = document.createElement("button");
+      guestBtn.id = "continueAsGuestBtn";
+      guestBtn.className = "btn-outline intro-outline";
+      guestBtn.setAttribute("data-i18n", "intro.continue_as_guest_button");
+      guestBtn.textContent = "Continue as Guest";
+      guestBtn.addEventListener("click", onExploreClick, { passive: false });
+
+      // Insert both where Explore used to be (before skipBtn)
+      skipBtn.parentNode.insertBefore(createBtn, skipBtn);
+      skipBtn.parentNode.insertBefore(guestBtn, skipBtn);
+    }
+
+    // Run on load
+    ensureGuestButtons();
+
+    // Also re-run whenever intro page is shown via router/showPage
+    document.addEventListener("page:shown", (e) => {
+      if (e?.detail?.id === "introPage") ensureGuestButtons();
+    });
+
+    // Keep > arrow behaviour
     if (arrowRightBtn) {
       arrowRightBtn.addEventListener("click", onExploreClick, {
         passive: false,

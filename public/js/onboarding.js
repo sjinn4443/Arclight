@@ -187,59 +187,54 @@ export function initializeOnboarding() {
       setTimeout(() => obs.disconnect(), 4000);
     }
 
-    // Replace #seeWhatBtn with "Create Account" that routes back to onboarding
+    // Replace #skipBtn (Go Straight to App) with guest CTA pair
     function replaceIntroPrimaryCtaOnce() {
       const trySwap = () => {
-        const oldBtn = document.getElementById("seeWhatBtn");
-        if (!oldBtn) return false;
+        const targetBtn = document.getElementById("skipBtn");
+        if (!targetBtn) return false;
 
+        // Create Account button
         const createBtn = document.createElement("button");
         createBtn.id = "createAccountBtn";
-        createBtn.className = oldBtn.className || "onb-cta intro-primary";
+        createBtn.className = "onb-cta intro-primary";
         createBtn.textContent = "Create Account";
-
-        // When clicked -> go to onboarding + mark that it came from skip path
         createBtn.addEventListener("click", () => {
           localStorage.setItem("cameFromSkipPath", "true");
           loadPage("onboarding");
         });
 
-        // Create "Continue as Guest" that visually matches #skipContinueBtn
+        // Continue as Guest button
         const guestBtn = document.createElement("button");
         guestBtn.id = "continueAsGuestBtn";
 
-        // Copy the same style or classes from #skipContinueBtn if it exists
         const skipStyleRef = document.getElementById("skipContinueBtn");
         if (skipStyleRef) {
           guestBtn.className = skipStyleRef.className;
         } else {
-          // Fallback: mimic same styling manually if not found
           guestBtn.className = "btn-outline intro-outline";
         }
 
         guestBtn.textContent = "Continue as Guest";
         guestBtn.addEventListener("click", () => {
-          // Mark session as guest & reset quota
           localStorage.setItem("guestMode", "true");
           localStorage.setItem("guestClicks", "0");
-          // Optional: remember when started (can help you tune funnels later)
           localStorage.setItem("guestStartAt", String(Date.now()));
-
           loadPage("dashboard");
         });
 
-        // Group both buttons side by side
+        // Group them
         const btnGroup = document.createElement("div");
-        btnGroup.className =
-          oldBtn.parentElement?.className || "intro-cta-group";
+        btnGroup.className = "intro-cta-group";
         btnGroup.appendChild(createBtn);
         btnGroup.appendChild(guestBtn);
 
-        oldBtn.replaceWith(btnGroup);
+        // Swap in place of Go Straight to App
+        targetBtn.replaceWith(btnGroup);
         return true;
       };
 
       if (trySwap()) return;
+
       const obs = new MutationObserver((_, o) => {
         if (trySwap()) o.disconnect();
       });
