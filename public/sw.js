@@ -1,5 +1,5 @@
 /* sw.js — Arclight PWA service worker */
-const CACHE_NAME = "arclight-static-v2";
+const CACHE_NAME = "arclight-static-v3";
 const CORE_ASSETS = [
   ".",
   "index.html",
@@ -23,6 +23,8 @@ const CORE_ASSETS = [
   "favicons/android-chrome-192x192.png", // Added favicon
   "favicons/android-chrome-512x512.png", // Added favicon
   "favicons/favicon.ico", // Added favicon
+  "favicons/pwa-install-narrow.png",
+  "favicons/pwa-install-wide.png",
 ];
 
 self.addEventListener("install", (event) => {

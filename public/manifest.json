@@ -17,5 +17,22 @@
       "sizes": "512x512",
       "type": "image/png"
     }
+  ],
+  "description": "Arclight Project training app",
+  "screenshots": [
+    {
+      "src": "/favicons/pwa-install-wide.png",
+      "sizes": "1920x1080",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Install preview wide"
+    },
+    {
+      "src": "/favicons/pwa-install-narrow.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Install preview"
+    }
   ]
 }
