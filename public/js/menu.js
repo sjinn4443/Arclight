@@ -163,6 +163,9 @@ export function openMenu() {
 
   document.body.setAttribute("data-menu-open", "true");
   overlay.classList.remove("hidden");
+
+  const panel = overlay?.querySelector(".menu-panel");
+  if (panel) wireMenuSearchToggle(panel);
 }
 
 /**
@@ -173,6 +176,31 @@ export function closeMenu() {
   if (!overlay) return;
   document.body.removeAttribute("data-menu-open");
   overlay.classList.add("hidden");
+}
+
+function wireMenuSearchToggle(panelRoot) {
+  const searchWrap = panelRoot.querySelector(
+    ".menu-search-wrap.search-wrap--compact",
+  );
+  const toggleBtn = panelRoot.querySelector("#menuSearchToggle");
+
+  if (!searchWrap || !toggleBtn) return;
+  if (toggleBtn.dataset.wired === "1") return;
+  toggleBtn.dataset.wired = "1";
+
+  toggleBtn.addEventListener("click", () => {
+    if (searchWrap.classList.contains("search-collapsed")) {
+      searchWrap.classList.remove("search-collapsed");
+      searchWrap.classList.add("search-expanded");
+      // optional: focus input
+      const input = searchWrap.querySelector('input[type="search"]');
+      input?.focus();
+    } else {
+      searchWrap.classList.remove("search-expanded");
+      searchWrap.classList.add("search-collapsed");
+      input?.blur();
+    }
+  });
 }
 
 function showInfoModal() {
@@ -191,7 +219,7 @@ function showInfoModal() {
       <h2 id="infoModalTitle" class="guest-modal__title">About location data</h2>
       <p class="guest-modal__text">
         Location data helps us understand usage and improve Arclight App. Your IP address provides an approximate
-        country/city on first load. <br> You can optionally provide more precise GPS data using the 'Check Location'
+        country/city on first load. <br> You can optionally provide more precise GPS data using the 'Get Precise Location'
         button. This data is handled as per our privacy guidelines.
       </p>
        </div>

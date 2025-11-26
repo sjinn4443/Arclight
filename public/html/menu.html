@@ -13,15 +13,15 @@
       <div class="user-profile"></div>
       <div id="menuUsername"></div>
       <div class="menu-sub" data-i18n="menu.my_profile_link">My profile ></div>
-      <div
-        id="profileLocation"
-        class="profile-location"
-        aria-live="polite"
-        style="visibility: hidden"
-      >
-        Location: …
-      </div>
-      <div>
+      <div class="profile-location-row">
+        <div
+          id="profileLocation"
+          class="profile-location"
+          aria-live="polite"
+          style="visibility: hidden"
+        >
+          Location: …
+        </div>
         <button
           class="info-icon"
           aria-label="About location"
@@ -55,39 +55,46 @@
         </button>
       </div>
       <button id="checkLocationBtn" class="check-location-btn">
-        Check Location
+        Get Precise Location
       </button>
-      <div class="menu-search-wrap">
-        <input
-          type="search"
-          class="menu-search"
-          placeholder="Search"
-          data-i18n="menu.search_placeholder:placeholder"
-        />
-        <span class="menu-search-icon">
-          <svg
-            width="18"
-            height="18"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M15.5 14h-.79l-.28-.27a6.471 6.471 0 001.48-5.34C15.19 5.01 12.17 2 8.5 2S1.81 5.01 1.81 8.5 4.83 15 8.5 15c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 5 1.49-1.49-5-5zm-7 0C5.47 14 3 11.53 3 8.5S5.47 3 8.5 3 14 5.47 14 8.5 11.53 14 8.5 14z"
-              fill="#9aa0a6"
-            />
-          </svg>
-        </span>
-      </div>
+      <!-- Menu search (collapsible like dashboard) -->
     </div>
     <div class="menu-tabs">
       <button class="tab active" data-i18n="menu.learning_tab_title">
         Learning
       </button>
-      <button class="tab" data-i18n="menu.community_tab_title">
+      <!--<button class="tab" data-i18n="menu.community_tab_title">
         Community
-      </button>
+      </button>-->
       <button class="tab" data-i18n="menu.links_tab_title">Links</button>
+
+      <!-- Compact search lives in the tab bar -->
+      <div
+        class="search-wrap search-wrap--compact search-collapsed menu-search-wrap"
+      >
+        <input
+          id="menuSearchInput"
+          type="search"
+          placeholder="Search"
+          data-i18n="menu.search_placeholder:placeholder"
+        />
+        <span class="search-icon" id="menuSearchToggle" aria-hidden="true">
+          <!-- same SVG you already use -->
+          <svg
+            viewBox="0 0 24 24"
+            width="18"
+            height="18"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </span>
+      </div>
     </div>
     <div class="menu-tab-content" id="learningTab">
       <div class="menu-section">
@@ -140,7 +147,7 @@
         </div>
       </div>
       <div class="menu-section">
-        <strong data-i18n="menu.alan_section_title">ALAN</strong>
+        <strong data-i18n="menu.alan_section_title">AI Assistant</strong>
         <div class="menu-item" data-i18n="menu.alan_item">ALAN</div>
       </div>
     </div>

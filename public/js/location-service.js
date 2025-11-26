@@ -33,7 +33,7 @@ function normalizeCity(fromIp, fromReverse) {
 function classifyCountry(iso2) {
   if (!iso2) return "MI";
   const HI = new Set([
-    "GB",
+    "UK",
     "US",
     "CA",
     "DE",
@@ -331,7 +331,7 @@ export function updateLocationUI(area, from = "gps") {
   ].filter(Boolean);
 
   nodes.forEach((n) => {
-    n.textContent = area || "Location unavailable";
+    n.textContent = normaliseAreaForDisplay(area) || "Location unavailable";
     // Ensure the profile location becomes visible if the HTML hid it
     if (n.id === "profileLocation") {
       n.style.visibility = "visible";
@@ -452,12 +452,34 @@ export async function handleCheckLocationClick() {
 
     // 5) Update the visible UI immediately
     updateLocationUI(area, "gps");
+
+    // 6) Mark button as used and fade it out
+    markPreciseLocationButtonUsed();
   } catch (err) {
     console.error("checklocation failed:", err);
     updateLocationUI("Unable to get precise location");
   } finally {
     setUIBusy(false);
   }
+}
+
+const LS_KEY_PRECISE_BTN_USED = "preciseLocationButtonUsed";
+
+function markPreciseLocationButtonUsed() {
+  try {
+    localStorage.setItem(LS_KEY_PRECISE_BTN_USED, "1");
+  } catch (_) {
+    /* noop */
+  }
+
+  const btn = document.querySelector("#checkLocationBtn");
+  if (!btn) return;
+
+  btn.classList.add("fading-out");
+  // After fade, remove from layout
+  setTimeout(() => {
+    btn.classList.add("is-hidden");
+  }, 420);
 }
 
 // Event listener for the "Check Location" button
@@ -506,6 +528,15 @@ function hydrateProfileLocationFromCache() {
     if (area) {
       updateLocationUI(area, "cache"); // Use 'cache' to indicate source
     }
+
+    // If a precise location was already saved, hide the button
+    if (
+      profGeo?.isPrecise ||
+      localStorage.getItem(LS_KEY_PRECISE_BTN_USED) === "1"
+    ) {
+      const btn = document.querySelector("#checkLocationBtn");
+      btn?.classList.add("is-hidden");
+    }
   } catch (e) {
     console.error("Failed to hydrate profile location from cache:", e);
     /* noop */
@@ -526,3 +557,9 @@ document.addEventListener("location:updated", (e) => {
     updateLocationUI(area, source);
   }
 });
+
+function normaliseAreaForDisplay(area) {
+  if (!area) return area;
+  // Swap trailing ", GB" or standalone "GB" to "UK"
+  return area.replace(/,\s*GB\b/g, ", UK").replace(/\bGB\b/g, "UK");
+}

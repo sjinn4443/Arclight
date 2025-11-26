@@ -825,31 +825,28 @@ input:checked + .slider:before {
 
 .menu-header {
   background: #c5c5c5;
-  padding: 28px 20px 16px;
+  padding: 34px 20px 0px;
   border-top-left-radius: 22px;
   margin: -10%;
+  margin-bottom: 11px;
 }
 
 .menu-close {
   position: absolute;
   top: 3%;
   right: -42%;
-  font-size: 37px;
+  font-size: 29px;
   border: none;
   background: none;
   color: #333;
   cursor: pointer;
 }
 
-.menu-header {
-  margin-bottom: 10px;
-}
-
 .user-profile {
-  width: 56px;
-  height: 56px;
+  width: 43px;
+  height: 43px;
   border-radius: 50%;
-  background: white;
+  background: #b4342a;
   margin-left: 6px;
   margin-bottom: 4px;
 }
@@ -857,69 +854,100 @@ input:checked + .slider:before {
 #menuUsername {
   font-weight: 500;
   font-size: 16px;
-  margin-left: 39%;
+  margin-left: 34%;
   color: #111;
-  margin-top: -25%;
+  margin-top: -21%;
 }
 
 .menu-sub {
   font-size: 11px;
   color: #666;
-  margin-left: 39%;
+  margin-left: 35%;
   margin-top: 1%;
 }
 
-.menu-search-wrap {
-  position: relative;
-  margin-top: 15px;
+/* Tabs with underlines */
+/* ===== Menu search: dashboard look + overlay behaviour ===== */
+
+/* Tabs bar: match old height/position but with valid CSS */
+.menu-tabs {
+  display: flex;
+  align-items: center;
+  gap: 0; /* same as old */
+  padding: 0 10px; /* old negative padding behaved like 0 */
+  border-bottom: 1px solid #ccc;
+  background: #f2f2f2;
+  margin-top: -5%; /* keep the old upward lift you liked */
+  position: relative; /* REQUIRED for search overlay */
+  height: 8%;
 }
 
-.menu-search {
-  margin-top: 11%;
+/* Keep search at far right when collapsed */
+.menu-tabs .menu-search-wrap {
+  margin-left: auto;
+}
+
+/* Collapsed: hide input, show icon only */
+.menu-tabs .menu-search-wrap.search-collapsed input[type="search"] {
+  width: 0;
+  opacity: 0;
+  padding: 0;
+  border: none;
+  pointer-events: none;
+  transition: all 0.25s ease;
+}
+
+/* Expanded: overlay the whole tabs bar (covers Learning + Links) */
+.menu-tabs .menu-search-wrap.search-expanded {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 5;
+  margin-left: 0; /* override auto push */
+}
+
+/* Expanded input fills the tabs bar */
+.menu-tabs .menu-search-wrap.search-expanded input[type="search"] {
   width: 100%;
-  padding: 7px 12px;
-  border-radius: 10px;
-  border: 0px solid #ccc;
-  font-size: 12px;
-  background: white;
-  color: #ccc;
+  opacity: 1;
+  height: 30px;
+  font-size: 11px;
+  border-radius: 12px;
+  border: 1px solid #e5e5ea;
+  padding: 0 36px 0 12px;
+  background: #fff;
+  pointer-events: auto;
+  transition: all 0.25s ease;
 }
 
-.menu-search-icon {
+/* Menu search icon: dashboard처럼 절대 위치로 고정 */
+.menu-tabs .menu-search-wrap .search-icon {
   position: absolute;
   right: 10px;
   top: 50%;
   transform: translateY(-50%);
-  pointer-events: none;
+  pointer-events: auto; /* 클릭 가능 */
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.menu-search-icon svg {
-  width: 18px;
-  height: 18px;
-}
-
-.menu-search {
-  padding: 7px 36px 7px 12px;
-}
-
-/* Tabs with underlines */
-.menu-tabs {
-  display: flex;
-  gap: 0;
-  padding: -4px 10px;
-  border-bottom: 1px solid #ccc;
-  background: #f2f2f2;
-  margin-top: -5%;
+/* collapsed일 때 탭 바에서 아이콘이 너무 아래로 보이면
+   wrap 자체를 살짝 올려서 ‘정렬된 느낌’만 주기 (아이콘은 안 움직임) */
+.menu-tabs .menu-search-wrap.search-collapsed {
+  padding-top: 7px; /* 너가 원했던 7px을 여기로 이동 */
+  padding-bottom: 7px;
+  margin-left: auto; /* Keep it at the right end when collapsed */
 }
 .menu-tabs .tab {
   background: none;
   border: none;
   font-size: 13px;
   color: #999;
-  padding: 8px 10px;
+  width: auto;
+  margin-top: 0;
+  padding: 8px 14px;
   border-bottom: 2px solid transparent;
 }
 .menu-tabs .tab.active {
@@ -971,11 +999,14 @@ input:checked + .slider:before {
 }
 
 .profile-location {
+  margin-bottom: 26px;
   font-size: 11px;
   color: #666;
-  margin-top: 15px;
-  margin-left: 81px;
   letter-spacing: 0.2px;
+}
+
+.check-location-btn.is-hidden + .menu-search-wrap {
+  margin-top: 4px;
 }
 
 /* Language picker overlay */
@@ -2011,14 +2042,15 @@ input:checked + .slider:before {
 /* ===== Location Buttons ===== */
 /* Smaller circular i next to text */
 .info-icon {
+  margin-right: -94px;
+  margin-top: -38px;
+  padding: 0.15rem; /* small tappable area, tweak if wanted */
   background: #c5c5c500;
   color: #666666;
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
   transition: background 0.2s ease;
-  margin-top: -28px;
-  margin-left: 98px;
 }
 
 .info-icon:hover {
@@ -2028,7 +2060,7 @@ input:checked + .slider:before {
 /* Check Location button (on its own row) */
 .check-location-btn {
   display: block;
-  margin: -13px 3px -8px 78px; /* aligns under Location */
+  margin: -6px 3px 11px 72px; /* aligns under Location */
   background-color: #8f8f8f;
   color: #fff;
   border: none;
@@ -2051,6 +2083,29 @@ input:checked + .slider:before {
 
 .check-location-btn:active {
   transform: translateY(1px);
+}
+
+/* Fade-out then hide after first successful precise location */
+.check-location-btn.fading-out {
+  opacity: 0;
+  transform: translateY(-2px);
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
+  pointer-events: none;
+}
+
+.check-location-btn.is-hidden {
+  display: none !important;
+}
+
+/* Put location text and info icon inline on one row */
+.profile-location-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 15px; /* keep your current vertical spacing */
+  margin-left: 73px; /* match the existing location indent */
 }
 
 /* === Info Modal (matches guest modal overlay) === */
@@ -2138,9 +2193,6 @@ input:checked + .slider:before {
 .lang-install__info-icon {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  line-height: 1;
-  padding: 0.25rem;
   border-radius: 999px;
   color: inherit; /* icon uses currentColor */
 }
