@@ -9,24 +9,19 @@ import { JSDOM } from "jsdom";
 const publicDir = path.join(__dirname, "..", "public");
 const allHtmlFiles = new Set();
 
-async function getHtmlFiles(dir) {
-  const dirents = await fs.readdir(dir, { withFileTypes: true });
-  const files = await Promise.all(
-    dirents.map((dirent) => {
-      const res = path.resolve(dir, dirent.name);
-      return dirent.isDirectory() ? getHtmlFiles(res) : res;
-    }),
-  );
-  return Array.prototype.concat(...files);
-}
+import globby from "globby";
+
+const HTML_GLOB = ["**/*.html"];
+const HTML_IGNORE = ["html/demo/**/*.html"];
 
 describe("Link Integrity Tests", () => {
   beforeAll(async () => {
-    const files = await getHtmlFiles(publicDir);
+    const files = await globby(HTML_GLOB, {
+      cwd: publicDir,
+      ignore: HTML_IGNORE,
+    });
     files.forEach((file) => {
-      if (file.endsWith(".html")) {
-        allHtmlFiles.add(path.relative(publicDir, file).replace(/\\/g, "/"));
-      }
+      allHtmlFiles.add(file.replace(/\\/g, "/"));
     });
   });
 

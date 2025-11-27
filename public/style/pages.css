@@ -1362,7 +1362,7 @@ select.onb-input.has-value + .onb-select-caret {
 /* Top bar */
 .profile-topbar {
   display: flex;
-  align-items: centre;
+  align-items: center;
   justify-content: space-between;
   padding: 6px 2px 14px;
 }
@@ -1377,7 +1377,7 @@ select.onb-input.has-value + .onb-select-caret {
 
 .profile-topbar__icons {
   display: flex;
-  align-items: centre;
+  align-items: center;
   gap: 12px;
 }
 
@@ -1407,7 +1407,7 @@ select.onb-input.has-value + .onb-select-caret {
   display: grid;
   grid-template-columns: 72px 1fr;
   gap: 14px;
-  align-items: centre;
+  align-items: center;
   padding: 10px 0 18px;
 }
 
@@ -1479,5 +1479,5 @@ select.onb-input.has-value + .onb-select-caret {
 .settings-item {
   font-size: 12px;
   font-weight: 600;
-  colour: #111;
+  color: #111;
 }

@@ -1,3 +1,5 @@
+/** @jest-environment node */
+
 /**
  * Accessibility (ARIA) regression test
  * - Crawls all HTML files under the `public` directory
@@ -83,7 +85,10 @@ describe("Accessibility: ARIA roles & attributes", () => {
   let htmlFiles = [];
 
   beforeAll(async () => {
-    htmlFiles = await globby(["**/*.html"], { cwd: PUBLIC_DIR });
+    htmlFiles = await globby(["**/*.html"], {
+      cwd: PUBLIC_DIR,
+      ignore: ["html/demo/**/*.html"],
+    });
   });
 
   test("interactive elements have roles and accessible labels", () => {

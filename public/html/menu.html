@@ -11,14 +11,22 @@
     </button>
     <div class="menu-header">
       <div class="user-profile"></div>
-      <div id="menuUsername"></div>
-      <div
+      <button
+        type="button"
+        id="menuUsername"
+        class="menu-username-btn"
+        data-route="myprofile"
+        aria-label="View profile"
+      ></button>
+      <button
+        type="button"
         class="menu-sub"
         data-route="myprofile"
         data-i18n="menu.my_profile_link"
+        aria-label="My profile"
       >
         My profile >
-      </div>
+      </button>
 
       <div class="profile-location-row">
         <div
@@ -85,7 +93,12 @@
           placeholder="Search"
           data-i18n="menu.search_placeholder:placeholder"
         />
-        <span class="search-icon" id="menuSearchToggle" aria-hidden="true">
+        <button
+          type="button"
+          class="search-icon"
+          id="menuSearchToggle"
+          aria-label="Toggle search"
+        >
           <!-- same SVG you already use -->
           <svg
             viewBox="0 0 24 24"
@@ -100,62 +113,91 @@
             <circle cx="11" cy="11" r="8"></circle>
             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
           </svg>
-        </span>
+        </button>
       </div>
     </div>
     <div class="menu-tab-content" id="learningTab">
       <div class="menu-section">
         <strong data-i18n="menu.my_learning_section_title">My learning</strong>
-        <div class="menu-item" data-i18n="menu.in_progress_item">
+        <button
+          type="button"
+          class="menu-item"
+          data-i18n="menu.in_progress_item"
+          aria-label="In progress"
+        >
           In progress
-        </div>
-        <div
+        </button>
+        <button
+          type="button"
           class="menu-item"
           id="likedMenuItem"
           data-route="mylearning"
           data-i18n="menu.liked_item"
+          aria-label="Liked"
         >
           Liked
-        </div>
-        <div class="menu-item" data-i18n="menu.notes_item">Notes</div>
+        </button>
+        <button
+          type="button"
+          class="menu-item"
+          data-i18n="menu.notes_item"
+          aria-label="Notes"
+        >
+          Notes
+        </button>
       </div>
       <div class="menu-section">
         <strong data-i18n="menu.contents_section_title">Contents</strong>
-        <div
+        <button
+          type="button"
           class="menu-item"
           id="startDownloadBtn"
           data-i18n="menu.start_downloading_item"
+          aria-label="Start downloading"
         >
           Start downloading
-        </div>
-        <div
+        </button>
+        <button
+          type="button"
           class="menu-item"
           id="downloadedContentsBtn"
           data-i18n="menu.downloaded_contents_item"
+          aria-label="Downloaded contents"
         >
           Downloaded contents
-        </div>
+        </button>
       </div>
       <div class="menu-section">
         <strong data-i18n="menu.atoms_card_section_title">Atoms Card</strong>
-        <div
+        <button
+          type="button"
           class="menu-item"
           id="atomsCardEyesBtn"
           data-i18n="menu.atoms_card_eyes_item"
+          aria-label="Eyes"
         >
           Eyes
-        </div>
-        <div
+        </button>
+        <button
+          type="button"
           class="menu-item"
           id="atomsCardEarsBtn"
           data-i18n="menu.atoms_card_ears_item"
+          aria-label="Ears"
         >
           Ears
-        </div>
+        </button>
       </div>
       <div class="menu-section">
         <strong data-i18n="menu.alan_section_title">AI Assistant</strong>
-        <div class="menu-item" data-i18n="menu.alan_item">ALAN</div>
+        <button
+          type="button"
+          class="menu-item"
+          data-i18n="menu.alan_item"
+          aria-label="ALAN"
+        >
+          ALAN
+        </button>
       </div>
     </div>
 
@@ -164,24 +206,13 @@
       <strong data-i18n="menu.settings_section_title">Settings</strong>
     </div>-->
 
-    <!-- Tab Content: Community -->
-    <div class="menu-tab-content hidden" id="communityTab">
-      <div class="menu-section">
-        <strong data-i18n="menu.community_section_title">Community</strong>
-        <div class="menu-item" data-i18n="menu.forum_item">Forum</div>
-        <div class="menu-item" data-i18n="menu.leaderboard_item">
-          Leaderboard
-        </div>
-      </div>
-    </div>
-
     <!-- Tab Content: Links -->
     <div class="menu-tab-content hidden" id="linksTab">
       <div class="menu-section">
         <strong data-i18n="menu.external_links_section_title"
           >External Links</strong
         >
-        <div class="menu-item">
+        <div class="menu-item-link-wrapper">
           <a
             href="https://medicine.st-andrews.ac.uk/arclight/devices/arclight/"
             target="_blank"
@@ -189,7 +220,7 @@
             >Arclight Project</a
           >
         </div>
-        <div class="menu-item">
+        <div class="menu-item-link-wrapper">
           <a
             href="https://arclightprojectshop.co.uk/?srsltid=AfmBOoog82AZ0K8MUui_J9YFnH47X9xyw9uXVTk_WEPXz6jEwilyn55i"
             target="_blank"
@@ -197,7 +228,7 @@
             >Arclight Shop</a
           >
         </div>
-        <div class="menu-item">
+        <div class="menu-item-link-wrapper">
           <a
             href="https://www.youtube.com/@arclightproject"
             target="_blank"
@@ -205,7 +236,7 @@
             >Arclight Youtube</a
           >
         </div>
-        <div class="menu-item">
+        <div class="menu-item-link-wrapper">
           <a
             href="https://www.who.int"
             target="_blank"
@@ -213,7 +244,7 @@
             >WHO</a
           >
         </div>
-        <div class="menu-item">
+        <div class="menu-item-link-wrapper">
           <a
             href="https://cybersight.org"
             target="_blank"
@@ -221,7 +252,7 @@
             >Cybersight: Orbis</a
           >
         </div>
-        <div class="menu-item">
+        <div class="menu-item-link-wrapper">
           <a
             href="https://www.rcophth.ac.uk/training/inspire/"
             target="_blank"
@@ -229,7 +260,7 @@
             >Inspire: RCO</a
           >
         </div>
-        <div class="menu-item">
+        <div class="menu-item-link-wrapper">
           <a
             href="https://aapos.org/glossary/retinopathy-of-prematurity"
             target="_blank"
@@ -237,7 +268,7 @@
             >Retinopathy of Prematurity: AAPOS</a
           >
         </div>
-        <div class="menu-item">
+        <div class="menu-item-link-wrapper">
           <a
             href="https://cviscotland.org"
             target="_blank"
@@ -245,7 +276,7 @@
             >CVI Scotland & CVI SIM</a
           >
         </div>
-        <div class="menu-item">
+        <div class="menu-item-link-wrapper">
           <a
             href="https://www.sightsim.com"
             target="_blank"
@@ -253,7 +284,7 @@
             >SightSIM</a
           >
         </div>
-        <div class="menu-item">
+        <div class="menu-item-link-wrapper">
           <a
             href="https://www.cehjournal.org"
             target="_blank"

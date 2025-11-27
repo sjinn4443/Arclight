@@ -28,7 +28,15 @@
     </header>
 
     <!-- Info icon -->
-    <i id="info-icon" class="fas fa-info-circle" onclick="toggleInfoBox()"></i>
+    <button
+      type="button"
+      id="info-icon-btn"
+      class="icon-btn"
+      aria-label="Toggle information"
+      onclick="toggleInfoBox()"
+    >
+      <i class="fas fa-info-circle"></i>
+    </button>
 
     <!-- Hidden info box -->
     <div id="info-popup" class="info-box" style="display: none">
