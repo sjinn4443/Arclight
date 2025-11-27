@@ -2,6 +2,7 @@
  * @fileoverview This file manages the application's global overlay menu. Handles menu initialization, opening, and closing, including fetching menu content and setting up event listeners.
  */
 
+import { loadPage } from "./navigation.js";
 import {
   getCurrentCountryCode,
   getCurrentArea,
@@ -116,8 +117,21 @@ export async function initializeMenu() {
   });
 
   overlay.addEventListener("click", (e) => {
-    const a = e.target.closest("a,[data-route],[data-close-menu]");
-    if (a) closeMenu();
+    const routeEl = e.target.closest("[data-route]");
+    const linkEl = e.target.closest("a,[data-close-menu]");
+
+    if (routeEl) {
+      const route = routeEl.getAttribute("data-route");
+      if (!route) return;
+
+      // Always use the router for data-route items
+      loadPage(route);
+
+      closeMenu();
+      return;
+    }
+
+    if (linkEl) closeMenu();
   });
 }
 

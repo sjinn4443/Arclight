@@ -957,3 +957,29 @@
 {"type":"refresh","ts":"2025-11-27T01:51:03.848Z","anon_id":"ab7d0058-4884-47e0-b53a-6b825915b06f","user_id":null}
 {"type":"profile","ts":"2025-11-27T01:51:12.739Z","anon_id":"ab7d0058-4884-47e0-b53a-6b825915b06f","user_id":null,"name":"testtttt","aims":null,"interest":null,"experience":"ophthalmologist","contact":null,"country":"GB","area":"Manchester","language":"en"}
 {"type":"profile","ts":"2025-11-27T01:51:14.962Z","anon_id":"ab7d0058-4884-47e0-b53a-6b825915b06f","user_id":null,"name":null,"aims":"타인에게 가르치기, 저자원 키트","interest":null,"experience":null,"contact":null,"country":null,"area":null,"language":null}
+{"type":"ip","ts":"2025-11-27T14:11:09.550Z","ip":"::1","geo":{}}
+{"type":"ip","ts":"2025-11-27T14:11:09.557Z","ip":"::1","geo":{}}
+{"type":"refresh","ts":"2025-11-27T14:11:28.551Z","anon_id":"ab7d0058-4884-47e0-b53a-6b825915b06f","user_id":null}
+{"type":"ip","ts":"2025-11-27T14:23:21.629Z","ip":"::1","geo":{}}
+{"type":"ip","ts":"2025-11-27T14:23:21.641Z","ip":"::1","geo":{}}
+{"type":"ip","ts":"2025-11-27T14:24:28.436Z","ip":"::1","geo":{}}
+{"type":"ip","ts":"2025-11-27T14:24:28.445Z","ip":"::1","geo":{}}
+{"type":"ip","ts":"2025-11-27T14:24:30.342Z","ip":"::1","geo":{}}
+{"type":"ip","ts":"2025-11-27T14:24:30.350Z","ip":"::1","geo":{}}
+{"type":"profile","ts":"2025-11-27T14:24:37.057Z","anon_id":"6c7882e7-3fe7-46bf-b229-d2dde6d745c6","user_id":null,"name":null,"aims":null,"interest":null,"experience":null,"contact":null,"country":null,"area":null,"language":"en"}
+{"type":"refresh","ts":"2025-11-27T14:24:37.069Z","anon_id":"6c7882e7-3fe7-46bf-b229-d2dde6d745c6","user_id":null}
+{"type":"profile","ts":"2025-11-27T14:24:40.562Z","anon_id":"6c7882e7-3fe7-46bf-b229-d2dde6d745c6","user_id":null,"name":"Sujin Kang","aims":null,"interest":null,"experience":"ent_specialist","contact":null,"country":"GB","area":"Manchester","language":"en"}
+{"type":"profile","ts":"2025-11-27T14:24:42.093Z","anon_id":"6c7882e7-3fe7-46bf-b229-d2dde6d745c6","user_id":null,"name":null,"aims":"Low Resource Kits, Public Health","interest":null,"experience":null,"contact":null,"country":null,"area":null,"language":null}
+{"type":"ip","ts":"2025-11-27T14:30:42.415Z","ip":"::1","geo":{}}
+{"type":"ip","ts":"2025-11-27T14:30:42.432Z","ip":"::1","geo":{}}
+{"type":"ip","ts":"2025-11-27T14:37:16.987Z","ip":"::1","geo":{}}
+{"type":"ip","ts":"2025-11-27T14:37:17.002Z","ip":"::1","geo":{}}
+{"type":"ip","ts":"2025-11-27T14:39:17.146Z","ip":"::1","geo":{}}
+{"type":"ip","ts":"2025-11-27T14:39:17.154Z","ip":"::1","geo":{}}
+{"type":"ip","ts":"2025-11-27T14:40:34.225Z","ip":"::1","geo":{}}
+{"type":"ip","ts":"2025-11-27T14:40:34.235Z","ip":"::1","geo":{}}
+{"type":"ip","ts":"2025-11-27T14:41:07.552Z","ip":"::1","geo":{}}
+{"type":"ip","ts":"2025-11-27T14:41:07.561Z","ip":"::1","geo":{}}
+{"type":"ip","ts":"2025-11-27T16:23:39.825Z","ip":"::1","geo":{}}
+{"type":"ip","ts":"2025-11-27T16:23:39.839Z","ip":"::1","geo":{}}
+{"type":"refresh","ts":"2025-11-27T16:23:42.099Z","anon_id":"6c7882e7-3fe7-46bf-b229-d2dde6d745c6","user_id":null}

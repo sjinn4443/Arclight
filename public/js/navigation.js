@@ -473,3 +473,19 @@ export function initializePageNavigation() {
   // Also expose a global for manual triggering / compatibility with old.zip
   window.launchQuiz = () => goToDirectOphthalmoscopyQuiz();
 })();
+
+// Custom event listener for "myprofile" route to show "myProfilePage"
+document.addEventListener("page:loaded", (e) => {
+  if (e.detail?.routeName === "myprofile") {
+    if (typeof window.showPage === "function") {
+      window.showPage("myProfilePage");
+    } else {
+      minimalShowPage("myProfilePage");
+    }
+    window.dispatchEvent(
+      new CustomEvent("app:navigate", {
+        detail: { pageId: "myProfilePage" },
+      }),
+    );
+  }
+});

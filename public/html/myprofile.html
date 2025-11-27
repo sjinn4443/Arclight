@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Profile</title>
+
+    <!-- Your existing global styles -->
+    <link rel="stylesheet" href="style/base.css" />
+    <link rel="stylesheet" href="style/components.css" />
+    <link rel="stylesheet" href="style/pages.css" />
+    <link rel="stylesheet" href="style/responsive.css" />
+
+    <!-- New page-specific styles -->
+    <link rel="stylesheet" href="style/myprofile.css" />
+  </head>
+
+  <body>
+    <div class="profile-page page active" id="myProfilePage">
+      <!-- Top bar -->
+      <div class="profile-topbar">
+        <div class="profile-topbar__title">My Profile</div>
+
+        <div class="profile-topbar__icons">
+          <!-- Bell -->
+          <button class="icon-btn" aria-label="Notifications">
+            🔔
+            <span class="notif-dot" aria-hidden="true"></span>
+          </button>
+
+          <!-- Menu -->
+          <button class="icon-btn menuBtn" aria-label="Menu">☰</button>
+        </div>
+      </div>
+
+      <!-- Profile header -->
+      <div class="profile-header">
+        <div class="profile-avatar" aria-hidden="true"></div>
+
+        <div>
+          <p class="profile-name">Sujin Kang</p>
+          <p class="profile-role">Medical Student</p>
+        </div>
+      </div>
+
+      <!-- Interest -->
+      <div class="section">
+        <div class="section-title">Interest</div>
+        <div class="interest-select">
+          <select id="interestSelect" aria-label="Interest">
+            <option selected>Eyes</option>
+            <option>Ears</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Achievements -->
+      <div class="section">
+        <div class="section-title">Achievements</div>
+        <div class="achievements-row">
+          <div class="achievement-tile"></div>
+          <div class="achievement-tile"></div>
+          <div class="achievement-tile"></div>
+        </div>
+      </div>
+
+      <!-- Settings -->
+      <div class="section">
+        <div class="section-title">Settings</div>
+        <div class="settings-list">
+          <div class="settings-item" data-route="editProfile">Edit Profile</div>
+          <div class="menu-item" data-route="languageinstall">
+            <img
+              src="images/icon/base/language_b.webp"
+              alt="Language"
+              class="menu-item-icon"
+              width="24"
+              height="24"
+            />
+
+            <span data-i18n="menu.language_item">Language</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- If your app uses the menu overlay globally -->
+    <script src="js/menu.js"></script>
+    <script>
+      if (window.initializeMenu) window.initializeMenu();
+    </script>
+  </body>
+</html>
