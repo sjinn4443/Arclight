@@ -8,6 +8,14 @@ The current focus is on ensuring the application's core structure and PWA capabi
 
 ## Recent Changes
 
+- Refactored dev dashboard table layout (`public/html/dev_dashboard.html`).
+  - Changed `table-layout` to `auto` to allow content to influence column widths.
+  - Enabled text wrapping for "Aims", "Interest", and "Experience" columns, removing ellipsis.
+  - Adjusted widths for "No.", "Language", and "Refresh count" columns for compactness.
+- Refactored menu search functionality to align with dashboard compact search patterns.
+  - Moved search wrap into the tab row (`public/html/menu.html`).
+  - Updated `public/style/components.css` to fix search icon "flying" animation, ensuring it remains fixed and aligned within the tab bar when expanding/collapsing.
+  - Ensured consistency in search input styling and overlay behavior.
 - Configured VS Code launch settings by creating `.vscode/launch.json` to enable easy debugging and running of the application on `http://localhost:3000`.
 - Implemented logic in `script.js` to prompt users to refresh the page when a new service worker version is detected, ensuring they always access the latest application version.
 - Enhanced the navigation system to include a unified dashboard, language/install page, onboarding, and professional interest pages, along with detailed module pages for Eyes and Ears content.
@@ -46,6 +54,8 @@ The current focus is on ensuring the application's core structure and PWA capabi
 - Updated `.env` to include `SESSION_SECRET=please-set-a-long-random-value` and `RAILWAY_URL=https://arclight.up.railway.app`.
 - Integrated Sentry for error monitoring using the CDN-based Browser SDK, which is compatible with the project's static architecture.
 - Addressed `npm audit` vulnerabilities by updating `js-yaml` and relaxing the CI audit level to prevent build failures while maintaining security awareness.
+- Performed code formatting check and fixed issues using Prettier, ensuring code consistency.
+- Executed all Jest test suites, confirming all tests passed successfully.
 
 ## Next Steps
 

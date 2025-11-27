@@ -77,6 +77,60 @@ app.get("/api/dev/users", basicAuth, async (req, res) => {
   }
 });
 
+app.delete("/api/dev/users/:anonId", basicAuth, async (req, res) => {
+  try {
+    const anonId = String(req.params.anonId || "").trim();
+    if (!anonId) return res.status(400).json({ error: "Missing anon_id" });
+
+    const telemetryFilePath = path.join(
+      __dirname,
+      "dev_dashboard",
+      "data",
+      "telemetry.ndjson",
+    );
+    let lines = [];
+    try {
+      const rawContent = await fsp.readFile(telemetryFilePath, "utf8");
+      lines = rawContent.split("\n").filter(Boolean); // Filter out empty lines
+    } catch (readErr) {
+      if (readErr.code === "ENOENT") {
+        // File does not exist, so no users to delete.
+        return res.status(404).json({ error: "User not found" });
+      }
+      throw readErr;
+    }
+
+    let userFound = false;
+    const filteredLines = lines.filter((line) => {
+      try {
+        const record = JSON.parse(line);
+        if (record.anon_id === anonId) {
+          userFound = true;
+          return false; // Exclude this record
+        }
+        return true; // Keep other records
+      } catch (parseErr) {
+        console.error("Error parsing NDJSON line:", parseErr);
+        return true; // Keep line if unparseable to avoid data loss
+      }
+    });
+
+    if (!userFound) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    await fsp.writeFile(
+      telemetryFilePath,
+      filteredLines.join("\n") + "\n",
+      "utf8",
+    );
+    return res.status(204).end();
+  } catch (err) {
+    console.error("[dev] delete user failed", err);
+    return res.status(500).json({ error: "Failed to delete user" });
+  }
+});
+
 app.post("/track", async (req, res) => {
   try {
     const ip = req.ip;

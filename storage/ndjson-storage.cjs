@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const { enrichIp } = require("../utils/ipEnricher.cjs");
+const { encrypt, decrypt } = require("../dev_dashboard/security/encrypt.cjs"); // Import encryption module
 
 const dataDir = path.join(__dirname, "..", "dev_dashboard", "data");
 const file = path.join(dataDir, "telemetry.ndjson");
@@ -11,7 +12,8 @@ function ensureDir() {
 function writeLine(obj) {
   ensureDir();
   try {
-    fs.appendFileSync(file, JSON.stringify(obj) + "\n", "utf8");
+    const encryptedData = encrypt(JSON.stringify(obj)); // Encrypt the data
+    fs.appendFileSync(file, encryptedData + "\n", "utf8");
   } catch (e) {
     console.error("Failed to write to telemetry.ndjson:", e);
     throw e; // Re-throw to propagate the error to the caller
@@ -76,9 +78,16 @@ async function getUsersForDashboard() {
   const lines = fs.readFileSync(file, "utf8").trim().split("\n");
 
   const map = new Map(); // key -> row
-  for (const line of lines) {
-    if (!line) continue;
-    const r = JSON.parse(line);
+  for (const encryptedLine of lines) {
+    if (!encryptedLine) continue;
+    let decryptedLine;
+    try {
+      decryptedLine = decrypt(encryptedLine); // Decrypt the line
+    } catch (e) {
+      console.error("Failed to decrypt line:", e.message);
+      continue; // Skip this line if decryption fails
+    }
+    const r = JSON.parse(decryptedLine);
     const key = keyOf(r);
     if (!key) continue;
 

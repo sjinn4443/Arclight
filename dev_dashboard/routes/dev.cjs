@@ -3,20 +3,24 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 const express = require("express");
-const fs = require("fs");
+const fs = require("fs/promises"); // Use fs/promises for async operations
 const path = require("path");
 const { decryptField } = require("../security/encrypt.cjs");
+const requireDevAuth = require("../security/requireDevAuth.cjs");
+const csrfProtection = require("../security/csrf.cjs");
 
 const router = express.Router();
 if (process.env.NODE_ENV !== "production") {
   console.log("[dev] dev router created");
 }
 
-router.get("/", (req, res) => {
-  const jsonPath = path.join(__dirname, "..", "data", "users.json");
+const USERS_PATH = path.join(process.cwd(), "storage", "users.json"); // Path to users.json
+
+router.get("/", requireDevAuth, async (req, res) => {
   let usersRaw = [];
   try {
-    usersRaw = JSON.parse(fs.readFileSync(jsonPath, "utf8"));
+    const raw = await fs.readFile(USERS_PATH, "utf8");
+    usersRaw = JSON.parse(raw);
   } catch (e) {
     usersRaw = [];
   }
@@ -84,5 +88,34 @@ router.get("/", (req, res) => {
 </html>
   `);
 });
+
+router.delete(
+  "/users/:anonId",
+  requireDevAuth,
+  csrfProtection,
+  async (req, res) => {
+    try {
+      const anonId = String(req.params.anonId || "").trim();
+      if (!anonId) return res.status(400).json({ error: "Missing anon_id" });
+
+      const raw = await fs.readFile(USERS_PATH, "utf8").catch(() => "[]");
+      const users = JSON.parse(raw || "[]");
+
+      const before = users.length;
+      const filtered = users.filter((u) => u.anon_id !== anonId);
+
+      if (filtered.length === before) {
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      await fs.writeFile(USERS_PATH, JSON.stringify(filtered, null, 2), "utf8");
+
+      return res.status(204).end();
+    } catch (err) {
+      console.error("[dev] delete user failed", err);
+      return res.status(500).json({ error: "Failed to delete user" });
+    }
+  },
+);
 
 module.exports = router;

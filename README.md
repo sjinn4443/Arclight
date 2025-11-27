@@ -161,8 +161,24 @@ Please follow the existing code patterns and update the Memory Bank when making 
 
 ## Changelog
 
-### 2025-11-17
+### 2025-11-27
 
+- Implemented code formatting check (`npm run format:check`) and automatic fixing (`npm run format`) using Prettier.
+- Executed all Jest test suites (`npm test`), with all 19 tests passing successfully.
+
+### 2025-11-26
+
+- Refactored dev dashboard table layout (`public/html/dev_dashboard.html`).
+  - Changed `table-layout` to `auto` to allow content to influence column widths.
+  - Enabled text wrapping for "Aims", "Interest", and "Experience" columns, removing ellipsis.
+  - Adjusted widths for "No.", "Language", and "Refresh count" columns for compactness.
+- Refactored dev dashboard table layout (`public/html/dev_dashboard.html`).
+  - Changed `table-layout` to `auto` to allow content to influence column widths.
+  - Enabled text wrapping for "Aims", "Interest", and "Experience" columns, removing ellipsis.
+  - Adjusted widths for "No.", "Language", and "Refresh count" columns for compactness.
+- Refactored menu search functionality to align with dashboard compact search patterns.
+- Moved search wrap into the tab row (`public/html/menu.html`).
+- Updated `public/style/components.css` to fix search icon "flying" animation, ensuring it remains fixed and aligned within the tab bar when expanding/collapsing.
 - Integrated Sentry for error monitoring using the CDN-based Browser SDK.
 - Updated `public/index.html` to include the Sentry script and initialization.
 - Modified `public/js/main.js` to send navigation events to Sentry as breadcrumbs.
