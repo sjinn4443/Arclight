@@ -110,6 +110,9 @@ describe("UI Integration Tests", () => {
   });
 
   beforeEach(async () => {
+    // Mock console.warn to suppress noisy output during tests
+    jest.spyOn(console, "warn").mockImplementation(() => {});
+
     // Reset mocks and state before each test
     jest.clearAllMocks(); // Clears mock calls and instances
 
@@ -303,6 +306,11 @@ describe("UI Integration Tests", () => {
     window.addEventListener("page:loaded", (e) => {
       global.updateGlobalBackVisibility(e.detail.routeName);
     });
+  });
+
+  afterEach(() => {
+    // Restore console.warn after each test
+    console.warn.mockRestore();
   });
 
   test("Home page loads and displays main elements", () => {

@@ -1,3 +1,7 @@
+/**
+ * @file IP Tracking Endpoint Tests
+ * @description Tests for the `/track` endpoint, ensuring IP logging, geolocation enrichment, and proper response handling.
+ */
 const request = require("supertest");
 const fs = require("fs");
 const path = require("path");

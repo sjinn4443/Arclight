@@ -248,6 +248,8 @@ document.addEventListener("DOMContentLoaded", () => {
 export let currentPageName = null;
 export const historyStack = [];
 
+let currentRoute = null; // Add the currentRoute guard
+
 /**
  * Loads a new page fragment into the '#page-content' container based on the given route name.
  * Manages history, closes the menu, and dispatches a 'page:loaded' custom event.
@@ -255,6 +257,9 @@ export const historyStack = [];
  * @param {Object} [options={}] - Options for page loading, e.g., `{ replace: true }` for history replacement.
  */
 export async function loadPage(routeName, options = {}) {
+  if (!options.replace && routeName === currentRoute) return; // Add the guard
+  currentRoute = routeName; // Update currentRoute
+
   const container = document.getElementById("page-content");
   const url = ROUTES[routeName];
 

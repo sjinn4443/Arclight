@@ -1,3 +1,7 @@
+/**
+ * @file Jest Setup
+ * @description Configuration and setup for Jest test environment, including polyfills and environment variables.
+ */
 import { TextEncoder, TextDecoder } from "util";
 import fetch from "node-fetch";
 

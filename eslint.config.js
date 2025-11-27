@@ -90,7 +90,7 @@ export default [
     },
   },
   {
-    files: ["jest.config.js", "tests/**/*.js"], // Jest config and all test files
+    files: ["jest.config.js", "tests/**/*.js", "tests/**/*.cjs"], // Jest config and all test files
     languageOptions: {
       globals: {
         ...globals.node, // For Node.js environment in tests

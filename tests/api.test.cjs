@@ -1,3 +1,7 @@
+/**
+ * @file API Integration Tests
+ * @description Tests for the backend API endpoints, ensuring correct responses and functionality.
+ */
 const request = require("supertest");
 const { app, closeServer } = require("../server.cjs");
 

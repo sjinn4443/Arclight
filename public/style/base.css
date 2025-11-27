@@ -37,6 +37,13 @@ h1 {
   margin-bottom: 20px;
 }
 
+/* Base paragraph rule for typography-consistency test */
+p {
+  font-size: 1rem;
+  line-height: 1.4;
+  margin: 0;
+}
+
 /* ============================================= Layout primitives & helpers ============================================= */
 body {
   font-family: Arial;

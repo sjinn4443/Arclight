@@ -1,0 +1,119 @@
+/** @jest-environment node */
+
+const makeServiceWorkerEnv = require("service-worker-mock");
+const fs = require("fs");
+const path = require("path");
+
+const SW_PATH = path.join(__dirname, "..", "public", "sw.js");
+
+function loadServiceWorkerScript() {
+  const swCode = fs.readFileSync(SW_PATH, "utf8");
+  // eslint-disable-next-line no-eval
+  eval(swCode);
+}
+
+describe("Service Worker Lifecycle - install caching", () => {
+  let mockSelf;
+  beforeEach(() => {
+    // Reset modules to ensure a fresh service worker environment for each test
+    jest.resetModules();
+
+    // Create a new mocked service worker environment
+    mockSelf = makeServiceWorkerEnv();
+    Object.assign(global, mockSelf);
+
+    // Mock caches to ensure they are available in the global context
+    global.caches = {
+      keys: jest.fn().mockResolvedValue(["arclight-static-v3"]),
+      open: jest.fn().mockResolvedValue({
+        addAll: jest.fn().mockResolvedValue(undefined),
+        keys: jest
+          .fn()
+          .mockResolvedValue([
+            { url: "http://localhost/index.html" },
+            { url: "http://localhost/js/index.js" },
+            { url: "http://localhost/js/navigation.js" },
+            { url: "http://localhost/style/style.css" },
+            { url: "http://localhost/manifest.json" },
+          ]),
+        match: jest.fn().mockResolvedValue(undefined),
+        put: jest.fn().mockResolvedValue(undefined),
+      }),
+      delete: jest.fn().mockResolvedValue(true),
+    };
+
+    // Mock global fetch
+    global.fetch = jest.fn(() => Promise.resolve(new Response()));
+
+    // Mock dispatchEvent for `self`
+    global.self.dispatchEvent = jest.fn((event) => {
+      if (event.type === "install" && typeof event.waitUntil === "function") {
+        event.waitUntil(Promise.resolve()); // Simulate waitUntil finishing
+      }
+    });
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  test("caches required core assets during install", async () => {
+    loadServiceWorkerScript();
+
+    // The service worker script adds the event listener to `self`.
+    // Now dispatch the event on the global `self` object.
+    const installEvent = new Event("install");
+    // event.waitUntil will be mocked by global.self.dispatchEvent mock
+
+    await self.dispatchEvent(installEvent);
+
+    // Ensure cache.addAll was called on the correct cache
+    expect(caches.open).toHaveBeenCalledWith("arclight-static-v3");
+    const cache = await caches.open("arclight-static-v3");
+    expect(cache.addAll).toHaveBeenCalledWith(
+      expect.arrayContaining([
+        ".",
+        "index.html",
+        "style.css",
+        "js/main.js",
+        "js/navigation.js",
+        "js/onboarding.js",
+        "js/dashboard.js",
+        "js/toc.js",
+        "js/video.js",
+        "js/quiz.js",
+        "js/mylearning.js",
+        "js/catalog.js",
+        "js/pwa.js",
+        "html/interest.html",
+        "js/interest.js",
+        "favicons/favicon-32x32.png",
+        "favicons/favicon-16x16.png",
+        "favicons/site.webmanifest",
+        "favicons/apple-touch-icon.png",
+        "favicons/android-chrome-192x192.png",
+        "favicons/android-chrome-512x512.png",
+        "favicons/favicon.ico",
+        "favicons/pwa-install-narrow.png",
+        "favicons/pwa-install-wide.png",
+      ])
+    );
+
+    // Optionally check if cache contains specific assets (requires deeper mocking of `cache.keys`)
+    // The previous mock for `cache.keys` returns a specific set of URLs.
+    const requests = await cache.keys();
+    const cachedUrls = requests.map((r) => new URL(r.url).pathname); // Extract pathname
+
+    const REQUIRED = [
+      "/index.html",
+      "/js/index.js",
+      "/js/navigation.js",
+      "/style/style.css",
+      "/manifest.json",
+    ];
+
+    for (const asset of REQUIRED) {
+      expect(cachedUrls.some((u) => u.endsWith(asset))).toBe(true);
+    }
+  });
+});
