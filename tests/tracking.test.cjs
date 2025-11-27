@@ -6,6 +6,7 @@ const request = require("supertest");
 const fs = require("fs");
 const path = require("path");
 const os = require("os");
+const { decrypt } = require("../dev_dashboard/security/encrypt.cjs"); // Import decrypt
 
 let logDir;
 let logFile;
@@ -94,10 +95,14 @@ describe("IP Tracking Endpoint", () => {
 
     // Read the log file and check its content
     const logContent = fs.readFileSync(logFile, "utf8");
-    const logEntries = logContent.trim().split("\n").filter(Boolean); // Filter out empty strings
+    const logEntries = logContent
+      .trim()
+      .split("\n")
+      .filter(Boolean)
+      .map((line) => JSON.parse(decrypt(line))); // Decrypt and parse each line
     expect(logEntries.length).toBe(1);
 
-    const loggedData = JSON.parse(logEntries[0]);
+    const loggedData = logEntries[0];
     expect(loggedData.ip).toBe("8.8.8.8");
     expect(loggedData.geo).toBeDefined();
     expect(loggedData.geo.country).toBe("US"); // GeoIP for 8.8.8.8 is US
@@ -118,10 +123,14 @@ describe("IP Tracking Endpoint", () => {
     await new Promise(process.nextTick);
 
     const logContent = fs.readFileSync(logFile, "utf8");
-    const logEntries = logContent.trim().split("\n").filter(Boolean); // Filter out empty strings
+    const logEntries = logContent
+      .trim()
+      .split("\n")
+      .filter(Boolean)
+      .map((line) => JSON.parse(decrypt(line))); // Decrypt and parse each line
     expect(logEntries.length).toBe(1); // Should be 1 as log file is cleared before each test
 
-    const loggedData = JSON.parse(logEntries[0]); // Check the first (and only) entry
+    const loggedData = logEntries[0]; // Check the first (and only) entry
     expect(loggedData.ip).toBe("::ffff:127.0.0.1"); // Should have the IPv6-mapped IPv4 address from middleware
     expect(loggedData.geo).toBeDefined();
     expect(loggedData.geo.country).toBeNull();

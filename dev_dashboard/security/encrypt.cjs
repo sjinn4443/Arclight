@@ -4,12 +4,10 @@ const algorithm = "aes-256-cbc"; // AES 256-bit encryption in CBC mode
 
 // Ensure the ENCRYPTION_KEY is set in environment variables
 const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY;
-if (!ENCRYPTION_KEY) {
+if (!ENCRYPTION_KEY && process.env.NODE_ENV !== "test") {
   console.error(
     "ENCRYPTION_KEY environment variable is not set. Encryption/Decryption will fail.",
   );
-  // In a real application, you might want to exit or throw an error here.
-  // For development, we'll proceed but log the warning.
 }
 
 // IV (Initialization Vector) should be a fixed size, typically 16 bytes for AES.

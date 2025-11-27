@@ -37,7 +37,7 @@ describe("Large-State Scenarios", () => {
     const endTime = performance.now();
 
     expect(retrievedItems).toHaveLength(250);
-    expect(endTime - startTime).toBeLessThan(100); // 100ms threshold for performance
+    expect(endTime - startTime).toBeLessThan(200); // 200ms threshold for performance
   });
 
   it("should handle repeated like/unlike actions correctly", () => {

@@ -25,21 +25,25 @@ const mockHtmlFiles = {
   "html/page3.html": "<html><body>Page 3 Content</body></html>",
 };
 
-global.fetch = jest.fn((url) => {
-  if (mockHtmlFiles[url]) {
-    return Promise.resolve({
-      ok: true,
-      text: async () => mockHtmlFiles[url],
-    });
-  } else {
-    return Promise.reject(new Error("Network error: File not found"));
-  }
-});
-
 describe("Navigation Flow Tests", () => {
+  let fetchSpy;
+
   beforeEach(() => {
     // Reset mocks and state before each test
     jest.clearAllMocks();
+
+    // Mock global.fetch for this test suite
+    fetchSpy = jest.spyOn(global, "fetch").mockImplementation((url) => {
+      if (mockHtmlFiles[url]) {
+        return Promise.resolve({
+          ok: true,
+          text: async () => mockHtmlFiles[url],
+        });
+      } else {
+        return Promise.reject(new Error("Network error: File not found"));
+      }
+    });
+
     historyStack = ["html/page1.html", "html/page2.html", "html/page3.html"];
     currentIndex = 2;
 
@@ -69,6 +73,10 @@ describe("Navigation Flow Tests", () => {
         await mockLoadPage(historyStack[currentIndex]);
       }
     });
+  });
+
+  afterEach(() => {
+    fetchSpy.mockRestore(); // Restore original fetch after each test
   });
 
   it("should navigate back and forward correctly", async () => {

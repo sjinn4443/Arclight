@@ -52,10 +52,15 @@ const mockHtmlFiles = {
 
 describe("UI Integration Tests", () => {
   let fetchSpy; // Declare fetchSpy here
+  let consoleWarnSpy;
 
   beforeAll(async () => {
-    // Reset modules to ensure a clean state
-    // jest.resetModules(); // Removed this line as it might be interfering with the fetch mock
+    // Reset modules to ensure a clean state so that navigation.js is re-imported
+    // after global.fetch is mocked.
+    jest.resetModules();
+
+    // Mock console.warn to suppress noisy output during tests
+    consoleWarnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
 
     // Use jest.spyOn to mock global.fetch
     fetchSpy = jest.spyOn(global, "fetch");
@@ -109,21 +114,45 @@ describe("UI Integration Tests", () => {
     });
   });
 
+  let consoleErrorSpy;
+
   beforeEach(async () => {
-    // Mock console.warn to suppress noisy output during tests
-    jest.spyOn(console, "warn").mockImplementation(() => {});
+    // Silence specific console.error messages during tests for graceful failure checks
+    consoleErrorSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation((...args) => {
+        const msg = String(args[0] ?? "");
+        if (
+          msg.includes("Failed to load route") ||
+          msg.includes("not found in ROUTES")
+        ) {
+          return;
+        }
+        // Let other errors through
+        process.stderr.write(args.join(" ") + "\n");
+      });
 
     // Reset mocks and state before each test
     jest.clearAllMocks(); // Clears mock calls and instances
+
+    // Re-apply the fetch mock for each test, as mockClear might remove its implementation
+    fetchSpy.mockImplementation((url) => {
+      if (mockHtmlFiles[url]) {
+        return Promise.resolve({
+          ok: true,
+          text: async () => mockHtmlFiles[url],
+        });
+      } else {
+        // Simulate a network error for unknown URLs
+        return Promise.reject(new Error("Network error: File not found"));
+      }
+    });
 
     // reset history
     mockedNavigationModule.setState({
       currentPageName: null,
       historyStack: ["intro"],
     });
-
-    // Reset fetch mock calls
-    global.fetch.mockClear();
 
     // (Re)wire the mock
     mockLoadPage.mockImplementation(async (routeName, options = {}) => {
@@ -308,9 +337,12 @@ describe("UI Integration Tests", () => {
     });
   });
 
-  afterEach(() => {
-    // Restore console.warn after each test
-    console.warn.mockRestore();
+  afterAll((done) => {
+    consoleWarnSpy.mockRestore(); // Restore console.warn after all tests
+    consoleErrorSpy.mockRestore(); // Restore console.error after all tests
+    // If there's a server being listened to, close it here.
+    // In this UI test, there isn't one directly, but good practice.
+    done();
   });
 
   test("Home page loads and displays main elements", () => {

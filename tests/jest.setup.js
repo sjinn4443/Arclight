@@ -13,3 +13,14 @@ if (!process.env.MASTER_KEY) {
 global.TextEncoder = TextEncoder;
 global.TextDecoder = TextDecoder;
 global.fetch = fetch;
+
+// Suppress console.warn messages globally during tests to reduce noise.
+// Specific warnings from navigation.js are not critical for test outcomes.
+let consoleWarnSpy;
+beforeEach(() => {
+  consoleWarnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
+});
+
+afterEach(() => {
+  consoleWarnSpy.mockRestore();
+});
