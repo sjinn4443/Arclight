@@ -400,3 +400,33 @@ document.addEventListener("click", (e) => {
     );
   }
 });
+
+// Make lesson rows act like carousel cards (deep-link to a video page)
+document.addEventListener("click", async (e) => {
+  const row = e.target.closest(".lesson-row[data-target]");
+  if (!row) return;
+
+  const target = row.getAttribute("data-target");
+  if (!target) return;
+
+  // same deep-link flow as eyes carousel → videos → subpage
+  window.__videosPendingTarget = target;
+  window.__videosSuppressFlash = true;
+  sessionStorage.setItem("gotoSubPage", target);
+
+  await loadPage("videos");
+
+  const { goToVideosSection } = await import("./videos.js");
+  goToVideosSection(target, { skipDefault: true });
+});
+
+// Keyboard activation (Enter/Space)
+document.addEventListener("keydown", (e) => {
+  const row = e.target.closest(".lesson-row[data-target]");
+  if (!row) return;
+
+  if (e.key === "Enter" || e.key === " ") {
+    e.preventDefault();
+    row.click();
+  }
+});

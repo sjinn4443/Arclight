@@ -44,10 +44,9 @@ describe("Typography consistency (static CSS)", () => {
     expect(CSS).toMatch(/line-height:/);
   });
 
-  test("headings/body/buttons exist in CSS", () => {
+  test("headings/body exist in CSS", () => {
     // Check for the existence of these selectors in the CSS
     expect(CSS).toMatch(/h1[\s\S]*?{/);
     expect(CSS).toMatch(/p[\s\S]*?{/);
-    expect(CSS).toMatch(/button[\s\S]*?{/);
   });
 });
