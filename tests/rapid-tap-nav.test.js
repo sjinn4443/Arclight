@@ -2,7 +2,8 @@
  * @file Rapid Tap Navigation Tests
  * @description Ensures the navigation system handles rapid user interactions without duplicating history entries or causing unexpected behavior.
  */
-const { loadPage, historyStack } = require("../public/js/navigation.js");
+import { jest } from "@jest/globals";
+import { loadPage, historyStack } from "../public/js/navigation.js";
 
 // mock fetch so loadPage works
 global.fetch = jest.fn(async (url) => ({

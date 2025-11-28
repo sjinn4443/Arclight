@@ -2,6 +2,7 @@
  * @file Jest Setup
  * @description Configuration and setup for Jest test environment, including polyfills and environment variables.
  */
+import { jest } from "@jest/globals";
 import { TextEncoder, TextDecoder } from "util";
 import fetch from "node-fetch";
 
@@ -14,13 +15,16 @@ global.TextEncoder = TextEncoder;
 global.TextDecoder = TextDecoder;
 global.fetch = fetch;
 
-// Suppress console.warn messages globally during tests to reduce noise.
-// Specific warnings from navigation.js are not critical for test outcomes.
+// Suppress console.warn and console.error messages globally during tests to reduce noise.
 let consoleWarnSpy;
+let consoleErrorSpy;
+
 beforeEach(() => {
   consoleWarnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
+  consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
 });
 
 afterEach(() => {
-  consoleWarnSpy.mockRestore();
+  consoleWarnSpy?.mockRestore();
+  consoleErrorSpy?.mockRestore();
 });

@@ -10,10 +10,10 @@
  * Tweak SELECTORS / RULES to match your real classnames if needed.
  */
 
-const fs = require("fs");
-const path = require("path");
-const globby = require("globby");
-const { JSDOM } = require("jsdom");
+import fs from "fs";
+import path from "path";
+import globby from "globby";
+import { JSDOM } from "jsdom";
 
 const PUBLIC_DIR = path.join(__dirname, "..", "public");
 
