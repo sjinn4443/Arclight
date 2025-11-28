@@ -833,8 +833,10 @@ input:checked + .slider:before {
 
 .menu-close {
   position: absolute;
+  width: 4%;
+  height: 4%;
   top: 3%;
-  right: -42%;
+  right: 6%;
   font-size: 29px;
   border: none;
   background: none;
@@ -862,8 +864,10 @@ input:checked + .slider:before {
 .menu-sub {
   font-size: 11px;
   color: #666;
-  margin-left: 35%;
-  margin-top: 1%;
+  margin-left: -2%;
+  margin-top: -3%;
+  background-color: #c5c5c500;
+  margin-bottom: -6%;
 }
 
 /* Tabs with underlines */
@@ -2043,7 +2047,7 @@ input:checked + .slider:before {
 /* Smaller circular i next to text */
 .info-icon {
   margin-right: -94px;
-  margin-top: -38px;
+  margin-top: -27px;
   padding: 0.15rem; /* small tappable area, tweak if wanted */
   background: #c5c5c500;
   color: #666666;
@@ -2204,4 +2208,187 @@ input:checked + .slider:before {
 .lang-install__info-icon:focus-visible {
   background: rgba(0, 0, 0, 0.06);
   outline: none;
+}
+
+/* myprofile.css
+   Page-scoped styling so My Profile matches the clean mock (pic 2),
+   while leaving global components alone.
+*/
+
+/* Page shell */
+#myProfilePage {
+  background: #fff;
+  min-height: 100vh;
+  padding: 31px;
+  padding-bottom: 100px; /* keep clear of bottom bar */
+  box-sizing: border-box;
+  font-size: 14px;
+  color: #111;
+}
+
+/* ---- Top bar ---- */
+#myProfilePage .profile-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 0 14px;
+  margin-top: -5%;
+}
+
+#myProfilePage .profile-topbar__title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #111;
+  margin-left: 13%;
+}
+
+#myProfilePage .profile-topbar__icons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Override global button rule for icon buttons */
+#myProfilePage .icon-btn {
+  width: auto;
+  height: auto;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: none;
+  color: #111;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  position: relative;
+}
+
+/* small red notification dot */
+#myProfilePage .notif-dot {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 7px;
+  height: 7px;
+  background: #e41e26;
+  border-radius: 50%;
+  display: block;
+}
+
+/* ---- Profile header row ---- */
+#myProfilePage .profile-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 8px 0 18px;
+}
+
+#myProfilePage .profile-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: #111; /* black placeholder like mock */
+  flex: 0 0 auto;
+}
+
+#myProfilePage .profile-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: #111;
+  margin: 0;
+}
+
+#myProfilePage .profile-role {
+  font-size: 12px;
+  color: #444;
+  margin-top: 2px;
+}
+
+/* ---- Sections ---- */
+#myProfilePage .section {
+  margin-top: 18px;
+}
+
+#myProfilePage .section-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #111;
+  margin-bottom: 15px;
+  margin-top: 29px;
+}
+
+/* ---- Interest dropdown (pill style) ---- */
+#myProfilePage .interest-select select {
+  width: 100%;
+  height: 38px;
+  padding: 0 36px 0 12px;
+  border-radius: 12px;
+  border: 1px solid #e5e5ea;
+  background: #fff;
+  font-size: 12px;
+  color: #111;
+  outline: none;
+  appearance: none;
+}
+
+/* subtle caret */
+#myProfilePage .interest-select {
+  position: relative;
+}
+#myProfilePage .interest-select::after {
+  content: "";
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 10px;
+  height: 6px;
+  background: currentColor;
+  -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'><path d='M6 8L0 0h12L6 8z' fill='black'/></svg>")
+    center/contain no-repeat;
+  mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'><path d='M6 8L0 0h12L6 8z' fill='black'/></svg>")
+    center/contain no-repeat;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* ---- Achievements tiles ---- */
+#myProfilePage .achievements-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 6px;
+}
+
+#myProfilePage .achievement-tile {
+  height: 72px;
+  border-radius: 14px;
+  background: #e6e6e6;
+}
+
+/* ---- Settings list ---- */
+#myProfilePage .settings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 22px;
+}
+
+/* plain rows, not “menu” styled blocks */
+#myProfilePage .settings-item,
+#myProfilePage .settings-list .menu-item {
+  display: flex;
+  align-items: centre;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #111;
+  padding: 6px 0;
+  background: transparent;
+}
+
+#myProfilePage .settings-list .menu-item img {
+  width: 23px;
+  height: 17px;
+  margin: 0;
 }
