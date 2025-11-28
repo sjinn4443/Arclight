@@ -5,6 +5,10 @@
 import fs from "fs/promises";
 import path from "path";
 import { JSDOM } from "jsdom";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const publicDir = path.join(__dirname, "..", "public");
 const allHtmlFiles = new Set();

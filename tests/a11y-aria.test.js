@@ -14,6 +14,10 @@ import fs from "fs";
 import path from "path";
 import globby from "globby";
 import { JSDOM } from "jsdom";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const PUBLIC_DIR = path.join(__dirname, "..", "public");
 
