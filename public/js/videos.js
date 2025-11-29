@@ -4,44 +4,46 @@
 
 import { initializeVideoPlayers, initializeToolbar } from "./video.js";
 
+// Keep track of the currently active subpage element within videos.html
+let currentPageElement = null;
+
+const __videosGlobalBoundKey = "__videosGlobalBound";
+if (window[__videosGlobalBoundKey] == null) {
+  window[__videosGlobalBoundKey] = false;
+}
+
 // ----- Internal helper to show a specific videos subpage -----
 function show(id) {
-  const scope = document.getElementById("page-content") || document;
-  if (!scope) return;
+  const newPageElement = document.getElementById(id);
+  if (!newPageElement) {
+    console.warn(`[videos.js] Page element with ID "${id}" not found.`);
+    return;
+  }
 
-  scope
-    .querySelectorAll(
-      "#learningModules.page, " +
-        "#coreClinicalOphthalmicExamination.page, " +
-        "#visualAcuityPage.page, " +
-        "#frontOfEyePage.page, " +
-        "#anteriorSegmentVideoPage.page, " +
-        "#pupilsPage.page, " +
-        "#rapdPage.page, " +
-        "#rapdTestVideoPage.page, " +
-        "#pupilExamPECPage.page, " +
-        "#pupilFullExamPage.page, " +
-        "#pupilPathwaysPage.page, " +
-        "#directOphthalmoscopy.page, " +
-        "#interactiveLearningPage.page, " +
-        "#miresPage.page, " +
-        "#morphPage.page, " +
-        "#diseasesPage.page, " +
-        "#childhoodEyeScreeningPage.page, " +
-        "#howToArclightPage.page, " +
-        "#assessmentVisionPage.page, " +
-        "#fundalReflexPage.page, " +
-        "#normalAbnormalPage.page, " +
-        "#squintPalsyPage.page, " +
-        "#cataractPage.page, " +
-        "#arclightPage.page, " +
-        "#howToUseArclightVideoPage.page, " +
-        "#phoneAttachmentVideoPage.page",
-    )
-    .forEach((p) => (p.style.display = "none"));
+  // Lazy-load any iframes inside the page the first time it is shown
+  newPageElement.querySelectorAll("iframe[data-src]").forEach((f) => {
+    if (!f.src) {
+      f.src = f.getAttribute("data-src");
+    }
+  });
 
-  const el = document.getElementById(id);
-  if (el) el.style.display = "block";
+  // Pause any videos that are NOT inside the target page
+  document.querySelectorAll("video").forEach((v) => {
+    if (!newPageElement.contains(v) && !v.paused) {
+      try {
+        v.pause();
+      } catch {}
+    }
+  });
+
+  // Hide the currently active page, if any
+  if (currentPageElement && currentPageElement !== newPageElement) {
+    currentPageElement.style.display = "none";
+  }
+
+  // Show the new page
+  newPageElement.style.display = "block";
+  currentPageElement = newPageElement;
 }
 
 // ----- Public initializer: called by router when 'videos' is loaded -----
@@ -104,34 +106,13 @@ export function initializeVideos() {
     // (No default section will be shown.)
     reveal();
   }
-
-  if (pending) {
-    // Try immediately
-    if (document.getElementById(pending)) {
-      show(pending);
-      reveal();
-    } else {
-      // Wait a couple of frames for the fragment to settle, then retry
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          if (document.getElementById(pending)) {
-            show(pending);
-            reveal();
-          } else {
-            // Only then use the default fallback
-            fallbackToDefault();
-          }
-        });
-      });
-    }
-  } else {
-    fallbackToDefault();
-  }
 }
 
-// Delegate: elements with data-page can jump within videos
-const pc = document.getElementById("page-content") || document;
-{
+if (!window[__videosGlobalBoundKey]) {
+  window[__videosGlobalBoundKey] = true;
+
+  // Delegate: elements with data-page can jump within videos
+  const pc = document.getElementById("page-content") || document;
   pc.addEventListener(
     "click",
     (e) => {
@@ -142,6 +123,81 @@ const pc = document.getElementById("page-content") || document;
     },
     { passive: true },
   );
+
+  // --- delegated listener on the card (ID is case-sensitive) ---
+  document.addEventListener("click", (e) => {
+    if (e.target.closest("#caseBasedLearningCard")) {
+      openAnteriorSegmentQuiz().catch((err) =>
+        console.error("Failed to open Anterior Segment Quiz:", err),
+      );
+    }
+  });
+
+  // Make lesson rows act like carousel cards (deep-link to a video page)
+  document.addEventListener("click", (e) => {
+    const row = e.target.closest(".lesson-row[data-target]");
+    if (!row) return;
+
+    const target = row.getAttribute("data-target");
+    if (!target) return;
+
+    // Directly show the target subpage within the already loaded videos.html
+    show(target);
+  });
+
+  // Keyboard activation (Enter/Space)
+  document.addEventListener("keydown", (e) => {
+    const row = e.target.closest(".lesson-row[data-target]");
+    if (!row) return;
+
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      row.click();
+    }
+  });
+
+  // Ensure video players are initialized after load
+  document.addEventListener("DOMContentLoaded", () => {
+    try {
+      initializeVideoPlayers();
+    } catch (_e) {}
+  });
+
+  // Initialize on first load (in case the page starts here)
+  document.addEventListener(
+    "DOMContentLoaded",
+    bindDirectOphthalmoscopyToolbar,
+  );
+
+  // Re-run on page transitions; also pause the video when leaving this page
+  window.addEventListener("page:loaded", (e) => {
+    const pageId = e?.detail?.pageId;
+
+    if (pageId === "directOphthalmoscopy") {
+      bindDirectOphthalmoscopyToolbar();
+    } else {
+      const vid = document.querySelector("#directOphthalmoscopy #customVideo");
+      if (vid && !vid.paused) vid.pause();
+    }
+  });
+
+  // Boot on hard refresh / first load
+  document.addEventListener("DOMContentLoaded", () => {
+    initializeToolbar();
+    initializeVideoPlayers();
+  });
+
+  // Re-run on route changes and pause when leaving the page
+  window.addEventListener("page:loaded", (e) => {
+    const pageId = e?.detail?.pageId;
+    if (pageId === "directOphthalmoscopy") {
+      initializeToolbar();
+      initializeVideoPlayers();
+    } else {
+      const vid = document.querySelector("#directOphthalmoscopy #customVideo");
+      if (vid && !vid.paused) vid.pause();
+    }
+  });
 }
 
 // Baseline-style direct card IDs inside Core Clinical Ophthalmic Examination
@@ -170,9 +226,6 @@ if (showCoreBtn)
 if (showDiseasesBtn) showDiseasesBtn.onclick = () => show("diseasesPage");
 if (showArclightBtn) showArclightBtn.onclick = () => show("arclightPage");
 
-// Video player hooks (ported from baseline)
-initializeVideoPlayers();
-
 // ----- Called from eyes.js after loadPage('videos') -----
 export function goToVideosSection(sectionId, opts = {}) {
   const { skipDefault = false } = opts;
@@ -192,13 +245,6 @@ export function goToVideosSection(sectionId, opts = {}) {
     window.__videosPendingTarget = null;
   }
 }
-
-// Ensure video players are initialized after load
-document.addEventListener("DOMContentLoaded", () => {
-  try {
-    initializeVideoPlayers();
-  } catch (_e) {}
-});
 
 // --- Direct Ophthalmoscopy toolbar wiring + nav-aware pausing ---
 function bindDirectOphthalmoscopyToolbar() {
@@ -239,40 +285,6 @@ function bindDirectOphthalmoscopyToolbar() {
     alert("Learning folder feature coming soon.");
   });
 }
-
-// Initialize on first load (in case the page starts here)
-document.addEventListener("DOMContentLoaded", bindDirectOphthalmoscopyToolbar);
-
-// Re-run on page transitions; also pause the video when leaving this page
-window.addEventListener("page:loaded", (e) => {
-  const pageId = e?.detail?.pageId;
-
-  if (pageId === "directOphthalmoscopy") {
-    bindDirectOphthalmoscopyToolbar();
-  } else {
-    const vid = document.querySelector("#directOphthalmoscopy #customVideo");
-    if (vid && !vid.paused) vid.pause();
-  }
-});
-// --- end wiring ---
-
-// Boot on hard refresh / first load
-document.addEventListener("DOMContentLoaded", () => {
-  initializeToolbar();
-  initializeVideoPlayers();
-});
-
-// Re-run on route changes and pause when leaving the page
-window.addEventListener("page:loaded", (e) => {
-  const pageId = e?.detail?.pageId;
-  if (pageId === "directOphthalmoscopy") {
-    initializeToolbar();
-    initializeVideoPlayers();
-  } else {
-    const vid = document.querySelector("#directOphthalmoscopy #customVideo");
-    if (vid && !vid.paused) vid.pause();
-  }
-});
 
 // Util: wait for an element to appear
 function _waitForEl(selector, timeout = 4000) {
@@ -391,42 +403,3 @@ async function openAnteriorSegmentQuiz() {
     page.style.display = "block";
   }
 }
-
-// --- delegated listener on the card (ID is case-sensitive) ---
-document.addEventListener("click", (e) => {
-  if (e.target.closest("#caseBasedLearningCard")) {
-    openAnteriorSegmentQuiz().catch((err) =>
-      console.error("Failed to open Anterior Segment Quiz:", err),
-    );
-  }
-});
-
-// Make lesson rows act like carousel cards (deep-link to a video page)
-document.addEventListener("click", async (e) => {
-  const row = e.target.closest(".lesson-row[data-target]");
-  if (!row) return;
-
-  const target = row.getAttribute("data-target");
-  if (!target) return;
-
-  // same deep-link flow as eyes carousel → videos → subpage
-  window.__videosPendingTarget = target;
-  window.__videosSuppressFlash = true;
-  sessionStorage.setItem("gotoSubPage", target);
-
-  await loadPage("videos");
-
-  const { goToVideosSection } = await import("./videos.js");
-  goToVideosSection(target, { skipDefault: true });
-});
-
-// Keyboard activation (Enter/Space)
-document.addEventListener("keydown", (e) => {
-  const row = e.target.closest(".lesson-row[data-target]");
-  if (!row) return;
-
-  if (e.key === "Enter" || e.key === " ") {
-    e.preventDefault();
-    row.click();
-  }
-});

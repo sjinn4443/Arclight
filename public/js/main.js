@@ -49,6 +49,9 @@ function isOnboardingDone() {
  * This function runs once the DOM is fully loaded.
  */
 document.addEventListener("DOMContentLoaded", () => {
+  // Force onboarding as done for testing purposes
+  localStorage.setItem("arclight:onboarded", "1");
+
   // Init global systems once
   initializeLocation().catch((e) => console.warn("[geo] init failed", e));
   initializeMenu();

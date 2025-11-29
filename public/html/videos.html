@@ -10,6 +10,7 @@
       <video
         id="visualAcuityVideo"
         controls
+        preload="none"
         style="width: 100%; max-width: 100%"
       >
         <source src="videos/VisualAcuity.mp4" type="video/mp4" />
@@ -98,6 +99,7 @@
       <video
         id="anteriorSegmentVideo"
         controls
+        preload="none"
         style="width: 100%; max-width: 100%"
       >
         <source src="videos/AnteriorSegment.mp4" type="video/mp4" />
@@ -262,7 +264,12 @@
       <h3 data-i18n="videos.rapdTestVideoTitle">RAPD Test Video</h3>
     </div>
     <div class="video-container">
-      <video id="rapdTestVideo" controls style="width: 100%; max-width: 100%">
+      <video
+        id="rapdTestVideo"
+        preload="none"
+        controls
+        style="width: 100%; max-width: 100%"
+      >
         <source src="videos/Pupil/RAPDTest.mp4" type="video/mp4" />
         <span data-i18n="videos.videoNotSupported"
           >Your browser does not support the video tag.</span
@@ -282,6 +289,7 @@
       <video
         id="pupilExamPECVideo"
         controls
+        preload="none"
         style="width: 100%; max-width: 100%"
       >
         <source src="videos/Pupil/PupilExamPEC.mp4" type="video/mp4" />
@@ -305,9 +313,10 @@
       <video
         id="pupilFullExamVideo"
         controls
+        preload="none"
         style="width: 100%; max-width: 100%"
       >
-        <source src="videos/Pupil/PupilExam.mp4" type="video/mp4" />
+        <source src="videos/Pupil/fullpupil_240p.mp4" type="video/mp4" />
         <span data-i18n="videos.videoNotSupported"
           >Your browser does not support the video tag.</span
         >
@@ -326,6 +335,7 @@
       <video
         id="pupilPathwaysVideo"
         controls
+        preload="none"
         style="width: 100%; max-width: 100%"
       >
         <source src="videos/Pupil/PupilPathways.mp4" type="video/mp4" />
@@ -346,7 +356,12 @@
       </h3>
     </div>
     <div class="video-container">
-      <video id="customVideo" controls style="width: 100%; max-width: 100%">
+      <video
+        id="customVideo"
+        controls
+        preload="none"
+        style="width: 100%; max-width: 100%"
+      >
         <source src="videos/DirectOphthalmoscopy.mp4" type="video/mp4" />
         <span data-i18n="videos.videoNotSupported"
           >Your browser does not support the video tag.</span
@@ -421,7 +436,8 @@
     </div>
     <div class="video-container">
       <iframe
-        src="subapp/Mires/index.html"
+        data-src="subapp/Mires/index.html"
+        loading="lazy"
         style="width: 100%; height: 80vh; border: none"
         title="Mires Simulation"
         data-i18n="videos.miresSimulationTitle:title"
@@ -438,7 +454,8 @@
     </div>
     <div class="video-container">
       <iframe
-        src="subapp/Morph/index.html"
+        data-src="subapp/Morph/index.html"
+        loading="lazy"
         style="width: 100%; height: 80vh; border: none"
         title="Morph Simulation"
         data-i18n="videos.morphSimulationTitle:title"
@@ -626,6 +643,7 @@
       <video
         id="howToArclightVideo"
         controls
+        preload="none"
         style="width: 100%; max-width: 100%"
       >
         <source src="videos/USAID/HowtoArclight.mp4" type="video/mp4" />
@@ -649,6 +667,7 @@
       <video
         id="assessmentVisionVideo"
         controls
+        preload="none"
         style="width: 100%; max-width: 100%"
       >
         <source src="videos/USAID/AssessmentVision.mp4" type="video/mp4" />
@@ -670,6 +689,7 @@
       <video
         id="fundalReflexVideo"
         controls
+        preload="none"
         style="width: 100%; max-width: 100%"
       >
         <source src="videos/USAID/FundalReflexUSAID.mp4" type="video/mp4" />
@@ -693,6 +713,7 @@
       <video
         id="normalAbnormalVideo"
         controls
+        preload="none"
         style="width: 100%; max-width: 100%"
       >
         <source src="videos/USAID/NormalAbnormal.mp4" type="video/mp4" />
@@ -712,7 +733,8 @@
     </div>
     <div class="video-container">
       <iframe
-        src="subapp/Squint/index.html"
+        data-src="subapp/Squint/index.html"
+        loading="lazy"
         style="width: 100%; height: 80vh; border: none"
         title="Squint / Palsy Simulation"
         data-i18n="videos.squintPalsySimulationTitle:title"
@@ -729,7 +751,8 @@
     </div>
     <div class="video-container">
       <iframe
-        src="subapp/Cataract/index.html"
+        data-src="subapp/Cataract/index.html"
+        loading="lazy"
         style="width: 100%; height: 80vh; border: none"
         title="Cataract Simulation"
         data-i18n="videos.cataractSimulationTitle:title"
@@ -787,6 +810,7 @@
       <video
         id="howToUseArclightVideo"
         controls
+        preload="none"
         style="width: 100%; max-width: 100%"
       >
         <source src="videos/USAID/HowtoArclight.mp4" type="video/mp4" />
@@ -810,6 +834,7 @@
       <video
         id="phoneAttachmentVideo"
         controls
+        preload="none"
         style="width: 100%; max-width: 100%"
       >
         <source src="videos/Arclight/PhoneAttach.mp4" type="video/mp4" />

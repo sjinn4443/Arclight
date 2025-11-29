@@ -55,7 +55,12 @@ export function initializeVideoPlayers() {
   });
 }
 
+let __toolbarInitialized = false;
+
 export function initializeToolbar() {
+  if (__toolbarInitialized) return;
+  __toolbarInitialized = true;
+
   const toolbarButtonMappings = {
     timestampBtn: showTimestamps,
     noteBtn: showNote,
