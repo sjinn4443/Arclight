@@ -136,6 +136,120 @@ function setTriToggleUI(root, mode) {
   });
 }
 
+// -------------------------
+// Apply Pupil Full Exam mode (low/high/online)
+// -------------------------
+const PUPIL_VIDEO_SOURCES = {
+  low: "videos/Pupil/fullpupil_240p.mp4",
+  high: "videos/Pupil/fullpupil_orig.mp4",
+  online: "https://www.youtube.com/embed/19pN7jSYHMw",
+};
+
+function applyPupilMode(mode, { preserveTime = true } = {}) {
+  if (!PUPIL_MODES.includes(mode)) mode = "low";
+
+  const page = document.getElementById("pupilFullExamPage");
+  if (!page) return;
+
+  const container = page.querySelector("#pupilFullExamContainer");
+  if (!container) return;
+
+  const video = container.querySelector("#pupilFullExamVideo");
+  const existingIframe = container.querySelector("iframe.pupil-full-yt");
+
+  // Save current time if we’re on a local video and switching away
+  let currentTime = 0;
+  if (preserveTime && video && !video.paused) {
+    currentTime = video.currentTime || 0;
+  } else if (preserveTime && video) {
+    currentTime = video.currentTime || 0;
+  }
+
+  if (mode === "online") {
+    // Pause and hide local video
+    if (video) {
+      try {
+        video.pause();
+      } catch {}
+      video.style.display = "none";
+    }
+
+    // Create iframe if not present
+    if (!existingIframe) {
+      const iframe = document.createElement("iframe");
+      iframe.className = "pupil-full-yt";
+      iframe.width = "100%";
+      iframe.height = "100%";
+      iframe.style.width = "100%";
+      iframe.style.minHeight = "45vh";
+      iframe.style.border = "none";
+      iframe.allow =
+        "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+      iframe.allowFullscreen = true;
+      iframe.title = "Pupil Full Examination (online)";
+      iframe.src = PUPIL_VIDEO_SOURCES.online;
+      container.appendChild(iframe);
+    } else {
+      // Ensure correct src if it exists already
+      existingIframe.src = PUPIL_VIDEO_SOURCES.online;
+      existingIframe.style.display = "block";
+    }
+
+    return;
+  }
+
+  // low / high modes:
+  // Remove/hide iframe if we’re leaving online
+  if (existingIframe) {
+    existingIframe.remove();
+  }
+
+  if (!video) return;
+
+  // Show video element
+  video.style.display = "block";
+
+  // Swap mp4 source
+  const sourceEl = video.querySelector("source");
+  if (sourceEl) {
+    sourceEl.src = PUPIL_VIDEO_SOURCES[mode];
+  } else {
+    // fallback: if source missing, create one
+    const s = document.createElement("source");
+    s.src = PUPIL_VIDEO_SOURCES[mode];
+    s.type = "video/mp4";
+    video.prepend(s);
+  }
+
+  // Reload and restore time
+  try {
+    video.load();
+  } catch {}
+
+  const restore = () => {
+    if (!preserveTime) return;
+
+    // Prefer stored maxTime if it exists, else use carried currentTime
+    const prog = readVideoProgress(VIDEO_PROGRESS_KEYS.pupilFullExamVideo);
+    const targetTime = (prog?.maxTime ?? currentTime) || 0;
+
+    try {
+      if (video.currentTime < 0.5 && targetTime > 0) {
+        video.currentTime = Math.min(
+          targetTime,
+          Math.max(0, (video.duration || targetTime) - 1),
+        );
+      }
+    } catch {}
+  };
+
+  if (video.readyState >= 1) {
+    restore();
+  } else {
+    video.addEventListener("loadedmetadata", restore, { once: true });
+  }
+}
+
 function wireTriToggle() {
   const page = document.getElementById("pupilFullExamPage");
   if (!page) return;
@@ -155,6 +269,9 @@ function wireTriToggle() {
     const mode = btn.dataset.mode;
     writePupilMode(mode);
     setTriToggleUI(toggle, mode);
+
+    // NEW: swap the video/iframe
+    applyPupilMode(mode);
 
     // broadcast in case other code wants to swap sources etc.
     document.dispatchEvent(
@@ -237,7 +354,14 @@ function show(id) {
   // Auto-resume full pupil exam video from last watched time
   if (id === "pupilFullExamPage") {
     wireTriToggle();
-    resumePupilFullExamIfNeeded();
+
+    const mode = readPupilMode();
+    applyPupilMode(mode, { preserveTime: false });
+
+    // Only auto-resume for local video modes
+    if (mode !== "online") {
+      resumePupilFullExamIfNeeded();
+    }
   }
 
   // Refresh lesson progress bars when switching sections
