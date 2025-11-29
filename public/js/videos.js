@@ -12,6 +12,195 @@ if (window[__videosGlobalBoundKey] == null) {
   window[__videosGlobalBoundKey] = false;
 }
 
+// -------------------------
+// Video progress (Pupils)
+// -------------------------
+const VIDEO_PROGRESS_KEYS = {
+  pupilFullExamVideo: "videoProgress:pupilFullExamVideo",
+};
+
+function formatTime(seconds) {
+  if (!Number.isFinite(seconds) || seconds < 0) seconds = 0;
+  const total = Math.floor(seconds);
+  const mins = Math.floor(total / 60);
+  const secs = total % 60;
+  return `${mins}:${String(secs).padStart(2, "0")}`;
+}
+
+function readVideoProgress(key) {
+  try {
+    return JSON.parse(localStorage.getItem(key) || "null");
+  } catch {
+    return null;
+  }
+}
+
+function writeVideoProgress(key, data) {
+  try {
+    localStorage.setItem(key, JSON.stringify(data));
+  } catch {}
+}
+
+function wirePupilFullExamProgress() {
+  const video = document.getElementById("pupilFullExamVideo");
+  if (!video || video.dataset.progressWired === "1") return;
+
+  video.dataset.progressWired = "1";
+
+  const storageKey = VIDEO_PROGRESS_KEYS.pupilFullExamVideo;
+
+  const save = () => {
+    const duration = video.duration || 0;
+    if (!duration) return;
+
+    const prev = readVideoProgress(storageKey) || {};
+    const maxTime = Math.max(prev.maxTime || 0, video.currentTime || 0);
+
+    writeVideoProgress(storageKey, {
+      maxTime,
+      duration,
+      percent: Math.min(100, (maxTime / duration) * 100),
+      updatedAt: Date.now(),
+    });
+
+    updateLessonProgressBars();
+  };
+
+  video.addEventListener("loadedmetadata", save);
+  video.addEventListener("timeupdate", save);
+  video.addEventListener("ended", () => {
+    if (!video.duration) return;
+    writeVideoProgress(storageKey, {
+      maxTime: video.duration,
+      duration: video.duration,
+      percent: 100,
+      updatedAt: Date.now(),
+    });
+    updateLessonProgressBars();
+  });
+}
+
+function updateLessonProgressBars(activePageId) {
+  // We only need to update when Pupils list is visible,
+  // but it’s cheap enough to run safely whenever.
+  const pupilsPage = document.getElementById("pupilsPage");
+  if (!pupilsPage) return;
+
+  const row = pupilsPage.querySelector(
+    '.lesson-row[data-target="pupilFullExamPage"]',
+  );
+  if (!row) return;
+
+  const fill = row.querySelector(".lesson-progress__fill");
+  const meta = row.querySelector(".lesson-meta");
+
+  const prog = readVideoProgress(VIDEO_PROGRESS_KEYS.pupilFullExamVideo);
+  const percent = prog?.percent ?? 0;
+  const maxTime = prog?.maxTime ?? 0;
+
+  if (fill) {
+    fill.style.width = `${percent}%`;
+    fill.setAttribute("aria-valuenow", String(Math.round(percent)));
+    fill.title = `${Math.round(percent)}% watched`;
+  }
+
+  if (meta) {
+    meta.textContent = `| ${formatTime(maxTime)}`;
+  }
+}
+
+// ----- Internal helper to show a specific videos subpage -----
+// -------------------------
+// 3-way toggle state (Pupil Full Exam)
+// -------------------------
+const PUPIL_MODE_KEY = "pupilFullExam:mode";
+const PUPIL_MODES = ["low", "high", "online"];
+
+function readPupilMode() {
+  const m = localStorage.getItem(PUPIL_MODE_KEY);
+  return PUPIL_MODES.includes(m) ? m : "low";
+}
+
+function writePupilMode(mode) {
+  if (!PUPIL_MODES.includes(mode)) mode = "low";
+  localStorage.setItem(PUPIL_MODE_KEY, mode);
+}
+
+function setTriToggleUI(root, mode) {
+  if (!root) return;
+  root.dataset.active = mode;
+  const btns = root.querySelectorAll(".tri-toggle__btn");
+  btns.forEach((btn) => {
+    const isActive = btn.dataset.mode === mode;
+    btn.setAttribute("aria-checked", isActive ? "true" : "false");
+  });
+}
+
+function wireTriToggle() {
+  const page = document.getElementById("pupilFullExamPage");
+  if (!page) return;
+
+  const toggle = page.querySelector(".tri-toggle");
+  if (!toggle || toggle.dataset.wired === "1") return;
+  toggle.dataset.wired = "1";
+
+  // init UI to stored mode
+  const initialMode = readPupilMode();
+  setTriToggleUI(toggle, initialMode);
+
+  toggle.addEventListener("click", (e) => {
+    const btn = e.target.closest(".tri-toggle__btn");
+    if (!btn) return;
+
+    const mode = btn.dataset.mode;
+    writePupilMode(mode);
+    setTriToggleUI(toggle, mode);
+
+    // broadcast in case other code wants to swap sources etc.
+    document.dispatchEvent(
+      new CustomEvent("pupil:mode-changed", {
+        detail: { mode },
+      }),
+    );
+  });
+}
+
+function resumePupilFullExamIfNeeded() {
+  const video = document.getElementById("pupilFullExamVideo");
+  if (!video || video.dataset.autoResumed === "1") return;
+
+  const prog = readVideoProgress(VIDEO_PROGRESS_KEYS.pupilFullExamVideo);
+  const startAt = prog?.maxTime ?? 0;
+
+  if (startAt <= 0) {
+    video.dataset.autoResumed = "1";
+    return;
+  }
+
+  const seekToSavedTime = () => {
+    const duration = video.duration || 0;
+    if (!duration) return;
+
+    // Don’t jump right to the very end
+    const safeTime = Math.min(startAt, Math.max(0, duration - 1));
+
+    // Only seek if we're basically at the start
+    if (video.currentTime < 0.5) {
+      try {
+        video.currentTime = safeTime;
+      } catch {}
+    }
+
+    video.dataset.autoResumed = "1";
+  };
+
+  if (video.readyState >= 1) {
+    seekToSavedTime();
+  } else {
+    video.addEventListener("loadedmetadata", seekToSavedTime, { once: true });
+  }
+}
+
 // ----- Internal helper to show a specific videos subpage -----
 function show(id) {
   const newPageElement = document.getElementById(id);
@@ -44,6 +233,15 @@ function show(id) {
   // Show the new page
   newPageElement.style.display = "block";
   currentPageElement = newPageElement;
+
+  // Auto-resume full pupil exam video from last watched time
+  if (id === "pupilFullExamPage") {
+    wireTriToggle();
+    resumePupilFullExamIfNeeded();
+  }
+
+  // Refresh lesson progress bars when switching sections
+  updateLessonProgressBars(id);
 }
 
 // ----- Public initializer: called by router when 'videos' is loaded -----
@@ -57,6 +255,9 @@ export function initializeVideos() {
 
   // Always hide first; we’ll reveal only when the target section exists.
   if (root) root.style.visibility = "hidden";
+
+  // Wire video progress tracking (safe to call even if DOM not ready yet)
+  wirePupilFullExamProgress();
 
   // Resolve the target (global → sessionStorage)
   let pending = window.__videosPendingTarget || "";
@@ -84,6 +285,10 @@ export function initializeVideos() {
     } catch (_e) {}
     window.__videosPendingTarget = "";
     window.__videosSuppressFlash = false;
+
+    // Update bars when the route becomes visible
+    updateLessonProgressBars();
+
     if (root) {
       requestAnimationFrame(() => {
         root.style.visibility = "visible";

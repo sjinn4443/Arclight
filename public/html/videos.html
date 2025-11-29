@@ -304,6 +304,38 @@
 <!-- Pupil Full Examination Page -->
 <div id="pupilFullExamPage" class="page" style="display: none">
   <div>
+    <!-- 3-way video mode toggle -->
+    <div class="tri-toggle" role="radiogroup" aria-label="Video mode">
+      <button
+        class="tri-toggle__btn"
+        type="button"
+        role="radio"
+        aria-checked="false"
+        data-mode="low"
+      >
+        low
+      </button>
+      <button
+        class="tri-toggle__btn"
+        type="button"
+        role="radio"
+        aria-checked="false"
+        data-mode="high"
+      >
+        high
+      </button>
+      <button
+        class="tri-toggle__btn tri-toggle__btn--icon"
+        type="button"
+        role="radio"
+        aria-checked="false"
+        data-mode="online"
+        aria-label="online"
+      >
+        <span class="tri-toggle__wifi" aria-hidden="true"></span>
+      </button>
+      <div class="tri-toggle__knob" aria-hidden="true"></div>
+    </div>
     <div class="video-header">
       <h3 data-i18n="videos.pupilFullExaminationTitle">
         Pupil Full Examination

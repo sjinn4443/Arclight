@@ -130,3 +130,91 @@ body {
 
 /* ============================================= Sitewide resets ============================================= */
 /* Sitewide resets - the body rule already handles margin and padding reset. */
+
+/* -------------------------
+   3-way toggle (low/high/online)
+-------------------------- */
+.tri-toggle {
+  --toggle-height: 36px;
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: center;
+  width: 31%;
+  max-width: 420px;
+  margin: 13px 17px -8px auto;
+  padding: 4px;
+  background: #ffffff;
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.06);
+  user-select: none;
+  border-color: #c5c5c5;
+}
+
+.tri-toggle__btn {
+  position: relative;
+  z-index: 2;
+  border: 0;
+  background: transparent;
+  padding: 0 6px; /* 세로 패딩 제거 */
+  height: 100%; /* 토글 높이에 맞춤 */
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.65);
+  border-radius: 999px;
+  cursor: pointer;
+  text-transform: lowercase;
+  display: grid;
+  place-items: center;
+  margin-bottom: 6px;
+}
+
+/* Wifi icon button */
+.tri-toggle__btn--icon {
+  display: grid;
+  place-items: center;
+}
+
+.tri-toggle__wifi {
+  width: 18px;
+  height: 18px;
+  display: inline-block;
+  background: currentColor;
+  -webkit-mask: url('data:image/svg+xml;utf8,\
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="black">\
+<path d="M12 18.5c.83 0 1.5.67 1.5 1.5S12.83 21.5 12 21.5 10.5 20.83 10.5 20s.67-1.5 1.5-1.5zm0-4c2.21 0 4.21.9 5.66 2.34l-1.42 1.42A5.98 5.98 0 0 0 12 16.5c-1.66 0-3.16.67-4.24 1.76l-1.42-1.42A7.96 7.96 0 0 1 12 14.5zm0-4c3.31 0 6.31 1.34 8.49 3.51l-1.41 1.41A9.96 9.96 0 0 0 12 12.5c-2.76 0-5.26 1.12-7.07 2.93L3.51 14A11.94 11.94 0 0 1 12 10.5zm0-4c4.42 0 8.42 1.79 11.31 4.69l-1.41 1.41A13.94 13.94 0 0 0 12 8.5c-3.87 0-7.37 1.57-9.9 4.1L.69 11.19A15.94 15.94 0 0 1 12 6.5z"/>\
+</svg>')
+    center / contain no-repeat;
+  mask: url('data:image/svg+xml;utf8,\
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="black">\
+<path d="M12 18.5c.83 0 1.5.67 1.5 1.5S12.83 21.5 12 21.5 10.5 20.83 10.5 20s.67-1.5 1.5-1.5zm0-4c2.21 0 4.21.9 5.66 2.34l-1.42 1.42A5.98 5.98 0 0 0 12 16.5c-1.66 0-3.16.67-4.24 1.76l-1.42-1.42A7.96 7.96 0 0 1 12 14.5zm0-4c3.31 0 6.31 1.34 8.49 3.51l-1.41 1.41A9.96 9.96 0 0 0 12 12.5c-2.76 0-5.26 1.12-7.07 2.93L3.51 14A11.94 11.94 0 0 1 12 10.5zm0-4c4.42 0 8.42 1.79 11.31 4.69l-1.41 1.41A13.94 13.94 0 0 0 12 8.5c-3.87 0-7.37 1.57-9.9 4.1L.69 11.19A15.94 15.94 0 0 1 12 6.5z"/>\
+</svg>')
+    center / contain no-repeat;
+}
+
+.tri-toggle__btn[aria-checked="true"] {
+  color: #ffffff;
+}
+
+.tri-toggle__knob {
+  position: absolute;
+  inset: 4px; /* top/bottom/left/right 고정 제거 */
+  width: calc((100% - 8px) / 3);
+  background: #e41e26;
+  border-radius: 999px;
+  transition: transform 180ms ease;
+  z-index: 1;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+}
+
+/* knob positions */
+.tri-toggle[data-active="low"] .tri-toggle__knob {
+  transform: translateX(0%);
+}
+.tri-toggle[data-active="high"] .tri-toggle__knob {
+  transform: translateX(100%);
+}
+.tri-toggle[data-active="online"] .tri-toggle__knob {
+  transform: translateX(200%);
+}
