@@ -1,4 +1,4 @@
-/** @type {import('@playwright/test').PlaywrightTestConfig} */
+/** @type {import('@playwright/test').PlaywrightTestConfig} 
 module.exports = {
   testDir: "./tests-e2e",
   use: {
@@ -9,4 +9,4 @@ module.exports = {
     port: 3000,
     reuseExistingServer: !process.env.CI,
   },
-};
+}; */

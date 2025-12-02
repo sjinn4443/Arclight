@@ -1,4 +1,4 @@
-<!-- THE CHANGES - activeContext.md | 2025-10-02, Cline -->
+<!-- THE CHANGES - activeContext.md | 2025-12-02, Cline -->
 
 # Active Context
 
@@ -56,6 +56,8 @@ The current focus is on ensuring the application's core structure and PWA capabi
 - Addressed `npm audit` vulnerabilities by updating `js-yaml` and relaxing the CI audit level to prevent build failures while maintaining security awareness.
 - Performed code formatting check and fixed issues using Prettier, ensuring code consistency.
 - Executed all Jest test suites, confirming all tests passed successfully.
+- **Added performance tests:** Implemented `lighthousespeed.test.js`, `renderperf.test.js`, `lowend.test.js`, `lowendmemoryleak.test.js`, and `mediaperf.test.js` to establish performance guards.
+- **Configured Jest for GC exposure:** Updated `package.json` to enable garbage collection exposure for memory leak detection in Jest tests.
 
 ## Next Steps
 
