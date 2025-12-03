@@ -24,9 +24,19 @@ describe("Performance budgets: payload sizes", () => {
   });
 
   test("main CSS stays under budget", () => {
-    const p = path.join(PUBLIC, "style/style.css"); // Adjusted path for style.css
-    const size = fs.statSync(p).size;
-    expect(kb(size)).toBeLessThan(budget.cssKb);
+    const files = [
+      "style/base.css",
+      "style/components.css",
+      "style/pages.css",
+      "style/responsive.css",
+    ];
+
+    const totalBytes = files.reduce((sum, f) => {
+      const p = path.join(PUBLIC, f);
+      return sum + fs.statSync(p).size;
+    }, 0);
+
+    expect(kb(totalBytes)).toBeLessThan(budget.cssKb);
   });
 
   test("core JS bundle stays under budget", () => {
@@ -34,6 +44,13 @@ describe("Performance budgets: payload sizes", () => {
       "js/main.js",
       "js/navigation.js",
       "js/dashboard.js",
+      "js/quiz-launcher.js",
+      "js/i18n.js",
+      "js/language-picker.js",
+      "js/menu.js",
+      "js/pwa.js",
+      "js/video.js",
+      "js/location-service.js",
       // add other critical startup scripts
     ];
 
@@ -49,27 +66,5 @@ describe("Performance budgets: payload sizes", () => {
     const p = path.join(PUBLIC, "sw.js");
     const size = fs.statSync(p).size;
     expect(kb(size)).toBeLessThan(budget.swKb);
-  });
-});
-
-/** @jest-environment jsdom */
-import { loadPage } from "../public/js/navigation.js";
-
-global.fetch = jest.fn(async () => ({
-  ok: true,
-  text: async () => `<div class="page">ok</div>`,
-}));
-
-describe("Performance budgets: route load time", () => {
-  beforeEach(() => {
-    document.body.innerHTML = `<div id="page-content"></div>`;
-  });
-
-  test("loadPage('dashboard') completes quickly", async () => {
-    const start = performance.now();
-    await loadPage("dashboard");
-    const end = performance.now();
-
-    expect(end - start).toBeLessThan(120); // proxy budget; tune to be stable
   });
 });

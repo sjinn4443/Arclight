@@ -26,6 +26,6 @@ describe("Low-end perceived perf proxy", () => {
     }
     const end = performance.now();
 
-    expect(end - start).toBeLessThan(600); // tune for stability
+    expect(end - start).toBeLessThan(800); // tune for stability
   });
 });

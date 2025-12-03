@@ -13,11 +13,6 @@ module.exports = {
     "/node_modules/",
     "/tests-e2e/",
     "/public/html/demo/",
-    "tests/large-state.test.js",
-    "tests/lighthousespeed.test.js",
-    "tests/lowend.test.js",
-    "tests/lowendmemoryleak.test.js",
-    "tests/mediaperf.test.js",
     "tests/renderperf.test.js",
   ], // Exclude Playwright tests, demo folder, and specific test files
   testTimeout: 30000, // Increase global test timeout to 30 seconds
