@@ -1,4 +1,4 @@
-/** @jest-environment jsdom 
+/** @jest-environment jsdom */
 import { loadPage } from "../public/js/navigation.js";
 
 global.fetch = jest.fn(async () => ({
@@ -26,4 +26,4 @@ describe("Memory leak proxy", () => {
     const growthMb = (after - before) / (1024 * 1024);
     expect(growthMb).toBeLessThan(15); // proxy budget, tune per your app
   });
-}); */
+});

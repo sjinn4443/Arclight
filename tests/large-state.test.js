@@ -1,6 +1,6 @@
 /**
  * @jest-environment jsdom
-
+ */
 // Mock localStorage
 const localStorageMock = (() => {
   let store = {};
@@ -57,4 +57,4 @@ describe("Large-State Scenarios", () => {
     localStorage.setItem("likedItems", JSON.stringify(likedItems));
     expect(JSON.parse(localStorage.getItem("likedItems"))).toEqual(["item-1"]);
   });
-}); */
+});

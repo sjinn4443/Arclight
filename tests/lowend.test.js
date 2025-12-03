@@ -1,4 +1,4 @@
-/** @jest-environment jsdom 
+/** @jest-environment jsdom */
 import { loadPage } from "../public/js/navigation.js";
 
 global.fetch = jest.fn(async () => ({
@@ -8,8 +8,7 @@ global.fetch = jest.fn(async () => ({
 
 function busyWait(ms) {
   const start = performance.now();
-  while (performance.now() - start < ms) {
-  }
+  while (performance.now() - start < ms) {}
 }
 
 describe("Low-end perceived perf proxy", () => {
@@ -29,4 +28,4 @@ describe("Low-end perceived perf proxy", () => {
 
     expect(end - start).toBeLessThan(600); // tune for stability
   });
-}); */
+});

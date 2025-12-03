@@ -1,4 +1,4 @@
-/** @jest-environment node 
+/** @jest-environment node */
 const fs = require("fs");
 const path = require("path");
 const { JSDOM } = require("jsdom"); // Required for HTML parsing in node environment tests
@@ -52,7 +52,7 @@ describe("Performance budgets: payload sizes", () => {
   });
 });
 
-/** @jest-environment jsdom 
+/** @jest-environment jsdom */
 import { loadPage } from "../public/js/navigation.js";
 
 global.fetch = jest.fn(async () => ({
@@ -72,4 +72,4 @@ describe("Performance budgets: route load time", () => {
 
     expect(end - start).toBeLessThan(120); // proxy budget; tune to be stable
   });
-});*/
+});

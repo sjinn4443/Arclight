@@ -32,6 +32,7 @@ describe("i18n Fallback", () => {
     expect(i18n.t("greeting")).toBe("Hello");
     i18n.setLang("es");
     expect(i18n.t("greeting")).toBe("Hola");
+    //add more lang
   });
 
   it("should fall back to English when a translation key is missing", () => {

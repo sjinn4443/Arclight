@@ -1,4 +1,4 @@
-/** @jest-environment node 
+/** @jest-environment node */
 const fs = require("fs");
 const path = require("path");
 const { JSDOM } = require("jsdom");
@@ -65,4 +65,3 @@ describe("Rendering guards: images optimised", () => {
     }
   });
 });
- */

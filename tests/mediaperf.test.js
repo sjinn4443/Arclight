@@ -1,4 +1,4 @@
-/** @jest-environment node 
+/** @jest-environment node */
 const fs = require("fs");
 const path = require("path");
 const { JSDOM } = require("jsdom");
@@ -39,7 +39,7 @@ describe("Media preload guards", () => {
   });
 });
 
-@jest-environment jsdom 
+/* @jest-environment jsdom */
 import { initVideoPlayer } from "../public/js/video.js";
 // ^ replace with your actual function (assuming video.js exists based on project context)
 
@@ -66,4 +66,4 @@ describe("Media resilience proxy", () => {
       "none",
     );
   });
-}); */
+});
