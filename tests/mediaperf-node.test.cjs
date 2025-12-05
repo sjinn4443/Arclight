@@ -2,7 +2,12 @@
 const fs = require("fs");
 const path = require("path");
 const { JSDOM } = require("jsdom");
-const { ROUTES } = require("../public/js/config.js"); // Import ROUTES
+
+let ROUTES;
+
+beforeAll(async () => {
+  ({ ROUTES } = await import("../public/js/config.js"));
+});
 
 describe("Media preload guards", () => {
   test("no video/audio preload on non-media pages", () => {
