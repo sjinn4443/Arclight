@@ -6,8 +6,8 @@ module.exports = {
   transformIgnorePatterns: [
     "/node_modules/(?!(jsdom|parse5|globby|@sindresorhus/merge-streams)/)",
   ],
-  setupFiles: ["<rootDir>/tests/setupEnv.js"],
-  setupFilesAfterEnv: ["./tests/jest.setup.js"],
+  setupFiles: ["<rootDir>/tests/setupEnv.cjs"],
+  setupFilesAfterEnv: ["./tests/jest.setup.cjs"],
   moduleFileExtensions: ["js", "json", "jsx", "ts", "tsx", "node", "cjs"],
   testPathIgnorePatterns: [
     "/node_modules/",

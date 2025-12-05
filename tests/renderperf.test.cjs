@@ -13,12 +13,12 @@ describe("Rendering guards: CSS is present early", () => {
     const { document } = dom.window;
 
     const headLinks = [
-      ...document.head.querySelectorAll("link[rel='stylesheet']"),
+      ...document.head.querySelectorAll("link[rel=\'stylesheet\']"),
     ];
     expect(headLinks.length).toBeGreaterThan(0);
 
     const hrefs = headLinks.map((l) => l.getAttribute("href"));
-    expect(hrefs.some((h) => h.includes("style.css"))).toBe(true);
+    expect(hrefs.some((h) => h.includes("components.css"))).toBe(true);
   });
 });
 

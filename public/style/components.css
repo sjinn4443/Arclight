@@ -2392,3 +2392,23 @@ input:checked + .slider:before {
   height: 17px;
   margin: 0;
 }
+
+/* Remove focus outline / active flash on back button */
+#backBtn,
+.backBtn,
+.back-button {
+  outline: none;
+  box-shadow: none;
+  -webkit-tap-highlight-color: transparent; /* mobile highlight */
+}
+
+/* Remove tap/focus flash on the global back button */
+#backBtnGlobal,
+#backBtnGlobal:focus,
+#backBtnGlobal:active,
+#backBtnGlobal:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+  border-color: transparent !important;
+  -webkit-tap-highlight-color: transparent;
+}
