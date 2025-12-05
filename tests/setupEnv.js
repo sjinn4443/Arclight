@@ -1,3 +1,3 @@
-process.env.ENCRYPTION_KEY =
-  process.env.ENCRYPTION_KEY ||
+process.env.ENCRYPTION_SECRET =
+  process.env.ENCRYPTION_SECRET ||
   "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef";
