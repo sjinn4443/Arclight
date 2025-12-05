@@ -1,4 +1,5 @@
 /* @jest-environment jsdom */
+import { jest } from "@jest/globals";
 import { initializeVideoPlayers } from "../public/js/video.js";
 // ^ replace with your actual function (assuming video.js exists based on project context)
 

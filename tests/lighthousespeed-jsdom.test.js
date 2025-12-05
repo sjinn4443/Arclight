@@ -1,4 +1,5 @@
 /** @jest-environment jsdom */
+import { jest } from "@jest/globals";
 import { loadPage } from "../public/js/navigation.js";
 
 global.fetch = jest.fn(async () => ({
@@ -11,7 +12,7 @@ describe("Performance budgets: route load time", () => {
     document.body.innerHTML = `<div id="page-content"></div>`;
   });
 
-  test("loadPage(\'dashboard\') completes quickly", async () => {
+  test("loadPage('dashboard') completes quickly", async () => {
     const start = performance.now();
     await loadPage("dashboard");
     const end = performance.now();

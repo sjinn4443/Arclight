@@ -1,4 +1,5 @@
 /** @jest-environment jsdom */
+import { jest } from "@jest/globals";
 import { loadPage } from "../public/js/navigation.js";
 
 global.fetch = jest.fn(async () => ({
