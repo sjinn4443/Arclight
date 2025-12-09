@@ -17,12 +17,6 @@
   height: 2.8rem;
 }
 
-/* Thumbnails in module cards */
-.module-card img {
-  width: clamp(56px, 22vw, 96px);
-  height: auto;
-}
-
 /* Bottom navigation bar */
 .bottom-bar {
   display: flex;

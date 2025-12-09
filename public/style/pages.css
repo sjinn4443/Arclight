@@ -504,6 +504,7 @@ select.onb-input.has-value {
   margin: 12% auto 28px;
   max-width: 220px;
   width: 41%;
+  aspect-ratio: 16 / 9;
   height: auto;
   border-radius: 14px;
 }
@@ -1328,7 +1329,7 @@ select.onb-input.has-value + .onb-select-caret {
   opacity: 0;
   padding: 0;
   border: none;
-  transition: all 0.25s ease;
+
   pointer-events: none;
 }
 
@@ -1341,7 +1342,6 @@ select.onb-input.has-value + .onb-select-caret {
   height: 30px;
   border-radius: 12px;
   pointer-events: auto;
-  transition: all 0.25s ease;
 }
 
 /* 아이콘은 항상 표시 */

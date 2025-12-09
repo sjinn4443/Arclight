@@ -2,7 +2,8 @@ module.exports = {
   ci: {
     collect: {
       // starts your app for LH to hit
-      startServerCommand: "node server.cjs", // ADJUST HERE if different
+      startServerCommand:
+        "npm run build && cross-env NODE_ENV=production node server.cjs", // build + serve prod
       startServerReadyPattern: "listening", // ADJUST to your server log
       url: [
         "http://localhost:3000/index.html",

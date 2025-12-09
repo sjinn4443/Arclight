@@ -26,17 +26,31 @@
       href="favicons/favicon-16x16.png"
     />
     <link rel="manifest" href="manifest.json" />
-    <script
-      src="https://browser.sentry-cdn.com/8.26.0/bundle.tracing.replay.min.js"
-      crossorigin="anonymous"
-    ></script>
     <script>
-      Sentry.init({
-        dsn: "https://203a0d9e09961e3dc90ebc2337e81642@o4510382478196736.ingest.de.sentry.io/4510382482325584",
-        tracesSampleRate: 1.0,
-        replaysSessionSampleRate: 0.1,
-        replaysOnErrorSampleRate: 1.0,
-      });
+      if (location.hostname !== "localhost") {
+        var s = document.createElement("script");
+        s.src =
+          "https://browser.sentry-cdn.com/8.26.0/bundle.tracing.replay.min.js";
+        s.crossOrigin = "anonymous";
+        s.onerror = function () {
+          console.warn(
+            "Sentry CDN blocked or failed to load; continuing without monitoring.",
+          );
+        };
+        s.onload = function () {
+          try {
+            Sentry.init({
+              dsn: "https://203a0d9e09961e3dc90ebc2337e81642@o4510382478196736.ingest.de.sentry.io/4510382482325584",
+              tracesSampleRate: 1.0,
+              replaysSessionSampleRate: 0.1,
+              replaysOnErrorSampleRate: 1.0,
+            });
+          } catch (e) {
+            console.warn("Sentry init failed:", e);
+          }
+        };
+        document.head.appendChild(s);
+      }
     </script>
 
     <link rel="stylesheet" href="style/base.css" />

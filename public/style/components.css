@@ -998,10 +998,11 @@ input:checked + .slider:before {
 
 /* Menu item icon alignment */
 .menu-item img {
-  width: 20px;
-  height: 15px;
+  width: 24px;
+  height: auto;
   margin-right: 6px;
   vertical-align: text-bottom;
+  aspect-ratio: auto; /* use intrinsic ratio to avoid distortion */
 }
 
 .profile-location {
@@ -1009,6 +1010,8 @@ input:checked + .slider:before {
   font-size: 11px;
   color: #666;
   letter-spacing: 0.2px;
+  /* Reserve space to avoid shift when content updates */
+  min-height: 1.4em;
 }
 
 .check-location-btn.is-hidden + .menu-search-wrap {

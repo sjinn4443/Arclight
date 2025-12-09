@@ -14,6 +14,8 @@ const prod = process.env.NODE_ENV === "production";
 
 const app = express();
 
+const staticRoot = path.join(__dirname, prod ? "dist" : "public");
+
 // Use the port from the environment variable, defaulting to 3001 if not set
 const PORT = process.env.PORT || 3000;
 
@@ -23,12 +25,9 @@ app.set("trust proxy", 1);
 const storage = require("./storage/index.cjs"); // auto-picks NDJSON or PG
 
 app.use(express.json({ limit: "100kb" }));
-app.use("/js", express.static(path.join(__dirname, "public", "js"))); // Explicit route for /js
-app.use(
-  "/favicons",
-  express.static(path.join(__dirname, "public", "favicons")),
-); // Explicit route for favicons
-app.use(express.static(path.join(__dirname, "public")));
+app.use("/js", express.static(path.join(staticRoot, "js"))); // Prefer built js in prod
+app.use("/favicons", express.static(path.join(staticRoot, "favicons"))); // Prefer built assets in prod
+app.use(express.static(staticRoot));
 
 // Initialise storage (creates table locally on PG or folders for NDJSON)
 storage.init().catch((err) => {

@@ -20,7 +20,7 @@
 
 .container {
   padding: 20px;
-  padding-bottom: 100%;
+  padding-bottom: 100px; /* reserve space, avoid percent-based layout jump */
 }
 
 body {
@@ -45,13 +45,10 @@ p {
 }
 
 /* ============================================= Layout primitives & helpers ============================================= */
-body {
-  font-family: Arial;
-}
 
 .container {
   padding: 20px;
-  padding-bottom: 100%;
+  padding-bottom: 100px; /* reserve space, avoid percent-based layout jump */
 }
 
 .page {
@@ -60,6 +57,11 @@ body {
 
 .page.active {
   display: block;
+}
+
+/* Reserve stable viewport height for initial content load */
+#page-content {
+  min-height: 100vh;
 }
 
 .hidden {
@@ -130,6 +132,11 @@ body {
 
 /* ============================================= Sitewide resets ============================================= */
 /* Sitewide resets - the body rule already handles margin and padding reset. */
+
+/* Prevent layout nudge when scrollbars appear/disappear */
+html {
+  scrollbar-gutter: stable both-edges;
+}
 
 /* -------------------------
    3-way toggle (low/high/online)
