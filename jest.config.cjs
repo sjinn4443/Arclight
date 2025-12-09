@@ -9,6 +9,13 @@ module.exports = {
   setupFiles: ["<rootDir>/tests/setupEnv.cjs"],
   setupFilesAfterEnv: ["./tests/jest.setup.cjs"],
   moduleFileExtensions: ["js", "json", "jsx", "ts", "tsx", "node", "cjs"],
+  moduleNameMapper: {
+    // Map app ESM modules to CJS test doubles to avoid ESM loader conflicts in CJS tests
+    "^\\.\\.\\/public\\/js\\/navigation\\.js$":
+      "<rootDir>/tests/__mocks__/navigation.cjs",
+    "^\\.\\.\\/public\\/js\\/video\\.js$":
+      "<rootDir>/tests/__mocks__/video.cjs",
+  },
   testPathIgnorePatterns: [
     "/node_modules/",
     "/tests-e2e/",
