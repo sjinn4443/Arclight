@@ -112,9 +112,12 @@ const build = async () => {
     };
     for (const file of htmlFiles) {
       const content = await fs.readFile(file, "utf8");
-      const minified = htmlMinifierTerser.minify(content, htmlMinifierOptions);
-      const htmlToWrite = await Promise.resolve(String(minified)); // Explicitly await and convert
-      await fs.writeFile(file, htmlToWrite);
+      // html-minifier-terser returns a Promise<string>
+      const minified = await htmlMinifierTerser.minify(
+        content,
+        htmlMinifierOptions,
+      );
+      await fs.writeFile(file, minified);
     }
 
     console.log("Build complete!");
