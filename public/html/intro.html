@@ -22,11 +22,18 @@
       <button class="intro-arrow intro-arrow-left"><</button>
 
       <img
-        src="images/onboarding/onboarding.webp"
-        alt="App preview"
+        src="images/onboarding/onboarding-240.webp"
+        srcset="
+          images/onboarding/onboarding-240.webp 240w,
+          images/onboarding/onboarding-480.webp 480w,
+          images/onboarding/onboarding.webp     740w
+        "
+        sizes="(max-width: 480px) 120px, 220px"
         class="intro-hero"
-        width="100"
-        height="100"
+        alt="App preview"
+        width="359"
+        height="740"
+        decoding="async"
         data-i18n="intro.app_preview_alt:alt"
       />
 

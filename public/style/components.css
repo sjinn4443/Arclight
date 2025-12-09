@@ -131,12 +131,14 @@ textarea {
   align-items: center;
 }
 
+/* Stabilise module card thumbnails to prevent CLS */
 .module-card img {
-  width: 80px;
-  height: 80px;
-  object-fit: cover;
-  border-radius: 8px;
-  margin-right: 12px;
+  width: clamp(56px, 22vw, 96px);
+  height: clamp(56px, 22vw, 96px); /* NEW: reserve height */
+  aspect-ratio: 1 / 1; /* NEW: stable square box */
+  object-fit: contain;
+  flex: 0 0 auto;
+  display: block;
 }
 
 .module-info h3 {
@@ -1060,7 +1062,7 @@ input:checked + .slider:before {
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23000000' d='M6 8L0 0h12L6 8z'/%3E%3C/svg%3E"); /* black arrow */
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'12\' height=\'8\' viewBox=\'0 0 12 8\'%3E%3Cpath fill=\'%23000000\' d=\'M6 8L0 0h12L6 8z\'/\%3E%3C/svg%3E"); /* black arrow */
   background-repeat: no-repeat;
   background-position: right 10px center;
   background-size: 12px 8px;
@@ -1124,7 +1126,7 @@ input:checked + .slider:before {
   cursor: pointer;
 }
 
-/* White arrow on the bar (so it's visible on black) */
+/* White arrow on the bar (so it\'s visible on black) */
 .lang-picker__toggle::after {
   content: "";
   position: absolute;
@@ -1135,7 +1137,7 @@ input:checked + .slider:before {
   height: 8px;
   background-repeat: no-repeat;
   background-size: 12px 8px;
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23000000' d='M6 8L0 0h12L6 8z'/%3E%3C/svg%3E"); /* black arrow */
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'12\' height=\'8\' viewBox=\'0 0 12 8\'%3E%3Cpath fill=\'%23000000\' d=\'M6 8L0 0h12L6 8z\'/\%3E%3C/svg%3E"); /* black arrow */
 }
 
 /* Open state rotates the arrow */
@@ -1920,9 +1922,9 @@ input:checked + .slider:before {
   display: block;
 
   /* mask the SVG chevron */
-  -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="%23000" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>')
+  -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\'><path fill=\'%23000\' d=\'M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z\'/\%3E%3C/svg%3E")
     center / contain no-repeat;
-  mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="%23000" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>')
+  mask: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\'><path fill=\'%23000\' d=\'M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z\'/\%3E%3C/svg%3E")
     center / contain no-repeat;
 }
 
@@ -2344,9 +2346,9 @@ input:checked + .slider:before {
   width: 10px;
   height: 6px;
   background: currentColor;
-  -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'><path d='M6 8L0 0h12L6 8z' fill='black'/></svg>")
+  -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 12 8\'><path d=\'M6 8L0 0h12L6 8z\'/\%3E%3C/svg%3E")
     center/contain no-repeat;
-  mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'><path d='M6 8L0 0h12L6 8z' fill='black'/></svg>")
+  mask: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 12 8\'><path d=\'M6 8L0 0h12L6 8z\'/\%3E%3C/svg%3E")
     center/contain no-repeat;
   opacity: 0.5;
   pointer-events: none;
