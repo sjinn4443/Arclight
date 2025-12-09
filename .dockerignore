@@ -1,0 +1,28 @@
+# Ignore local dev artifacts
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-store
+
+# VCS
+.git
+.gitignore
+
+# Editors
+.vscode
+.idea
+
+# Tests and local results
+coverage
+reports
+test-results
+playwright-report
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Others
+*.swp
+*.swo
