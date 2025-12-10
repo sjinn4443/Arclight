@@ -198,6 +198,9 @@ function minimalShowPage(id) {
   if (target) target.style.display = "";
 }
 
+// Expose minimalShowPage globally for legacy/inline usage
+window.minimalShowPage = window.minimalShowPage || minimalShowPage;
+
 (function () {
   if (window.__pageShownPatched) return;
   const orig = window.showPage;
@@ -494,3 +497,6 @@ document.addEventListener("page:loaded", (e) => {
     );
   }
 });
+
+// Expose loadPage globally for compatibility with legacy code / inline handlers
+window.loadPage = window.loadPage || loadPage;

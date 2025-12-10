@@ -131,15 +131,18 @@ window.addEventListener("page:loaded", (e) => {
   const host = document.getElementById(target);
   if (host) host.style.display = "";
 
-  try {
-    const { openMenu } = require("./menu.js");
-    document.querySelectorAll("#pupilsPage .menuBtn").forEach((btn) =>
-      btn.addEventListener("click", (ev) => {
-        ev.preventDefault();
+  // Wire the menu button using dynamic import (ESM-safe in browsers)
+  document.querySelectorAll("#pupilsPage .menuBtn").forEach((btn) =>
+    btn.addEventListener("click", async (ev) => {
+      ev.preventDefault();
+      try {
+        const { openMenu } = await import("./menu.js");
         openMenu();
-      }),
-    );
-  } catch {}
+      } catch (e) {
+        console.error("Failed to open menu:", e);
+      }
+    }),
+  );
 });
 
 document.addEventListener("DOMContentLoaded", () => {

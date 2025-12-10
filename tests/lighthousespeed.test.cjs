@@ -21,7 +21,7 @@ describe("Performance budgets: payload sizes", () => {
     const p = path.join(PUBLIC, "index.html");
     const size = fs.statSync(p).size;
     expect(kb(size)).toBeLessThan(budget.htmlKb);
-  });
+  }); // put each html files here
 
   test("main CSS stays under budget", () => {
     const files = [
