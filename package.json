@@ -4,7 +4,7 @@
   "main": "public/sw.js",
   "type": "module",
   "scripts": {
-    "prepare": "husky install",
+    "prepare": "husky install || echo '[prepare] husky not installed; skipping'",
     "test": "cross-env NODE_ENV=test NODE_OPTIONS=--expose-gc node_modules/jest/bin/jest.js --config jest.config.cjs",
     "dev": "cross-env NODE_ENV=development PORT=3000 nodemon server.cjs",
     "start": "node server.cjs",
