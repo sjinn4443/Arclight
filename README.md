@@ -103,7 +103,7 @@ The following JavaScript files are integral to the application's functionality:
 - `catalog-index.js`: Manages the catalog of learning modules.
 - `config.js`: Handles application configuration settings.
 - `dashboard.js`: Controls the main user dashboard functionality.
-- `dev_dashboard.js`: Specific scripts for the development dashboard.
+- `dev_dashboard.js` (now `reports`): Specific scripts for the development dashboard UI (served at /reports.html).
 - `ears.js`: Contains logic and content for the "Ears" module.
 - `eyes.js`: Contains logic and content for the "Eyes" module.
 - `home-data.js`: Manages data related to the home screen.

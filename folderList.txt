@@ -31,7 +31,7 @@ memory-bank/projectbrief.md
 memory-bank/systemPatterns.md
 memory-bank/techContext.md
 public/
-public/dev_dashboard.html
+public/reports.html
 public/index.html
 public/manifest.json
 public/sw.js
@@ -49,7 +49,7 @@ public/favicons/site.webmanifest
 public/html/
 public/html/atomscard.html
 public/html/dashboard.html
-public/html/dev_dashboard.html
+
 public/html/ears.html
 public/html/eyes.html
 public/html/fundal_exam.html

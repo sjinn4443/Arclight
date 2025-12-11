@@ -66,6 +66,15 @@ function basicAuth(req, res, next) {
   return res.status(401).send("Authentication required.");
 }
 
+// Protect the reports HTML pages so they are not publicly accessible
+app.get("/reports.html", basicAuth, (req, res) => {
+  return res.sendFile(path.join(staticRoot, "reports.html"));
+});
+
+app.get("/html/reports.html", basicAuth, (req, res) => {
+  return res.sendFile(path.join(staticRoot, "html", "reports.html"));
+});
+
 app.get("/api/dev/users", basicAuth, async (req, res) => {
   try {
     const rows = await storage.getUsersForDashboard();
