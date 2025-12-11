@@ -13,8 +13,7 @@
       Welcome to<br />the Arclight App!
     </h1>
     <p class="intro-sub" data-i18n="intro.subtitle">
-      Here’s a quick overview of the features<br />
-      to help you get started
+      Here’s a quick overview of the features<br />to help you get started<br />
     </p>
 
     <!-- Center phone image + arrows -->
@@ -23,20 +22,13 @@
         &#8249;
       </button>
 
-      <img
-        src="images/onboarding/onboarding-120.webp"
-        srcset="
-          images/onboarding/onboarding-120.webp 120w,
-          images/onboarding/onboarding-220.webp 220w
-        "
-        sizes="(max-width: 480px) 120px, 220px"
-        class="intro-hero"
-        alt="App preview"
-        width="220"
-        height="452"
-        decoding="async"
-        data-i18n="intro.app_preview_alt:alt"
-      />
+      <!-- 새 컨테이너 -->
+      <div class="intro-hero-frame">
+        <video class="intro-hero" autoplay muted playsinline loop>
+          <source src="videos/Intro/GIFRecommended_Comp.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
 
       <button class="intro-arrow intro-arrow-right" aria-label="Next">
         &#8250;
