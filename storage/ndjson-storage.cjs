@@ -134,7 +134,7 @@ async function getUsersForDashboard() {
 async function saveIp(ip) {
   const geo = await enrichIp(ip);
   const timestamp = new Date().toISOString();
-  console.log("Saving IP:", ip, "Geo:", geo, "Timestamp:", timestamp);
+  // Do not log IP or geo information here to avoid leaking potentially sensitive data.
   writeLine({
     type: "ip",
     ts: timestamp,

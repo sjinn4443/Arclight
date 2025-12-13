@@ -32,7 +32,10 @@ app.use(express.static(staticRoot));
 // Initialise storage (creates table locally on PG or folders for NDJSON)
 storage.init().catch((err) => {
   console.error("Storage init failed", err);
-  process.exit(1);
+  // During tests, don't hard-exit the Jest worker process.
+  if (process.env.NODE_ENV !== "test") {
+    process.exit(1);
+  }
 });
 
 // --- Public app APIs ---
@@ -57,11 +60,52 @@ app.post("/api/app/refresh", async (req, res) => {
 });
 
 // --- Dev dashboard (protected) ---
+// In-memory rate limiter for attempts against the reports dev page only.
+// Keeps a small sliding window per IP. This is intentionally simple and
+// scoped to the basic auth check for reports so normal user actions are not rate limited.
+const devDashboardAuthAttempts = new Map(); // ip -> [timestamps]
 function basicAuth(req, res, next) {
   const header = req.headers.authorization || "";
   const token = header.startsWith("Basic ") ? header.slice(6) : "";
   const [user, pass] = Buffer.from(token, "base64").toString("utf8").split(":");
-  if (pass && pass === process.env.DASHBOARD_PASSWORD) return next();
+
+  // Apply rate limiting only for requests attempting to access the reports pages
+  const isReportsPath =
+    req.path === "/reports.html" || req.path === "/html/reports.html";
+  if (isReportsPath) {
+    try {
+      const ip = req.ip || req.connection?.remoteAddress || "unknown";
+      const now = Date.now();
+      const windowMs = 15 * 60 * 1000; // 15 minutes
+      const maxAttempts = 10;
+      const attempts = devDashboardAuthAttempts.get(ip) || [];
+      // keep only recent entries inside the window
+      const recent = attempts.filter((ts) => now - ts < windowMs);
+      recent.push(now);
+      devDashboardAuthAttempts.set(ip, recent);
+      if (recent.length > maxAttempts) {
+        // Too many attempts — signal client and do not disclose details
+        res.set("Retry-After", String(Math.ceil(windowMs / 1000)));
+        return res
+          .status(429)
+          .send("Too many authentication attempts. Please try again later.");
+      }
+    } catch (e) {
+      // If rate limiter fails for some reason, continue to auth check (fail-open)
+      console.error("[dev] rate limiter error", e && e.message ? e.message : e);
+    }
+  }
+
+  // Perform password check. Do NOT log the supplied password or request body anywhere.
+  if (pass && pass === process.env.DASHBOARD_PASSWORD) {
+    // On success, clear recorded attempts for this IP to avoid locking the user out
+    if (isReportsPath) {
+      const ip = req.ip || req.connection?.remoteAddress || "unknown";
+      devDashboardAuthAttempts.delete(ip);
+    }
+    return next();
+  }
+
   res.set("WWW-Authenticate", 'Basic realm="Arclight Dev Dashboard"');
   return res.status(401).send("Authentication required.");
 }
