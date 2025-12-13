@@ -67,6 +67,7 @@ const build = async () => {
         "public/js/pwa.js",
         "public/js/quiz-launcher.js",
         "public/js/quizzes.js",
+        "public/js/reports.js",
         "public/js/toc.js",
         "public/js/video.js",
         "public/js/videos.js",

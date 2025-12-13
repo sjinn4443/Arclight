@@ -74,9 +74,10 @@ self.addEventListener("fetch", (event) => {
   if (
     url.pathname === "/track" ||
     url.pathname === "/reports.html" ||
+    url.pathname === "/html/reports.html" ||
     url.pathname.startsWith("/api/dev/")
   ) {
-    // Bypass service worker for /track endpoint, reports page, and dev API calls
+    // Bypass service worker for /track endpoint, reports pages, and dev API calls
     return;
   }
 

@@ -51,6 +51,15 @@ describe("Reports Basic Auth", () => {
     expect(res.text).toMatch(/Arclight Reports/);
   });
 
+  test("GET /js/reports.js should be served", async () => {
+    const res = await request(app).get("/js/reports.js");
+
+    // The reports page imports this module; it must exist in both dev and prod.
+    expect(res.status).toBe(200);
+    expect(res.headers["content-type"]).toMatch(/javascript|text\/plain/i);
+    expect(res.text).toMatch(/renderUsers|fetchUsers|initWorldMap/);
+  });
+
   test("GET /api/dev/users should require auth", async () => {
     const res = await request(app).get("/api/dev/users");
     expect(res.status).toBe(401);
