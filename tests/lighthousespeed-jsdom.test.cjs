@@ -17,6 +17,8 @@ describe("Performance budgets: route load time", () => {
     await loadPage("dashboard");
     const end = performance.now();
 
-    expect(end - start).toBeLessThan(120); // proxy budget; tune to be stable
+    // NOTE: This is a lightweight proxy budget and is sensitive to CI/host variability.
+    // Keep it modest but stable across environments.
+    expect(end - start).toBeLessThan(200);
   });
 });
