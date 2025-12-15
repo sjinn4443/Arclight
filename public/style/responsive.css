@@ -130,7 +130,7 @@ input {
   }
 
   #pupilsPage .lesson-type,
-  .lesson-meta {
+  #pupilsPage .lesson-meta {
     margin-top: 5vh;
   }
 
@@ -231,7 +231,7 @@ input {
   }
 
   #pupilsPage .lesson-type,
-  .lesson-meta {
+  #pupilsPage .lesson-meta {
     margin-top: 5vh;
   }
 
@@ -378,88 +378,43 @@ input {
   }
 }
 
-/* Base (mobile-first): compact */
 .lang-install__modal {
   width: min(286px, 90vw);
   padding: 20px 22px;
 }
 
-/* ≥ 480px: a bit wider */
+/* ============================================= ≥ 480px ============================================= */
 @media (min-width: 480px) {
   .lang-install__modal {
     width: min(286px, 90vw);
     padding: 22px 24px;
   }
-}
 
-/* Optional: tighten select on very small screens */
-@media (max-width: 360px) {
-  #languagePickerSelect.lang-install__select {
-    font-size: 12px;
-    padding: 8px 32px 8px 10px;
+  .ml-masonry {
+    column-count: 3;
+  }
+
+  .category-carousel {
+    grid-auto-columns: 29%;
+  }
+
+  #likedList {
+    grid-template-columns: 1fr 1fr;
   }
 }
 
-/* Moved from: public/AnteriorSegmentQuiz/html/theme.css */
+/* ============================================= ≥ 420px ============================================= */
 @media (max-width: 420px) {
   .card {
     border-radius: 16px;
     padding: 23px;
     height: 552px;
   }
-}
 
-/* Moved from: public/style/base.css */
-@media (prefers-reduced-motion: reduce) {
-  .logo-one {
-    animation: none !important;
-  }
-}
-
-/* Moved from: public/style/components.css */
-@media (max-width: 360px) {
-  .ml-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* Moved from: public/style/components.css */
-@media (min-width: 480px) {
-  .ml-masonry {
-    column-count: 3;
-  }
-}
-
-/* Moved from: public/style/components.css */
-@media (max-width: 340px) {
-  .pupil-card {
-    padding: 14px 12px;
-  }
-  .lesson-row {
-    grid-template-columns: 46px 1fr auto;
-  }
-  .lesson-row .thumb {
-    width: 46px;
-    height: 32px;
-  }
-}
-
-/* Moved from: public/style/components.css */
-@media (min-width: 1080px) {
-  :root {
-    --container-w: 84vw;
-  }
-}
-
-/* Moved from: public/style/pages.css */
-@media (max-width: 420px) {
   .onboarding-container {
     padding-bottom: 100%;
   }
-}
 
-/* Moved from: public/style/pages.css */
-@media (max-width: 420px) {
   .intro-container {
     padding-bottom: 120px;
     padding-top: 17%;
@@ -483,22 +438,19 @@ input {
   }
 }
 
-/* Moved from: public/style/pages.css */
-@media (min-width: 480px) {
-  .category-carousel {
-    grid-auto-columns: 29%;
+@media (prefers-reduced-motion: reduce) {
+  .logo-one {
+    animation: none !important;
   }
 }
 
-/* Moved from: public/style/pages.css */
-@media (min-width: 480px) {
-  #likedList {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-/* Moved from: public/style/pages.css */
+/* ============================================= ≥ 360px ============================================= */
 @media (max-width: 360px) {
+  #languagePickerSelect.lang-install__select {
+    font-size: 12px;
+    padding: 8px 32px 8px 10px;
+  }
+
   #likedList {
     grid-template-columns: 1fr;
   }
@@ -519,16 +471,13 @@ input {
   .lang-install__body {
     margin-top: 93px;
   }
-}
 
-/* Moved from: public/style/pages.css */
-@media (min-width: 480px) {
-  .ml-masonry {
-    column-count: 3;
+  .ml-grid {
+    grid-template-columns: 1fr;
   }
 }
 
-/* Moved from: public/style/pages.css */
+/* ============================================= ≥ 340px ============================================= */
 @media (max-width: 340px) {
   .pupil-card {
     padding: 14px 12px;
@@ -559,7 +508,12 @@ input {
   }
 }
 
-/* Moved from: public/style/pages.css */
+@media (min-width: 1080px) {
+  :root {
+    --container-w: 84vw;
+  }
+}
+
 @media (min-width: 401px) {
   #onboarding .container,
   #proInterestPage .container,
@@ -588,89 +542,5 @@ input {
   }
   .interest-container {
     padding-bottom: 0 !important;
-  }
-}
-
-/* Moved from: public/subapp/Cataract/style.css */
-@media (min-width: 600px) {
-  .button-group button {
-    max-width: 150px;
-  }
-}
-
-/* Moved from: public/subapp/Mires/styles.css */
-@media (min-width: 600px) {
-  #appBar h1 {
-    font-size: 30px;
-  }
-
-  #infoContainer {
-    top: 85px;
-    left: 30px;
-  }
-
-  /* Keep 4 slider pinned to bottom on larger screens */
-  #sliderContainer {
-    bottom: 15px;
-    right: 30px;
-  }
-
-  /* Keep vertical slider pinned to right on larger screens */
-  #separationSliderContainer {
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-  }
-
-  #blueCircle {
-    width: 300px;
-    height: 300px;
-  }
-
-  #mires {
-    width: 250px;
-    height: 200px;
-  }
-
-  svg {
-    width: 200px;
-    height: 200px;
-  }
-
-  .info-icon {
-    width: 13px;
-    height: 13px;
-  }
-}
-
-/* Moved from: public/subapp/Mires/styles.css */
-@media (min-width: 600px) {
-  #infoContainer {
-    top: 105px; /* adjusted value for larger screens */
-    left: 30px;
-  }
-}
-
-/* Moved from: public/subapp/Squint/style.css */
-@media screen and (max-width: 480px) {
-  .slider-wrapper {
-    width: 100%;
-  }
-
-  #backBtnGlobal::before {
-    width: 24px;
-    height: 23px;
-  }
-
-  .unified-top .icon {
-    font-size: 21px;
-  }
-
-  .eyes-top .icon {
-    font-size: 21px;
-  }
-
-  .lang-install__body {
-    margin-top: 93px;
   }
 }

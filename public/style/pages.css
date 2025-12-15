@@ -975,33 +975,10 @@ select.onb-input.has-value {
   padding: 6px 8px;
 }
 
-/* Eyes catalog: carousel dots */
-.catalog-h2 {
-  position: relative;
-}
-.catalog-h2 .carousel-dots {
-  position: absolute;
-  right: 0;
-  top: -6px; /* puts dots above the See all > spot */
-  display: flex;
-  gap: 7px;
-  align-items: center;
-}
-.catalog-h2 .carousel-dots .dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  border: 0;
-  background: #cfcfd6;
-  cursor: pointer;
-}
-.catalog-h2 .carousel-dots .dot.active {
-  background: #e41e26; /* active color (matches dashboard) */
-}
-
 /* ===== Pupils top bar ===== */
 #pupilsPage .eyes-topbar {
   position: fixed;
+  top: 0;
   width: 100%;
   z-index: 1000;
   background: #fff;
@@ -1014,7 +991,6 @@ select.onb-input.has-value {
 }
 
 #pupilsPage .eyes-topbar__title {
-  position: static;
   font-size: 14px;
   font-weight: 600;
   color: #111;
@@ -1042,6 +1018,14 @@ select.onb-input.has-value {
   margin-left: 240px;
 }
 
+/* ===== Pupils timeline layout ===== */
+#pupilsPage .pupils-container {
+  background: #fff;
+  min-height: 100vh;
+  padding-bottom: 100px;
+  padding-top: 62px; /* reserve space for fixed topbar */
+}
+
 #pupilsPage .pupils-subtitle {
   font-size: 13px;
   font-weight: 600;
@@ -1049,18 +1033,17 @@ select.onb-input.has-value {
   margin: 16px 18px 16px;
 }
 
-.tl-item {
+#pupilsPage .tl-item {
   position: relative;
   margin: 14px 0;
 }
 
-/* Inner lesson rows (white rounded chips) */
-
-.thumb {
-  width: 42px;
-  height: 30px;
+#pupilsPage .thumb {
+  width: 47px;
+  height: 48px;
   border-radius: 8px;
-  background: #d3d3d3;
+  background: #dcdcdc;
+  border: 1px solid #e5e5ea;
 }
 
 /* tighten the base module-card shadow/padding for this page only */
@@ -1069,7 +1052,6 @@ select.onb-input.has-value {
 }
 
 /* ===== Pupils card polish ===== */
-/* Outer grey card */
 #pupilsPage .pupil-card {
   background: #c5c5c5;
   border: none;
@@ -1089,7 +1071,6 @@ select.onb-input.has-value {
   color: #111;
 }
 
-/* White lesson boxes stacked under title */
 #pupilsPage .lesson-row {
   display: grid;
   grid-template-columns: 44px 1fr auto;
@@ -1104,15 +1085,6 @@ select.onb-input.has-value {
   width: 88%;
 }
 
-#pupilsPage .thumb {
-  width: 47px;
-  height: 48px;
-  border-radius: 8px;
-  background: #dcdcdc;
-  border: 1px solid #e5e5ea;
-}
-
-/* Title row within the white box */
 #pupilsPage .lesson-top {
   display: flex;
   align-items: center;
@@ -1122,17 +1094,18 @@ select.onb-input.has-value {
   margin-top: -11%;
   margin-left: 5%;
 }
+
 #pupilsPage .lesson-type {
   font-weight: 600;
   color: #111;
   font-size: 11px;
 }
+
 #pupilsPage .lesson-meta {
   color: #bbb;
   font-size: 11px;
 }
 
-/* Darker, thicker progress */
 #pupilsPage .lesson-progress {
   width: 100%;
   height: 6px;
@@ -1142,6 +1115,7 @@ select.onb-input.has-value {
   overflow: hidden;
   margin-left: 5%;
 }
+
 #pupilsPage .lesson-progress__fill {
   height: 100%;
   background: #111;
@@ -1153,13 +1127,6 @@ select.onb-input.has-value {
   font-size: 11px;
   color: #bbb;
   margin-bottom: -103%;
-}
-
-#pupilsPage .eyes-topbar {
-  position: fixed;
-  top: 0;
-  background: #fff;
-  z-index: 1000;
 }
 
 /* ===== Pupils timeline layout ===== */
@@ -1187,10 +1154,10 @@ select.onb-input.has-value {
 
 /* Lesson rows (white pills inside the card) */
 
+/* keep as-is (dead-code removal is out of scope) */
 #learningModules {
   display: none !important;
 }
-
 /* Disabled Eyes cards (no navigation) */
 .eyes-card.is-disabled {
   opacity: 0.5;
