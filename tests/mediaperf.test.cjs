@@ -1,7 +1,7 @@
 /* @jest-environment jsdom */
 import { jest } from "@jest/globals";
-import { initializeVideoPlayers } from "../public/js/video.js";
-// ^ replace with your actual function (assuming video.js exists based on project context)
+import { initializeVideoPlayers } from "../public/js/videoplayer.js";
+// ^ replace with your actual function (assuming videoplayer.js exists based on project context)
 
 describe("Media resilience proxy", () => {
   beforeEach(() => {

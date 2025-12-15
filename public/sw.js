@@ -9,7 +9,7 @@ const CORE_ASSETS = [
   "js/onboarding.js",
   "js/dashboard.js",
   "js/toc.js",
-  "js/video.js",
+  "js/videoplayer.js",
   "js/quiz.js",
   "js/mylearning.js",
   "js/catalog.js",

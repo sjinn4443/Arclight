@@ -2,7 +2,7 @@
  * @fileoverview This file contains videos related functions and logic.
  */
 
-import { initializeVideoPlayers, initializeToolbar } from "./video.js";
+import { initializeVideoPlayers, initializeToolbar } from "./videoplayer.js";
 
 // Keep track of the currently active subpage element within videos.html
 let currentPageElement = null;

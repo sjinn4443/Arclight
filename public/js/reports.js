@@ -78,11 +78,10 @@ function normaliseCountryName(c) {
   return String(c || "")
     .trim()
     .replace(/\s+/g, " ")
-    .replace(/^the\s+/i, "") // "the Gambia" 같은 경우 대비
+    .replace(/^the\s+/i, "")
     .toLowerCase();
 }
 
-// 기존 COUNTRY_CENTROIDS를 normalised key로도 쓸 수 있게 변환
 const COUNTRY_CENTROIDS_NORM = Object.fromEntries(
   Object.entries(COUNTRY_CENTROIDS).map(([k, v]) => [
     normaliseCountryName(k),
@@ -90,22 +89,18 @@ const COUNTRY_CENTROIDS_NORM = Object.fromEntries(
   ]),
 );
 
-// Rest Countries API로 좌표 가져오기
 async function fetchCountryLatLng(countryRaw) {
   const norm = normaliseCountryName(countryRaw);
   if (!norm) return null;
 
-  // 1) 메모리 캐시
   if (countryLatLngCache.has(norm)) return countryLatLngCache.get(norm);
 
-  // 2) 하드코딩 centroid
   if (COUNTRY_CENTROIDS_NORM[norm]) {
     const ll = COUNTRY_CENTROIDS_NORM[norm];
     countryLatLngCache.set(norm, ll);
     return ll;
   }
 
-  // 3) 외부 API fallback (dev 용량/트래픽 적어서 OK)
   try {
     const res = await fetch(
       `https://restcountries.com/v3.1/name/${encodeURIComponent(countryRaw)}?fields=latlng,name`,
@@ -129,7 +124,6 @@ async function fetchCountryLatLng(countryRaw) {
 }
 
 async function getLatLngFromUser(u) {
-  // 1) direct lat/lng 있으면 그걸 우선
   const lat = u.lat ?? u.latitude ?? u.location?.lat ?? u.location?.latitude;
   const lng =
     u.lng ??
@@ -143,7 +137,6 @@ async function getLatLngFromUser(u) {
     return [Number(lat), Number(lng)];
   }
 
-  // 2) 없으면 country로 centroid/lookup
   const c = (u.country || "").trim();
   if (!c) return null;
   return await fetchCountryLatLng(c);
@@ -158,7 +151,6 @@ async function renderWorldPins(users) {
   const mapStatus = document.getElementById("mapStatus");
   let pinCount = 0;
 
-  // country lookups 병렬 처리
   const latLngList = await Promise.all(users.map((u) => getLatLngFromUser(u)));
 
   users.forEach((u, idx) => {
@@ -180,10 +172,8 @@ async function renderWorldPins(users) {
     : "No locations available to pin";
 }
 
-// 모든 언어 라벨 -> i18n 키 역인덱스
 const REVERSE = new Map();
 
-// 번역 파일 평탄화: { "a.b.c": "Label", ... }
 function flat(obj, p = "", out = {}) {
   for (const [k, v] of Object.entries(obj || {})) {
     const path = p ? `${p}.${k}` : k;
@@ -193,7 +183,6 @@ function flat(obj, p = "", out = {}) {
   return out;
 }
 
-// 지원 언어 목록(필요한 것만 넣어도 됩니다)
 const LANGS = [
   "en",
   "am",
@@ -219,7 +208,6 @@ const LANGS = [
   "zu",
 ];
 
-// 한 번만: 모든 언어 사전을 읽어 역인덱스 구축
 async function buildReverseIndex() {
   const dicts = await Promise.all(LANGS.map((l) => fetchDictionary(l)));
   dicts.forEach((dict) => {
@@ -234,7 +222,7 @@ async function buildReverseIndex() {
   });
 }
 
-// 어떤 값이 와도 영어로 바꿔주는 함수
+// Change all toe English
 function englishFromAny(value, englishDict) {
   if (!value) return "—";
 

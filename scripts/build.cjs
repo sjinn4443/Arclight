@@ -69,7 +69,7 @@ const build = async () => {
         "public/js/quizzes.js",
         "public/js/reports.js",
         "public/js/toc.js",
-        "public/js/video.js",
+        "public/js/videoplayer.js",
         "public/js/videos.js",
       ],
       bundle: true,

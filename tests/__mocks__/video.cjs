@@ -1,4 +1,4 @@
-// Jest CJS mock for public/js/video.js to avoid ESM import issues in CI
+// Jest CJS mock for public/js/videoplayer.js to avoid ESM import issues in CI
 // Minimal implementation that matches surfaces used by tests
 
 function initializeVideoPlayers() {

@@ -6,7 +6,7 @@ import { loadPage, initializePageNavigation } from "./navigation.js";
 import { initializeMenu, closeMenu, openMenu } from "./menu.js";
 import { initializePWA } from "./pwa.js";
 import { wireGlobalNavigation } from "./navigation.js";
-import { initializeVideoPlayers, initializeToolbar } from "./video.js";
+import { initializeVideoPlayers, initializeToolbar } from "./videoplayer.js";
 import { initializeLocation } from "./location-service.js";
 
 function withSentry(fn) {
@@ -149,7 +149,7 @@ document.addEventListener("DOMContentLoaded", () => {
   wireGlobalNavigation();
 
   const splashContainer = document.getElementById("splashScreenContainer");
-  const onboarded = isOnboardingDone(); // ✅ 온보딩 여부 확인
+  const onboarded = isOnboardingDone();
 
   // splash 컨테이너가 없으면 바로 fallback
   if (!splashContainer) {
@@ -158,7 +158,6 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  // ✅ 온보딩 상태에 따라 어떤 스플래쉬를 쓸지 결정
   const useMidSplash = onboarded;
   const splashUrl = useMidSplash
     ? "html/splashscreen_mid.html"
@@ -170,14 +169,12 @@ document.addEventListener("DOMContentLoaded", () => {
       splashContainer.innerHTML = html;
       splashContainer.classList.add("active");
 
-      // mid 전용 로고(class="logo-one mid-only")가 있으면 그걸 우선 사용
       const logo =
         splashContainer.querySelector(".logo-one.mid-only") ||
         splashContainer.querySelector(".logo-one");
 
-      // ⏱ 타이머 설정
-      const MAX_MAIN_WAIT_MS = 8000; // 메인 스플래쉬 안전망
-      const MID_EXPECTED_MS = 4700 + 300; // mid splash (interest에서 쓰던 값과 맞춤)
+      const MAX_MAIN_WAIT_MS = 8000;
+      const MID_EXPECTED_MS = 4700 + 300; // mid splash
       let finished = false;
 
       const fallback = setTimeout(
@@ -192,7 +189,6 @@ document.addEventListener("DOMContentLoaded", () => {
         finished = true;
         clearTimeout(fallback);
 
-        // 페이드아웃
         splashContainer.classList.add("fade-out");
 
         const nextRoute = useMidSplash ? "dashboard" : "languageinstall";
@@ -213,13 +209,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (logo) {
         logo.addEventListener("animationend", (e) => {
-          // 메인 스플래쉬일 때는 shiftRight 끝날 때만 잡기 (기존 동작 유지)
           if (!useMidSplash && e.animationName !== "shiftRight") return;
-          // mid splash는 어떤 animationend든 한 번만 받으면 OK (fallback과 중복 방지용 finished 플래그 있음)
+
           done();
         });
       } else {
-        // 로고 못 찾으면 그냥 즉시 진행
         done();
       }
     })

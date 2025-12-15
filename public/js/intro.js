@@ -96,23 +96,19 @@ export function initializeIntro() {
 
     let introState = "original"; // original → recommended → pickup
 
-    // 원래 텍스트 저장
     const originalTitleHTML = introTitle?.innerHTML ?? "";
     const originalSubHTML = introSub?.innerHTML ?? "";
 
-    // 추천 상태 텍스트
     const recommendedTitleHTML = "Recommended contents";
     const recommendedSubHTML =
       "On your first visit, we will recommend contents<br />tailored to your interests and role";
 
-    // 상태 전환 함수들
     function showRecommended() {
       introState = "recommended";
 
       if (introTitle) introTitle.innerHTML = recommendedTitleHTML;
       if (introSub) introSub.innerHTML = recommendedSubHTML;
 
-      // 오른쪽/왼쪽 화살표 모두 보이게
       arrowRightBtn?.classList.add("intro-arrow--visible");
       arrowLeftBtn?.classList.add("intro-arrow--visible");
 
@@ -125,9 +121,7 @@ export function initializeIntro() {
       if (introTitle) introTitle.innerHTML = originalTitleHTML;
       if (introSub) introSub.innerHTML = originalSubHTML;
 
-      // “뒤로” 상태로 돌아왔으니 왼쪽 화살표는 다시 숨김
       arrowLeftBtn?.classList.remove("intro-arrow--visible");
-      // 오른쪽 화살표는 계속 남겨 두면, 다시 추천 상태로 갈 수 있음
 
       updateProgress();
     }
@@ -140,13 +134,11 @@ export function initializeIntro() {
         introSub.innerHTML =
           "We remember what you’ve completed,<br /> making it easy to continue whenever you come back.";
 
-      // 영상 변경
       const sourceEl = introVideo.querySelector("source");
       sourceEl.setAttribute("src", "videos/Intro/GIFVideo_Comp.mp4");
       introVideo.load();
       introVideo.play().catch(() => {});
 
-      // 화살표 둘 다 계속 보임
       arrowRightBtn?.classList.add("intro-arrow--visible");
       arrowLeftBtn?.classList.add("intro-arrow--visible");
 
@@ -161,13 +153,10 @@ export function initializeIntro() {
         introSub.innerHTML =
           "Follow each lesson with a quick quiz to review <br />key concepts and identify areas to revisit.";
 
-      // 비디오 변경
       const sourceEl = introVideo.querySelector("source");
       sourceEl.setAttribute("src", "videos/Intro/GIFQuiz_Comp.mp4");
       introVideo.load();
       introVideo.play().catch(() => {});
-
-      // 화살표 둘 다 유지
       arrowRightBtn?.classList.add("intro-arrow--visible");
       arrowLeftBtn?.classList.add("intro-arrow--visible");
 
@@ -192,13 +181,12 @@ export function initializeIntro() {
       ev.preventDefault();
 
       if (introState === "original") {
-        showRecommended(); // 1번째 클릭
+        showRecommended();
       } else if (introState === "recommended") {
-        showPickup(); // 2번째 클릭
+        showPickup();
       } else if (introState === "pickup") {
-        showQuiz(); // ★ 3번째 클릭 → 새 슬라이드
+        showQuiz();
       } else {
-        // quiz에서는 또 누르면 quiz 유지
         showQuiz();
       }
     }
@@ -222,22 +210,19 @@ export function initializeIntro() {
       let hasShownArrow = false;
       const SHOW_THRESHOLD = 0.9; // 90%
 
-      // 혹시라도 loop가 안 켜져 있으면 켜두기 (한 번만 설정)
       introVideo.loop = true;
 
       introVideo.addEventListener("timeupdate", () => {
         if (hasShownArrow) return;
 
         const duration = introVideo.duration;
-        if (!duration || !isFinite(duration)) return; // 아직 길이 모르면 패스
+        if (!duration || !isFinite(duration)) return;
 
         const progress = introVideo.currentTime / duration;
 
         if (progress >= SHOW_THRESHOLD) {
           hasShownArrow = true;
-          // 오른쪽 화살표만 먼저 등장
           arrowRightBtn.classList.add("intro-arrow--visible");
-          // 왼쪽은 계속 숨김 (오른쪽 클릭하면 우리가 따로 켜줄 거야)
         }
       });
     }

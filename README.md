@@ -128,7 +128,7 @@ The following JavaScript files are integral to the application's functionality:
 - `quizzes.js`: Contains core quiz logic and functionality.
 - `telemetry.js`: Manages telemetry and analytics data collection.
 - `toc.js`: Manages dynamic Table of Contents.
-- `video.js`: Handles video player functionality.
+- `videoplayer.js`: Handles video player functionality.
 - `videos.js`: Manages video content and playback.
 
 ## Memory Bank
