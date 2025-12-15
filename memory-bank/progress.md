@@ -15,70 +15,35 @@
 - **Offline Content Management:** A modal allows users to select and download specific assets for offline use via the service worker.
 - **General Application Refinement:** Ongoing improvements and content integration across various modules, including updates to video playback, navigation, onboarding, and PWA features.
 - **Menu Search Refactor:** Refactored menu search functionality to align with dashboard compact search patterns, including HTML structure and CSS for consistent styling and behavior.
-- **Memory Bank Update:** All memory bank files and `README.md` have been read as part of a memory bank update task.
-- **JSDoc Comments:** Added JSDoc comments to all JavaScript files in `Arclight_App/public/js/`.
-- **README Update:** Updated `README.md` to reflect the addition of JSDoc comments and the correct paths for CSS and JS directories.
-- **CSS Refactoring:** Removed duplicate and unscoped styles from `pages.css` for `.module-card`, `.ml-*` cluster, `.eyes-topbar`, and `.lesson-row`. Verified `.bottom-bar` and Language-Install page rules.
-- **Converted PNG images to WebP format in public/images/icon/eyes/disease directory.**
-- **Testing Setup:** Jest for unit, UI, and API testing, with a Git `pre-push` hook to run tests automatically. `tests/README.md` updated with detailed testing information.
-- **CI/CD Pipeline:** GitHub Actions CI/CD pipeline at `.github/workflows/ci-cd.yml` for continuous integration and deployment to Railway, including linting, type checking, and Lighthouse CI.
-- **Security Enhancements:** Implemented a `security` folder containing configurations for rate limiting, Content Security Policy (CSP), CORS allowlist, and CSRF protection.
+- **Testing Setup:** Jest for unit, UI, and API testing, with a Git `pre-push` hook to run tests automatically.
+- **CI/CD Pipeline:** GitHub Actions CI/CD pipeline at `.github/workflows/ci-cd.yml` for continuous integration and deployment, including formatting checks, build, accessibility checks, Jest, and artifact upload.
+- **Security Enhancements:** Reports Basic Auth protection and attempt rate limiting in `server.cjs`.
 - **Module System Fix:** Resolved ES module / CommonJS conflict by renaming `server.js` to `server.cjs` and updating related `require` paths and `package.json` scripts.
-- **API Test Fix:** Modified `server.cjs` to conditionally apply CSRF protection only when not in a test environment, resolving a timeout issue in API tests.
-- **Error Monitoring:** Integrated Sentry using the CDN-based Browser SDK for real-time error tracking and performance monitoring.
-- **Dependency Management:** Addressed `npm audit` vulnerabilities by updating `js-yaml` and relaxing the CI audit level to prevent build failures.
-- **Code Formatting and Testing:** Implemented code formatting check and fixed issues using Prettier, and executed all Jest test suites with all tests passing successfully.
+- **CI/Jest ESM Interop Fix:** Jest `moduleNameMapper` maps ESM browser modules to CJS mocks for CJS tests.
+- **Documentation refresh (2025-12-15):** Updated README files across `README.md`, `.github/`, `reports/`, `security/`, `securitytest/`, `tests/`, and `vscode-alanui-launcher/`.
 
 ## What's Left to Build
 
-- **Security Testing:** Thoroughly test all implemented security measures and ensure they are correctly configured for production environments (e.g., strong `SESSION_SECRET`).
+- **Security Testing:** Thoroughly test all implemented security measures and ensure they are correctly configured for production environments.
 - **Full Content Population:** Ensure all educational modules are fully populated with comprehensive content (text, images, videos, quizzes).
 - **Interactive Elements:** Refine all interactive elements within quizzes and case studies for a more engaging user experience.
 - **Robust Error Handling:** Implement client-side error handling for a smoother user experience across all new features.
-- **Accessibility Features:** Enhance accessibility (ARIA attributes, keyboard navigation, etc.) across the application, especially for new interactive components.
-- **Testing:** Continue to develop and expand automated tests for new features, edge cases, error handling, and PWA functionalities. Keep tests in sync with the codebase.
-- **Performance Optimization:** Further optimize media loading and overall application performance, particularly with the increased content and dynamic elements.
+- **Accessibility Features:** Enhance accessibility (ARIA attributes, keyboard navigation, etc.) across the application.
+- **Testing:** Continue to develop and expand automated tests for new features, edge cases, error handling, and PWA functionalities.
+- **Performance Optimization:** Further optimize media loading and overall application performance.
 
 ## Current Status
 
-The project has significantly advanced beyond its initial setup phase. The foundational structure is robust, and many core features, including advanced navigation, PWA capabilities, interactive learning modules, and content management, are now implemented. The application is a feature-rich PWA with a strong emphasis on interactive learning and offline capabilities. The `README.md` file has been updated to include a changelog and accurate project structure details. The testing setup with Jest and a pre-push hook is fully functional, and a CI/CD pipeline is established. Critical security measures have been implemented, and module resolution issues have been addressed. The API test timeout issue has been resolved. The next steps involve completing content population, refining existing features, and ensuring comprehensive testing and optimization, particularly for the new security features.
+The project is a feature-rich PWA with a strong emphasis on interactive learning and offline capabilities. The Express server (`server.cjs`) supports local/prod hosting, telemetry storage, and a password-protected reports page. Jest tests and GitHub Actions CI are in place.
 
 ## Known Issues
 
-- The application might not immediately show the latest version due to browser caching of the service worker, even with the new update prompt. Users may still need to manually clear site data or perform a hard refresh if the prompt doesn't appear or is dismissed.
+- The application might not immediately show the latest version due to browser caching of the service worker.
 - Some placeholder content still exists and needs to be replaced with actual educational material.
-- The "Coming Soon" pages need to be fully developed.
+- Some security modules under `security/` are placeholders pending re-enablement as middleware.
 
 ## Evolution of Project Decisions
 
-- The decision to use a PWA-first approach was made early and has been consistently reinforced, leading to the implementation of advanced offline features.
-- The modular design has proven highly effective for integrating diverse and expanding educational content.
-- The preference for vanilla JavaScript has been maintained, but the complexity of the application has led to more structured JavaScript patterns and global state management.
-- The project has embraced a more interactive and user-centric design, incorporating features like the "My Learning" page and dynamic TOCs to enhance the learning experience.
-
-## What's Left to Build
-
-- **Security Testing:** Thoroughly test all implemented security measures and ensure they are correctly configured for production environments (e.g., strong `SESSION_SECRET`).
-- **Full Content Population:** Ensure all educational modules are fully populated with comprehensive content (text, images, videos, quizzes).
-- **Interactive Elements:** Refine all interactive elements within quizzes and case studies for a more engaging user experience.
-- **Robust Error Handling:** Implement client-side error handling for a smoother user experience across all new features.
-- **Accessibility Features:** Enhance accessibility (ARIA attributes, keyboard navigation, etc.) across the application, especially for new interactive components.
-- **Testing:** Continue to develop and expand automated tests for new features, edge cases, error handling, and PWA functionalities. Keep tests in sync with the codebase.
-- **Performance Optimization:** Further optimize media loading and overall application performance, particularly with the increased content and dynamic elements.
-
-## Current Status
-
-The project has significantly advanced beyond its initial setup phase. The foundational structure is robust, and many core features, including advanced navigation, PWA capabilities, interactive learning modules, and content management, are now implemented. The application is a feature-rich PWA with a strong emphasis on interactive learning and offline capabilities. The `README.md` file has been updated to include a changelog and accurate project structure details. The testing setup with Jest and a pre-push hook is fully functional, and a CI/CD pipeline is established. Critical security measures have been implemented, and module resolution issues have been addressed. The API test timeout issue has been resolved. The next steps involve completing content population, refining existing features, and ensuring comprehensive testing and optimization, particularly for the new security features.
-
-## Known Issues
-
-- The application might not immediately show the latest version due to browser caching of the service worker, even with the new update prompt. Users may still need to manually clear site data or perform a hard refresh if the prompt doesn't appear or is dismissed.
-- Some placeholder content still exists and needs to be replaced with actual educational material.
-- The "Coming Soon" pages need to be fully developed.
-
-## Evolution of Project Decisions
-
-- The decision to use a PWA-first approach was made early and has been consistently reinforced, leading to the implementation of advanced offline features.
-- The modular design has proven highly effective for integrating diverse and expanding educational content.
-- The preference for vanilla JavaScript has been maintained, but the complexity of the application has led to more structured JavaScript patterns and global state management.
-- The project has embraced a more interactive and user-centric design, incorporating features like the "My Learning" page and dynamic TOCs to enhance the learning experience.
+- The decision to use a PWA-first approach was made early and has been consistently reinforced, leading to advanced offline features.
+- The modular design has proven effective for integrating diverse and expanding educational content.
+- The repo maintains a pragmatic mix of ESM and CJS where needed (server/tests), with Jest mappings/mocks used to keep tests stable.

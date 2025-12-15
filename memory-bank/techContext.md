@@ -1,79 +1,58 @@
-<!-- THE CHANGES - techContext.md | 2025-10-02, Cline -->
+<!-- THE CHANGES - techContext.md | 2025-12-15, Cline -->
 
 # Tech Context
 
 ## Technologies Used
 
-- **Core:** HTML5, CSS3, JavaScript (ES6+)
+- **Core UI:** HTML5, CSS3, JavaScript (ESM in browser)
+- **Server:** Node.js + Express (`server.cjs`)
 - **PWA:** Service Worker API, Web Manifest
-- **Build & Bundling:** `esbuild`, `clean-css`, `html-minifier-terser`
-- **Image Processing:** `sharp`
-- **Testing:** `Jest`, `Supertest`, `JSDOM`, `babel-jest`, `eslint`, `prettier`, `husky`
-- **Monitoring:** `Sentry`
-- **Security:** `express-rate-limit`, `helmet`, `cors`, `csurf`, `express-session`, `cookie-parser`
-- **Utilities:** `node-fetch`, `geoip-lite`, `fs-extra`, `mkdirp`
+- **Build & Bundling:** `esbuild`, `clean-css-cli`, `html-minifier-terser`
+- **Testing:** Jest (mix of `*.cjs` + `*.mjs`), JSDOM, Supertest
+- **Quality:** ESLint, Prettier, Husky + lint-staged
+- **E2E/Perf (optional):** Playwright, Lighthouse CI
+- **Storage:**
+  - dev/test: NDJSON file under `reports/data/telemetry.ndjson`
+  - prod: Postgres (via `pg`) when `DATABASE_URL` is present
 
 ## Development Setup
 
-The project utilizes a modern development workflow:
+- Install deps: `npm install`
+- Dev server (watch): `npm run dev`
+- Start server: `npm start`
+- Build: `npm run build`
+- Serve built output: `npm run serve:dist`
 
-- **Local Server:** `server.cjs` handles local development and API serving.
-- **Build Process:** `scripts/build.cjs` automates the bundling and minification of JS, CSS, and HTML assets using `esbuild`, `clean-css`, and `html-minifier-terser`.
-- **Image Conversion:** `convertImage.js` can be used to convert PNG images to WebP format.
-- **Translation Checks:** `scripts/check-translations.cjs` is a placeholder for translation consistency checks.
-- **Accessibility Testing:** `scripts/test-a11y.mjs` is a placeholder for accessibility checks.
-- **Dependencies:** Managed via `package.json`, including development dependencies for testing, linting, and building.
+## Key Environment Variables
 
-## Technical Constraints
+- `NODE_ENV`: `development` | `test` | `production`
+- `PORT`, `HOST`
+- `SERVE_DIST`: serve `dist/` even when `NODE_ENV` is not production
 
-- **Browser Compatibility:** Designed to work across modern web browsers.
-- **Offline First:** Emphasis on making core content available offline.
-- **Performance:** Optimized for fast loading and smooth interactions, especially given the media-heavy nature.
-- **No Backend Database:** All content and state management are handled client-side or through local storage/IndexedDB if implemented in specific modules. `server.cjs` is used for local development and API serving.
+### Reports
 
-## Dependencies
+- `DASHBOARD_PASSWORD`: Basic Auth password for `/reports.html` and `/html/reports.html`
 
-- **`package.json`:** Lists project dependencies and development scripts. Key dependencies include:
-  - **Runtime:** `express`, `cookie-parser`, `cors`, `dotenv`, `express-rate-limit`, `express-session`, `helmet`, `geoip-lite`, `http-server`, `morgan`, `node-fetch`, `sharp`.
-  - **Testing:** `jest`, `supertest`, `jsdom`, `jest-environment-jsdom`, `babel-jest`.
-  - **Build/Dev Tools:** `esbuild`, `clean-css-cli`, `html-minifier-terser`, `terser`, `fs-extra`, `mkdirp`, `prettier`, `eslint`, `husky`, `lint-staged`, `cross-env`, `typescript`.
+### Telemetry encryption (NDJSON mode)
+
+- `ENCRYPTION_SECRET`: when set, NDJSON rows are encrypted at rest (AES-256-GCM via `reports/security/encrypt.cjs`).
+
+### Production DB
+
+- `DATABASE_URL`: enables Postgres storage
+- `DB_SSL`: set to `disable` to disable SSL; otherwise SSL uses `rejectUnauthorized: false`
 
 ## Testing Setup
 
-The project includes a comprehensive test suite to ensure reliability, accessibility, and user experience.
+- Jest config: `jest.config.cjs`
+- Run tests: `npm test`
+- CI-style tests: `npm run test:ci`
 
-- **Frameworks:**
-  - **Jest:** Primary testing framework for unit, UI, and API tests.
-  - **Supertest:** Used for backend API testing.
-  - **JSDOM:** Simulates the DOM and localStorage for frontend and UI tests.
-- **Test Files:**
-  - `tests/ui.test.js`: Contains UI/UX integration and user flow tests.
-  - `tests/api.test.js`: Contains API tests.
-  - `tests/sample.test.js`: Contains sample unit tests.
-- **Test Coverage:**
-  - Backend API: Data handling, authentication, record management.
-  - Frontend Chatbot: Chat logic, sidebar updates, localStorage persistence.
-  - UI/UX Integration: User flows, accessibility, interface interactions.
-  - Quiz and Case Modules: Functionality for quizzes, case navigation, scoring.
-  - Clinical Image Display: Rendering and accessibility of clinical images.
-  - **Security Features:** Testing of rate limiting, CSP, CORS, and CSRF protection.
-- **Execution:**
-  - `npm install` (from project root) to install dependencies.
-  - `npm test` to run all tests.
-  - A Git `pre-push` hook is configured to automatically run all tests before pushing changes.
-- **Notes:**
-  - Backend tests use a temporary directory for data.
-  - Accessibility requirements are enforced by automated tests in `ui.test.js`.
-  - For full browser/E2E automation, Playwright or Cypress are considerations for future expansion.
-- **Internal Dependencies:** Modules link to shared assets in `images/` and `videos/`. JavaScript files within modules might interact with the main `script.js` or `service-worker.js`.
+### ESM/CJS constraint
 
-## Tool Usage Patterns
+The repo root is ESM (`"type": "module"`), but server and many tests are CommonJS (`*.cjs`). To avoid ESM loader issues when CJS tests import browser ESM modules, Jest uses `moduleNameMapper` to map selected ESM modules to CJS mocks under `tests/__mocks__/`.
 
-- **Text Editors/IDEs:** Standard web development environments (e.g., VS Code).
-- **Browser Developer Tools:** For debugging and performance analysis.
-- **CLI:** For running local servers, managing packages (npm/yarn), executing tests, and running build/utility scripts.
-- **Git:** For version control.
-- **GitHub Actions:** For automated CI/CD.
-- **Linters/Formatters:** ESLint and Prettier are used for code quality and consistency.
-- **Build Tools:** `esbuild` is used for bundling and minifying assets.
-- **Image Processing:** `sharp` is available for image optimization.
+## CI/CD
+
+- GitHub Actions workflow: `.github/workflows/ci-cd.yml`
+- Runs format check, build, accessibility checks, Jest, and uploads `dist/` as an artifact.

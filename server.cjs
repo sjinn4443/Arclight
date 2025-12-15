@@ -11,10 +11,15 @@ const fsp = require("fs").promises; // Import fs.promises for async file operati
 // Bind to the dynamic port Railway gives you; fall back only if truly absent.
 const HOST = process.env.HOST || "0.0.0.0";
 const prod = process.env.NODE_ENV === "production";
+// Allow serving the built/minified `dist/` assets even when NODE_ENV is not
+// production (useful for running Lighthouse against localhost).
+const serveDist =
+  String(process.env.SERVE_DIST || "").toLowerCase() === "1" ||
+  String(process.env.SERVE_DIST || "").toLowerCase() === "true";
 
 const app = express();
 
-const staticRoot = path.join(__dirname, prod ? "dist" : "public");
+const staticRoot = path.join(__dirname, prod || serveDist ? "dist" : "public");
 
 // Use the port from the environment variable, defaulting to 3001 if not set
 const PORT = process.env.PORT || 3000;

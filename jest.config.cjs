@@ -13,7 +13,7 @@ module.exports = {
     // Map app ESM modules to CJS test doubles to avoid ESM loader conflicts in CJS tests
     "^\\.\\.\\/public\\/js\\/navigation\\.js$":
       "<rootDir>/tests/__mocks__/navigation.cjs",
-    "^\\.\\.\\/public\\/js\\/video\\.js$":
+    "^\\.\\.\\/public\\/js\\/videoplayer\\.js$":
       "<rootDir>/tests/__mocks__/video.cjs",
   },
   testPathIgnorePatterns: [

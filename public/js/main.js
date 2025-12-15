@@ -149,6 +149,7 @@ document.addEventListener("DOMContentLoaded", () => {
   wireGlobalNavigation();
 
   const splashContainer = document.getElementById("splashScreenContainer");
+  const pageContainer = document.getElementById("page-content");
   const onboarded = isOnboardingDone();
 
   // splash 컨테이너가 없으면 바로 fallback
@@ -167,6 +168,11 @@ document.addEventListener("DOMContentLoaded", () => {
     .then((response) => response.text())
     .then((html) => {
       splashContainer.innerHTML = html;
+
+      // IMPORTANT: hide app content while splash is active to prevent CLS being
+      // attributed to <body> from the underlying route injection.
+      if (pageContainer) pageContainer.style.display = "none";
+
       splashContainer.classList.add("active");
 
       const logo =
@@ -198,6 +204,9 @@ document.addEventListener("DOMContentLoaded", () => {
             console.error(`Failed to load ${nextRoute} route:`, err);
           })
           .finally(() => {
+            // Reveal app content now that the route is in place
+            if (pageContainer) pageContainer.style.display = "";
+
             requestAnimationFrame(() => {
               splashContainer.classList.remove("active");
               setTimeout(() => {
@@ -221,6 +230,7 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error("Failed to load splash:", error);
       const fallbackRoute = onboarded ? "dashboard" : "languageinstall";
       loadPage(fallbackRoute);
+      if (pageContainer) pageContainer.style.display = "";
     });
 });
 

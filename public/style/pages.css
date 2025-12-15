@@ -24,22 +24,36 @@
 }
 
 /* Logo 1 */
-.logo-one {
+.logo-one-wrap {
   position: relative;
   z-index: 2;
   margin-right: calc(var(--overlap) * -1);
   max-width: min(60vw, 55.5556vw);
   width: 5%;
   height: auto;
-  animation-name: spinPause, shiftRight;
-  animation-duration: 1.3s, 0.8s; /* spin 1.3s total; shift stays 0.8s */
-  animation-timing-function: linear, ease;
-  animation-delay: 0s, 3.9s; /* 3 iterations × 1.3s = 3.9s before move-right */
-  animation-iteration-count: 3, 1; /* spin repeats 3×; shift once */
-  animation-fill-mode: none, forwards;
+  /* Shift uses compositor-only transforms to avoid CLS */
+  animation-name: shiftRight;
+  animation-duration: 0.8s;
+  animation-timing-function: ease;
+  animation-delay: 3.9s; /* 3 iterations × 1.3s = 3.9s before move-right */
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
   will-change: transform;
   top: -0.6757vh;
   left: -9.7222vw;
+}
+
+.logo-one {
+  width: 100%;
+  height: auto;
+  /* Spin stays on the image */
+  animation-name: spinPause;
+  animation-duration: 1.3s;
+  animation-timing-function: linear;
+  animation-delay: 0s;
+  animation-iteration-count: 3;
+  animation-fill-mode: none;
+  will-change: transform;
 }
 
 /* Logo 2 */
