@@ -1,6 +1,6 @@
 const fs = require("fs");
 const path = require("path");
-const { decrypt } = require("../dev_dashboard/security/encrypt.cjs");
+const { decrypt } = require("../reports/security/encrypt.cjs");
 
 function esc(v) {
   if (v === null || v === undefined) return "NULL";
@@ -12,14 +12,14 @@ function esc(v) {
   const inPath = path.join(
     __dirname,
     "..",
-    "dev_dashboard",
+    "reports",
     "data",
     "telemetry.ndjson",
   );
   const outPath = path.join(
     __dirname,
     "..",
-    "dev_dashboard",
+    "reports",
     "data",
     "telemetry.sql",
   );

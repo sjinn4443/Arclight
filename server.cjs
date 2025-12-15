@@ -137,7 +137,7 @@ app.delete("/api/dev/users/:anonId", basicAuth, async (req, res) => {
 
     const telemetryFilePath = path.join(
       __dirname,
-      "dev_dashboard",
+      "reports",
       "data",
       "telemetry.ndjson",
     );

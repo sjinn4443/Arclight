@@ -6,7 +6,7 @@ const request = require("supertest");
 const fs = require("fs");
 const path = require("path");
 const os = require("os");
-const { decrypt } = require("../dev_dashboard/security/encrypt.cjs"); // Import decrypt
+const { decrypt } = require("../reports/security/encrypt.cjs"); // Import decrypt
 
 let logDir;
 let logFile;

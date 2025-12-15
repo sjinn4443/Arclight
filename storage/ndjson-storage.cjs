@@ -1,9 +1,9 @@
 const fs = require("fs");
 const path = require("path");
 const { enrichIp } = require("../utils/ipEnricher.cjs");
-const { encrypt, decrypt } = require("../dev_dashboard/security/encrypt.cjs"); // Import encryption module
+const { encrypt, decrypt } = require("../reports/security/encrypt.cjs"); // Import encryption module
 
-const dataDir = path.join(__dirname, "..", "dev_dashboard", "data");
+const dataDir = path.join(__dirname, "..", "reports", "data");
 const file = path.join(dataDir, "telemetry.ndjson");
 
 function ensureDir() {

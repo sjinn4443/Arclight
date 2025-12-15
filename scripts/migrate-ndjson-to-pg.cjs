@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /*
-  Migration script: reads dev_dashboard/data/telemetry.ndjson (encrypted lines),
+  Migration script: reads reports/data/telemetry.ndjson (encrypted lines),
   decrypts them using existing encrypt.cjs, and inserts rows into Postgres using storage/pg-storage.cjs schema.
 
   Usage:
@@ -10,13 +10,13 @@
 const fs = require("fs");
 const path = require("path");
 const { pool } = require("../storage/db.cjs");
-const { decrypt } = require("../dev_dashboard/security/encrypt.cjs");
+const { decrypt } = require("../reports/security/encrypt.cjs");
 
 async function run() {
   const file = path.join(
     __dirname,
     "..",
-    "dev_dashboard",
+    "reports",
     "data",
     "telemetry.ndjson",
   );
