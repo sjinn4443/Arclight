@@ -1243,6 +1243,30 @@ input:checked + .slider:before {
   font-size: 12px;
 }
 
+/* Catalog: carousel dots (used by Eyes catalog + other carousels) */
+.catalog-h2 {
+  position: relative;
+}
+.catalog-h2 .carousel-dots {
+  position: absolute;
+  right: 0;
+  top: -6px; /* puts dots above the See all > spot */
+  display: flex;
+  gap: 7px;
+  align-items: center;
+}
+.catalog-h2 .carousel-dots .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  border: 0;
+  background: #cfcfd6;
+  cursor: pointer;
+}
+.catalog-h2 .carousel-dots .dot.active {
+  background: #e41e26; /* active color (matches dashboard) */
+}
+
 /* Dashboard: Recommended module cards */
 .module-card {
   display: flex;
@@ -1528,54 +1552,6 @@ input:checked + .slider:before {
   padding: 6px 8px;
 }
 
-/* My Learning polish */
-#likedPage .ml-topbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-#likedPage .ml-icons {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-#likedPage .icon.menuBtn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;
-  line-height: 1;
-}
-
-#likedPage .ml-tabs {
-  position: relative;
-  border-bottom: 1px solid #eee;
-  padding-bottom: 6px;
-}
-#likedPage .ml-tab {
-  position: relative;
-  background: none;
-  border: none;
-  color: #9aa0a6;
-  padding: 8px 0;
-  width: 33%;
-}
-#likedPage .ml-tab.active {
-  color: #e41e26;
-  font-weight: 600;
-}
-#likedPage .ml-tab.active::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -7px;
-  height: 2px;
-  background: #e41e26;
-  border-radius: 2px;
-}
-
 /* My Learning: Masonry layout */
 .ml-masonry {
   column-count: 2;
@@ -1644,193 +1620,6 @@ input:checked + .slider:before {
   border-radius: 9999px;
   font-size: 11px;
   padding: 6px 8px;
-}
-
-.tl-item {
-  position: relative;
-  margin: 14px 0;
-}
-
-.thumb {
-  width: 42px;
-  height: 30px;
-  border-radius: 8px;
-  background: #d3d3d3;
-}
-
-.eyes-topbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: 8px 2px 6px;
-}
-.eyes-topbar__title {
-  font-size: 13px;
-  font-weight: 500;
-  color: #111;
-}
-.eyes-topbar__icons {
-  display: flex;
-  gap: 10px;
-}
-
-.lesson-row {
-  display: grid;
-  grid-template-columns: 52px 1fr auto;
-  align-items: center;
-  gap: 10px;
-  background: #fff;
-  border-radius: 12px;
-  padding: 10px;
-  margin-top: 10px;
-}
-.lesson-main {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-.lesson-meta {
-  opacity: 0.65;
-}
-
-/* ============================================= Pupils page ============================================= */
-
-#pupilsPage .pupils-timeline {
-  counter-reset: pupils-step;
-}
-
-#pupilsPage .pupils-timeline .tl-item {
-  display: flex;
-  gap: 10px;
-  margin: 6px 0;
-  counter-increment: pupils-step;
-}
-
-#pupilsPage .pupils-timeline .tl-item::before {
-  content: counter(pupils-step);
-  flex: 0 0 auto;
-  width: 30px;
-  height: 30px;
-  border-radius: 6px;
-  background: #111;
-  color: #fff;
-  font-size: 14px;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: 3px;
-  z-index: 500;
-}
-
-#pupilsPage .pupil-card {
-  z-index: 1;
-  position: relative;
-  flex: 1;
-  background: #f4f4f4;
-  padding: 10px;
-  border-radius: 8px;
-}
-
-#pupilsPage .eyes-topbar__title {
-  font-size: 14px;
-  font-weight: 600;
-  color: #111;
-  top: 34px;
-}
-#pupilsPage .eyes-topbar__icons {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-#pupilsPage .bell-icon {
-  width: 20px;
-  height: 20px;
-  display: block;
-}
-
-#pupilsPage .pupil-card h3 {
-  margin: 8px 6px 14px;
-  font-size: 12px;
-  font-weight: 500;
-  color: #111;
-}
-
-#pupilsPage .lesson-row {
-  display: grid;
-  grid-template-columns: 44px 1fr auto;
-  align-items: center;
-  gap: 10px;
-  background: #fff;
-  border-radius: 12px;
-  min-height: 51px;
-  padding: 10px 12px;
-  margin: 16px 0;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-  width: 88%;
-}
-
-#pupilsPage .thumb {
-  width: 47px;
-  height: 48px;
-  border-radius: 8px;
-  background: #dcdcdc;
-  border: 1px solid #e5e5ea;
-}
-
-#pupilsPage .lesson-top {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 12px;
-  color: #777;
-  margin-top: -11%;
-  margin-left: 5%;
-}
-#pupilsPage .lesson-type {
-  font-weight: 600;
-  color: #111;
-  font-size: 11px;
-}
-#pupilsPage .lesson-meta {
-  color: #bbb;
-  font-size: 11px;
-}
-
-#pupilsPage .lesson-progress {
-  width: 100%;
-  height: 6px;
-  background: #e9e9e9;
-  border-radius: 999px;
-  margin-top: 5%;
-  overflow: hidden;
-  margin-left: 5%;
-}
-#pupilsPage .lesson-progress__fill {
-  height: 100%;
-  background: #111;
-  border-radius: 999px;
-  transition: width 0.25s ease;
-}
-
-#pupilsPage .lesson-cta {
-  font-size: 11px;
-  color: #bbb;
-  margin-bottom: -103%;
-}
-
-#pupilsPage .eyes-topbar {
-  position: fixed;
-  top: 0;
-  background: #fff;
-  z-index: 1000;
-}
-
-.pupils-subtitle {
-  font-size: 13px;
-  font-weight: 600;
-  color: #111;
-  margin: 21px 4px 12px;
 }
 
 /* ============================================= Canonical Eyes Topbar ============================================= */
