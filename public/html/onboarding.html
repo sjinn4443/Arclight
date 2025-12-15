@@ -1,7 +1,47 @@
 <!-- Onboarding Page — Guides new users through account creation, collecting their name, field of work, job role, and experience level to personalize their app experience. -->
 <div id="onboarding" class="page">
   <div class="container onboarding-container">
-    <h1 class="onb-title" data-i18n="onboarding.title">Create Account</h1>
+    <div
+      class="onb-title-row"
+      style="display: flex; align-items: center; gap: 8px"
+    >
+      <h1 class="onb-title" data-i18n="onboarding.title" style="margin: 0">
+        Create Account
+      </h1>
+
+      <button
+        type="button"
+        id="onboardingInfoBtn"
+        class="lang-install__info-icon account__info-icon"
+        aria-label="More information about creating an account"
+      >
+        <svg
+          class="info-icon__svg"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <circle
+            cx="12"
+            cy="12"
+            r="10"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          />
+          <line
+            x1="12"
+            y1="10"
+            x2="12"
+            y2="16"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+          />
+          <circle cx="12" cy="7" r="1.2" fill="currentColor" />
+        </svg>
+      </button>
+    </div>
 
     <div class="form-field">
       <label for="username" data-i18n="onboarding.username_label">Name</label>

@@ -872,28 +872,22 @@ input:checked + .slider:before {
   margin-bottom: -6%;
 }
 
-/* Tabs with underlines */
-/* ===== Menu search: dashboard look + overlay behaviour ===== */
-
-/* Tabs bar: match old height/position but with valid CSS */
 .menu-tabs {
   display: flex;
   align-items: center;
-  gap: 0; /* same as old */
-  padding: 0 10px; /* old negative padding behaved like 0 */
+  gap: 0;
+  padding: 0 10px;
   border-bottom: 1px solid #ccc;
   background: #f2f2f2;
-  margin-top: -5%; /* keep the old upward lift you liked */
-  position: relative; /* REQUIRED for search overlay */
+  margin-top: -5%;
+  position: relative;
   height: 8%;
 }
 
-/* Keep search at far right when collapsed */
 .menu-tabs .menu-search-wrap {
   margin-left: auto;
 }
 
-/* Collapsed: hide input, show icon only */
 .menu-tabs .menu-search-wrap.search-collapsed input[type="search"] {
   width: 0;
   opacity: 0;
@@ -903,17 +897,15 @@ input:checked + .slider:before {
   transition: all 0.25s ease;
 }
 
-/* Expanded: overlay the whole tabs bar (covers Learning + Links) */
 .menu-tabs .menu-search-wrap.search-expanded {
   position: absolute;
   left: 0;
   right: 0;
   top: 0;
   z-index: 5;
-  margin-left: 0; /* override auto push */
+  margin-left: 0;
 }
 
-/* Expanded input fills the tabs bar */
 .menu-tabs .menu-search-wrap.search-expanded input[type="search"] {
   width: 100%;
   opacity: 1;
@@ -927,24 +919,21 @@ input:checked + .slider:before {
   transition: all 0.25s ease;
 }
 
-/* Menu search icon: dashboard처럼 절대 위치로 고정 */
 .menu-tabs .menu-search-wrap .search-icon {
   position: absolute;
   right: 10px;
   top: 50%;
   transform: translateY(-50%);
-  pointer-events: auto; /* 클릭 가능 */
+  pointer-events: auto;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-/* collapsed일 때 탭 바에서 아이콘이 너무 아래로 보이면
-   wrap 자체를 살짝 올려서 ‘정렬된 느낌’만 주기 (아이콘은 안 움직임) */
 .menu-tabs .menu-search-wrap.search-collapsed {
-  padding-top: 7px; /* 너가 원했던 7px을 여기로 이동 */
+  padding-top: 7px;
   padding-bottom: 7px;
-  margin-left: auto; /* Keep it at the right end when collapsed */
+  margin-left: auto;
 }
 .menu-tabs .tab {
   background: none;
@@ -961,7 +950,6 @@ input:checked + .slider:before {
   font-weight: bold;
 }
 
-/* Sections with dividers */
 .menu-section {
   padding: 13px 10px;
 }
@@ -973,7 +961,6 @@ input:checked + .slider:before {
   letter-spacing: 0.5px;
 }
 
-/* Menu items */
 .menu-item {
   font-size: 12px;
   color: #111;
@@ -996,13 +983,12 @@ input:checked + .slider:before {
   text-decoration: underline;
 }
 
-/* Menu item icon alignment */
 .menu-item img {
   width: 24px;
   height: auto;
   margin-right: 6px;
   vertical-align: text-bottom;
-  aspect-ratio: auto; /* use intrinsic ratio to avoid distortion */
+  aspect-ratio: auto;
 }
 
 .profile-location {
@@ -1010,7 +996,6 @@ input:checked + .slider:before {
   font-size: 11px;
   color: #666;
   letter-spacing: 0.2px;
-  /* Reserve space to avoid shift when content updates */
   min-height: 1.4em;
 }
 
@@ -1018,7 +1003,6 @@ input:checked + .slider:before {
   margin-top: 4px;
 }
 
-/* Language picker overlay */
 .lang-install__overlay[hidden] {
   display: none;
 }
@@ -1092,7 +1076,7 @@ input:checked + .slider:before {
 
 .lang-install__item {
   display: grid;
-  grid-template-columns: 1fr auto; /* English left, Native right */
+  grid-template-columns: 1fr auto;
   align-items: center;
   gap: 12px;
   padding: 10px 12px;
@@ -1151,7 +1135,7 @@ input:checked + .slider:before {
 /* Dropdown (pic 2) — reuse your two-column list */
 .lang-picker__dropdown {
   margin-top: 6px;
-  position: relative; /* container context */
+  position: relative;
 }
 
 /* Absolute dropdown panel so it sits under the bar */
@@ -1200,8 +1184,6 @@ input:checked + .slider:before {
   font-weight: 600;
   font-size: 14px;
 }
-
-/* Responsive modal sizing stays as you set earlier */
 
 /* ============================================= Catalog components ============================================= */
 .catalog-h2 {
@@ -1290,11 +1272,11 @@ input:checked + .slider:before {
   display: flex;
   flex-direction: column;
   gap: 6px;
+  margin-left: 12px;
 }
 
 /* ============================================= Eyes page components ============================================= */
 
-/* Fix the Eyes top bar to the top on the Eyes catalog page only */
 #eyesCatalogPage .eyes-top {
   position: fixed;
   top: 0;
@@ -1311,9 +1293,8 @@ input:checked + .slider:before {
   margin: 0;
 }
 
-/* Keep title aligned nicely inside the fixed bar */
 #eyesCatalogPage .eyes-title {
-  margin-left: 0; /* bar padding now handles left spacing */
+  margin-left: 0;
   font-size: 14px;
   font-weight: 600;
   color: #000;
@@ -1665,6 +1646,92 @@ input:checked + .slider:before {
   padding: 6px 8px;
 }
 
+.tl-item {
+  position: relative;
+  margin: 14px 0;
+}
+
+.thumb {
+  width: 42px;
+  height: 30px;
+  border-radius: 8px;
+  background: #d3d3d3;
+}
+
+.eyes-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 8px 2px 6px;
+}
+.eyes-topbar__title {
+  font-size: 13px;
+  font-weight: 500;
+  color: #111;
+}
+.eyes-topbar__icons {
+  display: flex;
+  gap: 10px;
+}
+
+.lesson-row {
+  display: grid;
+  grid-template-columns: 52px 1fr auto;
+  align-items: center;
+  gap: 10px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 10px;
+  margin-top: 10px;
+}
+.lesson-main {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.lesson-meta {
+  opacity: 0.65;
+}
+
+/* ============================================= Pupils page ============================================= */
+
+#pupilsPage .pupils-timeline {
+  counter-reset: pupils-step;
+}
+
+#pupilsPage .pupils-timeline .tl-item {
+  display: flex;
+  gap: 10px;
+  margin: 6px 0;
+  counter-increment: pupils-step;
+}
+
+#pupilsPage .pupils-timeline .tl-item::before {
+  content: counter(pupils-step);
+  flex: 0 0 auto;
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  background: #111;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 3px;
+  z-index: 500;
+}
+
+#pupilsPage .pupil-card {
+  z-index: 1;
+  position: relative;
+  flex: 1;
+  background: #f4f4f4;
+  padding: 10px;
+  border-radius: 8px;
+}
+
 #pupilsPage .eyes-topbar__title {
   font-size: 14px;
   font-weight: 600;
@@ -1680,18 +1747,6 @@ input:checked + .slider:before {
   width: 20px;
   height: 20px;
   display: block;
-}
-
-.tl-item {
-  position: relative;
-  margin: 14px 0;
-}
-
-.thumb {
-  width: 42px;
-  height: 30px;
-  border-radius: 8px;
-  background: #d3d3d3;
 }
 
 #pupilsPage .pupil-card h3 {
@@ -1771,84 +1826,11 @@ input:checked + .slider:before {
   z-index: 1000;
 }
 
-.eyes-topbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: 8px 2px 6px;
-}
-.eyes-topbar__title {
-  font-size: 13px;
-  font-weight: 500;
-  color: #111;
-}
-.eyes-topbar__icons {
-  display: flex;
-  gap: 10px;
-}
-
 .pupils-subtitle {
   font-size: 13px;
   font-weight: 600;
   color: #111;
   margin: 21px 4px 12px;
-}
-
-.lesson-row {
-  display: grid;
-  grid-template-columns: 52px 1fr auto;
-  align-items: center;
-  gap: 10px;
-  background: #fff;
-  border-radius: 12px;
-  padding: 10px;
-  margin-top: 10px;
-}
-.lesson-main {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-.lesson-meta {
-  opacity: 0.65;
-}
-
-/* ============================================= Pupils page ============================================= */
-#pupilsPage .pupils-timeline {
-  counter-reset: pupils-step;
-}
-
-#pupilsPage .pupils-timeline .tl-item {
-  display: flex;
-  gap: 10px;
-  margin: 6px 0;
-  counter-increment: pupils-step;
-}
-
-#pupilsPage .pupils-timeline .tl-item::before {
-  content: counter(pupils-step);
-  flex: 0 0 auto;
-  width: 30px;
-  height: 30px;
-  border-radius: 6px;
-  background: #111;
-  color: #fff;
-  font-size: 14px;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: 3px;
-  z-index: 500;
-}
-
-#pupilsPage .pupil-card {
-  z-index: 1;
-  position: relative;
-  flex: 1;
-  background: #f4f4f4;
-  padding: 10px;
-  border-radius: 8px;
 }
 
 /* ============================================= Canonical Eyes Topbar ============================================= */
@@ -2027,9 +2009,9 @@ input:checked + .slider:before {
 }
 
 .guest-modal__title {
-  margin: 12px 0 19px;
-  font-size: 17px;
-  font-weight: 600;
+  margin: 31px 0 11px;
+  font-size: 22px;
+  font-weight: 750;
   color: #111;
 }
 
@@ -2045,6 +2027,29 @@ input:checked + .slider:before {
   font-size: 14px;
   border-radius: 12px;
   cursor: pointer;
+}
+
+/* Privacy & Terms modal: long content should scroll */
+.privacyterms__text {
+  max-height: 55vh;
+  overflow-y: auto;
+  padding-right: 6px;
+}
+
+/* Privacy & Terms: bold section headings spacing */
+.privacyterms__text p > strong {
+  display: block;
+  margin: 27px 0 10px; /* 위/아래 간격 */
+}
+
+/* (선택) 제목 바로 다음 문단은 위 간격을 조금 줄이기 */
+.privacyterms__text p > strong + br {
+  margin-top: 0;
+}
+
+/* Privacy & Terms: add spacing before final paragraphs */
+.privacyterms__text p + p {
+  margin-top: 12px;
 }
 
 /* Uses existing theme’s primary button colors */
@@ -2195,6 +2200,10 @@ input:checked + .slider:before {
   width: 0.9em;
   height: 1.1em;
   display: block;
+}
+
+#onboarding .account__info-icon {
+  margin-top: 7px !important;
 }
 
 /* If you want a consistent tappable area */

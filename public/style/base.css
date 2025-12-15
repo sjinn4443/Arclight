@@ -39,7 +39,7 @@ h1 {
 
 /* Base paragraph rule for typography-consistency test */
 p {
-  font-size: 1rem;
+  font-size: 0.9rem;
   line-height: 1.4;
   margin: 0;
 }
@@ -163,8 +163,8 @@ html {
   z-index: 2;
   border: 0;
   background: transparent;
-  padding: 0 6px; /* 세로 패딩 제거 */
-  height: 100%; /* 토글 높이에 맞춤 */
+  padding: 0 6px;
+  height: 100%;
   font-size: 12px;
   font-weight: 600;
   line-height: 1;
