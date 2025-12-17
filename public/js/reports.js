@@ -327,9 +327,7 @@ async function loadEnglishDictionary() {
   // Force the language to English for the dev dashboard
   await setLanguage("en");
   englishDict = await fetchDictionary("en");
-  // 영어만 로딩하고 끝내지 말고, 역인덱스도 구축
   await buildReverseIndex();
-  // 정적 UI 번역
   applyTranslations(document.body);
 }
 
@@ -338,7 +336,16 @@ async function renderUsers(users) {
     (a, b) => new Date(a.first_seen) - new Date(b.first_seen),
   );
 
-  // Prefer the browser's local language for "me" so you see changes instantly
+  // Render columns based on the actual table headers so /reports.html and
+  // /html/reports.html can diverge safely.
+  const table = document.getElementById("users");
+  const headers = [...table.querySelectorAll("thead th")].map((th) =>
+    String(th.textContent || "")
+      .trim()
+      .toLowerCase(),
+  );
+
+  const hasDeleteCol = headers.includes("delete");
 
   const rows = [];
   for (let i = 0; i < sorted.length; i++) {
@@ -348,33 +355,59 @@ async function renderUsers(users) {
     const interestEn = englishFromAny(u.interest, englishDict);
     const expEn = englishFromAny(u.experience, englishDict);
 
-    rows.push(`
-      <tr data-anon-id="${escapeHtml(u.anon_id || "")}">
-        <td>${i + 1}</td>
-        <td>${escapeHtml(u.name || "—")}</td>
-        <td>${escapeHtml(aimsEn)}</td>
-        <td>${escapeHtml(interestEn)}</td>
-        <td>${escapeHtml(expEn)}</td>
-        <td>${escapeHtml(u.contact || "—")}</td>
-        <td>${escapeHtml(u.country || "—")}</td>
-        <td>${escapeHtml(u.area || "—")}</td>
-        <td>${escapeHtml(u.language || "—")}</td>
-        <td>${typeof u.refresh_count === "number" ? u.refresh_count : 0}</td>
-        <!-- NEW -->
-        <td>
-          <button
-            type="button"
-            class="deleteBtn"
-            title="Delete user"
-            aria-label="Delete user"
-            data-anon-id="${escapeHtml(u.anon_id || "")}"
-            data-name="${escapeHtml(u.name || "—")}"
-            data-exp="${escapeHtml(expEn)}"
-            data-country="${escapeHtml(u.country || "—")}"
-          >🗑️</button>
-        </td>
-      </tr>
-    `);
+    const arclightOrArea = u.arclight ?? u.area;
+
+    const cells = headers
+      .map((h) => {
+        switch (h) {
+          case "no.":
+          case "no":
+            return `<td>${i + 1}</td>`;
+          case "name":
+            return `<td>${escapeHtml(u.name || "—")}</td>`;
+          case "aims":
+          case "professional group":
+            return `<td>${escapeHtml(aimsEn)}</td>`;
+          case "interest":
+            return `<td>${escapeHtml(interestEn)}</td>`;
+          case "experience":
+            return `<td>${escapeHtml(expEn)}</td>`;
+          case "arclight":
+          case "area":
+            return `<td>${escapeHtml(arclightOrArea || "—")}</td>`;
+          case "contact":
+            return `<td>${escapeHtml(u.contact || "—")}</td>`;
+          case "country":
+            return `<td>${escapeHtml(u.country || "—")}</td>`;
+          case "language":
+            return `<td>${escapeHtml(u.language || "—")}</td>`;
+          case "refresh count":
+            return `<td>${typeof u.refresh_count === "number" ? u.refresh_count : 0}</td>`;
+          case "delete":
+            return `
+              <td>
+                <button
+                  type="button"
+                  class="deleteBtn"
+                  title="Delete user"
+                  aria-label="Delete user"
+                  data-anon-id="${escapeHtml(u.anon_id || "")}"
+                  data-name="${escapeHtml(u.name || "—")}"
+                  data-exp="${escapeHtml(expEn)}"
+                  data-country="${escapeHtml(u.country || "—")}"
+                >🗑️</button>
+              </td>
+            `;
+          default:
+            // Unknown/unsupported header label: keep table shape consistent.
+            return `<td>—</td>`;
+        }
+      })
+      .join("");
+
+    rows.push(
+      `<tr data-anon-id="${escapeHtml(u.anon_id || "")}">${cells}</tr>`,
+    );
   }
 
   const tbody = document.querySelector("#users tbody");
@@ -387,44 +420,48 @@ async function renderUsers(users) {
   // Now call renderWorldPins() after users load
   await renderWorldPins(sorted);
 
-  // Wire delete buttons (event delegation so it survives refreshes)
-  tbody.onclick = async (e) => {
-    const btn = e.target.closest(".deleteBtn");
-    if (!btn) return;
+  // Wire delete buttons only when the column exists.
+  if (hasDeleteCol) {
+    tbody.onclick = async (e) => {
+      const btn = e.target.closest(".deleteBtn");
+      if (!btn) return;
 
-    const anonId = btn.dataset.anonId;
-    const name = btn.dataset.name;
-    const exp = btn.dataset.exp;
-    const country = btn.dataset.country;
+      const anonId = btn.dataset.anonId;
+      const name = btn.dataset.name;
+      const exp = btn.dataset.exp;
+      const country = btn.dataset.country;
 
-    const ok = window.confirm(
-      `Do you really want to delete this user data?\n\n` +
-        `Name: ${name}\n` +
-        `Experience: ${exp}\n` +
-        `Country: ${country}`,
-    );
+      const ok = window.confirm(
+        `Do you really want to delete this user data?\n\n` +
+          `Name: ${name}\n` +
+          `Experience: ${exp}\n` +
+          `Country: ${country}`,
+      );
 
-    if (!ok) return;
+      if (!ok) return;
 
-    try {
-      btn.disabled = true;
-      await deleteUser(anonId);
+      try {
+        btn.disabled = true;
+        await deleteUser(anonId);
 
-      // Remove row immediately for snappy UX
-      const tr = btn.closest("tr");
-      tr?.remove();
+        // Remove row immediately for snappy UX
+        const tr = btn.closest("tr");
+        tr?.remove();
 
-      // Update status count
-      const remaining = tbody.querySelectorAll("tr").length;
-      status.textContent = `Loaded ${remaining} row${
-        remaining === 1 ? "" : "s"
-      }`;
-    } catch (err) {
-      console.error(err);
-      alert(`Delete failed: ${err.message}`);
-      btn.disabled = false;
-    }
-  };
+        // Update status count
+        const remaining = tbody.querySelectorAll("tr").length;
+        status.textContent = `Loaded ${remaining} row${
+          remaining === 1 ? "" : "s"
+        }`;
+      } catch (err) {
+        console.error(err);
+        alert(`Delete failed: ${err.message}`);
+        btn.disabled = false;
+      }
+    };
+  } else {
+    tbody.onclick = null;
+  }
 }
 
 async function load() {
