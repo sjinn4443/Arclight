@@ -140,7 +140,7 @@ function setTriToggleUI(root, mode) {
 // Apply Pupil Full Exam mode (low/high/online)
 // -------------------------
 const PUPIL_VIDEO_SOURCES = {
-  low: "videos/Pupil/fullpupil_240p.mp4",
+  low: "videos/Pupil/fullpupil_220p.mp4",
   high: "videos/Pupil/fullpupil_orig.mp4",
   online: "https://www.youtube.com/embed/19pN7jSYHMw",
 };
