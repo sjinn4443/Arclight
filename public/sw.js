@@ -1,30 +1,33 @@
 /* sw.js — Arclight PWA service worker */
 const CACHE_NAME = "arclight-static-v3";
 const CORE_ASSETS = [
-  ".",
-  "index.html",
-  "style.css",
-  "js/main.js",
-  "js/navigation.js",
-  "js/onboarding.js",
-  "js/dashboard.js",
-  "js/toc.js",
-  "js/videoplayer.js",
-  "js/quiz.js",
-  "js/mylearning.js",
-  "js/catalog.js",
-  "js/pwa.js",
-  "html/interest.html", // Added for interest page
-  "js/interest.js", // Added for interest page script
-  "favicons/favicon-32x32.png", // Added favicon
-  "favicons/favicon-16x16.png", // Added favicon
-  "favicons/site.webmanifest", // Added manifest
-  "favicons/apple-touch-icon.png", // Added favicon
-  "favicons/android-chrome-192x192.png", // Added favicon
-  "favicons/android-chrome-512x512.png", // Added favicon
-  "favicons/favicon.ico", // Added favicon
-  "favicons/pwa-install-narrow.png",
-  "favicons/pwa-install-wide.png",
+  "/",
+  "/index.html",
+  "/style/base.css",
+  "/style/components.css",
+  "/style/pages.css",
+  "/style/responsive.css",
+  "/js/main.js",
+  "/js/navigation.js",
+  "/js/onboarding.js",
+  "/js/dashboard.js",
+  "/js/toc.js",
+  "/js/videoplayer.js",
+  "/js/quiz.js",
+  "/js/mylearning.js",
+  "/js/catalog.js",
+  "/js/pwa.js",
+  "/html/interest.html", // Added for interest page
+  "/js/interest.js", // Added for interest page script
+  "/favicons/favicon-32x32.png", // Added favicon
+  "/favicons/favicon-16x16.png", // Added favicon
+  "/favicons/site.webmanifest", // Added manifest
+  "/favicons/apple-touch-icon.png", // Added favicon
+  "/favicons/android-chrome-192x192.png", // Added favicon
+  "/favicons/android-chrome-512x512.png", // Added favicon
+  "/favicons/favicon.ico", // Added favicon
+  "/favicons/pwa-install-narrow.png",
+  "/favicons/pwa-install-wide.png",
 ];
 
 self.addEventListener("install", (event) => {
