@@ -1844,8 +1844,9 @@ input:checked + .slider:before {
   padding-top: 62px;
 }
 
-.video-container {
-  padding: 20px;
+.video-container,
+.video-container video,
+.video-container iframe {
   padding-bottom: 48px;
 }
 

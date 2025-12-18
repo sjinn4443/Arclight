@@ -181,23 +181,23 @@ export function initializeEyesCatalog() {
       },
       {
         label: "Visual Acuity",
-        target: EYES_INDEX["Visual Acuity"],
+        target: "visualAcuityPage",
         tags: ["Video"],
       },
       { label: "Pupils", target: "pupilsPage", tags: ["Video"] },
       {
         label: "Front of Eye",
-        target: EYES_INDEX["Front of Eye"],
-        tags: ["Video", "Case Study"],
+        target: "anteriorSegmentVideoPage",
+        tags: ["Video"],
       },
       {
         label: "Fundal Reflex",
-        target: EYES_INDEX["Fundal Reflex"],
-        tags: ["Coming Soon"],
+        target: "fundalReflexPage",
+        tags: ["Video"],
       },
       {
         label: "Ophthalmoscopy",
-        target: EYES_INDEX["Ophthalmoscopy"],
+        target: "directOphthalmoscopy",
         tags: ["Video", "Quiz"],
       },
       {
@@ -550,6 +550,38 @@ export function initializeEyesCatalog() {
           }
         } catch {
           sessionStorage.setItem("gotoSubPage", "pupilsPage"); // fallback
+        }
+        return;
+      }
+
+      // Direct-open other video pages from Eyes
+      const VIDEO_TARGETS = new Set([
+        "visualAcuityPage",
+        "fundalReflexPage",
+        "anteriorSegmentVideoPage",
+        "directOphthalmoscopy",
+      ]);
+
+      if (VIDEO_TARGETS.has(target)) {
+        try {
+          window.__videosPendingTarget = target;
+          window.__videosSuppressFlash = true;
+          sessionStorage.setItem("gotoSubPage", target);
+        } catch {
+          void 0;
+        }
+
+        await loadPage("videos");
+
+        try {
+          const { goToVideosSection } = await import("./videos.js");
+          if (typeof goToVideosSection === "function") {
+            goToVideosSection(target, { skipDefault: true });
+          } else {
+            sessionStorage.setItem("gotoSubPage", target);
+          }
+        } catch {
+          sessionStorage.setItem("gotoSubPage", target);
         }
         return;
       }

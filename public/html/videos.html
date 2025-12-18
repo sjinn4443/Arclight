@@ -3,17 +3,50 @@
 <!-- Visual Acuity Page -->
 <div id="visualAcuityPage" class="page" style="display: none">
   <div>
+    <!-- 3-way video mode toggle -->
+    <div class="tri-toggle" role="radiogroup" aria-label="Video mode">
+      <button
+        class="tri-toggle__btn"
+        type="button"
+        role="radio"
+        aria-checked="false"
+        data-mode="low"
+      >
+        low
+      </button>
+      <button
+        class="tri-toggle__btn"
+        type="button"
+        role="radio"
+        aria-checked="false"
+        data-mode="high"
+      >
+        high
+      </button>
+      <button
+        class="tri-toggle__btn tri-toggle__btn--icon"
+        type="button"
+        role="radio"
+        aria-checked="false"
+        data-mode="online"
+        aria-label="online"
+      >
+        <span class="tri-toggle__wifi" aria-hidden="true"></span>
+      </button>
+      <div class="tri-toggle__knob" aria-hidden="true"></div>
+    </div>
+
     <div class="video-header">
       <h3 data-i18n="videos.visualAcuityTitle">Visual Acuity</h3>
     </div>
-    <div class="video-container">
+    <div class="video-container" id="visualAcuityContainer">
       <video
         id="visualAcuityVideo"
         controls
         preload="none"
         style="width: 100%; max-width: 100%"
       >
-        <source src="videos/VisualAcuity.mp4" type="video/mp4" />
+        <source src="videos/visualacuity_220p.mp4" type="video/mp4" />
         <span data-i18n="videos.videoNotSupported"
           >Your browser does not support the video tag.</span
         >
@@ -46,9 +79,7 @@
         "
       />
       <div class="module-info">
-        <h3 data-i18n="videos.anteriorSegmentVideoTitle">
-          Anterior Segment Video
-        </h3>
+        <h3 data-i18n="videos.frontOfEyeTitle">Front of Eye</h3>
         <p data-i18n="videos.videoLearning">Video Learning</p>
         <div class="progress-bar">
           <div class="progress" style="width: 0%"></div>
@@ -90,19 +121,49 @@
 <!-- Anterior Segment Video Page -->
 <div id="anteriorSegmentVideoPage" class="page" style="display: none">
   <div>
-    <div class="video-header">
-      <h3 data-i18n="videos.anteriorSegmentVideoTitle">
-        Anterior Segment Video
-      </h3>
+    <!-- 3-way video mode toggle -->
+    <div class="tri-toggle" role="radiogroup" aria-label="Video mode">
+      <button
+        class="tri-toggle__btn"
+        type="button"
+        role="radio"
+        aria-checked="false"
+        data-mode="low"
+      >
+        low
+      </button>
+      <button
+        class="tri-toggle__btn"
+        type="button"
+        role="radio"
+        aria-checked="false"
+        data-mode="high"
+      >
+        high
+      </button>
+      <button
+        class="tri-toggle__btn tri-toggle__btn--icon"
+        type="button"
+        role="radio"
+        aria-checked="false"
+        data-mode="online"
+        aria-label="online"
+      >
+        <span class="tri-toggle__wifi" aria-hidden="true"></span>
+      </button>
+      <div class="tri-toggle__knob" aria-hidden="true"></div>
     </div>
-    <div class="video-container">
+    <div class="video-header">
+      <h3 data-i18n="videos.frontOfEyeTitle">Front of Eye</h3>
+    </div>
+    <div class="video-container" id="anteriorSegmentContainer">
       <video
         id="anteriorSegmentVideo"
         controls
         preload="none"
         style="width: 100%; max-width: 100%"
       >
-        <source src="videos/AnteriorSegment.mp4" type="video/mp4" />
+        <source src="videos/antseg_220p.mp4" type="video/mp4" />
         <span data-i18n="videos.videoNotSupported"
           >Your browser does not support the video tag.</span
         >
@@ -382,19 +443,52 @@
 <!-- Direct Ophthalmoscopy Embedded Module -->
 <div id="directOphthalmoscopy" class="page" style="display: none">
   <div>
+    <!-- 3-way video mode toggle -->
+    <div class="tri-toggle" role="radiogroup" aria-label="Video mode">
+      <button
+        class="tri-toggle__btn"
+        type="button"
+        role="radio"
+        aria-checked="false"
+        data-mode="low"
+      >
+        low
+      </button>
+      <button
+        class="tri-toggle__btn"
+        type="button"
+        role="radio"
+        aria-checked="false"
+        data-mode="high"
+      >
+        high
+      </button>
+      <button
+        class="tri-toggle__btn tri-toggle__btn--icon"
+        type="button"
+        role="radio"
+        aria-checked="false"
+        data-mode="online"
+        aria-label="online"
+      >
+        <span class="tri-toggle__wifi" aria-hidden="true"></span>
+      </button>
+      <div class="tri-toggle__knob" aria-hidden="true"></div>
+    </div>
+
     <div class="video-header">
       <h3 data-i18n="videos.directOphthalmoscopyTitle">
         Direct Ophthalmoscopy
       </h3>
     </div>
-    <div class="video-container">
+    <div class="video-container" id="directOphthalmoscopyContainer">
       <video
         id="customVideo"
         controls
         preload="none"
         style="width: 100%; max-width: 100%"
       >
-        <source src="videos/DirectOphthalmoscopy.mp4" type="video/mp4" />
+        <source src="videos/DO_220p.mp4" type="video/mp4" />
         <span data-i18n="videos.videoNotSupported"
           >Your browser does not support the video tag.</span
         >
@@ -714,17 +808,50 @@
 <!-- Fundal Reflex Page -->
 <div id="fundalReflexPage" class="page" style="display: none">
   <div>
+    <!-- 3-way video mode toggle -->
+    <div class="tri-toggle" role="radiogroup" aria-label="Video mode">
+      <button
+        class="tri-toggle__btn"
+        type="button"
+        role="radio"
+        aria-checked="false"
+        data-mode="low"
+      >
+        low
+      </button>
+      <button
+        class="tri-toggle__btn"
+        type="button"
+        role="radio"
+        aria-checked="false"
+        data-mode="high"
+      >
+        high
+      </button>
+      <button
+        class="tri-toggle__btn tri-toggle__btn--icon"
+        type="button"
+        role="radio"
+        aria-checked="false"
+        data-mode="online"
+        aria-label="online"
+      >
+        <span class="tri-toggle__wifi" aria-hidden="true"></span>
+      </button>
+      <div class="tri-toggle__knob" aria-hidden="true"></div>
+    </div>
+
     <div class="video-header">
       <h3 data-i18n="videos.fundalReflexTitle">Fundal Reflex</h3>
     </div>
-    <div class="video-container">
+    <div class="video-container" id="fundalReflexContainer">
       <video
         id="fundalReflexVideo"
         controls
         preload="none"
         style="width: 100%; max-width: 100%"
       >
-        <source src="videos/USAID/FundalReflexUSAID.mp4" type="video/mp4" />
+        <source src="videos/fundalreflex_220p.mp4" type="video/mp4" />
         <span data-i18n="videos.videoNotSupported"
           >Your browser does not support the video tag.</span
         >

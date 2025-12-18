@@ -145,6 +145,232 @@ const PUPIL_VIDEO_SOURCES = {
   online: "https://www.youtube.com/embed/19pN7jSYHMw",
 };
 
+// -------------------------
+// 3-way toggle state (Generic video pages)
+// -------------------------
+const GENERIC_VIDEO_MODES = ["low", "high", "online"];
+
+// Per-page sources for toggle-driven video pages
+const VIDEO_PAGE_SOURCES = {
+  visualAcuityPage: {
+    key: "videoMode:visualAcuityPage",
+    containerSelector: "#visualAcuityContainer",
+    videoSelector: "#visualAcuityVideo",
+    sources: {
+      low: "videos/visualacuity_220p.mp4",
+      high: "videos/visualactuity_720p.mp4",
+      online: "https://www.youtube.com/embed/R7z8_VxOO1U",
+    },
+    onlineTitle: "Visual Acuity (online)",
+    iframeClass: "videos-yt-visualacuity",
+  },
+
+  anteriorSegmentVideoPage: {
+    key: "videoMode:anteriorSegmentVideoPage",
+    containerSelector: "#anteriorSegmentContainer",
+    videoSelector: "#anteriorSegmentVideo",
+    sources: {
+      low: "videos/antseg_220p.mp4",
+      high: "videos/antseg_720p.mp4",
+      online: "https://www.youtube.com/embed/8O92uj56OHI",
+    },
+    onlineTitle: "Anterior Segment (online)",
+    iframeClass: "videos-yt-antseg",
+  },
+
+  fundalReflexPage: {
+    key: "videoMode:fundalReflexPage",
+    containerSelector: "#fundalReflexContainer",
+    videoSelector: "#fundalReflexVideo",
+    sources: {
+      low: "videos/fundalreflex_220p.mp4",
+      high: "videos/fundalreflex_720p.mp4",
+      online: "https://www.youtube.com/embed/_LwvmXGO0cE",
+    },
+    onlineTitle: "Fundal Reflex (online)",
+    iframeClass: "videos-yt-fundalreflex",
+  },
+
+  directOphthalmoscopy: {
+    key: "videoMode:directOphthalmoscopy",
+    containerSelector: "#directOphthalmoscopyContainer",
+    videoSelector: "#customVideo",
+    sources: {
+      low: "videos/DO_220p.mp4",
+      high: "videos/DO_720p.mp4",
+      online: "https://www.youtube.com/embed/ibzvXsRfLiI",
+    },
+    onlineTitle: "Direct Ophthalmoscopy (online)",
+    iframeClass: "videos-yt-do",
+  },
+};
+
+function readGenericVideoMode(storageKey) {
+  try {
+    const m = localStorage.getItem(storageKey);
+    return GENERIC_VIDEO_MODES.includes(m) ? m : "low";
+  } catch {
+    return "low";
+  }
+}
+
+function writeGenericVideoMode(storageKey, mode) {
+  try {
+    if (!GENERIC_VIDEO_MODES.includes(mode)) mode = "low";
+    localStorage.setItem(storageKey, mode);
+  } catch {
+    /* ignore */
+  }
+}
+
+function toYouTubeEmbed(url) {
+  // Accept youtu.be/<id>, youtube.com/watch?v=<id>, or already-embed URLs.
+  // Return an embed URL without extra query params.
+  try {
+    const u = new URL(url);
+    const host = u.hostname.replace(/^www\./, "");
+
+    // Already embed
+    if (host === "youtube.com" && u.pathname.startsWith("/embed/")) {
+      return `https://www.youtube.com${u.pathname}`;
+    }
+
+    // youtu.be/<id>
+    if (host === "youtu.be") {
+      const id = u.pathname.replace(/^\//, "");
+      if (id) return `https://www.youtube.com/embed/${id}`;
+    }
+
+    // youtube.com/watch?v=<id>
+    const id = u.searchParams.get("v");
+    if (id) return `https://www.youtube.com/embed/${id}`;
+  } catch {
+    /* ignore */
+  }
+
+  // fallback: return as-is
+  return url;
+}
+
+function applyVideoPageMode(pageId, mode, { preserveTime = true } = {}) {
+  const cfg = VIDEO_PAGE_SOURCES[pageId];
+  if (!cfg) return;
+  if (!GENERIC_VIDEO_MODES.includes(mode)) mode = "low";
+
+  const page = document.getElementById(pageId);
+  if (!page) return;
+
+  const toggle = page.querySelector(".tri-toggle");
+  if (toggle) setTriToggleUI(toggle, mode);
+
+  const container = page.querySelector(cfg.containerSelector);
+  if (!container) return;
+
+  const video = container.querySelector(cfg.videoSelector);
+  const existingIframe = container.querySelector(`iframe.${cfg.iframeClass}`);
+
+  let currentTime = 0;
+  if (preserveTime && video) {
+    currentTime = video.currentTime || 0;
+  }
+
+  if (mode === "online") {
+    // Pause and hide local video
+    if (video) {
+      try {
+        video.pause();
+      } catch {}
+      video.style.display = "none";
+    }
+
+    const embedUrl = toYouTubeEmbed(cfg.sources.online);
+
+    if (!existingIframe) {
+      const iframe = document.createElement("iframe");
+      iframe.className = cfg.iframeClass;
+      iframe.width = "100%";
+      iframe.height = "100%";
+      iframe.style.width = "100%";
+      iframe.style.minHeight = "45vh";
+      iframe.style.border = "none";
+      iframe.allow =
+        "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+      iframe.allowFullscreen = true;
+      iframe.title = cfg.onlineTitle || `${pageId} (online)`;
+      iframe.src = embedUrl;
+      container.appendChild(iframe);
+    } else {
+      existingIframe.src = embedUrl;
+      existingIframe.style.display = "block";
+    }
+
+    return;
+  }
+
+  // low / high modes
+  if (existingIframe) {
+    existingIframe.remove();
+  }
+
+  if (!video) return;
+  video.style.display = "block";
+
+  const sourceEl = video.querySelector("source");
+  const src = cfg.sources[mode];
+  if (sourceEl) {
+    sourceEl.src = src;
+  } else {
+    const s = document.createElement("source");
+    s.src = src;
+    s.type = "video/mp4";
+    video.prepend(s);
+  }
+
+  try {
+    video.load();
+  } catch {}
+
+  const restore = () => {
+    if (!preserveTime) return;
+    try {
+      if (video.currentTime < 0.5 && currentTime > 0) {
+        video.currentTime = Math.min(
+          currentTime,
+          Math.max(0, (video.duration || currentTime) - 1),
+        );
+      }
+    } catch {}
+  };
+
+  if (video.readyState >= 1) restore();
+  else video.addEventListener("loadedmetadata", restore, { once: true });
+}
+
+function wireVideoPageTriToggle(pageId) {
+  const cfg = VIDEO_PAGE_SOURCES[pageId];
+  if (!cfg) return;
+
+  const page = document.getElementById(pageId);
+  if (!page) return;
+
+  const toggle = page.querySelector(".tri-toggle");
+  if (!toggle || toggle.dataset.wired === "1") return;
+  toggle.dataset.wired = "1";
+
+  const initialMode = readGenericVideoMode(cfg.key);
+  setTriToggleUI(toggle, initialMode);
+  applyVideoPageMode(pageId, initialMode, { preserveTime: false });
+
+  toggle.addEventListener("click", (e) => {
+    const btn = e.target.closest(".tri-toggle__btn");
+    if (!btn) return;
+
+    const mode = btn.dataset.mode;
+    writeGenericVideoMode(cfg.key, mode);
+    applyVideoPageMode(pageId, mode);
+  });
+}
+
 function applyPupilMode(mode, { preserveTime = true } = {}) {
   if (!PUPIL_MODES.includes(mode)) mode = "low";
 
@@ -364,6 +590,11 @@ function show(id) {
     }
   }
 
+  // Toggle-driven video pages (Visual Acuity / Ant Seg / Fundal Reflex / DO)
+  if (Object.prototype.hasOwnProperty.call(VIDEO_PAGE_SOURCES, id)) {
+    wireVideoPageTriToggle(id);
+  }
+
   // Refresh lesson progress bars when switching sections
   updateLessonProgressBars(id);
 }
@@ -534,7 +765,7 @@ const byId = (id) => document.getElementById(id);
 const bindings = {
   visualacuityCard: "visualAcuityPage",
   pupilsCard: "pupilsPage",
-  anteriorSegmentCard: "frontOfEyePage",
+  anteriorSegmentCard: "anteriorSegmentVideoPage",
   ophthalmoscopyCard: "directOphthalmoscopy",
   interactiveLearningCard: "interactiveLearningPage",
 };
