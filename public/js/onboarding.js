@@ -1,5 +1,7 @@
 /**
- * @fileoverview This file contains onboarding related functions and logic, Including name input, professional field selection, and job role/student year details.
+ * @fileoverview This file contains onboarding related functions and logic,
+ * including name input, professional field selection, multi-select job roles,
+ * and conditional experience fields.
  */
 import { loadPage } from "./navigation.js";
 import { saveProfile } from "./telemetry.js";
@@ -11,11 +13,20 @@ export function initializeOnboarding() {
 
   const fieldSelect = document.getElementById("fieldSelect");
   const jobSelect = document.getElementById("jobSelect");
+  const jobSelectDisplay = document.getElementById("jobSelectDisplay");
+  const jobSelectText = document.getElementById("jobSelectText");
+  const jobSelectPanel = document.getElementById("jobSelectPanel");
+  const jobSelectUi = document.getElementById("jobSelectUi");
+
   const studentYearField = document.getElementById("studentYearField");
   const studentYearSelect = document.getElementById("studentYearSelect");
 
+  const practiceLevelField = document.getElementById("practiceLevelField");
+  const practiceLevelSelect = document.getElementById("practiceLevelSelect");
+
   const continueBtn = document.getElementById("completeOnboardingBtn");
 
+  // Info modal
   const infoBtn = document.getElementById("onboardingInfoBtn");
   if (infoBtn) {
     infoBtn.addEventListener("click", () => {
@@ -23,7 +34,158 @@ export function initializeOnboarding() {
     });
   }
 
-  // --- Name validation UI ---
+  // ---------------------------
+  // Helpers
+  // ---------------------------
+  function getSelectedRoles() {
+    if (!jobSelect) return [];
+    return Array.from(jobSelect.selectedOptions || [])
+      .map((o) => o.value)
+      .filter((v) => v && v !== "");
+  }
+
+  function clearJobSelection() {
+    if (!jobSelect) return;
+    Array.from(jobSelect.options).forEach((opt) => {
+      opt.selected = false;
+    });
+  }
+
+  function rebuildJobDropdownPanel() {
+    if (!jobSelect || !jobSelectPanel || !fieldSelect) return;
+
+    jobSelectPanel.innerHTML = "";
+
+    const selectedField = fieldSelect.value;
+    const group = jobSelect.querySelector(
+      `optgroup[data-field="${selectedField}"]`,
+    );
+
+    if (!group) {
+      const empty = document.createElement("div");
+      empty.className = "multi-select__group-title";
+      empty.textContent = "Select a field first";
+      jobSelectPanel.appendChild(empty);
+      return;
+    }
+
+    const title = document.createElement("div");
+    title.className = "multi-select__group-title";
+    title.textContent = group.getAttribute("label") || "Roles";
+    jobSelectPanel.appendChild(title);
+
+    Array.from(group.querySelectorAll("option")).forEach((opt) => {
+      const labelText = (opt.textContent || "").trim();
+
+      const row = document.createElement("div");
+      row.className = "multi-select__option";
+      row.setAttribute("role", "option");
+
+      const tick = document.createElement("span");
+      tick.className = "multi-select__tick";
+      tick.textContent = "✓";
+
+      const text = document.createElement("span");
+      text.className = "multi-select__label";
+      text.textContent = labelText;
+
+      row.appendChild(tick);
+      row.appendChild(text);
+
+      const paint = () => {
+        row.setAttribute("aria-selected", opt.selected ? "true" : "false");
+      };
+
+      row.addEventListener("click", () => {
+        opt.selected = !opt.selected;
+        paint();
+
+        syncJobDisplayText();
+        updateExperienceFields();
+        checkForm();
+
+        jobSelect.dispatchEvent(new Event("change"));
+      });
+
+      paint();
+      jobSelectPanel.appendChild(row);
+    });
+  }
+
+  // custom dropdown open/close
+  jobSelectDisplay?.addEventListener("click", () => {
+    const isOpen =
+      jobSelectPanel && !jobSelectPanel.classList.contains("hidden");
+    if (isOpen) closeJobPanel();
+    else openJobPanel();
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!jobSelectUi) return;
+    if (jobSelectUi.contains(e.target)) return;
+    closeJobPanel();
+  });
+
+  function syncJobDisplayText() {
+    if (!jobSelectText) return;
+    const roles = getSelectedRoles();
+    if (!roles.length) {
+      jobSelectText.textContent = "Select";
+      return;
+    }
+
+    const labels = roles
+      .map((v) =>
+        jobSelect
+          ?.querySelector(`option[value="${CSS.escape(v)}"]`)
+          ?.textContent?.trim(),
+      )
+      .filter(Boolean);
+
+    jobSelectText.textContent = labels.join(", ");
+  }
+
+  function openJobPanel() {
+    if (!jobSelectPanel || !jobSelectDisplay) return;
+
+    rebuildJobDropdownPanel();
+    syncJobDisplayText();
+
+    jobSelectPanel.classList.remove("hidden");
+    jobSelectDisplay.setAttribute("aria-expanded", "true");
+  }
+
+  function closeJobPanel() {
+    if (!jobSelectPanel || !jobSelectDisplay) return;
+    jobSelectPanel.classList.add("hidden");
+    jobSelectDisplay.setAttribute("aria-expanded", "false");
+  }
+
+  function updateExperienceFields() {
+    const roles = getSelectedRoles();
+
+    const hasMedicalStudent = roles.includes("medical_student");
+    const hasNonStudentRole = roles.some((r) => r && r !== "medical_student");
+
+    // Medical student → show studentYearField
+    if (studentYearField) {
+      studentYearField.classList.toggle("hidden", !hasMedicalStudent);
+      if (!hasMedicalStudent && studentYearSelect) studentYearSelect.value = "";
+      studentYearSelect?.dispatchEvent(new Event("change"));
+    }
+
+    // Any other role → show practiceLevelField
+    if (practiceLevelField) {
+      practiceLevelField.classList.toggle("hidden", !hasNonStudentRole);
+      if (!hasNonStudentRole && practiceLevelSelect)
+        practiceLevelSelect.value = "";
+      practiceLevelSelect?.dispatchEvent(new Event("change"));
+    }
+  }
+
+  // ---------------------------
+  // Name validation UI
+  // ---------------------------
   if (nameInput && nameTip) {
     const sanitize = (raw) => raw.replace(/[^A-Za-zÀ-ÖØ-öø-ÿ\s]/g, "");
 
@@ -48,23 +210,36 @@ export function initializeOnboarding() {
     paint();
   }
 
-  // --- Toggle .filled on inputs/selects when they have a non-empty value ---
-  [nameInput, fieldSelect, jobSelect, studentYearSelect].forEach((el) => {
-    if (!el) return;
-    const check = () => {
-      if (el.value && el.value.trim() !== "") {
-        el.classList.add("filled");
-      } else {
-        el.classList.remove("filled");
+  // ---------------------------
+  // Toggle .filled / .has-value on inputs/selects
+  // ---------------------------
+  [nameInput, fieldSelect, studentYearSelect, practiceLevelSelect].forEach(
+    (el) => {
+      if (!el) return;
+      const check = () => {
+        if (el.value && el.value.trim() !== "") el.classList.add("filled");
+        else el.classList.remove("filled");
+      };
+      check();
+      el.addEventListener("input", check);
+      el.addEventListener("change", check);
+    },
+  );
+
+  // jobSelect(multiple) 전용: 선택 개수로 filled/has-value 처리
+  if (jobSelect) {
+    const syncJobClasses = () => {
+      const roles = getSelectedRoles();
+      if (jobSelectDisplay) {
+        jobSelectDisplay.classList.toggle("filled", roles.length > 0);
+        jobSelectDisplay.classList.toggle("has-value", roles.length > 0);
       }
     };
-    check();
-    el.addEventListener("input", check);
-    el.addEventListener("change", check);
-  });
+    syncJobClasses();
+    jobSelect.addEventListener("change", syncJobClasses);
+  }
 
-  // --- Toggle .has-value on selects  ---
-  [fieldSelect, jobSelect, studentYearSelect].forEach((sel) => {
+  [fieldSelect, studentYearSelect, practiceLevelSelect].forEach((sel) => {
     if (!sel) return;
     const syncHasValue = () => {
       if (sel.value) sel.classList.add("has-value");
@@ -74,38 +249,53 @@ export function initializeOnboarding() {
     sel.addEventListener("change", syncHasValue);
   });
 
-  // --- Field → narrow job optgroups ---
+  // ---------------------------
+  // Field → narrow job optgroups
+  // ---------------------------
   if (fieldSelect && jobSelect) {
     const updateJobsForField = () => {
       const selected = fieldSelect.value;
+
       jobSelect
         .querySelectorAll("optgroup")
         .forEach((g) => (g.style.display = "none"));
+
       const show = jobSelect.querySelector(
         `optgroup[data-field="${selected}"]`,
       );
       if (show) show.style.display = "block";
-      jobSelect.value = "";
+
+      // Reset role selections when field changes
+      clearJobSelection();
+
+      // Reset + hide experience fields
+      if (studentYearSelect) studentYearSelect.value = "";
+      if (practiceLevelSelect) practiceLevelSelect.value = "";
       studentYearField?.classList.add("hidden");
-      // Re-sync states
+      practiceLevelField?.classList.add("hidden");
+
+      // Re-sync state + validation
       jobSelect.dispatchEvent(new Event("change"));
+
+      rebuildJobDropdownPanel();
+      syncJobDisplayText();
+
+      checkForm();
     };
+
     fieldSelect.addEventListener("change", updateJobsForField);
     updateJobsForField();
   }
 
-  // --- Show student year when "Medical Student" ---
-  if (jobSelect && studentYearField) {
-    jobSelect.addEventListener("change", () => {
-      const isMedStudent = jobSelect.value === "medical_student";
-      studentYearField.classList.toggle("hidden", !isMedStudent);
-      if (!isMedStudent && studentYearSelect) studentYearSelect.value = "";
-      // Re-sync states
-      studentYearSelect?.dispatchEvent(new Event("change"));
-    });
-  }
+  // jobSelect change → experience fields + validation
+  jobSelect?.addEventListener("change", () => {
+    updateExperienceFields();
+    checkForm();
+  });
 
-  // --- Form validation ---
+  // ---------------------------
+  // Form validation
+  // ---------------------------
   function isValidName() {
     const s = (nameInput?.value || "").trim();
     if (s === "") return false;
@@ -114,66 +304,108 @@ export function initializeOnboarding() {
     const hasSpecial = /[^A-Za-zÀ-ÖØ-öø-ÿ\s]/.test(s);
     return !(tooShort || hasDigits || hasSpecial);
   }
+
   function isValidField() {
     return !!fieldSelect?.value;
   }
+
   function isValidJob() {
-    return !!jobSelect?.value;
+    const roles = getSelectedRoles();
+    return roles.length > 0;
   }
-  function isValidYears() {
-    const needYears = jobSelect?.value === "Medical Student";
-    return !needYears || !!studentYearSelect?.value;
+
+  function isValidExperience() {
+    const roles = getSelectedRoles();
+    const hasMedicalStudent = roles.includes("medical_student");
+    const hasNonStudentRole = roles.some((r) => r && r !== "medical_student");
+
+    if (hasMedicalStudent && !studentYearSelect?.value) return false;
+    if (hasNonStudentRole && !practiceLevelSelect?.value) return false;
+
+    return true;
   }
+
   function checkForm() {
     const ok =
-      isValidName() && isValidField() && isValidJob() && isValidYears();
+      isValidName() && isValidField() && isValidJob() && isValidExperience();
     continueBtn?.toggleAttribute("disabled", !ok);
     return ok;
   }
+
   nameInput?.addEventListener("input", checkForm);
   fieldSelect?.addEventListener("change", checkForm);
   jobSelect?.addEventListener("change", checkForm);
   studentYearSelect?.addEventListener("change", checkForm);
+  practiceLevelSelect?.addEventListener("change", checkForm);
+
+  // initial
+  updateExperienceFields();
   checkForm();
 
-  // --- Continue ---
+  // ---------------------------
+  // Continue
+  // ---------------------------
   continueBtn?.addEventListener("click", async (e) => {
     if (!checkForm()) {
       e.preventDefault();
       return;
     }
+
+    const roles = getSelectedRoles();
+    const rolesString = roles.join("|"); // multi-role 저장
+
     try {
       await saveProfile({
-        name: (nameInput?.value || "").trim(), // Save the trimmed name directly
-        aims: null, // you’ll fill aims via the Interests page
+        name: (nameInput?.value || "").trim(),
+        aims: null,
         interest: null,
-        experience: jobSelect?.value || null, // Save the selected role to experience
-        contact: null, // add later if you collect it
-        country: getCurrentCountryCode(), // Save the user's country code
-        area: getCurrentArea(), // Save the user's area (city/locality)
+        experience: rolesString || null,
+        contact: null,
+        country: getCurrentCountryCode(),
+        area: getCurrentArea(),
         language:
           document.documentElement.getAttribute("lang") ||
           localStorage.getItem("prefLang") ||
           "en",
       });
     } catch {}
+
     const name = nameInput?.value?.trim();
     if (name) localStorage.setItem("username", name);
+
     if (fieldSelect?.value)
       localStorage.setItem("userField", fieldSelect.value);
-    if (jobSelect?.value) localStorage.setItem("userJob", jobSelect.value);
-    if (studentYearSelect && !studentYearField.classList.contains("hidden")) {
-      localStorage.setItem("studentYears", studentYearSelect.value || "");
+
+    // roles 저장
+    localStorage.setItem("userJob", rolesString);
+
+    // years 저장(보일 때만)
+    if (studentYearField && !studentYearField.classList.contains("hidden")) {
+      localStorage.setItem("studentYears", studentYearSelect?.value || "");
+    } else {
+      localStorage.removeItem("studentYears");
     }
+
+    if (
+      practiceLevelField &&
+      !practiceLevelField.classList.contains("hidden")
+    ) {
+      localStorage.setItem("practiceYears", practiceLevelSelect?.value || "");
+    } else {
+      localStorage.removeItem("practiceYears");
+    }
+
     loadPage("interest");
   });
 
+  // ---------------------------
   // Skip and Continue button logic — onboarding path: custom intro + return tweaks
+  // (원본 로직 그대로 유지)
+  // ---------------------------
   const skip = document.getElementById("skipContinueBtn");
   if (skip) {
     let locked = false;
 
-    // Hide #skipBtn on the intro page exactly once after navigation
     function hideIntroSkipButtonOnce() {
       const immediate = document.getElementById("skipBtn");
       if (immediate) {
@@ -194,13 +426,11 @@ export function initializeOnboarding() {
       setTimeout(() => obs.disconnect(), 4000);
     }
 
-    // Replace #skipBtn (Go Straight to App) with guest CTA pair
     function replaceIntroPrimaryCtaOnce() {
       const trySwap = () => {
         const targetBtn = document.getElementById("skipBtn");
         if (!targetBtn) return false;
 
-        // Create Account button
         const createBtn = document.createElement("button");
         createBtn.id = "createAccountBtn";
         createBtn.className = "onb-cta intro-primary";
@@ -210,7 +440,6 @@ export function initializeOnboarding() {
           loadPage("onboarding");
         });
 
-        // Continue as Guest button
         const guestBtn = document.createElement("button");
         guestBtn.id = "continueAsGuestBtn";
 
@@ -229,13 +458,11 @@ export function initializeOnboarding() {
           loadPage("dashboard");
         });
 
-        // Group them
         const btnGroup = document.createElement("div");
         btnGroup.className = "intro-cta-group";
         btnGroup.appendChild(createBtn);
         btnGroup.appendChild(guestBtn);
 
-        // Swap in place of Go Straight to App
         targetBtn.replaceWith(btnGroup);
         return true;
       };
@@ -252,17 +479,14 @@ export function initializeOnboarding() {
       setTimeout(() => obs.disconnect(), 4000);
     }
 
-    // Hide #skipContinueBtn on onboarding if came from skip path
     function hideSkipContinueBtnIfReturned() {
       if (localStorage.getItem("cameFromSkipPath") === "true") {
         const btn = document.getElementById("skipContinueBtn");
         if (btn) btn.style.display = "none";
-        // Clear the flag so it only hides once
         localStorage.removeItem("cameFromSkipPath");
       }
     }
 
-    // Run this check immediately (handles returning user instantly)
     hideSkipContinueBtnIfReturned();
 
     skip.addEventListener("click", () => {
@@ -272,7 +496,6 @@ export function initializeOnboarding() {
       const splashContainer = document.getElementById("splashScreenContainer");
       const pageContainer = document.getElementById("page-content");
 
-      // If overlay isn't present, just navigate and apply intro tweaks
       if (!splashContainer) {
         loadPage("intro");
         hideIntroSkipButtonOnce();
@@ -281,11 +504,9 @@ export function initializeOnboarding() {
         return;
       }
 
-      // Clean overlay state
       splashContainer.classList.remove("fade-out");
       splashContainer.innerHTML = "";
 
-      // Load mid-splash and animate
       fetch("html/splashscreen_mid.html")
         .then((r) => r.text())
         .then((html) => {

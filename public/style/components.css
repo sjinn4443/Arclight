@@ -2305,7 +2305,7 @@ input:checked + .slider:before {
   font-weight: 700;
   color: #111;
   margin-bottom: 15px;
-  margin-top: 29px;
+  margin-top: 27px;
 }
 
 /* ---- Interest dropdown (pill style) ---- */
@@ -2382,6 +2382,58 @@ input:checked + .slider:before {
   width: 23px;
   height: 17px;
   margin: 0;
+}
+
+/* Background rows */
+.bg-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0px 0px 12px;
+}
+
+.bg-row__label {
+  flex: 1;
+  font-size: 0.8rem;
+  line-height: 1.3;
+}
+
+/* Yes/No chips */
+.bg-chips {
+  display: flex;
+  gap: 5px;
+  flex-shrink: 0;
+}
+
+/* override global button style (components.css makes all buttons red + 100% width) */
+.bg-chip {
+  width: auto;
+  margin: 0;
+  padding: 7px 14px;
+  border-radius: 12px;
+  border: 1px solid #cfcfd6;
+  background: #fff;
+  color: #111;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+/* selected state */
+.bg-chip.is-selected,
+.bg-chip[aria-checked="true"] {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+  background: #fff;
+}
+
+/* tap/keyboard feedback */
+.bg-chip:active {
+  transform: scale(0.98);
+}
+.bg-chip:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
 }
 
 /* Remove focus outline / active flash on back button */
