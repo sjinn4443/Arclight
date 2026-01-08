@@ -157,11 +157,10 @@ async function renderWorldPins(users) {
     const ll = latLngList[idx];
     if (!ll) return;
 
-    const label =
-      `<strong>${escapeHtml(u.name || "—")}</strong><br>` +
-      `Country: ${escapeHtml(u.country || "—")}<br>` +
-      `Experience: ${escapeHtml(u.experienceEn || u.experience || "—")}`;
-
+    const label = `<strong>${escapeHtml(u.name || "Anonymous")}</strong><br>
+    Country: ${escapeHtml(u.country || "—")}<br>
+    Area: ${escapeHtml(u.area || "—")}<br>
+    Experience: ${escapeHtml(expEn || "—")}`;
     const marker = L.marker(ll).addTo(worldMap).bindPopup(label);
     mapMarkers.push(marker);
     pinCount += 1;
@@ -336,6 +335,8 @@ async function renderUsers(users) {
     (a, b) => new Date(a.first_seen) - new Date(b.first_seen),
   );
 
+  renderStats(sorted);
+
   // Render columns based on the actual table headers so /reports.html and
   // /html/reports.html can diverge safely.
   const table = document.getElementById("users");
@@ -498,3 +499,110 @@ document.addEventListener("language:updated", () => {
   // Give the backend a moment to write before refetching
   setTimeout(load, 500);
 });
+
+function _norm(v) {
+  return String(v ?? "").trim();
+}
+
+function _countTop(values, topN = 6) {
+  const m = new Map();
+  for (const v of values) {
+    const k = _norm(v);
+    if (!k) continue;
+    m.set(k, (m.get(k) || 0) + 1);
+  }
+  return [...m.entries()].sort((a, b) => b[1] - a[1]).slice(0, topN);
+}
+
+function _renderList(id, entries) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  if (!entries.length) {
+    el.textContent = "No data";
+    return;
+  }
+  el.innerHTML = entries
+    .map(
+      ([k, c]) =>
+        `<div class="kv"><span>${escapeHtml(k)}</span><span>${c}</span></div>`,
+    )
+    .join("");
+}
+
+function renderStats(users) {
+  // DEMO: 데이터가 적으면 가짜 레코드를 섞어서 통계가 “보이게”
+  const demo =
+    users.length >= 10
+      ? []
+      : [
+          {
+            interest: "Eyes",
+            experience: "Student",
+            country: "Kenya",
+            area: "Nairobi",
+            language: "en",
+            refresh_count: 5,
+          },
+          {
+            interest: "Ears",
+            experience: "Nurse",
+            country: "India",
+            area: "Karnataka",
+            language: "hi",
+            refresh_count: 9,
+          },
+          {
+            interest: "Teach",
+            experience: "Community health worker",
+            country: "Nigeria",
+            area: "Lagos",
+            language: "yo",
+            refresh_count: 7,
+          },
+          {
+            interest: "Eyes",
+            experience: "Doctor",
+            country: "Brazil",
+            area: "Bahia",
+            language: "pt",
+            refresh_count: 4,
+          },
+        ];
+
+  const all = [...users, ...demo];
+
+  _renderList(
+    "statsInterest",
+    _countTop(all.map((u) => u.interest_en || u.interest)),
+  );
+  _renderList(
+    "statsExperience",
+    _countTop(all.map((u) => u.experience_en || u.experience)),
+  );
+  _renderList(
+    "statsCountryArea",
+    _countTop(
+      all.map((u) => {
+        const c = _norm(u.country);
+        const a = _norm(u.area);
+        return a ? `${c} — ${a}` : c;
+      }),
+    ),
+  );
+  _renderList("statsLanguage", _countTop(all.map((u) => u.language)));
+
+  const refreshNums = all
+    .map((u) => Number(u.refresh_count ?? 0))
+    .filter((n) => Number.isFinite(n));
+
+  const total = refreshNums.reduce((a, b) => a + b, 0);
+  const avg = refreshNums.length ? total / refreshNums.length : 0;
+
+  const el = document.getElementById("statsRefresh");
+  if (el) {
+    el.innerHTML = `
+      <div class="kv"><span>Total</span><span>${total}</span></div>
+      <div class="kv"><span>Average per user</span><span>${avg.toFixed(1)}</span></div>
+    `;
+  }
+}

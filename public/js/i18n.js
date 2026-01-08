@@ -204,6 +204,13 @@ export async function setLanguage(lang) {
   window.dispatchEvent(
     new CustomEvent("i18n:languageChanged", { detail: { lang: next } }),
   );
+  document.dispatchEvent(
+    new CustomEvent("language:updated", { detail: { lang: next } }),
+  );
+
+  try {
+    window.ARCLIGHT?.saveProfile?.({ language: next });
+  } catch {}
 }
 
 /** Boot */

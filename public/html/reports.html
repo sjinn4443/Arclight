@@ -51,7 +51,51 @@
         overflow: hidden;
         background: #f7f7f7;
       }
+      .statsGrid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 12px;
+        margin: 12px 0 16px;
+      }
+      .statCard {
+        border: 1px solid #e7e7e7;
+        border-radius: 12px;
+        padding: 12px;
+        background: #fff;
+      }
+      .statCard h3 {
+        margin: 0 0 8px;
+        font-size: 14px;
+      }
+      .kv {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        font-size: 13px;
+      }
     </style>
+    <section class="statsGrid" aria-label="Statistics">
+      <div class="statCard">
+        <h3>Interest</h3>
+        <div id="statsInterest"></div>
+      </div>
+      <div class="statCard">
+        <h3>Experience</h3>
+        <div id="statsExperience"></div>
+      </div>
+      <div class="statCard">
+        <h3>Country and area</h3>
+        <div id="statsCountryArea"></div>
+      </div>
+      <div class="statCard">
+        <h3>Language</h3>
+        <div id="statsLanguage"></div>
+      </div>
+      <div class="statCard">
+        <h3>Refresh count</h3>
+        <div id="statsRefresh"></div>
+      </div>
+    </section>
   </head>
   <body>
     <div class="toolbar">

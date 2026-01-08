@@ -4,7 +4,7 @@
  * It also handles caching of location data and dispatching location update events.
  */
 
-import { bumpRefresh } from "./telemetry.js";
+import { bumpRefresh, saveProfile } from "./telemetry.js";
 
 // ---------- Constants ----------
 const GEO_CACHE_KEY = "profileGeo"; // stores { iso2, country, city, lat, lon, area, classification, ts, isPrecise }
@@ -268,6 +268,13 @@ export async function refineWithBrowserLocation() {
         };
 
         localStorage.setItem("profileGeo", JSON.stringify(merged));
+        saveProfile({
+          country: merged.country || null,
+          area: merged.area || merged.city || null,
+          lat: merged.lat ?? null,
+          lon: merged.lon ?? null,
+        });
+
         document.dispatchEvent(
           new CustomEvent("location:updated", { detail: merged }),
         );

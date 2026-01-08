@@ -129,6 +129,19 @@ async function getUsersForDashboard() {
   return Array.from(map.values()).sort(
     (a, b) => new Date(a.first_seen) - new Date(b.first_seen),
   );
+
+  const fs = require("fs/promises");
+  const path = require("path");
+
+  async function getUsersForDashboard() {
+    const { rows } = await pool.query(`
+    SELECT profile_id, name, aims, interest, experience, contact, country, area, language,
+           first_seen, last_seen, refresh_count
+    FROM app_users
+    ORDER BY first_seen ASC
+  `);
+    return rows;
+  }
 }
 
 async function saveIp(ip) {
