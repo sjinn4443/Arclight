@@ -73,6 +73,118 @@
         gap: 10px;
         font-size: 13px;
       }
+
+      /* Stat charts */
+      .statChart {
+        display: grid;
+        gap: 8px;
+      }
+      .barRow {
+        display: grid;
+        grid-template-columns: 1fr 46px;
+        align-items: center;
+        gap: 10px;
+      }
+      .barLabel {
+        font-size: 13px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .barValue {
+        text-align: right;
+        font-variant-numeric: tabular-nums;
+        font-size: 13px;
+      }
+      .barTrack {
+        height: 10px;
+        border-radius: 999px;
+        background: #eee;
+        overflow: hidden;
+        margin-top: 6px;
+      }
+      .barFill {
+        height: 100%;
+        border-radius: 999px;
+        background: #111;
+        width: 0%;
+        transition: width 250ms ease;
+      }
+
+      /* Donut */
+      .donutWrap {
+        display: grid;
+        grid-template-columns: 120px 1fr;
+        gap: 12px;
+        align-items: center;
+      }
+      .donut {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        background: conic-gradient(
+          #111 0 25%,
+          #666 0 40%,
+          #aaa 0 55%,
+          #ddd 0 100%
+        );
+        position: relative;
+      }
+      .donut::after {
+        content: "";
+        position: absolute;
+        inset: 18px;
+        background: #fff;
+        border-radius: 50%;
+      }
+      .donutCenter {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        font-size: 12px;
+        text-align: center;
+        z-index: 1;
+      }
+      .legend {
+        display: grid;
+        gap: 6px;
+      }
+      .legendItem {
+        display: grid;
+        grid-template-columns: 10px 1fr auto;
+        gap: 8px;
+        align-items: center;
+        font-size: 12px;
+      }
+      .legendSwatch {
+        width: 10px;
+        height: 10px;
+        border-radius: 2px;
+        background: #111;
+      }
+
+      /* KPI */
+      .kpiGrid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+      }
+      .kpi {
+        border: 1px solid #e7e7e7;
+        border-radius: 10px;
+        padding: 10px;
+        background: #fafafa;
+      }
+      .kpiLabel {
+        font-size: 12px;
+        color: #666;
+      }
+      .kpiValue {
+        font-size: 18px;
+        font-variant-numeric: tabular-nums;
+        margin-top: 4px;
+      }
     </style>
     <section class="statsGrid" aria-label="Statistics">
       <div class="statCard">

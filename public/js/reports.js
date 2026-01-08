@@ -530,7 +530,6 @@ function _renderList(id, entries) {
 }
 
 function renderStats(users) {
-  // DEMO: 데이터가 적으면 가짜 레코드를 섞어서 통계가 “보이게”
   const demo =
     users.length >= 10
       ? []
@@ -571,38 +570,138 @@ function renderStats(users) {
 
   const all = [...users, ...demo];
 
-  _renderList(
-    "statsInterest",
-    _countTop(all.map((u) => u.interest_en || u.interest)),
+  const interestTop = _countTop(
+    all.map((u) => u.interest_en || u.interest),
+    5,
   );
-  _renderList(
-    "statsExperience",
-    _countTop(all.map((u) => u.experience_en || u.experience)),
+  const expTop = _countTop(
+    all.map((u) => u.experience_en || u.experience),
+    5,
   );
-  _renderList(
-    "statsCountryArea",
-    _countTop(
-      all.map((u) => {
-        const c = _norm(u.country);
-        const a = _norm(u.area);
-        return a ? `${c} — ${a}` : c;
-      }),
-    ),
+  const countryAreaTop = _countTop(
+    all.map((u) => {
+      const c = _norm(u.country);
+      const a = _norm(u.area);
+      return a ? `${c} — ${a}` : c;
+    }),
+    8,
   );
-  _renderList("statsLanguage", _countTop(all.map((u) => u.language)));
+  const langTop = _countTop(
+    all.map((u) => u.language),
+    6,
+  );
 
-  const refreshNums = all
+  renderBarChart(document.getElementById("statsInterest"), interestTop, {
+    maxItems: 5,
+  });
+  renderBarChart(document.getElementById("statsExperience"), expTop, {
+    maxItems: 5,
+  });
+  renderBarChart(document.getElementById("statsCountryArea"), countryAreaTop, {
+    maxItems: 8,
+  });
+  renderDonut(document.getElementById("statsLanguage"), langTop, {
+    maxItems: 6,
+    title: "records",
+  });
+  renderRefreshKpis(document.getElementById("statsRefresh"), all);
+}
+
+function renderBarChart(
+  el,
+  entries,
+  { maxItems = 6, emptyText = "No data" } = {},
+) {
+  if (!el) return;
+  if (!entries || !entries.length) {
+    el.textContent = emptyText;
+    return;
+  }
+
+  const top = entries.slice(0, maxItems);
+  const max = Math.max(...top.map(([, c]) => c), 1);
+
+  el.innerHTML = `
+    <div class="statChart">
+      ${top
+        .map(([label, count]) => {
+          const pct = Math.round((count / max) * 100);
+          return `
+          <div>
+            <div class="barRow">
+              <div class="barLabel" title="${escapeHtml(label)}">${escapeHtml(label)}</div>
+              <div class="barValue">${count}</div>
+            </div>
+            <div class="barTrack"><div class="barFill" style="width:${pct}%"></div></div>
+          </div>
+        `;
+        })
+        .join("")}
+    </div>
+  `;
+}
+
+function renderDonut(el, entries, { maxItems = 6, title = "Total" } = {}) {
+  if (!el) return;
+  if (!entries || !entries.length) {
+    el.textContent = "No data";
+    return;
+  }
+
+  const top = entries.slice(0, maxItems);
+  const total = top.reduce((a, [, c]) => a + c, 0) || 1;
+
+  // simple grayscale palette
+  const colours = ["#111", "#444", "#666", "#888", "#aaa", "#ccc"];
+
+  let acc = 0;
+  const stops = top
+    .map(([, c], i) => {
+      const start = acc;
+      acc += (c / total) * 100;
+      return `${colours[i % colours.length]} ${start.toFixed(2)}% ${acc.toFixed(2)}%`;
+    })
+    .join(", ");
+
+  const donutHtml = `
+    <div class="donutWrap">
+      <div class="donut" style="background: conic-gradient(${stops});">
+        <div class="donutCenter"><div><strong>${total}</strong><br>${escapeHtml(title)}</div></div>
+      </div>
+      <div class="legend">
+        ${top
+          .map(
+            ([label, c], i) => `
+          <div class="legendItem">
+            <div class="legendSwatch" style="background:${colours[i % colours.length]}"></div>
+            <div title="${escapeHtml(label)}">${escapeHtml(label)}</div>
+            <div>${c}</div>
+          </div>
+        `,
+          )
+          .join("")}
+      </div>
+    </div>
+  `;
+
+  el.innerHTML = donutHtml;
+}
+
+function renderRefreshKpis(el, users) {
+  if (!el) return;
+
+  const nums = users
     .map((u) => Number(u.refresh_count ?? 0))
     .filter((n) => Number.isFinite(n));
+  const total = nums.reduce((a, b) => a + b, 0);
+  const avg = nums.length ? total / nums.length : 0;
+  const max = nums.length ? Math.max(...nums) : 0;
 
-  const total = refreshNums.reduce((a, b) => a + b, 0);
-  const avg = refreshNums.length ? total / refreshNums.length : 0;
-
-  const el = document.getElementById("statsRefresh");
-  if (el) {
-    el.innerHTML = `
-      <div class="kv"><span>Total</span><span>${total}</span></div>
-      <div class="kv"><span>Average per user</span><span>${avg.toFixed(1)}</span></div>
-    `;
-  }
+  el.innerHTML = `
+    <div class="kpiGrid">
+      <div class="kpi"><div class="kpiLabel">Total refresh</div><div class="kpiValue">${total}</div></div>
+      <div class="kpi"><div class="kpiLabel">Average per user</div><div class="kpiValue">${avg.toFixed(1)}</div></div>
+      <div class="kpi"><div class="kpiLabel">Max (single user)</div><div class="kpiValue">${max}</div></div>
+    </div>
+  `;
 }
