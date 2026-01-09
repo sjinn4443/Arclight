@@ -1164,10 +1164,10 @@ select.onb-input.has-value {
 }
 
 #pupilsPage .pupil-card h3 {
-  margin: 8px 6px 14px;
+  margin: 8px 25px 14px;
   font-size: 12px;
-  font-weight: 500;
-  color: #111;
+  font-weight: 600;
+  color: #fff;
 }
 
 #pupilsPage .lesson-row {
@@ -1179,7 +1179,7 @@ select.onb-input.has-value {
   border-radius: 12px;
   min-height: 51px;
   padding: 10px 12px;
-  margin: 16px 0;
+  margin: 16px 18px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
   width: 88%;
 }
@@ -1191,7 +1191,7 @@ select.onb-input.has-value {
   font-size: 12px;
   color: #777;
   margin-top: -11%;
-  margin-left: 5%;
+  margin-left: 25px;
 }
 
 #pupilsPage .lesson-type {
@@ -1210,9 +1210,9 @@ select.onb-input.has-value {
   height: 6px;
   background: #e9e9e9;
   border-radius: 999px;
-  margin-top: 5%;
+  margin-top: 2px;
   overflow: hidden;
-  margin-left: 5%;
+  margin-left: 23px;
 }
 
 #pupilsPage .lesson-progress__fill {
@@ -1225,7 +1225,7 @@ select.onb-input.has-value {
 #pupilsPage .lesson-cta {
   font-size: 11px;
   color: #bbb;
-  margin-bottom: -103%;
+  margin-bottom: -47px;
 }
 
 /* ===== Pupils timeline layout ===== */
@@ -1329,7 +1329,7 @@ body,
 
 /* Some builds put a background on the first container row—neutralize it */
 .page > .container:first-child {
-  background: #ffffff !important;
+  background: #fbfbfb !important;
 }
 
 /* Onboarding: align layout with intro/interest */

@@ -1672,141 +1672,271 @@ input:checked + .slider:before {
 /* ============================================= Pupils page ============================================= */
 
 #pupilsPage .pupils-timeline {
-  counter-reset: pupils-step;
+  display: none; /* old layout (timeline numbers) */
 }
 
-#pupilsPage .pupils-timeline .tl-item {
+/* New layout wrapper */
+#pupilsPage .pupils-levels {
   display: flex;
-  gap: 10px;
-  margin: 6px 0;
-  counter-increment: pupils-step;
+  flex-direction: column;
+  gap: 18px;
+  padding: 6px 0 18px;
 }
 
-#pupilsPage .pupils-timeline .tl-item::before {
-  content: counter(pupils-step);
-  flex: 0 0 auto;
-  width: 30px;
-  height: 30px;
-  border-radius: 6px;
-  background: #111;
+/* The two grey dots between sections */
+#pupilsPage .pupils-dots {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 2px 0;
+}
+#pupilsPage .pupils-dots span {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: #d7d7d7;
+}
+
+/* Level container (black rounded card) */
+#pupilsPage .pupil-level {
+  --accent: #ff9f2f;
+  --cap-from: #ffbf66;
+  --cap-to: #ff7a00;
+  width: min(100%, 420px);
+  margin: 0 auto;
+  border-radius: 25px;
+  background: #070707;
+  overflow: hidden;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.18);
+  border: none;
+  outline: none;
+  background-clip: padding-box;
+}
+
+/* colour variants */
+#pupilsPage .pupil-level--primary {
+  --accent: #ffb95c;
+  --cap-from: #ffbf66;
+  --cap-to: #ff7a00;
+}
+#pupilsPage .pupil-level--intermediate {
+  --accent: #f25600;
+  --cap-from: #ff7a00;
+  --cap-to: #e11b1b;
+}
+#pupilsPage .pupil-level--advanced {
+  --accent: #e41e26;
+  --cap-from: #ef2b2b;
+  --cap-to: #b70000;
+}
+
+/* Gradient cap header */
+#pupilsPage .pupil-level__cap {
+  background: linear-gradient(
+    90deg,
+    var(--cap-from) 0%,
+    var(--cap-from) 72%,
+    var(--cap-to) 100%
+  );
   color: #fff;
-  font-size: 14px;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: 3px;
-  z-index: 500;
+  font-size: 12px;
+  font-weight: 400;
+  text-align: center;
+  padding: 10px 12px;
+  border: none;
+  outline: none;
 }
 
-#pupilsPage .pupil-card {
-  z-index: 1;
-  position: relative;
-  flex: 1;
-  background: #f4f4f4;
-  padding: 10px;
-  border-radius: 8px;
-}
-
-#pupilsPage .eyes-topbar__title {
-  font-size: 14px;
-  font-weight: 600;
-  color: #111;
-  top: 34px;
-}
-#pupilsPage .eyes-topbar__icons {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-#pupilsPage .bell-icon {
-  width: 20px;
-  height: 20px;
+/* Make the buttons look like content blocks, not buttons */
+#pupilsPage .pupil-card.module-card {
   display: block;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  padding: 14px 16px 18px;
+  text-align: left;
+  cursor: pointer;
+}
+
+#pupilsPage .pupil-card.module-card:active {
+  transform: translateY(1px);
 }
 
 #pupilsPage .pupil-card h3 {
-  margin: 8px 6px 14px;
-  font-size: 12px;
-  font-weight: 500;
-  color: #111;
+  margin: 8px 2px 14px;
+  font-size: 26px;
+  line-height: 1.15;
+  font-weight: 750;
+  color: #fff;
 }
 
+/* lesson row (white pill inside card) */
 #pupilsPage .lesson-row {
+  width: 100%;
   display: grid;
-  grid-template-columns: 44px 1fr auto;
+  grid-template-columns: 70px 1fr auto;
   align-items: center;
-  gap: 10px;
+  gap: 14px;
+
   background: #fff;
-  border-radius: 12px;
-  min-height: 51px;
-  padding: 10px 12px;
-  margin: 16px 0;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-  width: 88%;
+  border-radius: 18px;
+  padding: 14px 14px;
+  margin: 12px 0;
+
+  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.12);
 }
 
-#pupilsPage .thumb {
-  width: 47px;
-  height: 48px;
-  border-radius: 8px;
-  background: #dcdcdc;
-  border: 1px solid #e5e5ea;
+/* icon thumb: black tile with simple glyphs */
+#pupilsPage .lesson-row .thumb {
+  width: 65px;
+  height: 52px;
+  border-radius: 16px;
+  background: #0a0a0a;
+  position: relative;
+  overflow: hidden;
 }
 
+/* video glyph (play + small “clapper” stripes) */
+#pupilsPage .lesson-row--video .thumb::before {
+  content: "";
+  position: absolute;
+  left: 14px;
+  top: 10px;
+  width: 34px;
+  height: 10px;
+  border-radius: 4px;
+  background: repeating-linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.95),
+    rgba(255, 255, 255, 0.95) 6px,
+    rgba(255, 255, 255, 0) 6px,
+    rgba(255, 255, 255, 0) 12px
+  );
+  opacity: 0.9;
+}
+#pupilsPage .lesson-row--video .thumb::after {
+  content: "";
+  position: absolute;
+  left: 28px;
+  top: 22px;
+  width: 0;
+  height: 0;
+  border-left: 14px solid var(--accent);
+  border-top: 9px solid transparent;
+  border-bottom: 9px solid transparent;
+}
+
+/* quiz glyph: simple question mark accent */
+#pupilsPage .lesson-row--quiz .thumb::after {
+  content: "?";
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 30px;
+  font-weight: 800;
+  color: var(--accent);
+}
+
+/* lesson meta */
+#pupilsPage .lesson-main {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
 #pupilsPage .lesson-top {
   display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 12px;
-  color: #777;
-  margin-top: -11%;
-  margin-left: 5%;
+  gap: 8px;
+  align-items: baseline;
+  font-size: 15px;
 }
 #pupilsPage .lesson-type {
-  font-weight: 600;
+  font-weight: 650;
   color: #111;
-  font-size: 11px;
 }
 #pupilsPage .lesson-meta {
-  color: #bbb;
-  font-size: 11px;
+  color: rgba(0, 0, 0, 0.45);
+  font-weight: 500;
 }
 
+/* progress bar */
 #pupilsPage .lesson-progress {
-  width: 100%;
-  height: 6px;
-  background: #e9e9e9;
+  height: 7px;
   border-radius: 999px;
-  margin-top: 5%;
+  background: #dedede;
   overflow: hidden;
-  margin-left: 5%;
 }
 #pupilsPage .lesson-progress__fill {
   height: 100%;
-  background: #111;
   border-radius: 999px;
-  transition: width 0.25s ease;
+  background: var(--accent);
 }
 
+/* CTA on the right */
 #pupilsPage .lesson-cta {
-  font-size: 11px;
-  color: #bbb;
-  margin-bottom: -103%;
-}
-
-#pupilsPage .eyes-topbar {
-  position: fixed;
-  top: 0;
-  background: #fff;
-  z-index: 1000;
-}
-
-.pupils-subtitle {
+  color: rgba(0, 0, 0, 0.35);
+  font-weight: 650;
   font-size: 13px;
-  font-weight: 600;
-  color: #111;
-  margin: 21px 4px 12px;
+  white-space: nowrap;
+}
+
+/* Make Advanced look like one “combined” block (two buttons inside same black area) */
+#pupilsPage .pupil-level--advanced .pupil-card.module-card {
+  padding-bottom: 10px;
+}
+#pupilsPage
+  .pupil-level--advanced
+  .pupil-card.module-card
+  + .pupil-card.module-card {
+  padding-top: 4px;
+}
+
+/* small screens: keep the same feel as your screenshot 1 (content may be clipped by viewport, but card stays centred) */
+@media (max-width: 360px) {
+  #pupilsPage .pupil-level {
+    width: calc(100% - 22px);
+  }
+
+  #pupilsPage .pupil-card h3 {
+    font-size: 22px;
+  }
+}
+
+/* ============================================= */
+/* Pupils page – module icons (real assets)      */
+/* ============================================= */
+
+#pupilsPage .lesson-row .thumb {
+  background-color: #0a0a0a;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 61px;
+}
+
+/* ---------- Primary ---------- */
+#pupilsPage .pupil-level--primary .lesson-row--video .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/primary_video.webp");
+}
+
+/* ---------- Intermediate ---------- */
+#pupilsPage .pupil-level--intermediate .lesson-row--video .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/intermediate_video.webp");
+}
+
+#pupilsPage .pupil-level--intermediate .lesson-row--quiz .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/intermediate_casestudy.webp");
+}
+
+/* ---------- Advanced ---------- */
+#pupilsPage .pupil-level--advanced .lesson-row--video .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/advanced_video.webp");
+}
+
+/* Remove any old pseudo-icons just in case */
+#pupilsPage .lesson-row .thumb::before,
+#pupilsPage .lesson-row .thumb::after {
+  content: none;
 }
 
 /* ============================================= Canonical Eyes Topbar ============================================= */
