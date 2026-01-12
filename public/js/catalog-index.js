@@ -9,7 +9,7 @@
  */
 export const EYES_INDEX = {
   // Core Examination
-  "History Taking": "comingSoon",
+  "History Taking": "casestudy",
   "Visual Acuity": "visualAcuityPage",
   Pupils: "pupilsPage",
   "Front of Eye": "frontOfEyePage",

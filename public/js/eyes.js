@@ -177,7 +177,7 @@ export function initializeEyesCatalog() {
       {
         label: "History Taking",
         target: EYES_INDEX["History Taking"],
-        tags: ["Coming Soon"],
+        tags: ["Quiz"],
       },
       {
         label: "Visual Acuity",

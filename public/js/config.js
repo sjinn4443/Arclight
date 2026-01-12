@@ -23,4 +23,5 @@ export const ROUTES = {
   menu: "html/menu.html",
   offline: "html/offline.html",
   reports: "html/reports.html",
+  casestudy: "html/casestudy.html",
 };

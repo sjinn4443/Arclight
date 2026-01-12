@@ -1640,11 +1640,7 @@ input:checked + .slider:before {
   justify-content: space-between;
   margin: 8px 2px 6px;
 }
-.eyes-topbar__title {
-  font-size: 13px;
-  font-weight: 500;
-  color: #111;
-}
+
 .eyes-topbar__icons {
   display: flex;
   gap: 10px;
@@ -1789,7 +1785,7 @@ input:checked + .slider:before {
 
 /* icon thumb: black tile with simple glyphs */
 #pupilsPage .lesson-row .thumb {
-  width: 65px;
+  width: 62px;
   height: 52px;
   border-radius: 16px;
   background: #0a0a0a;
@@ -1919,6 +1915,10 @@ input:checked + .slider:before {
   background-image: url("/images/icon/eyes/moduleicons/primary_video.webp");
 }
 
+#pupilsPage .pupil-level--primary .lesson-row--quiz .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/primary_casestudy.webp");
+}
+
 /* ---------- Intermediate ---------- */
 #pupilsPage .pupil-level--intermediate .lesson-row--video .thumb {
   background-image: url("/images/icon/eyes/moduleicons/intermediate_video.webp");
@@ -1933,10 +1933,198 @@ input:checked + .slider:before {
   background-image: url("/images/icon/eyes/moduleicons/advanced_video.webp");
 }
 
+#pupilsPage .pupil-level--advanced .lesson-row--quiz .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/advanced_casestudy.webp");
+}
+
 /* Remove any old pseudo-icons just in case */
 #pupilsPage .lesson-row .thumb::before,
 #pupilsPage .lesson-row .thumb::after {
   content: none;
+}
+
+/* ============================================= */
+/* Case Study page – match Pupils page look       */
+/* ============================================= */
+
+#casestudyPage .pupils-levels {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 6px 0 18px;
+}
+
+#casestudyPage .pupils-dots {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 2px 0;
+}
+#casestudyPage .pupils-dots span {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: #d7d7d7;
+}
+
+/* Level container (black rounded card) */
+#casestudyPage .pupil-level {
+  --accent: #ff9f2f;
+  --cap-from: #ffbf66;
+  --cap-to: #ff7a00;
+  width: min(100%, 420px);
+  margin: 0 auto;
+  border-radius: 25px;
+  background: #070707;
+  overflow: hidden;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.18);
+  border: none;
+  outline: none;
+  background-clip: padding-box;
+}
+
+/* colour variants */
+#casestudyPage .pupil-level--primary {
+  --accent: #ffb95c;
+  --cap-from: #ffbf66;
+  --cap-to: #ff7a00;
+}
+#casestudyPage .pupil-level--intermediate {
+  --accent: #f25600;
+  --cap-from: #ff7a00;
+  --cap-to: #e11b1b;
+}
+
+/* Gradient cap header */
+#casestudyPage .pupil-level__cap {
+  background: linear-gradient(
+    90deg,
+    var(--cap-from) 0%,
+    var(--cap-from) 72%,
+    var(--cap-to) 100%
+  );
+  color: #fff;
+  font-size: 12px;
+  font-weight: 400;
+  text-align: center;
+  padding: 10px 12px;
+  border: none;
+  outline: none;
+}
+
+/* button card */
+#casestudyPage .pupil-card.module-card {
+  display: block;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  padding: 14px 16px 18px;
+  text-align: left;
+  cursor: pointer;
+}
+#casestudyPage .pupil-card.module-card:active {
+  transform: translateY(1px);
+}
+#casestudyPage .pupil-card h3 {
+  margin: 8px 2px 14px;
+  font-size: 26px;
+  line-height: 1.15;
+  font-weight: 750;
+  color: #fff;
+}
+
+/* lesson row (white pill inside card) */
+#casestudyPage .lesson-row {
+  display: grid;
+  grid-template-columns: 44px 1fr auto;
+  align-items: center;
+  gap: 10px;
+  background: #fff;
+  border-radius: 12px;
+  min-height: 51px;
+  padding: 10px 12px;
+  margin: 1px 3px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  width: 88%;
+}
+
+#casestudyPage .lesson-row .thumb {
+  width: 65px;
+  height: 52px;
+  border-radius: 16px;
+  background-color: #0a0a0a;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 61px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Use your existing case study icon (same as pupils intermediate case study icon) */
+/* Primary case study icon */
+#casestudyPage .pupil-level--primary .lesson-row--quiz .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/primary_casestudy.webp");
+}
+
+/* Intermediate case study icon */
+#casestudyPage .pupil-level--intermediate .lesson-row--quiz .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/intermediate_casestudy.webp");
+}
+
+/* lesson meta */
+#casestudyPage .lesson-main {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+#casestudyPage .lesson-top {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #777;
+  margin-top: -11%;
+  margin-left: 20px;
+}
+#casestudyPage .lesson-type {
+  font-weight: 650;
+  color: #111;
+}
+#casestudyPage .lesson-meta {
+  color: rgba(0, 0, 0, 0);
+  font-weight: 500;
+}
+
+#casestudyPage .lesson-progress {
+  height: 7px;
+  border-radius: 999px;
+  background: #dedede;
+  overflow: hidden;
+  margin-left: 22px;
+}
+#casestudyPage .lesson-progress__fill {
+  height: 100%;
+  border-radius: 999px;
+  background: var(--accent);
+}
+
+#casestudyPage .lesson-cta {
+  color: rgba(0, 0, 0, 0.35);
+  font-weight: 650;
+  font-size: 11px;
+  white-space: nowrap;
+  margin-bottom: -39px;
+}
+
+@media (max-width: 360px) {
+  #casestudyPage .pupil-level {
+    width: calc(100% - 22px);
+  }
+
+  #casestudyPage .pupil-card h3 {
+    font-size: 13px;
+  }
 }
 
 /* ============================================= Canonical Eyes Topbar ============================================= */
@@ -1959,6 +2147,7 @@ input:checked + .slider:before {
   font-weight: 600;
   color: #111;
   line-height: 1;
+  margin-left: 23px;
 }
 
 .eyes-topbar__icons {

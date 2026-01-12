@@ -91,6 +91,12 @@ document.addEventListener("DOMContentLoaded", () => {
       initializeVideoPlayers();
       return;
     }
+
+    if (routeName === "casestudy") {
+      const { initializeCaseStudy } = await import("./casestudy.js");
+      initializeCaseStudy?.();
+      return;
+    }
   });
 });
 

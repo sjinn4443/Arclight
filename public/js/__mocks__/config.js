@@ -10,6 +10,7 @@ export const ROUTES = {
   intro: "/public/html/intro.html",
   videos: "/public/html/videos.html",
   quizzes: "/public/html/quizzes.html",
+  casestudy: "html/casestudy.html",
   directOphthalmoscopyQuizPage:
     "/public/html/directOphthalmoscopyQuizPage.html",
 };
