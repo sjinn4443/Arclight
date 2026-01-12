@@ -100,3 +100,85 @@
     </div>
   </div>
 </div>
+
+<!-- ✅ merged chat page (was casestudychat.html) -->
+<div id="caseStudyChatPage" class="page has-eyes-topbar" style="display: none">
+  <div class="container pupils-container">
+    <div class="eyes-topbar">
+      <div class="eyes-topbar__title">Eyes</div>
+      <div class="eyes-topbar__icons">
+        <button class="casechat-back" id="caseChatBackBtn" aria-label="Back">
+          ‹
+        </button>
+        <span class="icon menuBtn" aria-label="Menu">☰</span>
+      </div>
+    </div>
+
+    <h2 class="pupils-subtitle">Case study</h2>
+
+    <div class="casechat">
+      <div class="casechat-log" id="caseChatLog" aria-live="polite"></div>
+
+      <div
+        class="casechat-choices"
+        id="caseChatChoices"
+        aria-label="Questions"
+      ></div>
+
+      <button type="button" class="casechat-submit" id="caseChatSubmitBtn">
+        Submit answer
+      </button>
+    </div>
+  </div>
+
+  <!-- Diagnosis modal -->
+  <div class="casechat-modal" id="caseDxModal" hidden>
+    <div
+      class="casechat-modalCard"
+      id="caseDxCard"
+      role="dialog"
+      aria-modal="true"
+    >
+      <div class="casechat-modalTop">
+        <div class="casechat-modalTitle">Select the most likely diagnosis</div>
+        <button
+          type="button"
+          class="casechat-modalClose"
+          id="caseDxCloseBtn"
+          aria-label="Close"
+        >
+          ×
+        </button>
+      </div>
+      <div class="casechat-dxList" id="caseDxList"></div>
+    </div>
+  </div>
+
+  <!-- Result modal -->
+  <div class="casechat-modal" id="caseResultModal" hidden>
+    <div
+      class="casechat-modalCard"
+      id="caseResultCard"
+      role="dialog"
+      aria-modal="true"
+    >
+      <div class="casechat-modalTop">
+        <div class="casechat-modalTitle" id="caseResultTitle">Result</div>
+        <button
+          type="button"
+          class="casechat-modalClose"
+          id="caseResultCloseBtn"
+          aria-label="Close"
+        >
+          ×
+        </button>
+      </div>
+
+      <div class="casechat-resultBody" id="caseResultBody"></div>
+
+      <button type="button" class="casechat-next" id="caseNextBtn">
+        Next case
+      </button>
+    </div>
+  </div>
+</div>

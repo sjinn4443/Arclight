@@ -2127,6 +2127,237 @@ input:checked + .slider:before {
   }
 }
 
+/* ============================================= */
+/* Case study chat                               */
+/* ============================================= */
+
+#caseStudyChatPage .casechat {
+  width: min(100%, 420px);
+  margin: 0 auto;
+  padding-bottom: 20px;
+}
+
+#caseStudyChatPage .casechat-back {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(0, 0, 0, 0.35);
+  color: #fff;
+  font-size: 22px;
+  line-height: 1;
+  margin-right: 6px;
+  cursor: pointer;
+}
+
+#caseStudyChatPage .casechat-log {
+  background: #fff;
+  border-radius: 16px;
+  padding: 12px;
+  min-height: 46vh;
+  max-height: 52vh;
+  overflow: auto;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+
+#caseStudyChatPage .casechat-bubble {
+  display: flex;
+  margin: 10px 0;
+}
+
+#caseStudyChatPage .casechat-bubble--user {
+  justify-content: flex-end;
+}
+#caseStudyChatPage .casechat-bubble--bot {
+  justify-content: flex-start;
+}
+#caseStudyChatPage .casechat-bubble--system {
+  justify-content: center;
+}
+
+#caseStudyChatPage .casechat-text {
+  background: #f2f2f7;
+  padding: 10px 12px;
+  border-radius: 14px;
+  max-width: 86%;
+  font-size: 14px;
+  line-height: 1.35;
+  color: #111;
+}
+
+#caseStudyChatPage .casechat-bubble--user .casechat-text {
+  background: #111;
+  color: #fff;
+}
+
+#caseStudyChatPage .casechat-system {
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.55);
+  background: transparent;
+  padding: 6px 8px;
+}
+
+#caseStudyChatPage .casechat-img {
+  width: 180px;
+  max-width: 70vw;
+  border-radius: 14px;
+  margin-right: 10px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+#caseStudyChatPage .casechat-choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0 12px;
+}
+
+#caseStudyChatPage .casechat-chip {
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  background: #fff;
+  border-radius: 999px;
+  padding: 8px 10px;
+  font-size: 13px;
+  cursor: pointer;
+}
+#caseStudyChatPage .casechat-chip:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+#caseStudyChatPage .casechat-submit {
+  width: 100%;
+  border: 0;
+  border-radius: 14px;
+  padding: 12px 14px;
+  background: #111;
+  color: #fff;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+#caseStudyChatPage .casechat-submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Modals */
+#caseStudyChatPage .casechat-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+#caseStudyChatPage .casechat-modalCard {
+  background: #fff;
+  width: min(92vw, 440px);
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+  position: relative;
+}
+
+#caseStudyChatPage .casechat-modalTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+#caseStudyChatPage .casechat-modalTitle {
+  font-weight: 750;
+  font-size: 16px;
+  color: #111;
+}
+#caseStudyChatPage .casechat-modalClose {
+  border: 0;
+  background: transparent;
+  font-size: 26px;
+  line-height: 1;
+  cursor: pointer;
+  color: #666;
+}
+
+#caseStudyChatPage .casechat-dxList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+#caseStudyChatPage .casechat-dxItem {
+  text-align: left;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  background: #fff;
+  border-radius: 12px;
+  padding: 10px 12px;
+  cursor: pointer;
+}
+
+#caseStudyChatPage .casechat-resultOk {
+  font-weight: 800;
+  margin: 4px 0 10px;
+}
+#caseStudyChatPage .casechat-resultWhy {
+  color: #333;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+#caseStudyChatPage .casechat-next {
+  width: 100%;
+  margin-top: 14px;
+  border: 0;
+  border-radius: 14px;
+  padding: 12px 14px;
+  background: #111;
+  color: #fff;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+/* Try again feedback + shake */
+#caseStudyChatPage .casechat-tryagain {
+  margin-top: 10px;
+  font-size: 13px;
+  font-weight: 650;
+  color: #b00020;
+}
+
+@keyframes casechatShake {
+  0% {
+    transform: translateX(0);
+  }
+  15% {
+    transform: translateX(-10px);
+  }
+  30% {
+    transform: translateX(10px);
+  }
+  45% {
+    transform: translateX(-8px);
+  }
+  60% {
+    transform: translateX(8px);
+  }
+  75% {
+    transform: translateX(-6px);
+  }
+  90% {
+    transform: translateX(6px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+#caseStudyChatPage .casechat-modalCard.shake {
+  animation: casechatShake 0.35s ease-in-out;
+}
+
 /* ============================================= Canonical Eyes Topbar ============================================= */
 .eyes-topbar {
   position: fixed;
