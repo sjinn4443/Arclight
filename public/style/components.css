@@ -2151,43 +2151,92 @@ input:checked + .slider:before {
 }
 
 #caseStudyChatPage .casechat-log {
-  background: #fff;
-  border-radius: 16px;
-  padding: 12px;
-  min-height: 46vh;
-  max-height: 52vh;
-  overflow: auto;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+  background: transparent;
+  border-radius: 0;
+  padding: 4px 0;
+  min-height: 0;
+  max-height: none;
+  overflow: visible;
+  box-shadow: none;
 }
 
+#caseStudyChatPage .casechat-bubble--system {
+  justify-content: center;
+}
+
+/* ===== Chat bubbles: match screenshot ===== */
 #caseStudyChatPage .casechat-bubble {
   display: flex;
   margin: 10px 0;
 }
 
+/* 사용자(칩을 누른 질문) = 오른쪽 */
 #caseStudyChatPage .casechat-bubble--user {
   justify-content: flex-end;
 }
+
+/* 봇(환자 답변) = 왼쪽 */
 #caseStudyChatPage .casechat-bubble--bot {
   justify-content: flex-start;
 }
-#caseStudyChatPage .casechat-bubble--system {
-  justify-content: center;
-}
 
+/* 말풍선 기본 */
 #caseStudyChatPage .casechat-text {
-  background: #f2f2f7;
+  position: relative;
   padding: 10px 12px;
   border-radius: 14px;
-  max-width: 86%;
+  max-width: 78%;
   font-size: 14px;
   line-height: 1.35;
   color: #111;
+  background: #f2f2f7; /* 연회색 */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
+/* 사용자(오른쪽) 말풍선 꼬리 */
 #caseStudyChatPage .casechat-bubble--user .casechat-text {
+  background: #f2f2f7;
+  color: #111;
+  border-top-right-radius: 8px;
+}
+#caseStudyChatPage .casechat-bubble--user .casechat-text::after {
+  content: "";
+  position: absolute;
+  right: -6px;
+  top: 10px;
+  bottom: auto;
+  width: 0;
+  height: 0;
+  border-left: 8px solid #111;
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+}
+
+/* 봇(왼쪽) 말풍선 = 검정 */
+#caseStudyChatPage .casechat-bubble--bot .casechat-text {
   background: #111;
   color: #fff;
+  border-top-left-radius: 8px;
+}
+#caseStudyChatPage .casechat-bubble--bot .casechat-text::after {
+  content: "";
+  position: absolute;
+  left: -6px;
+  top: 10px;
+  bottom: auto;
+  width: 0;
+  height: 0;
+  border-right: 8px solid #fff;
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+}
+
+/* system 메시지(가운데) */
+#caseStudyChatPage .casechat-system {
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.55);
+  background: transparent;
+  padding: 6px 8px;
 }
 
 #caseStudyChatPage .casechat-system {
@@ -2197,12 +2246,20 @@ input:checked + .slider:before {
   padding: 6px 8px;
 }
 
+#caseStudyChatPage .casechat-botstack {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+
 #caseStudyChatPage .casechat-img {
-  width: 180px;
-  max-width: 70vw;
+  width: 86px;
+  height: auto;
   border-radius: 14px;
-  margin-right: 10px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  margin: 0;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+  flex: 0 0 auto;
 }
 
 #caseStudyChatPage .casechat-choices {
@@ -2252,6 +2309,10 @@ input:checked + .slider:before {
   background: rgba(0, 0, 0, 0.45);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
+}
+
+#caseStudyChatPage .casechat-modal[hidden] {
+  display: none !important;
 }
 
 #caseStudyChatPage .casechat-modalCard {
@@ -2358,6 +2419,395 @@ input:checked + .slider:before {
   animation: casechatShake 0.35s ease-in-out;
 }
 
+/* ===== Case study chat: overall page polish ===== */
+#caseStudyChatPage .container.pupils-container {
+  /* 페이지가 너무 꽉 차 보이지 않게 */
+  padding-left: 14px;
+  padding-right: 14px;
+  padding-bottom: 120px; /* 하단 영역(칩/버튼) 공간 확보 */
+  box-sizing: border-box;
+}
+
+#caseStudyChatPage .casechat-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  margin: -24px 6px 10px;
+}
+
+/* (선택) “First Case” 같은 상단 텍스트 느낌 */
+#caseStudyChatPage .pupils-subtitle {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* ===== Case image: small card style like screenshot ===== */
+#caseStudyChatPage .casechat-image-wrap {
+  display: flex;
+  justify-content: flex-start;
+  margin: 6px 0 10px;
+}
+
+#caseStudyChatPage #caseChatImage {
+  width: 120px !important;
+  height: auto !important;
+  border-radius: 14px !important;
+  display: block !important;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+}
+
+/* ===== Bottom panel (chips + submit) ===== */
+#caseStudyChatPage #caseChatChoices {
+  position: fixed;
+  left: 14px;
+  right: 14px;
+  bottom: 63px;
+  height: 142px;
+  background: #ffffff59;
+  border-radius: 18px;
+  padding: 52px 12px 12px; /* 위에 Submit 자리 확보 */
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.14);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* 칩 버튼을 사진처럼 pill */
+#caseStudyChatPage .casechat-chip {
+  width: auto;
+  border: 1px solid rgba(0, 0, 0, 0.14);
+  background: #fff;
+  border-radius: 999px;
+  padding: 8px 10px;
+  font-size: 13px;
+  cursor: pointer;
+  box-shadow: none;
+}
+
+#caseStudyChatPage .casechat-chip:active {
+  transform: translateY(1px);
+}
+
+/* Submit 버튼: 오른쪽 위에 빨간 pill */
+#caseStudyChatPage .casechat-footer {
+  position: fixed;
+  left: 14px;
+  right: 14px;
+  bottom: 18px;
+  z-index: 4500;
+}
+
+/* 버튼만 클릭 가능하게 */
+#caseStudyChatPage #caseChatSubmitBtn {
+  pointer-events: auto;
+  width: auto;
+  margin: 0;
+  padding: 12px 16px;
+  border-radius: 18px;
+  background: #e41e26;
+  color: #fff;
+  font-weight: 700;
+  font-size: 13px;
+  box-shadow: 0 10px 24px rgba(228, 30, 38, 0.28);
+  position: absolute;
+  right: 0px;
+  top: -197px;
+}
+
+/* disabled 상태 */
+#caseStudyChatPage #caseChatSubmitBtn:disabled {
+  opacity: 0.5;
+  box-shadow: none;
+}
+
+/* Quiz: top-right "submit answer >" */
+.submit-answer-btn {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+
+  width: auto;
+  padding: 0;
+  margin: 0;
+
+  background: transparent;
+  border: none;
+  color: #111;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.submit-answer-btn .chev {
+  font-weight: 700;
+  margin-left: 4px;
+}
+
+.submit-answer-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* ======================================================================= */
+/* Case study chat polish (to match reference screenshot)                  */
+/* ======================================================================= */
+
+#caseStudyChatPage {
+  background: #f2f2f7 !important;
+}
+
+#caseStudyChatPage .pupils-container {
+  background: transparent !important;
+}
+
+/* ----- Top quiz header (Quiz | submit answer >) ----- */
+#caseStudyChatPage .casechat-quizheader {
+  position: sticky;
+  top: 62px; /* eyes-topbar 높이 아래에 붙도록 (필요 시 56~66 조절) */
+  z-index: 50;
+  background: rgba(242, 242, 247, 0.96);
+  backdrop-filter: blur(6px);
+  padding: 10px 16px 8px;
+}
+
+#caseStudyChatPage .casechat-quizheader__row {
+  display: grid;
+  grid-template-columns: 40px 1fr auto;
+  align-items: center;
+}
+
+#caseStudyChatPage .casechat-quizheader__back {
+  width: 34px !important;
+  height: 34px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border-radius: 999px !important;
+  border: none !important;
+  background: transparent !important;
+  color: #111 !important;
+  font-size: 20px !important;
+  cursor: pointer;
+}
+
+#caseStudyChatPage .casechat-quizheader__title {
+  text-align: center;
+  font-size: 16px;
+  font-weight: 700;
+  color: #111;
+}
+
+#caseStudyChatPage .casechat-quizheader__submit {
+  width: auto !important;
+  margin: 0 !important;
+  padding: 6px 0 !important;
+  border: none !important;
+  background: transparent !important;
+  color: #111 !important;
+  font-size: 13px !important;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+#caseStudyChatPage .casechat-quizheader__submit .chev {
+  margin-left: 4px;
+}
+
+/* ----- Chat log spacing so it doesn't hide behind the bottom sheet ----- */
+#caseStudyChatPage .casechat-log {
+  padding: 10px 16px 240px; /* bottom sheet 공간 확보 */
+  background: transparent !important;
+}
+
+/* System bubble: "New case started" centred, subtle */
+#caseStudyChatPage .casechat-bubble--system {
+  justify-content: center;
+}
+#caseStudyChatPage .casechat-system {
+  background: transparent !important;
+  color: #6b7280;
+  font-size: 12px;
+  padding: 8px 0;
+}
+
+/* Bot/User bubbles polish */
+#caseStudyChatPage .casechat-bubble--bot .casechat-text {
+  background: #fff;
+  color: #111;
+  border-radius: 16px;
+  padding: 10px 12px;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
+}
+#caseStudyChatPage .casechat-bubble--user .casechat-text {
+  background: #111;
+  color: #fff;
+  border-radius: 16px;
+  padding: 10px 12px;
+}
+
+/* Case image */
+#caseStudyChatPage .casechat-image-wrap {
+  padding: 10px 16px 0;
+  background: transparent !important;
+}
+#caseStudyChatPage #caseChatImage {
+  width: 120px;
+  height: auto;
+  border-radius: 12px;
+  display: block;
+}
+
+/* ----- Bottom sheet (chips panel) ----- */
+
+#caseStudyChatPage #caseChatSubmitBtn.casechat-submitpill {
+  position: absolute;
+  top: -21px;
+  right: 0px;
+  transform: translateY(-40%);
+  padding: 12px 16px;
+  border-radius: 18px 18px 0px 0px;
+  border: none;
+  background: #e41e26;
+  color: #fff;
+  font-weight: 700;
+  font-size: 12px;
+  height: 35px;
+  z-index: 2;
+}
+
+#caseStudyChatPage #caseChatSubmitBtn.casechat-submitpill:disabled {
+  opacity: 0.5;
+  box-shadow: none;
+}
+
+#caseStudyChatPage #caseChatSubmitBtn .chev {
+  margin-left: 6px;
+}
+
+/* Chips container sits inside bottom sheet */
+#caseStudyChatPage #caseChatChoices.casechat-choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: flex-start;
+  padding: 16px;
+  margin: 0;
+  width: 308px;
+  height: 153px;
+}
+
+/* Chip buttons - IMPORTANT: override the global `button{...}` */
+#caseStudyChatPage button.casechat-chip {
+  width: auto !important;
+  margin: 0 !important;
+
+  padding: 8px 12px !important;
+  border-radius: 12px !important;
+
+  background: #fff !important;
+  border: 1px solid #d1d5db !important;
+
+  color: #111 !important; /* <-- 텍스트 검은색 (네가 요청한 핵심) */
+  font-size: 12px !important;
+  font-weight: 500;
+
+  cursor: pointer;
+}
+
+#caseStudyChatPage button.casechat-chip:disabled {
+  opacity: 0.45;
+}
+
+/* Dx list buttons (inside modal) also must not inherit global red button */
+#caseStudyChatPage .casechat-dxlist button,
+#caseStudyChatPage .casechat-dxitem {
+  width: 100% !important;
+  margin: 0 0 10px !important;
+  padding: 12px 12px !important;
+  border-radius: 14px !important;
+  background: #fff !important;
+  border: 1px solid #e5e7eb !important;
+  color: #111 !important;
+}
+
+/* We moved #caseChatChoices inside .casechat-footer, so it must NOT be fixed */
+#caseStudyChatPage #caseChatChoices {
+  position: static !important;
+  left: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  height: auto !important;
+  width: auto !important;
+  background: transparent !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+}
+
+#caseStudyChatPage .casechat-footer {
+  position: fixed;
+  left: 14px;
+  right: 14px;
+  bottom: 34px;
+  z-index: 60;
+  height: 141px;
+  background: #ffffff33;
+  border-radius: 22px 0px 0px 0px;
+  padding: 21px 12px 12px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
+}
+
+#caseStudyChatPage .casechat-composer {
+  position: relative;
+  width: 100%;
+  margin-top: 10px;
+}
+
+#caseStudyChatPage .casechat-draft {
+  width: 265px;
+  min-height: 39px;
+  display: flex;
+  align-items: center;
+  padding: 0 52px 0 14px;
+  margin-left: -12px;
+  background: #fff;
+  border: 1px solid #e5e5ea;
+  border-radius: 14px;
+
+  font-size: 13px;
+  font-weight: 500;
+  color: #111;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#caseStudyChatPage .casechat-send {
+  position: absolute;
+  right: -7px;
+  top: 11px;
+  transform: translateY(-50%);
+  width: 31px;
+  height: 30px;
+  border-radius: 12px;
+  border: none;
+  background: #e41e26;
+  color: #fff;
+  font-weight: 800;
+  font-size: 16px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#caseStudyChatPage .casechat-send:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
 /* ============================================= Canonical Eyes Topbar ============================================= */
 .eyes-topbar {
   position: fixed;
@@ -2371,6 +2821,8 @@ input:checked + .slider:before {
   height: 62px;
   padding: 0 12px;
   margin: 0;
+  left: 0;
+  right: 0;
 }
 
 .eyes-topbar__title {
@@ -2378,7 +2830,7 @@ input:checked + .slider:before {
   font-weight: 600;
   color: #111;
   line-height: 1;
-  margin-left: 23px;
+  margin-left: 46px;
 }
 
 .eyes-topbar__icons {

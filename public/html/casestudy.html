@@ -101,84 +101,91 @@
   </div>
 </div>
 
-<!-- ✅ merged chat page (was casestudychat.html) -->
+<!-- ✅ merged chat page (keep only ONE of these in the file) -->
 <div id="caseStudyChatPage" class="page has-eyes-topbar" style="display: none">
   <div class="container pupils-container">
     <div class="eyes-topbar">
-      <div class="eyes-topbar__title">Eyes</div>
+      <div class="eyes-topbar__title">Case Study</div>
       <div class="eyes-topbar__icons">
-        <button class="casechat-back" id="caseChatBackBtn" aria-label="Back">
-          ‹
-        </button>
         <span class="icon menuBtn" aria-label="Menu">☰</span>
       </div>
     </div>
 
-    <h2 class="pupils-subtitle">Case study</h2>
+    <!-- 채팅 로그 -->
+    <div id="caseChatLog" class="casechat-log"></div>
 
-    <div class="casechat">
-      <div class="casechat-log" id="caseChatLog" aria-live="polite"></div>
-
-      <div
-        class="casechat-choices"
-        id="caseChatChoices"
-        aria-label="Questions"
-      ></div>
-
-      <button type="button" class="casechat-submit" id="caseChatSubmitBtn">
-        Submit answer
+    <!-- Bottom sheet -->
+    <div class="casechat-footer">
+      <button
+        id="caseChatSubmitBtn"
+        class="casechat-submitpill"
+        type="button"
+        disabled
+      >
+        Submit Answer <span class="chev">&gt;</span>
       </button>
-    </div>
-  </div>
 
-  <!-- Diagnosis modal -->
-  <div class="casechat-modal" id="caseDxModal" hidden>
-    <div
-      class="casechat-modalCard"
-      id="caseDxCard"
-      role="dialog"
-      aria-modal="true"
-    >
-      <div class="casechat-modalTop">
-        <div class="casechat-modalTitle">Select the most likely diagnosis</div>
+      <!-- chips -->
+      <div id="caseChatChoices" class="casechat-choices"></div>
+
+      <!-- draft input row (pic 1처럼) -->
+      <div class="casechat-composer" role="group" aria-label="Case chat input">
+        <div id="caseChatDraft" class="casechat-draft">
+          Select a question above
+        </div>
         <button
+          id="caseChatSendBtn"
+          class="casechat-send"
           type="button"
-          class="casechat-modalClose"
-          id="caseDxCloseBtn"
-          aria-label="Close"
+          disabled
+          aria-label="Send"
         >
-          ×
+          ^
         </button>
       </div>
-      <div class="casechat-dxList" id="caseDxList"></div>
     </div>
-  </div>
 
-  <!-- Result modal -->
-  <div class="casechat-modal" id="caseResultModal" hidden>
-    <div
-      class="casechat-modalCard"
-      id="caseResultCard"
-      role="dialog"
-      aria-modal="true"
-    >
-      <div class="casechat-modalTop">
-        <div class="casechat-modalTitle" id="caseResultTitle">Result</div>
-        <button
-          type="button"
-          class="casechat-modalClose"
-          id="caseResultCloseBtn"
-          aria-label="Close"
-        >
-          ×
-        </button>
+    <!-- Dx 선택 모달 -->
+    <div id="caseDxModal" hidden class="casechat-modal">
+      <div class="casechat-modal__content">
+        <div class="casechat-modal__top">
+          <div class="casechat-modal__title">Select diagnosis</div>
+          <button
+            id="caseDxCloseBtn"
+            class="casechat-modal__close"
+            aria-label="Close"
+          >
+            ✕
+          </button>
+        </div>
+
+        <div id="caseDxList" class="casechat-dxlist"></div>
+        <div id="caseDxCard" class="casechat-dxcard"></div>
       </div>
+    </div>
 
-      <div class="casechat-resultBody" id="caseResultBody"></div>
+    <!-- 결과 모달 -->
+    <div id="caseResultModal" hidden class="casechat-modal">
+      <div class="casechat-modal__content">
+        <div class="casechat-modal__top">
+          <div id="caseResultTitle" class="casechat-modal__title">Result</div>
+          <button
+            id="caseResultCloseBtn"
+            class="casechat-modal__close"
+            aria-label="Close"
+          >
+            ✕
+          </button>
+        </div>
 
-      <button type="button" class="casechat-next" id="caseNextBtn">
-        Next case
-      </button>
+        <div id="caseResultBody" class="casechat-result"></div>
+
+        <div class="casechat-modal__actions">
+          <button id="caseNextBtn" class="start-btn" type="button">
+            Next case
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </div>

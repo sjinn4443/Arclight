@@ -32,6 +32,8 @@ const QUESTIONS = [
     ui: "When did it start and how did it begin?",
   },
   { id: "pain", label: "pain/itch", ui: "Do you have any pain or itchiness?" },
+  { id: "treatment", label: "treatment", ui: "Have you taken any treatment?" },
+
   {
     id: "redness",
     label: "redness/discharge",
@@ -52,7 +54,6 @@ const QUESTIONS = [
     label: "worse or better",
     ui: "Is it getting worse or better?",
   },
-  { id: "treatment", label: "treatment", ui: "Have you taken any treatment?" },
   {
     id: "other",
     label: "anything else",
@@ -77,7 +78,7 @@ const DIAGNOSES = [
 ];
 
 function caseAnswers({ caseNum, variant }) {
-  const nm = "Not mentioned.";
+  const nm = "No.";
 
   if (caseNum === 1 && variant === "elderly") {
     return {
@@ -355,6 +356,8 @@ export function initializeCaseStudy() {
   const choices = chatPage.querySelector("#caseChatChoices");
   const submitBtn = chatPage.querySelector("#caseChatSubmitBtn");
   const backBtn = chatPage.querySelector("#caseChatBackBtn");
+  const draftEl = chatPage.querySelector("#caseChatDraft");
+  const sendBtn = chatPage.querySelector("#caseChatSendBtn");
 
   const dxModal = chatPage.querySelector("#caseDxModal");
   const dxCard = chatPage.querySelector("#caseDxCard");
@@ -367,6 +370,13 @@ export function initializeCaseStudy() {
   const nextBtn = chatPage.querySelector("#caseNextBtn");
   const resultTitle = chatPage.querySelector("#caseResultTitle");
 
+  if (!log || !choices) {
+    console.warn(
+      "[casestudy] chatPage missing #caseChatLog or #caseChatChoices",
+    );
+    return;
+  }
+
   // 강제 초기 상태 (✅ “들어가자마자 Result 모달 떠있음” 방지)
   function forceCloseModals() {
     if (dxModal) dxModal.hidden = true;
@@ -376,6 +386,7 @@ export function initializeCaseStudy() {
   }
 
   let state = { current: null, answeredImageShown: false, asked: new Set() };
+  let pending = null;
 
   function appendBubble(kind, html) {
     const wrap = document.createElement("div");
@@ -394,20 +405,80 @@ export function initializeCaseStudy() {
     const imgHtml = maybeImgSrc
       ? `<img class="casechat-img" src="${maybeImgSrc}" alt="Case image" />`
       : "";
-    appendBubble("bot", `${imgHtml}<div class="casechat-text">${text}</div>`);
+
+    appendBubble(
+      "bot",
+      `<div class="casechat-botstack">
+       ${imgHtml}
+       <div class="casechat-text">${text}</div>
+     </div>`,
+    );
   }
 
   function renderChoices() {
     choices.innerHTML = "";
+
     QUESTIONS.forEach((q) => {
       const btn = document.createElement("button");
       btn.type = "button";
       btn.className = "casechat-chip";
       btn.textContent = q.label;
+
+      // 이미 보낸 질문은 비활성화
       btn.disabled = state.asked.has(q.id);
-      btn.addEventListener("click", () => onAsk(q));
+
+      // pending 선택 표시(선택된 칩 스타일용)
+      if (pending?.id === q.id) btn.classList.add("is-selected");
+
+      btn.addEventListener("click", () => {
+        if (state.asked.has(q.id)) return;
+
+        pending = q;
+
+        if (draftEl) draftEl.textContent = q.ui;
+        if (sendBtn) sendBtn.disabled = false;
+
+        // 선택 표시 업데이트
+        renderChoices();
+      });
+
       choices.appendChild(btn);
     });
+  }
+
+  function openDxModal() {
+    if (!state?.asked || state.asked.size === 0) {
+      appendSystem("Please ask at least one question before submitting.");
+      return;
+    }
+
+    if (!state.current) return;
+
+    // 모달 강제 닫힘 상태 정리(이미 있는 forceCloseModals는 startNewCase에서만 쓰니까 여기서도 최소정리)
+    if (dxCard) dxCard.textContent = "";
+
+    // Dx 리스트 채우기 (랜덤 순서)
+    if (dxList) {
+      dxList.innerHTML = "";
+      const options = shuffle(DIAGNOSES);
+
+      options.forEach((name) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "casechat-dxitem";
+        btn.textContent = name;
+
+        btn.addEventListener("click", () => {
+          // 여기엔 네 기존 “정답 체크/결과 모달” 로직을 그대로 옮기면 돼
+          // (이미 파일에 correctDiagnosisForCase, explanationForCase가 있음) :contentReference[oaicite:9]{index=9}
+          onPickDiagnosis(name);
+        });
+
+        dxList.appendChild(btn);
+      });
+    }
+
+    if (dxModal) dxModal.hidden = false;
   }
 
   function startNewCase() {
@@ -432,7 +503,7 @@ export function initializeCaseStudy() {
     appendUser(q.ui);
 
     const answers = caseAnswers(state.current);
-    const reply = answers?.[q.id] || "Not mentioned.";
+    const reply = answers?.[q.id] || "No.";
 
     if (!state.answeredImageShown) {
       state.answeredImageShown = true;
@@ -442,22 +513,8 @@ export function initializeCaseStudy() {
     }
   }
 
-  function openDxModal() {
-    forceCloseModals(); // result가 떠있던 상태가 남아있을 가능성까지 방어
-    dxList.innerHTML = "";
-    shuffle(DIAGNOSES).forEach((name) => {
-      const b = document.createElement("button");
-      b.type = "button";
-      b.className = "casechat-dxItem";
-      b.textContent = name;
-      b.addEventListener("click", () => onPickDiagnosis(name));
-      dxList.appendChild(b);
-    });
-    dxModal.hidden = false;
-  }
-
   function closeDxModal() {
-    dxModal.hidden = true;
+    if (dxModal) dxModal.hidden = true;
   }
 
   function openResultModal(title, html) {
@@ -500,14 +557,21 @@ export function initializeCaseStudy() {
 
   function showList() {
     forceCloseModals();
+    chatPage.classList.remove("active");
+    listPage.classList.add("active");
+
     chatPage.style.display = "none";
     listPage.style.display = "";
   }
 
   function showChat() {
+    listPage.classList.remove("active");
+    chatPage.classList.add("active");
+
     listPage.style.display = "none";
     chatPage.style.display = "";
-    startNewCase(); // ✅ enter 할 때마다 random + “New case started”
+
+    startNewCase(); // enter 할 때마다 random + “New case started”
   }
 
   // list -> chat (일단 intermediate만)
@@ -554,14 +618,25 @@ export function initializeCaseStudy() {
   });
 
   // chat controls
-  backBtn?.addEventListener("click", showList);
   submitBtn?.addEventListener("click", () => {
-    // 질문 하나도 안 했으면 제출 막기
     if (!state?.asked || state.asked.size === 0) {
       appendSystem("Please ask at least one question before submitting.");
       return;
     }
     openDxModal();
+  });
+
+  sendBtn?.addEventListener("click", () => {
+    console.log("[casechat] send clicked, pending =", pending); // ✅ 확인용
+    if (!pending) return;
+
+    onAsk(pending); // 여기서 “실제 전송”
+    pending = null;
+
+    if (draftEl) draftEl.textContent = "Select a question above";
+    if (sendBtn) sendBtn.disabled = true;
+
+    renderChoices();
   });
 
   // ✅ Enter/Space가 라우터/브라우저 기본 동작으로 새지 않게 막고,
@@ -570,8 +645,9 @@ export function initializeCaseStudy() {
     return e.key === "Enter" || e.key === " ";
   }
 
+  backBtn?.addEventListener("click", showList);
   backBtn?.addEventListener("keydown", (e) => {
-    if (!isEnterOrSpace(e)) return;
+    if (e.key !== "Enter" && e.key !== " ") return;
     e.preventDefault();
     e.stopPropagation();
     showList();
