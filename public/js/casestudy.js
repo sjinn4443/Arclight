@@ -37,12 +37,12 @@ const QUESTIONS = [
   {
     id: "redness",
     label: "redness/discharge",
-    ui: "Have you noticed any redness or discharge?",
+    ui: "Have you noticed any redness/discharge?",
   },
   {
     id: "loss",
     label: "vision/hearing loss",
-    ui: "Have you had any loss of vision or hearing?",
+    ui: "Have you had any loss of vision/hearing?",
   },
   {
     id: "balance",
@@ -358,6 +358,8 @@ export function initializeCaseStudy() {
   const backBtn = chatPage.querySelector("#caseChatBackBtn");
   const draftEl = chatPage.querySelector("#caseChatDraft");
   const sendBtn = chatPage.querySelector("#caseChatSendBtn");
+  const toggleBtn = chatPage.querySelector("#caseChatToggleBtn");
+  const footer = chatPage.querySelector(".casechat-footer");
 
   const dxModal = chatPage.querySelector("#caseDxModal");
   const dxCard = chatPage.querySelector("#caseDxCard");
@@ -377,6 +379,14 @@ export function initializeCaseStudy() {
     return;
   }
 
+  // initial chips state: hidden
+  if (choices) choices.hidden = true;
+  chatPage.style.setProperty("--casechat-log-pad", "140px");
+  if (footer) footer.classList.add("is-collapsed"); // ✅ footer 닫힘 모드
+
+  if (toggleBtn) toggleBtn.textContent = "Q";
+  if (draftEl) draftEl.classList.add("is-placeholder");
+
   // 강제 초기 상태 (✅ “들어가자마자 Result 모달 떠있음” 방지)
   function forceCloseModals() {
     if (dxModal) dxModal.hidden = true;
@@ -386,6 +396,26 @@ export function initializeCaseStudy() {
   }
 
   let state = { current: null, answeredImageShown: false, asked: new Set() };
+  let caseIndex = 0;
+
+  function ordinalWord(n) {
+    const words = [
+      "First",
+      "Second",
+      "Third",
+      "Fourth",
+      "Fifth",
+      "Sixth",
+      "Seventh",
+      "Eighth",
+      "Ninth",
+      "Tenth",
+      "Eleventh",
+      "Twelfth",
+    ];
+    return words[n - 1] || `${n}th`;
+  }
+
   let pending = null;
 
   function appendBubble(kind, html) {
@@ -393,8 +423,31 @@ export function initializeCaseStudy() {
     wrap.className = `casechat-bubble casechat-bubble--${kind}`;
     wrap.innerHTML = html;
     log.appendChild(wrap);
-    log.scrollTop = log.scrollHeight;
+
+    requestAnimationFrame(keepLastMessageVisible);
   }
+
+  function keepLastMessageVisible() {
+    const last = log.lastElementChild;
+    if (!last) return;
+
+    // footer(칩/드래프트/토글/submit 포함)의 윗변을 기준으로 안전선 잡기
+    const footerRect = footer?.getBoundingClientRect();
+    const safeBottom = footerRect
+      ? footerRect.top - 22
+      : window.innerHeight - 22;
+
+    const lastRect = last.getBoundingClientRect();
+
+    // 마지막 메시지가 안전선 아래로 내려가면(=가려지면) 그만큼 스크롤
+    if (lastRect.bottom > safeBottom) {
+      window.scrollBy({
+        top: lastRect.bottom - safeBottom,
+        behavior: "smooth",
+      });
+    }
+  }
+
   function appendSystem(text) {
     appendBubble("system", `<div class="casechat-system">${text}</div>`);
   }
@@ -402,17 +455,20 @@ export function initializeCaseStudy() {
     appendBubble("user", `<div class="casechat-text">${text}</div>`);
   }
   function appendBot(text, maybeImgSrc) {
-    const imgHtml = maybeImgSrc
-      ? `<img class="casechat-img" src="${maybeImgSrc}" alt="Case image" />`
-      : "";
+    let html = `<div class="casechat-botstack">`;
 
-    appendBubble(
-      "bot",
-      `<div class="casechat-botstack">
-       ${imgHtml}
-       <div class="casechat-text">${text}</div>
-     </div>`,
-    );
+    if (maybeImgSrc) {
+      html += `<img class="casechat-img" src="${maybeImgSrc}" alt="Case image" />`;
+    }
+
+    // ✅ 텍스트가 있을 때만 말풍선 생성
+    if (text && text.trim() !== "") {
+      html += `<div class="casechat-text">${text}</div>`;
+    }
+
+    html += `</div>`;
+
+    appendBubble("bot", html);
   }
 
   function renderChoices() {
@@ -435,7 +491,11 @@ export function initializeCaseStudy() {
 
         pending = q;
 
-        if (draftEl) draftEl.textContent = q.ui;
+        if (draftEl) {
+          draftEl.textContent = q.ui;
+          draftEl.classList.remove("is-placeholder");
+        }
+
         if (sendBtn) sendBtn.disabled = false;
 
         // 선택 표시 업데이트
@@ -461,7 +521,11 @@ export function initializeCaseStudy() {
     // Dx 리스트 채우기 (랜덤 순서)
     if (dxList) {
       dxList.innerHTML = "";
-      const options = shuffle(DIAGNOSES);
+
+      const correct = correctDiagnosisForCase(state.current);
+      const others = DIAGNOSES.filter((d) => d !== correct);
+      const sampled = shuffle(others).slice(0, 4);
+      const options = shuffle([correct, ...sampled]);
 
       options.forEach((name) => {
         const btn = document.createElement("button");
@@ -508,7 +572,21 @@ export function initializeCaseStudy() {
     state.asked = new Set();
 
     log.innerHTML = "";
-    appendSystem("New case started");
+    caseIndex += 1;
+    const ord = ordinalWord(caseIndex);
+
+    if (caseIndex === 1) {
+      appendSystem(`
+        <span class="casechat-caseindex">First case</span>
+        <span class="casechat-firstprompt">What is the first question you would ask?</span>
+      `);
+    } else {
+      appendSystem(`${ord} case`);
+    }
+
+    appendBot("", imgPathForCase(state.current.caseNum));
+    state.answeredImageShown = true;
+
     renderChoices();
     if (submitBtn) submitBtn.disabled = true;
   }
@@ -524,12 +602,7 @@ export function initializeCaseStudy() {
     const answers = caseAnswers(state.current);
     const reply = answers?.[q.id] || "No.";
 
-    if (!state.answeredImageShown) {
-      state.answeredImageShown = true;
-      appendBot(reply, imgPathForCase(state.current.caseNum));
-    } else {
-      appendBot(reply);
-    }
+    appendBot(reply);
   }
 
   function closeDxModal() {
@@ -627,6 +700,7 @@ export function initializeCaseStudy() {
     listPage.style.display = "none";
     chatPage.style.display = "";
 
+    caseIndex = 0;
     startNewCase(); // enter 할 때마다 random + “New case started”
   }
 
@@ -689,10 +763,51 @@ export function initializeCaseStudy() {
     onAsk(pending); // 여기서 “실제 전송”
     pending = null;
 
-    if (draftEl) draftEl.textContent = "Select a question above";
+    if (draftEl) {
+      draftEl.textContent = "Select a question above";
+      draftEl.classList.add("is-placeholder");
+    }
     if (sendBtn) sendBtn.disabled = true;
 
     renderChoices();
+  });
+
+  // toggle chips panel (^ <-> v)
+  toggleBtn?.addEventListener("click", () => {
+    const willOpen = !!choices?.hidden; // hidden이면 열기
+
+    if (choices) choices.hidden = !willOpen;
+
+    if (footer) {
+      footer.classList.toggle("is-collapsed", !willOpen);
+      footer.classList.toggle("is-expanded", willOpen);
+    }
+
+    // log bottom padding: bigger when chips open, smaller when closed
+    chatPage.style.setProperty(
+      "--casechat-log-pad",
+      willOpen ? "280px" : "140px",
+    );
+
+    if (toggleBtn) toggleBtn.textContent = willOpen ? "-" : "^";
+    requestAnimationFrame(() => {
+      if (typeof keepLastMessageVisible === "function")
+        keepLastMessageVisible();
+    });
+  });
+
+  // --- Dx modal close button wiring ---
+  dxClose?.addEventListener("click", (e) => {
+    e.preventDefault();
+    closeDxModal();
+  });
+
+  // (선택) 키보드 접근성까지 확실히
+  dxClose?.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " " || e.key === "Spacebar") {
+      e.preventDefault();
+      closeDxModal();
+    }
   });
 
   // ✅ Enter/Space가 라우터/브라우저 기본 동작으로 새지 않게 막고,
