@@ -454,8 +454,9 @@ export function initializeCaseStudy() {
 
     if (!state.current) return;
 
-    // 모달 강제 닫힘 상태 정리(이미 있는 forceCloseModals는 startNewCase에서만 쓰니까 여기서도 최소정리)
-    if (dxCard) dxCard.textContent = "";
+    // 모달 강제 닫힘 상태 정리
+    if (dxCard) dxCard.innerHTML = "";
+    dxLocked = false;
 
     // Dx 리스트 채우기 (랜덤 순서)
     if (dxList) {
@@ -466,12 +467,30 @@ export function initializeCaseStudy() {
         const btn = document.createElement("button");
         btn.type = "button";
         btn.className = "casechat-dxitem";
-        btn.textContent = name;
+        btn.setAttribute("role", "radio");
+        btn.setAttribute("aria-checked", "false");
+
+        // 사진 1처럼: 라디오(동그라미) + 라벨
+        btn.innerHTML = `
+      <span class="casechat-radio"></span>
+      <span class="casechat-dxlabel">${name}</span>
+    `;
 
         btn.addEventListener("click", () => {
-          // 여기엔 네 기존 “정답 체크/결과 모달” 로직을 그대로 옮기면 돼
-          // (이미 파일에 correctDiagnosisForCase, explanationForCase가 있음) :contentReference[oaicite:9]{index=9}
-          onPickDiagnosis(name);
+          if (dxLocked) return;
+
+          // 선택 상태 정리
+          dxList.querySelectorAll(".casechat-dxitem").forEach((b) => {
+            b.classList.remove("is-selected", "is-wrong", "is-correct");
+            b.setAttribute("aria-checked", "false");
+          });
+
+          // 지금 누른 것만 선택 표시
+          btn.classList.add("is-selected");
+          btn.setAttribute("aria-checked", "true");
+
+          // 정답 체크
+          onPickDiagnosis(name, btn);
         });
 
         dxList.appendChild(btn);
@@ -533,26 +552,63 @@ export function initializeCaseStudy() {
     el.classList.add("shake");
   }
 
-  function onPickDiagnosis(name) {
+  let dxLocked = false;
+
+  function onPickDiagnosis(name, pickedBtn) {
     const correct = correctDiagnosisForCase(state.current);
 
-    if (name === correct) {
-      closeDxModal();
-      openResultModal(
-        "Correct",
-        `<div class="casechat-resultOk">Correct</div>
-         <div class="casechat-resultWhy">${explanationForCase(state.current)}</div>`,
-      );
+    // 기존 피드백 지우기
+    if (dxCard) dxCard.innerHTML = "";
+
+    // 오답
+    if (name !== correct) {
+      pickedBtn.classList.remove("is-selected");
+      pickedBtn.classList.add("is-wrong");
+
+      // 사진 2처럼 아래에 Try again
+      const hint = document.createElement("div");
+      hint.className = "casechat-tryagain";
+      hint.textContent = "Try again";
+      dxCard.appendChild(hint);
+
+      shake(dxCard);
       return;
     }
 
-    // Wrong: Try again + shake
-    shake(dxCard);
-    const hint = document.createElement("div");
-    hint.className = "casechat-tryagain";
-    hint.textContent = "Try again";
-    dxCard.appendChild(hint);
-    setTimeout(() => hint.remove(), 900);
+    // 정답
+    pickedBtn.classList.remove("is-selected");
+    pickedBtn.classList.add("is-correct");
+
+    // 정답이면 더 이상 선택 못 하게 잠금
+    dxLocked = true;
+
+    // 다른 선택지 비활성화 (원하면 유지)
+    const all = dxList?.querySelectorAll(".casechat-dxitem") || [];
+    all.forEach((b) => {
+      if (b !== pickedBtn) {
+        b.disabled = true;
+        b.classList.add("is-disabled");
+      }
+    });
+
+    // 사진 2처럼: Correct + 설명 + Next case 버튼
+    const msg = document.createElement("div");
+    msg.className = "casechat-correctmsg";
+    msg.innerHTML = `
+    <div class="casechat-resultOk">Correct.</div>
+    <div class="casechat-resultWhy">In this case, the diagnosis is <b>${correct}</b>.</div>
+  `;
+    dxCard.appendChild(msg);
+
+    const next = document.createElement("button");
+    next.type = "button";
+    next.className = "casechat-nextcase";
+    next.textContent = "Next case";
+    next.addEventListener("click", () => {
+      closeDxModal();
+      startNewCase(); // 이미 파일 안에 있는 함수
+    });
+    dxCard.appendChild(next);
   }
 
   function showList() {

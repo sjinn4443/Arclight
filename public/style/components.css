@@ -2345,12 +2345,18 @@ input:checked + .slider:before {
   color: #666;
 }
 
-#caseStudyChatPage .casechat-dxList {
+#caseStudyChatPage .casechat-dxlist {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
+  margin-top: 6px;
+  flex: 1 1 auto;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-right: 4px;
 }
-#caseStudyChatPage .casechat-dxItem {
+
+#caseStudyChatPage .casechat-dxitem {
   text-align: left;
   border: 1px solid rgba(0, 0, 0, 0.12);
   background: #fff;
@@ -2806,6 +2812,125 @@ input:checked + .slider:before {
 #caseStudyChatPage .casechat-send:disabled {
   opacity: 0.45;
   cursor: not-allowed;
+}
+
+.casechat-dxitem {
+  width: 100%;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: #fff;
+}
+
+.casechat-dxitem + .casechat-dxitem {
+  margin-top: 10px;
+}
+
+.casechat-radio {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid rgba(0, 0, 0, 0.25);
+  display: inline-block;
+  flex: 0 0 auto;
+  position: relative;
+}
+
+.casechat-dxitem.is-selected .casechat-radio::after {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.casechat-dxlabel {
+  line-height: 1.2;
+}
+
+.casechat-dxitem.is-wrong {
+  background: rgba(220, 53, 69, 0.12);
+  border-color: rgba(220, 53, 69, 0.35);
+}
+
+.casechat-dxitem.is-correct {
+  background: rgba(25, 135, 84, 0.12);
+  border-color: rgba(25, 135, 84, 0.35);
+}
+
+.casechat-dxitem.is-disabled {
+  opacity: 0.55;
+}
+
+.casechat-tryagain {
+  margin-top: 12px;
+  font-weight: 600;
+  color: #dc3545;
+}
+
+.casechat-correctmsg {
+  margin-top: 12px;
+}
+
+.casechat-nextcase {
+  margin-top: 12px;
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: none;
+  background: #111;
+  color: #fff;
+  font-weight: 600;
+}
+
+/* ===== Case Study modal (MATCHES casestudy.html: __content/__top/__title/__close) ===== */
+#caseStudyChatPage .casechat-modal__content {
+  background: #fff;
+  width: min(92vw, 440px);
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+  position: relative;
+  max-height: 70vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+#caseStudyChatPage .casechat-modal__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+#caseStudyChatPage .casechat-modal__title {
+  font-weight: 750;
+  font-size: 16px;
+  color: #111;
+}
+
+/* ✅ 이게 지금 스크린샷의 ‘빨간 막대 X’ 문제를 직접 잡는 부분 */
+#caseStudyChatPage .casechat-modal__close {
+  width: auto !important;
+  margin: 0 !important;
+  padding: 0 6px !important;
+  border: 0 !important;
+  background: transparent !important;
+  color: #666 !important;
+  font-size: 26px !important;
+  line-height: 1 !important;
+  cursor: pointer;
+}
+
+#caseStudyChatPage .casechat-dxcard {
+  flex: 0 0 auto;
+  margin-top: 12px;
 }
 
 /* ============================================= Canonical Eyes Topbar ============================================= */
