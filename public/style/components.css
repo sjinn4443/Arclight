@@ -2387,13 +2387,13 @@ input:checked + .slider:before {
 }
 
 #caseStudyChatPage .casechat-resultOk {
-  font-weight: 800;
-  margin: 4px 0 10px;
+  margin: 23px 0 11px;
 }
 #caseStudyChatPage .casechat-resultWhy {
   color: #333;
   font-size: 14px;
   line-height: 1.4;
+  margin-bottom: 11px;
 }
 
 #caseStudyChatPage .casechat-next {
@@ -2451,8 +2451,12 @@ input:checked + .slider:before {
 #caseStudyChatPage .container.pupils-container {
   padding-left: 14px;
   padding-right: 14px;
-  padding-bottom: 180px;
+  padding-bottom: 42px;
   box-sizing: border-box;
+  background: transparent !important;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 #caseStudyChatPage .casechat-header {
@@ -2586,10 +2590,6 @@ input:checked + .slider:before {
   background: #f2f2f7 !important;
 }
 
-#caseStudyChatPage .pupils-container {
-  background: transparent !important;
-}
-
 /* ----- Top quiz header (Quiz | submit answer >) ----- */
 #caseStudyChatPage .casechat-quizheader {
   position: sticky;
@@ -2646,6 +2646,14 @@ input:checked + .slider:before {
 #caseStudyChatPage .casechat-log {
   padding: 10px 16px var(--casechat-log-pad, 140px); /* bottom sheet 공간 확보 */
   background: transparent !important;
+}
+
+#caseStudyChatPage .casechat-log {
+  flex: 1 1 auto;
+  overflow-y: auto;
+
+  /* ✅ footer 아래로 메시지가 비치지 않도록 '빈 공간' 확보 */
+  padding-bottom: 160px;
 }
 
 /* System bubble: "New case started" centred, subtle */
@@ -2937,7 +2945,7 @@ input:checked + .slider:before {
   padding: 16px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
   position: relative;
-  max-height: 58vh;
+  max-height: 70vh;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -3013,6 +3021,90 @@ input:checked + .slider:before {
   justify-content: center;
   line-height: 1;
   z-index: 9999;
+}
+
+/* ================= Case Study (Chat / Dx) ================= */
+
+#caseStudyChatPage .casechat-dxitem {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 12px 14px;
+  border-radius: 12px;
+
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+
+  text-align: left;
+}
+
+#caseStudyChatPage .casechat-radio {
+  width: 18px;
+  height: 18px;
+  border-radius: 9999px;
+  border: 2px solid #cbd5e1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+}
+
+/* 선택됨: radio fill */
+#caseStudyChatPage .casechat-dxitem.is-selected .casechat-radio::after {
+  content: "";
+  width: 10px;
+  height: 10px;
+  border-radius: 9999px;
+  background: #111827;
+}
+
+/* 오답: 빨간 박스 + radio 빨강 */
+#caseStudyChatPage .casechat-dxitem.is-wrong {
+  background: #fdecec;
+  border-color: #fca5a5;
+}
+
+#caseStudyChatPage .casechat-dxitem.is-wrong .casechat-radio {
+  border-color: #ef4444;
+}
+
+#caseStudyChatPage .casechat-dxitem.is-wrong .casechat-radio::after {
+  background: #ef4444;
+}
+
+/* 정답: 초록 박스 + radio 초록 */
+#caseStudyChatPage .casechat-dxitem.is-correct {
+  background: #eaf7ee;
+  border-color: #86efac;
+}
+
+#caseStudyChatPage .casechat-dxitem.is-correct .casechat-radio {
+  border-color: #22c55e;
+}
+
+#caseStudyChatPage .casechat-dxitem.is-correct .casechat-radio::after {
+  background: #22c55e;
+}
+
+/* 비활성화된 다른 선택지 */
+#caseStudyChatPage .casechat-dxitem.is-disabled {
+  opacity: 0.6;
+}
+
+/* footer 아래 채팅 비침을 막는 '불투명 마스크' */
+#caseStudyChatPage .casechat-footer-mask {
+  position: fixed;
+  left: 14px;
+  right: 14px;
+  bottom: -11px;
+  z-index: 59;
+  background: #f2f3f7;
+  height: 120px;
+  overflow: hidden;
+  opacity: 1;
+  pointer-events: none;
 }
 
 /* ============================================= Canonical Eyes Topbar ============================================= */

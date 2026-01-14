@@ -10,6 +10,19 @@ function shuffle(arr) {
   return a;
 }
 
+function buildCasePool() {
+  const pool = [
+    { caseNum: 1, variant: "infant" },
+    { caseNum: 1, variant: "elderly" },
+  ];
+
+  for (let i = 2; i <= 12; i++) {
+    pool.push({ caseNum: i, variant: null });
+  }
+
+  return shuffle(pool);
+}
+
 function pickRandomCase() {
   const caseNum = 1 + Math.floor(Math.random() * 12);
   if (caseNum === 1) {
@@ -398,6 +411,8 @@ export function initializeCaseStudy() {
   let state = { current: null, answeredImageShown: false, asked: new Set() };
   let caseIndex = 0;
 
+  let casePool = buildCasePool();
+
   function ordinalWord(n) {
     const words = [
       "First",
@@ -412,6 +427,7 @@ export function initializeCaseStudy() {
       "Tenth",
       "Eleventh",
       "Twelfth",
+      "Thirteenth",
     ];
     return words[n - 1] || `${n}th`;
   }
@@ -431,18 +447,26 @@ export function initializeCaseStudy() {
     const last = log.lastElementChild;
     if (!last) return;
 
-    // footer(칩/드래프트/토글/submit 포함)의 윗변을 기준으로 안전선 잡기
+    // log와 footer의 위치(뷰포트 기준)
+    const logRect = log.getBoundingClientRect();
     const footerRect = footer?.getBoundingClientRect();
-    const safeBottom = footerRect
-      ? footerRect.top - 22
-      : window.innerHeight - 22;
+
+    // log 영역 안에서 "실제로 보이는 바닥"을 안전선으로 잡기
+    // footer가 log 위를 덮으면 footer.top이 시각적 바닥이 됨
+    const visualBottom = footerRect
+      ? Math.min(logRect.bottom, footerRect.top)
+      : logRect.bottom;
+
+    const safeBottom = visualBottom - 16; // 여유값(원하면 12~24 사이로 조절)
 
     const lastRect = last.getBoundingClientRect();
 
-    // 마지막 메시지가 안전선 아래로 내려가면(=가려지면) 그만큼 스크롤
+    // 마지막 버블이 안전선 아래로 내려가 가려지면, log 자체를 올린다
     if (lastRect.bottom > safeBottom) {
-      window.scrollBy({
-        top: lastRect.bottom - safeBottom,
+      const delta = lastRect.bottom - safeBottom;
+
+      log.scrollTo({
+        top: log.scrollTop + delta,
         behavior: "smooth",
       });
     }
@@ -567,7 +591,41 @@ export function initializeCaseStudy() {
   function startNewCase() {
     forceCloseModals();
 
-    state.current = pickRandomCase();
+    if (casePool.length === 0) {
+      // 1) 화면 내용 전부 제거 (기존 채팅, img 포함)
+      log.innerHTML = "";
+
+      // 2) 모달/선택 상태 정리
+      forceCloseModals();
+      pending = null;
+
+      // 3) footer UI는 비활성화 (원하면 유지 가능)
+      if (submitBtn) submitBtn.disabled = true;
+      if (choices) {
+        choices.hidden = true;
+        choices.innerHTML = "";
+      }
+
+      if (draftEl) {
+        draftEl.textContent = "- Click here to select a question";
+        draftEl.classList.add("is-placeholder");
+      }
+      if (sendBtn) sendBtn.disabled = true;
+      if (toggleBtn) toggleBtn.textContent = "Q";
+
+      // footer는 반투명 유지하되 접어두기
+      if (footer) footer.classList.add("is-collapsed");
+
+      // 4) ✅ “First case, Second case” 뜨는 자리(= system bubble)에 표시
+      appendSystem(
+        `<span class="casechat-caseindex">All cases completed</span>`,
+      );
+
+      return;
+    }
+
+    state.current = casePool.shift();
+
     state.answeredImageShown = false;
     state.asked = new Set();
 
@@ -635,25 +693,25 @@ export function initializeCaseStudy() {
 
     // 오답
     if (name !== correct) {
-      pickedBtn.classList.remove("is-selected");
+      pickedBtn.classList.add("is-selected");
       pickedBtn.classList.add("is-wrong");
+      pickedBtn.setAttribute("aria-checked", "true");
 
-      // 사진 2처럼 아래에 Try again
       const hint = document.createElement("div");
       hint.className = "casechat-tryagain";
       hint.textContent = "Try again";
       dxCard.appendChild(hint);
 
-      shake(dxCard);
       return;
     }
 
-    // 정답
-    pickedBtn.classList.remove("is-selected");
-    pickedBtn.classList.add("is-correct");
-
     // 정답이면 더 이상 선택 못 하게 잠금
     dxLocked = true;
+
+    // 정답
+    pickedBtn.classList.add("is-selected");
+    pickedBtn.classList.add("is-correct");
+    pickedBtn.setAttribute("aria-checked", "true");
 
     // 다른 선택지 비활성화 (원하면 유지)
     const all = dxList?.querySelectorAll(".casechat-dxitem") || [];
