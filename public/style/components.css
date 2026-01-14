@@ -1712,9 +1712,9 @@ input:checked + .slider:before {
 
 /* colour variants */
 #pupilsPage .pupil-level--primary {
-  --accent: #ffb95c;
-  --cap-from: #ffbf66;
-  --cap-to: #ff7a00;
+  --accent: #0f0;
+  --cap-from: #27eb27;
+  --cap-to: #ffe600;
 }
 #pupilsPage .pupil-level--intermediate {
   --accent: #f25600;
@@ -1986,9 +1986,9 @@ input:checked + .slider:before {
 
 /* colour variants */
 #casestudyPage .pupil-level--primary {
-  --accent: #ffb95c;
-  --cap-from: #ffbf66;
-  --cap-to: #ff7a00;
+  --accent: #0f0;
+  --cap-from: #27eb27;
+  --cap-to: #ffe600;
 }
 #casestudyPage .pupil-level--intermediate {
   --accent: #f25600;
