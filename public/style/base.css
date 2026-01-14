@@ -105,10 +105,10 @@ p {
 
 @keyframes shiftRight {
   from {
-    transform: translateX(-35px);
+    transform: translateX(0);
   }
   to {
-    transform: translateX(-15px);
+    transform: translateX(20px);
   }
 }
 
