@@ -1075,7 +1075,8 @@ select.onb-input.has-value {
 }
 
 /* ===== Pupils top bar ===== */
-#pupilsPage .eyes-topbar {
+#pupilsPage .eyes-topbar,
+.pupils-like .eyes-topbar {
   position: fixed;
   top: 0;
   left: 0;
@@ -1090,7 +1091,8 @@ select.onb-input.has-value {
   margin: 0;
 }
 
-#pupilsPage .eyes-topbar__title {
+#pupilsPage .eyes-topbar__title,
+.pupils-like .eyes-topbar__title {
   font-size: 14px;
   font-weight: 600;
   color: #111;
@@ -1099,7 +1101,8 @@ select.onb-input.has-value {
   line-height: 1;
 }
 
-#pupilsPage .eyes-topbar__icons {
+#pupilsPage .eyes-topbar__icons,
+.pupils-like .eyes-topbar__icons {
   position: absolute;
   left: 12px;
   top: 50%;

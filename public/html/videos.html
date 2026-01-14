@@ -1,59 +1,110 @@
 <!-- Videos Page — Provides a comprehensive collection of video-based learning modules and interactive simulations for eye care, categorized into core examinations, diseases, and Arclight device usage. -->
 
 <!-- Visual Acuity Page -->
-<div id="visualAcuityPage" class="page" style="display: none">
-  <div>
-    <!-- 3-way video mode toggle -->
-    <div class="tri-toggle" role="radiogroup" aria-label="Video mode">
-      <button
-        class="tri-toggle__btn"
-        type="button"
-        role="radio"
-        aria-checked="false"
-        data-mode="low"
-      >
-        low
+<section id="visualAcuityPage" class="page pupils-like">
+  <div class="container pupils-container">
+    <div class="eyes-topbar">
+      <button class="back-button" data-back>
+        <span class="icon">‹</span>
       </button>
-      <button
-        class="tri-toggle__btn"
-        type="button"
-        role="radio"
-        aria-checked="false"
-        data-mode="high"
-      >
-        high
-      </button>
-      <button
-        class="tri-toggle__btn tri-toggle__btn--icon"
-        type="button"
-        role="radio"
-        aria-checked="false"
-        data-mode="online"
-        aria-label="online"
-      >
-        <span class="tri-toggle__wifi" aria-hidden="true"></span>
-      </button>
-      <div class="tri-toggle__knob" aria-hidden="true"></div>
+      <h1 class="eyes-title">Eyes</h1>
+      <button class="menuBtn" aria-label="Menu">&#9776;</button>
     </div>
 
-    <div class="video-header">
-      <h3 data-i18n="videos.visualAcuityTitle">Visual Acuity</h3>
-    </div>
-    <div class="video-container" id="visualAcuityContainer">
-      <video
-        id="visualAcuityVideo"
-        controls
-        preload="none"
-        style="width: 100%; max-width: 100%"
-      >
-        <source src="videos/visualacuity_220p.mp4" type="video/mp4" />
-        <span data-i18n="videos.videoNotSupported"
-          >Your browser does not support the video tag.</span
+    <h2 class="pupils-subtitle">Visual Acuity</h2>
+
+    <div class="pupils-levels">
+      <!-- PRIMARY -->
+      <section class="pupil-level">
+        <h3 class="pupil-level-title">Primary</h3>
+
+        <button
+          class="pupil-card module-card"
+          type="button"
+          data-page="vaWhoPage"
         >
-      </video>
+          <h3>Visual Acuity</h3>
+
+          <!-- 1 -->
+          <div class="lesson-row" data-target="vaWhoPage">
+            <div class="thumb"></div>
+            <div class="lesson-main">
+              <div class="lesson-top">
+                <span class="lesson-type">Video</span>
+                <span class="lesson-meta">| 00:00</span>
+              </div>
+              <div class="lesson-progress">
+                <div class="lesson-progress__fill" style="width: 0%"></div>
+              </div>
+              <div class="lesson-title">WHO Visual Acuity</div>
+            </div>
+            <span class="lesson-cta">Start &gt;</span>
+          </div>
+
+          <!-- 2 -->
+          <div class="lesson-row" data-target="vaNearVisionPage">
+            <div class="thumb"></div>
+            <div class="lesson-main">
+              <div class="lesson-top">
+                <span class="lesson-type">Video</span>
+                <span class="lesson-meta">| 00:00</span>
+              </div>
+              <div class="lesson-progress">
+                <div class="lesson-progress__fill" style="width: 0%"></div>
+              </div>
+              <div class="lesson-title">
+                Assessing Near Vision and Dispensing Glasses
+              </div>
+            </div>
+            <span class="lesson-cta">Start &gt;</span>
+          </div>
+
+          <!-- 3 -->
+          <div class="lesson-row" data-target="assessmentVisionPage">
+            <div class="thumb"></div>
+            <div class="lesson-main">
+              <div class="lesson-top">
+                <span class="lesson-type">Video</span>
+                <span class="lesson-meta">| 00:00</span>
+              </div>
+              <div class="lesson-progress">
+                <div class="lesson-progress__fill" style="width: 0%"></div>
+              </div>
+              <div class="lesson-title">Assessment of eyes and vision</div>
+            </div>
+            <span class="lesson-cta">Start &gt;</span>
+          </div>
+
+          <!-- 4 -->
+          <div class="lesson-row" data-target="vaMilestonesPage">
+            <div class="thumb"></div>
+            <div class="lesson-main">
+              <div class="lesson-top">
+                <span class="lesson-type">Video</span>
+                <span class="lesson-meta">| 00:00</span>
+              </div>
+              <div class="lesson-progress">
+                <div class="lesson-progress__fill" style="width: 0%"></div>
+              </div>
+              <div class="lesson-title">Milestones African Mum</div>
+            </div>
+            <span class="lesson-cta">Start &gt;</span>
+          </div>
+        </button>
+      </section>
+
+      <!-- INTERMEDIATE -->
+      <section class="pupil-level">
+        <h3 class="pupil-level-title">Intermediate</h3>
+      </section>
+
+      <!-- ADVANCED -->
+      <section class="pupil-level">
+        <h3 class="pupil-level-title">Advanced</h3>
+      </section>
     </div>
   </div>
-</div>
+</section>
 
 <!-- Front of Eye Page -->
 <div id="frontOfEyePage" class="page" style="display: none">
@@ -118,59 +169,92 @@
   </div>
 </div>
 
-<!-- Anterior Segment Video Page -->
-<div id="anteriorSegmentVideoPage" class="page" style="display: none">
-  <div>
-    <!-- 3-way video mode toggle -->
-    <div class="tri-toggle" role="radiogroup" aria-label="Video mode">
-      <button
-        class="tri-toggle__btn"
-        type="button"
-        role="radio"
-        aria-checked="false"
-        data-mode="low"
-      >
-        low
+<!-- Fundal Reflex Video Page -->
+<section id="fundalReflexPage" class="page pupils-like">
+  <div class="container pupils-container">
+    <div class="eyes-topbar">
+      <button class="back-button" data-back>
+        <span class="icon">‹</span>
       </button>
-      <button
-        class="tri-toggle__btn"
-        type="button"
-        role="radio"
-        aria-checked="false"
-        data-mode="high"
-      >
-        high
-      </button>
-      <button
-        class="tri-toggle__btn tri-toggle__btn--icon"
-        type="button"
-        role="radio"
-        aria-checked="false"
-        data-mode="online"
-        aria-label="online"
-      >
-        <span class="tri-toggle__wifi" aria-hidden="true"></span>
-      </button>
-      <div class="tri-toggle__knob" aria-hidden="true"></div>
+      <h1 class="eyes-title">Eyes</h1>
+      <button class="menuBtn" aria-label="Menu">&#9776;</button>
     </div>
-    <div class="video-header">
-      <h3 data-i18n="videos.frontOfEyeTitle">Front of Eye</h3>
-    </div>
-    <div class="video-container" id="anteriorSegmentContainer">
-      <video
-        id="anteriorSegmentVideo"
-        controls
-        preload="none"
-        style="width: 100%; max-width: 100%"
-      >
-        <source src="videos/antseg_220p.mp4" type="video/mp4" />
-        <span data-i18n="videos.videoNotSupported"
-          >Your browser does not support the video tag.</span
+
+    <h2 class="pupils-subtitle">Fundal Reflex</h2>
+
+    <div class="pupils-levels">
+      <!-- PRIMARY -->
+      <section class="pupil-level">
+        <h3 class="pupil-level-title">Primary</h3>
+
+        <button
+          class="pupil-card module-card"
+          type="button"
+          data-page="fundalExamPage"
         >
-      </video>
+          <h3>Fundal Reflex</h3>
+
+          <div class="lesson-row" data-target="fundalExamPage">
+            <div class="thumb"></div>
+            <div class="lesson-main">
+              <div class="lesson-top">
+                <span class="lesson-type">Video</span>
+                <span class="lesson-meta">| 00:00</span>
+              </div>
+              <div class="lesson-progress">
+                <div class="lesson-progress__fill" style="width: 0%"></div>
+              </div>
+              <div class="lesson-title">Fundal Reflex Examination</div>
+            </div>
+            <span class="lesson-cta">Start &gt;</span>
+          </div>
+
+          <div class="lesson-row" data-target="fundalStillPage">
+            <div class="thumb"></div>
+            <div class="lesson-main">
+              <div class="lesson-top">
+                <span class="lesson-type">Video</span>
+                <span class="lesson-meta">| 00:00</span>
+              </div>
+              <div class="lesson-progress">
+                <div class="lesson-progress__fill" style="width: 0%"></div>
+              </div>
+              <div class="lesson-title">
+                Still Images of 20 Real Examinations
+              </div>
+            </div>
+            <span class="lesson-cta">Start &gt;</span>
+          </div>
+
+          <div class="lesson-row" data-target="fundalRealPage">
+            <div class="thumb"></div>
+            <div class="lesson-main">
+              <div class="lesson-top">
+                <span class="lesson-type">Video</span>
+                <span class="lesson-meta">| 00:00</span>
+              </div>
+              <div class="lesson-progress">
+                <div class="lesson-progress__fill" style="width: 0%"></div>
+              </div>
+              <div class="lesson-title">
+                Videos of Real Fundal Reflex Examinations
+              </div>
+            </div>
+            <span class="lesson-cta">Start &gt;</span>
+          </div>
+        </button>
+      </section>
+
+      <section class="pupil-level">
+        <h3 class="pupil-level-title">Intermediate</h3>
+      </section>
+
+      <section class="pupil-level">
+        <h3 class="pupil-level-title">Advanced</h3>
+      </section>
     </div>
   </div>
-</div>
+</section>
 
 <!-- Pupils Page -->
 <div id="pupilsPage" class="page" style="display: none">
@@ -553,9 +637,59 @@
 </div>
 
 <!-- Direct Ophthalmoscopy Embedded Module -->
-<div id="directOphthalmoscopy" class="page" style="display: none">
-  <div>
-    <!-- 3-way video mode toggle -->
+<section id="directOphthalmoscopy" class="page pupils-like">
+  <div class="container pupils-container">
+    <div class="eyes-topbar">
+      <button class="back-button" data-back>
+        <span class="icon">‹</span>
+      </button>
+      <h1 class="eyes-title">Eyes</h1>
+      <button class="menuBtn" aria-label="Menu">&#9776;</button>
+    </div>
+
+    <h2 class="pupils-subtitle">Ophthalmoscopy</h2>
+
+    <div class="pupils-levels">
+      <!-- PRIMARY -->
+      <section class="pupil-level">
+        <h3 class="pupil-level-title">Primary</h3>
+
+        <button
+          class="pupil-card module-card"
+          type="button"
+          data-page="directOphthalmoscopy"
+        >
+          <h3>Ophthalmoscopy</h3>
+
+          <div class="lesson-row" data-target="directOphthalmoscopy">
+            <div class="thumb"></div>
+            <div class="lesson-main">
+              <div class="lesson-top">
+                <span class="lesson-type">Video</span>
+                <span class="lesson-meta">| 00:00</span>
+              </div>
+              <div class="lesson-progress">
+                <div class="lesson-progress__fill" style="width: 0%"></div>
+              </div>
+              <div class="lesson-title">Direct Ophthalmoscopy</div>
+            </div>
+            <span class="lesson-cta">Start &gt;</span>
+          </div>
+        </button>
+      </section>
+
+      <section class="pupil-level">
+        <h3 class="pupil-level-title">Intermediate</h3>
+      </section>
+
+      <section class="pupil-level">
+        <h3 class="pupil-level-title">Advanced</h3>
+      </section>
+    </div>
+  </div>
+</section>
+
+<!-- 
     <div class="tri-toggle" role="radiogroup" aria-label="Video mode">
       <button
         class="tri-toggle__btn"
@@ -635,7 +769,7 @@
       Take Quiz
     </button>
   </div>
-</div>
+</div> -->
 
 <!-- Interactive Learning Page -->
 <div id="interactiveLearningPage" class="page" style="display: none">

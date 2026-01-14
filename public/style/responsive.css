@@ -125,29 +125,36 @@ input {
     max-width: 76vw;
   }
 
-  #pupilsPage .pupil-card {
+  #pupilsPage .pupil-card,
+  .pupils-like .pupil-card {
     margin-left: -2%;
   }
 
   #pupilsPage .lesson-type,
-  #pupilsPage .lesson-meta {
+  #pupilsPage .lesson-meta,
+  .pupils-like .lesson-type,
+  .pupils-like .lesson-meta {
     margin-top: 5vh;
   }
 
-  #pupilsPage .lesson-progress {
+  #pupilsPage .lesson-progress,
+  .pupils-like .lesson-progress {
     margin-top: 2%;
   }
 
-  #pupilsPage .lesson-cta {
+  #pupilsPage .lesson-cta,
+  .pupils-like .lesson-cta {
     margin-top: 47%;
   }
 
-  #pupilsPage .lesson-main {
+  #pupilsPage .lesson-main,
+  .pupils-like .lesson-main {
     margin-top: -2vh;
     margin-left: -1vh;
   }
 
-  #pupilsPage .thumb {
+  #pupilsPage .thumb,
+  .pupils-like .thumb {
     width: 5vw;
     height: 4vh;
   }
@@ -226,29 +233,36 @@ input {
     max-width: 37vw;
   }
 
-  #pupilsPage .pupil-card {
+  #pupilsPage .pupil-card,
+  .pupils-like .pupil-card {
     margin-left: -2%;
   }
 
   #pupilsPage .lesson-type,
+  #pupilsPage .lesson-meta,
+  .pupils-like .lesson-type,
   #pupilsPage .lesson-meta {
     margin-top: 5vh;
   }
 
-  #pupilsPage .lesson-progress {
+  #pupilsPage .lesson-progress,
+  .pupils-like .lesson-progress {
     margin-top: 2%;
   }
 
-  #pupilsPage .lesson-cta {
+  #pupilsPage .lesson-cta,
+  .pupils-like .lesson-cta {
     margin-top: 45%;
   }
 
-  #pupilsPage .lesson-main {
+  #pupilsPage .lesson-main,
+  .pupils-like .lesson-main {
     margin-top: -1vh;
     margin-left: -1vh;
   }
 
-  #pupilsPage .thumb {
+  #pupilsPage .thumb,
+  .pupils-like .thumb {
     width: 3vw;
     height: 4vh;
   }

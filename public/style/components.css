@@ -1665,14 +1665,15 @@ input:checked + .slider:before {
   opacity: 0.65;
 }
 
-/* ============================================= Pupils page ============================================= */
+/* ============================================= Pupils page (AND pupils-like pages) ============================================= */
 
-#pupilsPage .pupils-timeline {
+/* Helper: applies to Pupils page AND any page with class="pupils-like" */
+:is(#pupilsPage, .pupils-like) .pupils-timeline {
   display: none; /* old layout (timeline numbers) */
 }
 
 /* New layout wrapper */
-#pupilsPage .pupils-levels {
+:is(#pupilsPage, .pupils-like) .pupils-levels {
   display: flex;
   flex-direction: column;
   gap: 18px;
@@ -1680,14 +1681,14 @@ input:checked + .slider:before {
 }
 
 /* The two grey dots between sections */
-#pupilsPage .pupils-dots {
+:is(#pupilsPage, .pupils-like) .pupils-dots {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 10px;
   padding: 2px 0;
 }
-#pupilsPage .pupils-dots span {
+:is(#pupilsPage, .pupils-like) .pupils-dots span {
   width: 6px;
   height: 6px;
   border-radius: 999px;
@@ -1695,7 +1696,7 @@ input:checked + .slider:before {
 }
 
 /* Level container (black rounded card) */
-#pupilsPage .pupil-level {
+:is(#pupilsPage, .pupils-like) .pupil-level {
   --accent: #ff9f2f;
   --cap-from: #ffbf66;
   --cap-to: #ff7a00;
@@ -1711,24 +1712,24 @@ input:checked + .slider:before {
 }
 
 /* colour variants */
-#pupilsPage .pupil-level--primary {
+:is(#pupilsPage, .pupils-like) .pupil-level--primary {
   --accent: #0f0;
   --cap-from: #27eb27;
   --cap-to: #ffe600;
 }
-#pupilsPage .pupil-level--intermediate {
+:is(#pupilsPage, .pupils-like) .pupil-level--intermediate {
   --accent: #f25600;
   --cap-from: #ff7a00;
   --cap-to: #e11b1b;
 }
-#pupilsPage .pupil-level--advanced {
+:is(#pupilsPage, .pupils-like) .pupil-level--advanced {
   --accent: #e41e26;
   --cap-from: #ef2b2b;
   --cap-to: #b70000;
 }
 
 /* Gradient cap header */
-#pupilsPage .pupil-level__cap {
+:is(#pupilsPage, .pupils-like) .pupil-level__cap {
   background: linear-gradient(
     90deg,
     var(--cap-from) 0%,
@@ -1738,14 +1739,14 @@ input:checked + .slider:before {
   color: #fff;
   font-size: 12px;
   font-weight: 400;
-  text-align: center;
+  text-align: centre;
   padding: 10px 12px;
   border: none;
   outline: none;
 }
 
 /* Make the buttons look like content blocks, not buttons */
-#pupilsPage .pupil-card.module-card {
+:is(#pupilsPage, .pupils-like) .pupil-card.module-card {
   display: block;
   width: 100%;
   border: 0;
@@ -1755,11 +1756,11 @@ input:checked + .slider:before {
   cursor: pointer;
 }
 
-#pupilsPage .pupil-card.module-card:active {
+:is(#pupilsPage, .pupils-like) .pupil-card.module-card:active {
   transform: translateY(1px);
 }
 
-#pupilsPage .pupil-card h3 {
+:is(#pupilsPage, .pupils-like) .pupil-card h3 {
   margin: 8px 2px 14px;
   font-size: 26px;
   line-height: 1.15;
@@ -1768,11 +1769,11 @@ input:checked + .slider:before {
 }
 
 /* lesson row (white pill inside card) */
-#pupilsPage .lesson-row {
+:is(#pupilsPage, .pupils-like) .lesson-row {
   width: 100%;
   display: grid;
   grid-template-columns: 70px 1fr auto;
-  align-items: center;
+  align-items: centre;
   gap: 14px;
 
   background: #fff;
@@ -1784,7 +1785,7 @@ input:checked + .slider:before {
 }
 
 /* icon thumb: black tile with simple glyphs */
-#pupilsPage .lesson-row .thumb {
+:is(#pupilsPage, .pupils-like) .lesson-row .thumb {
   width: 62px;
   height: 52px;
   border-radius: 13px;
@@ -1793,84 +1794,42 @@ input:checked + .slider:before {
   overflow: hidden;
 }
 
-/* video glyph (play + small “clapper” stripes) */
-#pupilsPage .lesson-row--video .thumb::before {
-  content: "";
-  position: absolute;
-  left: 14px;
-  top: 10px;
-  width: 34px;
-  height: 10px;
-  border-radius: 4px;
-  background: repeating-linear-gradient(
-    45deg,
-    rgba(255, 255, 255, 0.95),
-    rgba(255, 255, 255, 0.95) 6px,
-    rgba(255, 255, 255, 0) 6px,
-    rgba(255, 255, 255, 0) 12px
-  );
-  opacity: 0.9;
-}
-#pupilsPage .lesson-row--video .thumb::after {
-  content: "";
-  position: absolute;
-  left: 28px;
-  top: 22px;
-  width: 0;
-  height: 0;
-  border-left: 14px solid var(--accent);
-  border-top: 9px solid transparent;
-  border-bottom: 9px solid transparent;
-}
-
-/* quiz glyph: simple question mark accent */
-#pupilsPage .lesson-row--quiz .thumb::after {
-  content: "?";
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  font-size: 30px;
-  font-weight: 800;
-  color: var(--accent);
-}
-
 /* lesson meta */
-#pupilsPage .lesson-main {
+:is(#pupilsPage, .pupils-like) .lesson-main {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
-#pupilsPage .lesson-top {
+:is(#pupilsPage, .pupils-like) .lesson-top {
   display: flex;
   gap: 8px;
   align-items: baseline;
   font-size: 15px;
 }
-#pupilsPage .lesson-type {
+:is(#pupilsPage, .pupils-like) .lesson-type {
   font-weight: 650;
   color: #111;
 }
-#pupilsPage .lesson-meta {
+:is(#pupilsPage, .pupils-like) .lesson-meta {
   color: rgba(0, 0, 0, 0.45);
   font-weight: 500;
 }
 
 /* progress bar */
-#pupilsPage .lesson-progress {
+:is(#pupilsPage, .pupils-like) .lesson-progress {
   height: 7px;
   border-radius: 999px;
   background: #dedede;
   overflow: hidden;
 }
-#pupilsPage .lesson-progress__fill {
+:is(#pupilsPage, .pupils-like) .lesson-progress__fill {
   height: 100%;
   border-radius: 999px;
   background: var(--accent);
 }
 
 /* CTA on the right */
-#pupilsPage .lesson-cta {
+:is(#pupilsPage, .pupils-like) .lesson-cta {
   color: rgba(0, 0, 0, 0.35);
   font-weight: 650;
   font-size: 13px;
@@ -1878,23 +1837,23 @@ input:checked + .slider:before {
 }
 
 /* Make Advanced look like one “combined” block (two buttons inside same black area) */
-#pupilsPage .pupil-level--advanced .pupil-card.module-card {
+:is(#pupilsPage, .pupils-like) .pupil-level--advanced .pupil-card.module-card {
   padding-bottom: 10px;
 }
-#pupilsPage
+:is(#pupilsPage, .pupils-like)
   .pupil-level--advanced
   .pupil-card.module-card
   + .pupil-card.module-card {
   padding-top: 4px;
 }
 
-/* small screens: keep the same feel as your screenshot 1 (content may be clipped by viewport, but card stays centred) */
+/* small screens */
 @media (max-width: 360px) {
-  #pupilsPage .pupil-level {
+  :is(#pupilsPage, .pupils-like) .pupil-level {
     width: calc(100% - 22px);
   }
 
-  #pupilsPage .pupil-card h3 {
+  :is(#pupilsPage, .pupils-like) .pupil-card h3 {
     font-size: 22px;
   }
 }
@@ -1903,43 +1862,49 @@ input:checked + .slider:before {
 /* Pupils page – module icons (real assets)      */
 /* ============================================= */
 
-#pupilsPage .lesson-row .thumb {
+:is(#pupilsPage, .pupils-like) .lesson-row .thumb {
   background-color: #0a0a0a;
   background-repeat: no-repeat;
-  background-position: center;
+  background-position: centre;
   background-size: 61px;
 }
 
 /* ---------- Primary ---------- */
-#pupilsPage .pupil-level--primary .lesson-row--video .thumb {
+:is(#pupilsPage, .pupils-like) .pupil-level--primary .lesson-row--video .thumb {
   background-image: url("/images/icon/eyes/moduleicons/primary_video.webp");
 }
-
-#pupilsPage .pupil-level--primary .lesson-row--quiz .thumb {
+:is(#pupilsPage, .pupils-like) .pupil-level--primary .lesson-row--quiz .thumb {
   background-image: url("/images/icon/eyes/moduleicons/primary_casestudy.webp");
 }
 
 /* ---------- Intermediate ---------- */
-#pupilsPage .pupil-level--intermediate .lesson-row--video .thumb {
+:is(#pupilsPage, .pupils-like)
+  .pupil-level--intermediate
+  .lesson-row--video
+  .thumb {
   background-image: url("/images/icon/eyes/moduleicons/intermediate_video.webp");
 }
-
-#pupilsPage .pupil-level--intermediate .lesson-row--quiz .thumb {
+:is(#pupilsPage, .pupils-like)
+  .pupil-level--intermediate
+  .lesson-row--quiz
+  .thumb {
   background-image: url("/images/icon/eyes/moduleicons/intermediate_casestudy.webp");
 }
 
 /* ---------- Advanced ---------- */
-#pupilsPage .pupil-level--advanced .lesson-row--video .thumb {
+:is(#pupilsPage, .pupils-like)
+  .pupil-level--advanced
+  .lesson-row--video
+  .thumb {
   background-image: url("/images/icon/eyes/moduleicons/advanced_video.webp");
 }
-
-#pupilsPage .pupil-level--advanced .lesson-row--quiz .thumb {
+:is(#pupilsPage, .pupils-like) .pupil-level--advanced .lesson-row--quiz .thumb {
   background-image: url("/images/icon/eyes/moduleicons/advanced_casestudy.webp");
 }
 
 /* Remove any old pseudo-icons just in case */
-#pupilsPage .lesson-row .thumb::before,
-#pupilsPage .lesson-row .thumb::after {
+:is(#pupilsPage, .pupils-like) .lesson-row .thumb::before,
+:is(#pupilsPage, .pupils-like) .lesson-row .thumb::after {
   content: none;
 }
 
@@ -3755,4 +3720,11 @@ input:checked + .slider:before {
   box-shadow: none !important;
   border-color: transparent !important;
   -webkit-tap-highlight-color: transparent;
+}
+
+.lesson-title {
+  font-size: 12px;
+  line-height: 1.2;
+  margin-top: 6px;
+  opacity: 0.9;
 }
