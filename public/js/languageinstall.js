@@ -217,9 +217,7 @@ export function initializeLanguageInstall() {
 
   if (offlineInfoBtn) {
     offlineInfoBtn.addEventListener("click", () => {
-      showLanguageHintModal(
-        "install the app on your device for offline access",
-      );
+      showLanguageHintModal("Installs app on your device");
     });
   }
 

@@ -107,7 +107,7 @@ export function initializeIntro() {
       } else {
         skipBtn.classList.remove("onb-cta", "intro-primary");
         skipBtn.classList.add("btn-outline", "intro-outline");
-        skipBtn.textContent = "Go Straight to App";
+        skipBtn.textContent = "Skip and Start";
       }
     }
 
@@ -133,7 +133,7 @@ export function initializeIntro() {
 
     const recommendedTitleHTML = "Tailored for You";
     const recommendedSubHTML =
-      "On your first visit, we will recommend contents<br />that suits your interests and role";
+      "On your first visit, we will recommend content<br />that suits your interests and role";
 
     function showRecommended() {
       introState = "recommended";
@@ -188,7 +188,7 @@ export function initializeIntro() {
       if (introTitle) introTitle.innerHTML = "Strengthen Your Learning";
       if (introSub)
         introSub.innerHTML =
-          "Follow each lesson with a quick quiz to review <br />key concepts and identify areas to revisit.";
+          "Follow each lesson with a quick quiz to review <br />concepts and identify areas to revisit.";
 
       setSkipBtnPrimary(false);
 

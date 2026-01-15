@@ -187,8 +187,8 @@ export function initializeEyesCatalog() {
       { label: "Pupils", target: "pupilsPage", tags: ["Video"] },
       {
         label: "Front of Eye",
-        target: "anteriorSegmentVideoPage",
-        tags: ["Video"],
+        target: "comingSoon" /*"anteriorSegmentVideoPage",*/,
+        tags: ["Coming Soon"],
       },
       {
         label: "Fundal Reflex",

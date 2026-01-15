@@ -1739,7 +1739,7 @@ input:checked + .slider:before {
   color: #fff;
   font-size: 12px;
   font-weight: 400;
-  text-align: centre;
+  text-align: center;
   padding: 10px 12px;
   border: none;
   outline: none;
@@ -1751,37 +1751,13 @@ input:checked + .slider:before {
   width: 100%;
   border: 0;
   background: transparent;
-  padding: 13px 16px 6px;
+  padding: 11px 16px 6px;
   text-align: left;
   cursor: pointer;
 }
 
 :is(#pupilsPage, .pupils-like) .pupil-card.module-card:active {
   transform: translateY(1px);
-}
-
-:is(#pupilsPage, .pupils-like) .pupil-card h3 {
-  margin: 8px 2px 14px;
-  font-size: 26px;
-  line-height: 1.15;
-  font-weight: 750;
-  color: #fff;
-}
-
-/* lesson row (white pill inside card) */
-:is(#pupilsPage, .pupils-like) .lesson-row {
-  width: 100%;
-  display: grid;
-  grid-template-columns: 70px 1fr auto;
-  align-items: centre;
-  gap: 14px;
-
-  background: #fff;
-  border-radius: 18px;
-  padding: 14px 14px;
-  margin: 12px 0;
-
-  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.12);
 }
 
 /* icon thumb: black tile with simple glyphs */
@@ -1800,12 +1776,7 @@ input:checked + .slider:before {
   flex-direction: column;
   gap: 8px;
 }
-:is(#pupilsPage, .pupils-like) .lesson-top {
-  display: flex;
-  gap: 8px;
-  align-items: baseline;
-  font-size: 15px;
-}
+
 :is(#pupilsPage, .pupils-like) .lesson-type {
   font-weight: 650;
   color: #111;
@@ -1815,25 +1786,10 @@ input:checked + .slider:before {
   font-weight: 500;
 }
 
-/* progress bar */
-:is(#pupilsPage, .pupils-like) .lesson-progress {
-  height: 7px;
-  border-radius: 999px;
-  background: #dedede;
-  overflow: hidden;
-}
 :is(#pupilsPage, .pupils-like) .lesson-progress__fill {
   height: 100%;
   border-radius: 999px;
   background: var(--accent);
-}
-
-/* CTA on the right */
-:is(#pupilsPage, .pupils-like) .lesson-cta {
-  color: rgba(0, 0, 0, 0.35);
-  font-weight: 650;
-  font-size: 13px;
-  white-space: nowrap;
 }
 
 /* Make Advanced look like one “combined” block (two buttons inside same black area) */
@@ -1845,17 +1801,6 @@ input:checked + .slider:before {
   .pupil-card.module-card
   + .pupil-card.module-card {
   padding-top: 4px;
-}
-
-/* small screens */
-@media (max-width: 360px) {
-  :is(#pupilsPage, .pupils-like) .pupil-level {
-    width: calc(100% - 22px);
-  }
-
-  :is(#pupilsPage, .pupils-like) .pupil-card h3 {
-    font-size: 22px;
-  }
 }
 
 /* ============================================= */
@@ -3720,11 +3665,4 @@ input:checked + .slider:before {
   box-shadow: none !important;
   border-color: transparent !important;
   -webkit-tap-highlight-color: transparent;
-}
-
-.lesson-title {
-  font-size: 12px;
-  line-height: 1.2;
-  margin-top: 6px;
-  opacity: 0.9;
 }

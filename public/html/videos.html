@@ -1,106 +1,127 @@
 <!-- Videos Page — Provides a comprehensive collection of video-based learning modules and interactive simulations for eye care, categorized into core examinations, diseases, and Arclight device usage. -->
 
 <!-- Visual Acuity Page -->
+<!-- Visual Acuity Page -->
 <section id="visualAcuityPage" class="page pupils-like">
   <div class="container pupils-container">
     <div class="eyes-topbar">
-      <button class="back-button" data-back>
-        <span class="icon">‹</span>
-      </button>
-      <h1 class="eyes-title">Eyes</h1>
-      <button class="menuBtn" aria-label="Menu">&#9776;</button>
+      <div class="eyes-topbar__title">Eyes</div>
+      <div class="eyes-topbar__icons">
+        <span class="icon menuBtn" aria-label="Menu">☰</span>
+      </div>
     </div>
 
     <h2 class="pupils-subtitle">Visual Acuity</h2>
 
     <div class="pupils-levels">
-      <!-- PRIMARY -->
-      <section class="pupil-level">
-        <h3 class="pupil-level-title">Primary</h3>
+      <!-- Primary -->
+      <section class="pupil-level pupil-level--primary" aria-label="Primary">
+        <div class="pupil-level__cap">Primary</div>
 
         <button
-          class="pupil-card module-card"
           type="button"
+          class="pupil-card module-card"
           data-page="vaWhoPage"
         >
-          <h3>Visual Acuity</h3>
+          <h3>WHO Visual Acuity</h3>
 
-          <!-- 1 -->
-          <div class="lesson-row" data-target="vaWhoPage">
-            <div class="thumb"></div>
+          <div
+            class="lesson-row lesson-row--video"
+            data-target="vaWhoPage"
+            role="button"
+            tabindex="0"
+          >
+            <div class="thumb" aria-hidden="true"></div>
+
             <div class="lesson-main">
               <div class="lesson-top">
                 <span class="lesson-type">Video</span>
                 <span class="lesson-meta">| 00:00</span>
               </div>
-              <div class="lesson-progress">
-                <div class="lesson-progress__fill" style="width: 0%"></div>
-              </div>
-              <div class="lesson-title">WHO Visual Acuity</div>
-            </div>
-            <span class="lesson-cta">Start &gt;</span>
-          </div>
 
-          <!-- 2 -->
-          <div class="lesson-row" data-target="vaNearVisionPage">
-            <div class="thumb"></div>
-            <div class="lesson-main">
-              <div class="lesson-top">
-                <span class="lesson-type">Video</span>
-                <span class="lesson-meta">| 00:00</span>
-              </div>
-              <div class="lesson-progress">
+              <div
+                class="lesson-progress"
+                role="progressbar"
+                aria-valuemin="0"
+                aria-valuemax="100"
+              >
                 <div class="lesson-progress__fill" style="width: 0%"></div>
               </div>
-              <div class="lesson-title">
-                Assessing Near Vision and Dispensing Glasses
-              </div>
             </div>
-            <span class="lesson-cta">Start &gt;</span>
-          </div>
 
-          <!-- 3 -->
-          <div class="lesson-row" data-target="assessmentVisionPage">
-            <div class="thumb"></div>
-            <div class="lesson-main">
-              <div class="lesson-top">
-                <span class="lesson-type">Video</span>
-                <span class="lesson-meta">| 00:00</span>
-              </div>
-              <div class="lesson-progress">
-                <div class="lesson-progress__fill" style="width: 0%"></div>
-              </div>
-              <div class="lesson-title">Assessment of eyes and vision</div>
-            </div>
-            <span class="lesson-cta">Start &gt;</span>
-          </div>
-
-          <!-- 4 -->
-          <div class="lesson-row" data-target="vaMilestonesPage">
-            <div class="thumb"></div>
-            <div class="lesson-main">
-              <div class="lesson-top">
-                <span class="lesson-type">Video</span>
-                <span class="lesson-meta">| 00:00</span>
-              </div>
-              <div class="lesson-progress">
-                <div class="lesson-progress__fill" style="width: 0%"></div>
-              </div>
-              <div class="lesson-title">Milestones African Mum</div>
-            </div>
             <span class="lesson-cta">Start &gt;</span>
           </div>
         </button>
-      </section>
 
-      <!-- INTERMEDIATE -->
-      <section class="pupil-level">
-        <h3 class="pupil-level-title">Intermediate</h3>
-      </section>
+        <button
+          type="button"
+          class="pupil-card module-card"
+          data-page="vaNearVisionPage"
+        >
+          <h3>Assessing Near Vision and Dispensing Glasses</h3>
 
-      <!-- ADVANCED -->
-      <section class="pupil-level">
-        <h3 class="pupil-level-title">Advanced</h3>
+          <div
+            class="lesson-row lesson-row--video"
+            data-target="vaNearVisionPage"
+            role="button"
+            tabindex="0"
+          >
+            <div class="thumb" aria-hidden="true"></div>
+
+            <div class="lesson-main">
+              <div class="lesson-top">
+                <span class="lesson-type">Video</span>
+                <span class="lesson-meta">| 00:00</span>
+              </div>
+
+              <div
+                class="lesson-progress"
+                role="progressbar"
+                aria-valuemin="0"
+                aria-valuemax="100"
+              >
+                <div class="lesson-progress__fill" style="width: 0%"></div>
+              </div>
+            </div>
+
+            <span class="lesson-cta">Start &gt;</span>
+          </div>
+        </button>
+
+        <button
+          type="button"
+          class="pupil-card module-card"
+          data-page="assessmentVisionPage"
+        >
+          <h3>Assessment of eyes and vision</h3>
+
+          <div
+            class="lesson-row lesson-row--video"
+            data-target="assessmentVisionPage"
+            role="button"
+            tabindex="0"
+          >
+            <div class="thumb" aria-hidden="true"></div>
+
+            <div class="lesson-main">
+              <div class="lesson-top">
+                <span class="lesson-type">Video</span>
+                <span class="lesson-meta">| 00:00</span>
+              </div>
+
+              <div
+                class="lesson-progress"
+                role="progressbar"
+                aria-valuemin="0"
+                aria-valuemax="100"
+              >
+                <div class="lesson-progress__fill" style="width: 0%"></div>
+              </div>
+            </div>
+
+            <span class="lesson-cta">Start &gt;</span>
+          </div>
+        </button>
       </section>
     </div>
   </div>
@@ -173,84 +194,123 @@
 <section id="fundalReflexPage" class="page pupils-like">
   <div class="container pupils-container">
     <div class="eyes-topbar">
-      <button class="back-button" data-back>
-        <span class="icon">‹</span>
-      </button>
-      <h1 class="eyes-title">Eyes</h1>
-      <button class="menuBtn" aria-label="Menu">&#9776;</button>
+      <div class="eyes-topbar__title">Eyes</div>
+      <div class="eyes-topbar__icons">
+        <span class="icon menuBtn" aria-label="Menu">☰</span>
+      </div>
     </div>
 
     <h2 class="pupils-subtitle">Fundal Reflex</h2>
 
     <div class="pupils-levels">
-      <!-- PRIMARY -->
-      <section class="pupil-level">
-        <h3 class="pupil-level-title">Primary</h3>
+      <!-- Primary -->
+      <section class="pupil-level pupil-level--primary" aria-label="Primary">
+        <div class="pupil-level__cap">Primary</div>
 
         <button
-          class="pupil-card module-card"
           type="button"
+          class="pupil-card module-card"
           data-page="fundalExamPage"
         >
-          <h3>Fundal Reflex</h3>
+          <h3>Fundal Reflex Examination</h3>
 
-          <div class="lesson-row" data-target="fundalExamPage">
-            <div class="thumb"></div>
+          <div
+            class="lesson-row lesson-row--video"
+            data-target="fundalExamPage"
+            role="button"
+            tabindex="0"
+          >
+            <div class="thumb" aria-hidden="true"></div>
+
             <div class="lesson-main">
               <div class="lesson-top">
                 <span class="lesson-type">Video</span>
                 <span class="lesson-meta">| 00:00</span>
               </div>
-              <div class="lesson-progress">
-                <div class="lesson-progress__fill" style="width: 0%"></div>
-              </div>
-              <div class="lesson-title">Fundal Reflex Examination</div>
-            </div>
-            <span class="lesson-cta">Start &gt;</span>
-          </div>
 
-          <div class="lesson-row" data-target="fundalStillPage">
-            <div class="thumb"></div>
-            <div class="lesson-main">
-              <div class="lesson-top">
-                <span class="lesson-type">Video</span>
-                <span class="lesson-meta">| 00:00</span>
-              </div>
-              <div class="lesson-progress">
+              <div
+                class="lesson-progress"
+                role="progressbar"
+                aria-valuemin="0"
+                aria-valuemax="100"
+              >
                 <div class="lesson-progress__fill" style="width: 0%"></div>
               </div>
-              <div class="lesson-title">
-                Still Images of 20 Real Examinations
-              </div>
             </div>
-            <span class="lesson-cta">Start &gt;</span>
-          </div>
 
-          <div class="lesson-row" data-target="fundalRealPage">
-            <div class="thumb"></div>
-            <div class="lesson-main">
-              <div class="lesson-top">
-                <span class="lesson-type">Video</span>
-                <span class="lesson-meta">| 00:00</span>
-              </div>
-              <div class="lesson-progress">
-                <div class="lesson-progress__fill" style="width: 0%"></div>
-              </div>
-              <div class="lesson-title">
-                Videos of Real Fundal Reflex Examinations
-              </div>
-            </div>
             <span class="lesson-cta">Start &gt;</span>
           </div>
         </button>
-      </section>
 
-      <section class="pupil-level">
-        <h3 class="pupil-level-title">Intermediate</h3>
-      </section>
+        <button
+          type="button"
+          class="pupil-card module-card"
+          data-page="fundalStillPage"
+        >
+          <h3>Still Images of 20 Real Examinations</h3>
 
-      <section class="pupil-level">
-        <h3 class="pupil-level-title">Advanced</h3>
+          <div
+            class="lesson-row lesson-row--video"
+            data-target="fundalStillPage"
+            role="button"
+            tabindex="0"
+          >
+            <div class="thumb" aria-hidden="true"></div>
+
+            <div class="lesson-main">
+              <div class="lesson-top">
+                <span class="lesson-type">Video</span>
+                <span class="lesson-meta">| 00:00</span>
+              </div>
+
+              <div
+                class="lesson-progress"
+                role="progressbar"
+                aria-valuemin="0"
+                aria-valuemax="100"
+              >
+                <div class="lesson-progress__fill" style="width: 0%"></div>
+              </div>
+            </div>
+
+            <span class="lesson-cta">Start &gt;</span>
+          </div>
+        </button>
+
+        <button
+          type="button"
+          class="pupil-card module-card"
+          data-page="fundalRealPage"
+        >
+          <h3>Videos of Real Fundal Reflex Examinations</h3>
+
+          <div
+            class="lesson-row lesson-row--video"
+            data-target="fundalRealPage"
+            role="button"
+            tabindex="0"
+          >
+            <div class="thumb" aria-hidden="true"></div>
+
+            <div class="lesson-main">
+              <div class="lesson-top">
+                <span class="lesson-type">Video</span>
+                <span class="lesson-meta">| 00:00</span>
+              </div>
+
+              <div
+                class="lesson-progress"
+                role="progressbar"
+                aria-valuemin="0"
+                aria-valuemax="100"
+              >
+                <div class="lesson-progress__fill" style="width: 0%"></div>
+              </div>
+            </div>
+
+            <span class="lesson-cta">Start &gt;</span>
+          </div>
+        </button>
       </section>
     </div>
   </div>
@@ -392,15 +452,6 @@
             >
           </div>
         </button>
-      </section>
-
-      <div class="pupils-dots" aria-hidden="true">
-        <span></span><span></span>
-      </div>
-
-      <!-- Advanced -->
-      <section class="pupil-level pupil-level--advanced" aria-label="Advanced">
-        <div class="pupil-level__cap">Advanced</div>
 
         <button
           type="button"
@@ -440,9 +491,18 @@
             >
           </div>
         </button>
+      </section>
 
-        <button
-          type="button"
+      <!--<div class="pupils-dots" aria-hidden="true">
+        <span></span><span></span>
+      </div>
+
+       Advanced 
+      <section class="pupil-level pupil-level--advanced" aria-label="Advanced">
+        <div class="pupil-level__cap">Advanced</div> -->
+
+      <!--<button
+            type="button"
           class="pupil-card module-card"
           data-page="pupilPathwaysPage"
         >
@@ -480,8 +540,7 @@
               >Start &gt;</span
             >
           </div>
-        </button>
-      </section>
+        </button>-->
     </div>
   </div>
 </div>
@@ -640,50 +699,53 @@
 <section id="directOphthalmoscopy" class="page pupils-like">
   <div class="container pupils-container">
     <div class="eyes-topbar">
-      <button class="back-button" data-back>
-        <span class="icon">‹</span>
-      </button>
-      <h1 class="eyes-title">Eyes</h1>
-      <button class="menuBtn" aria-label="Menu">&#9776;</button>
+      <div class="eyes-topbar__title">Eyes</div>
+      <div class="eyes-topbar__icons">
+        <span class="icon menuBtn" aria-label="Menu">☰</span>
+      </div>
     </div>
 
     <h2 class="pupils-subtitle">Ophthalmoscopy</h2>
 
     <div class="pupils-levels">
-      <!-- PRIMARY -->
-      <section class="pupil-level">
-        <h3 class="pupil-level-title">Primary</h3>
+      <!-- Primary -->
+      <section class="pupil-level pupil-level--primary" aria-label="Primary">
+        <div class="pupil-level__cap">Primary</div>
 
         <button
-          class="pupil-card module-card"
           type="button"
+          class="pupil-card module-card"
           data-page="directOphthalmoscopy"
         >
-          <h3>Ophthalmoscopy</h3>
+          <h3>Direct Ophthalmoscopy</h3>
 
-          <div class="lesson-row" data-target="directOphthalmoscopy">
-            <div class="thumb"></div>
+          <div
+            class="lesson-row lesson-row--video"
+            data-target="directOphthalmoscopy"
+            role="button"
+            tabindex="0"
+          >
+            <div class="thumb" aria-hidden="true"></div>
+
             <div class="lesson-main">
               <div class="lesson-top">
                 <span class="lesson-type">Video</span>
                 <span class="lesson-meta">| 00:00</span>
               </div>
-              <div class="lesson-progress">
+
+              <div
+                class="lesson-progress"
+                role="progressbar"
+                aria-valuemin="0"
+                aria-valuemax="100"
+              >
                 <div class="lesson-progress__fill" style="width: 0%"></div>
               </div>
-              <div class="lesson-title">Direct Ophthalmoscopy</div>
             </div>
+
             <span class="lesson-cta">Start &gt;</span>
           </div>
         </button>
-      </section>
-
-      <section class="pupil-level">
-        <h3 class="pupil-level-title">Intermediate</h3>
-      </section>
-
-      <section class="pupil-level">
-        <h3 class="pupil-level-title">Advanced</h3>
       </section>
     </div>
   </div>
@@ -772,31 +834,109 @@
 </div> -->
 
 <!-- Interactive Learning Page -->
-<div id="interactiveLearningPage" class="page" style="display: none">
-  <div class="container">
-    <h1 data-i18n="videos.interactiveLearningTitle">Interactive Learning</h1>
-    <a
-      class="module-card"
-      id="miresCard"
-      href="subapp/Mires/index.html"
-      style="cursor: pointer; text-decoration: none"
-    >
-      <div class="module-info">
-        <h3 data-i18n="videos.miresTitle">Mires</h3>
-        <p data-i18n="videos.simulation">Simulation</p>
+<div
+  id="interactiveLearningPage"
+  class="page pupils-like"
+  style="display: none"
+>
+  <div class="container pupils-container">
+    <div class="eyes-topbar">
+      <div class="eyes-topbar__title">Eyes</div>
+      <div class="eyes-topbar__icons">
+        <span class="icon menuBtn" aria-label="Menu">☰</span>
       </div>
-    </a>
-    <a
-      class="module-card"
-      id="morphCard"
-      href="subapp/Morph/index.html"
-      style="cursor: pointer; text-decoration: none"
-    >
-      <div class="module-info">
-        <h3 data-i18n="videos.morphTitle">Morph</h3>
-        <p data-i18n="videos.simulation">Simulation</p>
+    </div>
+
+    <h2 class="pupils-subtitle">Interactive Learning</h2>
+
+    <div class="pupils-levels">
+      <!-- Primary -->
+      <section class="pupil-level pupil-level--primary" aria-label="Primary">
+        <div class="pupil-level__cap">Primary</div>
+
+        <button
+          type="button"
+          class="pupil-card module-card"
+          data-page="morphPage"
+        >
+          <h3>Morph</h3>
+
+          <div
+            class="lesson-row lesson-row--video"
+            data-target="morphPage"
+            role="button"
+            tabindex="0"
+          >
+            <div class="thumb" aria-hidden="true"></div>
+
+            <div class="lesson-main">
+              <div class="lesson-top">
+                <span class="lesson-type">Interactive</span>
+                <span class="lesson-meta">| 00:00</span>
+              </div>
+
+              <div
+                class="lesson-progress"
+                role="progressbar"
+                aria-valuemin="0"
+                aria-valuemax="100"
+              >
+                <div class="lesson-progress__fill" style="width: 0%"></div>
+              </div>
+            </div>
+
+            <span class="lesson-cta">Start &gt;</span>
+          </div>
+        </button>
+      </section>
+
+      <div class="pupils-dots" aria-hidden="true">
+        <span></span><span></span>
       </div>
-    </a>
+
+      <!-- Intermediate -->
+      <section
+        class="pupil-level pupil-level--intermediate"
+        aria-label="Intermediate"
+      >
+        <div class="pupil-level__cap">Intermediate</div>
+
+        <button
+          type="button"
+          class="pupil-card module-card"
+          data-page="miresPage"
+        >
+          <h3>Mires</h3>
+
+          <div
+            class="lesson-row lesson-row--video"
+            data-target="miresPage"
+            role="button"
+            tabindex="0"
+          >
+            <div class="thumb" aria-hidden="true"></div>
+
+            <div class="lesson-main">
+              <div class="lesson-top">
+                <span class="lesson-type">Interactive</span>
+                <span class="lesson-meta">| 00:00</span>
+              </div>
+
+              <div
+                class="lesson-progress"
+                role="progressbar"
+                aria-valuemin="0"
+                aria-valuemax="100"
+              >
+                <div class="lesson-progress__fill" style="width: 0%"></div>
+              </div>
+            </div>
+
+            <span class="lesson-cta">Start &gt;</span>
+          </div>
+        </button>
+      </section>
+    </div>
   </div>
 </div>
 
