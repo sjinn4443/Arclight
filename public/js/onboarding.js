@@ -11,7 +11,14 @@ export function initializeOnboarding() {
   const nameInput = document.getElementById("username");
   const nameTip = document.getElementById("usernameTooltip");
 
-  const fieldSelect = document.getElementById("fieldSelect");
+  const interestSelect = document.getElementById("interestSelect");
+  const interestSelectDisplay = document.getElementById(
+    "interestSelectDisplay",
+  );
+  const interestSelectText = document.getElementById("interestSelectText");
+  const interestSelectPanel = document.getElementById("interestSelectPanel");
+  const interestSelectUi = document.getElementById("interestSelectUi");
+  const interestError = document.getElementById("interestError");
   const jobSelect = document.getElementById("jobSelect");
   const jobSelectDisplay = document.getElementById("jobSelectDisplay");
   const jobSelectText = document.getElementById("jobSelectText");
@@ -37,44 +44,22 @@ export function initializeOnboarding() {
   // ---------------------------
   // Helpers
   // ---------------------------
-  function getSelectedRoles() {
-    if (!jobSelect) return [];
-    return Array.from(jobSelect.selectedOptions || [])
+  function getSelectedInterests() {
+    if (!interestSelect) return [];
+    return Array.from(interestSelect.selectedOptions || [])
       .map((o) => o.value)
       .filter((v) => v && v !== "");
   }
 
-  function clearJobSelection() {
-    if (!jobSelect) return;
-    Array.from(jobSelect.options).forEach((opt) => {
-      opt.selected = false;
-    });
-  }
+  function rebuildInterestDropdownPanel() {
+    if (!interestSelect || !interestSelectPanel) return;
 
-  function rebuildJobDropdownPanel() {
-    if (!jobSelect || !jobSelectPanel || !fieldSelect) return;
+    interestSelectPanel.innerHTML = "";
 
-    jobSelectPanel.innerHTML = "";
+    Array.from(interestSelect.querySelectorAll("option")).forEach((opt) => {
+      const value = opt.value;
+      if (!value) return; // placeholder option skip
 
-    const selectedField = fieldSelect.value;
-    const group = jobSelect.querySelector(
-      `optgroup[data-field="${selectedField}"]`,
-    );
-
-    if (!group) {
-      const empty = document.createElement("div");
-      empty.className = "multi-select__group-title";
-      empty.textContent = "Select a field first";
-      jobSelectPanel.appendChild(empty);
-      return;
-    }
-
-    const title = document.createElement("div");
-    title.className = "multi-select__group-title";
-    title.textContent = group.getAttribute("label") || "Roles";
-    jobSelectPanel.appendChild(title);
-
-    Array.from(group.querySelectorAll("option")).forEach((opt) => {
       const labelText = (opt.textContent || "").trim();
 
       const row = document.createElement("div");
@@ -100,15 +85,139 @@ export function initializeOnboarding() {
         opt.selected = !opt.selected;
         paint();
 
-        syncJobDisplayText();
-        updateExperienceFields();
+        syncInterestDisplayText();
+        updateJobsForInterests(); // 아래에서 새로 만들 거예요
         checkForm();
 
-        jobSelect.dispatchEvent(new Event("change"));
+        interestSelect.dispatchEvent(new Event("change"));
       });
 
       paint();
-      jobSelectPanel.appendChild(row);
+      interestSelectPanel.appendChild(row);
+    });
+  }
+
+  function syncInterestDisplayText() {
+    if (!interestSelectText || !interestSelect) return;
+
+    const interests = getSelectedInterests();
+    if (!interests.length) {
+      interestSelectText.textContent = "Select";
+      return;
+    }
+
+    const labels = interests
+      .map((v) =>
+        interestSelect
+          .querySelector(`option[value="${CSS.escape(v)}"]`)
+          ?.textContent?.trim(),
+      )
+      .filter(Boolean);
+
+    interestSelectText.textContent = labels.join(", ");
+  }
+
+  function openInterestPanel() {
+    if (!interestSelectPanel || !interestSelectDisplay) return;
+    rebuildInterestDropdownPanel();
+    syncInterestDisplayText();
+    interestSelectPanel.classList.remove("hidden");
+    interestSelectDisplay.setAttribute("aria-expanded", "true");
+  }
+
+  function closeInterestPanel() {
+    if (!interestSelectPanel || !interestSelectDisplay) return;
+    interestSelectPanel.classList.add("hidden");
+    interestSelectDisplay.setAttribute("aria-expanded", "false");
+  }
+
+  interestSelectDisplay?.addEventListener("click", () => {
+    const isOpen =
+      interestSelectPanel && !interestSelectPanel.classList.contains("hidden");
+    if (isOpen) closeInterestPanel();
+    else openInterestPanel();
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!interestSelectUi) return;
+    if (interestSelectUi.contains(e.target)) return;
+    closeInterestPanel();
+  });
+
+  function getSelectedRoles() {
+    if (!jobSelect) return [];
+    return Array.from(jobSelect.selectedOptions || [])
+      .map((o) => o.value)
+      .filter((v) => v && v !== "");
+  }
+
+  function clearJobSelection() {
+    if (!jobSelect) return;
+    Array.from(jobSelect.options).forEach((opt) => {
+      opt.selected = false;
+    });
+  }
+  function rebuildJobDropdownPanel() {
+    if (!jobSelect || !jobSelectPanel || !interestSelect) return;
+
+    jobSelectPanel.innerHTML = "";
+
+    const selectedInterests = getSelectedInterests();
+
+    if (!selectedInterests.length) {
+      const empty = document.createElement("div");
+      empty.className = "multi-select__group-title";
+      empty.textContent = "Select an interest first";
+      jobSelectPanel.appendChild(empty);
+      return;
+    }
+
+    // 선택된 interest들의 optgroup을 순서대로 렌더링 (각 그룹 헤더 포함)
+    selectedInterests.forEach((field) => {
+      const group = jobSelect.querySelector(`optgroup[data-field="${field}"]`);
+      if (!group) return;
+
+      const title = document.createElement("div");
+      title.className = "multi-select__group-title";
+      title.textContent = group.getAttribute("label") || "Roles";
+      jobSelectPanel.appendChild(title);
+
+      Array.from(group.querySelectorAll("option")).forEach((opt) => {
+        const labelText = (opt.textContent || "").trim();
+
+        const row = document.createElement("div");
+        row.className = "multi-select__option";
+        row.setAttribute("role", "option");
+
+        const tick = document.createElement("span");
+        tick.className = "multi-select__tick";
+        tick.textContent = "✓";
+
+        const text = document.createElement("span");
+        text.className = "multi-select__label";
+        text.textContent = labelText;
+
+        row.appendChild(tick);
+        row.appendChild(text);
+
+        const paint = () => {
+          row.setAttribute("aria-selected", opt.selected ? "true" : "false");
+        };
+
+        row.addEventListener("click", () => {
+          opt.selected = !opt.selected;
+          paint();
+
+          syncJobDisplayText();
+          updateExperienceFields();
+          checkForm();
+
+          jobSelect.dispatchEvent(new Event("change"));
+        });
+
+        paint();
+        jobSelectPanel.appendChild(row);
+      });
     });
   }
 
@@ -212,8 +321,11 @@ export function initializeOnboarding() {
 
   // ---------------------------
   // Toggle .filled / .has-value on inputs/selects
+  // (원본 txt 패턴을 유지하되, fieldSelect → interestSelectDisplay로 교체)
   // ---------------------------
-  [nameInput, fieldSelect, studentYearSelect, practiceLevelSelect].forEach(
+
+  // name + experience selects (일반 input/select)
+  [nameInput, interestSelect, studentYearSelect, practiceLevelSelect].forEach(
     (el) => {
       if (!el) return;
       const check = () => {
@@ -226,7 +338,23 @@ export function initializeOnboarding() {
     },
   );
 
-  // jobSelect(multiple) 전용: 선택 개수로 filled/has-value 처리
+  // interestSelect(multiple) 전용: 선택 개수로 filled/has-value 처리 (jobSelect와 동일한 방식)
+  if (interestSelect) {
+    const syncInterestClasses = () => {
+      const interests = getSelectedInterests();
+      if (interestSelectDisplay) {
+        interestSelectDisplay.classList.toggle("filled", interests.length > 0);
+        interestSelectDisplay.classList.toggle(
+          "has-value",
+          interests.length > 0,
+        );
+      }
+    };
+    syncInterestClasses();
+    interestSelect.addEventListener("change", syncInterestClasses);
+  }
+
+  // jobSelect(multiple) 전용: 선택 개수로 filled/has-value 처리 (원래 있던 그대로 유지)
   if (jobSelect) {
     const syncJobClasses = () => {
       const roles = getSelectedRoles();
@@ -239,7 +367,8 @@ export function initializeOnboarding() {
     jobSelect.addEventListener("change", syncJobClasses);
   }
 
-  [fieldSelect, studentYearSelect, practiceLevelSelect].forEach((sel) => {
+  // experience selects의 has-value (원본 txt 유지하되 fieldSelect 제거)
+  [studentYearSelect, practiceLevelSelect].forEach((sel) => {
     if (!sel) return;
     const syncHasValue = () => {
       if (sel.value) sel.classList.add("has-value");
@@ -250,41 +379,68 @@ export function initializeOnboarding() {
   });
 
   // ---------------------------
-  // Field → narrow job optgroups
+  // Interest(s) (multi) → narrow job optgroups (union)
   // ---------------------------
-  if (fieldSelect && jobSelect) {
-    const updateJobsForField = () => {
-      const selected = fieldSelect.value;
+  function getSelectedInterests() {
+    if (!interestSelect) return [];
+    return Array.from(interestSelect.selectedOptions || [])
+      .map((o) => o.value)
+      .filter((v) => v && v !== "");
+  }
 
-      jobSelect
-        .querySelectorAll("optgroup")
-        .forEach((g) => (g.style.display = "none"));
+  function updateJobsForInterests() {
+    if (!interestSelect || !jobSelect) return;
 
-      const show = jobSelect.querySelector(
-        `optgroup[data-field="${selected}"]`,
-      );
-      if (show) show.style.display = "block";
+    const selected = getSelectedInterests(); // ["eyes","ears",...]
+    const hasAny = selected.length > 0;
 
-      // Reset role selections when field changes
+    // 1) 일단 전부 숨김
+    jobSelect.querySelectorAll("optgroup").forEach((g) => {
+      g.style.display = "none";
+    });
+
+    // 2) 선택된 interest들에 해당하는 optgroup은 모두 표시
+    selected.forEach((field) => {
+      const group = jobSelect.querySelector(`optgroup[data-field="${field}"]`);
+      if (group) group.style.display = "block";
+    });
+
+    // 3) interest가 하나도 없으면 roles/experience 전부 초기화
+    if (!hasAny) {
       clearJobSelection();
 
-      // Reset + hide experience fields
       if (studentYearSelect) studentYearSelect.value = "";
       if (practiceLevelSelect) practiceLevelSelect.value = "";
       studentYearField?.classList.add("hidden");
       practiceLevelField?.classList.add("hidden");
 
-      // Re-sync state + validation
       jobSelect.dispatchEvent(new Event("change"));
-
       rebuildJobDropdownPanel();
       syncJobDisplayText();
-
       checkForm();
-    };
+      return;
+    }
 
-    fieldSelect.addEventListener("change", updateJobsForField);
-    updateJobsForField();
+    // 4) 선택된 interest 밖(optgroup 밖)의 role만 해제 (전체 리셋보다 UX 좋음)
+    const allowedGroups = new Set(selected);
+    Array.from(jobSelect.querySelectorAll("option")).forEach((opt) => {
+      const og = opt.closest("optgroup");
+      const ogField = og?.getAttribute("data-field");
+      if (!ogField) return;
+      if (!allowedGroups.has(ogField)) opt.selected = false;
+    });
+
+    // 5) 리빌드 + 검증
+    jobSelect.dispatchEvent(new Event("change"));
+    rebuildJobDropdownPanel();
+    syncJobDisplayText();
+    checkForm();
+  }
+
+  // 기존 fieldSelect.addEventListener(...) 대신 이걸로
+  if (interestSelect && jobSelect) {
+    interestSelect.addEventListener("change", updateJobsForInterests);
+    updateJobsForInterests(); // initial
   }
 
   // jobSelect change → experience fields + validation
@@ -306,7 +462,7 @@ export function initializeOnboarding() {
   }
 
   function isValidField() {
-    return !!fieldSelect?.value;
+    return getSelectedInterests().length > 0;
   }
 
   function isValidJob() {
@@ -328,12 +484,17 @@ export function initializeOnboarding() {
   function checkForm() {
     const ok =
       isValidName() && isValidField() && isValidJob() && isValidExperience();
-    continueBtn?.toggleAttribute("disabled", !ok);
+
+    if (continueBtn) {
+      continueBtn.disabled = !ok; // ✅ 처음엔 disabled, 조건 충족 시 활성화
+    }
+
     return ok;
   }
 
   nameInput?.addEventListener("input", checkForm);
-  fieldSelect?.addEventListener("change", checkForm);
+  interestSelect?.addEventListener("change", checkForm);
+
   jobSelect?.addEventListener("change", checkForm);
   studentYearSelect?.addEventListener("change", checkForm);
   practiceLevelSelect?.addEventListener("change", checkForm);
@@ -342,23 +503,25 @@ export function initializeOnboarding() {
   updateExperienceFields();
   checkForm();
 
-  // ---------------------------
-  // Continue
-  // ---------------------------
   continueBtn?.addEventListener("click", async (e) => {
     if (!checkForm()) {
       e.preventDefault();
       return;
     }
 
+    // ✅ 먼저 문자열들을 만들어 둔다 (순서 중요)
     const roles = getSelectedRoles();
     const rolesString = roles.join("|"); // multi-role 저장
 
+    const interests = getSelectedInterests();
+    const interestsString = interests.join("|"); // multi-interest 저장
+
+    // ✅ 서버/텔레메트리 저장
     try {
       await saveProfile({
         name: (nameInput?.value || "").trim(),
         aims: null,
-        interest: null,
+        interest: interestsString || null,
         experience: rolesString || null,
         contact: null,
         country: getCurrentCountryCode(),
@@ -370,11 +533,12 @@ export function initializeOnboarding() {
       });
     } catch {}
 
+    // ✅ localStorage 저장 (기존 로직 유지, 다만 interestsString은 이미 위에서 준비됨)
     const name = nameInput?.value?.trim();
     if (name) localStorage.setItem("username", name);
 
-    if (fieldSelect?.value)
-      localStorage.setItem("userField", fieldSelect.value);
+    if (interestsString) localStorage.setItem("userField", interestsString);
+    else localStorage.removeItem("userField");
 
     // roles 저장
     localStorage.setItem("userJob", rolesString);
