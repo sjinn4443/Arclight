@@ -83,6 +83,7 @@ export function initializeIntro() {
       "#introPage .intro-arrow-right",
     );
     const arrowLeftBtn = document.querySelector("#introPage .intro-arrow-left");
+    const skipBtn = document.getElementById("skipBtn");
 
     const introVideo = document.querySelector(
       "#introPage .intro-hero-frame video.intro-hero",
@@ -90,24 +91,59 @@ export function initializeIntro() {
 
     const introTitle = document.querySelector("#introPage .intro-title");
     const introSub = document.querySelector("#introPage .intro-sub");
-    const progressFill = document.querySelector(
-      "#introPage .intro-progress__fill",
+    const progressSegs = Array.from(
+      document.querySelectorAll("#introPage .intro-progress__seg"),
     );
 
     let introState = "original"; // original → recommended → pickup
 
+    function setSkipBtnPrimary(isPrimary) {
+      if (!skipBtn) return;
+
+      if (isPrimary) {
+        skipBtn.classList.remove("btn-outline", "intro-outline");
+        skipBtn.classList.add("onb-cta", "intro-primary");
+        skipBtn.textContent = "Start Exploring";
+      } else {
+        skipBtn.classList.remove("onb-cta", "intro-primary");
+        skipBtn.classList.add("btn-outline", "intro-outline");
+        skipBtn.textContent = "Go Straight to App";
+      }
+    }
+
+    function playIntroVideo(src, { loop = true, onEnded = null } = {}) {
+      if (!introVideo) return;
+
+      const sourceEl = introVideo.querySelector("source");
+      if (sourceEl) sourceEl.setAttribute("src", src);
+
+      introVideo.loop = loop;
+
+      // ended 핸들러는 quiz에서만 쓰고 싶으니, 매번 초기화
+      introVideo.onended = null;
+      if (typeof onEnded === "function") introVideo.onended = onEnded;
+
+      introVideo.load();
+      introVideo.currentTime = 0;
+      introVideo.play().catch(() => {});
+    }
+
     const originalTitleHTML = introTitle?.innerHTML ?? "";
     const originalSubHTML = introSub?.innerHTML ?? "";
 
-    const recommendedTitleHTML = "Recommended contents";
+    const recommendedTitleHTML = "Tailored for You";
     const recommendedSubHTML =
-      "On your first visit, we will recommend contents<br />tailored to your interests and role";
+      "On your first visit, we will recommend contents<br />that suits your interests and role";
 
     function showRecommended() {
       introState = "recommended";
 
       if (introTitle) introTitle.innerHTML = recommendedTitleHTML;
       if (introSub) introSub.innerHTML = recommendedSubHTML;
+
+      setSkipBtnPrimary(false);
+
+      playIntroVideo("videos/Intro/GIFRecommended_Comp.mp4", { loop: true });
 
       arrowRightBtn?.classList.add("intro-arrow--visible");
       arrowLeftBtn?.classList.add("intro-arrow--visible");
@@ -121,6 +157,10 @@ export function initializeIntro() {
       if (introTitle) introTitle.innerHTML = originalTitleHTML;
       if (introSub) introSub.innerHTML = originalSubHTML;
 
+      setSkipBtnPrimary(false);
+
+      playIntroVideo("videos/Intro/GIFRecommended_Comp.mp4", { loop: true });
+
       arrowLeftBtn?.classList.remove("intro-arrow--visible");
 
       updateProgress();
@@ -132,12 +172,9 @@ export function initializeIntro() {
       if (introTitle) introTitle.innerHTML = "Pick Up Anytime";
       if (introSub)
         introSub.innerHTML =
-          "We remember what you’ve completed,<br /> making it easy to continue whenever you come back.";
+          "We remember what you’ve completed,<br /> making it easy to continue where you left off";
 
-      const sourceEl = introVideo.querySelector("source");
-      sourceEl.setAttribute("src", "videos/Intro/GIFVideo_Comp.mp4");
-      introVideo.load();
-      introVideo.play().catch(() => {});
+      playIntroVideo("videos/Intro/GIFVideo_Comp.mp4", { loop: true });
 
       arrowRightBtn?.classList.add("intro-arrow--visible");
       arrowLeftBtn?.classList.add("intro-arrow--visible");
@@ -148,33 +185,42 @@ export function initializeIntro() {
     function showQuiz() {
       introState = "quiz";
 
-      if (introTitle) introTitle.innerHTML = "Strengthen your learning";
+      if (introTitle) introTitle.innerHTML = "Strengthen Your Learning";
       if (introSub)
         introSub.innerHTML =
           "Follow each lesson with a quick quiz to review <br />key concepts and identify areas to revisit.";
 
-      const sourceEl = introVideo.querySelector("source");
-      sourceEl.setAttribute("src", "videos/Intro/GIFQuiz_Comp.mp4");
-      introVideo.load();
-      introVideo.play().catch(() => {});
-      arrowRightBtn?.classList.add("intro-arrow--visible");
+      setSkipBtnPrimary(false);
+
+      playIntroVideo("videos/Intro/GIFQuiz_Comp.mp4", {
+        loop: false,
+        onEnded: () => {
+          setSkipBtnPrimary(true);
+        },
+      });
+
+      // ✅ 마지막 페이지: left만 보여주고 right는 숨김
       arrowLeftBtn?.classList.add("intro-arrow--visible");
+      arrowRightBtn?.classList.remove("intro-arrow--visible");
 
       updateProgress();
     }
 
     function updateProgress() {
-      if (!progressFill) return;
+      if (!progressSegs.length) return;
 
-      if (introState === "original") {
-        progressFill.style.width = "12%";
-      } else if (introState === "recommended") {
-        progressFill.style.width = "33%";
-      } else if (introState === "pickup") {
-        progressFill.style.width = "66%";
-      } else if (introState === "quiz") {
-        progressFill.style.width = "100%";
-      }
+      const step =
+        introState === "original"
+          ? 1
+          : introState === "recommended"
+            ? 2
+            : introState === "pickup"
+              ? 3
+              : 4; // quiz
+
+      progressSegs.forEach((seg, idx) => {
+        seg.classList.toggle("is-active", idx < step);
+      });
     }
 
     function onIntroArrowRight(ev) {

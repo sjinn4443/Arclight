@@ -581,6 +581,28 @@ select.onb-input.has-value {
   transition: width 0.4s ease;
 }
 
+/* Intro progress: 4 segments */
+.intro-progress__track--segments {
+  display: flex;
+  gap: 6px;
+  height: 3px;
+  background: transparent; /* 기존 회색 바 제거 */
+  border-radius: 0;
+  overflow: visible;
+}
+
+.intro-progress__seg {
+  flex: 1;
+  height: 3px;
+  background: #e6e6e8; /* 기본 회색 */
+  border-radius: 999px;
+  transition: background 0.25s ease;
+}
+
+.intro-progress__seg.is-active {
+  background: #e41e26; /* 활성 빨강 */
+}
+
 .intro-title {
   font-size: 22px;
   font-weight: 700;
@@ -589,6 +611,7 @@ select.onb-input.has-value {
   margin: 14% 0 8px 2px;
   text-align: left;
   margin-left: 5%;
+  white-space: pre-line;
 }
 .intro-sub {
   font-size: 12px;
@@ -597,6 +620,7 @@ select.onb-input.has-value {
   margin: 7% 0 10px 2px;
   text-align: left;
   margin-left: 5%;
+  white-space: pre-line;
 }
 
 .intro-hero {
@@ -641,7 +665,7 @@ select.onb-input.has-value {
 
 .intro-arrow {
   background: rgba(255, 255, 255, 0.85);
-  font-size: 1.5rem;
+  font-size: 2.7rem;
   width: 44px;
   height: 44px;
   display: flex;

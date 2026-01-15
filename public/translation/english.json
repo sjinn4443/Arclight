@@ -172,8 +172,8 @@
     "submit_button": "Join Us !"
   },
   "intro": {
-    "title": "Welcome to the    Arclight App!",
-    "subtitle": "Here's a brief overview of features to help you get started.",
+    "title": "Welcome to<br />the Arclight App!",
+    "subtitle": "Here’s a quick overview of the features<br />to help you get started",
     "explore_button": "Explore App",
     "skip_button": "Go Straight to App ",
     "placeholder_page_title": "Placeholder Page",

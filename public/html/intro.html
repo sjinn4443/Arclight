@@ -2,17 +2,36 @@
 <div id="introPage" class="page">
   <div class="container intro-container">
     <!-- Progress bar -->
-    <div class="intro-progress">
-      <div class="intro-progress__track">
-        <div class="intro-progress__fill"></div>
+    <div class="intro-progress" aria-label="Intro progress">
+      <div class="intro-progress__track intro-progress__track--segments">
+        <span
+          class="intro-progress__seg"
+          data-step="1"
+          aria-hidden="true"
+        ></span>
+        <span
+          class="intro-progress__seg"
+          data-step="2"
+          aria-hidden="true"
+        ></span>
+        <span
+          class="intro-progress__seg"
+          data-step="3"
+          aria-hidden="true"
+        ></span>
+        <span
+          class="intro-progress__seg"
+          data-step="4"
+          aria-hidden="true"
+        ></span>
       </div>
     </div>
 
     <!-- Text -->
-    <h1 class="intro-title" data-i18n="intro.title">
+    <h1 class="intro-title" data-i18n="intro.title:html">
       Welcome to<br />the Arclight App!
     </h1>
-    <p class="intro-sub" data-i18n="intro.subtitle">
+    <p class="intro-sub" data-i18n="intro.subtitle:html">
       Here’s a quick overview of the features<br />to help you get started<br />
     </p>
 
