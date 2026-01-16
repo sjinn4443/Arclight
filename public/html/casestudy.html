@@ -107,6 +107,32 @@
     <div class="eyes-topbar">
       <div class="eyes-topbar__title">Case Study</div>
       <div class="eyes-topbar__icons">
+        <button
+          id="caseTimerBtn"
+          class="caseTimer"
+          type="button"
+          aria-label="Case timer"
+        >
+          <svg
+            class="caseTimer__svg"
+            viewBox="0 0 36 36"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <path
+              class="caseTimer__bg"
+              d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+            />
+            <path
+              class="caseTimer__fg"
+              d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+            />
+            <text id="caseTimerText" x="18" y="21" class="caseTimer__text">
+              40
+            </text>
+          </svg>
+        </button>
+
         <span class="icon menuBtn" aria-label="Menu">☰</span>
       </div>
     </div>
@@ -128,7 +154,7 @@
         type="button"
         disabled
       >
-        Submit Answer <span class="chev">&gt;</span>
+        Select Diagnosis <span class="chev">&gt;</span>
       </button>
 
       <!-- chips -->
@@ -178,17 +204,123 @@
       <div class="casechat-modal__content">
         <div class="casechat-modal__top">
           <div class="casechat-modal__title">Select diagnosis</div>
+
+          <div class="casechat-modal__icons">
+            <button
+              id="caseDxTimerBtn"
+              class="caseTimer caseTimer--sm"
+              type="button"
+              aria-label="Diagnosis timer"
+            >
+              <svg
+                class="caseTimer__svg"
+                viewBox="0 0 36 36"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <path
+                  class="caseTimer__bg"
+                  d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                />
+                <path
+                  id="caseDxTimerFg"
+                  class="caseTimer__fg"
+                  d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                />
+                <text
+                  id="caseDxTimerText"
+                  x="18"
+                  y="21"
+                  class="caseTimer__text"
+                >
+                  10
+                </text>
+              </svg>
+            </button>
+
+            <button
+              id="caseDxCloseBtn"
+              class="casechat-modal__close"
+              aria-label="Close"
+              type="button"
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+
+        <div id="caseDxTrialText" class="casechat-modal__dxHint">
+          You only get 2 attempts.
+        </div>
+
+        <div id="caseDxAttempts" class="casechat-modal__dxAttempts" hidden>
+          Attempts left: 2
+        </div>
+
+        <div id="caseDxList" class="casechat-dxlist"></div>
+        <div id="caseDxCard" class="casechat-dxcard"></div>
+      </div>
+    </div>
+
+    <!-- Complete Modal-->
+    <div id="caseFinalModal" hidden class="casechat-modal">
+      <div class="casechat-modal__content">
+        <div class="casechat-modal__top">
+          <div class="casechat-modal__title">All cases completed</div>
           <button
-            id="caseDxCloseBtn"
+            id="caseFinalCloseBtn"
             class="casechat-modal__close"
             aria-label="Close"
+            type="button"
           >
             ✕
           </button>
         </div>
 
-        <div id="caseDxList" class="casechat-dxlist"></div>
-        <div id="caseDxCard" class="casechat-dxcard"></div>
+        <div id="caseFinalBody" class="casechat-dxcard"></div>
+
+        <div class="casechat-modal__actions"></div>
+      </div>
+    </div>
+
+    <!-- Case image penalty confirm modal -->
+    <div id="caseImgPenaltyModal" hidden class="casechat-modal">
+      <div class="casechat-modal__content">
+        <div class="casechat-modal__top">
+          <div class="casechat-modal__title">View case image?</div>
+          <button
+            id="caseImgPenaltyCloseBtn"
+            class="casechat-modal__close"
+            aria-label="Close"
+            type="button"
+          >
+            ✕
+          </button>
+        </div>
+
+        <div class="casechat-confirm__text">
+          Viewing the case image will deduct<br />10 seconds from the timer.
+          <br />
+          <br />
+          Do you still want to view it?
+        </div>
+
+        <div class="casechat-confirm__actions">
+          <button
+            id="caseImgPenaltyCancelBtn"
+            type="button"
+            class="casechat-confirm__btn is-cancel"
+          >
+            Cancel
+          </button>
+          <button
+            id="caseImgPenaltyOkBtn"
+            type="button"
+            class="casechat-confirm__btn is-ok"
+          >
+            OK
+          </button>
+        </div>
       </div>
     </div>
 
@@ -201,6 +333,7 @@
             id="caseResultCloseBtn"
             class="casechat-modal__close"
             aria-label="Close"
+            type="button"
           >
             ✕
           </button>

@@ -2172,6 +2172,13 @@ input:checked + .slider:before {
   margin-bottom: 6px;
 }
 
+/* (1/10)만 더 연하게: 아래 Take a history와 비슷한 톤 */
+#caseStudyChatPage .casechat-system .casechat-casecount {
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.55);
+}
+
 #caseStudyChatPage .casechat-botstack {
   display: flex;
   flex-direction: column;
@@ -2180,12 +2187,29 @@ input:checked + .slider:before {
 }
 
 #caseStudyChatPage .casechat-img {
-  width: 165px;
+  width: 250px;
   height: auto;
   border-radius: 23px;
-  margin: 34px 0px 13px 66px;
+  margin: 34px 0px 13px 31px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
   flex: 0 0 auto;
+}
+
+/* Case image: centre it and add a bit of top spacing */
+#caseStudyChatPage .casechat-imgwrap {
+  width: min(320px, 100%);
+  margin: 18px auto 12px; /* 위 마진 추가 + 가운데 정렬 */
+  border-radius: 23px;
+  overflow: hidden;
+}
+
+#caseStudyChatPage .casechat-img {
+  width: 100%;
+  height: auto;
+  border-radius: 0; /* wrap이 radius를 담당 */
+  margin: 0; /* ✅ 왼쪽 밀림 제거 */
+  box-shadow: none; /* ✅ (3번) 그림자 제거도 같이 */
+  display: block;
 }
 
 #caseStudyChatPage .casechat-choices {
@@ -2398,6 +2422,37 @@ input:checked + .slider:before {
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
 }
 
+#caseStudyChatPage .casechat-confirm__text {
+  font-size: 13px;
+  color: #333;
+  line-height: 1.4;
+  margin: 6px 6px 14px;
+}
+
+#caseStudyChatPage .casechat-confirm__actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+#caseStudyChatPage .casechat-confirm__btn {
+  width: 100% !important; /* 두 버튼 반반 */
+  margin: 0 !important;
+  padding: 12px 12px !important;
+  border-radius: 12px !important;
+  font-weight: 650;
+}
+
+#caseStudyChatPage .casechat-confirm__btn.is-cancel {
+  background: #e5e7eb !important;
+  color: #111 !important;
+}
+
+#caseStudyChatPage .casechat-confirm__btn.is-ok {
+  background: #e41e26 !important;
+  color: #fff !important;
+}
+
 /* ===== Bottom panel (chips + submit) ===== */
 #caseStudyChatPage #caseChatChoices {
   position: fixed;
@@ -2490,6 +2545,103 @@ input:checked + .slider:before {
 .submit-answer-btn:disabled {
   opacity: 0.35;
   cursor: not-allowed;
+}
+
+/* --- Timer --- */
+.caseTimer {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  margin: 0 10px 0 0;
+  cursor: default;
+}
+
+.caseTimer {
+  width: auto;
+  height: auto;
+  margin-top: 0;
+  padding: 0;
+}
+
+.caseTimer__svg {
+  width: 34px;
+  height: 34px;
+  display: block;
+}
+.caseTimer__bg {
+  fill: none;
+  stroke: #eee;
+  stroke-width: 3.4;
+}
+.caseTimer__fg {
+  fill: none;
+  stroke: #e53935;
+  stroke-width: 3.4;
+  stroke-linecap: round;
+  stroke-dasharray: 100 100;
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 0.2s linear;
+}
+.caseTimer__text {
+  font-size: 10px;
+  font-weight: 700;
+  text-anchor: middle;
+  fill: #e53935;
+}
+
+/* --- Case image cover --- */
+.casechat-imgwrap {
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+}
+.casechat-imgwrap .casechat-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  transition:
+    filter 0.2s ease,
+    opacity 0.2s ease;
+}
+
+/* hidden by default */
+.casechat-imgwrap:not(.is-revealed) .casechat-img {
+  filter: blur(14px);
+  opacity: 0.15;
+}
+
+.casechat-imgcover {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  padding: 12px;
+  margin-top: 0px;
+}
+.casechat-imgwrap.is-revealed .casechat-imgcover {
+  display: none;
+}
+.casechat-imgcover__text {
+  font-weight: 600;
+  text-align: center;
+  line-height: 1.2;
+  font-size: 12px;
+}
+
+/* --- Correct result image --- */
+.casechat-resultimg {
+  width: 100%;
+  height: auto;
+  border-radius: 14px;
+  margin: 10px 0;
+  display: block;
+  box-shadow: none;
 }
 
 /* ======================================================================= */
@@ -2701,7 +2853,7 @@ input:checked + .slider:before {
   bottom: 67px;
   z-index: 60;
   height: auto;
-  background: #ffffff33;
+  background: #909395e0;
   border-radius: 22px;
   padding: 0;
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
@@ -2852,7 +3004,7 @@ input:checked + .slider:before {
   background: #fff;
   width: min(71vw, 440px);
   border-radius: 14px;
-  padding: 16px;
+  padding: 19px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
   position: relative;
   max-height: 70vh;
@@ -2869,6 +3021,52 @@ input:checked + .slider:before {
   margin-bottom: 10px;
 }
 
+#caseStudyChatPage .casechat-modal__meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0 6px 10px;
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+#caseStudyChatPage .casechat-modal__dxTimer {
+  font-weight: 650;
+}
+
+#caseStudyChatPage .casechat-modal__dxHint {
+  text-align: right;
+}
+
+#caseStudyChatPage .casechat-modal__icons {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#caseStudyChatPage .caseTimer--sm {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+}
+#caseStudyChatPage .caseTimer--sm .caseTimer__text {
+  font-size: 10px;
+}
+#caseStudyChatPage .casechat-modal__dxHint {
+  margin: -11px 166px 10px 8px;
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.6);
+  white-space: nowrap;
+}
+
+#caseStudyChatPage .casechat-modal__dxAttempts {
+  margin: 2px 6px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #c62828; /* warning red */
+}
+
 #caseStudyChatPage .casechat-modal__title {
   font-weight: 750;
   font-size: 14px;
@@ -2880,11 +3078,11 @@ input:checked + .slider:before {
 #caseStudyChatPage .casechat-modal__close {
   width: auto !important;
   margin: 0 !important;
-  padding: 0 6px !important;
+  padding: 0 2px !important;
   border: 0 !important;
   background: transparent !important;
   color: #666 !important;
-  font-size: 19px !important;
+  font-size: 24px !important;
   font-weight: 700;
   line-height: 1 !important;
   cursor: pointer;
@@ -3015,6 +3213,27 @@ input:checked + .slider:before {
   overflow: hidden;
   opacity: 1;
   pointer-events: none;
+}
+
+/* Case Study: modal header buttons must not inherit the global button style */
+#caseStudyChatPage .casechat-modal__close,
+#caseStudyChatPage .caseTimer {
+  width: auto;
+  margin-top: 0;
+  padding: 0;
+  background: transparent;
+  color: inherit;
+  border: none;
+  border-radius: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* keep the small timer actually small */
+#caseStudyChatPage .caseTimer--sm {
+  width: 32px;
+  height: 32px;
 }
 
 /* ============================================= Canonical Eyes Topbar ============================================= */
@@ -3665,4 +3884,36 @@ input:checked + .slider:before {
   box-shadow: none !important;
   border-color: transparent !important;
   -webkit-tap-highlight-color: transparent;
+}
+
+/* Case Study: prevent global button styles from breaking icon buttons */
+#caseStudyChatPage .casechat-modal__close,
+#caseStudyChatPage .caseTimer {
+  width: auto;
+  height: auto;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* close button sizing */
+#caseStudyChatPage .casechat-modal__close {
+  width: 45px;
+  height: 35px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+/* keep the small timer actually small */
+#caseStudyChatPage .caseTimer--sm {
+  width: 32px;
+  height: 32px;
 }

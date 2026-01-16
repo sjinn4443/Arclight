@@ -16,7 +16,8 @@ function buildCasePool() {
     { caseNum: 1, variant: "elderly" },
   ];
 
-  for (let i = 2; i <= 12; i++) {
+  // 8 cases (2..9) => total 10 cases
+  for (let i = 2; i <= 9; i++) {
     pool.push({ caseNum: i, variant: null });
   }
 
@@ -379,11 +380,117 @@ export function initializeCaseStudy() {
   const dxList = chatPage.querySelector("#caseDxList");
   const dxClose = chatPage.querySelector("#caseDxCloseBtn");
 
+  const dxTimerText = chatPage.querySelector("#caseDxTimerText");
+  const dxTrialText = chatPage.querySelector("#caseDxTrialText");
+  const dxTimerFg = chatPage.querySelector("#caseDxTimerFg");
+
+  const timerBtn = chatPage.querySelector("#caseTimerBtn");
+  const timerText = chatPage.querySelector("#caseTimerText");
+  const timerFg = chatPage.querySelector(".caseTimer__fg");
+
+  const imgPenaltyModal = chatPage.querySelector("#caseImgPenaltyModal");
+  const imgPenaltyClose = chatPage.querySelector("#caseImgPenaltyCloseBtn");
+  const imgPenaltyCancel = chatPage.querySelector("#caseImgPenaltyCancelBtn");
+  const imgPenaltyOk = chatPage.querySelector("#caseImgPenaltyOkBtn");
+
+  const finalModal = chatPage.querySelector("#caseFinalModal");
+  const finalBody = chatPage.querySelector("#caseFinalBody");
+  const finalClose = chatPage.querySelector("#caseFinalCloseBtn");
+  const finalOk = chatPage.querySelector("#caseFinalOkBtn");
+
   const resultModal = chatPage.querySelector("#caseResultModal");
   const resultBody = chatPage.querySelector("#caseResultBody");
   const resultClose = chatPage.querySelector("#caseResultCloseBtn");
   const nextBtn = chatPage.querySelector("#caseNextBtn");
   const resultTitle = chatPage.querySelector("#caseResultTitle");
+
+  let revealTimeout = null;
+
+  function hideCaseImage() {
+    const wrap = log.querySelector(".casechat-imgwrap");
+    if (!wrap) return;
+    wrap.classList.remove("is-revealed");
+  }
+
+  function revealCaseImageFor2s() {
+    const wrap = log.querySelector(".casechat-imgwrap");
+    if (!wrap) return;
+
+    wrap.classList.add("is-revealed");
+
+    if (revealTimeout) clearTimeout(revealTimeout);
+    revealTimeout = setTimeout(() => {
+      wrap.classList.remove("is-revealed");
+    }, 2000);
+  }
+
+  function isTapOnImageCover(e) {
+    const target = e.target;
+    if (!(target instanceof Element)) return null;
+    return target.closest(".casechat-imgcover");
+  }
+
+  async function handleImageCoverTap(e) {
+    const btn = isTapOnImageCover(e);
+    if (!btn) return;
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    const ok = await confirmImagePenalty();
+    if (!ok) return;
+
+    // 10s penalty
+    setTimerLeft(timerLeft - 10);
+
+    // if penalty hits 0, setTimerLeft will open diagnosis automatically
+    if (timerLeft > 0) revealCaseImageFor2s();
+  }
+
+  function openFinalModal() {
+    if (finalBody) {
+      finalBody.innerHTML = `
+      <div class="casechat-resultWhy">Final score: <b>${scoreCorrect}/${scoreTotal}</b></div>
+    `;
+    }
+    if (finalModal) finalModal.hidden = false;
+  }
+  function closeFinalModal() {
+    if (finalModal) finalModal.hidden = true;
+  }
+  finalClose?.addEventListener("click", closeFinalModal);
+  finalOk?.addEventListener("click", closeFinalModal);
+
+  // ✅ 모바일에서 click이 안 잡히는 경우가 있어서 pointerup도 같이 받음
+  log.addEventListener("click", handleImageCoverTap);
+  log.addEventListener("pointerup", handleImageCoverTap);
+
+  function confirmImagePenalty() {
+    return new Promise((resolve) => {
+      if (!imgPenaltyModal) return resolve(false);
+
+      const close = (val) => {
+        imgPenaltyModal.hidden = true;
+        cleanup();
+        resolve(val);
+      };
+
+      const onOk = () => close(true);
+      const onCancel = () => close(false);
+
+      const cleanup = () => {
+        imgPenaltyOk?.removeEventListener("click", onOk);
+        imgPenaltyCancel?.removeEventListener("click", onCancel);
+        imgPenaltyClose?.removeEventListener("click", onCancel);
+      };
+
+      imgPenaltyModal.hidden = false;
+
+      imgPenaltyOk?.addEventListener("click", onOk);
+      imgPenaltyCancel?.addEventListener("click", onCancel);
+      imgPenaltyClose?.addEventListener("click", onCancel);
+    });
+  }
 
   if (!log || !choices) {
     console.warn(
@@ -410,6 +517,8 @@ export function initializeCaseStudy() {
 
   let state = { current: null, answeredImageShown: false, asked: new Set() };
   let caseIndex = 0;
+  let scoreCorrect = 0; // initial answer correct count
+  let scoreTotal = 0; // how many cases have been scored
 
   let casePool = buildCasePool();
 
@@ -432,7 +541,143 @@ export function initializeCaseStudy() {
     return words[n - 1] || `${n}th`;
   }
 
+  const TOTAL_CASES = 10;
+
   let pending = null;
+  let dxLocked = false;
+
+  const TIMER_TOTAL = 40;
+  let timerLeft = TIMER_TOTAL;
+  let timerInterval = null;
+
+  // ---- Dx modal timer & trials ----
+  const DX_TIMER_TOTAL = 10;
+  let dxTimerLeft = DX_TIMER_TOTAL;
+  let dxTimerInterval = null;
+  let dxAttemptsLeft = 2;
+  let caseScored = false; // ✅ 한 케이스를 1번만 채점하기 위한 플래그
+
+  function stopDxTimer() {
+    if (dxTimerInterval) {
+      clearInterval(dxTimerInterval);
+      dxTimerInterval = null;
+    }
+  }
+
+  function renderDxTimer() {
+    if (dxTimerText) dxTimerText.textContent = String(dxTimerLeft);
+
+    const pct = Math.max(0, Math.min(1, dxTimerLeft / DX_TIMER_TOTAL));
+    if (dxTimerFg) {
+      dxTimerFg.style.strokeDasharray = "100 100";
+      dxTimerFg.style.strokeDashoffset = String(100 * (1 - pct));
+    }
+  }
+
+  function renderDxTrials() {
+    if (!dxTrialText) return;
+    // 문구는 요청대로 비슷하게
+    dxTrialText.textContent =
+      dxAttemptsLeft === 2
+        ? "You only get 2 attempts."
+        : `Attempts left: ${dxAttemptsLeft}`;
+  }
+
+  function failDxAndMoveOn(reasonText) {
+    dxLocked = true;
+    stopDxTimer();
+
+    // 선택지 비활성화
+    const all = dxList?.querySelectorAll(".casechat-dxitem") || [];
+    all.forEach((b) => {
+      b.disabled = true;
+      b.classList.add("is-disabled");
+    });
+
+    // 점수 처리(틀린 것으로 확정)
+    if (!caseScored) {
+      scoreTotal += 1;
+      caseScored = true;
+    }
+
+    // 안내 + Next case 버튼
+    if (dxCard) {
+      dxCard.innerHTML = "";
+
+      const msg = document.createElement("div");
+      msg.className = "casechat-tryagain";
+      msg.innerHTML = reasonText;
+      dxCard.appendChild(msg);
+
+      const next = document.createElement("button");
+      next.type = "button";
+      next.className = "casechat-nextcase";
+      next.textContent = "Next case";
+      next.addEventListener("click", () => {
+        closeDxModal();
+        startNewCase();
+      });
+      dxCard.appendChild(next);
+    }
+  }
+
+  function startDxTimer() {
+    stopDxTimer();
+    dxTimerLeft = DX_TIMER_TOTAL;
+    renderDxTimer();
+
+    dxTimerInterval = setInterval(() => {
+      dxTimerLeft -= 1;
+      renderDxTimer();
+
+      if (dxTimerLeft <= 0) {
+        dxTimerLeft = 0;
+        renderDxTimer();
+        // 10초 끝나면 자동 실패 처리
+        failDxAndMoveOn("Time is up<br />Move on to the next case");
+      }
+    }, 1000);
+  }
+
+  function stopTimer() {
+    if (timerInterval) {
+      clearInterval(timerInterval);
+      timerInterval = null;
+    }
+  }
+
+  function renderTimer() {
+    if (timerText) timerText.textContent = String(timerLeft);
+
+    // SVG ring progress (0..100)
+    const pct = Math.max(0, Math.min(1, timerLeft / TIMER_TOTAL));
+    // pathLength is treated as 100 via stroke-dasharray below
+    if (timerFg) {
+      timerFg.style.strokeDasharray = "100 100";
+      timerFg.style.strokeDashoffset = String(100 * (1 - pct));
+    }
+  }
+
+  function setTimerLeft(next) {
+    timerLeft = Math.max(0, Math.min(TIMER_TOTAL, next));
+    renderTimer();
+
+    if (timerLeft === 0) {
+      // time up: force diagnosis modal
+      stopTimer();
+      openDxModal(true); // <-- 아래에서 openDxModal을 force 지원하도록 바꿀 거야
+    }
+  }
+
+  function startTimer() {
+    stopTimer();
+    timerLeft = TIMER_TOTAL;
+    renderTimer();
+
+    timerInterval = setInterval(() => {
+      setTimerLeft(timerLeft - 1);
+    }, 1000);
+  }
 
   function appendBubble(kind, html) {
     const wrap = document.createElement("div");
@@ -482,7 +727,14 @@ export function initializeCaseStudy() {
     let html = `<div class="casechat-botstack">`;
 
     if (maybeImgSrc) {
-      html += `<img class="casechat-img" src="${maybeImgSrc}" alt="Case image" />`;
+      html += `
+    <div class="casechat-imgwrap" data-imgsrc="${maybeImgSrc}">
+      <img class="casechat-img" src="${maybeImgSrc}" alt="Case image" />
+      <button type="button" class="casechat-imgcover" aria-label="View case image for 2 seconds">
+        <div class="casechat-imgcover__text">Tap to view the case image<br />for 2 seconds</div>
+      </button>
+    </div>
+  `;
     }
 
     // ✅ 텍스트가 있을 때만 말풍선 생성
@@ -530,8 +782,8 @@ export function initializeCaseStudy() {
     });
   }
 
-  function openDxModal() {
-    if (!state?.asked || state.asked.size === 0) {
+  function openDxModal(force = false) {
+    if (!force && (!state?.asked || state.asked.size === 0)) {
       appendSystem("Please ask at least one question before submitting.");
       return;
     }
@@ -541,6 +793,10 @@ export function initializeCaseStudy() {
     // 모달 강제 닫힘 상태 정리
     if (dxCard) dxCard.innerHTML = "";
     dxLocked = false;
+
+    dxAttemptsLeft = 2;
+    renderDxTrials();
+    startDxTimer();
 
     // Dx 리스트 채우기 (랜덤 순서)
     if (dxList) {
@@ -586,6 +842,8 @@ export function initializeCaseStudy() {
     }
 
     if (dxModal) dxModal.hidden = false;
+
+    stopTimer();
   }
 
   function startNewCase() {
@@ -617,9 +875,8 @@ export function initializeCaseStudy() {
       if (footer) footer.classList.add("is-collapsed");
 
       // 4) ✅ “First case, Second case” 뜨는 자리(= system bubble)에 표시
-      appendSystem(
-        `<span class="casechat-caseindex">All cases completed</span>`,
-      );
+      openFinalModal();
+      return;
 
       return;
     }
@@ -629,24 +886,25 @@ export function initializeCaseStudy() {
     state.answeredImageShown = false;
     state.asked = new Set();
 
+    caseScored = false;
+
     log.innerHTML = "";
     caseIndex += 1;
-    const ord = ordinalWord(caseIndex);
 
-    if (caseIndex === 1) {
-      appendSystem(`
-        <span class="casechat-caseindex">First case</span>
-        <span class="casechat-firstprompt">What is the first question you would ask?</span>
-      `);
-    } else {
-      appendSystem(`${ord} case`);
-    }
+    appendSystem(`
+  <span class="casechat-caseindex">Case ${caseIndex} <span class="casechat-casecount">(${caseIndex}/${TOTAL_CASES})</span></span>
+  <span class="casechat-firstprompt">Take a history to work out what is wrong</span>
+`);
 
     appendBot("", imgPathForCase(state.current.caseNum));
     state.answeredImageShown = true;
 
+    hideCaseImage();
+
     renderChoices();
     if (submitBtn) submitBtn.disabled = true;
+
+    startTimer();
   }
 
   function onAsk(q) {
@@ -664,6 +922,7 @@ export function initializeCaseStudy() {
   }
 
   function closeDxModal() {
+    stopDxTimer();
     if (dxModal) dxModal.hidden = true;
   }
 
@@ -683,8 +942,6 @@ export function initializeCaseStudy() {
     el.classList.add("shake");
   }
 
-  let dxLocked = false;
-
   function onPickDiagnosis(name, pickedBtn) {
     const correct = correctDiagnosisForCase(state.current);
 
@@ -697,16 +954,31 @@ export function initializeCaseStudy() {
       pickedBtn.classList.add("is-wrong");
       pickedBtn.setAttribute("aria-checked", "true");
 
-      const hint = document.createElement("div");
-      hint.className = "casechat-tryagain";
-      hint.textContent = "Try again";
-      dxCard.appendChild(hint);
+      dxAttemptsLeft -= 1;
+      renderDxTrials();
 
+      if (dxAttemptsLeft > 0) {
+        const hint = document.createElement("div");
+        hint.className = "casechat-tryagain";
+        hint.textContent = "Try again";
+        dxCard.appendChild(hint);
+        return;
+      }
+
+      // ✅ 2번 다 틀렸으면 다음 케이스로
+      failDxAndMoveOn("You have used both attempts. Moving to the next case.");
       return;
     }
 
     // 정답이면 더 이상 선택 못 하게 잠금
     dxLocked = true;
+    stopDxTimer();
+
+    if (!caseScored) {
+      scoreCorrect += 1;
+      scoreTotal += 1;
+      caseScored = true;
+    }
 
     // 정답
     pickedBtn.classList.add("is-selected");
@@ -725,10 +997,14 @@ export function initializeCaseStudy() {
     // 사진 2처럼: Correct + 설명 + Next case 버튼
     const msg = document.createElement("div");
     msg.className = "casechat-correctmsg";
+    const imgSrc = imgPathForCase(state.current.caseNum);
+
     msg.innerHTML = `
-    <div class="casechat-resultOk">Correct.</div>
-    <div class="casechat-resultWhy">In this case, the diagnosis is <b>${correct}</b>.</div>
-  `;
+  <div class="casechat-resultOk">Correct.</div>
+  <img class="casechat-resultimg" src="${imgSrc}" alt="Case image" />
+  <div class="casechat-resultWhy">In this case, the diagnosis is <b>${correct}</b>.</div>
+`;
+
     dxCard.appendChild(msg);
 
     const next = document.createElement("button");
@@ -853,6 +1129,23 @@ export function initializeCaseStudy() {
         keepLastMessageVisible();
     });
   });
+
+  draftEl?.addEventListener("click", (e) => {
+    e.preventDefault();
+    toggleBtn?.click();
+  });
+
+  draftEl?.addEventListener("keydown", (e) => {
+    if (e.key !== "Enter" && e.key !== " ") return;
+    e.preventDefault();
+    toggleBtn?.click();
+  });
+
+  // 접근성: div를 클릭 가능하게 보이도록(선택)
+  if (draftEl) {
+    draftEl.setAttribute("role", "button");
+    draftEl.setAttribute("tabindex", "0");
+  }
 
   // --- Dx modal close button wiring ---
   dxClose?.addEventListener("click", (e) => {
