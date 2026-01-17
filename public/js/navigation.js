@@ -470,9 +470,37 @@ export function initializePageNavigation() {
   document.addEventListener(
     "click",
     function (e) {
-      const btn = e.target.closest('#quizBtn, [data-action="take-quiz"]');
+      const target = e.target;
+      if (!(target instanceof Element)) return;
+
+      const btn = target.closest('#quizBtn, [data-action="take-quiz"]');
       if (!btn) return;
+
       e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+
+      goToDirectOphthalmoscopyQuiz();
+    },
+    true,
+  );
+
+  // 키보드(Enter/Space)도 quizBtn처럼 동작하게
+  document.addEventListener(
+    "keydown",
+    function (e) {
+      const target = e.target;
+      if (!(target instanceof Element)) return;
+
+      const btn = target.closest('#quizBtn, [data-action="take-quiz"]');
+      if (!btn) return;
+
+      if (e.key !== "Enter" && e.key !== " ") return;
+
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+
       goToDirectOphthalmoscopyQuiz();
     },
     true,
