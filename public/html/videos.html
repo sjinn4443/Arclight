@@ -296,16 +296,6 @@
       >
         high
       </button>
-      <button
-        class="tri-toggle__btn tri-toggle__btn--icon"
-        type="button"
-        role="radio"
-        aria-checked="false"
-        data-mode="online"
-        aria-label="online"
-      >
-        <span class="tri-toggle__wifi" aria-hidden="true"></span>
-      </button>
       <div class="tri-toggle__knob" aria-hidden="true"></div>
     </div>
 
@@ -573,11 +563,56 @@
   </div>
 </div>
 
-<!-- Still Images (not a video toggle page, but a real page so navigation works) -->
+<!-- Still Images of 20 Real Examinations (toggle video) -->
 <div id="fundalStillPage" class="page" style="display: none">
-  <div class="container">
-    <h2>Still Images of 20 Real Examinations</h2>
-    <p>Coming soon</p>
+  <div>
+    <div class="tri-toggle" role="radiogroup" aria-label="Video mode">
+      <button
+        class="tri-toggle__btn"
+        type="button"
+        role="radio"
+        aria-checked="false"
+        data-mode="low"
+      >
+        low
+      </button>
+      <button
+        class="tri-toggle__btn"
+        type="button"
+        role="radio"
+        aria-checked="false"
+        data-mode="high"
+      >
+        high
+      </button>
+      <button
+        class="tri-toggle__btn tri-toggle__btn--icon"
+        type="button"
+        role="radio"
+        aria-checked="false"
+        data-mode="online"
+        aria-label="online"
+      >
+        <span class="tri-toggle__wifi" aria-hidden="true"></span>
+      </button>
+      <div class="tri-toggle__knob" aria-hidden="true"></div>
+    </div>
+
+    <div class="video-header">
+      <h3>Still Images of 20 Real Examinations</h3>
+    </div>
+
+    <div class="video-container" id="fundalStillContainer">
+      <video
+        id="fundalStillVideo"
+        controls
+        preload="none"
+        style="width: 100%; max-width: 100%"
+      >
+        <source src="" type="video/mp4" />
+        <span>Your browser does not support the video tag.</span>
+      </video>
+    </div>
   </div>
 </div>
 
@@ -774,13 +809,13 @@
         <button
           type="button"
           class="pupil-card module-card"
-          data-page="rapdPage"
+          data-page="rapdTestVideoPage"
         >
           <h3 data-i18n="videos.rapdTestTitle">RAPD Test</h3>
 
           <div
             class="lesson-row lesson-row--video"
-            data-target="rapdPage"
+            data-target="rapdTestVideoPage"
             role="button"
             tabindex="0"
           >
@@ -863,32 +898,6 @@
   </div>
 </div>
 
-<!-- RAPD Page (menu) -->
-<div id="rapdPage" class="page" style="display: none">
-  <div class="container">
-    <h1 data-i18n="videos.rapdTestTitle">RAPD Test</h1>
-
-    <div class="module-card" style="background: #777; color: white">
-      <div class="module-info">
-        <h3 data-i18n="videos.appTitle">App</h3>
-        <p style="color: white" data-i18n="videos.comingSoon">Coming soon</p>
-      </div>
-    </div>
-
-    <div
-      class="module-card"
-      id="rapdVideoCard"
-      style="cursor: pointer"
-      data-page="rapdTestVideoPage"
-    >
-      <div class="module-info">
-        <h3 data-i18n="videos.videoTitle">Video</h3>
-        <p data-i18n="videos.startStatus">Start!</p>
-      </div>
-    </div>
-  </div>
-</div>
-
 <!-- RAPD Test Video Page -->
 <div id="rapdTestVideoPage" class="page" style="display: none">
   <div>
@@ -911,16 +920,6 @@
       >
         high
       </button>
-      <button
-        class="tri-toggle__btn tri-toggle__btn--icon"
-        type="button"
-        role="radio"
-        aria-checked="false"
-        data-mode="online"
-        aria-label="online"
-      >
-        <span class="tri-toggle__wifi" aria-hidden="true"></span>
-      </button>
       <div class="tri-toggle__knob" aria-hidden="true"></div>
     </div>
 
@@ -934,7 +933,7 @@
         controls
         style="width: 100%; max-width: 100%"
       >
-        <source src="videos/Pupil/RAPDTest.mp4" type="video/mp4" />
+        <source src="video/mp4" type="video/mp4" />
         <span data-i18n="videos.videoNotSupported"
           >Your browser does not support the video tag.</span
         >
@@ -964,16 +963,6 @@
         data-mode="high"
       >
         high
-      </button>
-      <button
-        class="tri-toggle__btn tri-toggle__btn--icon"
-        type="button"
-        role="radio"
-        aria-checked="false"
-        data-mode="online"
-        aria-label="online"
-      >
-        <span class="tri-toggle__wifi" aria-hidden="true"></span>
       </button>
       <div class="tri-toggle__knob" aria-hidden="true"></div>
     </div>
@@ -1020,16 +1009,6 @@
       >
         high
       </button>
-      <button
-        class="tri-toggle__btn tri-toggle__btn--icon"
-        type="button"
-        role="radio"
-        aria-checked="false"
-        data-mode="online"
-        aria-label="online"
-      >
-        <span class="tri-toggle__wifi" aria-hidden="true"></span>
-      </button>
       <div class="tri-toggle__knob" aria-hidden="true"></div>
     </div>
 
@@ -1046,7 +1025,10 @@
         preload="none"
         style="width: 100%; max-width: 100%"
       >
-        <source src="videos/Pupil/fullpupil_220p.mp4" type="video/mp4" />
+        <source
+          src="videos/Core/Pupils/Pupils_Full_220p.mp4"
+          type="video/mp4"
+        />
         <span data-i18n="videos.videoNotSupported"
           >Your browser does not support the video tag.</span
         >
@@ -1186,23 +1168,6 @@
           >Your browser does not support the video tag.</span
         >
       </video>
-    </div>
-
-    <div class="toolbar">
-      <button id="timestampBtn" data-i18n="videos.timestampButton">☰</button>
-      <button id="noteBtn" data-i18n="videos.noteButton">Aa</button>
-      <button id="folderBtn" data-i18n="videos.folderButton">📁</button>
-      <button id="infoBtn" data-i18n="videos.infoButton">🔹</button>
-    </div>
-
-    <div class="content-box" id="contentBox">
-      <h4 data-i18n="videos.additionalInformationTitle">
-        Additional Information
-      </h4>
-      <p data-i18n="videos.additionalInformationContent">
-        This video demonstrates the use of the Arclight device for performing
-        direct ophthalmoscopy.
-      </p>
     </div>
   </div>
 </div>

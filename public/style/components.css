@@ -3288,8 +3288,7 @@ input:checked + .slider:before {
   background-color: white;
   position: sticky;
   top: 19px;
-  width: 86%;
-  left: 20px;
+  width: 100%;
   height: 33px;
   z-index: 100;
   position: relative;

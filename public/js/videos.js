@@ -47,7 +47,7 @@ function wirePupilFullExamProgress() {
 
   video.dataset.progressWired = "1";
 
-  const storageKey = VIDEO_PROGRESS_KEYS.pupilFullExamVideo;
+  const storageKey = progressKeyForTarget("pupilFullExamPage");
 
   const save = () => {
     const duration = video.duration || 0;
@@ -73,6 +73,98 @@ function wirePupilFullExamProgress() {
     writeVideoProgress(storageKey, {
       maxTime: video.duration,
       duration: video.duration,
+      percent: 100,
+      updatedAt: Date.now(),
+    });
+    updateLessonProgressBars();
+  });
+}
+
+// -------------------------
+// Video progress (Generic: all toggle video pages)
+// -------------------------
+function progressKeyForTarget(targetPageId) {
+  return `videoProgress:${targetPageId}`;
+}
+
+function readProgressForTarget(targetPageId) {
+  return readVideoProgress(progressKeyForTarget(targetPageId));
+}
+
+function writeProgressForTarget(targetPageId, data) {
+  writeVideoProgress(progressKeyForTarget(targetPageId), data);
+}
+
+// Get a colour that matches the level cap (Primary/Intermediate) for the row
+function getLevelColourForRow(row) {
+  const level = row.closest(".pupil-level");
+  if (!level) return "";
+
+  const cap = level.querySelector(".pupil-level__cap");
+  if (!cap) return "";
+
+  const bg = getComputedStyle(cap).backgroundColor;
+  // ignore transparent
+  if (!bg || bg === "rgba(0, 0, 0, 0)" || bg === "transparent") return "";
+  return bg;
+}
+
+function updateLessonProgressBars() {
+  // Update ALL lesson rows that point to a video page
+  const rows = document.querySelectorAll(".lesson-row[data-target]");
+  rows.forEach((row) => {
+    const target = row.getAttribute("data-target");
+    if (!target) return;
+
+    const fill = row.querySelector(".lesson-progress__fill");
+    if (!fill) return;
+
+    const prog = readProgressForTarget(target);
+    const percent = prog?.percent ?? 0;
+
+    fill.style.width = `${percent}%`;
+    fill.setAttribute("aria-valuenow", String(Math.round(percent)));
+    fill.title = `${Math.round(percent)}% watched`;
+
+    // Colour match: Primary uses its green, Intermediate uses its orange
+    const c = getLevelColourForRow(row);
+    if (c) fill.style.backgroundColor = c;
+  });
+}
+
+// Wire progress tracking for a given pageId's local <video> (low/high only)
+function wireProgressForVideoElement(videoEl, targetPageId) {
+  if (!videoEl) return;
+
+  const wiredKey = `progressWired:${targetPageId}`;
+  if (videoEl.dataset[wiredKey] === "1") return;
+  videoEl.dataset[wiredKey] = "1";
+
+  const save = () => {
+    const duration = videoEl.duration || 0;
+    if (!duration) return;
+
+    const storageKey = progressKeyForTarget(targetPageId);
+    const prev = readVideoProgress(storageKey) || {};
+    const maxTime = Math.max(prev.maxTime || 0, videoEl.currentTime || 0);
+
+    writeVideoProgress(storageKey, {
+      maxTime,
+      duration,
+      percent: Math.min(100, (maxTime / duration) * 100),
+      updatedAt: Date.now(),
+    });
+
+    updateLessonProgressBars();
+  };
+
+  videoEl.addEventListener("loadedmetadata", save);
+  videoEl.addEventListener("timeupdate", save);
+  videoEl.addEventListener("ended", () => {
+    if (!videoEl.duration) return;
+    writeVideoProgress(progressKeyForTarget(targetPageId), {
+      maxTime: videoEl.duration,
+      duration: videoEl.duration,
       percent: 100,
       updatedAt: Date.now(),
     });
@@ -154,35 +246,6 @@ async function updateAllLessonDurations() {
   }
 }
 
-function updateLessonProgressBars(activePageId) {
-  // We only need to update when Pupils list is visible,
-  // but it’s cheap enough to run safely whenever.
-  const pupilsPage = document.getElementById("pupilsPage");
-  if (!pupilsPage) return;
-
-  const row = pupilsPage.querySelector(
-    '.lesson-row[data-target="pupilFullExamPage"]',
-  );
-  if (!row) return;
-
-  const fill = row.querySelector(".lesson-progress__fill");
-  const meta = row.querySelector(".lesson-meta");
-
-  const prog = readVideoProgress(VIDEO_PROGRESS_KEYS.pupilFullExamVideo);
-  const percent = prog?.percent ?? 0;
-  const maxTime = prog?.maxTime ?? 0;
-
-  if (fill) {
-    fill.style.width = `${percent}%`;
-    fill.setAttribute("aria-valuenow", String(Math.round(percent)));
-    fill.title = `${Math.round(percent)}% watched`;
-  }
-
-  if (meta) {
-    meta.textContent = `| ${formatTime(maxTime)}`;
-  }
-}
-
 // ----- Internal helper to show a specific videos subpage -----
 // -------------------------
 // 3-way toggle state (Pupil Full Exam)
@@ -214,8 +277,8 @@ function setTriToggleUI(root, mode) {
 // Apply Pupil Full Exam mode (low/high/online)
 // -------------------------
 const PUPIL_VIDEO_SOURCES = {
-  low: "videos/Pupil/fullpupil_220p.mp4",
-  high: "videos/Pupil/fullpupil_orig.mp4",
+  low: "videos/Core/Pupils/Pupils_Full_220p.mp4",
+  high: "videos/Core/Pupils/Pupils_Full_720p.mp4",
   online: "https://www.youtube.com/embed/19pN7jSYHMw",
 };
 
@@ -232,9 +295,9 @@ const VIDEO_PAGE_SOURCES = {
     containerSelector: "#vaWhoContainer",
     videoSelector: "#vaWhoVideo",
     sources: {
-      low: "videos/VA/WHO_220p.mp4",
-      high: "videos/VA/WHO_720p.mp4",
-      online: "https://www.youtube.com/embed/REPLACE_ME",
+      low: "videos/Core/VisualAcuity/VA_PEC1_220p.mp4",
+      high: "videos/Core/VisualAcuity/VA_PEC1_720p.mp4",
+      online: "https://youtu.be/R7z8_VxOO1U?si=v8Ft8bIZwaHIyXFl",
     },
     onlineTitle: "WHO Visual Acuity (online)",
     iframeClass: "videos-yt-va-who",
@@ -245,9 +308,9 @@ const VIDEO_PAGE_SOURCES = {
     containerSelector: "#vaNearVisionContainer",
     videoSelector: "#vaNearVisionVideo",
     sources: {
-      low: "videos/VA/NearVision_220p.mp4",
-      high: "videos/VA/NearVision_720p.mp4",
-      // online optional
+      low: "videos/Core/VisualAcuity/VA_NearDIst_220p.mp4",
+      high: "videos/Core/VisualAcuity/VA_NearDIst_720p.mp4",
+      online: "https://youtu.be/ji-ddMKnBa0?si=eW_M4JGarrFvGNi2",
     },
     onlineTitle: "Near Vision (online)",
     iframeClass: "videos-yt-va-near",
@@ -258,9 +321,9 @@ const VIDEO_PAGE_SOURCES = {
     containerSelector: "#assessmentVisionContainer",
     videoSelector: "#assessmentVisionVideo",
     sources: {
-      low: "videos/USAID/AssessmentVision.mp4",
-      high: "videos/USAID/AssessmentVision.mp4",
-      // online optional
+      low: "videos/Core/VisualAcuity/VA_Assessment_220p.mp4",
+      high: "videos/Core/VisualAcuity/VA_Assessment_720p.mp4",
+      online: "https://youtu.be/y1FIuL0lsPI?si=wpZZPIgtArTmY8Vi",
     },
     onlineTitle: "Assessment of Eyes and Vision (online)",
     iframeClass: "videos-yt-assess",
@@ -271,8 +334,8 @@ const VIDEO_PAGE_SOURCES = {
     containerSelector: "#mumVisionContainer",
     videoSelector: "#mumVisionVideo",
     sources: {
-      low: "videos/VA/MilestonesMum_220p.mp4",
-      high: "videos/VA/MilestonesMum_720p.mp4",
+      low: "videos/Core/VisualAcuity/VA_Mum_220p.mp4",
+      high: "videos/Core/VisualAcuity/VA_Mum_720p.mp4",
       // online optional
     },
     onlineTitle: "Milestones African Mum (online)",
@@ -285,9 +348,8 @@ const VIDEO_PAGE_SOURCES = {
     containerSelector: "#pupilExamPECPage .video-container",
     videoSelector: "#pupilExamPECVideo",
     sources: {
-      low: "videos/Pupil/PupilExamPEC.mp4",
-      high: "videos/Pupil/PupilExamPEC.mp4",
-      // online optional
+      low: "videos/Core/Pupils/Pupils_PEC_220p.mp4",
+      high: "videos/Core/Pupils/Pupils_PEC_720p.mp4",
     },
     onlineTitle: "Pupil Exam PEC (online)",
     iframeClass: "videos-yt-pec",
@@ -298,41 +360,38 @@ const VIDEO_PAGE_SOURCES = {
     containerSelector: "#rapdTestVideoPage .video-container",
     videoSelector: "#rapdTestVideo",
     sources: {
-      low: "videos/Pupil/RAPDTest.mp4",
-      high: "videos/Pupil/RAPDTest.mp4",
+      low: "videos/Core/Pupils/Pupils_RAPD24_220p.mp4",
+      high: "videos/Core/Pupils/Pupils_RAPD24_720p.mp4",
       // online optional
     },
     onlineTitle: "RAPD Test Video (online)",
     iframeClass: "videos-yt-rapd",
   },
 
-  // --- Existing toggle-driven pages you already had ---
-  anteriorSegmentVideoPage: {
-    key: "videoMode:anteriorSegmentVideoPage",
-    containerSelector: "#anteriorSegmentContainer",
-    videoSelector: "#anteriorSegmentVideo",
-    sources: {
-      low: "videos/antseg_220p.mp4",
-      high: "videos/antseg_720p.mp4",
-      online: "https://www.youtube.com/embed/8O92uj56OHI",
-    },
-    onlineTitle: "Anterior Segment (online)",
-    iframeClass: "videos-yt-antseg",
-  },
-
-  // --- Fundal Reflex pages (NEW) ---
   fundalExamPage: {
     key: "videoMode:fundalExamPage",
     containerSelector: "#fundalExamContainer",
     videoSelector: "#fundalExamVideo",
     sources: {
-      low: "videos/Fundal/fundal_exam_220p.mp4",
-      high: "videos/Fundal/fundal_exam_720p.mp4",
-      // online optional
-      // online: "https://www.youtube.com/embed/REPLACE_ME"
+      low: "videos/Core/FundalReflex/FR_Scotland_220p.mp4",
+      high: "videos/Core/FundalReflex/FR_Scotland_720p.mp4",
+      online:
+        "https://www.youtube.com/watch?v=wCdbRxsWa6U&list=PLkZBIZv_vTvnjaOebDsMcV2c9sRzXkyU-&index=3",
     },
     onlineTitle: "Fundal Reflex Examination (online)",
     iframeClass: "videos-yt-fundal-exam",
+  },
+
+  fundalStillPage: {
+    key: "videoMode:fundalStillPage",
+    containerSelector: "#fundalStillContainer",
+    videoSelector: "#fundalStillVideo",
+    sources: {
+      low: "videos/Core/FundalReflex/FRT Testing Tools/FR_Stillimg_220p.mp4",
+      high: "videos/Core/FundalReflex/FRT Testing Tools/FR_Stillimg_720p.mp4",
+    },
+    onlineTitle: "Still Images (online)",
+    iframeClass: "videos-yt-fundal-still",
   },
 
   fundalRealPage: {
@@ -340,9 +399,8 @@ const VIDEO_PAGE_SOURCES = {
     containerSelector: "#fundalRealContainer",
     videoSelector: "#fundalRealVideo",
     sources: {
-      low: "videos/Fundal/fundal_real_220p.mp4",
-      high: "videos/Fundal/fundal_real_720p.mp4",
-      // online optional
+      low: "videos/Core/FundalReflex/FRT Testing Tools/FR_SREN_220p.mp4",
+      high: "videos/Core/FundalReflex/FRT Testing Tools/FR_SREN_720p.mp4",
     },
     onlineTitle: "Real Fundal Reflex Examinations (online)",
     iframeClass: "videos-yt-fundal-real",
@@ -354,9 +412,9 @@ const VIDEO_PAGE_SOURCES = {
     containerSelector: "#directOphthalmoscopyContainer",
     videoSelector: "#customVideo",
     sources: {
-      low: "videos/DO_220p.mp4",
-      high: "videos/DO_720p.mp4",
-      online: "https://www.youtube.com/embed/ibzvXsRfLiI",
+      low: "videos/Core/Ophthalmoscopy/DirectOphth_220p.mp4",
+      high: "videos/Core/Ophthalmoscopy/DirectOphth_720p.mp4",
+      online: "https://www.youtube.com/watch?v=rG99iRufXfU&t=41s",
     },
     onlineTitle: "Direct Ophthalmoscopy (online)",
     iframeClass: "videos-yt-do",
@@ -496,11 +554,19 @@ function applyVideoPageMode(pageId, mode, { preserveTime = true } = {}) {
 
   const restore = () => {
     if (!preserveTime) return;
+
+    // Prefer stored progress if available
+    const prog = readProgressForTarget(pageId);
+    const savedTime = prog?.maxTime ?? 0;
+
+    // If we have a saved time, use that, otherwise use carried currentTime
+    const targetTime = savedTime > 0 ? savedTime : currentTime;
+
     try {
-      if (video.currentTime < 0.5 && currentTime > 0) {
+      if (video.currentTime < 0.5 && targetTime > 0) {
         video.currentTime = Math.min(
-          currentTime,
-          Math.max(0, (video.duration || currentTime) - 1),
+          targetTime,
+          Math.max(0, (video.duration || targetTime) - 1),
         );
       }
     } catch {}
@@ -524,7 +590,9 @@ function wireVideoPageTriToggle(pageId) {
   const initialMode = readGenericVideoMode(cfg.key);
   setTriToggleUI(toggle, initialMode);
   applyVideoPageMode(pageId, initialMode, { preserveTime: false });
-
+  const container = page.querySelector(cfg.containerSelector);
+  const video = container ? container.querySelector(cfg.videoSelector) : null;
+  wireProgressForVideoElement(video, pageId);
   toggle.addEventListener("click", (e) => {
     const btn = e.target.closest(".tri-toggle__btn");
     if (!btn) return;
@@ -554,7 +622,6 @@ function applyPupilMode(mode, { preserveTime = true } = {}) {
   } else if (preserveTime && video) {
     currentTime = video.currentTime || 0;
   }
-
   if (mode === "online") {
     if (!PUPIL_VIDEO_SOURCES.online) {
       console.warn(
@@ -587,7 +654,6 @@ function applyPupilMode(mode, { preserveTime = true } = {}) {
       iframe.src = PUPIL_VIDEO_SOURCES.online;
       container.appendChild(iframe);
     } else {
-      // Ensure correct src if it exists already
       existingIframe.src = PUPIL_VIDEO_SOURCES.online;
       existingIframe.style.display = "block";
     }
@@ -627,7 +693,7 @@ function applyPupilMode(mode, { preserveTime = true } = {}) {
     if (!preserveTime) return;
 
     // Prefer stored maxTime if it exists, else use carried currentTime
-    const prog = readVideoProgress(VIDEO_PROGRESS_KEYS.pupilFullExamVideo);
+    const prog = readProgressForTarget("pupilFullExamPage");
     const targetTime = (prog?.maxTime ?? currentTime) || 0;
 
     try {
@@ -683,7 +749,7 @@ function resumePupilFullExamIfNeeded() {
   const video = document.getElementById("pupilFullExamVideo");
   if (!video || video.dataset.autoResumed === "1") return;
 
-  const prog = readVideoProgress(VIDEO_PROGRESS_KEYS.pupilFullExamVideo);
+  const prog = readProgressForTarget("pupilFullExamPage");
   const startAt = prog?.maxTime ?? 0;
 
   if (startAt <= 0) {
@@ -906,7 +972,7 @@ if (!window[__videosGlobalBoundKey]) {
   window.addEventListener("page:loaded", (e) => {
     const pageId = e?.detail?.pageId;
 
-    if (pageId === "directOphthalmoscopy") {
+    if (pageId === "directOphthalmoscopyVideoPage") {
       bindDirectOphthalmoscopyToolbar();
     } else {
       const vid = document.querySelector("#directOphthalmoscopy #customVideo");
@@ -923,7 +989,7 @@ if (!window[__videosGlobalBoundKey]) {
   // Re-run on route changes and pause when leaving the page
   window.addEventListener("page:loaded", (e) => {
     const pageId = e?.detail?.pageId;
-    if (pageId === "directOphthalmoscopy") {
+    if (pageId === "directOphthalmoscopyVideoPage") {
       initializeToolbar();
       initializeVideoPlayers();
     } else {
