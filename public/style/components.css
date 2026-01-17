@@ -2417,10 +2417,18 @@ input:checked + .slider:before {
 }
 
 #caseStudyChatPage .casechat-modalCard,
-#caseStudyChatPagePrimary .casechat-modalCard,
 #caseStudyChatPageAdvanced .casechat-modalCard {
   background: #fff;
   width: min(92vw, 440px);
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+  position: relative;
+}
+
+#caseStudyChatPagePrimary .casechat-modalCard {
+  background: #fff;
+  width: min(79vw, 440px);
   border-radius: 14px;
   padding: 16px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
@@ -2436,13 +2444,23 @@ input:checked + .slider:before {
   gap: 12px;
   margin-bottom: 10px;
 }
+
 #caseStudyChatPage .casechat-modalTitle,
-#caseStudyChatPagePrimary .casechat-modalTitle,
 #caseStudyChatPageAdvanced .casechat-modalTitle {
   font-weight: 750;
   font-size: 16px;
   color: #111;
 }
+
+#caseStudyChatPagePrimary .casechat-modalTitle {
+  font-weight: 750;
+  font-size: 16px;
+  color: #111;
+  padding: 8px;
+  margin-left: 0px;
+  white-space: nowrap;
+}
+
 #caseStudyChatPage .casechat-modalClose,
 #caseStudyChatPagePrimary .casechat-modalClose,
 #caseStudyChatPageAdvanced .casechat-modalClose {
@@ -2452,6 +2470,16 @@ input:checked + .slider:before {
   line-height: 1;
   cursor: pointer;
   color: #666;
+}
+
+#caseStudyChatPagePrimary .casechat-modalClos {
+  border: 0;
+  background: transparent;
+  font-size: 26px;
+  line-height: 1;
+  cursor: pointer;
+  color: #666;
+  margin: -27px 0px 0px 141px;
 }
 
 #caseStudyChatPage .casechat-dxlist,
@@ -2484,12 +2512,19 @@ input:checked + .slider:before {
   margin: 23px 0 11px;
 }
 #caseStudyChatPage .casechat-resultWhy,
-#caseStudyChatPagePrimary .casechat-resultWhy,
 #caseStudyChatPageAdvanced .casechat-resultWhy {
   color: #333;
   font-size: 14px;
   line-height: 1.4;
   margin-bottom: 11px;
+}
+
+#caseStudyChatPagePrimary .casechat-resultWhy {
+  color: #333;
+  font-size: 14px;
+  line-height: 1.4;
+  margin-bottom: 28px;
+  margin-left: 8px;
 }
 
 #caseStudyChatPage .casechat-next,
@@ -3024,12 +3059,19 @@ subtle */ #caseStudyChatPageAdvanced .casechat-bubble--system {
   justify-content: center;
 }
 #caseStudyChatPage .casechat-system,
-#caseStudyChatPagePrimary .casechat-system,
 #caseStudyChatPageAdvanced .casechat-system {
   background: transparent !important;
   color: #6b7280;
   font-size: 12px;
   padding: 8px 0;
+}
+
+#caseStudyChatPagePrimary .casechat-system {
+  font-size: 14px;
+  font-weight: 700;
+  color: #000;
+  padding: 10px;
+  background: transparent !important;
 }
 
 /* Bot/User bubbles polish */
@@ -3384,7 +3426,7 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
 }
 
 .casechat-nextcase {
-  margin-top: 12px;
+  margin-top: 63px;
   width: 100%;
   padding: 12px 14px;
   border-radius: 12px;
@@ -3804,6 +3846,69 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
   100% {
     transform: translateY(0);
   }
+}
+
+/* === Primary Case Study (image grid) === */
+.casechat-imggrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin: 27px 0 21px;
+}
+
+.casechat-imgbtn {
+  border: 0;
+  padding: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  background: transparent;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.casechat-imgbtn:active {
+  transform: scale(0.99);
+}
+
+.casechat-imgopt {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Primary image grid feedback area */
+.casechat-imgfeedback {
+  margin-top: 10px;
+}
+
+/* Clicked image highlight (match intermediate semantics: is-wrong / is-correct) */
+.casechat-imgbtn.is-wrong {
+  outline: 3px solid #d64545;
+  outline-offset: 2px;
+}
+
+.casechat-imgbtn.is-correct {
+  outline: 3px solid #2f9e44;
+  outline-offset: 2px;
+}
+
+/* Primary: image choice buttons feel more rounded */
+#caseStudyChatPagePrimary .casechat-imgbtn {
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+#caseStudyChatPagePrimary .casechat-imgopt {
+  border-radius: 20px;
+  display: block;
+}
+#caseStudyChatPagePrimary .casechat-attemptsNote {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  text-align: right;
+  color: rgba(0, 0, 0, 0.55);
+  margin-top: 12px;
+  margin-left: 154px;
 }
 
 /* ============================================= Canonical Eyes Topbar ============================================= */

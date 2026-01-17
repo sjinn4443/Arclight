@@ -20,7 +20,7 @@
           class="pupil-card module-card"
           id="caseStudyPrimaryCard"
         >
-          <h3>Case study</h3>
+          <h3>12 Cases</h3>
 
           <div
             class="lesson-row lesson-row--quiz"
@@ -67,7 +67,7 @@
           class="pupil-card module-card"
           id="caseStudyIntermediateCard"
         >
-          <h3>Case study</h3>
+          <h3>12 Cases</h3>
 
           <div
             class="lesson-row lesson-row--quiz"
@@ -114,7 +114,7 @@
           class="pupil-card module-card"
           id="caseStudyAdvancedCard"
         >
-          <h3>Case study</h3>
+          <h3>12 Cases</h3>
 
           <div
             class="lesson-row lesson-row--quiz"
@@ -399,6 +399,7 @@
 </div>
 
 <!--Primary-->
+<!-- ✅ Primary case study page -->
 <div
   id="caseStudyChatPagePrimary"
   class="page has-eyes-topbar"
@@ -409,7 +410,7 @@
       <div class="eyes-topbar__title">Case Study</div>
       <div class="eyes-topbar__icons">
         <button
-          id="caseTimerBtn"
+          id="casePrimaryTimerBtn"
           class="caseTimer"
           type="button"
           aria-label="Case timer"
@@ -425,11 +426,17 @@
               d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
             />
             <path
+              id="casePrimaryTimerFg"
               class="caseTimer__fg"
               d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
             />
-            <text id="caseTimerText" x="18" y="21" class="caseTimer__text">
-              40
+            <text
+              id="casePrimaryTimerText"
+              x="18"
+              y="21"
+              class="caseTimer__text"
+            >
+              90
             </text>
           </svg>
         </button>
@@ -438,217 +445,8 @@
       </div>
     </div>
 
-    <!-- 채팅 로그 -->
-    <div id="caseChatLog" class="casechat-log"></div>
-
-    <div
-      class="casechat-footer-mask"
-      id="caseChatFooterMask"
-      aria-hidden="true"
-    ></div>
-
-    <!-- Bottom sheet -->
-    <div class="casechat-footer">
-      <button
-        id="caseChatSubmitBtn"
-        class="casechat-submitpill"
-        type="button"
-        disabled
-      >
-        Select Diagnosis <span class="chev">&gt;</span>
-      </button>
-
-      <!-- chips -->
-      <div id="caseChatChoices" class="casechat-choices"></div>
-
-      <!-- draft input row (pic 1처럼) -->
-      <div class="casechat-composer" role="group" aria-label="Case chat input">
-        <button
-          id="caseChatToggleBtn"
-          class="casechat-toggle"
-          type="button"
-          aria-label="Toggle question chips"
-        >
-          Q
-        </button>
-
-        <div id="caseChatDraft" class="casechat-draft">
-          - Click here to select a question
-        </div>
-        <button
-          id="caseChatSendBtn"
-          class="casechat-send"
-          type="button"
-          disabled
-          aria-label="Send"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 512 512"
-            width="19"
-            height="19"
-            aria-hidden="true"
-            focusable="false"
-            class="send-icon"
-          >
-            <path
-              d="M476.59 227.05l-.16-.07L49.35 49.84A23.56 23.56 0 0027.14 52 24.65 24.65 0 0016 72.59v113.29a24 24 0 0019.52 23.57l232.93 43.07a4 4 0 010 7.86L35.53 303.45A24 24 0 0016 327v113.31A23.57 23.57 0 0026.59 460a23.94 23.94 0 0013.22 4 24.55 24.55 0 009.52-1.93L476.4 285.94l.19-.09a32 32 0 000-58.8z"
-              fill="currentColor"
-            />
-          </svg>
-        </button>
-      </div>
-    </div>
-
-    <!-- Dx 선택 모달 -->
-    <div id="caseDxModal" hidden class="casechat-modal">
-      <div class="casechat-modal__content">
-        <div class="casechat-modal__top">
-          <div class="casechat-modal__title">Select diagnosis</div>
-
-          <div class="casechat-modal__icons">
-            <button
-              id="caseDxTimerBtn"
-              class="caseTimer caseTimer--sm"
-              type="button"
-              aria-label="Diagnosis timer"
-            >
-              <svg
-                class="caseTimer__svg"
-                viewBox="0 0 36 36"
-                aria-hidden="true"
-                focusable="false"
-              >
-                <path
-                  class="caseTimer__bg"
-                  d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                />
-                <path
-                  id="caseDxTimerFg"
-                  class="caseTimer__fg"
-                  d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                />
-                <text
-                  id="caseDxTimerText"
-                  x="18"
-                  y="21"
-                  class="caseTimer__text"
-                >
-                  10
-                </text>
-              </svg>
-            </button>
-
-            <button
-              id="caseDxCloseBtn"
-              class="casechat-modal__close"
-              aria-label="Close"
-              type="button"
-            >
-              ✕
-            </button>
-          </div>
-        </div>
-
-        <div id="caseDxTrialText" class="casechat-modal__dxHint">
-          You only get 2 attempts.
-        </div>
-
-        <div id="caseDxAttempts" class="casechat-modal__dxAttempts" hidden>
-          Attempts left: 2
-        </div>
-
-        <div id="caseDxList" class="casechat-dxlist"></div>
-        <div id="caseDxCard" class="casechat-dxcard"></div>
-      </div>
-    </div>
-
-    <!-- Complete Modal-->
-    <div id="caseFinalModal" hidden class="casechat-modal">
-      <div class="casechat-modal__content">
-        <div class="casechat-modal__top">
-          <div class="casechat-modal__title">All cases completed</div>
-          <button
-            id="caseFinalCloseBtn"
-            class="casechat-modal__close"
-            aria-label="Close"
-            type="button"
-          >
-            ✕
-          </button>
-        </div>
-
-        <div id="caseFinalBody" class="casechat-dxcard"></div>
-
-        <div class="casechat-modal__actions"></div>
-      </div>
-    </div>
-
-    <!-- Case image penalty confirm modal -->
-    <div id="caseImgPenaltyModal" hidden class="casechat-modal">
-      <div class="casechat-modal__content">
-        <div class="casechat-modal__top">
-          <div class="casechat-modal__title">View case image?</div>
-          <button
-            id="caseImgPenaltyCloseBtn"
-            class="casechat-modal__close"
-            aria-label="Close"
-            type="button"
-          >
-            ✕
-          </button>
-        </div>
-
-        <div class="casechat-confirm__text">
-          Viewing the case image will deduct<br />10 seconds from the timer.
-          <br />
-          <br />
-          Do you still want to view it?
-        </div>
-
-        <div class="casechat-confirm__actions">
-          <button
-            id="caseImgPenaltyCancelBtn"
-            type="button"
-            class="casechat-confirm__btn is-cancel"
-          >
-            Cancel
-          </button>
-          <button
-            id="caseImgPenaltyOkBtn"
-            type="button"
-            class="casechat-confirm__btn is-ok"
-          >
-            OK
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- 결과 모달 -->
-    <div id="caseResultModal" hidden class="casechat-modal">
-      <div class="casechat-modal__content">
-        <div class="casechat-modal__top">
-          <div id="caseResultTitle" class="casechat-modal__title">Result</div>
-          <button
-            id="caseResultCloseBtn"
-            class="casechat-modal__close"
-            aria-label="Close"
-            type="button"
-          >
-            ✕
-          </button>
-        </div>
-
-        <div id="caseResultBody" class="casechat-result"></div>
-
-        <div class="casechat-modal__actions">
-          <button id="caseNextBtn" class="start-btn" type="button">
-            Next case
-          </button>
-        </div>
-      </div>
-    </div>
+    <!-- Primary log -->
+    <div id="casePrimaryChatLog" class="casechat-log"></div>
   </div>
 </div>
 

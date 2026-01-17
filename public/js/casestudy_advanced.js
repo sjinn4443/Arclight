@@ -1168,31 +1168,40 @@ export function initializeCaseStudyAdvanced() {
   }
 
   // list -> chat (intermediate + advanced 허용)
-  const onCaseStudyClick = (level) => {
-    if (level !== "advanced") return;
-    showChat();
-  };
-
-  const primary = listPage.querySelector("#caseStudyPrimaryCard");
-  const inter = listPage.querySelector("#caseStudyIntermediateCard");
-
-  if (primary) {
-    primary.addEventListener("click", () => onCaseStudyClick("primary"));
-    primary.addEventListener("keydown", (e) => {
-      if (e.key !== "Enter" && e.key !== " ") return;
-      e.preventDefault();
-      onCaseStudyClick("primary");
-    });
+  function isEnterOrSpace(e) {
+    return e.key === "Enter" || e.key === " ";
   }
 
-  if (inter) {
-    inter.addEventListener("click", () => onCaseStudyClick("intermediate"));
-    inter.addEventListener("keydown", (e) => {
-      if (e.key !== "Enter" && e.key !== " ") return;
+  // ✅ Advanced: 카드/row/Start 텍스트 어디를 눌러도 잡히게 (capture)
+  listPage.addEventListener(
+    "click",
+    (e) => {
+      const hit =
+        e.target.closest("#caseStudyAdvancedCard") ||
+        e.target.closest('.lesson-row[data-level="advanced"]');
+      if (!hit) return;
+
       e.preventDefault();
-      onCaseStudyClick("intermediate");
-    });
-  }
+      onCaseStudyClick("advanced");
+    },
+    true,
+  );
+
+  listPage.addEventListener(
+    "keydown",
+    (e) => {
+      if (!isEnterOrSpace(e)) return;
+
+      const hit =
+        e.target.closest("#caseStudyAdvancedCard") ||
+        e.target.closest('.lesson-row[data-level="advanced"]');
+      if (!hit) return;
+
+      e.preventDefault();
+      onCaseStudyClick("advanced");
+    },
+    true,
+  );
 
   // ✅ 카드 안의 .lesson-row(tabindex=0)에서도 Enter/Space로 동작시키기
   listPage.querySelectorAll(".lesson-row[data-level]").forEach((row) => {

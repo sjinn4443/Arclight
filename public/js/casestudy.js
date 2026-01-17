@@ -1173,17 +1173,7 @@ export function initializeCaseStudy() {
     showChat();
   };
 
-  const primary = listPage.querySelector("#caseStudyPrimaryCard");
   const inter = listPage.querySelector("#caseStudyIntermediateCard");
-
-  if (primary) {
-    primary.addEventListener("click", () => onCaseStudyClick("primary"));
-    primary.addEventListener("keydown", (e) => {
-      if (e.key !== "Enter" && e.key !== " ") return;
-      e.preventDefault();
-      onCaseStudyClick("primary");
-    });
-  }
 
   if (inter) {
     inter.addEventListener("click", () => onCaseStudyClick("intermediate"));
@@ -1197,16 +1187,22 @@ export function initializeCaseStudy() {
   // ✅ 카드 안의 .lesson-row(tabindex=0)에서도 Enter/Space로 동작시키기
   listPage.querySelectorAll(".lesson-row[data-level]").forEach((row) => {
     row.addEventListener("click", (e) => {
+      // intermediate만 여기서 처리하고, primary/advanced는 버튼 클릭으로 넘겨서
+      // 각자 파일(casestudy_primary 등)의 핸들러가 받게 한다
+      if (row.dataset.level !== "intermediate") return;
+
       e.preventDefault();
       e.stopPropagation();
-      onCaseStudyClick(row.dataset.level);
+      onCaseStudyClick("intermediate");
     });
 
     row.addEventListener("keydown", (e) => {
       if (e.key !== "Enter" && e.key !== " ") return;
+      if (row.dataset.level !== "intermediate") return;
+
       e.preventDefault();
       e.stopPropagation();
-      onCaseStudyClick(row.dataset.level);
+      onCaseStudyClick("intermediate");
     });
   });
 
