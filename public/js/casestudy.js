@@ -1169,7 +1169,7 @@ export function initializeCaseStudy() {
 
   // list -> chat (intermediate + advanced 허용)
   const onCaseStudyClick = (level) => {
-    if (level !== "intermediate" && level !== "advanced") return;
+    if (level !== "intermediate") return;
     showChat();
   };
 

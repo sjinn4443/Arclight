@@ -447,6 +447,21 @@ export function initializePageNavigation() {
   const TARGET_ID = "directOphthalmoscopyQuizPage";
 
   async function goToDirectOphthalmoscopyQuiz() {
+    // 1) quizzes 프래그먼트를 먼저 로드해서 placeholder div가 DOM에 있도록 보장
+    if (typeof window.loadPage === "function") {
+      await loadPage("quizzes");
+    } else {
+      console.warn("loadPage() not found; cannot navigate to quizzes");
+      return;
+    }
+
+    // 2) 퀴즈 UI 생성/렌더링은 quiz-launcher.js의 전역 엔트리로 통일
+    //    (이 함수가 directOphthalmoscopyQuizPage를 채우고 showPage까지 함)
+    if (typeof window.launchQuiz === "function") {
+      return window.launchQuiz();
+    }
+
+    // 3) 혹시 launchQuiz가 없을 때만 최후의 fallback으로 showPage
     const show = (id) => {
       if (typeof window.showPage === "function") return window.showPage(id);
       if (typeof window.minimalShowPage === "function")
@@ -454,16 +469,7 @@ export function initializePageNavigation() {
       console.warn("No showPage() available");
     };
 
-    // If the quiz section is already in the DOM, just show it.
-    if (document.getElementById(TARGET_ID)) return show(TARGET_ID);
-
-    // Otherwise load the quizzes fragment, then show the target section.
-    if (typeof window.loadPage === "function") {
-      await loadPage("quizzes");
-      return show(TARGET_ID);
-    } else {
-      console.warn("loadPage() not found; cannot navigate to quizzes");
-    }
+    return show("directOphthalmoscopyQuizPage");
   }
 
   // Bind to the Take Quiz button (supports either id or data-action)
@@ -507,7 +513,8 @@ export function initializePageNavigation() {
   );
 
   // Also expose a global for manual triggering / compatibility with old.zip
-  window.launchQuiz = () => goToDirectOphthalmoscopyQuiz();
+  window.launchQuiz =
+    window.launchQuiz || (() => goToDirectOphthalmoscopyQuiz());
 })();
 
 // Custom event listener for "myprofile" route to show "myProfilePage"

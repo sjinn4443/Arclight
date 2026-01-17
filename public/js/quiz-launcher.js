@@ -3,13 +3,32 @@ function _launchQuiz() {
     document.querySelector(".page.active")?.id || "dashboard";
   const quizPageId = "directOphthalmoscopyQuizPage";
 
+  const show = (id) => {
+    if (typeof window.showPage === "function") return window.showPage(id);
+    if (typeof window.minimalShowPage === "function")
+      return window.minimalShowPage(id);
+
+    // 마지막 fallback (혹시 둘 다 없을 때)
+    document
+      .querySelectorAll(".page")
+      .forEach((p) => (p.style.display = "none"));
+    const el = document.getElementById(id);
+    if (el) el.style.display = "block";
+  };
+
   // Avoid creating duplicate quiz pages
-  if (document.getElementById(quizPageId)) {
-    showPage(quizPageId);
-    return;
+  const existing = document.getElementById(quizPageId);
+  if (existing) {
+    // 이미 placeholder div가 있을 수 있으니, 내용이 없으면 채운다
+    const hasQuizUI = existing.querySelector?.(".quiz-container");
+    if (hasQuizUI) {
+      show(quizPageId);
+      return;
+    }
+    // 내용이 없으면 아래 로직으로 채우기 위해 계속 진행
   }
 
-  const quizPage = document.createElement("div");
+  const quizPage = existing || document.createElement("div");
   quizPage.id = quizPageId;
   quizPage.className = "page";
   quizPage.innerHTML = `
@@ -31,7 +50,9 @@ function _launchQuiz() {
         </div>
       </div>
     </div>`;
-  document.getElementById("appRoot").appendChild(quizPage);
+  if (!existing) {
+    document.getElementById("appRoot").appendChild(quizPage);
+  }
 
   const questions = [
     {
@@ -135,8 +156,10 @@ function _launchQuiz() {
   });
 
   quizPage.querySelector("#backToVideoBtn").addEventListener("click", () => {
-    showPage(previousPage);
+    show(previousPage);
   });
 
-  showPage(quizPageId);
+  show(quizPageId);
 }
+
+window.launchQuiz = _launchQuiz;

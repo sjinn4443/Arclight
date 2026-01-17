@@ -16,9 +16,9 @@ async function handleQuizClick() {
       await loadPage("quizzes"); // ensure quizzes fragment is loaded
     }
     if (typeof window.showPage === "function") {
-      window.showPage("anteriorSegmentQuizPage");
+      window.showPage("directOphthalmoscopyQuizPage");
     } else if (typeof minimalShowPage === "function") {
-      minimalShowPage("anteriorSegmentQuizPage");
+      minimalShowPage("directOphthalmoscopyQuizPage");
     }
   } catch (err) {
     console.error("Failed to launch quiz:", err);

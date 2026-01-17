@@ -2051,13 +2051,29 @@ input:checked + .slider:before {
 /* Case study chat                               */
 /* ============================================= */
 
-#caseStudyChatPage .casechat {
+#caseStudyChatPage .casechat,
+
+
+/* ============================================= */
+/* Case study chat                               */
+/* ============================================= */
+
+#caseStudyChatPagePrimary .casechat,
+
+
+/* ============================================= */
+/* Case study chat                               */
+/* ============================================= */
+
+#caseStudyChatPageAdvanced .casechat {
   width: min(100%, 420px);
   margin: 0 auto;
   padding-bottom: 20px;
 }
 
-#caseStudyChatPage .casechat-back {
+#caseStudyChatPage .casechat-back,
+#caseStudyChatPagePrimary .casechat-back,
+#caseStudyChatPageAdvanced .casechat-back {
   width: 34px;
   height: 34px;
   border-radius: 999px;
@@ -2070,7 +2086,9 @@ input:checked + .slider:before {
   cursor: pointer;
 }
 
-#caseStudyChatPage .casechat-log {
+#caseStudyChatPage .casechat-log,
+#caseStudyChatPagePrimary .casechat-log,
+#caseStudyChatPageAdvanced .casechat-log {
   background: transparent;
   border-radius: 0;
   padding: 4px 0 260px;
@@ -2080,28 +2098,62 @@ input:checked + .slider:before {
   box-shadow: none;
 }
 
-#caseStudyChatPage .casechat-bubble--system {
+#caseStudyChatPage .casechat-bubble--system,
+#caseStudyChatPagePrimary .casechat-bubble--system,
+#caseStudyChatPageAdvanced .casechat-bubble--system {
   justify-content: center;
 }
 
 /* ===== Chat bubbles: match screenshot ===== */
-#caseStudyChatPage .casechat-bubble {
+#caseStudyChatPage .casechat-bubble,
+
+
+/* ===== Chat bubbles: match screenshot ===== */
+#caseStudyChatPagePrimary .casechat-bubble,
+
+
+/* ===== Chat bubbles: match screenshot ===== */
+#caseStudyChatPageAdvanced .casechat-bubble {
   display: flex;
   margin: -20px 0;
 }
 
 /* 사용자(칩을 누른 질문) = 오른쪽 */
-#caseStudyChatPage .casechat-bubble--user {
+#caseStudyChatPage .casechat-bubble--user,
+
+
+/* 사용자(칩을 누른 질문) = 오른쪽 */
+#caseStudyChatPagePrimary .casechat-bubble--user,
+
+
+/* 사용자(칩을 누른 질문) = 오른쪽 */
+#caseStudyChatPageAdvanced .casechat-bubble--user {
   justify-content: flex-end;
 }
 
 /* 봇(환자 답변) = 왼쪽 */
-#caseStudyChatPage .casechat-bubble--bot {
+#caseStudyChatPage .casechat-bubble--bot,
+
+
+/* 봇(환자 답변) = 왼쪽 */
+#caseStudyChatPagePrimary .casechat-bubble--bot,
+
+
+/* 봇(환자 답변) = 왼쪽 */
+#caseStudyChatPageAdvanced .casechat-bubble--bot {
   justify-content: flex-start;
 }
 
 /* 말풍선 기본 */
-#caseStudyChatPage .casechat-text {
+#caseStudyChatPage .casechat-text,
+
+
+/* 말풍선 기본 */
+#caseStudyChatPagePrimary .casechat-text,
+
+
+/* 말풍선 기본 */
+#caseStudyChatPageAdvanced .casechat-text {
   position: relative;
   padding: 10px 12px;
   border-radius: 14px;
@@ -2114,12 +2166,22 @@ input:checked + .slider:before {
 }
 
 /* 사용자(오른쪽) 말풍선 꼬리 */
-#caseStudyChatPage .casechat-bubble--user .casechat-text {
+#caseStudyChatPage .casechat-bubble--user .casechat-text,
+
+
+/* 사용자(오른쪽) 말풍선 꼬리 */
+#caseStudyChatPagePrimary .casechat-bubble--user .casechat-text,
+
+
+/* 사용자(오른쪽) 말풍선 꼬리 */
+#caseStudyChatPageAdvanced .casechat-bubble--user .casechat-text {
   background: #f2f2f7;
   color: #111;
   border-top-right-radius: 8px;
 }
-#caseStudyChatPage .casechat-bubble--user .casechat-text::after {
+#caseStudyChatPage .casechat-bubble--user .casechat-text::after,
+#caseStudyChatPagePrimary .casechat-bubble--user .casechat-text::after,
+#caseStudyChatPageAdvanced .casechat-bubble--user .casechat-text::after {
   content: "";
   position: absolute;
   right: -6px;
@@ -2133,12 +2195,22 @@ input:checked + .slider:before {
 }
 
 /* 봇(왼쪽) 말풍선 = 검정 */
-#caseStudyChatPage .casechat-bubble--bot .casechat-text {
+#caseStudyChatPage .casechat-bubble--bot .casechat-text,
+
+
+/* 봇(왼쪽) 말풍선 = 검정 */
+#caseStudyChatPagePrimary .casechat-bubble--bot .casechat-text,
+
+
+/* 봇(왼쪽) 말풍선 = 검정 */
+#caseStudyChatPageAdvanced .casechat-bubble--bot .casechat-text {
   background: #111;
   color: #fff;
   border-top-left-radius: 8px;
 }
-#caseStudyChatPage .casechat-bubble--bot .casechat-text::after {
+#caseStudyChatPage .casechat-bubble--bot .casechat-text::after,
+#caseStudyChatPagePrimary .casechat-bubble--bot .casechat-text::after,
+#caseStudyChatPageAdvanced .casechat-bubble--bot .casechat-text::after {
   content: "";
   position: absolute;
   left: -6px;
@@ -2152,7 +2224,15 @@ input:checked + .slider:before {
 }
 
 /* system 메시지(가운데) */
-#caseStudyChatPage .casechat-system {
+#caseStudyChatPage .casechat-system,
+
+
+/* system 메시지(가운데) */
+#caseStudyChatPagePrimary .casechat-system,
+
+
+/* system 메시지(가운데) */
+#caseStudyChatPageAdvanced .casechat-system {
   font-size: 12px;
   color: rgba(0, 0, 0, 0.55);
   background: transparent;
@@ -2160,14 +2240,18 @@ input:checked + .slider:before {
   text-align: center;
 }
 
-#caseStudyChatPage .casechat-system {
+#caseStudyChatPage .casechat-system,
+#caseStudyChatPagePrimary .casechat-system,
+#caseStudyChatPageAdvanced .casechat-system {
   font-size: 12px;
   color: rgba(0, 0, 0, 0.55);
   background: transparent;
   padding: 6px 8px;
 }
 
-#caseStudyChatPage .casechat-system .casechat-caseindex {
+#caseStudyChatPage .casechat-system .casechat-caseindex,
+#caseStudyChatPagePrimary .casechat-system .casechat-caseindex,
+#caseStudyChatPageAdvanced .casechat-system .casechat-caseindex {
   display: block;
   font-size: 14px; /* 원하는 크기로 */
   font-weight: 700; /* semibold 느낌 */
@@ -2175,7 +2259,9 @@ input:checked + .slider:before {
   margin-bottom: 2px;
 }
 
-#caseStudyChatPage .casechat-system .casechat-firstprompt {
+#caseStudyChatPage .casechat-system .casechat-firstprompt,
+#caseStudyChatPagePrimary .casechat-system .casechat-firstprompt,
+#caseStudyChatPageAdvanced .casechat-system .casechat-firstprompt {
   display: block;
   margin-top: 6px;
   line-height: 1.2;
@@ -2183,20 +2269,32 @@ input:checked + .slider:before {
 }
 
 /* (1/10)만 더 연하게: 아래 Take a history와 비슷한 톤 */
-#caseStudyChatPage .casechat-system .casechat-casecount {
+#caseStudyChatPage .casechat-system .casechat-casecount,
+
+
+/* (1/10)만 더 연하게: 아래 Take a history와 비슷한 톤 */
+#caseStudyChatPagePrimary .casechat-system .casechat-casecount,
+
+
+/* (1/10)만 더 연하게: 아래 Take a history와 비슷한 톤 */
+#caseStudyChatPageAdvanced .casechat-system .casechat-casecount {
   font-size: 12px;
   font-weight: 400;
   color: rgba(0, 0, 0, 0.55);
 }
 
-#caseStudyChatPage .casechat-botstack {
+#caseStudyChatPage .casechat-botstack,
+#caseStudyChatPagePrimary .casechat-botstack,
+#caseStudyChatPageAdvanced .casechat-botstack {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 6px;
 }
 
-#caseStudyChatPage .casechat-img {
+#caseStudyChatPage .casechat-img,
+#caseStudyChatPagePrimary .casechat-img,
+#caseStudyChatPageAdvanced .casechat-img {
   width: 250px;
   height: auto;
   border-radius: 23px;
@@ -2206,14 +2304,24 @@ input:checked + .slider:before {
 }
 
 /* Case image: centre it and add a bit of top spacing */
-#caseStudyChatPage .casechat-imgwrap {
+#caseStudyChatPage .casechat-imgwrap,
+
+
+/* Case image: centre it and add a bit of top spacing */
+#caseStudyChatPagePrimary .casechat-imgwrap,
+
+
+/* Case image: centre it and add a bit of top spacing */
+#caseStudyChatPageAdvanced .casechat-imgwrap {
   width: min(320px, 100%);
   margin: 18px auto 12px; /* 위 마진 추가 + 가운데 정렬 */
   border-radius: 23px;
   overflow: hidden;
 }
 
-#caseStudyChatPage .casechat-img {
+#caseStudyChatPage .casechat-img,
+#caseStudyChatPagePrimary .casechat-img,
+#caseStudyChatPageAdvanced .casechat-img {
   width: 100%;
   height: auto;
   border-radius: 0; /* wrap이 radius를 담당 */
@@ -2222,7 +2330,9 @@ input:checked + .slider:before {
   display: block;
 }
 
-#caseStudyChatPage .casechat-choices {
+#caseStudyChatPage .casechat-choices,
+#caseStudyChatPagePrimary .casechat-choices,
+#caseStudyChatPageAdvanced .casechat-choices {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
@@ -2230,11 +2340,21 @@ input:checked + .slider:before {
 }
 
 /* ✅ chips panel should be hidden on first entry */
-#caseStudyChatPage #caseChatChoices[hidden] {
+#caseStudyChatPage #caseChatChoices[hidden],
+
+
+/* ✅ chips panel should be hidden on first entry */
+#caseStudyChatPagePrimary #caseChatChoices[hidden],
+
+
+/* ✅ chips panel should be hidden on first entry */
+#caseStudyChatPageAdvanced #caseChatChoices[hidden] {
   display: none !important;
 }
 
-#caseStudyChatPage .casechat-chip {
+#caseStudyChatPage .casechat-chip,
+#caseStudyChatPagePrimary .casechat-chip,
+#caseStudyChatPageAdvanced .casechat-chip {
   border: 1px solid rgba(0, 0, 0, 0.12);
   background: #fff;
   border-radius: 999px;
@@ -2242,12 +2362,16 @@ input:checked + .slider:before {
   font-size: 13px;
   cursor: pointer;
 }
-#caseStudyChatPage .casechat-chip:disabled {
+#caseStudyChatPage .casechat-chip:disabled,
+#caseStudyChatPagePrimary .casechat-chip:disabled,
+#caseStudyChatPageAdvanced .casechat-chip:disabled {
   opacity: 0.35;
   cursor: not-allowed;
 }
 
-#caseStudyChatPage .casechat-submit {
+#caseStudyChatPage .casechat-submit,
+#caseStudyChatPagePrimary .casechat-submit,
+#caseStudyChatPageAdvanced .casechat-submit {
   width: 100%;
   border: 0;
   border-radius: 14px;
@@ -2258,13 +2382,23 @@ input:checked + .slider:before {
   cursor: pointer;
 }
 
-#caseStudyChatPage .casechat-submit:disabled {
+#caseStudyChatPage .casechat-submit:disabled,
+#caseStudyChatPagePrimary .casechat-submit:disabled,
+#caseStudyChatPageAdvanced .casechat-submit:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
 /* Modals */
-#caseStudyChatPage .casechat-modal {
+#caseStudyChatPage .casechat-modal,
+
+
+/* Modals */
+#caseStudyChatPagePrimary .casechat-modal,
+
+
+/* Modals */
+#caseStudyChatPageAdvanced .casechat-modal {
   position: fixed;
   inset: 0;
   z-index: 9999;
@@ -2276,11 +2410,15 @@ input:checked + .slider:before {
   -webkit-backdrop-filter: blur(6px);
 }
 
-#caseStudyChatPage .casechat-modal[hidden] {
+#caseStudyChatPage .casechat-modal[hidden],
+#caseStudyChatPagePrimary .casechat-modal[hidden],
+#caseStudyChatPageAdvanced .casechat-modal[hidden] {
   display: none !important;
 }
 
-#caseStudyChatPage .casechat-modalCard {
+#caseStudyChatPage .casechat-modalCard,
+#caseStudyChatPagePrimary .casechat-modalCard,
+#caseStudyChatPageAdvanced .casechat-modalCard {
   background: #fff;
   width: min(92vw, 440px);
   border-radius: 14px;
@@ -2289,19 +2427,25 @@ input:checked + .slider:before {
   position: relative;
 }
 
-#caseStudyChatPage .casechat-modalTop {
+#caseStudyChatPage .casechat-modalTop,
+#caseStudyChatPagePrimary .casechat-modalTop,
+#caseStudyChatPageAdvanced .casechat-modalTop {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
   margin-bottom: 10px;
 }
-#caseStudyChatPage .casechat-modalTitle {
+#caseStudyChatPage .casechat-modalTitle,
+#caseStudyChatPagePrimary .casechat-modalTitle,
+#caseStudyChatPageAdvanced .casechat-modalTitle {
   font-weight: 750;
   font-size: 16px;
   color: #111;
 }
-#caseStudyChatPage .casechat-modalClose {
+#caseStudyChatPage .casechat-modalClose,
+#caseStudyChatPagePrimary .casechat-modalClose,
+#caseStudyChatPageAdvanced .casechat-modalClose {
   border: 0;
   background: transparent;
   font-size: 26px;
@@ -2310,7 +2454,9 @@ input:checked + .slider:before {
   color: #666;
 }
 
-#caseStudyChatPage .casechat-dxlist {
+#caseStudyChatPage .casechat-dxlist,
+#caseStudyChatPagePrimary .casechat-dxlist,
+#caseStudyChatPageAdvanced .casechat-dxlist {
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -2321,7 +2467,9 @@ input:checked + .slider:before {
   padding-right: 4px;
 }
 
-#caseStudyChatPage .casechat-dxitem {
+#caseStudyChatPage .casechat-dxitem,
+#caseStudyChatPagePrimary .casechat-dxitem,
+#caseStudyChatPageAdvanced .casechat-dxitem {
   text-align: left;
   border: 1px solid rgba(0, 0, 0, 0.12);
   background: #fff;
@@ -2330,17 +2478,23 @@ input:checked + .slider:before {
   cursor: pointer;
 }
 
-#caseStudyChatPage .casechat-resultOk {
+#caseStudyChatPage .casechat-resultOk,
+#caseStudyChatPagePrimary .casechat-resultOk,
+#caseStudyChatPageAdvanced .casechat-resultOk {
   margin: 23px 0 11px;
 }
-#caseStudyChatPage .casechat-resultWhy {
+#caseStudyChatPage .casechat-resultWhy,
+#caseStudyChatPagePrimary .casechat-resultWhy,
+#caseStudyChatPageAdvanced .casechat-resultWhy {
   color: #333;
   font-size: 14px;
   line-height: 1.4;
   margin-bottom: 11px;
 }
 
-#caseStudyChatPage .casechat-next {
+#caseStudyChatPage .casechat-next,
+#caseStudyChatPagePrimary .casechat-next,
+#caseStudyChatPageAdvanced .casechat-next {
   width: 100%;
   margin-top: 14px;
   border: 0;
@@ -2353,7 +2507,15 @@ input:checked + .slider:before {
 }
 
 /* Try again feedback + shake */
-#caseStudyChatPage .casechat-tryagain {
+#caseStudyChatPage .casechat-tryagain,
+
+
+/* Try again feedback + shake */
+#caseStudyChatPagePrimary .casechat-tryagain,
+
+
+/* Try again feedback + shake */
+#caseStudyChatPageAdvanced .casechat-tryagain {
   margin-top: 16px;
   margin-left: 14px;
   font-size: 14px;
@@ -2387,12 +2549,22 @@ input:checked + .slider:before {
     transform: translateX(0);
   }
 }
-#caseStudyChatPage .casechat-modalCard.shake {
+#caseStudyChatPage .casechat-modalCard.shake,
+#caseStudyChatPagePrimary .casechat-modalCard.shake,
+#caseStudyChatPageAdvanced .casechat-modalCard.shake {
   animation: casechatShake 0.35s ease-in-out;
 }
 
 /* ===== Case study chat: overall page polish ===== */
-#caseStudyChatPage .container.pupils-container {
+#caseStudyChatPage .container.pupils-container,
+
+
+/* ===== Case study chat: overall page polish ===== */
+#caseStudyChatPagePrimary .container.pupils-container,
+
+
+/* ===== Case study chat: overall page polish ===== */
+#caseStudyChatPageAdvanced .container.pupils-container {
   padding-left: 14px;
   padding-right: 14px;
   padding-bottom: 42px;
@@ -2403,7 +2575,9 @@ input:checked + .slider:before {
   flex-direction: column;
 }
 
-#caseStudyChatPage .casechat-header {
+#caseStudyChatPage .casechat-header,
+#caseStudyChatPagePrimary .casechat-header,
+#caseStudyChatPageAdvanced .casechat-header {
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -2412,19 +2586,37 @@ input:checked + .slider:before {
 }
 
 /* (선택) “First Case” 같은 상단 텍스트 느낌 */
-#caseStudyChatPage .pupils-subtitle {
+#caseStudyChatPage .pupils-subtitle,
+
+
+/* (선택) “First Case” 같은 상단 텍스트 느낌 */
+#caseStudyChatPagePrimary .pupils-subtitle,
+
+
+/* (선택) “First Case” 같은 상단 텍스트 느낌 */
+#caseStudyChatPageAdvanced .pupils-subtitle {
   font-size: 13px;
   font-weight: 500;
 }
 
 /* ===== Case image: small card style like screenshot ===== */
-#caseStudyChatPage .casechat-image-wrap {
+#caseStudyChatPage .casechat-image-wrap,
+
+
+/* ===== Case image: small card style like screenshot ===== */
+#caseStudyChatPagePrimary .casechat-image-wrap,
+
+
+/* ===== Case image: small card style like screenshot ===== */
+#caseStudyChatPageAdvanced .casechat-image-wrap {
   display: flex;
   justify-content: flex-start;
   margin: 6px 0 10px;
 }
 
-#caseStudyChatPage #caseChatImage {
+#caseStudyChatPage #caseChatImage,
+#caseStudyChatPagePrimary #caseChatImage,
+#caseStudyChatPageAdvanced #caseChatImage {
   width: 120px !important;
   height: auto !important;
   border-radius: 14px !important;
@@ -2432,20 +2624,26 @@ input:checked + .slider:before {
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
 }
 
-#caseStudyChatPage .casechat-confirm__text {
+#caseStudyChatPage .casechat-confirm__text,
+#caseStudyChatPagePrimary .casechat-confirm__text,
+#caseStudyChatPageAdvanced .casechat-confirm__text {
   font-size: 13px;
   color: #333;
   line-height: 1.4;
   margin: 6px 6px 14px;
 }
 
-#caseStudyChatPage .casechat-confirm__actions {
+#caseStudyChatPage .casechat-confirm__actions,
+#caseStudyChatPagePrimary .casechat-confirm__actions,
+#caseStudyChatPageAdvanced .casechat-confirm__actions {
   display: flex;
   gap: 10px;
   margin-top: 6px;
 }
 
-#caseStudyChatPage .casechat-confirm__btn {
+#caseStudyChatPage .casechat-confirm__btn,
+#caseStudyChatPagePrimary .casechat-confirm__btn,
+#caseStudyChatPageAdvanced .casechat-confirm__btn {
   width: 100% !important; /* 두 버튼 반반 */
   margin: 0 !important;
   padding: 12px 12px !important;
@@ -2453,18 +2651,30 @@ input:checked + .slider:before {
   font-weight: 650;
 }
 
-#caseStudyChatPage .casechat-confirm__btn.is-cancel {
+#caseStudyChatPage .casechat-confirm__btn.is-cancel,
+#caseStudyChatPagePrimary .casechat-confirm__btn.is-cancel,
+#caseStudyChatPageAdvanced .casechat-confirm__btn.is-cancel {
   background: #e5e7eb !important;
   color: #111 !important;
 }
 
-#caseStudyChatPage .casechat-confirm__btn.is-ok {
+#caseStudyChatPage .casechat-confirm__btn.is-ok,
+#caseStudyChatPagePrimary .casechat-confirm__btn.is-ok,
+#caseStudyChatPageAdvanced .casechat-confirm__btn.is-ok {
   background: #e41e26 !important;
   color: #fff !important;
 }
 
 /* ===== Bottom panel (chips + submit) ===== */
-#caseStudyChatPage #caseChatChoices {
+#caseStudyChatPage #caseChatChoices,
+
+
+/* ===== Bottom panel (chips + submit) ===== */
+#caseStudyChatPagePrimary #caseChatChoices,
+
+
+/* ===== Bottom panel (chips + submit) ===== */
+#caseStudyChatPageAdvanced #caseChatChoices {
   position: fixed;
   left: 14px;
   right: 14px;
@@ -2480,7 +2690,15 @@ input:checked + .slider:before {
 }
 
 /* 칩 버튼을 사진처럼 pill */
-#caseStudyChatPage .casechat-chip {
+#caseStudyChatPage .casechat-chip,
+
+
+/* 칩 버튼을 사진처럼 pill */
+#caseStudyChatPagePrimary .casechat-chip,
+
+
+/* 칩 버튼을 사진처럼 pill */
+#caseStudyChatPageAdvanced .casechat-chip {
   width: auto;
   border: 1px solid rgba(0, 0, 0, 0.14);
   background: #fff;
@@ -2491,12 +2709,22 @@ input:checked + .slider:before {
   box-shadow: none;
 }
 
-#caseStudyChatPage .casechat-chip:active {
+#caseStudyChatPage .casechat-chip:active,
+#caseStudyChatPagePrimary .casechat-chip:active,
+#caseStudyChatPageAdvanced .casechat-chip:active {
   transform: translateY(1px);
 }
 
 /* Submit 버튼: 오른쪽 위에 빨간 pill */
-#caseStudyChatPage .casechat-footer {
+#caseStudyChatPage .casechat-footer,
+
+
+/* Submit 버튼: 오른쪽 위에 빨간 pill */
+#caseStudyChatPagePrimary .casechat-footer,
+
+
+/* Submit 버튼: 오른쪽 위에 빨간 pill */
+#caseStudyChatPageAdvanced .casechat-footer {
   position: fixed;
   left: 14px;
   right: 14px;
@@ -2505,7 +2733,15 @@ input:checked + .slider:before {
 }
 
 /* 버튼만 클릭 가능하게 */
-#caseStudyChatPage #caseChatSubmitBtn {
+#caseStudyChatPage #caseChatSubmitBtn,
+
+
+/* 버튼만 클릭 가능하게 */
+#caseStudyChatPagePrimary #caseChatSubmitBtn,
+
+
+/* 버튼만 클릭 가능하게 */
+#caseStudyChatPageAdvanced #caseChatSubmitBtn {
   pointer-events: fixed !important;
   width: auto;
   margin: 0;
@@ -2522,7 +2758,15 @@ input:checked + .slider:before {
 }
 
 /* disabled 상태 */
-#caseStudyChatPage #caseChatSubmitBtn:disabled {
+#caseStudyChatPage #caseChatSubmitBtn:disabled,
+
+
+/* disabled 상태 */
+#caseStudyChatPagePrimary #caseChatSubmitBtn:disabled,
+
+
+/* disabled 상태 */
+#caseStudyChatPageAdvanced #caseChatSubmitBtn:disabled {
   opacity: 0.5;
   box-shadow: none;
 }
@@ -2658,12 +2902,34 @@ input:checked + .slider:before {
 /* Case study chat polish (to match reference screenshot)                  */
 /* ======================================================================= */
 
-#caseStudyChatPage {
+#caseStudyChatPage,
+
+
+/* ======================================================================= */
+/* Case study chat polish (to match reference screenshot)                  */
+/* ======================================================================= */
+
+#caseStudyChatPagePrimary,
+
+
+/* ======================================================================= */
+/* Case study chat polish (to match reference screenshot)                  */
+/* ======================================================================= */
+
+#caseStudyChatPageAdvanced {
   background: #f2f2f7 !important;
 }
 
 /* ----- Top quiz header (Quiz | submit answer >) ----- */
-#caseStudyChatPage .casechat-quizheader {
+#caseStudyChatPage .casechat-quizheader,
+
+
+/* ----- Top quiz header (Quiz | submit answer >) ----- */
+#caseStudyChatPagePrimary .casechat-quizheader,
+
+
+/* ----- Top quiz header (Quiz | submit answer >) ----- */
+#caseStudyChatPageAdvanced .casechat-quizheader {
   position: sticky;
   top: 62px; /* eyes-topbar 높이 아래에 붙도록 (필요 시 56~66 조절) */
   z-index: 50;
@@ -2672,13 +2938,17 @@ input:checked + .slider:before {
   padding: 10px 16px 8px;
 }
 
-#caseStudyChatPage .casechat-quizheader__row {
+#caseStudyChatPage .casechat-quizheader__row,
+#caseStudyChatPagePrimary .casechat-quizheader__row,
+#caseStudyChatPageAdvanced .casechat-quizheader__row {
   display: grid;
   grid-template-columns: 40px 1fr auto;
   align-items: center;
 }
 
-#caseStudyChatPage .casechat-quizheader__back {
+#caseStudyChatPage .casechat-quizheader__back,
+#caseStudyChatPagePrimary .casechat-quizheader__back,
+#caseStudyChatPageAdvanced .casechat-quizheader__back {
   width: 34px !important;
   height: 34px !important;
   margin: 0 !important;
@@ -2691,14 +2961,18 @@ input:checked + .slider:before {
   cursor: pointer;
 }
 
-#caseStudyChatPage .casechat-quizheader__title {
+#caseStudyChatPage .casechat-quizheader__title,
+#caseStudyChatPagePrimary .casechat-quizheader__title,
+#caseStudyChatPageAdvanced .casechat-quizheader__title {
   text-align: center;
   font-size: 16px;
   font-weight: 700;
   color: #111;
 }
 
-#caseStudyChatPage .casechat-quizheader__submit {
+#caseStudyChatPage .casechat-quizheader__submit,
+#caseStudyChatPagePrimary .casechat-quizheader__submit,
+#caseStudyChatPageAdvanced .casechat-quizheader__submit {
   width: auto !important;
   margin: 0 !important;
   padding: 6px 0 !important;
@@ -2710,17 +2984,29 @@ input:checked + .slider:before {
   cursor: pointer;
 }
 
-#caseStudyChatPage .casechat-quizheader__submit .chev {
+#caseStudyChatPage .casechat-quizheader__submit .chev,
+#caseStudyChatPagePrimary .casechat-quizheader__submit .chev,
+#caseStudyChatPageAdvanced .casechat-quizheader__submit .chev {
   margin-left: 4px;
 }
 
 /* ----- Chat log spacing so it doesn't hide behind the bottom sheet ----- */
-#caseStudyChatPage .casechat-log {
+#caseStudyChatPage .casechat-log,
+
+
+/* ----- Chat log spacing so it doesn't hide behind the bottom sheet ----- */
+#caseStudyChatPagePrimary .casechat-log,
+
+
+/* ----- Chat log spacing so it doesn't hide behind the bottom sheet ----- */
+#caseStudyChatPageAdvanced .casechat-log {
   padding: 10px 16px var(--casechat-log-pad, 140px); /* bottom sheet 공간 확보 */
   background: transparent !important;
 }
 
-#caseStudyChatPage .casechat-log {
+#caseStudyChatPage .casechat-log,
+#caseStudyChatPagePrimary .casechat-log,
+#caseStudyChatPageAdvanced .casechat-log {
   flex: 1 1 auto;
   overflow-y: auto;
 
@@ -2728,11 +3014,18 @@ input:checked + .slider:before {
   padding-bottom: 160px;
 }
 
-/* System bubble: "New case started" centred, subtle */
-#caseStudyChatPage .casechat-bubble--system {
+/* System bubble: "New case started" centred,
+
+
+subtle */
+#caseStudyChatPage .casechat-bubble--system,
+subtle */ #caseStudyChatPagePrimary .casechat-bubble--system,
+subtle */ #caseStudyChatPageAdvanced .casechat-bubble--system {
   justify-content: center;
 }
-#caseStudyChatPage .casechat-system {
+#caseStudyChatPage .casechat-system,
+#caseStudyChatPagePrimary .casechat-system,
+#caseStudyChatPageAdvanced .casechat-system {
   background: transparent !important;
   color: #6b7280;
   font-size: 12px;
@@ -2740,7 +3033,15 @@ input:checked + .slider:before {
 }
 
 /* Bot/User bubbles polish */
-#caseStudyChatPage .casechat-bubble--bot .casechat-text {
+#caseStudyChatPage .casechat-bubble--bot .casechat-text,
+
+
+/* Bot/User bubbles polish */
+#caseStudyChatPagePrimary .casechat-bubble--bot .casechat-text,
+
+
+/* Bot/User bubbles polish */
+#caseStudyChatPageAdvanced .casechat-bubble--bot .casechat-text {
   background: #fff;
   color: #111;
   border-radius: 16px;
@@ -2748,7 +3049,9 @@ input:checked + .slider:before {
   box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
   margin: 32px 0 0 0px;
 }
-#caseStudyChatPage .casechat-bubble--user .casechat-text {
+#caseStudyChatPage .casechat-bubble--user .casechat-text,
+#caseStudyChatPagePrimary .casechat-bubble--user .casechat-text,
+#caseStudyChatPageAdvanced .casechat-bubble--user .casechat-text {
   background: #111;
   color: #fff;
   border-radius: 16px;
@@ -2757,11 +3060,21 @@ input:checked + .slider:before {
 }
 
 /* Case image */
-#caseStudyChatPage .casechat-image-wrap {
+#caseStudyChatPage .casechat-image-wrap,
+
+
+/* Case image */
+#caseStudyChatPagePrimary .casechat-image-wrap,
+
+
+/* Case image */
+#caseStudyChatPageAdvanced .casechat-image-wrap {
   padding: 10px 16px 0;
   background: transparent !important;
 }
-#caseStudyChatPage #caseChatImage {
+#caseStudyChatPage #caseChatImage,
+#caseStudyChatPagePrimary #caseChatImage,
+#caseStudyChatPageAdvanced #caseChatImage {
   width: 120px;
   height: auto;
   border-radius: 12px;
@@ -2770,7 +3083,17 @@ input:checked + .slider:before {
 
 /* ----- Bottom sheet (chips panel) ----- */
 
-#caseStudyChatPage #caseChatSubmitBtn.casechat-submitpill {
+#caseStudyChatPage #caseChatSubmitBtn.casechat-submitpill,
+
+
+/* ----- Bottom sheet (chips panel) ----- */
+
+#caseStudyChatPagePrimary #caseChatSubmitBtn.casechat-submitpill,
+
+
+/* ----- Bottom sheet (chips panel) ----- */
+
+#caseStudyChatPageAdvanced #caseChatSubmitBtn.casechat-submitpill {
   position: absolute;
   bottom: -81px;
   right: 0px;
@@ -2786,17 +3109,29 @@ input:checked + .slider:before {
   z-index: 9999;
 }
 
-#caseStudyChatPage #caseChatSubmitBtn.casechat-submitpill:disabled {
+#caseStudyChatPage #caseChatSubmitBtn.casechat-submitpill:disabled,
+#caseStudyChatPagePrimary #caseChatSubmitBtn.casechat-submitpill:disabled,
+#caseStudyChatPageAdvanced #caseChatSubmitBtn.casechat-submitpill:disabled {
   opacity: 0.5;
   box-shadow: none;
 }
 
-#caseStudyChatPage #caseChatSubmitBtn .chev {
+#caseStudyChatPage #caseChatSubmitBtn .chev,
+#caseStudyChatPagePrimary #caseChatSubmitBtn .chev,
+#caseStudyChatPageAdvanced #caseChatSubmitBtn .chev {
   margin-left: 6px;
 }
 
 /* Chips container sits inside bottom sheet */
-#caseStudyChatPage #caseChatChoices.casechat-choices {
+#caseStudyChatPage #caseChatChoices.casechat-choices,
+
+
+/* Chips container sits inside bottom sheet */
+#caseStudyChatPagePrimary #caseChatChoices.casechat-choices,
+
+
+/* Chips container sits inside bottom sheet */
+#caseStudyChatPageAdvanced #caseChatChoices.casechat-choices {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
@@ -2805,12 +3140,22 @@ input:checked + .slider:before {
 }
 
 /* ✅ chips panel should be hidden on first entry */
-#caseStudyChatPage #caseChatChoices[hidden] {
+#caseStudyChatPage #caseChatChoices[hidden],
+
+
+/* ✅ chips panel should be hidden on first entry */
+#caseStudyChatPagePrimary #caseChatChoices[hidden],
+
+
+/* ✅ chips panel should be hidden on first entry */
+#caseStudyChatPageAdvanced #caseChatChoices[hidden] {
   display: none !important;
 }
 
 /* Chip buttons - IMPORTANT: override the global `button{...}` */
-#caseStudyChatPage button.casechat-chip {
+#caseStudyChatPage button.casechat-chip,
+#caseStudyChatPagePrimary button.casechat-chip,
+#caseStudyChatPageAdvanced button.casechat-chip {
   width: auto !important;
   margin: 0 !important;
 
@@ -2827,13 +3172,31 @@ input:checked + .slider:before {
   cursor: pointer;
 }
 
-#caseStudyChatPage button.casechat-chip:disabled {
+#caseStudyChatPage button.casechat-chip:disabled,
+#caseStudyChatPagePrimary button.casechat-chip:disabled,
+#caseStudyChatPageAdvanced button.casechat-chip:disabled {
   opacity: 0.45;
 }
 
 /* Dx list buttons (inside modal) also must not inherit global red button */
 #caseStudyChatPage .casechat-dxlist button,
-#caseStudyChatPage .casechat-dxitem {
+
+
+/* Dx list buttons (inside modal) also must not inherit global red button */
+#caseStudyChatPagePrimary .casechat-dxlist button,
+
+
+/* Dx list buttons (inside modal) also must not inherit global red button */
+#caseStudyChatPageAdvanced .casechat-dxlist button,
+
+
+#caseStudyChatPage .casechat-dxitem,
+
+
+#caseStudyChatPagePrimary .casechat-dxitem,
+
+
+#caseStudyChatPageAdvanced .casechat-dxitem {
   width: 100% !important;
   margin: 0 0 0px !important;
   padding: 12px 12px !important;
@@ -2843,8 +3206,13 @@ input:checked + .slider:before {
   color: #111 !important;
 }
 
-/* We moved #caseChatChoices inside .casechat-footer, so it must NOT be fixed */
-#caseStudyChatPage #caseChatChoices {
+/* We moved #caseChatChoices inside .casechat-footer,
+
+
+so it must NOT be fixed */
+#caseStudyChatPage #caseChatChoices,
+so it must NOT be fixed */ #caseStudyChatPagePrimary #caseChatChoices,
+so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
   position: static !important;
   left: auto !important;
   right: auto !important;
@@ -2856,7 +3224,9 @@ input:checked + .slider:before {
   box-shadow: none !important;
 }
 
-#caseStudyChatPage .casechat-footer {
+#caseStudyChatPage .casechat-footer,
+#caseStudyChatPagePrimary .casechat-footer,
+#caseStudyChatPageAdvanced .casechat-footer {
   position: fixed;
   left: 50%;
   transform: translateX(-50%);
@@ -2871,14 +3241,18 @@ input:checked + .slider:before {
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
 }
 
-#caseStudyChatPage .casechat-footer.is-expanded #caseChatChoices {
+#caseStudyChatPage .casechat-footer.is-expanded #caseChatChoices,
+#caseStudyChatPagePrimary .casechat-footer.is-expanded #caseChatChoices,
+#caseStudyChatPageAdvanced .casechat-footer.is-expanded #caseChatChoices {
   position: absolute;
   left: 0;
   right: 0;
   bottom: 54px; /* composer 줄 위로 띄우기 */
 }
 
-#caseStudyChatPage .casechat-composer {
+#caseStudyChatPage .casechat-composer,
+#caseStudyChatPagePrimary .casechat-composer,
+#caseStudyChatPageAdvanced .casechat-composer {
   position: relative;
   width: 100%;
   margin-top: 0px;
@@ -2887,7 +3261,9 @@ input:checked + .slider:before {
   gap: 10px;
 }
 
-#caseStudyChatPage .casechat-draft {
+#caseStudyChatPage .casechat-draft,
+#caseStudyChatPagePrimary .casechat-draft,
+#caseStudyChatPageAdvanced .casechat-draft {
   width: 265px;
   min-height: 39px;
   display: flex;
@@ -2907,11 +3283,15 @@ input:checked + .slider:before {
   white-space: nowrap;
 }
 
-#caseStudyChatPage .casechat-draft.is-placeholder {
+#caseStudyChatPage .casechat-draft.is-placeholder,
+#caseStudyChatPagePrimary .casechat-draft.is-placeholder,
+#caseStudyChatPageAdvanced .casechat-draft.is-placeholder {
   color: #11111170;
 }
 
-#caseStudyChatPage .casechat-send {
+#caseStudyChatPage .casechat-send,
+#caseStudyChatPagePrimary .casechat-send,
+#caseStudyChatPageAdvanced .casechat-send {
   position: absolute;
   right: -4px;
   top: 10px;
@@ -2934,7 +3314,9 @@ input:checked + .slider:before {
   display: block;
 }
 
-#caseStudyChatPage .casechat-send:disabled {
+#caseStudyChatPage .casechat-send:disabled,
+#caseStudyChatPagePrimary .casechat-send:disabled,
+#caseStudyChatPageAdvanced .casechat-send:disabled {
   color: rgba(0, 0, 0, 0.35);
   opacity: 0.45;
   cursor: not-allowed;
@@ -3012,7 +3394,15 @@ input:checked + .slider:before {
 }
 
 /* ===== Case Study modal (MATCHES casestudy.html: __content/__top/__title/__close) ===== */
-#caseStudyChatPage .casechat-modal__content {
+#caseStudyChatPage .casechat-modal__content,
+
+
+/* ===== Case Study modal (MATCHES casestudy.html: __content/__top/__title/__close) ===== */
+#caseStudyChatPagePrimary .casechat-modal__content,
+
+
+/* ===== Case Study modal (MATCHES casestudy.html: __content/__top/__title/__close) ===== */
+#caseStudyChatPageAdvanced .casechat-modal__content {
   background: #fff;
   width: min(71vw, 440px);
   border-radius: 14px;
@@ -3025,7 +3415,9 @@ input:checked + .slider:before {
   flex-direction: column;
 }
 
-#caseStudyChatPage .casechat-modal__top {
+#caseStudyChatPage .casechat-modal__top,
+#caseStudyChatPagePrimary .casechat-modal__top,
+#caseStudyChatPageAdvanced .casechat-modal__top {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -3033,7 +3425,9 @@ input:checked + .slider:before {
   margin-bottom: 10px;
 }
 
-#caseStudyChatPage .casechat-modal__meta {
+#caseStudyChatPage .casechat-modal__meta,
+#caseStudyChatPagePrimary .casechat-modal__meta,
+#caseStudyChatPageAdvanced .casechat-modal__meta {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -3043,43 +3437,59 @@ input:checked + .slider:before {
   color: rgba(0, 0, 0, 0.6);
 }
 
-#caseStudyChatPage .casechat-modal__dxTimer {
+#caseStudyChatPage .casechat-modal__dxTimer,
+#caseStudyChatPagePrimary .casechat-modal__dxTimer,
+#caseStudyChatPageAdvanced .casechat-modal__dxTimer {
   font-weight: 650;
 }
 
-#caseStudyChatPage .casechat-modal__dxHint {
+#caseStudyChatPage .casechat-modal__dxHint,
+#caseStudyChatPagePrimary .casechat-modal__dxHint,
+#caseStudyChatPageAdvanced .casechat-modal__dxHint {
   text-align: right;
 }
 
-#caseStudyChatPage .casechat-modal__icons {
+#caseStudyChatPage .casechat-modal__icons,
+#caseStudyChatPagePrimary .casechat-modal__icons,
+#caseStudyChatPageAdvanced .casechat-modal__icons {
   display: inline-flex;
   align-items: center;
   gap: 10px;
 }
 
-#caseStudyChatPage .caseTimer--sm {
+#caseStudyChatPage .caseTimer--sm,
+#caseStudyChatPagePrimary .caseTimer--sm,
+#caseStudyChatPageAdvanced .caseTimer--sm {
   width: 32px;
   height: 32px;
   padding: 0;
 }
-#caseStudyChatPage .caseTimer--sm .caseTimer__text {
+#caseStudyChatPage .caseTimer--sm .caseTimer__text,
+#caseStudyChatPagePrimary .caseTimer--sm .caseTimer__text,
+#caseStudyChatPageAdvanced .caseTimer--sm .caseTimer__text {
   font-size: 10px;
 }
-#caseStudyChatPage .casechat-modal__dxHint {
+#caseStudyChatPage .casechat-modal__dxHint,
+#caseStudyChatPagePrimary .casechat-modal__dxHint,
+#caseStudyChatPageAdvanced .casechat-modal__dxHint {
   margin: -11px 166px 10px 8px;
   font-size: 12px;
   color: rgba(0, 0, 0, 0.6);
   white-space: nowrap;
 }
 
-#caseStudyChatPage .casechat-modal__dxAttempts {
+#caseStudyChatPage .casechat-modal__dxAttempts,
+#caseStudyChatPagePrimary .casechat-modal__dxAttempts,
+#caseStudyChatPageAdvanced .casechat-modal__dxAttempts {
   margin: 2px 6px 10px;
   font-size: 12px;
   font-weight: 600;
   color: #c62828; /* warning red */
 }
 
-#caseStudyChatPage .casechat-modal__title {
+#caseStudyChatPage .casechat-modal__title,
+#caseStudyChatPagePrimary .casechat-modal__title,
+#caseStudyChatPageAdvanced .casechat-modal__title {
   font-weight: 750;
   font-size: 14px;
   color: #111;
@@ -3087,7 +3497,15 @@ input:checked + .slider:before {
 }
 
 /* ✅ 이게 지금 스크린샷의 ‘빨간 막대 X’ 문제를 직접 잡는 부분 */
-#caseStudyChatPage .casechat-modal__close {
+#caseStudyChatPage .casechat-modal__close,
+
+
+/* ✅ 이게 지금 스크린샷의 ‘빨간 막대 X’ 문제를 직접 잡는 부분 */
+#caseStudyChatPagePrimary .casechat-modal__close,
+
+
+/* ✅ 이게 지금 스크린샷의 ‘빨간 막대 X’ 문제를 직접 잡는 부분 */
+#caseStudyChatPageAdvanced .casechat-modal__close {
   width: auto !important;
   margin: 0 !important;
   padding: 0 2px !important;
@@ -3100,29 +3518,51 @@ input:checked + .slider:before {
   cursor: pointer;
 }
 
-#caseStudyChatPage .casechat-dxcard {
+#caseStudyChatPage .casechat-dxcard,
+#caseStudyChatPagePrimary .casechat-dxcard,
+#caseStudyChatPageAdvanced .casechat-dxcard {
   flex: 0 0 auto;
   margin-top: -3px;
 }
 
 /* Correct text + answer in green */
-#caseStudyChatPage .casechat-resultOk {
+#caseStudyChatPage .casechat-resultOk,
+
+
+/* Correct text + answer in green */
+#caseStudyChatPagePrimary .casechat-resultOk,
+
+
+/* Correct text + answer in green */
+#caseStudyChatPageAdvanced .casechat-resultOk {
   color: #198754;
   font-weight: 700;
 }
 
-#caseStudyChatPage .casechat-resultWhy b {
+#caseStudyChatPage .casechat-resultWhy b,
+#caseStudyChatPagePrimary .casechat-resultWhy b,
+#caseStudyChatPageAdvanced .casechat-resultWhy b {
   color: #198754;
   font-weight: 700;
 }
 
 /* (선택) Dx 리스트에서 정답 선택지 텍스트도 초록 */
-#caseStudyChatPage .casechat-dxitem.is-correct .casechat-dxlabel {
+#caseStudyChatPage .casechat-dxitem.is-correct .casechat-dxlabel,
+
+
+/* (선택) Dx 리스트에서 정답 선택지 텍스트도 초록 */
+#caseStudyChatPagePrimary .casechat-dxitem.is-correct .casechat-dxlabel,
+
+
+/* (선택) Dx 리스트에서 정답 선택지 텍스트도 초록 */
+#caseStudyChatPageAdvanced .casechat-dxitem.is-correct .casechat-dxlabel {
   color: #198754 !important;
   font-weight: 650;
 }
 
-#caseStudyChatPage .casechat-toggle {
+#caseStudyChatPage .casechat-toggle,
+#caseStudyChatPagePrimary .casechat-toggle,
+#caseStudyChatPageAdvanced .casechat-toggle {
   position: absolute;
   left: 9px;
   top: 11px;
@@ -3145,7 +3585,17 @@ input:checked + .slider:before {
 
 /* ================= Case Study (Chat / Dx) ================= */
 
-#caseStudyChatPage .casechat-dxitem {
+#caseStudyChatPage .casechat-dxitem,
+
+
+/* ================= Case Study (Chat / Dx) ================= */
+
+#caseStudyChatPagePrimary .casechat-dxitem,
+
+
+/* ================= Case Study (Chat / Dx) ================= */
+
+#caseStudyChatPageAdvanced .casechat-dxitem {
   width: 100%;
   display: flex;
   align-items: center;
@@ -3160,7 +3610,9 @@ input:checked + .slider:before {
   text-align: left;
 }
 
-#caseStudyChatPage .casechat-radio {
+#caseStudyChatPage .casechat-radio,
+#caseStudyChatPagePrimary .casechat-radio,
+#caseStudyChatPageAdvanced .casechat-radio {
   width: 18px;
   height: 18px;
   border-radius: 9999px;
@@ -3172,7 +3624,15 @@ input:checked + .slider:before {
 }
 
 /* 선택됨: radio fill */
-#caseStudyChatPage .casechat-dxitem.is-selected .casechat-radio::after {
+#caseStudyChatPage .casechat-dxitem.is-selected .casechat-radio::after,
+
+
+/* 선택됨: radio fill */
+#caseStudyChatPagePrimary .casechat-dxitem.is-selected .casechat-radio::after,
+
+
+/* 선택됨: radio fill */
+#caseStudyChatPageAdvanced .casechat-dxitem.is-selected .casechat-radio::after {
   content: "";
   width: 10px;
   height: 10px;
@@ -3181,40 +3641,80 @@ input:checked + .slider:before {
 }
 
 /* 오답: 빨간 박스 + radio 빨강 */
-#caseStudyChatPage .casechat-dxitem.is-wrong {
+#caseStudyChatPage .casechat-dxitem.is-wrong,
+
+
+/* 오답: 빨간 박스 + radio 빨강 */
+#caseStudyChatPagePrimary .casechat-dxitem.is-wrong,
+
+
+/* 오답: 빨간 박스 + radio 빨강 */
+#caseStudyChatPageAdvanced .casechat-dxitem.is-wrong {
   background: #fdecec;
   border-color: #fca5a5;
 }
 
-#caseStudyChatPage .casechat-dxitem.is-wrong .casechat-radio {
+#caseStudyChatPage .casechat-dxitem.is-wrong .casechat-radio,
+#caseStudyChatPagePrimary .casechat-dxitem.is-wrong .casechat-radio,
+#caseStudyChatPageAdvanced .casechat-dxitem.is-wrong .casechat-radio {
   border-color: #ef4444;
 }
 
-#caseStudyChatPage .casechat-dxitem.is-wrong .casechat-radio::after {
+#caseStudyChatPage .casechat-dxitem.is-wrong .casechat-radio::after,
+#caseStudyChatPagePrimary .casechat-dxitem.is-wrong .casechat-radio::after,
+#caseStudyChatPageAdvanced .casechat-dxitem.is-wrong .casechat-radio::after {
   background: #ef4444;
 }
 
 /* 정답: 초록 박스 + radio 초록 */
-#caseStudyChatPage .casechat-dxitem.is-correct {
+#caseStudyChatPage .casechat-dxitem.is-correct,
+
+
+/* 정답: 초록 박스 + radio 초록 */
+#caseStudyChatPagePrimary .casechat-dxitem.is-correct,
+
+
+/* 정답: 초록 박스 + radio 초록 */
+#caseStudyChatPageAdvanced .casechat-dxitem.is-correct {
   background: #eaf7ee;
   border-color: #86efac;
 }
 
-#caseStudyChatPage .casechat-dxitem.is-correct .casechat-radio {
+#caseStudyChatPage .casechat-dxitem.is-correct .casechat-radio,
+#caseStudyChatPagePrimary .casechat-dxitem.is-correct .casechat-radio,
+#caseStudyChatPageAdvanced .casechat-dxitem.is-correct .casechat-radio {
   border-color: #22c55e;
 }
 
-#caseStudyChatPage .casechat-dxitem.is-correct .casechat-radio::after {
+#caseStudyChatPage .casechat-dxitem.is-correct .casechat-radio::after,
+#caseStudyChatPagePrimary .casechat-dxitem.is-correct .casechat-radio::after,
+#caseStudyChatPageAdvanced .casechat-dxitem.is-correct .casechat-radio::after {
   background: #22c55e;
 }
 
 /* 비활성화된 다른 선택지 */
-#caseStudyChatPage .casechat-dxitem.is-disabled {
+#caseStudyChatPage .casechat-dxitem.is-disabled,
+
+
+/* 비활성화된 다른 선택지 */
+#caseStudyChatPagePrimary .casechat-dxitem.is-disabled,
+
+
+/* 비활성화된 다른 선택지 */
+#caseStudyChatPageAdvanced .casechat-dxitem.is-disabled {
   opacity: 0.6;
 }
 
 /* footer 아래 채팅 비침을 막는 '불투명 마스크' */
-#caseStudyChatPage .casechat-footer-mask {
+#caseStudyChatPage .casechat-footer-mask,
+
+
+/* footer 아래 채팅 비침을 막는 '불투명 마스크' */
+#caseStudyChatPagePrimary .casechat-footer-mask,
+
+
+/* footer 아래 채팅 비침을 막는 '불투명 마스크' */
+#caseStudyChatPageAdvanced .casechat-footer-mask {
   position: fixed;
   left: 50%;
   transform: translateX(-50%);
@@ -3231,7 +3731,23 @@ input:checked + .slider:before {
 
 /* Case Study: modal header buttons must not inherit the global button style */
 #caseStudyChatPage .casechat-modal__close,
-#caseStudyChatPage .caseTimer {
+
+
+/* Case Study: modal header buttons must not inherit the global button style */
+#caseStudyChatPagePrimary .casechat-modal__close,
+
+
+/* Case Study: modal header buttons must not inherit the global button style */
+#caseStudyChatPageAdvanced .casechat-modal__close,
+
+
+#caseStudyChatPage .caseTimer,
+
+
+#caseStudyChatPagePrimary .caseTimer,
+
+
+#caseStudyChatPageAdvanced .caseTimer {
   width: auto;
   margin-top: 0;
   padding: 0;
@@ -3245,7 +3761,15 @@ input:checked + .slider:before {
 }
 
 /* keep the small timer actually small */
-#caseStudyChatPage .caseTimer--sm {
+#caseStudyChatPage .caseTimer--sm,
+
+
+/* keep the small timer actually small */
+#caseStudyChatPagePrimary .caseTimer--sm,
+
+
+/* keep the small timer actually small */
+#caseStudyChatPageAdvanced .caseTimer--sm {
   width: 32px;
   height: 32px;
 }
@@ -3257,7 +3781,15 @@ input:checked + .slider:before {
 }
 
 /* ✅ typing(…) 말풍선: 카톡처럼 위아래로 ‘둥둥’ */
-#caseStudyChatPage .casechat-bubble.is-typing {
+#caseStudyChatPage .casechat-bubble.is-typing,
+
+
+/* ✅ typing(…) 말풍선: 카톡처럼 위아래로 ‘둥둥’ */
+#caseStudyChatPagePrimary .casechat-bubble.is-typing,
+
+
+/* ✅ typing(…) 말풍선: 카톡처럼 위아래로 ‘둥둥’ */
+#caseStudyChatPageAdvanced .casechat-bubble.is-typing {
   animation: caseTypingBob 0.9s ease-in-out infinite;
   will-change: transform;
 }
@@ -3925,7 +4457,23 @@ input:checked + .slider:before {
 
 /* Case Study: prevent global button styles from breaking icon buttons */
 #caseStudyChatPage .casechat-modal__close,
-#caseStudyChatPage .caseTimer {
+
+
+/* Case Study: prevent global button styles from breaking icon buttons */
+#caseStudyChatPagePrimary .casechat-modal__close,
+
+
+/* Case Study: prevent global button styles from breaking icon buttons */
+#caseStudyChatPageAdvanced .casechat-modal__close,
+
+
+#caseStudyChatPage .caseTimer,
+
+
+#caseStudyChatPagePrimary .caseTimer,
+
+
+#caseStudyChatPageAdvanced .caseTimer {
   width: auto;
   height: auto;
   padding: 0;
@@ -3940,7 +4488,15 @@ input:checked + .slider:before {
 }
 
 /* close button sizing */
-#caseStudyChatPage .casechat-modal__close {
+#caseStudyChatPage .casechat-modal__close,
+
+
+/* close button sizing */
+#caseStudyChatPagePrimary .casechat-modal__close,
+
+
+/* close button sizing */
+#caseStudyChatPageAdvanced .casechat-modal__close {
   width: 45px;
   height: 35px;
   border-radius: 12px;
@@ -3950,7 +4506,15 @@ input:checked + .slider:before {
 }
 
 /* keep the small timer actually small */
-#caseStudyChatPage .caseTimer--sm {
+#caseStudyChatPage .caseTimer--sm,
+
+
+/* keep the small timer actually small */
+#caseStudyChatPagePrimary .caseTimer--sm,
+
+
+/* keep the small timer actually small */
+#caseStudyChatPageAdvanced .caseTimer--sm {
   width: 32px;
   height: 32px;
 }

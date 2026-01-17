@@ -71,7 +71,7 @@ function _launchQuiz() {
   }
 
   // ✅ 항상 퀴즈 페이지로 이동
-  showPage(quizPageId);
+  show(quizPageId);
 
   const questions = [
     {
@@ -175,10 +175,10 @@ function _launchQuiz() {
   });
 
   quizPage.querySelector("#backToVideoBtn").addEventListener("click", () => {
-    showPage(previousPage);
+    show(previousPage);
   });
 
-  showPage(quizPageId);
+  show(quizPageId);
 }
 
 function _renderQuestion(caseIndex, questionIndex) {
