@@ -12,16 +12,66 @@ function shuffle(arr) {
 
 function buildCasePool() {
   const pool = [
-    { caseNum: 1, variant: "infant" },
     { caseNum: 1, variant: "elderly" },
+
+    // case 2 variants
+    { caseNum: 2, variant: "progressive" },
+    { caseNum: 2, variant: "congenital" },
+
+    // case 3 variants
+    { caseNum: 3, variant: "adult" },
+    { caseNum: 3, variant: "neonate" },
+
+    // remaining single cases
+    { caseNum: 4, variant: null },
+    { caseNum: 5, variant: null },
+    { caseNum: 6, variant: null },
+    { caseNum: 7, variant: null },
+    { caseNum: 8, variant: null },
+    { caseNum: 9, variant: null },
+    { caseNum: 10, variant: null },
+    { caseNum: 11, variant: null },
+    { caseNum: 12, variant: null },
   ];
 
-  // 8 cases (2..9) => total 10 cases
-  for (let i = 2; i <= 9; i++) {
-    pool.push({ caseNum: i, variant: null });
-  }
+  // group by caseNum and randomly pick one variant per case
+  const grouped = {};
+  pool.forEach((c) => {
+    if (!grouped[c.caseNum]) grouped[c.caseNum] = [];
+    grouped[c.caseNum].push(c);
+  });
 
-  return shuffle(pool);
+  return shuffle(
+    Object.values(grouped).map(
+      (arr) => arr[Math.floor(Math.random() * arr.length)],
+    ),
+  );
+}
+
+function ageIntroForCase({ caseNum, variant }) {
+  if (caseNum === 1) return "This patient is 78 years old";
+
+  if (caseNum === 2 && variant === "progressive")
+    return "This patient is 12 months old";
+  if (caseNum === 2 && variant === "congenital")
+    return "This patient is 12 months old";
+
+  if (caseNum === 3 && variant === "adult")
+    return "This patient is 18 years old";
+  if (caseNum === 3 && variant === "neonate")
+    return "This patient is 2 weeks old";
+
+  if (caseNum === 4) return "This patient is 38 years old";
+  if (caseNum === 5) return "This patient is 29 years old";
+  if (caseNum === 6) return "This patient is 21 years old";
+  if (caseNum === 7) return "This patient is 21 years old";
+  if (caseNum === 8) return "This patient is 69 years old";
+  if (caseNum === 9) return "This patient is 21 years old";
+  if (caseNum === 10) return "This patient is 32 years old";
+  if (caseNum === 11) return "This patient is 8 years old";
+  if (caseNum === 12) return "This patient is 8 years old";
+
+  return "";
 }
 
 function pickRandomCase() {
@@ -39,34 +89,30 @@ function imgPathForCase(caseNum) {
 
 // ---------- data ----------
 const QUESTIONS = [
-  { id: "age", label: "age", ui: "How old are you?" },
-  {
-    id: "onset",
-    label: "onset",
-    ui: "When did it start and how did it begin?",
-  },
+  { id: "problem", label: "problem", ui: "What seems to be the main problem?" },
+  { id: "when", label: "when", ui: "When did it start?" },
+  { id: "how", label: "how", ui: "How did it start?" },
+  { id: "eye", label: "one/both", ui: "Is it affecting one eye or both eyes?" },
   { id: "pain", label: "pain/itch", ui: "Do you have any pain or itchiness?" },
-  { id: "treatment", label: "treatment", ui: "Have you taken any treatment?" },
-
   {
     id: "redness",
     label: "redness/discharge",
-    ui: "Have you noticed any redness/discharge?",
+    ui: "Have you noticed any redness or discharge?",
   },
   {
-    id: "loss",
-    label: "vision/hearing loss",
-    ui: "Have you had any loss of vision/hearing?",
-  },
-  {
-    id: "balance",
-    label: "balance",
-    ui: "Any balance problems or wobbly vision?",
+    id: "vision",
+    label: "vision",
+    ui: "Have you noticed any loss of vision?",
   },
   {
     id: "course",
-    label: "worse or better",
+    label: "worse/better",
     ui: "Is it getting worse or better?",
+  },
+  {
+    id: "treatment",
+    label: "treatment",
+    ui: "Have you had any treatment so far?",
   },
   {
     id: "other",
@@ -92,180 +138,215 @@ const DIAGNOSES = [
 ];
 
 function caseAnswers({ caseNum, variant }) {
-  const nm = "No.";
-
-  if (caseNum === 1 && variant === "elderly") {
+  if (caseNum === 1) {
     return {
-      age: "78 years old.",
-      onset:
-        "It has been gradually getting worse over several months. It started in one eye then affected both.",
-      pain: "No pain and no discharge.",
-      redness: "The eye looks white.",
-      loss: "Vision was blurry at first but now I cannot see anything.",
-      balance: nm,
-      course: "It has been getting worse.",
-      treatment: "No treatment yet.",
-      other: nm,
+      problem: "I can’t really see anything anymore.",
+      when: "It started over a year ago.",
+      how: "There was no injury, it just came on slowly.",
+      eye: "It started in one eye, but now both eyes are affected.",
+      pain: "No, there’s no pain or itchiness.",
+      redness: "The eye looks white and there’s no discharge.",
+      vision: "I can only see shadows now.",
+      course: "It’s been gradually getting worse.",
+      treatment: "No, I haven’t had any treatment yet.",
+      other: "No.",
     };
   }
 
-  if (caseNum === 2) {
+  if (caseNum === 2 && variant === "progressive") {
     return {
-      age: "12 months old.",
-      onset:
-        "It started around 6 months and has been gradually getting worse. Both eyes are affected.",
-      pain: "No pain and no discharge.",
-      redness: "The eye looks white.",
-      loss: "The child has lost interest in looking around.",
-      balance: nm,
-      course: "Getting worse.",
-      treatment: "No treatment yet.",
-      other: nm,
+      problem: "I noticed my child’s pupil looking white.",
+      when: "It started when my child was around six months old.",
+      how: "There was no injury, it just came on slowly.",
+      eye: "It started in one eye and now both eyes are affected.",
+      pain: "No, there’s no pain or itchiness.",
+      redness: "The eyes look white and there’s no discharge.",
+      vision: "My child has lost interest in looking around.",
+      course: "It’s getting worse.",
+      treatment: "No, we haven’t had any treatment yet.",
+      other: "An older sibling had a similar problem and sadly passed away.",
     };
   }
 
-  if (caseNum === 3) {
+  if (caseNum === 2 && variant === "congenital") {
     return {
-      age: "18 years old.",
-      onset:
-        "It started one week ago and worsened over 1 to 2 days. It started in one eye then both.",
-      pain: "It is sticky with yellow discharge and the eye is pink.",
-      redness: "Pink eye with yellow discharge.",
-      loss: "Vision is blurry too.",
-      balance: nm,
-      course: "Getting worse.",
-      treatment: "No treatment yet.",
-      other: nm,
+      problem: "I noticed my child’s pupils looking white.",
+      when: "It’s been there since birth.",
+      how: "It was present from birth.",
+      eye: "Both eyes are affected.",
+      pain: "No, there’s no pain or itchiness.",
+      redness: "The eyes look white with no discharge.",
+      vision: "My child has never really shown any visual interest.",
+      course: "It seems to be staying the same.",
+      treatment: "No, we haven’t had any treatment yet.",
+      other: "The eyes sometimes seem to shimmer and wobble.",
+    };
+  }
+
+  if (caseNum === 3 && variant === "adult") {
+    return {
+      problem: "My eye feels sticky.",
+      when: "It started about a week ago.",
+      how: "It came on gradually over one to two days.",
+      eye: "It started in one eye and then affected both.",
+      pain: "It’s itchy and sometimes feels gritty.",
+      redness: "The eye is pink with yellow discharge.",
+      vision: "My vision is blurry.",
+      course: "It’s getting worse.",
+      treatment: "No, I haven’t had any treatment yet.",
+      other: "No.",
+    };
+  }
+
+  if (caseNum === 3 && variant === "neonate") {
+    return {
+      problem: "My baby’s eyes look sticky.",
+      when: "It started about a week ago.",
+      how: "It came on gradually over one to two days.",
+      eye: "It started in one eye and then both.",
+      pain: "It’s hard to tell.",
+      redness: "The eyes are pink with thick yellow discharge.",
+      vision: "My baby keeps their eyes shut most of the time.",
+      course: "It’s getting worse.",
+      treatment: "No, there hasn’t been any treatment yet.",
+      other:
+        "I’ve been treated for sexually transmitted infections in the past.",
     };
   }
 
   if (caseNum === 4) {
     return {
-      age: "38 years old.",
-      onset: "It started many months ago and both eyes are affected.",
-      pain: "It is painful and gritty.",
-      redness: "Red eye.",
-      loss: "Blurred vision.",
-      balance: nm,
-      course: "Getting worse.",
-      treatment: "No treatment yet.",
-      other: nm,
+      problem: "My eyes feel painful and gritty.",
+      when: "It started many months ago.",
+      how: "It came on gradually.",
+      eye: "Both eyes are affected.",
+      pain: "Sometimes they feel itchy.",
+      redness: "They’re red and watery.",
+      vision: "My vision is blurry.",
+      course: "It’s getting worse.",
+      treatment: "No, I haven’t had any treatment yet.",
+      other: "No.",
     };
   }
 
   if (caseNum === 5) {
     return {
-      age: "29 years old.",
-      onset: "It started 2 weeks ago after I scratched my eye on a bush.",
-      pain: "It was gritty and watery at first. Now it is very painful.",
-      redness: "Red eye.",
-      loss: "I have lost vision in that eye.",
-      balance: nm,
-      course: "Gradually worse.",
-      treatment: "No treatment yet.",
-      other: "It began after the scratch injury.",
+      problem: "My eye is very painful.",
+      when: "It started about two weeks ago.",
+      how: "It began after I scratched my eye on a bush.",
+      eye: "Only one eye is affected.",
+      pain: "It was gritty at first, then became very painful.",
+      redness: "The eye is red with sticky yellow discharge.",
+      vision: "I can only see shadows now.",
+      course: "It’s getting worse.",
+      treatment: "No, I haven’t had any treatment yet.",
+      other: "No.",
     };
   }
 
   if (caseNum === 6) {
     return {
-      age: "21 years old.",
-      onset: "It started one week ago. Only one eye is affected.",
-      pain: "Gritty and watery.",
-      redness: nm,
-      loss: "Blurred vision.",
-      balance: nm,
-      course: "Gradually getting worse.",
-      treatment: "No treatment yet.",
+      problem: "My eye feels gritty.",
+      when: "It started about a week ago.",
+      how: "It came on gradually over two to three days.",
+      eye: "Only one eye is affected.",
+      pain: "Bright light is painful.",
+      redness: "The eye looks pink and watery.",
+      vision: "My vision is blurry.",
+      course: "It’s gradually getting worse.",
+      treatment: "No, I haven’t had any treatment yet.",
       other:
-        "I had a small patch of painful broken skin on my lip one week before the eye symptoms started.",
+        "I had a painful patch of broken skin on my lip about a week before this started.",
     };
   }
 
   if (caseNum === 7) {
     return {
-      age: "21 years old.",
-      onset: "It started one week ago. Only one eye is affected.",
-      pain: "Bright lights are painful and the eye is watery.",
-      redness: nm,
-      loss: "Slightly blurred vision.",
-      balance: nm,
-      course: "Gradually getting worse.",
-      treatment: "No treatment yet.",
-      other: nm,
+      problem: "Bright light really hurts my eye.",
+      when: "It started about a week ago.",
+      how: "It came on gradually over one to two days.",
+      eye: "Only one eye is affected.",
+      pain: "Light is painful but there’s no itch.",
+      redness: "The eye is pink and watery.",
+      vision: "My vision is slightly blurred.",
+      course: "It’s getting worse.",
+      treatment: "No, I haven’t had any treatment yet.",
+      other: "I’ve had several episodes like this before.",
     };
   }
 
   if (caseNum === 8) {
     return {
-      age: "69 years old.",
-      onset: "It started many months ago. Only one eye is affected.",
-      pain: "Slightly gritty and watery.",
-      redness: nm,
-      loss: "Slightly blurred vision.",
-      balance: nm,
-      course: "Gradually getting worse.",
-      treatment: "No treatment yet.",
-      other: nm,
+      problem: "I noticed a pink patch on my eye.",
+      when: "It started many months ago.",
+      how: "It came on slowly and there was no injury.",
+      eye: "Only one eye is affected.",
+      pain: "It feels a bit gritty.",
+      redness: "The eye looks mostly white but a bit watery.",
+      vision: "My vision seems normal.",
+      course: "It’s slowly getting worse.",
+      treatment: "No, I haven’t had any treatment yet.",
+      other: "I work outdoors in the fields every day.",
     };
   }
 
   if (caseNum === 9) {
     return {
-      age: "21 years old.",
-      onset: "It started after working under my car. Only one eye is affected.",
-      pain: "Gritty and watery.",
-      redness: "A little bit pink.",
-      loss: "Slightly blurred vision.",
-      balance: nm,
-      course: "Gradually getting worse.",
-      treatment: "No treatment yet.",
-      other: nm,
+      problem: "My eye feels gritty.",
+      when: "It started about a week ago.",
+      how: "It began after working under my car.",
+      eye: "Only one eye is affected.",
+      pain: "Bright light feels uncomfortable.",
+      redness: "The eye is a little bit pink.",
+      vision: "My vision is slightly blurred.",
+      course: "It’s getting worse.",
+      treatment: "No, I haven’t had any treatment yet.",
+      other: "No.",
     };
   }
 
   if (caseNum === 10) {
     return {
-      age: "32 years old.",
-      onset:
-        "It started after being hit in the face in a fight. Only one eye is affected.",
-      pain: "Painful and watering.",
-      redness: "Red eye.",
-      loss: "Very poor vision.",
-      balance: nm,
-      course: "Gradually getting worse.",
-      treatment: "No treatment yet.",
-      other: nm,
+      problem: "I’ve lost vision in my eye.",
+      when: "It started about four days ago.",
+      how: "It happened after I was punched.",
+      eye: "Only one eye is affected.",
+      pain: "It’s painful and watery.",
+      redness: "The eye is red.",
+      vision: "I can only see shadows.",
+      course: "It seems to be staying the same.",
+      treatment: "No, I haven’t had any treatment yet.",
+      other: "No.",
     };
   }
 
   if (caseNum === 11) {
     return {
-      age: "8 years old.",
-      onset:
-        "It started 3 days ago after being hit by a stick while play fighting. Only one eye is affected.",
-      pain: "Painful and watering.",
-      redness: "Red eye.",
-      loss: "Blurred vision.",
-      balance: nm,
-      course: "Gradually getting worse.",
-      treatment: "No treatment yet.",
-      other: nm,
+      problem: "My eye is painful.",
+      when: "It started about three days ago.",
+      how: "It happened after I was hit in the face with a stick.",
+      eye: "Only one eye is affected.",
+      pain: "It feels gritty but not itchy.",
+      redness: "The eye is pink and watery.",
+      vision: "My vision is blurry.",
+      course: "It’s getting worse.",
+      treatment: "No, I haven’t had any treatment yet.",
+      other: "No.",
     };
   }
 
   if (caseNum === 12) {
     return {
-      age: "8 years old.",
-      onset:
-        "It started today after being hit by a stick while play fighting. Only one eye is affected.",
-      pain: "Painful and watering.",
-      redness: "Red eye.",
-      loss: "Very poor vision.",
-      balance: nm,
-      course: "Gradually getting worse.",
-      treatment: "No treatment yet.",
-      other: nm,
+      problem: "I’ve suddenly lost vision in my eye.",
+      when: "It started yesterday.",
+      how: "It happened after I was hit in the eye with a stick.",
+      eye: "Only one eye is affected.",
+      pain: "It’s painful.",
+      redness: "The eye is red and watery.",
+      vision: "I can only see shadows.",
+      course: "It’s getting worse.",
+      treatment: "No, I haven’t had any treatment yet.",
+      other: "No.",
     };
   }
 
@@ -527,7 +608,7 @@ export function initializeCaseStudy() {
     return words[n - 1] || `${n}th`;
   }
 
-  const TOTAL_CASES = 10;
+  const TOTAL_CASES = 12;
 
   let pending = null;
   let dxLocked = false;
@@ -906,8 +987,16 @@ export function initializeCaseStudy() {
     log.innerHTML = "";
     caseIndex += 1;
 
+    const ageIntro = ageIntroForCase(state.current);
+
     appendSystem(`
-  <span class="casechat-caseindex">Case ${caseIndex} <span class="casechat-casecount">(${caseIndex}/${TOTAL_CASES})</span></span>
+  <div class="casechat-caseblock">
+    <div class="casechat-caseindex">
+      Case ${caseIndex}
+      <span class="casechat-casecount">(${caseIndex}/${TOTAL_CASES})</span>
+    </div>
+    ${ageIntro ? `<div class="casechat-caseindex">${ageIntro}</div>` : ""}
+  </div>
   <span class="casechat-firstprompt">Take a history to work out what is wrong</span>
 `);
 
