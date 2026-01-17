@@ -1906,6 +1906,12 @@ input:checked + .slider:before {
   --cap-to: #e11b1b;
 }
 
+#casestudyPage .pupil-level--advanced {
+  --accent: #e41e26;
+  --cap-from: #ef2b2b;
+  --cap-to: #b70000;
+}
+
 /* Gradient cap header */
 #casestudyPage .pupil-level__cap {
   background: linear-gradient(
@@ -1980,6 +1986,10 @@ input:checked + .slider:before {
 /* Intermediate case study icon */
 #casestudyPage .pupil-level--intermediate .lesson-row--quiz .thumb {
   background-image: url("/images/icon/eyes/moduleicons/intermediate_casestudy.webp");
+}
+
+#casestudyPage .pupil-level--advanced .lesson-row--quiz .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/advanced_casestudy.webp");
 }
 
 /* lesson meta */
@@ -2848,8 +2858,10 @@ input:checked + .slider:before {
 
 #caseStudyChatPage .casechat-footer {
   position: fixed;
-  left: 14px;
-  right: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(92vw, 360px);
+  right: auto;
   bottom: 67px;
   z-index: 60;
   height: auto;
@@ -2857,7 +2869,7 @@ input:checked + .slider:before {
   border-radius: 22px;
   padding: 0;
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
-} /*이거 방금 바꿈*/
+}
 
 #caseStudyChatPage .casechat-footer.is-expanded #caseChatChoices {
   position: absolute;
@@ -3204,8 +3216,10 @@ input:checked + .slider:before {
 /* footer 아래 채팅 비침을 막는 '불투명 마스크' */
 #caseStudyChatPage .casechat-footer-mask {
   position: fixed;
-  left: 14px;
-  right: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(92vw, 360px);
+  right: auto;
   bottom: -11px;
   z-index: 59;
   background: #f2f3f7;
@@ -3234,6 +3248,30 @@ input:checked + .slider:before {
 #caseStudyChatPage .caseTimer--sm {
   width: 32px;
   height: 32px;
+}
+
+.casechat-bubble.is-typing .casechat-text {
+  letter-spacing: 2px;
+  font-size: 20px;
+  opacity: 0.85;
+}
+
+/* ✅ typing(…) 말풍선: 카톡처럼 위아래로 ‘둥둥’ */
+#caseStudyChatPage .casechat-bubble.is-typing {
+  animation: caseTypingBob 0.9s ease-in-out infinite;
+  will-change: transform;
+}
+
+@keyframes caseTypingBob {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+  100% {
+    transform: translateY(0);
+  }
 }
 
 /* ============================================= Canonical Eyes Topbar ============================================= */

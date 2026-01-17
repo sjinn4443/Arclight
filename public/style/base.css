@@ -143,9 +143,10 @@ html {
 -------------------------- */
 .tri-toggle {
   --toggle-height: 36px;
+  --tri-cols: 3; /* ✅ 기본 3칸, JS가 2로 바꿀 수 있음 */
   position: relative;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(var(--tri-cols), 1fr); /* ✅ */
   align-items: center;
   width: 31%;
   max-width: 420px;
@@ -207,7 +208,7 @@ html {
 .tri-toggle__knob {
   position: absolute;
   inset: 4px; /* top/bottom/left/right 고정 제거 */
-  width: calc((100% - 8px) / 3);
+  width: calc((100% - 8px) / var(--tri-cols));
   background: #e41e26;
   border-radius: 999px;
   transition: transform 180ms ease;
@@ -215,13 +216,20 @@ html {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
 }
 
-/* knob positions */
-.tri-toggle[data-active="low"] .tri-toggle__knob {
-  transform: translateX(0%);
+/* ✅ knob positions (index-based) */
+.tri-toggle {
+  --tri-index: 0; /* low=0, high=1, online=2 */
 }
-.tri-toggle[data-active="high"] .tri-toggle__knob {
-  transform: translateX(100%);
+.tri-toggle .tri-toggle__knob {
+  transform: translateX(calc(var(--tri-index) * 100%));
 }
-.tri-toggle[data-active="online"] .tri-toggle__knob {
-  transform: translateX(200%);
+
+.tri-toggle[data-active="low"] {
+  --tri-index: 0;
+}
+.tri-toggle[data-active="high"] {
+  --tri-index: 1;
+}
+.tri-toggle[data-active="online"] {
+  --tri-index: 2;
 }

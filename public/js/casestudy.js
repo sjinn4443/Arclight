@@ -109,20 +109,6 @@ function caseAnswers({ caseNum, variant }) {
     };
   }
 
-  if (caseNum === 1 && variant === "infant") {
-    return {
-      age: "6 months old.",
-      onset: "Present at birth and affecting both eyes.",
-      pain: "No pain and no discharge.",
-      redness: "The eye looks white.",
-      loss: "The child has never been able to see.",
-      balance: nm,
-      course: nm,
-      treatment: "No treatment yet.",
-      other: nm,
-    };
-  }
-
   if (caseNum === 2) {
     return {
       age: "12 months old.",
@@ -747,6 +733,35 @@ export function initializeCaseStudy() {
     appendBubble("bot", html);
   }
 
+  function appendBotTyping(dots = "...") {
+    const log = document.getElementById("caseChatLog");
+    if (!log) return null;
+
+    const bubble = document.createElement("div");
+    bubble.className =
+      "casechat-bubble casechat-bubble--bot casechat-bubble--typing is-typing";
+
+    // ✅ 나중에 querySelector(".casechat-text")로 교체 가능하게 구조 맞춤
+    bubble.innerHTML = `<div class="casechat-text">${dots}</div>`;
+    log.appendChild(bubble);
+
+    requestAnimationFrame(keepLastMessageVisible);
+    return bubble;
+  }
+
+  function calcTypingDelay(answerText) {
+    // ✅ 답변 길이 기반으로 표시 시간 가변 (너가 원한 behaviour)
+    const len = (answerText || "").trim().length;
+
+    // 350ms ~ 1800ms 범위로 clamp
+    const min = 350;
+    const max = 1800;
+
+    // 글자 수에 비례해 늘리되 너무 길면 cap
+    const ms = min + Math.min(1450, Math.floor(len * 18));
+    return Math.max(min, Math.min(max, ms));
+  }
+
   function renderChoices() {
     choices.innerHTML = "";
 
@@ -918,7 +933,32 @@ export function initializeCaseStudy() {
     const answers = caseAnswers(state.current);
     const reply = answers?.[q.id] || "No.";
 
-    appendBot(reply);
+    // 1) 답변 길이에 따라 dots(… 개수)도 가변
+    const len = (reply || "").trim().length;
+    const dotsCount = Math.max(3, Math.min(7, 3 + Math.floor(len / 40)));
+    const dots = ".".repeat(dotsCount);
+
+    // 2) 먼저 typing 말풍선을 띄움
+    const typingBubble = appendBotTyping(dots);
+
+    // 3) 답변 길이에 따라 typing 표시 시간 결정
+    const delay = calcTypingDelay(reply);
+
+    // 4) delay 후에 typingBubble을 실제 답변으로 교체
+    setTimeout(() => {
+      if (!typingBubble) {
+        appendBot(reply);
+        return;
+      }
+
+      const textEl = typingBubble.querySelector(".casechat-text");
+      if (textEl) textEl.textContent = reply;
+
+      // typing 스타일 제거
+      typingBubble.classList.remove("casechat-bubble--typing", "is-typing");
+
+      requestAnimationFrame(keepLastMessageVisible);
+    }, delay);
   }
 
   function closeDxModal() {
@@ -1038,9 +1078,9 @@ export function initializeCaseStudy() {
     startNewCase(); // enter 할 때마다 random + “New case started”
   }
 
-  // list -> chat (일단 intermediate만)
+  // list -> chat (intermediate + advanced 허용)
   const onCaseStudyClick = (level) => {
-    if (level !== "intermediate") return;
+    if (level !== "intermediate" && level !== "advanced") return;
     showChat();
   };
 

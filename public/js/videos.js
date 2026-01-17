@@ -586,21 +586,36 @@ function wireVideoPageTriToggle(pageId) {
   const toggle = page.querySelector(".tri-toggle");
   if (!toggle || toggle.dataset.wired === "1") return;
   toggle.dataset.wired = "1";
+  // ---- tri-toggle button count(2 or 3) + initial mode clamp ----
+  const onlineBtn = toggle.querySelector(
+    '.tri-toggle__btn[data-mode="online"]',
+  );
+  const hasOnline = !!(cfg.sources && cfg.sources.online);
 
-  const initialMode = readGenericVideoMode(cfg.key);
+  if (onlineBtn) {
+    // online 소스 없으면 버튼 자체를 숨김
+    onlineBtn.hidden = !hasOnline;
+  }
+
+  // visible 버튼 개수(2 or 3) 계산해서 CSS 변수로 전달
+  const visibleCount = Array.from(
+    toggle.querySelectorAll(".tri-toggle__btn"),
+  ).filter((b) => !b.hidden).length;
+
+  // CSS는 --tri-cols 로 폭 계산함 (base.css에서 var(--tri-cols) 사용) :contentReference[oaicite:3]{index=3}
+  toggle.style.setProperty("--tri-cols", String(Math.max(1, visibleCount)));
+
+  // ---- initial mode ----
+  let initialMode = readGenericVideoMode(cfg.key);
+
+  // online 없는데 localStorage에 online 저장돼있으면 high로 강제
+  if (initialMode === "online" && !hasOnline) {
+    initialMode = "high";
+    writeGenericVideoMode(cfg.key, initialMode);
+  }
+
   setTriToggleUI(toggle, initialMode);
   applyVideoPageMode(pageId, initialMode, { preserveTime: false });
-  const container = page.querySelector(cfg.containerSelector);
-  const video = container ? container.querySelector(cfg.videoSelector) : null;
-  wireProgressForVideoElement(video, pageId);
-  toggle.addEventListener("click", (e) => {
-    const btn = e.target.closest(".tri-toggle__btn");
-    if (!btn) return;
-
-    const mode = btn.dataset.mode;
-    writeGenericVideoMode(cfg.key, mode);
-    applyVideoPageMode(pageId, mode);
-  });
 }
 
 function applyPupilMode(mode, { preserveTime = true } = {}) {
