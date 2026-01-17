@@ -27,35 +27,51 @@ function _launchQuiz() {
     document.querySelector(".page.active")?.id || "dashboard";
   const quizPageId = "directOphthalmoscopyQuizPage";
 
-  // Avoid creating duplicate quiz pages
-  if (document.getElementById(quizPageId)) {
-    showPage(quizPageId);
-    return;
+  // ✅ quizzes.html에 이미 있는 placeholder를 재사용하되,
+  // 비어 있으면(처음 실행이면) 내용을 채운다.
+  let quizPage = document.getElementById(quizPageId);
+
+  const needsInit =
+    !quizPage ||
+    !quizPage.dataset.initialised ||
+    quizPage.innerHTML.trim() === "";
+
+  if (!quizPage) {
+    quizPage = document.createElement("div");
+    quizPage.id = quizPageId;
+    quizPage.className = "page";
+
+    // appRoot가 있으면 거기에, 없으면 body에 붙이기
+    const host = document.getElementById("appRoot") || document.body;
+    host.appendChild(quizPage);
   }
 
-  const quizPage = document.createElement("div");
-  quizPage.id = quizPageId;
-  quizPage.className = "page";
-  quizPage.innerHTML = `
-    <div class="quiz-container">
-      <div class="quiz-header small">
-        <div class="quiz-header-row centered">
-          <button id="backToVideoBtn" class="back-icon" title="Go back">←</button>
-          <h2>Quiz</h2>
+  if (needsInit) {
+    quizPage.dataset.initialised = "1";
+
+    quizPage.innerHTML = `
+      <div class="quiz-container">
+        <div class="quiz-header small">
+          <div class="quiz-header-row centered">
+            <button id="backToVideoBtn" class="back-icon" title="Go back">←</button>
+            <h2>Quiz</h2>
+          </div>
         </div>
-      </div>
-      <div class="quiz-scroll"><form id="quizForm"></form></div>
-      <div class="quiz-footer">
-        <button type="submit" form="quizForm" class="start-btn">See Results</button>
-      </div>
-      <div id="quizModal" class="quiz-modal hidden">
-        <div class="quiz-modal-content">
-          <p id="quizScoreText"></p>
-          <button id="seeWhyBtn">See why?</button>
+        <div class="quiz-scroll"><form id="quizForm"></form></div>
+        <div class="quiz-footer">
+          <button type="submit" form="quizForm" class="start-btn">See Results</button>
         </div>
-      </div>
-    </div>`;
-  document.getElementById("appRoot").appendChild(quizPage);
+        <div id="quizModal" class="quiz-modal hidden">
+          <div class="quiz-modal-content">
+            <p id="quizScoreText"></p>
+            <button id="seeWhyBtn">See why?</button>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  // ✅ 항상 퀴즈 페이지로 이동
+  showPage(quizPageId);
 
   const questions = [
     {
@@ -241,3 +257,18 @@ function _buildReview() {
     elements.reviewContent.appendChild(caseDiv);
   });
 }
+
+// --- Make quiz launch callable from anywhere + auto-run on quizzes route ---
+(function () {
+  // expose for navigation.js (and old-style calls)
+  window.launchQuiz = () => _launchQuiz();
+
+  // when the quizzes route is loaded, immediately build + show the quiz UI
+  window.addEventListener("page:loaded", (e) => {
+    const routeName = e?.detail?.routeName;
+    if (routeName !== "quizzes") return;
+
+    // build + show the quiz page (fills #directOphthalmoscopyQuizPage)
+    window.launchQuiz();
+  });
+})();
