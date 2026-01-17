@@ -458,7 +458,22 @@ export function initializePageNavigation() {
     // 2) 퀴즈 UI 생성/렌더링은 quiz-launcher.js의 전역 엔트리로 통일
     //    (이 함수가 directOphthalmoscopyQuizPage를 채우고 showPage까지 함)
     if (typeof window.launchQuiz === "function") {
-      return window.launchQuiz();
+      window.launchQuiz();
+    }
+
+    // 3) Ensure the target quiz page is actually visible (avoid blank page)
+    const pages = document.querySelectorAll("#page-content .page");
+    pages.forEach((p) => {
+      p.classList.remove("active");
+      p.style.display = "none";
+    });
+
+    const target = document.getElementById(TARGET_ID);
+    if (target) {
+      target.classList.add("active");
+      target.style.display = "block";
+    } else {
+      console.warn("Quiz target not found:", TARGET_ID);
     }
 
     // 3) 혹시 launchQuiz가 없을 때만 최후의 fallback으로 showPage
@@ -479,7 +494,16 @@ export function initializePageNavigation() {
       const target = e.target;
       if (!(target instanceof Element)) return;
 
-      const btn = target.closest('#quizBtn, [data-action="take-quiz"]');
+      const direct = target.closest?.('#quizBtn, [data-action="take-quiz"]');
+
+      const path = typeof e.composedPath === "function" ? e.composedPath() : [];
+      const fromPath = path.find(
+        (n) =>
+          n instanceof Element &&
+          n.matches?.('#quizBtn, [data-action="take-quiz"]'),
+      );
+
+      const btn = direct || fromPath;
       if (!btn) return;
 
       e.preventDefault();
@@ -498,7 +522,16 @@ export function initializePageNavigation() {
       const target = e.target;
       if (!(target instanceof Element)) return;
 
-      const btn = target.closest('#quizBtn, [data-action="take-quiz"]');
+      const direct = target.closest?.('#quizBtn, [data-action="take-quiz"]');
+
+      const path = typeof e.composedPath === "function" ? e.composedPath() : [];
+      const fromPath = path.find(
+        (n) =>
+          n instanceof Element &&
+          n.matches?.('#quizBtn, [data-action="take-quiz"]'),
+      );
+
+      const btn = direct || fromPath;
       if (!btn) return;
 
       if (e.key !== "Enter" && e.key !== " ") return;

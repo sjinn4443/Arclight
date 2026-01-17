@@ -35,7 +35,7 @@ function _launchQuiz() {
     <div class="quiz-container">
       <div class="quiz-header small">
         <div class="quiz-header-row centered">
-          <button id="backToVideoBtn" class="back-icon" title="Go back">←</button>
+          <button id="backToVideoBtn" class="back-icon" title="Go back"></button>
           <h2>Quiz</h2>
         </div>
       </div>

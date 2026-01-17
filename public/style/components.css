@@ -258,7 +258,7 @@ body.quiz-mode {
 }
 
 .quiz-header.small {
-  padding: 8px;
+  padding: 21px;
   position: relative;
 }
 
@@ -368,7 +368,7 @@ body.quiz-mode {
 }
 
 .quiz-footer .start-btn {
-  background-color: var(--primary-color);
+  background-color: #e41e26;
   color: white;
   border-radius: 12px;
   font-size: 14px;

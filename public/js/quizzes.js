@@ -42,7 +42,11 @@ function _launchQuiz() {
     quizPage.className = "page";
 
     // appRoot가 있으면 거기에, 없으면 body에 붙이기
-    const host = document.getElementById("appRoot") || document.body;
+    const host =
+      document.getElementById("page-content") ||
+      document.querySelector(".page")?.parentElement ||
+      document.body;
+
     host.appendChild(quizPage);
   }
 
@@ -53,7 +57,7 @@ function _launchQuiz() {
       <div class="quiz-container">
         <div class="quiz-header small">
           <div class="quiz-header-row centered">
-            <button id="backToVideoBtn" class="back-icon" title="Go back">←</button>
+
             <h2>Quiz</h2>
           </div>
         </div>
