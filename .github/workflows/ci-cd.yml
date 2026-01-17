@@ -26,7 +26,24 @@ jobs:
           git lfs checkout
 
       - name: Debug video sizes
-        run: ls -lh public/videos/Pupil/*.mp4
+        shell: bash
+        run: |
+          # This step is only for debugging/visibility in CI.
+          # Some branches/environments may not include these large assets,
+          # so this must NOT fail the pipeline.
+          set -euo pipefail
+
+          if [[ -d "public/videos/Pupil" ]]; then
+            shopt -s nullglob
+            files=(public/videos/Pupil/*.mp4)
+            if (( ${#files[@]} )); then
+              ls -lh "${files[@]}"
+            else
+              echo "No .mp4 files found under public/videos/Pupil/"
+            fi
+          else
+            echo "Directory public/videos/Pupil/ does not exist in this checkout."
+          fi
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
