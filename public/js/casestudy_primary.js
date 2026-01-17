@@ -740,7 +740,7 @@ export function initializeCaseStudyPrimary() {
 
     <div class="casechat-confirm__actions">
       <button type="button" class="casechat-confirm__btn is-ok" data-action="restart">Restart</button>
-      <button type="button" class="casechat-confirm__btn is-cancel" data-action="back">Back to history taking</button>
+      <button type="button" class="casechat-confirm__btn is-cancel" data-action="back">Back to<br />history taking</button>
     </div>
   </div>
     `;

@@ -2687,9 +2687,13 @@ input:checked + .slider:before {
 }
 
 #caseStudyChatPage .casechat-confirm__btn.is-cancel,
-#caseStudyChatPagePrimary .casechat-confirm__btn.is-cancel,
 #caseStudyChatPageAdvanced .casechat-confirm__btn.is-cancel {
   background: #e5e7eb !important;
+  color: #111 !important;
+}
+
+#caseStudyChatPagePrimary .casechat-confirm__btn.is-cancel {
+  background: #e41e26 !important;
   color: #111 !important;
 }
 
