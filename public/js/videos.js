@@ -616,6 +616,43 @@ function wireVideoPageTriToggle(pageId) {
 
   setTriToggleUI(toggle, initialMode);
   applyVideoPageMode(pageId, initialMode, { preserveTime: false });
+
+  // ---- bind interactions (click / keyboard) ----
+  const onPickMode = (mode) => {
+    if (!mode) return;
+
+    // online 버튼이 숨김이면 무시
+    const btn = toggle.querySelector(`.tri-toggle__btn[data-mode="${mode}"]`);
+    if (btn && btn.hidden) return;
+
+    writeGenericVideoMode(cfg.key, mode);
+    setTriToggleUI(toggle, mode);
+    // 클릭으로 바꿀 때는 재생 위치 유지하는 편이 UX가 좋음
+    applyVideoPageMode(pageId, mode, { preserveTime: true });
+  };
+
+  toggle.addEventListener("click", (e) => {
+    const btn = e.target.closest(".tri-toggle__btn");
+    if (!btn || !toggle.contains(btn)) return;
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    onPickMode(btn.dataset.mode);
+  });
+
+  // 접근성: Enter/Space로도 토글 변경
+  toggle.addEventListener("keydown", (e) => {
+    if (e.key !== "Enter" && e.key !== " " && e.key !== "Spacebar") return;
+
+    const btn = e.target.closest(".tri-toggle__btn");
+    if (!btn || !toggle.contains(btn)) return;
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    onPickMode(btn.dataset.mode);
+  });
 }
 
 function applyPupilMode(mode, { preserveTime = true } = {}) {
