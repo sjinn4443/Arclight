@@ -378,7 +378,9 @@ export function initializeCaseStudyPrimary() {
 
   const listPage = document.getElementById("casestudyPage");
   const chatPage = document.getElementById("caseStudyChatPagePrimary");
-  if (!listPage || !chatPage) return;
+  const flashPage = document.getElementById("caseStudyFlashcardPagePrimary");
+
+  if (!listPage || !chatPage || !flashPage) return;
 
   const log = chatPage.querySelector("#casePrimaryChatLog");
   const timerText = chatPage.querySelector("#casePrimaryTimerText");
@@ -441,6 +443,378 @@ export function initializeCaseStudyPrimary() {
         renderNextButton();
       }
     }, 1000);
+  }
+
+  // ---------------- Flashcard (Urgent referral) ----------------
+  const FLASH_TOTAL = 30;
+  let flashPool = buildCasePool();
+  let flashIndex = 0;
+  let flashTimerLeft = FLASH_TOTAL;
+  let flashTimerInt = null;
+  let flashCorrectCount = 0;
+  let flashWrong = [];
+  let flashCompletionModalEl = null;
+  let flashSwipeBound = false;
+
+  function ensureFlashCompletionModal() {
+    if (flashCompletionModalEl) return flashCompletionModalEl;
+
+    const modal = document.createElement("div");
+    modal.className = "casechat-modal";
+    modal.hidden = true;
+
+    modal.innerHTML = `
+    <div class="casechat-modalCard" style="max-height:80vh; overflow:auto;">
+      <div class="casechat-modalTop">
+        <div class="casechat-modalTitle">All cards completed</div>
+      </div>
+
+      <div class="casechat-resultWhy" id="flashScoreText"></div>
+
+      <div id="flashWrongList" style="margin-top:12px;"></div>
+
+      <div class="casechat-confirm__actions">
+        <button type="button" class="casechat-confirm__btn is-ok" data-action="restart">Restart</button>
+        <button type="button" class="casechat-confirm__btn is-cancel" data-action="back">Back</button>
+      </div>
+    </div>
+  `;
+
+    modal.addEventListener("click", (e) => {
+      const restartBtn = e.target.closest('[data-action="restart"]');
+      if (restartBtn) {
+        modal.hidden = true;
+        // restart
+        flashPool = buildCasePool();
+        flashIndex = 0;
+        flashCorrectCount = 0;
+        flashWrong = [];
+        renderFlashCard();
+        return;
+      }
+
+      const backBtn = e.target.closest('[data-action="back"]');
+      if (backBtn) {
+        modal.hidden = true;
+        showListFromFlash();
+        return;
+      }
+    });
+
+    flashPage.appendChild(modal);
+    flashCompletionModalEl = modal;
+    return modal;
+  }
+
+  function showFlashCompletionModal() {
+    const modal = ensureFlashCompletionModal();
+
+    const scoreText = modal.querySelector("#flashScoreText");
+    if (scoreText) {
+      scoreText.innerHTML = `You got <b>${flashCorrectCount}</b> out of <b>${flashPool.length}</b> correct.`;
+    }
+
+    const list = modal.querySelector("#flashWrongList");
+    if (list) {
+      if (flashWrong.length === 0) {
+        list.innerHTML = `<div class="casechat-resultWhy">No wrong answers.</div>`;
+      } else {
+        list.innerHTML = flashWrong
+          .map(({ caseObj, correctIsUrgent }) => {
+            const img = imgPathForCase(caseObj.caseNum);
+            const dx = correctDiagnosisForPrimary(caseObj);
+            const label = correctIsUrgent ? "Urgent Referral" : "Not urgent";
+
+            return `
+            <div style="display:flex; gap:10px; padding:10px 0; border-top:1px solid #eee; align-items:center;">
+              <img src="${img}" alt="Case image" style="width:72px; height:72px; object-fit:cover; border-radius:12px;" />
+              <div style="flex:1;">
+                <div style="font-weight:700; font-size:14px; margin-bottom:4px;">${dx}</div>
+                <div style="font-size:13px;">
+                  <b>${label}</b>
+                </div>
+              </div>
+            </div>
+          `;
+          })
+          .join("");
+      }
+    }
+
+    modal.hidden = false;
+  }
+
+  // urgent referral mapping (Primary 12 cases)
+  function isUrgentReferralCase(caseNum) {
+    // urgent: retinoblastoma, neonatal STI conjunctivitis, corneal ulcer, HSV keratitis, anterior uveitis,
+    // foreign body + infection, hyphaema, penetrating injuries
+    return [2, 3, 5, 6, 7, 9, 10, 11, 12].includes(caseNum);
+  }
+
+  function stopFlashTimer() {
+    if (flashTimerInt) {
+      clearInterval(flashTimerInt);
+      flashTimerInt = null;
+    }
+  }
+
+  function renderFlashTimer() {
+    const t = flashPage.querySelector("#primaryFlashTimerText");
+    const fg = flashPage.querySelector("#primaryFlashTimerFg");
+    if (!t || !fg) return;
+
+    t.textContent = String(flashTimerLeft);
+
+    const pct = Math.max(0, Math.min(1, flashTimerLeft / FLASH_TOTAL));
+    const dash = (pct * 100).toFixed(1);
+    fg.setAttribute("stroke-dasharray", `${dash}, 100`);
+  }
+
+  function startFlashTimer(onTimeUp) {
+    stopFlashTimer();
+    flashTimerLeft = FLASH_TOTAL;
+    renderFlashTimer();
+
+    flashTimerInt = setInterval(() => {
+      flashTimerLeft -= 1;
+      renderFlashTimer();
+
+      if (flashTimerLeft <= 0) {
+        flashTimerLeft = 0;
+        renderFlashTimer();
+        stopFlashTimer();
+        if (typeof onTimeUp === "function") onTimeUp();
+      }
+    }, 1000);
+  }
+
+  function showPrimaryFlashcard() {
+    // hide list/chat, show flash
+    listPage.style.display = "none";
+    chatPage.style.display = "none";
+    flashPage.style.display = "block";
+
+    // ✅ 항상 새 게임으로 리셋 (재입장 시 꼬임 방지)
+    stopFlashTimer();
+    flashPool = buildCasePool();
+    flashIndex = 0;
+    flashCorrectCount = 0;
+    flashWrong = [];
+
+    // (모달이 이전에 떠있었다면 숨김)
+    if (flashCompletionModalEl) flashCompletionModalEl.hidden = true;
+
+    // back
+    const backBtn = flashPage.querySelector("#primaryFlashBackBtn");
+    if (backBtn) backBtn.onclick = () => showListFromFlash();
+
+    // buttons
+    const urgentBtn = flashPage.querySelector("#primaryFlashUrgentBtn");
+    const notUrgentBtn = flashPage.querySelector("#primaryFlashNotUrgentBtn");
+    if (urgentBtn) urgentBtn.onclick = () => submitFlashAnswer(true);
+    if (notUrgentBtn) notUrgentBtn.onclick = () => submitFlashAnswer(false);
+
+    // swipe (bind once)
+    bindFlashSwipe();
+
+    // ✅ 가이드 처리
+    const guide = flashPage.querySelector("#primaryFlashGuide");
+    const ok = flashPage.querySelector("#primaryFlashGuideOk");
+    const key = "primaryFlashcardGuideSeen";
+
+    const startNow = () => {
+      // 카드/타이머 시작
+      renderFlashCard();
+    };
+
+    if (guide && ok) {
+      // 이미 본 적 있으면 바로 시작, 아니면 안내 후 시작
+      if (sessionStorage.getItem(key)) {
+        guide.style.display = "none";
+        startNow(); // ✅ 이게 없어서 지금 화면이 비었음
+      } else {
+        guide.style.display = "block";
+        ok.onclick = () => {
+          guide.style.display = "none";
+          sessionStorage.setItem(key, "1");
+          startNow();
+        };
+      }
+    } else {
+      // guide DOM이 없으면 그냥 시작
+      startNow();
+    }
+  }
+
+  // back
+  const backBtn = flashPage.querySelector("#primaryFlashBackBtn");
+  if (backBtn) backBtn.onclick = () => showListFromFlash();
+
+  // buttons
+  const urgentBtn = flashPage.querySelector("#primaryFlashUrgentBtn");
+  const notUrgentBtn = flashPage.querySelector("#primaryFlashNotUrgentBtn");
+  if (urgentBtn) urgentBtn.onclick = () => submitFlashAnswer(true);
+  if (notUrgentBtn) notUrgentBtn.onclick = () => submitFlashAnswer(false);
+
+  // swipe
+  bindFlashSwipe();
+
+  function showListFromFlash() {
+    stopFlashTimer();
+    flashPage.style.display = "none";
+    chatPage.style.display = "none";
+    listPage.style.display = "block";
+  }
+
+  function flashBulletsForCase(caseObj) {
+    // reuse primary lines but remove the “ending prompts”
+    const lines = primaryLinesForCase(caseObj) || [];
+    return lines.filter(
+      (x) =>
+        x && x !== "What is the diagnosis?" && x !== "I think that's about it.",
+    );
+  }
+
+  function renderFlashCard() {
+    // ✅ 끝났으면 요약 화면
+    if (flashIndex >= flashPool.length) {
+      stopFlashTimer();
+      showFlashCompletionModal();
+      return;
+    }
+
+    const caseObj = flashPool[flashIndex]; // ✅ 더 이상 % 사용 X
+    const img = flashPage.querySelector("#primaryFlashImg");
+    const dx = flashPage.querySelector("#primaryFlashDx");
+    const ul = flashPage.querySelector("#primaryFlashBullets");
+
+    if (!img || !dx || !ul) return;
+
+    const diagnosis = correctDiagnosisForPrimary(caseObj);
+    img.src = imgPathForCase(caseObj.caseNum);
+    dx.textContent = diagnosis;
+
+    ul.innerHTML = "";
+    flashBulletsForCase(caseObj).forEach((line) => {
+      const li = document.createElement("li");
+      li.textContent = line;
+      ul.appendChild(li);
+    });
+
+    startFlashTimer(() => {
+      // time up => 오답 처리 후 다음 케이스
+      submitFlashAnswer(null);
+    });
+  }
+
+  function submitFlashAnswer(userSaysUrgent) {
+    // userSaysUrgent: true(urgent), false(not urgent), null(time up)
+    if (flashIndex >= flashPool.length) return;
+
+    const caseObj = flashPool[flashIndex];
+    const correctUrgent = isUrgentReferralCase(caseObj.caseNum);
+
+    const isCorrect = userSaysUrgent === correctUrgent;
+
+    if (isCorrect) {
+      flashCorrectCount += 1;
+    } else {
+      flashWrong.push({
+        caseObj,
+        correctIsUrgent: correctUrgent,
+      });
+    }
+
+    stopFlashTimer();
+
+    // ✅ advance + re-render (this triggers result modal when done)
+    flashIndex += 1;
+    renderFlashCard();
+  }
+
+  function bindFlashSwipe() {
+    if (flashSwipeBound) return;
+    const card = flashPage.querySelector("#primaryFlashCard");
+    if (!card) return;
+
+    let startX = 0;
+    let startY = 0;
+    let dxLive = 0;
+    let tracking = false;
+
+    const resetCard = () => {
+      card.style.transition = "transform 180ms ease";
+      card.style.transform = "translateX(0px) rotate(0deg)";
+      setTimeout(() => {
+        card.style.transition = "";
+      }, 200);
+    };
+
+    const flyOut = (dir, cb) => {
+      // dir: 1 (right), -1 (left)
+      const off = dir * Math.max(320, window.innerWidth);
+      card.style.transition = "transform 180ms ease";
+      card.style.transform = `translateX(${off}px) rotate(${dir * 10}deg)`;
+      setTimeout(() => {
+        card.style.transition = "";
+        card.style.transform = "translateX(0px) rotate(0deg)";
+        if (typeof cb === "function") cb();
+      }, 190);
+    };
+
+    card.addEventListener(
+      "touchstart",
+      (e) => {
+        const t = e.touches?.[0];
+        if (!t) return;
+        tracking = true;
+        startX = t.clientX;
+        startY = t.clientY;
+        dxLive = 0;
+        card.style.transition = "";
+      },
+      { passive: true },
+    );
+
+    card.addEventListener(
+      "touchmove",
+      (e) => {
+        if (!tracking) return;
+        const t = e.touches?.[0];
+        if (!t) return;
+
+        const dx = t.clientX - startX;
+        const dy = t.clientY - startY;
+
+        // 세로 스크롤 제스처면 무시
+        if (Math.abs(dy) > Math.abs(dx)) return;
+
+        dxLive = dx;
+        const rot = Math.max(-12, Math.min(12, dx / 18));
+        card.style.transform = `translateX(${dx}px) rotate(${rot}deg)`;
+      },
+      { passive: true },
+    );
+
+    card.addEventListener("touchend", () => {
+      if (!tracking) return;
+      tracking = false;
+
+      if (dxLive > 90) {
+        // swipe right -> urgent
+        flyOut(1, () => submitFlashAnswer(true));
+        return;
+      }
+      if (dxLive < -90) {
+        // swipe left -> not urgent
+        flyOut(-1, () => submitFlashAnswer(false));
+        return;
+      }
+
+      resetCard();
+    });
+
+    flashSwipeBound = true;
   }
 
   // ---- UI helpers ----
@@ -843,18 +1217,31 @@ export function initializeCaseStudyPrimary() {
   }
 
   // ✅ 어떤 요소를 클릭하든(카드/lesson-row/Start 텍스트 등) 무조건 잡히게
+  function routePrimaryEntry(level) {
+    if (level === "primary") {
+      showChat();
+      return;
+    }
+    if (level === "primary-flashcard") {
+      showPrimaryFlashcard();
+      return;
+    }
+  }
+
   listPage.addEventListener(
     "click",
     (e) => {
-      const hit =
-        e.target.closest("#caseStudyPrimaryCard") ||
-        e.target.closest('.lesson-row[data-level="primary"]');
-      if (!hit) return;
+      const row = e.target.closest(".lesson-row");
+      const inPrimaryCard = e.target.closest("#caseStudyPrimaryCard");
+      if (!inPrimaryCard) return;
 
       e.preventDefault();
-      onCaseStudyClick("primary");
+
+      // row가 있으면 row의 data-level로 분기, 없으면 기본(case study)
+      const level = row?.dataset?.level || "primary";
+      routePrimaryEntry(level);
     },
-    true, // ✅ CAPTURE 단계로 강제
+    true,
   );
 
   listPage.addEventListener(
@@ -862,17 +1249,15 @@ export function initializeCaseStudyPrimary() {
     (e) => {
       if (!isEnterOrSpace(e)) return;
 
-      const hit =
-        e.target.closest("#caseStudyPrimaryCard") ||
-        e.target.closest('.lesson-row[data-level="primary"]');
-      if (!hit) return;
+      const row = e.target.closest(".lesson-row");
+      const inPrimaryCard = e.target.closest("#caseStudyPrimaryCard");
+      if (!inPrimaryCard) return;
 
       e.preventDefault();
-      onCaseStudyClick("primary");
-    },
-    true, // ✅ CAPTURE
-  );
 
-  // ⬅️ 뒤로가기 버튼이 Primary 페이지에 없다면, 일단 ESC 등으로 나가는 로직은 나중에 추가 가능
-  // 지금 단계 목표는 “Primary가 계획대로 동작”이니까 showList는 다음 단계에서 UI에 연결해도 됨.
+      const level = row?.dataset?.level || "primary";
+      routePrimaryEntry(level);
+    },
+    true,
+  );
 }

@@ -49,6 +49,47 @@
             <span class="lesson-cta">Start &gt;</span>
           </div>
         </button>
+
+        <!-- ✅ NEW: Referral Flashcard row (Primary) -->
+        <button
+          type="button"
+          class="pupil-card module-card"
+          id="caseStudyPrimaryCard"
+        >
+          <h3>Urgent Referral</h3>
+          <div
+            class="lesson-row lesson-row--quiz"
+            role="button"
+            tabindex="0"
+            data-level="primary-flashcard"
+          >
+            <div
+              class="thumb"
+              aria-hidden="true"
+              style="
+                background-image: url(&quot;/images/icon/eyes/moduleicons/primary_flashcard.webp&quot;);
+              "
+            ></div>
+
+            <div class="lesson-main">
+              <div class="lesson-top">
+                <span class="lesson-type">Flashcard</span>
+                <span class="lesson-meta"></span>
+              </div>
+
+              <div
+                class="lesson-progress"
+                role="progressbar"
+                aria-valuemin="0"
+                aria-valuemax="100"
+              >
+                <div class="lesson-progress__fill" style="width: 0%"></div>
+              </div>
+            </div>
+
+            <span class="lesson-cta">Start &gt;</span>
+          </div>
+        </button>
       </section>
 
       <div class="pupils-dots" aria-hidden="true">
@@ -699,6 +740,188 @@
             Next case
           </button>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ✅ Primary Referral Flashcard page -->
+<div
+  id="caseStudyFlashcardPagePrimary"
+  class="page has-eyes-topbar"
+  style="display: none"
+>
+  <div class="container pupils-container">
+    <div class="eyes-topbar">
+      <button
+        id="primaryFlashBackBtn"
+        type="button"
+        class="icon"
+        aria-label="Back"
+        style="
+          border: none;
+          background: transparent;
+          font-size: 22px;
+          line-height: 1;
+        "
+      >
+        &lt;
+      </button>
+
+      <div class="eyes-topbar__title">Referral Flashcard</div>
+
+      <div class="eyes-topbar__icons">
+        <button
+          id="primaryFlashTimerBtn"
+          class="caseTimer"
+          type="button"
+          aria-label="Flashcard timer"
+        >
+          <svg
+            class="caseTimer__svg"
+            viewBox="0 0 36 36"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <path
+              class="caseTimer__bg"
+              d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+            />
+            <path
+              id="primaryFlashTimerFg"
+              class="caseTimer__fg"
+              d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+            />
+            <text
+              id="primaryFlashTimerText"
+              x="18"
+              y="21"
+              class="caseTimer__text"
+            >
+              30
+            </text>
+          </svg>
+        </button>
+
+        <span class="icon menuBtn" aria-label="Menu">☰</span>
+      </div>
+    </div>
+
+    <!-- 안내 오버레이 -->
+    <div
+      id="primaryFlashGuide"
+      style="
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 5000;
+        background: rgba(0, 0, 0, 0.35);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+      "
+    >
+      <div
+        style="
+          max-width: 287px;
+          margin: 36vh auto 0;
+          background: #fff;
+          border-radius: 16px;
+          padding: 32px 16px;
+        "
+      >
+        <div
+          style="font-size: 14px; line-height: 1.4; margin: 0px 0px 13px 12px"
+        >
+          Look at the case on the flashcard.<br /><br />
+          If it needs an
+          <span style="font-weight: 700; color: #e41e26">urgent referral</span>,
+          swipe right<br />or press <b>Urgent Referral</b> below.
+          <br /><br />You have 30 seconds.
+        </div>
+        <button
+          id="primaryFlashGuideOk"
+          type="button"
+          style="
+            margin-top: 14px;
+            width: 100%;
+            height: 38px;
+            border-radius: 12px;
+            border: none;
+            background: #e41e26;
+            color: #fff;
+            font-weight: 600;
+          "
+        >
+          Start
+        </button>
+      </div>
+    </div>
+
+    <!-- 카드 영역 -->
+    <div id="primaryFlashCardWrap" style="margin-top: 14px">
+      <div
+        id="primaryFlashCard"
+        style="
+          background: #fff;
+          border-radius: 18px;
+          padding: 14px;
+          box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+          margin-top: -15px;
+        "
+      >
+        <img
+          id="primaryFlashImg"
+          alt="Case image"
+          style="width: 100%; border-radius: 40px; object-fit: cover"
+        />
+        <div
+          id="primaryFlashDx"
+          style="margin-top: 20px; font-weight: 700; font-size: 16px"
+        ></div>
+        <ul
+          id="primaryFlashBullets"
+          style="
+            margin: 19px 0 21px;
+            padding-left: 18px;
+            font-size: 14px;
+            color: #333;
+            line-height: 24px;
+          "
+        ></ul>
+      </div>
+
+      <div style="display: flex; gap: 10px; margin-top: 12px">
+        <button
+          id="primaryFlashNotUrgentBtn"
+          type="button"
+          style="
+            flex: 1;
+            height: 42px;
+            border-radius: 14px;
+            border: 1px solid #d9d9dd;
+            background: #777;
+            font-weight: 600;
+            font-size: 14px;
+          "
+        >
+          Not urgent
+        </button>
+        <button
+          id="primaryFlashUrgentBtn"
+          type="button"
+          style="
+            flex: 1;
+            height: 42px;
+            border-radius: 14px;
+            border: none;
+            background: #e41e26;
+            color: #fff;
+            font-weight: 600;
+            font-size: 14px;
+          "
+        >
+          Urgent Referral
+        </button>
       </div>
     </div>
   </div>

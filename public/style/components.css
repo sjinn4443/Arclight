@@ -2861,6 +2861,14 @@ input:checked + .slider:before {
   height: 34px;
   display: block;
 }
+
+#caseStudyFlashcardPagePrimary .caseTimer__svg {
+  width: 34px;
+  height: 34px;
+  display: block;
+  margin-left: -38px;
+}
+
 .caseTimer__bg {
   fill: none;
   stroke: #eee;
@@ -3938,6 +3946,15 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
   color: #111;
   line-height: 1;
   margin-left: 46px;
+}
+
+#caseStudyFlashcardPagePrimary .eyes-topbar__title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #111;
+  line-height: 1;
+  margin-right: 131px;
+  white-space: nowrap;
 }
 
 .eyes-topbar__icons {
