@@ -3923,6 +3923,93 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
   margin-left: 154px;
 }
 
+/* Modals (Flashcard Primary) */
+#caseStudyFlashcardPagePrimary .casechat-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+#caseStudyFlashcardPagePrimary .casechat-modal[hidden] {
+  display: none !important;
+}
+
+#caseStudyFlashcardPagePrimary .casechat-modalCard {
+  background: #fff;
+  width: min(73vw, 440px);
+  height: 63vh;
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+  position: relative;
+}
+
+#caseStudyFlashcardPagePrimary .casechat-modalTitle {
+  font-size: 15px;
+  font-weight: 700;
+  padding: 12px;
+}
+
+#caseStudyFlashcardPagePrimary .casechat-resultWhy {
+  font-size: 14px;
+  margin: 0px 0px 15px 12px;
+}
+
+/* ===== Flashcard result modal (Primary) – wrong list styling ===== */
+#caseStudyFlashcardPagePrimary .flash-wrong-list {
+  margin-top: 12px;
+}
+
+#caseStudyFlashcardPagePrimary .flash-wrong-row {
+  display: flex;
+  gap: 17px;
+  padding: 13px 10px;
+  border-top: 1px solid #eee;
+  align-items: center;
+}
+
+#caseStudyFlashcardPagePrimary .flash-wrong-thumb {
+  width: 72px;
+  height: 72px;
+  object-fit: cover;
+  border-radius: 12px;
+  display: block;
+}
+
+#caseStudyFlashcardPagePrimary .flash-wrong-main {
+  flex: 1;
+}
+
+#caseStudyFlashcardPagePrimary .flash-wrong-dx {
+  font-weight: 500; /* 요청사항: diagnosis 500 */
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+#caseStudyFlashcardPagePrimary .flash-wrong-label {
+  font-size: 13px;
+  font-weight: 700; /* 요청사항: bold */
+  color: #e41e26; /* 요청사항: red */
+}
+
+/* ===== Restart / Back side-by-side ===== */
+#caseStudyFlashcardPagePrimary .flash-result-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 34px;
+}
+
+#caseStudyFlashcardPagePrimary .flash-result-actions .casechat-confirm__btn {
+  flex: 1;
+  margin-top: 0 !important; /* 전역 button margin-top(10px) 무력화 */
+}
+
 /* ============================================= Canonical Eyes Topbar ============================================= */
 .eyes-topbar {
   position: fixed;

@@ -471,12 +471,13 @@ export function initializeCaseStudyPrimary() {
 
       <div class="casechat-resultWhy" id="flashScoreText"></div>
 
-      <div id="flashWrongList" style="margin-top:12px;"></div>
+      <div id="flashWrongList" class="flash-wrong-list"></div>
 
-      <div class="casechat-confirm__actions">
+      <div class="casechat-confirm__actions flash-result-actions">
         <button type="button" class="casechat-confirm__btn is-ok" data-action="restart">Restart</button>
         <button type="button" class="casechat-confirm__btn is-cancel" data-action="back">Back</button>
       </div>
+
     </div>
   `;
 
@@ -525,17 +526,19 @@ export function initializeCaseStudyPrimary() {
             const dx = correctDiagnosisForPrimary(caseObj);
             const label = correctIsUrgent ? "Urgent Referral" : "Not urgent";
 
+            const urgencyClass = correctIsUrgent
+              ? "is-urgent"
+              : "is-not-urgent";
+
             return `
-            <div style="display:flex; gap:10px; padding:10px 0; border-top:1px solid #eee; align-items:center;">
-              <img src="${img}" alt="Case image" style="width:72px; height:72px; object-fit:cover; border-radius:12px;" />
-              <div style="flex:1;">
-                <div style="font-weight:700; font-size:14px; margin-bottom:4px;">${dx}</div>
-                <div style="font-size:13px;">
-                  <b>${label}</b>
+              <div class="flash-wrong-row">
+                <img class="flash-wrong-thumb" src="${img}" alt="Case image" />
+                <div class="flash-wrong-main">
+                  <div class="flash-wrong-dx">${dx}</div>
+                  <div class="flash-wrong-label ${urgencyClass}">${label}</div>
                 </div>
               </div>
-            </div>
-          `;
+            `;
           })
           .join("");
       }
@@ -601,8 +604,9 @@ export function initializeCaseStudyPrimary() {
     flashCorrectCount = 0;
     flashWrong = [];
 
-    // (모달이 이전에 떠있었다면 숨김)
-    if (flashCompletionModalEl) flashCompletionModalEl.hidden = true;
+    if (flashCompletionModalEl) {
+      flashCompletionModalEl.hidden = true;
+    }
 
     // back
     const backBtn = flashPage.querySelector("#primaryFlashBackBtn");
@@ -676,7 +680,11 @@ export function initializeCaseStudyPrimary() {
   }
 
   function renderFlashCard() {
-    // ✅ 끝났으면 요약 화면
+    console.log("[flash] renderFlashCard", {
+      flashIndex,
+      poolLen: flashPool?.length,
+    });
+
     if (flashIndex >= flashPool.length) {
       stopFlashTimer();
       showFlashCompletionModal();
@@ -708,27 +716,37 @@ export function initializeCaseStudyPrimary() {
   }
 
   function submitFlashAnswer(userSaysUrgent) {
-    // userSaysUrgent: true(urgent), false(not urgent), null(time up)
-    if (flashIndex >= flashPool.length) return;
+    console.log("[flash] submitFlashAnswer called", {
+      userSaysUrgent,
+      flashIndex,
+      poolLen: flashPool?.length,
+    });
+
+    if (flashIndex >= flashPool.length) {
+      console.warn("[flash] submit ignored because flashIndex >= poolLen");
+      return;
+    }
 
     const caseObj = flashPool[flashIndex];
     const correctUrgent = isUrgentReferralCase(caseObj.caseNum);
-
     const isCorrect = userSaysUrgent === correctUrgent;
 
     if (isCorrect) {
       flashCorrectCount += 1;
     } else {
-      flashWrong.push({
-        caseObj,
-        correctIsUrgent: correctUrgent,
-      });
+      flashWrong.push({ caseObj, correctIsUrgent: correctUrgent });
     }
 
     stopFlashTimer();
 
-    // ✅ advance + re-render (this triggers result modal when done)
     flashIndex += 1;
+
+    console.log("[flash] after increment", {
+      flashIndex,
+      poolLen: flashPool?.length,
+      willComplete: flashIndex >= (flashPool?.length || 0),
+    });
+
     renderFlashCard();
   }
 
