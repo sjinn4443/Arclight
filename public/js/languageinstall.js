@@ -76,6 +76,52 @@ export function initializeLanguageInstall() {
     });
   }
 
+  function isIOS() {
+    const ua = navigator.userAgent || "";
+    const iOSDevice = /iPad|iPhone|iPod/.test(ua);
+    const iPadOS13Plus = /Macintosh/.test(ua) && "ontouchend" in document;
+    return iOSDevice || iPadOS13Plus;
+  }
+
+  function isAndroid() {
+    const ua = navigator.userAgent || "";
+    return /Android/.test(ua);
+  }
+
+  function getInstallHelpHTML() {
+    // iOS Share icon (inline SVG)
+    const shareIconSVG = `
+    <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"
+      style="vertical-align:middle; margin:0 4px;">
+      <path d="M12 3l4 4h-3v6h-2V7H8l4-4zM5 10v9h14v-9h2v9c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2v-9h2z"/>
+    </svg>
+  `;
+
+    // iPhone / iPad (Safari)
+    if (isIOS()) {
+      return `
+      <strong>On iOS (Safari):</strong><br />
+      1) Tap the Share button ${shareIconSVG} in the address bar<br />
+      2) Select <strong>Add to Home Screen</strong>
+    `;
+    }
+
+    // Android (Chrome)
+    if (isAndroid()) {
+      return `
+      <strong>On Android (Chrome):</strong><br />
+      1) Tap the browser menu <strong>(⋮)</strong><br />
+      2) Select <strong>Install app</strong> or <strong>Add to Home Screen</strong>
+    `;
+    }
+
+    // Fallback (desktop/unknown)
+    return `
+    <strong>To install:</strong><br />
+    Use your browser menu and choose <strong>Install app</strong> or <strong>Add to Home Screen</strong>.
+  `;
+  }
+
   // Install flow
   if (installBtn) {
     installBtn.addEventListener("click", async () => {
@@ -89,9 +135,7 @@ export function initializeLanguageInstall() {
             return;
           }
 
-          alert(
-            "To install, use your browser menu: “Install app” / “Add to Home screen”.",
-          );
+          showLanguageHintModal(getInstallHelpHTML());
           return; // stay on language page
         }
 
@@ -217,13 +261,17 @@ export function initializeLanguageInstall() {
 
   if (offlineInfoBtn) {
     offlineInfoBtn.addEventListener("click", () => {
-      showLanguageHintModal("Installs app on your device");
+      showLanguageHintModal(
+        "Add the app to your home screen so you can <br /> use it without Wi-Fi or mobile data.<br /><br /> Some content, such as videos, may need to be <br />downloaded first before it can be used offline.",
+      );
     });
   }
 
   if (onlineInfoBtn) {
     onlineInfoBtn.addEventListener("click", () => {
-      showLanguageHintModal("continue using the app without installing");
+      showLanguageHintModal(
+        "Use the app in your current browser. <br /><br />You will need an internet connection <br />each time you use the app.",
+      );
     });
   }
 }
@@ -247,7 +295,6 @@ function showLanguageHintModal(message) {
       <button class="guest-modal__close" aria-label="Close">&times;</button>
       <h2 class="guest-modal__title"></h2>
       <p class="guest-modal__text">${message}</p>
-      <button class="guest-modal__cta" type="button">OK</button>
     </div>
   `;
 
