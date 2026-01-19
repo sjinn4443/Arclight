@@ -322,3 +322,99 @@
     </div>
   </div>
 </div>
+
+<!-- Fundal Reflex Examination (toggle video) -->
+<div id="fundalExamPage" class="page" style="display: none">
+  <div>
+    <div class="tri-toggle" role="radiogroup" aria-label="Video mode">
+      <button
+        class="tri-toggle__btn"
+        type="button"
+        role="radio"
+        aria-checked="false"
+        data-mode="low"
+      >
+        low
+      </button>
+      <button
+        class="tri-toggle__btn"
+        type="button"
+        role="radio"
+        aria-checked="false"
+        data-mode="high"
+      >
+        high
+      </button>
+      <button
+        class="tri-toggle__btn tri-toggle__btn--icon"
+        type="button"
+        role="radio"
+        aria-checked="false"
+        data-mode="online"
+        aria-label="online"
+      >
+        <span class="tri-toggle__wifi" aria-hidden="true"></span>
+      </button>
+      <div class="tri-toggle__knob" aria-hidden="true"></div>
+    </div>
+
+    <div class="video-header">
+      <h3>Fundal Reflex Examination</h3>
+    </div>
+
+    <div class="video-container" id="fundalExamContainer">
+      <video
+        id="fundalExamVideo"
+        controls
+        preload="none"
+        style="width: 100%; max-width: 100%"
+      >
+        <source src="" type="video/mp4" />
+        <span>Your browser does not support the video tag.</span>
+      </video>
+    </div>
+  </div>
+</div>
+
+<!-- Milestones African Mum -->
+<div id="mumVisionPage" class="page" style="display: none">
+  <div>
+    <div class="tri-toggle" role="radiogroup" aria-label="Video mode">
+      <button
+        class="tri-toggle__btn"
+        type="button"
+        role="radio"
+        aria-checked="false"
+        data-mode="low"
+      >
+        low
+      </button>
+      <button
+        class="tri-toggle__btn"
+        type="button"
+        role="radio"
+        aria-checked="false"
+        data-mode="high"
+      >
+        high
+      </button>
+      <div class="tri-toggle__knob" aria-hidden="true"></div>
+    </div>
+
+    <div class="video-header">
+      <h3>Milestones African Mum</h3>
+    </div>
+
+    <div class="video-container" id="mumVisionContainer">
+      <video
+        id="mumVisionVideo"
+        controls
+        preload="none"
+        style="width: 100%; max-width: 100%"
+      >
+        <source src="" type="video/mp4" />
+        <span>Your browser does not support the video tag.</span>
+      </video>
+    </div>
+  </div>
+</div>

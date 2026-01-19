@@ -1,19 +1,31 @@
-function initializeChildhoodEyeScreeningWorkshop() {
+// public/js/childhoodEyeScreeningWorkshop.js
+import { loadPage } from "./navigation.js";
+
+export function initializeChildhoodEyeScreeningWorkshop() {
   const rows = document.querySelectorAll(
     "#childhoodEyeScreeningWorkshopPage .lesson-row[data-target]",
   );
 
   rows.forEach((row) => {
-    row.addEventListener("click", () => {
+    row.addEventListener("click", async (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      if (typeof e.stopImmediatePropagation === "function") {
+        e.stopImmediatePropagation();
+      }
+
       const target = row.getAttribute("data-target");
       if (!target) return;
 
-      // videos 라우트가 로드된 뒤 main.js가 이 값을 보고 해당 subpage를 열어줌
       try {
+        window.__videosPendingTarget = target;
+        window.__videosSuppressFlash = true;
+
         sessionStorage.setItem("gotoSubPage", target);
       } catch {}
 
-      loadPage("videos");
+      // 4) videos route로 이동
+      await loadPage("videos");
     });
   });
 
