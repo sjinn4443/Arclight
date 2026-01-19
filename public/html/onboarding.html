@@ -459,22 +459,8 @@
 
     <!-- ✅ Medical Student 외 직업을 하나라도 선택하면 표시 -->
     <div class="form-field hidden" id="practiceLevelField">
-      <label for="practiceLevelSelect"> Experience </label>
-      <div class="onb-select-wrap">
-        <select id="practiceLevelSelect" class="onb-input">
-          <option value="" disabled selected hidden>Select</option>
-          <option value="lt1">Less than 1 year</option>
-          <option value="1_2">1–2 years</option>
-          <option value="3_5">3–5 years</option>
-          <option value="6_10">6–10 years</option>
-          <option value="gt10">More than 10 years</option>
-        </select>
-        <span class="onb-select-caret" aria-hidden="true">
-          <svg viewBox="0 0 24 24" focusable="false">
-            <path d="M7 10l5 5 5-5z" fill="currentColor"></path>
-          </svg>
-        </span>
-      </div>
+      <label data-i18n="onboarding.practiceLevelLabel">Experience</label>
+      <div id="experienceByRole"></div>
     </div>
 
     <button

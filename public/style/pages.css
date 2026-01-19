@@ -312,6 +312,11 @@
   appearance: none;
 }
 
+#onboarding.months,
+#onboarding.years {
+  font-size: 13px;
+}
+
 .onb-input:focus {
   border-color: #cfcfd6;
   background: #fff;
@@ -356,6 +361,23 @@ select.onb-input.has-value {
   cursor: pointer;
 }
 .onb-cta:disabled {
+  background: #bdbdbf;
+}
+
+#completeOnboardingBtn.onb-cta {
+  display: block;
+  width: 100%;
+  height: 38px;
+  border: none;
+  border-radius: 14px;
+  background: #e41e26;
+  color: #fff;
+  font-weight: 600; /* Changed from 100 to 600 */
+  font-size: 13px;
+  margin-top: 55px;
+  cursor: pointer;
+}
+#completeOnboardingBtn.onb-cta:disabled {
   background: #bdbdbf;
 }
 
@@ -1491,4 +1513,46 @@ select.onb-input.has-value + .onb-select-caret {
   display: flex;
   align-items: center;
   pointer-events: auto !important;
+}
+
+/* Experience by role */
+.role-exp-block {
+  margin-top: 10px;
+}
+
+.role-exp-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #222;
+  margin: 18px 0 0px 2px;
+}
+
+.role-exp-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.exp-input {
+  width: 18px;
+  height: 12px;
+  text-align: center;
+  padding: 10px 8px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* number spinner 제거 */
+.exp-input::-webkit-inner-spin-button,
+.exp-input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.exp-input {
+  -moz-appearance: textfield;
+}
+
+/* years / months labels in experience rows */
+.role-exp-row span {
+  font-size: 13px;
 }

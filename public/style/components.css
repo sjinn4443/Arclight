@@ -4183,10 +4183,10 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
 .guest-modal__close {
   position: absolute;
   top: -1px;
-  right: -155px;
+  right: -148px;
   background: transparent;
   border: none;
-  font-size: 28px;
+  font-size: 35px;
   cursor: pointer;
   line-height: 1;
   color: #666;
@@ -4198,7 +4198,7 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
 }
 
 .guest-modal__title {
-  margin: 31px 0 11px;
+  margin: 13px 0 25px;
   font-size: 22px;
   font-weight: 750;
   color: #111;
