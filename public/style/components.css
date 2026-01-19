@@ -1822,6 +1822,18 @@ input:checked + .slider:before {
   background-image: url("/images/icon/eyes/moduleicons/primary_casestudy.webp");
 }
 
+#casestudyPage .lesson-row[data-level="primary-flashcard"] .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/primary_flash.webp") !important;
+}
+
+/* Interactive Learning page – custom module icons */
+#interactiveLearningPage
+  .pupil-level--primary
+  .lesson-row[data-target="morphPage"]
+  .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/primary_interactive.webp");
+}
+
 /* ---------- Intermediate ---------- */
 :is(#pupilsPage, .pupils-like)
   .pupil-level--intermediate
@@ -1834,6 +1846,13 @@ input:checked + .slider:before {
   .lesson-row--quiz
   .thumb {
   background-image: url("/images/icon/eyes/moduleicons/intermediate_casestudy.webp");
+}
+
+#interactiveLearningPage
+  .pupil-level--intermediate
+  .lesson-row[data-target="miresPage"]
+  .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/intermediate_interactive.webp");
 }
 
 /* ---------- Advanced ---------- */
