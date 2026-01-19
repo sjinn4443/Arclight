@@ -1245,6 +1245,7 @@ select.onb-input.has-value {
   color: #777;
   margin-top: -11%;
   margin-left: 25px;
+  width: 171px;
 }
 
 #pupilsPage .lesson-type,
@@ -1262,7 +1263,7 @@ select.onb-input.has-value {
 
 #pupilsPage .lesson-progress,
 .pupils-like .lesson-progress {
-  width: 100%;
+  width: 165px;
   height: 6px;
   background: #e9e9e9;
   border-radius: 999px;
@@ -1283,7 +1284,8 @@ select.onb-input.has-value {
 .pupils-like .lesson-cta {
   font-size: 11px;
   color: #bbb;
-  margin-bottom: -47px;
+  margin-bottom: -40px;
+  margin-left: -41px;
 }
 
 /* ===== Pupils timeline layout ===== */

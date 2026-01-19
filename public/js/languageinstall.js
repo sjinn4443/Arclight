@@ -100,7 +100,7 @@ export function initializeLanguageInstall() {
     // iPhone / iPad (Safari)
     if (isIOS()) {
       return `
-      <strong>On iOS (Safari):</strong><br />
+      <strong>On iOS:</strong><br /><br />
       1) Tap the Share button ${shareIconSVG} in the address bar<br />
       2) Select <strong>Add to Home Screen</strong>
     `;
@@ -109,7 +109,7 @@ export function initializeLanguageInstall() {
     // Android (Chrome)
     if (isAndroid()) {
       return `
-      <strong>On Android (Chrome):</strong><br />
+      <strong>On Android:</strong><br /><br />
       1) Tap the browser menu <strong>(⋮)</strong><br />
       2) Select <strong>Install app</strong> or <strong>Add to Home Screen</strong>
     `;
