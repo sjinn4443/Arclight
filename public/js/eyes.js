@@ -251,6 +251,11 @@ export function initializeEyesCatalog() {
     ],
     pecCarousel: [
       {
+        label: "Childhood Eye Screening",
+        target: "childhoodEyeScreeningWorkshop",
+        tags: ["Video", "Quiz"],
+      },
+      {
         label: "WHO PEC",
         target: EYES_INDEX["WHO PEC"],
         tags: ["Coming Soon"],

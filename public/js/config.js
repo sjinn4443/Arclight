@@ -24,4 +24,5 @@ export const ROUTES = {
   offline: "html/offline.html",
   reports: "html/reports.html",
   casestudy: "html/casestudy.html",
+  childhoodEyeScreeningWorkshop: "html/childhoodEyeScreeningWorkshop.html",
 };

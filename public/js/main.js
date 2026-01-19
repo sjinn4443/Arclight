@@ -92,6 +92,13 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    if (routeName === "childhoodEyeScreeningWorkshop") {
+      const { initializeChildhoodEyeScreeningWorkshop } =
+        await import("./childhoodEyeScreeningWorkshop.js");
+      initializeChildhoodEyeScreeningWorkshop?.();
+      return;
+    }
+
     if (routeName === "casestudy") {
       const { initializeCaseStudy } = await import("./casestudy.js");
       const { initializeCaseStudyAdvanced } =

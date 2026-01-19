@@ -1823,7 +1823,19 @@ input:checked + .slider:before {
 }
 
 #casestudyPage .lesson-row[data-level="primary-flashcard"] .thumb {
-  background-image: url("/images/icon/eyes/moduleicons/primary_flash.webp") !important;
+  background-image: url("/images/icon/eyes/moduleicons/primary_flash") !important;
+}
+
+#childhoodEyeScreeningWorkshopPage .lesson-row--scroll .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/primary_scroll.webp");
+}
+
+#childhoodEyeScreeningWorkshopPage .lesson-row--pdf .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/primary_pdf.webp");
+}
+
+#childhoodEyeScreeningWorkshopPage .lesson-row--flashcard .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/primary_flash.webp");
 }
 
 /* Interactive Learning page – custom module icons */
