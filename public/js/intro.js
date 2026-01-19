@@ -4,6 +4,79 @@
 
 import { loadPage } from "./navigation.js";
 
+function runMidSplashThen(routeName) {
+  const splashContainer = document.getElementById("splashScreenContainer");
+  const pageContainer = document.getElementById("page-content");
+
+  // splash 컨테이너가 없으면 바로 이동 (fallback)
+  if (!splashContainer) {
+    loadPage(routeName);
+    return;
+  }
+
+  splashContainer.classList.remove("fade-out");
+  splashContainer.innerHTML = "";
+
+  fetch("html/splashscreen_mid.html")
+    .then((r) => r.text())
+    .then((html) => {
+      splashContainer.innerHTML = html;
+
+      if (pageContainer) pageContainer.style.display = "none";
+      splashContainer.classList.add("splash-full-screen"); // 추가
+      splashContainer.classList.add("active");
+
+      const logo =
+        splashContainer.querySelector(".logo-one.mid-only") ||
+        splashContainer.querySelector(".logo-one");
+
+      // onboarding.js에서 쓰는 기대시간과 동일 패턴 (4.7s + buffer)
+      const EXPECTED_MS = 4700 + 300;
+
+      let finished = false;
+
+      function finish() {
+        if (finished) return;
+        finished = true;
+
+        splashContainer.classList.add("fade-out");
+
+        // splash fade-out 후 목적지로 이동
+        setTimeout(() => {
+          loadPage(routeName)
+            .catch((err) => console.error(`Failed to load ${routeName}:`, err))
+            .finally(() => {
+              if (pageContainer) pageContainer.style.display = "";
+              splashContainer.classList.remove("active", "fade-out");
+              splashContainer.innerHTML = "";
+            });
+        }, 300);
+      }
+
+      // 애니메이션 기반 종료 (없으면 timeout fallback)
+      const fallback = setTimeout(finish, EXPECTED_MS);
+
+      function onAnimationEnd(e) {
+        if (e.animationName === "midHold") {
+          clearTimeout(fallback);
+          logo.removeEventListener("animationend", onAnimationEnd);
+          finish();
+        }
+      }
+
+      if (logo) logo.addEventListener("animationend", onAnimationEnd);
+      else {
+        clearTimeout(fallback);
+        finish();
+      }
+    })
+    .catch(() => {
+      // 실패 시 유저를 멈춰두지 말고 바로 이동
+      if (pageContainer) pageContainer.style.display = "";
+      loadPage(routeName);
+    });
+}
+
 /**
  * Initializes the introduction page.
  * Sets up click listeners for the 'See What's New' and 'Skip' buttons,
@@ -13,7 +86,11 @@ export function initializeIntro() {
   const seeWhatBtn = document.getElementById("seeWhatBtn");
   const skipBtn = document.getElementById("skipBtn");
 
-  const go = () => loadPage("dashboard"); // pre-split behavior: both go to dashboard
+  const go = (ev) => {
+    ev?.preventDefault?.();
+    ev?.stopImmediatePropagation?.();
+    runMidSplashThen("dashboard");
+  };
 
   if (seeWhatBtn) seeWhatBtn.addEventListener("click", go);
   if (skipBtn) skipBtn.addEventListener("click", go);
@@ -75,7 +152,8 @@ export function initializeIntro() {
 
   function onExploreClick(ev) {
     ev.preventDefault();
-    goToExplore();
+    ev?.stopImmediatePropagation?.();
+    runMidSplashThen("dashboard");
   }
 
   ready(() => {

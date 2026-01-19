@@ -882,7 +882,71 @@ export function initializeOnboarding() {
           localStorage.setItem("guestMode", "true");
           localStorage.setItem("guestClicks", "0");
           localStorage.setItem("guestStartAt", String(Date.now()));
-          loadPage("dashboard");
+
+          const splashContainer = document.getElementById(
+            "splashScreenContainer",
+          );
+          const pageContainer = document.getElementById("page-content");
+
+          if (!splashContainer) {
+            loadPage("dashboard");
+            return;
+          }
+
+          splashContainer.classList.remove("fade-out");
+          splashContainer.innerHTML = "";
+
+          fetch("html/splashscreen_mid.html")
+            .then((r) => r.text())
+            .then((html) => {
+              splashContainer.innerHTML = html;
+
+              if (pageContainer) pageContainer.style.display = "none";
+              splashContainer.classList.add("splash-full-screen"); // ✅ 여기 핵심
+              splashContainer.classList.add("active");
+
+              const logo =
+                splashContainer.querySelector(".logo-one.mid-only") ||
+                splashContainer.querySelector(".logo-one");
+
+              const EXPECTED_MS = 4700 + 300;
+
+              let finished = false;
+              function finish() {
+                if (finished) return;
+                finished = true;
+
+                splashContainer.classList.add("fade-out");
+
+                setTimeout(() => {
+                  loadPage("dashboard").finally(() => {
+                    if (pageContainer) pageContainer.style.display = "";
+                    splashContainer.classList.remove("active", "fade-out");
+                    splashContainer.innerHTML = "";
+                  });
+                }, 300);
+              }
+
+              const fallback = setTimeout(finish, EXPECTED_MS);
+
+              function onAnimationEnd(e) {
+                if (e.animationName === "midHold") {
+                  clearTimeout(fallback);
+                  logo.removeEventListener("animationend", onAnimationEnd);
+                  finish();
+                }
+              }
+
+              if (logo) logo.addEventListener("animationend", onAnimationEnd);
+              else {
+                clearTimeout(fallback);
+                finish();
+              }
+            })
+            .catch(() => {
+              if (pageContainer) pageContainer.style.display = "";
+              loadPage("dashboard");
+            });
         });
 
         const btnGroup = document.createElement("div");
