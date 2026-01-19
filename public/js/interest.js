@@ -55,9 +55,9 @@ export function initializeInterest() {
       } catch {
         void 0;
       }
-
-      const splashContainer = document.getElementById("splashScreenContainer");
-      const pageContainer = document.getElementById("page-content");
+      // ✅ interest → intro 사이 mid-splash 제거: 바로 intro로 이동
+      loadPage("intro");
+      locked = false;
 
       // If we can't find the overlay, just go to Intro.
       if (!splashContainer) {

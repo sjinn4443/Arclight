@@ -224,7 +224,14 @@ document.addEventListener("DOMContentLoaded", () => {
             requestAnimationFrame(() => {
               splashContainer.classList.remove("active");
               setTimeout(() => {
-                splashContainer.remove();
+                // ✅ remove 하지 말고 비워두기만
+                splashContainer.classList.remove(
+                  "splash-full-screen",
+                  "fade-out",
+                );
+                splashContainer.innerHTML = "";
+                // (선택) 접근성/클릭 차단 방지용
+                splashContainer.setAttribute("aria-hidden", "true");
               }, 300);
             });
           });

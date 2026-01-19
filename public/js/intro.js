@@ -85,6 +85,7 @@ function runMidSplashThen(routeName) {
 export function initializeIntro() {
   const seeWhatBtn = document.getElementById("seeWhatBtn");
   const skipBtn = document.getElementById("skipBtn");
+  console.log("[INTRO] intro.js loaded");
 
   const go = (ev) => {
     ev?.preventDefault?.();
@@ -107,6 +108,9 @@ export function initializeIntro() {
   }
 
   async function goToExplore() {
+    console.log("[INTRO] Start/Skip clicked");
+    runMidSplashThen("dashboard");
+
     // Prefer router if available
     if (typeof window.showPage === "function") {
       window.showPage(TARGET_ID);
