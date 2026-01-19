@@ -1803,6 +1803,11 @@ input:checked + .slider:before {
   padding-top: 4px;
 }
 
+/* childhood eye screening workshop only */
+#childhoodEyeScreeningWorkshopPage .pupils-container {
+  padding-top: 0px;
+}
+
 /* ============================================= */
 /* Pupils page – module icons (real assets)      */
 /* ============================================= */
