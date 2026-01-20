@@ -4836,6 +4836,7 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
   line-height: 1.4;
   color: #111;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+  z-index: 9999;
 }
 
 /* 작은 화면에서는 위아래로 쌓기 */
