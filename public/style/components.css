@@ -4808,22 +4808,6 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
   max-width: 70vw;
 }
 
-/* ============================================= */
-/* Visual system scroll (Lottie + side text)     */
-/* ============================================= */
-
-#visualsystemeyesbrainPage .visualsystem-stage {
-  display: grid;
-  grid-template-columns: 1fr 1fr; /* 왼쪽 애니, 오른쪽 텍스트 */
-  gap: 14px;
-  align-items: start;
-}
-
-#visualsystemeyesbrainPage .visualsystem-lottie {
-  width: 100%;
-  min-height: 320px;
-}
-
 #visualsystemeyesbrainPage .visualsystem-side {
   width: 100%;
 }
@@ -4844,4 +4828,51 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
   #visualsystemeyesbrainPage .visualsystem-stage {
     grid-template-columns: 1fr;
   }
+}
+
+/* ============================================= */
+/* Visual system scroll (Lottie + side text)     */
+/* ============================================= */
+
+#visualsystemeyesbrainPage .visualsystem-stage {
+  position: relative; /* ✅ overlay 기준점 */
+  width: 100%;
+  display: grid;
+  place-items: center; /* ✅ 애니는 중앙 고정 */
+}
+
+/* 애니메이션은 기존처럼 크게, 중앙에 고정 */
+#visualsystemeyesbrainPage .visualsystem-lottie {
+  width: min(92vw, 520px);
+  height: min(92vh, 900px);
+}
+
+/* ✅ 텍스트를 애니 위에 overlay, 동그라미 옆으로 */
+#visualsystemeyesbrainPage .vs-copy {
+  position: absolute;
+  left: -12px;
+  top: 80px;
+  transform: translateY(-50%);
+
+  width: min(47vw, 320px);
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 16px;
+  padding: 12px 14px;
+  color: #111;
+  font-size: 12px;
+  line-height: 1.4;
+
+  z-index: 5;
+  pointer-events: none; /* ✅ 스크롤/키 이벤트 방해 안 하게 */
+}
+
+/* 기본: 모든 문장은 숨기고, 활성만 보여주기 */
+#visualsystemeyesbrainPage .vs-line {
+  display: none;
+  margin: 0;
+}
+#visualsystemeyesbrainPage .vs-line.is-active {
+  display: block;
+  font-size: 13px;
+  line-height: 20px;
 }

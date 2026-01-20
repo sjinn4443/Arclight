@@ -1392,6 +1392,12 @@ body,
   background: #ffffff !important;
 }
 
+#visualsystemeyesbrainPage,
+.page > .container:first-child {
+  background: #ffffff !important;
+  padding-top: 30px;
+}
+
 /* Onboarding: align layout with intro/interest */
 .onboarding-container {
   max-width: 100%;
