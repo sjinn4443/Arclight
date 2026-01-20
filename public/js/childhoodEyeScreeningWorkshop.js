@@ -53,3 +53,11 @@ export function initializeChildhoodEyeScreeningWorkshop() {
       row.addEventListener("click", () => alert("Coming soon."));
     });
 }
+
+// Fundal Reflex PDF row -> open Fundal PDF page
+const fundalPdfRow = document.getElementById("fundalReflexPdfRow");
+if (fundalPdfRow) {
+  fundalPdfRow.addEventListener("click", () => {
+    loadPage("fundalReflexPdf");
+  });
+}

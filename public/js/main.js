@@ -8,6 +8,7 @@ import { initializePWA } from "./pwa.js";
 import { wireGlobalNavigation } from "./navigation.js";
 import { initializeVideoPlayers, initializeToolbar } from "./videoplayer.js";
 import { initializeLocation } from "./location-service.js";
+import { initializeFundalReflexPdf } from "./fundalReflexPdf.js";
 
 function withSentry(fn) {
   return (...args) => {
@@ -96,6 +97,11 @@ document.addEventListener("DOMContentLoaded", () => {
       const { initializeChildhoodEyeScreeningWorkshop } =
         await import("./childhoodEyeScreeningWorkshop.js");
       initializeChildhoodEyeScreeningWorkshop?.();
+      return;
+    }
+
+    if (routeName === "fundalReflexPdf") {
+      initializeFundalReflexPdf();
       return;
     }
 

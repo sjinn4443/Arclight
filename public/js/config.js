@@ -25,4 +25,5 @@ export const ROUTES = {
   reports: "html/reports.html",
   casestudy: "html/casestudy.html",
   childhoodEyeScreeningWorkshop: "html/childhoodEyeScreeningWorkshop.html",
+  fundalReflexPdf: "/html/fundalReflexPdf.html",
 };
