@@ -26,4 +26,5 @@ export const ROUTES = {
   casestudy: "html/casestudy.html",
   childhoodEyeScreeningWorkshop: "html/childhoodEyeScreeningWorkshop.html",
   fundalReflexPdf: "/html/fundalReflexPdf.html",
+  visualsystemeyesbrain: "html/visualsystemeyesbrain.html",
 };

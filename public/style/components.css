@@ -4767,3 +4767,80 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
   width: 32px;
   height: 32px;
 }
+
+/* Visual System (Eyes & Brain) scroll page */
+#visualsystemeyesbrainPage .visualsystem-scroll-wrap {
+  position: relative;
+  height: calc(100vh - 56px); /* top bar 높이에 맞게 조정 */
+  display: grid;
+  place-items: center;
+  background: #fff;
+  overflow: hidden;
+}
+
+#visualsystemeyesbrainPage .visualsystem-lottie {
+  width: min(92vw, 520px);
+  height: min(92vh, 900px);
+}
+
+#visualsystemeyesbrainPage .visualsystem-hud {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  pointer-events: none;
+  user-select: none;
+}
+
+#visualsystemeyesbrainPage .visualsystem-pill {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  padding: 8px 10px;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 70vw;
+}
+
+/* ============================================= */
+/* Visual system scroll (Lottie + side text)     */
+/* ============================================= */
+
+#visualsystemeyesbrainPage .visualsystem-stage {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* 왼쪽 애니, 오른쪽 텍스트 */
+  gap: 14px;
+  align-items: start;
+}
+
+#visualsystemeyesbrainPage .visualsystem-lottie {
+  width: 100%;
+  min-height: 320px;
+}
+
+#visualsystemeyesbrainPage .visualsystem-side {
+  width: 100%;
+}
+
+#visualsystemeyesbrainPage .visualsystem-text {
+  background: #fff;
+  border-radius: 16px;
+  padding: 14px 14px;
+  font-size: 13px;
+  line-height: 1.4;
+  color: #111;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+}
+
+/* 작은 화면에서는 위아래로 쌓기 */
+@media (max-width: 480px) {
+  #visualsystemeyesbrainPage .visualsystem-stage {
+    grid-template-columns: 1fr;
+  }
+}

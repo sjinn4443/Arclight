@@ -13,4 +13,5 @@ export const ROUTES = {
   casestudy: "html/casestudy.html",
   directOphthalmoscopyQuizPage:
     "/public/html/directOphthalmoscopyQuizPage.html",
+  visualsystemeyesbrain: "/public/html/visualsystemeyesbrain.html",
 };

@@ -118,6 +118,13 @@ document.addEventListener("DOMContentLoaded", () => {
       initializeCaseStudyAdvanced(); // advanced (복사본)
       return;
     }
+
+    if (routeName === "visualsystemeyesbrain") {
+      const { initializeVisualSystemEyesBrain } =
+        await import("./visualsystemeyesbrain.js");
+      initializeVisualSystemEyesBrain?.();
+      return;
+    }
   });
 });
 // childhoodEyeScreeningWorkshop route init
