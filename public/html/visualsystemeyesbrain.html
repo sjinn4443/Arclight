@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>VisualSystemEyesBrain - Scroll Segments</title>
+
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        background: #0b0b0f;
+        overflow: hidden; /* wheel로만 제어 */
+        font-family:
+          system-ui,
+          -apple-system,
+          Segoe UI,
+          Roboto,
+          Helvetica,
+          Arial,
+          sans-serif;
+      }
+      .wrap {
+        height: 100%;
+        display: grid;
+        place-items: center;
+      }
+      #lottie {
+        width: min(92vw, 520px);
+        height: min(92vh, 900px);
+      }
+      .hud {
+        position: fixed;
+        left: 12px;
+        bottom: 12px;
+        right: 12px;
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        justify-content: space-between;
+        color: rgba(255, 255, 255, 0.85);
+        font-size: 13px;
+        user-select: none;
+        pointer-events: none;
+      }
+      .pill {
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 999px;
+        padding: 8px 10px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 70vw;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="wrap">
+      <div id="lottie" aria-label="Visual system animation"></div>
+    </div>
+
+    <div class="hud">
+      <div class="pill" id="status">Loading…</div>
+      <div class="pill" id="hint">
+        Wheel: next/prev · ↑/↓: next/prev · Space: replay
+      </div>
+    </div>
+
+    <!-- ✅ integrity 제거: 불일치 차단 방지 -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <script>
+      /**
+       * 파일 배치
+       * - visualsystemeyesbrain_scroll.html
+       * - VisualSystemEyesBrain.json
+       * - /images (json 안에서 u:"images/" 로 참조)
+       *
+       * 프레임 구간(요청 반영)
+       * - 진입 시 자동: 00000~00059 재생 후 멈춤
+       * - 스크롤1: 00060~00119
+       * - 스크롤2: 00120~00207
+       * - 스크롤3: 00208~00400
+       * - 스크롤4: 00401~00598
+       */
+
+      const JSON_PATH =
+        "../scrolls/workshop/childhood/visualsystemeyesbrain/VisualSystemEyesBrain.json";
+
+      // ✅ 요청한 구간 그대로
+      const SEGMENTS = [
+        [0, 59], // auto-play on load
+        [60, 119], // scroll 1
+        [120, 207], // scroll 2
+        [208, 400], // scroll 3
+        [401, 598], // scroll 4
+      ];
+
+      const statusEl = document.getElementById("status");
+      const container = document.getElementById("lottie");
+
+      let anim = null;
+      let currentIndex = 0; // 현재 '정지해 있는' 세그먼트 인덱스
+      let isPlaying = false; // 세그먼트 재생 중 입력 차단
+      let isThrottled = false; // 휠 연타 방지
+
+      function setStatus(text) {
+        statusEl.textContent = text;
+      }
+
+      function clampIndex(i) {
+        return Math.max(0, Math.min(SEGMENTS.length - 1, i));
+      }
+
+      function throttle(ms = 250) {
+        isThrottled = true;
+        window.setTimeout(() => {
+          isThrottled = false;
+        }, ms);
+      }
+
+      function playIndex(i, force = true) {
+        if (!anim) return;
+
+        const next = clampIndex(i);
+        const [start, end] = SEGMENTS[next];
+
+        currentIndex = next;
+        isPlaying = true;
+
+        setStatus(
+          `Segment ${currentIndex}/${SEGMENTS.length - 1}  ·  frames ${String(start).padStart(5, "0")}→${String(end).padStart(5, "0")}`,
+        );
+
+        // force=true: 이전 재생 큐를 지우고 새 세그먼트를 즉시 재생
+        anim.playSegments([start, end], force);
+      }
+
+      function next() {
+        // 0은 자동 재생 구간이라, 스크롤로는 1~4만 가도록 해도 되지만
+        // 여기선 단순히 currentIndex+1로 진행 (자동 재생 끝나면 currentIndex=0이라 다음은 1)
+        if (!anim || isPlaying || isThrottled) return;
+        throttle(250);
+        playIndex(currentIndex + 1, true);
+      }
+
+      function prev() {
+        // prev는 1에서 0으로도 갈 수 있게 해 둠(원치 않으면 clamp를 1부터로 바꿔줄게)
+        if (!anim || isPlaying || isThrottled) return;
+        throttle(250);
+        playIndex(currentIndex - 1, true);
+      }
+
+      function replay() {
+        if (!anim || isPlaying) return;
+        playIndex(currentIndex, true);
+      }
+
+      function onWheel(e) {
+        e.preventDefault();
+        if (!anim || isPlaying || isThrottled) return;
+
+        if (e.deltaY > 0) next();
+        else if (e.deltaY < 0) prev();
+      }
+
+      function onKeyDown(e) {
+        if (!anim) return;
+
+        if (e.key === "ArrowDown" || e.key === "PageDown") {
+          e.preventDefault();
+          next();
+        } else if (e.key === "ArrowUp" || e.key === "PageUp") {
+          e.preventDefault();
+          prev();
+        } else if (e.key === " " || e.key === "Spacebar") {
+          e.preventDefault();
+          replay();
+        }
+      }
+
+      // ✅ 라이브러리 로드 확인
+      if (!window.lottie || typeof window.lottie.loadAnimation !== "function") {
+        setStatus(
+          "❌ Lottie library not loaded (CDN blocked?). Check network/console.",
+        );
+        throw new Error("Lottie not available");
+      }
+
+      anim = window.lottie.loadAnimation({
+        container,
+        renderer: "svg",
+        loop: false,
+        autoplay: false,
+        path: JSON_PATH,
+        // 이미지 에셋 경로가 json 안에 이미 "images/"로 들어있어서 별도 설정 필요 없음 :contentReference[oaicite:2]{index=2}
+      });
+
+      // JSON 로딩/파싱 실패 감지
+      anim.addEventListener("data_failed", () => {
+        setStatus(
+          "❌ Failed to load JSON. If opened via file://, try running a local server.",
+        );
+      });
+
+      // DOMLoaded: SVG/레이어 준비 완료
+      anim.addEventListener("DOMLoaded", () => {
+        setStatus("Auto playing 00000→00059…");
+        // ✅ 진입 시 자동 0구간 재생
+        playIndex(0, true);
+      });
+
+      // 세그먼트 재생 완료 시: 다음 입력 대기
+      anim.addEventListener("complete", () => {
+        isPlaying = false;
+
+        // 재생이 끝난 구간의 end 프레임에서 멈추게 하고 상태 표시
+        const [, end] = SEGMENTS[currentIndex];
+        anim.goToAndStop(end, true);
+
+        if (currentIndex === 0) {
+          setStatus("Ready · scroll to play (1/4)");
+        } else {
+          setStatus(`Ready · scroll again (${currentIndex}/4 done)`);
+        }
+      });
+
+      window.addEventListener("wheel", onWheel, { passive: false });
+      window.addEventListener("keydown", onKeyDown);
+    </script>
+  </body>
+</html>
