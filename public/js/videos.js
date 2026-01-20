@@ -419,6 +419,44 @@ const VIDEO_PAGE_SOURCES = {
     onlineTitle: "Direct Ophthalmoscopy (online)",
     iframeClass: "videos-yt-do",
   },
+
+  usaidHowToUseArclightPage: {
+    key: "videoMode:usaidHowToUseArclightPage",
+    containerSelector: "#usaidHowToUseArclightContainer",
+    videoSelector: "#usaidHowToUseArclightVideo",
+    sources: {
+      low: "videos/USAID Childhood eye screening/1. How to use the Arclight - ENGLISH - HD_220p.mp4",
+      high: "videos/USAID Childhood eye screening/1. How to use the Arclight - ENGLISH - HD_720p.mp4",
+      online: "https://youtu.be/ibzvXsRfLiI?si=DI2MKpa0nuCgGz-k",
+    },
+    onlineTitle: "How to use the Arclight (online)",
+    iframeClass: "videos-yt-usaid-howto",
+  },
+
+  usaidFundalReflexExamPage: {
+    key: "videoMode:usaidFundalReflexExamPage",
+    containerSelector: "#usaidFundalReflexExamContainer",
+    videoSelector: "#usaidFundalReflexExamVideo",
+    sources: {
+      low: "videos/USAID Childhood eye screening/FundalReflexUSAID_220p.mp4",
+      high: "videos/USAID Childhood eye screening/FundalReflexUSAID_720p.mp4",
+    },
+    onlineTitle: "Fundal Reflex Exam (online)",
+    iframeClass: "videos-yt-usaid-fundal",
+  },
+
+  usaidNormalAbnormalPage: {
+    key: "videoMode:usaidNormalAbnormalPage",
+    containerSelector: "#usaidNormalAbnormalContainer",
+    videoSelector: "#usaidNormalAbnormalVideo",
+    sources: {
+      low: "videos/USAID Childhood eye screening/4. Normal and Abnormal findings - ENGLISH - HD_220p.mp4",
+      high: "videos/USAID Childhood eye screening/4. Normal and Abnormal findings - ENGLISH - HD_720p.mp4",
+      online: "https://youtu.be/n837_zt_Vaw?si=VnQDItAVB1tZx-M0",
+    },
+    onlineTitle: "Normal and Abnormal findings (online)",
+    iframeClass: "videos-yt-usaid-normal",
+  },
 };
 
 function readGenericVideoMode(storageKey) {
@@ -986,13 +1024,15 @@ if (!window[__videosGlobalBoundKey]) {
 
   // Make lesson rows act like carousel cards (deep-link to a video page)
   document.addEventListener("click", (e) => {
+    // ✅ videos route가 DOM에 없으면 아무 것도 하지 않기
+    if (!document.getElementById("videos")) return;
+
     const row = e.target.closest(".lesson-row[data-target]");
     if (!row) return;
 
     const target = row.getAttribute("data-target");
     if (!target) return;
 
-    // Directly show the target subpage within the already loaded videos.html
     show(target);
   });
 
@@ -1254,3 +1294,12 @@ async function openAnteriorSegmentQuiz() {
     page.style.display = "block";
   }
 }
+
+// Debug helpers (safe to keep, or remove later)
+window.initializeVideos = initializeVideos;
+window.__videosShow = (id) => {
+  try {
+    window.__videosPendingTarget = id;
+  } catch {}
+  // 내부 show는 스코프 안이라 직접 노출이 필요하면 아래도 같이 붙일 수 있음
+};

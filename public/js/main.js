@@ -114,6 +114,15 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+// childhoodEyeScreeningWorkshop route init
+window.addEventListener("page:loaded", async (e) => {
+  const routeName = e?.detail?.routeName;
+  if (routeName !== "childhoodEyeScreeningWorkshop") return;
+
+  const { initializeChildhoodEyeScreeningWorkshop } =
+    await import("./childhoodEyeScreeningWorkshop.js");
+  initializeChildhoodEyeScreeningWorkshop?.();
+});
 
 /**
  * Another event listener for 'page:loaded' custom event, specifically for the 'liked' route.
