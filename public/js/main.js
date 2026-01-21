@@ -128,15 +128,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (routeName === "casestudy") {
       const { initializeCaseStudy } = await import("./casestudy.js");
-      const { initializeCaseStudyAdvanced } =
-        await import("./casestudy_advanced.js");
+      //const { initializeCaseStudyAdvanced } =
+      //await import("./casestudy_advanced.js");
 
       const { initializeCaseStudyPrimary } =
         await import("./casestudy_primary.js");
       initializeCaseStudyPrimary();
 
       initializeCaseStudy(); // intermediate (기존)
-      initializeCaseStudyAdvanced(); // advanced (복사본)
+      //initializeCaseStudyAdvanced(); // advanced (복사본)
       return;
     }
 
