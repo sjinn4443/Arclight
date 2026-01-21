@@ -946,6 +946,20 @@ export function initializeVideos() {
   // Always hide first; we’ll reveal only when the target section exists.
   if (root) root.style.visibility = "hidden";
 
+  // [ADD] videos route 들어올 때, videos 안의 모든 subpage를 일단 숨김 (기본으로 떠있는 visualAcuityPage 방지)
+  const videosRoot =
+    document.getElementById("videos") ||
+    document.querySelector('[data-page="videos"]');
+
+  if (videosRoot) {
+    videosRoot.querySelectorAll(".page").forEach((p) => {
+      p.style.display = "none";
+    });
+  }
+
+  // [ADD] 첫 show()에서 기존 페이지를 확실히 새로 잡도록 초기화
+  currentPageElement = null;
+
   // Wire video progress tracking (safe to call even if DOM not ready yet)
   wirePupilFullExamProgress();
 
