@@ -1646,6 +1646,14 @@ input:checked + .slider:before {
   gap: 10px;
 }
 
+#atomsHandout1Page,
+#atomsHandout2Page .eyes-topbar__icons {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .lesson-row {
   display: grid;
   grid-template-columns: 52px 1fr auto;

@@ -2,7 +2,139 @@
 // FILE: public/js/fundalReflexPdf.js
 // ================================================
 
+function showOnlyPage(pageId) {
+  const root = document.getElementById("page-content") || document;
+  const pages = root.querySelectorAll(".page");
+  pages.forEach((p) => {
+    p.style.display = "none";
+    p.classList.remove("active");
+  });
+
+  const target = document.getElementById(pageId);
+  if (target) {
+    target.style.display = "";
+    target.classList.add("active");
+  }
+}
+
+function setupPanZoomForStage(viewerEl, stageEl, opts = {}) {
+  const minScale = opts.minScale ?? 0.6;
+  const maxScale = opts.maxScale ?? 6;
+
+  let scale = 1;
+  let tx = 0;
+  let ty = 0;
+
+  function apply() {
+    stageEl.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`;
+  }
+
+  function clampScale(next) {
+    return Math.max(minScale, Math.min(maxScale, next));
+  }
+
+  // wheel zoom (desktop)
+  viewerEl.addEventListener(
+    "wheel",
+    (e) => {
+      e.preventDefault();
+
+      const rect = viewerEl.getBoundingClientRect();
+      const cx = e.clientX - rect.left;
+      const cy = e.clientY - rect.top;
+
+      const prev = scale;
+      const next = clampScale(prev * (e.deltaY > 0 ? 0.9 : 1.1));
+      if (next === prev) return;
+
+      const k = next / prev;
+      tx = cx - k * (cx - tx);
+      ty = cy - k * (cy - ty);
+      scale = next;
+      apply();
+    },
+    { passive: false },
+  );
+
+  // pointer pan + pinch (mobile)
+  const pointers = new Map();
+  const dist = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
+
+  let panStart = null;
+  let pinchStart = null;
+
+  viewerEl.addEventListener("pointerdown", (e) => {
+    viewerEl.setPointerCapture(e.pointerId);
+    pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+
+    if (pointers.size === 1) {
+      panStart = { x: e.clientX, y: e.clientY, tx, ty };
+      pinchStart = null;
+    } else if (pointers.size === 2) {
+      const [p1, p2] = [...pointers.values()];
+      pinchStart = { d: dist(p1, p2) };
+      panStart = null;
+    }
+  });
+
+  viewerEl.addEventListener("pointermove", (e) => {
+    if (!pointers.has(e.pointerId)) return;
+    pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+
+    if (pointers.size === 1 && panStart) {
+      const p = [...pointers.values()][0];
+      tx = panStart.tx + (p.x - panStart.x);
+      ty = panStart.ty + (p.y - panStart.y);
+      apply();
+    }
+
+    if (pointers.size === 2 && pinchStart) {
+      const [p1, p2] = [...pointers.values()];
+      const d = dist(p1, p2);
+
+      const rect = viewerEl.getBoundingClientRect();
+      const mid = { x: (p1.x + p2.x) / 2, y: (p1.y + p2.y) / 2 };
+      const cx = mid.x - rect.left;
+      const cy = mid.y - rect.top;
+
+      const prev = scale;
+      const next = clampScale(prev * (d / pinchStart.d));
+      if (next === prev) return;
+
+      const k = next / prev;
+      tx = cx - k * (cx - tx);
+      ty = cy - k * (cy - ty);
+      scale = next;
+      apply();
+    }
+  });
+
+  function clearPointer(e) {
+    pointers.delete(e.pointerId);
+    if (pointers.size === 0) {
+      panStart = null;
+      pinchStart = null;
+      return;
+    }
+    if (pointers.size === 1) {
+      const p = [...pointers.values()][0];
+      panStart = { x: p.x, y: p.y, tx, ty };
+      pinchStart = null;
+    }
+  }
+
+  viewerEl.addEventListener("pointerup", clearPointer);
+  viewerEl.addEventListener("pointercancel", clearPointer);
+
+  // 기본 스타일
+  viewerEl.style.touchAction = "none";
+  stageEl.style.transformOrigin = "0 0";
+
+  apply();
+}
+
 export function initializeFundalReflexPdf() {
+  showOnlyPage("fundalReflexPdfPage");
   const page = document.getElementById("fundalReflexPdfPage");
   if (!page) return;
 
@@ -225,4 +357,67 @@ export function initializeFundalReflexPdf() {
       // native download behaviour will handle it
     });
   }
+}
+
+function initAtomsHandoutPage(pageId, viewerId, imgSrc) {
+  const page = document.getElementById(pageId);
+  if (!page) return;
+
+  const viewer = page.querySelector(`#${viewerId}`);
+  if (!viewer) return;
+
+  // 중복 initialise 방지
+  if (viewer.dataset.inited === "1") return;
+  viewer.dataset.inited = "1";
+
+  // fundalReflexPdf.html의 구조처럼 topbar 아래를 풀스크린 뷰어로 사용 :contentReference[oaicite:1]{index=1}
+  viewer.style.position = "fixed";
+  viewer.style.left = "0";
+  viewer.style.right = "0";
+  viewer.style.top = "62px";
+  viewer.style.bottom = "0";
+  viewer.style.overflow = "hidden";
+  viewer.style.background = "#fff";
+
+  viewer.innerHTML = `
+    <div class="atoms-stage" style="position:absolute; left:0; top:0;">
+      <img
+        src="${imgSrc}"
+        alt="ATOMS handout"
+        draggable="false"
+        style="
+          display:block;
+          width:100vw;
+          height:auto;
+          max-width:none;
+          user-select:none;
+          -webkit-user-drag:none;
+          pointer-events:none;
+        "
+      />
+    </div>
+  `;
+
+  const stage = viewer.querySelector(".atoms-stage");
+  if (!stage) return;
+
+  setupPanZoomForStage(viewer, stage);
+}
+
+export function initializeAtomsHandout1() {
+  showOnlyPage("atomsHandout1Page");
+  initAtomsHandoutPage(
+    "atomsHandout1Page",
+    "atomsHandout1Viewer",
+    "images/pdf/Workshop/Childhood/AtomsHandout1.png",
+  );
+}
+
+export function initializeAtomsHandout2() {
+  showOnlyPage("atomsHandout2Page");
+  initAtomsHandoutPage(
+    "atomsHandout2Page",
+    "atomsHandout2Viewer",
+    "images/pdf/Workshop/Childhood/AtomsHandout2.png",
+  );
 }

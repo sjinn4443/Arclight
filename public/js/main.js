@@ -8,7 +8,11 @@ import { initializePWA } from "./pwa.js";
 import { wireGlobalNavigation } from "./navigation.js";
 import { initializeVideoPlayers, initializeToolbar } from "./videoplayer.js";
 import { initializeLocation } from "./location-service.js";
-import { initializeFundalReflexPdf } from "./fundalReflexPdf.js";
+import {
+  initializeFundalReflexPdf,
+  initializeAtomsHandout1,
+  initializeAtomsHandout2,
+} from "./fundalReflexPdf.js";
 
 function withSentry(fn) {
   return (...args) => {
@@ -102,6 +106,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (routeName === "fundalReflexPdf") {
       initializeFundalReflexPdf();
+      return;
+    }
+
+    if (routeName === "atomsHandout1") {
+      initializeAtomsHandout1();
+      return;
+    }
+
+    if (routeName === "atomsHandout2") {
+      initializeAtomsHandout2();
       return;
     }
 

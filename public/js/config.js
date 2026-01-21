@@ -29,4 +29,6 @@ export const ROUTES = {
   visualsystemeyesbrain: "html/visualsystemeyesbrain.html",
   childhoodAssessment: "html/childhoodAssessment.html",
   behavioursquiz: "html/behavioursquiz.html",
+  atomsHandout1: "html/fundalReflexPdf.html",
+  atomsHandout2: "html/fundalReflexPdf.html",
 };

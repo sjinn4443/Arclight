@@ -68,12 +68,38 @@ export function initializeChildhoodEyeScreeningWorkshop() {
       row.dataset.wiredComingSoon = "1";
       row.addEventListener("click", () => alert("Coming soon."));
     });
-}
 
-// Fundal Reflex PDF row -> open Fundal PDF page
-const fundalPdfRow = document.getElementById("fundalReflexPdfRow");
-if (fundalPdfRow) {
-  fundalPdfRow.addEventListener("click", () => {
-    loadPage("fundalReflexPdf");
-  });
+  // ---- PDF / ATOMS rows (must be inside initialise) ----
+  const atoms1 = document.getElementById("atomsHandout1Row");
+  if (atoms1 && atoms1.dataset.wiredPdf !== "1") {
+    atoms1.dataset.wiredPdf = "1";
+    atoms1.addEventListener("click", async (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+      await loadPage("atomsHandout1");
+    });
+  }
+
+  const atoms2 = document.getElementById("atomsHandout2Row");
+  if (atoms2 && atoms2.dataset.wiredPdf !== "1") {
+    atoms2.dataset.wiredPdf = "1";
+    atoms2.addEventListener("click", async (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+      await loadPage("atomsHandout2");
+    });
+  }
+
+  const fundalPdf = document.getElementById("fundalReflexPdfRow");
+  if (fundalPdf && fundalPdf.dataset.wiredPdf !== "1") {
+    fundalPdf.dataset.wiredPdf = "1";
+    fundalPdf.addEventListener("click", async (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+      await loadPage("fundalReflexPdf");
+    });
+  }
 }
