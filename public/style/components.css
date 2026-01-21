@@ -4915,3 +4915,9 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
 .quiz-feedback.is-wrong {
   font-weight: 600;
 }
+
+/* 카드 영역에서만 제스처를 제어 */
+.flashcard-swipe-lock {
+  touch-action: pan-y; /* 세로 스크롤은 허용, 가로는 브라우저 기본 스크롤로 처리하지 않게 */
+  overscroll-behavior-x: none; /* 카드 영역에서 가로 바운스도 방지 */
+}

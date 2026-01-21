@@ -527,8 +527,6 @@ export function initializeCaseStudy() {
   finalOk?.addEventListener("click", closeFinalModal);
 
   // ✅ 모바일에서 click이 안 잡히는 경우가 있어서 pointerup도 같이 받음
-  log.addEventListener("click", handleImageCoverTap);
-  log.addEventListener("pointerup", handleImageCoverTap);
 
   function confirmImagePenalty() {
     return new Promise((resolve) => {
@@ -563,6 +561,9 @@ export function initializeCaseStudy() {
     );
     return;
   }
+
+  log.addEventListener("click", handleImageCoverTap);
+  log.addEventListener("pointerup", handleImageCoverTap);
 
   // initial chips state: hidden
   if (choices) choices.hidden = true;
