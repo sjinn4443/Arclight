@@ -119,6 +119,13 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    // navigation.js 내부 혹은 관련 로직 위치
+    if (routeName === "visualImpairment") {
+      const { initializeVisualImpairment } =
+        await import("./visualImpairment.js");
+      initializeVisualImpairment();
+    }
+
     if (routeName === "casestudy") {
       const { initializeCaseStudy } = await import("./casestudy.js");
       const { initializeCaseStudyAdvanced } =

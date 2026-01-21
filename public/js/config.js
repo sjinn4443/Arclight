@@ -31,4 +31,6 @@ export const ROUTES = {
   behavioursquiz: "html/behavioursquiz.html",
   atomsHandout1: "html/fundalReflexPdf.html",
   atomsHandout2: "html/fundalReflexPdf.html",
+  visualImpairment: "html/visualImpairment.html",
+  atomsHandout1: "html/fundalReflexPdf.html",
 };

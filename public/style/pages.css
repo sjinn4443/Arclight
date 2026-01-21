@@ -1564,3 +1564,28 @@ select.onb-input.has-value + .onb-select-caret {
 .role-exp-row span {
   font-size: 13px;
 }
+
+/* public/style/pages.css 마지막에 추가 */
+
+.media-scroll-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* 항목 간 간격 */
+  padding-bottom: 50px;
+  width: 100%;
+}
+
+.media-item {
+  width: 100%;
+  background: #000; /* 로딩 전 배경색 */
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.media-item img,
+.media-item video {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 0px;
+}

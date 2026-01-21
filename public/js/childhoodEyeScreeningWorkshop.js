@@ -1,105 +1,53 @@
 import { loadPage } from "./navigation.js";
 
 export function initializeChildhoodEyeScreeningWorkshop() {
-  const rows = document.querySelectorAll(
-    "#childhoodEyeScreeningWorkshopPage .lesson-row[data-target]",
-  );
+  const page = document.getElementById("childhoodEyeScreeningWorkshopPage");
+  if (!page) return;
 
-  // ✅ rows가 없으면 조용히 종료 (페이지 아직 안 붙었을 때)
-  if (!rows || rows.length === 0) {
-    console.warn("[workshop] no lesson rows found to wire");
-    return;
-  }
-
+  // 1. 기존 data-target 기반 로우들 연결
+  const rows = page.querySelectorAll(".lesson-row[data-target]");
   rows.forEach((row) => {
-    // ✅ 중복 바인딩 방지
     if (row.dataset.wired === "1") return;
     row.dataset.wired = "1";
 
-    // (디버그) 이 row가 잡혔는지 확인
-    console.warn(
-      "[workshop] wiring row target=",
-      row.getAttribute("data-target"),
-    );
-
     row.addEventListener("click", async (event) => {
       event.preventDefault();
-      event.stopPropagation();
-      event.stopImmediatePropagation();
-
       const target = row.getAttribute("data-target");
-      console.warn("[workshop] clicked target =", target);
       if (!target) return;
 
       if (target === "childhoodAssessmentPage") {
-        try {
-          sessionStorage.removeItem("gotoSubPage");
-        } catch (_) {}
         await loadPage("childhoodAssessment");
-        return;
-      }
-
-      if (target === "behavioursquizPage") {
-        try {
-          sessionStorage.removeItem("gotoSubPage");
-        } catch (_) {}
+      } else if (target === "behavioursquizPage") {
         await loadPage("behavioursquiz");
-        return;
       }
-
-      window.__videosPendingTarget = target;
-      window.__videosSuppressFlash = true;
-
-      sessionStorage.setItem("gotoSubPage", target);
-      console.warn(
-        "[workshop] gotoSubPage set =",
-        sessionStorage.getItem("gotoSubPage"),
-      );
-
-      await loadPage("videos");
     });
   });
 
-  // coming-soon wiring도 initialise 안으로 넣는 게 안전함
-  document
-    .querySelectorAll("#childhoodEyeScreeningWorkshopPage .coming-soon")
-    .forEach((row) => {
-      if (row.dataset.wiredComingSoon === "1") return;
-      row.dataset.wiredComingSoon = "1";
-      row.addEventListener("click", () => alert("Coming soon."));
-    });
-
-  // ---- PDF / ATOMS rows (must be inside initialise) ----
-  const atoms1 = document.getElementById("atomsHandout1Row");
-  if (atoms1 && atoms1.dataset.wiredPdf !== "1") {
-    atoms1.dataset.wiredPdf = "1";
-    atoms1.addEventListener("click", async (e) => {
+  // 2. Visual Impairment 버튼 연결 (추가된 부분)
+  const viRow = document.getElementById("visualImpairmentRow");
+  if (viRow && viRow.dataset.wired !== "1") {
+    viRow.dataset.wired = "1";
+    viRow.addEventListener("click", async (e) => {
       e.preventDefault();
-      e.stopPropagation();
-      e.stopImmediatePropagation();
-      await loadPage("atomsHandout1");
+      await loadPage("visualImpairment");
     });
   }
 
-  const atoms2 = document.getElementById("atomsHandout2Row");
-  if (atoms2 && atoms2.dataset.wiredPdf !== "1") {
-    atoms2.dataset.wiredPdf = "1";
-    atoms2.addEventListener("click", async (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      e.stopImmediatePropagation();
-      await loadPage("atomsHandout2");
-    });
-  }
+  // 3. PDF 관련 버튼들 (Atoms, Fundal 등)
+  const pdfLinks = [
+    { id: "atomsHandout1Row", route: "atomsHandout1" },
+    { id: "atomsHandout2Row", route: "atomsHandout2" },
+    { id: "fundalReflexPdfRow", route: "fundalReflexPdf" },
+  ];
 
-  const fundalPdf = document.getElementById("fundalReflexPdfRow");
-  if (fundalPdf && fundalPdf.dataset.wiredPdf !== "1") {
-    fundalPdf.dataset.wiredPdf = "1";
-    fundalPdf.addEventListener("click", async (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      e.stopImmediatePropagation();
-      await loadPage("fundalReflexPdf");
-    });
-  }
+  pdfLinks.forEach((link) => {
+    const el = document.getElementById(link.id);
+    if (el && el.dataset.wiredPdf !== "1") {
+      el.dataset.wiredPdf = "1";
+      el.addEventListener("click", async (e) => {
+        e.preventDefault();
+        await loadPage(link.route);
+      });
+    }
+  });
 }
