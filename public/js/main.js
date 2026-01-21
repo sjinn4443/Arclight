@@ -132,6 +132,12 @@ document.addEventListener("DOMContentLoaded", () => {
       initializeChildhoodAssessment?.();
       return;
     }
+
+    if (routeName === "behavioursquiz") {
+      const { initializeBehavioursQuiz } = await import("./behavioursquiz.js");
+      initializeBehavioursQuiz?.();
+      return;
+    }
   });
 });
 // childhoodEyeScreeningWorkshop route init

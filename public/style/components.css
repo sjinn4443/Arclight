@@ -4888,6 +4888,7 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
   display: block;
   border-radius: 12px;
 }
+
 .quiz-option {
   display: flex;
   gap: 10px;

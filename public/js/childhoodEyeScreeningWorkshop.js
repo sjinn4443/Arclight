@@ -39,6 +39,14 @@ export function initializeChildhoodEyeScreeningWorkshop() {
         return;
       }
 
+      if (target === "behavioursquizPage") {
+        try {
+          sessionStorage.removeItem("gotoSubPage");
+        } catch (_) {}
+        await loadPage("behavioursquiz");
+        return;
+      }
+
       window.__videosPendingTarget = target;
       window.__videosSuppressFlash = true;
 

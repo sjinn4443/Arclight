@@ -28,4 +28,5 @@ export const ROUTES = {
   fundalReflexPdf: "/html/fundalReflexPdf.html",
   visualsystemeyesbrain: "html/visualsystemeyesbrain.html",
   childhoodAssessment: "html/childhoodAssessment.html",
+  behavioursquiz: "html/behavioursquiz.html",
 };
