@@ -1,10 +1,55 @@
+// public/js/childhoodEyeScreeningWorkshop.js
 import { loadPage } from "./navigation.js";
+
+function normaliseVideosSubpageId(raw) {
+  if (!raw) return "";
+
+  let t = String(raw).trim();
+
+  // allow "#fundalExamPage" style
+  if (t.startsWith("#")) t = t.slice(1);
+
+  // If workshop uses short aliases, map them to the real ids in videos.html
+  const ALIASES = {
+    visualAcuity: "visualAcuityPage",
+    vaWho: "vaWhoPage",
+    vaNearVision: "vaNearVisionPage",
+    mumVision: "mumVisionPage",
+
+    fundalReflex: "fundalReflexPage",
+    fundalExam: "fundalExamPage",
+    fundalStill: "fundalStillPage",
+    fundalReal: "fundalRealPage",
+
+    pupils: "pupilsPage",
+    pupilExamPEC: "pupilExamPECPage",
+    pupilFullExam: "pupilFullExamPage",
+    pupilPathways: "pupilPathwaysPage",
+
+    rapdTestVideo: "rapdTestVideoPage",
+    directOphthalmoscopy: "directOphthalmoscopyVideoPage",
+    directOphthalmoscopyVideo: "directOphthalmoscopyVideoPage",
+
+    childhoodEyeScreening: "childhoodEyeScreeningPage",
+    howToArclight: "howToArclightPage",
+    assessmentVision: "assessmentVisionPage",
+    normalAbnormal: "normalAbnormalPage",
+    frontOfEye: "frontOfEyePage",
+  };
+
+  if (ALIASES[t]) return ALIASES[t];
+
+  // If it already looks like a real id, keep it
+  if (t.endsWith("Page")) return t;
+
+  // Common case: workshop uses "fundalExam" but videos.html uses "fundalExamPage"
+  return `${t}Page`;
+}
 
 export function initializeChildhoodEyeScreeningWorkshop() {
   const page = document.getElementById("childhoodEyeScreeningWorkshopPage");
   if (!page) return;
 
-  // 1. 기존 data-target 기반 로우들 연결
   const rows = page.querySelectorAll(".lesson-row[data-target]");
   rows.forEach((row) => {
     if (row.dataset.wired === "1") return;
@@ -12,14 +57,42 @@ export function initializeChildhoodEyeScreeningWorkshop() {
 
     row.addEventListener("click", async (event) => {
       event.preventDefault();
-      const target = row.getAttribute("data-target");
+
+      const targetRaw = row.getAttribute("data-target");
+      if (!targetRaw) return;
+
+      // ✅ quizzes that are separate routes
+      if (targetRaw === "childhoodAssessmentPage") {
+        await loadPage("childhoodAssessment");
+        return;
+      }
+      if (targetRaw === "behavioursquizPage") {
+        await loadPage("behavioursquiz");
+        return;
+      }
+
+      // ✅ EVERYTHING ELSE: treat as a videos subpage id (normalised)
+      const target = normaliseVideosSubpageId(targetRaw);
       if (!target) return;
 
-      if (target === "childhoodAssessmentPage") {
-        await loadPage("childhoodAssessment");
-      } else if (target === "behavioursquizPage") {
-        await loadPage("behavioursquiz");
-      }
+      try {
+        sessionStorage.setItem("gotoSubPage", target);
+        try {
+          window.__videosPendingTarget = target;
+          window.__videosSuppressFlash = true;
+        } catch (_e) {}
+
+        sessionStorage.setItem("fromRoute", "childhoodEyeScreeningWorkshop");
+      } catch (_e) {}
+
+      console.log(
+        "[Workshop → Videos] targetRaw =",
+        targetRaw,
+        "→ target =",
+        target,
+      );
+
+      await loadPage("videos");
     });
   });
 

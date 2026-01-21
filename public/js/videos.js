@@ -904,6 +904,13 @@ function show(id) {
   newPageElement.style.display = "block";
   currentPageElement = newPageElement;
 
+  // ✅ ensure we start at the top when switching video subpages
+  try {
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  } catch {}
+
   // Auto-resume full pupil exam video from last watched time
   if (id === "pupilFullExamPage") {
     wireTriToggle();

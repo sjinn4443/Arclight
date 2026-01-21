@@ -319,6 +319,17 @@ export async function loadPage(routeName, options = {}) {
   // Inject the fetched HTML
   container.innerHTML = html;
 
+  // ✅ Always reset scroll position on route change
+  try {
+    container.scrollTop = 0;
+  } catch {}
+
+  try {
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  } catch {}
+
   try {
     closeMenu();
   } catch {}

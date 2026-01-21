@@ -2,958 +2,959 @@
 
 <!-- Visual Acuity Page -->
 <!-- Visual Acuity Page -->
-<section id="visualAcuityPage" class="page pupils-like">
-  <div class="container pupils-container">
-    <div class="eyes-topbar">
-      <div class="eyes-topbar__title">Eyes</div>
-      <div class="eyes-topbar__icons">
-        <span class="icon menuBtn" aria-label="Menu">☰</span>
-      </div>
-    </div>
-
-    <h2 class="pupils-subtitle">Visual Acuity</h2>
-
-    <div class="pupils-levels">
-      <!-- Primary -->
-      <section class="pupil-level pupil-level--primary" aria-label="Primary">
-        <div class="pupil-level__cap">Primary</div>
-
-        <button
-          type="button"
-          class="pupil-card module-card"
-          data-page="vaWhoPage"
-        >
-          <h3>Teach Yourself</h3>
-
-          <div
-            class="lesson-row lesson-row--video"
-            data-target="vaWhoPage"
-            role="button"
-            tabindex="0"
-          >
-            <div class="thumb" aria-hidden="true"></div>
-
-            <div class="lesson-main">
-              <div class="lesson-top">
-                <span class="lesson-type">WHO Visual Acuity</span>
-                <span class="lesson-meta">| 00:00</span>
-              </div>
-
-              <div
-                class="lesson-progress"
-                role="progressbar"
-                aria-valuemin="0"
-                aria-valuemax="100"
-              >
-                <div class="lesson-progress__fill" style="width: 0%"></div>
-              </div>
-            </div>
-
-            <span class="lesson-cta">Start &gt;</span>
-          </div>
-          <div
-            class="lesson-row lesson-row--video"
-            data-target="vaNearVisionPage"
-            role="button"
-            tabindex="0"
-          >
-            <div class="thumb" aria-hidden="true"></div>
-
-            <div class="lesson-main">
-              <div class="lesson-top">
-                <span class="lesson-type">Near Vision & Glasses</span>
-                <span class="lesson-meta">| 00:00</span>
-              </div>
-
-              <div
-                class="lesson-progress"
-                role="progressbar"
-                aria-valuemin="0"
-                aria-valuemax="100"
-              >
-                <div class="lesson-progress__fill" style="width: 0%"></div>
-              </div>
-            </div>
-
-            <span class="lesson-cta">Start &gt;</span>
-          </div>
-          <div
-            class="lesson-row lesson-row--video"
-            data-target="assessmentVisionPage"
-            role="button"
-            tabindex="0"
-          >
-            <div class="thumb" aria-hidden="true"></div>
-
-            <div class="lesson-main">
-              <div class="lesson-top">
-                <span class="lesson-type">Assessing Eyes & Vision</span>
-                <span class="lesson-meta">| 00:00</span>
-              </div>
-
-              <div
-                class="lesson-progress"
-                role="progressbar"
-                aria-valuemin="0"
-                aria-valuemax="100"
-              >
-                <div class="lesson-progress__fill" style="width: 0%"></div>
-              </div>
-            </div>
-
-            <span class="lesson-cta">Start &gt;</span>
-          </div>
-
-          <div
-            class="lesson-row lesson-row--video"
-            data-target="mumVisionPage"
-            role="button"
-            tabindex="0"
-          >
-            <div class="thumb" aria-hidden="true"></div>
-
-            <div class="lesson-main">
-              <div class="lesson-top">
-                <span class="lesson-type">Milestones African Mum</span>
-                <span class="lesson-meta">| 00:00</span>
-              </div>
-
-              <div
-                class="lesson-progress"
-                role="progressbar"
-                aria-valuemin="0"
-                aria-valuemax="100"
-              >
-                <div class="lesson-progress__fill" style="width: 0%"></div>
-              </div>
-            </div>
-
-            <span class="lesson-cta">Start &gt;</span>
-          </div>
-        </button>
-      </section>
-    </div>
-  </div>
-</section>
-
-<!-- ========================= -->
-<!-- Visual Acuity: Video Pages -->
-<!-- ========================= -->
-
-<!-- WHO Visual Acuity -->
-<div id="vaWhoPage" class="page" style="display: none">
-  <div>
-    <div class="tri-toggle" role="radiogroup" aria-label="Video mode">
-      <button
-        class="tri-toggle__btn"
-        type="button"
-        role="radio"
-        aria-checked="false"
-        data-mode="low"
-      >
-        low
-      </button>
-      <button
-        class="tri-toggle__btn"
-        type="button"
-        role="radio"
-        aria-checked="false"
-        data-mode="high"
-      >
-        high
-      </button>
-      <button
-        class="tri-toggle__btn tri-toggle__btn--icon"
-        type="button"
-        role="radio"
-        aria-checked="false"
-        data-mode="online"
-        aria-label="online"
-      >
-        <span class="tri-toggle__wifi" aria-hidden="true"></span>
-      </button>
-      <div class="tri-toggle__knob" aria-hidden="true"></div>
-    </div>
-
-    <div class="video-header">
-      <h3>WHO Visual Acuity</h3>
-    </div>
-
-    <div class="video-container" id="vaWhoContainer">
-      <video
-        id="vaWhoVideo"
-        controls
-        preload="none"
-        style="width: 100%; max-width: 100%"
-      >
-        <source src="" type="video/mp4" />
-        <span>Your browser does not support the video tag.</span>
-      </video>
-    </div>
-  </div>
-</div>
-
-<!-- Assessing Near Vision and Dispensing Glasses -->
-<div id="vaNearVisionPage" class="page" style="display: none">
-  <div>
-    <div class="tri-toggle" role="radiogroup" aria-label="Video mode">
-      <button
-        class="tri-toggle__btn"
-        type="button"
-        role="radio"
-        aria-checked="false"
-        data-mode="low"
-      >
-        low
-      </button>
-      <button
-        class="tri-toggle__btn"
-        type="button"
-        role="radio"
-        aria-checked="false"
-        data-mode="high"
-      >
-        high
-      </button>
-      <button
-        class="tri-toggle__btn tri-toggle__btn--icon"
-        type="button"
-        role="radio"
-        aria-checked="false"
-        data-mode="online"
-        aria-label="online"
-      >
-        <span class="tri-toggle__wifi" aria-hidden="true"></span>
-      </button>
-      <div class="tri-toggle__knob" aria-hidden="true"></div>
-    </div>
-
-    <div class="video-header">
-      <h3>Assessing Near Vision and Dispensing Glasses</h3>
-    </div>
-
-    <div class="video-container" id="vaNearVisionContainer">
-      <video
-        id="vaNearVisionVideo"
-        controls
-        preload="none"
-        style="width: 100%; max-width: 100%"
-      >
-        <source src="" type="video/mp4" />
-        <span>Your browser does not support the video tag.</span>
-      </video>
-    </div>
-  </div>
-</div>
-
-<!-- Assessment of eyes and vision -->
-<!-- (이 페이지는 이미 존재하지만, 토글을 붙이려면 아래처럼 바꿔야 해서 “교체 지시”는 B파트에서 줄게) -->
-
-<!-- Milestones African Mum -->
-<div id="mumVisionPage" class="page" style="display: none">
-  <div>
-    <div class="tri-toggle" role="radiogroup" aria-label="Video mode">
-      <button
-        class="tri-toggle__btn"
-        type="button"
-        role="radio"
-        aria-checked="false"
-        data-mode="low"
-      >
-        low
-      </button>
-      <button
-        class="tri-toggle__btn"
-        type="button"
-        role="radio"
-        aria-checked="false"
-        data-mode="high"
-      >
-        high
-      </button>
-      <div class="tri-toggle__knob" aria-hidden="true"></div>
-    </div>
-
-    <div class="video-header">
-      <h3>Milestones African Mum</h3>
-    </div>
-
-    <div class="video-container" id="mumVisionContainer">
-      <video
-        id="mumVisionVideo"
-        controls
-        preload="none"
-        style="width: 100%; max-width: 100%"
-      >
-        <source src="" type="video/mp4" />
-        <span>Your browser does not support the video tag.</span>
-      </video>
-    </div>
-  </div>
-</div>
-
-<!-- Front of Eye Page -->
-<div id="frontOfEyePage" class="page" style="display: none">
-  <div class="container">
-    <h1 data-i18n="videos.frontOfEyeTitle">Front of Eye</h1>
-
-    <div
-      class="module-card"
-      id="anteriorSegmentVideoCard"
-      style="cursor: pointer"
-      data-page="anteriorSegmentVideoPage"
-    >
-      <img
-        src="images/icons_pic/FrontOfEye.webp"
-        alt="Anterior Segment Video"
-        data-i18n="videos.anteriorSegmentVideoAlt:alt"
-        style="
-          width: 80px;
-          height: 80px;
-          object-fit: contain;
-          border-radius: 8px;
-          margin-right: 12px;
-        "
-      />
-      <div class="module-info">
-        <h3 data-i18n="videos.frontOfEyeTitle">Front of Eye</h3>
-        <p data-i18n="videos.videoLearning">Video Learning</p>
-        <div class="progress-bar">
-          <div class="progress" style="width: 0%"></div>
+<div id="videos" data-page="videos">
+  <section id="visualAcuityPage" class="page pupils-like">
+    <div class="container pupils-container">
+      <div class="eyes-topbar">
+        <div class="eyes-topbar__title">Eyes</div>
+        <div class="eyes-topbar__icons">
+          <span class="icon menuBtn" aria-label="Menu">☰</span>
         </div>
-        <span class="status" data-i18n="videos.startStatus">Start!</span>
+      </div>
+
+      <h2 class="pupils-subtitle">Visual Acuity</h2>
+
+      <div class="pupils-levels">
+        <!-- Primary -->
+        <section class="pupil-level pupil-level--primary" aria-label="Primary">
+          <div class="pupil-level__cap">Primary</div>
+
+          <button
+            type="button"
+            class="pupil-card module-card"
+            data-page="vaWhoPage"
+          >
+            <h3>Teach Yourself</h3>
+
+            <div
+              class="lesson-row lesson-row--video"
+              data-target="vaWhoPage"
+              role="button"
+              tabindex="0"
+            >
+              <div class="thumb" aria-hidden="true"></div>
+
+              <div class="lesson-main">
+                <div class="lesson-top">
+                  <span class="lesson-type">WHO Visual Acuity</span>
+                  <span class="lesson-meta">| 00:00</span>
+                </div>
+
+                <div
+                  class="lesson-progress"
+                  role="progressbar"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                >
+                  <div class="lesson-progress__fill" style="width: 0%"></div>
+                </div>
+              </div>
+
+              <span class="lesson-cta">Start &gt;</span>
+            </div>
+            <div
+              class="lesson-row lesson-row--video"
+              data-target="vaNearVisionPage"
+              role="button"
+              tabindex="0"
+            >
+              <div class="thumb" aria-hidden="true"></div>
+
+              <div class="lesson-main">
+                <div class="lesson-top">
+                  <span class="lesson-type">Near Vision & Glasses</span>
+                  <span class="lesson-meta">| 00:00</span>
+                </div>
+
+                <div
+                  class="lesson-progress"
+                  role="progressbar"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                >
+                  <div class="lesson-progress__fill" style="width: 0%"></div>
+                </div>
+              </div>
+
+              <span class="lesson-cta">Start &gt;</span>
+            </div>
+            <div
+              class="lesson-row lesson-row--video"
+              data-target="assessmentVisionPage"
+              role="button"
+              tabindex="0"
+            >
+              <div class="thumb" aria-hidden="true"></div>
+
+              <div class="lesson-main">
+                <div class="lesson-top">
+                  <span class="lesson-type">Assessing Eyes & Vision</span>
+                  <span class="lesson-meta">| 00:00</span>
+                </div>
+
+                <div
+                  class="lesson-progress"
+                  role="progressbar"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                >
+                  <div class="lesson-progress__fill" style="width: 0%"></div>
+                </div>
+              </div>
+
+              <span class="lesson-cta">Start &gt;</span>
+            </div>
+
+            <div
+              class="lesson-row lesson-row--video"
+              data-target="mumVisionPage"
+              role="button"
+              tabindex="0"
+            >
+              <div class="thumb" aria-hidden="true"></div>
+
+              <div class="lesson-main">
+                <div class="lesson-top">
+                  <span class="lesson-type">Milestones African Mum</span>
+                  <span class="lesson-meta">| 00:00</span>
+                </div>
+
+                <div
+                  class="lesson-progress"
+                  role="progressbar"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                >
+                  <div class="lesson-progress__fill" style="width: 0%"></div>
+                </div>
+              </div>
+
+              <span class="lesson-cta">Start &gt;</span>
+            </div>
+          </button>
+        </section>
       </div>
     </div>
+  </section>
 
-    <div
-      class="module-card"
-      id="caseBasedLearningCard"
-      style="cursor: pointer"
-      data-page="anteriorSegmentQuizPage"
-    >
-      <img
-        src="images/CaseStudy.webp"
-        alt="Case Based Learning"
-        data-i18n="videos.caseBasedLearningAlt:alt"
-        style="
-          width: 80px;
-          height: 80px;
-          object-fit: contain;
-          border-radius: 8px;
-          margin-right: 12px;
-        "
-      />
-      <div class="module-info">
-        <h3 data-i18n="videos.caseBasedLearningTitle">Case Based Learning</h3>
-        <p data-i18n="videos.quiz">Quiz</p>
-        <div class="progress-bar">
-          <div class="progress" style="width: 0%"></div>
+  <!-- ========================= -->
+  <!-- Visual Acuity: Video Pages -->
+  <!-- ========================= -->
+
+  <!-- WHO Visual Acuity -->
+  <div id="vaWhoPage" class="page" style="display: none">
+    <div>
+      <div class="tri-toggle" role="radiogroup" aria-label="Video mode">
+        <button
+          class="tri-toggle__btn"
+          type="button"
+          role="radio"
+          aria-checked="false"
+          data-mode="low"
+        >
+          low
+        </button>
+        <button
+          class="tri-toggle__btn"
+          type="button"
+          role="radio"
+          aria-checked="false"
+          data-mode="high"
+        >
+          high
+        </button>
+        <button
+          class="tri-toggle__btn tri-toggle__btn--icon"
+          type="button"
+          role="radio"
+          aria-checked="false"
+          data-mode="online"
+          aria-label="online"
+        >
+          <span class="tri-toggle__wifi" aria-hidden="true"></span>
+        </button>
+        <div class="tri-toggle__knob" aria-hidden="true"></div>
+      </div>
+
+      <div class="video-header">
+        <h3>WHO Visual Acuity</h3>
+      </div>
+
+      <div class="video-container" id="vaWhoContainer">
+        <video
+          id="vaWhoVideo"
+          controls
+          preload="none"
+          style="width: 100%; max-width: 100%"
+        >
+          <source src="" type="video/mp4" />
+          <span>Your browser does not support the video tag.</span>
+        </video>
+      </div>
+    </div>
+  </div>
+
+  <!-- Assessing Near Vision and Dispensing Glasses -->
+  <div id="vaNearVisionPage" class="page" style="display: none">
+    <div>
+      <div class="tri-toggle" role="radiogroup" aria-label="Video mode">
+        <button
+          class="tri-toggle__btn"
+          type="button"
+          role="radio"
+          aria-checked="false"
+          data-mode="low"
+        >
+          low
+        </button>
+        <button
+          class="tri-toggle__btn"
+          type="button"
+          role="radio"
+          aria-checked="false"
+          data-mode="high"
+        >
+          high
+        </button>
+        <button
+          class="tri-toggle__btn tri-toggle__btn--icon"
+          type="button"
+          role="radio"
+          aria-checked="false"
+          data-mode="online"
+          aria-label="online"
+        >
+          <span class="tri-toggle__wifi" aria-hidden="true"></span>
+        </button>
+        <div class="tri-toggle__knob" aria-hidden="true"></div>
+      </div>
+
+      <div class="video-header">
+        <h3>Assessing Near Vision and Dispensing Glasses</h3>
+      </div>
+
+      <div class="video-container" id="vaNearVisionContainer">
+        <video
+          id="vaNearVisionVideo"
+          controls
+          preload="none"
+          style="width: 100%; max-width: 100%"
+        >
+          <source src="" type="video/mp4" />
+          <span>Your browser does not support the video tag.</span>
+        </video>
+      </div>
+    </div>
+  </div>
+
+  <!-- Assessment of eyes and vision -->
+  <!-- (이 페이지는 이미 존재하지만, 토글을 붙이려면 아래처럼 바꿔야 해서 “교체 지시”는 B파트에서 줄게) -->
+
+  <!-- Milestones African Mum -->
+  <div id="mumVisionPage" class="page" style="display: none">
+    <div>
+      <div class="tri-toggle" role="radiogroup" aria-label="Video mode">
+        <button
+          class="tri-toggle__btn"
+          type="button"
+          role="radio"
+          aria-checked="false"
+          data-mode="low"
+        >
+          low
+        </button>
+        <button
+          class="tri-toggle__btn"
+          type="button"
+          role="radio"
+          aria-checked="false"
+          data-mode="high"
+        >
+          high
+        </button>
+        <div class="tri-toggle__knob" aria-hidden="true"></div>
+      </div>
+
+      <div class="video-header">
+        <h3>Milestones African Mum</h3>
+      </div>
+
+      <div class="video-container" id="mumVisionContainer">
+        <video
+          id="mumVisionVideo"
+          controls
+          preload="none"
+          style="width: 100%; max-width: 100%"
+        >
+          <source src="" type="video/mp4" />
+          <span>Your browser does not support the video tag.</span>
+        </video>
+      </div>
+    </div>
+  </div>
+
+  <!-- Front of Eye Page -->
+  <div id="frontOfEyePage" class="page" style="display: none">
+    <div class="container">
+      <h1 data-i18n="videos.frontOfEyeTitle">Front of Eye</h1>
+
+      <div
+        class="module-card"
+        id="anteriorSegmentVideoCard"
+        style="cursor: pointer"
+        data-page="anteriorSegmentVideoPage"
+      >
+        <img
+          src="images/icons_pic/FrontOfEye.webp"
+          alt="Anterior Segment Video"
+          data-i18n="videos.anteriorSegmentVideoAlt:alt"
+          style="
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            border-radius: 8px;
+            margin-right: 12px;
+          "
+        />
+        <div class="module-info">
+          <h3 data-i18n="videos.frontOfEyeTitle">Front of Eye</h3>
+          <p data-i18n="videos.videoLearning">Video Learning</p>
+          <div class="progress-bar">
+            <div class="progress" style="width: 0%"></div>
+          </div>
+          <span class="status" data-i18n="videos.startStatus">Start!</span>
         </div>
-        <span class="status" data-i18n="videos.startStatus">Start!</span>
+      </div>
+
+      <div
+        class="module-card"
+        id="caseBasedLearningCard"
+        style="cursor: pointer"
+        data-page="anteriorSegmentQuizPage"
+      >
+        <img
+          src="images/CaseStudy.webp"
+          alt="Case Based Learning"
+          data-i18n="videos.caseBasedLearningAlt:alt"
+          style="
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            border-radius: 8px;
+            margin-right: 12px;
+          "
+        />
+        <div class="module-info">
+          <h3 data-i18n="videos.caseBasedLearningTitle">Case Based Learning</h3>
+          <p data-i18n="videos.quiz">Quiz</p>
+          <div class="progress-bar">
+            <div class="progress" style="width: 0%"></div>
+          </div>
+          <span class="status" data-i18n="videos.startStatus">Start!</span>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<!-- Fundal Reflex Video Page -->
-<section id="fundalReflexPage" class="page pupils-like">
-  <div class="container pupils-container">
-    <div class="eyes-topbar">
-      <div class="eyes-topbar__title">Eyes</div>
-      <div class="eyes-topbar__icons">
-        <span class="icon menuBtn" aria-label="Menu">☰</span>
-      </div>
-    </div>
-
-    <h2 class="pupils-subtitle">Fundal Reflex</h2>
-
-    <div class="pupils-levels">
-      <!-- Primary -->
-      <section class="pupil-level pupil-level--primary" aria-label="Primary">
-        <div class="pupil-level__cap">Primary</div>
-
-        <button
-          type="button"
-          class="pupil-card module-card"
-          data-page="fundalExamPage"
-        >
-          <h3>Teach Yourself</h3>
-
-          <div
-            class="lesson-row lesson-row--video"
-            data-target="fundalExamPage"
-            role="button"
-            tabindex="0"
-          >
-            <div class="thumb" aria-hidden="true"></div>
-
-            <div class="lesson-main">
-              <div class="lesson-top">
-                <span class="lesson-type">Fundal Reflex Exam</span>
-                <span class="lesson-meta">| 00:00</span>
-              </div>
-
-              <div
-                class="lesson-progress"
-                role="progressbar"
-                aria-valuemin="0"
-                aria-valuemax="100"
-              >
-                <div class="lesson-progress__fill" style="width: 0%"></div>
-              </div>
-            </div>
-
-            <span class="lesson-cta">Start &gt;</span>
-          </div>
-
-          <div
-            class="lesson-row lesson-row--video"
-            data-target="fundalStillPage"
-            role="button"
-            tabindex="0"
-          >
-            <div class="thumb" aria-hidden="true"></div>
-
-            <div class="lesson-main">
-              <div class="lesson-top">
-                <span class="lesson-type">20 Real Exam</span>
-                <span class="lesson-meta">| 00:00</span>
-              </div>
-
-              <div
-                class="lesson-progress"
-                role="progressbar"
-                aria-valuemin="0"
-                aria-valuemax="100"
-              >
-                <div class="lesson-progress__fill" style="width: 0%"></div>
-              </div>
-            </div>
-
-            <span class="lesson-cta">Start &gt;</span>
-          </div>
-
-          <div
-            class="lesson-row lesson-row--video"
-            data-target="fundalRealPage"
-            role="button"
-            tabindex="0"
-          >
-            <div class="thumb" aria-hidden="true"></div>
-
-            <div class="lesson-main">
-              <div class="lesson-top">
-                <span class="lesson-type">Real Exam Videos</span>
-                <span class="lesson-meta">| 00:00</span>
-              </div>
-
-              <div
-                class="lesson-progress"
-                role="progressbar"
-                aria-valuemin="0"
-                aria-valuemax="100"
-              >
-                <div class="lesson-progress__fill" style="width: 0%"></div>
-              </div>
-            </div>
-
-            <span class="lesson-cta">Start &gt;</span>
-          </div>
-        </button>
-      </section>
-    </div>
-  </div>
-</section>
-
-<!-- ========================= -->
-<!-- Fundal Reflex: Video Pages -->
-<!-- ========================= -->
-
-<!-- Fundal Reflex Examination (toggle video) -->
-<div id="fundalExamPage" class="page" style="display: none">
-  <div>
-    <div class="tri-toggle" role="radiogroup" aria-label="Video mode">
-      <button
-        class="tri-toggle__btn"
-        type="button"
-        role="radio"
-        aria-checked="false"
-        data-mode="low"
-      >
-        low
-      </button>
-      <button
-        class="tri-toggle__btn"
-        type="button"
-        role="radio"
-        aria-checked="false"
-        data-mode="high"
-      >
-        high
-      </button>
-      <button
-        class="tri-toggle__btn tri-toggle__btn--icon"
-        type="button"
-        role="radio"
-        aria-checked="false"
-        data-mode="online"
-        aria-label="online"
-      >
-        <span class="tri-toggle__wifi" aria-hidden="true"></span>
-      </button>
-      <div class="tri-toggle__knob" aria-hidden="true"></div>
-    </div>
-
-    <div class="video-header">
-      <h3>Fundal Reflex Examination</h3>
-    </div>
-
-    <div class="video-container" id="fundalExamContainer">
-      <video
-        id="fundalExamVideo"
-        controls
-        preload="none"
-        style="width: 100%; max-width: 100%"
-      >
-        <source src="" type="video/mp4" />
-        <span>Your browser does not support the video tag.</span>
-      </video>
-    </div>
-  </div>
-</div>
-
-<!-- Still Images of 20 Real Examinations (toggle video) -->
-<div id="fundalStillPage" class="page" style="display: none">
-  <div>
-    <div class="tri-toggle" role="radiogroup" aria-label="Video mode">
-      <button
-        class="tri-toggle__btn"
-        type="button"
-        role="radio"
-        aria-checked="false"
-        data-mode="low"
-      >
-        low
-      </button>
-      <button
-        class="tri-toggle__btn"
-        type="button"
-        role="radio"
-        aria-checked="false"
-        data-mode="high"
-      >
-        high
-      </button>
-      <button
-        class="tri-toggle__btn tri-toggle__btn--icon"
-        type="button"
-        role="radio"
-        aria-checked="false"
-        data-mode="online"
-        aria-label="online"
-      >
-        <span class="tri-toggle__wifi" aria-hidden="true"></span>
-      </button>
-      <div class="tri-toggle__knob" aria-hidden="true"></div>
-    </div>
-
-    <div class="video-header">
-      <h3>Still Images of 20 Real Examinations</h3>
-    </div>
-
-    <div class="video-container" id="fundalStillContainer">
-      <video
-        id="fundalStillVideo"
-        controls
-        preload="none"
-        style="width: 100%; max-width: 100%"
-      >
-        <source src="" type="video/mp4" />
-        <span>Your browser does not support the video tag.</span>
-      </video>
-    </div>
-  </div>
-</div>
-
-<!-- Videos of Real Fundal Reflex Examinations (toggle video) -->
-<div id="fundalRealPage" class="page" style="display: none">
-  <div>
-    <div class="tri-toggle" role="radiogroup" aria-label="Video mode">
-      <button
-        class="tri-toggle__btn"
-        type="button"
-        role="radio"
-        aria-checked="false"
-        data-mode="low"
-      >
-        low
-      </button>
-      <button
-        class="tri-toggle__btn"
-        type="button"
-        role="radio"
-        aria-checked="false"
-        data-mode="high"
-      >
-        high
-      </button>
-      <button
-        class="tri-toggle__btn tri-toggle__btn--icon"
-        type="button"
-        role="radio"
-        aria-checked="false"
-        data-mode="online"
-        aria-label="online"
-      >
-        <span class="tri-toggle__wifi" aria-hidden="true"></span>
-      </button>
-      <div class="tri-toggle__knob" aria-hidden="true"></div>
-    </div>
-
-    <div class="video-header">
-      <h3>Videos of Real Fundal Reflex Examinations</h3>
-    </div>
-
-    <div class="video-container" id="fundalRealContainer">
-      <video
-        id="fundalRealVideo"
-        controls
-        preload="none"
-        style="width: 100%; max-width: 100%"
-      >
-        <source src="" type="video/mp4" />
-        <span>Your browser does not support the video tag.</span>
-      </video>
-    </div>
-  </div>
-</div>
-
-<!-- ========================= -->
-<!-- USAID: Video Pages -->
-<!-- ========================= -->
-
-<!-- USAID: How to use the Arclight (toggle video) -->
-<div id="usaidHowToUseArclightPage" class="page" style="display: none">
-  <div>
-    <div class="tri-toggle" role="radiogroup" aria-label="Video mode">
-      <button
-        class="tri-toggle__btn"
-        type="button"
-        role="radio"
-        aria-checked="false"
-        data-mode="low"
-      >
-        low
-      </button>
-      <button
-        class="tri-toggle__btn"
-        type="button"
-        role="radio"
-        aria-checked="false"
-        data-mode="high"
-      >
-        high
-      </button>
-      <button
-        class="tri-toggle__btn tri-toggle__btn--icon"
-        type="button"
-        role="radio"
-        aria-checked="false"
-        data-mode="online"
-        aria-label="online"
-      >
-        <span class="tri-toggle__wifi" aria-hidden="true"></span>
-      </button>
-      <div class="tri-toggle__knob" aria-hidden="true"></div>
-    </div>
-
-    <div class="video-header">
-      <h3>How to use the Arclight</h3>
-    </div>
-
-    <div class="video-container" id="usaidHowToUseArclightContainer">
-      <video
-        id="usaidHowToUseArclightVideo"
-        controls
-        preload="none"
-        style="width: 100%; max-width: 100%"
-      >
-        <source src="" type="video/mp4" />
-        <span>Your browser does not support the video tag.</span>
-      </video>
-    </div>
-  </div>
-</div>
-
-<!-- USAID: Fundal Reflex Exam (toggle video) -->
-<div id="usaidFundalReflexExamPage" class="page" style="display: none">
-  <div>
-    <div class="tri-toggle" role="radiogroup" aria-label="Video mode">
-      <button
-        class="tri-toggle__btn"
-        type="button"
-        role="radio"
-        aria-checked="false"
-        data-mode="low"
-      >
-        low
-      </button>
-      <button
-        class="tri-toggle__btn"
-        type="button"
-        role="radio"
-        aria-checked="false"
-        data-mode="high"
-      >
-        high
-      </button>
-      <div class="tri-toggle__knob" aria-hidden="true"></div>
-    </div>
-
-    <div class="video-header">
-      <h3>Fundal Reflex Exam</h3>
-    </div>
-
-    <div class="video-container" id="usaidFundalReflexExamContainer">
-      <video
-        id="usaidFundalReflexExamVideo"
-        controls
-        preload="none"
-        style="width: 100%; max-width: 100%"
-      >
-        <source src="" type="video/mp4" />
-        <span>Your browser does not support the video tag.</span>
-      </video>
-    </div>
-  </div>
-</div>
-
-<!-- USAID: Normal and Abnormal findings (toggle video) -->
-<div id="usaidNormalAbnormalPage" class="page" style="display: none">
-  <div>
-    <div class="tri-toggle" role="radiogroup" aria-label="Video mode">
-      <button
-        class="tri-toggle__btn"
-        type="button"
-        role="radio"
-        aria-checked="false"
-        data-mode="low"
-      >
-        low
-      </button>
-      <button
-        class="tri-toggle__btn"
-        type="button"
-        role="radio"
-        aria-checked="false"
-        data-mode="high"
-      >
-        high
-      </button>
-      <button
-        class="tri-toggle__btn tri-toggle__btn--icon"
-        type="button"
-        role="radio"
-        aria-checked="false"
-        data-mode="online"
-        aria-label="online"
-      >
-        <span class="tri-toggle__wifi" aria-hidden="true"></span>
-      </button>
-      <div class="tri-toggle__knob" aria-hidden="true"></div>
-    </div>
-
-    <div class="video-header">
-      <h3>Normal and Abnormal findings</h3>
-    </div>
-
-    <div class="video-container" id="usaidNormalAbnormalContainer">
-      <video
-        id="usaidNormalAbnormalVideo"
-        controls
-        preload="none"
-        style="width: 100%; max-width: 100%"
-      >
-        <source src="" type="video/mp4" />
-        <span>Your browser does not support the video tag.</span>
-      </video>
-    </div>
-  </div>
-</div>
-
-<!-- Pupils Page -->
-<div id="pupilsPage" class="page" style="display: none">
-  <div class="container pupils-container">
-    <div class="eyes-topbar">
-      <div class="eyes-topbar__title" data-i18n="videos.eyesTitle">Eyes</div>
-      <div class="eyes-topbar__icons">
-        <span class="icon menuBtn" data-i18n="videos.menuButton">☰</span>
-      </div>
-    </div>
-
-    <h2 class="pupils-subtitle" data-i18n="videos.pupilsSubtitle">Pupils</h2>
-
-    <div class="pupils-levels">
-      <!-- Primary -->
-      <section class="pupil-level pupil-level--primary" aria-label="Primary">
-        <div class="pupil-level__cap">Primary</div>
-
-        <button
-          type="button"
-          class="pupil-card module-card"
-          data-page="pupilExamPECPage"
-        >
-          <h3 data-i18n="videos.primaryEyeCareExaminationTitle">Training</h3>
-
-          <div
-            class="lesson-row lesson-row--video"
-            data-target="pupilExamPECPage"
-            role="button"
-            tabindex="0"
-          >
-            <div class="thumb" aria-hidden="true"></div>
-
-            <div class="lesson-main">
-              <div class="lesson-top">
-                <span class="lesson-type" data-i18n="videos.videoLearning"
-                  >Primary Eye Care Exam</span
-                >
-                <span class="lesson-meta">| 02:20</span>
-              </div>
-
-              <div
-                class="lesson-progress"
-                role="progressbar"
-                aria-valuemin="0"
-                aria-valuemax="100"
-              >
-                <div class="lesson-progress__fill" style="width: 0%"></div>
-              </div>
-            </div>
-
-            <span class="lesson-cta" data-i18n="videos.startCta"
-              >Start &gt;</span
-            >
-          </div>
-        </button>
-      </section>
-
-      <div class="pupils-dots" aria-hidden="true">
-        <span></span><span></span>
+  <!-- Fundal Reflex Video Page -->
+  <section id="fundalReflexPage" class="page pupils-like">
+    <div class="container pupils-container">
+      <div class="eyes-topbar">
+        <div class="eyes-topbar__title">Eyes</div>
+        <div class="eyes-topbar__icons">
+          <span class="icon menuBtn" aria-label="Menu">☰</span>
+        </div>
       </div>
 
-      <!-- Intermediate -->
-      <section
-        class="pupil-level pupil-level--intermediate"
-        aria-label="Intermediate"
-      >
-        <div class="pupil-level__cap">Intermediate</div>
+      <h2 class="pupils-subtitle">Fundal Reflex</h2>
 
-        <button
-          type="button"
-          class="pupil-card module-card"
-          data-page="pupilFullExamPage"
-        >
-          <h3 data-i18n="videos.pupilFullExaminationTitle">Learning</h3>
+      <div class="pupils-levels">
+        <!-- Primary -->
+        <section class="pupil-level pupil-level--primary" aria-label="Primary">
+          <div class="pupil-level__cap">Primary</div>
 
-          <div
-            class="lesson-row lesson-row--video"
-            data-target="pupilFullExamPage"
-            role="button"
-            tabindex="0"
+          <button
+            type="button"
+            class="pupil-card module-card"
+            data-page="fundalExamPage"
           >
-            <div class="thumb" aria-hidden="true"></div>
+            <h3>Teach Yourself</h3>
 
-            <div class="lesson-main">
-              <div class="lesson-top">
-                <span class="lesson-type" data-i18n="videos.fullexamvideo"
-                  >Pupil Full Exam</span
+            <div
+              class="lesson-row lesson-row--video"
+              data-target="fundalExamPage"
+              role="button"
+              tabindex="0"
+            >
+              <div class="thumb" aria-hidden="true"></div>
+
+              <div class="lesson-main">
+                <div class="lesson-top">
+                  <span class="lesson-type">Fundal Reflex Exam</span>
+                  <span class="lesson-meta">| 00:00</span>
+                </div>
+
+                <div
+                  class="lesson-progress"
+                  role="progressbar"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
                 >
-                <span class="lesson-meta">| 02:25</span>
+                  <div class="lesson-progress__fill" style="width: 0%"></div>
+                </div>
               </div>
 
-              <div
-                class="lesson-progress"
-                role="progressbar"
-                aria-valuemin="0"
-                aria-valuemax="100"
-              >
-                <div class="lesson-progress__fill" style="width: 28%"></div>
-              </div>
+              <span class="lesson-cta">Start &gt;</span>
             </div>
 
-            <span class="lesson-cta" data-i18n="videos.startCta"
-              >Start &gt;</span
+            <div
+              class="lesson-row lesson-row--video"
+              data-target="fundalStillPage"
+              role="button"
+              tabindex="0"
             >
-          </div>
+              <div class="thumb" aria-hidden="true"></div>
 
-          <div
-            class="lesson-row lesson-row--video"
-            data-target="rapdTestVideoPage"
-            role="button"
-            tabindex="0"
-          >
-            <div class="thumb" aria-hidden="true"></div>
+              <div class="lesson-main">
+                <div class="lesson-top">
+                  <span class="lesson-type">20 Real Exam</span>
+                  <span class="lesson-meta">| 00:00</span>
+                </div>
 
-            <div class="lesson-main">
-              <div class="lesson-top">
-                <span class="lesson-type" data-i18n="videos.RAPDVideo"
-                  >RAPD Test</span
+                <div
+                  class="lesson-progress"
+                  role="progressbar"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
                 >
-                <span class="lesson-meta">| 08:01</span>
+                  <div class="lesson-progress__fill" style="width: 0%"></div>
+                </div>
               </div>
 
-              <div
-                class="lesson-progress"
-                role="progressbar"
-                aria-valuemin="0"
-                aria-valuemax="100"
-              >
-                <div class="lesson-progress__fill" style="width: 0%"></div>
-              </div>
+              <span class="lesson-cta">Start &gt;</span>
             </div>
 
-            <span class="lesson-cta" data-i18n="videos.startCta"
-              >Start &gt;</span
+            <div
+              class="lesson-row lesson-row--video"
+              data-target="fundalRealPage"
+              role="button"
+              tabindex="0"
             >
-          </div>
-        </button>
+              <div class="thumb" aria-hidden="true"></div>
 
+              <div class="lesson-main">
+                <div class="lesson-top">
+                  <span class="lesson-type">Real Exam Videos</span>
+                  <span class="lesson-meta">| 00:00</span>
+                </div>
+
+                <div
+                  class="lesson-progress"
+                  role="progressbar"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                >
+                  <div class="lesson-progress__fill" style="width: 0%"></div>
+                </div>
+              </div>
+
+              <span class="lesson-cta">Start &gt;</span>
+            </div>
+          </button>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================= -->
+  <!-- Fundal Reflex: Video Pages -->
+  <!-- ========================= -->
+
+  <!-- Fundal Reflex Examination (toggle video) -->
+  <div id="fundalExamPage" class="page" style="display: none">
+    <div>
+      <div class="tri-toggle" role="radiogroup" aria-label="Video mode">
         <button
+          class="tri-toggle__btn"
           type="button"
-          class="pupil-card module-card"
-          data-page="rapdTestVideoPage"
+          role="radio"
+          aria-checked="false"
+          data-mode="low"
         >
-          <h3 data-i18n="videos.rapdTestTitle">Test Yourself</h3>
-          <div class="lesson-row lesson-row--quiz">
-            <div class="thumb" aria-hidden="true"></div>
+          low
+        </button>
+        <button
+          class="tri-toggle__btn"
+          type="button"
+          role="radio"
+          aria-checked="false"
+          data-mode="high"
+        >
+          high
+        </button>
+        <button
+          class="tri-toggle__btn tri-toggle__btn--icon"
+          type="button"
+          role="radio"
+          aria-checked="false"
+          data-mode="online"
+          aria-label="online"
+        >
+          <span class="tri-toggle__wifi" aria-hidden="true"></span>
+        </button>
+        <div class="tri-toggle__knob" aria-hidden="true"></div>
+      </div>
 
-            <div class="lesson-main">
-              <div class="lesson-top">
-                <span class="lesson-type" data-i18n="videos.quiz"
-                  >Pupil Full Exam</span
+      <div class="video-header">
+        <h3>Fundal Reflex Examination</h3>
+      </div>
+
+      <div class="video-container" id="fundalExamContainer">
+        <video
+          id="fundalExamVideo"
+          controls
+          preload="none"
+          style="width: 100%; max-width: 100%"
+        >
+          <source src="" type="video/mp4" />
+          <span>Your browser does not support the video tag.</span>
+        </video>
+      </div>
+    </div>
+  </div>
+
+  <!-- Still Images of 20 Real Examinations (toggle video) -->
+  <div id="fundalStillPage" class="page" style="display: none">
+    <div>
+      <div class="tri-toggle" role="radiogroup" aria-label="Video mode">
+        <button
+          class="tri-toggle__btn"
+          type="button"
+          role="radio"
+          aria-checked="false"
+          data-mode="low"
+        >
+          low
+        </button>
+        <button
+          class="tri-toggle__btn"
+          type="button"
+          role="radio"
+          aria-checked="false"
+          data-mode="high"
+        >
+          high
+        </button>
+        <button
+          class="tri-toggle__btn tri-toggle__btn--icon"
+          type="button"
+          role="radio"
+          aria-checked="false"
+          data-mode="online"
+          aria-label="online"
+        >
+          <span class="tri-toggle__wifi" aria-hidden="true"></span>
+        </button>
+        <div class="tri-toggle__knob" aria-hidden="true"></div>
+      </div>
+
+      <div class="video-header">
+        <h3>Still Images of 20 Real Examinations</h3>
+      </div>
+
+      <div class="video-container" id="fundalStillContainer">
+        <video
+          id="fundalStillVideo"
+          controls
+          preload="none"
+          style="width: 100%; max-width: 100%"
+        >
+          <source src="" type="video/mp4" />
+          <span>Your browser does not support the video tag.</span>
+        </video>
+      </div>
+    </div>
+  </div>
+
+  <!-- Videos of Real Fundal Reflex Examinations (toggle video) -->
+  <div id="fundalRealPage" class="page" style="display: none">
+    <div>
+      <div class="tri-toggle" role="radiogroup" aria-label="Video mode">
+        <button
+          class="tri-toggle__btn"
+          type="button"
+          role="radio"
+          aria-checked="false"
+          data-mode="low"
+        >
+          low
+        </button>
+        <button
+          class="tri-toggle__btn"
+          type="button"
+          role="radio"
+          aria-checked="false"
+          data-mode="high"
+        >
+          high
+        </button>
+        <button
+          class="tri-toggle__btn tri-toggle__btn--icon"
+          type="button"
+          role="radio"
+          aria-checked="false"
+          data-mode="online"
+          aria-label="online"
+        >
+          <span class="tri-toggle__wifi" aria-hidden="true"></span>
+        </button>
+        <div class="tri-toggle__knob" aria-hidden="true"></div>
+      </div>
+
+      <div class="video-header">
+        <h3>Videos of Real Fundal Reflex Examinations</h3>
+      </div>
+
+      <div class="video-container" id="fundalRealContainer">
+        <video
+          id="fundalRealVideo"
+          controls
+          preload="none"
+          style="width: 100%; max-width: 100%"
+        >
+          <source src="" type="video/mp4" />
+          <span>Your browser does not support the video tag.</span>
+        </video>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================= -->
+  <!-- USAID: Video Pages -->
+  <!-- ========================= -->
+
+  <!-- USAID: How to use the Arclight (toggle video) -->
+  <div id="usaidHowToUseArclightPage" class="page" style="display: none">
+    <div>
+      <div class="tri-toggle" role="radiogroup" aria-label="Video mode">
+        <button
+          class="tri-toggle__btn"
+          type="button"
+          role="radio"
+          aria-checked="false"
+          data-mode="low"
+        >
+          low
+        </button>
+        <button
+          class="tri-toggle__btn"
+          type="button"
+          role="radio"
+          aria-checked="false"
+          data-mode="high"
+        >
+          high
+        </button>
+        <button
+          class="tri-toggle__btn tri-toggle__btn--icon"
+          type="button"
+          role="radio"
+          aria-checked="false"
+          data-mode="online"
+          aria-label="online"
+        >
+          <span class="tri-toggle__wifi" aria-hidden="true"></span>
+        </button>
+        <div class="tri-toggle__knob" aria-hidden="true"></div>
+      </div>
+
+      <div class="video-header">
+        <h3>How to use the Arclight</h3>
+      </div>
+
+      <div class="video-container" id="usaidHowToUseArclightContainer">
+        <video
+          id="usaidHowToUseArclightVideo"
+          controls
+          preload="none"
+          style="width: 100%; max-width: 100%"
+        >
+          <source src="" type="video/mp4" />
+          <span>Your browser does not support the video tag.</span>
+        </video>
+      </div>
+    </div>
+  </div>
+
+  <!-- USAID: Fundal Reflex Exam (toggle video) -->
+  <div id="usaidFundalReflexExamPage" class="page" style="display: none">
+    <div>
+      <div class="tri-toggle" role="radiogroup" aria-label="Video mode">
+        <button
+          class="tri-toggle__btn"
+          type="button"
+          role="radio"
+          aria-checked="false"
+          data-mode="low"
+        >
+          low
+        </button>
+        <button
+          class="tri-toggle__btn"
+          type="button"
+          role="radio"
+          aria-checked="false"
+          data-mode="high"
+        >
+          high
+        </button>
+        <div class="tri-toggle__knob" aria-hidden="true"></div>
+      </div>
+
+      <div class="video-header">
+        <h3>Fundal Reflex Exam</h3>
+      </div>
+
+      <div class="video-container" id="usaidFundalReflexExamContainer">
+        <video
+          id="usaidFundalReflexExamVideo"
+          controls
+          preload="none"
+          style="width: 100%; max-width: 100%"
+        >
+          <source src="" type="video/mp4" />
+          <span>Your browser does not support the video tag.</span>
+        </video>
+      </div>
+    </div>
+  </div>
+
+  <!-- USAID: Normal and Abnormal findings (toggle video) -->
+  <div id="usaidNormalAbnormalPage" class="page" style="display: none">
+    <div>
+      <div class="tri-toggle" role="radiogroup" aria-label="Video mode">
+        <button
+          class="tri-toggle__btn"
+          type="button"
+          role="radio"
+          aria-checked="false"
+          data-mode="low"
+        >
+          low
+        </button>
+        <button
+          class="tri-toggle__btn"
+          type="button"
+          role="radio"
+          aria-checked="false"
+          data-mode="high"
+        >
+          high
+        </button>
+        <button
+          class="tri-toggle__btn tri-toggle__btn--icon"
+          type="button"
+          role="radio"
+          aria-checked="false"
+          data-mode="online"
+          aria-label="online"
+        >
+          <span class="tri-toggle__wifi" aria-hidden="true"></span>
+        </button>
+        <div class="tri-toggle__knob" aria-hidden="true"></div>
+      </div>
+
+      <div class="video-header">
+        <h3>Normal and Abnormal findings</h3>
+      </div>
+
+      <div class="video-container" id="usaidNormalAbnormalContainer">
+        <video
+          id="usaidNormalAbnormalVideo"
+          controls
+          preload="none"
+          style="width: 100%; max-width: 100%"
+        >
+          <source src="" type="video/mp4" />
+          <span>Your browser does not support the video tag.</span>
+        </video>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pupils Page -->
+  <div id="pupilsPage" class="page" style="display: none">
+    <div class="container pupils-container">
+      <div class="eyes-topbar">
+        <div class="eyes-topbar__title" data-i18n="videos.eyesTitle">Eyes</div>
+        <div class="eyes-topbar__icons">
+          <span class="icon menuBtn" data-i18n="videos.menuButton">☰</span>
+        </div>
+      </div>
+
+      <h2 class="pupils-subtitle" data-i18n="videos.pupilsSubtitle">Pupils</h2>
+
+      <div class="pupils-levels">
+        <!-- Primary -->
+        <section class="pupil-level pupil-level--primary" aria-label="Primary">
+          <div class="pupil-level__cap">Primary</div>
+
+          <button
+            type="button"
+            class="pupil-card module-card"
+            data-page="pupilExamPECPage"
+          >
+            <h3 data-i18n="videos.primaryEyeCareExaminationTitle">Training</h3>
+
+            <div
+              class="lesson-row lesson-row--video"
+              data-target="pupilExamPECPage"
+              role="button"
+              tabindex="0"
+            >
+              <div class="thumb" aria-hidden="true"></div>
+
+              <div class="lesson-main">
+                <div class="lesson-top">
+                  <span class="lesson-type" data-i18n="videos.videoLearning"
+                    >Primary Eye Care Exam</span
+                  >
+                  <span class="lesson-meta">| 02:20</span>
+                </div>
+
+                <div
+                  class="lesson-progress"
+                  role="progressbar"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
                 >
-                <span class="lesson-meta">| 10 Questions</span>
+                  <div class="lesson-progress__fill" style="width: 0%"></div>
+                </div>
               </div>
 
-              <div
-                class="lesson-progress"
-                role="progressbar"
-                aria-valuemin="0"
-                aria-valuemax="100"
+              <span class="lesson-cta" data-i18n="videos.startCta"
+                >Start &gt;</span
               >
-                <div class="lesson-progress__fill" style="width: 0%"></div>
+            </div>
+          </button>
+        </section>
+
+        <div class="pupils-dots" aria-hidden="true">
+          <span></span><span></span>
+        </div>
+
+        <!-- Intermediate -->
+        <section
+          class="pupil-level pupil-level--intermediate"
+          aria-label="Intermediate"
+        >
+          <div class="pupil-level__cap">Intermediate</div>
+
+          <button
+            type="button"
+            class="pupil-card module-card"
+            data-page="pupilFullExamPage"
+          >
+            <h3 data-i18n="videos.pupilFullExaminationTitle">Learning</h3>
+
+            <div
+              class="lesson-row lesson-row--video"
+              data-target="pupilFullExamPage"
+              role="button"
+              tabindex="0"
+            >
+              <div class="thumb" aria-hidden="true"></div>
+
+              <div class="lesson-main">
+                <div class="lesson-top">
+                  <span class="lesson-type" data-i18n="videos.fullexamvideo"
+                    >Pupil Full Exam</span
+                  >
+                  <span class="lesson-meta">| 02:25</span>
+                </div>
+
+                <div
+                  class="lesson-progress"
+                  role="progressbar"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                >
+                  <div class="lesson-progress__fill" style="width: 28%"></div>
+                </div>
               </div>
+
+              <span class="lesson-cta" data-i18n="videos.startCta"
+                >Start &gt;</span
+              >
             </div>
 
-            <span class="lesson-cta" data-i18n="videos.startCta"
-              >Start &gt;</span
+            <div
+              class="lesson-row lesson-row--video"
+              data-target="rapdTestVideoPage"
+              role="button"
+              tabindex="0"
             >
-          </div>
-        </button>
-      </section>
+              <div class="thumb" aria-hidden="true"></div>
 
-      <!--<div class="pupils-dots" aria-hidden="true">
+              <div class="lesson-main">
+                <div class="lesson-top">
+                  <span class="lesson-type" data-i18n="videos.RAPDVideo"
+                    >RAPD Test</span
+                  >
+                  <span class="lesson-meta">| 08:01</span>
+                </div>
+
+                <div
+                  class="lesson-progress"
+                  role="progressbar"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                >
+                  <div class="lesson-progress__fill" style="width: 0%"></div>
+                </div>
+              </div>
+
+              <span class="lesson-cta" data-i18n="videos.startCta"
+                >Start &gt;</span
+              >
+            </div>
+          </button>
+
+          <button
+            type="button"
+            class="pupil-card module-card"
+            data-page="rapdTestVideoPage"
+          >
+            <h3 data-i18n="videos.rapdTestTitle">Test Yourself</h3>
+            <div class="lesson-row lesson-row--quiz">
+              <div class="thumb" aria-hidden="true"></div>
+
+              <div class="lesson-main">
+                <div class="lesson-top">
+                  <span class="lesson-type" data-i18n="videos.quiz"
+                    >Pupil Full Exam</span
+                  >
+                  <span class="lesson-meta">| 10 Questions</span>
+                </div>
+
+                <div
+                  class="lesson-progress"
+                  role="progressbar"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                >
+                  <div class="lesson-progress__fill" style="width: 0%"></div>
+                </div>
+              </div>
+
+              <span class="lesson-cta" data-i18n="videos.startCta"
+                >Start &gt;</span
+              >
+            </div>
+          </button>
+        </section>
+
+        <!--<div class="pupils-dots" aria-hidden="true">
         <span></span><span></span>
       </div>
 
@@ -961,7 +962,7 @@
       <section class="pupil-level pupil-level--advanced" aria-label="Advanced">
         <div class="pupil-level__cap">Advanced</div> -->
 
-      <!--<button
+        <!--<button
             type="button"
           class="pupil-card module-card"
           data-page="pupilPathwaysPage"
@@ -1001,324 +1002,324 @@
             >
           </div>
         </button>-->
-    </div>
-  </div>
-</div>
-
-<!-- RAPD Test Video Page -->
-<div id="rapdTestVideoPage" class="page" style="display: none">
-  <div>
-    <div class="tri-toggle" role="radiogroup" aria-label="Video mode">
-      <button
-        class="tri-toggle__btn"
-        type="button"
-        role="radio"
-        aria-checked="false"
-        data-mode="low"
-      >
-        low
-      </button>
-      <button
-        class="tri-toggle__btn"
-        type="button"
-        role="radio"
-        aria-checked="false"
-        data-mode="high"
-      >
-        high
-      </button>
-      <div class="tri-toggle__knob" aria-hidden="true"></div>
-    </div>
-
-    <div class="video-header">
-      <h3 data-i18n="videos.rapdTestVideoTitle">RAPD Test Video</h3>
-    </div>
-    <div class="video-container">
-      <video
-        id="rapdTestVideo"
-        preload="none"
-        controls
-        style="width: 100%; max-width: 100%"
-      >
-        <source src="video/mp4" type="video/mp4" />
-        <span data-i18n="videos.videoNotSupported"
-          >Your browser does not support the video tag.</span
-        >
-      </video>
-    </div>
-  </div>
-</div>
-
-<!-- Pupil Exam PEC Page -->
-<div id="pupilExamPECPage" class="page" style="display: none">
-  <div>
-    <div class="tri-toggle" role="radiogroup" aria-label="Video mode">
-      <button
-        class="tri-toggle__btn"
-        type="button"
-        role="radio"
-        aria-checked="false"
-        data-mode="low"
-      >
-        low
-      </button>
-      <button
-        class="tri-toggle__btn"
-        type="button"
-        role="radio"
-        aria-checked="false"
-        data-mode="high"
-      >
-        high
-      </button>
-      <div class="tri-toggle__knob" aria-hidden="true"></div>
-    </div>
-
-    <div class="video-header">
-      <h3 data-i18n="videos.pupilExamPECTitle">Pupil Exam PEC</h3>
-    </div>
-    <div class="video-container">
-      <video
-        id="pupilExamPECVideo"
-        controls
-        preload="none"
-        style="width: 100%; max-width: 100%"
-      >
-        <source src="videos/Core/Pupils/PupilExamPEC.mp4" type="video/mp4" />
-        <span data-i18n="videos.videoNotSupported"
-          >Your browser does not support the video tag.</span
-        >
-      </video>
-    </div>
-  </div>
-</div>
-
-<!-- Pupil Full Examination Page -->
-<div id="pupilFullExamPage" class="page" style="display: none">
-  <div>
-    <!-- 3-way video mode toggle -->
-    <div class="tri-toggle" role="radiogroup" aria-label="Video mode">
-      <button
-        class="tri-toggle__btn"
-        type="button"
-        role="radio"
-        aria-checked="false"
-        data-mode="low"
-      >
-        low
-      </button>
-      <button
-        class="tri-toggle__btn"
-        type="button"
-        role="radio"
-        aria-checked="false"
-        data-mode="high"
-      >
-        high
-      </button>
-      <div class="tri-toggle__knob" aria-hidden="true"></div>
-    </div>
-
-    <div class="video-header">
-      <h3 data-i18n="videos.pupilFullExaminationTitle">
-        Pupil Full Examination
-      </h3>
-    </div>
-
-    <div class="video-container" id="pupilFullExamContainer">
-      <video
-        id="pupilFullExamVideo"
-        controls
-        preload="none"
-        style="width: 100%; max-width: 100%"
-      >
-        <source
-          src="videos/Core/Pupils/Pupils_Full_220p.mp4"
-          type="video/mp4"
-        />
-        <span data-i18n="videos.videoNotSupported"
-          >Your browser does not support the video tag.</span
-        >
-      </video>
-    </div>
-  </div>
-</div>
-
-<!-- Pupil Pathways Page -->
-<div id="pupilPathwaysPage" class="page" style="display: none">
-  <div>
-    <div class="video-header">
-      <h3 data-i18n="videos.pupilPathwaysTitle">Pupil Pathways</h3>
-    </div>
-    <div class="video-container">
-      <video
-        id="pupilPathwaysVideo"
-        controls
-        preload="none"
-        style="width: 100%; max-width: 100%"
-      >
-        <source src="videos/Core/Pupils/PupilPathways.mp4" type="video/mp4" />
-        <span data-i18n="videos.videoNotSupported"
-          >Your browser does not support the video tag.</span
-        >
-      </video>
-    </div>
-  </div>
-</div>
-
-<!-- Direct Ophthalmoscopy Embedded Module -->
-<section id="directOphthalmoscopy" class="page pupils-like">
-  <div class="container pupils-container">
-    <div class="eyes-topbar">
-      <div class="eyes-topbar__title">Eyes</div>
-      <div class="eyes-topbar__icons">
-        <span class="icon menuBtn" aria-label="Menu">☰</span>
       </div>
     </div>
+  </div>
 
-    <h2 class="pupils-subtitle">Ophthalmoscopy</h2>
-
-    <div class="pupils-levels">
-      <!-- Primary -->
-      <section class="pupil-level pupil-level--primary" aria-label="Primary">
-        <div class="pupil-level__cap">Primary</div>
-
+  <!-- RAPD Test Video Page -->
+  <div id="rapdTestVideoPage" class="page" style="display: none">
+    <div>
+      <div class="tri-toggle" role="radiogroup" aria-label="Video mode">
         <button
+          class="tri-toggle__btn"
           type="button"
-          class="pupil-card module-card"
-          data-page="directOphthalmoscopyVideoPage"
+          role="radio"
+          aria-checked="false"
+          data-mode="low"
         >
-          <h3>Teach Yourself</h3>
-
-          <div
-            class="lesson-row lesson-row--video"
-            data-target="directOphthalmoscopyVideoPage"
-            role="button"
-            tabindex="0"
-          >
-            <div class="thumb" aria-hidden="true"></div>
-
-            <div class="lesson-main">
-              <div class="lesson-top">
-                <span class="lesson-type">Direct Ophthalmoscopy</span>
-                <span class="lesson-meta">| 00:00</span>
-              </div>
-
-              <div
-                class="lesson-progress"
-                role="progressbar"
-                aria-valuemin="0"
-                aria-valuemax="100"
-              >
-                <div class="lesson-progress__fill" style="width: 0%"></div>
-              </div>
-            </div>
-
-            <span class="lesson-cta">Start &gt;</span>
-          </div>
+          low
         </button>
-
         <button
+          class="tri-toggle__btn"
           type="button"
-          class="pupil-card module-card"
-          data-page="directOphthalmoscopyVideoPage"
+          role="radio"
+          aria-checked="false"
+          data-mode="high"
         >
-          <h3>Test Yourself</h3>
-          <div
-            class="lesson-row lesson-row--quiz"
-            data-action="take-quiz"
-            data-quiz="directOphthalmoscopy"
-            tabindex="0"
-            role="button"
+          high
+        </button>
+        <div class="tri-toggle__knob" aria-hidden="true"></div>
+      </div>
+
+      <div class="video-header">
+        <h3 data-i18n="videos.rapdTestVideoTitle">RAPD Test Video</h3>
+      </div>
+      <div class="video-container">
+        <video
+          id="rapdTestVideo"
+          preload="none"
+          controls
+          style="width: 100%; max-width: 100%"
+        >
+          <source src="video/mp4" type="video/mp4" />
+          <span data-i18n="videos.videoNotSupported"
+            >Your browser does not support the video tag.</span
           >
-            <div class="thumb" aria-hidden="true"></div>
+        </video>
+      </div>
+    </div>
+  </div>
 
-            <div class="lesson-main">
-              <div class="lesson-top">
-                <span class="lesson-type" data-i18n="videos.takeQuizButton"
-                  >Direct Ophthalmoscopy</span
-                >
-                <span class="lesson-meta">| 7 Qs</span>
-              </div>
+  <!-- Pupil Exam PEC Page -->
+  <div id="pupilExamPECPage" class="page" style="display: none">
+    <div>
+      <div class="tri-toggle" role="radiogroup" aria-label="Video mode">
+        <button
+          class="tri-toggle__btn"
+          type="button"
+          role="radio"
+          aria-checked="false"
+          data-mode="low"
+        >
+          low
+        </button>
+        <button
+          class="tri-toggle__btn"
+          type="button"
+          role="radio"
+          aria-checked="false"
+          data-mode="high"
+        >
+          high
+        </button>
+        <div class="tri-toggle__knob" aria-hidden="true"></div>
+      </div>
 
-              <div
-                class="lesson-progress"
-                role="progressbar"
-                aria-valuemin="0"
-                aria-valuemax="100"
-              >
-                <div class="lesson-progress__fill" style="width: 0%"></div>
-              </div>
-            </div>
+      <div class="video-header">
+        <h3 data-i18n="videos.pupilExamPECTitle">Pupil Exam PEC</h3>
+      </div>
+      <div class="video-container">
+        <video
+          id="pupilExamPECVideo"
+          controls
+          preload="none"
+          style="width: 100%; max-width: 100%"
+        >
+          <source src="videos/Core/Pupils/PupilExamPEC.mp4" type="video/mp4" />
+          <span data-i18n="videos.videoNotSupported"
+            >Your browser does not support the video tag.</span
+          >
+        </video>
+      </div>
+    </div>
+  </div>
 
-            <span class="lesson-cta" data-i18n="videos.startCta"
-              >Start &gt;</span
+  <!-- Pupil Full Examination Page -->
+  <div id="pupilFullExamPage" class="page" style="display: none">
+    <div>
+      <!-- 3-way video mode toggle -->
+      <div class="tri-toggle" role="radiogroup" aria-label="Video mode">
+        <button
+          class="tri-toggle__btn"
+          type="button"
+          role="radio"
+          aria-checked="false"
+          data-mode="low"
+        >
+          low
+        </button>
+        <button
+          class="tri-toggle__btn"
+          type="button"
+          role="radio"
+          aria-checked="false"
+          data-mode="high"
+        >
+          high
+        </button>
+        <div class="tri-toggle__knob" aria-hidden="true"></div>
+      </div>
+
+      <div class="video-header">
+        <h3 data-i18n="videos.pupilFullExaminationTitle">
+          Pupil Full Examination
+        </h3>
+      </div>
+
+      <div class="video-container" id="pupilFullExamContainer">
+        <video
+          id="pupilFullExamVideo"
+          controls
+          preload="none"
+          style="width: 100%; max-width: 100%"
+        >
+          <source
+            src="videos/Core/Pupils/Pupils_Full_220p.mp4"
+            type="video/mp4"
+          />
+          <span data-i18n="videos.videoNotSupported"
+            >Your browser does not support the video tag.</span
+          >
+        </video>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pupil Pathways Page -->
+  <div id="pupilPathwaysPage" class="page" style="display: none">
+    <div>
+      <div class="video-header">
+        <h3 data-i18n="videos.pupilPathwaysTitle">Pupil Pathways</h3>
+      </div>
+      <div class="video-container">
+        <video
+          id="pupilPathwaysVideo"
+          controls
+          preload="none"
+          style="width: 100%; max-width: 100%"
+        >
+          <source src="videos/Core/Pupils/PupilPathways.mp4" type="video/mp4" />
+          <span data-i18n="videos.videoNotSupported"
+            >Your browser does not support the video tag.</span
+          >
+        </video>
+      </div>
+    </div>
+  </div>
+
+  <!-- Direct Ophthalmoscopy Embedded Module -->
+  <section id="directOphthalmoscopy" class="page pupils-like">
+    <div class="container pupils-container">
+      <div class="eyes-topbar">
+        <div class="eyes-topbar__title">Eyes</div>
+        <div class="eyes-topbar__icons">
+          <span class="icon menuBtn" aria-label="Menu">☰</span>
+        </div>
+      </div>
+
+      <h2 class="pupils-subtitle">Ophthalmoscopy</h2>
+
+      <div class="pupils-levels">
+        <!-- Primary -->
+        <section class="pupil-level pupil-level--primary" aria-label="Primary">
+          <div class="pupil-level__cap">Primary</div>
+
+          <button
+            type="button"
+            class="pupil-card module-card"
+            data-page="directOphthalmoscopyVideoPage"
+          >
+            <h3>Teach Yourself</h3>
+
+            <div
+              class="lesson-row lesson-row--video"
+              data-target="directOphthalmoscopyVideoPage"
+              role="button"
+              tabindex="0"
             >
-          </div>
-        </button>
-      </section>
-    </div>
-  </div>
-</section>
+              <div class="thumb" aria-hidden="true"></div>
 
-<!-- Direct Ophthalmoscopy Video Page (toggle + toolbar) -->
-<div id="directOphthalmoscopyVideoPage" class="page" style="display: none">
-  <div>
-    <div class="tri-toggle" role="radiogroup" aria-label="Video mode">
-      <button
-        class="tri-toggle__btn"
-        type="button"
-        role="radio"
-        aria-checked="false"
-        data-mode="low"
-      >
-        low
-      </button>
-      <button
-        class="tri-toggle__btn"
-        type="button"
-        role="radio"
-        aria-checked="false"
-        data-mode="high"
-      >
-        high
-      </button>
-      <button
-        class="tri-toggle__btn tri-toggle__btn--icon"
-        type="button"
-        role="radio"
-        aria-checked="false"
-        data-mode="online"
-        aria-label="online"
-      >
-        <span class="tri-toggle__wifi" aria-hidden="true"></span>
-      </button>
-      <div class="tri-toggle__knob" aria-hidden="true"></div>
-    </div>
+              <div class="lesson-main">
+                <div class="lesson-top">
+                  <span class="lesson-type">Direct Ophthalmoscopy</span>
+                  <span class="lesson-meta">| 00:00</span>
+                </div>
 
-    <div class="video-header">
-      <h3 data-i18n="videos.directOphthalmoscopyTitle">
-        Direct Ophthalmoscopy
-      </h3>
-    </div>
+                <div
+                  class="lesson-progress"
+                  role="progressbar"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                >
+                  <div class="lesson-progress__fill" style="width: 0%"></div>
+                </div>
+              </div>
 
-    <div class="video-container" id="directOphthalmoscopyContainer">
-      <video
-        id="customVideo"
-        controls
-        preload="none"
-        style="width: 100%; max-width: 100%"
-      >
-        <source src="" type="video/mp4" />
-        <span data-i18n="videos.videoNotSupported"
-          >Your browser does not support the video tag.</span
+              <span class="lesson-cta">Start &gt;</span>
+            </div>
+          </button>
+
+          <button
+            type="button"
+            class="pupil-card module-card"
+            data-page="directOphthalmoscopyVideoPage"
+          >
+            <h3>Test Yourself</h3>
+            <div
+              class="lesson-row lesson-row--quiz"
+              data-action="take-quiz"
+              data-quiz="directOphthalmoscopy"
+              tabindex="0"
+              role="button"
+            >
+              <div class="thumb" aria-hidden="true"></div>
+
+              <div class="lesson-main">
+                <div class="lesson-top">
+                  <span class="lesson-type" data-i18n="videos.takeQuizButton"
+                    >Direct Ophthalmoscopy</span
+                  >
+                  <span class="lesson-meta">| 7 Qs</span>
+                </div>
+
+                <div
+                  class="lesson-progress"
+                  role="progressbar"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                >
+                  <div class="lesson-progress__fill" style="width: 0%"></div>
+                </div>
+              </div>
+
+              <span class="lesson-cta" data-i18n="videos.startCta"
+                >Start &gt;</span
+              >
+            </div>
+          </button>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <!-- Direct Ophthalmoscopy Video Page (toggle + toolbar) -->
+  <div id="directOphthalmoscopyVideoPage" class="page" style="display: none">
+    <div>
+      <div class="tri-toggle" role="radiogroup" aria-label="Video mode">
+        <button
+          class="tri-toggle__btn"
+          type="button"
+          role="radio"
+          aria-checked="false"
+          data-mode="low"
         >
-      </video>
+          low
+        </button>
+        <button
+          class="tri-toggle__btn"
+          type="button"
+          role="radio"
+          aria-checked="false"
+          data-mode="high"
+        >
+          high
+        </button>
+        <button
+          class="tri-toggle__btn tri-toggle__btn--icon"
+          type="button"
+          role="radio"
+          aria-checked="false"
+          data-mode="online"
+          aria-label="online"
+        >
+          <span class="tri-toggle__wifi" aria-hidden="true"></span>
+        </button>
+        <div class="tri-toggle__knob" aria-hidden="true"></div>
+      </div>
+
+      <div class="video-header">
+        <h3 data-i18n="videos.directOphthalmoscopyTitle">
+          Direct Ophthalmoscopy
+        </h3>
+      </div>
+
+      <div class="video-container" id="directOphthalmoscopyContainer">
+        <video
+          id="customVideo"
+          controls
+          preload="none"
+          style="width: 100%; max-width: 100%"
+        >
+          <source src="" type="video/mp4" />
+          <span data-i18n="videos.videoNotSupported"
+            >Your browser does not support the video tag.</span
+          >
+        </video>
+      </div>
     </div>
   </div>
-</div>
 
-<!-- 
+  <!-- 
     <div class="tri-toggle" role="radiogroup" aria-label="Video mode">
       <button
         class="tri-toggle__btn"
@@ -1400,535 +1401,550 @@
   </div>
 </div> -->
 
-<!-- Interactive Learning Page -->
-<div
-  id="interactiveLearningPage"
-  class="page pupils-like"
-  style="display: none"
->
-  <div class="container pupils-container">
-    <div class="eyes-topbar">
-      <div class="eyes-topbar__title">Eyes</div>
-      <div class="eyes-topbar__icons">
-        <span class="icon menuBtn" aria-label="Menu">☰</span>
+  <!-- Interactive Learning Page -->
+  <div
+    id="interactiveLearningPage"
+    class="page pupils-like"
+    style="display: none"
+  >
+    <div class="container pupils-container">
+      <div class="eyes-topbar">
+        <div class="eyes-topbar__title">Eyes</div>
+        <div class="eyes-topbar__icons">
+          <span class="icon menuBtn" aria-label="Menu">☰</span>
+        </div>
+      </div>
+
+      <h2 class="pupils-subtitle">Interactive Learning</h2>
+
+      <div class="pupils-levels">
+        <!-- Primary -->
+        <section class="pupil-level pupil-level--primary" aria-label="Primary">
+          <div class="pupil-level__cap">Primary</div>
+
+          <button
+            type="button"
+            class="pupil-card module-card"
+            data-page="morphPage"
+          >
+            <h3>Test Yourself</h3>
+
+            <div
+              class="lesson-row lesson-row--video"
+              data-target="morphPage"
+              role="button"
+              tabindex="0"
+            >
+              <div class="thumb" aria-hidden="true"></div>
+
+              <div class="lesson-main">
+                <div class="lesson-top">
+                  <span class="lesson-type">Morph</span>
+                </div>
+
+                <div
+                  class="lesson-progress"
+                  role="progressbar"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                >
+                  <div class="lesson-progress__fill" style="width: 0%"></div>
+                </div>
+              </div>
+
+              <span class="lesson-cta">Start &gt;</span>
+            </div>
+          </button>
+        </section>
+
+        <div class="pupils-dots" aria-hidden="true">
+          <span></span><span></span>
+        </div>
+
+        <!-- Intermediate -->
+        <section
+          class="pupil-level pupil-level--intermediate"
+          aria-label="Intermediate"
+        >
+          <div class="pupil-level__cap">Intermediate</div>
+
+          <button
+            type="button"
+            class="pupil-card module-card"
+            data-page="miresPage"
+          >
+            <h3>Test Yourself</h3>
+
+            <div
+              class="lesson-row lesson-row--video"
+              data-target="miresPage"
+              role="button"
+              tabindex="0"
+            >
+              <div class="thumb" aria-hidden="true"></div>
+
+              <div class="lesson-main">
+                <div class="lesson-top">
+                  <span class="lesson-type">Mires</span>
+                </div>
+
+                <div
+                  class="lesson-progress"
+                  role="progressbar"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                >
+                  <div class="lesson-progress__fill" style="width: 0%"></div>
+                </div>
+              </div>
+
+              <span class="lesson-cta">Start &gt;</span>
+            </div>
+          </button>
+        </section>
       </div>
     </div>
+  </div>
 
-    <h2 class="pupils-subtitle">Interactive Learning</h2>
-
-    <div class="pupils-levels">
-      <!-- Primary -->
-      <section class="pupil-level pupil-level--primary" aria-label="Primary">
-        <div class="pupil-level__cap">Primary</div>
-
-        <button
-          type="button"
-          class="pupil-card module-card"
-          data-page="morphPage"
-        >
-          <h3>Test Yourself</h3>
-
-          <div
-            class="lesson-row lesson-row--video"
-            data-target="morphPage"
-            role="button"
-            tabindex="0"
-          >
-            <div class="thumb" aria-hidden="true"></div>
-
-            <div class="lesson-main">
-              <div class="lesson-top">
-                <span class="lesson-type">Morph</span>
-              </div>
-
-              <div
-                class="lesson-progress"
-                role="progressbar"
-                aria-valuemin="0"
-                aria-valuemax="100"
-              >
-                <div class="lesson-progress__fill" style="width: 0%"></div>
-              </div>
-            </div>
-
-            <span class="lesson-cta">Start &gt;</span>
-          </div>
-        </button>
-      </section>
-
-      <div class="pupils-dots" aria-hidden="true">
-        <span></span><span></span>
+  <!-- Mires Page -->
+  <div id="miresPage" class="page" style="display: none">
+    <div>
+      <div class="video-header">
+        <h3 data-i18n="videos.miresTitle">Mires</h3>
       </div>
+      <div class="video-container">
+        <iframe
+          data-src="subapp/Mires/index.html"
+          loading="lazy"
+          style="width: 100%; height: 80vh; border: none"
+          title="Mires Simulation"
+          data-i18n="videos.miresSimulationTitle:title"
+        ></iframe>
+      </div>
+    </div>
+  </div>
 
-      <!-- Intermediate -->
-      <section
-        class="pupil-level pupil-level--intermediate"
-        aria-label="Intermediate"
+  <!-- Morph Page -->
+  <div id="morphPage" class="page" style="display: none">
+    <div>
+      <div class="video-header">
+        <h3 data-i18n="videos.morphTitle">Morph</h3>
+      </div>
+      <div class="video-container">
+        <iframe
+          data-src="subapp/Morph/index.html"
+          loading="lazy"
+          style="width: 100%; height: 80vh; border: none"
+          title="Morph Simulation"
+          data-i18n="videos.morphSimulationTitle:title"
+        ></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- Diseases Page -->
+  <div id="diseasesPage" class="page" style="display: none">
+    <div class="container">
+      <h1 data-i18n="videos.diseasesTitle">Diseases</h1>
+      <div class="module-card" style="background-color: #b3b3b3; color: white">
+        <div class="module-info">
+          <h3 data-i18n="videos.uncorrectedRefractiveErrorTitle">
+            Uncorrected Refractive Error
+          </h3>
+          <p style="color: white" data-i18n="videos.toBeAdded">To be added</p>
+          <div class="progress-bar">
+            <div class="progress" style="width: 0%"></div>
+          </div>
+          <span
+            class="status"
+            style="color: white"
+            data-i18n="videos.comingSoon"
+            >Coming Soon</span
+          >
+        </div>
+      </div>
+      <div
+        class="module-card"
+        id="cataractCard"
+        style="cursor: pointer"
+        data-page="cataractPage"
       >
-        <div class="pupil-level__cap">Intermediate</div>
-
-        <button
-          type="button"
-          class="pupil-card module-card"
-          data-page="miresPage"
-        >
-          <h3>Test Yourself</h3>
-
-          <div
-            class="lesson-row lesson-row--video"
-            data-target="miresPage"
-            role="button"
-            tabindex="0"
-          >
-            <div class="thumb" aria-hidden="true"></div>
-
-            <div class="lesson-main">
-              <div class="lesson-top">
-                <span class="lesson-type">Mires</span>
-              </div>
-
-              <div
-                class="lesson-progress"
-                role="progressbar"
-                aria-valuemin="0"
-                aria-valuemax="100"
-              >
-                <div class="lesson-progress__fill" style="width: 0%"></div>
-              </div>
-            </div>
-
-            <span class="lesson-cta">Start &gt;</span>
+        <div class="module-info">
+          <h3 data-i18n="videos.cataractTitle">Cataract</h3>
+          <p data-i18n="videos.interactiveLearning">Interactive Learning</p>
+        </div>
+      </div>
+      <div class="module-card" style="background-color: #b3b3b3; color: white">
+        <div class="module-info">
+          <h3 data-i18n="videos.glaucomaTitle">Glaucoma</h3>
+          <p style="color: white" data-i18n="videos.toBeAdded">To be added</p>
+          <div class="progress-bar">
+            <div class="progress" style="width: 0%"></div>
           </div>
-        </button>
-      </section>
-    </div>
-  </div>
-</div>
-
-<!-- Mires Page -->
-<div id="miresPage" class="page" style="display: none">
-  <div>
-    <div class="video-header">
-      <h3 data-i18n="videos.miresTitle">Mires</h3>
-    </div>
-    <div class="video-container">
-      <iframe
-        data-src="subapp/Mires/index.html"
-        loading="lazy"
-        style="width: 100%; height: 80vh; border: none"
-        title="Mires Simulation"
-        data-i18n="videos.miresSimulationTitle:title"
-      ></iframe>
-    </div>
-  </div>
-</div>
-
-<!-- Morph Page -->
-<div id="morphPage" class="page" style="display: none">
-  <div>
-    <div class="video-header">
-      <h3 data-i18n="videos.morphTitle">Morph</h3>
-    </div>
-    <div class="video-container">
-      <iframe
-        data-src="subapp/Morph/index.html"
-        loading="lazy"
-        style="width: 100%; height: 80vh; border: none"
-        title="Morph Simulation"
-        data-i18n="videos.morphSimulationTitle:title"
-      ></iframe>
-    </div>
-  </div>
-</div>
-
-<!-- Diseases Page -->
-<div id="diseasesPage" class="page" style="display: none">
-  <div class="container">
-    <h1 data-i18n="videos.diseasesTitle">Diseases</h1>
-    <div class="module-card" style="background-color: #b3b3b3; color: white">
-      <div class="module-info">
-        <h3 data-i18n="videos.uncorrectedRefractiveErrorTitle">
-          Uncorrected Refractive Error
-        </h3>
-        <p style="color: white" data-i18n="videos.toBeAdded">To be added</p>
-        <div class="progress-bar">
-          <div class="progress" style="width: 0%"></div>
+          <span
+            class="status"
+            style="color: white"
+            data-i18n="videos.comingSoon"
+            >Coming Soon</span
+          >
         </div>
-        <span class="status" style="color: white" data-i18n="videos.comingSoon"
-          >Coming Soon</span
-        >
       </div>
-    </div>
-    <div
-      class="module-card"
-      id="cataractCard"
-      style="cursor: pointer"
-      data-page="cataractPage"
-    >
-      <div class="module-info">
-        <h3 data-i18n="videos.cataractTitle">Cataract</h3>
-        <p data-i18n="videos.interactiveLearning">Interactive Learning</p>
-      </div>
-    </div>
-    <div class="module-card" style="background-color: #b3b3b3; color: white">
-      <div class="module-info">
-        <h3 data-i18n="videos.glaucomaTitle">Glaucoma</h3>
-        <p style="color: white" data-i18n="videos.toBeAdded">To be added</p>
-        <div class="progress-bar">
-          <div class="progress" style="width: 0%"></div>
+      <div
+        class="module-card"
+        id="childhoodEyeScreeningCard"
+        style="cursor: pointer"
+        data-page="childhoodEyeScreeningPage"
+      >
+        <div class="module-info">
+          <h3 data-i18n="videos.childhoodEyeScreeningTitle">
+            Childhood Eye Screening
+          </h3>
+          <p data-i18n="videos.videoLearning">Video Learning</p>
         </div>
-        <span class="status" style="color: white" data-i18n="videos.comingSoon"
-          >Coming Soon</span
-        >
       </div>
-    </div>
-    <div
-      class="module-card"
-      id="childhoodEyeScreeningCard"
-      style="cursor: pointer"
-      data-page="childhoodEyeScreeningPage"
-    >
-      <div class="module-info">
-        <h3 data-i18n="videos.childhoodEyeScreeningTitle">
-          Childhood Eye Screening
-        </h3>
-        <p data-i18n="videos.videoLearning">Video Learning</p>
-      </div>
-    </div>
-    <div class="module-card" style="background-color: #b3b3b3; color: white">
-      <div class="module-info">
-        <h3 data-i18n="videos.diabeticRetinopathyTitle">
-          Diabetic Retinopathy
-        </h3>
-        <p style="color: white" data-i18n="videos.toBeAdded">To be added</p>
-        <div class="progress-bar">
-          <div class="progress" style="width: 0%"></div>
+      <div class="module-card" style="background-color: #b3b3b3; color: white">
+        <div class="module-info">
+          <h3 data-i18n="videos.diabeticRetinopathyTitle">
+            Diabetic Retinopathy
+          </h3>
+          <p style="color: white" data-i18n="videos.toBeAdded">To be added</p>
+          <div class="progress-bar">
+            <div class="progress" style="width: 0%"></div>
+          </div>
+          <span
+            class="status"
+            style="color: white"
+            data-i18n="videos.comingSoon"
+            >Coming Soon</span
+          >
         </div>
-        <span class="status" style="color: white" data-i18n="videos.comingSoon"
-          >Coming Soon</span
-        >
       </div>
-    </div>
-    <div class="module-card" style="background-color: #b3b3b3; color: white">
-      <div class="module-info">
-        <h3 data-i18n="videos.retinopathyOfPrematurityTitle">
-          Retinopathy of Prematurity
-        </h3>
-        <p style="color: white" data-i18n="videos.toBeAdded">To be added</p>
-        <div class="progress-bar">
-          <div class="progress" style="width: 0%"></div>
+      <div class="module-card" style="background-color: #b3b3b3; color: white">
+        <div class="module-info">
+          <h3 data-i18n="videos.retinopathyOfPrematurityTitle">
+            Retinopathy of Prematurity
+          </h3>
+          <p style="color: white" data-i18n="videos.toBeAdded">To be added</p>
+          <div class="progress-bar">
+            <div class="progress" style="width: 0%"></div>
+          </div>
+          <span
+            class="status"
+            style="color: white"
+            data-i18n="videos.comingSoon"
+            >Coming Soon</span
+          >
         </div>
-        <span class="status" style="color: white" data-i18n="videos.comingSoon"
-          >Coming Soon</span
-        >
       </div>
-    </div>
-    <div
-      class="module-card"
-      id="squintPalsyCard"
-      style="cursor: pointer"
-      data-page="squintPalsyPage"
-    >
-      <div class="module-info">
-        <h3 data-i18n="videos.squintPalsyTitle">Squint / Palsy</h3>
-        <p data-i18n="videos.interactiveLearning">Interactive Learning</p>
+      <div
+        class="module-card"
+        id="squintPalsyCard"
+        style="cursor: pointer"
+        data-page="squintPalsyPage"
+      >
+        <div class="module-info">
+          <h3 data-i18n="videos.squintPalsyTitle">Squint / Palsy</h3>
+          <p data-i18n="videos.interactiveLearning">Interactive Learning</p>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<!-- Childhood Eye Screening Page -->
-<div id="childhoodEyeScreeningPage" class="page" style="display: none">
-  <div class="container">
-    <h1 data-i18n="videos.childhoodEyeScreeningTitle">
-      Childhood Eye Screening
-    </h1>
-    <div
-      class="module-card"
-      id="howToUseArclightCard"
-      style="cursor: pointer"
-      data-page="howToArclightPage"
-    >
-      <div class="module-info">
+  <!-- Childhood Eye Screening Page -->
+  <div id="childhoodEyeScreeningPage" class="page" style="display: none">
+    <div class="container">
+      <h1 data-i18n="videos.childhoodEyeScreeningTitle">
+        Childhood Eye Screening
+      </h1>
+      <div
+        class="module-card"
+        id="howToUseArclightCard"
+        style="cursor: pointer"
+        data-page="howToArclightPage"
+      >
+        <div class="module-info">
+          <h3 data-i18n="videos.howToUseArclightTitle">
+            How to Use the Arclight
+          </h3>
+          <p data-i18n="videos.videoContent">Video Content</p>
+          <div class="progress-bar">
+            <div class="progress" style="width: 0%"></div>
+          </div>
+          <span class="status" data-i18n="videos.startStatus">Start!</span>
+        </div>
+      </div>
+      <div
+        class="module-card"
+        data-page="assessmentVisionPage"
+        style="cursor: pointer"
+      >
+        <div class="module-info">
+          <h3 data-i18n="videos.assessmentOfEyesAndVisionTitle">
+            Assessment of Eyes and Vision
+          </h3>
+          <p data-i18n="videos.videoContent">Video Content</p>
+          <div class="progress-bar">
+            <div class="progress" style="width: 0%"></div>
+          </div>
+          <span class="status" data-i18n="videos.startStatus">Start!</span>
+        </div>
+      </div>
+      <div
+        class="module-card"
+        id="fundalreflexFRT"
+        style="cursor: pointer"
+        data-page="fundalReflexPage"
+      >
+        <div class="module-info">
+          <h3 data-i18n="videos.fundalReflexTitle">Fundal Reflex</h3>
+          <p data-i18n="videos.videoContent">Video Content</p>
+          <div class="progress-bar">
+            <div class="progress" style="width: 0%"></div>
+          </div>
+          <span class="status" data-i18n="videos.startStatus">Start!</span>
+        </div>
+      </div>
+      <div
+        class="module-card"
+        data-page="normalAbnormalPage"
+        style="cursor: pointer"
+      >
+        <div class="module-info">
+          <h3 data-i18n="videos.normalAndAbnormalFindingsTitle">
+            Normal and Abnormal Findings
+          </h3>
+          <p data-i18n="videos.videoContent">Video Content</p>
+          <div class="progress-bar">
+            <div class="progress" style="width: 0%"></div>
+          </div>
+          <span class="status" data-i18n="videos.startStatus">Start!</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- How to Use the Arclight Page -->
+  <div id="howToArclightPage" class="page" style="display: none">
+    <div>
+      <div class="video-header">
         <h3 data-i18n="videos.howToUseArclightTitle">
           How to Use the Arclight
         </h3>
-        <p data-i18n="videos.videoContent">Video Content</p>
-        <div class="progress-bar">
-          <div class="progress" style="width: 0%"></div>
-        </div>
-        <span class="status" data-i18n="videos.startStatus">Start!</span>
+      </div>
+      <div class="video-container">
+        <video
+          id="howToArclightVideo"
+          controls
+          preload="none"
+          style="width: 100%; max-width: 100%"
+        >
+          <source src="videos/USAID/HowtoArclight.mp4" type="video/mp4" />
+          <span data-i18n="videos.videoNotSupported"
+            >Your browser does not support the video tag.</span
+          >
+        </video>
       </div>
     </div>
-    <div
-      class="module-card"
-      data-page="assessmentVisionPage"
-      style="cursor: pointer"
-    >
-      <div class="module-info">
+  </div>
+
+  <!-- Assessment of Eyes and Vision Page -->
+  <div id="assessmentVisionPage" class="page" style="display: none">
+    <div>
+      <div class="tri-toggle" role="radiogroup" aria-label="Video mode">
+        <button
+          class="tri-toggle__btn"
+          type="button"
+          role="radio"
+          aria-checked="false"
+          data-mode="low"
+        >
+          low
+        </button>
+        <button
+          class="tri-toggle__btn"
+          type="button"
+          role="radio"
+          aria-checked="false"
+          data-mode="high"
+        >
+          high
+        </button>
+        <button
+          class="tri-toggle__btn tri-toggle__btn--icon"
+          type="button"
+          role="radio"
+          aria-checked="false"
+          data-mode="online"
+          aria-label="online"
+        >
+          <span class="tri-toggle__wifi" aria-hidden="true"></span>
+        </button>
+        <div class="tri-toggle__knob" aria-hidden="true"></div>
+      </div>
+
+      <div class="video-header">
         <h3 data-i18n="videos.assessmentOfEyesAndVisionTitle">
           Assessment of Eyes and Vision
         </h3>
-        <p data-i18n="videos.videoContent">Video Content</p>
-        <div class="progress-bar">
-          <div class="progress" style="width: 0%"></div>
-        </div>
-        <span class="status" data-i18n="videos.startStatus">Start!</span>
+      </div>
+      <div class="video-container" id="assessmentVisionContainer">
+        <video
+          id="assessmentVisionVideo"
+          controls
+          preload="none"
+          style="width: 100%; max-width: 100%"
+        >
+          <source src="videos/USAID/AssessmentVision.mp4" type="video/mp4" />
+          <span data-i18n="videos.videoNotSupported"
+            >Your browser does not support the video tag.</span
+          >
+        </video>
       </div>
     </div>
-    <div
-      class="module-card"
-      id="fundalreflexFRT"
-      style="cursor: pointer"
-      data-page="fundalReflexPage"
-    >
-      <div class="module-info">
-        <h3 data-i18n="videos.fundalReflexTitle">Fundal Reflex</h3>
-        <p data-i18n="videos.videoContent">Video Content</p>
-        <div class="progress-bar">
-          <div class="progress" style="width: 0%"></div>
-        </div>
-        <span class="status" data-i18n="videos.startStatus">Start!</span>
-      </div>
-    </div>
-    <div
-      class="module-card"
-      data-page="normalAbnormalPage"
-      style="cursor: pointer"
-    >
-      <div class="module-info">
+  </div>
+
+  <!-- Normal and Abnormal Findings Page -->
+  <div id="normalAbnormalPage" class="page" style="display: none">
+    <div>
+      <div class="video-header">
         <h3 data-i18n="videos.normalAndAbnormalFindingsTitle">
           Normal and Abnormal Findings
         </h3>
-        <p data-i18n="videos.videoContent">Video Content</p>
-        <div class="progress-bar">
-          <div class="progress" style="width: 0%"></div>
-        </div>
-        <span class="status" data-i18n="videos.startStatus">Start!</span>
+      </div>
+      <div class="video-container">
+        <video
+          id="normalAbnormalVideo"
+          controls
+          preload="none"
+          style="width: 100%; max-width: 100%"
+        >
+          <source src="videos/USAID/NormalAbnormal.mp4" type="video/mp4" />
+          <span data-i18n="videos.videoNotSupported"
+            >Your browser does not support the video tag.</span
+          >
+        </video>
       </div>
     </div>
   </div>
-</div>
 
-<!-- How to Use the Arclight Page -->
-<div id="howToArclightPage" class="page" style="display: none">
-  <div>
-    <div class="video-header">
-      <h3 data-i18n="videos.howToUseArclightTitle">How to Use the Arclight</h3>
-    </div>
-    <div class="video-container">
-      <video
-        id="howToArclightVideo"
-        controls
-        preload="none"
-        style="width: 100%; max-width: 100%"
-      >
-        <source src="videos/USAID/HowtoArclight.mp4" type="video/mp4" />
-        <span data-i18n="videos.videoNotSupported"
-          >Your browser does not support the video tag.</span
-        >
-      </video>
+  <!-- Squint / Palsy Page -->
+  <div id="squintPalsyPage" class="page" style="display: none">
+    <div>
+      <div class="video-header">
+        <h3 data-i18n="videos.squintPalsyTitle">Squint / Palsy</h3>
+      </div>
+      <div class="video-container">
+        <iframe
+          data-src="subapp/Squint/index.html"
+          loading="lazy"
+          style="width: 100%; height: 80vh; border: none"
+          title="Squint / Palsy Simulation"
+          data-i18n="videos.squintPalsySimulationTitle:title"
+        ></iframe>
+      </div>
     </div>
   </div>
-</div>
 
-<!-- Assessment of Eyes and Vision Page -->
-<div id="assessmentVisionPage" class="page" style="display: none">
-  <div>
-    <div class="tri-toggle" role="radiogroup" aria-label="Video mode">
-      <button
-        class="tri-toggle__btn"
-        type="button"
-        role="radio"
-        aria-checked="false"
-        data-mode="low"
-      >
-        low
-      </button>
-      <button
-        class="tri-toggle__btn"
-        type="button"
-        role="radio"
-        aria-checked="false"
-        data-mode="high"
-      >
-        high
-      </button>
-      <button
-        class="tri-toggle__btn tri-toggle__btn--icon"
-        type="button"
-        role="radio"
-        aria-checked="false"
-        data-mode="online"
-        aria-label="online"
-      >
-        <span class="tri-toggle__wifi" aria-hidden="true"></span>
-      </button>
-      <div class="tri-toggle__knob" aria-hidden="true"></div>
-    </div>
-
-    <div class="video-header">
-      <h3 data-i18n="videos.assessmentOfEyesAndVisionTitle">
-        Assessment of Eyes and Vision
-      </h3>
-    </div>
-    <div class="video-container" id="assessmentVisionContainer">
-      <video
-        id="assessmentVisionVideo"
-        controls
-        preload="none"
-        style="width: 100%; max-width: 100%"
-      >
-        <source src="videos/USAID/AssessmentVision.mp4" type="video/mp4" />
-        <span data-i18n="videos.videoNotSupported"
-          >Your browser does not support the video tag.</span
-        >
-      </video>
+  <!-- Cataract Page -->
+  <div id="cataractPage" class="page" style="display: none">
+    <div>
+      <div class="video-header">
+        <h3 data-i18n="videos.cataractTitle">Cataract</h3>
+      </div>
+      <div class="video-container">
+        <iframe
+          data-src="subapp/Cataract/index.html"
+          loading="lazy"
+          style="width: 100%; height: 80vh; border: none"
+          title="Cataract Simulation"
+          data-i18n="videos.cataractSimulationTitle:title"
+        ></iframe>
+      </div>
     </div>
   </div>
-</div>
 
-<!-- Normal and Abnormal Findings Page -->
-<div id="normalAbnormalPage" class="page" style="display: none">
-  <div>
-    <div class="video-header">
-      <h3 data-i18n="videos.normalAndAbnormalFindingsTitle">
-        Normal and Abnormal Findings
-      </h3>
-    </div>
-    <div class="video-container">
-      <video
-        id="normalAbnormalVideo"
-        controls
-        preload="none"
-        style="width: 100%; max-width: 100%"
+  <!-- Arclight Page -->
+  <div id="arclightPage" class="page" style="display: none">
+    <div class="container">
+      <h1 data-i18n="videos.arclightTitle">Arclight</h1>
+      <div
+        class="module-card"
+        id="howToUseArclightArclightCard"
+        style="cursor: pointer"
+        data-page="howToUseArclightVideoPage"
       >
-        <source src="videos/USAID/NormalAbnormal.mp4" type="video/mp4" />
-        <span data-i18n="videos.videoNotSupported"
-          >Your browser does not support the video tag.</span
-        >
-      </video>
+        <div class="module-info">
+          <h3 data-i18n="videos.howToUseArclightTitle">How to Use Arclight</h3>
+          <p data-i18n="videos.videoLearning">Video Learning</p>
+          <div class="progress-bar">
+            <div class="progress" style="width: 0%"></div>
+          </div>
+          <span class="status" data-i18n="videos.startStatus">Start!</span>
+        </div>
+      </div>
+      <div
+        class="module-card"
+        id="phoneAttachmentCard"
+        style="cursor: pointer"
+        data-page="phoneAttachmentVideoPage"
+      >
+        <div class="module-info">
+          <h3 data-i18n="videos.mobilePhoneAttachmentTitle">
+            Mobile Phone Attachment
+          </h3>
+          <p data-i18n="videos.videoLearning">Video Learning</p>
+          <div class="progress-bar">
+            <div class="progress" style="width: 0%"></div>
+          </div>
+          <span class="status" data-i18n="videos.startStatus">Start!</span>
+        </div>
+      </div>
     </div>
   </div>
-</div>
 
-<!-- Squint / Palsy Page -->
-<div id="squintPalsyPage" class="page" style="display: none">
-  <div>
-    <div class="video-header">
-      <h3 data-i18n="videos.squintPalsyTitle">Squint / Palsy</h3>
-    </div>
-    <div class="video-container">
-      <iframe
-        data-src="subapp/Squint/index.html"
-        loading="lazy"
-        style="width: 100%; height: 80vh; border: none"
-        title="Squint / Palsy Simulation"
-        data-i18n="videos.squintPalsySimulationTitle:title"
-      ></iframe>
-    </div>
-  </div>
-</div>
-
-<!-- Cataract Page -->
-<div id="cataractPage" class="page" style="display: none">
-  <div>
-    <div class="video-header">
-      <h3 data-i18n="videos.cataractTitle">Cataract</h3>
-    </div>
-    <div class="video-container">
-      <iframe
-        data-src="subapp/Cataract/index.html"
-        loading="lazy"
-        style="width: 100%; height: 80vh; border: none"
-        title="Cataract Simulation"
-        data-i18n="videos.cataractSimulationTitle:title"
-      ></iframe>
-    </div>
-  </div>
-</div>
-
-<!-- Arclight Page -->
-<div id="arclightPage" class="page" style="display: none">
-  <div class="container">
-    <h1 data-i18n="videos.arclightTitle">Arclight</h1>
-    <div
-      class="module-card"
-      id="howToUseArclightArclightCard"
-      style="cursor: pointer"
-      data-page="howToUseArclightVideoPage"
-    >
-      <div class="module-info">
+  <!-- How to Use Arclight Video Page -->
+  <div id="howToUseArclightVideoPage" class="page" style="display: none">
+    <div>
+      <div class="video-header">
         <h3 data-i18n="videos.howToUseArclightTitle">How to Use Arclight</h3>
-        <p data-i18n="videos.videoLearning">Video Learning</p>
-        <div class="progress-bar">
-          <div class="progress" style="width: 0%"></div>
-        </div>
-        <span class="status" data-i18n="videos.startStatus">Start!</span>
+      </div>
+      <div class="video-container">
+        <video
+          id="howToUseArclightVideo"
+          controls
+          preload="none"
+          style="width: 100%; max-width: 100%"
+        >
+          <source src="videos/USAID/HowtoArclight.mp4" type="video/mp4" />
+          <span data-i18n="videos.videoNotSupported"
+            >Your browser does not support the video tag.</span
+          >
+        </video>
       </div>
     </div>
-    <div
-      class="module-card"
-      id="phoneAttachmentCard"
-      style="cursor: pointer"
-      data-page="phoneAttachmentVideoPage"
-    >
-      <div class="module-info">
+  </div>
+
+  <!-- Mobile Phone Attachment Video Page -->
+  <div id="phoneAttachmentVideoPage" class="page" style="display: none">
+    <div>
+      <div class="video-header">
         <h3 data-i18n="videos.mobilePhoneAttachmentTitle">
           Mobile Phone Attachment
         </h3>
-        <p data-i18n="videos.videoLearning">Video Learning</p>
-        <div class="progress-bar">
-          <div class="progress" style="width: 0%"></div>
-        </div>
-        <span class="status" data-i18n="videos.startStatus">Start!</span>
       </div>
-    </div>
-  </div>
-</div>
-
-<!-- How to Use Arclight Video Page -->
-<div id="howToUseArclightVideoPage" class="page" style="display: none">
-  <div>
-    <div class="video-header">
-      <h3 data-i18n="videos.howToUseArclightTitle">How to Use Arclight</h3>
-    </div>
-    <div class="video-container">
-      <video
-        id="howToUseArclightVideo"
-        controls
-        preload="none"
-        style="width: 100%; max-width: 100%"
-      >
-        <source src="videos/USAID/HowtoArclight.mp4" type="video/mp4" />
-        <span data-i18n="videos.videoNotSupported"
-          >Your browser does not support the video tag.</span
+      <div class="video-container">
+        <video
+          id="phoneAttachmentVideo"
+          controls
+          preload="none"
+          style="width: 100%; max-width: 100%"
         >
-      </video>
-    </div>
-  </div>
-</div>
-
-<!-- Mobile Phone Attachment Video Page -->
-<div id="phoneAttachmentVideoPage" class="page" style="display: none">
-  <div>
-    <div class="video-header">
-      <h3 data-i18n="videos.mobilePhoneAttachmentTitle">
-        Mobile Phone Attachment
-      </h3>
-    </div>
-    <div class="video-container">
-      <video
-        id="phoneAttachmentVideo"
-        controls
-        preload="none"
-        style="width: 100%; max-width: 100%"
-      >
-        <source src="videos/Arclight/PhoneAttach.mp4" type="video/mp4" />
-        <span data-i18n="videos.videoNotSupported"
-          >Your browser does not support the video tag.</span
-        >
-      </video>
+          <source src="videos/Arclight/PhoneAttach.mp4" type="video/mp4" />
+          <span data-i18n="videos.videoNotSupported"
+            >Your browser does not support the video tag.</span
+          >
+        </video>
+      </div>
     </div>
   </div>
 </div>

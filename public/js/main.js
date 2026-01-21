@@ -193,35 +193,6 @@ window.addEventListener("load", () => {
   }).catch((e) => console.error("track error", e));
 });
 
-// Direct-open a requested subpage inside videos.html (e.g., pupilsPage)
-window.addEventListener("page:loaded", (e) => {
-  if (e?.detail?.routeName !== "videos") return;
-
-  const target = sessionStorage.getItem("gotoSubPage");
-  if (!target) return;
-  sessionStorage.removeItem("gotoSubPage");
-
-  // Hide all .page sections, then show the requested one
-  const allPages = document.querySelectorAll(".page");
-  allPages.forEach((p) => (p.style.display = "none"));
-
-  const host = document.getElementById(target);
-  if (host) host.style.display = "";
-
-  // Wire the menu button using dynamic import (ESM-safe in browsers)
-  document.querySelectorAll("#pupilsPage .menuBtn").forEach((btn) =>
-    btn.addEventListener("click", async (ev) => {
-      ev.preventDefault();
-      try {
-        const { openMenu } = await import("./menu.js");
-        openMenu();
-      } catch (e) {
-        console.error("Failed to open menu:", e);
-      }
-    }),
-  );
-});
-
 document.addEventListener("DOMContentLoaded", () => {
   wireGlobalNavigation();
 

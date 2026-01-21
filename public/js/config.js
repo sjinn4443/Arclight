@@ -33,4 +33,7 @@ export const ROUTES = {
   atomsHandout2: "html/fundalReflexPdf.html",
   visualImpairment: "html/visualImpairment.html",
   atomsHandout1: "html/fundalReflexPdf.html",
+  signsVICases: "html/signsVICases.html",
+  childhoodRefer: "html/childhoodRefer.html",
+  childhoodEyeBrainImages: "html/childhoodEyeBrainImages.html",
 };
