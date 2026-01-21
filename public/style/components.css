@@ -1646,12 +1646,19 @@ input:checked + .slider:before {
   gap: 10px;
 }
 
-#atomsHandout1Page,
+/* ATOMS handout pages: topbar 아이콘은 fundalReflexPdf처럼 오른쪽 정렬 */
+#atomsHandout1Page .eyes-topbar__icons,
 #atomsHandout2Page .eyes-topbar__icons {
-  margin-left: auto;
+  margin-left: 280px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
+}
+
+/* ATOMS pages에서만 menuBtn에 걸린 pupils-like 강제 margin 제거 */
+#atomsHandout1Page .icon.menuBtn,
+#atomsHandout2Page .icon.menuBtn {
+  margin: 0 !important;
 }
 
 .lesson-row {
