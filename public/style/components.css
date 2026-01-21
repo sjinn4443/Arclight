@@ -48,7 +48,7 @@ button:disabled {
   width: 100%;
   height: 39px;
   border-radius: 14px;
-  background: #e41e26;
+  background: #6f6f72;
   color: #fff;
   border: none;
   font-size: 13px;
@@ -60,7 +60,7 @@ button:disabled {
   width: 100%;
   height: 39px;
   border-radius: 14px;
-  background: #6f6f72;
+  background: #e41e26;
   color: #fff;
   border: none;
   font-size: 13px;
@@ -1843,7 +1843,7 @@ input:checked + .slider:before {
 }
 
 #casestudyPage .lesson-row[data-level="primary-flashcard"] .thumb {
-  background-image: url("/images/icon/eyes/moduleicons/primary_flash") !important;
+  background-image: url("/images/icon/eyes/moduleicons/primary_flash.webp") !important;
 }
 
 #childhoodEyeScreeningWorkshopPage .lesson-row--scroll .thumb {
