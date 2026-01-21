@@ -125,6 +125,13 @@ document.addEventListener("DOMContentLoaded", () => {
       initializeVisualSystemEyesBrain?.();
       return;
     }
+
+    if (routeName === "childhoodAssessment") {
+      const { initializeChildhoodAssessment } =
+        await import("./childhoodAssessment.js");
+      initializeChildhoodAssessment?.();
+      return;
+    }
   });
 });
 // childhoodEyeScreeningWorkshop route init

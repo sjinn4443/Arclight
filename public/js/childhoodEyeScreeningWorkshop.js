@@ -31,6 +31,14 @@ export function initializeChildhoodEyeScreeningWorkshop() {
       console.warn("[workshop] clicked target =", target);
       if (!target) return;
 
+      if (target === "childhoodAssessmentPage") {
+        try {
+          sessionStorage.removeItem("gotoSubPage");
+        } catch (_) {}
+        await loadPage("childhoodAssessment");
+        return;
+      }
+
       window.__videosPendingTarget = target;
       window.__videosSuppressFlash = true;
 

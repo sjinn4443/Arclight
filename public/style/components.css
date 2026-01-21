@@ -375,7 +375,7 @@ body.quiz-mode {
   padding: 12px;
   width: 100%;
   max-width: 320px;
-  margin: 2 auto;
+  margin-left: 6px;
   display: block;
   border: none;
 }
@@ -4875,4 +4875,27 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
   display: block;
   font-size: 13px;
   line-height: 20px;
+}
+
+/* FILE: public/css/style.css (또는 기존 quiz css 파일) */
+
+.quiz-image-wrap {
+  margin: 12px 0;
+}
+.quiz-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 12px;
+}
+.quiz-option {
+  display: flex;
+  gap: 10px;
+  margin: 8px 0;
+}
+.quiz-feedback.is-correct {
+  font-weight: 600;
+}
+.quiz-feedback.is-wrong {
+  font-weight: 600;
 }
