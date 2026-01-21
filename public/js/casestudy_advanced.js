@@ -123,11 +123,11 @@ const QUESTIONS = [
 
 const DIAGNOSES = [
   "Congenital cataract",
-  "Senile cataract",
+  "Cataract",
   "Retinoblastoma",
   "Gonococcal/Chlamydial conjunctivitis",
   "Trachomatous trichiasis with corneal scarring",
-  "Bacterial / fungal corneal ulcer (traumatic)",
+  "Bacterial / fungal corneal ulcer",
   "Herpes simplex keratitis",
   "Anterior Uveitis",
   "Pterygium",
@@ -355,11 +355,11 @@ function caseAnswers({ caseNum, variant }) {
 
 function correctDiagnosisForCase({ caseNum, variant }) {
   if (caseNum === 1 && variant === "infant") return "Congenital cataract";
-  if (caseNum === 1 && variant === "elderly") return "Senile cataract";
+  if (caseNum === 1 && variant === "elderly") return "Cataract";
   if (caseNum === 2) return "Retinoblastoma";
   if (caseNum === 3) return "Gonococcal/Chlamydial conjunctivitis";
   if (caseNum === 4) return "Trachomatous trichiasis with corneal scarring";
-  if (caseNum === 5) return "Bacterial / fungal corneal ulcer (traumatic)";
+  if (caseNum === 5) return "Bacterial / fungal corneal ulcer";
   if (caseNum === 6) return "Herpes simplex keratitis";
   if (caseNum === 7) return "Anterior Uveitis";
   if (caseNum === 8) return "Pterygium";
@@ -375,7 +375,7 @@ function explanationForCase({ caseNum, variant }) {
   if (caseNum === 1 && variant === "infant")
     return "A white pupil present from birth, with poor vision, fits congenital cataract.";
   if (caseNum === 1 && variant === "elderly")
-    return "Gradual, painless worsening vision over months in an older adult fits senile cataract.";
+    return "Gradual, painless worsening vision over months in an older adult fits cataract.";
   if (caseNum === 2)
     return "A white pupil in a young child with reduced visual engagement is concerning for retinoblastoma.";
   if (caseNum === 3)

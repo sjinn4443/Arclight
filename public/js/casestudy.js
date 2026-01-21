@@ -123,11 +123,11 @@ const QUESTIONS = [
 
 const DIAGNOSES = [
   "Congenital cataract",
-  "Senile cataract",
+  "Cataract",
   "Retinoblastoma",
   "Gonococcal/Chlamydial conjunctivitis",
   "Trachomatous trichiasis with corneal scarring",
-  "Bacterial / fungal corneal ulcer (traumatic)",
+  "Bacterial / fungal corneal ulcer",
   "Herpes simplex keratitis",
   "Anterior Uveitis",
   "Pterygium",
@@ -140,213 +140,211 @@ const DIAGNOSES = [
 function caseAnswers({ caseNum, variant }) {
   if (caseNum === 1) {
     return {
-      problem: "I can’t really see anything anymore.",
-      when: "It started over a year ago.",
-      how: "There was no injury, it just came on slowly.",
-      eye: "It started in one eye, but now both eyes are affected.",
-      pain: "No, there’s no pain or itchiness.",
-      redness: "The eye looks white and there’s no discharge.",
-      vision: "I can only see shadows now.",
-      course: "It’s been gradually getting worse.",
-      treatment: "No, I haven’t had any treatment yet.",
-      other: "No.",
+      problem: "Cannot see anything",
+      when: "Started over a year ago",
+      how: "No trauma, started slowly",
+      eye: "At first one eye, then both eyes",
+      pain: "No pain or itch",
+      redness: "White eye with no discharge",
+      vision: "Only sees shadows",
+      course: "Gradually getting worse",
+      treatment: "No treatment yet",
+      other: "No",
     };
   }
 
   if (caseNum === 2 && variant === "progressive") {
     return {
-      problem: "I noticed my child’s pupil looking white.",
-      when: "It started when my child was around six months old.",
-      how: "There was no injury, it just came on slowly.",
-      eye: "It started in one eye and now both eyes are affected.",
-      pain: "No, there’s no pain or itchiness.",
-      redness: "The eyes look white and there’s no discharge.",
-      vision: "My child has lost interest in looking around.",
-      course: "It’s getting worse.",
-      treatment: "No, we haven’t had any treatment yet.",
-      other: "An older sibling had a similar problem and sadly passed away.",
+      problem: "Mum noticed pupil looked white",
+      when: "Started around 6 months of age",
+      how: "No trauma, started slowly",
+      eye: "One eye first, then both eyes",
+      pain: "No pain or itch",
+      redness: "White eye with no discharge",
+      vision: "Child has lost interest in looking around",
+      course: "Getting worse",
+      treatment: "No treatment yet",
+      other: "Older sibling had similar condition and is now deceased",
     };
   }
 
   if (caseNum === 2 && variant === "congenital") {
     return {
-      problem: "I noticed my child’s pupils looking white.",
-      when: "It’s been there since birth.",
-      how: "It was present from birth.",
-      eye: "Both eyes are affected.",
-      pain: "No, there’s no pain or itchiness.",
-      redness: "The eyes look white with no discharge.",
-      vision: "My child has never really shown any visual interest.",
-      course: "It seems to be staying the same.",
-      treatment: "No, we haven’t had any treatment yet.",
-      other: "The eyes sometimes seem to shimmer and wobble.",
+      problem: "Mum noticed pupil looked white",
+      when: "Present from birth",
+      how: "Present from birth",
+      eye: "Both eyes",
+      pain: "No pain or itch",
+      redness: "White eye with no discharge",
+      vision: "Child has never shown visual interest",
+      course: "Staying the same",
+      treatment: "No treatment yet",
+      other: "Eyes shimmer and wobble",
     };
   }
 
   if (caseNum === 3 && variant === "adult") {
     return {
-      problem: "My eye feels sticky.",
-      when: "It started about a week ago.",
-      how: "It came on gradually over one to two days.",
-      eye: "It started in one eye and then affected both.",
-      pain: "It’s itchy and sometimes feels gritty.",
-      redness: "The eye is pink with yellow discharge.",
-      vision: "My vision is blurry.",
-      course: "It’s getting worse.",
-      treatment: "No, I haven’t had any treatment yet.",
-      other: "No.",
+      problem: "Sticky eye",
+      when: "Started 1 week ago",
+      how: "Gradual over 1 to 2 days",
+      eye: "At first one eye, then both eyes",
+      pain: "Itchy and gritty at times",
+      redness: "Pink eye with yellow discharge",
+      vision: "Blurry vision",
+      course: "Getting worse",
+      treatment: "No treatment yet",
+      other: "No",
     };
   }
 
   if (caseNum === 3 && variant === "neonate") {
     return {
-      problem: "My baby’s eyes look sticky.",
-      when: "It started about a week ago.",
-      how: "It came on gradually over one to two days.",
-      eye: "It started in one eye and then both.",
-      pain: "It’s hard to tell.",
-      redness: "The eyes are pink with thick yellow discharge.",
-      vision: "My baby keeps their eyes shut most of the time.",
-      course: "It’s getting worse.",
-      treatment: "No, there hasn’t been any treatment yet.",
-      other:
-        "I’ve been treated for sexually transmitted infections in the past.",
+      problem: "Sticky eye",
+      when: "Started 1 week ago",
+      how: "Gradual over 1 to 2 days",
+      eye: "At first one eye, then both eyes",
+      pain: "Hard to assess",
+      redness: "Pink eye with thick yellow discharge",
+      vision: "Keeping eyes shut",
+      course: "Getting worse",
+      treatment: "No treatment yet",
+      other: "Mother has been treated for STDs in the past",
     };
   }
 
   if (caseNum === 4) {
     return {
-      problem: "My eyes feel painful and gritty.",
-      when: "It started many months ago.",
-      how: "It came on gradually.",
-      eye: "Both eyes are affected.",
-      pain: "Sometimes they feel itchy.",
-      redness: "They’re red and watery.",
-      vision: "My vision is blurry.",
-      course: "It’s getting worse.",
-      treatment: "No, I haven’t had any treatment yet.",
-      other: "No.",
+      problem: "Painful and gritty eyes",
+      when: "Started many months ago",
+      how: "Gradual onset",
+      eye: "Both eyes affected",
+      pain: "Sometimes itchy",
+      redness: "Red eye with watery discharge",
+      vision: "Blurry vision",
+      course: "Getting worse",
+      treatment: "No treatment yet",
+      other: "No",
     };
   }
 
   if (caseNum === 5) {
     return {
-      problem: "My eye is very painful.",
-      when: "It started about two weeks ago.",
-      how: "It began after I scratched my eye on a bush.",
-      eye: "Only one eye is affected.",
-      pain: "It was gritty at first, then became very painful.",
-      redness: "The eye is red with sticky yellow discharge.",
-      vision: "I can only see shadows now.",
-      course: "It’s getting worse.",
-      treatment: "No, I haven’t had any treatment yet.",
-      other: "No.",
+      problem: "Painful eye",
+      when: "Started 2 weeks ago",
+      how: "After scratch from bush",
+      eye: "One eye",
+      pain: "Gritty then very painful",
+      redness: "Red eye with sticky yellow discharge",
+      vision: "Only sees shadows",
+      course: "Getting worse",
+      treatment: "No treatment yet",
+      other: "No",
     };
   }
 
   if (caseNum === 6) {
     return {
-      problem: "My eye feels gritty.",
-      when: "It started about a week ago.",
-      how: "It came on gradually over two to three days.",
-      eye: "Only one eye is affected.",
-      pain: "Bright light is painful.",
-      redness: "The eye looks pink and watery.",
-      vision: "My vision is blurry.",
-      course: "It’s gradually getting worse.",
-      treatment: "No, I haven’t had any treatment yet.",
-      other:
-        "I had a painful patch of broken skin on my lip about a week before this started.",
+      problem: "Gritty eye",
+      when: "Started 1 week ago",
+      how: "Gradual onset over 2 to 3 days",
+      eye: "One eye",
+      pain: "Bright light is painful",
+      redness: "Pink eye with watery discharge",
+      vision: "Blurry vision",
+      course: "Gradually getting worse",
+      treatment: "No treatment yet",
+      other: "Painful broken skin on lip one week before eye symptoms",
     };
   }
 
   if (caseNum === 7) {
     return {
-      problem: "Bright light really hurts my eye.",
-      when: "It started about a week ago.",
-      how: "It came on gradually over one to two days.",
-      eye: "Only one eye is affected.",
-      pain: "Light is painful but there’s no itch.",
-      redness: "The eye is pink and watery.",
-      vision: "My vision is slightly blurred.",
-      course: "It’s getting worse.",
-      treatment: "No, I haven’t had any treatment yet.",
-      other: "I’ve had several episodes like this before.",
+      problem: "Bright light is painful",
+      when: "Started 1 week ago",
+      how: "Gradual over 1 to 2 days",
+      eye: "One eye",
+      pain: "Bright light painful, no itch",
+      redness: "Pink watery eye",
+      vision: "Slightly blurred vision",
+      course: "Gradually getting worse",
+      treatment: "No treatment yet",
+      other: "Several previous episodes",
     };
   }
 
   if (caseNum === 8) {
     return {
-      problem: "I noticed a pink patch on my eye.",
-      when: "It started many months ago.",
-      how: "It came on slowly and there was no injury.",
-      eye: "Only one eye is affected.",
-      pain: "It feels a bit gritty.",
-      redness: "The eye looks mostly white but a bit watery.",
-      vision: "My vision seems normal.",
-      course: "It’s slowly getting worse.",
-      treatment: "No, I haven’t had any treatment yet.",
-      other: "I work outdoors in the fields every day.",
+      problem: "Pink patch on eye",
+      when: "Started many months ago",
+      how: "Slow onset, no trauma",
+      eye: "One eye",
+      pain: "Gritty sensation",
+      redness: "White eye with slight watering",
+      vision: "Vision unaffected",
+      course: "Slowly getting worse",
+      treatment: "No treatment yet",
+      other: "Works outdoors daily",
     };
   }
 
   if (caseNum === 9) {
     return {
-      problem: "My eye feels gritty.",
-      when: "It started about a week ago.",
-      how: "It began after working under my car.",
-      eye: "Only one eye is affected.",
-      pain: "Bright light feels uncomfortable.",
-      redness: "The eye is a little bit pink.",
-      vision: "My vision is slightly blurred.",
-      course: "It’s getting worse.",
-      treatment: "No, I haven’t had any treatment yet.",
-      other: "No.",
+      problem: "Gritty eye",
+      when: "Started 1 week ago",
+      how: "After working under a car",
+      eye: "One eye",
+      pain: "Bright light uncomfortable",
+      redness: "Slightly pink eye",
+      vision: "Slightly blurred vision",
+      course: "Gradually getting worse",
+      treatment: "No treatment yet",
+      other: "No",
     };
   }
 
   if (caseNum === 10) {
     return {
-      problem: "I’ve lost vision in my eye.",
-      when: "It started about four days ago.",
-      how: "It happened after I was punched.",
-      eye: "Only one eye is affected.",
-      pain: "It’s painful and watery.",
-      redness: "The eye is red.",
-      vision: "I can only see shadows.",
-      course: "It seems to be staying the same.",
-      treatment: "No, I haven’t had any treatment yet.",
-      other: "No.",
+      problem: "Loss of vision",
+      when: "Started 4 days ago",
+      how: "After being punched",
+      eye: "One eye",
+      pain: "Painful with watering",
+      redness: "Red eye",
+      vision: "Only sees shadows",
+      course: "Staying the same",
+      treatment: "No treatment yet",
+      other: "No",
     };
   }
 
   if (caseNum === 11) {
     return {
-      problem: "My eye is painful.",
-      when: "It started about three days ago.",
-      how: "It happened after I was hit in the face with a stick.",
-      eye: "Only one eye is affected.",
-      pain: "It feels gritty but not itchy.",
-      redness: "The eye is pink and watery.",
-      vision: "My vision is blurry.",
-      course: "It’s getting worse.",
-      treatment: "No, I haven’t had any treatment yet.",
-      other: "No.",
+      problem: "Painful eye",
+      when: "Started 3 days ago",
+      how: "After being hit in the face with a stick",
+      eye: "One eye",
+      pain: "Gritty, no itch",
+      redness: "Pink eye with watering",
+      vision: "Blurry vision",
+      course: "Gradually getting worse",
+      treatment: "No treatment yet",
+      other: "No",
     };
   }
 
   if (caseNum === 12) {
     return {
-      problem: "I’ve suddenly lost vision in my eye.",
-      when: "It started yesterday.",
-      how: "It happened after I was hit in the eye with a stick.",
-      eye: "Only one eye is affected.",
-      pain: "It’s painful.",
-      redness: "The eye is red and watery.",
-      vision: "I can only see shadows.",
-      course: "It’s getting worse.",
-      treatment: "No, I haven’t had any treatment yet.",
-      other: "No.",
+      problem: "Loss of vision",
+      when: "Started 1 day ago",
+      how: "After being hit in the eye with a stick",
+      eye: "One eye",
+      pain: "Painful",
+      redness: "Red eye with watering",
+      vision: "Only sees shadows",
+      course: "Getting worse",
+      treatment: "No treatment yet",
+      other: "No",
     };
   }
 
@@ -355,11 +353,11 @@ function caseAnswers({ caseNum, variant }) {
 
 function correctDiagnosisForCase({ caseNum, variant }) {
   if (caseNum === 1 && variant === "infant") return "Congenital cataract";
-  if (caseNum === 1 && variant === "elderly") return "Senile cataract";
+  if (caseNum === 1 && variant === "elderly") return "Cataract";
   if (caseNum === 2) return "Retinoblastoma";
   if (caseNum === 3) return "Gonococcal/Chlamydial conjunctivitis";
   if (caseNum === 4) return "Trachomatous trichiasis with corneal scarring";
-  if (caseNum === 5) return "Bacterial / fungal corneal ulcer (traumatic)";
+  if (caseNum === 5) return "Bacterial / fungal corneal ulcer";
   if (caseNum === 6) return "Herpes simplex keratitis";
   if (caseNum === 7) return "Anterior Uveitis";
   if (caseNum === 8) return "Pterygium";
@@ -375,7 +373,7 @@ function explanationForCase({ caseNum, variant }) {
   if (caseNum === 1 && variant === "infant")
     return "A white pupil present from birth, with poor vision, fits congenital cataract.";
   if (caseNum === 1 && variant === "elderly")
-    return "Gradual, painless worsening vision over months in an older adult fits senile cataract.";
+    return "Gradual, painless worsening vision over months in an older adult fits cataract.";
   if (caseNum === 2)
     return "A white pupil in a young child with reduced visual engagement is concerning for retinoblastoma.";
   if (caseNum === 3)
