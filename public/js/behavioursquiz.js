@@ -105,7 +105,7 @@ export function initializeBehavioursQuiz() {
       <div id="behavioursQuizModal" class="quiz-modal hidden">
         <div class="quiz-modal-content">
           <p id="behavioursQuizScoreText"></p>
-          <button id="behavioursSeeWhyBtn">See why?</button>
+          <button id="behavioursSeeWhyBtn">Check Answer</button>
         </div>
       </div>
     </div>
@@ -118,9 +118,8 @@ export function initializeBehavioursQuiz() {
     let html = `<div class="quiz-block"><p>${escapeHtml(q.q)}</p>`;
 
     html += `
-      <img src="${q.img}" alt="" loading="lazy"
-        style="width:72%; height:auto; display:block; margin:14px 43px; border-radius:12px;" />
-    `;
+  <img class="quiz-image" src="${q.img}" alt="" loading="lazy" />
+`;
 
     q.options.forEach((opt, j) => {
       html += `
@@ -168,8 +167,9 @@ export function initializeBehavioursQuiz() {
       if (selected === q.answer) score += 1;
     });
 
-    mount.querySelector("#behavioursQuizScoreText").innerText =
-      `You got ${score} out of ${questions.length} correct.`;
+    mount.querySelector("#behavioursQuizScoreText").innerHTML =
+      `You got ${score} out of ${questions.length} correct.<br>
+   <small class="quiz-hint">Answers are highlighted in green.</small>`;
     mount.querySelector("#behavioursQuizModal").classList.remove("hidden");
   });
 

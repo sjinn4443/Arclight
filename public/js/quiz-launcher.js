@@ -46,7 +46,7 @@ function _launchQuiz() {
       <div id="quizModal" class="quiz-modal hidden">
         <div class="quiz-modal-content">
           <p id="quizScoreText"></p>
-          <button id="seeWhyBtn">See why?</button>
+          <button id="seeWhyBtn">Check Answer</button>
         </div>
       </div>
     </div>`;
@@ -143,8 +143,9 @@ function _launchQuiz() {
       });
       if (selected === answer) correct++;
     });
-    quizPage.querySelector("#quizScoreText").innerText =
-      `You got ${correct} out of ${questions.length} correct.`;
+    quizPage.querySelector("#quizScoreText").innerHTML =
+      `You got ${correct} out of ${questions.length} correct.<br>
+   <small>Answers are highlighted in green.</small>`;
     quizPage.querySelector("#quizModal").classList.remove("hidden");
   };
 

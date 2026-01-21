@@ -117,7 +117,7 @@ export function initializeChildhoodAssessment() {
       <div id="childhoodQuizModal" class="quiz-modal hidden">
         <div class="quiz-modal-content">
           <p id="childhoodQuizScoreText"></p>
-          <button id="childhoodSeeWhyBtn">See why?</button>
+          <button id="childhoodSeeWhyBtn">Check Answer</button>
         </div>
       </div>
     </div>
@@ -130,9 +130,8 @@ export function initializeChildhoodAssessment() {
     let html = `<div class="quiz-block"><p>${escapeHtml(q.q)}</p>`;
 
     html += `
-      <img src="${q.img}" alt="" loading="lazy"
-        style="width:100%; height:auto; display:block; margin:10px 0; border-radius:12px;" />
-    `;
+  <img class="quiz-image" src="${q.img}" alt="" loading="lazy" />
+`;
 
     q.options.forEach((opt, j) => {
       html += `
@@ -180,8 +179,10 @@ export function initializeChildhoodAssessment() {
       if (selected === q.answer) score += 1;
     });
 
-    mount.querySelector("#childhoodQuizScoreText").innerText =
-      `You got ${score} out of ${questions.length} correct.`;
+    mount.querySelector("#childhoodQuizScoreText").innerHTML =
+      `You got ${score} out of ${questions.length} correct.<br>
+   <small>Answers are highlighted in green.</small>`;
+
     mount.querySelector("#childhoodQuizModal").classList.remove("hidden");
   });
 

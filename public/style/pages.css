@@ -1220,6 +1220,13 @@ select.onb-input.has-value {
   color: #fff;
 }
 
+#childhoodEyeScreeningWorkshopPage .pupil-card h3 {
+  margin: 8px 25px -5px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+}
+
 /* Lesson rows (white pills) */
 #pupilsPage .lesson-row,
 .pupils-like .lesson-row {

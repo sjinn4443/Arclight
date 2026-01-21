@@ -35,6 +35,7 @@ function normaliseVideosSubpageId(raw) {
     assessmentVision: "assessmentVisionPage",
     normalAbnormal: "normalAbnormalPage",
     frontOfEye: "frontOfEyePage",
+    assessingVisualFunction: "assessingVisualFunctionPage",
   };
 
   if (ALIASES[t]) return ALIASES[t];

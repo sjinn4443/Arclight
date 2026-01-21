@@ -68,7 +68,7 @@ function _launchQuiz() {
         <div id="quizModal" class="quiz-modal hidden">
           <div class="quiz-modal-content">
             <p id="quizScoreText"></p>
-            <button id="seeWhyBtn">See why?</button>
+            <button id="seeWhyBtn">Check Answer</button>
           </div>
         </div>
       </div>`;

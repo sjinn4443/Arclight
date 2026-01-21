@@ -390,6 +390,18 @@ input {
   .container {
     padding-top: 3%;
   }
+
+  .lesson-row--quiz {
+    max-width: 420px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .lesson-row--quiz img {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
 }
 
 .lang-install__modal {
