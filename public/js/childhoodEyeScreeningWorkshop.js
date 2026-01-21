@@ -73,10 +73,19 @@ export function initializeChildhoodEyeScreeningWorkshop() {
       }
 
       // ✅ scroll/standalone pages that are separate routes (NOT videos subpages)
+      // public/js/childhoodEyeScreeningWorkshop.js
+
+      // ...중략...
+
       const DIRECT_ROUTES = {
         // Eye & Brain
         visualsystemeyesbrainPage: "visualsystemeyesbrain",
         childhoodEyeBrainImagesPage: "childhoodEyeBrainImages",
+
+        // ✅ [ADD] Visual development + QnO도 childhoodEyeBrainImages route로!
+        childhoodIntroVisualDevelopmentPage: "childhoodEyeBrainImages",
+        childhoodNormalVisualDevelopmentPage: "childhoodEyeBrainImages",
+        childhoodAskQuestionsObservePage: "childhoodEyeBrainImages",
 
         // Signs of visual impairment → Cases
         signsVICasesPage: "signsVICases",
@@ -84,37 +93,34 @@ export function initializeChildhoodEyeScreeningWorkshop() {
         // Childhood eye screening → Refer
         childhoodReferPage: "childhoodRefer",
 
-        // (안전망) 혹시 row가 visual impairment 페이지를 직접 가리키는 경우
+        // (안전망)
         visualImpairmentPage: "visualImpairment",
       };
 
       if (DIRECT_ROUTES[targetRaw]) {
-        await loadPage(DIRECT_ROUTES[targetRaw]);
+        const route = DIRECT_ROUTES[targetRaw];
+        await loadPage(route);
+
+        // ✅ [ADD] 같은 route 안에서, 눌렀던 "정확한 pageId"를 보여주기
+        if (typeof window.showPage === "function") {
+          window.showPage(targetRaw);
+        } else {
+          // 최소 안전장치 (showPage가 없는 경우)
+          const el = document.getElementById(targetRaw);
+          if (el) {
+            document
+              .querySelectorAll(".page")
+              .forEach((p) => (p.style.display = "none"));
+            el.style.display = "block";
+          }
+        }
+
+        // 상단으로 스크롤
+        try {
+          window.scrollTo(0, 0);
+        } catch {}
         return;
       }
-
-      // ✅ EVERYTHING ELSE: treat as a videos subpage id (normalised)
-      const target = normaliseVideosSubpageId(targetRaw);
-      if (!target) return;
-
-      try {
-        sessionStorage.setItem("gotoSubPage", target);
-        try {
-          window.__videosPendingTarget = target;
-          window.__videosSuppressFlash = true;
-        } catch (_e) {}
-
-        sessionStorage.setItem("fromRoute", "childhoodEyeScreeningWorkshop");
-      } catch (_e) {}
-
-      console.log(
-        "[Workshop → Videos] targetRaw =",
-        targetRaw,
-        "→ target =",
-        target,
-      );
-
-      await loadPage("videos");
     });
   });
 

@@ -338,7 +338,7 @@ const VIDEO_PAGE_SOURCES = {
       high: "videos/Core/VisualAcuity/VA_Mum_720p.mp4",
       // online optional
     },
-    onlineTitle: "Milestones African Mum (online)",
+    onlineTitle: "Visual Development (online)",
     iframeClass: "videos-yt-mum",
   },
 

@@ -175,12 +175,20 @@ export function initializeFundalReflexPdf() {
     .catch((err) => console.error("[fundalPdf] failed to load SVG:", err));
 
   // Layout viewer fullscreen under a fixed 62px topbar
-  viewer.style.position = "fixed";
-  viewer.style.left = "0";
-  viewer.style.right = "0";
-  viewer.style.top = "62px";
-  viewer.style.bottom = "0";
+  // ✅ viewer를 고정 풀고, 페이지 흐름 안에서 보이게
+  viewer.style.position = "relative";
+  viewer.style.left = "auto";
+  viewer.style.right = "auto";
+  viewer.style.top = "auto";
+  viewer.style.bottom = "auto";
+
+  // ✅ PDF 영역 높이를 제한해서, 아래 이미지로 스크롤 가능하게
+  viewer.style.width = "100%";
+  viewer.style.height = "calc(100vh - 62px)";
   viewer.style.overflow = "hidden";
+  viewer.style.background = "#fff";
+  viewer.style.touchAction = "none";
+
   viewer.style.background = "#fff";
   viewer.style.touchAction = "none"; // required for custom pan/pinch
 

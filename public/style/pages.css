@@ -1595,4 +1595,5 @@ select.onb-input.has-value + .onb-select-caret {
   height: auto;
   display: block;
   border-radius: 0px;
+  border: none;
 }
