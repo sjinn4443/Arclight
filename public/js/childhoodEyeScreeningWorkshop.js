@@ -71,6 +71,27 @@ export function initializeChildhoodEyeScreeningWorkshop() {
         return;
       }
 
+      // ✅ scroll/standalone pages that are separate routes (NOT videos subpages)
+      const DIRECT_ROUTES = {
+        // Eye & Brain
+        visualsystemeyesbrainPage: "visualsystemeyesbrain",
+        childhoodEyeBrainImagesPage: "childhoodEyeBrainImages",
+
+        // Signs of visual impairment → Cases
+        signsVICasesPage: "signsVICases",
+
+        // Childhood eye screening → Refer
+        childhoodReferPage: "childhoodRefer",
+
+        // (안전망) 혹시 row가 visual impairment 페이지를 직접 가리키는 경우
+        visualImpairmentPage: "visualImpairment",
+      };
+
+      if (DIRECT_ROUTES[targetRaw]) {
+        await loadPage(DIRECT_ROUTES[targetRaw]);
+        return;
+      }
+
       // ✅ EVERYTHING ELSE: treat as a videos subpage id (normalised)
       const target = normaliseVideosSubpageId(targetRaw);
       if (!target) return;
