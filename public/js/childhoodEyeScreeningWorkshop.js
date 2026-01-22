@@ -101,13 +101,13 @@ export function initializeChildhoodEyeScreeningWorkshop() {
         const route = DIRECT_ROUTES[targetRaw];
         await loadPage(route);
 
-        // ✅ [ADD] 같은 route 안에서, 눌렀던 "정확한 pageId"를 보여주기
-        if (typeof window.showPage === "function") {
-          window.showPage(targetRaw);
-        } else {
-          // 최소 안전장치 (showPage가 없는 경우)
-          const el = document.getElementById(targetRaw);
-          if (el) {
+        // ✅ 같은 route 안에 targetRaw 페이지 섹션이 있으면 그걸 정확히 보여주기
+        const el = document.getElementById(targetRaw);
+        if (el) {
+          if (typeof window.showPage === "function") {
+            window.showPage(targetRaw);
+          } else {
+            // fallback: showPage가 없을 때 최소 동작
             document
               .querySelectorAll(".page")
               .forEach((p) => (p.style.display = "none"));
@@ -115,10 +115,43 @@ export function initializeChildhoodEyeScreeningWorkshop() {
           }
         }
 
-        // 상단으로 스크롤
         try {
           window.scrollTo(0, 0);
         } catch {}
+        return;
+      }
+
+      // ✅ videos.html 안의 서브페이지(비디오)로 보내기
+      const target = normaliseVideosSubpageId(targetRaw);
+
+      // target이 비디오 페이지 id처럼 생겼으면 videos route로 이동해서 열기
+      if (target && target.endsWith("Page")) {
+        try {
+          // videos.js가 사용하는 딥링크 방식에 맞춰 세팅
+          window.__videosPendingTarget = target;
+          window.__videosSuppressFlash = true;
+          sessionStorage.setItem("gotoSubPage", target);
+        } catch {
+          // sessionStorage가 막혀도 최소한 loadPage는 되게
+        }
+
+        await loadPage("videos");
+
+        // 가능하면 videos.js의 helper로 즉시 해당 섹션 보여주기
+        try {
+          const { goToVideosSection } = await import("./videos.js");
+          if (typeof goToVideosSection === "function") {
+            goToVideosSection(target, { skipDefault: true });
+          } else {
+            // fallback: videos.js가 sessionStorage 읽어서 열도록 둠
+            sessionStorage.setItem("gotoSubPage", target);
+          }
+        } catch {
+          // fallback 유지
+          try {
+            sessionStorage.setItem("gotoSubPage", target);
+          } catch {}
+        }
         return;
       }
     });
