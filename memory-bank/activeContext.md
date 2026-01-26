@@ -1,4 +1,4 @@
-<!-- THE CHANGES - activeContext.md | 2025-12-15, Cline -->
+<!-- THE CHANGES - activeContext.md | 2026-01-26, Cline -->
 
 # Active Context
 
@@ -7,6 +7,17 @@
 Documentation refresh: updating README files across key folders so they accurately reflect the current server wiring, telemetry/reports flow, CI pipeline, tests (including ESM/CJS constraints), and the VS Code launcher extension.
 
 ## Recent Changes
+
+- Husky setup cleanup (2026-01-26):
+  - Updated root `package.json` `prepare` script from deprecated `husky install` to `husky`.
+  - Verified Git hooks path points to `.husky/_` and `pre-commit` runs `lint-staged`.
+
+- Root README script coverage (2026-01-26):
+  - Updated `README.md` to document additional `package.json` scripts that are actively available:
+    - Playwright E2E/perf (`test:e2e`, `perf:e2e`)
+    - Lighthouse CI (`perf:lh`)
+    - Translation checks (`check-translations`)
+    - Tracking server helper (`start:track`)
 
 - Updated README files to align with current code:
   - Root `README.md`

@@ -44,6 +44,10 @@ Common commands (see `package.json` for the full list):
 - **Start server (no watch):** `npm start`
 - **Start server in production mode:** `npm run start:prod`
 
+### Run (special)
+
+- **Start a second server for tracking (port 3001):** `npm run start:track`
+
 ### Build / serve built output
 
 - **Build static assets to `dist/`:** `npm run build`
@@ -65,9 +69,16 @@ rmdir /s /q dist
 - **Run Jest tests:** `npm test`
 - **CI-style tests:** `npm run test:ci`
 - **Accessibility checks:** `npm run test:a11y`
+- **E2E tests (Playwright):** `npm run test:e2e`
+- **Performance E2E (Playwright):** `npm run perf:e2e`
+- **Lighthouse CI (LHCI):** `npm run perf:lh`
 - **Lint:** `npm run lint`
 - **Format:** `npm run format` / `npm run format:check`
 - **Type check:** `npm run type-check`
+
+### Content / i18n
+
+- **Check translations:** `npm run check-translations`
 
 ## Environment variables
 

@@ -21,6 +21,8 @@
 - **Module System Fix:** Resolved ES module / CommonJS conflict by renaming `server.js` to `server.cjs` and updating related `require` paths and `package.json` scripts.
 - **CI/Jest ESM Interop Fix:** Jest `moduleNameMapper` maps ESM browser modules to CJS mocks for CJS tests.
 - **Documentation refresh (2025-12-15):** Updated README files across `README.md`, `.github/`, `reports/`, `security/`, `securitytest/`, `tests/`, and `vscode-alanui-launcher/`.
+- **Husky hooks enabled (2026-01-26):** `prepare` runs `husky` (no deprecated `husky install`), Git hooksPath is `.husky/_`, and `pre-commit` runs `lint-staged`.
+- **Root README script coverage (2026-01-26):** Root `README.md` now documents Playwright (`test:e2e`, `perf:e2e`), Lighthouse CI (`perf:lh`), translation checks (`check-translations`), and `start:track`.
 
 ## What's Left to Build
 

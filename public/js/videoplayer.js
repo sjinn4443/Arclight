@@ -42,7 +42,7 @@ export function initializeVideoPlayers() {
     const coarse =
       window.matchMedia && window.matchMedia("(pointer: coarse)").matches;
     const touchPoints = navigator.maxTouchPoints || 0;
-    const smallScreen = Math.min(window.innerWidth, window.innerHeight) <= 1024;
+    const smallScreen = Math.min(window.innerWidth, window.innerHeight) < 1024;
     return (coarse || touchPoints > 0) && smallScreen;
   };
 
@@ -98,12 +98,28 @@ export function initializeVideoPlayers() {
     // 이미 fullscreen이면 중복 진입 방지
     if (getFsElement()) return;
 
-    // video가 들어있는 컨테이너를 fullscreen 대상으로
-    const container = videoEl.closest(".video-container") || videoEl;
-
     arclightFsActive = true;
-    await requestFs(container);
+
+    // 1) iOS Safari: video.webkitEnterFullscreen()이 "비디오 전용 fullscreen"이라 가장 안정적
+    //    (document fullscreenchange가 안 뜨는 경우가 많아서 아래에 별도 이벤트도 붙일 예정)
+    if (typeof videoEl.webkitEnterFullscreen === "function") {
+      try {
+        videoEl.webkitEnterFullscreen();
+      } catch (_) {
+        // 실패 시 아래 표준 fullscreen으로 fallback
+      }
+    }
+
+    // 2) 표준 Fullscreen API: video 자체를 fullscreen 대상으로
+    if (!getFsElement()) {
+      await requestFs(videoEl);
+    }
+
+    // 3) fullscreen 진입 직후에 orientation lock 시도 (일부 기기에서 타이밍 이슈가 있어 1회 재시도)
     await requestLandscapeLock();
+    setTimeout(() => {
+      requestLandscapeLock();
+    }, 250);
   };
 
   const restoreAfterFullscreenExit = async () => {
@@ -136,6 +152,21 @@ export function initializeVideoPlayers() {
     if (v.__wiredPlayOnce) return;
     v.__wiredPlayOnce = true;
     v.addEventListener("play", () => {
+      // iOS video fullscreen 전용 이벤트 (document fullscreenchange가 안 뜰 수 있음)
+      if (!v.__wiredIosFsEvents) {
+        v.__wiredIosFsEvents = true;
+
+        v.addEventListener("webkitbeginfullscreen", async () => {
+          if (!isMobileOrTablet()) return;
+          arclightFsActive = true;
+          await requestLandscapeLock();
+        });
+
+        v.addEventListener("webkitendfullscreen", async () => {
+          await restoreAfterFullscreenExit();
+        });
+      }
+
       videos.forEach((other) => {
         if (other !== v) other.pause();
       });
