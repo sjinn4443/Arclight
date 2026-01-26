@@ -30,8 +30,8 @@ function runMidSplashThen(routeName) {
         splashContainer.querySelector(".logo-one.mid-only") ||
         splashContainer.querySelector(".logo-one");
 
-      // onboarding.js에서 쓰는 기대시간과 동일 패턴 (4.7s + buffer)
-      const EXPECTED_MS = 4700 + 300;
+      // Expected timing: 2 * 1.3s spins = 2.6s (+small buffer)
+      const EXPECTED_MS = 2600 + 300;
 
       let finished = false;
 

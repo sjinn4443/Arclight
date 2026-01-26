@@ -41,7 +41,8 @@ const EYES_IMAGE_MAP = {
   "Optic Nerve Disease": "images/icon/eyes/disease/car_opticnerv.webp",
 
   // Primary Eye Care (PEC)
-  "WHO PEC": "images/icon/eyes/who/car_who.webp",
+  // Primary Eye Care (PEC)
+  "WHO PEC": "images/icon/eyes/workshop/car_who.webp",
 
   // Extended examination
   Ptosis: "images/icon/eyes/extended/car_ptosis.webp",
@@ -49,7 +50,7 @@ const EYES_IMAGE_MAP = {
   "Eye Movements/Squint": "images/icon/eyes/extended/car_squint.webp",
   "Cranial Nerve Examination": "images/icon/eyes/extended/car_cranial.webp",
 
-  // Tools
+  // Tools and Kits
   "Arclight Overview": "images/icon/eyes/tools/car_arclight.webp",
   "Holo Overview": "images/icon/eyes/tools/car_holo.webp",
 };
@@ -342,12 +343,19 @@ export function initializeEyesCatalog() {
               data-label="${i.label}"
               ${disabledAttrs}>
               ${
-                EYES_IMAGE_MAP[i.label]
+                (
+                  i.target === "childhoodEyeScreeningWorkshop"
+                    ? "images/icon/eyes/workshop/car_childhoodscreen.webp"
+                    : EYES_IMAGE_MAP[i.label]
+                )
                   ? `<img class="eyes-card__bg" src="${
-                      EYES_IMAGE_MAP[i.label]
+                      i.target === "childhoodEyeScreeningWorkshop"
+                        ? "images/icon/eyes/workshop/car_childhoodscreen.webp"
+                        : EYES_IMAGE_MAP[i.label]
                     }" alt="${i.label}">`
                   : ""
               }
+
         <span class="heart-btn" aria-label="Toggle like" title="Like"
               role="button"
               tabindex="0"

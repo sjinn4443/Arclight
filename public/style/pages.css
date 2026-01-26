@@ -131,8 +131,8 @@
   animation-name: spinPause;
   animation-duration: 1.3s; /* spin 1.3s total; shift stays 0.8s */
   animation-timing-function: linear;
-  animation-delay: 0s; /* 3 iterations × 1.3s = 3.9s before move-right */
-  animation-iteration-count: 3; /* spin repeats 3×; shift once */
+  animation-delay: 0s; /* 2 iterations × 1.3s = 2.6s */
+  animation-iteration-count: 2; /* spin repeats 2× */
   animation-fill-mode: none;
   will-change: transform;
   top: -0.6757vh;
