@@ -673,6 +673,8 @@ export function initializeOnboarding() {
         if (String(v).trim() === "") return false;
       }
     }
+
+    return true;
   }
 
   function checkForm() {
@@ -702,14 +704,12 @@ export function initializeOnboarding() {
       return;
     }
 
-    // ✅ 먼저 문자열들을 만들어 둔다 (순서 중요)
     const roles = getSelectedRoles();
-    const rolesString = roles.join("|"); // multi-role 저장
+    const rolesString = roles.join("|");
 
     const interests = getSelectedInterests();
-    const interestsString = interests.join("|"); // multi-interest 저장
+    const interestsString = interests.join("|");
 
-    // ✅ 서버/텔레메트리 저장
     try {
       await saveProfile({
         name: (nameInput?.value || "").trim(),
@@ -726,84 +726,30 @@ export function initializeOnboarding() {
       });
     } catch {}
 
-    // ✅ localStorage 저장 (기존 로직 유지, 다만 interestsString은 이미 위에서 준비됨)
     const name = nameInput?.value?.trim();
     if (name) localStorage.setItem("username", name);
 
     if (interestsString) localStorage.setItem("userField", interestsString);
     else localStorage.removeItem("userField");
 
-    // roles 저장
     localStorage.setItem("userJob", rolesString);
 
-    // years 저장(보일 때만)
     if (studentYearField && !studentYearField.classList.contains("hidden")) {
       localStorage.setItem("studentYears", studentYearSelect?.value || "");
     } else {
       localStorage.removeItem("studentYears");
     }
 
-    /*if (
-      practiceLevelField &&
-      !practiceLevelField.classList.contains("hidden")
-    ) {
-      const roles = getSelectedRoles().filter(
-        (r) => r && r !== "medical_student",
-      );
-
-      const byRole = {};
-      let maxTotalMonths = 0;
-
-      roles.forEach((role) => {
-        const block = experienceByRole?.querySelector(
-          `[data-role="${CSS.escape(role)}"]`,
-        );
-        const y = parseInt(
-          block?.querySelector('input[data-kind="years"]')?.value || "0",
-          10,
-        );
-        const m = parseInt(
-          block?.querySelector('input[data-kind="months"]')?.value || "0",
-          10,
-        );
-
-        const years = Number.isFinite(y) ? y : 0;
-        const months = Number.isFinite(m) ? Math.min(11, Math.max(0, m)) : 0;
-
-        const totalMonths = years * 12 + months;
-        const range = mapPracticeMonthsToRange(totalMonths);
-
-        byRole[role] = { years, months, totalMonths, range };
-
-        if (totalMonths > maxTotalMonths) maxTotalMonths = totalMonths;
-      });
-
-      // ✅ role별 정확값 + 범주를 함께 저장
-      localStorage.setItem("practiceByRole", JSON.stringify(byRole));
-
-      // ✅ (기존 호환) 앱 다른 곳에서 practiceMonths 등을 쓸 수도 있으니 최대값으로 유지
-      const maxRange = mapPracticeMonthsToRange(maxTotalMonths);
-      localStorage.setItem("practiceMonths", String(maxTotalMonths));
-      localStorage.setItem("practiceRange", maxRange);
-    } else {
-      localStorage.removeItem("practiceByRole");
-      localStorage.removeItem("practiceMonths");
-      localStorage.removeItem("practiceRange");
-    }
-
-    loadPage("interest");
-  }); */
-
     if (
       practiceLevelField &&
       !practiceLevelField.classList.contains("hidden")
     ) {
-      const roles = getSelectedRoles().filter(
+      const nonStudentRoles = getSelectedRoles().filter(
         (r) => r && r !== "medical_student",
       );
       const byRole = {};
 
-      roles.forEach((role) => {
+      nonStudentRoles.forEach((role) => {
         const block = experienceByRole?.querySelector(
           `[data-role="${CSS.escape(role)}"]`,
         );
@@ -817,6 +763,8 @@ export function initializeOnboarding() {
     } else {
       localStorage.removeItem("practiceByRole");
     }
+
+    loadPage("interest");
   });
 
   // ---------------------------

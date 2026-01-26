@@ -122,7 +122,7 @@
       </div>
     </div>
 
-    <div class="form-field">
+    <div class="form-field" id="jobField">
       <label for="jobSelectDisplay" data-i18n="onboarding.job_label">
         Role(s)
       </label>
@@ -460,16 +460,16 @@
     <!-- ✅ Medical Student 외 직업을 하나라도 선택하면 표시 -->
     <div class="form-field hidden" id="practiceLevelField">
       <label data-i18n="onboarding.practiceLevelLabel">Experience</label>
-      <div id="experienceByRole"></div>
-    </div>
-
-    <!-- ✅ KEEP (but disabled for now): old manual inputs -->
-    <!--
+      <div id="experienceByRole">
+        <!-- ✅ KEEP (but disabled for now): old manual inputs -->
+        <!--
       <div class="exp-manual-inputs">
         <input id="expYears" type="number" min="0" placeholder="Years" />
         <input id="expMonths" type="number" min="0" max="11" placeholder="Months" />
       </div>
     -->
+      </div>
+    </div>
 
     <button
       id="completeOnboardingBtn"
