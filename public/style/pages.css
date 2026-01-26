@@ -1597,3 +1597,38 @@ select.onb-input.has-value + .onb-select-caret {
   border-radius: 0px;
   border: none;
 }
+
+/* Intro progress: 4 segments (video-synced fill) */
+.intro-progress__track--segments {
+  display: flex;
+  gap: 6px;
+  height: 3px;
+  background: transparent;
+  border-radius: 0;
+  overflow: visible;
+}
+
+.intro-progress__seg {
+  flex: 1;
+  height: 3px;
+  background: #e6e6e8; /* 기본 회색 트랙 */
+  border-radius: 999px;
+  position: relative;
+  overflow: hidden; /* fill이 세그먼트 밖으로 안 튀게 */
+}
+
+/* is-active는 JS가 상태 표시로만 쓰고, 색은 fill이 담당 */
+.intro-progress__seg.is-active {
+  background: #e6e6e8;
+}
+
+.intro-progress__seg .intro-progress__fill {
+  position: absolute;
+  inset: 0;
+  width: 0%;
+  height: 100%;
+  display: block;
+  background: #e41e26; /* 진행 빨강 */
+  border-radius: 999px;
+  transition: width 120ms linear;
+}

@@ -178,6 +178,73 @@ export function initializeIntro() {
     );
 
     let introState = "original"; // original → recommended → pickup
+    const progressFills = progressSegs.map((seg) =>
+      seg.querySelector(".intro-progress__fill"),
+    );
+
+    // 각 세그먼트의 누적 진행률 (0~1)
+    const segmentProgress = [0, 0, 0, 0];
+
+    function clamp01(n) {
+      if (n < 0) return 0;
+      if (n > 1) return 1;
+      return n;
+    }
+
+    function getStepIndexFromState() {
+      return introState === "original"
+        ? 0
+        : introState === "recommended"
+          ? 1
+          : introState === "pickup"
+            ? 2
+            : 3; // quiz
+    }
+
+    function renderProgress() {
+      if (!progressSegs.length) return;
+
+      const activeIdx = getStepIndexFromState();
+
+      progressSegs.forEach((seg, idx) => {
+        // 기존 is-active 의미(이전 단계 포함 “활성화”)는 유지
+        seg.classList.toggle("is-active", idx <= activeIdx);
+
+        const fill = progressFills[idx];
+        if (!fill) return;
+
+        const pct =
+          idx < activeIdx ? 1 : idx === activeIdx ? segmentProgress[idx] : 0;
+
+        fill.style.width = `${pct * 100}%`;
+      });
+    }
+
+    function setActiveStep(stepIndex) {
+      // stepIndex 이전은 완료(100%)
+      for (let i = 0; i < stepIndex; i++) segmentProgress[i] = 1;
+
+      // stepIndex부터 뒤는 초기화(0%)
+      for (let i = stepIndex; i < segmentProgress.length; i++) {
+        segmentProgress[i] = 0;
+      }
+
+      renderProgress();
+    }
+
+    function updateActiveStepFromVideo() {
+      const idx = getStepIndexFromState();
+
+      const duration = introVideo?.duration;
+      if (!duration || !isFinite(duration)) return;
+
+      const p = clamp01(introVideo.currentTime / duration);
+
+      // loop 영상에서도 채움이 되돌아가지 않게 최대값 유지
+      segmentProgress[idx] = Math.max(segmentProgress[idx], p);
+
+      renderProgress();
+    }
 
     function setSkipBtnPrimary(isPrimary) {
       if (!skipBtn) return;
@@ -230,7 +297,7 @@ export function initializeIntro() {
       arrowRightBtn?.classList.add("intro-arrow--visible");
       arrowLeftBtn?.classList.add("intro-arrow--visible");
 
-      updateProgress();
+      setActiveStep(getStepIndexFromState());
     }
 
     function showOriginal() {
@@ -245,7 +312,7 @@ export function initializeIntro() {
 
       arrowLeftBtn?.classList.remove("intro-arrow--visible");
 
-      updateProgress();
+      setActiveStep(getStepIndexFromState());
     }
 
     function showPickup() {
@@ -261,7 +328,7 @@ export function initializeIntro() {
       arrowRightBtn?.classList.add("intro-arrow--visible");
       arrowLeftBtn?.classList.add("intro-arrow--visible");
 
-      updateProgress();
+      setActiveStep(getStepIndexFromState());
     }
 
     function showQuiz() {
@@ -285,24 +352,7 @@ export function initializeIntro() {
       arrowLeftBtn?.classList.add("intro-arrow--visible");
       arrowRightBtn?.classList.remove("intro-arrow--visible");
 
-      updateProgress();
-    }
-
-    function updateProgress() {
-      if (!progressSegs.length) return;
-
-      const step =
-        introState === "original"
-          ? 1
-          : introState === "recommended"
-            ? 2
-            : introState === "pickup"
-              ? 3
-              : 4; // quiz
-
-      progressSegs.forEach((seg, idx) => {
-        seg.classList.toggle("is-active", idx < step);
-      });
+      setActiveStep(getStepIndexFromState());
     }
 
     function onIntroArrowRight(ev) {
@@ -354,6 +404,12 @@ export function initializeIntro() {
         }
       });
     }
+
+    if (introVideo) {
+      introVideo.addEventListener("timeupdate", updateActiveStepFromVideo);
+    }
+
+    setActiveStep(getStepIndexFromState());
 
     function isGuestMode() {
       return localStorage.getItem("guestMode") === "true";
