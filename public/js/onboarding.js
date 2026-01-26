@@ -34,7 +34,6 @@ export function initializeOnboarding() {
   const studentYearSelect = document.getElementById("studentYearSelect");
 
   const practiceLevelField = document.getElementById("practiceLevelField");
-  const practiceLevelSelect = document.getElementById("practiceLevelSelect");
 
   const continueBtn = document.getElementById("completeOnboardingBtn");
 
@@ -371,10 +370,13 @@ export function initializeOnboarding() {
 
       // 보일 때: role별 입력 렌더
       if (show) {
-        renderExperienceByRole(nonStudentRoles);
+        renderExperienceByRole(nonStudentRoles); // ✅ role별 experience select 렌더
       } else {
-        // 숨길 때: 경험 입력 초기화
-        if (experienceByRole) experienceByRole.innerHTML = "";
+        if (experienceByRole) {
+          experienceByRole.querySelectorAll(".role-exp-block").forEach((el) => {
+            el.remove();
+          });
+        }
       }
     }
   }
@@ -397,7 +399,6 @@ export function initializeOnboarding() {
     if (el.value && String(el.value).trim() !== "") el.classList.add("filled");
     else el.classList.remove("filled");
   }
-
   function renderExperienceByRole(roleValues) {
     if (!experienceByRole) return;
 
@@ -405,9 +406,9 @@ export function initializeOnboarding() {
     const previous = {};
     experienceByRole.querySelectorAll("[data-role]").forEach((block) => {
       const role = block.getAttribute("data-role");
-      const y = block.querySelector('input[data-kind="years"]')?.value || "";
-      const m = block.querySelector('input[data-kind="months"]')?.value || "";
-      if (role) previous[role] = { y, m };
+      const range =
+        block.querySelector('select[data-kind="practiceLevel"]')?.value || "";
+      if (role) previous[role] = { range };
     });
 
     experienceByRole.innerHTML = "";
@@ -426,76 +427,48 @@ export function initializeOnboarding() {
       const row = document.createElement("div");
       row.className = "role-exp-row";
 
-      const yearsInput = document.createElement("input");
-      yearsInput.type = "number";
-      yearsInput.inputMode = "numeric";
-      yearsInput.min = "0";
-      yearsInput.max = "60";
-      yearsInput.step = "1";
-      yearsInput.placeholder = "0";
-      yearsInput.className = "onb-input exp-input";
-      yearsInput.setAttribute("aria-label", `${label} years of experience`);
-      yearsInput.setAttribute("data-kind", "years");
+      const wrap = document.createElement("div");
+      wrap.className = "onb-select-wrap";
 
-      const yearsText = document.createElement("span");
-      yearsText.textContent = "years";
+      const select = document.createElement("select");
+      select.className = "onb-input";
+      select.setAttribute("data-kind", "practiceLevel");
 
-      const monthsInput = document.createElement("input");
-      monthsInput.type = "number";
-      monthsInput.inputMode = "numeric";
-      monthsInput.min = "0";
-      monthsInput.max = "11";
-      monthsInput.step = "1";
-      monthsInput.placeholder = "0";
-      monthsInput.className = "onb-input exp-input";
-      monthsInput.setAttribute(
-        "aria-label",
-        `${label} additional months of experience`,
-      );
-      monthsInput.setAttribute("data-kind", "months");
+      select.innerHTML = `
+      <option value="" disabled hidden>Select</option>
+      <option value="0-1">0–1 years</option>
+      <option value="1-2">1–2 years</option>
+      <option value="2-4">2–4 years</option>
+      <option value="4-7">4–7 years</option>
+      <option value="7-10">7–10 years</option>
+      <option value="10+">10+ years</option>
+    `;
 
-      const monthsText = document.createElement("span");
-      monthsText.textContent = "months";
+      const caret = document.createElement("span");
+      caret.className = "onb-select-caret";
+      caret.setAttribute("aria-hidden", "true");
+      caret.innerHTML = `
+      <svg viewBox="0 0 24 24" focusable="false">
+        <path d="M7 10l5 5 5-5z" fill="currentColor"></path>
+      </svg>
+    `;
+
+      wrap.appendChild(select);
+      wrap.appendChild(caret);
+
+      row.appendChild(wrap);
 
       // 값 복원
-      if (previous[role]) {
-        yearsInput.value = previous[role].y;
-        monthsInput.value = previous[role].m;
-      }
+      select.value = previous[role]?.range || "";
 
-      // 입력 정규화 + filled + validation
-      const onInput = () => {
-        // months는 0~11로 clamp
-        if (monthsInput.value !== "") {
-          const clamped = clampInt(monthsInput.value, 0, 11);
-          if (clamped !== "" && clamped !== monthsInput.value)
-            monthsInput.value = clamped;
-        }
-        // years는 0~60로 clamp
-        if (yearsInput.value !== "") {
-          const clamped = clampInt(yearsInput.value, 0, 60);
-          if (clamped !== "" && clamped !== yearsInput.value)
-            yearsInput.value = clamped;
-        }
-
-        toggleFilled(yearsInput);
-        toggleFilled(monthsInput);
+      // 선택 시 has-value/filled 갱신 + validation
+      const paint = () => {
+        select.classList.toggle("has-value", !!select.value);
+        select.classList.toggle("filled", !!select.value);
         checkForm();
       };
-
-      yearsInput.addEventListener("input", onInput);
-      yearsInput.addEventListener("change", onInput);
-      monthsInput.addEventListener("input", onInput);
-      monthsInput.addEventListener("change", onInput);
-
-      // initial filled paint
-      toggleFilled(yearsInput);
-      toggleFilled(monthsInput);
-
-      row.appendChild(yearsInput);
-      row.appendChild(yearsText);
-      row.appendChild(monthsInput);
-      row.appendChild(monthsText);
+      select.addEventListener("change", paint);
+      paint();
 
       block.appendChild(title);
       block.appendChild(row);
@@ -537,18 +510,16 @@ export function initializeOnboarding() {
   // ---------------------------
 
   // name + experience selects (일반 input/select)
-  [nameInput, interestSelect, studentYearSelect, practiceLevelSelect].forEach(
-    (el) => {
-      if (!el) return;
-      const check = () => {
-        if (el.value && el.value.trim() !== "") el.classList.add("filled");
-        else el.classList.remove("filled");
-      };
-      check();
-      el.addEventListener("input", check);
-      el.addEventListener("change", check);
-    },
-  );
+  [nameInput, interestSelect, studentYearSelect].forEach((el) => {
+    if (!el) return;
+    const check = () => {
+      if (el.value && el.value.trim() !== "") el.classList.add("filled");
+      else el.classList.remove("filled");
+    };
+    check();
+    el.addEventListener("input", check);
+    el.addEventListener("change", check);
+  });
 
   // interestSelect(multiple) 전용: 선택 개수로 filled/has-value 처리 (jobSelect와 동일한 방식)
   if (interestSelect) {
@@ -580,7 +551,7 @@ export function initializeOnboarding() {
   }
 
   // experience selects의 has-value (원본 txt 유지하되 fieldSelect 제거)
-  [studentYearSelect, practiceLevelSelect].forEach((sel) => {
+  [studentYearSelect].forEach((sel) => {
     if (!sel) return;
     const syncHasValue = () => {
       if (sel.value) sel.classList.add("has-value");
@@ -622,7 +593,6 @@ export function initializeOnboarding() {
       clearJobSelection();
 
       if (studentYearSelect) studentYearSelect.value = "";
-      if (practiceLevelSelect) practiceLevelSelect.value = "";
       studentYearField?.classList.add("hidden");
       practiceLevelField?.classList.add("hidden");
 
@@ -690,7 +660,6 @@ export function initializeOnboarding() {
 
     if (hasMedicalStudent && !studentYearSelect?.value) return false;
 
-    // non-student role이 하나라도 있으면: 각 role의 years는 필수, months는 선택(빈칸 허용)
     if (nonStudentRoles.length > 0) {
       if (!experienceByRole) return false;
 
@@ -698,12 +667,12 @@ export function initializeOnboarding() {
         const block = experienceByRole.querySelector(
           `[data-role="${CSS.escape(role)}"]`,
         );
-        const y = block?.querySelector('input[data-kind="years"]')?.value || "";
-        if (String(y).trim() === "") return false;
+        const v =
+          block?.querySelector('select[data-kind="practiceLevel"]')?.value ||
+          "";
+        if (String(v).trim() === "") return false;
       }
     }
-
-    return true;
   }
 
   function checkForm() {
@@ -774,7 +743,7 @@ export function initializeOnboarding() {
       localStorage.removeItem("studentYears");
     }
 
-    if (
+    /*if (
       practiceLevelField &&
       !practiceLevelField.classList.contains("hidden")
     ) {
@@ -823,6 +792,31 @@ export function initializeOnboarding() {
     }
 
     loadPage("interest");
+  }); */
+
+    if (
+      practiceLevelField &&
+      !practiceLevelField.classList.contains("hidden")
+    ) {
+      const roles = getSelectedRoles().filter(
+        (r) => r && r !== "medical_student",
+      );
+      const byRole = {};
+
+      roles.forEach((role) => {
+        const block = experienceByRole?.querySelector(
+          `[data-role="${CSS.escape(role)}"]`,
+        );
+        const range =
+          block?.querySelector('select[data-kind="practiceLevel"]')?.value ||
+          "";
+        byRole[role] = { range };
+      });
+
+      localStorage.setItem("practiceByRole", JSON.stringify(byRole));
+    } else {
+      localStorage.removeItem("practiceByRole");
+    }
   });
 
   // ---------------------------
