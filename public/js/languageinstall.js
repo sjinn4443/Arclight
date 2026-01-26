@@ -262,7 +262,7 @@ export function initializeLanguageInstall() {
   if (offlineInfoBtn) {
     offlineInfoBtn.addEventListener("click", () => {
       showLanguageHintModal(
-        "Add the app to your home screen so you can <br /> use it without Wi-Fi or mobile data.<br /><br /> Some content, such as videos, may need to be <br />downloaded first before it can be used offline.",
+        "Install the app to use without<br /> Wi-Fi / mobile data.<br /> <br />Some content (e.g. videos), <br />may need to be downloaded first.",
       );
     });
   }
@@ -270,7 +270,7 @@ export function initializeLanguageInstall() {
   if (onlineInfoBtn) {
     onlineInfoBtn.addEventListener("click", () => {
       showLanguageHintModal(
-        "Use the app in your current browser. <br /><br />You will need an internet connection <br />each time you use the app.",
+        "Use the app in your current browser. <br />An internet connection is required.",
       );
     });
   }
@@ -354,7 +354,7 @@ function buildCustomLangSelect(selectEl) {
   caret.style.position = "absolute";
   caret.style.right = "12px";
   caret.style.pointerEvents = "none";
-  caret.style.fontSize = "22px";
+  caret.style.fontSize = "25px";
   caret.style.width = "17px";
 
   // Label (two-column inside the "select" box)
