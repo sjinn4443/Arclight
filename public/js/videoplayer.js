@@ -35,6 +35,94 @@ export function seekTo(sec) {
 }
 
 export function initializeVideoPlayers() {
+  // === Fullscreen + orientation (mobile/tablet only) ===
+  let arclightFsActive = false;
+
+  const isMobileOrTablet = () => {
+    const coarse =
+      window.matchMedia && window.matchMedia("(pointer: coarse)").matches;
+    const touchPoints = navigator.maxTouchPoints || 0;
+    const smallScreen = Math.min(window.innerWidth, window.innerHeight) <= 1024;
+    return (coarse || touchPoints > 0) && smallScreen;
+  };
+
+  const requestLandscapeLock = async () => {
+    try {
+      if (screen.orientation && typeof screen.orientation.lock === "function") {
+        await screen.orientation.lock("landscape");
+      }
+    } catch (_) {
+      // ignore (iOS Safari 등에서 실패 가능)
+    }
+  };
+
+  const unlockOrientation = async () => {
+    try {
+      if (
+        screen.orientation &&
+        typeof screen.orientation.unlock === "function"
+      ) {
+        screen.orientation.unlock();
+      }
+    } catch (_) {
+      // ignore
+    }
+  };
+
+  const requestFs = async (el) => {
+    const anyEl = el;
+    if (anyEl.requestFullscreen) return anyEl.requestFullscreen();
+    if (anyEl.webkitRequestFullscreen) return anyEl.webkitRequestFullscreen();
+    if (anyEl.msRequestFullscreen) return anyEl.msRequestFullscreen();
+  };
+
+  const exitFs = async () => {
+    const d = document;
+    if (d.exitFullscreen) return d.exitFullscreen();
+    if (d.webkitExitFullscreen) return d.webkitExitFullscreen();
+    if (d.msExitFullscreen) return d.msExitFullscreen();
+  };
+
+  const getFsElement = () => {
+    return (
+      document.fullscreenElement ||
+      document.webkitFullscreenElement ||
+      document.msFullscreenElement ||
+      null
+    );
+  };
+
+  const enterVideoFullscreen = async (videoEl) => {
+    if (!isMobileOrTablet()) return;
+
+    // 이미 fullscreen이면 중복 진입 방지
+    if (getFsElement()) return;
+
+    // video가 들어있는 컨테이너를 fullscreen 대상으로
+    const container = videoEl.closest(".video-container") || videoEl;
+
+    arclightFsActive = true;
+    await requestFs(container);
+    await requestLandscapeLock();
+  };
+
+  const restoreAfterFullscreenExit = async () => {
+    if (!arclightFsActive) return;
+    arclightFsActive = false;
+    await unlockOrientation();
+  };
+
+  const onFullscreenChange = async () => {
+    const fsEl = getFsElement();
+    if (!fsEl) {
+      await restoreAfterFullscreenExit();
+    }
+  };
+
+  document.addEventListener("fullscreenchange", onFullscreenChange);
+  document.addEventListener("webkitfullscreenchange", onFullscreenChange);
+  document.addEventListener("MSFullscreenChange", onFullscreenChange);
+
   // Attach contextual timeupdate to the Direct Ophthalmoscopy video
   const main = document.getElementById("customVideo");
   if (main && !main.__wiredTimeupdate) {
@@ -51,11 +139,14 @@ export function initializeVideoPlayers() {
       videos.forEach((other) => {
         if (other !== v) other.pause();
       });
+      enterVideoFullscreen(v);
     });
   });
 
   // === Share UI wiring (button below video) ===
-  const shareBtn = document.querySelector("[data-video-share-btn]");
+  const shareBtns = Array.from(
+    document.querySelectorAll("[data-video-share-btn]"),
+  );
   const sharePanel = document.querySelector("[data-video-share-panel]");
   const shopCopyBtn = document.querySelector("[data-video-share-copy-shop]");
   const videoCopyBtn = document.querySelector("[data-video-share-copy-video]");
@@ -65,20 +156,46 @@ export function initializeVideoPlayers() {
   const videoLinkEl = document.querySelector("[data-video-share-video-link]");
 
   // If the page does not have share UI, skip safely
-  if (shareBtn && sharePanel && shopLinkEl && videoLinkEl) {
-    const SHOP_URL = "https://arclightproject.org/shop"; // <-- 여기 URL은 네가 원하는 최종 Shop 링크로 교체
+  if (shareBtns.length && sharePanel && shopLinkEl && videoLinkEl) {
+    const SHOP_URL = "https://arclightprojectshop.co.uk/";
 
-    const getCurrentVideoUrl = () => {
-      // 1) 페이지에서 명시적으로 data-video-share-url을 주면 그걸 사용
-      const explicit = shareBtn.getAttribute("data-video-share-url");
+    const resolveToAbsoluteUrl = (maybeRelativeUrl) => {
+      if (!maybeRelativeUrl) return "";
+      try {
+        return new URL(maybeRelativeUrl, window.location.href).href;
+      } catch (_) {
+        return String(maybeRelativeUrl);
+      }
+    };
+
+    const getVideoUrlForButton = (btn) => {
+      // 1) 버튼에 명시적으로 data-video-share-url이 있으면 그걸 사용
+      const explicit = btn.getAttribute("data-video-share-url");
       if (explicit && explicit.trim()) return explicit.trim();
 
-      // 2) 아니면 현재 페이지 URL을 사용
+      // 2) 버튼이 들어있는 video-container 안의 video.currentSrc 사용
+      const container = btn.closest(".video-container");
+      const video = container ? container.querySelector("video") : null;
+
+      if (video && video.currentSrc) return video.currentSrc;
+
+      // 3) currentSrc가 비어있으면 <source src> 또는 video.src를 절대경로로 변환
+      if (video) {
+        const source = video.querySelector("source");
+        const src =
+          (source && source.getAttribute("src")) ||
+          video.getAttribute("src") ||
+          "";
+        const abs = resolveToAbsoluteUrl(src);
+        if (abs) return abs;
+      }
+
+      // 4) 최후: 현재 페이지 URL
       return window.location.href;
     };
 
-    const openPanel = () => {
-      const videoUrl = getCurrentVideoUrl();
+    const openPanel = (btn) => {
+      const videoUrl = getVideoUrlForButton(btn);
       shopLinkEl.value = SHOP_URL;
       videoLinkEl.value = videoUrl;
 
@@ -96,12 +213,15 @@ export function initializeVideoPlayers() {
       sharePanel.hidden = true;
     };
 
+    sharePanel.addEventListener("click", (e) => {
+      if (e.target === sharePanel) closePanel();
+    });
+
     const copyToClipboard = async (text) => {
       try {
         await navigator.clipboard.writeText(text);
         return true;
       } catch (_) {
-        // Fallback: legacy copy
         const ta = document.createElement("textarea");
         ta.value = text;
         ta.setAttribute("readonly", "");
@@ -115,9 +235,11 @@ export function initializeVideoPlayers() {
       }
     };
 
-    shareBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      openPanel();
+    shareBtns.forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        openPanel(btn);
+      });
     });
 
     if (closeBtn) {
@@ -144,10 +266,10 @@ export function initializeVideoPlayers() {
     if (nativeShareBtn) {
       nativeShareBtn.addEventListener("click", async (e) => {
         e.preventDefault();
+
         const videoUrl = videoLinkEl.value;
         const shopUrl = shopLinkEl.value;
 
-        // 기기 공유 시트
         try {
           await navigator.share({
             title: document.title || "Arclight video",
@@ -155,16 +277,10 @@ export function initializeVideoPlayers() {
             url: videoUrl,
           });
         } catch (_) {
-          // 사용자가 취소했거나 실패하면 복사로 대체
           await copyToClipboard(videoUrl);
         }
       });
     }
-
-    // 패널 바깥 클릭 닫기(원하면 유지, 싫으면 삭제)
-    sharePanel.addEventListener("click", (e) => {
-      if (e.target === sharePanel) closePanel();
-    });
   }
 }
 
