@@ -53,6 +53,119 @@ export function initializeVideoPlayers() {
       });
     });
   });
+
+  // === Share UI wiring (button below video) ===
+  const shareBtn = document.querySelector("[data-video-share-btn]");
+  const sharePanel = document.querySelector("[data-video-share-panel]");
+  const shopCopyBtn = document.querySelector("[data-video-share-copy-shop]");
+  const videoCopyBtn = document.querySelector("[data-video-share-copy-video]");
+  const nativeShareBtn = document.querySelector("[data-video-share-native]");
+  const closeBtn = document.querySelector("[data-video-share-close]");
+  const shopLinkEl = document.querySelector("[data-video-share-shop-link]");
+  const videoLinkEl = document.querySelector("[data-video-share-video-link]");
+
+  // If the page does not have share UI, skip safely
+  if (shareBtn && sharePanel && shopLinkEl && videoLinkEl) {
+    const SHOP_URL = "https://arclightproject.org/shop"; // <-- 여기 URL은 네가 원하는 최종 Shop 링크로 교체
+
+    const getCurrentVideoUrl = () => {
+      // 1) 페이지에서 명시적으로 data-video-share-url을 주면 그걸 사용
+      const explicit = shareBtn.getAttribute("data-video-share-url");
+      if (explicit && explicit.trim()) return explicit.trim();
+
+      // 2) 아니면 현재 페이지 URL을 사용
+      return window.location.href;
+    };
+
+    const openPanel = () => {
+      const videoUrl = getCurrentVideoUrl();
+      shopLinkEl.value = SHOP_URL;
+      videoLinkEl.value = videoUrl;
+
+      sharePanel.hidden = false;
+
+      // native share 지원 여부에 따라 버튼 표시
+      if (nativeShareBtn) {
+        nativeShareBtn.hidden = !(
+          navigator && typeof navigator.share === "function"
+        );
+      }
+    };
+
+    const closePanel = () => {
+      sharePanel.hidden = true;
+    };
+
+    const copyToClipboard = async (text) => {
+      try {
+        await navigator.clipboard.writeText(text);
+        return true;
+      } catch (_) {
+        // Fallback: legacy copy
+        const ta = document.createElement("textarea");
+        ta.value = text;
+        ta.setAttribute("readonly", "");
+        ta.style.position = "fixed";
+        ta.style.left = "-9999px";
+        document.body.appendChild(ta);
+        ta.select();
+        const ok = document.execCommand("copy");
+        document.body.removeChild(ta);
+        return ok;
+      }
+    };
+
+    shareBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      openPanel();
+    });
+
+    if (closeBtn) {
+      closeBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        closePanel();
+      });
+    }
+
+    if (shopCopyBtn) {
+      shopCopyBtn.addEventListener("click", async (e) => {
+        e.preventDefault();
+        await copyToClipboard(shopLinkEl.value);
+      });
+    }
+
+    if (videoCopyBtn) {
+      videoCopyBtn.addEventListener("click", async (e) => {
+        e.preventDefault();
+        await copyToClipboard(videoLinkEl.value);
+      });
+    }
+
+    if (nativeShareBtn) {
+      nativeShareBtn.addEventListener("click", async (e) => {
+        e.preventDefault();
+        const videoUrl = videoLinkEl.value;
+        const shopUrl = shopLinkEl.value;
+
+        // 기기 공유 시트
+        try {
+          await navigator.share({
+            title: document.title || "Arclight video",
+            text: `Video: ${videoUrl}\nShop: ${shopUrl}`,
+            url: videoUrl,
+          });
+        } catch (_) {
+          // 사용자가 취소했거나 실패하면 복사로 대체
+          await copyToClipboard(videoUrl);
+        }
+      });
+    }
+
+    // 패널 바깥 클릭 닫기(원하면 유지, 싫으면 삭제)
+    sharePanel.addEventListener("click", (e) => {
+      if (e.target === sharePanel) closePanel();
+    });
+  }
 }
 
 let __toolbarInitialized = false;
