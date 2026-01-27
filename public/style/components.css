@@ -2467,10 +2467,18 @@ input:checked + .slider:before {
   display: none !important;
 }
 
-#caseStudyChatPage .casechat-modalCard,
 #caseStudyChatPageAdvanced .casechat-modalCard {
   background: #fff;
   width: min(92vw, 440px);
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+  position: relative;
+}
+
+#caseStudyChatPage .casechat-modalCard {
+  background: #fff;
+  width: min(76vw, 440px);
   border-radius: 14px;
   padding: 16px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
@@ -2562,12 +2570,20 @@ input:checked + .slider:before {
 #caseStudyChatPageAdvanced .casechat-resultOk {
   margin: 23px 0 11px;
 }
-#caseStudyChatPage .casechat-resultWhy,
+
 #caseStudyChatPageAdvanced .casechat-resultWhy {
   color: #333;
   font-size: 14px;
   line-height: 1.4;
   margin-bottom: 11px;
+}
+
+#caseStudyChatPage .casechat-resultWhy {
+  color: #333;
+  font-size: 14px;
+  line-height: 1.4;
+  margin-bottom: 24px;
+  margin-top: 16px;
 }
 
 #caseStudyChatPagePrimary .casechat-resultWhy {
@@ -2756,8 +2772,20 @@ input:checked + .slider:before {
 }
 
 /* ===== Bottom panel (chips + submit) ===== */
-#caseStudyChatPage #caseChatChoices,
-
+#caseStudyChatPage #caseChatChoices {
+  position: fixed;
+  left: 14px;
+  right: 14px;
+  bottom: 63px;
+  height: 125px;
+  background: #ffffff59;
+  border-radius: 18px;
+  padding: 23px 14px 51px; /* 위에 Submit 자리 확보 */
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.14);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
 
 /* ===== Bottom panel (chips + submit) ===== */
 #caseStudyChatPagePrimary #caseChatChoices,
@@ -3347,13 +3375,20 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
 }
 
-#caseStudyChatPage .casechat-footer.is-expanded #caseChatChoices,
 #caseStudyChatPagePrimary .casechat-footer.is-expanded #caseChatChoices,
 #caseStudyChatPageAdvanced .casechat-footer.is-expanded #caseChatChoices {
   position: absolute;
   left: 0;
   right: 0;
   bottom: 54px; /* composer 줄 위로 띄우기 */
+}
+
+#caseStudyChatPage .casechat-footer.is-expanded #caseChatChoices {
+  position: absolute;
+  left: -12px;
+  right: 0;
+  bottom: -7px; /* composer 줄 위로 띄우기 */
+  width: 300px;
 }
 
 #caseStudyChatPage .casechat-composer,
@@ -4081,6 +4116,30 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
 .casechat-confirm__btn.is-exit {
   background: #777;
   color: #ffffff;
+}
+
+/* ✅ 기본: 숫자/링 모두 회색 */
+#caseStudyChatPage .caseTimer__fg {
+  stroke: #9ca3af;
+} /* 기존 빨강(#e41e26) → 회색 */
+#caseStudyChatPage .caseTimer__text {
+  fill: #9ca3af;
+}
+
+/* ✅ 10초 이하: 숫자/링 모두 빨강 */
+#caseStudyChatPage #caseTimerBtn.is-danger .caseTimer__fg {
+  stroke: #e41e26;
+}
+#caseStudyChatPage #caseTimerBtn.is-danger .caseTimer__text {
+  fill: #e41e26;
+}
+
+/* ✅ Dx(Answer) 타이머: 기본 회색, is-danger면 빨강 */
+#caseStudyChatPage .caseTimer.is-danger .caseTimer__fg {
+  stroke: #e41e26;
+}
+#caseStudyChatPage .caseTimer.is-danger .caseTimer__text {
+  fill: #e41e26;
 }
 
 /* ============================================= Canonical Eyes Topbar ============================================= */

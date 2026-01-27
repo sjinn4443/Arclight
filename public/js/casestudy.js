@@ -587,6 +587,59 @@ export function initializeCaseStudy() {
   let scoreTotal = 0; // how many cases have been scored
 
   let casePool = buildCasePool();
+  // ---------- intro modal (intermediate) ----------
+  let introModalEl = null;
+  let introSeen = false;
+
+  function ensureIntroModal() {
+    if (introModalEl) return introModalEl;
+
+    const modal = document.createElement("div");
+    modal.className = "casechat-modal";
+    modal.hidden = true;
+
+    modal.innerHTML = `
+    <div class="casechat-modalCard">
+      <div class="casechat-modalTop">
+        <div class="casechat-modalTitle">Case study</div>
+      </div>
+
+      <div class="casechat-resultWhy">
+        Ask questions to patient <br />and work out the diagnosis.<br /><br />
+        <span style="font-weight: 700; color: #e41e26">You only get 40 seconds.</span>
+      </div>
+
+      <div class="casechat-confirm__actions">
+        <button type="button" class="casechat-confirm__btn is-ok" data-action="ok">OK</button>
+      </div>
+    </div>
+  `;
+
+    modal.addEventListener("click", (e) => {
+      const okBtn = e.target.closest('[data-action="ok"]');
+      if (!okBtn) return;
+
+      introSeen = true;
+      hideIntroModal();
+
+      // ✅ OK 누른 뒤에 케이스 시작
+      startNewCase();
+    });
+
+    chatPage.appendChild(modal);
+    introModalEl = modal;
+    return introModalEl;
+  }
+
+  function showIntroModal() {
+    const modal = ensureIntroModal();
+    modal.hidden = false;
+  }
+
+  function hideIntroModal() {
+    if (!introModalEl) return;
+    introModalEl.hidden = true;
+  }
 
   function ordinalWord(n) {
     const words = [
@@ -638,6 +691,9 @@ export function initializeCaseStudy() {
       dxTimerFg.style.strokeDasharray = "100 100";
       dxTimerFg.style.strokeDashoffset = String(100 * (1 - pct));
     }
+
+    const dxTimerRoot = dxTimerFg?.closest(".caseTimer");
+    dxTimerRoot?.classList.toggle("is-danger", dxTimerLeft <= 5);
   }
 
   function renderDxTrials() {
@@ -690,6 +746,8 @@ export function initializeCaseStudy() {
   function startDxTimer() {
     stopDxTimer();
     dxTimerLeft = DX_TIMER_TOTAL;
+    dxTimerFg?.closest(".caseTimer")?.classList.remove("is-danger");
+
     renderDxTimer();
 
     dxTimerInterval = setInterval(() => {
@@ -722,6 +780,7 @@ export function initializeCaseStudy() {
       timerFg.style.strokeDasharray = "100 100";
       timerFg.style.strokeDashoffset = String(100 * (1 - pct));
     }
+    if (timerBtn) timerBtn.classList.toggle("is-danger", timerLeft <= 10);
   }
 
   function setTimerLeft(next) {
@@ -738,6 +797,10 @@ export function initializeCaseStudy() {
   function startTimer() {
     stopTimer();
     timerLeft = TIMER_TOTAL;
+    timerLeft = TIMER_TOTAL;
+    if (timerBtn) timerBtn.classList.remove("is-danger");
+    renderTimer();
+
     renderTimer();
 
     timerInterval = setInterval(() => {
@@ -797,7 +860,7 @@ export function initializeCaseStudy() {
     <div class="casechat-imgwrap" data-imgsrc="${maybeImgSrc}">
       <img class="casechat-img" src="${maybeImgSrc}" alt="Case image" />
       <button type="button" class="casechat-imgcover" aria-label="View case image for 2 seconds">
-        <div class="casechat-imgcover__text">Tap to view the case image<br />for 2 seconds</div>
+        <div class="casechat-imgcover__text">Tap to view the case image<br />for 3 seconds</div>
       </button>
     </div>
   `;
@@ -1148,6 +1211,7 @@ export function initializeCaseStudy() {
 
   function showList() {
     forceCloseModals();
+    hideIntroModal();
     chatPage.classList.remove("active");
     listPage.classList.add("active");
 
@@ -1163,7 +1227,15 @@ export function initializeCaseStudy() {
     chatPage.style.display = "";
 
     caseIndex = 0;
-    startNewCase(); // enter 할 때마다 random + “New case started”
+
+    // ✅ 입장 시 인트로 모달 먼저
+    forceCloseModals();
+    if (!introSeen) {
+      showIntroModal();
+      return;
+    }
+
+    startNewCase();
   }
 
   // list -> chat (intermediate + advanced 허용)
@@ -1228,6 +1300,21 @@ export function initializeCaseStudy() {
     if (sendBtn) sendBtn.disabled = true;
 
     renderChoices();
+
+    if (choices) choices.hidden = true;
+
+    if (footer) {
+      footer.classList.add("is-collapsed");
+      footer.classList.remove("is-expanded");
+    }
+
+    chatPage.style.setProperty("--casechat-log-pad", "140px");
+    if (toggleBtn) toggleBtn.textContent = "Q";
+
+    requestAnimationFrame(() => {
+      if (typeof keepLastMessageVisible === "function")
+        keepLastMessageVisible();
+    });
   });
 
   // toggle chips panel (^ <-> v)
