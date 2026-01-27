@@ -341,7 +341,7 @@ function primaryLinesForCase(caseObj) {
   // - other가 원래 No였으면: "... I think that's about it." 다음에 "What is the diagnosis?"
   // - other가 No가 아니면: 마지막은 항상 "I think that's about it."
   const endingLine = wasOtherNo
-    ? "What is the diagnosis?"
+    ? "What is the problem?"
     : "I think that's about it.";
 
   const grouped = [
@@ -381,10 +381,11 @@ export function initializeCaseStudyPrimary() {
   if (!listPage || !chatPage || !flashPage) return;
 
   const log = chatPage.querySelector("#casePrimaryChatLog");
+  const timerBtn = chatPage.querySelector("#casePrimaryTimerBtn");
   const timerText = chatPage.querySelector("#casePrimaryTimerText");
   const timerFg = chatPage.querySelector("#casePrimaryTimerFg");
 
-  if (!log || !timerText || !timerFg) return;
+  if (!log || !timerBtn || !timerText || !timerFg) return;
 
   // ---- state ----
   const TOTAL_CASES = 12;
@@ -415,11 +416,20 @@ export function initializeCaseStudyPrimary() {
   function renderTimer() {
     timerText.textContent = String(timerLeft);
 
-    // circle progress (stroke-dasharray)
-    // 100% = 100, 0% = 0 (간단히 비율로 표시)
+    // 남은 비율 (0..1)
     const pct = Math.max(0, Math.min(1, timerLeft / TIMER_TOTAL));
-    const dash = (pct * 100).toFixed(1);
-    timerFg.setAttribute("stroke-dasharray", `${dash}, 100`);
+
+    // ✅ 100 기반 링 진행률 (flash/intermediate와 동일)
+    timerFg.style.strokeDasharray = "100 100";
+    timerFg.style.strokeDashoffset = String(100 * (1 - pct));
+
+    // ✅ 색상: 시작~11초는 회색, 10초부터 빨강
+    const isLastTen = timerLeft <= 10;
+    const c = isLastTen ? "#e41e26" : "#777";
+
+    // 링/숫자 색 동기화
+    timerFg.style.stroke = c;
+    timerText.style.fill = c; // SVG text는 fill로 색이 바뀜
   }
 
   function startTimer() {
@@ -928,7 +938,7 @@ export function initializeCaseStudyPrimary() {
     const btn = document.createElement("button");
     btn.type = "button";
     btn.className = "casechat-nextcase";
-    btn.textContent = "Next case";
+    btn.textContent = "Next case >";
     btn.addEventListener("click", () => startNewCase());
 
     // ✅ 항상 채팅(로그) 맨 아래로
@@ -969,7 +979,16 @@ export function initializeCaseStudyPrimary() {
 
   function clearGridMarks() {
     if (!currentGridEl) return;
+
     currentGridEl.querySelectorAll(".casechat-imgbtn").forEach((b) => {
+      const lockedWrong = b.dataset.lockedWrong === "1";
+
+      // ✅ 첫 오답으로 찍힌 테두리는 유지
+      if (lockedWrong) {
+        b.classList.remove("is-correct"); // 혹시 모를 상태만 정리
+        return;
+      }
+
       b.classList.remove("is-wrong", "is-correct");
     });
   }
@@ -1022,6 +1041,8 @@ export function initializeCaseStudyPrimary() {
     clickedBtn.classList.add("is-wrong");
 
     attemptsLeft -= 1;
+
+    if (attemptsLeft === 1) clickedBtn.dataset.lockedWrong = "1";
 
     if (attemptsLeft > 0) {
       // ✅ 1회 남았으면: 빨간 하이라이트 + "Try again"

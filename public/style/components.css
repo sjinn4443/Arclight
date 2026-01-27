@@ -2149,6 +2149,21 @@ input:checked + .slider:before {
   box-shadow: none;
 }
 
+/* Primary chat: bottom space + timer smooth animation */
+#caseStudyChatPagePrimary .casechat-log {
+  padding: 4px 0 63px;
+}
+
+#caseStudyChatPagePrimary .caseTimer__fg {
+  transition:
+    stroke-dashoffset 1s linear,
+    stroke 150ms linear;
+}
+
+#caseStudyChatPagePrimary .caseTimer__text {
+  transition: fill 150ms linear;
+}
+
 #caseStudyChatPage .casechat-bubble--system,
 #caseStudyChatPagePrimary .casechat-bubble--system,
 #caseStudyChatPageAdvanced .casechat-bubble--system {
@@ -3159,10 +3174,10 @@ subtle */ #caseStudyChatPageAdvanced .casechat-bubble--system {
 }
 
 #caseStudyChatPagePrimary .casechat-system {
-  font-size: 14px;
-  font-weight: 700;
+  font-size: 13px;
+  font-weight: 400;
   color: #000;
-  padding: 10px;
+  padding: 12px;
   background: transparent !important;
 }
 
