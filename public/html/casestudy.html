@@ -781,6 +781,8 @@
           type="button"
           aria-label="Flashcard timer"
         >
+          <div id="primaryFlashCounter" class="primaryFlashCounter"></div>
+
           <svg
             class="caseTimer__svg"
             viewBox="0 0 36 36"
@@ -836,11 +838,20 @@
         <div
           style="font-size: 14px; line-height: 1.4; margin: 0px 0px 13px 12px"
         >
-          Look at the case on the flashcard.<br /><br />
-          If it needs an
-          <span style="font-weight: 700; color: #e41e26">urgent referral</span>,
-          swipe right<br />or press <b>Urgent Referral</b> below.
-          <br /><br />You have 30 seconds.
+          Review the card.<br /><br />
+          Swipe right or tap
+          <span style="font-weight: 700; color: #e41e26">Urgent Referral</span
+          >.<br />
+          Swipe left or tap <b>Not Urgent</b>.<br /><br />
+          You have 30 seconds.
+
+          <!--Review the flashcard.<br /><br />
+          Decide if the case needs an
+          <span style="font-weight: 700; color: #e41e26">urgent referral</span>.
+          <br /><br />Swipe right / click red button -
+          <span style="font-weight: 700; color: #e41e26">Urgent</span>
+          <br />Swipe left / click gray button - <b>Not Urgent</b>
+          <br /><br />You have 30 seconds.-->
         </div>
         <button
           id="primaryFlashGuideOk"
@@ -873,6 +884,8 @@
           margin-top: -15px;
         "
       >
+        <div id="primaryFlashCaseLabel" class="primaryFlashCaseLabel"></div>
+
         <img
           id="primaryFlashImg"
           alt="Case image"
@@ -908,7 +921,7 @@
             font-size: 14px;
           "
         >
-          Not urgent
+          < Not Urgent
         </button>
         <button
           id="primaryFlashUrgentBtn"
@@ -924,7 +937,7 @@
             font-size: 14px;
           "
         >
-          Urgent Referral
+          Urgent Referral >
         </button>
       </div>
     </div>

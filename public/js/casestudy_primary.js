@@ -473,8 +473,8 @@ export function initializeCaseStudyPrimary() {
 
       <div class="casechat-confirm__actions flash-result-actions">
         <button type="button" class="casechat-confirm__btn is-ok" data-action="restart">Restart</button>
-        <button type="button" class="casechat-confirm__btn is-cancel" data-action="back">Back</button>
-      </div>
+       <button type="button" class="casechat-confirm__btn is-exit" data-action="back">Exit</button>
+    </div>
 
     </div>
   `;
@@ -558,17 +558,31 @@ export function initializeCaseStudyPrimary() {
       flashTimerInt = null;
     }
   }
+  // 캐시: svg path 길이 (dash 계산용)
+  let flashTimerPathLen = null;
 
   function renderFlashTimer() {
-    const t = flashPage.querySelector("#primaryFlashTimerText");
-    const fg = flashPage.querySelector("#primaryFlashTimerFg");
-    if (!t || !fg) return;
+    const fg = flashPage?.querySelector("#primaryFlashTimerFg");
+    const t = flashPage?.querySelector("#primaryFlashTimerText");
+    if (!fg || !t) return;
 
+    // 숫자 갱신
     t.textContent = String(flashTimerLeft);
 
+    // 남은 비율 (0..1)
     const pct = Math.max(0, Math.min(1, flashTimerLeft / FLASH_TOTAL));
-    const dash = (pct * 100).toFixed(1);
-    fg.setAttribute("stroke-dasharray", `${dash}, 100`);
+
+    // ✅ case study intermediate 방식(100 기반)으로 링 진행률 표시
+    fg.style.strokeDasharray = "100 100";
+    fg.style.strokeDashoffset = String(100 * (1 - pct));
+
+    // 색상: 첫 25초(#777), 마지막 5초(빨강)
+    const isLastFive = flashTimerLeft <= 5;
+    const c = isLastFive ? "#e41e26" : "#777";
+
+    // 링/숫자 색 동기화
+    fg.style.stroke = c;
+    t.style.fill = c; // SVG text는 fill로 색이 바뀜
   }
 
   function startFlashTimer(onTimeUp) {
@@ -690,6 +704,11 @@ export function initializeCaseStudyPrimary() {
     }
 
     const caseObj = flashPool[flashIndex]; // ✅ 더 이상 % 사용 X
+    const caseLabel = flashPage.querySelector("#primaryFlashCaseLabel");
+    if (caseLabel) {
+      caseLabel.textContent = `Case (${flashIndex + 1}/${flashPool.length})`;
+    }
+
     const img = flashPage.querySelector("#primaryFlashImg");
     const dx = flashPage.querySelector("#primaryFlashDx");
     const ul = flashPage.querySelector("#primaryFlashBullets");
@@ -726,6 +745,7 @@ export function initializeCaseStudyPrimary() {
     }
 
     const caseObj = flashPool[flashIndex];
+
     const correctUrgent = isUrgentReferralCase(caseObj.caseNum);
     const isCorrect = userSaysUrgent === correctUrgent;
 

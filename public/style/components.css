@@ -2938,7 +2938,8 @@ input:checked + .slider:before {
   font-size: 10px;
   font-weight: 700;
   text-anchor: middle;
-  fill: #e53935;
+  transition: fill 200ms linear;
+  fill: #777;
 }
 
 /* --- Case image cover --- */
@@ -4046,7 +4047,7 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
 #caseStudyFlashcardPagePrimary .flash-wrong-label {
   font-size: 13px;
   font-weight: 700; /* 요청사항: bold */
-  color: #e41e26; /* 요청사항: red */
+  color: #000; /* 요청사항: red */
 }
 
 /* ===== Restart / Back side-by-side ===== */
@@ -4059,6 +4060,27 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
 #caseStudyFlashcardPagePrimary .flash-result-actions .casechat-confirm__btn {
   flex: 1;
   margin-top: 0 !important; /* 전역 button margin-top(10px) 무력화 */
+}
+
+#caseStudyFlashcardPagePrimary .flash-wrong-label.is-not-urgent {
+  color: #000;
+}
+
+#caseStudyFlashcardPagePrimary .flash-wrong-label.is-urgent {
+  color: #e41e26;
+}
+
+/* Flashcard timer ring animation */
+#caseStudyFlashcardPagePrimary .caseTimer__fg {
+  transition:
+    stroke-dashoffset 1s linear,
+    stroke 200ms linear;
+  stroke: #777;
+}
+
+.casechat-confirm__btn.is-exit {
+  background: #777;
+  color: #ffffff;
 }
 
 /* ============================================= Canonical Eyes Topbar ============================================= */
@@ -4093,6 +4115,13 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
   line-height: 1;
   margin-right: 131px;
   white-space: nowrap;
+}
+
+#caseStudyFlashcardPagePrimary .primaryFlashCaseLabel {
+  font-size: 13px;
+  font-weight: 700;
+  color: #777;
+  margin: 2px 0 10px;
 }
 
 .eyes-topbar__icons {
