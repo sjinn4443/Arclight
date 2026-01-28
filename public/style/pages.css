@@ -530,7 +530,28 @@ select.onb-input.has-value {
   font-size: 12px;
   font-weight: 650;
   color: #000;
-  margin: 10% 0 10px 2px;
+  margin: 11% 0 13px 2px;
+}
+
+.interest-layout {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.interest-arclight-img {
+  width: 45px;
+  height: auto;
+  flex: 0 0 auto;
+  margin-top: 27px;
+  margin-left: 18px;
+}
+
+.interest-questions {
+  flex: 1 1 auto;
+  min-width: 0;
+  margin-left: 26px;
+  margin-top: 12px;
 }
 
 .chip-row {
