@@ -725,6 +725,39 @@ select.onb-input.has-value {
   pointer-events: auto;
 }
 
+/* Arrow pop animation */
+@keyframes introArrowPopAppear {
+  0% {
+    transform: scale(0);
+  }
+  60% {
+    transform: scale(1.74);
+  } /* 4.7rem / 2.7rem ≈ 1.74 */
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes introArrowPop {
+  0% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.74);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+#introPage .intro-arrow.intro-arrow--pop-appear {
+  animation: introArrowPopAppear 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+#introPage .intro-arrow.intro-arrow--pop {
+  animation: introArrowPop 600ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
 .intro-primary {
   background: #e41e26;
   margin-top: 4%;

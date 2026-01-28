@@ -286,6 +286,7 @@ export function initializeIntro() {
 
     function showRecommended() {
       introState = "recommended";
+      arrowPopDone.recommended = false;
 
       if (introTitle) introTitle.innerHTML = recommendedTitleHTML;
       if (introSub) introSub.innerHTML = recommendedSubHTML;
@@ -302,6 +303,7 @@ export function initializeIntro() {
 
     function showOriginal() {
       introState = "original";
+      arrowPopDone.original = false;
 
       if (introTitle) introTitle.innerHTML = originalTitleHTML;
       if (introSub) introSub.innerHTML = originalSubHTML;
@@ -317,6 +319,7 @@ export function initializeIntro() {
 
     function showPickup() {
       introState = "pickup";
+      arrowPopDone.pickup = false;
 
       if (introTitle) introTitle.innerHTML = "Pick Up Anytime";
       if (introSub)
@@ -383,24 +386,56 @@ export function initializeIntro() {
       }
     }
 
-    // --- Intro video: show right arrow after ~90% of first play ---
+    const arrowPopDone = {
+      original: false,
+      recommended: false,
+      pickup: false,
+    };
+
+    function restartArrowAnimation(className) {
+      if (!arrowRightBtn) return;
+      arrowRightBtn.classList.remove(
+        "intro-arrow--pop",
+        "intro-arrow--pop-appear",
+      );
+      // reflow로 animation 재시작
+      void arrowRightBtn.offsetWidth;
+      arrowRightBtn.classList.add(className);
+    }
+
+    // --- Intro video: arrow visibility + pop animation ---
     if (introVideo && arrowRightBtn) {
-      let hasShownArrow = false;
       const SHOW_THRESHOLD = 0.9; // 90%
 
       introVideo.loop = true;
 
       introVideo.addEventListener("timeupdate", () => {
-        if (hasShownArrow) return;
-
         const duration = introVideo.duration;
         if (!duration || !isFinite(duration)) return;
 
         const progress = introVideo.currentTime / duration;
 
-        if (progress >= SHOW_THRESHOLD) {
-          hasShownArrow = true;
-          arrowRightBtn.classList.add("intro-arrow--visible");
+        // 1) original: 90%에 처음 보이게 + (0 -> 4.7rem -> 원래) 애니메이션
+        if (introState === "original") {
+          if (progress >= SHOW_THRESHOLD && !arrowPopDone.original) {
+            arrowPopDone.original = true;
+
+            arrowRightBtn.classList.add("intro-arrow--visible");
+            restartArrowAnimation("intro-arrow--pop-appear");
+          }
+          return;
+        }
+
+        // 2) recommended / pickup: 화살표는 이미 보이지만,
+        //    영상이 끝날 때(90%) 1번 (4.7rem -> 원래) 팝 애니메이션
+        if (
+          (introState === "recommended" || introState === "pickup") &&
+          progress >= SHOW_THRESHOLD
+        ) {
+          if (!arrowPopDone[introState]) {
+            arrowPopDone[introState] = true;
+            restartArrowAnimation("intro-arrow--pop");
+          }
         }
       });
     }
