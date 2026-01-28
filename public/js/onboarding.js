@@ -24,6 +24,7 @@ export function initializeOnboarding() {
   const jobSelectText = document.getElementById("jobSelectText");
   const jobSelectPanel = document.getElementById("jobSelectPanel");
   const jobSelectUi = document.getElementById("jobSelectUi");
+  let jobAutoCloseTimer = null;
   const practiceYearsSelect = document.getElementById("practiceYearsSelect");
   const practiceMonthsSelect = document.getElementById("practiceMonthsSelect");
   const practiceRangeHint = document.getElementById("practiceRangeHint");
@@ -37,13 +38,14 @@ export function initializeOnboarding() {
 
   const continueBtn = document.getElementById("completeOnboardingBtn");
 
+  let interestAutoCloseTimer = null;
+
   function mapPracticeMonthsToRange(totalMonths) {
     // 규칙: 2.5년(30개월) => 3–5년으로 가야 하므로
     //      1–2년은 <=24개월, 그 초과는 다음 구간으로 올림.
-    if (totalMonths <= 12) return "0-1";
-    if (totalMonths <= 24) return "1-2";
-    if (totalMonths <= 60) return "3-5";
-    if (totalMonths <= 120) return "6-10";
+    if (totalMonths <= 24) return "0-2";
+    if (totalMonths <= 60) return "2-5";
+    if (totalMonths <= 120) return "5-10";
     return "10+";
   }
 
@@ -166,10 +168,15 @@ export function initializeOnboarding() {
         paint();
 
         syncInterestDisplayText();
-        updateJobsForInterests(); // 아래에서 새로 만들 거예요
+        updateJobsForInterests();
         checkForm();
 
         interestSelect.dispatchEvent(new Event("change"));
+
+        if (interestAutoCloseTimer) clearTimeout(interestAutoCloseTimer);
+        interestAutoCloseTimer = setTimeout(() => {
+          closeInterestPanel();
+        }, 600);
       });
 
       paint();
@@ -293,6 +300,11 @@ export function initializeOnboarding() {
           checkForm();
 
           jobSelect.dispatchEvent(new Event("change"));
+
+          if (jobAutoCloseTimer) clearTimeout(jobAutoCloseTimer);
+          jobAutoCloseTimer = setTimeout(() => {
+            closeJobPanel();
+          }, 600);
         });
 
         paint();
@@ -435,14 +447,12 @@ export function initializeOnboarding() {
       select.setAttribute("data-kind", "practiceLevel");
 
       select.innerHTML = `
-      <option value="" disabled hidden>Select</option>
-      <option value="0-1">0–1 years</option>
-      <option value="1-2">1–2 years</option>
-      <option value="2-4">2–4 years</option>
-      <option value="4-7">4–7 years</option>
-      <option value="7-10">7–10 years</option>
-      <option value="10+">10+ years</option>
-    `;
+        <option value="" disabled hidden>Years of experience</option>
+        <option value="0-2">0–2</option>
+        <option value="2-5">2–5</option>
+        <option value="5-10">5–10</option>
+        <option value="10+">10+</option>
+      `;
 
       const caret = document.createElement("span");
       caret.className = "onb-select-caret";
