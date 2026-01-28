@@ -947,60 +947,20 @@ export function initializeOnboarding() {
         return;
       }
 
-      splashContainer.classList.remove("fade-out");
+      // ✅ mid splash(splashscreen_mid.html) 제거: 바로 Intro로 이동
+      splashContainer.classList.remove(
+        "active",
+        "fade-out",
+        "splash-full-screen",
+      );
       splashContainer.innerHTML = "";
+      if (pageContainer) pageContainer.style.display = "";
 
-      fetch("html/splashscreen_mid.html")
-        .then((r) => r.text())
-        .then((html) => {
-          splashContainer.innerHTML = html;
-          if (pageContainer) pageContainer.style.display = "none";
-          splashContainer.classList.add("active");
+      loadPage("intro");
+      hideIntroSkipButtonOnce();
+      replaceIntroPrimaryCtaOnce();
 
-          const logo =
-            splashContainer.querySelector(".logo-one.mid-only") ||
-            splashContainer.querySelector(".logo-one");
-
-          const EXPECTED_MS = 4700 + 300;
-
-          const finish = () => {
-            splashContainer.classList.add("fade-out");
-            setTimeout(() => {
-              if (pageContainer) pageContainer.style.display = "";
-              splashContainer.classList.remove("active", "fade-out");
-              splashContainer.innerHTML = "";
-
-              loadPage("intro");
-              hideIntroSkipButtonOnce();
-              replaceIntroPrimaryCtaOnce();
-
-              locked = false;
-            }, 300);
-          };
-
-          const fallback = setTimeout(finish, EXPECTED_MS);
-
-          if (logo) {
-            const onAnimationEnd = (e) => {
-              if (e.animationName === "midHold") {
-                logo.removeEventListener("animationend", onAnimationEnd);
-                clearTimeout(fallback);
-                finish();
-              }
-            };
-            logo.addEventListener("animationend", onAnimationEnd);
-          } else {
-            clearTimeout(fallback);
-            finish();
-          }
-        })
-        .catch(() => {
-          if (pageContainer) pageContainer.style.display = "";
-          loadPage("intro");
-          hideIntroSkipButtonOnce();
-          replaceIntroPrimaryCtaOnce();
-          locked = false;
-        });
+      locked = false;
     });
   }
 }
