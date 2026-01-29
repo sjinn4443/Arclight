@@ -879,6 +879,13 @@ function show(id) {
     return;
   }
 
+  // [ADD] Always close the global video share panel when switching subpages
+  const sharePanel = document.querySelector("[data-video-share-panel]");
+  if (sharePanel) sharePanel.hidden = true;
+
+  const nativeShareBtn = document.querySelector("[data-video-share-native]");
+  if (nativeShareBtn) nativeShareBtn.hidden = true;
+
   // Lazy-load any iframes inside the page the first time it is shown
   newPageElement.querySelectorAll("iframe[data-src]").forEach((f) => {
     if (!f.src) {
@@ -932,6 +939,9 @@ function show(id) {
   // Refresh lesson progress bars when switching sections
   updateLessonProgressBars(id);
   updateAllLessonDurations();
+
+  // [ADD] Re-bind video/share UI now that the target subpage is in the DOM
+  initializeVideoPlayers();
 }
 
 // ----- Public initializer: called by router when 'videos' is loaded -----

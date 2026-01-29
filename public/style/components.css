@@ -1728,14 +1728,14 @@ input:checked + .slider:before {
 
 /* colour variants */
 :is(#pupilsPage, .pupils-like) .pupil-level--primary {
-  --accent: #0f0;
-  --cap-from: #27eb27;
-  --cap-to: #ffe600;
+  --accent: #1e8d1e;
+  --cap-from: #15e115;
+  --cap-to: #00c306;
 }
 :is(#pupilsPage, .pupils-like) .pupil-level--intermediate {
   --accent: #f25600;
   --cap-from: #ff7a00;
-  --cap-to: #e11b1b;
+  --cap-to: #ff5200;
 }
 :is(#pupilsPage, .pupils-like) .pupil-level--advanced {
   --accent: #e41e26;
@@ -1947,14 +1947,14 @@ input:checked + .slider:before {
 
 /* colour variants */
 #casestudyPage .pupil-level--primary {
-  --accent: #0f0;
-  --cap-from: #27eb27;
-  --cap-to: #ffe600;
+  --accent: #1e8d1e;
+  --cap-from: #15e115;
+  --cap-to: #00c306;
 }
 #casestudyPage .pupil-level--intermediate {
   --accent: #f25600;
   --cap-from: #ff7a00;
-  --cap-to: #e11b1b;
+  --cap-to: #ff5200;
 }
 
 #casestudyPage .pupil-level--advanced {

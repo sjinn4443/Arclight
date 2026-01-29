@@ -702,4 +702,20 @@ input {
   .pupils-subtitle {
     margin: 21px 4px 26px;
   }
+
+  .video-container {
+    width: 100%;
+    max-width: 74vw;
+    display: block;
+    max-height: 74vh;
+    padding-left: 13%;
+  }
+
+  .video-header {
+    padding: 23px 0px 26px 0;
+  }
+
+  .tri-toggle {
+    margin-right: 11.5vw;
+  }
 }

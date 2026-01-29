@@ -173,7 +173,6 @@ export function initializeVideoPlayers() {
       enterVideoFullscreen(v);
     });
   });
-
   // === Share UI wiring (button below video) ===
   const shareBtns = Array.from(
     document.querySelectorAll("[data-video-share-btn]"),
@@ -186,7 +185,38 @@ export function initializeVideoPlayers() {
   const shopLinkEl = document.querySelector("[data-video-share-shop-link]");
   const videoLinkEl = document.querySelector("[data-video-share-video-link]");
 
-  // If the page does not have share UI, skip safely
+  // Always start hidden (so it only appears after pressing Share)
+  if (sharePanel) sharePanel.hidden = true;
+  if (nativeShareBtn) nativeShareBtn.hidden = true;
+
+  // ---- CLOSE BEHAVIOUR MUST ALWAYS WORK (even when there are no share buttons) ----
+  if (sharePanel && !sharePanel.__wiredSharePanelClose) {
+    sharePanel.__wiredSharePanelClose = true;
+
+    const closePanel = () => {
+      sharePanel.hidden = true;
+      if (nativeShareBtn) nativeShareBtn.hidden = true;
+    };
+
+    // 1) Click outside the card closes the panel
+    sharePanel.addEventListener("click", (e) => {
+      if (e.target === sharePanel) closePanel();
+    });
+
+    // 2) X button closes the panel
+    if (closeBtn) {
+      closeBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        closePanel();
+      });
+    }
+
+    // 3) Any page change closes the panel (pre-video pages, other modules, etc.)
+    document.addEventListener("page:shown", closePanel);
+    window.addEventListener("page:loaded", closePanel);
+  }
+
+  // ---- OPEN/SHARE LOGIC (only if share UI exists on this page) ----
   if (shareBtns.length && sharePanel && shopLinkEl && videoLinkEl) {
     const SHOP_URL = "https://arclightprojectshop.co.uk/";
 
@@ -200,17 +230,14 @@ export function initializeVideoPlayers() {
     };
 
     const getVideoUrlForButton = (btn) => {
-      // 1) 버튼에 명시적으로 data-video-share-url이 있으면 그걸 사용
       const explicit = btn.getAttribute("data-video-share-url");
       if (explicit && explicit.trim()) return explicit.trim();
 
-      // 2) 버튼이 들어있는 video-container 안의 video.currentSrc 사용
       const container = btn.closest(".video-container");
       const video = container ? container.querySelector("video") : null;
 
       if (video && video.currentSrc) return video.currentSrc;
 
-      // 3) currentSrc가 비어있으면 <source src> 또는 video.src를 절대경로로 변환
       if (video) {
         const source = video.querySelector("source");
         const src =
@@ -221,7 +248,6 @@ export function initializeVideoPlayers() {
         if (abs) return abs;
       }
 
-      // 4) 최후: 현재 페이지 URL
       return window.location.href;
     };
 
@@ -232,21 +258,12 @@ export function initializeVideoPlayers() {
 
       sharePanel.hidden = false;
 
-      // native share 지원 여부에 따라 버튼 표시
       if (nativeShareBtn) {
         nativeShareBtn.hidden = !(
           navigator && typeof navigator.share === "function"
         );
       }
     };
-
-    const closePanel = () => {
-      sharePanel.hidden = true;
-    };
-
-    sharePanel.addEventListener("click", (e) => {
-      if (e.target === sharePanel) closePanel();
-    });
 
     const copyToClipboard = async (text) => {
       try {
@@ -267,34 +284,36 @@ export function initializeVideoPlayers() {
     };
 
     shareBtns.forEach((btn) => {
+      if (btn.__wiredShareOpen) return;
+      btn.__wiredShareOpen = true;
+
       btn.addEventListener("click", (e) => {
         e.preventDefault();
         openPanel(btn);
       });
     });
 
-    if (closeBtn) {
-      closeBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        closePanel();
-      });
-    }
+    if (shopCopyBtn && !shopCopyBtn.__wiredShareCopyShop) {
+      shopCopyBtn.__wiredShareCopyShop = true;
 
-    if (shopCopyBtn) {
       shopCopyBtn.addEventListener("click", async (e) => {
         e.preventDefault();
         await copyToClipboard(shopLinkEl.value);
       });
     }
 
-    if (videoCopyBtn) {
+    if (videoCopyBtn && !videoCopyBtn.__wiredShareCopyVideo) {
+      videoCopyBtn.__wiredShareCopyVideo = true;
+
       videoCopyBtn.addEventListener("click", async (e) => {
         e.preventDefault();
         await copyToClipboard(videoLinkEl.value);
       });
     }
 
-    if (nativeShareBtn) {
+    if (nativeShareBtn && !nativeShareBtn.__wiredShareNative) {
+      nativeShareBtn.__wiredShareNative = true;
+
       nativeShareBtn.addEventListener("click", async (e) => {
         e.preventDefault();
 

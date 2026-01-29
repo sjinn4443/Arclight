@@ -149,7 +149,7 @@ html {
   grid-template-columns: repeat(var(--tri-cols), 1fr); /* ✅ */
   align-items: center;
   width: 31%;
-  max-width: 420px;
+  max-width: 174px;
   margin: 16px 17px -8px auto;
   padding: 4px;
   background: #ffffff;
