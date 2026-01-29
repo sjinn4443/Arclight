@@ -18,10 +18,37 @@ export function initializeDashboard() {
   if (!root || wired.has(root)) return;
   wired.add(root);
 
-  // 1) Hello <username>!
+  // 1) Greeting rotation by refresh count
   const helloEl = root.querySelector(".hello");
   const username = (localStorage.getItem("username") || "").trim();
-  if (helloEl) helloEl.textContent = `Hello ${username || "there"}!`;
+
+  const KEY = "dashboard_greeting_load_count";
+  const prev = Number(localStorage.getItem(KEY) || "0");
+  const count = prev + 1;
+  localStorage.setItem(KEY, String(count));
+
+  if (helloEl) {
+    // reset content (in case we previously inserted an image)
+    helloEl.textContent = "";
+    helloEl.innerHTML = "";
+
+    if (count === 1) {
+      helloEl.textContent = `Hello ${username || "there"}!`;
+    } else if (count === 2) {
+      helloEl.textContent = `Welcome back ${username || "there"}!`;
+    } else if (count === 3) {
+      helloEl.textContent = `Nice to see you again ${username || "there"}!`;
+    } else {
+      const img = document.createElement("img");
+      img.src = "images/logo/pwainstall.png";
+      img.alt = "PWA install";
+      img.decoding = "async";
+      img.style.height = "28px";
+      img.style.width = "auto";
+      img.style.marginLeft = "2px";
+      helloEl.appendChild(img);
+    }
+  }
 
   // 2) ☰ → Menu route (overlay lives in menu.html)
   const menuBtn = root.querySelector(".menuBtn");
