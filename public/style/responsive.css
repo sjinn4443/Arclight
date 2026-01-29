@@ -199,6 +199,10 @@ input {
   .video-share-btn {
     margin-right: 28px;
   }
+
+  .see-all-toggle {
+    margin-left: 30vw;
+  }
 }
 
 /* ============================================= Tablets 768px ============================================= */
@@ -296,6 +300,10 @@ input {
 
   .video-share-btn {
     margin-right: 24px;
+  }
+
+  .see-all-toggle {
+    margin-left: 29vw;
   }
 }
 
@@ -729,5 +737,9 @@ input {
 
   .video-share-btn {
     margin-right: 11.5vw;
+  }
+
+  .see-all-toggle {
+    margin-left: 12vw;
   }
 }

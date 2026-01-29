@@ -47,10 +47,81 @@ function normaliseVideosSubpageId(raw) {
   return `${t}Page`;
 }
 
+function setupWorkshopSeeAllToggles(page) {
+  const cards = page.querySelectorAll(".pupil-card.module-card");
+  cards.forEach((card) => {
+    const subtitles = card.querySelectorAll("p.section-subtitle");
+    subtitles.forEach((subtitle) => {
+      // subtitle 다음에 나오는 lesson-row들을, 다음 section-subtitle 나오기 전까지 그룹으로 묶음
+      const groupRows = [];
+      let el = subtitle.nextElementSibling;
+
+      while (el) {
+        if (el.matches && el.matches("p.section-subtitle")) break;
+        if (el.classList && el.classList.contains("lesson-row"))
+          groupRows.push(el);
+        el = el.nextElementSibling;
+      }
+
+      // "한 항목에 3개 초과" => 4개 이상일 때만 토글 생성
+      if (groupRows.length <= 3) return;
+
+      // 이미 토글이 붙어있으면 중복 생성 방지
+      if (subtitle.querySelector(".see-all-toggle")) return;
+
+      // 기본 상태: 2개만 보여주고 나머지는 숨김
+      groupRows.slice(2).forEach((row) => {
+        row.setAttribute("data-collapsible-hidden", "true");
+      });
+
+      const toggle = document.createElement("span");
+      toggle.className = "see-all-toggle";
+      toggle.setAttribute("role", "button");
+      toggle.setAttribute("tabindex", "0");
+      toggle.setAttribute("aria-expanded", "false");
+      toggle.textContent = "See all >";
+
+      const open = () => {
+        groupRows.forEach((row) =>
+          row.removeAttribute("data-collapsible-hidden"),
+        );
+        toggle.textContent = "Close v";
+        toggle.setAttribute("aria-expanded", "true");
+      };
+
+      const close = () => {
+        groupRows.slice(2).forEach((row) => {
+          row.setAttribute("data-collapsible-hidden", "true");
+        });
+        toggle.textContent = "See all >";
+        toggle.setAttribute("aria-expanded", "false");
+      };
+
+      const toggleNow = (e) => {
+        // 카드가 <button>이라 이벤트가 섞이지 않게 완전히 차단
+        e.preventDefault();
+        e.stopPropagation();
+
+        const expanded = toggle.getAttribute("aria-expanded") === "true";
+        if (expanded) close();
+        else open();
+      };
+
+      toggle.addEventListener("click", toggleNow);
+      toggle.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") toggleNow(e);
+      });
+
+      // subtitle 오른쪽에 붙이기
+      subtitle.appendChild(toggle);
+    });
+  });
+}
+
 export function initializeChildhoodEyeScreeningWorkshop() {
   const page = document.getElementById("childhoodEyeScreeningWorkshopPage");
   if (!page) return;
-
+  setupWorkshopSeeAllToggles(page);
   const rows = page.querySelectorAll(".lesson-row[data-target]");
   rows.forEach((row) => {
     if (row.dataset.wired === "1") return;

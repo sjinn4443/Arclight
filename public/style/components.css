@@ -5133,3 +5133,17 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
   background-color: #fff;
   border-radius: 0px;
 }
+
+/* Workshop: See all / Close toggle + collapsed rows */
+[data-collapsible-hidden="true"] {
+  display: none !important;
+}
+
+.see-all-toggle {
+  margin-left: 35vw;
+  cursor: pointer;
+  user-select: none;
+  font-weight: 600;
+  font-size: 12px;
+  color: #15e115;
+}
