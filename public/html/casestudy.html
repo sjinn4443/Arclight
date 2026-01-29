@@ -840,8 +840,8 @@
         >
           Review the card.<br /><br />
           Swipe right or tap
-          <span style="font-weight: 700; color: #e41e26">Urgent Referral</span
-          >.<br />
+          <span style="font-weight: 700; color: #e41e26">Urgent Referral.</span>
+          <br />
           Swipe left or tap <b>Not Urgent</b>.<br /><br />
           You have 30 seconds.
 
@@ -876,6 +876,7 @@
     <div id="primaryFlashCardWrap" style="margin-top: 14px">
       <div
         id="primaryFlashCard"
+        class="flashcard"
         style="
           background: #fff;
           border-radius: 18px;
@@ -884,62 +885,77 @@
           margin-top: -15px;
         "
       >
-        <div id="primaryFlashCaseLabel" class="primaryFlashCaseLabel"></div>
+        <!-- 앞면 -->
+        <div class="flashcard__face flashcard__face--front">
+          <div id="primaryFlashCaseLabel" class="primaryFlashCaseLabel"></div>
 
-        <img
-          id="primaryFlashImg"
-          alt="Case image"
-          style="width: 100%; border-radius: 40px; object-fit: cover"
-        />
-        <div
-          id="primaryFlashDx"
-          style="margin-top: 20px; font-weight: 700; font-size: 16px"
-        ></div>
-        <ul
-          id="primaryFlashBullets"
-          style="
-            margin: 19px 0 21px;
-            padding-left: 18px;
-            font-size: 14px;
-            color: #333;
-            line-height: 24px;
-          "
-        ></ul>
+          <img
+            id="primaryFlashImg"
+            alt="Case image"
+            style="width: 100%; border-radius: 40px; object-fit: cover"
+          />
+
+          <ul
+            id="primaryFlashBullets"
+            style="
+              margin: 19px 0 21px;
+              padding-left: 18px;
+              font-size: 14px;
+              color: #333;
+              line-height: 24px;
+            "
+          ></ul>
+        </div>
+
+        <!-- 뒷면 -->
+        <div class="flashcard__face flashcard__face--back">
+          <div
+            id="primaryFlashDx"
+            style="
+              font-weight: 700;
+              font-size: 18px;
+              text-align: center;
+              margin: 12px;
+            "
+          ></div>
+        </div>
       </div>
 
-      <div style="display: flex; gap: 10px; margin-top: 12px">
-        <button
-          id="primaryFlashNotUrgentBtn"
-          type="button"
-          style="
-            flex: 1;
-            height: 42px;
-            border-radius: 14px;
-            border: 1px solid #d9d9dd;
-            background: #777;
-            font-weight: 600;
-            font-size: 14px;
-          "
-        >
-          &lt; Not Urgent
-        </button>
-        <button
-          id="primaryFlashUrgentBtn"
-          type="button"
-          style="
-            flex: 1;
-            height: 42px;
-            border-radius: 14px;
-            border: none;
-            background: #e41e26;
-            color: #fff;
-            font-weight: 600;
-            font-size: 14px;
-          "
-        >
-          Urgent Referral &gt;
-        </button>
-      </div>
+      <!-- (아래 urgent/not urgent 버튼 영역은 기존 그대로 유지) -->
+    </div>
+
+    <div style="display: flex; gap: 10px; margin-top: 12px">
+      <button
+        id="primaryFlashNotUrgentBtn"
+        type="button"
+        style="
+          flex: 1;
+          height: 42px;
+          border-radius: 14px;
+          border: 1px solid #d9d9dd;
+          background: #777;
+          font-weight: 600;
+          font-size: 14px;
+        "
+      >
+        &lt; Not Urgent
+      </button>
+      <button
+        id="primaryFlashUrgentBtn"
+        type="button"
+        style="
+          flex: 1;
+          height: 42px;
+          border-radius: 14px;
+          border: none;
+          background: #e41e26;
+          color: #fff;
+          font-weight: 600;
+          font-size: 14px;
+        "
+      >
+        Urgent Referral &gt;
+      </button>
     </div>
   </div>
 </div>
