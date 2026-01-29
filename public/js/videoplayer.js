@@ -173,165 +173,237 @@ export function initializeVideoPlayers() {
       enterVideoFullscreen(v);
     });
   });
+
   // === Share UI wiring (button below video) ===
   const shareBtns = Array.from(
     document.querySelectorAll("[data-video-share-btn]"),
   );
-  const sharePanel = document.querySelector("[data-video-share-panel]");
-  const shopCopyBtn = document.querySelector("[data-video-share-copy-shop]");
-  const videoCopyBtn = document.querySelector("[data-video-share-copy-video]");
-  const nativeShareBtn = document.querySelector("[data-video-share-native]");
-  const closeBtn = document.querySelector("[data-video-share-close]");
-  const shopLinkEl = document.querySelector("[data-video-share-shop-link]");
-  const videoLinkEl = document.querySelector("[data-video-share-video-link]");
 
-  // Always start hidden (so it only appears after pressing Share)
-  if (sharePanel) sharePanel.hidden = true;
-  if (nativeShareBtn) nativeShareBtn.hidden = true;
+  // If there are no share buttons on this page, do nothing.
+  if (!shareBtns.length) return;
 
-  // ---- CLOSE BEHAVIOUR MUST ALWAYS WORK (even when there are no share buttons) ----
-  if (sharePanel && !sharePanel.__wiredSharePanelClose) {
-    sharePanel.__wiredSharePanelClose = true;
+  const SHOP_URL = "https://arclightprojectshop.co.uk/";
 
-    const closePanel = () => {
-      sharePanel.hidden = true;
-      if (nativeShareBtn) nativeShareBtn.hidden = true;
-    };
+  const resolveToAbsoluteUrl = (maybeRelativeUrl) => {
+    if (!maybeRelativeUrl) return "";
+    try {
+      return new URL(maybeRelativeUrl, window.location.href).href;
+    } catch (_) {
+      return String(maybeRelativeUrl);
+    }
+  };
 
-    // 1) Click outside the card closes the panel
-    sharePanel.addEventListener("click", (e) => {
-      if (e.target === sharePanel) closePanel();
-    });
+  const getVideoUrlForButton = (btn) => {
+    const explicit = btn.getAttribute("data-video-share-url");
+    if (explicit && explicit.trim()) return explicit.trim();
 
-    // 2) X button closes the panel
-    if (closeBtn) {
-      closeBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        closePanel();
-      });
+    const container = btn.closest(".video-container");
+    const video = container ? container.querySelector("video") : null;
+
+    if (video && video.currentSrc) return video.currentSrc;
+
+    if (video) {
+      const source = video.querySelector("source");
+      const src =
+        (source && source.getAttribute("src")) ||
+        video.getAttribute("src") ||
+        "";
+      const abs = resolveToAbsoluteUrl(src);
+      if (abs) return abs;
     }
 
-    // 3) Any page change closes the panel (pre-video pages, other modules, etc.)
-    document.addEventListener("page:shown", closePanel);
-    window.addEventListener("page:loaded", closePanel);
-  }
+    return window.location.href;
+  };
 
-  // ---- OPEN/SHARE LOGIC (only if share UI exists on this page) ----
-  if (shareBtns.length && sharePanel && shopLinkEl && videoLinkEl) {
-    const SHOP_URL = "https://arclightprojectshop.co.uk/";
-
-    const resolveToAbsoluteUrl = (maybeRelativeUrl) => {
-      if (!maybeRelativeUrl) return "";
-      try {
-        return new URL(maybeRelativeUrl, window.location.href).href;
-      } catch (_) {
-        return String(maybeRelativeUrl);
-      }
-    };
-
-    const getVideoUrlForButton = (btn) => {
-      const explicit = btn.getAttribute("data-video-share-url");
-      if (explicit && explicit.trim()) return explicit.trim();
-
-      const container = btn.closest(".video-container");
-      const video = container ? container.querySelector("video") : null;
-
-      if (video && video.currentSrc) return video.currentSrc;
-
-      if (video) {
-        const source = video.querySelector("source");
-        const src =
-          (source && source.getAttribute("src")) ||
-          video.getAttribute("src") ||
-          "";
-        const abs = resolveToAbsoluteUrl(src);
-        if (abs) return abs;
-      }
-
-      return window.location.href;
-    };
-
-    const openPanel = (btn) => {
-      const videoUrl = getVideoUrlForButton(btn);
-      shopLinkEl.value = SHOP_URL;
-      videoLinkEl.value = videoUrl;
-
-      sharePanel.hidden = false;
-
-      if (nativeShareBtn) {
-        nativeShareBtn.hidden = !(
-          navigator && typeof navigator.share === "function"
-        );
-      }
-    };
-
-    const copyToClipboard = async (text) => {
-      try {
-        await navigator.clipboard.writeText(text);
-        return true;
-      } catch (_) {
-        const ta = document.createElement("textarea");
-        ta.value = text;
-        ta.setAttribute("readonly", "");
-        ta.style.position = "fixed";
-        ta.style.left = "-9999px";
-        document.body.appendChild(ta);
-        ta.select();
-        const ok = document.execCommand("copy");
-        document.body.removeChild(ta);
-        return ok;
-      }
-    };
-
-    shareBtns.forEach((btn) => {
-      if (btn.__wiredShareOpen) return;
-      btn.__wiredShareOpen = true;
-
-      btn.addEventListener("click", (e) => {
-        e.preventDefault();
-        openPanel(btn);
-      });
-    });
-
-    if (shopCopyBtn && !shopCopyBtn.__wiredShareCopyShop) {
-      shopCopyBtn.__wiredShareCopyShop = true;
-
-      shopCopyBtn.addEventListener("click", async (e) => {
-        e.preventDefault();
-        await copyToClipboard(shopLinkEl.value);
-      });
+  const copyToClipboard = async (text) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } catch (_) {
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.setAttribute("readonly", "");
+      ta.style.position = "fixed";
+      ta.style.left = "-9999px";
+      document.body.appendChild(ta);
+      ta.select();
+      const ok = document.execCommand("copy");
+      document.body.removeChild(ta);
+      return ok;
     }
+  };
 
-    if (videoCopyBtn && !videoCopyBtn.__wiredShareCopyVideo) {
-      videoCopyBtn.__wiredShareCopyVideo = true;
+  const getOrCreateShareMenu = () => {
+    let menu = document.getElementById("videoShareMenu");
+    if (menu) return menu;
 
-      videoCopyBtn.addEventListener("click", async (e) => {
-        e.preventDefault();
-        await copyToClipboard(videoLinkEl.value);
+    menu = document.createElement("div");
+    menu.id = "videoShareMenu";
+    menu.className = "video-share-menu";
+    menu.hidden = true;
+
+    // Keep current context here
+    menu.dataset.videoUrl = "";
+    menu.dataset.anchorBtnId = "";
+
+    // Menu items (exactly 2)
+    menu.innerHTML = `
+      <button type="button" class="video-share-menu__item" data-video-share-action="share-video">
+        Share video
+      </button>
+      <button type="button" class="video-share-menu__item" data-video-share-action="shop">
+        Arclight Shop
+      </button>
+    `;
+
+    document.body.appendChild(menu);
+
+    // Close helpers (wired once)
+    if (!menu.__wiredClose) {
+      menu.__wiredClose = true;
+
+      const closeMenu = () => {
+        menu.hidden = true;
+        menu.dataset.videoUrl = "";
+        menu.dataset.anchorBtnId = "";
+      };
+
+      // Click outside closes
+      document.addEventListener("mousedown", (e) => {
+        if (menu.hidden) return;
+
+        const target = e.target;
+        if (!(target instanceof Element)) return;
+
+        const anchorBtnId = menu.dataset.anchorBtnId;
+        const anchorBtn = anchorBtnId
+          ? document.getElementById(anchorBtnId)
+          : null;
+
+        const clickedInsideMenu = menu.contains(target);
+        const clickedOnAnchorBtn = anchorBtn
+          ? anchorBtn.contains(target)
+          : false;
+
+        if (!clickedInsideMenu && !clickedOnAnchorBtn) closeMenu();
       });
-    }
 
-    if (nativeShareBtn && !nativeShareBtn.__wiredShareNative) {
-      nativeShareBtn.__wiredShareNative = true;
+      // Page changes should close (same intent as existing modal logic)
+      document.addEventListener("page:shown", closeMenu);
+      window.addEventListener("page:loaded", closeMenu);
 
-      nativeShareBtn.addEventListener("click", async (e) => {
-        e.preventDefault();
+      // Scroll/resize closes to avoid “floating in wrong place”
+      window.addEventListener("scroll", closeMenu, { passive: true });
+      window.addEventListener("resize", closeMenu);
 
-        const videoUrl = videoLinkEl.value;
-        const shopUrl = shopLinkEl.value;
+      // Menu item actions
+      menu.addEventListener("click", async (e) => {
+        const btn = e.target.closest("[data-video-share-action]");
+        if (!btn) return;
 
-        try {
-          await navigator.share({
-            title: document.title || "Arclight video",
-            text: `Video: ${videoUrl}\nShop: ${shopUrl}`,
-            url: videoUrl,
-          });
-        } catch (_) {
-          await copyToClipboard(videoUrl);
+        const action = btn.getAttribute("data-video-share-action");
+        const videoUrl = menu.dataset.videoUrl || window.location.href;
+
+        if (action === "shop") {
+          // Direct redirect (requirement)
+          window.location.href = SHOP_URL;
+          return;
+        }
+
+        if (action === "share-video") {
+          // Prefer native share, fallback to clipboard copy
+          if (navigator && typeof navigator.share === "function") {
+            try {
+              await navigator.share({
+                title: document.title || "Arclight video",
+                url: videoUrl,
+              });
+            } catch (_) {
+              await copyToClipboard(videoUrl);
+            }
+          } else {
+            await copyToClipboard(videoUrl);
+          }
+
+          closeMenu();
         }
       });
     }
-  }
+
+    return menu;
+  };
+
+  const positionMenuNearButton = (menu, btn) => {
+    // Use fixed positioning relative to viewport
+    menu.style.position = "fixed";
+
+    // Make it measurable while still “hidden” to the user
+    const wasHidden = menu.hidden;
+    if (wasHidden) menu.hidden = false;
+    menu.style.visibility = "hidden";
+
+    const r = btn.getBoundingClientRect();
+    const menuRect = menu.getBoundingClientRect();
+
+    // Default: below the button, left-aligned
+    let top = r.bottom + 8;
+    let left = r.left;
+
+    // Keep inside viewport with small padding
+    const pad = 8;
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+
+    // If overflowing right, shift left
+    if (left + menuRect.width > vw - pad) {
+      left = Math.max(pad, vw - pad - menuRect.width);
+    }
+
+    // If overflowing bottom, open upward
+    if (top + menuRect.height > vh - pad) {
+      top = Math.max(pad, r.top - 8 - menuRect.height);
+    }
+
+    menu.style.left = `${left}px`;
+    menu.style.top = `${top}px`;
+
+    // Restore visibility
+    menu.style.visibility = "";
+    if (wasHidden) menu.hidden = true;
+  };
+
+  shareBtns.forEach((btn, idx) => {
+    // Ensure each share button has a stable id (for outside-click logic)
+    if (!btn.id) btn.id = `videoShareBtn_${idx}`;
+
+    if (btn.__wiredShareMenuOpen) return;
+    btn.__wiredShareMenuOpen = true;
+
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+
+      const menu = getOrCreateShareMenu();
+
+      // Toggle behaviour: if same anchor and open, close it
+      const isSameAnchor = menu.dataset.anchorBtnId === btn.id;
+      if (!menu.hidden && isSameAnchor) {
+        menu.hidden = true;
+        menu.dataset.videoUrl = "";
+        menu.dataset.anchorBtnId = "";
+        return;
+      }
+
+      const videoUrl = getVideoUrlForButton(btn);
+      menu.dataset.videoUrl = videoUrl;
+      menu.dataset.anchorBtnId = btn.id;
+
+      // Position then show
+      positionMenuNearButton(menu, btn);
+      menu.hidden = false;
+    });
+  });
 }
 
 let __toolbarInitialized = false;

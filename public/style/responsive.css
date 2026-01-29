@@ -195,6 +195,10 @@ input {
   #backBtnGlobal.top-back {
     margin-left: -22px;
   }
+
+  .video-share-btn {
+    margin-right: 28px;
+  }
 }
 
 /* ============================================= Tablets 768px ============================================= */
@@ -288,6 +292,10 @@ input {
     max-width: 100%;
     height: auto;
     object-fit: contain;
+  }
+
+  .video-share-btn {
+    margin-right: 24px;
   }
 }
 
@@ -716,6 +724,10 @@ input {
   }
 
   .tri-toggle {
+    margin-right: 11.5vw;
+  }
+
+  .video-share-btn {
     margin-right: 11.5vw;
   }
 }

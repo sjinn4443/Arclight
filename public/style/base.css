@@ -250,12 +250,11 @@ html {
   margin: -74px 27px 21px 297px;
   display: grid;
   place-items: center;
-  width: 44px;
-  height: 44px;
+  width: 49px;
+  height: 26px;
   border: 0;
-  border-radius: 999px;
+  border-radius: 10px;
   background: #e5e5ea;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
   cursor: pointer;
 }
 
@@ -351,4 +350,53 @@ html {
 
 .video-share-panel__native {
   width: 100%;
+}
+
+/* -------------------------
+   Video share menu (small panel)
+-------------------------- */
+
+/* SVG */
+.video-share-icon {
+  display: block;
+  margin-top: -11px 2px;
+}
+
+.video-share-menu {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+  border-radius: 13px;
+  overflow: hidden; /* 아이템이 radius 밖으로 안 삐져나오게 */
+  min-width: 180px;
+  z-index: 9999;
+}
+
+/* 3) 메뉴 아이템: 빨강 -> 흰색, radius 0, 텍스트 검정
+   (components.css 전역 button 스타일을 덮어쓰기 위해 셀렉터를 더 강하게) */
+.video-share-menu .video-share-menu__item {
+  background: #ffffff;
+  color: #000000;
+  border: none;
+  border-radius: 0;
+  margin: 0; /* components.css의 margin-top 제거 */
+  width: 100%; /* 풀폭은 유지, 대신 카드 안에서만 */
+  text-align: left;
+  padding: 12px 14px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* 4) 클릭(눌림) 상태: 흰색 -> 회색 */
+.video-share-menu .video-share-menu__item:active {
+  background: #e5e5ea;
+}
+
+/* (선택) 키보드 포커스 표시 */
+.video-share-menu .video-share-menu__item:focus {
+  outline: none;
+}
+.video-share-menu .video-share-menu__item:focus-visible {
+  outline: 2px solid rgba(0, 0, 0, 0.35);
+  outline-offset: -2px;
 }

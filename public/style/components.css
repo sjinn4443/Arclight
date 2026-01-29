@@ -5126,3 +5126,10 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
   justify-content: flex-end;
   margin-top: 8px;
 }
+
+#pupilsPage .video-share-menu__item,
+.page.pupils-like .video-share-menu__item {
+  margin-top: 0px;
+  background-color: #fff;
+  border-radius: 0px;
+}
