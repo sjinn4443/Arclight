@@ -192,121 +192,8 @@ input {
     margin: 0;
   }
 
-  #backtnGlobal.top-back {
+  #backBtnGlobal.top-back {
     margin-left: -22px;
-  }
-}
-
-/* ============================================= XL desktop: no-crop mode (full image visible) ============================================= */
-@media (min-width: 1440px) {
-  #categoryCarousel .category-card {
-    background: #fff;
-  }
-  #categoryCarousel .category-card img {
-    aspect-ratio: 16 / 9;
-    object-fit: contain;
-    display: block;
-    width: 100%;
-  }
-
-  .search-icon svg,
-  .menu-search-icon svg {
-    width: 22px;
-    height: 22px;
-  }
-
-  .eyes-carousel {
-    grid-auto-columns: 16%;
-  }
-
-  .menu-panel {
-    width: 220px;
-    margin-top: 1%;
-  }
-  .menu-close {
-    font-size: 28px;
-    top: 14px;
-    right: 14px;
-  }
-
-  .pupils-container {
-    max-width: 37vw;
-  }
-
-  #pupilsPage .pupil-card,
-  .pupils-like .pupil-card {
-    margin-left: -2%;
-  }
-
-  #pupilsPage .lesson-type,
-  #pupilsPage .lesson-meta,
-  .pupils-like .lesson-type,
-  #pupilsPage .lesson-meta {
-    margin-top: 5vh;
-  }
-
-  #pupilsPage .lesson-progress,
-  .pupils-like .lesson-progress {
-    margin-top: 2%;
-  }
-
-  #pupilsPage .lesson-cta,
-  .pupils-like .lesson-cta {
-    margin-top: 45%;
-  }
-
-  #pupilsPage .lesson-main,
-  .pupils-like .lesson-main {
-    margin-top: -1vh;
-    margin-left: -1vh;
-  }
-
-  #pupilsPage .thumb,
-  .pupils-like .thumb {
-    width: 3vw;
-    height: 4vh;
-  }
-
-  .category-card__title {
-    left: 42px;
-  }
-
-  .unified-container {
-    max-width: 76vw;
-    margin-top: -9vh;
-  }
-
-  .lang-install__modal {
-    width: 340px; /* unchanged */
-    padding: 24px 28px; /* unchanged */
-  }
-
-  :root {
-    --container-w: 91vw;
-  }
-
-  .category-carousel {
-    grid-auto-columns: 26%;
-  }
-
-  #eyesCatalogPage .eyes-top {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    background: #fff;
-    z-index: 2000;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 92%;
-    height: 62px;
-    padding: 0 20px 0 136px;
-    margin: 0;
-  }
-
-  #backtnGlobal.top-back {
-    margin-left: -80px;
   }
 }
 
@@ -568,5 +455,251 @@ input {
   }
   .interest-container {
     padding-bottom: 0 !important;
+  }
+}
+
+/* ============================================= XL desktop: no-crop mode (full image visible) ============================================= */
+@media (min-width: 1440px) {
+  #categoryCarousel .category-card {
+    background: #fff;
+  }
+  #categoryCarousel .category-card img {
+    aspect-ratio: 16 / 9;
+    object-fit: contain;
+    display: block;
+    width: 100%;
+  }
+
+  .search-icon svg,
+  .menu-search-icon svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .eyes-carousel {
+    grid-auto-columns: 16%;
+  }
+
+  .menu-panel {
+    width: 220px;
+    margin-top: 1%;
+  }
+  .menu-close {
+    font-size: 28px;
+    top: 14px;
+    right: 14px;
+  }
+
+  .pupils-container {
+    max-width: 37vw;
+  }
+
+  #pupilsPage .pupil-card,
+  .pupils-like .pupil-card {
+    margin-left: -2%;
+  }
+
+  #pupilsPage .lesson-type,
+  #pupilsPage .lesson-meta,
+  .pupils-like .lesson-type,
+  #pupilsPage .lesson-meta {
+    margin-top: 5vh;
+  }
+
+  #pupilsPage .lesson-progress,
+  .pupils-like .lesson-progress {
+    margin-top: 2%;
+  }
+
+  #pupilsPage .lesson-cta,
+  .pupils-like .lesson-cta {
+    margin-top: 45%;
+  }
+
+  #pupilsPage .lesson-main,
+  .pupils-like .lesson-main {
+    margin-top: -1vh;
+    margin-left: -1vh;
+  }
+
+  #pupilsPage .thumb,
+  .pupils-like .thumb {
+    width: 3vw;
+    height: 4vh;
+  }
+
+  .category-card__title {
+    left: 42px;
+  }
+
+  .unified-container {
+    max-width: 60vw;
+    margin-top: 2vh;
+  }
+
+  .page .container:first-child {
+    max-width: 55vw;
+  }
+
+  .eyes-carousel {
+    gap: 8vw;
+  }
+
+  .lang-install__modal {
+    width: 340px; /* unchanged */
+    padding: 24px 28px; /* unchanged */
+  }
+
+  :root {
+    --container-w: 91vw;
+  }
+
+  .category-carousel {
+    gap: 0px;
+  }
+
+  #eyesCatalogPage .eyes-top {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: #fff;
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 92%;
+    height: 62px;
+    padding-left: 24vw;
+    margin: 0;
+    max-width: 54vw;
+  }
+
+  #backBtnGlobal.top-back {
+    padding-left: 12vw !important;
+  }
+
+  #pupilsPage .icon.backBtn,
+  .pupils-like .icon.backBtn {
+    font-size: 56px;
+    line-height: 1;
+    transform: none;
+  }
+
+  #backBtnGlobal {
+    width: 72px;
+    height: 72px;
+  }
+
+  #backBtnGlobal::before {
+    width: 29px;
+    height: 46px;
+    margin: 0px -101px 31px 39px;
+  }
+
+  .eyes-top .icon {
+    font-size: 19px;
+    font-weight: 600;
+  }
+
+  .page.has-eyes-topbar .eyes-topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: #fff;
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 62px;
+    padding-left: 24vw;
+    margin: 0;
+    max-width: 54vw;
+  }
+
+  .page.has-eyes-topbar .eyes-topbar__title {
+    font-weight: 600;
+    margin-left: 5px;
+  }
+
+  .page.has-eyes-topbar .eyes-topbar__icons .icon {
+    font-size: 20px;
+    line-height: 1;
+  }
+
+  .page.has-eyes-topbar .eyes-top .icon {
+    font-size: 19px;
+    font-weight: 600;
+  }
+
+  #pupilsPage .page.has-eyes-topbar .eyes-topbar,
+  .page.pupils-like.has-eyes-topbar .eyes-topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: #fff;
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 62px;
+    padding-left: 38.5vw;
+    margin: 0;
+    max-width: 54vw;
+  }
+
+  #pupilsPage .eyes-topbar__title,
+  .page.pupils-like.has-eyes-topbar__title {
+    font-weight: 600;
+    margin-left: 5px;
+  }
+
+  #pupilsPage .eyes-topbar__icons .icon,
+  .page.pupils-like.has-eyes-topbar__icons .icon {
+    font-size: 20px;
+    line-height: 1;
+    margin-left: 23vw;
+  }
+
+  #pupilsPage .eyes-topbar .eyes-top .icon,
+  .page.pupils-like.has-eyes-topbar .eyes-top .icon {
+    font-size: 19px;
+    font-weight: 600;
+  }
+
+  #pupilsPage .page .container:first-child,
+  .page.pupils-like .page .container:first-child {
+    max-width: 39vw;
+  }
+
+  #pupilsPage .pupils-subtitle,
+  .page.pupils-like .pupils-subtitle {
+    font-size: 13px;
+    font-weight: 700;
+    color: #111;
+    margin: 16px 272px 30px;
+  }
+
+  #pupilsPage .icon.menuBtn,
+  .page.pupils-like .icon.menuBtn {
+    font-size: 17px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: centre;
+    justify-content: centre;
+    margin: 0px 0px 2px 386px;
+  }
+
+  #pupilsPage #backBtnGlobal::before,
+  .page.pupils-like #backBtnGlobal::before {
+    width: 29px;
+    height: 46px;
+    margin: 0vh -38vw 3.3vh 1vh;
+  }
+
+  .pupils-subtitle {
+    margin: 21px 4px 26px;
   }
 }

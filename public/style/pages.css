@@ -1517,7 +1517,7 @@ select.onb-input.has-value + .onb-select-caret {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 62px;
+  height: 80px;
   padding: 0; /* Eyes top has tight spacing */
   box-shadow: none; /* ensure no lingering shadow */
 }
@@ -1685,4 +1685,16 @@ select.onb-input.has-value + .onb-select-caret {
   background: #e41e26; /* 진행 빨강 */
   border-radius: 999px;
   transition: width 120ms linear;
+}
+
+#pupilsPage .eyes-topbar,
+.pupils-like .eyes-topbar {
+  height: 80px;
+}
+
+/* back 버튼만 크게 */
+#pupilsPage .icon.backBtn,
+.pupils-like .icon.backBtn {
+  font-size: 56px;
+  line-height: 1;
 }
