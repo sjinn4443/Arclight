@@ -4128,6 +4128,44 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
   stroke: #777;
 }
 
+/* Flashcard flip (Primary) */
+#caseStudyFlashcardPagePrimary #primaryFlashCard.flashcard {
+  position: relative;
+  transform-style: preserve-3d;
+}
+
+#caseStudyFlashcardPagePrimary #primaryFlashCard.flashcard .flashcard__face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+}
+
+#caseStudyFlashcardPagePrimary
+  #primaryFlashCard.flashcard
+  .flashcard__face--front {
+  position: relative; /* front는 문서 흐름 유지 */
+}
+
+#caseStudyFlashcardPagePrimary
+  #primaryFlashCard.flashcard
+  .flashcard__face--back {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: rotateY(180deg);
+  background-color: #e5e5ea;
+  border-radius: 18px;
+}
+
+#caseStudyFlashcardPagePrimary #primaryFlashCard.flashcard.is-flipped {
+  transform: rotateY(180deg);
+  transition: transform 200ms ease;
+}
+
+#caseStudyFlashcardPagePrimary #primaryFlashCard.flashcard:not(.is-flipped) {
+  transition: transform 200ms ease;
+}
+
 .casechat-confirm__btn.is-exit {
   background: #777;
   color: #ffffff;

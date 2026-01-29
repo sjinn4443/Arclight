@@ -85,7 +85,7 @@ function setupWorkshopSeeAllToggles(page) {
         groupRows.forEach((row) =>
           row.removeAttribute("data-collapsible-hidden"),
         );
-        toggle.textContent = "Close v";
+        toggle.textContent = "Close ^";
         toggle.setAttribute("aria-expanded", "true");
       };
 

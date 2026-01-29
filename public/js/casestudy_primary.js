@@ -464,6 +464,41 @@ export function initializeCaseStudyPrimary() {
   let flashCompletionModalEl = null;
   let flashSwipeBound = false;
 
+  // ---- scroll lock (Flashcard page only) ----
+  let flashScrollLocked = false;
+  let flashScrollY = 0;
+
+  function lockFlashPageScroll() {
+    if (flashScrollLocked) return;
+    flashScrollLocked = true;
+
+    flashScrollY = window.scrollY || 0;
+
+    // Prevent the document from scrolling
+    document.documentElement.style.overflow = "hidden";
+    document.body.style.overflow = "hidden";
+    document.body.style.position = "fixed";
+    document.body.style.top = `-${flashScrollY}px`;
+    document.body.style.left = "0";
+    document.body.style.right = "0";
+    document.body.style.width = "100%";
+  }
+
+  function unlockFlashPageScroll() {
+    if (!flashScrollLocked) return;
+    flashScrollLocked = false;
+
+    document.documentElement.style.overflow = "";
+    document.body.style.overflow = "";
+    document.body.style.position = "";
+    document.body.style.top = "";
+    document.body.style.left = "";
+    document.body.style.right = "";
+    document.body.style.width = "";
+
+    window.scrollTo(0, flashScrollY);
+  }
+
   function ensureFlashCompletionModal() {
     if (flashCompletionModalEl) return flashCompletionModalEl;
 
@@ -618,6 +653,7 @@ export function initializeCaseStudyPrimary() {
     listPage.style.display = "none";
     chatPage.style.display = "none";
     flashPage.style.display = "block";
+    lockFlashPageScroll();
 
     // ✅ 항상 새 게임으로 리셋 (재입장 시 꼬임 방지)
     stopFlashTimer();
@@ -687,6 +723,7 @@ export function initializeCaseStudyPrimary() {
 
   function showListFromFlash() {
     stopFlashTimer();
+    unlockFlashPageScroll();
     flashPage.style.display = "none";
     chatPage.style.display = "none";
     listPage.style.display = "block";
@@ -728,6 +765,13 @@ export function initializeCaseStudyPrimary() {
     const diagnosis = correctDiagnosisForPrimary(caseObj);
     img.src = imgPathForCase(caseObj.caseNum);
     dx.textContent = diagnosis;
+    const wrap = flashPage.querySelector("#primaryFlashCardWrap");
+    const card = flashPage.querySelector("#primaryFlashCard");
+    if (card) card.classList.remove("is-flipped");
+    if (wrap) {
+      wrap.style.transition = "";
+      wrap.style.transform = "translateX(0px) rotate(0deg)";
+    }
 
     ul.innerHTML = "";
     flashBulletsForCase(caseObj).forEach((line) => {
@@ -780,30 +824,43 @@ export function initializeCaseStudyPrimary() {
 
   function bindFlashSwipe() {
     if (flashSwipeBound) return;
+    const wrap = flashPage.querySelector("#primaryFlashCardWrap");
     const card = flashPage.querySelector("#primaryFlashCard");
-    if (!card) return;
+    if (!wrap || !card) return;
 
     let startX = 0;
     let startY = 0;
     let dxLive = 0;
+    let dyLive = 0;
+
     let tracking = false;
 
+    // ✅ swipe로 인한 touch 시퀀스 뒤에 발생하는 click(ghost click) 방지
+    let suppressClick = false;
+
+    // ✅ 탭(클릭)으로 앞/뒷면 토글
+    card.addEventListener("click", () => {
+      console.log("[flash] card click"); // ✅ 임시
+      if (suppressClick) return;
+      card.classList.toggle("is-flipped");
+    });
+
     const resetCard = () => {
-      card.style.transition = "transform 180ms ease";
-      card.style.transform = "translateX(0px) rotate(0deg)";
+      wrap.style.transition = "transform 180ms ease";
+      wrap.style.transform = "translateX(0px) rotate(0deg)";
       setTimeout(() => {
-        card.style.transition = "";
+        wrap.style.transition = "";
       }, 200);
     };
 
     const flyOut = (dir, cb) => {
       // dir: 1 (right), -1 (left)
       const off = dir * Math.max(320, window.innerWidth);
-      card.style.transition = "transform 180ms ease";
-      card.style.transform = `translateX(${off}px) rotate(${dir * 10}deg)`;
+      wrap.style.transition = "transform 180ms ease";
+      wrap.style.transform = `translateX(${off}px) rotate(${dir * 10}deg)`;
       setTimeout(() => {
-        card.style.transition = "";
-        card.style.transform = "translateX(0px) rotate(0deg)";
+        wrap.style.transition = "";
+        wrap.style.transform = "translateX(0px) rotate(0deg)";
         if (typeof cb === "function") cb();
       }, 190);
     };
@@ -817,34 +874,55 @@ export function initializeCaseStudyPrimary() {
         startX = t.clientX;
         startY = t.clientY;
         dxLive = 0;
-        card.style.transition = "";
+        dyLive = 0;
+
+        suppressClick = false;
+
+        wrap.style.transition = "";
       },
-      { passive: true },
+      { passive: false },
     );
 
     card.addEventListener(
       "touchmove",
       (e) => {
         if (!tracking) return;
+        e.preventDefault();
+
         const t = e.touches?.[0];
         if (!t) return;
 
         const dx = t.clientX - startX;
         const dy = t.clientY - startY;
 
-        // 세로 스크롤 제스처면 무시
-        if (Math.abs(dy) > Math.abs(dx)) return;
+        if (Math.abs(dx) > 8 || Math.abs(dy) > 8) suppressClick = true;
 
         dxLive = dx;
-        const rot = Math.max(-12, Math.min(12, dx / 18));
-        card.style.transform = `translateX(${dx}px) rotate(${rot}deg)`;
+        dyLive = dy;
+
+        // 좌/우 드래그 중일 때만 카드가 따라오게
+        if (Math.abs(dx) >= Math.abs(dy)) {
+          const rot = Math.max(-12, Math.min(12, dx / 18));
+          wrap.style.transform = `translateX(${dx}px) rotate(${rot}deg)`;
+        }
       },
-      { passive: true },
+      { passive: false },
     );
 
     card.addEventListener("touchend", () => {
       if (!tracking) return;
       tracking = false;
+
+      // touchend 직후 발생할 수 있는 click을 잠깐 막았다가 해제
+      const unlockClick = () => (suppressClick = false);
+      setTimeout(unlockClick, 250);
+
+      // swipe up -> flip (toggle front/back)
+      if (dyLive < -90) {
+        card.classList.toggle("is-flipped");
+        resetCard();
+        return;
+      }
 
       if (dxLive > 90) {
         // swipe right -> urgent
