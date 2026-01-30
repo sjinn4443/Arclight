@@ -354,67 +354,113 @@
   </div>
 
   <!-- Front of Eye Page -->
-  <div id="frontOfEyePage" class="page" style="display: none">
-    <div class="container">
-      <h1 data-i18n="videos.frontOfEyeTitle">Front of Eye</h1>
-
-      <div
-        class="module-card"
-        id="anteriorSegmentVideoCard"
-        style="cursor: pointer"
-        data-page="anteriorSegmentVideoPage"
-      >
-        <img
-          src="images/icons_pic/FrontOfEye.webp"
-          alt="Anterior Segment Video"
-          data-i18n="videos.anteriorSegmentVideoAlt:alt"
-          style="
-            width: 80px;
-            height: 80px;
-            object-fit: contain;
-            border-radius: 8px;
-            margin-right: 12px;
-          "
-        />
-        <div class="module-info">
-          <h3 data-i18n="videos.frontOfEyeTitle">Front of Eye</h3>
-          <p data-i18n="videos.videoLearning">Video Learning</p>
-          <div class="progress-bar">
-            <div class="progress" style="width: 0%"></div>
-          </div>
-          <span class="status" data-i18n="videos.startStatus">Start!</span>
+  <section id="frontOfEyePage" class="page pupils-like">
+    <div class="container pupils-container">
+      <div class="eyes-topbar">
+        <div class="eyes-topbar__title">Eyes</div>
+        <div class="eyes-topbar__icons">
+          <span class="icon menuBtn" aria-label="Menu">☰</span>
         </div>
       </div>
 
-      <div
-        class="module-card"
-        id="caseBasedLearningCard"
-        style="cursor: pointer"
-        data-page="anteriorSegmentQuizPage"
-      >
-        <img
-          src="images/CaseStudy.webp"
-          alt="Case Based Learning"
-          data-i18n="videos.caseBasedLearningAlt:alt"
-          style="
-            width: 80px;
-            height: 80px;
-            object-fit: contain;
-            border-radius: 8px;
-            margin-right: 12px;
-          "
-        />
-        <div class="module-info">
-          <h3 data-i18n="videos.caseBasedLearningTitle">Case Based Learning</h3>
-          <p data-i18n="videos.quiz">Quiz</p>
-          <div class="progress-bar">
-            <div class="progress" style="width: 0%"></div>
-          </div>
-          <span class="status" data-i18n="videos.startStatus">Start!</span>
+      <h2 class="pupils-subtitle" data-i18n="videos.frontOfEyeTitle">
+        Front of Eye
+      </h2>
+
+      <div class="pupils-levels">
+        <!-- Primary -->
+        <section class="pupil-level pupil-level--primary" aria-label="Primary">
+          <div class="pupil-level__cap">Primary</div>
+
+          <button
+            type="button"
+            class="pupil-card module-card"
+            data-page="fePecAnteriorSegmentPage"
+          >
+            <h3>Teach Yourself</h3>
+
+            <div
+              class="lesson-row lesson-row--video"
+              data-target="fePecAnteriorSegmentPage"
+              role="button"
+              tabindex="0"
+            >
+              <div class="thumb" aria-hidden="true"></div>
+
+              <div class="lesson-main">
+                <div class="lesson-top">
+                  <span class="lesson-type">PEC Anterior Segment</span>
+                  <span class="lesson-meta">| 00:00</span>
+                </div>
+
+                <div
+                  class="lesson-progress"
+                  role="progressbar"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                >
+                  <div class="lesson-progress__fill" style="width: 0%"></div>
+                </div>
+              </div>
+
+              <span class="lesson-cta" data-i18n="videos.startCta"
+                >Start &gt;</span
+              >
+            </div>
+          </button>
+        </section>
+
+        <div class="pupils-dots" aria-hidden="true">
+          <span></span><span></span>
         </div>
+
+        <!-- Intermediate -->
+        <section
+          class="pupil-level pupil-level--intermediate"
+          aria-label="Intermediate"
+        >
+          <div class="pupil-level__cap">Intermediate</div>
+
+          <button
+            type="button"
+            class="pupil-card module-card"
+            data-page="feFullAnteriorSegmentPage"
+          >
+            <h3>Teach Yourself</h3>
+
+            <div
+              class="lesson-row lesson-row--video"
+              data-target="feFullAnteriorSegmentPage"
+              role="button"
+              tabindex="0"
+            >
+              <div class="thumb" aria-hidden="true"></div>
+
+              <div class="lesson-main">
+                <div class="lesson-top">
+                  <span class="lesson-type">Full Anterior Segment</span>
+                  <span class="lesson-meta">| 00:00</span>
+                </div>
+
+                <div
+                  class="lesson-progress"
+                  role="progressbar"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                >
+                  <div class="lesson-progress__fill" style="width: 0%"></div>
+                </div>
+              </div>
+
+              <span class="lesson-cta" data-i18n="videos.startCta"
+                >Start &gt;</span
+              >
+            </div>
+          </button>
+        </section>
       </div>
     </div>
-  </div>
+  </section>
 
   <!-- Fundal Reflex Video Page -->
   <section id="fundalReflexPage" class="page pupils-like">
@@ -1233,6 +1279,96 @@
             >
           </div>
         </button>-->
+      </div>
+    </div>
+  </div>
+
+  <!-- Front of Eye: PEC Anterior Segment (Video Page) -->
+  <div id="fePecAnteriorSegmentPage" class="page" style="display: none">
+    <div>
+      <div class="tri-toggle" role="radiogroup" aria-label="Video mode">
+        <button
+          class="tri-toggle__btn"
+          type="button"
+          role="radio"
+          aria-checked="false"
+          data-mode="low"
+        >
+          low
+        </button>
+        <button
+          class="tri-toggle__btn"
+          type="button"
+          role="radio"
+          aria-checked="false"
+          data-mode="high"
+        >
+          high
+        </button>
+        <div class="tri-toggle__knob" aria-hidden="true"></div>
+      </div>
+
+      <div class="video-header">
+        <h3>PEC Anterior Segment</h3>
+      </div>
+
+      <div class="video-container" id="fePecAnteriorSegmentContainer">
+        <video
+          id="fePecAnteriorSegmentVideo"
+          controls
+          preload="none"
+          style="width: 100%; max-width: 100%"
+        >
+          <source src="" type="video/mp4" />
+          <span data-i18n="videos.videoNotSupported"
+            >Your browser does not support the video tag.</span
+          >
+        </video>
+      </div>
+    </div>
+  </div>
+
+  <!-- Front of Eye: Full Anterior Segment (Video Page) -->
+  <div id="feFullAnteriorSegmentPage" class="page" style="display: none">
+    <div>
+      <div class="tri-toggle" role="radiogroup" aria-label="Video mode">
+        <button
+          class="tri-toggle__btn"
+          type="button"
+          role="radio"
+          aria-checked="false"
+          data-mode="low"
+        >
+          low
+        </button>
+        <button
+          class="tri-toggle__btn"
+          type="button"
+          role="radio"
+          aria-checked="false"
+          data-mode="high"
+        >
+          high
+        </button>
+        <div class="tri-toggle__knob" aria-hidden="true"></div>
+      </div>
+
+      <div class="video-header">
+        <h3>Full Anterior Segment</h3>
+      </div>
+
+      <div class="video-container" id="feFullAnteriorSegmentContainer">
+        <video
+          id="feFullAnteriorSegmentVideo"
+          controls
+          preload="none"
+          style="width: 100%; max-width: 100%"
+        >
+          <source src="" type="video/mp4" />
+          <span data-i18n="videos.videoNotSupported"
+            >Your browser does not support the video tag.</span
+          >
+        </video>
       </div>
     </div>
   </div>

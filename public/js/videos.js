@@ -382,6 +382,30 @@ const VIDEO_PAGE_SOURCES = {
     iframeClass: "videos-yt-fundal-exam",
   },
 
+  fePecAnteriorSegmentPage: {
+    key: "videoMode:fePecAnteriorSegmentPage",
+    containerSelector: "#fePecAnteriorSegmentContainer",
+    videoSelector: "#fePecAnteriorSegmentVideo",
+    sources: {
+      low: "videos/Core/FrontofEye/FE_PEC_220p.mp4",
+      high: "videos/Core/FrontofEye/FE_PEC_720p.mp4",
+    },
+    onlineTitle: "PEC Anterior Segment (online)",
+    iframeClass: "videos-yt-fe-pec",
+  },
+
+  feFullAnteriorSegmentPage: {
+    key: "videoMode:feFullAnteriorSegmentPage",
+    containerSelector: "#feFullAnteriorSegmentContainer",
+    videoSelector: "#feFullAnteriorSegmentVideo",
+    sources: {
+      low: "videos/Core/FrontofEye/FE_Full_220p.mp4",
+      high: "videos/Core/FrontofEye/FE_Full_720p.mp4",
+    },
+    onlineTitle: "Full Anterior Segment (online)",
+    iframeClass: "videos-yt-fe-full",
+  },
+
   fundalStillPage: {
     key: "videoMode:fundalStillPage",
     containerSelector: "#fundalStillContainer",
