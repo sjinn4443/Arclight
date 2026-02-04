@@ -46,6 +46,21 @@ function buildCasePool() {
   return shuffle(pool);
 }
 
+function buildTourPreviewCase(excludeCaseNum) {
+  // 1..12 중에서 excludeCaseNum과 다른 가장 앞 번호를 선택 (결과가 항상 고정되도록)
+  const all = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].filter(
+    (n) => n !== excludeCaseNum,
+  );
+
+  const caseNum = all[0] || 1;
+
+  // case 2/3은 variant가 필요하므로 Tour 미리보기에서는 고정 variant로 넣는다
+  if (caseNum === 2) return { caseNum: 2, variant: "progressive" };
+  if (caseNum === 3) return { caseNum: 3, variant: "adult" };
+
+  return { caseNum, variant: "default" };
+}
+
 // ✅ 이미지 경로는 기존과 동일하게 사용
 function imgPathForCase(caseNum) {
   return `/images/casestudy/case${caseNum}_eye.webp`;
@@ -679,7 +694,7 @@ export function initializeCaseStudyPrimary() {
     // swipe (bind once)
     bindFlashSwipe();
 
-    // ✅ 가이드 처리
+    /*
     const guide = flashPage.querySelector("#primaryFlashGuide");
     const ok = flashPage.querySelector("#primaryFlashGuideOk");
     const key = "primaryFlashcardGuideSeen";
@@ -704,6 +719,365 @@ export function initializeCaseStudyPrimary() {
       }
     } else {
       // guide DOM이 없으면 그냥 시작
+      startNow();
+    }
+  } */
+
+    // ✅ 4-step tour 처리 (Step 1: 설명만 + Next)
+    const tour = flashPage.querySelector("#primaryFlashTour");
+    const spot = flashPage.querySelector("#primaryFlashTourSpot");
+    const spotCard = flashPage.querySelector("#primaryFlashTourSpotCard");
+
+    const bubble = flashPage.querySelector("#primaryFlashTourBubble");
+    const tTitle = flashPage.querySelector("#primaryFlashTourTitle");
+    const tText = flashPage.querySelector("#primaryFlashTourText");
+    const tNext = flashPage.querySelector("#primaryFlashTourNext");
+    const tHint = flashPage.querySelector("#primaryFlashTourHint");
+
+    const key = "primaryFlashcardGuideSeen";
+
+    const startNow = () => {
+      renderFlashCard();
+    };
+
+    const steps = [
+      {
+        title: "Referral Flashcard",
+        text: "Look at the cases and decide if the patient needs urgent referral or not.",
+        target: null,
+        hint: null,
+        nextLabel: ">",
+      },
+      {
+        title: "Flip the card",
+        text: "You can check diagnosis by tapping the card.",
+        target: "#primaryFlashCard",
+        hint: null,
+        nextLabel: ">",
+      },
+      {
+        title: "Not urgent",
+        text: "Swipe the flashcard to the left or press the button.",
+        target: "#primaryFlashNotUrgentBtn",
+        hint: "left",
+        nextLabel: ">",
+      },
+      {
+        title: "Urgent referral",
+        text: "Swipe the flashcard to the right or press the button.",
+        target: "#primaryFlashUrgentBtn",
+        hint: "right",
+        nextLabel: "Start",
+      },
+    ];
+
+    let stepIndex = 0;
+
+    function hideTour() {
+      if (tour) tour.style.display = "none";
+    }
+
+    function showTour() {
+      if (tour) tour.style.display = "block";
+    }
+
+    function clearHint() {
+      if (!tHint) return;
+      tHint.style.display = "none";
+      tHint.style.left = "";
+      tHint.style.top = "";
+      tHint.style.width = "";
+      tHint.classList.remove("is-up", "is-left", "is-right", "is-over-card");
+    }
+
+    function applyHint(kind) {
+      if (!tHint) return;
+      clearHint();
+      if (!kind) return;
+
+      tHint.style.display = "block";
+
+      // Flip 단계는 hint 자체를 안 쓰기로 했으니, 여기서는 left/right만 처리
+      if (kind === "left") {
+        tHint.classList.add("is-left", "is-over-card");
+      }
+      if (kind === "right") {
+        tHint.classList.add("is-right", "is-over-card");
+      }
+    }
+
+    function positionHintCenteredOnFlashCard() {
+      if (!tHint) return;
+
+      const cardEl = flashPage.querySelector("#primaryFlashCard");
+      if (!cardEl) return;
+
+      const r = cardEl.getBoundingClientRect();
+
+      // Hint를 화면 기준 fixed로 card 정중앙에 두기
+      tHint.style.position = "fixed";
+      tHint.style.left = `50%`;
+      tHint.style.top = `${Math.round(r.top + r.height / 2)}px`;
+      tHint.style.transform = "translate(-50%, -50%)";
+      tHint.style.marginTop = "0";
+      tHint.style.zIndex = "10000";
+    }
+
+    function positionHintOverFlashCard() {
+      if (!tHint) return;
+      if (tHint.style.display === "none") return;
+
+      const cardEl = flashPage.querySelector("#primaryFlashCard");
+      if (!cardEl) return;
+
+      const r = cardEl.getBoundingClientRect();
+
+      // 힌트 바 너비는 카드보다 작게 고정 범위로 설정
+      const w = Math.max(180, Math.min(260, Math.round(r.width - 24)));
+      const h = 34; // .pflash-tour__hint height
+
+      // 카드 정중앙에 힌트 바의 정중앙을 맞춤
+      const centerX = Math.round(r.left + r.width / 2);
+      const centerY = Math.round(r.top + r.height / 2);
+
+      const leftRaw = Math.round(centerX - w / 2);
+      const topRaw = Math.round(centerY - h / 2);
+
+      const left = Math.max(12, Math.min(leftRaw, window.innerWidth - w - 12));
+      const top = Math.max(12, Math.min(topRaw, window.innerHeight - h - 12));
+
+      tHint.style.left = `${left}px`;
+      tHint.style.top = `${top}px`;
+      tHint.style.width = `${w}px`;
+    }
+
+    function hideSpotlight() {
+      if (!spot) return;
+      spot.style.width = "0px";
+      spot.style.height = "0px";
+      spot.style.left = "0px";
+      spot.style.top = "0px";
+      spot.style.display = "none";
+    }
+
+    function positionSpotlightTo(targetEl) {
+      if (!spot) return;
+      const r = targetEl.getBoundingClientRect();
+
+      // padding around target
+      const pad = 10;
+      const left = Math.max(8, r.left - pad);
+      const top = Math.max(8, r.top - pad);
+      const width = Math.min(window.innerWidth - left - 8, r.width + pad * 2);
+      const height = Math.min(window.innerHeight - top - 8, r.height + pad * 2);
+
+      spot.style.display = "block";
+      spot.style.left = `${left}px`;
+      spot.style.top = `${top}px`;
+      spot.style.width = `${width}px`;
+      spot.style.height = `${height}px`;
+    }
+
+    function hideCardSpotlight() {
+      if (!spotCard) return;
+      spotCard.style.width = "0px";
+      spotCard.style.height = "0px";
+      spotCard.style.left = "0px";
+      spotCard.style.top = "0px";
+      spotCard.style.display = "none";
+    }
+
+    function positionCardSpotlightTo(targetEl) {
+      if (!spotCard) return;
+      const r = targetEl.getBoundingClientRect();
+
+      const pad = 10;
+      const left = Math.max(8, r.left - pad);
+      const top = Math.max(8, r.top - pad);
+      const width = Math.min(window.innerWidth - left - 8, r.width + pad * 2);
+      const height = Math.min(window.innerHeight - top - 8, r.height + pad * 2);
+
+      spotCard.style.display = "block";
+      spotCard.style.left = `${left}px`;
+      spotCard.style.top = `${top}px`;
+      spotCard.style.width = `${width}px`;
+      spotCard.style.height = `${height}px`;
+    }
+
+    function positionSpotlightToGroup(els) {
+      if (!spot) return;
+
+      const rects = els.filter(Boolean).map((el) => el.getBoundingClientRect());
+
+      if (!rects.length) {
+        hideSpotlight();
+        return;
+      }
+
+      const minLeft = Math.min(...rects.map((r) => r.left));
+      const minTop = Math.min(...rects.map((r) => r.top));
+      const maxRight = Math.max(...rects.map((r) => r.right));
+      const maxBottom = Math.max(...rects.map((r) => r.bottom));
+
+      const pad = 10;
+      const left = Math.max(8, minLeft - pad);
+      const top = Math.max(8, minTop - pad);
+      const width = Math.min(
+        window.innerWidth - left - 8,
+        maxRight - minLeft + pad * 2,
+      );
+      const height = Math.min(
+        window.innerHeight - top - 8,
+        maxBottom - minTop + pad * 2,
+      );
+
+      spot.style.display = "block";
+      spot.style.left = `${left}px`;
+      spot.style.top = `${top}px`;
+      spot.style.width = `${width}px`;
+      spot.style.height = `${height}px`;
+    }
+
+    function positionBubble(targetEl) {
+      if (!bubble) return;
+
+      const margin = 12;
+
+      // default: centre bottom-ish
+      let x = Math.round((window.innerWidth - bubble.offsetWidth) / 2);
+      let y = Math.round(window.innerHeight - bubble.offsetHeight - 24);
+
+      if (!targetEl) {
+        bubble.style.left = `${Math.max(12, Math.min(x, window.innerWidth - bubble.offsetWidth - 12))}px`;
+        bubble.style.top = `${Math.max(12, Math.min(y, window.innerHeight - bubble.offsetHeight - 12))}px`;
+        return;
+      }
+
+      const r = targetEl.getBoundingClientRect();
+
+      // prefer below target
+      const belowY = r.bottom + margin;
+      const aboveY = r.top - margin - bubble.offsetHeight;
+
+      if (belowY + bubble.offsetHeight <= window.innerHeight - 12) {
+        y = belowY;
+      } else if (aboveY >= 12) {
+        y = aboveY;
+      }
+
+      // try align with target centre
+      x = Math.round(r.left + r.width / 2 - bubble.offsetWidth / 2);
+
+      bubble.style.left = `${Math.max(12, Math.min(x, window.innerWidth - bubble.offsetWidth - 12))}px`;
+      bubble.style.top = `${Math.max(12, Math.min(y, window.innerHeight - bubble.offsetHeight - 12))}px`;
+    }
+
+    function renderStep() {
+      const s = steps[stepIndex];
+      if (!s) return;
+
+      if (tTitle) tTitle.textContent = s.title;
+      if (tText) tText.textContent = s.text;
+      if (tNext) {
+        tNext.textContent = s.nextLabel;
+
+        // Start 단계만 너비 60px
+        if (s.nextLabel === "Start") {
+          tNext.classList.add("is-start");
+        } else {
+          tNext.classList.remove("is-start");
+        }
+      }
+
+      applyHint(s.hint);
+      // hint가 켜져 있는 단계면 flashcard 정중앙으로 이동
+      if (s.hint) {
+        requestAnimationFrame(() => positionHintCenteredOnFlashCard());
+      }
+
+      if (s.hint === "left" || s.hint === "right") {
+        requestAnimationFrame(() => positionHintOverFlashCard());
+      }
+
+      // Step 1: 설명만 (spotlight 없음)
+      if (!s.target) {
+        hideSpotlight();
+        hideCardSpotlight();
+        requestAnimationFrame(() => positionBubble(null));
+        return;
+      }
+
+      const targetEl = flashPage.querySelector(s.target);
+      if (!targetEl) {
+        hideSpotlight();
+        hideCardSpotlight();
+        requestAnimationFrame(() => positionBubble(null));
+        return;
+      }
+
+      const cardEl = flashPage.querySelector("#primaryFlashCard");
+
+      // Not urgent / Urgent referral 단계에서는 버튼 spot + 카드 spot을 동시에 표시
+      if (
+        s.target === "#primaryFlashNotUrgentBtn" ||
+        s.target === "#primaryFlashUrgentBtn"
+      ) {
+        positionSpotlightTo(targetEl); // 버튼 spot (기존 spot)
+        if (cardEl) positionCardSpotlightTo(cardEl); // 카드 spot (추가 spotCard)
+      } else {
+        positionSpotlightTo(targetEl);
+        hideCardSpotlight();
+      }
+
+      requestAnimationFrame(() => positionBubble(targetEl));
+    }
+
+    function advanceTour() {
+      if (stepIndex < steps.length - 1) {
+        stepIndex += 1;
+        renderStep();
+        return;
+      }
+
+      // finished
+      hideTour();
+      sessionStorage.setItem(key, "1");
+      startNow();
+    }
+
+    function beginTour() {
+      // Tour가 떠 있는 동안에도 카드 1장을 먼저 렌더
+      // 단, Tour 종료 후 실제 첫 케이스(flashPool[0])와 다른 케이스로 강제
+      const firstCaseNum = flashPool?.[0]?.caseNum;
+      const previewCaseObj = buildTourPreviewCase(firstCaseNum);
+
+      renderFlashCard({
+        caseObjOverride: previewCaseObj,
+        skipTimer: true,
+        labelOverride: "Example",
+      });
+
+      stepIndex = 0;
+      showTour();
+      renderStep();
+    }
+
+    if (tour && spot && bubble && tNext) {
+      tNext.onclick = () => advanceTour();
+
+      if (sessionStorage.getItem(key)) {
+        hideTour();
+        startNow();
+      } else {
+        beginTour();
+      }
+
+      // keep spotlight aligned on resize
+      window.addEventListener("resize", () => {
+        if (!tour || tour.style.display === "none") return;
+        renderStep();
+      });
+    } else {
       startNow();
     }
   }
@@ -737,23 +1111,35 @@ export function initializeCaseStudyPrimary() {
         x && x !== "What is the diagnosis?" && x !== "I think that's about it.",
     );
   }
+  function renderFlashCard(opts = {}) {
+    const {
+      caseObjOverride = null,
+      skipTimer = false,
+      labelOverride = null,
+    } = opts;
 
-  function renderFlashCard() {
     console.log("[flash] renderFlashCard", {
       flashIndex,
       poolLen: flashPool?.length,
+      override: Boolean(caseObjOverride),
+      skipTimer,
     });
 
-    if (flashIndex >= flashPool.length) {
+    // override가 없을 때만 완료 체크
+    if (!caseObjOverride && flashIndex >= flashPool.length) {
       stopFlashTimer();
       showFlashCompletionModal();
       return;
     }
 
-    const caseObj = flashPool[flashIndex]; // ✅ 더 이상 % 사용 X
+    const caseObj = caseObjOverride || flashPool[flashIndex]; // ✅ override 지원
     const caseLabel = flashPage.querySelector("#primaryFlashCaseLabel");
     if (caseLabel) {
-      caseLabel.textContent = `Case (${flashIndex + 1}/${flashPool.length})`;
+      if (labelOverride != null) {
+        caseLabel.textContent = labelOverride;
+      } else {
+        caseLabel.textContent = `Case (${flashIndex + 1}/${flashPool.length})`;
+      }
     }
 
     const img = flashPage.querySelector("#primaryFlashImg");
@@ -779,6 +1165,8 @@ export function initializeCaseStudyPrimary() {
       li.textContent = line;
       ul.appendChild(li);
     });
+
+    if (skipTimer) return;
 
     startFlashTimer(() => {
       // time up => 오답 처리 후 다음 케이스

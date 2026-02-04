@@ -336,7 +336,7 @@ const VIDEO_PAGE_SOURCES = {
     sources: {
       low: "videos/Core/VisualAcuity/VA_Mum_220p.mp4",
       high: "videos/Core/VisualAcuity/VA_Mum_720p.mp4",
-      // online optional
+      online: "https://www.youtube.com/watch?v=OU8ueHEyfBA",
     },
     onlineTitle: "Visual Development (online)",
     iframeClass: "videos-yt-mum",

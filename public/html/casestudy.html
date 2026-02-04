@@ -813,7 +813,7 @@
       </div>
     </div>
 
-    <!-- 안내 오버레이 -->
+    <!-- 안내 오버레이 
     <div
       id="primaryFlashGuide"
       style="
@@ -844,14 +844,6 @@
           <br />
           Swipe left or tap <b>Not Urgent</b>.<br /><br />
           You have 30 seconds.
-
-          <!--Review the flashcard.<br /><br />
-          Decide if the case needs an
-          <span style="font-weight: 700; color: #e41e26">urgent referral</span>.
-          <br /><br />Swipe right / click red button -
-          <span style="font-weight: 700; color: #e41e26">Urgent</span>
-          <br />Swipe left / click gray button - <b>Not Urgent</b>
-          <br /><br />You have 30 seconds.-->
         </div>
         <button
           id="primaryFlashGuideOk"
@@ -870,6 +862,45 @@
           Start
         </button>
       </div>
+    </div> -->
+
+    <!-- Tour overlay (Primary flashcard) -->
+    <div id="primaryFlashTour" class="pflash-tour" style="display: none">
+      <div class="pflash-tour__backdrop"></div>
+
+      <!-- spotlight frame -->
+      <div
+        id="primaryFlashTourSpot"
+        class="pflash-tour__spot"
+        aria-hidden="true"
+      ></div>
+
+      <!-- bubble -->
+      <div
+        id="primaryFlashTourBubble"
+        class="pflash-tour__bubble"
+        role="dialog"
+        aria-live="polite"
+      >
+        <div id="primaryFlashTourTitle" class="pflash-tour__title"></div>
+        <div id="primaryFlashTourText" class="pflash-tour__text"></div>
+
+        <div class="pflash-tour__actions">
+          <button
+            id="primaryFlashTourNext"
+            type="button"
+            class="pflash-tour__btn"
+          >
+            Next
+          </button>
+        </div>
+      </div>
+      <!-- animation hint area (moved outside bubble, positioned above flashcard by JS) -->
+      <div
+        id="primaryFlashTourHint"
+        class="pflash-tour__hint"
+        aria-hidden="true"
+      ></div>
     </div>
 
     <!-- 카드 영역 -->
