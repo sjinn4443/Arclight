@@ -258,6 +258,11 @@ export function initializeEyesCatalog() {
         tags: ["Video", "Quiz"],
       },
       {
+        label: "Glaucoma",
+        target: "glaucomaWorkshop",
+        tags: ["Video", "Quiz"],
+      },
+      {
         label: "WHO PEC",
         target: EYES_INDEX["WHO PEC"],
         tags: ["Coming Soon"],

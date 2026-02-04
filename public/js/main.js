@@ -104,6 +104,13 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    if (routeName === "glaucomaWorkshop") {
+      const { initializeGlaucomaWorkshop } =
+        await import("./glaucomaWorkshop.js");
+      initializeGlaucomaWorkshop?.();
+      return;
+    }
+
     if (routeName === "fundalReflexPdf") {
       initializeFundalReflexPdf();
       return;
