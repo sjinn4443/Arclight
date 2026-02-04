@@ -27,76 +27,114 @@ function normaliseVideosSubpageId(raw) {
   return `${t}Page`;
 }
 
-function setupWorkshopSeeAllToggles(page) {
-  const cards = page.querySelectorAll(".pupil-card.module-card");
+function setupWorkshopFolders(page) {
+  const folders = page.querySelectorAll(
+    "#glaucomaWorkshopFolders .glaucoma-folder-row",
+  );
+  const sectionCards = page.querySelectorAll(".glaucoma-section-card");
 
-  cards.forEach((card) => {
+  const foldersContainer = page.querySelector("#glaucomaWorkshopFolders");
+  if (!foldersContainer) return;
+
+  const hideAllSectionCards = () => {
+    sectionCards.forEach((card) => {
+      card.style.display = "none";
+
+      const titleEl = card.querySelector("h3");
+      if (!titleEl) return;
+
+      const existingToggle = titleEl.querySelector(".see-all-toggle");
+      if (existingToggle) existingToggle.remove();
+    });
+  };
+
+  const showSectionByKey = (key) => {
+    const card = page.querySelector(
+      `.glaucoma-section-card[data-section="${key}"]`,
+    );
+    if (!card) return;
+
+    const openFolderRow = page.querySelector(
+      `#glaucomaWorkshopFolders .glaucoma-folder-row[data-folder="${key}"]`,
+    );
+    if (!openFolderRow) return;
+
+    // 다른 섹션이 열려있으면 먼저 닫기 (폴더들은 그대로 유지)
+    hideAllSectionCards();
+    folders.forEach((r) => (r.style.display = ""));
+
+    // 클릭한 폴더 버튼 1개만 없어짐
+    openFolderRow.style.display = "none";
+
+    // 섹션 카드를 "그 자리"에 나오게 하기: 폴더 row 바로 다음에 배치
+    openFolderRow.insertAdjacentElement("afterend", card);
+    card.style.display = "";
+
+    // h3 오른쪽에 Close를 붙이기
     const titleEl = card.querySelector("h3");
     if (!titleEl) return;
 
-    // 이 카드 안의 모든 lesson-row를 한 그룹으로 처리
-    const groupRows = Array.from(card.querySelectorAll(".lesson-row"));
-
-    // "2개 초과면 접기" => 3개 이상일 때만 토글
-    if (groupRows.length <= 2) return;
-
-    // 이미 붙어있으면 중복 방지
-    if (titleEl.querySelector(".see-all-toggle")) return;
-
-    // 기본 상태: 2개만 보여주고 나머지는 숨김
-    groupRows.slice(2).forEach((row) => {
-      row.setAttribute("data-collapsible-hidden", "true");
-    });
+    // h3를 한 줄짜리 flex 헤더로 만들고, Close를 오른쪽으로 보냄
+    titleEl.style.display = "flex";
+    titleEl.style.alignItems = "center";
+    titleEl.style.width = "100%";
 
     const toggle = document.createElement("span");
     toggle.className = "see-all-toggle";
     toggle.setAttribute("role", "button");
     toggle.setAttribute("tabindex", "0");
-    toggle.setAttribute("aria-expanded", "false");
-    toggle.textContent = "See all >";
+    toggle.setAttribute("aria-expanded", "true");
+    toggle.textContent = "Close ^";
 
-    const open = () => {
-      groupRows.forEach((row) =>
-        row.removeAttribute("data-collapsible-hidden"),
-      );
-      toggle.textContent = "Close ^";
-      toggle.setAttribute("aria-expanded", "true");
-    };
-
-    const close = () => {
-      groupRows.slice(2).forEach((row) => {
-        row.setAttribute("data-collapsible-hidden", "true");
-      });
-      toggle.textContent = "See all >";
-      toggle.setAttribute("aria-expanded", "false");
-    };
-
-    const toggleNow = (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      const expanded = toggle.getAttribute("aria-expanded") === "true";
-      if (expanded) close();
-      else open();
-    };
-
-    toggle.addEventListener("click", toggleNow);
-    toggle.addEventListener("keydown", (e) => {
-      if (e.key === "Enter" || e.key === " ") toggleNow(e);
-    });
-
-    // h3를 한 줄짜리 flex 헤더로 만들고, toggle을 오른쪽 끝으로 보냄
-    titleEl.style.display = "flex";
-    titleEl.style.alignItems = "center";
-    titleEl.style.width = "100%";
-
-    // toggle이 CSS의 margin-left:12vw 영향을 받지 않도록 inline으로 덮어쓰기
+    // 오른쪽 위치 고정(지금까지 너가 맞춘 값 유지)
     toggle.style.marginLeft = "auto";
     toggle.style.marginRight = "15px";
     toggle.style.whiteSpace = "nowrap";
 
-    // h3 오른쪽에 붙이기 (History   See all >)
-    // h3가 이미 flex로 바뀌어 있어야 오른쪽 정렬됨 (HTML에서 h3를 flex로 교체)
+    const closeNow = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      // 섹션 카드 숨기기
+      card.style.display = "none";
+
+      // h3에 붙인 Close 제거
+      const existingToggle = titleEl.querySelector(".see-all-toggle");
+      if (existingToggle) existingToggle.remove();
+
+      // 폴더 버튼 복귀
+      openFolderRow.style.display = "";
+    };
+
+    toggle.addEventListener("click", closeNow);
+    toggle.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") closeNow(e);
+    });
+
     titleEl.appendChild(toggle);
+  };
+
+  hideAllSectionCards();
+  folders.forEach((r) => (r.style.display = ""));
+  foldersContainer.style.display = "";
+
+  folders.forEach((row) => {
+    if (row.dataset.wired === "1") return;
+    row.dataset.wired = "1";
+
+    const key = row.getAttribute("data-folder");
+    if (!key) return;
+
+    const openNow = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      showSectionByKey(key);
+    };
+
+    row.addEventListener("click", openNow);
+    row.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") openNow(e);
+    });
   });
 }
 
@@ -104,7 +142,7 @@ export function initializeGlaucomaWorkshop() {
   const page = document.getElementById("glaucomaWorkshopPage");
   if (!page) return;
 
-  setupWorkshopSeeAllToggles(page);
+  setupWorkshopFolders(page);
 
   const rows = page.querySelectorAll(".lesson-row[data-target]");
   rows.forEach((row) => {

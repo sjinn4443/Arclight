@@ -13,8 +13,199 @@
       <section class="pupil-level pupil-level--primary" aria-label="Primary">
         <div class="pupil-level__cap">Primary</div>
 
+        <!-- Folder buttons (collapsed view) -->
+        <div
+          id="glaucomaWorkshopFolders"
+          style="
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+          "
+        >
+          <div
+            class="lesson-row glaucoma-folder-row"
+            data-folder="introduction"
+            role="button"
+            tabindex="0"
+            style="width: 79%"
+          >
+            <div
+              class="thumb"
+              aria-hidden="true"
+              style="
+                background-image: url(&quot;/images/icon/eyes/moduleicons/primary_folder.webp&quot;);
+              "
+            ></div>
+
+            <div class="lesson-main">
+              <div class="lesson-top">
+                <span class="lesson-type">Introduction</span>
+                <span class="lesson-meta"></span>
+              </div>
+            </div>
+
+            <span class="lesson-cta" style="color: #00ff66">See all &gt;</span>
+          </div>
+
+          <div
+            class="lesson-row glaucoma-folder-row"
+            data-folder="history"
+            role="button"
+            tabindex="0"
+            style="width: 79%"
+          >
+            <div
+              class="thumb"
+              aria-hidden="true"
+              style="
+                background-image: url(&quot;/images/icon/eyes/moduleicons/primary_folder.webp&quot;);
+              "
+            ></div>
+
+            <div class="lesson-main">
+              <div class="lesson-top">
+                <span class="lesson-type">History</span>
+                <span class="lesson-meta"></span>
+              </div>
+            </div>
+
+            <span class="lesson-cta" style="color: #00ff66">See all &gt;</span>
+          </div>
+
+          <div
+            class="lesson-row glaucoma-folder-row"
+            data-folder="vision"
+            role="button"
+            tabindex="0"
+            style="width: 79%"
+          >
+            <div
+              class="thumb"
+              aria-hidden="true"
+              style="
+                background-image: url(&quot;/images/icon/eyes/moduleicons/primary_folder.webp&quot;);
+              "
+            ></div>
+
+            <div class="lesson-main">
+              <div class="lesson-top">
+                <span class="lesson-type">Vision</span>
+                <span class="lesson-meta"></span>
+              </div>
+            </div>
+
+            <span class="lesson-cta" style="color: #00ff66">See all &gt;</span>
+          </div>
+
+          <div
+            class="lesson-row glaucoma-folder-row"
+            data-folder="fieldsPupils"
+            role="button"
+            tabindex="0"
+            style="width: 79%"
+          >
+            <div
+              class="thumb"
+              aria-hidden="true"
+              style="
+                background-image: url(&quot;/images/icon/eyes/moduleicons/primary_folder.webp&quot;);
+              "
+            ></div>
+
+            <div class="lesson-main">
+              <div class="lesson-top">
+                <span class="lesson-type">Fields &amp; pupils</span>
+                <span class="lesson-meta"></span>
+              </div>
+            </div>
+
+            <span class="lesson-cta" style="color: #00ff66">See all &gt;</span>
+          </div>
+
+          <div
+            class="lesson-row glaucoma-folder-row"
+            data-folder="frontOfEye"
+            role="button"
+            tabindex="0"
+            style="width: 79%"
+          >
+            <div
+              class="thumb"
+              aria-hidden="true"
+              style="
+                background-image: url(&quot;/images/icon/eyes/moduleicons/primary_folder.webp&quot;);
+              "
+            ></div>
+
+            <div class="lesson-main">
+              <div class="lesson-top">
+                <span class="lesson-type">Front of eye</span>
+                <span class="lesson-meta"></span>
+              </div>
+            </div>
+
+            <span class="lesson-cta" style="color: #00ff66">See all &gt;</span>
+          </div>
+
+          <div
+            class="lesson-row glaucoma-folder-row"
+            data-folder="backOfEye"
+            role="button"
+            tabindex="0"
+            style="width: 79%"
+          >
+            <div
+              class="thumb"
+              aria-hidden="true"
+              style="
+                background-image: url(&quot;/images/icon/eyes/moduleicons/primary_folder.webp&quot;);
+              "
+            ></div>
+
+            <div class="lesson-main">
+              <div class="lesson-top">
+                <span class="lesson-type">Back of eye</span>
+                <span class="lesson-meta"></span>
+              </div>
+            </div>
+
+            <span class="lesson-cta" style="color: #00ff66">See all &gt;</span>
+          </div>
+
+          <div
+            class="lesson-row glaucoma-folder-row"
+            data-folder="summary"
+            role="button"
+            tabindex="0"
+            style="width: 79%"
+          >
+            <div
+              class="thumb"
+              aria-hidden="true"
+              style="
+                background-image: url(&quot;/images/icon/eyes/moduleicons/primary_folder.webp&quot;);
+              "
+            ></div>
+
+            <div class="lesson-main">
+              <div class="lesson-top">
+                <span class="lesson-type">Summary</span>
+                <span class="lesson-meta"></span>
+              </div>
+            </div>
+
+            <span class="lesson-cta" style="color: #00ff66">See all &gt;</span>
+          </div>
+        </div>
+
         <!-- Introduction -->
-        <button type="button" class="pupil-card module-card">
+        <button
+          type="button"
+          class="pupil-card module-card glaucoma-section-card"
+          data-section="introduction"
+          style="display: none"
+        >
           <h3>Introduction</h3>
 
           <div
@@ -112,8 +303,13 @@
         </button>
 
         <!-- History -->
-        <button type="button" class="pupil-card module-card">
-          <h3>History</h3>
+        <button
+          type="button"
+          class="pupil-card module-card glaucoma-section-card"
+          data-section="vision"
+          style="display: none"
+        >
+          <h3>Vision</h3>
 
           <div
             class="lesson-row lesson-row--scroll"
@@ -212,7 +408,12 @@
         </button>
 
         <!-- Vision -->
-        <button type="button" class="pupil-card module-card">
+        <button
+          type="button"
+          class="pupil-card module-card glaucoma-section-card"
+          data-section="vision"
+          style="display: none"
+        >
           <h3>Vision</h3>
 
           <div
@@ -329,7 +530,12 @@
         </button>
 
         <!-- Fields & pupils -->
-        <button type="button" class="pupil-card module-card">
+        <button
+          type="button"
+          class="pupil-card module-card glaucoma-section-card"
+          data-section="fieldsPupils"
+          style="display: none"
+        >
           <h3>Fields &amp; pupils</h3>
 
           <div
@@ -679,7 +885,12 @@
         </button>
 
         <!-- Front of eye -->
-        <button type="button" class="pupil-card module-card">
+        <button
+          type="button"
+          class="pupil-card module-card glaucoma-section-card"
+          data-section="frontOfEye"
+          style="display: none"
+        >
           <h3>Front of eye</h3>
 
           <div
@@ -930,7 +1141,12 @@
         </button>
 
         <!-- Back of eye -->
-        <button type="button" class="pupil-card module-card">
+        <button
+          type="button"
+          class="pupil-card module-card glaucoma-section-card"
+          data-section="backOfEye"
+          style="display: none"
+        >
           <h3>Back of eye</h3>
 
           <div
@@ -1102,7 +1318,12 @@
         </button>
 
         <!-- Summary -->
-        <button type="button" class="pupil-card module-card">
+        <button
+          type="button"
+          class="pupil-card module-card glaucoma-section-card"
+          data-section="summary"
+          style="display: none"
+        >
           <h3>Summary</h3>
 
           <div
