@@ -571,25 +571,36 @@ function initGlaucomaACDInteractive() {
   }
   page.dataset.inited = "1";
 
-  const dragTargets = [
-    page.querySelector("#acdTorchLeft"),
-    page.querySelector("#acdTorchRight"),
-  ];
-
-  const leftTorch = page.querySelector("#acdTorchLeft");
-  const rightTorch = page.querySelector("#acdTorchRight");
-  const rightCrescent = page.querySelector("#acdCrescentRight");
-  const leftTick = page.querySelector("#acdTickLeft");
-  const rightTick = page.querySelector("#acdTickRight");
+  const stage = page.querySelector("#acdStage");
   const hint = page.querySelector("#acdHint");
 
-  if (!leftTorch || !rightTorch || !rightCrescent) return;
+  const flashlightOff = page.querySelector("#acdFlashlightOff");
+  const bubble = page.querySelector("#acdBubble");
+
+  const flashlightLeft = page.querySelector("#acdFlashlightLeft");
+  const flashlightRight = page.querySelector("#acdFlashlightRight");
+  const rightCrescent = page.querySelector("#acdCrescentRight");
+
+  const labelLeft = page.querySelector("#acdLabelLeft");
+  const labelRight = page.querySelector("#acdLabelRight");
+
+  if (
+    !stage ||
+    !flashlightOff ||
+    !bubble ||
+    !flashlightLeft ||
+    !flashlightRight ||
+    !rightCrescent
+  )
+    return;
 
   const state = {
+    pickedUp: false,
+
     // -1(왼쪽) ~ +1(오른쪽)
-    nx: 0.8,
-    // 0(눈 중심 부근) ~ 1(눈 위아래 멀어짐) 용도로 쓰기보다, 지금은 “수평 빛” 컨셉이라 약하게만
+    nx: 0.85,
     ny: 0.0,
+
     dragging: false,
     pointerId: null,
   };
@@ -598,42 +609,77 @@ function initGlaucomaACDInteractive() {
     return Math.max(a, Math.min(b, v));
   }
 
-  function getEffectStrength(nx) {
-    // “temporal 쪽에 가까울수록 효과↑, 정면(중앙)일수록 효과↓”
-    // nx 절대값이 클수록 강함
-    const t = clamp((Math.abs(nx) - 0.15) / 0.75, 0, 1);
-    return t;
-  }
-
   function render() {
-    const strength = getEffectStrength(state.nx);
-
-    // 토치 위치: 좌/우 대칭으로 이동
-    // stage 안에서 좌측 torch는 nx에 따라 더 왼쪽으로, 우측 torch는 더 오른쪽으로
-    const stage = page.querySelector("#acdStage");
     const rect = stage.getBoundingClientRect();
 
-    const baseInset = rect.width * 0.04;
-    const travel = rect.width * 0.18; // 드래그로 이동하는 폭
+    // pickup 전: off flashlight + bubble만 보이고, on flashlight는 숨김
+    if (!state.pickedUp) {
+      flashlightLeft.style.display = "none";
+      flashlightRight.style.display = "none";
 
-    const leftX = baseInset - travel * state.nx; // nx=+면 더 왼쪽(temporal)
-    const rightX = rect.width - baseInset + travel * state.nx; // nx=+면 더 오른쪽(temporal)
+      rightCrescent.style.opacity = "0";
 
-    leftTorch.style.left = `${leftX}px`;
-    rightTorch.style.left = `${rightX}px`;
+      if (hint) hint.style.opacity = "1";
 
-    // “얇은 어두운 반달(crescent shadow)”은 오른쪽(얕은 AC)에서만,
-    // temporal 조명(strength 높음)에서 nasal(코쪽) 홍채에 생기게
+      flashlightOff.style.display = "";
+      bubble.style.display = "";
+      return;
+    }
+
+    // pickup 후: off 숨김, on 2개 표시
+    flashlightOff.style.display = "none";
+    bubble.style.display = "none";
+
+    flashlightLeft.style.display = "block";
+    flashlightRight.style.display = "block";
+
+    // flashlights move symmetrically around centre line
+    const baseInset = rect.width * 0.06;
+    const travel = rect.width * 0.2;
+
+    let leftX = baseInset - travel * state.nx;
+    let rightX = rect.width - baseInset + travel * state.nx;
+
+    const y = rect.height * 0.52;
+
+    // clamp inside stage bounds (use actual rendered width)
+    const fw = flashlightLeft.getBoundingClientRect().width || 0;
+    const half = fw / 2;
+
+    // left flashlight must stay fully inside
+    leftX = clamp(leftX, half, rect.width - half);
+
+    // right flashlight is symmetric position around centre line
+    // keep it inside too
+    rightX = clamp(rightX, half, rect.width - half);
+
+    // ✅ Crescent strength is driven by the RIGHT flashlight's pixel position.
+    //    Far from the eye (more to the right) => 0
+    //    As it moves left towards the eye => 0 -> 1
+    const START_SHOW_RIGHT = 273; // start to appear
+    const FULL_SHOW_RIGHT = 236.8; // fully visible
+
+    const denom = START_SHOW_RIGHT - FULL_SHOW_RIGHT; // 6.667
+    const strength =
+      denom > 0 ? clamp((START_SHOW_RIGHT - rightX) / denom, 0, 1) : 0;
+
+    flashlightLeft.style.left = `${leftX}px`;
+    flashlightRight.style.left = `${rightX}px`;
+
+    // crescent shadow on RIGHT eye only
     rightCrescent.style.opacity = `${strength}`;
 
-    // 힌트는 strength가 충분하면 서서히 사라지게
-    if (hint) hint.style.opacity = `${1 - strength}`;
+    // ✅ Show labels ONLY when fully visible
+    if (strength >= 1) {
+      if (labelLeft) labelLeft.style.opacity = "1";
+      if (labelRight) labelRight.style.opacity = "1";
+    } else {
+      if (labelLeft) labelLeft.style.opacity = "0";
+      if (labelRight) labelRight.style.opacity = "0";
+    }
 
-    // 정상(왼쪽)은 강한 temporal 조명 때 ✅만
-    // 얕은(오른쪽)은 ✅ + 🌙
-    const tickOn = strength > 0.55;
-    if (leftTick) leftTick.style.opacity = tickOn ? "1" : "0";
-    if (rightTick) rightTick.style.opacity = tickOn ? "1" : "0";
+    // hint fades as strength increases
+    if (hint) hint.style.opacity = `${1 - strength}`;
   }
 
   function pointerToNormalised(e) {
@@ -648,7 +694,33 @@ function initGlaucomaACDInteractive() {
     return { nx, ny: 0 };
   }
 
+  function pickUpFlashlight() {
+    if (state.pickedUp) return;
+
+    // pick up 시점에는 중앙(효과 거의 0)에서 시작해서
+    // 사용자가 옆으로 옮길 때부터 crescent가 생기게 한다
+    state.nx = 0;
+    state.ny = 0;
+
+    state.pickedUp = true;
+    render();
+  }
+
   function onDown(e) {
+    // pickup: clicking or dragging the OFF flashlight activates the experience
+    if (!state.pickedUp) {
+      if (e.target === flashlightOff) {
+        pickUpFlashlight();
+        state.dragging = true;
+        state.pointerId = e.pointerId;
+        e.target.setPointerCapture(e.pointerId);
+      }
+      return;
+    }
+
+    // after pickup: drag the ON flashlights
+    if (e.target !== flashlightLeft && e.target !== flashlightRight) return;
+
     state.dragging = true;
     state.pointerId = e.pointerId;
     e.target.setPointerCapture(e.pointerId);
@@ -676,8 +748,7 @@ function initGlaucomaACDInteractive() {
     render();
   }
 
-  dragTargets.forEach((el) => {
-    if (!el) return;
+  [flashlightOff, flashlightLeft, flashlightRight].forEach((el) => {
     el.style.touchAction = "none";
     el.addEventListener("pointerdown", onDown);
     el.addEventListener("pointermove", onMove);
