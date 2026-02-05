@@ -231,12 +231,179 @@ function setupVisualFieldsSubfolder(page) {
   });
 }
 
+function setupAtomsPanZoom(viewerEl, stageEl) {
+  let scale = 1;
+  let tx = 0;
+  let ty = 0;
+
+  function apply() {
+    stageEl.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`;
+  }
+
+  function clampScale(next) {
+    return Math.max(0.6, Math.min(6, next));
+  }
+
+  // wheel zoom (desktop)
+  viewerEl.addEventListener(
+    "wheel",
+    (e) => {
+      e.preventDefault();
+
+      const rect = viewerEl.getBoundingClientRect();
+      const cx = e.clientX - rect.left;
+      const cy = e.clientY - rect.top;
+
+      const prev = scale;
+      const next = clampScale(prev * (e.deltaY > 0 ? 0.9 : 1.1));
+      if (next === prev) return;
+
+      const k = next / prev;
+      tx = cx - k * (cx - tx);
+      ty = cy - k * (cy - ty);
+      scale = next;
+      apply();
+    },
+    { passive: false },
+  );
+
+  // pointer pan + pinch (mobile)
+  const pointers = new Map();
+  const dist = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
+
+  let panStart = null;
+  let pinchStart = null;
+
+  viewerEl.addEventListener("pointerdown", (e) => {
+    viewerEl.setPointerCapture(e.pointerId);
+    pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+
+    if (pointers.size === 1) {
+      panStart = { x: e.clientX, y: e.clientY, tx, ty };
+      pinchStart = null;
+    } else if (pointers.size === 2) {
+      const [p1, p2] = [...pointers.values()];
+      pinchStart = { d: dist(p1, p2), scale };
+      panStart = null;
+    }
+  });
+
+  viewerEl.addEventListener("pointermove", (e) => {
+    if (!pointers.has(e.pointerId)) return;
+    pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+
+    if (pointers.size === 1 && panStart) {
+      const p = [...pointers.values()][0];
+      tx = panStart.tx + (p.x - panStart.x);
+      ty = panStart.ty + (p.y - panStart.y);
+      apply();
+    }
+
+    if (pointers.size === 2 && pinchStart) {
+      const [p1, p2] = [...pointers.values()];
+      const d = dist(p1, p2);
+
+      const rect = viewerEl.getBoundingClientRect();
+      const mid = {
+        x: (p1.x + p2.x) / 2 - rect.left,
+        y: (p1.y + p2.y) / 2 - rect.top,
+      };
+
+      const prev = scale;
+      const next = clampScale(pinchStart.scale * (d / pinchStart.d));
+      if (next === prev) return;
+
+      const k = next / prev;
+      tx = mid.x - k * (mid.x - tx);
+      ty = mid.y - k * (mid.y - ty);
+      scale = next;
+      apply();
+    }
+  });
+
+  function clearPointer(e) {
+    pointers.delete(e.pointerId);
+    if (pointers.size === 0) {
+      panStart = null;
+      pinchStart = null;
+    }
+  }
+
+  viewerEl.addEventListener("pointerup", clearPointer);
+  viewerEl.addEventListener("pointercancel", clearPointer);
+
+  viewerEl.style.touchAction = "none";
+  stageEl.style.transformOrigin = "0 0";
+
+  apply();
+}
+
+function initGlaucomaSummaryAtomsPage(pageId, viewerId, imgSrc) {
+  const page = document.getElementById(pageId);
+  const viewer = document.getElementById(viewerId);
+
+  if (!page || !viewer) return;
+  if (viewer.dataset.inited === "1") return;
+
+  viewer.style.position = "fixed";
+  viewer.style.top = "50px";
+  viewer.style.left = "0";
+  viewer.style.right = "0";
+  viewer.style.bottom = "0";
+  viewer.style.overflow = "hidden";
+
+  viewer.innerHTML = `
+    <div class="atoms-handout-container" style="
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      position: relative;
+      touch-action: none;
+    ">
+      <div class="atoms-handout-stage" style="
+        width: 100%;
+        height: 100%;
+        transform-origin: 0 0;
+      ">
+        <img src="${imgSrc}" alt="ATOMS handout image" style="
+          display: block;
+          max-width: 100%;
+          height: auto;
+          margin: 0 auto;
+        " />
+      </div>
+    </div>
+  `;
+
+  const stage = viewer.querySelector(".atoms-handout-stage");
+  if (!stage) return;
+
+  setupAtomsPanZoom(viewer, stage);
+
+  viewer.dataset.inited = "1";
+}
+
+function initGlaucomaSummaryAtomsPages() {
+  initGlaucomaSummaryAtomsPage(
+    "glaucomaFundusSummaryAtomsPage",
+    "glaucomaFundusSummaryAtomsViewer",
+    "/images/pdf/Workshop/Glaucoma/07Summary/Atoms/01.png",
+  );
+
+  initGlaucomaSummaryAtomsPage(
+    "glaucomaGlaucomaSummaryAtomsPage",
+    "glaucomaGlaucomaSummaryAtomsViewer",
+    "/images/pdf/Workshop/Glaucoma/07Summary/Atoms/02.png",
+  );
+}
+
 export function initializeGlaucomaWorkshop() {
   const page = document.getElementById("glaucomaWorkshopPage");
   if (!page) return;
 
   setupWorkshopFolders(page);
   setupVisualFieldsSubfolder(page);
+  initGlaucomaSummaryAtomsPages();
 
   const rows = page.querySelectorAll(".lesson-row[data-target]");
   rows.forEach((row) => {
@@ -278,6 +445,8 @@ export function initializeGlaucomaWorkshop() {
         glaucomaCupping: "glaucomaScrollImages",
 
         glaucomaSummaryScrolly: "glaucomaScrollImages",
+        glaucomaFundusSummaryAtomsPage: "glaucomaWorkshop",
+        glaucomaGlaucomaSummaryAtomsPage: "glaucomaWorkshop",
       };
       if (DIRECT_ROUTES[targetRaw]) {
         const route = DIRECT_ROUTES[targetRaw];

@@ -1358,38 +1358,199 @@
             <span class="lesson-cta">Start &gt;</span>
           </div>
 
+          <!-- Fundus ATOMS Card -->
           <div
             class="lesson-row lesson-row--pdf"
-            data-target="glaucomaHandout"
+            id="glaucomaFundusSummaryRow"
+            data-target="glaucomaFundusSummaryAtomsPage"
             role="button"
             tabindex="0"
           >
             <div
               class="thumb"
-              aria-hidden="true"
               style="
                 background-image: url(&quot;/images/icon/eyes/moduleicons/primary_pdf.webp&quot;);
               "
+              aria-hidden="true"
             ></div>
 
             <div class="lesson-main">
               <div class="lesson-top">
-                <span class="lesson-type">Handout</span>
+                <span class="lesson-type">Fundus Atoms Card</span>
                 <span class="lesson-meta"></span>
               </div>
-              <div
-                class="lesson-progress"
-                role="progressbar"
-                aria-valuemin="0"
-                aria-valuemax="100"
-              >
-                <div class="lesson-progress__fill" style="width: 0%"></div>
+
+              <div class="lesson-progress">
+                <div class="progress-bar">
+                  <div class="progress-fill" style="width: 0%"></div>
+                </div>
               </div>
             </div>
+
+            <span class="lesson-cta">Start &gt;</span>
+          </div>
+
+          <!-- Glaucoma ATOMS Card -->
+          <div
+            class="lesson-row lesson-row--pdf"
+            id="glaucomaGlaucomaSummaryRow"
+            data-target="glaucomaGlaucomaSummaryAtomsPage"
+            role="button"
+            tabindex="0"
+          >
+            <div
+              class="thumb"
+              style="
+                background-image: url(&quot;/images/icon/eyes/moduleicons/primary_pdf.webp&quot;);
+              "
+              aria-hidden="true"
+            ></div>
+
+            <div class="lesson-main">
+              <div class="lesson-top">
+                <span class="lesson-type">Glaucoma Atoms Card</span>
+                <span class="lesson-meta"></span>
+              </div>
+
+              <div class="lesson-progress">
+                <div class="progress-bar">
+                  <div class="progress-fill" style="width: 0%"></div>
+                </div>
+              </div>
+            </div>
+
             <span class="lesson-cta">Start &gt;</span>
           </div>
         </button>
       </section>
     </div>
+  </div>
+</div>
+
+<!-- =========================
+     Glaucoma – Summary ATOMS handout pages
+     ========================= -->
+
+<!-- Fundus ATOMS -->
+<div
+  id="glaucomaFundusSummaryAtomsPage"
+  class="page pupils-like has-eyes-topbar"
+  style="display: none"
+>
+  <div class="container pupils-container">
+    <div class="eyes-topbar">
+      <div class="eyes-topbar__title">Fundus</div>
+      <div class="eyes-topbar__icons">
+        <a
+          id="downloadGlaucomaFundusSummaryBtn"
+          href="images/pdf/Workshop/Glaucoma/07Summary/Atoms/01.png"
+          download
+          aria-label="Download Fundus ATOMS"
+          style="
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border: none;
+            background: transparent;
+            padding: 0;
+            cursor: pointer;
+          "
+        >
+          <svg
+            viewBox="0 0 24 24"
+            width="22"
+            height="22"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <path
+              d="M12 3a1 1 0 0 1 1 1v9.17l2.59-2.58a1 1 0 1 1 1.41 1.42l-4.3 4.29a1 1 0 0 1-1.4 0l-4.3-4.29a1 1 0 1 1 1.41-1.42L11 13.17V4a1 1 0 0 1 1-1z"
+            ></path>
+            <path
+              d="M5 20a1 1 0 0 1-1-1v-2a1 1 0 1 1 2 0v1h12v-1a1 1 0 1 1 2 0v2a1 1 0 0 1-1 1H5z"
+            ></path>
+          </svg>
+        </a>
+
+        <span class="icon menuBtn" aria-label="Menu">☰</span>
+      </div>
+    </div>
+
+    <div
+      id="glaucomaFundusSummaryAtomsViewer"
+      style="
+        position: fixed;
+        top: 50px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        overflow: hidden;
+        background: #ffffff;
+      "
+    ></div>
+  </div>
+</div>
+
+<!-- Glaucoma ATOMS -->
+<div
+  id="glaucomaGlaucomaSummaryAtomsPage"
+  class="page pupils-like has-eyes-topbar"
+  style="display: none"
+>
+  <div class="container pupils-container">
+    <div class="eyes-topbar">
+      <div class="eyes-topbar__title">Glaucoma</div>
+      <div class="eyes-topbar__icons">
+        <a
+          id="downloadGlaucomaSummaryBtn"
+          href="images/pdf/Workshop/Glaucoma/07Summary/Atoms/02.png"
+          download
+          aria-label="Download Glaucoma ATOMS"
+          style="
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border: none;
+            background: transparent;
+            padding: 0;
+            cursor: pointer;
+          "
+        >
+          <svg
+            viewBox="0 0 24 24"
+            width="22"
+            height="22"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <path
+              d="M12 3a1 1 0 0 1 1 1v9.17l2.59-2.58a1 1 0 1 1 1.41 1.42l-4.3 4.29a1 1 0 0 1-1.4 0l-4.3-4.29a1 1 0 1 1 1.41-1.42L11 13.17V4a1 1 0 0 1 1-1z"
+            ></path>
+            <path
+              d="M5 20a1 1 0 0 1-1-1v-2a1 1 0 1 1 2 0v1h12v-1a1 1 0 1 1 2 0v2a1 1 0 0 1-1 1H5z"
+            ></path>
+          </svg>
+        </a>
+
+        <span class="icon menuBtn" aria-label="Menu">☰</span>
+      </div>
+    </div>
+
+    <div
+      id="glaucomaGlaucomaSummaryAtomsViewer"
+      style="
+        position: fixed;
+        top: 50px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        overflow: hidden;
+        background: #ffffff;
+      "
+    ></div>
   </div>
 </div>
