@@ -138,11 +138,105 @@ function setupWorkshopFolders(page) {
   });
 }
 
+function setupVisualFieldsSubfolder(page) {
+  const row = page.querySelector(
+    '.glaucoma-subfolder-row[data-subfolder="visualFields"]',
+  );
+  if (!row) return;
+
+  const card = page.querySelector(
+    '.glaucoma-subsection-card[data-subsection="visualFields"]',
+  );
+  if (!card) return;
+
+  // 중복 바인딩 방지
+  if (row.dataset.wired === "1") return;
+  row.dataset.wired = "1";
+
+  const closeExisting = () => {
+    // 카드 숨김
+    card.style.display = "none";
+
+    // h3에 붙인 Close 제거
+    const titleEl = card.querySelector("h3");
+    if (titleEl) {
+      const existingToggle = titleEl.querySelector(".see-all-toggle");
+      if (existingToggle) existingToggle.remove();
+    }
+
+    // ✅ 하위 카드를 원래 자리(anchor)로 되돌리기
+    const anchor = page.querySelector("#visualFieldsSubsectionAnchor");
+    if (anchor) {
+      anchor.insertAdjacentElement("afterend", card);
+    }
+
+    // 폴더 row 복귀
+    row.style.display = "";
+  };
+
+  const openNow = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    // 혹시 이미 열려있으면 먼저 정리
+    closeExisting();
+
+    // 폴더 row 숨김
+    row.style.display = "none";
+
+    // 카드 위치: anchor 바로 다음 (닫힐 때도 이 위치로 복귀)
+    const anchor = page.querySelector("#visualFieldsSubsectionAnchor");
+    if (anchor) {
+      anchor.insertAdjacentElement("afterend", card);
+    } else {
+      row.insertAdjacentElement("afterend", card);
+    }
+    card.style.display = "";
+
+    const titleEl = card.querySelector("h3");
+    if (!titleEl) return;
+
+    titleEl.style.display = "flex";
+    titleEl.style.alignItems = "center";
+    titleEl.style.width = "100%";
+
+    const toggle = document.createElement("span");
+    toggle.className = "see-all-toggle";
+    toggle.setAttribute("role", "button");
+    toggle.setAttribute("tabindex", "0");
+    toggle.setAttribute("aria-expanded", "true");
+    toggle.textContent = "Close ^";
+
+    toggle.style.marginLeft = "auto";
+    toggle.style.marginRight = "15px";
+    toggle.style.whiteSpace = "nowrap";
+
+    const closeNow = (ev) => {
+      ev.preventDefault();
+      ev.stopPropagation();
+      closeExisting();
+    };
+
+    toggle.addEventListener("click", closeNow);
+    toggle.addEventListener("keydown", (ev) => {
+      if (ev.key === "Enter" || ev.key === " ") closeNow(ev);
+    });
+
+    titleEl.appendChild(toggle);
+  };
+
+  row.addEventListener("click", openNow);
+  row.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " ") openNow(e);
+  });
+}
+
 export function initializeGlaucomaWorkshop() {
   const page = document.getElementById("glaucomaWorkshopPage");
   if (!page) return;
 
   setupWorkshopFolders(page);
+  setupVisualFieldsSubfolder(page);
 
   const rows = page.querySelectorAll(".lesson-row[data-target]");
   rows.forEach((row) => {
@@ -155,13 +249,73 @@ export function initializeGlaucomaWorkshop() {
       const targetRaw = row.getAttribute("data-target");
       if (!targetRaw) return;
 
+      // ✅ Glaucoma intro image scroll pages
+      const DIRECT_ROUTES = {
+        glaucomaWhatIs: "glaucomaScrollImages",
+        glaucomaTypes: "glaucomaScrollImages",
+        glaucomaDiagnosis: "glaucomaScrollImages",
+        glaucomaIntro: "glaucomaScrollImages",
+        glaucomaPOAGACAG: "glaucomaScrollImages",
+        glaucomaVisionIntro: "glaucomaScrollImages",
+        glaucomaTestingVisualAcuity: "glaucomaScrollImages",
+
+        glaucomaFieldsIntro: "glaucomaScrollImages",
+        glaucomaFieldsExam: "glaucomaScrollImages",
+        glaucomaQuadrantsFingers: "glaucomaScrollImages",
+        glaucomaQuadrantsRed: "glaucomaScrollImages",
+        glaucomaAssessRecord: "glaucomaScrollImages",
+
+        glaucomaPupilReactions: "glaucomaScrollImages",
+        glaucomaSwingRAPD: "glaucomaScrollImages",
+
+        frontOfEyePage: "glaucomaScrollImages",
+        glaucomaFrontFindings: "glaucomaScrollImages",
+        glaucomaACDScroll: "glaucomaScrollImages",
+        glaucomaHighIOP: "glaucomaScrollImages",
+
+        fundalReflexPage: "glaucomaScrollImages",
+        glaucomaOpticNerve: "glaucomaScrollImages",
+        glaucomaCupping: "glaucomaScrollImages",
+
+        glaucomaSummaryScrolly: "glaucomaScrollImages",
+      };
+      if (DIRECT_ROUTES[targetRaw]) {
+        const route = DIRECT_ROUTES[targetRaw];
+        await loadPage(route);
+
+        // ✅ route 로드 후 항상 showPage 시도 (el 체크로 막지 않음)
+        if (typeof window.showPage === "function") {
+          window.showPage(targetRaw);
+        } else {
+          document
+            .querySelectorAll(".page")
+            .forEach((p) => (p.style.display = "none"));
+          const el = document.getElementById(targetRaw);
+          if (el) el.style.display = "block";
+        }
+
+        // ✅ 디버그: target id가 실제로 로드된 DOM에 있는지 확인
+        const elAfter = document.getElementById(targetRaw);
+        if (!elAfter) {
+          console.warn(
+            "[glaucomaWorkshop] Scroll target not found in loaded route:",
+            { route, targetRaw },
+          );
+        }
+
+        try {
+          window.scrollTo(0, 0);
+        } catch {}
+        return;
+      }
+
       // 1) 라우트 키가 직접 존재하면 그대로 로드
       if (ROUTES[targetRaw]) {
         await loadPage(targetRaw);
         return;
       }
 
-      // 2) videos 서브페이지로 이동(Childhood 방식과 동일한 UX)
+      // 2) videos 서브페이지로 이동
       const videoSectionId = normaliseVideosSubpageId(targetRaw);
       if (videoSectionId) {
         await loadPage("videos");
@@ -174,7 +328,6 @@ export function initializeGlaucomaWorkshop() {
         return;
       }
 
-      // 3) 아직 매핑이 없으면 조용히 무시(스타일/UX 깨지지 않게)
       console.warn("[glaucomaWorkshop] Unhandled target:", targetRaw);
     };
 
