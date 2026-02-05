@@ -1055,3 +1055,274 @@
     </div>
   </div>
 </div>
+
+<!-- 17b) Front of eye – Anterior Chamber Depth (Interactive) -->
+<div
+  id="glaucomaACDInteractive"
+  class="page pupils-like has-eyes-topbar"
+  style="display: none"
+>
+  <div class="container pupils-container">
+    <div class="eyes-topbar">
+      <div class="eyes-topbar__title">Anterior Chamber Depth</div>
+      <div class="eyes-topbar__icons">
+        <span class="icon menuBtn" aria-label="Menu">☰</span>
+      </div>
+    </div>
+
+    <style>
+      /* scoped to ACD interactive page */
+      #glaucomaACDInteractive .acd-wrap {
+        padding: 12px 0 24px 0;
+      }
+      #glaucomaACDInteractive .acd-instructions {
+        font-size: 16px;
+        line-height: 1.3;
+        margin: 6px 0 12px 0;
+        opacity: 0.9;
+      }
+      #glaucomaACDInteractive #acdStage {
+        position: relative;
+        width: 100%;
+        height: min(62vh, 520px);
+        background: #000;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+        touch-action: none;
+      }
+
+      /* eye group */
+      #glaucomaACDInteractive .acd-eye {
+        position: absolute;
+        top: 30%;
+        width: 34%;
+        aspect-ratio: 1 / 1;
+        border-radius: 50%;
+        background: #e0d6cc;
+        box-shadow: inset 0 0 0 10px rgba(0, 0, 0, 0.04);
+      }
+      #glaucomaACDInteractive .acd-eye.left {
+        left: 10%;
+      }
+      #glaucomaACDInteractive .acd-eye.right {
+        right: 10%;
+      }
+
+      #glaucomaACDInteractive .acd-iris {
+        position: absolute;
+        inset: 22%;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle at 40% 40%,
+          #6aa0ff 0%,
+          #2b4a9b 45%,
+          #0a1a3b 100%
+        );
+        box-shadow: inset 0 0 0 10px rgba(0, 0, 0, 0.08);
+      }
+      #glaucomaACDInteractive .acd-pupil {
+        position: absolute;
+        inset: 33%;
+        border-radius: 50%;
+        background: #000;
+        opacity: 0.92;
+      }
+
+      /* nose */
+      #glaucomaACDInteractive .acd-nose {
+        position: absolute;
+        top: 34%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 10%;
+        height: 34%;
+        border-radius: 80px 80px 120px 120px;
+        border: 4px solid rgba(0, 0, 0, 0.65);
+        border-top: 0;
+        opacity: 0.85;
+      }
+
+      /* torches */
+      #glaucomaACDInteractive .acd-torch {
+        position: absolute;
+        top: 36%;
+        width: 44px;
+        height: 18px;
+        background: #888;
+        border-radius: 10px;
+        transform: translateX(-50%);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+      }
+      #glaucomaACDInteractive .acd-torch::after {
+        content: "";
+        position: absolute;
+        right: -10px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 0;
+        height: 0;
+        border-left: 10px solid #888;
+        border-top: 8px solid transparent;
+        border-bottom: 8px solid transparent;
+      }
+      #glaucomaACDInteractive #acdTorchRight::after {
+        left: -10px;
+        right: auto;
+        border-left: 0;
+        border-right: 10px solid #888;
+      }
+
+      /* light beams (purely decorative gradients) */
+      #glaucomaACDInteractive .acd-beam {
+        position: absolute;
+        top: 33%;
+        height: 30%;
+        width: 40%;
+        pointer-events: none;
+        opacity: 0.75;
+        mix-blend-mode: screen;
+      }
+      #glaucomaACDInteractive .acd-beam.left {
+        left: 0;
+        background: linear-gradient(
+          90deg,
+          rgba(255, 255, 200, 0) 0%,
+          rgba(255, 255, 200, 0.55) 55%,
+          rgba(255, 255, 200, 0) 100%
+        );
+      }
+      #glaucomaACDInteractive .acd-beam.right {
+        right: 0;
+        background: linear-gradient(
+          270deg,
+          rgba(255, 255, 200, 0) 0%,
+          rgba(255, 255, 200, 0.55) 55%,
+          rgba(255, 255, 200, 0) 100%
+        );
+      }
+
+      /* crescent shadow on nasal iris of RIGHT (shallow AC) eye */
+      #glaucomaACDInteractive #acdCrescentRight {
+        position: absolute;
+        top: 50%;
+        left: 20%;
+        transform: translateY(-50%);
+        width: 38%;
+        height: 60%;
+        border-radius: 999px;
+        background: rgba(0, 0, 0, 0.55);
+        filter: blur(0.3px);
+        opacity: 0;
+        clip-path: ellipse(60% 48% at 35% 50%);
+        pointer-events: none;
+      }
+
+      /* ticks */
+      #glaucomaACDInteractive .acd-tick {
+        position: absolute;
+        top: 16%;
+        right: 10%;
+        font-size: 30px;
+        opacity: 0;
+        transition: opacity 120ms ease;
+        user-select: none;
+        pointer-events: none;
+      }
+      #glaucomaACDInteractive .acd-tick.left {
+        right: auto;
+        left: 10%;
+      }
+
+      /* hint */
+      #glaucomaACDInteractive #acdHint {
+        position: absolute;
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 8px 12px;
+        background: rgba(0, 0, 0, 0.06);
+        border-radius: 999px;
+        font-size: 14px;
+        opacity: 1;
+        transition: opacity 180ms ease;
+        pointer-events: none;
+      }
+
+      /* drag handle */
+      #glaucomaACDInteractive #acdDragHandle {
+        margin-top: 12px;
+        width: 100%;
+        height: 52px;
+        border-radius: 14px;
+        background: rgba(0, 0, 0, 0.06);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        user-select: none;
+        touch-action: none;
+      }
+      #glaucomaACDInteractive #acdDragHandle .knob {
+        width: 130px;
+        height: 36px;
+        border-radius: 999px;
+        background: rgba(0, 0, 0, 0.12);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+      }
+    </style>
+
+    <div class="acd-wrap">
+      <div class="acd-instructions">
+        Drag the flashlight and shine light from the <b>temporal side</b> to
+        compare the two eyes
+      </div>
+
+      <div id="acdStage" aria-label="Anterior Chamber Depth interactive">
+        <div id="acdHint">Shine from the side</div>
+
+        <div class="acd-eye left" aria-label="Normal eye (left)">
+          <div class="acd-iris">
+            <div class="acd-pupil"></div>
+          </div>
+          <div class="acd-tick left" id="acdTickLeft">✅</div>
+        </div>
+
+        <div
+          class="acd-eye right"
+          aria-label="Shallow anterior chamber eye (right)"
+        >
+          <div class="acd-iris">
+            <div class="acd-pupil"></div>
+          </div>
+
+          <!-- crescent shadow on nasal side -->
+          <div id="acdCrescentRight" aria-hidden="true"></div>
+
+          <div class="acd-tick" id="acdTickRight">✅</div>
+        </div>
+
+        <div class="acd-nose" aria-hidden="true"></div>
+
+        <!-- torches & beams -->
+        <div class="acd-beam left" aria-hidden="true"></div>
+        <div class="acd-beam right" aria-hidden="true"></div>
+
+        <div
+          id="acdTorchLeft"
+          class="acd-torch"
+          aria-hidden="true"
+          style="left: 8%"
+        ></div>
+        <div
+          id="acdTorchRight"
+          class="acd-torch"
+          aria-hidden="true"
+          style="left: 92%"
+        ></div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -486,6 +486,7 @@ export function initializeGlaucomaWorkshop() {
         glaucomaFrontFindings: "glaucomaScrollImages",
         glaucomaACDScroll: "glaucomaScrollImages",
         glaucomaHighIOP: "glaucomaScrollImages",
+        glaucomaACDInteractive: "glaucomaScrollImages",
 
         fundalReflexPage: "glaucomaScrollImages",
         glaucomaOpticNerve: "glaucomaScrollImages",
@@ -508,6 +509,10 @@ export function initializeGlaucomaWorkshop() {
             .forEach((p) => (p.style.display = "none"));
           const el = document.getElementById(targetRaw);
           if (el) el.style.display = "block";
+        }
+
+        if (targetRaw === "glaucomaACDInteractive") {
+          initGlaucomaACDInteractive();
         }
 
         // ✅ 디버그: target id가 실제로 로드된 DOM에 있는지 확인
@@ -552,4 +557,146 @@ export function initializeGlaucomaWorkshop() {
       if (e.key === "Enter" || e.key === " ") activate(e);
     });
   });
+}
+
+function initGlaucomaACDInteractive() {
+  const page = document.getElementById("glaucomaACDInteractive");
+  if (!page) return;
+
+  // 중복 초기화 방지
+  if (page.dataset.inited === "1") {
+    // 페이지 재진입 시도 대비: 상태만 업데이트
+    updateGlaucomaACDInteractive();
+    return;
+  }
+  page.dataset.inited = "1";
+
+  const dragTargets = [
+    page.querySelector("#acdTorchLeft"),
+    page.querySelector("#acdTorchRight"),
+  ];
+
+  const leftTorch = page.querySelector("#acdTorchLeft");
+  const rightTorch = page.querySelector("#acdTorchRight");
+  const rightCrescent = page.querySelector("#acdCrescentRight");
+  const leftTick = page.querySelector("#acdTickLeft");
+  const rightTick = page.querySelector("#acdTickRight");
+  const hint = page.querySelector("#acdHint");
+
+  if (!leftTorch || !rightTorch || !rightCrescent) return;
+
+  const state = {
+    // -1(왼쪽) ~ +1(오른쪽)
+    nx: 0.8,
+    // 0(눈 중심 부근) ~ 1(눈 위아래 멀어짐) 용도로 쓰기보다, 지금은 “수평 빛” 컨셉이라 약하게만
+    ny: 0.0,
+    dragging: false,
+    pointerId: null,
+  };
+
+  function clamp(v, a, b) {
+    return Math.max(a, Math.min(b, v));
+  }
+
+  function getEffectStrength(nx) {
+    // “temporal 쪽에 가까울수록 효과↑, 정면(중앙)일수록 효과↓”
+    // nx 절대값이 클수록 강함
+    const t = clamp((Math.abs(nx) - 0.15) / 0.75, 0, 1);
+    return t;
+  }
+
+  function render() {
+    const strength = getEffectStrength(state.nx);
+
+    // 토치 위치: 좌/우 대칭으로 이동
+    // stage 안에서 좌측 torch는 nx에 따라 더 왼쪽으로, 우측 torch는 더 오른쪽으로
+    const stage = page.querySelector("#acdStage");
+    const rect = stage.getBoundingClientRect();
+
+    const baseInset = rect.width * 0.04;
+    const travel = rect.width * 0.18; // 드래그로 이동하는 폭
+
+    const leftX = baseInset - travel * state.nx; // nx=+면 더 왼쪽(temporal)
+    const rightX = rect.width - baseInset + travel * state.nx; // nx=+면 더 오른쪽(temporal)
+
+    leftTorch.style.left = `${leftX}px`;
+    rightTorch.style.left = `${rightX}px`;
+
+    // “얇은 어두운 반달(crescent shadow)”은 오른쪽(얕은 AC)에서만,
+    // temporal 조명(strength 높음)에서 nasal(코쪽) 홍채에 생기게
+    rightCrescent.style.opacity = `${strength}`;
+
+    // 힌트는 strength가 충분하면 서서히 사라지게
+    if (hint) hint.style.opacity = `${1 - strength}`;
+
+    // 정상(왼쪽)은 강한 temporal 조명 때 ✅만
+    // 얕은(오른쪽)은 ✅ + 🌙
+    const tickOn = strength > 0.55;
+    if (leftTick) leftTick.style.opacity = tickOn ? "1" : "0";
+    if (rightTick) rightTick.style.opacity = tickOn ? "1" : "0";
+  }
+
+  function pointerToNormalised(e) {
+    const stage = page.querySelector("#acdStage");
+    const r = stage.getBoundingClientRect();
+
+    // 화면에서 stage의 중앙 기준으로 -1~+1
+    const cx = r.left + r.width / 2;
+    const nx = clamp((e.clientX - cx) / (r.width * 0.45), -1, 1);
+
+    // 수평빔 컨셉이라 y는 “효과 약화”만 아주 살짝 반영 가능하지만, 지금은 0 고정에 가깝게 둠
+    return { nx, ny: 0 };
+  }
+
+  function onDown(e) {
+    state.dragging = true;
+    state.pointerId = e.pointerId;
+    e.target.setPointerCapture(e.pointerId);
+
+    const p = pointerToNormalised(e);
+    state.nx = p.nx;
+    state.ny = p.ny;
+    render();
+  }
+
+  function onMove(e) {
+    if (!state.dragging) return;
+    if (state.pointerId !== e.pointerId) return;
+
+    const p = pointerToNormalised(e);
+    state.nx = p.nx;
+    state.ny = p.ny;
+    render();
+  }
+
+  function onUp(e) {
+    if (state.pointerId !== e.pointerId) return;
+    state.dragging = false;
+    state.pointerId = null;
+    render();
+  }
+
+  dragTargets.forEach((el) => {
+    if (!el) return;
+    el.style.touchAction = "none";
+    el.addEventListener("pointerdown", onDown);
+    el.addEventListener("pointermove", onMove);
+    el.addEventListener("pointerup", onUp);
+    el.addEventListener("pointercancel", onUp);
+  });
+
+  // 리사이즈 시 재렌더
+  window.addEventListener("resize", render);
+
+  // 초기 상태
+  render();
+}
+
+// 재진입 시(이미 init 된 경우) 위치만 업데이트
+function updateGlaucomaACDInteractive() {
+  const page = document.getElementById("glaucomaACDInteractive");
+  if (!page) return;
+  const rightCrescent = page.querySelector("#acdCrescentRight");
+  if (rightCrescent && rightCrescent.style.opacity === "")
+    rightCrescent.style.opacity = "0";
 }
