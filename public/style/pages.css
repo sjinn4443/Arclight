@@ -1698,3 +1698,32 @@ select.onb-input.has-value + .onb-select-caret {
   font-size: 56px;
   line-height: 1;
 }
+
+/* Glaucoma ATOMS pages: force download/menu to the right */
+#glaucomaFundusSummaryAtomsPage .eyes-topbar,
+#glaucomaGlaucomaSummaryAtomsPage .eyes-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Ensure the title participates in flex (do not let it behave like a fixed overlay here) */
+#glaucomaFundusSummaryAtomsPage .eyes-topbar__title,
+#glaucomaGlaucomaSummaryAtomsPage .eyes-topbar__title {
+  position: static;
+}
+
+/* Push the icon group to the far right */
+#glaucomaFundusSummaryAtomsPage .eyes-topbar__icons,
+#glaucomaGlaucomaSummaryAtomsPage .eyes-topbar__icons {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* Neutralise any inherited spacing that shoves the menu away */
+#glaucomaFundusSummaryAtomsPage .icon.menuBtn,
+#glaucomaGlaucomaSummaryAtomsPage .icon.menuBtn {
+  margin: 0;
+}

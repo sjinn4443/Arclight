@@ -36,6 +36,32 @@ function setupWorkshopFolders(page) {
   const foldersContainer = page.querySelector("#glaucomaWorkshopFolders");
   if (!foldersContainer) return;
 
+  // ----------------------------
+  // Persist open folder across "internal" workshop navigation only
+  // ----------------------------
+  const SS_OPEN_KEY = "glaucomaWorkshop:openFolderKey";
+  const SS_RESTORE_FLAG = "glaucomaWorkshop:restoreOpenFolder";
+
+  const ssGet = (k) => {
+    try {
+      return sessionStorage.getItem(k);
+    } catch {
+      return null;
+    }
+  };
+
+  const ssSet = (k, v) => {
+    try {
+      sessionStorage.setItem(k, v);
+    } catch {}
+  };
+
+  const ssRemove = (k) => {
+    try {
+      sessionStorage.removeItem(k);
+    } catch {}
+  };
+
   const hideAllSectionCards = () => {
     sectionCards.forEach((card) => {
       card.style.display = "none";
@@ -63,8 +89,8 @@ function setupWorkshopFolders(page) {
     hideAllSectionCards();
     folders.forEach((r) => (r.style.display = ""));
 
-    // 클릭한 폴더 버튼 1개만 없어짐
     openFolderRow.style.display = "none";
+    ssSet(SS_OPEN_KEY, key);
 
     // 섹션 카드를 "그 자리"에 나오게 하기: 폴더 row 바로 다음에 배치
     openFolderRow.insertAdjacentElement("afterend", card);
@@ -104,6 +130,8 @@ function setupWorkshopFolders(page) {
 
       // 폴더 버튼 복귀
       openFolderRow.style.display = "";
+      ssRemove(SS_OPEN_KEY);
+      ssRemove(SS_RESTORE_FLAG);
     };
 
     toggle.addEventListener("click", closeNow);
@@ -117,6 +145,21 @@ function setupWorkshopFolders(page) {
   hideAllSectionCards();
   folders.forEach((r) => (r.style.display = ""));
   foldersContainer.style.display = "";
+
+  // ✅ If we are returning from an internal workshop page, restore the open folder.
+  // ✅ If we are entering the workshop from outside (dashboard/eyes/etc.), keep everything closed.
+  const shouldRestore = ssGet(SS_RESTORE_FLAG) === "1";
+  const savedKey = ssGet(SS_OPEN_KEY);
+
+  if (shouldRestore && savedKey) {
+    // one-shot restore
+    ssRemove(SS_RESTORE_FLAG);
+    showSectionByKey(savedKey);
+  } else {
+    // entering from outside -> forget old state
+    ssRemove(SS_OPEN_KEY);
+    ssRemove(SS_RESTORE_FLAG);
+  }
 
   folders.forEach((row) => {
     if (row.dataset.wired === "1") return;
@@ -415,6 +458,10 @@ export function initializeGlaucomaWorkshop() {
 
       const targetRaw = row.getAttribute("data-target");
       if (!targetRaw) return;
+
+      try {
+        sessionStorage.setItem("glaucomaWorkshop:restoreOpenFolder", "1");
+      } catch {}
 
       // ✅ Glaucoma intro image scroll pages
       const DIRECT_ROUTES = {
