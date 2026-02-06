@@ -36,5 +36,6 @@ export const ROUTES = {
   childhoodRefer: "html/childhoodRefer.html",
   childhoodEyeBrainImages: "html/childhoodEyeBrainImages.html",
   glaucomaWorkshop: "html/glaucomaWorkshop.html",
+  glaucomaQuizCaseStudy: "html/glaucomaQuizCaseStudy.html",
   glaucomaScrollImages: "html/glaucomascrollImages.html",
 };
