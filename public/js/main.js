@@ -13,6 +13,7 @@ import {
   initializeAtomsHandout1,
   initializeAtomsHandout2,
 } from "./fundalReflexPdf.js";
+import { initializeGlaucomaQuizCaseStudy } from "./glaucomaQuizCaseStudy.js";
 
 function withSentry(fn) {
   return (...args) => {
@@ -112,8 +113,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (routeName === "glaucomaQuizCaseStudy") {
-      const { initializeGlaucomaQuizCaseStudy } =
-        await import("./glaucomaQuizCaseStudy.js");
       initializeGlaucomaQuizCaseStudy();
     }
 
