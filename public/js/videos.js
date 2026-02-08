@@ -481,6 +481,76 @@ const VIDEO_PAGE_SOURCES = {
     onlineTitle: "Normal and Abnormal findings (online)",
     iframeClass: "videos-yt-usaid-normal",
   },
+
+  glaucomaPupilReactionsVideoPage: {
+    videoMode: "triToggle",
+    containerSelector: "#glaucomaPupilReactionsVideoContainer",
+    videoSelector: "#glaucomaPupilReactionsVideo",
+    sources: {
+      low: "videos/Workshop/Glaucoma/pupilreaction_220p.mp4",
+      high: "videos/Workshop/Glaucoma/pupilreaction_720p.mp4",
+    },
+  },
+
+  glaucomaSignsOfGlaucomaVideoPage: {
+    videoMode: "triToggle",
+    containerSelector: "#glaucomaSignsOfGlaucomaVideoContainer",
+    videoSelector: "#glaucomaSignsOfGlaucomaVideo",
+    sources: {
+      low: "videos/Workshop/Glaucoma/FRsignsglaucoma_220p.mp4",
+      high: "videos/Workshop/Glaucoma/FRsignsglaucoma_720p.mp4",
+    },
+  },
+
+  glaucomaAnteriorChamberDepthVideoPage: {
+    videoMode: "triToggle",
+    containerSelector: "#glaucomaAnteriorChamberDepthVideoContainer",
+    videoSelector: "#glaucomaAnteriorChamberDepthVideo",
+    sources: {
+      low: "videos/Workshop/Glaucoma/FRACD_220p.mp4",
+      high: "videos/Workshop/Glaucoma/FRACD_720p.mp4",
+    },
+  },
+
+  glaucomaACAGCaseWorkshopVideoPage: {
+    videoMode: "triToggle",
+    containerSelector: "#glaucomaACAGCaseWorkshopVideoContainer",
+    videoSelector: "#glaucomaACAGCaseWorkshopVideo",
+    sources: {
+      low: "videos/Workshop/Glaucoma/FRACAG_220p.mp4",
+      high: "videos/Workshop/Glaucoma/FRACAG_720p.mp4",
+    },
+  },
+
+  glaucomaFundalReflexDiseaseVideoPage: {
+    videoMode: "triToggle",
+    containerSelector: "#glaucomaFundalReflexDiseaseVideoContainer",
+    videoSelector: "#glaucomaFundalReflexDiseaseVideo",
+    sources: {
+      low: "videos/Workshop/Glaucoma/FRDisease_220p.mp4",
+      high: "videos/Workshop/Glaucoma/FRDisease_720p.mp4",
+    },
+  },
+
+  glaucomaOtherOpticNerveDiseasesVideoPage: {
+    videoMode: "triToggle",
+    containerSelector: "#glaucomaOtherOpticNerveDiseasesVideoContainer",
+    videoSelector: "#glaucomaOtherOpticNerveDiseasesVideo",
+    sources: {
+      low: "videos/Workshop/Glaucoma/opticdiseases_220p.mp4",
+      high: "videos/Workshop/Glaucoma/opticdiseases_720p.mp4",
+    },
+  },
+
+  glaucomaVisualFieldExamVideoPage: {
+    videoMode: "triToggle",
+    containerSelector: "#glaucomaVisualFieldExamVideoContainer",
+    videoSelector: "#glaucomaVisualFieldExamVideo",
+    sources: {
+      low: "videos/Workshop/Glaucoma/opticdiseases_220p.mp4",
+      high: "videos/Workshop/Glaucoma/opticdiseases_720p.mp4",
+    },
+  },
 };
 
 function readGenericVideoMode(storageKey) {

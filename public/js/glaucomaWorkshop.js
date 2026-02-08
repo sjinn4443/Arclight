@@ -543,13 +543,16 @@ export function initializeGlaucomaWorkshop() {
       // 2) videos 서브페이지로 이동
       const videoSectionId = normaliseVideosSubpageId(targetRaw);
       if (videoSectionId) {
+        // ✅ videos.js initializeVideos()가 읽는 키로 전달 (gotoSubPage / __videosPendingTarget)
+        try {
+          sessionStorage.setItem("gotoSubPage", videoSectionId);
+        } catch {}
+
+        try {
+          window.__videosPendingTarget = videoSectionId;
+        } catch {}
+
         await loadPage("videos");
-        try {
-          sessionStorage.setItem("videos:goto", videoSectionId);
-        } catch {}
-        try {
-          window.location.hash = `#${videoSectionId}`;
-        } catch {}
         return;
       }
 
