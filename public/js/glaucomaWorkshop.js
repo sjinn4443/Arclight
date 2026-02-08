@@ -481,6 +481,7 @@ export function initializeGlaucomaWorkshop() {
 
         glaucomaPupilReactions: "glaucomaScrollImages",
         glaucomaSwingRAPD: "glaucomaScrollImages",
+        glaucomaRAPDFullSwingInteractive: "glaucomaScrollImages",
 
         frontOfEyePage: "glaucomaScrollImages",
         glaucomaFrontFindings: "glaucomaScrollImages",
@@ -514,6 +515,8 @@ export function initializeGlaucomaWorkshop() {
 
         if (targetRaw === "glaucomaACDInteractive") {
           initGlaucomaACDInteractive();
+        } else if (targetRaw === "glaucomaRAPDFullSwingInteractive") {
+          initGlaucomaRAPDFullSwingInteractive();
         }
 
         // ✅ 디버그: target id가 실제로 로드된 DOM에 있는지 확인
@@ -771,4 +774,267 @@ function updateGlaucomaACDInteractive() {
   const rightCrescent = page.querySelector("#acdCrescentRight");
   if (rightCrescent && rightCrescent.style.opacity === "")
     rightCrescent.style.opacity = "0";
+}
+
+function initGlaucomaRAPDFullSwingInteractive() {
+  const page = document.getElementById("glaucomaRAPDFullSwingInteractive");
+  if (!page) return;
+
+  // prevent double init
+  if (page.dataset.inited === "1") {
+    updateGlaucomaRAPDFullSwingInteractive();
+    return;
+  }
+  page.dataset.inited = "1";
+
+  const stage = page.querySelector("#rapdStage");
+  const hint = page.querySelector("#rapdHint");
+
+  const flashlightOff = page.querySelector("#rapdFlashlightOff");
+  const flashlight = page.querySelector("#rapdFlashlight");
+  const beam = page.querySelector("#rapdBeam");
+  const bubble = page.querySelector("#rapdBubble");
+
+  const pupilLeft = page.querySelector("#rapdPupilLeft");
+  const pupilRight = page.querySelector("#rapdPupilRight");
+
+  const toggle = page.querySelector("#rapdModeToggle");
+  const toggleLabel = page.querySelector("#rapdModeLabel");
+
+  // 기본 진입은 Normal(=RAPD OFF)로 강제
+  if (toggle) toggle.checked = false;
+  if (toggleLabel) toggleLabel.textContent = "RAPD mode OFF";
+
+  if (
+    !stage ||
+    !flashlightOff ||
+    !flashlight ||
+    !beam ||
+    !pupilLeft ||
+    !pupilRight
+  )
+    return;
+
+  const state = {
+    pickedUp: false,
+    dragging: false,
+    pointerId: null,
+
+    // -1(left) ~ +1(right)
+    nx: 0,
+
+    // -1(up) ~ +1(down)
+    ny: 0,
+
+    // for RAPD “paradoxical dilation” when swinging to the RAPD eye (right)
+    lastSide: "centre", // "left" | "right" | "centre"
+  };
+
+  function clamp(v, a, b) {
+    return Math.max(a, Math.min(b, v));
+  }
+
+  function getSide(nx) {
+    if (nx < -0.25) return "left";
+    if (nx > 0.25) return "right";
+    return "centre";
+  }
+
+  function setPupilScale(el, s) {
+    el.style.transform = `translate(-50%, -50%) scale(${s})`;
+  }
+
+  function render() {
+    const rect = stage.getBoundingClientRect();
+
+    // before pickup: show only “off” + bubble
+    if (!state.pickedUp) {
+      flashlight.style.display = "none";
+      beam.style.display = "none";
+      flashlightOff.style.display = "";
+      if (bubble) bubble.style.display = "";
+      if (hint) hint.style.opacity = "1";
+
+      // baseline pupils (dark: dilated)
+      setPupilScale(pupilLeft, 0.9);
+      setPupilScale(pupilRight, 0.9);
+      return;
+    }
+
+    // after pickup
+    flashlightOff.style.display = "none";
+    if (bubble) bubble.style.display = "none";
+    flashlight.style.display = "block";
+    beam.style.display = "block";
+    if (hint) hint.style.opacity = "0";
+
+    // map nx to stage x
+    const cx = rect.width / 2;
+    const travel = rect.width * 0.38;
+    const x = cx + travel * state.nx;
+
+    // keep within stage
+    const xClamped = clamp(x, 24, rect.width - 24);
+
+    // y now moves too: dragging down reduces light reaching the eyes
+    const baseY = rect.height * 0.54;
+    const y = clamp(
+      baseY + rect.height * 0.22 * state.ny,
+      24,
+      rect.height - 24,
+    );
+
+    flashlight.style.left = `${xClamped}px`;
+    flashlight.style.top = `${y}px`;
+
+    // BEAM behaviour:
+    const side = getSide(state.nx);
+
+    // light is ON only when the flashlight is within the eye-height band
+    const lightOn = y >= rect.height * 0.4 && y < rect.height * 0.66;
+
+    const beamX = xClamped - 6; // slight offset towards torch head
+    const beamY = y - 50;
+
+    beam.style.left = `${beamX}px`;
+    beam.style.top = `${beamY}px`;
+
+    if (side === "centre") {
+      beam.style.width = `${rect.width * 0.42}px`;
+      beam.style.height = `${rect.height * 0.22}px`;
+      beam.style.transform = `translate(0, -50%) rotate(0deg)`;
+      beam.style.opacity = "0.9";
+    } else if (side === "left") {
+      beam.style.width = `${rect.width * 0.6}px`;
+      beam.style.height = `${rect.height * 0.18}px`;
+      // beam goes to the right
+      beam.style.transform = `translate(0, -50%) rotate(0deg)`;
+      beam.style.opacity = "0.95";
+    } else {
+      beam.style.width = `${rect.width * 0.6}px`;
+      beam.style.height = `${rect.height * 0.18}px`;
+      // beam goes to the left
+      beam.style.transform = `translate(0, -50%) rotate(180deg)`;
+      beam.style.opacity = "0.95";
+    }
+
+    // PUPIL LOGIC
+    const rapdOn = !!(toggle && toggle.checked);
+
+    if (toggleLabel) {
+      toggleLabel.textContent = rapdOn ? "RAPD mode ON" : "RAPD mode OFF";
+    }
+
+    // sizes
+    const CONSTRICT = 0.62;
+    const DILATE = 0.9;
+
+    // LIGHT OFF (flashlight dragged down) -> both dilate (normal + RAPD)
+    if (!lightOn) {
+      setPupilScale(pupilLeft, DILATE);
+      setPupilScale(pupilRight, DILATE);
+    } else {
+      // LIGHT ON (eyes receive light)
+      if (!rapdOn) {
+        // NORMAL -> both constrict
+        setPupilScale(pupilLeft, CONSTRICT);
+        setPupilScale(pupilRight, CONSTRICT);
+      } else {
+        // RAPD MODE -> left constrict, right dilate
+        setPupilScale(pupilLeft, CONSTRICT);
+        setPupilScale(pupilRight, DILATE);
+      }
+    }
+
+    state.lastSide = side;
+  }
+
+  function pointerToNormalised(e) {
+    const r = stage.getBoundingClientRect();
+
+    const cx = r.left + r.width / 2;
+    const nx = clamp((e.clientX - cx) / (r.width * 0.45), -1, 1);
+
+    // 기준점을 eyes 이미지 중심(대략 52%) 근처로 두고, 아래로 내릴수록 ny가 +가 되게
+    const cy = r.top + r.height * 0.54;
+    const ny = clamp((e.clientY - cy) / (r.height * 0.35), -1, 1);
+
+    return { nx, ny };
+  }
+
+  function pickUpFlashlight() {
+    if (state.pickedUp) return;
+    state.nx = 0;
+    state.ny = 0;
+    state.pickedUp = true;
+    render();
+  }
+
+  function onDown(e) {
+    if (!state.pickedUp) {
+      if (e.target === flashlightOff) {
+        pickUpFlashlight();
+        state.dragging = true;
+        state.pointerId = e.pointerId;
+        e.target.setPointerCapture(e.pointerId);
+      }
+      return;
+    }
+
+    if (e.target !== flashlight) return;
+
+    state.dragging = true;
+    state.pointerId = e.pointerId;
+    e.target.setPointerCapture(e.pointerId);
+
+    const p = pointerToNormalised(e);
+    state.nx = p.nx;
+    state.ny = p.ny;
+    render();
+  }
+
+  function onMove(e) {
+    if (!state.dragging) return;
+    if (state.pointerId !== e.pointerId) return;
+    const p = pointerToNormalised(e);
+    state.nx = p.nx;
+    state.ny = p.ny;
+    render();
+  }
+
+  function onUp(e) {
+    if (state.pointerId !== e.pointerId) return;
+    state.dragging = false;
+    state.pointerId = null;
+    render();
+  }
+
+  [flashlightOff, flashlight].forEach((el) => {
+    el.style.touchAction = "none";
+    el.addEventListener("pointerdown", onDown);
+    el.addEventListener("pointermove", onMove);
+    el.addEventListener("pointerup", onUp);
+    el.addEventListener("pointercancel", onUp);
+  });
+
+  if (toggle) {
+    toggle.addEventListener("change", render);
+  }
+
+  window.addEventListener("resize", render);
+
+  render();
+}
+
+function updateGlaucomaRAPDFullSwingInteractive() {
+  const page = document.getElementById("glaucomaRAPDFullSwingInteractive");
+  if (!page) return;
+  // simplest: just re-render by calling init guard pattern
+  // (we keep it minimal and safe)
+  const stage = page.querySelector("#rapdStage");
+  if (!stage) return;
+  // trigger a resize-like refresh
+  try {
+    window.dispatchEvent(new Event("resize"));
+  } catch {}
 }

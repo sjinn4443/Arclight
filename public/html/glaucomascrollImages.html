@@ -1301,3 +1301,288 @@
     </div>
   </div>
 </div>
+
+<!-- 17c) Pupils – Full pupil swinging light (Interactive) -->
+<div
+  id="glaucomaRAPDFullSwingInteractive"
+  class="page pupils-like has-eyes-topbar"
+  style="display: none"
+>
+  <div class="container pupils-container">
+    <div class="eyes-topbar">
+      <div class="eyes-topbar__title">Full pupil swinging light</div>
+      <div class="eyes-topbar__icons">
+        <span class="icon menuBtn" aria-label="Menu">☰</span>
+      </div>
+    </div>
+
+    <style>
+      /* scoped to RAPD interactive page */
+      #glaucomaRAPDFullSwingInteractive .rapd-wrap {
+        padding: 12px 0 24px 0;
+      }
+
+      #glaucomaRAPDFullSwingInteractive .rapd-instructions {
+        font-size: 16px;
+        line-height: 1.3;
+        margin: 6px 0 10px 0;
+        opacity: 0.9;
+      }
+
+      #glaucomaRAPDFullSwingInteractive .rapd-toggleRow {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 0 0 10px 0;
+      }
+
+      #glaucomaRAPDFullSwingInteractive .rapd-toggleLabel {
+        font-size: 14px;
+        opacity: 0.9;
+      }
+
+      /* simple switch */
+      #glaucomaRAPDFullSwingInteractive .rapd-switch {
+        position: relative;
+        width: 46px;
+        height: 26px;
+        flex: 0 0 auto;
+      }
+      #glaucomaRAPDFullSwingInteractive .rapd-switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+      #glaucomaRAPDFullSwingInteractive .rapd-slider {
+        position: absolute;
+        cursor: pointer;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.18);
+        border-radius: 999px;
+        transition: 180ms ease;
+      }
+      #glaucomaRAPDFullSwingInteractive .rapd-slider::before {
+        content: "";
+        position: absolute;
+        height: 20px;
+        width: 20px;
+        left: 3px;
+        top: 3px;
+        background: #fff;
+        border-radius: 50%;
+        transition: 180ms ease;
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+      }
+      #glaucomaRAPDFullSwingInteractive
+        .rapd-switch
+        input:checked
+        + .rapd-slider {
+        background: rgba(0, 0, 0, 0.35);
+      }
+      #glaucomaRAPDFullSwingInteractive
+        .rapd-switch
+        input:checked
+        + .rapd-slider::before {
+        transform: translateX(20px);
+      }
+
+      #glaucomaRAPDFullSwingInteractive #rapdStage {
+        position: relative;
+        width: 320px;
+        height: min(62vh, 520px);
+        background: #000;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+        touch-action: none;
+      }
+
+      #glaucomaRAPDFullSwingInteractive #rapdEyesImg {
+        position: absolute;
+        left: 50%;
+        top: 52%;
+        transform: translate(-50%, -50%);
+        width: min(92%, 720px);
+        height: auto;
+        user-select: none;
+        pointer-events: none;
+      }
+
+      /* hint pill */
+      #glaucomaRAPDFullSwingInteractive #rapdHint {
+        position: absolute;
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 8px 12px;
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 999px;
+        font-size: 14px;
+        opacity: 1;
+        transition: opacity 180ms ease;
+        pointer-events: none;
+        color: rgba(255, 255, 255, 0.92);
+      }
+
+      /* pickup flashlight (off) */
+      #glaucomaRAPDFullSwingInteractive #rapdFlashlightOff {
+        position: absolute;
+        top: 56%;
+        left: 95%;
+        transform: translate(-50%, -50%);
+        width: 18px;
+        height: auto;
+        user-select: none;
+        cursor: grab;
+        touch-action: none;
+      }
+      #glaucomaRAPDFullSwingInteractive #rapdFlashlightOff:active {
+        cursor: grabbing;
+      }
+
+      /* bubble */
+      #glaucomaRAPDFullSwingInteractive #rapdBubble {
+        position: absolute;
+        top: 26%;
+        left: 72%;
+        transform: translate(-50%, -50%);
+        width: 42vw;
+        padding: 13px 11px;
+        border-radius: 14px;
+        background: #ffffff;
+        color: #111;
+        font-size: 14px;
+        line-height: 1.25;
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+        pointer-events: none;
+      }
+      #glaucomaRAPDFullSwingInteractive #rapdBubble::after {
+        content: "";
+        position: absolute;
+        right: 9px;
+        bottom: -10px;
+        width: 0;
+        height: 0;
+        border-left: 10px solid transparent;
+        border-right: 10px solid transparent;
+        border-top: 10px solid #ffffff;
+      }
+
+      /* active flashlight */
+      #glaucomaRAPDFullSwingInteractive #rapdFlashlight {
+        position: absolute;
+        top: 304px;
+        left: 260px;
+        width: 19px;
+        height: auto;
+        transform: translate(-50%, -50%);
+        user-select: none;
+        display: none;
+        cursor: grab;
+        touch-action: none;
+        z-index: 6;
+      }
+      #glaucomaRAPDFullSwingInteractive #rapdFlashlight:active {
+        cursor: grabbing;
+      }
+
+      /* light beam (code-driven) */
+      #glaucomaRAPDFullSwingInteractive #rapdBeam {
+        position: absolute;
+        width: 220px;
+        height: 140px;
+        transform-origin: 0% 50%;
+        pointer-events: none;
+        display: none;
+        z-index: 5;
+
+        /* soft torch cone */
+        background: radial-gradient(
+          ellipse at 0% 50%,
+          rgba(255, 255, 255, 0.55) 0%,
+          rgba(255, 255, 255, 0.22) 35%,
+          rgba(255, 255, 255, 0.08) 65%,
+          rgba(255, 255, 255, 0) 100%
+        );
+        filter: blur(0.2px);
+        clip-path: polygon(0 45%, 100% 0, 100% 100%, 0 55%);
+        opacity: 0.95;
+      }
+
+      /* pupils (overlay circles) */
+      #glaucomaRAPDFullSwingInteractive .rapd-pupil {
+        position: absolute;
+        width: 11px;
+        height: 11px;
+        border-radius: 999px;
+        background: #0a0a0a;
+        box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.25);
+        transform: translate(-50%, -50%) scale(1);
+        transition: transform 180ms ease;
+        z-index: 4;
+        pointer-events: none;
+      }
+
+      #glaucomaRAPDFullSwingInteractive #rapdPupilLeft {
+        left: 37.7%;
+        top: 50.6%;
+      }
+
+      #glaucomaRAPDFullSwingInteractive #rapdPupilRight {
+        left: 63.5%;
+        top: 50.6%;
+      }
+    </style>
+
+    <div class="rapd-wrap">
+      <div class="rapd-instructions">
+        Swing the light between the patient’s eyes and watch how the pupils
+        change
+      </div>
+
+      <div class="rapd-toggleRow" aria-label="RAPD mode toggle">
+        <label class="rapd-switch">
+          <input id="rapdModeToggle" type="checkbox" />
+          <span class="rapd-slider" aria-hidden="true"></span>
+        </label>
+        <div class="rapd-toggleLabel">
+          <b id="rapdModeLabel">RAPD mode OFF</b> (paradoxical dilation)
+        </div>
+      </div>
+
+      <div id="rapdStage" aria-label="RAPD swinging light interactive">
+        <div id="rapdHint">Swing the light left and right</div>
+
+        <img
+          id="rapdEyesImg"
+          src="/images/learning/GlaucomaRAPD/eyes.webp"
+          alt="Eyes graphic"
+          draggable="false"
+        />
+
+        <!-- pupils are code-driven overlays -->
+        <div id="rapdPupilLeft" class="rapd-pupil" aria-hidden="true"></div>
+        <div id="rapdPupilRight" class="rapd-pupil" aria-hidden="true"></div>
+
+        <img
+          id="rapdFlashlightOff"
+          src="/images/learning/GlaucomaRAPD/flashlight.webp"
+          alt="Pick up flashlight"
+          draggable="false"
+        />
+        <div id="rapdBubble">
+          Pick up the flashlight, then swing the light between the eyes
+        </div>
+
+        <!-- active flashlight + beam -->
+        <div id="rapdBeam" aria-hidden="true"></div>
+        <img
+          id="rapdFlashlight"
+          src="/images/learning/GlaucomaRAPD/flashlight.webp"
+          alt="Flashlight"
+          draggable="false"
+        />
+      </div>
+    </div>
+  </div>
+</div>
