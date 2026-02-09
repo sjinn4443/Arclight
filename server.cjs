@@ -37,13 +37,38 @@ app.use("/js", express.static(path.join(staticRoot, "js"))); // Prefer built js 
 app.use("/favicons", express.static(path.join(staticRoot, "favicons"))); // Prefer built assets in prod
 
 // Initialise storage (creates table locally on PG or folders for NDJSON)
-storage.init().catch((err) => {
-  console.error("Storage init failed", err);
-  // During tests, don't hard-exit the Jest worker process.
-  if (process.env.NODE_ENV !== "test") {
-    process.exit(1);
+// Railway 환경에서 DB가 잠깐 늦게 뜨거나 네트워크가 순간 실패해도
+// 컨테이너가 바로 죽지 않도록 재시도한다.
+let storageReady = false;
+
+async function initStorageWithRetry() {
+  const maxAttempts = 10;
+  const baseDelayMs = 1500;
+
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    try {
+      await storage.init();
+      storageReady = true;
+      console.log(`[storage] init ok (attempt ${attempt})`);
+      return;
+    } catch (err) {
+      console.error(
+        `[storage] init failed (attempt ${attempt}/${maxAttempts})`,
+        err,
+      );
+      const delay = baseDelayMs * attempt;
+      await new Promise((r) => setTimeout(r, delay));
+    }
   }
-});
+
+  // 여기까지 오면 init이 계속 실패한 것.
+  // 컨테이너를 죽이지 않고, 정적 파일 서빙은 계속 가능하게 둔다.
+  console.error(
+    "[storage] init failed permanently; continuing without DB-backed telemetry.",
+  );
+}
+
+initStorageWithRetry();
 
 // --- Public app APIs ---
 app.post("/api/app/profile", async (req, res) => {
