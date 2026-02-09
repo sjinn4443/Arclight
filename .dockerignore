@@ -16,6 +16,7 @@ yarn-error.log*
 # Tests and local results
 coverage
 reports
+.env
 test-results
 playwright-report
 

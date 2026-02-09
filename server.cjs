@@ -21,8 +21,9 @@ const app = express();
 
 const staticRoot = path.join(__dirname, prod || serveDist ? "dist" : "public");
 
-// Use the port from the environment variable, defaulting to 3001 if not set
-const PORT = process.env.PORT || 3000;
+// Use the port from the environment variable.
+// In production (Railway/Docker), default to 8080 if PORT is absent.
+const PORT = process.env.PORT || (prod ? 8080 : 3000);
 
 // Behind Railway → needed for secure cookies, real client IPs, rate limits
 app.set("trust proxy", 1);
@@ -207,8 +208,8 @@ app.post("/track", async (req, res) => {
 // --- Start server ---
 let server;
 if (require.main === module) {
-  server = app.listen(PORT, () => {
-    console.log(`Arclight app listening on http://localhost:${PORT}`);
+  server = app.listen(PORT, HOST, () => {
+    console.log(`Arclight app listening on http://${HOST}:${PORT}`);
   });
 }
 
