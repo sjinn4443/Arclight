@@ -37,11 +37,13 @@ app.use("/js", express.static(path.join(staticRoot, "js"))); // Prefer built js 
 app.use("/favicons", express.static(path.join(staticRoot, "favicons"))); // Prefer built assets in prod
 
 // Initialise storage (creates table locally on PG or folders for NDJSON)
+// Railway 환경에서 DB가 잠깐 늦게 뜨거나 네트워크가 순간 실패해도
+// 컨테이너가 바로 죽지 않도록 재시도한다.
 let storageReady = false;
 
 async function initStorageWithRetry() {
   const maxAttempts = 10;
-  const baseDelayMs = 1000;
+  const baseDelayMs = 1500;
 
   for (let attempt = 1; attempt <= maxAttempts; attempt++) {
     try {
@@ -50,36 +52,26 @@ async function initStorageWithRetry() {
       console.log(`[storage] init ok (attempt ${attempt})`);
       return;
     } catch (err) {
-      console.error(`[storage] init failed (attempt ${attempt})`, err);
-
-      // In tests, fail fast to surface problems
-      if (process.env.NODE_ENV === "test") throw err;
-
-      const delay = Math.min(baseDelayMs * 2 ** (attempt - 1), 15000);
+      console.error(
+        `[storage] init failed (attempt ${attempt}/${maxAttempts})`,
+        err,
+      );
+      const delay = baseDelayMs * attempt;
       await new Promise((r) => setTimeout(r, delay));
     }
   }
 
-  // After retries, keep server alive but mark storage as unavailable
+  // 여기까지 오면 init이 계속 실패한 것.
+  // 컨테이너를 죽이지 않고, 정적 파일 서빙은 계속 가능하게 둔다.
   console.error(
-    "[storage] init failed after retries; continuing without storage",
+    "[storage] init failed permanently; continuing without DB-backed telemetry.",
   );
 }
 
-initStorageWithRetry().catch((e) => {
-  // This should only happen in test, but guard anyway
-  console.error("[storage] initStorageWithRetry crashed", e);
-});
-
 initStorageWithRetry();
 
-function requireStorage(req, res, next) {
-  if (storageReady) return next();
-  return res.status(503).json({ error: "storage unavailable" });
-}
-
 // --- Public app APIs ---
-app.post("/api/app/profile", requireStorage, async (req, res) => {
+app.post("/api/app/profile", async (req, res) => {
   try {
     await storage.saveProfile(req.body || {});
     res.json({ ok: true });
@@ -89,7 +81,7 @@ app.post("/api/app/profile", requireStorage, async (req, res) => {
   }
 });
 
-app.post("/api/app/refresh", requireStorage, async (req, res) => {
+app.post("/api/app/refresh", async (req, res) => {
   try {
     await storage.bumpRefresh(req.body || {});
     res.json({ ok: true });
@@ -227,7 +219,7 @@ app.delete("/api/dev/users/:anonId", basicAuth, async (req, res) => {
 // dev dashboard/report routes so Basic Auth is applied correctly.
 app.use(express.static(staticRoot));
 
-app.post("/track", requireStorage, async (req, res) => {
+app.post("/track", async (req, res) => {
   try {
     const ip = req.ip;
     await storage.saveIp(ip);
