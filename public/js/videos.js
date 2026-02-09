@@ -551,6 +551,47 @@ const VIDEO_PAGE_SOURCES = {
       high: "videos/Workshop/Glaucoma/opticdiseases_720p.mp4",
     },
   },
+
+  glaucomaDirectOphthalmoscopyDiscsAnnotatedVideoPage: {
+    videoMode: "triToggle",
+    containerSelector:
+      "#glaucomaDirectOphthalmoscopyDiscsAnnotatedVideoContainer",
+    videoSelector: "#glaucomaDirectOphthalmoscopyDiscsAnnotatedVideo",
+    sources: {
+      low: "videos/Workshop/Glaucoma/DO_discsannotated_220p.mp4",
+      high: "videos/Workshop/Glaucoma/DO_discsannotated_720p.mp4",
+    },
+  },
+
+  glaucomaOpticDiscAnatomyVideoPage: {
+    videoMode: "triToggle",
+    containerSelector: "#glaucomaOpticDiscAnatomyVideoContainer",
+    videoSelector: "#glaucomaOpticDiscAnatomyVideo",
+    sources: {
+      low: "videos/Workshop/Glaucoma/BE_opticdiscanatomy_220p.mp4",
+      high: "videos/Workshop/Glaucoma/BE_opticdiscanatomy_720p.mp4",
+    },
+  },
+
+  glaucomaMarginVideoPage: {
+    videoMode: "triToggle",
+    containerSelector: "#glaucomaMarginVideoContainer",
+    videoSelector: "#glaucomaMarginVideo",
+    sources: {
+      low: "videos/Workshop/Glaucoma/BE_Margin_220p.mp4",
+      high: "videos/Workshop/Glaucoma/BE_Margin_720p.mp4",
+    },
+  },
+
+  glaucomaDiscCuppingVideoPage: {
+    videoMode: "triToggle",
+    containerSelector: "#glaucomaDiscCuppingVideoContainer",
+    videoSelector: "#glaucomaDiscCuppingVideo",
+    sources: {
+      low: "videos/Workshop/Glaucoma/BE_disccuppingonly_220p.mp4",
+      high: "videos/Workshop/Glaucoma/BE_disccuppingonly_720p.mp4",
+    },
+  },
 };
 
 function readGenericVideoMode(storageKey) {
