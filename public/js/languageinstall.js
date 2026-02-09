@@ -142,11 +142,10 @@ export function initializeLanguageInstall() {
         // Show native install prompt
         const result = await promptInstall();
 
-        // Accept both possible shapes:
-        // - boolean true/false
-        // - { outcome: 'accepted' | 'dismissed' }
+        // promptInstall() in pwa.js returns a string: 'accepted' | 'dismissed'
         const accepted =
           result === true ||
+          result === "accepted" ||
           (typeof result === "object" &&
             result &&
             result.outcome === "accepted");
@@ -162,22 +161,104 @@ export function initializeLanguageInstall() {
         // Accepted → warm cache (best-effort) then advance
         try {
           const sw = await navigator.serviceWorker.ready;
+
           const pagesToCache = [
-            "index.html",
-            "style.css",
-            "html/languageinstall.html",
-            "html/onboarding.html",
-            "html/dashboard.html",
-            "html/eyes.html",
-            "html/ears.html",
-            "html/menu.html",
-            "html/quizzes.html",
-            "html/videos.html",
+            "/index.html",
+            "/html/languageinstall.html",
+            "/html/onboarding.html",
+            "/html/dashboard.html",
+            "/html/eyes.html",
+            "/html/ears.html",
+            "/html/menu.html",
+            "/html/quizzes.html",
+            "/html/videos.html",
           ];
+
+          // Glaucoma workshop + learning assets (explicit list)
+          const glaucomaAssetsToCache = [
+            "/images/learning/GlaucomaACD/flashlight.webp",
+            "/images/learning/GlaucomaRAPD/flashlight.webp",
+
+            "/images/pdf/Workshop/Glaucoma/Anatomy/01.jpg",
+            "/images/pdf/Workshop/Glaucoma/Anatomy/02.jpg",
+            "/images/pdf/Workshop/Glaucoma/Anatomy/03.jpg",
+            "/images/pdf/Workshop/Glaucoma/Anatomy/04.jpg",
+            "/images/pdf/Workshop/Glaucoma/Anatomy/05.jpg",
+            "/images/pdf/Workshop/Glaucoma/Anatomy/06.jpg",
+            "/images/pdf/Workshop/Glaucoma/Anatomy/07.jpg",
+
+            "/images/pdf/Workshop/Glaucoma/Diagnosis/01.jpg",
+            "/images/pdf/Workshop/Glaucoma/Diagnosis/02.jpg",
+            "/images/pdf/Workshop/Glaucoma/Diagnosis/03.jpg",
+            "/images/pdf/Workshop/Glaucoma/Diagnosis/04.jpg",
+            "/images/pdf/Workshop/Glaucoma/Diagnosis/05.jpg",
+            "/images/pdf/Workshop/Glaucoma/Diagnosis/06.jpg",
+            "/images/pdf/Workshop/Glaucoma/Diagnosis/07.jpg",
+            "/images/pdf/Workshop/Glaucoma/Diagnosis/08.jpg",
+            "/images/pdf/Workshop/Glaucoma/Diagnosis/09.jpg",
+            "/images/pdf/Workshop/Glaucoma/Diagnosis/10.jpg",
+            "/images/pdf/Workshop/Glaucoma/Diagnosis/11.jpg",
+            "/images/pdf/Workshop/Glaucoma/Diagnosis/12.jpg",
+            "/images/pdf/Workshop/Glaucoma/Diagnosis/13.jpg",
+            "/images/pdf/Workshop/Glaucoma/Diagnosis/14.jpg",
+            "/images/pdf/Workshop/Glaucoma/Diagnosis/15.jpg",
+
+            "/images/pdf/Workshop/Glaucoma/Intro/01.jpg",
+            "/images/pdf/Workshop/Glaucoma/Intro/02.jpg",
+            "/images/pdf/Workshop/Glaucoma/Intro/03.jpg",
+            "/images/pdf/Workshop/Glaucoma/Intro/04.jpg",
+            "/images/pdf/Workshop/Glaucoma/Intro/05.jpg",
+
+            "/images/pdf/Workshop/Glaucoma/Types/01.jpg",
+            "/images/pdf/Workshop/Glaucoma/Types/02.jpg",
+            "/images/pdf/Workshop/Glaucoma/Types/03.jpg",
+            "/images/pdf/Workshop/Glaucoma/Types/04.jpg",
+            "/images/pdf/Workshop/Glaucoma/Types/05.jpg",
+            "/images/pdf/Workshop/Glaucoma/Types/06.jpg",
+            "/images/pdf/Workshop/Glaucoma/Types/07.jpg",
+            "/images/pdf/Workshop/Glaucoma/Types/08.jpg",
+            "/images/pdf/Workshop/Glaucoma/Types/09.jpg",
+            "/images/pdf/Workshop/Glaucoma/Types/10.jpg",
+
+            "/images/pdf/Workshop/Glaucoma/Cupping/01.jpg",
+            "/images/pdf/Workshop/Glaucoma/Cupping/02.jpg",
+            "/images/pdf/Workshop/Glaucoma/Cupping/03.jpg",
+            "/images/pdf/Workshop/Glaucoma/Cupping/04.jpg",
+            "/images/pdf/Workshop/Glaucoma/Cupping/05.jpg",
+            "/images/pdf/Workshop/Glaucoma/Cupping/06.jpg",
+
+            "/images/pdf/Workshop/Glaucoma/Summary/01.jpg",
+            "/images/pdf/Workshop/Glaucoma/Summary/02.jpg",
+            "/images/pdf/Workshop/Glaucoma/Summary/03.jpg",
+            "/images/pdf/Workshop/Glaucoma/Summary/04.jpg",
+            "/images/pdf/Workshop/Glaucoma/Summary/05.jpg",
+            "/images/pdf/Workshop/Glaucoma/Summary/06.jpg",
+            "/images/pdf/Workshop/Glaucoma/Summary/07.jpg",
+            "/images/pdf/Workshop/Glaucoma/Summary/08.jpg",
+
+            "/videos/Workshop/Glaucoma/GlaucomaAnteriorChamberDepth_220p.mp4",
+            "/videos/Workshop/Glaucoma/GlaucomaAnteriorChamberDepth_720p.mp4",
+            "/videos/Workshop/Glaucoma/GlaucomaACAGCaseWorkshop_220p.mp4",
+            "/videos/Workshop/Glaucoma/GlaucomaACAGCaseWorkshop_720p.mp4",
+            "/videos/Workshop/Glaucoma/GlaucomaCupping_220p.mp4",
+            "/videos/Workshop/Glaucoma/GlaucomaCupping_720p.mp4",
+            "/videos/Workshop/Glaucoma/GlaucomaDiagnosis_220p.mp4",
+            "/videos/Workshop/Glaucoma/GlaucomaDiagnosis_720p.mp4",
+            "/videos/Workshop/Glaucoma/GlaucomaIntro_220p.mp4",
+            "/videos/Workshop/Glaucoma/GlaucomaIntro_720p.mp4",
+            "/videos/Workshop/Glaucoma/GlaucomaTypes_220p.mp4",
+            "/videos/Workshop/Glaucoma/GlaucomaTypes_720p.mp4",
+          ];
+
+          const urlsToCache = [...pagesToCache, ...glaucomaAssetsToCache];
+
           sw.active?.postMessage({
-            type: "CACHE_ASSETS",
-            payload: pagesToCache,
+            type: "CACHE_URLS",
+            payload: urlsToCache,
+            cacheName: "arclight-static-v3",
           });
+          console.warn("[install] sent CACHE_URLS to SW:", urlsToCache.length);
+
           console.warn(
             "[install] sent CACHE_ASSETS to SW:",
             pagesToCache.length,
