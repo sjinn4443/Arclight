@@ -104,17 +104,17 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // Static assets: cache-first
+  // Static assets: network-first (fallback to cache)
   event.respondWith(
     (async () => {
       const cache = await caches.open(CACHE_NAME);
-      const cached = await cache.match(req);
-      if (cached) return cached;
+
       try {
-        const fresh = await fetch(req);
+        const fresh = await fetch(req, { cache: "no-store" });
         cache.put(req, fresh.clone()).catch(() => {});
         return fresh;
       } catch {
+        const cached = await cache.match(req);
         return cached || Response.error();
       }
     })(),
@@ -125,6 +125,12 @@ self.addEventListener("fetch", (event) => {
 self.addEventListener("message", async (event) => {
   const { data, ports } = event;
   if (!data || !data.type) return;
+
+  if (data.type === "SKIP_WAITING") {
+    self.skipWaiting();
+    ports?.[0]?.postMessage?.({ type: "SKIP_WAITING_DONE" });
+    return;
+  }
 
   if (data.type === "CACHE_URLS") {
     const urls = data.payload || [];
