@@ -84,6 +84,39 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
+  // ---- MP4 handling (avoid breaking cache with Range requests) ----
+  const isMp4 = url.pathname.endsWith(".mp4");
+
+  // If the browser requests a byte range, serve from cache if possible,
+  // otherwise fall back to network. Do NOT cache the ranged response.
+  if (isMp4 && req.headers.has("range")) {
+    event.respondWith(
+      (async () => {
+        const cache = await caches.open(CACHE_NAME);
+        const cached = await cache.match(req, { ignoreSearch: true });
+        if (cached) return cached;
+        return fetch(req);
+      })(),
+    );
+    return;
+  }
+
+  // For full MP4 requests, prefer cache first (offline stability)
+  if (isMp4) {
+    event.respondWith(
+      (async () => {
+        const cache = await caches.open(CACHE_NAME);
+        const cached = await cache.match(req, { ignoreSearch: true });
+        if (cached) return cached;
+
+        const fresh = await fetch(req);
+        cache.put(req, fresh.clone()).catch(() => {});
+        return fresh;
+      })(),
+    );
+    return;
+  }
+
   if (req.mode === "navigate") {
     // HTML navigation: try network, fallback to cached shell
     event.respondWith(

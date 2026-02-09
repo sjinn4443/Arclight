@@ -172,82 +172,121 @@ export function initializeLanguageInstall() {
             "/html/menu.html",
             "/html/quizzes.html",
             "/html/videos.html",
+
+            // Glaucoma workshop html pages
+            "/html/glaucomaWorkshop.html",
+            "/html/glaucomascrollImages.html",
+            "/html/glaucomaQuizCaseStudy.html",
+
+            // JS needed for glaucoma workshop + videos
+            "/js/glaucomaWorkshop.js",
+            "/js/videos.js",
+            "/js/videoplayer.js",
           ];
 
           // Glaucoma workshop + learning assets (explicit list)
           const glaucomaAssetsToCache = [
             "/images/learning/GlaucomaACD/flashlight.webp",
+            "/images/learning/GlaucomaACD/eyes.webp",
+            "/images/learning/GlaucomaACD/flashlightoff.webp",
             "/images/learning/GlaucomaRAPD/flashlight.webp",
+            "/images/learning/GlaucomaRAPD/eyes.webp",
 
-            "/images/pdf/Workshop/Glaucoma/Anatomy/01.jpg",
-            "/images/pdf/Workshop/Glaucoma/Anatomy/02.jpg",
-            "/images/pdf/Workshop/Glaucoma/Anatomy/03.jpg",
-            "/images/pdf/Workshop/Glaucoma/Anatomy/04.jpg",
-            "/images/pdf/Workshop/Glaucoma/Anatomy/05.jpg",
-            "/images/pdf/Workshop/Glaucoma/Anatomy/06.jpg",
-            "/images/pdf/Workshop/Glaucoma/Anatomy/07.jpg",
+            // Glaucoma workshop images (match glaucomaWorkshop.js exactly)
 
-            "/images/pdf/Workshop/Glaucoma/Diagnosis/01.jpg",
-            "/images/pdf/Workshop/Glaucoma/Diagnosis/02.jpg",
-            "/images/pdf/Workshop/Glaucoma/Diagnosis/03.jpg",
-            "/images/pdf/Workshop/Glaucoma/Diagnosis/04.jpg",
-            "/images/pdf/Workshop/Glaucoma/Diagnosis/05.jpg",
-            "/images/pdf/Workshop/Glaucoma/Diagnosis/06.jpg",
-            "/images/pdf/Workshop/Glaucoma/Diagnosis/07.jpg",
-            "/images/pdf/Workshop/Glaucoma/Diagnosis/08.jpg",
-            "/images/pdf/Workshop/Glaucoma/Diagnosis/09.jpg",
-            "/images/pdf/Workshop/Glaucoma/Diagnosis/10.jpg",
-            "/images/pdf/Workshop/Glaucoma/Diagnosis/11.jpg",
-            "/images/pdf/Workshop/Glaucoma/Diagnosis/12.jpg",
-            "/images/pdf/Workshop/Glaucoma/Diagnosis/13.jpg",
-            "/images/pdf/Workshop/Glaucoma/Diagnosis/14.jpg",
-            "/images/pdf/Workshop/Glaucoma/Diagnosis/15.jpg",
+            // 01 Introduction
+            "/images/pdf/Workshop/Glaucoma/01Introduction/01.jpg",
+            "/images/pdf/Workshop/Glaucoma/01Introduction/02.jpg",
+            "/images/pdf/Workshop/Glaucoma/01Introduction/03.jpg",
+            "/images/pdf/Workshop/Glaucoma/01Introduction/04.jpg",
+            "/images/pdf/Workshop/Glaucoma/01Introduction/05.jpg",
 
-            "/images/pdf/Workshop/Glaucoma/Intro/01.jpg",
-            "/images/pdf/Workshop/Glaucoma/Intro/02.jpg",
-            "/images/pdf/Workshop/Glaucoma/Intro/03.jpg",
-            "/images/pdf/Workshop/Glaucoma/Intro/04.jpg",
-            "/images/pdf/Workshop/Glaucoma/Intro/05.jpg",
+            // 02 Anatomy
+            "/images/pdf/Workshop/Glaucoma/02Anatomy/01.jpg",
+            "/images/pdf/Workshop/Glaucoma/02Anatomy/02.jpg",
+            "/images/pdf/Workshop/Glaucoma/02Anatomy/03.jpg",
+            "/images/pdf/Workshop/Glaucoma/02Anatomy/04.jpg",
+            "/images/pdf/Workshop/Glaucoma/02Anatomy/05.jpg",
+            "/images/pdf/Workshop/Glaucoma/02Anatomy/06.jpg",
+            "/images/pdf/Workshop/Glaucoma/02Anatomy/07.jpg",
 
-            "/images/pdf/Workshop/Glaucoma/Types/01.jpg",
-            "/images/pdf/Workshop/Glaucoma/Types/02.jpg",
-            "/images/pdf/Workshop/Glaucoma/Types/03.jpg",
-            "/images/pdf/Workshop/Glaucoma/Types/04.jpg",
-            "/images/pdf/Workshop/Glaucoma/Types/05.jpg",
-            "/images/pdf/Workshop/Glaucoma/Types/06.jpg",
-            "/images/pdf/Workshop/Glaucoma/Types/07.jpg",
-            "/images/pdf/Workshop/Glaucoma/Types/08.jpg",
-            "/images/pdf/Workshop/Glaucoma/Types/09.jpg",
-            "/images/pdf/Workshop/Glaucoma/Types/10.jpg",
+            // 03 Diagnosis
+            "/images/pdf/Workshop/Glaucoma/03Diagnosis/01.jpg",
+            "/images/pdf/Workshop/Glaucoma/03Diagnosis/02.jpg",
+            "/images/pdf/Workshop/Glaucoma/03Diagnosis/03.jpg",
+            "/images/pdf/Workshop/Glaucoma/03Diagnosis/04.jpg",
+            "/images/pdf/Workshop/Glaucoma/03Diagnosis/05.jpg",
+            "/images/pdf/Workshop/Glaucoma/03Diagnosis/06.jpg",
+            "/images/pdf/Workshop/Glaucoma/03Diagnosis/07.jpg",
+            "/images/pdf/Workshop/Glaucoma/03Diagnosis/08.jpg",
+            "/images/pdf/Workshop/Glaucoma/03Diagnosis/09.jpg",
+            "/images/pdf/Workshop/Glaucoma/03Diagnosis/10.jpg",
+            "/images/pdf/Workshop/Glaucoma/03Diagnosis/11.jpg",
+            "/images/pdf/Workshop/Glaucoma/03Diagnosis/12.jpg",
+            "/images/pdf/Workshop/Glaucoma/03Diagnosis/13.jpg",
+            "/images/pdf/Workshop/Glaucoma/03Diagnosis/14.jpg",
+            "/images/pdf/Workshop/Glaucoma/03Diagnosis/15.jpg",
 
-            "/images/pdf/Workshop/Glaucoma/Cupping/01.jpg",
-            "/images/pdf/Workshop/Glaucoma/Cupping/02.jpg",
-            "/images/pdf/Workshop/Glaucoma/Cupping/03.jpg",
-            "/images/pdf/Workshop/Glaucoma/Cupping/04.jpg",
-            "/images/pdf/Workshop/Glaucoma/Cupping/05.jpg",
-            "/images/pdf/Workshop/Glaucoma/Cupping/06.jpg",
+            // 04 Types
+            "/images/pdf/Workshop/Glaucoma/04Types/01.jpg",
+            "/images/pdf/Workshop/Glaucoma/04Types/02.jpg",
+            "/images/pdf/Workshop/Glaucoma/04Types/03.jpg",
+            "/images/pdf/Workshop/Glaucoma/04Types/04.jpg",
+            "/images/pdf/Workshop/Glaucoma/04Types/05.jpg",
+            "/images/pdf/Workshop/Glaucoma/04Types/06.jpg",
+            "/images/pdf/Workshop/Glaucoma/04Types/07.jpg",
+            "/images/pdf/Workshop/Glaucoma/04Types/08.jpg",
+            "/images/pdf/Workshop/Glaucoma/04Types/09.jpg",
+            "/images/pdf/Workshop/Glaucoma/04Types/10.jpg",
 
-            "/images/pdf/Workshop/Glaucoma/Summary/01.jpg",
-            "/images/pdf/Workshop/Glaucoma/Summary/02.jpg",
-            "/images/pdf/Workshop/Glaucoma/Summary/03.jpg",
-            "/images/pdf/Workshop/Glaucoma/Summary/04.jpg",
-            "/images/pdf/Workshop/Glaucoma/Summary/05.jpg",
-            "/images/pdf/Workshop/Glaucoma/Summary/06.jpg",
-            "/images/pdf/Workshop/Glaucoma/Summary/07.jpg",
-            "/images/pdf/Workshop/Glaucoma/Summary/08.jpg",
+            // 05 Cupping
+            "/images/pdf/Workshop/Glaucoma/05Cupping/01.jpg",
+            "/images/pdf/Workshop/Glaucoma/05Cupping/02.jpg",
+            "/images/pdf/Workshop/Glaucoma/05Cupping/03.jpg",
+            "/images/pdf/Workshop/Glaucoma/05Cupping/04.jpg",
+            "/images/pdf/Workshop/Glaucoma/05Cupping/05.jpg",
+            "/images/pdf/Workshop/Glaucoma/05Cupping/06.jpg",
 
-            "/videos/Workshop/Glaucoma/GlaucomaAnteriorChamberDepth_220p.mp4",
-            "/videos/Workshop/Glaucoma/GlaucomaAnteriorChamberDepth_720p.mp4",
-            "/videos/Workshop/Glaucoma/GlaucomaACAGCaseWorkshop_220p.mp4",
-            "/videos/Workshop/Glaucoma/GlaucomaACAGCaseWorkshop_720p.mp4",
-            "/videos/Workshop/Glaucoma/GlaucomaCupping_220p.mp4",
-            "/videos/Workshop/Glaucoma/GlaucomaCupping_720p.mp4",
-            "/videos/Workshop/Glaucoma/GlaucomaDiagnosis_220p.mp4",
-            "/videos/Workshop/Glaucoma/GlaucomaDiagnosis_720p.mp4",
-            "/videos/Workshop/Glaucoma/GlaucomaIntro_220p.mp4",
-            "/videos/Workshop/Glaucoma/GlaucomaIntro_720p.mp4",
-            "/videos/Workshop/Glaucoma/GlaucomaTypes_220p.mp4",
-            "/videos/Workshop/Glaucoma/GlaucomaTypes_720p.mp4",
+            // 06 Summary
+            "/images/pdf/Workshop/Glaucoma/06Summary/01.jpg",
+            "/images/pdf/Workshop/Glaucoma/06Summary/02.jpg",
+            "/images/pdf/Workshop/Glaucoma/06Summary/03.jpg",
+            "/images/pdf/Workshop/Glaucoma/06Summary/04.jpg",
+            "/images/pdf/Workshop/Glaucoma/06Summary/05.jpg",
+            "/images/pdf/Workshop/Glaucoma/06Summary/06.jpg",
+            "/images/pdf/Workshop/Glaucoma/06Summary/07.jpg",
+            "/images/pdf/Workshop/Glaucoma/06Summary/08.jpg",
+
+            // Glaucoma workshop videos (match videos.js sources exactly)
+            "/videos/Workshop/Glaucoma/pupilreaction_220p.mp4",
+            "/videos/Workshop/Glaucoma/pupilreaction_720p.mp4",
+
+            "/videos/Workshop/Glaucoma/FRsignsglaucoma_220p.mp4",
+            "/videos/Workshop/Glaucoma/FRsignsglaucoma_720p.mp4",
+
+            "/videos/Workshop/Glaucoma/FRACD_220p.mp4",
+            "/videos/Workshop/Glaucoma/FRACD_720p.mp4",
+
+            "/videos/Workshop/Glaucoma/FRACAG_220p.mp4",
+            "/videos/Workshop/Glaucoma/FRACAG_720p.mp4",
+
+            "/videos/Workshop/Glaucoma/FRDisease_220p.mp4",
+            "/videos/Workshop/Glaucoma/FRDisease_720p.mp4",
+
+            "/videos/Workshop/Glaucoma/opticdiseases_220p.mp4",
+            "/videos/Workshop/Glaucoma/opticdiseases_720p.mp4",
+
+            "/videos/Workshop/Glaucoma/DO_discsannotated_220p.mp4",
+            "/videos/Workshop/Glaucoma/DO_discsannotated_720p.mp4",
+
+            "/videos/Workshop/Glaucoma/BE_opticdiscanatomy_220p.mp4",
+            "/videos/Workshop/Glaucoma/BE_opticdiscanatomy_720p.mp4",
+
+            "/videos/Workshop/Glaucoma/BE_Margin_220p.mp4",
+            "/videos/Workshop/Glaucoma/BE_Margin_720p.mp4",
+
+            "/videos/Workshop/Glaucoma/BE_disccuppingonly_220p.mp4",
+            "/videos/Workshop/Glaucoma/BE_disccuppingonly_720p.mp4",
           ];
 
           const urlsToCache = [...pagesToCache, ...glaucomaAssetsToCache];
