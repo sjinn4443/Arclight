@@ -1,4 +1,4 @@
-<div
+﻿<div
   id="childhoodEyeScreeningWorkshopPage"
   class="page pupils-like has-eyes-topbar"
 >
@@ -17,8 +17,149 @@
       <section class="pupil-level pupil-level--primary" aria-label="Primary">
         <div class="pupil-level__cap">Primary</div>
 
+        <!-- Folder buttons (collapsed view) -->
+        <div
+          id="childhoodWorkshopFolders"
+          style="
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+          "
+        >
+          <div
+            class="lesson-row childhood-folder-row"
+            data-folder="visualSystem"
+            role="button"
+            tabindex="0"
+            style="width: 79%"
+          >
+            <div
+              class="thumb"
+              aria-hidden="true"
+              style="
+                background-image: url(&quot;/images/icon/eyes/moduleicons/primary_folder.webp&quot;);
+              "
+            ></div>
+
+            <div class="lesson-main">
+              <div class="lesson-top">
+                <span class="lesson-type">The Visual System</span>
+                <span class="lesson-meta"></span>
+              </div>
+            </div>
+
+            <span class="lesson-cta" style="color: #00ff66">See all &gt;</span>
+          </div>
+
+          <div
+            class="lesson-row childhood-folder-row"
+            data-folder="visualDevelopment"
+            role="button"
+            tabindex="0"
+            style="width: 79%"
+          >
+            <div
+              class="thumb"
+              aria-hidden="true"
+              style="
+                background-image: url(&quot;/images/icon/eyes/moduleicons/primary_folder.webp&quot;);
+              "
+            ></div>
+
+            <div class="lesson-main">
+              <div class="lesson-top">
+                <span class="lesson-type">Visual Development</span>
+                <span class="lesson-meta"></span>
+              </div>
+            </div>
+
+            <span class="lesson-cta" style="color: #00ff66">See all &gt;</span>
+          </div>
+
+          <div
+            class="lesson-row childhood-folder-row"
+            data-folder="causesVisualImpairment"
+            role="button"
+            tabindex="0"
+            style="width: 79%"
+          >
+            <div
+              class="thumb"
+              aria-hidden="true"
+              style="
+                background-image: url(&quot;/images/icon/eyes/moduleicons/primary_folder.webp&quot;);
+              "
+            ></div>
+
+            <div class="lesson-main">
+              <div class="lesson-top">
+                <span class="lesson-type">Causes of Visual Impairment</span>
+                <span class="lesson-meta"></span>
+              </div>
+            </div>
+
+            <span class="lesson-cta" style="color: #00ff66">See all &gt;</span>
+          </div>
+
+          <div
+            class="lesson-row childhood-folder-row"
+            data-folder="signsVisualImpairment"
+            role="button"
+            tabindex="0"
+            style="width: 79%"
+          >
+            <div
+              class="thumb"
+              aria-hidden="true"
+              style="
+                background-image: url(&quot;/images/icon/eyes/moduleicons/primary_folder.webp&quot;);
+              "
+            ></div>
+
+            <div class="lesson-main">
+              <div class="lesson-top">
+                <span class="lesson-type">Signs of Visual Impairment</span>
+                <span class="lesson-meta"></span>
+              </div>
+            </div>
+
+            <span class="lesson-cta" style="color: #00ff66">See all &gt;</span>
+          </div>
+
+          <div
+            class="lesson-row childhood-folder-row"
+            data-folder="childhoodEyeScreening"
+            role="button"
+            tabindex="0"
+            style="width: 79%"
+          >
+            <div
+              class="thumb"
+              aria-hidden="true"
+              style="
+                background-image: url(&quot;/images/icon/eyes/moduleicons/primary_folder.webp&quot;);
+              "
+            ></div>
+
+            <div class="lesson-main">
+              <div class="lesson-top">
+                <span class="lesson-type">Childhood Eye Screening</span>
+                <span class="lesson-meta"></span>
+              </div>
+            </div>
+
+            <span class="lesson-cta" style="color: #00ff66">See all &gt;</span>
+          </div>
+        </div>
+
         <!-- The Visual System -->
-        <button type="button" class="pupil-card module-card">
+        <button
+          type="button"
+          class="pupil-card module-card childhood-section-card"
+          data-section="visualSystem"
+          style="display: none"
+        >
           <h3>The Visual System</h3>
           <p
             class="section-subtitle"
@@ -56,7 +197,12 @@
         </button>
 
         <!-- Visual Development -->
-        <button type="button" class="pupil-card module-card">
+        <button
+          type="button"
+          class="pupil-card module-card childhood-section-card"
+          data-section="visualDevelopment"
+          style="display: none"
+        >
           <h3>Visual Development</h3>
           <p
             class="section-subtitle"
@@ -206,8 +352,10 @@
         <!-- Causes of Visual Impairment -->
         <button
           type="button"
-          class="pupil-card module-card"
+          class="pupil-card module-card childhood-section-card"
+          data-section="causesVisualImpairment"
           data-page="comingSoon"
+          style="display: none"
         >
           <h3>Causes of Visual Impairment</h3>
           <p
@@ -248,8 +396,10 @@
         <!-- Signs of Visual Impairment -->
         <button
           type="button"
-          class="pupil-card module-card"
+          class="pupil-card module-card childhood-section-card"
+          data-section="signsVisualImpairment"
           data-page="comingSoon"
+          style="display: none"
         >
           <h3>Signs of Visual Impairment</h3>
           <p
@@ -322,7 +472,12 @@
         </button>
 
         <!-- Childhood Eye Screening -->
-        <button type="button" class="pupil-card module-card">
+        <button
+          type="button"
+          class="pupil-card module-card childhood-section-card"
+          data-section="childhoodEyeScreening"
+          style="display: none"
+        >
           <h3>Childhood Eye Screening</h3>
           <p
             class="section-subtitle"

@@ -47,81 +47,155 @@ function normaliseVideosSubpageId(raw) {
   return `${t}Page`;
 }
 
-function setupWorkshopSeeAllToggles(page) {
-  const cards = page.querySelectorAll(".pupil-card.module-card");
-  cards.forEach((card) => {
-    const subtitles = card.querySelectorAll("p.section-subtitle");
-    subtitles.forEach((subtitle) => {
-      // subtitle 다음에 나오는 lesson-row들을, 다음 section-subtitle 나오기 전까지 그룹으로 묶음
-      const groupRows = [];
-      let el = subtitle.nextElementSibling;
+function setupWorkshopFolders(page) {
+  const folders = page.querySelectorAll(
+    "#childhoodWorkshopFolders .childhood-folder-row",
+  );
+  const sectionCards = page.querySelectorAll(".childhood-section-card");
 
-      while (el) {
-        if (el.matches && el.matches("p.section-subtitle")) break;
-        if (el.classList && el.classList.contains("lesson-row"))
-          groupRows.push(el);
-        el = el.nextElementSibling;
-      }
+  const foldersContainer = page.querySelector("#childhoodWorkshopFolders");
+  if (!foldersContainer) return;
 
-      // "한 항목에 3개 초과" => 4개 이상일 때만 토글 생성
-      if (groupRows.length <= 3) return;
+  const SS_OPEN_KEY = "childhoodWorkshop:openFolderKey";
+  const SS_RESTORE_FLAG = "childhoodWorkshop:restoreOpenFolder";
 
-      // 이미 토글이 붙어있으면 중복 생성 방지
-      if (subtitle.querySelector(".see-all-toggle")) return;
+  const ssGet = (k) => {
+    try {
+      return sessionStorage.getItem(k);
+    } catch {
+      return null;
+    }
+  };
 
-      // 기본 상태: 2개만 보여주고 나머지는 숨김
-      groupRows.slice(2).forEach((row) => {
-        row.setAttribute("data-collapsible-hidden", "true");
-      });
+  const ssSet = (k, v) => {
+    try {
+      sessionStorage.setItem(k, v);
+    } catch {}
+  };
 
-      const toggle = document.createElement("span");
-      toggle.className = "see-all-toggle";
-      toggle.setAttribute("role", "button");
-      toggle.setAttribute("tabindex", "0");
-      toggle.setAttribute("aria-expanded", "false");
-      toggle.textContent = "See all >";
+  const ssRemove = (k) => {
+    try {
+      sessionStorage.removeItem(k);
+    } catch {}
+  };
 
-      const open = () => {
-        groupRows.forEach((row) =>
-          row.removeAttribute("data-collapsible-hidden"),
-        );
-        toggle.textContent = "Close ^";
-        toggle.setAttribute("aria-expanded", "true");
-      };
+  const hideAllSectionCards = () => {
+    sectionCards.forEach((card) => {
+      card.style.display = "none";
 
-      const close = () => {
-        groupRows.slice(2).forEach((row) => {
-          row.setAttribute("data-collapsible-hidden", "true");
-        });
-        toggle.textContent = "See all >";
-        toggle.setAttribute("aria-expanded", "false");
-      };
+      const titleEl = card.querySelector("h3");
+      if (!titleEl) return;
 
-      const toggleNow = (e) => {
-        // 카드가 <button>이라 이벤트가 섞이지 않게 완전히 차단
-        e.preventDefault();
-        e.stopPropagation();
+      const existingToggle = titleEl.querySelector(".see-all-toggle");
+      if (existingToggle) existingToggle.remove();
+    });
+  };
 
-        const expanded = toggle.getAttribute("aria-expanded") === "true";
-        if (expanded) close();
-        else open();
-      };
+  const showSectionByKey = (key) => {
+    const card = page.querySelector(
+      `.childhood-section-card[data-section="${key}"]`,
+    );
+    if (!card) return;
 
-      toggle.addEventListener("click", toggleNow);
-      toggle.addEventListener("keydown", (e) => {
-        if (e.key === "Enter" || e.key === " ") toggleNow(e);
-      });
+    const openFolderRow = page.querySelector(
+      `#childhoodWorkshopFolders .childhood-folder-row[data-folder="${key}"]`,
+    );
+    if (!openFolderRow) return;
 
-      // subtitle 오른쪽에 붙이기
-      subtitle.appendChild(toggle);
+    hideAllSectionCards();
+    folders.forEach((r) => (r.style.display = ""));
+
+    openFolderRow.style.display = "none";
+    ssSet(SS_OPEN_KEY, key);
+
+    openFolderRow.insertAdjacentElement("afterend", card);
+    card.style.display = "";
+
+    const titleEl = card.querySelector("h3");
+    if (!titleEl) return;
+
+    titleEl.style.display = "flex";
+    titleEl.style.alignItems = "center";
+    titleEl.style.width = "100%";
+
+    const toggle = document.createElement("span");
+    toggle.className = "see-all-toggle";
+    toggle.setAttribute("role", "button");
+    toggle.setAttribute("tabindex", "0");
+    toggle.setAttribute("aria-expanded", "true");
+    toggle.textContent = "Close ^";
+
+    toggle.style.marginLeft = "auto";
+    toggle.style.marginRight = "15px";
+    toggle.style.whiteSpace = "nowrap";
+
+    const closeNow = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      card.style.display = "none";
+
+      const existingToggle = titleEl.querySelector(".see-all-toggle");
+      if (existingToggle) existingToggle.remove();
+
+      openFolderRow.style.display = "";
+      ssRemove(SS_OPEN_KEY);
+      ssRemove(SS_RESTORE_FLAG);
+    };
+
+    toggle.addEventListener("click", closeNow);
+    toggle.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") closeNow(e);
+    });
+
+    titleEl.appendChild(toggle);
+  };
+
+  hideAllSectionCards();
+  folders.forEach((r) => (r.style.display = ""));
+  foldersContainer.style.display = "";
+
+  const shouldRestore = ssGet(SS_RESTORE_FLAG) === "1";
+  const savedKey = ssGet(SS_OPEN_KEY);
+
+  if (shouldRestore && savedKey) {
+    ssRemove(SS_RESTORE_FLAG);
+    showSectionByKey(savedKey);
+  } else {
+    ssRemove(SS_OPEN_KEY);
+    ssRemove(SS_RESTORE_FLAG);
+  }
+
+  folders.forEach((row) => {
+    if (row.dataset.wired === "1") return;
+    row.dataset.wired = "1";
+
+    const key = row.getAttribute("data-folder");
+    if (!key) return;
+
+    const openNow = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      showSectionByKey(key);
+    };
+
+    row.addEventListener("click", openNow);
+    row.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") openNow(e);
     });
   });
+}
+
+function markRestoreOpenFolder() {
+  try {
+    sessionStorage.setItem("childhoodWorkshop:restoreOpenFolder", "1");
+  } catch {}
 }
 
 export function initializeChildhoodEyeScreeningWorkshop() {
   const page = document.getElementById("childhoodEyeScreeningWorkshopPage");
   if (!page) return;
-  setupWorkshopSeeAllToggles(page);
+  setupWorkshopFolders(page);
   const rows = page.querySelectorAll(".lesson-row[data-target]");
   rows.forEach((row) => {
     if (row.dataset.wired === "1") return;
@@ -132,6 +206,8 @@ export function initializeChildhoodEyeScreeningWorkshop() {
 
       const targetRaw = row.getAttribute("data-target");
       if (!targetRaw) return;
+
+      markRestoreOpenFolder();
 
       // ✅ quizzes that are separate routes
       if (targetRaw === "childhoodAssessmentPage") {
@@ -234,6 +310,7 @@ export function initializeChildhoodEyeScreeningWorkshop() {
     viRow.dataset.wired = "1";
     viRow.addEventListener("click", async (e) => {
       e.preventDefault();
+      markRestoreOpenFolder();
       await loadPage("visualImpairment");
     });
   }
@@ -251,6 +328,7 @@ export function initializeChildhoodEyeScreeningWorkshop() {
       el.dataset.wiredPdf = "1";
       el.addEventListener("click", async (e) => {
         e.preventDefault();
+        markRestoreOpenFolder();
         await loadPage(link.route);
       });
     }
