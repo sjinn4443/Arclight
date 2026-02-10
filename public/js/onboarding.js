@@ -252,7 +252,12 @@ export function initializeOnboarding() {
 
     jobSelectPanel.innerHTML = "";
 
-    const selectedInterests = getSelectedInterests();
+    const selectedInterestsRaw = getSelectedInterests();
+
+    // ✅ Generalist가 있으면 roles 패널은 eyes+ears+skin 3개 그룹을 렌더링
+    const selectedInterests = selectedInterestsRaw.includes("generalist")
+      ? ["eyes", "ears", "skin"]
+      : selectedInterestsRaw;
 
     if (!selectedInterests.length) {
       const empty = document.createElement("div");
@@ -557,8 +562,13 @@ export function initializeOnboarding() {
   function updateJobsForInterests() {
     if (!interestSelect || !jobSelect) return;
 
-    const selected = getSelectedInterests(); // ["eyes","ears",...]
-    const hasAny = selected.length > 0;
+    const selectedRaw = getSelectedInterests(); // ["eyes","ears","generalist",...]
+    const hasAny = selectedRaw.length > 0;
+
+    // ✅ Generalist가 있으면 roles는 eyes+ears+skin 전체를 대상으로 처리
+    const selected = selectedRaw.includes("generalist")
+      ? ["eyes", "ears", "skin"]
+      : selectedRaw;
 
     // 1) 일단 전부 숨김
     jobSelect.querySelectorAll("optgroup").forEach((g) => {
