@@ -1268,7 +1268,7 @@ select.onb-input.has-value {
 /* Card heading (white text on grey) */
 #pupilsPage .pupil-card h3,
 .pupils-like .pupil-card h3 {
-  margin: 8px 25px 14px;
+  margin: 8px -6px 14px;
   font-size: 12px;
   font-weight: 600;
   color: #fff;
@@ -1345,8 +1345,8 @@ select.onb-input.has-value {
 .pupils-like .lesson-cta {
   font-size: 11px;
   color: #bbb;
-  margin-bottom: -40px;
-  margin-left: -41px;
+  margin-bottom: -37px;
+  margin-left: -48px;
 }
 
 /* ===== Pupils timeline layout ===== */
@@ -1726,4 +1726,51 @@ select.onb-input.has-value + .onb-select-caret {
 #glaucomaFundusSummaryAtomsPage .icon.menuBtn,
 #glaucomaGlaucomaSummaryAtomsPage .icon.menuBtn {
   margin: 0;
+}
+
+/* Glaucoma workshop: folder emphasis + compact lesson rows */
+#glaucomaWorkshopPage.glaucoma-folder-open
+  #glaucomaWorkshopFolders
+  .glaucoma-folder-row {
+  opacity: 0.72;
+}
+
+#glaucomaWorkshopPage .lesson-row[data-target] {
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#glaucomaWorkshopPage .lesson-row[data-target] .lesson-progress {
+  width: 146px;
+}
+
+#glaucomaWorkshopPage #glaucomaWorkshopFolders {
+  align-items: center;
+}
+
+#glaucomaWorkshopPage .glaucoma-section-card,
+#glaucomaWorkshopPage .glaucoma-subsection-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+#glaucomaWorkshopPage .glaucoma-section-card > h3,
+#glaucomaWorkshopPage .glaucoma-subsection-card > h3 {
+  align-self: stretch;
+  text-align: left;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+#glaucomaWorkshopPage .pupil-card.module-card {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+#glaucomaWorkshopPage .lesson-row[data-target] .lesson-cta {
+  margin-left: -65px;
 }

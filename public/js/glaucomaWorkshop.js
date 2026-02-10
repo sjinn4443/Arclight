@@ -91,6 +91,7 @@ function setupWorkshopFolders(page) {
 
     openFolderRow.style.display = "none";
     ssSet(SS_OPEN_KEY, key);
+    page.classList.add("glaucoma-folder-open");
 
     // 섹션 카드를 "그 자리"에 나오게 하기: 폴더 row 바로 다음에 배치
     openFolderRow.insertAdjacentElement("afterend", card);
@@ -132,6 +133,7 @@ function setupWorkshopFolders(page) {
       openFolderRow.style.display = "";
       ssRemove(SS_OPEN_KEY);
       ssRemove(SS_RESTORE_FLAG);
+      page.classList.remove("glaucoma-folder-open");
     };
 
     toggle.addEventListener("click", closeNow);
@@ -145,6 +147,7 @@ function setupWorkshopFolders(page) {
   hideAllSectionCards();
   folders.forEach((r) => (r.style.display = ""));
   foldersContainer.style.display = "";
+  page.classList.remove("glaucoma-folder-open");
 
   // ✅ If we are returning from an internal workshop page, restore the open folder.
   // ✅ If we are entering the workshop from outside (dashboard/eyes/etc.), keep everything closed.
@@ -159,6 +162,7 @@ function setupWorkshopFolders(page) {
     // entering from outside -> forget old state
     ssRemove(SS_OPEN_KEY);
     ssRemove(SS_RESTORE_FLAG);
+    page.classList.remove("glaucoma-folder-open");
   }
 
   folders.forEach((row) => {
