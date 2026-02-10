@@ -52,26 +52,57 @@ function _launchQuiz() {
 
   if (needsInit) {
     quizPage.dataset.initialised = "1";
+    const layoutTemplate = document.getElementById("quizzesLayoutTemplate");
+    if (layoutTemplate) {
+      quizPage.replaceChildren(layoutTemplate.content.cloneNode(true));
+    } else {
+      const container = document.createElement("div");
+      container.className = "quiz-container";
 
-    quizPage.innerHTML = `
-      <div class="quiz-container">
-        <div class="quiz-header small">
-          <div class="quiz-header-row centered">
+      const header = document.createElement("div");
+      header.className = "quiz-header small";
+      const headerRow = document.createElement("div");
+      headerRow.className = "quiz-header-row centered";
+      const title = document.createElement("h2");
+      title.textContent = "Quiz";
+      headerRow.appendChild(title);
+      header.appendChild(headerRow);
 
-            <h2>Quiz</h2>
-          </div>
-        </div>
-        <div class="quiz-scroll"><form id="quizForm"></form></div>
-        <div class="quiz-footer">
-          <button type="submit" form="quizForm" class="start-btn">See Results</button>
-        </div>
-        <div id="quizModal" class="quiz-modal hidden">
-          <div class="quiz-modal-content">
-            <p id="quizScoreText"></p>
-            <button id="seeWhyBtn">Check Answer</button>
-          </div>
-        </div>
-      </div>`;
+      const scroll = document.createElement("div");
+      scroll.className = "quiz-scroll";
+      const form = document.createElement("form");
+      form.id = "quizForm";
+      scroll.appendChild(form);
+
+      const footer = document.createElement("div");
+      footer.className = "quiz-footer";
+      const submitBtn = document.createElement("button");
+      submitBtn.type = "submit";
+      submitBtn.setAttribute("form", "quizForm");
+      submitBtn.className = "start-btn";
+      submitBtn.textContent = "See Results";
+      footer.appendChild(submitBtn);
+
+      const modal = document.createElement("div");
+      modal.id = "quizModal";
+      modal.className = "quiz-modal hidden";
+      const modalContent = document.createElement("div");
+      modalContent.className = "quiz-modal-content";
+      const scoreText = document.createElement("p");
+      scoreText.id = "quizScoreText";
+      const whyBtn = document.createElement("button");
+      whyBtn.id = "seeWhyBtn";
+      whyBtn.textContent = "Check Answer";
+      modalContent.appendChild(scoreText);
+      modalContent.appendChild(whyBtn);
+      modal.appendChild(modalContent);
+
+      container.appendChild(header);
+      container.appendChild(scroll);
+      container.appendChild(footer);
+      container.appendChild(modal);
+      quizPage.replaceChildren(container);
+    }
   }
 
   // ✅ 항상 퀴즈 페이지로 이동
@@ -136,15 +167,51 @@ function _launchQuiz() {
   ];
 
   const quizForm = quizPage.querySelector("#quizForm");
+  const blockTemplate = document.getElementById("quizzesBlockTemplate");
+  const optionTemplate = document.getElementById("quizzesOptionTemplate");
+  if (!quizForm) return;
+  quizForm.textContent = "";
   questions.forEach((q, i) => {
-    let block = `<div class="quiz-block"><p>${q.q}</p>`;
+    const block =
+      blockTemplate?.content.firstElementChild?.cloneNode(true) ||
+      document.createElement("div");
+    block.classList.add("quiz-block");
+
+    const question = block.querySelector(".quiz-question");
+    if (question) question.textContent = q.q;
+
+    const optionsWrap = block.querySelector(".quiz-options");
     q.options.forEach((opt, j) => {
-      block += `<label class="radio-label"><input type="radio" name="q${i}" value="${j}" /><span>${opt}</span></label>`;
+      const option =
+        optionTemplate?.content.firstElementChild?.cloneNode(true) ||
+        document.createElement("label");
+      option.classList.add("radio-label");
+
+      const input =
+        option.querySelector("input") || document.createElement("input");
+      input.type = "radio";
+      input.name = `q${i}`;
+      input.value = String(j);
+
+      const span =
+        option.querySelector(".quiz-option-text") ||
+        option.querySelector("span") ||
+        document.createElement("span");
+      span.textContent = opt;
+
+      if (!option.contains(input)) option.prepend(input);
+      if (!option.contains(span)) option.appendChild(span);
+
+      if (optionsWrap) optionsWrap.appendChild(option);
+      else block.appendChild(option);
     });
-    block += `<p class="answer" style="display:none; margin-top:5px; font-style:italic;">Correct answer: ${
-      q.options[q.answer]
-    }</p></div>`;
-    quizForm.innerHTML += block;
+
+    const answer = block.querySelector(".answer");
+    if (answer) {
+      answer.textContent = `Correct answer: ${q.options[q.answer]}`;
+    }
+
+    quizForm.appendChild(block);
   });
 
   quizForm.onsubmit = (e) => {
@@ -191,22 +258,45 @@ function _renderQuestion(caseIndex, questionIndex) {
   elements.caseTitle.textContent = `Case ${caseIndex + 1}`;
   elements.caseSubtitle.textContent = c.title;
   elements.caseImage.src = c.image;
-  elements.quizForm.innerHTML = "";
-  const div = document.createElement("div");
-  div.className = "question";
-  div.innerHTML = `<h3>${questionIndex + 1}. ${
-    q.question
-  }</h3><ul class="options"></ul>`;
+  elements.quizForm.textContent = "";
+  const questionTemplate = document.getElementById(
+    "quizzesCaseQuestionTemplate",
+  );
+  const optionTemplate = document.getElementById("quizzesCaseOptionTemplate");
+  const div =
+    questionTemplate?.content.firstElementChild?.cloneNode(true) ||
+    document.createElement("div");
+  div.classList.add("question");
+
+  const title =
+    div.querySelector(".question-title") || document.createElement("h3");
+  title.textContent = `${questionIndex + 1}. ${q.question}`;
+  if (!div.contains(title)) div.prepend(title);
+
+  const optionsList =
+    div.querySelector(".options") || document.createElement("ul");
+  if (!div.contains(optionsList)) div.appendChild(optionsList);
   q.options.forEach((opt, optIndex) => {
-    const li = document.createElement("li");
-    li.innerHTML = `<input type="radio" name="q${questionIndex}" id="c${caseIndex}q${questionIndex}o${optIndex}" value="${optIndex}"><label for="c${caseIndex}q${questionIndex}o${optIndex}">${opt}</label>`;
-    const input = li.querySelector("input");
+    const li =
+      optionTemplate?.content.firstElementChild?.cloneNode(true) ||
+      document.createElement("li");
+    const input = li.querySelector("input") || document.createElement("input");
+    const label = li.querySelector("label") || document.createElement("label");
+    const inputId = `c${caseIndex}q${questionIndex}o${optIndex}`;
+    input.type = "radio";
+    input.name = `q${questionIndex}`;
+    input.id = inputId;
+    input.value = String(optIndex);
+    label.setAttribute("for", inputId);
+    label.textContent = opt;
+    if (!li.contains(input)) li.prepend(input);
+    if (!li.contains(label)) li.appendChild(label);
     if (answers[caseIndex][questionIndex] === optIndex) input.checked = true;
     input.onchange = () => {
       answers[caseIndex][questionIndex] = parseInt(input.value);
       updateButtons();
     };
-    div.querySelector(".options").appendChild(li);
+    optionsList.appendChild(li);
   });
   elements.quizForm.appendChild(div);
   updateButtons();
@@ -235,26 +325,63 @@ function _showScore() {
 }
 
 function _buildReview() {
-  elements.reviewContent.innerHTML = "";
+  elements.reviewContent.textContent = "";
+  const caseTemplate = document.getElementById("quizzesReviewCaseTemplate");
+  const questionTemplate = document.getElementById(
+    "quizzesReviewQuestionTemplate",
+  );
+  const optionTemplate = document.getElementById("quizzesReviewOptionTemplate");
   cases.forEach((c, caseIdx) => {
-    const caseDiv = document.createElement("div");
-    caseDiv.className = "review-case";
-    caseDiv.innerHTML = `<h2>Case ${caseIdx + 1}</h2><div id="caseSubtitle">${
-      c.title
-    }</div><img class="case-image" src="${c.image}" alt="${c.title}">`;
+    const caseDiv =
+      caseTemplate?.content.firstElementChild?.cloneNode(true) ||
+      document.createElement("div");
+    caseDiv.classList.add("review-case");
+
+    const caseTitle =
+      caseDiv.querySelector(".review-case-title") ||
+      document.createElement("h2");
+    caseTitle.textContent = `Case ${caseIdx + 1}`;
+    if (!caseDiv.contains(caseTitle)) caseDiv.prepend(caseTitle);
+
+    const subtitle =
+      caseDiv.querySelector(".review-case-subtitle") ||
+      document.createElement("div");
+    subtitle.textContent = c.title;
+    if (!caseDiv.contains(subtitle)) caseDiv.appendChild(subtitle);
+
+    const image =
+      caseDiv.querySelector("img.case-image") || document.createElement("img");
+    image.classList.add("case-image");
+    image.src = c.image;
+    image.alt = c.title;
+    if (!caseDiv.contains(image)) caseDiv.appendChild(image);
+
     c.questions.forEach((q, qIdx) => {
-      const qDiv = document.createElement("div");
-      qDiv.className = "review-question";
-      qDiv.innerHTML = `<h3>${qIdx + 1}. ${
-        q.question
-      }</h3><ul class="review-options"></ul>`;
+      const qDiv =
+        questionTemplate?.content.firstElementChild?.cloneNode(true) ||
+        document.createElement("div");
+      qDiv.classList.add("review-question");
+
+      const qTitle =
+        qDiv.querySelector(".review-question-title") ||
+        document.createElement("h3");
+      qTitle.textContent = `${qIdx + 1}. ${q.question}`;
+      if (!qDiv.contains(qTitle)) qDiv.prepend(qTitle);
+
+      const optionsList =
+        qDiv.querySelector(".review-options") || document.createElement("ul");
+      if (!qDiv.contains(optionsList)) qDiv.appendChild(optionsList);
+
       q.options.forEach((opt, optIdx) => {
-        const li = document.createElement("li");
+        const li =
+          optionTemplate?.content.firstElementChild?.cloneNode(true) ||
+          document.createElement("li");
+        li.classList.add("review-option");
         li.textContent = opt;
         if (optIdx === q.correctIndex) li.classList.add("correct");
         if (answers[caseIdx][qIdx] === optIdx)
           li.classList.add("user-selected");
-        qDiv.querySelector("ul").appendChild(li);
+        optionsList.appendChild(li);
       });
       caseDiv.appendChild(qDiv);
     });

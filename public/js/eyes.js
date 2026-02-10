@@ -333,57 +333,65 @@ export function initializeEyesCatalog() {
 
     el.classList.add("eyes-track");
 
-    el.innerHTML = items
-      .map((i) => {
-        const disabled = !isNavigable(i.target, i.tags);
-        const disabledAttrs = disabled
-          ? 'aria-disabled="true" tabindex="-1" data-disabled="true"'
-          : 'tabindex="0"';
+    const cardTemplate = document.getElementById("eyesCardTemplate");
+    if (!cardTemplate) return;
 
-        return `
-      <button type="button"
-              class="eyes-card ${disabled ? "is-disabled" : ""} ${
-                likes.has(i.label) ? "liked" : ""
-              }"
-              data-target="${i.target}"
-              data-label="${i.label}"
-              ${disabledAttrs}>
-              ${
-                (
-                  i.target === "childhoodEyeScreeningWorkshop"
-                    ? "images/icon/eyes/workshop/car_childhoodscreen.webp"
-                    : EYES_IMAGE_MAP[i.label]
-                )
-                  ? `<img class="eyes-card__bg" src="${
-                      i.target === "childhoodEyeScreeningWorkshop"
-                        ? "images/icon/eyes/workshop/car_childhoodscreen.webp"
-                        : EYES_IMAGE_MAP[i.label]
-                    }" alt="${i.label}">`
-                  : ""
-              }
+    el.textContent = "";
+    items.forEach((i) => {
+      const disabled = !isNavigable(i.target, i.tags);
+      const card = cardTemplate.content
+        .querySelector(".eyes-card")
+        .cloneNode(true);
 
-        <span class="heart-btn" aria-label="Toggle like" title="Like"
-              role="button"
-              tabindex="0"
-              style="pointer-events:auto">
-          <svg viewBox="0 0 24 24" aria-hidden="true" style="pointer-events:auto">
-            <path style="pointer-events:auto"
-                  d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 1 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/>
-          </svg>
-        </span>
-        <span class="eyes-card__title">${i.label}</span>
-        <div class="tag-row">
-          ${
-            disabled
-              ? `<span class="tag coming-tag">Coming Soon</span>`
-              : i.tags?.map((t) => `<span class="tag">${t}</span>`).join("") ||
-                ""
-          }
-        </div>
-        </button>
-    `;
-      })
-      .join("");
+      card.classList.toggle("is-disabled", disabled);
+      card.classList.toggle("liked", likes.has(i.label));
+      card.dataset.target = i.target;
+      card.dataset.label = i.label;
+
+      if (disabled) {
+        card.setAttribute("aria-disabled", "true");
+        card.setAttribute("tabindex", "-1");
+        card.setAttribute("data-disabled", "true");
+      } else {
+        card.setAttribute("tabindex", "0");
+      }
+
+      const img = card.querySelector(".eyes-card__bg");
+      const imgSrc =
+        i.target === "childhoodEyeScreeningWorkshop"
+          ? "images/icon/eyes/workshop/car_childhoodscreen.webp"
+          : EYES_IMAGE_MAP[i.label];
+      if (img && imgSrc) {
+        img.src = imgSrc;
+        img.alt = i.label;
+      } else if (img) {
+        img.remove();
+      }
+
+      const title = card.querySelector(".eyes-card__title");
+      if (title) title.textContent = i.label;
+
+      const tagRow = card.querySelector(".tag-row");
+      if (tagRow) {
+        if (disabled) {
+          const tag = document.createElement("span");
+          tag.className = "tag coming-tag";
+          tag.textContent = "Coming Soon";
+          tagRow.appendChild(tag);
+        } else if (i.tags?.length) {
+          i.tags.forEach((t) => {
+            const tag = document.createElement("span");
+            tag.className = "tag";
+            tag.textContent = t;
+            tagRow.appendChild(tag);
+          });
+        } else {
+          tagRow.remove();
+        }
+      }
+
+      el.appendChild(card);
+    });
   };
 
   Object.entries(sections).forEach(([id, list]) => render(id, list));

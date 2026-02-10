@@ -2793,7 +2793,7 @@ input:checked + .slider:before {
   right: 14px;
   bottom: 63px;
   height: 125px;
-  background: #ffffff59;
+  background: #909395e0;
   border-radius: 18px;
   padding: 23px 14px 51px; /* 위에 Submit 자리 확보 */
   box-shadow: 0 14px 40px rgba(0, 0, 0, 0.14);

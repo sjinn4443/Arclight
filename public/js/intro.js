@@ -277,19 +277,50 @@ export function initializeIntro() {
       introVideo.play().catch(() => {});
     }
 
-    const originalTitleHTML = introTitle?.innerHTML ?? "";
-    const originalSubHTML = introSub?.innerHTML ?? "";
+    const originalTitleNodes = introTitle
+      ? Array.from(introTitle.childNodes).map((n) => n.cloneNode(true))
+      : [];
+    const originalSubNodes = introSub
+      ? Array.from(introSub.childNodes).map((n) => n.cloneNode(true))
+      : [];
 
-    const recommendedTitleHTML = "Tailored for You";
-    const recommendedSubHTML =
-      "On your first visit, we will recommend content<br />that suits your interests and role";
+    const recommendedTitleText = "Tailored for You";
+    const recommendedSubLines = [
+      "On your first visit, we will recommend content",
+      "that suits your interests and role",
+    ];
+
+    function appendLines(target, lines) {
+      const parts = Array.isArray(lines) ? lines : [lines];
+      parts.forEach((part, index) => {
+        if (index > 0) target.appendChild(document.createElement("br"));
+        target.appendChild(document.createTextNode(String(part)));
+      });
+    }
+
+    function setText(el, text) {
+      if (!el) return;
+      el.textContent = text;
+    }
+
+    function setLines(el, lines) {
+      if (!el) return;
+      el.textContent = "";
+      appendLines(el, lines);
+    }
+
+    function restoreNodes(el, nodes) {
+      if (!el) return;
+      el.textContent = "";
+      nodes.forEach((n) => el.appendChild(n.cloneNode(true)));
+    }
 
     function showRecommended() {
       introState = "recommended";
       arrowPopDone.recommended = false;
 
-      if (introTitle) introTitle.innerHTML = recommendedTitleHTML;
-      if (introSub) introSub.innerHTML = recommendedSubHTML;
+      setText(introTitle, recommendedTitleText);
+      setLines(introSub, recommendedSubLines);
 
       setSkipBtnPrimary(false);
 
@@ -305,8 +336,8 @@ export function initializeIntro() {
       introState = "original";
       arrowPopDone.original = false;
 
-      if (introTitle) introTitle.innerHTML = originalTitleHTML;
-      if (introSub) introSub.innerHTML = originalSubHTML;
+      restoreNodes(introTitle, originalTitleNodes);
+      restoreNodes(introSub, originalSubNodes);
 
       setSkipBtnPrimary(false);
 
@@ -321,10 +352,11 @@ export function initializeIntro() {
       introState = "pickup";
       arrowPopDone.pickup = false;
 
-      if (introTitle) introTitle.innerHTML = "Pick Up Anytime";
-      if (introSub)
-        introSub.innerHTML =
-          "We remember what you’ve completed,<br /> making it easy to continue where you left off";
+      setText(introTitle, "Pick Up Anytime");
+      setLines(introSub, [
+        "We remember what you’ve completed,",
+        "making it easy to continue where you left off",
+      ]);
 
       playIntroVideo("videos/Intro/GIFVideo_Comp.mp4", { loop: true });
 
@@ -337,10 +369,11 @@ export function initializeIntro() {
     function showQuiz() {
       introState = "quiz";
 
-      if (introTitle) introTitle.innerHTML = "Strengthen Your Learning";
-      if (introSub)
-        introSub.innerHTML =
-          "Follow each lesson with a quick quiz to review <br />concepts and identify areas to revisit.";
+      setText(introTitle, "Strengthen Your Learning");
+      setLines(introSub, [
+        "Follow each lesson with a quick quiz to review",
+        "concepts and identify areas to revisit.",
+      ]);
 
       setSkipBtnPrimary(false);
 

@@ -3043,5 +3043,115 @@
     </div>
   </div>
 
+  <template id="videoShareMenuTemplate">
+    <div class="video-share-menu">
+      <button
+        type="button"
+        class="video-share-menu__item"
+        data-video-share-action="share-video"
+      >
+        Share video
+      </button>
+      <button
+        type="button"
+        class="video-share-menu__item"
+        data-video-share-action="shop"
+      >
+        Arclight Shop
+      </button>
+    </div>
+  </template>
+
+  <template id="videoTimestampsTemplate">
+    <h4>Time stamp</h4>
+    <p><a href="#" data-ts="0">0:00 General Inspection</a></p>
+    <p><a href="#" data-ts="28">0:28 Arclight Setup</a></p>
+    <p><a href="#" data-ts="47">0:47 Fundal Reflex</a></p>
+    <p><a href="#" data-ts="67">1:07 Optic Nerve</a></p>
+    <p><a href="#" data-ts="102">1:42 Retinal Vessels</a></p>
+  </template>
+
+  <template id="videoNoteTemplate">
+    <textarea placeholder="Type your notes here..."></textarea>
+  </template>
+
+  <template id="videoFilesTemplate">
+    <h4>Attached Files</h4>
+    <p><a class="link" href="#">Arclight_Device_Practice.pdf</a></p>
+    <p><a class="link" href="#">Fundal_Reflex.pdf</a></p>
+    <p><a class="link" href="#">Ophthalmoscopy_Exercise.docx</a></p>
+  </template>
+
+  <template id="videoInfoTemplate">
+    <h4>Additional Information</h4>
+    <p>This video shows how to prepare and use the Arclight ophthalmoscope.</p>
+  </template>
+
+  <template id="videoEyeAnatomyTemplate">
+    <h4>Eye Anatomy</h4>
+    <img
+      src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Eye_anatomy_diagram.svg/1200px-Eye_anatomy_diagram.svg.png"
+      style="width: 100%; border-radius: 5px; margin-top: 10px"
+    />
+    <ul>
+      <li>Periorbita</li>
+      <li>Eyelids</li>
+      <li>Eyes</li>
+    </ul>
+  </template>
+
+  <template id="videoDeviceOverviewTemplate">
+    <h4>Arclight Device Overview</h4>
+    <img
+      src="images/learning/arclight_device.webp"
+      style="width: 100%; border-radius: 5px"
+    />
+  </template>
+
+  <template id="quizLauncherLayoutTemplate">
+    <div class="quiz-container">
+      <div class="quiz-header small">
+        <div class="quiz-header-row centered">
+          <button
+            id="backToVideoBtn"
+            class="back-icon"
+            title="Go back"
+          ></button>
+          <h2>Quiz</h2>
+        </div>
+      </div>
+      <div class="quiz-scroll"><form id="quizForm"></form></div>
+      <div class="quiz-footer">
+        <button type="submit" form="quizForm" class="start-btn">
+          See Results
+        </button>
+      </div>
+      <div id="quizModal" class="quiz-modal hidden">
+        <div class="quiz-modal-content">
+          <p id="quizScoreText"></p>
+          <button id="seeWhyBtn">Check Answer</button>
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <template id="quizLauncherBlockTemplate">
+    <div class="quiz-block">
+      <p class="quiz-question"></p>
+      <div class="quiz-options"></div>
+      <p
+        class="answer"
+        style="display: none; margin-top: 5px; font-style: italic"
+      ></p>
+    </div>
+  </template>
+
+  <template id="quizLauncherOptionTemplate">
+    <label class="radio-label">
+      <input type="radio" />
+      <span class="quiz-option-text"></span>
+    </label>
+  </template>
+
   <script src="../js/quiz-launcher.js"></script>
 </div>

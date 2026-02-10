@@ -221,23 +221,13 @@ function showInfoModal() {
   // Prevent duplicates
   if (document.getElementById("infoModalOverlay")) return;
 
-  const modal = document.createElement("div");
-  modal.id = "infoModalOverlay";
-  modal.setAttribute("role", "dialog");
-  modal.setAttribute("aria-modal", "true");
-  modal.setAttribute("aria-labelledby", "infoModalTitle");
+  const modalTemplate = document.getElementById("menuInfoModalTemplate");
+  if (!modalTemplate) return;
 
-  modal.innerHTML = `
-    <div class="guest-modal">
-      <button class="guest-modal__close" aria-label="Close">&times;</button>
-      <h2 id="infoModalTitle" class="guest-modal__title">About location data</h2>
-      <p class="guest-modal__text">
-        Location data helps us understand usage and improve Arclight App. Your IP address provides an approximate
-        country/city on first load. <br> You can optionally provide more precise GPS data using the 'Get Precise Location'
-        button. This data is handled as per our privacy guidelines.
-      </p>
-       </div>
-  `;
+  const modal = modalTemplate.content
+    .querySelector("#infoModalOverlay")
+    ?.cloneNode(true);
+  if (!modal) return;
 
   document.body.appendChild(modal);
 

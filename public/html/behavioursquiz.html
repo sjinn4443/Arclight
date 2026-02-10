@@ -8,4 +8,44 @@
       </div>
     </div>
   </div>
+
+  <template id="behavioursQuizLayoutTemplate">
+    <div class="quiz-container">
+      <div class="quiz-scroll">
+        <form id="behavioursQuizForm"></form>
+      </div>
+
+      <div class="quiz-footer">
+        <button type="submit" form="behavioursQuizForm" class="start-btn">
+          See Results
+        </button>
+      </div>
+
+      <div id="behavioursQuizModal" class="quiz-modal hidden">
+        <div class="quiz-modal-content">
+          <p id="behavioursQuizScoreText"></p>
+          <button id="behavioursSeeWhyBtn">Check Answer</button>
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <template id="behavioursQuizBlockTemplate">
+    <div class="quiz-block">
+      <p class="quiz-question"></p>
+      <img class="quiz-image" src="" alt="" loading="lazy" />
+      <div class="quiz-options"></div>
+      <p
+        class="answer"
+        style="display: none; margin-top: 5px; font-style: italic"
+      ></p>
+    </div>
+  </template>
+
+  <template id="behavioursQuizOptionTemplate">
+    <label class="radio-label">
+      <input type="radio" />
+      <span class="quiz-option-text"></span>
+    </label>
+  </template>
 </div>

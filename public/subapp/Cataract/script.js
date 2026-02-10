@@ -151,14 +151,14 @@ document.addEventListener("DOMContentLoaded", function () {
       '#top-section input[name="onset"]:checked',
     );
     if (!onsetElem) {
-      document.getElementById("result").innerHTML = "";
+      document.getElementById("result").textContent = "";
       return;
     }
     // Ensure both fundal and back selections exist.
     const fundalBtn = document.querySelector(".fundal-btn.selected");
     const backBtn = document.querySelector(".back-btn.selected");
     if (!fundalBtn || !backBtn) {
-      document.getElementById("result").innerHTML = "";
+      document.getElementById("result").textContent = "";
       return;
     }
     const fundalSelection = fundalBtn.getAttribute("data-value");
@@ -301,66 +301,128 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // 9. Build the result output.
     const resultDiv = document.getElementById("result");
-    let resultHTML = `<p><strong>Cataract:</strong> ${cataractType}</p>`;
+    resultDiv.textContent = "";
+
+    const cataractRow = document.createElement("p");
+    const cataractLabel = document.createElement("strong");
+    cataractLabel.textContent = "Cataract:";
+    cataractRow.appendChild(cataractLabel);
+    cataractRow.appendChild(document.createTextNode(` ${cataractType}`));
+    resultDiv.appendChild(cataractRow);
+
+    const referralRow = document.createElement("p");
+    const referralLabel = document.createElement("strong");
+    referralLabel.textContent = ">:";
+    referralRow.appendChild(referralLabel);
+    referralRow.appendChild(document.createTextNode(" "));
 
     if (referral.startsWith("YES (Refer urgently")) {
-      resultHTML += `<p><strong>>:</strong> <span style="color:red;">YES</span>${referral.substring(3)}</p>`;
+      const yes = document.createElement("span");
+      yes.style.color = "red";
+      yes.textContent = "YES";
+      referralRow.appendChild(yes);
+      referralRow.appendChild(document.createTextNode(referral.substring(3)));
     } else if (referral.startsWith("YES (Refer")) {
-      resultHTML += `<p><strong>>:</strong> <span style="color:green;">YES</span>${referral.substring(3)}</p>`;
+      const yes = document.createElement("span");
+      yes.style.color = "green";
+      yes.textContent = "YES";
+      referralRow.appendChild(yes);
+      referralRow.appendChild(document.createTextNode(referral.substring(3)));
     } else if (referral.startsWith("See") || referral.startsWith("Soon")) {
-      resultHTML += `<p style="color:orange;"><strong>>:</strong> <span style="color:orange;">${referral.split(" ")[0]}</span> ${referral.substring(referral.indexOf(" ") + 1)}</p>`;
+      referralRow.style.color = "orange";
+      const firstSpace = referral.indexOf(" ");
+      const firstWord =
+        firstSpace === -1 ? referral : referral.slice(0, firstSpace);
+      const rest =
+        firstSpace === -1 ? "" : referral.slice(firstSpace + 1).trim();
+      const word = document.createElement("span");
+      word.style.color = "orange";
+      word.textContent = firstWord;
+      referralRow.appendChild(word);
+      if (rest) referralRow.appendChild(document.createTextNode(` ${rest}`));
     } else if (referral.startsWith("YES - Pupils")) {
       // Output the pupil override message in orange.
-      resultHTML += `<p style="color:orange;"><strong>>:</strong> ${referral}</p>`;
+      referralRow.style.color = "orange";
+      referralRow.appendChild(document.createTextNode(referral));
     } else if (referral.startsWith("NO")) {
-      resultHTML += `<p><strong>>:</strong> ${referral}</p>`;
+      referralRow.appendChild(document.createTextNode(referral));
     } else if (referral.startsWith("Incomplete Data")) {
-      resultHTML += `<p style="color:grey;"><strong>>:</strong> <span style="color:grey;">${referral}</span></p>`;
+      referralRow.style.color = "grey";
+      const msg = document.createElement("span");
+      msg.style.color = "grey";
+      msg.textContent = referral;
+      referralRow.appendChild(msg);
     } else {
-      resultHTML += `<p><strong>>:</strong> ${referral}</p>`;
+      referralRow.appendChild(document.createTextNode(referral));
     }
-    resultHTML += `<br>`;
+    resultDiv.appendChild(referralRow);
+    resultDiv.appendChild(document.createElement("br"));
 
     let explanationCataract = "";
     let explanationBack = "";
     if (cataractType !== "Nil") {
       if (cataractType === "Nuclear") {
-        explanationCataract += `<p>Nuclear: dense central opacity causing blur; usually age-related and progressive; surgery will help.</p>`;
+        explanationCataract =
+          "Nuclear: dense central opacity causing blur; usually age-related and progressive; surgery will help.";
       } else if (cataractType === "Cortical") {
-        explanationCataract += `<p>Cortical: spoke-like peripheral opacities cause blur and glare; surgery will help.</p>`;
+        explanationCataract =
+          "Cortical: spoke-like peripheral opacities cause blur and glare; surgery will help.";
       } else if (cataractType === "Subcapsular") {
-        explanationCataract += `<p>Subcapsular: posterior opacities cause glare and reduced near vision; surgery will help.</p>`;
+        explanationCataract =
+          "Subcapsular: posterior opacities cause glare and reduced near vision; surgery will help.";
       } else if (cataractType === "Mature") {
-        explanationCataract += `<p>Mature: opaque white lens and severe vision loss; prompt surgery will prevent complications.</p>`;
+        explanationCataract =
+          "Mature: opaque white lens and severe vision loss; prompt surgery will prevent complications.";
       }
     }
     if (
       ["cupping", "diabetic", "poor view", "detached"].includes(backSelection)
     ) {
       if (backSelection === "cupping") {
-        explanationBack += `<p>Deep disc cupping indicates advanced glaucoma. Swift evaluation is needed to protect vision.</p>`;
+        explanationBack =
+          "Deep disc cupping indicates advanced glaucoma. Swift evaluation is needed to protect vision.";
       } else if (backSelection === "diabetic") {
-        explanationBack += `<p>Diabetic retinopathy needs treatment to save vision. Cataract surgery is unlikely to help.</p>`;
+        explanationBack =
+          "Diabetic retinopathy needs treatment to save vision. Cataract surgery is unlikely to help.";
       } else if (backSelection === "poor view") {
-        explanationBack += `<p>Poor view from dense cataract, retinal detachment or vitreous haemorrhage. Further evaluation is needed.</p>`;
+        explanationBack =
+          "Poor view from dense cataract, retinal detachment or vitreous haemorrhage. Further evaluation is needed.";
       } else if (backSelection === "detached") {
-        explanationBack += `<p>A fresh retinal detachment requires immediate repair. If longstanding, cataract surgery is unlikely to help.</p>`;
+        explanationBack =
+          "A fresh retinal detachment requires immediate repair. If longstanding, cataract surgery is unlikely to help.";
       }
     }
 
-    let combinedExplanation = explanationCataract;
-    if (explanationCataract && explanationBack) {
-      combinedExplanation += `<br>` + explanationBack;
-    } else {
-      combinedExplanation += explanationBack;
+    const explanationLines = [];
+    if (explanationCataract) explanationLines.push(explanationCataract);
+    if (explanationBack) explanationLines.push(explanationBack);
+
+    if (explanationLines.length) {
+      const explanation = document.createElement("div");
+      explanation.className = "explanation-text";
+      explanationLines.forEach((text, idx) => {
+        const p = document.createElement("p");
+        p.textContent = text;
+        explanation.appendChild(p);
+        if (idx === 0 && explanationLines.length > 1) {
+          explanation.appendChild(document.createElement("br"));
+        }
+      });
+      resultDiv.appendChild(explanation);
     }
-    if (combinedExplanation) {
-      resultHTML += `<div class="explanation-text">${combinedExplanation}</div>`;
-    }
+
     if (urgentFlag && investigationMessage) {
-      resultHTML += `<p style="color:${investigationColor};"><strong>${investigationMessage.split(":")[0]}:</strong> ${investigationMessage.split(":")[1].trim()}</p>`;
+      const urgentRow = document.createElement("p");
+      urgentRow.style.color = investigationColor;
+      const [prefix, rest] = investigationMessage.split(":");
+      const strong = document.createElement("strong");
+      strong.textContent = `${prefix.trim()}:`;
+      urgentRow.appendChild(strong);
+      urgentRow.appendChild(
+        document.createTextNode(` ${rest ? rest.trim() : ""}`),
+      );
+      resultDiv.appendChild(urgentRow);
     }
-    resultDiv.innerHTML = resultHTML;
     document.getElementById("result-section").classList.remove("disabled");
     document
       .getElementById("result-section")

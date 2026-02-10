@@ -10,6 +10,14 @@ function shuffle(arr) {
   return a;
 }
 
+function appendLines(target, lines) {
+  const parts = Array.isArray(lines) ? lines : [lines];
+  parts.forEach((part, index) => {
+    if (index > 0) target.appendChild(document.createElement("br"));
+    target.appendChild(document.createTextNode(String(part)));
+  });
+}
+
 function correctDiagnosisForPrimary({ caseNum }) {
   if (caseNum === 1) return "Cataract";
   if (caseNum === 2) return "Retinoblastoma";
@@ -521,23 +529,49 @@ export function initializeCaseStudyPrimary() {
     modal.className = "casechat-modal";
     modal.hidden = true;
 
-    modal.innerHTML = `
-    <div class="casechat-modalCard" style="max-height:80vh; overflow:auto;">
-      <div class="casechat-modalTop">
-        <div class="casechat-modalTitle">All cards completed</div>
-      </div>
+    const card = document.createElement("div");
+    card.className = "casechat-modalCard";
+    card.style.maxHeight = "80vh";
+    card.style.overflow = "auto";
 
-      <div class="casechat-resultWhy" id="flashScoreText"></div>
+    const top = document.createElement("div");
+    top.className = "casechat-modalTop";
+    const title = document.createElement("div");
+    title.className = "casechat-modalTitle";
+    title.textContent = "All cards completed";
+    top.appendChild(title);
 
-      <div id="flashWrongList" class="flash-wrong-list"></div>
+    const score = document.createElement("div");
+    score.className = "casechat-resultWhy";
+    score.id = "flashScoreText";
 
-      <div class="casechat-confirm__actions flash-result-actions">
-        <button type="button" class="casechat-confirm__btn is-ok" data-action="restart">Restart</button>
-       <button type="button" class="casechat-confirm__btn is-exit" data-action="back">Exit</button>
-    </div>
+    const wrongList = document.createElement("div");
+    wrongList.id = "flashWrongList";
+    wrongList.className = "flash-wrong-list";
 
-    </div>
-  `;
+    const actions = document.createElement("div");
+    actions.className = "casechat-confirm__actions flash-result-actions";
+
+    const restartBtn = document.createElement("button");
+    restartBtn.type = "button";
+    restartBtn.className = "casechat-confirm__btn is-ok";
+    restartBtn.dataset.action = "restart";
+    restartBtn.textContent = "Restart";
+
+    const exitBtn = document.createElement("button");
+    exitBtn.type = "button";
+    exitBtn.className = "casechat-confirm__btn is-exit";
+    exitBtn.dataset.action = "back";
+    exitBtn.textContent = "Exit";
+
+    actions.appendChild(restartBtn);
+    actions.appendChild(exitBtn);
+
+    card.appendChild(top);
+    card.appendChild(score);
+    card.appendChild(wrongList);
+    card.appendChild(actions);
+    modal.appendChild(card);
 
     modal.addEventListener("click", (e) => {
       const restartBtn = e.target.closest('[data-action="restart"]');
@@ -570,35 +604,58 @@ export function initializeCaseStudyPrimary() {
 
     const scoreText = modal.querySelector("#flashScoreText");
     if (scoreText) {
-      scoreText.innerHTML = `You got <b>${flashCorrectCount}</b> out of <b>${flashPool.length}</b> correct.`;
+      scoreText.textContent = "";
+      scoreText.appendChild(document.createTextNode("You got "));
+      const correct = document.createElement("b");
+      correct.textContent = String(flashCorrectCount);
+      scoreText.appendChild(correct);
+      scoreText.appendChild(document.createTextNode(" out of "));
+      const total = document.createElement("b");
+      total.textContent = String(flashPool.length);
+      scoreText.appendChild(total);
+      scoreText.appendChild(document.createTextNode(" correct."));
     }
 
     const list = modal.querySelector("#flashWrongList");
     if (list) {
+      list.textContent = "";
       if (flashWrong.length === 0) {
-        list.innerHTML = `<div class="casechat-resultWhy">No wrong answers.</div>`;
+        const empty = document.createElement("div");
+        empty.className = "casechat-resultWhy";
+        empty.textContent = "No wrong answers.";
+        list.appendChild(empty);
       } else {
-        list.innerHTML = flashWrong
-          .map(({ caseObj, correctIsUrgent }) => {
-            const img = imgPathForCase(caseObj.caseNum);
-            const dx = correctDiagnosisForPrimary(caseObj);
-            const label = correctIsUrgent ? "Urgent Referral" : "Not urgent";
+        flashWrong.forEach(({ caseObj, correctIsUrgent }) => {
+          const img = imgPathForCase(caseObj.caseNum);
+          const dx = correctDiagnosisForPrimary(caseObj);
+          const label = correctIsUrgent ? "Urgent Referral" : "Not urgent";
+          const urgencyClass = correctIsUrgent ? "is-urgent" : "is-not-urgent";
 
-            const urgencyClass = correctIsUrgent
-              ? "is-urgent"
-              : "is-not-urgent";
+          const row = document.createElement("div");
+          row.className = "flash-wrong-row";
 
-            return `
-              <div class="flash-wrong-row">
-                <img class="flash-wrong-thumb" src="${img}" alt="Case image" />
-                <div class="flash-wrong-main">
-                  <div class="flash-wrong-dx">${dx}</div>
-                  <div class="flash-wrong-label ${urgencyClass}">${label}</div>
-                </div>
-              </div>
-            `;
-          })
-          .join("");
+          const thumb = document.createElement("img");
+          thumb.className = "flash-wrong-thumb";
+          thumb.src = img;
+          thumb.alt = "Case image";
+
+          const main = document.createElement("div");
+          main.className = "flash-wrong-main";
+
+          const dxEl = document.createElement("div");
+          dxEl.className = "flash-wrong-dx";
+          dxEl.textContent = dx;
+
+          const labelEl = document.createElement("div");
+          labelEl.className = `flash-wrong-label ${urgencyClass}`;
+          labelEl.textContent = label;
+
+          main.appendChild(dxEl);
+          main.appendChild(labelEl);
+          row.appendChild(thumb);
+          row.appendChild(main);
+          list.appendChild(row);
+        });
       }
     }
 
@@ -1159,7 +1216,7 @@ export function initializeCaseStudyPrimary() {
       wrap.style.transform = "translateX(0px) rotate(0deg)";
     }
 
-    ul.innerHTML = "";
+    ul.textContent = "";
     flashBulletsForCase(caseObj).forEach((line) => {
       const li = document.createElement("li");
       li.textContent = line;
@@ -1211,10 +1268,11 @@ export function initializeCaseStudyPrimary() {
   }
 
   function bindFlashSwipe() {
-    if (flashSwipeBound) return;
     const wrap = flashPage.querySelector("#primaryFlashCardWrap");
     const card = flashPage.querySelector("#primaryFlashCard");
     if (!wrap || !card) return;
+    if (card.__flashSwipeBound) return;
+    card.__flashSwipeBound = true;
 
     let startX = 0;
     let startY = 0;
@@ -1330,17 +1388,36 @@ export function initializeCaseStudyPrimary() {
   }
 
   // ---- UI helpers ----
-  function appendSystem(text) {
+  function appendContent(target, content) {
+    if (content == null) return;
+    if (Array.isArray(content)) {
+      content.forEach((item) => appendContent(target, item));
+      return;
+    }
+    if (typeof content === "string") {
+      target.appendChild(document.createTextNode(content));
+      return;
+    }
+    target.appendChild(content);
+  }
+
+  function appendSystem(content) {
     const div = document.createElement("div");
     div.className = "casechat-bubble casechat-bubble--system";
-    div.innerHTML = `<div class="casechat-system">${text}</div>`;
+    const inner = document.createElement("div");
+    inner.className = "casechat-system";
+    appendContent(inner, content);
+    div.appendChild(inner);
     log.appendChild(div);
   }
 
   function appendBot(text) {
     const div = document.createElement("div");
     div.className = "casechat-bubble casechat-bubble--bot";
-    div.innerHTML = `<div class="casechat-text">${text}</div>`;
+    const inner = document.createElement("div");
+    inner.className = "casechat-text";
+    inner.textContent = text;
+    div.appendChild(inner);
     log.appendChild(div);
     div.scrollIntoView({ block: "end", behavior: "smooth" });
   }
@@ -1375,11 +1452,11 @@ export function initializeCaseStudyPrimary() {
       btn.className = "casechat-imgbtn";
       btn.dataset.caseNum = String(caseNum);
 
-      btn.innerHTML = `
-      <img class="casechat-imgopt"
-           src="${imgPathForCase(caseNum)}"
-           alt="Diagnosis option image" />
-    `;
+      const img = document.createElement("img");
+      img.className = "casechat-imgopt";
+      img.src = imgPathForCase(caseNum);
+      img.alt = "Diagnosis option image";
+      btn.appendChild(img);
 
       btn.addEventListener("click", () => {
         if (locked) return;
@@ -1461,25 +1538,48 @@ export function initializeCaseStudyPrimary() {
 
   function setFeedbackTryAgain() {
     if (!currentFeedbackEl) return;
-    currentFeedbackEl.innerHTML = `<div class="casechat-tryagain">Try again</div>`;
+    currentFeedbackEl.textContent = "";
+    const msg = document.createElement("div");
+    msg.className = "casechat-tryagain";
+    msg.textContent = "Try again";
+    currentFeedbackEl.appendChild(msg);
   }
 
   function setFeedbackCorrect(diagnosisName) {
     if (!currentFeedbackEl) return;
-    currentFeedbackEl.innerHTML = `
-    <div class="casechat-resultOk">Correct.</div>
-    <div class="casechat-resultWhy">In this case, the diagnosis is <b>${diagnosisName}</b>.</div>
-  `;
+    currentFeedbackEl.textContent = "";
+    const ok = document.createElement("div");
+    ok.className = "casechat-resultOk";
+    ok.textContent = "Correct.";
+
+    const why = document.createElement("div");
+    why.className = "casechat-resultWhy";
+    why.appendChild(document.createTextNode("In this case, the diagnosis is "));
+    const strong = document.createElement("b");
+    strong.textContent = diagnosisName;
+    why.appendChild(strong);
+    why.appendChild(document.createTextNode("."));
+
+    currentFeedbackEl.appendChild(ok);
+    currentFeedbackEl.appendChild(why);
   }
 
   function setFeedbackIncorrectOutOfAttempts() {
     if (!currentFeedbackEl) return;
-    currentFeedbackEl.innerHTML = `<div class="casechat-tryagain">Incorrect.</div>`;
+    currentFeedbackEl.textContent = "";
+    const msg = document.createElement("div");
+    msg.className = "casechat-tryagain";
+    msg.textContent = "Incorrect.";
+    currentFeedbackEl.appendChild(msg);
   }
 
   function setFeedbackTimeUp() {
     if (!currentFeedbackEl) return;
-    currentFeedbackEl.innerHTML = `<div class="casechat-tryagain">Time is up.</div>`;
+    currentFeedbackEl.textContent = "";
+    const msg = document.createElement("div");
+    msg.className = "casechat-tryagain";
+    msg.textContent = "Time is up.";
+    currentFeedbackEl.appendChild(msg);
   }
 
   function onPickImage(clickedCaseNum, clickedBtn) {
@@ -1537,7 +1637,7 @@ export function initializeCaseStudyPrimary() {
   }
 
   function resetLog() {
-    log.innerHTML = "";
+    log.textContent = "";
     locked = false;
     attemptsLeft = 2;
     currentGridEl = null;
@@ -1584,21 +1684,36 @@ export function initializeCaseStudyPrimary() {
     modal.className = "casechat-modal";
     modal.hidden = true;
 
-    modal.innerHTML = `
-    <div class="casechat-modalCard">
-      <div class="casechat-modalTop">
-        <div class="casechat-modalTitle">Case study</div>
-          </div>
+    const card = document.createElement("div");
+    card.className = "casechat-modalCard";
 
-      <div class="casechat-resultWhy">
-        Listen to what the patient says and tap<br />the image that best matches the diagnosis.
-        </div>
+    const top = document.createElement("div");
+    top.className = "casechat-modalTop";
+    const title = document.createElement("div");
+    title.className = "casechat-modalTitle";
+    title.textContent = "Case study";
+    top.appendChild(title);
 
-      <div class="casechat-confirm__actions">
-        <button type="button" class="casechat-confirm__btn is-ok" data-action="ok">OK</button>
-      </div>
-    </div>
-  `;
+    const body = document.createElement("div");
+    body.className = "casechat-resultWhy";
+    appendLines(body, [
+      "Listen to what the patient says and tap",
+      "the image that best matches the diagnosis.",
+    ]);
+
+    const actions = document.createElement("div");
+    actions.className = "casechat-confirm__actions";
+    const okBtn = document.createElement("button");
+    okBtn.type = "button";
+    okBtn.className = "casechat-confirm__btn is-ok";
+    okBtn.dataset.action = "ok";
+    okBtn.textContent = "OK";
+    actions.appendChild(okBtn);
+
+    card.appendChild(top);
+    card.appendChild(body);
+    card.appendChild(actions);
+    modal.appendChild(card);
 
     modal.addEventListener("click", (e) => {
       const closeBtn = e.target.closest(".casechat-modalClose");
@@ -1637,22 +1752,41 @@ export function initializeCaseStudyPrimary() {
     modal.className = "casechat-modal";
     modal.hidden = true;
 
-    modal.innerHTML = `
-      <div class="casechat-modalCard">
-    <div class="casechat-modalTop">
-      <div class="casechat-modalTitle">All cases completed</div>
-         </div>
+    const card = document.createElement("div");
+    card.className = "casechat-modalCard";
 
-    <div class="casechat-resultWhy">
-      You got <b>${correctCount}</b> out of <b>${TOTAL_CASES}</b> correct.
-    </div>
+    const top = document.createElement("div");
+    top.className = "casechat-modalTop";
+    const title = document.createElement("div");
+    title.className = "casechat-modalTitle";
+    title.textContent = "All cases completed";
+    top.appendChild(title);
 
-    <div class="casechat-confirm__actions">
-      <button type="button" class="casechat-confirm__btn is-ok" data-action="restart">Restart</button>
-      <button type="button" class="casechat-confirm__btn is-cancel" data-action="back">Back to<br />history taking</button>
-    </div>
-  </div>
-    `;
+    const why = document.createElement("div");
+    why.className = "casechat-resultWhy";
+
+    const actions = document.createElement("div");
+    actions.className = "casechat-confirm__actions";
+
+    const restartBtn = document.createElement("button");
+    restartBtn.type = "button";
+    restartBtn.className = "casechat-confirm__btn is-ok";
+    restartBtn.dataset.action = "restart";
+    restartBtn.textContent = "Restart";
+
+    const backBtn = document.createElement("button");
+    backBtn.type = "button";
+    backBtn.className = "casechat-confirm__btn is-cancel";
+    backBtn.dataset.action = "back";
+    appendLines(backBtn, ["Back to", "history taking"]);
+
+    actions.appendChild(restartBtn);
+    actions.appendChild(backBtn);
+
+    card.appendChild(top);
+    card.appendChild(why);
+    card.appendChild(actions);
+    modal.appendChild(card);
 
     modal.addEventListener("click", (e) => {
       const closeBtn = e.target.closest(".casechat-modalClose");
@@ -1690,7 +1824,16 @@ export function initializeCaseStudyPrimary() {
     // 점수 텍스트 업데이트(동적으로)
     const why = modal.querySelector(".casechat-resultWhy");
     if (why) {
-      why.innerHTML = `You got <b>${correctCount}</b> out of <b>${TOTAL_CASES}</b> correct.`;
+      why.textContent = "";
+      why.appendChild(document.createTextNode("You got "));
+      const correct = document.createElement("b");
+      correct.textContent = String(correctCount);
+      why.appendChild(correct);
+      why.appendChild(document.createTextNode(" out of "));
+      const total = document.createElement("b");
+      total.textContent = String(TOTAL_CASES);
+      why.appendChild(total);
+      why.appendChild(document.createTextNode(" correct."));
     }
     modal.hidden = false;
   }
@@ -1720,21 +1863,28 @@ export function initializeCaseStudyPrimary() {
     resetLog();
 
     // ✅ Case header 복구
-    appendSystem(`
-  <div class="casechat-caseblock">
-    <div class="casechat-caseindex">
-      Case ${caseIndex}
-      <span class="casechat-casecount">(${caseIndex}/${TOTAL_CASES})</span>
-    </div>
-  </div>
-`);
+    const caseBlock = document.createElement("div");
+    caseBlock.className = "casechat-caseblock";
+
+    const caseIndexEl = document.createElement("div");
+    caseIndexEl.className = "casechat-caseindex";
+    caseIndexEl.appendChild(document.createTextNode(`Case ${caseIndex}`));
+
+    const caseCount = document.createElement("span");
+    caseCount.className = "casechat-casecount";
+    caseCount.textContent = `(${caseIndex}/${TOTAL_CASES})`;
+    caseIndexEl.appendChild(caseCount);
+    caseBlock.appendChild(caseIndexEl);
+
+    appendSystem(caseBlock);
 
     appendSystem(
       "Listen to what the patient says and tap the image that best matches the diagnosis.",
     );
-    appendSystem(
-      `<span class="casechat-attemptsNote">You only get 2 attempts.</span>`,
-    );
+    const attemptsNote = document.createElement("span");
+    attemptsNote.className = "casechat-attemptsNote";
+    attemptsNote.textContent = "You only get 2 attempts.";
+    appendSystem(attemptsNote);
 
     renderImageGrid(current.caseNum);
     startTimer();

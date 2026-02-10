@@ -6,13 +6,17 @@ import {
   setLanguage,
 } from "./i18n.js";
 
-function escapeHtml(s) {
-  return String(s ?? "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
+function createEl(tag, className, text) {
+  const el = document.createElement(tag);
+  if (className) el.className = className;
+  if (text != null) el.textContent = text;
+  return el;
+}
+
+function appendPopupLine(container, label, value) {
+  const line = document.createElement("div");
+  line.textContent = `${label}: ${value}`;
+  container.appendChild(line);
 }
 
 // ---------- Map helpers ----------
@@ -157,10 +161,16 @@ async function renderWorldPins(users) {
     const ll = latLngList[idx];
     if (!ll) return;
 
-    const label = `<strong>${escapeHtml(u.name || "Anonymous")}</strong><br>
-    Country: ${escapeHtml(u.country || "—")}<br>
-    Area: ${escapeHtml(u.area || "—")}<br>
-    Experience: ${escapeHtml(expEn || "—")}`;
+    const expEn = englishFromAny(u.experience, englishDict);
+    const label = document.createElement("div");
+    const nameRow = document.createElement("div");
+    const name = document.createElement("strong");
+    name.textContent = u.name || "Anonymous";
+    nameRow.appendChild(name);
+    label.appendChild(nameRow);
+    appendPopupLine(label, "Country", u.country || "—");
+    appendPopupLine(label, "Area", u.area || "—");
+    appendPopupLine(label, "Experience", expEn || "—");
     const marker = L.marker(ll).addTo(worldMap).bindPopup(label);
     mapMarkers.push(marker);
     pinCount += 1;
@@ -348,7 +358,12 @@ async function renderUsers(users) {
 
   const hasDeleteCol = headers.includes("delete");
 
-  const rows = [];
+  const tbody = document.querySelector("#users tbody");
+  const status = document.getElementById("status");
+  if (!tbody) return;
+  tbody.textContent = "";
+
+  const frag = document.createDocumentFragment();
   for (let i = 0; i < sorted.length; i++) {
     const u = sorted[i];
 
@@ -358,62 +373,71 @@ async function renderUsers(users) {
 
     const arclightOrArea = u.arclight ?? u.area;
 
-    const cells = headers
-      .map((h) => {
-        switch (h) {
-          case "no.":
-          case "no":
-            return `<td>${i + 1}</td>`;
-          case "name":
-            return `<td>${escapeHtml(u.name || "—")}</td>`;
-          case "aims":
-          case "professional group":
-            return `<td>${escapeHtml(aimsEn)}</td>`;
-          case "interest":
-            return `<td>${escapeHtml(interestEn)}</td>`;
-          case "experience":
-            return `<td>${escapeHtml(expEn)}</td>`;
-          case "arclight":
-          case "area":
-            return `<td>${escapeHtml(arclightOrArea || "—")}</td>`;
-          case "contact":
-            return `<td>${escapeHtml(u.contact || "—")}</td>`;
-          case "country":
-            return `<td>${escapeHtml(u.country || "—")}</td>`;
-          case "language":
-            return `<td>${escapeHtml(u.language || "—")}</td>`;
-          case "refresh count":
-            return `<td>${typeof u.refresh_count === "number" ? u.refresh_count : 0}</td>`;
-          case "delete":
-            return `
-              <td>
-                <button
-                  type="button"
-                  class="deleteBtn"
-                  title="Delete user"
-                  aria-label="Delete user"
-                  data-anon-id="${escapeHtml(u.anon_id || "")}"
-                  data-name="${escapeHtml(u.name || "—")}"
-                  data-exp="${escapeHtml(expEn)}"
-                  data-country="${escapeHtml(u.country || "—")}"
-                >🗑️</button>
-              </td>
-            `;
-          default:
-            // Unknown/unsupported header label: keep table shape consistent.
-            return `<td>—</td>`;
-        }
-      })
-      .join("");
+    const tr = document.createElement("tr");
+    tr.dataset.anonId = u.anon_id || "";
 
-    rows.push(
-      `<tr data-anon-id="${escapeHtml(u.anon_id || "")}">${cells}</tr>`,
-    );
+    headers.forEach((h) => {
+      const td = document.createElement("td");
+      switch (h) {
+        case "no.":
+        case "no":
+          td.textContent = String(i + 1);
+          break;
+        case "name":
+          td.textContent = u.name || "—";
+          break;
+        case "aims":
+        case "professional group":
+          td.textContent = aimsEn;
+          break;
+        case "interest":
+          td.textContent = interestEn;
+          break;
+        case "experience":
+          td.textContent = expEn;
+          break;
+        case "arclight":
+        case "area":
+          td.textContent = arclightOrArea || "—";
+          break;
+        case "contact":
+          td.textContent = u.contact || "—";
+          break;
+        case "country":
+          td.textContent = u.country || "—";
+          break;
+        case "language":
+          td.textContent = u.language || "—";
+          break;
+        case "refresh count":
+          td.textContent =
+            typeof u.refresh_count === "number" ? String(u.refresh_count) : "0";
+          break;
+        case "delete": {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "deleteBtn";
+          btn.title = "Delete user";
+          btn.setAttribute("aria-label", "Delete user");
+          btn.dataset.anonId = u.anon_id || "";
+          btn.dataset.name = u.name || "—";
+          btn.dataset.exp = expEn;
+          btn.dataset.country = u.country || "—";
+          btn.textContent = "\u{1F5D1}\uFE0F";
+          td.appendChild(btn);
+          break;
+        }
+        default:
+          td.textContent = "—";
+      }
+
+      tr.appendChild(td);
+    });
+
+    frag.appendChild(tr);
   }
 
-  const tbody = document.querySelector("#users tbody");
-  const status = document.getElementById("status");
-  tbody.innerHTML = rows.join("");
+  tbody.appendChild(frag);
   status.textContent = `Loaded ${sorted.length} row${
     sorted.length === 1 ? "" : "s"
   }`;
@@ -521,12 +545,15 @@ function _renderList(id, entries) {
     el.textContent = "No data";
     return;
   }
-  el.innerHTML = entries
-    .map(
-      ([k, c]) =>
-        `<div class="kv"><span>${escapeHtml(k)}</span><span>${c}</span></div>`,
-    )
-    .join("");
+  el.textContent = "";
+  const frag = document.createDocumentFragment();
+  entries.forEach(([k, c]) => {
+    const row = createEl("div", "kv");
+    row.appendChild(createEl("span", "", k));
+    row.appendChild(createEl("span", "", String(c)));
+    frag.appendChild(row);
+  });
+  el.appendChild(frag);
 }
 
 function renderStats(users) {
@@ -621,24 +648,31 @@ function renderBarChart(
   const top = entries.slice(0, maxItems);
   const max = Math.max(...top.map(([, c]) => c), 1);
 
-  el.innerHTML = `
-    <div class="statChart">
-      ${top
-        .map(([label, count]) => {
-          const pct = Math.round((count / max) * 100);
-          return `
-          <div>
-            <div class="barRow">
-              <div class="barLabel" title="${escapeHtml(label)}">${escapeHtml(label)}</div>
-              <div class="barValue">${count}</div>
-            </div>
-            <div class="barTrack"><div class="barFill" style="width:${pct}%"></div></div>
-          </div>
-        `;
-        })
-        .join("")}
-    </div>
-  `;
+  el.textContent = "";
+  const chart = createEl("div", "statChart");
+
+  top.forEach(([label, count]) => {
+    const pct = Math.round((count / max) * 100);
+    const item = document.createElement("div");
+
+    const row = createEl("div", "barRow");
+    const labelEl = createEl("div", "barLabel", label);
+    labelEl.title = label;
+    const valueEl = createEl("div", "barValue", String(count));
+    row.appendChild(labelEl);
+    row.appendChild(valueEl);
+
+    const track = createEl("div", "barTrack");
+    const fill = createEl("div", "barFill");
+    fill.style.width = `${pct}%`;
+    track.appendChild(fill);
+
+    item.appendChild(row);
+    item.appendChild(track);
+    chart.appendChild(item);
+  });
+
+  el.appendChild(chart);
 }
 
 function renderDonut(el, entries, { maxItems = 6, title = "Total" } = {}) {
@@ -663,28 +697,40 @@ function renderDonut(el, entries, { maxItems = 6, title = "Total" } = {}) {
     })
     .join(", ");
 
-  const donutHtml = `
-    <div class="donutWrap">
-      <div class="donut" style="background: conic-gradient(${stops});">
-        <div class="donutCenter"><div><strong>${total}</strong><br>${escapeHtml(title)}</div></div>
-      </div>
-      <div class="legend">
-        ${top
-          .map(
-            ([label, c], i) => `
-          <div class="legendItem">
-            <div class="legendSwatch" style="background:${colours[i % colours.length]}"></div>
-            <div title="${escapeHtml(label)}">${escapeHtml(label)}</div>
-            <div>${c}</div>
-          </div>
-        `,
-          )
-          .join("")}
-      </div>
-    </div>
-  `;
+  el.textContent = "";
+  const wrap = createEl("div", "donutWrap");
+  const donut = createEl("div", "donut");
+  donut.style.background = `conic-gradient(${stops})`;
 
-  el.innerHTML = donutHtml;
+  const center = createEl("div", "donutCenter");
+  const centerInner = document.createElement("div");
+  const totalEl = document.createElement("strong");
+  totalEl.textContent = String(total);
+  centerInner.appendChild(totalEl);
+  centerInner.appendChild(document.createElement("br"));
+  centerInner.appendChild(document.createTextNode(title));
+  center.appendChild(centerInner);
+  donut.appendChild(center);
+
+  const legend = createEl("div", "legend");
+  top.forEach(([label, c], i) => {
+    const item = createEl("div", "legendItem");
+    const swatch = createEl("div", "legendSwatch");
+    swatch.style.background = colours[i % colours.length];
+    const labelEl = document.createElement("div");
+    labelEl.title = label;
+    labelEl.textContent = label;
+    const countEl = document.createElement("div");
+    countEl.textContent = String(c);
+    item.appendChild(swatch);
+    item.appendChild(labelEl);
+    item.appendChild(countEl);
+    legend.appendChild(item);
+  });
+
+  wrap.appendChild(donut);
+  wrap.appendChild(legend);
+  el.appendChild(wrap);
 }
 
 function renderRefreshKpis(el, users) {
@@ -697,11 +743,18 @@ function renderRefreshKpis(el, users) {
   const avg = nums.length ? total / nums.length : 0;
   const max = nums.length ? Math.max(...nums) : 0;
 
-  el.innerHTML = `
-    <div class="kpiGrid">
-      <div class="kpi"><div class="kpiLabel">Total refresh</div><div class="kpiValue">${total}</div></div>
-      <div class="kpi"><div class="kpiLabel">Average per user</div><div class="kpiValue">${avg.toFixed(1)}</div></div>
-      <div class="kpi"><div class="kpiLabel">Max (single user)</div><div class="kpiValue">${max}</div></div>
-    </div>
-  `;
+  el.textContent = "";
+  const grid = createEl("div", "kpiGrid");
+  const kpis = [
+    ["Total refresh", String(total)],
+    ["Average per user", avg.toFixed(1)],
+    ["Max (single user)", String(max)],
+  ];
+  kpis.forEach(([label, value]) => {
+    const kpi = createEl("div", "kpi");
+    kpi.appendChild(createEl("div", "kpiLabel", label));
+    kpi.appendChild(createEl("div", "kpiValue", value));
+    grid.appendChild(kpi);
+  });
+  el.appendChild(grid);
 }

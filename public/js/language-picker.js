@@ -50,7 +50,7 @@
     const source = installSelect || selectEl;
     if (!source || !listEl) return;
 
-    listEl.innerHTML = "";
+    listEl.textContent = "";
     [...source.options].forEach((opt) => {
       const code = opt.value;
       const english = (opt.textContent || "").trim();
@@ -61,10 +61,14 @@
       li.setAttribute("role", "option");
       li.setAttribute("tabindex", "0");
       li.dataset.code = code;
-      li.innerHTML = `
-        <span class="lang-install__item-en">${english}</span>
-        <span class="lang-install__item-native">${native}</span>
-      `;
+      const en = document.createElement("span");
+      en.className = "lang-install__item-en";
+      en.textContent = english;
+      const nativeEl = document.createElement("span");
+      nativeEl.className = "lang-install__item-native";
+      nativeEl.textContent = native;
+      li.appendChild(en);
+      li.appendChild(nativeEl);
 
       const choose = () => applyLanguage(code, installSelect, english);
       li.addEventListener("click", choose);

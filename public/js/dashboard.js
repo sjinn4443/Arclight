@@ -265,24 +265,49 @@ function renderRecommendations(host) {
 
   const picks = shuffle(ALL).slice(0, 2);
 
-  host.innerHTML = picks
-    .map(
-      (m) => `
-    <div class="module-card" data-route="${m.route || ""}" ${
-      m.page ? `data-page="${m.page}"` : ""
-    }>
-      <img src="${m.img}" alt="${m.title}" />
-      <div class="module-info">
-        <h3>${m.title}</h3>
-        ${m.subtitle ? `<p>${m.subtitle}</p>` : ""}
-        <div class="progress-bar"><div class="progress" style="width: ${
-          m.progress || 0
-        }%;"></div></div>
-      </div>
-    </div>
-  `,
-    )
-    .join("");
+  const cardTemplate = document.getElementById(
+    "dashboardRecommendedCardTemplate",
+  );
+  if (!cardTemplate) return;
+
+  host.textContent = "";
+  picks.forEach((m) => {
+    const card = cardTemplate.content
+      .querySelector(".module-card")
+      .cloneNode(true);
+
+    if (m.route) {
+      card.setAttribute("data-route", m.route);
+    }
+    if (m.page) {
+      card.setAttribute("data-page", m.page);
+    }
+
+    const img = card.querySelector("img");
+    if (img) {
+      img.src = m.img;
+      img.alt = m.title;
+    }
+
+    const title = card.querySelector(".module-title");
+    if (title) title.textContent = m.title;
+
+    const subtitle = card.querySelector(".module-subtitle");
+    if (subtitle) {
+      if (m.subtitle) {
+        subtitle.textContent = m.subtitle;
+      } else {
+        subtitle.remove();
+      }
+    }
+
+    const progress = card.querySelector(".progress");
+    if (progress) {
+      progress.style.width = `${m.progress || 0}%`;
+    }
+
+    host.appendChild(card);
+  });
 
   // Click behavior: prefer page deep-link into Videos, else use route
   host.querySelectorAll(".module-card").forEach((card) => {

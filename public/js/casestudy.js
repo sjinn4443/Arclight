@@ -1068,6 +1068,13 @@ export function initializeCaseStudy() {
     hideCaseImage();
 
     renderChoices();
+    if (choices) choices.hidden = false;
+    if (footer) {
+      footer.classList.remove("is-collapsed");
+      footer.classList.add("is-expanded");
+    }
+    chatPage.style.setProperty("--casechat-log-pad", "280px");
+    if (toggleBtn) toggleBtn.textContent = "-";
     if (submitBtn) submitBtn.disabled = true;
 
     startTimer();

@@ -27,6 +27,28 @@
       href="favicons/favicon-16x16.png"
     />
     <link rel="manifest" href="manifest.json" />
+    <template id="guestGateModalTemplate">
+      <div id="guestGateModal" role="dialog" aria-modal="true">
+        <div class="guest-modal">
+          <button
+            id="guestModalClose"
+            class="guest-modal__close"
+            aria-label="Close"
+          >
+            &times;
+          </button>
+          <h2 class="guest-modal__title">Enjoying Arclight?</h2>
+          <p class="guest-modal__text">
+            You’ve reached the end of guest access.<br />
+            Create a free account to keep exploring all features without limits.
+          </p>
+          <button id="guestSignupBtn" class="guest-modal__cta btn-primary">
+            Create Account
+          </button>
+        </div>
+      </div>
+    </template>
+
     <script>
       if (location.hostname !== "localhost") {
         var s = document.createElement("script");

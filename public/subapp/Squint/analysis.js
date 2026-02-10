@@ -85,6 +85,31 @@ function transformOutput(text, prefix) {
   return prefix + ": " + diagnoses.join(", ");
 }
 
+function makeFormattedText(labelText, parts) {
+  return {
+    labelText,
+    parts,
+    displayText: parts.map((part) => part.text).join(""),
+  };
+}
+
+function appendFormattedParts(container, parts) {
+  parts.forEach((part) => {
+    if (!part || !part.text) return;
+    const { text, color, italic } = part;
+    if (!color && !italic) {
+      container.appendChild(document.createTextNode(text));
+      return;
+    }
+    const el = italic
+      ? document.createElement("i")
+      : document.createElement("span");
+    if (color) el.style.color = color;
+    el.textContent = text;
+    container.appendChild(el);
+  });
+}
+
 /**
  * Determine a condition category based on the generated output text.
  *
@@ -101,7 +126,7 @@ function determineCondition(text, _eyeType) {
     content.includes("normal") ||
     content.includes("neutral")
   ) {
-    return "";
+    return null;
   }
 
   // Flags for detected features.
@@ -135,8 +160,12 @@ function determineCondition(text, _eyeType) {
 
   // 3rd nerve palsy condition (displayed in red):
   // Must be down (hypo) and out (exo) with no conflicting " in " indicator, and the sudden toggle must be ON.
-  const extraInfo =
-    "; Sudden: vertical diplopia+ptosis; <span style='color:red;'>aneurysm</span>, <span style='color:orange;'>tumour, trauma</span>";
+  const extraInfoParts = [
+    { text: "; Sudden: vertical diplopia+ptosis; " },
+    { text: "aneurysm", color: "red" },
+    { text: ", " },
+    { text: "tumour, trauma", color: "orange" },
+  ];
   if (
     vertical === "hypo" &&
     horizontal === "exo" &&
@@ -144,18 +173,21 @@ function determineCondition(text, _eyeType) {
     hasSudden
   ) {
     if (!hasPtosis) {
-      return (
-        "<span style='color:red;'>possible 3rd nerve palsy</span>" + extraInfo
-      );
+      return makeFormattedText("possible 3rd nerve palsy", [
+        { text: "possible 3rd nerve palsy", color: "red" },
+        ...extraInfoParts,
+      ]);
     } else {
       if (hasLargePupil && hasMedOrLargePtosis) {
-        return (
-          "<span style='color:red;'>definite 3rd nerve palsy</span>" + extraInfo
-        );
+        return makeFormattedText("definite 3rd nerve palsy", [
+          { text: "definite 3rd nerve palsy", color: "red" },
+          ...extraInfoParts,
+        ]);
       } else {
-        return (
-          "<span style='color:red;'>probable 3rd nerve palsy</span>" + extraInfo
-        );
+        return makeFormattedText("probable 3rd nerve palsy", [
+          { text: "probable 3rd nerve palsy", color: "red" },
+          ...extraInfoParts,
+        ]);
       }
     }
   }
@@ -165,13 +197,25 @@ function determineCondition(text, _eyeType) {
     "; Subtle: angled diplopia+head tilt; 'congenital', trauma; look for nasal upshoot";
   if (vertical === "hyper" && horizontal === "exo") {
     if (content.includes("small up")) {
-      return "possible 4th nerve palsy" + subtleText;
+      return makeFormattedText("possible 4th nerve palsy", [
+        { text: "possible 4th nerve palsy" },
+        { text: subtleText },
+      ]);
     } else if (content.includes("med up") || content.includes("medium up")) {
-      return "probable 4th nerve palsy" + subtleText;
+      return makeFormattedText("probable 4th nerve palsy", [
+        { text: "probable 4th nerve palsy" },
+        { text: subtleText },
+      ]);
     } else if (content.includes("large up")) {
-      return "definite 4th nerve palsy" + subtleText;
+      return makeFormattedText("definite 4th nerve palsy", [
+        { text: "definite 4th nerve palsy" },
+        { text: subtleText },
+      ]);
     } else {
-      return "4th nerve palsy" + subtleText;
+      return makeFormattedText("4th nerve palsy", [
+        { text: "4th nerve palsy" },
+        { text: subtleText },
+      ]);
     }
   }
 
@@ -186,24 +230,33 @@ function determineCondition(text, _eyeType) {
     !content.includes("medium down") &&
     !content.includes("large down")
   ) {
-    const extraText =
-      "; Sudden: horizontal diplopia+head turn; " +
-      "<span style='color:red;'>SOL/IIH - ICP</span>, " +
-      "<span style='color:orange;'>Temporal arteritis</span>, ear";
+    const extraParts = [
+      { text: "; Sudden: horizontal diplopia+head turn; " },
+      { text: "SOL/IIH - ICP", color: "red" },
+      { text: ", " },
+      { text: "Temporal arteritis", color: "orange" },
+      { text: ", ear" },
+    ];
     if (content.includes("small in")) {
-      return (
-        "<span style='color:red;'>possible 6th nerve palsy</span>" + extraText
-      );
+      return makeFormattedText("possible 6th nerve palsy", [
+        { text: "possible 6th nerve palsy", color: "red" },
+        ...extraParts,
+      ]);
     } else if (content.includes("med in") || content.includes("medium in")) {
-      return (
-        "<span style='color:red;'>probable 6th nerve palsy</span>" + extraText
-      );
+      return makeFormattedText("probable 6th nerve palsy", [
+        { text: "probable 6th nerve palsy", color: "red" },
+        ...extraParts,
+      ]);
     } else if (content.includes("large in")) {
-      return (
-        "<span style='color:red;'>definite 6th nerve palsy</span>" + extraText
-      );
+      return makeFormattedText("definite 6th nerve palsy", [
+        { text: "definite 6th nerve palsy", color: "red" },
+        ...extraParts,
+      ]);
     } else {
-      return "<span style='color:red;'>6th nerve palsy</span>" + extraText;
+      return makeFormattedText("6th nerve palsy", [
+        { text: "6th nerve palsy", color: "red" },
+        ...extraParts,
+      ]);
     }
   }
 
@@ -212,36 +265,51 @@ function determineCondition(text, _eyeType) {
   //   - With no ptosis/lid evidence → possible Horner syndrome
   //   - With ptosis/lid → probable Horner syndrome, unless "faded" is also present, then definite.
   if (content.includes("smaller pupil")) {
-    const extraText = "; CAD, stroke, lung <i>> physical</i>";
-    let hornerOutput = "";
+    const extraParts = [
+      { text: "; CAD, stroke, lung " },
+      { text: "> physical", italic: true },
+    ];
+    let hornerOutput = null;
     if (hasPtosis) {
       if (content.includes("faded")) {
-        hornerOutput = "definite Horner" + extraText;
+        hornerOutput = makeFormattedText("definite Horner", [
+          { text: "definite Horner" },
+          ...extraParts,
+        ]);
       } else {
-        hornerOutput = "probable Horner" + extraText;
+        hornerOutput = makeFormattedText("probable Horner", [
+          { text: "probable Horner" },
+          ...extraParts,
+        ]);
       }
     } else {
-      hornerOutput = "possible Horner" + extraText;
+      hornerOutput = makeFormattedText("possible Horner", [
+        { text: "possible Horner" },
+        ...extraParts,
+      ]);
     }
     return hornerOutput;
   }
 
   // Fallback conditions.
   if (horizontal && vertical) {
-    return "Mixed " + horizontal.toUpperCase() + " & " + vertical.toUpperCase();
+    const label = `Mixed ${horizontal.toUpperCase()} & ${vertical.toUpperCase()}`;
+    return makeFormattedText(label, [{ text: label }]);
   }
   if (horizontal) {
-    return horizontal.toUpperCase();
+    const label = horizontal.toUpperCase();
+    return makeFormattedText(label, [{ text: label }]);
   }
   if (vertical) {
-    return vertical.toUpperCase();
+    const label = vertical.toUpperCase();
+    return makeFormattedText(label, [{ text: label }]);
   }
 
   if (hasPtosis || hasSudden || hasDilated) {
-    return "Palsy";
+    return makeFormattedText("Palsy", [{ text: "Palsy" }]);
   }
 
-  return "";
+  return null;
 }
 
 /**
@@ -287,11 +355,17 @@ function determinePupilCondition(rightText, leftText) {
 
   // Check for pinhole pupils.
   if (rText.includes("pinhole pupil") && lText.includes("pinhole pupil")) {
-    return "Bilateral pinhole — <i>likely old age or drugs</i>";
+    return makeFormattedText("Bilateral pinhole — likely old age or drugs", [
+      { text: "Bilateral pinhole — " },
+      { text: "likely old age or drugs", italic: true },
+    ]);
   }
   // Check for bilateral dilated pupils.
   if (rText.includes("dilated pupil") && lText.includes("dilated pupil")) {
-    return "Bilateral dilated — <i>consider drugs or trauma</i>";
+    return makeFormattedText("Bilateral dilated — consider drugs or trauma", [
+      { text: "Bilateral dilated — " },
+      { text: "consider drugs or trauma", italic: true },
+    ]);
   }
 
   // Get numeric pupil scores.
@@ -300,17 +374,26 @@ function determinePupilCondition(rightText, leftText) {
 
   // If scores are equal, the pupils are symmetric.
   if (scoreRight === scoreLeft) {
-    return "";
+    return null;
   }
 
   const diff = Math.abs(scoreRight - scoreLeft);
   if (diff === 1) {
-    return "Slightly larger — <i>benign anisocoria</i>";
+    return makeFormattedText("Slightly larger — benign anisocoria", [
+      { text: "Slightly larger — " },
+      { text: "benign anisocoria", italic: true },
+    ]);
   } else if (diff >= 2) {
-    return "Unilateral larger — <i>possible Adie; sluggish, viral</i>";
+    return makeFormattedText(
+      "Unilateral larger — possible Adie; sluggish, viral",
+      [
+        { text: "Unilateral larger — " },
+        { text: "possible Adie; sluggish, viral", italic: true },
+      ],
+    );
   }
 
-  return "";
+  return null;
 }
 
 // Global cache variables
@@ -343,76 +426,124 @@ function updateAnalysisOutput() {
   // Final conditions for Horner syndrome.
   let finalConditionRight = conditionRight;
   let finalConditionLeft = conditionLeft;
-  if (
-    conditionRight.toLowerCase().includes("horner") &&
-    conditionLeft.toLowerCase().includes("horner")
-  ) {
+  const rightLabelText = conditionRight?.labelText?.toLowerCase() || "";
+  const leftLabelText = conditionLeft?.labelText?.toLowerCase() || "";
+  if (rightLabelText.includes("horner") && leftLabelText.includes("horner")) {
     if (scoreRight === scoreLeft) {
-      finalConditionRight = "";
-      finalConditionLeft = "";
+      finalConditionRight = null;
+      finalConditionLeft = null;
     } else if (Math.abs(scoreRight - scoreLeft) === 1) {
       if (scoreRight < scoreLeft) {
         // Right eye is one step more constricted.
-        finalConditionLeft = "";
+        finalConditionLeft = null;
       } else {
-        finalConditionRight = "";
+        finalConditionRight = null;
       }
     }
   }
 
   const pupilCondition = determinePupilCondition(rightText, leftText);
 
-  let outputHTML = "<strong>RE:</strong> " + clinicalRight.replace("RE: ", "");
-  if (finalConditionRight) {
-    outputHTML += " (" + finalConditionRight + ")";
-  }
-  outputHTML += "<br><strong>LE:</strong> " + clinicalLeft.replace("LE: ", "");
-  if (finalConditionLeft) {
-    outputHTML += " (" + finalConditionLeft + ")";
-  }
-  if (
-    pupilCondition &&
-    !finalConditionRight.toLowerCase().includes("3rd nerve palsy") &&
-    !finalConditionLeft.toLowerCase().includes("3rd nerve palsy")
-  ) {
-    outputHTML += "<br><strong>Pupils:</strong> " + pupilCondition;
-  }
+  const outputSignature = [
+    clinicalRight,
+    finalConditionRight?.labelText || "",
+    clinicalLeft,
+    finalConditionLeft?.labelText || "",
+    pupilCondition?.labelText || "",
+  ].join("|");
 
-  // Only update analysisElement if content has changed.
-  if (analysisElement.innerHTML !== outputHTML) {
-    analysisElement.innerHTML = outputHTML;
-    lastAnalysisHTML = outputHTML;
+  if (analysisElement.dataset.signature !== outputSignature) {
+    analysisElement.textContent = "";
+
+    const reLine = document.createElement("div");
+    const reLabel = document.createElement("strong");
+    reLabel.textContent = "RE:";
+    reLine.appendChild(reLabel);
+    reLine.appendChild(
+      document.createTextNode(` ${clinicalRight.replace("RE: ", "")}`),
+    );
+    if (finalConditionRight) {
+      reLine.appendChild(document.createTextNode(" ("));
+      appendFormattedParts(reLine, finalConditionRight.parts);
+      reLine.appendChild(document.createTextNode(")"));
+    }
+    analysisElement.appendChild(reLine);
+
+    const leLine = document.createElement("div");
+    const leLabel = document.createElement("strong");
+    leLabel.textContent = "LE:";
+    leLine.appendChild(leLabel);
+    leLine.appendChild(
+      document.createTextNode(` ${clinicalLeft.replace("LE: ", "")}`),
+    );
+    if (finalConditionLeft) {
+      leLine.appendChild(document.createTextNode(" ("));
+      appendFormattedParts(leLine, finalConditionLeft.parts);
+      leLine.appendChild(document.createTextNode(")"));
+    }
+    analysisElement.appendChild(leLine);
+
+    const rightLabel = finalConditionRight?.labelText?.toLowerCase() || "";
+    const leftLabel = finalConditionLeft?.labelText?.toLowerCase() || "";
+    if (
+      pupilCondition &&
+      !rightLabel.includes("3rd nerve palsy") &&
+      !leftLabel.includes("3rd nerve palsy")
+    ) {
+      const pupilLine = document.createElement("div");
+      const pupilLabel = document.createElement("strong");
+      pupilLabel.textContent = "Pupils:";
+      pupilLine.appendChild(pupilLabel);
+      pupilLine.appendChild(document.createTextNode(" "));
+      appendFormattedParts(pupilLine, pupilCondition.parts);
+      analysisElement.appendChild(pupilLine);
+    }
+
+    analysisElement.dataset.signature = outputSignature;
   }
 
   // Determine which palsy image to display.
-  let palsyImageHTML = "";
-  const conditionRightLower = finalConditionRight.toLowerCase();
-  const conditionLeftLower = finalConditionLeft.toLowerCase();
+  const conditionRightLower =
+    finalConditionRight?.labelText?.toLowerCase() || "";
+  const conditionLeftLower = finalConditionLeft?.labelText?.toLowerCase() || "";
+
+  let palsyKey = "";
+  let palsySrc = "";
+  let palsyAlt = "";
 
   if (
     conditionRightLower.includes("3rd nerve palsy") ||
     conditionLeftLower.includes("3rd nerve palsy")
   ) {
-    palsyImageHTML =
-      '<img src="3.png" alt="3rd nerve palsy" class="palsy-img-outside">';
+    palsyKey = "3rd";
+    palsySrc = "3.png";
+    palsyAlt = "3rd nerve palsy";
   } else if (
     conditionRightLower.includes("4th nerve palsy") ||
     conditionLeftLower.includes("4th nerve palsy")
   ) {
-    palsyImageHTML =
-      '<img src="4.png" alt="4th nerve palsy" class="palsy-img-outside">';
+    palsyKey = "4th";
+    palsySrc = "4.png";
+    palsyAlt = "4th nerve palsy";
   } else if (
     conditionRightLower.includes("6th nerve palsy") ||
     conditionLeftLower.includes("6th nerve palsy")
   ) {
-    palsyImageHTML =
-      '<img src="6.png" alt="6th nerve palsy" class="palsy-img-outside">';
+    palsyKey = "6th";
+    palsySrc = "6.png";
+    palsyAlt = "6th nerve palsy";
   }
 
-  // Update the palsy image container only if content has changed.
-  if (palsyImgContainer && palsyImgContainer.innerHTML !== palsyImageHTML) {
-    palsyImgContainer.innerHTML = palsyImageHTML;
-    lastPalsyImageHTML = palsyImageHTML;
+  if (palsyImgContainer && palsyImgContainer.dataset.palsyKey !== palsyKey) {
+    palsyImgContainer.textContent = "";
+    if (palsySrc) {
+      const img = document.createElement("img");
+      img.src = palsySrc;
+      img.alt = palsyAlt;
+      img.className = "palsy-img-outside";
+      palsyImgContainer.appendChild(img);
+    }
+    palsyImgContainer.dataset.palsyKey = palsyKey;
   }
 }
 

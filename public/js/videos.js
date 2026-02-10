@@ -1440,10 +1440,22 @@ async function openAnteriorSegmentQuiz() {
 
   const quizUrl = await resolveQuizUrl();
   if (!quizUrl) {
-    page.innerHTML = `<div style="padding:16px">
-      Couldn’t find <code>AnteriorSegmentQuiz/html/index.html</code> from here.<br/>
-      Make sure the <code>AnteriorSegmentQuiz/</code> folder is deployed next to your app root.
-    </div>`;
+    const box = document.createElement("div");
+    box.style.padding = "16px";
+    box.appendChild(document.createTextNode("Couldn't find "));
+    const codePath = document.createElement("code");
+    codePath.textContent = "AnteriorSegmentQuiz/html/index.html";
+    box.appendChild(codePath);
+    box.appendChild(document.createTextNode(" from here."));
+    box.appendChild(document.createElement("br"));
+    box.appendChild(document.createTextNode("Make sure the "));
+    const codeFolder = document.createElement("code");
+    codeFolder.textContent = "AnteriorSegmentQuiz/";
+    box.appendChild(codeFolder);
+    box.appendChild(
+      document.createTextNode(" folder is deployed next to your app root."),
+    );
+    page.replaceChildren(box);
   } else {
     iframe.onload = () => console.warn("Quiz iframe loaded:", quizUrl);
     iframe.onerror = () => console.error("Quiz iframe failed:", quizUrl);

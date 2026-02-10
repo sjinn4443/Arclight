@@ -103,52 +103,60 @@ export function initializeChildhoodAssessment() {
     },
   ];
 
-  // ✅ quiz-launcher.js CSS 재사용용: 같은 클래스 구조 사용
-  mount.innerHTML = `
-    <div class="quiz-container">
-      <div class="quiz-scroll">
-        <form id="childhoodQuizForm"></form>
-      </div>
+  const layoutTemplate = document.getElementById(
+    "childhoodAssessmentLayoutTemplate",
+  );
+  const blockTemplate = document.getElementById(
+    "childhoodAssessmentBlockTemplate",
+  );
+  const optionTemplate = document.getElementById(
+    "childhoodAssessmentOptionTemplate",
+  );
 
-      <div class="quiz-footer">
-        <button type="submit" form="childhoodQuizForm" class="start-btn">See Results</button>
-      </div>
+  if (!layoutTemplate || !blockTemplate || !optionTemplate) return;
 
-      <div id="childhoodQuizModal" class="quiz-modal hidden">
-        <div class="quiz-modal-content">
-          <p id="childhoodQuizScoreText"></p>
-          <button id="childhoodSeeWhyBtn">Check Answer</button>
-        </div>
-      </div>
-    </div>
-  `;
+  mount.textContent = "";
+  mount.appendChild(layoutTemplate.content.cloneNode(true));
 
   const form = mount.querySelector("#childhoodQuizForm");
+  if (!form) return;
 
   questions.forEach((q, i) => {
+    const block = blockTemplate.content
+      .querySelector(".quiz-block")
+      .cloneNode(true);
     const correctLetter = LETTERS[q.answer] || "";
-    let html = `<div class="quiz-block"><p>${escapeHtml(q.q)}</p>`;
 
-    html += `
-  <img class="quiz-image" src="${q.img}" alt="" loading="lazy" />
-`;
+    const question = block.querySelector(".quiz-question");
+    if (question) question.textContent = q.q;
 
-    q.options.forEach((opt, j) => {
-      html += `
-        <label class="radio-label">
-          <input type="radio" name="q${i}" value="${j}">
-          <span>${LETTERS[j]}. ${escapeHtml(opt)}</span>
-        </label>
-      `;
-    });
+    const image = block.querySelector(".quiz-image");
+    if (image) image.src = q.img;
 
-    html += `
-      <p class="answer" style="display:none; margin-top:5px; font-style:italic;">
-        Correct answer: ${correctLetter}. ${escapeHtml(q.options[q.answer])}
-      </p>
-    </div>`;
+    const optionsWrap = block.querySelector(".quiz-options");
+    if (optionsWrap) {
+      q.options.forEach((opt, j) => {
+        const option = optionTemplate.content
+          .querySelector(".radio-label")
+          .cloneNode(true);
+        const input = option.querySelector("input");
+        if (input) {
+          input.type = "radio";
+          input.name = `q${i}`;
+          input.value = String(j);
+        }
+        const text = option.querySelector(".quiz-option-text");
+        if (text) text.textContent = `${LETTERS[j]}. ${opt}`;
+        optionsWrap.appendChild(option);
+      });
+    }
 
-    form.insertAdjacentHTML("beforeend", html);
+    const answer = block.querySelector(".answer");
+    if (answer) {
+      answer.textContent = `Correct answer: ${correctLetter}. ${q.options[q.answer]}`;
+    }
+
+    form.appendChild(block);
   });
 
   form.addEventListener("submit", (e) => {
@@ -179,9 +187,17 @@ export function initializeChildhoodAssessment() {
       if (selected === q.answer) score += 1;
     });
 
-    mount.querySelector("#childhoodQuizScoreText").innerHTML =
-      `You got ${score} out of ${questions.length} correct.<br>
-   <small>Answers are highlighted in green.</small>`;
+    const scoreText = mount.querySelector("#childhoodQuizScoreText");
+    if (scoreText) {
+      scoreText.textContent = "";
+      const scoreLine = document.createElement("span");
+      scoreLine.textContent = `You got ${score} out of ${questions.length} correct.`;
+      scoreText.appendChild(scoreLine);
+      scoreText.appendChild(document.createElement("br"));
+      const hint = document.createElement("small");
+      hint.textContent = "Answers are highlighted in green.";
+      scoreText.appendChild(hint);
+    }
 
     mount.querySelector("#childhoodQuizModal").classList.remove("hidden");
   });
@@ -192,13 +208,4 @@ export function initializeChildhoodAssessment() {
       .querySelectorAll(".answer")
       .forEach((a) => (a.style.display = "block"));
   });
-}
-
-function escapeHtml(s) {
-  return String(s ?? "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
 }

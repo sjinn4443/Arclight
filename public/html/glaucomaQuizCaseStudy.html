@@ -10,6 +10,62 @@
 
     <!-- JS가 여기에 퀴즈 UI를 주입함 -->
     <div id="glaucomaQuizMount" style="padding: 10px 0"></div>
+
+    <template id="glaucomaQuizLayoutTemplate">
+      <div class="quiz-header">
+        <h3>Choose the correct diagnosis</h3>
+        <div class="quiz-progress" id="gqProgress">0 / 0</div>
+      </div>
+
+      <div id="gqAllQuestions"></div>
+
+      <div class="quiz-actions" style="margin-top: 16px">
+        <button class="btn primary" id="gqResults" type="button" disabled>
+          See results
+        </button>
+      </div>
+
+      <div class="modal-backdrop" id="gqModal">
+        <div class="modal">
+          <h3 id="gqScoreTitle">Results</h3>
+          <p id="gqScoreText"></p>
+          <div class="quiz-actions">
+            <button class="btn secondary" id="gqReview" type="button">
+              Review
+            </button>
+            <button class="btn primary" id="gqRestart" type="button">
+              Restart
+            </button>
+          </div>
+        </div>
+      </div>
+    </template>
+
+    <template id="glaucomaQuizCardTemplate">
+      <div class="quiz-card" style="margin-bottom: 14px">
+        <div
+          class="quiz-progress quiz-card-progress"
+          style="
+            margin-bottom: 10px;
+            opacity: 0.75;
+            font-weight: 700;
+            --font-color: #000;
+            font-size: 14px;
+          "
+        ></div>
+        <video class="quiz-video" autoplay muted playsinline preload="metadata">
+          <source src="" type="video/mp4" />
+        </video>
+        <div class="options"></div>
+      </div>
+    </template>
+
+    <template id="glaucomaQuizOptionTemplate">
+      <label class="opt">
+        <input type="radio" />
+        <span class="opt-label"></span>
+      </label>
+    </template>
   </div>
 
   <!-- 최소 스타일(다른 퀴즈 CSS가 이미 있으면 이건 유지해도 되고 지워도 됨) -->

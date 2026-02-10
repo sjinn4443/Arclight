@@ -104,3 +104,76 @@
     Maybe later
   </button>
 </div>
+
+<template id="quizzesLayoutTemplate">
+  <div class="quiz-container">
+    <div class="quiz-header small">
+      <div class="quiz-header-row centered">
+        <h2>Quiz</h2>
+      </div>
+    </div>
+    <div class="quiz-scroll"><form id="quizForm"></form></div>
+    <div class="quiz-footer">
+      <button type="submit" form="quizForm" class="start-btn">
+        See Results
+      </button>
+    </div>
+    <div id="quizModal" class="quiz-modal hidden">
+      <div class="quiz-modal-content">
+        <p id="quizScoreText"></p>
+        <button id="seeWhyBtn">Check Answer</button>
+      </div>
+    </div>
+  </div>
+</template>
+
+<template id="quizzesBlockTemplate">
+  <div class="quiz-block">
+    <p class="quiz-question"></p>
+    <div class="quiz-options"></div>
+    <p
+      class="answer"
+      style="display: none; margin-top: 5px; font-style: italic"
+    ></p>
+  </div>
+</template>
+
+<template id="quizzesOptionTemplate">
+  <label class="radio-label">
+    <input type="radio" />
+    <span class="quiz-option-text"></span>
+  </label>
+</template>
+
+<template id="quizzesCaseQuestionTemplate">
+  <div class="question">
+    <h3 class="question-title"></h3>
+    <ul class="options"></ul>
+  </div>
+</template>
+
+<template id="quizzesCaseOptionTemplate">
+  <li>
+    <input type="radio" />
+    <label></label>
+  </li>
+</template>
+
+<template id="quizzesReviewCaseTemplate">
+  <div class="review-case">
+    <h2 class="review-case-title"></h2>
+    <div class="review-case-subtitle"></div>
+    <img class="case-image" alt="" />
+  </div>
+</template>
+
+<template id="quizzesReviewQuestionTemplate">
+  <div class="review-question">
+    <h3 class="review-question-title"></h3>
+    <ul class="review-options"></ul>
+  </div>
+</template>
+
+<template id="quizzesReviewOptionTemplate">
+  <li class="review-option"></li>
+</template>

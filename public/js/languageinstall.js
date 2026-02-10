@@ -88,40 +88,15 @@ export function initializeLanguageInstall() {
     return /Android/.test(ua);
   }
 
-  function getInstallHelpHTML() {
-    // iOS Share icon (inline SVG)
-    const shareIconSVG = `
-    <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"
-      style="vertical-align:middle; margin:0 4px;">
-      <path d="M12 3l4 4h-3v6h-2V7H8l4-4zM5 10v9h14v-9h2v9c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2v-9h2z"/>
-    </svg>
-  `;
-
-    // iPhone / iPad (Safari)
+  function getInstallHelpTemplateId() {
     if (isIOS()) {
-      return `
-      <strong>On iOS:</strong><br /><br />
-      1) Tap the Share button ${shareIconSVG} in the address bar<br />
-      2) Select <strong>Add to Home Screen</strong>
-    `;
+      return "languageInstallHelpIos";
     }
-
-    // Android (Chrome)
     if (isAndroid()) {
-      return `
-      <strong>On Android:</strong><br /><br />
-      1) Tap the browser menu <strong>(⋮)</strong><br />
-      2) Select <strong>Install app</strong> or <strong>Add to Home Screen</strong>
-    `;
+      return "languageInstallHelpAndroid";
     }
-
-    // Fallback (desktop/unknown)
-    return `
-    <strong>To install:</strong><br />
-    Use your browser menu and choose <strong>Install app</strong> or <strong>Add to Home Screen</strong>.
-  `;
+    return "languageInstallHelpDefault";
   }
-
   // Install flow
   if (installBtn) {
     installBtn.addEventListener("click", async () => {
@@ -135,7 +110,7 @@ export function initializeLanguageInstall() {
             return;
           }
 
-          showLanguageHintModal(getInstallHelpHTML());
+          showLanguageHintModal(getInstallHelpTemplateId());
           return; // stay on language page
         }
 
@@ -381,17 +356,13 @@ export function initializeLanguageInstall() {
 
   if (offlineInfoBtn) {
     offlineInfoBtn.addEventListener("click", () => {
-      showLanguageHintModal(
-        "Install the app to use without<br /> Wi-Fi / mobile data.<br /> <br />Some content (e.g. videos), <br />may need to be downloaded first.",
-      );
+      showLanguageHintModal("languageInstallHintOffline");
     });
   }
 
   if (onlineInfoBtn) {
     onlineInfoBtn.addEventListener("click", () => {
-      showLanguageHintModal(
-        "Use the app in your current browser. <br />An internet connection is required.",
-      );
+      showLanguageHintModal("languageInstallHintOnline");
     });
   }
 }
@@ -399,24 +370,28 @@ export function initializeLanguageInstall() {
 /**
  * Shows a small info modal explaining the selected language install option.
  * Reuses the guest modal look and feel.
- * @param {string} message - Body text to show inside the modal.
+ * @param {string} templateId - Template id to render inside the modal body.
  */
-function showLanguageHintModal(message) {
+function showLanguageHintModal(templateId) {
   // Prevent duplicates
   if (document.getElementById("hintModalOverlay")) return;
 
-  const modal = document.createElement("div");
-  modal.id = "hintModalOverlay";
-  modal.setAttribute("role", "dialog");
-  modal.setAttribute("aria-modal", "true");
+  const modalTemplate = document.getElementById(
+    "languageInstallHintModalTemplate",
+  );
+  if (!modalTemplate) return;
 
-  modal.innerHTML = `
-    <div class="guest-modal">
-      <button class="guest-modal__close" aria-label="Close">&times;</button>
-      <h2 class="guest-modal__title"></h2>
-      <p class="guest-modal__text">${message}</p>
-    </div>
-  `;
+  const modal = modalTemplate.content
+    .querySelector("#hintModalOverlay")
+    ?.cloneNode(true);
+
+  if (!modal) return;
+
+  const messageHost = modal.querySelector(".guest-modal__text");
+  const messageTemplate = document.getElementById(templateId);
+  if (messageHost && messageTemplate) {
+    messageHost.appendChild(messageTemplate.content.cloneNode(true));
+  }
 
   document.body.appendChild(modal);
 
@@ -470,7 +445,7 @@ function buildCustomLangSelect(selectEl) {
 
   // Chevron
   const caret = document.createElement("span");
-  caret.innerHTML = "&#x25BE;";
+  caret.textContent = "\u25BE";
   caret.style.position = "absolute";
   caret.style.right = "12px";
   caret.style.pointerEvents = "none";
@@ -529,7 +504,9 @@ function buildCustomLangSelect(selectEl) {
       left.textContent = english;
 
       const right = document.createElement("span");
-      right.innerHTML = `<strong>${native}</strong>`;
+      const rightStrong = document.createElement("strong");
+      rightStrong.textContent = native;
+      right.appendChild(rightStrong);
 
       row.appendChild(left);
       row.appendChild(right);
@@ -565,13 +542,17 @@ function buildCustomLangSelect(selectEl) {
       .trim();
     const native = current.getAttribute("data-native") || english;
 
-    if (current.value === "en") {
-      label.innerHTML = `<span>${english}</span>`; // single column
-    } else {
-      label.innerHTML = `
-        <span>${english}</span>
-        <span><strong>${native}</strong></span>
-      `;
+    label.textContent = "";
+    const left = document.createElement("span");
+    left.textContent = english;
+    label.appendChild(left);
+
+    if (current.value !== "en") {
+      const right = document.createElement("span");
+      const rightStrong = document.createElement("strong");
+      rightStrong.textContent = native;
+      right.appendChild(rightStrong);
+      label.appendChild(right);
     }
   }
 

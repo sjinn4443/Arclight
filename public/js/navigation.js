@@ -27,24 +27,13 @@ function ensureGuestModal() {
   // Prevent duplicates
   if (document.getElementById("guestGateModal")) return;
 
-  const modal = document.createElement("div");
-  modal.id = "guestGateModal";
-  modal.setAttribute("role", "dialog");
-  modal.setAttribute("aria-modal", "true");
+  const modalTemplate = document.getElementById("guestGateModalTemplate");
+  if (!modalTemplate) return;
 
-  modal.innerHTML = `
-    <div class="guest-modal">
-      <button id="guestModalClose" class="guest-modal__close" aria-label="Close">&times;</button>
-      <h2 class="guest-modal__title">Enjoying Arclight?</h2>
-      <p class="guest-modal__text">
-        You’ve reached the end of guest access.<br> 
-        Create a free account to keep exploring all features without limits.
-      </p>
-      <button id="guestSignupBtn" class="guest-modal__cta btn-primary">
-        Create Account
-      </button>
-    </div>
-  `;
+  const modal = modalTemplate.content
+    .querySelector("#guestGateModal")
+    ?.cloneNode(true);
+  if (!modal) return;
 
   document.body.appendChild(modal);
 
@@ -283,7 +272,13 @@ export async function loadPage(routeName, options = {}) {
   }
   if (!url) {
     console.error(`Route "${routeName}" not found in ROUTES.`);
-    container.innerHTML = `<div class="container"><p>Page not found: ${routeName}</p></div>`;
+    container.textContent = "";
+    const notFoundWrap = document.createElement("div");
+    notFoundWrap.className = "container";
+    const notFoundText = document.createElement("p");
+    notFoundText.textContent = `Page not found: ${routeName}`;
+    notFoundWrap.appendChild(notFoundText);
+    container.appendChild(notFoundWrap);
     // Dispatch events even for errors to signal completion of the attempt.
     window.dispatchEvent(
       new CustomEvent("page:loaded", { detail: { routeName, error: true } }),
@@ -305,7 +300,13 @@ export async function loadPage(routeName, options = {}) {
     html = await res.text();
   } catch (err) {
     console.error("Failed to load route", routeName, url, err);
-    container.innerHTML = `<div class="container"><p>Failed to load page: ${routeName}</p></div>`;
+    container.textContent = "";
+    const failedWrap = document.createElement("div");
+    failedWrap.className = "container";
+    const failedText = document.createElement("p");
+    failedText.textContent = `Failed to load page: ${routeName}`;
+    failedWrap.appendChild(failedText);
+    container.appendChild(failedWrap);
     // Dispatch events even for fetch errors.
     window.dispatchEvent(
       new CustomEvent("page:loaded", { detail: { routeName, error: true } }),

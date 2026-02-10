@@ -30,6 +30,9 @@ export function initializeOnboarding() {
   const practiceRangeHint = document.getElementById("practiceRangeHint");
   const practiceLevelRange = document.getElementById("practiceLevelRange");
   const experienceByRole = document.getElementById("experienceByRole");
+  const practiceLevelTemplate = document.getElementById(
+    "practiceLevelTemplate",
+  );
 
   const studentYearField = document.getElementById("studentYearField");
   const studentYearSelect = document.getElementById("studentYearSelect");
@@ -428,60 +431,30 @@ export function initializeOnboarding() {
     roleValues.forEach((role) => {
       const label = getRoleLabel(role);
 
-      const block = document.createElement("div");
-      block.className = "role-exp-block";
+      if (!practiceLevelTemplate) return;
+
+      const block =
+        practiceLevelTemplate.content.firstElementChild?.cloneNode(true);
+      if (!block) return;
       block.setAttribute("data-role", role);
 
-      const title = document.createElement("div");
-      title.className = "role-exp-label";
-      title.textContent = label;
+      const title = block.querySelector(".role-exp-label");
+      if (title) title.textContent = label;
 
-      const row = document.createElement("div");
-      row.className = "role-exp-row";
-
-      const wrap = document.createElement("div");
-      wrap.className = "onb-select-wrap";
-
-      const select = document.createElement("select");
-      select.className = "onb-input";
-      select.setAttribute("data-kind", "practiceLevel");
-
-      select.innerHTML = `
-        <option value="" disabled hidden>Years of experience</option>
-        <option value="0-2">0–2</option>
-        <option value="2-5">2–5</option>
-        <option value="5-10">5–10</option>
-        <option value="10+">10+</option>
-      `;
-
-      const caret = document.createElement("span");
-      caret.className = "onb-select-caret";
-      caret.setAttribute("aria-hidden", "true");
-      caret.innerHTML = `
-      <svg viewBox="0 0 24 24" focusable="false">
-        <path d="M7 10l5 5 5-5z" fill="currentColor"></path>
-      </svg>
-    `;
-
-      wrap.appendChild(select);
-      wrap.appendChild(caret);
-
-      row.appendChild(wrap);
+      const select = block.querySelector('select[data-kind="practiceLevel"]');
 
       // 값 복원
-      select.value = previous[role]?.range || "";
+      if (select) select.value = previous[role]?.range || "";
 
       // 선택 시 has-value/filled 갱신 + validation
       const paint = () => {
+        if (!select) return;
         select.classList.toggle("has-value", !!select.value);
         select.classList.toggle("filled", !!select.value);
         checkForm();
       };
-      select.addEventListener("change", paint);
+      select?.addEventListener("change", paint);
       paint();
-
-      block.appendChild(title);
-      block.appendChild(row);
 
       experienceByRole.appendChild(block);
     });
@@ -974,78 +947,10 @@ function showPrivacyTermsModal() {
   modal.setAttribute("role", "dialog");
   modal.setAttribute("aria-modal", "true");
 
-  modal.innerHTML = `
-    <div class="guest-modal">
-      <button class="guest-modal__close" aria-label="Close">&times;</button>
-      <h2 class="guest-modal__title">Privacy &amp; Terms</h2>
-
-      <div class="guest-modal__text privacyterms__text">
-        <p><strong>Information we collect</strong></p>
-        <p>We collect a small amount of personal data:</p>
-        <ul>
-          <li>name</li>
-          <li>email address</li>
-          <li>learning goals</li>
-          <li>IP address or an approximate location based on it</li>
-        </ul>
-        <p>Only information needed to run and improve the service is collected.</p>
-
-        <p><strong>How we use it</strong></p>
-        <p>
-          This data helps to tailor the app to each person’s goals, understand how the app is used and improve features over time.
-          It may also be used to get in touch about important changes to the app or an account.<br />
-          Personal data is never sold.
-        </p>
-
-        <p><strong>Where it is stored</strong></p>
-        <p>
-          Information is stored on a managed server and database provided by Railway.
-          Railway provides the hosting and infrastructure; we control how data is used within the app and keep it only for as long as reasonably needed.
-        </p>
-
-        <p><strong>Third-party services</strong></p>
-        <p>
-          We rely on trusted third-party services, such as hosting providers, to run the app.
-          These services only process data as needed to provide the infrastructure and do not have permission to use it for their own purposes.
-        </p>
-
-        <p><strong>Seeing or deleting data</strong></p>
-        <p>
-          Anyone can ask to see, update or delete the information held about them.<br />
-          Please email: __
-        </p>
-        <p>
-          Identity may need to be confirmed before a request is completed.
-          If any information must be kept for legal or security reasons, this will be explained.
-        </p>
-
-        <p><strong>Your account</strong></p>
-        <p>
-          If you create an account, please keep your login details secure.<br />
-          You are responsible for activity on your account unless you let us know about misuse or a security problem.
-        </p>
-
-        <p><strong>Education only</strong></p>
-        <p>
-          This app is an education tool to support learning and revision.
-          It is not formal academic, legal or professional advice and cannot guarantee exam passes, grades or any particular outcome.
-          Study choices and decisions remain the user’s responsibility.
-        </p>
-
-        <p><strong>Responsibility and limits</strong></p>
-        <p>
-          The aim is to keep the app helpful and reliable, but no service is perfect.
-          Continuous availability or complete freedom from errors cannot be promised, and the app may not suit every situation.
-        </p>
-        <p>
-          As far as UK law allows, we are not responsible for losses such as missed marks, lost income or opportunities that arise from using, or being unable to use, the app.
-          Nothing here removes any rights provided by UK law.
-        </p>
-
-        <p>Using the app means accepting these Privacy &amp; Terms.</p>
-      </div>
-    </div>
-  `;
+  const template = document.getElementById("privacyTermsModalTemplate");
+  if (template) {
+    modal.appendChild(template.content.cloneNode(true));
+  }
 
   document.body.appendChild(modal);
 

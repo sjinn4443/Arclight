@@ -10,6 +10,14 @@ function shuffle(arr) {
   return a;
 }
 
+function appendLines(target, lines) {
+  const parts = Array.isArray(lines) ? lines : [lines];
+  parts.forEach((part, index) => {
+    if (index > 0) target.appendChild(document.createElement("br"));
+    target.appendChild(document.createTextNode(String(part)));
+  });
+}
+
 function buildCasePool() {
   const pool = [
     { caseNum: 1, variant: "elderly" },
@@ -516,9 +524,14 @@ export function initializeCaseStudyAdvanced() {
 
   function openFinalModal() {
     if (finalBody) {
-      finalBody.innerHTML = `
-      <div class="casechat-resultWhy">Final score: <b>${scoreCorrect}/${scoreTotal}</b></div>
-    `;
+      finalBody.textContent = "";
+      const msg = document.createElement("div");
+      msg.className = "casechat-resultWhy";
+      msg.appendChild(document.createTextNode("Final score: "));
+      const score = document.createElement("b");
+      score.textContent = `${scoreCorrect}/${scoreTotal}`;
+      msg.appendChild(score);
+      finalBody.appendChild(msg);
     }
     if (finalModal) finalModal.hidden = false;
   }
@@ -578,7 +591,7 @@ export function initializeCaseStudyAdvanced() {
   function forceCloseModals() {
     if (dxModal) dxModal.hidden = true;
     if (resultModal) resultModal.hidden = true;
-    if (resultBody) resultBody.innerHTML = "";
+    if (resultBody) resultBody.textContent = "";
     if (resultTitle) resultTitle.textContent = "Result";
   }
 
@@ -650,7 +663,7 @@ export function initializeCaseStudyAdvanced() {
         : `Attempts left: ${dxAttemptsLeft}`;
   }
 
-  function failDxAndMoveOn(reasonText) {
+  function failDxAndMoveOn(reasonLines) {
     dxLocked = true;
     stopDxTimer();
 
@@ -669,11 +682,11 @@ export function initializeCaseStudyAdvanced() {
 
     // 안내 + Next case 버튼
     if (dxCard) {
-      dxCard.innerHTML = "";
+      dxCard.textContent = "";
 
       const msg = document.createElement("div");
       msg.className = "casechat-tryagain";
-      msg.innerHTML = reasonText;
+      appendLines(msg, reasonLines);
       dxCard.appendChild(msg);
 
       const next = document.createElement("button");
@@ -701,7 +714,7 @@ export function initializeCaseStudyAdvanced() {
         dxTimerLeft = 0;
         renderDxTimer();
         // 10초 끝나면 자동 실패 처리
-        failDxAndMoveOn("Time is up<br />Move on to the next case");
+        failDxAndMoveOn(["Time is up", "Move on to the next case"]);
       }
     }, 1000);
   }
@@ -746,72 +759,78 @@ export function initializeCaseStudyAdvanced() {
     }, 1000);
   }
 
-  function appendBubble(kind, html) {
+  function appendContent(target, content) {
+    if (content == null) return;
+    if (Array.isArray(content)) {
+      content.forEach((item) => appendContent(target, item));
+      return;
+    }
+    if (typeof content === "string") {
+      target.appendChild(document.createTextNode(content));
+      return;
+    }
+    target.appendChild(content);
+  }
+
+  function appendBubble(kind, content) {
     const wrap = document.createElement("div");
     wrap.className = `casechat-bubble casechat-bubble--${kind}`;
-    wrap.innerHTML = html;
+    appendContent(wrap, content);
     log.appendChild(wrap);
 
     requestAnimationFrame(keepLastMessageVisible);
+    return wrap;
   }
 
-  function keepLastMessageVisible() {
-    const last = log.lastElementChild;
-    if (!last) return;
-
-    // log와 footer의 위치(뷰포트 기준)
-    const logRect = log.getBoundingClientRect();
-    const footerRect = footer?.getBoundingClientRect();
-
-    // log 영역 안에서 "실제로 보이는 바닥"을 안전선으로 잡기
-    // footer가 log 위를 덮으면 footer.top이 시각적 바닥이 됨
-    const visualBottom = footerRect
-      ? Math.min(logRect.bottom, footerRect.top)
-      : logRect.bottom;
-
-    const safeBottom = visualBottom - 16; // 여유값(원하면 12~24 사이로 조절)
-
-    const lastRect = last.getBoundingClientRect();
-
-    // 마지막 버블이 안전선 아래로 내려가 가려지면, log 자체를 올린다
-    if (lastRect.bottom > safeBottom) {
-      const delta = lastRect.bottom - safeBottom;
-
-      log.scrollTo({
-        top: log.scrollTop + delta,
-        behavior: "smooth",
-      });
-    }
-  }
-
-  function appendSystem(text) {
-    appendBubble("system", `<div class="casechat-system">${text}</div>`);
+  function appendSystem(content) {
+    const inner = document.createElement("div");
+    inner.className = "casechat-system";
+    appendContent(inner, content);
+    appendBubble("system", inner);
   }
   function appendUser(text) {
-    appendBubble("user", `<div class="casechat-text">${text}</div>`);
+    const inner = document.createElement("div");
+    inner.className = "casechat-text";
+    inner.textContent = text;
+    appendBubble("user", inner);
   }
   function appendBot(text, maybeImgSrc) {
-    let html = `<div class="casechat-botstack">`;
+    const stack = document.createElement("div");
+    stack.className = "casechat-botstack";
 
     if (maybeImgSrc) {
-      html += `
-    <div class="casechat-imgwrap" data-imgsrc="${maybeImgSrc}">
-      <img class="casechat-img" src="${maybeImgSrc}" alt="Case image" />
-      <button type="button" class="casechat-imgcover" aria-label="View case image for 2 seconds">
-        <div class="casechat-imgcover__text">Tap to view the case image<br />for 2 seconds</div>
-      </button>
-    </div>
-  `;
+      const imgWrap = document.createElement("div");
+      imgWrap.className = "casechat-imgwrap";
+      imgWrap.dataset.imgsrc = maybeImgSrc;
+
+      const img = document.createElement("img");
+      img.className = "casechat-img";
+      img.src = maybeImgSrc;
+      img.alt = "Case image";
+
+      const coverBtn = document.createElement("button");
+      coverBtn.type = "button";
+      coverBtn.className = "casechat-imgcover";
+      coverBtn.setAttribute("aria-label", "View case image for 2 seconds");
+
+      const coverText = document.createElement("div");
+      coverText.className = "casechat-imgcover__text";
+      appendLines(coverText, ["Tap to view the case image", "for 2 seconds"]);
+
+      coverBtn.appendChild(coverText);
+      imgWrap.appendChild(img);
+      imgWrap.appendChild(coverBtn);
+      stack.appendChild(imgWrap);
     }
 
-    // ✅ 텍스트가 있을 때만 말풍선 생성
     if (text && text.trim() !== "") {
-      html += `<div class="casechat-text">${text}</div>`;
+      const textEl = document.createElement("div");
+      textEl.className = "casechat-text";
+      textEl.textContent = text;
+      stack.appendChild(textEl);
     }
 
-    html += `</div>`;
-
-    appendBubble("bot", html);
+    appendBubble("bot", stack);
   }
 
   function appendBotTyping(dots = "...") {
@@ -822,8 +841,11 @@ export function initializeCaseStudyAdvanced() {
     bubble.className =
       "casechat-bubble casechat-bubble--bot casechat-bubble--typing is-typing";
 
-    // ✅ 나중에 querySelector(".casechat-text")로 교체 가능하게 구조 맞춤
-    bubble.innerHTML = `<div class="casechat-text">${dots}</div>`;
+    const textEl = document.createElement("div");
+    textEl.className = "casechat-text";
+    textEl.textContent = dots;
+    bubble.appendChild(textEl);
+
     log.appendChild(bubble);
 
     requestAnimationFrame(keepLastMessageVisible);
@@ -844,7 +866,7 @@ export function initializeCaseStudyAdvanced() {
   }
 
   function renderChoices() {
-    choices.innerHTML = "";
+    choices.textContent = "";
 
     QUESTIONS.forEach((q) => {
       const btn = document.createElement("button");
@@ -887,7 +909,7 @@ export function initializeCaseStudyAdvanced() {
     if (!state.current) return;
 
     // 모달 강제 닫힘 상태 정리
-    if (dxCard) dxCard.innerHTML = "";
+    if (dxCard) dxCard.textContent = "";
     dxLocked = false;
 
     dxAttemptsLeft = 2;
@@ -896,7 +918,7 @@ export function initializeCaseStudyAdvanced() {
 
     // Dx 리스트 채우기 (랜덤 순서)
     if (dxList) {
-      dxList.innerHTML = "";
+      dxList.textContent = "";
 
       const correct = correctDiagnosisForCase(state.current);
       const others = DIAGNOSES.filter((d) => d !== correct);
@@ -911,10 +933,13 @@ export function initializeCaseStudyAdvanced() {
         btn.setAttribute("aria-checked", "false");
 
         // 사진 1처럼: 라디오(동그라미) + 라벨
-        btn.innerHTML = `
-      <span class="casechat-radio"></span>
-      <span class="casechat-dxlabel">${name}</span>
-    `;
+        const radio = document.createElement("span");
+        radio.className = "casechat-radio";
+        const label = document.createElement("span");
+        label.className = "casechat-dxlabel";
+        label.textContent = name;
+        btn.appendChild(radio);
+        btn.appendChild(label);
 
         btn.addEventListener("click", () => {
           if (dxLocked) return;
@@ -947,7 +972,7 @@ export function initializeCaseStudyAdvanced() {
 
     if (casePool.length === 0) {
       // 1) 화면 내용 전부 제거 (기존 채팅, img 포함)
-      log.innerHTML = "";
+      log.textContent = "";
 
       // 2) 모달/선택 상태 정리
       forceCloseModals();
@@ -957,7 +982,7 @@ export function initializeCaseStudyAdvanced() {
       if (submitBtn) submitBtn.disabled = true;
       if (choices) {
         choices.hidden = true;
-        choices.innerHTML = "";
+        choices.textContent = "";
       }
 
       if (draftEl) {
@@ -984,21 +1009,39 @@ export function initializeCaseStudyAdvanced() {
 
     caseScored = false;
 
-    log.innerHTML = "";
+    log.textContent = "";
     caseIndex += 1;
 
     const ageIntro = ageIntroForCase(state.current);
 
-    appendSystem(`
-  <div class="casechat-caseblock">
-    <div class="casechat-caseindex">
-      Case ${caseIndex}
-      <span class="casechat-casecount">(${caseIndex}/${TOTAL_CASES})</span>
-    </div>
-    ${ageIntro ? `<div class="casechat-caseindex">${ageIntro}</div>` : ""}
-  </div>
-  <span class="casechat-firstprompt">Take a history to work out what is wrong</span>
-`);
+    const caseBlock = document.createElement("div");
+    caseBlock.className = "casechat-caseblock";
+
+    const caseIndexEl = document.createElement("div");
+    caseIndexEl.className = "casechat-caseindex";
+    caseIndexEl.appendChild(document.createTextNode(`Case ${caseIndex}`));
+
+    const caseCount = document.createElement("span");
+    caseCount.className = "casechat-casecount";
+    caseCount.textContent = `(${caseIndex}/${TOTAL_CASES})`;
+    caseIndexEl.appendChild(caseCount);
+    caseBlock.appendChild(caseIndexEl);
+
+    if (ageIntro) {
+      const ageEl = document.createElement("div");
+      ageEl.className = "casechat-caseindex";
+      ageEl.textContent = ageIntro;
+      caseBlock.appendChild(ageEl);
+    }
+
+    const firstPrompt = document.createElement("span");
+    firstPrompt.className = "casechat-firstprompt";
+    firstPrompt.textContent = "Take a history to work out what is wrong";
+
+    const introFragment = document.createDocumentFragment();
+    introFragment.appendChild(caseBlock);
+    introFragment.appendChild(firstPrompt);
+    appendSystem(introFragment);
 
     appendBot("", imgPathForCase(state.current.caseNum));
     state.answeredImageShown = true;
@@ -1055,9 +1098,10 @@ export function initializeCaseStudyAdvanced() {
     if (dxModal) dxModal.hidden = true;
   }
 
-  function openResultModal(title, html) {
+  function openResultModal(title, content) {
     resultTitle.textContent = title;
-    resultBody.innerHTML = html;
+    resultBody.textContent = "";
+    appendContent(resultBody, content);
     resultModal.hidden = false;
   }
 
@@ -1075,7 +1119,7 @@ export function initializeCaseStudyAdvanced() {
     const correct = correctDiagnosisForCase(state.current);
 
     // 기존 피드백 지우기
-    if (dxCard) dxCard.innerHTML = "";
+    if (dxCard) dxCard.textContent = "";
 
     // 오답
     if (name !== correct) {
@@ -1128,11 +1172,26 @@ export function initializeCaseStudyAdvanced() {
     msg.className = "casechat-correctmsg";
     const imgSrc = imgPathForCase(state.current.caseNum);
 
-    msg.innerHTML = `
-  <div class="casechat-resultOk">Correct.</div>
-  <img class="casechat-resultimg" src="${imgSrc}" alt="Case image" />
-  <div class="casechat-resultWhy">In this case, the diagnosis is <b>${correct}</b>.</div>
-`;
+    const ok = document.createElement("div");
+    ok.className = "casechat-resultOk";
+    ok.textContent = "Correct.";
+
+    const img = document.createElement("img");
+    img.className = "casechat-resultimg";
+    img.src = imgSrc;
+    img.alt = "Case image";
+
+    const why = document.createElement("div");
+    why.className = "casechat-resultWhy";
+    why.appendChild(document.createTextNode("In this case, the diagnosis is "));
+    const strong = document.createElement("b");
+    strong.textContent = correct;
+    why.appendChild(strong);
+    why.appendChild(document.createTextNode("."));
+
+    msg.appendChild(ok);
+    msg.appendChild(img);
+    msg.appendChild(why);
 
     dxCard.appendChild(msg);
 

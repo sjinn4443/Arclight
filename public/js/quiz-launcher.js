@@ -31,25 +31,62 @@ function _launchQuiz() {
   const quizPage = existing || document.createElement("div");
   quizPage.id = quizPageId;
   quizPage.className = "page";
-  quizPage.innerHTML = `
-    <div class="quiz-container">
-      <div class="quiz-header small">
-        <div class="quiz-header-row centered">
-          <button id="backToVideoBtn" class="back-icon" title="Go back"></button>
-          <h2>Quiz</h2>
-        </div>
-      </div>
-      <div class="quiz-scroll"><form id="quizForm"></form></div>
-      <div class="quiz-footer">
-        <button type="submit" form="quizForm" class="start-btn">See Results</button>
-      </div>
-      <div id="quizModal" class="quiz-modal hidden">
-        <div class="quiz-modal-content">
-          <p id="quizScoreText"></p>
-          <button id="seeWhyBtn">Check Answer</button>
-        </div>
-      </div>
-    </div>`;
+  const layoutTemplate = document.getElementById("quizLauncherLayoutTemplate");
+  if (layoutTemplate) {
+    quizPage.replaceChildren(layoutTemplate.content.cloneNode(true));
+  } else {
+    const container = document.createElement("div");
+    container.className = "quiz-container";
+
+    const header = document.createElement("div");
+    header.className = "quiz-header small";
+    const headerRow = document.createElement("div");
+    headerRow.className = "quiz-header-row centered";
+    const backBtn = document.createElement("button");
+    backBtn.id = "backToVideoBtn";
+    backBtn.className = "back-icon";
+    backBtn.title = "Go back";
+    const title = document.createElement("h2");
+    title.textContent = "Quiz";
+    headerRow.appendChild(backBtn);
+    headerRow.appendChild(title);
+    header.appendChild(headerRow);
+
+    const scroll = document.createElement("div");
+    scroll.className = "quiz-scroll";
+    const form = document.createElement("form");
+    form.id = "quizForm";
+    scroll.appendChild(form);
+
+    const footer = document.createElement("div");
+    footer.className = "quiz-footer";
+    const submitBtn = document.createElement("button");
+    submitBtn.type = "submit";
+    submitBtn.setAttribute("form", "quizForm");
+    submitBtn.className = "start-btn";
+    submitBtn.textContent = "See Results";
+    footer.appendChild(submitBtn);
+
+    const modal = document.createElement("div");
+    modal.id = "quizModal";
+    modal.className = "quiz-modal hidden";
+    const modalContent = document.createElement("div");
+    modalContent.className = "quiz-modal-content";
+    const scoreText = document.createElement("p");
+    scoreText.id = "quizScoreText";
+    const whyBtn = document.createElement("button");
+    whyBtn.id = "seeWhyBtn";
+    whyBtn.textContent = "Check Answer";
+    modalContent.appendChild(scoreText);
+    modalContent.appendChild(whyBtn);
+    modal.appendChild(modalContent);
+
+    container.appendChild(header);
+    container.appendChild(scroll);
+    container.appendChild(footer);
+    container.appendChild(modal);
+    quizPage.replaceChildren(container);
+  }
   if (!existing) {
     document.getElementById("appRoot").appendChild(quizPage);
   }
@@ -113,15 +150,67 @@ function _launchQuiz() {
   ];
 
   const quizForm = quizPage.querySelector("#quizForm");
+  const blockTemplate = document.getElementById("quizLauncherBlockTemplate");
+  const optionTemplate = document.getElementById("quizLauncherOptionTemplate");
+  if (!quizForm) return;
+  quizForm.textContent = "";
   questions.forEach((q, i) => {
-    let block = `<div class="quiz-block"><p>${q.q}</p>`;
+    const block =
+      blockTemplate?.content.firstElementChild?.cloneNode(true) ||
+      document.createElement("div");
+    block.classList.add("quiz-block");
+
+    let question = block.querySelector(".quiz-question");
+    if (!question) {
+      question = document.createElement("p");
+      question.className = "quiz-question";
+      block.appendChild(question);
+    }
+    question.textContent = q.q;
+
+    let optionsWrap = block.querySelector(".quiz-options");
+    if (!optionsWrap) {
+      optionsWrap = document.createElement("div");
+      optionsWrap.className = "quiz-options";
+      block.appendChild(optionsWrap);
+    }
     q.options.forEach((opt, j) => {
-      block += `<label class="radio-label"><input type="radio" name="q${i}" value="${j}" /><span>${opt}</span></label>`;
+      const option =
+        optionTemplate?.content.firstElementChild?.cloneNode(true) ||
+        document.createElement("label");
+      option.classList.add("radio-label");
+
+      const input =
+        option.querySelector("input") || document.createElement("input");
+      input.type = "radio";
+      input.name = `q${i}`;
+      input.value = String(j);
+
+      const span =
+        option.querySelector(".quiz-option-text") ||
+        option.querySelector("span") ||
+        document.createElement("span");
+      span.textContent = opt;
+
+      if (!option.contains(input)) option.prepend(input);
+      if (!option.contains(span)) option.appendChild(span);
+
+      if (optionsWrap) optionsWrap.appendChild(option);
+      else block.appendChild(option);
     });
-    block += `<p class="answer" style="display:none; margin-top:5px; font-style:italic;">Correct answer: ${
-      q.options[q.answer]
-    }</p></div>`;
-    quizForm.innerHTML += block;
+
+    let answer = block.querySelector(".answer");
+    if (!answer) {
+      answer = document.createElement("p");
+      answer.className = "answer";
+      answer.style.display = "none";
+      answer.style.marginTop = "5px";
+      answer.style.fontStyle = "italic";
+      block.appendChild(answer);
+    }
+    answer.textContent = `Correct answer: ${q.options[q.answer]}`;
+
+    quizForm.appendChild(block);
   });
 
   quizForm.onsubmit = (e) => {
@@ -143,9 +232,15 @@ function _launchQuiz() {
       });
       if (selected === answer) correct++;
     });
-    quizPage.querySelector("#quizScoreText").innerHTML =
-      `You got ${correct} out of ${questions.length} correct.<br>
-   <small>Answers are highlighted in green.</small>`;
+    const scoreText = quizPage.querySelector("#quizScoreText");
+    if (scoreText) {
+      scoreText.textContent = `You got ${correct} out of ${questions.length} correct.`;
+      const lineBreak = document.createElement("br");
+      const note = document.createElement("small");
+      note.textContent = "Answers are highlighted in green.";
+      scoreText.appendChild(lineBreak);
+      scoreText.appendChild(note);
+    }
     quizPage.querySelector("#quizModal").classList.remove("hidden");
   };
 

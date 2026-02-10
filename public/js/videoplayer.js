@@ -4,8 +4,26 @@
 
 let lastPauseTime = null;
 
+function replaceContentWithTemplate(target, templateId) {
+  if (!target) return;
+  const template = document.getElementById(templateId);
+  if (!template) return;
+  target.replaceChildren(template.content.cloneNode(true));
+}
+
 async function handleQuizClick() {
   // If an old global exists, use it
+  if (typeof window.launchQuiz === "function") {
+    return window.launchQuiz();
+  }
+
+  // Try to load the quiz launcher if it wasn't executed yet
+  try {
+    await import("./quiz-launcher.js");
+  } catch (err) {
+    console.warn("Failed to import quiz launcher:", err);
+  }
+
   if (typeof window.launchQuiz === "function") {
     return window.launchQuiz();
   }
@@ -237,24 +255,34 @@ export function initializeVideoPlayers() {
     let menu = document.getElementById("videoShareMenu");
     if (menu) return menu;
 
-    menu = document.createElement("div");
+    const menuTemplate = document.getElementById("videoShareMenuTemplate");
+    menu = menuTemplate?.content.firstElementChild?.cloneNode(true);
+    if (!menu) {
+      menu = document.createElement("div");
+      menu.className = "video-share-menu";
+
+      const shareBtn = document.createElement("button");
+      shareBtn.type = "button";
+      shareBtn.className = "video-share-menu__item";
+      shareBtn.setAttribute("data-video-share-action", "share-video");
+      shareBtn.textContent = "Share video";
+
+      const shopBtn = document.createElement("button");
+      shopBtn.type = "button";
+      shopBtn.className = "video-share-menu__item";
+      shopBtn.setAttribute("data-video-share-action", "shop");
+      shopBtn.textContent = "Arclight Shop";
+
+      menu.appendChild(shareBtn);
+      menu.appendChild(shopBtn);
+    }
+
     menu.id = "videoShareMenu";
-    menu.className = "video-share-menu";
     menu.hidden = true;
 
     // Keep current context here
     menu.dataset.videoUrl = "";
     menu.dataset.anchorBtnId = "";
-
-    // Menu items (exactly 2)
-    menu.innerHTML = `
-      <button type="button" class="video-share-menu__item" data-video-share-action="share-video">
-        Share video
-      </button>
-      <button type="button" class="video-share-menu__item" data-video-share-action="shop">
-        Arclight Shop
-      </button>
-    `;
 
     document.body.appendChild(menu);
 
@@ -439,13 +467,7 @@ function showTimestamps() {
   const contentBox = document.getElementById("contentBox");
   if (!contentBox) return;
 
-  contentBox.innerHTML = `
-    <h4>Time stamp</h4>
-    <p><a href="#" data-ts="0">0:00 General Inspection</a></p>
-    <p><a href="#" data-ts="28">0:28 Arclight Setup</a></p>
-    <p><a href="#" data-ts="47">0:47 Fundal Reflex</a></p>
-    <p><a href="#" data-ts="67">1:07 Optic Nerve</a></p>
-    <p><a href="#" data-ts="102">1:42 Retinal Vessels</a></p>`;
+  replaceContentWithTemplate(contentBox, "videoTimestampsTemplate");
 
   contentBox.querySelectorAll("[data-ts]").forEach((a) => {
     a.addEventListener("click", (ev) => {
@@ -460,28 +482,21 @@ function showNote() {
   setActiveToolbarButton("noteBtn");
   const contentBox = document.getElementById("contentBox");
   if (!contentBox) return;
-  contentBox.innerHTML =
-    '<textarea placeholder="Type your notes here..."></textarea>';
+  replaceContentWithTemplate(contentBox, "videoNoteTemplate");
 }
 
 function showFiles() {
   setActiveToolbarButton("folderBtn");
   const contentBox = document.getElementById("contentBox");
   if (!contentBox) return;
-  contentBox.innerHTML = `
-    <h4>Attached Files</h4>
-    <p><a class="link" href="#">Arclight_Device_Practice.pdf</a></p>
-    <p><a class="link" href="#">Fundal_Reflex.pdf</a></p>
-    <p><a class="link" href="#">Ophthalmoscopy_Exercise.docx</a></p>`;
+  replaceContentWithTemplate(contentBox, "videoFilesTemplate");
 }
 
 function showDefaultInfo() {
   setActiveToolbarButton("infoBtn");
   const contentBox = document.getElementById("contentBox");
   if (!contentBox) return;
-  contentBox.innerHTML = `
-    <h4>Additional Information</h4>
-    <p>This video shows how to prepare and use the Arclight ophthalmoscope.</p>`;
+  replaceContentWithTemplate(contentBox, "videoInfoTemplate");
 }
 
 function setActiveToolbarButton(id) {
@@ -508,18 +523,13 @@ function handleVideoTimeUpdate() {
     22: {
       id: "eye-info",
       handler: () => {
-        contentBox.innerHTML = `
-          <h4>Eye Anatomy</h4>
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Eye_anatomy_diagram.svg/1200px-Eye_anatomy_diagram.svg.png" style="width: 100%; border-radius: 5px; margin-top: 10px;" />
-          <ul><li>Periorbita</li><li>Eyelids</li><li>Eyes</li></ul>`;
+        replaceContentWithTemplate(contentBox, "videoEyeAnatomyTemplate");
       },
     },
     32: {
       id: "device-info",
       handler: () => {
-        contentBox.innerHTML = `
-          <h4>Arclight Device Overview</h4>
-          <img src="images/learning/arclight_device.webp" style="width: 100%; border-radius: 5px;" />`;
+        replaceContentWithTemplate(contentBox, "videoDeviceOverviewTemplate");
       },
     },
   };

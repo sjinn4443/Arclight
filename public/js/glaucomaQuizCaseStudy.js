@@ -93,30 +93,11 @@ export function initializeGlaucomaQuizCaseStudy() {
   // 사용자가 선택한 답
   const userAnswers = new Array(QUESTIONS.length).fill(null);
 
-  // UI 주입
-  mount.innerHTML = `
-    <div class="quiz-header">
-      <h3>Choose the correct diagnosis</h3>
-      <div class="quiz-progress" id="gqProgress">0 / ${QUESTIONS.length}</div>
-    </div>
+  const layoutTemplate = document.getElementById("glaucomaQuizLayoutTemplate");
+  if (!layoutTemplate) return;
 
-    <div id="gqAllQuestions"></div>
-
-    <div class="quiz-actions" style="margin-top: 16px;">
-      <button class="btn primary" id="gqResults" type="button" disabled>See results</button>
-    </div>
-
-    <div class="modal-backdrop" id="gqModal">
-      <div class="modal">
-        <h3 id="gqScoreTitle">Results</h3>
-        <p id="gqScoreText"></p>
-        <div class="quiz-actions">
-          <button class="btn secondary" id="gqReview" type="button">Review</button>
-          <button class="btn primary" id="gqRestart" type="button">Restart</button>
-        </div>
-      </div>
-    </div>
-  `;
+  mount.textContent = "";
+  mount.appendChild(layoutTemplate.content.cloneNode(true));
 
   const progressEl = mount.querySelector("#gqProgress");
   const allWrap = mount.querySelector("#gqAllQuestions");
@@ -133,47 +114,60 @@ export function initializeGlaucomaQuizCaseStudy() {
   }
 
   function renderAll() {
-    allWrap.innerHTML = QUESTIONS.map((q, qi) => {
+    const cardTemplate = document.getElementById("glaucomaQuizCardTemplate");
+    const optionTemplate = document.getElementById(
+      "glaucomaQuizOptionTemplate",
+    );
+    if (!cardTemplate || !optionTemplate) return;
+
+    allWrap.textContent = "";
+
+    QUESTIONS.forEach((q, qi) => {
       const opts = optionsCache[qi];
       const name = `gq_${qi}`;
       const chosen = userAnswers[qi];
 
-      const optionsHtml = opts
-        .map((label, oi) => {
+      const card = cardTemplate.content
+        .querySelector(".quiz-card")
+        .cloneNode(true);
+      card.dataset.qwrap = String(qi);
+
+      const cardProgress = card.querySelector(".quiz-card-progress");
+      if (cardProgress) cardProgress.textContent = `Case ${qi + 1}`;
+
+      const source = card.querySelector("source");
+      if (source) source.src = q.video;
+
+      const optionsWrap = card.querySelector(".options");
+      if (optionsWrap) {
+        optionsWrap.dataset.qopts = String(qi);
+        opts.forEach((optLabel, oi) => {
           const id = `${name}_${oi}`;
-          const checked = chosen === label ? "checked" : "";
-          return `
-            <label class="opt" for="${id}" data-q="${qi}" data-value="${label}">
-              <input id="${id}" type="radio" name="${name}" value="${label}" ${checked}/>
-              <span>${label}</span>
-            </label>
-          `;
-        })
-        .join("");
+          const opt = optionTemplate.content
+            .querySelector(".opt")
+            .cloneNode(true);
+          opt.setAttribute("for", id);
+          opt.dataset.q = String(qi);
+          opt.dataset.value = optLabel;
 
-      return `
-        <div class="quiz-card" data-qwrap="${qi}" style="margin-bottom: 14px;">
-          <div class="quiz-progress" style="margin-bottom: 10px; opacity: 0.75; font-weight: 700;
-    --font-color: #000;
-    font-size: 14px;">Case ${qi + 1}</div>
+          const input = opt.querySelector("input");
+          if (input) {
+            input.id = id;
+            input.type = "radio";
+            input.name = name;
+            input.value = optLabel;
+            input.checked = chosen === optLabel;
+          }
 
-          <video
-            class="quiz-video"
-            autoplay
-            muted
-            playsinline
-            preload="metadata"
-          >
+          const labelSpan = opt.querySelector(".opt-label");
+          if (labelSpan) labelSpan.textContent = optLabel;
 
-            <source src="${q.video}" type="video/mp4"/>
-          </video>
+          optionsWrap.appendChild(opt);
+        });
+      }
 
-          <div class="options" data-qopts="${qi}">
-            ${optionsHtml}
-          </div>
-        </div>
-      `;
-    }).join("");
+      allWrap.appendChild(card);
+    });
 
     // 라디오 change 바인딩
     allWrap.querySelectorAll('input[type="radio"]').forEach((radio) => {

@@ -387,26 +387,28 @@ function initAtomsHandoutPage(pageId, viewerId, imgSrc) {
   viewer.style.overflow = "hidden";
   viewer.style.background = "#fff";
 
-  viewer.innerHTML = `
-    <div class="atoms-stage" style="position:absolute; left:0; top:0;">
-      <img
-        src="${imgSrc}"
-        alt="ATOMS handout"
-        draggable="false"
-        style="
-          display:block;
-          width:100vw;
-          height:auto;
-          max-width:none;
-          user-select:none;
-          -webkit-user-drag:none;
-          pointer-events:none;
-        "
-      />
-    </div>
-  `;
+  viewer.textContent = "";
 
-  const stage = viewer.querySelector(".atoms-stage");
+  const stage = document.createElement("div");
+  stage.className = "atoms-stage";
+  stage.style.position = "absolute";
+  stage.style.left = "0";
+  stage.style.top = "0";
+
+  const img = document.createElement("img");
+  img.src = imgSrc;
+  img.alt = "ATOMS handout";
+  img.draggable = false;
+  img.style.display = "block";
+  img.style.width = "100vw";
+  img.style.height = "auto";
+  img.style.maxWidth = "none";
+  img.style.userSelect = "none";
+  img.style.webkitUserDrag = "none";
+  img.style.pointerEvents = "none";
+
+  stage.appendChild(img);
+  viewer.appendChild(stage);
   if (!stage) return;
 
   setupPanZoomForStage(viewer, stage);

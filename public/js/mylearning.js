@@ -285,11 +285,18 @@ function renderMyLearnings() {
     ? raw.map((v) => toKey(v))
     : Array.from(raw instanceof Set ? raw : new Set(), (v) => toKey(v));
 
+  const cardTemplate = document.getElementById("mlCardTemplate");
+  if (!cardTemplate) return;
+
   if (!likedIds.length) {
-    listEl.innerHTML = `
-      <p class="note" role="status" aria-live="polite">
-        No saved items yet. Tap the heart on any Eyes card to add it here.
-      </p>`;
+    listEl.textContent = "";
+    const empty = document.createElement("p");
+    empty.className = "note";
+    empty.setAttribute("role", "status");
+    empty.setAttribute("aria-live", "polite");
+    empty.textContent =
+      "No saved items yet. Tap the heart on any Eyes card to add it here.";
+    listEl.appendChild(empty);
     return;
   }
 
@@ -303,34 +310,45 @@ function renderMyLearnings() {
   /**
    * Renders a single liked item as a card.
    * @param {Object} item - The item object to render.
-   * @returns {string} The HTML string for the item card.
+   * @returns {HTMLElement} The DOM node for the item card.
    */
   const renderCard = (item) => {
     const title = item.label || item.name || "Untitled";
     const target = item.target || item.pageId || "comingSoon";
-    const badges = (item.tags || [])
-      .slice(0, 3)
-      .map((t) => `<span class="ml-badge">${t}</span>`)
-      .join("");
     const size = pickSize();
-    return `
-      <button type="button" class="ml-card ${size}" data-target="${target}">
-        <div class="ml-card-header">
-          <h4>${title}</h4>
-          <span class="ml-heart">❤</span>
-        </div>
-        <div class="ml-badges">${badges}</div>
-      </button>`;
+    const card = cardTemplate.content.querySelector(".ml-card").cloneNode(true);
+    card.classList.add(size);
+    card.dataset.target = target;
+
+    const titleEl = card.querySelector("h4");
+    if (titleEl) titleEl.textContent = title;
+
+    const badgesWrap = card.querySelector(".ml-badges");
+    if (badgesWrap) {
+      badgesWrap.textContent = "";
+      (item.tags || []).slice(0, 3).forEach((t) => {
+        const badge = document.createElement("span");
+        badge.className = "ml-badge";
+        badge.textContent = t;
+        badgesWrap.appendChild(badge);
+      });
+    }
+
+    return card;
   };
 
-  const html = likedItems.length
-    ? likedItems.map(renderCard).join("")
-    : `
-      <p class="note" role="status" aria-live="polite">
-        Your saved items couldn’t be matched. Try liking a new item.
-      </p>`;
-
-  listEl.innerHTML = html;
+  listEl.textContent = "";
+  if (likedItems.length) {
+    likedItems.map(renderCard).forEach((card) => listEl.appendChild(card));
+  } else {
+    const empty = document.createElement("p");
+    empty.className = "note";
+    empty.setAttribute("role", "status");
+    empty.setAttribute("aria-live", "polite");
+    empty.textContent =
+      "Your saved items couldn’t be matched. Try liking a new item.";
+    listEl.appendChild(empty);
+  }
 
   // Card navigation
   listEl.onclick = (e) => {

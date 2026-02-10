@@ -9,6 +9,33 @@
       </div>
     </div>
 
+    <template id="eyesCardTemplate">
+      <button type="button" class="eyes-card">
+        <img class="eyes-card__bg" src="" alt="" />
+        <span
+          class="heart-btn"
+          aria-label="Toggle like"
+          title="Like"
+          role="button"
+          tabindex="0"
+          style="pointer-events: auto"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+            style="pointer-events: auto"
+          >
+            <path
+              style="pointer-events: auto"
+              d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 1 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"
+            />
+          </svg>
+        </span>
+        <span class="eyes-card__title"></span>
+        <div class="tag-row"></div>
+      </button>
+    </template>
+
     <!-- Core Examination -->
     <h2 class="catalog-h2" data-i18n="coreExaminationTitle">
       Core Examination <span class="see-all" data-i18n="seeAll">See all ></span>

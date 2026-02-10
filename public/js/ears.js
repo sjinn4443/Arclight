@@ -54,25 +54,38 @@ export function initializeEars() {
 
     el.classList.add('eyes-track'); // reuse same track class for styling
 
-    el.innerHTML = items.map((i) => `
-      <button type="button"
-              class="eyes-card ${likes.has(i.label) ? 'liked' : ''}"
-              data-target="${i.target}"
-              data-label="${i.label}">
-        <span class="heart-btn"
-              aria-label="Like ${i.label}"
-              role="button"
-              tabindex="0"
-              style="pointer-events:auto">
-          <svg viewBox="0 0 24 24" aria-hidden="true" style="pointer-events:auto">
-            <path style="pointer-events:auto"
-                  d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 1 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/>
-          </svg>
-        </span>
-        <span class="eyes-card__title">${i.label}</span>
-        ${i.tags?.length ? `<div class="tag-row">${i.tags.map((t) => `<span class="tag">${t}</span>`).join('')}</div>` : ''}
-      </button>
-    `).join('');
+    const cardTemplate = pageEl.querySelector('#earsCardTemplate');
+    if (!cardTemplate) return;
+
+    el.textContent = '';
+    items.forEach((i) => {
+      const card = cardTemplate.content.querySelector('.eyes-card').cloneNode(true);
+      card.classList.toggle('liked', likes.has(i.label));
+      card.dataset.target = i.target;
+      card.dataset.label = i.label;
+
+      const heart = card.querySelector('.heart-btn');
+      if (heart) heart.setAttribute('aria-label', `Like ${i.label}`);
+
+      const title = card.querySelector('.eyes-card__title');
+      if (title) title.textContent = i.label;
+
+      const tagRow = card.querySelector('.tag-row');
+      if (tagRow) {
+        if (i.tags?.length) {
+          i.tags.forEach((t) => {
+            const tag = document.createElement('span');
+            tag.className = 'tag';
+            tag.textContent = t;
+            tagRow.appendChild(tag);
+          });
+        } else {
+          tagRow.remove();
+        }
+      }
+
+      el.appendChild(card);
+    });
   };
 
   Object.entries(sections).forEach(([id, list]) => render(id, list));
