@@ -922,18 +922,8 @@ export function initializeCaseStudy() {
 
       btn.addEventListener("click", () => {
         if (state.asked.has(q.id)) return;
-
-        pending = q;
-
-        if (draftEl) {
-          draftEl.textContent = q.ui;
-          draftEl.classList.remove("is-placeholder");
-        }
-
-        if (sendBtn) sendBtn.disabled = false;
-
-        // 선택 표시 업데이트
-        renderChoices();
+        // 칩 클릭 즉시 전송
+        commitQuestion(q);
       });
 
       choices.appendChild(btn);
@@ -1293,11 +1283,10 @@ export function initializeCaseStudy() {
     openDxModal();
   });
 
-  sendBtn?.addEventListener("click", () => {
-    console.log("[casechat] send clicked, pending =", pending); // ✅ 확인용
-    if (!pending) return;
+  function commitQuestion(q) {
+    if (!q) return;
 
-    onAsk(pending); // 여기서 “실제 전송”
+    onAsk(q); // 여기서 “실제 전송”
     pending = null;
 
     if (draftEl) {
@@ -1306,7 +1295,7 @@ export function initializeCaseStudy() {
     }
     if (sendBtn) sendBtn.disabled = true;
 
-    renderChoices();
+    // onAsk() 안에서 renderChoices()가 이미 호출되므로 여기서는 호출하지 않음
 
     if (choices) choices.hidden = true;
 
@@ -1322,6 +1311,12 @@ export function initializeCaseStudy() {
       if (typeof keepLastMessageVisible === "function")
         keepLastMessageVisible();
     });
+  }
+
+  sendBtn?.addEventListener("click", () => {
+    console.log("[casechat] send clicked, pending =", pending); // ✅ 확인용
+    if (!pending) return;
+    commitQuestion(pending);
   });
 
   // toggle chips panel (^ <-> v)

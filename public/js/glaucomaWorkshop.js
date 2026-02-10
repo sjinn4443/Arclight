@@ -587,9 +587,12 @@ function initGlaucomaACDInteractive() {
   const flashlightLeft = page.querySelector("#acdFlashlightLeft");
   const flashlightRight = page.querySelector("#acdFlashlightRight");
   const rightCrescent = page.querySelector("#acdCrescentRight");
+  const shadowImg = page.querySelector("#acdShadowImg");
 
-  const labelLeft = page.querySelector("#acdLabelLeft");
-  const labelRight = page.querySelector("#acdLabelRight");
+  const labelLeftImg = page.querySelector("#acdNormalImg");
+  const labelRightImg = page.querySelector("#acdShallowImg");
+  const labelLeftText = page.querySelector("#acdLabelLeft .acd-label-text");
+  const labelRightText = page.querySelector("#acdLabelRight .acd-label-text");
 
   if (
     !stage ||
@@ -603,6 +606,7 @@ function initGlaucomaACDInteractive() {
 
   const state = {
     pickedUp: false,
+    imagesUnlocked: false,
 
     // -1(왼쪽) ~ +1(오른쪽)
     nx: 0.85,
@@ -625,6 +629,15 @@ function initGlaucomaACDInteractive() {
       flashlightRight.style.display = "none";
 
       rightCrescent.style.opacity = "0";
+      if (shadowImg) {
+        shadowImg.style.opacity = "0";
+        shadowImg.style.display = "none";
+      }
+
+      if (labelLeftImg) labelLeftImg.style.opacity = "0";
+      if (labelRightImg) labelRightImg.style.opacity = "0";
+      if (labelLeftText) labelLeftText.style.opacity = "0";
+      if (labelRightText) labelRightText.style.opacity = "0";
 
       if (hint) hint.style.opacity = "1";
 
@@ -676,13 +689,36 @@ function initGlaucomaACDInteractive() {
     // crescent shadow on RIGHT eye only
     rightCrescent.style.opacity = `${strength}`;
 
-    // ✅ Show labels ONLY when fully visible
+    // ✅ Show label text ONLY when fully visible
     if (strength >= 1) {
-      if (labelLeft) labelLeft.style.opacity = "1";
-      if (labelRight) labelRight.style.opacity = "1";
+      if (labelLeftText) labelLeftText.style.opacity = "1";
+      if (labelRightText) labelRightText.style.opacity = "1";
     } else {
-      if (labelLeft) labelLeft.style.opacity = "0";
-      if (labelRight) labelRight.style.opacity = "0";
+      if (labelLeftText) labelLeftText.style.opacity = "0";
+      if (labelRightText) labelRightText.style.opacity = "0";
+    }
+
+    // label images: hidden initially, shown from the first full reveal
+    if (!state.imagesUnlocked && strength >= 1) {
+      state.imagesUnlocked = true;
+    }
+    if (state.imagesUnlocked) {
+      if (labelLeftImg) labelLeftImg.style.opacity = "1";
+      if (labelRightImg) labelRightImg.style.opacity = "1";
+    } else {
+      if (labelLeftImg) labelLeftImg.style.opacity = "0";
+      if (labelRightImg) labelRightImg.style.opacity = "0";
+    }
+
+    // shadow.webp: follow crescent visibility
+    if (shadowImg) {
+      if (strength > 0) {
+        shadowImg.style.display = "block";
+        shadowImg.style.opacity = `${strength}`;
+      } else {
+        shadowImg.style.opacity = "0";
+        shadowImg.style.display = "none";
+      }
     }
 
     // hint fades as strength increases

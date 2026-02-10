@@ -1133,6 +1133,19 @@
         filter: blur(0.6px);
       }
 
+      /* shadow.webp overlay: follows the crescent position and visibility */
+      #glaucomaACDInteractive #acdShadowImg {
+        position: absolute;
+        left: 214px;
+        top: 65px;
+        transform: translate(-50%, -50%);
+        width: 29px;
+        height: 17px;
+        pointer-events: none;
+        user-select: none;
+        z-index: 500;
+      }
+
       /* hint (top, centred) */
       #glaucomaACDInteractive #acdHint {
         position: absolute;
@@ -1220,26 +1233,44 @@
       /* ACD result labels */
       #glaucomaACDInteractive .acd-label {
         position: absolute;
-        top: 97px; /* 눈 위 */
+        top: 53px; /* 눈 위 */
         font-size: 14px;
         font-weight: 600;
         color: #ffffff;
-        opacity: 0;
+        opacity: 1;
         transition: opacity 180ms ease;
         pointer-events: none;
         white-space: nowrap;
         text-align: center;
       }
 
+      /* label images */
+      #glaucomaACDInteractive .acd-label-img {
+        display: block;
+        width: 108px;
+        height: auto;
+        margin: 0 auto 6px auto;
+        opacity: 0;
+        transition: opacity 180ms ease;
+        user-select: none;
+        pointer-events: none;
+      }
+
+      #glaucomaACDInteractive .acd-label-text {
+        display: block;
+        opacity: 0;
+        transition: opacity 180ms ease;
+      }
+
       /* left eye */
       #glaucomaACDInteractive #acdLabelLeft {
-        left: 32%;
+        left: 28%;
         transform: translateX(-50%);
       }
 
       /* right eye */
       #glaucomaACDInteractive #acdLabelRight {
-        left: 68%;
+        left: 72%;
         transform: translateX(-50%);
       }
     </style>
@@ -1263,13 +1294,37 @@
 
         <!-- crescent shadow overlay (right eye nasal iris) -->
         <div id="acdCrescentRight" aria-hidden="true"></div>
+        <img
+          id="acdShadowImg"
+          src="/images/learning/GlaucomaACD/shadow.webp"
+          alt=""
+          aria-hidden="true"
+          draggable="false"
+        />
 
         <!-- ACD labels -->
         <div id="acdLabelLeft" class="acd-label">
-          Deep<br />Anterior<br />Chamber
+          <img
+            id="acdNormalImg"
+            class="acd-label-img"
+            src="/images/learning/GlaucomaACD/normal.webp"
+            alt=""
+            aria-hidden="true"
+            draggable="false"
+          />
+          <span class="acd-label-text">Deep<br />Anterior<br />Chamber</span>
         </div>
+
         <div id="acdLabelRight" class="acd-label">
-          Shallow<br />Anterior<br />Chamber
+          <img
+            id="acdShallowImg"
+            class="acd-label-img"
+            src="/images/learning/GlaucomaACD/shallow.webp"
+            alt=""
+            aria-hidden="true"
+            draggable="false"
+          />
+          <span class="acd-label-text">Shallow<br />Anterior<br />Chamber</span>
         </div>
 
         <!-- pickup flashlight (off) -->
