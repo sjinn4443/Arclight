@@ -501,6 +501,7 @@ export function initializeGlaucomaWorkshop() {
         glaucomaFundusSummaryAtomsPage: "glaucomaWorkshop",
         glaucomaGlaucomaSummaryAtomsPage: "glaucomaWorkshop",
         glaucomaQuizCaseStudy: "glaucomaQuizCaseStudy",
+        glaucomaSecondaryCauseQuizPage: "glaucomaQuizCaseStudy",
       };
       if (DIRECT_ROUTES[targetRaw]) {
         const route = DIRECT_ROUTES[targetRaw];

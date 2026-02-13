@@ -194,3 +194,168 @@
     }
   </style>
 </div>
+
+<!-- Secondary glaucoma causes drag-and-drop quiz -->
+<div
+  id="glaucomaSecondaryCauseQuizPage"
+  class="page pupils-like has-eyes-topbar"
+  style="display: none"
+>
+  <div class="container pupils-container">
+    <div class="eyes-topbar">
+      <div class="eyes-topbar__title">Secondary glaucoma findings</div>
+      <div class="eyes-topbar__icons">
+        <span class="icon menuBtn" aria-label="Menu">&#9776;</span>
+      </div>
+    </div>
+
+    <div id="glaucomaSecondaryQuizMount" style="padding: 10px 0"></div>
+
+    <template id="glaucomaSecondaryQuizTemplate">
+      <div class="gsec-quiz">
+        <p class="gsec-prompt">
+          Some findings can raise eye pressure and lead to secondary glaucoma.
+          <br />
+          Drag each finding into the correct box.
+        </p>
+
+        <div class="gsec-zones">
+          <div class="gsec-zone" data-zone="secondary">
+            <div class="gsec-zone__cap">Secondary cause</div>
+            <div
+              class="gsec-zone__body"
+              aria-label="Secondary cause drop zone"
+            ></div>
+          </div>
+
+          <div class="gsec-zone" data-zone="not">
+            <div class="gsec-zone__cap">Not secondary</div>
+            <div
+              class="gsec-zone__body"
+              aria-label="Not secondary drop zone"
+            ></div>
+          </div>
+        </div>
+
+        <div class="gsec-bank" aria-label="Findings list"></div>
+
+        <div class="gsec-actions">
+          <button class="btn primary" type="button" id="gsecSubmit">
+            Submit answer
+          </button>
+        </div>
+
+        <div class="gsec-feedback" id="gsecFeedback" aria-live="polite"></div>
+      </div>
+    </template>
+
+    <style>
+      /* Secondary cause drag quiz styles (scoped via .gsec-*) */
+      #glaucomaSecondaryQuizMount {
+        max-width: 520px;
+        margin: 0 auto;
+        padding: 0 14px 24px;
+      }
+
+      .gsec-title {
+        margin: 8px 0 10px;
+        font-size: 18px;
+        font-weight: 800;
+      }
+
+      .gsec-prompt {
+        margin: 0 0 14px;
+        font-size: 14px;
+        line-height: 1.35;
+        opacity: 0.9;
+      }
+
+      .gsec-zones {
+        display: grid;
+        gap: 14px;
+        margin: 10px 0 14px;
+      }
+
+      .gsec-zone {
+        background: #fff;
+        border-radius: 14px;
+        overflow: hidden;
+        border: 1px solid rgba(0, 0, 0, 0.06);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+      }
+
+      .gsec-zone__cap {
+        background: #e41e26;
+        color: #fff;
+        font-weight: 500;
+        text-align: center;
+        padding: 10px 12px;
+        font-size: 14px;
+      }
+
+      .gsec-zone__body {
+        min-height: 120px;
+        padding: 12px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+        align-content: flex-start;
+      }
+
+      .gsec-zone.is-over .gsec-zone__body {
+        outline: 2px dashed rgba(0, 0, 0, 0.25);
+        outline-offset: -6px;
+      }
+
+      .gsec-bank {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+      }
+
+      .gsec-chip {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: auto !important;
+        padding: 10px 12px;
+        border-radius: 999px;
+        border: 1px solid rgba(0, 0, 0, 0.25);
+        background: #fff;
+        color: #111 !important;
+        font-size: 12px;
+        font-weight: 500;
+        user-select: none;
+        -webkit-user-select: none;
+        cursor: grab;
+        touch-action: none;
+      }
+
+      .gsec-chip:active {
+        cursor: grabbing;
+      }
+
+      .gsec-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 16px;
+      }
+
+      .gsec-feedback {
+        margin-top: 12px;
+        font-size: 14px;
+        font-weight: 800;
+      }
+
+      .gsec-chip.is-correct {
+        border-color: #2e7d32;
+        color: #2e7d32 !important;
+      }
+
+      .gsec-chip.is-wrong {
+        border-color: #c62828;
+        color: #c62828 !important;
+      }
+    </style>
+  </div>
+</div>

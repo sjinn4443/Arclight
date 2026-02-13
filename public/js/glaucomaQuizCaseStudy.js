@@ -4,6 +4,8 @@ export function initializeGlaucomaQuizCaseStudy() {
   const page = document.getElementById("glaucomaQuizCaseStudy");
   if (!page) return;
 
+  initGlaucomaSecondaryCauseDragQuiz();
+
   if (page.dataset.wired === "1") return;
   page.dataset.wired = "1";
 
@@ -278,4 +280,208 @@ export function initializeGlaucomaQuizCaseStudy() {
   });
 
   renderAll();
+}
+
+function initGlaucomaSecondaryCauseDragQuiz() {
+  const page = document.getElementById("glaucomaSecondaryCauseQuizPage");
+  if (!page) return;
+
+  if (page.dataset.wired === "1") return;
+  page.dataset.wired = "1";
+
+  const mount = page.querySelector("#glaucomaSecondaryQuizMount");
+  const tpl = page.querySelector("#glaucomaSecondaryQuizTemplate");
+  if (!mount || !tpl) return;
+
+  const ITEMS = [
+    { id: "lens", label: "Lens dislocation", zone: "secondary" },
+    { id: "hyphaema", label: "Hyphaema", zone: "secondary" },
+    { id: "uveitis", label: "Anterior uveitis", zone: "secondary" },
+    { id: "irisBombe", label: "Iris bombe", zone: "secondary" },
+    { id: "pigment", label: "Pigment dispersion", zone: "secondary" },
+    { id: "pxf", label: "Pseudo-exfoliation", zone: "secondary" },
+    { id: "shallow", label: "Shallow chamber", zone: "secondary" },
+    { id: "irisNV", label: "Iris new vessels", zone: "secondary" },
+    { id: "deep", label: "Deep chamber", zone: "not" },
+    { id: "normalIris", label: "Normal iris", zone: "not" },
+    { id: "cupping", label: "Optic disc cupping", zone: "not" },
+    { id: "largeCDR", label: "Large cup-disc ratio", zone: "not" },
+  ];
+
+  mount.textContent = "";
+  const ui = tpl.content.cloneNode(true);
+  mount.appendChild(ui);
+
+  const zones = Array.from(mount.querySelectorAll(".gsec-zone"));
+  const bank = mount.querySelector(".gsec-bank");
+  const submitBtn = mount.querySelector("#gsecSubmit");
+  const feedback = mount.querySelector("#gsecFeedback");
+
+  if (!bank || !submitBtn || !feedback || zones.length !== 2) return;
+
+  const state = new Map();
+  ITEMS.forEach((it) => state.set(it.id, "bank"));
+
+  function shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function makeChip(item) {
+    const el = document.createElement("button");
+    el.type = "button";
+    el.className = "gsec-chip";
+    el.textContent = item.label;
+    el.setAttribute("draggable", "true");
+    el.dataset.itemId = item.id;
+    el.dataset.correctZone = item.zone;
+
+    el.addEventListener("dragstart", (e) => {
+      if (submitBtn.disabled) return;
+      e.dataTransfer?.setData("text/plain", item.id);
+      e.dataTransfer?.setDragImage?.(el, 10, 10);
+    });
+
+    let dragging = false;
+
+    el.addEventListener("pointerdown", (e) => {
+      if (submitBtn.disabled) return;
+      dragging = true;
+      el.setPointerCapture(e.pointerId);
+
+      el.style.position = "relative";
+      el.style.zIndex = "5";
+      el.dataset.dx = "0";
+      el.dataset.dy = "0";
+    });
+
+    el.addEventListener("pointermove", (e) => {
+      if (!dragging || submitBtn.disabled) return;
+
+      const dx = parseFloat(el.dataset.dx || "0") + e.movementX || 0;
+      const dy = parseFloat(el.dataset.dy || "0") + e.movementY || 0;
+      el.dataset.dx = String(dx);
+      el.dataset.dy = String(dy);
+
+      el.style.transform = `translate(${dx}px, ${dy}px)`;
+    });
+
+    el.addEventListener("pointerup", (e) => {
+      if (!dragging) return;
+      dragging = false;
+
+      const ptX = e.clientX;
+      const ptY = e.clientY;
+
+      const hit = zones
+        .map((z) => {
+          const body = z.querySelector(".gsec-zone__body");
+          if (!body) return null;
+          const r = body.getBoundingClientRect();
+          const inside =
+            ptX >= r.left && ptX <= r.right && ptY >= r.top && ptY <= r.bottom;
+          return inside ? z : null;
+        })
+        .find(Boolean);
+
+      el.style.transform = "";
+      el.style.zIndex = "";
+      el.dataset.dx = "0";
+      el.dataset.dy = "0";
+
+      if (hit) {
+        const zoneKey = hit.getAttribute("data-zone");
+        if (zoneKey === "secondary" || zoneKey === "not") {
+          moveChipTo(el, zoneKey);
+        }
+      }
+    });
+
+    return el;
+  }
+
+  function moveChipTo(chipEl, where) {
+    const id = chipEl.dataset.itemId;
+    if (!id) return;
+
+    if (where === "bank") {
+      bank.appendChild(chipEl);
+      state.set(id, "bank");
+      return;
+    }
+
+    const zoneEl = zones.find((z) => z.getAttribute("data-zone") === where);
+    const body = zoneEl?.querySelector(".gsec-zone__body");
+    if (!body) return;
+
+    body.appendChild(chipEl);
+    state.set(id, where);
+  }
+
+  shuffle(ITEMS).forEach((item) => bank.appendChild(makeChip(item)));
+
+  function wireDropTarget(el, where) {
+    el.addEventListener("dragover", (e) => {
+      if (submitBtn.disabled) return;
+      e.preventDefault();
+    });
+    el.addEventListener("drop", (e) => {
+      if (submitBtn.disabled) return;
+      e.preventDefault();
+      const id = e.dataTransfer?.getData("text/plain");
+      if (!id) return;
+      const chip = mount.querySelector(`.gsec-chip[data-item-id="${id}"]`);
+      if (!chip) return;
+      moveChipTo(chip, where);
+    });
+  }
+
+  zones.forEach((z) => {
+    const body = z.querySelector(".gsec-zone__body");
+    if (!body) return;
+
+    wireDropTarget(body, z.getAttribute("data-zone"));
+
+    body.addEventListener("dragenter", () => z.classList.add("is-over"));
+    body.addEventListener("dragleave", () => z.classList.remove("is-over"));
+    body.addEventListener("drop", () => z.classList.remove("is-over"));
+  });
+
+  wireDropTarget(bank, "bank");
+
+  submitBtn.addEventListener("click", () => {
+    const unplaced = ITEMS.filter((it) => state.get(it.id) === "bank");
+    if (unplaced.length > 0) {
+      feedback.textContent = "Place all findings before submitting.";
+      return;
+    }
+
+    submitBtn.disabled = true;
+
+    let correct = 0;
+    ITEMS.forEach((it) => {
+      const chip = mount.querySelector(`.gsec-chip[data-item-id="${it.id}"]`);
+      if (!chip) return;
+
+      chip.classList.remove("is-correct", "is-wrong");
+      const placed = state.get(it.id);
+      const ok = placed === it.zone;
+      if (ok) {
+        correct += 1;
+        chip.classList.add("is-correct");
+      } else {
+        chip.classList.add("is-wrong");
+      }
+    });
+
+    if (correct === ITEMS.length) {
+      feedback.textContent = "Correct!";
+    } else {
+      feedback.textContent = `Not quite: ${correct} / ${ITEMS.length} correct.`;
+    }
+  });
 }
