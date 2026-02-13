@@ -116,6 +116,13 @@ document.addEventListener("DOMContentLoaded", () => {
       initializeGlaucomaQuizCaseStudy();
     }
 
+    if (routeName === "glaucomaHistoryCaseStudy") {
+      const { initializeGlaucomaHistoryCaseStudy } =
+        await import("./glaucomaHistoryCaseStudy.js");
+      initializeGlaucomaHistoryCaseStudy();
+      return;
+    }
+
     if (routeName === "fundalReflexPdf") {
       initializeFundalReflexPdf();
       return;

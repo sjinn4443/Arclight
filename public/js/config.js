@@ -38,4 +38,5 @@ export const ROUTES = {
   glaucomaWorkshop: "html/glaucomaWorkshop.html",
   glaucomaQuizCaseStudy: "html/glaucomaQuizCaseStudy.html",
   glaucomaScrollImages: "html/glaucomascrollImages.html",
+  glaucomaHistoryCaseStudy: "html/glaucomaHistoryCaseStudy.html",
 };
