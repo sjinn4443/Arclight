@@ -66,6 +66,25 @@
   right: -9.1667vw;
 }
 
+/* Desktop (>=1024px): First splash scale to 70% */
+@media (min-width: 1024px) {
+  /* first splash only (NOT mid splash) */
+  .splash-wrap:not(.mid) .logo-one-wrap {
+    width: 3.5%; /* 5% * 0.7 */
+    animation-name: shiftRightDesktop;
+    left: -6vw; /* start further right so logo1 spins closer to logo2 */
+  }
+
+  .splash-wrap:not(.mid) .logo-two {
+    width: 33.6%; /* 48% * 0.7 */
+  }
+
+  /* Desktop (>=1024px): faster fade-out for mid splash */
+  .splash-full-screen.fade-out {
+    animation-duration: 0.25s;
+  }
+}
+
 .splash-container {
   width: 100vw;
   height: 100vh;
@@ -137,6 +156,13 @@
   will-change: transform;
   top: -0.6757vh;
   left: -1.3889vw;
+}
+
+/* Desktop (>=1024px): Mid splash logo 2x */
+@media (min-width: 1024px) {
+  .splash-wrap.mid .logo-one.mid-only {
+    width: 20%; /* 10% * 2 */
+  }
 }
 
 /* Motion for the mid splash (distinct from first splash) */

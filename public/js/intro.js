@@ -30,8 +30,11 @@ function runMidSplashThen(routeName) {
         splashContainer.querySelector(".logo-one.mid-only") ||
         splashContainer.querySelector(".logo-one");
 
+      const holdBufferMs = 220;
+      const postFadeDelayMs = 140;
+
       // Expected timing: 2 * 1.3s spins = 2.6s (+small buffer)
-      const EXPECTED_MS = 2600 + 300;
+      const EXPECTED_MS = 2600 + holdBufferMs;
 
       let finished = false;
 
@@ -50,7 +53,7 @@ function runMidSplashThen(routeName) {
               splashContainer.classList.remove("active", "fade-out");
               splashContainer.innerHTML = "";
             });
-        }, 300);
+        }, postFadeDelayMs);
       }
 
       // 애니메이션 기반 종료 (없으면 timeout fallback)

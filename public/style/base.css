@@ -112,6 +112,15 @@ p {
   }
 }
 
+@keyframes shiftRightDesktop {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(145px);
+  }
+}
+
 @keyframes fadeIn {
   to {
     opacity: 1;
