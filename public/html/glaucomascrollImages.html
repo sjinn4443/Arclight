@@ -1357,7 +1357,7 @@
   </div>
 </div>
 
-<!-- 17c) Pupils – Full pupil swinging light (Interactive) -->
+<!-- 17c) Pupils – Pupil swinging light test RAPD (Interactive) -->
 <div
   id="glaucomaRAPDFullSwingInteractive"
   class="page pupils-like has-eyes-topbar"
@@ -1365,7 +1365,7 @@
 >
   <div class="container pupils-container">
     <div class="eyes-topbar">
-      <div class="eyes-topbar__title">Full pupil swinging light</div>
+      <div class="eyes-topbar__title">Pupil swinging light test RAPD</div>
       <div class="eyes-topbar__icons">
         <span class="icon menuBtn" aria-label="Menu">☰</span>
       </div>
@@ -1380,7 +1380,7 @@
       #glaucomaRAPDFullSwingInteractive .rapd-instructions {
         font-size: 16px;
         line-height: 1.3;
-        margin: 6px 0 10px 0;
+        margin: 6px 0 20px 0;
         opacity: 0.9;
       }
 
@@ -1432,7 +1432,7 @@
         .rapd-switch
         input:checked
         + .rapd-slider {
-        background: rgba(0, 0, 0, 0.35);
+        background: #22c55e;
       }
       #glaucomaRAPDFullSwingInteractive
         .rapd-switch
@@ -1457,7 +1457,7 @@
         left: 50%;
         top: 52%;
         transform: translate(-50%, -50%);
-        width: min(92%, 720px);
+        width: min(128%, 720px);
         height: auto;
         user-select: none;
         pointer-events: none;
@@ -1477,6 +1477,8 @@
         transition: opacity 180ms ease;
         pointer-events: none;
         color: rgba(255, 255, 255, 0.92);
+        z-index: 9999;
+        text-align: center;
       }
 
       /* pickup flashlight (off) */
@@ -1572,27 +1574,26 @@
         border-radius: 999px;
         background: #0a0a0a;
         box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.25);
-        transform: translate(-50%, -50%) scale(1);
+        transform: translate(-50%, -50%) scale(1.2);
         transition: transform 180ms ease;
         z-index: 4;
         pointer-events: none;
       }
 
       #glaucomaRAPDFullSwingInteractive #rapdPupilLeft {
-        left: 37.7%;
-        top: 50.6%;
+        left: 33.5%;
+        top: 50.7%;
       }
 
       #glaucomaRAPDFullSwingInteractive #rapdPupilRight {
-        left: 63.5%;
-        top: 50.6%;
+        left: 68.4%;
+        top: 50.7%;
       }
     </style>
 
     <div class="rapd-wrap">
       <div class="rapd-instructions">
-        Swing the light between the patient’s eyes and watch how the pupils
-        change
+        Swing the light between the eyes and observe the pupil reaction
       </div>
 
       <div class="rapd-toggleRow" aria-label="RAPD mode toggle">
@@ -1606,7 +1607,7 @@
       </div>
 
       <div id="rapdStage" aria-label="RAPD swinging light interactive">
-        <div id="rapdHint">Swing the light left and right</div>
+        <div id="rapdHint">Swing the light<br />left and right</div>
 
         <img
           id="rapdEyesImg"
@@ -1626,7 +1627,7 @@
           draggable="false"
         />
         <div id="rapdBubble">
-          Pick up the flashlight, then swing the light between the eyes
+          Pick up Arclight, then swing the light between the eyes
         </div>
 
         <!-- active flashlight + beam -->

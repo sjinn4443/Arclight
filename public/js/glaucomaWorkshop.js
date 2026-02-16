@@ -873,6 +873,8 @@ function initGlaucomaRAPDFullSwingInteractive() {
 
     // for RAPD “paradoxical dilation” when swinging to the RAPD eye (right)
     lastSide: "centre", // "left" | "right" | "centre"
+    rapdRightPulseStart: null,
+    rapdRightPulseTimer: null,
   };
 
   function clamp(v, a, b) {
@@ -889,6 +891,17 @@ function initGlaucomaRAPDFullSwingInteractive() {
     el.style.transform = `translate(-50%, -50%) scale(${s})`;
   }
 
+  function setPupilTransitionMs(el, ms) {
+    el.style.transition = `transform ${ms}ms cubic-bezier(0.22, 0.61, 0.36, 1)`;
+  }
+
+  function clearRapdRightPulseTimer() {
+    if (state.rapdRightPulseTimer !== null) {
+      clearTimeout(state.rapdRightPulseTimer);
+      state.rapdRightPulseTimer = null;
+    }
+  }
+
   function render() {
     const rect = stage.getBoundingClientRect();
 
@@ -899,10 +912,12 @@ function initGlaucomaRAPDFullSwingInteractive() {
       flashlightOff.style.display = "";
       if (bubble) bubble.style.display = "";
       if (hint) hint.style.opacity = "1";
+      state.rapdRightPulseStart = null;
+      clearRapdRightPulseTimer();
 
       // baseline pupils (dark: dilated)
-      setPupilScale(pupilLeft, 0.9);
-      setPupilScale(pupilRight, 0.9);
+      setPupilScale(pupilLeft, 1.2);
+      setPupilScale(pupilRight, 1.2);
       return;
     }
 
@@ -911,7 +926,7 @@ function initGlaucomaRAPDFullSwingInteractive() {
     if (bubble) bubble.style.display = "none";
     flashlight.style.display = "block";
     beam.style.display = "block";
-    if (hint) hint.style.opacity = "0";
+    if (hint) hint.style.opacity = state.dragging ? "0" : "1";
 
     // map nx to stage x
     const cx = rect.width / 2;
@@ -971,23 +986,58 @@ function initGlaucomaRAPDFullSwingInteractive() {
     }
 
     // sizes
-    const CONSTRICT = 0.62;
-    const DILATE = 0.9;
+    const CONSTRICT = 0.82;
+    const DILATE = 1.2;
+    const RAPD_RIGHT_CONSTRICT_MS = 220;
+    const RAPD_RIGHT_DILATE_MS = 700;
+
+    // default response speed
+    setPupilTransitionMs(pupilLeft, 180);
+    setPupilTransitionMs(pupilRight, 180);
 
     // LIGHT OFF (flashlight dragged down) -> both dilate (normal + RAPD)
     if (!lightOn) {
+      state.rapdRightPulseStart = null;
+      clearRapdRightPulseTimer();
       setPupilScale(pupilLeft, DILATE);
       setPupilScale(pupilRight, DILATE);
     } else {
       // LIGHT ON (eyes receive light)
       if (!rapdOn) {
+        state.rapdRightPulseStart = null;
+        clearRapdRightPulseTimer();
         // NORMAL -> both constrict
         setPupilScale(pupilLeft, CONSTRICT);
         setPupilScale(pupilRight, CONSTRICT);
       } else {
-        // RAPD MODE -> left constrict, right dilate
+        // RAPD MODE -> right pupil briefly constricts on right light, then dilates
         setPupilScale(pupilLeft, CONSTRICT);
-        setPupilScale(pupilRight, DILATE);
+
+        if (side === "right") {
+          const now = Date.now();
+          if (state.rapdRightPulseStart === null) {
+            state.rapdRightPulseStart = now;
+            clearRapdRightPulseTimer();
+            state.rapdRightPulseTimer = setTimeout(() => {
+              state.rapdRightPulseTimer = null;
+              render();
+            }, RAPD_RIGHT_CONSTRICT_MS + 16);
+          }
+
+          const elapsed = now - state.rapdRightPulseStart;
+          if (elapsed < RAPD_RIGHT_CONSTRICT_MS) {
+            setPupilTransitionMs(pupilRight, 180);
+            setPupilScale(pupilRight, CONSTRICT);
+          } else {
+            // make dilation feel gradual and natural
+            setPupilTransitionMs(pupilRight, RAPD_RIGHT_DILATE_MS);
+            setPupilScale(pupilRight, DILATE);
+          }
+        } else {
+          state.rapdRightPulseStart = null;
+          clearRapdRightPulseTimer();
+          setPupilScale(pupilRight, CONSTRICT);
+        }
       }
     }
 
@@ -1022,6 +1072,7 @@ function initGlaucomaRAPDFullSwingInteractive() {
         state.dragging = true;
         state.pointerId = e.pointerId;
         e.target.setPointerCapture(e.pointerId);
+        render();
       }
       return;
     }
