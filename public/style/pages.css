@@ -1800,3 +1800,53 @@ select.onb-input.has-value + .onb-select-caret {
 #glaucomaWorkshopPage .lesson-row[data-target] .lesson-cta {
   margin-left: -65px;
 }
+
+/* Childhood workshop: mirror glaucoma workshop sizing/spacing */
+#childhoodEyeScreeningWorkshopPage.childhood-folder-open
+  #childhoodWorkshopFolders
+  .childhood-folder-row {
+  opacity: 0.72;
+}
+
+#childhoodEyeScreeningWorkshopPage #childhoodWorkshopFolders {
+  align-items: center;
+}
+
+#childhoodEyeScreeningWorkshopPage .childhood-section-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+#childhoodEyeScreeningWorkshopPage .childhood-section-card > h3 {
+  align-self: stretch;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+#childhoodEyeScreeningWorkshopPage .pupil-card.module-card {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+#childhoodEyeScreeningWorkshopPage .childhood-section-card .lesson-row {
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#childhoodEyeScreeningWorkshopPage
+  .childhood-section-card
+  .lesson-row
+  .lesson-progress {
+  width: 146px;
+}
+
+#childhoodEyeScreeningWorkshopPage
+  .childhood-section-card
+  .lesson-row
+  .lesson-cta {
+  margin-left: -65px;
+}

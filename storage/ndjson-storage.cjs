@@ -24,7 +24,20 @@ async function init() {
   ensureDir();
 }
 
+function toFiniteNumber(v) {
+  const n = Number(v);
+  return Number.isFinite(n) ? n : null;
+}
+
+function pickGeoField(f, key) {
+  if (!f || typeof f !== "object") return null;
+  const geo = f.geo && typeof f.geo === "object" ? f.geo : null;
+  if (!geo) return null;
+  return geo[key] ?? null;
+}
+
 async function saveProfile(f) {
+  f = f || {};
   const anon = (f.anon_id || "").toString().slice(0, 80);
   const uid = (f.user_id || f.email || "").toString().slice(0, 120); // may be empty
   // If no identifier is present, we cannot log this event.
@@ -44,13 +57,24 @@ async function saveProfile(f) {
     interest: f.interest ?? null,
     experience: f.experience ?? null,
     contact: f.contact ?? null,
-    country: f.country ?? null,
-    area: f.area ?? null,
-    language: f.language ?? null,
+    country: f.country ?? pickGeoField(f, "country") ?? null,
+    area: f.area ?? pickGeoField(f, "area") ?? pickGeoField(f, "city") ?? null,
+    language: f.language ?? pickGeoField(f, "language") ?? null,
+    lat: toFiniteNumber(f.lat ?? f.latitude ?? pickGeoField(f, "lat")) ?? null,
+    lon:
+      toFiniteNumber(
+        f.lon ??
+          f.lng ??
+          f.longitude ??
+          pickGeoField(f, "lon") ??
+          pickGeoField(f, "lng") ??
+          pickGeoField(f, "longitude"),
+      ) ?? null,
   });
 }
 
 async function bumpRefresh(f) {
+  f = f || {};
   const anon = (f.anon_id || "").toString().slice(0, 80);
   const uid = (f.user_id || f.email || "").toString().slice(0, 120);
   // If no identifier is present, we cannot log this event.
@@ -65,6 +89,20 @@ async function bumpRefresh(f) {
     ts: new Date().toISOString(),
     anon_id: anon || null,
     user_id: uid || null,
+    reason: f.reason ?? null,
+    country: f.country ?? pickGeoField(f, "country") ?? null,
+    area: f.area ?? pickGeoField(f, "area") ?? pickGeoField(f, "city") ?? null,
+    language: f.language ?? pickGeoField(f, "language") ?? null,
+    lat: toFiniteNumber(f.lat ?? f.latitude ?? pickGeoField(f, "lat")) ?? null,
+    lon:
+      toFiniteNumber(
+        f.lon ??
+          f.lng ??
+          f.longitude ??
+          pickGeoField(f, "lon") ??
+          pickGeoField(f, "lng") ??
+          pickGeoField(f, "longitude"),
+      ) ?? null,
   });
 }
 
@@ -75,11 +113,10 @@ function keyOf(r) {
 
 async function getUsersForDashboard() {
   if (!fs.existsSync(file)) return [];
-  const lines = fs.readFileSync(file, "utf8").trim().split("\n");
+  const lines = fs.readFileSync(file, "utf8").split(/\r?\n/).filter(Boolean);
 
   const map = new Map(); // key -> row
   for (const encryptedLine of lines) {
-    if (!encryptedLine) continue;
     let decryptedLine;
     try {
       decryptedLine = decrypt(encryptedLine); // Decrypt the line
@@ -87,7 +124,12 @@ async function getUsersForDashboard() {
       console.error("Failed to decrypt line:", e.message);
       continue; // Skip this line if decryption fails
     }
-    const r = JSON.parse(decryptedLine);
+    let r;
+    try {
+      r = JSON.parse(decryptedLine);
+    } catch {
+      continue;
+    }
     const key = keyOf(r);
     if (!key) continue;
 
@@ -103,6 +145,8 @@ async function getUsersForDashboard() {
       country: null,
       area: null,
       language: null,
+      lat: null,
+      lon: null,
       first_seen: null,
       last_seen: null,
       refresh_count: 0,
@@ -117,10 +161,21 @@ async function getUsersForDashboard() {
       cur.country = r.country ?? cur.country;
       cur.area = r.area ?? cur.area;
       cur.language = r.language ?? cur.language;
+      const profileLat = toFiniteNumber(r.lat ?? r.latitude);
+      const profileLon = toFiniteNumber(r.lon ?? r.lng ?? r.longitude);
+      if (profileLat != null) cur.lat = profileLat;
+      if (profileLon != null) cur.lon = profileLon;
       cur.first_seen = cur.first_seen || r.ts;
       cur.last_seen = r.ts;
     } else if (r.type === "refresh") {
       cur.refresh_count += 1;
+      cur.country = r.country ?? cur.country;
+      cur.area = r.area ?? cur.area;
+      cur.language = r.language ?? cur.language;
+      const refreshLat = toFiniteNumber(r.lat ?? r.latitude);
+      const refreshLon = toFiniteNumber(r.lon ?? r.lng ?? r.longitude);
+      if (refreshLat != null) cur.lat = refreshLat;
+      if (refreshLon != null) cur.lon = refreshLon;
       cur.first_seen = cur.first_seen || r.ts;
       cur.last_seen = r.ts;
     }
@@ -129,19 +184,6 @@ async function getUsersForDashboard() {
   return Array.from(map.values()).sort(
     (a, b) => new Date(a.first_seen) - new Date(b.first_seen),
   );
-
-  const fs = require("fs/promises");
-  const path = require("path");
-
-  async function getUsersForDashboard() {
-    const { rows } = await pool.query(`
-    SELECT profile_id, name, aims, interest, experience, contact, country, area, language,
-           first_seen, last_seen, refresh_count
-    FROM app_users
-    ORDER BY first_seen ASC
-  `);
-    return rows;
-  }
 }
 
 async function saveIp(ip) {

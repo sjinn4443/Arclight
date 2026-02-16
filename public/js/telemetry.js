@@ -44,8 +44,8 @@ export async function saveProfile(fields) {
   }
 }
 
-export async function bumpRefresh() {
-  const body = { anon_id: getAnonId(), user_id: getUserId() };
+export async function bumpRefresh(fields = {}) {
+  const body = { anon_id: getAnonId(), user_id: getUserId(), ...fields };
 
   try {
     await fetch("/api/app/refresh", {

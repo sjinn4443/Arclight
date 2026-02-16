@@ -51,6 +51,20 @@ const COUNTRY_CENTROIDS = {
   // add more as your data needs
 };
 
+const COUNTRY_CODE_TO_NAME = {
+  GB: "United Kingdom",
+  UK: "United Kingdom",
+  US: "United States",
+  USA: "United States",
+  KR: "South Korea",
+  TZ: "Tanzania",
+};
+
+function toFiniteNumber(v) {
+  const n = Number(v);
+  return Number.isFinite(n) ? n : null;
+}
+
 function initWorldMap() {
   const el = document.getElementById("worldMap");
   const mapStatus = document.getElementById("mapStatus");
@@ -105,22 +119,72 @@ async function fetchCountryLatLng(countryRaw) {
     return ll;
   }
 
-  try {
-    const res = await fetch(
-      `https://restcountries.com/v3.1/name/${encodeURIComponent(countryRaw)}?fields=latlng,name`,
-    );
-    if (!res.ok) throw new Error("Country lookup failed");
-
-    const data = await res.json();
-    const latlng = data?.[0]?.latlng;
-
-    if (Array.isArray(latlng) && latlng.length === 2) {
-      const ll = [Number(latlng[0]), Number(latlng[1])];
-      countryLatLngCache.set(norm, ll);
-      return ll;
+  const code = String(countryRaw || "")
+    .trim()
+    .toUpperCase();
+  const isAlphaCode = /^[A-Z]{2,3}$/.test(code);
+  if (isAlphaCode) {
+    const aliasName = COUNTRY_CODE_TO_NAME[code];
+    if (aliasName) {
+      const aliasNorm = normaliseCountryName(aliasName);
+      if (COUNTRY_CENTROIDS_NORM[aliasNorm]) {
+        const ll = COUNTRY_CENTROIDS_NORM[aliasNorm];
+        countryLatLngCache.set(norm, ll);
+        return ll;
+      }
     }
-  } catch (e) {
-    console.warn("No lat/lng for country:", countryRaw, e);
+    try {
+      const res = await fetch(
+        `https://restcountries.com/v3.1/alpha/${encodeURIComponent(code)}?fields=latlng,name,cca2,cca3`,
+      );
+      if (res.ok) {
+        const data = await res.json();
+        const row = Array.isArray(data) ? data[0] : data;
+        const latlng = row?.latlng;
+        if (Array.isArray(latlng) && latlng.length === 2) {
+          const ll = [Number(latlng[0]), Number(latlng[1])];
+          countryLatLngCache.set(norm, ll);
+          if (row?.cca2)
+            countryLatLngCache.set(normaliseCountryName(row.cca2), ll);
+          if (row?.cca3)
+            countryLatLngCache.set(normaliseCountryName(row.cca3), ll);
+          if (row?.name?.common) {
+            countryLatLngCache.set(normaliseCountryName(row.name.common), ll);
+          }
+          return ll;
+        }
+      }
+    } catch (e) {
+      console.warn("No lat/lng for country code:", countryRaw, e);
+    }
+  }
+
+  const nameLookups = [
+    `https://restcountries.com/v3.1/name/${encodeURIComponent(countryRaw)}?fullText=true&fields=latlng,name,cca2,cca3`,
+    `https://restcountries.com/v3.1/name/${encodeURIComponent(countryRaw)}?fields=latlng,name,cca2,cca3`,
+  ];
+  for (const url of nameLookups) {
+    try {
+      const res = await fetch(url);
+      if (!res.ok) continue;
+      const data = await res.json();
+      const row = Array.isArray(data) ? data[0] : data;
+      const latlng = row?.latlng;
+      if (Array.isArray(latlng) && latlng.length === 2) {
+        const ll = [Number(latlng[0]), Number(latlng[1])];
+        countryLatLngCache.set(norm, ll);
+        if (row?.cca2)
+          countryLatLngCache.set(normaliseCountryName(row.cca2), ll);
+        if (row?.cca3)
+          countryLatLngCache.set(normaliseCountryName(row.cca3), ll);
+        if (row?.name?.common) {
+          countryLatLngCache.set(normaliseCountryName(row.name.common), ll);
+        }
+        return ll;
+      }
+    } catch (e) {
+      console.warn("No lat/lng for country:", countryRaw, e);
+    }
   }
 
   countryLatLngCache.set(norm, null);
@@ -128,17 +192,19 @@ async function fetchCountryLatLng(countryRaw) {
 }
 
 async function getLatLngFromUser(u) {
-  const lat = u.lat ?? u.latitude ?? u.location?.lat ?? u.location?.latitude;
-  const lng =
+  const latRaw = u.lat ?? u.latitude ?? u.location?.lat ?? u.location?.latitude;
+  const lngRaw =
     u.lng ??
     u.lon ??
     u.longitude ??
     u.location?.lng ??
     u.location?.lon ??
     u.location?.longitude;
+  const lat = toFiniteNumber(latRaw);
+  const lng = toFiniteNumber(lngRaw);
 
-  if (Number.isFinite(lat) && Number.isFinite(lng)) {
-    return [Number(lat), Number(lng)];
+  if (lat != null && lng != null) {
+    return [lat, lng];
   }
 
   const c = (u.country || "").trim();
@@ -171,6 +237,7 @@ async function renderWorldPins(users) {
     appendPopupLine(label, "Country", u.country || "—");
     appendPopupLine(label, "Area", u.area || "—");
     appendPopupLine(label, "Experience", expEn || "—");
+    appendPopupLine(label, "Last seen", formatWhen(u.last_seen));
     const marker = L.marker(ll).addTo(worldMap).bindPopup(label);
     mapMarkers.push(marker);
     pinCount += 1;
@@ -340,6 +407,19 @@ async function loadEnglishDictionary() {
   applyTranslations(document.body);
 }
 
+function formatWhen(value) {
+  if (!value) return "—";
+  const d = new Date(value);
+  if (Number.isNaN(d.getTime())) return "—";
+  return d.toLocaleString(undefined, {
+    year: "numeric",
+    month: "short",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+
 async function renderUsers(users) {
   const sorted = [...users].sort(
     (a, b) => new Date(a.first_seen) - new Date(b.first_seen),
@@ -412,6 +492,16 @@ async function renderUsers(users) {
         case "refresh count":
           td.textContent =
             typeof u.refresh_count === "number" ? String(u.refresh_count) : "0";
+          break;
+        case "when":
+        case "last active":
+          td.textContent = formatWhen(u.last_seen || u.first_seen);
+          break;
+        case "first seen":
+          td.textContent = formatWhen(u.first_seen);
+          break;
+        case "last seen":
+          td.textContent = formatWhen(u.last_seen);
           break;
         case "delete": {
           const btn = document.createElement("button");

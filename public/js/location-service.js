@@ -206,7 +206,7 @@ export async function initializeLocation() {
     // 3) Fallback (no IP info)
     const fallback = {
       iso2: "GB",
-      country: "GB",
+      country: "United Kingdom",
       city: null,
       lat: null,
       lon: null,
@@ -293,6 +293,10 @@ export async function refineWithBrowserLocation() {
 export function getCurrentCountryCode() {
   const data = _readCache(); // Directly read from localStorage
   return data?.iso2 || "GB";
+}
+export function getCurrentCountryName() {
+  const data = _readCache(); // Directly read from localStorage
+  return data?.country || data?.iso2 || "GB";
 }
 export function getCurrentArea() {
   const data = _readCache(); // Directly read from localStorage
@@ -435,6 +439,17 @@ export async function handleCheckLocationClick() {
     document.dispatchEvent(
       new CustomEvent("location:updated", { detail: precise }),
     );
+
+    try {
+      await saveProfile({
+        country: precise.country || null,
+        area: precise.area || precise.city || null,
+        lat: precise.lat ?? null,
+        lon: precise.lon ?? null,
+      });
+    } catch (e) {
+      console.warn("saveProfile failed after precise location update:", e);
+    }
 
     // Notify backend so Dev Dashboard reflects the new location
     try {

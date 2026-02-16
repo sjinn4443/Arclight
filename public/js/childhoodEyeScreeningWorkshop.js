@@ -107,6 +107,7 @@ function setupWorkshopFolders(page) {
 
     openFolderRow.style.display = "none";
     ssSet(SS_OPEN_KEY, key);
+    page.classList.add("childhood-folder-open");
 
     openFolderRow.insertAdjacentElement("afterend", card);
     card.style.display = "";
@@ -141,6 +142,7 @@ function setupWorkshopFolders(page) {
       openFolderRow.style.display = "";
       ssRemove(SS_OPEN_KEY);
       ssRemove(SS_RESTORE_FLAG);
+      page.classList.remove("childhood-folder-open");
     };
 
     toggle.addEventListener("click", closeNow);
@@ -154,6 +156,7 @@ function setupWorkshopFolders(page) {
   hideAllSectionCards();
   folders.forEach((r) => (r.style.display = ""));
   foldersContainer.style.display = "";
+  page.classList.remove("childhood-folder-open");
 
   const shouldRestore = ssGet(SS_RESTORE_FLAG) === "1";
   const savedKey = ssGet(SS_OPEN_KEY);
@@ -164,6 +167,7 @@ function setupWorkshopFolders(page) {
   } else {
     ssRemove(SS_OPEN_KEY);
     ssRemove(SS_RESTORE_FLAG);
+    page.classList.remove("childhood-folder-open");
   }
 
   folders.forEach((row) => {
