@@ -49,6 +49,11 @@ const QUESTIONS = [
     label: "ethnicity",
     ui: "What is your background?",
   },
+  {
+    id: "ethinicity",
+    label: "ethinicity",
+    ui: "What is your background?",
+  },
 ];
 
 // ---- cases ----
@@ -92,6 +97,7 @@ function caseAnswers(caseKey) {
       other:
         "I am short sighted and I wear glasses for distance. My father had glaucoma. I am over 40.",
       ethnicity: "I have an African background.",
+      ethinicity: "I have an African background.",
     };
   }
 
@@ -109,6 +115,7 @@ function caseAnswers(caseKey) {
       other:
         "I see halos around lights. I have had a similar attack before that went away. I am long sighted and I need glasses for near vision. I have been told I have cataracts.",
       ethnicity: "I have an Asian background.",
+      ethinicity: "I have an Asian background.",
     };
   }
 
@@ -125,7 +132,7 @@ export function initializeGlaucomaHistoryCaseStudy() {
   const draftEl = page.querySelector("#caseChatDraft");
   const sendBtn = page.querySelector("#caseChatSendBtn");
   const toggleBtn = page.querySelector("#caseChatToggleBtn");
-  const footer = page.querySelector(".casechat-footer");
+  const footer = page.querySelector(".casechat-footer, .caseChatFooter");
 
   const dxModal = page.querySelector("#caseDxModal");
   const dxCard = page.querySelector("#caseDxCard");
@@ -165,6 +172,9 @@ export function initializeGlaucomaHistoryCaseStudy() {
 
   if (toggleBtn) toggleBtn.textContent = "Q";
   if (draftEl) draftEl.classList.add("is-placeholder");
+  if (draftEl && !draftEl.textContent.trim()) {
+    draftEl.textContent = "- Click here to select a question";
+  }
 
   function forceCloseModals() {
     if (dxModal) dxModal.hidden = true;
@@ -205,7 +215,7 @@ export function initializeGlaucomaHistoryCaseStudy() {
 
         <div class="casechat-resultWhy">
           Ask questions to patient <br />and work out the diagnosis.<br /><br />
-          <span style="font-weight: 700; color: #e41e26">You only get 60 seconds.</span>
+          <span style="font-weight: 700; color: #e41e26">You only get 40 seconds.</span>
         </div>
 
         <div class="casechat-confirm__actions">
@@ -239,16 +249,16 @@ export function initializeGlaucomaHistoryCaseStudy() {
   }
 
   // ---- timers ----
-  const TIMER_TOTAL = 60;
+  const TIMER_TOTAL = 40;
   let timerLeft = TIMER_TOTAL;
   let timerInterval = null;
 
-  const DX_TIMER_TOTAL = 15;
+  const DX_TIMER_TOTAL = 10;
   let dxTimerLeft = DX_TIMER_TOTAL;
   let dxTimerInterval = null;
 
   let dxLocked = false;
-  let dxAttemptsLeft = 1;
+  let dxAttemptsLeft = 2;
   let caseScored = false;
 
   function stopTimer() {
@@ -313,8 +323,8 @@ export function initializeGlaucomaHistoryCaseStudy() {
   function renderDxTrials() {
     if (!dxTrialText) return;
     dxTrialText.textContent =
-      dxAttemptsLeft === 1
-        ? "You only get 1 attempt."
+      dxAttemptsLeft === 2
+        ? "You only get 2 attempts."
         : `Attempts left: ${dxAttemptsLeft}`;
   }
 
@@ -497,7 +507,7 @@ export function initializeGlaucomaHistoryCaseStudy() {
     if (dxCard) dxCard.innerHTML = "";
     dxLocked = false;
 
-    dxAttemptsLeft = 1;
+    dxAttemptsLeft = 2;
     renderDxTrials();
     startDxTimer();
 
@@ -661,8 +671,6 @@ export function initializeGlaucomaHistoryCaseStudy() {
     `);
 
     // ✅ image 없음: 첫 bot 메시지는 텍스트로만
-    appendBot("Hello, how can I help today?");
-
     renderChoices();
     choices.hidden = false;
 
