@@ -3563,6 +3563,11 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
   font-size: 13px;
 }
 
+.casechat-dxlabel {
+  line-height: 1.2;
+  font-size: 13px;
+}
+
 .casechat-dxitem.is-wrong {
   background: rgba(220, 53, 69, 0.12);
   border-color: rgba(220, 53, 69, 0.35);
@@ -5414,4 +5419,203 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
     transform: translateX(160px);
     opacity: 0.35;
   }
+}
+
+/* =============================================
+Glaucoma history case study: match intermediate style
+============================================= */
+
+/* Page/container tone matches history taking intermediate */
+#glaucomaHistoryCaseStudy {
+  background: #f2f2f7 !important;
+}
+#glaucomaHistoryCaseStudy .container.pupils-container {
+  padding-left: 14px;
+  padding-right: 14px;
+  padding-bottom: 42px;
+  box-sizing: border-box;
+  background: transparent !important;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Timer colours match intermediate: gray by default, red in danger state */
+#glaucomaHistoryCaseStudy .caseTimer__fg {
+  stroke: #9ca3af;
+}
+#glaucomaHistoryCaseStudy .caseTimer__text {
+  fill: #9ca3af;
+}
+#glaucomaHistoryCaseStudy #caseTimerBtn.is-danger .caseTimer__fg {
+  stroke: #e41e26;
+}
+#glaucomaHistoryCaseStudy #caseTimerBtn.is-danger .caseTimer__text {
+  fill: #e41e26;
+}
+#glaucomaHistoryCaseStudy .caseTimer.is-danger .caseTimer__fg {
+  stroke: #e41e26;
+}
+#glaucomaHistoryCaseStudy .caseTimer.is-danger .caseTimer__text {
+  fill: #e41e26;
+}
+
+/* Case intro text hierarchy matches intermediate */
+#glaucomaHistoryCaseStudy .casechat-system .casechat-caseindex {
+  display: block;
+  font-size: 14px;
+  font-weight: 700;
+  color: rgba(0, 0, 0, 0.75);
+  margin-bottom: 2px;
+  margin-top: 12px;
+}
+#glaucomaHistoryCaseStudy .casechat-system .casechat-firstprompt {
+  display: block;
+  margin-top: 6px;
+  line-height: 1.2;
+  margin-bottom: 18px;
+  font-size: 14px;
+}
+#glaucomaHistoryCaseStudy .casechat-system .casechat-casecount {
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.55);
+}
+
+#glaucomaHistoryCaseStudy .casechat-tryagain {
+  font-size: 14px;
+  color: #e41e21;
+  font-weight: 700;
+  margin-top: 17px;
+}
+
+/* Diagnosis visual feedback matches intermediate */
+#glaucomaHistoryCaseStudy .casechat-resultOk {
+  color: #198754;
+  font-weight: 700;
+  font-size: 14px;
+}
+#glaucomaHistoryCaseStudy .casechat-resultBad {
+  color: #e41e26;
+  font-weight: 700;
+  font-size: 14px;
+}
+#glaucomaHistoryCaseStudy .casechat-resultWhy b {
+  color: #198754;
+  font-weight: 700;
+  font-size: 14px;
+}
+#glaucomaHistoryCaseStudy .casechat-resultBadDx {
+  color: #e41e26;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+#glaucomaHistoryCaseStudy .casechat-resultWhy {
+  font-size: 14px;
+}
+
+#glaucomaHistoryCaseStudy .casechat-dxitem {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  text-align: left;
+}
+#glaucomaHistoryCaseStudy .casechat-radio {
+  width: 18px;
+  height: 18px;
+  border-radius: 9999px;
+  border: 2px solid #cbd5e1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+}
+#glaucomaHistoryCaseStudy .casechat-dxitem.is-selected .casechat-radio::after {
+  content: "";
+  width: 10px;
+  height: 10px;
+  border-radius: 9999px;
+  background: #111827;
+}
+#glaucomaHistoryCaseStudy .casechat-dxitem.is-wrong {
+  background: #fdecec;
+  border-color: #fca5a5;
+}
+#glaucomaHistoryCaseStudy .casechat-dxitem.is-wrong .casechat-radio {
+  border-color: #ef4444;
+}
+#glaucomaHistoryCaseStudy .casechat-dxitem.is-wrong .casechat-radio::after {
+  background: #ef4444;
+}
+#glaucomaHistoryCaseStudy .casechat-dxitem.is-correct {
+  background: #eaf7ee;
+  border-color: #86efac;
+}
+#glaucomaHistoryCaseStudy .casechat-dxitem.is-correct .casechat-radio {
+  border-color: #22c55e;
+}
+#glaucomaHistoryCaseStudy .casechat-dxitem.is-correct .casechat-radio::after {
+  background: #22c55e;
+}
+#glaucomaHistoryCaseStudy .casechat-dxitem.is-correct .casechat-dxlabel {
+  color: #198754 !important;
+  font-weight: 650;
+}
+#glaucomaHistoryCaseStudy .casechat-dxitem.is-disabled {
+  opacity: 0.6;
+}
+
+/* Bottom chips/toggle area mirrors intermediate */
+#glaucomaHistoryCaseStudy #caseChatChoices {
+  position: static !important;
+  left: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  height: auto !important;
+  width: auto !important;
+  background: transparent !important;
+  padding: 0 !important;
+  margin: 13px !important;
+  box-shadow: none !important;
+}
+#glaucomaHistoryCaseStudy #caseChatChoices.casechat-choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: flex-start;
+}
+#glaucomaHistoryCaseStudy #caseChatChoices[hidden] {
+  display: none !important;
+}
+#glaucomaHistoryCaseStudy .casechat-footer.is-expanded #caseChatChoices {
+  position: static !important;
+}
+#glaucomaHistoryCaseStudy .casechat-footer {
+  background: #909395e0 !important;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18) !important;
+}
+#glaucomaHistoryCaseStudy .casechat-footer-mask {
+  display: block !important;
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(92vw, 360px);
+  right: auto;
+  bottom: -11px;
+  z-index: 59;
+  background: #f2f3f7;
+  height: 120px;
+  overflow: hidden;
+  opacity: 1;
+  pointer-events: none;
+}
+
+#glaucomaHistoryCaseStudy .casechat-dxlabel {
+  color: #000;
 }

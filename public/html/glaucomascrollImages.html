@@ -1146,6 +1146,40 @@
         z-index: 500;
       }
 
+      #glaucomaACDInteractive .acd-shadow-linked {
+        position: absolute;
+        width: clamp(54px, 10vw, 74px);
+        height: auto;
+        pointer-events: none;
+        user-select: none;
+        z-index: 510;
+        opacity: 0;
+        display: none;
+      }
+      #glaucomaACDInteractive #acdNormalFlashImg {
+        top: 46px;
+        left: -31px;
+        width: 80px;
+        z-index: 999;
+      }
+      #glaucomaACDInteractive #acdNormalArrowImg {
+        top: 60px;
+        left: -48px;
+        width: 192px;
+        transform: scaleX(-1);
+      }
+      #glaucomaACDInteractive #acdShallowFlashImg {
+        top: 47px;
+        right: -33px;
+        width: 83px;
+        z-index: 999;
+      }
+      #glaucomaACDInteractive #acdShallowArrowImg {
+        top: 65px;
+        right: -23px;
+        width: 124px;
+      }
+
       /* hint (top, centred) */
       #glaucomaACDInteractive #acdHint {
         position: absolute;
@@ -1297,6 +1331,38 @@
         <img
           id="acdShadowImg"
           src="/images/learning/GlaucomaACD/shadow.webp"
+          alt=""
+          aria-hidden="true"
+          draggable="false"
+        />
+        <img
+          id="acdNormalFlashImg"
+          class="acd-shadow-linked"
+          src="/images/learning/GlaucomaACD/normalflash.webp"
+          alt=""
+          aria-hidden="true"
+          draggable="false"
+        />
+        <img
+          id="acdNormalArrowImg"
+          class="acd-shadow-linked"
+          src="/images/learning/GlaucomaACD/normalarrow.webp"
+          alt=""
+          aria-hidden="true"
+          draggable="false"
+        />
+        <img
+          id="acdShallowFlashImg"
+          class="acd-shadow-linked"
+          src="/images/learning/GlaucomaACD/shallowflash.webp"
+          alt=""
+          aria-hidden="true"
+          draggable="false"
+        />
+        <img
+          id="acdShallowArrowImg"
+          class="acd-shadow-linked"
+          src="/images/learning/GlaucomaACD/shallowarrow.webp"
           alt=""
           aria-hidden="true"
           draggable="false"

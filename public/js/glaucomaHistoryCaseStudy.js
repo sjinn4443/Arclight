@@ -49,11 +49,6 @@ const QUESTIONS = [
     label: "ethnicity",
     ui: "What is your background?",
   },
-  {
-    id: "ethinicity",
-    label: "ethinicity",
-    ui: "What is your background?",
-  },
 ];
 
 // ---- cases ----
@@ -97,7 +92,6 @@ function caseAnswers(caseKey) {
       other:
         "I am short sighted and I wear glasses for distance. My father had glaucoma. I am over 40.",
       ethnicity: "I have an African background.",
-      ethinicity: "I have an African background.",
     };
   }
 
@@ -115,7 +109,6 @@ function caseAnswers(caseKey) {
       other:
         "I see halos around lights. I have had a similar attack before that went away. I am long sighted and I need glasses for near vision. I have been told I have cataracts.",
       ethnicity: "I have an Asian background.",
-      ethinicity: "I have an Asian background.",
     };
   }
 
@@ -140,7 +133,6 @@ export function initializeGlaucomaHistoryCaseStudy() {
   const dxClose = page.querySelector("#caseDxCloseBtn");
 
   const dxTimerText = page.querySelector("#caseDxTimerText");
-  const dxTrialText = page.querySelector("#caseDxTrialText");
   const dxTimerFg = page.querySelector("#caseDxTimerFg");
 
   const timerBtn = page.querySelector("#caseTimerBtn");
@@ -170,11 +162,18 @@ export function initializeGlaucomaHistoryCaseStudy() {
   page.style.setProperty("--casechat-log-pad", "140px");
   footer?.classList.add("is-collapsed");
 
-  if (toggleBtn) toggleBtn.textContent = "Q";
-  if (draftEl) draftEl.classList.add("is-placeholder");
-  if (draftEl && !draftEl.textContent.trim()) {
-    draftEl.textContent = "- Click here to select a question";
+  const DRAFT_TEXT_EXPANDED = "Click here to select a question";
+  const DRAFT_TEXT_COLLAPSED = "Click here to select a question";
+  function syncDraftPlaceholder() {
+    if (!draftEl) return;
+    draftEl.classList.add("is-placeholder");
+    draftEl.textContent = choices?.hidden
+      ? DRAFT_TEXT_COLLAPSED
+      : DRAFT_TEXT_EXPANDED;
   }
+
+  if (toggleBtn) toggleBtn.textContent = "^";
+  syncDraftPlaceholder();
 
   function forceCloseModals() {
     if (dxModal) dxModal.hidden = true;
@@ -215,7 +214,7 @@ export function initializeGlaucomaHistoryCaseStudy() {
 
         <div class="casechat-resultWhy">
           Ask questions to patient <br />and work out the diagnosis.<br /><br />
-          <span style="font-weight: 700; color: #e41e26">You only get 40 seconds.</span>
+          <span style="font-weight: 700; color: #e41e26">You only get 60 seconds.</span>
         </div>
 
         <div class="casechat-confirm__actions">
@@ -249,7 +248,7 @@ export function initializeGlaucomaHistoryCaseStudy() {
   }
 
   // ---- timers ----
-  const TIMER_TOTAL = 40;
+  const TIMER_TOTAL = 60;
   let timerLeft = TIMER_TOTAL;
   let timerInterval = null;
 
@@ -258,7 +257,6 @@ export function initializeGlaucomaHistoryCaseStudy() {
   let dxTimerInterval = null;
 
   let dxLocked = false;
-  let dxAttemptsLeft = 2;
   let caseScored = false;
 
   function stopTimer() {
@@ -276,7 +274,7 @@ export function initializeGlaucomaHistoryCaseStudy() {
       timerFg.style.strokeDasharray = "100 100";
       timerFg.style.strokeDashoffset = String(100 * (1 - pct));
     }
-    if (timerBtn) timerBtn.classList.toggle("is-danger", timerLeft <= 10);
+    if (timerBtn) timerBtn.classList.toggle("is-danger", timerLeft <= 5);
   }
 
   function setTimerLeft(next) {
@@ -320,15 +318,7 @@ export function initializeGlaucomaHistoryCaseStudy() {
     dxTimerRoot?.classList.toggle("is-danger", dxTimerLeft <= 5);
   }
 
-  function renderDxTrials() {
-    if (!dxTrialText) return;
-    dxTrialText.textContent =
-      dxAttemptsLeft === 2
-        ? "You only get 2 attempts."
-        : `Attempts left: ${dxAttemptsLeft}`;
-  }
-
-  function failDxAndMoveOn(reasonText) {
+  function failDxAndMoveOn(reasonText, options = {}) {
     dxLocked = true;
     stopDxTimer();
 
@@ -347,7 +337,10 @@ export function initializeGlaucomaHistoryCaseStudy() {
       dxCard.innerHTML = "";
 
       const msg = document.createElement("div");
-      msg.className = "casechat-tryagain";
+      msg.className =
+        options.variant === "rich"
+          ? "casechat-correctmsg"
+          : "casechat-tryagain";
       msg.innerHTML = reasonText;
       dxCard.appendChild(msg);
 
@@ -507,8 +500,6 @@ export function initializeGlaucomaHistoryCaseStudy() {
     if (dxCard) dxCard.innerHTML = "";
     dxLocked = false;
 
-    dxAttemptsLeft = 2;
-    renderDxTrials();
     startDxTimer();
 
     if (dxList) {
@@ -558,10 +549,22 @@ export function initializeGlaucomaHistoryCaseStudy() {
       pickedBtn.classList.add("is-selected", "is-wrong");
       pickedBtn.setAttribute("aria-checked", "true");
 
-      dxAttemptsLeft -= 1;
-      renderDxTrials();
+      const moveOnHint =
+        caseIndex === 1
+          ? `<div class="casechat-resultBad" style="margin-top:8px">Move onto the next case.</div>`
+          : "";
 
-      failDxAndMoveOn("You have used your attempt. Moving to the next case.");
+      failDxAndMoveOn(
+        `
+        <div class="casechat-resultBad">Incorrect.</div>
+        <div class="casechat-resultWhy">In this case, the diagnosis is <span class="casechat-resultBadDx">${correct}</span>.</div>
+        <div class="casechat-resultWhy" style="margin-top:8px">${explanationForCase(
+          state.currentKey,
+        )}</div>
+        ${moveOnHint}
+      `,
+        { variant: "rich" },
+      );
       return;
     }
 
@@ -638,12 +641,9 @@ export function initializeGlaucomaHistoryCaseStudy() {
         choices.hidden = true;
         choices.innerHTML = "";
       }
-      if (draftEl) {
-        draftEl.textContent = "- Click here to select a question";
-        draftEl.classList.add("is-placeholder");
-      }
+      syncDraftPlaceholder();
       if (sendBtn) sendBtn.disabled = true;
-      if (toggleBtn) toggleBtn.textContent = "Q";
+      if (toggleBtn) toggleBtn.textContent = "^";
       footer?.classList.add("is-collapsed");
 
       openFinalModal();
@@ -678,6 +678,7 @@ export function initializeGlaucomaHistoryCaseStudy() {
     footer?.classList.add("is-expanded");
     page.style.setProperty("--casechat-log-pad", "280px");
 
+    syncDraftPlaceholder();
     if (toggleBtn) toggleBtn.textContent = "-";
     if (submitBtn) submitBtn.disabled = true;
 
@@ -691,19 +692,16 @@ export function initializeGlaucomaHistoryCaseStudy() {
     onAsk(q);
     pending = null;
 
-    if (draftEl) {
-      draftEl.textContent = "Select a question above";
-      draftEl.classList.add("is-placeholder");
-    }
     if (sendBtn) sendBtn.disabled = true;
 
     if (choices) choices.hidden = true;
+    syncDraftPlaceholder();
 
     footer?.classList.add("is-collapsed");
     footer?.classList.remove("is-expanded");
     page.style.setProperty("--casechat-log-pad", "140px");
 
-    if (toggleBtn) toggleBtn.textContent = "Q";
+    if (toggleBtn) toggleBtn.textContent = "^";
 
     requestAnimationFrame(keepLastMessageVisible);
   }
@@ -742,6 +740,7 @@ export function initializeGlaucomaHistoryCaseStudy() {
     footer?.classList.toggle("is-expanded", willOpen);
 
     page.style.setProperty("--casechat-log-pad", willOpen ? "280px" : "140px");
+    syncDraftPlaceholder();
     if (toggleBtn) toggleBtn.textContent = willOpen ? "-" : "^";
 
     requestAnimationFrame(keepLastMessageVisible);

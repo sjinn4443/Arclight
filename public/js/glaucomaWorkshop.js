@@ -594,6 +594,10 @@ function initGlaucomaACDInteractive() {
   const flashlightRight = page.querySelector("#acdFlashlightRight");
   const rightCrescent = page.querySelector("#acdCrescentRight");
   const shadowImg = page.querySelector("#acdShadowImg");
+  const normalFlashImg = page.querySelector("#acdNormalFlashImg");
+  const normalArrowImg = page.querySelector("#acdNormalArrowImg");
+  const shallowFlashImg = page.querySelector("#acdShallowFlashImg");
+  const shallowArrowImg = page.querySelector("#acdShallowArrowImg");
 
   const labelLeftImg = page.querySelector("#acdNormalImg");
   const labelRightImg = page.querySelector("#acdShallowImg");
@@ -626,6 +630,22 @@ function initGlaucomaACDInteractive() {
     return Math.max(a, Math.min(b, v));
   }
 
+  function syncShadowLinkedImages(strength) {
+    const linkedImages = [
+      shadowImg,
+      normalFlashImg,
+      normalArrowImg,
+      shallowFlashImg,
+      shallowArrowImg,
+    ].filter(Boolean);
+    const visible = strength > 0;
+
+    linkedImages.forEach((img) => {
+      img.style.opacity = visible ? `${strength}` : "0";
+      img.style.display = visible ? "block" : "none";
+    });
+  }
+
   function render() {
     const rect = stage.getBoundingClientRect();
 
@@ -635,10 +655,7 @@ function initGlaucomaACDInteractive() {
       flashlightRight.style.display = "none";
 
       rightCrescent.style.opacity = "0";
-      if (shadowImg) {
-        shadowImg.style.opacity = "0";
-        shadowImg.style.display = "none";
-      }
+      syncShadowLinkedImages(0);
 
       if (labelLeftImg) labelLeftImg.style.opacity = "0";
       if (labelRightImg) labelRightImg.style.opacity = "0";
@@ -716,16 +733,8 @@ function initGlaucomaACDInteractive() {
       if (labelRightImg) labelRightImg.style.opacity = "0";
     }
 
-    // shadow.webp: follow crescent visibility
-    if (shadowImg) {
-      if (strength > 0) {
-        shadowImg.style.display = "block";
-        shadowImg.style.opacity = `${strength}`;
-      } else {
-        shadowImg.style.opacity = "0";
-        shadowImg.style.display = "none";
-      }
-    }
+    // shadow.webp and top helper images share visibility timing
+    syncShadowLinkedImages(strength);
 
     // hint fades as strength increases
     if (hint) hint.style.opacity = `${1 - strength}`;

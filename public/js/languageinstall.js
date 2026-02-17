@@ -164,6 +164,10 @@ export function initializeLanguageInstall() {
             "/images/learning/GlaucomaACD/flashlight.webp",
             "/images/learning/GlaucomaACD/eyes.webp",
             "/images/learning/GlaucomaACD/flashlightoff.webp",
+            "/images/learning/GlaucomaACD/normalflash.webp",
+            "/images/learning/GlaucomaACD/normalarrow.webp",
+            "/images/learning/GlaucomaACD/shallowflash.webp",
+            "/images/learning/GlaucomaACD/shallowarrow.webp",
             "/images/learning/GlaucomaRAPD/flashlight.webp",
             "/images/learning/GlaucomaRAPD/eyes.webp",
 
