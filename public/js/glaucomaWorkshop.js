@@ -872,7 +872,7 @@ function initGlaucomaRAPDFullSwingInteractive() {
   const toggle = page.querySelector("#rapdModeToggle");
   const toggleLabel = page.querySelector("#rapdModeLabel");
 
-  // 기본 진입은 Normal(=RAPD OFF)로 강제
+  // default entry is Normal (= RAPD OFF)
   if (toggle) toggle.checked = false;
   if (toggleLabel) toggleLabel.textContent = "RAPD mode OFF";
 
@@ -886,26 +886,86 @@ function initGlaucomaRAPDFullSwingInteractive() {
   )
     return;
 
+  flashlight.style.transition = "opacity 120ms linear";
+
+  const LATENCY_MS = 250;
+  const CONSTRICT_MIN = 0.82;
+  const DILATE_MAX = 1.2;
+  const RAPD_RIGHT_PARTIAL_RATIO = 0.8;
+  const RAPD_RIGHT_PARTIAL_MIN =
+    DILATE_MAX - (DILATE_MAX - CONSTRICT_MIN) * RAPD_RIGHT_PARTIAL_RATIO;
+  const CONSTRICT_FAST_MS = 85;
+  const CONSTRICT_SLOW_MS = 620;
+  const ESCAPE_HOLD_MS = 140;
+  const ESCAPE_RAMP_MS = 1800;
+  const ESCAPE_TARGET_SCALE = 0.92;
+  const ESCAPE_STABLE_AFTER_FULL_MS = 3000;
+  const LIGHT_MOTION_THRESHOLD = 0.045;
+  const DILATE_RAMP_MS = 520;
+  const RAPD_RIGHT_PULSE_MS = 220;
+  const RAPD_RIGHT_PULSE_WITH_LATENCY_MS = LATENCY_MS + RAPD_RIGHT_PULSE_MS;
+  const SLOW_CENTER_DWELL_MS = 160;
+  const HIPPUS_AMP_LIGHT = 0.008;
+  const HIPPUS_AMP_DARK = 0.016;
+
   const state = {
     pickedUp: false,
     dragging: false,
     pointerId: null,
-
-    // -1(left) ~ +1(right)
     nx: 0,
-
-    // -1(up) ~ +1(down)
     ny: 0,
-
-    // for RAPD “paradoxical dilation” when swinging to the RAPD eye (right)
+    flashlightOpacity: 1,
     lastSide: "centre", // "left" | "right" | "centre"
     rapdRightPulseStart: null,
-    rapdRightPulseTimer: null,
+    centerEnteredAt: null,
+    lastLightMoveAt: null,
+    lastLitNx: null,
+    lastLitNy: null,
+    renderTicker: null,
+    eyes: {
+      left: null,
+      right: null,
+    },
   };
 
   function clamp(v, a, b) {
     return Math.max(a, Math.min(b, v));
   }
+
+  function lerp(a, b, t) {
+    return a + (b - a) * t;
+  }
+
+  function easeOutCubic(t) {
+    const x = clamp(t, 0, 1);
+    return 1 - (1 - x) * (1 - x) * (1 - x);
+  }
+
+  function easeInOutSine(t) {
+    const x = clamp(t, 0, 1);
+    return -(Math.cos(Math.PI * x) - 1) / 2;
+  }
+
+  function createEyeState(seed) {
+    const now = performance.now();
+    return {
+      desiredConstricted: false,
+      desiredChangedAt: now,
+      effectiveConstricted: false,
+      constrictStartedAt: null,
+      dilateStartedAt: null,
+      dilateStartScale: DILATE_MAX,
+      constrictMinTarget: CONSTRICT_MIN,
+      constrictMinActive: CONSTRICT_MIN,
+      escapeStartedAt: null,
+      hippusSeedA: seed,
+      hippusSeedB: seed + 1.73,
+      hippusSeedC: seed + 3.41,
+    };
+  }
+
+  state.eyes.left = createEyeState(0.61);
+  state.eyes.right = createEyeState(2.14);
 
   function getSide(nx) {
     if (nx < -0.25) return "left";
@@ -921,17 +981,191 @@ function initGlaucomaRAPDFullSwingInteractive() {
     el.style.transition = `transform ${ms}ms cubic-bezier(0.22, 0.61, 0.36, 1)`;
   }
 
-  function clearRapdRightPulseTimer() {
-    if (state.rapdRightPulseTimer !== null) {
-      clearTimeout(state.rapdRightPulseTimer);
-      state.rapdRightPulseTimer = null;
+  function updateFlashlightOpacity(rect, x, y) {
+    const leftEyeX = rect.width * 0.335;
+    const rightEyeX = rect.width * 0.684;
+    const eyeY = rect.height * 0.507;
+
+    // Use torch head position (not image center) for opacity zones.
+    const box = flashlight.getBoundingClientRect();
+    const headOffsetY = box.height > 0 ? box.height * 0.42 : rect.height * 0.08;
+    const lightHeadX = x;
+    const lightHeadY = y - headOffsetY;
+
+    const dLeft = Math.hypot(lightHeadX - leftEyeX, lightHeadY - eyeY);
+    const dRight = Math.hypot(lightHeadX - rightEyeX, lightHeadY - eyeY);
+    const d = Math.min(dLeft, dRight);
+
+    const strongFadeDist = rect.width * 0.09;
+    const softFadeDist = rect.width * 0.16;
+    const recoverDist = rect.width * 0.28;
+    const strongOpacity = 0.42;
+    const softOpacity = 0.62;
+
+    let targetOpacity = 1;
+    if (d <= strongFadeDist) {
+      targetOpacity = strongOpacity;
+    } else if (d <= softFadeDist) {
+      const t = (d - strongFadeDist) / (softFadeDist - strongFadeDist);
+      targetOpacity = lerp(strongOpacity, softOpacity, easeInOutSine(t));
+    } else if (d <= recoverDist) {
+      const t = (d - softFadeDist) / (recoverDist - softFadeDist);
+      targetOpacity = lerp(softOpacity, 1, easeInOutSine(t));
+    }
+
+    if (!Number.isFinite(state.flashlightOpacity)) state.flashlightOpacity = 1;
+    state.flashlightOpacity = lerp(
+      state.flashlightOpacity,
+      targetOpacity,
+      0.18,
+    );
+    flashlight.style.opacity = String(
+      clamp(state.flashlightOpacity, strongOpacity, 1),
+    );
+  }
+
+  function resetEyeState(eye, now) {
+    eye.desiredConstricted = false;
+    eye.desiredChangedAt = now;
+    eye.effectiveConstricted = false;
+    eye.constrictStartedAt = null;
+    eye.dilateStartedAt = null;
+    eye.dilateStartScale = DILATE_MAX;
+    eye.constrictMinTarget = CONSTRICT_MIN;
+    eye.constrictMinActive = CONSTRICT_MIN;
+    eye.escapeStartedAt = null;
+  }
+
+  function getConstrictedScale(eye, now) {
+    if (!eye.effectiveConstricted) return DILATE_MAX;
+
+    const constrictStart = eye.constrictStartedAt ?? now;
+    const elapsed = Math.max(0, now - constrictStart);
+    const minTarget = eye.constrictMinActive;
+    const constrictSpan = DILATE_MAX - minTarget;
+    const fastTarget = DILATE_MAX - (constrictSpan * 2) / 3;
+
+    if (elapsed < CONSTRICT_FAST_MS) {
+      const p = elapsed / CONSTRICT_FAST_MS;
+      return lerp(DILATE_MAX, fastTarget, easeOutCubic(p));
+    }
+
+    if (elapsed < CONSTRICT_FAST_MS + CONSTRICT_SLOW_MS) {
+      const p = (elapsed - CONSTRICT_FAST_MS) / CONSTRICT_SLOW_MS;
+      return lerp(fastTarget, minTarget, easeInOutSine(p));
+    }
+
+    const escapeTarget = Math.max(minTarget, ESCAPE_TARGET_SCALE);
+    if (eye.escapeStartedAt === null) return minTarget;
+
+    const escapeElapsed = Math.max(0, now - eye.escapeStartedAt);
+    if (escapeElapsed < ESCAPE_HOLD_MS) return minTarget;
+    if (escapeElapsed < ESCAPE_HOLD_MS + ESCAPE_RAMP_MS) {
+      const p = (escapeElapsed - ESCAPE_HOLD_MS) / ESCAPE_RAMP_MS;
+      return lerp(minTarget, escapeTarget, easeInOutSine(p));
+    }
+
+    return escapeTarget;
+  }
+
+  function getDilatedScale(eye, now) {
+    if (eye.effectiveConstricted) return DILATE_MAX;
+    if (eye.dilateStartedAt === null) return DILATE_MAX;
+
+    const elapsed = Math.max(0, now - eye.dilateStartedAt);
+    if (elapsed >= DILATE_RAMP_MS) return DILATE_MAX;
+
+    const p = easeInOutSine(elapsed / DILATE_RAMP_MS);
+    return lerp(eye.dilateStartScale, DILATE_MAX, p);
+  }
+
+  function updateEyeDesiredWithLatency(
+    eye,
+    shouldConstrict,
+    now,
+    constrictMin,
+  ) {
+    eye.constrictMinTarget = constrictMin;
+    eye.constrictMinActive = lerp(
+      eye.constrictMinActive,
+      eye.constrictMinTarget,
+      0.22,
+    );
+
+    if (eye.desiredConstricted !== shouldConstrict) {
+      eye.desiredConstricted = shouldConstrict;
+      eye.desiredChangedAt = now;
+    }
+
+    if (
+      eye.effectiveConstricted !== eye.desiredConstricted &&
+      now - eye.desiredChangedAt >= LATENCY_MS
+    ) {
+      if (eye.desiredConstricted) {
+        eye.effectiveConstricted = true;
+        eye.constrictStartedAt = now;
+        eye.dilateStartedAt = null;
+        eye.dilateStartScale = DILATE_MAX;
+        eye.escapeStartedAt = null;
+      } else {
+        const dilateFrom = getConstrictedScale(eye, now);
+        eye.effectiveConstricted = false;
+        eye.constrictStartedAt = null;
+        eye.dilateStartedAt = now;
+        eye.dilateStartScale = dilateFrom;
+        eye.escapeStartedAt = null;
+      }
     }
   }
 
+  function updateEyeEscapeState(eye, now, stimulusOn, lastMoveAt) {
+    if (!stimulusOn || !eye.effectiveConstricted) {
+      eye.escapeStartedAt = null;
+      return;
+    }
+
+    const fullConstrictAt =
+      (eye.constrictStartedAt ?? now) + CONSTRICT_FAST_MS + CONSTRICT_SLOW_MS;
+    const stableFrom = Number.isFinite(lastMoveAt) ? lastMoveAt : now;
+    const canEscapeAt =
+      Math.max(fullConstrictAt, stableFrom) + ESCAPE_STABLE_AFTER_FULL_MS;
+
+    if (now >= canEscapeAt) {
+      if (eye.escapeStartedAt === null) eye.escapeStartedAt = now;
+    } else {
+      eye.escapeStartedAt = null;
+    }
+  }
+
+  function getHippusOffset(eye, now) {
+    const t = now / 1000;
+    const mixed =
+      0.62 * Math.sin(2 * Math.PI * 0.87 * t + eye.hippusSeedA) +
+      0.38 * Math.sin(2 * Math.PI * 1.33 * t + eye.hippusSeedB);
+    const wander =
+      0.7 + 0.3 * Math.sin(2 * Math.PI * 0.12 * t + eye.hippusSeedC);
+    const amp = eye.effectiveConstricted ? HIPPUS_AMP_LIGHT : HIPPUS_AMP_DARK;
+    return amp * mixed * wander;
+  }
+
+  function applyEyeScale(el, eye, now) {
+    const base = eye.effectiveConstricted
+      ? getConstrictedScale(eye, now)
+      : getDilatedScale(eye, now);
+    const hippus = getHippusOffset(eye, now);
+    const scaled = clamp(
+      base + hippus,
+      CONSTRICT_MIN,
+      DILATE_MAX + HIPPUS_AMP_DARK,
+    );
+    setPupilScale(el, scaled);
+  }
+
   function render() {
+    const now = performance.now();
     const rect = stage.getBoundingClientRect();
 
-    // before pickup: show only “off” + bubble
+    // before pickup: show only "off" + bubble
     if (!state.pickedUp) {
       flashlight.style.display = "none";
       beam.style.display = "none";
@@ -939,11 +1173,18 @@ function initGlaucomaRAPDFullSwingInteractive() {
       if (bubble) bubble.style.display = "";
       if (hint) hint.style.opacity = "1";
       state.rapdRightPulseStart = null;
-      clearRapdRightPulseTimer();
-
-      // baseline pupils (dark: dilated)
-      setPupilScale(pupilLeft, 1.2);
-      setPupilScale(pupilRight, 1.2);
+      state.centerEnteredAt = null;
+      state.lastLightMoveAt = null;
+      state.lastLitNx = null;
+      state.lastLitNy = null;
+      resetEyeState(state.eyes.left, now);
+      resetEyeState(state.eyes.right, now);
+      setPupilTransitionMs(pupilLeft, 120);
+      setPupilTransitionMs(pupilRight, 120);
+      state.flashlightOpacity = 1;
+      flashlight.style.opacity = "1";
+      setPupilScale(pupilLeft, DILATE_MAX);
+      setPupilScale(pupilRight, DILATE_MAX);
       return;
     }
 
@@ -958,11 +1199,9 @@ function initGlaucomaRAPDFullSwingInteractive() {
     const cx = rect.width / 2;
     const travel = rect.width * 0.38;
     const x = cx + travel * state.nx;
-
-    // keep within stage
     const xClamped = clamp(x, 24, rect.width - 24);
 
-    // y now moves too: dragging down reduces light reaching the eyes
+    // y moves too: dragging down reduces light reaching the eyes
     const baseY = rect.height * 0.54;
     const y = clamp(
       baseY + rect.height * 0.22 * state.ny,
@@ -973,99 +1212,120 @@ function initGlaucomaRAPDFullSwingInteractive() {
     flashlight.style.left = `${xClamped}px`;
     flashlight.style.top = `${y}px`;
 
-    // BEAM behaviour:
+    // beam behavior
     const side = getSide(state.nx);
-
-    // light is ON only when the flashlight is within the eye-height band
     const lightOn = y >= rect.height * 0.4 && y < rect.height * 0.66;
 
-    const beamX = xClamped - 6; // slight offset towards torch head
-    const beamY = y - 50;
-
-    beam.style.left = `${beamX}px`;
-    beam.style.top = `${beamY}px`;
-
     if (side === "centre") {
-      beam.style.width = `${rect.width * 0.42}px`;
-      beam.style.height = `${rect.height * 0.22}px`;
-      beam.style.transform = `translate(0, -50%) rotate(0deg)`;
-      beam.style.opacity = "0.9";
-    } else if (side === "left") {
-      beam.style.width = `${rect.width * 0.6}px`;
-      beam.style.height = `${rect.height * 0.18}px`;
-      // beam goes to the right
-      beam.style.transform = `translate(0, -50%) rotate(0deg)`;
-      beam.style.opacity = "0.95";
+      if (state.lastSide !== "centre" || state.centerEnteredAt === null) {
+        state.centerEnteredAt = now;
+      }
     } else {
-      beam.style.width = `${rect.width * 0.6}px`;
-      beam.style.height = `${rect.height * 0.18}px`;
-      // beam goes to the left
-      beam.style.transform = `translate(0, -50%) rotate(180deg)`;
-      beam.style.opacity = "0.95";
+      state.centerEnteredAt = null;
     }
 
-    // PUPIL LOGIC
-    const rapdOn = !!(toggle && toggle.checked);
+    const centerDwellMs =
+      side === "centre" && state.centerEnteredAt !== null
+        ? now - state.centerEnteredAt
+        : 0;
+    const slowCenterDilating =
+      lightOn && side === "centre" && centerDwellMs >= SLOW_CENTER_DWELL_MS;
+    const effectiveStimulus = lightOn && !slowCenterDilating;
 
+    if (!effectiveStimulus) {
+      state.lastLightMoveAt = now;
+      state.lastLitNx = null;
+      state.lastLitNy = null;
+    } else if (state.lastLitNx === null || state.lastLitNy === null) {
+      state.lastLightMoveAt = now;
+      state.lastLitNx = state.nx;
+      state.lastLitNy = state.ny;
+    } else {
+      const delta = Math.hypot(
+        state.nx - state.lastLitNx,
+        state.ny - state.lastLitNy,
+      );
+      if (delta > LIGHT_MOTION_THRESHOLD) {
+        state.lastLightMoveAt = now;
+        state.lastLitNx = state.nx;
+        state.lastLitNy = state.ny;
+      } else {
+        state.lastLitNx = lerp(state.lastLitNx, state.nx, 0.08);
+        state.lastLitNy = lerp(state.lastLitNy, state.ny, 0.08);
+      }
+    }
+
+    const beamX = xClamped;
+    const beamY = y - 50;
+    beam.style.left = `${beamX}px`;
+    beam.style.top = `${beamY}px`;
+    updateFlashlightOpacity(rect, xClamped, y);
+
+    const beamDiameter = rect.width * 0.42;
+    beam.style.width = `${beamDiameter}px`;
+    beam.style.height = `${beamDiameter}px`;
+    beam.style.transform = "translate(-50%, -50%)";
+    beam.style.opacity = side === "centre" ? "0.85" : "0.9";
+
+    const rapdOn = !!(toggle && toggle.checked);
     if (toggleLabel) {
       toggleLabel.textContent = rapdOn ? "RAPD mode ON" : "RAPD mode OFF";
     }
 
-    // sizes
-    const CONSTRICT = 0.82;
-    const DILATE = 1.2;
-    const RAPD_RIGHT_CONSTRICT_MS = 220;
-    const RAPD_RIGHT_DILATE_MS = 700;
+    setPupilTransitionMs(pupilLeft, 90);
+    setPupilTransitionMs(pupilRight, 90);
 
-    // default response speed
-    setPupilTransitionMs(pupilLeft, 180);
-    setPupilTransitionMs(pupilRight, 180);
+    let leftShouldConstrict = effectiveStimulus;
+    let rightShouldConstrict = effectiveStimulus;
+    let leftConstrictMin = CONSTRICT_MIN;
+    let rightConstrictMin = CONSTRICT_MIN;
 
-    // LIGHT OFF (flashlight dragged down) -> both dilate (normal + RAPD)
-    if (!lightOn) {
-      state.rapdRightPulseStart = null;
-      clearRapdRightPulseTimer();
-      setPupilScale(pupilLeft, DILATE);
-      setPupilScale(pupilRight, DILATE);
-    } else {
-      // LIGHT ON (eyes receive light)
-      if (!rapdOn) {
-        state.rapdRightPulseStart = null;
-        clearRapdRightPulseTimer();
-        // NORMAL -> both constrict
-        setPupilScale(pupilLeft, CONSTRICT);
-        setPupilScale(pupilRight, CONSTRICT);
-      } else {
-        // RAPD MODE -> right pupil briefly constricts on right light, then dilates
-        setPupilScale(pupilLeft, CONSTRICT);
-
-        if (side === "right") {
-          const now = Date.now();
-          if (state.rapdRightPulseStart === null) {
-            state.rapdRightPulseStart = now;
-            clearRapdRightPulseTimer();
-            state.rapdRightPulseTimer = setTimeout(() => {
-              state.rapdRightPulseTimer = null;
-              render();
-            }, RAPD_RIGHT_CONSTRICT_MS + 16);
-          }
-
-          const elapsed = now - state.rapdRightPulseStart;
-          if (elapsed < RAPD_RIGHT_CONSTRICT_MS) {
-            setPupilTransitionMs(pupilRight, 180);
-            setPupilScale(pupilRight, CONSTRICT);
-          } else {
-            // make dilation feel gradual and natural
-            setPupilTransitionMs(pupilRight, RAPD_RIGHT_DILATE_MS);
-            setPupilScale(pupilRight, DILATE);
-          }
-        } else {
-          state.rapdRightPulseStart = null;
-          clearRapdRightPulseTimer();
-          setPupilScale(pupilRight, CONSTRICT);
+    if (rapdOn && effectiveStimulus) {
+      if (side === "right") {
+        if (state.lastSide !== "right" || state.rapdRightPulseStart === null) {
+          state.rapdRightPulseStart = now;
         }
+        const rapdElapsed = now - state.rapdRightPulseStart;
+        rightShouldConstrict = rapdElapsed < RAPD_RIGHT_PULSE_WITH_LATENCY_MS;
+        rightConstrictMin = RAPD_RIGHT_PARTIAL_MIN;
+      } else {
+        state.rapdRightPulseStart = null;
+        rightShouldConstrict = true;
+        rightConstrictMin = CONSTRICT_MIN;
       }
+      leftShouldConstrict = true;
+    } else {
+      state.rapdRightPulseStart = null;
     }
+
+    updateEyeDesiredWithLatency(
+      state.eyes.left,
+      leftShouldConstrict,
+      now,
+      leftConstrictMin,
+    );
+    updateEyeDesiredWithLatency(
+      state.eyes.right,
+      rightShouldConstrict,
+      now,
+      rightConstrictMin,
+    );
+
+    updateEyeEscapeState(
+      state.eyes.left,
+      now,
+      effectiveStimulus,
+      state.lastLightMoveAt,
+    );
+    updateEyeEscapeState(
+      state.eyes.right,
+      now,
+      effectiveStimulus,
+      state.lastLightMoveAt,
+    );
+
+    applyEyeScale(pupilLeft, state.eyes.left, now);
+    applyEyeScale(pupilRight, state.eyes.right, now);
 
     state.lastSide = side;
   }
@@ -1076,7 +1336,7 @@ function initGlaucomaRAPDFullSwingInteractive() {
     const cx = r.left + r.width / 2;
     const nx = clamp((e.clientX - cx) / (r.width * 0.45), -1, 1);
 
-    // 기준점을 eyes 이미지 중심(대략 52%) 근처로 두고, 아래로 내릴수록 ny가 +가 되게
+    // reference around eyes image center; lower drag gives positive ny
     const cy = r.top + r.height * 0.54;
     const ny = clamp((e.clientY - cy) / (r.height * 0.35), -1, 1);
 
@@ -1145,9 +1405,20 @@ function initGlaucomaRAPDFullSwingInteractive() {
 
   window.addEventListener("resize", render);
 
+  state.renderTicker = window.setInterval(() => {
+    if (!document.body.contains(page)) {
+      if (state.renderTicker !== null) {
+        clearInterval(state.renderTicker);
+        state.renderTicker = null;
+      }
+      return;
+    }
+    if (getComputedStyle(page).display === "none") return;
+    render();
+  }, 33);
+
   render();
 }
-
 function updateGlaucomaRAPDFullSwingInteractive() {
   const page = document.getElementById("glaucomaRAPDFullSwingInteractive");
   if (!page) return;
