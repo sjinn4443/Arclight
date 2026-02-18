@@ -3,6 +3,7 @@
  */
 
 import { initializeVideoPlayers, initializeToolbar } from "./videoplayer.js";
+import { loadPage } from "./navigation.js";
 
 // Keep track of the currently active subpage element within videos.html
 let currentPageElement = null;
@@ -11,6 +12,12 @@ const __videosGlobalBoundKey = "__videosGlobalBound";
 if (window[__videosGlobalBoundKey] == null) {
   window[__videosGlobalBoundKey] = false;
 }
+
+const EXTERNAL_GLAUCOMA_SCROLL_TARGETS = new Set([
+  "glaucomaACDInteractive",
+  "glaucomaRAPDFullSwingInteractive",
+]);
+let externalGlaucomaNavInFlight = false;
 
 // -------------------------
 // Video progress (Pupils)
@@ -256,6 +263,51 @@ async function updateAllLessonDurations() {
     // (optional: you can remove this guard to always overwrite)
     const dur = await probeDuration(lowSrc);
     if (dur > 0) setLessonMetaForTarget(target, formatTime(dur));
+  }
+}
+
+function showPageFallback(id) {
+  document.querySelectorAll(".page").forEach((p) => {
+    p.style.display = "none";
+  });
+  const el = document.getElementById(id);
+  if (el) el.style.display = "block";
+  document.dispatchEvent(new CustomEvent("page:shown", { detail: { id } }));
+}
+
+async function openExternalGlaucomaInteractive(targetId) {
+  if (!EXTERNAL_GLAUCOMA_SCROLL_TARGETS.has(targetId)) return;
+  if (externalGlaucomaNavInFlight) return;
+  externalGlaucomaNavInFlight = true;
+
+  try {
+    try {
+      sessionStorage.removeItem("glaucomaWorkshop:nextFlowEnabled");
+      sessionStorage.removeItem("glaucomaWorkshop:nextFlowIndex");
+    } catch {}
+
+    document
+      .querySelectorAll(".glaucoma-next-wrap")
+      .forEach((el) => el.remove());
+
+    await loadPage("glaucomaScrollImages");
+
+    if (typeof window.showPage === "function") window.showPage(targetId);
+    else showPageFallback(targetId);
+
+    try {
+      const { initializeGlaucomaScrollInteractiveTarget } =
+        await import("./glaucomaWorkshop.js");
+      initializeGlaucomaScrollInteractiveTarget?.(targetId);
+    } catch {}
+
+    try {
+      window.scrollTo(0, 0);
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    } catch {}
+  } finally {
+    externalGlaucomaNavInFlight = false;
   }
 }
 
@@ -1031,6 +1083,14 @@ function resumePupilFullExamIfNeeded() {
 
 // ----- Internal helper to show a specific videos subpage -----
 function show(id) {
+  if (
+    EXTERNAL_GLAUCOMA_SCROLL_TARGETS.has(id) &&
+    !document.getElementById(id)
+  ) {
+    void openExternalGlaucomaInteractive(id);
+    return;
+  }
+
   const newPageElement = document.getElementById(id);
   if (!newPageElement) {
     console.warn(`[videos.js] Page element with ID "${id}" not found.`);

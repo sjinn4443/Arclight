@@ -1431,3 +1431,14 @@ function updateGlaucomaRAPDFullSwingInteractive() {
     window.dispatchEvent(new Event("resize"));
   } catch {}
 }
+
+export function initializeGlaucomaScrollInteractiveTarget(targetId) {
+  if (targetId === "glaucomaACDInteractive") {
+    initGlaucomaACDInteractive();
+    return;
+  }
+
+  if (targetId === "glaucomaRAPDFullSwingInteractive") {
+    initGlaucomaRAPDFullSwingInteractive();
+  }
+}

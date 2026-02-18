@@ -1873,6 +1873,13 @@ input:checked + .slider:before {
   background-image: url("/images/icon/eyes/moduleicons/primary_interactive.webp");
 }
 
+#interactiveLearningPage
+  .pupil-level--primary
+  .lesson-row[data-target="glaucomaACDInteractive"]
+  .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/primary_interactive.webp");
+}
+
 /* ---------- Intermediate ---------- */
 :is(#pupilsPage, .pupils-like)
   .pupil-level--intermediate
@@ -1892,6 +1899,49 @@ input:checked + .slider:before {
   .lesson-row[data-target="miresPage"]
   .thumb {
   background-image: url("/images/icon/eyes/moduleicons/intermediate_interactive.webp");
+}
+
+#interactiveLearningPage
+  .pupil-level--intermediate
+  .lesson-row[data-target="glaucomaRAPDFullSwingInteractive"]
+  .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/intermediate_interactive.webp");
+}
+
+/* Interactive Learning: reduce vertical gap between paired cards */
+#interactiveLearningPage
+  .pupil-level--primary
+  .pupil-card.module-card:first-of-type,
+#interactiveLearningPage
+  .pupil-level--intermediate
+  .pupil-card.module-card:first-of-type {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+#interactiveLearningPage
+  .pupil-level--primary
+  .pupil-card.module-card
+  + .pupil-card.module-card,
+#interactiveLearningPage
+  .pupil-level--intermediate
+  .pupil-card.module-card
+  + .pupil-card.module-card {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+#interactiveLearningPage
+  .pupil-level--primary
+  .pupil-card.module-card
+  + .pupil-card.module-card
+  .lesson-row,
+#interactiveLearningPage
+  .pupil-level--intermediate
+  .pupil-card.module-card
+  + .pupil-card.module-card
+  .lesson-row {
+  margin-top: 0;
 }
 
 /* ---------- Advanced ---------- */
