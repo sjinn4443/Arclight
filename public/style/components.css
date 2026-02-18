@@ -1804,7 +1804,7 @@ input:checked + .slider:before {
 :is(#pupilsPage, .pupils-like) .lesson-progress__fill {
   height: 100%;
   border-radius: 999px;
-  background: var(--accent);
+  background: #15e115;
 }
 
 /* Make Advanced look like one “combined” block (two buttons inside same black area) */
@@ -5618,4 +5618,30 @@ Glaucoma history case study: match intermediate style
 
 #glaucomaHistoryCaseStudy .casechat-dxlabel {
   color: #000;
+}
+
+/* Glaucoma workshop flow: shared Next button */
+.glaucoma-next-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 16px 0 28px;
+}
+
+.glaucoma-next-btn {
+  min-width: 96px;
+  height: 38px;
+  border: none;
+  border-radius: 15px;
+  padding: 0 18px;
+  background: #e41e26;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.glaucoma-next-btn:active {
+  transform: translateY(1px);
 }

@@ -1,9 +1,14 @@
 // public/js/glaucomaQuizCaseStudy.js
+import {
+  initializeGlaucomaWorkshopProgressInfra,
+  setGlaucomaLessonProgress,
+} from "./glaucomaWorkshopProgress.js";
 
 export function initializeGlaucomaQuizCaseStudy() {
   const page = document.getElementById("glaucomaQuizCaseStudy");
   if (!page) return;
 
+  initializeGlaucomaWorkshopProgressInfra();
   initGlaucomaSecondaryCauseDragQuiz();
 
   if (page.dataset.wired === "1") return;
@@ -113,6 +118,10 @@ export function initializeGlaucomaQuizCaseStudy() {
     const answered = userAnswers.filter(Boolean).length;
     progressEl.textContent = `${answered} / ${QUESTIONS.length}`;
     resultsBtn.disabled = answered !== QUESTIONS.length;
+    setGlaucomaLessonProgress(
+      "glaucomaQuizCaseStudy",
+      (answered / QUESTIONS.length) * 100,
+    );
   }
 
   function renderAll() {
@@ -286,6 +295,8 @@ function initGlaucomaSecondaryCauseDragQuiz() {
   const page = document.getElementById("glaucomaSecondaryCauseQuizPage");
   if (!page) return;
 
+  initializeGlaucomaWorkshopProgressInfra();
+
   if (page.dataset.wired === "1") return;
   page.dataset.wired = "1";
 
@@ -321,6 +332,14 @@ function initGlaucomaSecondaryCauseDragQuiz() {
 
   const state = new Map();
   ITEMS.forEach((it) => state.set(it.id, "bank"));
+
+  function updateSecondaryProgress() {
+    const placed = ITEMS.filter((it) => state.get(it.id) !== "bank").length;
+    setGlaucomaLessonProgress(
+      "glaucomaSecondaryCauseQuizPage",
+      (placed / ITEMS.length) * 100,
+    );
+  }
 
   function shuffle(arr) {
     const a = arr.slice();
@@ -411,6 +430,7 @@ function initGlaucomaSecondaryCauseDragQuiz() {
     if (where === "bank") {
       bank.appendChild(chipEl);
       state.set(id, "bank");
+      updateSecondaryProgress();
       return;
     }
 
@@ -420,9 +440,11 @@ function initGlaucomaSecondaryCauseDragQuiz() {
 
     body.appendChild(chipEl);
     state.set(id, where);
+    updateSecondaryProgress();
   }
 
   shuffle(ITEMS).forEach((item) => bank.appendChild(makeChip(item)));
+  updateSecondaryProgress();
 
   function wireDropTarget(el, where) {
     el.addEventListener("dragover", (e) => {
@@ -461,6 +483,7 @@ function initGlaucomaSecondaryCauseDragQuiz() {
     }
 
     submitBtn.disabled = true;
+    updateSecondaryProgress();
 
     let correct = 0;
     ITEMS.forEach((it) => {

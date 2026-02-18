@@ -91,6 +91,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if (routeName === "videos") {
       const { initializeVideos } = await import("./videos.js");
       initializeVideos?.();
+      const { initializeGlaucomaWorkshopNextFlowInfra } =
+        await import("./glaucomaWorkshopNextFlow.js");
+      initializeGlaucomaWorkshopNextFlowInfra?.();
 
       // Also (re)attach toolbar + video listeners now that the fragment is in the DOM
       initializeToolbar();
@@ -112,11 +115,27 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    if (routeName === "glaucomaScrollImages") {
+      const { initializeGlaucomaWorkshopProgressInfra } =
+        await import("./glaucomaWorkshopProgress.js");
+      initializeGlaucomaWorkshopProgressInfra?.();
+      const { initializeGlaucomaWorkshopNextFlowInfra } =
+        await import("./glaucomaWorkshopNextFlow.js");
+      initializeGlaucomaWorkshopNextFlowInfra?.();
+      return;
+    }
+
     if (routeName === "glaucomaQuizCaseStudy") {
+      const { initializeGlaucomaWorkshopNextFlowInfra } =
+        await import("./glaucomaWorkshopNextFlow.js");
+      initializeGlaucomaWorkshopNextFlowInfra?.();
       initializeGlaucomaQuizCaseStudy();
     }
 
     if (routeName === "glaucomaHistoryCaseStudy") {
+      const { initializeGlaucomaWorkshopNextFlowInfra } =
+        await import("./glaucomaWorkshopNextFlow.js");
+      initializeGlaucomaWorkshopNextFlowInfra?.();
       const { initializeGlaucomaHistoryCaseStudy } =
         await import("./glaucomaHistoryCaseStudy.js");
       initializeGlaucomaHistoryCaseStudy();

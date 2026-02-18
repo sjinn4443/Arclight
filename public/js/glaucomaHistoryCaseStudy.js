@@ -1,4 +1,8 @@
 // public/js/glaucomaHistoryCaseStudy.js
+import {
+  initializeGlaucomaWorkshopProgressInfra,
+  setGlaucomaLessonProgress,
+} from "./glaucomaWorkshopProgress.js";
 
 function shuffle(arr) {
   const a = [...arr];
@@ -118,6 +122,7 @@ function caseAnswers(caseKey) {
 export function initializeGlaucomaHistoryCaseStudy() {
   const page = document.getElementById("glaucomaHistoryCaseStudy");
   if (!page) return;
+  initializeGlaucomaWorkshopProgressInfra();
 
   const log = page.querySelector("#caseChatLog");
   const choices = page.querySelector("#caseChatChoices");
@@ -194,6 +199,26 @@ export function initializeGlaucomaHistoryCaseStudy() {
 
   // exactly 2 cases, random order
   let casePool = shuffle(CASES.map((c) => c.key));
+
+  const TOTAL_CASES = 2;
+  const QUESTIONS_PER_CASE = QUESTIONS.length;
+
+  function updateHistoryProgress() {
+    const completedCases = Math.max(0, caseIndex - 1);
+    const currentCaseAsked = Math.min(
+      QUESTIONS_PER_CASE,
+      state?.asked?.size || 0,
+    );
+    const totalQuestions = TOTAL_CASES * QUESTIONS_PER_CASE;
+    const doneQuestions = Math.min(
+      totalQuestions,
+      completedCases * QUESTIONS_PER_CASE + currentCaseAsked,
+    );
+    setGlaucomaLessonProgress(
+      "glaucomaHistoryCaseStudy",
+      (doneQuestions / totalQuestions) * 100,
+    );
+  }
 
   // ---- intro modal ----
   let introModalEl = null;
@@ -460,6 +485,7 @@ export function initializeGlaucomaHistoryCaseStudy() {
   function onAsk(q) {
     if (state.asked.has(q.id)) return;
     state.asked.add(q.id);
+    updateHistoryProgress();
     renderChoices();
     if (submitBtn) submitBtn.disabled = false;
 
@@ -628,8 +654,6 @@ export function initializeGlaucomaHistoryCaseStudy() {
   finalOk?.addEventListener("click", closeFinalModal);
 
   // ---- case flow ----
-  const TOTAL_CASES = 2;
-
   function startNewCase() {
     forceCloseModals();
 
@@ -646,6 +670,7 @@ export function initializeGlaucomaHistoryCaseStudy() {
       if (toggleBtn) toggleBtn.textContent = "^";
       footer?.classList.add("is-collapsed");
 
+      setGlaucomaLessonProgress("glaucomaHistoryCaseStudy", 100);
       openFinalModal();
       return;
     }
@@ -656,6 +681,7 @@ export function initializeGlaucomaHistoryCaseStudy() {
 
     log.innerHTML = "";
     caseIndex += 1;
+    updateHistoryProgress();
 
     const ageIntro = ageIntroForCase(state.currentKey);
 

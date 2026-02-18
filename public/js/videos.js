@@ -136,7 +136,7 @@ function updateLessonProgressBars() {
 function wireProgressForVideoElement(videoEl, targetPageId) {
   if (!videoEl) return;
 
-  const wiredKey = `progressWired:${targetPageId}`;
+  const wiredKey = `progressWired_${String(targetPageId).replace(/[^a-zA-Z0-9_-]/g, "_")}`;
   if (videoEl.dataset[wiredKey] === "1") return;
   videoEl.dataset[wiredKey] = "1";
 
@@ -1045,6 +1045,7 @@ function show(id) {
   // Show the new page
   newPageElement.style.display = "block";
   currentPageElement = newPageElement;
+  document.dispatchEvent(new CustomEvent("page:shown", { detail: { id } }));
 
   // ✅ ensure we start at the top when switching video subpages
   try {
@@ -1069,6 +1070,11 @@ function show(id) {
   // Toggle-driven video pages (Visual Acuity / Ant Seg / Fundal Reflex / DO)
   if (Object.prototype.hasOwnProperty.call(VIDEO_PAGE_SOURCES, id)) {
     wireVideoPageTriToggle(id);
+
+    const cfg = VIDEO_PAGE_SOURCES[id];
+    const page = document.getElementById(id);
+    const videoEl = page?.querySelector(cfg?.videoSelector || "");
+    wireProgressForVideoElement(videoEl, id);
   }
 
   // Refresh lesson progress bars when switching sections

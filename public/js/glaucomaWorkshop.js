@@ -1,5 +1,14 @@
 import { loadPage } from "./navigation.js";
 import { ROUTES } from "./config.js";
+import {
+  initializeGlaucomaWorkshopProgressInfra,
+  updateGlaucomaWorkshopProgressBars,
+} from "./glaucomaWorkshopProgress.js";
+import {
+  assignGlaucomaWorkshopFlowIndices,
+  initializeGlaucomaWorkshopNextFlowInfra,
+  rememberGlaucomaWorkshopFlowFromRow,
+} from "./glaucomaWorkshopNextFlow.js";
 
 // videos.html 내 섹션 id로 정규화 (childhood workshop 방식 참고) :contentReference[oaicite:4]{index=4}
 function normaliseVideosSubpageId(raw) {
@@ -448,9 +457,13 @@ export function initializeGlaucomaWorkshop() {
   const page = document.getElementById("glaucomaWorkshopPage");
   if (!page) return;
 
+  initializeGlaucomaWorkshopProgressInfra();
+  initializeGlaucomaWorkshopNextFlowInfra();
   setupWorkshopFolders(page);
   setupVisualFieldsSubfolder(page);
   initGlaucomaSummaryAtomsPages();
+  assignGlaucomaWorkshopFlowIndices(page);
+  updateGlaucomaWorkshopProgressBars();
 
   const rows = page.querySelectorAll(".lesson-row[data-target]");
   rows.forEach((row) => {
@@ -462,6 +475,7 @@ export function initializeGlaucomaWorkshop() {
 
       const targetRaw = row.getAttribute("data-target");
       if (!targetRaw) return;
+      rememberGlaucomaWorkshopFlowFromRow(row);
 
       try {
         sessionStorage.setItem("glaucomaWorkshop:restoreOpenFolder", "1");
@@ -517,6 +531,9 @@ export function initializeGlaucomaWorkshop() {
             .forEach((p) => (p.style.display = "none"));
           const el = document.getElementById(targetRaw);
           if (el) el.style.display = "block";
+          document.dispatchEvent(
+            new CustomEvent("page:shown", { detail: { id: targetRaw } }),
+          );
         }
 
         if (targetRaw === "glaucomaACDInteractive") {

@@ -1,0 +1,354 @@
+import { loadPage } from "./navigation.js";
+
+const WORKSHOP_HOME = "__glaucomaWorkshopHome__";
+const FLOW_INDEX_KEY = "glaucomaWorkshop:nextFlowIndex";
+const FLOW_EVENT = "glaucomaWorkshop:nextflow-changed";
+
+const TARGET_ALIASES = {
+  glaucomaVisualFieldExamVideo: "glaucomaVisualFieldExamVideoPage",
+};
+
+const SCROLL_TARGETS = new Set([
+  "glaucomaWhatIs",
+  "glaucomaTypes",
+  "glaucomaDiagnosis",
+  "glaucomaIntro",
+  "glaucomaPOAGACAG",
+  "glaucomaVisionIntro",
+  "glaucomaTestingVisualAcuity",
+  "glaucomaFieldsIntro",
+  "glaucomaFieldsExam",
+  "glaucomaQuadrantsFingers",
+  "glaucomaQuadrantsRed",
+  "glaucomaAssessRecord",
+  "glaucomaPupilReactions",
+  "glaucomaSwingRAPD",
+  "glaucomaRAPDFullSwingInteractive",
+  "frontOfEyePage",
+  "glaucomaFrontFindings",
+  "glaucomaACDInteractive",
+  "glaucomaACDScroll",
+  "glaucomaHighIOP",
+  "fundalReflexPage",
+  "glaucomaOpticNerve",
+  "glaucomaCupping",
+  "glaucomaSummaryScrolly",
+]);
+
+const VIDEO_TARGETS = new Set([
+  "vaWhoPage",
+  "vaNearVisionPage",
+  "glaucomaVisualFieldExamVideoPage",
+  "pupilFullExamPage",
+  "glaucomaPupilReactionsVideoPage",
+  "feFullAnteriorSegmentPage",
+  "glaucomaSignsOfGlaucomaVideoPage",
+  "glaucomaAnteriorChamberDepthVideoPage",
+  "glaucomaACAGCaseWorkshopVideoPage",
+  "glaucomaFundalReflexDiseaseVideoPage",
+  "directOphthalmoscopyVideoPage",
+  "glaucomaDirectOphthalmoscopyDiscsAnnotatedVideoPage",
+  "glaucomaOpticDiscAnatomyVideoPage",
+  "glaucomaMarginVideoPage",
+  "glaucomaDiscCuppingVideoPage",
+  "glaucomaOtherOpticNerveDiseasesVideoPage",
+]);
+
+const QUIZ_ROUTE_TARGETS = new Set([
+  "glaucomaQuizCaseStudy",
+  "glaucomaSecondaryCauseQuizPage",
+]);
+
+const HISTORY_ROUTE_TARGETS = new Set(["glaucomaHistoryCaseStudy"]);
+
+const WORKSHOP_INTERNAL_TARGETS = new Set([
+  "glaucomaFundusSummaryAtomsPage",
+  "glaucomaGlaucomaSummaryAtomsPage",
+]);
+
+const FLOW_SECTIONS = [
+  ["glaucomaWhatIs", "glaucomaTypes", "glaucomaDiagnosis"],
+  ["glaucomaIntro", "glaucomaPOAGACAG", "glaucomaHistoryCaseStudy"],
+  [
+    "glaucomaVisionIntro",
+    "glaucomaTestingVisualAcuity",
+    "vaWhoPage",
+    "vaNearVisionPage",
+  ],
+  [
+    "glaucomaFieldsIntro",
+    "glaucomaFieldsExam",
+    "glaucomaQuadrantsFingers",
+    "glaucomaQuadrantsRed",
+    "glaucomaAssessRecord",
+    "glaucomaVisualFieldExamVideoPage",
+    "glaucomaPupilReactions",
+    "pupilFullExamPage",
+    "glaucomaPupilReactionsVideoPage",
+    "glaucomaSwingRAPD",
+    "glaucomaRAPDFullSwingInteractive",
+  ],
+  [
+    "frontOfEyePage",
+    "feFullAnteriorSegmentPage",
+    "glaucomaFrontFindings",
+    "glaucomaSignsOfGlaucomaVideoPage",
+    "glaucomaACDInteractive",
+    "glaucomaAnteriorChamberDepthVideoPage",
+    "glaucomaSecondaryCauseQuizPage",
+    "glaucomaACDScroll",
+    "glaucomaHighIOP",
+    "glaucomaACAGCaseWorkshopVideoPage",
+  ],
+  [
+    "fundalReflexPage",
+    "glaucomaFundalReflexDiseaseVideoPage",
+    "directOphthalmoscopyVideoPage",
+    "glaucomaDirectOphthalmoscopyDiscsAnnotatedVideoPage",
+    "glaucomaOpticNerve",
+    "glaucomaOpticDiscAnatomyVideoPage",
+    "glaucomaMarginVideoPage",
+    "glaucomaDiscCuppingVideoPage",
+    "glaucomaCupping",
+    "glaucomaDiscCuppingVideoPage",
+    "glaucomaOtherOpticNerveDiseasesVideoPage",
+    "glaucomaQuizCaseStudy",
+  ],
+  [
+    "glaucomaSummaryScrolly",
+    "glaucomaFundusSummaryAtomsPage",
+    "glaucomaGlaucomaSummaryAtomsPage",
+  ],
+];
+
+const FLOW = [];
+const TARGET_TO_INDICES = new Map();
+
+for (const section of FLOW_SECTIONS) {
+  for (let i = 0; i < section.length; i += 1) {
+    const target = section[i];
+    FLOW.push({
+      target,
+      next: section[i + 1] || WORKSHOP_HOME,
+    });
+  }
+}
+
+FLOW.forEach((entry, idx) => {
+  const arr = TARGET_TO_INDICES.get(entry.target) || [];
+  arr.push(idx);
+  TARGET_TO_INDICES.set(entry.target, arr);
+});
+
+let nextInfraWired = false;
+
+function canonicalTarget(raw) {
+  if (!raw) return "";
+  return TARGET_ALIASES[raw] || raw;
+}
+
+function getStoredFlowIndex() {
+  try {
+    const raw = sessionStorage.getItem(FLOW_INDEX_KEY);
+    const idx = Number(raw);
+    if (Number.isInteger(idx) && idx >= 0 && idx < FLOW.length) return idx;
+  } catch {}
+  return null;
+}
+
+function setStoredFlowIndex(idx) {
+  try {
+    if (Number.isInteger(idx) && idx >= 0 && idx < FLOW.length) {
+      sessionStorage.setItem(FLOW_INDEX_KEY, String(idx));
+    } else {
+      sessionStorage.removeItem(FLOW_INDEX_KEY);
+    }
+  } catch {}
+}
+
+function findFlowIndexByOccurrence(target, occurrence) {
+  const arr = TARGET_TO_INDICES.get(target) || [];
+  return arr[occurrence - 1] ?? null;
+}
+
+function resolveFlowIndexForCurrentTarget(target) {
+  const canon = canonicalTarget(target);
+  if (!canon) return null;
+
+  const stored = getStoredFlowIndex();
+  if (stored != null && FLOW[stored]?.target === canon) return stored;
+
+  const arr = TARGET_TO_INDICES.get(canon) || [];
+  return arr[0] ?? null;
+}
+
+function showPageFallback(id) {
+  document.querySelectorAll(".page").forEach((p) => {
+    p.style.display = "none";
+  });
+  const el = document.getElementById(id);
+  if (el) el.style.display = "block";
+  document.dispatchEvent(new CustomEvent("page:shown", { detail: { id } }));
+}
+
+async function navigateToTarget(target) {
+  if (target === WORKSHOP_HOME) {
+    await loadPage("glaucomaWorkshop");
+    document.dispatchEvent(new CustomEvent(FLOW_EVENT));
+    return;
+  }
+
+  if (SCROLL_TARGETS.has(target)) {
+    await loadPage("glaucomaScrollImages");
+    if (typeof window.showPage === "function") window.showPage(target);
+    else showPageFallback(target);
+    document.dispatchEvent(new CustomEvent(FLOW_EVENT));
+    return;
+  }
+
+  if (VIDEO_TARGETS.has(target)) {
+    try {
+      window.__videosPendingTarget = target;
+      window.__videosSuppressFlash = true;
+      sessionStorage.setItem("gotoSubPage", target);
+    } catch {}
+    await loadPage("videos");
+    document.dispatchEvent(new CustomEvent(FLOW_EVENT));
+    return;
+  }
+
+  if (HISTORY_ROUTE_TARGETS.has(target)) {
+    await loadPage("glaucomaHistoryCaseStudy");
+    if (typeof window.showPage === "function") window.showPage(target);
+    else showPageFallback(target);
+    document.dispatchEvent(new CustomEvent(FLOW_EVENT));
+    return;
+  }
+
+  if (QUIZ_ROUTE_TARGETS.has(target)) {
+    await loadPage("glaucomaQuizCaseStudy");
+    if (typeof window.showPage === "function") window.showPage(target);
+    else showPageFallback(target);
+    document.dispatchEvent(new CustomEvent(FLOW_EVENT));
+    return;
+  }
+
+  if (WORKSHOP_INTERNAL_TARGETS.has(target)) {
+    await loadPage("glaucomaWorkshop");
+    if (typeof window.showPage === "function") window.showPage(target);
+    else showPageFallback(target);
+    document.dispatchEvent(new CustomEvent(FLOW_EVENT));
+    return;
+  }
+}
+
+function removeNextButtons() {
+  document.querySelectorAll(".glaucoma-next-wrap").forEach((el) => el.remove());
+}
+
+function renderNextButtonForTarget(target) {
+  const idx = resolveFlowIndexForCurrentTarget(target);
+  if (idx == null) {
+    removeNextButtons();
+    return;
+  }
+
+  const current = FLOW[idx];
+  const targetId = canonicalTarget(target);
+  const pageEl =
+    document.getElementById(targetId) || document.getElementById(target);
+  if (!pageEl) return;
+
+  removeNextButtons();
+
+  const host =
+    pageEl.querySelector(".container.pupils-container") ||
+    pageEl.querySelector(".container") ||
+    pageEl;
+
+  const wrap = document.createElement("div");
+  wrap.className = "glaucoma-next-wrap";
+
+  const btn = document.createElement("button");
+  btn.type = "button";
+  btn.className = "glaucoma-next-btn";
+  btn.textContent = current.next === WORKSHOP_HOME ? "Next >" : "Next >";
+
+  btn.addEventListener("click", async () => {
+    try {
+      sessionStorage.setItem("glaucomaWorkshop:restoreOpenFolder", "1");
+    } catch {}
+
+    const nextIdx = idx + 1;
+    if (FLOW[nextIdx] && FLOW[nextIdx].target === current.next) {
+      setStoredFlowIndex(nextIdx);
+    } else if (current.next === WORKSHOP_HOME) {
+      setStoredFlowIndex(null);
+    } else {
+      const indices = TARGET_TO_INDICES.get(current.next) || [];
+      setStoredFlowIndex(indices[0] ?? null);
+    }
+
+    await navigateToTarget(current.next);
+  });
+
+  wrap.appendChild(btn);
+  host.appendChild(wrap);
+}
+
+export function initializeGlaucomaWorkshopNextFlowInfra() {
+  if (nextInfraWired) return;
+  nextInfraWired = true;
+
+  document.addEventListener("page:shown", (e) => {
+    const shownId = e?.detail?.id;
+    if (!shownId) return;
+    renderNextButtonForTarget(shownId);
+  });
+
+  window.addEventListener("page:loaded", (e) => {
+    const routeName = e?.detail?.routeName;
+    if (routeName === "glaucomaWorkshop") removeNextButtons();
+  });
+
+  document.addEventListener(FLOW_EVENT, () => {
+    const visiblePage = document.querySelector(
+      ".page[style*='display: block']",
+    );
+    if (!visiblePage?.id) return;
+    renderNextButtonForTarget(visiblePage.id);
+  });
+}
+
+export function assignGlaucomaWorkshopFlowIndices(page) {
+  if (!page) return;
+
+  const occurMap = new Map();
+  page.querySelectorAll(".lesson-row[data-target]").forEach((row) => {
+    const raw = row.getAttribute("data-target");
+    const target = canonicalTarget(raw);
+    if (!target) return;
+
+    const nextOcc = (occurMap.get(target) || 0) + 1;
+    occurMap.set(target, nextOcc);
+
+    const idx = findFlowIndexByOccurrence(target, nextOcc);
+    if (idx != null) row.dataset.nextFlowIndex = String(idx);
+  });
+}
+
+export function rememberGlaucomaWorkshopFlowFromRow(row) {
+  if (!row) return;
+
+  const idx = Number(row.dataset.nextFlowIndex);
+  if (Number.isInteger(idx) && idx >= 0 && idx < FLOW.length) {
+    setStoredFlowIndex(idx);
+    return;
+  }
+
+  const raw = row.getAttribute("data-target");
+  const target = canonicalTarget(raw);
+  if (!target) return;
+  const indices = TARGET_TO_INDICES.get(target) || [];
+  setStoredFlowIndex(indices[0] ?? null);
+}
