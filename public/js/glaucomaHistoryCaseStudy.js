@@ -214,10 +214,8 @@ export function initializeGlaucomaHistoryCaseStudy() {
       totalQuestions,
       completedCases * QUESTIONS_PER_CASE + currentCaseAsked,
     );
-    setGlaucomaLessonProgress(
-      "glaucomaHistoryCaseStudy",
-      (doneQuestions / totalQuestions) * 100,
-    );
+    const inProgressPercent = (doneQuestions / totalQuestions) * 95;
+    setGlaucomaLessonProgress("glaucomaHistoryCaseStudy", inProgressPercent);
   }
 
   // ---- intro modal ----

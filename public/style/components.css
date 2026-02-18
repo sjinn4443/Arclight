@@ -1349,6 +1349,13 @@ input:checked + .slider:before {
   display: none;
 }
 
+#eyesCatalogPage .eyes-carousel-divider {
+  height: 2px;
+  width: 100vw;
+  margin: 0 calc(50% - 50vw) 14px;
+  background: #e7e7eb;
+}
+
 .eyes-card {
   scroll-snap-align: center;
   background: #fff;
@@ -4313,6 +4320,17 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
   padding-top: 62px;
 }
 
+/* If all scroll images already fit the viewport, remove artificial extra scroll space. */
+.page.has-eyes-topbar.glaucoma-scroll-fit {
+  min-height: auto;
+  padding-bottom: 18px;
+}
+
+.page.has-eyes-topbar.glaucoma-scroll-fit .container.pupils-container {
+  min-height: auto;
+  padding-bottom: 18px;
+}
+
 .video-container,
 .video-container video,
 .video-container iframe {
@@ -5622,11 +5640,10 @@ Glaucoma history case study: match intermediate style
 
 /* Glaucoma workshop flow: shared Next button */
 .glaucoma-next-wrap {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  padding: 16px 0 28px;
+  position: fixed;
+  right: 16px;
+  bottom: calc(16px + env(safe-area-inset-bottom));
+  z-index: 75;
 }
 
 .glaucoma-next-btn {
@@ -5635,11 +5652,15 @@ Glaucoma history case study: match intermediate style
   border: none;
   border-radius: 15px;
   padding: 0 18px;
-  background: #e41e26;
+  background: #9ca3af;
   color: #fff;
   font-size: 14px;
   font-weight: 600;
   line-height: 1;
+}
+
+.glaucoma-next-btn.is-ready {
+  background: #e41e26;
 }
 
 .glaucoma-next-btn:active {

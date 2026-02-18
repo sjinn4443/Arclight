@@ -697,7 +697,7 @@ select.onb-input.has-value {
   width: 100%;
   height: 100%;
   margin: 0; /* 바깥 마진 제거 – 화살표랑 잘 정렬되게 */
-  border-radius: inherit; /* 프레임의 radius 따라감 */
+  border-radius: 0; /* 프레임의 radius 따라감 */
   object-fit: cover; /* 프레임에 꽉 차게 */
 }
 
@@ -719,17 +719,31 @@ select.onb-input.has-value {
 }
 
 /* 비디오 프레임 컨테이너 */
+
 .intro-hero-frame {
   position: relative;
   width: 56%;
-  max-width: 560px; /* 데스크톱에서 너무 안 커지게 상한선 */
-  aspect-ratio: 16 / 9; /* mp4 비율에 맞춤 */
+  max-width: 560px;
+  aspect-ratio: 68 / 45;
   border-radius: 18px;
-  border: 6px solid #000; /* 원하는 색으로 조정 가능 */
-  overflow: hidden; /* 둥근 모서리 밖 내용 잘라냄 */
-  background: #000; /* 로딩 전 검은 배경 */
-  height: 378px;
+  border: 6px solid #000;
+  overflow: hidden;
+  background: #000;
+  height: 370px;
   margin: 15px 3px 19px 0px;
+}
+
+@media (min-width: 1024px) {
+  .intro-hero-frame {
+    border-radius: 12px;
+    width: 41%;
+  }
+}
+
+@media (min-width: 1920px) {
+  .intro-hero-frame {
+    border-radius: 25px;
+  }
 }
 
 .intro-arrow {
@@ -828,6 +842,25 @@ select.onb-input.has-value {
   font-size: 13px;
   font-weight: 500;
   color: #111;
+}
+.unified-top .hello-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+#unifiedDashboard .dashboard-today-date {
+  position: fixed;
+  right: 10px;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 8px);
+  z-index: 40;
+  font-size: 11px;
+  color: #6b7280;
+  line-height: 1.2;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 999px;
+  padding: 4px 8px;
+  pointer-events: none;
 }
 
 .unified-top .icons {
@@ -1773,6 +1806,26 @@ select.onb-input.has-value + .onb-select-caret {
 
 #glaucomaWorkshopPage #glaucomaWorkshopFolders {
   align-items: center;
+}
+
+#glaucomaWorkshopPage #glaucomaWorkshopFolders .glaucoma-folder-row {
+  position: relative;
+}
+
+#glaucomaWorkshopPage
+  #glaucomaWorkshopFolders
+  .glaucoma-folder-row.is-complete::after {
+  content: "";
+  position: absolute;
+  top: -3px;
+  right: 1px;
+  width: clamp(72px, 19vw, 84px);
+  height: clamp(72px, 19vw, 84px);
+  transform: none;
+  background: url("/images/icon/eyes/moduleicons/primary_stamp.webp") center /
+    contain no-repeat;
+  pointer-events: none;
+  z-index: 2;
 }
 
 #glaucomaWorkshopPage .glaucoma-section-card,

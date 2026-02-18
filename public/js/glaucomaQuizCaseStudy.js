@@ -118,10 +118,8 @@ export function initializeGlaucomaQuizCaseStudy() {
     const answered = userAnswers.filter(Boolean).length;
     progressEl.textContent = `${answered} / ${QUESTIONS.length}`;
     resultsBtn.disabled = answered !== QUESTIONS.length;
-    setGlaucomaLessonProgress(
-      "glaucomaQuizCaseStudy",
-      (answered / QUESTIONS.length) * 100,
-    );
+    const inProgressPercent = (answered / QUESTIONS.length) * 90;
+    setGlaucomaLessonProgress("glaucomaQuizCaseStudy", inProgressPercent);
   }
 
   function renderAll() {
@@ -239,6 +237,7 @@ export function initializeGlaucomaQuizCaseStudy() {
 
     scoreText.textContent = `You got ${score} out of ${total} correct.`;
     modal.style.display = "flex";
+    setGlaucomaLessonProgress("glaucomaQuizCaseStudy", 100);
   }
 
   function closeModal() {
@@ -335,9 +334,10 @@ function initGlaucomaSecondaryCauseDragQuiz() {
 
   function updateSecondaryProgress() {
     const placed = ITEMS.filter((it) => state.get(it.id) !== "bank").length;
+    const inProgressPercent = (placed / ITEMS.length) * 90;
     setGlaucomaLessonProgress(
       "glaucomaSecondaryCauseQuizPage",
-      (placed / ITEMS.length) * 100,
+      inProgressPercent,
     );
   }
 
@@ -484,6 +484,7 @@ function initGlaucomaSecondaryCauseDragQuiz() {
 
     submitBtn.disabled = true;
     updateSecondaryProgress();
+    setGlaucomaLessonProgress("glaucomaSecondaryCauseQuizPage", 100);
 
     let correct = 0;
     ITEMS.forEach((it) => {

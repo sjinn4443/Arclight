@@ -41,6 +41,15 @@ function writeVideoProgress(key, data) {
   } catch {}
 }
 
+function dispatchWorkshopProgressChanged(targetPageId) {
+  if (!targetPageId) return;
+  document.dispatchEvent(
+    new CustomEvent("glaucomaWorkshop:progress-changed", {
+      detail: { target: targetPageId },
+    }),
+  );
+}
+
 function wirePupilFullExamProgress() {
   const video = document.getElementById("pupilFullExamVideo");
   if (!video || video.dataset.progressWired === "1") return;
@@ -64,6 +73,7 @@ function wirePupilFullExamProgress() {
     });
 
     updateLessonProgressBars();
+    dispatchWorkshopProgressChanged("pupilFullExamPage");
   };
 
   video.addEventListener("loadedmetadata", save);
@@ -77,6 +87,7 @@ function wirePupilFullExamProgress() {
       updatedAt: Date.now(),
     });
     updateLessonProgressBars();
+    dispatchWorkshopProgressChanged("pupilFullExamPage");
   });
 }
 
@@ -156,6 +167,7 @@ function wireProgressForVideoElement(videoEl, targetPageId) {
     });
 
     updateLessonProgressBars();
+    dispatchWorkshopProgressChanged(targetPageId);
   };
 
   videoEl.addEventListener("loadedmetadata", save);
@@ -169,6 +181,7 @@ function wireProgressForVideoElement(videoEl, targetPageId) {
       updatedAt: Date.now(),
     });
     updateLessonProgressBars();
+    dispatchWorkshopProgressChanged(targetPageId);
   });
 }
 
@@ -483,6 +496,7 @@ const VIDEO_PAGE_SOURCES = {
   },
 
   glaucomaPupilReactionsVideoPage: {
+    key: "videoMode:glaucomaPupilReactionsVideoPage",
     videoMode: "triToggle",
     containerSelector: "#glaucomaPupilReactionsVideoContainer",
     videoSelector: "#glaucomaPupilReactionsVideo",
@@ -493,6 +507,7 @@ const VIDEO_PAGE_SOURCES = {
   },
 
   glaucomaSignsOfGlaucomaVideoPage: {
+    key: "videoMode:glaucomaSignsOfGlaucomaVideoPage",
     videoMode: "triToggle",
     containerSelector: "#glaucomaSignsOfGlaucomaVideoContainer",
     videoSelector: "#glaucomaSignsOfGlaucomaVideo",
@@ -503,6 +518,7 @@ const VIDEO_PAGE_SOURCES = {
   },
 
   glaucomaAnteriorChamberDepthVideoPage: {
+    key: "videoMode:glaucomaAnteriorChamberDepthVideoPage",
     videoMode: "triToggle",
     containerSelector: "#glaucomaAnteriorChamberDepthVideoContainer",
     videoSelector: "#glaucomaAnteriorChamberDepthVideo",
@@ -513,6 +529,7 @@ const VIDEO_PAGE_SOURCES = {
   },
 
   glaucomaACAGCaseWorkshopVideoPage: {
+    key: "videoMode:glaucomaACAGCaseWorkshopVideoPage",
     videoMode: "triToggle",
     containerSelector: "#glaucomaACAGCaseWorkshopVideoContainer",
     videoSelector: "#glaucomaACAGCaseWorkshopVideo",
@@ -523,6 +540,7 @@ const VIDEO_PAGE_SOURCES = {
   },
 
   glaucomaFundalReflexDiseaseVideoPage: {
+    key: "videoMode:glaucomaFundalReflexDiseaseVideoPage",
     videoMode: "triToggle",
     containerSelector: "#glaucomaFundalReflexDiseaseVideoContainer",
     videoSelector: "#glaucomaFundalReflexDiseaseVideo",
@@ -533,6 +551,7 @@ const VIDEO_PAGE_SOURCES = {
   },
 
   glaucomaOtherOpticNerveDiseasesVideoPage: {
+    key: "videoMode:glaucomaOtherOpticNerveDiseasesVideoPage",
     videoMode: "triToggle",
     containerSelector: "#glaucomaOtherOpticNerveDiseasesVideoContainer",
     videoSelector: "#glaucomaOtherOpticNerveDiseasesVideo",
@@ -543,6 +562,7 @@ const VIDEO_PAGE_SOURCES = {
   },
 
   glaucomaVisualFieldExamVideoPage: {
+    key: "videoMode:glaucomaVisualFieldExamVideoPage",
     videoMode: "triToggle",
     containerSelector: "#glaucomaVisualFieldExamVideoContainer",
     videoSelector: "#glaucomaVisualFieldExamVideo",
@@ -553,10 +573,10 @@ const VIDEO_PAGE_SOURCES = {
   },
 
   glaucomaDirectOphthalmoscopyDiscsAnnotatedVideoPage: {
+    key: "videoMode:glaucomaDirectOphthalmoscopyDiscsAnnotatedVideoPage",
     videoMode: "triToggle",
-    containerSelector:
-      "#glaucomaDirectOphthalmoscopyDiscsAnnotatedVideoContainer",
-    videoSelector: "#glaucomaDirectOphthalmoscopyDiscsAnnotatedVideo",
+    containerSelector: "#directOphthalmoscopyDiscsAnnotatedVideoContainer",
+    videoSelector: "#directOphthalmoscopyDiscsAnnotatedVideo",
     sources: {
       low: "videos/Workshop/Glaucoma/DO_discsannotated_220p.mp4",
       high: "videos/Workshop/Glaucoma/DO_discsannotated_720p.mp4",
@@ -564,9 +584,10 @@ const VIDEO_PAGE_SOURCES = {
   },
 
   glaucomaOpticDiscAnatomyVideoPage: {
+    key: "videoMode:glaucomaOpticDiscAnatomyVideoPage",
     videoMode: "triToggle",
-    containerSelector: "#glaucomaOpticDiscAnatomyVideoContainer",
-    videoSelector: "#glaucomaOpticDiscAnatomyVideo",
+    containerSelector: "#opticDiscAnatomyVideoContainer",
+    videoSelector: "#opticDiscAnatomyVideo",
     sources: {
       low: "videos/Workshop/Glaucoma/BE_opticdiscanatomy_220p.mp4",
       high: "videos/Workshop/Glaucoma/BE_opticdiscanatomy_720p.mp4",
@@ -574,9 +595,10 @@ const VIDEO_PAGE_SOURCES = {
   },
 
   glaucomaMarginVideoPage: {
+    key: "videoMode:glaucomaMarginVideoPage",
     videoMode: "triToggle",
-    containerSelector: "#glaucomaMarginVideoContainer",
-    videoSelector: "#glaucomaMarginVideo",
+    containerSelector: "#marginVideoContainer",
+    videoSelector: "#marginVideo",
     sources: {
       low: "videos/Workshop/Glaucoma/BE_Margin_220p.mp4",
       high: "videos/Workshop/Glaucoma/BE_Margin_720p.mp4",
@@ -584,9 +606,10 @@ const VIDEO_PAGE_SOURCES = {
   },
 
   glaucomaDiscCuppingVideoPage: {
+    key: "videoMode:glaucomaDiscCuppingVideoPage",
     videoMode: "triToggle",
-    containerSelector: "#glaucomaDiscCuppingVideoContainer",
-    videoSelector: "#glaucomaDiscCuppingVideo",
+    containerSelector: "#discCuppingVideoContainer",
+    videoSelector: "#discCuppingVideo",
     sources: {
       low: "videos/Workshop/Glaucoma/BE_disccuppingonly_220p.mp4",
       high: "videos/Workshop/Glaucoma/BE_disccuppingonly_720p.mp4",
@@ -1307,6 +1330,11 @@ export function goToVideosSection(sectionId, opts = {}) {
   } catch {
     window.__videosPendingTarget = null;
   }
+}
+
+export function showVideosPageById(sectionId) {
+  if (!sectionId) return;
+  show(sectionId);
 }
 
 // --- Direct Ophthalmoscopy toolbar wiring + nav-aware pausing ---

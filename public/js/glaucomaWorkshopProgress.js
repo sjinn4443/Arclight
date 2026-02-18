@@ -35,6 +35,7 @@ const PDF_TARGETS = new Set([
 
 let infraWired = false;
 let activeScrollTarget = null;
+const FIT_CLASS = "glaucoma-scroll-fit";
 
 function clampPercent(value) {
   const n = Number(value);
@@ -130,6 +131,36 @@ function setRowProgressUI(row, percent) {
   }
 }
 
+function getSectionLessonTargets(page, sectionKey) {
+  if (!page || !sectionKey) return [];
+  const section = page.querySelector(
+    `.glaucoma-section-card[data-section="${sectionKey}"]`,
+  );
+  if (!section) return [];
+
+  return Array.from(section.querySelectorAll(".lesson-row[data-target]"))
+    .map((row) => row.getAttribute("data-target"))
+    .filter(Boolean);
+}
+
+function updateGlaucomaFolderCompletionStamps(page) {
+  if (!page) return;
+
+  const folderRows = page.querySelectorAll(
+    "#glaucomaWorkshopFolders .glaucoma-folder-row[data-folder]",
+  );
+
+  folderRows.forEach((row) => {
+    const sectionKey = row.getAttribute("data-folder");
+    const targets = getSectionLessonTargets(page, sectionKey);
+    const isComplete =
+      targets.length > 0 &&
+      targets.every((target) => getGlaucomaLessonProgress(target) >= 100);
+
+    row.classList.toggle("is-complete", isComplete);
+  });
+}
+
 export function updateGlaucomaWorkshopProgressBars(root = document) {
   const page =
     root?.querySelector?.("#glaucomaWorkshopPage") ||
@@ -141,6 +172,8 @@ export function updateGlaucomaWorkshopProgressBars(root = document) {
     if (!target) return;
     setRowProgressUI(row, getGlaucomaLessonProgress(target));
   });
+
+  updateGlaucomaFolderCompletionStamps(page);
 }
 
 function isWindowAtBottom(threshold = 8) {
@@ -159,6 +192,108 @@ function maybeCompleteActiveScrollLesson() {
   }
 }
 
+function clearScrollFitState() {
+  document.querySelectorAll(`.${FIT_CLASS}`).forEach((el) => {
+    el.classList.remove(FIT_CLASS);
+  });
+}
+
+function getImageOnlyContentBlock(pageEl) {
+  if (!pageEl) return null;
+  const container = pageEl.querySelector(".container.pupils-container");
+  if (!container) return null;
+
+  const children = Array.from(container.children).filter(
+    (el) =>
+      !el.classList.contains("eyes-topbar") &&
+      el.tagName !== "STYLE" &&
+      el.tagName !== "SCRIPT",
+  );
+  if (children.length !== 1) return null;
+
+  const block = children[0];
+  const imgs = Array.from(block.querySelectorAll(":scope > img"));
+  if (!imgs.length) return null;
+
+  const nonImg = Array.from(block.children).filter(
+    (el) => el.tagName !== "IMG",
+  );
+  if (nonImg.length) return null;
+
+  return block;
+}
+
+function evaluateScrollFitForTarget(target) {
+  const pageEl = document.getElementById(target);
+  if (!pageEl) return;
+  pageEl.classList.remove(FIT_CLASS);
+
+  const block = getImageOnlyContentBlock(pageEl);
+  if (!block) return;
+
+  const container = pageEl.querySelector(".container.pupils-container");
+  const topbar = container?.querySelector(".eyes-topbar");
+
+  const pageStyle = getComputedStyle(pageEl);
+  const topbarHeight = topbar?.getBoundingClientRect().height || 0;
+  const containerStyle = getComputedStyle(container);
+  const blockStyle = getComputedStyle(block);
+
+  let contentHeight = 0;
+  block.querySelectorAll(":scope > img").forEach((img) => {
+    const rect = img.getBoundingClientRect();
+    const style = getComputedStyle(img);
+    contentHeight +=
+      rect.height +
+      (parseFloat(style.marginTop) || 0) +
+      (parseFloat(style.marginBottom) || 0);
+  });
+
+  const totalHeight =
+    (parseFloat(pageStyle.paddingTop) || 0) +
+    (parseFloat(pageStyle.paddingBottom) || 0) +
+    topbarHeight +
+    (parseFloat(containerStyle.paddingTop) || 0) +
+    (parseFloat(containerStyle.paddingBottom) || 0) +
+    (parseFloat(blockStyle.paddingTop) || 0) +
+    (parseFloat(blockStyle.paddingBottom) || 0) +
+    contentHeight;
+
+  if (totalHeight <= (window.innerHeight || 0) - 8) {
+    pageEl.classList.add(FIT_CLASS);
+  }
+}
+
+function scheduleScrollFitEvaluation(target) {
+  if (!target) return;
+  requestAnimationFrame(() => {
+    evaluateScrollFitForTarget(target);
+    maybeCompleteActiveScrollLesson();
+  });
+}
+
+function wireScrollFitRecheckOnImages(target) {
+  const pageEl = document.getElementById(target);
+  if (!pageEl) return;
+  pageEl.querySelectorAll("img").forEach((img) => {
+    if (img.complete) return;
+    img.addEventListener(
+      "load",
+      () => {
+        scheduleScrollFitEvaluation(target);
+      },
+      { once: true },
+    );
+    img.addEventListener(
+      "error",
+      () => {
+        scheduleScrollFitEvaluation(target);
+      },
+      { once: true },
+    );
+  });
+}
+
 export function initializeGlaucomaWorkshopProgressInfra() {
   if (infraWired) return;
   infraWired = true;
@@ -167,6 +302,7 @@ export function initializeGlaucomaWorkshopProgressInfra() {
     const routeName = e?.detail?.routeName;
     if (routeName !== "glaucomaScrollImages") {
       activeScrollTarget = null;
+      clearScrollFitState();
     }
     if (routeName === "glaucomaWorkshop") {
       updateGlaucomaWorkshopProgressBars();
@@ -183,7 +319,8 @@ export function initializeGlaucomaWorkshopProgressInfra() {
 
     if (SCROLL_TARGETS.has(shownId)) {
       activeScrollTarget = shownId;
-      requestAnimationFrame(maybeCompleteActiveScrollLesson);
+      scheduleScrollFitEvaluation(shownId);
+      wireScrollFitRecheckOnImages(shownId);
       return;
     }
 
@@ -200,4 +337,11 @@ export function initializeGlaucomaWorkshopProgressInfra() {
   window.addEventListener("resize", maybeCompleteActiveScrollLesson, {
     passive: true,
   });
+  window.addEventListener(
+    "resize",
+    () => {
+      scheduleScrollFitEvaluation(activeScrollTarget);
+    },
+    { passive: true },
+  );
 }
