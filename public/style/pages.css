@@ -1793,6 +1793,12 @@ select.onb-input.has-value + .onb-select-caret {
 }
 
 /* Glaucoma workshop: folder emphasis + compact lesson rows */
+#glaucomaWorkshopPage .pupil-level__cap.pupil-level__cap--glaucoma-workshop {
+  background: linear-gradient(90deg, var(--cap-from) 0%, #ff7600 105%);
+  font-size: 13px;
+  font-weight: 600;
+}
+
 #glaucomaWorkshopPage.glaucoma-folder-open
   #glaucomaWorkshopFolders
   .glaucoma-folder-row {
