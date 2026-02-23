@@ -983,6 +983,25 @@ select.onb-input.has-value {
   border-radius: inherit;
 }
 
+/* Prevent image save/share callout on dashboard card long-press (mobile). */
+#unifiedDashboard .category-card,
+#unifiedDashboard .category-card__bg,
+#unifiedDashboard .module-card img {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+#unifiedDashboard .category-card__bg,
+#unifiedDashboard .module-card img {
+  -webkit-user-drag: none;
+  user-drag: none;
+}
+
+#unifiedDashboard .category-card__bg {
+  pointer-events: none;
+}
+
 /* title overlay (on top of image + gradient) */
 .category-card__title {
   position: absolute;

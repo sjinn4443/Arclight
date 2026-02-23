@@ -17,6 +17,17 @@ export function initializeDashboard() {
   if (!root || wired.has(root)) return;
   wired.add(root);
 
+  // On touch devices, block long-press context menus on clickable dashboard cards.
+  if (window.matchMedia?.("(pointer: coarse)")?.matches) {
+    root.addEventListener("contextmenu", (e) => {
+      const target = e.target;
+      if (!(target instanceof Element)) return;
+      if (target.closest(".category-card, .module-card")) {
+        e.preventDefault();
+      }
+    });
+  }
+
   // 1) Greeting rotation by refresh count
   const helloEl = root.querySelector(".hello");
   const username = (localStorage.getItem("username") || "").trim();
