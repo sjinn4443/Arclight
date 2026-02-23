@@ -21,23 +21,28 @@ function formatVersionDate(isoDate) {
 }
 
 async function fetchVersionDateIso() {
-  try {
-    const res = await fetch("/api/app/version", {
-      credentials: "same-origin",
-      cache: "no-store",
-    });
-    if (!res.ok) return null;
+  const endpoints = ["/api/app/version", "/version.json"];
 
-    const payload = await res.json();
-    const value =
-      typeof payload?.versionDate === "string"
-        ? payload.versionDate.slice(0, 10)
-        : "";
-    return /^\d{4}-\d{2}-\d{2}$/.test(value) ? value : null;
-  } catch (err) {
-    console.error("[menu] version date fetch failed:", err);
-    return null;
+  for (const url of endpoints) {
+    try {
+      const res = await fetch(url, {
+        credentials: "same-origin",
+        cache: "no-store",
+      });
+      if (!res.ok) continue;
+
+      const payload = await res.json();
+      const value =
+        typeof payload?.versionDate === "string"
+          ? payload.versionDate.slice(0, 10)
+          : "";
+      if (/^\d{4}-\d{2}-\d{2}$/.test(value)) return value;
+    } catch (err) {
+      console.error(`[menu] version date fetch failed (${url}):`, err);
+    }
   }
+
+  return null;
 }
 
 async function getVersionDateIso() {

@@ -3,6 +3,57 @@ const fs = require("fs-extra");
 const path = require("path");
 const CleanCSS = require("clean-css");
 const htmlMinifierTerser = require("html-minifier-terser");
+const { execSync } = require("child_process");
+
+function toIsoDateString(value) {
+  if (!value || typeof value !== "string") return null;
+  const trimmed = value.trim();
+  if (!trimmed) return null;
+  if (/^\d{4}-\d{2}-\d{2}$/.test(trimmed)) return trimmed;
+
+  const parsed = new Date(trimmed);
+  if (Number.isNaN(parsed.getTime())) return null;
+  return parsed.toISOString().slice(0, 10);
+}
+
+function resolveBuildVersionDate() {
+  const envCandidates = [
+    process.env.APP_VERSION_DATE,
+    process.env.APP_PUSH_DATE,
+    process.env.SOURCE_COMMIT_DATE,
+    process.env.COMMIT_DATE,
+    process.env.SOURCE_DATE_EPOCH,
+    process.env.RAILWAY_DEPLOYMENT_CREATED_AT,
+  ];
+
+  for (const candidate of envCandidates) {
+    // SOURCE_DATE_EPOCH can be numeric (seconds)
+    if (/^\d+$/.test(String(candidate || "").trim())) {
+      const epochMs = Number(candidate) * 1000;
+      if (!Number.isNaN(epochMs)) {
+        return new Date(epochMs).toISOString().slice(0, 10);
+      }
+    }
+
+    const normalized = toIsoDateString(candidate);
+    if (normalized) return normalized;
+  }
+
+  try {
+    const gitIso = execSync("git log -1 --format=%cI", {
+      cwd: path.join(__dirname, ".."),
+      stdio: ["ignore", "pipe", "ignore"],
+      encoding: "utf8",
+    }).trim();
+    const normalized = toIsoDateString(gitIso);
+    if (normalized) return normalized;
+  } catch {
+    // Ignore git lookup errors in environments where .git metadata is unavailable.
+  }
+
+  // Fallback to build date so deployed artifacts still have a stable version date.
+  return new Date().toISOString().slice(0, 10);
+}
 
 // Helper function to recursively find files with a given extension
 async function findFiles(dir, extension) {
@@ -28,6 +79,7 @@ const build = async () => {
 
   const distPath = path.join(__dirname, "..", "dist");
   const publicPath = path.join(__dirname, "..", "public");
+  const versionDate = resolveBuildVersionDate();
 
   try {
     // 1. Clean the 'dist' directory
@@ -35,6 +87,11 @@ const build = async () => {
 
     // 2. Copy 'public' directory contents to 'dist'
     await fs.copy(publicPath, distPath);
+
+    // 2b. Write build/version metadata for runtime consumers (Railway-safe).
+    await fs.writeJson(path.join(distPath, "version.json"), {
+      versionDate,
+    });
 
     // 3. Remove original js files from dist (esbuild will create new ones)
     // This ensures we don't have duplicate or unminified JS files from the copy step.

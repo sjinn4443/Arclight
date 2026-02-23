@@ -33,6 +33,58 @@ function toIsoDateString(value) {
   return parsed.toISOString().slice(0, 10);
 }
 
+function getIsoDateFromMtime(filePath) {
+  try {
+    const stat = fs.statSync(filePath);
+    if (!stat || Number.isNaN(stat.mtimeMs)) return null;
+    return new Date(stat.mtimeMs).toISOString().slice(0, 10);
+  } catch {
+    return null;
+  }
+}
+
+function resolveVersionDateFromVersionFile() {
+  const candidatePaths = [
+    path.join(staticRoot, "version.json"),
+    path.join(__dirname, "version.json"),
+  ];
+
+  for (const p of candidatePaths) {
+    try {
+      const raw = fs.readFileSync(p, "utf8");
+      const payload = JSON.parse(raw);
+      const normalized = toIsoDateString(payload?.versionDate);
+      if (normalized) return normalized;
+    } catch {
+      // Ignore invalid/missing file and keep searching.
+    }
+  }
+
+  return null;
+}
+
+function resolveVersionDateFromStaticFiles() {
+  const candidatePaths = [
+    path.join(staticRoot, "index.html"),
+    path.join(staticRoot, "js", "main.js"),
+    path.join(staticRoot, "js", "menu.js"),
+    path.join(staticRoot, "html", "menu.html"),
+  ];
+
+  let latestMs = -1;
+  for (const p of candidatePaths) {
+    try {
+      const stat = fs.statSync(p);
+      if (stat.mtimeMs > latestMs) latestMs = stat.mtimeMs;
+    } catch {
+      // Ignore missing files.
+    }
+  }
+
+  if (latestMs < 0) return null;
+  return new Date(latestMs).toISOString().slice(0, 10);
+}
+
 function resolveAppVersionDate() {
   const envCandidates = [
     process.env.APP_VERSION_DATE,
@@ -57,6 +109,18 @@ function resolveAppVersionDate() {
   } catch {
     // Ignore git lookup errors (e.g. .git missing in some deploys).
   }
+
+  const versionFileDate = resolveVersionDateFromVersionFile();
+  if (versionFileDate) return versionFileDate;
+
+  // Final fallback for environments where .git is unavailable at runtime:
+  // use the newest timestamp among shipped static assets.
+  const staticDate = resolveVersionDateFromStaticFiles();
+  if (staticDate) return staticDate;
+
+  // Last-resort fallback for unusual layouts.
+  const packageDate = getIsoDateFromMtime(path.join(__dirname, "package.json"));
+  if (packageDate) return packageDate;
 
   return null;
 }
