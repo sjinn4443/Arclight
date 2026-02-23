@@ -1,5 +1,9 @@
 const WORKSHOP_PROGRESS_PREFIX = "glaucomaWorkshop:progress:";
 const WORKSHOP_PROGRESS_EVENT = "glaucomaWorkshop:progress-changed";
+const WORKSHOP_FOLDER_COMPLETED_PREFIX = "glaucomaWorkshop:folderCompletedAt:";
+const FOLDER_COMPLETE_STAR_SVG =
+  '<svg class="glaucoma-folder-complete-star" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 2.5l2.93 5.94 6.56.95-4.74 4.62 1.12 6.53L12 17.46l-5.87 3.08 1.12-6.53L2.5 9.39l6.56-.95L12 2.5z"/></svg>';
+const FOLDER_COMPLETE_DATE_CLASS = "glaucoma-folder-complete-rank-date";
 
 const SCROLL_TARGETS = new Set([
   "glaucomaWhatIs",
@@ -43,6 +47,18 @@ function clampPercent(value) {
   return Math.max(0, Math.min(100, n));
 }
 
+function clampTimestamp(value) {
+  const n = Number(value);
+  if (!Number.isFinite(n) || n <= 0) return 0;
+  return Math.round(n);
+}
+
+function clampPositiveInt(value) {
+  const n = Number(value);
+  if (!Number.isFinite(n) || n <= 0) return 0;
+  return Math.floor(n);
+}
+
 function readJSON(key) {
   try {
     return JSON.parse(localStorage.getItem(key) || "null");
@@ -65,16 +81,157 @@ function videoProgressKey(target) {
   return `videoProgress:${target}`;
 }
 
-function readPercentFromStorageKey(key) {
+function folderCompletedAtKey(sectionKey) {
+  return `${WORKSHOP_FOLDER_COMPLETED_PREFIX}${sectionKey}`;
+}
+
+function readProgressFromStorageKey(key) {
   const data = readJSON(key);
-  return clampPercent(data?.percent ?? 0);
+  return {
+    percent: clampPercent(data?.percent ?? 0),
+    updatedAt: clampTimestamp(data?.updatedAt),
+  };
+}
+
+function getGlaucomaLessonProgressSnapshot(target) {
+  if (!target) return { percent: 0, updatedAt: 0 };
+
+  const custom = readProgressFromStorageKey(workshopProgressKey(target));
+  const video = readProgressFromStorageKey(videoProgressKey(target));
+
+  if (custom.percent > video.percent) return custom;
+  if (video.percent > custom.percent) return video;
+
+  return {
+    percent: custom.percent,
+    updatedAt: Math.max(custom.updatedAt, video.updatedAt),
+  };
+}
+
+function readStoredFolderCompletion(sectionKey) {
+  if (!sectionKey) return { count: 0, completedAt: 0 };
+  const data = readJSON(folderCompletedAtKey(sectionKey));
+  const completedAt = clampTimestamp(data?.completedAt);
+  const countRaw = clampPositiveInt(data?.count);
+
+  // Backward compatibility: old format stored only completedAt.
+  const count = countRaw || (completedAt ? 1 : 0);
+  return { count, completedAt };
+}
+
+function writeStoredFolderCompletion(sectionKey, { count, completedAt }) {
+  if (!sectionKey) return;
+  const safeCount = clampPositiveInt(count);
+  const safeTimestamp = clampTimestamp(completedAt);
+  if (!safeCount || !safeTimestamp) return;
+  writeJSON(folderCompletedAtKey(sectionKey), {
+    count: safeCount,
+    completedAt: safeTimestamp,
+  });
+}
+
+function formatFolderCompletedDate(timestamp) {
+  const safeTimestamp = clampTimestamp(timestamp);
+  if (!safeTimestamp) return "";
+
+  const date = new Date(safeTimestamp);
+  if (Number.isNaN(date.getTime())) return "";
+
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const year = date.getFullYear();
+  return `${day}.${month}.${year}`;
+}
+
+function formatOrdinal(n) {
+  const num = Math.trunc(Number(n));
+  if (!Number.isFinite(num) || num <= 0) return "";
+
+  const mod100 = num % 100;
+  if (mod100 >= 11 && mod100 <= 13) return `${num}th`;
+
+  const mod10 = num % 10;
+  if (mod10 === 1) return `${num}st`;
+  if (mod10 === 2) return `${num}nd`;
+  if (mod10 === 3) return `${num}rd`;
+  return `${num}th`;
+}
+
+function clearFolderCompletionMeta(metaEl) {
+  if (!metaEl) return;
+  metaEl.textContent = "";
+  metaEl.classList.remove("glaucoma-folder-complete-meta");
+}
+
+function setFolderCompletionMeta(row, isComplete) {
+  const meta = row?.querySelector(".lesson-meta");
+  if (!meta) return;
+
+  if (!isComplete) {
+    clearFolderCompletionMeta(meta);
+    return;
+  }
+
+  const completionMarkup = FOLDER_COMPLETE_STAR_SVG;
+  if (meta.innerHTML !== completionMarkup) {
+    meta.innerHTML = completionMarkup;
+  }
+  meta.classList.add("glaucoma-folder-complete-meta");
+}
+
+function getFolderCompletionDateElement(row) {
+  if (!row) return null;
+  const existing = row.querySelector(`.${FOLDER_COMPLETE_DATE_CLASS}`);
+  if (existing) return existing;
+
+  const lessonMain = row.querySelector(".lesson-main");
+  if (!lessonMain) return null;
+
+  const dateEl = document.createElement("span");
+  dateEl.className = FOLDER_COMPLETE_DATE_CLASS;
+  lessonMain.appendChild(dateEl);
+  return dateEl;
+}
+
+function clearFolderCompletionDate(row) {
+  const dateEl = row?.querySelector(`.${FOLDER_COMPLETE_DATE_CLASS}`);
+  if (!dateEl) return;
+  dateEl.remove();
+}
+
+function setFolderCompletionDate(
+  row,
+  isComplete,
+  completedAt,
+  completionCount,
+) {
+  if (!isComplete) {
+    clearFolderCompletionDate(row);
+    return;
+  }
+
+  const ordinal = formatOrdinal(completionCount);
+  const completedDate = formatFolderCompletedDate(completedAt);
+  if (!ordinal || !completedDate) {
+    clearFolderCompletionDate(row);
+    return;
+  }
+
+  const dateEl = getFolderCompletionDateElement(row);
+  if (!dateEl) return;
+
+  const label = `${ordinal} ${completedDate}`;
+  if (dateEl.textContent !== label) {
+    dateEl.textContent = label;
+  }
+
+  const ariaLabel = `Completed ${ordinal} time on ${completedDate}`;
+  dateEl.setAttribute("aria-label", ariaLabel);
+  dateEl.title = ariaLabel;
 }
 
 export function getGlaucomaLessonProgress(target) {
-  if (!target) return 0;
-  const customPercent = readPercentFromStorageKey(workshopProgressKey(target));
-  const videoPercent = readPercentFromStorageKey(videoProgressKey(target));
-  return Math.max(customPercent, videoPercent);
+  return getGlaucomaLessonProgressSnapshot(target).percent;
 }
 
 export function setGlaucomaLessonProgress(
@@ -89,8 +246,13 @@ export function setGlaucomaLessonProgress(
   const prevObj = readJSON(key) || {};
   const prev = clampPercent(prevObj?.percent ?? 0);
   const finalPercent = mode === "replace" ? next : Math.max(prev, next);
+  const shouldRefreshCompletedAt = next >= 100 && finalPercent >= 100;
 
-  if (finalPercent !== prev || !Number.isFinite(prevObj?.percent)) {
+  if (
+    finalPercent !== prev ||
+    !Number.isFinite(prevObj?.percent) ||
+    shouldRefreshCompletedAt
+  ) {
     writeJSON(key, {
       percent: finalPercent,
       updatedAt: Date.now(),
@@ -153,11 +315,50 @@ function updateGlaucomaFolderCompletionStamps(page) {
   folderRows.forEach((row) => {
     const sectionKey = row.getAttribute("data-folder");
     const targets = getSectionLessonTargets(page, sectionKey);
+    const targetProgress = targets.map((target) =>
+      getGlaucomaLessonProgressSnapshot(target),
+    );
     const isComplete =
       targets.length > 0 &&
-      targets.every((target) => getGlaucomaLessonProgress(target) >= 100);
+      targetProgress.every((state) => state.percent >= 100);
+
+    const latestLessonCompletedAt = targetProgress.reduce(
+      (latest, state) => Math.max(latest, state.updatedAt),
+      0,
+    );
+    const stored = readStoredFolderCompletion(sectionKey);
+    let completionCount = stored.count;
+    let completedAt = stored.completedAt;
+    let shouldPersist = false;
+
+    if (isComplete) {
+      if (!completionCount || !completedAt) {
+        completionCount = 1;
+        completedAt = latestLessonCompletedAt || Date.now();
+        shouldPersist = true;
+      } else {
+        const allLessonsRecompletedAfterLastFolderCompletion =
+          targetProgress.length > 0 &&
+          targetProgress.every((state) => state.updatedAt > completedAt);
+
+        if (allLessonsRecompletedAfterLastFolderCompletion) {
+          completionCount += 1;
+          completedAt = latestLessonCompletedAt || Date.now();
+          shouldPersist = true;
+        }
+      }
+    }
+
+    if (shouldPersist) {
+      writeStoredFolderCompletion(sectionKey, {
+        count: completionCount,
+        completedAt,
+      });
+    }
 
     row.classList.toggle("is-complete", isComplete);
+    setFolderCompletionMeta(row, isComplete);
+    setFolderCompletionDate(row, isComplete, completedAt, completionCount);
   });
 }
 

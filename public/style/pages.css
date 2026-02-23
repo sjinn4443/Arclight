@@ -1825,18 +1825,50 @@ select.onb-input.has-value + .onb-select-caret {
 
 #glaucomaWorkshopPage
   #glaucomaWorkshopFolders
-  .glaucoma-folder-row.is-complete::after {
-  content: "";
-  position: absolute;
-  top: -3px;
-  right: 1px;
-  width: clamp(72px, 19vw, 84px);
-  height: clamp(72px, 19vw, 84px);
-  transform: none;
-  background: url("/images/icon/eyes/moduleicons/primary_stamp.webp") center /
-    contain no-repeat;
-  pointer-events: none;
-  z-index: 2;
+  .glaucoma-folder-row
+  .lesson-main {
+  gap: 0;
+}
+
+#glaucomaWorkshopPage
+  #glaucomaWorkshopFolders
+  .glaucoma-folder-row
+  .lesson-top {
+  width: auto;
+}
+
+#glaucomaWorkshopPage
+  #glaucomaWorkshopFolders
+  .glaucoma-folder-row
+  .lesson-meta.glaucoma-folder-complete-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  white-space: nowrap;
+  color: #15e115;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+#glaucomaWorkshopPage #glaucomaWorkshopFolders .glaucoma-folder-complete-star {
+  width: 12px;
+  height: 12px;
+  flex: 0 0 12px;
+  display: inline-block;
+}
+
+#glaucomaWorkshopPage
+  #glaucomaWorkshopFolders
+  .glaucoma-folder-complete-rank-date {
+  display: block;
+  margin-left: 26px;
+  margin-top: 18px;
+  margin-bottom: -37px;
+  color: #bbb;
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
 }
 
 #glaucomaWorkshopPage .glaucoma-section-card,
