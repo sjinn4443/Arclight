@@ -281,7 +281,9 @@ document.addEventListener("DOMContentLoaded", () => {
         splashContainer.querySelector(".logo-one.mid-only") ||
         splashContainer.querySelector(".logo-one");
 
-      const MAX_MAIN_WAIT_MS = 8000;
+      // First splash animation is ~4.7s (3.9s spin + 0.8s shift).
+      // Keep post-animation pause to at most 1s before language install.
+      const MAX_MAIN_WAIT_MS = 4700 + 1000;
       const MID_EXPECTED_MS = 4700 + 300; // mid splash
       let finished = false;
 
