@@ -10,6 +10,64 @@ import {
 } from "./location-service.js";
 
 let overlay, closeBtn;
+let cachedVersionDateIso = null;
+let versionDateRequest = null;
+
+function formatVersionDate(isoDate) {
+  if (!isoDate || typeof isoDate !== "string") return null;
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(isoDate);
+  if (!m) return null;
+  return `${m[3]}.${m[2]}.${m[1]}`;
+}
+
+async function fetchVersionDateIso() {
+  try {
+    const res = await fetch("/api/app/version", {
+      credentials: "same-origin",
+      cache: "no-store",
+    });
+    if (!res.ok) return null;
+
+    const payload = await res.json();
+    const value =
+      typeof payload?.versionDate === "string"
+        ? payload.versionDate.slice(0, 10)
+        : "";
+    return /^\d{4}-\d{2}-\d{2}$/.test(value) ? value : null;
+  } catch (err) {
+    console.error("[menu] version date fetch failed:", err);
+    return null;
+  }
+}
+
+async function getVersionDateIso() {
+  if (cachedVersionDateIso) return cachedVersionDateIso;
+  if (!versionDateRequest) {
+    versionDateRequest = fetchVersionDateIso().finally(() => {
+      versionDateRequest = null;
+    });
+  }
+  const value = await versionDateRequest;
+  if (value) cachedVersionDateIso = value;
+  return value;
+}
+
+async function renderMenuVersionDate() {
+  const el = overlay?.querySelector("#menuVersionDate");
+  if (!el) return;
+
+  const versionDateIso = await getVersionDateIso();
+  const formatted = formatVersionDate(versionDateIso);
+
+  if (!formatted) {
+    el.textContent = "ver --.--.----";
+    el.removeAttribute("datetime");
+    return;
+  }
+
+  el.textContent = `ver ${formatted}`;
+  el.dateTime = versionDateIso;
+}
 
 // --- Render the profile location from localStorage (prefer precise) ---
 function renderProfileLocation() {
@@ -96,6 +154,7 @@ export async function initializeMenu() {
   if (nameEl) {
     nameEl.textContent = name || "Your name";
   }
+  void renderMenuVersionDate();
 
   // 5b) Wire the "i" info button to open the info popup
   const infoBtn = overlay.querySelector(".info-icon");
@@ -174,6 +233,7 @@ export function openMenu() {
 
   // D) Call renderProfileLocation at the end of openMenu() to ensure it's updated when menu opens
   renderProfileLocation();
+  void renderMenuVersionDate();
 
   document.body.setAttribute("data-menu-open", "true");
   overlay.classList.remove("hidden");
@@ -201,13 +261,13 @@ function wireMenuSearchToggle(panelRoot) {
   if (!searchWrap || !toggleBtn) return;
   if (toggleBtn.dataset.wired === "1") return;
   toggleBtn.dataset.wired = "1";
+  const input = searchWrap.querySelector('input[type="search"]');
 
   toggleBtn.addEventListener("click", () => {
     if (searchWrap.classList.contains("search-collapsed")) {
       searchWrap.classList.remove("search-collapsed");
       searchWrap.classList.add("search-expanded");
       // optional: focus input
-      const input = searchWrap.querySelector('input[type="search"]');
       input?.focus();
     } else {
       searchWrap.classList.remove("search-expanded");

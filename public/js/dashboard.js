@@ -6,26 +6,6 @@ import { loadPage } from "./navigation.js";
 import { openMenu } from "./menu.js";
 
 const wired = new WeakSet();
-const DASHBOARD_DATE_FORMAT = {
-  day: "2-digit",
-  month: "2-digit",
-  year: "numeric",
-};
-
-function renderTodayDate(root) {
-  const dateEl = root?.querySelector("#dashboardTodayDate");
-  if (!dateEl) return;
-
-  const today = new Date();
-  const formatted = new Intl.DateTimeFormat(
-    "en-GB",
-    DASHBOARD_DATE_FORMAT,
-  ).format(today);
-
-  dateEl.textContent = formatted;
-  dateEl.dateTime = today.toISOString().slice(0, 10);
-}
-
 /**
  * Initializes the unified dashboard page.
  * Sets up user greetings, event listeners for menu button, category cards,
@@ -68,9 +48,6 @@ export function initializeDashboard() {
       helloEl.appendChild(img);
     }
   }
-  renderTodayDate(root);
-  document.addEventListener("language:updated", () => renderTodayDate(root));
-
   // 2) ☰ → Menu route (overlay lives in menu.html)
   const menuBtn = root.querySelector(".menuBtn");
   if (menuBtn) {

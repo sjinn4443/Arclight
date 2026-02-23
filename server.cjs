@@ -7,6 +7,7 @@ const session = require("express-session");
 const http = require("http");
 const fs = require("fs"); // Import fs for file operations
 const fsp = require("fs").promises; // Import fs.promises for async file operations
+const { execSync } = require("child_process");
 
 // Bind to the dynamic port Railway gives you; fall back only if truly absent.
 const HOST = process.env.HOST || "0.0.0.0";
@@ -20,6 +21,47 @@ const serveDist =
 const app = express();
 
 const staticRoot = path.join(__dirname, prod || serveDist ? "dist" : "public");
+
+function toIsoDateString(value) {
+  if (!value || typeof value !== "string") return null;
+  const trimmed = value.trim();
+  if (!trimmed) return null;
+  if (/^\d{4}-\d{2}-\d{2}$/.test(trimmed)) return trimmed;
+
+  const parsed = new Date(trimmed);
+  if (Number.isNaN(parsed.getTime())) return null;
+  return parsed.toISOString().slice(0, 10);
+}
+
+function resolveAppVersionDate() {
+  const envCandidates = [
+    process.env.APP_VERSION_DATE,
+    process.env.APP_PUSH_DATE,
+    process.env.SOURCE_COMMIT_DATE,
+    process.env.COMMIT_DATE,
+  ];
+
+  for (const candidate of envCandidates) {
+    const normalized = toIsoDateString(candidate);
+    if (normalized) return normalized;
+  }
+
+  try {
+    const gitIso = execSync("git log -1 --format=%cI", {
+      cwd: __dirname,
+      stdio: ["ignore", "pipe", "ignore"],
+      encoding: "utf8",
+    }).trim();
+    const normalized = toIsoDateString(gitIso);
+    if (normalized) return normalized;
+  } catch {
+    // Ignore git lookup errors (e.g. .git missing in some deploys).
+  }
+
+  return null;
+}
+
+const appVersionDate = resolveAppVersionDate();
 
 // Use the port from the environment variable.
 // In production (Railway/Docker), default to 8080 if PORT is absent.
@@ -71,6 +113,11 @@ async function initStorageWithRetry() {
 initStorageWithRetry();
 
 // --- Public app APIs ---
+app.get("/api/app/version", (req, res) => {
+  res.set("Cache-Control", "no-store");
+  res.json({ versionDate: appVersionDate });
+});
+
 app.post("/api/app/profile", async (req, res) => {
   try {
     await storage.saveProfile(req.body || {});
