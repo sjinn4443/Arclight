@@ -337,4 +337,38 @@ export function initializeChildhoodEyeScreeningWorkshop() {
       });
     }
   });
+
+  // 4. Fundal reflex folder toggle (inside Childhood Eye Screening section)
+  const fundalFolderRow = document.getElementById("fundalReflexFolderRow");
+  const fundalSubRows = document.getElementById("fundalReflexSubRows");
+  if (
+    fundalFolderRow &&
+    fundalSubRows &&
+    fundalFolderRow.dataset.wiredFolder !== "1"
+  ) {
+    fundalFolderRow.dataset.wiredFolder = "1";
+    const cta = fundalFolderRow.querySelector(".lesson-cta");
+
+    const setOpenState = (open) => {
+      fundalSubRows.style.display = open ? "" : "none";
+      fundalFolderRow.setAttribute("aria-expanded", open ? "true" : "false");
+      if (cta) cta.textContent = open ? "Close ^" : "See all >";
+      page.classList.toggle("fundal-reflex-open", open);
+    };
+
+    // default closed
+    setOpenState(false);
+
+    const toggleOpenState = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const isOpen = fundalSubRows.style.display !== "none";
+      setOpenState(!isOpen);
+    };
+
+    fundalFolderRow.addEventListener("click", toggleOpenState);
+    fundalFolderRow.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") toggleOpenState(e);
+    });
+  }
 }

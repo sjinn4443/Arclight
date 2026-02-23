@@ -1903,3 +1903,35 @@ select.onb-input.has-value + .onb-select-caret {
   .lesson-cta {
   margin-left: -65px;
 }
+
+#childhoodEyeScreeningWorkshopPage
+  .childhood-section-card[data-section="childhoodEyeScreening"]
+  .lesson-row.childhood-fundal-subrow {
+  width: 70%;
+}
+
+#childhoodEyeScreeningWorkshopPage
+  .childhood-section-card[data-section="childhoodEyeScreening"]
+  .lesson-row.childhood-fundal-subrow
+  .lesson-progress {
+  width: 130px;
+}
+
+#childhoodEyeScreeningWorkshopPage
+  .childhood-section-card[data-section="childhoodEyeScreening"]
+  .lesson-row.childhood-fundal-subrow
+  .lesson-cta {
+  margin-left: -91px;
+}
+
+#childhoodEyeScreeningWorkshopPage.fundal-reflex-open
+  .childhood-section-card[data-section="childhoodEyeScreening"]
+  .lesson-row {
+  opacity: 0.72;
+}
+
+#childhoodEyeScreeningWorkshopPage.fundal-reflex-open
+  .childhood-section-card[data-section="childhoodEyeScreening"]
+  .lesson-row.childhood-fundal-subrow {
+  opacity: 1;
+}

@@ -1865,6 +1865,10 @@ input:checked + .slider:before {
   background-image: url("/images/icon/eyes/moduleicons/primary_flash.webp");
 }
 
+#childhoodEyeScreeningWorkshopPage .lesson-row--folder .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/primary_folder.webp");
+}
+
 /* Interactive Learning page – custom module icons */
 #interactiveLearningPage
   .pupil-level--primary
