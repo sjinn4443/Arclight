@@ -677,7 +677,7 @@ input {
 
   #pupilsPage .icon.menuBtn,
   .page.pupils-like .icon.menuBtn {
-    font-size: 17px;
+    font-size: 20px;
     cursor: pointer;
     display: inline-flex;
     align-items: centre;
@@ -712,4 +712,11 @@ input {
   .see-all-toggle {
     margin-left: 12vw;
   }
+}
+
+/* Force a fixed back icon size across breakpoints. */
+#backBtnGlobal::before {
+  width: 33px;
+  height: 33px;
+  margin: 0;
 }

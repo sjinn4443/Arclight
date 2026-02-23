@@ -1258,7 +1258,7 @@ select.onb-input.has-value {
 /* Title */
 #pupilsPage .eyes-topbar__title,
 .pupils-like .eyes-topbar__title {
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 600;
   color: #111;
   line-height: 1;
@@ -1274,7 +1274,7 @@ select.onb-input.has-value {
 
 #pupilsPage .icon.menuBtn,
 .pupils-like .icon.menuBtn {
-  font-size: 17px;
+  font-size: 20px;
   cursor: pointer;
   display: inline-flex;
   align-items: centre;
@@ -1585,7 +1585,7 @@ select.onb-input.has-value + .onb-select-caret {
 #pupilsPage .eyes-topbar__title,
 .pupils-like .eyes-topbar__title {
   position: fixed;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 600;
   color: #000;
   margin: 0 0 0 55px; /* left indent like Eyes */
