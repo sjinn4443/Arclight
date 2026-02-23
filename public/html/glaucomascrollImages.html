@@ -1087,6 +1087,7 @@
         position: relative;
         width: 320px;
         height: min(62vh, 520px);
+        --acd-stage-shift-y: 40px;
         background: #000;
         border-radius: 16px;
         overflow: hidden;
@@ -1098,7 +1099,7 @@
       #glaucomaACDInteractive #acdEyesImg {
         position: absolute;
         left: 50%;
-        top: 52%;
+        top: calc(46% + var(--acd-stage-shift-y));
         transform: translate(-50%, -50%);
         width: min(92%, 720px);
         height: auto;
@@ -1109,7 +1110,7 @@
       #glaucomaACDInteractive #acdCrescentRight {
         position: absolute;
         left: 236px;
-        top: 246px;
+        top: calc(218px + var(--acd-stage-shift-y));
         transform: translate(-50%, -50%) scaleX(-1);
         width: 50px;
         height: 32px;
@@ -1137,7 +1138,7 @@
       #glaucomaACDInteractive #acdShadowImg {
         position: absolute;
         left: 214px;
-        top: 65px;
+        top: calc(65px + var(--acd-stage-shift-y));
         transform: translate(-50%, -50%);
         width: 29px;
         height: 17px;
@@ -1157,25 +1158,27 @@
         display: none;
       }
       #glaucomaACDInteractive #acdNormalFlashImg {
-        top: 46px;
+        top: calc(46px + var(--acd-stage-shift-y));
         left: -31px;
-        width: 80px;
+        width: 53px;
         z-index: 999;
+        top: 78px;
       }
       #glaucomaACDInteractive #acdNormalArrowImg {
-        top: 60px;
+        top: calc(60px + var(--acd-stage-shift-y));
         left: -48px;
         width: 192px;
         transform: scaleX(-1);
       }
       #glaucomaACDInteractive #acdShallowFlashImg {
-        top: 47px;
-        right: -33px;
-        width: 83px;
+        top: calc(47px + var(--acd-stage-shift-y));
+        right: -16px;
+        width: 53px;
         z-index: 999;
+        top: 78px;
       }
       #glaucomaACDInteractive #acdShallowArrowImg {
-        top: 65px;
+        top: calc(65px + var(--acd-stage-shift-y));
         right: -23px;
         width: 124px;
       }
@@ -1199,8 +1202,8 @@
       /* flashlight OFF (pickup) */
       #glaucomaACDInteractive #acdFlashlightOff {
         position: absolute;
-        top: 56%;
-        left: 95%;
+        top: calc(276px + var(--acd-stage-shift-y));
+        left: 94%;
         transform: translate(-50%, -50%);
         width: 14px;
         height: auto;
@@ -1215,7 +1218,7 @@
       /* speech bubble */
       #glaucomaACDInteractive #acdBubble {
         position: absolute;
-        top: 26%;
+        top: calc(26% + var(--acd-stage-shift-y));
         left: 72%;
         transform: translate(-50%, -50%);
         width: 40vw;
@@ -1243,7 +1246,7 @@
       /* flashlight ON (left + right), initially hidden */
       #glaucomaACDInteractive .acd-flashlight {
         position: absolute;
-        top: 304px;
+        top: calc(276px + var(--acd-stage-shift-y));
         width: 94px;
         height: auto;
         transform: translate(-50%, -50%);
@@ -1276,6 +1279,10 @@
         pointer-events: none;
         white-space: nowrap;
         text-align: center;
+      }
+
+      #glaucomaACDInteractive .acd-label {
+        top: calc(53px + var(--acd-stage-shift-y));
       }
 
       /* label images */
@@ -1378,7 +1385,7 @@
             aria-hidden="true"
             draggable="false"
           />
-          <span class="acd-label-text">Deep<br />Anterior<br />Chamber</span>
+          <span class="acd-label-text">Deep AC</span>
         </div>
 
         <div id="acdLabelRight" class="acd-label">
@@ -1390,7 +1397,7 @@
             aria-hidden="true"
             draggable="false"
           />
-          <span class="acd-label-text">Shallow<br />Anterior<br />Chamber</span>
+          <span class="acd-label-text">Shallow AC</span>
         </div>
 
         <!-- pickup flashlight (off) -->

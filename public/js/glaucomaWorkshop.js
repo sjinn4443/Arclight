@@ -681,7 +681,27 @@ function initGlaucomaACDInteractive() {
 
       if (hint) hint.style.opacity = "1";
 
+      // Keep pickup flashlight aligned with the default RIGHT flashlight position.
+      const previewBaseInset = rect.width * 0.06;
+      const previewTravel = rect.width * 0.2;
+      const previewRightX = rect.width - previewBaseInset + previewTravel * 0;
+      const previewWidth =
+        parseFloat(getComputedStyle(flashlightRight).width) ||
+        parseFloat(getComputedStyle(flashlightLeft).width) ||
+        94;
+      const previewHalf = previewWidth / 2;
+      const previewRightClamped = clamp(
+        previewRightX,
+        previewHalf,
+        rect.width - previewHalf,
+      );
+      const previewTopPx = parseFloat(getComputedStyle(flashlightRight).top);
+
       flashlightOff.style.display = "";
+      flashlightOff.style.left = `${previewRightClamped}px`;
+      if (Number.isFinite(previewTopPx)) {
+        flashlightOff.style.top = `${previewTopPx}px`;
+      }
       bubble.style.display = "";
       return;
     }
