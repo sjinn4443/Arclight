@@ -925,9 +925,9 @@
             style="
               margin: 19px 0 21px;
               padding-left: 18px;
-              font-size: 14px;
+              font-size: 15px;
               color: #333;
-              line-height: 24px;
+              line-height: 26px;
             "
           ></ul>
         </div>
@@ -935,14 +935,18 @@
         <!-- 뒷면 -->
         <div class="flashcard__face flashcard__face--back">
           <div
-            id="primaryFlashDx"
-            style="
-              font-weight: 700;
-              font-size: 18px;
-              text-align: center;
-              margin: 12px;
-            "
-          ></div>
+            class="primaryFlashCaseLabel primaryFlashCaseLabel--ghost"
+            aria-hidden="true"
+          >
+            Case
+          </div>
+          <img
+            id="primaryFlashBackImg"
+            class="primaryFlashBackImg"
+            alt="Case image"
+          />
+          <div id="primaryFlashDx" class="primaryFlashDx"></div>
+          <ul id="primaryFlashDxRationale" class="primaryFlashDxRationale"></ul>
         </div>
       </div>
 

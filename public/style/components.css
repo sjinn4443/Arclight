@@ -4272,6 +4272,7 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
 #caseStudyFlashcardPagePrimary #primaryFlashCard.flashcard {
   position: relative;
   transform-style: preserve-3d;
+  height: 505px;
 }
 
 #caseStudyFlashcardPagePrimary #primaryFlashCard.flashcard .flashcard__face {
@@ -4284,17 +4285,55 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
   #primaryFlashCard.flashcard
   .flashcard__face--front {
   position: relative; /* front는 문서 흐름 유지 */
+  overflow-y: auto;
 }
 
 #caseStudyFlashcardPagePrimary
   #primaryFlashCard.flashcard
   .flashcard__face--back {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   transform: rotateY(180deg);
-  background-color: #e5e5ea;
+  background-color: #fff;
   border-radius: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  padding: 14px;
+  overflow-y: auto;
+}
+
+#caseStudyFlashcardPagePrimary .primaryFlashBackImg {
+  width: 100%;
+  border-radius: 40px;
+  object-fit: cover;
+  display: block;
+}
+
+#caseStudyFlashcardPagePrimary .primaryFlashDx {
+  font-weight: 700;
+  font-size: 18px;
+  text-align: left;
+  color: #111;
+  margin: 12px 0 0;
+}
+
+#caseStudyFlashcardPagePrimary .primaryFlashDxRationale {
+  margin: 19px 0 21px;
+  padding-left: 18px;
+  color: #333;
+  font-size: 15px;
+  line-height: 26px;
+}
+
+#caseStudyFlashcardPagePrimary #primaryFlashBullets li + li,
+#caseStudyFlashcardPagePrimary .primaryFlashDxRationale li + li {
+  margin-top: 10px;
+}
+
+#caseStudyFlashcardPagePrimary .primaryFlashCaseLabel--ghost {
+  visibility: hidden;
+  pointer-events: none;
+  user-select: none;
 }
 
 #caseStudyFlashcardPagePrimary #primaryFlashCard.flashcard.is-flipped {

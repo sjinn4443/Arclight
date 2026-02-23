@@ -35,6 +35,101 @@ function correctDiagnosisForPrimary({ caseNum }) {
   return "";
 }
 
+function flashRationaleLinesForCase({ caseNum, variant }) {
+  if (caseNum === 1) {
+    return [
+      "Vision became worse slowly over many months, with no pain.",
+      "No red eye or discharge suggests cataract, not an eye infection.",
+    ];
+  }
+
+  if (caseNum === 2) {
+    return [
+      "A white pupil in a baby is a key danger sign for retinoblastoma.",
+      "Poor visual attention supports this diagnosis and needs urgent referral.",
+    ];
+  }
+
+  if (caseNum === 3) {
+    const riskLine =
+      variant === "neonate"
+        ? "Newborn age and maternal STI history support gonococcal/chlamydial conjunctivitis."
+        : "This sticky red-eye pattern can be due to gonococcal/chlamydial infection.";
+    return [
+      "Thick yellow discharge and pink eyes suggest bacterial conjunctivitis.",
+      riskLine,
+    ];
+  }
+
+  if (caseNum === 4) {
+    return [
+      "Long-term gritty pain with blurry vision suggests chronic surface damage.",
+      "This pattern fits trachomatous trichiasis with corneal scarring.",
+    ];
+  }
+
+  if (caseNum === 5) {
+    return [
+      "Severe pain and red eye after a scratch from a bush suggest corneal ulcer.",
+      "Discharge and very poor vision support bacterial/fungal corneal infection.",
+    ];
+  }
+
+  if (caseNum === 6) {
+    return [
+      "One painful light-sensitive eye with watery redness suggests keratitis.",
+      "Recent painful lip sores support herpes simplex keratitis.",
+    ];
+  }
+
+  if (caseNum === 7) {
+    return [
+      "Photophobia, pain, and blurred vision in one eye suggest uveitis.",
+      "Repeated similar episodes support anterior uveitis.",
+    ];
+  }
+
+  if (caseNum === 8) {
+    return [
+      "A slow-growing pink patch with mild grit sensation suggests pterygium.",
+      "Good vision and long outdoor work make this diagnosis more likely.",
+    ];
+  }
+
+  if (caseNum === 9) {
+    return [
+      "Gritty painful eye after metal work suggests a corneal foreign body.",
+      "Light sensitivity and blurred vision suggest early infection is starting.",
+    ];
+  }
+
+  if (caseNum === 10) {
+    return [
+      "Sudden vision loss after blunt trauma is typical for traumatic hyphaema.",
+      "A painful red watering eye with shadow vision supports this diagnosis.",
+    ];
+  }
+
+  if (caseNum === 11) {
+    return [
+      "Stick injury with worsening pain and blur suggests open-globe trauma.",
+      "This pattern fits penetrating corneal laceration with iris prolapse.",
+    ];
+  }
+
+  if (caseNum === 12) {
+    return [
+      "Severe vision loss after stick trauma suggests a penetrating eye injury.",
+      "Painful red eye with fast decline supports traumatic cataract.",
+    ];
+  }
+
+  return [
+    "The history pattern supports this diagnosis.",
+    "Clinical signs are consistent with this case label.",
+  ];
+}
+
 function buildCasePool() {
   const pool = [
     { caseNum: 1, variant: "default" },
@@ -1161,12 +1256,131 @@ export function initializeCaseStudyPrimary() {
   }
 
   function flashBulletsForCase(caseObj) {
-    // reuse primary lines but remove the “ending prompts”
-    const lines = primaryLinesForCase(caseObj) || [];
-    return lines.filter(
-      (x) =>
-        x && x !== "What is the diagnosis?" && x !== "I think that's about it.",
-    );
+    const { caseNum, variant } = caseObj || {};
+
+    if (caseNum === 1) {
+      return [
+        "started slowly over more than a year.",
+        "no pain or itch.",
+        "no redness or discharge.",
+        "vision now only sees shadows.",
+      ];
+    }
+
+    if (caseNum === 2) {
+      return [
+        "white pupil noticed in a very young child.",
+        "poor visual interest for age.",
+        "can involve one eye then both eyes.",
+        "urgent red-flag pattern for intraocular tumor.",
+      ];
+    }
+
+    if (caseNum === 3 && variant === "neonate") {
+      return [
+        "newborn with pink eyes and thick yellow sticky discharge.",
+        "started in one eye then both eyes.",
+        "eyes often kept shut due to irritation.",
+        "maternal STI history increases suspicion.",
+      ];
+    }
+
+    if (caseNum === 3) {
+      return [
+        "pink eyes with thick yellow sticky discharge.",
+        "started in one eye then both eyes.",
+        "blurry vision and symptoms getting worse.",
+        "pattern fits severe bacterial/STI-related conjunctivitis.",
+      ];
+    }
+
+    if (caseNum === 4) {
+      return [
+        "long history of gritty painful eyes.",
+        "both eyes affected with redness and watering.",
+        "blurred vision and slowly worsening course.",
+        "chronic surface damage pattern (trichiasis/scarring).",
+      ];
+    }
+
+    if (caseNum === 5) {
+      return [
+        "after scratch from bush.",
+        "one eye gritty then very painful.",
+        "red eye with sticky yellow discharge.",
+        "only sees shadows.",
+      ];
+    }
+
+    if (caseNum === 6) {
+      return [
+        "painful broken skin on lip one week before eye symptoms.",
+        "blurry vision gradually getting worse.",
+        "pink eye with watery discharge.",
+        "bright light is painful.",
+      ];
+    }
+
+    if (caseNum === 7) {
+      return [
+        "one painful eye with pink watery redness.",
+        "bright light is painful.",
+        "vision is slightly blurred.",
+        "similar episodes happened before.",
+      ];
+    }
+
+    if (caseNum === 8) {
+      return [
+        "slowly growing pink patch on one eye.",
+        "gritty feeling with mild watering.",
+        "vision mostly unaffected.",
+        "long outdoor UV exposure history.",
+      ];
+    }
+
+    if (caseNum === 9) {
+      return [
+        "started after working under a car.",
+        "one gritty eye with light sensitivity.",
+        "slightly red eye with gradual blur.",
+        "worsening course suggests early infection.",
+      ];
+    }
+
+    if (caseNum === 10) {
+      return [
+        "sudden vision loss after being punched.",
+        "painful red watery eye.",
+        "vision reduced to only shadows.",
+        "blunt-trauma pattern fits hyphaema.",
+      ];
+    }
+
+    if (caseNum === 11) {
+      return [
+        "hit in the eye with a stick.",
+        "one eye gritty painful and getting worse.",
+        "pink watering eye with blurred vision.",
+        "penetrating-injury pattern (possible open globe).",
+      ];
+    }
+
+    if (caseNum === 12) {
+      return [
+        "recent stick injury to the eye.",
+        "painful red eye with watering.",
+        "vision dropped to shadows and worsening.",
+        "penetrating trauma can cause traumatic cataract.",
+      ];
+    }
+
+    return [
+      "onset and course of symptoms.",
+      "pain/redness/discharge pattern.",
+      "vision impact.",
+      "important risk history.",
+    ];
   }
   function renderFlashCard(opts = {}) {
     const {
@@ -1202,12 +1416,29 @@ export function initializeCaseStudyPrimary() {
     const img = flashPage.querySelector("#primaryFlashImg");
     const dx = flashPage.querySelector("#primaryFlashDx");
     const ul = flashPage.querySelector("#primaryFlashBullets");
+    const backImg = flashPage.querySelector("#primaryFlashBackImg");
+    const dxRationale = flashPage.querySelector("#primaryFlashDxRationale");
 
     if (!img || !dx || !ul) return;
 
     const diagnosis = correctDiagnosisForPrimary(caseObj);
-    img.src = imgPathForCase(caseObj.caseNum);
+    const imagePath = imgPathForCase(caseObj.caseNum);
+    img.src = imagePath;
     dx.textContent = diagnosis;
+    if (backImg) {
+      backImg.src = imagePath;
+      backImg.alt = `Case image for ${diagnosis || "diagnosis"}`;
+    }
+    if (dxRationale) {
+      dxRationale.textContent = "";
+      flashRationaleLinesForCase(caseObj)
+        .slice(0, 2)
+        .forEach((line) => {
+          const li = document.createElement("li");
+          li.textContent = line;
+          dxRationale.appendChild(li);
+        });
+    }
     const wrap = flashPage.querySelector("#primaryFlashCardWrap");
     const card = flashPage.querySelector("#primaryFlashCard");
     if (card) card.classList.remove("is-flipped");
