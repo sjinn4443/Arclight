@@ -1523,7 +1523,7 @@
         left: 50%;
         top: 52%;
         transform: translate(-50%, -50%);
-        width: min(167%, 940px);
+        width: min(128%, 720px);
         height: auto;
         user-select: none;
         pointer-events: none;
@@ -1553,7 +1553,7 @@
         top: 56%;
         left: 95%;
         transform: translate(-50%, -50%);
-        width: 24px;
+        width: 18px;
         height: auto;
         user-select: none;
         cursor: grab;
@@ -1596,7 +1596,7 @@
         position: absolute;
         top: 304px;
         left: 260px;
-        width: 25px;
+        width: 19px;
         height: auto;
         transform: translate(-50%, -50%);
         user-select: none;
@@ -1612,8 +1612,8 @@
       /* light beam (code-driven) */
       #glaucomaRAPDFullSwingInteractive #rapdBeam {
         position: absolute;
-        width: 236px;
-        height: 236px;
+        width: 180px;
+        height: 180px;
         transform-origin: 50% 50%;
         pointer-events: none;
         display: none;
@@ -1622,10 +1622,10 @@
         /* soft circular spotlight */
         background: radial-gradient(
           circle at center,
-          rgb(255 255 255) 0%,
-          rgb(255 255 255 / 55%) 34%,
-          rgb(255 255 255 / 0%) 64%,
-          rgb(255 255 255 / 0%) 100%
+          rgba(255, 255, 255) 0%,
+          rgba(255, 255, 255) 55%,
+          rgba(255, 255, 255, 0.1) 64%,
+          rgba(255, 255, 255, 0) 100%
         );
         border-radius: 50%;
         filter: blur(0.35px);
@@ -1635,11 +1635,11 @@
       /* pupils (overlay circles) */
       #glaucomaRAPDFullSwingInteractive .rapd-pupil {
         position: absolute;
-        width: 15px;
-        height: 15px;
+        width: 11px;
+        height: 11px;
         border-radius: 999px;
         background: #0a0a0a;
-        box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.25);
+        box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.25);
         transform: translate(-50%, -50%) scale(1.2);
         transition: transform 180ms ease;
         z-index: 4;

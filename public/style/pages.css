@@ -1935,3 +1935,29 @@ select.onb-input.has-value + .onb-select-caret {
   .lesson-row.childhood-fundal-subrow {
   opacity: 1;
 }
+
+.childhood-fundal-scroll-page .childhood-fundal-prep-list {
+  display: flex;
+  flex-direction: column;
+  gap: 107px;
+  padding-bottom: 32px;
+  margin: 0 -22px;
+}
+
+.childhood-fundal-scroll-page .childhood-fundal-prep-item {
+  border-radius: 0;
+  overflow: hidden;
+}
+
+.childhood-fundal-scroll-page .childhood-fundal-prep-stage {
+  width: 100%;
+  margin-left: 0;
+  aspect-ratio: 1169 / 1280;
+  background: #fff;
+}
+
+.childhood-fundal-scroll-page .childhood-fundal-prep-stage svg {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}

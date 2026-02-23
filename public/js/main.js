@@ -185,6 +185,22 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    const FUNDAL_REFLEX_SCROLL_ROUTES = new Set([
+      "childhoodFundalPreparation",
+      "childhoodFundalExamination",
+      "childhoodFundalNewbornEyesOpen",
+      "childhoodFundalNewbornEyesClosed",
+      "childhoodFundalUnclearFindings",
+      "childhoodFundalPossibleFinding",
+      "childhoodFundalAfterExamination",
+    ]);
+    if (FUNDAL_REFLEX_SCROLL_ROUTES.has(routeName)) {
+      const { initializeChildhoodFundalReflexScrollPage } =
+        await import("./childhoodFundalPreparation.js");
+      initializeChildhoodFundalReflexScrollPage?.(routeName);
+      return;
+    }
+
     if (routeName === "childhoodAssessment") {
       const { initializeChildhoodAssessment } =
         await import("./childhoodAssessment.js");

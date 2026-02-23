@@ -237,6 +237,14 @@ export function initializeChildhoodEyeScreeningWorkshop() {
         childhoodIntroVisualDevelopmentPage: "childhoodEyeBrainImages",
         childhoodNormalVisualDevelopmentPage: "childhoodEyeBrainImages",
         childhoodAskQuestionsObservePage: "childhoodEyeBrainImages",
+        childhoodFundalPreparationPage: "childhoodFundalPreparation",
+        childhoodFundalExaminationPage: "childhoodFundalExamination",
+        childhoodFundalNewbornEyesOpenPage: "childhoodFundalNewbornEyesOpen",
+        childhoodFundalNewbornEyesClosedPage:
+          "childhoodFundalNewbornEyesClosed",
+        childhoodFundalUnclearFindingsPage: "childhoodFundalUnclearFindings",
+        childhoodFundalPossibleFindingPage: "childhoodFundalPossibleFinding",
+        childhoodFundalAfterExaminationPage: "childhoodFundalAfterExamination",
 
         // Signs of visual impairment → Cases
         signsVICasesPage: "signsVICases",

@@ -14,4 +14,16 @@ export const ROUTES = {
   directOphthalmoscopyQuizPage:
     "/public/html/directOphthalmoscopyQuizPage.html",
   visualsystemeyesbrain: "/public/html/visualsystemeyesbrain.html",
+  childhoodFundalPreparation: "/public/html/childhoodFundalPreparation.html",
+  childhoodFundalExamination: "/public/html/childhoodFundalExamination.html",
+  childhoodFundalNewbornEyesOpen:
+    "/public/html/childhoodFundalNewbornEyesOpen.html",
+  childhoodFundalNewbornEyesClosed:
+    "/public/html/childhoodFundalNewbornEyesClosed.html",
+  childhoodFundalUnclearFindings:
+    "/public/html/childhoodFundalUnclearFindings.html",
+  childhoodFundalPossibleFinding:
+    "/public/html/childhoodFundalPossibleFinding.html",
+  childhoodFundalAfterExamination:
+    "/public/html/childhoodFundalAfterExamination.html",
 };
