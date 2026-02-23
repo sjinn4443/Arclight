@@ -1859,6 +1859,44 @@ select.onb-input.has-value + .onb-select-caret {
   margin-left: -65px;
 }
 
+#glaucomaWorkshopPage .lesson-row[data-subfolder="visualFields"] .lesson-cta {
+  color: #f25600 !important;
+}
+
+#glaucomaWorkshopPage
+  .glaucoma-subsection-card[data-subsection="visualFields"]
+  .see-all-toggle {
+  color: #f25600;
+}
+
+#glaucomaWorkshopPage
+  .lesson-row:is(
+    [data-target="glaucomaFieldsExam"],
+    [data-target="glaucomaQuadrantsFingers"],
+    [data-target="glaucomaQuadrantsRed"],
+    [data-target="glaucomaAssessRecord"],
+    [data-target="glaucomaVisualFieldExamVideo"],
+    [data-target="pupilFullExamPage"],
+    [data-target="glaucomaSwingRAPD"],
+    [data-target="glaucomaRAPDFullSwingInteractive"],
+    [data-target="feFullAnteriorSegmentPage"],
+    [data-target="glaucomaAnteriorChamberDepthVideoPage"],
+    [data-target="glaucomaACDInteractive"],
+    [data-target="glaucomaACDScroll"],
+    [data-target="glaucomaSecondaryCauseQuizPage"],
+    [data-target="glaucomaHighIOP"],
+    [data-target="glaucomaOpticNerve"],
+    [data-target="glaucomaOpticDiscAnatomyVideoPage"],
+    [data-target="glaucomaMarginVideoPage"],
+    [data-target="glaucomaDiscCuppingVideoPage"],
+    [data-target="glaucomaCupping"],
+    [data-target="glaucomaOtherOpticNerveDiseasesVideoPage"],
+    [data-target="glaucomaQuizCaseStudy"]
+  )
+  .lesson-progress__fill {
+  background: #f25600;
+}
+
 /* Childhood workshop: mirror glaucoma workshop sizing/spacing */
 #childhoodEyeScreeningWorkshopPage.childhood-folder-open
   #childhoodWorkshopFolders
