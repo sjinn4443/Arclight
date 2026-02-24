@@ -1753,7 +1753,7 @@ select.onb-input.has-value + .onb-select-caret {
 
 #pupilsPage .eyes-topbar,
 .pupils-like .eyes-topbar {
-  height: 80px;
+  height: 62px;
 }
 
 /* back 버튼만 크게 */
@@ -1795,6 +1795,12 @@ select.onb-input.has-value + .onb-select-caret {
 /* Glaucoma workshop: folder emphasis + compact lesson rows */
 #glaucomaWorkshopPage .pupil-level__cap.pupil-level__cap--glaucoma-workshop {
   background: linear-gradient(90deg, var(--cap-from) 0%, #ff7600 105%);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+#childhoodEyeScreeningWorkshopPage
+  .pupil-level__cap.pupil-level__cap--childhood-workshop {
   font-size: 13px;
   font-weight: 600;
 }
@@ -1922,6 +1928,7 @@ select.onb-input.has-value + .onb-select-caret {
     [data-target="glaucomaACDInteractive"],
     [data-target="glaucomaACDScroll"],
     [data-target="glaucomaSecondaryCauseQuizPage"],
+    [data-target="glaucomaACAGCaseWorkshopVideoPage"],
     [data-target="glaucomaHighIOP"],
     [data-target="glaucomaOpticNerve"],
     [data-target="glaucomaOpticDiscAnatomyVideoPage"],
@@ -2026,6 +2033,7 @@ select.onb-input.has-value + .onb-select-caret {
 }
 
 .childhood-fundal-scroll-page .childhood-fundal-prep-item {
+  position: relative;
   border-radius: 0;
   overflow: hidden;
 }
@@ -2041,4 +2049,121 @@ select.onb-input.has-value + .onb-select-caret {
   display: block;
   width: 100% !important;
   height: 100% !important;
+}
+
+.childhood-fundal-scroll-page .childhood-fundal-scroll-down-arrow {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(58, 58, 58, 0.46);
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.childhood-fundal-scroll-page .childhood-fundal-scroll-down-arrow.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.childhood-fundal-scroll-page .childhood-fundal-scroll-down-arrow__stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  transform: translateY(-1px);
+}
+
+.childhood-fundal-scroll-page .childhood-fundal-scroll-down-arrow__chev {
+  width: 9px;
+  height: 9px;
+  border-right: 2.2px solid currentColor;
+  border-bottom: 2.2px solid currentColor;
+  transform: rotate(45deg);
+  margin-top: -4px;
+  color: #ececec;
+  animation: fundalArrowGrayShift 1.2s linear infinite;
+}
+
+.childhood-fundal-scroll-page
+  .childhood-fundal-scroll-down-arrow__chev:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.childhood-fundal-scroll-page
+  .childhood-fundal-scroll-down-arrow__chev:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.childhood-fundal-scroll-page
+  .childhood-fundal-scroll-down-arrow__chev:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes fundalArrowGrayShift {
+  0% {
+    color: #e7e7e7;
+  }
+  33% {
+    color: #b8b8b8;
+  }
+  66% {
+    color: #7d7d7d;
+  }
+  100% {
+    color: #e7e7e7;
+  }
+}
+
+.childhood-fundal-scroll-page .childhood-fundal-title-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.childhood-fundal-scroll-page .eyes-topbar__title {
+  white-space: nowrap;
+  width: max-content;
+}
+
+.childhood-fundal-scroll-page .childhood-fundal-replay-btn {
+  margin-left: 138px;
+  height: 28px;
+  padding: 0 10px;
+  border: 0px;
+  border-radius: 14px;
+  background: #e41e21;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.childhood-fundal-scroll-page
+  .childhood-fundal-replay-btn.childhood-fundal-replay-btn--compact-offset {
+  margin-left: 74px;
+}
+
+#childhoodFundalPossibleFindingPage .childhood-fundal-replay-btn,
+#childhoodFundalPossibleFindingPage
+  .childhood-fundal-replay-btn.childhood-fundal-replay-btn--compact-offset,
+#childhoodFundalUnclearFindingsPage .childhood-fundal-replay-btn,
+#childhoodFundalUnclearFindingsPage
+  .childhood-fundal-replay-btn.childhood-fundal-replay-btn--compact-offset,
+#childhoodFundalAfterExaminationPage .childhood-fundal-replay-btn,
+#childhoodFundalAfterExaminationPage
+  .childhood-fundal-replay-btn.childhood-fundal-replay-btn--compact-offset {
+  margin-left: 103px;
 }
