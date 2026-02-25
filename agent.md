@@ -64,3 +64,22 @@
 
 - `Unclear Findings` file 2 visual alignment request:
   - Updated `public/scrolly/coreexam/fundalreflex/unclear/1/data.json` layer using `image_6` (`img_6.png`) Y position from `46.286` to `54.5` so it sits lower like `unclear/2`.
+
+## Text Overlay Policy (Fundal Scroll Pages)
+
+- Segment text should accumulate and remain visible.
+- New segment text should be appended below existing text, not replace it.
+- Default engine mode for segment text is `append` when no explicit per-file mode is set.
+- Current text style for fundal segment captions:
+  - `font-size: 14px`
+  - `line-height: 1.85`
+  - centered alignment
+- Top-bar title click can be used to toggle segment text on/off on enabled routes.
+- This is enabled for:
+  - `Preparation`
+  - `Examination`
+  - `Newborn - Eyes Open`
+  - `Newborn - Eyes Closed`
+  - `Unclear Findings`
+  - `Possible Findings`
+  - `After Examination`

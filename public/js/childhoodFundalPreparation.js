@@ -6,6 +6,7 @@ const ROUTE_CONFIG = {
     pageId: "childhoodFundalPreparationPage",
     label: "Preparation",
     enableReplay: true,
+    segmentTextToggleOnTitle: true,
     paths: [
       "/scrolly/coreexam/fundalreflex/prep/1/data.json",
       "/scrolly/coreexam/fundalreflex/prep/2/data.json",
@@ -37,12 +38,29 @@ const ROUTE_CONFIG = {
       [110, 238, 378, "last"],
       [270, 357, 453, "last"],
     ],
+    segmentStartTexts: [
+      ["Wash hands"],
+      [
+        "Select the brightest light setting",
+        "Make sure the lens rack is at the top",
+        "Examination room needs to be quiet and dim",
+      ],
+      ["Hold Arclight close to your eye"],
+      [
+        "Newborns should be swaddled securely",
+        "For older babies, parents can hold them\nor put on their laps",
+        "",
+        "Older children can sit by themselves",
+      ],
+    ],
+    segmentTextModeByFile: ["append", "append", "append", "append"],
     iosAggressiveSettleSegments: [[0], [1, 2], [3], [1, 2, 3]],
   },
   childhoodFundalExamination: {
     pageId: "childhoodFundalExaminationPage",
     label: "Examination",
     enableReplay: true,
+    segmentTextToggleOnTitle: true,
     paths: [
       "/scrolly/coreexam/fundalreflex/exam/1/data.json",
       "/scrolly/coreexam/fundalreflex/exam/2/data.json",
@@ -70,12 +88,27 @@ const ROUTE_CONFIG = {
       [114, "last"],
       [138, 265, "last"],
     ],
+    segmentStartTexts: [
+      ["Observe the reflex at arm's length"],
+      ["Move side to side and get closer\nif need to look in more detail"],
+      ["At arm's length, examine both eyes\nat the same time"],
+      [
+        "In a normal examination, there should be\nno overall difference in brightness\nor colour between eyes",
+      ],
+      [
+        "The appearance will vary by race\n\nBlack baby - yellow / white / blue reflex",
+        "White baby - orange / red reflex",
+        "Asian baby - orange / yellow reflex",
+      ],
+    ],
+    segmentTextModeByFile: ["append", "append", "append", "append", "append"],
     iosAggressiveSettleSegments: [[0], [1], [2, 3], [1], [2]],
   },
   childhoodFundalNewbornEyesOpen: {
     pageId: "childhoodFundalNewbornEyesOpenPage",
     label: "Newborn - Eyes Open",
     enableReplay: true,
+    segmentTextToggleOnTitle: true,
     paths: [
       "/scrolly/coreexam/fundalreflex/eyesopen/1/data.json",
       "/scrolly/coreexam/fundalreflex/eyesopen/2/data.json",
@@ -93,6 +126,19 @@ const ROUTE_CONFIG = {
       ],
     ],
     settleFrameOverrides: [["last"], [147, 205, 205], [114, 262, 205, 262]],
+    segmentStartTexts: [
+      ["Parents should hold the baby\nswaddled securely with arms tucked away"],
+      [
+        "Observe reflex in both eyes at the same time,",
+        "",
+        "without touching the baby.",
+      ],
+      [
+        "Occasional and short-lasting squints\nare common in the first month of life,",
+        "and will usually disappear by three months of age",
+      ],
+    ],
+    segmentTextModeByFile: ["append", "append", "append"],
     iosAggressiveSettleSegments: [[0], [2], [1]],
     richSettleContentFiles: [1, 2],
     richSettleMinAreaByFile: [0, 0.18, 0.18],
@@ -101,6 +147,7 @@ const ROUTE_CONFIG = {
     pageId: "childhoodFundalNewbornEyesClosedPage",
     label: "Newborn - Eyes Closed",
     enableReplay: true,
+    segmentTextToggleOnTitle: true,
     paths: [
       "/scrolly/coreexam/fundalreflex/eyesclosed/1/data.json",
       "/scrolly/coreexam/fundalreflex/eyesclosed/2/data.json",
@@ -108,12 +155,18 @@ const ROUTE_CONFIG = {
     playMode: "segmentScroll",
     segmentRanges: [[{ from: 0 }], [{ from: 0, to: 240 }, { from: 241 }]],
     settleFrameOverrides: [["last"], [240, "last"]],
+    segmentStartTexts: [
+      ["Parents should hold the baby\nswaddled securely with arms tucked away"],
+      ["If baby is asleep, gently open one eye at a time."],
+    ],
+    segmentTextModeByFile: ["append", "append"],
     iosAggressiveSettleSegments: [[0], [1]],
   },
   childhoodFundalUnclearFindings: {
     pageId: "childhoodFundalUnclearFindingsPage",
     label: "Unclear Findings",
     enableReplay: true,
+    segmentTextToggleOnTitle: true,
     paths: [
       "/scrolly/coreexam/fundalreflex/unclear/0/data.json",
       "/scrolly/coreexam/fundalreflex/unclear/1/data.json",
@@ -130,25 +183,39 @@ const ROUTE_CONFIG = {
     firstFileExtraTopGap: 30,
     playMode: "segmentScroll",
     segmentRanges: [
-      [{ from: 16 }],
+      [{ from: 16, to: 140 }, { from: 141 }],
       [{ from: 0, to: 172 }, { from: 172 }],
       [{ from: 0, to: 82 }, { from: 83, to: 135 }, { from: 136 }],
       [{ from: 0, to: 160 }, { from: 161, to: 564 }, { from: 565 }],
     ],
     settleFrameOverrides: [
-      ["last"],
+      [140, "last"],
       [172, "last"],
       [82, 135, "last"],
       [160, 564, "last"],
     ],
+    segmentStartTexts: [
+      ["", "If findings are unclear, follow the next steps"],
+      ["Compare the reflex with parent.\nIt should look similar"],
+      ["If still unsure, ask colleague for second opinion"],
+      [
+        "If on your own, gain consent from patient\nand record a video",
+        "Attach the Arclight to the camera of a mobile phone",
+        "Share securely for a second opinion",
+      ],
+    ],
+    segmentTextModeByFile: ["append", "append", "append", "append"],
     iosAggressiveSettleSegments: [[0], [1, 2], [2]],
   },
   childhoodFundalPossibleFinding: {
     pageId: "childhoodFundalPossibleFindingPage",
     label: "Possible Findings",
     enableReplay: true,
+    segmentTextToggleOnTitle: true,
     paths: ["/scrolly/coreexam/fundalreflex/findings/data.json"],
     stageAspectRatioByFile: ["1169 / 1655"],
+    mobileStageTopAligned: true,
+    centerTopBiasByFile: [240],
     playMode: "segmentScroll",
     segmentRanges: [
       [
@@ -160,12 +227,30 @@ const ROUTE_CONFIG = {
       ],
     ],
     settleFrameOverrides: [[87, 145, 265, 385, "last"]],
+    segmentStartTexts: [
+      [
+        "If overall colour and brightness is similar between\ntwo eyes, then the examination is normal",
+        "If overall colour and brightness is similar between\ntwo eyes, then the examination is normal",
+        "Occasional and short-lasting squints\nare common in the first month of life",
+        "and will usually disappear by three months of age",
+        "Any difference in colour / partial / complete\nloss of reflex is abnormal.",
+      ],
+    ],
+    segmentTextModeByFile: ["replace"],
+    finalSummaryBulletsByFile: [
+      [
+        "If overall colour and brightness is similar between\ntwo eyes, then the examination is normal",
+        "Occasional and short-lasting squints are common in the first month of life and will usually disappear by three months of age",
+        "Any difference in colour / partial / complete\nloss of reflex is abnormal.",
+      ],
+    ],
     iosAggressiveSettleSegments: [[3, 4]],
   },
   childhoodFundalAfterExamination: {
     pageId: "childhoodFundalAfterExaminationPage",
     label: "After Examination",
     enableReplay: true,
+    segmentTextToggleOnTitle: true,
     paths: [
       "/scrolly/coreexam/fundalreflex/afterexam/1/data.json",
       "/scrolly/coreexam/fundalreflex/afterexam/2/data.json",
@@ -173,6 +258,11 @@ const ROUTE_CONFIG = {
     playMode: "segmentScroll",
     segmentRanges: [[{ from: 0, to: 89 }, { from: 90 }], [{ from: 0 }]],
     settleFrameOverrides: [[89, "last"], ["last"]],
+    segmentStartTexts: [
+      ["Offer thanks,", "explain your findings and make a plan"],
+      ["Repeat hand wash"],
+    ],
+    segmentTextModeByFile: ["appendInline", "append"],
     iosAggressiveSettleSegments: [[1]],
   },
 };
@@ -234,6 +324,122 @@ function resolveFirstFileExtraTopGap(cfg) {
   return 18;
 }
 
+function isNarrowMobileViewport() {
+  if (typeof window === "undefined") return false;
+  const width = window.innerWidth || document.documentElement?.clientWidth || 0;
+  return width > 0 && width <= 768;
+}
+
+function shouldUseMobileStageTopAlignedMode(cfg) {
+  return cfg?.mobileStageTopAligned === true && isNarrowMobileViewport();
+}
+
+function resolveSegmentStartTexts(cfg, fileIndex) {
+  const raw = Array.isArray(cfg?.segmentStartTexts)
+    ? cfg.segmentStartTexts[fileIndex]
+    : null;
+  if (!Array.isArray(raw)) return [];
+
+  return raw.map((entry) => {
+    if (entry == null) return "";
+    return String(entry).trim();
+  });
+}
+
+function resolveFinalSummaryBullets(cfg, fileIndex) {
+  const raw = Array.isArray(cfg?.finalSummaryBulletsByFile)
+    ? cfg.finalSummaryBulletsByFile[fileIndex]
+    : null;
+  if (!Array.isArray(raw)) return [];
+
+  return raw.map((entry) => {
+    if (entry == null) return "";
+    return String(entry).trim();
+  });
+}
+
+function resolveSegmentTextMode(cfg, fileIndex) {
+  const raw = Array.isArray(cfg?.segmentTextModeByFile)
+    ? cfg.segmentTextModeByFile[fileIndex]
+    : null;
+  const mode = String(raw == null ? "" : raw)
+    .trim()
+    .toLowerCase();
+  if (
+    mode === "append" ||
+    mode === "appendinline" ||
+    mode === "sticky" ||
+    mode === "replace"
+  ) {
+    return mode;
+  }
+  // Default to append so future segment texts accumulate instead of replacing.
+  return "append";
+}
+
+const TIGHT_LINE_HEIGHT_SEGMENT_TEXTS = new Set([
+  "For older babies, parents can hold them\nor put on their laps",
+]);
+
+function normaliseSegmentTextLine(text) {
+  return String(text == null ? "" : text)
+    .replace(/\r\n?/g, "\n")
+    .replace(/\s*\/\s*/g, " / ")
+    .trim();
+}
+
+function shouldUseTightSegmentTextLineHeight(text) {
+  const normalized = normaliseSegmentTextLine(text);
+  if (!normalized) return false;
+  if (TIGHT_LINE_HEIGHT_SEGMENT_TEXTS.has(normalized)) return true;
+  // Keep same-sentence line breaks tighter while preserving paragraph breaks.
+  return normalized.includes("\n") && !normalized.includes("\n\n");
+}
+
+function normaliseInlineSegmentText(text) {
+  return normaliseSegmentTextLine(text)
+    .replace(/\n+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function appendInlineSegmentText(existingText, incomingText) {
+  const existing = normaliseInlineSegmentText(existingText);
+  const incoming = normaliseInlineSegmentText(incomingText);
+  if (!incoming) return existing;
+  if (!existing) return incoming;
+  if (existing.endsWith(incoming)) return existing;
+  return `${existing} ${incoming}`.replace(/\s+/g, " ").trim();
+}
+
+function renderSegmentTextLine(lineEl, text) {
+  if (!lineEl) return;
+  const normalized = normaliseSegmentTextLine(text);
+  if (!normalized) {
+    lineEl.textContent = "";
+    return;
+  }
+
+  const paragraphs = normalized.split(/\n{2,}/).filter((part) => part.trim());
+  if (paragraphs.length <= 1) {
+    lineEl.textContent = normalized;
+    return;
+  }
+
+  lineEl.classList.add("childhood-fundal-segment-text__line--paragraphized");
+  paragraphs.forEach((paragraph, idx) => {
+    const paragraphEl = document.createElement("div");
+    paragraphEl.className = "childhood-fundal-segment-text__paragraph";
+    if (idx > 0) {
+      paragraphEl.classList.add(
+        "childhood-fundal-segment-text__paragraph--half-gap",
+      );
+    }
+    paragraphEl.textContent = paragraph.trim();
+    lineEl.appendChild(paragraphEl);
+  });
+}
+
 function buildAnimationSlots(listEl, label, count, cfg = null) {
   if (!listEl) return [];
 
@@ -264,8 +470,13 @@ function buildAnimationSlots(listEl, label, count, cfg = null) {
       '<span class="childhood-fundal-scroll-down-arrow__chev"></span>' +
       "</div>";
 
+    const segmentText = document.createElement("div");
+    segmentText.className = "childhood-fundal-segment-text";
+    segmentText.setAttribute("aria-live", "polite");
+
+    stage.appendChild(downArrow);
     item.appendChild(stage);
-    item.appendChild(downArrow);
+    item.appendChild(segmentText);
     listEl.appendChild(item);
     stages.push(stage);
   }
@@ -783,6 +994,13 @@ function resolveSettledFrame(
 function playSegment(controller, segmentIndex) {
   const seg = controller.segments[segmentIndex];
   if (!seg) return false;
+  const segmentText =
+    Array.isArray(controller.segmentStartTexts) &&
+    segmentIndex >= 0 &&
+    segmentIndex < controller.segmentStartTexts.length
+      ? controller.segmentStartTexts[segmentIndex]
+      : "";
+  controller.setSegmentText?.(segmentText);
 
   controller.hideDownArrow?.();
   controller.playingSegmentIndex = segmentIndex;
@@ -949,6 +1167,10 @@ function getNearestVisibleControllerIndex(controllers) {
 function initializeSegmentScrollMode(cfg, page, stages) {
   let activeFileIndex = 0;
   let hasAnchoredStart = false;
+  const shouldEnableTitleSegmentTextToggle =
+    cfg.segmentTextToggleOnTitle === true;
+  let areSegmentTextsVisible = true;
+  let removeTitleSegmentTextToggleListeners = null;
 
   const getTopbarHeight = () => {
     const topbar = page.querySelector(".eyes-topbar");
@@ -956,12 +1178,64 @@ function initializeSegmentScrollMode(cfg, page, stages) {
     return Number.isFinite(raw) && raw > 0 ? raw : 56;
   };
 
+  const setSegmentTextsVisibility = (visible) => {
+    areSegmentTextsVisible = visible !== false;
+    page.classList.toggle(
+      "childhood-fundal-segment-text-hidden",
+      !areSegmentTextsVisible,
+    );
+  };
+
+  const wireTitleSegmentTextToggle = () => {
+    if (!shouldEnableTitleSegmentTextToggle) return;
+    const titleEl = page.querySelector(".eyes-topbar .eyes-topbar__title");
+    if (!titleEl) return;
+
+    titleEl.classList.add("childhood-fundal-title-toggle");
+    titleEl.setAttribute("role", "button");
+    titleEl.setAttribute("tabindex", "0");
+    titleEl.setAttribute(
+      "aria-label",
+      "Toggle preparation guidance text on or off",
+    );
+    titleEl.setAttribute(
+      "aria-pressed",
+      areSegmentTextsVisible ? "true" : "false",
+    );
+
+    const onToggle = (e) => {
+      if (e?.type === "keydown") {
+        const key = e.key || "";
+        if (key !== "Enter" && key !== " ") return;
+        e.preventDefault();
+      }
+      const nextVisible = !areSegmentTextsVisible;
+      setSegmentTextsVisibility(nextVisible);
+      titleEl.setAttribute("aria-pressed", nextVisible ? "true" : "false");
+    };
+
+    titleEl.addEventListener("click", onToggle);
+    titleEl.addEventListener("keydown", onToggle);
+    removeTitleSegmentTextToggleListeners = () => {
+      titleEl.removeEventListener("click", onToggle);
+      titleEl.removeEventListener("keydown", onToggle);
+      titleEl.classList.remove("childhood-fundal-title-toggle");
+      titleEl.removeAttribute("role");
+      titleEl.removeAttribute("tabindex");
+      titleEl.removeAttribute("aria-label");
+      titleEl.removeAttribute("aria-pressed");
+    };
+  };
+
   const getCenteredScrollTopForStage = (stage) => {
     const rect = stage.getBoundingClientRect();
     const absoluteTop = window.scrollY + rect.top;
-    const stageCenterAbs = absoluteTop + rect.height / 2;
     const vh = window.innerHeight || document.documentElement.clientHeight || 0;
     const topbarHeight = getTopbarHeight();
+    if (shouldUseMobileStageTopAlignedMode(cfg)) {
+      return Math.max(0, absoluteTop - topbarHeight);
+    }
+    const stageCenterAbs = absoluteTop + rect.height / 2;
     const effectiveViewportCenter =
       topbarHeight + Math.max(0, (vh - topbarHeight) / 2);
     const fileIndex = Number(stage?.dataset?.fileIndex);
@@ -986,7 +1260,9 @@ function initializeSegmentScrollMode(cfg, page, stages) {
     if (!firstStage) return;
 
     const topbarHeight = getTopbarHeight();
-    const extraTopGap = resolveFirstFileExtraTopGap(cfg);
+    const extraTopGap = shouldUseMobileStageTopAlignedMode(cfg)
+      ? 0
+      : resolveFirstFileExtraTopGap(cfg);
     const rect = firstStage.getBoundingClientRect();
     const absoluteTop = window.scrollY + rect.top;
     const targetTop = Math.max(0, absoluteTop - topbarHeight - extraTopGap);
@@ -1025,6 +1301,13 @@ function initializeSegmentScrollMode(cfg, page, stages) {
         stage.parentElement?.querySelector(
           ".childhood-fundal-scroll-down-arrow",
         ) || null,
+      segmentTextEl:
+        stage.parentElement?.querySelector(".childhood-fundal-segment-text") ||
+        null,
+      segmentStartTexts: resolveSegmentStartTexts(cfg, idx),
+      finalSummaryBulletLines: resolveFinalSummaryBullets(cfg, idx),
+      segmentTextMode: resolveSegmentTextMode(cfg, idx),
+      segmentTextLines: [],
       segments: [],
       ready: false,
       isPlaying: false,
@@ -1049,6 +1332,9 @@ function initializeSegmentScrollMode(cfg, page, stages) {
       onSegmentSettled: null,
       showDownArrow: null,
       hideDownArrow: null,
+      setSegmentText: null,
+      clearSegmentText: null,
+      showFinalSummaryBullets: null,
     };
 
     controller.showDownArrow = () => {
@@ -1061,7 +1347,91 @@ function initializeSegmentScrollMode(cfg, page, stages) {
       controller.arrowEl.classList.remove("is-visible");
     };
 
+    controller.setSegmentText = (text) => {
+      if (!controller.segmentTextEl) return;
+      controller.segmentTextEl.classList.remove(
+        "childhood-fundal-segment-text--bullet-summary",
+      );
+      const value = normaliseSegmentTextLine(text);
+      if (controller.segmentTextMode === "append") {
+        if (value && !controller.segmentTextLines.includes(value)) {
+          controller.segmentTextLines.push(value);
+        }
+      } else if (controller.segmentTextMode === "appendinline") {
+        if (value) {
+          const merged = appendInlineSegmentText(
+            controller.segmentTextLines[0] || "",
+            value,
+          );
+          controller.segmentTextLines = merged ? [merged] : [];
+        }
+      } else if (controller.segmentTextMode === "sticky") {
+        if (value) {
+          controller.segmentTextLines = [value];
+        }
+      } else {
+        controller.segmentTextLines = value ? [value] : [];
+      }
+
+      controller.segmentTextEl.replaceChildren();
+      controller.segmentTextLines.forEach((line) => {
+        const lineEl = document.createElement("div");
+        lineEl.className = "childhood-fundal-segment-text__line";
+        if (shouldUseTightSegmentTextLineHeight(line)) {
+          lineEl.classList.add("childhood-fundal-segment-text__line--tight");
+        }
+        renderSegmentTextLine(lineEl, line);
+        controller.segmentTextEl.appendChild(lineEl);
+      });
+      controller.segmentTextEl.classList.toggle(
+        "is-empty",
+        controller.segmentTextLines.length === 0,
+      );
+    };
+
+    controller.showFinalSummaryBullets = () => {
+      if (!controller.segmentTextEl) return;
+      const lines = Array.isArray(controller.finalSummaryBulletLines)
+        ? controller.finalSummaryBulletLines
+            .map((line) => normaliseSegmentTextLine(line))
+            .filter((line) => !!line)
+        : [];
+      if (!lines.length) return;
+
+      controller.segmentTextLines = lines.slice();
+      controller.segmentTextEl.replaceChildren();
+
+      const listEl = document.createElement("ul");
+      listEl.className = "childhood-fundal-segment-text__bullet-list";
+      lines.forEach((line) => {
+        const itemEl = document.createElement("li");
+        itemEl.className = "childhood-fundal-segment-text__bullet-item";
+        if (shouldUseTightSegmentTextLineHeight(line)) {
+          itemEl.classList.add("childhood-fundal-segment-text__line--tight");
+        }
+        renderSegmentTextLine(itemEl, line);
+        listEl.appendChild(itemEl);
+      });
+
+      controller.segmentTextEl.appendChild(listEl);
+      controller.segmentTextEl.classList.remove("is-empty");
+      controller.segmentTextEl.classList.add(
+        "childhood-fundal-segment-text--bullet-summary",
+      );
+    };
+
+    controller.clearSegmentText = () => {
+      controller.segmentTextLines = [];
+      if (!controller.segmentTextEl) return;
+      controller.segmentTextEl.replaceChildren();
+      controller.segmentTextEl.classList.remove(
+        "childhood-fundal-segment-text--bullet-summary",
+      );
+      controller.segmentTextEl.classList.add("is-empty");
+    };
+
     controller.hideDownArrow();
+    controller.clearSegmentText();
 
     controller.stopCenterLock = () => {
       if (!Number.isFinite(controller.centerLockRafId)) return;
@@ -1550,6 +1920,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
       try {
         controller.stopCenterLock?.();
       } catch {}
+      controller.clearSegmentText?.();
       controller.isPlaying = false;
       controller.isSnapping = false;
       controller.segmentIndex = -1;
@@ -1614,6 +1985,15 @@ function initializeSegmentScrollMode(cfg, page, stages) {
       });
     }
   }
+  setSegmentTextsVisibility(true);
+  wireTitleSegmentTextToggle();
+
+  function showFinalSummaryBulletsForCompletedControllers() {
+    controllers.forEach((controller) => {
+      if (!isControllerComplete(controller)) return;
+      controller.showFinalSummaryBullets?.();
+    });
+  }
 
   controllers.forEach((controller) => {
     controller.onSegmentSettled = () => {
@@ -1622,6 +2002,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
         setMobileTouchLock(true);
         return;
       }
+      showFinalSummaryBulletsForCompletedControllers();
       hideAllDownArrows();
       setMobileTouchLock(false);
       startFinalPinLoop();
@@ -1835,6 +2216,9 @@ function initializeSegmentScrollMode(cfg, page, stages) {
       stopIosFinalPinKeepAlive();
       stopIosCenterCorrection();
       setMobileTouchLock(false);
+      removeTitleSegmentTextToggleListeners?.();
+      removeTitleSegmentTextToggleListeners = null;
+      setSegmentTextsVisibility(true);
       controllers.forEach((c) => {
         try {
           c.stopCenterLock?.();

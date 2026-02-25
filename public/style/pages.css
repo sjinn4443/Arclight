@@ -2043,12 +2043,129 @@ select.onb-input.has-value + .onb-select-caret {
   margin-left: 0;
   aspect-ratio: 1169 / 1280;
   background: #fff;
+  position: relative;
+}
+
+@media (min-width: 1024px) {
+  .childhood-fundal-scroll-page .childhood-fundal-prep-stage {
+    max-width: 66.6667%;
+    margin-left: auto;
+    margin-right: auto;
+  }
 }
 
 .childhood-fundal-scroll-page .childhood-fundal-prep-stage svg {
   display: block;
   width: 100% !important;
   height: 100% !important;
+}
+
+.childhood-fundal-scroll-page .childhood-fundal-segment-text {
+  min-height: 40px;
+  padding: 12px 16px 12px;
+  font-size: 14px;
+  line-height: 1.85;
+  font-weight: 600;
+  color: #1f2937;
+  letter-spacing: 0;
+  text-align: center;
+  white-space: pre-line;
+}
+
+.childhood-fundal-scroll-page .childhood-fundal-segment-text__line {
+  white-space: pre-line;
+}
+
+.childhood-fundal-scroll-page
+  .childhood-fundal-segment-text.childhood-fundal-segment-text--bullet-summary {
+  text-align: left;
+  white-space: normal;
+}
+
+.childhood-fundal-scroll-page .childhood-fundal-segment-text__bullet-list {
+  margin: 0;
+  padding-left: 18px;
+  list-style: disc;
+  list-style-position: outside;
+}
+
+.childhood-fundal-scroll-page .childhood-fundal-segment-text__bullet-item {
+  margin: 0;
+  white-space: normal;
+}
+
+.childhood-fundal-scroll-page
+  .childhood-fundal-segment-text__line--paragraphized {
+  white-space: normal;
+}
+
+.childhood-fundal-scroll-page .childhood-fundal-segment-text__paragraph {
+  white-space: pre-line;
+}
+
+.childhood-fundal-scroll-page
+  .childhood-fundal-segment-text__paragraph--half-gap {
+  margin-top: 0.5em;
+}
+
+.childhood-fundal-scroll-page .childhood-fundal-segment-text__line--tight {
+  line-height: 1.45;
+}
+
+#childhoodFundalPossibleFindingPage
+  .childhood-fundal-segment-text__line--tight {
+  line-height: 1.83;
+}
+
+#childhoodFundalPossibleFindingPage
+  .childhood-fundal-segment-text.childhood-fundal-segment-text--bullet-summary
+  .childhood-fundal-segment-text__bullet-item,
+#childhoodFundalPossibleFindingPage
+  .childhood-fundal-segment-text.childhood-fundal-segment-text--bullet-summary
+  .childhood-fundal-segment-text__bullet-item.childhood-fundal-segment-text__line--tight {
+  line-height: 1.43;
+}
+
+#childhoodFundalPossibleFindingPage
+  .childhood-fundal-segment-text.childhood-fundal-segment-text--bullet-summary
+  .childhood-fundal-segment-text__bullet-item
+  + .childhood-fundal-segment-text__bullet-item {
+  margin-top: calc(1.83em - 1.43em);
+}
+
+.childhood-fundal-scroll-page .childhood-fundal-segment-text.is-empty {
+  min-height: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.childhood-fundal-scroll-page
+  .childhood-fundal-prep-item:last-child
+  .childhood-fundal-segment-text:not(.is-empty) {
+  padding-bottom: 22px;
+}
+
+#childhoodFundalPossibleFindingPage
+  .childhood-fundal-segment-text:not(.is-empty) {
+  padding-top: 8px;
+  padding-bottom: 22px;
+}
+
+#childhoodFundalPossibleFindingPage
+  .childhood-fundal-prep-item:last-child
+  .childhood-fundal-segment-text:not(.is-empty) {
+  padding-bottom: 30px;
+}
+
+#childhoodFundalUnclearFindingsPage
+  .childhood-fundal-prep-item:last-child
+  .childhood-fundal-segment-text:not(.is-empty) {
+  padding-bottom: 26px;
+}
+
+.childhood-fundal-scroll-page.childhood-fundal-segment-text-hidden
+  .childhood-fundal-segment-text {
+  visibility: hidden;
 }
 
 .childhood-fundal-scroll-page .childhood-fundal-scroll-down-arrow {
@@ -2135,6 +2252,12 @@ select.onb-input.has-value + .onb-select-caret {
 .childhood-fundal-scroll-page .eyes-topbar__title {
   white-space: nowrap;
   width: max-content;
+}
+
+.childhood-fundal-scroll-page
+  .eyes-topbar__title.childhood-fundal-title-toggle {
+  cursor: pointer;
+  user-select: none;
 }
 
 .childhood-fundal-scroll-page .childhood-fundal-replay-btn {
