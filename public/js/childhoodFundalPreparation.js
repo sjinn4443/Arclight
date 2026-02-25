@@ -80,22 +80,22 @@ const ROUTE_CONFIG = {
       "/scrolly/coreexam/fundalreflex/eyesopen/1/data.json",
       "/scrolly/coreexam/fundalreflex/eyesopen/2/data.json",
       "/scrolly/coreexam/fundalreflex/eyesopen/3/data.json",
-      "/scrolly/coreexam/fundalreflex/eyesopen/4/data.json",
     ],
     playMode: "segmentScroll",
     segmentRanges: [
       [{ from: 16 }],
-      [{ from: 0, to: 146 }, { from: 147, to: 382 }, { from: 383 }],
-      [{ from: 0, to: 119 }, { from: 120 }],
-      [{ from: 0, to: 61 }, { from: 62, to: 106 }, { from: 107 }],
+      [{ from: 0, to: 147 }, { from: 148, to: 205 }, { from: 381 }],
+      [
+        { from: 0, to: 114 },
+        { from: 115, to: 262 },
+        { from: 263, to: 378 },
+        { from: 379 },
+      ],
     ],
-    settleFrameOverrides: [
-      ["last"],
-      [146, 382, "last"],
-      [119, "last"],
-      [61, 106, "last"],
-    ],
-    iosAggressiveSettleSegments: [[0], [2], [1], [2]],
+    settleFrameOverrides: [["last"], [147, 205, 205], [114, 262, 205, 262]],
+    iosAggressiveSettleSegments: [[0], [2], [1]],
+    richSettleContentFiles: [1, 2],
+    richSettleMinAreaByFile: [0, 0.18, 0.18],
   },
   childhoodFundalNewbornEyesClosed: {
     pageId: "childhoodFundalNewbornEyesClosedPage",
@@ -104,16 +104,11 @@ const ROUTE_CONFIG = {
     paths: [
       "/scrolly/coreexam/fundalreflex/eyesclosed/1/data.json",
       "/scrolly/coreexam/fundalreflex/eyesclosed/2/data.json",
-      "/scrolly/coreexam/fundalreflex/eyesclosed/3/data.json",
     ],
     playMode: "segmentScroll",
-    segmentRanges: [
-      [{ from: 16 }],
-      [{ from: 0, to: 240 }, { from: 241 }],
-      [{ from: 0, to: 61 }, { from: 62, to: 106 }, { from: 107 }],
-    ],
-    settleFrameOverrides: [["last"], [240, "last"], [61, 106, "last"]],
-    iosAggressiveSettleSegments: [[0], [1], [2]],
+    segmentRanges: [[{ from: 0 }], [{ from: 0, to: 240 }, { from: 241 }]],
+    settleFrameOverrides: [["last"], [240, "last"]],
+    iosAggressiveSettleSegments: [[0], [1]],
   },
   childhoodFundalUnclearFindings: {
     pageId: "childhoodFundalUnclearFindingsPage",
@@ -125,6 +120,14 @@ const ROUTE_CONFIG = {
       "/scrolly/coreexam/fundalreflex/unclear/2/data.json",
       "/scrolly/coreexam/fundalreflex/unclear/3/data.json",
     ],
+    stageAspectRatioByFile: [
+      "1169 / 1280",
+      "1169 / 1368",
+      "1169 / 1368",
+      "1169 / 1368",
+    ],
+    centerTopBiasByFile: [88, 0, 0, 0],
+    firstFileExtraTopGap: 30,
     playMode: "segmentScroll",
     segmentRanges: [
       [{ from: 16 }],
@@ -145,6 +148,7 @@ const ROUTE_CONFIG = {
     label: "Possible Findings",
     enableReplay: true,
     paths: ["/scrolly/coreexam/fundalreflex/findings/data.json"],
+    stageAspectRatioByFile: ["1169 / 1655"],
     playMode: "segmentScroll",
     segmentRanges: [
       [
@@ -204,7 +208,33 @@ function cleanupActiveSession() {
   activeSession = null;
 }
 
-function buildAnimationSlots(listEl, label, count) {
+function resolveStageAspectRatio(cfg, fileIndex) {
+  const raw = Array.isArray(cfg?.stageAspectRatioByFile)
+    ? cfg.stageAspectRatioByFile[fileIndex]
+    : null;
+  if (typeof raw === "string" && raw.trim()) return raw.trim();
+
+  const numeric = Number(raw);
+  if (Number.isFinite(numeric) && numeric > 0) return String(numeric);
+  return "";
+}
+
+function resolveCenterTopBias(cfg, fileIndex) {
+  const raw = Array.isArray(cfg?.centerTopBiasByFile)
+    ? cfg.centerTopBiasByFile[fileIndex]
+    : null;
+  const numeric = Number(raw);
+  if (Number.isFinite(numeric) && numeric > 0) return numeric;
+  return 0;
+}
+
+function resolveFirstFileExtraTopGap(cfg) {
+  const numeric = Number(cfg?.firstFileExtraTopGap);
+  if (Number.isFinite(numeric) && numeric >= 0) return numeric;
+  return 18;
+}
+
+function buildAnimationSlots(listEl, label, count, cfg = null) {
   if (!listEl) return [];
 
   listEl.innerHTML = "";
@@ -219,6 +249,10 @@ function buildAnimationSlots(listEl, label, count) {
     stage.setAttribute("role", "img");
     stage.setAttribute("aria-label", `${label} animation ${i + 1}`);
     stage.dataset.fileIndex = String(i);
+    const customAspectRatio = resolveStageAspectRatio(cfg, i);
+    if (customAspectRatio) {
+      stage.style.aspectRatio = customAspectRatio;
+    }
 
     const downArrow = document.createElement("div");
     downArrow.className = "childhood-fundal-scroll-down-arrow";
@@ -345,6 +379,21 @@ function resolveSegmentsForFile(cfg, fileIndex, anim) {
   return rawList.map((raw) => normaliseSegment(raw, lastFrame));
 }
 
+function shouldRequireRichSettleContent(cfg, fileIndex) {
+  const fileRules = cfg?.richSettleContentFiles;
+  if (!Array.isArray(fileRules) || fileRules.length === 0) return false;
+  return fileRules.includes(fileIndex);
+}
+
+function resolveRichSettleMinArea(cfg, fileIndex) {
+  const raw = Array.isArray(cfg?.richSettleMinAreaByFile)
+    ? cfg.richSettleMinAreaByFile[fileIndex]
+    : null;
+  const numeric = Number(raw);
+  if (Number.isFinite(numeric) && numeric > 0) return numeric;
+  return 0.16;
+}
+
 function getSegmentEndFrame(segment) {
   if (!segment) return 0;
   const safeFrom = Number.isFinite(Number(segment.from))
@@ -376,6 +425,7 @@ function resolvePreferredSettleFrame(cfg, fileIndex, segmentIndex, segment) {
   const segLength = Math.max(0, safeEnd - safeFrom);
 
   let candidate = fallback;
+  let allowOutsideSegment = false;
   if (raw == null || raw === "last") {
     if (IS_IOS_WEBKIT) {
       // iOS Safari frequently drops the terminal frame for some SVG Lottie files.
@@ -389,16 +439,24 @@ function resolvePreferredSettleFrame(cfg, fileIndex, segmentIndex, segment) {
   } else {
     const numeric = Number(raw);
     if (Number.isFinite(numeric)) {
-      candidate = Math.max(safeFrom, Math.min(safeEnd, Math.floor(numeric)));
+      candidate = Math.floor(numeric);
+      allowOutsideSegment = candidate < safeFrom || candidate > safeEnd;
+      if (!allowOutsideSegment) {
+        candidate = Math.max(safeFrom, Math.min(safeEnd, candidate));
+      }
     }
   }
 
-  if (shouldUseIosAggressiveSettle(cfg, fileIndex, segmentIndex)) {
+  if (
+    !allowOutsideSegment &&
+    shouldUseIosAggressiveSettle(cfg, fileIndex, segmentIndex)
+  ) {
     // Only for known-problem iOS segments: keep a safer margin from terminal/fade frames.
     const extraBackoff = Math.max(8, Math.min(28, Math.floor(segLength * 0.1)));
     candidate = Math.max(safeFrom, candidate - extraBackoff);
   }
 
+  if (allowOutsideSegment) return candidate;
   return Math.max(safeFrom, Math.min(safeEnd, candidate));
 }
 
@@ -455,6 +513,53 @@ function isStageFrameBlank(controller) {
   return true;
 }
 
+function hasRichVisibleContent(controller, minTotalAreaRatio = 0.16) {
+  const svgEl =
+    controller?.anim?.renderer?.svgElement ||
+    controller?.stage?.querySelector?.("svg");
+  if (!svgEl) return false;
+
+  const svgRect = svgEl.getBoundingClientRect?.();
+  if (!svgRect || svgRect.width <= 0.5 || svgRect.height <= 0.5) return false;
+
+  const svgArea = Math.max(1, svgRect.width * svgRect.height);
+  const nodes = svgEl.querySelectorAll(
+    "image,path,rect,circle,ellipse,polygon,polyline,line,use,text",
+  );
+  if (!nodes.length) return false;
+
+  const minimumAreaRatio = Number.isFinite(Number(minTotalAreaRatio))
+    ? Math.max(0.01, Number(minTotalAreaRatio))
+    : 0.16;
+  let areaRatioSum = 0;
+
+  for (let i = 0; i < nodes.length; i += 1) {
+    const node = nodes[i];
+    const style = window.getComputedStyle(node);
+    if (!style) continue;
+    if (style.display === "none" || style.visibility === "hidden") continue;
+
+    const opacity = Number.parseFloat(style.opacity || "1");
+    if (Number.isFinite(opacity) && opacity <= 0.02) continue;
+
+    const rect = node.getBoundingClientRect?.();
+    if (!rect || rect.width <= 0.5 || rect.height <= 0.5) continue;
+
+    const overlapLeft = Math.max(svgRect.left, rect.left);
+    const overlapRight = Math.min(svgRect.right, rect.right);
+    const overlapTop = Math.max(svgRect.top, rect.top);
+    const overlapBottom = Math.min(svgRect.bottom, rect.bottom);
+    const overlapWidth = overlapRight - overlapLeft;
+    const overlapHeight = overlapBottom - overlapTop;
+    if (overlapWidth <= 0.5 || overlapHeight <= 0.5) continue;
+
+    areaRatioSum += (overlapWidth * overlapHeight) / svgArea;
+    if (areaRatioSum >= minimumAreaRatio) return true;
+  }
+
+  return areaRatioSum >= minimumAreaRatio;
+}
+
 function forceSvgVisibleForController(controller) {
   const svgEl =
     controller?.anim?.renderer?.svgElement ||
@@ -490,9 +595,15 @@ function clampFrameToAnimation(controller, frame) {
   return Math.max(0, Math.min(lastFrame, Math.floor(numeric)));
 }
 
-function resolveAnyVisibleFrame(controller, preferredFrame) {
+function resolveAnyVisibleFrame(controller, preferredFrame, options = {}) {
   const lastFrame = getAnimationLastFrame(controller?.anim);
   const start = clampFrameToAnimation(controller, preferredFrame);
+  const requireRichContent = !!options.requireRichContent;
+  const minContentAreaRatio = Number.isFinite(
+    Number(options.minContentAreaRatio),
+  )
+    ? Math.max(0.01, Number(options.minContentAreaRatio))
+    : 0.16;
 
   for (let offset = 0; offset <= lastFrame; offset += 1) {
     const backward = start - offset;
@@ -501,11 +612,19 @@ function resolveAnyVisibleFrame(controller, preferredFrame) {
         controller.anim.goToAndStop(backward, true);
         forceSvgVisibleForController(controller);
       } catch {}
-      if (!isStageFrameBlank(controller)) {
-        controller.lastVisibleFrame = backward;
-        controller.lastVisibleFrameEver = backward;
-        return backward;
+      if (isStageFrameBlank(controller)) continue;
+      const richBackward = hasRichVisibleContent(
+        controller,
+        minContentAreaRatio,
+      );
+      if (requireRichContent && !richBackward) continue;
+      controller.lastVisibleFrame = backward;
+      controller.lastVisibleFrameEver = backward;
+      if (richBackward) {
+        controller.lastRichVisibleFrame = backward;
+        controller.lastRichVisibleFrameEver = backward;
       }
+      return backward;
     }
 
     const forward = start + offset;
@@ -514,30 +633,51 @@ function resolveAnyVisibleFrame(controller, preferredFrame) {
       controller.anim.goToAndStop(forward, true);
       forceSvgVisibleForController(controller);
     } catch {}
-    if (!isStageFrameBlank(controller)) {
-      controller.lastVisibleFrame = forward;
-      controller.lastVisibleFrameEver = forward;
-      return forward;
+    if (isStageFrameBlank(controller)) continue;
+    const richForward = hasRichVisibleContent(controller, minContentAreaRatio);
+    if (requireRichContent && !richForward) continue;
+    controller.lastVisibleFrame = forward;
+    controller.lastVisibleFrameEver = forward;
+    if (richForward) {
+      controller.lastRichVisibleFrame = forward;
+      controller.lastRichVisibleFrameEver = forward;
     }
+    return forward;
   }
 
   return start;
 }
 
-function resolveSettledFrame(controller, segment, preferredFrame) {
+function resolveSettledFrame(
+  controller,
+  segment,
+  preferredFrame,
+  options = {},
+) {
   const safeFrom = Number.isFinite(Number(segment?.from))
     ? Math.floor(Number(segment.from))
     : 0;
   const safeEnd = Number.isFinite(Number(segment?.to))
     ? Math.floor(Number(segment.to))
     : safeFrom;
+  const allowOutsideSegment = !!options.allowOutsideSegment;
+  const requireRichContent = !!options.requireRichContent;
+  const minContentAreaRatio = Number.isFinite(
+    Number(options.minContentAreaRatio),
+  )
+    ? Math.max(0.01, Number(options.minContentAreaRatio))
+    : 0.16;
+  const minFrame = allowOutsideSegment ? 0 : safeFrom;
+  const maxFrame = allowOutsideSegment
+    ? getAnimationLastFrame(controller?.anim)
+    : safeEnd;
 
   let candidate = Number.isFinite(Number(preferredFrame))
     ? Math.floor(Number(preferredFrame))
     : safeEnd;
-  candidate = Math.max(safeFrom, Math.min(safeEnd, candidate));
+  candidate = Math.max(minFrame, Math.min(maxFrame, candidate));
 
-  const maxLookback = Math.max(0, candidate - safeFrom);
+  const maxLookback = Math.max(0, candidate - minFrame);
 
   for (let offset = 0; offset <= maxLookback; offset += 1) {
     const frame = candidate - offset;
@@ -545,27 +685,99 @@ function resolveSettledFrame(controller, segment, preferredFrame) {
       controller.anim.goToAndStop(frame, true);
       forceSvgVisibleForController(controller);
     } catch {}
+    if (isStageFrameBlank(controller)) continue;
+    if (
+      requireRichContent &&
+      !hasRichVisibleContent(controller, minContentAreaRatio)
+    ) {
+      continue;
+    }
     if (!isStageFrameBlank(controller)) {
       controller.lastVisibleFrame = frame;
       controller.lastVisibleFrameEver = frame;
+      const richFrame = hasRichVisibleContent(controller, minContentAreaRatio);
+      if (richFrame) {
+        controller.lastRichVisibleFrame = frame;
+        controller.lastRichVisibleFrameEver = frame;
+      }
       return frame;
     }
   }
 
   const rememberedInSegment = Number(controller?.lastVisibleFrame);
   if (Number.isFinite(rememberedInSegment)) {
-    return Math.max(
-      safeFrom,
-      Math.min(safeEnd, Math.floor(rememberedInSegment)),
+    const rememberedFrame = Math.max(
+      minFrame,
+      Math.min(maxFrame, Math.floor(rememberedInSegment)),
     );
+    try {
+      controller.anim.goToAndStop(rememberedFrame, true);
+      forceSvgVisibleForController(controller);
+    } catch {}
+    if (
+      !isStageFrameBlank(controller) &&
+      (!requireRichContent ||
+        hasRichVisibleContent(controller, minContentAreaRatio))
+    ) {
+      return rememberedFrame;
+    }
   }
 
   const rememberedAny = Number(controller?.lastVisibleFrameEver);
   if (Number.isFinite(rememberedAny)) {
-    return clampFrameToAnimation(controller, rememberedAny);
+    const rememberedFrame = clampFrameToAnimation(controller, rememberedAny);
+    try {
+      controller.anim.goToAndStop(rememberedFrame, true);
+      forceSvgVisibleForController(controller);
+    } catch {}
+    if (
+      !isStageFrameBlank(controller) &&
+      (!requireRichContent ||
+        hasRichVisibleContent(controller, minContentAreaRatio))
+    ) {
+      return rememberedFrame;
+    }
   }
 
-  return resolveAnyVisibleFrame(controller, candidate);
+  if (requireRichContent) {
+    const rememberedRichInSegment = Number(controller?.lastRichVisibleFrame);
+    if (Number.isFinite(rememberedRichInSegment)) {
+      const richFrame = Math.max(
+        minFrame,
+        Math.min(maxFrame, Math.floor(rememberedRichInSegment)),
+      );
+      try {
+        controller.anim.goToAndStop(richFrame, true);
+        forceSvgVisibleForController(controller);
+      } catch {}
+      if (
+        !isStageFrameBlank(controller) &&
+        hasRichVisibleContent(controller, minContentAreaRatio)
+      ) {
+        return richFrame;
+      }
+    }
+
+    const rememberedRichAny = Number(controller?.lastRichVisibleFrameEver);
+    if (Number.isFinite(rememberedRichAny)) {
+      const richFrame = clampFrameToAnimation(controller, rememberedRichAny);
+      try {
+        controller.anim.goToAndStop(richFrame, true);
+        forceSvgVisibleForController(controller);
+      } catch {}
+      if (
+        !isStageFrameBlank(controller) &&
+        hasRichVisibleContent(controller, minContentAreaRatio)
+      ) {
+        return richFrame;
+      }
+    }
+  }
+
+  return resolveAnyVisibleFrame(controller, candidate, {
+    requireRichContent,
+    minContentAreaRatio,
+  });
 }
 
 function playSegment(controller, segmentIndex) {
@@ -623,6 +835,19 @@ function stopAtSegmentEnd(controller, cfg) {
         finishedSeg,
       )
     : null;
+  const allowOutsideSegment =
+    finishedSeg && Number.isFinite(Number(preferredFrame))
+      ? Number(preferredFrame) < finishedSeg.from ||
+        Number(preferredFrame) > finishedSeg.to
+      : false;
+  const requireRichContent = shouldRequireRichSettleContent(
+    cfg,
+    controller.fileIndex,
+  );
+  const minContentAreaRatio = resolveRichSettleMinArea(
+    cfg,
+    controller.fileIndex,
+  );
   let holdFrame = 0;
   if (!finishedSeg && Number.isFinite(controller.targetEndFrame)) {
     holdFrame = Math.max(0, Math.floor(controller.targetEndFrame));
@@ -645,13 +870,37 @@ function stopAtSegmentEnd(controller, cfg) {
           controller,
           finishedSeg,
           preferredFrame,
+          {
+            allowOutsideSegment,
+            requireRichContent,
+            minContentAreaRatio,
+          },
         );
         controller.resolvedFrameBySegment?.set(finishedSegIndex, holdFrame);
       }
       controller.anim.goToAndStop(holdFrame, true);
       forceSvgVisibleForController(controller);
-      if (isStageFrameBlank(controller)) {
-        holdFrame = resolveAnyVisibleFrame(controller, holdFrame);
+      const isSparseSettle =
+        requireRichContent &&
+        !isStageFrameBlank(controller) &&
+        !hasRichVisibleContent(controller, minContentAreaRatio);
+      if (isStageFrameBlank(controller) || isSparseSettle) {
+        if (finishedSeg) {
+          holdFrame = resolveSettledFrame(
+            controller,
+            finishedSeg,
+            preferredFrame,
+            {
+              allowOutsideSegment,
+              requireRichContent,
+              minContentAreaRatio,
+            },
+          );
+        }
+        holdFrame = resolveAnyVisibleFrame(controller, holdFrame, {
+          requireRichContent,
+          minContentAreaRatio,
+        });
         controller.anim.goToAndStop(holdFrame, true);
         forceSvgVisibleForController(controller);
       }
@@ -715,7 +964,14 @@ function initializeSegmentScrollMode(cfg, page, stages) {
     const topbarHeight = getTopbarHeight();
     const effectiveViewportCenter =
       topbarHeight + Math.max(0, (vh - topbarHeight) / 2);
-    return Math.max(0, stageCenterAbs - effectiveViewportCenter);
+    const fileIndex = Number(stage?.dataset?.fileIndex);
+    const centerTopBias = Number.isFinite(fileIndex)
+      ? resolveCenterTopBias(cfg, fileIndex)
+      : 0;
+    return Math.max(
+      0,
+      stageCenterAbs - effectiveViewportCenter - centerTopBias,
+    );
   };
 
   const centerStage = (stage) => {
@@ -730,7 +986,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
     if (!firstStage) return;
 
     const topbarHeight = getTopbarHeight();
-    const extraTopGap = 18;
+    const extraTopGap = resolveFirstFileExtraTopGap(cfg);
     const rect = firstStage.getBoundingClientRect();
     const absoluteTop = window.scrollY + rect.top;
     const targetTop = Math.max(0, absoluteTop - topbarHeight - extraTopGap);
@@ -781,8 +1037,12 @@ function initializeSegmentScrollMode(cfg, page, stages) {
       lastRenderedFrame: null,
       lastVisibleFrame: null,
       lastVisibleFrameEver: null,
+      lastRichVisibleFrame: null,
+      lastRichVisibleFrameEver: null,
       lastPinnedFrame: null,
       resolvedFrameBySegment: new Map(),
+      requireRichContent: shouldRequireRichSettleContent(cfg, idx),
+      minContentAreaRatio: resolveRichSettleMinArea(cfg, idx),
       centerLockRafId: null,
       startCenterLock: null,
       stopCenterLock: null,
@@ -848,6 +1108,12 @@ function initializeSegmentScrollMode(cfg, page, stages) {
           );
           controller.lastVisibleFrame = currentFrame;
           controller.lastVisibleFrameEver = currentFrame;
+          if (
+            hasRichVisibleContent(controller, controller.minContentAreaRatio)
+          ) {
+            controller.lastRichVisibleFrame = currentFrame;
+            controller.lastRichVisibleFrameEver = currentFrame;
+          }
           controller.lastPinnedFrame = currentFrame;
         }
       }
@@ -876,6 +1142,16 @@ function initializeSegmentScrollMode(cfg, page, stages) {
             if (!isStageFrameBlank(controller)) {
               controller.lastVisibleFrame = controller.lastRenderedFrame;
               controller.lastVisibleFrameEver = controller.lastRenderedFrame;
+              if (
+                hasRichVisibleContent(
+                  controller,
+                  controller.minContentAreaRatio,
+                )
+              ) {
+                controller.lastRichVisibleFrame = controller.lastRenderedFrame;
+                controller.lastRichVisibleFrameEver =
+                  controller.lastRenderedFrame;
+              }
             }
           }
         }
@@ -1007,11 +1283,26 @@ function initializeSegmentScrollMode(cfg, page, stages) {
       segIndex,
       seg,
     );
+    const allowOutsideSegment = Number.isFinite(Number(preferredFrame))
+      ? Number(preferredFrame) < seg.from || Number(preferredFrame) > seg.to
+      : false;
+    const requireRichContent = shouldRequireRichSettleContent(
+      cfg,
+      controller.fileIndex,
+    );
+    const minContentAreaRatio = resolveRichSettleMinArea(
+      cfg,
+      controller.fileIndex,
+    );
 
     const cached = controller.resolvedFrameBySegment?.get(segIndex);
     const holdFrame = Number.isFinite(cached)
       ? cached
-      : resolveSettledFrame(controller, seg, preferredFrame);
+      : resolveSettledFrame(controller, seg, preferredFrame, {
+          allowOutsideSegment,
+          requireRichContent,
+          minContentAreaRatio,
+        });
     let safeHoldFrame = holdFrame;
     controller.resolvedFrameBySegment?.set(segIndex, safeHoldFrame);
 
@@ -1030,8 +1321,20 @@ function initializeSegmentScrollMode(cfg, page, stages) {
       controller.anim.goToAndStop(safeHoldFrame, true);
     } catch {}
     forceSvgVisibleForController(controller);
-    if (isStageFrameBlank(controller)) {
-      safeHoldFrame = resolveAnyVisibleFrame(controller, safeHoldFrame);
+    const isSparsePinned =
+      requireRichContent &&
+      !isStageFrameBlank(controller) &&
+      !hasRichVisibleContent(controller, minContentAreaRatio);
+    if (isStageFrameBlank(controller) || isSparsePinned) {
+      safeHoldFrame = resolveSettledFrame(controller, seg, preferredFrame, {
+        allowOutsideSegment,
+        requireRichContent,
+        minContentAreaRatio,
+      });
+      safeHoldFrame = resolveAnyVisibleFrame(controller, safeHoldFrame, {
+        requireRichContent,
+        minContentAreaRatio,
+      });
       controller.resolvedFrameBySegment?.set(segIndex, safeHoldFrame);
       try {
         controller.anim.goToAndStop(safeHoldFrame, true);
@@ -1086,25 +1389,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
   function startFinalPinLoop(passCount = 4) {
     if (!areAllControllersComplete()) return;
 
-    // Keep original desktop behavior: continuously pin settled frames.
-    if (!IS_IOS_WEBKIT) {
-      if (Number.isFinite(finalPinRafId)) return;
-
-      const tick = () => {
-        if (!areAllControllersComplete()) {
-          finalPinRafId = null;
-          return;
-        }
-
-        pinAllAnimationsToSettledFrames();
-        finalPinRafId = requestAnimationFrame(tick);
-      };
-
-      finalPinRafId = requestAnimationFrame(tick);
-      return;
-    }
-
-    // iOS/mobile-safe behavior: bounded pin passes to avoid white-screen lockups.
+    // Bounded pin passes prevent long-running frame pin loops from destabilizing SVG layers.
     finalPinPassesRemaining = Math.max(
       finalPinPassesRemaining,
       Math.max(1, Math.floor(Number(passCount) || 0)),
@@ -1123,7 +1408,11 @@ function initializeSegmentScrollMode(cfg, page, stages) {
           return;
         }
 
-        pinAllAnimationsToSettledFrames({ visibleOnly: true });
+        if (IS_IOS_WEBKIT) {
+          pinAllAnimationsToSettledFrames({ visibleOnly: true });
+        } else {
+          pinAllAnimationsToSettledFrames();
+        }
         finalPinPassesRemaining -= 1;
         if (finalPinPassesRemaining > 0) {
           finalPinRafId = requestAnimationFrame(tick);
@@ -1270,6 +1559,8 @@ function initializeSegmentScrollMode(cfg, page, stages) {
       controller.lastRenderedFrame = null;
       controller.lastVisibleFrame = null;
       controller.lastVisibleFrameEver = null;
+      controller.lastRichVisibleFrame = null;
+      controller.lastRichVisibleFrameEver = null;
       controller.lastPinnedFrame = null;
       controller.resolvedFrameBySegment?.clear?.();
 
@@ -1292,6 +1583,12 @@ function initializeSegmentScrollMode(cfg, page, stages) {
           );
           controller.lastVisibleFrame = currentFrame;
           controller.lastVisibleFrameEver = currentFrame;
+          if (
+            hasRichVisibleContent(controller, controller.minContentAreaRatio)
+          ) {
+            controller.lastRichVisibleFrame = currentFrame;
+            controller.lastRichVisibleFrameEver = currentFrame;
+          }
           controller.lastPinnedFrame = currentFrame;
         }
       }
@@ -1579,7 +1876,7 @@ export async function initializeChildhoodFundalReflexScrollPage(routeName) {
   cleanupActiveSession();
 
   const listEl = page.querySelector(".childhood-fundal-prep-list");
-  const stages = buildAnimationSlots(listEl, cfg.label, cfg.paths.length);
+  const stages = buildAnimationSlots(listEl, cfg.label, cfg.paths.length, cfg);
   if (!stages.length) return;
 
   const isLottieReady = await ensureLottie();
