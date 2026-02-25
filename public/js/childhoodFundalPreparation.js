@@ -167,6 +167,15 @@ const ROUTE_CONFIG = {
 };
 
 let activeSession = null;
+const IS_IOS_WEBKIT = (() => {
+  if (typeof navigator === "undefined") return false;
+  const ua = navigator.userAgent || "";
+  const iOSDevice = /iPad|iPhone|iPod/.test(ua);
+  const iPadOSDesktopUA =
+    navigator.platform === "MacIntel" &&
+    Number(navigator.maxTouchPoints || 0) > 1;
+  return iOSDevice || iPadOSDesktopUA;
+})();
 
 function cleanupActiveSession() {
   if (!activeSession) return;
@@ -385,16 +394,40 @@ function isStageFrameBlank(controller) {
 
     try {
       const rect = node.getBoundingClientRect?.();
-      if (!rect) continue;
-      if (rect.width <= 0.5 || rect.height <= 0.5) continue;
-      const intersectsViewport =
-        rect.right > svgRect.left &&
-        rect.left < svgRect.right &&
-        rect.bottom > svgRect.top &&
-        rect.top < svgRect.bottom;
-      if (!intersectsViewport) continue;
-      return false;
+      if (!IS_IOS_WEBKIT) {
+        if (!rect) continue;
+        if (rect.width <= 0.5 || rect.height <= 0.5) continue;
+        const intersectsViewport =
+          rect.right > svgRect.left &&
+          rect.left < svgRect.right &&
+          rect.bottom > svgRect.top &&
+          rect.top < svgRect.bottom;
+        if (!intersectsViewport) continue;
+        return false;
+      }
+
+      if (rect && rect.width > 0.5 && rect.height > 0.5) return false;
     } catch {}
+
+    // iOS Safari can intermittently report 0x0 client rects for SVG nodes.
+    // Fall back to SVG-local bounds/attributes before treating the frame as blank.
+    try {
+      if (typeof node.getBBox === "function") {
+        const box = node.getBBox();
+        if (box && box.width > 0.5 && box.height > 0.5) return false;
+      }
+    } catch {}
+
+    const widthAttr = Number(node.getAttribute?.("width"));
+    const heightAttr = Number(node.getAttribute?.("height"));
+    if (
+      Number.isFinite(widthAttr) &&
+      Number.isFinite(heightAttr) &&
+      widthAttr > 0.5 &&
+      heightAttr > 0.5
+    ) {
+      return false;
+    }
   }
 
   return true;
@@ -844,13 +877,23 @@ function initializeSegmentScrollMode(cfg, page, stages) {
   }
 
   let finalPinRafId = null;
+  let finalPinPassesRemaining = 0;
+  let deferredFinalPinRafId = null;
 
   function stopFinalPinLoop() {
-    if (!Number.isFinite(finalPinRafId)) return;
-    try {
-      cancelAnimationFrame(finalPinRafId);
-    } catch {}
-    finalPinRafId = null;
+    if (Number.isFinite(finalPinRafId)) {
+      try {
+        cancelAnimationFrame(finalPinRafId);
+      } catch {}
+      finalPinRafId = null;
+    }
+    if (Number.isFinite(deferredFinalPinRafId)) {
+      try {
+        cancelAnimationFrame(deferredFinalPinRafId);
+      } catch {}
+      deferredFinalPinRafId = null;
+    }
+    finalPinPassesRemaining = 0;
   }
 
   function pinControllerToSettledFrame(controller) {
@@ -900,20 +943,57 @@ function initializeSegmentScrollMode(cfg, page, stages) {
     });
   }
 
-  function startFinalPinLoop() {
-    if (Number.isFinite(finalPinRafId)) return;
+  function startFinalPinLoop(passCount = 4) {
+    if (!areAllControllersComplete()) return;
 
-    const tick = () => {
-      if (!areAllControllersComplete()) {
-        finalPinRafId = null;
-        return;
-      }
+    // Keep original desktop behavior: continuously pin settled frames.
+    if (!IS_IOS_WEBKIT) {
+      if (Number.isFinite(finalPinRafId)) return;
 
-      pinAllAnimationsToSettledFrames();
+      const tick = () => {
+        if (!areAllControllersComplete()) {
+          finalPinRafId = null;
+          return;
+        }
+
+        pinAllAnimationsToSettledFrames();
+        finalPinRafId = requestAnimationFrame(tick);
+      };
+
       finalPinRafId = requestAnimationFrame(tick);
-    };
+      return;
+    }
 
-    finalPinRafId = requestAnimationFrame(tick);
+    // iOS/mobile-safe behavior: bounded pin passes to avoid white-screen lockups.
+    finalPinPassesRemaining = Math.max(
+      finalPinPassesRemaining,
+      Math.max(1, Math.floor(Number(passCount) || 0)),
+    );
+
+    if (Number.isFinite(deferredFinalPinRafId)) return;
+    deferredFinalPinRafId = requestAnimationFrame(() => {
+      deferredFinalPinRafId = null;
+      if (!areAllControllersComplete()) return;
+      if (Number.isFinite(finalPinRafId)) return;
+
+      const tick = () => {
+        if (!areAllControllersComplete()) {
+          finalPinRafId = null;
+          finalPinPassesRemaining = 0;
+          return;
+        }
+
+        pinAllAnimationsToSettledFrames();
+        finalPinPassesRemaining -= 1;
+        if (finalPinPassesRemaining > 0) {
+          finalPinRafId = requestAnimationFrame(tick);
+          return;
+        }
+        finalPinRafId = null;
+      };
+
+      finalPinRafId = requestAnimationFrame(tick);
+    });
   }
 
   function applyReplayButtonTitleOffset(buttonEl, titleEl) {
@@ -1224,10 +1304,23 @@ function initializeSegmentScrollMode(cfg, page, stages) {
     }
   }
 
+  function onViewportChangeAfterCompletion() {
+    if (!areAllControllersComplete()) return;
+    startFinalPinLoop(2);
+  }
+
   page.addEventListener("wheel", onWheel, { passive: false });
   page.addEventListener("touchstart", onTouchStart, { passive: true });
   page.addEventListener("touchmove", onTouchMove, { passive: false });
   page.addEventListener("touchend", onTouchEnd, { passive: false });
+  window.addEventListener("scroll", onViewportChangeAfterCompletion, {
+    passive: true,
+  });
+  window.addEventListener("resize", onViewportChangeAfterCompletion, {
+    passive: true,
+  });
+  window.addEventListener("pageshow", onViewportChangeAfterCompletion);
+  window.addEventListener("orientationchange", onViewportChangeAfterCompletion);
 
   return {
     animations: controllers.map((c) => c.anim),
@@ -1243,6 +1336,13 @@ function initializeSegmentScrollMode(cfg, page, stages) {
       page.removeEventListener("touchstart", onTouchStart);
       page.removeEventListener("touchmove", onTouchMove);
       page.removeEventListener("touchend", onTouchEnd);
+      window.removeEventListener("scroll", onViewportChangeAfterCompletion);
+      window.removeEventListener("resize", onViewportChangeAfterCompletion);
+      window.removeEventListener("pageshow", onViewportChangeAfterCompletion);
+      window.removeEventListener(
+        "orientationchange",
+        onViewportChangeAfterCompletion,
+      );
     },
   };
 }
