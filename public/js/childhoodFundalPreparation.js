@@ -350,22 +350,28 @@ function getSegmentEndFrame(segment) {
 }
 
 function resolvePreferredSettleFrame(cfg, fileIndex, segmentIndex, segment) {
-  const fallback = getSegmentEndFrame(segment);
-  const fileOverrides = cfg?.settleFrameOverrides?.[fileIndex];
-  if (!Array.isArray(fileOverrides)) return fallback;
-
-  const raw = fileOverrides[segmentIndex];
-  if (raw == null || raw === "last") return fallback;
-
-  const numeric = Number(raw);
-  if (!Number.isFinite(numeric)) return fallback;
-
   const safeFrom = Number.isFinite(Number(segment?.from))
     ? Math.floor(Number(segment.from))
     : 0;
   const safeEnd = Number.isFinite(Number(segment?.to))
     ? Math.floor(Number(segment.to))
     : safeFrom;
+  const fallback = Math.max(safeFrom, safeEnd);
+  const fileOverrides = cfg?.settleFrameOverrides?.[fileIndex];
+  if (!Array.isArray(fileOverrides)) return fallback;
+
+  const raw = fileOverrides[segmentIndex];
+  if (raw == null || raw === "last") {
+    if (!IS_IOS_WEBKIT) return fallback;
+    // iOS Safari frequently drops the terminal frame for some SVG Lottie files.
+    // Prefer a slightly earlier "tail-safe" frame on iOS only.
+    const segLength = Math.max(0, safeEnd - safeFrom);
+    const tailOffset = Math.max(2, Math.min(12, Math.floor(segLength * 0.02)));
+    return Math.max(safeFrom, safeEnd - tailOffset);
+  }
+
+  const numeric = Number(raw);
+  if (!Number.isFinite(numeric)) return fallback;
   return Math.max(safeFrom, Math.min(safeEnd, Math.floor(numeric)));
 }
 
@@ -417,17 +423,6 @@ function isStageFrameBlank(controller) {
         if (box && box.width > 0.5 && box.height > 0.5) return false;
       }
     } catch {}
-
-    const widthAttr = Number(node.getAttribute?.("width"));
-    const heightAttr = Number(node.getAttribute?.("height"));
-    if (
-      Number.isFinite(widthAttr) &&
-      Number.isFinite(heightAttr) &&
-      widthAttr > 0.5 &&
-      heightAttr > 0.5
-    ) {
-      return false;
-    }
   }
 
   return true;
@@ -879,6 +874,16 @@ function initializeSegmentScrollMode(cfg, page, stages) {
   let finalPinRafId = null;
   let finalPinPassesRemaining = 0;
   let deferredFinalPinRafId = null;
+  let iosFinalPinIntervalId = null;
+  const IOS_FINAL_PIN_INTERVAL_MS = 480;
+
+  function stopIosFinalPinKeepAlive() {
+    if (!Number.isFinite(iosFinalPinIntervalId)) return;
+    try {
+      clearInterval(iosFinalPinIntervalId);
+    } catch {}
+    iosFinalPinIntervalId = null;
+  }
 
   function stopFinalPinLoop() {
     if (Number.isFinite(finalPinRafId)) {
@@ -996,6 +1001,17 @@ function initializeSegmentScrollMode(cfg, page, stages) {
     });
   }
 
+  function startIosFinalPinKeepAlive() {
+    if (!IS_IOS_WEBKIT) return;
+    if (Number.isFinite(iosFinalPinIntervalId)) return;
+
+    iosFinalPinIntervalId = window.setInterval(() => {
+      if (!areAllControllersComplete()) return;
+      if (document.visibilityState === "hidden") return;
+      pinAllAnimationsToSettledFrames();
+    }, IOS_FINAL_PIN_INTERVAL_MS);
+  }
+
   function applyReplayButtonTitleOffset(buttonEl, titleEl) {
     if (!buttonEl) return;
     const normalizedTitle = String(titleEl?.textContent || "")
@@ -1085,6 +1101,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
 
   function resetAllAnimationsToStart() {
     stopFinalPinLoop();
+    stopIosFinalPinKeepAlive();
     hideAllDownArrows();
     controllers.forEach((controller) => {
       try {
@@ -1152,6 +1169,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
       }
       hideAllDownArrows();
       startFinalPinLoop();
+      startIosFinalPinKeepAlive();
     };
   });
 
@@ -1307,6 +1325,14 @@ function initializeSegmentScrollMode(cfg, page, stages) {
   function onViewportChangeAfterCompletion() {
     if (!areAllControllersComplete()) return;
     startFinalPinLoop(2);
+    startIosFinalPinKeepAlive();
+  }
+
+  function onVisibilityChangeAfterCompletion() {
+    if (!areAllControllersComplete()) return;
+    if (document.visibilityState !== "visible") return;
+    startFinalPinLoop(IS_IOS_WEBKIT ? 3 : 1);
+    startIosFinalPinKeepAlive();
   }
 
   page.addEventListener("wheel", onWheel, { passive: false });
@@ -1321,12 +1347,17 @@ function initializeSegmentScrollMode(cfg, page, stages) {
   });
   window.addEventListener("pageshow", onViewportChangeAfterCompletion);
   window.addEventListener("orientationchange", onViewportChangeAfterCompletion);
+  document.addEventListener(
+    "visibilitychange",
+    onVisibilityChangeAfterCompletion,
+  );
 
   return {
     animations: controllers.map((c) => c.anim),
     observer: null,
     removeInputListeners: () => {
       stopFinalPinLoop();
+      stopIosFinalPinKeepAlive();
       controllers.forEach((c) => {
         try {
           c.stopCenterLock?.();
@@ -1342,6 +1373,10 @@ function initializeSegmentScrollMode(cfg, page, stages) {
       window.removeEventListener(
         "orientationchange",
         onViewportChangeAfterCompletion,
+      );
+      document.removeEventListener(
+        "visibilitychange",
+        onVisibilityChangeAfterCompletion,
       );
     },
   };
