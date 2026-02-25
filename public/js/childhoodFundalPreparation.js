@@ -37,6 +37,7 @@ const ROUTE_CONFIG = {
       [110, 238, 378, "last"],
       [270, 357, 453, "last"],
     ],
+    iosAggressiveSettleSegments: [[0], [1, 2], [3], [1, 2, 3]],
   },
   childhoodFundalExamination: {
     pageId: "childhoodFundalExaminationPage",
@@ -69,6 +70,7 @@ const ROUTE_CONFIG = {
       [114, "last"],
       [138, 265, "last"],
     ],
+    iosAggressiveSettleSegments: [[0], [1], [2, 3], [1], [2]],
   },
   childhoodFundalNewbornEyesOpen: {
     pageId: "childhoodFundalNewbornEyesOpenPage",
@@ -93,6 +95,7 @@ const ROUTE_CONFIG = {
       [119, "last"],
       [61, 106, "last"],
     ],
+    iosAggressiveSettleSegments: [[0], [2], [1], [2]],
   },
   childhoodFundalNewbornEyesClosed: {
     pageId: "childhoodFundalNewbornEyesClosedPage",
@@ -110,6 +113,7 @@ const ROUTE_CONFIG = {
       [{ from: 0, to: 61 }, { from: 62, to: 106 }, { from: 107 }],
     ],
     settleFrameOverrides: [["last"], [240, "last"], [61, 106, "last"]],
+    iosAggressiveSettleSegments: [[0], [1], [2]],
   },
   childhoodFundalUnclearFindings: {
     pageId: "childhoodFundalUnclearFindingsPage",
@@ -134,6 +138,7 @@ const ROUTE_CONFIG = {
       [82, 135, "last"],
       [160, 564, "last"],
     ],
+    iosAggressiveSettleSegments: [[0], [1, 2], [2]],
   },
   childhoodFundalPossibleFinding: {
     pageId: "childhoodFundalPossibleFindingPage",
@@ -151,6 +156,7 @@ const ROUTE_CONFIG = {
       ],
     ],
     settleFrameOverrides: [[87, 145, 265, 385, "last"]],
+    iosAggressiveSettleSegments: [[3, 4]],
   },
   childhoodFundalAfterExamination: {
     pageId: "childhoodFundalAfterExaminationPage",
@@ -163,6 +169,7 @@ const ROUTE_CONFIG = {
     playMode: "segmentScroll",
     segmentRanges: [[{ from: 0, to: 89 }, { from: 90 }], [{ from: 0 }]],
     settleFrameOverrides: [[89, "last"], ["last"]],
+    iosAggressiveSettleSegments: [[1]],
   },
 };
 
@@ -349,6 +356,13 @@ function getSegmentEndFrame(segment) {
   return Math.max(safeFrom, safeTo);
 }
 
+function shouldUseIosAggressiveSettle(cfg, fileIndex, segmentIndex) {
+  if (!IS_IOS_WEBKIT) return false;
+  const fileRules = cfg?.iosAggressiveSettleSegments?.[fileIndex];
+  if (!Array.isArray(fileRules) || fileRules.length === 0) return false;
+  return fileRules.includes(segmentIndex);
+}
+
 function resolvePreferredSettleFrame(cfg, fileIndex, segmentIndex, segment) {
   const safeFrom = Number.isFinite(Number(segment?.from))
     ? Math.floor(Number(segment.from))
@@ -358,21 +372,34 @@ function resolvePreferredSettleFrame(cfg, fileIndex, segmentIndex, segment) {
     : safeFrom;
   const fallback = Math.max(safeFrom, safeEnd);
   const fileOverrides = cfg?.settleFrameOverrides?.[fileIndex];
-  if (!Array.isArray(fileOverrides)) return fallback;
+  const raw = Array.isArray(fileOverrides) ? fileOverrides[segmentIndex] : null;
+  const segLength = Math.max(0, safeEnd - safeFrom);
 
-  const raw = fileOverrides[segmentIndex];
+  let candidate = fallback;
   if (raw == null || raw === "last") {
-    if (!IS_IOS_WEBKIT) return fallback;
-    // iOS Safari frequently drops the terminal frame for some SVG Lottie files.
-    // Prefer a slightly earlier "tail-safe" frame on iOS only.
-    const segLength = Math.max(0, safeEnd - safeFrom);
-    const tailOffset = Math.max(2, Math.min(12, Math.floor(segLength * 0.02)));
-    return Math.max(safeFrom, safeEnd - tailOffset);
+    if (IS_IOS_WEBKIT) {
+      // iOS Safari frequently drops the terminal frame for some SVG Lottie files.
+      // Prefer a slightly earlier "tail-safe" frame on iOS only.
+      const tailOffset = Math.max(
+        2,
+        Math.min(12, Math.floor(segLength * 0.02)),
+      );
+      candidate = Math.max(safeFrom, safeEnd - tailOffset);
+    }
+  } else {
+    const numeric = Number(raw);
+    if (Number.isFinite(numeric)) {
+      candidate = Math.max(safeFrom, Math.min(safeEnd, Math.floor(numeric)));
+    }
   }
 
-  const numeric = Number(raw);
-  if (!Number.isFinite(numeric)) return fallback;
-  return Math.max(safeFrom, Math.min(safeEnd, Math.floor(numeric)));
+  if (shouldUseIosAggressiveSettle(cfg, fileIndex, segmentIndex)) {
+    // Only for known-problem iOS segments: keep a safer margin from terminal/fade frames.
+    const extraBackoff = Math.max(8, Math.min(28, Math.floor(segLength * 0.1)));
+    candidate = Math.max(safeFrom, candidate - extraBackoff);
+  }
+
+  return Math.max(safeFrom, Math.min(safeEnd, candidate));
 }
 
 function isStageFrameBlank(controller) {
@@ -877,6 +904,36 @@ function initializeSegmentScrollMode(cfg, page, stages) {
     hideAllDownArrows();
     target?.showDownArrow?.();
   };
+  let iosCenterCorrectionRafId = null;
+
+  function stopIosCenterCorrection() {
+    if (!Number.isFinite(iosCenterCorrectionRafId)) return;
+    try {
+      cancelAnimationFrame(iosCenterCorrectionRafId);
+    } catch {}
+    iosCenterCorrectionRafId = null;
+  }
+
+  function requestIosCenterCorrection() {
+    if (!IS_IOS_WEBKIT) return;
+    if (areAllControllersComplete()) return;
+    if (Number.isFinite(iosCenterCorrectionRafId)) return;
+
+    iosCenterCorrectionRafId = requestAnimationFrame(() => {
+      iosCenterCorrectionRafId = null;
+      if (areAllControllersComplete()) return;
+      const controller = getGateController();
+      if (!controller?.stage) return;
+      centerStage(controller.stage);
+    });
+  }
+
+  function setMobileTouchLock(enabled) {
+    if (!IS_IOS_WEBKIT) return;
+    page.style.touchAction = enabled ? "none" : "";
+    page.style.overscrollBehaviorY = enabled ? "none" : "";
+    document.body.style.overscrollBehaviorY = enabled ? "none" : "";
+  }
 
   function isControllerComplete(controller) {
     return (
@@ -1187,6 +1244,8 @@ function initializeSegmentScrollMode(cfg, page, stages) {
   function resetAllAnimationsToStart() {
     stopFinalPinLoop();
     stopIosFinalPinKeepAlive();
+    stopIosCenterCorrection();
+    setMobileTouchLock(true);
     hideAllDownArrows();
     controllers.forEach((controller) => {
       try {
@@ -1232,6 +1291,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
     requestAnimationFrame(() =>
       requestAnimationFrame(() => {
         scrollToFirstFileStart();
+        requestIosCenterCorrection();
       }),
     );
   }
@@ -1252,13 +1312,18 @@ function initializeSegmentScrollMode(cfg, page, stages) {
     controller.onSegmentSettled = () => {
       if (!areAllControllersComplete()) {
         showDownArrowForController(controller);
+        setMobileTouchLock(true);
+        requestIosCenterCorrection();
         return;
       }
       hideAllDownArrows();
+      setMobileTouchLock(false);
       startFinalPinLoop();
       startIosFinalPinKeepAlive();
     };
   });
+
+  setMobileTouchLock(!areAllControllersComplete());
 
   let wheelAccum = 0;
   let touchStartY = null;
@@ -1382,6 +1447,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
     if (canConsumeDirection(dir)) {
       e.preventDefault();
       e.stopPropagation();
+      requestIosCenterCorrection();
     }
   }
 
@@ -1406,7 +1472,14 @@ function initializeSegmentScrollMode(cfg, page, stages) {
     if (consumed) {
       e.preventDefault();
       e.stopPropagation();
+      requestIosCenterCorrection();
     }
+  }
+
+  function onViewportChangeDuringProgress() {
+    if (!IS_IOS_WEBKIT) return;
+    if (areAllControllersComplete()) return;
+    requestIosCenterCorrection();
   }
 
   function onViewportChangeAfterCompletion() {
@@ -1426,6 +1499,14 @@ function initializeSegmentScrollMode(cfg, page, stages) {
   page.addEventListener("touchstart", onTouchStart, { passive: true });
   page.addEventListener("touchmove", onTouchMove, { passive: false });
   page.addEventListener("touchend", onTouchEnd, { passive: false });
+  window.addEventListener("scroll", onViewportChangeDuringProgress, {
+    passive: true,
+  });
+  window.addEventListener("resize", onViewportChangeDuringProgress, {
+    passive: true,
+  });
+  window.addEventListener("pageshow", onViewportChangeDuringProgress);
+  window.addEventListener("orientationchange", onViewportChangeDuringProgress);
   window.addEventListener("scroll", onViewportChangeAfterCompletion, {
     passive: true,
   });
@@ -1445,6 +1526,8 @@ function initializeSegmentScrollMode(cfg, page, stages) {
     removeInputListeners: () => {
       stopFinalPinLoop();
       stopIosFinalPinKeepAlive();
+      stopIosCenterCorrection();
+      setMobileTouchLock(false);
       controllers.forEach((c) => {
         try {
           c.stopCenterLock?.();
@@ -1454,6 +1537,13 @@ function initializeSegmentScrollMode(cfg, page, stages) {
       page.removeEventListener("touchstart", onTouchStart);
       page.removeEventListener("touchmove", onTouchMove);
       page.removeEventListener("touchend", onTouchEnd);
+      window.removeEventListener("scroll", onViewportChangeDuringProgress);
+      window.removeEventListener("resize", onViewportChangeDuringProgress);
+      window.removeEventListener("pageshow", onViewportChangeDuringProgress);
+      window.removeEventListener(
+        "orientationchange",
+        onViewportChangeDuringProgress,
+      );
       window.removeEventListener("scroll", onViewportChangeAfterCompletion);
       window.removeEventListener("resize", onViewportChangeAfterCompletion);
       window.removeEventListener("pageshow", onViewportChangeAfterCompletion);
