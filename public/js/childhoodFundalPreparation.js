@@ -434,6 +434,23 @@ function forceSvgVisibleForController(controller) {
     controller?.stage?.querySelector?.("svg");
   if (!svgEl) return;
 
+  if (IS_IOS_WEBKIT) {
+    // Safari/iOS can drop SVG layers after rapid scroll + frame seeks.
+    // Keep the stage and SVG on a stable compositing layer.
+    if (controller?.stage) {
+      controller.stage.style.willChange = "transform";
+      controller.stage.style.transform = "translate3d(0,0,0)";
+      controller.stage.style.webkitTransform = "translate3d(0,0,0)";
+      controller.stage.style.backfaceVisibility = "hidden";
+      controller.stage.style.webkitBackfaceVisibility = "hidden";
+    }
+    svgEl.style.willChange = "transform, opacity";
+    svgEl.style.transform = "translate3d(0,0,0)";
+    svgEl.style.webkitTransform = "translate3d(0,0,0)";
+    svgEl.style.backfaceVisibility = "hidden";
+    svgEl.style.webkitBackfaceVisibility = "hidden";
+  }
+
   svgEl.style.display = "block";
   svgEl.style.visibility = "visible";
   svgEl.style.opacity = "1";
@@ -533,6 +550,7 @@ function playSegment(controller, segmentIndex) {
   controller.targetEndFrame = seg.to;
   controller.isPlaying = true;
   controller.lastRenderedFrame = seg.from;
+  controller.lastPinnedFrame = null;
 
   try {
     controller.startCenterLock?.();
@@ -613,6 +631,7 @@ function stopAtSegmentEnd(controller, cfg) {
       if (!isStageFrameBlank(controller)) {
         controller.lastVisibleFrame = holdFrame;
         controller.lastVisibleFrameEver = holdFrame;
+        controller.lastPinnedFrame = holdFrame;
       }
     } finally {
       controller.isSnapping = false;
@@ -735,6 +754,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
       lastRenderedFrame: null,
       lastVisibleFrame: null,
       lastVisibleFrameEver: null,
+      lastPinnedFrame: null,
       resolvedFrameBySegment: new Map(),
       centerLockRafId: null,
       startCenterLock: null,
@@ -801,6 +821,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
           );
           controller.lastVisibleFrame = currentFrame;
           controller.lastVisibleFrameEver = currentFrame;
+          controller.lastPinnedFrame = currentFrame;
         }
       }
 
@@ -875,9 +896,12 @@ function initializeSegmentScrollMode(cfg, page, stages) {
   let finalPinPassesRemaining = 0;
   let deferredFinalPinRafId = null;
   let iosFinalPinIntervalId = null;
+  let iosFinalPinPassesRemaining = 0;
   const IOS_FINAL_PIN_INTERVAL_MS = 480;
+  const IOS_FINAL_PIN_BURST_PASSES = 6;
 
   function stopIosFinalPinKeepAlive() {
+    iosFinalPinPassesRemaining = 0;
     if (!Number.isFinite(iosFinalPinIntervalId)) return;
     try {
       clearInterval(iosFinalPinIntervalId);
@@ -923,6 +947,17 @@ function initializeSegmentScrollMode(cfg, page, stages) {
       : resolveSettledFrame(controller, seg, preferredFrame);
     let safeHoldFrame = holdFrame;
     controller.resolvedFrameBySegment?.set(segIndex, safeHoldFrame);
+
+    const prevPinned = Number(controller.lastPinnedFrame);
+    if (
+      IS_IOS_WEBKIT &&
+      Number.isFinite(prevPinned) &&
+      Math.floor(prevPinned) === safeHoldFrame
+    ) {
+      forceSvgVisibleForController(controller);
+      if (!isStageFrameBlank(controller)) return;
+    }
+
     try {
       controller.anim.pause();
       controller.anim.goToAndStop(safeHoldFrame, true);
@@ -939,13 +974,46 @@ function initializeSegmentScrollMode(cfg, page, stages) {
     if (!isStageFrameBlank(controller)) {
       controller.lastVisibleFrame = safeHoldFrame;
       controller.lastVisibleFrameEver = safeHoldFrame;
+      controller.lastPinnedFrame = safeHoldFrame;
+    } else if (IS_IOS_WEBKIT) {
+      controller.lastPinnedFrame = null;
     }
   }
 
-  function pinAllAnimationsToSettledFrames() {
-    controllers.forEach((controller) => {
-      pinControllerToSettledFrame(controller);
+  function getControllersNearViewport(margin = 96) {
+    const vh = window.innerHeight || document.documentElement.clientHeight || 0;
+    if (!Number.isFinite(vh) || vh <= 0) return [];
+
+    return controllers.filter((controller) => {
+      if (!controller?.stage) return false;
+      const rect = controller.stage.getBoundingClientRect?.();
+      if (!rect) return false;
+      return rect.bottom >= -margin && rect.top <= vh + margin;
     });
+  }
+
+  function pinAllAnimationsToSettledFrames(options = {}) {
+    const visibleOnly = options?.visibleOnly === true;
+    if (!visibleOnly) {
+      controllers.forEach((controller) => {
+        pinControllerToSettledFrame(controller);
+      });
+      return;
+    }
+
+    const visibleControllers = getControllersNearViewport();
+    if (visibleControllers.length) {
+      visibleControllers.forEach((controller) => {
+        pinControllerToSettledFrame(controller);
+      });
+      return;
+    }
+
+    const fallback =
+      controllers[activeFileIndex] || controllers[controllers.length - 1];
+    if (fallback) {
+      pinControllerToSettledFrame(fallback);
+    }
   }
 
   function startFinalPinLoop(passCount = 4) {
@@ -988,7 +1056,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
           return;
         }
 
-        pinAllAnimationsToSettledFrames();
+        pinAllAnimationsToSettledFrames({ visibleOnly: true });
         finalPinPassesRemaining -= 1;
         if (finalPinPassesRemaining > 0) {
           finalPinRafId = requestAnimationFrame(tick);
@@ -1001,14 +1069,31 @@ function initializeSegmentScrollMode(cfg, page, stages) {
     });
   }
 
-  function startIosFinalPinKeepAlive() {
+  function startIosFinalPinKeepAlive(passCount = IOS_FINAL_PIN_BURST_PASSES) {
     if (!IS_IOS_WEBKIT) return;
+    iosFinalPinPassesRemaining = Math.max(
+      iosFinalPinPassesRemaining,
+      Math.max(1, Math.floor(Number(passCount) || 0)),
+    );
+
+    if (areAllControllersComplete() && document.visibilityState !== "hidden") {
+      pinAllAnimationsToSettledFrames({ visibleOnly: true });
+    }
+
     if (Number.isFinite(iosFinalPinIntervalId)) return;
 
     iosFinalPinIntervalId = window.setInterval(() => {
-      if (!areAllControllersComplete()) return;
+      if (!areAllControllersComplete()) {
+        stopIosFinalPinKeepAlive();
+        return;
+      }
       if (document.visibilityState === "hidden") return;
-      pinAllAnimationsToSettledFrames();
+
+      pinAllAnimationsToSettledFrames({ visibleOnly: true });
+      iosFinalPinPassesRemaining -= 1;
+      if (iosFinalPinPassesRemaining <= 0) {
+        stopIosFinalPinKeepAlive();
+      }
     }, IOS_FINAL_PIN_INTERVAL_MS);
   }
 
@@ -1116,6 +1201,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
       controller.lastRenderedFrame = null;
       controller.lastVisibleFrame = null;
       controller.lastVisibleFrameEver = null;
+      controller.lastPinnedFrame = null;
       controller.resolvedFrameBySegment?.clear?.();
 
       const firstSeg = controller.segments[0];
@@ -1137,6 +1223,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
           );
           controller.lastVisibleFrame = currentFrame;
           controller.lastVisibleFrameEver = currentFrame;
+          controller.lastPinnedFrame = currentFrame;
         }
       }
     });
