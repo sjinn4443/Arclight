@@ -906,6 +906,12 @@ function initializeSegmentScrollMode(cfg, page, stages) {
   };
   let iosCenterCorrectionRafId = null;
 
+  function isAnyControllerPlaybackActive() {
+    return controllers.some(
+      (controller) => controller?.isPlaying || controller?.isSnapping,
+    );
+  }
+
   function stopIosCenterCorrection() {
     if (!Number.isFinite(iosCenterCorrectionRafId)) return;
     try {
@@ -914,14 +920,17 @@ function initializeSegmentScrollMode(cfg, page, stages) {
     iosCenterCorrectionRafId = null;
   }
 
-  function requestIosCenterCorrection() {
+  function requestIosCenterCorrection(options = {}) {
+    const force = options?.force === true;
     if (!IS_IOS_WEBKIT) return;
     if (areAllControllersComplete()) return;
+    if (!force && !isAnyControllerPlaybackActive()) return;
     if (Number.isFinite(iosCenterCorrectionRafId)) return;
 
     iosCenterCorrectionRafId = requestAnimationFrame(() => {
       iosCenterCorrectionRafId = null;
       if (areAllControllersComplete()) return;
+      if (!force && !isAnyControllerPlaybackActive()) return;
       const controller = getGateController();
       if (!controller?.stage) return;
       centerStage(controller.stage);
@@ -930,9 +939,10 @@ function initializeSegmentScrollMode(cfg, page, stages) {
 
   function setMobileTouchLock(enabled) {
     if (!IS_IOS_WEBKIT) return;
-    page.style.touchAction = enabled ? "none" : "";
-    page.style.overscrollBehaviorY = enabled ? "none" : "";
-    document.body.style.overscrollBehaviorY = enabled ? "none" : "";
+    // Allow normal vertical paging between files; just suppress bounce chaining.
+    page.style.touchAction = enabled ? "pan-y" : "";
+    page.style.overscrollBehaviorY = enabled ? "contain" : "";
+    document.body.style.overscrollBehaviorY = enabled ? "contain" : "";
   }
 
   function isControllerComplete(controller) {
@@ -1291,7 +1301,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
     requestAnimationFrame(() =>
       requestAnimationFrame(() => {
         scrollToFirstFileStart();
-        requestIosCenterCorrection();
+        requestIosCenterCorrection({ force: true });
       }),
     );
   }
@@ -1313,7 +1323,6 @@ function initializeSegmentScrollMode(cfg, page, stages) {
       if (!areAllControllersComplete()) {
         showDownArrowForController(controller);
         setMobileTouchLock(true);
-        requestIosCenterCorrection();
         return;
       }
       hideAllDownArrows();
@@ -1479,6 +1488,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
   function onViewportChangeDuringProgress() {
     if (!IS_IOS_WEBKIT) return;
     if (areAllControllersComplete()) return;
+    if (!isAnyControllerPlaybackActive()) return;
     requestIosCenterCorrection();
   }
 
