@@ -346,6 +346,12 @@ function isDesktopViewport() {
   return width >= 1024;
 }
 
+function isWideDesktopViewport() {
+  if (typeof window === "undefined") return false;
+  const width = window.innerWidth || document.documentElement?.clientWidth || 0;
+  return width >= 1440;
+}
+
 function shouldUseMobileStageTopAlignedMode(cfg) {
   return cfg?.mobileStageTopAligned === true && isNarrowMobileViewport();
 }
@@ -1242,14 +1248,41 @@ function initializeSegmentScrollMode(cfg, page, stages) {
       return;
     }
 
-    const rightInset = Math.max(
-      10,
-      Math.round(stageRect.right - svgRect.right + 10),
-    );
-    const bottomInset = Math.max(
-      10,
-      Math.round(stageRect.bottom - svgRect.bottom + 10),
-    );
+    let rightInset = 10;
+    let bottomInset = 10;
+
+    if (isWideDesktopViewport()) {
+      // 1440+에서는 SVG viewBox 기준의 실제 렌더 영역 우하단으로 보정한다.
+      const vb = svgEl.viewBox?.baseVal;
+      const vbWidth = Number(vb?.width);
+      const vbHeight = Number(vb?.height);
+      if (
+        Number.isFinite(vbWidth) &&
+        vbWidth > 0 &&
+        Number.isFinite(vbHeight) &&
+        vbHeight > 0
+      ) {
+        const scale = Math.min(
+          stageRect.width / vbWidth,
+          stageRect.height / vbHeight,
+        );
+        const renderWidth = vbWidth * scale;
+        const renderHeight = vbHeight * scale;
+        const gutterX = Math.max(0, (stageRect.width - renderWidth) / 2);
+        const gutterY = Math.max(0, (stageRect.height - renderHeight) / 2);
+        rightInset = Math.max(10, Math.round(gutterX + 10));
+        bottomInset = Math.max(10, Math.round(gutterY + 10));
+      }
+    } else {
+      rightInset = Math.max(
+        10,
+        Math.round(stageRect.right - svgRect.right + 10),
+      );
+      bottomInset = Math.max(
+        10,
+        Math.round(stageRect.bottom - svgRect.bottom + 10),
+      );
+    }
 
     arrowEl.style.setProperty("--fundal-arrow-right", `${rightInset}px`);
     arrowEl.style.setProperty("--fundal-arrow-bottom", `${bottomInset}px`);
@@ -1414,6 +1447,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
 
     controller.showDownArrow = () => {
       if (!controller.arrowEl) return;
+      updateArrowAnchorForController(controller);
       controller.arrowEl.classList.add("is-visible");
     };
 
