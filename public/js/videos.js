@@ -407,6 +407,20 @@ const VIDEO_PAGE_SOURCES = {
     iframeClass: "videos-yt-mum",
   },
 
+  assessingVisualFunctionPage: {
+    key: "videoMode:assessingVisualFunctionPage",
+    containerSelector: "#assessingVisualFunctionPage .video-container",
+    videoSelector: "#assessingVisualFunctionVideo",
+    // This page is single-video (no toggle); keep low/high identical so
+    // shared progress wiring can still track it by target id.
+    sources: {
+      low: "images/pdf/Workshop/Childhood/VisualDevelopment/01.mp4",
+      high: "images/pdf/Workshop/Childhood/VisualDevelopment/01.mp4",
+    },
+    onlineTitle: "Assessing Visual Function (online)",
+    iframeClass: "videos-yt-assessing-visual-function",
+  },
+
   // --- Pupils: make these toggle-driven too (optional but aligns with your goal) ---
   pupilExamPECPage: {
     key: "videoMode:pupilExamPECPage",

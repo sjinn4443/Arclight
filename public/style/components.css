@@ -2070,7 +2070,7 @@ input:checked + .slider:before {
   transform: translateY(1px);
 }
 #casestudyPage .pupil-card h3 {
-  margin: 8px 2px 14px;
+  margin: 8px 6px -5px;
   font-size: 12px;
   line-height: 1.15;
   font-weight: 750;
@@ -5747,14 +5747,16 @@ Glaucoma history case study: match intermediate style
 }
 
 /* Glaucoma workshop flow: shared Next button */
-.glaucoma-next-wrap {
+.glaucoma-next-wrap,
+.childhood-next-wrap {
   position: fixed;
   right: 16px;
   bottom: calc(16px + env(safe-area-inset-bottom));
   z-index: 75;
 }
 
-.glaucoma-next-btn {
+.glaucoma-next-btn,
+.childhood-next-btn {
   min-width: 96px;
   height: 38px;
   border: none;
@@ -5767,10 +5769,12 @@ Glaucoma history case study: match intermediate style
   line-height: 1;
 }
 
-.glaucoma-next-btn.is-ready {
+.glaucoma-next-btn.is-ready,
+.childhood-next-btn.is-ready {
   background: #e41e26;
 }
 
-.glaucoma-next-btn:active {
+.glaucoma-next-btn:active,
+.childhood-next-btn:active {
   transform: translateY(1px);
 }

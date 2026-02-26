@@ -1,9 +1,15 @@
 // FILE: public/js/childhoodAssessment.js
 // Simple: inject quiz into existing #childhoodAssessmentQuizPage only (no page creation, no appRoot append)
+import {
+  initializeChildhoodWorkshopProgressInfra,
+  setChildhoodLessonProgress,
+} from "./childhoodWorkshopProgress.js";
 
 export function initializeChildhoodAssessment() {
   const mount = document.getElementById("childhoodAssessmentQuizPage");
   if (!mount) return;
+
+  initializeChildhoodWorkshopProgressInfra();
 
   // prevent double-build
   if (mount.dataset.built === "1") return;
@@ -121,6 +127,22 @@ export function initializeChildhoodAssessment() {
   const form = mount.querySelector("#childhoodQuizForm");
   if (!form) return;
 
+  const setAssessmentProgress = (percent, { mode = "max" } = {}) => {
+    setChildhoodLessonProgress("childhoodAssessmentPage", percent, { mode });
+    setChildhoodLessonProgress("childhoodAssessmentQuizPage", percent, {
+      mode,
+    });
+  };
+
+  const updateProgressFromAnswers = () => {
+    const answered = questions.reduce((count, _q, index) => {
+      const checked = form.querySelector(`input[name="q${index}"]:checked`);
+      return count + (checked ? 1 : 0);
+    }, 0);
+    const inProgressPercent = (answered / questions.length) * 90;
+    setAssessmentProgress(inProgressPercent);
+  };
+
   questions.forEach((q, i) => {
     const block = blockTemplate.content
       .querySelector(".quiz-block")
@@ -157,6 +179,12 @@ export function initializeChildhoodAssessment() {
     }
 
     form.appendChild(block);
+  });
+
+  form.addEventListener("change", (e) => {
+    if (!(e.target instanceof HTMLInputElement)) return;
+    if (e.target.type !== "radio") return;
+    updateProgressFromAnswers();
   });
 
   form.addEventListener("submit", (e) => {
@@ -199,6 +227,7 @@ export function initializeChildhoodAssessment() {
       scoreText.appendChild(hint);
     }
 
+    setAssessmentProgress(100);
     mount.querySelector("#childhoodQuizModal").classList.remove("hidden");
   });
 

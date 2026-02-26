@@ -1,9 +1,15 @@
 // FILE: public/js/behavioursquiz.js
 // Simple: inject quiz into existing #behavioursquizPage only (no page creation, no appRoot append)
+import {
+  initializeChildhoodWorkshopProgressInfra,
+  setChildhoodLessonProgress,
+} from "./childhoodWorkshopProgress.js";
 
 export function initializeBehavioursQuiz() {
   const mount = document.getElementById("behavioursquizPage");
   if (!mount) return;
+
+  initializeChildhoodWorkshopProgressInfra();
 
   // prevent double-build
   if (mount.dataset.built === "1") return;
@@ -107,6 +113,15 @@ export function initializeBehavioursQuiz() {
   const form = mount.querySelector("#behavioursQuizForm");
   if (!form) return;
 
+  const updateProgressFromAnswers = () => {
+    const answered = questions.reduce((count, _q, index) => {
+      const checked = form.querySelector(`input[name="q${index}"]:checked`);
+      return count + (checked ? 1 : 0);
+    }, 0);
+    const inProgressPercent = (answered / questions.length) * 90;
+    setChildhoodLessonProgress("behavioursquizPage", inProgressPercent);
+  };
+
   questions.forEach((q, i) => {
     const block = blockTemplate.content
       .querySelector(".quiz-block")
@@ -143,6 +158,12 @@ export function initializeBehavioursQuiz() {
     }
 
     form.appendChild(block);
+  });
+
+  form.addEventListener("change", (e) => {
+    if (!(e.target instanceof HTMLInputElement)) return;
+    if (e.target.type !== "radio") return;
+    updateProgressFromAnswers();
   });
 
   form.addEventListener("submit", (e) => {
@@ -185,6 +206,7 @@ export function initializeBehavioursQuiz() {
       hint.textContent = "Answers are highlighted in green.";
       scoreText.appendChild(hint);
     }
+    setChildhoodLessonProgress("behavioursquizPage", 100);
     mount.querySelector("#behavioursQuizModal").classList.remove("hidden");
   });
 

@@ -1,5 +1,14 @@
 // public/js/childhoodEyeScreeningWorkshop.js
 import { loadPage } from "./navigation.js";
+import {
+  initializeChildhoodWorkshopProgressInfra,
+  updateChildhoodWorkshopProgressBars,
+} from "./childhoodWorkshopProgress.js";
+import {
+  assignChildhoodWorkshopFlowIndices,
+  initializeChildhoodWorkshopNextFlowInfra,
+  rememberChildhoodWorkshopFlowFromRow,
+} from "./childhoodWorkshopNextFlow.js";
 
 function normaliseVideosSubpageId(raw) {
   if (!raw) return "";
@@ -45,6 +54,31 @@ function normaliseVideosSubpageId(raw) {
 
   // Common case: workshop uses "fundalExam" but videos.html uses "fundalExamPage"
   return `${t}Page`;
+}
+
+function showPageWithFallbackAndEvent(id) {
+  if (!id) return false;
+
+  const el = document.getElementById(id);
+  if (!el) return false;
+
+  const hasShowPage = typeof window.showPage === "function";
+  const needsManualDispatch =
+    !hasShowPage || window.__pageShownPatched !== true;
+
+  if (typeof window.showPage === "function") {
+    window.showPage(id);
+  } else {
+    document.querySelectorAll(".page").forEach((p) => {
+      p.style.display = "none";
+    });
+    el.style.display = "block";
+  }
+
+  if (needsManualDispatch) {
+    document.dispatchEvent(new CustomEvent("page:shown", { detail: { id } }));
+  }
+  return true;
 }
 
 function setupWorkshopFolders(page) {
@@ -199,7 +233,13 @@ function markRestoreOpenFolder() {
 export function initializeChildhoodEyeScreeningWorkshop() {
   const page = document.getElementById("childhoodEyeScreeningWorkshopPage");
   if (!page) return;
+
+  initializeChildhoodWorkshopProgressInfra();
+  initializeChildhoodWorkshopNextFlowInfra();
   setupWorkshopFolders(page);
+  assignChildhoodWorkshopFlowIndices(page);
+  updateChildhoodWorkshopProgressBars();
+
   const rows = page.querySelectorAll(".lesson-row[data-target]");
   rows.forEach((row) => {
     if (row.dataset.wired === "1") return;
@@ -211,15 +251,21 @@ export function initializeChildhoodEyeScreeningWorkshop() {
       const targetRaw = row.getAttribute("data-target");
       if (!targetRaw) return;
 
+      rememberChildhoodWorkshopFlowFromRow(row);
       markRestoreOpenFolder();
 
       // ✅ quizzes that are separate routes
-      if (targetRaw === "childhoodAssessmentPage") {
+      if (
+        targetRaw === "childhoodAssessmentPage" ||
+        targetRaw === "childhoodAssessmentQuizPage"
+      ) {
         await loadPage("childhoodAssessment");
+        showPageWithFallbackAndEvent("childhoodAssessmentQuizPage");
         return;
       }
       if (targetRaw === "behavioursquizPage") {
         await loadPage("behavioursquiz");
+        showPageWithFallbackAndEvent("behavioursquizPage");
         return;
       }
 
@@ -252,6 +298,11 @@ export function initializeChildhoodEyeScreeningWorkshop() {
         // Childhood eye screening → Refer
         childhoodReferPage: "childhoodRefer",
 
+        // PDFs
+        atomsHandout1Page: "atomsHandout1",
+        atomsHandout2Page: "atomsHandout2",
+        fundalReflexPdfPage: "fundalReflexPdf",
+
         // (안전망)
         visualImpairmentPage: "visualImpairment",
       };
@@ -261,18 +312,11 @@ export function initializeChildhoodEyeScreeningWorkshop() {
         await loadPage(route);
 
         // ✅ 같은 route 안에 targetRaw 페이지 섹션이 있으면 그걸 정확히 보여주기
-        const el = document.getElementById(targetRaw);
-        if (el) {
-          if (typeof window.showPage === "function") {
-            window.showPage(targetRaw);
-          } else {
-            // fallback: showPage가 없을 때 최소 동작
-            document
-              .querySelectorAll(".page")
-              .forEach((p) => (p.style.display = "none"));
-            el.style.display = "block";
-          }
-        }
+        const fallbackId =
+          targetRaw === "childhoodAssessmentPage"
+            ? "childhoodAssessmentQuizPage"
+            : targetRaw;
+        showPageWithFallbackAndEvent(fallbackId);
 
         try {
           window.scrollTo(0, 0);
@@ -314,36 +358,6 @@ export function initializeChildhoodEyeScreeningWorkshop() {
         return;
       }
     });
-  });
-
-  // 2. Visual Impairment 버튼 연결 (추가된 부분)
-  const viRow = document.getElementById("visualImpairmentRow");
-  if (viRow && viRow.dataset.wired !== "1") {
-    viRow.dataset.wired = "1";
-    viRow.addEventListener("click", async (e) => {
-      e.preventDefault();
-      markRestoreOpenFolder();
-      await loadPage("visualImpairment");
-    });
-  }
-
-  // 3. PDF 관련 버튼들 (Atoms, Fundal 등)
-  const pdfLinks = [
-    { id: "atomsHandout1Row", route: "atomsHandout1" },
-    { id: "atomsHandout2Row", route: "atomsHandout2" },
-    { id: "fundalReflexPdfRow", route: "fundalReflexPdf" },
-  ];
-
-  pdfLinks.forEach((link) => {
-    const el = document.getElementById(link.id);
-    if (el && el.dataset.wiredPdf !== "1") {
-      el.dataset.wiredPdf = "1";
-      el.addEventListener("click", async (e) => {
-        e.preventDefault();
-        markRestoreOpenFolder();
-        await loadPage(link.route);
-      });
-    }
   });
 
   // 4. Fundal reflex folder toggle (inside Childhood Eye Screening section)

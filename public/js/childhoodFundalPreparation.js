@@ -1171,11 +1171,25 @@ function initializeSegmentScrollMode(cfg, page, stages) {
     cfg.segmentTextToggleOnTitle === true;
   let areSegmentTextsVisible = true;
   let removeTitleSegmentTextToggleListeners = null;
+  let hasDispatchedRouteComplete = false;
 
   const getTopbarHeight = () => {
     const topbar = page.querySelector(".eyes-topbar");
     const raw = topbar?.getBoundingClientRect?.().height;
     return Number.isFinite(raw) && raw > 0 ? raw : 56;
+  };
+
+  const dispatchRouteComplete = () => {
+    if (hasDispatchedRouteComplete) return;
+    const target = cfg?.pageId;
+    if (!target) return;
+
+    hasDispatchedRouteComplete = true;
+    document.dispatchEvent(
+      new CustomEvent("childhoodWorkshop:route-complete", {
+        detail: { target },
+      }),
+    );
   };
 
   const setSegmentTextsVisibility = (visible) => {
@@ -1911,6 +1925,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
   }
 
   function resetAllAnimationsToStart() {
+    hasDispatchedRouteComplete = false;
     stopFinalPinLoop();
     stopIosFinalPinKeepAlive();
     stopIosCenterCorrection();
@@ -2007,6 +2022,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
       setMobileTouchLock(false);
       startFinalPinLoop();
       startIosFinalPinKeepAlive();
+      dispatchRouteComplete();
     };
   });
 

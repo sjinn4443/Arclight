@@ -94,6 +94,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const { initializeGlaucomaWorkshopNextFlowInfra } =
         await import("./glaucomaWorkshopNextFlow.js");
       initializeGlaucomaWorkshopNextFlowInfra?.();
+      const { initializeChildhoodWorkshopNextFlowInfra } =
+        await import("./childhoodWorkshopNextFlow.js");
+      initializeChildhoodWorkshopNextFlowInfra?.();
 
       // Also (re)attach toolbar + video listeners now that the fragment is in the DOM
       initializeToolbar();
@@ -202,6 +205,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (routeName === "childhoodAssessment") {
+      const { initializeChildhoodWorkshopNextFlowInfra } =
+        await import("./childhoodWorkshopNextFlow.js");
+      initializeChildhoodWorkshopNextFlowInfra?.();
       const { initializeChildhoodAssessment } =
         await import("./childhoodAssessment.js");
       initializeChildhoodAssessment?.();
@@ -209,6 +215,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (routeName === "behavioursquiz") {
+      const { initializeChildhoodWorkshopNextFlowInfra } =
+        await import("./childhoodWorkshopNextFlow.js");
+      initializeChildhoodWorkshopNextFlowInfra?.();
       const { initializeBehavioursQuiz } = await import("./behavioursquiz.js");
       initializeBehavioursQuiz?.();
       return;

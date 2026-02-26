@@ -1332,14 +1332,14 @@ select.onb-input.has-value {
 /* Card heading (white text on grey) */
 #pupilsPage .pupil-card h3,
 .pupils-like .pupil-card h3 {
-  margin: 8px -6px 14px;
+  margin: 8px 6px -5px;
   font-size: 12px;
   font-weight: 600;
   color: #fff;
 }
 
 #childhoodEyeScreeningWorkshopPage .pupil-card h3 {
-  margin: 8px 25px -5px;
+  margin: 8px 6px -5px;
   font-size: 14px;
   font-weight: 700;
   color: #fff;
@@ -1888,6 +1888,7 @@ select.onb-input.has-value + .onb-select-caret {
 
 #glaucomaWorkshopPage .glaucoma-section-card > h3,
 #glaucomaWorkshopPage .glaucoma-subsection-card > h3 {
+  margin: 8px -6px 14px;
   align-self: stretch;
   text-align: left;
   padding-left: 16px;
@@ -1951,6 +1952,76 @@ select.onb-input.has-value + .onb-select-caret {
 
 #childhoodEyeScreeningWorkshopPage #childhoodWorkshopFolders {
   align-items: center;
+}
+
+#childhoodEyeScreeningWorkshopPage
+  #childhoodWorkshopFolders
+  .childhood-folder-row {
+  position: relative;
+}
+
+#childhoodEyeScreeningWorkshopPage
+  #childhoodWorkshopFolders
+  .childhood-folder-row
+  .lesson-main {
+  gap: 0;
+}
+
+#childhoodEyeScreeningWorkshopPage
+  #childhoodWorkshopFolders
+  .childhood-folder-row
+  .lesson-top {
+  width: auto;
+}
+
+#childhoodEyeScreeningWorkshopPage
+  #childhoodWorkshopFolders
+  .childhood-folder-row
+  .lesson-meta.childhood-folder-complete-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  white-space: nowrap;
+  color: #15e115;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+#childhoodEyeScreeningWorkshopPage
+  #childhoodWorkshopFolders
+  .childhood-folder-complete-star {
+  width: 12px;
+  height: 12px;
+  flex: 0 0 12px;
+  display: inline-block;
+}
+
+#childhoodEyeScreeningWorkshopPage
+  #childhoodWorkshopFolders
+  .childhood-folder-complete-rank-date {
+  display: block;
+  margin-left: 26px;
+  margin-top: 18px;
+  margin-bottom: -37px;
+  color: #bbb;
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+#childhoodEyeScreeningWorkshopPage
+  #childhoodWorkshopFolders
+  .childhood-folder-row[data-folder="causesVisualImpairment"]
+  .childhood-folder-complete-star {
+  margin-top: -14px;
+}
+
+#childhoodEyeScreeningWorkshopPage
+  #childhoodWorkshopFolders
+  .childhood-folder-row[data-folder="causesVisualImpairment"]
+  .childhood-folder-complete-rank-date {
+  margin-top: 4px;
 }
 
 #childhoodEyeScreeningWorkshopPage .childhood-section-card {
