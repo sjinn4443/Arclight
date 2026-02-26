@@ -1371,6 +1371,13 @@ input:checked + .slider:before {
   background: #e7e7eb;
 }
 
+@media (min-width: 1024px) {
+  #eyesCatalogPage .eyes-carousel-divider {
+    width: calc(100% + 8px);
+    margin: 0 0 14px -4px;
+  }
+}
+
 .eyes-card {
   scroll-snap-align: center;
   background: #fff;

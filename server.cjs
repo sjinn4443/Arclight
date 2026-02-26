@@ -51,7 +51,7 @@ function getIsoDateFromMtime(filePath) {
   }
 }
 
-function resolveVersionDateFromVersionFile() {
+function resolveVersionMetadataFromVersionFile() {
   const candidatePaths = [
     path.join(staticRoot, "version.json"),
     path.join(__dirname, "version.json"),
@@ -61,8 +61,20 @@ function resolveVersionDateFromVersionFile() {
     try {
       const raw = fs.readFileSync(p, "utf8");
       const payload = JSON.parse(raw);
-      const normalized = toIsoDateString(payload?.versionDate);
-      if (normalized) return normalized;
+      const versionDate = toIsoDateString(payload?.versionDate);
+      if (!versionDate) continue;
+
+      const versionSequence =
+        parsePositiveInt(
+          payload?.versionSequence ??
+            payload?.pushNumber ??
+            payload?.buildNumber,
+        ) || null;
+
+      return {
+        versionDate,
+        versionSequence,
+      };
     } catch {
       // Ignore invalid/missing file and keep searching.
     }
@@ -118,8 +130,8 @@ function resolveAppVersionDate() {
     // Ignore git lookup errors (e.g. .git missing in some deploys).
   }
 
-  const versionFileDate = resolveVersionDateFromVersionFile();
-  if (versionFileDate) return versionFileDate;
+  if (versionMetadataFromFile?.versionDate)
+    return versionMetadataFromFile.versionDate;
 
   // Final fallback for environments where .git is unavailable at runtime:
   // use the newest timestamp among shipped static assets.
@@ -168,12 +180,20 @@ function resolveAppVersionSequence(versionDate) {
     if (normalized) return normalized;
   }
 
+  if (
+    versionMetadataFromFile?.versionDate === versionDate &&
+    versionMetadataFromFile?.versionSequence
+  ) {
+    return versionMetadataFromFile.versionSequence;
+  }
+
   const gitCount = resolveVersionSequenceFromGit(versionDate);
   if (gitCount) return gitCount;
 
   return 1;
 }
 
+const versionMetadataFromFile = resolveVersionMetadataFromVersionFile();
 const appVersionDate = resolveAppVersionDate();
 const appVersionSequence = resolveAppVersionSequence(appVersionDate);
 

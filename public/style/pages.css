@@ -2024,6 +2024,44 @@ select.onb-input.has-value + .onb-select-caret {
   margin-top: 4px;
 }
 
+@media (min-width: 1024px) {
+  #childhoodEyeScreeningWorkshopPage
+    #childhoodWorkshopFolders
+    .childhood-folder-row
+    .lesson-type {
+    display: inline-block;
+    margin-top: 3px;
+    margin-left: 8px;
+  }
+
+  #childhoodEyeScreeningWorkshopPage
+    #childhoodWorkshopFolders
+    .childhood-folder-complete-star {
+    margin-top: -48px;
+  }
+
+  #childhoodEyeScreeningWorkshopPage
+    #childhoodWorkshopFolders
+    .childhood-folder-complete-rank-date {
+    margin-left: 33px;
+    margin-top: -5px;
+  }
+
+  #childhoodEyeScreeningWorkshopPage
+    #childhoodWorkshopFolders
+    .childhood-folder-row[data-folder="causesVisualImpairment"]
+    .childhood-folder-complete-star {
+    margin-top: -48px;
+  }
+
+  #childhoodEyeScreeningWorkshopPage
+    #childhoodWorkshopFolders
+    .childhood-folder-row[data-folder="causesVisualImpairment"]
+    .childhood-folder-complete-rank-date {
+    margin-top: -5px;
+  }
+}
+
 #childhoodEyeScreeningWorkshopPage .childhood-section-card {
   display: flex;
   flex-direction: column;
@@ -2115,11 +2153,13 @@ select.onb-input.has-value + .onb-select-caret {
   aspect-ratio: 1169 / 1280;
   background: #fff;
   position: relative;
+  isolation: isolate;
 }
 
 @media (min-width: 1024px) {
   .childhood-fundal-scroll-page .childhood-fundal-prep-stage {
     max-width: 66.6667%;
+    max-height: 68vh;
     margin-left: auto;
     margin-right: auto;
   }
@@ -2241,8 +2281,10 @@ select.onb-input.has-value + .onb-select-caret {
 
 .childhood-fundal-scroll-page .childhood-fundal-scroll-down-arrow {
   position: absolute;
-  right: 14px;
-  bottom: 14px;
+  top: auto;
+  left: auto;
+  right: var(--fundal-arrow-right, 10px);
+  bottom: var(--fundal-arrow-bottom, 10px);
   width: 36px;
   height: 36px;
   border-radius: 50%;
@@ -2256,7 +2298,7 @@ select.onb-input.has-value + .onb-select-caret {
     opacity 0.18s ease,
     transform 0.18s ease;
   pointer-events: none;
-  z-index: 3;
+  z-index: 12;
 }
 
 .childhood-fundal-scroll-page .childhood-fundal-scroll-down-arrow.is-visible {

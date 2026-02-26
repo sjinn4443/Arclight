@@ -179,16 +179,16 @@ input {
   #eyesCatalogPage .eyes-top {
     position: fixed;
     top: 0;
-    left: 0;
-    right: 0;
+    left: calc(7vw - 4px);
+    right: calc(7vw - 4px);
     background: #fff;
     z-index: 2000;
     display: flex;
     align-items: center;
-    justify-content: flex-start;
-    gap: 92%;
+    justify-content: space-between;
+    gap: 10px;
     height: 62px;
-    padding: 0 20px 0 74px;
+    padding: 0 20px 0 56px;
     margin: 0;
   }
 
@@ -577,22 +577,23 @@ input {
   #eyesCatalogPage .eyes-top {
     position: fixed;
     top: 0;
-    left: 0;
-    right: 0;
+    left: calc(22vw - 4px);
+    right: calc(22vw - 4px);
     background: #fff;
     z-index: 2000;
     display: flex;
     align-items: center;
-    justify-content: flex-start;
-    gap: 92%;
+    justify-content: space-between;
+    gap: 10px;
     height: 62px;
-    padding-left: 24vw;
+    padding: 0 20px 0 56px;
     margin: 0;
-    max-width: 54vw;
+    max-width: none;
   }
 
   #backBtnGlobal.top-back {
-    padding-left: 12vw !important;
+    padding-left: 17vw !important;
+    top: 8px !important;
   }
 
   #pupilsPage .icon.backBtn,

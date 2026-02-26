@@ -63,22 +63,82 @@ function resolveBuildVersionDate() {
   return new Date().toISOString().slice(0, 10);
 }
 
-function resolveVersionSequenceFromGit(versionDate) {
-  if (!versionDate) return null;
-
+function isShallowRepo(cwd) {
   try {
-    const gitCommitDates = execSync("git log --first-parent --format=%cI", {
-      cwd: path.join(__dirname, ".."),
+    const out = execSync("git rev-parse --is-shallow-repository", {
+      cwd,
       stdio: ["ignore", "pipe", "ignore"],
       encoding: "utf8",
-    })
-      .trim()
-      .split(/\r?\n/)
-      .filter(Boolean);
+    }).trim();
+    return out === "true";
+  } catch {
+    return false;
+  }
+}
+
+function getFirstParentCommitDates(cwd) {
+  try {
+    const out = execSync("git log --first-parent --format=%cI", {
+      cwd,
+      stdio: ["ignore", "pipe", "ignore"],
+      encoding: "utf8",
+    }).trim();
+    if (!out) return [];
+    return out.split(/\r?\n/).filter(Boolean);
+  } catch {
+    return [];
+  }
+}
+
+function tryDeepenGitHistory(cwd) {
+  // In CI/deploy clones, git history is often shallow and returns only 1 commit.
+  // Best-effort deepen helps recover same-day commit counts without failing builds.
+  const commands = [
+    "git fetch --unshallow --tags",
+    "git fetch --deepen=200 --tags",
+  ];
+  for (const cmd of commands) {
+    try {
+      execSync(cmd, {
+        cwd,
+        stdio: ["ignore", "ignore", "ignore"],
+      });
+      return true;
+    } catch {
+      // Keep trying next fetch strategy.
+    }
+  }
+  return false;
+}
+
+function resolveVersionSequenceFromGit(versionDate) {
+  if (!versionDate) return null;
+  const repoRoot = path.join(__dirname, "..");
+
+  try {
+    let gitCommitDates = getFirstParentCommitDates(repoRoot);
+
+    const isCi =
+      String(process.env.CI || "").toLowerCase() === "true" ||
+      Boolean(process.env.RAILWAY_PROJECT_ID);
 
     let count = 0;
     for (const commitIso of gitCommitDates) {
       if (toIsoDateString(commitIso) === versionDate) count += 1;
+    }
+    if (count > 1) return count;
+
+    if (
+      isCi &&
+      count <= 1 &&
+      isShallowRepo(repoRoot) &&
+      tryDeepenGitHistory(repoRoot)
+    ) {
+      gitCommitDates = getFirstParentCommitDates(repoRoot);
+      count = 0;
+      for (const commitIso of gitCommitDates) {
+        if (toIsoDateString(commitIso) === versionDate) count += 1;
+      }
     }
 
     return count > 0 ? count : null;

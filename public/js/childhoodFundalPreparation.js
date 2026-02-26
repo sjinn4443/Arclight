@@ -55,6 +55,8 @@ const ROUTE_CONFIG = {
     ],
     segmentTextModeByFile: ["append", "append", "append", "append"],
     iosAggressiveSettleSegments: [[0], [1, 2], [3], [1, 2, 3]],
+    richSettleContentFiles: [0, 1, 2, 3],
+    richSettleMinAreaByFile: [0.08, 0.12, 0.12, 0.12],
   },
   childhoodFundalExamination: {
     pageId: "childhoodFundalExaminationPage",
@@ -103,6 +105,8 @@ const ROUTE_CONFIG = {
     ],
     segmentTextModeByFile: ["append", "append", "append", "append", "append"],
     iosAggressiveSettleSegments: [[0], [1], [2, 3], [1], [2]],
+    richSettleContentFiles: [0, 1, 2, 3, 4],
+    richSettleMinAreaByFile: [0.08, 0.1, 0.12, 0.1, 0.1],
   },
   childhoodFundalNewbornEyesOpen: {
     pageId: "childhoodFundalNewbornEyesOpenPage",
@@ -140,8 +144,8 @@ const ROUTE_CONFIG = {
     ],
     segmentTextModeByFile: ["append", "append", "append"],
     iosAggressiveSettleSegments: [[0], [2], [1]],
-    richSettleContentFiles: [1, 2],
-    richSettleMinAreaByFile: [0, 0.18, 0.18],
+    richSettleContentFiles: [0, 1, 2],
+    richSettleMinAreaByFile: [0.08, 0.18, 0.18],
   },
   childhoodFundalNewbornEyesClosed: {
     pageId: "childhoodFundalNewbornEyesClosedPage",
@@ -161,6 +165,8 @@ const ROUTE_CONFIG = {
     ],
     segmentTextModeByFile: ["append", "append"],
     iosAggressiveSettleSegments: [[0], [1]],
+    richSettleContentFiles: [0, 1],
+    richSettleMinAreaByFile: [0.08, 0.12],
   },
   childhoodFundalUnclearFindings: {
     pageId: "childhoodFundalUnclearFindingsPage",
@@ -206,6 +212,8 @@ const ROUTE_CONFIG = {
     ],
     segmentTextModeByFile: ["append", "append", "append", "append"],
     iosAggressiveSettleSegments: [[0], [1, 2], [2]],
+    richSettleContentFiles: [0, 1, 2, 3],
+    richSettleMinAreaByFile: [0.1, 0.12, 0.12, 0.12],
   },
   childhoodFundalPossibleFinding: {
     pageId: "childhoodFundalPossibleFindingPage",
@@ -264,6 +272,8 @@ const ROUTE_CONFIG = {
     ],
     segmentTextModeByFile: ["appendInline", "append"],
     iosAggressiveSettleSegments: [[1]],
+    richSettleContentFiles: [0, 1],
+    richSettleMinAreaByFile: [0.1, 0.12],
   },
 };
 
@@ -328,6 +338,12 @@ function isNarrowMobileViewport() {
   if (typeof window === "undefined") return false;
   const width = window.innerWidth || document.documentElement?.clientWidth || 0;
   return width > 0 && width <= 768;
+}
+
+function isDesktopViewport() {
+  if (typeof window === "undefined") return false;
+  const width = window.innerWidth || document.documentElement?.clientWidth || 0;
+  return width >= 1024;
 }
 
 function shouldUseMobileStageTopAlignedMode(cfg) {
@@ -1200,6 +1216,51 @@ function initializeSegmentScrollMode(cfg, page, stages) {
     );
   };
 
+  const updateArrowAnchorForController = (controller) => {
+    const arrowEl = controller?.arrowEl;
+    const stage = controller?.stage;
+    if (!arrowEl || !stage) return;
+
+    if (!isDesktopViewport()) {
+      arrowEl.style.removeProperty("--fundal-arrow-right");
+      arrowEl.style.removeProperty("--fundal-arrow-bottom");
+      return;
+    }
+
+    const svgEl =
+      controller?.anim?.renderer?.svgElement || stage.querySelector("svg");
+    if (!svgEl) return;
+
+    const stageRect = stage.getBoundingClientRect?.();
+    const svgRect = svgEl.getBoundingClientRect?.();
+    if (
+      !stageRect ||
+      !svgRect ||
+      stageRect.width <= 0.5 ||
+      svgRect.width <= 0.5
+    ) {
+      return;
+    }
+
+    const rightInset = Math.max(
+      10,
+      Math.round(stageRect.right - svgRect.right + 10),
+    );
+    const bottomInset = Math.max(
+      10,
+      Math.round(stageRect.bottom - svgRect.bottom + 10),
+    );
+
+    arrowEl.style.setProperty("--fundal-arrow-right", `${rightInset}px`);
+    arrowEl.style.setProperty("--fundal-arrow-bottom", `${bottomInset}px`);
+  };
+
+  const updateAllArrowAnchors = () => {
+    controllers.forEach((controller) => {
+      updateArrowAnchorForController(controller);
+    });
+  };
+
   const wireTitleSegmentTextToggle = () => {
     if (!shouldEnableTitleSegmentTextToggle) return;
     const titleEl = page.querySelector(".eyes-topbar .eyes-topbar__title");
@@ -1505,6 +1566,9 @@ function initializeSegmentScrollMode(cfg, page, stages) {
       if (idx === 0) {
         anchorToFirstFile();
       }
+      requestAnimationFrame(() => {
+        updateArrowAnchorForController(controller);
+      });
     };
 
     anim.addEventListener("data_ready", onReady);
@@ -1792,11 +1856,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
           return;
         }
 
-        if (IS_IOS_WEBKIT) {
-          pinAllAnimationsToSettledFrames({ visibleOnly: true });
-        } else {
-          pinAllAnimationsToSettledFrames();
-        }
+        pinAllAnimationsToSettledFrames({ visibleOnly: true });
         finalPinPassesRemaining -= 1;
         if (finalPinPassesRemaining > 0) {
           finalPinRafId = requestAnimationFrame(tick);
@@ -2020,6 +2080,11 @@ function initializeSegmentScrollMode(cfg, page, stages) {
       showFinalSummaryBulletsForCompletedControllers();
       hideAllDownArrows();
       setMobileTouchLock(false);
+      if (IS_IOS_WEBKIT) {
+        // Keep iOS bounce chaining off after completion to avoid white blank flashes.
+        page.style.overscrollBehaviorY = "contain";
+        document.body.style.overscrollBehaviorY = "contain";
+      }
       startFinalPinLoop();
       startIosFinalPinKeepAlive();
       dispatchRouteComplete();
@@ -2209,8 +2274,13 @@ function initializeSegmentScrollMode(cfg, page, stages) {
   window.addEventListener("resize", onViewportChangeDuringProgress, {
     passive: true,
   });
+  window.addEventListener("resize", updateAllArrowAnchors, {
+    passive: true,
+  });
   window.addEventListener("pageshow", onViewportChangeDuringProgress);
+  window.addEventListener("pageshow", updateAllArrowAnchors);
   window.addEventListener("orientationchange", onViewportChangeDuringProgress);
+  window.addEventListener("orientationchange", updateAllArrowAnchors);
   window.addEventListener("scroll", onViewportChangeAfterCompletion, {
     passive: true,
   });
@@ -2246,11 +2316,14 @@ function initializeSegmentScrollMode(cfg, page, stages) {
       page.removeEventListener("touchend", onTouchEnd);
       window.removeEventListener("scroll", onViewportChangeDuringProgress);
       window.removeEventListener("resize", onViewportChangeDuringProgress);
+      window.removeEventListener("resize", updateAllArrowAnchors);
       window.removeEventListener("pageshow", onViewportChangeDuringProgress);
+      window.removeEventListener("pageshow", updateAllArrowAnchors);
       window.removeEventListener(
         "orientationchange",
         onViewportChangeDuringProgress,
       );
+      window.removeEventListener("orientationchange", updateAllArrowAnchors);
       window.removeEventListener("scroll", onViewportChangeAfterCompletion);
       window.removeEventListener("resize", onViewportChangeAfterCompletion);
       window.removeEventListener("pageshow", onViewportChangeAfterCompletion);

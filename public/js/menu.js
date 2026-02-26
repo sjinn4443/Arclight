@@ -48,6 +48,7 @@ function normalizeVersionPayload(payload) {
 
 async function fetchVersionInfo() {
   const endpoints = ["/api/app/version", "/version.json"];
+  let best = null;
 
   for (const url of endpoints) {
     try {
@@ -59,13 +60,30 @@ async function fetchVersionInfo() {
 
       const payload = await res.json();
       const value = normalizeVersionPayload(payload);
-      if (value) return value;
+      if (!value) continue;
+
+      if (!best) {
+        best = value;
+        continue;
+      }
+
+      if (value.versionDateIso > best.versionDateIso) {
+        best = value;
+        continue;
+      }
+
+      if (
+        value.versionDateIso === best.versionDateIso &&
+        value.versionSequence > best.versionSequence
+      ) {
+        best = value;
+      }
     } catch (err) {
       console.error(`[menu] version metadata fetch failed (${url}):`, err);
     }
   }
 
-  return null;
+  return best;
 }
 
 async function getVersionInfo() {
