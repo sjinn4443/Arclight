@@ -16,6 +16,14 @@ function toIsoDateString(value) {
   return parsed.toISOString().slice(0, 10);
 }
 
+function parsePositiveInt(value) {
+  const raw = String(value ?? "").trim();
+  if (!/^\d+$/.test(raw)) return null;
+  const parsed = Number(raw);
+  if (!Number.isSafeInteger(parsed) || parsed <= 0) return null;
+  return parsed;
+}
+
 function resolveBuildVersionDate() {
   const envCandidates = [
     process.env.APP_VERSION_DATE,
@@ -55,6 +63,48 @@ function resolveBuildVersionDate() {
   return new Date().toISOString().slice(0, 10);
 }
 
+function resolveVersionSequenceFromGit(versionDate) {
+  if (!versionDate) return null;
+
+  try {
+    const gitCommitDates = execSync("git log --first-parent --format=%cI", {
+      cwd: path.join(__dirname, ".."),
+      stdio: ["ignore", "pipe", "ignore"],
+      encoding: "utf8",
+    })
+      .trim()
+      .split(/\r?\n/)
+      .filter(Boolean);
+
+    let count = 0;
+    for (const commitIso of gitCommitDates) {
+      if (toIsoDateString(commitIso) === versionDate) count += 1;
+    }
+
+    return count > 0 ? count : null;
+  } catch {
+    // Ignore git lookup errors in environments where .git metadata is unavailable.
+    return null;
+  }
+}
+
+function resolveBuildVersionSequence(versionDate) {
+  const envCandidates = [
+    process.env.APP_VERSION_SEQUENCE,
+    process.env.APP_PUSH_NUMBER,
+  ];
+
+  for (const candidate of envCandidates) {
+    const normalized = parsePositiveInt(candidate);
+    if (normalized) return normalized;
+  }
+
+  const gitCount = resolveVersionSequenceFromGit(versionDate);
+  if (gitCount) return gitCount;
+
+  return 1;
+}
+
 // Helper function to recursively find files with a given extension
 async function findFiles(dir, extension) {
   let results = [];
@@ -80,6 +130,7 @@ const build = async () => {
   const distPath = path.join(__dirname, "..", "dist");
   const publicPath = path.join(__dirname, "..", "public");
   const versionDate = resolveBuildVersionDate();
+  const versionSequence = resolveBuildVersionSequence(versionDate);
 
   try {
     // 1. Clean the 'dist' directory
@@ -91,6 +142,7 @@ const build = async () => {
     // 2b. Write build/version metadata for runtime consumers (Railway-safe).
     await fs.writeJson(path.join(distPath, "version.json"), {
       versionDate,
+      versionSequence,
     });
 
     // 3. Remove original js files from dist (esbuild will create new ones)

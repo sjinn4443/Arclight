@@ -10,8 +10,8 @@ import {
 } from "./location-service.js";
 
 let overlay, closeBtn;
-let cachedVersionDateIso = null;
-let versionDateRequest = null;
+let cachedVersionInfo = null;
+let versionInfoRequest = null;
 
 function formatVersionDate(isoDate) {
   if (!isoDate || typeof isoDate !== "string") return null;
@@ -20,7 +20,33 @@ function formatVersionDate(isoDate) {
   return `${m[3]}.${m[2]}.${m[1]}`;
 }
 
-async function fetchVersionDateIso() {
+function parsePositiveInt(value) {
+  const raw = String(value ?? "").trim();
+  if (!/^\d+$/.test(raw)) return null;
+  const parsed = Number(raw);
+  if (!Number.isSafeInteger(parsed) || parsed <= 0) return null;
+  return parsed;
+}
+
+function normalizeVersionPayload(payload) {
+  const versionDateIso =
+    typeof payload?.versionDate === "string"
+      ? payload.versionDate.slice(0, 10)
+      : "";
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(versionDateIso)) return null;
+
+  const versionSequence =
+    parsePositiveInt(
+      payload?.versionSequence ?? payload?.pushNumber ?? payload?.buildNumber,
+    ) || 1;
+
+  return {
+    versionDateIso,
+    versionSequence,
+  };
+}
+
+async function fetchVersionInfo() {
   const endpoints = ["/api/app/version", "/version.json"];
 
   for (const url of endpoints) {
@@ -32,28 +58,25 @@ async function fetchVersionDateIso() {
       if (!res.ok) continue;
 
       const payload = await res.json();
-      const value =
-        typeof payload?.versionDate === "string"
-          ? payload.versionDate.slice(0, 10)
-          : "";
-      if (/^\d{4}-\d{2}-\d{2}$/.test(value)) return value;
+      const value = normalizeVersionPayload(payload);
+      if (value) return value;
     } catch (err) {
-      console.error(`[menu] version date fetch failed (${url}):`, err);
+      console.error(`[menu] version metadata fetch failed (${url}):`, err);
     }
   }
 
   return null;
 }
 
-async function getVersionDateIso() {
-  if (cachedVersionDateIso) return cachedVersionDateIso;
-  if (!versionDateRequest) {
-    versionDateRequest = fetchVersionDateIso().finally(() => {
-      versionDateRequest = null;
+async function getVersionInfo() {
+  if (cachedVersionInfo) return cachedVersionInfo;
+  if (!versionInfoRequest) {
+    versionInfoRequest = fetchVersionInfo().finally(() => {
+      versionInfoRequest = null;
     });
   }
-  const value = await versionDateRequest;
-  if (value) cachedVersionDateIso = value;
+  const value = await versionInfoRequest;
+  if (value) cachedVersionInfo = value;
   return value;
 }
 
@@ -61,7 +84,8 @@ async function renderMenuVersionDate() {
   const el = overlay?.querySelector("#menuVersionDate");
   if (!el) return;
 
-  const versionDateIso = await getVersionDateIso();
+  const versionInfo = await getVersionInfo();
+  const versionDateIso = versionInfo?.versionDateIso || null;
   const formatted = formatVersionDate(versionDateIso);
 
   if (!formatted) {
@@ -70,7 +94,8 @@ async function renderMenuVersionDate() {
     return;
   }
 
-  el.textContent = `ver ${formatted}`;
+  const versionSequence = parsePositiveInt(versionInfo?.versionSequence) || 1;
+  el.textContent = `ver ${formatted}.${versionSequence}`;
   el.dateTime = versionDateIso;
 }
 

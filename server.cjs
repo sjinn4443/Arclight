@@ -33,6 +33,14 @@ function toIsoDateString(value) {
   return parsed.toISOString().slice(0, 10);
 }
 
+function parsePositiveInt(value) {
+  const raw = String(value ?? "").trim();
+  if (!/^\d+$/.test(raw)) return null;
+  const parsed = Number(raw);
+  if (!Number.isSafeInteger(parsed) || parsed <= 0) return null;
+  return parsed;
+}
+
 function getIsoDateFromMtime(filePath) {
   try {
     const stat = fs.statSync(filePath);
@@ -125,7 +133,49 @@ function resolveAppVersionDate() {
   return null;
 }
 
+function resolveVersionSequenceFromGit(versionDate) {
+  if (!versionDate) return null;
+
+  try {
+    const gitCommitDates = execSync("git log --first-parent --format=%cI", {
+      cwd: __dirname,
+      stdio: ["ignore", "pipe", "ignore"],
+      encoding: "utf8",
+    })
+      .trim()
+      .split(/\r?\n/)
+      .filter(Boolean);
+
+    let count = 0;
+    for (const commitIso of gitCommitDates) {
+      if (toIsoDateString(commitIso) === versionDate) count += 1;
+    }
+    return count > 0 ? count : null;
+  } catch {
+    // Ignore git lookup errors (e.g. .git missing in some deploys).
+    return null;
+  }
+}
+
+function resolveAppVersionSequence(versionDate) {
+  const envCandidates = [
+    process.env.APP_VERSION_SEQUENCE,
+    process.env.APP_PUSH_NUMBER,
+  ];
+
+  for (const candidate of envCandidates) {
+    const normalized = parsePositiveInt(candidate);
+    if (normalized) return normalized;
+  }
+
+  const gitCount = resolveVersionSequenceFromGit(versionDate);
+  if (gitCount) return gitCount;
+
+  return 1;
+}
+
 const appVersionDate = resolveAppVersionDate();
+const appVersionSequence = resolveAppVersionSequence(appVersionDate);
 
 // Use the port from the environment variable.
 // In production (Railway/Docker), default to 8080 if PORT is absent.
@@ -179,7 +229,10 @@ initStorageWithRetry();
 // --- Public app APIs ---
 app.get("/api/app/version", (req, res) => {
   res.set("Cache-Control", "no-store");
-  res.json({ versionDate: appVersionDate });
+  res.json({
+    versionDate: appVersionDate,
+    versionSequence: appVersionSequence,
+  });
 });
 
 app.post("/api/app/profile", async (req, res) => {
