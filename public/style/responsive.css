@@ -192,8 +192,99 @@ input {
     margin: 0;
   }
 
+  .menu-close {
+    top: 0px;
+    right: auto;
+    left: 0;
+    margin-left: 109px;
+  }
+
+  /* Desktop: apply Eyes-page topbar geometry to all pages using eyes-topbar */
+  .page .eyes-topbar {
+    position: fixed;
+    top: 0;
+    left: calc(7vw - 4px);
+    right: calc(7vw - 4px);
+    background: #fff;
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    height: 62px;
+    padding: 0 20px 0 56px;
+    margin: 0;
+    max-width: none;
+  }
+
+  .page .eyes-topbar__title {
+    position: static;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1;
+    margin-left: 0;
+  }
+
+  .page .eyes-topbar__icons {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 0 0 auto;
+  }
+
+  .page .eyes-topbar .icon.menuBtn {
+    margin: 0 !important;
+    font-size: 20px;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
   #backBtnGlobal.top-back {
-    margin-left: -22px;
+    top: 10px;
+    left: calc(7vw - 4px + 10px);
+    margin-left: 0;
+    padding-left: 0;
+  }
+
+  /* #pupilsPage has high-specificity base rules in pages.css; pin desktop layout here */
+  #pupilsPage .eyes-topbar {
+    left: calc(7vw - 4px);
+    right: calc(7vw - 4px);
+    width: auto;
+    padding: 0 20px 0 56px;
+    height: 62px;
+    justify-content: space-between;
+  }
+
+  #pupilsPage .eyes-topbar__title {
+    position: static;
+    margin-left: 0;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1;
+  }
+
+  #pupilsPage .eyes-topbar__icons {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 0 0 auto;
+  }
+
+  #pupilsPage .eyes-topbar .icon.menuBtn {
+    margin: 0 !important;
+    font-size: 20px;
+    line-height: 1;
+    color: #111;
+    opacity: 1;
+    visibility: visible;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .video-share-btn {
@@ -502,8 +593,10 @@ input {
   }
   .menu-close {
     font-size: 28px;
-    top: 14px;
-    right: 14px;
+    top: 0px;
+    right: auto;
+    left: 0;
+    margin-left: 109px;
   }
 
   .pupils-container {
@@ -592,8 +685,10 @@ input {
   }
 
   #backBtnGlobal.top-back {
-    padding-left: 17vw !important;
-    top: 8px !important;
+    top: 10px !important;
+    left: calc(22vw - 4px + 10px) !important;
+    padding-left: 0 !important;
+    margin-left: 0 !important;
   }
 
   #pupilsPage .icon.backBtn,
@@ -604,14 +699,14 @@ input {
   }
 
   #backBtnGlobal {
-    width: 72px;
-    height: 72px;
+    width: 36px;
+    height: 36px;
   }
 
   #backBtnGlobal::before {
-    width: 29px;
-    height: 46px;
-    margin: 0vh -38vw 3.3vh 1vh;
+    width: 18px;
+    height: 18px;
+    margin: 0;
   }
 
   .eyes-top .icon {
@@ -619,48 +714,46 @@ input {
     font-weight: 600;
   }
 
-  .page.has-eyes-topbar .eyes-topbar {
+  /* XL desktop: keep same topbar geometry as Eyes page across all pages */
+  .page .eyes-topbar {
     position: fixed;
     top: 0;
-    left: 0;
-    right: 0;
+    left: calc(22vw - 4px);
+    right: calc(22vw - 4px);
     background: #fff;
     z-index: 2000;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 10px;
     height: 62px;
-    padding-left: 38.5vw;
+    padding: 0 20px 0 56px;
     margin: 0;
-    max-width: 54vw;
+    max-width: none;
   }
 
-  .page.has-eyes-topbar .eyes-topbar__title {
+  .page .eyes-topbar__title {
+    position: static;
+    font-size: 15px;
     font-weight: 600;
-    margin-left: 5px;
+    margin-left: 0;
   }
 
-  .page.has-eyes-topbar .eyes-topbar__icons .icon {
+  .page .eyes-topbar__icons {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 0 0 auto;
+  }
+
+  .page .eyes-topbar .icon.menuBtn {
+    margin: 0 !important;
     font-size: 20px;
     line-height: 1;
-    margin-left: 23vw;
-  }
-
-  .page.has-eyes-topbar .eyes-top .icon {
-    font-size: 19px;
-    font-weight: 600;
-  }
-
-  #pupilsPage .eyes-topbar__title,
-  .page.pupils-like.has-eyes-topbar__title {
-    font-weight: 600;
-    margin-left: 5px;
-  }
-
-  #pupilsPage .eyes-topbar .eyes-top .icon,
-  .page.pupils-like.has-eyes-topbar .eyes-top .icon {
-    font-size: 19px;
-    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
 
   #pupilsPage .page .container:first-child,
@@ -668,12 +761,11 @@ input {
     max-width: 39vw;
   }
 
-  #pupilsPage .pupils-subtitle,
-  .page.pupils-like .pupils-subtitle {
+  .page .pupils-subtitle {
     font-size: 13px;
     font-weight: 700;
     color: #111;
-    margin: 16px 272px 30px;
+    margin: 16px 18px 16px;
   }
 
   #pupilsPage .icon.menuBtn,
@@ -681,13 +773,50 @@ input {
     font-size: 20px;
     cursor: pointer;
     display: inline-flex;
-    align-items: centre;
-    justify-content: centre;
-    margin: 0px 0px 2px 386px;
+    align-items: center;
+    justify-content: center;
+    margin: 0 !important;
+  }
+
+  #pupilsPage .eyes-topbar {
+    left: calc(22vw - 4px);
+    right: calc(22vw - 4px);
+    width: auto;
+    padding: 0 20px 0 56px;
+    height: 62px;
+    justify-content: space-between;
+  }
+
+  #pupilsPage .eyes-topbar__title {
+    position: static;
+    margin-left: 0;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1;
+  }
+
+  #pupilsPage .eyes-topbar__icons {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 0 0 auto;
+  }
+
+  #pupilsPage .eyes-topbar .icon.menuBtn {
+    margin: 0 !important;
+    font-size: 20px;
+    line-height: 1;
+    color: #111;
+    opacity: 1;
+    visibility: visible;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .pupils-subtitle {
-    margin: 21px 4px 26px;
+    margin: 16px 18px 16px;
   }
 
   .video-container {
@@ -720,4 +849,28 @@ input {
   width: 33px;
   height: 33px;
   margin: 0;
+}
+
+/* Desktop final overrides (keep at end to beat earlier breakpoint collisions) */
+@media (min-width: 1024px) {
+  .menu-panel {
+    position: relative;
+  }
+
+  .menu-close {
+    top: 0px !important;
+    left: auto !important;
+    right: 8px !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  #backBtnGlobal.top-back {
+    top: 12px !important;
+  }
+
+  .page .pupils-subtitle {
+    margin: 16px 316px 16px !important;
+    padding: 0 !important;
+  }
 }

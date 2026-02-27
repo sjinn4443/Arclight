@@ -54,9 +54,12 @@ function getIsoDateFromMtime(filePath) {
 function resolveVersionMetadataFromVersionFile() {
   const candidatePaths = [
     path.join(staticRoot, "version.json"),
+    path.join(__dirname, "dist", "version.json"),
+    path.join(__dirname, "public", "version.json"),
     path.join(__dirname, "version.json"),
   ];
 
+  let best = null;
   for (const p of candidatePaths) {
     try {
       const raw = fs.readFileSync(p, "utf8");
@@ -71,16 +74,30 @@ function resolveVersionMetadataFromVersionFile() {
             payload?.buildNumber,
         ) || null;
 
-      return {
+      const value = {
         versionDate,
         versionSequence,
       };
+      if (!best) {
+        best = value;
+        continue;
+      }
+
+      const valueSeq = value.versionSequence || 0;
+      const bestSeq = best.versionSequence || 0;
+      if (value.versionDate > best.versionDate) {
+        best = value;
+        continue;
+      }
+      if (value.versionDate === best.versionDate && valueSeq > bestSeq) {
+        best = value;
+      }
     } catch {
       // Ignore invalid/missing file and keep searching.
     }
   }
 
-  return null;
+  return best;
 }
 
 function resolveVersionDateFromStaticFiles() {
@@ -118,6 +135,10 @@ function resolveAppVersionDate(versionMetadataFromFile = null) {
     if (normalized) return normalized;
   }
 
+  // Prefer build-time metadata when available so date/sequence stay consistent.
+  if (versionMetadataFromFile?.versionDate)
+    return versionMetadataFromFile.versionDate;
+
   try {
     const gitIso = execSync("git log -1 --format=%cI", {
       cwd: __dirname,
@@ -129,9 +150,6 @@ function resolveAppVersionDate(versionMetadataFromFile = null) {
   } catch {
     // Ignore git lookup errors (e.g. .git missing in some deploys).
   }
-
-  if (versionMetadataFromFile?.versionDate)
-    return versionMetadataFromFile.versionDate;
 
   // Final fallback for environments where .git is unavailable at runtime:
   // use the newest timestamp among shipped static assets.

@@ -1422,9 +1422,29 @@ select.onb-input.has-value {
 
 .pupils-subtitle {
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 700;
   color: #111;
-  margin: 21px 4px 12px;
+  margin: 16px 18px 16px;
+}
+
+/* Canonical subtitle style: match Pupils page across pages that render this element */
+.page .pupils-subtitle {
+  display: block;
+  position: relative;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  line-height: 1.2;
+  color: #111 !important;
+  margin: 16px 316px 16px !important;
+  padding: 0 !important;
+  text-align: left;
+}
+
+/* Hide "Teach Yourself" / "Test Yourself" helper headings across all devices */
+h3[data-i18n="videos.primaryEyeCareExaminationTitle"],
+h3[data-i18n="videos.pupilFullExaminationTitle"],
+h3[data-i18n="videos.rapdTestTitle"] {
+  display: none !important;
 }
 
 /* Module card */
@@ -1521,6 +1541,11 @@ body,
 .page > .container:first-child {
   background: #ffffff !important;
   padding-top: 30px;
+}
+
+/* Keep pupils-like titles below fixed Eyes topbar (avoid being hidden by generic 30px top padding) */
+.page.pupils-like > .container.pupils-container:first-child {
+  padding-top: 59px !important;
 }
 
 /* Onboarding: align layout with intro/interest */
