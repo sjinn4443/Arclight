@@ -25,13 +25,13 @@ const ROUTE_CONFIG = {
         { from: 206, to: 299 },
       ],
       [
-        { from: 0, to: 110 },
-        { from: 111, to: 236 },
-        { from: 237, to: 374 },
-        { from: 375, to: 539 },
+        { from: 0, to: 101 },
+        { from: 102, to: 222 },
+        { from: 236, to: 354 },
+        { from: 380, to: 539 },
       ],
       [
-        { from: 0, to: 270 },
+        { from: 0, to: 164 },
         { from: 271, to: 316 },
         { from: 317, to: 398 },
         { from: 399, to: 539 },
@@ -40,8 +40,8 @@ const ROUTE_CONFIG = {
     settleFrameOverrides: [
       [239],
       [120, 205, 299],
-      [110, 236, 374, 539],
-      [270, 316, 398, 539],
+      [101, 222, 354, 539],
+      [164, 316, 398, 539],
     ],
     segmentStartTexts: [
       ["Wash hands"],
@@ -157,7 +157,7 @@ const ROUTE_CONFIG = {
       [
         "Observe reflex in both eyes at the same time,",
         "",
-        "without touching the baby.",
+        "without touching the baby",
       ],
       [
         "Occasional and short-lasting squints\nare common in the first month of life,",
@@ -191,7 +191,7 @@ const ROUTE_CONFIG = {
     settleFrameOverrides: [[389], [240, 419]],
     segmentStartTexts: [
       ["Parents should hold the baby\nswaddled securely with arms tucked away"],
-      ["If baby is asleep, gently open one eye at a time."],
+      ["If baby is asleep, gently open one eye at a time"],
     ],
     segmentTextModeByFile: ["append", "append"],
     strictFrameLockNoFallback: true,
@@ -235,20 +235,20 @@ const ROUTE_CONFIG = {
         { from: 136, to: 209 },
       ],
       [
-        { from: 0, to: 160 },
-        { from: 161, to: 564 },
-        { from: 565, to: 779 },
+        { from: 0, to: 235 },
+        { from: 240, to: 475 },
+        { from: 568, to: 779 },
       ],
     ],
     settleFrameOverrides: [
       [146, 269],
       [172, 239],
       [82, 135, 209],
-      [160, 564, 779],
+      [235, 475, 779],
     ],
     segmentStartTexts: [
       ["", "If findings are unclear, follow the next steps"],
-      ["Compare the reflex with parent.\nIt should look similar"],
+      ["Compare the reflex with parent\nIt should look similar"],
       ["If still unsure, ask colleague for second opinion"],
       [
         "If on your own, gain consent from patient\nand record a video",
@@ -268,38 +268,43 @@ const ROUTE_CONFIG = {
     label: "Possible Findings",
     enableReplay: true,
     segmentTextToggleOnTitle: true,
-    paths: ["/scrolly/coreexam/fundalreflex/findings/data.json"],
-    stageAspectRatioByFile: ["1169 / 1655"],
-    mobileStageTopAligned: true,
-    centerTopBiasByFile: [240],
+    paths: [
+      "/scrolly/coreexam/fundalreflex/findings/1/data.json",
+      "/scrolly/coreexam/fundalreflex/findings/2/data.json",
+    ],
+    stageAspectRatioByFile: ["1146 / 1476", "1146 / 1476"],
+    preserveAspectRatioByFile: ["xMidYMid meet", "xMidYMid meet"],
+    mobileStageTopAligned: false,
+    centerTopBiasByFile: [0, -35],
+    desktopTopGapByFile: [18, 0],
     playMode: "segmentScroll",
     segmentRanges: [
+      [{ from: 0, to: 79 }],
       [
-        { from: 0, to: 87 },
-        { from: 87, to: 145 },
-        { from: 146, to: 265 },
-        { from: 265, to: 385 },
-        { from: 386, to: 569 },
+        { from: 0, to: 214 },
+        { from: 220, to: 317 },
+        { from: 333, to: 509 },
       ],
     ],
-    settleFrameOverrides: [[87, 145, 265, 385, 569]],
+    settleFrameOverrides: [[79], [214, 317, 509]],
     segmentStartTexts: [
       [
         "If overall colour and brightness is similar between\ntwo eyes, then the examination is normal",
-        "If overall colour and brightness is similar between\ntwo eyes, then the examination is normal",
+      ],
+      [
         "Occasional and short-lasting squints\nare common in the first month of life",
         "and will usually disappear by three months of age",
-        "Any difference in colour / partial / complete\nloss of reflex is abnormal.",
+        "Any difference in colour / partial / complete\nloss of reflex is abnormal",
       ],
     ],
-    segmentTextModeByFile: ["replace"],
+    segmentTextModeByFile: ["replace", "replace"],
     strictFrameLockNoFallback: true,
     strictFrameRemountOnBlank: true,
     finalSummaryBulletsByFile: [
+      [],
       [
-        "If overall colour and brightness is similar between\ntwo eyes, then the examination is normal",
         "Occasional and short-lasting squints are common in the first month of life and will usually disappear by three months of age",
-        "Any difference in colour / partial / complete\nloss of reflex is abnormal.",
+        "Any difference in colour / partial / complete\nloss of reflex is abnormal",
       ],
     ],
     iosAggressiveSettleSegments: [[3, 4]],
@@ -388,8 +393,25 @@ function resolveCenterTopBias(cfg, fileIndex) {
     ? cfg.centerTopBiasByFile[fileIndex]
     : null;
   const numeric = Number(raw);
-  if (Number.isFinite(numeric) && numeric > 0) return numeric;
+  if (Number.isFinite(numeric)) return numeric;
   return 0;
+}
+
+function resolveDesktopTopGap(cfg, fileIndex) {
+  const raw = Array.isArray(cfg?.desktopTopGapByFile)
+    ? cfg.desktopTopGapByFile[fileIndex]
+    : cfg?.desktopTopGap;
+  const numeric = Number(raw);
+  if (Number.isFinite(numeric) && numeric >= 0) return numeric;
+  return 18;
+}
+
+function resolvePreserveAspectRatio(cfg, fileIndex) {
+  const raw = Array.isArray(cfg?.preserveAspectRatioByFile)
+    ? cfg.preserveAspectRatioByFile[fileIndex]
+    : null;
+  const value = String(raw == null ? "" : raw).trim();
+  return value || "xMidYMid meet";
 }
 
 function resolveFirstFileExtraTopGap(cfg) {
@@ -2462,16 +2484,43 @@ function initializeSegmentScrollMode(cfg, page, stages) {
     const absoluteTop = window.scrollY + rect.top;
     const vh = window.innerHeight || document.documentElement.clientHeight || 0;
     const topbarHeight = getTopbarHeight();
+    const fileIndex = Number(stage?.dataset?.fileIndex);
     if (shouldUseMobileStageTopAlignedMode(cfg)) {
       return Math.max(0, absoluteTop - topbarHeight);
     }
+    if (isDesktopViewport()) {
+      const desktopTopGap = Number.isFinite(fileIndex)
+        ? resolveDesktopTopGap(cfg, fileIndex)
+        : 18;
+      return Math.max(0, absoluteTop - topbarHeight - desktopTopGap);
+    }
     const stageCenterAbs = absoluteTop + rect.height / 2;
-    const effectiveViewportCenter =
-      topbarHeight + Math.max(0, (vh - topbarHeight) / 2);
-    const fileIndex = Number(stage?.dataset?.fileIndex);
-    const centerTopBias = Number.isFinite(fileIndex)
+    const availableHeight = Math.max(0, vh - topbarHeight);
+    const effectiveViewportCenter = topbarHeight + availableHeight / 2;
+    let centerTopBias = Number.isFinite(fileIndex)
       ? resolveCenterTopBias(cfg, fileIndex)
       : 0;
+    if (
+      isNarrowMobileViewport() &&
+      Number.isFinite(fileIndex) &&
+      fileIndex > 0
+    ) {
+      const firstStage = stages?.[0];
+      const firstRect = firstStage?.getBoundingClientRect?.();
+      const firstHeight = Number(firstRect?.height);
+      const currentHeight = Number(rect?.height);
+      if (
+        Number.isFinite(firstHeight) &&
+        firstHeight > 0 &&
+        Number.isFinite(currentHeight) &&
+        currentHeight > 0
+      ) {
+        // On mobile, align each file to the same visual lock position as file 1.
+        centerTopBias += (currentHeight - firstHeight) / 2;
+      }
+      // Lift non-first animations a bit higher than file 1 on mobile.
+      centerTopBias -= 24;
+    }
     return Math.max(
       0,
       stageCenterAbs - effectiveViewportCenter - centerTopBias,
@@ -2708,7 +2757,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
         autoplay: false,
         path: cfg.paths[idx],
         rendererSettings: {
-          preserveAspectRatio: "xMidYMid meet",
+          preserveAspectRatio: resolvePreserveAspectRatio(cfg, idx),
           hideOnTransparent: false,
         },
       });
@@ -3935,7 +3984,7 @@ export async function initializeChildhoodFundalReflexScrollPage(routeName) {
       autoplay: false,
       path: cfg.paths[idx],
       rendererSettings: {
-        preserveAspectRatio: "xMidYMid meet",
+        preserveAspectRatio: resolvePreserveAspectRatio(cfg, idx),
         hideOnTransparent: false,
       },
     }),

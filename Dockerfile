@@ -5,6 +5,9 @@ FROM node:20-alpine AS build
 
 WORKDIR /app
 
+# Needed for build-time version sequence calculation from git history.
+RUN apk add --no-cache git
+
 # Install full deps (incl. dev) for building
 COPY package.json package-lock.json ./
 RUN npm ci --no-audit --no-fund
@@ -27,8 +30,11 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci --omit=dev --no-audit --no-fund
 
-# Copy app source (server + any runtime modules), and built assets from build stage
-COPY . .
+# Copy only runtime source from build stage (keeps .git out of final image)
+COPY --from=build /app/server.cjs ./server.cjs
+COPY --from=build /app/storage ./storage
+COPY --from=build /app/utils ./utils
+COPY --from=build /app/reports ./reports
 COPY --from=build /app/dist ./dist
 
 # Expose default port; Railway sets PORT env var at runtime

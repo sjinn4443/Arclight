@@ -166,6 +166,13 @@ function updateGlobalBackVisibility(routeName) {
   btn.style.display = EXCLUDED_BACK_ROUTES.includes(routeName)
     ? "none"
     : "flex";
+
+  // Eyes catalog: nudge the global back button slightly higher.
+  if (routeName === "eyes") {
+    btn.style.setProperty("top", "7px", "important");
+  } else {
+    btn.style.removeProperty("top");
+  }
 }
 
 // Keep the back button visible only on allowed routes

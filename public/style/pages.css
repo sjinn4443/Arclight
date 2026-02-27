@@ -2163,6 +2163,25 @@ select.onb-input.has-value + .onb-select-caret {
     margin-left: auto;
     margin-right: auto;
   }
+
+  #childhoodFundalPossibleFindingPage
+    .childhood-fundal-prep-stage[data-file-index="0"] {
+    max-height: 56vh;
+  }
+
+  #childhoodFundalPossibleFindingPage
+    .childhood-fundal-prep-stage[data-file-index="1"] {
+    max-height: 86vh;
+  }
+
+  #childhoodFundalUnclearFindingsPage
+    .childhood-fundal-prep-stage[data-file-index="0"],
+  #childhoodFundalUnclearFindingsPage
+    .childhood-fundal-prep-stage[data-file-index="1"],
+  #childhoodFundalUnclearFindingsPage
+    .childhood-fundal-prep-stage[data-file-index="2"] {
+    max-height: 78vh;
+  }
 }
 
 .childhood-fundal-scroll-page .childhood-fundal-prep-stage svg {
