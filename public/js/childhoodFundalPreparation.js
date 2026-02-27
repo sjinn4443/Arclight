@@ -877,6 +877,79 @@ function resolveNodeEffectiveVisibility(node, svgEl, cache) {
   return { hidden: false, opacity };
 }
 
+function doesDomRectIntersect(a, b, epsilon = 0.5) {
+  if (!a || !b) return false;
+  return (
+    a.right > b.left + epsilon &&
+    a.left < b.right - epsilon &&
+    a.bottom > b.top + epsilon &&
+    a.top < b.bottom - epsilon
+  );
+}
+
+function resolveSvgViewportBounds(svgEl) {
+  if (!svgEl) return null;
+  const vb = svgEl.viewBox?.baseVal;
+  const vbWidth = Number(vb?.width);
+  const vbHeight = Number(vb?.height);
+  if (
+    Number.isFinite(vbWidth) &&
+    vbWidth > 0.5 &&
+    Number.isFinite(vbHeight) &&
+    vbHeight > 0.5
+  ) {
+    const vbX = Number.isFinite(Number(vb?.x)) ? Number(vb.x) : 0;
+    const vbY = Number.isFinite(Number(vb?.y)) ? Number(vb.y) : 0;
+    return {
+      left: vbX,
+      top: vbY,
+      right: vbX + vbWidth,
+      bottom: vbY + vbHeight,
+    };
+  }
+
+  const rawWidth = Number(svgEl.getAttribute("width"));
+  const rawHeight = Number(svgEl.getAttribute("height"));
+  const width =
+    Number.isFinite(rawWidth) && rawWidth > 0.5
+      ? rawWidth
+      : Number(svgEl.clientWidth || 0);
+  const height =
+    Number.isFinite(rawHeight) && rawHeight > 0.5
+      ? rawHeight
+      : Number(svgEl.clientHeight || 0);
+  if (
+    !Number.isFinite(width) ||
+    width <= 0.5 ||
+    !Number.isFinite(height) ||
+    height <= 0.5
+  ) {
+    return null;
+  }
+  return { left: 0, top: 0, right: width, bottom: height };
+}
+
+function doesNodeBBoxIntersectSvgViewport(node, svgEl, epsilon = 0.5) {
+  if (!node || typeof node.getBBox !== "function") return false;
+  let box = null;
+  try {
+    box = node.getBBox();
+  } catch {}
+  if (!box || box.width <= 0.5 || box.height <= 0.5) return false;
+
+  const viewport = resolveSvgViewportBounds(svgEl);
+  if (!viewport) return true;
+
+  const boxRight = box.x + box.width;
+  const boxBottom = box.y + box.height;
+  return (
+    boxRight > viewport.left + epsilon &&
+    box.x < viewport.right - epsilon &&
+    boxBottom > viewport.top + epsilon &&
+    box.y < viewport.bottom - epsilon
+  );
+}
+
 function isStageFrameBlank(controller) {
   const svgEl =
     controller?.anim?.renderer?.svgElement ||
@@ -917,26 +990,24 @@ function isStageFrameBlank(controller) {
       if (!IS_IOS_WEBKIT) {
         if (!rect) continue;
         if (rect.width <= 0.5 || rect.height <= 0.5) continue;
-        const intersectsViewport =
-          rect.right > svgRect.left &&
-          rect.left < svgRect.right &&
-          rect.bottom > svgRect.top &&
-          rect.top < svgRect.bottom;
+        const intersectsViewport = doesDomRectIntersect(rect, svgRect, 0.5);
         if (!intersectsViewport) continue;
         return false;
       }
 
-      if (rect && rect.width > 0.5 && rect.height > 0.5) return false;
+      if (
+        rect &&
+        rect.width > 0.5 &&
+        rect.height > 0.5 &&
+        doesDomRectIntersect(rect, svgRect, 0.5)
+      ) {
+        return false;
+      }
     } catch {}
 
     // iOS Safari can intermittently report 0x0 client rects for SVG nodes.
     // Fall back to SVG-local bounds/attributes before treating the frame as blank.
-    try {
-      if (typeof node.getBBox === "function") {
-        const box = node.getBBox();
-        if (box && box.width > 0.5 && box.height > 0.5) return false;
-      }
-    } catch {}
+    if (doesNodeBBoxIntersectSvgViewport(node, svgEl, 0.5)) return false;
   }
 
   return true;
@@ -1588,6 +1659,32 @@ async function recoverLockedExactFrame(
 
   // Keep overlay visible when still blank, so users don't see a white flash.
   return { frame: holdFrame, isBlank: true };
+}
+
+function requestLockedExactFrameRecovery(
+  controller,
+  cfg,
+  exactFrame,
+  options = {},
+) {
+  if (!controller) return;
+  if (controller.isLockedExactRecovering) return;
+  controller.isLockedExactRecovering = true;
+
+  recoverLockedExactFrame(controller, cfg, exactFrame, options)
+    .then((recovered) => {
+      if (!controller) return;
+      if (!recovered?.isBlank) {
+        hideRecoveryOverlayWhenStable(controller);
+      } else {
+        showRecoveryOverlay(controller);
+      }
+      syncPersistentSettleSnapshotOverlay(controller);
+    })
+    .finally(() => {
+      if (!controller) return;
+      controller.isLockedExactRecovering = false;
+    });
 }
 
 function cancelStrictExactRecovery(controller, segmentIndex) {
@@ -2594,6 +2691,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
       resolvedFrameBySegment: new Map(),
       strictFallbackFrameBySegment: new Map(),
       strictRecoveryRafBySegment: new Map(),
+      isLockedExactRecovering: false,
       isRemounting: false,
       recoveryOverlayEl: null,
       recoveryOverlayClearTimer: null,
@@ -3160,6 +3258,18 @@ function initializeSegmentScrollMode(cfg, page, stages) {
       controller.resolvedFrameBySegment?.set(segIndex, exactFrame);
       if (useLockedExactFrame) {
         controller.strictFallbackFrameBySegment?.delete?.(segIndex);
+        const prevPinned = Number(controller.lastPinnedFrame);
+        if (
+          IS_IOS_WEBKIT &&
+          Number.isFinite(prevPinned) &&
+          Math.floor(prevPinned) === exactFrame
+        ) {
+          forceSvgVisibleForController(controller);
+          if (!isStageFrameBlank(controller)) {
+            syncPersistentSettleSnapshotOverlay(controller);
+            return;
+          }
+        }
         const pinned = pinExactFrameWithRecovery(controller, exactFrame, {
           attempts: IS_IOS_WEBKIT ? 8 : 4,
           minContentAreaRatio,
@@ -3175,6 +3285,14 @@ function initializeSegmentScrollMode(cfg, page, stages) {
           });
           controller.resolvedFrameBySegment?.set(segIndex, exactFrame);
           syncPersistentSettleSnapshotOverlay(controller);
+          return;
+        }
+
+        if (IS_IOS_WEBKIT) {
+          showRecoveryOverlay(controller);
+          requestLockedExactFrameRecovery(controller, cfg, exactFrame, {
+            minContentAreaRatio,
+          });
           return;
         }
 
@@ -3554,6 +3672,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
       controller.clearSegmentText?.();
       controller.isPlaying = false;
       controller.isSnapping = false;
+      controller.isLockedExactRecovering = false;
       controller.segmentIndex = -1;
       controller.playingSegmentIndex = -1;
       controller.targetEndFrame = null;
