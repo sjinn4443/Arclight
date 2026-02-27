@@ -15,7 +15,8 @@ yarn-error.log*
 
 # Tests and local results
 coverage
-reports
+# Keep reports source code in the image; exclude runtime/generated data only.
+reports/data
 .env
 test-results
 playwright-report
