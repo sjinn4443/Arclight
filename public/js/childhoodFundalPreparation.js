@@ -1258,8 +1258,12 @@ function hideRecoveryOverlayWhenStable(controller, options = {}) {
 function syncPersistentSettleSnapshotOverlay(controller) {
   if (!controller?.persistentSettleSnapshotOverlay) return;
   if (controller.isPlaying || controller.isSnapping) return;
-  if (isStageFrameBlank(controller)) return;
-  showRecoveryOverlay(controller);
+  if (isStageFrameBlank(controller)) {
+    showRecoveryOverlay(controller);
+    return;
+  }
+  rememberRecoverySnapshot(controller, controller.lastRenderedFrame);
+  hideRecoveryOverlay(controller, { immediate: true });
 }
 
 function cancelArrowEnsure(controller) {
@@ -1488,7 +1492,12 @@ async function recoverLockedExactFrame(
           : 2,
     ),
   );
-  const overlayShown = showRecoveryOverlay(controller);
+  let overlayShown = false;
+  const ensureOverlayVisible = () => {
+    if (overlayShown) return true;
+    overlayShown = showRecoveryOverlay(controller);
+    return overlayShown;
+  };
 
   let pinned = pinExactFrameWithRecovery(controller, holdFrame, {
     attempts: IS_IOS_WEBKIT ? 4 : 2,
@@ -1505,6 +1514,7 @@ async function recoverLockedExactFrame(
     });
     return { frame: holdFrame, isBlank: false };
   }
+  ensureOverlayVisible();
 
   for (let i = 0; i < settlePasses; i += 1) {
     await waitForNextFrame();
@@ -2105,8 +2115,9 @@ function stopAtSegmentEnd(controller, cfg) {
     ? shouldUseStrictFrameLockNoFallback(cfg)
     : false;
   if (useLockedExactFrame) {
-    // Capture the currently visible frame immediately, before any recovery seeks.
-    showRecoveryOverlay(controller);
+    // Keep a fresh snapshot ready, but only show overlay if recovery actually hits a blank frame.
+    rememberRecoverySnapshot(controller, controller.lastRenderedFrame);
+    hideRecoveryOverlay(controller, { immediate: true });
   } else {
     hideRecoveryOverlay(controller, { immediate: true });
   }
