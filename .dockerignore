@@ -6,7 +6,7 @@ yarn-error.log*
 .pnpm-store
 
 # VCS
-# Keep .git in build context so build-time version sequence can count same-day commits.
+.git
 .gitignore
 
 # Editors
@@ -15,6 +15,7 @@ yarn-error.log*
 
 # Tests and local results
 coverage
+reports
 .env
 test-results
 playwright-report
