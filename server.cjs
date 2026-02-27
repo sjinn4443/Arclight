@@ -105,7 +105,7 @@ function resolveVersionDateFromStaticFiles() {
   return new Date(latestMs).toISOString().slice(0, 10);
 }
 
-function resolveAppVersionDate() {
+function resolveAppVersionDate(versionMetadataFromFile = null) {
   const envCandidates = [
     process.env.APP_VERSION_DATE,
     process.env.APP_PUSH_DATE,
@@ -169,7 +169,10 @@ function resolveVersionSequenceFromGit(versionDate) {
   }
 }
 
-function resolveAppVersionSequence(versionDate) {
+function resolveAppVersionSequence(
+  versionDate,
+  versionMetadataFromFile = null,
+) {
   const envCandidates = [
     process.env.APP_VERSION_SEQUENCE,
     process.env.APP_PUSH_NUMBER,
@@ -193,9 +196,15 @@ function resolveAppVersionSequence(versionDate) {
   return 1;
 }
 
-const versionMetadataFromFile = resolveVersionMetadataFromVersionFile();
-const appVersionDate = resolveAppVersionDate();
-const appVersionSequence = resolveAppVersionSequence(appVersionDate);
+function resolveCurrentAppVersion() {
+  const versionMetadataFromFile = resolveVersionMetadataFromVersionFile();
+  const versionDate = resolveAppVersionDate(versionMetadataFromFile);
+  const versionSequence = resolveAppVersionSequence(
+    versionDate,
+    versionMetadataFromFile,
+  );
+  return { versionDate, versionSequence };
+}
 
 // Use the port from the environment variable.
 // In production (Railway/Docker), default to 8080 if PORT is absent.
@@ -248,10 +257,11 @@ initStorageWithRetry();
 
 // --- Public app APIs ---
 app.get("/api/app/version", (req, res) => {
+  const currentVersion = resolveCurrentAppVersion();
   res.set("Cache-Control", "no-store");
   res.json({
-    versionDate: appVersionDate,
-    versionSequence: appVersionSequence,
+    versionDate: currentVersion.versionDate,
+    versionSequence: currentVersion.versionSequence,
   });
 });
 

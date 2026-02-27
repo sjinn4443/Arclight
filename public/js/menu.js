@@ -86,7 +86,9 @@ async function fetchVersionInfo() {
   return best;
 }
 
-async function getVersionInfo() {
+async function getVersionInfo(options = {}) {
+  const forceRefresh = options?.forceRefresh === true;
+  if (forceRefresh) cachedVersionInfo = null;
   if (cachedVersionInfo) return cachedVersionInfo;
   if (!versionInfoRequest) {
     versionInfoRequest = fetchVersionInfo().finally(() => {
@@ -102,7 +104,7 @@ async function renderMenuVersionDate() {
   const el = overlay?.querySelector("#menuVersionDate");
   if (!el) return;
 
-  const versionInfo = await getVersionInfo();
+  const versionInfo = await getVersionInfo({ forceRefresh: true });
   const versionDateIso = versionInfo?.versionDateIso || null;
   const formatted = formatVersionDate(versionDateIso);
 

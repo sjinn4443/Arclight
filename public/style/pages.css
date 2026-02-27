@@ -2298,7 +2298,7 @@ select.onb-input.has-value + .onb-select-caret {
     opacity 0.18s ease,
     transform 0.18s ease;
   pointer-events: none;
-  z-index: 12;
+  z-index: 40;
 }
 
 .childhood-fundal-scroll-page .childhood-fundal-scroll-down-arrow.is-visible {

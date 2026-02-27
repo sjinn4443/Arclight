@@ -6,6 +6,7 @@ const ROUTE_CONFIG = {
     pageId: "childhoodFundalPreparationPage",
     label: "Preparation",
     enableReplay: true,
+    persistentSettleSnapshotOverlay: true,
     segmentTextToggleOnTitle: true,
     paths: [
       "/scrolly/coreexam/fundalreflex/prep/1/data.json",
@@ -18,25 +19,29 @@ const ROUTE_CONFIG = {
     // file1: one full segment (0 -> END).
     segmentRanges: [
       [{ from: 37, to: 239 }],
-      [{ from: 0, to: 120 }, { from: 121, to: 207 }, { from: 208 }],
+      [
+        { from: 0, to: 120 },
+        { from: 121, to: 205 },
+        { from: 206, to: 299 },
+      ],
       [
         { from: 0, to: 110 },
-        { from: 111, to: 238 },
-        { from: 239, to: 378 },
-        { from: 379 },
+        { from: 111, to: 236 },
+        { from: 237, to: 374 },
+        { from: 375, to: 539 },
       ],
       [
         { from: 0, to: 270 },
-        { from: 271, to: 357 },
-        { from: 358, to: 453 },
-        { from: 454 },
+        { from: 271, to: 316 },
+        { from: 317, to: 398 },
+        { from: 399, to: 539 },
       ],
     ],
     settleFrameOverrides: [
       [239],
-      [120, 207, "last"],
-      [110, 238, 378, "last"],
-      [270, 357, 453, "last"],
+      [120, 205, 299],
+      [110, 236, 374, 539],
+      [270, 316, 398, 539],
     ],
     segmentStartTexts: [
       ["Wash hands"],
@@ -54,6 +59,8 @@ const ROUTE_CONFIG = {
       ],
     ],
     segmentTextModeByFile: ["append", "append", "append", "append"],
+    strictFrameLockNoFallback: true,
+    strictFrameRemountOnBlank: true,
     iosAggressiveSettleSegments: [[0], [1, 2], [3], [1, 2, 3]],
     richSettleContentFiles: [0, 1, 2, 3],
     richSettleMinAreaByFile: [0.08, 0.12, 0.12, 0.12],
@@ -72,23 +79,33 @@ const ROUTE_CONFIG = {
     ],
     playMode: "segmentScroll",
     segmentRanges: [
-      [{ from: 16 }],
-      [{ from: 0, to: 186 }, { from: 186 }],
+      [{ from: 16, to: 149 }],
+      [
+        { from: 0, to: 186 },
+        { from: 186, to: 329 },
+      ],
       [
         { from: 0, to: 78 },
         { from: 79, to: 209 },
         { from: 210, to: 351 },
-        { from: 352 },
+        { from: 352, to: 449 },
       ],
-      [{ from: 0, to: 114 }, { from: 115 }],
-      [{ from: 0, to: 138 }, { from: 139, to: 265 }, { from: 266 }],
+      [
+        { from: 0, to: 114 },
+        { from: 115, to: 359 },
+      ],
+      [
+        { from: 0, to: 138 },
+        { from: 139, to: 265 },
+        { from: 266, to: 449 },
+      ],
     ],
     settleFrameOverrides: [
-      ["last"],
-      [186, "last"],
-      [78, 209, 351, "last"],
-      [114, "last"],
-      [138, 265, "last"],
+      [149],
+      [186, 329],
+      [78, 209, 351, 449],
+      [114, 359],
+      [138, 265, 449],
     ],
     segmentStartTexts: [
       ["Observe the reflex at arm's length"],
@@ -104,6 +121,8 @@ const ROUTE_CONFIG = {
       ],
     ],
     segmentTextModeByFile: ["append", "append", "append", "append", "append"],
+    strictFrameLockNoFallback: true,
+    strictFrameRemountOnBlank: true,
     iosAggressiveSettleSegments: [[0], [1], [2, 3], [1], [2]],
     richSettleContentFiles: [0, 1, 2, 3, 4],
     richSettleMinAreaByFile: [0.08, 0.1, 0.12, 0.1, 0.1],
@@ -120,16 +139,19 @@ const ROUTE_CONFIG = {
     ],
     playMode: "segmentScroll",
     segmentRanges: [
-      [{ from: 16 }],
-      [{ from: 0, to: 147 }, { from: 148, to: 205 }, { from: 381 }],
+      [{ from: 16, to: 419 }],
+      [
+        { from: 0, to: 147 },
+        { from: 148, to: 205 },
+        { from: 381, to: 659 },
+      ],
       [
         { from: 0, to: 114 },
         { from: 115, to: 262 },
-        { from: 263, to: 378 },
-        { from: 379 },
+        { from: 263, to: 419 },
       ],
     ],
-    settleFrameOverrides: [["last"], [147, 205, 205], [114, 262, 205, 262]],
+    settleFrameOverrides: [[419], [147, 205, 659], [114, 262, 419]],
     segmentStartTexts: [
       ["Parents should hold the baby\nswaddled securely with arms tucked away"],
       [
@@ -143,6 +165,8 @@ const ROUTE_CONFIG = {
       ],
     ],
     segmentTextModeByFile: ["append", "append", "append"],
+    strictFrameLockNoFallback: true,
+    strictFrameRemountOnBlank: true,
     iosAggressiveSettleSegments: [[0], [2], [1]],
     richSettleContentFiles: [0, 1, 2],
     richSettleMinAreaByFile: [0.08, 0.18, 0.18],
@@ -157,13 +181,21 @@ const ROUTE_CONFIG = {
       "/scrolly/coreexam/fundalreflex/eyesclosed/2/data.json",
     ],
     playMode: "segmentScroll",
-    segmentRanges: [[{ from: 0 }], [{ from: 0, to: 240 }, { from: 241 }]],
-    settleFrameOverrides: [["last"], [240, "last"]],
+    segmentRanges: [
+      [{ from: 0, to: 389 }],
+      [
+        { from: 0, to: 240 },
+        { from: 241, to: 419 },
+      ],
+    ],
+    settleFrameOverrides: [[389], [240, 419]],
     segmentStartTexts: [
       ["Parents should hold the baby\nswaddled securely with arms tucked away"],
       ["If baby is asleep, gently open one eye at a time."],
     ],
     segmentTextModeByFile: ["append", "append"],
+    strictFrameLockNoFallback: true,
+    strictFrameRemountOnBlank: true,
     iosAggressiveSettleSegments: [[0], [1]],
     richSettleContentFiles: [0, 1],
     richSettleMinAreaByFile: [0.08, 0.12],
@@ -189,16 +221,30 @@ const ROUTE_CONFIG = {
     firstFileExtraTopGap: 30,
     playMode: "segmentScroll",
     segmentRanges: [
-      [{ from: 16, to: 140 }, { from: 141 }],
-      [{ from: 0, to: 172 }, { from: 172 }],
-      [{ from: 0, to: 82 }, { from: 83, to: 135 }, { from: 136 }],
-      [{ from: 0, to: 160 }, { from: 161, to: 564 }, { from: 565 }],
+      [
+        { from: 16, to: 146 },
+        { from: 147, to: 269 },
+      ],
+      [
+        { from: 0, to: 172 },
+        { from: 172, to: 239 },
+      ],
+      [
+        { from: 0, to: 82 },
+        { from: 83, to: 135 },
+        { from: 136, to: 209 },
+      ],
+      [
+        { from: 0, to: 160 },
+        { from: 161, to: 564 },
+        { from: 565, to: 779 },
+      ],
     ],
     settleFrameOverrides: [
-      [140, "last"],
-      [172, "last"],
-      [82, 135, "last"],
-      [160, 564, "last"],
+      [146, 269],
+      [172, 239],
+      [82, 135, 209],
+      [160, 564, 779],
     ],
     segmentStartTexts: [
       ["", "If findings are unclear, follow the next steps"],
@@ -211,6 +257,8 @@ const ROUTE_CONFIG = {
       ],
     ],
     segmentTextModeByFile: ["append", "append", "append", "append"],
+    strictFrameLockNoFallback: true,
+    strictFrameRemountOnBlank: true,
     iosAggressiveSettleSegments: [[0], [1, 2], [2]],
     richSettleContentFiles: [0, 1, 2, 3],
     richSettleMinAreaByFile: [0.1, 0.12, 0.12, 0.12],
@@ -231,10 +279,10 @@ const ROUTE_CONFIG = {
         { from: 87, to: 145 },
         { from: 146, to: 265 },
         { from: 265, to: 385 },
-        { from: 386 },
+        { from: 386, to: 569 },
       ],
     ],
-    settleFrameOverrides: [[87, 145, 265, 385, "last"]],
+    settleFrameOverrides: [[87, 145, 265, 385, 569]],
     segmentStartTexts: [
       [
         "If overall colour and brightness is similar between\ntwo eyes, then the examination is normal",
@@ -245,6 +293,8 @@ const ROUTE_CONFIG = {
       ],
     ],
     segmentTextModeByFile: ["replace"],
+    strictFrameLockNoFallback: true,
+    strictFrameRemountOnBlank: true,
     finalSummaryBulletsByFile: [
       [
         "If overall colour and brightness is similar between\ntwo eyes, then the examination is normal",
@@ -264,13 +314,21 @@ const ROUTE_CONFIG = {
       "/scrolly/coreexam/fundalreflex/afterexam/2/data.json",
     ],
     playMode: "segmentScroll",
-    segmentRanges: [[{ from: 0, to: 89 }, { from: 90 }], [{ from: 0 }]],
-    settleFrameOverrides: [[89, "last"], ["last"]],
+    segmentRanges: [
+      [
+        { from: 0, to: 89 },
+        { from: 90, to: 149 },
+      ],
+      [{ from: 0, to: 158 }],
+    ],
+    settleFrameOverrides: [[89, 149], [158]],
     segmentStartTexts: [
       ["Offer thanks,", "explain your findings and make a plan"],
       ["Repeat hand wash"],
     ],
     segmentTextModeByFile: ["appendInline", "append"],
+    strictFrameLockNoFallback: true,
+    strictFrameRemountOnBlank: true,
     iosAggressiveSettleSegments: [[1]],
     richSettleContentFiles: [0, 1],
     richSettleMinAreaByFile: [0.1, 0.12],
@@ -299,7 +357,13 @@ function cleanupActiveSession() {
     activeSession.removeInputListeners?.();
   } catch {}
 
-  activeSession.animations?.forEach((anim) => {
+  const liveAnimations = Array.isArray(activeSession.controllers)
+    ? activeSession.controllers
+        .map((controller) => controller?.anim)
+        .filter((anim) => !!anim)
+    : activeSession.animations || [];
+
+  liveAnimations.forEach((anim) => {
     try {
       anim.destroy();
     } catch {}
@@ -462,6 +526,32 @@ function renderSegmentTextLine(lineEl, text) {
   });
 }
 
+function createDownArrowElement() {
+  const downArrow = document.createElement("div");
+  downArrow.className = "childhood-fundal-scroll-down-arrow";
+  downArrow.setAttribute("aria-hidden", "true");
+  downArrow.innerHTML =
+    '<div class="childhood-fundal-scroll-down-arrow__stack">' +
+    '<span class="childhood-fundal-scroll-down-arrow__chev"></span>' +
+    '<span class="childhood-fundal-scroll-down-arrow__chev"></span>' +
+    '<span class="childhood-fundal-scroll-down-arrow__chev"></span>' +
+    "</div>";
+  return downArrow;
+}
+
+function ensureStageDownArrowElement(stage, existingArrow = null) {
+  if (!stage) return null;
+  if (existingArrow && existingArrow.parentElement === stage)
+    return existingArrow;
+
+  const found = stage.querySelector(".childhood-fundal-scroll-down-arrow");
+  if (found) return found;
+
+  const downArrow = existingArrow || createDownArrowElement();
+  stage.appendChild(downArrow);
+  return downArrow;
+}
+
 function buildAnimationSlots(listEl, label, count, cfg = null) {
   if (!listEl) return [];
 
@@ -482,15 +572,7 @@ function buildAnimationSlots(listEl, label, count, cfg = null) {
       stage.style.aspectRatio = customAspectRatio;
     }
 
-    const downArrow = document.createElement("div");
-    downArrow.className = "childhood-fundal-scroll-down-arrow";
-    downArrow.setAttribute("aria-hidden", "true");
-    downArrow.innerHTML =
-      '<div class="childhood-fundal-scroll-down-arrow__stack">' +
-      '<span class="childhood-fundal-scroll-down-arrow__chev"></span>' +
-      '<span class="childhood-fundal-scroll-down-arrow__chev"></span>' +
-      '<span class="childhood-fundal-scroll-down-arrow__chev"></span>' +
-      "</div>";
+    const downArrow = createDownArrowElement();
 
     const segmentText = document.createElement("div");
     segmentText.className = "childhood-fundal-segment-text";
@@ -583,13 +665,24 @@ function getAnimationLastFrame(anim) {
 function normaliseSegment(rawSegment, lastFrame) {
   let from = 0;
   let to = lastFrame;
+  let hasExplicitTo = false;
 
   if (Array.isArray(rawSegment)) {
     from = Number(rawSegment[0]);
-    to = rawSegment[1] == null ? lastFrame : Number(rawSegment[1]);
+    if (rawSegment[1] == null) {
+      to = lastFrame;
+    } else {
+      to = Number(rawSegment[1]);
+      hasExplicitTo = true;
+    }
   } else if (rawSegment && typeof rawSegment === "object") {
     from = Number(rawSegment.from);
-    to = rawSegment.to == null ? lastFrame : Number(rawSegment.to);
+    if (rawSegment.to == null) {
+      to = lastFrame;
+    } else {
+      to = Number(rawSegment.to);
+      hasExplicitTo = true;
+    }
   }
 
   if (!Number.isFinite(from)) from = 0;
@@ -598,7 +691,7 @@ function normaliseSegment(rawSegment, lastFrame) {
   from = Math.max(0, Math.min(lastFrame, Math.floor(from)));
   to = Math.max(from, Math.min(lastFrame, Math.floor(to)));
 
-  return { from, to };
+  return { from, to, hasExplicitTo };
 }
 
 function resolveSegmentsForFile(cfg, fileIndex, anim) {
@@ -610,6 +703,23 @@ function resolveSegmentsForFile(cfg, fileIndex, anim) {
   }
 
   return rawList.map((raw) => normaliseSegment(raw, lastFrame));
+}
+
+function isStrictSegmentEndHold(cfg) {
+  return cfg?.strictSegmentEndHold !== false;
+}
+
+function shouldUseStrictFrameLockNoFallback(cfg) {
+  return cfg?.strictFrameLockNoFallback === true;
+}
+
+function shouldUsePersistentSettleSnapshotOverlay(cfg) {
+  return cfg?.persistentSettleSnapshotOverlay === true;
+}
+
+function shouldUseExactSegmentTerminalHold(cfg, segment) {
+  if (!isStrictSegmentEndHold(cfg)) return false;
+  return segment?.hasExplicitTo === true;
 }
 
 function shouldRequireRichSettleContent(cfg, fileIndex) {
@@ -638,7 +748,22 @@ function getSegmentEndFrame(segment) {
   return Math.max(safeFrom, safeTo);
 }
 
-function shouldUseIosAggressiveSettle(cfg, fileIndex, segmentIndex) {
+function isFrameWithinSegment(frame, segment) {
+  if (!segment) return false;
+  const safeFrom = Number.isFinite(Number(segment.from))
+    ? Math.floor(Number(segment.from))
+    : 0;
+  const safeTo = Number.isFinite(Number(segment.to))
+    ? Math.floor(Number(segment.to))
+    : safeFrom;
+  const numeric = Number(frame);
+  if (!Number.isFinite(numeric)) return false;
+  const safeFrame = Math.floor(numeric);
+  return safeFrame >= safeFrom && safeFrame <= safeTo;
+}
+
+function shouldUseIosAggressiveSettle(cfg, fileIndex, segmentIndex, segment) {
+  if (shouldUseExactSegmentTerminalHold(cfg, segment)) return false;
   if (!IS_IOS_WEBKIT) return false;
   const fileRules = cfg?.iosAggressiveSettleSegments?.[fileIndex];
   if (!Array.isArray(fileRules) || fileRules.length === 0) return false;
@@ -653,6 +778,10 @@ function resolvePreferredSettleFrame(cfg, fileIndex, segmentIndex, segment) {
     ? Math.floor(Number(segment.to))
     : safeFrom;
   const fallback = Math.max(safeFrom, safeEnd);
+  const strictSegmentEndHold = shouldUseExactSegmentTerminalHold(cfg, segment);
+  if (strictSegmentEndHold) {
+    return fallback;
+  }
   const fileOverrides = cfg?.settleFrameOverrides?.[fileIndex];
   const raw = Array.isArray(fileOverrides) ? fileOverrides[segmentIndex] : null;
   const segLength = Math.max(0, safeEnd - safeFrom);
@@ -682,7 +811,7 @@ function resolvePreferredSettleFrame(cfg, fileIndex, segmentIndex, segment) {
 
   if (
     !allowOutsideSegment &&
-    shouldUseIosAggressiveSettle(cfg, fileIndex, segmentIndex)
+    shouldUseIosAggressiveSettle(cfg, fileIndex, segmentIndex, segment)
   ) {
     // Only for known-problem iOS segments: keep a safer margin from terminal/fade frames.
     const extraBackoff = Math.max(8, Math.min(28, Math.floor(segLength * 0.1)));
@@ -693,11 +822,55 @@ function resolvePreferredSettleFrame(cfg, fileIndex, segmentIndex, segment) {
   return Math.max(safeFrom, Math.min(safeEnd, candidate));
 }
 
+function resolveNodeEffectiveVisibility(node, svgEl, cache) {
+  if (!node || !svgEl) return { hidden: true, opacity: 0 };
+  let opacity = 1;
+  let current = node;
+
+  while (current && current.nodeType === 1) {
+    let cached = cache.get(current);
+    if (!cached) {
+      const style = window.getComputedStyle(current);
+      const rawOpacity = Number.parseFloat(style?.opacity || "1");
+      cached = {
+        hidden:
+          !style || style.display === "none" || style.visibility === "hidden",
+        opacity: Number.isFinite(rawOpacity)
+          ? Math.max(0, Math.min(1, rawOpacity))
+          : 1,
+      };
+      cache.set(current, cached);
+    }
+
+    if (cached.hidden) return { hidden: true, opacity: 0 };
+    opacity *= cached.opacity;
+    if (!Number.isFinite(opacity) || opacity <= 0.02) {
+      return { hidden: true, opacity: 0 };
+    }
+
+    if (current === svgEl) break;
+    current = current.parentElement;
+  }
+
+  return { hidden: false, opacity };
+}
+
 function isStageFrameBlank(controller) {
   const svgEl =
     controller?.anim?.renderer?.svgElement ||
     controller?.stage?.querySelector?.("svg");
   if (!svgEl) return true;
+
+  const svgStyle = window.getComputedStyle(svgEl);
+  if (
+    !svgStyle ||
+    svgStyle.display === "none" ||
+    svgStyle.visibility === "hidden"
+  ) {
+    return true;
+  }
+  const svgOpacity = Number.parseFloat(svgStyle.opacity || "1");
+  if (Number.isFinite(svgOpacity) && svgOpacity <= 0.02) return true;
 
   const svgRect = svgEl.getBoundingClientRect?.();
   if (!svgRect || svgRect.width <= 0.5 || svgRect.height <= 0.5) return true;
@@ -706,15 +879,16 @@ function isStageFrameBlank(controller) {
     "image,path,rect,circle,ellipse,polygon,polyline,line,use,text",
   );
   if (!nodes.length) return true;
+  const visibilityCache = new WeakMap();
 
   for (let i = 0; i < nodes.length; i += 1) {
     const node = nodes[i];
-    const style = window.getComputedStyle(node);
-    if (!style) continue;
-    if (style.display === "none" || style.visibility === "hidden") continue;
-
-    const opacity = Number.parseFloat(style.opacity || "1");
-    if (Number.isFinite(opacity) && opacity <= 0.02) continue;
+    const effective = resolveNodeEffectiveVisibility(
+      node,
+      svgEl,
+      visibilityCache,
+    );
+    if (effective.hidden) continue;
 
     try {
       const rect = node.getBoundingClientRect?.();
@@ -752,6 +926,17 @@ function hasRichVisibleContent(controller, minTotalAreaRatio = 0.16) {
     controller?.stage?.querySelector?.("svg");
   if (!svgEl) return false;
 
+  const svgStyle = window.getComputedStyle(svgEl);
+  if (
+    !svgStyle ||
+    svgStyle.display === "none" ||
+    svgStyle.visibility === "hidden"
+  ) {
+    return false;
+  }
+  const svgOpacity = Number.parseFloat(svgStyle.opacity || "1");
+  if (Number.isFinite(svgOpacity) && svgOpacity <= 0.02) return false;
+
   const svgRect = svgEl.getBoundingClientRect?.();
   if (!svgRect || svgRect.width <= 0.5 || svgRect.height <= 0.5) return false;
 
@@ -765,15 +950,16 @@ function hasRichVisibleContent(controller, minTotalAreaRatio = 0.16) {
     ? Math.max(0.01, Number(minTotalAreaRatio))
     : 0.16;
   let areaRatioSum = 0;
+  const visibilityCache = new WeakMap();
 
   for (let i = 0; i < nodes.length; i += 1) {
     const node = nodes[i];
-    const style = window.getComputedStyle(node);
-    if (!style) continue;
-    if (style.display === "none" || style.visibility === "hidden") continue;
-
-    const opacity = Number.parseFloat(style.opacity || "1");
-    if (Number.isFinite(opacity) && opacity <= 0.02) continue;
+    const effective = resolveNodeEffectiveVisibility(
+      node,
+      svgEl,
+      visibilityCache,
+    );
+    if (effective.hidden) continue;
 
     const rect = node.getBoundingClientRect?.();
     if (!rect || rect.width <= 0.5 || rect.height <= 0.5) continue;
@@ -821,11 +1007,815 @@ function forceSvgVisibleForController(controller) {
   svgEl.style.opacity = "1";
 }
 
+function cloneRecoverySnapshotFromStoredMarkup(
+  controller,
+  maxAllowedFrame = null,
+  allowedSegmentIndex = null,
+) {
+  const storedFrame = Number(controller?.recoverySnapshotFrame);
+  const storedSegmentIndex = Number(controller?.recoverySnapshotSegmentIndex);
+  const hasMaxAllowedFrame =
+    maxAllowedFrame != null && Number.isFinite(Number(maxAllowedFrame));
+  const hasAllowedSegmentIndex =
+    allowedSegmentIndex != null && Number.isFinite(Number(allowedSegmentIndex));
+  if (
+    hasAllowedSegmentIndex &&
+    Number.isFinite(storedSegmentIndex) &&
+    Math.floor(storedSegmentIndex) > Math.floor(Number(allowedSegmentIndex))
+  ) {
+    return null;
+  }
+  if (
+    hasMaxAllowedFrame &&
+    Number.isFinite(storedFrame) &&
+    storedFrame > Number(maxAllowedFrame) + 1
+  ) {
+    return null;
+  }
+
+  const markup = String(controller?.recoverySnapshotMarkup || "").trim();
+  if (!markup) return null;
+
+  const template = document.createElement("template");
+  template.innerHTML = markup;
+  const node = template.content.firstElementChild;
+  if (!node) return null;
+
+  node.style.display = "block";
+  node.style.width = "100%";
+  node.style.height = "100%";
+  return node;
+}
+
+function rememberRecoverySnapshot(controller, frameHint = null) {
+  const svgEl =
+    controller?.anim?.renderer?.svgElement ||
+    controller?.stage?.querySelector?.("svg");
+  if (!svgEl) return false;
+  if (isStageFrameBlank(controller)) return false;
+
+  let snapshot = null;
+  try {
+    snapshot = svgEl.cloneNode(true);
+  } catch {}
+  if (!snapshot) return false;
+
+  snapshot.style.display = "block";
+  snapshot.style.width = "100%";
+  snapshot.style.height = "100%";
+  controller.recoverySnapshotMarkup = snapshot.outerHTML;
+  const fallbackFrame = Math.floor(Number(controller?.anim?.currentFrame));
+  const rawFrame = Number.isFinite(Number(frameHint))
+    ? Number(frameHint)
+    : fallbackFrame;
+  if (Number.isFinite(rawFrame)) {
+    controller.recoverySnapshotFrame = clampFrameToAnimation(
+      controller,
+      rawFrame,
+    );
+  }
+  const snapshotSegIndex = Number(controller?.playingSegmentIndex);
+  if (Number.isFinite(snapshotSegIndex) && snapshotSegIndex >= 0) {
+    controller.recoverySnapshotSegmentIndex = Math.floor(snapshotSegIndex);
+  }
+  return true;
+}
+
+function captureRecoverySnapshot(controller) {
+  const anim = controller?.anim;
+  const rawFallbackSegment = controller?.playingSegmentIndex;
+  const fallbackSegmentIndex =
+    rawFallbackSegment == null || !Number.isFinite(Number(rawFallbackSegment))
+      ? null
+      : Math.floor(Number(rawFallbackSegment));
+  const rawFallbackCeiling = controller?.targetEndFrame;
+  const fallbackCeiling =
+    rawFallbackCeiling == null || !Number.isFinite(Number(rawFallbackCeiling))
+      ? null
+      : Number(rawFallbackCeiling);
+  if (!anim) {
+    return cloneRecoverySnapshotFromStoredMarkup(
+      controller,
+      fallbackCeiling,
+      fallbackSegmentIndex,
+    );
+  }
+
+  const svgEl =
+    controller?.anim?.renderer?.svgElement ||
+    controller?.stage?.querySelector?.("svg");
+  if (svgEl && rememberRecoverySnapshot(controller)) {
+    const snapshot = cloneRecoverySnapshotFromStoredMarkup(
+      controller,
+      fallbackCeiling,
+      fallbackSegmentIndex,
+    );
+    if (snapshot) return snapshot;
+  }
+
+  return cloneRecoverySnapshotFromStoredMarkup(
+    controller,
+    fallbackCeiling,
+    fallbackSegmentIndex,
+  );
+}
+
+function ensureRecoveryOverlay(controller) {
+  const stage = controller?.stage;
+  if (!stage) return null;
+
+  let overlay = controller?.recoveryOverlayEl || null;
+  if (overlay && overlay.parentElement === stage) return overlay;
+
+  overlay = document.createElement("div");
+  overlay.className = "childhood-fundal-recovery-overlay";
+  overlay.setAttribute("aria-hidden", "true");
+  overlay.style.position = "absolute";
+  overlay.style.left = "0";
+  overlay.style.top = "0";
+  overlay.style.right = "0";
+  overlay.style.bottom = "0";
+  overlay.style.zIndex = "11";
+  overlay.style.pointerEvents = "none";
+  overlay.style.opacity = "0";
+  overlay.style.visibility = "hidden";
+  overlay.style.transition = "none";
+  overlay.style.background = "transparent";
+  stage.appendChild(overlay);
+  controller.recoveryOverlayEl = overlay;
+  return overlay;
+}
+
+function showRecoveryOverlay(controller) {
+  const overlay = ensureRecoveryOverlay(controller);
+  if (!overlay) return false;
+
+  if (Number.isFinite(controller?.recoveryOverlayClearTimer)) {
+    clearTimeout(controller.recoveryOverlayClearTimer);
+    controller.recoveryOverlayClearTimer = null;
+  }
+
+  // Preserve the existing snapshot while recovery is in-flight.
+  if (
+    controller?.recoveryOverlayVisible &&
+    overlay.style.visibility === "visible" &&
+    overlay.childNodes.length > 0
+  ) {
+    overlay.style.opacity = "1";
+    return true;
+  }
+
+  const snapshot = captureRecoverySnapshot(controller);
+  if (snapshot) {
+    overlay.replaceChildren(snapshot);
+  }
+
+  if (!overlay.childNodes.length) return false;
+  overlay.style.visibility = "visible";
+  overlay.style.opacity = "1";
+  controller.recoveryOverlayVisible = true;
+  return true;
+}
+
+function hideRecoveryOverlay(controller, options = {}) {
+  const overlay = controller?.recoveryOverlayEl;
+  if (!overlay) return;
+  const immediate = options?.immediate === true;
+
+  controller.recoveryOverlayVisible = false;
+  if (Number.isFinite(controller?.recoveryOverlayClearTimer)) {
+    clearTimeout(controller.recoveryOverlayClearTimer);
+    controller.recoveryOverlayClearTimer = null;
+  }
+
+  const clear = () => {
+    if (!controller || controller.recoveryOverlayVisible) return;
+    overlay.style.opacity = "0";
+    overlay.style.visibility = "hidden";
+    overlay.replaceChildren();
+  };
+
+  if (immediate || overlay.style.transition === "none") {
+    clear();
+    return;
+  }
+
+  overlay.style.opacity = "0";
+  controller.recoveryOverlayClearTimer = setTimeout(() => {
+    controller.recoveryOverlayClearTimer = null;
+    clear();
+  }, 140);
+}
+
+function hideRecoveryOverlayWhenStable(controller, options = {}) {
+  if (!controller) return;
+  const checks = Math.max(
+    1,
+    Math.min(
+      8,
+      Number.isFinite(Number(options.checks))
+        ? Math.floor(Number(options.checks))
+        : IS_IOS_WEBKIT
+          ? 4
+          : 2,
+    ),
+  );
+  const requiredStablePasses = Math.max(
+    1,
+    Math.min(
+      4,
+      Number.isFinite(Number(options.requiredStablePasses))
+        ? Math.floor(Number(options.requiredStablePasses))
+        : IS_IOS_WEBKIT
+          ? 2
+          : 1,
+    ),
+  );
+  let remaining = checks;
+  let stablePasses = 0;
+
+  const tick = () => {
+    if (!controller) return;
+    forceSvgVisibleForController(controller);
+    const blank = isStageFrameBlank(controller);
+    if (!blank) {
+      stablePasses += 1;
+      rememberRecoverySnapshot(controller);
+    } else {
+      stablePasses = 0;
+    }
+    if (stablePasses >= requiredStablePasses || remaining <= 1) {
+      if (!blank) hideRecoveryOverlay(controller);
+      return;
+    }
+    remaining -= 1;
+    requestAnimationFrame(tick);
+  };
+
+  requestAnimationFrame(tick);
+}
+
+function syncPersistentSettleSnapshotOverlay(controller) {
+  if (!controller?.persistentSettleSnapshotOverlay) return;
+  if (controller.isPlaying || controller.isSnapping) return;
+  if (isStageFrameBlank(controller)) return;
+  showRecoveryOverlay(controller);
+}
+
+function cancelArrowEnsure(controller) {
+  const rafId = Number(controller?.arrowEnsureRafId);
+  if (!Number.isFinite(rafId)) return;
+  try {
+    cancelAnimationFrame(rafId);
+  } catch {}
+  if (controller) controller.arrowEnsureRafId = null;
+}
+
+function ensureControllerDownArrow(controller) {
+  const stage = controller?.stage;
+  if (!stage) return null;
+
+  const arrowEl = ensureStageDownArrowElement(
+    stage,
+    controller?.arrowEl || null,
+  );
+  if (!arrowEl) return null;
+  controller.arrowEl = arrowEl;
+  return arrowEl;
+}
+
 function clampFrameToAnimation(controller, frame) {
   const lastFrame = getAnimationLastFrame(controller?.anim);
   const numeric = Number(frame);
   if (!Number.isFinite(numeric)) return 0;
   return Math.max(0, Math.min(lastFrame, Math.floor(numeric)));
+}
+
+function resolveTerminalHoldFrameForSegment(segment) {
+  return getSegmentEndFrame(segment);
+}
+
+function pinExactFrameWithRecovery(controller, frame, options = {}) {
+  const safeFrame = clampFrameToAnimation(controller, frame);
+  const lastFrame = getAnimationLastFrame(controller?.anim);
+  const allowFrameShift = options.allowFrameShift !== false;
+  const attempts = Math.max(
+    1,
+    Math.min(
+      10,
+      Number.isFinite(Number(options.attempts))
+        ? Math.floor(Number(options.attempts))
+        : IS_IOS_WEBKIT
+          ? 6
+          : 3,
+    ),
+  );
+  const minContentAreaRatio = Number.isFinite(
+    Number(options.minContentAreaRatio),
+  )
+    ? Math.max(0.01, Number(options.minContentAreaRatio))
+    : 0.16;
+  let isBlank = true;
+
+  for (let attempt = 0; attempt < attempts; attempt += 1) {
+    try {
+      controller.anim.pause();
+      controller.anim.goToAndStop(safeFrame, true);
+    } catch {}
+    forceSvgVisibleForController(controller);
+    isBlank = isStageFrameBlank(controller);
+    if (!isBlank) break;
+
+    if (allowFrameShift) {
+      // Nudge for renderer refresh, then always return to the exact target frame.
+      const nudgeDistance = Math.max(1, Math.min(12, attempt + 1));
+      const backward = Math.max(0, safeFrame - nudgeDistance);
+      const forward = Math.min(lastFrame, safeFrame + nudgeDistance);
+      const nudgeFrame = attempt % 2 === 0 ? backward : forward;
+      if (nudgeFrame !== safeFrame) {
+        try {
+          controller.anim.goToAndStop(nudgeFrame, true);
+        } catch {}
+        forceSvgVisibleForController(controller);
+        try {
+          controller.anim.goToAndStop(safeFrame, true);
+        } catch {}
+        forceSvgVisibleForController(controller);
+        isBlank = isStageFrameBlank(controller);
+        if (!isBlank) break;
+      }
+
+      // Some Safari/WebKit states need a larger seek jump before returning to target frame.
+      if (IS_IOS_WEBKIT && isBlank) {
+        const farJump = Math.max(
+          0,
+          Math.min(
+            lastFrame,
+            attempt % 2 === 0 ? safeFrame - 8 : safeFrame + 8,
+          ),
+        );
+        if (farJump !== safeFrame) {
+          try {
+            controller.anim.goToAndStop(farJump, true);
+          } catch {}
+          forceSvgVisibleForController(controller);
+          try {
+            controller.anim.goToAndStop(safeFrame, true);
+          } catch {}
+          forceSvgVisibleForController(controller);
+          isBlank = isStageFrameBlank(controller);
+          if (!isBlank) break;
+        }
+      }
+    }
+
+    try {
+      controller.anim.resize?.();
+    } catch {}
+    forceSvgVisibleForController(controller);
+  }
+
+  try {
+    controller.anim.pause();
+    controller.anim.goToAndStop(safeFrame, true);
+  } catch {}
+  forceSvgVisibleForController(controller);
+  isBlank = isStageFrameBlank(controller);
+
+  if (!isBlank) {
+    controller.lastVisibleFrame = safeFrame;
+    controller.lastVisibleFrameEver = safeFrame;
+    if (hasRichVisibleContent(controller, minContentAreaRatio)) {
+      controller.lastRichVisibleFrame = safeFrame;
+      controller.lastRichVisibleFrameEver = safeFrame;
+    }
+    controller.lastPinnedFrame = safeFrame;
+    rememberRecoverySnapshot(controller, safeFrame);
+  } else if (IS_IOS_WEBKIT) {
+    controller.lastPinnedFrame = null;
+  }
+
+  return { frame: safeFrame, isBlank };
+}
+
+function requestExactHoldStabilization(controller, frame, options = {}) {
+  if (!controller) return;
+  const holdFrame = clampFrameToAnimation(controller, frame);
+  const allowFrameShift = options.allowFrameShift !== false;
+  const passes = Math.max(
+    1,
+    Math.min(
+      8,
+      Number.isFinite(Number(options.passes))
+        ? Math.floor(Number(options.passes))
+        : IS_IOS_WEBKIT
+          ? 5
+          : 3,
+    ),
+  );
+  const attemptsPerPass = Math.max(
+    1,
+    Math.min(
+      5,
+      Number.isFinite(Number(options.attemptsPerPass))
+        ? Math.floor(Number(options.attemptsPerPass))
+        : IS_IOS_WEBKIT
+          ? 3
+          : 2,
+    ),
+  );
+  const minContentAreaRatio = Number.isFinite(
+    Number(options.minContentAreaRatio),
+  )
+    ? Math.max(0.01, Number(options.minContentAreaRatio))
+    : 0.16;
+  const expectedSegIndex = Number(controller.segmentIndex);
+  let remaining = passes;
+
+  const tick = () => {
+    if (!controller || controller.isPlaying) return;
+    if (
+      Number.isFinite(expectedSegIndex) &&
+      Number(controller.segmentIndex) !== expectedSegIndex
+    ) {
+      return;
+    }
+
+    pinExactFrameWithRecovery(controller, holdFrame, {
+      attempts: attemptsPerPass,
+      minContentAreaRatio,
+      allowFrameShift,
+    });
+
+    remaining -= 1;
+    if (remaining > 0) {
+      requestAnimationFrame(tick);
+    }
+  };
+
+  requestAnimationFrame(tick);
+}
+
+function waitForNextFrame() {
+  return new Promise((resolve) => {
+    requestAnimationFrame(() => resolve());
+  });
+}
+
+async function recoverLockedExactFrame(
+  controller,
+  cfg,
+  exactFrame,
+  options = {},
+) {
+  if (!controller) {
+    return { frame: 0, isBlank: true };
+  }
+  const holdFrame = clampFrameToAnimation(controller, exactFrame);
+  const minContentAreaRatio = Number.isFinite(
+    Number(options.minContentAreaRatio),
+  )
+    ? Math.max(0.01, Number(options.minContentAreaRatio))
+    : 0.16;
+  const settlePasses = Math.max(
+    1,
+    Math.min(
+      6,
+      Number.isFinite(Number(options.settlePasses))
+        ? Math.floor(Number(options.settlePasses))
+        : IS_IOS_WEBKIT
+          ? 3
+          : 2,
+    ),
+  );
+  const overlayShown = showRecoveryOverlay(controller);
+
+  let pinned = pinExactFrameWithRecovery(controller, holdFrame, {
+    attempts: IS_IOS_WEBKIT ? 4 : 2,
+    minContentAreaRatio,
+    allowFrameShift: false,
+  });
+  if (!pinned.isBlank) {
+    if (overlayShown) hideRecoveryOverlayWhenStable(controller);
+    requestExactHoldStabilization(controller, holdFrame, {
+      passes: settlePasses,
+      attemptsPerPass: IS_IOS_WEBKIT ? 3 : 2,
+      minContentAreaRatio,
+      allowFrameShift: false,
+    });
+    return { frame: holdFrame, isBlank: false };
+  }
+
+  for (let i = 0; i < settlePasses; i += 1) {
+    await waitForNextFrame();
+    pinned = pinExactFrameWithRecovery(controller, holdFrame, {
+      attempts: 1,
+      minContentAreaRatio,
+      allowFrameShift: false,
+    });
+    if (!pinned.isBlank) {
+      if (overlayShown) hideRecoveryOverlayWhenStable(controller);
+      requestExactHoldStabilization(controller, holdFrame, {
+        passes: settlePasses,
+        attemptsPerPass: IS_IOS_WEBKIT ? 2 : 1,
+        minContentAreaRatio,
+        allowFrameShift: false,
+      });
+      return { frame: holdFrame, isBlank: false };
+    }
+  }
+
+  if (
+    cfg?.strictFrameRemountOnBlank !== false &&
+    typeof controller.remountAtFrame === "function" &&
+    !controller.isRemounting
+  ) {
+    try {
+      const remounted = await controller.remountAtFrame(holdFrame, {
+        timeoutMs: IS_IOS_WEBKIT ? 1200 : 900,
+      });
+      if (remounted) {
+        pinned = pinExactFrameWithRecovery(controller, holdFrame, {
+          attempts: IS_IOS_WEBKIT ? 4 : 2,
+          minContentAreaRatio,
+          allowFrameShift: false,
+        });
+        if (!pinned.isBlank) {
+          if (overlayShown) hideRecoveryOverlayWhenStable(controller);
+          requestExactHoldStabilization(controller, holdFrame, {
+            passes: settlePasses,
+            attemptsPerPass: IS_IOS_WEBKIT ? 3 : 2,
+            minContentAreaRatio,
+            allowFrameShift: false,
+          });
+          return { frame: holdFrame, isBlank: false };
+        }
+      }
+    } catch {}
+  }
+
+  // Keep overlay visible when still blank, so users don't see a white flash.
+  return { frame: holdFrame, isBlank: true };
+}
+
+function cancelStrictExactRecovery(controller, segmentIndex) {
+  const map = controller?.strictRecoveryRafBySegment;
+  if (!map) return;
+  const key = Number(segmentIndex);
+  if (!Number.isFinite(key)) return;
+  const rafId = Number(map.get(key));
+  if (Number.isFinite(rafId)) {
+    try {
+      cancelAnimationFrame(rafId);
+    } catch {}
+  }
+  map.delete(key);
+}
+
+function cancelAllStrictExactRecovery(controller) {
+  const map = controller?.strictRecoveryRafBySegment;
+  if (!map) return;
+  map.forEach((rafId) => {
+    const safeRafId = Number(rafId);
+    if (!Number.isFinite(safeRafId)) return;
+    try {
+      cancelAnimationFrame(safeRafId);
+    } catch {}
+  });
+  map.clear();
+}
+
+function requestStrictExactRecovery(
+  controller,
+  segmentIndex,
+  segment,
+  exactFrame,
+  fallbackFrame,
+  options = {},
+) {
+  if (!controller || !segment) return;
+  const key = Number(segmentIndex);
+  if (!Number.isFinite(key)) return;
+  const map = controller.strictRecoveryRafBySegment;
+  if (!map) return;
+  if (Number.isFinite(Number(map.get(key)))) return;
+
+  const holdExact = clampFrameToAnimation(controller, exactFrame);
+  const safeFallback = isFrameWithinSegment(fallbackFrame, segment)
+    ? clampFrameToAnimation(controller, fallbackFrame)
+    : null;
+  const minContentAreaRatio = Number.isFinite(
+    Number(options.minContentAreaRatio),
+  )
+    ? Math.max(0.01, Number(options.minContentAreaRatio))
+    : 0.16;
+  let remaining = Math.max(
+    1,
+    Math.min(
+      40,
+      Number.isFinite(Number(options.passes))
+        ? Math.floor(Number(options.passes))
+        : IS_IOS_WEBKIT
+          ? 20
+          : 10,
+    ),
+  );
+  const attemptsPerPass = Math.max(
+    1,
+    Math.min(
+      5,
+      Number.isFinite(Number(options.attemptsPerPass))
+        ? Math.floor(Number(options.attemptsPerPass))
+        : IS_IOS_WEBKIT
+          ? 3
+          : 2,
+    ),
+  );
+
+  const finish = () => {
+    cancelStrictExactRecovery(controller, key);
+  };
+
+  const tick = () => {
+    if (!controller || controller.isPlaying) {
+      finish();
+      return;
+    }
+    if (Number(controller.segmentIndex) !== key) {
+      finish();
+      return;
+    }
+
+    const exactPinned = pinExactFrameWithRecovery(controller, holdExact, {
+      attempts: attemptsPerPass,
+      minContentAreaRatio,
+    });
+    if (!exactPinned.isBlank) {
+      controller.strictFallbackFrameBySegment?.delete?.(key);
+      controller.resolvedFrameBySegment?.set(key, holdExact);
+      finish();
+      requestExactHoldStabilization(controller, holdExact, {
+        passes: IS_IOS_WEBKIT ? 6 : 3,
+        attemptsPerPass: IS_IOS_WEBKIT ? 3 : 2,
+        minContentAreaRatio,
+      });
+      return;
+    }
+
+    if (Number.isFinite(safeFallback)) {
+      pinExactFrameWithRecovery(controller, safeFallback, {
+        attempts: 1,
+        minContentAreaRatio,
+      });
+      controller.strictFallbackFrameBySegment?.set(key, safeFallback);
+      controller.resolvedFrameBySegment?.set(key, holdExact);
+    }
+
+    remaining -= 1;
+    if (remaining <= 0) {
+      finish();
+      return;
+    }
+    const rafId = requestAnimationFrame(tick);
+    map.set(key, rafId);
+  };
+
+  const initialRafId = requestAnimationFrame(tick);
+  map.set(key, initialRafId);
+}
+
+function resolveVisibleFrameInsideSegment(
+  controller,
+  segment,
+  preferredFrame,
+  options = {},
+) {
+  const safeFrom = Number.isFinite(Number(segment?.from))
+    ? Math.floor(Number(segment.from))
+    : 0;
+  const safeTo = Number.isFinite(Number(segment?.to))
+    ? Math.floor(Number(segment.to))
+    : safeFrom;
+  const minContentAreaRatio = Number.isFinite(
+    Number(options.minContentAreaRatio),
+  )
+    ? Math.max(0.01, Number(options.minContentAreaRatio))
+    : 0.16;
+  const requireRichContent = !!options.requireRichContent;
+  const start = Math.max(
+    safeFrom,
+    Math.min(safeTo, clampFrameToAnimation(controller, preferredFrame)),
+  );
+
+  for (let offset = 0; start - offset >= safeFrom; offset += 1) {
+    const frame = start - offset;
+    try {
+      controller.anim.goToAndStop(frame, true);
+      forceSvgVisibleForController(controller);
+    } catch {}
+    if (isStageFrameBlank(controller)) continue;
+    if (
+      requireRichContent &&
+      !hasRichVisibleContent(controller, minContentAreaRatio)
+    ) {
+      continue;
+    }
+    return frame;
+  }
+
+  for (let frame = start + 1; frame <= safeTo; frame += 1) {
+    try {
+      controller.anim.goToAndStop(frame, true);
+      forceSvgVisibleForController(controller);
+    } catch {}
+    if (isStageFrameBlank(controller)) continue;
+    if (
+      requireRichContent &&
+      !hasRichVisibleContent(controller, minContentAreaRatio)
+    ) {
+      continue;
+    }
+    return frame;
+  }
+
+  return start;
+}
+
+function resolveStrictFallbackFrame(
+  controller,
+  segment,
+  preferredFrame,
+  options = {},
+) {
+  const requireRichContent = !!options.requireRichContent;
+  const minContentAreaRatio = Number.isFinite(
+    Number(options.minContentAreaRatio),
+  )
+    ? Math.max(0.01, Number(options.minContentAreaRatio))
+    : 0.16;
+  const safeFrom = Number.isFinite(Number(segment?.from))
+    ? Math.floor(Number(segment.from))
+    : 0;
+  const safeTo = Number.isFinite(Number(segment?.to))
+    ? Math.floor(Number(segment.to))
+    : safeFrom;
+
+  // Prefer frames close to the segment terminal frame.
+  const terminalLookback = Math.max(0, Math.min(14, safeTo - safeFrom));
+  for (let offset = 0; offset <= terminalLookback; offset += 1) {
+    const frame = safeTo - offset;
+    try {
+      controller.anim.goToAndStop(frame, true);
+      forceSvgVisibleForController(controller);
+    } catch {}
+    if (isStageFrameBlank(controller)) continue;
+    if (
+      requireRichContent &&
+      !hasRichVisibleContent(controller, minContentAreaRatio)
+    ) {
+      continue;
+    }
+    return clampFrameToAnimation(controller, frame);
+  }
+
+  const candidates = [
+    controller?.lastVisibleFrame,
+    controller?.lastRenderedFrame,
+    controller?.lastPinnedFrame,
+    controller?.lastVisibleFrameEver,
+  ];
+  for (let i = 0; i < candidates.length; i += 1) {
+    const candidate = Number(candidates[i]);
+    if (!Number.isFinite(candidate)) continue;
+    if (!isFrameWithinSegment(candidate, segment)) continue;
+    return clampFrameToAnimation(controller, candidate);
+  }
+
+  let inside = resolveVisibleFrameInsideSegment(
+    controller,
+    segment,
+    preferredFrame,
+    {
+      requireRichContent,
+      minContentAreaRatio,
+    },
+  );
+  if (!isFrameWithinSegment(inside, segment)) {
+    inside = getSegmentEndFrame(segment);
+  }
+
+  // Last-resort global recovery if SVG metrics are temporarily broken.
+  if (isStageFrameBlank(controller)) {
+    const recovered = resolveAnyVisibleFrame(controller, inside, {
+      requireRichContent,
+      minContentAreaRatio,
+    });
+    if (isFrameWithinSegment(recovered, segment)) {
+      return clampFrameToAnimation(controller, recovered);
+    }
+  }
+
+  return clampFrameToAnimation(controller, inside);
 }
 
 function resolveAnyVisibleFrame(controller, preferredFrame, options = {}) {
@@ -1016,6 +2006,17 @@ function resolveSettledFrame(
 function playSegment(controller, segmentIndex) {
   const seg = controller.segments[segmentIndex];
   if (!seg) return false;
+  const storedSnapshotFrame = Number(controller?.recoverySnapshotFrame);
+  if (
+    Number.isFinite(storedSnapshotFrame) &&
+    storedSnapshotFrame > Number(seg.to) + 1
+  ) {
+    controller.recoverySnapshotMarkup = "";
+    controller.recoverySnapshotFrame = null;
+  }
+  hideRecoveryOverlay(controller, { immediate: true });
+  cancelStrictExactRecovery(controller, segmentIndex);
+  controller.strictFallbackFrameBySegment?.delete?.(segmentIndex);
   const segmentText =
     Array.isArray(controller.segmentStartTexts) &&
     segmentIndex >= 0 &&
@@ -1043,6 +2044,7 @@ function playSegment(controller, segmentIndex) {
 
 function playPreviousOrNextSegment(controller, dir) {
   if (!controller.ready || controller.segments.length === 0) return false;
+  if (controller.isSnapping) return false;
 
   if (dir > 0) {
     const nextIndex = controller.segmentIndex + 1;
@@ -1067,6 +2069,10 @@ function stopAtSegmentEnd(controller, cfg) {
   const finishedSegIndex = controller.playingSegmentIndex;
   const finishedSeg =
     controller.segments[controller.playingSegmentIndex] || null;
+  const strictSegmentEndHold = shouldUseExactSegmentTerminalHold(
+    cfg,
+    finishedSeg,
+  );
   const preferredFrame = finishedSeg
     ? resolvePreferredSettleFrame(
         cfg,
@@ -1092,6 +2098,18 @@ function stopAtSegmentEnd(controller, cfg) {
   if (!finishedSeg && Number.isFinite(controller.targetEndFrame)) {
     holdFrame = Math.max(0, Math.floor(controller.targetEndFrame));
   }
+  if (strictSegmentEndHold && finishedSeg) {
+    holdFrame = resolveTerminalHoldFrameForSegment(finishedSeg);
+  }
+  const useLockedExactFrame = strictSegmentEndHold
+    ? shouldUseStrictFrameLockNoFallback(cfg)
+    : false;
+  if (useLockedExactFrame) {
+    // Capture the currently visible frame immediately, before any recovery seeks.
+    showRecoveryOverlay(controller);
+  } else {
+    hideRecoveryOverlay(controller, { immediate: true });
+  }
 
   controller.isPlaying = false;
   controller.segmentIndex = controller.playingSegmentIndex;
@@ -1103,28 +2121,102 @@ function stopAtSegmentEnd(controller, cfg) {
     controller.anim.pause();
   } catch {}
 
-  requestAnimationFrame(() => {
+  requestAnimationFrame(async () => {
     try {
-      if (finishedSeg) {
-        holdFrame = resolveSettledFrame(
-          controller,
-          finishedSeg,
-          preferredFrame,
-          {
-            allowOutsideSegment,
-            requireRichContent,
+      if (strictSegmentEndHold && finishedSeg) {
+        const exactFrame = resolveTerminalHoldFrameForSegment(finishedSeg);
+        cancelStrictExactRecovery(controller, finishedSegIndex);
+        holdFrame = exactFrame;
+        controller.resolvedFrameBySegment?.set(finishedSegIndex, exactFrame);
+        if (useLockedExactFrame) {
+          controller.strictFallbackFrameBySegment?.delete?.(finishedSegIndex);
+          const recovered = await recoverLockedExactFrame(
+            controller,
+            cfg,
+            exactFrame,
+            {
+              minContentAreaRatio,
+            },
+          );
+          holdFrame = recovered.frame;
+          controller.resolvedFrameBySegment?.set(finishedSegIndex, exactFrame);
+        } else {
+          controller.strictFallbackFrameBySegment?.delete?.(finishedSegIndex);
+          const pinned = pinExactFrameWithRecovery(controller, exactFrame, {
+            attempts: IS_IOS_WEBKIT ? 10 : 6,
             minContentAreaRatio,
-          },
-        );
-        controller.resolvedFrameBySegment?.set(finishedSegIndex, holdFrame);
-      }
-      controller.anim.goToAndStop(holdFrame, true);
-      forceSvgVisibleForController(controller);
-      const isSparseSettle =
-        requireRichContent &&
-        !isStageFrameBlank(controller) &&
-        !hasRichVisibleContent(controller, minContentAreaRatio);
-      if (isStageFrameBlank(controller) || isSparseSettle) {
+          });
+          if (pinned.isBlank) {
+            const fallbackFrame = resolveStrictFallbackFrame(
+              controller,
+              finishedSeg,
+              exactFrame,
+              {
+                requireRichContent,
+                minContentAreaRatio,
+              },
+            );
+            holdFrame = fallbackFrame;
+            controller.strictFallbackFrameBySegment?.set(
+              finishedSegIndex,
+              fallbackFrame,
+            );
+            const fallbackPinned = pinExactFrameWithRecovery(
+              controller,
+              fallbackFrame,
+              {
+                attempts: IS_IOS_WEBKIT ? 8 : 5,
+                minContentAreaRatio,
+              },
+            );
+            if (fallbackPinned.isBlank) {
+              let rescueFrame = resolveVisibleFrameInsideSegment(
+                controller,
+                finishedSeg,
+                exactFrame,
+                {
+                  requireRichContent,
+                  minContentAreaRatio,
+                },
+              );
+              if (!isFrameWithinSegment(rescueFrame, finishedSeg)) {
+                rescueFrame = fallbackFrame;
+              }
+              holdFrame = rescueFrame;
+              controller.strictFallbackFrameBySegment?.set(
+                finishedSegIndex,
+                rescueFrame,
+              );
+              pinExactFrameWithRecovery(controller, rescueFrame, {
+                attempts: IS_IOS_WEBKIT ? 10 : 6,
+                minContentAreaRatio,
+              });
+            }
+            requestStrictExactRecovery(
+              controller,
+              finishedSegIndex,
+              finishedSeg,
+              exactFrame,
+              holdFrame,
+              {
+                passes: IS_IOS_WEBKIT ? 24 : 12,
+                attemptsPerPass: IS_IOS_WEBKIT ? 3 : 2,
+                minContentAreaRatio,
+              },
+            );
+          } else {
+            holdFrame = exactFrame;
+            controller.strictFallbackFrameBySegment?.delete?.(finishedSegIndex);
+            requestExactHoldStabilization(controller, exactFrame, {
+              passes: IS_IOS_WEBKIT ? 10 : 4,
+              attemptsPerPass: IS_IOS_WEBKIT ? 4 : 2,
+              minContentAreaRatio,
+              allowFrameShift: false,
+            });
+          }
+        }
+        controller.resolvedFrameBySegment?.set(finishedSegIndex, exactFrame);
+      } else {
         if (finishedSeg) {
           holdFrame = resolveSettledFrame(
             controller,
@@ -1136,29 +2228,48 @@ function stopAtSegmentEnd(controller, cfg) {
               minContentAreaRatio,
             },
           );
+          controller.resolvedFrameBySegment?.set(finishedSegIndex, holdFrame);
         }
-        holdFrame = resolveAnyVisibleFrame(controller, holdFrame, {
-          requireRichContent,
-          minContentAreaRatio,
-        });
         controller.anim.goToAndStop(holdFrame, true);
         forceSvgVisibleForController(controller);
-      }
-      if (!isStageFrameBlank(controller)) {
-        controller.lastVisibleFrame = holdFrame;
-        controller.lastVisibleFrameEver = holdFrame;
-        controller.lastPinnedFrame = holdFrame;
+        const isSparseSettle =
+          requireRichContent &&
+          !isStageFrameBlank(controller) &&
+          !hasRichVisibleContent(controller, minContentAreaRatio);
+        if (isStageFrameBlank(controller) || isSparseSettle) {
+          if (finishedSeg) {
+            holdFrame = resolveSettledFrame(
+              controller,
+              finishedSeg,
+              preferredFrame,
+              {
+                allowOutsideSegment,
+                requireRichContent,
+                minContentAreaRatio,
+              },
+            );
+          }
+          holdFrame = resolveAnyVisibleFrame(controller, holdFrame, {
+            requireRichContent,
+            minContentAreaRatio,
+          });
+          controller.anim.goToAndStop(holdFrame, true);
+          forceSvgVisibleForController(controller);
+        }
+        if (!isStageFrameBlank(controller)) {
+          controller.lastVisibleFrame = holdFrame;
+          controller.lastVisibleFrameEver = holdFrame;
+          controller.lastPinnedFrame = holdFrame;
+        }
       }
     } finally {
       controller.isSnapping = false;
+      syncPersistentSettleSnapshotOverlay(controller);
+      controller.inputLockUntil = Date.now() + (IS_IOS_WEBKIT ? 1200 : 900);
       try {
         controller.onSegmentSettled?.();
       } catch {}
-      const pendingDir = controller.pendingDir;
       controller.pendingDir = 0;
-      if (pendingDir !== 0) {
-        playPreviousOrNextSegment(controller, pendingDir);
-      }
     }
   });
 }
@@ -1223,7 +2334,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
   };
 
   const updateArrowAnchorForController = (controller) => {
-    const arrowEl = controller?.arrowEl;
+    const arrowEl = ensureControllerDownArrow(controller);
     const stage = controller?.stage;
     if (!arrowEl || !stage) return;
 
@@ -1389,21 +2500,9 @@ function initializeSegmentScrollMode(cfg, page, stages) {
   };
 
   const controllers = stages.map((stage, idx) => {
-    const anim = window.lottie.loadAnimation({
-      container: stage,
-      renderer: "svg",
-      loop: false,
-      autoplay: false,
-      path: cfg.paths[idx],
-      rendererSettings: {
-        preserveAspectRatio: "xMidYMid meet",
-        hideOnTransparent: false,
-      },
-    });
-
     const controller = {
       stage,
-      anim,
+      anim: null,
       fileIndex: idx,
       arrowEl:
         stage.parentElement?.querySelector(
@@ -1424,6 +2523,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
       playingSegmentIndex: -1,
       targetEndFrame: null,
       pendingDir: 0,
+      inputLockUntil: 0,
       failed: false,
       lastRenderedFrame: null,
       lastVisibleFrame: null,
@@ -1432,7 +2532,19 @@ function initializeSegmentScrollMode(cfg, page, stages) {
       lastRichVisibleFrameEver: null,
       lastPinnedFrame: null,
       resolvedFrameBySegment: new Map(),
+      strictFallbackFrameBySegment: new Map(),
+      strictRecoveryRafBySegment: new Map(),
+      isRemounting: false,
+      recoveryOverlayEl: null,
+      recoveryOverlayClearTimer: null,
+      recoveryOverlayVisible: false,
+      recoverySnapshotMarkup: "",
+      recoverySnapshotFrame: null,
+      recoverySnapshotSegmentIndex: -1,
+      arrowEnsureRafId: null,
       requireRichContent: shouldRequireRichSettleContent(cfg, idx),
+      persistentSettleSnapshotOverlay:
+        shouldUsePersistentSettleSnapshotOverlay(cfg),
       minContentAreaRatio: resolveRichSettleMinArea(cfg, idx),
       centerLockRafId: null,
       startCenterLock: null,
@@ -1443,17 +2555,28 @@ function initializeSegmentScrollMode(cfg, page, stages) {
       setSegmentText: null,
       clearSegmentText: null,
       showFinalSummaryBullets: null,
+      handleAnimationReady: null,
+      handleAnimationFailed: null,
+      handleAnimationEnterFrame: null,
+      handleAnimationComplete: null,
+      attachAnimationListeners: null,
+      detachAnimationListeners: null,
+      remountAtFrame: null,
     };
 
     controller.showDownArrow = () => {
-      if (!controller.arrowEl) return;
+      const arrowEl = ensureControllerDownArrow(controller);
+      if (!arrowEl) return;
+      cancelArrowEnsure(controller);
       updateArrowAnchorForController(controller);
-      controller.arrowEl.classList.add("is-visible");
+      arrowEl.classList.add("is-visible");
     };
 
     controller.hideDownArrow = () => {
-      if (!controller.arrowEl) return;
-      controller.arrowEl.classList.remove("is-visible");
+      cancelArrowEnsure(controller);
+      const arrowEl = ensureControllerDownArrow(controller);
+      if (!arrowEl) return;
+      arrowEl.classList.remove("is-visible");
     };
 
     controller.setSegmentText = (text) => {
@@ -1566,24 +2689,42 @@ function initializeSegmentScrollMode(cfg, page, stages) {
       controller.centerLockRafId = requestAnimationFrame(tick);
     };
 
+    const createAnimationInstance = () =>
+      window.lottie.loadAnimation({
+        container: stage,
+        renderer: "svg",
+        loop: false,
+        autoplay: false,
+        path: cfg.paths[idx],
+        rendererSettings: {
+          preserveAspectRatio: "xMidYMid meet",
+          hideOnTransparent: false,
+        },
+      });
+
     const onReady = () => {
+      const activeAnim = controller.anim;
+      if (!activeAnim) return;
       if (controller.ready) return;
-      controller.segments = resolveSegmentsForFile(cfg, idx, anim);
+      if (!controller.isRemounting) {
+        hideRecoveryOverlay(controller, { immediate: true });
+      }
+      controller.segments = resolveSegmentsForFile(cfg, idx, activeAnim);
       controller.ready = true;
 
       const first = controller.segments[0];
       if (first) {
-        anim.goToAndStop(first.from, true);
+        activeAnim.goToAndStop(first.from, true);
         forceSvgVisibleForController(controller);
         if (isStageFrameBlank(controller)) {
           const recovered = resolveAnyVisibleFrame(controller, first.from);
-          anim.goToAndStop(recovered, true);
+          activeAnim.goToAndStop(recovered, true);
           forceSvgVisibleForController(controller);
         }
         if (!isStageFrameBlank(controller)) {
           const currentFrame = clampFrameToAnimation(
             controller,
-            Math.floor(Number(anim.currentFrame)),
+            Math.floor(Number(activeAnim.currentFrame)),
           );
           controller.lastVisibleFrame = currentFrame;
           controller.lastVisibleFrameEver = currentFrame;
@@ -1594,6 +2735,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
             controller.lastRichVisibleFrameEver = currentFrame;
           }
           controller.lastPinnedFrame = currentFrame;
+          rememberRecoverySnapshot(controller, currentFrame);
         }
       }
 
@@ -1601,21 +2743,24 @@ function initializeSegmentScrollMode(cfg, page, stages) {
         anchorToFirstFile();
       }
       requestAnimationFrame(() => {
+        ensureControllerDownArrow(controller);
         updateArrowAnchorForController(controller);
       });
     };
 
-    anim.addEventListener("data_ready", onReady);
-    anim.addEventListener("DOMLoaded", onReady);
-    anim.addEventListener("data_failed", () => {
+    const onDataFailed = () => {
       controller.failed = true;
       console.error("[fundalScroll] animation data failed:", cfg.paths[idx]);
-    });
-    anim.addEventListener("enterFrame", () => {
+    };
+
+    const onEnterFrame = () => {
+      const activeAnim = controller.anim;
+      if (!activeAnim) return;
+
       if (controller.isPlaying) {
         const activeSeg = controller.segments[controller.playingSegmentIndex];
         if (activeSeg) {
-          const current = Math.floor(Number(anim.currentFrame));
+          const current = Math.floor(Number(activeAnim.currentFrame));
           if (Number.isFinite(current)) {
             controller.lastRenderedFrame = Math.max(
               activeSeg.from,
@@ -1634,21 +2779,174 @@ function initializeSegmentScrollMode(cfg, page, stages) {
                 controller.lastRichVisibleFrameEver =
                   controller.lastRenderedFrame;
               }
+
+              const nearEndBackoff = Math.max(
+                8,
+                Math.min(
+                  24,
+                  Math.floor((activeSeg.to - activeSeg.from + 1) * 0.08),
+                ),
+              );
+              if (
+                controller.recoverySnapshotSegmentIndex !==
+                  controller.playingSegmentIndex &&
+                controller.lastRenderedFrame >= activeSeg.to - nearEndBackoff
+              ) {
+                if (
+                  rememberRecoverySnapshot(
+                    controller,
+                    controller.lastRenderedFrame,
+                  )
+                ) {
+                  controller.recoverySnapshotSegmentIndex =
+                    controller.playingSegmentIndex;
+                }
+              }
             }
           }
         }
       }
 
       if (!controller.isPlaying || controller.targetEndFrame == null) return;
-      if (Math.floor(Number(anim.currentFrame)) >= controller.targetEndFrame) {
+      if (
+        Math.floor(Number(activeAnim.currentFrame)) >= controller.targetEndFrame
+      ) {
         stopAtSegmentEnd(controller, cfg);
       }
-    });
-    anim.addEventListener("complete", () => {
+    };
+
+    const onComplete = () => {
       if (controller.isPlaying) {
         stopAtSegmentEnd(controller, cfg);
       }
-    });
+    };
+
+    controller.handleAnimationReady = onReady;
+    controller.handleAnimationFailed = onDataFailed;
+    controller.handleAnimationEnterFrame = onEnterFrame;
+    controller.handleAnimationComplete = onComplete;
+
+    controller.attachAnimationListeners = (targetAnim = controller.anim) => {
+      if (!targetAnim) return;
+      targetAnim.addEventListener("data_ready", onReady);
+      targetAnim.addEventListener("DOMLoaded", onReady);
+      targetAnim.addEventListener("data_failed", onDataFailed);
+      targetAnim.addEventListener("enterFrame", onEnterFrame);
+      targetAnim.addEventListener("complete", onComplete);
+    };
+
+    controller.detachAnimationListeners = (targetAnim = controller.anim) => {
+      if (!targetAnim) return;
+      try {
+        targetAnim.removeEventListener("data_ready", onReady);
+      } catch {}
+      try {
+        targetAnim.removeEventListener("DOMLoaded", onReady);
+      } catch {}
+      try {
+        targetAnim.removeEventListener("data_failed", onDataFailed);
+      } catch {}
+      try {
+        targetAnim.removeEventListener("enterFrame", onEnterFrame);
+      } catch {}
+      try {
+        targetAnim.removeEventListener("complete", onComplete);
+      } catch {}
+    };
+
+    controller.remountAtFrame = (frame, options = {}) =>
+      new Promise((resolve) => {
+        if (controller.isRemounting) {
+          resolve(false);
+          return;
+        }
+        if (!controller.stage) {
+          resolve(false);
+          return;
+        }
+
+        controller.isRemounting = true;
+        const priorAnim = controller.anim;
+        const targetFrame = clampFrameToAnimation(controller, frame);
+        let timeoutId = null;
+        let remountReady = false;
+        let nextAnim = null;
+
+        const onRemountReady = () => {
+          const activeAnim = controller.anim;
+          if (!activeAnim || activeAnim !== nextAnim) {
+            finish(false);
+            return;
+          }
+          requestAnimationFrame(() => {
+            const pinned = pinExactFrameWithRecovery(controller, targetFrame, {
+              attempts: IS_IOS_WEBKIT ? 5 : 3,
+              minContentAreaRatio: controller.minContentAreaRatio,
+              allowFrameShift: false,
+            });
+            finish(!pinned.isBlank);
+          });
+        };
+
+        const onRemountFail = () => {
+          finish(false);
+        };
+
+        const finish = (ok) => {
+          if (remountReady) return;
+          remountReady = true;
+          if (nextAnim) {
+            try {
+              nextAnim.removeEventListener("data_ready", onRemountReady);
+            } catch {}
+            try {
+              nextAnim.removeEventListener("DOMLoaded", onRemountReady);
+            } catch {}
+            try {
+              nextAnim.removeEventListener("data_failed", onRemountFail);
+            } catch {}
+          }
+          if (timeoutId != null) {
+            clearTimeout(timeoutId);
+          }
+          controller.isRemounting = false;
+          resolve(!!ok);
+        };
+
+        try {
+          controller.detachAnimationListeners?.(priorAnim);
+        } catch {}
+        try {
+          priorAnim?.destroy?.();
+        } catch {}
+
+        controller.ready = false;
+        controller.failed = false;
+        controller.segments = [];
+
+        nextAnim = createAnimationInstance();
+        controller.anim = nextAnim;
+        controller.attachAnimationListeners?.(nextAnim);
+
+        nextAnim.addEventListener("data_ready", onRemountReady);
+        nextAnim.addEventListener("DOMLoaded", onRemountReady);
+        nextAnim.addEventListener("data_failed", onRemountFail);
+
+        timeoutId = setTimeout(
+          () => {
+            finish(false);
+          },
+          Math.max(
+            600,
+            Number.isFinite(Number(options.timeoutMs))
+              ? Math.floor(Number(options.timeoutMs))
+              : 1800,
+          ),
+        );
+      });
+
+    controller.anim = createAnimationInstance();
+    controller.attachAnimationListeners(controller.anim);
 
     return controller;
   });
@@ -1658,9 +2956,39 @@ function initializeSegmentScrollMode(cfg, page, stages) {
   const hideAllDownArrows = () => {
     controllers.forEach((controller) => controller.hideDownArrow?.());
   };
+  const ensureArrowVisibleForController = (target, passes = 12) => {
+    if (!target) return;
+    const initialArrow = ensureControllerDownArrow(target);
+    if (!initialArrow) return;
+    cancelArrowEnsure(target);
+    let remaining = Math.max(
+      1,
+      Number.isFinite(Number(passes)) ? Math.floor(Number(passes)) : 12,
+    );
+
+    const tick = () => {
+      const arrowEl = ensureControllerDownArrow(target);
+      if (!arrowEl) return;
+      if (target.isPlaying || target.isSnapping) {
+        target.arrowEnsureRafId = null;
+        return;
+      }
+      updateArrowAnchorForController(target);
+      arrowEl.classList.add("is-visible");
+      remaining -= 1;
+      if (remaining <= 0) {
+        target.arrowEnsureRafId = null;
+        return;
+      }
+      target.arrowEnsureRafId = requestAnimationFrame(tick);
+    };
+
+    target.arrowEnsureRafId = requestAnimationFrame(tick);
+  };
   const showDownArrowForController = (target) => {
     hideAllDownArrows();
     target?.showDownArrow?.();
+    ensureArrowVisibleForController(target, IS_IOS_WEBKIT ? 18 : 12);
   };
   let iosCenterCorrectionRafId = null;
 
@@ -1759,6 +3087,143 @@ function initializeSegmentScrollMode(cfg, page, stages) {
         : controller.segments.length - 1;
     const seg = controller.segments[segIndex];
     if (!seg) return;
+    const strictSegmentEndHold = shouldUseExactSegmentTerminalHold(cfg, seg);
+    const minContentAreaRatio = resolveRichSettleMinArea(
+      cfg,
+      controller.fileIndex,
+    );
+
+    if (strictSegmentEndHold) {
+      const exactFrame = resolveTerminalHoldFrameForSegment(seg);
+      const useLockedExactFrame = shouldUseStrictFrameLockNoFallback(cfg);
+      cancelStrictExactRecovery(controller, segIndex);
+      controller.resolvedFrameBySegment?.set(segIndex, exactFrame);
+      if (useLockedExactFrame) {
+        controller.strictFallbackFrameBySegment?.delete?.(segIndex);
+        const pinned = pinExactFrameWithRecovery(controller, exactFrame, {
+          attempts: IS_IOS_WEBKIT ? 8 : 4,
+          minContentAreaRatio,
+          allowFrameShift: false,
+        });
+        if (!pinned.isBlank) {
+          hideRecoveryOverlayWhenStable(controller);
+          requestExactHoldStabilization(controller, exactFrame, {
+            passes: IS_IOS_WEBKIT ? 4 : 2,
+            attemptsPerPass: IS_IOS_WEBKIT ? 2 : 1,
+            minContentAreaRatio,
+            allowFrameShift: false,
+          });
+          controller.resolvedFrameBySegment?.set(segIndex, exactFrame);
+          syncPersistentSettleSnapshotOverlay(controller);
+          return;
+        }
+
+        if (
+          cfg?.strictFrameRemountOnBlank !== false &&
+          typeof controller.remountAtFrame === "function" &&
+          !controller.isRemounting
+        ) {
+          controller
+            .remountAtFrame(exactFrame, {
+              timeoutMs: IS_IOS_WEBKIT ? 1200 : 900,
+            })
+            .then((remounted) => {
+              if (!remounted) return;
+              const repinned = pinExactFrameWithRecovery(
+                controller,
+                exactFrame,
+                {
+                  attempts: IS_IOS_WEBKIT ? 5 : 3,
+                  minContentAreaRatio,
+                  allowFrameShift: false,
+                },
+              );
+              if (!repinned.isBlank) {
+                hideRecoveryOverlayWhenStable(controller);
+              }
+              requestExactHoldStabilization(controller, exactFrame, {
+                passes: IS_IOS_WEBKIT ? 4 : 2,
+                attemptsPerPass: IS_IOS_WEBKIT ? 2 : 1,
+                minContentAreaRatio,
+                allowFrameShift: false,
+              });
+              syncPersistentSettleSnapshotOverlay(controller);
+            });
+        }
+        return;
+      }
+
+      const requireRichContent = shouldRequireRichSettleContent(
+        cfg,
+        controller.fileIndex,
+      );
+      const pinned = pinExactFrameWithRecovery(controller, exactFrame, {
+        attempts: IS_IOS_WEBKIT ? 8 : 5,
+        minContentAreaRatio,
+      });
+      if (!pinned.isBlank) {
+        controller.strictFallbackFrameBySegment?.delete?.(segIndex);
+        controller.resolvedFrameBySegment?.set(segIndex, exactFrame);
+        syncPersistentSettleSnapshotOverlay(controller);
+        return;
+      }
+
+      const cachedFallback = Number(
+        controller.strictFallbackFrameBySegment?.get?.(segIndex),
+      );
+      const fallbackFrame = isFrameWithinSegment(cachedFallback, seg)
+        ? clampFrameToAnimation(controller, cachedFallback)
+        : resolveStrictFallbackFrame(controller, seg, exactFrame, {
+            requireRichContent,
+            minContentAreaRatio,
+          });
+      controller.strictFallbackFrameBySegment?.set(segIndex, fallbackFrame);
+      const fallbackPinned = pinExactFrameWithRecovery(
+        controller,
+        fallbackFrame,
+        {
+          attempts: IS_IOS_WEBKIT ? 8 : 5,
+          minContentAreaRatio,
+        },
+      );
+      if (fallbackPinned.isBlank) {
+        let rescueFrame = resolveVisibleFrameInsideSegment(
+          controller,
+          seg,
+          exactFrame,
+          {
+            requireRichContent,
+            minContentAreaRatio,
+          },
+        );
+        if (!isFrameWithinSegment(rescueFrame, seg)) {
+          rescueFrame = fallbackFrame;
+        }
+        controller.strictFallbackFrameBySegment?.set(segIndex, rescueFrame);
+        pinExactFrameWithRecovery(controller, rescueFrame, {
+          attempts: IS_IOS_WEBKIT ? 10 : 6,
+          minContentAreaRatio,
+        });
+      }
+      requestStrictExactRecovery(
+        controller,
+        segIndex,
+        seg,
+        exactFrame,
+        controller.strictFallbackFrameBySegment?.get?.(segIndex),
+        {
+          passes: IS_IOS_WEBKIT ? 18 : 10,
+          attemptsPerPass: IS_IOS_WEBKIT ? 3 : 2,
+          minContentAreaRatio,
+        },
+      );
+      controller.resolvedFrameBySegment?.set(segIndex, exactFrame);
+      syncPersistentSettleSnapshotOverlay(controller);
+      return;
+    }
+
+    cancelStrictExactRecovery(controller, segIndex);
+    controller.strictFallbackFrameBySegment?.delete?.(segIndex);
     const preferredFrame = resolvePreferredSettleFrame(
       cfg,
       controller.fileIndex,
@@ -1769,10 +3234,6 @@ function initializeSegmentScrollMode(cfg, page, stages) {
       ? Number(preferredFrame) < seg.from || Number(preferredFrame) > seg.to
       : false;
     const requireRichContent = shouldRequireRichSettleContent(
-      cfg,
-      controller.fileIndex,
-    );
-    const minContentAreaRatio = resolveRichSettleMinArea(
       cfg,
       controller.fileIndex,
     );
@@ -1830,6 +3291,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
     } else if (IS_IOS_WEBKIT) {
       controller.lastPinnedFrame = null;
     }
+    syncPersistentSettleSnapshotOverlay(controller);
   }
 
   function getControllersNearViewport(margin = 96) {
@@ -2036,13 +3498,20 @@ function initializeSegmentScrollMode(cfg, page, stages) {
       controller.playingSegmentIndex = -1;
       controller.targetEndFrame = null;
       controller.pendingDir = 0;
+      controller.inputLockUntil = 0;
       controller.lastRenderedFrame = null;
       controller.lastVisibleFrame = null;
       controller.lastVisibleFrameEver = null;
       controller.lastRichVisibleFrame = null;
       controller.lastRichVisibleFrameEver = null;
       controller.lastPinnedFrame = null;
+      controller.recoverySnapshotMarkup = "";
+      controller.recoverySnapshotFrame = null;
+      controller.recoverySnapshotSegmentIndex = -1;
+      hideRecoveryOverlay(controller, { immediate: true });
       controller.resolvedFrameBySegment?.clear?.();
+      controller.strictFallbackFrameBySegment?.clear?.();
+      cancelAllStrictExactRecovery(controller);
 
       const firstSeg = controller.segments[0];
       if (controller.ready && firstSeg) {
@@ -2075,6 +3544,10 @@ function initializeSegmentScrollMode(cfg, page, stages) {
     });
 
     hideReplayButton();
+    if (controllers[0]) {
+      activeFileIndex = 0;
+      showDownArrowForController(controllers[0]);
+    }
     requestAnimationFrame(() =>
       requestAnimationFrame(() => {
         scrollToFirstFileStart();
@@ -2106,6 +3579,10 @@ function initializeSegmentScrollMode(cfg, page, stages) {
 
   controllers.forEach((controller) => {
     controller.onSegmentSettled = () => {
+      pinControllerToSettledFrame(controller);
+      wheelAccum = 0;
+      touchStartY = null;
+      lastTriggerAt = Date.now() + (IS_IOS_WEBKIT ? 320 : 220);
       if (!areAllControllersComplete()) {
         showDownArrowForController(controller);
         setMobileTouchLock(true);
@@ -2119,11 +3596,22 @@ function initializeSegmentScrollMode(cfg, page, stages) {
         page.style.overscrollBehaviorY = "contain";
         document.body.style.overscrollBehaviorY = "contain";
       }
-      startFinalPinLoop();
-      startIosFinalPinKeepAlive();
+      if (isStrictSegmentEndHold(cfg)) {
+        stopFinalPinLoop();
+        stopIosFinalPinKeepAlive();
+        pinAllAnimationsToSettledFrames({ visibleOnly: true });
+      } else {
+        startFinalPinLoop();
+        startIosFinalPinKeepAlive();
+      }
       dispatchRouteComplete();
     };
   });
+
+  if (!areAllControllersComplete() && controllers[0]) {
+    activeFileIndex = 0;
+    showDownArrowForController(controllers[0]);
+  }
 
   setMobileTouchLock(!areAllControllersComplete());
 
@@ -2156,7 +3644,11 @@ function initializeSegmentScrollMode(cfg, page, stages) {
     const controller = getGateController();
     if (!controller) return false;
     if (controller.failed) return false;
+    if (controller.isSnapping) return true;
     if (controller.isPlaying) return true;
+    if (dir > 0 && Date.now() < Number(controller.inputLockUntil || 0)) {
+      return true;
+    }
 
     // Never consume upward input when not actively playing.
     if (dir < 0) return false;
@@ -2171,18 +3663,26 @@ function initializeSegmentScrollMode(cfg, page, stages) {
       if (dir < 0) {
         showReplayButton();
       }
-      startFinalPinLoop();
+      if (isStrictSegmentEndHold(cfg)) {
+        pinAllAnimationsToSettledFrames({ visibleOnly: true });
+      } else {
+        startFinalPinLoop();
+      }
       return false;
     }
 
     const controller = getGateController();
     if (!controller) return false;
     if (controller.failed) return false;
+    if (controller.isSnapping) return true;
     if (!controller.ready) return dir > 0;
+    if (dir > 0 && Date.now() < Number(controller.inputLockUntil || 0)) {
+      return true;
+    }
 
     if (controller.isPlaying) {
-      // Never reverse while a segment is running.
-      controller.pendingDir = dir > 0 ? 1 : 0;
+      // Block direction input while a segment is running to avoid inertial auto-advance.
+      controller.pendingDir = 0;
       return true;
     }
 
@@ -2200,7 +3700,6 @@ function initializeSegmentScrollMode(cfg, page, stages) {
 
   function onWheel(e) {
     if (!Number.isFinite(e.deltaY) || e.deltaY === 0) return;
-    hideAllDownArrows();
 
     const instantaneousDir = e.deltaY > 0 ? 1 : -1;
     if (canConsumeDirection(instantaneousDir)) {
@@ -2243,7 +3742,6 @@ function initializeSegmentScrollMode(cfg, page, stages) {
 
     const dy = touchStartY - currentY;
     if (Math.abs(dy) < TOUCH_MOVE_LOCK_THRESHOLD) return;
-    hideAllDownArrows();
 
     const dir = dy > 0 ? 1 : -1;
     if (canConsumeDirection(dir)) {
@@ -2260,7 +3758,6 @@ function initializeSegmentScrollMode(cfg, page, stages) {
     touchStartY = null;
 
     if (Math.abs(dy) < TOUCH_THRESHOLD) return;
-    hideAllDownArrows();
 
     const now = Date.now();
     if (now - lastTriggerAt < TRIGGER_COOLDOWN_MS) return;
@@ -2287,6 +3784,12 @@ function initializeSegmentScrollMode(cfg, page, stages) {
 
   function onViewportChangeAfterCompletion() {
     if (!areAllControllersComplete()) return;
+    if (isStrictSegmentEndHold(cfg)) {
+      stopFinalPinLoop();
+      stopIosFinalPinKeepAlive();
+      pinAllAnimationsToSettledFrames({ visibleOnly: true });
+      return;
+    }
     startFinalPinLoop(2);
     startIosFinalPinKeepAlive();
   }
@@ -2294,6 +3797,12 @@ function initializeSegmentScrollMode(cfg, page, stages) {
   function onVisibilityChangeAfterCompletion() {
     if (!areAllControllersComplete()) return;
     if (document.visibilityState !== "visible") return;
+    if (isStrictSegmentEndHold(cfg)) {
+      stopFinalPinLoop();
+      stopIosFinalPinKeepAlive();
+      pinAllAnimationsToSettledFrames({ visibleOnly: true });
+      return;
+    }
     startFinalPinLoop(IS_IOS_WEBKIT ? 3 : 1);
     startIosFinalPinKeepAlive();
   }
@@ -2329,6 +3838,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
   );
 
   return {
+    controllers,
     animations: controllers.map((c) => c.anim),
     observer: null,
     removeInputListeners: () => {
@@ -2343,6 +3853,15 @@ function initializeSegmentScrollMode(cfg, page, stages) {
         try {
           c.stopCenterLock?.();
         } catch {}
+        cancelArrowEnsure(c);
+        hideRecoveryOverlay(c, { immediate: true });
+        c.recoverySnapshotMarkup = "";
+        c.recoverySnapshotFrame = null;
+        c.recoverySnapshotSegmentIndex = -1;
+        try {
+          c.detachAnimationListeners?.();
+        } catch {}
+        cancelAllStrictExactRecovery(c);
       });
       page.removeEventListener("wheel", onWheel);
       page.removeEventListener("touchstart", onTouchStart);

@@ -5753,13 +5753,25 @@ Glaucoma history case study: match intermediate style
   color: #000;
 }
 
-/* Glaucoma workshop flow: shared Next button */
-.glaucoma-next-wrap,
-.childhood-next-wrap {
+/* Glaucoma workshop flow: fixed Next button */
+.glaucoma-next-wrap {
   position: fixed;
   right: 16px;
   bottom: calc(16px + env(safe-area-inset-bottom));
   z-index: 75;
+}
+
+/* Childhood workshop flow: place Next at page bottom (not fixed) */
+.childhood-next-wrap {
+  position: absolute;
+  right: 16px;
+  bottom: calc(16px + env(safe-area-inset-bottom));
+  z-index: 75;
+}
+
+.childhood-next-host {
+  position: relative;
+  padding-bottom: calc(72px + env(safe-area-inset-bottom));
 }
 
 .glaucoma-next-btn,

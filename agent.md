@@ -17,6 +17,7 @@
 
 ## Current Fix
 
+- Historical notes below this heading are legacy context and are superseded by `2026-02-26 Mandatory Guardrail` when they conflict.
 - Keep playback ranges unchanged.
 - Override settle frames to stable frames for the problematic segments:
   - file 2 segment 3: settle to frame `205`
@@ -83,3 +84,23 @@
   - `Unclear Findings`
   - `Possible Findings`
   - `After Examination`
+
+## 2026-02-26 Mandatory Guardrail (Do Not Regress)
+
+- For all Fundal `segmentScroll` routes, each segment must freeze on that segment's terminal frame (`to`, or file end when `to` is omitted).
+- Do not use `settleFrameOverrides` to move the final hold to a different frame unless there is explicit approval for that route and segment.
+- White-screen prevention must preserve the same terminal frame:
+  - Use same-frame repin/recovery (`goToAndStop(target)` + SVG visibility forcing + renderer refresh).
+  - If a nudge is needed for renderer recovery, always return to the exact target frame before final pin.
+- Any edit to Fundal scroll/settle logic must be manually rechecked on:
+  - `Preparation` file 2 and file 3
+  - `Examination` (multi-segment files)
+  - `Newborn - Eyes Open` file 2 and file 3
+
+## 2026-02-26 Mandatory Baseline (User-Approved)
+
+- Canonical stable reference for Fundal scroll behavior is commit `4fdee95` (`FR06`), especially `public/js/childhoodFundalPreparation.js`.
+- User-verified outcome: FR06 does **not** show the white blank screen regression after segment/scroll animation completion.
+- Mandatory rule: keep FR06 behavior as baseline for all Fundal routes (`Preparation`, `Examination`, `Newborn - Eyes Open/Closed`, `Unclear Findings`, `Possible Findings`, `After Examination`).
+- If white blank regression appears again, first step is FR06 comparison/restore for this file before adding new logic.
+- Do not ship new settle/pin/blank-detection experiments on this file unless explicitly requested and re-verified against FR06 behavior.

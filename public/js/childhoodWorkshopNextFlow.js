@@ -7,6 +7,7 @@ const FLOW_ENABLED_KEY = "childhoodWorkshop:nextFlowEnabled";
 const FLOW_EVENT = "childhoodWorkshop:nextflow-changed";
 const PROGRESS_EVENT = "childhoodWorkshop:progress-changed";
 const EXTERNAL_VIDEO_PROGRESS_EVENT = "glaucomaWorkshop:progress-changed";
+const NEXT_HOST_CLASS = "childhood-next-host";
 
 const TARGET_ALIASES = {
   childhoodAssessmentPage: "childhoodAssessmentQuizPage",
@@ -346,9 +347,12 @@ async function navigateToTarget(target) {
 }
 
 function removeNextButtons() {
-  document
-    .querySelectorAll(".childhood-next-wrap")
-    .forEach((el) => el.remove());
+  document.querySelectorAll(".childhood-next-wrap").forEach((el) => {
+    try {
+      el.parentElement?.classList.remove(NEXT_HOST_CLASS);
+    } catch {}
+    el.remove();
+  });
 }
 
 function renderNextButtonForTarget(target) {
@@ -370,6 +374,7 @@ function renderNextButtonForTarget(target) {
     pageEl.querySelector(".container.pupils-container") ||
     pageEl.querySelector(".container") ||
     pageEl;
+  host.classList.add(NEXT_HOST_CLASS);
 
   const wrap = document.createElement("div");
   wrap.className = "childhood-next-wrap";
