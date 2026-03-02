@@ -351,6 +351,66 @@ const IS_IOS_WEBKIT = (() => {
   return iOSDevice || iPadOSDesktopUA;
 })();
 
+const IOS_FR06_PREPARATION_SEGMENT_RANGES = [
+  [{ from: 37, to: 239 }],
+  [{ from: 0, to: 120 }, { from: 121, to: 207 }, { from: 208 }],
+  [
+    { from: 0, to: 110 },
+    { from: 111, to: 238 },
+    { from: 239, to: 378 },
+    { from: 379 },
+  ],
+  [
+    { from: 0, to: 270 },
+    { from: 271, to: 357 },
+    { from: 358, to: 453 },
+    { from: 454 },
+  ],
+];
+
+const IOS_FR06_PREPARATION_SETTLE_OVERRIDES = [
+  [239],
+  [120, 207, "last"],
+  [110, 238, 378, "last"],
+  [270, 357, 453, "last"],
+];
+
+function cloneSegmentRanges(segmentRanges) {
+  if (!Array.isArray(segmentRanges)) return [];
+  return segmentRanges.map((fileSegments) => {
+    if (!Array.isArray(fileSegments)) return [];
+    return fileSegments.map((segment) => {
+      if (!segment || typeof segment !== "object") return segment;
+      return { ...segment };
+    });
+  });
+}
+
+function cloneSettleFrameOverrides(settleFrameOverrides) {
+  if (!Array.isArray(settleFrameOverrides)) return [];
+  return settleFrameOverrides.map((fileOverrides) => {
+    if (!Array.isArray(fileOverrides)) return [];
+    return fileOverrides.slice();
+  });
+}
+
+function resolveRuntimeRouteConfig(routeName, baseCfg) {
+  if (!baseCfg) return null;
+  if (!IS_IOS_WEBKIT) return baseCfg;
+  if (routeName !== "childhoodFundalPreparation") return baseCfg;
+
+  // FR06 was user-verified stable on iPhone for Preparation.
+  // Keep desktop/Android config untouched; only adjust iOS runtime behavior.
+  return {
+    ...baseCfg,
+    segmentRanges: cloneSegmentRanges(IOS_FR06_PREPARATION_SEGMENT_RANGES),
+    settleFrameOverrides: cloneSettleFrameOverrides(
+      IOS_FR06_PREPARATION_SETTLE_OVERRIDES,
+    ),
+    strictFrameLockNoFallback: false,
+  };
+}
+
 function cleanupActiveSession() {
   if (!activeSession) return;
 
@@ -4332,7 +4392,9 @@ function initializeSegmentScrollMode(cfg, page, stages) {
 }
 
 export async function initializeChildhoodFundalReflexScrollPage(routeName) {
-  const cfg = ROUTE_CONFIG[routeName];
+  const baseCfg = ROUTE_CONFIG[routeName];
+  if (!baseCfg) return;
+  const cfg = resolveRuntimeRouteConfig(routeName, baseCfg);
   if (!cfg) return;
 
   const page = document.getElementById(cfg.pageId);
