@@ -4623,6 +4623,40 @@ function initializeSegmentScrollMode(cfg, page, stages) {
     return false;
   }
 
+  function stepToNextControllerFromTouch() {
+    if (areAllControllersComplete()) return false;
+    const controller = getGateController();
+    if (!controller) return false;
+    if (controller.failed || controller.isSnapping || controller.isPlaying) {
+      return false;
+    }
+    if (!controller.ready || !controller.segments.length) return false;
+    if (controller.segmentIndex < controller.segments.length - 1) return false;
+
+    const nextIndex = Math.min(
+      controllers.length - 1,
+      Math.max(0, Number(controller.fileIndex) + 1),
+    );
+    if (
+      !Number.isFinite(nextIndex) ||
+      nextIndex <= Number(controller.fileIndex)
+    ) {
+      return false;
+    }
+
+    const nextController = controllers[nextIndex];
+    if (!nextController?.stage) return false;
+
+    activeFileIndex = nextIndex;
+    hideAllDownArrows();
+    showDownArrowForController(nextController);
+    requestAnimationFrame(() => {
+      centerStage(nextController.stage);
+      requestIosCenterCorrection({ force: true });
+    });
+    return true;
+  }
+
   function onWheel(e) {
     if (!Number.isFinite(e.deltaY) || e.deltaY === 0) return;
 
@@ -4669,7 +4703,8 @@ function initializeSegmentScrollMode(cfg, page, stages) {
     if (Math.abs(dy) < TOUCH_MOVE_LOCK_THRESHOLD) return;
 
     const dir = dy > 0 ? 1 : -1;
-    if (canConsumeDirection(dir)) {
+    const lockMobileDownSwipe = dir > 0 && !areAllControllersComplete();
+    if (lockMobileDownSwipe || canConsumeDirection(dir)) {
       e.preventDefault();
       e.stopPropagation();
       requestIosCenterCorrection();
@@ -4689,7 +4724,10 @@ function initializeSegmentScrollMode(cfg, page, stages) {
     lastTriggerAt = now;
 
     const dir = dy > 0 ? 1 : -1;
-    const consumed = handleDirection(dir);
+    let consumed = handleDirection(dir);
+    if (!consumed && dir > 0) {
+      consumed = stepToNextControllerFromTouch();
+    }
     if (!consumed && dir < 0 && areAllControllersComplete()) {
       showReplayButton();
     }
