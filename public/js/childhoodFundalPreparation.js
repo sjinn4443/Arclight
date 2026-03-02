@@ -1280,6 +1280,21 @@ function hasRichVisibleContent(controller, minTotalAreaRatio = 0.16) {
   return areaRatioSum >= minimumAreaRatio;
 }
 
+function isPinnedFrameUnstable(controller, options = {}) {
+  if (!IS_IOS_WEBKIT) return false;
+  if (isStageFrameBlank(controller)) return true;
+  if (options.requireRichContent !== true) return false;
+
+  const minContentAreaRatio = Number.isFinite(
+    Number(options.minContentAreaRatio),
+  )
+    ? Math.max(0.01, Number(options.minContentAreaRatio))
+    : Number.isFinite(Number(controller?.minContentAreaRatio))
+      ? Math.max(0.01, Number(controller.minContentAreaRatio))
+      : 0.16;
+  return !hasRichVisibleContent(controller, minContentAreaRatio);
+}
+
 function forceSvgVisibleForController(controller) {
   const svgEl =
     controller?.anim?.renderer?.svgElement ||
@@ -1862,7 +1877,13 @@ async function recoverLockedExactFrame(
     minContentAreaRatio,
     allowFrameShift: false,
   });
-  if (!pinned.isBlank) {
+  if (
+    !pinned.isBlank &&
+    !isPinnedFrameUnstable(controller, {
+      requireRichContent,
+      minContentAreaRatio,
+    })
+  ) {
     clearLockedFallback();
     if (overlayShown) hideRecoveryOverlayWhenStable(controller);
     requestExactHoldStabilization(controller, holdFrame, {
@@ -1882,7 +1903,13 @@ async function recoverLockedExactFrame(
       minContentAreaRatio,
       allowFrameShift: false,
     });
-    if (!pinned.isBlank) {
+    if (
+      !pinned.isBlank &&
+      !isPinnedFrameUnstable(controller, {
+        requireRichContent,
+        minContentAreaRatio,
+      })
+    ) {
       clearLockedFallback();
       if (overlayShown) hideRecoveryOverlayWhenStable(controller);
       requestExactHoldStabilization(controller, holdFrame, {
@@ -1910,7 +1937,13 @@ async function recoverLockedExactFrame(
           minContentAreaRatio,
           allowFrameShift: false,
         });
-        if (!pinned.isBlank) {
+        if (
+          !pinned.isBlank &&
+          !isPinnedFrameUnstable(controller, {
+            requireRichContent,
+            minContentAreaRatio,
+          })
+        ) {
           clearLockedFallback();
           if (overlayShown) hideRecoveryOverlayWhenStable(controller);
           requestExactHoldStabilization(controller, holdFrame, {
@@ -1961,7 +1994,13 @@ async function recoverLockedExactFrame(
       });
     }
 
-    if (!fallbackPinned.isBlank) {
+    if (
+      !fallbackPinned.isBlank &&
+      !isPinnedFrameUnstable(controller, {
+        requireRichContent,
+        minContentAreaRatio,
+      })
+    ) {
       rememberLockedFallback(fallbackFrame);
       if (overlayShown) hideRecoveryOverlayWhenStable(controller);
       requestStrictExactRecovery(
@@ -2061,6 +2100,7 @@ function requestStrictExactRecovery(
   const safeFallback = isFrameWithinSegment(fallbackFrame, segment)
     ? clampFrameToAnimation(controller, fallbackFrame)
     : null;
+  const requireRichContent = controller?.requireRichContent === true;
   const minContentAreaRatio = Number.isFinite(
     Number(options.minContentAreaRatio),
   )
@@ -2107,7 +2147,13 @@ function requestStrictExactRecovery(
       attempts: attemptsPerPass,
       minContentAreaRatio,
     });
-    if (!exactPinned.isBlank) {
+    if (
+      !exactPinned.isBlank &&
+      !isPinnedFrameUnstable(controller, {
+        requireRichContent,
+        minContentAreaRatio,
+      })
+    ) {
       controller.strictFallbackFrameBySegment?.delete?.(key);
       controller.resolvedFrameBySegment?.set(key, holdExact);
       finish();
@@ -2605,7 +2651,11 @@ function stopAtSegmentEnd(controller, cfg) {
             attempts: IS_IOS_WEBKIT ? 10 : 6,
             minContentAreaRatio,
           });
-          if (pinned.isBlank) {
+          const exactFrameUnstable = isPinnedFrameUnstable(controller, {
+            requireRichContent,
+            minContentAreaRatio,
+          });
+          if (pinned.isBlank || exactFrameUnstable) {
             const fallbackFrame = resolveStrictFallbackFrame(
               controller,
               finishedSeg,
@@ -2628,7 +2678,11 @@ function stopAtSegmentEnd(controller, cfg) {
                 minContentAreaRatio,
               },
             );
-            if (fallbackPinned.isBlank) {
+            const fallbackUnstable = isPinnedFrameUnstable(controller, {
+              requireRichContent,
+              minContentAreaRatio,
+            });
+            if (fallbackPinned.isBlank || fallbackUnstable) {
               let rescueFrame = resolveVisibleFrameInsideSegment(
                 controller,
                 finishedSeg,
@@ -3641,7 +3695,11 @@ function initializeSegmentScrollMode(cfg, page, stages) {
         minContentAreaRatio,
         allowFrameShift: false,
       });
-      if (pinned.isBlank) {
+      const pinnedUnstable = isPinnedFrameUnstable(controller, {
+        requireRichContent: controller.requireRichContent === true,
+        minContentAreaRatio,
+      });
+      if (pinned.isBlank || pinnedUnstable) {
         showRecoveryOverlay(controller);
       } else {
         hideRecoveryOverlayWhenStable(controller, {
@@ -3718,7 +3776,12 @@ function initializeSegmentScrollMode(cfg, page, stages) {
           Math.floor(prevPinned) === exactFrame
         ) {
           forceSvgVisibleForController(controller);
-          if (!isStageFrameBlank(controller)) {
+          if (
+            !isPinnedFrameUnstable(controller, {
+              requireRichContent: controller.requireRichContent === true,
+              minContentAreaRatio,
+            })
+          ) {
             syncPersistentSettleSnapshotOverlay(controller);
             return;
           }
@@ -3728,7 +3791,13 @@ function initializeSegmentScrollMode(cfg, page, stages) {
           minContentAreaRatio,
           allowFrameShift: false,
         });
-        if (!pinned.isBlank) {
+        if (
+          !pinned.isBlank &&
+          !isPinnedFrameUnstable(controller, {
+            requireRichContent: controller.requireRichContent === true,
+            minContentAreaRatio,
+          })
+        ) {
           controller.strictFallbackFrameBySegment?.delete?.(segIndex);
           hideRecoveryOverlayWhenStable(controller);
           requestExactHoldStabilization(controller, exactFrame, {
@@ -3752,7 +3821,13 @@ function initializeSegmentScrollMode(cfg, page, stages) {
                 minContentAreaRatio,
               },
             );
-            if (!fallbackPinned.isBlank) {
+            if (
+              !fallbackPinned.isBlank &&
+              !isPinnedFrameUnstable(controller, {
+                requireRichContent: controller.requireRichContent === true,
+                minContentAreaRatio,
+              })
+            ) {
               hideRecoveryOverlayWhenStable(controller);
               controller.resolvedFrameBySegment?.set(segIndex, exactFrame);
               requestStrictExactRecovery(
@@ -3798,7 +3873,13 @@ function initializeSegmentScrollMode(cfg, page, stages) {
                   allowFrameShift: false,
                 },
               );
-              if (!repinned.isBlank) {
+              if (
+                !repinned.isBlank &&
+                !isPinnedFrameUnstable(controller, {
+                  requireRichContent: controller.requireRichContent === true,
+                  minContentAreaRatio,
+                })
+              ) {
                 hideRecoveryOverlayWhenStable(controller);
               }
               requestExactHoldStabilization(controller, exactFrame, {
@@ -3821,7 +3902,13 @@ function initializeSegmentScrollMode(cfg, page, stages) {
         attempts: IS_IOS_WEBKIT ? 8 : 5,
         minContentAreaRatio,
       });
-      if (!pinned.isBlank) {
+      if (
+        !pinned.isBlank &&
+        !isPinnedFrameUnstable(controller, {
+          requireRichContent,
+          minContentAreaRatio,
+        })
+      ) {
         controller.strictFallbackFrameBySegment?.delete?.(segIndex);
         controller.resolvedFrameBySegment?.set(segIndex, exactFrame);
         syncPersistentSettleSnapshotOverlay(controller);
@@ -3846,7 +3933,13 @@ function initializeSegmentScrollMode(cfg, page, stages) {
           minContentAreaRatio,
         },
       );
-      if (fallbackPinned.isBlank) {
+      if (
+        fallbackPinned.isBlank ||
+        isPinnedFrameUnstable(controller, {
+          requireRichContent,
+          minContentAreaRatio,
+        })
+      ) {
         let rescueFrame = resolveVisibleFrameInsideSegment(
           controller,
           seg,
