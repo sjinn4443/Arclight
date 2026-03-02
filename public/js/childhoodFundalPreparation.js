@@ -2957,6 +2957,9 @@ function stopAtSegmentEnd(controller, cfg) {
         controller.requestIosPostSettleRefresh?.(holdFrame, {
           segmentIndex: controller.segmentIndex,
           minContentAreaRatio,
+          passes: 10,
+          intervalMs: 48,
+          attemptsPerTick: 3,
         });
       }
       controller.inputLockUntil = Date.now() + (IS_IOS_WEBKIT ? 1200 : 900);
@@ -3788,8 +3791,8 @@ function initializeSegmentScrollMode(cfg, page, stages) {
   let deferredFinalPinRafId = null;
   let iosFinalPinIntervalId = null;
   let iosFinalPinPassesRemaining = 0;
-  const IOS_FINAL_PIN_INTERVAL_MS = 480;
-  const IOS_FINAL_PIN_BURST_PASSES = 6;
+  const IOS_FINAL_PIN_INTERVAL_MS = 160;
+  const IOS_FINAL_PIN_BURST_PASSES = 10;
 
   function stopIosFinalPinKeepAlive() {
     iosFinalPinPassesRemaining = 0;
@@ -3827,19 +3830,28 @@ function initializeSegmentScrollMode(cfg, page, stages) {
     const passes = Math.max(
       1,
       Math.min(
-        8,
+        12,
         Number.isFinite(Number(options.passes))
           ? Math.floor(Number(options.passes))
-          : 5,
+          : 8,
       ),
     );
     const intervalMs = Math.max(
-      70,
+      24,
       Math.min(
-        260,
+        180,
         Number.isFinite(Number(options.intervalMs))
           ? Math.floor(Number(options.intervalMs))
-          : 110,
+          : 56,
+      ),
+    );
+    const attemptsPerTick = Math.max(
+      1,
+      Math.min(
+        4,
+        Number.isFinite(Number(options.attemptsPerTick))
+          ? Math.floor(Number(options.attemptsPerTick))
+          : 3,
       ),
     );
     const minContentAreaRatio = Number.isFinite(
@@ -3869,7 +3881,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
 
       forceSvgVisibleForController(controller);
       const pinned = pinExactFrameWithRecovery(controller, holdFrame, {
-        attempts: 2,
+        attempts: attemptsPerTick,
         minContentAreaRatio,
         allowFrameShift: false,
       });
@@ -3897,7 +3909,8 @@ function initializeSegmentScrollMode(cfg, page, stages) {
       controller.iosPostSettleTimerId = window.setTimeout(tick, intervalMs);
     };
 
-    controller.iosPostSettleTimerId = window.setTimeout(tick, intervalMs);
+    // Kick once immediately so white-frame exposure is minimized on iOS.
+    controller.iosPostSettleTimerId = window.setTimeout(tick, 0);
   }
 
   function stopFinalPinLoop() {
