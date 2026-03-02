@@ -205,11 +205,17 @@ async function resolveVersionSequenceFromGitHub(versionDate) {
 
     let res;
     try {
+      const token = String(
+        process.env.GITHUB_TOKEN || process.env.GH_TOKEN || "",
+      ).trim();
+      const headers = {
+        Accept: "application/vnd.github+json",
+        "User-Agent": "arclight-build-version-sequence",
+      };
+      if (token) headers.Authorization = `Bearer ${token}`;
+
       res = await fetch(url, {
-        headers: {
-          Accept: "application/vnd.github+json",
-          "User-Agent": "arclight-build-version-sequence",
-        },
+        headers,
       });
     } catch {
       return null;
@@ -273,15 +279,25 @@ async function resolveBuildVersionSequence(versionDate) {
 
   for (const candidate of envCandidates) {
     const normalized = parsePositiveInt(candidate);
-    if (normalized) return normalized;
+    if (normalized) {
+      console.log("[version] sequence source=env value=", normalized);
+      return normalized;
+    }
   }
 
   const gitCount = resolveVersionSequenceFromGit(versionDate);
-  if (gitCount) return gitCount;
+  if (gitCount) {
+    console.log("[version] sequence source=git value=", gitCount);
+    return gitCount;
+  }
 
   const githubCount = await resolveVersionSequenceFromGitHub(versionDate);
-  if (githubCount) return githubCount;
+  if (githubCount) {
+    console.log("[version] sequence source=github-api value=", githubCount);
+    return githubCount;
+  }
 
+  console.log("[version] sequence source=fallback value=1");
   return 1;
 }
 
