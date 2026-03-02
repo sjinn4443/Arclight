@@ -111,6 +111,128 @@ function tryDeepenGitHistory(cwd) {
   return false;
 }
 
+function parseRepoSlug(raw) {
+  const value = String(raw || "").trim();
+  if (!value) return null;
+
+  const fullMatch = /^([A-Za-z0-9_.-]+)\/([A-Za-z0-9_.-]+)$/.exec(value);
+  if (fullMatch) return `${fullMatch[1]}/${fullMatch[2]}`;
+
+  const fromUrl =
+    /github\.com[/:]([A-Za-z0-9_.-]+)\/([A-Za-z0-9_.-]+?)(?:\.git)?$/.exec(
+      value,
+    );
+  if (fromUrl) return `${fromUrl[1]}/${fromUrl[2]}`;
+
+  return null;
+}
+
+function resolveRepoSlugForFallback() {
+  const directCandidates = [
+    process.env.APP_GITHUB_REPOSITORY,
+    process.env.GITHUB_REPOSITORY,
+    process.env.RAILWAY_GIT_REPO_FULL_NAME,
+    process.env.RAILWAY_GIT_REPO_SLUG,
+    process.env.REPOSITORY,
+    // Safe default for this repo.
+    "sjinn4443/Arclight",
+  ];
+
+  for (const candidate of directCandidates) {
+    const parsed = parseRepoSlug(candidate);
+    if (parsed) return parsed;
+  }
+
+  const ownerCandidates = [
+    process.env.GITHUB_REPOSITORY_OWNER,
+    process.env.RAILWAY_GIT_REPO_OWNER,
+  ];
+  const nameCandidates = [
+    process.env.RAILWAY_GIT_REPO_NAME,
+    process.env.APP_GITHUB_REPO_NAME,
+  ];
+
+  for (const ownerRaw of ownerCandidates) {
+    const owner = String(ownerRaw || "").trim();
+    if (!owner) continue;
+    for (const nameRaw of nameCandidates) {
+      const name = String(nameRaw || "").trim();
+      if (!name) continue;
+      return `${owner}/${name}`;
+    }
+  }
+
+  return null;
+}
+
+function resolveRepoBranchForFallback() {
+  const candidates = [
+    process.env.RAILWAY_GIT_BRANCH,
+    process.env.GITHUB_REF_NAME,
+    process.env.APP_GITHUB_BRANCH,
+    "main",
+  ];
+
+  for (const candidate of candidates) {
+    const value = String(candidate || "").trim();
+    if (value) return value;
+  }
+  return "main";
+}
+
+async function resolveVersionSequenceFromGitHub(versionDate) {
+  if (!versionDate) return null;
+
+  const repoSlug = resolveRepoSlugForFallback();
+  if (!repoSlug) return null;
+
+  const branch = resolveRepoBranchForFallback();
+  const [owner, repo] = repoSlug.split("/");
+  if (!owner || !repo) return null;
+
+  const since = `${versionDate}T00:00:00Z`;
+  const until = `${versionDate}T23:59:59Z`;
+
+  let page = 1;
+  let total = 0;
+  while (page <= 10) {
+    const url =
+      `https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/commits` +
+      `?sha=${encodeURIComponent(branch)}` +
+      `&since=${encodeURIComponent(since)}` +
+      `&until=${encodeURIComponent(until)}` +
+      `&per_page=100&page=${page}`;
+
+    let res;
+    try {
+      res = await fetch(url, {
+        headers: {
+          Accept: "application/vnd.github+json",
+          "User-Agent": "arclight-build-version-sequence",
+        },
+      });
+    } catch {
+      return null;
+    }
+
+    if (!res.ok) return null;
+
+    let rows = null;
+    try {
+      rows = await res.json();
+    } catch {
+      return null;
+    }
+    if (!Array.isArray(rows)) return null;
+
+    total += rows.length;
+    if (rows.length < 100) break;
+    page += 1;
+  }
+
+  return total > 0 ? total : null;
+}
+
 function resolveVersionSequenceFromGit(versionDate) {
   if (!versionDate) return null;
   const repoRoot = path.join(__dirname, "..");
@@ -143,7 +265,7 @@ function resolveVersionSequenceFromGit(versionDate) {
   }
 }
 
-function resolveBuildVersionSequence(versionDate) {
+async function resolveBuildVersionSequence(versionDate) {
   const envCandidates = [
     process.env.APP_VERSION_SEQUENCE,
     process.env.APP_PUSH_NUMBER,
@@ -156,6 +278,9 @@ function resolveBuildVersionSequence(versionDate) {
 
   const gitCount = resolveVersionSequenceFromGit(versionDate);
   if (gitCount) return gitCount;
+
+  const githubCount = await resolveVersionSequenceFromGitHub(versionDate);
+  if (githubCount) return githubCount;
 
   return 1;
 }
@@ -185,7 +310,7 @@ const build = async () => {
   const distPath = path.join(__dirname, "..", "dist");
   const publicPath = path.join(__dirname, "..", "public");
   const versionDate = resolveBuildVersionDate();
-  const versionSequence = resolveBuildVersionSequence(versionDate);
+  const versionSequence = await resolveBuildVersionSequence(versionDate);
 
   try {
     // 1. Clean the 'dist' directory
