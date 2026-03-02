@@ -1569,6 +1569,23 @@ async function recoverLockedExactFrame(
     return { frame: 0, isBlank: true };
   }
   const holdFrame = clampFrameToAnimation(controller, exactFrame);
+  const segmentCount = Array.isArray(controller?.segments)
+    ? controller.segments.length
+    : 0;
+  const activeSegmentIndexRaw = Number(controller?.segmentIndex);
+  const activeSegmentIndex =
+    segmentCount > 0 && Number.isFinite(activeSegmentIndexRaw)
+      ? Math.max(
+          0,
+          Math.min(segmentCount - 1, Math.floor(activeSegmentIndexRaw)),
+        )
+      : -1;
+  const activeSegment =
+    activeSegmentIndex >= 0 ? controller?.segments?.[activeSegmentIndex] : null;
+  const requireRichContent = shouldRequireRichSettleContent(
+    cfg,
+    controller.fileIndex,
+  );
   const minContentAreaRatio = Number.isFinite(
     Number(options.minContentAreaRatio),
   )
@@ -1591,6 +1608,19 @@ async function recoverLockedExactFrame(
     overlayShown = showRecoveryOverlay(controller);
     return overlayShown;
   };
+  const clearLockedFallback = () => {
+    if (activeSegmentIndex < 0) return;
+    controller.strictFallbackFrameBySegment?.delete?.(activeSegmentIndex);
+  };
+  const rememberLockedFallback = (frame) => {
+    if (activeSegmentIndex < 0) return;
+    const safeFallback = clampFrameToAnimation(controller, frame);
+    controller.strictFallbackFrameBySegment?.set(
+      activeSegmentIndex,
+      safeFallback,
+    );
+    controller.resolvedFrameBySegment?.set(activeSegmentIndex, holdFrame);
+  };
 
   let pinned = pinExactFrameWithRecovery(controller, holdFrame, {
     attempts: IS_IOS_WEBKIT ? 4 : 2,
@@ -1598,6 +1628,7 @@ async function recoverLockedExactFrame(
     allowFrameShift: false,
   });
   if (!pinned.isBlank) {
+    clearLockedFallback();
     if (overlayShown) hideRecoveryOverlayWhenStable(controller);
     requestExactHoldStabilization(controller, holdFrame, {
       passes: settlePasses,
@@ -1617,6 +1648,7 @@ async function recoverLockedExactFrame(
       allowFrameShift: false,
     });
     if (!pinned.isBlank) {
+      clearLockedFallback();
       if (overlayShown) hideRecoveryOverlayWhenStable(controller);
       requestExactHoldStabilization(controller, holdFrame, {
         passes: settlePasses,
@@ -1644,6 +1676,7 @@ async function recoverLockedExactFrame(
           allowFrameShift: false,
         });
         if (!pinned.isBlank) {
+          clearLockedFallback();
           if (overlayShown) hideRecoveryOverlayWhenStable(controller);
           requestExactHoldStabilization(controller, holdFrame, {
             passes: settlePasses,
@@ -1655,6 +1688,66 @@ async function recoverLockedExactFrame(
         }
       }
     } catch {}
+  }
+
+  // iOS-only fallback: keep visible content on failed exact terminal frame locks.
+  if (IS_IOS_WEBKIT && activeSegment && activeSegmentIndex >= 0) {
+    let fallbackFrame = resolveStrictFallbackFrame(
+      controller,
+      activeSegment,
+      holdFrame,
+      {
+        requireRichContent,
+        minContentAreaRatio,
+      },
+    );
+    let fallbackPinned = pinExactFrameWithRecovery(controller, fallbackFrame, {
+      attempts: 8,
+      minContentAreaRatio,
+    });
+
+    if (fallbackPinned.isBlank) {
+      let rescueFrame = resolveVisibleFrameInsideSegment(
+        controller,
+        activeSegment,
+        holdFrame,
+        {
+          requireRichContent,
+          minContentAreaRatio,
+        },
+      );
+      if (!isFrameWithinSegment(rescueFrame, activeSegment)) {
+        rescueFrame = fallbackFrame;
+      }
+      fallbackFrame = rescueFrame;
+      fallbackPinned = pinExactFrameWithRecovery(controller, fallbackFrame, {
+        attempts: 10,
+        minContentAreaRatio,
+      });
+    }
+
+    if (!fallbackPinned.isBlank) {
+      rememberLockedFallback(fallbackFrame);
+      if (overlayShown) hideRecoveryOverlayWhenStable(controller);
+      requestStrictExactRecovery(
+        controller,
+        activeSegmentIndex,
+        activeSegment,
+        holdFrame,
+        fallbackFrame,
+        {
+          passes: 24,
+          attemptsPerPass: 3,
+          minContentAreaRatio,
+        },
+      );
+      requestExactHoldStabilization(controller, fallbackFrame, {
+        passes: settlePasses,
+        attemptsPerPass: 2,
+        minContentAreaRatio,
+      });
+      return { frame: fallbackFrame, isBlank: false };
+    }
   }
 
   // Keep overlay visible when still blank, so users don't see a white flash.
@@ -3257,7 +3350,16 @@ function initializeSegmentScrollMode(cfg, page, stages) {
       cancelStrictExactRecovery(controller, segIndex);
       controller.resolvedFrameBySegment?.set(segIndex, exactFrame);
       if (useLockedExactFrame) {
-        controller.strictFallbackFrameBySegment?.delete?.(segIndex);
+        const lockedFallbackFrame = Number(
+          controller.strictFallbackFrameBySegment?.get?.(segIndex),
+        );
+        const hasLockedFallback = isFrameWithinSegment(
+          lockedFallbackFrame,
+          seg,
+        );
+        if (!hasLockedFallback) {
+          controller.strictFallbackFrameBySegment?.delete?.(segIndex);
+        }
         const prevPinned = Number(controller.lastPinnedFrame);
         if (
           IS_IOS_WEBKIT &&
@@ -3276,6 +3378,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
           allowFrameShift: false,
         });
         if (!pinned.isBlank) {
+          controller.strictFallbackFrameBySegment?.delete?.(segIndex);
           hideRecoveryOverlayWhenStable(controller);
           requestExactHoldStabilization(controller, exactFrame, {
             passes: IS_IOS_WEBKIT ? 4 : 2,
@@ -3289,6 +3392,34 @@ function initializeSegmentScrollMode(cfg, page, stages) {
         }
 
         if (IS_IOS_WEBKIT) {
+          if (hasLockedFallback) {
+            const fallbackPinned = pinExactFrameWithRecovery(
+              controller,
+              lockedFallbackFrame,
+              {
+                attempts: 8,
+                minContentAreaRatio,
+              },
+            );
+            if (!fallbackPinned.isBlank) {
+              hideRecoveryOverlayWhenStable(controller);
+              controller.resolvedFrameBySegment?.set(segIndex, exactFrame);
+              requestStrictExactRecovery(
+                controller,
+                segIndex,
+                seg,
+                exactFrame,
+                lockedFallbackFrame,
+                {
+                  passes: 24,
+                  attemptsPerPass: 3,
+                  minContentAreaRatio,
+                },
+              );
+              syncPersistentSettleSnapshotOverlay(controller);
+              return;
+            }
+          }
           showRecoveryOverlay(controller);
           requestLockedExactFrameRecovery(controller, cfg, exactFrame, {
             minContentAreaRatio,
