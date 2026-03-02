@@ -2957,9 +2957,9 @@ function stopAtSegmentEnd(controller, cfg) {
         controller.requestIosPostSettleRefresh?.(holdFrame, {
           segmentIndex: controller.segmentIndex,
           minContentAreaRatio,
-          passes: 10,
-          intervalMs: 48,
-          attemptsPerTick: 3,
+          passes: 8,
+          intervalMs: 40,
+          attemptsPerTick: 4,
         });
       }
       controller.inputLockUntil = Date.now() + (IS_IOS_WEBKIT ? 1200 : 900);
@@ -3791,8 +3791,8 @@ function initializeSegmentScrollMode(cfg, page, stages) {
   let deferredFinalPinRafId = null;
   let iosFinalPinIntervalId = null;
   let iosFinalPinPassesRemaining = 0;
-  const IOS_FINAL_PIN_INTERVAL_MS = 160;
-  const IOS_FINAL_PIN_BURST_PASSES = 10;
+  const IOS_FINAL_PIN_INTERVAL_MS = 120;
+  const IOS_FINAL_PIN_BURST_PASSES = 4;
 
   function stopIosFinalPinKeepAlive() {
     iosFinalPinPassesRemaining = 0;
@@ -3833,7 +3833,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
         12,
         Number.isFinite(Number(options.passes))
           ? Math.floor(Number(options.passes))
-          : 8,
+          : 7,
       ),
     );
     const intervalMs = Math.max(
@@ -3842,7 +3842,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
         180,
         Number.isFinite(Number(options.intervalMs))
           ? Math.floor(Number(options.intervalMs))
-          : 56,
+          : 48,
       ),
     );
     const attemptsPerTick = Math.max(
@@ -4623,40 +4623,6 @@ function initializeSegmentScrollMode(cfg, page, stages) {
     return false;
   }
 
-  function stepToNextControllerFromTouch() {
-    if (areAllControllersComplete()) return false;
-    const controller = getGateController();
-    if (!controller) return false;
-    if (controller.failed || controller.isSnapping || controller.isPlaying) {
-      return false;
-    }
-    if (!controller.ready || !controller.segments.length) return false;
-    if (controller.segmentIndex < controller.segments.length - 1) return false;
-
-    const nextIndex = Math.min(
-      controllers.length - 1,
-      Math.max(0, Number(controller.fileIndex) + 1),
-    );
-    if (
-      !Number.isFinite(nextIndex) ||
-      nextIndex <= Number(controller.fileIndex)
-    ) {
-      return false;
-    }
-
-    const nextController = controllers[nextIndex];
-    if (!nextController?.stage) return false;
-
-    activeFileIndex = nextIndex;
-    hideAllDownArrows();
-    showDownArrowForController(nextController);
-    requestAnimationFrame(() => {
-      centerStage(nextController.stage);
-      requestIosCenterCorrection({ force: true });
-    });
-    return true;
-  }
-
   function onWheel(e) {
     if (!Number.isFinite(e.deltaY) || e.deltaY === 0) return;
 
@@ -4703,8 +4669,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
     if (Math.abs(dy) < TOUCH_MOVE_LOCK_THRESHOLD) return;
 
     const dir = dy > 0 ? 1 : -1;
-    const lockMobileDownSwipe = dir > 0 && !areAllControllersComplete();
-    if (lockMobileDownSwipe || canConsumeDirection(dir)) {
+    if (canConsumeDirection(dir)) {
       e.preventDefault();
       e.stopPropagation();
       requestIosCenterCorrection();
@@ -4725,9 +4690,6 @@ function initializeSegmentScrollMode(cfg, page, stages) {
 
     const dir = dy > 0 ? 1 : -1;
     let consumed = handleDirection(dir);
-    if (!consumed && dir > 0) {
-      consumed = stepToNextControllerFromTouch();
-    }
     if (!consumed && dir < 0 && areAllControllersComplete()) {
       showReplayButton();
     }
