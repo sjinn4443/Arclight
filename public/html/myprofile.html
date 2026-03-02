@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My Profile</title>
+    <title data-i18n="auto.myprofile.my_profile">My Profile</title>
 
     <!-- Your existing global styles -->
     <link rel="stylesheet" href="style/base.css" />
@@ -19,7 +19,12 @@
     <div class="profile-page page active" id="myProfilePage">
       <!-- Top bar -->
       <div class="profile-topbar">
-        <div class="profile-topbar__title">My Profile</div>
+        <div
+          class="profile-topbar__title"
+          data-i18n="auto.myprofile.my_profile"
+        >
+          My Profile
+        </div>
 
         <div class="profile-topbar__icons">
           <!-- Bell -->
@@ -38,32 +43,45 @@
         <div class="profile-avatar" aria-hidden="true"></div>
 
         <div>
-          <p class="profile-name">Sujin Kang</p>
-          <p class="profile-role">Medical Student</p>
+          <p class="profile-name" data-i18n="auto.myprofile.sujin_kang">
+            Sujin Kang
+          </p>
+          <p class="profile-role" data-i18n="auto.myprofile.medical_student">
+            Medical Student
+          </p>
         </div>
       </div>
 
       <!-- Interest -->
       <div class="section">
-        <div class="section-title">Interest</div>
+        <div class="section-title" data-i18n="auto.myprofile.interest">
+          Interest
+        </div>
         <div class="interest-select">
           <select id="interestSelect" aria-label="Interest">
-            <option selected>Eyes</option>
-            <option>Ears</option>
+            <option selected data-i18n="auto.myprofile.eyes">Eyes</option>
+            <option data-i18n="auto.myprofile.ears">Ears</option>
           </select>
         </div>
       </div>
 
       <!-- Background -->
       <div class="section">
-        <div class="section-title">Background</div>
+        <div class="section-title" data-i18n="auto.myprofile.background">
+          Background
+        </div>
 
         <div
           class="bg-row"
           data-key="ownsArclight"
           aria-label="I own an Arclight device"
         >
-          <div class="bg-row__label">I own an Arclight device</div>
+          <div
+            class="bg-row__label"
+            data-i18n="auto.myprofile.i_own_an_arclight_device"
+          >
+            I own an Arclight device
+          </div>
 
           <div
             class="bg-chips"
@@ -129,7 +147,9 @@
 
       <!-- Achievements -->
       <div class="section">
-        <div class="section-title">Achievements</div>
+        <div class="section-title" data-i18n="auto.myprofile.achievements">
+          Achievements
+        </div>
         <div class="achievements-row">
           <div class="achievement-tile"></div>
           <div class="achievement-tile"></div>
@@ -139,9 +159,17 @@
 
       <!-- Settings -->
       <div class="section">
-        <div class="section-title">Settings</div>
+        <div class="section-title" data-i18n="auto.myprofile.settings">
+          Settings
+        </div>
         <div class="settings-list">
-          <div class="settings-item" data-route="editProfile">Edit Profile</div>
+          <div
+            class="settings-item"
+            data-route="editProfile"
+            data-i18n="auto.myprofile.edit_profile"
+          >
+            Edit Profile
+          </div>
           <div class="menu-item" data-route="languageinstall">
             <img
               src="images/icon/base/language_b.webp"

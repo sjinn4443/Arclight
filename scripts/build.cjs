@@ -118,10 +118,6 @@ function resolveVersionSequenceFromGit(versionDate) {
   try {
     let gitCommitDates = getFirstParentCommitDates(repoRoot);
 
-    const isCi =
-      String(process.env.CI || "").toLowerCase() === "true" ||
-      Boolean(process.env.RAILWAY_PROJECT_ID);
-
     let count = 0;
     for (const commitIso of gitCommitDates) {
       if (toIsoDateString(commitIso) === versionDate) count += 1;
@@ -129,7 +125,6 @@ function resolveVersionSequenceFromGit(versionDate) {
     if (count > 1) return count;
 
     if (
-      isCi &&
       count <= 1 &&
       isShallowRepo(repoRoot) &&
       tryDeepenGitHistory(repoRoot)

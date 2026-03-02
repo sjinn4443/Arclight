@@ -49,8 +49,11 @@ function normalizeVersionPayload(payload) {
 async function fetchVersionInfo() {
   const endpoints = ["/api/app/version", "/version.json"];
   let best = null;
+  const requestStamp = Date.now();
 
-  for (const url of endpoints) {
+  for (const baseUrl of endpoints) {
+    const sep = baseUrl.includes("?") ? "&" : "?";
+    const url = `${baseUrl}${sep}vts=${requestStamp}`;
     try {
       const res = await fetch(url, {
         credentials: "same-origin",

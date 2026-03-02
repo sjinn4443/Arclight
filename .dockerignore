@@ -6,7 +6,6 @@ yarn-error.log*
 .pnpm-store
 
 # VCS
-.git
 .gitignore
 
 # Editors

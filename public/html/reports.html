@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Arclight Reports</title>
+    <title data-i18n="auto.reports.arclight_reports">Arclight Reports</title>
     <meta name="robots" content="noindex,nofollow" />
     <link
       rel="stylesheet"
@@ -188,55 +188,65 @@
     </style>
     <section class="statsGrid" aria-label="Statistics">
       <div class="statCard">
-        <h3>Interest</h3>
+        <h3 data-i18n="auto.reports.interest">Interest</h3>
         <div id="statsInterest"></div>
       </div>
       <div class="statCard">
-        <h3>Experience</h3>
+        <h3 data-i18n="auto.reports.experience">Experience</h3>
         <div id="statsExperience"></div>
       </div>
       <div class="statCard">
-        <h3>Country and area</h3>
+        <h3 data-i18n="auto.reports.country_and_area">Country and area</h3>
         <div id="statsCountryArea"></div>
       </div>
       <div class="statCard">
-        <h3>Language</h3>
+        <h3 data-i18n="auto.reports.language">Language</h3>
         <div id="statsLanguage"></div>
       </div>
       <div class="statCard">
-        <h3>Refresh count</h3>
+        <h3 data-i18n="auto.reports.refresh_count">Refresh count</h3>
         <div id="statsRefresh"></div>
       </div>
     </section>
   </head>
   <body>
     <div class="toolbar">
-      <button id="refreshBtn" type="button">Refresh data</button>
-      <span id="status" class="status">Loaded 0 rows</span>
+      <button
+        id="refreshBtn"
+        type="button"
+        data-i18n="auto.reports.refresh_data"
+      >
+        Refresh data
+      </button>
+      <span id="status" class="status" data-i18n="auto.reports.loaded_0_rows"
+        >Loaded 0 rows</span
+      >
     </div>
 
     <table id="users">
       <thead>
         <tr>
-          <th>No.</th>
-          <th>Name</th>
-          <th>Aims</th>
-          <th>Interest</th>
-          <th>Experience</th>
-          <th>Contact</th>
-          <th>Country</th>
-          <th>Area</th>
-          <th>Language</th>
-          <th>Refresh count</th>
-          <th>When</th>
-          <th>Delete</th>
+          <th data-i18n="auto.reports.no">No.</th>
+          <th data-i18n="auto.reports.name">Name</th>
+          <th data-i18n="auto.reports.aims">Aims</th>
+          <th data-i18n="auto.reports.interest">Interest</th>
+          <th data-i18n="auto.reports.experience">Experience</th>
+          <th data-i18n="auto.reports.contact">Contact</th>
+          <th data-i18n="auto.reports.country">Country</th>
+          <th data-i18n="auto.reports.area">Area</th>
+          <th data-i18n="auto.reports.language">Language</th>
+          <th data-i18n="auto.reports.refresh_count">Refresh count</th>
+          <th data-i18n="auto.reports.when">When</th>
+          <th data-i18n="auto.reports.delete">Delete</th>
         </tr>
       </thead>
       <tbody></tbody>
     </table>
 
     <hr style="margin: 24px 0; opacity: 0.25" />
-    <h3 style="margin: 0 0 8px 0">User locations</h3>
+    <h3 style="margin: 0 0 8px 0" data-i18n="auto.reports.user_locations">
+      User locations
+    </h3>
     <div id="worldMap"></div>
     <p id="mapStatus" style="font-size: 12px; opacity: 0.7; margin-top: 6px">
       Loading map…

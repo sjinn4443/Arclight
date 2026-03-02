@@ -136,6 +136,16 @@ export function initializeOnboarding() {
       .filter((v) => v && v !== "");
   }
 
+  function getSelectPlaceholderText(selectEl, fallback = "Select") {
+    if (!selectEl) return fallback;
+    const opt =
+      selectEl.querySelector('option[value=""]') ||
+      selectEl.querySelector("option[disabled]") ||
+      selectEl.options?.[0];
+    const label = (opt?.textContent || "").trim();
+    return label || fallback;
+  }
+
   function rebuildInterestDropdownPanel() {
     if (!interestSelect || !interestSelectPanel) return;
 
@@ -192,7 +202,10 @@ export function initializeOnboarding() {
 
     const interests = getSelectedInterests();
     if (!interests.length) {
-      interestSelectText.textContent = "Select";
+      interestSelectText.textContent = getSelectPlaceholderText(
+        interestSelect,
+        "Select",
+      );
       return;
     }
 
@@ -262,8 +275,10 @@ export function initializeOnboarding() {
     if (!selectedInterests.length) {
       const empty = document.createElement("div");
       empty.className = "multi-select__group-title";
+      empty.setAttribute("data-i18n", "onboarding.select_interest_first");
       empty.textContent = "Select an interest first";
       jobSelectPanel.appendChild(empty);
+      window.I18N?.applyTranslations?.(jobSelectPanel);
       return;
     }
 
@@ -274,7 +289,11 @@ export function initializeOnboarding() {
 
       const title = document.createElement("div");
       title.className = "multi-select__group-title";
-      title.textContent = group.getAttribute("label") || "Roles";
+      const fallbackRoleTitle =
+        document
+          .querySelector('label[for="jobSelectDisplay"]')
+          ?.textContent?.trim() || "Roles";
+      title.textContent = group.getAttribute("label") || fallbackRoleTitle;
       jobSelectPanel.appendChild(title);
 
       Array.from(group.querySelectorAll("option")).forEach((opt) => {
@@ -339,7 +358,7 @@ export function initializeOnboarding() {
     if (!jobSelectText) return;
     const roles = getSelectedRoles();
     if (!roles.length) {
-      jobSelectText.textContent = "Select";
+      jobSelectText.textContent = getSelectPlaceholderText(jobSelect, "Select");
       return;
     }
 
@@ -796,6 +815,7 @@ export function initializeOnboarding() {
         const createBtn = document.createElement("button");
         createBtn.id = "createAccountBtn";
         createBtn.className = "onb-cta intro-primary";
+        createBtn.setAttribute("data-i18n", "onboarding.title");
         createBtn.textContent = "Create Account";
         createBtn.addEventListener("click", () => {
           localStorage.setItem("cameFromSkipPath", "true");
@@ -812,6 +832,10 @@ export function initializeOnboarding() {
           guestBtn.className = "btn-outline intro-outline";
         }
 
+        guestBtn.setAttribute(
+          "data-i18n",
+          "onboarding.continue_as_guest_button",
+        );
         guestBtn.textContent = "Continue as Guest";
         guestBtn.addEventListener("click", () => {
           localStorage.setItem("guestMode", "true");
@@ -888,6 +912,7 @@ export function initializeOnboarding() {
         btnGroup.className = "intro-cta-group";
         btnGroup.appendChild(createBtn);
         btnGroup.appendChild(guestBtn);
+        window.I18N?.applyTranslations?.(btnGroup);
 
         targetBtn.replaceWith(btnGroup);
         return true;

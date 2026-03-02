@@ -201,14 +201,14 @@ function resolveAppVersionSequence(
     if (normalized) return normalized;
   }
 
-  if (
-    versionMetadataFromFile?.versionDate === versionDate &&
-    versionMetadataFromFile?.versionSequence
-  ) {
-    return versionMetadataFromFile.versionSequence;
-  }
+  const metadataCount =
+    versionMetadataFromFile?.versionDate === versionDate
+      ? parsePositiveInt(versionMetadataFromFile?.versionSequence)
+      : null;
 
   const gitCount = resolveVersionSequenceFromGit(versionDate);
+  if (metadataCount && gitCount) return Math.max(metadataCount, gitCount);
+  if (metadataCount) return metadataCount;
   if (gitCount) return gitCount;
 
   return 1;

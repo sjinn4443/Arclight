@@ -321,7 +321,13 @@
   <template id="languageInstallHintModalTemplate">
     <div id="hintModalOverlay" role="dialog" aria-modal="true">
       <div class="guest-modal">
-        <button class="guest-modal__close" aria-label="Close">&times;</button>
+        <button
+          class="guest-modal__close"
+          aria-label="Close"
+          data-i18n="auto.languageinstall.text"
+        >
+          &times;
+        </button>
         <h2 class="guest-modal__title"></h2>
         <div class="guest-modal__text"></div>
       </div>
@@ -330,7 +336,8 @@
 
   <template id="languageInstallHelpIos">
     <div class="lang-install__hint-body">
-      <strong>On iOS:</strong><br /><br />
+      <strong data-i18n="auto.languageinstall.on_ios">On iOS:</strong
+      ><br /><br />
       1) Tap the Share button
       <svg
         width="16"
@@ -344,24 +351,38 @@
         />
       </svg>
       in the address bar<br />
-      2) Select <strong>Add to Home Screen</strong>
+      2) Select
+      <strong data-i18n="auto.languageinstall.add_to_home_screen"
+        >Add to Home Screen</strong
+      >
     </div>
   </template>
 
   <template id="languageInstallHelpAndroid">
     <div class="lang-install__hint-body">
-      <strong>On Android:</strong><br /><br />
-      1) Tap the browser menu <strong>(&#x22EE;)</strong><br />
-      2) Select <strong>Install app</strong> or
-      <strong>Add to Home Screen</strong>
+      <strong data-i18n="auto.languageinstall.on_android">On Android:</strong
+      ><br /><br />
+      1) Tap the browser menu
+      <strong data-i18n="auto.languageinstall.x22ee">(&#x22EE;)</strong><br />
+      2) Select
+      <strong data-i18n="auto.languageinstall.install_app">Install app</strong>
+      or
+      <strong data-i18n="auto.languageinstall.add_to_home_screen"
+        >Add to Home Screen</strong
+      >
     </div>
   </template>
 
   <template id="languageInstallHelpDefault">
     <div class="lang-install__hint-body">
-      <strong>To install:</strong><br />
-      Use your browser menu and choose <strong>Install app</strong> or
-      <strong>Add to Home Screen</strong>.
+      <strong data-i18n="auto.languageinstall.to_install">To install:</strong
+      ><br />
+      Use your browser menu and choose
+      <strong data-i18n="auto.languageinstall.install_app">Install app</strong>
+      or
+      <strong data-i18n="auto.languageinstall.add_to_home_screen"
+        >Add to Home Screen</strong
+      >.
     </div>
   </template>
 
