@@ -24,6 +24,7 @@ Arclight is primarily a **static, client-side PWA** served from `public/` (or `d
 - **Event-driven UI:** DOM events and listeners drive interactions.
 - **Service Worker caching:** Cache-first/asset caching to enable offline flows.
 - **ESM in browser, CJS in Node:** Browser code under `public/js/*.js` is ESM; Node server/tests commonly use `*.cjs`.
+- **i18n symbol preservation:** Locale files keep UI symbol values (`☰`, `<`, `×`) unchanged across languages; only translatable text is localized.
 
 ## Component Relationships
 

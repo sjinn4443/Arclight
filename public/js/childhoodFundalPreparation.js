@@ -503,6 +503,7 @@ const IS_IOS_WEBKIT = (() => {
     Number(navigator.maxTouchPoints || 0) > 1;
   return iOSDevice || iPadOSDesktopUA;
 })();
+const IOS_REPAINT_NUDGE_PENDING = new WeakSet();
 
 const IOS_FR06_PREPARATION_SEGMENT_RANGES = [
   [{ from: 37, to: 239 }],
@@ -1305,6 +1306,33 @@ function forceSvgVisibleForController(controller) {
   svgEl.style.display = "block";
   svgEl.style.visibility = "visible";
   svgEl.style.opacity = "1";
+}
+
+function requestIosStageRepaintNudge(stageEl) {
+  if (!IS_IOS_WEBKIT) return;
+  if (!stageEl) return;
+  if (IOS_REPAINT_NUDGE_PENDING.has(stageEl)) return;
+  IOS_REPAINT_NUDGE_PENDING.add(stageEl);
+
+  requestAnimationFrame(() => {
+    if (!stageEl?.isConnected) {
+      IOS_REPAINT_NUDGE_PENDING.delete(stageEl);
+      return;
+    }
+
+    const prevTransform = stageEl.style.transform;
+    const prevWebkitTransform = stageEl.style.webkitTransform;
+    stageEl.style.transform = "translate3d(0,0,0.001px)";
+    stageEl.style.webkitTransform = "translate3d(0,0,0.001px)";
+
+    requestAnimationFrame(() => {
+      if (stageEl?.isConnected) {
+        stageEl.style.transform = prevTransform;
+        stageEl.style.webkitTransform = prevWebkitTransform;
+      }
+      IOS_REPAINT_NUDGE_PENDING.delete(stageEl);
+    });
+  });
 }
 
 function cloneRecoverySnapshotFromStoredMarkup(
@@ -2696,6 +2724,7 @@ function stopAtSegmentEnd(controller, cfg) {
     } finally {
       controller.isSnapping = false;
       syncPersistentSettleSnapshotOverlay(controller);
+      requestIosStageRepaintNudge(controller?.stage);
       if (IS_IOS_WEBKIT && Number.isFinite(Number(holdFrame))) {
         controller.requestIosPostSettleRefresh?.(holdFrame, {
           segmentIndex: controller.segmentIndex,
@@ -3621,6 +3650,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
         });
       }
       syncPersistentSettleSnapshotOverlay(controller);
+      requestIosStageRepaintNudge(controller?.stage);
 
       controller.iosPostSettlePassesRemaining -= 1;
       if (controller.iosPostSettlePassesRemaining <= 0) {
@@ -3937,10 +3967,16 @@ function initializeSegmentScrollMode(cfg, page, stages) {
   }
 
   function pinAllAnimationsToSettledFrames(options = {}) {
+    const pinAndNudgeController = (controller) => {
+      if (!controller) return;
+      pinControllerToSettledFrame(controller);
+      requestIosStageRepaintNudge(controller.stage);
+    };
+
     const visibleOnly = options?.visibleOnly === true;
     if (!visibleOnly) {
       controllers.forEach((controller) => {
-        pinControllerToSettledFrame(controller);
+        pinAndNudgeController(controller);
       });
       return;
     }
@@ -3948,7 +3984,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
     const visibleControllers = getControllersNearViewport();
     if (visibleControllers.length) {
       visibleControllers.forEach((controller) => {
-        pinControllerToSettledFrame(controller);
+        pinAndNudgeController(controller);
       });
       return;
     }
@@ -3956,7 +3992,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
     const fallback =
       controllers[activeFileIndex] || controllers[controllers.length - 1];
     if (fallback) {
-      pinControllerToSettledFrame(fallback);
+      pinAndNudgeController(fallback);
     }
   }
 

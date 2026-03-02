@@ -312,6 +312,13 @@ export function initializeIntro() {
       appendLines(el, lines);
     }
 
+    function reapplyDynamicTranslations() {
+      try {
+        const root = document.getElementById("introPage") || document;
+        window.I18N?.applyTranslations?.(root);
+      } catch {}
+    }
+
     function restoreNodes(el, nodes) {
       if (!el) return;
       el.textContent = "";
@@ -333,6 +340,7 @@ export function initializeIntro() {
       arrowLeftBtn?.classList.add("intro-arrow--visible");
 
       setActiveStep(getStepIndexFromState());
+      reapplyDynamicTranslations();
     }
 
     function showOriginal() {
@@ -349,6 +357,7 @@ export function initializeIntro() {
       arrowLeftBtn?.classList.remove("intro-arrow--visible");
 
       setActiveStep(getStepIndexFromState());
+      reapplyDynamicTranslations();
     }
 
     function showPickup() {
@@ -367,6 +376,7 @@ export function initializeIntro() {
       arrowLeftBtn?.classList.add("intro-arrow--visible");
 
       setActiveStep(getStepIndexFromState());
+      reapplyDynamicTranslations();
     }
 
     function showQuiz() {
@@ -392,6 +402,7 @@ export function initializeIntro() {
       arrowRightBtn?.classList.remove("intro-arrow--visible");
 
       setActiveStep(getStepIndexFromState());
+      reapplyDynamicTranslations();
     }
 
     function onIntroArrowRight(ev) {

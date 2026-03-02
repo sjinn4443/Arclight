@@ -21,6 +21,7 @@ const LANG_ALIAS = {
   id: "indonesian",
   rw: "kinyarwanda",
   ko: "korean",
+  te: "telugu",
   ln: "lingala",
   fa: "persian",
   pt: "portuguese",

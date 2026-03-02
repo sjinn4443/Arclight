@@ -395,6 +395,9 @@ export function initializeEyesCatalog() {
   };
 
   Object.entries(sections).forEach(([id, list]) => render(id, list));
+  try {
+    window.I18N?.applyTranslations?.(pageEl);
+  } catch {}
 
   // === Carousel dots per section ===
   // For each carousel on the Eyes page, inject a dot strip above "See all >"

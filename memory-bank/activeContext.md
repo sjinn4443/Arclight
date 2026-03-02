@@ -8,6 +8,10 @@ Documentation refresh: updating README files across key folders so they accurate
 
 ## Recent Changes
 
+- i18n translation policy update (2026-03-02):
+  - Added a mandatory symbol-preservation rule for locale files.
+  - UI symbols used as button/icon text (for example `☰`, `<`, `×`) must remain unchanged and must not be translated.
+
 - Husky setup cleanup (2026-01-26):
   - Updated root `package.json` `prepare` script from deprecated `husky install` to `husky`.
   - Verified Git hooks path points to `.husky/_` and `pre-commit` runs `lint-staged`.
@@ -49,3 +53,4 @@ Key corrections included:
 ## Important Patterns and Preferences
 
 - When the repo mixes ESM and CJS, document the boundary and the mechanism used to keep tests stable (mocks + `moduleNameMapper`).
+- In translation JSON files, preserve icon/symbol values exactly as-is. Do not localize `☰`, `<`, `×` (and equivalent UI symbol tokens).

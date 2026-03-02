@@ -79,6 +79,7 @@ rmdir /s /q dist
 ### Content / i18n
 
 - **Check translations:** `npm run check-translations`
+- **Symbol preservation rule:** Button/icon symbols such as `☰`, `<`, `×` must not be translated in locale JSON files. Keep these values identical across all languages.
 
 ## Environment variables
 

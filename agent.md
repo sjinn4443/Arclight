@@ -5,6 +5,11 @@
 - Page: `childhoodFundalNewbornEyesOpen`
 - File set: `eyesopen/1`, `eyesopen/2`, `eyesopen/3` (`eyesopen/4` removed)
 
+## Translation Rule (Persistent)
+
+- In locale JSON files, UI symbol values must be preserved and not translated.
+- Keep symbols exactly as-is across languages, including `☰`, `<`, `×`.
+
 ## Issue Summary
 
 - After file 2 and file 3 complete, the stage can look like a near-white blank screen with only a few elements visible.
