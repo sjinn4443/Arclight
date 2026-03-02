@@ -96,11 +96,16 @@
       let currentSegment = 0;
       let isPlaying = false;
       let isThrottled = false;
+      const ua = navigator.userAgent || "";
+      const isIOSRenderer =
+        /iPad|iPhone|iPod/.test(ua) ||
+        (navigator.platform === "MacIntel" &&
+          Number(navigator.maxTouchPoints || 0) > 1);
 
       // Load the Fundal Exam animation
       const anim = lottie.loadAnimation({
         container: container,
-        renderer: "svg",
+        renderer: isIOSRenderer ? "canvas" : "svg",
         loop: false,
         autoplay: false,
         path: "Fundal_prep.json",

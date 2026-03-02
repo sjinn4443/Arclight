@@ -1275,6 +1275,7 @@ select.onb-input.has-value {
   display: flex;
   align-items: center;
   gap: 10px;
+  margin-left: auto;
 }
 
 #pupilsPage .icon.menuBtn,
@@ -1282,9 +1283,13 @@ select.onb-input.has-value {
   font-size: 20px;
   cursor: pointer;
   display: inline-flex;
-  align-items: centre;
-  justify-content: centre;
-  margin: 0px 0px 2px 314px;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  margin: 0 !important;
+  color: #111;
+  opacity: 1;
+  visibility: visible;
 }
 
 /* Layout container: reserve space for fixed topbar */
@@ -1631,6 +1636,7 @@ select.onb-input.has-value + .onb-select-caret {
   transform: none;
   display: flex;
   gap: 10px;
+  margin-left: auto;
   margin-right: 0;
 }
 

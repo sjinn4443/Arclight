@@ -204,7 +204,9 @@ input {
   #unifiedDashboard .unified-top .menuBtn,
   #likedPage .ml-topbar .menuBtn,
   #earsCatalogPage .ears-top .menuBtn,
-  #myProfilePage .profile-topbar .menuBtn {
+  #myProfilePage .profile-topbar .menuBtn,
+  .page.has-eyes-topbar .eyes-topbar .menuBtn,
+  #videos .page .eyes-topbar .menuBtn {
     position: fixed;
     top: 20px;
     right: calc(7vw - 4px + 20px);
@@ -713,7 +715,9 @@ input {
   #unifiedDashboard .unified-top .menuBtn,
   #likedPage .ml-topbar .menuBtn,
   #earsCatalogPage .ears-top .menuBtn,
-  #myProfilePage .profile-topbar .menuBtn {
+  #myProfilePage .profile-topbar .menuBtn,
+  .page.has-eyes-topbar .eyes-topbar .menuBtn,
+  #videos .page .eyes-topbar .menuBtn {
     position: fixed;
     top: 20px;
     right: calc(22vw - 4px + 20px);

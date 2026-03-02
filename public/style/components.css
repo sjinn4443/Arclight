@@ -4427,6 +4427,24 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
   gap: 10px;
 }
 
+/* Keep right-side menu icon visible on all pages using Eyes topbar. */
+.page.has-eyes-topbar .eyes-topbar__icons {
+  margin-left: auto;
+  align-items: center;
+}
+
+.page.has-eyes-topbar .eyes-topbar .icon.menuBtn {
+  margin: 0 !important;
+  font-size: 20px;
+  line-height: 1;
+  color: #111;
+  opacity: 1;
+  visibility: visible;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
 /* Any page using this topbar should add spacing for content below it */
 .page.has-eyes-topbar {
   background: #fff;

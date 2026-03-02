@@ -84,6 +84,64 @@ const VIDEO_PAGE_IDS = new Set([
   "cataractPage",
 ]);
 
+const EYES_CAROUSEL_STATE_KEY = "arclight:eyes:carousel-state:v1";
+
+function clampNumber(value, min, max) {
+  return Math.min(max, Math.max(min, value));
+}
+
+function readEyesCarouselState() {
+  try {
+    const raw = sessionStorage.getItem(EYES_CAROUSEL_STATE_KEY);
+    if (!raw) return {};
+    const parsed = JSON.parse(raw);
+    return parsed && typeof parsed === "object" ? parsed : {};
+  } catch {
+    return {};
+  }
+}
+
+function writeEyesCarouselState(state) {
+  try {
+    sessionStorage.setItem(EYES_CAROUSEL_STATE_KEY, JSON.stringify(state));
+  } catch {
+    void 0;
+  }
+}
+
+function getCenteredCardIndex(carouselEl, cards) {
+  const mid = carouselEl.scrollLeft + carouselEl.offsetWidth / 2;
+  let bestIndex = 0;
+  let bestDistance = Infinity;
+  cards.forEach((card, idx) => {
+    const center = card.offsetLeft + card.offsetWidth / 2;
+    const distance = Math.abs(center - mid);
+    if (distance < bestDistance) {
+      bestDistance = distance;
+      bestIndex = idx;
+    }
+  });
+  return bestIndex;
+}
+
+function saveEyesCarouselState(pageEl) {
+  if (!pageEl) return;
+  const nextState = {};
+  pageEl
+    .querySelectorAll(".eyes-carousel, .eyes-track")
+    .forEach((carouselEl) => {
+      const id = carouselEl.id;
+      if (!id) return;
+      const cards = Array.from(carouselEl.querySelectorAll(".eyes-card"));
+      if (!cards.length) return;
+      nextState[id] = {
+        scrollLeft: Math.round(carouselEl.scrollLeft || 0),
+        activeIndex: getCenteredCardIndex(carouselEl, cards),
+      };
+    });
+  writeEyesCarouselState(nextState);
+}
+
 /* ---- PUBLIC: called by router on page 'eyes' ---- */
 /**
  * Initializes the main "Eyes" page, primarily by calling `initializeEyesCatalog`.
@@ -110,6 +168,7 @@ export function initializeEyes() {
 
     // Direct to Pupils without flashing Learning Modules
     // inside the Pupils click handler in eyes.js
+    saveEyesCarouselState(document.getElementById("eyesCatalogPage"));
     window.__videosPendingTarget = "pupilsPage";
     window.__videosSuppressFlash = true;
     try {
@@ -397,7 +456,9 @@ export function initializeEyesCatalog() {
   Object.entries(sections).forEach(([id, list]) => render(id, list));
   try {
     window.I18N?.applyTranslations?.(pageEl);
-  } catch {}
+  } catch {
+    void 0;
+  }
 
   // === Carousel dots per section ===
   // For each carousel on the Eyes page, inject a dot strip above "See all >"
@@ -432,33 +493,21 @@ export function initializeEyesCatalog() {
       )
       .join("");
     const dots = Array.from(dotsWrap.querySelectorAll(".dot"));
+    const carouselId = carouselEl.id;
 
     // Helpers to compute which card is centered, paint dots, and center a card
-    const getActiveIndex = () => {
-      const mid = carouselEl.scrollLeft + carouselEl.offsetWidth / 2;
-      let best = 0,
-        bestDist = Infinity;
-      cards.forEach((card, i) => {
-        const center = card.offsetLeft + card.offsetWidth / 2;
-        const d = Math.abs(center - mid);
-        if (d < bestDist) {
-          bestDist = d;
-          best = i;
-        }
-      });
-      return best;
-    };
+    const getActiveIndex = () => getCenteredCardIndex(carouselEl, cards);
 
     const paintDots = (i) => {
       dots.forEach((d, idx) => d.classList.toggle("active", idx === i));
     };
 
-    const centerCardByIndex = (i) => {
+    const centerCardByIndex = (i, behavior = "smooth") => {
       const clamped = Math.max(0, Math.min(i, cards.length - 1));
       const card = cards[clamped];
       const left =
         card.offsetLeft - carouselEl.offsetWidth / 2 + card.offsetWidth / 2;
-      carouselEl.scrollTo({ left, behavior: "smooth" });
+      carouselEl.scrollTo({ left, behavior });
     };
 
     // Click any dot to center that item
@@ -477,10 +526,36 @@ export function initializeEyesCatalog() {
     };
     carouselEl.addEventListener("scroll", onScroll, { passive: true });
 
-    // Initial sync: always activate the first dot on load
+    // Initial sync: restore prior state when available.
     requestAnimationFrame(() => {
+      const savedState = carouselId
+        ? readEyesCarouselState()[carouselId]
+        : null;
+      const savedLeft = Number(savedState?.scrollLeft);
+      const savedIndex = Number(savedState?.activeIndex);
+
+      if (Number.isFinite(savedLeft)) {
+        const maxScroll = Math.max(
+          0,
+          carouselEl.scrollWidth - carouselEl.clientWidth,
+        );
+        carouselEl.scrollTo({
+          left: clampNumber(savedLeft, 0, maxScroll),
+          behavior: "auto",
+        });
+        paintDots(getActiveIndex());
+        return;
+      }
+
+      if (Number.isFinite(savedIndex)) {
+        const idx = clampNumber(savedIndex, 0, cards.length - 1);
+        centerCardByIndex(idx, "auto");
+        paintDots(idx);
+        return;
+      }
+
       paintDots(0);
-      centerCardByIndex(0); // ← 첫 카드로 스크롤 맞추기
+      centerCardByIndex(0, "auto");
     });
   };
   // This comment is intentionally placed here to satisfy the linter for the empty block statement.
@@ -489,6 +564,24 @@ export function initializeEyesCatalog() {
   pageEl
     .querySelectorAll(".eyes-carousel, .eyes-track")
     .forEach((carouselEl) => setupDotsForCarousel(carouselEl));
+
+  // Persist state while users scroll so returning to Eyes restores the same position.
+  pageEl
+    .querySelectorAll(".eyes-carousel, .eyes-track")
+    .forEach((carouselEl) => {
+      let rafId = null;
+      carouselEl.addEventListener(
+        "scroll",
+        () => {
+          if (rafId) return;
+          rafId = requestAnimationFrame(() => {
+            rafId = null;
+            saveEyesCarouselState(pageEl);
+          });
+        },
+        { passive: true },
+      );
+    });
 
   // Enforce pointer-events on heart & its children (override any CSS without touching style.css)
   pageEl.querySelectorAll(".heart-btn, .heart-btn *").forEach((n) => {
@@ -558,6 +651,7 @@ export function initializeEyesCatalog() {
       const label = (card.getAttribute("data-label") || "").toLowerCase();
 
       _e.preventDefault();
+      saveEyesCarouselState(pageEl);
 
       // Direct-open Pupils
       if (target === "pupilsPage" || label === "pupils") {

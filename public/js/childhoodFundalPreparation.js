@@ -2,6 +2,15 @@ import { fetchDictionary, get, getLanguage } from "./i18n.js";
 
 const LOTTIE_SRC =
   "https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js";
+const FUNDAL_LOTTIE_RENDERER = (() => {
+  if (typeof navigator === "undefined") return "svg";
+  const ua = navigator.userAgent || "";
+  const iOSDevice = /iPad|iPhone|iPod/.test(ua);
+  const iPadOSDesktopUA =
+    navigator.platform === "MacIntel" &&
+    Number(navigator.maxTouchPoints || 0) > 1;
+  return iOSDevice || iPadOSDesktopUA ? "canvas" : "svg";
+})();
 
 const ROUTE_CONFIG = {
   childhoodFundalPreparation: {
@@ -1162,25 +1171,207 @@ function doesNodeBBoxIntersectSvgViewport(node, svgEl, epsilon = 0.5) {
   );
 }
 
-function isStageFrameBlank(controller) {
-  const svgEl =
+function getControllerSvgElement(controller) {
+  return (
     controller?.anim?.renderer?.svgElement ||
-    controller?.stage?.querySelector?.("svg");
-  if (!svgEl) return true;
+    controller?.stage?.querySelector?.("svg") ||
+    null
+  );
+}
 
-  const svgStyle = window.getComputedStyle(svgEl);
+function getControllerCanvasElement(controller) {
+  const renderer = controller?.anim?.renderer;
+  const rendererCanvas =
+    renderer?.canvasContext?.canvas || renderer?.canvasElement || null;
+  if (rendererCanvas) return rendererCanvas;
+  return controller?.stage?.querySelector?.("canvas") || null;
+}
+
+function getControllerRenderElement(controller) {
+  return (
+    getControllerSvgElement(controller) ||
+    getControllerCanvasElement(controller) ||
+    null
+  );
+}
+
+function isCanvasRenderElement(el) {
+  return String(el?.tagName || "").toUpperCase() === "CANVAS";
+}
+
+function cloneCanvasSnapshotNode(canvasEl) {
+  if (!canvasEl) return null;
+  const width = Number(canvasEl.width || 0);
+  const height = Number(canvasEl.height || 0);
+  if (!Number.isFinite(width) || width <= 0) return null;
+  if (!Number.isFinite(height) || height <= 0) return null;
+
+  const clone = document.createElement("canvas");
+  clone.width = width;
+  clone.height = height;
+  clone.style.display = "block";
+  clone.style.width = "100%";
+  clone.style.height = "100%";
+  try {
+    const ctx = clone.getContext("2d");
+    if (!ctx) return null;
+    ctx.drawImage(canvasEl, 0, 0, width, height);
+    return clone;
+  } catch {
+    return null;
+  }
+}
+
+function sampleCanvasContentMetrics(canvasEl, options = {}) {
+  if (!canvasEl) return null;
+  const sourceWidth = Number(canvasEl.width || 0);
+  const sourceHeight = Number(canvasEl.height || 0);
+  if (!Number.isFinite(sourceWidth) || sourceWidth <= 0) return null;
+  if (!Number.isFinite(sourceHeight) || sourceHeight <= 0) return null;
+
+  const sampleSize = Math.max(
+    12,
+    Math.min(
+      36,
+      Number.isFinite(Number(options.sampleSize))
+        ? Math.floor(Number(options.sampleSize))
+        : 24,
+    ),
+  );
+  const alphaThreshold = Math.max(
+    1,
+    Math.min(
+      254,
+      Number.isFinite(Number(options.alphaThreshold))
+        ? Math.floor(Number(options.alphaThreshold))
+        : 16,
+    ),
+  );
+  const nearWhiteThreshold = Math.max(
+    180,
+    Math.min(
+      255,
+      Number.isFinite(Number(options.nearWhiteThreshold))
+        ? Math.floor(Number(options.nearWhiteThreshold))
+        : 245,
+    ),
+  );
+
+  let scratch = sampleCanvasContentMetrics._scratchCanvas;
+  if (!scratch) {
+    scratch = document.createElement("canvas");
+    sampleCanvasContentMetrics._scratchCanvas = scratch;
+  }
+  if (scratch.width !== sampleSize) scratch.width = sampleSize;
+  if (scratch.height !== sampleSize) scratch.height = sampleSize;
+
+  const ctx = scratch.getContext("2d", { willReadFrequently: true });
+  if (!ctx) return null;
+  ctx.clearRect(0, 0, sampleSize, sampleSize);
+
+  try {
+    ctx.drawImage(
+      canvasEl,
+      0,
+      0,
+      sourceWidth,
+      sourceHeight,
+      0,
+      0,
+      sampleSize,
+      sampleSize,
+    );
+  } catch {
+    return null;
+  }
+
+  let imageData = null;
+  try {
+    imageData = ctx.getImageData(0, 0, sampleSize, sampleSize);
+  } catch {
+    return null;
+  }
+  if (!imageData?.data?.length) return null;
+
+  let visibleCount = 0;
+  let nonWhiteCount = 0;
+  let darkCount = 0;
+  const data = imageData.data;
+  const totalPixels = sampleSize * sampleSize;
+
+  for (let i = 0; i < data.length; i += 4) {
+    const r = data[i];
+    const g = data[i + 1];
+    const b = data[i + 2];
+    const a = data[i + 3];
+    if (a <= alphaThreshold) continue;
+
+    visibleCount += 1;
+    if (
+      r < nearWhiteThreshold ||
+      g < nearWhiteThreshold ||
+      b < nearWhiteThreshold
+    ) {
+      nonWhiteCount += 1;
+    }
+    if (r <= 40 && g <= 40 && b <= 40) {
+      darkCount += 1;
+    }
+  }
+
+  const visibleRatio = visibleCount / Math.max(1, totalPixels);
+  const nonWhiteRatio = nonWhiteCount / Math.max(1, totalPixels);
+  const nonWhiteAmongVisible = nonWhiteCount / Math.max(1, visibleCount);
+  const darkRatio = darkCount / Math.max(1, totalPixels);
+
+  return {
+    visibleCount,
+    totalPixels,
+    visibleRatio,
+    nonWhiteRatio,
+    nonWhiteAmongVisible,
+    darkRatio,
+  };
+}
+
+function isStageFrameBlank(controller) {
+  const renderEl = getControllerRenderElement(controller);
+  if (!renderEl) return true;
+
+  const renderStyle = window.getComputedStyle(renderEl);
   if (
-    !svgStyle ||
-    svgStyle.display === "none" ||
-    svgStyle.visibility === "hidden"
+    !renderStyle ||
+    renderStyle.display === "none" ||
+    renderStyle.visibility === "hidden"
   ) {
     return true;
   }
-  const svgOpacity = Number.parseFloat(svgStyle.opacity || "1");
-  if (Number.isFinite(svgOpacity) && svgOpacity <= 0.02) return true;
+  const renderOpacity = Number.parseFloat(renderStyle.opacity || "1");
+  if (Number.isFinite(renderOpacity) && renderOpacity <= 0.02) return true;
 
-  const svgRect = svgEl.getBoundingClientRect?.();
-  if (!svgRect || svgRect.width <= 0.5 || svgRect.height <= 0.5) return true;
+  const renderRect = renderEl.getBoundingClientRect?.();
+  if (!renderRect || renderRect.width <= 0.5 || renderRect.height <= 0.5) {
+    return true;
+  }
+
+  if (isCanvasRenderElement(renderEl)) {
+    const metrics = sampleCanvasContentMetrics(renderEl, {
+      sampleSize: 24,
+      alphaThreshold: 16,
+      nearWhiteThreshold: 246,
+    });
+    if (!metrics) return false;
+
+    const transparentLike = metrics.visibleRatio <= 0.01;
+    const sparseLike =
+      metrics.visibleRatio <= 0.05 && metrics.nonWhiteRatio <= 0.015;
+    const nearWhiteFlood =
+      metrics.visibleRatio >= 0.6 && metrics.nonWhiteAmongVisible <= 0.012;
+    return transparentLike || sparseLike || nearWhiteFlood;
+  }
+
+  const svgEl = getControllerSvgElement(controller);
+  if (!svgEl) return true;
 
   const nodes = svgEl.querySelectorAll(
     "image,path,rect,circle,ellipse,polygon,polyline,line,use,text",
@@ -1202,7 +1393,7 @@ function isStageFrameBlank(controller) {
       if (!IS_IOS_WEBKIT) {
         if (!rect) continue;
         if (rect.width <= 0.5 || rect.height <= 0.5) continue;
-        const intersectsViewport = doesDomRectIntersect(rect, svgRect, 0.5);
+        const intersectsViewport = doesDomRectIntersect(rect, renderRect, 0.5);
         if (!intersectsViewport) continue;
         return false;
       }
@@ -1211,7 +1402,7 @@ function isStageFrameBlank(controller) {
         rect &&
         rect.width > 0.5 &&
         rect.height > 0.5 &&
-        doesDomRectIntersect(rect, svgRect, 0.5)
+        doesDomRectIntersect(rect, renderRect, 0.5)
       ) {
         return false;
       }
@@ -1226,26 +1417,49 @@ function isStageFrameBlank(controller) {
 }
 
 function hasRichVisibleContent(controller, minTotalAreaRatio = 0.16) {
-  const svgEl =
-    controller?.anim?.renderer?.svgElement ||
-    controller?.stage?.querySelector?.("svg");
-  if (!svgEl) return false;
+  const renderEl = getControllerRenderElement(controller);
+  if (!renderEl) return false;
 
-  const svgStyle = window.getComputedStyle(svgEl);
+  const renderStyle = window.getComputedStyle(renderEl);
   if (
-    !svgStyle ||
-    svgStyle.display === "none" ||
-    svgStyle.visibility === "hidden"
+    !renderStyle ||
+    renderStyle.display === "none" ||
+    renderStyle.visibility === "hidden"
   ) {
     return false;
   }
-  const svgOpacity = Number.parseFloat(svgStyle.opacity || "1");
-  if (Number.isFinite(svgOpacity) && svgOpacity <= 0.02) return false;
+  const renderOpacity = Number.parseFloat(renderStyle.opacity || "1");
+  if (Number.isFinite(renderOpacity) && renderOpacity <= 0.02) return false;
 
-  const svgRect = svgEl.getBoundingClientRect?.();
-  if (!svgRect || svgRect.width <= 0.5 || svgRect.height <= 0.5) return false;
+  const renderRect = renderEl.getBoundingClientRect?.();
+  if (!renderRect || renderRect.width <= 0.5 || renderRect.height <= 0.5) {
+    return false;
+  }
 
-  const svgArea = Math.max(1, svgRect.width * svgRect.height);
+  if (isCanvasRenderElement(renderEl)) {
+    const metrics = sampleCanvasContentMetrics(renderEl, {
+      sampleSize: 24,
+      alphaThreshold: 16,
+      nearWhiteThreshold: 245,
+    });
+    if (!metrics) return true;
+
+    const targetRatio = Number.isFinite(Number(minTotalAreaRatio))
+      ? Math.max(0.01, Number(minTotalAreaRatio))
+      : 0.16;
+    const minVisibleRatio = Math.max(0.03, Math.min(0.35, targetRatio * 0.55));
+    const minNonWhiteRatio = Math.max(0.012, Math.min(0.2, targetRatio * 0.5));
+
+    if (metrics.visibleRatio < minVisibleRatio) return false;
+    if (metrics.nonWhiteRatio < minNonWhiteRatio) return false;
+    if (metrics.nonWhiteAmongVisible < 0.045) return false;
+    return true;
+  }
+
+  const svgEl = getControllerSvgElement(controller);
+  if (!svgEl) return false;
+
+  const svgArea = Math.max(1, renderRect.width * renderRect.height);
   const nodes = svgEl.querySelectorAll(
     "image,path,rect,circle,ellipse,polygon,polyline,line,use,text",
   );
@@ -1269,10 +1483,10 @@ function hasRichVisibleContent(controller, minTotalAreaRatio = 0.16) {
     const rect = node.getBoundingClientRect?.();
     if (!rect || rect.width <= 0.5 || rect.height <= 0.5) continue;
 
-    const overlapLeft = Math.max(svgRect.left, rect.left);
-    const overlapRight = Math.min(svgRect.right, rect.right);
-    const overlapTop = Math.max(svgRect.top, rect.top);
-    const overlapBottom = Math.min(svgRect.bottom, rect.bottom);
+    const overlapLeft = Math.max(renderRect.left, rect.left);
+    const overlapRight = Math.min(renderRect.right, rect.right);
+    const overlapTop = Math.max(renderRect.top, rect.top);
+    const overlapBottom = Math.min(renderRect.bottom, rect.bottom);
     const overlapWidth = overlapRight - overlapLeft;
     const overlapHeight = overlapBottom - overlapTop;
     if (overlapWidth <= 0.5 || overlapHeight <= 0.5) continue;
@@ -1300,14 +1514,12 @@ function isPinnedFrameUnstable(controller, options = {}) {
 }
 
 function forceSvgVisibleForController(controller) {
-  const svgEl =
-    controller?.anim?.renderer?.svgElement ||
-    controller?.stage?.querySelector?.("svg");
-  if (!svgEl) return;
+  const renderEl = getControllerRenderElement(controller);
+  if (!renderEl) return;
 
   if (IS_IOS_WEBKIT) {
-    // Safari/iOS can drop SVG layers after rapid scroll + frame seeks.
-    // Keep the stage and SVG on a stable compositing layer.
+    // Safari/iOS can drop renderer layers after rapid scroll + frame seeks.
+    // Keep stage and render element on a stable compositing layer.
     if (controller?.stage) {
       controller.stage.style.willChange = "transform";
       controller.stage.style.transform = "translate3d(0,0,0)";
@@ -1315,16 +1527,16 @@ function forceSvgVisibleForController(controller) {
       controller.stage.style.backfaceVisibility = "hidden";
       controller.stage.style.webkitBackfaceVisibility = "hidden";
     }
-    svgEl.style.willChange = "transform, opacity";
-    svgEl.style.transform = "translate3d(0,0,0)";
-    svgEl.style.webkitTransform = "translate3d(0,0,0)";
-    svgEl.style.backfaceVisibility = "hidden";
-    svgEl.style.webkitBackfaceVisibility = "hidden";
+    renderEl.style.willChange = "transform, opacity";
+    renderEl.style.transform = "translate3d(0,0,0)";
+    renderEl.style.webkitTransform = "translate3d(0,0,0)";
+    renderEl.style.backfaceVisibility = "hidden";
+    renderEl.style.webkitBackfaceVisibility = "hidden";
   }
 
-  svgEl.style.display = "block";
-  svgEl.style.visibility = "visible";
-  svgEl.style.opacity = "1";
+  renderEl.style.display = "block";
+  renderEl.style.visibility = "visible";
+  renderEl.style.opacity = "1";
 }
 
 function requestIosStageRepaintNudge(stageEl) {
@@ -1380,6 +1592,18 @@ function cloneRecoverySnapshotFromStoredMarkup(
     return null;
   }
 
+  const canvasDataUrl = String(controller?.recoverySnapshotCanvasDataUrl || "");
+  if (canvasDataUrl) {
+    const img = document.createElement("img");
+    img.src = canvasDataUrl;
+    img.alt = "";
+    img.setAttribute("aria-hidden", "true");
+    img.style.display = "block";
+    img.style.width = "100%";
+    img.style.height = "100%";
+    return img;
+  }
+
   const markup = String(controller?.recoverySnapshotMarkup || "").trim();
   if (!markup) return null;
 
@@ -1395,22 +1619,36 @@ function cloneRecoverySnapshotFromStoredMarkup(
 }
 
 function rememberRecoverySnapshot(controller, frameHint = null) {
-  const svgEl =
-    controller?.anim?.renderer?.svgElement ||
-    controller?.stage?.querySelector?.("svg");
-  if (!svgEl) return false;
+  const renderEl = getControllerRenderElement(controller);
+  if (!renderEl) return false;
   if (isStageFrameBlank(controller)) return false;
 
   let snapshot = null;
-  try {
-    snapshot = svgEl.cloneNode(true);
-  } catch {}
+  if (isCanvasRenderElement(renderEl)) {
+    const canvasSnapshot = cloneCanvasSnapshotNode(renderEl);
+    if (canvasSnapshot) {
+      snapshot = canvasSnapshot;
+      controller.recoverySnapshotMarkup = "";
+      controller.recoverySnapshotCanvasDataUrl = "";
+      try {
+        controller.recoverySnapshotCanvasDataUrl =
+          canvasSnapshot.toDataURL("image/png");
+      } catch {}
+    }
+  } else {
+    try {
+      snapshot = renderEl.cloneNode(true);
+    } catch {}
+    if (snapshot) {
+      snapshot.style.display = "block";
+      snapshot.style.width = "100%";
+      snapshot.style.height = "100%";
+      controller.recoverySnapshotMarkup = snapshot.outerHTML;
+      controller.recoverySnapshotCanvasDataUrl = "";
+    }
+  }
   if (!snapshot) return false;
 
-  snapshot.style.display = "block";
-  snapshot.style.width = "100%";
-  snapshot.style.height = "100%";
-  controller.recoverySnapshotMarkup = snapshot.outerHTML;
   const fallbackFrame = Math.floor(Number(controller?.anim?.currentFrame));
   const rawFrame = Number.isFinite(Number(frameHint))
     ? Number(frameHint)
@@ -1448,10 +1686,12 @@ function captureRecoverySnapshot(controller) {
     );
   }
 
-  const svgEl =
-    controller?.anim?.renderer?.svgElement ||
-    controller?.stage?.querySelector?.("svg");
-  if (svgEl && rememberRecoverySnapshot(controller)) {
+  const renderEl = getControllerRenderElement(controller);
+  if (renderEl && rememberRecoverySnapshot(controller)) {
+    if (isCanvasRenderElement(renderEl)) {
+      const canvasSnapshot = cloneCanvasSnapshotNode(renderEl);
+      if (canvasSnapshot) return canvasSnapshot;
+    }
     const snapshot = cloneRecoverySnapshotFromStoredMarkup(
       controller,
       fallbackCeiling,
@@ -2448,6 +2688,7 @@ function playSegment(controller, segmentIndex) {
     storedSnapshotFrame > Number(seg.to) + 1
   ) {
     controller.recoverySnapshotMarkup = "";
+    controller.recoverySnapshotCanvasDataUrl = "";
     controller.recoverySnapshotFrame = null;
   }
   hideRecoveryOverlay(controller, { immediate: true });
@@ -2798,7 +3039,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
     }
 
     const svgEl =
-      controller?.anim?.renderer?.svgElement || stage.querySelector("svg");
+      getControllerRenderElement(controller) || stage.querySelector("canvas");
     if (!svgEl) return;
 
     const stageRect = stage.getBoundingClientRect?.();
@@ -2815,7 +3056,10 @@ function initializeSegmentScrollMode(cfg, page, stages) {
     let rightInset = 10;
     let bottomInset = 10;
 
-    if (isWideDesktopViewport()) {
+    if (
+      isWideDesktopViewport() &&
+      String(svgEl?.tagName || "").toUpperCase() === "SVG"
+    ) {
       // 1440+에서는 SVG viewBox 기준의 실제 렌더 영역 우하단으로 보정한다.
       const vb = svgEl.viewBox?.baseVal;
       const vbWidth = Number(vb?.width);
@@ -3020,6 +3264,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
       recoveryOverlayClearTimer: null,
       recoveryOverlayVisible: false,
       recoverySnapshotMarkup: "",
+      recoverySnapshotCanvasDataUrl: "",
       recoverySnapshotFrame: null,
       recoverySnapshotSegmentIndex: -1,
       arrowEnsureRafId: null,
@@ -3185,7 +3430,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
     const createAnimationInstance = () =>
       window.lottie.loadAnimation({
         container: stage,
-        renderer: "svg",
+        renderer: FUNDAL_LOTTIE_RENDERER,
         loop: false,
         autoplay: false,
         path: cfg.paths[idx],
@@ -4167,6 +4412,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
       controller.lastRichVisibleFrameEver = null;
       controller.lastPinnedFrame = null;
       controller.recoverySnapshotMarkup = "";
+      controller.recoverySnapshotCanvasDataUrl = "";
       controller.recoverySnapshotFrame = null;
       controller.recoverySnapshotSegmentIndex = -1;
       hideRecoveryOverlay(controller, { immediate: true });
@@ -4531,6 +4777,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
         c.cancelIosPostSettleRefresh?.();
         hideRecoveryOverlay(c, { immediate: true });
         c.recoverySnapshotMarkup = "";
+        c.recoverySnapshotCanvasDataUrl = "";
         c.recoverySnapshotFrame = null;
         c.recoverySnapshotSegmentIndex = -1;
         try {
@@ -4597,7 +4844,7 @@ export async function initializeChildhoodFundalReflexScrollPage(routeName) {
   const animations = stages.map((stage, idx) =>
     window.lottie.loadAnimation({
       container: stage,
-      renderer: "svg",
+      renderer: FUNDAL_LOTTIE_RENDERER,
       loop: true,
       autoplay: false,
       path: cfg.paths[idx],
