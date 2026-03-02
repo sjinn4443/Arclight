@@ -4474,6 +4474,9 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
   display: flex;
   align-items: center;
   justify-content: center;
+  /* Keep only the pseudo-element icon; hide translated text node */
+  font-size: 0;
+  line-height: 0;
 }
 
 /* draw the icon */

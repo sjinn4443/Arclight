@@ -57,6 +57,14 @@ input {
     font-size: 1rem;
   }
 
+  .page .pupils-subtitle {
+    margin: 22px 16px 16px !important;
+  }
+
+  #casestudyPage .pupils-subtitle {
+    margin: -17px 16px 16px !important;
+  }
+
   #backBtnGlobal::before {
     width: 24px;
     height: 23px;

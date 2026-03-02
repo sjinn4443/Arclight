@@ -260,7 +260,9 @@
         type="button"
         disabled
       >
-        Select Diagnosis
+        <span data-i18n="auto.casestudy.select_diagnosis"
+          >Select Diagnosis</span
+        >
         <span class="chev" data-i18n="auto.casestudy.text">&gt;</span>
       </button>
 
@@ -274,11 +276,16 @@
           class="casechat-toggle"
           type="button"
           aria-label="Toggle question chips"
+          data-i18n="i18nExtra.case_question_toggle"
         >
           Q
         </button>
 
-        <div id="caseChatDraft" class="casechat-draft">
+        <div
+          id="caseChatDraft"
+          class="casechat-draft"
+          data-i18n="i18nExtra.case_study_click_question_dash"
+        >
           - Click here to select a question
         </div>
         <button
@@ -361,11 +368,20 @@
           </div>
         </div>
 
-        <div id="caseDxTrialText" class="casechat-modal__dxHint">
+        <div
+          id="caseDxTrialText"
+          class="casechat-modal__dxHint"
+          data-i18n="i18nExtra.case_study_attempts_notice"
+        >
           You only get 2 attempts.
         </div>
 
-        <div id="caseDxAttempts" class="casechat-modal__dxAttempts" hidden>
+        <div
+          id="caseDxAttempts"
+          class="casechat-modal__dxAttempts"
+          hidden
+          data-i18n="i18nExtra.case_study_attempts_left"
+        >
           Attempts left: 2
         </div>
 
@@ -420,7 +436,10 @@
           </button>
         </div>
 
-        <div class="casechat-confirm__text">
+        <div
+          class="casechat-confirm__text"
+          data-i18n="i18nExtra.case_study_image_penalty_html:html"
+        >
           Viewing the case image will deduct<br />10 seconds from the timer.
           <br />
           <br />
@@ -432,6 +451,7 @@
             id="caseImgPenaltyCancelBtn"
             type="button"
             class="casechat-confirm__btn is-cancel"
+            data-i18n="i18nExtra.cancel"
           >
             Cancel
           </button>
@@ -439,6 +459,7 @@
             id="caseImgPenaltyOkBtn"
             type="button"
             class="casechat-confirm__btn is-ok"
+            data-i18n="i18nExtra.ok"
           >
             OK
           </button>
@@ -470,7 +491,12 @@
         <div id="caseResultBody" class="casechat-result"></div>
 
         <div class="casechat-modal__actions">
-          <button id="caseNextBtn" class="start-btn" type="button">
+          <button
+            id="caseNextBtn"
+            class="start-btn"
+            type="button"
+            data-i18n="i18nExtra.next_case"
+          >
             Next case
           </button>
         </div>
@@ -592,7 +618,9 @@
         type="button"
         disabled
       >
-        Select Diagnosis
+        <span data-i18n="auto.casestudy.select_diagnosis"
+          >Select Diagnosis</span
+        >
         <span class="chev" data-i18n="auto.casestudy.text">&gt;</span>
       </button>
 
@@ -606,11 +634,16 @@
           class="casechat-toggle"
           type="button"
           aria-label="Toggle question chips"
+          data-i18n="i18nExtra.case_question_toggle"
         >
           Q
         </button>
 
-        <div id="caseChatDraft" class="casechat-draft">
+        <div
+          id="caseChatDraft"
+          class="casechat-draft"
+          data-i18n="i18nExtra.case_study_click_question_dash"
+        >
           - Click here to select a question
         </div>
         <button
@@ -693,11 +726,20 @@
           </div>
         </div>
 
-        <div id="caseDxTrialText" class="casechat-modal__dxHint">
+        <div
+          id="caseDxTrialText"
+          class="casechat-modal__dxHint"
+          data-i18n="i18nExtra.case_study_attempts_notice"
+        >
           You only get 2 attempts.
         </div>
 
-        <div id="caseDxAttempts" class="casechat-modal__dxAttempts" hidden>
+        <div
+          id="caseDxAttempts"
+          class="casechat-modal__dxAttempts"
+          hidden
+          data-i18n="i18nExtra.case_study_attempts_left"
+        >
           Attempts left: 2
         </div>
 
@@ -752,7 +794,10 @@
           </button>
         </div>
 
-        <div class="casechat-confirm__text">
+        <div
+          class="casechat-confirm__text"
+          data-i18n="i18nExtra.case_study_image_penalty_html:html"
+        >
           Viewing the case image will deduct<br />10 seconds from the timer.
           <br />
           <br />
@@ -764,6 +809,7 @@
             id="caseImgPenaltyCancelBtn"
             type="button"
             class="casechat-confirm__btn is-cancel"
+            data-i18n="i18nExtra.cancel"
           >
             Cancel
           </button>
@@ -771,6 +817,7 @@
             id="caseImgPenaltyOkBtn"
             type="button"
             class="casechat-confirm__btn is-ok"
+            data-i18n="i18nExtra.ok"
           >
             OK
           </button>
@@ -802,7 +849,12 @@
         <div id="caseResultBody" class="casechat-result"></div>
 
         <div class="casechat-modal__actions">
-          <button id="caseNextBtn" class="start-btn" type="button">
+          <button
+            id="caseNextBtn"
+            class="start-btn"
+            type="button"
+            data-i18n="i18nExtra.next_case"
+          >
             Next case
           </button>
         </div>
@@ -957,6 +1009,7 @@
             id="primaryFlashTourNext"
             type="button"
             class="pflash-tour__btn"
+            data-i18n="i18nExtra.next"
           >
             Next
           </button>
@@ -1010,6 +1063,7 @@
           <div
             class="primaryFlashCaseLabel primaryFlashCaseLabel--ghost"
             aria-hidden="true"
+            data-i18n="i18nExtra.case_label"
           >
             Case
           </div>
@@ -1030,6 +1084,7 @@
       <button
         id="primaryFlashNotUrgentBtn"
         type="button"
+        data-i18n="i18nExtra.not_urgent_button"
         style="
           flex: 1;
           height: 42px;
@@ -1045,6 +1100,7 @@
       <button
         id="primaryFlashUrgentBtn"
         type="button"
+        data-i18n="i18nExtra.urgent_referral_button"
         style="
           flex: 1;
           height: 42px;

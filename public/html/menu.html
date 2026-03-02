@@ -25,6 +25,7 @@
           class="profile-location"
           aria-live="polite"
           style="visibility: hidden"
+          data-i18n="i18nExtra.location_loading"
         >
           Location: …
         </div>
@@ -60,7 +61,11 @@
           </svg>
         </button>
       </div>
-      <button id="checkLocationBtn" class="check-location-btn">
+      <button
+        id="checkLocationBtn"
+        class="check-location-btn"
+        data-i18n="i18nExtra.get_precise_location"
+      >
         Get Precise Location
       </button>
       <!-- Menu search (collapsible like dashboard) -->
@@ -118,10 +123,17 @@
           >
             &times;
           </button>
-          <h2 id="infoModalTitle" class="guest-modal__title">
+          <h2
+            id="infoModalTitle"
+            class="guest-modal__title"
+            data-i18n="i18nExtra.about_location_data_title"
+          >
             About location data
           </h2>
-          <p class="guest-modal__text">
+          <p
+            class="guest-modal__text"
+            data-i18n="i18nExtra.about_location_data_text:html"
+          >
             Location data helps us understand usage and improve Arclight App.
             Your IP address provides an approximate country/city on first load.
             <br />

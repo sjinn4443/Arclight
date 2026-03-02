@@ -1,3 +1,5 @@
+import { fetchDictionary, get, getLanguage } from "./i18n.js";
+
 const LOTTIE_SRC =
   "https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js";
 
@@ -340,6 +342,157 @@ const ROUTE_CONFIG = {
   },
 };
 
+const FUNDAL_TEXT_KEYS = new Map([
+  ["Wash hands", "i18nExtra.fundal_reflex.wash_hands"],
+  [
+    "Select the brightest light setting",
+    "i18nExtra.fundal_reflex.select_brightest_light_setting",
+  ],
+  [
+    "Make sure the lens rack is at the top",
+    "i18nExtra.fundal_reflex.make_sure_lens_rack_top",
+  ],
+  [
+    "Examination room needs to be quiet and dim",
+    "i18nExtra.fundal_reflex.room_quiet_and_dim",
+  ],
+  [
+    "Hold Arclight close to your eye",
+    "i18nExtra.fundal_reflex.hold_arclight_close_to_eye",
+  ],
+  [
+    "Newborns should be swaddled securely",
+    "i18nExtra.fundal_reflex.newborns_swaddled_securely",
+  ],
+  [
+    "For older babies, parents can hold them\nor put on their laps",
+    "i18nExtra.fundal_reflex.older_babies_parent_hold_lap",
+  ],
+  [
+    "Older children can sit by themselves",
+    "i18nExtra.fundal_reflex.older_children_sit_by_themselves",
+  ],
+  [
+    "Observe the reflex at arm's length",
+    "i18nExtra.fundal_reflex.observe_reflex_arms_length",
+  ],
+  [
+    "Move side to side and get closer\nif need to look in more detail",
+    "i18nExtra.fundal_reflex.move_side_get_closer_detail",
+  ],
+  [
+    "At arm's length, examine both eyes\nat the same time",
+    "i18nExtra.fundal_reflex.examine_both_eyes_same_time",
+  ],
+  [
+    "In a normal examination, there should be\nno overall difference in brightness\nor colour between eyes",
+    "i18nExtra.fundal_reflex.normal_no_difference_between_eyes",
+  ],
+  [
+    "The appearance will vary by race\n\nBlack baby - yellow / white / blue reflex",
+    "i18nExtra.fundal_reflex.appearance_varies_by_race_black_baby",
+  ],
+  [
+    "White baby - orange / red reflex",
+    "i18nExtra.fundal_reflex.white_baby_orange_red_reflex",
+  ],
+  [
+    "Asian baby - orange / yellow reflex",
+    "i18nExtra.fundal_reflex.asian_baby_orange_yellow_reflex",
+  ],
+  [
+    "Parents should hold the baby\nswaddled securely with arms tucked away",
+    "i18nExtra.fundal_reflex.parents_hold_baby_swaddled",
+  ],
+  [
+    "Observe reflex in both eyes at the same time,",
+    "i18nExtra.fundal_reflex.observe_reflex_both_eyes_same_time",
+  ],
+  [
+    "without touching the baby",
+    "i18nExtra.fundal_reflex.without_touching_baby",
+  ],
+  [
+    "Occasional and short-lasting squints\nare common in the first month of life,",
+    "i18nExtra.fundal_reflex.occasional_squints_first_month_comma",
+  ],
+  [
+    "and will usually disappear by three months of age",
+    "i18nExtra.fundal_reflex.disappear_by_three_months",
+  ],
+  [
+    "If baby is asleep, gently open one eye at a time",
+    "i18nExtra.fundal_reflex.if_baby_asleep_open_one_eye",
+  ],
+  [
+    "If findings are unclear, follow the next steps",
+    "i18nExtra.fundal_reflex.if_unclear_follow_next_steps",
+  ],
+  [
+    "Compare the reflex with parent\nIt should look similar",
+    "i18nExtra.fundal_reflex.compare_reflex_with_parent",
+  ],
+  [
+    "If still unsure, ask colleague for second opinion",
+    "i18nExtra.fundal_reflex.ask_colleague_second_opinion",
+  ],
+  [
+    "If on your own, gain consent from patient\nand record a video",
+    "i18nExtra.fundal_reflex.if_alone_gain_consent_record_video",
+  ],
+  [
+    "Attach the Arclight to the camera of a mobile phone",
+    "i18nExtra.fundal_reflex.attach_arclight_mobile_camera",
+  ],
+  [
+    "Share securely for a second opinion",
+    "i18nExtra.fundal_reflex.share_securely_second_opinion",
+  ],
+  [
+    "If overall colour and brightness is similar between\ntwo eyes, then the examination is normal",
+    "i18nExtra.fundal_reflex.if_overall_similar_exam_normal",
+  ],
+  [
+    "Occasional and short-lasting squints\nare common in the first month of life",
+    "i18nExtra.fundal_reflex.occasional_squints_first_month",
+  ],
+  [
+    "Any difference in colour / partial / complete\nloss of reflex is abnormal",
+    "i18nExtra.fundal_reflex.difference_in_reflex_abnormal",
+  ],
+  [
+    "Occasional and short-lasting squints are common in the first month of life and will usually disappear by three months of age",
+    "i18nExtra.fundal_reflex.occasional_squints_summary",
+  ],
+  ["Offer thanks,", "i18nExtra.fundal_reflex.offer_thanks"],
+  [
+    "explain your findings and make a plan",
+    "i18nExtra.fundal_reflex.explain_findings_make_plan",
+  ],
+  ["Repeat hand wash", "i18nExtra.fundal_reflex.repeat_hand_wash"],
+  ["Replay", "i18nExtra.fundal_reflex.replay"],
+]);
+
+let fundalI18nDict = {};
+let fundalI18nLang = null;
+
+async function ensureFundalI18nDictionary() {
+  const lang = getLanguage();
+  if (fundalI18nLang === lang && fundalI18nDict) return;
+  fundalI18nDict = await fetchDictionary(lang);
+  fundalI18nLang = lang;
+}
+
+function translateFundalText(rawText) {
+  const normalized = rawText == null ? "" : String(rawText).trim();
+  if (!normalized) return "";
+
+  const key = FUNDAL_TEXT_KEYS.get(normalized);
+  if (!key) return normalized;
+
+  return String(get(fundalI18nDict, key) ?? normalized).trim();
+}
+
 let activeSession = null;
 const IS_IOS_WEBKIT = (() => {
   if (typeof navigator === "undefined") return false;
@@ -508,10 +661,7 @@ function resolveSegmentStartTexts(cfg, fileIndex) {
     : null;
   if (!Array.isArray(raw)) return [];
 
-  return raw.map((entry) => {
-    if (entry == null) return "";
-    return String(entry).trim();
-  });
+  return raw.map((entry) => translateFundalText(entry));
 }
 
 function resolveFinalSummaryBullets(cfg, fileIndex) {
@@ -520,10 +670,7 @@ function resolveFinalSummaryBullets(cfg, fileIndex) {
     : null;
   if (!Array.isArray(raw)) return [];
 
-  return raw.map((entry) => {
-    if (entry == null) return "";
-    return String(entry).trim();
-  });
+  return raw.map((entry) => translateFundalText(entry));
 }
 
 function resolveSegmentTextMode(cfg, fileIndex) {
@@ -3937,7 +4084,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
     btn.type = "button";
     btn.dataset.fundalReplayBtn = "1";
     btn.className = "childhood-fundal-replay-btn";
-    btn.textContent = "Replay";
+    btn.textContent = translateFundalText("Replay");
     btn.style.display = "none";
 
     if (titleGroup) {
@@ -4394,6 +4541,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
 export async function initializeChildhoodFundalReflexScrollPage(routeName) {
   const baseCfg = ROUTE_CONFIG[routeName];
   if (!baseCfg) return;
+  await ensureFundalI18nDictionary();
   const cfg = resolveRuntimeRouteConfig(routeName, baseCfg);
   if (!cfg) return;
 

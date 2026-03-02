@@ -32,7 +32,12 @@ const LANG_ALIAS = {
   zu: "zulu",
 };
 
-const CACHE = { lang: null, dict: {}, fetched: new Map() };
+const CACHE = {
+  lang: null,
+  dict: {},
+  fetched: new Map(),
+  literalIndex: new Map(),
+};
 
 export function get(obj, path) {
   return path
@@ -79,7 +84,78 @@ export async function fetchDictionary(lang) {
 
 async function loadTranslations(lang) {
   CACHE.dict = await fetchDictionary(lang);
+  rebuildLiteralIndex();
   CACHE.lang = lang;
+}
+
+function normalizeLiteralText(value) {
+  return String(value == null ? "" : value)
+    .replace(/\r\n?/g, "\n")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function rebuildLiteralIndex() {
+  CACHE.literalIndex = new Map();
+  const literal = CACHE.dict?.i18nLiteral;
+  if (!literal || typeof literal !== "object") return;
+
+  Object.entries(literal).forEach(([rawKey, rawVal]) => {
+    const key = normalizeLiteralText(rawKey);
+    if (!key) return;
+    CACHE.literalIndex.set(key, String(rawVal));
+  });
+}
+
+function literalTranslate(rawText) {
+  const key = normalizeLiteralText(rawText);
+  if (!key) return null;
+  return CACHE.literalIndex.get(key) ?? null;
+}
+
+function applyLiteralTranslations(root = document) {
+  if (!root || !CACHE.literalIndex?.size) return;
+
+  const doc = root.ownerDocument || document;
+  const scope =
+    root.nodeType === 9 ? root.body || root.documentElement || root : root;
+  if (!scope) return;
+
+  const textWalker = doc.createTreeWalker(scope, NodeFilter.SHOW_TEXT, null);
+
+  let textNode = textWalker.nextNode();
+  while (textNode) {
+    const parent = textNode.parentElement;
+    if (
+      parent &&
+      !parent.closest("[data-i18n]") &&
+      !parent.closest("[data-i18n-skip]") &&
+      !/^(SCRIPT|STYLE|NOSCRIPT|TEMPLATE)$/i.test(parent.tagName || "")
+    ) {
+      const translated = literalTranslate(textNode.textContent);
+      if (translated != null) {
+        textNode.textContent = translated;
+      }
+    }
+    textNode = textWalker.nextNode();
+  }
+
+  const attrNames = ["aria-label", "title", "placeholder", "alt"];
+  scope.querySelectorAll("*").forEach((el) => {
+    if (el.closest("[data-i18n-skip]")) return;
+    const spec = (el.getAttribute("data-i18n") || "").trim();
+    const target = spec.split(":")[1]?.toLowerCase() || "text";
+
+    attrNames.forEach((attr) => {
+      if (spec && target === attr.toLowerCase()) return;
+      const current = el.getAttribute(attr);
+      if (!current) return;
+      const translated = literalTranslate(current);
+      if (translated != null) {
+        el.setAttribute(attr, translated);
+      }
+    });
+  });
 }
 
 /** SELECT placeholder helper: first empty/disabled option’s text */
@@ -189,6 +265,8 @@ export function applyTranslations(root = document) {
       }
     }
   });
+
+  applyLiteralTranslations(root);
 }
 
 /** Change language and re-translate the live DOM */

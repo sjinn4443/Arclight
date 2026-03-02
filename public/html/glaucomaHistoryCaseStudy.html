@@ -56,7 +56,9 @@
         type="button"
         disabled
       >
-        Select Diagnosis
+        <span data-i18n="auto.glaucomahistorycasestudy.select_diagnosis"
+          >Select Diagnosis</span
+        >
         <span class="chev" data-i18n="auto.glaucomahistorycasestudy.text"
           >&gt;</span
         >
@@ -72,11 +74,16 @@
           class="casechat-toggle"
           type="button"
           aria-label="Toggle question chips"
+          data-i18n="i18nExtra.case_question_toggle"
         >
           Q
         </button>
 
-        <div id="caseChatDraft" class="casechat-draft">
+        <div
+          id="caseChatDraft"
+          class="casechat-draft"
+          data-i18n="i18nExtra.case_study_click_question"
+        >
           Click here to select a question
         </div>
 
@@ -215,7 +222,12 @@
         <div id="caseResultBody" class="casechat-result"></div>
 
         <div class="casechat-modal__actions">
-          <button id="caseNextBtn" class="start-btn" type="button">
+          <button
+            id="caseNextBtn"
+            class="start-btn"
+            type="button"
+            data-i18n="i18nExtra.next_case"
+          >
             Next case
           </button>
         </div>

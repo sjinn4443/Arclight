@@ -1,0 +1,132 @@
+- Click here to select a question
+\u{1F5D1}\uFE0F
+\u25BE
+After Examination
+All cards completed
+All cases completed
+Answers are highlighted in green.
+Anterior uveitis
+AnteriorSegmentQuiz/
+AnteriorSegmentQuiz/html/index.html
+anything else
+Arclight Overview
+Arclight Shop
+Case study
+Cataract
+Check Answer
+Childhood Eye Screening
+Close ^
+Coming Soon
+Common Ear Conditions
+Continue as Guest
+Corneal Disease
+Correct!
+Correct.
+Cranial Nerve Examination
+Create Account
+Deep chamber
+Delete user
+Diabetic Retinopathy
+Do you have any pain or itchiness?
+Ear Health & Hearing
+ethnicity
+Examination
+Exit
+Eye Movements/Squint
+Flip the card
+Front of Eye
+Fundal Reflex
+Glaucoma
+Have you had any treatment so far?
+Have you noticed any loss of vision?
+Have you noticed any redness or discharge?
+History Taking
+Holo Overview
+how
+How did it start?
+How to Examine the Ear
+Hyphaema
+Incorrect.
+Interactive Learning
+Iris bombe
+Iris new vessels
+Is it affecting one eye or both eyes?
+Is it getting worse or better?
+Is there anything else you want to tell me?
+Large cup-disc ratio
+Lens dislocation
+Look at the cases and decide if the patient needs urgent referral or not.
+Map ready
+Mini Apps
+Newborn - Eyes Closed
+Newborn - Eyes Open
+Next >
+Next case
+Next case >
+No data
+No saved items yet. Tap the heart on any Eyes card to add it here.
+No wrong answers.
+Normal iris
+Not urgent
+OK
+one/both
+Ophthalmoscopy
+Optic disc cupping
+Optic Nerve Disease
+Otitis Media (Coming Soon)
+Otoscopy
+Otoscopy Poster
+pain/itch
+Pigment dispersion
+Place all findings before submitting.
+Possible Findings
+Preparation
+problem
+Proptosis
+Pseudo-exfoliation
+Ptosis
+Pupils
+Q
+Quiz
+RAPD mode OFF
+records
+redness/discharge
+Referral Flashcard
+Restart
+Result
+Retinal Disease
+Retinopathy of Prematurity
+See Results
+Select a question above
+Select an interest first
+Shallow chamber
+Share video
+Sign up to use this feature
+Skip and Start
+Start Exploring
+Swipe the flashcard to the left or press the button.
+Swipe the flashcard to the right or press the button.
+Take a history to work out what is wrong
+Time is up.
+treatment
+Try again
+Tuning Fork (Coming Soon)
+Unclear Findings
+Uncorrected Refractive Error
+Urgent referral
+ver --.--.----
+Video
+Video • Case Study
+Video • Quiz
+View case image for 2 seconds
+vision
+Visual Acuity
+What is your background?
+What seems to be the main problem?
+when
+When did it start?
+WHO PEC
+worse/better
+You can check diagnosis by tapping the card.
+You only get 2 attempts.
+Your saved items couldn’t be matched. Try liking a new item.

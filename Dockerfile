@@ -14,7 +14,15 @@ RUN npm ci --no-audit --no-fund
 
 # Copy the rest and build
 COPY . .
+RUN if [ -d .git ]; then \
+      echo "[version-debug] .git present"; \
+      git rev-parse --is-shallow-repository || true; \
+      git log --first-parent --format=%cI -n 8 || true; \
+    else \
+      echo "[version-debug] .git missing"; \
+    fi
 RUN npm run build
+RUN echo "[version-debug] dist/version.json" && cat dist/version.json || true
 
 # ---------- Runtime stage ----------
 FROM node:20-alpine AS runtime

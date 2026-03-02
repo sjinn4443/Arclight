@@ -338,7 +338,9 @@
     <div class="lang-install__hint-body">
       <strong data-i18n="auto.languageinstall.on_ios">On iOS:</strong
       ><br /><br />
-      1) Tap the Share button
+      <span data-i18n="i18nExtra.languageinstall_ios_step1">
+        1) Tap the Share button
+      </span>
       <svg
         width="16"
         height="16"
@@ -350,8 +352,10 @@
           d="M12 3l4 4h-3v6h-2V7H8l4-4zM5 10v9h14v-9h2v9c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2v-9h2z"
         />
       </svg>
-      in the address bar<br />
-      2) Select
+      <span data-i18n="i18nExtra.languageinstall_ios_step1_suffix"
+        >in the address bar</span
+      ><br />
+      <span data-i18n="i18nExtra.languageinstall_step2_select">2) Select</span>
       <strong data-i18n="auto.languageinstall.add_to_home_screen"
         >Add to Home Screen</strong
       >
@@ -362,11 +366,13 @@
     <div class="lang-install__hint-body">
       <strong data-i18n="auto.languageinstall.on_android">On Android:</strong
       ><br /><br />
-      1) Tap the browser menu
+      <span data-i18n="i18nExtra.languageinstall_android_step1"
+        >1) Tap the browser menu</span
+      >
       <strong data-i18n="auto.languageinstall.x22ee">(&#x22EE;)</strong><br />
-      2) Select
+      <span data-i18n="i18nExtra.languageinstall_step2_select">2) Select</span>
       <strong data-i18n="auto.languageinstall.install_app">Install app</strong>
-      or
+      <span data-i18n="i18nExtra.languageinstall_or">or</span>
       <strong data-i18n="auto.languageinstall.add_to_home_screen"
         >Add to Home Screen</strong
       >
@@ -377,9 +383,11 @@
     <div class="lang-install__hint-body">
       <strong data-i18n="auto.languageinstall.to_install">To install:</strong
       ><br />
-      Use your browser menu and choose
+      <span data-i18n="i18nExtra.languageinstall_default_choose"
+        >Use your browser menu and choose</span
+      >
       <strong data-i18n="auto.languageinstall.install_app">Install app</strong>
-      or
+      <span data-i18n="i18nExtra.languageinstall_or">or</span>
       <strong data-i18n="auto.languageinstall.add_to_home_screen"
         >Add to Home Screen</strong
       >.
@@ -387,7 +395,10 @@
   </template>
 
   <template id="languageInstallHintOffline">
-    <div class="lang-install__hint-body">
+    <div
+      class="lang-install__hint-body"
+      data-i18n="i18nExtra.languageinstall_hint_offline:html"
+    >
       Install the app to use without<br />
       Wi-Fi / mobile data.<br /><br />
       Some content (e.g. videos),<br />may need to be downloaded first.
@@ -395,7 +406,10 @@
   </template>
 
   <template id="languageInstallHintOnline">
-    <div class="lang-install__hint-body">
+    <div
+      class="lang-install__hint-body"
+      data-i18n="i18nExtra.languageinstall_hint_online:html"
+    >
       Use the app in your current browser. <br />An internet connection is
       required.
     </div>

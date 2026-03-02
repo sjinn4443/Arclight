@@ -1433,9 +1433,13 @@
 
     <div class="acd-wrap">
       <div class="acd-instructions">
-        Drag the Arclight and shine light from the
+        <span data-i18n="i18nExtra.glaucomascroll_drag_from"
+          >Drag the Arclight and shine light from the</span
+        >
         <b data-i18n="auto.glaucomascrollimages.temporal_side">temporal side</b>
-        to compare the two eyes
+        <span data-i18n="i18nExtra.glaucomascroll_compare_eyes"
+          >to compare the two eyes</span
+        >
       </div>
 
       <div id="acdStage" aria-label="Anterior Chamber Depth interactive">
@@ -1804,7 +1808,10 @@
     </style>
 
     <div class="rapd-wrap">
-      <div class="rapd-instructions">
+      <div
+        class="rapd-instructions"
+        data-i18n="i18nExtra.glaucomascroll_swing_instruction"
+      >
         Swing the light between the eyes and observe the pupil reaction
       </div>
 
@@ -1819,12 +1826,16 @@
             data-i18n="auto.glaucomascrollimages.rapd_mode_off"
             >RAPD mode OFF</b
           >
-          (paradoxical dilation)
+          <span data-i18n="i18nExtra.glaucomascroll_paradoxical_dilation"
+            >(paradoxical dilation)</span
+          >
         </div>
       </div>
 
       <div id="rapdStage" aria-label="RAPD swinging light interactive">
-        <div id="rapdHint">Swing the light<br />left and right</div>
+        <div id="rapdHint" data-i18n="i18nExtra.glaucomascroll_rapd_hint:html">
+          Swing the light<br />left and right
+        </div>
 
         <img
           id="rapdEyesImg"
@@ -1843,7 +1854,7 @@
           alt="Pick up flashlight"
           draggable="false"
         />
-        <div id="rapdBubble">
+        <div id="rapdBubble" data-i18n="i18nExtra.glaucomascroll_pick_up_swing">
           Pick up Arclight, then swing the light between the eyes
         </div>
 

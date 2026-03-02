@@ -37,12 +37,21 @@
           >
             &times;
           </button>
-          <h2 class="guest-modal__title">Enjoying Arclight?</h2>
-          <p class="guest-modal__text">
+          <h2 class="guest-modal__title" data-i18n="i18nExtra.guest_gate_title">
+            Enjoying Arclight?
+          </h2>
+          <p
+            class="guest-modal__text"
+            data-i18n="i18nExtra.guest_gate_text:html"
+          >
             You’ve reached the end of guest access.<br />
             Create a free account to keep exploring all features without limits.
           </p>
-          <button id="guestSignupBtn" class="guest-modal__cta btn-primary">
+          <button
+            id="guestSignupBtn"
+            class="guest-modal__cta btn-primary"
+            data-i18n="onboarding.title"
+          >
             Create Account
           </button>
         </div>
@@ -102,6 +111,7 @@
         id="profileLocation"
         class="profile-location"
         style="visibility: hidden"
+        data-i18n="i18nExtra.loading_location"
       >
         Loading location…
       </div>
@@ -136,10 +146,7 @@
         <button class="close-btn" id="closeLangPickerBtn" aria-label="Close">
           &times;
         </button>
-        <h3
-          class="lang-install__title"
-          data-i18n="languageInstall.select_language"
-        >
+        <h3 class="lang-install__title" data-i18n="languageInstall.title">
           Select Language
         </h3>
 
@@ -205,7 +212,9 @@
             aria-haspopup="listbox"
             aria-expanded="false"
           >
-            <span id="langPickerCurrent">English</span>
+            <span id="langPickerCurrent" data-i18n="languageInstall.english"
+              >English</span
+            >
           </button>
 
           <ul

@@ -1,0 +1,1605 @@
+[
+  {
+    "file": "public/index.html",
+    "kind": "attr",
+    "tag": "BUTTON",
+    "attr": "aria-label",
+    "text": "Close"
+  },
+  {
+    "file": "public/index.html",
+    "kind": "text",
+    "tag": "SPAN",
+    "text": "English"
+  },
+  {
+    "file": "public/index.html",
+    "kind": "text",
+    "tag": "DIV",
+    "text": "Loading location…"
+  },
+  {
+    "file": "public/reports.html",
+    "kind": "text",
+    "tag": "TH",
+    "text": "Arclight"
+  },
+  {
+    "file": "public/reports.html",
+    "kind": "text",
+    "tag": "TITLE",
+    "text": "Arclight Reports"
+  },
+  {
+    "file": "public/reports.html",
+    "kind": "text",
+    "tag": "TH",
+    "text": "Contact"
+  },
+  {
+    "file": "public/reports.html",
+    "kind": "text",
+    "tag": "TH",
+    "text": "Country"
+  },
+  {
+    "file": "public/reports.html",
+    "kind": "text",
+    "tag": "TH",
+    "text": "Experience"
+  },
+  {
+    "file": "public/reports.html",
+    "kind": "text",
+    "tag": "TH",
+    "text": "Interest"
+  },
+  {
+    "file": "public/reports.html",
+    "kind": "text",
+    "tag": "TH",
+    "text": "Language"
+  },
+  {
+    "file": "public/reports.html",
+    "kind": "text",
+    "tag": "SPAN",
+    "text": "Loaded 0 rows"
+  },
+  {
+    "file": "public/reports.html",
+    "kind": "text",
+    "tag": "TH",
+    "text": "Name"
+  },
+  {
+    "file": "public/reports.html",
+    "kind": "text",
+    "tag": "TH",
+    "text": "No."
+  },
+  {
+    "file": "public/reports.html",
+    "kind": "text",
+    "tag": "TH",
+    "text": "Professional Group"
+  },
+  {
+    "file": "public/reports.html",
+    "kind": "text",
+    "tag": "TH",
+    "text": "Refresh count"
+  },
+  {
+    "file": "public/reports.html",
+    "kind": "text",
+    "tag": "BUTTON",
+    "text": "Refresh data"
+  },
+  {
+    "file": "public/reports.html",
+    "kind": "text",
+    "tag": "TH",
+    "text": "When"
+  },
+  {
+    "file": "public/test_track.html",
+    "kind": "text",
+    "tag": "BUTTON",
+    "text": "Send Track Event"
+  },
+  {
+    "file": "public/test_track.html",
+    "kind": "text",
+    "tag": "TITLE",
+    "text": "Test Track Endpoint"
+  },
+  {
+    "file": "public/test_track.html",
+    "kind": "text",
+    "tag": "H1",
+    "text": "Testing /track Endpoint"
+  },
+  {
+    "file": "public\\html\\behavioursquiz.html",
+    "kind": "attr",
+    "tag": "SPAN",
+    "attr": "aria-label",
+    "text": "Menu"
+  },
+  {
+    "file": "public\\html\\casestudy.html",
+    "kind": "attr",
+    "tag": "BUTTON",
+    "attr": "aria-label",
+    "text": "Back"
+  },
+  {
+    "file": "public\\html\\casestudy.html",
+    "kind": "attr",
+    "tag": "DIV",
+    "attr": "aria-label",
+    "text": "Case chat input"
+  },
+  {
+    "file": "public\\html\\casestudy.html",
+    "kind": "attr",
+    "tag": "IMG",
+    "attr": "alt",
+    "text": "Case image"
+  },
+  {
+    "file": "public\\html\\casestudy.html",
+    "kind": "attr",
+    "tag": "BUTTON",
+    "attr": "aria-label",
+    "text": "Case timer"
+  },
+  {
+    "file": "public\\html\\casestudy.html",
+    "kind": "attr",
+    "tag": "BUTTON",
+    "attr": "aria-label",
+    "text": "Close"
+  },
+  {
+    "file": "public\\html\\casestudy.html",
+    "kind": "attr",
+    "tag": "BUTTON",
+    "attr": "aria-label",
+    "text": "Diagnosis timer"
+  },
+  {
+    "file": "public\\html\\casestudy.html",
+    "kind": "attr",
+    "tag": "BUTTON",
+    "attr": "aria-label",
+    "text": "Flashcard timer"
+  },
+  {
+    "file": "public\\html\\casestudy.html",
+    "kind": "attr",
+    "tag": "SECTION",
+    "attr": "aria-label",
+    "text": "Intermediate"
+  },
+  {
+    "file": "public\\html\\casestudy.html",
+    "kind": "attr",
+    "tag": "SPAN",
+    "attr": "aria-label",
+    "text": "Menu"
+  },
+  {
+    "file": "public\\html\\casestudy.html",
+    "kind": "attr",
+    "tag": "SECTION",
+    "attr": "aria-label",
+    "text": "Primary"
+  },
+  {
+    "file": "public\\html\\casestudy.html",
+    "kind": "attr",
+    "tag": "BUTTON",
+    "attr": "aria-label",
+    "text": "Send"
+  },
+  {
+    "file": "public\\html\\casestudy.html",
+    "kind": "attr",
+    "tag": "BUTTON",
+    "attr": "aria-label",
+    "text": "Toggle question chips"
+  },
+  {
+    "file": "public\\html\\casestudy.html",
+    "kind": "text",
+    "tag": "DIV",
+    "text": "- Click here to select a question"
+  },
+  {
+    "file": "public\\html\\casestudy.html",
+    "kind": "text",
+    "tag": "BUTTON",
+    "text": "< Not Urgent"
+  },
+  {
+    "file": "public\\html\\casestudy.html",
+    "kind": "text",
+    "tag": "DIV",
+    "text": "10 seconds from the timer."
+  },
+  {
+    "file": "public\\html\\casestudy.html",
+    "kind": "text",
+    "tag": "DIV",
+    "text": "Attempts left: 2"
+  },
+  {
+    "file": "public\\html\\casestudy.html",
+    "kind": "text",
+    "tag": "BUTTON",
+    "text": "Cancel"
+  },
+  {
+    "file": "public\\html\\casestudy.html",
+    "kind": "text",
+    "tag": "DIV",
+    "text": "Case"
+  },
+  {
+    "file": "public\\html\\casestudy.html",
+    "kind": "text",
+    "tag": "DIV",
+    "text": "Do you still want to view it?"
+  },
+  {
+    "file": "public\\html\\casestudy.html",
+    "kind": "text",
+    "tag": "BUTTON",
+    "text": "Next"
+  },
+  {
+    "file": "public\\html\\casestudy.html",
+    "kind": "text",
+    "tag": "BUTTON",
+    "text": "Next case"
+  },
+  {
+    "file": "public\\html\\casestudy.html",
+    "kind": "text",
+    "tag": "BUTTON",
+    "text": "OK"
+  },
+  {
+    "file": "public\\html\\casestudy.html",
+    "kind": "text",
+    "tag": "BUTTON",
+    "text": "Q"
+  },
+  {
+    "file": "public\\html\\casestudy.html",
+    "kind": "text",
+    "tag": "BUTTON",
+    "text": "Select Diagnosis"
+  },
+  {
+    "file": "public\\html\\casestudy.html",
+    "kind": "text",
+    "tag": "BUTTON",
+    "text": "Urgent Referral >"
+  },
+  {
+    "file": "public\\html\\casestudy.html",
+    "kind": "text",
+    "tag": "DIV",
+    "text": "Viewing the case image will deduct"
+  },
+  {
+    "file": "public\\html\\casestudy.html",
+    "kind": "text",
+    "tag": "DIV",
+    "text": "You only get 2 attempts."
+  },
+  {
+    "file": "public\\html\\childhoodAssessment.html",
+    "kind": "attr",
+    "tag": "SPAN",
+    "attr": "aria-label",
+    "text": "Menu"
+  },
+  {
+    "file": "public\\html\\childhoodEyeBrainImages.html",
+    "kind": "attr",
+    "tag": "SPAN",
+    "attr": "aria-label",
+    "text": "Menu"
+  },
+  {
+    "file": "public\\html\\childhoodEyeScreeningWorkshop.html",
+    "kind": "attr",
+    "tag": "SECTION",
+    "attr": "aria-label",
+    "text": "Childhood eye screening"
+  },
+  {
+    "file": "public\\html\\childhoodEyeScreeningWorkshop.html",
+    "kind": "attr",
+    "tag": "SPAN",
+    "attr": "aria-label",
+    "text": "Menu"
+  },
+  {
+    "file": "public\\html\\childhoodEyeScreeningWorkshop.html",
+    "kind": "attr",
+    "tag": "BUTTON",
+    "attr": "aria-label",
+    "text": "online"
+  },
+  {
+    "file": "public\\html\\childhoodEyeScreeningWorkshop.html",
+    "kind": "attr",
+    "tag": "BUTTON",
+    "attr": "title",
+    "text": "Share"
+  },
+  {
+    "file": "public\\html\\childhoodEyeScreeningWorkshop.html",
+    "kind": "attr",
+    "tag": "BUTTON",
+    "attr": "aria-label",
+    "text": "Share"
+  },
+  {
+    "file": "public\\html\\childhoodEyeScreeningWorkshop.html",
+    "kind": "attr",
+    "tag": "DIV",
+    "attr": "aria-label",
+    "text": "Video mode"
+  },
+  {
+    "file": "public\\html\\childhoodEyeScreeningWorkshop.html",
+    "kind": "text",
+    "tag": "DIV",
+    "text": "Childhood Eye Screening"
+  },
+  {
+    "file": "public\\html\\childhoodEyeScreeningWorkshop.html",
+    "kind": "text",
+    "tag": "BUTTON",
+    "text": "high"
+  },
+  {
+    "file": "public\\html\\childhoodEyeScreeningWorkshop.html",
+    "kind": "text",
+    "tag": "SPAN",
+    "text": "Introduction to Visual Development"
+  },
+  {
+    "file": "public\\html\\childhoodEyeScreeningWorkshop.html",
+    "kind": "text",
+    "tag": "BUTTON",
+    "text": "low"
+  },
+  {
+    "file": "public\\html\\childhoodFundalAfterExamination.html",
+    "kind": "attr",
+    "tag": "DIV",
+    "attr": "aria-label",
+    "text": "Fundal reflex after examination animations"
+  },
+  {
+    "file": "public\\html\\childhoodFundalAfterExamination.html",
+    "kind": "attr",
+    "tag": "SPAN",
+    "attr": "aria-label",
+    "text": "Menu"
+  },
+  {
+    "file": "public\\html\\childhoodFundalExamination.html",
+    "kind": "attr",
+    "tag": "DIV",
+    "attr": "aria-label",
+    "text": "Fundal reflex examination animations"
+  },
+  {
+    "file": "public\\html\\childhoodFundalExamination.html",
+    "kind": "attr",
+    "tag": "SPAN",
+    "attr": "aria-label",
+    "text": "Menu"
+  },
+  {
+    "file": "public\\html\\childhoodFundalNewbornEyesClosed.html",
+    "kind": "attr",
+    "tag": "DIV",
+    "attr": "aria-label",
+    "text": "Fundal reflex newborn eyes closed animations"
+  },
+  {
+    "file": "public\\html\\childhoodFundalNewbornEyesClosed.html",
+    "kind": "attr",
+    "tag": "SPAN",
+    "attr": "aria-label",
+    "text": "Menu"
+  },
+  {
+    "file": "public\\html\\childhoodFundalNewbornEyesOpen.html",
+    "kind": "attr",
+    "tag": "DIV",
+    "attr": "aria-label",
+    "text": "Fundal reflex newborn eyes open animations"
+  },
+  {
+    "file": "public\\html\\childhoodFundalNewbornEyesOpen.html",
+    "kind": "attr",
+    "tag": "SPAN",
+    "attr": "aria-label",
+    "text": "Menu"
+  },
+  {
+    "file": "public\\html\\childhoodFundalPossibleFinding.html",
+    "kind": "attr",
+    "tag": "DIV",
+    "attr": "aria-label",
+    "text": "Fundal reflex possible findings animations"
+  },
+  {
+    "file": "public\\html\\childhoodFundalPossibleFinding.html",
+    "kind": "attr",
+    "tag": "SPAN",
+    "attr": "aria-label",
+    "text": "Menu"
+  },
+  {
+    "file": "public\\html\\childhoodFundalPreparation.html",
+    "kind": "attr",
+    "tag": "DIV",
+    "attr": "aria-label",
+    "text": "Fundal reflex preparation animations"
+  },
+  {
+    "file": "public\\html\\childhoodFundalPreparation.html",
+    "kind": "attr",
+    "tag": "SPAN",
+    "attr": "aria-label",
+    "text": "Menu"
+  },
+  {
+    "file": "public\\html\\childhoodFundalUnclearFindings.html",
+    "kind": "attr",
+    "tag": "DIV",
+    "attr": "aria-label",
+    "text": "Fundal reflex unclear findings animations"
+  },
+  {
+    "file": "public\\html\\childhoodFundalUnclearFindings.html",
+    "kind": "attr",
+    "tag": "SPAN",
+    "attr": "aria-label",
+    "text": "Menu"
+  },
+  {
+    "file": "public\\html\\childhoodRefer.html",
+    "kind": "attr",
+    "tag": "SPAN",
+    "attr": "aria-label",
+    "text": "Menu"
+  },
+  {
+    "file": "public\\html\\fundal_exam.html",
+    "kind": "text",
+    "tag": "TITLE",
+    "text": "Fundal Exam"
+  },
+  {
+    "file": "public\\html\\fundal_exam.html",
+    "kind": "text",
+    "tag": "DIV",
+    "text": "Loading Fundal_Exam.json…"
+  },
+  {
+    "file": "public\\html\\fundalReflexPdf.html",
+    "kind": "attr",
+    "tag": "A",
+    "attr": "aria-label",
+    "text": "Download ATOMS handout 1"
+  },
+  {
+    "file": "public\\html\\fundalReflexPdf.html",
+    "kind": "attr",
+    "tag": "A",
+    "attr": "aria-label",
+    "text": "Download ATOMS handout 2"
+  },
+  {
+    "file": "public\\html\\fundalReflexPdf.html",
+    "kind": "attr",
+    "tag": "A",
+    "attr": "aria-label",
+    "text": "Download PDF"
+  },
+  {
+    "file": "public\\html\\fundalReflexPdf.html",
+    "kind": "attr",
+    "tag": "DIV",
+    "attr": "aria-label",
+    "text": "Fundal reflex PDF viewer"
+  },
+  {
+    "file": "public\\html\\fundalReflexPdf.html",
+    "kind": "attr",
+    "tag": "SPAN",
+    "attr": "aria-label",
+    "text": "Menu"
+  },
+  {
+    "file": "public\\html\\glaucomaHistoryCaseStudy.html",
+    "kind": "attr",
+    "tag": "DIV",
+    "attr": "aria-label",
+    "text": "Case chat input"
+  },
+  {
+    "file": "public\\html\\glaucomaHistoryCaseStudy.html",
+    "kind": "attr",
+    "tag": "BUTTON",
+    "attr": "aria-label",
+    "text": "Case timer"
+  },
+  {
+    "file": "public\\html\\glaucomaHistoryCaseStudy.html",
+    "kind": "attr",
+    "tag": "BUTTON",
+    "attr": "aria-label",
+    "text": "Close"
+  },
+  {
+    "file": "public\\html\\glaucomaHistoryCaseStudy.html",
+    "kind": "attr",
+    "tag": "BUTTON",
+    "attr": "aria-label",
+    "text": "Diagnosis timer"
+  },
+  {
+    "file": "public\\html\\glaucomaHistoryCaseStudy.html",
+    "kind": "attr",
+    "tag": "SPAN",
+    "attr": "aria-label",
+    "text": "Menu"
+  },
+  {
+    "file": "public\\html\\glaucomaHistoryCaseStudy.html",
+    "kind": "attr",
+    "tag": "BUTTON",
+    "attr": "aria-label",
+    "text": "Send"
+  },
+  {
+    "file": "public\\html\\glaucomaHistoryCaseStudy.html",
+    "kind": "attr",
+    "tag": "BUTTON",
+    "attr": "aria-label",
+    "text": "Toggle question chips"
+  },
+  {
+    "file": "public\\html\\glaucomaHistoryCaseStudy.html",
+    "kind": "text",
+    "tag": "DIV",
+    "text": "Click here to select a question"
+  },
+  {
+    "file": "public\\html\\glaucomaHistoryCaseStudy.html",
+    "kind": "text",
+    "tag": "BUTTON",
+    "text": "Next case"
+  },
+  {
+    "file": "public\\html\\glaucomaHistoryCaseStudy.html",
+    "kind": "text",
+    "tag": "BUTTON",
+    "text": "Q"
+  },
+  {
+    "file": "public\\html\\glaucomaHistoryCaseStudy.html",
+    "kind": "text",
+    "tag": "BUTTON",
+    "text": "Select Diagnosis"
+  },
+  {
+    "file": "public\\html\\glaucomaQuizCaseStudy.html",
+    "kind": "attr",
+    "tag": "SPAN",
+    "attr": "aria-label",
+    "text": "Menu"
+  },
+  {
+    "file": "public\\html\\glaucomascrollImages.html",
+    "kind": "attr",
+    "tag": "DIV",
+    "attr": "aria-label",
+    "text": "Anterior Chamber Depth interactive"
+  },
+  {
+    "file": "public\\html\\glaucomascrollImages.html",
+    "kind": "attr",
+    "tag": "IMG",
+    "attr": "alt",
+    "text": "Back of eye - Cupping - 01"
+  },
+  {
+    "file": "public\\html\\glaucomascrollImages.html",
+    "kind": "attr",
+    "tag": "IMG",
+    "attr": "alt",
+    "text": "Back of eye - Cupping - 02"
+  },
+  {
+    "file": "public\\html\\glaucomascrollImages.html",
+    "kind": "attr",
+    "tag": "IMG",
+    "attr": "alt",
+    "text": "Back of eye - Cupping - 03"
+  },
+  {
+    "file": "public\\html\\glaucomascrollImages.html",
+    "kind": "attr",
+    "tag": "IMG",
+    "attr": "alt",
+    "text": "Back of eye - Cupping - 04"
+  },
+  {
+    "file": "public\\html\\glaucomascrollImages.html",
+    "kind": "attr",
+    "tag": "IMG",
+    "attr": "alt",
+    "text": "Back of eye - Introduction - 01"
+  },
+  {
+    "file": "public\\html\\glaucomascrollImages.html",
+    "kind": "attr",
+    "tag": "IMG",
+    "attr": "alt",
+    "text": "Back of eye - Optic nerve - 01"
+  },
+  {
+    "file": "public\\html\\glaucomascrollImages.html",
+    "kind": "attr",
+    "tag": "IMG",
+    "attr": "alt",
+    "text": "Back of eye - Optic nerve - 02"
+  },
+  {
+    "file": "public\\html\\glaucomascrollImages.html",
+    "kind": "attr",
+    "tag": "IMG",
+    "attr": "alt",
+    "text": "Eyes graphic"
+  },
+  {
+    "file": "public\\html\\glaucomascrollImages.html",
+    "kind": "attr",
+    "tag": "IMG",
+    "attr": "alt",
+    "text": "Fields - Assess and record - 01"
+  },
+  {
+    "file": "public\\html\\glaucomascrollImages.html",
+    "kind": "attr",
+    "tag": "IMG",
+    "attr": "alt",
+    "text": "Fields - Examination - 01"
+  },
+  {
+    "file": "public\\html\\glaucomascrollImages.html",
+    "kind": "attr",
+    "tag": "IMG",
+    "attr": "alt",
+    "text": "Fields - Intro - 01"
+  },
+  {
+    "file": "public\\html\\glaucomascrollImages.html",
+    "kind": "attr",
+    "tag": "IMG",
+    "attr": "alt",
+    "text": "Fields - Intro - 02"
+  },
+  {
+    "file": "public\\html\\glaucomascrollImages.html",
+    "kind": "attr",
+    "tag": "IMG",
+    "attr": "alt",
+    "text": "Fields - Quadrants Fingers - 01"
+  },
+  {
+    "file": "public\\html\\glaucomascrollImages.html",
+    "kind": "attr",
+    "tag": "IMG",
+    "attr": "alt",
+    "text": "Fields - Quadrants Fingers - 02"
+  },
+  {
+    "file": "public\\html\\glaucomascrollImages.html",
+    "kind": "attr",
+    "tag": "IMG",
+    "attr": "alt",
+    "text": "Fields - Quadrants Red - 01"
+  },
+  {
+    "file": "public\\html\\glaucomascrollImages.html",
+    "kind": "attr",
+    "tag": "IMG",
+    "attr": "alt",
+    "text": "Fields - Quadrants Red - 02"
+  },
+  {
+    "file": "public\\html\\glaucomascrollImages.html",
+    "kind": "attr",
+    "tag": "IMG",
+    "attr": "alt",
+    "text": "Flashlight"
+  },
+  {
+    "file": "public\\html\\glaucomascrollImages.html",
+    "kind": "attr",
+    "tag": "IMG",
+    "attr": "alt",
+    "text": "Flashlight left"
+  },
+  {
+    "file": "public\\html\\glaucomascrollImages.html",
+    "kind": "attr",
+    "tag": "IMG",
+    "attr": "alt",
+    "text": "Flashlight right"
+  },
+  {
+    "file": "public\\html\\glaucomascrollImages.html",
+    "kind": "attr",
+    "tag": "IMG",
+    "attr": "alt",
+    "text": "Front of eye - Anterior Chamber Depth - 01"
+  },
+  {
+    "file": "public\\html\\glaucomascrollImages.html",
+    "kind": "attr",
+    "tag": "IMG",
+    "attr": "alt",
+    "text": "Front of eye - Anterior Chamber Depth - 02"
+  },
+  {
+    "file": "public\\html\\glaucomascrollImages.html",
+    "kind": "attr",
+    "tag": "IMG",
+    "attr": "alt",
+    "text": "Front of eye - Feeling for high IOP in ACAG - 01"
+  },
+  {
+    "file": "public\\html\\glaucomascrollImages.html",
+    "kind": "attr",
+    "tag": "IMG",
+    "attr": "alt",
+    "text": "Front of eye - Feeling for high IOP in ACAG - 02"
+  },
+  {
+    "file": "public\\html\\glaucomascrollImages.html",
+    "kind": "attr",
+    "tag": "IMG",
+    "attr": "alt",
+    "text": "Front of eye - Feeling for high IOP in ACAG - 03"
+  },
+  {
+    "file": "public\\html\\glaucomascrollImages.html",
+    "kind": "attr",
+    "tag": "IMG",
+    "attr": "alt",
+    "text": "Front of eye - Feeling for high IOP in ACAG - 04"
+  },
+  {
+    "file": "public\\html\\glaucomascrollImages.html",
+    "kind": "attr",
+    "tag": "IMG",
+    "attr": "alt",
+    "text": "Front of eye - Findings - 01"
+  },
+  {
+    "file": "public\\html\\glaucomascrollImages.html",
+    "kind": "attr",
+    "tag": "IMG",
+    "attr": "alt",
+    "text": "Front of eye - Findings - 02"
+  },
+  {
+    "file": "public\\html\\glaucomascrollImages.html",
+    "kind": "attr",
+    "tag": "IMG",
+    "attr": "alt",
+    "text": "Front of eye - Findings - 03"
+  },
+  {
+    "file": "public\\html\\glaucomascrollImages.html",
+    "kind": "attr",
+    "tag": "IMG",
+    "attr": "alt",
+    "text": "Front of eye - Introduction - 01"
+  },
+  {
+    "file": "public\\html\\glaucomascrollImages.html",
+    "kind": "attr",
+    "tag": "IMG",
+    "attr": "alt",
+    "text": "History - Introduction - 01"
+  },
+  {
+    "file": "public\\html\\glaucomascrollImages.html",
+    "kind": "attr",
+    "tag": "IMG",
+    "attr": "alt",
+    "text": "History - POAG and ACAG - 01"
+  },
+  {
+    "file": "public\\html\\glaucomascrollImages.html",
+    "kind": "attr",
+    "tag": "IMG",
+    "attr": "alt",
+    "text": "History - POAG and ACAG - 02"
+  },
+  {
+    "file": "public\\html\\glaucomascrollImages.html",
+    "kind": "attr",
+    "tag": "SPAN",
+    "attr": "aria-label",
+    "text": "Menu"
+  },
+  {
+    "file": "public\\html\\glaucomascrollImages.html",
+    "kind": "attr",
+    "tag": "IMG",
+    "attr": "alt",
+    "text": "Pick up flashlight"
+  },
+  {
+    "file": "public\\html\\glaucomascrollImages.html",
+    "kind": "attr",
+    "tag": "IMG",
+    "attr": "alt",
+    "text": "Pupils - Reactions - 01"
+  },
+  {
+    "file": "public\\html\\glaucomascrollImages.html",
+    "kind": "attr",
+    "tag": "IMG",
+    "attr": "alt",
+    "text": "Pupils - Reactions - 02"
+  },
+  {
+    "file": "public\\html\\glaucomascrollImages.html",
+    "kind": "attr",
+    "tag": "IMG",
+    "attr": "alt",
+    "text": "Pupils - Swing RAPD - 01"
+  },
+  {
+    "file": "public\\html\\glaucomascrollImages.html",
+    "kind": "attr",
+    "tag": "DIV",
+    "attr": "aria-label",
+    "text": "RAPD mode toggle"
+  },
+  {
+    "file": "public\\html\\glaucomascrollImages.html",
+    "kind": "attr",
+    "tag": "DIV",
+    "attr": "aria-label",
+    "text": "RAPD swinging light interactive"
+  },
+  {
+    "file": "public\\html\\glaucomascrollImages.html",
+    "kind": "attr",
+    "tag": "IMG",
+    "attr": "alt",
+    "text": "Summary - Scrolly - 01"
+  },
+  {
+    "file": "public\\html\\glaucomascrollImages.html",
+    "kind": "attr",
+    "tag": "IMG",
+    "attr": "alt",
+    "text": "Summary - Scrolly - 02"
+  },
+  {
+    "file": "public\\html\\glaucomascrollImages.html",
+    "kind": "attr",
+    "tag": "IMG",
+    "attr": "alt",
+    "text": "Summary - Scrolly - 03"
+  },
+  {
+    "file": "public\\html\\glaucomascrollImages.html",
+    "kind": "attr",
+    "tag": "IMG",
+    "attr": "alt",
+    "text": "Summary - Scrolly - 04"
+  },
+  {
+    "file": "public\\html\\glaucomascrollImages.html",
+    "kind": "attr",
+    "tag": "IMG",
+    "attr": "alt",
+    "text": "Summary - Scrolly - 05"
+  },
+  {
+    "file": "public\\html\\glaucomascrollImages.html",
+    "kind": "attr",
+    "tag": "IMG",
+    "attr": "alt",
+    "text": "Summary - Scrolly - 06"
+  },
+  {
+    "file": "public\\html\\glaucomascrollImages.html",
+    "kind": "attr",
+    "tag": "IMG",
+    "attr": "alt",
+    "text": "Summary - Scrolly - 07"
+  },
+  {
+    "file": "public\\html\\glaucomascrollImages.html",
+    "kind": "attr",
+    "tag": "IMG",
+    "attr": "alt",
+    "text": "Summary - Scrolly - 08"
+  },
+  {
+    "file": "public\\html\\glaucomascrollImages.html",
+    "kind": "attr",
+    "tag": "IMG",
+    "attr": "alt",
+    "text": "Summary - Scrolly - 09"
+  },
+  {
+    "file": "public\\html\\glaucomascrollImages.html",
+    "kind": "attr",
+    "tag": "IMG",
+    "attr": "alt",
+    "text": "Vision - Intro - 01"
+  },
+  {
+    "file": "public\\html\\glaucomascrollImages.html",
+    "kind": "attr",
+    "tag": "IMG",
+    "attr": "alt",
+    "text": "Vision - Intro - 02"
+  },
+  {
+    "file": "public\\html\\glaucomascrollImages.html",
+    "kind": "attr",
+    "tag": "IMG",
+    "attr": "alt",
+    "text": "Vision - Testing Visual Acuity - 01"
+  },
+  {
+    "file": "public\\html\\glaucomascrollImages.html",
+    "kind": "attr",
+    "tag": "IMG",
+    "attr": "alt",
+    "text": "What is glaucoma - 01"
+  },
+  {
+    "file": "public\\html\\glaucomascrollImages.html",
+    "kind": "text",
+    "tag": "DIV",
+    "text": "(paradoxical dilation)"
+  },
+  {
+    "file": "public\\html\\glaucomascrollImages.html",
+    "kind": "text",
+    "tag": "DIV",
+    "text": "Drag the Arclight and shine light from the"
+  },
+  {
+    "file": "public\\html\\glaucomascrollImages.html",
+    "kind": "text",
+    "tag": "DIV",
+    "text": "left and right"
+  },
+  {
+    "file": "public\\html\\glaucomascrollImages.html",
+    "kind": "text",
+    "tag": "DIV",
+    "text": "Pick up Arclight, then swing the light between the eyes"
+  },
+  {
+    "file": "public\\html\\glaucomascrollImages.html",
+    "kind": "text",
+    "tag": "DIV",
+    "text": "Swing the light"
+  },
+  {
+    "file": "public\\html\\glaucomascrollImages.html",
+    "kind": "text",
+    "tag": "DIV",
+    "text": "Swing the light between the eyes and observe the pupil reaction"
+  },
+  {
+    "file": "public\\html\\glaucomascrollImages.html",
+    "kind": "text",
+    "tag": "DIV",
+    "text": "to compare the two eyes"
+  },
+  {
+    "file": "public\\html\\glaucomaWorkshop.html",
+    "kind": "attr",
+    "tag": "A",
+    "attr": "aria-label",
+    "text": "Download Fundus ATOMS"
+  },
+  {
+    "file": "public\\html\\glaucomaWorkshop.html",
+    "kind": "attr",
+    "tag": "A",
+    "attr": "aria-label",
+    "text": "Download Glaucoma ATOMS"
+  },
+  {
+    "file": "public\\html\\glaucomaWorkshop.html",
+    "kind": "attr",
+    "tag": "SECTION",
+    "attr": "aria-label",
+    "text": "Glaucoma workshop"
+  },
+  {
+    "file": "public\\html\\glaucomaWorkshop.html",
+    "kind": "attr",
+    "tag": "SPAN",
+    "attr": "aria-label",
+    "text": "Menu"
+  },
+  {
+    "file": "public\\html\\glaucomaWorkshop.html",
+    "kind": "text",
+    "tag": "SPAN",
+    "text": "[To be added]"
+  },
+  {
+    "file": "public\\html\\glaucomaWorkshop.html",
+    "kind": "text",
+    "tag": "SPAN",
+    "text": "ACAG case"
+  },
+  {
+    "file": "public\\html\\glaucomaWorkshop.html",
+    "kind": "text",
+    "tag": "SPAN",
+    "text": "Anterior Chamber Depth"
+  },
+  {
+    "file": "public\\html\\glaucomaWorkshop.html",
+    "kind": "text",
+    "tag": "SPAN",
+    "text": "Assess and record"
+  },
+  {
+    "file": "public\\html\\glaucomaWorkshop.html",
+    "kind": "text",
+    "tag": "SPAN",
+    "text": "Cupping"
+  },
+  {
+    "file": "public\\html\\glaucomaWorkshop.html",
+    "kind": "text",
+    "tag": "SPAN",
+    "text": "Direct ophthalmoscopy"
+  },
+  {
+    "file": "public\\html\\glaucomaWorkshop.html",
+    "kind": "text",
+    "tag": "SPAN",
+    "text": "Direct ophthalmoscopy - disc annotated"
+  },
+  {
+    "file": "public\\html\\glaucomaWorkshop.html",
+    "kind": "text",
+    "tag": "SPAN",
+    "text": "Direct pupil examination technique"
+  },
+  {
+    "file": "public\\html\\glaucomaWorkshop.html",
+    "kind": "text",
+    "tag": "SPAN",
+    "text": "Disc cupping"
+  },
+  {
+    "file": "public\\html\\glaucomaWorkshop.html",
+    "kind": "text",
+    "tag": "SPAN",
+    "text": "Examination"
+  },
+  {
+    "file": "public\\html\\glaucomaWorkshop.html",
+    "kind": "text",
+    "tag": "SPAN",
+    "text": "Examination and anterior chamber depth"
+  },
+  {
+    "file": "public\\html\\glaucomaWorkshop.html",
+    "kind": "text",
+    "tag": "SPAN",
+    "text": "Feeling for high IOP in ACAG"
+  },
+  {
+    "file": "public\\html\\glaucomaWorkshop.html",
+    "kind": "text",
+    "tag": "SPAN",
+    "text": "Findings that can lead to glaucoma"
+  },
+  {
+    "file": "public\\html\\glaucomaWorkshop.html",
+    "kind": "text",
+    "tag": "SPAN",
+    "text": "Full pupil swinging light test RAPD"
+  },
+  {
+    "file": "public\\html\\glaucomaWorkshop.html",
+    "kind": "text",
+    "tag": "SPAN",
+    "text": "Fundal Reflex Disease"
+  },
+  {
+    "file": "public\\html\\glaucomaWorkshop.html",
+    "kind": "text",
+    "tag": "DIV",
+    "text": "Glaucoma workshop"
+  },
+  {
+    "file": "public\\html\\glaucomaWorkshop.html",
+    "kind": "text",
+    "tag": "SPAN",
+    "text": "Intro"
+  },
+  {
+    "file": "public\\html\\glaucomaWorkshop.html",
+    "kind": "text",
+    "tag": "SPAN",
+    "text": "Margin"
+  },
+  {
+    "file": "public\\html\\glaucomaWorkshop.html",
+    "kind": "text",
+    "tag": "SPAN",
+    "text": "Near vision and dispense of glasses"
+  },
+  {
+    "file": "public\\html\\glaucomaWorkshop.html",
+    "kind": "text",
+    "tag": "SPAN",
+    "text": "Optic disc anatomy"
+  },
+  {
+    "file": "public\\html\\glaucomaWorkshop.html",
+    "kind": "text",
+    "tag": "SPAN",
+    "text": "Optic nerve"
+  },
+  {
+    "file": "public\\html\\glaucomaWorkshop.html",
+    "kind": "text",
+    "tag": "SPAN",
+    "text": "Other optic nerve diseases"
+  },
+  {
+    "file": "public\\html\\glaucomaWorkshop.html",
+    "kind": "text",
+    "tag": "SPAN",
+    "text": "Pupil reactions"
+  },
+  {
+    "file": "public\\html\\glaucomaWorkshop.html",
+    "kind": "text",
+    "tag": "SPAN",
+    "text": "Pupil swinging light test RAPD"
+  },
+  {
+    "file": "public\\html\\glaucomaWorkshop.html",
+    "kind": "text",
+    "tag": "SPAN",
+    "text": "Quadrants – Fingers"
+  },
+  {
+    "file": "public\\html\\glaucomaWorkshop.html",
+    "kind": "text",
+    "tag": "SPAN",
+    "text": "Quadrants – Red target"
+  },
+  {
+    "file": "public\\html\\glaucomaWorkshop.html",
+    "kind": "text",
+    "tag": "SPAN",
+    "text": "Quiz"
+  },
+  {
+    "file": "public\\html\\glaucomaWorkshop.html",
+    "kind": "text",
+    "tag": "SPAN",
+    "text": "Signs of glaucoma"
+  },
+  {
+    "file": "public\\html\\glaucomaWorkshop.html",
+    "kind": "text",
+    "tag": "SPAN",
+    "text": "Visual Field Examination"
+  },
+  {
+    "file": "public\\html\\glaucomaWorkshop.html",
+    "kind": "text",
+    "tag": "SPAN",
+    "text": "Visual fields"
+  },
+  {
+    "file": "public\\html\\interest.html",
+    "kind": "attr",
+    "tag": "IMG",
+    "attr": "alt",
+    "text": "Arclight"
+  },
+  {
+    "file": "public\\html\\intro.html",
+    "kind": "attr",
+    "tag": "DIV",
+    "attr": "aria-label",
+    "text": "Intro progress"
+  },
+  {
+    "file": "public\\html\\intro.html",
+    "kind": "attr",
+    "tag": "BUTTON",
+    "attr": "aria-label",
+    "text": "Next"
+  },
+  {
+    "file": "public\\html\\intro.html",
+    "kind": "attr",
+    "tag": "BUTTON",
+    "attr": "aria-label",
+    "text": "Previous"
+  },
+  {
+    "file": "public\\html\\intro.html",
+    "kind": "text",
+    "tag": "VIDEO",
+    "text": "Your browser does not support the video tag."
+  },
+  {
+    "file": "public\\html\\menu.html",
+    "kind": "text",
+    "tag": "BUTTON",
+    "text": "Get Precise Location"
+  },
+  {
+    "file": "public\\html\\menu.html",
+    "kind": "text",
+    "tag": "DIV",
+    "text": "Location: …"
+  },
+  {
+    "file": "public\\html\\myprofile.html",
+    "kind": "attr",
+    "tag": "DIV",
+    "attr": "aria-label",
+    "text": "I have received prior Arclight training"
+  },
+  {
+    "file": "public\\html\\myprofile.html",
+    "kind": "attr",
+    "tag": "DIV",
+    "attr": "aria-label",
+    "text": "I own an Arclight device"
+  },
+  {
+    "file": "public\\html\\myprofile.html",
+    "kind": "attr",
+    "tag": "SELECT",
+    "attr": "aria-label",
+    "text": "Interest"
+  },
+  {
+    "file": "public\\html\\myprofile.html",
+    "kind": "attr",
+    "tag": "IMG",
+    "attr": "alt",
+    "text": "Language"
+  },
+  {
+    "file": "public\\html\\myprofile.html",
+    "kind": "attr",
+    "tag": "BUTTON",
+    "attr": "aria-label",
+    "text": "Menu"
+  },
+  {
+    "file": "public\\html\\myprofile.html",
+    "kind": "attr",
+    "tag": "BUTTON",
+    "attr": "aria-label",
+    "text": "Notifications"
+  },
+  {
+    "file": "public\\html\\myprofile.html",
+    "kind": "attr",
+    "tag": "DIV",
+    "attr": "aria-label",
+    "text": "Owns an Arclight device"
+  },
+  {
+    "file": "public\\html\\myprofile.html",
+    "kind": "attr",
+    "tag": "DIV",
+    "attr": "aria-label",
+    "text": "Prior Arclight training"
+  },
+  {
+    "file": "public\\html\\myprofile.html",
+    "kind": "text",
+    "tag": "DIV",
+    "text": "I have received prior Arclight training"
+  },
+  {
+    "file": "public\\html\\myprofile.html",
+    "kind": "text",
+    "tag": "BUTTON",
+    "text": "No"
+  },
+  {
+    "file": "public\\html\\myprofile.html",
+    "kind": "text",
+    "tag": "BUTTON",
+    "text": "Yes"
+  },
+  {
+    "file": "public\\html\\page1.html",
+    "kind": "text",
+    "tag": "TITLE",
+    "text": "Page 1"
+  },
+  {
+    "file": "public\\html\\page1.html",
+    "kind": "text",
+    "tag": "P",
+    "text": "This is the content for page 1."
+  },
+  {
+    "file": "public\\html\\page1.html",
+    "kind": "text",
+    "tag": "H1",
+    "text": "Welcome to Page 1"
+  },
+  {
+    "file": "public\\html\\reports.html",
+    "kind": "attr",
+    "tag": "SECTION",
+    "attr": "aria-label",
+    "text": "Statistics"
+  },
+  {
+    "file": "public\\html\\reports.html",
+    "kind": "text",
+    "tag": "P",
+    "text": "Loading map…"
+  },
+  {
+    "file": "public\\html\\signsVICases.html",
+    "kind": "attr",
+    "tag": "SPAN",
+    "attr": "aria-label",
+    "text": "Menu"
+  },
+  {
+    "file": "public\\html\\videos.html",
+    "kind": "attr",
+    "tag": "SECTION",
+    "attr": "aria-label",
+    "text": "Intermediate"
+  },
+  {
+    "file": "public\\html\\videos.html",
+    "kind": "attr",
+    "tag": "SPAN",
+    "attr": "aria-label",
+    "text": "Menu"
+  },
+  {
+    "file": "public\\html\\videos.html",
+    "kind": "attr",
+    "tag": "BUTTON",
+    "attr": "aria-label",
+    "text": "online"
+  },
+  {
+    "file": "public\\html\\videos.html",
+    "kind": "attr",
+    "tag": "SECTION",
+    "attr": "aria-label",
+    "text": "Primary"
+  },
+  {
+    "file": "public\\html\\videos.html",
+    "kind": "attr",
+    "tag": "BUTTON",
+    "attr": "title",
+    "text": "Share"
+  },
+  {
+    "file": "public\\html\\videos.html",
+    "kind": "attr",
+    "tag": "BUTTON",
+    "attr": "aria-label",
+    "text": "Share"
+  },
+  {
+    "file": "public\\html\\videos.html",
+    "kind": "attr",
+    "tag": "BUTTON",
+    "attr": "aria-label",
+    "text": "Share this video"
+  },
+  {
+    "file": "public\\html\\videos.html",
+    "kind": "attr",
+    "tag": "DIV",
+    "attr": "aria-label",
+    "text": "Toggle video mode"
+  },
+  {
+    "file": "public\\html\\videos.html",
+    "kind": "attr",
+    "tag": "DIV",
+    "attr": "aria-label",
+    "text": "Video mode"
+  },
+  {
+    "file": "public\\html\\videos.html",
+    "kind": "text",
+    "tag": "BUTTON",
+    "text": "high"
+  },
+  {
+    "file": "public\\html\\videos.html",
+    "kind": "text",
+    "tag": "BUTTON",
+    "text": "High"
+  },
+  {
+    "file": "public\\html\\videos.html",
+    "kind": "text",
+    "tag": "BUTTON",
+    "text": "low"
+  },
+  {
+    "file": "public\\html\\videos.html",
+    "kind": "text",
+    "tag": "BUTTON",
+    "text": "Low"
+  },
+  {
+    "file": "public\\html\\visualsystemeyesbrain.html",
+    "kind": "attr",
+    "tag": "SPAN",
+    "attr": "aria-label",
+    "text": "Menu"
+  },
+  {
+    "file": "public\\html\\visualsystemeyesbrain.html",
+    "kind": "attr",
+    "tag": "DIV",
+    "attr": "aria-label",
+    "text": "Visual system animation"
+  },
+  {
+    "file": "public\\html\\visualsystemeyesbrain.html",
+    "kind": "attr",
+    "tag": "DIV",
+    "attr": "aria-label",
+    "text": "Visual system scroll"
+  },
+  {
+    "file": "public\\html\\visualsystemeyesbrain.html",
+    "kind": "text",
+    "tag": "P",
+    "text": "At the back of the eye"
+  },
+  {
+    "file": "public\\html\\visualsystemeyesbrain.html",
+    "kind": "text",
+    "tag": "P",
+    "text": "by the cornea and lens."
+  },
+  {
+    "file": "public\\html\\visualsystemeyesbrain.html",
+    "kind": "text",
+    "tag": "P",
+    "text": "down the optic nerve."
+  },
+  {
+    "file": "public\\html\\visualsystemeyesbrain.html",
+    "kind": "text",
+    "tag": "P",
+    "text": "from the world and turn"
+  },
+  {
+    "file": "public\\html\\visualsystemeyesbrain.html",
+    "kind": "text",
+    "tag": "P",
+    "text": "in a camera which turns the"
+  },
+  {
+    "file": "public\\html\\visualsystemeyesbrain.html",
+    "kind": "text",
+    "tag": "P",
+    "text": "is the retina."
+  },
+  {
+    "file": "public\\html\\visualsystemeyesbrain.html",
+    "kind": "text",
+    "tag": "P",
+    "text": "light into electrical signals"
+  },
+  {
+    "file": "public\\html\\visualsystemeyesbrain.html",
+    "kind": "text",
+    "tag": "P",
+    "text": "Light is focused onto"
+  },
+  {
+    "file": "public\\html\\visualsystemeyesbrain.html",
+    "kind": "text",
+    "tag": "P",
+    "text": "that are passed to the brain"
+  },
+  {
+    "file": "public\\html\\visualsystemeyesbrain.html",
+    "kind": "text",
+    "tag": "P",
+    "text": "the back of the eye"
+  },
+  {
+    "file": "public\\html\\visualsystemeyesbrain.html",
+    "kind": "text",
+    "tag": "P",
+    "text": "The brain then creates"
+  },
+  {
+    "file": "public\\html\\visualsystemeyesbrain.html",
+    "kind": "text",
+    "tag": "P",
+    "text": "The eyes collect light"
+  },
+  {
+    "file": "public\\html\\visualsystemeyesbrain.html",
+    "kind": "text",
+    "tag": "P",
+    "text": "this into signals for the brain"
+  },
+  {
+    "file": "public\\html\\visualsystemeyesbrain.html",
+    "kind": "text",
+    "tag": "P",
+    "text": "This is like a sensor or film"
+  },
+  {
+    "file": "public\\html\\visualsystemeyesbrain.html",
+    "kind": "text",
+    "tag": "P",
+    "text": "to create ‘vision’."
+  },
+  {
+    "file": "public\\html\\visualsystemeyesbrain.html",
+    "kind": "text",
+    "tag": "P",
+    "text": "vision from these signals."
+  },
+  {
+    "file": "public\\html\\visualsystemeyesbrain.html",
+    "kind": "text",
+    "tag": "DIV",
+    "text": "Wheel: next/prev · ↑/↓: next/prev · Space: replay"
+  }
+]
