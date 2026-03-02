@@ -2215,6 +2215,19 @@ select.onb-input.has-value + .onb-select-caret {
   height: 100% !important;
 }
 
+@supports (-webkit-overflow-scrolling: touch) {
+  @media (max-width: 1023.98px) {
+    .childhood-fundal-scroll-page .childhood-fundal-prep-stage,
+    .childhood-fundal-scroll-page .childhood-fundal-prep-stage svg {
+      -webkit-transform: translateZ(0);
+      transform: translateZ(0);
+      will-change: transform, opacity;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+    }
+  }
+}
+
 .childhood-fundal-scroll-page .childhood-fundal-segment-text {
   min-height: 40px;
   padding: 12px 16px 12px;

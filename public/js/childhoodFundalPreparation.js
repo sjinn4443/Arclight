@@ -2251,6 +2251,7 @@ function playSegment(controller, segmentIndex) {
   controller.playingSegmentIndex = segmentIndex;
   controller.targetEndFrame = seg.to;
   controller.isPlaying = true;
+  controller.cancelIosPostSettleRefresh?.();
   controller.lastRenderedFrame = seg.from;
   controller.lastPinnedFrame = null;
 
@@ -2488,6 +2489,12 @@ function stopAtSegmentEnd(controller, cfg) {
     } finally {
       controller.isSnapping = false;
       syncPersistentSettleSnapshotOverlay(controller);
+      if (IS_IOS_WEBKIT && Number.isFinite(Number(holdFrame))) {
+        controller.requestIosPostSettleRefresh?.(holdFrame, {
+          segmentIndex: controller.segmentIndex,
+          minContentAreaRatio,
+        });
+      }
       controller.inputLockUntil = Date.now() + (IS_IOS_WEBKIT ? 1200 : 900);
       try {
         controller.onSegmentSettled?.();
@@ -2798,6 +2805,10 @@ function initializeSegmentScrollMode(cfg, page, stages) {
         shouldUsePersistentSettleSnapshotOverlay(cfg),
       minContentAreaRatio: resolveRichSettleMinArea(cfg, idx),
       centerLockRafId: null,
+      iosPostSettleTimerId: null,
+      iosPostSettlePassesRemaining: 0,
+      requestIosPostSettleRefresh: null,
+      cancelIosPostSettleRefresh: null,
       startCenterLock: null,
       stopCenterLock: null,
       onSegmentSettled: null,
@@ -2922,6 +2933,14 @@ function initializeSegmentScrollMode(cfg, page, stages) {
         cancelAnimationFrame(controller.centerLockRafId);
       } catch {}
       controller.centerLockRafId = null;
+    };
+
+    controller.requestIosPostSettleRefresh = (frame, options = {}) => {
+      scheduleIosPostSettleRefresh(controller, frame, options);
+    };
+
+    controller.cancelIosPostSettleRefresh = () => {
+      cancelIosPostSettleRefresh(controller);
     };
 
     controller.startCenterLock = () => {
@@ -3311,6 +3330,101 @@ function initializeSegmentScrollMode(cfg, page, stages) {
       clearInterval(iosFinalPinIntervalId);
     } catch {}
     iosFinalPinIntervalId = null;
+  }
+
+  function cancelIosPostSettleRefresh(controller) {
+    if (!controller) return;
+    controller.iosPostSettlePassesRemaining = 0;
+    const timeoutId = Number(controller.iosPostSettleTimerId);
+    if (!Number.isFinite(timeoutId)) {
+      controller.iosPostSettleTimerId = null;
+      return;
+    }
+    try {
+      clearTimeout(timeoutId);
+    } catch {}
+    controller.iosPostSettleTimerId = null;
+  }
+
+  function scheduleIosPostSettleRefresh(controller, frame, options = {}) {
+    if (!IS_IOS_WEBKIT) return;
+    if (!controller?.ready || !controller.segments?.length) return;
+
+    const holdFrame = clampFrameToAnimation(controller, frame);
+    const expectedSegmentIndex = Number.isFinite(Number(options.segmentIndex))
+      ? Math.floor(Number(options.segmentIndex))
+      : Number.isFinite(Number(controller.segmentIndex))
+        ? Math.floor(Number(controller.segmentIndex))
+        : null;
+    const passes = Math.max(
+      1,
+      Math.min(
+        8,
+        Number.isFinite(Number(options.passes))
+          ? Math.floor(Number(options.passes))
+          : 5,
+      ),
+    );
+    const intervalMs = Math.max(
+      70,
+      Math.min(
+        260,
+        Number.isFinite(Number(options.intervalMs))
+          ? Math.floor(Number(options.intervalMs))
+          : 110,
+      ),
+    );
+    const minContentAreaRatio = Number.isFinite(
+      Number(options.minContentAreaRatio),
+    )
+      ? Math.max(0.01, Number(options.minContentAreaRatio))
+      : Number.isFinite(Number(controller.minContentAreaRatio))
+        ? Math.max(0.01, Number(controller.minContentAreaRatio))
+        : 0.16;
+
+    cancelIosPostSettleRefresh(controller);
+    controller.iosPostSettlePassesRemaining = passes;
+
+    const tick = () => {
+      if (!controller) return;
+      if (controller.isPlaying || controller.isSnapping) {
+        cancelIosPostSettleRefresh(controller);
+        return;
+      }
+      if (
+        Number.isFinite(expectedSegmentIndex) &&
+        Number(controller.segmentIndex) !== expectedSegmentIndex
+      ) {
+        cancelIosPostSettleRefresh(controller);
+        return;
+      }
+
+      forceSvgVisibleForController(controller);
+      const pinned = pinExactFrameWithRecovery(controller, holdFrame, {
+        attempts: 2,
+        minContentAreaRatio,
+        allowFrameShift: false,
+      });
+      if (pinned.isBlank) {
+        showRecoveryOverlay(controller);
+      } else {
+        hideRecoveryOverlayWhenStable(controller, {
+          checks: 6,
+          requiredStablePasses: 2,
+        });
+      }
+      syncPersistentSettleSnapshotOverlay(controller);
+
+      controller.iosPostSettlePassesRemaining -= 1;
+      if (controller.iosPostSettlePassesRemaining <= 0) {
+        controller.iosPostSettleTimerId = null;
+        return;
+      }
+
+      controller.iosPostSettleTimerId = window.setTimeout(tick, intervalMs);
+    };
+
+    controller.iosPostSettleTimerId = window.setTimeout(tick, intervalMs);
   }
 
   function stopFinalPinLoop() {
@@ -3804,6 +3918,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
       controller.isPlaying = false;
       controller.isSnapping = false;
       controller.isLockedExactRecovering = false;
+      controller.cancelIosPostSettleRefresh?.();
       controller.segmentIndex = -1;
       controller.playingSegmentIndex = -1;
       controller.targetEndFrame = null;
@@ -3908,8 +4023,12 @@ function initializeSegmentScrollMode(cfg, page, stages) {
       }
       if (isStrictSegmentEndHold(cfg)) {
         stopFinalPinLoop();
-        stopIosFinalPinKeepAlive();
         pinAllAnimationsToSettledFrames({ visibleOnly: true });
+        if (IS_IOS_WEBKIT) {
+          startIosFinalPinKeepAlive(IOS_FINAL_PIN_BURST_PASSES + 2);
+        } else {
+          stopIosFinalPinKeepAlive();
+        }
       } else {
         startFinalPinLoop();
         startIosFinalPinKeepAlive();
@@ -3975,6 +4094,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
       }
       if (isStrictSegmentEndHold(cfg)) {
         pinAllAnimationsToSettledFrames({ visibleOnly: true });
+        if (IS_IOS_WEBKIT) startIosFinalPinKeepAlive(4);
       } else {
         startFinalPinLoop();
       }
@@ -4096,8 +4216,12 @@ function initializeSegmentScrollMode(cfg, page, stages) {
     if (!areAllControllersComplete()) return;
     if (isStrictSegmentEndHold(cfg)) {
       stopFinalPinLoop();
-      stopIosFinalPinKeepAlive();
       pinAllAnimationsToSettledFrames({ visibleOnly: true });
+      if (IS_IOS_WEBKIT) {
+        startIosFinalPinKeepAlive(4);
+      } else {
+        stopIosFinalPinKeepAlive();
+      }
       return;
     }
     startFinalPinLoop(2);
@@ -4109,8 +4233,12 @@ function initializeSegmentScrollMode(cfg, page, stages) {
     if (document.visibilityState !== "visible") return;
     if (isStrictSegmentEndHold(cfg)) {
       stopFinalPinLoop();
-      stopIosFinalPinKeepAlive();
       pinAllAnimationsToSettledFrames({ visibleOnly: true });
+      if (IS_IOS_WEBKIT) {
+        startIosFinalPinKeepAlive(6);
+      } else {
+        stopIosFinalPinKeepAlive();
+      }
       return;
     }
     startFinalPinLoop(IS_IOS_WEBKIT ? 3 : 1);
@@ -4164,6 +4292,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
           c.stopCenterLock?.();
         } catch {}
         cancelArrowEnsure(c);
+        c.cancelIosPostSettleRefresh?.();
         hideRecoveryOverlay(c, { immediate: true });
         c.recoverySnapshotMarkup = "";
         c.recoverySnapshotFrame = null;
