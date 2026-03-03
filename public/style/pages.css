@@ -1836,6 +1836,24 @@ select.onb-input.has-value + .onb-select-caret {
   font-weight: 600;
 }
 
+@media (max-width: 37.5em) {
+  #pupilsPage .eyes-topbar__icons,
+  .pupils-like .eyes-topbar__icons,
+  .page.has-eyes-topbar .eyes-topbar__icons {
+    margin-right: 14px;
+  }
+}
+
+@media (max-width: 37.5em) {
+  #childhoodEyeBrainImagesPage .eyes-topbar__icons,
+  #childhoodIntroVisualDevelopmentPage .eyes-topbar__icons,
+  #childhoodNormalVisualDevelopmentPage .eyes-topbar__icons,
+  #childhoodAskQuestionsObservePage .eyes-topbar__icons,
+  .childhood-fundal-scroll-page .eyes-topbar__icons {
+    margin-right: 20px;
+  }
+}
+
 #glaucomaWorkshopPage.glaucoma-folder-open
   #glaucomaWorkshopFolders
   .glaucoma-folder-row {

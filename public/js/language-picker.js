@@ -22,6 +22,14 @@
     collapseDropdown();
   }
 
+  function closeMenuOverlayIfOpen() {
+    const menuOverlay = document.querySelector("#menuOverlay.menu-overlay");
+    if (!menuOverlay) return;
+    menuOverlay.classList.add("hidden");
+    menuOverlay.classList.remove("open", "is-visible");
+    document.body.removeAttribute("data-menu-open");
+  }
+
   function expandDropdown() {
     listEl.hidden = false;
     toggleBtn.setAttribute("aria-expanded", "true");
@@ -153,15 +161,20 @@
     closeModal();
   });
 
-  // Intercept only the menu "Language" item to open modal
-  document.addEventListener("click", (e) => {
-    const btn = e.target.closest('.menu-item[data-route="languageinstall"]');
-    if (!btn) return;
-    e.preventDefault();
-    e.stopPropagation();
-    openModal();
-    document
-      .querySelector("#menuOverlay, .menu-overlay, [data-menu-overlay]")
-      ?.classList.remove("open", "is-visible");
-  });
+  // Intercept only the menu "Language" item to open modal.
+  // Use capture so we stop menu route navigation before it runs.
+  document.addEventListener(
+    "click",
+    (e) => {
+      const btn = e.target.closest(
+        '#menuOverlay .menu-item[data-route="languageinstall"]',
+      );
+      if (!btn) return;
+      e.preventDefault();
+      e.stopPropagation();
+      closeMenuOverlayIfOpen();
+      openModal();
+    },
+    true,
+  );
 })();

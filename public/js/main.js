@@ -84,6 +84,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   initializePageNavigation();
   initializePWA();
+  // Keep workshop "Next >" flow available even on direct deep links.
+  void import("./childhoodWorkshopNextFlow.js")
+    .then((m) => m.initializeChildhoodWorkshopNextFlowInfra?.())
+    .catch(() => {});
+  void import("./glaucomaWorkshopNextFlow.js")
+    .then((m) => m.initializeGlaucomaWorkshopNextFlowInfra?.())
+    .catch(() => {});
 
   /**
    * Event listener for 'page:loaded' custom event.

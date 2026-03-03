@@ -508,6 +508,12 @@ export function initializeChildhoodWorkshopNextFlowInfra() {
     if (!visibleId) return;
     renderNextButtonForTarget(visibleId);
   });
+
+  requestAnimationFrame(() => {
+    const visibleId = getVisiblePageId();
+    if (!visibleId) return;
+    renderNextButtonForTarget(visibleId);
+  });
 }
 
 export function assignChildhoodWorkshopFlowIndices(page) {

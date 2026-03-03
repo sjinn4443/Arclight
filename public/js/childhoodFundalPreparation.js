@@ -279,7 +279,7 @@ const ROUTE_CONFIG = {
       "/scrolly/coreexam/fundalreflex/findings/1/data.json",
       "/scrolly/coreexam/fundalreflex/findings/2/data.json",
     ],
-    stageAspectRatioByFile: ["1146 / 1476", "1146 / 1476"],
+    stageAspectRatioByFile: ["1146 / 947", "1146 / 1476"],
     preserveAspectRatioByFile: ["xMidYMid meet", "xMidYMid meet"],
     mobileStageTopAligned: false,
     centerTopBiasByFile: [0, -35],
@@ -2835,6 +2835,7 @@ function playSegment(controller, segmentIndex) {
   try {
     controller.startCenterLock?.();
   } catch {}
+  controller.setPlaybackViewportFreeze?.(true);
 
   forceSvgVisibleForController(controller);
   controller.anim.goToAndStop(seg.from, true);
@@ -3084,6 +3085,7 @@ function stopAtSegmentEnd(controller, cfg) {
       maybeHideStagePoster(controller);
     } finally {
       controller.isSnapping = false;
+      controller.setPlaybackViewportFreeze?.(false);
       syncPersistentSettleSnapshotOverlay(controller);
       requestIosStageRepaintNudge(controller?.stage);
       if (IS_IOS_WEBKIT && Number.isFinite(Number(holdFrame))) {
@@ -3415,6 +3417,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
       cancelIosPostSettleRefresh: null,
       startCenterLock: null,
       stopCenterLock: null,
+      setPlaybackViewportFreeze: null,
       onSegmentSettled: null,
       showDownArrow: null,
       hideDownArrow: null,
@@ -3437,6 +3440,8 @@ function initializeSegmentScrollMode(cfg, page, stages) {
       updateArrowAnchorForController(controller);
       arrowEl.classList.add("is-visible");
     };
+
+    controller.setPlaybackViewportFreeze = setPlaybackViewportFreeze;
 
     controller.hideDownArrow = () => {
       cancelArrowEnsure(controller);
@@ -3901,12 +3906,103 @@ function initializeSegmentScrollMode(cfg, page, stages) {
     });
   }
 
+  let playbackFreezeRafId = null;
+  let isPlaybackViewportFrozen = false;
+
+  function clearPlaybackFreezeRaf() {
+    if (!Number.isFinite(playbackFreezeRafId)) return;
+    try {
+      cancelAnimationFrame(playbackFreezeRafId);
+    } catch {}
+    playbackFreezeRafId = null;
+  }
+
+  function onPlaybackFreezeViewportShift() {
+    if (!isPlaybackViewportFrozen) return;
+    if (Number.isFinite(playbackFreezeRafId)) return;
+
+    playbackFreezeRafId = requestAnimationFrame(() => {
+      playbackFreezeRafId = null;
+      if (!isPlaybackViewportFrozen) return;
+      const controller = getGateController();
+      if (!controller?.stage) return;
+      centerStage(controller.stage);
+    });
+  }
+
+  function preventPlaybackViewportShift(event) {
+    if (!isPlaybackViewportFrozen) return;
+    if (event.cancelable) event.preventDefault();
+  }
+
+  function setPlaybackViewportFreeze(enabled) {
+    // Desktop keeps natural scroll behavior; mobile gets a playback lock.
+    if (isDesktopViewport()) return;
+
+    if (enabled) {
+      if (isPlaybackViewportFrozen) {
+        onPlaybackFreezeViewportShift();
+        return;
+      }
+
+      isPlaybackViewportFrozen = true;
+      page.style.overscrollBehaviorY = "none";
+      document.body.style.overscrollBehaviorY = "none";
+      document.documentElement.style.overscrollBehaviorY = "none";
+      document.addEventListener("touchmove", preventPlaybackViewportShift, {
+        passive: false,
+        capture: true,
+      });
+      document.addEventListener("wheel", preventPlaybackViewportShift, {
+        passive: false,
+        capture: true,
+      });
+      window.addEventListener("scroll", onPlaybackFreezeViewportShift, {
+        passive: true,
+      });
+      onPlaybackFreezeViewportShift();
+      return;
+    }
+
+    if (!isPlaybackViewportFrozen) return;
+    isPlaybackViewportFrozen = false;
+    clearPlaybackFreezeRaf();
+    document.removeEventListener(
+      "touchmove",
+      preventPlaybackViewportShift,
+      true,
+    );
+    document.removeEventListener("wheel", preventPlaybackViewportShift, true);
+    window.removeEventListener("scroll", onPlaybackFreezeViewportShift);
+
+    if (IS_IOS_WEBKIT && !areAllControllersComplete()) {
+      page.style.overscrollBehaviorY = "contain";
+      document.body.style.overscrollBehaviorY = "contain";
+      document.documentElement.style.overscrollBehaviorY = "contain";
+      return;
+    }
+
+    if (IS_IOS_WEBKIT && areAllControllersComplete()) {
+      page.style.overscrollBehaviorY = "contain";
+      document.body.style.overscrollBehaviorY = "contain";
+      document.documentElement.style.overscrollBehaviorY = "contain";
+      return;
+    }
+
+    page.style.removeProperty("overscroll-behavior-y");
+    document.body.style.removeProperty("overscroll-behavior-y");
+    document.documentElement.style.removeProperty("overscroll-behavior-y");
+  }
+
   function setMobileTouchLock(enabled) {
     if (!IS_IOS_WEBKIT) return;
     // Allow normal vertical paging between files; just suppress bounce chaining.
     page.style.touchAction = enabled ? "pan-y" : "";
     page.style.overscrollBehaviorY = enabled ? "contain" : "";
     document.body.style.overscrollBehaviorY = enabled ? "contain" : "";
+    document.documentElement.style.overscrollBehaviorY = enabled
+      ? "contain"
+      : "";
   }
 
   function isControllerComplete(controller) {
@@ -4535,6 +4631,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
   }
 
   function resetAllAnimationsToStart() {
+    setPlaybackViewportFreeze(false);
     hasDispatchedRouteComplete = false;
     stopFinalPinLoop();
     stopIosFinalPinKeepAlive();
@@ -4915,6 +5012,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
       stopFinalPinLoop();
       stopIosFinalPinKeepAlive();
       stopIosCenterCorrection();
+      setPlaybackViewportFreeze(false);
       setMobileTouchLock(false);
       removeTitleSegmentTextToggleListeners?.();
       removeTitleSegmentTextToggleListeners = null;

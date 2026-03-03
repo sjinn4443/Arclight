@@ -453,6 +453,12 @@ export function initializeGlaucomaWorkshopNextFlowInfra() {
     if (!visibleId) return;
     renderNextButtonForTarget(visibleId);
   });
+
+  requestAnimationFrame(() => {
+    const visibleId = getVisiblePageId();
+    if (!visibleId) return;
+    renderNextButtonForTarget(visibleId);
+  });
 }
 
 export function assignGlaucomaWorkshopFlowIndices(page) {
