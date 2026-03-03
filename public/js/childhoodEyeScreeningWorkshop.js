@@ -236,15 +236,93 @@ const FUNDAL_EARLY_WARMUP_ROUTES = [
   "childhoodFundalExamination",
   "childhoodFundalNewbornEyesOpen",
 ];
+const FUNDAL_SCROLL_ROUTE_SET = new Set([
+  "childhoodFundalPreparation",
+  "childhoodFundalExamination",
+  "childhoodFundalNewbornEyesOpen",
+  "childhoodFundalNewbornEyesClosed",
+  "childhoodFundalUnclearFindings",
+  "childhoodFundalPossibleFinding",
+  "childhoodFundalAfterExamination",
+]);
+const FUNDAL_TARGET_TO_ROUTE = {
+  childhoodFundalPreparationPage: "childhoodFundalPreparation",
+  childhoodFundalExaminationPage: "childhoodFundalExamination",
+  childhoodFundalNewbornEyesOpenPage: "childhoodFundalNewbornEyesOpen",
+  childhoodFundalNewbornEyesClosedPage: "childhoodFundalNewbornEyesClosed",
+  childhoodFundalUnclearFindingsPage: "childhoodFundalUnclearFindings",
+  childhoodFundalPossibleFindingPage: "childhoodFundalPossibleFinding",
+  childhoodFundalAfterExaminationPage: "childhoodFundalAfterExamination",
+};
+const fundalIntentWarmupCache = new Set();
+
+function isConstrainedMobileFundalWarmupDevice() {
+  if (typeof window === "undefined" || typeof navigator === "undefined") {
+    return false;
+  }
+
+  const isMobileViewport =
+    typeof window.matchMedia === "function"
+      ? window.matchMedia("(max-width: 37.5em)").matches
+      : Number(window.innerWidth || 0) <= 600;
+  if (!isMobileViewport) return false;
+
+  const connection =
+    navigator.connection ||
+    navigator.mozConnection ||
+    navigator.webkitConnection;
+  const effectiveType = String(connection?.effectiveType || "").toLowerCase();
+  const saveDataEnabled = connection?.saveData === true;
+  const isSlowNetwork =
+    effectiveType.includes("2g") || effectiveType.includes("3g");
+
+  const deviceMemory = Number(navigator.deviceMemory || 0);
+  const isLowMemoryDevice =
+    Number.isFinite(deviceMemory) && deviceMemory > 0 && deviceMemory <= 2;
+
+  const cpuCores = Number(navigator.hardwareConcurrency || 0);
+  const isLowCpuDevice =
+    Number.isFinite(cpuCores) && cpuCores > 0 && cpuCores <= 4;
+
+  return (
+    saveDataEnabled || isSlowNetwork || isLowMemoryDevice || isLowCpuDevice
+  );
+}
+
+function warmupFundalRouteOnIntent(routeName) {
+  const normalized = String(routeName || "").trim();
+  if (!FUNDAL_SCROLL_ROUTE_SET.has(normalized)) return;
+  if (fundalIntentWarmupCache.has(normalized)) return;
+  fundalIntentWarmupCache.add(normalized);
+
+  void import("./childhoodFundalPreparation.js")
+    .then((module) => {
+      module.prewarmChildhoodFundalRouteAssets?.([normalized], {
+        mode: "route",
+        loadLottie: true,
+      });
+    })
+    .catch((err) => {
+      console.warn("[childhoodWorkshop] fundal intent warmup skipped", err);
+    });
+}
 
 function scheduleFundalRouteWarmup() {
   if (fundalWarmupScheduled) return;
   fundalWarmupScheduled = true;
+  const constrainedMobile = isConstrainedMobileFundalWarmupDevice();
+  const warmupRoutes = constrainedMobile
+    ? [FUNDAL_EARLY_WARMUP_ROUTES[0]]
+    : FUNDAL_EARLY_WARMUP_ROUTES;
 
   const warmup = () => {
     void import("./childhoodFundalPreparation.js")
       .then((module) => {
-        module.prewarmChildhoodFundalRouteAssets?.(FUNDAL_EARLY_WARMUP_ROUTES);
+        module.prewarmChildhoodFundalRouteAssets?.(warmupRoutes, {
+          mode: "idle",
+          // On constrained mobiles, avoid executing lottie during idle warmup.
+          loadLottie: !constrainedMobile,
+        });
       })
       .catch((err) => {
         console.warn("[childhoodWorkshop] fundal warmup skipped", err);
@@ -273,12 +351,25 @@ export function initializeChildhoodEyeScreeningWorkshop() {
   rows.forEach((row) => {
     if (row.dataset.wired === "1") return;
     row.dataset.wired = "1";
+    const rowTarget = String(row.getAttribute("data-target") || "").trim();
+    const intentFundalRoute = FUNDAL_TARGET_TO_ROUTE[rowTarget];
+    if (intentFundalRoute) {
+      const onIntentWarmup = () => {
+        warmupFundalRouteOnIntent(intentFundalRoute);
+      };
+      row.addEventListener("pointerdown", onIntentWarmup, { passive: true });
+      row.addEventListener("touchstart", onIntentWarmup, { passive: true });
+    }
 
     row.addEventListener("click", async (event) => {
       event.preventDefault();
 
       const targetRaw = row.getAttribute("data-target");
       if (!targetRaw) return;
+      const explicitFundalRoute = FUNDAL_TARGET_TO_ROUTE[targetRaw];
+      if (explicitFundalRoute) {
+        warmupFundalRouteOnIntent(explicitFundalRoute);
+      }
 
       rememberChildhoodWorkshopFlowFromRow(row);
       markRestoreOpenFolder();
@@ -338,6 +429,9 @@ export function initializeChildhoodEyeScreeningWorkshop() {
 
       if (DIRECT_ROUTES[targetRaw]) {
         const route = DIRECT_ROUTES[targetRaw];
+        if (FUNDAL_SCROLL_ROUTE_SET.has(route)) {
+          warmupFundalRouteOnIntent(route);
+        }
         await loadPage(route);
 
         // ✅ 같은 route 안에 targetRaw 페이지 섹션이 있으면 그걸 정확히 보여주기

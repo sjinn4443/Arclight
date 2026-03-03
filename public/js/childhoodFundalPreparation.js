@@ -5164,7 +5164,10 @@ function resolveFundalRouteConfig(routeName) {
   return resolveRuntimeRouteConfig(routeName, baseCfg);
 }
 
-export function prewarmChildhoodFundalRouteAssets(routeNames = []) {
+export function prewarmChildhoodFundalRouteAssets(
+  routeNames = [],
+  options = {},
+) {
   const rawList = Array.isArray(routeNames)
     ? routeNames
     : [String(routeNames || "").trim()];
@@ -5172,14 +5175,21 @@ export function prewarmChildhoodFundalRouteAssets(routeNames = []) {
     .map((name) => String(name || "").trim())
     .filter((name) => !!name);
   const targets = filtered.length ? filtered : Object.keys(ROUTE_CONFIG);
+  const mode = String(options?.mode || "idle")
+    .trim()
+    .toLowerCase();
+  const warmupMode = mode === "route" ? "route" : "idle";
+  const shouldLoadLottie = options?.loadLottie !== false;
 
   targets.forEach((routeName) => {
     const cfg = resolveFundalRouteConfig(routeName);
     if (!cfg) return;
-    warmupFundalRouteAssets(cfg, { mode: "idle" });
+    warmupFundalRouteAssets(cfg, { mode: warmupMode });
   });
 
-  void ensureLottie();
+  if (shouldLoadLottie) {
+    void ensureLottie();
+  }
 }
 
 export async function initializeChildhoodFundalReflexScrollPage(routeName) {

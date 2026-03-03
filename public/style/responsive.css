@@ -72,14 +72,25 @@ input {
 
   .page.has-eyes-topbar .eyes-topbar .icon.menuBtn,
   #pupilsPage .icon.menuBtn,
-  .pupils-like .icon.menuBtn {
+  .pupils-like .icon.menuBtn,
+  #videos .page .eyes-topbar .menuBtn {
     width: 36px;
     height: 36px;
-    font-size: 25px;
+    font-size: 25px !important;
     line-height: 1;
     display: inline-flex;
     align-items: center;
     justify-content: center;
+  }
+
+  #unifiedDashboard .unified-top .menuBtn,
+  #likedPage .ml-topbar .menuBtn,
+  #earsCatalogPage .ears-top .menuBtn,
+  #myProfilePage .profile-topbar .menuBtn,
+  .page.has-eyes-topbar .eyes-topbar .menuBtn,
+  #videos .page .eyes-topbar .menuBtn {
+    font-size: 25px !important;
+    line-height: 1;
   }
 
   .unified-top .icon {
