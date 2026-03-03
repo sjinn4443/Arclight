@@ -811,8 +811,7 @@ function resolveStagePosterPath(animationPath) {
 
 function shouldSkipStagePoster(cfg, fileIndex = 0) {
   if (!IS_IOS_WEBKIT) return false;
-  if (cfg?.disableIosFirstStagePoster === false) return false;
-  return Number(fileIndex) === 0;
+  return cfg?.disableIosFirstStagePoster === true && Number(fileIndex) === 0;
 }
 
 function primeFundalAsset(url, options = {}) {
@@ -848,7 +847,7 @@ function primeFundalAsset(url, options = {}) {
   head.appendChild(link);
 }
 
-function warmupFundalRouteAssets(cfg) {
+function warmupFundalRouteAssets(cfg, options = {}) {
   if (!cfg) return;
   const paths = Array.isArray(cfg.paths)
     ? cfg.paths
@@ -856,23 +855,46 @@ function warmupFundalRouteAssets(cfg) {
         .filter((path) => !!path)
     : [];
   if (!paths.length) return;
+  const mode = String(options.mode || "route")
+    .trim()
+    .toLowerCase();
+  const isIdleWarmup = mode === "idle";
 
-  primeFundalAsset(LOTTIE_SRC, {
-    as: "script",
-    fetchPriority: "high",
-  });
-
-  const firstDataPath = paths[0];
-  primeFundalAsset(firstDataPath, {
-    as: "fetch",
-    fetchPriority: "high",
-  });
-  if (!shouldSkipStagePoster(cfg, 0)) {
-    primeFundalAsset(resolveStagePosterPath(firstDataPath), {
-      as: "image",
+  if (isIdleWarmup) {
+    primeFundalAsset(LOTTIE_SRC, {
+      rel: "prefetch",
+      as: "script",
+    });
+  } else {
+    primeFundalAsset(LOTTIE_SRC, {
+      as: "script",
       fetchPriority: "high",
     });
   }
+
+  const firstDataPath = paths[0];
+  primeFundalAsset(
+    firstDataPath,
+    isIdleWarmup
+      ? { rel: "prefetch", as: "fetch" }
+      : {
+          as: "fetch",
+          fetchPriority: "high",
+        },
+  );
+  if (!shouldSkipStagePoster(cfg, 0)) {
+    primeFundalAsset(
+      resolveStagePosterPath(firstDataPath),
+      isIdleWarmup
+        ? { rel: "prefetch", as: "image" }
+        : {
+            as: "image",
+            fetchPriority: "high",
+          },
+    );
+  }
+
+  if (isIdleWarmup) return;
 
   for (let i = 1; i < Math.min(paths.length, 3); i += 1) {
     const path = paths[i];
@@ -5154,7 +5176,7 @@ export function prewarmChildhoodFundalRouteAssets(routeNames = []) {
   targets.forEach((routeName) => {
     const cfg = resolveFundalRouteConfig(routeName);
     if (!cfg) return;
-    warmupFundalRouteAssets(cfg);
+    warmupFundalRouteAssets(cfg, { mode: "idle" });
   });
 
   void ensureLottie();
@@ -5172,7 +5194,15 @@ export async function initializeChildhoodFundalReflexScrollPage(routeName) {
   const listEl = page.querySelector(".childhood-fundal-prep-list");
   const stages = buildAnimationSlots(listEl, cfg.label, cfg.paths.length, cfg);
   if (!stages.length) return;
-  warmupFundalRouteAssets(cfg);
+  warmupFundalRouteAssets(cfg, { mode: "route" });
+
+  await new Promise((resolve) => {
+    if (typeof requestAnimationFrame === "function") {
+      requestAnimationFrame(() => resolve());
+      return;
+    }
+    setTimeout(resolve, 0);
+  });
 
   const i18nReadyPromise = ensureFundalI18nDictionary().catch((err) => {
     console.error("[fundalScroll] dictionary preload failed", err);

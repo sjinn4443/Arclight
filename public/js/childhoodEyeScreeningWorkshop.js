@@ -231,6 +231,11 @@ function markRestoreOpenFolder() {
 }
 
 let fundalWarmupScheduled = false;
+const FUNDAL_EARLY_WARMUP_ROUTES = [
+  "childhoodFundalPreparation",
+  "childhoodFundalExamination",
+  "childhoodFundalNewbornEyesOpen",
+];
 
 function scheduleFundalRouteWarmup() {
   if (fundalWarmupScheduled) return;
@@ -239,15 +244,7 @@ function scheduleFundalRouteWarmup() {
   const warmup = () => {
     void import("./childhoodFundalPreparation.js")
       .then((module) => {
-        module.prewarmChildhoodFundalRouteAssets?.([
-          "childhoodFundalPreparation",
-          "childhoodFundalExamination",
-          "childhoodFundalNewbornEyesOpen",
-          "childhoodFundalNewbornEyesClosed",
-          "childhoodFundalUnclearFindings",
-          "childhoodFundalPossibleFinding",
-          "childhoodFundalAfterExamination",
-        ]);
+        module.prewarmChildhoodFundalRouteAssets?.(FUNDAL_EARLY_WARMUP_ROUTES);
       })
       .catch((err) => {
         console.warn("[childhoodWorkshop] fundal warmup skipped", err);
@@ -255,10 +252,10 @@ function scheduleFundalRouteWarmup() {
   };
 
   if (typeof window.requestIdleCallback === "function") {
-    window.requestIdleCallback(() => warmup(), { timeout: 1200 });
+    window.requestIdleCallback(() => warmup(), { timeout: 320 });
     return;
   }
-  window.setTimeout(warmup, 220);
+  window.setTimeout(warmup, 80);
 }
 
 export function initializeChildhoodEyeScreeningWorkshop() {

@@ -70,6 +70,18 @@ input {
     height: 23px;
   }
 
+  .page.has-eyes-topbar .eyes-topbar .icon.menuBtn,
+  #pupilsPage .icon.menuBtn,
+  .pupils-like .icon.menuBtn {
+    width: 36px;
+    height: 36px;
+    font-size: 25px;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
   .unified-top .icon {
     font-size: 21px;
   }
