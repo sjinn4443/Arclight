@@ -1872,6 +1872,8 @@ select.onb-input.has-value + .onb-select-caret {
 
   .childhood-fundal-scroll-page .eyes-topbar .icon.menuBtn {
     left: -8px !important;
+    font-size: 21px !important;
+    line-height: 1;
   }
 }
 

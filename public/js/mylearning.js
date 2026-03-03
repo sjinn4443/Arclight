@@ -10,6 +10,12 @@ import { EYES_INDEX } from "./catalog-index.js";
 const PRIMARY_KEY = "likedItems";
 // Legacy keys to support older saved data formats.
 const LEGACY_KEYS = ["eyesLikes", "likedItems", "liked"];
+const MY_LEARNING_EMPTY_FALLBACK =
+  "No saved items yet. Tap the heart on any Eyes card to add it here.";
+const MY_LEARNING_UNMATCHED_FALLBACK =
+  "Your saved items couldn't be matched. Try liking a new item.";
+const MY_LEARNING_EMPTY_I18N_KEY = "i18nExtra.my_learning_empty";
+const MY_LEARNING_UNMATCHED_I18N_KEY = "i18nExtra.my_learning_unmatched";
 
 /**
  * Reads liked items from localStorage for a given key and returns them as a Set.
@@ -294,9 +300,14 @@ function renderMyLearnings() {
     empty.className = "note";
     empty.setAttribute("role", "status");
     empty.setAttribute("aria-live", "polite");
-    empty.textContent =
-      "No saved items yet. Tap the heart on any Eyes card to add it here.";
+    empty.textContent = MY_LEARNING_EMPTY_FALLBACK;
+    empty.setAttribute("data-i18n", MY_LEARNING_EMPTY_I18N_KEY);
     listEl.appendChild(empty);
+    try {
+      window.I18N?.applyTranslations?.(empty);
+    } catch {
+      void 0;
+    }
     return;
   }
 
@@ -345,9 +356,14 @@ function renderMyLearnings() {
     empty.className = "note";
     empty.setAttribute("role", "status");
     empty.setAttribute("aria-live", "polite");
-    empty.textContent =
-      "Your saved items couldn’t be matched. Try liking a new item.";
+    empty.textContent = MY_LEARNING_UNMATCHED_FALLBACK;
+    empty.setAttribute("data-i18n", MY_LEARNING_UNMATCHED_I18N_KEY);
     listEl.appendChild(empty);
+    try {
+      window.I18N?.applyTranslations?.(empty);
+    } catch {
+      void 0;
+    }
   }
 
   // Card navigation
@@ -373,7 +389,7 @@ function renderMyLearnings() {
     });
   }
 
-  // Chips – cosmetic toggles
+  // Chips - cosmetic toggles
   const chips = page.querySelectorAll(".ml-chip");
   chips.forEach((chip) => {
     if (chip._mlBound) return;

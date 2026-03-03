@@ -1,24 +1,23 @@
-<!doctype html>
+﻿<!doctype html>
 <html>
   <head>
     <meta charset="UTF-8" />
     <title data-i18n="i18nExtra.fundal_exam_title">Fundal Exam</title>
 
-    <!-- LOAD LOTTIE FIRST -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.9.6/lottie.min.js"></script>
 
     <style>
       body {
         margin: 0;
         background: black;
-        colour: white;
+        color: white;
         font-family:
           system-ui,
           -apple-system,
           BlinkMacSystemFont,
           "Segoe UI",
           sans-serif;
-        text-align: centre;
+        text-align: center;
       }
 
       #lottie-container {
@@ -26,15 +25,15 @@
         max-width: 800px;
         margin: 0 auto;
         display: flex;
-        justify-content: centre;
-        align-items: centre;
+        justify-content: center;
+        align-items: center;
         min-height: 80vh;
         overflow: hidden;
       }
 
       #status {
         margin: 1rem 0 2rem;
-        colour: #ccc;
+        color: #ccc;
         font-size: 0.9rem;
       }
 
@@ -48,16 +47,92 @@
   <body>
     <div id="lottie-container"></div>
     <div id="status" data-i18n="i18nExtra.fundal_exam_loading">
-      Loading Fundal_Exam.json…
+      Loading Fundal_Exam.json...
     </div>
 
     <script>
       const container = document.getElementById("lottie-container");
       const statusEl = document.getElementById("status");
 
-      // Frame segments – add or adjust these as needed
+      const LANG_ALIAS = {
+        en: "english",
+        am: "amharic",
+        ar: "arabic",
+        bn: "bangla",
+        ny: "chichewa",
+        zh: "chinese",
+        fr: "french",
+        ha: "hausa",
+        hi: "hindi",
+        ig: "igbo",
+        id: "indonesian",
+        rw: "kinyarwanda",
+        ko: "korean",
+        te: "telugu",
+        ln: "lingala",
+        fa: "persian",
+        pt: "portuguese",
+        sn: "shona",
+        es: "spanish",
+        sw: "swahili",
+        ur: "urdu",
+        yo: "yoruba",
+        zu: "zulu",
+      };
+
+      function getPathValue(obj, path) {
+        return String(path || "")
+          .split(".")
+          .reduce(
+            (acc, key) => (acc && key in acc ? acc[key] : undefined),
+            obj,
+          );
+      }
+
+      function interpolate(template, vars = {}) {
+        return String(template).replace(
+          /\{\{\s*([a-zA-Z0-9_]+)\s*\}\}/g,
+          (_, key) => String(vars[key] ?? ""),
+        );
+      }
+
+      function getPreferredLanguage() {
+        const fromStorage = localStorage.getItem("prefLang");
+        if (fromStorage) return fromStorage;
+        const htmlLang = (
+          document.documentElement.getAttribute("lang") || ""
+        ).trim();
+        return htmlLang || "en";
+      }
+
+      const dictionaryPromise = (async () => {
+        const lang = getPreferredLanguage();
+        const alias = LANG_ALIAS[lang] || LANG_ALIAS.en;
+        try {
+          const res = await fetch(`/translation/${alias}.json`, {
+            cache: "no-store",
+          });
+          if (!res.ok) return {};
+          return await res.json();
+        } catch {
+          return {};
+        }
+      })();
+
+      async function translate(path, fallback, vars = {}) {
+        const dict = await dictionaryPromise;
+        const translated = getPathValue(dict, path);
+        return interpolate(translated == null ? fallback : translated, vars);
+      }
+
+      function setStatus(path, fallback, vars = {}) {
+        void translate(path, fallback, vars).then((text) => {
+          statusEl.textContent = text;
+        });
+      }
+
       const SEGMENTS = [
-        [0, 201], // #1
+        [0, 201],
         [201, 272],
         [272, 451],
         [451, 526],
@@ -67,10 +142,10 @@
         [1020, 1403],
         [1403, 1676],
 
-        [1676, 2011], //#2
+        [1676, 2011],
         [2011, 2122],
 
-        [2122, 2245], //#3
+        [2122, 2245],
         [2245, 2458],
         [2458, 2584],
         [2584, 2793],
@@ -82,11 +157,11 @@
         [4084, 4174],
         [4174, 4461],
 
-        [4461, 4573], //#4
+        [4461, 4573],
         [4573, 4669],
         [4669, 4925],
 
-        [4925, 5237], //#5
+        [4925, 5237],
         [5237, 5467],
         [5467, 5716],
         [5716, 5943],
@@ -102,7 +177,6 @@
         (navigator.platform === "MacIntel" &&
           Number(navigator.maxTouchPoints || 0) > 1);
 
-      // Load the Fundal Exam animation
       const anim = lottie.loadAnimation({
         container: container,
         renderer: isIOSRenderer ? "canvas" : "svg",
@@ -111,17 +185,17 @@
         path: "Fundal_prep.json",
       });
 
-      // When JSON & SVG are ready
       anim.addEventListener("DOMLoaded", () => {
-        // Make the SVG responsive inside our container
         const svg = container.querySelector("svg");
         if (svg) svg.classList.add("lottie-svg");
 
-        statusEl.textContent = "Loaded. Scroll to move through sections.";
-        playSegment(0); // auto-play first section
+        setStatus(
+          "i18nExtra.fundal_exam_loaded_scroll",
+          "Loaded. Scroll to move through sections.",
+        );
+        playSegment(0);
       });
 
-      // Play a single segment by index
       function playSegment(index) {
         if (index < 0 || index >= SEGMENTS.length) return;
 
@@ -129,28 +203,32 @@
         isPlaying = true;
         currentSegment = index;
 
-        statusEl.textContent = `Playing section ${
-          index + 1
-        } of ${SEGMENTS.length}…`;
+        setStatus(
+          "i18nExtra.fundal_exam_playing_section",
+          "Playing section {{current}} of {{total}}...",
+          { current: index + 1, total: SEGMENTS.length },
+        );
+
         anim.playSegments([start, end], true);
       }
 
-      // When a segment finishes
       anim.addEventListener("complete", () => {
         isPlaying = false;
-        statusEl.textContent = `Section ${
-          currentSegment + 1
-        } complete. Scroll up/down for the next section.`;
+        setStatus(
+          "i18nExtra.fundal_exam_section_complete",
+          "Section {{current}} complete. Scroll up/down for the next section.",
+          { current: currentSegment + 1 },
+        );
       });
 
-      // Optional: load failure feedback
       anim.addEventListener("data_failed", () => {
-        statusEl.textContent =
-          "Could not load Fundal_Exam.json – check file name / location.";
+        setStatus(
+          "i18nExtra.fundal_exam_load_failed",
+          "Could not load Fundal_Exam.json. Check file name or location.",
+        );
         console.error("Lottie: failed to load Fundal_Exam.json");
       });
 
-      // Scroll to move between sections
       window.addEventListener(
         "wheel",
         (event) => {
@@ -159,22 +237,25 @@
           if (isThrottled || isPlaying) return;
 
           if (event.deltaY > 0) {
-            // Scroll down → next section
             if (currentSegment < SEGMENTS.length - 1) {
               playSegment(currentSegment + 1);
             } else {
-              statusEl.textContent = "You’re at the final section.";
+              setStatus(
+                "i18nExtra.fundal_exam_final_section",
+                "You're at the final section.",
+              );
             }
           } else if (event.deltaY < 0) {
-            // Scroll up → previous section
             if (currentSegment > 0) {
               playSegment(currentSegment - 1);
             } else {
-              statusEl.textContent = "You’re at the first section.";
+              setStatus(
+                "i18nExtra.fundal_exam_first_section",
+                "You're at the first section.",
+              );
             }
           }
 
-          // Simple 300ms throttle so we don’t spam scrolls
           isThrottled = true;
           setTimeout(() => {
             isThrottled = false;

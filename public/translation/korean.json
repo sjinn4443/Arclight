@@ -38,11 +38,14 @@
     "experience_6": "시뮬레이션 훈련",
     "experience_7": "기타",
     "continue_button": "계속",
-    "skip_button": "건너뛰고 계속",
+    "skip_button": "건너뛰고 시작하기",
     "job_role_placeholder": "선택",
     "job_group_eyes": "눈",
     "job_group_ears": "귀",
-    "job_group_skin": "피부"
+    "job_group_skin": "피부",
+    "experience_placeholder": "선택",
+    "practiceLevelLabel": "경험",
+    "practice_level_placeholder": "경력 연수"
   },
   "dashboard": {
     "greeting": "안녕하세요 사용자님!",
@@ -57,7 +60,17 @@
     "quick_action_download_contents": "콘텐츠 다운로드",
     "recommended_title": "추천 콘텐츠",
     "see_all": "모두 보기 >",
-    "coming_soon": "준비 중입니다."
+    "coming_soon": "준비 중입니다.",
+    "greeting_hello_name": "안녕하세요 {{name}}!",
+    "greeting_welcome_back_name": "{{name}}님, 다시 오신 것을 환영합니다!",
+    "greeting_nice_to_see_again_name": "{{name}}님, 다시 뵙게 되어 반갑습니다!",
+    "greeting_hello_generic": "안녕하세요!",
+    "greeting_welcome_back_generic": "다시 오신 것을 환영합니다!",
+    "greeting_nice_to_see_again_generic": "다시 뵙게 되어 반갑습니다!",
+    "recommended_subtitle_video": "비디오",
+    "recommended_subtitle_video_quiz": "비디오 | 퀴즈",
+    "recommended_subtitle_video_case_study": "비디오 | 사례 연구",
+    "recommended_subtitle_mini_apps": "미니 앱"
   },
   "ears": {
     "title": "귀",
@@ -171,7 +184,7 @@
     "title": "Arclight 앱에 오신 것을 환영합니다!",
     "subtitle": "시작하는 데 도움이 되는 기능에 대한 간략한 개요입니다.",
     "explore_button": "앱 탐색",
-    "skip_button": "건너뛰고 계속",
+    "skip_button": "건너뛰고 시작하기",
     "placeholder_page_title": "자리 표시자 페이지",
     "placeholder_page_note": "곧 기능 세부 정보가 추가될 예정입니다.",
     "continue_to_dashboard_button": "대시보드로 계속",
@@ -350,7 +363,36 @@
     }
   },
   "i18nLiteral": {
-    "Next >": "다음 >"
+    "Next >": "다음 >",
+    "Skip and Start": "건너뛰고 시작하기",
+    "Start Exploring": "탐색 시작하기",
+    "Tailored for You": "맞춤 추천",
+    "Tailored for you": "맞춤 추천",
+    "On your first visit, we will recommend content": "첫 방문 시, 콘텐츠를 추천해 드립니다",
+    "that suits your interests and role": "관심사와 역할에 맞게",
+    "Pick Up Anytime": "언제든 이어서 학습하세요",
+    "We remember what you've completed,": "완료한 학습을 기억해,",
+    "We remember what you’ve completed,": "완료한 학습을 기억해,",
+    "We remember what you?ve completed,": "완료한 학습을 기억해,",
+    "We remember what you???ve completed,": "완료한 학습을 기억해,",
+    "making it easy to continue where you left off": "중단한 지점에서 쉽게 다시 시작할 수 있어요",
+    "Strengthen Your Learning": "학습을 더 탄탄하게",
+    "Follow each lesson with a quick quiz to review": "각 학습 뒤 짧은 퀴즈로 복습하고",
+    "concepts and identify areas to revisit.": "다시 봐야 할 부분을 확인하세요.",
+    "No saved items yet. Tap the heart on any Eyes card to add it here.": "아직 저장된 항목이 없습니다. Eyes 카드의 하트를 눌러 여기에 추가하세요.",
+    "Your saved items couldn't be matched. Try liking a new item.": "저장한 항목을 찾지 못했습니다. 새 항목에 좋아요를 눌러보세요.",
+    "Your saved items couldn’t be matched. Try liking a new item.": "저장한 항목을 찾지 못했습니다. 새 항목에 좋아요를 눌러보세요.",
+    "Your saved items couldn?t be matched. Try liking a new item.": "저장한 항목을 찾지 못했습니다. 새 항목에 좋아요를 눌러보세요.",
+    "Video • Quiz": "비디오 • 퀴즈",
+    "Video • Case Study": "비디오 • 사례 연구",
+    "Video ? Quiz": "비디오 • 퀴즈",
+    "Video ? Case Study": "비디오 • 사례 연구",
+    "Your experience": "당신의 경험",
+    "Your Experience": "당신의 경험",
+    "Childhood Eye Screening": "소아 눈 검진",
+    "childhood eye screening": "소아 눈 검진",
+    "Cataract": "백내장",
+    "cataract": "백내장"
   },
   "i18nExtra": {
     "fundal_reflex": {
@@ -389,6 +431,27 @@
       "explain_findings_make_plan": "소견을 설명하고 다음 계획을 세우세요",
       "repeat_hand_wash": "손 씻기를 다시 하세요",
       "replay": "다시 보기"
-    }
+    },
+    "fundal_exam_loading": "Fundal_Exam.json 불러오는 중...",
+    "fundal_exam_title": "안저 검사",
+    "fundal_exam_loaded_scroll": "불러왔습니다. 섹션 사이를 이동하려면 스크롤하세요.",
+    "fundal_exam_playing_section": "{{total}}개 중 {{current}}번째 섹션 재생 중...",
+    "fundal_exam_section_complete": "{{current}}번째 섹션 완료. 다음 섹션으로 가려면 위/아래로 스크롤하세요.",
+    "fundal_exam_load_failed": "Fundal_Exam.json을 불러오지 못했습니다. 파일 이름 또는 위치를 확인하세요.",
+    "fundal_exam_final_section": "마지막 섹션입니다.",
+    "fundal_exam_first_section": "첫 번째 섹션입니다.",
+    "menu_aria_label": "메뉴",
+    "eyes_toggle_like": "좋아요 전환",
+    "eyes_like": "좋아요",
+    "eyes_go_to_item": "항목으로 이동",
+    "fundal_reflex_preparation_animations_aria": "안저 반사 준비 애니메이션",
+    "fundal_reflex_examination_animations_aria": "안저 반사 검사 애니메이션",
+    "fundal_reflex_newborn_eyes_open_animations_aria": "안저 반사 신생아 눈 뜬 상태 애니메이션",
+    "fundal_reflex_newborn_eyes_closed_animations_aria": "안저 반사 신생아 눈 감은 상태 애니메이션",
+    "fundal_reflex_unclear_findings_animations_aria": "안저 반사 불명확 소견 애니메이션",
+    "fundal_reflex_possible_findings_animations_aria": "안저 반사 가능한 소견 애니메이션",
+    "fundal_reflex_after_examination_animations_aria": "안저 반사 검사 후 애니메이션",
+    "my_learning_empty": "아직 저장된 항목이 없습니다. Eyes 카드의 하트를 눌러 여기에 추가하세요.",
+    "my_learning_unmatched": "저장한 항목을 찾지 못했습니다. 새 항목에 좋아요를 눌러보세요."
   }
 }

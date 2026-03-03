@@ -41,9 +41,37 @@ const CACHE = {
 };
 
 export function get(obj, path) {
-  return path
-    .split(".")
-    .reduce((o, k) => (o && k in o ? o[k] : undefined), obj);
+  if (!obj || !path) return undefined;
+
+  const parts = String(path).split(".");
+  let current = obj;
+
+  for (let i = 0; i < parts.length; i += 1) {
+    if (!current || typeof current !== "object") return undefined;
+
+    const segment = parts[i];
+    if (segment in current) {
+      current = current[segment];
+      continue;
+    }
+
+    // Support dictionaries that use dot-separated keys as a single property,
+    // e.g. "card_label.history_taking" under "eyes".
+    let matched = false;
+    for (let j = parts.length - 1; j > i; j -= 1) {
+      const merged = parts.slice(i, j + 1).join(".");
+      if (merged in current) {
+        current = current[merged];
+        i = j;
+        matched = true;
+        break;
+      }
+    }
+
+    if (!matched) return undefined;
+  }
+
+  return current;
 }
 
 function langToPath(lang) {

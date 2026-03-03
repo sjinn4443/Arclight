@@ -482,6 +482,12 @@ export function initializeOnboarding() {
 
       experienceByRole.appendChild(block);
     });
+
+    try {
+      window.I18N?.applyTranslations?.(experienceByRole);
+    } catch {
+      void 0;
+    }
   }
 
   // ---------------------------

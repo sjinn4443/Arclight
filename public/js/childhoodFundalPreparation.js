@@ -809,6 +809,12 @@ function resolveStagePosterPath(animationPath) {
   );
 }
 
+function shouldSkipStagePoster(cfg, fileIndex = 0) {
+  if (!IS_IOS_WEBKIT) return false;
+  if (cfg?.disableIosFirstStagePoster === false) return false;
+  return Number(fileIndex) === 0;
+}
+
 function primeFundalAsset(url, options = {}) {
   if (typeof document === "undefined") return;
   const head = document.head || document.querySelector("head");
@@ -861,18 +867,22 @@ function warmupFundalRouteAssets(cfg) {
     as: "fetch",
     fetchPriority: "high",
   });
-  primeFundalAsset(resolveStagePosterPath(firstDataPath), {
-    as: "image",
-    fetchPriority: "high",
-  });
+  if (!shouldSkipStagePoster(cfg, 0)) {
+    primeFundalAsset(resolveStagePosterPath(firstDataPath), {
+      as: "image",
+      fetchPriority: "high",
+    });
+  }
 
   for (let i = 1; i < Math.min(paths.length, 3); i += 1) {
     const path = paths[i];
     primeFundalAsset(path, { rel: "prefetch", as: "fetch" });
-    primeFundalAsset(resolveStagePosterPath(path), {
-      rel: "prefetch",
-      as: "image",
-    });
+    if (!shouldSkipStagePoster(cfg, i)) {
+      primeFundalAsset(resolveStagePosterPath(path), {
+        rel: "prefetch",
+        as: "image",
+      });
+    }
   }
 }
 
@@ -951,7 +961,8 @@ function buildAnimationSlots(listEl, label, count, cfg = null) {
         ? cfg.paths[i]
         : "";
     const posterPath = resolveStagePosterPath(animationPath);
-    if (posterPath) {
+    const shouldRenderPoster = posterPath && !shouldSkipStagePoster(cfg, i);
+    if (shouldRenderPoster) {
       stage.classList.add("childhood-fundal-prep-stage--loading");
       stage.dataset.posterHidden = "0";
       const posterEl = createStagePosterElement(posterPath, i);
@@ -5125,10 +5136,32 @@ function initializeSegmentScrollMode(cfg, page, stages) {
   };
 }
 
-export async function initializeChildhoodFundalReflexScrollPage(routeName) {
+function resolveFundalRouteConfig(routeName) {
   const baseCfg = ROUTE_CONFIG[routeName];
-  if (!baseCfg) return;
-  const cfg = resolveRuntimeRouteConfig(routeName, baseCfg);
+  if (!baseCfg) return null;
+  return resolveRuntimeRouteConfig(routeName, baseCfg);
+}
+
+export function prewarmChildhoodFundalRouteAssets(routeNames = []) {
+  const rawList = Array.isArray(routeNames)
+    ? routeNames
+    : [String(routeNames || "").trim()];
+  const filtered = rawList
+    .map((name) => String(name || "").trim())
+    .filter((name) => !!name);
+  const targets = filtered.length ? filtered : Object.keys(ROUTE_CONFIG);
+
+  targets.forEach((routeName) => {
+    const cfg = resolveFundalRouteConfig(routeName);
+    if (!cfg) return;
+    warmupFundalRouteAssets(cfg);
+  });
+
+  void ensureLottie();
+}
+
+export async function initializeChildhoodFundalReflexScrollPage(routeName) {
+  const cfg = resolveFundalRouteConfig(routeName);
   if (!cfg) return;
 
   const page = document.getElementById(cfg.pageId);
@@ -5141,10 +5174,11 @@ export async function initializeChildhoodFundalReflexScrollPage(routeName) {
   if (!stages.length) return;
   warmupFundalRouteAssets(cfg);
 
-  const i18nReadyPromise = ensureFundalI18nDictionary();
+  const i18nReadyPromise = ensureFundalI18nDictionary().catch((err) => {
+    console.error("[fundalScroll] dictionary preload failed", err);
+  });
   const lottieReadyPromise = ensureLottie();
 
-  await i18nReadyPromise;
   const isLottieReady = await lottieReadyPromise;
   if (!isLottieReady) {
     console.error("[fundalScroll] lottie is not available");
@@ -5153,8 +5187,11 @@ export async function initializeChildhoodFundalReflexScrollPage(routeName) {
 
   if (cfg.playMode === "segmentScroll") {
     activeSession = initializeSegmentScrollMode(cfg, page, stages);
+    void i18nReadyPromise.then(() => refreshActiveFundalLanguageSession());
     return;
   }
+
+  await i18nReadyPromise;
 
   const animations = stages.map((stage, idx) =>
     window.lottie.loadAnimation({

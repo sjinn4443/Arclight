@@ -4,8 +4,31 @@
 
 import { loadPage } from "./navigation.js";
 import { openMenu } from "./menu.js";
+import { fetchDictionary, get, getLanguage } from "./i18n.js";
 
 const wired = new WeakSet();
+let dashboardI18nDict = {};
+let dashboardI18nLang = null;
+
+function interpolateTemplate(template, vars = {}) {
+  return String(template || "").replace(
+    /\{\{\s*([a-zA-Z0-9_]+)\s*\}\}/g,
+    (_, key) => String(vars[key] ?? ""),
+  );
+}
+
+async function ensureDashboardI18nDictionary() {
+  const lang = getLanguage();
+  if (dashboardI18nLang === lang && dashboardI18nDict) return;
+  dashboardI18nDict = await fetchDictionary(lang);
+  dashboardI18nLang = lang;
+}
+
+async function translateDashboard(path, fallback, vars = {}) {
+  await ensureDashboardI18nDictionary();
+  const translated = get(dashboardI18nDict, path);
+  return interpolateTemplate(translated == null ? fallback : translated, vars);
+}
 /**
  * Initializes the unified dashboard page.
  * Sets up user greetings, event listeners for menu button, category cards,
@@ -42,12 +65,42 @@ export function initializeDashboard() {
     helloEl.textContent = "";
     helloEl.innerHTML = "";
 
+    const applyLocalizedGreeting = async () => {
+      const hasName = Boolean(username);
+      let key = "";
+      let fallback = "";
+
+      if (count === 1) {
+        key = hasName
+          ? "dashboard.greeting_hello_name"
+          : "dashboard.greeting_hello_generic";
+        fallback = hasName ? `Hello ${username}!` : "Hello!";
+      } else if (count === 2) {
+        key = hasName
+          ? "dashboard.greeting_welcome_back_name"
+          : "dashboard.greeting_welcome_back_generic";
+        fallback = hasName ? `Welcome back ${username}!` : "Welcome back!";
+      } else if (count === 3) {
+        key = hasName
+          ? "dashboard.greeting_nice_to_see_again_name"
+          : "dashboard.greeting_nice_to_see_again_generic";
+        fallback = hasName
+          ? `Nice to see you again ${username}!`
+          : "Nice to see you again!";
+      }
+
+      if (!key) return;
+      helloEl.textContent = await translateDashboard(key, fallback, {
+        name: username,
+      });
+    };
+
     if (count === 1) {
-      helloEl.textContent = `Hello ${username || "there"}!`;
+      void applyLocalizedGreeting();
     } else if (count === 2) {
-      helloEl.textContent = `Welcome back ${username || "there"}!`;
+      void applyLocalizedGreeting();
     } else if (count === 3) {
-      helloEl.textContent = `Nice to see you again ${username || "there"}!`;
+      void applyLocalizedGreeting();
     } else {
       const img = document.createElement("img");
       img.src = "images/logo/pwainstall.png";
@@ -58,8 +111,14 @@ export function initializeDashboard() {
       img.style.marginLeft = "2px";
       helloEl.appendChild(img);
     }
+
+    window.addEventListener("i18n:languageChanged", () => {
+      if (count >= 1 && count <= 3) {
+        void applyLocalizedGreeting();
+      }
+    });
   }
-  // 2) ☰ → Menu route (overlay lives in menu.html)
+  // 2) Menu route (overlay lives in menu.html)
   const menuBtn = root.querySelector(".menuBtn");
   if (menuBtn) {
     menuBtn.addEventListener("click", (e) => {
@@ -68,7 +127,7 @@ export function initializeDashboard() {
     });
   }
 
-  // 2b) Compact search toggle (icon → show/hide box)
+  // 2b) Compact search toggle (icon -> show/hide box)
   const searchWrap = root.querySelector(".search-wrap--compact");
   const toggleBtn = root.querySelector("#dashboardSearchToggle");
 
@@ -237,37 +296,47 @@ function renderRecommendations(host) {
   const ALL = [
     {
       title: "Ophthalmoscopy",
+      titleI18n: "eyes.card_label.ophthalmoscopy",
       page: "directOphthalmoscopy",
       img: "images/icon/eyes/core/ophth.webp",
-      subtitle: "Video • Quiz",
+      subtitle: "Video | Quiz",
+      subtitleI18n: "dashboard.recommended_subtitle_video_quiz",
       progress: 0,
     },
     {
       title: "Visual Acuity",
+      titleI18n: "eyes.card_label.visual_acuity",
       page: "visualAcuityPage",
       img: "images/icon/eyes/core/visualacuity.webp",
       subtitle: "Video",
+      subtitleI18n: "dashboard.recommended_subtitle_video",
       progress: 0,
     },
     {
       title: "Pupils",
+      titleI18n: "eyes.card_label.pupils",
       page: "pupilsPage",
       img: "images/icon/eyes/core/pupils.webp",
-      subtitle: "Video • Quiz",
+      subtitle: "Video | Quiz",
+      subtitleI18n: "dashboard.recommended_subtitle_video_quiz",
       progress: 0,
     },
     {
       title: "Front of Eye",
+      titleI18n: "eyes.card_label.front_of_eye",
       page: "anteriorSegmentVideoPage",
       img: "images/icon/eyes/core/frontofeye.webp",
-      subtitle: "Video • Case Study",
+      subtitle: "Video | Case Study",
+      subtitleI18n: "dashboard.recommended_subtitle_video_case_study",
       progress: 0,
     },
     {
       title: "Interactive Learning",
+      titleI18n: "eyes.card_label.interactive_learning",
       page: "interactiveLearningPage",
       img: "images/icon/eyes/core/miniapp.webp",
       subtitle: "Mini Apps",
+      subtitleI18n: "dashboard.recommended_subtitle_mini_apps",
       progress: 0,
     },
   ];
@@ -296,15 +365,20 @@ function renderRecommendations(host) {
     if (img) {
       img.src = m.img;
       img.alt = m.title;
+      if (m.titleI18n) img.setAttribute("data-i18n", `${m.titleI18n}:alt`);
     }
 
     const title = card.querySelector(".module-title");
-    if (title) title.textContent = m.title;
+    if (title) {
+      title.textContent = m.title;
+      if (m.titleI18n) title.setAttribute("data-i18n", m.titleI18n);
+    }
 
     const subtitle = card.querySelector(".module-subtitle");
     if (subtitle) {
       if (m.subtitle) {
         subtitle.textContent = m.subtitle;
+        if (m.subtitleI18n) subtitle.setAttribute("data-i18n", m.subtitleI18n);
       } else {
         subtitle.remove();
       }
@@ -317,6 +391,12 @@ function renderRecommendations(host) {
 
     host.appendChild(card);
   });
+
+  try {
+    window.I18N?.applyTranslations?.(host);
+  } catch {
+    void 0;
+  }
 
   // Click behavior: prefer page deep-link into Videos, else use route
   host.querySelectorAll(".module-card").forEach((card) => {

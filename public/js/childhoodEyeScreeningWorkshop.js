@@ -230,6 +230,37 @@ function markRestoreOpenFolder() {
   } catch {}
 }
 
+let fundalWarmupScheduled = false;
+
+function scheduleFundalRouteWarmup() {
+  if (fundalWarmupScheduled) return;
+  fundalWarmupScheduled = true;
+
+  const warmup = () => {
+    void import("./childhoodFundalPreparation.js")
+      .then((module) => {
+        module.prewarmChildhoodFundalRouteAssets?.([
+          "childhoodFundalPreparation",
+          "childhoodFundalExamination",
+          "childhoodFundalNewbornEyesOpen",
+          "childhoodFundalNewbornEyesClosed",
+          "childhoodFundalUnclearFindings",
+          "childhoodFundalPossibleFinding",
+          "childhoodFundalAfterExamination",
+        ]);
+      })
+      .catch((err) => {
+        console.warn("[childhoodWorkshop] fundal warmup skipped", err);
+      });
+  };
+
+  if (typeof window.requestIdleCallback === "function") {
+    window.requestIdleCallback(() => warmup(), { timeout: 1200 });
+    return;
+  }
+  window.setTimeout(warmup, 220);
+}
+
 export function initializeChildhoodEyeScreeningWorkshop() {
   const page = document.getElementById("childhoodEyeScreeningWorkshopPage");
   if (!page) return;
@@ -239,6 +270,7 @@ export function initializeChildhoodEyeScreeningWorkshop() {
   setupWorkshopFolders(page);
   assignChildhoodWorkshopFlowIndices(page);
   updateChildhoodWorkshopProgressBars();
+  scheduleFundalRouteWarmup();
 
   const rows = page.querySelectorAll(".lesson-row[data-target]");
   rows.forEach((row) => {

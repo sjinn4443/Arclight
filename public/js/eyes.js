@@ -55,6 +55,48 @@ const EYES_IMAGE_MAP = {
   "Holo Overview": "images/icon/eyes/tools/car_holo.webp",
 };
 
+const EYES_LABEL_I18N_KEYS = Object.freeze({
+  "History Taking": "eyes.card_label.history_taking",
+  "Visual Acuity": "eyes.card_label.visual_acuity",
+  Pupils: "eyes.card_label.pupils",
+  "Front of Eye": "eyes.card_label.front_of_eye",
+  "Fundal Reflex": "eyes.card_label.fundal_reflex",
+  Ophthalmoscopy: "eyes.card_label.ophthalmoscopy",
+  "Interactive Learning": "eyes.card_label.interactive_learning",
+  "Uncorrected Refractive Error":
+    "eyes.card_label.uncorrected_refractive_error",
+  Cataract: "eyes.card_label.cataract",
+  Glaucoma: "eyes.card_label.glaucoma",
+  "Diabetic Retinopathy": "eyes.card_label.diabetic_retinopathy",
+  "Corneal Disease": "eyes.card_label.corneal_disease",
+  "Childhood Eye Screening": "eyes.card_label.childhood_eye_screening",
+  "Retinopathy of Prematurity": "eyes.card_label.retinopathy_of_prematurity",
+  "Retinal Disease": "eyes.card_label.retinal_disease",
+  "Optic Nerve Disease": "eyes.card_label.optic_nerve_disease",
+  "WHO PEC": "eyes.card_label.who_pec",
+  Ptosis: "eyes.card_label.ptosis",
+  Proptosis: "eyes.card_label.proptosis",
+  "Eye Movements/Squint": "eyes.card_label.eye_movements/squint",
+  "Cranial Nerve Examination": "eyes.card_label.cranial_nerve_examination",
+  "Arclight Overview": "eyes.card_label.arclight_overview",
+  "Holo Overview": "eyes.card_label.holo_overview",
+});
+
+const EYES_TAG_I18N_KEYS = Object.freeze({
+  "Coming Soon": "eyes.tag_coming_soon",
+  Video: "eyes.tag_video",
+  "Case Study": "eyes.tag_case_study",
+  Quiz: "eyes.tag_quiz",
+  "Mini Apps": "eyes.tag_mini_apps",
+  "Mini App": "eyes.tag_mini_app",
+});
+
+const EYES_EXTRA_I18N_KEYS = Object.freeze({
+  toggleLikeAria: "i18nExtra.eyes_toggle_like",
+  likeTitle: "i18nExtra.eyes_like",
+  goToItemPrefix: "i18nExtra.eyes_go_to_item",
+});
+
 /**
  * Authoritative list of baseline video-section IDs shown inside the Videos route.
  * These IDs are used to determine if a card click should navigate to the 'videos' page
@@ -207,6 +249,36 @@ export function initializeEyes() {
 export function initializeEyesCatalog() {
   const pageEl = document.getElementById("eyesCatalogPage");
   if (!pageEl) return;
+
+  const resolveI18nText = (path, fallback) => {
+    if (!path || typeof window.I18N?.applyTranslations !== "function") {
+      return fallback;
+    }
+
+    const probe = document.createElement("span");
+    probe.style.display = "none";
+    probe.setAttribute("data-i18n", path);
+    probe.textContent = fallback;
+    pageEl.appendChild(probe);
+
+    try {
+      window.I18N.applyTranslations(probe);
+      return (probe.textContent || fallback).trim();
+    } catch {
+      return fallback;
+    } finally {
+      probe.remove();
+    }
+  };
+
+  const localizedLikeTitle = resolveI18nText(
+    EYES_EXTRA_I18N_KEYS.likeTitle,
+    "Like",
+  );
+  const localizedGoToItemPrefix = resolveI18nText(
+    EYES_EXTRA_I18N_KEYS.goToItemPrefix,
+    "Go to item",
+  );
 
   // menu (baseline parity)
   const menuBtn = pageEl.querySelector(".menuBtn");
@@ -390,6 +462,7 @@ export function initializeEyesCatalog() {
       const card = cardTemplate.content
         .querySelector(".eyes-card")
         .cloneNode(true);
+      const labelI18nKey = EYES_LABEL_I18N_KEYS[i.label];
 
       card.classList.toggle("is-disabled", disabled);
       card.classList.toggle("liked", likes.has(i.label));
@@ -404,6 +477,15 @@ export function initializeEyesCatalog() {
         card.setAttribute("tabindex", "0");
       }
 
+      const heartBtn = card.querySelector(".heart-btn");
+      if (heartBtn) {
+        heartBtn.setAttribute(
+          "data-i18n",
+          `${EYES_EXTRA_I18N_KEYS.toggleLikeAria}:aria-label`,
+        );
+        heartBtn.setAttribute("title", localizedLikeTitle);
+      }
+
       const img = card.querySelector(".eyes-card__bg");
       const imgSrc =
         i.target === "childhoodEyeScreeningWorkshop"
@@ -412,12 +494,18 @@ export function initializeEyesCatalog() {
       if (img && imgSrc) {
         img.src = imgSrc;
         img.alt = i.label;
+        if (labelI18nKey) {
+          img.setAttribute("data-i18n", `${labelI18nKey}:alt`);
+        }
       } else if (img) {
         img.remove();
       }
 
       const title = card.querySelector(".eyes-card__title");
-      if (title) title.textContent = i.label;
+      if (title) {
+        title.textContent = i.label;
+        if (labelI18nKey) title.setAttribute("data-i18n", labelI18nKey);
+      }
 
       const tagRow = card.querySelector(".tag-row");
       if (tagRow) {
@@ -425,12 +513,18 @@ export function initializeEyesCatalog() {
           const tag = document.createElement("span");
           tag.className = "tag coming-tag";
           tag.textContent = "Coming Soon";
+          tag.setAttribute(
+            "data-i18n",
+            EYES_TAG_I18N_KEYS["Coming Soon"] || "eyes.tag_coming_soon",
+          );
           tagRow.appendChild(tag);
         } else if (i.tags?.length) {
           i.tags.forEach((t) => {
             const tag = document.createElement("span");
             tag.className = "tag";
             tag.textContent = t;
+            const tagI18nKey = EYES_TAG_I18N_KEYS[t];
+            if (tagI18nKey) tag.setAttribute("data-i18n", tagI18nKey);
             tagRow.appendChild(tag);
           });
         } else {
@@ -445,6 +539,10 @@ export function initializeEyesCatalog() {
   Object.entries(sections).forEach(([id, list]) => render(id, list));
   try {
     window.I18N?.applyTranslations?.(pageEl);
+    pageEl.querySelectorAll(".heart-btn").forEach((btn) => {
+      const aria = btn.getAttribute("aria-label");
+      if (aria) btn.setAttribute("title", aria);
+    });
   } catch {
     void 0;
   }
@@ -476,7 +574,7 @@ export function initializeEyesCatalog() {
     dotsWrap.innerHTML = cards
       .map(
         (_, i) =>
-          `<button class="dot" type="button" aria-label="Go to item ${
+          `<button class="dot" type="button" aria-label="${localizedGoToItemPrefix} ${
             i + 1
           }"></button>`,
       )
