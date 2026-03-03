@@ -614,12 +614,20 @@ export function initializeEyesCatalog() {
     carouselEl.addEventListener("scroll", onScroll, { passive: true });
 
     // Initial sync: restore prior state when available.
+    // Use activeIndex first because it is resilient to responsive width changes.
     requestAnimationFrame(() => {
       const savedState = carouselId
         ? readEyesCarouselState()[carouselId]
         : null;
       const savedLeft = Number(savedState?.scrollLeft);
       const savedIndex = Number(savedState?.activeIndex);
+
+      if (Number.isFinite(savedIndex)) {
+        const idx = clampNumber(savedIndex, 0, cards.length - 1);
+        centerCardByIndex(idx, "auto");
+        paintDots(idx);
+        return;
+      }
 
       if (Number.isFinite(savedLeft)) {
         const maxScroll = Math.max(
@@ -634,15 +642,7 @@ export function initializeEyesCatalog() {
         return;
       }
 
-      if (Number.isFinite(savedIndex)) {
-        const idx = clampNumber(savedIndex, 0, cards.length - 1);
-        centerCardByIndex(idx, "auto");
-        paintDots(idx);
-        return;
-      }
-
-      paintDots(0);
-      centerCardByIndex(0, "auto");
+      paintDots(getActiveIndex());
     });
   };
   // This comment is intentionally placed here to satisfy the linter for the empty block statement.
