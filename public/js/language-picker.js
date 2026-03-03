@@ -7,10 +7,92 @@
   const toggleBtn = document.getElementById("langPickerToggle"); // collapsed bar
   const currentEl = document.getElementById("langPickerCurrent"); // text in the bar
   const listEl = document.getElementById("languagePickerList"); // dropdown list
+  let pickerOptionsHydratePromise = null;
+  let pickerOptionsHydrated = false;
+  const nativeByCode = {
+    en: "English",
+    am: "\u12A0\u121B\u122D\u129B",
+    ar: "\u0627\u0644\u0639\u0631\u0628\u064A\u0629",
+    bn: "\u09AC\u09BE\u0982\u09B2\u09BE",
+    ny: "Chinyanja",
+    zh: "\u4E2D\u6587",
+    fr: "Fran\u00E7ais",
+    ha: "Hausa",
+    hi: "\u0939\u093F\u0928\u094D\u0926\u0940",
+    ig: "\u00CDgb\u00F2",
+    id: "Bahasa Indonesia",
+    rw: "Ikinyarwanda",
+    ko: "\uD55C\uAD6D\uC5B4",
+    te: "\u0C24\u0C46\u0C32\u0C41\u0C17\u0C41",
+    ln: "Ling\u00E1la",
+    fa: "\u0641\u0627\u0631\u0633\u06CC",
+    sn: "ChiShona",
+    es: "Espa\u00F1ol",
+    sw: "Kiswahili",
+    ur: "\u0627\u0631\u062F\u0648",
+    yo: "Yor\u00F9b\u00E1",
+    zu: "isiZulu",
+  };
 
-  function openModal() {
+  async function hydratePickerOptionsFromLanguageInstall() {
+    if (!selectEl) return;
+    if (pickerOptionsHydrated) return;
+    if (pickerOptionsHydratePromise) {
+      await pickerOptionsHydratePromise;
+      return;
+    }
+
+    pickerOptionsHydratePromise = (async () => {
+      const candidates = [
+        "/html/languageinstall.html",
+        "html/languageinstall.html",
+      ];
+      let res = null;
+
+      for (const url of candidates) {
+        try {
+          const attempt = await fetch(url, {
+            credentials: "same-origin",
+            cache: "no-store",
+          });
+          if (attempt.ok) {
+            res = attempt;
+            break;
+          }
+        } catch {
+          // Try the next candidate.
+        }
+      }
+      if (!res) return;
+
+      const html = await res.text();
+      const doc = new DOMParser().parseFromString(html, "text/html");
+      const pref = doc.querySelector("#prefLang");
+      if (!pref) return;
+
+      const options = [...pref.querySelectorAll("option")];
+      if (!options.length) return;
+
+      selectEl.innerHTML = "";
+      options.forEach((opt) => {
+        selectEl.appendChild(opt.cloneNode(true));
+      });
+      pickerOptionsHydrated = true;
+    })()
+      .catch(() => {
+        // Keep existing fallback options if fetch/parse fails.
+      })
+      .finally(() => {
+        pickerOptionsHydratePromise = null;
+      });
+
+    await pickerOptionsHydratePromise;
+  }
+
+  async function openModal() {
     overlay.hidden = false;
     document.body.style.overflow = "hidden";
+    await hydratePickerOptionsFromLanguageInstall();
     buildListFromInstallSelect();
     setBarLabelFromCurrent();
     collapseDropdown();
@@ -62,7 +144,13 @@
     [...source.options].forEach((opt) => {
       const code = opt.value;
       const english = (opt.textContent || "").trim();
-      const native = (opt.getAttribute("data-native") || english).trim();
+      const attrNative = (opt.getAttribute("data-native") || "").trim();
+      const englishNorm = english.toLocaleLowerCase();
+      const nativeAttrNorm = attrNative.toLocaleLowerCase();
+      const nativeLooksFallback = !attrNative || nativeAttrNorm === englishNorm;
+      const native = (
+        nativeLooksFallback ? nativeByCode[code] || english : attrNative
+      ).trim();
 
       const li = document.createElement("li");
       li.className = "lang-install__item";
@@ -93,40 +181,30 @@
 
   // Apply language exactly like the Language Install page
   async function applyLanguage(code, installSelect, englishLabel) {
-    if (installSelect) {
-      installSelect.value = code;
-      installSelect.dispatchEvent(new Event("change", { bubbles: true }));
-      currentEl.textContent = englishLabel || currentEl.textContent;
-      closeModal(); // close popup after selection
-      return;
-    }
-    if (window.I18N?.setLanguage) {
-      try {
+    try {
+      if (installSelect) {
+        installSelect.value = code;
+        installSelect.dispatchEvent(new Event("change", { bubbles: true }));
+      }
+
+      if (window.I18N?.setLanguage) {
         await window.I18N.setLanguage(code);
         window.I18N.applyTranslations?.();
-        try {
-          localStorage.setItem("prefLang", code);
-        } catch {
-          void 0;
-        }
-        document.documentElement.setAttribute("lang", code);
-        currentEl.textContent = englishLabel || currentEl.textContent;
-      } finally {
-        closeModal();
+      } else {
+        window.I18N?.applyTranslations?.();
       }
-      return;
+
+      try {
+        localStorage.setItem("prefLang", code);
+      } catch {
+        void 0;
+      }
+
+      document.documentElement.setAttribute("lang", code);
+      currentEl.textContent = englishLabel || currentEl.textContent;
+    } finally {
+      closeModal();
     }
-    // Minimal fallback
-    try {
-      localStorage.setItem("prefLang", code);
-    } catch {
-      void 0;
-    }
-    // Ensure applyTranslations is called from window.I18N if available
-    window.I18N?.applyTranslations?.();
-    document.documentElement.setAttribute("lang", code);
-    currentEl.textContent = englishLabel || currentEl.textContent;
-    closeModal();
   }
 
   // --- Events ---

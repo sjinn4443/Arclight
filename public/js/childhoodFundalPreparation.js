@@ -491,6 +491,25 @@ function translateFundalText(rawText) {
 }
 
 let activeSession = null;
+
+async function refreshActiveFundalLanguageSession() {
+  if (!activeSession || typeof activeSession.refreshLanguage !== "function") {
+    return;
+  }
+  try {
+    await activeSession.refreshLanguage();
+  } catch (err) {
+    console.error("[fundalScroll] language refresh failed", err);
+  }
+}
+
+if (!window.__fundalScrollLanguageRefreshWired) {
+  window.__fundalScrollLanguageRefreshWired = true;
+  window.addEventListener("i18n:languageChanged", () => {
+    void refreshActiveFundalLanguageSession();
+  });
+}
+
 const IS_IOS_WEBKIT = (() => {
   if (typeof navigator === "undefined") return false;
   const ua = navigator.userAgent || "";
@@ -875,15 +894,21 @@ function createStagePosterElement(posterPath, fileIndex = 0) {
 function hideStagePoster(stage, options = {}) {
   if (!stage) return;
   const poster = stage.querySelector(".childhood-fundal-prep-stage__poster");
-  stage.classList.remove("childhood-fundal-prep-stage--loading");
-  stage.classList.add("childhood-fundal-prep-stage--ready");
-  stage.dataset.posterHidden = "1";
-  if (!poster) return;
+  const markReady = () => {
+    stage.classList.remove("childhood-fundal-prep-stage--loading");
+    stage.classList.add("childhood-fundal-prep-stage--ready");
+    stage.dataset.posterHidden = "1";
+  };
+  if (!poster) {
+    markReady();
+    return;
+  }
 
   const removePoster = () => {
     if (poster.parentElement) {
       poster.parentElement.removeChild(poster);
     }
+    markReady();
   };
   if (options.immediate === true) {
     removePoster();
@@ -3082,7 +3107,7 @@ function stopAtSegmentEnd(controller, cfg) {
           controller.lastPinnedFrame = holdFrame;
         }
       }
-      maybeHideStagePoster(controller);
+      maybeHideStagePoster(controller, { immediate: true });
     } finally {
       controller.isSnapping = false;
       controller.setPlaybackViewportFreeze?.(false);
@@ -3585,9 +3610,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
       const activeAnim = controller.anim;
       if (!activeAnim) return;
       if (controller.ready) return;
-      if (!controller.isRemounting) {
-        hideRecoveryOverlay(controller, { immediate: true });
-      }
+      hideRecoveryOverlay(controller, { immediate: true });
       controller.segments = resolveSegmentsForFile(cfg, idx, activeAnim);
       controller.ready = true;
 
@@ -3617,7 +3640,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
           rememberRecoverySnapshot(controller, currentFrame);
         }
       }
-      maybeHideStagePoster(controller);
+      hideStagePoster(controller.stage, { immediate: true });
 
       if (idx === 0) {
         anchorToFirstFile();
@@ -3836,6 +3859,50 @@ function initializeSegmentScrollMode(cfg, page, stages) {
 
   let replayBtn = null;
   const shouldSupportReplay = cfg.enableReplay === true;
+  const refreshSessionLanguage = async () => {
+    await ensureFundalI18nDictionary();
+
+    controllers.forEach((controller) => {
+      const fileIndex = Number(controller?.fileIndex);
+      if (!Number.isFinite(fileIndex) || fileIndex < 0) return;
+
+      controller.segmentStartTexts = resolveSegmentStartTexts(cfg, fileIndex);
+      controller.finalSummaryBulletLines = resolveFinalSummaryBullets(
+        cfg,
+        fileIndex,
+      );
+
+      const isBulletSummaryVisible = Boolean(
+        controller.segmentTextEl?.classList?.contains(
+          "childhood-fundal-segment-text--bullet-summary",
+        ),
+      );
+      if (isBulletSummaryVisible) {
+        if (controller.finalSummaryBulletLines.length) {
+          controller.showFinalSummaryBullets?.();
+        } else {
+          controller.clearSegmentText?.();
+        }
+        return;
+      }
+
+      controller.clearSegmentText?.();
+      const maxIndex = Math.min(
+        Number(controller.segmentIndex),
+        controller.segmentStartTexts.length - 1,
+      );
+      if (!Number.isFinite(maxIndex) || maxIndex < 0) return;
+
+      for (let i = 0; i <= maxIndex; i += 1) {
+        controller.setSegmentText?.(controller.segmentStartTexts[i]);
+      }
+    });
+
+    if (shouldSupportReplay) {
+      const btn = replayBtn || ensureReplayButton();
+      if (btn) btn.textContent = translateFundalText("Replay");
+    }
+  };
   const hideAllDownArrows = () => {
     controllers.forEach((controller) => controller.hideDownArrow?.());
   };
@@ -4545,14 +4612,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
 
   function applyReplayButtonTitleOffset(buttonEl, titleEl) {
     if (!buttonEl) return;
-    const normalizedTitle = String(titleEl?.textContent || "")
-      .replace(/\s+/g, " ")
-      .trim();
-    const isLongTitle = normalizedTitle.length >= 18;
-    buttonEl.classList.toggle(
-      "childhood-fundal-replay-btn--compact-offset",
-      isLongTitle,
-    );
+    buttonEl.classList.remove("childhood-fundal-replay-btn--compact-offset");
   }
 
   function ensureReplayButton() {
@@ -5005,6 +5065,9 @@ function initializeSegmentScrollMode(cfg, page, stages) {
   );
 
   return {
+    cfg,
+    page,
+    refreshLanguage: refreshSessionLanguage,
     controllers,
     animations: controllers.map((c) => c.anim),
     observer: null,

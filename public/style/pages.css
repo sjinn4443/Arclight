@@ -1850,8 +1850,34 @@ select.onb-input.has-value + .onb-select-caret {
   #childhoodNormalVisualDevelopmentPage .eyes-topbar__icons,
   #childhoodAskQuestionsObservePage .eyes-topbar__icons,
   .childhood-fundal-scroll-page .eyes-topbar__icons {
-    margin-right: 20px;
+    margin-right: 42px !important;
   }
+}
+
+@media (max-width: 37.5em) {
+  #childhoodEyeBrainImagesPage .eyes-topbar .icon.menuBtn,
+  #childhoodIntroVisualDevelopmentPage .eyes-topbar .icon.menuBtn,
+  #childhoodNormalVisualDevelopmentPage .eyes-topbar .icon.menuBtn,
+  #childhoodAskQuestionsObservePage .eyes-topbar .icon.menuBtn,
+  .childhood-fundal-scroll-page .eyes-topbar .icon.menuBtn {
+    position: relative;
+    left: -30px !important;
+  }
+}
+
+@media (max-width: 37.5em) {
+  .childhood-fundal-scroll-page .eyes-topbar__icons {
+    margin-right: 14px !important;
+  }
+
+  .childhood-fundal-scroll-page .eyes-topbar .icon.menuBtn {
+    left: -8px !important;
+  }
+}
+
+#childhoodFundalPossibleFindingPage .childhood-fundal-prep-stage,
+#childhoodFundalPossibleFindingPage .childhood-fundal-prep-stage__poster {
+  background: transparent;
 }
 
 #glaucomaWorkshopPage.glaucoma-folder-open
@@ -2200,9 +2226,11 @@ select.onb-input.has-value + .onb-select-caret {
   width: 100%;
   margin-left: 0;
   aspect-ratio: 1169 / 1280;
-  background: #edf1f5;
+  background: transparent;
   position: relative;
   isolation: isolate;
+  overflow: hidden;
+  contain: paint;
 }
 
 .childhood-fundal-scroll-page
@@ -2221,7 +2249,7 @@ select.onb-input.has-value + .onb-select-caret {
   z-index: 1;
   opacity: 1;
   transition: opacity 0.16s ease-out;
-  background: #edf1f5;
+  background: transparent;
 }
 
 .childhood-fundal-scroll-page
@@ -2263,11 +2291,14 @@ select.onb-input.has-value + .onb-select-caret {
   height: 100% !important;
   position: relative;
   z-index: 2;
+  overflow: hidden !important;
+  clip-path: inset(0);
 }
 
 .childhood-fundal-scroll-page .childhood-fundal-prep-stage canvas {
   position: relative;
   z-index: 2;
+  clip-path: inset(0);
 }
 
 @supports (-webkit-overflow-scrolling: touch) {
@@ -2486,9 +2517,17 @@ select.onb-input.has-value + .onb-select-caret {
 }
 
 .childhood-fundal-scroll-page .childhood-fundal-replay-btn {
-  margin-left: 138px;
+  position: absolute;
+  top: 50%;
+  left: 121px;
+  transform: translateY(-50%);
+  margin-left: 0 !important;
+  margin-top: 0 !important;
+  width: 86px;
+  min-width: 86px;
+  max-width: 86px;
   height: 28px;
-  padding: 0 10px;
+  padding: 0 8px;
   border: 0px;
   border-radius: 14px;
   background: #e41e21;
@@ -2497,11 +2536,13 @@ select.onb-input.has-value + .onb-select-caret {
   font-weight: 600;
   line-height: 1;
   cursor: pointer;
+  white-space: nowrap;
+  z-index: 1002;
 }
 
 .childhood-fundal-scroll-page
   .childhood-fundal-replay-btn.childhood-fundal-replay-btn--compact-offset {
-  margin-left: 74px;
+  left: 121px;
 }
 
 #childhoodFundalPossibleFindingPage .childhood-fundal-replay-btn,
@@ -2513,5 +2554,56 @@ select.onb-input.has-value + .onb-select-caret {
 #childhoodFundalAfterExaminationPage .childhood-fundal-replay-btn,
 #childhoodFundalAfterExaminationPage
   .childhood-fundal-replay-btn.childhood-fundal-replay-btn--compact-offset {
-  margin-left: 103px;
+  left: 121px;
+}
+
+@media (max-width: 37.5em) {
+  .childhood-fundal-scroll-page .childhood-fundal-replay-btn,
+  .childhood-fundal-scroll-page
+    .childhood-fundal-replay-btn.childhood-fundal-replay-btn--compact-offset,
+  #childhoodFundalPossibleFindingPage .childhood-fundal-replay-btn,
+  #childhoodFundalPossibleFindingPage
+    .childhood-fundal-replay-btn.childhood-fundal-replay-btn--compact-offset,
+  #childhoodFundalUnclearFindingsPage .childhood-fundal-replay-btn,
+  #childhoodFundalUnclearFindingsPage
+    .childhood-fundal-replay-btn.childhood-fundal-replay-btn--compact-offset,
+  #childhoodFundalAfterExaminationPage .childhood-fundal-replay-btn,
+  #childhoodFundalAfterExaminationPage
+    .childhood-fundal-replay-btn.childhood-fundal-replay-btn--compact-offset {
+    left: 231px !important;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1439.98px) {
+  .childhood-fundal-scroll-page .childhood-fundal-replay-btn,
+  .childhood-fundal-scroll-page
+    .childhood-fundal-replay-btn.childhood-fundal-replay-btn--compact-offset,
+  #childhoodFundalPossibleFindingPage .childhood-fundal-replay-btn,
+  #childhoodFundalPossibleFindingPage
+    .childhood-fundal-replay-btn.childhood-fundal-replay-btn--compact-offset,
+  #childhoodFundalUnclearFindingsPage .childhood-fundal-replay-btn,
+  #childhoodFundalUnclearFindingsPage
+    .childhood-fundal-replay-btn.childhood-fundal-replay-btn--compact-offset,
+  #childhoodFundalAfterExaminationPage .childhood-fundal-replay-btn,
+  #childhoodFundalAfterExaminationPage
+    .childhood-fundal-replay-btn.childhood-fundal-replay-btn--compact-offset {
+    left: 675px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .childhood-fundal-scroll-page .childhood-fundal-replay-btn,
+  .childhood-fundal-scroll-page
+    .childhood-fundal-replay-btn.childhood-fundal-replay-btn--compact-offset,
+  #childhoodFundalPossibleFindingPage .childhood-fundal-replay-btn,
+  #childhoodFundalPossibleFindingPage
+    .childhood-fundal-replay-btn.childhood-fundal-replay-btn--compact-offset,
+  #childhoodFundalUnclearFindingsPage .childhood-fundal-replay-btn,
+  #childhoodFundalUnclearFindingsPage
+    .childhood-fundal-replay-btn.childhood-fundal-replay-btn--compact-offset,
+  #childhoodFundalAfterExaminationPage .childhood-fundal-replay-btn,
+  #childhoodFundalAfterExaminationPage
+    .childhood-fundal-replay-btn.childhood-fundal-replay-btn--compact-offset {
+    left: 870px;
+  }
 }
