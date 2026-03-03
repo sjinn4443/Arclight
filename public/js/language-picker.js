@@ -90,6 +90,7 @@
   }
 
   async function openModal() {
+    if (!overlay) return;
     overlay.hidden = false;
     document.body.style.overflow = "hidden";
     await hydratePickerOptionsFromLanguageInstall();
@@ -99,6 +100,7 @@
   }
 
   function closeModal() {
+    if (!overlay) return;
     overlay.hidden = true;
     document.body.style.overflow = "";
     collapseDropdown();
@@ -230,7 +232,7 @@
 
   // Close on Escape (dropdown first, then modal)
   document.addEventListener("keydown", (e) => {
-    if (e.key !== "Escape" || overlay.hidden) return;
+    if (e.key !== "Escape" || !overlay || overlay.hidden) return;
     if (!listEl.hidden) {
       collapseDropdown();
       e.stopPropagation();
@@ -244,14 +246,15 @@
   document.addEventListener(
     "click",
     (e) => {
-      const btn = e.target.closest(
-        '#menuOverlay .menu-item[data-route="languageinstall"]',
-      );
+      const target = e.target;
+      if (!(target instanceof Element)) return;
+      const btn = target.closest('[data-route="languageinstall"]');
       if (!btn) return;
+      if (!overlay) return;
       e.preventDefault();
       e.stopPropagation();
       closeMenuOverlayIfOpen();
-      openModal();
+      void openModal();
     },
     true,
   );
