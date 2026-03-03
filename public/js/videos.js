@@ -3,7 +3,7 @@
  */
 
 import { initializeVideoPlayers, initializeToolbar } from "./videoplayer.js";
-import { loadPage } from "./navigation.js";
+import { loadPage, syncRouteHash, getRouteFromHash } from "./navigation.js";
 
 // Keep track of the currently active subpage element within videos.html
 let currentPageElement = null;
@@ -1142,6 +1142,7 @@ function show(id) {
   // Show the new page
   newPageElement.style.display = "block";
   currentPageElement = newPageElement;
+  syncRouteHash("videos", { replace: true, subPageId: id });
   document.dispatchEvent(new CustomEvent("page:shown", { detail: { id } }));
 
   // ✅ ensure we start at the top when switching video subpages
@@ -1217,6 +1218,12 @@ export function initializeVideos() {
     try {
       pending = sessionStorage.getItem("gotoSubPage") || "";
     } catch (_e) {}
+  }
+  if (!pending) {
+    const deepLink = getRouteFromHash();
+    if (deepLink?.routeName === "videos" && deepLink.subPageId) {
+      pending = deepLink.subPageId;
+    }
   }
 
   // Utility: wait until an element with this id exists (then resolve).

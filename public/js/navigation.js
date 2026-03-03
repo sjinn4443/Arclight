@@ -241,6 +241,102 @@ export let currentPageName = null;
 export const historyStack = [];
 
 let currentRoute = null; // Add the currentRoute guard
+let isWritingRouteHash = false;
+const HASH_ROUTE_PREFIX = "#/";
+
+function safeDecodeHashSegment(value) {
+  const raw = String(value ?? "");
+  if (!raw) return "";
+  try {
+    return decodeURIComponent(raw);
+  } catch {
+    return raw;
+  }
+}
+
+function normalizeRouteName(value) {
+  const routeName = String(value ?? "").trim();
+  if (!routeName) return null;
+  return Object.prototype.hasOwnProperty.call(ROUTES, routeName)
+    ? routeName
+    : null;
+}
+
+function normalizeSubPageId(value) {
+  const subPageId = String(value ?? "").trim();
+  return subPageId || null;
+}
+
+function buildHashFromRoute(routeName, subPageId = null) {
+  const normalizedRoute = normalizeRouteName(routeName);
+  if (!normalizedRoute) return "";
+
+  const normalizedSubPage = normalizeSubPageId(subPageId);
+  if (normalizedSubPage) {
+    return `${HASH_ROUTE_PREFIX}${encodeURIComponent(
+      normalizedRoute,
+    )}/${encodeURIComponent(normalizedSubPage)}`;
+  }
+  return `${HASH_ROUTE_PREFIX}${encodeURIComponent(normalizedRoute)}`;
+}
+
+export function getRouteFromHash(
+  hash = typeof window !== "undefined" ? window.location.hash : "",
+) {
+  const rawHash = String(hash ?? "").trim();
+  if (!rawHash || rawHash === "#") return null;
+
+  let path = rawHash.startsWith("#") ? rawHash.slice(1) : rawHash;
+  if (path.startsWith("/")) path = path.slice(1);
+  if (!path) return null;
+
+  const [routePart, subPagePart] = path
+    .split("/")
+    .filter(Boolean)
+    .map((part) => safeDecodeHashSegment(part));
+
+  const routeName = normalizeRouteName(routePart);
+  if (!routeName) return null;
+
+  return {
+    routeName,
+    subPageId: normalizeSubPageId(subPagePart),
+  };
+}
+
+function primeVideosSubPage(subPageId) {
+  const normalizedSubPage = normalizeSubPageId(subPageId);
+  if (!normalizedSubPage) return;
+  try {
+    window.__videosPendingTarget = normalizedSubPage;
+    sessionStorage.setItem("gotoSubPage", normalizedSubPage);
+  } catch {}
+}
+
+export function syncRouteHash(routeName, options = {}) {
+  if (typeof window === "undefined") return;
+  const normalizedRoute = normalizeRouteName(routeName);
+  if (!normalizedRoute) return;
+
+  const replace = options?.replace === true;
+  const hash = buildHashFromRoute(normalizedRoute, options?.subPageId);
+  if (!hash || window.location.hash === hash) return;
+
+  isWritingRouteHash = true;
+  if (replace) {
+    history.replaceState(
+      history.state,
+      "",
+      `${window.location.pathname}${window.location.search}${hash}`,
+    );
+  } else {
+    window.location.hash = hash;
+  }
+
+  window.setTimeout(() => {
+    isWritingRouteHash = false;
+  }, 0);
+}
 
 /**
  * Loads a new page fragment into the '#page-content' container based on the given route name.
@@ -249,8 +345,25 @@ let currentRoute = null; // Add the currentRoute guard
  * @param {Object} [options={}] - Options for page loading, e.g., `{ replace: true }` for history replacement.
  */
 export async function loadPage(routeName, options = {}) {
-  if (!options.replace && routeName === currentRoute) return; // Add the guard
+  const replace = options?.replace === true;
+  const force = options?.force === true;
+  const syncHash = options?.syncHash !== false;
+  const subPageId = normalizeSubPageId(options?.subPageId);
+
+  if (!replace && !force && routeName === currentRoute) {
+    if (syncHash) {
+      syncRouteHash(routeName, {
+        replace,
+        subPageId: routeName === "videos" ? subPageId : null,
+      });
+    }
+    return; // Add the guard
+  }
   currentRoute = routeName; // Update currentRoute
+
+  if (routeName === "videos" && subPageId) {
+    primeVideosSubPage(subPageId);
+  }
 
   const container = document.getElementById("page-content");
   const url = ROUTES[routeName];
@@ -370,7 +483,7 @@ export async function loadPage(routeName, options = {}) {
   }
 
   // Basic history management
-  if (!options.replace) {
+  if (!replace) {
     historyStack.push(routeName);
   } else {
     // If replacing, ensure the current entry is removed before pushing the new one
@@ -382,6 +495,13 @@ export async function loadPage(routeName, options = {}) {
   }
 
   currentPageName = routeName; // Ensure currentPageName is set after successful load
+
+  if (syncHash) {
+    syncRouteHash(routeName, {
+      replace,
+      subPageId: routeName === "videos" ? subPageId : null,
+    });
+  }
 
   // Notify initializers
   window.dispatchEvent(
@@ -438,6 +558,22 @@ export function goBack() {
  * with 'data-route' attributes and an event listener for a global back button.
  */
 export function initializePageNavigation() {
+  window.addEventListener("hashchange", () => {
+    if (isWritingRouteHash) return;
+
+    const deepLink = getRouteFromHash();
+    if (!deepLink?.routeName) return;
+
+    void loadPage(deepLink.routeName, {
+      replace: true,
+      force:
+        deepLink.routeName === currentRoute ||
+        (deepLink.routeName === "videos" && !!deepLink.subPageId),
+      subPageId: deepLink.subPageId,
+      syncHash: false,
+    });
+  });
+
   window.addEventListener("click", (e) => {
     const el = e.target.closest?.("[data-route]");
     if (!el) return;

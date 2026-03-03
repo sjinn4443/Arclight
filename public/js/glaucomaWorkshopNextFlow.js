@@ -210,16 +210,24 @@ function findFlowIndexByOccurrence(target, occurrence) {
 }
 
 function resolveFlowIndexForCurrentTarget(target) {
-  if (!isFlowEnabled()) return null;
-
   const canon = canonicalTarget(target);
   if (!canon) return null;
+
+  const arr = TARGET_TO_INDICES.get(canon) || [];
+  const first = arr[0] ?? null;
+  if (first == null) return null;
+
+  if (!isFlowEnabled()) {
+    setFlowEnabled(true);
+    setStoredFlowIndex(first);
+    return first;
+  }
 
   const stored = getStoredFlowIndex();
   if (stored != null && FLOW[stored]?.target === canon) return stored;
 
-  const arr = TARGET_TO_INDICES.get(canon) || [];
-  return arr[0] ?? null;
+  setStoredFlowIndex(first);
+  return first;
 }
 
 function showPageFallback(id) {
@@ -426,6 +434,12 @@ export function initializeGlaucomaWorkshopNextFlowInfra() {
       return;
     }
     if (routeName === "glaucomaWorkshop") removeNextButtons();
+
+    requestAnimationFrame(() => {
+      const visibleId = getVisiblePageId();
+      if (!visibleId) return;
+      renderNextButtonForTarget(visibleId);
+    });
   });
 
   document.addEventListener(FLOW_EVENT, () => {

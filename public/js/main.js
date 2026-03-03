@@ -2,10 +2,14 @@
  * @fileoverview Core client-side logic for the Arclight app. Handles global initialization, navigation, splash screen flow, and dynamic page loading.
  */
 
-import { loadPage, initializePageNavigation } from "./navigation.js";
+import {
+  loadPage,
+  initializePageNavigation,
+  wireGlobalNavigation,
+  getRouteFromHash,
+} from "./navigation.js";
 import { initializeMenu, closeMenu, openMenu } from "./menu.js";
 import { initializePWA } from "./pwa.js";
-import { wireGlobalNavigation } from "./navigation.js";
 import { initializeVideoPlayers, initializeToolbar } from "./videoplayer.js";
 import { initializeLocation } from "./location-service.js";
 import {
@@ -46,6 +50,18 @@ function isOnboardingDone() {
   } catch {
     return false;
   }
+}
+
+function resolveInitialRoute(onboarded) {
+  const deepLink = getRouteFromHash();
+  if (deepLink?.routeName) {
+    return deepLink;
+  }
+
+  return {
+    routeName: onboarded ? "dashboard" : "languageinstall",
+    subPageId: null,
+  };
 }
 // --- End Onboarding Persistence ---
 
@@ -262,11 +278,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const splashContainer = document.getElementById("splashScreenContainer");
   const pageContainer = document.getElementById("page-content");
   const onboarded = isOnboardingDone();
+  const initialRoute = resolveInitialRoute(onboarded);
 
   // splash 컨테이너가 없으면 바로 fallback
   if (!splashContainer) {
-    const fallbackRoute = onboarded ? "dashboard" : "languageinstall";
-    loadPage(fallbackRoute);
+    loadPage(initialRoute.routeName, {
+      replace: true,
+      subPageId: initialRoute.subPageId,
+    });
     return;
   }
 
@@ -310,9 +329,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
         splashContainer.classList.add("fade-out");
 
-        const nextRoute = useMidSplash ? "dashboard" : "languageinstall";
+        const nextRoute = initialRoute.routeName;
 
-        loadPage(nextRoute)
+        loadPage(nextRoute, {
+          replace: true,
+          subPageId: initialRoute.subPageId,
+        })
           .catch((err) => {
             console.error(`Failed to load ${nextRoute} route:`, err);
           })
@@ -348,8 +370,10 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     .catch((error) => {
       console.error("Failed to load splash:", error);
-      const fallbackRoute = onboarded ? "dashboard" : "languageinstall";
-      loadPage(fallbackRoute);
+      loadPage(initialRoute.routeName, {
+        replace: true,
+        subPageId: initialRoute.subPageId,
+      });
       if (pageContainer) pageContainer.style.display = "";
     });
 });

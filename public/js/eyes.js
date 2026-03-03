@@ -2,7 +2,7 @@
  * @fileoverview This file manages the "Eyes" learning module catalog page, including navigation, displaying content cards, handling 'like' functionality, and routing to video sections.
  */
 
-import { loadPage } from "./navigation.js";
+import { loadPage, syncRouteHash } from "./navigation.js";
 import { openMenu } from "./menu.js";
 import { readLikes as getLikes, toggleLike } from "./likes.js";
 import { EYES_INDEX } from "./catalog-index.js";
@@ -193,19 +193,8 @@ export function initializeEyes() {
       void 0; // Intentionally empty
     }
 
-    // Compress the history so Back goes straight to the previous page (no blank Videos root)
-    try {
-      const st = {
-        ...(history.state || {}),
-        page: "videos",
-        subpage: "pupilsPage",
-      };
-      const base = location.pathname + location.search;
-      const hash = "#videos/pupilsPage";
-      history.replaceState(st, "", base + hash);
-    } catch {
-      void 0; // Intentionally empty
-    }
+    // Keep a shareable deep link to the exact videos subpage.
+    syncRouteHash("videos", { replace: true, subPageId: "pupilsPage" });
   });
 }
 

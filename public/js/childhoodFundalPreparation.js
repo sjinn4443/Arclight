@@ -2,6 +2,8 @@ import { fetchDictionary, get, getLanguage } from "./i18n.js";
 
 const LOTTIE_SRC =
   "https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js";
+const FUNDAL_STAGE_POSTER_FILENAME = "img_0.png";
+const FUNDAL_ASSET_PRIME_CACHE = new Set();
 const FUNDAL_LOTTIE_RENDERER = (() => {
   if (typeof navigator === "undefined") return "svg";
   const ua = navigator.userAgent || "";
@@ -779,6 +781,127 @@ function ensureStageDownArrowElement(stage, existingArrow = null) {
   return downArrow;
 }
 
+function resolveStagePosterPath(animationPath) {
+  const rawPath = String(animationPath || "").trim();
+  if (!rawPath || !/\/data\.json(?:\?.*)?$/i.test(rawPath)) return "";
+  return rawPath.replace(
+    /\/data\.json(?:\?.*)?$/i,
+    `/images/${FUNDAL_STAGE_POSTER_FILENAME}`,
+  );
+}
+
+function primeFundalAsset(url, options = {}) {
+  if (typeof document === "undefined") return;
+  const head = document.head || document.querySelector("head");
+  if (!head) return;
+
+  const href = String(url || "").trim();
+  if (!href) return;
+
+  const rel = String(options.rel || "preload").trim() || "preload";
+  const asType = String(options.as || "").trim();
+  const key = `${rel}|${asType}|${href}`;
+  if (FUNDAL_ASSET_PRIME_CACHE.has(key)) return;
+  FUNDAL_ASSET_PRIME_CACHE.add(key);
+
+  const link = document.createElement("link");
+  link.rel = rel;
+  link.href = href;
+  if (asType) link.as = asType;
+
+  const fetchPriority = String(options.fetchPriority || "").trim();
+  if (fetchPriority) {
+    link.setAttribute("fetchpriority", fetchPriority);
+  }
+
+  if (options.crossOrigin) {
+    link.crossOrigin = String(options.crossOrigin);
+  } else if (asType === "script" && /^https?:\/\//i.test(href)) {
+    link.crossOrigin = "anonymous";
+  }
+
+  head.appendChild(link);
+}
+
+function warmupFundalRouteAssets(cfg) {
+  if (!cfg) return;
+  const paths = Array.isArray(cfg.paths)
+    ? cfg.paths
+        .map((path) => String(path || "").trim())
+        .filter((path) => !!path)
+    : [];
+  if (!paths.length) return;
+
+  primeFundalAsset(LOTTIE_SRC, {
+    as: "script",
+    fetchPriority: "high",
+  });
+
+  const firstDataPath = paths[0];
+  primeFundalAsset(firstDataPath, {
+    as: "fetch",
+    fetchPriority: "high",
+  });
+  primeFundalAsset(resolveStagePosterPath(firstDataPath), {
+    as: "image",
+    fetchPriority: "high",
+  });
+
+  for (let i = 1; i < Math.min(paths.length, 3); i += 1) {
+    const path = paths[i];
+    primeFundalAsset(path, { rel: "prefetch", as: "fetch" });
+    primeFundalAsset(resolveStagePosterPath(path), {
+      rel: "prefetch",
+      as: "image",
+    });
+  }
+}
+
+function createStagePosterElement(posterPath, fileIndex = 0) {
+  if (!posterPath) return null;
+  const poster = document.createElement("img");
+  poster.className = "childhood-fundal-prep-stage__poster";
+  poster.src = posterPath;
+  poster.alt = "";
+  poster.setAttribute("aria-hidden", "true");
+  poster.decoding = "async";
+  poster.loading = fileIndex === 0 ? "eager" : "lazy";
+  if (fileIndex === 0) {
+    poster.setAttribute("fetchpriority", "high");
+  }
+  return poster;
+}
+
+function hideStagePoster(stage, options = {}) {
+  if (!stage) return;
+  const poster = stage.querySelector(".childhood-fundal-prep-stage__poster");
+  stage.classList.remove("childhood-fundal-prep-stage--loading");
+  stage.classList.add("childhood-fundal-prep-stage--ready");
+  stage.dataset.posterHidden = "1";
+  if (!poster) return;
+
+  const removePoster = () => {
+    if (poster.parentElement) {
+      poster.parentElement.removeChild(poster);
+    }
+  };
+  if (options.immediate === true) {
+    removePoster();
+    return;
+  }
+
+  poster.classList.add("is-fading-out");
+  poster.addEventListener("transitionend", removePoster, { once: true });
+  window.setTimeout(removePoster, 260);
+}
+
+function maybeHideStagePoster(controller, options = {}) {
+  const stage = controller?.stage;
+  if (!stage || stage.dataset.posterHidden === "1") return;
+  if (isStageFrameBlank(controller)) return;
+  hideStagePoster(stage, options);
+}
+
 function buildAnimationSlots(listEl, label, count, cfg = null) {
   if (!listEl) return [];
 
@@ -797,6 +920,21 @@ function buildAnimationSlots(listEl, label, count, cfg = null) {
     const customAspectRatio = resolveStageAspectRatio(cfg, i);
     if (customAspectRatio) {
       stage.style.aspectRatio = customAspectRatio;
+    }
+    const animationPath =
+      Array.isArray(cfg?.paths) && typeof cfg.paths[i] === "string"
+        ? cfg.paths[i]
+        : "";
+    const posterPath = resolveStagePosterPath(animationPath);
+    if (posterPath) {
+      stage.classList.add("childhood-fundal-prep-stage--loading");
+      stage.dataset.posterHidden = "0";
+      const posterEl = createStagePosterElement(posterPath, i);
+      if (posterEl) {
+        stage.appendChild(posterEl);
+      }
+    } else {
+      stage.dataset.posterHidden = "1";
     }
 
     const downArrow = createDownArrowElement();
@@ -2074,7 +2212,7 @@ async function recoverLockedExactFrame(
       Number.isFinite(Number(options.settlePasses))
         ? Math.floor(Number(options.settlePasses))
         : IS_IOS_WEBKIT
-          ? 3
+          ? 2
           : 2,
     ),
   );
@@ -2090,7 +2228,7 @@ async function recoverLockedExactFrame(
   };
 
   let pinned = pinExactFrameWithRecovery(controller, holdFrame, {
-    attempts: IS_IOS_WEBKIT ? 4 : 2,
+    attempts: IS_IOS_WEBKIT ? 3 : 2,
     minContentAreaRatio,
     allowFrameShift: false,
   });
@@ -2105,7 +2243,7 @@ async function recoverLockedExactFrame(
     if (overlayShown) hideRecoveryOverlayWhenStable(controller);
     requestExactHoldStabilization(controller, holdFrame, {
       passes: settlePasses,
-      attemptsPerPass: IS_IOS_WEBKIT ? 3 : 2,
+      attemptsPerPass: IS_IOS_WEBKIT ? 2 : 2,
       minContentAreaRatio,
       allowFrameShift: false,
     });
@@ -2146,11 +2284,11 @@ async function recoverLockedExactFrame(
   ) {
     try {
       const remounted = await controller.remountAtFrame(holdFrame, {
-        timeoutMs: IS_IOS_WEBKIT ? 1200 : 900,
+        timeoutMs: IS_IOS_WEBKIT ? 650 : 900,
       });
       if (remounted) {
         pinned = pinExactFrameWithRecovery(controller, holdFrame, {
-          attempts: IS_IOS_WEBKIT ? 4 : 2,
+          attempts: IS_IOS_WEBKIT ? 3 : 2,
           minContentAreaRatio,
           allowFrameShift: false,
         });
@@ -2165,7 +2303,7 @@ async function recoverLockedExactFrame(
           if (overlayShown) hideRecoveryOverlayWhenStable(controller);
           requestExactHoldStabilization(controller, holdFrame, {
             passes: settlePasses,
-            attemptsPerPass: IS_IOS_WEBKIT ? 3 : 2,
+            attemptsPerPass: IS_IOS_WEBKIT ? 2 : 2,
             minContentAreaRatio,
             allowFrameShift: false,
           });
@@ -2769,7 +2907,11 @@ function stopAtSegmentEnd(controller, cfg) {
   if (useLockedExactFrame) {
     // Keep a fresh snapshot ready, but only show overlay if recovery actually hits a blank frame.
     rememberRecoverySnapshot(controller, controller.lastRenderedFrame);
-    hideRecoveryOverlay(controller, { immediate: true });
+    if (IS_IOS_WEBKIT) {
+      showRecoveryOverlay(controller);
+    } else {
+      hideRecoveryOverlay(controller, { immediate: true });
+    }
   } else {
     hideRecoveryOverlay(controller, { immediate: true });
   }
@@ -2803,6 +2945,12 @@ function stopAtSegmentEnd(controller, cfg) {
           );
           holdFrame = recovered.frame;
           controller.resolvedFrameBySegment?.set(finishedSegIndex, exactFrame);
+          if (!recovered?.isBlank) {
+            hideRecoveryOverlayWhenStable(controller, {
+              checks: IS_IOS_WEBKIT ? 5 : 3,
+              requiredStablePasses: 2,
+            });
+          }
         } else {
           controller.strictFallbackFrameBySegment?.delete?.(finishedSegIndex);
           const pinned = pinExactFrameWithRecovery(controller, exactFrame, {
@@ -2933,6 +3081,7 @@ function stopAtSegmentEnd(controller, cfg) {
           controller.lastPinnedFrame = holdFrame;
         }
       }
+      maybeHideStagePoster(controller);
     } finally {
       controller.isSnapping = false;
       syncPersistentSettleSnapshotOverlay(controller);
@@ -2946,7 +3095,7 @@ function stopAtSegmentEnd(controller, cfg) {
           attemptsPerTick: 4,
         });
       }
-      controller.inputLockUntil = Date.now() + (IS_IOS_WEBKIT ? 1200 : 900);
+      controller.inputLockUntil = Date.now() + (IS_IOS_WEBKIT ? 820 : 900);
       try {
         controller.onSegmentSettled?.();
       } catch {}
@@ -3463,6 +3612,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
           rememberRecoverySnapshot(controller, currentFrame);
         }
       }
+      maybeHideStagePoster(controller);
 
       if (idx === 0) {
         anchorToFirstFile();
@@ -3481,6 +3631,9 @@ function initializeSegmentScrollMode(cfg, page, stages) {
     const onEnterFrame = () => {
       const activeAnim = controller.anim;
       if (!activeAnim) return;
+      if (controller.stage?.dataset?.posterHidden !== "1") {
+        maybeHideStagePoster(controller);
+      }
 
       if (controller.isPlaying) {
         const activeSeg = controller.segments[controller.playingSegmentIndex];
@@ -4814,7 +4967,6 @@ function initializeSegmentScrollMode(cfg, page, stages) {
 export async function initializeChildhoodFundalReflexScrollPage(routeName) {
   const baseCfg = ROUTE_CONFIG[routeName];
   if (!baseCfg) return;
-  await ensureFundalI18nDictionary();
   const cfg = resolveRuntimeRouteConfig(routeName, baseCfg);
   if (!cfg) return;
 
@@ -4826,8 +4978,13 @@ export async function initializeChildhoodFundalReflexScrollPage(routeName) {
   const listEl = page.querySelector(".childhood-fundal-prep-list");
   const stages = buildAnimationSlots(listEl, cfg.label, cfg.paths.length, cfg);
   if (!stages.length) return;
+  warmupFundalRouteAssets(cfg);
 
-  const isLottieReady = await ensureLottie();
+  const i18nReadyPromise = ensureFundalI18nDictionary();
+  const lottieReadyPromise = ensureLottie();
+
+  await i18nReadyPromise;
+  const isLottieReady = await lottieReadyPromise;
   if (!isLottieReady) {
     console.error("[fundalScroll] lottie is not available");
     return;

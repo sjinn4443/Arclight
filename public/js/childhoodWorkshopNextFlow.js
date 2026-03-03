@@ -4,6 +4,7 @@ import { isChildhoodLessonReadyForNext } from "./childhoodWorkshopProgress.js";
 const WORKSHOP_HOME = "__childhoodWorkshopHome__";
 const FLOW_INDEX_KEY = "childhoodWorkshop:nextFlowIndex";
 const FLOW_ENABLED_KEY = "childhoodWorkshop:nextFlowEnabled";
+const FLOW_AUTO_KEY = "childhoodWorkshop:nextFlowAuto";
 const FLOW_EVENT = "childhoodWorkshop:nextflow-changed";
 const PROGRESS_EVENT = "childhoodWorkshop:progress-changed";
 const EXTERNAL_VIDEO_PROGRESS_EVENT = "glaucomaWorkshop:progress-changed";
@@ -172,7 +173,25 @@ function isFlowEnabled() {
 function setFlowEnabled(enabled) {
   try {
     if (enabled) sessionStorage.setItem(FLOW_ENABLED_KEY, "1");
-    else sessionStorage.removeItem(FLOW_ENABLED_KEY);
+    else {
+      sessionStorage.removeItem(FLOW_ENABLED_KEY);
+      sessionStorage.removeItem(FLOW_AUTO_KEY);
+    }
+  } catch {}
+}
+
+function isFlowAutoBootstrapped() {
+  try {
+    return sessionStorage.getItem(FLOW_AUTO_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
+
+function setFlowAutoBootstrapped(enabled) {
+  try {
+    if (enabled) sessionStorage.setItem(FLOW_AUTO_KEY, "1");
+    else sessionStorage.removeItem(FLOW_AUTO_KEY);
   } catch {}
 }
 
@@ -182,16 +201,25 @@ function findFlowIndexByOccurrence(target, occurrence) {
 }
 
 function resolveFlowIndexForCurrentTarget(target) {
-  if (!isFlowEnabled()) return null;
-
   const canon = canonicalTarget(target);
   if (!canon) return null;
+
+  const arr = TARGET_TO_INDICES.get(canon) || [];
+  const first = arr[0] ?? null;
+  if (first == null) return null;
+
+  if (!isFlowEnabled()) {
+    setFlowEnabled(true);
+    setFlowAutoBootstrapped(true);
+    setStoredFlowIndex(first);
+    return first;
+  }
 
   const stored = getStoredFlowIndex();
   if (stored != null && FLOW[stored]?.target === canon) return stored;
 
-  const arr = TARGET_TO_INDICES.get(canon) || [];
-  return arr[0] ?? null;
+  setStoredFlowIndex(first);
+  return first;
 }
 
 function showPageFallback(id) {
@@ -227,6 +255,7 @@ function shouldForceBackToWorkshopHome() {
 async function navigateBackToWorkshopHome() {
   setStoredFlowIndex(null);
   setFlowEnabled(false);
+  setFlowAutoBootstrapped(false);
   clearWorkshopReturnFlags();
   removeNextButtons();
   await loadPage("childhoodEyeScreeningWorkshop", { replace: true });
@@ -384,13 +413,15 @@ function renderNextButtonForTarget(target) {
   btn.className = "childhood-next-btn";
   btn.textContent = "Next >";
   btn.setAttribute("data-i18n", "i18nLiteral.Next >");
-  const ready = isChildhoodLessonReadyForNext(targetId);
+  const ready =
+    isChildhoodLessonReadyForNext(targetId) || isFlowAutoBootstrapped();
   btn.classList.toggle("is-ready", ready);
   btn.disabled = !ready;
   btn.setAttribute("aria-disabled", ready ? "false" : "true");
 
   btn.addEventListener("click", async () => {
-    if (!isChildhoodLessonReadyForNext(targetId)) return;
+    if (!isChildhoodLessonReadyForNext(targetId) && !isFlowAutoBootstrapped())
+      return;
 
     try {
       sessionStorage.setItem("childhoodWorkshop:restoreOpenFolder", "1");
@@ -447,10 +478,17 @@ export function initializeChildhoodWorkshopNextFlowInfra() {
     if (!FLOW_ROUTES.has(routeName)) {
       setFlowEnabled(false);
       setStoredFlowIndex(null);
+      setFlowAutoBootstrapped(false);
       removeNextButtons();
       return;
     }
     if (routeName === "childhoodEyeScreeningWorkshop") removeNextButtons();
+
+    requestAnimationFrame(() => {
+      const visibleId = getVisiblePageId();
+      if (!visibleId) return;
+      renderNextButtonForTarget(visibleId);
+    });
   });
 
   document.addEventListener(FLOW_EVENT, () => {
@@ -492,6 +530,7 @@ export function assignChildhoodWorkshopFlowIndices(page) {
 export function rememberChildhoodWorkshopFlowFromRow(row) {
   if (!row) return;
   setFlowEnabled(true);
+  setFlowAutoBootstrapped(false);
 
   const idx = Number(row.dataset.nextFlowIndex);
   if (Number.isInteger(idx) && idx >= 0 && idx < FLOW.length) {
