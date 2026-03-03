@@ -434,5 +434,70 @@
   "reviewQuizButton": "Nyochaa ajụjụ",
   "restartQuizButton": "Malitegharịa ajụjụ",
   "reviewAnswersTitle": "Nyochaa azịza",
-  "closeReviewButton": "Mechie nyocha"
+  "closeReviewButton": "Mechie nyocha",
+  "auto": {
+    "childhoodfundalpreparation": {
+      "preparation": "Nkwadebe"
+    },
+    "childhoodfundalexamination": {
+      "examination": "Nyocha"
+    },
+    "childhoodfundalnewborneyesopen": {
+      "newborn_eyes_open": "Nwa amụrụ ọhụrụ - Anya mepere emepe"
+    },
+    "childhoodfundalnewborneyesclosed": {
+      "newborn_eyes_closed": "A mụrụ ọhụrụ - Anya mechiri"
+    },
+    "childhoodfundalunclearfindings": {
+      "unclear_findings": "Nchọpụta edoghị anya"
+    },
+    "childhoodfundalpossiblefinding": {
+      "possible_findings": "Nchoputa enwere ike"
+    },
+    "childhoodfundalafterexamination": {
+      "after_examination": "Mgbe nyochachara"
+    }
+  },
+  "i18nLiteral": {
+    "Next >": "Ọzọ >"
+  },
+  "i18nExtra": {
+    "fundal_reflex": {
+      "wash_hands": "Saa aka",
+      "select_brightest_light_setting": "Jiri ntọala ọkụ kacha cha cha",
+      "make_sure_lens_rack_top": "Gbaa mbọ hụ na anya anya dị n'elu",
+      "room_quiet_and_dim": "Nyochaa n'ime ụlọ dị jụụ, nke adịghị ahụkebe",
+      "hold_arclight_close_to_eye": "Jide Arclight nso na anya gị",
+      "newborns_swaddled_securely": "Swachie nwa amụrụ ọhụrụ nke ọma",
+      "older_babies_parent_hold_lap": "Nne na nna na-ejide nwa toro eto",
+      "older_children_sit_by_themselves": "Nwa toro eto nwere ike ịnọdụ onwe ya",
+      "observe_reflex_arms_length": "Lelee reflex n'ogologo ogwe aka",
+      "move_side_get_closer_detail": "Gaa n'akụkụ gaa n'akụkụ, bịaruo nso ma ọ dị mkpa",
+      "examine_both_eyes_same_time": "Nyochaa anya abụọ ọnụ n'ogologo ogwe aka",
+      "normal_no_difference_between_eyes": "Kwesịrị ịbụ ihe dị iche na nchapụta ma ọ bụ agba n'etiti anya",
+      "appearance_varies_by_race_black_baby": "Reflex na-adịgasị iche site n'agbụrụ\n\nNwa nwa: odo / ọcha / blue reflex",
+      "white_baby_orange_red_reflex": "Nwa ọcha: reflex oroma / uhie uhie",
+      "asian_baby_orange_yellow_reflex": "Nwa Asia: Oroma / odo reflex",
+      "parents_hold_baby_swaddled": "Nne ma ọ bụ nna na-ejide nwa ahụ nke ọma, kechie ya, kechie ya",
+      "observe_reflex_both_eyes_same_time": "Lelee anya abụọ ọnụ na-emetụghị aka",
+      "without_touching_baby": "na-emetụghị aka",
+      "occasional_squints_first_month_comma": "squints na-adị mkpụmkpụ ma na-adịte aka\nna-emekarị n'ọnwa mbụ nke ndụ,",
+      "disappear_by_three_months": "ọ na-apụkarịkwa mgbe ọnwa atọ ga-eru",
+      "if_baby_asleep_open_one_eye": "Ọ bụrụ na nwa na-ehi ụra, jiri nwayọọ meghee otu anya n'otu oge",
+      "if_unclear_follow_next_steps": "Ọ bụrụ na edoghị anya, soro usoro ndị ọzọ",
+      "compare_reflex_with_parent": "Tulee ya na ntughari uche nke nne na nna; kwesịrị iyi",
+      "ask_colleague_second_opinion": "Ọ bụrụ na ejighị n'aka, chọọ echiche onye ọrụ ibe",
+      "if_alone_gain_consent_record_video": "Ọ bụrụ naanị gị, nweta nkwenye wee dekọọ vidiyo",
+      "attach_arclight_mobile_camera": "Tinye Arclight na igwefoto ekwentị",
+      "share_securely_second_opinion": "Kekọrịta nke ọma maka echiche nke abụọ",
+      "if_overall_similar_exam_normal": "Ụcha na nchapụta yiri ya = nkịtị",
+      "occasional_squints_first_month": "squints na-adị mkpụmkpụ ma na-adịte aka\nna-adịkarị na ọnwa mbụ nke ndụ",
+      "difference_in_reflex_abnormal": "Ọdịiche agba ọ bụla ma ọ bụ nhụsianya zuru oke = ihe na-adịghị mma",
+      "occasional_squints_summary": "A na-ahụkarị squints oge ụfọdụ na nke na-adị mkpụmkpụ n'ọnwa mbụ nke ndụ, ọ na-apụkarịkwa mgbe ọnwa atọ gasịrị.",
+      "offer_thanks": "Daalụ nne na nna,",
+      "explain_findings_make_plan": "kọwaa nchoputa, hazie usoro ndị ọzọ",
+      "repeat_hand_wash": "Tinyegharịa ịsa aka",
+      "replay": "Tinyegharịa"
+    }
+  }
 }

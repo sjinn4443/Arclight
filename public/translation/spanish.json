@@ -434,5 +434,70 @@
   "reviewQuizButton": "Revisar cuestionario",
   "restartQuizButton": "Reiniciar cuestionario",
   "reviewAnswersTitle": "Revisar respuestas",
-  "closeReviewButton": "Cerrar revisión"
+  "closeReviewButton": "Cerrar revisión",
+  "auto": {
+    "childhoodfundalpreparation": {
+      "preparation": "Preparación"
+    },
+    "childhoodfundalexamination": {
+      "examination": "Examen"
+    },
+    "childhoodfundalnewborneyesopen": {
+      "newborn_eyes_open": "Recién nacido - Ojos abiertos"
+    },
+    "childhoodfundalnewborneyesclosed": {
+      "newborn_eyes_closed": "Recién Nacido - Ojos Cerrados"
+    },
+    "childhoodfundalunclearfindings": {
+      "unclear_findings": "Hallazgos poco claros"
+    },
+    "childhoodfundalpossiblefinding": {
+      "possible_findings": "Posibles hallazgos"
+    },
+    "childhoodfundalafterexamination": {
+      "after_examination": "Después del examen"
+    }
+  },
+  "i18nLiteral": {
+    "Next >": "Siguiente >"
+  },
+  "i18nExtra": {
+    "fundal_reflex": {
+      "wash_hands": "lavarse las manos",
+      "select_brightest_light_setting": "Utilice la configuración de luz más brillante",
+      "make_sure_lens_rack_top": "Asegúrese de que las lentes estén en la parte superior",
+      "room_quiet_and_dim": "Examinar en una habitación silenciosa y oscura.",
+      "hold_arclight_close_to_eye": "Mantenga Arclight cerca de su ojo",
+      "newborns_swaddled_securely": "Envuelva al recién nacido de forma segura",
+      "older_babies_parent_hold_lap": "Padre sostiene a un bebé mayor",
+      "older_children_sit_by_themselves": "El niño mayor puede sentarse solo",
+      "observe_reflex_arms_length": "Observar el reflejo con el brazo extendido.",
+      "move_side_get_closer_detail": "Muévase de lado a lado, acérquese si es necesario",
+      "examine_both_eyes_same_time": "Examine ambos ojos juntos con el brazo extendido.",
+      "normal_no_difference_between_eyes": "No debería haber diferencia en el brillo o el color entre los ojos.",
+      "appearance_varies_by_race_black_baby": "El reflejo varía según la raza.\n\nBebé negro: reflejo amarillo/blanco/azul",
+      "white_baby_orange_red_reflex": "Bebé blanco: reflejo naranja/rojo.",
+      "asian_baby_orange_yellow_reflex": "Bebé asiático: reflejo naranja/amarillo",
+      "parents_hold_baby_swaddled": "Los padres sostienen al bebé envuelto de forma segura y con los brazos doblados",
+      "observe_reflex_both_eyes_same_time": "Observar ambos ojos juntos sin tocarse.",
+      "without_touching_baby": "sin tocar",
+      "occasional_squints_first_month_comma": "Estrabismo ocasional y de corta duración.\nson comunes en el primer mes de vida,",
+      "disappear_by_three_months": "y generalmente desaparecerá a los tres meses de edad.",
+      "if_baby_asleep_open_one_eye": "Si el bebé está dormido, abra suavemente un ojo a la vez.",
+      "if_unclear_follow_next_steps": "Si no está claro, siga los siguientes pasos",
+      "compare_reflex_with_parent": "Comparar con el reflejo de los padres; debería ser similar",
+      "ask_colleague_second_opinion": "Si no está seguro, busque la opinión de un colega.",
+      "if_alone_gain_consent_record_video": "Si está solo, obtenga el consentimiento y grabe el vídeo.",
+      "attach_arclight_mobile_camera": "Conecte Arclight a la cámara del teléfono",
+      "share_securely_second_opinion": "Comparta de forma segura para obtener una segunda opinión",
+      "if_overall_similar_exam_normal": "Color y brillo similares = normal",
+      "occasional_squints_first_month": "Estrabismo ocasional y de corta duración.\nSon comunes en el primer mes de vida.",
+      "difference_in_reflex_abnormal": "Cualquier diferencia de color o pérdida parcial/completa = anormal",
+      "occasional_squints_summary": "Los estrabismo ocasionales y de corta duración son comunes en el primer mes de vida y generalmente desaparecen a los tres meses de edad.",
+      "offer_thanks": "Gracias padre,",
+      "explain_findings_make_plan": "explicar los hallazgos, planificar los próximos pasos",
+      "repeat_hand_wash": "Repita el lavado de manos",
+      "replay": "Repetición"
+    }
+  }
 }

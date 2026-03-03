@@ -434,5 +434,70 @@
   "reviewQuizButton": "ጥያቄን ይገምግሙ",
   "restartQuizButton": "ጥያቄን እንደገና ያስጀምሩ",
   "reviewAnswersTitle": "መልሶችን ይገምግሙ",
-  "closeReviewButton": "ግምገማን ዝጋ"
+  "closeReviewButton": "ግምገማን ዝጋ",
+  "auto": {
+    "childhoodfundalpreparation": {
+      "preparation": "አዘገጃጀት"
+    },
+    "childhoodfundalexamination": {
+      "examination": "ምርመራ"
+    },
+    "childhoodfundalnewborneyesopen": {
+      "newborn_eyes_open": "አዲስ የተወለዱ - ዓይኖች ክፍት ናቸው"
+    },
+    "childhoodfundalnewborneyesclosed": {
+      "newborn_eyes_closed": "አዲስ የተወለዱ - ዓይኖች ተዘግተዋል"
+    },
+    "childhoodfundalunclearfindings": {
+      "unclear_findings": "ግልጽ ያልሆኑ ግኝቶች"
+    },
+    "childhoodfundalpossiblefinding": {
+      "possible_findings": "ሊሆኑ የሚችሉ ግኝቶች"
+    },
+    "childhoodfundalafterexamination": {
+      "after_examination": "ከፈተና በኋላ"
+    }
+  },
+  "i18nLiteral": {
+    "Next >": "ቀጣይ >"
+  },
+  "i18nExtra": {
+    "fundal_reflex": {
+      "wash_hands": "እጅን መታጠብ",
+      "select_brightest_light_setting": "በጣም ደማቅ የብርሃን ቅንብርን ይጠቀሙ",
+      "make_sure_lens_rack_top": "ሌንሶች ከላይ መሆናቸውን ያረጋግጡ",
+      "room_quiet_and_dim": "በጸጥታ፣ ደብዛዛ ክፍል ውስጥ ይፈትሹ",
+      "hold_arclight_close_to_eye": "Arclightን ወደ ዓይንህ ያዝ",
+      "newborns_swaddled_securely": "አዲስ የተወለደውን ልጅ ደህንነቱ በተጠበቀ ሁኔታ ያጥፉ",
+      "older_babies_parent_hold_lap": "ወላጅ ትልቅ ልጅ ይይዛል",
+      "older_children_sit_by_themselves": "ትልቅ ልጅ ራሱን ችሎ መቀመጥ ይችላል",
+      "observe_reflex_arms_length": "በክንድ ርዝመት ላይ ምላሽን ይመልከቱ",
+      "move_side_get_closer_detail": "ከጎን ወደ ጎን ያንቀሳቅሱ, አስፈላጊ ከሆነ ይቅረቡ",
+      "examine_both_eyes_same_time": "ሁለቱንም ዓይኖች በክንድ ርዝመት አንድ ላይ ይፈትሹ",
+      "normal_no_difference_between_eyes": "በዓይኖች መካከል በብሩህነት ወይም በቀለም ምንም ልዩነት ሊኖር አይገባም",
+      "appearance_varies_by_race_black_baby": "Reflex በዘር ይለያያል\n\nጥቁር ሕፃን: ቢጫ / ነጭ / ሰማያዊ ሪፍሌክስ",
+      "white_baby_orange_red_reflex": "ነጭ ሕፃን: ብርቱካናማ / ቀይ reflex",
+      "asian_baby_orange_yellow_reflex": "የእስያ ሕፃን: ብርቱካናማ / ቢጫ reflex",
+      "parents_hold_baby_swaddled": "ወላጅ ሕፃኑን ደህንነቱ በተጠበቀ ሁኔታ ታጥቆ፣ ክንዶቹን ይይዛቸዋል።",
+      "observe_reflex_both_eyes_same_time": "ሳይነኩ ሁለቱንም አይኖች አንድ ላይ ይመልከቱ",
+      "without_touching_baby": "ሳይነካ",
+      "occasional_squints_first_month_comma": "አልፎ አልፎ እና ለአጭር ጊዜ የሚቆዩ ስኩዊቶች\nበህይወት የመጀመሪያ ወር ውስጥ የተለመዱ ናቸው ፣",
+      "disappear_by_three_months": "እና አብዛኛውን ጊዜ በሦስት ወር እድሜ ይጠፋል",
+      "if_baby_asleep_open_one_eye": "ህጻኑ ተኝቶ ከሆነ, በቀስታ አንድ ዓይንን በአንድ ጊዜ ይክፈቱ",
+      "if_unclear_follow_next_steps": "ግልጽ ካልሆኑ የሚቀጥሉትን እርምጃዎች ይከተሉ",
+      "compare_reflex_with_parent": "ከወላጆች ምላሽ ጋር አወዳድር; ተመሳሳይ መሆን አለበት",
+      "ask_colleague_second_opinion": "እርግጠኛ ካልሆኑ የባልደረባን አስተያየት ይፈልጉ",
+      "if_alone_gain_consent_record_video": "ብቻውን ከሆነ፣ ፈቃድ ያግኙ እና ቪዲዮ ይቅረጹ",
+      "attach_arclight_mobile_camera": "Arclight ከስልክ ካሜራ ጋር ያያይዙ",
+      "share_securely_second_opinion": "ለሁለተኛ አስተያየት ደህንነቱ በተጠበቀ ሁኔታ ያካፍሉ።",
+      "if_overall_similar_exam_normal": "ተመሳሳይ ቀለም እና ብሩህነት = መደበኛ",
+      "occasional_squints_first_month": "አልፎ አልፎ እና ለአጭር ጊዜ የሚቆዩ ስኩዊቶች\nበህይወት የመጀመሪያ ወር ውስጥ የተለመዱ ናቸው",
+      "difference_in_reflex_abnormal": "ማንኛውም የቀለም ልዩነት ወይም ከፊል / ሙሉ ኪሳራ = ያልተለመደ",
+      "occasional_squints_summary": "በህይወት የመጀመሪያ ወር ውስጥ አልፎ አልፎ እና ለአጭር ጊዜ የሚቆዩ ስኩዊቶች የተለመዱ ናቸው እና አብዛኛውን ጊዜ በሶስት ወር እድሜያቸው ይጠፋሉ.",
+      "offer_thanks": "አመሰግናለሁ ወላጅ፣",
+      "explain_findings_make_plan": "ግኝቶችን ያብራሩ, ቀጣይ እርምጃዎችን ያቅዱ",
+      "repeat_hand_wash": "የእጅ መታጠብን ይድገሙት",
+      "replay": "እንደገና አጫውት።"
+    }
+  }
 }

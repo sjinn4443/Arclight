@@ -434,5 +434,70 @@
   "reviewQuizButton": "Duba Tambaya",
   "restartQuizButton": "Fara Tambaya Sabuwa",
   "reviewAnswersTitle": "Duba Amsoshi",
-  "closeReviewButton": "Rufe Bita"
+  "closeReviewButton": "Rufe Bita",
+  "auto": {
+    "childhoodfundalpreparation": {
+      "preparation": "Shiri"
+    },
+    "childhoodfundalexamination": {
+      "examination": "jarrabawa"
+    },
+    "childhoodfundalnewborneyesopen": {
+      "newborn_eyes_open": "Jariri - Buɗe Ido"
+    },
+    "childhoodfundalnewborneyesclosed": {
+      "newborn_eyes_closed": "Jariri - Ido a rufe"
+    },
+    "childhoodfundalunclearfindings": {
+      "unclear_findings": "Abubuwan da ba a bayyana ba"
+    },
+    "childhoodfundalpossiblefinding": {
+      "possible_findings": "Abubuwan Neman Bincike"
+    },
+    "childhoodfundalafterexamination": {
+      "after_examination": "Bayan Jarabawa"
+    }
+  },
+  "i18nLiteral": {
+    "Next >": "Na gaba >"
+  },
+  "i18nExtra": {
+    "fundal_reflex": {
+      "wash_hands": "Wanke hannu",
+      "select_brightest_light_setting": "Yi amfani da saitin haske mafi haske",
+      "make_sure_lens_rack_top": "Tabbatar cewa ruwan tabarau suna saman",
+      "room_quiet_and_dim": "Yi nazari a cikin shiru, dakin duhu",
+      "hold_arclight_close_to_eye": "Riƙe Arclight kusa da idonka",
+      "newborns_swaddled_securely": "Swaddle jariri lafiya",
+      "older_babies_parent_hold_lap": "Iyaye suna riƙe da babban jariri",
+      "older_children_sit_by_themselves": "Babban yaro zai iya zama da kansa",
+      "observe_reflex_arms_length": "Kula da reflex a tsayin hannu",
+      "move_side_get_closer_detail": "Matsa gefe zuwa gefe, matso kusa idan an buƙata",
+      "examine_both_eyes_same_time": "Yi nazarin idanu biyu tare a tsayin hannu",
+      "normal_no_difference_between_eyes": "Kada ya zama wani bambanci a cikin haske ko launi tsakanin idanu",
+      "appearance_varies_by_race_black_baby": "Reflex ya bambanta ta launin fata\n\nBaƙar fata: rawaya / fari / shuɗi reflex",
+      "white_baby_orange_red_reflex": "Farin jariri: orange / ja reflex",
+      "asian_baby_orange_yellow_reflex": "Jaririn Asiya: orange / rawaya reflex",
+      "parents_hold_baby_swaddled": "Iyaye suna riƙe da jariri amintacce a lulluɓe, hannayen riga",
+      "observe_reflex_both_eyes_same_time": "Kula da idanu biyu tare ba tare da taɓawa ba",
+      "without_touching_baby": "ba tare da taba ba",
+      "occasional_squints_first_month_comma": "squints na lokaci-lokaci kuma na ɗan gajeren lokaci\nsun zama ruwan dare a farkon watan rayuwa,",
+      "disappear_by_three_months": "kuma yawanci zai ɓace bayan watanni uku",
+      "if_baby_asleep_open_one_eye": "Idan jariri yana barci, buɗe ido ɗaya a hankali a lokaci guda",
+      "if_unclear_follow_next_steps": "Idan babu tabbas, bi matakai na gaba",
+      "compare_reflex_with_parent": "Kwatanta da tunanin iyaye; yakamata ya zama kama",
+      "ask_colleague_second_opinion": "Idan babu tabbas, nemi ra'ayin abokin aiki",
+      "if_alone_gain_consent_record_video": "Idan kadai, sami izini kuma yi rikodin bidiyo",
+      "attach_arclight_mobile_camera": "Haɗa Arclight zuwa kyamarar waya",
+      "share_securely_second_opinion": "Raba amintacce don ra'ayi na biyu",
+      "if_overall_similar_exam_normal": "Irin wannan launi da haske = al'ada",
+      "occasional_squints_first_month": "squints na lokaci-lokaci kuma na ɗan gajeren lokaci\nsun zama ruwan dare a farkon watan rayuwa",
+      "difference_in_reflex_abnormal": "Duk wani bambancin launi ko ɓarna/cikakkiyar asara = mara kyau",
+      "occasional_squints_summary": "Kwance-tsalle na lokaci-lokaci da ɗan gajeren lokaci suna da yawa a cikin watan farko na rayuwa kuma yawanci suna ɓacewa da watanni uku.",
+      "offer_thanks": "Na gode iyaye,",
+      "explain_findings_make_plan": "bayyana binciken, tsara matakai na gaba",
+      "repeat_hand_wash": "Maimaita wanke hannu",
+      "replay": "Sake kunnawa"
+    }
+  }
 }

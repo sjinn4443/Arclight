@@ -434,5 +434,70 @@
   "reviewQuizButton": "بررسی آزمون",
   "restartQuizButton": "شروع مجدد آزمون",
   "reviewAnswersTitle": "بررسی پاسخ‌ها",
-  "closeReviewButton": "بستن بررسی"
+  "closeReviewButton": "بستن بررسی",
+  "auto": {
+    "childhoodfundalpreparation": {
+      "preparation": "آماده سازی"
+    },
+    "childhoodfundalexamination": {
+      "examination": "معاینه"
+    },
+    "childhoodfundalnewborneyesopen": {
+      "newborn_eyes_open": "نوزاد - چشمان باز"
+    },
+    "childhoodfundalnewborneyesclosed": {
+      "newborn_eyes_closed": "نوزاد - چشمان بسته"
+    },
+    "childhoodfundalunclearfindings": {
+      "unclear_findings": "یافته های نامشخص"
+    },
+    "childhoodfundalpossiblefinding": {
+      "possible_findings": "یافته های احتمالی"
+    },
+    "childhoodfundalafterexamination": {
+      "after_examination": "بعد از معاینه"
+    }
+  },
+  "i18nLiteral": {
+    "Next >": "بعدی >"
+  },
+  "i18nExtra": {
+    "fundal_reflex": {
+      "wash_hands": "دست ها را بشویید",
+      "select_brightest_light_setting": "از روشن ترین تنظیم نور استفاده کنید",
+      "make_sure_lens_rack_top": "اطمینان حاصل کنید که لنزها در بالا هستند",
+      "room_quiet_and_dim": "در اتاق ساکت و تاریک بررسی کنید",
+      "hold_arclight_close_to_eye": "Arclight را نزدیک چشم خود نگه دارید",
+      "newborns_swaddled_securely": "نوزاد تازه متولد شده را ایمن قنداق کنید",
+      "older_babies_parent_hold_lap": "والدین کودک بزرگتر را در آغوش می گیرند",
+      "older_children_sit_by_themselves": "کودک بزرگتر می تواند به طور مستقل بنشیند",
+      "observe_reflex_arms_length": "رفلکس را در طول بازو مشاهده کنید",
+      "move_side_get_closer_detail": "از پهلو به پهلو حرکت کنید، در صورت نیاز نزدیکتر شوید",
+      "examine_both_eyes_same_time": "هر دو چشم را با هم در طول بازو بررسی کنید",
+      "normal_no_difference_between_eyes": "در روشنایی یا رنگ بین چشم ها تفاوتی وجود ندارد",
+      "appearance_varies_by_race_black_baby": "رفلکس بر اساس نژاد متفاوت است\n\nکودک سیاه: رفلکس زرد / سفید / آبی",
+      "white_baby_orange_red_reflex": "نوزاد سفید: رفلکس نارنجی / قرمز",
+      "asian_baby_orange_yellow_reflex": "کودک آسیایی: رفلکس نارنجی / زرد",
+      "parents_hold_baby_swaddled": "والدین نوزاد را محکم قنداق کرده و دستانش را جمع کرده اند",
+      "observe_reflex_both_eyes_same_time": "بدون لمس هر دو چشم را با هم مشاهده کنید",
+      "without_touching_baby": "بدون دست زدن",
+      "occasional_squints_first_month_comma": "چشم های گاه به گاه و کوتاه مدت\nدر ماه اول زندگی رایج هستند،",
+      "disappear_by_three_months": "و معمولا تا سه ماهگی ناپدید می شود",
+      "if_baby_asleep_open_one_eye": "اگر کودک خواب است، هر بار یک چشم خود را به آرامی باز کنید",
+      "if_unclear_follow_next_steps": "اگر نامشخص است، مراحل بعدی را دنبال کنید",
+      "compare_reflex_with_parent": "مقایسه با رفلکس والدین؛ باید مشابه باشد",
+      "ask_colleague_second_opinion": "اگر مطمئن نیستید، نظر همکار را جویا شوید",
+      "if_alone_gain_consent_record_video": "اگر تنها هستید، رضایت بگیرید و ویدیو ضبط کنید",
+      "attach_arclight_mobile_camera": "Arclight را به دوربین گوشی وصل کنید",
+      "share_securely_second_opinion": "برای نظر دوم با خیال راحت به اشتراک بگذارید",
+      "if_overall_similar_exam_normal": "رنگ و روشنایی مشابه = معمولی",
+      "occasional_squints_first_month": "چشم های گاه به گاه و کوتاه مدت\nدر ماه اول زندگی شایع هستند",
+      "difference_in_reflex_abnormal": "هر گونه تفاوت رنگ یا از دست دادن جزئی/کامل = غیر طبیعی است",
+      "occasional_squints_summary": "چشمک زدن های گاه به گاه و کوتاه مدت در ماه اول زندگی شایع است و معمولا تا سه ماهگی ناپدید می شود.",
+      "offer_thanks": "با تشکر از پدر و مادر،",
+      "explain_findings_make_plan": "یافته ها را توضیح دهید، مراحل بعدی را برنامه ریزی کنید",
+      "repeat_hand_wash": "شستشوی دستی را تکرار کنید",
+      "replay": "پخش مجدد"
+    }
+  }
 }

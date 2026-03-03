@@ -434,5 +434,70 @@
   "reviewQuizButton": "Tinjau Kuis",
   "restartQuizButton": "Mulai Ulang Kuis",
   "reviewAnswersTitle": "Tinjau Jawaban",
-  "closeReviewButton": "Tutup Tinjauan"
+  "closeReviewButton": "Tutup Tinjauan",
+  "auto": {
+    "childhoodfundalpreparation": {
+      "preparation": "Persiapan"
+    },
+    "childhoodfundalexamination": {
+      "examination": "Penyelidikan"
+    },
+    "childhoodfundalnewborneyesopen": {
+      "newborn_eyes_open": "Baru Lahir - Mata Terbuka"
+    },
+    "childhoodfundalnewborneyesclosed": {
+      "newborn_eyes_closed": "Bayi Baru Lahir - Mata Tertutup"
+    },
+    "childhoodfundalunclearfindings": {
+      "unclear_findings": "Temuan Tidak Jelas"
+    },
+    "childhoodfundalpossiblefinding": {
+      "possible_findings": "Temuan yang Mungkin"
+    },
+    "childhoodfundalafterexamination": {
+      "after_examination": "Setelah Pemeriksaan"
+    }
+  },
+  "i18nLiteral": {
+    "Next >": "Selanjutnya >"
+  },
+  "i18nExtra": {
+    "fundal_reflex": {
+      "wash_hands": "Cuci tangan",
+      "select_brightest_light_setting": "Gunakan pengaturan cahaya paling terang",
+      "make_sure_lens_rack_top": "Pastikan lensa berada di atas",
+      "room_quiet_and_dim": "Periksa di ruangan yang tenang dan redup",
+      "hold_arclight_close_to_eye": "Dekatkan Arclight ke mata Anda",
+      "newborns_swaddled_securely": "Bedong bayi baru lahir dengan aman",
+      "older_babies_parent_hold_lap": "Orang tua menggendong bayi yang lebih tua",
+      "older_children_sit_by_themselves": "Anak yang lebih besar sudah bisa duduk mandiri",
+      "observe_reflex_arms_length": "Amati refleks pada jarak lengan",
+      "move_side_get_closer_detail": "Bergerak dari sisi ke sisi, mendekatlah jika diperlukan",
+      "examine_both_eyes_same_time": "Periksa kedua mata bersamaan sejauh lengan",
+      "normal_no_difference_between_eyes": "Seharusnya tidak ada perbedaan kecerahan atau warna antar mata",
+      "appearance_varies_by_race_black_baby": "Refleks bervariasi berdasarkan ras\n\nBayi hitam: refleks kuning/putih/biru",
+      "white_baby_orange_red_reflex": "Bayi berkulit putih : reflek jingga/merah",
+      "asian_baby_orange_yellow_reflex": "Bayi Asia: refleks oranye/kuning",
+      "parents_hold_baby_swaddled": "Orang tua menggendong bayinya dengan aman, lengannya diselipkan",
+      "observe_reflex_both_eyes_same_time": "Amati kedua mata secara bersamaan tanpa bersentuhan",
+      "without_touching_baby": "tanpa menyentuh",
+      "occasional_squints_first_month_comma": "Mata juling yang sesekali dan berlangsung singkat\numum terjadi pada bulan pertama kehidupan,",
+      "disappear_by_three_months": "dan biasanya akan hilang pada usia tiga bulan",
+      "if_baby_asleep_open_one_eye": "Jika bayi tertidur, buka perlahan satu mata pada satu waktu",
+      "if_unclear_follow_next_steps": "Jika belum jelas, ikuti langkah berikutnya",
+      "compare_reflex_with_parent": "Bandingkan dengan refleks orang tua; harus serupa",
+      "ask_colleague_second_opinion": "Jika tidak yakin, mintalah pendapat rekan kerja",
+      "if_alone_gain_consent_record_video": "Jika sendirian, dapatkan persetujuan dan rekam video",
+      "attach_arclight_mobile_camera": "Pasang Arclight ke kamera ponsel",
+      "share_securely_second_opinion": "Bagikan dengan aman untuk opini kedua",
+      "if_overall_similar_exam_normal": "Warna dan kecerahan serupa = normal",
+      "occasional_squints_first_month": "Mata juling yang sesekali dan berlangsung singkat\numum terjadi pada bulan pertama kehidupan",
+      "difference_in_reflex_abnormal": "Perbedaan warna atau kehilangan sebagian/seluruhnya = tidak normal",
+      "occasional_squints_summary": "Mata juling yang sesekali terjadi dan berlangsung dalam waktu singkat sering terjadi pada bulan pertama kehidupan dan biasanya akan hilang pada usia tiga bulan.",
+      "offer_thanks": "Terima kasih orang tua,",
+      "explain_findings_make_plan": "jelaskan temuannya, rencanakan langkah selanjutnya",
+      "repeat_hand_wash": "Ulangi mencuci tangan",
+      "replay": "Memutar ulang"
+    }
+  }
 }

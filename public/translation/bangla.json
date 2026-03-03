@@ -434,5 +434,70 @@
   "reviewQuizButton": "কুইজ পর্যালোচনা করুন",
   "restartQuizButton": "কুইজ পুনরায় শুরু করুন",
   "reviewAnswersTitle": "উত্তর পর্যালোচনা করুন",
-  "closeReviewButton": "পর্যালোচনা বন্ধ করুন"
+  "closeReviewButton": "পর্যালোচনা বন্ধ করুন",
+  "auto": {
+    "childhoodfundalpreparation": {
+      "preparation": "প্রস্তুতি"
+    },
+    "childhoodfundalexamination": {
+      "examination": "পরীক্ষা"
+    },
+    "childhoodfundalnewborneyesopen": {
+      "newborn_eyes_open": "নবজাতক - চোখ খোলা"
+    },
+    "childhoodfundalnewborneyesclosed": {
+      "newborn_eyes_closed": "নবজাতক - চোখ বন্ধ"
+    },
+    "childhoodfundalunclearfindings": {
+      "unclear_findings": "অস্পষ্ট ফলাফল"
+    },
+    "childhoodfundalpossiblefinding": {
+      "possible_findings": "সম্ভাব্য ফলাফল"
+    },
+    "childhoodfundalafterexamination": {
+      "after_examination": "পরীক্ষার পর"
+    }
+  },
+  "i18nLiteral": {
+    "Next >": "পরবর্তী >"
+  },
+  "i18nExtra": {
+    "fundal_reflex": {
+      "wash_hands": "হাত ধোয়া",
+      "select_brightest_light_setting": "উজ্জ্বল আলোর সেটিং ব্যবহার করুন",
+      "make_sure_lens_rack_top": "লেন্স শীর্ষে আছে তা নিশ্চিত করুন",
+      "room_quiet_and_dim": "শান্ত, আবছা ঘরে পরীক্ষা করুন",
+      "hold_arclight_close_to_eye": "আপনার চোখের কাছে Arclight ধরুন",
+      "newborns_swaddled_securely": "নবজাতককে নিরাপদে দোলানো",
+      "older_babies_parent_hold_lap": "বাবা-মা বড় বাচ্চাকে ধরে রেখেছেন",
+      "older_children_sit_by_themselves": "বড় শিশু স্বাধীনভাবে বসতে পারে",
+      "observe_reflex_arms_length": "বাহুর দৈর্ঘ্যে রিফ্লেক্স পর্যবেক্ষণ করুন",
+      "move_side_get_closer_detail": "পাশে সরান, প্রয়োজনে কাছে যান",
+      "examine_both_eyes_same_time": "বাহুর দৈর্ঘ্যে উভয় চোখ একসাথে পরীক্ষা করুন",
+      "normal_no_difference_between_eyes": "চোখের মধ্যে উজ্জ্বলতা বা রঙের কোন পার্থক্য থাকা উচিত নয়",
+      "appearance_varies_by_race_black_baby": "রিফ্লেক্স জাতি দ্বারা পরিবর্তিত হয়\n\nকালো শিশু: হলুদ/সাদা/নীল রিফ্লেক্স",
+      "white_baby_orange_red_reflex": "হোয়াইট বেবি: কমলা/লাল রিফ্লেক্স",
+      "asian_baby_orange_yellow_reflex": "এশিয়ান শিশু: কমলা/হলুদ প্রতিবর্ত",
+      "parents_hold_baby_swaddled": "পিতামাতা শিশুকে নিরাপদে দোলনায়, বাহুতে আটকে রাখে",
+      "observe_reflex_both_eyes_same_time": "স্পর্শ না করে উভয় চোখ একসাথে পর্যবেক্ষণ করুন",
+      "without_touching_baby": "স্পর্শ ছাড়া",
+      "occasional_squints_first_month_comma": "মাঝে মাঝে এবং স্বল্পস্থায়ী squints\nজীবনের প্রথম মাসে সাধারণ,",
+      "disappear_by_three_months": "এবং সাধারণত তিন মাস বয়সের মধ্যে অদৃশ্য হয়ে যাবে",
+      "if_baby_asleep_open_one_eye": "যদি শিশু ঘুমিয়ে থাকে, আলতো করে একবারে একটি চোখ খুলুন",
+      "if_unclear_follow_next_steps": "অস্পষ্ট হলে, পরবর্তী পদক্ষেপগুলি অনুসরণ করুন",
+      "compare_reflex_with_parent": "পিতামাতার প্রতিচ্ছবি সঙ্গে তুলনা; অনুরূপ হওয়া উচিত",
+      "ask_colleague_second_opinion": "অনিশ্চিত হলে সহকর্মীর মতামত নিন",
+      "if_alone_gain_consent_record_video": "একা থাকলে সম্মতি নিন এবং ভিডিও রেকর্ড করুন",
+      "attach_arclight_mobile_camera": "ফোন ক্যামেরায় Arclight সংযুক্ত করুন",
+      "share_securely_second_opinion": "দ্বিতীয় মতামতের জন্য নিরাপদে শেয়ার করুন",
+      "if_overall_similar_exam_normal": "অনুরূপ রঙ এবং উজ্জ্বলতা = স্বাভাবিক",
+      "occasional_squints_first_month": "মাঝে মাঝে এবং স্বল্পস্থায়ী squints\nজীবনের প্রথম মাসে সাধারণ",
+      "difference_in_reflex_abnormal": "কোনো রঙের পার্থক্য বা আংশিক/সম্পূর্ণ ক্ষতি = অস্বাভাবিক",
+      "occasional_squints_summary": "জীবনের প্রথম মাসে মাঝে মাঝে এবং স্বল্পস্থায়ী স্কুইন্টগুলি সাধারণ এবং সাধারণত তিন মাস বয়সে অদৃশ্য হয়ে যায়",
+      "offer_thanks": "অভিভাবককে ধন্যবাদ,",
+      "explain_findings_make_plan": "ফলাফল ব্যাখ্যা করুন, পরবর্তী পদক্ষেপের পরিকল্পনা করুন",
+      "repeat_hand_wash": "বারবার হাত ধোয়া",
+      "replay": "রিপ্লে"
+    }
+  }
 }

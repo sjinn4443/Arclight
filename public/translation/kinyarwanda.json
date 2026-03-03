@@ -434,5 +434,70 @@
   "reviewQuizButton": "Subiramo Quiz",
   "restartQuizButton": "Ongera utangire Quiz",
   "reviewAnswersTitle": "Subiramo Ibisubizo",
-  "closeReviewButton": "Funga Gusubiramo"
+  "closeReviewButton": "Funga Gusubiramo",
+  "auto": {
+    "childhoodfundalpreparation": {
+      "preparation": "Kwitegura"
+    },
+    "childhoodfundalexamination": {
+      "examination": "Ikizamini"
+    },
+    "childhoodfundalnewborneyesopen": {
+      "newborn_eyes_open": "Uruhinja - Amaso arakinguye"
+    },
+    "childhoodfundalnewborneyesclosed": {
+      "newborn_eyes_closed": "Uruhinja - Amaso arahumutse"
+    },
+    "childhoodfundalunclearfindings": {
+      "unclear_findings": "Ibisubizo bidasobanutse"
+    },
+    "childhoodfundalpossiblefinding": {
+      "possible_findings": "Ibisubizo bishoboka"
+    },
+    "childhoodfundalafterexamination": {
+      "after_examination": "Nyuma y'Ikizamini"
+    }
+  },
+  "i18nLiteral": {
+    "Next >": "Ibikurikira>"
+  },
+  "i18nExtra": {
+    "fundal_reflex": {
+      "wash_hands": "Karaba intoki",
+      "select_brightest_light_setting": "Koresha urumuri rwinshi",
+      "make_sure_lens_rack_top": "Menya neza ko lens ziri hejuru",
+      "room_quiet_and_dim": "Suzuma mucyumba gituje, cyijimye",
+      "hold_arclight_close_to_eye": "Fata Arclight hafi yijisho ryawe",
+      "newborns_swaddled_securely": "Kuzuza umwana wavutse neza",
+      "older_babies_parent_hold_lap": "Ababyeyi bafashe umwana mukuru",
+      "older_children_sit_by_themselves": "Umwana mukuru arashobora kwicara wenyine",
+      "observe_reflex_arms_length": "Itegereze reflex ku burebure bw'ukuboko",
+      "move_side_get_closer_detail": "Himura uruhande rumwe, wegere niba bikenewe",
+      "examine_both_eyes_same_time": "Suzuma amaso yombi hamwe uburebure bw'ukuboko",
+      "normal_no_difference_between_eyes": "Ntigomba gutandukanya umucyo cyangwa ibara hagati y'amaso",
+      "appearance_varies_by_race_black_baby": "Reflex iratandukanye kubwoko\n\nUmwana wirabura: umuhondo / umweru / ubururu reflex",
+      "white_baby_orange_red_reflex": "Umwana wera: orange / umutuku utukura",
+      "asian_baby_orange_yellow_reflex": "Uruhinja rwo muri Aziya: orange / umuhondo reflex",
+      "parents_hold_baby_swaddled": "Umubyeyi afashe umwana wiziritse neza, amaboko afatanye",
+      "observe_reflex_both_eyes_same_time": "Itegereze amaso yombi hamwe udakoraho",
+      "without_touching_baby": "udakoraho",
+      "occasional_squints_first_month_comma": "Rimwe na rimwe kandi bigufi-biramba\nbirasanzwe mukwezi kwambere kwubuzima,",
+      "disappear_by_three_months": "kandi mubisanzwe bizimira amezi atatu",
+      "if_baby_asleep_open_one_eye": "Niba umwana asinziriye, fungura witonze ijisho rimwe icyarimwe",
+      "if_unclear_follow_next_steps": "Niba bidasobanutse, kurikiza intambwe ikurikira",
+      "compare_reflex_with_parent": "Gereranya na refleks y'ababyeyi; bigomba kuba bisa",
+      "ask_colleague_second_opinion": "Niba udashidikanya, shakisha igitekerezo cya mugenzi wawe",
+      "if_alone_gain_consent_record_video": "Niba wenyine, shaka uburenganzira kandi wandike amashusho",
+      "attach_arclight_mobile_camera": "Ongeraho Arclight kuri kamera ya terefone",
+      "share_securely_second_opinion": "Sangira neza kubitekerezo bya kabiri",
+      "if_overall_similar_exam_normal": "Ibara risa nubucyo = nibisanzwe",
+      "occasional_squints_first_month": "Rimwe na rimwe kandi bigufi-biramba\nbirasanzwe mukwezi kwambere kwubuzima",
+      "difference_in_reflex_abnormal": "Itandukaniro ryamabara yose cyangwa igice / igihombo cyuzuye = bidasanzwe",
+      "occasional_squints_summary": "Rimwe na rimwe kandi bigufi biramba bikunze kugaragara mukwezi kwambere kwubuzima kandi bizashira mugihe cyamezi atatu",
+      "offer_thanks": "Urakoze ababyeyi,",
+      "explain_findings_make_plan": "sobanura ibyagaragaye, tegura intambwe ikurikira",
+      "repeat_hand_wash": "Subiramo gukaraba intoki",
+      "replay": "Subiza"
+    }
+  }
 }

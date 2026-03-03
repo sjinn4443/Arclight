@@ -434,5 +434,70 @@
   "reviewQuizButton": "प्रश्नोत्तरी की समीक्षा करें",
   "restartQuizButton": "प्रश्नोत्तरी पुनः आरंभ करें",
   "reviewAnswersTitle": "उत्तरों की समीक्षा करें",
-  "closeReviewButton": "समीक्षा बंद करें"
+  "closeReviewButton": "समीक्षा बंद करें",
+  "auto": {
+    "childhoodfundalpreparation": {
+      "preparation": "तैयारी"
+    },
+    "childhoodfundalexamination": {
+      "examination": "परीक्षा"
+    },
+    "childhoodfundalnewborneyesopen": {
+      "newborn_eyes_open": "नवजात - आँखें खुलीं"
+    },
+    "childhoodfundalnewborneyesclosed": {
+      "newborn_eyes_closed": "नवजात - आंखें बंद"
+    },
+    "childhoodfundalunclearfindings": {
+      "unclear_findings": "अस्पष्ट निष्कर्ष"
+    },
+    "childhoodfundalpossiblefinding": {
+      "possible_findings": "संभावित निष्कर्ष"
+    },
+    "childhoodfundalafterexamination": {
+      "after_examination": "परीक्षा के बाद"
+    }
+  },
+  "i18nLiteral": {
+    "Next >": "अगला >"
+  },
+  "i18nExtra": {
+    "fundal_reflex": {
+      "wash_hands": "हाथ धोएं",
+      "select_brightest_light_setting": "सबसे चमकदार प्रकाश सेटिंग का उपयोग करें",
+      "make_sure_lens_rack_top": "सुनिश्चित करें कि लेंस शीर्ष पर हों",
+      "room_quiet_and_dim": "शांत, अँधेरे कमरे में जाँच करें",
+      "hold_arclight_close_to_eye": "आर्कलाइट को अपनी आंख के पास रखें",
+      "newborns_swaddled_securely": "नवजात को सुरक्षित रूप से लपेटें",
+      "older_babies_parent_hold_lap": "माता-पिता बड़े बच्चे को पकड़ते हैं",
+      "older_children_sit_by_themselves": "बड़ा बच्चा स्वतंत्र रूप से बैठ सकता है",
+      "observe_reflex_arms_length": "हाथ की दूरी पर प्रतिबिम्ब का निरीक्षण करें",
+      "move_side_get_closer_detail": "यदि आवश्यक हो तो अगल-बगल जाएँ, करीब आएँ",
+      "examine_both_eyes_same_time": "हाथ की दूरी पर दोनों आंखों की एक साथ जांच करें",
+      "normal_no_difference_between_eyes": "आंखों की चमक या रंग में कोई अंतर नहीं होना चाहिए",
+      "appearance_varies_by_race_black_baby": "प्रतिवर्त नस्ल के अनुसार भिन्न होता है\n\nकाला बच्चा: पीला/सफ़ेद/नीला प्रतिवर्त",
+      "white_baby_orange_red_reflex": "सफेद बच्चा: नारंगी/लाल प्रतिवर्त",
+      "asian_baby_orange_yellow_reflex": "एशियाई शिशु: नारंगी/पीला प्रतिवर्त",
+      "parents_hold_baby_swaddled": "माता-पिता बच्चे को सुरक्षित रूप से लपेटे हुए, बाँहों में छिपाकर रखते हैं",
+      "observe_reflex_both_eyes_same_time": "बिना छुए दोनों आंखों को एक साथ देखें",
+      "without_touching_baby": "बिना छुए",
+      "occasional_squints_first_month_comma": "कभी-कभार और कम समय तक रहने वाला भेंगापन\nजीवन के पहले महीने में आम हैं,",
+      "disappear_by_three_months": "और आमतौर पर तीन महीने की उम्र तक गायब हो जाएगा",
+      "if_baby_asleep_open_one_eye": "यदि बच्चा सो रहा है, तो एक बार में धीरे से एक आंख खोलें",
+      "if_unclear_follow_next_steps": "यदि अस्पष्ट हो तो अगले चरणों का पालन करें",
+      "compare_reflex_with_parent": "माता-पिता की प्रतिक्रिया के साथ तुलना करें; समान होना चाहिए",
+      "ask_colleague_second_opinion": "यदि अनिश्चित हो तो सहकर्मी की राय लें",
+      "if_alone_gain_consent_record_video": "यदि अकेले हों, तो सहमति प्राप्त करें और वीडियो रिकॉर्ड करें",
+      "attach_arclight_mobile_camera": "आर्कलाइट को फोन कैमरे से जोड़ें",
+      "share_securely_second_opinion": "दूसरी राय के लिए सुरक्षित रूप से साझा करें",
+      "if_overall_similar_exam_normal": "समान रंग और चमक = सामान्य",
+      "occasional_squints_first_month": "कभी-कभार और कम समय तक रहने वाला भेंगापन\nजीवन के पहले महीने में आम हैं",
+      "difference_in_reflex_abnormal": "रंग में कोई अंतर या आंशिक/पूर्ण हानि = असामान्य",
+      "occasional_squints_summary": "जीवन के पहले महीने में कभी-कभार और थोड़े समय तक रहने वाला भेंगापन आम है और आमतौर पर तीन महीने की उम्र तक गायब हो जाता है।",
+      "offer_thanks": "धन्यवाद अभिभावक,",
+      "explain_findings_make_plan": "निष्कर्षों की व्याख्या करें, अगले चरणों की योजना बनाएं",
+      "repeat_hand_wash": "बार-बार हाथ धोएं",
+      "replay": "REPLAY"
+    }
+  }
 }

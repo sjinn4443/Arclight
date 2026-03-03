@@ -434,5 +434,70 @@
   "reviewQuizButton": "مراجعة الاختبار",
   "restartQuizButton": "إعادة الاختبار",
   "reviewAnswersTitle": "مراجعة الإجابات",
-  "closeReviewButton": "إغلاق المراجعة"
+  "closeReviewButton": "إغلاق المراجعة",
+  "auto": {
+    "childhoodfundalpreparation": {
+      "preparation": "تحضير"
+    },
+    "childhoodfundalexamination": {
+      "examination": "فحص"
+    },
+    "childhoodfundalnewborneyesopen": {
+      "newborn_eyes_open": "الوليد - عيون مفتوحة"
+    },
+    "childhoodfundalnewborneyesclosed": {
+      "newborn_eyes_closed": "حديث الولادة - عيون مغلقة"
+    },
+    "childhoodfundalunclearfindings": {
+      "unclear_findings": "نتائج غير واضحة"
+    },
+    "childhoodfundalpossiblefinding": {
+      "possible_findings": "النتائج المحتملة"
+    },
+    "childhoodfundalafterexamination": {
+      "after_examination": "بعد الفحص"
+    }
+  },
+  "i18nLiteral": {
+    "Next >": "التالي >"
+  },
+  "i18nExtra": {
+    "fundal_reflex": {
+      "wash_hands": "اغسل يديك",
+      "select_brightest_light_setting": "استخدام ألمع إعداد الضوء",
+      "make_sure_lens_rack_top": "تأكد من أن العدسات في الأعلى",
+      "room_quiet_and_dim": "افحص في غرفة هادئة ومعتمة",
+      "hold_arclight_close_to_eye": "أمسك Arclight بالقرب من عينك",
+      "newborns_swaddled_securely": "قماط الوليد بشكل آمن",
+      "older_babies_parent_hold_lap": "الوالد يحمل الطفل الأكبر سنا",
+      "older_children_sit_by_themselves": "يمكن للطفل الأكبر سنا الجلوس بشكل مستقل",
+      "observe_reflex_arms_length": "مراقبة المنعكس على طول الذراع",
+      "move_side_get_closer_detail": "تحرك من جانب إلى آخر، واقترب إذا لزم الأمر",
+      "examine_both_eyes_same_time": "افحص كلتا العينين معًا على مسافة ذراع",
+      "normal_no_difference_between_eyes": "يجب ألا يكون هناك اختلاف في السطوع أو اللون بين العينين",
+      "appearance_varies_by_race_black_baby": "يختلف المنعكس حسب العرق\n\nالطفل الأسود: منعكس أصفر/أبيض/أزرق",
+      "white_baby_orange_red_reflex": "الطفل الأبيض: منعكس برتقالي/أحمر",
+      "asian_baby_orange_yellow_reflex": "الطفل الآسيوي: منعكس برتقالي/أصفر",
+      "parents_hold_baby_swaddled": "يحمل الوالد الطفل وهو مقمط بشكل آمن، وذراعيه مطويتين",
+      "observe_reflex_both_eyes_same_time": "مراقبة كلتا العينين معا دون لمس",
+      "without_touching_baby": "دون لمس",
+      "occasional_squints_first_month_comma": "الحول العرضي والقصير الأمد\nوهي شائعة في الشهر الأول من الحياة،",
+      "disappear_by_three_months": "وعادة ما تختفي عند عمر ثلاثة أشهر",
+      "if_baby_asleep_open_one_eye": "إذا كان الطفل نائماً، افتحي عيناً واحدة بلطف في كل مرة",
+      "if_unclear_follow_next_steps": "إذا كان غير واضح، اتبع الخطوات التالية",
+      "compare_reflex_with_parent": "قارن مع منعكس الوالدين. يجب أن تكون مماثلة",
+      "ask_colleague_second_opinion": "إذا لم تكن متأكدا، اطلب رأي الزميل",
+      "if_alone_gain_consent_record_video": "إذا كنت بمفردك، احصل على الموافقة وقم بتسجيل الفيديو",
+      "attach_arclight_mobile_camera": "قم بتوصيل Arclight بكاميرا الهاتف",
+      "share_securely_second_opinion": "شارك بشكل آمن للحصول على الرأي الثاني",
+      "if_overall_similar_exam_normal": "نفس اللون والسطوع = عادي",
+      "occasional_squints_first_month": "الحول العرضي والقصير الأمد\nشائعة في الشهر الأول من الحياة",
+      "difference_in_reflex_abnormal": "أي اختلاف في اللون أو فقدان جزئي/كامل = غير طبيعي",
+      "occasional_squints_summary": "يعد الحول العرضي والقصير الأمد أمرًا شائعًا في الشهر الأول من الحياة، وعادةً ما يختفي عند عمر ثلاثة أشهر",
+      "offer_thanks": "أشكر الوالدين،",
+      "explain_findings_make_plan": "شرح النتائج، والتخطيط للخطوات التالية",
+      "repeat_hand_wash": "كرر غسل اليد",
+      "replay": "إعادة التشغيل"
+    }
+  }
 }

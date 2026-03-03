@@ -434,5 +434,70 @@
   "reviewQuizButton": "Buyekeza imibuzo",
   "restartQuizButton": "Qala kabusha imibuzo",
   "reviewAnswersTitle": "Buyekeza izimpendulo",
-  "closeReviewButton": "Vala ukubuyekeza"
+  "closeReviewButton": "Vala ukubuyekeza",
+  "auto": {
+    "childhoodfundalpreparation": {
+      "preparation": "Ukulungiselela"
+    },
+    "childhoodfundalexamination": {
+      "examination": "Ukuhlola"
+    },
+    "childhoodfundalnewborneyesopen": {
+      "newborn_eyes_open": "Osanda kuzalwa - Amehlo Avulekile"
+    },
+    "childhoodfundalnewborneyesclosed": {
+      "newborn_eyes_closed": "Osanda kuzalwa - Amehlo Avaliwe"
+    },
+    "childhoodfundalunclearfindings": {
+      "unclear_findings": "Okutholakele okungacacile"
+    },
+    "childhoodfundalpossiblefinding": {
+      "possible_findings": "Okungenzeka Okutholakele"
+    },
+    "childhoodfundalafterexamination": {
+      "after_examination": "Ngemva Kokuhlolwa"
+    }
+  },
+  "i18nLiteral": {
+    "Next >": "Okulandelayo >"
+  },
+  "i18nExtra": {
+    "fundal_reflex": {
+      "wash_hands": "Geza izandla",
+      "select_brightest_light_setting": "Sebenzisa ukulungiselelwa kokukhanya okugqame kakhulu",
+      "make_sure_lens_rack_top": "Qinisekisa ukuthi amalensi angaphezulu",
+      "room_quiet_and_dim": "Hlola egumbini elithule, elilufifi",
+      "hold_arclight_close_to_eye": "Bamba i-Arclight eduze neso lakho",
+      "newborns_swaddled_securely": "Swaddle osanda kuzalwa ngokuphepha",
+      "older_babies_parent_hold_lap": "Umzali uphethe ingane endala",
+      "older_children_sit_by_themselves": "Ingane endala ingakwazi ukuhlala ngokuzimela",
+      "observe_reflex_arms_length": "Qaphela i-reflex ngobude bengalo",
+      "move_side_get_closer_detail": "Hambisa eceleni, sondela uma kudingeka",
+      "examine_both_eyes_same_time": "Hlolani amehlo omabili ndawonye ngobude bengalo",
+      "normal_no_difference_between_eyes": "Akufanele kube nomehluko ekukhanyeni noma umbala phakathi kwamehlo",
+      "appearance_varies_by_race_black_baby": "I-Reflex iyahlukahluka ngokohlanga\n\nIngane emnyama: yellow / white / blue reflex",
+      "white_baby_orange_red_reflex": "Ingane emhlophe: i-orange / red reflex",
+      "asian_baby_orange_yellow_reflex": "Ingane yase-Asia: i-reflex ewolintshi / ephuzi",
+      "parents_hold_baby_swaddled": "Umzali ubambe ingane iboshwe ngokuvikelekile, izingalo ezishutheke",
+      "observe_reflex_both_eyes_same_time": "Qaphela womabili amehlo ndawonye ngaphandle kokuthinta",
+      "without_touching_baby": "ngaphandle kokuthinta",
+      "occasional_squints_first_month_comma": "Ama-squints ezikhathi ezithile futhi ahlala isikhathi esifushane\nzivamile ngenyanga yokuqala yokuphila,",
+      "disappear_by_three_months": "futhi ngokuvamile izonyamalala ngezinyanga ezintathu ubudala",
+      "if_baby_asleep_open_one_eye": "Uma ingane ilele, vula ngobumnene iso elilodwa ngesikhathi",
+      "if_unclear_follow_next_steps": "Uma kungacacile, landela izinyathelo ezilandelayo",
+      "compare_reflex_with_parent": "Qhathanisa ne-reflex yomzali; kufanele kufane",
+      "ask_colleague_second_opinion": "Uma ungaqiniseki, funa umbono wozakwenu",
+      "if_alone_gain_consent_record_video": "Uma uwedwa, thola imvume futhi urekhode ividiyo",
+      "attach_arclight_mobile_camera": "Namathisela i-Arclight kukhamera yefoni",
+      "share_securely_second_opinion": "Yabelana ngokuvikelekile ukuze uthole umbono wesibili",
+      "if_overall_similar_exam_normal": "Umbala ofanayo nokukhanya = okuvamile",
+      "occasional_squints_first_month": "Ama-squints ezikhathi ezithile futhi ahlala isikhathi esifushane\nzivamile enyangeni yokuqala yokuphila",
+      "difference_in_reflex_abnormal": "Noma yimuphi umehluko wombala noma ukulahlekelwa okuyingxenye/ okuphelele = okungajwayelekile",
+      "occasional_squints_summary": "Ama-squints ahlala ngezikhathi ezithile futhi ahlala isikhathi esifushane avamile enyangeni yokuqala yokuphila futhi ngokuvamile azonyamalala ngezinyanga ezintathu ubudala.",
+      "offer_thanks": "Ngiyabonga mzali,",
+      "explain_findings_make_plan": "chaza okutholakele, hlela izinyathelo ezilandelayo",
+      "repeat_hand_wash": "Phinda ukugeza izandla",
+      "replay": "Dlala kabusha"
+    }
+  }
 }

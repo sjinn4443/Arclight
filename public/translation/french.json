@@ -434,5 +434,70 @@
   "reviewQuizButton": "Revoir le quiz",
   "restartQuizButton": "Recommencer le quiz",
   "reviewAnswersTitle": "Revoir les réponses",
-  "closeReviewButton": "Fermer la révision"
+  "closeReviewButton": "Fermer la révision",
+  "auto": {
+    "childhoodfundalpreparation": {
+      "preparation": "Préparation"
+    },
+    "childhoodfundalexamination": {
+      "examination": "Examen"
+    },
+    "childhoodfundalnewborneyesopen": {
+      "newborn_eyes_open": "Nouveau-né - Yeux ouverts"
+    },
+    "childhoodfundalnewborneyesclosed": {
+      "newborn_eyes_closed": "Nouveau-né - Yeux fermés"
+    },
+    "childhoodfundalunclearfindings": {
+      "unclear_findings": "Des résultats peu clairs"
+    },
+    "childhoodfundalpossiblefinding": {
+      "possible_findings": "Résultats possibles"
+    },
+    "childhoodfundalafterexamination": {
+      "after_examination": "Après l'examen"
+    }
+  },
+  "i18nLiteral": {
+    "Next >": "Suivant >"
+  },
+  "i18nExtra": {
+    "fundal_reflex": {
+      "wash_hands": "Se laver les mains",
+      "select_brightest_light_setting": "Utiliser le réglage de lumière le plus brillant",
+      "make_sure_lens_rack_top": "Assurez-vous que les lentilles sont en haut",
+      "room_quiet_and_dim": "Examinez dans une pièce calme et sombre",
+      "hold_arclight_close_to_eye": "Tenez Arclight près de vos yeux",
+      "newborns_swaddled_securely": "Emmailloter le nouveau-né en toute sécurité",
+      "older_babies_parent_hold_lap": "Le parent tient un bébé plus âgé",
+      "older_children_sit_by_themselves": "Un enfant plus âgé peut s'asseoir de manière autonome",
+      "observe_reflex_arms_length": "Observer le réflexe à bout de bras",
+      "move_side_get_closer_detail": "Déplacez-vous d’un côté à l’autre, rapprochez-vous si nécessaire",
+      "examine_both_eyes_same_time": "Examinez les deux yeux ensemble à bout de bras",
+      "normal_no_difference_between_eyes": "Il ne devrait y avoir aucune différence de luminosité ou de couleur entre les yeux",
+      "appearance_varies_by_race_black_baby": "Le réflexe varie selon la race\n\nBébé noir : réflexe jaune/blanc/bleu",
+      "white_baby_orange_red_reflex": "Bébé blanc : réflexe orange/rouge",
+      "asian_baby_orange_yellow_reflex": "Bébé asiatique : réflexe orange/jaune",
+      "parents_hold_baby_swaddled": "Le parent tient bébé bien emmailloté, les bras repliés",
+      "observe_reflex_both_eyes_same_time": "Observez les deux yeux ensemble sans se toucher",
+      "without_touching_baby": "sans toucher",
+      "occasional_squints_first_month_comma": "strabismes occasionnels et de courte durée\nsont fréquents au cours du premier mois de la vie,",
+      "disappear_by_three_months": "et disparaîtra généralement à l'âge de trois mois",
+      "if_baby_asleep_open_one_eye": "Si bébé dort, ouvrez doucement un œil à la fois",
+      "if_unclear_follow_next_steps": "Si ce n'est pas clair, suivez les étapes suivantes",
+      "compare_reflex_with_parent": "Comparez avec le réflexe des parents ; devrait être similaire",
+      "ask_colleague_second_opinion": "En cas de doute, demandez l'avis d'un collègue",
+      "if_alone_gain_consent_record_video": "Si vous êtes seul, obtenez le consentement et enregistrez une vidéo",
+      "attach_arclight_mobile_camera": "Fixez Arclight à la caméra du téléphone",
+      "share_securely_second_opinion": "Partagez en toute sécurité pour un deuxième avis",
+      "if_overall_similar_exam_normal": "Couleur et luminosité similaires = normales",
+      "occasional_squints_first_month": "strabismes occasionnels et de courte durée\nsont fréquents au cours du premier mois de la vie",
+      "difference_in_reflex_abnormal": "Toute différence de couleur ou perte partielle/complète = anormale",
+      "occasional_squints_summary": "Les strabismes occasionnels et de courte durée sont fréquents au cours du premier mois de la vie et disparaissent généralement à l'âge de trois mois.",
+      "offer_thanks": "Merci parent,",
+      "explain_findings_make_plan": "expliquer les résultats, planifier les prochaines étapes",
+      "repeat_hand_wash": "Répéter le lavage à la main",
+      "replay": "Rejouer"
+    }
+  }
 }

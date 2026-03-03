@@ -434,5 +434,70 @@
   "reviewQuizButton": "Ṣàyẹ̀wò Ìdánwò",
   "restartQuizButton": "Bẹ̀rẹ̀ Ìdánwò Lẹ́ẹ̀kan Sí I",
   "reviewAnswersTitle": "Ṣàyẹ̀wò Àwọn Ìdáhùn",
-  "closeReviewButton": "Tì Bíbáwò"
+  "closeReviewButton": "Tì Bíbáwò",
+  "auto": {
+    "childhoodfundalpreparation": {
+      "preparation": "Igbaradi"
+    },
+    "childhoodfundalexamination": {
+      "examination": "Ayẹwo"
+    },
+    "childhoodfundalnewborneyesopen": {
+      "newborn_eyes_open": "Omo tuntun - Oju Open"
+    },
+    "childhoodfundalnewborneyesclosed": {
+      "newborn_eyes_closed": "Omo tuntun - Oju Titi"
+    },
+    "childhoodfundalunclearfindings": {
+      "unclear_findings": "Awọn awari ti ko ṣe kedere"
+    },
+    "childhoodfundalpossiblefinding": {
+      "possible_findings": "Awọn awari ti o ṣeeṣe"
+    },
+    "childhoodfundalafterexamination": {
+      "after_examination": "Lẹhin Idanwo"
+    }
+  },
+  "i18nLiteral": {
+    "Next >": "Itele >"
+  },
+  "i18nExtra": {
+    "fundal_reflex": {
+      "wash_hands": "Fọ ọwọ",
+      "select_brightest_light_setting": "Lo eto ina didan julọ",
+      "make_sure_lens_rack_top": "Rii daju pe awọn lẹnsi wa ni oke",
+      "room_quiet_and_dim": "Ṣayẹwo ni idakẹjẹ, yara baibai",
+      "hold_arclight_close_to_eye": "Mu Arclight sunmo si oju rẹ",
+      "newborns_swaddled_securely": "Swaddle ọmọ ikoko ni aabo",
+      "older_babies_parent_hold_lap": "Òbí di àgbà ọmọ",
+      "older_children_sit_by_themselves": "Ọmọ agbalagba le joko ni ominira",
+      "observe_reflex_arms_length": "Ṣe akiyesi ifasilẹ ni ipari apa",
+      "move_side_get_closer_detail": "Gbe ẹgbẹ si ẹgbẹ, sunmọ ti o ba nilo",
+      "examine_both_eyes_same_time": "Ṣayẹwo awọn oju mejeeji papọ ni ipari apa",
+      "normal_no_difference_between_eyes": "Ko yẹ ki o jẹ iyatọ ninu imọlẹ tabi awọ laarin awọn oju",
+      "appearance_varies_by_race_black_baby": "Reflex yatọ nipa ije\n\nBlack omo: ofeefee / funfun / blue reflex",
+      "white_baby_orange_red_reflex": "White omo: osan / pupa rifulẹkisi",
+      "asian_baby_orange_yellow_reflex": "Asia omo: osan / ofeefee rifulẹkisi",
+      "parents_hold_baby_swaddled": "Obi di ọmọ mu ni aabo, ti a fi ọwọ pa",
+      "observe_reflex_both_eyes_same_time": "Ṣe akiyesi awọn oju mejeeji papọ laisi fọwọkan",
+      "without_touching_baby": "lai fọwọkan",
+      "occasional_squints_first_month_comma": "Lẹẹkọọkan ati kukuru-pípẹ squints\nwọpọ ni oṣu akọkọ ti igbesi aye,",
+      "disappear_by_three_months": "ati pe yoo maa parẹ nipasẹ oṣu mẹta ọjọ ori",
+      "if_baby_asleep_open_one_eye": "Ti ọmọ ba sùn, rọra ṣii oju kan ni akoko kan",
+      "if_unclear_follow_next_steps": "Ti ko ba ṣe akiyesi, tẹle awọn igbesẹ atẹle",
+      "compare_reflex_with_parent": "Ṣe afiwe pẹlu ifasilẹ awọn obi; yẹ ki o jẹ iru",
+      "ask_colleague_second_opinion": "Ti ko ba ni idaniloju, wa imọran ẹlẹgbẹ",
+      "if_alone_gain_consent_record_video": "Ti o ba nikan, jèrè igbanilaaye ati ṣe igbasilẹ fidio",
+      "attach_arclight_mobile_camera": "So Arclight mọ kamẹra foonu",
+      "share_securely_second_opinion": "Pin ni aabo fun ero keji",
+      "if_overall_similar_exam_normal": "Iru awọ ati imọlẹ = deede",
+      "occasional_squints_first_month": "Lẹẹkọọkan ati kukuru-pípẹ squints\nwọpọ ni oṣu akọkọ ti igbesi aye",
+      "difference_in_reflex_abnormal": "Eyikeyi awọ iyato tabi apa kan/pipe pipadanu = ajeji",
+      "occasional_squints_summary": "Awọn squints igba diẹ ati igba diẹ jẹ wọpọ ni oṣu akọkọ ti igbesi aye ati pe yoo maa parẹ nipasẹ oṣu mẹta ti ọjọ ori.",
+      "offer_thanks": "O ṣeun obi,",
+      "explain_findings_make_plan": "se alaye awari, gbero tókàn awọn igbesẹ",
+      "repeat_hand_wash": "Tun ọwọ wẹ",
+      "replay": "Tun ṣe"
+    }
+  }
 }

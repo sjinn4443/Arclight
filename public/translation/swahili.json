@@ -434,5 +434,70 @@
   "reviewQuizButton": "Kagua Jaribio",
   "restartQuizButton": "Anzisha Upya Jaribio",
   "reviewAnswersTitle": "Kagua Majibu",
-  "closeReviewButton": "Funga Ukaguzi"
+  "closeReviewButton": "Funga Ukaguzi",
+  "auto": {
+    "childhoodfundalpreparation": {
+      "preparation": "Maandalizi"
+    },
+    "childhoodfundalexamination": {
+      "examination": "Uchunguzi"
+    },
+    "childhoodfundalnewborneyesopen": {
+      "newborn_eyes_open": "Mtoto mchanga - Macho wazi"
+    },
+    "childhoodfundalnewborneyesclosed": {
+      "newborn_eyes_closed": "Mtoto mchanga - Macho Yamefungwa"
+    },
+    "childhoodfundalunclearfindings": {
+      "unclear_findings": "Matokeo Isiyo wazi"
+    },
+    "childhoodfundalpossiblefinding": {
+      "possible_findings": "Matokeo Yanayowezekana"
+    },
+    "childhoodfundalafterexamination": {
+      "after_examination": "Baada ya Uchunguzi"
+    }
+  },
+  "i18nLiteral": {
+    "Next >": "Inayofuata >"
+  },
+  "i18nExtra": {
+    "fundal_reflex": {
+      "wash_hands": "Osha mikono",
+      "select_brightest_light_setting": "Tumia mpangilio wa mwangaza zaidi",
+      "make_sure_lens_rack_top": "Hakikisha lenzi ziko juu",
+      "room_quiet_and_dim": "Chunguza katika chumba tulivu, chenye giza",
+      "hold_arclight_close_to_eye": "Shikilia Arclight karibu na jicho lako",
+      "newborns_swaddled_securely": "Swaddle mtoto mchanga salama",
+      "older_babies_parent_hold_lap": "Mzazi anashikilia mtoto mzee",
+      "older_children_sit_by_themselves": "Mtoto mzee anaweza kukaa kwa kujitegemea",
+      "observe_reflex_arms_length": "Angalia reflex kwa urefu wa mkono",
+      "move_side_get_closer_detail": "Sogeza upande kwa upande, karibu ikiwa inahitajika",
+      "examine_both_eyes_same_time": "Chunguza macho yote mawili kwa urefu wa mkono",
+      "normal_no_difference_between_eyes": "Haipaswi kuwa na tofauti katika mwangaza au rangi kati ya macho",
+      "appearance_varies_by_race_black_baby": "Reflex inatofautiana na rangi\n\nMtoto mweusi: njano / nyeupe / bluu reflex",
+      "white_baby_orange_red_reflex": "Mtoto mweupe: machungwa / nyekundu reflex",
+      "asian_baby_orange_yellow_reflex": "Mtoto wa Asia: reflex ya machungwa / njano",
+      "parents_hold_baby_swaddled": "Mzazi amemshikilia mtoto akiwa amevishwa swaddles kwa usalama, ameweka mikono",
+      "observe_reflex_both_eyes_same_time": "Tazama macho yote mawili kwa pamoja bila kugusa",
+      "without_touching_baby": "bila kugusa",
+      "occasional_squints_first_month_comma": "Vipu vya mara kwa mara na vya muda mfupi\nkawaida katika mwezi wa kwanza wa maisha;",
+      "disappear_by_three_months": "na kawaida hupotea kwa miezi mitatu ya umri",
+      "if_baby_asleep_open_one_eye": "Ikiwa mtoto amelala, fungua jicho moja kwa upole",
+      "if_unclear_follow_next_steps": "Ikiwa haijulikani, fuata hatua zinazofuata",
+      "compare_reflex_with_parent": "Linganisha na reflex ya mzazi; inapaswa kufanana",
+      "ask_colleague_second_opinion": "Ikiwa huna uhakika, tafuta maoni ya mwenzako",
+      "if_alone_gain_consent_record_video": "Ikiwa peke yako, pata idhini na urekodi video",
+      "attach_arclight_mobile_camera": "Ambatisha Arclight kwenye kamera ya simu",
+      "share_securely_second_opinion": "Shiriki kwa usalama kwa maoni ya pili",
+      "if_overall_similar_exam_normal": "Rangi sawa na mwangaza = kawaida",
+      "occasional_squints_first_month": "Vipu vya mara kwa mara na vya muda mfupi\nni kawaida katika mwezi wa kwanza wa maisha",
+      "difference_in_reflex_abnormal": "Tofauti yoyote ya rangi au hasara ya sehemu/kamili = isiyo ya kawaida",
+      "occasional_squints_summary": "Makengeza ya mara kwa mara na ya muda mfupi ni ya kawaida katika mwezi wa kwanza wa maisha na kawaida hupotea kwa miezi mitatu ya umri.",
+      "offer_thanks": "Asante mzazi,",
+      "explain_findings_make_plan": "kueleza matokeo, panga hatua zinazofuata",
+      "repeat_hand_wash": "Rudia kuosha mikono",
+      "replay": "Cheza tena"
+    }
+  }
 }

@@ -434,5 +434,70 @@
   "reviewQuizButton": "Onani Mafunso",
   "restartQuizButton": "Yambitsaninso Mafunso",
   "reviewAnswersTitle": "Onani Mayankho",
-  "closeReviewButton": "Tsekani Kuwunikanso"
+  "closeReviewButton": "Tsekani Kuwunikanso",
+  "auto": {
+    "childhoodfundalpreparation": {
+      "preparation": "Kukonzekera"
+    },
+    "childhoodfundalexamination": {
+      "examination": "Kufufuza"
+    },
+    "childhoodfundalnewborneyesopen": {
+      "newborn_eyes_open": "Wakhanda - Maso Otseguka"
+    },
+    "childhoodfundalnewborneyesclosed": {
+      "newborn_eyes_closed": "Wangobadwa kumene - Maso Otsekedwa"
+    },
+    "childhoodfundalunclearfindings": {
+      "unclear_findings": "Zotsatira Zosadziwika"
+    },
+    "childhoodfundalpossiblefinding": {
+      "possible_findings": "Zomwe Zingachitike"
+    },
+    "childhoodfundalafterexamination": {
+      "after_examination": "Pambuyo Mayeso"
+    }
+  },
+  "i18nLiteral": {
+    "Next >": "Kenako >"
+  },
+  "i18nExtra": {
+    "fundal_reflex": {
+      "wash_hands": "Sambani m'manja",
+      "select_brightest_light_setting": "Gwiritsani ntchito kuyatsa kowala kwambiri",
+      "make_sure_lens_rack_top": "Onetsetsani kuti magalasi ali pamwamba",
+      "room_quiet_and_dim": "Yang'anani m'chipinda chabata, chamdima",
+      "hold_arclight_close_to_eye": "Gwirani Arclight pafupi ndi diso lanu",
+      "newborns_swaddled_securely": "Swaddle wakhanda bwinobwino",
+      "older_babies_parent_hold_lap": "Makolo anyamula mwana wamkulu",
+      "older_children_sit_by_themselves": "Mwana wamkulu akhoza kukhala payekha",
+      "observe_reflex_arms_length": "Yang'anani reflex kutalika kwa mkono",
+      "move_side_get_closer_detail": "Yendani mbali ndi mbali, yandikirani ngati pakufunika",
+      "examine_both_eyes_same_time": "Yang'anani maso onse pamodzi pamtunda wa mkono",
+      "normal_no_difference_between_eyes": "Pasakhale kusiyana pakati pa kuwala kapena mtundu pakati pa maso",
+      "appearance_varies_by_race_black_baby": "Reflex imasiyanasiyana malinga ndi mtundu\n\nMwana wakuda: yellow / white / blue reflex",
+      "white_baby_orange_red_reflex": "White mwana: lalanje / red reflex",
+      "asian_baby_orange_yellow_reflex": "Mwana waku Asia: lalanje / yellow reflex",
+      "parents_hold_baby_swaddled": "Kholo limagwira mwana wake motetezedwa bwino, atamuyika manja",
+      "observe_reflex_both_eyes_same_time": "Yang'anani maso onse pamodzi osakhudza",
+      "without_touching_baby": "popanda kukhudza",
+      "occasional_squints_first_month_comma": "Zovala zanthawi zonse komanso zazifupi\nzofala m'mwezi woyamba wa moyo,",
+      "disappear_by_three_months": "ndipo nthawi zambiri amatha pakadutsa miyezi itatu",
+      "if_baby_asleep_open_one_eye": "Ngati mwana akugona, tsegulani diso limodzi panthawi imodzi",
+      "if_unclear_follow_next_steps": "Ngati sizikudziwika, tsatirani njira zotsatirazi",
+      "compare_reflex_with_parent": "Yerekezerani ndi malingaliro a kholo; ziyenera kukhala zofanana",
+      "ask_colleague_second_opinion": "Ngati simukudziwa, funsani maganizo a mnzanu",
+      "if_alone_gain_consent_record_video": "Ngati muli nokha, vomerezani ndikujambula kanema",
+      "attach_arclight_mobile_camera": "Gwirizanitsani Arclight ku kamera ya foni",
+      "share_securely_second_opinion": "Gawani motetezeka kuti muganizirenso zachiwiri",
+      "if_overall_similar_exam_normal": "Mtundu wofanana ndi kuwala = zachilendo",
+      "occasional_squints_first_month": "Zovala zanthawi zonse komanso zazifupi\nndizofala m'mwezi woyamba wa moyo",
+      "difference_in_reflex_abnormal": "Kusiyana kwamtundu uliwonse kapena kutayika pang'ono / kwathunthu = zachilendo",
+      "occasional_squints_summary": "Maswiti anthawi zina komanso osakhalitsa amapezeka m'mwezi woyamba wa moyo ndipo nthawi zambiri amatha pakatha miyezi itatu yakubadwa.",
+      "offer_thanks": "Zikomo kholo,",
+      "explain_findings_make_plan": "fotokozani zomwe mwapeza, konzani masitepe otsatirawa",
+      "repeat_hand_wash": "Bwerezani kusamba m'manja",
+      "replay": "Seweraninso"
+    }
+  }
 }

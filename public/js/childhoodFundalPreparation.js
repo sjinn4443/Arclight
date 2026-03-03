@@ -57,16 +57,16 @@ const ROUTE_CONFIG = {
     segmentStartTexts: [
       ["Wash hands"],
       [
-        "Select the brightest light setting",
-        "Make sure the lens rack is at the top",
-        "Examination room needs to be quiet and dim",
+        "Use brightest light setting",
+        "Ensure lenses are at top",
+        "Examine in quiet, dim room",
       ],
       ["Hold Arclight close to your eye"],
       [
-        "Newborns should be swaddled securely",
-        "For older babies, parents can hold them\nor put on their laps",
+        "Swaddle newborn securely",
+        "Parent holds older baby",
         "",
-        "Older children can sit by themselves",
+        "Older child can sit independently",
       ],
     ],
     segmentTextModeByFile: ["append", "append", "append", "append"],
@@ -119,16 +119,14 @@ const ROUTE_CONFIG = {
       [138, 265, 449],
     ],
     segmentStartTexts: [
-      ["Observe the reflex at arm's length"],
-      ["Move side to side and get closer\nif need to look in more detail"],
-      ["At arm's length, examine both eyes\nat the same time"],
+      ["Observe reflex at arm's length"],
+      ["Move side to side, get closer if needed"],
+      ["Examine both eyes together at arm's length"],
+      ["Should be no difference in brightness or colour between eyes"],
       [
-        "In a normal examination, there should be\nno overall difference in brightness\nor colour between eyes",
-      ],
-      [
-        "The appearance will vary by race\n\nBlack baby - yellow / white / blue reflex",
-        "White baby - orange / red reflex",
-        "Asian baby - orange / yellow reflex",
+        "Reflex varies by race\n\nBlack baby: yellow / white / blue reflex",
+        "White baby: orange / red reflex",
+        "Asian baby: orange / yellow reflex",
       ],
     ],
     segmentTextModeByFile: ["append", "append", "append", "append", "append"],
@@ -164,12 +162,8 @@ const ROUTE_CONFIG = {
     ],
     settleFrameOverrides: [[419], [147, 205, 659], [114, 262, 419]],
     segmentStartTexts: [
-      ["Parents should hold the baby\nswaddled securely with arms tucked away"],
-      [
-        "Observe reflex in both eyes at the same time,",
-        "",
-        "without touching the baby",
-      ],
+      ["Parent holds baby securely swaddled, arms tucked"],
+      ["Observe both eyes together without touching", "", ""],
       [
         "Occasional and short-lasting squints\nare common in the first month of life,",
         "and will usually disappear by three months of age",
@@ -201,7 +195,7 @@ const ROUTE_CONFIG = {
     ],
     settleFrameOverrides: [[389], [240, 419]],
     segmentStartTexts: [
-      ["Parents should hold the baby\nswaddled securely with arms tucked away"],
+      ["Parent holds baby securely swaddled, arms tucked"],
       ["If baby is asleep, gently open one eye at a time"],
     ],
     segmentTextModeByFile: ["append", "append"],
@@ -258,13 +252,13 @@ const ROUTE_CONFIG = {
       [235, 475, 779],
     ],
     segmentStartTexts: [
-      ["", "If findings are unclear, follow the next steps"],
-      ["Compare the reflex with parent\nIt should look similar"],
-      ["If still unsure, ask colleague for second opinion"],
+      ["", "If unclear, follow next steps"],
+      ["Compare with parent's reflex; should be similar"],
+      ["If unsure, seek colleague's opinion"],
       [
-        "If on your own, gain consent from patient\nand record a video",
-        "Attach the Arclight to the camera of a mobile phone",
-        "Share securely for a second opinion",
+        "If alone, gain consent and record video",
+        "Attach Arclight to phone camera",
+        "Share securely for second opinion",
       ],
     ],
     segmentTextModeByFile: ["append", "append", "append", "append"],
@@ -299,13 +293,11 @@ const ROUTE_CONFIG = {
     ],
     settleFrameOverrides: [[79], [214, 317, 509]],
     segmentStartTexts: [
-      [
-        "If overall colour and brightness is similar between\ntwo eyes, then the examination is normal",
-      ],
+      ["Similar colour and brightness = normal"],
       [
         "Occasional and short-lasting squints\nare common in the first month of life",
         "and will usually disappear by three months of age",
-        "Any difference in colour / partial / complete\nloss of reflex is abnormal",
+        "Any colour difference or partial/complete loss = abnormal",
       ],
     ],
     segmentTextModeByFile: ["replace", "replace"],
@@ -315,7 +307,7 @@ const ROUTE_CONFIG = {
       [],
       [
         "Occasional and short-lasting squints are common in the first month of life and will usually disappear by three months of age",
-        "Any difference in colour / partial / complete\nloss of reflex is abnormal",
+        "Any colour difference or partial/complete loss = abnormal",
       ],
     ],
     iosAggressiveSettleSegments: [[3, 4]],
@@ -339,7 +331,7 @@ const ROUTE_CONFIG = {
     ],
     settleFrameOverrides: [[89, 149], [158]],
     segmentStartTexts: [
-      ["Offer thanks,", "explain your findings and make a plan"],
+      ["Thank parent,", "explain findings, plan next steps"],
       ["Repeat hand wash"],
     ],
     segmentTextModeByFile: ["appendInline", "append"],
@@ -354,73 +346,67 @@ const ROUTE_CONFIG = {
 const FUNDAL_TEXT_KEYS = new Map([
   ["Wash hands", "i18nExtra.fundal_reflex.wash_hands"],
   [
-    "Select the brightest light setting",
+    "Use brightest light setting",
     "i18nExtra.fundal_reflex.select_brightest_light_setting",
   ],
   [
-    "Make sure the lens rack is at the top",
+    "Ensure lenses are at top",
     "i18nExtra.fundal_reflex.make_sure_lens_rack_top",
   ],
-  [
-    "Examination room needs to be quiet and dim",
-    "i18nExtra.fundal_reflex.room_quiet_and_dim",
-  ],
+  ["Examine in quiet, dim room", "i18nExtra.fundal_reflex.room_quiet_and_dim"],
   [
     "Hold Arclight close to your eye",
     "i18nExtra.fundal_reflex.hold_arclight_close_to_eye",
   ],
   [
-    "Newborns should be swaddled securely",
+    "Swaddle newborn securely",
     "i18nExtra.fundal_reflex.newborns_swaddled_securely",
   ],
   [
-    "For older babies, parents can hold them\nor put on their laps",
+    "Parent holds older baby",
     "i18nExtra.fundal_reflex.older_babies_parent_hold_lap",
   ],
   [
-    "Older children can sit by themselves",
+    "Older child can sit independently",
     "i18nExtra.fundal_reflex.older_children_sit_by_themselves",
   ],
   [
-    "Observe the reflex at arm's length",
+    "Observe reflex at arm's length",
     "i18nExtra.fundal_reflex.observe_reflex_arms_length",
   ],
   [
-    "Move side to side and get closer\nif need to look in more detail",
+    "Move side to side, get closer if needed",
     "i18nExtra.fundal_reflex.move_side_get_closer_detail",
   ],
   [
-    "At arm's length, examine both eyes\nat the same time",
+    "Examine both eyes together at arm's length",
     "i18nExtra.fundal_reflex.examine_both_eyes_same_time",
   ],
   [
-    "In a normal examination, there should be\nno overall difference in brightness\nor colour between eyes",
+    "Should be no difference in brightness or colour between eyes",
     "i18nExtra.fundal_reflex.normal_no_difference_between_eyes",
   ],
   [
-    "The appearance will vary by race\n\nBlack baby - yellow / white / blue reflex",
+    "Reflex varies by race\n\nBlack baby: yellow / white / blue reflex",
     "i18nExtra.fundal_reflex.appearance_varies_by_race_black_baby",
   ],
   [
-    "White baby - orange / red reflex",
+    "White baby: orange / red reflex",
     "i18nExtra.fundal_reflex.white_baby_orange_red_reflex",
   ],
   [
-    "Asian baby - orange / yellow reflex",
+    "Asian baby: orange / yellow reflex",
     "i18nExtra.fundal_reflex.asian_baby_orange_yellow_reflex",
   ],
   [
-    "Parents should hold the baby\nswaddled securely with arms tucked away",
+    "Parent holds baby securely swaddled, arms tucked",
     "i18nExtra.fundal_reflex.parents_hold_baby_swaddled",
   ],
   [
-    "Observe reflex in both eyes at the same time,",
+    "Observe both eyes together without touching",
     "i18nExtra.fundal_reflex.observe_reflex_both_eyes_same_time",
   ],
-  [
-    "without touching the baby",
-    "i18nExtra.fundal_reflex.without_touching_baby",
-  ],
+  ["without touching", "i18nExtra.fundal_reflex.without_touching_baby"],
   [
     "Occasional and short-lasting squints\nare common in the first month of life,",
     "i18nExtra.fundal_reflex.occasional_squints_first_month_comma",
@@ -434,31 +420,31 @@ const FUNDAL_TEXT_KEYS = new Map([
     "i18nExtra.fundal_reflex.if_baby_asleep_open_one_eye",
   ],
   [
-    "If findings are unclear, follow the next steps",
+    "If unclear, follow next steps",
     "i18nExtra.fundal_reflex.if_unclear_follow_next_steps",
   ],
   [
-    "Compare the reflex with parent\nIt should look similar",
+    "Compare with parent's reflex; should be similar",
     "i18nExtra.fundal_reflex.compare_reflex_with_parent",
   ],
   [
-    "If still unsure, ask colleague for second opinion",
+    "If unsure, seek colleague's opinion",
     "i18nExtra.fundal_reflex.ask_colleague_second_opinion",
   ],
   [
-    "If on your own, gain consent from patient\nand record a video",
+    "If alone, gain consent and record video",
     "i18nExtra.fundal_reflex.if_alone_gain_consent_record_video",
   ],
   [
-    "Attach the Arclight to the camera of a mobile phone",
+    "Attach Arclight to phone camera",
     "i18nExtra.fundal_reflex.attach_arclight_mobile_camera",
   ],
   [
-    "Share securely for a second opinion",
+    "Share securely for second opinion",
     "i18nExtra.fundal_reflex.share_securely_second_opinion",
   ],
   [
-    "If overall colour and brightness is similar between\ntwo eyes, then the examination is normal",
+    "Similar colour and brightness = normal",
     "i18nExtra.fundal_reflex.if_overall_similar_exam_normal",
   ],
   [
@@ -466,16 +452,16 @@ const FUNDAL_TEXT_KEYS = new Map([
     "i18nExtra.fundal_reflex.occasional_squints_first_month",
   ],
   [
-    "Any difference in colour / partial / complete\nloss of reflex is abnormal",
+    "Any colour difference or partial/complete loss = abnormal",
     "i18nExtra.fundal_reflex.difference_in_reflex_abnormal",
   ],
   [
     "Occasional and short-lasting squints are common in the first month of life and will usually disappear by three months of age",
     "i18nExtra.fundal_reflex.occasional_squints_summary",
   ],
-  ["Offer thanks,", "i18nExtra.fundal_reflex.offer_thanks"],
+  ["Thank parent,", "i18nExtra.fundal_reflex.offer_thanks"],
   [
-    "explain your findings and make a plan",
+    "explain findings, plan next steps",
     "i18nExtra.fundal_reflex.explain_findings_make_plan",
   ],
   ["Repeat hand wash", "i18nExtra.fundal_reflex.repeat_hand_wash"],
@@ -706,9 +692,7 @@ function resolveSegmentTextMode(cfg, fileIndex) {
   return "append";
 }
 
-const TIGHT_LINE_HEIGHT_SEGMENT_TEXTS = new Set([
-  "For older babies, parents can hold them\nor put on their laps",
-]);
+const TIGHT_LINE_HEIGHT_SEGMENT_TEXTS = new Set(["Parent holds older baby"]);
 
 function normaliseSegmentTextLine(text) {
   return String(text == null ? "" : text)

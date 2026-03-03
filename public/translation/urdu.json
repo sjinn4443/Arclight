@@ -434,5 +434,70 @@
   "reviewQuizButton": "کوئز کا جائزہ لیں",
   "restartQuizButton": "کوئز دوبارہ شروع کریں",
   "reviewAnswersTitle": "جوابات کا جائزہ لیں",
-  "closeReviewButton": "جائزہ بند کریں"
+  "closeReviewButton": "جائزہ بند کریں",
+  "auto": {
+    "childhoodfundalpreparation": {
+      "preparation": "تیاری"
+    },
+    "childhoodfundalexamination": {
+      "examination": "امتحان"
+    },
+    "childhoodfundalnewborneyesopen": {
+      "newborn_eyes_open": "نومولود - آنکھیں کھلیں۔"
+    },
+    "childhoodfundalnewborneyesclosed": {
+      "newborn_eyes_closed": "نومولود - آنکھیں بند"
+    },
+    "childhoodfundalunclearfindings": {
+      "unclear_findings": "غیر واضح نتائج"
+    },
+    "childhoodfundalpossiblefinding": {
+      "possible_findings": "ممکنہ نتائج"
+    },
+    "childhoodfundalafterexamination": {
+      "after_examination": "امتحان کے بعد"
+    }
+  },
+  "i18nLiteral": {
+    "Next >": "اگلا >"
+  },
+  "i18nExtra": {
+    "fundal_reflex": {
+      "wash_hands": "ہاتھ دھوئے۔",
+      "select_brightest_light_setting": "روشن ترین لائٹ سیٹنگ کا استعمال کریں۔",
+      "make_sure_lens_rack_top": "یقینی بنائیں کہ عینک سب سے اوپر ہیں۔",
+      "room_quiet_and_dim": "خاموش، مدھم کمرے میں معائنہ کریں۔",
+      "hold_arclight_close_to_eye": "آرک لائٹ کو اپنی آنکھ کے قریب رکھیں",
+      "newborns_swaddled_securely": "نوزائیدہ کو محفوظ طریقے سے لپیٹیں۔",
+      "older_babies_parent_hold_lap": "والدین نے بڑے بچے کو پکڑ رکھا ہے۔",
+      "older_children_sit_by_themselves": "بڑا بچہ آزادانہ طور پر بیٹھ سکتا ہے۔",
+      "observe_reflex_arms_length": "بازو کی لمبائی پر ریفلیکس کا مشاہدہ کریں۔",
+      "move_side_get_closer_detail": "ایک طرف بڑھیں، ضرورت پڑنے پر قریب جائیں۔",
+      "examine_both_eyes_same_time": "بازو کی لمبائی پر دونوں آنکھوں کو ایک ساتھ چیک کریں۔",
+      "normal_no_difference_between_eyes": "آنکھوں کے درمیان چمک یا رنگ میں کوئی فرق نہیں ہونا چاہئے",
+      "appearance_varies_by_race_black_baby": "اضطراری نسل کے لحاظ سے مختلف ہوتی ہے۔\n\nسیاہ بچہ: پیلا/سفید/نیلے اضطراری",
+      "white_baby_orange_red_reflex": "سفید بچہ: نارنجی / سرخ اضطراری",
+      "asian_baby_orange_yellow_reflex": "ایشیائی بچہ: نارنجی / پیلا اضطراری",
+      "parents_hold_baby_swaddled": "والدین نے بچے کو محفوظ طریقے سے لپیٹے ہوئے، بازوؤں کو پکڑ رکھا ہے۔",
+      "observe_reflex_both_eyes_same_time": "چھوئے بغیر دونوں آنکھوں کو ایک ساتھ دیکھیں",
+      "without_touching_baby": "چھونے کے بغیر",
+      "occasional_squints_first_month_comma": "کبھی کبھار اور قلیل دیر تک چلنے والے اسکوینٹس\nزندگی کے پہلے مہینے میں عام ہیں،",
+      "disappear_by_three_months": "اور عموماً تین ماہ کی عمر میں غائب ہو جائے گا۔",
+      "if_baby_asleep_open_one_eye": "اگر بچہ سو رہا ہے تو آہستہ سے ایک وقت میں ایک آنکھ کھولیں۔",
+      "if_unclear_follow_next_steps": "اگر واضح نہ ہو تو اگلے مراحل پر عمل کریں۔",
+      "compare_reflex_with_parent": "والدین کے اضطراری سے موازنہ کریں؛ اسی طرح ہونا چاہئے",
+      "ask_colleague_second_opinion": "اگر یقین نہ آئے تو ساتھی کی رائے لیں۔",
+      "if_alone_gain_consent_record_video": "اگر تنہا ہو تو رضامندی حاصل کریں اور ویڈیو ریکارڈ کریں۔",
+      "attach_arclight_mobile_camera": "فون کیمرہ سے آرک لائٹ منسلک کریں۔",
+      "share_securely_second_opinion": "دوسری رائے کے لیے محفوظ طریقے سے شیئر کریں۔",
+      "if_overall_similar_exam_normal": "مماثل رنگ اور چمک = نارمل",
+      "occasional_squints_first_month": "کبھی کبھار اور قلیل دیر تک چلنے والے اسکوینٹس\nزندگی کے پہلے مہینے میں عام ہیں",
+      "difference_in_reflex_abnormal": "رنگ کا کوئی فرق یا جزوی/مکمل نقصان = غیر معمولی",
+      "occasional_squints_summary": "زندگی کے پہلے مہینے میں کبھی کبھار اور قلیل دیر تک نظر آنا عام ہے اور عموماً تین ماہ کی عمر میں غائب ہو جاتا ہے۔",
+      "offer_thanks": "شکریہ والدین،",
+      "explain_findings_make_plan": "نتائج کی وضاحت کریں، اگلے اقدامات کی منصوبہ بندی کریں۔",
+      "repeat_hand_wash": "ہاتھ دھونے کو دہرائیں۔",
+      "replay": "ری پلے"
+    }
+  }
 }

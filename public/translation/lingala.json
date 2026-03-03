@@ -434,5 +434,70 @@
   "reviewQuizButton": "Kotála mokonzi",
   "restartQuizButton": "Kobanda mokonzi lisúsu",
   "reviewAnswersTitle": "Kotála biyano",
-  "closeReviewButton": "Kóbɛtɛla lisangá ya biyano"
+  "closeReviewButton": "Kóbɛtɛla lisangá ya biyano",
+  "auto": {
+    "childhoodfundalpreparation": {
+      "preparation": "Kobongisa"
+    },
+    "childhoodfundalexamination": {
+      "examination": "Kosala ekzamɛ"
+    },
+    "childhoodfundalnewborneyesopen": {
+      "newborn_eyes_open": "Mwana ya sika - Miso Efungwami"
+    },
+    "childhoodfundalnewborneyesclosed": {
+      "newborn_eyes_closed": "Mwana ya sika - Miso ekangami"
+    },
+    "childhoodfundalunclearfindings": {
+      "unclear_findings": "Makambo oyo ezwami polele te"
+    },
+    "childhoodfundalpossiblefinding": {
+      "possible_findings": "Makambo oyo ekoki kozwama"
+    },
+    "childhoodfundalafterexamination": {
+      "after_examination": "Nsima ya Ekzamɛ"
+    }
+  },
+  "i18nLiteral": {
+    "Next >": "Na sima >"
+  },
+  "i18nExtra": {
+    "fundal_reflex": {
+      "wash_hands": "Sukola maboko",
+      "select_brightest_light_setting": "Salelá réglage ya mwinda oyo ezali kongɛnga mingi",
+      "make_sure_lens_rack_top": "Assurer que ba objectifs ezala na likolo",
+      "room_quiet_and_dim": "Talá na shambre ya kimya mpe ya molili",
+      "hold_arclight_close_to_eye": "Simbá Arclight penepene na liso na yo",
+      "newborns_swaddled_securely": "Swaddle mwana oyo abotami sika na ndenge ya malamu",
+      "older_babies_parent_hold_lap": "Moboti asimbi bebe oyo akómi mokóló",
+      "older_children_sit_by_themselves": "Mwana ya mokóló akoki kofanda ye moko",
+      "observe_reflex_arms_length": "Talá reflexe na bolai ya lobɔkɔ",
+      "move_side_get_closer_detail": "Bokende pembeni na ngambo, bopusana penepene soki esengeli",
+      "examine_both_eyes_same_time": "Talá miso nyonso mibale esika moko na bolai ya lobɔkɔ",
+      "normal_no_difference_between_eyes": "Esengeli kozala na bokeseni te na kongenga to na langi kati na miso",
+      "appearance_varies_by_race_black_baby": "Réflexe ekeseni na loposo\n\nBébé noir: jaune / pembe / réflexe bleu",
+      "white_baby_orange_red_reflex": "Bébé ya pembe: réflex orange / rouge",
+      "asian_baby_orange_yellow_reflex": "Bébé ya Asie: réflexe orange / jaune",
+      "parents_hold_baby_swaddled": "Moboti asimbi bebe malamu ekangami, maboko ekangami",
+      "observe_reflex_both_eyes_same_time": "Talá miso nyonso mibale esika moko kozanga kosimba",
+      "without_touching_baby": "kozanga kosimba",
+      "occasional_squints_first_month_comma": "Kobɛta miso ntango mosusu mpe oyo eumelaka ntango mokuse\nezali mingi na sanza ya liboso ya bomoi, .",
+      "disappear_by_three_months": "mpe mbala mingi ekolimwa na sanza misato",
+      "if_baby_asleep_open_one_eye": "Soki bebe alali, fungolá liso moko na malɛmbɛ na mbala moko",
+      "if_unclear_follow_next_steps": "Soki ezali polele te, landá makambo oyo elandi",
+      "compare_reflex_with_parent": "Kokanisa na réflexe ya moboti; esengeli kozala ndenge moko",
+      "ask_colleague_second_opinion": "Soki ozali na ntembe, luká makanisi ya moninga ya mosala",
+      "if_alone_gain_consent_record_video": "Soki ozali yo moko, zwá ndingisa mpe kamá video",
+      "attach_arclight_mobile_camera": "Bokanga Arclight na caméra ya téléphone",
+      "share_securely_second_opinion": "Kabola na bokengi mpo na makanisi ya mibale",
+      "if_overall_similar_exam_normal": "Couleur na lumière ya ndenge moko = normal",
+      "occasional_squints_first_month": "Kobɛta miso ntango mosusu mpe oyo eumelaka ntango mokuse\nezali mingi na sanza ya liboso ya bomoi",
+      "difference_in_reflex_abnormal": "Bokeseni nyonso ya langi to bobungisi ya ndambo/ya mobimba = abnormal",
+      "occasional_squints_summary": "Kokangama ya miso ntango mosusu mpe ya ntango mokuse esalemaka mingi na sanza ya liboso ya bomoi mpe mbala mingi ekolimwa na sanza misato",
+      "offer_thanks": "Matondo mingi moboti, .",
+      "explain_findings_make_plan": "limbolá makambo oyo omoni, bongisa makambo oyo ekolanda",
+      "repeat_hand_wash": "Zongela kosukola maboko",
+      "replay": "Kozongela kobɛta"
+    }
+  }
 }

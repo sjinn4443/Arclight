@@ -434,5 +434,70 @@
   "reviewQuizButton": "Ongorora Quiz",
   "restartQuizButton": "Tanga zvekare Quiz",
   "reviewAnswersTitle": "Ongorora Mhinduro",
-  "closeReviewButton": "Vhara Ongororo"
+  "closeReviewButton": "Vhara Ongororo",
+  "auto": {
+    "childhoodfundalpreparation": {
+      "preparation": "Kugadzirira"
+    },
+    "childhoodfundalexamination": {
+      "examination": "Examination"
+    },
+    "childhoodfundalnewborneyesopen": {
+      "newborn_eyes_open": "Achangozvarwa - Meso Akavhurika"
+    },
+    "childhoodfundalnewborneyesclosed": {
+      "newborn_eyes_closed": "Achangozvarwa - Maziso Akavharwa"
+    },
+    "childhoodfundalunclearfindings": {
+      "unclear_findings": "Zvisina Kujeka Zvakawanikwa"
+    },
+    "childhoodfundalpossiblefinding": {
+      "possible_findings": "Zvinogoneka Zvawanikwa"
+    },
+    "childhoodfundalafterexamination": {
+      "after_examination": "Mushure meExamination"
+    }
+  },
+  "i18nLiteral": {
+    "Next >": "Zvinotevera >"
+  },
+  "i18nExtra": {
+    "fundal_reflex": {
+      "wash_hands": "Geza maoko",
+      "select_brightest_light_setting": "Shandisa chiedza chakajeka",
+      "make_sure_lens_rack_top": "Ita shuwa kuti lenzi dziri pamusoro",
+      "room_quiet_and_dim": "Ongorora muimba yakanyarara, isina kujeka",
+      "hold_arclight_close_to_eye": "Bata Arclight pedyo neziso rako",
+      "newborns_swaddled_securely": "Swaddle achangozvarwa zvakachengeteka",
+      "older_babies_parent_hold_lap": "Mubereki akabata mwana mukuru",
+      "older_children_sit_by_themselves": "Mwana mukuru anogona kugara akazvimirira",
+      "observe_reflex_arms_length": "Tarisa reflex pakureba kweruoko",
+      "move_side_get_closer_detail": "Enda kune rumwe rutivi, swedera pedyo kana zvichidiwa",
+      "examine_both_eyes_same_time": "Ongorora maziso ose pamwe chete pakureba kweruoko",
+      "normal_no_difference_between_eyes": "Haifanire kuve nemusiyano mukupenya kana ruvara pakati pemeso",
+      "appearance_varies_by_race_black_baby": "Reflex inosiyana nerudzi\n\nMucheche mutema: yero / chena / bhuruu reflex",
+      "white_baby_orange_red_reflex": "Mucheche muchena: orenji / tsvuku reflex",
+      "asian_baby_orange_yellow_reflex": "Mucheche weAsia: orenji / yero reflex",
+      "parents_hold_baby_swaddled": "Mubereki anobata mucheche akaputirwa, maoko akaiswa",
+      "observe_reflex_both_eyes_same_time": "Tarisa maziso ose ari maviri pamwe chete pasina kubata",
+      "without_touching_baby": "pasina kubata",
+      "occasional_squints_first_month_comma": "Dzimwe nguva uye kwenguva pfupi squints\nzvinowanzoitika mumwedzi wekutanga wehupenyu,",
+      "disappear_by_three_months": "uye kazhinji inonyangarika nemwedzi mitatu yezera",
+      "if_baby_asleep_open_one_eye": "Kana mwana akarara, zvinyoronyoro vhura ziso rimwe panguva",
+      "if_unclear_follow_next_steps": "Kana zvisina kujeka, tevera matanho anotevera",
+      "compare_reflex_with_parent": "Enzanisa nemafungiro emubereki; inofanira kufanana",
+      "ask_colleague_second_opinion": "Kana usina chokwadi, tsvaga maonero emumwe wako",
+      "if_alone_gain_consent_record_video": "Kana uri wega, wana mvumo uye rekodha vhidhiyo",
+      "attach_arclight_mobile_camera": "Batanidza Arclight kune kamera kamera",
+      "share_securely_second_opinion": "Govera zvakachengeteka kune yechipiri maonero",
+      "if_overall_similar_exam_normal": "Muvara wakafanana uye kupenya = zvakajairika",
+      "occasional_squints_first_month": "Dzimwe nguva uye kwenguva pfupi squints\nzvinowanzoitika mumwedzi wekutanga wehupenyu",
+      "difference_in_reflex_abnormal": "Chero mutsauko wemuvara kana chikamu / kurasikirwa kwakakwana = kusajairika",
+      "occasional_squints_summary": "Dzimwe nguva uye kwenguva pfupi squints inowanzoitika mumwedzi wekutanga wehupenyu uye inowanzopera nemwedzi mitatu yezera.",
+      "offer_thanks": "Ndatenda mubereki,",
+      "explain_findings_make_plan": "tsanangura zvawanikwa, ronga matanho anotevera",
+      "repeat_hand_wash": "Dzokorora kugeza maoko",
+      "replay": "Replay"
+    }
+  }
 }

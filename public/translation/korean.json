@@ -325,5 +325,70 @@
     "earsFilter": "귀",
     "skinFilter": "피부",
     "howToTeachFilter": "가르치는 방법"
+  },
+  "auto": {
+    "childhoodfundalpreparation": {
+      "preparation": "준비"
+    },
+    "childhoodfundalexamination": {
+      "examination": "검사"
+    },
+    "childhoodfundalnewborneyesopen": {
+      "newborn_eyes_open": "신생아 - 눈 뜬 상태"
+    },
+    "childhoodfundalnewborneyesclosed": {
+      "newborn_eyes_closed": "신생아 - 눈 감은 상태"
+    },
+    "childhoodfundalunclearfindings": {
+      "unclear_findings": "불분명한 소견"
+    },
+    "childhoodfundalpossiblefinding": {
+      "possible_findings": "가능한 소견"
+    },
+    "childhoodfundalafterexamination": {
+      "after_examination": "검사 후"
+    }
+  },
+  "i18nLiteral": {
+    "Next >": "다음 >"
+  },
+  "i18nExtra": {
+    "fundal_reflex": {
+      "wash_hands": "손을 씻으세요",
+      "select_brightest_light_setting": "가장 밝은 조명으로 설정하세요",
+      "make_sure_lens_rack_top": "렌즈가 맨 위에 있는지 확인하십시오.",
+      "room_quiet_and_dim": "조용하고 어두운 방에서 검사하세요",
+      "hold_arclight_close_to_eye": "Arclight를 눈 가까이에 대세요",
+      "newborns_swaddled_securely": "신생아를 단단히 포대기로 감싸세요",
+      "older_babies_parent_hold_lap": "보호자가 더 큰 아기를 안아주세요",
+      "older_children_sit_by_themselves": "더 큰 아이는 스스로 앉을 수 있습니다",
+      "observe_reflex_arms_length": "팔 길이 거리에서 반사를 관찰하세요",
+      "move_side_get_closer_detail": "좌우로 움직이며, 필요하면 더 가까이 보세요",
+      "examine_both_eyes_same_time": "팔 길이 거리에서 양안을 함께 검사하세요",
+      "normal_no_difference_between_eyes": "양안의 밝기와 색에 차이가 없어야 합니다",
+      "appearance_varies_by_race_black_baby": "인종에 따라 반사가 다를 수 있습니다\n\n흑인 아기: 노랑 / 흰색 / 파란 반사",
+      "white_baby_orange_red_reflex": "백인 아기: 주황 / 빨간 반사",
+      "asian_baby_orange_yellow_reflex": "아시아 아기: 주황 / 노란 반사",
+      "parents_hold_baby_swaddled": "보호자가 아기를 팔을 안쪽으로 넣어 단단히 싸서 안아주세요",
+      "observe_reflex_both_eyes_same_time": "아기를 만지지 말고 양안을 함께 관찰하세요",
+      "without_touching_baby": "만지지 않고",
+      "occasional_squints_first_month_comma": "짧고 일시적인 사시는\n생후 첫 한 달에 흔하며,",
+      "disappear_by_three_months": "보통 생후 3개월까지 사라집니다",
+      "if_baby_asleep_open_one_eye": "아기가 자고 있으면 한 번에 한쪽 눈만 부드럽게 열어보세요",
+      "if_unclear_follow_next_steps": "불확실하면 다음 단계를 따르세요",
+      "compare_reflex_with_parent": "보호자의 반사와 비교하세요. 비슷해야 합니다",
+      "ask_colleague_second_opinion": "확신이 없으면 동료에게 2차 의견을 구하세요",
+      "if_alone_gain_consent_record_video": "혼자라면 동의를 얻고 영상을 기록하세요",
+      "attach_arclight_mobile_camera": "Arclight를 휴대폰 카메라에 부착하세요",
+      "share_securely_second_opinion": "2차 의견을 위해 안전하게 공유하세요",
+      "if_overall_similar_exam_normal": "전체 색과 밝기가 비슷하면 정상입니다",
+      "occasional_squints_first_month": "짧고 일시적인 사시는\n생후 첫 한 달에 흔합니다",
+      "difference_in_reflex_abnormal": "색 차이 또는 부분/완전 반사 소실은 비정상입니다",
+      "occasional_squints_summary": "짧고 일시적인 사시는 생후 첫 한 달에 흔하며 보통 생후 3개월까지 사라집니다",
+      "offer_thanks": "보호자에게 감사 인사를 전하세요,",
+      "explain_findings_make_plan": "소견을 설명하고 다음 계획을 세우세요",
+      "repeat_hand_wash": "손 씻기를 다시 하세요",
+      "replay": "다시 보기"
+    }
   }
 }

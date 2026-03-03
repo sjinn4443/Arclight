@@ -434,5 +434,70 @@
   "reviewQuizButton": "Revisar Quiz",
   "restartQuizButton": "Reiniciar Quiz",
   "reviewAnswersTitle": "Revisar Respostas",
-  "closeReviewButton": "Fechar Revisão"
+  "closeReviewButton": "Fechar Revisão",
+  "auto": {
+    "childhoodfundalpreparation": {
+      "preparation": "Preparação"
+    },
+    "childhoodfundalexamination": {
+      "examination": "Exame"
+    },
+    "childhoodfundalnewborneyesopen": {
+      "newborn_eyes_open": "Recém-nascido - Olhos Abertos"
+    },
+    "childhoodfundalnewborneyesclosed": {
+      "newborn_eyes_closed": "Recém-nascido - Olhos Fechados"
+    },
+    "childhoodfundalunclearfindings": {
+      "unclear_findings": "Descobertas pouco claras"
+    },
+    "childhoodfundalpossiblefinding": {
+      "possible_findings": "Possíveis descobertas"
+    },
+    "childhoodfundalafterexamination": {
+      "after_examination": "Após o exame"
+    }
+  },
+  "i18nLiteral": {
+    "Next >": "Próximo>"
+  },
+  "i18nExtra": {
+    "fundal_reflex": {
+      "wash_hands": "Lave as mãos",
+      "select_brightest_light_setting": "Use a configuração de luz mais brilhante",
+      "make_sure_lens_rack_top": "Certifique-se de que as lentes estejam na parte superior",
+      "room_quiet_and_dim": "Examine em uma sala silenciosa e escura",
+      "hold_arclight_close_to_eye": "Segure Arclight perto de seu olho",
+      "newborns_swaddled_securely": "Enrole o recém-nascido com segurança",
+      "older_babies_parent_hold_lap": "Pai segura bebê mais velho",
+      "older_children_sit_by_themselves": "A criança mais velha pode sentar-se de forma independente",
+      "observe_reflex_arms_length": "Observe o reflexo com o braço estendido",
+      "move_side_get_closer_detail": "Mova-se de um lado para o outro, aproxime-se se necessário",
+      "examine_both_eyes_same_time": "Examine os dois olhos juntos com o braço estendido",
+      "normal_no_difference_between_eyes": "Não deve haver diferença de brilho ou cor entre os olhos",
+      "appearance_varies_by_race_black_baby": "O reflexo varia de acordo com a raça\n\nBebê preto: reflexo amarelo/branco/azul",
+      "white_baby_orange_red_reflex": "Bebê branco: reflexo laranja/vermelho",
+      "asian_baby_orange_yellow_reflex": "Bebê asiático: reflexo laranja/amarelo",
+      "parents_hold_baby_swaddled": "O pai segura o bebê firmemente enrolado, com os braços dobrados",
+      "observe_reflex_both_eyes_same_time": "Observe os dois olhos juntos sem tocar",
+      "without_touching_baby": "sem tocar",
+      "occasional_squints_first_month_comma": "Estrabismos ocasionais e de curta duração\nsão comuns no primeiro mês de vida,",
+      "disappear_by_three_months": "e geralmente desaparece por volta dos três meses de idade",
+      "if_baby_asleep_open_one_eye": "Se o bebê estiver dormindo, abra suavemente um olho de cada vez",
+      "if_unclear_follow_next_steps": "Se não estiver claro, siga as próximas etapas",
+      "compare_reflex_with_parent": "Compare com o reflexo dos pais; deveria ser semelhante",
+      "ask_colleague_second_opinion": "Se não tiver certeza, peça a opinião de um colega",
+      "if_alone_gain_consent_record_video": "Se estiver sozinho, obtenha consentimento e grave vídeo",
+      "attach_arclight_mobile_camera": "Anexe Arclight à câmera do telefone",
+      "share_securely_second_opinion": "Compartilhe com segurança para uma segunda opinião",
+      "if_overall_similar_exam_normal": "Cor e brilho semelhantes = normal",
+      "occasional_squints_first_month": "Estrabismos ocasionais e de curta duração\nsão comuns no primeiro mês de vida",
+      "difference_in_reflex_abnormal": "Qualquer diferença de cor ou perda parcial/completa = anormal",
+      "occasional_squints_summary": "Estrabismos ocasionais e de curta duração são comuns no primeiro mês de vida e geralmente desaparecem por volta dos três meses de idade",
+      "offer_thanks": "Obrigado pai,",
+      "explain_findings_make_plan": "explicar as descobertas, planejar os próximos passos",
+      "repeat_hand_wash": "Repita a lavagem das mãos",
+      "replay": "Repetir"
+    }
+  }
 }

@@ -383,6 +383,7 @@ function renderNextButtonForTarget(target) {
   btn.type = "button";
   btn.className = "childhood-next-btn";
   btn.textContent = "Next >";
+  btn.setAttribute("data-i18n", "i18nLiteral.Next >");
   const ready = isChildhoodLessonReadyForNext(targetId);
   btn.classList.toggle("is-ready", ready);
   btn.disabled = !ready;
@@ -410,6 +411,7 @@ function renderNextButtonForTarget(target) {
 
   wrap.appendChild(btn);
   host.appendChild(wrap);
+  window.I18N?.applyTranslations?.(wrap);
 }
 
 export function initializeChildhoodWorkshopNextFlowInfra() {

@@ -434,5 +434,70 @@
   "reviewQuizButton": "复习测验",
   "restartQuizButton": "重新开始测验",
   "reviewAnswersTitle": "复习答案",
-  "closeReviewButton": "关闭复习"
+  "closeReviewButton": "关闭复习",
+  "auto": {
+    "childhoodfundalpreparation": {
+      "preparation": "准备"
+    },
+    "childhoodfundalexamination": {
+      "examination": "考试"
+    },
+    "childhoodfundalnewborneyesopen": {
+      "newborn_eyes_open": "新生儿 - 睁开眼睛"
+    },
+    "childhoodfundalnewborneyesclosed": {
+      "newborn_eyes_closed": "新生儿 - 闭着眼睛"
+    },
+    "childhoodfundalunclearfindings": {
+      "unclear_findings": "不清楚的发现"
+    },
+    "childhoodfundalpossiblefinding": {
+      "possible_findings": "可能的发现"
+    },
+    "childhoodfundalafterexamination": {
+      "after_examination": "检查后"
+    }
+  },
+  "i18nLiteral": {
+    "Next >": "下一页 >"
+  },
+  "i18nExtra": {
+    "fundal_reflex": {
+      "wash_hands": "洗手",
+      "select_brightest_light_setting": "使用最亮的灯光设置",
+      "make_sure_lens_rack_top": "确保镜片位于顶部",
+      "room_quiet_and_dim": "在安静、昏暗的房间里检查",
+      "hold_arclight_close_to_eye": "将弧光灯靠近眼睛",
+      "newborns_swaddled_securely": "安全地包裹新生儿",
+      "older_babies_parent_hold_lap": "父母抱着大一点的婴儿",
+      "older_children_sit_by_themselves": "大一点的孩子可以独立坐",
+      "observe_reflex_arms_length": "保持一臂距离观察反射",
+      "move_side_get_closer_detail": "从一边移动到另一边，如果需要的话靠近一些",
+      "examine_both_eyes_same_time": "保持一臂距离一起检查双眼",
+      "normal_no_difference_between_eyes": "眼睛之间的亮度或颜色不应有差异",
+      "appearance_varies_by_race_black_baby": "反射因种族而异\n\n黑宝宝：黄/白/蓝反射",
+      "white_baby_orange_red_reflex": "白宝宝：橙/红反射",
+      "asian_baby_orange_yellow_reflex": "亚洲宝宝：橙色/黄色反射",
+      "parents_hold_baby_swaddled": "父母将婴儿安全地包裹在襁褓中，双臂交叉",
+      "observe_reflex_both_eyes_same_time": "一起观察双眼，但不要接触",
+      "without_touching_baby": "不碰",
+      "occasional_squints_first_month_comma": "偶尔且短暂的斜视\n常见于出生后第一个月，",
+      "disappear_by_three_months": "通常会在三个月大时消失",
+      "if_baby_asleep_open_one_eye": "如果宝宝睡着了，一次轻轻地睁开一只眼睛",
+      "if_unclear_follow_next_steps": "如果不清楚，请执行后续步骤",
+      "compare_reflex_with_parent": "与家长的反应进行比较；应该是相似的",
+      "ask_colleague_second_opinion": "如果不确定，请寻求同事的意见",
+      "if_alone_gain_consent_record_video": "如果独自一人，请征得同意并录制视频",
+      "attach_arclight_mobile_camera": "将 Arclight 连接到手机摄像头",
+      "share_securely_second_opinion": "安全分享以获得第二意见",
+      "if_overall_similar_exam_normal": "颜色和亮度相似=正常",
+      "occasional_squints_first_month": "偶尔且短暂的斜视\n常见于出生后第一个月",
+      "difference_in_reflex_abnormal": "任何色差或部分/完全丢失=异常",
+      "occasional_squints_summary": "偶尔和短暂的斜视在出生后第一个月很常见，通常会在三个月大时消失",
+      "offer_thanks": "感谢家长，",
+      "explain_findings_make_plan": "解释调查结果，计划下一步",
+      "repeat_hand_wash": "重复洗手",
+      "replay": "重播"
+    }
+  }
 }

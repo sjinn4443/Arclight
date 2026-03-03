@@ -373,6 +373,7 @@ function renderNextButtonForTarget(target) {
   btn.type = "button";
   btn.className = "glaucoma-next-btn";
   btn.textContent = current.next === WORKSHOP_HOME ? "Next >" : "Next >";
+  btn.setAttribute("data-i18n", "i18nLiteral.Next >");
   const ready = getGlaucomaLessonProgress(targetId) >= 100;
   btn.classList.toggle("is-ready", ready);
 
@@ -396,6 +397,7 @@ function renderNextButtonForTarget(target) {
 
   wrap.appendChild(btn);
   host.appendChild(wrap);
+  window.I18N?.applyTranslations?.(wrap);
 }
 
 export function initializeGlaucomaWorkshopNextFlowInfra() {
