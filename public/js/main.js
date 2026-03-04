@@ -55,13 +55,27 @@ function isOnboardingDone() {
 function resolveInitialRoute(onboarded) {
   const deepLink = getRouteFromHash();
   if (deepLink?.routeName) {
-    return deepLink;
+    return {
+      ...deepLink,
+      isDeepLink: true,
+    };
   }
 
   return {
     routeName: onboarded ? "dashboard" : "languageinstall",
     subPageId: null,
+    isDeepLink: false,
   };
+}
+
+function shouldSkipSplashForInitialRoute(initialRoute) {
+  if (initialRoute?.isDeepLink) return true;
+  if (typeof window === "undefined") return false;
+  try {
+    return window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+  } catch {
+    return false;
+  }
 }
 // --- End Onboarding Persistence ---
 
@@ -286,9 +300,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const pageContainer = document.getElementById("page-content");
   const onboarded = isOnboardingDone();
   const initialRoute = resolveInitialRoute(onboarded);
+  const skipSplash = shouldSkipSplashForInitialRoute(initialRoute);
 
   // splash 컨테이너가 없으면 바로 fallback
-  if (!splashContainer) {
+  if (!splashContainer || skipSplash) {
+    if (splashContainer) {
+      splashContainer.classList.remove("active", "fade-out");
+      splashContainer.innerHTML = "";
+      splashContainer.setAttribute("aria-hidden", "true");
+    }
     loadPage(initialRoute.routeName, {
       replace: true,
       subPageId: initialRoute.subPageId,
@@ -316,10 +336,9 @@ document.addEventListener("DOMContentLoaded", () => {
         splashContainer.querySelector(".logo-one.mid-only") ||
         splashContainer.querySelector(".logo-one");
 
-      // First splash animation is ~4.7s (3.9s spin + 0.8s shift).
-      // Keep post-animation pause to at most 1s before language install.
-      const MAX_MAIN_WAIT_MS = 4700 + 1000;
-      const MID_EXPECTED_MS = 4700 + 300; // mid splash
+      // Keep splash bounded so slower devices and shared links are not delayed.
+      const MAX_MAIN_WAIT_MS = 4700 + 300;
+      const MID_EXPECTED_MS = 2600 + 250;
       let finished = false;
 
       const fallback = setTimeout(
