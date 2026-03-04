@@ -227,10 +227,34 @@ export async function initializeVisualSystemEyesBrain() {
     if (window.lottie) return true;
 
     await new Promise((resolve, reject) => {
-      const s = document.createElement("script");
+      const targetPath = "/vendor/lottie.min.js";
+      const existing = Array.from(
+        document.querySelectorAll("script[src]"),
+      ).find((scriptEl) => {
+        const rawSrc = String(scriptEl.getAttribute("src") || "").trim();
+        if (!rawSrc) return false;
+        if (rawSrc === targetPath) return true;
+        try {
+          return (
+            new URL(rawSrc, window.location.origin).pathname === targetPath
+          );
+        } catch {
+          return false;
+        }
+      });
 
-      s.src =
-        "https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js";
+      if (existing) {
+        if (window.lottie) {
+          resolve();
+          return;
+        }
+        existing.addEventListener("load", resolve, { once: true });
+        existing.addEventListener("error", reject, { once: true });
+        return;
+      }
+
+      const s = document.createElement("script");
+      s.src = targetPath;
 
       s.onload = resolve;
       s.onerror = reject;

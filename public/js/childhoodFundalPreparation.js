@@ -1,9 +1,11 @@
 import { fetchDictionary, get, getLanguage } from "./i18n.js";
 
-const LOTTIE_SRC =
-  "https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js";
+const LOTTIE_SRC = "/vendor/lottie.min.js";
 const FUNDAL_STAGE_POSTER_FILENAME = "img_0.png";
+const FUNDAL_STAGE_POSTER_ENABLED = false;
 const FUNDAL_ASSET_PRIME_CACHE = new Set();
+const FUNDAL_LOTTIE_IMAGE_ASSET_URLS_CACHE = new Map();
+const FUNDAL_IMAGE_WARMUP_PROMISE_CACHE = new Map();
 const FUNDAL_LOTTIE_RENDERER = (() => {
   if (typeof navigator === "undefined") return "svg";
   const ua = navigator.userAgent || "";
@@ -22,16 +24,13 @@ const ROUTE_CONFIG = {
     persistentSettleSnapshotOverlay: true,
     segmentTextToggleOnTitle: true,
     paths: [
-      "/scrolly/coreexam/fundalreflex/prep/1/data.json",
       "/scrolly/coreexam/fundalreflex/prep/2/data.json",
       "/scrolly/coreexam/fundalreflex/prep/3/data.json",
       "/scrolly/coreexam/fundalreflex/prep/4/data.json",
     ],
     playMode: "segmentScroll",
     // User-provided segment plan (inclusive frame ranges).
-    // file1: one full segment (0 -> END).
     segmentRanges: [
-      [{ from: 37, to: 239 }],
       [
         { from: 0, to: 120 },
         { from: 121, to: 205 },
@@ -51,13 +50,11 @@ const ROUTE_CONFIG = {
       ],
     ],
     settleFrameOverrides: [
-      [239],
       [120, 205, 299],
       [101, 222, 354, 539],
       [164, 316, 398, 539],
     ],
     segmentStartTexts: [
-      ["Wash hands"],
       [
         "Use brightest light setting",
         "Ensure lenses are at top",
@@ -71,12 +68,12 @@ const ROUTE_CONFIG = {
         "Older child can sit independently",
       ],
     ],
-    segmentTextModeByFile: ["append", "append", "append", "append"],
+    segmentTextModeByFile: ["append", "append", "append"],
     strictFrameLockNoFallback: true,
     strictFrameRemountOnBlank: true,
-    iosAggressiveSettleSegments: [[0], [1, 2], [3], [1, 2, 3]],
-    richSettleContentFiles: [0, 1, 2, 3],
-    richSettleMinAreaByFile: [0.08, 0.12, 0.12, 0.12],
+    iosAggressiveSettleSegments: [[1, 2], [3], [1, 2, 3]],
+    richSettleContentFiles: [0, 1, 2],
+    richSettleMinAreaByFile: [0.12, 0.12, 0.12],
   },
   childhoodFundalExamination: {
     pageId: "childhoodFundalExaminationPage",
@@ -184,28 +181,31 @@ const ROUTE_CONFIG = {
     enableReplay: true,
     segmentTextToggleOnTitle: true,
     paths: [
+      "/scrolly/coreexam/fundalreflex/prep/1/data.json",
       "/scrolly/coreexam/fundalreflex/eyesclosed/1/data.json",
       "/scrolly/coreexam/fundalreflex/eyesclosed/2/data.json",
     ],
     playMode: "segmentScroll",
     segmentRanges: [
+      [{ from: 37, to: 239 }],
       [{ from: 0, to: 389 }],
       [
         { from: 0, to: 240 },
         { from: 241, to: 419 },
       ],
     ],
-    settleFrameOverrides: [[389], [240, 419]],
+    settleFrameOverrides: [[239], [389], [240, 419]],
     segmentStartTexts: [
+      ["Wash hands"],
       ["Parent holds baby securely swaddled, arms tucked"],
       ["If baby is asleep, gently open one eye at a time"],
     ],
-    segmentTextModeByFile: ["append", "append"],
+    segmentTextModeByFile: ["append", "append", "append"],
     strictFrameLockNoFallback: true,
     strictFrameRemountOnBlank: true,
-    iosAggressiveSettleSegments: [[0], [1]],
-    richSettleContentFiles: [0, 1],
-    richSettleMinAreaByFile: [0.08, 0.12],
+    iosAggressiveSettleSegments: [[0], [0], [1]],
+    richSettleContentFiles: [0, 1, 2],
+    richSettleMinAreaByFile: [0.08, 0.08, 0.12],
   },
   childhoodFundalUnclearFindings: {
     pageId: "childhoodFundalUnclearFindingsPage",
@@ -319,29 +319,22 @@ const ROUTE_CONFIG = {
     label: "After Examination",
     enableReplay: true,
     segmentTextToggleOnTitle: true,
-    paths: [
-      "/scrolly/coreexam/fundalreflex/afterexam/1/data.json",
-      "/scrolly/coreexam/fundalreflex/afterexam/2/data.json",
-    ],
+    paths: ["/scrolly/coreexam/fundalreflex/afterexam/1/data.json"],
     playMode: "segmentScroll",
     segmentRanges: [
       [
         { from: 0, to: 89 },
         { from: 90, to: 149 },
       ],
-      [{ from: 0, to: 158 }],
     ],
-    settleFrameOverrides: [[89, 149], [158]],
-    segmentStartTexts: [
-      ["Thank parent,", "explain findings, plan next steps"],
-      ["Repeat hand wash"],
-    ],
-    segmentTextModeByFile: ["appendInline", "append"],
+    settleFrameOverrides: [[89, 149]],
+    segmentStartTexts: [["Thank parent,", "explain findings, plan next steps"]],
+    segmentTextModeByFile: ["appendInline"],
     strictFrameLockNoFallback: true,
     strictFrameRemountOnBlank: true,
     iosAggressiveSettleSegments: [[1]],
-    richSettleContentFiles: [0, 1],
-    richSettleMinAreaByFile: [0.1, 0.12],
+    richSettleContentFiles: [0],
+    richSettleMinAreaByFile: [0.1],
   },
 };
 
@@ -522,7 +515,6 @@ const IS_IOS_WEBKIT = (() => {
 const IOS_REPAINT_NUDGE_PENDING = new WeakSet();
 
 const IOS_FR06_PREPARATION_SEGMENT_RANGES = [
-  [{ from: 37, to: 239 }],
   [
     { from: 0, to: 120 },
     { from: 121, to: 207 },
@@ -543,7 +535,6 @@ const IOS_FR06_PREPARATION_SEGMENT_RANGES = [
 ];
 
 const IOS_FR06_PREPARATION_SETTLE_OVERRIDES = [
-  [239],
   [120, 207, "last"],
   [110, 238, 378, "last"],
   [270, 357, 453, "last"],
@@ -810,6 +801,7 @@ function resolveStagePosterPath(animationPath) {
 }
 
 function shouldSkipStagePoster(cfg, fileIndex = 0) {
+  if (!FUNDAL_STAGE_POSTER_ENABLED) return true;
   if (!IS_IOS_WEBKIT) return false;
   return cfg?.disableIosFirstStagePoster === true && Number(fileIndex) === 0;
 }
@@ -847,6 +839,135 @@ function primeFundalAsset(url, options = {}) {
   head.appendChild(link);
 }
 
+function resolveLottieImageAssetUrl(dataPath, asset) {
+  const file = String(asset?.p || "").trim();
+  if (!file) return "";
+  if (/^(?:data:|blob:|https?:)?\/\//i.test(file)) return file;
+  if (typeof window === "undefined") return "";
+
+  const base = new URL(String(dataPath || "").trim(), window.location.origin);
+  const relDir = String(asset?.u || "").trim();
+  const mergedPath = `${relDir}${file}`;
+  return new URL(mergedPath, base).toString();
+}
+
+async function listLottieImageAssetUrls(dataPath) {
+  const path = String(dataPath || "").trim();
+  if (!path || typeof fetch !== "function") return [];
+  if (FUNDAL_LOTTIE_IMAGE_ASSET_URLS_CACHE.has(path)) {
+    return FUNDAL_LOTTIE_IMAGE_ASSET_URLS_CACHE.get(path);
+  }
+
+  const promise = fetch(path, {
+    method: "GET",
+    credentials: "same-origin",
+    cache: "force-cache",
+  })
+    .then(async (response) => {
+      if (!response.ok) return [];
+      const payload = await response.json();
+      const assets = Array.isArray(payload?.assets) ? payload.assets : [];
+      const urls = assets
+        .filter((asset) => {
+          if (!asset || asset.e === 1) return false;
+          return typeof asset.p === "string" && asset.p.trim().length > 0;
+        })
+        .map((asset) => resolveLottieImageAssetUrl(path, asset))
+        .filter((url) => !!url);
+      return Array.from(new Set(urls));
+    })
+    .catch(() => []);
+
+  FUNDAL_LOTTIE_IMAGE_ASSET_URLS_CACHE.set(path, promise);
+  return promise;
+}
+
+function warmFundalImage(url, options = {}) {
+  const href = String(url || "").trim();
+  if (!href) return Promise.resolve(false);
+  if (typeof Image === "undefined") return Promise.resolve(false);
+  if (FUNDAL_IMAGE_WARMUP_PROMISE_CACHE.has(href)) {
+    return FUNDAL_IMAGE_WARMUP_PROMISE_CACHE.get(href);
+  }
+
+  const promise = new Promise((resolve) => {
+    const img = new Image();
+    img.decoding = "async";
+    img.loading = "eager";
+    const fetchPriority = String(options.fetchPriority || "").trim();
+    if (fetchPriority) {
+      img.setAttribute("fetchpriority", fetchPriority);
+    }
+
+    const done = (ok) => {
+      img.onload = null;
+      img.onerror = null;
+      resolve(ok);
+    };
+    img.onload = () => done(true);
+    img.onerror = () => done(false);
+    img.src = href;
+    if (img.complete) done(true);
+  });
+
+  FUNDAL_IMAGE_WARMUP_PROMISE_CACHE.set(href, promise);
+  return promise;
+}
+
+async function primeFundalLottieImageAssets(dataPath, options = {}) {
+  const urls = await listLottieImageAssetUrls(dataPath);
+  if (!urls.length) return 0;
+
+  const rel = String(options.rel || "preload").trim() || "preload";
+  const fetchPriority = String(options.fetchPriority || "").trim();
+
+  urls.forEach((url, index) => {
+    primeFundalAsset(url, {
+      rel,
+      as: "image",
+      fetchPriority: index < 4 ? fetchPriority : "",
+    });
+  });
+
+  const shouldWarmup = options.warmup !== false;
+  if (!shouldWarmup) return urls.length;
+
+  const warmCount = Math.max(
+    1,
+    Math.min(
+      urls.length,
+      Number.isFinite(Number(options.warmCount))
+        ? Math.floor(Number(options.warmCount))
+        : IS_IOS_WEBKIT
+          ? 8
+          : 6,
+    ),
+  );
+  const warmupPromise = Promise.allSettled(
+    urls
+      .slice(0, warmCount)
+      .map((url) => warmFundalImage(url, { fetchPriority })),
+  );
+  if (options.awaitWarmup !== true) return urls.length;
+
+  const timeoutMs = Math.max(
+    80,
+    Math.min(
+      2400,
+      Number.isFinite(Number(options.timeoutMs))
+        ? Math.floor(Number(options.timeoutMs))
+        : IS_IOS_WEBKIT
+          ? 1200
+          : 800,
+    ),
+  );
+  await Promise.race([
+    warmupPromise,
+    new Promise((resolve) => setTimeout(resolve, timeoutMs)),
+  ]);
+  return urls.length;
+}
+
 function warmupFundalRouteAssets(cfg, options = {}) {
   if (!cfg) return;
   const paths = Array.isArray(cfg.paths)
@@ -882,6 +1003,21 @@ function warmupFundalRouteAssets(cfg, options = {}) {
           fetchPriority: "high",
         },
   );
+  void primeFundalLottieImageAssets(
+    firstDataPath,
+    isIdleWarmup
+      ? {
+          rel: "prefetch",
+          warmup: false,
+        }
+      : {
+          rel: "preload",
+          fetchPriority: "high",
+          warmup: true,
+          warmCount: IS_IOS_WEBKIT ? 8 : 6,
+          awaitWarmup: false,
+        },
+  );
   if (!shouldSkipStagePoster(cfg, 0)) {
     primeFundalAsset(
       resolveStagePosterPath(firstDataPath),
@@ -899,6 +1035,10 @@ function warmupFundalRouteAssets(cfg, options = {}) {
   for (let i = 1; i < Math.min(paths.length, 3); i += 1) {
     const path = paths[i];
     primeFundalAsset(path, { rel: "prefetch", as: "fetch" });
+    void primeFundalLottieImageAssets(path, {
+      rel: "prefetch",
+      warmup: false,
+    });
     if (!shouldSkipStagePoster(cfg, i)) {
       primeFundalAsset(resolveStagePosterPath(path), {
         rel: "prefetch",
@@ -954,9 +1094,71 @@ function hideStagePoster(stage, options = {}) {
 
 function maybeHideStagePoster(controller, options = {}) {
   const stage = controller?.stage;
-  if (!stage || stage.dataset.posterHidden === "1") return;
-  if (isStageFrameBlank(controller)) return;
+  if (!stage || stage.dataset.posterHidden === "1") return false;
+  if (isStageFrameBlank(controller)) return false;
+
+  const requireRichContent =
+    options.requireRichContent === true ||
+    (options.requireRichContent == null && IS_IOS_WEBKIT);
+  if (requireRichContent) {
+    const minContentAreaRatio = Number.isFinite(
+      Number(options.minContentAreaRatio),
+    )
+      ? Math.max(0.01, Number(options.minContentAreaRatio))
+      : Number.isFinite(Number(controller?.minContentAreaRatio))
+        ? Math.max(0.01, Number(controller.minContentAreaRatio))
+        : 0.16;
+    if (!hasRichVisibleContent(controller, minContentAreaRatio)) return false;
+  }
+
   hideStagePoster(stage, options);
+  return true;
+}
+
+function cancelStagePosterHideCheck(controller) {
+  const rafId = Number(controller?.posterHideCheckRafId);
+  if (!Number.isFinite(rafId)) return;
+  try {
+    cancelAnimationFrame(rafId);
+  } catch {}
+  if (controller) controller.posterHideCheckRafId = null;
+}
+
+function scheduleStagePosterHideCheck(controller, options = {}) {
+  const stage = controller?.stage;
+  if (!stage || stage.dataset.posterHidden === "1") return;
+
+  cancelStagePosterHideCheck(controller);
+
+  let remainingChecks = Math.max(
+    1,
+    Math.min(
+      360,
+      Number.isFinite(Number(options.checks))
+        ? Math.floor(Number(options.checks))
+        : IS_IOS_WEBKIT
+          ? 240
+          : 60,
+    ),
+  );
+
+  const tick = () => {
+    if (!controller?.stage || controller.stage.dataset.posterHidden === "1") {
+      if (controller) controller.posterHideCheckRafId = null;
+      return;
+    }
+
+    const hidden = maybeHideStagePoster(controller, options);
+    if (hidden || remainingChecks <= 1) {
+      controller.posterHideCheckRafId = null;
+      return;
+    }
+
+    remainingChecks -= 1;
+    controller.posterHideCheckRafId = requestAnimationFrame(tick);
+  };
+
+  controller.posterHideCheckRafId = requestAnimationFrame(tick);
 }
 
 function buildAnimationSlots(listEl, label, count, cfg = null) {
@@ -1016,8 +1218,26 @@ async function ensureLottie() {
 
   if (!window.__lottieLoadPromise) {
     window.__lottieLoadPromise = new Promise((resolve, reject) => {
-      const existing = document.querySelector(`script[src="${LOTTIE_SRC}"]`);
+      const targetPath = new URL(LOTTIE_SRC, window.location.origin).pathname;
+      const existing = Array.from(
+        document.querySelectorAll("script[src]"),
+      ).find((scriptEl) => {
+        const rawSrc = String(scriptEl.getAttribute("src") || "").trim();
+        if (!rawSrc) return false;
+        if (rawSrc === LOTTIE_SRC) return true;
+        try {
+          return (
+            new URL(rawSrc, window.location.origin).pathname === targetPath
+          );
+        } catch {
+          return false;
+        }
+      });
       if (existing) {
+        if (window.lottie) {
+          resolve();
+          return;
+        }
         existing.addEventListener("load", resolve, { once: true });
         existing.addEventListener("error", reject, { once: true });
         return;
@@ -3140,7 +3360,18 @@ function stopAtSegmentEnd(controller, cfg) {
           controller.lastPinnedFrame = holdFrame;
         }
       }
-      maybeHideStagePoster(controller, { immediate: true });
+      const didHidePoster = maybeHideStagePoster(controller, {
+        immediate: true,
+        requireRichContent: IS_IOS_WEBKIT,
+        minContentAreaRatio: controller.minContentAreaRatio,
+      });
+      if (!didHidePoster && controller.stage?.dataset?.posterHidden !== "1") {
+        scheduleStagePosterHideCheck(controller, {
+          requireRichContent: IS_IOS_WEBKIT,
+          minContentAreaRatio: controller.minContentAreaRatio,
+          checks: IS_IOS_WEBKIT ? 220 : 45,
+        });
+      }
     } finally {
       controller.isSnapping = false;
       controller.setPlaybackViewportFreeze?.(false);
@@ -3463,6 +3694,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
       recoverySnapshotCanvasDataUrl: "",
       recoverySnapshotFrame: null,
       recoverySnapshotSegmentIndex: -1,
+      posterHideCheckRafId: null,
       arrowEnsureRafId: null,
       requireRichContent: shouldRequireRichSettleContent(cfg, idx),
       persistentSettleSnapshotOverlay:
@@ -3673,7 +3905,19 @@ function initializeSegmentScrollMode(cfg, page, stages) {
           rememberRecoverySnapshot(controller, currentFrame);
         }
       }
-      hideStagePoster(controller.stage, { immediate: true });
+      const shouldRequirePosterRichContent = IS_IOS_WEBKIT;
+      const didHidePoster = maybeHideStagePoster(controller, {
+        immediate: true,
+        requireRichContent: shouldRequirePosterRichContent,
+        minContentAreaRatio: controller.minContentAreaRatio,
+      });
+      if (!didHidePoster && controller.stage?.dataset?.posterHidden !== "1") {
+        scheduleStagePosterHideCheck(controller, {
+          requireRichContent: shouldRequirePosterRichContent,
+          minContentAreaRatio: controller.minContentAreaRatio,
+          checks: shouldRequirePosterRichContent ? 260 : 60,
+        });
+      }
 
       if (idx === 0) {
         anchorToFirstFile();
@@ -3693,7 +3937,10 @@ function initializeSegmentScrollMode(cfg, page, stages) {
       const activeAnim = controller.anim;
       if (!activeAnim) return;
       if (controller.stage?.dataset?.posterHidden !== "1") {
-        maybeHideStagePoster(controller);
+        maybeHideStagePoster(controller, {
+          requireRichContent: IS_IOS_WEBKIT,
+          minContentAreaRatio: controller.minContentAreaRatio,
+        });
       }
 
       if (controller.isPlaying) {
@@ -4735,6 +4982,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
       try {
         controller.stopCenterLock?.();
       } catch {}
+      cancelStagePosterHideCheck(controller);
       controller.clearSegmentText?.();
       controller.isPlaying = false;
       controller.isSnapping = false;
@@ -5117,6 +5365,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
         try {
           c.stopCenterLock?.();
         } catch {}
+        cancelStagePosterHideCheck(c);
         cancelArrowEnsure(c);
         c.cancelIosPostSettleRefresh?.();
         hideRecoveryOverlay(c, { immediate: true });
@@ -5205,6 +5454,17 @@ export async function initializeChildhoodFundalReflexScrollPage(routeName) {
   const stages = buildAnimationSlots(listEl, cfg.label, cfg.paths.length, cfg);
   if (!stages.length) return;
   warmupFundalRouteAssets(cfg, { mode: "route" });
+  const firstDataPath = String(cfg.paths?.[0] || "").trim();
+  const firstStageImageWarmupPromise = firstDataPath
+    ? primeFundalLottieImageAssets(firstDataPath, {
+        rel: "preload",
+        fetchPriority: "high",
+        warmup: true,
+        warmCount: IS_IOS_WEBKIT ? 8 : 6,
+        awaitWarmup: true,
+        timeoutMs: IS_IOS_WEBKIT ? 1200 : 800,
+      }).catch(() => 0)
+    : Promise.resolve(0);
 
   await new Promise((resolve) => {
     if (typeof requestAnimationFrame === "function") {
@@ -5219,7 +5479,10 @@ export async function initializeChildhoodFundalReflexScrollPage(routeName) {
   });
   const lottieReadyPromise = ensureLottie();
 
-  const isLottieReady = await lottieReadyPromise;
+  const [isLottieReady] = await Promise.all([
+    lottieReadyPromise,
+    firstStageImageWarmupPromise,
+  ]);
   if (!isLottieReady) {
     console.error("[fundalScroll] lottie is not available");
     return;
