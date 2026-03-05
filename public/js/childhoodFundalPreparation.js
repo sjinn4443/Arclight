@@ -57,15 +57,15 @@ const ROUTE_CONFIG = {
     segmentStartTexts: [
       [
         "Use brightest light setting",
-        "Ensure lenses are at top",
+        "Push lenses up",
         "Examine in quiet, dim room",
       ],
       ["Hold Arclight close to your eye"],
       [
-        "Swaddle newborn securely",
-        "Parent holds older baby",
+        "Swaddle newborn",
+        "Parents should hold older baby",
         "",
-        "Older child can sit independently",
+        "Older children can sit alone",
       ],
     ],
     segmentTextModeByFile: ["append", "append", "append"],
@@ -105,9 +105,9 @@ const ROUTE_CONFIG = {
         { from: 115, to: 359 },
       ],
       [
-        { from: 0, to: 138 },
-        { from: 139, to: 265 },
-        { from: 266, to: 449 },
+        { from: 0, to: 133 },
+        { from: 142, to: 253 },
+        { from: 268, to: 449 },
       ],
     ],
     settleFrameOverrides: [
@@ -115,7 +115,7 @@ const ROUTE_CONFIG = {
       [186, 329],
       [78, 209, 351, 449],
       [114, 359],
-      [138, 265, 449],
+      [133, 253, 449],
     ],
     segmentStartTexts: [
       ["Observe reflex at arm's length"],
@@ -146,20 +146,21 @@ const ROUTE_CONFIG = {
       "/scrolly/coreexam/fundalreflex/eyesopen/3/data.json",
     ],
     playMode: "segmentScroll",
+    forceInitialFrameHoldByFile: [0],
     segmentRanges: [
-      [{ from: 16, to: 419 }],
+      [{ from: 0, to: 329 }],
       [
         { from: 0, to: 147 },
         { from: 148, to: 205 },
         { from: 381, to: 659 },
       ],
       [
-        { from: 0, to: 114 },
-        { from: 115, to: 262 },
-        { from: 263, to: 419 },
+        { from: 0, to: 113 },
+        { from: 119, to: 265 },
+        { from: 266, to: 419 },
       ],
     ],
-    settleFrameOverrides: [[419], [147, 205, 659], [114, 262, 419]],
+    settleFrameOverrides: [[329], [147, 205, 659], [113, 265, 419]],
     segmentStartTexts: [
       ["Parent holds baby securely swaddled, arms tucked"],
       ["Observe both eyes together without touching", "", ""],
@@ -229,12 +230,13 @@ const ROUTE_CONFIG = {
     playMode: "segmentScroll",
     segmentRanges: [
       [
-        { from: 16, to: 146 },
-        { from: 147, to: 269 },
+        { from: 0, to: 204 },
+        { from: 206, to: 269 },
       ],
       [
-        { from: 0, to: 172 },
-        { from: 172, to: 239 },
+        { from: 0, to: 79 },
+        { from: 80, to: 253 },
+        { from: 254, to: 299 },
       ],
       [
         { from: 0, to: 82 },
@@ -248,13 +250,13 @@ const ROUTE_CONFIG = {
       ],
     ],
     settleFrameOverrides: [
-      [146, 269],
-      [172, 239],
+      [204, 269],
+      [79, 253, 299],
       [82, 135, 209],
       [235, 475, 779],
     ],
     segmentStartTexts: [
-      ["", "If unclear, follow next steps"],
+      ["", "If unclear, follow next three steps"],
       ["Compare with parent's reflex; should be similar"],
       ["If unsure, seek colleague's opinion"],
       [
@@ -344,25 +346,19 @@ const FUNDAL_TEXT_KEYS = new Map([
     "Use brightest light setting",
     "i18nExtra.fundal_reflex.select_brightest_light_setting",
   ],
-  [
-    "Ensure lenses are at top",
-    "i18nExtra.fundal_reflex.make_sure_lens_rack_top",
-  ],
+  ["Push lenses up", "i18nExtra.fundal_reflex.make_sure_lens_rack_top"],
   ["Examine in quiet, dim room", "i18nExtra.fundal_reflex.room_quiet_and_dim"],
   [
     "Hold Arclight close to your eye",
     "i18nExtra.fundal_reflex.hold_arclight_close_to_eye",
   ],
+  ["Swaddle newborn", "i18nExtra.fundal_reflex.newborns_swaddled_securely"],
   [
-    "Swaddle newborn securely",
-    "i18nExtra.fundal_reflex.newborns_swaddled_securely",
-  ],
-  [
-    "Parent holds older baby",
+    "Parents should hold older baby",
     "i18nExtra.fundal_reflex.older_babies_parent_hold_lap",
   ],
   [
-    "Older child can sit independently",
+    "Older children can sit alone",
     "i18nExtra.fundal_reflex.older_children_sit_by_themselves",
   ],
   [
@@ -415,7 +411,7 @@ const FUNDAL_TEXT_KEYS = new Map([
     "i18nExtra.fundal_reflex.if_baby_asleep_open_one_eye",
   ],
   [
-    "If unclear, follow next steps",
+    "If unclear, follow next three steps",
     "i18nExtra.fundal_reflex.if_unclear_follow_next_steps",
   ],
   [
@@ -521,10 +517,10 @@ const IOS_FR06_PREPARATION_SEGMENT_RANGES = [
     { from: 208, to: "last" },
   ],
   [
-    { from: 0, to: 110 },
-    { from: 111, to: 238 },
-    { from: 239, to: 378 },
-    { from: 379, to: "last" },
+    { from: 0, to: 101 },
+    { from: 102, to: 222 },
+    { from: 236, to: 354 },
+    { from: 380, to: "last" },
   ],
   [
     { from: 0, to: 270 },
@@ -536,7 +532,7 @@ const IOS_FR06_PREPARATION_SEGMENT_RANGES = [
 
 const IOS_FR06_PREPARATION_SETTLE_OVERRIDES = [
   [120, 207, "last"],
-  [110, 238, 378, "last"],
+  [101, 222, 354, "last"],
   [270, 357, 453, "last"],
 ];
 
@@ -639,6 +635,13 @@ function resolvePreserveAspectRatio(cfg, fileIndex) {
   return value || "xMidYMid meet";
 }
 
+function shouldForceInitialFrameHold(cfg, fileIndex) {
+  const raw = cfg?.forceInitialFrameHoldByFile;
+  if (raw === true) return true;
+  if (!Array.isArray(raw)) return false;
+  return raw.includes(fileIndex);
+}
+
 function resolveFirstFileExtraTopGap(cfg) {
   const numeric = Number(cfg?.firstFileExtraTopGap);
   if (Number.isFinite(numeric) && numeric >= 0) return numeric;
@@ -704,7 +707,9 @@ function resolveSegmentTextMode(cfg, fileIndex) {
   return "append";
 }
 
-const TIGHT_LINE_HEIGHT_SEGMENT_TEXTS = new Set(["Parent holds older baby"]);
+const TIGHT_LINE_HEIGHT_SEGMENT_TEXTS = new Set([
+  "Parents should hold older baby",
+]);
 
 function normaliseSegmentTextLine(text) {
   return String(text == null ? "" : text)
@@ -1179,6 +1184,7 @@ function buildAnimationSlots(listEl, label, count, cfg = null) {
     const customAspectRatio = resolveStageAspectRatio(cfg, i);
     if (customAspectRatio) {
       stage.style.aspectRatio = customAspectRatio;
+      stage.style.setProperty("--fundal-stage-aspect-ratio", customAspectRatio);
     }
     const animationPath =
       Array.isArray(cfg?.paths) && typeof cfg.paths[i] === "string"
@@ -3386,7 +3392,7 @@ function stopAtSegmentEnd(controller, cfg) {
           attemptsPerTick: 4,
         });
       }
-      controller.inputLockUntil = Date.now() + (IS_IOS_WEBKIT ? 820 : 900);
+      controller.inputLockUntil = Date.now() + (IS_IOS_WEBKIT ? 1400 : 1500);
       try {
         controller.onSegmentSettled?.();
       } catch {}
@@ -3881,9 +3887,10 @@ function initializeSegmentScrollMode(cfg, page, stages) {
 
       const first = controller.segments[0];
       if (first) {
+        const forceInitialFrameHold = shouldForceInitialFrameHold(cfg, idx);
         activeAnim.goToAndStop(first.from, true);
         forceSvgVisibleForController(controller);
-        if (isStageFrameBlank(controller)) {
+        if (!forceInitialFrameHold && isStageFrameBlank(controller)) {
           const recovered = resolveAnyVisibleFrame(controller, first.from);
           activeAnim.goToAndStop(recovered, true);
           forceSvgVisibleForController(controller);
@@ -4509,13 +4516,43 @@ function initializeSegmentScrollMode(cfg, page, stages) {
     finalPinPassesRemaining = 0;
   }
 
+  function resolveLatestSettledSegmentIndex(controller) {
+    const segmentCount = Array.isArray(controller?.segments)
+      ? controller.segments.length
+      : 0;
+    if (segmentCount <= 0) return -1;
+
+    const resolvedMap = controller?.resolvedFrameBySegment;
+    const activeIndex = Number.isFinite(Number(controller?.segmentIndex))
+      ? Math.floor(Number(controller.segmentIndex))
+      : -1;
+
+    if (
+      activeIndex >= 0 &&
+      activeIndex < segmentCount &&
+      Number.isFinite(Number(resolvedMap?.get?.(activeIndex)))
+    ) {
+      return activeIndex;
+    }
+
+    let latestResolvedIndex = -1;
+    resolvedMap?.forEach?.((frame, key) => {
+      const safeKey = Number.isFinite(Number(key))
+        ? Math.floor(Number(key))
+        : -1;
+      if (safeKey < 0 || safeKey >= segmentCount) return;
+      if (!Number.isFinite(Number(frame))) return;
+      latestResolvedIndex = Math.max(latestResolvedIndex, safeKey);
+    });
+
+    return latestResolvedIndex;
+  }
+
   function pinControllerToSettledFrame(controller) {
     if (!controller?.ready || !controller.segments.length) return;
 
-    const segIndex =
-      controller.segmentIndex >= 0
-        ? Math.min(controller.segmentIndex, controller.segments.length - 1)
-        : controller.segments.length - 1;
+    const segIndex = resolveLatestSettledSegmentIndex(controller);
+    if (segIndex < 0) return;
     const seg = controller.segments[segIndex];
     if (!seg) return;
     const strictSegmentEndHold = shouldUseExactSegmentTerminalHold(cfg, seg);
@@ -4525,7 +4562,12 @@ function initializeSegmentScrollMode(cfg, page, stages) {
     );
 
     if (strictSegmentEndHold) {
-      const exactFrame = resolveTerminalHoldFrameForSegment(seg);
+      const cachedExactFrame = Number(
+        controller.resolvedFrameBySegment?.get?.(segIndex),
+      );
+      const exactFrame = Number.isFinite(cachedExactFrame)
+        ? clampFrameToAnimation(controller, cachedExactFrame)
+        : resolveTerminalHoldFrameForSegment(seg);
       const useLockedExactFrame = shouldUseStrictFrameLockNoFallback(cfg);
       cancelStrictExactRecovery(controller, segIndex);
       controller.resolvedFrameBySegment?.set(segIndex, exactFrame);
@@ -4976,6 +5018,8 @@ function initializeSegmentScrollMode(cfg, page, stages) {
     stopFinalPinLoop();
     stopIosFinalPinKeepAlive();
     stopIosCenterCorrection();
+    clearForwardWheelUnlockTimer();
+    forwardWheelLocked = false;
     setMobileTouchLock(true);
     hideAllDownArrows();
     controllers.forEach((controller) => {
@@ -5074,6 +5118,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
 
   controllers.forEach((controller) => {
     controller.onSegmentSettled = () => {
+      lockForwardWheelUntilIdle();
       pinControllerToSettledFrame(controller);
       wheelAccum = 0;
       touchStartY = null;
@@ -5121,6 +5166,46 @@ function initializeSegmentScrollMode(cfg, page, stages) {
   const TOUCH_THRESHOLD = 24;
   const TOUCH_MOVE_LOCK_THRESHOLD = 8;
   const TRIGGER_COOLDOWN_MS = 120;
+  const WHEEL_BURST_IDLE_MS = 320;
+  const FORWARD_WHEEL_IDLE_UNLOCK_MS = 280;
+  let wheelBurstLocked = false;
+  let wheelBurstReleaseTimer = null;
+  let forwardWheelLocked = false;
+  let forwardWheelUnlockTimer = null;
+
+  const clearWheelBurstReleaseTimer = () => {
+    if (!Number.isFinite(Number(wheelBurstReleaseTimer))) return;
+    clearTimeout(wheelBurstReleaseTimer);
+    wheelBurstReleaseTimer = null;
+  };
+
+  const scheduleWheelBurstRelease = () => {
+    clearWheelBurstReleaseTimer();
+    wheelBurstReleaseTimer = setTimeout(() => {
+      wheelBurstLocked = false;
+      wheelAccum = 0;
+      wheelBurstReleaseTimer = null;
+    }, WHEEL_BURST_IDLE_MS);
+  };
+
+  const clearForwardWheelUnlockTimer = () => {
+    if (!Number.isFinite(Number(forwardWheelUnlockTimer))) return;
+    clearTimeout(forwardWheelUnlockTimer);
+    forwardWheelUnlockTimer = null;
+  };
+
+  const scheduleForwardWheelUnlock = () => {
+    clearForwardWheelUnlockTimer();
+    forwardWheelUnlockTimer = setTimeout(() => {
+      forwardWheelLocked = false;
+      forwardWheelUnlockTimer = null;
+    }, FORWARD_WHEEL_IDLE_UNLOCK_MS);
+  };
+
+  const lockForwardWheelUntilIdle = () => {
+    forwardWheelLocked = true;
+    scheduleForwardWheelUnlock();
+  };
 
   function getGateController() {
     const playingIndex = controllers.findIndex((c) => c.isPlaying);
@@ -5206,6 +5291,14 @@ function initializeSegmentScrollMode(cfg, page, stages) {
       e.preventDefault();
       e.stopPropagation();
     }
+    if (instantaneousDir > 0 && forwardWheelLocked) {
+      scheduleForwardWheelUnlock();
+      e.preventDefault();
+      e.stopPropagation();
+      return;
+    }
+    scheduleWheelBurstRelease();
+    if (wheelBurstLocked) return;
 
     if (wheelAccum !== 0 && Math.sign(wheelAccum) !== Math.sign(e.deltaY)) {
       wheelAccum = 0;
@@ -5221,6 +5314,10 @@ function initializeSegmentScrollMode(cfg, page, stages) {
     wheelAccum = 0;
 
     const consumed = handleDirection(dir);
+    if (consumed && dir > 0) {
+      wheelBurstLocked = true;
+      scheduleWheelBurstRelease();
+    }
     if (!consumed && dir < 0 && areAllControllersComplete()) {
       showReplayButton();
     }
@@ -5356,6 +5453,9 @@ function initializeSegmentScrollMode(cfg, page, stages) {
       stopFinalPinLoop();
       stopIosFinalPinKeepAlive();
       stopIosCenterCorrection();
+      clearWheelBurstReleaseTimer();
+      clearForwardWheelUnlockTimer();
+      forwardWheelLocked = false;
       setPlaybackViewportFreeze(false);
       setMobileTouchLock(false);
       removeTitleSegmentTextToggleListeners?.();

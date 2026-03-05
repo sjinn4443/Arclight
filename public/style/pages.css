@@ -1911,6 +1911,57 @@ select.onb-input.has-value + .onb-select-caret {
   position: relative;
 }
 
+#glaucomaWorkshopPage #glaucomaWorkshopFolders .glaucoma-folder-row .thumb {
+  position: relative;
+  overflow: visible;
+}
+
+#glaucomaWorkshopPage #glaucomaWorkshopFolders .glaucoma-folder-item-counts {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 7px;
+  pointer-events: none;
+}
+
+#glaucomaWorkshopPage
+  #glaucomaWorkshopFolders
+  .glaucoma-folder-item-counts.glaucoma-folder-item-counts--dual {
+  left: auto;
+  right: -8px;
+  justify-content: flex-start;
+}
+
+#glaucomaWorkshopPage #glaucomaWorkshopFolders .glaucoma-folder-item-count {
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 999px;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 0 2px #fff;
+}
+
+#glaucomaWorkshopPage
+  #glaucomaWorkshopFolders
+  .glaucoma-folder-item-count--primary {
+  background: #15e115;
+}
+
+#glaucomaWorkshopPage
+  #glaucomaWorkshopFolders
+  .glaucoma-folder-item-count--intermediate {
+  background: #f25600;
+}
+
 #glaucomaWorkshopPage
   #glaucomaWorkshopFolders
   .glaucoma-folder-row
@@ -2040,6 +2091,37 @@ select.onb-input.has-value + .onb-select-caret {
   #childhoodWorkshopFolders
   .childhood-folder-row {
   position: relative;
+}
+
+#childhoodEyeScreeningWorkshopPage
+  #childhoodWorkshopFolders
+  .childhood-folder-row
+  .thumb,
+#childhoodEyeScreeningWorkshopPage #fundalReflexFolderRow .thumb {
+  position: relative;
+  overflow: visible;
+}
+
+#childhoodEyeScreeningWorkshopPage
+  #childhoodWorkshopFolders
+  .childhood-folder-item-count,
+#childhoodEyeScreeningWorkshopPage
+  #fundalReflexFolderRow
+  .childhood-folder-item-count {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 999px;
+  background: #15e115;
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 16px;
+  text-align: center;
+  box-shadow: 0 0 0 2px #fff;
 }
 
 #childhoodEyeScreeningWorkshopPage
@@ -2259,6 +2341,8 @@ select.onb-input.has-value + .onb-select-caret {
 }
 
 .childhood-fundal-scroll-page .childhood-fundal-prep-stage {
+  --fundal-stage-aspect-ratio: 1169 / 1280;
+  --fundal-stage-max-height: 68vh;
   width: 100%;
   margin-left: 0;
   aspect-ratio: 1169 / 1280;
@@ -2295,44 +2379,57 @@ select.onb-input.has-value + .onb-select-caret {
 
 @media (min-width: 1024px) {
   .childhood-fundal-scroll-page .childhood-fundal-prep-stage {
-    max-width: 66.6667%;
-    max-height: 68vh;
+    width: min(
+      66.6667%,
+      calc(var(--fundal-stage-max-height) * (var(--fundal-stage-aspect-ratio)))
+    );
+    max-width: none;
+    max-height: none;
     margin-left: auto;
     margin-right: auto;
   }
 
   #childhoodFundalPossibleFindingPage
     .childhood-fundal-prep-stage[data-file-index="0"] {
-    max-height: 56vh;
+    --fundal-stage-max-height: 56vh;
   }
 
   #childhoodFundalPossibleFindingPage
     .childhood-fundal-prep-stage[data-file-index="1"] {
-    max-height: 86vh;
+    --fundal-stage-max-height: 86vh;
   }
 
   #childhoodFundalUnclearFindingsPage
-    .childhood-fundal-prep-stage[data-file-index="0"],
+    .childhood-fundal-prep-stage[data-file-index="0"] {
+    --fundal-stage-max-height: 78vh;
+  }
+
   #childhoodFundalUnclearFindingsPage
     .childhood-fundal-prep-stage[data-file-index="1"],
   #childhoodFundalUnclearFindingsPage
-    .childhood-fundal-prep-stage[data-file-index="2"] {
-    max-height: 78vh;
+    .childhood-fundal-prep-stage[data-file-index="2"],
+  #childhoodFundalUnclearFindingsPage
+    .childhood-fundal-prep-stage[data-file-index="3"] {
+    --fundal-stage-max-height: 83vh;
   }
 }
 
 .childhood-fundal-scroll-page .childhood-fundal-prep-stage svg {
   display: block;
-  width: 100% !important;
-  height: 100% !important;
-  position: relative;
+  width: calc(100% + 2px) !important;
+  height: calc(100% + 2px) !important;
+  position: absolute;
+  inset: -1px;
   z-index: 2;
   overflow: hidden !important;
   clip-path: inset(0);
 }
 
 .childhood-fundal-scroll-page .childhood-fundal-prep-stage canvas {
-  position: relative;
+  position: absolute;
+  inset: -1px;
+  width: calc(100% + 2px) !important;
+  height: calc(100% + 2px) !important;
   z-index: 2;
   clip-path: inset(0);
 }

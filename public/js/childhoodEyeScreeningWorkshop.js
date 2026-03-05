@@ -81,6 +81,97 @@ function showPageWithFallbackAndEvent(id) {
   return true;
 }
 
+const NUMBERED_CHILDHOOD_LABEL_KEYS = [
+  "auto.childhoodeyescreeningworkshop.the_visual_system",
+  "auto.childhoodeyescreeningworkshop.visual_development",
+  "auto.childhoodeyescreeningworkshop.causes_of_visual_impairment",
+  "auto.childhoodeyescreeningworkshop.signs_of_visual_impairment",
+  "auto.childhoodeyescreeningworkshop.childhood_eye_screening",
+];
+
+function stripLeadingStepNumber(text) {
+  return String(text || "").replace(/^\s*\d+\.\s*/, "");
+}
+
+function normalizeChildhoodWorkshopLabels(root = document) {
+  const selector = NUMBERED_CHILDHOOD_LABEL_KEYS.map(
+    (key) => `[data-i18n="${key}"]`,
+  ).join(", ");
+  if (!selector) return;
+
+  root.querySelectorAll(selector).forEach((el) => {
+    // Keep numeric prefixes only for the collapsed folder buttons.
+    if (el.closest("#childhoodWorkshopFolders .childhood-folder-row")) return;
+    const next = stripLeadingStepNumber(el.textContent);
+    if (next !== el.textContent) el.textContent = next;
+  });
+}
+
+function countTopLevelSectionRows(sectionCard) {
+  if (!sectionCard) return 0;
+  return Array.from(sectionCard.children).filter((child) =>
+    child.classList?.contains("lesson-row"),
+  ).length;
+}
+
+function updateWorkshopFolderItemBadges(page) {
+  const rows = page.querySelectorAll(
+    "#childhoodWorkshopFolders .childhood-folder-row[data-folder]",
+  );
+
+  rows.forEach((row) => {
+    const sectionKey = row.getAttribute("data-folder");
+    if (!sectionKey) return;
+
+    const sectionCard = page.querySelector(
+      `.childhood-section-card[data-section="${sectionKey}"]`,
+    );
+    const itemCount = countTopLevelSectionRows(sectionCard);
+    const thumb = row.querySelector(".thumb");
+    if (!thumb) return;
+
+    let badge = thumb.querySelector(".childhood-folder-item-count");
+    if (!badge) {
+      badge = document.createElement("span");
+      badge.className = "childhood-folder-item-count";
+      badge.setAttribute("aria-hidden", "true");
+      thumb.appendChild(badge);
+    }
+    badge.textContent = String(itemCount);
+    row.setAttribute("data-item-count", String(itemCount));
+  });
+}
+
+function updateFundalReflexFolderItemBadge(page) {
+  const folderRow = page.querySelector("#fundalReflexFolderRow");
+  const subRowsContainer = page.querySelector("#fundalReflexSubRows");
+  if (!folderRow || !subRowsContainer) return;
+
+  const itemCount = Array.from(subRowsContainer.children).filter((child) =>
+    child.classList?.contains("lesson-row"),
+  ).length;
+
+  const thumb = folderRow.querySelector(".thumb");
+  if (!thumb) return;
+
+  let badge = thumb.querySelector(".childhood-folder-item-count");
+  if (itemCount <= 0) {
+    if (badge) badge.remove();
+    folderRow.removeAttribute("data-item-count");
+    return;
+  }
+
+  if (!badge) {
+    badge = document.createElement("span");
+    badge.className = "childhood-folder-item-count";
+    badge.setAttribute("aria-hidden", "true");
+    thumb.appendChild(badge);
+  }
+
+  badge.textContent = String(itemCount);
+  folderRow.setAttribute("data-item-count", String(itemCount));
+}
+
 function setupWorkshopFolders(page) {
   const folders = page.querySelectorAll(
     "#childhoodWorkshopFolders .childhood-folder-row",
@@ -89,6 +180,8 @@ function setupWorkshopFolders(page) {
 
   const foldersContainer = page.querySelector("#childhoodWorkshopFolders");
   if (!foldersContainer) return;
+  updateWorkshopFolderItemBadges(page);
+  updateFundalReflexFolderItemBadge(page);
 
   const SS_OPEN_KEY = "childhoodWorkshop:openFolderKey";
   const SS_RESTORE_FLAG = "childhoodWorkshop:restoreOpenFolder";
@@ -346,6 +439,12 @@ export function initializeChildhoodEyeScreeningWorkshop() {
   assignChildhoodWorkshopFlowIndices(page);
   updateChildhoodWorkshopProgressBars();
   scheduleFundalRouteWarmup();
+  normalizeChildhoodWorkshopLabels(document);
+  if (typeof window.requestAnimationFrame === "function") {
+    window.requestAnimationFrame(() =>
+      normalizeChildhoodWorkshopLabels(document),
+    );
+  }
 
   const rows = page.querySelectorAll(".lesson-row[data-target]");
   rows.forEach((row) => {

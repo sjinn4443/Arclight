@@ -36,6 +36,117 @@ function normaliseVideosSubpageId(raw) {
   return `${t}Page`;
 }
 
+function getTopLevelSectionRows(sectionCard) {
+  if (!sectionCard) return [];
+  return Array.from(sectionCard.children).filter((child) =>
+    child.classList?.contains("lesson-row"),
+  );
+}
+
+function getThumbBackgroundImage(row) {
+  const thumb = row?.querySelector(".thumb");
+  if (!thumb) return "";
+
+  const inlineStyle = String(thumb.getAttribute("style") || "");
+  const styleBg = String(thumb.style?.backgroundImage || "");
+
+  let computedBg = "";
+  try {
+    computedBg = String(window.getComputedStyle(thumb).backgroundImage || "");
+  } catch {
+    computedBg = "";
+  }
+
+  return `${inlineStyle} ${styleBg} ${computedBg}`.toLowerCase();
+}
+
+function inferLessonLevelFromRow(row) {
+  const explicitLevel = String(row?.getAttribute("data-level") || "")
+    .trim()
+    .toLowerCase();
+  if (explicitLevel === "primary" || explicitLevel === "intermediate") {
+    return explicitLevel;
+  }
+
+  const bg = getThumbBackgroundImage(row);
+  if (bg.includes("intermediate_")) return "intermediate";
+  if (bg.includes("primary_")) return "primary";
+
+  if (row?.classList?.contains("glaucoma-subfolder-row")) return "intermediate";
+  return "primary";
+}
+
+function countSectionRowsByLevel(sectionCard) {
+  return getTopLevelSectionRows(sectionCard).reduce(
+    (acc, row) => {
+      const level = inferLessonLevelFromRow(row);
+      if (level === "intermediate") {
+        acc.intermediate += 1;
+      } else {
+        acc.primary += 1;
+      }
+      return acc;
+    },
+    { primary: 0, intermediate: 0 },
+  );
+}
+
+function renderFolderCountBadge(level, count) {
+  const badge = document.createElement("span");
+  badge.className = `glaucoma-folder-item-count glaucoma-folder-item-count--${level}`;
+  badge.setAttribute("aria-hidden", "true");
+  badge.textContent = String(count);
+  return badge;
+}
+
+function updateGlaucomaFolderItemBadges(page) {
+  const folderRows = page.querySelectorAll(
+    "#glaucomaWorkshopFolders .glaucoma-folder-row[data-folder]",
+  );
+
+  folderRows.forEach((row) => {
+    const sectionKey = row.getAttribute("data-folder");
+    if (!sectionKey) return;
+
+    const sectionCard = page.querySelector(
+      `.glaucoma-section-card[data-section="${sectionKey}"]`,
+    );
+    const counts = countSectionRowsByLevel(sectionCard);
+    const totalCount = counts.primary + counts.intermediate;
+
+    const thumb = row.querySelector(".thumb");
+    if (!thumb) return;
+
+    let wrap = thumb.querySelector(".glaucoma-folder-item-counts");
+    if (!wrap) {
+      wrap = document.createElement("span");
+      wrap.className = "glaucoma-folder-item-counts";
+      wrap.setAttribute("aria-hidden", "true");
+      thumb.appendChild(wrap);
+    }
+
+    const hasBothLevels = counts.primary > 0 && counts.intermediate > 0;
+    wrap.classList.toggle("glaucoma-folder-item-counts--dual", hasBothLevels);
+    while (wrap.firstChild) {
+      wrap.removeChild(wrap.firstChild);
+    }
+
+    if (hasBothLevels) {
+      wrap.appendChild(renderFolderCountBadge("primary", counts.primary));
+      wrap.appendChild(
+        renderFolderCountBadge("intermediate", counts.intermediate),
+      );
+    } else if (totalCount > 0) {
+      const singleLevel = counts.intermediate > 0 ? "intermediate" : "primary";
+      wrap.appendChild(renderFolderCountBadge(singleLevel, totalCount));
+    }
+
+    row.setAttribute("data-primary-count", String(counts.primary));
+    row.setAttribute("data-intermediate-count", String(counts.intermediate));
+    row.setAttribute("data-item-count", String(totalCount));
+  });
+}
+
 function setupWorkshopFolders(page) {
   const folders = page.querySelectorAll(
     "#glaucomaWorkshopFolders .glaucoma-folder-row",
@@ -44,6 +155,7 @@ function setupWorkshopFolders(page) {
 
   const foldersContainer = page.querySelector("#glaucomaWorkshopFolders");
   if (!foldersContainer) return;
+  updateGlaucomaFolderItemBadges(page);
 
   // ----------------------------
   // Persist open folder across "internal" workshop navigation only
