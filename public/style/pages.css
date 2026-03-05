@@ -2118,8 +2118,8 @@ select.onb-input.has-value + .onb-select-caret {
   background: #15e115;
   color: #ffffff;
   font-size: 10px;
-  font-weight: 700;
   line-height: 16px;
+  font-weight: 700;
   text-align: center;
   box-shadow: 0 0 0 2px #fff;
 }

@@ -562,6 +562,7 @@ function resolveRuntimeRouteConfig(routeName, baseCfg) {
 
   // FR06 was user-verified stable on iPhone for Preparation.
   // Keep desktop/Android config untouched; only adjust iOS runtime behavior.
+  // FR06 also rendered Preparation with SVG on iPhone.
   return {
     ...baseCfg,
     segmentRanges: cloneSegmentRanges(IOS_FR06_PREPARATION_SEGMENT_RANGES),
