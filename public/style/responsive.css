@@ -57,6 +57,10 @@ input {
     font-size: 1rem;
   }
 
+  .menu-panel {
+    height: 83%;
+  }
+
   .page .pupils-subtitle {
     margin: 22px 16px 16px !important;
   }

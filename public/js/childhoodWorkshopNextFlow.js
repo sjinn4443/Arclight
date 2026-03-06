@@ -84,6 +84,7 @@ for (const section of FLOW_SECTIONS) {
     const target = section[i];
     FLOW.push({
       target,
+      previous: section[i - 1] || WORKSHOP_HOME,
       next: section[i + 1] || WORKSHOP_HOME,
     });
   }
@@ -408,6 +409,28 @@ function renderNextButtonForTarget(target) {
   const wrap = document.createElement("div");
   wrap.className = "childhood-next-wrap";
 
+  const previousBtn = document.createElement("button");
+  previousBtn.type = "button";
+  previousBtn.className = "childhood-prev-btn";
+  previousBtn.textContent = "< Previous";
+  previousBtn.setAttribute("data-i18n", "i18nLiteral.< Previous");
+  previousBtn.addEventListener("click", async () => {
+    try {
+      sessionStorage.setItem("childhoodWorkshop:restoreOpenFolder", "1");
+    } catch {}
+
+    if (current.previous === WORKSHOP_HOME) {
+      setStoredFlowIndex(null);
+    } else if (FLOW[idx - 1] && FLOW[idx - 1].target === current.previous) {
+      setStoredFlowIndex(idx - 1);
+    } else {
+      const previousIndices = TARGET_TO_INDICES.get(current.previous) || [];
+      setStoredFlowIndex(previousIndices[0] ?? null);
+    }
+
+    await navigateToTarget(current.previous);
+  });
+
   const btn = document.createElement("button");
   btn.type = "button";
   btn.className = "childhood-next-btn";
@@ -440,6 +463,7 @@ function renderNextButtonForTarget(target) {
     await navigateToTarget(current.next);
   });
 
+  wrap.appendChild(previousBtn);
   wrap.appendChild(btn);
   host.appendChild(wrap);
   window.I18N?.applyTranslations?.(wrap);

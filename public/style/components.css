@@ -810,15 +810,18 @@ input:checked + .slider:before {
   z-index: 10000;
   display: flex;
   justify-content: flex-end;
+  overflow-x: hidden;
 }
 
 .menu-panel {
-  width: 58%;
+  width: 65%;
   margin-top: 8%;
   border-radius: 24px 0px 0px 24px;
-  height: 84%;
+  height: 77%;
   background: #f2f2f2;
   padding: 20px;
+  box-sizing: border-box;
+  overflow-x: hidden;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
@@ -826,11 +829,21 @@ input:checked + .slider:before {
 }
 
 .menu-header {
+  --menu-inline-width: 140px;
   background: #c5c5c5;
-  padding: 34px 20px 0px;
+  padding: 28px 20px 18px;
   border-top-left-radius: 22px;
-  margin: -10%;
-  margin-bottom: 11px;
+  margin: -20px -20px 11px;
+  display: grid;
+  grid-template-columns: 43px minmax(0, 1fr);
+  grid-template-areas:
+    "avatar name"
+    ". profile"
+    ". location"
+    ". cta";
+  column-gap: 14px;
+  row-gap: 6px;
+  align-items: center;
 }
 
 .menu-close {
@@ -847,29 +860,34 @@ input:checked + .slider:before {
 }
 
 .user-profile {
+  grid-area: avatar;
   width: 43px;
   height: 43px;
   border-radius: 50%;
   background: #b4342a;
-  margin-left: 6px;
-  margin-bottom: 4px;
+  margin: 2px 0 0;
+  align-self: start;
 }
 
 #menuUsername {
+  grid-area: name;
   font-weight: 500;
   font-size: 16px;
-  margin-left: 34%;
   color: #111;
-  margin-top: -21%;
+  margin: 0;
+  line-height: 1.2;
 }
 
 .menu-sub {
+  grid-area: profile;
   font-size: 11px;
   color: #666;
-  margin-left: -2%;
-  margin-top: -3%;
-  background-color: #c5c5c500;
-  margin-bottom: -6%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  justify-self: start;
+  text-align: left;
 }
 
 .menu-tabs {
@@ -931,9 +949,18 @@ input:checked + .slider:before {
 }
 
 .menu-tabs .menu-search-wrap.search-collapsed {
-  padding-top: 7px;
-  padding-bottom: 7px;
+  position: static;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
   margin-left: auto;
+  flex: 0 0 auto;
+}
+
+.menu-tabs .menu-search-wrap.search-collapsed .search-icon {
+  position: static;
+  transform: none;
 }
 .menu-tabs .tab {
   background: none;
@@ -952,6 +979,9 @@ input:checked + .slider:before {
 
 .menu-section {
   padding: 13px 10px;
+}
+.menu-section--tight-top {
+  padding-top: 6px;
 }
 .menu-section strong {
   display: block;
@@ -1012,6 +1042,17 @@ input:checked + .slider:before {
   color: #666;
   letter-spacing: 0.2px;
   min-height: 1.4em;
+}
+
+.menu-header .profile-location {
+  margin-bottom: 0;
+  min-height: 0;
+  min-width: 0;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  overflow-wrap: anywhere;
+  line-height: 1.25;
 }
 
 .check-location-btn.is-hidden + .menu-search-wrap {
@@ -4655,8 +4696,7 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
 /* ===== Location Buttons ===== */
 /* Smaller circular i next to text */
 .info-icon {
-  margin-right: -94px;
-  margin-top: -27px;
+  margin: 0;
   padding: 0.15rem; /* small tappable area, tweak if wanted */
   background: #c5c5c500;
   color: #666666;
@@ -4664,6 +4704,9 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
   font-weight: 600;
   cursor: pointer;
   transition: background 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .info-icon:hover {
@@ -4672,8 +4715,12 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
 
 /* Check Location button (on its own row) */
 .check-location-btn {
-  display: block;
-  margin: -6px 3px 11px 72px; /* aligns under Location */
+  grid-area: cta;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  justify-self: start;
+  margin: 6px 0 0;
   background-color: #8f8f8f;
   color: #fff;
   border: none;
@@ -4687,7 +4734,7 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
     background-color 0.2s ease,
     transform 0.1s ease;
 
-  width: 140px; /* slightly longer */
+  width: var(--menu-inline-width); /* keep aligned with location row */
 }
 
 .check-location-btn:hover {
@@ -4714,11 +4761,14 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
 
 /* Put location text and info icon inline on one row */
 .profile-location-row {
-  display: flex;
+  grid-area: location;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
   gap: 4px;
-  margin-top: 15px; /* keep your current vertical spacing */
-  margin-left: 73px; /* match the existing location indent */
+  margin: 2px 0 0;
+  min-width: 0;
+  width: min(100%, var(--menu-inline-width));
 }
 
 /* === Info Modal (matches guest modal overlay) === */
@@ -5777,17 +5827,25 @@ Glaucoma history case study: match intermediate style
 /* Glaucoma workshop flow: fixed Next button */
 .glaucoma-next-wrap {
   position: fixed;
+  left: 16px;
   right: 16px;
   bottom: calc(16px + env(safe-area-inset-bottom));
   z-index: 75;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
 }
 
 /* Childhood workshop flow: place Next at page bottom (not fixed) */
 .childhood-next-wrap {
   position: absolute;
+  left: 16px;
   right: 16px;
   bottom: calc(16px + env(safe-area-inset-bottom));
   z-index: 75;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
 }
 
 .childhood-next-host {
@@ -5796,7 +5854,9 @@ Glaucoma history case study: match intermediate style
 }
 
 .glaucoma-next-btn,
-.childhood-next-btn {
+.childhood-next-btn,
+.glaucoma-prev-btn,
+.childhood-prev-btn {
   min-width: 96px;
   height: 38px;
   border: none;
@@ -5809,12 +5869,19 @@ Glaucoma history case study: match intermediate style
   line-height: 1;
 }
 
+.glaucoma-prev-btn,
+.childhood-prev-btn {
+  background: #9ca3af;
+}
+
 .glaucoma-next-btn.is-ready,
 .childhood-next-btn.is-ready {
   background: #e41e26;
 }
 
 .glaucoma-next-btn:active,
-.childhood-next-btn:active {
+.childhood-next-btn:active,
+.glaucoma-prev-btn:active,
+.childhood-prev-btn:active {
   transform: translateY(1px);
 }

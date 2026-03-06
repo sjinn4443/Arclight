@@ -7,6 +7,8 @@ import { initializePWA, canInstall, promptInstall } from "./pwa.js";
 import { setLanguage, getLanguage } from "./i18n.js";
 import { saveProfile, bumpRefresh } from "./telemetry.js"; // Import bumpRefresh
 
+const STATIC_CACHE_NAME = "arclight-static-v4";
+
 initializePWA();
 
 /**
@@ -273,7 +275,7 @@ export function initializeLanguageInstall() {
           sw.active?.postMessage({
             type: "CACHE_URLS",
             payload: urlsToCache,
-            cacheName: "arclight-static-v3",
+            cacheName: STATIC_CACHE_NAME,
           });
           console.warn("[install] sent CACHE_URLS to SW:", urlsToCache.length);
 

@@ -12,6 +12,8 @@ import {
 let overlay, closeBtn;
 let cachedVersionInfo = null;
 let versionInfoRequest = null;
+let menuInitRequest = null;
+let menuEscapeHandlerBound = false;
 
 function formatVersionDate(isoDate) {
   if (!isoDate || typeof isoDate !== "string") return null;
@@ -171,6 +173,25 @@ function renderProfileLocation() {
   }
 }
 
+function sanitizeMenuOverlay(root) {
+  if (!root) return;
+
+  const legacyAtomsSection = root
+    .querySelector("#atomsCardEyesBtn, #atomsCardEarsBtn")
+    ?.closest(".menu-section");
+  legacyAtomsSection?.remove();
+
+  root
+    .querySelector('[data-i18n="menu.alan_section_title"]')
+    ?.closest(".menu-section")
+    ?.classList.add("menu-section--tight-top");
+
+  root
+    .querySelector('[data-route="languageinstall"]')
+    ?.closest(".menu-section")
+    ?.classList.add("menu-section--tight-top");
+}
+
 /**
  * Initializes the global overlay menu.
  * Fetches the menu HTML, appends it to the body, and sets up event listeners
@@ -178,73 +199,91 @@ function renderProfileLocation() {
  * Ensures the menu is initialized only once.
  */
 export async function initializeMenu() {
-  if (overlay) return; // already initialized
-
-  // 1) Fetch the template
-  const res = await fetch("html/menu.html");
-  const html = await res.text();
-
-  // 2) Parse and extract the overlay element
-  const tmp = document.createElement("div");
-  tmp.innerHTML = html;
-  const found = tmp.querySelector("#menuOverlay");
-  if (!found) {
-    console.error("[menu] #menuOverlay not found in html/menu.html");
+  if (overlay) {
+    sanitizeMenuOverlay(overlay);
     return;
   }
+  if (menuInitRequest) return menuInitRequest;
 
-  // 3) Ensure it starts hidden & append under <body>
-  found.classList.add("hidden");
-  document.body.appendChild(found);
+  menuInitRequest = (async () => {
+    // 1) Fetch the template
+    const res = await fetch("html/menu.html", {
+      credentials: "same-origin",
+      cache: "no-store",
+    });
+    const html = await res.text();
 
-  // 4) Wire refs AFTER appending
-  overlay = found;
-  closeBtn = overlay.querySelector("#closeMenuBtn");
-
-  // 5) Populate username now that overlay exists
-  const nameEl = overlay.querySelector("#menuUsername");
-  const name = (localStorage.getItem("username") || "").trim();
-  if (nameEl) {
-    nameEl.textContent = name || "Your name";
-  }
-  void renderMenuVersionDate();
-
-  // 5b) Wire the "i" info button to open the info popup
-  const infoBtn = overlay.querySelector(".info-icon");
-  infoBtn?.addEventListener("click", (e) => {
-    e.preventDefault();
-    showInfoModal();
-  });
-
-  // 6) Handlers
-  closeBtn?.addEventListener("click", closeMenu);
-
-  overlay.addEventListener("click", (e) => {
-    // click outside the panel closes
-    if (e.target === overlay) closeMenu();
-  });
-
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") closeMenu();
-  });
-
-  overlay.addEventListener("click", (e) => {
-    const routeEl = e.target.closest("[data-route]");
-    const linkEl = e.target.closest("a,[data-close-menu]");
-
-    if (routeEl) {
-      const route = routeEl.getAttribute("data-route");
-      if (!route) return;
-
-      // Always use the router for data-route items
-      loadPage(route);
-
-      closeMenu();
+    // 2) Parse and extract the overlay element
+    const tmp = document.createElement("div");
+    tmp.innerHTML = html;
+    const found = tmp.querySelector("#menuOverlay");
+    if (!found) {
+      console.error("[menu] #menuOverlay not found in html/menu.html");
       return;
     }
 
-    if (linkEl) closeMenu();
+    sanitizeMenuOverlay(found);
+
+    // 3) Ensure it starts hidden & append under <body>
+    found.classList.add("hidden");
+    document.body.appendChild(found);
+
+    // 4) Wire refs AFTER appending
+    overlay = found;
+    closeBtn = overlay.querySelector("#closeMenuBtn");
+
+    // 5) Populate username now that overlay exists
+    const nameEl = overlay.querySelector("#menuUsername");
+    const name = (localStorage.getItem("username") || "").trim();
+    if (nameEl) {
+      nameEl.textContent = name || "Your name";
+    }
+    void renderMenuVersionDate();
+
+    // 5b) Wire the "i" info button to open the info popup
+    const infoBtn = overlay.querySelector(".info-icon");
+    infoBtn?.addEventListener("click", (e) => {
+      e.preventDefault();
+      showInfoModal();
+    });
+
+    // 6) Handlers
+    closeBtn?.addEventListener("click", closeMenu);
+
+    overlay.addEventListener("click", (e) => {
+      // click outside the panel closes
+      if (e.target === overlay) closeMenu();
+    });
+
+    if (!menuEscapeHandlerBound) {
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeMenu();
+      });
+      menuEscapeHandlerBound = true;
+    }
+
+    overlay.addEventListener("click", (e) => {
+      const routeEl = e.target.closest("[data-route]");
+      const linkEl = e.target.closest("a,[data-close-menu]");
+
+      if (routeEl) {
+        const route = routeEl.getAttribute("data-route");
+        if (!route) return;
+
+        // Always use the router for data-route items
+        loadPage(route);
+
+        closeMenu();
+        return;
+      }
+
+      if (linkEl) closeMenu();
+    });
+  })().finally(() => {
+    menuInitRequest = null;
   });
+
+  return menuInitRequest;
 }
 
 // ---- Event listeners for location updates and rendering ----
@@ -275,8 +314,11 @@ document.addEventListener("location:updated", () => {
  * Opens the global overlay menu.
  * Adds a 'data-menu-open' attribute to the body and removes the 'hidden' class from the overlay.
  */
-export function openMenu() {
+export async function openMenu() {
+  if (!overlay) await initializeMenu();
   if (!overlay) return;
+
+  sanitizeMenuOverlay(overlay);
 
   const nameEl = overlay.querySelector("#menuUsername");
   const name = (localStorage.getItem("username") || "").trim();
