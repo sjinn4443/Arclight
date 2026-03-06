@@ -2353,6 +2353,19 @@ select.onb-input.has-value + .onb-select-caret {
   contain: paint;
 }
 
+#childhoodFundalPreparationPage
+  .childhood-fundal-prep-stage[data-file-index="0"]::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 14.05%;
+  height: 3px;
+  background: #b8b5b0;
+  pointer-events: none;
+  z-index: 3;
+}
+
 .childhood-fundal-scroll-page
   .childhood-fundal-prep-stage.childhood-fundal-prep-stage--loading {
   overflow: hidden;
