@@ -2660,27 +2660,34 @@ select.onb-input.has-value + .onb-select-caret {
 }
 
 .childhood-fundal-scroll-page .childhood-fundal-stage-replay-btn__icon {
-  width: 18px;
-  height: 18px;
+  width: 25px;
+  height: 22px;
   display: block;
+  object-fit: cover;
+  object-position: center;
+  transform: translateX(-1px);
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
 @media (min-width: 1024px) {
   .childhood-fundal-scroll-page .childhood-fundal-scroll-down-arrow,
   .childhood-fundal-scroll-page .childhood-fundal-stage-replay-btn {
-    width: 44px;
-    height: 44px;
+    width: 50px;
+    height: 50px;
   }
 
   .childhood-fundal-scroll-page .childhood-fundal-scroll-down-arrow__chev {
-    width: 10px;
-    height: 10px;
-    margin-top: -5px;
+    width: 13px;
+    height: 13px;
+    border-right-width: 2.5px;
+    border-bottom-width: 2.5px;
+    margin-top: -6px;
   }
 
   .childhood-fundal-scroll-page .childhood-fundal-stage-replay-btn__icon {
-    width: 20px;
-    height: 20px;
+    width: 33px;
+    height: 31px;
   }
 }
 

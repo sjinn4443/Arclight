@@ -146,6 +146,7 @@ const ROUTE_CONFIG = {
       "/scrolly/coreexam/fundalreflex/eyesopen/3/data.json",
     ],
     playMode: "stageAutoplay",
+    autoplayLegacySegmentPlaybackByFile: [false, true, false],
     forceInitialFrameHoldByFile: [0],
     segmentRanges: [
       [{ from: 0, to: 329 }],
@@ -228,6 +229,8 @@ const ROUTE_CONFIG = {
     centerTopBiasByFile: [88, 0, 0, 0],
     firstFileExtraTopGap: 30,
     playMode: "stageAutoplay",
+    autoplayLegacySegmentPlaybackByFile: [false, false, false, true],
+    preferLastVisibleCompletionFrameByFile: [false, false, false, true],
     segmentRanges: [
       [
         { from: 0, to: 204 },
@@ -809,10 +812,7 @@ function createStageReplayButtonElement() {
   replayBtn.setAttribute("aria-label", "Replay");
   replayBtn.title = "Replay";
   replayBtn.innerHTML =
-    '<svg class="childhood-fundal-stage-replay-btn__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">' +
-    '<path d="M8 7.25V3.75L4.75 7 8 10.25" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>' +
-    '<path d="M7.85 7a7 7 0 1 1-1.83 6.15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>' +
-    "</svg>";
+    '<img class="childhood-fundal-stage-replay-btn__icon" src="/images/icon/base/replay.webp" alt="" aria-hidden="true" draggable="false">';
   replayBtn.style.display = "none";
   return replayBtn;
 }
@@ -1460,6 +1460,33 @@ function resolveSegmentsForFile(cfg, fileIndex, anim) {
   }
 
   return rawList.map((raw) => normaliseSegment(raw, lastFrame));
+}
+
+function shouldUseLegacySegmentPlaybackForAutoplay(cfg, fileIndex) {
+  const rule = Array.isArray(cfg?.autoplayLegacySegmentPlaybackByFile)
+    ? cfg.autoplayLegacySegmentPlaybackByFile[fileIndex]
+    : null;
+  return rule === true;
+}
+
+function resolveAutoplayPlaybackSegments(cfg, fileIndex, anim, segments = []) {
+  if (
+    shouldUseLegacySegmentPlaybackForAutoplay(cfg, fileIndex) &&
+    Array.isArray(segments) &&
+    segments.length > 0
+  ) {
+    return segments.map((segment) => ({ ...segment }));
+  }
+
+  const lastFrame = getAnimationLastFrame(anim);
+  return [normaliseSegment({ from: 0, to: lastFrame }, lastFrame)];
+}
+
+function shouldPreferLastVisibleCompletionFrame(cfg, fileIndex) {
+  const rule = Array.isArray(cfg?.preferLastVisibleCompletionFrameByFile)
+    ? cfg.preferLastVisibleCompletionFrameByFile[fileIndex]
+    : null;
+  return rule === true;
 }
 
 function isStrictSegmentEndHold(cfg) {
@@ -5716,6 +5743,7 @@ function initializeStageAutoplayMode(cfg, page, stages) {
       segmentTextLines: [],
       currentTextSegmentIndex: -1,
       segments: [],
+      playbackSegments: [],
       ready: false,
       failed: false,
       started: false,
@@ -6203,9 +6231,48 @@ function initializeStageAutoplayMode(cfg, page, stages) {
     return null;
   }
 
+  function resolvePreferredCompletionVisibleFrame(state, terminalSegment) {
+    if (
+      !state ||
+      !terminalSegment ||
+      !shouldPreferLastVisibleCompletionFrame(cfg, state.fileIndex)
+    ) {
+      return null;
+    }
+
+    const candidates = [
+      state.lastRichVisibleFrameEver,
+      state.lastVisibleFrameEver,
+      state.lastRichVisibleFrame,
+      state.lastVisibleFrame,
+    ];
+
+    for (let i = 0; i < candidates.length; i += 1) {
+      const candidate = Number(candidates[i]);
+      if (!Number.isFinite(candidate)) continue;
+      if (!isFrameWithinSegment(candidate, terminalSegment)) continue;
+      return clampFrameToAnimation(state, candidate);
+    }
+
+    return null;
+  }
+
   function resolveCompletionHoldFrame(state) {
     const lastFrame = getAnimationLastFrame(state?.anim);
-    let holdFrame = clampFrameToAnimation(state, lastFrame);
+    const terminalPlaybackSegment = Array.isArray(state?.playbackSegments)
+      ? state.playbackSegments[state.playbackSegments.length - 1]
+      : null;
+    const preferredVisibleFrame = resolvePreferredCompletionVisibleFrame(
+      state,
+      terminalPlaybackSegment,
+    );
+    let holdFrame = clampFrameToAnimation(
+      state,
+      preferredVisibleFrame ??
+        (terminalPlaybackSegment
+          ? getSegmentEndFrame(terminalPlaybackSegment)
+          : lastFrame),
+    );
     try {
       state.anim?.goToAndStop(holdFrame, true);
     } catch {
@@ -6217,6 +6284,7 @@ function initializeStageAutoplayMode(cfg, page, stages) {
       !state.requireRichContent ||
       hasRichVisibleContent(state, state.minContentAreaRatio);
     if (!isStageFrameBlank(state) && hasRichFrame) {
+      rememberRecoverySnapshot(state, holdFrame);
       return holdFrame;
     }
 
@@ -6228,6 +6296,7 @@ function initializeStageAutoplayMode(cfg, page, stages) {
       // Ignore renderer seek failures and keep the recovered candidate flow.
     }
     forceSvgVisibleForController(state);
+    rememberRecoverySnapshot(state, holdFrame);
     return holdFrame;
   }
 
@@ -6366,17 +6435,39 @@ function initializeStageAutoplayMode(cfg, page, stages) {
     alignStageForPlayback(state);
     setPlaybackScrollLocked(true);
 
-    const startFrame = 0;
-    const endFrame = getAnimationLastFrame(state.anim);
+    const playbackSegments =
+      Array.isArray(state.playbackSegments) && state.playbackSegments.length > 0
+        ? state.playbackSegments
+        : resolveAutoplayPlaybackSegments(cfg, state.fileIndex, state.anim);
+    const firstPlaybackSegment = playbackSegments[0] || null;
+    const startFrame = clampFrameToAnimation(
+      state,
+      Number(firstPlaybackSegment?.from),
+    );
+    const endFrame = getSegmentEndFrame(
+      playbackSegments[playbackSegments.length - 1],
+    );
     if (endFrame <= 0) {
       await finishStagePlayback(state);
       return true;
     }
 
+    const playbackPairs = playbackSegments.map((segment) => [
+      clampFrameToAnimation(state, Number(segment?.from)),
+      clampFrameToAnimation(state, getSegmentEndFrame(segment)),
+    ]);
+
     try {
       state.anim?.pause();
       state.anim?.goToAndStop(startFrame, true);
-      state.anim?.playSegments([startFrame, endFrame], true);
+      if (playbackPairs.length > 1) {
+        state.anim?.playSegments(playbackPairs, true);
+      } else {
+        state.anim?.playSegments(
+          playbackPairs[0] || [startFrame, endFrame],
+          true,
+        );
+      }
     } catch {
       try {
         state.anim?.goToAndPlay(startFrame, true);
@@ -6455,6 +6546,12 @@ function initializeStageAutoplayMode(cfg, page, stages) {
 
     const onReady = () => {
       state.segments = resolveSegmentsForFile(cfg, state.fileIndex, anim);
+      state.playbackSegments = resolveAutoplayPlaybackSegments(
+        cfg,
+        state.fileIndex,
+        anim,
+        state.segments,
+      );
       state.ready = true;
       prepareInitialFrame(state);
       updateStageControlAnchors(state);
