@@ -2353,19 +2353,6 @@ select.onb-input.has-value + .onb-select-caret {
   contain: paint;
 }
 
-#childhoodFundalPreparationPage
-  .childhood-fundal-prep-stage[data-file-index="0"]::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 14.05%;
-  height: 3px;
-  background: #b8b5b0;
-  pointer-events: none;
-  z-index: 3;
-}
-
 .childhood-fundal-scroll-page
   .childhood-fundal-prep-stage.childhood-fundal-prep-stage--loading {
   overflow: hidden;
@@ -2576,11 +2563,17 @@ select.onb-input.has-value + .onb-select-caret {
   bottom: var(--fundal-arrow-bottom, 10px);
   width: 36px;
   height: 36px;
+  padding: 0;
+  border: 0;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   background: rgba(58, 58, 58, 0.46);
+  color: #fff;
+  line-height: 0;
+  appearance: none;
+  -webkit-appearance: none;
   opacity: 0;
   transform: translateY(8px);
   transition:
@@ -2593,6 +2586,18 @@ select.onb-input.has-value + .onb-select-caret {
 .childhood-fundal-scroll-page .childhood-fundal-scroll-down-arrow.is-visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+.childhood-fundal-scroll-page
+  .childhood-fundal-scroll-down-arrow.is-visible:not(:disabled) {
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.childhood-fundal-scroll-page
+  .childhood-fundal-scroll-down-arrow:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.92);
+  outline-offset: 2px;
 }
 
 .childhood-fundal-scroll-page .childhood-fundal-scroll-down-arrow__stack {
@@ -2628,6 +2633,62 @@ select.onb-input.has-value + .onb-select-caret {
 .childhood-fundal-scroll-page
   .childhood-fundal-scroll-down-arrow__chev:nth-child(3) {
   animation-delay: 0.4s;
+}
+
+.childhood-fundal-scroll-page .childhood-fundal-stage-replay-btn {
+  position: absolute;
+  left: var(--fundal-replay-left, 10px);
+  bottom: var(--fundal-replay-bottom, 10px);
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(58, 58, 58, 0.46);
+  color: #fff;
+  cursor: pointer;
+  line-height: 0;
+  z-index: 41;
+}
+
+.childhood-fundal-scroll-page .childhood-fundal-stage-replay-btn:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.92);
+  outline-offset: 2px;
+}
+
+.childhood-fundal-scroll-page .childhood-fundal-stage-replay-btn__icon {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+@media (min-width: 1024px) {
+  .childhood-fundal-scroll-page .childhood-fundal-scroll-down-arrow,
+  .childhood-fundal-scroll-page .childhood-fundal-stage-replay-btn {
+    width: 44px;
+    height: 44px;
+  }
+
+  .childhood-fundal-scroll-page .childhood-fundal-scroll-down-arrow__chev {
+    width: 10px;
+    height: 10px;
+    margin-top: -5px;
+  }
+
+  .childhood-fundal-scroll-page .childhood-fundal-stage-replay-btn__icon {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+@media (max-width: 37.5em) {
+  .childhood-fundal-scroll-page .childhood-fundal-stage-replay-btn {
+    width: 36px;
+    height: 36px;
+  }
 }
 
 @keyframes fundalArrowGrayShift {

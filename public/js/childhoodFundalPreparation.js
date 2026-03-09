@@ -28,7 +28,7 @@ const ROUTE_CONFIG = {
       "/scrolly/coreexam/fundalreflex/prep/3/data.json",
       "/scrolly/coreexam/fundalreflex/prep/4/data.json",
     ],
-    playMode: "segmentScroll",
+    playMode: "stageAutoplay",
     // User-provided segment plan (inclusive frame ranges).
     segmentRanges: [
       [
@@ -87,7 +87,7 @@ const ROUTE_CONFIG = {
       "/scrolly/coreexam/fundalreflex/exam/4/data.json",
       "/scrolly/coreexam/fundalreflex/exam/5/data.json",
     ],
-    playMode: "segmentScroll",
+    playMode: "stageAutoplay",
     segmentRanges: [
       [{ from: 16, to: 149 }],
       [
@@ -145,7 +145,7 @@ const ROUTE_CONFIG = {
       "/scrolly/coreexam/fundalreflex/eyesopen/2/data.json",
       "/scrolly/coreexam/fundalreflex/eyesopen/3/data.json",
     ],
-    playMode: "segmentScroll",
+    playMode: "stageAutoplay",
     forceInitialFrameHoldByFile: [0],
     segmentRanges: [
       [{ from: 0, to: 329 }],
@@ -186,7 +186,7 @@ const ROUTE_CONFIG = {
       "/scrolly/coreexam/fundalreflex/eyesclosed/1/data.json",
       "/scrolly/coreexam/fundalreflex/eyesclosed/2/data.json",
     ],
-    playMode: "segmentScroll",
+    playMode: "stageAutoplay",
     segmentRanges: [
       [{ from: 37, to: 239 }],
       [{ from: 0, to: 389 }],
@@ -227,7 +227,7 @@ const ROUTE_CONFIG = {
     ],
     centerTopBiasByFile: [88, 0, 0, 0],
     firstFileExtraTopGap: 30,
-    playMode: "segmentScroll",
+    playMode: "stageAutoplay",
     segmentRanges: [
       [
         { from: 0, to: 204 },
@@ -286,7 +286,7 @@ const ROUTE_CONFIG = {
     mobileStageTopAligned: false,
     centerTopBiasByFile: [0, -35],
     desktopTopGapByFile: [18, 0],
-    playMode: "segmentScroll",
+    playMode: "stageAutoplay",
     segmentRanges: [
       [{ from: 0, to: 79 }],
       [
@@ -322,7 +322,7 @@ const ROUTE_CONFIG = {
     enableReplay: true,
     segmentTextToggleOnTitle: true,
     paths: ["/scrolly/coreexam/fundalreflex/afterexam/1/data.json"],
-    playMode: "segmentScroll",
+    playMode: "stageAutoplay",
     segmentRanges: [
       [
         { from: 0, to: 89 },
@@ -772,9 +772,13 @@ function renderSegmentTextLine(lineEl, text) {
 }
 
 function createDownArrowElement() {
-  const downArrow = document.createElement("div");
+  const downArrow = document.createElement("button");
+  downArrow.type = "button";
   downArrow.className = "childhood-fundal-scroll-down-arrow";
-  downArrow.setAttribute("aria-hidden", "true");
+  downArrow.dataset.fundalStageNextBtn = "1";
+  downArrow.setAttribute("aria-label", "Next animation");
+  downArrow.title = "Next animation";
+  downArrow.disabled = true;
   downArrow.innerHTML =
     '<div class="childhood-fundal-scroll-down-arrow__stack">' +
     '<span class="childhood-fundal-scroll-down-arrow__chev"></span>' +
@@ -795,6 +799,109 @@ function ensureStageDownArrowElement(stage, existingArrow = null) {
   const downArrow = existingArrow || createDownArrowElement();
   stage.appendChild(downArrow);
   return downArrow;
+}
+
+function createStageReplayButtonElement() {
+  const replayBtn = document.createElement("button");
+  replayBtn.type = "button";
+  replayBtn.className = "childhood-fundal-stage-replay-btn";
+  replayBtn.dataset.fundalStageReplayBtn = "1";
+  replayBtn.setAttribute("aria-label", "Replay");
+  replayBtn.title = "Replay";
+  replayBtn.innerHTML =
+    '<svg class="childhood-fundal-stage-replay-btn__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">' +
+    '<path d="M8 7.25V3.75L4.75 7 8 10.25" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>' +
+    '<path d="M7.85 7a7 7 0 1 1-1.83 6.15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>' +
+    "</svg>";
+  replayBtn.style.display = "none";
+  return replayBtn;
+}
+
+function ensureStageReplayButtonElement(stage, existingBtn = null) {
+  if (!stage) return null;
+  if (existingBtn && existingBtn.parentElement === stage) return existingBtn;
+
+  const found = stage.querySelector(".childhood-fundal-stage-replay-btn");
+  if (found) return found;
+
+  const replayBtn = existingBtn || createStageReplayButtonElement();
+  stage.appendChild(replayBtn);
+  return replayBtn;
+}
+
+function clearFundalTextContainer(container) {
+  if (!container) return;
+  container.replaceChildren();
+  container.classList.remove("childhood-fundal-segment-text--bullet-summary");
+  container.classList.add("is-empty");
+}
+
+function renderFundalTextLines(container, lines, options = {}) {
+  if (!container) return;
+
+  const safeLines = Array.isArray(lines)
+    ? lines
+        .map((line) => normaliseSegmentTextLine(line))
+        .filter((line) => !!line)
+    : [];
+
+  container.replaceChildren();
+  container.classList.toggle("is-empty", safeLines.length === 0);
+  container.classList.toggle(
+    "childhood-fundal-segment-text--bullet-summary",
+    options.bullet === true && safeLines.length > 0,
+  );
+
+  if (!safeLines.length) return;
+
+  if (options.bullet === true) {
+    const listEl = document.createElement("ul");
+    listEl.className = "childhood-fundal-segment-text__bullet-list";
+    safeLines.forEach((line) => {
+      const itemEl = document.createElement("li");
+      itemEl.className = "childhood-fundal-segment-text__bullet-item";
+      if (shouldUseTightSegmentTextLineHeight(line)) {
+        itemEl.classList.add("childhood-fundal-segment-text__line--tight");
+      }
+      renderSegmentTextLine(itemEl, line);
+      listEl.appendChild(itemEl);
+    });
+    container.appendChild(listEl);
+    return;
+  }
+
+  safeLines.forEach((line) => {
+    const lineEl = document.createElement("div");
+    lineEl.className = "childhood-fundal-segment-text__line";
+    if (shouldUseTightSegmentTextLineHeight(line)) {
+      lineEl.classList.add("childhood-fundal-segment-text__line--tight");
+    }
+    renderSegmentTextLine(lineEl, line);
+    container.appendChild(lineEl);
+  });
+}
+
+function cleanupLegacyTopbarReplay(page) {
+  if (!page) return;
+
+  const legacyReplayBtn = page.querySelector("[data-fundal-replay-btn]");
+  legacyReplayBtn?.remove();
+
+  const titleEl = page.querySelector(".eyes-topbar .eyes-topbar__title");
+  if (titleEl) {
+    titleEl.classList.remove("childhood-fundal-title-toggle");
+    titleEl.removeAttribute("role");
+    titleEl.removeAttribute("tabindex");
+    titleEl.removeAttribute("aria-label");
+    titleEl.removeAttribute("aria-pressed");
+  }
+}
+
+function setStageReplayButtonLabel(buttonEl, label) {
+  if (!buttonEl) return;
+  const safeLabel = String(label || "Replay").trim() || "Replay";
+  buttonEl.setAttribute("aria-label", safeLabel);
+  buttonEl.title = safeLabel;
 }
 
 function resolveStagePosterPath(animationPath) {
@@ -4933,7 +5040,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
     }, IOS_FINAL_PIN_INTERVAL_MS);
   }
 
-  function applyReplayButtonTitleOffset(buttonEl, titleEl) {
+  function applyReplayButtonTitleOffset(buttonEl) {
     if (!buttonEl) return;
     buttonEl.classList.remove("childhood-fundal-replay-btn--compact-offset");
   }
@@ -4941,9 +5048,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
   function ensureReplayButton() {
     if (!shouldSupportReplay) return null;
     if (replayBtn) {
-      const topbar = page.querySelector(".eyes-topbar");
-      const titleEl = topbar?.querySelector(".eyes-topbar__title");
-      applyReplayButtonTitleOffset(replayBtn, titleEl);
+      applyReplayButtonTitleOffset(replayBtn);
       return replayBtn;
     }
 
@@ -4976,7 +5081,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
     const existing = titleGroup.querySelector("[data-fundal-replay-btn]");
     if (existing) {
       replayBtn = existing;
-      applyReplayButtonTitleOffset(replayBtn, titleEl);
+      applyReplayButtonTitleOffset(replayBtn);
       return replayBtn;
     }
 
@@ -4995,7 +5100,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
     } else {
       topbarIcons.prepend(btn);
     }
-    applyReplayButtonTitleOffset(btn, titleEl);
+    applyReplayButtonTitleOffset(btn);
     replayBtn = btn;
     return replayBtn;
   }
@@ -5508,6 +5613,945 @@ function initializeSegmentScrollMode(cfg, page, stages) {
   };
 }
 
+function initializeStageAutoplayMode(cfg, page, stages) {
+  const pageContent = document.getElementById("page-content");
+  const overscrollRestore = {
+    page: page.style.overscrollBehaviorY,
+    body: document.body.style.overscrollBehaviorY,
+    doc: document.documentElement.style.overscrollBehaviorY,
+  };
+  const blockedScrollKeys = new Set([
+    " ",
+    "ArrowDown",
+    "ArrowUp",
+    "PageDown",
+    "PageUp",
+    "Home",
+    "End",
+  ]);
+
+  let routeCompleteDispatched = false;
+  let firstStageStartQueued = false;
+  let isPlaybackScrollLocked = false;
+  let lockedWindowScrollTop = 0;
+  let lockedPageContentScrollTop = 0;
+
+  const getTopbarHeight = () => {
+    const topbar = page.querySelector(".eyes-topbar");
+    const raw = topbar?.getBoundingClientRect?.().height;
+    return Number.isFinite(raw) && raw > 0 ? raw : 56;
+  };
+
+  const getScrollHostMetrics = () => {
+    const canUsePageContent =
+      !!pageContent &&
+      (pageContent.scrollHeight || 0) - (pageContent.clientHeight || 0) > 1;
+
+    if (canUsePageContent) {
+      const rect = pageContent.getBoundingClientRect();
+      return {
+        type: "page",
+        scrollTop: pageContent.scrollTop || 0,
+        viewportHeight: pageContent.clientHeight || window.innerHeight || 0,
+        topOffset: rect.top || 0,
+      };
+    }
+
+    return {
+      type: "window",
+      scrollTop:
+        window.scrollY ??
+        document.documentElement?.scrollTop ??
+        document.body?.scrollTop ??
+        0,
+      viewportHeight:
+        window.innerHeight || document.documentElement?.clientHeight || 0,
+      topOffset: 0,
+    };
+  };
+
+  const getAbsoluteTopForStage = (stage, metrics = getScrollHostMetrics()) => {
+    const rect = stage?.getBoundingClientRect?.();
+    if (!rect) return 0;
+
+    if (metrics.type === "page") {
+      return metrics.scrollTop + (rect.top - metrics.topOffset);
+    }
+
+    return metrics.scrollTop + rect.top;
+  };
+
+  const setScrollHostTop = (targetTop, metrics = getScrollHostMetrics()) => {
+    const safeTop = Math.max(0, Math.round(Number(targetTop) || 0));
+
+    if (metrics.type === "page" && pageContent) {
+      if (typeof pageContent.scrollTo === "function") {
+        pageContent.scrollTo({ top: safeTop, behavior: "auto" });
+      } else {
+        pageContent.scrollTop = safeTop;
+      }
+      return;
+    }
+
+    window.scrollTo({ top: safeTop, behavior: "auto" });
+  };
+
+  const states = stages.map((stage, idx) => {
+    const segmentTextEl =
+      stage.parentElement?.querySelector(".childhood-fundal-segment-text") ||
+      null;
+    const state = {
+      stage,
+      anim: null,
+      fileIndex: idx,
+      arrowEl:
+        stage.parentElement?.querySelector(
+          ".childhood-fundal-scroll-down-arrow",
+        ) || null,
+      replayBtn: null,
+      segmentTextEl,
+      segmentStartTexts: [],
+      finalSummaryBulletLines: [],
+      segmentTextMode: resolveSegmentTextMode(cfg, idx),
+      segmentTextLines: [],
+      currentTextSegmentIndex: -1,
+      segments: [],
+      ready: false,
+      failed: false,
+      started: false,
+      completed: false,
+      playing: false,
+      lastRenderedFrame: null,
+      lastVisibleFrame: null,
+      lastVisibleFrameEver: null,
+      lastRichVisibleFrame: null,
+      lastRichVisibleFrameEver: null,
+      lastPinnedFrame: null,
+      minContentAreaRatio: resolveRichSettleMinArea(cfg, idx),
+      requireRichContent: shouldRequireRichSettleContent(cfg, idx),
+      animationListeners: null,
+    };
+
+    state.replayBtn = ensureStageReplayButtonElement(stage, state.replayBtn);
+    setStageReplayButtonLabel(state.replayBtn, translateFundalText("Replay"));
+    state.replayBtn.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      void replayStage(state);
+    });
+
+    const arrowEl = ensureControllerDownArrow(state);
+    if (arrowEl && arrowEl.dataset.fundalNextBound !== "1") {
+      arrowEl.dataset.fundalNextBound = "1";
+      arrowEl.addEventListener("click", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        scrollToNextStage(state);
+      });
+    }
+    hideStageControls(state);
+    clearFundalTextContainer(segmentTextEl);
+
+    return state;
+  });
+
+  function hasNextStage(state) {
+    return Number(state?.fileIndex) < states.length - 1;
+  }
+
+  function areAllStagesComplete() {
+    return states.length > 0 && states.every((state) => state.completed);
+  }
+
+  function resolveStageSummary(state) {
+    state.segmentStartTexts = resolveSegmentStartTexts(cfg, state.fileIndex)
+      .map((line) => normaliseSegmentTextLine(line))
+      .filter((line) => !!line);
+    state.finalSummaryBulletLines = resolveFinalSummaryBullets(
+      cfg,
+      state.fileIndex,
+    )
+      .map((line) => normaliseSegmentTextLine(line))
+      .filter((line) => !!line);
+  }
+
+  function setStageSegmentText(state, text) {
+    if (!state?.segmentTextEl) return;
+    const value = normaliseSegmentTextLine(text);
+
+    if (state.segmentTextMode === "append") {
+      if (value && !state.segmentTextLines.includes(value)) {
+        state.segmentTextLines.push(value);
+      }
+    } else if (state.segmentTextMode === "appendinline") {
+      if (value) {
+        const merged = appendInlineSegmentText(
+          state.segmentTextLines[0] || "",
+          value,
+        );
+        state.segmentTextLines = merged ? [merged] : [];
+      }
+    } else if (state.segmentTextMode === "sticky") {
+      state.segmentTextLines = value ? [value] : [];
+    } else {
+      state.segmentTextLines = value ? [value] : [];
+    }
+
+    renderFundalTextLines(state.segmentTextEl, state.segmentTextLines);
+  }
+
+  function clearStageSegmentText(state) {
+    if (!state) return;
+    state.segmentTextLines = [];
+    state.currentTextSegmentIndex = -1;
+    clearFundalTextContainer(state.segmentTextEl);
+  }
+
+  function applyStageTextUpToIndex(state, maxIndex) {
+    clearStageSegmentText(state);
+    if (!Array.isArray(state.segmentStartTexts)) return;
+
+    for (let i = 0; i <= maxIndex; i += 1) {
+      const text = state.segmentStartTexts[i];
+      setStageSegmentText(state, text);
+    }
+    state.currentTextSegmentIndex = maxIndex;
+  }
+
+  function updateStageTextForFrame(state, frame) {
+    if (!state || !Array.isArray(state.segments) || !state.segments.length) {
+      return;
+    }
+    if (
+      !Array.isArray(state.segmentStartTexts) ||
+      !state.segmentStartTexts.length
+    ) {
+      return;
+    }
+
+    let nextIndex = -1;
+    state.segments.forEach((segment, idx) => {
+      if (isFrameWithinSegment(frame, segment)) {
+        nextIndex = idx;
+      }
+    });
+
+    if (nextIndex < 0) return;
+    if (nextIndex === state.currentTextSegmentIndex) return;
+
+    if (nextIndex < state.currentTextSegmentIndex) {
+      applyStageTextUpToIndex(state, nextIndex);
+      return;
+    }
+
+    for (let i = state.currentTextSegmentIndex + 1; i <= nextIndex; i += 1) {
+      const text = state.segmentStartTexts[i];
+      setStageSegmentText(state, text);
+    }
+    state.currentTextSegmentIndex = nextIndex;
+  }
+
+  function showStageFinalSummaryBullets(state) {
+    if (!state?.segmentTextEl) return;
+    if (!state.finalSummaryBulletLines.length) return;
+    renderFundalTextLines(state.segmentTextEl, state.finalSummaryBulletLines, {
+      bullet: true,
+    });
+  }
+
+  function restoreTranslatedPlaybackText(state) {
+    if (!state) return;
+    if (state.finalSummaryBulletLines.length && state.completed) {
+      showStageFinalSummaryBullets(state);
+      return;
+    }
+
+    if (state.currentTextSegmentIndex >= 0) {
+      applyStageTextUpToIndex(state, state.currentTextSegmentIndex);
+      return;
+    }
+
+    clearStageSegmentText(state);
+  }
+
+  function hideStageControls(state) {
+    if (!state) return;
+    const replayBtn = ensureStageReplayButtonElement(
+      state.stage,
+      state.replayBtn,
+    );
+    if (replayBtn) {
+      replayBtn.style.display = "none";
+    }
+    const arrowEl = ensureControllerDownArrow(state);
+    if (arrowEl) {
+      arrowEl.classList.remove("is-visible");
+      arrowEl.disabled = true;
+    }
+  }
+
+  function showStageControls(state) {
+    if (!state) return;
+    const replayBtn = ensureStageReplayButtonElement(
+      state.stage,
+      state.replayBtn,
+    );
+    if (replayBtn) {
+      setStageReplayButtonLabel(replayBtn, translateFundalText("Replay"));
+      replayBtn.style.display = "inline-flex";
+      replayBtn.style.alignItems = "center";
+      replayBtn.style.justifyContent = "center";
+    }
+    const arrowEl = ensureControllerDownArrow(state);
+    if (arrowEl) {
+      arrowEl.disabled = !hasNextStage(state);
+      arrowEl.classList.toggle("is-visible", hasNextStage(state));
+    }
+    updateStageControlAnchors(state);
+  }
+
+  function updateStageControlAnchors(state) {
+    const arrowEl = ensureControllerDownArrow(state);
+    const replayBtn = ensureStageReplayButtonElement(
+      state.stage,
+      state.replayBtn,
+    );
+    const stage = state?.stage;
+
+    if (!stage) return;
+
+    if (!isDesktopViewport()) {
+      arrowEl?.style.removeProperty("--fundal-arrow-right");
+      arrowEl?.style.removeProperty("--fundal-arrow-bottom");
+      replayBtn?.style.removeProperty("--fundal-replay-left");
+      replayBtn?.style.removeProperty("--fundal-replay-bottom");
+      return;
+    }
+
+    const renderEl =
+      getControllerRenderElement(state) || stage.querySelector("canvas");
+    const stageRect = stage.getBoundingClientRect?.();
+    const renderRect = renderEl?.getBoundingClientRect?.();
+    if (
+      !stageRect ||
+      !renderRect ||
+      stageRect.width <= 0.5 ||
+      renderRect.width <= 0.5
+    ) {
+      return;
+    }
+
+    let leftInset = 10;
+    let rightInset = 10;
+    let bottomInset = 10;
+
+    if (
+      isWideDesktopViewport() &&
+      String(renderEl?.tagName || "").toUpperCase() === "SVG"
+    ) {
+      const vb = renderEl.viewBox?.baseVal;
+      const vbWidth = Number(vb?.width);
+      const vbHeight = Number(vb?.height);
+      if (
+        Number.isFinite(vbWidth) &&
+        vbWidth > 0 &&
+        Number.isFinite(vbHeight) &&
+        vbHeight > 0
+      ) {
+        const scale = Math.min(
+          stageRect.width / vbWidth,
+          stageRect.height / vbHeight,
+        );
+        const renderWidth = vbWidth * scale;
+        const renderHeight = vbHeight * scale;
+        const gutterX = Math.max(0, (stageRect.width - renderWidth) / 2);
+        const gutterY = Math.max(0, (stageRect.height - renderHeight) / 2);
+        leftInset = Math.max(10, Math.round(gutterX + 10));
+        rightInset = Math.max(10, Math.round(gutterX + 10));
+        bottomInset = Math.max(10, Math.round(gutterY + 10));
+      }
+    } else {
+      leftInset = Math.max(
+        10,
+        Math.round(renderRect.left - stageRect.left + 10),
+      );
+      rightInset = Math.max(
+        10,
+        Math.round(stageRect.right - renderRect.right + 10),
+      );
+      bottomInset = Math.max(
+        10,
+        Math.round(stageRect.bottom - renderRect.bottom + 10),
+      );
+    }
+
+    arrowEl?.style.setProperty("--fundal-arrow-right", `${rightInset}px`);
+    arrowEl?.style.setProperty("--fundal-arrow-bottom", `${bottomInset}px`);
+    replayBtn?.style.setProperty("--fundal-replay-left", `${leftInset}px`);
+    replayBtn?.style.setProperty("--fundal-replay-bottom", `${bottomInset}px`);
+  }
+
+  function updateAllStageControlAnchors() {
+    states.forEach((state) => updateStageControlAnchors(state));
+  }
+
+  function getCenteredScrollTopForStage(
+    stage,
+    metrics = getScrollHostMetrics(),
+  ) {
+    const rect = stage.getBoundingClientRect();
+    const absoluteTop = getAbsoluteTopForStage(stage, metrics);
+    const vh = metrics.viewportHeight || 0;
+    const topbarHeight = getTopbarHeight();
+    const fileIndex = Number(stage?.dataset?.fileIndex);
+
+    if (shouldUseMobileStageTopAlignedMode(cfg)) {
+      return Math.max(0, absoluteTop - topbarHeight);
+    }
+    if (isDesktopViewport()) {
+      const desktopTopGap = Number.isFinite(fileIndex)
+        ? resolveDesktopTopGap(cfg, fileIndex)
+        : 18;
+      return Math.max(0, absoluteTop - topbarHeight - desktopTopGap);
+    }
+
+    const stageCenterAbs = absoluteTop + rect.height / 2;
+    const availableHeight = Math.max(0, vh - topbarHeight);
+    const effectiveViewportCenter = topbarHeight + availableHeight / 2;
+    let centerTopBias = Number.isFinite(fileIndex)
+      ? resolveCenterTopBias(cfg, fileIndex)
+      : 0;
+
+    if (
+      isNarrowMobileViewport() &&
+      Number.isFinite(fileIndex) &&
+      fileIndex > 0
+    ) {
+      const firstStage = stages?.[0];
+      const firstRect = firstStage?.getBoundingClientRect?.();
+      const firstHeight = Number(firstRect?.height);
+      const currentHeight = Number(rect?.height);
+      if (
+        Number.isFinite(firstHeight) &&
+        firstHeight > 0 &&
+        Number.isFinite(currentHeight) &&
+        currentHeight > 0
+      ) {
+        centerTopBias += (currentHeight - firstHeight) / 2;
+      }
+      centerTopBias -= 24;
+    }
+
+    return Math.max(
+      0,
+      stageCenterAbs - effectiveViewportCenter - centerTopBias,
+    );
+  }
+
+  function centerStageForPlayback(stage) {
+    const metrics = getScrollHostMetrics();
+    const targetTop = getCenteredScrollTopForStage(stage, metrics);
+    if (Math.abs(targetTop - metrics.scrollTop) <= 1) return;
+    setScrollHostTop(targetTop, metrics);
+  }
+
+  function scrollToFirstStageStart() {
+    const firstStage = stages[0];
+    if (!firstStage) return;
+
+    const metrics = getScrollHostMetrics();
+    const topbarHeight = getTopbarHeight();
+    const extraTopGap = shouldUseMobileStageTopAlignedMode(cfg)
+      ? 0
+      : resolveFirstFileExtraTopGap(cfg);
+    const absoluteTop = getAbsoluteTopForStage(firstStage, metrics);
+    const targetTop = Math.max(0, absoluteTop - topbarHeight - extraTopGap);
+
+    setScrollHostTop(targetTop, metrics);
+  }
+
+  function alignStageForPlayback(state) {
+    if (!state?.stage) return;
+    if (state.fileIndex === 0) {
+      scrollToFirstStageStart();
+      return;
+    }
+    centerStageForPlayback(state.stage);
+  }
+
+  function scrollToNextStage(state) {
+    if (
+      !state ||
+      state.playing ||
+      states.some((candidate) => candidate.playing)
+    )
+      return;
+
+    const nextState = hasNextStage(state) ? states[state.fileIndex + 1] : null;
+    if (!nextState?.stage) return;
+
+    alignStageForPlayback(nextState);
+    requestAnimationFrame(() => {
+      updateAllStageControlAnchors();
+      maybeStartEligibleStage();
+    });
+  }
+
+  function rememberLockedScrollPosition() {
+    lockedWindowScrollTop =
+      window.scrollY ??
+      document.documentElement?.scrollTop ??
+      document.body?.scrollTop ??
+      0;
+    lockedPageContentScrollTop = pageContent?.scrollTop || 0;
+  }
+
+  function syncLockedViewport() {
+    if (!isPlaybackScrollLocked) return;
+
+    const currentWindowScrollTop =
+      window.scrollY ??
+      document.documentElement?.scrollTop ??
+      document.body?.scrollTop ??
+      0;
+
+    if (Math.abs(currentWindowScrollTop - lockedWindowScrollTop) > 1) {
+      window.scrollTo({ top: lockedWindowScrollTop, behavior: "auto" });
+    }
+
+    if (
+      pageContent &&
+      Math.abs((pageContent.scrollTop || 0) - lockedPageContentScrollTop) > 1
+    ) {
+      pageContent.scrollTop = lockedPageContentScrollTop;
+    }
+  }
+
+  function preventPlaybackScroll(event) {
+    if (!isPlaybackScrollLocked) return;
+    event.preventDefault();
+    syncLockedViewport();
+  }
+
+  function preventPlaybackScrollKeys(event) {
+    if (!isPlaybackScrollLocked) return;
+    if (!blockedScrollKeys.has(event.key || "")) return;
+    event.preventDefault();
+  }
+
+  function setPlaybackScrollLocked(locked) {
+    if (isPlaybackScrollLocked === locked) return;
+    isPlaybackScrollLocked = locked;
+
+    if (locked) {
+      rememberLockedScrollPosition();
+      page.style.overscrollBehaviorY = "none";
+      document.body.style.overscrollBehaviorY = "none";
+      document.documentElement.style.overscrollBehaviorY = "none";
+      window.addEventListener("wheel", preventPlaybackScroll, {
+        passive: false,
+      });
+      pageContent?.addEventListener("wheel", preventPlaybackScroll, {
+        passive: false,
+      });
+      window.addEventListener("touchmove", preventPlaybackScroll, {
+        passive: false,
+      });
+      pageContent?.addEventListener("touchmove", preventPlaybackScroll, {
+        passive: false,
+      });
+      window.addEventListener("keydown", preventPlaybackScrollKeys);
+      window.addEventListener("scroll", syncLockedViewport, { passive: true });
+      pageContent?.addEventListener("scroll", syncLockedViewport, {
+        passive: true,
+      });
+      return;
+    }
+
+    window.removeEventListener("wheel", preventPlaybackScroll);
+    pageContent?.removeEventListener("wheel", preventPlaybackScroll);
+    window.removeEventListener("touchmove", preventPlaybackScroll);
+    pageContent?.removeEventListener("touchmove", preventPlaybackScroll);
+    window.removeEventListener("keydown", preventPlaybackScrollKeys);
+    window.removeEventListener("scroll", syncLockedViewport);
+    pageContent?.removeEventListener("scroll", syncLockedViewport);
+    page.style.overscrollBehaviorY = overscrollRestore.page;
+    document.body.style.overscrollBehaviorY = overscrollRestore.body;
+    document.documentElement.style.overscrollBehaviorY = overscrollRestore.doc;
+  }
+
+  function isStateNearViewportCenter(state) {
+    const rect = state?.stage?.getBoundingClientRect?.();
+    const viewportHeight =
+      window.innerHeight || document.documentElement?.clientHeight || 0;
+    if (!rect || rect.height <= 0.5 || viewportHeight <= 0) return false;
+    if (rect.bottom <= 0 || rect.top >= viewportHeight) return false;
+
+    const viewportCenter = viewportHeight / 2;
+    const stageCenter = rect.top + rect.height / 2;
+    const centerBand = Math.max(90, Math.min(220, viewportHeight * 0.22));
+    return Math.abs(stageCenter - viewportCenter) <= centerBand;
+  }
+
+  function getNextAutoplayCandidate() {
+    for (let i = 0; i < states.length; i += 1) {
+      const state = states[i];
+      if (state.failed || state.started) continue;
+      if (i > 0 && !states[i - 1]?.completed) return null;
+      return state;
+    }
+    return null;
+  }
+
+  function resolveCompletionHoldFrame(state) {
+    const lastFrame = getAnimationLastFrame(state?.anim);
+    let holdFrame = clampFrameToAnimation(state, lastFrame);
+    try {
+      state.anim?.goToAndStop(holdFrame, true);
+    } catch {
+      // Ignore renderer seek failures and fall back to visible-frame recovery.
+    }
+    forceSvgVisibleForController(state);
+
+    const hasRichFrame =
+      !state.requireRichContent ||
+      hasRichVisibleContent(state, state.minContentAreaRatio);
+    if (!isStageFrameBlank(state) && hasRichFrame) {
+      return holdFrame;
+    }
+
+    const recoveredFrame = resolveAnyVisibleFrame(state, holdFrame);
+    holdFrame = clampFrameToAnimation(state, recoveredFrame);
+    try {
+      state.anim?.goToAndStop(holdFrame, true);
+    } catch {
+      // Ignore renderer seek failures and keep the recovered candidate flow.
+    }
+    forceSvgVisibleForController(state);
+    return holdFrame;
+  }
+
+  function dispatchRouteCompleteOnce() {
+    if (routeCompleteDispatched || !areAllStagesComplete()) return;
+    routeCompleteDispatched = true;
+    document.dispatchEvent(
+      new CustomEvent("childhoodWorkshop:route-complete", {
+        detail: { target: cfg.pageId },
+      }),
+    );
+  }
+
+  async function finishStagePlayback(state) {
+    state.playing = false;
+    setPlaybackScrollLocked(false);
+
+    state.lastPinnedFrame = resolveCompletionHoldFrame(state);
+    const shouldRequirePosterRichContent = IS_IOS_WEBKIT;
+    const didHidePoster = maybeHideStagePoster(state, {
+      immediate: true,
+      requireRichContent: shouldRequirePosterRichContent,
+      minContentAreaRatio: state.minContentAreaRatio,
+    });
+    if (!didHidePoster && state.stage?.dataset?.posterHidden !== "1") {
+      scheduleStagePosterHideCheck(state, {
+        requireRichContent: shouldRequirePosterRichContent,
+        minContentAreaRatio: state.minContentAreaRatio,
+        checks: shouldRequirePosterRichContent ? 260 : 60,
+      });
+    }
+
+    requestIosStageRepaintNudge(state.stage);
+    if (!state.completed) {
+      state.completed = true;
+    }
+    showStageFinalSummaryBullets(state);
+    showStageControls(state);
+    dispatchRouteCompleteOnce();
+
+    requestAnimationFrame(() => {
+      maybeStartEligibleStage();
+    });
+  }
+
+  function refreshVisibleFrameState(state) {
+    const activeAnim = state?.anim;
+    if (!activeAnim) return null;
+
+    if (state.stage?.dataset?.posterHidden !== "1") {
+      maybeHideStagePoster(state, {
+        requireRichContent: IS_IOS_WEBKIT,
+        minContentAreaRatio: state.minContentAreaRatio,
+      });
+    }
+
+    const current = Math.floor(Number(activeAnim.currentFrame));
+    if (!Number.isFinite(current)) return null;
+
+    state.lastRenderedFrame = clampFrameToAnimation(state, current);
+    if (isStageFrameBlank(state)) return state.lastRenderedFrame;
+
+    state.lastVisibleFrame = state.lastRenderedFrame;
+    state.lastVisibleFrameEver = state.lastRenderedFrame;
+    if (hasRichVisibleContent(state, state.minContentAreaRatio)) {
+      state.lastRichVisibleFrame = state.lastRenderedFrame;
+      state.lastRichVisibleFrameEver = state.lastRenderedFrame;
+    }
+    return state.lastRenderedFrame;
+  }
+
+  function prepareInitialFrame(state) {
+    const startFrame = 0;
+    try {
+      state.anim?.goToAndStop(startFrame, true);
+    } catch {
+      // Some renderers can reject an eager first-frame seek before settling.
+    }
+    forceSvgVisibleForController(state);
+
+    if (isStageFrameBlank(state)) {
+      const recoveredFrame = resolveAnyVisibleFrame(state, startFrame);
+      try {
+        state.anim?.goToAndStop(recoveredFrame, true);
+      } catch {
+        // If this also fails, the poster fallback remains in place.
+      }
+      forceSvgVisibleForController(state);
+    }
+
+    if (!isStageFrameBlank(state)) {
+      const currentFrame = clampFrameToAnimation(
+        state,
+        Math.floor(Number(state.anim?.currentFrame || 0)),
+      );
+      state.lastVisibleFrame = currentFrame;
+      state.lastVisibleFrameEver = currentFrame;
+      if (hasRichVisibleContent(state, state.minContentAreaRatio)) {
+        state.lastRichVisibleFrame = currentFrame;
+        state.lastRichVisibleFrameEver = currentFrame;
+      }
+      state.lastPinnedFrame = currentFrame;
+    }
+
+    const shouldRequirePosterRichContent = IS_IOS_WEBKIT;
+    const didHidePoster = maybeHideStagePoster(state, {
+      immediate: true,
+      requireRichContent: shouldRequirePosterRichContent,
+      minContentAreaRatio: state.minContentAreaRatio,
+    });
+    if (!didHidePoster && state.stage?.dataset?.posterHidden !== "1") {
+      scheduleStagePosterHideCheck(state, {
+        requireRichContent: shouldRequirePosterRichContent,
+        minContentAreaRatio: state.minContentAreaRatio,
+        checks: shouldRequirePosterRichContent ? 260 : 60,
+      });
+    }
+  }
+
+  async function playStage(state, { replay = false } = {}) {
+    if (!state?.ready || state.failed || state.playing) return false;
+    if (states.some((candidate) => candidate.playing)) return false;
+    if (!replay && state.started) return false;
+    if (
+      !replay &&
+      state.fileIndex > 0 &&
+      !states[state.fileIndex - 1]?.completed
+    ) {
+      return false;
+    }
+
+    state.started = true;
+    state.playing = true;
+    clearStageSegmentText(state);
+    hideStageControls(state);
+    alignStageForPlayback(state);
+    setPlaybackScrollLocked(true);
+
+    const startFrame = 0;
+    const endFrame = getAnimationLastFrame(state.anim);
+    if (endFrame <= 0) {
+      await finishStagePlayback(state);
+      return true;
+    }
+
+    try {
+      state.anim?.pause();
+      state.anim?.goToAndStop(startFrame, true);
+      state.anim?.playSegments([startFrame, endFrame], true);
+    } catch {
+      try {
+        state.anim?.goToAndPlay(startFrame, true);
+      } catch {
+        // Leave the stage idle if both playback strategies fail.
+      }
+    }
+    forceSvgVisibleForController(state);
+    updateStageTextForFrame(state, startFrame);
+    updateStageControlAnchors(state);
+    return true;
+  }
+
+  async function replayStage(state) {
+    if (!state || state.playing || !state.ready) return;
+    await playStage(state, { replay: true });
+  }
+
+  function maybeStartEligibleStage() {
+    if (states.some((state) => state.playing)) return;
+
+    const nextState = getNextAutoplayCandidate();
+    if (!nextState) {
+      dispatchRouteCompleteOnce();
+      return;
+    }
+
+    if (nextState.fileIndex === 0) {
+      if (!firstStageStartQueued && nextState.ready) {
+        firstStageStartQueued = true;
+        void playStage(nextState);
+      }
+      return;
+    }
+
+    if (!nextState.ready || !isStateNearViewportCenter(nextState)) return;
+    void playStage(nextState);
+  }
+
+  function onViewportChange() {
+    updateAllStageControlAnchors();
+    maybeStartEligibleStage();
+  }
+
+  async function refreshLanguage() {
+    await ensureFundalI18nDictionary();
+    states.forEach((state) => {
+      resolveStageSummary(state);
+      const replayBtn = ensureStageReplayButtonElement(
+        state.stage,
+        state.replayBtn,
+      );
+      if (replayBtn) {
+        setStageReplayButtonLabel(replayBtn, translateFundalText("Replay"));
+      }
+      restoreTranslatedPlaybackText(state);
+    });
+  }
+
+  states.forEach((state) => {
+    resolveStageSummary(state);
+
+    const anim = window.lottie.loadAnimation({
+      container: state.stage,
+      renderer: FUNDAL_LOTTIE_RENDERER,
+      loop: false,
+      autoplay: false,
+      path: cfg.paths[state.fileIndex],
+      rendererSettings: {
+        preserveAspectRatio: resolvePreserveAspectRatio(cfg, state.fileIndex),
+        hideOnTransparent: false,
+      },
+    });
+
+    state.anim = anim;
+
+    const onReady = () => {
+      state.segments = resolveSegmentsForFile(cfg, state.fileIndex, anim);
+      state.ready = true;
+      prepareInitialFrame(state);
+      updateStageControlAnchors(state);
+      if (state.fileIndex === 0 && !firstStageStartQueued) {
+        requestAnimationFrame(() => {
+          scrollToFirstStageStart();
+          maybeStartEligibleStage();
+        });
+      }
+    };
+
+    const onDataFailed = () => {
+      state.failed = true;
+      console.error(
+        "[fundalScroll] animation data failed:",
+        cfg.paths[state.fileIndex],
+      );
+    };
+
+    const onEnterFrame = () => {
+      const currentFrame = refreshVisibleFrameState(state);
+      if (state.playing && Number.isFinite(currentFrame)) {
+        updateStageTextForFrame(state, currentFrame);
+      }
+      updateStageControlAnchors(state);
+    };
+
+    const onComplete = () => {
+      void finishStagePlayback(state);
+    };
+
+    anim.addEventListener("DOMLoaded", onReady);
+    anim.addEventListener("data_failed", onDataFailed);
+    anim.addEventListener("enterFrame", onEnterFrame);
+    anim.addEventListener("complete", onComplete);
+
+    state.animationListeners = {
+      onReady,
+      onDataFailed,
+      onEnterFrame,
+      onComplete,
+    };
+  });
+
+  cleanupLegacyTopbarReplay(page);
+  window.addEventListener("scroll", onViewportChange, { passive: true });
+  pageContent?.addEventListener("scroll", onViewportChange, { passive: true });
+  window.addEventListener("resize", onViewportChange, { passive: true });
+  window.addEventListener("pageshow", onViewportChange, { passive: true });
+  window.addEventListener("orientationchange", onViewportChange, {
+    passive: true,
+  });
+
+  return {
+    refreshLanguage,
+    controllers: states,
+    animations: states.map((state) => state.anim).filter((anim) => !!anim),
+    observer: null,
+    removeInputListeners: () => {
+      setPlaybackScrollLocked(false);
+      window.removeEventListener("scroll", onViewportChange);
+      pageContent?.removeEventListener("scroll", onViewportChange);
+      window.removeEventListener("resize", onViewportChange);
+      window.removeEventListener("pageshow", onViewportChange);
+      window.removeEventListener("orientationchange", onViewportChange);
+      states.forEach((state) => {
+        cancelStagePosterHideCheck(state);
+        cancelArrowEnsure(state);
+        hideRecoveryOverlay(state, { immediate: true });
+        hideStageControls(state);
+        try {
+          state.anim?.removeEventListener(
+            "DOMLoaded",
+            state.animationListeners?.onReady,
+          );
+          state.anim?.removeEventListener(
+            "data_failed",
+            state.animationListeners?.onDataFailed,
+          );
+          state.anim?.removeEventListener(
+            "enterFrame",
+            state.animationListeners?.onEnterFrame,
+          );
+          state.anim?.removeEventListener(
+            "complete",
+            state.animationListeners?.onComplete,
+          );
+        } catch {
+          // Ignore listener cleanup failures during route teardown.
+        }
+        state.animationListeners = null;
+      });
+      cleanupLegacyTopbarReplay(page);
+    },
+  };
+}
+
 function resolveFundalRouteConfig(routeName) {
   const baseCfg = ROUTE_CONFIG[routeName];
   if (!baseCfg) return null;
@@ -5586,6 +6630,12 @@ export async function initializeChildhoodFundalReflexScrollPage(routeName) {
   ]);
   if (!isLottieReady) {
     console.error("[fundalScroll] lottie is not available");
+    return;
+  }
+
+  if (cfg.playMode === "stageAutoplay") {
+    await i18nReadyPromise;
+    activeSession = initializeStageAutoplayMode(cfg, page, stages);
     return;
   }
 

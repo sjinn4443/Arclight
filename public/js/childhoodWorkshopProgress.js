@@ -25,6 +25,16 @@ const SCROLL_TARGETS = new Set([
   "childhoodFundalAfterExaminationPage",
 ]);
 
+const ROUTE_COMPLETE_ONLY_TARGETS = new Set([
+  "childhoodFundalPreparationPage",
+  "childhoodFundalExaminationPage",
+  "childhoodFundalNewbornEyesOpenPage",
+  "childhoodFundalNewbornEyesClosedPage",
+  "childhoodFundalUnclearFindingsPage",
+  "childhoodFundalPossibleFindingPage",
+  "childhoodFundalAfterExaminationPage",
+]);
+
 const PDF_TARGETS = new Set([
   "atomsHandout1Page",
   "atomsHandout2Page",
@@ -461,6 +471,7 @@ function hasScrollableRange(minRange = 8) {
 
 function maybeCompleteActiveScrollLesson() {
   if (!activeScrollTarget) return;
+  if (ROUTE_COMPLETE_ONLY_TARGETS.has(activeScrollTarget)) return;
   // Prevent instant auto-complete before the learner has actually scrolled
   // when there is a meaningful scroll range.
   if (hasScrollableRange() && !hasScrolledFromTop()) return;
