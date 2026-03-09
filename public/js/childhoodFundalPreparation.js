@@ -231,6 +231,7 @@ const ROUTE_CONFIG = {
     playMode: "stageAutoplay",
     autoplayLegacySegmentPlaybackByFile: [false, false, false, true],
     preferLastVisibleCompletionFrameByFile: [false, false, false, true],
+    preserveCompletionSnapshotOverlayByFile: [false, false, false, true],
     segmentRanges: [
       [
         { from: 0, to: 204 },
@@ -1485,6 +1486,13 @@ function resolveAutoplayPlaybackSegments(cfg, fileIndex, anim, segments = []) {
 function shouldPreferLastVisibleCompletionFrame(cfg, fileIndex) {
   const rule = Array.isArray(cfg?.preferLastVisibleCompletionFrameByFile)
     ? cfg.preferLastVisibleCompletionFrameByFile[fileIndex]
+    : null;
+  return rule === true;
+}
+
+function shouldPreserveCompletionSnapshotOverlay(cfg, fileIndex) {
+  const rule = Array.isArray(cfg?.preserveCompletionSnapshotOverlayByFile)
+    ? cfg.preserveCompletionSnapshotOverlayByFile[fileIndex]
     : null;
   return rule === true;
 }
@@ -6314,7 +6322,26 @@ function initializeStageAutoplayMode(cfg, page, stages) {
     state.playing = false;
     setPlaybackScrollLocked(false);
 
-    state.lastPinnedFrame = resolveCompletionHoldFrame(state);
+    const shouldPreserveSnapshot = shouldPreserveCompletionSnapshotOverlay(
+      cfg,
+      state.fileIndex,
+    );
+    if (shouldPreserveSnapshot) {
+      const currentFrame = clampFrameToAnimation(
+        state,
+        Math.floor(Number(state.anim?.currentFrame || 0)),
+      );
+      rememberRecoverySnapshot(state, currentFrame);
+      state.anim?.pause?.();
+      showRecoveryOverlay(state);
+      state.lastPinnedFrame = currentFrame;
+    } else {
+      state.lastPinnedFrame = resolveCompletionHoldFrame(state);
+      hideRecoveryOverlayWhenStable(state, {
+        checks: 2,
+        requiredStablePasses: 1,
+      });
+    }
     const shouldRequirePosterRichContent = IS_IOS_WEBKIT;
     const didHidePoster = maybeHideStagePoster(state, {
       immediate: true,
@@ -6430,6 +6457,7 @@ function initializeStageAutoplayMode(cfg, page, stages) {
 
     state.started = true;
     state.playing = true;
+    hideRecoveryOverlay(state, { immediate: true });
     clearStageSegmentText(state);
     hideStageControls(state);
     alignStageForPlayback(state);
