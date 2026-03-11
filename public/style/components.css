@@ -5926,7 +5926,21 @@ Glaucoma history case study: match intermediate style
 :is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage)
   .eyes-topbar__icons {
   position: relative;
-  left: -16px;
+  left: 0;
+}
+
+@media (max-width: 767px) {
+  :is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage)
+    .eyes-topbar__icons {
+    left: 0 !important;
+  }
+
+  :is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage)
+    .eyes-topbar
+    .icon.menuBtn {
+    position: relative;
+    left: 22px !important;
+  }
 }
 
 :is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage)
@@ -5943,7 +5957,7 @@ Glaucoma history case study: match intermediate style
 
 :is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage) .vs-story {
   position: relative;
-  height: 3400dvh;
+  height: 4690dvh;
 }
 
 :is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage)
@@ -5970,8 +5984,143 @@ Glaucoma history case study: match intermediate style
   box-shadow: none;
 }
 
+:is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage) .vs-scroll-cue,
+:is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage) .vs-caption {
+  position: absolute;
+  left: var(--left, 50%);
+  top: var(--top, 50%);
+  opacity: var(--opacity, 0);
+  transform: translate3d(
+      calc(var(--origin-x, -50%) + var(--x, 0px)),
+      calc(var(--origin-y, -50%) + var(--y, 0px)),
+      0
+    )
+    scale(var(--scale, 1));
+  pointer-events: none;
+}
+
+:is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage) .vs-scroll-cue {
+  --left: 50%;
+  --top: 92%;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(58, 58, 58, 0.46);
+  color: #fff;
+  z-index: 18;
+}
+
+:is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage)
+  .vs-scroll-cue__stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(-1px);
+}
+
+:is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage)
+  .vs-scroll-cue__chev {
+  width: 9px;
+  height: 9px;
+  margin-top: -4px;
+  border-right: 2.2px solid currentColor;
+  border-bottom: 2.2px solid currentColor;
+  transform: rotate(45deg);
+  animation: vsArrowGrayShift 1.2s linear infinite;
+}
+
+:is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage)
+  .vs-scroll-cue__chev:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+:is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage)
+  .vs-scroll-cue__chev:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+:is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage) .vs-caption {
+  width: var(--width, min(82%, 340px));
+  padding: 14px 16px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 16px 36px rgb(24 33 46 / 20%);
+  z-index: 17;
+  text-align: left;
+}
+
+:is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage)
+  .vs-caption__body {
+  margin: 0;
+  color: #1d2430;
+  font-size: clamp(14px, 3.8vw, 16px);
+  font-weight: 600;
+  line-height: 1.42;
+  letter-spacing: -0.02em;
+  white-space: pre-line;
+}
+
+:is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage)
+  .vs-caption--intro {
+  --left: 50%;
+  --top: 18%;
+  --width: 224px;
+  box-sizing: border-box;
+  border-radius: 10px;
+  box-shadow: 0 16px 36px rgb(24 33 46 / 8%);
+}
+
+:is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage)
+  .vs-caption--world {
+  --left: 50%;
+  --top: 77%;
+  --width: 224px;
+  box-sizing: border-box;
+  border-radius: 10px;
+  box-shadow: 0 16px 36px rgb(24 33 46 / 8%);
+}
+
+:is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage)
+  .vs-caption--final {
+  --left: 2.5%;
+  --top: 22%;
+  --origin-x: 0%;
+  --origin-y: 0%;
+  --width: min(34%, 148px);
+  border-radius: 10px;
+}
+
+:is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage)
+  .vs-caption--final
+  .vs-caption__body {
+  font-size: clamp(14px, 3.8vw, 16px);
+  font-weight: 600;
+  line-height: 1.42;
+}
+
+@keyframes vsArrowGrayShift {
+  0% {
+    color: #efefef;
+    opacity: 0.42;
+  }
+  40% {
+    color: #f9f9f9;
+    opacity: 1;
+  }
+  100% {
+    color: #cfcfcf;
+    opacity: 0.36;
+  }
+}
+
 :is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage) .vs-layer,
-:is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage) .vs-label {
+:is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage) .vs-label,
+:is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage) .vs-scroll-cue,
+:is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage) .vs-caption {
   will-change: transform, opacity, clip-path;
 }
 
@@ -6230,14 +6379,14 @@ Glaucoma history case study: match intermediate style
 }
 
 :is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage) .vs-face {
-  --left: 50%;
+  --left: 55.5%;
   --top: 41%;
   --width: 21%;
   z-index: 10;
 }
 
 :is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage) .vs-final-light {
-  --left: 50.6%;
+  --left: 56%;
   --top: 21%;
   --origin-y: 0%;
   --width: 13%;
@@ -6246,14 +6395,14 @@ Glaucoma history case study: match intermediate style
 }
 
 :is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage) .vs-final-eye {
-  --left: 50.6%;
+  --left: 56%;
   --top: 52%;
   --width: 46%;
   z-index: 8;
 }
 
 :is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage) .vs-brain {
-  --left: 69%;
+  --left: 75%;
   --top: 1637px;
   --origin-y: -100%;
   --width: 100%;
@@ -6262,7 +6411,7 @@ Glaucoma history case study: match intermediate style
 }
 
 :is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage) .vs-tract {
-  --left: 78%;
+  --left: 84%;
   --top: 33%;
   --origin-y: 0%;
   --width: 60%;
@@ -6271,7 +6420,7 @@ Glaucoma history case study: match intermediate style
 }
 
 :is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage) .vs-tract2 {
-  --left: 69%;
+  --left: 75%;
   --top: 63%;
   --origin-y: 0%;
   --width: 76%;
@@ -6280,8 +6429,55 @@ Glaucoma history case study: match intermediate style
 }
 
 @media (min-width: 768px) {
+  :is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage)
+    .eyes-topbar__icons {
+    position: absolute;
+    top: 50%;
+    right: calc(22vw - 4px + 20px);
+    left: auto;
+    margin-left: 0;
+    transform: translateY(-50%);
+  }
+
+  :is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage)
+    .eyes-topbar
+    .icon.menuBtn {
+    position: static;
+    left: auto !important;
+  }
+
   :is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage) .vs-story {
-    height: 2900dvh;
+    height: 4000dvh;
+  }
+
+  :is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage)
+    .vs-label--cornea {
+    --dot-left: 151px;
+    --dot-y: 74px;
+  }
+
+  :is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage)
+    .vs-label--lens {
+    --line-h: 76px;
+    --line-d: clamp(34px, 10vw, 47px);
+    --line-angle: 43deg;
+    --line-top: 26px;
+    --line-d-left: 119px;
+    --dot-left: 152px;
+    --dot-y: 56px;
+  }
+
+  :is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage)
+    .vs-label--retina {
+    --line-d: 37px;
+    --line-angle: 47deg;
+    --line-d-left: 116px;
+    --dot-left: 139px;
+    --dot-y: 37px;
+  }
+
+  :is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage) .vs-brain {
+    --top: 1796px;
   }
 
   :is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage)

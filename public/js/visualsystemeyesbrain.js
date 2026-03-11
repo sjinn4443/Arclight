@@ -21,16 +21,26 @@ function easeInOutCubic(t) {
 
 function mapStoryProgress(rawProgress) {
   const raw = clamp(rawProgress);
-  const earlyRawEnd = 0.61;
+  const earlyRawEnd = 0.4424;
+  const middleRawEnd = 0.5878;
   const earlySceneEnd = 0.86;
+  const middleSceneEnd = 0.932;
 
   if (raw <= earlyRawEnd) {
     return (raw / earlyRawEnd) * earlySceneEnd;
   }
 
+  if (raw <= middleRawEnd) {
+    return (
+      earlySceneEnd +
+      ((raw - earlyRawEnd) / (middleRawEnd - earlyRawEnd)) *
+        (middleSceneEnd - earlySceneEnd)
+    );
+  }
+
   return (
-    earlySceneEnd +
-    ((raw - earlyRawEnd) / (1 - earlyRawEnd)) * (1 - earlySceneEnd)
+    middleSceneEnd +
+    ((raw - middleRawEnd) / (1 - middleRawEnd)) * (1 - middleSceneEnd)
   );
 }
 
@@ -135,6 +145,23 @@ function setLabelState(element, { opacity = 0, x = 0, y = 0 } = {}) {
   element.style.visibility = visible ? "visible" : "hidden";
 }
 
+function setTextContent(element, text) {
+  if (!element) return;
+  if (element.textContent === text) return;
+  element.textContent = text;
+}
+
+const INTRO_CAPTION_TEXT =
+  "Eyes collect light and turn it into signals for the brain";
+const WORLD_CAPTION_TEXT_FOCUS =
+  "Cornea and lens focus light onto the back of the eye";
+const WORLD_CAPTION_TEXT_RETINA = "At the back of the eye\nis the retina";
+const FINAL_CAPTION_TEXT_SENSOR = "The retina works like a camera sensor";
+const FINAL_CAPTION_TEXT_SIGNAL = "It changes light into electrical signals";
+const FINAL_CAPTION_TEXT_OPTIC_NERVE =
+  "These signals travel through the optic nerve to the brain";
+const FINAL_CAPTION_TEXT_VISION = "The brain creates vision from these signals";
+
 function renderScene(elements, progress, prefersReducedMotion) {
   const mappedProgress = mapStoryProgress(progress);
   const p = prefersReducedMotion
@@ -173,6 +200,23 @@ function renderScene(elements, progress, prefersReducedMotion) {
   const lensIn = mix(p, 0.2, 0.26, easeOutCubic);
   const retinaIn = mix(p, 0.23, 0.29, easeOutCubic);
   const labelOut = clamp(1 - worldOut);
+  const scrollCueOut = mix(progress, 0.001, 0.018, easeOutCubic);
+  const introCaptionOut = mix(p, 0.405, 0.47, easeInOutCubic);
+  const introCaptionOpacity = clamp(1 - introCaptionOut);
+  const worldCaptionIn = mix(p, 0.56, 0.6, easeOutCubic);
+  const worldCaptionOpacity = clamp(worldCaptionIn * (1 - worldOut));
+  const finalCaptionOpacity = finalOpacity;
+
+  setLayerState(elements.scrollCue, {
+    opacity: 1 - scrollCueOut,
+    y: lerp(0, -8, scrollCueOut),
+  });
+
+  setTextContent(elements.introCaptionText, INTRO_CAPTION_TEXT);
+  setLayerState(elements.introCaption, {
+    opacity: introCaptionOpacity,
+    y: lerp(0, -12, introCaptionOut),
+  });
 
   setLayerState(elements.background, {
     opacity: backgroundOpacity,
@@ -253,6 +297,15 @@ function renderScene(elements, progress, prefersReducedMotion) {
     rotate: lerp(-90, 0, intro),
   });
 
+  setTextContent(
+    elements.worldCaptionText,
+    p < 0.685 ? WORLD_CAPTION_TEXT_FOCUS : WORLD_CAPTION_TEXT_RETINA,
+  );
+  setLayerState(elements.worldCaption, {
+    opacity: worldCaptionOpacity,
+    y: lerp(12, 0, worldCaptionIn),
+  });
+
   setLabelState(elements.corneaLabel, {
     opacity: corneaIn * labelOut,
     x: lerp(-10, 0, corneaIn),
@@ -278,7 +331,7 @@ function renderScene(elements, progress, prefersReducedMotion) {
   setLayerState(elements.face, {
     opacity: faceOpacity,
     y: lerp(16, 0, faceIn) + finalTailY,
-    leftPercent: lerp(50, 52, finalIn),
+    leftPercent: lerp(55.5, 57.5, finalIn),
     topPercent: lerp(41, 11, finalIn),
     scale: lerp(0.86, 1, faceIn),
   });
@@ -309,6 +362,20 @@ function renderScene(elements, progress, prefersReducedMotion) {
     clipBottom: 100 - tractProgress * 100,
   });
 
+  let finalCaptionText = FINAL_CAPTION_TEXT_SENSOR;
+  if (tract2Progress > 0.03) {
+    finalCaptionText = FINAL_CAPTION_TEXT_VISION;
+  } else if (tractProgress > 0.03 || tractOut > 0.01) {
+    finalCaptionText = FINAL_CAPTION_TEXT_OPTIC_NERVE;
+  } else if (p > 0.952) {
+    finalCaptionText = FINAL_CAPTION_TEXT_SIGNAL;
+  }
+  setTextContent(elements.finalCaptionText, finalCaptionText);
+  setLayerState(elements.finalCaption, {
+    opacity: finalCaptionOpacity,
+    y: lerp(10, 0, finalIn) + finalTailY,
+  });
+
   setLayerState(elements.tract2, {
     opacity: finalOpacity * (tract2Progress > 0.001 ? 1 : 0),
     y: finalTailY,
@@ -330,6 +397,15 @@ export function initializeVisualSystemEyesBrain() {
   if (!story) return;
 
   const elements = {
+    scrollCue: page.querySelector('[data-vs="scrollCue"]'),
+    introCaption: page.querySelector('[data-vs="introCaption"]'),
+    introCaptionText: page.querySelector(
+      '[data-vs="introCaption"] .vs-caption__body',
+    ),
+    worldCaption: page.querySelector('[data-vs="worldCaption"]'),
+    worldCaptionText: page.querySelector('[data-vs="worldCaptionText"]'),
+    finalCaption: page.querySelector('[data-vs="finalCaption"]'),
+    finalCaptionText: page.querySelector('[data-vs="finalCaptionText"]'),
     background: page.querySelector('[data-vs="background"]'),
     cloud1: page.querySelector('[data-vs="cloud1"]'),
     cloud2: page.querySelector('[data-vs="cloud2"]'),

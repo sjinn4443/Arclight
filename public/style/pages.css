@@ -1866,6 +1866,14 @@ select.onb-input.has-value + .onb-select-caret {
 }
 
 @media (max-width: 37.5em) {
+  #childhoodEyeBrainImagesPage .eyes-topbar .icon.menuBtn,
+  #visualsystemeyesbrainPage .eyes-topbar .icon.menuBtn {
+    position: relative;
+    left: 22px !important;
+  }
+}
+
+@media (max-width: 37.5em) {
   .childhood-fundal-scroll-page .eyes-topbar__icons {
     margin-right: 14px !important;
   }
