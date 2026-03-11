@@ -1,318 +1,404 @@
-// public/js/visualsystemeyesbrain.js
-// 라우터가 페이지를 DOM에 붙인 다음 initializeVisualSystemEyesBrain()를 호출해줘야 함
+function clamp(value, min = 0, max = 1) {
+  return Math.min(max, Math.max(min, value));
+}
 
-export async function initializeVisualSystemEyesBrain() {
-  const page = document.getElementById("visualsystemeyesbrainPage");
+function lerp(from, to, progress) {
+  return from + (to - from) * progress;
+}
+
+function mix(progress, start, end, ease = (t) => t) {
+  if (end <= start) return progress >= end ? 1 : 0;
+  return ease(clamp((progress - start) / (end - start)));
+}
+
+function easeOutCubic(t) {
+  return 1 - (1 - t) ** 3;
+}
+
+function easeInCubic(t) {
+  return t * t * t;
+}
+
+function easeInOutCubic(t) {
+  return t < 0.5 ? 4 * t ** 3 : 1 - (-2 * t + 2) ** 3 / 2;
+}
+
+function stepped(progress, steps) {
+  if (progress <= 0) return 0;
+  if (progress >= 1) return 1;
+  return Math.floor(progress * steps) / steps;
+}
+
+function getScrollRoot(node) {
+  let current = node?.parentElement ?? null;
+
+  while (current && current !== document.body) {
+    const style = window.getComputedStyle(current);
+    const overflowY = style.overflowY || style.overflow;
+    if (/(auto|scroll|overlay)/.test(overflowY)) {
+      return current;
+    }
+    current = current.parentElement;
+  }
+
+  return window;
+}
+
+function getRootMetrics(scrollRoot) {
+  if (scrollRoot === window) {
+    return {
+      top: 0,
+      height: window.innerHeight || document.documentElement.clientHeight || 1,
+    };
+  }
+
+  const rect = scrollRoot.getBoundingClientRect();
+  return {
+    top: rect.top,
+    height: scrollRoot.clientHeight || rect.height || 1,
+  };
+}
+
+function formatNumber(value) {
+  return Number.isFinite(value) ? value.toFixed(4) : "0";
+}
+
+function setLayerState(
+  element,
+  {
+    opacity = 0,
+    x = 0,
+    y = 0,
+    scale = 1,
+    rotate = 0,
+    leftPercent = null,
+    topPercent = null,
+    clipTop = null,
+    clipBottom = null,
+  } = {},
+) {
+  if (!element) return;
+
+  const visible = opacity > 0.001;
+  element.style.setProperty("--opacity", formatNumber(clamp(opacity)));
+  element.style.setProperty("--x", `${formatNumber(x)}px`);
+  element.style.setProperty("--y", `${formatNumber(y)}px`);
+  element.style.setProperty("--scale", formatNumber(scale));
+  element.style.setProperty("--rotate", `${formatNumber(rotate)}deg`);
+  if (leftPercent == null) {
+    element.style.removeProperty("--left");
+  } else {
+    element.style.setProperty("--left", `${formatNumber(leftPercent)}%`);
+  }
+  if (topPercent == null) {
+    element.style.removeProperty("--top");
+  } else {
+    element.style.setProperty("--top", `${formatNumber(topPercent)}%`);
+  }
+  if (clipTop == null) {
+    element.style.removeProperty("--clip-top");
+  } else {
+    element.style.setProperty(
+      "--clip-top",
+      `${formatNumber(clamp(clipTop, 0, 100))}%`,
+    );
+  }
+  if (clipBottom == null) {
+    element.style.removeProperty("--clip-bottom");
+  } else {
+    element.style.setProperty(
+      "--clip-bottom",
+      `${formatNumber(clamp(clipBottom, 0, 100))}%`,
+    );
+  }
+  element.style.visibility = visible ? "visible" : "hidden";
+}
+
+function setLabelState(element, { opacity = 0, x = 0, y = 0 } = {}) {
+  if (!element) return;
+
+  const visible = opacity > 0.001;
+  element.style.setProperty("--opacity", formatNumber(clamp(opacity)));
+  element.style.setProperty("--x", `${formatNumber(x)}px`);
+  element.style.setProperty("--y", `${formatNumber(y)}px`);
+  element.style.visibility = visible ? "visible" : "hidden";
+}
+
+function renderScene(elements, progress, prefersReducedMotion) {
+  const p = prefersReducedMotion
+    ? Math.round(clamp(progress) * 14) / 14
+    : clamp(progress);
+
+  const intro = mix(p, 0.02, 0.16, easeInOutCubic);
+  const envIn = mix(p, 0.4, 0.5, easeOutCubic);
+  const worldLightIn = mix(p, 0.55, 0.66, easeOutCubic);
+  const worldOut = mix(p, 0.7, 0.78, easeInOutCubic);
+  const worldLightOut = mix(p, 0.7, 0.78, easeInOutCubic);
+  const manIn = mix(p, 0.79, 0.85, easeOutCubic);
+  const manOut = mix(p, 0.885, 0.925, easeInOutCubic);
+  const faceIn = mix(p, 0.86, 0.905, easeOutCubic);
+  const finalIn = mix(p, 0.915, 0.958, easeInOutCubic);
+  const bgOut = mix(p, 0.915, 0.958, easeInOutCubic);
+  const tractRaw = mix(p, 0.968, 0.998, easeInCubic);
+  const finalTail = mix(p, 0.998, 1, easeOutCubic);
+  const tractProgress = prefersReducedMotion
+    ? Math.round(tractRaw * 18) / 18
+    : stepped(tractRaw, 18);
+
+  const worldOpacity = clamp(1 - worldOut);
+  const backgroundOpacity = clamp(envIn * (1 - bgOut));
+  const lightOpacity = clamp(worldLightIn * (1 - worldLightOut));
+  const manOpacity = clamp(manIn * (1 - manOut));
+  const faceOpacity = clamp(faceIn);
+  const finalOpacity = clamp(finalIn);
+  const finalTailY = lerp(0, -140, finalTail);
+
+  const corneaIn = mix(p, 0.18, 0.24, easeOutCubic);
+  const lensIn = mix(p, 0.2, 0.26, easeOutCubic);
+  const retinaIn = mix(p, 0.23, 0.29, easeOutCubic);
+  const labelOut = clamp(1 - worldOut);
+
+  setLayerState(elements.background, {
+    opacity: backgroundOpacity,
+    y: lerp(-180, 0, envIn) + lerp(0, -170, bgOut),
+  });
+
+  const cloudAlpha = backgroundOpacity;
+  setLayerState(elements.cloud1, {
+    opacity: cloudAlpha,
+    x: lerp(-96, 0, envIn) + lerp(0, -96, bgOut),
+    y: lerp(-18, 0, envIn),
+    scale: 0.98,
+  });
+  setLayerState(elements.cloud2, {
+    opacity: cloudAlpha,
+    x: lerp(-64, 0, envIn) + lerp(0, -64, bgOut),
+    y: lerp(-10, 0, envIn),
+    scale: 0.84,
+  });
+  setLayerState(elements.cloud3, {
+    opacity: cloudAlpha,
+    x: lerp(72, 0, envIn) + lerp(0, 72, bgOut),
+    y: lerp(-8, 0, envIn),
+    scale: 0.86,
+  });
+  setLayerState(elements.cloud4, {
+    opacity: cloudAlpha,
+    x: lerp(112, 0, envIn) + lerp(0, 112, bgOut),
+    y: lerp(-16, 0, envIn),
+    scale: 1.02,
+  });
+  setLayerState(elements.cloud5, {
+    opacity: cloudAlpha,
+    x: lerp(92, 0, envIn) + lerp(0, 92, bgOut),
+    y: lerp(-10, 0, envIn),
+    scale: 1.04,
+  });
+
+  setLayerState(elements.sun, {
+    opacity: backgroundOpacity,
+    y: lerp(-120, 0, envIn) + lerp(0, -120, bgOut),
+    scale: lerp(0.88, 1, envIn),
+  });
+
+  setLayerState(elements.grass1, {
+    opacity: backgroundOpacity,
+    x: lerp(-120, 0, envIn) + lerp(0, -120, bgOut),
+    y: lerp(14, 0, envIn),
+  });
+  setLayerState(elements.grass2, {
+    opacity: backgroundOpacity,
+    x: lerp(-78, 0, envIn) + lerp(0, -78, bgOut),
+    y: lerp(10, 0, envIn),
+  });
+  setLayerState(elements.grass3, {
+    opacity: backgroundOpacity,
+    x: lerp(86, 0, envIn) + lerp(0, 86, bgOut),
+    y: lerp(12, 0, envIn),
+  });
+  setLayerState(elements.grass4, {
+    opacity: backgroundOpacity,
+    x: lerp(118, 0, envIn) + lerp(0, 118, bgOut),
+    y: lerp(8, 0, envIn),
+  });
+
+  setLayerState(elements.worldLight, {
+    opacity: lightOpacity,
+    y: lerp(-12, 0, worldLightIn),
+    scale: 0.8,
+    clipBottom: 100 - worldLightIn * 100,
+  });
+
+  setLayerState(elements.worldEye, {
+    opacity: worldOpacity,
+    x: 0,
+    y: 0,
+    scale: lerp(0.82, 0.98, intro),
+    rotate: lerp(-90, 0, intro),
+  });
+
+  setLabelState(elements.corneaLabel, {
+    opacity: corneaIn * labelOut,
+    x: lerp(-10, 0, corneaIn),
+    y: lerp(16, 0, corneaIn),
+  });
+  setLabelState(elements.lensLabel, {
+    opacity: lensIn * labelOut,
+    x: lerp(-8, 0, lensIn),
+    y: lerp(14, 0, lensIn),
+  });
+  setLabelState(elements.retinaLabel, {
+    opacity: retinaIn * labelOut,
+    x: lerp(-8, 0, retinaIn),
+    y: lerp(14, 0, retinaIn),
+  });
+
+  setLayerState(elements.man, {
+    opacity: manOpacity,
+    y: lerp(180, 0, manIn) + lerp(0, -22, manOut),
+    scale: lerp(0.92, 1, manIn),
+  });
+
+  setLayerState(elements.face, {
+    opacity: faceOpacity,
+    y: lerp(16, 0, faceIn) + finalTailY,
+    leftPercent: lerp(50, 52, finalIn),
+    topPercent: lerp(41, 11, finalIn),
+    scale: lerp(0.86, 1, faceIn),
+  });
+
+  setLayerState(elements.finalLight, {
+    opacity: finalOpacity,
+    y: lerp(-18, 0, finalIn) + finalTailY,
+    scale: 0.8,
+    clipBottom: 100 - finalIn * 100,
+  });
+
+  setLayerState(elements.finalEye, {
+    opacity: finalOpacity,
+    y: lerp(18, 0, finalIn) + finalTailY,
+    scale: lerp(0.92, 0.98, finalIn),
+    rotate: 0,
+  });
+
+  setLayerState(elements.brain, {
+    opacity: finalOpacity,
+    y: lerp(260, -820, finalIn) + finalTailY,
+    scale: lerp(0.92, 1, finalIn),
+  });
+
+  setLayerState(elements.tract, {
+    opacity: finalOpacity,
+    y: finalTailY,
+    clipBottom: 100 - tractProgress * 100,
+  });
+}
+
+export function initializeVisualSystemEyesBrain() {
+  const page =
+    document.getElementById("visualsystemeyesbrainPage") ||
+    document.getElementById("childhoodEyeBrainImagesPage");
   if (!page) return;
 
-  // ✅ 중복 초기화 방지 (라우터가 여러 번 호출할 수 있음)
-  if (page.dataset.vsWired === "1") return;
-  page.dataset.vsWired = "1";
-
-  const lottieEl = page.querySelector("#vs_lottie");
-  const statusEl = page.querySelector("#vs_status");
-  const stageEl = page.querySelector(".visualsystem-stage");
-  if (!stageEl) {
-    console.error("[visualsystemeyesbrain] .visualsystem-stage not found");
-    return;
-  }
-  const SEGMENTS = [
-    { from: 0, to: 57, step: 0 },
-    { from: 58, to: 268, step: 1 },
-    { from: 269, to: 320, step: 2 },
-    { from: 321, to: 400, step: 3 },
-    { from: 401, to: 598, step: 4 },
-  ];
-
-  let targetEndFrame = null;
-
-  let anim = null;
-  let segIndex = 0;
-  let isPlaying = false;
-  let isReady = false;
-
-  let lastTriggerTs = 0;
-  const TRIGGER_COOLDOWN_MS = 250;
-
-  let wheelAccum = 0;
-  const WHEEL_THRESHOLD = 30; // 필요하면 20~60 사이로 조절
-
-  let pendingDir = 0;
-
-  function setStatus(text) {
-    if (statusEl) statusEl.textContent = text;
+  if (typeof page._vsCleanup === "function") {
+    page._vsCleanup();
   }
 
-  function setCopyStep(step) {
-    page.querySelectorAll(".vs-line").forEach((p) => {
-      const pStep = Number(p.getAttribute("data-step"));
-      p.classList.toggle("is-active", pStep === step);
+  const story = page.querySelector(".vs-story");
+  if (!story) return;
+
+  const elements = {
+    background: page.querySelector('[data-vs="background"]'),
+    cloud1: page.querySelector('[data-vs="cloud1"]'),
+    cloud2: page.querySelector('[data-vs="cloud2"]'),
+    cloud3: page.querySelector('[data-vs="cloud3"]'),
+    cloud4: page.querySelector('[data-vs="cloud4"]'),
+    cloud5: page.querySelector('[data-vs="cloud5"]'),
+    sun: page.querySelector('[data-vs="sun"]'),
+    grass1: page.querySelector('[data-vs="grass1"]'),
+    grass2: page.querySelector('[data-vs="grass2"]'),
+    grass3: page.querySelector('[data-vs="grass3"]'),
+    grass4: page.querySelector('[data-vs="grass4"]'),
+    worldLight: page.querySelector('[data-vs="worldLight"]'),
+    worldEye: page.querySelector('[data-vs="worldEye"]'),
+    corneaLabel: page.querySelector('[data-vs="corneaLabel"]'),
+    lensLabel: page.querySelector('[data-vs="lensLabel"]'),
+    retinaLabel: page.querySelector('[data-vs="retinaLabel"]'),
+    man: page.querySelector('[data-vs="man"]'),
+    face: page.querySelector('[data-vs="face"]'),
+    finalLight: page.querySelector('[data-vs="finalLight"]'),
+    finalEye: page.querySelector('[data-vs="finalEye"]'),
+    brain: page.querySelector('[data-vs="brain"]'),
+    tract: page.querySelector('[data-vs="tract"]'),
+  };
+
+  const controller = new AbortController();
+  const { signal } = controller;
+  const scrollRoot = getScrollRoot(page);
+  const prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  );
+
+  let rafId = 0;
+  let lastProgress = -1;
+  let detachMotionPreference = () => {};
+
+  function scheduleRender() {
+    if (rafId) return;
+    rafId = window.requestAnimationFrame(() => {
+      rafId = 0;
+
+      const rootMetrics = getRootMetrics(scrollRoot);
+      const storyRect = story.getBoundingClientRect();
+      const travel = Math.max(storyRect.height - rootMetrics.height, 1);
+      const progress = clamp((rootMetrics.top - storyRect.top) / travel);
+
+      if (Math.abs(progress - lastProgress) < 0.0005) return;
+      lastProgress = progress;
+
+      // Keep the scene scroll-driven instead of timeline-driven.
+      renderScene(elements, progress, prefersReducedMotion.matches);
     });
   }
 
-  function playSegmentByIndex(i) {
-    if (!anim) return;
-    const idx = Math.max(0, Math.min(SEGMENTS.length - 1, i));
-    const seg = SEGMENTS[idx];
+  const listen = (target, type, handler, options = {}) => {
+    if (!target?.addEventListener) return;
+    target.addEventListener(type, handler, { ...options, signal });
+  };
 
-    isPlaying = true;
-    segIndex = idx;
-    targetEndFrame = seg.to;
-
-    setCopyStep(seg.step);
-    setStatus(`Playing ${seg.from}–${seg.to}`);
-
-    anim.goToAndStop(seg.from, true);
-    anim.playSegments([seg.from, seg.to], true);
+  if (scrollRoot === window) {
+    listen(window, "scroll", scheduleRender, { passive: true });
+  } else {
+    listen(scrollRoot, "scroll", scheduleRender, { passive: true });
   }
 
-  let isSnapping = false;
+  listen(window, "resize", scheduleRender, { passive: true });
+  listen(window, "orientationchange", scheduleRender, { passive: true });
 
-  function stopAtEndOfCurrentSegment() {
-    if (!anim) return;
-    if (isSnapping) return;
-    isSnapping = true;
-
-    const seg = SEGMENTS[segIndex];
-    const end = seg.to;
-
-    // ✅ 먼저 상태를 내려서 enterFrame/next/prev 재진입을 끊음
-    isPlaying = false;
-    targetEndFrame = null;
-    setStatus(`Paused @ ${end}`);
-
-    // ✅ goToAndStop은 콜스택 밖에서 (enterFrame 루프와 분리)
-    requestAnimationFrame(() => {
-      try {
-        anim.goToAndStop(end, true);
-      } finally {
-        isSnapping = false;
-
-        // ✅ 스냅이 끝난 뒤, 예약된 이동이 있으면 한 번만 실행
-        if (pendingDir !== 0) {
-          const dir = pendingDir;
-          pendingDir = 0;
-
-          // cooldown 무시하고 즉시 이동시키면 UX가 더 자연스러움
-          if (dir > 0 && segIndex < SEGMENTS.length - 1) {
-            playSegmentByIndex(segIndex + 1);
-          } else if (dir < 0 && segIndex > 0) {
-            playSegmentByIndex(segIndex - 1);
-          }
-        }
-      }
-    });
+  if (typeof prefersReducedMotion.addEventListener === "function") {
+    prefersReducedMotion.addEventListener("change", scheduleRender, { signal });
+  } else if (typeof prefersReducedMotion.addListener === "function") {
+    prefersReducedMotion.addListener(scheduleRender);
+    detachMotionPreference = () =>
+      prefersReducedMotion.removeListener(scheduleRender);
   }
 
-  function next() {
-    const now = Date.now();
-    if (now - lastTriggerTs < TRIGGER_COOLDOWN_MS) return;
-    lastTriggerTs = now;
-
-    // ✅ 재생 중이면: 현재 세그먼트를 끝으로 스냅하고 진행
-    if (isPlaying) {
-      pendingDir = 1; // 끝나면 다음으로
-      return;
-    }
-
-    if (segIndex >= SEGMENTS.length - 1) {
-      setStatus(`End · Paused @ ${SEGMENTS[segIndex].to}`);
-      return;
-    }
-    playSegmentByIndex(segIndex + 1);
-  }
-
-  function prev() {
-    const now = Date.now();
-    if (now - lastTriggerTs < TRIGGER_COOLDOWN_MS) return;
-    lastTriggerTs = now;
-
-    // ✅ 재생 중이면: 현재 세그먼트를 끝으로 스냅하고 진행
-    if (isPlaying) {
-      pendingDir = -1; // 끝나면 다음으로
-      return;
-    }
-
-    if (segIndex <= 0) {
-      playSegmentByIndex(0);
-      return;
-    }
-    playSegmentByIndex(segIndex - 1);
-  }
-
-  function onKeyDown(e) {
-    // 입력이 폼 요소에서 일어날 땐 방해하지 않기
-    const tag =
-      e.target && e.target.tagName ? e.target.tagName.toLowerCase() : "";
-    if (tag === "input" || tag === "textarea" || tag === "select") return;
-
-    // 이 화면은 키로도 단계 이동을 하므로 기본 스크롤(화살표) 등을 막음
-    const k = e.key;
-
-    if (k === "ArrowDown" || k === "PageDown") {
-      e.preventDefault();
-      next();
-      return;
-    }
-    if (k === "ArrowUp" || k === "PageUp") {
-      e.preventDefault();
-      prev();
-      return;
-    }
-    if (k === " " || k === "Spacebar") {
-      e.preventDefault();
-      // 현재 세그먼트 다시 재생
-      playSegmentByIndex(segIndex);
-      return;
-    }
-  }
-
-  function onWheel(e) {
-    // 1) 애니메이션 준비 전엔 기본 스크롤을 막지 않음
-    if (!isReady) return;
-
-    // 2) 이 페이지는 wheel을 ‘단계 전환’으로 쓰므로 기본 스크롤은 막음
-    e.preventDefault();
-
-    // (디버그용 로그가 필요하면 여기 두기)
-    console.log("[VS wheel]", {
-      deltaY: e.deltaY,
-      isReady,
-      segIndex,
-      isPlaying,
-      pendingDir,
-      wheelAccum,
-    });
-
-    // 3) 트랙패드/마우스 모두 대응하려고 누적
-    wheelAccum += e.deltaY;
-
-    // 4) 아직 threshold 미만이면 아무 것도 하지 않음
-    if (Math.abs(wheelAccum) < WHEEL_THRESHOLD) return;
-
-    // 5) threshold 넘었으면 이번 제스처의 방향만 결정
-    const goingDown = wheelAccum > 0;
-
-    // 6) 의도는 pendingDir에만 저장 (재생 중에도 의도는 남김)
-    pendingDir = goingDown ? 1 : -1;
-
-    // 7) 이번 제스처는 처리했으니 누적 초기화 (중요!)
-    wheelAccum = 0;
-
-    // 8) 현재 재생 중이 아니라면 바로 실행
-    if (!isPlaying) {
-      if (goingDown) next();
-      else prev();
-    }
-  }
-
-  // 터치 스와이프(모바일)
-  let touchStartY = null;
-  function onTouchStart(e) {
-    if (!e.touches || e.touches.length !== 1) return;
-    touchStartY = e.touches[0].clientY;
-  }
-  function onTouchEnd(e) {
-    if (touchStartY == null) return;
-    const endY = e.changedTouches?.[0]?.clientY ?? touchStartY;
-    const dy = touchStartY - endY;
-    touchStartY = null;
-    if (Math.abs(dy) < 20) return;
-    if (dy > 0) next();
-    else prev();
-  }
-
-  // ✅ lottie-web가 전역으로 로드돼 있어야 함
-  async function ensureLottie() {
-    if (window.lottie) return true;
-
-    await new Promise((resolve, reject) => {
-      const targetPath = "/vendor/lottie.min.js";
-      const existing = Array.from(
-        document.querySelectorAll("script[src]"),
-      ).find((scriptEl) => {
-        const rawSrc = String(scriptEl.getAttribute("src") || "").trim();
-        if (!rawSrc) return false;
-        if (rawSrc === targetPath) return true;
-        try {
-          return (
-            new URL(rawSrc, window.location.origin).pathname === targetPath
-          );
-        } catch {
-          return false;
-        }
-      });
-
-      if (existing) {
-        if (window.lottie) {
-          resolve();
-          return;
-        }
-        existing.addEventListener("load", resolve, { once: true });
-        existing.addEventListener("error", reject, { once: true });
-        return;
-      }
-
-      const s = document.createElement("script");
-      s.src = targetPath;
-
-      s.onload = resolve;
-      s.onerror = reject;
-      document.head.appendChild(s);
-    });
-
-    return !!window.lottie;
-  }
-
-  const ok = await ensureLottie();
-  if (!ok) {
-    setStatus("Error: lottie-web not loaded");
-    console.error(
-      "[visualsystemeyesbrain] lottie-web not loaded (failed to load script)",
-    );
-    return;
-  }
-
-  if (!lottieEl) {
-    setStatus("Error: #vs_lottie not found");
-    console.error("[visualsystemeyesbrain] #vs_lottie not found");
-    return;
-  }
-
-  setStatus("Loading…");
-
-  anim = window.lottie.loadAnimation({
-    container: lottieEl,
-    renderer: "svg",
-    loop: false,
-    autoplay: false,
-    path: "/scrolls/workshop/childhood/visualsystemeyesbrain/VisualSystemEyesBrain.json",
+  page.querySelectorAll("img").forEach((img) => {
+    if (img.complete) return;
+    listen(img, "load", scheduleRender, { once: true });
   });
 
-  anim.addEventListener("data_failed", () => {
-    setStatus("Error: animation data failed to load");
-    isReady = false; // 스크롤 가로채지 않게
-  });
-
-  anim.addEventListener("DOMLoaded", () => {
-    console.warn("[visualsystemeyesbrain] DOMLoaded");
-    isReady = true;
-    segIndex = 0;
-    setCopyStep(SEGMENTS[0].step);
-    playSegmentByIndex(0); // 첫 진입 0-57 재생
-  });
-
-  anim.addEventListener("enterFrame", () => {
-    if (!isPlaying || targetEndFrame == null) return;
-
-    // currentFrame은 소수로 움직일 수 있어서 약간의 여유를 둠
-    if (anim.currentFrame >= targetEndFrame - 0.5) {
-      stopAtEndOfCurrentSegment();
+  page._vsCleanup = () => {
+    controller.abort();
+    detachMotionPreference();
+    if (rafId) {
+      window.cancelAnimationFrame(rafId);
+      rafId = 0;
     }
-  });
+    delete page._vsCleanup;
+  };
 
-  stageEl.addEventListener("wheel", onWheel, { passive: false });
-  window.addEventListener("keydown", onKeyDown, { passive: false });
-  stageEl.addEventListener("touchstart", onTouchStart, { passive: true });
-  stageEl.addEventListener("touchend", onTouchEnd, { passive: true });
+  renderScene(elements, 0, prefersReducedMotion.matches);
+  scheduleRender();
+  window.requestAnimationFrame(scheduleRender);
 }
