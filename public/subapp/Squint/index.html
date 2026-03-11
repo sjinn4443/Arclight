@@ -104,13 +104,17 @@
         <div class="toggle-reflex">
           <span class="toggle-label">reflex&nbsp;&nbsp;</span>
           <label class="switch">
-            <input type="checkbox" id="toggle-reflex" />
+            <input
+              type="checkbox"
+              id="toggle-reflex"
+              aria-label="Toggle reflex mode"
+            />
             <span class="toggle-slider"></span>
           </label>
         </div>
         <div class="toggle-iris">
           <span class="toggle-label"></span>
-          <select id="iris-colour">
+          <select id="iris-colour" aria-label="Iris colour">
             <option value="dark-brown">dark</option>
             <option value="light-brown">brown</option>
             <option value="green" selected>green</option>
@@ -120,7 +124,11 @@
         <div class="toggle-sudden">
           <span class="toggle-label">sudden&nbsp;</span>
           <label class="switch">
-            <input type="checkbox" id="toggle-sudden" />
+            <input
+              type="checkbox"
+              id="toggle-sudden"
+              aria-label="Toggle sudden onset indicator"
+            />
             <span class="toggle-slider"></span>
           </label>
         </div>
@@ -135,6 +143,7 @@
           type="range"
           id="reflex-color-slider"
           class="slider"
+          aria-label="Adjust reflex colour"
           min="0"
           max="100"
           value="66"
@@ -182,6 +191,7 @@
           <input
             type="range"
             class="slider"
+            aria-label="Adjust left pupil size"
             min="10"
             max="55"
             value="32"
@@ -195,6 +205,7 @@
           <input
             type="range"
             class="slider"
+            aria-label="Adjust right pupil size"
             min="10"
             max="55"
             value="32"
@@ -213,6 +224,7 @@
           <input
             type="range"
             class="vertical-eye-slider"
+            aria-label="Adjust left upper eyelid"
             min="0"
             max="30"
             value="0"
@@ -224,6 +236,7 @@
           <input
             type="range"
             class="vertical-eye-slider"
+            aria-label="Adjust right upper eyelid"
             min="0"
             max="30"
             value="0"

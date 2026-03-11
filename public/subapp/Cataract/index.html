@@ -71,6 +71,7 @@
                 name="onset"
                 value="gradual"
                 id="onset-gradual"
+                aria-label="Gradual vision loss onset in months"
             /></span>
             <span
               >Sudden <span class="small-text">(days)</span
@@ -79,27 +80,47 @@
                 name="onset"
                 value="sudden"
                 id="onset-sudden"
+                aria-label="Sudden vision loss onset in days"
             /></span>
           </div>
 
           <div class="question-group">
             <span><strong>Eyes:</strong></span>
             <span
-              >1<input type="radio" name="eyes" value="one" id="eyes-one"
+              >1<input
+                type="radio"
+                name="eyes"
+                value="one"
+                id="eyes-one"
+                aria-label="One eye affected"
             /></span>
             <span
-              >2<input type="radio" name="eyes" value="two" id="eyes-two"
+              >2<input
+                type="radio"
+                name="eyes"
+                value="two"
+                id="eyes-two"
+                aria-label="Two eyes affected"
             /></span>
             <span id="pain-label"><strong>Pain/Redness:</strong></span>
             <span
-              ><input type="radio" name="pain" value="yes" id="pain-yes"
+              ><input
+                type="radio"
+                name="pain"
+                value="yes"
+                id="pain-yes"
+                aria-label="Pain or redness present"
             /></span>
           </div>
 
           <div class="question-group">
             <span><strong>VA:</strong></span>
             <span>
-              <select id="distanceVA" name="distanceVA">
+              <select
+                id="distanceVA"
+                name="distanceVA"
+                aria-label="Distance visual acuity"
+              >
                 <option value=""></option>
                 <option value="6/6">6/6</option>
                 <option value="6/12">6/12</option>
@@ -110,7 +131,7 @@
             </span>
             <span><strong>Near VA:</strong></span>
             <span>
-              <select id="nearVA" name="nearVA">
+              <select id="nearVA" name="nearVA" aria-label="Near visual acuity">
                 <option value=""></option>
                 <option value="N5">N5</option>
                 <option value="N8">N8</option>
@@ -133,6 +154,7 @@
                 name="pupil"
                 value="normal"
                 id="pupil-normal"
+                aria-label="Pupils black, round, equal, and reactive"
             /></span>
           </div>
 
@@ -147,6 +169,7 @@
                 name="front"
                 value="present"
                 id="front-present"
+                aria-label="Corneal scar or distortion seen at the front of the eye"
             /></span>
           </div>
         </section>
