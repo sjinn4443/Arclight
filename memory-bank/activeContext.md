@@ -1,12 +1,19 @@
-<!-- THE CHANGES - activeContext.md | 2026-01-26, Cline -->
+<!-- THE CHANGES - activeContext.md | 2026-03-11, Codex -->
 
 # Active Context
 
 ## Current Work Focus
 
-Documentation refresh: updating README files across key folders so they accurately reflect the current server wiring, telemetry/reports flow, CI pipeline, tests (including ESM/CJS constraints), and the VS Code launcher extension.
+Interactive Learning documentation refresh after adding new embedded modules and normalizing card spacing on the Videos route.
 
 ## Recent Changes
+
+- Interactive Learning external embeds (2026-03-11):
+  - Added `Fundal Reflex` and `Trauma` buttons under the Primary section, and `Amsler` under Intermediate on `interactiveLearningPage`.
+  - Added matching hidden subpages in `public/html/videos.html` that lazy-load external Netlify apps via `iframe[data-src]`.
+  - Kept the existing Videos-route wrapper pattern (same header/container flow and back-button behavior as local subapps such as `Morph` and `Mires`).
+  - Normalized Interactive Learning card spacing so all card-to-card gaps match the preferred first-pair spacing.
+  - Recorded the key maintenance constraint: Arclight can style the wrapper shell only; cross-origin iframe internals must be changed in the remote app.
 
 - i18n translation policy update (2026-03-02):
   - Added a mandatory symbol-preservation rule for locale files.
@@ -32,25 +39,23 @@ Documentation refresh: updating README files across key folders so they accurate
   - `tests/README.md`
   - `vscode-alanui-launcher/README.md`
 
-Key corrections included:
-
-- Reports/telemetry docs now match the fact that **`server.cjs`** serves and protects `/reports.html` and `/html/reports.html` and exposes `/api/dev/users` + `DELETE /api/dev/users/:anonId`.
-- Telemetry encryption docs now match **`ENCRYPTION_SECRET`** usage from `reports/security/encrypt.cjs` and its integration in `storage/ndjson-storage.cjs`.
-- Security docs now note that `security/cors.cjs`, `security/csp.cjs`, and `security/csrf.cjs` are currently placeholders.
-- Test docs now document the Jest `moduleNameMapper` approach used to avoid ESM/CJS interop issues when CJS tests import browser ESM modules.
-
 ## Next Steps
 
-- Keep folder READMEs in sync with future wiring changes (e.g., if optional routers under `reports/routes/` are re-enabled or if CSP/CORS/CSRF are reintroduced as middleware).
+- Keep external embed URLs and their purpose documented when Interactive Learning changes again.
+- If a remote embed later blocks framing, switch that module to a local copy or an open-in-new-tab fallback.
+- Add translation keys for `Trauma` and `Amsler` if those labels need to be localized instead of staying English-only.
+- Keep folder READMEs in sync with future wiring changes (for example if optional routers under `reports/routes/` are re-enabled or if CSP/CORS/CSRF are reintroduced as middleware).
 - Consider improving the VS Code launcher extension for Windows/Linux (replace macOS `open -a` with `vscode.env.openExternal()` and add `contributes.commands` to the extension manifest).
 - Regenerate `folderList.txt` whenever large folder structure changes occur.
 
 ## Active Decisions and Considerations
 
-- Prefer accurate, code-referenced documentation over aspirational/legacy docs.
-- Avoid introducing new runtime behavior while updating documentation (docs-only change).
+- Prefer accurate, code-referenced documentation over aspirational or legacy docs.
+- Use the existing Videos-route subpage pattern (`data-page`, `data-target`, hidden `.page` blocks, `iframe[data-src]`) when adding more Interactive Learning modules.
+- Do not assume parent-page CSS/JS can control embedded external site UI across origins.
 
 ## Important Patterns and Preferences
 
 - When the repo mixes ESM and CJS, document the boundary and the mechanism used to keep tests stable (mocks + `moduleNameMapper`).
 - In translation JSON files, preserve icon/symbol values exactly as-is. Do not localize `☰`, `<`, `×` (and equivalent UI symbol tokens).
+- For Interactive Learning under `videos.html`, prefer the existing hidden-subpage + lazy iframe pattern over special-case navigation.

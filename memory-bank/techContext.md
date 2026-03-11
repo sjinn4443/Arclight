@@ -1,17 +1,18 @@
-<!-- THE CHANGES - techContext.md | 2025-12-15, Cline -->
+<!-- THE CHANGES - techContext.md | 2026-03-11, Codex -->
 
 # Tech Context
 
 ## Technologies Used
 
-- **Core UI:** HTML5, CSS3, JavaScript (ESM in browser)
-- **Server:** Node.js + Express (`server.cjs`)
-- **PWA:** Service Worker API, Web Manifest
-- **Build & Bundling:** `esbuild`, `clean-css-cli`, `html-minifier-terser`
-- **Testing:** Jest (mix of `*.cjs` + `*.mjs`), JSDOM, Supertest
-- **Quality:** ESLint, Prettier, Husky + lint-staged
-- **E2E/Perf (optional):** Playwright, Lighthouse CI
-- **Storage:**
+- Core UI: HTML5, CSS3, JavaScript (ESM in browser)
+- Server: Node.js + Express (`server.cjs`)
+- PWA: Service Worker API, Web Manifest
+- Embedded interactive content: local iframe mini-apps under `public/subapp/*` plus selected external Netlify iframes inside `public/html/videos.html`
+- Build & Bundling: `esbuild`, `clean-css-cli`, `html-minifier-terser`
+- Testing: Jest (mix of `*.cjs` + `*.mjs`), JSDOM, Supertest
+- Quality: ESLint, Prettier, Husky + lint-staged
+- E2E/Perf (optional): Playwright, Lighthouse CI
+- Storage:
   - dev/test: NDJSON file under `reports/data/telemetry.ndjson`
   - prod: Postgres (via `pg`) when `DATABASE_URL` is present
 
@@ -22,6 +23,12 @@
 - Start server: `npm start`
 - Build: `npm run build`
 - Serve built output: `npm run serve:dist`
+
+### Interactive Learning integration notes
+
+- Local interactive modules are typically served from `public/subapp/*`.
+- External interactive modules are embedded through hidden subpages in `public/html/videos.html` and lazy-loaded by `public/js/videos.js`.
+- Cross-origin iframe internals cannot be styled or scripted directly from Arclight.
 
 ## Key Environment Variables
 

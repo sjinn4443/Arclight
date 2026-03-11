@@ -15,7 +15,7 @@ This document serves as the foundational brief for the Arclight project.
 The project encompasses the development of:
 
 - A main landing page with navigation to different educational modules.
-- Modules for Anterior Segment Quiz, Cataract, Mires, Morph, and Squint, each with specific interactive elements and content.
+- Modules for Anterior Segment Quiz, Cataract, Mires, Morph, Squint, and additional Interactive Learning tools such as Fundal Reflex, Trauma, and Amsler, each with specific interactive elements and content.
 - A robust image and video library to support the educational content.
 - A service worker for progressive web app (PWA) features, including offline access.
 - Basic styling and responsiveness to ensure a consistent user experience.

@@ -1,5 +1,24 @@
 # Newborn Eyes Open Scroll Notes
 
+## 2026-03-11 Interactive Learning External Embed Notes
+
+- Page: `interactiveLearningPage` inside `public/html/videos.html`
+- Added external embed cards:
+  - Primary: `Fundal Reflex`, `Trauma`
+  - Intermediate: `Amsler`
+- Embed targets:
+  - `https://fundalreflex.netlify.app/`
+  - `https://trauma26.netlify.app/`
+  - `https://amsler2.netlify.app/`
+- Integration pattern:
+  - Use the existing Videos-route subpage flow (`data-page`, `data-target`, hidden `.page` blocks, lazy `iframe[data-src]` loading in `public/js/videos.js`).
+  - Keep the same wrapper UI as local subapps (`backBtn`, header, shared container flow).
+- Styling constraint:
+  - Arclight can change the outer wrapper, card spacing, iframe size, and surrounding UI.
+  - Arclight cannot directly restyle or reposition icons/elements inside those embedded sites because they are cross-origin iframes.
+- Operational note:
+  - If any remote site later sends `X-Frame-Options` or restrictive `frame-ancestors` CSP, the iframe embed will break and needs a fallback plan.
+
 ## Context
 
 - Page: `childhoodFundalNewbornEyesOpen`
