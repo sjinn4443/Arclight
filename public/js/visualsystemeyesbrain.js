@@ -15,12 +15,23 @@ function easeOutCubic(t) {
   return 1 - (1 - t) ** 3;
 }
 
-function easeInCubic(t) {
-  return t * t * t;
-}
-
 function easeInOutCubic(t) {
   return t < 0.5 ? 4 * t ** 3 : 1 - (-2 * t + 2) ** 3 / 2;
+}
+
+function mapStoryProgress(rawProgress) {
+  const raw = clamp(rawProgress);
+  const earlyRawEnd = 0.61;
+  const earlySceneEnd = 0.86;
+
+  if (raw <= earlyRawEnd) {
+    return (raw / earlyRawEnd) * earlySceneEnd;
+  }
+
+  return (
+    earlySceneEnd +
+    ((raw - earlyRawEnd) / (1 - earlyRawEnd)) * (1 - earlySceneEnd)
+  );
 }
 
 function stepped(progress, steps) {
@@ -125,9 +136,10 @@ function setLabelState(element, { opacity = 0, x = 0, y = 0 } = {}) {
 }
 
 function renderScene(elements, progress, prefersReducedMotion) {
+  const mappedProgress = mapStoryProgress(progress);
   const p = prefersReducedMotion
-    ? Math.round(clamp(progress) * 14) / 14
-    : clamp(progress);
+    ? Math.round(mappedProgress * 14) / 14
+    : mappedProgress;
 
   const intro = mix(p, 0.02, 0.16, easeInOutCubic);
   const envIn = mix(p, 0.4, 0.5, easeOutCubic);
@@ -135,15 +147,19 @@ function renderScene(elements, progress, prefersReducedMotion) {
   const worldOut = mix(p, 0.7, 0.78, easeInOutCubic);
   const worldLightOut = mix(p, 0.7, 0.78, easeInOutCubic);
   const manIn = mix(p, 0.79, 0.85, easeOutCubic);
-  const manOut = mix(p, 0.885, 0.925, easeInOutCubic);
-  const faceIn = mix(p, 0.86, 0.905, easeOutCubic);
-  const finalIn = mix(p, 0.915, 0.958, easeInOutCubic);
-  const bgOut = mix(p, 0.915, 0.958, easeInOutCubic);
-  const tractRaw = mix(p, 0.968, 0.998, easeInCubic);
-  const finalTail = mix(p, 0.998, 1, easeOutCubic);
+  const manOut = mix(p, 0.885, 0.92, easeInOutCubic);
+  const faceIn = mix(p, 0.86, 0.895, easeOutCubic);
+  const bgOut = mix(p, 0.905, 0.928, easeInOutCubic);
+  const finalIn = mix(p, 0.932, 0.955, easeInOutCubic);
+  const endPhase = mix(p, 0.958, 1);
+  const tractRaw = mix(endPhase, 0.08, 0.48, easeInOutCubic);
+  const tractOut = mix(endPhase, 0.55, 0.62, easeInOutCubic);
+  const tract2Raw = mix(endPhase, 0.72, 0.97, easeInOutCubic);
+  const finalTail = mix(endPhase, 0.985, 1, easeOutCubic);
   const tractProgress = prefersReducedMotion
-    ? Math.round(tractRaw * 18) / 18
-    : stepped(tractRaw, 18);
+    ? Math.round(tractRaw * 28) / 28
+    : stepped(tractRaw, 28);
+  const tract2Progress = clamp(tract2Raw);
 
   const worldOpacity = clamp(1 - worldOut);
   const backgroundOpacity = clamp(envIn * (1 - bgOut));
@@ -288,9 +304,15 @@ function renderScene(elements, progress, prefersReducedMotion) {
   });
 
   setLayerState(elements.tract, {
-    opacity: finalOpacity,
+    opacity: finalOpacity * (1 - tractOut),
     y: finalTailY,
     clipBottom: 100 - tractProgress * 100,
+  });
+
+  setLayerState(elements.tract2, {
+    opacity: finalOpacity * (tract2Progress > 0.001 ? 1 : 0),
+    y: finalTailY,
+    clipBottom: 100 - tract2Progress * 100,
   });
 }
 
@@ -330,6 +352,7 @@ export function initializeVisualSystemEyesBrain() {
     finalEye: page.querySelector('[data-vs="finalEye"]'),
     brain: page.querySelector('[data-vs="brain"]'),
     tract: page.querySelector('[data-vs="tract"]'),
+    tract2: page.querySelector('[data-vs="tract2"]'),
   };
 
   const controller = new AbortController();
