@@ -1948,6 +1948,40 @@
           <button
             type="button"
             class="pupil-card module-card"
+            data-page="fundalReflexInteractivePage"
+          >
+            <div
+              class="lesson-row lesson-row--video"
+              data-target="fundalReflexInteractivePage"
+              role="button"
+              tabindex="0"
+            >
+              <div class="thumb" aria-hidden="true"></div>
+
+              <div class="lesson-main">
+                <div class="lesson-top">
+                  <span class="lesson-type">Fundal Reflex</span>
+                </div>
+
+                <div
+                  class="lesson-progress"
+                  role="progressbar"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                >
+                  <div class="lesson-progress__fill" style="width: 0%"></div>
+                </div>
+              </div>
+
+              <span class="lesson-cta" data-i18n="auto.videos.start"
+                >Start &gt;</span
+              >
+            </div>
+          </button>
+
+          <button
+            type="button"
+            class="pupil-card module-card"
             data-page="morphPage"
           >
             <div
@@ -1963,6 +1997,40 @@
                   <span class="lesson-type" data-i18n="auto.videos.morph"
                     >Morph</span
                   >
+                </div>
+
+                <div
+                  class="lesson-progress"
+                  role="progressbar"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                >
+                  <div class="lesson-progress__fill" style="width: 0%"></div>
+                </div>
+              </div>
+
+              <span class="lesson-cta" data-i18n="auto.videos.start"
+                >Start &gt;</span
+              >
+            </div>
+          </button>
+
+          <button
+            type="button"
+            class="pupil-card module-card"
+            data-page="traumaInteractivePage"
+          >
+            <div
+              class="lesson-row lesson-row--video"
+              data-target="traumaInteractivePage"
+              role="button"
+              tabindex="0"
+            >
+              <div class="thumb" aria-hidden="true"></div>
+
+              <div class="lesson-main">
+                <div class="lesson-top">
+                  <span class="lesson-type">Trauma</span>
                 </div>
 
                 <div
@@ -2028,6 +2096,40 @@
           <div class="pupil-level__cap" data-i18n="auto.videos.intermediate">
             Intermediate
           </div>
+
+          <button
+            type="button"
+            class="pupil-card module-card"
+            data-page="amslerInteractivePage"
+          >
+            <div
+              class="lesson-row lesson-row--video"
+              data-target="amslerInteractivePage"
+              role="button"
+              tabindex="0"
+            >
+              <div class="thumb" aria-hidden="true"></div>
+
+              <div class="lesson-main">
+                <div class="lesson-top">
+                  <span class="lesson-type">Amsler</span>
+                </div>
+
+                <div
+                  class="lesson-progress"
+                  role="progressbar"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                >
+                  <div class="lesson-progress__fill" style="width: 0%"></div>
+                </div>
+              </div>
+
+              <span class="lesson-cta" data-i18n="auto.videos.start"
+                >Start &gt;</span
+              >
+            </div>
+          </button>
 
           <button
             type="button"
@@ -2121,6 +2223,23 @@
     </div>
   </div>
 
+  <!-- Fundal Reflex Interactive Page -->
+  <div id="fundalReflexInteractivePage" class="page" style="display: none">
+    <div>
+      <div class="video-header">
+        <h3 data-i18n="videos.fundalReflexTitle">Fundal Reflex</h3>
+      </div>
+      <div class="video-container">
+        <iframe
+          data-src="https://fundalreflex.netlify.app/"
+          loading="lazy"
+          style="width: 100%; height: 80vh; border: none"
+          title="Fundal Reflex Interactive"
+        ></iframe>
+      </div>
+    </div>
+  </div>
+
   <!-- Morph Page -->
   <div id="morphPage" class="page" style="display: none">
     <div>
@@ -2134,6 +2253,40 @@
           style="width: 100%; height: 80vh; border: none"
           title="Morph Simulation"
           data-i18n="videos.morphSimulationTitle:title"
+        ></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- Trauma Interactive Page -->
+  <div id="traumaInteractivePage" class="page" style="display: none">
+    <div>
+      <div class="video-header">
+        <h3>Trauma</h3>
+      </div>
+      <div class="video-container">
+        <iframe
+          data-src="https://trauma26.netlify.app/"
+          loading="lazy"
+          style="width: 100%; height: 80vh; border: none"
+          title="Trauma Interactive"
+        ></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- Amsler Interactive Page -->
+  <div id="amslerInteractivePage" class="page" style="display: none">
+    <div>
+      <div class="video-header">
+        <h3>Amsler</h3>
+      </div>
+      <div class="video-container">
+        <iframe
+          data-src="https://amsler2.netlify.app/"
+          loading="lazy"
+          style="width: 100%; height: 80vh; border: none"
+          title="Amsler Interactive"
         ></iframe>
       </div>
     </div>
