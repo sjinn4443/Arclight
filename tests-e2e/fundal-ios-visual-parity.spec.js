@@ -1,4 +1,4 @@
-import { chromium, devices, expect, test, webkit } from "@playwright/test";
+import { devices, expect, test, webkit } from "@playwright/test";
 import sharp from "sharp";
 
 const ROUTE_READY_TIMEOUT_MS = 30_000;
@@ -45,7 +45,9 @@ const CASES = [
 
 test.describe("Fundal iOS visual parity", () => {
   for (const testCase of CASES) {
-    test(`${testCase.routeName} stage ${testCase.stageIndex + 1} matches chromium structure on iOS`, async ({}, testInfo) => {
+    test(`${testCase.routeName} stage ${testCase.stageIndex + 1} matches chromium structure on iOS`, async ({
+      page,
+    }, testInfo) => {
       test.skip(
         testInfo.project.name !== "chromium-desktop",
         "This suite launches Chromium and WebKit directly for parity checks.",
@@ -56,23 +58,10 @@ test.describe("Fundal iOS visual parity", () => {
         String(testInfo.project.use?.baseURL || "").trim() ||
         "http://localhost:4173";
 
-      const [chromiumBrowser, webkitBrowser] = await Promise.all([
-        chromium.launch(),
-        webkit.launch(),
-      ]);
-
-      let chromiumContext = null;
+      const webkitBrowser = await webkit.launch();
       let webkitContext = null;
 
       try {
-        chromiumContext = await chromiumBrowser.newContext({
-          viewport: MOBILE_VIEWPORT,
-          deviceScaleFactor: 1,
-          hasTouch: true,
-          isMobile: true,
-          locale: "en-US",
-          serviceWorkers: "block",
-        });
         webkitContext = await webkitBrowser.newContext({
           ...devices["iPhone 13"],
           viewport: MOBILE_VIEWPORT,
@@ -81,15 +70,14 @@ test.describe("Fundal iOS visual parity", () => {
           serviceWorkers: "block",
         });
 
-        const chromiumPage = await chromiumContext.newPage();
         const webkitPage = await webkitContext.newPage();
 
         await Promise.all([
-          prepareFundalPage(chromiumPage, baseURL, testCase),
+          prepareFundalPage(page, baseURL, testCase),
           prepareFundalPage(webkitPage, baseURL, testCase),
         ]);
 
-        const chromiumStage = chromiumPage
+        const chromiumStage = page
           .locator(".childhood-fundal-prep-stage")
           .nth(testCase.stageIndex);
         const webkitStage = webkitPage
@@ -100,7 +88,7 @@ test.describe("Fundal iOS visual parity", () => {
         for (const checkpoint of testCase.checkpoints) {
           const [chromiumState, webkitState] = await Promise.all([
             seekFundalStage(
-              chromiumPage,
+              page,
               testCase.routeName,
               testCase.stageIndex,
               checkpoint.frame,
@@ -114,7 +102,7 @@ test.describe("Fundal iOS visual parity", () => {
           ]);
 
           await Promise.all([
-            centerStageInViewport(chromiumPage, chromiumStage),
+            centerStageInViewport(page, chromiumStage),
             centerStageInViewport(webkitPage, webkitStage),
           ]);
 
@@ -192,14 +180,8 @@ test.describe("Fundal iOS visual parity", () => {
           buildParityFailureMessage(testCase, comparisons),
         ).toBe(0);
       } finally {
-        await Promise.allSettled([
-          chromiumContext?.close(),
-          webkitContext?.close(),
-        ]);
-        await Promise.allSettled([
-          chromiumBrowser.close(),
-          webkitBrowser.close(),
-        ]);
+        await Promise.allSettled([webkitContext?.close()]);
+        await Promise.allSettled([webkitBrowser.close()]);
       }
     });
   }

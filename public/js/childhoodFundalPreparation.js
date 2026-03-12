@@ -6180,6 +6180,7 @@ function initializeStageAutoplayMode(routeName, cfg, page, stages) {
       arrowEl?.style.removeProperty("--fundal-arrow-right");
       arrowEl?.style.removeProperty("--fundal-arrow-bottom");
       replayBtn?.style.removeProperty("--fundal-replay-left");
+      replayBtn?.style.removeProperty("--fundal-replay-right");
       replayBtn?.style.removeProperty("--fundal-replay-bottom");
       return;
     }
@@ -6197,7 +6198,6 @@ function initializeStageAutoplayMode(routeName, cfg, page, stages) {
       return;
     }
 
-    let leftInset = 10;
     let rightInset = 10;
     let bottomInset = 10;
 
@@ -6218,19 +6218,14 @@ function initializeStageAutoplayMode(routeName, cfg, page, stages) {
           stageRect.width / vbWidth,
           stageRect.height / vbHeight,
         );
-        const renderWidth = vbWidth * scale;
         const renderHeight = vbHeight * scale;
+        const renderWidth = vbWidth * scale;
         const gutterX = Math.max(0, (stageRect.width - renderWidth) / 2);
         const gutterY = Math.max(0, (stageRect.height - renderHeight) / 2);
-        leftInset = Math.max(10, Math.round(gutterX + 10));
         rightInset = Math.max(10, Math.round(gutterX + 10));
         bottomInset = Math.max(10, Math.round(gutterY + 10));
       }
     } else {
-      leftInset = Math.max(
-        10,
-        Math.round(renderRect.left - stageRect.left + 10),
-      );
       rightInset = Math.max(
         10,
         Math.round(stageRect.right - renderRect.right + 10),
@@ -6243,7 +6238,7 @@ function initializeStageAutoplayMode(routeName, cfg, page, stages) {
 
     arrowEl?.style.setProperty("--fundal-arrow-right", `${rightInset}px`);
     arrowEl?.style.setProperty("--fundal-arrow-bottom", `${bottomInset}px`);
-    replayBtn?.style.setProperty("--fundal-replay-left", `${leftInset}px`);
+    replayBtn?.style.setProperty("--fundal-replay-right", `${rightInset}px`);
     replayBtn?.style.setProperty("--fundal-replay-bottom", `${bottomInset}px`);
   }
 

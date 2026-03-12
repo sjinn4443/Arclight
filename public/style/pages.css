@@ -2565,12 +2565,12 @@ select.onb-input.has-value + .onb-select-caret {
 
 .childhood-fundal-scroll-page .childhood-fundal-scroll-down-arrow {
   position: absolute;
-  top: auto;
-  left: auto;
-  right: var(--fundal-arrow-right, 10px);
-  bottom: var(--fundal-arrow-bottom, 10px);
-  width: 36px;
-  height: 36px;
+  top: 92%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  width: 72px;
+  height: 72px;
   padding: 0;
   border: 0;
   border-radius: 50%;
@@ -2583,7 +2583,7 @@ select.onb-input.has-value + .onb-select-caret {
   appearance: none;
   -webkit-appearance: none;
   opacity: 0;
-  transform: translateY(8px);
+  transform: translate3d(-50%, calc(-50% + 8px), 0);
   transition:
     opacity 0.18s ease,
     transform 0.18s ease;
@@ -2593,7 +2593,7 @@ select.onb-input.has-value + .onb-select-caret {
 
 .childhood-fundal-scroll-page .childhood-fundal-scroll-down-arrow.is-visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: translate3d(-50%, -50%, 0);
 }
 
 .childhood-fundal-scroll-page
@@ -2614,16 +2614,16 @@ select.onb-input.has-value + .onb-select-caret {
   align-items: center;
   justify-content: center;
   gap: 0;
-  transform: translateY(-1px);
+  transform: translateY(-2px);
 }
 
 .childhood-fundal-scroll-page .childhood-fundal-scroll-down-arrow__chev {
-  width: 9px;
-  height: 9px;
-  border-right: 2.2px solid currentColor;
-  border-bottom: 2.2px solid currentColor;
+  width: 18px;
+  height: 18px;
+  border-right: 4.4px solid currentColor;
+  border-bottom: 4.4px solid currentColor;
   transform: rotate(45deg);
-  margin-top: -4px;
+  margin-top: -8px;
   color: #ececec;
   animation: fundalArrowGrayShift 1.2s linear infinite;
 }
@@ -2645,17 +2645,18 @@ select.onb-input.has-value + .onb-select-caret {
 
 .childhood-fundal-scroll-page .childhood-fundal-stage-replay-btn {
   position: absolute;
-  left: var(--fundal-replay-left, 10px);
+  left: auto;
+  right: var(--fundal-replay-right, 10px);
   bottom: var(--fundal-replay-bottom, 10px);
-  width: 36px;
-  height: 36px;
+  width: 72px;
+  height: 72px;
   padding: 0;
   border: 0;
   border-radius: 50%;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: rgba(58, 58, 58, 0.46);
+  background: rgb(56 56 56);
   color: #fff;
   cursor: pointer;
   line-height: 0;
@@ -2668,12 +2669,12 @@ select.onb-input.has-value + .onb-select-caret {
 }
 
 .childhood-fundal-scroll-page .childhood-fundal-stage-replay-btn__icon {
-  width: 25px;
-  height: 22px;
+  width: 50px;
+  height: 44px;
   display: block;
   object-fit: cover;
   object-position: center;
-  transform: translateX(-1px);
+  transform: translateX(-2px);
   user-select: none;
   -webkit-user-drag: none;
 }
@@ -2681,28 +2682,29 @@ select.onb-input.has-value + .onb-select-caret {
 @media (min-width: 1024px) {
   .childhood-fundal-scroll-page .childhood-fundal-scroll-down-arrow,
   .childhood-fundal-scroll-page .childhood-fundal-stage-replay-btn {
-    width: 50px;
-    height: 50px;
+    width: 100px;
+    height: 100px;
   }
 
   .childhood-fundal-scroll-page .childhood-fundal-scroll-down-arrow__chev {
-    width: 13px;
-    height: 13px;
-    border-right-width: 2.5px;
-    border-bottom-width: 2.5px;
-    margin-top: -6px;
+    width: 26px;
+    height: 26px;
+    border-right-width: 5px;
+    border-bottom-width: 5px;
+    margin-top: -12px;
   }
 
   .childhood-fundal-scroll-page .childhood-fundal-stage-replay-btn__icon {
-    width: 33px;
-    height: 31px;
+    width: 66px;
+    height: 62px;
   }
 }
 
 @media (max-width: 37.5em) {
+  .childhood-fundal-scroll-page .childhood-fundal-scroll-down-arrow,
   .childhood-fundal-scroll-page .childhood-fundal-stage-replay-btn {
-    width: 36px;
-    height: 36px;
+    width: 72px;
+    height: 72px;
   }
 }
 

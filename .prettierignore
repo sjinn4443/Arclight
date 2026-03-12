@@ -1,1 +1,6 @@
 public/html/demo
+build
+dist
+.next
+playwright-report
+test-results
