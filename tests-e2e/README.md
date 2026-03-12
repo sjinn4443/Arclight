@@ -2,11 +2,17 @@
 
 Playwright-based end-to-end checks live here.
 
-## Fundal final-frame validation
+## Fundal validation
 
-This suite validates that every `childhood eye screening > fundal reflex`
-animation stage finishes on a non-empty final frame instead of collapsing to a
-blank or sparse hold frame.
+The fundal suite covers:
+
+- final-frame hold validation across all fundal routes
+- autoplay scroll-lock behavior for staged playback
+- iOS renderer override selection for masked files
+- Chromium vs iOS WebKit visual parity on the fixed masked Preparation scene
+
+The goal is to catch both end-of-animation blank holds and iOS-specific visual
+regressions such as partial rendering or inverted mask output.
 
 Run locally:
 

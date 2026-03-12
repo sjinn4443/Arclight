@@ -75,7 +75,7 @@ jobs:
         env:
           MASTER_KEY: ${{ secrets.MASTER_KEY }}
 
-      - name: Run fundal final-frame validation
+      - name: Run fundal E2E validation
         run: npm run test:fundal:ci
 
       - name: Upload Playwright artifacts

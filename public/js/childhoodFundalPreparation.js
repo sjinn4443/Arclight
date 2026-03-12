@@ -17,15 +17,114 @@ const FUNDAL_LOTTIE_RENDERER = (() => {
 })();
 const FUNDAL_IOS_DEFAULT_RENDERER = "canvas";
 
+function getFundalE2ERuntime() {
+  if (typeof window === "undefined") return null;
+  const runtime = window.__ARCLIGHT_E2E__;
+  return runtime && typeof runtime === "object" ? runtime : null;
+}
+
 function resolveFundalE2EPlaybackRate() {
-  if (typeof window === "undefined") return 1;
-  const raw = Number(window.__ARCLIGHT_E2E__?.fundalPlaybackRate);
-  if (!Number.isFinite(raw) || raw <= 0) return 1;
+  const raw = Number(getFundalE2ERuntime()?.fundalPlaybackRate);
+  if (!Number.isFinite(raw) || raw <= 0) return null;
   return Math.min(20, raw);
 }
 
-function applyFundalE2EPlaybackRate(anim) {
-  const playbackRate = resolveFundalE2EPlaybackRate();
+function shouldDisableFundalE2EAutoplay() {
+  return getFundalE2ERuntime()?.disableFundalAutoplay === true;
+}
+
+function ensureFundalE2ERegistry() {
+  const runtime = getFundalE2ERuntime();
+  if (!runtime) return null;
+
+  if (!runtime.fundal || typeof runtime.fundal !== "object") {
+    runtime.fundal = {};
+  }
+  const fundal = runtime.fundal;
+
+  if (!fundal.sessions || typeof fundal.sessions !== "object") {
+    fundal.sessions = {};
+  }
+
+  if (typeof fundal.hasRoute !== "function") {
+    fundal.hasRoute = (routeName) => !!fundal.sessions?.[routeName];
+  }
+
+  if (typeof fundal.getStageState !== "function") {
+    fundal.getStageState = (routeName, stageIndex) =>
+      fundal.sessions?.[routeName]?.getStageState?.(stageIndex) || null;
+  }
+
+  if (typeof fundal.seekStage !== "function") {
+    fundal.seekStage = (routeName, stageIndex, frame, options) =>
+      fundal.sessions?.[routeName]?.seekStage?.(stageIndex, frame, options) ||
+      null;
+  }
+
+  return fundal;
+}
+
+function registerFundalE2ESession(routeName, sessionApi) {
+  const fundal = ensureFundalE2ERegistry();
+  if (!fundal || !routeName || !sessionApi) return;
+  fundal.sessions[routeName] = sessionApi;
+}
+
+function unregisterFundalE2ESession(routeName) {
+  const fundal = ensureFundalE2ERegistry();
+  if (!fundal || !routeName) return;
+  delete fundal.sessions[routeName];
+}
+
+function waitForFundalE2ERenderFrame() {
+  return new Promise((resolve) => {
+    if (typeof requestAnimationFrame === "function") {
+      requestAnimationFrame(() => resolve());
+      return;
+    }
+    setTimeout(resolve, 16);
+  });
+}
+
+async function waitForFundalE2ERenderStability(frameCount = 2) {
+  const totalFrames = Math.max(1, Math.floor(Number(frameCount) || 0));
+  for (let i = 0; i < totalFrames; i += 1) {
+    await waitForFundalE2ERenderFrame();
+  }
+}
+
+function resolveConfiguredFundalPlaybackRate(cfg, fileIndex) {
+  const raw = Array.isArray(cfg?.playbackRateByFile)
+    ? cfg.playbackRateByFile[fileIndex]
+    : cfg?.playbackRate;
+  const playbackRate = Number(raw);
+  if (!Number.isFinite(playbackRate) || playbackRate <= 0) return 1;
+  return playbackRate;
+}
+
+function resolveConfiguredAutoplayStartFrame(cfg, fileIndex) {
+  const raw = Array.isArray(cfg?.autoplayStartFrameByFile)
+    ? cfg.autoplayStartFrameByFile[fileIndex]
+    : cfg?.autoplayStartFrame;
+  const startFrame = Number(raw);
+  if (!Number.isFinite(startFrame) || startFrame < 0) return 0;
+  return Math.floor(startFrame);
+}
+
+function resolveConfiguredAutoplayEndFrame(cfg, fileIndex) {
+  const raw = Array.isArray(cfg?.autoplayEndFrameByFile)
+    ? cfg.autoplayEndFrameByFile[fileIndex]
+    : cfg?.autoplayEndFrame;
+  if (raw == null || raw === "") return null;
+  const endFrame = Number(raw);
+  if (!Number.isFinite(endFrame) || endFrame < 0) return null;
+  return Math.floor(endFrame);
+}
+
+function applyFundalPlaybackRate(anim, cfg, fileIndex) {
+  const playbackRate =
+    resolveFundalE2EPlaybackRate() ??
+    resolveConfiguredFundalPlaybackRate(cfg, fileIndex);
   if (playbackRate === 1 || typeof anim?.setSpeed !== "function") return;
   try {
     anim.setSpeed(playbackRate);
@@ -47,6 +146,10 @@ const ROUTE_CONFIG = {
       "/scrolly/coreexam/fundalreflex/prep/4/data.json",
     ],
     playMode: "stageAutoplay",
+    playbackRateByFile: [1, 1, 1.3],
+    autoplayStartFrameByFile: [0, 0, 90],
+    autoplayEndFrameByFile: [null, 375, null],
+    segmentTextTriggerFramesByFile: [null, null, [0, 196, 317, 384]],
     // User-provided segment plan (inclusive frame ranges).
     segmentRanges: [
       [
@@ -165,6 +268,7 @@ const ROUTE_CONFIG = {
       "/scrolly/coreexam/fundalreflex/eyesopen/3/data.json",
     ],
     playMode: "stageAutoplay",
+    playbackRateByFile: [1.5, 1, 1],
     autoplayLegacySegmentPlaybackByFile: [false, true, false],
     preferLastVisibleCompletionFrameByFile: [false, true, false],
     forceInitialFrameHoldByFile: [0],
@@ -622,6 +726,8 @@ function resolveFundalRenderer(cfg, fileIndex) {
 function cleanupActiveSession() {
   if (!activeSession) return;
 
+  unregisterFundalE2ESession(activeSession.routeName);
+
   try {
     activeSession.observer?.disconnect();
   } catch {}
@@ -724,6 +830,22 @@ function resolveSegmentStartTexts(cfg, fileIndex) {
   if (!Array.isArray(raw)) return [];
 
   return raw.map((entry) => translateFundalText(entry));
+}
+
+function resolveSegmentTextTriggerFrames(cfg, fileIndex) {
+  const raw = Array.isArray(cfg?.segmentTextTriggerFramesByFile)
+    ? cfg.segmentTextTriggerFramesByFile[fileIndex]
+    : null;
+  if (!Array.isArray(raw)) return [];
+
+  return raw
+    .map((frame) => {
+      const numeric = Number(frame);
+      return Number.isFinite(numeric) && numeric >= 0
+        ? Math.floor(numeric)
+        : null;
+    })
+    .filter((frame) => frame != null);
 }
 
 function resolveFinalSummaryBullets(cfg, fileIndex) {
@@ -1513,16 +1635,52 @@ function shouldUseLegacySegmentPlaybackForAutoplay(cfg, fileIndex) {
 }
 
 function resolveAutoplayPlaybackSegments(cfg, fileIndex, anim, segments = []) {
+  const lastFrame = getAnimationLastFrame(anim);
+  const autoplayStartFrame = Math.max(
+    0,
+    Math.min(lastFrame, resolveConfiguredAutoplayStartFrame(cfg, fileIndex)),
+  );
+  const configuredAutoplayEndFrame = resolveConfiguredAutoplayEndFrame(
+    cfg,
+    fileIndex,
+  );
+  const autoplayEndFrame = Number.isFinite(configuredAutoplayEndFrame)
+    ? Math.max(
+        autoplayStartFrame,
+        Math.min(lastFrame, configuredAutoplayEndFrame),
+      )
+    : lastFrame;
+
   if (
     shouldUseLegacySegmentPlaybackForAutoplay(cfg, fileIndex) &&
     Array.isArray(segments) &&
     segments.length > 0
   ) {
-    return segments.map((segment) => ({ ...segment }));
+    const clippedSegments = segments
+      .map((segment) => ({ ...segment }))
+      .filter((segment) => getSegmentEndFrame(segment) >= autoplayStartFrame)
+      .filter((segment) => Number(segment.from) <= autoplayEndFrame)
+      .map((segment, index) =>
+        index === 0 && autoplayStartFrame > Number(segment.from)
+          ? {
+              ...segment,
+              from: autoplayStartFrame,
+              to: Math.min(getSegmentEndFrame(segment), autoplayEndFrame),
+            }
+          : {
+              ...segment,
+              to: Math.min(getSegmentEndFrame(segment), autoplayEndFrame),
+            },
+      );
+    if (clippedSegments.length > 0) return clippedSegments;
   }
 
-  const lastFrame = getAnimationLastFrame(anim);
-  return [normaliseSegment({ from: 0, to: lastFrame }, lastFrame)];
+  return [
+    normaliseSegment(
+      { from: autoplayStartFrame, to: autoplayEndFrame },
+      lastFrame,
+    ),
+  ];
 }
 
 function shouldPreferLastVisibleCompletionFrame(cfg, fileIndex) {
@@ -3854,6 +4012,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
         stage.parentElement?.querySelector(".childhood-fundal-segment-text") ||
         null,
       segmentStartTexts: resolveSegmentStartTexts(cfg, idx),
+      segmentTextTriggerFrames: resolveSegmentTextTriggerFrames(cfg, idx),
       finalSummaryBulletLines: resolveFinalSummaryBullets(cfg, idx),
       segmentTextMode: resolveSegmentTextMode(cfg, idx),
       segmentTextLines: [],
@@ -4061,7 +4220,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
           hideOnTransparent: false,
         },
       });
-      applyFundalE2EPlaybackRate(anim);
+      applyFundalPlaybackRate(anim, cfg, idx);
       return anim;
     };
 
@@ -4342,6 +4501,10 @@ function initializeSegmentScrollMode(cfg, page, stages) {
       if (!Number.isFinite(fileIndex) || fileIndex < 0) return;
 
       controller.segmentStartTexts = resolveSegmentStartTexts(cfg, fileIndex);
+      controller.segmentTextTriggerFrames = resolveSegmentTextTriggerFrames(
+        cfg,
+        fileIndex,
+      );
       controller.finalSummaryBulletLines = resolveFinalSummaryBullets(
         cfg,
         fileIndex,
@@ -5693,7 +5856,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
   };
 }
 
-function initializeStageAutoplayMode(cfg, page, stages) {
+function initializeStageAutoplayMode(routeName, cfg, page, stages) {
   const pageContent = document.getElementById("page-content");
   const overscrollRestore = {
     page: page.style.overscrollBehaviorY,
@@ -5784,6 +5947,7 @@ function initializeStageAutoplayMode(cfg, page, stages) {
       replayBtn: null,
       segmentTextEl,
       segmentStartTexts: [],
+      segmentTextTriggerFrames: [],
       finalSummaryBulletLines: [],
       segmentTextMode: resolveSegmentTextMode(cfg, idx),
       segmentTextLines: [],
@@ -5838,9 +6002,14 @@ function initializeStageAutoplayMode(cfg, page, stages) {
   }
 
   function resolveStageSummary(state) {
-    state.segmentStartTexts = resolveSegmentStartTexts(cfg, state.fileIndex)
-      .map((line) => normaliseSegmentTextLine(line))
-      .filter((line) => !!line);
+    state.segmentStartTexts = resolveSegmentStartTexts(
+      cfg,
+      state.fileIndex,
+    ).map((line) => normaliseSegmentTextLine(line));
+    state.segmentTextTriggerFrames = resolveSegmentTextTriggerFrames(
+      cfg,
+      state.fileIndex,
+    );
     state.finalSummaryBulletLines = resolveFinalSummaryBullets(
       cfg,
       state.fileIndex,
@@ -5904,11 +6073,24 @@ function initializeStageAutoplayMode(cfg, page, stages) {
     }
 
     let nextIndex = -1;
-    state.segments.forEach((segment, idx) => {
-      if (isFrameWithinSegment(frame, segment)) {
-        nextIndex = idx;
-      }
-    });
+    if (Array.isArray(state.segmentTextTriggerFrames)) {
+      state.segmentTextTriggerFrames.forEach((triggerFrame, idx) => {
+        if (
+          Number.isFinite(triggerFrame) &&
+          Number(frame) >= Number(triggerFrame)
+        ) {
+          nextIndex = idx;
+        }
+      });
+    }
+
+    if (nextIndex < 0) {
+      state.segments.forEach((segment, idx) => {
+        if (isFrameWithinSegment(frame, segment)) {
+          nextIndex = idx;
+        }
+      });
+    }
 
     if (nextIndex < 0) return;
     if (nextIndex === state.currentTextSegmentIndex) return;
@@ -6532,7 +6714,10 @@ function initializeStageAutoplayMode(cfg, page, stages) {
   }
 
   function prepareInitialFrame(state) {
-    const startFrame = 0;
+    const startFrame = resolveConfiguredAutoplayStartFrame(
+      cfg,
+      state.fileIndex,
+    );
     try {
       state.anim?.goToAndStop(startFrame, true);
     } catch {
@@ -6651,6 +6836,7 @@ function initializeStageAutoplayMode(cfg, page, stages) {
   }
 
   function maybeStartEligibleStage() {
+    if (shouldDisableFundalE2EAutoplay()) return;
     if (states.some((state) => state.playing)) return;
 
     const nextState = getNextAutoplayCandidate();
@@ -6705,7 +6891,7 @@ function initializeStageAutoplayMode(cfg, page, stages) {
         hideOnTransparent: false,
       },
     });
-    applyFundalE2EPlaybackRate(anim);
+    applyFundalPlaybackRate(anim, cfg, state.fileIndex);
 
     state.anim = anim;
 
@@ -6761,6 +6947,112 @@ function initializeStageAutoplayMode(cfg, page, stages) {
     };
   });
 
+  function serializeFundalE2EStageState(state) {
+    if (!state) return null;
+
+    const renderEl = getControllerRenderElement(state);
+    const tagName = String(renderEl?.tagName || "").toLowerCase();
+    const renderRect = renderEl?.getBoundingClientRect?.();
+
+    return {
+      routeName,
+      fileIndex: Number(state.fileIndex),
+      ready: state.ready === true,
+      failed: state.failed === true,
+      started: state.started === true,
+      completed: state.completed === true,
+      playing: state.playing === true,
+      posterHidden: state.stage?.dataset?.posterHidden === "1",
+      renderType: tagName || "missing",
+      hasSvg: tagName === "svg",
+      hasCanvas: tagName === "canvas",
+      currentFrame: clampFrameToAnimation(
+        state,
+        Math.floor(Number(state.anim?.currentFrame || 0)),
+      ),
+      renderWidth: Number.isFinite(Number(renderRect?.width))
+        ? Number(renderRect.width)
+        : 0,
+      renderHeight: Number.isFinite(Number(renderRect?.height))
+        ? Number(renderRect.height)
+        : 0,
+      replayVisible:
+        ensureStageReplayButtonElement(state.stage, state.replayBtn)?.style
+          ?.display !== "none",
+    };
+  }
+
+  async function seekFundalE2EStage(stageIndex, frame, options = {}) {
+    const state = states[Number(stageIndex)];
+    if (!state) {
+      return {
+        routeName,
+        fileIndex: Number(stageIndex),
+        ready: false,
+        failed: true,
+        reason: "missing-stage",
+      };
+    }
+
+    if (!state.ready || !state.anim) {
+      return {
+        ...serializeFundalE2EStageState(state),
+        reason: "not-ready",
+      };
+    }
+
+    const safeFrame = clampFrameToAnimation(state, Number(frame));
+    const requireRichContent =
+      options?.requireRichContent == null
+        ? IS_IOS_WEBKIT
+        : options.requireRichContent === true;
+
+    try {
+      state.anim.pause?.();
+      state.anim.goToAndStop(safeFrame, true);
+    } catch {
+      return {
+        ...serializeFundalE2EStageState(state),
+        reason: "seek-failed",
+      };
+    }
+
+    hideRecoveryOverlay(state, { immediate: true });
+    hideStageControls(state);
+    forceSvgVisibleForController(state);
+    maybeHideStagePoster(state, {
+      immediate: true,
+      requireRichContent,
+      minContentAreaRatio: state.minContentAreaRatio,
+    });
+    refreshVisibleFrameState(state);
+    updateStageControlAnchors(state);
+    requestIosStageRepaintNudge(state.stage);
+
+    await waitForFundalE2ERenderStability(3);
+
+    forceSvgVisibleForController(state);
+    maybeHideStagePoster(state, {
+      immediate: true,
+      requireRichContent,
+      minContentAreaRatio: state.minContentAreaRatio,
+    });
+    refreshVisibleFrameState(state);
+    updateStageControlAnchors(state);
+    requestIosStageRepaintNudge(state.stage);
+
+    await waitForFundalE2ERenderStability(2);
+
+    return serializeFundalE2EStageState(state);
+  }
+
+  registerFundalE2ESession(routeName, {
+    getStageState: (stageIndex) =>
+      serializeFundalE2EStageState(states[Number(stageIndex)]),
+    seekStage: (stageIndex, frame, options) =>
+      seekFundalE2EStage(stageIndex, frame, options),
+  });
+
   cleanupLegacyTopbarReplay(page);
   window.addEventListener("scroll", onViewportChange, { passive: true });
   pageContent?.addEventListener("scroll", onViewportChange, { passive: true });
@@ -6771,6 +7063,7 @@ function initializeStageAutoplayMode(cfg, page, stages) {
   });
 
   return {
+    routeName,
     refreshLanguage,
     controllers: states,
     animations: states.map((state) => state.anim).filter((anim) => !!anim),
@@ -6897,7 +7190,7 @@ export async function initializeChildhoodFundalReflexScrollPage(routeName) {
 
   if (cfg.playMode === "stageAutoplay") {
     await i18nReadyPromise;
-    activeSession = initializeStageAutoplayMode(cfg, page, stages);
+    activeSession = initializeStageAutoplayMode(routeName, cfg, page, stages);
     return;
   }
 
@@ -6921,12 +7214,12 @@ export async function initializeChildhoodFundalReflexScrollPage(routeName) {
         hideOnTransparent: false,
       },
     });
-    applyFundalE2EPlaybackRate(anim);
+    applyFundalPlaybackRate(anim, cfg, idx);
     return anim;
   });
 
   const observer = createViewportController(stages, animations);
-  activeSession = { observer, animations };
+  activeSession = { routeName, observer, animations };
 }
 
 if (!window.__fundalScrollCleanupWired) {
