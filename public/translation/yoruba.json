@@ -456,10 +456,159 @@
     },
     "childhoodfundalafterexamination": {
       "after_examination": "Lẹhin Idanwo"
+    },
+    "childhoodeyescreeningworkshop": {
+      "eyes": "Oju",
+      "the_visual_system": "1. The Visual System",
+      "see_all": "Wo gbogbo >",
+      "visual_development": "2. Visual Development",
+      "causes_of_visual_impairment": "3. Okunfa ti Visual àìpéye",
+      "signs_of_visual_impairment": "4. Awọn ami ti Visual Ailagbara",
+      "childhood_eye_screening": "5. Abojuto Oju ewe",
+      "eye_brain": "Oju & Ọpọlọ",
+      "start": "Bẹrẹ >",
+      "atoms_card": "Atoms Kaadi",
+      "normal_visual_development": "Deede Visual Development",
+      "assessing_visual_function": "Iṣiro Iṣẹ Iwoye",
+      "cases": "Awọn ọran",
+      "behaviours": "Awọn iwa",
+      "10_questions": "| 10 Ìbéèrè",
+      "ask_questions_and_observe": "Beere Awọn ibeere ati Ṣe akiyesi",
+      "assessing_eyes_vision": "Iṣiro Awọn Oju & Iran",
+      "refer": "Tọkasi",
+      "how_to_use_arclight": "Bi o ṣe le Lo Arclight",
+      "fundal_reflex_usaid": "Iṣatunṣe Ipilẹ USAID",
+      "fundal_reflex_pdf": "Iṣatunṣe Ipilẹ PDF",
+      "fundal_reflex": "Ifojusi ipilẹ",
+      "preparation": "Igbaradi",
+      "examination": "Ayẹwo",
+      "newborn_eyes_open": "Omo tuntun - Oju Open",
+      "newborn_eyes_closed": "Omo tuntun - Oju Titi",
+      "unclear_findings": "Awọn awari ti ko ṣe kedere",
+      "possible_findings": "Awọn awari ti o ṣeeṣe",
+      "after_examination": "Lẹhin Idanwo",
+      "normal_abnormal": "Deede & Aiṣedeede",
+      "assessment": "Igbelewọn",
+      "9_questions": "9 Ìbéèrè",
+      "fundal_reflex_examination": "Agbeyewo rifulẹkisi Fundal",
+      "your_browser_does_not_support_the_video_tag": "Aṣàwákiri rẹ ko ṣe atilẹyin tag fidio."
+    },
+    "visualsystemeyesbrain": {
+      "childhood_eye_screening": "Abojuto Oju ewe",
+      "eye_brain": "Oju & Ọpọlọ",
+      "cornea": "Cornea",
+      "lens": "Lẹnsi",
+      "retina": "Retina",
+      "loading": "Nkojọpọ..."
+    },
+    "childhoodassessment": {
+      "assessment": "Igbelewọn",
+      "check_answer": "Ṣayẹwo Idahun"
+    },
+    "behavioursquiz": {
+      "behaviours_mcq": "Awọn iwa MCQ",
+      "check_answer": "Ṣayẹwo Idahun"
+    },
+    "fundalreflexpdf": {
+      "fundal_reflex": "Ifojusi ipilẹ",
+      "eyes": "Oju"
+    },
+    "visualimpairment": {
+      "visual_impairment": "Ibanuje wiwo"
+    },
+    "signsvicases": {
+      "signs_of_visual_impairment": "Awọn ami ti Visual Ailagbara"
+    },
+    "childhoodrefer": {
+      "refer": "Tọkasi"
+    },
+    "childhoodeyebrainimages": {
+      "eye_brain": "Oju & Ọpọlọ",
+      "introduction_to_visual_development": "Ifihan to Visual Development",
+      "normal_visual_development": "Deede Visual Development",
+      "ask_questions_and_observe": "Beere Awọn ibeere ati Ṣe akiyesi"
+    },
+    "glaucomaworkshop": {
+      "eyes": "Oju",
+      "1_introduction": "1. Ifihan",
+      "see_all": "Wo gbogbo >",
+      "2_history": "2. Itan",
+      "3_vision": "3. Iranran",
+      "4_fields_pupils": "4. Awọn aaye & awọn ọmọ ile-iwe",
+      "5_front_of_eye": "5. Iwaju oju",
+      "6_back_of_eye": "6. Back ti oju",
+      "7_summary": "7. Lakotan",
+      "introduction": "Ifaara",
+      "what_is_glaucoma": "Kini Glaucoma",
+      "start": "Bẹrẹ >",
+      "types_of_glaucoma": "Awọn oriṣi Glaucoma",
+      "diagnosis": "Aisan ayẹwo",
+      "history": "Itan",
+      "poag_and_acag": "POAG ati ACAG",
+      "case_study": "Iwadi ọran",
+      "vision": "Iranran",
+      "intro_vision_loss": "Intoro & Iran pipadanu",
+      "testing_visual_acuity": "Idanwo Visual Acuity",
+      "visual_acuity": "Acuity Visual",
+      "fields_pupils": "Awọn aaye & awọn ọmọ ile-iwe",
+      "visual_fields": "Awọn aaye wiwo",
+      "front_of_eye": "Iwaju oju",
+      "back_of_eye": "Pada ti oju",
+      "summary": "Lakotan",
+      "scrolly": "Yi lọ",
+      "fundus_atoms_card": "Fundus Atoms Kaadi",
+      "glaucoma_atoms_card": "Glaucoma Atoms Kaadi",
+      "fundus": "Fundus",
+      "glaucoma": "Glaucoma"
+    },
+    "glaucomaquizcasestudy": {
+      "normal_or_abnormal": "Deede tabi Aiṣedeede",
+      "choose_the_correct_diagnosis": "Yan ayẹwo ti o tọ",
+      "results": "Esi",
+      "secondary_glaucoma_findings": "Awọn awari glaucoma keji",
+      "secondary_cause": "Idi keji",
+      "not_secondary": "Ko secondary"
+    },
+    "glaucomascrollimages": {
+      "what_is_glaucoma": "Kini glaucoma",
+      "types_of_glaucoma": "Awọn oriṣi ti glaucoma",
+      "diagnosis": "Aisan ayẹwo",
+      "introduction": "Ifaara",
+      "poag_and_acag": "POAG ati ACAG",
+      "intro_vision_loss": "Intoro & Iran pipadanu",
+      "testing_visual_acuity": "Idanwo Visual Acuity",
+      "intro": "Ọrọ Iṣaaju",
+      "examination": "Ayẹwo",
+      "quadrants_fingers": "Quadrants - Awọn ika ọwọ",
+      "quadrants_red_target": "Quadrants - Red afojusun",
+      "assess_and_record": "Ṣe ayẹwo ati igbasilẹ",
+      "pupil_reactions": "Awọn aati akẹẹkọ",
+      "full_pupil_swinging_light_test_rapd": "Idanwo imole ti omo ile ni kikun RAPD",
+      "findings_that_can_lead_to_glaucoma": "Awọn awari ti o le ja si glaucoma",
+      "anterior_chamber_depth": "Iwaju Iyẹwu Ijinle",
+      "feeling_for_high_iop_in_acag": "rilara fun giga IOP ni ACAG",
+      "optic_nerve": "opiki nafu",
+      "cupping": "agolo",
+      "scrolly": "yiyi",
+      "temporal_side": "igba die ẹgbẹ",
+      "shine_from_the_side": "Tan lati ẹgbẹ",
+      "deep_ac": "AC jin",
+      "shallow_ac": "AC aijinile",
+      "pick_up_arclight_and_shine_from_the_side": "Gbe Arclight ki o tan imọlẹ lati ẹgbẹ",
+      "pupil_swinging_light_test_rapd": "Idanwo imole ti omo ile iwe RAPD",
+      "rapd_mode_off": "Ipo RAPD PA"
+    },
+    "glaucomahistorycasestudy": {
+      "case_study": "Ikẹkọ Ọran",
+      "text": ">",
+      "select_diagnosis": "Yan okunfa",
+      "all_cases_completed": "Gbogbo awọn ọran ti pari",
+      "result": "Abajade"
     }
   },
   "i18nLiteral": {
-    "Next >": "Itele >"
+    "Next >": "Itele >",
+    "Close ^": "Pade ^"
   },
   "i18nExtra": {
     "fundal_reflex": {

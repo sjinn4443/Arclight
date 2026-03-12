@@ -456,10 +456,159 @@
     },
     "childhoodfundalafterexamination": {
       "after_examination": "Após o exame"
+    },
+    "childhoodeyescreeningworkshop": {
+      "eyes": "Olhos",
+      "the_visual_system": "1. O Sistema Visual",
+      "see_all": "Ver tudo >",
+      "visual_development": "2. Desenvolvimento Visual",
+      "causes_of_visual_impairment": "3. Causas da deficiência visual",
+      "signs_of_visual_impairment": "4. Sinais de deficiência visual",
+      "childhood_eye_screening": "5. Exame oftalmológico infantil",
+      "eye_brain": "Olho e Cérebro",
+      "start": "Iniciar >",
+      "atoms_card": "Cartão Atoms",
+      "normal_visual_development": "Desenvolvimento visual normal",
+      "assessing_visual_function": "Avaliando a função visual",
+      "cases": "Casos",
+      "behaviours": "Comportamentos",
+      "10_questions": "| 10 perguntas",
+      "ask_questions_and_observe": "Faça perguntas e observe",
+      "assessing_eyes_vision": "Avaliando Olhos e Visão",
+      "refer": "Consulte",
+      "how_to_use_arclight": "Como usar Arclight",
+      "fundal_reflex_usaid": "Reflexo Fundamental USAID",
+      "fundal_reflex_pdf": "Reflexo Fundal PDF",
+      "fundal_reflex": "Reflexo fundamental",
+      "preparation": "Preparação",
+      "examination": "Exame",
+      "newborn_eyes_open": "Recém-nascido - Olhos Abertos",
+      "newborn_eyes_closed": "Recém-nascido - Olhos Fechados",
+      "unclear_findings": "Descobertas pouco claras",
+      "possible_findings": "Possíveis descobertas",
+      "after_examination": "Após o exame",
+      "normal_abnormal": "Normal e Anormal",
+      "assessment": "Avaliação",
+      "9_questions": "9 perguntas",
+      "fundal_reflex_examination": "Exame Reflexo Fundal",
+      "your_browser_does_not_support_the_video_tag": "Seu navegador não suporta a tag de vídeo."
+    },
+    "visualsystemeyesbrain": {
+      "childhood_eye_screening": "Triagem oftalmológica infantil",
+      "eye_brain": "Olho e Cérebro",
+      "cornea": "Córnea",
+      "lens": "Lente",
+      "retina": "Retina",
+      "loading": "Carregando..."
+    },
+    "childhoodassessment": {
+      "assessment": "Avaliação",
+      "check_answer": "Verifique a resposta"
+    },
+    "behavioursquiz": {
+      "behaviours_mcq": "Comportamentos MCQ",
+      "check_answer": "Verifique a resposta"
+    },
+    "fundalreflexpdf": {
+      "fundal_reflex": "Reflexo fundamental",
+      "eyes": "Olhos"
+    },
+    "visualimpairment": {
+      "visual_impairment": "Deficiência visual"
+    },
+    "signsvicases": {
+      "signs_of_visual_impairment": "Sinais de deficiência visual"
+    },
+    "childhoodrefer": {
+      "refer": "Consulte"
+    },
+    "childhoodeyebrainimages": {
+      "eye_brain": "Olho e Cérebro",
+      "introduction_to_visual_development": "Introdução ao Desenvolvimento Visual",
+      "normal_visual_development": "Desenvolvimento visual normal",
+      "ask_questions_and_observe": "Faça perguntas e observe"
+    },
+    "glaucomaworkshop": {
+      "eyes": "Olhos",
+      "1_introduction": "1. Introdução",
+      "see_all": "Ver tudo >",
+      "2_history": "2. História",
+      "3_vision": "3. Visão",
+      "4_fields_pupils": "4. Campos e alunos",
+      "5_front_of_eye": "5. Frente do olho",
+      "6_back_of_eye": "6. Parte posterior do olho",
+      "7_summary": "7. Resumo",
+      "introduction": "Introdução",
+      "what_is_glaucoma": "O que é Glaucoma",
+      "start": "Iniciar >",
+      "types_of_glaucoma": "Tipos de glaucoma",
+      "diagnosis": "Diagnóstico",
+      "history": "História",
+      "poag_and_acag": "POAG e ACAG",
+      "case_study": "Estudo de caso",
+      "vision": "Visão",
+      "intro_vision_loss": "Introdução e perda de visão",
+      "testing_visual_acuity": "Testando acuidade visual",
+      "visual_acuity": "Acuidade Visual",
+      "fields_pupils": "Campos e alunos",
+      "visual_fields": "Campos visuais",
+      "front_of_eye": "Frente do olho",
+      "back_of_eye": "Atrás do olho",
+      "summary": "Resumo",
+      "scrolly": "Rolado",
+      "fundus_atoms_card": "Cartão Fundo Atoms",
+      "glaucoma_atoms_card": "Cartão Glaucoma Atoms",
+      "fundus": "Fundo",
+      "glaucoma": "Glaucoma"
+    },
+    "glaucomaquizcasestudy": {
+      "normal_or_abnormal": "Normal ou Anormal",
+      "choose_the_correct_diagnosis": "Escolha o diagnóstico correto",
+      "results": "Resultados",
+      "secondary_glaucoma_findings": "Achados de glaucoma secundário",
+      "secondary_cause": "Causa secundária",
+      "not_secondary": "Não secundário"
+    },
+    "glaucomascrollimages": {
+      "what_is_glaucoma": "O que é glaucoma",
+      "types_of_glaucoma": "Tipos de glaucoma",
+      "diagnosis": "Diagnóstico",
+      "introduction": "Introdução",
+      "poag_and_acag": "POAG e ACAG",
+      "intro_vision_loss": "Introdução e perda de visão",
+      "testing_visual_acuity": "Testando acuidade visual",
+      "intro": "Introdução",
+      "examination": "Exame",
+      "quadrants_fingers": "Quadrantes - Dedos",
+      "quadrants_red_target": "Quadrantes - alvo vermelho",
+      "assess_and_record": "Avalie e registre",
+      "pupil_reactions": "Reações da pupila",
+      "full_pupil_swinging_light_test_rapd": "Teste de luz oscilante da pupila completa RAPD",
+      "findings_that_can_lead_to_glaucoma": "Achados que podem levar ao glaucoma",
+      "anterior_chamber_depth": "Profundidade da Câmara Anterior",
+      "feeling_for_high_iop_in_acag": "sentindo alta IOP em ACAG",
+      "optic_nerve": "nervo óptico",
+      "cupping": "ventosas",
+      "scrolly": "rolado",
+      "temporal_side": "lado temporal",
+      "shine_from_the_side": "Brilhe de lado",
+      "deep_ac": "AC profundo",
+      "shallow_ac": "AC raso",
+      "pick_up_arclight_and_shine_from_the_side": "Pegue Arclight e brilhe lateralmente",
+      "pupil_swinging_light_test_rapd": "Teste de luz oscilante da pupila RAPD",
+      "rapd_mode_off": "Modo RAPD DESLIGADO"
+    },
+    "glaucomahistorycasestudy": {
+      "case_study": "Estudo de caso",
+      "text": ">",
+      "select_diagnosis": "Selecione o diagnóstico",
+      "all_cases_completed": "Todos os casos concluídos",
+      "result": "Resultado"
     }
   },
   "i18nLiteral": {
-    "Next >": "Próximo>"
+    "Next >": "Próximo>",
+    "Close ^": "Fechar ^"
   },
   "i18nExtra": {
     "fundal_reflex": {

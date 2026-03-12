@@ -456,10 +456,159 @@
     },
     "childhoodfundalafterexamination": {
       "after_examination": "امتحان کے بعد"
+    },
+    "childhoodeyescreeningworkshop": {
+      "eyes": "آنکھیں",
+      "the_visual_system": "1. بصری نظام",
+      "see_all": "سب دیکھیں >",
+      "visual_development": "2. بصری ترقی",
+      "causes_of_visual_impairment": "3. بصارت کی خرابی کی وجوہات",
+      "signs_of_visual_impairment": "4. بصارت کی خرابی کی علامات",
+      "childhood_eye_screening": "5. بچپن کی آنکھوں کی اسکریننگ",
+      "eye_brain": "آنکھ اور دماغ",
+      "start": "شروع کریں >",
+      "atoms_card": "Atoms کارڈ",
+      "normal_visual_development": "عمومی بصری ترقی",
+      "assessing_visual_function": "بصری فنکشن کا اندازہ لگانا",
+      "cases": "کیسز",
+      "behaviours": "رویے",
+      "10_questions": "| 10 سوالات",
+      "ask_questions_and_observe": "سوالات پوچھیں اور مشاہدہ کریں۔",
+      "assessing_eyes_vision": "آنکھوں اور بصارت کا اندازہ لگانا",
+      "refer": "رجوع کریں۔",
+      "how_to_use_arclight": "کیسے استعمال کریں Arclight",
+      "fundal_reflex_usaid": "فنڈل ریفلیکس USAID",
+      "fundal_reflex_pdf": "فنڈل ریفلیکس PDF",
+      "fundal_reflex": "فنڈل اضطراری",
+      "preparation": "تیاری",
+      "examination": "امتحان",
+      "newborn_eyes_open": "نومولود - آنکھیں کھلیں۔",
+      "newborn_eyes_closed": "نومولود - آنکھیں بند",
+      "unclear_findings": "غیر واضح نتائج",
+      "possible_findings": "ممکنہ نتائج",
+      "after_examination": "امتحان کے بعد",
+      "normal_abnormal": "نارمل اور غیر معمولی",
+      "assessment": "تشخیص",
+      "9_questions": "9 سوالات",
+      "fundal_reflex_examination": "فنڈل اضطراری امتحان",
+      "your_browser_does_not_support_the_video_tag": "آپ کا براؤزر ویڈیو ٹیگ کو سپورٹ نہیں کرتا ہے۔"
+    },
+    "visualsystemeyesbrain": {
+      "childhood_eye_screening": "بچپن کی آنکھوں کی اسکریننگ",
+      "eye_brain": "آنکھ اور دماغ",
+      "cornea": "کارنیا",
+      "lens": "لینس",
+      "retina": "ریٹنا",
+      "loading": "لوڈ ہو رہا ہے..."
+    },
+    "childhoodassessment": {
+      "assessment": "تشخیص",
+      "check_answer": "جواب چیک کریں۔"
+    },
+    "behavioursquiz": {
+      "behaviours_mcq": "برتاؤ MCQ",
+      "check_answer": "جواب چیک کریں۔"
+    },
+    "fundalreflexpdf": {
+      "fundal_reflex": "فنڈل اضطراری",
+      "eyes": "آنکھیں"
+    },
+    "visualimpairment": {
+      "visual_impairment": "بصری خرابی۔"
+    },
+    "signsvicases": {
+      "signs_of_visual_impairment": "بصری خرابی کی علامات"
+    },
+    "childhoodrefer": {
+      "refer": "رجوع کریں۔"
+    },
+    "childhoodeyebrainimages": {
+      "eye_brain": "آنکھ اور دماغ",
+      "introduction_to_visual_development": "بصری ترقی کا تعارف",
+      "normal_visual_development": "عمومی بصری ترقی",
+      "ask_questions_and_observe": "سوالات پوچھیں اور مشاہدہ کریں۔"
+    },
+    "glaucomaworkshop": {
+      "eyes": "آنکھیں",
+      "1_introduction": "1. تعارف",
+      "see_all": "سب دیکھیں >",
+      "2_history": "2. تاریخ",
+      "3_vision": "3. بصارت",
+      "4_fields_pupils": "4. میدان اور شاگرد",
+      "5_front_of_eye": "5. آنکھ کے سامنے",
+      "6_back_of_eye": "6. آنکھ کے پیچھے",
+      "7_summary": "7. خلاصہ",
+      "introduction": "تعارف",
+      "what_is_glaucoma": "گلوکوما کیا ہے؟",
+      "start": "شروع کریں >",
+      "types_of_glaucoma": "گلوکوما کی اقسام",
+      "diagnosis": "تشخیص",
+      "history": "تاریخ",
+      "poag_and_acag": "POAG اور ACAG",
+      "case_study": "کیس اسٹڈی",
+      "vision": "وژن",
+      "intro_vision_loss": "تعارف اور بصارت کا نقصان",
+      "testing_visual_acuity": "بصری تیکشنتا کی جانچ",
+      "visual_acuity": "بصری تیکشنی۔",
+      "fields_pupils": "میدان اور شاگرد",
+      "visual_fields": "بصری فیلڈز",
+      "front_of_eye": "آنکھ کے سامنے",
+      "back_of_eye": "آنکھ کے پیچھے",
+      "summary": "خلاصہ",
+      "scrolly": "سکرولی",
+      "fundus_atoms_card": "فنڈز Atoms کارڈ",
+      "glaucoma_atoms_card": "گلوکوما Atoms کارڈ",
+      "fundus": "فنڈس",
+      "glaucoma": "گلوکوما"
+    },
+    "glaucomaquizcasestudy": {
+      "normal_or_abnormal": "نارمل یا غیر معمولی",
+      "choose_the_correct_diagnosis": "صحیح تشخیص کا انتخاب کریں۔",
+      "results": "نتائج",
+      "secondary_glaucoma_findings": "ثانوی گلوکوما کے نتائج",
+      "secondary_cause": "ثانوی وجہ",
+      "not_secondary": "ثانوی نہیں۔"
+    },
+    "glaucomascrollimages": {
+      "what_is_glaucoma": "گلوکوما کیا ہے؟",
+      "types_of_glaucoma": "گلوکوما کی اقسام",
+      "diagnosis": "تشخیص",
+      "introduction": "تعارف",
+      "poag_and_acag": "POAG اور ACAG",
+      "intro_vision_loss": "تعارف اور بصارت کا نقصان",
+      "testing_visual_acuity": "بصری تیکشنتا کی جانچ",
+      "intro": "تعارف",
+      "examination": "امتحان",
+      "quadrants_fingers": "Quadrants - انگلیاں",
+      "quadrants_red_target": "Quadrants - سرخ ہدف",
+      "assess_and_record": "تشخیص کریں اور ریکارڈ کریں۔",
+      "pupil_reactions": "شاگردوں کے رد عمل",
+      "full_pupil_swinging_light_test_rapd": "مکمل شاگرد جھولنے والی لائٹ ٹیسٹ RAPD",
+      "findings_that_can_lead_to_glaucoma": "ایسے نتائج جو گلوکوما کا باعث بن سکتے ہیں۔",
+      "anterior_chamber_depth": "پچھلے چیمبر کی گہرائی",
+      "feeling_for_high_iop_in_acag": "بلندی کا احساس IOP میں ACAG",
+      "optic_nerve": "آپٹک اعصاب",
+      "cupping": "سنگی",
+      "scrolly": "سکرولی",
+      "temporal_side": "وقتی طرف",
+      "shine_from_the_side": "طرف سے چمکنا",
+      "deep_ac": "ڈیپ اے سی",
+      "shallow_ac": "اتلی اے سی",
+      "pick_up_arclight_and_shine_from_the_side": "Arclight اٹھائیں اور سائیڈ سے چمکیں۔",
+      "pupil_swinging_light_test_rapd": "شاگرد جھولتے ہوئے لائٹ ٹیسٹ RAPD",
+      "rapd_mode_off": "RAPD موڈ آف ہے۔"
+    },
+    "glaucomahistorycasestudy": {
+      "case_study": "کیس اسٹڈی",
+      "text": ">",
+      "select_diagnosis": "تشخیص کا انتخاب کریں۔",
+      "all_cases_completed": "تمام کیسز مکمل",
+      "result": "نتیجہ"
     }
   },
   "i18nLiteral": {
-    "Next >": "اگلا >"
+    "Next >": "اگلا >",
+    "Close ^": "بند کریں ^"
   },
   "i18nExtra": {
     "fundal_reflex": {

@@ -456,10 +456,159 @@
     },
     "childhoodfundalafterexamination": {
       "after_examination": "بعد از معاینه"
+    },
+    "childhoodeyescreeningworkshop": {
+      "eyes": "چشم",
+      "the_visual_system": "1. سیستم بصری",
+      "see_all": "مشاهده همه >",
+      "visual_development": "2. توسعه بصری",
+      "causes_of_visual_impairment": "3. علل اختلال بینایی",
+      "signs_of_visual_impairment": "4. علائم اختلال بینایی",
+      "childhood_eye_screening": "5. غربالگری چشم دوران کودکی",
+      "eye_brain": "چشم و مغز",
+      "start": "شروع >",
+      "atoms_card": "Atoms کارت",
+      "normal_visual_development": "توسعه بصری عادی",
+      "assessing_visual_function": "ارزیابی عملکرد بصری",
+      "cases": "موارد",
+      "behaviours": "رفتارها",
+      "10_questions": "| 10 سوال",
+      "ask_questions_and_observe": "سوال بپرسید و مشاهده کنید",
+      "assessing_eyes_vision": "ارزیابی چشم و بینایی",
+      "refer": "مراجعه کنید",
+      "how_to_use_arclight": "نحوه استفاده از Arclight",
+      "fundal_reflex_usaid": "بازتاب بنیادی USAID",
+      "fundal_reflex_pdf": "بازتاب بنیادی PDF",
+      "fundal_reflex": "رفلکس فاندال",
+      "preparation": "آماده سازی",
+      "examination": "معاینه",
+      "newborn_eyes_open": "نوزاد - چشمان باز",
+      "newborn_eyes_closed": "نوزاد - چشمان بسته",
+      "unclear_findings": "یافته های نامشخص",
+      "possible_findings": "یافته های احتمالی",
+      "after_examination": "بعد از معاینه",
+      "normal_abnormal": "عادی و غیر عادی",
+      "assessment": "ارزیابی",
+      "9_questions": "9 سوال",
+      "fundal_reflex_examination": "معاینه رفلکس بنیادی",
+      "your_browser_does_not_support_the_video_tag": "مرورگر شما از برچسب ویدیو پشتیبانی نمی کند."
+    },
+    "visualsystemeyesbrain": {
+      "childhood_eye_screening": "غربالگری چشم دوران کودکی",
+      "eye_brain": "چشم و مغز",
+      "cornea": "قرنیه",
+      "lens": "لنز",
+      "retina": "شبکیه چشم",
+      "loading": "در حال بارگیری..."
+    },
+    "childhoodassessment": {
+      "assessment": "ارزیابی",
+      "check_answer": "پاسخ را بررسی کنید"
+    },
+    "behavioursquiz": {
+      "behaviours_mcq": "رفتارهای MCQ",
+      "check_answer": "پاسخ را بررسی کنید"
+    },
+    "fundalreflexpdf": {
+      "fundal_reflex": "رفلکس فاندال",
+      "eyes": "چشم"
+    },
+    "visualimpairment": {
+      "visual_impairment": "اختلال بینایی"
+    },
+    "signsvicases": {
+      "signs_of_visual_impairment": "علائم اختلال بینایی"
+    },
+    "childhoodrefer": {
+      "refer": "مراجعه کنید"
+    },
+    "childhoodeyebrainimages": {
+      "eye_brain": "چشم و مغز",
+      "introduction_to_visual_development": "مقدمه ای بر توسعه بصری",
+      "normal_visual_development": "توسعه بصری عادی",
+      "ask_questions_and_observe": "سوال بپرسید و مشاهده کنید"
+    },
+    "glaucomaworkshop": {
+      "eyes": "چشم",
+      "1_introduction": "1. مقدمه",
+      "see_all": "مشاهده همه >",
+      "2_history": "2. تاریخچه",
+      "3_vision": "3. بینایی",
+      "4_fields_pupils": "4. رشته ها و دانش آموزان",
+      "5_front_of_eye": "5. جلوی چشم",
+      "6_back_of_eye": "6. پشت چشم",
+      "7_summary": "7. خلاصه",
+      "introduction": "مقدمه",
+      "what_is_glaucoma": "گلوکوم چیست؟",
+      "start": "شروع >",
+      "types_of_glaucoma": "انواع گلوکوم",
+      "diagnosis": "تشخیص",
+      "history": "تاریخچه",
+      "poag_and_acag": "POAG و ACAG",
+      "case_study": "مطالعه موردی",
+      "vision": "چشم انداز",
+      "intro_vision_loss": "مقدمه و از دست دادن بینایی",
+      "testing_visual_acuity": "تست حدت بینایی",
+      "visual_acuity": "حدت بینایی",
+      "fields_pupils": "رشته ها و دانش آموزان",
+      "visual_fields": "زمینه های بصری",
+      "front_of_eye": "جلوی چشم",
+      "back_of_eye": "پشت چشم",
+      "summary": "خلاصه",
+      "scrolly": "طومار",
+      "fundus_atoms_card": "کارت Atoms Fundus",
+      "glaucoma_atoms_card": "گلوکوم Atoms کارت",
+      "fundus": "فوندوس",
+      "glaucoma": "گلوکوم"
+    },
+    "glaucomaquizcasestudy": {
+      "normal_or_abnormal": "عادی یا غیر طبیعی",
+      "choose_the_correct_diagnosis": "تشخیص صحیح را انتخاب کنید",
+      "results": "نتایج",
+      "secondary_glaucoma_findings": "یافته های گلوکوم ثانویه",
+      "secondary_cause": "علت ثانویه",
+      "not_secondary": "ثانویه نیست"
+    },
+    "glaucomascrollimages": {
+      "what_is_glaucoma": "گلوکوم چیست؟",
+      "types_of_glaucoma": "انواع گلوکوم",
+      "diagnosis": "تشخیص",
+      "introduction": "مقدمه",
+      "poag_and_acag": "POAG و ACAG",
+      "intro_vision_loss": "مقدمه و از دست دادن بینایی",
+      "testing_visual_acuity": "تست حدت بینایی",
+      "intro": "مقدمه",
+      "examination": "معاینه",
+      "quadrants_fingers": "ربع - انگشتان",
+      "quadrants_red_target": "ربع - هدف قرمز",
+      "assess_and_record": "ارزیابی و ثبت کنید",
+      "pupil_reactions": "واکنش های مردمک",
+      "full_pupil_swinging_light_test_rapd": "تست نور نوسان کامل مردمک RAPD",
+      "findings_that_can_lead_to_glaucoma": "یافته هایی که می تواند منجر به گلوکوم شود",
+      "anterior_chamber_depth": "عمق محفظه قدامی",
+      "feeling_for_high_iop_in_acag": "احساس بالا بودن IOP در ACAG",
+      "optic_nerve": "عصب بینایی",
+      "cupping": "حجامت",
+      "scrolly": "طومار",
+      "temporal_side": "سمت زمانی",
+      "shine_from_the_side": "از پهلو بدرخشید",
+      "deep_ac": "AC عمیق",
+      "shallow_ac": "AC کم عمق",
+      "pick_up_arclight_and_shine_from_the_side": "Arclight را بردارید و از کنار بدرخشید",
+      "pupil_swinging_light_test_rapd": "تست نور نوسان مردمک RAPD",
+      "rapd_mode_off": "حالت RAPD خاموش است"
+    },
+    "glaucomahistorycasestudy": {
+      "case_study": "مطالعه موردی",
+      "text": ">",
+      "select_diagnosis": "تشخیص را انتخاب کنید",
+      "all_cases_completed": "همه موارد تکمیل شد",
+      "result": "نتیجه"
     }
   },
   "i18nLiteral": {
-    "Next >": "بعدی >"
+    "Next >": "بعدی >",
+    "Close ^": "ببند ^"
   },
   "i18nExtra": {
     "fundal_reflex": {

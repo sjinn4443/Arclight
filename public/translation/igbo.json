@@ -456,10 +456,159 @@
     },
     "childhoodfundalafterexamination": {
       "after_examination": "Mgbe nyochachara"
+    },
+    "childhoodeyescreeningworkshop": {
+      "eyes": "Anya",
+      "the_visual_system": "1. The Visual System",
+      "see_all": "Hụ ihe niile >",
+      "visual_development": "2. Mmepe anya",
+      "causes_of_visual_impairment": "3. Ihe na-akpata mmerụ ahụ anya",
+      "signs_of_visual_impairment": "4. Ihe ịrịba ama nke Mmebi Anya",
+      "childhood_eye_screening": "5. Nyocha anya nwata",
+      "eye_brain": "Anya & Ụbụrụ",
+      "start": "Malite >",
+      "atoms_card": "Kaadị Atoms",
+      "normal_visual_development": "Mmepe Ọhụụ Nkịtị",
+      "assessing_visual_function": "Nyochaa Ọrụ Anya",
+      "cases": "Okwu",
+      "behaviours": "Omume",
+      "10_questions": "| 10 Ajụjụ",
+      "ask_questions_and_observe": "Jụọ ajụjụ wee lelee",
+      "assessing_eyes_vision": "Nyochaa Anya & Ọhụụ",
+      "refer": "Tụtụ aka",
+      "how_to_use_arclight": "Otu esi eji Arclight",
+      "fundal_reflex_usaid": "Ntugharị ihe ndabere USAID",
+      "fundal_reflex_pdf": "Ntugharị ihe ndabere PDF",
+      "fundal_reflex": "Ntugharị isi",
+      "preparation": "Nkwadebe",
+      "examination": "Nyocha",
+      "newborn_eyes_open": "Nwa amụrụ ọhụrụ - Anya mepere emepe",
+      "newborn_eyes_closed": "Nwa amụrụ ọhụrụ - Anya mechiri",
+      "unclear_findings": "Nchọpụta edoghị anya",
+      "possible_findings": "Nchoputa enwere ike",
+      "after_examination": "Mgbe nyochachara",
+      "normal_abnormal": "Nkịtị & adịghị mma",
+      "assessment": "Ntụle",
+      "9_questions": "9 Ajụjụ",
+      "fundal_reflex_examination": "Fundal Reflex Nyocha",
+      "your_browser_does_not_support_the_video_tag": "Ihe nchọgharị gị anaghị akwado mkpado vidiyo."
+    },
+    "visualsystemeyesbrain": {
+      "childhood_eye_screening": "Nyocha anya nwata",
+      "eye_brain": "Anya & Ụbụrụ",
+      "cornea": "Cornea",
+      "lens": "oghere",
+      "retina": "Retina",
+      "loading": "Na-ebu..."
+    },
+    "childhoodassessment": {
+      "assessment": "Ntụle",
+      "check_answer": "Lelee azịza"
+    },
+    "behavioursquiz": {
+      "behaviours_mcq": "Omume MCQ",
+      "check_answer": "Lelee azịza"
+    },
+    "fundalreflexpdf": {
+      "fundal_reflex": "Ntugharị isi",
+      "eyes": "Anya"
+    },
+    "visualimpairment": {
+      "visual_impairment": "Mmebi Anya"
+    },
+    "signsvicases": {
+      "signs_of_visual_impairment": "Ihe ịrịba ama nke Mmebi Anya"
+    },
+    "childhoodrefer": {
+      "refer": "Tụtụ aka"
+    },
+    "childhoodeyebrainimages": {
+      "eye_brain": "Anya & Ụbụrụ",
+      "introduction_to_visual_development": "Okwu mmalite maka mmepe anya",
+      "normal_visual_development": "Mmepe Ọhụụ Nkịtị",
+      "ask_questions_and_observe": "Jụọ ajụjụ wee lelee"
+    },
+    "glaucomaworkshop": {
+      "eyes": "Anya",
+      "1_introduction": "1. Okwu mmalite",
+      "see_all": "Hụ ihe niile >",
+      "2_history": "2. Akụkọ ihe mere eme",
+      "3_vision": "3. Ọhụụ",
+      "4_fields_pupils": "4. Ubi & ụmụ akwụkwọ",
+      "5_front_of_eye": "5. N'ihu anya",
+      "6_back_of_eye": "6. Azụ anya",
+      "7_summary": "7. Nchịkọta",
+      "introduction": "Okwu mmalite",
+      "what_is_glaucoma": "Kedu ihe bụ Glaucoma",
+      "start": "Malite >",
+      "types_of_glaucoma": "Ụdị glaucoma",
+      "diagnosis": "Nchọpụta nchọpụta",
+      "history": "Akụkọ ihe mere eme",
+      "poag_and_acag": "POAG na ACAG",
+      "case_study": "Ọmụmụ ikpe",
+      "vision": "Ọhụụ",
+      "intro_vision_loss": "Intro & Ọhụụ Ọhụụ",
+      "testing_visual_acuity": "Nleba anya Ọhụhụ",
+      "visual_acuity": "Ọhụụ Anya",
+      "fields_pupils": "Ubi & ụmụ akwụkwọ",
+      "visual_fields": "Ebe a na-ahụ anya",
+      "front_of_eye": "N'ihu anya",
+      "back_of_eye": "Azụ anya",
+      "summary": "Nchịkọta",
+      "scrolly": "Pịgharịa",
+      "fundus_atoms_card": "Kaadị FundusAtoms",
+      "glaucoma_atoms_card": "Glaucoma Atoms Kaadị",
+      "fundus": "Fundus",
+      "glaucoma": "Glaucoma"
+    },
+    "glaucomaquizcasestudy": {
+      "normal_or_abnormal": "Nkịtị ma ọ bụ dị njọ",
+      "choose_the_correct_diagnosis": "Họrọ ezigbo nchoputa",
+      "results": "Nsonaazụ",
+      "secondary_glaucoma_findings": "Nchọpụta glaucoma nke abụọ",
+      "secondary_cause": "Ihe kpatara nke abụọ",
+      "not_secondary": "Ọ bụghị nke abụọ"
+    },
+    "glaucomascrollimages": {
+      "what_is_glaucoma": "Gịnị bụ glaucoma",
+      "types_of_glaucoma": "Ụdị glaucoma",
+      "diagnosis": "Nchọpụta nchọpụta",
+      "introduction": "Okwu mmalite",
+      "poag_and_acag": "POAG na ACAG",
+      "intro_vision_loss": "Intro & Ọhụụ Ọhụụ",
+      "testing_visual_acuity": "Nleba anya Ọhụhụ",
+      "intro": "Okwu mmalite",
+      "examination": "Nyocha",
+      "quadrants_fingers": "Quadrant - mkpịsị aka",
+      "quadrants_red_target": "Quadrants - Red lekwasịrị anya",
+      "assess_and_record": "Nyochaa ma dekọọ",
+      "pupil_reactions": "Mmeghachi omume ụmụ akwụkwọ",
+      "full_pupil_swinging_light_test_rapd": "Nnwale ọkụ na-atụgharị nwa akwụkwọ zuru oke RAPD",
+      "findings_that_can_lead_to_glaucoma": "Nchọpụta ndị nwere ike ibute glaucoma",
+      "anterior_chamber_depth": "Omimi Ụlọ dị n'ihu",
+      "feeling_for_high_iop_in_acag": "mmetụta maka elu IOP na ACAG",
+      "optic_nerve": "akwara optic",
+      "cupping": "ịkwa iko",
+      "scrolly": "mpịakọta",
+      "temporal_side": "akụkụ oge",
+      "shine_from_the_side": "Na-enwu site n'akụkụ",
+      "deep_ac": "miri AC",
+      "shallow_ac": "AC dị omimi",
+      "pick_up_arclight_and_shine_from_the_side": "Bulie Arclight wee nwuo n'akụkụ",
+      "pupil_swinging_light_test_rapd": "Nnwale ọkụ na-efegharị nwa akwụkwọ RAPD",
+      "rapd_mode_off": "Gbanyụọ ọnọdụ RAPD"
+    },
+    "glaucomahistorycasestudy": {
+      "case_study": "Ọmụmụ ihe",
+      "text": ">",
+      "select_diagnosis": "Họrọ nchoputa",
+      "all_cases_completed": "Emechara ikpe niile",
+      "result": "Nsonaazụ"
     }
   },
   "i18nLiteral": {
-    "Next >": "Ọzọ >"
+    "Next >": "Ọzọ >",
+    "Close ^": "Mechie ^"
   },
   "i18nExtra": {
     "fundal_reflex": {

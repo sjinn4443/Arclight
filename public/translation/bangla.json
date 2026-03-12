@@ -456,10 +456,159 @@
     },
     "childhoodfundalafterexamination": {
       "after_examination": "পরীক্ষার পর"
+    },
+    "childhoodeyescreeningworkshop": {
+      "eyes": "চোখ",
+      "the_visual_system": "1. ভিজ্যুয়াল সিস্টেম",
+      "see_all": "সব দেখুন >",
+      "visual_development": "2. ভিজ্যুয়াল ডেভেলপমেন্ট",
+      "causes_of_visual_impairment": "3. দৃষ্টি প্রতিবন্ধকতার কারণ",
+      "signs_of_visual_impairment": "4. দৃষ্টি প্রতিবন্ধকতার লক্ষণ",
+      "childhood_eye_screening": "5. শৈশব আই স্ক্রীনিং",
+      "eye_brain": "চোখ ও মস্তিষ্ক",
+      "start": "শুরু >",
+      "atoms_card": "Atoms কার্ড",
+      "normal_visual_development": "স্বাভাবিক ভিজ্যুয়াল ডেভেলপমেন্ট",
+      "assessing_visual_function": "ভিজ্যুয়াল ফাংশন মূল্যায়ন",
+      "cases": "মামলা",
+      "behaviours": "আচরণ",
+      "10_questions": "| 10টি প্রশ্ন",
+      "ask_questions_and_observe": "প্রশ্ন জিজ্ঞাসা করুন এবং পর্যবেক্ষণ করুন",
+      "assessing_eyes_vision": "চোখ এবং দৃষ্টি মূল্যায়ন",
+      "refer": "উল্লেখ করুন",
+      "how_to_use_arclight": "কিভাবে ব্যবহার করবেন Arclight",
+      "fundal_reflex_usaid": "ফান্ডাল রিফ্লেক্স USAID",
+      "fundal_reflex_pdf": "ফান্ডাল রিফ্লেক্স PDF",
+      "fundal_reflex": "ফান্ডাল রিফ্লেক্স",
+      "preparation": "প্রস্তুতি",
+      "examination": "পরীক্ষা",
+      "newborn_eyes_open": "নবজাতক - চোখ খোলা",
+      "newborn_eyes_closed": "নবজাতক - চোখ বন্ধ",
+      "unclear_findings": "অস্পষ্ট ফলাফল",
+      "possible_findings": "সম্ভাব্য ফলাফল",
+      "after_examination": "পরীক্ষার পর",
+      "normal_abnormal": "স্বাভাবিক এবং অস্বাভাবিক",
+      "assessment": "মূল্যায়ন",
+      "9_questions": "9টি প্রশ্ন",
+      "fundal_reflex_examination": "ফান্ডাল রিফ্লেক্স পরীক্ষা",
+      "your_browser_does_not_support_the_video_tag": "আপনার ব্রাউজার ভিডিও ট্যাগ সমর্থন করে না."
+    },
+    "visualsystemeyesbrain": {
+      "childhood_eye_screening": "শৈশব আই স্ক্রীনিং",
+      "eye_brain": "চোখ ও মস্তিষ্ক",
+      "cornea": "কর্নিয়া",
+      "lens": "লেন্স",
+      "retina": "রেটিনা",
+      "loading": "লোড হচ্ছে..."
+    },
+    "childhoodassessment": {
+      "assessment": "মূল্যায়ন",
+      "check_answer": "উত্তর চেক করুন"
+    },
+    "behavioursquiz": {
+      "behaviours_mcq": "আচরণ MCQ",
+      "check_answer": "উত্তর চেক করুন"
+    },
+    "fundalreflexpdf": {
+      "fundal_reflex": "ফান্ডাল রিফ্লেক্স",
+      "eyes": "চোখ"
+    },
+    "visualimpairment": {
+      "visual_impairment": "দৃষ্টি প্রতিবন্ধকতা"
+    },
+    "signsvicases": {
+      "signs_of_visual_impairment": "দৃষ্টি প্রতিবন্ধকতার লক্ষণ"
+    },
+    "childhoodrefer": {
+      "refer": "উল্লেখ করুন"
+    },
+    "childhoodeyebrainimages": {
+      "eye_brain": "চোখ ও মস্তিষ্ক",
+      "introduction_to_visual_development": "ভিজ্যুয়াল ডেভেলপমেন্টের ভূমিকা",
+      "normal_visual_development": "স্বাভাবিক ভিজ্যুয়াল ডেভেলপমেন্ট",
+      "ask_questions_and_observe": "প্রশ্ন জিজ্ঞাসা করুন এবং পর্যবেক্ষণ করুন"
+    },
+    "glaucomaworkshop": {
+      "eyes": "চোখ",
+      "1_introduction": "1. ভূমিকা",
+      "see_all": "সব দেখুন >",
+      "2_history": "2. ইতিহাস",
+      "3_vision": "3. দৃষ্টি",
+      "4_fields_pupils": "4. ক্ষেত্র এবং ছাত্র",
+      "5_front_of_eye": "5. চোখের সামনে",
+      "6_back_of_eye": "6. চোখের পিছনে",
+      "7_summary": "7. সারাংশ",
+      "introduction": "ভূমিকা",
+      "what_is_glaucoma": "গ্লুকোমা কি",
+      "start": "শুরু >",
+      "types_of_glaucoma": "গ্লুকোমার প্রকারভেদ",
+      "diagnosis": "রোগ নির্ণয়",
+      "history": "ইতিহাস",
+      "poag_and_acag": "POAG এবং ACAG",
+      "case_study": "কেস স্টাডি",
+      "vision": "দৃষ্টি",
+      "intro_vision_loss": "ইন্ট্রো এবং দৃষ্টি ক্ষতি",
+      "testing_visual_acuity": "ভিজ্যুয়াল তীক্ষ্ণতা পরীক্ষা করা",
+      "visual_acuity": "চাক্ষুষ তীক্ষ্ণতা",
+      "fields_pupils": "ক্ষেত্র এবং ছাত্র",
+      "visual_fields": "ভিজ্যুয়াল ক্ষেত্র",
+      "front_of_eye": "চোখের সামনে",
+      "back_of_eye": "চোখের পিছনে",
+      "summary": "সারাংশ",
+      "scrolly": "স্ক্রলি",
+      "fundus_atoms_card": "ফান্ডস Atoms কার্ড",
+      "glaucoma_atoms_card": "গ্লুকোমা Atoms কার্ড",
+      "fundus": "ফান্ডাস",
+      "glaucoma": "গ্লুকোমা"
+    },
+    "glaucomaquizcasestudy": {
+      "normal_or_abnormal": "স্বাভাবিক বা অস্বাভাবিক",
+      "choose_the_correct_diagnosis": "সঠিক নির্ণয়ের নির্বাচন করুন",
+      "results": "ফলাফল",
+      "secondary_glaucoma_findings": "সেকেন্ডারি গ্লুকোমা ফলাফল",
+      "secondary_cause": "সেকেন্ডারি কারণ",
+      "not_secondary": "গৌণ নয়"
+    },
+    "glaucomascrollimages": {
+      "what_is_glaucoma": "গ্লুকোমা কি",
+      "types_of_glaucoma": "গ্লুকোমার প্রকারভেদ",
+      "diagnosis": "রোগ নির্ণয়",
+      "introduction": "ভূমিকা",
+      "poag_and_acag": "POAG এবং ACAG",
+      "intro_vision_loss": "ইন্ট্রো এবং দৃষ্টি ক্ষতি",
+      "testing_visual_acuity": "ভিজ্যুয়াল তীক্ষ্ণতা পরীক্ষা করা",
+      "intro": "ভূমিকা",
+      "examination": "পরীক্ষা",
+      "quadrants_fingers": "চতুর্ভুজ - আঙ্গুল",
+      "quadrants_red_target": "চতুর্ভুজ - লাল লক্ষ্য",
+      "assess_and_record": "মূল্যায়ন এবং রেকর্ড",
+      "pupil_reactions": "ছাত্র প্রতিক্রিয়া",
+      "full_pupil_swinging_light_test_rapd": "ফুল পিউপিল সুইংিং লাইট টেস্ট RAPD",
+      "findings_that_can_lead_to_glaucoma": "ফলাফল যা গ্লুকোমা হতে পারে",
+      "anterior_chamber_depth": "সামনের চেম্বারের গভীরতা",
+      "feeling_for_high_iop_in_acag": "ACAG এ উচ্চ IOP এর জন্য অনুভূতি",
+      "optic_nerve": "অপটিক স্নায়ু",
+      "cupping": "কাপিং",
+      "scrolly": "স্ক্রলি",
+      "temporal_side": "অস্থায়ী দিক",
+      "shine_from_the_side": "পাশ থেকে উজ্জ্বল",
+      "deep_ac": "ডিপ এসি",
+      "shallow_ac": "অগভীর এসি",
+      "pick_up_arclight_and_shine_from_the_side": "Arclight পিক আপ করুন এবং পাশ থেকে জ্বলুন",
+      "pupil_swinging_light_test_rapd": "পিউপিল সুইংিং লাইট টেস্ট RAPD",
+      "rapd_mode_off": "RAPD মোড বন্ধ"
+    },
+    "glaucomahistorycasestudy": {
+      "case_study": "কেস স্টাডি",
+      "text": ">",
+      "select_diagnosis": "নির্ণয় নির্বাচন করুন",
+      "all_cases_completed": "সব মামলা সম্পন্ন হয়েছে",
+      "result": "ফলাফল"
     }
   },
   "i18nLiteral": {
-    "Next >": "পরবর্তী >"
+    "Next >": "পরবর্তী >",
+    "Close ^": "বন্ধ করুন ^"
   },
   "i18nExtra": {
     "fundal_reflex": {

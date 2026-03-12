@@ -456,10 +456,159 @@
     },
     "childhoodfundalafterexamination": {
       "after_examination": "Nyuma y'Ikizamini"
+    },
+    "childhoodeyescreeningworkshop": {
+      "eyes": "Amaso",
+      "the_visual_system": "1. Sisitemu igaragara",
+      "see_all": "Reba byose>",
+      "visual_development": "2. Iterambere rigaragara",
+      "causes_of_visual_impairment": "3. Impamvu zitera ubumuga bwo kutabona",
+      "signs_of_visual_impairment": "4. Ibimenyetso byo kutabona neza",
+      "childhood_eye_screening": "5. Kugenzura Amaso Yumwana",
+      "eye_brain": "Ijisho & Ubwonko",
+      "start": "Tangira>",
+      "atoms_card": "Atoms Ikarita",
+      "normal_visual_development": "Iterambere risanzwe",
+      "assessing_visual_function": "Gusuzuma Imikorere igaragara",
+      "cases": "Imanza",
+      "behaviours": "Imyitwarire",
+      "10_questions": "| Ibibazo 10",
+      "ask_questions_and_observe": "Baza Ibibazo kandi Witegereze",
+      "assessing_eyes_vision": "Gusuzuma Amaso & Icyerekezo",
+      "refer": "Raba",
+      "how_to_use_arclight": "Nigute Ukoresha Arclight",
+      "fundal_reflex_usaid": "Inkunga y'ibanze USAID",
+      "fundal_reflex_pdf": "Inkunga y'ibanze PDF",
+      "fundal_reflex": "Inkunga y'amafaranga",
+      "preparation": "Kwitegura",
+      "examination": "Ikizamini",
+      "newborn_eyes_open": "Uruhinja - Amaso arakinguye",
+      "newborn_eyes_closed": "Uruhinja - Amaso arahumutse",
+      "unclear_findings": "Ibisubizo bidasobanutse",
+      "possible_findings": "Ibisubizo bishoboka",
+      "after_examination": "Nyuma y'Ikizamini",
+      "normal_abnormal": "Bisanzwe & Ntibisanzwe",
+      "assessment": "Isuzuma",
+      "9_questions": "9 Ibibazo",
+      "fundal_reflex_examination": "Ikizamini cya Reflex Ikizamini",
+      "your_browser_does_not_support_the_video_tag": "Mucukumbuzi yawe ntabwo ishigikira tagi ya videwo."
+    },
+    "visualsystemeyesbrain": {
+      "childhood_eye_screening": "Kugenzura Amaso Yumwana",
+      "eye_brain": "Ijisho & Ubwonko",
+      "cornea": "Cornea",
+      "lens": "Lens",
+      "retina": "Retina",
+      "loading": "Kuremera ..."
+    },
+    "childhoodassessment": {
+      "assessment": "Isuzuma",
+      "check_answer": "Reba Igisubizo"
+    },
+    "behavioursquiz": {
+      "behaviours_mcq": "Imyitwarire MCQ",
+      "check_answer": "Reba Igisubizo"
+    },
+    "fundalreflexpdf": {
+      "fundal_reflex": "Inkunga y'amafaranga",
+      "eyes": "Amaso"
+    },
+    "visualimpairment": {
+      "visual_impairment": "Kutabona neza"
+    },
+    "signsvicases": {
+      "signs_of_visual_impairment": "Ibimenyetso byo kutabona neza"
+    },
+    "childhoodrefer": {
+      "refer": "Raba"
+    },
+    "childhoodeyebrainimages": {
+      "eye_brain": "Ijisho & Ubwonko",
+      "introduction_to_visual_development": "Intangiriro yo Gutezimbere",
+      "normal_visual_development": "Iterambere risanzwe",
+      "ask_questions_and_observe": "Baza Ibibazo kandi Witegereze"
+    },
+    "glaucomaworkshop": {
+      "eyes": "Amaso",
+      "1_introduction": "1. Intangiriro",
+      "see_all": "Reba byose>",
+      "2_history": "2. Amateka",
+      "3_vision": "3. Icyerekezo",
+      "4_fields_pupils": "4. Imirima & abanyeshuri",
+      "5_front_of_eye": "5. Imbere y'amaso",
+      "6_back_of_eye": "6. Inyuma y'ijisho",
+      "7_summary": "7. Incamake",
+      "introduction": "Intangiriro",
+      "what_is_glaucoma": "Glaucoma ni iki",
+      "start": "Tangira>",
+      "types_of_glaucoma": "Ubwoko bwa Glaucoma",
+      "diagnosis": "Gusuzuma",
+      "history": "Amateka",
+      "poag_and_acag": "POAG na ACAG",
+      "case_study": "Inyigo",
+      "vision": "Icyerekezo",
+      "intro_vision_loss": "Igihombo & Intumbero",
+      "testing_visual_acuity": "Kwipimisha neza",
+      "visual_acuity": "Kugaragara neza",
+      "fields_pupils": "Imirima & abanyeshuri",
+      "visual_fields": "Imirima igaragara",
+      "front_of_eye": "Imbere y'amaso",
+      "back_of_eye": "Inyuma y'ijisho",
+      "summary": "Incamake",
+      "scrolly": "Umuzingo",
+      "fundus_atoms_card": "Ikigega Atoms Ikarita",
+      "glaucoma_atoms_card": "Glaucoma Atoms Ikarita",
+      "fundus": "Ikigega",
+      "glaucoma": "Glaucoma"
+    },
+    "glaucomaquizcasestudy": {
+      "normal_or_abnormal": "Bisanzwe cyangwa Ntibisanzwe",
+      "choose_the_correct_diagnosis": "Hitamo isuzuma ryukuri",
+      "results": "Ibisubizo",
+      "secondary_glaucoma_findings": "Icyiciro cya kabiri cya glaucoma",
+      "secondary_cause": "Impamvu ya kabiri",
+      "not_secondary": "Ntabwo ari urwa kabiri"
+    },
+    "glaucomascrollimages": {
+      "what_is_glaucoma": "Glaucoma ni iki",
+      "types_of_glaucoma": "Ubwoko bwa glaucoma",
+      "diagnosis": "Gusuzuma",
+      "introduction": "Intangiriro",
+      "poag_and_acag": "POAG na ACAG",
+      "intro_vision_loss": "Igihombo & Intumbero",
+      "testing_visual_acuity": "Kwipimisha neza",
+      "intro": "Intro",
+      "examination": "Ikizamini",
+      "quadrants_fingers": "Quadrants - Urutoki",
+      "quadrants_red_target": "Quadrants - Intego itukura",
+      "assess_and_record": "Suzuma kandi wandike",
+      "pupil_reactions": "Imyitwarire y'abanyeshuri",
+      "full_pupil_swinging_light_test_rapd": "Ikizamini cyuzuye cyumucyo RAPD",
+      "findings_that_can_lead_to_glaucoma": "Ibisubizo bishobora kuganisha kuri glaucoma",
+      "anterior_chamber_depth": "Ubujyakuzimu bw'imbere",
+      "feeling_for_high_iop_in_acag": "kumva hejuru IOP muri ACAG",
+      "optic_nerve": "imitsi ya optique",
+      "cupping": "igikombe",
+      "scrolly": "umuzingo",
+      "temporal_side": "uruhande rw'agateganyo",
+      "shine_from_the_side": "Kumurika kuruhande",
+      "deep_ac": "AC Yimbitse",
+      "shallow_ac": "Shallow AC",
+      "pick_up_arclight_and_shine_from_the_side": "Tora Arclight hanyuma urabagirane kuruhande",
+      "pupil_swinging_light_test_rapd": "Abanyeshuri bazunguruka ikizamini cyumucyo RAPD",
+      "rapd_mode_off": "RAPD uburyo bwa OFF"
+    },
+    "glaucomahistorycasestudy": {
+      "case_study": "Inyigo",
+      "text": ">",
+      "select_diagnosis": "Hitamo kwisuzumisha",
+      "all_cases_completed": "Imanza zose zarangiye",
+      "result": "Igisubizo"
     }
   },
   "i18nLiteral": {
-    "Next >": "Ibikurikira>"
+    "Next >": "Ibikurikira>",
+    "Close ^": "Funga ^"
   },
   "i18nExtra": {
     "fundal_reflex": {

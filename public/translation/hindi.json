@@ -469,6 +469,154 @@
     },
     "childhoodfundalafterexamination": {
       "after_examination": "परीक्षा के बाद"
+    },
+    "childhoodeyescreeningworkshop": {
+      "eyes": "आँखें",
+      "the_visual_system": "1. दृश्य प्रणाली",
+      "see_all": "सभी देखें >",
+      "visual_development": "2. दृश्य विकास",
+      "causes_of_visual_impairment": "3. दृष्टि हानि के कारण",
+      "signs_of_visual_impairment": "4. दृष्टि हानि के लक्षण",
+      "childhood_eye_screening": "5. बचपन की आंखों की जांच",
+      "eye_brain": "आंख और मस्तिष्क",
+      "start": "प्रारंभ >",
+      "atoms_card": "Atoms कार्ड",
+      "normal_visual_development": "सामान्य दृश्य विकास",
+      "assessing_visual_function": "दृश्य कार्य का आकलन करना",
+      "cases": "मामलों",
+      "behaviours": "व्यवहार",
+      "10_questions": "| 10 प्रश्न",
+      "ask_questions_and_observe": "प्रश्न पूछें और निरीक्षण करें",
+      "assessing_eyes_vision": "आंखों और दृष्टि का आकलन",
+      "refer": "संदर्भ देना",
+      "how_to_use_arclight": "Arclight का उपयोग कैसे करें",
+      "fundal_reflex_usaid": "फंडल रिफ्लेक्स USAID",
+      "fundal_reflex_pdf": "फंडल रिफ्लेक्स PDF",
+      "fundal_reflex": "मौलिक प्रतिवर्त",
+      "preparation": "तैयारी",
+      "examination": "परीक्षा",
+      "newborn_eyes_open": "नवजात - आँखें खुलीं",
+      "newborn_eyes_closed": "नवजात - आंखें बंद",
+      "unclear_findings": "अस्पष्ट निष्कर्ष",
+      "possible_findings": "संभावित निष्कर्ष",
+      "after_examination": "परीक्षा के बाद",
+      "normal_abnormal": "सामान्य एवं असामान्य",
+      "assessment": "आकलन",
+      "9_questions": "9 प्रश्न",
+      "fundal_reflex_examination": "फंडल रिफ्लेक्स परीक्षा",
+      "your_browser_does_not_support_the_video_tag": "आपका ब्राउज़र में वीडियो टैग समर्थित नहीं है।"
+    },
+    "visualsystemeyesbrain": {
+      "childhood_eye_screening": "बचपन की आंखों की जांच",
+      "eye_brain": "आंख और मस्तिष्क",
+      "cornea": "कॉर्निया",
+      "lens": "लेंस",
+      "retina": "रेटिना",
+      "loading": "लोड हो रहा है..."
+    },
+    "childhoodassessment": {
+      "assessment": "आकलन",
+      "check_answer": "उत्तर जांचें"
+    },
+    "behavioursquiz": {
+      "behaviours_mcq": "व्यवहार एमसीक्यू",
+      "check_answer": "उत्तर जांचें"
+    },
+    "fundalreflexpdf": {
+      "fundal_reflex": "मौलिक प्रतिवर्त",
+      "eyes": "आँखें"
+    },
+    "visualimpairment": {
+      "visual_impairment": "दृश्य हानि"
+    },
+    "signsvicases": {
+      "signs_of_visual_impairment": "दृश्य हानि के लक्षण"
+    },
+    "childhoodrefer": {
+      "refer": "संदर्भ देना"
+    },
+    "childhoodeyebrainimages": {
+      "eye_brain": "आंख और मस्तिष्क",
+      "introduction_to_visual_development": "दृश्य विकास का परिचय",
+      "normal_visual_development": "सामान्य दृश्य विकास",
+      "ask_questions_and_observe": "प्रश्न पूछें और निरीक्षण करें"
+    },
+    "glaucomaworkshop": {
+      "eyes": "आँखें",
+      "1_introduction": "1 परिचय",
+      "see_all": "सभी देखें >",
+      "2_history": "2. इतिहास",
+      "3_vision": "3. दृष्टि",
+      "4_fields_pupils": "4. क्षेत्र और छात्र",
+      "5_front_of_eye": "5. आँख का अगला भाग",
+      "6_back_of_eye": "6. आँख का पिछला भाग",
+      "7_summary": "7. सारांश",
+      "introduction": "परिचय",
+      "what_is_glaucoma": "ग्लूकोमा क्या है?",
+      "start": "प्रारंभ >",
+      "types_of_glaucoma": "ग्लूकोमा के प्रकार",
+      "diagnosis": "निदान",
+      "history": "इतिहास",
+      "poag_and_acag": "POAG और ACAG",
+      "case_study": "केस स्टडी",
+      "vision": "दृष्टि",
+      "intro_vision_loss": "परिचय एवं दृष्टि हानि",
+      "testing_visual_acuity": "दृश्य तीक्ष्णता का परीक्षण",
+      "visual_acuity": "दृश्य तीक्ष्णता",
+      "fields_pupils": "फ़ील्ड और छात्र",
+      "visual_fields": "दृश्य क्षेत्र",
+      "front_of_eye": "आँख के सामने",
+      "back_of_eye": "आँख का पिछला भाग",
+      "summary": "सारांश",
+      "scrolly": "स्क्रॉली",
+      "fundus_atoms_card": "फंडस Atoms कार्ड",
+      "glaucoma_atoms_card": "ग्लूकोमा Atoms कार्ड",
+      "fundus": "बुध्न",
+      "glaucoma": "मोतियाबिंद"
+    },
+    "glaucomaquizcasestudy": {
+      "normal_or_abnormal": "सामान्य या असामान्य",
+      "choose_the_correct_diagnosis": "सही निदान चुनें",
+      "results": "परिणाम",
+      "secondary_glaucoma_findings": "माध्यमिक मोतियाबिंद के निष्कर्ष",
+      "secondary_cause": "द्वितीयक कारण",
+      "not_secondary": "गौण नहीं"
+    },
+    "glaucomascrollimages": {
+      "what_is_glaucoma": "ग्लूकोमा क्या है?",
+      "types_of_glaucoma": "ग्लूकोमा के प्रकार",
+      "diagnosis": "निदान",
+      "introduction": "परिचय",
+      "poag_and_acag": "POAG और ACAG",
+      "intro_vision_loss": "परिचय एवं दृष्टि हानि",
+      "testing_visual_acuity": "दृश्य तीक्ष्णता का परीक्षण",
+      "intro": "पहचान",
+      "examination": "परीक्षा",
+      "quadrants_fingers": "चतुर्भुज - उँगलियाँ",
+      "quadrants_red_target": "चतुर्भुज - लाल लक्ष्य",
+      "assess_and_record": "मूल्यांकन करें और रिकॉर्ड करें",
+      "pupil_reactions": "विद्यार्थियों की प्रतिक्रियाएँ",
+      "full_pupil_swinging_light_test_rapd": "पूर्ण पुतली स्विंगिंग लाइट परीक्षण RAPD",
+      "findings_that_can_lead_to_glaucoma": "ऐसे निष्कर्ष जो ग्लूकोमा का कारण बन सकते हैं",
+      "anterior_chamber_depth": "पूर्वकाल चैम्बर गहराई",
+      "feeling_for_high_iop_in_acag": "ACAG में उच्च IOP की भावना",
+      "optic_nerve": "नेत्र - संबंधी तंत्रिका",
+      "cupping": "कपिंग",
+      "scrolly": "स्क्रॉली",
+      "temporal_side": "लौकिक पक्ष",
+      "shine_from_the_side": "बगल से चमकें",
+      "deep_ac": "डीप ए.सी",
+      "shallow_ac": "उथला ए.सी",
+      "pick_up_arclight_and_shine_from_the_side": "Arclight उठाएँ और किनारे से चमकाएँ",
+      "pupil_swinging_light_test_rapd": "पुपिल स्विंगिंग लाइट टेस्ट RAPD",
+      "rapd_mode_off": "RAPD मोड बंद"
+    },
+    "glaucomahistorycasestudy": {
+      "case_study": "केस स्टडी",
+      "text": ">",
+      "select_diagnosis": "निदान का चयन करें",
+      "all_cases_completed": "सभी मामले पूरे हो गये",
+      "result": "परिणाम"
     }
   },
   "i18nLiteral": {
@@ -486,7 +634,8 @@
     "making it easy to continue where you left off": "जिससे आप जहां छोड़ा था वहीं से आसानी से जारी रख सकें",
     "Strengthen Your Learning": "अपनी सीख को मजबूत करें",
     "Follow each lesson with a quick quiz to review": "हर पाठ के बाद पुनरावृत्ति के लिए एक छोटा क्विज़ करें",
-    "concepts and identify areas to revisit.": "ताकि अवधारणाएं दोहरा सकें और दोबारा देखने वाले भाग पहचान सकें।"
+    "concepts and identify areas to revisit.": "ताकि अवधारणाएं दोहरा सकें और दोबारा देखने वाले भाग पहचान सकें।",
+    "Close ^": "बंद करें ^"
   },
   "i18nExtra": {
     "fundal_exam_loading": "Fundal_Exam.json लोड हो रहा है...",

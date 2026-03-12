@@ -456,10 +456,159 @@
     },
     "childhoodfundalafterexamination": {
       "after_examination": "ከፈተና በኋላ"
+    },
+    "childhoodeyescreeningworkshop": {
+      "eyes": "አይኖች",
+      "the_visual_system": "1. የእይታ ስርዓት",
+      "see_all": "ሁሉንም ይመልከቱ >",
+      "visual_development": "2. የእይታ እድገት",
+      "causes_of_visual_impairment": "3. የማየት እክል መንስኤዎች",
+      "signs_of_visual_impairment": "4. የእይታ እክል ምልክቶች",
+      "childhood_eye_screening": "5. የልጅነት የዓይን ምርመራ",
+      "eye_brain": "አይን እና አንጎል",
+      "start": "ጀምር >",
+      "atoms_card": "Atoms ካርድ",
+      "normal_visual_development": "መደበኛ የእይታ እድገት",
+      "assessing_visual_function": "የእይታ ተግባርን መገምገም",
+      "cases": "ጉዳዮች",
+      "behaviours": "ባህሪያት",
+      "10_questions": "| 10 ጥያቄዎች",
+      "ask_questions_and_observe": "ጥያቄዎችን ይጠይቁ እና ይከታተሉ",
+      "assessing_eyes_vision": "አይን እና እይታን መገምገም",
+      "refer": "ያጣቅሱ",
+      "how_to_use_arclight": "Arclightን እንዴት መጠቀም እንደሚቻል",
+      "fundal_reflex_usaid": "ፈንድ ሪፍሌክስ USAID",
+      "fundal_reflex_pdf": "ፈንድ ሪፍሌክስ PDF",
+      "fundal_reflex": "መሰረታዊ ምላሽ",
+      "preparation": "አዘገጃጀት",
+      "examination": "ምርመራ",
+      "newborn_eyes_open": "አዲስ የተወለዱ - ዓይኖች ክፍት ናቸው",
+      "newborn_eyes_closed": "አዲስ የተወለዱ - ዓይኖች ተዘግተዋል",
+      "unclear_findings": "ግልጽ ያልሆኑ ግኝቶች",
+      "possible_findings": "ሊሆኑ የሚችሉ ግኝቶች",
+      "after_examination": "ከፈተና በኋላ",
+      "normal_abnormal": "መደበኛ እና ያልተለመደ",
+      "assessment": "ግምገማ",
+      "9_questions": "9 ጥያቄዎች",
+      "fundal_reflex_examination": "የፈንድ ሪፍሌክስ ምርመራ",
+      "your_browser_does_not_support_the_video_tag": "አሳሽህ የቪዲዮ መለያውን አይደግፍም።"
+    },
+    "visualsystemeyesbrain": {
+      "childhood_eye_screening": "የልጅነት የዓይን ምርመራ",
+      "eye_brain": "አይን እና አንጎል",
+      "cornea": "ኮርኒያ",
+      "lens": "መነፅር",
+      "retina": "ሬቲና",
+      "loading": "በመጫን ላይ..."
+    },
+    "childhoodassessment": {
+      "assessment": "ግምገማ",
+      "check_answer": "መልሱን ያረጋግጡ"
+    },
+    "behavioursquiz": {
+      "behaviours_mcq": "ባህሪያት MCQ",
+      "check_answer": "መልሱን ያረጋግጡ"
+    },
+    "fundalreflexpdf": {
+      "fundal_reflex": "መሰረታዊ ምላሽ",
+      "eyes": "አይኖች"
+    },
+    "visualimpairment": {
+      "visual_impairment": "የእይታ እክል"
+    },
+    "signsvicases": {
+      "signs_of_visual_impairment": "የእይታ እክል ምልክቶች"
+    },
+    "childhoodrefer": {
+      "refer": "ያጣቅሱ"
+    },
+    "childhoodeyebrainimages": {
+      "eye_brain": "አይን እና አንጎል",
+      "introduction_to_visual_development": "የእይታ እድገት መግቢያ",
+      "normal_visual_development": "መደበኛ የእይታ እድገት",
+      "ask_questions_and_observe": "ጥያቄዎችን ይጠይቁ እና ይከታተሉ"
+    },
+    "glaucomaworkshop": {
+      "eyes": "አይኖች",
+      "1_introduction": "1. መግቢያ",
+      "see_all": "ሁሉንም ይመልከቱ >",
+      "2_history": "2. ታሪክ",
+      "3_vision": "3. ራዕይ",
+      "4_fields_pupils": "4. መስኮች እና ተማሪዎች",
+      "5_front_of_eye": "5. የዓይን ፊት",
+      "6_back_of_eye": "6. የዓይን ጀርባ",
+      "7_summary": "7. ማጠቃለያ",
+      "introduction": "መግቢያ",
+      "what_is_glaucoma": "ግላኮማ ምንድን ነው?",
+      "start": "ጀምር >",
+      "types_of_glaucoma": "የግላኮማ ዓይነቶች",
+      "diagnosis": "ምርመራ",
+      "history": "ታሪክ",
+      "poag_and_acag": "POAG እና ACAG",
+      "case_study": "የጉዳይ ጥናት",
+      "vision": "ራዕይ",
+      "intro_vision_loss": "መግቢያ እና ራዕይ ማጣት",
+      "testing_visual_acuity": "የእይታ Acuityን መሞከር",
+      "visual_acuity": "የእይታ Acuity",
+      "fields_pupils": "መስኮች እና ተማሪዎች",
+      "visual_fields": "የእይታ መስኮች",
+      "front_of_eye": "የዓይን ፊት",
+      "back_of_eye": "የዓይን ጀርባ",
+      "summary": "ማጠቃለያ",
+      "scrolly": "ሸብልል",
+      "fundus_atoms_card": "Fundus Atoms ካርድ",
+      "glaucoma_atoms_card": "ግላኮማ Atoms ካርድ",
+      "fundus": "ፈንዱስ",
+      "glaucoma": "ግላኮማ"
+    },
+    "glaucomaquizcasestudy": {
+      "normal_or_abnormal": "መደበኛ ወይም ያልተለመደ",
+      "choose_the_correct_diagnosis": "ትክክለኛውን ምርመራ ይምረጡ",
+      "results": "ውጤቶች",
+      "secondary_glaucoma_findings": "ሁለተኛ ደረጃ የግላኮማ ግኝቶች",
+      "secondary_cause": "ሁለተኛ ምክንያት",
+      "not_secondary": "ሁለተኛ ደረጃ አይደለም"
+    },
+    "glaucomascrollimages": {
+      "what_is_glaucoma": "ግላኮማ ምንድን ነው?",
+      "types_of_glaucoma": "የግላኮማ ዓይነቶች",
+      "diagnosis": "ምርመራ",
+      "introduction": "መግቢያ",
+      "poag_and_acag": "POAG እና ACAG",
+      "intro_vision_loss": "መግቢያ እና ራዕይ ማጣት",
+      "testing_visual_acuity": "የእይታ Acuityን መሞከር",
+      "intro": "መግቢያ",
+      "examination": "ምርመራ",
+      "quadrants_fingers": "ኳድራንት - ጣቶች",
+      "quadrants_red_target": "ኳድራንት - ቀይ ዒላማ",
+      "assess_and_record": "ይገምግሙ እና ይመዝግቡ",
+      "pupil_reactions": "የተማሪ ምላሽ",
+      "full_pupil_swinging_light_test_rapd": "የሙሉ ተማሪ ዥዋዥዌ ብርሃን ሙከራ RAPD",
+      "findings_that_can_lead_to_glaucoma": "ወደ ግላኮማ ሊያመራ የሚችል ግኝቶች",
+      "anterior_chamber_depth": "የፊት ክፍል ጥልቀት",
+      "feeling_for_high_iop_in_acag": "በACAG ውስጥ ከፍ ያለ ስሜት IOP",
+      "optic_nerve": "የዓይን ነርቭ",
+      "cupping": "ኩባያ",
+      "scrolly": "ማሸብለል",
+      "temporal_side": "ጊዜያዊ ጎን",
+      "shine_from_the_side": "ከጎን በኩል ይብራ",
+      "deep_ac": "ጥልቅ AC",
+      "shallow_ac": "ጥልቀት የሌለው ኤሲ",
+      "pick_up_arclight_and_shine_from_the_side": "Arclightን አንሳ እና ከጎን በኩል አብራ",
+      "pupil_swinging_light_test_rapd": "የተማሪ ዥዋዥዌ ብርሃን ሙከራ RAPD",
+      "rapd_mode_off": "RAPD ሁነታ ጠፍቷል"
+    },
+    "glaucomahistorycasestudy": {
+      "case_study": "የጉዳይ ጥናት",
+      "text": ">",
+      "select_diagnosis": "ምርመራን ይምረጡ",
+      "all_cases_completed": "ሁሉም ጉዳዮች ተጠናቅቀዋል",
+      "result": "ውጤት"
     }
   },
   "i18nLiteral": {
-    "Next >": "ቀጣይ >"
+    "Next >": "ቀጣይ >",
+    "Close ^": "ዝጋ ^"
   },
   "i18nExtra": {
     "fundal_reflex": {

@@ -456,10 +456,159 @@
     },
     "childhoodfundalafterexamination": {
       "after_examination": "Baada ya Uchunguzi"
+    },
+    "childhoodeyescreeningworkshop": {
+      "eyes": "Macho",
+      "the_visual_system": "1. Mfumo wa Visual",
+      "see_all": "Tazama zote >",
+      "visual_development": "2. Maendeleo ya Visual",
+      "causes_of_visual_impairment": "3. Sababu za Uharibifu wa Maono",
+      "signs_of_visual_impairment": "4. Dalili za Uharibifu wa Maono",
+      "childhood_eye_screening": "5. Uchunguzi wa Macho ya Utotoni",
+      "eye_brain": "Macho & Ubongo",
+      "start": "Anza >",
+      "atoms_card": "Atoms Kadi",
+      "normal_visual_development": "Maendeleo ya Kawaida ya Visual",
+      "assessing_visual_function": "Tathmini ya Kazi ya Visual",
+      "cases": "Kesi",
+      "behaviours": "Tabia",
+      "10_questions": "| Maswali 10",
+      "ask_questions_and_observe": "Uliza Maswali na Uangalie",
+      "assessing_eyes_vision": "Tathmini ya Macho na Maono",
+      "refer": "Rejea",
+      "how_to_use_arclight": "Jinsi ya kutumia Arclight",
+      "fundal_reflex_usaid": "Msingi Reflex USAID",
+      "fundal_reflex_pdf": "Msingi Reflex PDF",
+      "fundal_reflex": "Msingi reflex",
+      "preparation": "Maandalizi",
+      "examination": "Uchunguzi",
+      "newborn_eyes_open": "Mtoto mchanga - Macho wazi",
+      "newborn_eyes_closed": "Mtoto mchanga - Macho Yamefungwa",
+      "unclear_findings": "Matokeo Isiyo wazi",
+      "possible_findings": "Matokeo Yanayowezekana",
+      "after_examination": "Baada ya Uchunguzi",
+      "normal_abnormal": "Kawaida na isiyo ya kawaida",
+      "assessment": "Tathmini",
+      "9_questions": "9 Maswali",
+      "fundal_reflex_examination": "Uchunguzi wa Msingi wa Reflex",
+      "your_browser_does_not_support_the_video_tag": "Kivinjari chako hakitumii lebo ya video."
+    },
+    "visualsystemeyesbrain": {
+      "childhood_eye_screening": "Uchunguzi wa Macho ya Utotoni",
+      "eye_brain": "Macho & Ubongo",
+      "cornea": "Konea",
+      "lens": "Lenzi",
+      "retina": "Retina",
+      "loading": "Inapakia..."
+    },
+    "childhoodassessment": {
+      "assessment": "Tathmini",
+      "check_answer": "Angalia Jibu"
+    },
+    "behavioursquiz": {
+      "behaviours_mcq": "Tabia za MCQ",
+      "check_answer": "Angalia Jibu"
+    },
+    "fundalreflexpdf": {
+      "fundal_reflex": "Msingi reflex",
+      "eyes": "Macho"
+    },
+    "visualimpairment": {
+      "visual_impairment": "Uharibifu wa Maono"
+    },
+    "signsvicases": {
+      "signs_of_visual_impairment": "Dalili za Uharibifu wa Maono"
+    },
+    "childhoodrefer": {
+      "refer": "Rejea"
+    },
+    "childhoodeyebrainimages": {
+      "eye_brain": "Macho & Ubongo",
+      "introduction_to_visual_development": "Utangulizi wa Ukuzaji wa Visual",
+      "normal_visual_development": "Maendeleo ya Kawaida ya Visual",
+      "ask_questions_and_observe": "Uliza Maswali na Uangalie"
+    },
+    "glaucomaworkshop": {
+      "eyes": "Macho",
+      "1_introduction": "1. Utangulizi",
+      "see_all": "Tazama zote >",
+      "2_history": "2. Historia",
+      "3_vision": "3. Maono",
+      "4_fields_pupils": "4. Mashamba & wanafunzi",
+      "5_front_of_eye": "5. Mbele ya jicho",
+      "6_back_of_eye": "6. Nyuma ya jicho",
+      "7_summary": "7. Muhtasari",
+      "introduction": "Utangulizi",
+      "what_is_glaucoma": "Glaucoma ni nini",
+      "start": "Anza >",
+      "types_of_glaucoma": "Aina za Glaucoma",
+      "diagnosis": "Utambuzi",
+      "history": "Historia",
+      "poag_and_acag": "POAG na ACAG",
+      "case_study": "Uchunguzi kifani",
+      "vision": "Maono",
+      "intro_vision_loss": "Utangulizi na Upotezaji wa Maono",
+      "testing_visual_acuity": "Kupima Usanifu wa Kuona",
+      "visual_acuity": "Acuity ya Visual",
+      "fields_pupils": "Mashamba & wanafunzi",
+      "visual_fields": "Sehemu za kuona",
+      "front_of_eye": "Mbele ya jicho",
+      "back_of_eye": "Nyuma ya jicho",
+      "summary": "Muhtasari",
+      "scrolly": "Sogeza",
+      "fundus_atoms_card": "Kadi Atoms ya Fundus",
+      "glaucoma_atoms_card": "Kadi ya Glaucoma Atoms",
+      "fundus": "Fundus",
+      "glaucoma": "Glakoma"
+    },
+    "glaucomaquizcasestudy": {
+      "normal_or_abnormal": "Kawaida au isiyo ya kawaida",
+      "choose_the_correct_diagnosis": "Chagua utambuzi sahihi",
+      "results": "Matokeo",
+      "secondary_glaucoma_findings": "Matokeo ya glaucoma ya sekondari",
+      "secondary_cause": "Sababu ya pili",
+      "not_secondary": "Sio sekondari"
+    },
+    "glaucomascrollimages": {
+      "what_is_glaucoma": "Glaucoma ni nini",
+      "types_of_glaucoma": "Aina za glaucoma",
+      "diagnosis": "Utambuzi",
+      "introduction": "Utangulizi",
+      "poag_and_acag": "POAG na ACAG",
+      "intro_vision_loss": "Utangulizi na Upotezaji wa Maono",
+      "testing_visual_acuity": "Kupima Usanifu wa Kuona",
+      "intro": "Utangulizi",
+      "examination": "Uchunguzi",
+      "quadrants_fingers": "Quadrants - Vidole",
+      "quadrants_red_target": "Quadrants - Lengo jekundu",
+      "assess_and_record": "Tathmini na rekodi",
+      "pupil_reactions": "Majibu ya wanafunzi",
+      "full_pupil_swinging_light_test_rapd": "Jaribio la mwanga wa kubembea kwa mwanafunzi RAPD",
+      "findings_that_can_lead_to_glaucoma": "Matokeo ambayo yanaweza kusababisha glaucoma",
+      "anterior_chamber_depth": "Kina cha Chumba cha mbele",
+      "feeling_for_high_iop_in_acag": "kujisikia juu IOP katika ACAG",
+      "optic_nerve": "ujasiri wa macho",
+      "cupping": "kikombe",
+      "scrolly": "tembeza",
+      "temporal_side": "upande wa muda",
+      "shine_from_the_side": "Kuangaza kutoka upande",
+      "deep_ac": "AC ya kina",
+      "shallow_ac": "AC yenye kina kirefu",
+      "pick_up_arclight_and_shine_from_the_side": "Chukua Arclight na uangaze kutoka upande",
+      "pupil_swinging_light_test_rapd": "Jaribio la mwanga wa kubembea kwa mwanafunzi RAPD",
+      "rapd_mode_off": "Hali ya RAPD IMEZIMWA"
+    },
+    "glaucomahistorycasestudy": {
+      "case_study": "Uchunguzi kifani",
+      "text": ">",
+      "select_diagnosis": "Chagua utambuzi",
+      "all_cases_completed": "Kesi zote zimekamilika",
+      "result": "Matokeo"
     }
   },
   "i18nLiteral": {
-    "Next >": "Inayofuata >"
+    "Next >": "Inayofuata >",
+    "Close ^": "Funga ^"
   },
   "i18nExtra": {
     "fundal_reflex": {

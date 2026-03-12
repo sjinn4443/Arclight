@@ -456,10 +456,159 @@
     },
     "childhoodfundalafterexamination": {
       "after_examination": "Mushure meExamination"
+    },
+    "childhoodeyescreeningworkshop": {
+      "eyes": "Maziso",
+      "the_visual_system": "1. The Visual System",
+      "see_all": "Ona zvese >",
+      "visual_development": "2. Kukura Kwekuona",
+      "causes_of_visual_impairment": "3. Zvinokonzera Kukanganiswa Kwekuona",
+      "signs_of_visual_impairment": "4. Zviratidzo zvekusaona zvakanaka",
+      "childhood_eye_screening": "5. Childhood Eye Screening",
+      "eye_brain": "Ziso & Uropi",
+      "start": "Tanga >",
+      "atoms_card": "Atoms Kadhi",
+      "normal_visual_development": "Normal Visual Development",
+      "assessing_visual_function": "Kuongorora Basa rekuona",
+      "cases": "Cases",
+      "behaviours": "Maitiro",
+      "10_questions": "| 10 Mibvunzo",
+      "ask_questions_and_observe": "Bvunza Mibvunzo Uye Ona",
+      "assessing_eyes_vision": "Kuongorora Maziso & Kuona",
+      "refer": "Refer",
+      "how_to_use_arclight": "Mashandisiro e Arclight",
+      "fundal_reflex_usaid": "Fundal Reflex USAID",
+      "fundal_reflex_pdf": "Fundal Reflex PDF",
+      "fundal_reflex": "Fundal reflex",
+      "preparation": "Kugadzirira",
+      "examination": "Examination",
+      "newborn_eyes_open": "Achangozvarwa - Meso Akavhurika",
+      "newborn_eyes_closed": "Achangozvarwa - Maziso Akavharwa",
+      "unclear_findings": "Zvisina Kujeka Zvakawanikwa",
+      "possible_findings": "Zvinogoneka Zvawanikwa",
+      "after_examination": "Mushure meExamination",
+      "normal_abnormal": "Normal & Abnormal",
+      "assessment": "Kuongorora",
+      "9_questions": "9 Mibvunzo",
+      "fundal_reflex_examination": "Fundal Reflex Examination",
+      "your_browser_does_not_support_the_video_tag": "Browser yako haitsigire vhidhiyo tag."
+    },
+    "visualsystemeyesbrain": {
+      "childhood_eye_screening": "Kuongororwa Kwemaziso Kwevana",
+      "eye_brain": "Ziso & Uropi",
+      "cornea": "Cornea",
+      "lens": "Lens",
+      "retina": "Retina",
+      "loading": "Loading..."
+    },
+    "childhoodassessment": {
+      "assessment": "Kuongorora",
+      "check_answer": "Tarisa Mhinduro"
+    },
+    "behavioursquiz": {
+      "behaviours_mcq": "Maitiro MCQ",
+      "check_answer": "Tarisa Mhinduro"
+    },
+    "fundalreflexpdf": {
+      "fundal_reflex": "Fundal reflex",
+      "eyes": "Maziso"
+    },
+    "visualimpairment": {
+      "visual_impairment": "Kukanganiswa Kwekuona"
+    },
+    "signsvicases": {
+      "signs_of_visual_impairment": "Zviratidzo Zvokusaona"
+    },
+    "childhoodrefer": {
+      "refer": "Refer"
+    },
+    "childhoodeyebrainimages": {
+      "eye_brain": "Ziso & Uropi",
+      "introduction_to_visual_development": "Nhanganyaya yeVisual Development",
+      "normal_visual_development": "Normal Visual Development",
+      "ask_questions_and_observe": "Bvunza Mibvunzo Uye Ona"
+    },
+    "glaucomaworkshop": {
+      "eyes": "Maziso",
+      "1_introduction": "1. Nhanganyaya",
+      "see_all": "Ona zvese >",
+      "2_history": "2. Nhoroondo",
+      "3_vision": "3. Chiratidzo",
+      "4_fields_pupils": "4. Minda & vadzidzi",
+      "5_front_of_eye": "5. Pamberi peziso",
+      "6_back_of_eye": "6. Kuseri kweziso",
+      "7_summary": "7. Pfupiso",
+      "introduction": "Nhanganyaya",
+      "what_is_glaucoma": "Chii chinonzi Glaucoma",
+      "start": "Tanga >",
+      "types_of_glaucoma": "Mhando dzeGlaucoma",
+      "diagnosis": "Kuongororwa",
+      "history": "Nhoroondo",
+      "poag_and_acag": "POAG uye ACAG",
+      "case_study": "Nyaya yekudzidza",
+      "vision": "Chiratidzo",
+      "intro_vision_loss": "Intro & Vision kurasikirwa",
+      "testing_visual_acuity": "Kuedza Visual Acuity",
+      "visual_acuity": "Visual Acuity",
+      "fields_pupils": "Minda & vadzidzi",
+      "visual_fields": "Minda yekuona",
+      "front_of_eye": "Pamberi peziso",
+      "back_of_eye": "Seri kweziso",
+      "summary": "Summary",
+      "scrolly": "Mupumburu",
+      "fundus_atoms_card": "Fundus Atoms Kadhi",
+      "glaucoma_atoms_card": "Glaucoma Atoms Kadhi",
+      "fundus": "Fundus",
+      "glaucoma": "Glaucoma"
+    },
+    "glaucomaquizcasestudy": {
+      "normal_or_abnormal": "Normal kana Abnormal",
+      "choose_the_correct_diagnosis": "Sarudza chirwere chakakodzera",
+      "results": "Results",
+      "secondary_glaucoma_findings": "Sekondari glaucoma zvakawanikwa",
+      "secondary_cause": "Chikonzero chechipiri",
+      "not_secondary": "Kwete yechipiri"
+    },
+    "glaucomascrollimages": {
+      "what_is_glaucoma": "Chii chinonzi glaucoma",
+      "types_of_glaucoma": "Mhando dze glaucoma",
+      "diagnosis": "Kuongororwa",
+      "introduction": "Nhanganyaya",
+      "poag_and_acag": "POAG uye ACAG",
+      "intro_vision_loss": "Intro & Vision kurasikirwa",
+      "testing_visual_acuity": "Kuedza Visual Acuity",
+      "intro": "Intro",
+      "examination": "Examination",
+      "quadrants_fingers": "Quadrants - Zvigunwe",
+      "quadrants_red_target": "Quadrants - Tsvuku chinangwa",
+      "assess_and_record": "Ongorora uye rekodhi",
+      "pupil_reactions": "Kuita kwevadzidzi",
+      "full_pupil_swinging_light_test_rapd": "Chiedza chechiedza chechiedza chemwana chizere RAPD",
+      "findings_that_can_lead_to_glaucoma": "Zvitsva zvinogona kukonzera glaucoma",
+      "anterior_chamber_depth": "Anterior Chamber Depth",
+      "feeling_for_high_iop_in_acag": "kunzwa kuri pamusoro IOP mu ACAG",
+      "optic_nerve": "optic nerve",
+      "cupping": "cuping",
+      "scrolly": "scrolly",
+      "temporal_side": "rutivi rwenguva",
+      "shine_from_the_side": "Kupenya kubva parutivi",
+      "deep_ac": "Yakadzika AC",
+      "shallow_ac": "Shallow AC",
+      "pick_up_arclight_and_shine_from_the_side": "Simudza Arclight uvheneke nedivi",
+      "pupil_swinging_light_test_rapd": "Chiedza chechiedza chemwana RAPD",
+      "rapd_mode_off": "RAPD modhi YADZIMWA"
+    },
+    "glaucomahistorycasestudy": {
+      "case_study": "Nyaya Yokudzidza",
+      "text": ">",
+      "select_diagnosis": "Sarudza kuongororwa",
+      "all_cases_completed": "Mhosva dzese dzakapera",
+      "result": "Mhedzisiro"
     }
   },
   "i18nLiteral": {
-    "Next >": "Zvinotevera >"
+    "Next >": "Zvinotevera >",
+    "Close ^": "Vhara ^"
   },
   "i18nExtra": {
     "fundal_reflex": {

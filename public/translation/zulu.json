@@ -456,10 +456,159 @@
     },
     "childhoodfundalafterexamination": {
       "after_examination": "Ngemva Kokuhlolwa"
+    },
+    "childhoodeyescreeningworkshop": {
+      "eyes": "Amehlo",
+      "the_visual_system": "1. Uhlelo Lokubukwayo",
+      "see_all": "Bona konke >",
+      "visual_development": "2. Ukuthuthukiswa Okubonwayo",
+      "causes_of_visual_impairment": "3. Izimbangela Zokukhubazeka Okubukwayo",
+      "signs_of_visual_impairment": "4. Izimpawu Zokukhubazeka Kokubuka",
+      "childhood_eye_screening": "5. Ukuhlolwa Kwamehlo Ezingane",
+      "eye_brain": "Iso Nengqondo",
+      "start": "Qala >",
+      "atoms_card": "Atoms Ikhadi",
+      "normal_visual_development": "Ukuthuthukiswa Okujwayelekile Kokubonwa",
+      "assessing_visual_function": "Ukuhlola Umsebenzi Obonakalayo",
+      "cases": "Amacala",
+      "behaviours": "Ukuziphatha",
+      "10_questions": "| 10 Imibuzo",
+      "ask_questions_and_observe": "Buza Imibuzo Futhi Uqaphele",
+      "assessing_eyes_vision": "Ukuhlola Amehlo & Umbono",
+      "refer": "Bheka",
+      "how_to_use_arclight": "Isetshenziswa kanjani i-Arclight",
+      "fundal_reflex_usaid": "I-Fundal Reflex USAID",
+      "fundal_reflex_pdf": "I-Fundal Reflex PDF",
+      "fundal_reflex": "I-fundal reflex",
+      "preparation": "Ukulungiselela",
+      "examination": "Ukuhlola",
+      "newborn_eyes_open": "Osanda kuzalwa - Amehlo Avulekile",
+      "newborn_eyes_closed": "Osanda kuzalwa - Amehlo Avaliwe",
+      "unclear_findings": "Okutholakele okungacacile",
+      "possible_findings": "Okungenzeka Okutholakele",
+      "after_examination": "Ngemva Kokuhlolwa",
+      "normal_abnormal": "Okuvamile & Okungajwayelekile",
+      "assessment": "Ukuhlola",
+      "9_questions": "9 Imibuzo",
+      "fundal_reflex_examination": "Ukuhlolwa kwe-Fundal Reflex",
+      "your_browser_does_not_support_the_video_tag": "Isiphequluli sakho asisekeli umaki wevidiyo."
+    },
+    "visualsystemeyesbrain": {
+      "childhood_eye_screening": "Ukuhlolwa Kwamehlo Ezingane",
+      "eye_brain": "Iso Nengqondo",
+      "cornea": "I-Cornea",
+      "lens": "Ilensi",
+      "retina": "I-Retina",
+      "loading": "Iyalayisha..."
+    },
+    "childhoodassessment": {
+      "assessment": "Ukuhlola",
+      "check_answer": "Hlola Impendulo"
+    },
+    "behavioursquiz": {
+      "behaviours_mcq": "I-MCQ yokuziphatha",
+      "check_answer": "Hlola Impendulo"
+    },
+    "fundalreflexpdf": {
+      "fundal_reflex": "I-fundal reflex",
+      "eyes": "Amehlo"
+    },
+    "visualimpairment": {
+      "visual_impairment": "Ukukhubazeka Okubonwayo"
+    },
+    "signsvicases": {
+      "signs_of_visual_impairment": "Izimpawu Zokukhubazeka Okubukwayo"
+    },
+    "childhoodrefer": {
+      "refer": "Bheka"
+    },
+    "childhoodeyebrainimages": {
+      "eye_brain": "Iso Nengqondo",
+      "introduction_to_visual_development": "Isingeniso Sokuthuthukiswa Okubonwayo",
+      "normal_visual_development": "Ukuthuthukiswa Okujwayelekile Kokubonwa",
+      "ask_questions_and_observe": "Buza Imibuzo Futhi Uqaphele"
+    },
+    "glaucomaworkshop": {
+      "eyes": "Amehlo",
+      "1_introduction": "1. Isingeniso",
+      "see_all": "Bona konke >",
+      "2_history": "2. Umlando",
+      "3_vision": "3. Umbono",
+      "4_fields_pupils": "4. Izinkundla & abafundi",
+      "5_front_of_eye": "5. Ngaphambili kwamehlo",
+      "6_back_of_eye": "6. Ingemuva leso",
+      "7_summary": "7. Isifinyezo",
+      "introduction": "Isingeniso",
+      "what_is_glaucoma": "Yini i-Glaucoma",
+      "start": "Qala >",
+      "types_of_glaucoma": "Izinhlobo zeGlaucoma",
+      "diagnosis": "Ukuxilongwa",
+      "history": "Umlando",
+      "poag_and_acag": "POAG kanye ne-ACAG",
+      "case_study": "Ucwaningo lwesigameko",
+      "vision": "Umbono",
+      "intro_vision_loss": "Isingeniso nokulahleka kombono",
+      "testing_visual_acuity": "Ukuhlola i-Visual Acuity",
+      "visual_acuity": "I-Visual Acuity",
+      "fields_pupils": "Izinkambu & abafundi",
+      "visual_fields": "Izinkambu ezibonakalayo",
+      "front_of_eye": "Ngaphambili kwamehlo",
+      "back_of_eye": "Ngemuva kwamehlo",
+      "summary": "Isifinyezo",
+      "scrolly": "Skrola",
+      "fundus_atoms_card": "Ikhadi Atoms le-fundus",
+      "glaucoma_atoms_card": "Ikhadi le-Glaucoma Atoms",
+      "fundus": "Fundus",
+      "glaucoma": "I-Glaucoma"
+    },
+    "glaucomaquizcasestudy": {
+      "normal_or_abnormal": "Okuvamile noma Okungajwayelekile",
+      "choose_the_correct_diagnosis": "Khetha ukuxilongwa okulungile",
+      "results": "Imiphumela",
+      "secondary_glaucoma_findings": "Imiphumela ye-glaucoma yesibili",
+      "secondary_cause": "Imbangela yesibili",
+      "not_secondary": "Hhayi okwesibili"
+    },
+    "glaucomascrollimages": {
+      "what_is_glaucoma": "Yini i-glaucoma",
+      "types_of_glaucoma": "Izinhlobo ze-glaucoma",
+      "diagnosis": "Ukuxilongwa",
+      "introduction": "Isingeniso",
+      "poag_and_acag": "POAG kanye ne-ACAG",
+      "intro_vision_loss": "Isingeniso nokulahleka kombono",
+      "testing_visual_acuity": "Ukuhlola i-Visual Acuity",
+      "intro": "Isingeniso",
+      "examination": "Ukuhlola",
+      "quadrants_fingers": "Amaquadrants - Iminwe",
+      "quadrants_red_target": "Ama-quadrants - Ithagethi ebomvu",
+      "assess_and_record": "Hlola futhi urekhode",
+      "pupil_reactions": "Ukusabela komfundi",
+      "full_pupil_swinging_light_test_rapd": "Ukuhlolwa kokukhanya komfundi okuphelele RAPD",
+      "findings_that_can_lead_to_glaucoma": "Okutholakele okungaholela ku-glaucoma",
+      "anterior_chamber_depth": "Ukujula Kwegumbi Langaphambili",
+      "feeling_for_high_iop_in_acag": "ukuzizwa uphakeme IOP e-ACAG",
+      "optic_nerve": "inzwa ye-optic",
+      "cupping": "ukufaka izinkomishi",
+      "scrolly": "skrola",
+      "temporal_side": "uhlangothi lwesikhashana",
+      "shine_from_the_side": "Akhanye eceleni",
+      "deep_ac": "I-AC ejulile",
+      "shallow_ac": "I-AC engajulile",
+      "pick_up_arclight_and_shine_from_the_side": "Thatha Arclight bese ucwebezela eceleni",
+      "pupil_swinging_light_test_rapd": "Ukuhlolwa kokukhanya komfundi RAPD",
+      "rapd_mode_off": "RAPD imodi IVALIWE"
+    },
+    "glaucomahistorycasestudy": {
+      "case_study": "Ucwaningo lwesigameko",
+      "text": ">",
+      "select_diagnosis": "Khetha ukuxilongwa",
+      "all_cases_completed": "Wonke amacala aqediwe",
+      "result": "Umphumela"
     }
   },
   "i18nLiteral": {
-    "Next >": "Okulandelayo >"
+    "Next >": "Okulandelayo >",
+    "Close ^": "Vala ^"
   },
   "i18nExtra": {
     "fundal_reflex": {

@@ -456,10 +456,159 @@
     },
     "childhoodfundalafterexamination": {
       "after_examination": "Bayan Jarabawa"
+    },
+    "childhoodeyescreeningworkshop": {
+      "eyes": "Idanu",
+      "the_visual_system": "1. The Visual System",
+      "see_all": "Duba duka >",
+      "visual_development": "2. Haɓaka gani",
+      "causes_of_visual_impairment": "3. Dalilan Rashin Gani",
+      "signs_of_visual_impairment": "4. Alamomin Lalacewar gani",
+      "childhood_eye_screening": "5. Duban Idon Yara",
+      "eye_brain": "Ido & Kwakwalwa",
+      "start": "Fara >",
+      "atoms_card": "Katin Atoms",
+      "normal_visual_development": "Haɓaka gani na al'ada",
+      "assessing_visual_function": "Tantance Ayyukan Gani",
+      "cases": "lamuran",
+      "behaviours": "Halaye",
+      "10_questions": "| Tambayoyi 10",
+      "ask_questions_and_observe": "Yi Tambayoyi da Kula",
+      "assessing_eyes_vision": "Tantance Ido & Hange",
+      "refer": "Komawa",
+      "how_to_use_arclight": "Yadda Ake Amfani da Arclight",
+      "fundal_reflex_usaid": "Tunanin Tushen USAID",
+      "fundal_reflex_pdf": "Tunanin Tushen PDF",
+      "fundal_reflex": "Tunanin asali",
+      "preparation": "Shiri",
+      "examination": "jarrabawa",
+      "newborn_eyes_open": "Jariri - Buɗe Ido",
+      "newborn_eyes_closed": "Jariri - Ido a Rufe",
+      "unclear_findings": "Abubuwan da ba a bayyana ba",
+      "possible_findings": "Abubuwan da za a iya samu",
+      "after_examination": "Bayan Jarabawa",
+      "normal_abnormal": "Na al'ada & Mara kyau",
+      "assessment": "Kimantawa",
+      "9_questions": "9 Tambayoyi",
+      "fundal_reflex_examination": "Fundal Reflex Jarrabawar",
+      "your_browser_does_not_support_the_video_tag": "Mai binciken ku baya goyan bayan alamar bidiyo."
+    },
+    "visualsystemeyesbrain": {
+      "childhood_eye_screening": "Nunin Idon Yara",
+      "eye_brain": "Ido & Kwakwalwa",
+      "cornea": "Cornea",
+      "lens": "Lens",
+      "retina": "Retina",
+      "loading": "Ana lodawa..."
+    },
+    "childhoodassessment": {
+      "assessment": "Kimantawa",
+      "check_answer": "Duba Amsa"
+    },
+    "behavioursquiz": {
+      "behaviours_mcq": "Halayen MCQ",
+      "check_answer": "Duba Amsa"
+    },
+    "fundalreflexpdf": {
+      "fundal_reflex": "Tunanin asali",
+      "eyes": "Idanu"
+    },
+    "visualimpairment": {
+      "visual_impairment": "Lalacewar gani"
+    },
+    "signsvicases": {
+      "signs_of_visual_impairment": "Alamomin Lalacewar gani"
+    },
+    "childhoodrefer": {
+      "refer": "Komawa"
+    },
+    "childhoodeyebrainimages": {
+      "eye_brain": "Ido & Kwakwalwa",
+      "introduction_to_visual_development": "Gabatarwa ga Ci gaban Kayayyakin gani",
+      "normal_visual_development": "Haɓaka gani na al'ada",
+      "ask_questions_and_observe": "Yi Tambayoyi da Kula"
+    },
+    "glaucomaworkshop": {
+      "eyes": "Idanu",
+      "1_introduction": "1. Gabatarwa",
+      "see_all": "Duba duka >",
+      "2_history": "2. Tarihi",
+      "3_vision": "3. Hangen gani",
+      "4_fields_pupils": "4. Filaye & almajirai",
+      "5_front_of_eye": "5. Gaban ido",
+      "6_back_of_eye": "6. Bayan ido",
+      "7_summary": "7. Takaitawa",
+      "introduction": "Gabatarwa",
+      "what_is_glaucoma": "Menene Glaucoma",
+      "start": "Fara >",
+      "types_of_glaucoma": "Nau'in Glaucoma",
+      "diagnosis": "Bincike",
+      "history": "Tarihi",
+      "poag_and_acag": "POAG da ACAG",
+      "case_study": "Nazarin harka",
+      "vision": "hangen nesa",
+      "intro_vision_loss": "Gabatarwa & Rasa hangen nesa",
+      "testing_visual_acuity": "Gwajin Kayayyakin gani",
+      "visual_acuity": "Kallon gani",
+      "fields_pupils": "Filaye & almajirai",
+      "visual_fields": "Filayen gani",
+      "front_of_eye": "Gaban ido",
+      "back_of_eye": "Bayan ido",
+      "summary": "Takaitawa",
+      "scrolly": "Gungura",
+      "fundus_atoms_card": "Katin Funus Atoms",
+      "glaucoma_atoms_card": "Glaucoma Atoms Katin",
+      "fundus": "Fundus",
+      "glaucoma": "Glaucoma"
+    },
+    "glaucomaquizcasestudy": {
+      "normal_or_abnormal": "Na al'ada ko mara kyau",
+      "choose_the_correct_diagnosis": "Zabi daidai ganewar asali",
+      "results": "Sakamako",
+      "secondary_glaucoma_findings": "Sakamakon glaucoma na biyu",
+      "secondary_cause": "Dalili na biyu",
+      "not_secondary": "Ba sakandare ba"
+    },
+    "glaucomascrollimages": {
+      "what_is_glaucoma": "Menene glaucoma",
+      "types_of_glaucoma": "Nau'in glaucoma",
+      "diagnosis": "Bincike",
+      "introduction": "Gabatarwa",
+      "poag_and_acag": "POAG da ACAG",
+      "intro_vision_loss": "Gabatarwa & Rasa hangen nesa",
+      "testing_visual_acuity": "Gwajin Kayayyakin gani",
+      "intro": "Gabatarwa",
+      "examination": "jarrabawa",
+      "quadrants_fingers": "Quadrants - Yatsu",
+      "quadrants_red_target": "Quadrants - Red manufa",
+      "assess_and_record": "Auna da rikodin",
+      "pupil_reactions": "Halin ɗalibi",
+      "full_pupil_swinging_light_test_rapd": "Cikakken gwajin haske na jujjuya almajiri RAPD",
+      "findings_that_can_lead_to_glaucoma": "Binciken da zai iya haifar da glaucoma",
+      "anterior_chamber_depth": "Zurfin Gidan Gaba",
+      "feeling_for_high_iop_in_acag": "jin girma IOP a cikin ACAG",
+      "optic_nerve": "jijiyar gani",
+      "cupping": "cin abinci",
+      "scrolly": "gungurawa",
+      "temporal_side": "na dan lokaci",
+      "shine_from_the_side": "Haskaka daga gefe",
+      "deep_ac": "Zurfin AC",
+      "shallow_ac": "Shallow AC",
+      "pick_up_arclight_and_shine_from_the_side": "Dauki Arclight kuma ku haskaka daga gefe",
+      "pupil_swinging_light_test_rapd": "Gwajin haske na almajiri RAPD",
+      "rapd_mode_off": "Yanayin RAPD KASHE"
+    },
+    "glaucomahistorycasestudy": {
+      "case_study": "Nazarin Harka",
+      "text": ">",
+      "select_diagnosis": "Zaɓi ganewar asali",
+      "all_cases_completed": "An kammala dukkan lamuran",
+      "result": "Sakamako"
     }
   },
   "i18nLiteral": {
-    "Next >": "Na gaba >"
+    "Next >": "Na gaba >",
+    "Close ^": "Rufe ^"
   },
   "i18nExtra": {
     "fundal_reflex": {

@@ -456,10 +456,159 @@
     },
     "childhoodfundalafterexamination": {
       "after_examination": "检查后"
+    },
+    "childhoodeyescreeningworkshop": {
+      "eyes": "眼睛",
+      "the_visual_system": "1. 视觉系统",
+      "see_all": "查看全部>",
+      "visual_development": "2. 视觉开发",
+      "causes_of_visual_impairment": "3. 视力障碍的原因",
+      "signs_of_visual_impairment": "4. 视力障碍的迹象",
+      "childhood_eye_screening": "5. 儿童期眼部检查",
+      "eye_brain": "眼睛与大脑",
+      "start": "开始>",
+      "atoms_card": "Atoms 卡",
+      "normal_visual_development": "正常视觉发育",
+      "assessing_visual_function": "评估视觉功能",
+      "cases": "案例",
+      "behaviours": "行为",
+      "10_questions": "| 10 个问题",
+      "ask_questions_and_observe": "提出问题并观察",
+      "assessing_eyes_vision": "评估眼睛和视力",
+      "refer": "参考",
+      "how_to_use_arclight": "如何使用 Arclight",
+      "fundal_reflex_usaid": "底反射 USAID",
+      "fundal_reflex_pdf": "底反射 PDF",
+      "fundal_reflex": "眼底反射",
+      "preparation": "准备",
+      "examination": "考试",
+      "newborn_eyes_open": "新生儿 - 睁开眼睛",
+      "newborn_eyes_closed": "新生儿 - 闭着眼睛",
+      "unclear_findings": "不清楚的发现",
+      "possible_findings": "可能的发现",
+      "after_examination": "检查后",
+      "normal_abnormal": "正常与异常",
+      "assessment": "评估",
+      "9_questions": "9 个问题",
+      "fundal_reflex_examination": "眼底反射检查",
+      "your_browser_does_not_support_the_video_tag": "您的浏览器不支持视频标签。"
+    },
+    "visualsystemeyesbrain": {
+      "childhood_eye_screening": "儿童眼科检查",
+      "eye_brain": "眼睛与大脑",
+      "cornea": "角膜",
+      "lens": "镜片",
+      "retina": "视网膜",
+      "loading": "加载中..."
+    },
+    "childhoodassessment": {
+      "assessment": "评估",
+      "check_answer": "检查答案"
+    },
+    "behavioursquiz": {
+      "behaviours_mcq": "行为MCQ",
+      "check_answer": "检查答案"
+    },
+    "fundalreflexpdf": {
+      "fundal_reflex": "眼底反射",
+      "eyes": "眼睛"
+    },
+    "visualimpairment": {
+      "visual_impairment": "视力障碍"
+    },
+    "signsvicases": {
+      "signs_of_visual_impairment": "视力障碍的迹象"
+    },
+    "childhoodrefer": {
+      "refer": "参考"
+    },
+    "childhoodeyebrainimages": {
+      "eye_brain": "眼睛与大脑",
+      "introduction_to_visual_development": "视觉开发简介",
+      "normal_visual_development": "正常视觉发育",
+      "ask_questions_and_observe": "提出问题并观察"
+    },
+    "glaucomaworkshop": {
+      "eyes": "眼睛",
+      "1_introduction": "一、简介",
+      "see_all": "查看全部>",
+      "2_history": "2. 历史",
+      "3_vision": "3. 愿景",
+      "4_fields_pupils": "4. 领域和学生",
+      "5_front_of_eye": "5. 眼前",
+      "6_back_of_eye": "6. 眼后部",
+      "7_summary": "七、总结",
+      "introduction": "介绍",
+      "what_is_glaucoma": "什么是青光眼",
+      "start": "开始>",
+      "types_of_glaucoma": "青光眼的类型",
+      "diagnosis": "诊断",
+      "history": "历史",
+      "poag_and_acag": "POAG 和 ACAG",
+      "case_study": "案例研究",
+      "vision": "想象",
+      "intro_vision_loss": "简介和视力丧失",
+      "testing_visual_acuity": "测试视力",
+      "visual_acuity": "视力",
+      "fields_pupils": "领域与学生",
+      "visual_fields": "视野",
+      "front_of_eye": "眼睛前面",
+      "back_of_eye": "眼后部",
+      "summary": "概括",
+      "scrolly": "滚动式",
+      "fundus_atoms_card": "眼底 Atoms 卡",
+      "glaucoma_atoms_card": "青光眼 Atoms 卡",
+      "fundus": "眼底",
+      "glaucoma": "青光眼"
+    },
+    "glaucomaquizcasestudy": {
+      "normal_or_abnormal": "正常或异常",
+      "choose_the_correct_diagnosis": "选择正确的诊断",
+      "results": "结果",
+      "secondary_glaucoma_findings": "继发性青光眼的发现",
+      "secondary_cause": "次要原因",
+      "not_secondary": "不是次要的"
+    },
+    "glaucomascrollimages": {
+      "what_is_glaucoma": "什么是青光眼",
+      "types_of_glaucoma": "青光眼的类型",
+      "diagnosis": "诊断",
+      "introduction": "介绍",
+      "poag_and_acag": "POAG 和 ACAG",
+      "intro_vision_loss": "简介和视力丧失",
+      "testing_visual_acuity": "测试视力",
+      "intro": "简介",
+      "examination": "考试",
+      "quadrants_fingers": "象限 - 手指",
+      "quadrants_red_target": "象限 - 红色目标",
+      "assess_and_record": "评估并记录",
+      "pupil_reactions": "瞳孔反应",
+      "full_pupil_swinging_light_test_rapd": "全瞳孔摆动光测试 RAPD",
+      "findings_that_can_lead_to_glaucoma": "可能导致青光眼的发现",
+      "anterior_chamber_depth": "前房深度",
+      "feeling_for_high_iop_in_acag": "在 ACAG 中感受高 IOP",
+      "optic_nerve": "视神经",
+      "cupping": "拔罐",
+      "scrolly": "滚动的",
+      "temporal_side": "颞侧",
+      "shine_from_the_side": "从侧面发光",
+      "deep_ac": "深度交流",
+      "shallow_ac": "浅交流",
+      "pick_up_arclight_and_shine_from_the_side": "拿起Arclight并从侧面发光",
+      "pupil_swinging_light_test_rapd": "瞳孔摆动光测试 RAPD",
+      "rapd_mode_off": "RAPD 模式关闭"
+    },
+    "glaucomahistorycasestudy": {
+      "case_study": "案例研究",
+      "text": ">",
+      "select_diagnosis": "选择诊断",
+      "all_cases_completed": "所有案件均已完成",
+      "result": "结果"
     }
   },
   "i18nLiteral": {
-    "Next >": "下一页 >"
+    "Next >": "下一页 >",
+    "Close ^": "关闭^"
   },
   "i18nExtra": {
     "fundal_reflex": {

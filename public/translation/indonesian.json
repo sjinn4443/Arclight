@@ -456,10 +456,159 @@
     },
     "childhoodfundalafterexamination": {
       "after_examination": "Setelah Pemeriksaan"
+    },
+    "childhoodeyescreeningworkshop": {
+      "eyes": "Mata",
+      "the_visual_system": "1. Sistem Visual",
+      "see_all": "Lihat semua >",
+      "visual_development": "2. Perkembangan Penglihatan",
+      "causes_of_visual_impairment": "3. Penyebab Gangguan Penglihatan",
+      "signs_of_visual_impairment": "4. Tanda-tanda Gangguan Penglihatan",
+      "childhood_eye_screening": "5. Pemeriksaan Mata Anak",
+      "eye_brain": "Mata & Otak",
+      "start": "Mulai >",
+      "atoms_card": "Atoms Kartu",
+      "normal_visual_development": "Perkembangan Visual Normal",
+      "assessing_visual_function": "Menilai Fungsi Visual",
+      "cases": "Kasus",
+      "behaviours": "Perilaku",
+      "10_questions": "| 10 Pertanyaan",
+      "ask_questions_and_observe": "Ajukan Pertanyaan dan Amati",
+      "assessing_eyes_vision": "Menilai Mata & Penglihatan",
+      "refer": "Merujuk",
+      "how_to_use_arclight": "Cara Menggunakan Arclight",
+      "fundal_reflex_usaid": "Refleks Fundamental USAID",
+      "fundal_reflex_pdf": "Refleks Fundamental PDF",
+      "fundal_reflex": "Refleks fundus",
+      "preparation": "Persiapan",
+      "examination": "Penyelidikan",
+      "newborn_eyes_open": "Baru Lahir - Mata Terbuka",
+      "newborn_eyes_closed": "Bayi Baru Lahir - Mata Tertutup",
+      "unclear_findings": "Temuan Tidak Jelas",
+      "possible_findings": "Temuan yang Mungkin",
+      "after_examination": "Setelah Pemeriksaan",
+      "normal_abnormal": "Biasa & Tidak Normal",
+      "assessment": "Penilaian",
+      "9_questions": "9 Pertanyaan",
+      "fundal_reflex_examination": "Pemeriksaan Refleks Fundamental",
+      "your_browser_does_not_support_the_video_tag": "Browser Anda tidak mendukung tag video."
+    },
+    "visualsystemeyesbrain": {
+      "childhood_eye_screening": "Pemeriksaan Mata Masa Kecil",
+      "eye_brain": "Mata & Otak",
+      "cornea": "Kornea",
+      "lens": "Lensa",
+      "retina": "Retina",
+      "loading": "Memuat..."
+    },
+    "childhoodassessment": {
+      "assessment": "Penilaian",
+      "check_answer": "Periksa Jawaban"
+    },
+    "behavioursquiz": {
+      "behaviours_mcq": "Perilaku soal pilihan ganda",
+      "check_answer": "Periksa Jawaban"
+    },
+    "fundalreflexpdf": {
+      "fundal_reflex": "Refleks fundus",
+      "eyes": "Mata"
+    },
+    "visualimpairment": {
+      "visual_impairment": "Gangguan Penglihatan"
+    },
+    "signsvicases": {
+      "signs_of_visual_impairment": "Tanda-tanda Gangguan Penglihatan"
+    },
+    "childhoodrefer": {
+      "refer": "Merujuk"
+    },
+    "childhoodeyebrainimages": {
+      "eye_brain": "Mata & Otak",
+      "introduction_to_visual_development": "Pengantar Perkembangan Visual",
+      "normal_visual_development": "Perkembangan Visual Normal",
+      "ask_questions_and_observe": "Ajukan Pertanyaan dan Amati"
+    },
+    "glaucomaworkshop": {
+      "eyes": "Mata",
+      "1_introduction": "1. Pendahuluan",
+      "see_all": "Lihat semua >",
+      "2_history": "2. Sejarah",
+      "3_vision": "3. Visi",
+      "4_fields_pupils": "4. Bidang & murid",
+      "5_front_of_eye": "5. Bagian depan mata",
+      "6_back_of_eye": "6. Bagian belakang mata",
+      "7_summary": "7. Ringkasan",
+      "introduction": "Perkenalan",
+      "what_is_glaucoma": "Apa itu Glaukoma",
+      "start": "Mulai >",
+      "types_of_glaucoma": "Jenis-Jenis Glaukoma",
+      "diagnosis": "Diagnosa",
+      "history": "Sejarah",
+      "poag_and_acag": "POAG dan ACAG",
+      "case_study": "Studi kasus",
+      "vision": "Penglihatan",
+      "intro_vision_loss": "Intro & Kehilangan Penglihatan",
+      "testing_visual_acuity": "Menguji Ketajaman Penglihatan",
+      "visual_acuity": "Ketajaman Penglihatan",
+      "fields_pupils": "Bidang & murid",
+      "visual_fields": "Bidang visual",
+      "front_of_eye": "Bagian depan mata",
+      "back_of_eye": "Bagian belakang mata",
+      "summary": "Ringkasan",
+      "scrolly": "Bergulir",
+      "fundus_atoms_card": "Kartu Fundus Atoms",
+      "glaucoma_atoms_card": "Kartu Glaukoma Atoms",
+      "fundus": "fundus",
+      "glaucoma": "Glaukoma"
+    },
+    "glaucomaquizcasestudy": {
+      "normal_or_abnormal": "Biasa atau Tidak Normal",
+      "choose_the_correct_diagnosis": "Pilih diagnosis yang benar",
+      "results": "Hasil",
+      "secondary_glaucoma_findings": "Temuan glaukoma sekunder",
+      "secondary_cause": "Penyebab sekunder",
+      "not_secondary": "Bukan yang sekunder"
+    },
+    "glaucomascrollimages": {
+      "what_is_glaucoma": "Apa itu glaukoma",
+      "types_of_glaucoma": "Jenis glaukoma",
+      "diagnosis": "Diagnosa",
+      "introduction": "Perkenalan",
+      "poag_and_acag": "POAG dan ACAG",
+      "intro_vision_loss": "Intro & Kehilangan Penglihatan",
+      "testing_visual_acuity": "Menguji Ketajaman Penglihatan",
+      "intro": "Pendahuluan",
+      "examination": "Penyelidikan",
+      "quadrants_fingers": "Kuadran - Jari",
+      "quadrants_red_target": "Kuadran - Target merah",
+      "assess_and_record": "Menilai dan mencatat",
+      "pupil_reactions": "Reaksi murid",
+      "full_pupil_swinging_light_test_rapd": "Tes cahaya mengayun pupil penuh RAPD",
+      "findings_that_can_lead_to_glaucoma": "Temuan yang dapat menyebabkan glaukoma",
+      "anterior_chamber_depth": "Kedalaman Kamar Anterior",
+      "feeling_for_high_iop_in_acag": "perasaan senang IOP di ACAG",
+      "optic_nerve": "saraf optik",
+      "cupping": "bekam",
+      "scrolly": "gulir",
+      "temporal_side": "sisi temporal",
+      "shine_from_the_side": "Bersinar dari samping",
+      "deep_ac": "AC dalam",
+      "shallow_ac": "AC dangkal",
+      "pick_up_arclight_and_shine_from_the_side": "Ambil Arclight dan bersinar dari samping",
+      "pupil_swinging_light_test_rapd": "Tes cahaya mengayun murid RAPD",
+      "rapd_mode_off": "RAPD mode MATI"
+    },
+    "glaucomahistorycasestudy": {
+      "case_study": "Studi Kasus",
+      "text": ">",
+      "select_diagnosis": "Pilih diagnosis",
+      "all_cases_completed": "Semua kasus selesai",
+      "result": "Hasil"
     }
   },
   "i18nLiteral": {
-    "Next >": "Selanjutnya >"
+    "Next >": "Selanjutnya >",
+    "Close ^": "Tutup ^"
   },
   "i18nExtra": {
     "fundal_reflex": {

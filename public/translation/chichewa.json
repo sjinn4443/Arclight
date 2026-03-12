@@ -456,10 +456,159 @@
     },
     "childhoodfundalafterexamination": {
       "after_examination": "Pambuyo Mayeso"
+    },
+    "childhoodeyescreeningworkshop": {
+      "eyes": "Maso",
+      "the_visual_system": "1. Njira Yowonera",
+      "see_all": "Onani zonse >",
+      "visual_development": "2. Chitukuko Chowoneka",
+      "causes_of_visual_impairment": "3. Zomwe Zimayambitsa Kuwonongeka kwa Maso",
+      "signs_of_visual_impairment": "4. Zizindikiro za Kulephera Kuwona",
+      "childhood_eye_screening": "5. Kuyang’anira Maso Achibwana",
+      "eye_brain": "Diso & Ubongo",
+      "start": "Yambani >",
+      "atoms_card": "Atoms Khadi",
+      "normal_visual_development": "Kukula Kwachiwonekere Kwachizolowezi",
+      "assessing_visual_function": "Kuwunika Ntchito Zowoneka",
+      "cases": "Milandu",
+      "behaviours": "Makhalidwe",
+      "10_questions": "| | 10 Mafunso",
+      "ask_questions_and_observe": "Funsani Mafunso ndi Kuwona",
+      "assessing_eyes_vision": "Kuwunika Maso & Masomphenya",
+      "refer": "Onani",
+      "how_to_use_arclight": "Momwe mungagwiritsire ntchito Arclight",
+      "fundal_reflex_usaid": "Fundal Reflex USAID",
+      "fundal_reflex_pdf": "Fundal Reflex PDF",
+      "fundal_reflex": "Fundal reflex",
+      "preparation": "Kukonzekera",
+      "examination": "Kufufuza",
+      "newborn_eyes_open": "Wakhanda - Maso Otseguka",
+      "newborn_eyes_closed": "Wangobadwa kumene - Maso Otsekedwa",
+      "unclear_findings": "Zotsatira Zosadziwika",
+      "possible_findings": "Zomwe Zingachitike",
+      "after_examination": "Pambuyo Mayeso",
+      "normal_abnormal": "Normal & Abnormal",
+      "assessment": "Kuwunika",
+      "9_questions": "9 Mafunso",
+      "fundal_reflex_examination": "Kufufuza kwa Fundal Reflex",
+      "your_browser_does_not_support_the_video_tag": "Msakatuli wanu sagwirizana ndi chizindikiro cha kanema."
+    },
+    "visualsystemeyesbrain": {
+      "childhood_eye_screening": "Kuyeza Maso Achibwana",
+      "eye_brain": "Diso & Ubongo",
+      "cornea": "Kornea",
+      "lens": "Lens",
+      "retina": "Retina",
+      "loading": "Tikutsegula..."
+    },
+    "childhoodassessment": {
+      "assessment": "Kuwunika",
+      "check_answer": "Onani Yankho"
+    },
+    "behavioursquiz": {
+      "behaviours_mcq": "Makhalidwe a MCQ",
+      "check_answer": "Onani Yankho"
+    },
+    "fundalreflexpdf": {
+      "fundal_reflex": "Fundal reflex",
+      "eyes": "Maso"
+    },
+    "visualimpairment": {
+      "visual_impairment": "Kusawoneka bwino"
+    },
+    "signsvicases": {
+      "signs_of_visual_impairment": "Zizindikiro za Kuwonongeka kwa Maso"
+    },
+    "childhoodrefer": {
+      "refer": "Onani"
+    },
+    "childhoodeyebrainimages": {
+      "eye_brain": "Diso & Ubongo",
+      "introduction_to_visual_development": "Mau oyamba a Visual Development",
+      "normal_visual_development": "Kukula Kwachiwonekere Kwachizolowezi",
+      "ask_questions_and_observe": "Funsani Mafunso ndi Kuwona"
+    },
+    "glaucomaworkshop": {
+      "eyes": "Maso",
+      "1_introduction": "1. Mawu Oyamba",
+      "see_all": "Onani zonse >",
+      "2_history": "2. Mbiri",
+      "3_vision": "3. Masomphenya",
+      "4_fields_pupils": "4. Minda & ophunzira",
+      "5_front_of_eye": "5. Kutsogolo kwa diso",
+      "6_back_of_eye": "6. Kumbuyo kwa diso",
+      "7_summary": "7. Mwachidule",
+      "introduction": "Mawu Oyamba",
+      "what_is_glaucoma": "Glaucoma ndi chiyani",
+      "start": "Yambani >",
+      "types_of_glaucoma": "Mitundu ya Glaucoma",
+      "diagnosis": "Matenda",
+      "history": "Mbiri",
+      "poag_and_acag": "POAG ndi ACAG",
+      "case_study": "Nkhani yophunzira",
+      "vision": "Masomphenya",
+      "intro_vision_loss": "Kutayika kwa Intro & Vision",
+      "testing_visual_acuity": "Kuyesa Visual Acuity",
+      "visual_acuity": "Mawonekedwe Acuity",
+      "fields_pupils": "Minda & ophunzira",
+      "visual_fields": "Minda zowoneka",
+      "front_of_eye": "Kutsogolo kwa diso",
+      "back_of_eye": "Kumbuyo kwa diso",
+      "summary": "Chidule",
+      "scrolly": "Mpukutu",
+      "fundus_atoms_card": "Fundus Atoms Khadi",
+      "glaucoma_atoms_card": "Khadi la Glaucoma Atoms",
+      "fundus": "Fundus",
+      "glaucoma": "Glaucoma"
+    },
+    "glaucomaquizcasestudy": {
+      "normal_or_abnormal": "Normal kapena Abnormal",
+      "choose_the_correct_diagnosis": "Sankhani matenda olondola",
+      "results": "Zotsatira",
+      "secondary_glaucoma_findings": "Zotsatira za glaucoma yachiwiri",
+      "secondary_cause": "Chifukwa chachiwiri",
+      "not_secondary": "Osati sekondale"
+    },
+    "glaucomascrollimages": {
+      "what_is_glaucoma": "Kodi glaucoma ndi chiyani",
+      "types_of_glaucoma": "Mitundu ya glaucoma",
+      "diagnosis": "Matenda",
+      "introduction": "Mawu Oyamba",
+      "poag_and_acag": "POAG ndi ACAG",
+      "intro_vision_loss": "Kutayika kwa Intro & Vision",
+      "testing_visual_acuity": "Kuyesa Visual Acuity",
+      "intro": "Chiyambi",
+      "examination": "Kufufuza",
+      "quadrants_fingers": "Quadrants - Zala",
+      "quadrants_red_target": "Quadrants - Chandamale chofiyira",
+      "assess_and_record": "Unikani ndi kulemba",
+      "pupil_reactions": "Zochita za ana",
+      "full_pupil_swinging_light_test_rapd": "Kuyesa kwa kuwala kosambira RAPD",
+      "findings_that_can_lead_to_glaucoma": "Zotsatira zomwe zingayambitse glaucoma",
+      "anterior_chamber_depth": "Anterior Chamber Kuzama",
+      "feeling_for_high_iop_in_acag": "kumverera kwapamwamba IOP mu ACAG",
+      "optic_nerve": "optic mitsempha",
+      "cupping": "makapu",
+      "scrolly": "mpukutu",
+      "temporal_side": "mbali yanthawi",
+      "shine_from_the_side": "Walani kuchokera kumbali",
+      "deep_ac": "Zakuya AC",
+      "shallow_ac": "Zozama za AC",
+      "pick_up_arclight_and_shine_from_the_side": "Nyamulani Arclight ndikuwala chakumbali",
+      "pupil_swinging_light_test_rapd": "Kuyesa kwa kuwala kwa ophunzira RAPD",
+      "rapd_mode_off": "RAPD mode YOZIMITSA"
+    },
+    "glaucomahistorycasestudy": {
+      "case_study": "Nkhani Yophunzira",
+      "text": ">",
+      "select_diagnosis": "Sankhani matenda",
+      "all_cases_completed": "Milandu yonse yatha",
+      "result": "Zotsatira"
     }
   },
   "i18nLiteral": {
-    "Next >": "Kenako >"
+    "Next >": "Kenako >",
+    "Close ^": "Tsekani ^"
   },
   "i18nExtra": {
     "fundal_reflex": {

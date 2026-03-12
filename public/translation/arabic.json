@@ -456,10 +456,159 @@
     },
     "childhoodfundalafterexamination": {
       "after_examination": "بعد الفحص"
+    },
+    "childhoodeyescreeningworkshop": {
+      "eyes": "عيون",
+      "the_visual_system": "1. النظام البصري",
+      "see_all": "شاهد الكل >",
+      "visual_development": "2. التطوير البصري",
+      "causes_of_visual_impairment": "3. أسباب ضعف البصر",
+      "signs_of_visual_impairment": "4. علامات ضعف البصر",
+      "childhood_eye_screening": "5. فحص العين في مرحلة الطفولة",
+      "eye_brain": "العين والدماغ",
+      "start": "ابدأ >",
+      "atoms_card": "Atoms البطاقة",
+      "normal_visual_development": "التطور البصري الطبيعي",
+      "assessing_visual_function": "تقييم الوظيفة البصرية",
+      "cases": "حالات",
+      "behaviours": "السلوكيات",
+      "10_questions": "| 10 أسئلة",
+      "ask_questions_and_observe": "اطرح الأسئلة ولاحظ",
+      "assessing_eyes_vision": "تقييم العيون والرؤية",
+      "refer": "يشير إلى",
+      "how_to_use_arclight": "كيفية استخدام Arclight",
+      "fundal_reflex_usaid": "المنعكس القاعي USAID",
+      "fundal_reflex_pdf": "المنعكس القاعي PDF",
+      "fundal_reflex": "منعكس قاعدي",
+      "preparation": "تحضير",
+      "examination": "فحص",
+      "newborn_eyes_open": "الوليد - عيون مفتوحة",
+      "newborn_eyes_closed": "حديث الولادة - عيون مغلقة",
+      "unclear_findings": "نتائج غير واضحة",
+      "possible_findings": "النتائج المحتملة",
+      "after_examination": "بعد الفحص",
+      "normal_abnormal": "عادي وغير طبيعي",
+      "assessment": "تقدير",
+      "9_questions": "9 أسئلة",
+      "fundal_reflex_examination": "فحص المنعكس الأساسي",
+      "your_browser_does_not_support_the_video_tag": "متصفحك لا يدعم علامة الفيديو."
+    },
+    "visualsystemeyesbrain": {
+      "childhood_eye_screening": "فحص العين في مرحلة الطفولة",
+      "eye_brain": "العين والدماغ",
+      "cornea": "القرنية",
+      "lens": "عدسة",
+      "retina": "شبكية العين",
+      "loading": "تحميل..."
+    },
+    "childhoodassessment": {
+      "assessment": "تقدير",
+      "check_answer": "تحقق من الإجابة"
+    },
+    "behavioursquiz": {
+      "behaviours_mcq": "السلوكيات MCQ",
+      "check_answer": "تحقق من الإجابة"
+    },
+    "fundalreflexpdf": {
+      "fundal_reflex": "منعكس قاعدي",
+      "eyes": "عيون"
+    },
+    "visualimpairment": {
+      "visual_impairment": "الإعاقة البصرية"
+    },
+    "signsvicases": {
+      "signs_of_visual_impairment": "علامات ضعف البصر"
+    },
+    "childhoodrefer": {
+      "refer": "يشير إلى"
+    },
+    "childhoodeyebrainimages": {
+      "eye_brain": "العين والدماغ",
+      "introduction_to_visual_development": "مقدمة في التنمية البصرية",
+      "normal_visual_development": "التطور البصري الطبيعي",
+      "ask_questions_and_observe": "اطرح الأسئلة ولاحظ"
+    },
+    "glaucomaworkshop": {
+      "eyes": "عيون",
+      "1_introduction": "1. مقدمة",
+      "see_all": "شاهد الكل >",
+      "2_history": "2. التاريخ",
+      "3_vision": "3. الرؤية",
+      "4_fields_pupils": "4. الحقول والتلاميذ",
+      "5_front_of_eye": "5. مقدمة العين",
+      "6_back_of_eye": "6. مؤخرة العين",
+      "7_summary": "7. ملخص",
+      "introduction": "مقدمة",
+      "what_is_glaucoma": "ما هو الجلوكوما",
+      "start": "ابدأ >",
+      "types_of_glaucoma": "أنواع الجلوكوما",
+      "diagnosis": "تشخبص",
+      "history": "تاريخ",
+      "poag_and_acag": "POAG وACAG",
+      "case_study": "دراسة الحالة",
+      "vision": "رؤية",
+      "intro_vision_loss": "مقدمة وفقدان الرؤية",
+      "testing_visual_acuity": "اختبار حدة البصر",
+      "visual_acuity": "حدة البصر",
+      "fields_pupils": "الحقول والتلاميذ",
+      "visual_fields": "المجالات البصرية",
+      "front_of_eye": "أمام العين",
+      "back_of_eye": "مؤخرة العين",
+      "summary": "ملخص",
+      "scrolly": "التمرير",
+      "fundus_atoms_card": "بطاقة قاع العين Atoms",
+      "glaucoma_atoms_card": "بطاقة الجلوكوما Atoms",
+      "fundus": "قاع العين",
+      "glaucoma": "الجلوكوما"
+    },
+    "glaucomaquizcasestudy": {
+      "normal_or_abnormal": "عادي أو غير طبيعي",
+      "choose_the_correct_diagnosis": "اختر التشخيص الصحيح",
+      "results": "نتائج",
+      "secondary_glaucoma_findings": "نتائج الجلوكوما الثانوية",
+      "secondary_cause": "السبب الثانوي",
+      "not_secondary": "ليست ثانوية"
+    },
+    "glaucomascrollimages": {
+      "what_is_glaucoma": "ما هو الجلوكوما",
+      "types_of_glaucoma": "أنواع الجلوكوما",
+      "diagnosis": "تشخبص",
+      "introduction": "مقدمة",
+      "poag_and_acag": "POAG وACAG",
+      "intro_vision_loss": "مقدمة وفقدان الرؤية",
+      "testing_visual_acuity": "اختبار حدة البصر",
+      "intro": "مقدمة",
+      "examination": "فحص",
+      "quadrants_fingers": "الأرباع - الأصابع",
+      "quadrants_red_target": "الأرباع - الهدف الأحمر",
+      "assess_and_record": "تقييم وتسجيل",
+      "pupil_reactions": "ردود فعل التلاميذ",
+      "full_pupil_swinging_light_test_rapd": "اختبار الضوء المتأرجح لحدقة العين بالكامل RAPD",
+      "findings_that_can_lead_to_glaucoma": "النتائج التي يمكن أن تؤدي إلى الجلوكوما",
+      "anterior_chamber_depth": "عمق الغرفة الأمامية",
+      "feeling_for_high_iop_in_acag": "شعور بالنشوة IOP في ACAG",
+      "optic_nerve": "العصب البصري",
+      "cupping": "الحجامة",
+      "scrolly": "التمرير",
+      "temporal_side": "الجانب الزمني",
+      "shine_from_the_side": "تألق من الجانب",
+      "deep_ac": "تكييف عميق",
+      "shallow_ac": "مكيف هواء ضحل",
+      "pick_up_arclight_and_shine_from_the_side": "التقط Arclight وتألق من الجانب",
+      "pupil_swinging_light_test_rapd": "اختبار الضوء المتأرجح للتلميذ RAPD",
+      "rapd_mode_off": "RAPD وضع إيقاف التشغيل"
+    },
+    "glaucomahistorycasestudy": {
+      "case_study": "دراسة الحالة",
+      "text": ">",
+      "select_diagnosis": "حدد التشخيص",
+      "all_cases_completed": "تم الانتهاء من جميع الحالات",
+      "result": "نتيجة"
     }
   },
   "i18nLiteral": {
-    "Next >": "التالي >"
+    "Next >": "التالي >",
+    "Close ^": "إغلاق ^"
   },
   "i18nExtra": {
     "fundal_reflex": {

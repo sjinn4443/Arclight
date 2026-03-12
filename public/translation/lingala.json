@@ -456,10 +456,159 @@
     },
     "childhoodfundalafterexamination": {
       "after_examination": "Nsima ya Ekzamɛ"
+    },
+    "childhoodeyescreeningworkshop": {
+      "eyes": "Miso",
+      "the_visual_system": "1. Système ya komona",
+      "see_all": "Tala nionso >",
+      "visual_development": "2. Bokoli ya komona",
+      "causes_of_visual_impairment": "3. Ntina ya kozanga komona malamu",
+      "signs_of_visual_impairment": "4. Bilembo ya kozanga komona malamu",
+      "childhood_eye_screening": "5. Kosala dépistage ya miso na bomwana",
+      "eye_brain": "Liso & Cerveau",
+      "start": "Kobanda >",
+      "atoms_card": "Atoms Carte ya kosala",
+      "normal_visual_development": "Développement Visuel Normal",
+      "assessing_visual_function": "Kotalela Mosala ya Bomoni",
+      "cases": "Makambo oyo esalemaka",
+      "behaviours": "Bizaleli",
+      "10_questions": "| 10 Mituna",
+      "ask_questions_and_observe": "Tuna Mituna mpe Talá",
+      "assessing_eyes_vision": "Kotalela Miso & Bomoni",
+      "refer": "Kolobela",
+      "how_to_use_arclight": "Ndenge ya kosalela Arclight .",
+      "fundal_reflex_usaid": "Réflexe fondal USAID Ezali ndenge moko na ba .",
+      "fundal_reflex_pdf": "Réflexe fondal PDF Ezali ndenge moko na ba .",
+      "fundal_reflex": "Réflexe fondamental",
+      "preparation": "Kobongisa",
+      "examination": "Kosala ekzamɛ",
+      "newborn_eyes_open": "Mwana ya sika - Miso Efungwami",
+      "newborn_eyes_closed": "Mwana ya sika - Miso ekangami",
+      "unclear_findings": "Makambo oyo ezwami polele te",
+      "possible_findings": "Makambo oyo ekoki kozwama",
+      "after_examination": "Nsima ya Kosala Ekzamɛ",
+      "normal_abnormal": "Normal & Abnormal",
+      "assessment": "Botaleli",
+      "9_questions": "9 Mituna",
+      "fundal_reflex_examination": "Examen ya Réflexe Fondal",
+      "your_browser_does_not_support_the_video_tag": "Navigateur na yo esimbaka te balise ya video."
+    },
+    "visualsystemeyesbrain": {
+      "childhood_eye_screening": "Dépistage ya miso na bomwana",
+      "eye_brain": "Liso & Cerveau",
+      "cornea": "Cornée",
+      "lens": "Objectif ya",
+      "retina": "Rétine ya rétine",
+      "loading": "Ezali ko charger..."
+    },
+    "childhoodassessment": {
+      "assessment": "Botaleli",
+      "check_answer": "Vérifier Eyano"
+    },
+    "behavioursquiz": {
+      "behaviours_mcq": "Bizaleli MCQ",
+      "check_answer": "Vérifier Eyano"
+    },
+    "fundalreflexpdf": {
+      "fundal_reflex": "Réflexe fondamental",
+      "eyes": "Miso"
+    },
+    "visualimpairment": {
+      "visual_impairment": "Kozanga komona malamu"
+    },
+    "signsvicases": {
+      "signs_of_visual_impairment": "Bilembo ya kozanga komona malamu"
+    },
+    "childhoodrefer": {
+      "refer": "Kolobela"
+    },
+    "childhoodeyebrainimages": {
+      "eye_brain": "Liso & Cerveau",
+      "introduction_to_visual_development": "Maloba ya ebandeli mpo na Développement Visuel",
+      "normal_visual_development": "Développement Visuel Normal",
+      "ask_questions_and_observe": "Tuna Mituna mpe Talá"
+    },
+    "glaucomaworkshop": {
+      "eyes": "Miso",
+      "1_introduction": "1. Maloba ya ebandeli",
+      "see_all": "Tala nionso >",
+      "2_history": "2. Lisoló ya bato",
+      "3_vision": "3. Bomoni",
+      "4_fields_pupils": "4. Bitando & banakelasi",
+      "5_front_of_eye": "5. Liboso ya liso",
+      "6_back_of_eye": "6. Mokɔngɔ ya liso",
+      "7_summary": "7. Bokuse ya koloba",
+      "introduction": "Maloba ya ebandeli",
+      "what_is_glaucoma": "Glaucome ezali nini",
+      "start": "Kobanda >",
+      "types_of_glaucoma": "Mitindo ya Glaucome",
+      "diagnosis": "Diagnostic ya diagnostic",
+      "history": "Lisolo",
+      "poag_and_acag": "POAG mpe ACAG nazali na posa ya koyebisa bino.",
+      "case_study": "Boyekoli ya likambo",
+      "vision": "Emonaneli",
+      "intro_vision_loss": "Intro & Bobungisi ya Vision",
+      "testing_visual_acuity": "Komeka Acuité Visuelle",
+      "visual_acuity": "Acuité ya komona",
+      "fields_pupils": "Bitando & banakelasi",
+      "visual_fields": "Bitando ya komona",
+      "front_of_eye": "Liboso ya liso",
+      "back_of_eye": "Mokɔngɔ ya liso",
+      "summary": "Na mokuse",
+      "scrolly": "Scrolly oyo ezali na kati",
+      "fundus_atoms_card": "Fondus Atoms Carte ya kosala",
+      "glaucoma_atoms_card": "Glaucome Atoms Carte",
+      "fundus": "Fundus ya nzoto",
+      "glaucoma": "Bokono ya Glaucome"
+    },
+    "glaucomaquizcasestudy": {
+      "normal_or_abnormal": "Normal to Abnormal",
+      "choose_the_correct_diagnosis": "Pona diagnostic ya malamu",
+      "results": "Ba resultat",
+      "secondary_glaucoma_findings": "Ba résultats ya glaucome secondaire",
+      "secondary_cause": "Ntina ya mibale",
+      "not_secondary": "Ezali ya mibale te"
+    },
+    "glaucomascrollimages": {
+      "what_is_glaucoma": "Glaucome ezali nini",
+      "types_of_glaucoma": "Mitindo ya maladi ya glaucome",
+      "diagnosis": "Diagnostic ya diagnostic",
+      "introduction": "Maloba ya ebandeli",
+      "poag_and_acag": "POAG mpe ACAG nazali na posa ya koyebisa bino.",
+      "intro_vision_loss": "Intro & Bobungisi ya Vision",
+      "testing_visual_acuity": "Komeka Acuité Visuelle",
+      "intro": "Intro",
+      "examination": "Kosala ekzamɛ",
+      "quadrants_fingers": "Quadrants - Misapi ya misapi",
+      "quadrants_red_target": "Quadrants - Cible ya motane",
+      "assess_and_record": "Talela mpe kokoma",
+      "pupil_reactions": "Ba réactions ya ba élèves",
+      "full_pupil_swinging_light_test_rapd": "Momekano ya mwinda ya kobalusama ya mwana-kelasi mobimba RAPD .",
+      "findings_that_can_lead_to_glaucoma": "Bomonisi oyo ekoki komema na glaucome",
+      "anterior_chamber_depth": "Bozindo ya Chambre Antérieure",
+      "feeling_for_high_iop_in_acag": "koyoka mpo na likolo IOP na ACAG .",
+      "optic_nerve": "misisa ya miso",
+      "cupping": "kosala cupping",
+      "scrolly": "oyo ezali na rulo",
+      "temporal_side": "ngambo ya ntango",
+      "shine_from_the_side": "Engɛnga uta na mopanzi",
+      "deep_ac": "AC ya mozindo",
+      "shallow_ac": "AC ya mozindo te",
+      "pick_up_arclight_and_shine_from_the_side": "Bozwa Arclight mpe engɛnga uta na mopanzi",
+      "pupil_swinging_light_test_rapd": "Momekano ya pole ya kobalusa mwana-kelasi RAPD .",
+      "rapd_mode_off": "RAPD mode OFF"
+    },
+    "glaucomahistorycasestudy": {
+      "case_study": "Boyekoli ya likambo",
+      "text": ">",
+      "select_diagnosis": "Pona diagnostic",
+      "all_cases_completed": "Ba cas nionso esilaki",
+      "result": "Mbano"
     }
   },
   "i18nLiteral": {
-    "Next >": "Na sima >"
+    "Next >": "Na sima >",
+    "Close ^": "Bokanga ^"
   },
   "i18nExtra": {
     "fundal_reflex": {
