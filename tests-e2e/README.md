@@ -32,6 +32,10 @@ CI uses:
 npm run test:fundal:ci
 ```
 
+Generated Playwright outputs such as `playwright-report/`, `test-results/`, and
+temporary browser screenshots stay local and are ignored by git. CI publishes
+the generated report artifacts separately.
+
 Local `git push` also runs the fundal suite automatically through
 `.husky/pre-push` when a push includes fundal-related files. Set
 `SKIP_FUNDAL_PRE_PUSH=1` to bypass it deliberately.
