@@ -5676,21 +5676,14 @@ function initializeStageAutoplayMode(cfg, page, stages) {
     body: document.body.style.overscrollBehaviorY,
     doc: document.documentElement.style.overscrollBehaviorY,
   };
-  const blockedScrollKeys = new Set([
-    " ",
-    "ArrowDown",
-    "ArrowUp",
-    "PageDown",
-    "PageUp",
-    "Home",
-    "End",
-  ]);
+  const forwardScrollKeys = new Set(["ArrowDown", "PageDown", "End"]);
 
   let routeCompleteDispatched = false;
   let firstStageStartQueued = false;
   let isPlaybackScrollLocked = false;
   let lockedWindowScrollTop = 0;
   let lockedPageContentScrollTop = 0;
+  let playbackTouchLastY = null;
 
   const getTopbarHeight = () => {
     const topbar = page.querySelector(".eyes-topbar");
@@ -6172,27 +6165,82 @@ function initializeStageAutoplayMode(cfg, page, stages) {
       document.body?.scrollTop ??
       0;
 
-    if (Math.abs(currentWindowScrollTop - lockedWindowScrollTop) > 1) {
+    if (currentWindowScrollTop > lockedWindowScrollTop + 1) {
       window.scrollTo({ top: lockedWindowScrollTop, behavior: "auto" });
     }
 
     if (
       pageContent &&
-      Math.abs((pageContent.scrollTop || 0) - lockedPageContentScrollTop) > 1
+      (pageContent.scrollTop || 0) > lockedPageContentScrollTop + 1
     ) {
       pageContent.scrollTop = lockedPageContentScrollTop;
     }
   }
 
+  function getPlaybackLockedScrollTop(metrics = getScrollHostMetrics()) {
+    if (metrics.type === "page") {
+      return Math.max(0, Number(lockedPageContentScrollTop) || 0);
+    }
+    return Math.max(0, Number(lockedWindowScrollTop) || 0);
+  }
+
+  function hasReachedPlaybackLowerBound(metrics = getScrollHostMetrics()) {
+    if (!isPlaybackScrollLocked) return false;
+    const currentTop = Math.max(0, Number(metrics?.scrollTop) || 0);
+    return currentTop >= getPlaybackLockedScrollTop(metrics) - 1;
+  }
+
+  function rememberPlaybackTouchPoint(event) {
+    if (!event?.touches || event.touches.length !== 1) {
+      playbackTouchLastY = null;
+      return;
+    }
+    const nextY = Number(event.touches[0]?.clientY);
+    playbackTouchLastY = Number.isFinite(nextY) ? nextY : null;
+  }
+
+  function clearPlaybackTouchPoint() {
+    playbackTouchLastY = null;
+  }
+
+  function resolvePlaybackTouchDirection(event) {
+    const currentY = Number(event?.touches?.[0]?.clientY);
+    if (!Number.isFinite(currentY)) return 0;
+    const previousY = playbackTouchLastY;
+    playbackTouchLastY = currentY;
+    if (!Number.isFinite(previousY)) return 0;
+    if (Math.abs(currentY - previousY) < 0.5) return 0;
+    // Finger moving up scrolls the content down toward the next animation.
+    return currentY < previousY ? 1 : -1;
+  }
+
+  function isForwardPlaybackScrollEvent(event) {
+    if (!event) return false;
+    if (event.type === "wheel") {
+      const deltaY = Number(event.deltaY);
+      return Number.isFinite(deltaY) && deltaY > 0;
+    }
+    if (event.type === "touchmove") {
+      return resolvePlaybackTouchDirection(event) > 0;
+    }
+    return false;
+  }
+
   function preventPlaybackScroll(event) {
     if (!isPlaybackScrollLocked) return;
+    if (!isForwardPlaybackScrollEvent(event)) return;
+    if (!hasReachedPlaybackLowerBound()) return;
     event.preventDefault();
     syncLockedViewport();
   }
 
   function preventPlaybackScrollKeys(event) {
     if (!isPlaybackScrollLocked) return;
-    if (!blockedScrollKeys.has(event.key || "")) return;
+    const key = event.key || "";
+    const isSpaceForward =
+      (key === " " || key === "Spacebar") && event.shiftKey !== true;
+    if (!isSpaceForward && !forwardScrollKeys.has(key)) return;
+    if (!hasReachedPlaybackLowerBound()) return;
     event.preventDefault();
   }
 
@@ -6202,9 +6250,16 @@ function initializeStageAutoplayMode(cfg, page, stages) {
 
     if (locked) {
       rememberLockedScrollPosition();
+      clearPlaybackTouchPoint();
       page.style.overscrollBehaviorY = "none";
       document.body.style.overscrollBehaviorY = "none";
       document.documentElement.style.overscrollBehaviorY = "none";
+      window.addEventListener("touchstart", rememberPlaybackTouchPoint, {
+        passive: true,
+      });
+      pageContent?.addEventListener("touchstart", rememberPlaybackTouchPoint, {
+        passive: true,
+      });
       window.addEventListener("wheel", preventPlaybackScroll, {
         passive: false,
       });
@@ -6217,6 +6272,18 @@ function initializeStageAutoplayMode(cfg, page, stages) {
       pageContent?.addEventListener("touchmove", preventPlaybackScroll, {
         passive: false,
       });
+      window.addEventListener("touchend", clearPlaybackTouchPoint, {
+        passive: true,
+      });
+      pageContent?.addEventListener("touchend", clearPlaybackTouchPoint, {
+        passive: true,
+      });
+      window.addEventListener("touchcancel", clearPlaybackTouchPoint, {
+        passive: true,
+      });
+      pageContent?.addEventListener("touchcancel", clearPlaybackTouchPoint, {
+        passive: true,
+      });
       window.addEventListener("keydown", preventPlaybackScrollKeys);
       window.addEventListener("scroll", syncLockedViewport, { passive: true });
       pageContent?.addEventListener("scroll", syncLockedViewport, {
@@ -6225,10 +6292,17 @@ function initializeStageAutoplayMode(cfg, page, stages) {
       return;
     }
 
+    clearPlaybackTouchPoint();
+    window.removeEventListener("touchstart", rememberPlaybackTouchPoint);
+    pageContent?.removeEventListener("touchstart", rememberPlaybackTouchPoint);
     window.removeEventListener("wheel", preventPlaybackScroll);
     pageContent?.removeEventListener("wheel", preventPlaybackScroll);
     window.removeEventListener("touchmove", preventPlaybackScroll);
     pageContent?.removeEventListener("touchmove", preventPlaybackScroll);
+    window.removeEventListener("touchend", clearPlaybackTouchPoint);
+    pageContent?.removeEventListener("touchend", clearPlaybackTouchPoint);
+    window.removeEventListener("touchcancel", clearPlaybackTouchPoint);
+    pageContent?.removeEventListener("touchcancel", clearPlaybackTouchPoint);
     window.removeEventListener("keydown", preventPlaybackScrollKeys);
     window.removeEventListener("scroll", syncLockedViewport);
     pageContent?.removeEventListener("scroll", syncLockedViewport);
