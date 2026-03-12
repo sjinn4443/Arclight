@@ -15,6 +15,7 @@ const FUNDAL_LOTTIE_RENDERER = (() => {
     Number(navigator.maxTouchPoints || 0) > 1;
   return iOSDevice || iPadOSDesktopUA ? "canvas" : "svg";
 })();
+const FUNDAL_IOS_DEFAULT_RENDERER = "canvas";
 
 function resolveFundalE2EPlaybackRate() {
   if (typeof window === "undefined") return 1;
@@ -148,6 +149,7 @@ const ROUTE_CONFIG = {
     segmentTextModeByFile: ["append", "append", "append", "append", "append"],
     strictFrameLockNoFallback: true,
     strictFrameRemountOnBlank: true,
+    iosRendererByFile: [null, null, null, null, "svg"],
     iosAggressiveSettleSegments: [[0], [1], [2, 3], [1], [2]],
     richSettleContentFiles: [0, 1, 2, 3, 4],
     richSettleMinAreaByFile: [0.08, 0.1, 0.12, 0.1, 0.1],
@@ -223,6 +225,7 @@ const ROUTE_CONFIG = {
     segmentTextModeByFile: ["append", "append", "append"],
     strictFrameLockNoFallback: true,
     strictFrameRemountOnBlank: true,
+    iosRendererByFile: [null, "svg", "svg"],
     iosAggressiveSettleSegments: [[0], [0], [1]],
     richSettleContentFiles: [0, 1, 2],
     richSettleMinAreaByFile: [0.08, 0.08, 0.12],
@@ -356,6 +359,7 @@ const ROUTE_CONFIG = {
     segmentTextModeByFile: ["appendInline"],
     strictFrameLockNoFallback: true,
     strictFrameRemountOnBlank: true,
+    iosRendererByFile: ["svg"],
     iosAggressiveSettleSegments: [[1]],
     richSettleContentFiles: [0],
     richSettleMinAreaByFile: [0.1],
@@ -593,6 +597,26 @@ function resolveRuntimeRouteConfig(routeName, baseCfg) {
     ),
     strictFrameLockNoFallback: true,
   };
+}
+
+function resolveFundalRenderer(cfg, fileIndex) {
+  if (!IS_IOS_WEBKIT) return FUNDAL_LOTTIE_RENDERER;
+
+  const override = Array.isArray(cfg?.iosRendererByFile)
+    ? cfg.iosRendererByFile[fileIndex]
+    : null;
+  const normalized = String(override == null ? "" : override)
+    .trim()
+    .toLowerCase();
+  if (
+    normalized === "svg" ||
+    normalized === "canvas" ||
+    normalized === "html"
+  ) {
+    return normalized;
+  }
+
+  return FUNDAL_IOS_DEFAULT_RENDERER;
 }
 
 function cleanupActiveSession() {
@@ -4028,7 +4052,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
     const createAnimationInstance = () => {
       const anim = window.lottie.loadAnimation({
         container: stage,
-        renderer: FUNDAL_LOTTIE_RENDERER,
+        renderer: resolveFundalRenderer(cfg, idx),
         loop: false,
         autoplay: false,
         path: cfg.paths[idx],
@@ -6672,7 +6696,7 @@ function initializeStageAutoplayMode(cfg, page, stages) {
 
     const anim = window.lottie.loadAnimation({
       container: state.stage,
-      renderer: FUNDAL_LOTTIE_RENDERER,
+      renderer: resolveFundalRenderer(cfg, state.fileIndex),
       loop: false,
       autoplay: false,
       path: cfg.paths[state.fileIndex],
@@ -6888,7 +6912,7 @@ export async function initializeChildhoodFundalReflexScrollPage(routeName) {
   const animations = stages.map((stage, idx) => {
     const anim = window.lottie.loadAnimation({
       container: stage,
-      renderer: FUNDAL_LOTTIE_RENDERER,
+      renderer: resolveFundalRenderer(cfg, idx),
       loop: true,
       autoplay: false,
       path: cfg.paths[idx],
