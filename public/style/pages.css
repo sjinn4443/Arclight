@@ -2345,7 +2345,7 @@ select.onb-input.has-value + .onb-select-caret {
 .childhood-fundal-scroll-page .childhood-fundal-prep-item {
   position: relative;
   border-radius: 0;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .childhood-fundal-scroll-page .childhood-fundal-prep-stage {
@@ -2565,12 +2565,12 @@ select.onb-input.has-value + .onb-select-caret {
 
 .childhood-fundal-scroll-page .childhood-fundal-scroll-down-arrow {
   position: absolute;
-  top: 92%;
+  top: calc(100% + 12px);
   left: 50%;
   right: auto;
   bottom: auto;
-  width: 72px;
-  height: 72px;
+  width: 54px;
+  height: 54px;
   padding: 0;
   border: 0;
   border-radius: 50%;
@@ -2583,7 +2583,7 @@ select.onb-input.has-value + .onb-select-caret {
   appearance: none;
   -webkit-appearance: none;
   opacity: 0;
-  transform: translate3d(-50%, calc(-50% + 8px), 0);
+  transform: translate3d(-50%, 8px, 0);
   transition:
     opacity 0.18s ease,
     transform 0.18s ease;
@@ -2593,7 +2593,7 @@ select.onb-input.has-value + .onb-select-caret {
 
 .childhood-fundal-scroll-page .childhood-fundal-scroll-down-arrow.is-visible {
   opacity: 1;
-  transform: translate3d(-50%, -50%, 0);
+  transform: translate3d(-50%, 0, 0);
 }
 
 .childhood-fundal-scroll-page
@@ -2614,16 +2614,16 @@ select.onb-input.has-value + .onb-select-caret {
   align-items: center;
   justify-content: center;
   gap: 0;
-  transform: translateY(-2px);
+  transform: translateY(-1.5px);
 }
 
 .childhood-fundal-scroll-page .childhood-fundal-scroll-down-arrow__chev {
-  width: 18px;
-  height: 18px;
-  border-right: 4.4px solid currentColor;
-  border-bottom: 4.4px solid currentColor;
+  width: 13.5px;
+  height: 13.5px;
+  border-right: 3.3px solid currentColor;
+  border-bottom: 3.3px solid currentColor;
   transform: rotate(45deg);
-  margin-top: -8px;
+  margin-top: -6px;
   color: #ececec;
   animation: fundalArrowGrayShift 1.2s linear infinite;
 }
@@ -2648,15 +2648,15 @@ select.onb-input.has-value + .onb-select-caret {
   left: auto;
   right: var(--fundal-replay-right, 10px);
   bottom: var(--fundal-replay-bottom, 10px);
-  width: 72px;
-  height: 72px;
+  width: 54px;
+  height: 54px;
   padding: 0;
   border: 0;
   border-radius: 50%;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: rgb(56 56 56);
+  background: rgba(58, 58, 58, 0.46);
   color: #fff;
   cursor: pointer;
   line-height: 0;
@@ -2669,12 +2669,12 @@ select.onb-input.has-value + .onb-select-caret {
 }
 
 .childhood-fundal-scroll-page .childhood-fundal-stage-replay-btn__icon {
-  width: 50px;
-  height: 44px;
+  width: 37.5px;
+  height: 33px;
   display: block;
-  object-fit: cover;
+  object-fit: contain;
   object-position: center;
-  transform: translateX(-2px);
+  transform: translateX(-1.5px);
   user-select: none;
   -webkit-user-drag: none;
 }
@@ -2682,29 +2682,29 @@ select.onb-input.has-value + .onb-select-caret {
 @media (min-width: 1024px) {
   .childhood-fundal-scroll-page .childhood-fundal-scroll-down-arrow,
   .childhood-fundal-scroll-page .childhood-fundal-stage-replay-btn {
-    width: 100px;
-    height: 100px;
+    width: 75px;
+    height: 75px;
   }
 
   .childhood-fundal-scroll-page .childhood-fundal-scroll-down-arrow__chev {
-    width: 26px;
-    height: 26px;
-    border-right-width: 5px;
-    border-bottom-width: 5px;
-    margin-top: -12px;
+    width: 19.5px;
+    height: 19.5px;
+    border-right-width: 3.75px;
+    border-bottom-width: 3.75px;
+    margin-top: -9px;
   }
 
   .childhood-fundal-scroll-page .childhood-fundal-stage-replay-btn__icon {
-    width: 66px;
-    height: 62px;
+    width: 49.5px;
+    height: 46.5px;
   }
 }
 
 @media (max-width: 37.5em) {
   .childhood-fundal-scroll-page .childhood-fundal-scroll-down-arrow,
   .childhood-fundal-scroll-page .childhood-fundal-stage-replay-btn {
-    width: 72px;
-    height: 72px;
+    width: 54px;
+    height: 54px;
   }
 }
 

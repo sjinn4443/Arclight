@@ -958,14 +958,22 @@ function createDownArrowElement() {
 
 function ensureStageDownArrowElement(stage, existingArrow = null) {
   if (!stage) return null;
-  if (existingArrow && existingArrow.parentElement === stage)
+  const arrowContainer = stage.parentElement || stage;
+  if (existingArrow && existingArrow.parentElement === arrowContainer)
     return existingArrow;
 
-  const found = stage.querySelector(".childhood-fundal-scroll-down-arrow");
-  if (found) return found;
+  const found = arrowContainer.querySelector(
+    ".childhood-fundal-scroll-down-arrow",
+  );
+  if (found) {
+    if (found.parentElement !== arrowContainer) {
+      arrowContainer.appendChild(found);
+    }
+    return found;
+  }
 
   const downArrow = existingArrow || createDownArrowElement();
-  stage.appendChild(downArrow);
+  arrowContainer.appendChild(downArrow);
   return downArrow;
 }
 
@@ -1482,9 +1490,9 @@ function buildAnimationSlots(listEl, label, count, cfg = null) {
     segmentText.className = "childhood-fundal-segment-text";
     segmentText.setAttribute("aria-live", "polite");
 
-    stage.appendChild(downArrow);
     item.appendChild(stage);
     item.appendChild(segmentText);
+    item.appendChild(downArrow);
     listEl.appendChild(item);
     stages.push(stage);
   }
@@ -5993,6 +6001,8 @@ function initializeStageAutoplayMode(routeName, cfg, page, stages) {
     return state;
   });
 
+  let lastViewportScrollTop = null;
+
   function hasNextStage(state) {
     return Number(state?.fileIndex) < states.length - 1;
   }
@@ -6146,6 +6156,19 @@ function initializeStageAutoplayMode(routeName, cfg, page, stages) {
     }
   }
 
+  function hideStageDownArrow(state) {
+    if (!state) return;
+    const arrowEl = ensureControllerDownArrow(state);
+    if (!arrowEl) return;
+    arrowEl.classList.remove("is-visible");
+  }
+
+  function hideAllStageDownArrows() {
+    states.forEach((state) => {
+      hideStageDownArrow(state);
+    });
+  }
+
   function showStageControls(state) {
     if (!state) return;
     const replayBtn = ensureStageReplayButtonElement(
@@ -6164,6 +6187,16 @@ function initializeStageAutoplayMode(routeName, cfg, page, stages) {
       arrowEl.classList.toggle("is-visible", hasNextStage(state));
     }
     updateStageControlAnchors(state);
+  }
+
+  function hideCompletedOffCenterDownArrows() {
+    states.forEach((state) => {
+      if (!state?.completed || !hasNextStage(state)) return;
+      const arrowEl = ensureControllerDownArrow(state);
+      if (!arrowEl?.classList?.contains("is-visible")) return;
+      if (isStateNearViewportCenter(state)) return;
+      hideStageDownArrow(state);
+    });
   }
 
   function updateStageControlAnchors(state) {
@@ -6341,6 +6374,7 @@ function initializeStageAutoplayMode(routeName, cfg, page, stages) {
     const nextState = hasNextStage(state) ? states[state.fileIndex + 1] : null;
     if (!nextState?.stage) return;
 
+    hideStageDownArrow(state);
     alignStageForPlayback(nextState);
     requestAnimationFrame(() => {
       updateAllStageControlAnchors();
@@ -6621,8 +6655,19 @@ function initializeStageAutoplayMode(routeName, cfg, page, stages) {
     return holdFrame;
   }
 
-  function dispatchRouteCompleteOnce() {
-    if (routeCompleteDispatched || !areAllStagesComplete()) return;
+  function isRouteCompletionSatisfied(completedState = null) {
+    if (areAllStagesComplete()) return true;
+    const completedIndex = Number(completedState?.fileIndex);
+    return (
+      Number.isFinite(completedIndex) &&
+      completedIndex === states.length - 1 &&
+      completedState?.completed === true
+    );
+  }
+
+  function dispatchRouteCompleteOnce(completedState = null) {
+    if (routeCompleteDispatched || !isRouteCompletionSatisfied(completedState))
+      return;
     routeCompleteDispatched = true;
     document.dispatchEvent(
       new CustomEvent("childhoodWorkshop:route-complete", {
@@ -6675,7 +6720,7 @@ function initializeStageAutoplayMode(routeName, cfg, page, stages) {
     }
     showStageFinalSummaryBullets(state);
     showStageControls(state);
-    dispatchRouteCompleteOnce();
+    dispatchRouteCompleteOnce(state);
 
     requestAnimationFrame(() => {
       maybeStartEligibleStage();
@@ -6773,6 +6818,7 @@ function initializeStageAutoplayMode(routeName, cfg, page, stages) {
 
     state.started = true;
     state.playing = true;
+    hideAllStageDownArrows();
     hideRecoveryOverlay(state, { immediate: true });
     clearStageSegmentText(state);
     hideStageControls(state);
@@ -6853,6 +6899,16 @@ function initializeStageAutoplayMode(routeName, cfg, page, stages) {
   }
 
   function onViewportChange() {
+    const metrics = getScrollHostMetrics();
+    const currentScrollTop = Number(metrics?.scrollTop || 0);
+    const isScrollingDown =
+      Number.isFinite(lastViewportScrollTop) &&
+      currentScrollTop > lastViewportScrollTop + 6;
+    lastViewportScrollTop = currentScrollTop;
+
+    if (isScrollingDown) {
+      hideCompletedOffCenterDownArrows();
+    }
     updateAllStageControlAnchors();
     maybeStartEligibleStage();
   }
