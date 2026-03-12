@@ -1,5 +1,6 @@
 // language-picker.js
 (function () {
+  const DEFAULT_LANGUAGE_CODE = "en";
   const overlay = document.getElementById("languagePickerOverlay");
   const closeBtn = document.getElementById("closeLangPickerBtn");
 
@@ -33,6 +34,44 @@
     yo: "Yor\u00F9b\u00E1",
     zu: "isiZulu",
   };
+
+  function getCurrentLanguageCode() {
+    return (
+      window.I18N?.getLanguage?.() ||
+      localStorage.getItem("prefLang") ||
+      document.documentElement.getAttribute("lang") ||
+      DEFAULT_LANGUAGE_CODE
+    );
+  }
+
+  function syncSelectToLanguage(select, code) {
+    if (!select) return;
+    const next = String(code || "").trim() || DEFAULT_LANGUAGE_CODE;
+    if ([...select.options].some((opt) => opt.value === next)) {
+      select.value = next;
+    }
+  }
+
+  function syncPickerSelection(code = getCurrentLanguageCode()) {
+    syncSelectToLanguage(selectEl, code);
+    syncSelectToLanguage(document.getElementById("prefLang"), code);
+  }
+
+  function getBarLabelForOption(opt) {
+    if (!opt) return nativeByCode[DEFAULT_LANGUAGE_CODE] || "English";
+    const english = (opt.textContent || "").trim();
+    const native = (opt.getAttribute("data-native") || "").trim();
+    return native || english || nativeByCode[opt.value] || "English";
+  }
+
+  function markSelectedLanguage(code = getCurrentLanguageCode()) {
+    if (!listEl) return;
+    [...listEl.children].forEach((item) => {
+      const selected = item.dataset.code === code;
+      item.setAttribute("aria-selected", selected ? "true" : "false");
+      item.classList.toggle("is-selected", selected);
+    });
+  }
 
   async function hydratePickerOptionsFromLanguageInstall() {
     if (!selectEl) return;
@@ -94,6 +133,7 @@
     overlay.hidden = false;
     document.body.style.overflow = "hidden";
     await hydratePickerOptionsFromLanguageInstall();
+    syncPickerSelection();
     buildListFromInstallSelect();
     setBarLabelFromCurrent();
     collapseDropdown();
@@ -125,15 +165,18 @@
   }
 
   function setBarLabelFromCurrent() {
-    // Prefer current selection from #prefLang if present; else from hidden select; else default 'English'
+    syncPickerSelection();
+
+    // Prefer current selection from #prefLang if present; else from hidden select.
     const installSelect = document.getElementById("prefLang");
     const src = installSelect || selectEl;
-    let label = "English";
+    let label = nativeByCode[getCurrentLanguageCode()] || "English";
     if (src) {
       const opt = src.options[src.selectedIndex] || src.options[0];
-      if (opt) label = (opt.textContent || "English").trim();
+      if (opt) label = getBarLabelForOption(opt);
     }
     currentEl.textContent = label;
+    markSelectedLanguage(src?.value || getCurrentLanguageCode());
   }
 
   // Build two-column list from Language Install select, falling back to hidden select
@@ -158,6 +201,10 @@
       li.className = "lang-install__item";
       li.setAttribute("role", "option");
       li.setAttribute("tabindex", "0");
+      li.setAttribute(
+        "aria-selected",
+        code === getCurrentLanguageCode() ? "true" : "false",
+      );
       li.dataset.code = code;
       const en = document.createElement("span");
       en.className = "lang-install__item-en";
@@ -168,7 +215,7 @@
       li.appendChild(en);
       li.appendChild(nativeEl);
 
-      const choose = () => applyLanguage(code, installSelect, english);
+      const choose = () => applyLanguage(code, installSelect);
       li.addEventListener("click", choose);
       li.addEventListener("keydown", (e) => {
         if (e.key === "Enter" || e.key === " ") {
@@ -179,10 +226,12 @@
 
       listEl.appendChild(li);
     });
+
+    markSelectedLanguage(source.value || getCurrentLanguageCode());
   }
 
   // Apply language exactly like the Language Install page
-  async function applyLanguage(code, installSelect, englishLabel) {
+  async function applyLanguage(code, installSelect) {
     try {
       if (installSelect) {
         installSelect.value = code;
@@ -203,7 +252,8 @@
       }
 
       document.documentElement.setAttribute("lang", code);
-      currentEl.textContent = englishLabel || currentEl.textContent;
+      syncPickerSelection(code);
+      setBarLabelFromCurrent();
     } finally {
       closeModal();
     }
@@ -258,4 +308,15 @@
     },
     true,
   );
+
+  window.addEventListener("i18n:languageChanged", () => {
+    syncPickerSelection();
+    setBarLabelFromCurrent();
+  });
+
+  window.addEventListener("storage", (e) => {
+    if (e.key !== "prefLang") return;
+    syncPickerSelection();
+    setBarLabelFromCurrent();
+  });
 })();

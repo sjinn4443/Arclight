@@ -413,7 +413,7 @@ const ROUTE_CONFIG = {
     stageAspectRatioByFile: ["1146 / 947", "1146 / 1476"],
     preserveAspectRatioByFile: ["xMidYMid meet", "xMidYMid meet"],
     mobileStageTopAligned: false,
-    centerTopBiasByFile: [0, -35],
+    centerTopBiasByFile: [0, -96],
     desktopTopGapByFile: [18, 0],
     playMode: "stageAutoplay",
     segmentRanges: [

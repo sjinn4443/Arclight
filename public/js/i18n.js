@@ -36,9 +36,15 @@ const LANG_ALIAS = {
 const CACHE = {
   lang: null,
   dict: {},
+  fallbackDict: {},
   fetched: new Map(),
   literalIndex: new Map(),
+  loading: null,
 };
+
+const GLOBAL_TRANSLATION_PASS_DELAYS_MS = [80, 220];
+let translationPassInFlight = false;
+let translationPassQueued = false;
 
 export function get(obj, path) {
   if (!obj || !path) return undefined;
@@ -74,30 +80,38 @@ export function get(obj, path) {
   return current;
 }
 
+function normalizeLanguage(lang) {
+  const normalized = String(lang || "")
+    .trim()
+    .toLowerCase();
+  return LANG_ALIAS[normalized] ? normalized : "en";
+}
+
 function langToPath(lang) {
-  const alias = LANG_ALIAS[lang] || LANG_ALIAS.en;
+  const alias = LANG_ALIAS[normalizeLanguage(lang)] || LANG_ALIAS.en;
   return `/translation/${alias}.json`;
 }
 
 export function getLanguage() {
   const fromStorage = localStorage.getItem("prefLang");
-  if (fromStorage) return fromStorage;
+  if (fromStorage) return normalizeLanguage(fromStorage);
   const htmlLang = (document.documentElement.getAttribute("lang") || "").trim();
-  return htmlLang || "en";
+  return normalizeLanguage(htmlLang || "en");
 }
 
 // New function to fetch a specific language dictionary without affecting global CACHE
 export async function fetchDictionary(lang) {
-  if (CACHE.fetched.has(lang)) {
-    return CACHE.fetched.get(lang);
+  const normalized = normalizeLanguage(lang);
+  if (CACHE.fetched.has(normalized)) {
+    return CACHE.fetched.get(normalized);
   }
 
   const p = (async () => {
-    const path = langToPath(lang);
+    const path = langToPath(normalized);
     try {
       const res = await fetch(path, { cache: "no-store" });
       if (!res.ok) {
-        if (lang === "en") return {};
+        if (normalized === "en") return {};
         throw new Error(`Fetch failed: ${res.status}`);
       }
       return await res.json();
@@ -107,14 +121,46 @@ export async function fetchDictionary(lang) {
     }
   })();
 
-  CACHE.fetched.set(lang, p);
+  CACHE.fetched.set(normalized, p);
   return p;
 }
 
 async function loadTranslations(lang) {
-  CACHE.dict = await fetchDictionary(lang);
-  rebuildLiteralIndex();
-  CACHE.lang = lang;
+  const next = normalizeLanguage(lang);
+  if (CACHE.loading?.lang === next) {
+    return CACHE.loading.promise;
+  }
+
+  const promise = (async () => {
+    const fallbackDict = await fetchDictionary("en");
+    const dict = next === "en" ? fallbackDict : await fetchDictionary(next);
+
+    CACHE.fallbackDict = fallbackDict || {};
+    CACHE.dict = dict || {};
+    CACHE.lang = next;
+    document.documentElement.setAttribute("lang", next);
+    rebuildLiteralIndex();
+    return CACHE.dict;
+  })().finally(() => {
+    if (CACHE.loading?.promise === promise) {
+      CACHE.loading = null;
+    }
+  });
+
+  CACHE.loading = { lang: next, promise };
+  return promise;
+}
+
+async function ensureTranslationsReady(lang = getLanguage()) {
+  const next = normalizeLanguage(lang);
+  if (CACHE.loading?.lang === next) {
+    await CACHE.loading.promise;
+    return CACHE.dict;
+  }
+  if (CACHE.lang !== next || !CACHE.lang) {
+    await loadTranslations(next);
+  }
+  return CACHE.dict;
 }
 
 function normalizeLiteralText(value) {
@@ -126,14 +172,17 @@ function normalizeLiteralText(value) {
 
 function rebuildLiteralIndex() {
   CACHE.literalIndex = new Map();
-  const literal = CACHE.dict?.i18nLiteral;
-  if (!literal || typeof literal !== "object") return;
+  const mergeLiteralEntries = (source) => {
+    if (!source || typeof source !== "object") return;
+    Object.entries(source).forEach(([rawKey, rawVal]) => {
+      const key = normalizeLiteralText(rawKey);
+      if (!key) return;
+      CACHE.literalIndex.set(key, String(rawVal));
+    });
+  };
 
-  Object.entries(literal).forEach(([rawKey, rawVal]) => {
-    const key = normalizeLiteralText(rawKey);
-    if (!key) return;
-    CACHE.literalIndex.set(key, String(rawVal));
-  });
+  mergeLiteralEntries(CACHE.fallbackDict?.i18nLiteral);
+  mergeLiteralEntries(CACHE.dict?.i18nLiteral);
 }
 
 function literalTranslate(rawText) {
@@ -200,6 +249,9 @@ function setSelectPlaceholder(selectEl, text) {
 export function applyTranslations(root = document) {
   if (!root) return;
 
+  const getTranslationValue = (path) =>
+    get(CACHE.dict, path) ?? get(CACHE.fallbackDict, path);
+
   const nodes = root.querySelectorAll("[data-i18n]");
   nodes.forEach((el) => {
     const spec = (el.getAttribute("data-i18n") || "").trim();
@@ -209,7 +261,7 @@ export function applyTranslations(root = document) {
 
     const [path, rawTarget = "text"] = spec.split(":");
     const target = (rawTarget || "text").toLowerCase();
-    const val = get(CACHE.dict, path);
+    const val = getTranslationValue(path);
     if (val == null) return;
 
     const tag = el.tagName.toUpperCase();
@@ -298,22 +350,57 @@ export function applyTranslations(root = document) {
   applyLiteralTranslations(root);
 }
 
+async function runGlobalTranslationPass() {
+  translationPassQueued = true;
+  if (translationPassInFlight) return;
+
+  translationPassInFlight = true;
+  try {
+    while (translationPassQueued) {
+      translationPassQueued = false;
+      await ensureTranslationsReady(getLanguage());
+      applyTranslations(document);
+    }
+  } catch (err) {
+    console.error("[i18n] translation pass failed", err);
+  } finally {
+    translationPassInFlight = false;
+  }
+}
+
+function scheduleGlobalTranslationPasses() {
+  const queuePass = () => {
+    void runGlobalTranslationPass();
+  };
+
+  queuePass();
+
+  if (typeof window.requestAnimationFrame === "function") {
+    window.requestAnimationFrame(queuePass);
+    window.requestAnimationFrame(() => window.requestAnimationFrame(queuePass));
+  }
+
+  GLOBAL_TRANSLATION_PASS_DELAYS_MS.forEach((delay) => {
+    window.setTimeout(queuePass, delay);
+  });
+}
+
 /** Change language and re-translate the live DOM */
 export async function setLanguage(lang) {
-  const next = lang || getLanguage();
-  if (next === CACHE.lang) {
-    localStorage.setItem("prefLang", next);
-    return;
-  }
+  const next = normalizeLanguage(lang || getLanguage());
+  const previous = CACHE.lang;
   localStorage.setItem("prefLang", next);
   await loadTranslations(next);
   applyTranslations(document);
-  window.dispatchEvent(
-    new CustomEvent("i18n:languageChanged", { detail: { lang: next } }),
-  );
-  document.dispatchEvent(
-    new CustomEvent("language:updated", { detail: { lang: next } }),
-  );
+  document.documentElement.setAttribute("lang", next);
+
+  if (previous !== next) {
+    const detail = { lang: next, previousLang: previous };
+    window.dispatchEvent(new CustomEvent("i18n:languageChanged", { detail }));
+    document.dispatchEvent(new CustomEvent("language:updated", { detail }));
+  }
+
+  scheduleGlobalTranslationPasses();
 
   try {
     window.ARCLIGHT?.saveProfile?.({ language: next });
@@ -321,14 +408,19 @@ export async function setLanguage(lang) {
 }
 
 /** Boot */
-(async () => {
-  const lang = getLanguage();
-  await loadTranslations(lang);
-  applyTranslations(document);
+if (!window.__arclightI18nLifecycleBound) {
+  window.__arclightI18nLifecycleBound = true;
+  window.addEventListener("page:loaded", scheduleGlobalTranslationPasses);
+  document.addEventListener("page:shown", scheduleGlobalTranslationPasses);
+  window.addEventListener(
+    "i18n:languageChanged",
+    scheduleGlobalTranslationPasses,
+  );
+}
 
-  // Re-apply whenever a new page fragment is inserted or shown
-  window.addEventListener("page:loaded", () => applyTranslations(document));
-  document.addEventListener("page:shown", () => applyTranslations(document));
+(async () => {
+  await ensureTranslationsReady(getLanguage());
+  scheduleGlobalTranslationPasses();
 })();
 
 // i18n.js (near bottom; only if you don't already expose these)
@@ -336,3 +428,4 @@ window.I18N = window.I18N || {};
 window.I18N.setLanguage = window.I18N.setLanguage || setLanguage; // your existing function
 window.I18N.applyTranslations =
   window.I18N.applyTranslations || applyTranslations; // your existing function
+window.I18N.getLanguage = window.I18N.getLanguage || getLanguage;

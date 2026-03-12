@@ -340,6 +340,77 @@
     "howToTeachFilter": "가르치는 방법"
   },
   "auto": {
+    "childhoodeyescreeningworkshop": {
+      "eyes": "눈",
+      "the_visual_system": "1. 시각계",
+      "see_all": "모두 보기 >",
+      "visual_development": "2. 시각 발달",
+      "causes_of_visual_impairment": "3. 시각장애의 원인",
+      "signs_of_visual_impairment": "4. 시각장애의 징후",
+      "childhood_eye_screening": "5. 소아 눈 검진",
+      "eye_brain": "눈과 뇌",
+      "start": "시작 >",
+      "atoms_card": "Atoms 카드",
+      "normal_visual_development": "정상 시각 발달",
+      "assessing_visual_function": "시기능 평가",
+      "cases": "사례",
+      "behaviours": "행동",
+      "10_questions": "| 10문항",
+      "ask_questions_and_observe": "질문하고 관찰하기",
+      "assessing_eyes_vision": "눈과 시력 평가",
+      "refer": "의뢰",
+      "how_to_use_arclight": "Arclight 사용법",
+      "fundal_reflex_usaid": "USAID 안저 반사",
+      "fundal_reflex_pdf": "안저 반사 PDF",
+      "fundal_reflex": "안저 반사",
+      "preparation": "준비",
+      "examination": "검사",
+      "newborn_eyes_open": "신생아 - 눈 뜬 상태",
+      "newborn_eyes_closed": "신생아 - 눈 감은 상태",
+      "unclear_findings": "불분명한 소견",
+      "possible_findings": "가능한 소견",
+      "after_examination": "검사 후",
+      "normal_abnormal": "정상 및 비정상",
+      "assessment": "평가",
+      "9_questions": "9문항",
+      "fundal_reflex_examination": "안저 반사 검사",
+      "your_browser_does_not_support_the_video_tag": "브라우저가 비디오 태그를 지원하지 않습니다."
+    },
+    "visualsystemeyesbrain": {
+      "childhood_eye_screening": "소아 눈 검진",
+      "eye_brain": "눈과 뇌",
+      "cornea": "각막",
+      "lens": "수정체",
+      "retina": "망막",
+      "loading": "불러오는 중..."
+    },
+    "childhoodassessment": {
+      "assessment": "평가",
+      "check_answer": "정답 확인"
+    },
+    "behavioursquiz": {
+      "behaviours_mcq": "행동 객관식 퀴즈",
+      "check_answer": "정답 확인"
+    },
+    "fundalreflexpdf": {
+      "fundal_reflex": "안저 반사",
+      "eyes": "눈"
+    },
+    "visualimpairment": {
+      "visual_impairment": "시각장애"
+    },
+    "signsvicases": {
+      "signs_of_visual_impairment": "시각장애의 징후"
+    },
+    "childhoodrefer": {
+      "refer": "의뢰"
+    },
+    "childhoodeyebrainimages": {
+      "eye_brain": "눈과 뇌",
+      "introduction_to_visual_development": "시각 발달 소개",
+      "normal_visual_development": "정상 시각 발달",
+      "ask_questions_and_observe": "질문하고 관찰하기"
+    },
     "childhoodfundalpreparation": {
       "preparation": "준비"
     },
@@ -360,9 +431,87 @@
     },
     "childhoodfundalafterexamination": {
       "after_examination": "검사 후"
+    },
+    "glaucomaworkshop": {
+      "eyes": "눈",
+      "1_introduction": "1. 소개",
+      "see_all": "모두 보기 >",
+      "2_history": "2. 병력",
+      "3_vision": "3. 시력",
+      "4_fields_pupils": "4. 시야 및 동공",
+      "5_front_of_eye": "5. 눈 앞부분",
+      "6_back_of_eye": "6. 눈 뒷부분",
+      "7_summary": "7. 요약",
+      "introduction": "소개",
+      "what_is_glaucoma": "녹내장이란?",
+      "start": "시작 >",
+      "types_of_glaucoma": "녹내장의 종류",
+      "diagnosis": "진단",
+      "history": "병력",
+      "poag_and_acag": "POAG 및 ACAG",
+      "case_study": "사례 연구",
+      "vision": "시력",
+      "intro_vision_loss": "소개 및 시야 손실",
+      "testing_visual_acuity": "시력 검사",
+      "visual_acuity": "시력",
+      "fields_pupils": "시야 및 동공",
+      "visual_fields": "시야",
+      "front_of_eye": "눈 앞부분",
+      "back_of_eye": "눈 뒷부분",
+      "summary": "요약",
+      "scrolly": "스크롤 학습",
+      "fundus_atoms_card": "안저 Atoms 카드",
+      "glaucoma_atoms_card": "녹내장 Atoms 카드",
+      "fundus": "안저",
+      "glaucoma": "녹내장"
+    },
+    "glaucomaquizcasestudy": {
+      "normal_or_abnormal": "정상 또는 비정상",
+      "choose_the_correct_diagnosis": "올바른 진단을 선택하세요",
+      "results": "결과",
+      "secondary_glaucoma_findings": "이차성 녹내장 소견",
+      "secondary_cause": "이차성 원인",
+      "not_secondary": "이차성 아님"
+    },
+    "glaucomascrollimages": {
+      "what_is_glaucoma": "녹내장이란?",
+      "types_of_glaucoma": "녹내장의 종류",
+      "diagnosis": "진단",
+      "introduction": "소개",
+      "poag_and_acag": "POAG 및 ACAG",
+      "intro_vision_loss": "소개 및 시야 손실",
+      "testing_visual_acuity": "시력 검사",
+      "intro": "소개",
+      "examination": "검사",
+      "quadrants_fingers": "사분면 - 손가락",
+      "quadrants_red_target": "사분면 - 빨간 표적",
+      "assess_and_record": "평가 및 기록",
+      "pupil_reactions": "동공 반응",
+      "full_pupil_swinging_light_test_rapd": "전체 동공 흔들이 빛 검사 RAPD",
+      "findings_that_can_lead_to_glaucoma": "녹내장으로 이어질 수 있는 소견",
+      "anterior_chamber_depth": "전방 깊이",
+      "feeling_for_high_iop_in_acag": "ACAG에서 높은 안압 촉진",
+      "optic_nerve": "시신경",
+      "cupping": "함몰",
+      "scrolly": "스크롤 학습",
+      "temporal_side": "관자쪽",
+      "shine_from_the_side": "옆에서 비추기",
+      "deep_ac": "깊은 전방",
+      "shallow_ac": "얕은 전방",
+      "pick_up_arclight_and_shine_from_the_side": "Arclight를 들어 옆에서 비추세요",
+      "pupil_swinging_light_test_rapd": "동공 흔들이 빛 검사 RAPD",
+      "rapd_mode_off": "RAPD 모드 꺼짐"
+    },
+    "glaucomahistorycasestudy": {
+      "case_study": "사례 연구",
+      "text": ">",
+      "select_diagnosis": "진단을 선택하세요",
+      "all_cases_completed": "모든 사례 완료",
+      "result": "결과"
     }
   },
   "i18nLiteral": {
+    "Close ^": "닫기 ^",
     "Next >": "다음 >",
     "Skip and Start": "건너뛰고 시작하기",
     "Start Exploring": "탐색 시작하기",

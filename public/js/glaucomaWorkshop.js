@@ -36,6 +36,10 @@ function normaliseVideosSubpageId(raw) {
   return `${t}Page`;
 }
 
+function refreshWorkshopTranslations(root = document) {
+  window.I18N?.applyTranslations?.(root);
+}
+
 function getTopLevelSectionRows(sectionCard) {
   if (!sectionCard) return [];
   return Array.from(sectionCard.children).filter((child) =>
@@ -263,6 +267,7 @@ function setupWorkshopFolders(page) {
     });
 
     titleEl.appendChild(toggle);
+    refreshWorkshopTranslations(titleEl);
   };
 
   hideAllSectionCards();
@@ -391,6 +396,7 @@ function setupVisualFieldsSubfolder(page) {
     });
 
     titleEl.appendChild(toggle);
+    refreshWorkshopTranslations(titleEl);
   };
 
   row.addEventListener("click", openNow);

@@ -81,6 +81,10 @@ function showPageWithFallbackAndEvent(id) {
   return true;
 }
 
+function refreshWorkshopTranslations(root = document) {
+  window.I18N?.applyTranslations?.(root);
+}
+
 const NUMBERED_CHILDHOOD_LABEL_KEYS = [
   "auto.childhoodeyescreeningworkshop.the_visual_system",
   "auto.childhoodeyescreeningworkshop.visual_development",
@@ -278,6 +282,7 @@ function setupWorkshopFolders(page) {
     });
 
     titleEl.appendChild(toggle);
+    refreshWorkshopTranslations(titleEl);
   };
 
   hideAllSectionCards();
@@ -598,6 +603,7 @@ export function initializeChildhoodEyeScreeningWorkshop() {
       fundalFolderRow.setAttribute("aria-expanded", open ? "true" : "false");
       if (cta) cta.textContent = open ? "Close ^" : "See all >";
       page.classList.toggle("fundal-reflex-open", open);
+      refreshWorkshopTranslations(fundalFolderRow);
     };
 
     // default closed

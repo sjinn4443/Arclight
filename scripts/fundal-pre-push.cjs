@@ -42,11 +42,14 @@ if (relevantFiles.length === 0) {
 console.log("[fundal pre-push] validating fundal changes before push:");
 relevantFiles.forEach((filePath) => console.log(` - ${filePath}`));
 
-const npmCommand = process.platform === "win32" ? "npm.cmd" : "npm";
-const runResult = spawnSync(npmCommand, ["run", "test:fundal"], {
-  stdio: "inherit",
-  shell: false,
-});
+const runResult = runNpmScript("test:fundal");
+
+if (runResult.error) {
+  console.error(
+    `[fundal pre-push] failed to launch npm: ${runResult.error.message}`,
+  );
+  process.exit(1);
+}
 
 if (runResult.status !== 0) {
   process.exit(runResult.status || 1);
@@ -127,4 +130,22 @@ function runGit(args) {
   } catch {
     return "";
   }
+}
+
+function runNpmScript(scriptName) {
+  if (process.platform === "win32") {
+    return spawnSync(
+      process.env.ComSpec || "cmd.exe",
+      ["/d", "/s", "/c", `npm.cmd run ${scriptName}`],
+      {
+        stdio: "inherit",
+        shell: false,
+      },
+    );
+  }
+
+  return spawnSync("npm", ["run", scriptName], {
+    stdio: "inherit",
+    shell: false,
+  });
 }
