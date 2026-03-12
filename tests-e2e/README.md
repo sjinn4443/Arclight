@@ -31,3 +31,7 @@ CI uses:
 ```bash
 npm run test:fundal:ci
 ```
+
+Local `git push` also runs the fundal suite automatically through
+`.husky/pre-push` when a push includes fundal-related files. Set
+`SKIP_FUNDAL_PRE_PUSH=1` to bypass it deliberately.
