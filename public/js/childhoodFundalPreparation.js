@@ -16,6 +16,23 @@ const FUNDAL_LOTTIE_RENDERER = (() => {
   return iOSDevice || iPadOSDesktopUA ? "canvas" : "svg";
 })();
 
+function resolveFundalE2EPlaybackRate() {
+  if (typeof window === "undefined") return 1;
+  const raw = Number(window.__ARCLIGHT_E2E__?.fundalPlaybackRate);
+  if (!Number.isFinite(raw) || raw <= 0) return 1;
+  return Math.min(20, raw);
+}
+
+function applyFundalE2EPlaybackRate(anim) {
+  const playbackRate = resolveFundalE2EPlaybackRate();
+  if (playbackRate === 1 || typeof anim?.setSpeed !== "function") return;
+  try {
+    anim.setSpeed(playbackRate);
+  } catch {
+    // Ignore test-only playback-rate overrides when the renderer rejects them.
+  }
+}
+
 const ROUTE_CONFIG = {
   childhoodFundalPreparation: {
     pageId: "childhoodFundalPreparationPage",
@@ -147,6 +164,7 @@ const ROUTE_CONFIG = {
     ],
     playMode: "stageAutoplay",
     autoplayLegacySegmentPlaybackByFile: [false, true, false],
+    preferLastVisibleCompletionFrameByFile: [false, true, false],
     forceInitialFrameHoldByFile: [0],
     segmentRanges: [
       [{ from: 0, to: 329 }],
@@ -4007,8 +4025,8 @@ function initializeSegmentScrollMode(cfg, page, stages) {
       controller.centerLockRafId = requestAnimationFrame(tick);
     };
 
-    const createAnimationInstance = () =>
-      window.lottie.loadAnimation({
+    const createAnimationInstance = () => {
+      const anim = window.lottie.loadAnimation({
         container: stage,
         renderer: FUNDAL_LOTTIE_RENDERER,
         loop: false,
@@ -4019,6 +4037,9 @@ function initializeSegmentScrollMode(cfg, page, stages) {
           hideOnTransparent: false,
         },
       });
+      applyFundalE2EPlaybackRate(anim);
+      return anim;
+    };
 
     const onReady = () => {
       const activeAnim = controller.anim;
@@ -6296,7 +6317,10 @@ function initializeStageAutoplayMode(cfg, page, stages) {
       return holdFrame;
     }
 
-    const recoveredFrame = resolveAnyVisibleFrame(state, holdFrame);
+    const recoveredFrame = resolveAnyVisibleFrame(state, holdFrame, {
+      requireRichContent: state.requireRichContent === true,
+      minContentAreaRatio: state.minContentAreaRatio,
+    });
     holdFrame = clampFrameToAnimation(state, recoveredFrame);
     try {
       state.anim?.goToAndStop(holdFrame, true);
@@ -6304,6 +6328,20 @@ function initializeStageAutoplayMode(cfg, page, stages) {
       // Ignore renderer seek failures and keep the recovered candidate flow.
     }
     forceSvgVisibleForController(state);
+    if (
+      isStageFrameBlank(state) ||
+      (state.requireRichContent === true &&
+        !hasRichVisibleContent(state, state.minContentAreaRatio))
+    ) {
+      const visibleFallbackFrame = resolveAnyVisibleFrame(state, holdFrame);
+      holdFrame = clampFrameToAnimation(state, visibleFallbackFrame);
+      try {
+        state.anim?.goToAndStop(holdFrame, true);
+      } catch {
+        // Keep the richer recovery candidate if the fallback seek also fails.
+      }
+      forceSvgVisibleForController(state);
+    }
     rememberRecoverySnapshot(state, holdFrame);
     return holdFrame;
   }
@@ -6569,6 +6607,7 @@ function initializeStageAutoplayMode(cfg, page, stages) {
         hideOnTransparent: false,
       },
     });
+    applyFundalE2EPlaybackRate(anim);
 
     state.anim = anim;
 
@@ -6772,8 +6811,8 @@ export async function initializeChildhoodFundalReflexScrollPage(routeName) {
 
   await i18nReadyPromise;
 
-  const animations = stages.map((stage, idx) =>
-    window.lottie.loadAnimation({
+  const animations = stages.map((stage, idx) => {
+    const anim = window.lottie.loadAnimation({
       container: stage,
       renderer: FUNDAL_LOTTIE_RENDERER,
       loop: true,
@@ -6783,8 +6822,10 @@ export async function initializeChildhoodFundalReflexScrollPage(routeName) {
         preserveAspectRatio: resolvePreserveAspectRatio(cfg, idx),
         hideOnTransparent: false,
       },
-    }),
-  );
+    });
+    applyFundalE2EPlaybackRate(anim);
+    return anim;
+  });
 
   const observer = createViewportController(stages, animations);
   activeSession = { observer, animations };

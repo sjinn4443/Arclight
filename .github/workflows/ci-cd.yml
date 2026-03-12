@@ -54,6 +54,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium webkit
+
       - name: Check formatting
         run: npm run format:check
 
@@ -71,6 +74,18 @@ jobs:
         run: npm run test:ci
         env:
           MASTER_KEY: ${{ secrets.MASTER_KEY }}
+
+      - name: Run fundal final-frame validation
+        run: npm run test:fundal:ci
+
+      - name: Upload Playwright artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: |
+            playwright-report/
+            test-results/
 
       - name: Upload production artifact
         uses: actions/upload-artifact@v4
