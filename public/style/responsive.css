@@ -246,13 +246,6 @@ input {
     justify-content: center;
   }
 
-  .menu-close {
-    top: 0px;
-    right: auto;
-    left: 0;
-    margin-left: 109px;
-  }
-
   /* Desktop: apply Eyes-page topbar geometry to all pages using eyes-topbar */
   .page .eyes-topbar {
     position: fixed;
@@ -297,7 +290,6 @@ input {
   }
 
   #backBtnGlobal.top-back {
-    top: 10px;
     left: calc(7vw - 4px + 10px);
     margin-left: 0;
     padding-left: 0;

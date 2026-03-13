@@ -69,9 +69,6 @@ button:disabled {
 
 /* Top-left global back button */
 #backBtnGlobal.top-back {
-  position: fixed;
-  top: 24px;
-  left: 18px;
   z-index: 5001;
   margin: 0;
 }
@@ -125,10 +122,6 @@ textarea {
   border-radius: 16px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
   margin-bottom: 20px;
-}
-
-.module-card {
-  align-items: center;
 }
 
 /* Stabilise module card thumbnails to prevent CLS */
@@ -186,7 +179,6 @@ p.note {
   justify-content: center;
   padding: 5px;
   background-color: white;
-  position: sticky;
   top: 0;
   z-index: 100;
   position: relative;
@@ -544,17 +536,6 @@ body.quiz-mode {
   gap: 6px;
   padding: 10px;
   border-bottom: 1px solid #ddd;
-}
-
-.toc-tab button {
-  flex: 1;
-  background: #b4342a;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  padding: 6px;
-  font-size: 14px;
-  cursor: pointer;
 }
 
 /* List styling */
@@ -1129,14 +1110,6 @@ input:checked + .slider:before {
 
 /* Two-column language list (English | Native) */
 .lang-install__list {
-  margin: 8px 0 0;
-  padding: 0;
-  list-style: none;
-  max-height: 50vh;
-  overflow: auto;
-  border-radius: 10px;
-  background: #fff;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
   touch-action: pan-y;
@@ -1203,7 +1176,6 @@ input:checked + .slider:before {
 /* Dropdown (pic 2) — reuse your two-column list */
 .lang-picker__dropdown {
   margin-top: 6px;
-  position: static;
   max-height: min(50dvh, 320px);
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
@@ -1735,18 +1707,6 @@ input:checked + .slider:before {
   height: 30px;
   border-radius: 8px;
   background: #d3d3d3;
-}
-
-.eyes-topbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: 8px 2px 6px;
-}
-
-.eyes-topbar__icons {
-  display: flex;
-  gap: 10px;
 }
 
 /* ATOMS handout pages: topbar 아이콘은 fundalReflexPdf처럼 오른쪽 정렬 */
@@ -2320,7 +2280,6 @@ input:checked + .slider:before {
 #caseStudyChatPageAdvanced .casechat-log {
   background: transparent;
   border-radius: 0;
-  padding: 4px 0 260px;
   min-height: 0;
   max-height: none;
   overflow: visible;
@@ -2548,10 +2507,8 @@ input:checked + .slider:before {
 #caseStudyChatPage .casechat-img,
 #caseStudyChatPagePrimary .casechat-img,
 #caseStudyChatPageAdvanced .casechat-img {
-  width: 250px;
   height: auto;
   border-radius: 23px;
-  margin: 34px 0px 13px 31px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
   flex: 0 0 auto;
 }
@@ -3061,7 +3018,6 @@ input:checked + .slider:before {
   left: 14px;
   right: 14px;
   bottom: 18px;
-  z-index: 4500;
 }
 
 /* 버튼만 클릭 가능하게 */
@@ -3139,7 +3095,6 @@ input:checked + .slider:before {
 .caseTimer {
   border: 0;
   background: transparent;
-  padding: 0;
   margin: 0 10px 0 0;
   cursor: default;
 }
@@ -3905,9 +3860,7 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
   background: transparent !important;
   color: #666 !important;
   font-size: 24px !important;
-  font-weight: 700;
   line-height: 1 !important;
-  cursor: pointer;
 }
 
 #caseStudyChatPage .casechat-dxcard,
@@ -4144,30 +4097,8 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
 
 
 #caseStudyChatPageAdvanced .caseTimer {
-  width: auto;
   margin-top: 0;
-  padding: 0;
-  background: transparent;
   color: inherit;
-  border: none;
-  border-radius: 0;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* keep the small timer actually small */
-#caseStudyChatPage .caseTimer--sm,
-
-
-/* keep the small timer actually small */
-#caseStudyChatPagePrimary .caseTimer--sm,
-
-
-/* keep the small timer actually small */
-#caseStudyChatPageAdvanced .caseTimer--sm {
-  width: 32px;
-  height: 32px;
 }
 
 .casechat-bubble.is-typing .casechat-text {
@@ -4570,7 +4501,6 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
   justify-content: center;
   padding: 5px;
   background-color: white;
-  position: sticky;
   top: 19px;
   width: 100%;
   height: 33px;
@@ -5226,10 +5156,8 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
 
 /* close button sizing */
 #caseStudyChatPageAdvanced .casechat-modal__close {
-  width: 45px;
   height: 35px;
   border-radius: 12px;
-  font-size: 16px;
   font-weight: 800;
   cursor: pointer;
 }

@@ -18,11 +18,6 @@
   padding-bottom: 100px;
 }
 
-.container {
-  padding: 20px;
-  padding-bottom: 100px; /* reserve space, avoid percent-based layout jump */
-}
-
 body {
   font-family: var(--font-family);
   margin: 0;
