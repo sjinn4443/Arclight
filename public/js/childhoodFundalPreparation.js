@@ -470,6 +470,239 @@ const ROUTE_CONFIG = {
   },
 };
 
+const FUNDAL_REFLEX_EXAMINATION_SCROLL_ROUTE = "fundalReflexExaminationScroll";
+const FUNDAL_REFLEX_EXAMINATION_SCROLL_PAGE_ID =
+  "fundalReflexExaminationScrollPage";
+const FUNDAL_REFLEX_EXAMINATION_SECTION_SOURCES = [
+  {
+    routeName: "childhoodFundalPreparation",
+    title: "Preparation",
+    titleKey: "auto.childhoodeyescreeningworkshop.preparation",
+  },
+  {
+    routeName: "childhoodFundalExamination",
+    title: "Examination",
+    titleKey: "auto.childhoodeyescreeningworkshop.examination",
+  },
+  {
+    routeName: "childhoodFundalNewbornEyesOpen",
+    title: "Newborn - Eyes Open",
+    titleKey: "auto.childhoodeyescreeningworkshop.newborn_eyes_open",
+  },
+  {
+    routeName: "childhoodFundalNewbornEyesClosed",
+    title: "Newborn - Eyes Closed",
+    titleKey: "auto.childhoodeyescreeningworkshop.newborn_eyes_closed",
+  },
+  {
+    routeName: "childhoodFundalUnclearFindings",
+    title: "Unclear Findings",
+    titleKey: "auto.childhoodeyescreeningworkshop.unclear_findings",
+  },
+  {
+    routeName: "childhoodFundalPossibleFinding",
+    title: "Possible Findings",
+    titleKey: "auto.childhoodeyescreeningworkshop.possible_findings",
+  },
+  {
+    routeName: "childhoodFundalAfterExamination",
+    title: "After Examination",
+    titleKey: "auto.childhoodeyescreeningworkshop.after_examination",
+  },
+];
+
+function cloneFundalConfigValue(value) {
+  if (value == null) return value;
+
+  if (typeof structuredClone === "function") {
+    try {
+      return structuredClone(value);
+    } catch {
+      // Fall through to the recursive clone for config-only data.
+    }
+  }
+
+  if (Array.isArray(value)) {
+    return value.map((item) => cloneFundalConfigValue(item));
+  }
+
+  if (typeof value === "object") {
+    const next = {};
+    Object.entries(value).forEach(([key, entryValue]) => {
+      next[key] = cloneFundalConfigValue(entryValue);
+    });
+    return next;
+  }
+
+  return value;
+}
+
+function buildCombinedFundalPerFileArray(sectionDefs, key) {
+  const result = [];
+
+  sectionDefs.forEach((section) => {
+    const cfg = ROUTE_CONFIG[section?.routeName];
+    const fileCount = Array.isArray(cfg?.paths) ? cfg.paths.length : 0;
+    const values = Array.isArray(cfg?.[key]) ? cfg[key] : [];
+
+    for (let i = 0; i < fileCount; i += 1) {
+      result.push(cloneFundalConfigValue(values[i]));
+    }
+  });
+
+  return result.some((value) => value !== undefined) ? result : undefined;
+}
+
+function buildCombinedFundalIndexedFileList(sectionDefs, key) {
+  const result = [];
+  let offset = 0;
+
+  sectionDefs.forEach((section) => {
+    const cfg = ROUTE_CONFIG[section?.routeName];
+    const fileCount = Array.isArray(cfg?.paths) ? cfg.paths.length : 0;
+    const values = Array.isArray(cfg?.[key]) ? cfg[key] : [];
+
+    values.forEach((value) => {
+      const idx = Number(value);
+      if (!Number.isInteger(idx) || idx < 0) return;
+      result.push(offset + idx);
+    });
+
+    offset += fileCount;
+  });
+
+  return result.length ? result : undefined;
+}
+
+function createCombinedFundalRouteConfig(pageId, label, sectionDefs = []) {
+  const normalizedSections = [];
+  const paths = [];
+  let startIndex = 0;
+
+  sectionDefs.forEach((section) => {
+    const cfg = ROUTE_CONFIG[section?.routeName];
+    const sectionPaths = Array.isArray(cfg?.paths)
+      ? cfg.paths
+          .map((path) => String(path || "").trim())
+          .filter((path) => !!path)
+      : [];
+    if (!sectionPaths.length) return;
+
+    normalizedSections.push({
+      startIndex,
+      title: String(section?.title || cfg?.label || label).trim() || label,
+      titleKey: String(section?.titleKey || "").trim(),
+    });
+
+    paths.push(...sectionPaths);
+    startIndex += sectionPaths.length;
+  });
+
+  return {
+    pageId,
+    label,
+    enableReplay: true,
+    persistentSettleSnapshotOverlay: true,
+    segmentTextToggleOnTitle: true,
+    playMode: "stageAutoplay",
+    strictFrameLockNoFallback: true,
+    strictFrameRemountOnBlank: true,
+    paths,
+    sections: normalizedSections,
+    playbackRateByFile: buildCombinedFundalPerFileArray(
+      sectionDefs,
+      "playbackRateByFile",
+    ),
+    autoplayStartFrameByFile: buildCombinedFundalPerFileArray(
+      sectionDefs,
+      "autoplayStartFrameByFile",
+    ),
+    autoplayEndFrameByFile: buildCombinedFundalPerFileArray(
+      sectionDefs,
+      "autoplayEndFrameByFile",
+    ),
+    segmentTextTriggerFramesByFile: buildCombinedFundalPerFileArray(
+      sectionDefs,
+      "segmentTextTriggerFramesByFile",
+    ),
+    segmentRanges: buildCombinedFundalPerFileArray(
+      sectionDefs,
+      "segmentRanges",
+    ),
+    settleFrameOverrides: buildCombinedFundalPerFileArray(
+      sectionDefs,
+      "settleFrameOverrides",
+    ),
+    segmentStartTexts: buildCombinedFundalPerFileArray(
+      sectionDefs,
+      "segmentStartTexts",
+    ),
+    segmentTextModeByFile: buildCombinedFundalPerFileArray(
+      sectionDefs,
+      "segmentTextModeByFile",
+    ),
+    iosAggressiveSettleSegments: buildCombinedFundalPerFileArray(
+      sectionDefs,
+      "iosAggressiveSettleSegments",
+    ),
+    richSettleMinAreaByFile: buildCombinedFundalPerFileArray(
+      sectionDefs,
+      "richSettleMinAreaByFile",
+    ),
+    stageAspectRatioByFile: buildCombinedFundalPerFileArray(
+      sectionDefs,
+      "stageAspectRatioByFile",
+    ),
+    centerTopBiasByFile: buildCombinedFundalPerFileArray(
+      sectionDefs,
+      "centerTopBiasByFile",
+    ),
+    desktopTopGapByFile: buildCombinedFundalPerFileArray(
+      sectionDefs,
+      "desktopTopGapByFile",
+    ),
+    preserveAspectRatioByFile: buildCombinedFundalPerFileArray(
+      sectionDefs,
+      "preserveAspectRatioByFile",
+    ),
+    iosRendererByFile: buildCombinedFundalPerFileArray(
+      sectionDefs,
+      "iosRendererByFile",
+    ),
+    autoplayLegacySegmentPlaybackByFile: buildCombinedFundalPerFileArray(
+      sectionDefs,
+      "autoplayLegacySegmentPlaybackByFile",
+    ),
+    preferLastVisibleCompletionFrameByFile: buildCombinedFundalPerFileArray(
+      sectionDefs,
+      "preferLastVisibleCompletionFrameByFile",
+    ),
+    preserveCompletionSnapshotOverlayByFile: buildCombinedFundalPerFileArray(
+      sectionDefs,
+      "preserveCompletionSnapshotOverlayByFile",
+    ),
+    finalSummaryBulletsByFile: buildCombinedFundalPerFileArray(
+      sectionDefs,
+      "finalSummaryBulletsByFile",
+    ),
+    forceInitialFrameHoldByFile: buildCombinedFundalIndexedFileList(
+      sectionDefs,
+      "forceInitialFrameHoldByFile",
+    ),
+    richSettleContentFiles: buildCombinedFundalIndexedFileList(
+      sectionDefs,
+      "richSettleContentFiles",
+    ),
+  };
+}
+
+ROUTE_CONFIG[FUNDAL_REFLEX_EXAMINATION_SCROLL_ROUTE] =
+  createCombinedFundalRouteConfig(
+    "fundalReflexExaminationScrollPage",
+    "Fundal Reflex Examination",
+    FUNDAL_REFLEX_EXAMINATION_SECTION_SOURCES,
+  );
+
 const FUNDAL_TEXT_KEYS = new Map([
   ["Wash hands", "i18nExtra.fundal_reflex.wash_hands"],
   [
@@ -777,6 +1010,20 @@ function cleanupActiveSession() {
   });
 
   activeSession = null;
+}
+
+if (!window.__fundalScrollPageShownCleanupWired) {
+  window.__fundalScrollPageShownCleanupWired = true;
+  document.addEventListener("page:shown", (e) => {
+    const shownId = e?.detail?.id || "";
+    if (!activeSession) return;
+
+    const activeCfg = resolveFundalRouteConfig(activeSession.routeName);
+    const activePageId = activeCfg?.pageId || "";
+    if (!activePageId || shownId === activePageId) return;
+
+    cleanupActiveSession();
+  });
 }
 
 function resolveStageAspectRatio(cfg, fileIndex) {
@@ -1480,8 +1727,60 @@ function buildAnimationSlots(listEl, label, count, cfg = null) {
 
   listEl.innerHTML = "";
   const stages = [];
+  const rawSections = Array.isArray(cfg?.sections) ? cfg.sections : [];
+  const sections = rawSections
+    .map((section) => {
+      const startIndex = Number(section?.startIndex);
+      if (
+        !Number.isInteger(startIndex) ||
+        startIndex < 0 ||
+        startIndex >= count
+      )
+        return null;
+
+      const title = String(section?.title || label || "").trim();
+      if (!title) return null;
+
+      return {
+        startIndex,
+        title,
+        titleKey: String(section?.titleKey || "").trim(),
+      };
+    })
+    .filter((section) => !!section)
+    .sort((a, b) => a.startIndex - b.startIndex);
+  const sectionStarts = new Map(
+    sections.map((section) => [section.startIndex, section]),
+  );
+  let currentListEl = listEl;
 
   for (let i = 0; i < count; i += 1) {
+    const sectionMeta = sectionStarts.get(i);
+    if (sectionMeta) {
+      const sectionEl = document.createElement("section");
+      sectionEl.className = "fundal-reflex-examination-section";
+
+      const dividerEl = document.createElement("div");
+      dividerEl.className = "fundal-reflex-section-divider";
+
+      const titleEl = document.createElement("h3");
+      titleEl.className = "fundal-reflex-section-divider__title";
+      titleEl.textContent = sectionMeta.title;
+      if (sectionMeta.titleKey) {
+        titleEl.setAttribute("data-i18n", sectionMeta.titleKey);
+      }
+
+      dividerEl.appendChild(titleEl);
+
+      const itemsEl = document.createElement("div");
+      itemsEl.className = "fundal-reflex-examination-section-items";
+
+      sectionEl.appendChild(dividerEl);
+      sectionEl.appendChild(itemsEl);
+      listEl.appendChild(sectionEl);
+      currentListEl = itemsEl;
+    }
+
     const item = document.createElement("div");
     item.className = "childhood-fundal-prep-item";
 
@@ -1521,11 +1820,22 @@ function buildAnimationSlots(listEl, label, count, cfg = null) {
     item.appendChild(stage);
     item.appendChild(segmentText);
     item.appendChild(downArrow);
-    listEl.appendChild(item);
+    currentListEl.appendChild(item);
     stages.push(stage);
   }
 
   return stages;
+}
+
+function resolveFirstStageAnchorElement(stage, cfg) {
+  if (!stage) return null;
+  if (cfg?.pageId !== FUNDAL_REFLEX_EXAMINATION_SCROLL_PAGE_ID) return stage;
+
+  return (
+    stage
+      .closest(".fundal-reflex-examination-section")
+      ?.querySelector(".fundal-reflex-section-divider") || stage
+  );
 }
 
 async function ensureLottie() {
@@ -4014,11 +4324,15 @@ function initializeSegmentScrollMode(cfg, page, stages) {
     const firstStage = stages[0];
     if (!firstStage) return;
 
+    const anchorEl = resolveFirstStageAnchorElement(firstStage, cfg);
     const topbarHeight = getTopbarHeight();
-    const extraTopGap = shouldUseMobileStageTopAlignedMode(cfg)
-      ? 0
-      : resolveFirstFileExtraTopGap(cfg);
-    const rect = firstStage.getBoundingClientRect();
+    const extraTopGap =
+      anchorEl === firstStage
+        ? shouldUseMobileStageTopAlignedMode(cfg)
+          ? 0
+          : resolveFirstFileExtraTopGap(cfg)
+        : 0;
+    const rect = anchorEl.getBoundingClientRect();
     const absoluteTop = window.scrollY + rect.top;
     const targetTop = Math.max(0, absoluteTop - topbarHeight - extraTopGap);
 
@@ -6430,11 +6744,15 @@ function initializeStageAutoplayMode(routeName, cfg, page, stages) {
     if (!firstStage) return;
 
     const metrics = getScrollHostMetrics();
+    const anchorEl = resolveFirstStageAnchorElement(firstStage, cfg);
     const topbarHeight = getTopbarHeight();
-    const extraTopGap = shouldUseMobileStageTopAlignedMode(cfg)
-      ? 0
-      : resolveFirstFileExtraTopGap(cfg);
-    const absoluteTop = getAbsoluteTopForStage(firstStage, metrics);
+    const extraTopGap =
+      anchorEl === firstStage
+        ? shouldUseMobileStageTopAlignedMode(cfg)
+          ? 0
+          : resolveFirstFileExtraTopGap(cfg)
+        : 0;
+    const absoluteTop = getAbsoluteTopForStage(anchorEl, metrics);
     const targetTop = Math.max(0, absoluteTop - topbarHeight - extraTopGap);
 
     setScrollHostTop(targetTop, metrics);
@@ -7294,6 +7612,7 @@ export async function initializeChildhoodFundalReflexScrollPage(routeName) {
   const listEl = page.querySelector(".childhood-fundal-prep-list");
   const stages = buildAnimationSlots(listEl, cfg.label, cfg.paths.length, cfg);
   if (!stages.length) return;
+  window.I18N?.applyTranslations?.(page);
   warmupFundalRouteAssets(cfg, { mode: "route" });
   const firstDataPath = String(cfg.paths?.[0] || "").trim();
   const firstStageImageWarmupPromise = firstDataPath

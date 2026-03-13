@@ -18,6 +18,14 @@ const EXTERNAL_GLAUCOMA_SCROLL_TARGETS = new Set([
   "glaucomaRAPDFullSwingInteractive",
 ]);
 let externalGlaucomaNavInFlight = false;
+const CHILDHOOD_WORKSHOP_PROGRESS_PREFIX = "childhoodWorkshop:progress:";
+const CHILDHOOD_WORKSHOP_PROGRESS_EVENT = "childhoodWorkshop:progress-changed";
+const CHILDHOOD_WORKSHOP_ROUTE_COMPLETE_EVENT =
+  "childhoodWorkshop:route-complete";
+const FUNDAL_REFLEX_EXAMINATION_SCROLL_PAGE_ID =
+  "fundalReflexExaminationScrollPage";
+const FUNDAL_REFLEX_EXAMINATION_SCROLL_ROUTE = "fundalReflexExaminationScroll";
+const FUNDAL_REFLEX_EXAMINATION_PROGRESS_CAP = 95;
 
 // -------------------------
 // Video progress (Pupils)
@@ -42,10 +50,72 @@ function readVideoProgress(key) {
   }
 }
 
+function clampStoredProgressPercent(value) {
+  const num = Number(value);
+  if (!Number.isFinite(num)) return 0;
+  return Math.max(0, Math.min(100, num));
+}
+
+function clampStoredProgressTimestamp(value) {
+  const num = Number(value);
+  if (!Number.isFinite(num) || num <= 0) return 0;
+  return Math.round(num);
+}
+
+function normalizeProgressRecord(record) {
+  return {
+    percent: clampStoredProgressPercent(record?.percent),
+    updatedAt: clampStoredProgressTimestamp(record?.updatedAt),
+  };
+}
+
 function writeVideoProgress(key, data) {
   try {
     localStorage.setItem(key, JSON.stringify(data));
   } catch {}
+}
+
+function workshopProgressKeyForTarget(targetPageId) {
+  return `${CHILDHOOD_WORKSHOP_PROGRESS_PREFIX}${targetPageId}`;
+}
+
+function readWorkshopProgressForTarget(targetPageId) {
+  return normalizeProgressRecord(
+    readVideoProgress(workshopProgressKeyForTarget(targetPageId)),
+  );
+}
+
+function writeWorkshopProgressForTarget(
+  targetPageId,
+  percent,
+  { mode = "max" } = {},
+) {
+  if (!targetPageId) return 0;
+
+  const storageKey = workshopProgressKeyForTarget(targetPageId);
+  const previousRaw = readVideoProgress(storageKey);
+  const previous = normalizeProgressRecord(previousRaw);
+  const next = clampStoredProgressPercent(percent);
+  const finalPercent =
+    mode === "replace" ? next : Math.max(previous.percent, next);
+
+  if (
+    finalPercent !== previous.percent ||
+    !Number.isFinite(Number(previousRaw?.percent))
+  ) {
+    writeVideoProgress(storageKey, {
+      percent: finalPercent,
+      updatedAt: Date.now(),
+    });
+  }
+
+  document.dispatchEvent(
+    new CustomEvent(CHILDHOOD_WORKSHOP_PROGRESS_EVENT, {
+      detail: { target: targetPageId, percent: finalPercent },
+    }),
+  );
+
+  return finalPercent;
 }
 
 function dispatchWorkshopProgressChanged(targetPageId) {
@@ -106,11 +176,99 @@ function progressKeyForTarget(targetPageId) {
 }
 
 function readProgressForTarget(targetPageId) {
-  return readVideoProgress(progressKeyForTarget(targetPageId));
+  const videoProgress = normalizeProgressRecord(
+    readVideoProgress(progressKeyForTarget(targetPageId)),
+  );
+  const workshopProgress = readWorkshopProgressForTarget(targetPageId);
+
+  if (workshopProgress.percent > videoProgress.percent) return workshopProgress;
+  if (videoProgress.percent > workshopProgress.percent) return videoProgress;
+
+  return {
+    percent: videoProgress.percent,
+    updatedAt: Math.max(videoProgress.updatedAt, workshopProgress.updatedAt),
+  };
 }
 
 function writeProgressForTarget(targetPageId, data) {
   writeVideoProgress(progressKeyForTarget(targetPageId), data);
+}
+
+function getWindowScrollMetrics() {
+  const doc = document.documentElement;
+  const body = document.body;
+  return {
+    scrollTop: window.scrollY ?? doc?.scrollTop ?? body?.scrollTop ?? 0,
+    viewport: window.innerHeight ?? doc?.clientHeight ?? 0,
+    fullHeight: Math.max(doc?.scrollHeight || 0, body?.scrollHeight || 0),
+  };
+}
+
+function getPreferredScrollMetrics() {
+  const windowMetrics = getWindowScrollMetrics();
+  const pageContent = document.getElementById("page-content");
+  if (!pageContent) return windowMetrics;
+
+  const pageMetrics = {
+    scrollTop: pageContent.scrollTop || 0,
+    viewport: pageContent.clientHeight || 0,
+    fullHeight: pageContent.scrollHeight || 0,
+  };
+
+  const pageRange = Math.max(0, pageMetrics.fullHeight - pageMetrics.viewport);
+  const windowRange = Math.max(
+    0,
+    windowMetrics.fullHeight - windowMetrics.viewport,
+  );
+
+  if (pageRange > 1 && windowRange <= 1) return pageMetrics;
+  if (windowRange > 1 && pageRange <= 1) return windowMetrics;
+  if (pageMetrics.scrollTop > 0 && windowMetrics.scrollTop <= 0) {
+    return pageMetrics;
+  }
+  if (windowMetrics.scrollTop > 0 && pageMetrics.scrollTop <= 0) {
+    return windowMetrics;
+  }
+
+  const pageProgress = pageRange > 0 ? pageMetrics.scrollTop / pageRange : 0;
+  const windowProgress =
+    windowRange > 0 ? windowMetrics.scrollTop / windowRange : 0;
+
+  return pageProgress >= windowProgress ? pageMetrics : windowMetrics;
+}
+
+function syncFundalReflexExaminationScrollProgress() {
+  const page = document.getElementById(
+    FUNDAL_REFLEX_EXAMINATION_SCROLL_PAGE_ID,
+  );
+  if (!page) return;
+  if (
+    currentPageElement?.id !== FUNDAL_REFLEX_EXAMINATION_SCROLL_PAGE_ID &&
+    page.style.display === "none"
+  ) {
+    return;
+  }
+
+  const { scrollTop, viewport, fullHeight } = getPreferredScrollMetrics();
+  const scrollRange = Math.max(0, fullHeight - viewport);
+  if (scrollRange <= 1) return;
+
+  const percent = Math.min(
+    FUNDAL_REFLEX_EXAMINATION_PROGRESS_CAP,
+    (Math.max(0, scrollTop) / scrollRange) *
+      FUNDAL_REFLEX_EXAMINATION_PROGRESS_CAP,
+  );
+
+  writeWorkshopProgressForTarget(
+    FUNDAL_REFLEX_EXAMINATION_SCROLL_PAGE_ID,
+    percent,
+  );
+}
+
+function scheduleFundalReflexExaminationScrollProgressSync() {
+  requestAnimationFrame(() => {
+    syncFundalReflexExaminationScrollProgress();
+  });
 }
 
 // Get a colour that matches the level cap (Primary/Intermediate) for the row
@@ -273,6 +431,18 @@ function showPageFallback(id) {
   const el = document.getElementById(id);
   if (el) el.style.display = "block";
   document.dispatchEvent(new CustomEvent("page:shown", { detail: { id } }));
+
+  if (id === "fundalReflexPage") {
+    removeFundalReflexListFlowButtons();
+    requestAnimationFrame(() => removeFundalReflexListFlowButtons());
+    window.setTimeout(() => removeFundalReflexListFlowButtons(), 0);
+  }
+
+  if (id === FUNDAL_REFLEX_EXAMINATION_SCROLL_PAGE_ID) {
+    syncFundalReflexExaminationTopbar();
+    void initializeFundalReflexExaminationScrollGuide();
+    scheduleFundalReflexExaminationScrollProgressSync();
+  }
 }
 
 async function openExternalGlaucomaInteractive(targetId) {
@@ -308,6 +478,57 @@ async function openExternalGlaucomaInteractive(targetId) {
     } catch {}
   } finally {
     externalGlaucomaNavInFlight = false;
+  }
+}
+
+function removeFundalReflexListFlowButtons() {
+  const page = document.getElementById("fundalReflexPage");
+  if (!page || !page.closest("#videos")) return;
+
+  page
+    .querySelectorAll(".childhood-next-wrap, .glaucoma-next-wrap")
+    .forEach((el) => el.remove());
+  page
+    .querySelectorAll(".childhood-next-host, .glaucoma-next-host")
+    .forEach((el) => {
+      el.classList.remove("childhood-next-host", "glaucoma-next-host");
+    });
+}
+
+function syncFundalReflexExaminationTopbar() {
+  const page = document.getElementById(
+    FUNDAL_REFLEX_EXAMINATION_SCROLL_PAGE_ID,
+  );
+  if (!page) return;
+
+  const titleEl = page.querySelector(".eyes-topbar__title");
+  if (titleEl) {
+    titleEl.setAttribute("data-i18n", "auto.videos.fundal_reflex_examination");
+    titleEl.textContent = "Fundal Reflex Examination";
+  }
+
+  const menuBtn = page.querySelector(".icon.menuBtn");
+  if (menuBtn) {
+    menuBtn.textContent = "\u2630";
+  }
+
+  window.I18N?.applyTranslations?.(page.querySelector(".eyes-topbar"));
+}
+
+async function initializeFundalReflexExaminationScrollGuide() {
+  syncFundalReflexExaminationTopbar();
+  try {
+    const { initializeChildhoodFundalReflexScrollPage } =
+      await import("./childhoodFundalPreparation.js");
+    await initializeChildhoodFundalReflexScrollPage?.(
+      FUNDAL_REFLEX_EXAMINATION_SCROLL_ROUTE,
+    );
+    scheduleFundalReflexExaminationScrollProgressSync();
+  } catch (err) {
+    console.error(
+      "[videos] failed to initialize Fundal Reflex Examination guide",
+      err,
+    );
   }
 }
 
@@ -1145,6 +1366,18 @@ function show(id) {
   syncRouteHash("videos", { replace: true, subPageId: id });
   document.dispatchEvent(new CustomEvent("page:shown", { detail: { id } }));
 
+  if (id === "fundalReflexPage") {
+    removeFundalReflexListFlowButtons();
+    requestAnimationFrame(() => removeFundalReflexListFlowButtons());
+    window.setTimeout(() => removeFundalReflexListFlowButtons(), 0);
+  }
+
+  if (id === FUNDAL_REFLEX_EXAMINATION_SCROLL_PAGE_ID) {
+    syncFundalReflexExaminationTopbar();
+    void initializeFundalReflexExaminationScrollGuide();
+    scheduleFundalReflexExaminationScrollProgressSync();
+  }
+
   // ✅ ensure we start at the top when switching video subpages
   try {
     window.scrollTo(0, 0);
@@ -1334,6 +1567,41 @@ if (!window[__videosGlobalBoundKey]) {
   document.addEventListener(
     "DOMContentLoaded",
     bindDirectOphthalmoscopyToolbar,
+  );
+
+  document.addEventListener(CHILDHOOD_WORKSHOP_PROGRESS_EVENT, () => {
+    updateLessonProgressBars();
+  });
+
+  document.addEventListener(CHILDHOOD_WORKSHOP_ROUTE_COMPLETE_EVENT, (e) => {
+    const target = e?.detail?.target;
+    if (target !== FUNDAL_REFLEX_EXAMINATION_SCROLL_PAGE_ID) return;
+    writeWorkshopProgressForTarget(target, 100, { mode: "replace" });
+  });
+
+  window.addEventListener(
+    "scroll",
+    () => {
+      syncFundalReflexExaminationScrollProgress();
+    },
+    { passive: true },
+  );
+
+  window.addEventListener(
+    "resize",
+    () => {
+      scheduleFundalReflexExaminationScrollProgressSync();
+    },
+    { passive: true },
+  );
+
+  const pageContent = document.getElementById("page-content");
+  pageContent?.addEventListener(
+    "scroll",
+    () => {
+      syncFundalReflexExaminationScrollProgress();
+    },
+    { passive: true },
   );
 
   // Re-run on page transitions; also pause the video when leaving this page

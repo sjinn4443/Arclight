@@ -100,6 +100,7 @@ function go(target) {
     "phoneAttachmentVideoPage",
     "visualAcuityPage",
     "fundalReflexPage",
+    "fundalReflexExaminationScrollPage",
     "interactiveLearningPage",
     "assessmentVisionPage",
     "normalAbnormalPage",

@@ -1953,6 +1953,10 @@ input:checked + .slider:before {
   background-image: url("/images/icon/eyes/moduleicons/primary_scroll.webp");
 }
 
+#fundalReflexPage .lesson-row--scroll .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/primary_scroll.webp");
+}
+
 #childhoodEyeScreeningWorkshopPage .lesson-row--pdf .thumb {
   background-image: url("/images/icon/eyes/moduleicons/primary_pdf.webp");
 }
@@ -5943,6 +5947,16 @@ Glaucoma history case study: match intermediate style
 .glaucoma-prev-btn:active,
 .childhood-prev-btn:active {
   transform: translateY(1px);
+}
+
+#videos #fundalReflexPage .childhood-next-wrap,
+#videos #fundalReflexPage .glaucoma-next-wrap {
+  display: none !important;
+}
+
+#videos #fundalReflexPage .childhood-next-host,
+#videos #fundalReflexPage .glaucoma-next-host {
+  padding-bottom: 0 !important;
 }
 
 /* Visual System (Eyes & Brain) mobile scrollytelling override */

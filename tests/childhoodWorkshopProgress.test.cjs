@@ -2,8 +2,9 @@
  * @jest-environment jsdom
  */
 
-import { beforeEach, describe, expect, it } from "@jest/globals";
-import { updateChildhoodWorkshopProgressBars } from "../public/js/childhoodWorkshopProgress.js";
+import { beforeEach, describe, expect, it, jest } from "@jest/globals";
+
+let updateChildhoodWorkshopProgressBars;
 
 function setProgress(target, percent, updatedAt) {
   localStorage.setItem(
@@ -66,6 +67,14 @@ describe("childhood workshop nested folder completion", () => {
         </div>
       </div>
     `;
+  });
+
+  beforeEach(async () => {
+    jest.resetModules();
+    await jest.isolateModulesAsync(async () => {
+      ({ updateChildhoodWorkshopProgressBars } =
+        await import("../public/js/childhoodWorkshopProgress.js"));
+    });
   });
 
   it("shows star and completion date for nested folders once every inner lesson is complete", () => {

@@ -2326,6 +2326,55 @@ select.onb-input.has-value + .onb-select-caret {
   margin: 0 -22px;
 }
 
+#fundalReflexExaminationScrollPage .childhood-fundal-prep-list {
+  gap: 0;
+  padding-bottom: 24px;
+}
+
+#fundalReflexExaminationScrollPage .fundal-reflex-examination-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+#fundalReflexExaminationScrollPage .fundal-reflex-examination-section-items {
+  display: flex;
+  flex-direction: column;
+  gap: 107px;
+}
+
+#fundalReflexExaminationScrollPage .fundal-reflex-section-divider {
+  --fundal-reflex-divider-offset: 78px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60px;
+  margin: var(--fundal-reflex-divider-offset) 0 0;
+  padding: 0 24px;
+  border-radius: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0) 0%,
+    #000 18%,
+    #000 100%
+  );
+}
+
+#fundalReflexExaminationScrollPage
+  .fundal-reflex-examination-section:first-child
+  .fundal-reflex-section-divider {
+  margin-top: 0;
+}
+
+#fundalReflexExaminationScrollPage .fundal-reflex-section-divider__title {
+  margin: 0;
+  color: #fff;
+  font-size: clamp(1.05rem, 0.95rem + 0.7vw, 1.45rem);
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  text-align: center;
+}
+
 #childhoodFundalPossibleFindingPage .childhood-fundal-prep-list {
   gap: 76px;
   padding-bottom: 48px;
@@ -2853,5 +2902,45 @@ select.onb-input.has-value + .onb-select-caret {
   #childhoodFundalAfterExaminationPage
     .childhood-fundal-replay-btn.childhood-fundal-replay-btn--compact-offset {
     left: 870px;
+  }
+}
+
+#fundalReflexExaminationScrollPage .fundal-reflex-inline-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 0 calc(24px + env(safe-area-inset-bottom));
+}
+
+#fundalReflexExaminationScrollPage .fundal-reflex-inline-nav__btn {
+  flex: 1;
+  min-height: 38px;
+  border: none;
+  border-radius: 15px;
+  padding: 0 18px;
+  background: #9ca3af;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+#fundalReflexExaminationScrollPage .fundal-reflex-inline-nav__btn--next {
+  background: #e41e26;
+}
+
+#fundalReflexExaminationScrollPage .fundal-reflex-inline-nav__btn:active {
+  transform: translateY(1px);
+}
+
+@media (max-width: 37.5em) {
+  #fundalReflexExaminationScrollPage .fundal-reflex-section-divider {
+    min-height: 60px;
+    border-radius: 0;
+  }
+
+  #fundalReflexExaminationScrollPage .fundal-reflex-section-divider__title {
+    font-size: 1rem;
+    letter-spacing: 0.05em;
   }
 }

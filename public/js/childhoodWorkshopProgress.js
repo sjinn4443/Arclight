@@ -23,6 +23,7 @@ const SCROLL_TARGETS = new Set([
   "childhoodFundalUnclearFindingsPage",
   "childhoodFundalPossibleFindingPage",
   "childhoodFundalAfterExaminationPage",
+  "fundalReflexExaminationScrollPage",
 ]);
 
 const ROUTE_COMPLETE_ONLY_TARGETS = new Set([
@@ -33,6 +34,7 @@ const ROUTE_COMPLETE_ONLY_TARGETS = new Set([
   "childhoodFundalUnclearFindingsPage",
   "childhoodFundalPossibleFindingPage",
   "childhoodFundalAfterExaminationPage",
+  "fundalReflexExaminationScrollPage",
 ]);
 
 const PDF_TARGETS = new Set([
@@ -53,6 +55,7 @@ const SCROLL_ROUTES = new Set([
   "childhoodFundalUnclearFindings",
   "childhoodFundalPossibleFinding",
   "childhoodFundalAfterExamination",
+  "fundalReflexExaminationScroll",
 ]);
 
 let infraWired = false;
