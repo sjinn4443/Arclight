@@ -591,6 +591,7 @@ const FUNDAL_TEXT_KEYS = new Map([
 
 let fundalI18nDict = {};
 let fundalI18nLang = null;
+const CHILDHOOD_WORKSHOP_PROGRESS_PREFIX = "childhoodWorkshop:progress:";
 
 async function ensureFundalI18nDictionary() {
   const lang = getLanguage();
@@ -610,6 +611,33 @@ function translateFundalText(rawText) {
 }
 
 let activeSession = null;
+
+function readStoredChildhoodWorkshopProgress(target) {
+  if (!target) return { percent: 0, updatedAt: 0 };
+
+  try {
+    const raw = JSON.parse(
+      localStorage.getItem(`${CHILDHOOD_WORKSHOP_PROGRESS_PREFIX}${target}`) ||
+        "null",
+    );
+    const percent = Number(raw?.percent);
+    const updatedAt = Number(raw?.updatedAt);
+    return {
+      percent:
+        Number.isFinite(percent) && percent > 0
+          ? Math.max(0, Math.min(100, percent))
+          : 0,
+      updatedAt:
+        Number.isFinite(updatedAt) && updatedAt > 0 ? Math.round(updatedAt) : 0,
+    };
+  } catch {
+    return { percent: 0, updatedAt: 0 };
+  }
+}
+
+function isStoredChildhoodWorkshopRouteComplete(target) {
+  return readStoredChildhoodWorkshopProgress(target).percent >= 100;
+}
 
 async function refreshActiveFundalLanguageSession() {
   if (!activeSession || typeof activeSession.refreshLanguage !== "function") {
@@ -5872,9 +5900,13 @@ function initializeStageAutoplayMode(routeName, cfg, page, stages) {
     doc: document.documentElement.style.overscrollBehaviorY,
   };
   const forwardScrollKeys = new Set(["ArrowDown", "PageDown", "End"]);
+  const shouldRestoreCompletedRoute = isStoredChildhoodWorkshopRouteComplete(
+    cfg.pageId,
+  );
 
   let routeCompleteDispatched = false;
-  let firstStageStartQueued = false;
+  let firstStageStartQueued = shouldRestoreCompletedRoute;
+  let restoredCompletedRouteState = false;
   let isPlaybackScrollLocked = false;
   let lockedWindowScrollTop = 0;
   let lockedPageContentScrollTop = 0;
@@ -6277,6 +6309,60 @@ function initializeStageAutoplayMode(routeName, cfg, page, stages) {
 
   function updateAllStageControlAnchors() {
     states.forEach((state) => updateStageControlAnchors(state));
+  }
+
+  function restoreCompletedStageState(state) {
+    if (!state?.ready || state.failed) return;
+
+    state.started = true;
+    state.completed = true;
+    state.playing = false;
+    clearStageSegmentText(state);
+
+    const holdFrame = resolveCompletionHoldFrame(state);
+    updateStageTextForFrame(state, holdFrame);
+    if (state.finalSummaryBulletLines.length) {
+      showStageFinalSummaryBullets(state);
+    }
+
+    const shouldRequirePosterRichContent = IS_IOS_WEBKIT;
+    const didHidePoster = maybeHideStagePoster(state, {
+      immediate: true,
+      requireRichContent: shouldRequirePosterRichContent,
+      minContentAreaRatio: state.minContentAreaRatio,
+    });
+    if (!didHidePoster && state.stage?.dataset?.posterHidden !== "1") {
+      scheduleStagePosterHideCheck(state, {
+        requireRichContent: shouldRequirePosterRichContent,
+        minContentAreaRatio: state.minContentAreaRatio,
+        checks: shouldRequirePosterRichContent ? 260 : 60,
+      });
+    }
+
+    requestIosStageRepaintNudge(state.stage);
+    showStageControls(state);
+  }
+
+  function maybeRestoreCompletedRouteState() {
+    if (!shouldRestoreCompletedRoute || restoredCompletedRouteState) return;
+
+    const allStatesReady = states.every((state) => state.ready || state.failed);
+    if (!allStatesReady) return;
+
+    restoredCompletedRouteState = true;
+    routeCompleteDispatched = true;
+    setPlaybackScrollLocked(false);
+
+    states.forEach((state) => {
+      restoreCompletedStageState(state);
+    });
+
+    scrollToFirstStageStart();
+    updateAllStageControlAnchors();
+    requestAnimationFrame(() => {
+      updateAllStageControlAnchors();
+      hideCompletedOffCenterDownArrows();
+    });
   }
 
   function getCenteredScrollTopForStage(
@@ -6957,6 +7043,10 @@ function initializeStageAutoplayMode(routeName, cfg, page, stages) {
       state.ready = true;
       prepareInitialFrame(state);
       updateStageControlAnchors(state);
+      if (shouldRestoreCompletedRoute) {
+        maybeRestoreCompletedRouteState();
+        return;
+      }
       if (state.fileIndex === 0 && !firstStageStartQueued) {
         requestAnimationFrame(() => {
           scrollToFirstStageStart();

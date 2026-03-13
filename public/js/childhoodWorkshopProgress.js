@@ -331,23 +331,67 @@ function getSectionLessonTargets(page, sectionKey) {
   const section = page.querySelector(
     `.childhood-section-card[data-section="${sectionKey}"]`,
   );
-  if (!section) return [];
+  return getLessonTargets(section);
+}
 
-  return Array.from(section.querySelectorAll(".lesson-row[data-target]"))
+function getLessonTargets(container) {
+  if (!container) return [];
+
+  return Array.from(container.querySelectorAll(".lesson-row[data-target]"))
     .map((row) => row.getAttribute("data-target"))
     .filter(Boolean);
+}
+
+function getFolderCompletionDescriptors(page) {
+  if (!page) return [];
+
+  const topLevelFolders = Array.from(
+    page.querySelectorAll(
+      "#childhoodWorkshopFolders .childhood-folder-row[data-folder]",
+    ),
+  ).map((row) => {
+    const sectionKey = row.getAttribute("data-folder");
+    return {
+      row,
+      sectionKey,
+      targets: getSectionLessonTargets(page, sectionKey),
+    };
+  });
+
+  const nestedFolders = Array.from(
+    page.querySelectorAll(".lesson-row--folder[aria-controls]"),
+  )
+    .map((row) => {
+      const controlledId = String(
+        row.getAttribute("aria-controls") || "",
+      ).trim();
+      if (!controlledId) return null;
+
+      const controlledEl = document.getElementById(controlledId);
+      if (!controlledEl || !page.contains(controlledEl)) return null;
+
+      const sectionKey = String(
+        row.getAttribute("data-folder-progress-key") || row.id || controlledId,
+      ).trim();
+      if (!sectionKey) return null;
+
+      return {
+        row,
+        sectionKey,
+        targets: getLessonTargets(controlledEl),
+      };
+    })
+    .filter(Boolean);
+
+  return [...topLevelFolders, ...nestedFolders];
 }
 
 function updateChildhoodFolderCompletionStamps(page) {
   if (!page) return;
 
-  const folderRows = page.querySelectorAll(
-    "#childhoodWorkshopFolders .childhood-folder-row[data-folder]",
-  );
+  const folderRows = getFolderCompletionDescriptors(page);
 
-  folderRows.forEach((row) => {
-    const sectionKey = row.getAttribute("data-folder");
-    const targets = getSectionLessonTargets(page, sectionKey);
+  folderRows.forEach(({ row, sectionKey, targets }) => {
     const targetProgress = targets.map((target) =>
       getChildhoodLessonProgressSnapshot(target),
     );
