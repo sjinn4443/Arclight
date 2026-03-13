@@ -162,13 +162,24 @@ const FINAL_CAPTION_TEXT_OPTIC_NERVE =
   "These signals travel through the optic nerve to the brain";
 const FINAL_CAPTION_TEXT_VISION = "The brain creates vision from these signals";
 
-function renderScene(elements, progress, prefersReducedMotion) {
+function renderScene(
+  elements,
+  progress,
+  prefersReducedMotion,
+  isMobileViewport = false,
+) {
   const mappedProgress = mapStoryProgress(progress);
   const p = prefersReducedMotion
     ? Math.round(mappedProgress * 14) / 14
     : mappedProgress;
+  const mobileIntroShift = isMobileViewport ? 0.02 : 0;
 
-  const intro = mix(p, 0.02, 0.16, easeInOutCubic);
+  const intro = mix(
+    p,
+    Math.max(0, 0.02 - mobileIntroShift),
+    Math.max(0, 0.16 - mobileIntroShift),
+    easeInOutCubic,
+  );
   const envIn = mix(p, 0.4, 0.5, easeOutCubic);
   const worldLightIn = mix(p, 0.55, 0.66, easeOutCubic);
   const worldOut = mix(p, 0.7, 0.78, easeInOutCubic);
@@ -196,9 +207,24 @@ function renderScene(elements, progress, prefersReducedMotion) {
   const finalOpacity = clamp(finalIn);
   const finalTailY = lerp(0, -140, finalTail);
 
-  const corneaIn = mix(p, 0.18, 0.24, easeOutCubic);
-  const lensIn = mix(p, 0.2, 0.26, easeOutCubic);
-  const retinaIn = mix(p, 0.23, 0.29, easeOutCubic);
+  const corneaIn = mix(
+    p,
+    Math.max(0, 0.18 - mobileIntroShift),
+    Math.max(0, 0.24 - mobileIntroShift),
+    easeOutCubic,
+  );
+  const lensIn = mix(
+    p,
+    Math.max(0, 0.2 - mobileIntroShift),
+    Math.max(0, 0.26 - mobileIntroShift),
+    easeOutCubic,
+  );
+  const retinaIn = mix(
+    p,
+    Math.max(0, 0.23 - mobileIntroShift),
+    Math.max(0, 0.29 - mobileIntroShift),
+    easeOutCubic,
+  );
   const labelOut = clamp(1 - worldOut);
   const scrollCueOut = mix(progress, 0.001, 0.018, easeOutCubic);
   const introCaptionOut = mix(p, 0.405, 0.47, easeInOutCubic);
@@ -209,7 +235,7 @@ function renderScene(elements, progress, prefersReducedMotion) {
 
   setLayerState(elements.scrollCue, {
     opacity: 1 - scrollCueOut,
-    y: lerp(0, -8, scrollCueOut),
+    y: 0,
   });
 
   setTextContent(elements.introCaptionText, INTRO_CAPTION_TEXT);
@@ -437,6 +463,7 @@ export function initializeVisualSystemEyesBrain() {
   const prefersReducedMotion = window.matchMedia(
     "(prefers-reduced-motion: reduce)",
   );
+  const mobileViewport = window.matchMedia("(max-width: 767px)");
 
   let rafId = 0;
   let lastProgress = -1;
@@ -456,7 +483,12 @@ export function initializeVisualSystemEyesBrain() {
       lastProgress = progress;
 
       // Keep the scene scroll-driven instead of timeline-driven.
-      renderScene(elements, progress, prefersReducedMotion.matches);
+      renderScene(
+        elements,
+        progress,
+        prefersReducedMotion.matches,
+        mobileViewport.matches,
+      );
     });
   }
 
@@ -497,7 +529,12 @@ export function initializeVisualSystemEyesBrain() {
     delete page._vsCleanup;
   };
 
-  renderScene(elements, 0, prefersReducedMotion.matches);
+  renderScene(
+    elements,
+    0,
+    prefersReducedMotion.matches,
+    mobileViewport.matches,
+  );
   scheduleRender();
   window.requestAnimationFrame(scheduleRender);
 }

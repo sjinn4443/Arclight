@@ -6033,17 +6033,47 @@ Glaucoma history case study: match intermediate style
 }
 
 :is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage) .vs-scroll-cue {
-  --left: 50%;
-  --top: 92%;
-  width: 36px;
-  height: 36px;
+  --left: 0%;
+  --top: 62px;
+  --origin-x: 0%;
+  --origin-y: 0%;
+  position: fixed;
+  inset: auto 0 0 0;
+  width: 100vw;
+  height: calc(100dvh - 62px);
+  display: grid;
+  place-items: center;
+  background: rgba(24, 24, 24, 0.64);
+  color: #fff;
+  box-shadow: none;
+  z-index: 1800;
+}
+
+:is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage)
+  .vs-scroll-cue__pill {
+  box-sizing: border-box;
+  width: 76px;
+  height: 118px;
+  padding: 14px 10px 14px;
+  border: 0;
   border-radius: 999px;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: rgba(58, 58, 58, 0.46);
+  gap: 9px;
+  background: #9d9d9db3;
+}
+
+:is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage)
+  .vs-scroll-cue__label {
   color: #fff;
-  z-index: 18;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: 0.04em;
+  text-transform: lowercase;
+  text-align: center;
 }
 
 :is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage)
@@ -6052,16 +6082,18 @@ Glaucoma history case study: match intermediate style
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  margin-top: 0;
+  margin-bottom: 0;
   transform: translateY(-1px);
 }
 
 :is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage)
   .vs-scroll-cue__chev {
-  width: 9px;
-  height: 9px;
-  margin-top: -4px;
-  border-right: 2.2px solid currentColor;
-  border-bottom: 2.2px solid currentColor;
+  width: 14px;
+  height: 14px;
+  margin-top: -5px;
+  border-right: 3px solid currentColor;
+  border-bottom: 3px solid currentColor;
   transform: rotate(45deg);
   animation: vsArrowGrayShift 1.2s linear infinite;
 }
@@ -6074,6 +6106,24 @@ Glaucoma history case study: match intermediate style
 :is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage)
   .vs-scroll-cue__chev:nth-child(3) {
   animation-delay: 0.4s;
+}
+
+@media (min-width: 1024px) {
+  :is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage)
+    .vs-scroll-cue__pill {
+    width: 76px;
+    height: 118px;
+    padding: 14px 10px 14px;
+  }
+
+  :is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage)
+    .vs-scroll-cue__chev {
+    width: 15px;
+    height: 15px;
+    margin-top: -6px;
+    border-right-width: 3.2px;
+    border-bottom-width: 3.2px;
+  }
 }
 
 :is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage) .vs-caption {

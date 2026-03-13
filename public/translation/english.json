@@ -663,7 +663,7 @@
       "causes_of_visual_impairment": "3. Causes of Visual Impairment",
       "signs_of_visual_impairment": "4. Signs of Visual Impairment",
       "childhood_eye_screening": "5. Childhood Eye Screening",
-      "eye_brain": "Eye & Brain",
+      "eye_brain": "Eyes & Brain",
       "start": "Start >",
       "atoms_card": "Atoms Card",
       "normal_visual_development": "Normal Visual Development",
@@ -693,7 +693,7 @@
     },
     "visualsystemeyesbrain": {
       "childhood_eye_screening": "Childhood Eye Screening",
-      "eye_brain": "Eye & Brain",
+      "eye_brain": "Eyes & Brain",
       "cornea": "Cornea",
       "lens": "Lens",
       "retina": "Retina",
@@ -721,7 +721,7 @@
       "refer": "Refer"
     },
     "childhoodeyebrainimages": {
-      "eye_brain": "Eye & Brain",
+      "eye_brain": "Eyes & Brain",
       "introduction_to_visual_development": "Introduction to Visual Development",
       "normal_visual_development": "Normal Visual Development",
       "ask_questions_and_observe": "Ask Questions and Observe"
