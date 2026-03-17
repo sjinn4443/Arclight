@@ -66,6 +66,13 @@ export function initializeLanguageInstall() {
   // ——— build custom dropdown UI inside .lang-install__select-wrap ———
   if (langSelect && langSelect.closest(".lang-install__select-wrap")) {
     buildCustomLangSelect(langSelect);
+
+    const refreshCustomLangSelect = () => {
+      buildCustomLangSelect(langSelect);
+    };
+
+    window.addEventListener("i18n:languageChanged", refreshCustomLangSelect);
+    document.addEventListener("language:updated", refreshCustomLangSelect);
   }
 
   // Set initial select value from saved pref
@@ -400,6 +407,7 @@ function showLanguageHintModal(templateId) {
   }
 
   document.body.appendChild(modal);
+  window.I18N?.applyTranslations?.(modal);
 
   const close = () => {
     modal.classList.add("fade-out");
@@ -421,6 +429,11 @@ function showLanguageHintModal(templateId) {
  */
 function buildCustomLangSelect(selectEl) {
   const wrap = selectEl.closest(".lang-install__select-wrap");
+  if (!wrap) return;
+
+  wrap
+    .querySelectorAll("[data-custom-lang-select]")
+    .forEach((el) => el.remove());
 
   // Hide native select but keep it in the DOM for accessibility
   selectEl.style.position = "absolute";
@@ -434,6 +447,7 @@ function buildCustomLangSelect(selectEl) {
   ctrl.type = "button";
   ctrl.setAttribute("aria-haspopup", "listbox");
   ctrl.setAttribute("aria-expanded", "false");
+  ctrl.setAttribute("data-custom-lang-select", "true");
 
   // Match black page style
   ctrl.style.width = "100%";
@@ -468,6 +482,7 @@ function buildCustomLangSelect(selectEl) {
   // Dropdown list
   const list = document.createElement("ul");
   list.setAttribute("role", "listbox");
+  list.setAttribute("data-custom-lang-select", "true");
   list.style.position = "absolute";
   list.style.left = "0";
   list.style.right = "0";

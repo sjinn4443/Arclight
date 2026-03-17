@@ -93,18 +93,26 @@ function showTOC(type = "eyes") {
 
   items.sort().forEach((item) => {
     const li = document.createElement("li");
+    li.dataset.topic = item;
     li.textContent = item;
     tocList.appendChild(li);
   });
+
+  try {
+    window.I18N?.applyTranslations?.(tocList);
+  } catch {
+    void 0;
+  }
 
   const imgBox = document.getElementById("atomsImageContainer");
   if (imgBox) imgBox.innerHTML = "";
 }
 
 function handleTOCItemClick(e) {
-  if (!e || e.target.tagName !== "LI") return;
+  const itemEl = e?.target?.closest?.("li");
+  if (!itemEl) return;
 
-  const topic = e.target.textContent.trim();
+  const topic = itemEl.dataset.topic || itemEl.textContent.trim();
   const container = document.getElementById("atomsImageContainer");
   if (!container) return;
   container.innerHTML = "";

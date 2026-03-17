@@ -175,10 +175,19 @@ export function initializeGlaucomaHistoryCaseStudy() {
     draftEl.textContent = choices?.hidden
       ? DRAFT_TEXT_COLLAPSED
       : DRAFT_TEXT_EXPANDED;
+    translateNode(draftEl);
   }
 
   if (toggleBtn) toggleBtn.textContent = "^";
   syncDraftPlaceholder();
+
+  function translateNode(node) {
+    try {
+      window.I18N?.applyTranslations?.(node);
+    } catch {
+      void 0;
+    }
+  }
 
   function forceCloseModals() {
     if (dxModal) dxModal.hidden = true;
@@ -256,6 +265,7 @@ export function initializeGlaucomaHistoryCaseStudy() {
     });
 
     page.appendChild(modal);
+    translateNode(modal);
     introModalEl = modal;
     return introModalEl;
   }
@@ -376,6 +386,7 @@ export function initializeGlaucomaHistoryCaseStudy() {
         startNewCase();
       });
       dxCard.appendChild(next);
+      translateNode(dxCard);
     }
   }
 
@@ -424,6 +435,7 @@ export function initializeGlaucomaHistoryCaseStudy() {
     wrap.className = `casechat-bubble casechat-bubble--${kind}`;
     wrap.innerHTML = html;
     log.appendChild(wrap);
+    translateNode(wrap);
 
     requestAnimationFrame(keepLastMessageVisible);
   }
@@ -444,6 +456,7 @@ export function initializeGlaucomaHistoryCaseStudy() {
       "casechat-bubble casechat-bubble--bot casechat-bubble--typing is-typing";
     bubble.innerHTML = `<div class="casechat-text">${dots}</div>`;
     log.appendChild(bubble);
+    translateNode(bubble);
 
     requestAnimationFrame(keepLastMessageVisible);
     return bubble;
@@ -478,6 +491,8 @@ export function initializeGlaucomaHistoryCaseStudy() {
 
       choices.appendChild(btn);
     });
+
+    translateNode(choices);
   }
 
   function onAsk(q) {
@@ -503,6 +518,7 @@ export function initializeGlaucomaHistoryCaseStudy() {
       const textEl = typingBubble?.querySelector(".casechat-text");
       if (textEl) textEl.textContent = reply;
       typingBubble?.classList.remove("casechat-bubble--typing", "is-typing");
+      translateNode(typingBubble);
       requestAnimationFrame(keepLastMessageVisible);
     }, delay);
   }
@@ -560,6 +576,8 @@ export function initializeGlaucomaHistoryCaseStudy() {
 
         dxList.appendChild(btn);
       });
+
+      translateNode(dxList);
     }
 
     if (dxModal) dxModal.hidden = false;
@@ -632,6 +650,7 @@ export function initializeGlaucomaHistoryCaseStudy() {
       startNewCase();
     });
     dxCard.appendChild(next);
+    translateNode(dxCard);
   }
 
   // ---- final modal ----
@@ -642,6 +661,7 @@ export function initializeGlaucomaHistoryCaseStudy() {
       `;
     }
     if (finalModal) finalModal.hidden = false;
+    translateNode(finalModal || finalBody);
   }
 
   function closeFinalModal() {
@@ -814,6 +834,10 @@ export function initializeGlaucomaHistoryCaseStudy() {
   } else {
     startNewCase();
   }
+
+  window.addEventListener("i18n:languageChanged", () => {
+    translateNode(page);
+  });
 
   // also harden initial paint
   requestAnimationFrame(() => {

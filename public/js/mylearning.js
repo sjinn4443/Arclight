@@ -370,6 +370,12 @@ function renderMyLearnings() {
     }
   }
 
+  try {
+    window.I18N?.applyTranslations?.(listEl);
+  } catch {
+    void 0;
+  }
+
   // Card navigation
   listEl.onclick = (e) => {
     const card = e.target.closest?.(".ml-card");

@@ -261,6 +261,8 @@ export function initializeIntro() {
         skipBtn.classList.add("btn-outline", "intro-outline");
         skipBtn.textContent = "Skip and Start";
       }
+
+      reapplyDynamicTranslations();
     }
 
     function playIntroVideo(src, { loop = true, onEnded = null } = {}) {
@@ -366,7 +368,7 @@ export function initializeIntro() {
 
       setText(introTitle, "Pick Up Anytime");
       setLines(introSub, [
-        "We remember what you’ve completed,",
+        "We remember what you've completed,",
         "making it easy to continue where you left off",
       ]);
 

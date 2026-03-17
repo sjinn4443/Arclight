@@ -519,6 +519,7 @@ export function initializeCaseStudy() {
     `;
     }
     if (finalModal) finalModal.hidden = false;
+    translateNode(finalModal || finalBody);
   }
   function closeFinalModal() {
     if (finalModal) finalModal.hidden = true;
@@ -627,6 +628,7 @@ export function initializeCaseStudy() {
     });
 
     chatPage.appendChild(modal);
+    translateNode(modal);
     introModalEl = modal;
     return introModalEl;
   }
@@ -703,6 +705,11 @@ export function initializeCaseStudy() {
       dxAttemptsLeft === 2
         ? "You only get 2 attempts."
         : `Attempts left: ${dxAttemptsLeft}`;
+    try {
+      window.I18N?.applyTranslations?.(dxTrialText);
+    } catch {
+      void 0;
+    }
   }
 
   function failDxAndMoveOn(reasonText) {
@@ -740,6 +747,7 @@ export function initializeCaseStudy() {
         startNewCase();
       });
       dxCard.appendChild(next);
+      translateNode(dxCard);
     }
   }
 
@@ -808,11 +816,20 @@ export function initializeCaseStudy() {
     }, 1000);
   }
 
+  function translateNode(node) {
+    try {
+      window.I18N?.applyTranslations?.(node);
+    } catch {
+      void 0;
+    }
+  }
+
   function appendBubble(kind, html) {
     const wrap = document.createElement("div");
     wrap.className = `casechat-bubble casechat-bubble--${kind}`;
     wrap.innerHTML = html;
     log.appendChild(wrap);
+    translateNode(wrap);
 
     requestAnimationFrame(keepLastMessageVisible);
   }
@@ -887,6 +904,7 @@ export function initializeCaseStudy() {
     // ✅ 나중에 querySelector(".casechat-text")로 교체 가능하게 구조 맞춤
     bubble.innerHTML = `<div class="casechat-text">${dots}</div>`;
     log.appendChild(bubble);
+    translateNode(bubble);
 
     requestAnimationFrame(keepLastMessageVisible);
     return bubble;
@@ -928,6 +946,8 @@ export function initializeCaseStudy() {
 
       choices.appendChild(btn);
     });
+
+    translateNode(choices);
   }
 
   function openDxModal(force = false) {
@@ -987,6 +1007,8 @@ export function initializeCaseStudy() {
 
         dxList.appendChild(btn);
       });
+
+      translateNode(dxList);
     }
 
     if (dxModal) dxModal.hidden = false;
@@ -1015,6 +1037,7 @@ export function initializeCaseStudy() {
       if (draftEl) {
         draftEl.textContent = "- Click here to select a question";
         draftEl.classList.add("is-placeholder");
+        translateNode(draftEl);
       }
       if (sendBtn) sendBtn.disabled = true;
       if (toggleBtn) toggleBtn.textContent = "Q";
@@ -1104,6 +1127,7 @@ export function initializeCaseStudy() {
 
       // typing 스타일 제거
       typingBubble.classList.remove("casechat-bubble--typing", "is-typing");
+      translateNode(typingBubble);
 
       requestAnimationFrame(keepLastMessageVisible);
     }, delay);
@@ -1118,6 +1142,7 @@ export function initializeCaseStudy() {
     resultTitle.textContent = title;
     resultBody.innerHTML = html;
     resultModal.hidden = false;
+    translateNode(resultModal);
   }
 
   function closeResultModal() {
@@ -1150,6 +1175,7 @@ export function initializeCaseStudy() {
         hint.className = "casechat-tryagain";
         hint.textContent = "Try again";
         dxCard.appendChild(hint);
+        translateNode(dxCard);
         return;
       }
 
@@ -1204,6 +1230,7 @@ export function initializeCaseStudy() {
       startNewCase(); // 이미 파일 안에 있는 함수
     });
     dxCard.appendChild(next);
+    translateNode(dxCard);
   }
 
   function showList() {
@@ -1292,6 +1319,7 @@ export function initializeCaseStudy() {
     if (draftEl) {
       draftEl.textContent = "Select a question above";
       draftEl.classList.add("is-placeholder");
+      translateNode(draftEl);
     }
     if (sendBtn) sendBtn.disabled = true;
 
@@ -1418,6 +1446,11 @@ export function initializeCaseStudy() {
 
   // initial view
   showList();
+
+  window.addEventListener("i18n:languageChanged", () => {
+    translateNode(listPage);
+    translateNode(chatPage);
+  });
 
   // ✅ 라우터가 page:loaded 이후에 display를 다시 만지는 경우까지 방어
   requestAnimationFrame(() => {

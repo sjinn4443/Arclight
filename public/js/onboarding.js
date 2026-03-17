@@ -643,6 +643,27 @@ export function initializeOnboarding() {
     updateJobsForInterests(); // initial
   }
 
+  function refreshTranslatedOnboardingUi() {
+    rebuildInterestDropdownPanel();
+    syncInterestDisplayText();
+    rebuildJobDropdownPanel();
+    syncJobDisplayText();
+
+    const roles = getSelectedRoles();
+    const nonStudentRoles = roles.filter(
+      (role) => role && role !== "medical_student",
+    );
+    if (nonStudentRoles.length) {
+      renderExperienceByRole(nonStudentRoles);
+    }
+  }
+
+  window.addEventListener(
+    "i18n:languageChanged",
+    refreshTranslatedOnboardingUi,
+  );
+  document.addEventListener("language:updated", refreshTranslatedOnboardingUi);
+
   // jobSelect change → experience fields + validation
   jobSelect?.addEventListener("change", () => {
     updateExperienceFields();
