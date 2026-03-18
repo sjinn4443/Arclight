@@ -36,6 +36,11 @@ function ensureGuestModal() {
   if (!modal) return;
 
   document.body.appendChild(modal);
+  try {
+    window.I18N?.applyTranslations?.(modal);
+  } catch {
+    void 0;
+  }
 
   // Cache elements
   const signupBtn = modal.querySelector("#guestSignupBtn");

@@ -255,10 +255,14 @@ export function initializeIntro() {
       if (isPrimary) {
         skipBtn.classList.remove("btn-outline", "intro-outline");
         skipBtn.classList.add("onb-cta", "intro-primary");
+        skipBtn.removeAttribute("data-i18n");
         skipBtn.textContent = "Start Exploring";
       } else {
         skipBtn.classList.remove("onb-cta", "intro-primary");
         skipBtn.classList.add("btn-outline", "intro-outline");
+        if (originalSkipI18n) {
+          skipBtn.setAttribute("data-i18n", originalSkipI18n);
+        }
         skipBtn.textContent = "Skip and Start";
       }
 
@@ -288,6 +292,9 @@ export function initializeIntro() {
     const originalSubNodes = introSub
       ? Array.from(introSub.childNodes).map((n) => n.cloneNode(true))
       : [];
+    const originalTitleI18n = introTitle?.getAttribute("data-i18n") || null;
+    const originalSubI18n = introSub?.getAttribute("data-i18n") || null;
+    const originalSkipI18n = skipBtn?.getAttribute("data-i18n") || null;
 
     const recommendedTitleText = "Tailored for You";
     const recommendedSubLines = [
@@ -327,10 +334,29 @@ export function initializeIntro() {
       nodes.forEach((n) => el.appendChild(n.cloneNode(true)));
     }
 
+    function setDynamicIntroBindings(isDynamic) {
+      if (introTitle) {
+        if (isDynamic) {
+          introTitle.removeAttribute("data-i18n");
+        } else if (originalTitleI18n) {
+          introTitle.setAttribute("data-i18n", originalTitleI18n);
+        }
+      }
+
+      if (introSub) {
+        if (isDynamic) {
+          introSub.removeAttribute("data-i18n");
+        } else if (originalSubI18n) {
+          introSub.setAttribute("data-i18n", originalSubI18n);
+        }
+      }
+    }
+
     function showRecommended() {
       introState = "recommended";
       arrowPopDone.recommended = false;
 
+      setDynamicIntroBindings(true);
       setText(introTitle, recommendedTitleText);
       setLines(introSub, recommendedSubLines);
 
@@ -349,6 +375,7 @@ export function initializeIntro() {
       introState = "original";
       arrowPopDone.original = false;
 
+      setDynamicIntroBindings(false);
       restoreNodes(introTitle, originalTitleNodes);
       restoreNodes(introSub, originalSubNodes);
 
@@ -366,6 +393,7 @@ export function initializeIntro() {
       introState = "pickup";
       arrowPopDone.pickup = false;
 
+      setDynamicIntroBindings(true);
       setText(introTitle, "Pick Up Anytime");
       setLines(introSub, [
         "We remember what you've completed,",
@@ -384,6 +412,7 @@ export function initializeIntro() {
     function showQuiz() {
       introState = "quiz";
 
+      setDynamicIntroBindings(true);
       setText(introTitle, "Strengthen Your Learning");
       setLines(introSub, [
         "Follow each lesson with a quick quiz to review",

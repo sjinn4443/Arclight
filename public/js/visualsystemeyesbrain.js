@@ -198,6 +198,7 @@ function renderScene(
     ? Math.round(tractRaw * 28) / 28
     : stepped(tractRaw, 28);
   const tract2Progress = clamp(tract2Raw);
+  const facebrainIn = mix(tract2Progress, 0.45, 0.62, easeInOutCubic);
 
   const worldOpacity = clamp(1 - worldOut);
   const backgroundOpacity = clamp(envIn * (1 - bgOut));
@@ -223,6 +224,12 @@ function renderScene(
     p,
     Math.max(0, 0.23 - mobileIntroShift),
     Math.max(0, 0.29 - mobileIntroShift),
+    easeOutCubic,
+  );
+  const opticNerveIn = mix(
+    p,
+    Math.max(0, 0.245 - mobileIntroShift),
+    Math.max(0, 0.305 - mobileIntroShift),
     easeOutCubic,
   );
   const labelOut = clamp(1 - worldOut);
@@ -347,6 +354,11 @@ function renderScene(
     x: lerp(-8, 0, retinaIn),
     y: lerp(14, 0, retinaIn),
   });
+  setLabelState(elements.opticNerveLabel, {
+    opacity: opticNerveIn * labelOut,
+    x: lerp(8, 0, opticNerveIn),
+    y: lerp(14, 0, opticNerveIn),
+  });
 
   setLayerState(elements.man, {
     opacity: manOpacity,
@@ -357,8 +369,8 @@ function renderScene(
   setLayerState(elements.face, {
     opacity: faceOpacity,
     y: lerp(16, 0, faceIn) + finalTailY,
-    leftPercent: lerp(55.5, 57.5, finalIn),
-    topPercent: lerp(41, 11, finalIn),
+    leftPercent: lerp(50, 43.5, finalIn),
+    topPercent: lerp(44, 11, finalIn),
     scale: lerp(0.86, 1, faceIn),
   });
 
@@ -380,6 +392,12 @@ function renderScene(
     opacity: finalOpacity,
     y: lerp(260, -820, finalIn) + finalTailY,
     scale: lerp(0.92, 1, finalIn),
+  });
+
+  setLayerState(elements.facebrain, {
+    opacity: finalOpacity * facebrainIn,
+    y: lerp(18, 0, facebrainIn) + finalTailY,
+    scale: lerp(0.92, 1, facebrainIn),
   });
 
   setLayerState(elements.tract, {
@@ -448,11 +466,13 @@ export function initializeVisualSystemEyesBrain() {
     corneaLabel: page.querySelector('[data-vs="corneaLabel"]'),
     lensLabel: page.querySelector('[data-vs="lensLabel"]'),
     retinaLabel: page.querySelector('[data-vs="retinaLabel"]'),
+    opticNerveLabel: page.querySelector('[data-vs="opticNerveLabel"]'),
     man: page.querySelector('[data-vs="man"]'),
     face: page.querySelector('[data-vs="face"]'),
     finalLight: page.querySelector('[data-vs="finalLight"]'),
     finalEye: page.querySelector('[data-vs="finalEye"]'),
     brain: page.querySelector('[data-vs="brain"]'),
+    facebrain: page.querySelector('[data-vs="facebrain"]'),
     tract: page.querySelector('[data-vs="tract"]'),
     tract2: page.querySelector('[data-vs="tract2"]'),
   };

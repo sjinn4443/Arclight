@@ -1,3 +1,37 @@
+function translateNode(node) {
+  try {
+    window.I18N?.applyTranslations?.(node);
+  } catch {
+    void 0;
+  }
+}
+
+function setCorrectAnswerLine(target, optionText) {
+  if (!target) return;
+  target.textContent = "";
+  target.appendChild(document.createTextNode("Correct answer:"));
+  target.appendChild(document.createTextNode(" "));
+  target.appendChild(document.createTextNode(optionText));
+}
+
+function setScoreSummary(target, correct, total) {
+  if (!target) return;
+  target.textContent = "";
+  target.appendChild(document.createTextNode("You got"));
+  target.appendChild(document.createTextNode(" "));
+  const correctValue = document.createElement("b");
+  correctValue.textContent = String(correct);
+  target.appendChild(correctValue);
+  target.appendChild(document.createTextNode(" "));
+  target.appendChild(document.createTextNode("out of"));
+  target.appendChild(document.createTextNode(" "));
+  const totalValue = document.createElement("b");
+  totalValue.textContent = String(total);
+  target.appendChild(totalValue);
+  target.appendChild(document.createTextNode(" "));
+  target.appendChild(document.createTextNode("correct."));
+}
+
 function _launchQuiz() {
   const previousPage =
     document.querySelector(".page.active")?.id || "dashboard";
@@ -5,32 +39,31 @@ function _launchQuiz() {
 
   const show = (id) => {
     if (typeof window.showPage === "function") return window.showPage(id);
-    if (typeof window.minimalShowPage === "function")
+    if (typeof window.minimalShowPage === "function") {
       return window.minimalShowPage(id);
+    }
 
-    // 마지막 fallback (혹시 둘 다 없을 때)
     document
       .querySelectorAll(".page")
-      .forEach((p) => (p.style.display = "none"));
+      .forEach((pageEl) => (pageEl.style.display = "none"));
     const el = document.getElementById(id);
     if (el) el.style.display = "block";
   };
 
-  // Avoid creating duplicate quiz pages
   const existing = document.getElementById(quizPageId);
   if (existing) {
-    // 이미 placeholder div가 있을 수 있으니, 내용이 없으면 채운다
     const hasQuizUI = existing.querySelector?.(".quiz-container");
     if (hasQuizUI) {
       show(quizPageId);
+      translateNode(existing);
       return;
     }
-    // 내용이 없으면 아래 로직으로 채우기 위해 계속 진행
   }
 
   const quizPage = existing || document.createElement("div");
   quizPage.id = quizPageId;
   quizPage.className = "page";
+
   const layoutTemplate = document.getElementById("quizLauncherLayoutTemplate");
   if (layoutTemplate) {
     quizPage.replaceChildren(layoutTemplate.content.cloneNode(true));
@@ -46,8 +79,10 @@ function _launchQuiz() {
     backBtn.id = "backToVideoBtn";
     backBtn.className = "back-icon";
     backBtn.title = "Go back";
+    backBtn.setAttribute("data-i18n", "i18nLiteral.Go back:title");
     const title = document.createElement("h2");
     title.textContent = "Quiz";
+    title.setAttribute("data-i18n", "auto.quizzes.quiz");
     headerRow.appendChild(backBtn);
     headerRow.appendChild(title);
     header.appendChild(headerRow);
@@ -65,6 +100,7 @@ function _launchQuiz() {
     submitBtn.setAttribute("form", "quizForm");
     submitBtn.className = "start-btn";
     submitBtn.textContent = "See Results";
+    submitBtn.setAttribute("data-i18n", "i18nExtra.see_results");
     footer.appendChild(submitBtn);
 
     const modal = document.createElement("div");
@@ -77,6 +113,7 @@ function _launchQuiz() {
     const whyBtn = document.createElement("button");
     whyBtn.id = "seeWhyBtn";
     whyBtn.textContent = "Check Answer";
+    whyBtn.setAttribute("data-i18n", "auto.quizzes.check_answer");
     modalContent.appendChild(scoreText);
     modalContent.appendChild(whyBtn);
     modal.appendChild(modalContent);
@@ -87,28 +124,29 @@ function _launchQuiz() {
     container.appendChild(modal);
     quizPage.replaceChildren(container);
   }
+
   if (!existing) {
-    document.getElementById("appRoot").appendChild(quizPage);
+    document.getElementById("appRoot")?.appendChild(quizPage);
   }
 
   const questions = [
     {
       q: "1. When starting direct ophthalmoscopy, what is the ideal distance between the examiner and the patient?",
-      options: ["5 cm", "10 cm", "15 cm", "Arm’s length"],
+      options: ["5 cm", "10 cm", "15 cm", "Arm's length"],
       answer: 3,
     },
     {
       q: "2. Which of the options describe the best condition to get the view of the retina?",
       options: [
         "Outdoors with bright sunlight, dilated pupil",
-        "Deem room with dilated pupil",
+        "Dim room with dilated pupil",
         "Indoors with bright light, dilated pupil",
-        "Deem room with constricted pupil",
+        "Dim room with constricted pupil",
       ],
       answer: 1,
     },
     {
-      q: "3. Which eye should you use to examine the patient’s right eye?",
+      q: "3. Which eye should you use to examine the patient's right eye?",
       options: ["Left eye", "Either eye", "Right eye", "Dominant eye"],
       answer: 2,
     },
@@ -153,8 +191,9 @@ function _launchQuiz() {
   const blockTemplate = document.getElementById("quizLauncherBlockTemplate");
   const optionTemplate = document.getElementById("quizLauncherOptionTemplate");
   if (!quizForm) return;
+
   quizForm.textContent = "";
-  questions.forEach((q, i) => {
+  questions.forEach((questionData, questionIndex) => {
     const block =
       blockTemplate?.content.firstElementChild?.cloneNode(true) ||
       document.createElement("div");
@@ -166,7 +205,7 @@ function _launchQuiz() {
       question.className = "quiz-question";
       block.appendChild(question);
     }
-    question.textContent = q.q;
+    question.textContent = questionData.q;
 
     let optionsWrap = block.querySelector(".quiz-options");
     if (!optionsWrap) {
@@ -174,7 +213,8 @@ function _launchQuiz() {
       optionsWrap.className = "quiz-options";
       block.appendChild(optionsWrap);
     }
-    q.options.forEach((opt, j) => {
+
+    questionData.options.forEach((optionText, optionIndex) => {
       const option =
         optionTemplate?.content.firstElementChild?.cloneNode(true) ||
         document.createElement("label");
@@ -183,20 +223,18 @@ function _launchQuiz() {
       const input =
         option.querySelector("input") || document.createElement("input");
       input.type = "radio";
-      input.name = `q${i}`;
-      input.value = String(j);
+      input.name = `q${questionIndex}`;
+      input.value = String(optionIndex);
 
       const span =
         option.querySelector(".quiz-option-text") ||
         option.querySelector("span") ||
         document.createElement("span");
-      span.textContent = opt;
+      span.textContent = optionText;
 
       if (!option.contains(input)) option.prepend(input);
       if (!option.contains(span)) option.appendChild(span);
-
-      if (optionsWrap) optionsWrap.appendChild(option);
-      else block.appendChild(option);
+      optionsWrap.appendChild(option);
     });
 
     let answer = block.querySelector(".answer");
@@ -208,50 +246,67 @@ function _launchQuiz() {
       answer.style.fontStyle = "italic";
       block.appendChild(answer);
     }
-    answer.textContent = `Correct answer: ${q.options[q.answer]}`;
+    setCorrectAnswerLine(answer, questionData.options[questionData.answer]);
 
     quizForm.appendChild(block);
   });
 
-  quizForm.onsubmit = (e) => {
-    e.preventDefault();
+  translateNode(quizPage);
+  translateNode(quizForm);
+
+  quizForm.onsubmit = (event) => {
+    event.preventDefault();
     let correct = 0;
-    questions.forEach((q, i) => {
-      const radios = quizForm.querySelectorAll(`input[name="q${i}"]`);
-      const answer = q.answer;
+
+    questions.forEach((questionData, questionIndex) => {
+      const radios = quizForm.querySelectorAll(
+        `input[name="q${questionIndex}"]`,
+      );
+      const answer = questionData.answer;
       let selected = null;
-      radios.forEach((r) => {
-        r.disabled = true;
-        if (r.checked) selected = parseInt(r.value);
+
+      radios.forEach((radio) => {
+        radio.disabled = true;
+        if (radio.checked) selected = Number.parseInt(radio.value, 10);
       });
-      const labels = radios[0].closest(".quiz-block").querySelectorAll("label");
+
+      const block = radios[0]?.closest(".quiz-block");
+      const labels = block?.querySelectorAll("label") || [];
       labels.forEach((label, index) => {
-        if (index === answer) label.classList.add("correct");
-        else if (parseInt(label.querySelector("input").value) === selected)
+        if (index === answer) {
+          label.classList.add("correct");
+        } else if (
+          Number.parseInt(label.querySelector("input")?.value || "", 10) ===
+          selected
+        ) {
           label.classList.add("wrong");
+        }
       });
-      if (selected === answer) correct++;
+
+      if (selected === answer) correct += 1;
     });
+
     const scoreText = quizPage.querySelector("#quizScoreText");
     if (scoreText) {
-      scoreText.textContent = `You got ${correct} out of ${questions.length} correct.`;
-      const lineBreak = document.createElement("br");
+      setScoreSummary(scoreText, correct, questions.length);
+      scoreText.appendChild(document.createElement("br"));
       const note = document.createElement("small");
       note.textContent = "Answers are highlighted in green.";
-      scoreText.appendChild(lineBreak);
       scoreText.appendChild(note);
+      translateNode(scoreText);
     }
-    quizPage.querySelector("#quizModal").classList.remove("hidden");
+
+    quizPage.querySelector("#quizModal")?.classList.remove("hidden");
   };
 
-  quizPage.querySelector("#seeWhyBtn").addEventListener("click", () => {
-    quizPage.querySelector("#quizModal").classList.add("hidden");
+  quizPage.querySelector("#seeWhyBtn")?.addEventListener("click", () => {
+    quizPage.querySelector("#quizModal")?.classList.add("hidden");
     quizPage
       .querySelectorAll(".answer")
-      .forEach((a) => (a.style.display = "block"));
+      .forEach((answerEl) => (answerEl.style.display = "block"));
   });
 
-  quizPage.querySelector("#backToVideoBtn").addEventListener("click", () => {
+  quizPage.querySelector("#backToVideoBtn")?.addEventListener("click", () => {
     show(previousPage);
   });
 

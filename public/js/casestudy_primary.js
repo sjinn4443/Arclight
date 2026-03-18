@@ -18,6 +18,14 @@ function appendLines(target, lines) {
   });
 }
 
+function translateNode(node) {
+  try {
+    window.I18N?.applyTranslations?.(node);
+  } catch {
+    void 0;
+  }
+}
+
 function correctDiagnosisForPrimary({ caseNum }) {
   if (caseNum === 1) return "Cataract";
   if (caseNum === 2) return "Retinoblastoma";
@@ -690,6 +698,7 @@ export function initializeCaseStudyPrimary() {
     });
 
     flashPage.appendChild(modal);
+    translateNode(modal);
     flashCompletionModalEl = modal;
     return modal;
   }
@@ -700,15 +709,19 @@ export function initializeCaseStudyPrimary() {
     const scoreText = modal.querySelector("#flashScoreText");
     if (scoreText) {
       scoreText.textContent = "";
-      scoreText.appendChild(document.createTextNode("You got "));
+      scoreText.appendChild(document.createTextNode("You got"));
+      scoreText.appendChild(document.createTextNode(" "));
       const correct = document.createElement("b");
       correct.textContent = String(flashCorrectCount);
       scoreText.appendChild(correct);
-      scoreText.appendChild(document.createTextNode(" out of "));
+      scoreText.appendChild(document.createTextNode(" "));
+      scoreText.appendChild(document.createTextNode("out of"));
+      scoreText.appendChild(document.createTextNode(" "));
       const total = document.createElement("b");
       total.textContent = String(flashPool.length);
       scoreText.appendChild(total);
-      scoreText.appendChild(document.createTextNode(" correct."));
+      scoreText.appendChild(document.createTextNode(" "));
+      scoreText.appendChild(document.createTextNode("correct."));
     }
 
     const list = modal.querySelector("#flashWrongList");
@@ -754,6 +767,7 @@ export function initializeCaseStudyPrimary() {
       }
     }
 
+    translateNode(modal);
     modal.hidden = false;
   }
 
@@ -1140,6 +1154,7 @@ export function initializeCaseStudyPrimary() {
           tNext.classList.remove("is-start");
         }
       }
+      if (bubble) translateNode(bubble);
 
       applyHint(s.hint);
       // hint가 켜져 있는 단계면 flashcard 정중앙으로 이동
@@ -1406,11 +1421,18 @@ export function initializeCaseStudyPrimary() {
     const caseObj = caseObjOverride || flashPool[flashIndex]; // ✅ override 지원
     const caseLabel = flashPage.querySelector("#primaryFlashCaseLabel");
     if (caseLabel) {
+      caseLabel.textContent = "";
       if (labelOverride != null) {
         caseLabel.textContent = labelOverride;
       } else {
-        caseLabel.textContent = `Case (${flashIndex + 1}/${flashPool.length})`;
+        const labelPrefix = document.createElement("span");
+        labelPrefix.textContent = "Case";
+        caseLabel.appendChild(labelPrefix);
+        caseLabel.appendChild(
+          document.createTextNode(` (${flashIndex + 1}/${flashPool.length})`),
+        );
       }
+      translateNode(caseLabel);
     }
 
     const img = flashPage.querySelector("#primaryFlashImg");
@@ -1427,7 +1449,7 @@ export function initializeCaseStudyPrimary() {
     dx.textContent = diagnosis;
     if (backImg) {
       backImg.src = imagePath;
-      backImg.alt = `Case image for ${diagnosis || "diagnosis"}`;
+      backImg.alt = "Case image";
     }
     if (dxRationale) {
       dxRationale.textContent = "";
@@ -1453,6 +1475,8 @@ export function initializeCaseStudyPrimary() {
       li.textContent = line;
       ul.appendChild(li);
     });
+
+    translateNode(flashPage);
 
     if (skipTimer) return;
 
@@ -1640,6 +1664,7 @@ export function initializeCaseStudyPrimary() {
     appendContent(inner, content);
     div.appendChild(inner);
     log.appendChild(div);
+    translateNode(div);
   }
 
   function appendBot(text) {
@@ -1650,6 +1675,7 @@ export function initializeCaseStudyPrimary() {
     inner.textContent = text;
     div.appendChild(inner);
     log.appendChild(div);
+    translateNode(div);
     div.scrollIntoView({ block: "end", behavior: "smooth" });
   }
   function renderImageGrid(correctCaseNum) {
@@ -1703,6 +1729,8 @@ export function initializeCaseStudyPrimary() {
 
     log.appendChild(grid);
     log.appendChild(feedback);
+    translateNode(grid);
+    translateNode(feedback);
 
     currentGridEl = grid;
     currentFeedbackEl = feedback;
@@ -1717,6 +1745,7 @@ export function initializeCaseStudyPrimary() {
 
     // ✅ 항상 채팅(로그) 맨 아래로
     log.appendChild(btn);
+    translateNode(btn);
 
     btn.scrollIntoView({ block: "end", behavior: "smooth" });
   }
@@ -1774,6 +1803,7 @@ export function initializeCaseStudyPrimary() {
     msg.className = "casechat-tryagain";
     msg.textContent = "Try again";
     currentFeedbackEl.appendChild(msg);
+    translateNode(currentFeedbackEl);
   }
 
   function setFeedbackCorrect(diagnosisName) {
@@ -1785,7 +1815,8 @@ export function initializeCaseStudyPrimary() {
 
     const why = document.createElement("div");
     why.className = "casechat-resultWhy";
-    why.appendChild(document.createTextNode("In this case, the diagnosis is "));
+    why.appendChild(document.createTextNode("In this case, the diagnosis is"));
+    why.appendChild(document.createTextNode(" "));
     const strong = document.createElement("b");
     strong.textContent = diagnosisName;
     why.appendChild(strong);
@@ -1793,6 +1824,7 @@ export function initializeCaseStudyPrimary() {
 
     currentFeedbackEl.appendChild(ok);
     currentFeedbackEl.appendChild(why);
+    translateNode(currentFeedbackEl);
   }
 
   function setFeedbackIncorrectOutOfAttempts() {
@@ -1802,6 +1834,7 @@ export function initializeCaseStudyPrimary() {
     msg.className = "casechat-tryagain";
     msg.textContent = "Incorrect.";
     currentFeedbackEl.appendChild(msg);
+    translateNode(currentFeedbackEl);
   }
 
   function setFeedbackTimeUp() {
@@ -1811,6 +1844,7 @@ export function initializeCaseStudyPrimary() {
     msg.className = "casechat-tryagain";
     msg.textContent = "Time is up.";
     currentFeedbackEl.appendChild(msg);
+    translateNode(currentFeedbackEl);
   }
 
   function onPickImage(clickedCaseNum, clickedBtn) {
@@ -1927,10 +1961,10 @@ export function initializeCaseStudyPrimary() {
 
     const body = document.createElement("div");
     body.className = "casechat-resultWhy";
-    appendLines(body, [
-      "Listen to what the patient says and tap",
-      "the image that best matches the diagnosis.",
-    ]);
+    appendLines(
+      body,
+      "Listen to what the patient says and tap the image that best matches the diagnosis.",
+    );
 
     const actions = document.createElement("div");
     actions.className = "casechat-confirm__actions";
@@ -1959,12 +1993,14 @@ export function initializeCaseStudyPrimary() {
     });
 
     chatPage.appendChild(modal);
+    translateNode(modal);
     introModalEl = modal;
     return introModalEl;
   }
 
   function showIntroModal() {
     const modal = ensureIntroModal();
+    translateNode(modal);
     modal.hidden = false;
   }
 
@@ -2009,7 +2045,7 @@ export function initializeCaseStudyPrimary() {
     backBtn.type = "button";
     backBtn.className = "casechat-confirm__btn is-cancel";
     backBtn.dataset.action = "back";
-    appendLines(backBtn, ["Back to", "history taking"]);
+    appendLines(backBtn, ["Back to", "History taking"]);
 
     actions.appendChild(restartBtn);
     actions.appendChild(backBtn);
@@ -2046,6 +2082,7 @@ export function initializeCaseStudyPrimary() {
     });
 
     chatPage.appendChild(modal);
+    translateNode(modal);
     completionModalEl = modal;
     return completionModalEl;
   }
@@ -2056,16 +2093,21 @@ export function initializeCaseStudyPrimary() {
     const why = modal.querySelector(".casechat-resultWhy");
     if (why) {
       why.textContent = "";
-      why.appendChild(document.createTextNode("You got "));
+      why.appendChild(document.createTextNode("You got"));
+      why.appendChild(document.createTextNode(" "));
       const correct = document.createElement("b");
       correct.textContent = String(correctCount);
       why.appendChild(correct);
-      why.appendChild(document.createTextNode(" out of "));
+      why.appendChild(document.createTextNode(" "));
+      why.appendChild(document.createTextNode("out of"));
+      why.appendChild(document.createTextNode(" "));
       const total = document.createElement("b");
       total.textContent = String(TOTAL_CASES);
       why.appendChild(total);
-      why.appendChild(document.createTextNode(" correct."));
+      why.appendChild(document.createTextNode(" "));
+      why.appendChild(document.createTextNode("correct."));
     }
+    translateNode(modal);
     modal.hidden = false;
   }
 
@@ -2099,7 +2141,10 @@ export function initializeCaseStudyPrimary() {
 
     const caseIndexEl = document.createElement("div");
     caseIndexEl.className = "casechat-caseindex";
-    caseIndexEl.appendChild(document.createTextNode(`Case ${caseIndex}`));
+    const caseLabelText = document.createElement("span");
+    caseLabelText.textContent = "Case";
+    caseIndexEl.appendChild(caseLabelText);
+    caseIndexEl.appendChild(document.createTextNode(` ${caseIndex}`));
 
     const caseCount = document.createElement("span");
     caseCount.className = "casechat-casecount";
