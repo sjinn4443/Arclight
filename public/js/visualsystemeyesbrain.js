@@ -172,14 +172,7 @@ function renderScene(
   const p = prefersReducedMotion
     ? Math.round(mappedProgress * 14) / 14
     : mappedProgress;
-  const compactP = isMobileViewport
-    ? clamp(
-        p +
-          (p > 0.38 ? 0.02 : 0) +
-          (p > 0.62 ? 0.025 : 0) +
-          (p > 0.82 ? 0.018 : 0),
-      )
-    : p;
+  const compactP = p;
   const mobileIntroShift = isMobileViewport ? 0.02 : 0;
 
   const intro = mix(
@@ -193,11 +186,11 @@ function renderScene(
   const worldOut = mix(compactP, 0.7, 0.78, easeInOutCubic);
   const worldLightOut = mix(compactP, 0.7, 0.78, easeInOutCubic);
   const manIn = mix(compactP, 0.79, 0.85, easeOutCubic);
-  const manOut = mix(compactP, 0.885, 0.93, easeInOutCubic);
-  const faceIn = mix(compactP, 0.855, 0.9, easeOutCubic);
-  const bgOut = mix(compactP, 0.895, 0.925, easeInOutCubic);
-  const finalIn = mix(compactP, 0.916, 0.946, easeInOutCubic);
-  const endPhase = mix(compactP, 0.95, 1);
+  const manOut = mix(compactP, 0.885, 0.95, easeInOutCubic);
+  const faceIn = mix(compactP, 0.855, 0.92, easeOutCubic);
+  const bgOut = mix(compactP, 0.895, 0.94, easeInOutCubic);
+  const finalIn = mix(compactP, 0.916, 0.961, easeInOutCubic);
+  const endPhase = mix(compactP, 0.966, 1);
   const tractRaw = mix(endPhase, 0.08, 0.48, easeInOutCubic);
   const tractOut = mix(endPhase, 0.55, 0.62, easeInOutCubic);
   const tract2Raw = mix(endPhase, 0.72, 0.97, easeInOutCubic);
