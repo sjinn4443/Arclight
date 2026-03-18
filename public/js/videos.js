@@ -4,6 +4,7 @@
 
 import { initializeVideoPlayers, initializeToolbar } from "./videoplayer.js";
 import { loadPage, syncRouteHash, getRouteFromHash } from "./navigation.js";
+import { showExperimentalMiniAppNoticeForPage } from "./experimentalMiniAppNotice.js";
 
 // Keep track of the currently active subpage element within videos.html
 let currentPageElement = null;
@@ -464,6 +465,7 @@ async function openExternalGlaucomaInteractive(targetId) {
 
     if (typeof window.showPage === "function") window.showPage(targetId);
     else showPageFallback(targetId);
+    showExperimentalMiniAppNoticeForPage(targetId);
 
     try {
       const { initializeGlaucomaScrollInteractiveTarget } =
@@ -1364,6 +1366,7 @@ function show(id) {
   newPageElement.style.display = "block";
   currentPageElement = newPageElement;
   syncRouteHash("videos", { replace: true, subPageId: id });
+  showExperimentalMiniAppNoticeForPage(id);
   document.dispatchEvent(new CustomEvent("page:shown", { detail: { id } }));
 
   if (id === "fundalReflexPage") {

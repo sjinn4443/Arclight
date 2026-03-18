@@ -12,6 +12,7 @@ import { initializeMenu, closeMenu, openMenu } from "./menu.js";
 import { initializePWA } from "./pwa.js";
 import { initializeVideoPlayers, initializeToolbar } from "./videoplayer.js";
 import { initializeLocation } from "./location-service.js";
+import { initializeExperimentalMiniAppNotice } from "./experimentalMiniAppNotice.js";
 import {
   initializeFundalReflexPdf,
   initializeAtomsHandout1,
@@ -88,6 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Init global systems once
   initializeLocation().catch((e) => console.warn("[geo] init failed", e));
   initializeMenu();
+  initializeExperimentalMiniAppNotice();
 
   document.addEventListener("click", (e) => {
     const btn = e.target.closest(".menuBtn");

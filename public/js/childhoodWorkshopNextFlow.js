@@ -23,6 +23,16 @@ const VIDEO_TARGETS = new Set([
   "usaidNormalAbnormalPage",
 ]);
 
+const FUNDAL_SCROLL_TARGETS = new Set([
+  "childhoodFundalPreparationPage",
+  "childhoodFundalExaminationPage",
+  "childhoodFundalNewbornEyesOpenPage",
+  "childhoodFundalNewbornEyesClosedPage",
+  "childhoodFundalUnclearFindingsPage",
+  "childhoodFundalPossibleFindingPage",
+  "childhoodFundalAfterExaminationPage",
+]);
+
 const TARGET_ROUTES = {
   childhoodEyeBrainImagesPage: "childhoodEyeBrainImages",
   childhoodIntroVisualDevelopmentPage: "childhoodEyeBrainImages",
@@ -394,6 +404,10 @@ function renderNextButtonForTarget(target) {
 
   const current = FLOW[idx];
   const targetId = canonicalTarget(target);
+  if (FUNDAL_SCROLL_TARGETS.has(targetId)) {
+    removeNextButtons();
+    return;
+  }
   const pageEl =
     document.getElementById(targetId) || document.getElementById(target);
   if (!pageEl) return;

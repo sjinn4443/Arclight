@@ -130,7 +130,7 @@ function _launchQuiz() {
       const whyBtn = document.createElement("button");
       whyBtn.id = "seeWhyBtn";
       whyBtn.textContent = "Check Answer";
-      whyBtn.setAttribute("data-i18n", "auto.quizzes.check_answer");
+      whyBtn.setAttribute("data-i18n", "i18nLiteral.Check Answer");
       modalContent.appendChild(scoreText);
       modalContent.appendChild(whyBtn);
       modal.appendChild(modalContent);

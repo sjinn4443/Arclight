@@ -1,5 +1,6 @@
 import { loadPage } from "./navigation.js";
 import { ROUTES } from "./config.js";
+import { showExperimentalMiniAppNoticeForPage } from "./experimentalMiniAppNotice.js";
 import {
   initializeGlaucomaWorkshopProgressInfra,
   updateGlaucomaWorkshopProgressBars,
@@ -653,6 +654,7 @@ export function initializeGlaucomaWorkshop() {
             new CustomEvent("page:shown", { detail: { id: targetRaw } }),
           );
         }
+        showExperimentalMiniAppNoticeForPage(targetRaw);
 
         if (targetRaw === "glaucomaACDInteractive") {
           initGlaucomaACDInteractive();

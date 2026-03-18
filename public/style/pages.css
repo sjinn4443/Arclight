@@ -2612,6 +2612,13 @@ select.onb-input.has-value + .onb-select-caret {
   transform: translate3d(-50%, 0, 0);
 }
 
+.childhood-fundal-scroll-page .childhood-fundal-scroll-down-arrow--page {
+  width: 76px;
+  height: 118px;
+  background: transparent;
+  border-radius: 999px;
+}
+
 .childhood-fundal-scroll-page
   .childhood-fundal-scroll-down-arrow.is-visible:not(:disabled) {
   pointer-events: auto;
@@ -2659,6 +2666,66 @@ select.onb-input.has-value + .onb-select-caret {
   animation-delay: 0.4s;
 }
 
+.childhood-fundal-scroll-page .childhood-fundal-page-next-pill {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  padding: 14px 10px 14px;
+  border-radius: 999px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  background: #9d9d9db3;
+  color: #fff;
+}
+
+.childhood-fundal-scroll-page .childhood-fundal-page-next-pill__label {
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: 0.04em;
+  text-transform: lowercase;
+  text-align: center;
+}
+
+.childhood-fundal-scroll-page .childhood-fundal-page-next-pill__stack {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(-1px);
+}
+
+.childhood-fundal-scroll-page .childhood-fundal-page-next-pill__down,
+.childhood-fundal-scroll-page .childhood-fundal-page-next-pill__hand {
+  display: none;
+}
+
+.childhood-fundal-scroll-page .childhood-fundal-page-next-pill__chev {
+  width: 14px;
+  height: 14px;
+  margin-top: -5px;
+  border-right: 3px solid currentColor;
+  border-bottom: 3px solid currentColor;
+  transform: rotate(45deg);
+  animation: fundalArrowGrayShift 1.2s linear infinite;
+}
+
+.childhood-fundal-scroll-page
+  .childhood-fundal-page-next-pill__chev:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.childhood-fundal-scroll-page
+  .childhood-fundal-page-next-pill__chev:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
 .childhood-fundal-scroll-page .childhood-fundal-stage-replay-btn {
   position: absolute;
   left: auto;
@@ -2702,6 +2769,11 @@ select.onb-input.has-value + .onb-select-caret {
     height: 75px;
   }
 
+  .childhood-fundal-scroll-page .childhood-fundal-scroll-down-arrow--page {
+    width: 76px;
+    height: 118px;
+  }
+
   .childhood-fundal-scroll-page .childhood-fundal-scroll-down-arrow__chev {
     width: 19.5px;
     height: 19.5px;
@@ -2721,6 +2793,47 @@ select.onb-input.has-value + .onb-select-caret {
   .childhood-fundal-scroll-page .childhood-fundal-stage-replay-btn {
     width: 54px;
     height: 54px;
+  }
+
+  .childhood-fundal-scroll-page .childhood-fundal-scroll-down-arrow--page {
+    width: 86px;
+    height: 128px;
+  }
+
+  .childhood-fundal-scroll-page .childhood-fundal-page-next-pill {
+    padding: 14px 10px 16px;
+    gap: 10px;
+  }
+
+  .childhood-fundal-scroll-page .childhood-fundal-page-next-pill__stack {
+    width: 56px;
+    height: 58px;
+    transform: none;
+  }
+
+  .childhood-fundal-scroll-page .childhood-fundal-page-next-pill__chev {
+    display: none;
+  }
+
+  .childhood-fundal-scroll-page .childhood-fundal-page-next-pill__down {
+    display: block;
+    position: absolute;
+    left: 50%;
+    top: 2px;
+    width: 20px;
+    height: auto;
+    transform: translateX(-50%);
+  }
+
+  .childhood-fundal-scroll-page .childhood-fundal-page-next-pill__hand {
+    display: block;
+    position: absolute;
+    left: 77%;
+    bottom: -2px;
+    width: 73px;
+    height: auto;
+    transform: translateX(-50%);
+    animation: vsHandFloatUp 1.45s ease-in-out infinite;
   }
 }
 

@@ -4818,6 +4818,53 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
   animation: guestModalFadeOut 0.25s ease-in forwards;
 }
 
+body[data-experimental-miniapp-notice-open="true"] {
+  overflow: hidden;
+}
+
+#experimentalMiniAppNoticeOverlay[hidden] {
+  display: none;
+}
+
+#experimentalMiniAppNoticeOverlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  z-index: 10002;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  animation: guestModalFadeIn 0.3s ease-out;
+}
+
+.experimental-miniapp-modal.guest-modal {
+  width: min(90vw, 420px);
+  max-width: 420px;
+  padding: 20px 20px 18px;
+}
+
+.experimental-miniapp-modal__title {
+  margin: 0 0 12px;
+  font-size: clamp(16px, 4.6vw, 18px);
+  line-height: 1.25;
+  white-space: nowrap;
+}
+
+.experimental-miniapp-modal__text {
+  margin: 0 0 20px;
+  font-size: 15px;
+  line-height: 1.55;
+  white-space: pre-line;
+}
+
+.experimental-miniapp-modal__cta {
+  width: 100%;
+  min-height: 44px;
+}
+
 /* === Location Button Animations === */
 .check-location-btn.checking-location {
   background-color: #e41e26 !important; /* Use !important to override existing styles */

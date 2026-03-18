@@ -1,3 +1,4 @@
+import { loadPage } from "./navigation.js";
 import { fetchDictionary, get, getLanguage } from "./i18n.js";
 
 const LOTTIE_SRC = "/vendor/lottie.min.js";
@@ -711,6 +712,135 @@ ROUTE_CONFIG[FUNDAL_REFLEX_EXAMINATION_SCROLL_ROUTE] =
     FUNDAL_REFLEX_EXAMINATION_SECTION_SOURCES,
   );
 
+const FUNDAL_PAGE_ROUTE_SEQUENCE = [
+  "childhoodFundalPreparation",
+  "childhoodFundalExamination",
+  "childhoodFundalNewbornEyesOpen",
+  "childhoodFundalNewbornEyesClosed",
+  "childhoodFundalUnclearFindings",
+  "childhoodFundalPossibleFinding",
+  "childhoodFundalAfterExamination",
+];
+
+let pendingFundalPageEntry = null;
+let fundalPageNavigationInFlight = false;
+
+function findFundalPageSequenceIndex(routeName) {
+  const normalized = String(routeName || "").trim();
+  if (!normalized) return -1;
+  return FUNDAL_PAGE_ROUTE_SEQUENCE.indexOf(normalized);
+}
+
+function getAdjacentFundalRoute(routeName, direction = 1) {
+  const currentIndex = findFundalPageSequenceIndex(routeName);
+  if (currentIndex < 0) return "";
+
+  const step = direction < 0 ? -1 : 1;
+  return FUNDAL_PAGE_ROUTE_SEQUENCE[currentIndex + step] || "";
+}
+
+function hasPreviousFundalRoute(routeName) {
+  return !!getAdjacentFundalRoute(routeName, -1);
+}
+
+function hasNextFundalRoute(routeName) {
+  return !!getAdjacentFundalRoute(routeName, 1);
+}
+
+function rememberFundalWorkshopFolderRestore() {
+  try {
+    sessionStorage.setItem("childhoodWorkshop:restoreOpenFolder", "1");
+  } catch {}
+}
+
+function setPendingFundalPageEntry(routeName, edge) {
+  const normalizedRoute = String(routeName || "").trim();
+  const normalizedEdge = String(edge || "")
+    .trim()
+    .toLowerCase();
+  if (!normalizedRoute || !normalizedEdge) {
+    pendingFundalPageEntry = null;
+    return;
+  }
+
+  pendingFundalPageEntry = {
+    routeName: normalizedRoute,
+    edge: normalizedEdge === "end" ? "end" : "start",
+  };
+}
+
+function consumePendingFundalPageEntry(routeName) {
+  const pending = pendingFundalPageEntry;
+  if (!pending) return null;
+
+  if (
+    String(pending.routeName || "").trim() !== String(routeName || "").trim()
+  ) {
+    return null;
+  }
+
+  pendingFundalPageEntry = null;
+  return pending;
+}
+
+function showFundalPageWithFallbackAndEvent(pageId) {
+  const normalizedPageId = String(pageId || "").trim();
+  if (!normalizedPageId) return false;
+
+  const pageEl = document.getElementById(normalizedPageId);
+  if (!pageEl) return false;
+
+  const hasShowPage = typeof window.showPage === "function";
+  const needsManualDispatch =
+    !hasShowPage || window.__pageShownPatched !== true;
+
+  if (hasShowPage) {
+    window.showPage(normalizedPageId);
+  } else {
+    document.querySelectorAll(".page").forEach((candidate) => {
+      candidate.style.display = "none";
+    });
+    pageEl.style.display = "block";
+  }
+
+  if (needsManualDispatch) {
+    document.dispatchEvent(
+      new CustomEvent("page:shown", { detail: { id: normalizedPageId } }),
+    );
+  }
+
+  return true;
+}
+
+async function navigateAdjacentFundalPage(routeName, direction = 1) {
+  if (fundalPageNavigationInFlight) return false;
+
+  const targetRoute = getAdjacentFundalRoute(routeName, direction);
+  if (!targetRoute) return false;
+
+  const targetCfg = resolveFundalRouteConfig(targetRoute);
+  if (!targetCfg?.pageId) return false;
+
+  fundalPageNavigationInFlight = true;
+  rememberFundalWorkshopFolderRestore();
+  setPendingFundalPageEntry(targetRoute, direction < 0 ? "end" : "start");
+
+  try {
+    await loadPage(targetRoute);
+    showFundalPageWithFallbackAndEvent(targetCfg.pageId);
+    return true;
+  } catch (err) {
+    pendingFundalPageEntry = null;
+    console.error(
+      "[fundalScroll] failed to navigate between fundal pages",
+      err,
+    );
+    return false;
+  } finally {
+    fundalPageNavigationInFlight = false;
+  }
+}
+
 const FUNDAL_TEXT_KEYS = new Map([
   ["Wash hands", "i18nExtra.fundal_reflex.wash_hands"],
   [
@@ -827,6 +957,7 @@ const FUNDAL_TEXT_KEYS = new Map([
     "i18nExtra.fundal_reflex.explain_findings_make_plan",
   ],
   ["Repeat hand wash", "i18nExtra.fundal_reflex.repeat_hand_wash"],
+  ["Next page", "i18nExtra.fundal_reflex.next_page"],
   ["Replay", "i18nExtra.fundal_reflex.replay"],
 ]);
 
@@ -1222,20 +1353,77 @@ function renderSegmentTextLine(lineEl, text) {
   });
 }
 
+function createStageAdvanceArrowMarkup() {
+  return (
+    '<div class="childhood-fundal-scroll-down-arrow__stack">' +
+    '<span class="childhood-fundal-scroll-down-arrow__chev"></span>' +
+    '<span class="childhood-fundal-scroll-down-arrow__chev"></span>' +
+    '<span class="childhood-fundal-scroll-down-arrow__chev"></span>' +
+    "</div>"
+  );
+}
+
+function createFundalNextPagePillMarkup() {
+  return (
+    '<span class="childhood-fundal-page-next-pill">' +
+    '<span class="childhood-fundal-page-next-pill__label"></span>' +
+    '<span class="childhood-fundal-page-next-pill__stack">' +
+    '<img class="childhood-fundal-page-next-pill__down" src="/scrolly/workshop/childhood/eyesbrain/down.png" alt="" aria-hidden="true" loading="eager" draggable="false">' +
+    '<img class="childhood-fundal-page-next-pill__hand" src="/scrolly/workshop/childhood/eyesbrain/hand.png" alt="" aria-hidden="true" loading="eager" draggable="false">' +
+    '<span class="childhood-fundal-page-next-pill__chev"></span>' +
+    '<span class="childhood-fundal-page-next-pill__chev"></span>' +
+    '<span class="childhood-fundal-page-next-pill__chev"></span>' +
+    "</span>" +
+    "</span>"
+  );
+}
+
+function setStageAdvanceControlAppearance(
+  buttonEl,
+  mode = "stage",
+  label = "",
+) {
+  if (!buttonEl) return;
+
+  const nextMode =
+    String(mode || "stage")
+      .trim()
+      .toLowerCase() === "page"
+      ? "page"
+      : "stage";
+  const safeLabel = String(label || "").trim();
+
+  buttonEl.dataset.fundalAdvanceMode = nextMode;
+  buttonEl.classList.toggle(
+    "childhood-fundal-scroll-down-arrow--page",
+    nextMode === "page",
+  );
+
+  if (nextMode === "page") {
+    buttonEl.innerHTML = createFundalNextPagePillMarkup();
+    const labelEl = buttonEl.querySelector(
+      ".childhood-fundal-page-next-pill__label",
+    );
+    if (labelEl) {
+      labelEl.textContent = safeLabel || "Next page";
+    }
+    buttonEl.setAttribute("aria-label", safeLabel || "Next page");
+    buttonEl.title = safeLabel || "Next page";
+    return;
+  }
+
+  buttonEl.innerHTML = createStageAdvanceArrowMarkup();
+  buttonEl.setAttribute("aria-label", safeLabel || "Next animation");
+  buttonEl.title = safeLabel || "Next animation";
+}
+
 function createDownArrowElement() {
   const downArrow = document.createElement("button");
   downArrow.type = "button";
   downArrow.className = "childhood-fundal-scroll-down-arrow";
   downArrow.dataset.fundalStageNextBtn = "1";
-  downArrow.setAttribute("aria-label", "Next animation");
-  downArrow.title = "Next animation";
   downArrow.disabled = true;
-  downArrow.innerHTML =
-    '<div class="childhood-fundal-scroll-down-arrow__stack">' +
-    '<span class="childhood-fundal-scroll-down-arrow__chev"></span>' +
-    '<span class="childhood-fundal-scroll-down-arrow__chev"></span>' +
-    '<span class="childhood-fundal-scroll-down-arrow__chev"></span>' +
-    "</div>";
+  setStageAdvanceControlAppearance(downArrow, "stage", "Next animation");
   return downArrow;
 }
 
@@ -6214,7 +6402,13 @@ function initializeSegmentScrollMode(cfg, page, stages) {
   };
 }
 
-function initializeStageAutoplayMode(routeName, cfg, page, stages) {
+function initializeStageAutoplayMode(
+  routeName,
+  cfg,
+  page,
+  stages,
+  entryContext = null,
+) {
   const pageContent = document.getElementById("page-content");
   const overscrollRestore = {
     page: page.style.overscrollBehaviorY,
@@ -6222,9 +6416,14 @@ function initializeStageAutoplayMode(routeName, cfg, page, stages) {
     doc: document.documentElement.style.overscrollBehaviorY,
   };
   const forwardScrollKeys = new Set(["ArrowDown", "PageDown", "End"]);
-  const shouldRestoreCompletedRoute = isStoredChildhoodWorkshopRouteComplete(
-    cfg.pageId,
-  );
+  const crossPageEntryEdge = String(entryContext?.edge || "")
+    .trim()
+    .toLowerCase();
+  const forceStartEntry = crossPageEntryEdge === "start";
+  const forceEndEntry = crossPageEntryEdge === "end";
+  const shouldRestoreCompletedRoute =
+    forceEndEntry ||
+    (!forceStartEntry && isStoredChildhoodWorkshopRouteComplete(cfg.pageId));
 
   let routeCompleteDispatched = false;
   let firstStageStartQueued = shouldRestoreCompletedRoute;
@@ -6233,6 +6432,7 @@ function initializeStageAutoplayMode(routeName, cfg, page, stages) {
   let lockedWindowScrollTop = 0;
   let lockedPageContentScrollTop = 0;
   let playbackTouchLastY = null;
+  let boundaryTouchLastY = null;
 
   const getTopbarHeight = () => {
     const topbar = page.querySelector(".eyes-topbar");
@@ -6346,7 +6546,7 @@ function initializeStageAutoplayMode(routeName, cfg, page, stages) {
       arrowEl.addEventListener("click", (event) => {
         event.preventDefault();
         event.stopPropagation();
-        scrollToNextStage(state);
+        void handleAdvanceControlClick(state);
       });
     }
     hideStageControls(state);
@@ -6359,6 +6559,22 @@ function initializeStageAutoplayMode(routeName, cfg, page, stages) {
 
   function hasNextStage(state) {
     return Number(state?.fileIndex) < states.length - 1;
+  }
+
+  function hasPreviousFundalPage() {
+    return hasPreviousFundalRoute(routeName);
+  }
+
+  function hasNextFundalPage() {
+    return hasNextFundalRoute(routeName);
+  }
+
+  function shouldShowNextPageAdvanceControl(state) {
+    return !hasNextStage(state) && hasNextFundalPage();
+  }
+
+  function hasAdvanceControl(state) {
+    return hasNextStage(state) || shouldShowNextPageAdvanceControl(state);
   }
 
   function areAllStagesComplete() {
@@ -6505,6 +6721,11 @@ function initializeStageAutoplayMode(routeName, cfg, page, stages) {
     }
     const arrowEl = ensureControllerDownArrow(state);
     if (arrowEl) {
+      setStageAdvanceControlAppearance(
+        arrowEl,
+        "stage",
+        translateFundalText("Next animation") || "Next animation",
+      );
       arrowEl.classList.remove("is-visible");
       arrowEl.disabled = true;
     }
@@ -6537,15 +6758,29 @@ function initializeStageAutoplayMode(routeName, cfg, page, stages) {
     }
     const arrowEl = ensureControllerDownArrow(state);
     if (arrowEl) {
-      arrowEl.disabled = !hasNextStage(state);
-      arrowEl.classList.toggle("is-visible", hasNextStage(state));
+      const showAdvance = hasAdvanceControl(state);
+      if (shouldShowNextPageAdvanceControl(state)) {
+        setStageAdvanceControlAppearance(
+          arrowEl,
+          "page",
+          translateFundalText("Next page") || "Next page",
+        );
+      } else {
+        setStageAdvanceControlAppearance(
+          arrowEl,
+          "stage",
+          translateFundalText("Next animation") || "Next animation",
+        );
+      }
+      arrowEl.disabled = !showAdvance;
+      arrowEl.classList.toggle("is-visible", showAdvance);
     }
     updateStageControlAnchors(state);
   }
 
   function hideCompletedOffCenterDownArrows() {
     states.forEach((state) => {
-      if (!state?.completed || !hasNextStage(state)) return;
+      if (!state?.completed || !hasAdvanceControl(state)) return;
       const arrowEl = ensureControllerDownArrow(state);
       if (!arrowEl?.classList?.contains("is-visible")) return;
       if (isStateNearViewportCenter(state)) return;
@@ -6679,7 +6914,11 @@ function initializeStageAutoplayMode(routeName, cfg, page, stages) {
       restoreCompletedStageState(state);
     });
 
-    scrollToFirstStageStart();
+    if (forceEndEntry) {
+      scrollToLastStageEntry();
+    } else {
+      scrollToFirstStageStart();
+    }
     updateAllStageControlAnchors();
     requestAnimationFrame(() => {
       updateAllStageControlAnchors();
@@ -6747,11 +6986,10 @@ function initializeStageAutoplayMode(routeName, cfg, page, stages) {
     setScrollHostTop(targetTop, metrics);
   }
 
-  function scrollToFirstStageStart() {
+  function getFirstStageStartScrollTop(metrics = getScrollHostMetrics()) {
     const firstStage = stages[0];
-    if (!firstStage) return;
+    if (!firstStage) return 0;
 
-    const metrics = getScrollHostMetrics();
     const anchorEl = resolveFirstStageAnchorElement(firstStage, cfg);
     const topbarHeight = getTopbarHeight();
     const extraTopGap =
@@ -6761,9 +6999,19 @@ function initializeStageAutoplayMode(routeName, cfg, page, stages) {
           : resolveFirstFileExtraTopGap(cfg)
         : 0;
     const absoluteTop = getAbsoluteTopForStage(anchorEl, metrics);
-    const targetTop = Math.max(0, absoluteTop - topbarHeight - extraTopGap);
+    return Math.max(0, absoluteTop - topbarHeight - extraTopGap);
+  }
 
+  function scrollToFirstStageStart() {
+    const metrics = getScrollHostMetrics();
+    const targetTop = getFirstStageStartScrollTop(metrics);
     setScrollHostTop(targetTop, metrics);
+  }
+
+  function scrollToLastStageEntry() {
+    const lastState = states[states.length - 1];
+    if (!lastState?.stage) return;
+    centerStageForPlayback(lastState.stage);
   }
 
   function alignStageForPlayback(state) {
@@ -6792,6 +7040,16 @@ function initializeStageAutoplayMode(routeName, cfg, page, stages) {
       updateAllStageControlAnchors();
       maybeStartEligibleStage();
     });
+  }
+
+  async function handleAdvanceControlClick(state) {
+    if (!state) return;
+    if (hasNextStage(state)) {
+      scrollToNextStage(state);
+      return;
+    }
+    if (!shouldShowNextPageAdvanceControl(state)) return;
+    await navigateAdjacentFundalPage(routeName, 1);
   }
 
   function rememberLockedScrollPosition() {
@@ -6871,6 +7129,136 @@ function initializeStageAutoplayMode(routeName, cfg, page, stages) {
       return resolvePlaybackTouchDirection(event) > 0;
     }
     return false;
+  }
+
+  function rememberBoundaryTouchPoint(event) {
+    if (!event?.touches || event.touches.length !== 1) {
+      boundaryTouchLastY = null;
+      return;
+    }
+    const nextY = Number(event.touches[0]?.clientY);
+    boundaryTouchLastY = Number.isFinite(nextY) ? nextY : null;
+  }
+
+  function clearBoundaryTouchPoint() {
+    boundaryTouchLastY = null;
+  }
+
+  function resolveBoundaryTouchDirection(event) {
+    const currentY = Number(event?.touches?.[0]?.clientY);
+    if (!Number.isFinite(currentY)) return 0;
+    const previousY = boundaryTouchLastY;
+    boundaryTouchLastY = currentY;
+    if (!Number.isFinite(previousY)) return 0;
+    if (Math.abs(currentY - previousY) < 0.5) return 0;
+    return currentY < previousY ? 1 : -1;
+  }
+
+  function resolveBoundaryKeyDirection(event) {
+    const key = String(event?.key || "");
+    const isSpaceBackward =
+      (key === " " || key === "Spacebar") && event.shiftKey === true;
+    const isSpaceForward =
+      (key === " " || key === "Spacebar") && event.shiftKey !== true;
+    if (key === "ArrowUp" || key === "PageUp" || key === "Home") return -1;
+    if (isSpaceBackward) return -1;
+    if (
+      key === "ArrowDown" ||
+      key === "PageDown" ||
+      key === "End" ||
+      isSpaceForward
+    ) {
+      return 1;
+    }
+    return 0;
+  }
+
+  function isAtFirstStageBoundary(metrics = getScrollHostMetrics()) {
+    const threshold = 10;
+    return (
+      metrics.scrollTop <= getFirstStageStartScrollTop(metrics) + threshold
+    );
+  }
+
+  function isAdvanceControlVisibleInViewport(
+    state,
+    metrics = getScrollHostMetrics(),
+  ) {
+    if (!state) return false;
+    const arrowEl = ensureControllerDownArrow(state);
+    const rect = arrowEl?.getBoundingClientRect?.();
+    if (
+      !rect ||
+      arrowEl.disabled ||
+      !arrowEl.classList.contains("is-visible")
+    ) {
+      return false;
+    }
+
+    const viewportTop = metrics.type === "page" ? metrics.topOffset : 0;
+    const viewportBottom = viewportTop + (metrics.viewportHeight || 0);
+    return rect.bottom > viewportTop + 8 && rect.top < viewportBottom - 8;
+  }
+
+  function isAtLastStageBoundary(metrics = getScrollHostMetrics()) {
+    const lastState = states[states.length - 1];
+    if (!lastState?.stage) return false;
+    const threshold = 18;
+    return (
+      metrics.scrollTop >=
+      getCenteredScrollTopForStage(lastState.stage, metrics) - threshold
+    );
+  }
+
+  function maybeNavigateAcrossFundalPages(direction, event) {
+    if (fundalPageNavigationInFlight) return false;
+    if (direction < 0) {
+      if (!hasPreviousFundalPage()) return false;
+      const firstState = states[0];
+      if (!firstState?.ready) return false;
+      if (!isAtFirstStageBoundary()) return false;
+      event?.preventDefault?.();
+      event?.stopPropagation?.();
+      void navigateAdjacentFundalPage(routeName, -1);
+      return true;
+    }
+
+    if (direction > 0) {
+      if (!hasNextFundalPage()) return false;
+      const lastState = states[states.length - 1];
+      if (!lastState?.ready || !lastState.completed || lastState.playing) {
+        return false;
+      }
+      const metrics = getScrollHostMetrics();
+      const pageAdvanceVisible =
+        shouldShowNextPageAdvanceControl(lastState) &&
+        isAdvanceControlVisibleInViewport(lastState, metrics);
+      if (!isAtLastStageBoundary(metrics) && !pageAdvanceVisible) return false;
+      event?.preventDefault?.();
+      event?.stopPropagation?.();
+      void navigateAdjacentFundalPage(routeName, 1);
+      return true;
+    }
+
+    return false;
+  }
+
+  function handleBoundaryWheel(event) {
+    const deltaY = Number(event?.deltaY);
+    if (!Number.isFinite(deltaY) || Math.abs(deltaY) < 0.5) return;
+    maybeNavigateAcrossFundalPages(deltaY > 0 ? 1 : -1, event);
+  }
+
+  function handleBoundaryTouchMove(event) {
+    const direction = resolveBoundaryTouchDirection(event);
+    if (!direction) return;
+    maybeNavigateAcrossFundalPages(direction, event);
+  }
+
+  function handleBoundaryKeyDown(event) {
+    const direction = resolveBoundaryKeyDirection(event);
+    if (!direction) return;
+    maybeNavigateAcrossFundalPages(direction, event);
   }
 
   function preventPlaybackScroll(event) {
@@ -7336,6 +7724,22 @@ function initializeStageAutoplayMode(routeName, cfg, page, stages) {
       if (replayBtn) {
         setStageReplayButtonLabel(replayBtn, translateFundalText("Replay"));
       }
+      const arrowEl = ensureControllerDownArrow(state);
+      if (arrowEl) {
+        if (shouldShowNextPageAdvanceControl(state)) {
+          setStageAdvanceControlAppearance(
+            arrowEl,
+            "page",
+            translateFundalText("Next page") || "Next page",
+          );
+        } else {
+          setStageAdvanceControlAppearance(
+            arrowEl,
+            "stage",
+            translateFundalText("Next animation") || "Next animation",
+          );
+        }
+      }
       restoreTranslatedPlaybackText(state);
     });
   }
@@ -7521,6 +7925,35 @@ function initializeStageAutoplayMode(routeName, cfg, page, stages) {
   });
 
   cleanupLegacyTopbarReplay(page);
+  window.addEventListener("touchstart", rememberBoundaryTouchPoint, {
+    passive: true,
+  });
+  pageContent?.addEventListener("touchstart", rememberBoundaryTouchPoint, {
+    passive: true,
+  });
+  window.addEventListener("touchend", clearBoundaryTouchPoint, {
+    passive: true,
+  });
+  pageContent?.addEventListener("touchend", clearBoundaryTouchPoint, {
+    passive: true,
+  });
+  window.addEventListener("touchcancel", clearBoundaryTouchPoint, {
+    passive: true,
+  });
+  pageContent?.addEventListener("touchcancel", clearBoundaryTouchPoint, {
+    passive: true,
+  });
+  window.addEventListener("wheel", handleBoundaryWheel, { passive: false });
+  pageContent?.addEventListener("wheel", handleBoundaryWheel, {
+    passive: false,
+  });
+  window.addEventListener("touchmove", handleBoundaryTouchMove, {
+    passive: false,
+  });
+  pageContent?.addEventListener("touchmove", handleBoundaryTouchMove, {
+    passive: false,
+  });
+  window.addEventListener("keydown", handleBoundaryKeyDown);
   window.addEventListener("scroll", onViewportChange, { passive: true });
   pageContent?.addEventListener("scroll", onViewportChange, { passive: true });
   window.addEventListener("resize", onViewportChange, { passive: true });
@@ -7537,6 +7970,21 @@ function initializeStageAutoplayMode(routeName, cfg, page, stages) {
     observer: null,
     removeInputListeners: () => {
       setPlaybackScrollLocked(false);
+      clearBoundaryTouchPoint();
+      window.removeEventListener("touchstart", rememberBoundaryTouchPoint);
+      pageContent?.removeEventListener(
+        "touchstart",
+        rememberBoundaryTouchPoint,
+      );
+      window.removeEventListener("touchend", clearBoundaryTouchPoint);
+      pageContent?.removeEventListener("touchend", clearBoundaryTouchPoint);
+      window.removeEventListener("touchcancel", clearBoundaryTouchPoint);
+      pageContent?.removeEventListener("touchcancel", clearBoundaryTouchPoint);
+      window.removeEventListener("wheel", handleBoundaryWheel);
+      pageContent?.removeEventListener("wheel", handleBoundaryWheel);
+      window.removeEventListener("touchmove", handleBoundaryTouchMove);
+      pageContent?.removeEventListener("touchmove", handleBoundaryTouchMove);
+      window.removeEventListener("keydown", handleBoundaryKeyDown);
       window.removeEventListener("scroll", onViewportChange);
       pageContent?.removeEventListener("scroll", onViewportChange);
       window.removeEventListener("resize", onViewportChange);
@@ -7611,6 +8059,7 @@ export function prewarmChildhoodFundalRouteAssets(
 export async function initializeChildhoodFundalReflexScrollPage(routeName) {
   const cfg = resolveFundalRouteConfig(routeName);
   if (!cfg) return;
+  const pendingEntry = consumePendingFundalPageEntry(routeName);
 
   const page = document.getElementById(cfg.pageId);
   if (!page) return;
@@ -7658,7 +8107,13 @@ export async function initializeChildhoodFundalReflexScrollPage(routeName) {
 
   if (cfg.playMode === "stageAutoplay") {
     await i18nReadyPromise;
-    activeSession = initializeStageAutoplayMode(routeName, cfg, page, stages);
+    activeSession = initializeStageAutoplayMode(
+      routeName,
+      cfg,
+      page,
+      stages,
+      pendingEntry,
+    );
     return;
   }
 
