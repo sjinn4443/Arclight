@@ -53,6 +53,76 @@ function formatNumber(value) {
   return Number.isFinite(value) ? value.toFixed(4) : "0";
 }
 
+function getVideoPreviewTime(video) {
+  const duration = Number(video?.duration);
+  if (!Number.isFinite(duration) || duration <= 0.2) return null;
+  if (duration > 1.2) return Math.min(0.8, duration - 0.1);
+  return Math.min(Math.max(duration * 0.35, 0.18), duration - 0.08);
+}
+
+function captureVideoPoster(video) {
+  const width = Math.max(1, Math.floor(video.videoWidth || 0));
+  const height = Math.max(1, Math.floor(video.videoHeight || 0));
+  if (!width || !height) return false;
+
+  const canvas = document.createElement("canvas");
+  canvas.width = width;
+  canvas.height = height;
+  const context = canvas.getContext("2d");
+  if (!context) return false;
+
+  try {
+    context.drawImage(video, 0, 0, width, height);
+    video.setAttribute("poster", canvas.toDataURL("image/jpeg", 0.86));
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function prepareVideoPoster(video) {
+  if (!video) return;
+  if (video.dataset.posterPrepared === "1") return;
+  if (video.dataset.posterPreparing === "1") return;
+
+  const previewTime = getVideoPreviewTime(video);
+  if (previewTime == null) return;
+
+  video.dataset.posterPreparing = "1";
+  let phase = "preview";
+
+  const cleanup = () => {
+    video.removeEventListener("seeked", handleSeeked);
+    delete video.dataset.posterPreparing;
+  };
+
+  const handleSeeked = () => {
+    if (phase === "preview") {
+      captureVideoPoster(video);
+      video.dataset.posterPrepared = "1";
+      phase = "reset";
+
+      try {
+        video.pause();
+        video.currentTime = 0;
+      } catch {
+        cleanup();
+      }
+      return;
+    }
+
+    cleanup();
+  };
+
+  video.addEventListener("seeked", handleSeeked);
+
+  try {
+    video.currentTime = previewTime;
+  } catch {
+    cleanup();
+  }
+}
+
 function setMotionState(
   element,
   {
@@ -114,7 +184,7 @@ function renderScene(elements, progress, prefersReducedMotion) {
       initialLeft: 50,
       initialTop: 52,
       finalLeft: 31,
-      finalTop: 50.5,
+      finalTop: 47.8,
       finalScale: 0.73,
     },
     {
@@ -124,7 +194,7 @@ function renderScene(elements, progress, prefersReducedMotion) {
       initialLeft: 50,
       initialTop: 78,
       finalLeft: 31,
-      finalTop: 84,
+      finalTop: 72.6,
       finalScale: 0.73,
     },
   ];
@@ -148,70 +218,77 @@ function renderScene(elements, progress, prefersReducedMotion) {
       link: elements.linkCataract,
       start: 0.58,
       end: 0.65,
-      cardLeft: 79.5,
-      cardTop: 17.5,
-      linkLeft: 57.5,
-      linkTop: 20.1,
+      cardLeft: 74.8,
+      cardTop: 15.5,
+      linkLeft: 53.5,
+      linkTop: 16.1,
+      linkScale: 1,
     },
     {
       element: elements.cardNeedGlasses,
       link: elements.linkNeedGlasses,
       start: 0.64,
       end: 0.71,
-      cardLeft: 79.5,
-      cardTop: 30.5,
+      cardLeft: 74.8,
+      cardTop: 24.2,
       linkLeft: 57.8,
-      linkTop: 31.3,
+      linkTop: 24,
+      linkScale: 1.4,
     },
     {
       element: elements.cardCornealScar,
       link: elements.linkCornealScar,
       start: 0.7,
       end: 0.77,
-      cardLeft: 79.5,
-      cardTop: 43.8,
-      linkLeft: 57.5,
-      linkTop: 42.8,
+      cardLeft: 74.8,
+      cardTop: 32.2,
+      linkLeft: 59.5,
+      linkTop: 31.8,
+      linkScale: 1.2,
     },
     {
       element: elements.cardRetinoblastoma,
       link: elements.linkRetinoblastoma,
       start: 0.76,
       end: 0.83,
-      cardLeft: 79.5,
-      cardTop: 50.8,
+      cardLeft: 74.8,
+      cardTop: 39.8,
       linkLeft: 57.5,
-      linkTop: 51.8,
+      linkTop: 40.8,
+      linkScale: 1,
     },
     {
       element: elements.cardRop,
       link: elements.linkRop,
       start: 0.82,
       end: 0.89,
-      cardLeft: 79.5,
-      cardTop: 63.4,
-      linkLeft: 57.8,
-      linkTop: 63.4,
+      cardLeft: 74.8,
+      cardTop: 47.8,
+      linkLeft: 53.8,
+      linkTop: 48.2,
+      linkScale: 1.4,
     },
     {
       element: elements.cardMalnourishment,
       link: elements.linkMalnourishment,
       start: 0.88,
       end: 0.95,
-      cardLeft: 79.5,
-      cardTop: 76,
-      linkLeft: 57.5,
-      linkTop: 75,
+      cardLeft: 74.8,
+      cardTop: 55.8,
+      linkLeft: 56.5,
+      linkTop: 55.5,
+      linkScale: 1.3,
     },
     {
       element: elements.cardProblems,
       link: elements.linkProblems,
       start: 0.94,
       end: 1,
-      cardLeft: 79.5,
-      cardTop: 90.6,
-      linkLeft: 57.8,
-      linkTop: 90.6,
+      cardLeft: 74.8,
+      cardTop: 72.8,
+      linkLeft: 56.6,
+      linkTop: 73.2,
+      linkScale: 1,
     },
   ];
 
@@ -230,7 +307,7 @@ function renderScene(elements, progress, prefersReducedMotion) {
       leftPercent: config.linkLeft,
       topPercent: config.linkTop,
       x: lerp(20, 0, reveal),
-      scale: lerp(0.96, 1, reveal),
+      scale: lerp(0.96, config.linkScale ?? 1, reveal),
     });
   });
 }
@@ -325,6 +402,22 @@ export function initializeVisualImpairment() {
       listen(img, "load", scheduleRender, { once: true });
     });
 
+  const videos = page.querySelectorAll("video");
+  videos.forEach((video) => {
+    if (video.readyState >= 1) {
+      prepareVideoPoster(video);
+    } else {
+      listen(
+        video,
+        "loadedmetadata",
+        () => {
+          prepareVideoPoster(video);
+        },
+        { once: true },
+      );
+    }
+  });
+
   const intersectionRoot = scrollRoot === window ? null : scrollRoot;
   const revealTargets = page.querySelectorAll("[data-vi-reveal]");
   const revealPanels = page.querySelectorAll(".vi-detail-panel");
@@ -350,7 +443,6 @@ export function initializeVisualImpairment() {
     revealTargets.forEach((target) => target.classList.add("is-visible"));
   }
 
-  const videos = page.querySelectorAll("video");
   if ("IntersectionObserver" in window && videos.length) {
     videoObserver = new IntersectionObserver(
       (entries) => {
