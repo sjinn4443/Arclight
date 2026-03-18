@@ -6676,3 +6676,466 @@ Glaucoma history case study: match intermediate style
     box-shadow: none;
   }
 }
+
+#visualImpairmentPage {
+  --vi-scene-width: min(100vw, 430px);
+  background: #fff !important;
+}
+
+#visualImpairmentPage > .container.pupils-container {
+  background: #fff !important;
+}
+
+#visualImpairmentPage .eyes-topbar__icons {
+  position: relative;
+  left: 0;
+}
+
+#visualImpairmentPage .vi-scroll-wrap {
+  position: relative;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  background: #fff;
+  overflow: visible;
+}
+
+#visualImpairmentPage .vi-story {
+  position: relative;
+  height: 3200dvh;
+  background: #000;
+}
+
+#visualImpairmentPage .vi-story__sticky {
+  position: sticky;
+  top: 70px;
+  height: calc(100dvh - 82px);
+  display: grid;
+  place-items: center;
+  overflow: clip;
+  background: #000;
+}
+
+#visualImpairmentPage .vi-scene {
+  position: relative;
+  width: var(--vi-scene-width);
+  height: min(100%, 760px);
+  max-height: 760px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 18%, rgb(94 24 24 / 22%), transparent 32%),
+    #000;
+  isolation: isolate;
+}
+
+#visualImpairmentPage .vi-scroll-cue,
+#visualImpairmentPage .vi-node,
+#visualImpairmentPage .vi-link,
+#visualImpairmentPage .vi-card {
+  position: absolute;
+  left: var(--left, 50%);
+  top: var(--top, 50%);
+  opacity: var(--opacity, 0);
+  transform: translate3d(
+      calc(var(--origin-x, -50%) + var(--x, 0px)),
+      calc(var(--origin-y, -50%) + var(--y, 0px)),
+      0
+    )
+    scale(var(--scale, 1));
+  visibility: hidden;
+  will-change: transform, opacity;
+}
+
+#visualImpairmentPage .vi-scroll-cue {
+  --left: 0%;
+  --top: 62px;
+  --origin-x: 0%;
+  --origin-y: 0%;
+  position: fixed;
+  inset: auto 0 0 0;
+  width: 100vw;
+  height: calc(100dvh - 62px);
+  display: grid;
+  place-items: center;
+  background: rgb(24 24 24 / 64%);
+  color: #fff;
+  z-index: 1800;
+  pointer-events: none;
+}
+
+#visualImpairmentPage .vi-scroll-cue__pill {
+  box-sizing: border-box;
+  width: 76px;
+  height: 118px;
+  padding: 14px 10px 14px;
+  border-radius: 999px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  background: #9d9d9db3;
+}
+
+#visualImpairmentPage .vi-scroll-cue__label {
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: 0.04em;
+  text-transform: lowercase;
+  text-align: center;
+}
+
+#visualImpairmentPage .vi-scroll-cue__stack {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(-1px);
+}
+
+#visualImpairmentPage .vi-scroll-cue__down,
+#visualImpairmentPage .vi-scroll-cue__hand {
+  display: none;
+}
+
+#visualImpairmentPage .vi-scroll-cue__chev {
+  width: 14px;
+  height: 14px;
+  margin-top: -5px;
+  border-right: 3px solid currentColor;
+  border-bottom: 3px solid currentColor;
+  transform: rotate(45deg);
+  animation: viArrowShift 1.2s linear infinite;
+}
+
+#visualImpairmentPage .vi-scroll-cue__chev:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+#visualImpairmentPage .vi-scroll-cue__chev:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+#visualImpairmentPage .vi-node {
+  width: var(--width, 58%);
+  z-index: 2;
+}
+
+#visualImpairmentPage .vi-node img,
+#visualImpairmentPage .vi-link img,
+#visualImpairmentPage .vi-card img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+#visualImpairmentPage .vi-node__label {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 16%;
+  color: #fff;
+  font-size: clamp(18px, 4.8vw, 28px);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+  text-align: center;
+}
+
+#visualImpairmentPage .vi-node--light,
+#visualImpairmentPage .vi-node--retina,
+#visualImpairmentPage .vi-node--brain {
+  --width: 60%;
+}
+
+#visualImpairmentPage .vi-link {
+  z-index: 3;
+}
+
+#visualImpairmentPage .vi-link--light-top,
+#visualImpairmentPage .vi-link--retina-top,
+#visualImpairmentPage .vi-link--light-bottom,
+#visualImpairmentPage .vi-link--retina-bottom {
+  width: 21%;
+}
+
+#visualImpairmentPage .vi-link--light-mid,
+#visualImpairmentPage .vi-link--retina-mid {
+  width: 18%;
+}
+
+#visualImpairmentPage .vi-link--brain {
+  width: 18%;
+  height: 0;
+  border-top: 6px dashed #de5555;
+}
+
+#visualImpairmentPage .vi-card {
+  width: var(--width, 32%);
+  z-index: 4;
+}
+
+#visualImpairmentPage .vi-card__label {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 14px 18px;
+  color: #fff;
+  font-size: clamp(13px, 3.7vw, 18px);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  text-align: center;
+}
+
+#visualImpairmentPage .vi-card--problems {
+  --width: 32%;
+}
+
+#visualImpairmentPage .vi-card__label--stack {
+  justify-items: start;
+  align-content: center;
+  padding: 22px 22px 22px 24px;
+  font-size: clamp(12px, 3.35vw, 17px);
+  line-height: 1.34;
+  text-align: left;
+}
+
+#visualImpairmentPage .vi-detail-panel {
+  position: relative;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  min-height: 100dvh;
+  padding: clamp(34px, 8vw, 56px) 0 clamp(72px, 12vw, 96px);
+  color: #fff;
+}
+
+#visualImpairmentPage .vi-detail-panel--light {
+  background: linear-gradient(
+    180deg,
+    #ececec 0%,
+    #6e6e6e 12%,
+    #181818 34%,
+    #050505 62%,
+    #575757 86%,
+    #ececec 100%
+  );
+}
+
+#visualImpairmentPage .vi-detail-panel--retina {
+  background: linear-gradient(
+    180deg,
+    #d8d8d8 0%,
+    #626262 13%,
+    #121212 35%,
+    #050505 66%,
+    #4c4c4c 88%,
+    #dfdfdf 100%
+  );
+}
+
+#visualImpairmentPage .vi-detail-panel--brain {
+  background: linear-gradient(
+    180deg,
+    #dadada 0%,
+    #5f5f5f 14%,
+    #111111 37%,
+    #050505 65%,
+    #565656 87%,
+    #e0e0e0 100%
+  );
+}
+
+#visualImpairmentPage .vi-detail-panel__inner {
+  width: min(100vw, 430px);
+  margin: 0 auto;
+  padding: 0 clamp(18px, 5vw, 26px);
+  box-sizing: border-box;
+}
+
+#visualImpairmentPage .vi-detail-panel__title {
+  margin: 0 0 clamp(32px, 8vw, 46px);
+  color: #fff;
+  font-size: clamp(24px, 6.2vw, 34px);
+  font-weight: 500;
+  line-height: 1.16;
+  letter-spacing: -0.03em;
+  text-align: center;
+}
+
+#visualImpairmentPage .vi-detail-block {
+  display: grid;
+  grid-template-columns: minmax(86px, 118px) 1fr;
+  gap: 16px;
+  align-items: start;
+  margin-bottom: clamp(26px, 8vw, 42px);
+}
+
+#visualImpairmentPage .vi-detail-block:last-child {
+  margin-bottom: 0;
+}
+
+#visualImpairmentPage .vi-detail-block__label {
+  padding-top: 4px;
+  color: #fff;
+  font-size: clamp(16px, 4.6vw, 22px);
+  font-weight: 500;
+  line-height: 1.24;
+  letter-spacing: -0.02em;
+}
+
+#visualImpairmentPage .vi-media-frame {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border-radius: 0;
+  background: rgb(255 255 255 / 92%);
+  box-shadow: 0 24px 60px rgb(0 0 0 / 18%);
+}
+
+#visualImpairmentPage .vi-media-frame--split {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
+}
+
+#visualImpairmentPage .vi-media-frame img,
+#visualImpairmentPage .vi-media-frame video {
+  width: 100%;
+  display: block;
+  border-radius: 18px;
+  background: #000;
+}
+
+#visualImpairmentPage .vi-media-frame--single {
+  gap: 0;
+}
+
+#visualImpairmentPage [data-vi-reveal] {
+  opacity: 0;
+  transform: translate3d(0, 28px, 0);
+  transition:
+    opacity 720ms ease,
+    transform 720ms ease;
+}
+
+#visualImpairmentPage [data-vi-reveal].is-visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+@keyframes viArrowShift {
+  0% {
+    color: #efefef;
+    opacity: 0.42;
+  }
+  40% {
+    color: #f9f9f9;
+    opacity: 1;
+  }
+  100% {
+    color: #cfcfcf;
+    opacity: 0.36;
+  }
+}
+
+@keyframes viHandFloatUp {
+  0% {
+    transform: translate3d(-50%, 18px, 0);
+    opacity: 0;
+  }
+  18% {
+    opacity: 1;
+  }
+  72% {
+    transform: translate3d(-50%, -10px, 0);
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(-50%, -20px, 0);
+    opacity: 0;
+  }
+}
+
+@media (max-width: 767px) {
+  #visualImpairmentPage .eyes-topbar__icons {
+    left: 0 !important;
+  }
+
+  #visualImpairmentPage .eyes-topbar .icon.menuBtn {
+    position: relative;
+    left: 22px !important;
+  }
+
+  #visualImpairmentPage .vi-story {
+    height: 2450dvh;
+  }
+
+  #visualImpairmentPage .vi-scroll-cue__pill {
+    width: 86px;
+    height: 128px;
+    padding: 14px 10px 16px;
+    gap: 10px;
+  }
+
+  #visualImpairmentPage .vi-scroll-cue__stack {
+    width: 56px;
+    height: 58px;
+    transform: none;
+  }
+
+  #visualImpairmentPage .vi-scroll-cue__chev {
+    display: none;
+  }
+
+  #visualImpairmentPage .vi-scroll-cue__down {
+    display: block;
+    position: absolute;
+    left: 50%;
+    top: 2px;
+    width: 20px;
+    height: auto;
+    transform: translateX(-50%);
+  }
+
+  #visualImpairmentPage .vi-scroll-cue__hand {
+    display: block;
+    position: absolute;
+    left: 77%;
+    bottom: -2px;
+    width: 73px;
+    height: auto;
+    transform: translateX(-50%);
+    animation: viHandFloatUp 1.45s ease-in-out infinite;
+  }
+}
+
+@media (min-width: 768px) {
+  #visualImpairmentPage .eyes-topbar__icons {
+    position: absolute;
+    top: 50%;
+    right: calc(22vw - 4px + 20px);
+    left: auto;
+    margin-left: 0;
+    transform: translateY(-50%);
+  }
+
+  #visualImpairmentPage .eyes-topbar .icon.menuBtn {
+    position: static;
+    left: auto !important;
+  }
+
+  #visualImpairmentPage .vi-story {
+    height: 2800dvh;
+  }
+
+  #visualImpairmentPage .vi-story__sticky {
+    top: 78px;
+    height: calc(100dvh - 98px);
+  }
+}

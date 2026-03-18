@@ -721,6 +721,7 @@ const FUNDAL_PAGE_ROUTE_SEQUENCE = [
   "childhoodFundalPossibleFinding",
   "childhoodFundalAfterExamination",
 ];
+const FUNDAL_CROSS_PAGE_BOUNDARY_LOCK_MS = 900;
 
 let pendingFundalPageEntry = null;
 let fundalPageNavigationInFlight = false;
@@ -753,7 +754,7 @@ function rememberFundalWorkshopFolderRestore() {
   } catch {}
 }
 
-function setPendingFundalPageEntry(routeName, edge) {
+function setPendingFundalPageEntry(routeName, edge, options = {}) {
   const normalizedRoute = String(routeName || "").trim();
   const normalizedEdge = String(edge || "")
     .trim()
@@ -766,6 +767,7 @@ function setPendingFundalPageEntry(routeName, edge) {
   pendingFundalPageEntry = {
     routeName: normalizedRoute,
     edge: normalizedEdge === "end" ? "end" : "start",
+    boundaryInputLockUntil: Number(options?.boundaryInputLockUntil || 0),
   };
 }
 
@@ -823,7 +825,9 @@ async function navigateAdjacentFundalPage(routeName, direction = 1) {
 
   fundalPageNavigationInFlight = true;
   rememberFundalWorkshopFolderRestore();
-  setPendingFundalPageEntry(targetRoute, direction < 0 ? "end" : "start");
+  setPendingFundalPageEntry(targetRoute, direction < 0 ? "end" : "start", {
+    boundaryInputLockUntil: Date.now() + FUNDAL_CROSS_PAGE_BOUNDARY_LOCK_MS,
+  });
 
   try {
     await loadPage(targetRoute);
@@ -6419,6 +6423,9 @@ function initializeStageAutoplayMode(
   const crossPageEntryEdge = String(entryContext?.edge || "")
     .trim()
     .toLowerCase();
+  let boundaryInputLockUntil = Number(
+    entryContext?.boundaryInputLockUntil || 0,
+  );
   const forceStartEntry = crossPageEntryEdge === "start";
   const forceEndEntry = crossPageEntryEdge === "end";
   const shouldRestoreCompletedRoute =
@@ -6781,6 +6788,7 @@ function initializeStageAutoplayMode(
   function hideCompletedOffCenterDownArrows() {
     states.forEach((state) => {
       if (!state?.completed || !hasAdvanceControl(state)) return;
+      if (shouldShowNextPageAdvanceControl(state)) return;
       const arrowEl = ensureControllerDownArrow(state);
       if (!arrowEl?.classList?.contains("is-visible")) return;
       if (isStateNearViewportCenter(state)) return;
@@ -7180,7 +7188,7 @@ function initializeStageAutoplayMode(
     );
   }
 
-  function isAdvanceControlVisibleInViewport(
+  function isAdvanceControlFullyVisibleInViewport(
     state,
     metrics = getScrollHostMetrics(),
   ) {
@@ -7197,7 +7205,7 @@ function initializeStageAutoplayMode(
 
     const viewportTop = metrics.type === "page" ? metrics.topOffset : 0;
     const viewportBottom = viewportTop + (metrics.viewportHeight || 0);
-    return rect.bottom > viewportTop + 8 && rect.top < viewportBottom - 8;
+    return rect.top >= viewportTop + 8 && rect.bottom <= viewportBottom - 8;
   }
 
   function isAtLastStageBoundary(metrics = getScrollHostMetrics()) {
@@ -7210,8 +7218,30 @@ function initializeStageAutoplayMode(
     );
   }
 
+  function hasReachedScrollHostLowerBoundary(metrics = getScrollHostMetrics()) {
+    if (metrics.type === "page" && pageContent) {
+      return (
+        Number(pageContent.scrollTop || 0) +
+          Number(pageContent.clientHeight || 0) >=
+        Number(pageContent.scrollHeight || 0) - 2
+      );
+    }
+
+    const doc = document.documentElement;
+    const body = document.body;
+    const scrollHeight = Math.max(
+      Number(doc?.scrollHeight || 0),
+      Number(body?.scrollHeight || 0),
+    );
+    return (
+      Number(metrics.scrollTop || 0) + Number(metrics.viewportHeight || 0) >=
+      scrollHeight - 2
+    );
+  }
+
   function maybeNavigateAcrossFundalPages(direction, event) {
     if (fundalPageNavigationInFlight) return false;
+    if (Date.now() < boundaryInputLockUntil) return false;
     if (direction < 0) {
       if (!hasPreviousFundalPage()) return false;
       const firstState = states[0];
@@ -7232,8 +7262,15 @@ function initializeStageAutoplayMode(
       const metrics = getScrollHostMetrics();
       const pageAdvanceVisible =
         shouldShowNextPageAdvanceControl(lastState) &&
-        isAdvanceControlVisibleInViewport(lastState, metrics);
-      if (!isAtLastStageBoundary(metrics) && !pageAdvanceVisible) return false;
+        isAdvanceControlFullyVisibleInViewport(lastState, metrics);
+
+      if (shouldShowNextPageAdvanceControl(lastState)) {
+        if (!pageAdvanceVisible) return false;
+        if (!hasReachedScrollHostLowerBoundary(metrics)) return false;
+      } else if (!isAtLastStageBoundary(metrics)) {
+        return false;
+      }
+
       event?.preventDefault?.();
       event?.stopPropagation?.();
       void navigateAdjacentFundalPage(routeName, 1);
@@ -8063,6 +8100,10 @@ export async function initializeChildhoodFundalReflexScrollPage(routeName) {
 
   const page = document.getElementById(cfg.pageId);
   if (!page) return;
+  page.classList.toggle(
+    "childhood-fundal-scroll-page--has-next-page",
+    hasNextFundalRoute(routeName),
+  );
 
   cleanupActiveSession();
 
