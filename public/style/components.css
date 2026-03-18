@@ -5999,6 +5999,7 @@ Glaucoma history case study: match intermediate style
   padding: 14px 10px 14px;
   border: 0;
   border-radius: 999px;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -6020,6 +6021,7 @@ Glaucoma history case study: match intermediate style
 
 :is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage)
   .vs-scroll-cue__stack {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -6027,6 +6029,13 @@ Glaucoma history case study: match intermediate style
   margin-top: 0;
   margin-bottom: 0;
   transform: translateY(-1px);
+}
+
+:is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage)
+  .vs-scroll-cue__down,
+:is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage)
+  .vs-scroll-cue__hand {
+  display: none;
 }
 
 :is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage)
@@ -6048,6 +6057,55 @@ Glaucoma history case study: match intermediate style
 :is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage)
   .vs-scroll-cue__chev:nth-child(3) {
   animation-delay: 0.4s;
+}
+
+@media (max-width: 767px) {
+  :is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage)
+    .vs-scroll-cue__pill {
+    width: 86px;
+    height: 128px;
+    padding: 14px 10px 16px;
+    gap: 10px;
+  }
+
+  :is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage)
+    .vs-scroll-cue__stack {
+    width: 56px;
+    height: 58px;
+    transform: none;
+  }
+
+  :is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage)
+    .vs-scroll-cue__chev {
+    display: none;
+  }
+
+  :is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage)
+    .vs-scroll-cue__down {
+    display: block;
+    position: absolute;
+    left: 50%;
+    top: 2px;
+    width: 20px;
+    height: auto;
+    transform: translateX(-50%);
+  }
+
+  :is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage)
+    .vs-scroll-cue__hand {
+    display: block;
+    position: absolute;
+    left: 77%;
+    bottom: -2px;
+    width: 73px;
+    height: auto;
+    transform: translateX(-50%);
+    animation: vsHandFloatUp 1.45s ease-in-out infinite;
+  }
+
+  :is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage) .vs-story {
+    height: 3320dvh;
+  }
 }
 
 @media (min-width: 1024px) {
@@ -6139,6 +6197,24 @@ Glaucoma history case study: match intermediate style
   100% {
     color: #cfcfcf;
     opacity: 0.36;
+  }
+}
+
+@keyframes vsHandFloatUp {
+  0% {
+    transform: translate3d(-50%, 18px, 0);
+    opacity: 0;
+  }
+  18% {
+    opacity: 1;
+  }
+  72% {
+    transform: translate3d(-50%, -10px, 0);
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(-50%, -20px, 0);
+    opacity: 0;
   }
 }
 
@@ -6399,20 +6475,20 @@ Glaucoma history case study: match intermediate style
 
 :is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage)
   .vs-label--optic-nerve {
-  --left: 63%;
+  --left: 75%;
   --top: 61%;
   --base-x: 0px;
   --base-y: 0px;
-  --text-top: 18px;
-  --line-h: 27px;
-  --line-d: 24px;
-  --line-left: -44%;
-  --line-top: 55%;
-  --line-d-left: -57%;
-  --line-d-top: 148%;
+  --text-top: 4px;
+  --line-h: 21px;
+  --line-d: 20px;
+  --line-left: -34%;
+  --line-top: 72%;
+  --line-d-left: -52%;
+  --line-d-top: 168%;
   --line-angle: -50deg;
-  --dot-left: -61%;
-  --dot-y: 155%;
+  --dot-left: -60%;
+  --dot-y: 157%;
 }
 
 :is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage)

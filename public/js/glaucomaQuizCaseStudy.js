@@ -4,6 +4,55 @@ import {
   setGlaucomaLessonProgress,
 } from "./glaucomaWorkshopProgress.js";
 
+function translateNode(node) {
+  try {
+    window.I18N?.applyTranslations?.(node);
+  } catch {
+    void 0;
+  }
+}
+
+function setCaseLabel(target, index) {
+  if (!target) return;
+  target.textContent = "";
+  target.appendChild(document.createTextNode("Case"));
+  target.appendChild(document.createTextNode(` ${index}`));
+}
+
+function setScoreSummary(target, correct, total) {
+  if (!target) return;
+  target.textContent = "";
+  target.appendChild(document.createTextNode("You got"));
+  target.appendChild(document.createTextNode(" "));
+  const correctValue = document.createElement("b");
+  correctValue.textContent = String(correct);
+  target.appendChild(correctValue);
+  target.appendChild(document.createTextNode(" "));
+  target.appendChild(document.createTextNode("out of"));
+  target.appendChild(document.createTextNode(" "));
+  const totalValue = document.createElement("b");
+  totalValue.textContent = String(total);
+  target.appendChild(totalValue);
+  target.appendChild(document.createTextNode(" "));
+  target.appendChild(document.createTextNode("correct."));
+}
+
+function setNotQuiteSummary(target, correct, total) {
+  if (!target) return;
+  target.textContent = "";
+  target.appendChild(document.createTextNode("Not quite:"));
+  target.appendChild(document.createTextNode(" "));
+  const correctValue = document.createElement("b");
+  correctValue.textContent = String(correct);
+  target.appendChild(correctValue);
+  target.appendChild(document.createTextNode(" / "));
+  const totalValue = document.createElement("b");
+  totalValue.textContent = String(total);
+  target.appendChild(totalValue);
+  target.appendChild(document.createTextNode(" "));
+  target.appendChild(document.createTextNode("correct."));
+}
+
 export function initializeGlaucomaQuizCaseStudy() {
   const page = document.getElementById("glaucomaQuizCaseStudy");
   if (!page) return;
@@ -142,7 +191,7 @@ export function initializeGlaucomaQuizCaseStudy() {
       card.dataset.qwrap = String(qi);
 
       const cardProgress = card.querySelector(".quiz-card-progress");
-      if (cardProgress) cardProgress.textContent = `Case ${qi + 1}`;
+      if (cardProgress) setCaseLabel(cardProgress, qi + 1);
 
       const source = card.querySelector("source");
       if (source) source.src = q.video;
@@ -176,6 +225,7 @@ export function initializeGlaucomaQuizCaseStudy() {
       }
 
       allWrap.appendChild(card);
+      translateNode(card);
     });
 
     // 라디오 change 바인딩
@@ -235,7 +285,8 @@ export function initializeGlaucomaQuizCaseStudy() {
       return acc + (ans === QUESTIONS[i].answer ? 1 : 0);
     }, 0);
 
-    scoreText.textContent = `You got ${score} out of ${total} correct.`;
+    setScoreSummary(scoreText, score, total);
+    translateNode(scoreText);
     modal.style.display = "flex";
     setGlaucomaLessonProgress("glaucomaQuizCaseStudy", 100);
   }
@@ -288,6 +339,7 @@ export function initializeGlaucomaQuizCaseStudy() {
   });
 
   renderAll();
+  translateNode(page);
 }
 
 function initGlaucomaSecondaryCauseDragQuiz() {
@@ -420,6 +472,7 @@ function initGlaucomaSecondaryCauseDragQuiz() {
       }
     });
 
+    translateNode(el);
     return el;
   }
 
@@ -479,6 +532,7 @@ function initGlaucomaSecondaryCauseDragQuiz() {
     const unplaced = ITEMS.filter((it) => state.get(it.id) === "bank");
     if (unplaced.length > 0) {
       feedback.textContent = "Place all findings before submitting.";
+      translateNode(feedback);
       return;
     }
 
@@ -505,7 +559,10 @@ function initGlaucomaSecondaryCauseDragQuiz() {
     if (correct === ITEMS.length) {
       feedback.textContent = "Correct!";
     } else {
-      feedback.textContent = `Not quite: ${correct} / ${ITEMS.length} correct.`;
+      setNotQuiteSummary(feedback, correct, ITEMS.length);
     }
+    translateNode(feedback);
   });
+
+  translateNode(page);
 }

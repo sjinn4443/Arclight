@@ -1,13 +1,13 @@
 import { expect, test } from "@playwright/test";
 
 const FUNDAL_ROUTES = [
-  { routeName: "childhoodFundalPreparation", stageCount: 3 },
+  { routeName: "childhoodFundalPreparation", stageCount: 4 },
   { routeName: "childhoodFundalExamination", stageCount: 5 },
   { routeName: "childhoodFundalNewbornEyesOpen", stageCount: 3 },
-  { routeName: "childhoodFundalNewbornEyesClosed", stageCount: 3 },
+  { routeName: "childhoodFundalNewbornEyesClosed", stageCount: 2 },
   { routeName: "childhoodFundalUnclearFindings", stageCount: 4 },
   { routeName: "childhoodFundalPossibleFinding", stageCount: 2 },
-  { routeName: "childhoodFundalAfterExamination", stageCount: 1 },
+  { routeName: "childhoodFundalAfterExamination", stageCount: 2 },
 ];
 
 const E2E_FUNDAL_PLAYBACK_RATE = 8;

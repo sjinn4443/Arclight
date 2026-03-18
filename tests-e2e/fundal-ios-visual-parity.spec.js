@@ -15,7 +15,7 @@ const MIN_ROI_CORRELATION = 0.42;
 const CASES = [
   {
     routeName: "childhoodFundalPreparation",
-    stageCount: 3,
+    stageCount: 4,
     stageIndex: 1,
     label: "prep-3-masked-scene",
     checkpoints: [

@@ -223,9 +223,12 @@
         <button
           id="nextCaseBtn"
           aria-label="Next case"
+          data-i18n="nextCaseButton"
           disabled
           style="margin-top: 10px; display: none"
-        ></button>
+        >
+          Next Case
+        </button>
       </div>
 
       <div id="scoreCard" class="quiz-card-container" style="display: none">
@@ -255,6 +258,256 @@
     </div>
 
     <script>
+      const LANG_ALIAS = {
+        en: "english",
+        am: "amharic",
+        ar: "arabic",
+        bn: "bangla",
+        ny: "chichewa",
+        zh: "chinese",
+        fr: "french",
+        ha: "hausa",
+        hi: "hindi",
+        ig: "igbo",
+        id: "indonesian",
+        rw: "kinyarwanda",
+        ko: "korean",
+        te: "telugu",
+        ln: "lingala",
+        fa: "persian",
+        pt: "portuguese",
+        sn: "shona",
+        es: "spanish",
+        sw: "swahili",
+        ur: "urdu",
+        yo: "yoruba",
+        zu: "zulu",
+      };
+
+      const i18nState = {
+        lang: null,
+        dict: {},
+        fallback: {},
+        literalIndex: new Map(),
+      };
+
+      function normalizeLanguage(lang) {
+        const normalized = String(lang || "")
+          .trim()
+          .toLowerCase();
+        return LANG_ALIAS[normalized] ? normalized : "en";
+      }
+
+      function getByPath(obj, path) {
+        if (!obj || !path) return undefined;
+
+        const parts = String(path).split(".");
+        let current = obj;
+
+        for (let index = 0; index < parts.length; index += 1) {
+          if (!current || typeof current !== "object") return undefined;
+
+          const segment = parts[index];
+          if (segment in current) {
+            current = current[segment];
+            continue;
+          }
+
+          let matched = false;
+          for (let end = parts.length - 1; end > index; end -= 1) {
+            const merged = parts.slice(index, end + 1).join(".");
+            if (merged in current) {
+              current = current[merged];
+              index = end;
+              matched = true;
+              break;
+            }
+          }
+
+          if (!matched) return undefined;
+        }
+
+        return current;
+      }
+
+      function normalizeLiteralText(value) {
+        return String(value == null ? "" : value)
+          .replace(/\r\n?/g, "\n")
+          .replace(/\s+/g, " ")
+          .trim();
+      }
+
+      function rebuildLiteralIndex() {
+        i18nState.literalIndex = new Map();
+        [i18nState.fallback, i18nState.dict].forEach((source) => {
+          const entries = source?.i18nLiteral;
+          if (!entries || typeof entries !== "object") return;
+          Object.entries(entries).forEach(([key, value]) => {
+            const normalizedKey = normalizeLiteralText(key);
+            if (!normalizedKey) return;
+            i18nState.literalIndex.set(normalizedKey, String(value));
+          });
+        });
+      }
+
+      function literalTranslate(text) {
+        const key = normalizeLiteralText(text);
+        if (!key) return null;
+        return i18nState.literalIndex.get(key) ?? null;
+      }
+
+      async function fetchDictionary(lang) {
+        const normalized = normalizeLanguage(lang);
+        const alias = LANG_ALIAS[normalized] || LANG_ALIAS.en;
+        const url = new URL(
+          `../../translation/${alias}.json`,
+          window.location.href,
+        );
+
+        try {
+          const response = await fetch(url, { cache: "no-store" });
+          if (!response.ok) {
+            if (normalized === "en") return {};
+            throw new Error(`Fetch failed: ${response.status}`);
+          }
+          return await response.json();
+        } catch (error) {
+          console.warn(
+            "[anterior-quiz] failed to load dictionary",
+            alias,
+            error,
+          );
+          return {};
+        }
+      }
+
+      async function ensureTranslationsReady() {
+        const next = normalizeLanguage(
+          localStorage.getItem("prefLang") ||
+            document.documentElement.getAttribute("lang") ||
+            "en",
+        );
+
+        if (i18nState.lang === next) return;
+
+        i18nState.fallback = await fetchDictionary("en");
+        i18nState.dict =
+          next === "en" ? i18nState.fallback : await fetchDictionary(next);
+        i18nState.lang = next;
+        document.documentElement.setAttribute("lang", next);
+        rebuildLiteralIndex();
+      }
+
+      function setNodeTranslation(el, value, target) {
+        if (!el || value == null) return;
+        const mode = String(target || "text").toLowerCase();
+
+        if (mode === "html") {
+          el.innerHTML = value;
+          return;
+        }
+
+        if (mode === "title" || mode === "aria-label") {
+          el.setAttribute(mode, value);
+          return;
+        }
+
+        el.textContent = value;
+      }
+
+      function applyLiteralTranslations(root = document) {
+        const scope =
+          root.nodeType === 9
+            ? root.body || root.documentElement || root
+            : root;
+        if (!scope) return;
+
+        const walker = document.createTreeWalker(
+          scope,
+          NodeFilter.SHOW_TEXT,
+          null,
+        );
+
+        let textNode = walker.nextNode();
+        while (textNode) {
+          const parent = textNode.parentElement;
+          if (
+            parent &&
+            !parent.closest("[data-i18n]") &&
+            !/^(SCRIPT|STYLE|NOSCRIPT|TEMPLATE)$/i.test(parent.tagName || "")
+          ) {
+            const translated = literalTranslate(textNode.textContent);
+            if (translated != null) textNode.textContent = translated;
+          }
+          textNode = walker.nextNode();
+        }
+
+        const attrNames = ["aria-label", "title", "alt", "placeholder"];
+        scope.querySelectorAll("*").forEach((el) => {
+          attrNames.forEach((attr) => {
+            const current = el.getAttribute(attr);
+            if (!current) return;
+            const translated = literalTranslate(current);
+            if (translated != null) {
+              el.setAttribute(attr, translated);
+            }
+          });
+        });
+      }
+
+      async function applyTranslations(root = document) {
+        await ensureTranslationsReady();
+
+        const nodes = [];
+        if (root.nodeType === 1 && root.matches?.("[data-i18n]"))
+          nodes.push(root);
+        if (typeof root.querySelectorAll === "function") {
+          nodes.push(...root.querySelectorAll("[data-i18n]"));
+        }
+
+        nodes.forEach((el) => {
+          const spec = (el.getAttribute("data-i18n") || "").trim();
+          if (!spec) return;
+          const [path, rawTarget = "text"] = spec.split(":");
+          const value =
+            getByPath(i18nState.dict, path) ??
+            getByPath(i18nState.fallback, path);
+          if (value == null) return;
+          setNodeTranslation(el, value, rawTarget);
+        });
+
+        applyLiteralTranslations(root);
+      }
+
+      function setCaseLabel(target, index) {
+        target.textContent = "";
+        target.appendChild(document.createTextNode("Case"));
+        target.appendChild(document.createTextNode(` ${index}`));
+      }
+
+      function setNumberedQuestion(target, index, text) {
+        target.textContent = "";
+        target.appendChild(document.createTextNode(`${index}. `));
+        target.appendChild(document.createTextNode(text));
+      }
+
+      function setScoreSummary(target, correct, total) {
+        target.textContent = "";
+        target.appendChild(document.createTextNode("You scored"));
+        target.appendChild(document.createTextNode(" "));
+        const correctValue = document.createElement("b");
+        correctValue.textContent = String(correct);
+        target.appendChild(correctValue);
+        target.appendChild(document.createTextNode(" "));
+        target.appendChild(document.createTextNode("out of"));
+        target.appendChild(document.createTextNode(" "));
+        const totalValue = document.createElement("b");
+        totalValue.textContent = String(total);
+        target.appendChild(totalValue);
+        target.appendChild(document.createTextNode(" "));
+        target.appendChild(document.createTextNode("correct."));
+      }
+
       const cases = [
         {
           title: "6 month old baby: 'Eye looks funny'",
@@ -713,11 +966,11 @@
         const c = cases[caseIndex];
         const q = c.questions[questionIndex];
 
-        caseTitle.textContent = `Case ${caseIndex + 1}`;
+        setCaseLabel(caseTitle, caseIndex + 1);
         caseSubtitle.textContent = c.title;
 
         caseImage.src = c.image;
-        caseImage.alt = c.title + " image";
+        caseImage.alt = "Case image";
 
         quizForm.innerHTML = "";
 
@@ -725,7 +978,7 @@
         div.classList.add("question");
 
         const h3 = document.createElement("h3");
-        h3.textContent = `${questionIndex + 1}. ${q.question}`;
+        setNumberedQuestion(h3, questionIndex + 1, q.question);
         div.appendChild(h3);
 
         const ul = document.createElement("ul");
@@ -760,6 +1013,10 @@
         quizForm.appendChild(div);
 
         updateButtons();
+        void applyTranslations(div);
+        void applyTranslations(caseTitle);
+        void applyTranslations(caseSubtitle);
+        void applyTranslations(caseImage);
       }
 
       function updateButtons() {
@@ -816,7 +1073,8 @@
           });
         });
 
-        scoreText.textContent = `You scored ${correctCount} out of ${totalQuestions} correct.`;
+        setScoreSummary(scoreText, correctCount, totalQuestions);
+        void applyTranslations(scoreText);
       }
 
       restartBtn.onclick = () => {
@@ -847,7 +1105,7 @@
           caseDiv.classList.add("review-case");
 
           const h2 = document.createElement("h2");
-          h2.textContent = `Case ${caseIdx + 1}`;
+          setCaseLabel(h2, caseIdx + 1);
           caseDiv.appendChild(h2);
 
           const subtitle = document.createElement("div");
@@ -858,7 +1116,7 @@
           const img = document.createElement("img");
           img.className = "case-image";
           img.src = c.image;
-          img.alt = c.title + " image";
+          img.alt = "Case image";
           caseDiv.appendChild(img);
 
           c.questions.forEach((q, qIdx) => {
@@ -866,7 +1124,7 @@
             qDiv.classList.add("review-question");
 
             const qH3 = document.createElement("h3");
-            qH3.textContent = `${qIdx + 1}. ${q.question}`;
+            setNumberedQuestion(qH3, qIdx + 1, q.question);
             qDiv.appendChild(qH3);
 
             const ul = document.createElement("ul");
@@ -888,14 +1146,29 @@
 
             qDiv.appendChild(ul);
             caseDiv.appendChild(qDiv);
+            void applyTranslations(qDiv);
           });
 
           reviewContent.appendChild(caseDiv);
+          void applyTranslations(caseDiv);
         });
       }
 
       // Initialize first question display
       renderQuestion(currentCaseIndex, currentQuestionIndex);
+      void applyTranslations(document);
+      window.addEventListener("storage", (event) => {
+        if (event.key !== "prefLang") return;
+        void applyTranslations(document);
+      });
+      window.addEventListener("focus", () => {
+        void applyTranslations(document);
+      });
+      document.addEventListener("visibilitychange", () => {
+        if (document.visibilityState === "visible") {
+          void applyTranslations(document);
+        }
+      });
     </script>
   </body>
 </html>

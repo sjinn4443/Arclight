@@ -19,10 +19,10 @@ function easeInOutCubic(t) {
   return t < 0.5 ? 4 * t ** 3 : 1 - (-2 * t + 2) ** 3 / 2;
 }
 
-function mapStoryProgress(rawProgress) {
+function mapStoryProgress(rawProgress, isMobileViewport = false) {
   const raw = clamp(rawProgress);
-  const earlyRawEnd = 0.4424;
-  const middleRawEnd = 0.5878;
+  const earlyRawEnd = isMobileViewport ? 0.4 : 0.4424;
+  const middleRawEnd = isMobileViewport ? 0.53 : 0.5878;
   const earlySceneEnd = 0.86;
   const middleSceneEnd = 0.932;
 
@@ -168,28 +168,36 @@ function renderScene(
   prefersReducedMotion,
   isMobileViewport = false,
 ) {
-  const mappedProgress = mapStoryProgress(progress);
+  const mappedProgress = mapStoryProgress(progress, isMobileViewport);
   const p = prefersReducedMotion
     ? Math.round(mappedProgress * 14) / 14
     : mappedProgress;
+  const compactP = isMobileViewport
+    ? clamp(
+        p +
+          (p > 0.38 ? 0.02 : 0) +
+          (p > 0.62 ? 0.025 : 0) +
+          (p > 0.82 ? 0.018 : 0),
+      )
+    : p;
   const mobileIntroShift = isMobileViewport ? 0.02 : 0;
 
   const intro = mix(
-    p,
+    compactP,
     Math.max(0, 0.02 - mobileIntroShift),
     Math.max(0, 0.16 - mobileIntroShift),
     easeInOutCubic,
   );
-  const envIn = mix(p, 0.4, 0.5, easeOutCubic);
-  const worldLightIn = mix(p, 0.55, 0.66, easeOutCubic);
-  const worldOut = mix(p, 0.7, 0.78, easeInOutCubic);
-  const worldLightOut = mix(p, 0.7, 0.78, easeInOutCubic);
-  const manIn = mix(p, 0.79, 0.85, easeOutCubic);
-  const manOut = mix(p, 0.885, 0.92, easeInOutCubic);
-  const faceIn = mix(p, 0.86, 0.895, easeOutCubic);
-  const bgOut = mix(p, 0.905, 0.928, easeInOutCubic);
-  const finalIn = mix(p, 0.932, 0.955, easeInOutCubic);
-  const endPhase = mix(p, 0.958, 1);
+  const envIn = mix(compactP, 0.4, 0.5, easeOutCubic);
+  const worldLightIn = mix(compactP, 0.55, 0.66, easeOutCubic);
+  const worldOut = mix(compactP, 0.7, 0.78, easeInOutCubic);
+  const worldLightOut = mix(compactP, 0.7, 0.78, easeInOutCubic);
+  const manIn = mix(compactP, 0.79, 0.85, easeOutCubic);
+  const manOut = mix(compactP, 0.885, 0.93, easeInOutCubic);
+  const faceIn = mix(compactP, 0.855, 0.9, easeOutCubic);
+  const bgOut = mix(compactP, 0.895, 0.925, easeInOutCubic);
+  const finalIn = mix(compactP, 0.916, 0.946, easeInOutCubic);
+  const endPhase = mix(compactP, 0.95, 1);
   const tractRaw = mix(endPhase, 0.08, 0.48, easeInOutCubic);
   const tractOut = mix(endPhase, 0.55, 0.62, easeInOutCubic);
   const tract2Raw = mix(endPhase, 0.72, 0.97, easeInOutCubic);
@@ -209,34 +217,34 @@ function renderScene(
   const finalTailY = lerp(0, -140, finalTail);
 
   const corneaIn = mix(
-    p,
+    compactP,
     Math.max(0, 0.18 - mobileIntroShift),
     Math.max(0, 0.24 - mobileIntroShift),
     easeOutCubic,
   );
   const lensIn = mix(
-    p,
+    compactP,
     Math.max(0, 0.2 - mobileIntroShift),
     Math.max(0, 0.26 - mobileIntroShift),
     easeOutCubic,
   );
   const retinaIn = mix(
-    p,
+    compactP,
     Math.max(0, 0.23 - mobileIntroShift),
     Math.max(0, 0.29 - mobileIntroShift),
     easeOutCubic,
   );
   const opticNerveIn = mix(
-    p,
+    compactP,
     Math.max(0, 0.245 - mobileIntroShift),
     Math.max(0, 0.305 - mobileIntroShift),
     easeOutCubic,
   );
   const labelOut = clamp(1 - worldOut);
   const scrollCueOut = mix(progress, 0.001, 0.018, easeOutCubic);
-  const introCaptionOut = mix(p, 0.405, 0.47, easeInOutCubic);
+  const introCaptionOut = mix(compactP, 0.405, 0.47, easeInOutCubic);
   const introCaptionOpacity = clamp(1 - introCaptionOut);
-  const worldCaptionIn = mix(p, 0.56, 0.6, easeOutCubic);
+  const worldCaptionIn = mix(compactP, 0.56, 0.6, easeOutCubic);
   const worldCaptionOpacity = clamp(worldCaptionIn * (1 - worldOut));
   const finalCaptionOpacity = finalOpacity;
 
@@ -332,7 +340,7 @@ function renderScene(
 
   setTextContent(
     elements.worldCaptionText,
-    p < 0.685 ? WORLD_CAPTION_TEXT_FOCUS : WORLD_CAPTION_TEXT_RETINA,
+    compactP < 0.685 ? WORLD_CAPTION_TEXT_FOCUS : WORLD_CAPTION_TEXT_RETINA,
   );
   setLayerState(elements.worldCaption, {
     opacity: worldCaptionOpacity,
@@ -411,7 +419,7 @@ function renderScene(
     finalCaptionText = FINAL_CAPTION_TEXT_VISION;
   } else if (tractProgress > 0.03 || tractOut > 0.01) {
     finalCaptionText = FINAL_CAPTION_TEXT_OPTIC_NERVE;
-  } else if (p > 0.952) {
+  } else if (compactP > 0.945) {
     finalCaptionText = FINAL_CAPTION_TEXT_SIGNAL;
   }
   setTextContent(elements.finalCaptionText, finalCaptionText);

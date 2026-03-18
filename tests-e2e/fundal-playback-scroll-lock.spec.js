@@ -38,7 +38,7 @@ test.describe("Fundal autoplay scroll lock", () => {
     });
 
     const stages = page.locator(".childhood-fundal-prep-stage");
-    await expect(stages).toHaveCount(3, {
+    await expect(stages).toHaveCount(4, {
       timeout: ROUTE_READY_TIMEOUT_MS,
     });
 

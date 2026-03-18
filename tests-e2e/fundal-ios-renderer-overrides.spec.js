@@ -6,7 +6,7 @@ const CASES = [
   {
     routeName: "childhoodFundalAfterExamination",
     svgStageIndexes: [0],
-    canvasStageIndexes: [],
+    canvasStageIndexes: [1],
   },
   {
     routeName: "childhoodFundalExamination",
@@ -15,8 +15,8 @@ const CASES = [
   },
   {
     routeName: "childhoodFundalNewbornEyesClosed",
-    svgStageIndexes: [1, 2],
-    canvasStageIndexes: [0],
+    svgStageIndexes: [0, 1],
+    canvasStageIndexes: [],
   },
 ];
 

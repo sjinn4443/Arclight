@@ -373,7 +373,6 @@ const build = async () => {
         "public/js/onboarding.js",
         "public/js/pwa.js",
         "public/js/quiz-launcher.js",
-        "public/js/quizzes.js",
         "public/js/reports.js",
         "public/js/toc.js",
         "public/js/videoplayer.js",

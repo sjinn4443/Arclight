@@ -5,6 +5,41 @@ import {
   setChildhoodLessonProgress,
 } from "./childhoodWorkshopProgress.js";
 
+function translateNode(node) {
+  try {
+    window.I18N?.applyTranslations?.(node);
+  } catch {
+    void 0;
+  }
+}
+
+function setCorrectAnswerLine(target, letter, optionText) {
+  if (!target) return;
+  target.textContent = "";
+  target.appendChild(document.createTextNode("Correct answer:"));
+  target.appendChild(document.createTextNode(" "));
+  target.appendChild(document.createTextNode(`${letter}. `));
+  target.appendChild(document.createTextNode(optionText));
+}
+
+function setScoreSummary(target, correct, total) {
+  if (!target) return;
+  target.textContent = "";
+  target.appendChild(document.createTextNode("You got"));
+  target.appendChild(document.createTextNode(" "));
+  const correctValue = document.createElement("b");
+  correctValue.textContent = String(correct);
+  target.appendChild(correctValue);
+  target.appendChild(document.createTextNode(" "));
+  target.appendChild(document.createTextNode("out of"));
+  target.appendChild(document.createTextNode(" "));
+  const totalValue = document.createElement("b");
+  totalValue.textContent = String(total);
+  target.appendChild(totalValue);
+  target.appendChild(document.createTextNode(" "));
+  target.appendChild(document.createTextNode("correct."));
+}
+
 export function initializeBehavioursQuiz() {
   const mount = document.getElementById("behavioursquizPage");
   if (!mount) return;
@@ -147,17 +182,22 @@ export function initializeBehavioursQuiz() {
           input.value = String(j);
         }
         const text = option.querySelector(".quiz-option-text");
-        if (text) text.textContent = `${LETTERS[j]}. ${opt}`;
+        if (text) {
+          text.textContent = "";
+          text.appendChild(document.createTextNode(`${LETTERS[j]}. `));
+          text.appendChild(document.createTextNode(opt));
+        }
         optionsWrap.appendChild(option);
       });
     }
 
     const answer = block.querySelector(".answer");
     if (answer) {
-      answer.textContent = `Correct answer: ${correctLetter}. ${q.options[q.answer]}`;
+      setCorrectAnswerLine(answer, correctLetter, q.options[q.answer]);
     }
 
     form.appendChild(block);
+    translateNode(block);
   });
 
   form.addEventListener("change", (e) => {
@@ -198,13 +238,14 @@ export function initializeBehavioursQuiz() {
     if (scoreText) {
       scoreText.textContent = "";
       const scoreLine = document.createElement("span");
-      scoreLine.textContent = `You got ${score} out of ${questions.length} correct.`;
+      setScoreSummary(scoreLine, score, questions.length);
       scoreText.appendChild(scoreLine);
       scoreText.appendChild(document.createElement("br"));
       const hint = document.createElement("small");
       hint.className = "quiz-hint";
       hint.textContent = "Answers are highlighted in green.";
       scoreText.appendChild(hint);
+      translateNode(scoreText);
     }
     setChildhoodLessonProgress("behavioursquizPage", 100);
     mount.querySelector("#behavioursQuizModal").classList.remove("hidden");
@@ -216,4 +257,6 @@ export function initializeBehavioursQuiz() {
       .querySelectorAll(".answer")
       .forEach((a) => (a.style.display = "block"));
   });
+
+  translateNode(mount);
 }
