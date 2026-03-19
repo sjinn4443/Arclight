@@ -37,7 +37,7 @@ const TARGET_ROUTES = {
   childhoodEyeBrainImagesPage: "childhoodEyeBrainImages",
   childhoodIntroVisualDevelopmentPage: "childhoodEyeBrainImages",
   childhoodNormalVisualDevelopmentPage: "childhoodEyeBrainImages",
-  childhoodAskQuestionsObservePage: "childhoodEyeBrainImages",
+  childhoodAskQuestionsObservePage: "childhoodAskQuestionsObservePage",
   visualImpairmentPage: "visualImpairment",
   signsVICasesPage: "signsVICases",
   childhoodReferPage: "childhoodRefer",
@@ -374,11 +374,12 @@ async function navigateToTarget(target) {
 
   const route = TARGET_ROUTES[target];
   if (route) {
-    await loadPage(route);
-    if (typeof window.showPage === "function") {
+    const subPageId = route === "childhoodEyeBrainImages" ? target : null;
+    await loadPage(route, subPageId ? { subPageId } : undefined);
+    if (!subPageId && typeof window.showPage === "function") {
       window.showPage(target);
       ensurePageShownEvent(target);
-    } else {
+    } else if (!subPageId) {
       showPageFallback(target);
     }
     resetViewportToTopSoon();

@@ -35,6 +35,7 @@ export const ROUTES = {
   signsVICases: "html/signsVICases.html",
   childhoodRefer: "html/childhoodRefer.html",
   childhoodEyeBrainImages: "html/childhoodEyeBrainImages.html",
+  childhoodAskQuestionsObservePage: "html/childhoodEyeBrainImages.html",
   childhoodFundalPreparation: "html/childhoodFundalPreparation.html",
   childhoodFundalExamination: "html/childhoodFundalExamination.html",
   childhoodFundalNewbornEyesOpen: "html/childhoodFundalNewbornEyesOpen.html",

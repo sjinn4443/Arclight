@@ -318,6 +318,48 @@ function primeVideosSubPage(subPageId) {
   } catch {}
 }
 
+function showSubPageIfPresent(subPageId) {
+  const normalizedSubPage = normalizeSubPageId(subPageId);
+  if (!normalizedSubPage) return false;
+
+  const target = document.getElementById(normalizedSubPage);
+  if (!target) return false;
+
+  if (typeof window.showPage === "function") {
+    window.showPage(normalizedSubPage);
+  } else {
+    minimalShowPage(normalizedSubPage);
+    document.dispatchEvent(
+      new CustomEvent("page:shown", {
+        detail: { id: normalizedSubPage },
+      }),
+    );
+  }
+
+  return true;
+}
+
+function showRoutePageIfPresent(routeName) {
+  const normalizedRoute = normalizeRouteName(routeName);
+  if (!normalizedRoute) return false;
+
+  const target = document.getElementById(normalizedRoute);
+  if (!target || !target.classList?.contains("page")) return false;
+
+  if (typeof window.showPage === "function") {
+    window.showPage(normalizedRoute);
+  } else {
+    minimalShowPage(normalizedRoute);
+    document.dispatchEvent(
+      new CustomEvent("page:shown", {
+        detail: { id: normalizedRoute },
+      }),
+    );
+  }
+
+  return true;
+}
+
 export function syncRouteHash(routeName, options = {}) {
   if (typeof window === "undefined") return;
   const normalizedRoute = normalizeRouteName(routeName);
@@ -356,10 +398,13 @@ export async function loadPage(routeName, options = {}) {
   const subPageId = normalizeSubPageId(options?.subPageId);
 
   if (!replace && !force && routeName === currentRoute) {
+    if (!showSubPageIfPresent(subPageId)) {
+      showRoutePageIfPresent(routeName);
+    }
     if (syncHash) {
       syncRouteHash(routeName, {
         replace,
-        subPageId: routeName === "videos" ? subPageId : null,
+        subPageId,
       });
     }
     return; // Add the guard
@@ -504,7 +549,7 @@ export async function loadPage(routeName, options = {}) {
   if (syncHash) {
     syncRouteHash(routeName, {
       replace,
-      subPageId: routeName === "videos" ? subPageId : null,
+      subPageId,
     });
   }
 
@@ -517,6 +562,10 @@ export async function loadPage(routeName, options = {}) {
   window.dispatchEvent(
     new CustomEvent("page:rendered", { detail: { routeName } }),
   );
+
+  if (!showSubPageIfPresent(subPageId)) {
+    showRoutePageIfPresent(routeName);
+  }
 
   // Toggle fixed UI (optional)
   const searchContainer = document.getElementById("fixedSearchContainer");

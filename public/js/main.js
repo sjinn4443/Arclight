@@ -222,7 +222,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (
       routeName === "visualsystemeyesbrain" ||
-      routeName === "childhoodEyeBrainImages"
+      routeName === "childhoodEyeBrainImages" ||
+      routeName === "childhoodAskQuestionsObservePage"
     ) {
       const { initializeVisualSystemEyesBrain } =
         await import("./visualsystemeyesbrain.js");

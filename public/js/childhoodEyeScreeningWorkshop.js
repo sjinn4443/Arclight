@@ -506,7 +506,7 @@ export function initializeChildhoodEyeScreeningWorkshop() {
         // ✅ [ADD] Visual development + QnO도 childhoodEyeBrainImages route로!
         childhoodIntroVisualDevelopmentPage: "childhoodEyeBrainImages",
         childhoodNormalVisualDevelopmentPage: "childhoodEyeBrainImages",
-        childhoodAskQuestionsObservePage: "childhoodEyeBrainImages",
+        childhoodAskQuestionsObservePage: "childhoodAskQuestionsObservePage",
         childhoodFundalPreparationPage: "childhoodFundalPreparation",
         childhoodFundalExaminationPage: "childhoodFundalExamination",
         childhoodFundalNewbornEyesOpenPage: "childhoodFundalNewbornEyesOpen",
@@ -533,17 +533,21 @@ export function initializeChildhoodEyeScreeningWorkshop() {
 
       if (DIRECT_ROUTES[targetRaw]) {
         const route = DIRECT_ROUTES[targetRaw];
-        if (FUNDAL_SCROLL_ROUTE_SET.has(route)) {
-          warmupFundalRouteOnIntent(route);
-        }
-        await loadPage(route);
-
-        // ✅ 같은 route 안에 targetRaw 페이지 섹션이 있으면 그걸 정확히 보여주기
         const fallbackId =
           targetRaw === "childhoodAssessmentPage"
             ? "childhoodAssessmentQuizPage"
             : targetRaw;
-        showPageWithFallbackAndEvent(fallbackId);
+        const subPageId =
+          route === "childhoodEyeBrainImages" ? fallbackId : null;
+        if (FUNDAL_SCROLL_ROUTE_SET.has(route)) {
+          warmupFundalRouteOnIntent(route);
+        }
+        await loadPage(route, subPageId ? { subPageId } : undefined);
+
+        // ✅ 같은 route 안에 targetRaw 페이지 섹션이 있으면 그걸 정확히 보여주기
+        if (!subPageId) {
+          showPageWithFallbackAndEvent(fallbackId);
+        }
 
         try {
           window.scrollTo(0, 0);

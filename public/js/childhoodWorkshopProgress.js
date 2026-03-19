@@ -45,6 +45,7 @@ const PDF_TARGETS = new Set([
 
 const SCROLL_ROUTES = new Set([
   "childhoodEyeBrainImages",
+  "childhoodAskQuestionsObservePage",
   "visualImpairment",
   "signsVICases",
   "childhoodRefer",
