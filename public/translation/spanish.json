@@ -618,7 +618,15 @@
       "observe_item_7": "Responde con una sonrisa tranquila.",
       "observe_item_8": "Sigue una luz",
       "observe_item_9": "Alcanza con precisión",
-      "observe_item_10": "No le gusta que le tapen un ojo"
+      "observe_item_10": "No le gusta que le tapen un ojo",
+      "visual_development_intro_image_alt": "Madre o padre sosteniendo a un recién nacido y mirándolo",
+      "visual_development_intro_paragraph_1": "Cuando los bebés nacen, su visión es deficiente. Esencialmente están 'ciegos'. Sin embargo, su visión se desarrollará durante los siguientes 5 a 8 años, y la mayor mejoría ocurre en los primeros 18 meses de vida. Este es un período muy crítico.",
+      "visual_development_intro_paragraph_2": "Durante este tiempo, el sistema visual de los ojos y del cerebro debe estar sano y estimulado. Este es el mejor período para identificar una enfermedad y derivar para tratamiento.",
+      "visual_development_brain_image_alt": "Los ojos y las vías visuales que los conectan con el cerebro",
+      "visual_development_identify_disease_title": "Por qué y cómo identificamos la enfermedad para maximizar el desarrollo visual",
+      "visual_development_identify_disease_body": "Cualquier enfermedad del ojo o del cerebro retrasará el desarrollo y limitará la visión a largo plazo. Por eso es importante identificar lo antes posible cualquier causa tratable de enfermedad que esté afectando el desarrollo visual y general normal.",
+      "visual_development_question_bubble": "Esto puede hacerse haciendo preguntas sobre la visión, el embarazo, el parto, cualquier enfermedad y el desarrollo general",
+      "visual_development_observe_copy": "Después observe los ojos para valorar el desarrollo visual y luego haga el cribado de enfermedad ocular realizando la prueba del reflejo fundal 'rojo' y examinando la parte anterior del ojo"
     },
     "glaucomaworkshop": {
       "eyes": "Ojos",

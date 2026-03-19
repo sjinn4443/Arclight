@@ -615,7 +615,15 @@
       "observe_item_7": "Kuphendula emamatheka ethule",
       "observe_item_8": "Ilandela ukukhanya",
       "observe_item_9": "Ifinyelela ngokunembile",
-      "observe_item_10": "Akathandi ukuvaleka kweso elilodwa"
+      "observe_item_10": "Akathandi ukuvaleka kweso elilodwa",
+      "visual_development_intro_image_alt": "Umzali ophethe usana olusanda kuzalwa futhi elubuka",
+      "visual_development_intro_paragraph_1": "Lapho izingane zizalwa ukubona kwazo kuba buthakathaka. Ngokuyisisekelo ziba njengezi 'yimpumputhe'. Nokho ukubona kwazo kukhula eminyakeni emi-5 kuya kweyi-8 elandelayo, futhi intuthuko enkulu yenzeka ezinyangeni eziyi-18 zokuqala zokuphila. Lesi isikhathi esibaluleke kakhulu.",
+      "visual_development_intro_paragraph_2": "Ngalesi sikhathi uhlelo lokubona lwamehlo nobuchopho kufanele lube luphilile futhi luthole ukuvuselelwa. Lesi yisikhathi esihle kakhulu sokuhlonza isifo nokudlulisela ukuze kutholakale ukwelashwa.",
+      "visual_development_brain_image_alt": "Amehlo nezindlela zokubona eziwaxhumanisa nobuchopho",
+      "visual_development_identify_disease_title": "Kungani futhi kanjani sihlonza isifo ukuze sikhulise ukukhula kokubona kakhulu",
+      "visual_development_identify_disease_body": "Noma yisiphi isifo seso noma sobuchopho sizobambezela ukukhula futhi sinciphise ukubona kwesikhathi eside. Yingakho kubalulekile ukuhlonza ngokushesha okukhulu noma yiziphi izimbangela zesifo ezingelashwa ezithinta ukukhula okujwayelekile kokubona kanye nokukhula komzimba jikelele.",
+      "visual_development_question_bubble": "Lokhu kungenziwa ngokubuza imibuzo ngokubona, ukukhulelwa, ukuzalwa, noma yikuphi ukugula kanye nokukhula jikelele",
+      "visual_development_observe_copy": "Bese ubheka amehlo ukuhlola ukukhula kokubona, bese uhlola isifo samehlo ngokwenza ukuhlolwa kwe fundal 'red' reflex nangokuhlola ingxenye engaphambili yeso"
     },
     "glaucomaworkshop": {
       "eyes": "Amehlo",

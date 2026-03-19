@@ -613,7 +613,15 @@
       "observe_item_7": "Ya amsa yana murmushi",
       "observe_item_8": "Yana bin haske",
       "observe_item_9": "Ya kai daidai",
-      "observe_item_10": "Ba ya son rufe ido ɗaya"
+      "observe_item_10": "Ba ya son rufe ido ɗaya",
+      "visual_development_intro_image_alt": "Uba ko uwa yana rike da jariri yana kallonsa",
+      "visual_development_intro_paragraph_1": "Lokacin da aka haifi jarirai, ganinsu yana da rauni. A takaice suna kama da 'makafi'. Amma ganinsu zai ci gaba da bunkasa cikin shekaru 5 zuwa 8 masu zuwa, kuma mafi yawan sauyi yana faruwa a watanni 18 na farko na rayuwa. Wannan lokaci ne mai matukar muhimmanci.",
+      "visual_development_intro_paragraph_2": "A wannan lokaci tsarin gani na idanu da kwakwalwa dole ne ya kasance lafiya kuma yana samun motsawa. Wannan ne mafi kyawun lokaci don gano cuta da tura mara lafiya domin magani.",
+      "visual_development_brain_image_alt": "Idanu da hanyoyin gani da ke hade su da kwakwalwa",
+      "visual_development_identify_disease_title": "Dalilin da yadda muke gano cuta domin kara bunkasa gani sosai",
+      "visual_development_identify_disease_body": "Duk wata cuta ta ido ko kwakwalwa za ta rage bunkasa kuma ta iyakance gani na dogon lokaci. Shi ya sa yana da muhimmanci a gano da wuri-wuri duk wasu dalilan cuta masu magani da ke shafar bunkasar gani da kuma bunkasar jiki gaba daya.",
+      "visual_development_question_bubble": "Ana iya yin hakan ta hanyar tambayar game da gani, ciki, haihuwa, kowace rashin lafiya da kuma bunkasa gaba daya",
+      "visual_development_observe_copy": "Sai a lura da idanu domin tantance bunkasar gani, sannan a yi gwajin fundal 'red' reflex da kuma duba gaban ido domin binciken cututtukan ido"
     },
     "glaucomaworkshop": {
       "eyes": "Idanu",

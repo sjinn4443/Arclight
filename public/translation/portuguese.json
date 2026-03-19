@@ -616,7 +616,15 @@
       "observe_item_7": "Responde com um sorriso tranquilo",
       "observe_item_8": "Segue uma luz",
       "observe_item_9": "Alcança com precisão",
-      "observe_item_10": "Não gosta de ter um olho coberto"
+      "observe_item_10": "Não gosta de ter um olho coberto",
+      "visual_development_intro_image_alt": "Pai ou mãe segurando um recém-nascido e olhando para ele",
+      "visual_development_intro_paragraph_1": "Quando os bebés nascem, a sua visão é fraca. São essencialmente 'cegos'. No entanto, a visão vai desenvolver-se ao longo dos 5 a 8 anos seguintes, com a maior melhoria a ocorrer nos primeiros 18 meses de vida. Este é um período muito crítico.",
+      "visual_development_intro_paragraph_2": "Durante este período, o sistema visual dos olhos e do cérebro precisa de estar saudável e estimulado. Este é o melhor período para identificar doença e encaminhar para tratamento.",
+      "visual_development_brain_image_alt": "Os olhos e as vias visuais que os ligam ao cérebro",
+      "visual_development_identify_disease_title": "Porque e como identificamos a doença para maximizar o desenvolvimento visual",
+      "visual_development_identify_disease_body": "Qualquer doença do olho ou do cérebro irá atrasar o desenvolvimento e limitar a visão a longo prazo. Por isso, é importante identificar o mais cedo possível quaisquer causas tratáveis de doença que estejam a afetar o desenvolvimento visual e geral normal.",
+      "visual_development_question_bubble": "Isto pode ser feito fazendo perguntas sobre a visão, a gravidez, o parto, quaisquer doenças e o desenvolvimento geral",
+      "visual_development_observe_copy": "Depois observe os olhos avaliando o desenvolvimento visual e faça o rastreio de doença ocular realizando o teste do reflexo fundal 'vermelho' e examinando a parte da frente do olho"
     },
     "glaucomaworkshop": {
       "eyes": "Olhos",

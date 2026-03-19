@@ -760,7 +760,15 @@
       "observe_item_7": "Responds with a quiet smile",
       "observe_item_8": "Follows a light",
       "observe_item_9": "Reaches accurately",
-      "observe_item_10": "Dislikes one eye being covered"
+      "observe_item_10": "Dislikes one eye being covered",
+      "visual_development_intro_image_alt": "Parent holding and looking at a newborn baby",
+      "visual_development_intro_paragraph_1": "When babies are born their vision is poor. They are essentially 'blind'. Their vision will however develop over the following 5 to 8 years with most improvement occurring in the first 18 months of life. This is a very critical period.",
+      "visual_development_intro_paragraph_2": "During this time the visual system of the eyes and brain needs to be healthy and stimulated. This is the best period to identify disease and refer for treatment.",
+      "visual_development_brain_image_alt": "The eyes and their visual connections to the brain",
+      "visual_development_identify_disease_title": "Why and how we identify disease to maximise visual development",
+      "visual_development_identify_disease_body": "Any disease of the eye or brain will slow development and limit long term vision. This is why it is important to identify as early as possible any treatable causes of disease that is affecting normal visual and general development.",
+      "visual_development_question_bubble": "This can be done by asking questions about vision, pregnancy, birth, any illnesses and general development",
+      "visual_development_observe_copy": "then observe the eyes assessing visual development then screen for eye disease by performing the fundal 'red' reflex test and examining the front of the eye"
     },
     "childhoodfundalpreparation": { "preparation": "Preparation" },
     "childhoodfundalexamination": { "examination": "Examination" },

@@ -615,7 +615,15 @@
       "observe_item_7": "Anajibu kwa tabasamu tulivu",
       "observe_item_8": "Inafuata mwanga",
       "observe_item_9": "Inafikia kwa usahihi",
-      "observe_item_10": "Haipendi jicho moja kufunikwa"
+      "observe_item_10": "Haipendi jicho moja kufunikwa",
+      "visual_development_intro_image_alt": "Mzazi amembeba mtoto mchanga na anamwangalia",
+      "visual_development_intro_paragraph_1": "Watoto wanapozaliwa uwezo wao wa kuona huwa dhaifu. Kimsingi huwa kama 'vipofu'. Hata hivyo, uwezo wao wa kuona utaendelea kukua katika miaka 5 hadi 8 inayofuata, na maboresho mengi hutokea katika miezi 18 ya kwanza ya maisha. Hiki ni kipindi muhimu sana.",
+      "visual_development_intro_paragraph_2": "Katika kipindi hiki, mfumo wa kuona wa macho na ubongo unapaswa kuwa na afya na kuchochewa. Hiki ndicho kipindi bora zaidi cha kutambua ugonjwa na kumpeleka mgonjwa kwa matibabu.",
+      "visual_development_brain_image_alt": "Macho na njia za kuona zinazoyaunganisha na ubongo",
+      "visual_development_identify_disease_title": "Kwa nini na jinsi tunavyotambua ugonjwa ili kukuza maendeleo ya kuona kwa kiwango cha juu",
+      "visual_development_identify_disease_body": "Ugonjwa wowote wa jicho au wa ubongo utapunguza kasi ya maendeleo na kupunguza uwezo wa kuona wa muda mrefu. Ndiyo maana ni muhimu kutambua mapema iwezekanavyo sababu zozote zinazotibika za ugonjwa zinazoathiri maendeleo ya kawaida ya kuona na maendeleo ya jumla.",
+      "visual_development_question_bubble": "Hili linaweza kufanywa kwa kuuliza maswali kuhusu kuona, ujauzito, kuzaliwa, magonjwa yoyote na maendeleo ya jumla",
+      "visual_development_observe_copy": "Kisha tazama macho kutathmini maendeleo ya kuona, halafu chunguza ugonjwa wa macho kwa kufanya kipimo cha fundal 'red' reflex na kuchunguza sehemu ya mbele ya jicho"
     },
     "glaucomaworkshop": {
       "eyes": "Macho",

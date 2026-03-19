@@ -618,7 +618,15 @@
       "observe_item_7": "Subiza kumwenyura utuje",
       "observe_item_8": "Kurikira urumuri",
       "observe_item_9": "Kugera neza",
-      "observe_item_10": "Ntabwo yanga ijisho rimwe"
+      "observe_item_10": "Ntabwo yanga ijisho rimwe",
+      "visual_development_intro_image_alt": "Umubyeyi uteruye uruhinja kandi arureba",
+      "visual_development_intro_paragraph_1": "Abana bavutse baba bafite ubushobozi buke bwo kubona. Mu by'ukuri baba nk'abatabona. Ariko uko kubona kwabo gukomeza gutera imbere mu myaka 5 kugeza kuri 8 ikurikiraho, impinduka nini zikaboneka cyane cyane mu mezi 18 ya mbere y'ubuzima. Iyi ni igihe cy'ingenzi cyane.",
+      "visual_development_intro_paragraph_2": "Muri iki gihe, uburyo bwo kubona bukorwa n'amaso n'ubwonko bugomba kuba buzima kandi bugaterwa imbaraga. Iki ni cyo gihe cyiza cyo kumenya indwara no kohereza umuntu kuvurirwa.",
+      "visual_development_brain_image_alt": "Amaso n'inzira z'iyerekwa ziyahuza n'ubwonko",
+      "visual_development_identify_disease_title": "Impamvu n'uburyo tumenya indwara kugira ngo iyerekwa rikure neza kurushaho",
+      "visual_development_identify_disease_body": "Indwara iyo ari yo yose yo mu jisho cyangwa mu bwonko izadindiza imikurire kandi igabanye iyerekwa ry'igihe kirekire. Ni yo mpamvu ari ngombwa kumenya hakiri kare impamvu z'indwara zishobora kuvurwa zibangamira imikurire isanzwe y'iyerekwa n'iterambere rusange.",
+      "visual_development_question_bubble": "Ibi bishobora gukorwa ubajije ibibazo ku iyerekwa, gutwita, kuvuka, indwara izo ari zo zose n'iterambere rusange",
+      "visual_development_observe_copy": "Hanyuma reba amaso usuzume imikurire y'iyerekwa, ubone gusuzuma indwara z'amaso ukoresheje ikizamini cya fundal 'red' reflex no gusuzuma igice cy'imbere cy'ijisho"
     },
     "glaucomaworkshop": {
       "eyes": "Amaso",

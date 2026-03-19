@@ -1850,6 +1850,379 @@ select.onb-input.has-value + .onb-select-caret {
   }
 }
 
+@media (max-width: 37.5em) {
+  #childhoodIntroVisualDevelopmentPage .eyes-topbar__icons {
+    margin-right: 14px !important;
+  }
+
+  #childhoodIntroVisualDevelopmentPage .eyes-topbar .icon.menuBtn {
+    left: -8px !important;
+    width: 36px;
+    height: 36px;
+    font-size: 25px !important;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+#childhoodIntroVisualDevelopmentPage .childhood-visual-dev-story {
+  display: grid;
+  gap: 20px;
+  padding: 6px 0 30px;
+}
+
+#childhoodIntroVisualDevelopmentPage .childhood-visual-dev-figure {
+  margin: 0;
+  padding: 0;
+  border-radius: 0;
+  overflow: visible;
+  background: #ffffff;
+  box-shadow: none;
+}
+
+#childhoodIntroVisualDevelopmentPage .childhood-visual-dev-figure img,
+#childhoodIntroVisualDevelopmentPage .childhood-visual-dev-qno-layer img,
+#childhoodIntroVisualDevelopmentPage .childhood-visual-dev-observe-panel img {
+  display: block;
+  width: 100%;
+  height: auto;
+  box-shadow: none;
+  filter: none;
+}
+
+#childhoodIntroVisualDevelopmentPage .childhood-visual-dev-figure--brain {
+  margin-bottom: 12px;
+}
+
+#childhoodIntroVisualDevelopmentPage .childhood-visual-dev-copy-card {
+  padding: 0;
+  border-radius: 0;
+  background: #ffffff;
+  box-shadow: none;
+}
+
+#childhoodIntroVisualDevelopmentPage .childhood-visual-dev-copy-card--compact {
+  padding: 0;
+  margin-bottom: 34px;
+}
+
+#childhoodIntroVisualDevelopmentPage .childhood-visual-dev-copy-card p,
+#childhoodIntroVisualDevelopmentPage .childhood-visual-dev-observe-copy {
+  margin: 0;
+  color: #000000;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.7;
+  letter-spacing: -0.02em;
+}
+
+#childhoodIntroVisualDevelopmentPage .childhood-visual-dev-observe-copy {
+  display: block;
+  margin-top: 32px;
+  margin-bottom: 32px;
+}
+
+#childhoodIntroVisualDevelopmentPage .childhood-visual-dev-copy-card p + p {
+  margin-top: 16px;
+}
+
+#childhoodIntroVisualDevelopmentPage .childhood-visual-dev-callout {
+  display: grid;
+  gap: 16px;
+  margin-top: 78px;
+  margin-bottom: 40px;
+}
+
+#childhoodIntroVisualDevelopmentPage .childhood-visual-dev-callout__title {
+  padding: 14px 16px;
+  border-radius: 0;
+  background: #0f1115;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.45;
+  letter-spacing: -0.03em;
+}
+
+#childhoodIntroVisualDevelopmentPage .childhood-visual-dev-scene-card {
+  position: relative;
+  padding: 0;
+  border-radius: 0;
+  overflow: visible;
+  background: #ffffff;
+  box-shadow: none;
+}
+
+#childhoodIntroVisualDevelopmentPage .childhood-visual-dev-qno-stage {
+  position: relative;
+  --childhood-visual-dev-qno-offset-top: 16.5%;
+  aspect-ratio: 1169 / 1648;
+  border-radius: 24px;
+  overflow: hidden;
+  background: #a8a294;
+}
+
+#childhoodIntroVisualDevelopmentPage .childhood-visual-dev-qno-layer {
+  position: absolute;
+  left: var(--left, 0%);
+  top: calc(var(--top, 0%) + var(--childhood-visual-dev-qno-offset-top));
+  width: var(--width, auto);
+  z-index: var(--z, 1);
+  will-change: transform;
+}
+
+#childhoodIntroVisualDevelopmentPage .childhood-visual-dev-qno-layer--man {
+  transform-origin: 70% 100%;
+  animation: none;
+}
+
+#childhoodIntroVisualDevelopmentPage .childhood-visual-dev-qno-layer--mother {
+  transform-origin: 50% 100%;
+  animation: none;
+}
+
+#childhoodIntroVisualDevelopmentPage .childhood-visual-dev-qno-layer--arm {
+  transform-origin: 22% 38%;
+  animation: none;
+}
+
+#childhoodIntroVisualDevelopmentPage .childhood-visual-dev-qno-bubble {
+  position: absolute;
+  left: 49%;
+  top: 5.2%;
+  z-index: 7;
+  width: min(58%, 308px);
+  min-width: 208px;
+  padding: 14px 15px;
+  border-radius: 18px;
+  background: #ffffff;
+  transform: translate3d(-50%, 0, 0);
+  box-shadow: none;
+  animation: none;
+}
+
+#childhoodIntroVisualDevelopmentPage .childhood-visual-dev-qno-bubble::after {
+  content: "";
+  position: absolute;
+  left: 66px;
+  bottom: -14px;
+  width: 14px;
+  height: 24px;
+  background: inherit;
+  clip-path: polygon(18% 0, 100% 10%, 46% 100%);
+  transform: rotate(8deg);
+}
+
+#childhoodIntroVisualDevelopmentPage .childhood-visual-dev-qno-bubble__text {
+  margin: 0;
+  color: #000000;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.42;
+  letter-spacing: -0.02em;
+}
+
+#childhoodIntroVisualDevelopmentPage .childhood-visual-dev-observe-stage {
+  position: relative;
+  margin-top: 16px;
+  aspect-ratio: 1.28 / 1;
+  border-radius: 24px;
+  overflow: hidden;
+  background: #b2ac9f
+    url("/scrolly/coreexam/fundalreflex/prep/3/images/img_12.png") center /
+    cover no-repeat;
+}
+
+#childhoodIntroVisualDevelopmentPage
+  .childhood-visual-dev-observe-stage::before {
+  content: none;
+}
+
+#childhoodIntroVisualDevelopmentPage .childhood-visual-dev-observe-panel {
+  position: absolute;
+  bottom: 0;
+  will-change: transform;
+}
+
+#childhoodIntroVisualDevelopmentPage .childhood-visual-dev-observe-panel--exam {
+  left: -20%;
+  height: 78%;
+  z-index: 2;
+  animation: none;
+}
+
+#childhoodIntroVisualDevelopmentPage
+  .childhood-visual-dev-observe-panel--exam
+  img {
+  width: auto;
+  height: 100%;
+  max-width: none;
+  filter: none;
+}
+
+#childhoodIntroVisualDevelopmentPage
+  .childhood-visual-dev-observe-panel--newborn {
+  right: 0;
+  bottom: 0;
+  width: 50%;
+  height: 100%;
+  z-index: 3;
+}
+
+#childhoodIntroVisualDevelopmentPage
+  .childhood-visual-dev-observe-panel--newborn
+  img {
+  width: auto !important;
+  height: auto !important;
+  max-width: none;
+}
+
+#childhoodIntroVisualDevelopmentPage .childhood-visual-dev-observe-mother,
+#childhoodIntroVisualDevelopmentPage .childhood-visual-dev-observe-examiner {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  will-change: transform;
+  width: auto;
+  height: auto;
+  max-width: none;
+}
+
+#childhoodIntroVisualDevelopmentPage .childhood-visual-dev-observe-mother {
+  width: 72% !important;
+  right: 17% !important;
+  z-index: 2;
+  animation: none;
+}
+
+#childhoodIntroVisualDevelopmentPage .childhood-visual-dev-observe-examiner {
+  width: 92% !important;
+  right: -32% !important;
+  z-index: 3;
+  animation: none;
+}
+
+#childhoodIntroVisualDevelopmentPage
+  .childhood-visual-dev-observe-panel--newborn
+  img.childhood-visual-dev-observe-mother {
+  width: 72% !important;
+  right: 17% !important;
+}
+
+#childhoodIntroVisualDevelopmentPage
+  .childhood-visual-dev-observe-panel--newborn
+  img.childhood-visual-dev-observe-examiner {
+  width: 92% !important;
+  right: -32% !important;
+}
+
+@media (max-width: 37.5em) {
+  #childhoodIntroVisualDevelopmentPage .childhood-visual-dev-story {
+    gap: 18px;
+    padding-bottom: 24px;
+  }
+
+  #childhoodIntroVisualDevelopmentPage .childhood-visual-dev-figure,
+  #childhoodIntroVisualDevelopmentPage .childhood-visual-dev-scene-card {
+    padding: 0;
+    border-radius: 0;
+  }
+
+  #childhoodIntroVisualDevelopmentPage .childhood-visual-dev-copy-card {
+    padding: 0;
+    border-radius: 0;
+    max-width: 84%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  #childhoodIntroVisualDevelopmentPage
+    .childhood-visual-dev-copy-card--compact {
+    margin-bottom: 30px;
+  }
+
+  #childhoodIntroVisualDevelopmentPage .childhood-visual-dev-callout__title {
+    padding: 14px 16px;
+    border-radius: 0;
+  }
+
+  #childhoodIntroVisualDevelopmentPage .childhood-visual-dev-observe-copy {
+    display: block;
+    max-width: 84%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 26px;
+    margin-bottom: 28px;
+  }
+
+  #childhoodIntroVisualDevelopmentPage .childhood-visual-dev-qno-bubble {
+    left: 50%;
+    top: 4.8%;
+    width: min(68%, 252px);
+    min-width: 0;
+    padding: 12px 13px;
+  }
+
+  #childhoodIntroVisualDevelopmentPage .childhood-visual-dev-qno-bubble::after {
+    left: 44px;
+  }
+
+  #childhoodIntroVisualDevelopmentPage .childhood-visual-dev-observe-stage {
+    aspect-ratio: 1 / 1.02;
+  }
+
+  #childhoodIntroVisualDevelopmentPage
+    .childhood-visual-dev-observe-panel--exam {
+    left: -26%;
+    height: 72%;
+  }
+
+  #childhoodIntroVisualDevelopmentPage
+    .childhood-visual-dev-observe-panel--newborn {
+    width: 54%;
+    height: 100%;
+  }
+
+  #childhoodIntroVisualDevelopmentPage .childhood-visual-dev-observe-mother {
+    width: 72% !important;
+    right: 17% !important;
+  }
+
+  #childhoodIntroVisualDevelopmentPage .childhood-visual-dev-observe-examiner {
+    width: 92% !important;
+    right: -32% !important;
+  }
+
+  #childhoodIntroVisualDevelopmentPage
+    .childhood-visual-dev-observe-panel--newborn
+    img.childhood-visual-dev-observe-mother {
+    width: 72% !important;
+    right: 17% !important;
+  }
+
+  #childhoodIntroVisualDevelopmentPage
+    .childhood-visual-dev-observe-panel--newborn
+    img.childhood-visual-dev-observe-examiner {
+    width: 92% !important;
+    right: -32% !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #childhoodIntroVisualDevelopmentPage .childhood-visual-dev-qno-layer--man,
+  #childhoodIntroVisualDevelopmentPage .childhood-visual-dev-qno-layer--mother,
+  #childhoodIntroVisualDevelopmentPage .childhood-visual-dev-qno-layer--arm,
+  #childhoodIntroVisualDevelopmentPage .childhood-visual-dev-qno-bubble,
+  #childhoodIntroVisualDevelopmentPage
+    .childhood-visual-dev-observe-panel--exam,
+  #childhoodIntroVisualDevelopmentPage .childhood-visual-dev-observe-mother,
+  #childhoodIntroVisualDevelopmentPage .childhood-visual-dev-observe-examiner {
+    animation: none !important;
+  }
+}
+
 #childhoodAskQuestionsObservePage .childhood-qno-story {
   position: relative;
   margin: 0 -8px;

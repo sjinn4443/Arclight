@@ -613,7 +613,15 @@
       "observe_item_7": "Anopindura achinyemwerera hake",
       "observe_item_8": "Inotevera chiedza",
       "observe_item_9": "Inosvika chokwadi",
-      "observe_item_10": "Haafarire ziso rimwe rakavharwa"
+      "observe_item_10": "Haafarire ziso rimwe rakavharwa",
+      "visual_development_intro_image_alt": "Mubereki akabata mwana achangoberekwa achimutarisa",
+      "visual_development_intro_paragraph_1": "Vana pavanoberekwa kuona kwavo kunenge kusina kusimba. Vanenge vakaita se 'mapofu'. Asi kuona kwavo kunozokura mumakore 5 kusvika 8 anotevera, uye kuvandudzika kukuru kunoitika mumwedzi 18 yekutanga yehupenyu. Iyi inguva yakakosha zvikuru.",
+      "visual_development_intro_paragraph_2": "Panguva iyi, hurongwa hwekuona hwemaziso nehuropi hunofanira kunge huri hwakanaka uye huchikurudzirwa. Iyi ndiyo nguva yakanakisisa yekuona chirwere nekutumira munhu kunorapwa.",
+      "visual_development_brain_image_alt": "Maziso nenzira dzekuona dzinoabatanidza nehuropi",
+      "visual_development_identify_disease_title": "Nei uye sei tichiona chirwere kuti kuona kukure zvakanyanya",
+      "visual_development_identify_disease_body": "Chero chirwere cheziso kana chehuropi chinononotsa kukura uye chinoderedza kuona kwenguva refu. Ndokusaka zvakakosha kuona nekukurumidza sezvinobvira zvikonzero zvinorapika zvechirwere zvinokanganisa kuona kwakajairika uye kukura kwese.",
+      "visual_development_question_bubble": "Izvi zvinogona kuitwa nekubvunza nezvekuona, pamuviri, kuberekwa, chero zvirwere uye kukura kwese",
+      "visual_development_observe_copy": "Wobva waongorora maziso uchiyera kukura kwekuona, wobva waita kuongorora chirwere cheziso nekuita bvunzo ye fundal 'red' reflex uye nekuongorora chikamu chepamberi cheziso"
     },
     "glaucomaworkshop": {
       "eyes": "Maziso",

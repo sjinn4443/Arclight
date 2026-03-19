@@ -603,7 +603,15 @@
       "observe_item_7": "በጸጥታ ፈገግታ ምላሽ ይሰጣል",
       "observe_item_8": "ብርሃንን ይከተላል",
       "observe_item_9": "በትክክል ይደርሳል",
-      "observe_item_10": "አንድ ዓይን መሸፈን አይወድም።"
+      "observe_item_10": "አንድ ዓይን መሸፈን አይወድም።",
+      "visual_development_intro_image_alt": "አዲስ የተወለደ ሕፃንን ይዞ የሚመለከት ወላጅ",
+      "visual_development_intro_paragraph_1": "ሕፃናት ሲወለዱ እይታቸው ደካማ ነው። በመሠረቱ 'ዕውር' ናቸው። ነገር ግን እይታቸው በሚቀጥሉት 5 እስከ 8 ዓመታት ውስጥ ይዳብራል፣ ትልቁ ማሻሻያም በሕይወት የመጀመሪያዎቹ 18 ወራት ውስጥ ይከሰታል። ይህ እጅግ ወሳኝ ጊዜ ነው።",
+      "visual_development_intro_paragraph_2": "በዚህ ጊዜ የዓይንና የአንጎል የማየት ስርዓት ጤናማ እና በቂ ማነቃቂያ ያለው መሆን አለበት። በሽታን ለመለየትና ለሕክምና ማስተላለፍ ይህ የተሻለ ጊዜ ነው።",
+      "visual_development_brain_image_alt": "ዓይኖችን ከአንጎል ጋር የሚያገናኙ የማየት መንገዶች",
+      "visual_development_identify_disease_title": "የማየት እድገትን ከፍ ለማድረግ በሽታን ለምን እና እንዴት እንለያለን",
+      "visual_development_identify_disease_body": "የዓይን ወይም የአንጎል ማንኛውም በሽታ እድገትን ያዘገያል እና የረጅም ጊዜ እይታን ይገድባል። ስለዚህ መደበኛ የእይታና አጠቃላይ እድገትን የሚጎዱ ሊታከሙ የሚችሉ ምክንያቶችን በተቻለ ፍጥነት መለየት አስፈላጊ ነው።",
+      "visual_development_question_bubble": "ይህ ስለ እይታ፣ ስለ እርግዝና፣ ስለ ልደት፣ ስለ ሕመሞች እና ስለ አጠቃላይ እድገት በመጠየቅ ሊደረግ ይችላል",
+      "visual_development_observe_copy": "ከዚያ ዓይኖቹን በመመልከት የማየት እድገትን ይገምግሙ፣ ከዚያም የፈንዳል 'ቀይ' ሪፍሌክስ ምርመራን በማድረግ እና የዓይኑን ፊት ክፍል በመመርመር የዓይን በሽታ ይመርመሩ"
     },
     "glaucomaworkshop": {
       "eyes": "አይኖች",

@@ -485,7 +485,15 @@
       "observe_item_7": "소리 없는 미소에 반응하는지",
       "observe_item_8": "빛을 따라보는지",
       "observe_item_9": "정확하게 손을 뻗는지",
-      "observe_item_10": "한쪽 눈을 가리면 싫어하는지"
+      "observe_item_10": "한쪽 눈을 가리면 싫어하는지",
+      "visual_development_intro_image_alt": "신생아를 안고 바라보는 부모",
+      "visual_development_intro_paragraph_1": "아기는 태어날 때 시력이 좋지 않습니다. 사실상 '보지 못하는' 상태입니다. 그러나 시력은 이후 5년에서 8년에 걸쳐 발달하며, 가장 큰 향상은 생후 첫 18개월에 일어납니다. 이 시기는 매우 중요합니다.",
+      "visual_development_intro_paragraph_2": "이 기간 동안 눈과 뇌의 시각계는 건강해야 하고 충분한 자극을 받아야 합니다. 또한 질환을 발견하고 치료를 의뢰하기에 가장 좋은 시기입니다.",
+      "visual_development_brain_image_alt": "눈과 뇌를 연결하는 시각 경로",
+      "visual_development_identify_disease_title": "시각 발달을 최대화하기 위해 왜, 어떻게 질환을 확인하는가",
+      "visual_development_identify_disease_body": "눈이나 뇌에 어떤 질환이 있더라도 발달을 늦추고 장기적인 시력을 제한할 수 있습니다. 그래서 정상적인 시각 발달과 전반적 발달에 영향을 주는 치료 가능한 원인을 가능한 한 빨리 확인하는 것이 중요합니다.",
+      "visual_development_question_bubble": "이는 시력, 임신, 출생, 질병, 전반적인 발달에 대해 질문함으로써 할 수 있습니다",
+      "visual_development_observe_copy": "그다음 눈을 관찰하여 시각 발달을 평가하고, 안저 '적색' 반사 검사를 시행하고 눈 앞부분을 살펴 안질환을 선별합니다"
     },
     "childhoodfundalpreparation": { "preparation": "준비" },
     "childhoodfundalexamination": { "examination": "검사" },

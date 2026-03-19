@@ -615,7 +615,15 @@
       "observe_item_7": "Amayankha akumwetulira chete",
       "observe_item_8": "Kutsatira kuwala",
       "observe_item_9": "Amafika molondola",
-      "observe_item_10": "Sakonda diso limodzi kufundidwa"
+      "observe_item_10": "Sakonda diso limodzi kufundidwa",
+      "visual_development_intro_image_alt": "Kholo lanyamula mwana wakhanda ndipo likumuyangana",
+      "visual_development_intro_paragraph_1": "Ana akabadwa amaona pangono. Mwachidule amakhala ngati 'akhungu'. Komabe maso awo amakula m'zaka 5 mpaka 8 zotsatira, ndipo kusintha kwakukulu kumachitika m'miyezi 18 yoyamba ya moyo. Iyi ndi nthawi yofunika kwambiri.",
+      "visual_development_intro_paragraph_2": "Nthawi imeneyi dongosolo la maso ndi ubongo loyang'anira kuona liyenera kukhala lathanzi komanso kulandira kulimbikitsidwa. Iyi ndi nthawi yabwino kwambiri yozindikira matenda ndi kutumiza kuti alandire chithandizo.",
+      "visual_development_brain_image_alt": "Maso ndi njira za kuona zolumikizana ndi ubongo",
+      "visual_development_identify_disease_title": "Chifukwa ndi momwe timazindikirira matenda kuti kuona kukule bwino kwambiri",
+      "visual_development_identify_disease_body": "Matenda aliwonse a diso kapena ubongo amachedwetsa kukula ndipo amalepheretsa kuona kwa nthawi yaitali. Chifukwa chake ndikofunikira kuzindikira msanga momwe zingathere zifukwa za matenda zomwe zingachiritsidwe zomwe zimakhudza kuona kwabwinobwino ndi kukula konse kwa thupi.",
+      "visual_development_question_bubble": "Izi zingachitike pofunsa mafunso okhudza kuona, mimba, kubadwa, matenda aliwonse komanso kukula konse",
+      "visual_development_observe_copy": "Kenako yang'anani maso kuti muwunike kukula kwa kuona, ndiyeno fufuzani matenda a maso pochita mayeso a fundal 'red' reflex ndi kuyang'ana mbali yakutsogolo ya diso"
     },
     "glaucomaworkshop": {
       "eyes": "Maso",

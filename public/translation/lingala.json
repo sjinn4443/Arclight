@@ -618,7 +618,15 @@
       "observe_item_7": "Ayanoli na mwa kosɛka ya kimya",
       "observe_item_8": "Alandi mwinda moko",
       "observe_item_9": "Esimbaka na bosikisiki",
-      "observe_item_10": "Alingaka te liso moko ezipami"
+      "observe_item_10": "Alingaka te liso moko ezipami",
+      "visual_development_intro_image_alt": "Moboti oyo asimbi mwana ya sika mpe azali kotala ye",
+      "visual_development_intro_paragraph_1": "Ntango bana bazali kobotama, bomoni na bango ezalaka malembe. Na moboko bazalaka lokola 'bakufi miso'. Kasi bomoni na bango ekokola malembe malembe na kati ya mbula 5 tii 8 oyo ezali koya, mpe kobongwana monene mingi esalemaka na sanza 18 ya liboso ya bomoi. Oyo ezali eleko ya ntina mingi.",
+      "visual_development_intro_paragraph_2": "Na eleko oyo, système ya komona ya miso mpe ya bongo esengeli kozala malamu mpe kozwa stimulation. Oyo ezali eleko ya malamu mingi mpo na koyeba bokono mpe kotinda mpo na traitement.",
+      "visual_development_brain_image_alt": "Miso mpe banzela ya komona oyo ezali kokangisa yango na bongo",
+      "visual_development_identify_disease_title": "Mpo na nini mpe ndenge nini tozali koyeba bokono mpo tokolisa bomoni malamu koleka",
+      "visual_development_identify_disease_body": "Bokono nyonso ya liso to ya bongo ekobebisa bokoli mpe ekokangela bomoni ya ntango molai. Yango wana ezali na ntina koyeba noki ndenge ekoki kozala bantina ya bokono oyo ekoki kosalisa na traitement mpe oyo ezali kobebisa bokoli ya bomoni ya malamu mpe bokoli ya nzoto mobimba.",
+      "visual_development_question_bubble": "Yango ekoki kosalema na kotuna mituna na ntina na bomoni, zemi, kobota, bokono nyonso mpe bokoli ya nzoto mobimba",
+      "visual_development_observe_copy": "Na nsima tala miso mpo na kotalela bokoli ya bomoni, mpe sala test ya fundal 'red' reflex mpe tala eteni ya liboso ya liso mpo na kosala dépistage ya bokono ya miso"
     },
     "glaucomaworkshop": {
       "eyes": "Miso",

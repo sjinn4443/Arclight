@@ -611,7 +611,15 @@
       "observe_item_7": "Répond avec un sourire tranquille",
       "observe_item_8": "Suit une lumière",
       "observe_item_9": "Atteint avec précision",
-      "observe_item_10": "N'aime pas qu'un œil soit couvert"
+      "observe_item_10": "N'aime pas qu'un œil soit couvert",
+      "visual_development_intro_image_alt": "Parent tenant un nouveau-né et le regardant",
+      "visual_development_intro_paragraph_1": "À la naissance, la vision des bébés est faible. Ils sont essentiellement 'aveugles'. Leur vision va cependant se développer au cours des 5 à 8 années suivantes, avec la plus grande amélioration durant les 18 premiers mois de vie. C'est une période très critique.",
+      "visual_development_intro_paragraph_2": "Pendant cette période, le système visuel des yeux et du cerveau doit être sain et stimulé. C'est le meilleur moment pour identifier une maladie et orienter vers un traitement.",
+      "visual_development_brain_image_alt": "Les yeux et les voies visuelles qui les relient au cerveau",
+      "visual_development_identify_disease_title": "Pourquoi et comment nous identifions la maladie pour maximiser le développement visuel",
+      "visual_development_identify_disease_body": "Toute maladie de l'œil ou du cerveau ralentira le développement et limitera la vision à long terme. C'est pourquoi il est important d'identifier le plus tôt possible toute cause traitable de maladie qui affecte le développement visuel et général normal.",
+      "visual_development_question_bubble": "Cela peut se faire en posant des questions sur la vision, la grossesse, la naissance, les maladies éventuelles et le développement général",
+      "visual_development_observe_copy": "Ensuite, observez les yeux pour évaluer le développement visuel, puis recherchez une maladie oculaire en réalisant le test du réflexe fundique 'rouge' et en examinant la partie antérieure de l'œil"
     },
     "glaucomaworkshop": {
       "eyes": "Yeux",

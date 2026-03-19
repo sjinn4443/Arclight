@@ -597,7 +597,15 @@
       "observe_item_7": "以安静的微笑回应",
       "observe_item_8": "跟随一盏灯",
       "observe_item_9": "准确到达",
-      "observe_item_10": "不喜欢一只眼睛被遮住"
+      "observe_item_10": "不喜欢一只眼睛被遮住",
+      "visual_development_intro_image_alt": "抱着并看着新生儿的家长",
+      "visual_development_intro_paragraph_1": "婴儿出生时视力很差，基本上可以说是“看不见”。不过，在接下来的5到8年中，他们的视力会逐渐发育，其中大部分改善发生在生命最初18个月。这是一个非常关键的时期。",
+      "visual_development_intro_paragraph_2": "在这段时间里，眼睛和大脑的视觉系统需要保持健康并受到刺激。这也是发现疾病并转诊治疗的最佳时期。",
+      "visual_development_brain_image_alt": "眼睛及其连接大脑的视觉通路",
+      "visual_development_identify_disease_title": "我们为何以及如何识别疾病以最大限度促进视觉发育",
+      "visual_development_identify_disease_body": "眼睛或大脑的任何疾病都会减缓发育，并限制长期视力。因此，尽早识别任何影响正常视觉和整体发育的可治疗病因非常重要。",
+      "visual_development_question_bubble": "这可以通过询问视力、妊娠、分娩、任何疾病以及整体发育情况来完成",
+      "visual_development_observe_copy": "然后观察眼睛以评估视觉发育，再通过进行眼底“红”反射测试和检查眼前段来筛查眼病"
     },
     "glaucomaworkshop": {
       "eyes": "眼睛",

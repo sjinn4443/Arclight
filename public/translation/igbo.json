@@ -615,7 +615,15 @@
       "observe_item_7": "Jiri ọnụ ọchị dị jụụ zaghachi",
       "observe_item_8": "Na-eso ọkụ",
       "observe_item_9": "Na-eru nke ọma",
-      "observe_item_10": "Achọghị ka otu anya kpuchie ya"
+      "observe_item_10": "Achọghị ka otu anya kpuchie ya",
+      "visual_development_intro_image_alt": "Nne ma obu nna ji nwa amuru ohuru ma na-ele ya anya",
+      "visual_development_intro_paragraph_1": "Mgbe a mụrụ ụmụ ọhụrụ, ọhụhụ ha adịghị ike. N'ụzọ bụ isi, ha dị ka ndị 'ìsì'. Otú ọ dị, ọhụhụ ha ga-etolite n’ime afọ 5 ruo 8 sochirinụ, ebe mmezi kasịnụ na-eme n’ime ọnwa 18 mbụ nke ndụ. Nke a bụ oge dị oke mkpa.",
+      "visual_development_intro_paragraph_2": "N’oge a, usoro ịhụ ihe nke anya na ụbụrụ ga-adị mma ma nata mkpali. Nke a bụ oge kacha mma iji chọpụta ọrịa ma zipu maka ọgwụgwọ.",
+      "visual_development_brain_image_alt": "Anya na ụzọ ọhụhụ ndị na-ejikọta ha na ụbụrụ",
+      "visual_development_identify_disease_title": "Ihe kpatara na otú anyị si achọpụta ọrịa iji kwalite mmepe ọhụhụ nke ọma",
+      "visual_development_identify_disease_body": "Ọrịa ọ bụla nke anya ma ọ bụ ụbụrụ ga-eme ka mmepe daa nwayọ ma gbochie ọhụhụ ogologo oge. Nke a bụ ya mere o ji dị mkpa ịchọpụta ngwa ngwa o kwere mee ihe ọ bụla a pụrụ ịgwọ nke na-emetụta mmepe ọhụhụ na mmepe zuru ezu nkịtị.",
+      "visual_development_question_bubble": "A pụrụ ime nke a site n’ịjụ ajụjụ gbasara ọhụhụ, ime ime, ọmụmụ, ọrịa ọ bụla na mmepe zuru ezu",
+      "visual_development_observe_copy": "Mgbe ahụ lelee anya iji nyochaa mmepe ọhụhụ, wee nyochaa ọrịa anya site n’ime ule fundal 'red' reflex na ilele akụkụ ihu nke anya"
     },
     "glaucomaworkshop": {
       "eyes": "Anya",
