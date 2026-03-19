@@ -1867,6 +1867,17 @@ select.onb-input.has-value + .onb-select-caret {
   }
 }
 
+@media (max-width: 37.5em) {
+  #childhoodNormalVisualDevelopmentPage .eyes-topbar__icons {
+    margin-right: 50px !important;
+  }
+
+  #childhoodNormalVisualDevelopmentPage .eyes-topbar .icon.menuBtn {
+    position: relative;
+    left: -30px !important;
+  }
+}
+
 #childhoodIntroVisualDevelopmentPage .childhood-visual-dev-story {
   display: grid;
   gap: 20px;
