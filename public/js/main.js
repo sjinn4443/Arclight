@@ -223,6 +223,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (
       routeName === "visualsystemeyesbrain" ||
       routeName === "childhoodEyeBrainImages" ||
+      routeName === "childhoodIntroVisualDevelopmentPage" ||
+      routeName === "childhoodNormalVisualDevelopmentPage" ||
       routeName === "childhoodAskQuestionsObservePage"
     ) {
       const { initializeVisualSystemEyesBrain } =

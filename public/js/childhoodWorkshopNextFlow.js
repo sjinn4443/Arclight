@@ -35,8 +35,8 @@ const FUNDAL_SCROLL_TARGETS = new Set([
 
 const TARGET_ROUTES = {
   childhoodEyeBrainImagesPage: "childhoodEyeBrainImages",
-  childhoodIntroVisualDevelopmentPage: "childhoodEyeBrainImages",
-  childhoodNormalVisualDevelopmentPage: "childhoodEyeBrainImages",
+  childhoodIntroVisualDevelopmentPage: "childhoodIntroVisualDevelopmentPage",
+  childhoodNormalVisualDevelopmentPage: "childhoodNormalVisualDevelopmentPage",
   childhoodAskQuestionsObservePage: "childhoodAskQuestionsObservePage",
   visualImpairmentPage: "visualImpairment",
   signsVICasesPage: "signsVICases",
@@ -110,6 +110,9 @@ const FLOW_ROUTES = new Set([
   "childhoodEyeScreeningWorkshop",
   "videos",
   "childhoodEyeBrainImages",
+  "childhoodIntroVisualDevelopmentPage",
+  "childhoodNormalVisualDevelopmentPage",
+  "childhoodAskQuestionsObservePage",
   "visualImpairment",
   "signsVICases",
   "childhoodRefer",

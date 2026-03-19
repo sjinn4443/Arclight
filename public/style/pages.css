@@ -1952,8 +1952,8 @@ select.onb-input.has-value + .onb-select-caret {
 
 #childhoodAskQuestionsObservePage .childhood-qno-bubble {
   position: absolute;
-  left: 36%;
-  top: 16.6%;
+  left: 44%;
+  top: 29%;
   z-index: 7;
   width: 54%;
   min-width: 182px;
@@ -1972,7 +1972,7 @@ select.onb-input.has-value + .onb-select-caret {
 #childhoodAskQuestionsObservePage .childhood-qno-bubble::after {
   content: "";
   position: absolute;
-  left: 54px;
+  left: 72px;
   bottom: -14px;
   width: 14px;
   height: 24px;
@@ -1990,7 +1990,7 @@ select.onb-input.has-value + .onb-select-caret {
   margin: 0;
   color: #17202d;
   font-size: clamp(14px, 3.8vw, 15px);
-  font-weight: 400;
+  font-weight: 500;
   line-height: 1.38;
   letter-spacing: -0.02em;
 }

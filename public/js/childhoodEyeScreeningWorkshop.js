@@ -504,8 +504,10 @@ export function initializeChildhoodEyeScreeningWorkshop() {
         childhoodEyeBrainImagesPage: "childhoodEyeBrainImages",
 
         // ✅ [ADD] Visual development + QnO도 childhoodEyeBrainImages route로!
-        childhoodIntroVisualDevelopmentPage: "childhoodEyeBrainImages",
-        childhoodNormalVisualDevelopmentPage: "childhoodEyeBrainImages",
+        childhoodIntroVisualDevelopmentPage:
+          "childhoodIntroVisualDevelopmentPage",
+        childhoodNormalVisualDevelopmentPage:
+          "childhoodNormalVisualDevelopmentPage",
         childhoodAskQuestionsObservePage: "childhoodAskQuestionsObservePage",
         childhoodFundalPreparationPage: "childhoodFundalPreparation",
         childhoodFundalExaminationPage: "childhoodFundalExamination",

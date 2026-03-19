@@ -187,9 +187,14 @@ window.addEventListener("page:loaded", (_e) => {
  */
 function minimalShowPage(id) {
   const pages = document.querySelectorAll(".page");
-  pages.forEach((p) => (p.style.display = "none"));
+  pages.forEach((p) => {
+    p.classList.remove("active");
+    p.style.display = "none";
+  });
   const target = document.getElementById(id);
-  if (target) target.style.display = "";
+  if (!target) return;
+  target.classList.add("active");
+  target.style.display = "block";
 }
 
 // Expose minimalShowPage globally for legacy/inline usage

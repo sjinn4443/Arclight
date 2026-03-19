@@ -570,6 +570,19 @@ const CHILDHOOD_QNO_QUESTIONS = [
   "Any concerns with movement?",
 ];
 
+const CHILDHOOD_QNO_QUESTION_KEYS = [
+  "auto.childhoodeyebrainimages.question_1",
+  "auto.childhoodeyebrainimages.question_2",
+  "auto.childhoodeyebrainimages.question_3",
+  "auto.childhoodeyebrainimages.question_4",
+  "auto.childhoodeyebrainimages.question_5",
+  "auto.childhoodeyebrainimages.question_6",
+  "auto.childhoodeyebrainimages.question_7",
+  "auto.childhoodeyebrainimages.question_8",
+  "auto.childhoodeyebrainimages.question_9",
+  "auto.childhoodeyebrainimages.question_10",
+];
+
 function initializeChildhoodAskQuestionsObserve() {
   const page = document.getElementById("childhoodAskQuestionsObservePage");
   if (!page) return;
@@ -629,7 +642,12 @@ function initializeChildhoodAskQuestionsObserve() {
       safeStepIndex > 0 && safeStepIndex <= CHILDHOOD_QNO_QUESTIONS.length;
     questionBubble.classList.toggle("is-visible", showBubble);
     if (showBubble) {
+      questionText.setAttribute(
+        "data-i18n",
+        CHILDHOOD_QNO_QUESTION_KEYS[questionIndex],
+      );
       setTextContent(questionText, CHILDHOOD_QNO_QUESTIONS[questionIndex]);
+      window.I18N?.applyTranslations?.(questionText);
     }
 
     observeItems.forEach((item, index) => {

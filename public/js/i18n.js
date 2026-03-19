@@ -252,8 +252,15 @@ export function applyTranslations(root = document) {
   const getTranslationValue = (path) =>
     get(CACHE.dict, path) ?? get(CACHE.fallbackDict, path);
 
-  const nodes = root.querySelectorAll("[data-i18n]");
-  nodes.forEach((el) => {
+  const scopedNodes = [];
+  if (root.nodeType === 1 && root.matches?.("[data-i18n]")) {
+    scopedNodes.push(root);
+  }
+  if (typeof root.querySelectorAll === "function") {
+    scopedNodes.push(...root.querySelectorAll("[data-i18n]"));
+  }
+
+  scopedNodes.forEach((el) => {
     const spec = (el.getAttribute("data-i18n") || "").trim();
     if (!spec) return;
     // Do not translate inside regions explicitly marked to be skipped
