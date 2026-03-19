@@ -347,11 +347,7 @@
   },
   "mylearning": {
     "title": "میری سیکھنا",
-    "tabs": {
-      "in_progress": "جاری ہے",
-      "liked": "پسندیدہ",
-      "notes": "نوٹس"
-    },
+    "tabs": { "in_progress": "جاری ہے", "liked": "پسندیدہ", "notes": "نوٹس" },
     "search_placeholder": "مواد تلاش کریں",
     "filters": {
       "eyes": "آنکھیں",
@@ -471,9 +467,7 @@
     "menuButton": "☰",
     "cataractTitle": "موتیا کا عنوان",
     "interactiveLearning": "انٹرایکٹو لرننگ",
-    "share": {
-      "label": "لیبل"
-    }
+    "share": { "label": "لیبل" }
   },
   "appTitle": "Arclight آنکھیں، کان، جلد",
   "installPrompt": "بہتر تجربے کے لیے یہ ایپ انسٹال کریں!",
@@ -489,27 +483,17 @@
   "reviewAnswersTitle": "جوابات کا جائزہ لیں",
   "closeReviewButton": "جائزہ بند کریں",
   "auto": {
-    "childhoodfundalpreparation": {
-      "preparation": "تیاری"
-    },
-    "childhoodfundalexamination": {
-      "examination": "امتحان"
-    },
+    "childhoodfundalpreparation": { "preparation": "تیاری" },
+    "childhoodfundalexamination": { "examination": "امتحان" },
     "childhoodfundalnewborneyesopen": {
       "newborn_eyes_open": "نومولود - آنکھیں کھلیں۔"
     },
     "childhoodfundalnewborneyesclosed": {
       "newborn_eyes_closed": "نومولود - آنکھیں بند"
     },
-    "childhoodfundalunclearfindings": {
-      "unclear_findings": "غیر واضح نتائج"
-    },
-    "childhoodfundalpossiblefinding": {
-      "possible_findings": "ممکنہ نتائج"
-    },
-    "childhoodfundalafterexamination": {
-      "after_examination": "امتحان کے بعد"
-    },
+    "childhoodfundalunclearfindings": { "unclear_findings": "غیر واضح نتائج" },
+    "childhoodfundalpossiblefinding": { "possible_findings": "ممکنہ نتائج" },
+    "childhoodfundalafterexamination": { "after_examination": "امتحان کے بعد" },
     "childhoodeyescreeningworkshop": {
       "eyes": "آنکھیں",
       "the_visual_system": "1. بصری نظام",
@@ -562,18 +546,35 @@
       "behaviours_mcq": "برتاؤ MCQ",
       "check_answer": "جواب چیک کریں۔"
     },
-    "fundalreflexpdf": {
-      "fundal_reflex": "فنڈل اضطراری",
-      "eyes": "آنکھیں"
-    },
-    "visualimpairment": {
-      "visual_impairment": "بصری خرابی۔"
-    },
-    "signsvicases": {
-      "signs_of_visual_impairment": "بصری خرابی کی علامات"
-    },
+    "fundalreflexpdf": { "fundal_reflex": "فنڈل اضطراری", "eyes": "آنکھیں" },
+    "visualimpairment": { "visual_impairment": "بصری خرابی۔" },
+    "signsvicases": { "signs_of_visual_impairment": "بصری خرابی کی علامات" },
     "childhoodrefer": {
-      "refer": "رجوع کریں۔"
+      "refer": "رجوع کریں۔",
+      "eye_conditions_to_refer": "رجوع کرنے کے لیے آنکھوں کے حالات",
+      "white_pupil": "سفید شاگرد",
+      "white_pink_pupil": "سفید / گلابی شاگرد",
+      "cataract": "موتیا بند",
+      "retinoblastoma": "ریٹینوبلاسٹوما",
+      "eyes_not_straight": "آنکھیں سیدھی نہیں ہیں۔",
+      "squint": "سکوئنٹ",
+      "eye_lid_low": "آنکھ کا ڈھکن کم",
+      "ptosis": "پٹوسس",
+      "big_eyes": "بڑی آنکھیں",
+      "glaucoma": "گلوکوما",
+      "small_eyes": "چھوٹی آنکھیں",
+      "cataract_corneal_scar_coloboma_glasses": "موتیابند، قرنیہ کا داغ\nکولوبوما، شیشے",
+      "corneal_scar": "قرنیہ کا داغ",
+      "coloboma": "کولوبوما",
+      "red_eye": "سرخ آنکھ",
+      "red_eyes": "سرخ آنکھیں",
+      "infective_conjunctivitis": "متعدی آشوب چشم",
+      "allergic_conjunctivitis": "الرجک آشوب چشم",
+      "white_patches_on_cornea": "کارنیا پر سفید دھبے",
+      "early_infective_ulcer": "ابتدائی انفیکشن السر",
+      "severe_infective_ulcer": "شدید انفیکشن السر",
+      "trauma": "صدمہ",
+      "congenital_dermoid": "پیدائشی ڈرمائڈ"
     },
     "childhoodeyebrainimages": {
       "eye_brain": "آنکھ اور دماغ",
@@ -747,10 +748,7 @@
       "on_android": "اینڈرائیڈ پر:",
       "install_app": "ایپ انسٹال کریں۔"
     },
-    "quizzes": {
-      "quiz": "کوئز",
-      "check_answer": "جواب چیک کریں۔"
-    }
+    "quizzes": { "quiz": "کوئز", "check_answer": "جواب چیک کریں۔" }
   },
   "i18nLiteral": {
     "Next >": "اگلا >",
@@ -1505,7 +1503,5 @@
     "settings": "ترتیبات",
     "edit_profile": "پروفائل میں ترمیم کریں۔"
   },
-  "offline": {
-    "pupils_checkbox": "پتلیاں"
-  }
+  "offline": { "pupils_checkbox": "پتلیاں" }
 }

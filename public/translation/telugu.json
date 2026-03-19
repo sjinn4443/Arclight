@@ -488,9 +488,7 @@
     "menuButton": "☰",
     "cataractTitle": "కంటిశుక్లం శీర్షిక",
     "interactiveLearning": "ఇంటరాక్టివ్ లెర్నింగ్",
-    "share": {
-      "label": "లేబుల్"
-    }
+    "share": { "label": "లేబుల్" }
   },
   "appTitle": "Arclight కళ్ళు, చెవులు, చర్మం",
   "installPrompt": "మెరుగైన అనుభవం కోసం ఈ యాప్‌ను ఇన్‌స్టాల్ చేయండి!",
@@ -610,13 +608,8 @@
       "quiz": "క్విజ్",
       "check_answer": "సమాధానాన్ని తనిఖీ చేయండి"
     },
-    "quizzes": {
-      "quiz": "క్విజ్",
-      "check_answer": "సమాధానాన్ని తనిఖీ చేయండి"
-    },
-    "menu": {
-      "text": "×"
-    },
+    "quizzes": { "quiz": "క్విజ్", "check_answer": "సమాధానాన్ని తనిఖీ చేయండి" },
+    "menu": { "text": "×" },
     "reports": {
       "arclight_reports": "ఆర్క్‌లైట్ నివేదికలు",
       "interest": "ఆసక్తి",
@@ -708,18 +701,37 @@
       "behaviours_mcq": "ప్రవర్తనలు MCQ",
       "check_answer": "సమాధానాన్ని తనిఖీ చేయండి"
     },
-    "fundalreflexpdf": {
-      "fundal_reflex": "ఫండల్ రిఫ్లెక్స్",
-      "eyes": "కళ్ళు"
-    },
-    "visualimpairment": {
-      "visual_impairment": "దృష్టి లోపం"
-    },
+    "fundalreflexpdf": { "fundal_reflex": "ఫండల్ రిఫ్లెక్స్", "eyes": "కళ్ళు" },
+    "visualimpairment": { "visual_impairment": "దృష్టి లోపం" },
     "signsvicases": {
       "signs_of_visual_impairment": "దృష్టి లోపం యొక్క చిహ్నాలు"
     },
     "childhoodrefer": {
-      "refer": "సూచించండి"
+      "refer": "సూచించండి",
+      "eye_conditions_to_refer": "సూచించడానికి కంటి పరిస్థితులు",
+      "white_pupil": "తెల్ల విద్యార్థి",
+      "white_pink_pupil": "తెలుపు / పింక్ విద్యార్థి",
+      "cataract": "కంటిశుక్లం",
+      "retinoblastoma": "రెటినోబ్లాస్టోమా",
+      "eyes_not_straight": "కళ్ళు సూటిగా లేవు",
+      "squint": "స్క్వింట్",
+      "eye_lid_low": "కంటి మూత తక్కువగా ఉంది",
+      "ptosis": "ప్టోసిస్",
+      "big_eyes": "పెద్ద కళ్ళు",
+      "glaucoma": "గ్లాకోమా",
+      "small_eyes": "చిన్న కళ్ళు",
+      "cataract_corneal_scar_coloboma_glasses": "కంటిశుక్లం, కార్నియల్ స్కార్\nకొలోబోమా, అద్దాలు",
+      "corneal_scar": "కార్నియల్ స్కార్",
+      "coloboma": "కొలోబోమా",
+      "red_eye": "రెడ్ ఐ",
+      "red_eyes": "రెడ్ ఐస్",
+      "infective_conjunctivitis": "ఇన్ఫెక్టివ్ కండ్లకలక",
+      "allergic_conjunctivitis": "అలెర్జీ కండ్లకలక",
+      "white_patches_on_cornea": "కార్నియాపై తెల్లటి పాచెస్",
+      "early_infective_ulcer": "ఎర్లీ ఇన్ఫెక్టివ్ అల్సర్",
+      "severe_infective_ulcer": "తీవ్రమైన ఇన్ఫెక్టివ్ అల్సర్",
+      "trauma": "గాయం",
+      "congenital_dermoid": "పుట్టుకతో వచ్చే డెర్మాయిడ్"
     },
     "childhoodeyebrainimages": {
       "eye_brain": "కన్ను & మెదడు",
@@ -727,12 +739,8 @@
       "normal_visual_development": "సాధారణ దృశ్య అభివృద్ధి",
       "ask_questions_and_observe": "ప్రశ్నలు అడగండి మరియు గమనించండి"
     },
-    "childhoodfundalpreparation": {
-      "preparation": "తయారీ"
-    },
-    "childhoodfundalexamination": {
-      "examination": "పరీక్ష"
-    },
+    "childhoodfundalpreparation": { "preparation": "తయారీ" },
+    "childhoodfundalexamination": { "examination": "పరీక్ష" },
     "childhoodfundalnewborneyesopen": {
       "newborn_eyes_open": "నవజాత - కళ్ళు తెరవండి"
     },
@@ -745,9 +753,7 @@
     "childhoodfundalpossiblefinding": {
       "possible_findings": "సాధ్యమైన అన్వేషణలు"
     },
-    "childhoodfundalafterexamination": {
-      "after_examination": "పరీక్ష తర్వాత"
-    },
+    "childhoodfundalafterexamination": { "after_examination": "పరీక్ష తర్వాత" },
     "glaucomaworkshop": {
       "eyes": "కళ్ళు",
       "1_introduction": "1. పరిచయం",

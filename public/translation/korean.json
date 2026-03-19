@@ -357,11 +357,7 @@
   },
   "mylearning": {
     "title": "내 학습",
-    "tabs": {
-      "in_progress": "진행 중",
-      "liked": "좋아요",
-      "notes": "메모"
-    },
+    "tabs": { "in_progress": "진행 중", "liked": "좋아요", "notes": "메모" },
     "search_placeholder": "콘텐츠 검색",
     "filters": {
       "eyes": "눈",
@@ -432,18 +428,35 @@
       "behaviours_mcq": "행동 객관식 퀴즈",
       "check_answer": "정답 확인"
     },
-    "fundalreflexpdf": {
-      "fundal_reflex": "안저 반사",
-      "eyes": "눈"
-    },
-    "visualimpairment": {
-      "visual_impairment": "시각장애"
-    },
-    "signsvicases": {
-      "signs_of_visual_impairment": "시각장애의 징후"
-    },
+    "fundalreflexpdf": { "fundal_reflex": "안저 반사", "eyes": "눈" },
+    "visualimpairment": { "visual_impairment": "시각장애" },
+    "signsvicases": { "signs_of_visual_impairment": "시각장애의 징후" },
     "childhoodrefer": {
-      "refer": "의뢰"
+      "refer": "의뢰",
+      "eye_conditions_to_refer": "의뢰해야 할 안과 질환",
+      "white_pupil": "백색 동공",
+      "white_pink_pupil": "백색 / 분홍색 동공",
+      "cataract": "백내장",
+      "retinoblastoma": "망막모세포종",
+      "eyes_not_straight": "눈이 똑바르지 않음",
+      "squint": "사시",
+      "eye_lid_low": "눈꺼풀이 처짐",
+      "ptosis": "안검하수",
+      "big_eyes": "큰 눈",
+      "glaucoma": "녹내장",
+      "small_eyes": "작은 눈",
+      "cataract_corneal_scar_coloboma_glasses": "백내장, 각막 흉터\n콜로보마, 안경",
+      "corneal_scar": "각막 흉터",
+      "coloboma": "콜로보마",
+      "red_eye": "충혈된 눈",
+      "red_eyes": "충혈된 눈",
+      "infective_conjunctivitis": "감염성 결막염",
+      "allergic_conjunctivitis": "알레르기 결막염",
+      "white_patches_on_cornea": "각막의 흰 반점",
+      "early_infective_ulcer": "초기 감염성 궤양",
+      "severe_infective_ulcer": "중증 감염성 궤양",
+      "trauma": "외상",
+      "congenital_dermoid": "선천성 더모이드"
     },
     "childhoodeyebrainimages": {
       "eye_brain": "눈과 뇌",
@@ -451,27 +464,17 @@
       "normal_visual_development": "정상 시각 발달",
       "ask_questions_and_observe": "질문하고 관찰하기"
     },
-    "childhoodfundalpreparation": {
-      "preparation": "준비"
-    },
-    "childhoodfundalexamination": {
-      "examination": "검사"
-    },
+    "childhoodfundalpreparation": { "preparation": "준비" },
+    "childhoodfundalexamination": { "examination": "검사" },
     "childhoodfundalnewborneyesopen": {
       "newborn_eyes_open": "신생아 - 눈 뜬 상태"
     },
     "childhoodfundalnewborneyesclosed": {
       "newborn_eyes_closed": "신생아 - 눈 감은 상태"
     },
-    "childhoodfundalunclearfindings": {
-      "unclear_findings": "불분명한 소견"
-    },
-    "childhoodfundalpossiblefinding": {
-      "possible_findings": "가능한 소견"
-    },
-    "childhoodfundalafterexamination": {
-      "after_examination": "검사 후"
-    },
+    "childhoodfundalunclearfindings": { "unclear_findings": "불분명한 소견" },
+    "childhoodfundalpossiblefinding": { "possible_findings": "가능한 소견" },
+    "childhoodfundalafterexamination": { "after_examination": "검사 후" },
     "glaucomaworkshop": {
       "eyes": "눈",
       "1_introduction": "1. 소개",
@@ -638,10 +641,7 @@
       "on_android": "Android에서:",
       "install_app": "앱 설치"
     },
-    "quizzes": {
-      "quiz": "퀴즈",
-      "check_answer": "정답 확인"
-    }
+    "quizzes": { "quiz": "퀴즈", "check_answer": "정답 확인" }
   },
   "i18nLiteral": {
     "Close ^": "닫기 ^",
@@ -1431,9 +1431,7 @@
     "menuButton": "☰",
     "cataractTitle": "백내장제목",
     "interactiveLearning": "대화형학습",
-    "share": {
-      "label": "라벨"
-    }
+    "share": { "label": "라벨" }
   },
   "appTitle": "Arclight 눈, 귀, 피부",
   "myLearningTitle": "나의 학습",
@@ -1468,11 +1466,6 @@
     "settings": "설정",
     "edit_profile": "프로필 편집"
   },
-  "offlineContent": {
-    "checkbox_pupils": "동공",
-    "pupils_checkbox": "동공"
-  },
-  "offline": {
-    "pupils_checkbox": "동공"
-  }
+  "offlineContent": { "checkbox_pupils": "동공", "pupils_checkbox": "동공" },
+  "offline": { "pupils_checkbox": "동공" }
 }

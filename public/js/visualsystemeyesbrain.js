@@ -428,10 +428,7 @@ function renderScene(
   });
 }
 
-export function initializeVisualSystemEyesBrain() {
-  const page =
-    document.getElementById("visualsystemeyesbrainPage") ||
-    document.getElementById("childhoodEyeBrainImagesPage");
+function initializeVisualSystemStoryPage(page) {
   if (!page) return;
 
   if (typeof page._vsCleanup === "function") {
@@ -558,4 +555,187 @@ export function initializeVisualSystemEyesBrain() {
   );
   scheduleRender();
   window.requestAnimationFrame(scheduleRender);
+}
+
+const CHILDHOOD_QNO_QUESTIONS = [
+  "Any concerns with vision / appearance of eyes?",
+  "Any normal or abnormal visual behaviours?",
+  "Red or painful eyes?",
+  "Any issues with pregnancy?",
+  "Any issues with birth?",
+  "Was the child born premature?",
+  "Any serious illness?",
+  "Any concerns about general development?",
+  "Any concerns about hearing or speech?",
+  "Any concerns with movement?",
+];
+
+function initializeChildhoodAskQuestionsObserve() {
+  const page = document.getElementById("childhoodAskQuestionsObservePage");
+  if (!page) return;
+
+  if (typeof page._childhoodQnoCleanup === "function") {
+    page._childhoodQnoCleanup();
+  }
+
+  const story = page.querySelector("[data-childhood-qno-story]");
+  const stepEls = Array.from(page.querySelectorAll("[data-qno-step]"));
+  const scrollCue = page.querySelector('[data-qno="scrollCue"]');
+  const questionScene = page.querySelector('[data-qno="questionsScene"]');
+  const observeScene = page.querySelector('[data-qno="observeScene"]');
+  const questionBubble = page.querySelector('[data-qno="questionBubble"]');
+  const questionText = page.querySelector('[data-qno="questionText"]');
+  const observeItems = Array.from(
+    page.querySelectorAll("[data-qno-observe-item]"),
+  );
+
+  if (
+    !story ||
+    stepEls.length === 0 ||
+    !scrollCue ||
+    !questionScene ||
+    !observeScene ||
+    !questionBubble ||
+    !questionText ||
+    observeItems.length === 0
+  ) {
+    return;
+  }
+
+  const controller = new AbortController();
+  const { signal } = controller;
+  const scrollRoot = getScrollRoot(page);
+  let rafId = 0;
+  let lastStepIndex = -1;
+
+  function setActiveStep(stepIndex) {
+    const safeStepIndex = Math.max(0, Math.min(stepIndex, stepEls.length - 1));
+    const showQuestions = safeStepIndex <= CHILDHOOD_QNO_QUESTIONS.length;
+    const questionIndex = Math.max(
+      0,
+      Math.min(safeStepIndex - 1, CHILDHOOD_QNO_QUESTIONS.length - 1),
+    );
+    const observeCount = Math.max(
+      0,
+      safeStepIndex - CHILDHOOD_QNO_QUESTIONS.length,
+    );
+
+    page.dataset.qnoStep = String(safeStepIndex);
+    scrollCue.classList.toggle("is-hidden", safeStepIndex > 0);
+    questionScene.classList.toggle("is-active", showQuestions);
+    observeScene.classList.toggle("is-active", !showQuestions);
+
+    const showBubble =
+      safeStepIndex > 0 && safeStepIndex <= CHILDHOOD_QNO_QUESTIONS.length;
+    questionBubble.classList.toggle("is-visible", showBubble);
+    if (showBubble) {
+      setTextContent(questionText, CHILDHOOD_QNO_QUESTIONS[questionIndex]);
+    }
+
+    observeItems.forEach((item, index) => {
+      const isVisible = index < observeCount;
+      item.classList.toggle("is-visible", isVisible);
+      item.classList.toggle("is-current", index === observeCount - 1);
+    });
+  }
+
+  function scheduleRender() {
+    if (rafId) return;
+    rafId = window.requestAnimationFrame(() => {
+      rafId = 0;
+
+      const rootMetrics = getRootMetrics(scrollRoot);
+      const rootCenter = rootMetrics.top + rootMetrics.height * 0.48;
+      let bestStepIndex = 0;
+      let bestDistance = Number.POSITIVE_INFINITY;
+
+      stepEls.forEach((stepEl, index) => {
+        const rect = stepEl.getBoundingClientRect();
+        const stepCenter = rect.top + rect.height * 0.5;
+        const distance = Math.abs(stepCenter - rootCenter);
+        if (distance < bestDistance) {
+          bestDistance = distance;
+          bestStepIndex = index;
+        }
+      });
+
+      if (bestStepIndex === lastStepIndex) return;
+      lastStepIndex = bestStepIndex;
+      setActiveStep(bestStepIndex);
+    });
+  }
+
+  const listen = (target, type, handler, options = {}) => {
+    if (!target?.addEventListener) return;
+    target.addEventListener(type, handler, { ...options, signal });
+  };
+
+  if (scrollRoot === window) {
+    listen(window, "scroll", scheduleRender, { passive: true });
+  } else {
+    listen(scrollRoot, "scroll", scheduleRender, { passive: true });
+  }
+
+  listen(window, "resize", scheduleRender, { passive: true });
+  listen(window, "orientationchange", scheduleRender, { passive: true });
+
+  page.querySelectorAll("img").forEach((img) => {
+    if (img.complete) return;
+    listen(img, "load", scheduleRender, { once: true });
+  });
+
+  page._childhoodQnoCleanup = () => {
+    controller.abort();
+    if (rafId) {
+      window.cancelAnimationFrame(rafId);
+      rafId = 0;
+    }
+    delete page._childhoodQnoCleanup;
+  };
+
+  setActiveStep(0);
+  scheduleRender();
+  window.requestAnimationFrame(scheduleRender);
+  window.requestAnimationFrame(() =>
+    window.requestAnimationFrame(scheduleRender),
+  );
+}
+
+let didBindVisualSystemPageShownListener = false;
+
+function bindVisualSystemPageShownListener() {
+  if (didBindVisualSystemPageShownListener) return;
+  didBindVisualSystemPageShownListener = true;
+
+  document.addEventListener("page:shown", (event) => {
+    const pageId = event?.detail?.id;
+    if (
+      pageId !== "visualsystemeyesbrainPage" &&
+      pageId !== "childhoodEyeBrainImagesPage" &&
+      pageId !== "childhoodAskQuestionsObservePage"
+    ) {
+      return;
+    }
+
+    window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(() => {
+        initializeVisualSystemStoryPage(
+          document.getElementById("visualsystemeyesbrainPage") ||
+            document.getElementById("childhoodEyeBrainImagesPage"),
+        );
+        if (pageId === "childhoodAskQuestionsObservePage") {
+          initializeChildhoodAskQuestionsObserve();
+        }
+      });
+    });
+  });
+}
+
+export function initializeVisualSystemEyesBrain() {
+  initializeVisualSystemStoryPage(
+    document.getElementById("visualsystemeyesbrainPage") ||
+      document.getElementById("childhoodEyeBrainImagesPage"),
+  );
+  initializeChildhoodAskQuestionsObserve();
+  bindVisualSystemPageShownListener();
 }

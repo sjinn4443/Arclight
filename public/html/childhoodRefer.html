@@ -1,98 +1,291 @@
 <!-- public/html/childhoodRefer.html -->
-<div id="childhoodReferPage" class="page has-eyes-topbar">
+<div id="childhoodReferPage" class="page has-eyes-topbar childhood-refer-page">
   <div class="container pupils-container">
     <div class="eyes-topbar">
       <div class="eyes-topbar__title" data-i18n="auto.childhoodrefer.refer">
         Refer
       </div>
       <div class="eyes-topbar__icons">
-        <span class="icon menuBtn" aria-label="Menu">☰</span>
+        <span class="icon menuBtn" aria-label="Menu">&#9776;</span>
       </div>
     </div>
 
-    <h2 class="pupils-subtitle"></h2>
+    <section class="childhood-refer" aria-labelledby="childhoodReferHeading">
+      <h2
+        id="childhoodReferHeading"
+        class="childhood-refer__heading"
+        data-i18n="auto.childhoodrefer.eye_conditions_to_refer"
+      >
+        Eye Conditions to Refer
+      </h2>
 
-    <div style="padding-bottom: 24px">
-      <!-- 01 -->
-      <div style="margin: 14px 0; display: grid; gap: 10px">
+      <article class="childhood-refer__entry">
+        <p
+          class="childhood-refer__context"
+          data-i18n="auto.childhoodrefer.white_pupil"
+        >
+          White Pupil
+        </p>
+        <p
+          class="childhood-refer__disease"
+          data-i18n="auto.childhoodrefer.cataract"
+        >
+          Cataract
+        </p>
         <img
-          src="/images/pdf/Workshop/Childhood/Refer/01.jpg"
+          class="childhood-refer__image"
+          src="/images/pdf/Workshop/Childhood/Refer/cataract.png"
           alt=""
           loading="lazy"
-          style="
-            width: 100%;
-            height: auto;
-            display: block;
-            border-radius: 14px;
-            margin-bottom: 26px;
-          "
         />
-      </div>
+      </article>
 
-      <!-- 02 -->
-      <div style="margin: 14px 0; display: grid; gap: 10px">
+      <article class="childhood-refer__entry">
+        <p
+          class="childhood-refer__context"
+          data-i18n="auto.childhoodrefer.white_pink_pupil"
+        >
+          White / Pink Pupil
+        </p>
+        <p
+          class="childhood-refer__disease"
+          data-i18n="auto.childhoodrefer.retinoblastoma"
+        >
+          Retinoblastoma
+        </p>
         <img
-          src="/images/pdf/Workshop/Childhood/Refer/02.jpg"
+          class="childhood-refer__image"
+          src="/images/pdf/Workshop/Childhood/Refer/retinoblastoma.png"
           alt=""
           loading="lazy"
-          style="
-            width: 100%;
-            height: auto;
-            display: block;
-            border-radius: 14px;
-            margin-bottom: 26px;
-          "
         />
-      </div>
+      </article>
 
-      <!-- 03 -->
-      <div style="margin: 14px 0; display: grid; gap: 10px">
+      <article class="childhood-refer__entry">
+        <p
+          class="childhood-refer__context"
+          data-i18n="auto.childhoodrefer.eyes_not_straight"
+        >
+          Eyes Not Straight
+        </p>
+        <p
+          class="childhood-refer__disease"
+          data-i18n="auto.childhoodrefer.squint"
+        >
+          Squint
+        </p>
         <img
-          src="/images/pdf/Workshop/Childhood/Refer/03.jpg"
+          class="childhood-refer__image"
+          src="/images/pdf/Workshop/Childhood/Refer/squint.png"
           alt=""
           loading="lazy"
-          style="
-            width: 100%;
-            height: auto;
-            display: block;
-            border-radius: 14px;
-            margin-bottom: 26px;
-          "
         />
-      </div>
+      </article>
 
-      <!-- 04 -->
-      <div style="margin: 14px 0; display: grid; gap: 10px">
+      <article class="childhood-refer__entry">
+        <p
+          class="childhood-refer__context"
+          data-i18n="auto.childhoodrefer.eye_lid_low"
+        >
+          Eye Lid Low
+        </p>
+        <p
+          class="childhood-refer__disease"
+          data-i18n="auto.childhoodrefer.ptosis"
+        >
+          Ptosis
+        </p>
         <img
-          src="/images/pdf/Workshop/Childhood/Refer/04.jpg"
+          class="childhood-refer__image"
+          src="/images/pdf/Workshop/Childhood/Refer/ptosis.png"
           alt=""
           loading="lazy"
-          style="
-            width: 100%;
-            height: auto;
-            display: block;
-            border-radius: 14px;
-            margin-bottom: 26px;
-          "
         />
-      </div>
+      </article>
 
-      <!-- 05 -->
-      <div style="margin: 14px 0; display: grid; gap: 10px">
+      <article class="childhood-refer__entry">
+        <p
+          class="childhood-refer__context"
+          data-i18n="auto.childhoodrefer.big_eyes"
+        >
+          Big Eyes
+        </p>
+        <p
+          class="childhood-refer__disease"
+          data-i18n="auto.childhoodrefer.glaucoma"
+        >
+          Glaucoma
+        </p>
         <img
-          src="/images/pdf/Workshop/Childhood/Refer/05.jpg"
+          class="childhood-refer__image"
+          src="/images/pdf/Workshop/Childhood/Refer/glaucoma.png"
           alt=""
           loading="lazy"
-          style="
-            width: 100%;
-            height: auto;
-            display: block;
-            border-radius: 14px;
-            margin-bottom: 26px;
-            margin-left: 18px;
-          "
         />
-      </div>
-    </div>
+      </article>
+
+      <article class="childhood-refer__entry">
+        <p
+          class="childhood-refer__context"
+          data-i18n="auto.childhoodrefer.small_eyes"
+        >
+          Small Eyes
+        </p>
+        <p
+          class="childhood-refer__disease childhood-refer__disease--list"
+          data-i18n="auto.childhoodrefer.cataract_corneal_scar_coloboma_glasses"
+        >
+          Cataract, Corneal Scar Coloboma, Glasses
+        </p>
+        <img
+          class="childhood-refer__image"
+          src="/images/pdf/Workshop/Childhood/Refer/cataractcornealcolobomaglasses.png"
+          alt=""
+          loading="lazy"
+        />
+      </article>
+
+      <article class="childhood-refer__group">
+        <p
+          class="childhood-refer__context"
+          data-i18n="auto.childhoodrefer.red_eyes"
+        >
+          Red Eyes
+        </p>
+        <div class="childhood-refer__pair">
+          <figure class="childhood-refer__pair-item">
+            <p
+              class="childhood-refer__disease childhood-refer__disease--pair"
+              data-i18n="auto.childhoodrefer.infective_conjunctivitis"
+            >
+              Infective Conjunctivitis
+            </p>
+            <img
+              class="childhood-refer__image"
+              src="/images/pdf/Workshop/Childhood/Refer/infective.png"
+              alt=""
+              loading="lazy"
+            />
+          </figure>
+
+          <figure class="childhood-refer__pair-item">
+            <p
+              class="childhood-refer__disease childhood-refer__disease--pair"
+              data-i18n="auto.childhoodrefer.allergic_conjunctivitis"
+            >
+              Allergic Conjunctivitis
+            </p>
+            <img
+              class="childhood-refer__image"
+              src="/images/pdf/Workshop/Childhood/Refer/allergic.png"
+              alt=""
+              loading="lazy"
+            />
+          </figure>
+        </div>
+      </article>
+
+      <article class="childhood-refer__group">
+        <p
+          class="childhood-refer__context"
+          data-i18n="auto.childhoodrefer.white_patches_on_cornea"
+        >
+          White Patches on Cornea
+        </p>
+        <div class="childhood-refer__pair">
+          <figure class="childhood-refer__pair-item">
+            <p
+              class="childhood-refer__disease childhood-refer__disease--pair"
+              data-i18n="auto.childhoodrefer.early_infective_ulcer"
+            >
+              Early Infective Ulcer
+            </p>
+            <img
+              class="childhood-refer__image"
+              src="/images/pdf/Workshop/Childhood/Refer/earlyulcer.png"
+              alt=""
+              loading="lazy"
+            />
+          </figure>
+
+          <figure class="childhood-refer__pair-item">
+            <p
+              class="childhood-refer__disease childhood-refer__disease--pair"
+              data-i18n="auto.childhoodrefer.severe_infective_ulcer"
+            >
+              Severe Infective Ulcer
+            </p>
+            <img
+              class="childhood-refer__image"
+              src="/images/pdf/Workshop/Childhood/Refer/severeulcer.png"
+              alt=""
+              loading="lazy"
+            />
+          </figure>
+        </div>
+      </article>
+
+      <article class="childhood-refer__entry childhood-refer__entry--single">
+        <p
+          class="childhood-refer__disease"
+          data-i18n="auto.childhoodrefer.trauma"
+        >
+          Trauma
+        </p>
+        <img
+          class="childhood-refer__image"
+          src="/images/pdf/Workshop/Childhood/Refer/trauma.png"
+          alt=""
+          loading="lazy"
+        />
+      </article>
+
+      <article class="childhood-refer__entry childhood-refer__entry--single">
+        <p
+          class="childhood-refer__disease"
+          data-i18n="auto.childhoodrefer.coloboma"
+        >
+          Coloboma
+        </p>
+        <img
+          class="childhood-refer__image childhood-refer__image--coloboma"
+          src="/images/pdf/Workshop/Childhood/Refer/coloboma.png"
+          alt=""
+          loading="lazy"
+        />
+      </article>
+
+      <article class="childhood-refer__group childhood-refer__group--dermoid">
+        <p
+          class="childhood-refer__disease"
+          data-i18n="auto.childhoodrefer.congenital_dermoid"
+        >
+          Congenital Dermoid
+        </p>
+        <div class="childhood-refer__pair">
+          <figure
+            class="childhood-refer__pair-item childhood-refer__pair-item--image-only"
+          >
+            <img
+              class="childhood-refer__image"
+              src="/images/pdf/Workshop/Childhood/Refer/congenital.jpg"
+              alt=""
+              loading="lazy"
+            />
+          </figure>
+
+          <figure
+            class="childhood-refer__pair-item childhood-refer__pair-item--image-only"
+          >
+            <img
+              class="childhood-refer__image childhood-refer__image--congenital-2"
+              src="/images/pdf/Workshop/Childhood/Refer/congenital2.png"
+              alt=""
+              loading="lazy"
+            />
+          </figure>
+        </div>
+      </article>
+    </section>
   </div>
 </div>

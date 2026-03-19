@@ -645,31 +645,247 @@
 
     <h2 class="pupils-subtitle"></h2>
 
-    <div style="padding-bottom: 24px">
-      <!-- 01 -->
-      <div style="margin: 14px 0">
-        <img
-          src="/images/pdf/Workshop/Childhood/QnO/01.jpg"
-          alt=""
-          loading="lazy"
-          style="width: 100%; height: auto; display: block; border-radius: 14px"
-        />
+    <div class="childhood-qno-story" data-childhood-qno-story>
+      <div class="childhood-qno-story__sticky">
+        <div class="childhood-qno-stage">
+          <div class="childhood-qno-scroll-cue" data-qno="scrollCue">
+            <div class="childhood-qno-scroll-cue__pill">
+              <span class="childhood-qno-scroll-cue__label"
+                >scroll<br />down</span
+              >
+              <div class="childhood-qno-scroll-cue__stack">
+                <img
+                  class="childhood-qno-scroll-cue__down"
+                  src="/scrolly/workshop/childhood/eyesbrain/down.png"
+                  alt=""
+                  loading="eager"
+                  draggable="false"
+                />
+                <img
+                  class="childhood-qno-scroll-cue__hand"
+                  src="/scrolly/workshop/childhood/eyesbrain/hand.png"
+                  alt=""
+                  loading="eager"
+                  draggable="false"
+                />
+                <span class="childhood-qno-scroll-cue__chev"></span>
+                <span class="childhood-qno-scroll-cue__chev"></span>
+                <span class="childhood-qno-scroll-cue__chev"></span>
+              </div>
+            </div>
+          </div>
+
+          <section
+            class="childhood-qno-scene childhood-qno-scene--questions is-active"
+            data-qno="questionsScene"
+            aria-label="Childhood vision screening questions"
+          >
+            <div
+              class="childhood-qno-stage-frame childhood-qno-stage-frame--question"
+            >
+              <div class="childhood-qno-stage-bar">
+                <span>Childhood Vision Screening Questions</span>
+              </div>
+
+              <div
+                class="childhood-qno-layer childhood-qno-layer--question-background"
+                style="--left: 0%; --top: 7.6754%; --width: 100%; --z: 1"
+              >
+                <img
+                  src="/scrolly/coreexam/fundalreflex/unclear/3/images/img_15.png"
+                  alt=""
+                  loading="eager"
+                  draggable="false"
+                />
+              </div>
+              <div
+                class="childhood-qno-layer childhood-qno-layer--question-man"
+                style="
+                  --left: 9.8518%;
+                  --top: 15.1559%;
+                  --width: 27.3739%;
+                  --z: 2;
+                "
+              >
+                <img
+                  src="/scrolly/coreexam/fundalreflex/unclear/3/images/img_12.png"
+                  alt=""
+                  loading="eager"
+                  draggable="false"
+                />
+              </div>
+              <div
+                class="childhood-qno-layer childhood-qno-layer--question-mother"
+                style="
+                  --left: 45.5946%;
+                  --top: 32.1881%;
+                  --width: 37.5535%;
+                  --z: 3;
+                "
+              >
+                <img
+                  src="/scrolly/coreexam/fundalreflex/unclear/3/images/img_11.png"
+                  alt=""
+                  loading="eager"
+                  draggable="false"
+                />
+              </div>
+              <div
+                class="childhood-qno-layer childhood-qno-layer--question-arm"
+                style="
+                  --left: 30.154%;
+                  --top: 35.8065%;
+                  --width: 24.9787%;
+                  --z: 4;
+                "
+              >
+                <img
+                  src="/scrolly/coreexam/fundalreflex/unclear/3/images/img_13.png"
+                  alt=""
+                  loading="eager"
+                  draggable="false"
+                />
+              </div>
+
+              <div class="childhood-qno-bubble" data-qno="questionBubble">
+                <p class="childhood-qno-bubble__text" data-qno="questionText">
+                  Any concerns with vision or appearance of eyes?
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <section
+            class="childhood-qno-scene childhood-qno-scene--observe"
+            data-qno="observeScene"
+            aria-label="Observe and assess visual development"
+          >
+            <div class="childhood-qno-observe-card">
+              <div
+                class="childhood-qno-stage-bar childhood-qno-stage-bar--observe"
+              >
+                <span>Observe and assess visual development</span>
+              </div>
+
+              <div class="childhood-qno-observe-copy">
+                <p class="childhood-qno-observe-kicker">observe for...</p>
+                <ol class="childhood-qno-observe-list">
+                  <li class="childhood-qno-observe-item" data-qno-observe-item>
+                    Normal visual behaviours
+                  </li>
+                  <li class="childhood-qno-observe-item" data-qno-observe-item>
+                    Signs of visual impairment
+                  </li>
+                  <li class="childhood-qno-observe-item" data-qno-observe-item>
+                    Pupils black, round and equal
+                  </li>
+                  <li class="childhood-qno-observe-item" data-qno-observe-item>
+                    Squint or wobbly eyes
+                  </li>
+                  <li class="childhood-qno-observe-item" data-qno-observe-item>
+                    Red eye, discharge, or squeezing eyes shut
+                  </li>
+                  <li class="childhood-qno-observe-item" data-qno-observe-item>
+                    Follows your face, and from how far
+                  </li>
+                  <li class="childhood-qno-observe-item" data-qno-observe-item>
+                    Returns a silent smile
+                  </li>
+                  <li class="childhood-qno-observe-item" data-qno-observe-item>
+                    Follows a light
+                  </li>
+                  <li class="childhood-qno-observe-item" data-qno-observe-item>
+                    Reaches accurately
+                  </li>
+                  <li class="childhood-qno-observe-item" data-qno-observe-item>
+                    Objects to one eye being covered
+                  </li>
+                </ol>
+              </div>
+
+              <div
+                class="childhood-qno-stage-frame childhood-qno-stage-frame--exam"
+              >
+                <div
+                  class="childhood-qno-stage-canvas childhood-qno-stage-canvas--exam"
+                >
+                  <div
+                    class="childhood-qno-layer childhood-qno-layer--exam-background"
+                    style="
+                      --left: 0.0856%;
+                      --top: 0.6641%;
+                      --width: 99.8289%;
+                      --z: 1;
+                    "
+                  >
+                    <img
+                      src="/scrolly/coreexam/fundalreflex/exam/2/images/img_6.png"
+                      alt=""
+                      loading="eager"
+                      draggable="false"
+                    />
+                  </div>
+                  <div
+                    class="childhood-qno-layer childhood-qno-layer--exam-man"
+                    style="
+                      --left: 13.0645%;
+                      --top: 24.4053%;
+                      --width: 74.7648%;
+                      --z: 2;
+                    "
+                  >
+                    <img
+                      src="/scrolly/coreexam/fundalreflex/exam/2/images/img_4.png"
+                      alt=""
+                      loading="eager"
+                      draggable="false"
+                    />
+                  </div>
+                  <div
+                    class="childhood-qno-layer childhood-qno-layer--exam-boy"
+                    style="
+                      --left: 56.4586%;
+                      --top: 31.4844%;
+                      --width: 30.7101%;
+                      --z: 3;
+                    "
+                  >
+                    <img
+                      src="/scrolly/coreexam/fundalreflex/exam/2/images/img_3.png"
+                      alt=""
+                      loading="eager"
+                      draggable="false"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
       </div>
 
-      <!-- 02 -->
-      <div style="margin: 14px 0">
-        <img
-          src="/images/pdf/Workshop/Childhood/QnO/02.jpg"
-          alt=""
-          loading="lazy"
-          style="
-            width: 115%;
-            height: auto;
-            display: block;
-            border-radius: 14px;
-            margin-left: -11px;
-          "
-        />
+      <div class="childhood-qno-steps" aria-hidden="true">
+        <div class="childhood-qno-step" data-qno-step="0"></div>
+        <div class="childhood-qno-step" data-qno-step="1"></div>
+        <div class="childhood-qno-step" data-qno-step="2"></div>
+        <div class="childhood-qno-step" data-qno-step="3"></div>
+        <div class="childhood-qno-step" data-qno-step="4"></div>
+        <div class="childhood-qno-step" data-qno-step="5"></div>
+        <div class="childhood-qno-step" data-qno-step="6"></div>
+        <div class="childhood-qno-step" data-qno-step="7"></div>
+        <div class="childhood-qno-step" data-qno-step="8"></div>
+        <div class="childhood-qno-step" data-qno-step="9"></div>
+        <div class="childhood-qno-step" data-qno-step="10"></div>
+        <div class="childhood-qno-step" data-qno-step="11"></div>
+        <div class="childhood-qno-step" data-qno-step="12"></div>
+        <div class="childhood-qno-step" data-qno-step="13"></div>
+        <div class="childhood-qno-step" data-qno-step="14"></div>
+        <div class="childhood-qno-step" data-qno-step="15"></div>
+        <div class="childhood-qno-step" data-qno-step="16"></div>
+        <div class="childhood-qno-step" data-qno-step="17"></div>
+        <div class="childhood-qno-step" data-qno-step="18"></div>
+        <div class="childhood-qno-step" data-qno-step="19"></div>
+        <div class="childhood-qno-step" data-qno-step="20"></div>
       </div>
     </div>
   </div>

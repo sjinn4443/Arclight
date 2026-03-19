@@ -347,11 +347,7 @@
   },
   "mylearning": {
     "title": "Mon apprentissage",
-    "tabs": {
-      "in_progress": "En cours",
-      "liked": "Favoris",
-      "notes": "Notes"
-    },
+    "tabs": { "in_progress": "En cours", "liked": "Favoris", "notes": "Notes" },
     "search_placeholder": "Rechercher du contenu",
     "filters": {
       "eyes": "Yeux",
@@ -471,9 +467,7 @@
     "menuButton": "☰",
     "cataractTitle": "cataracteTitre",
     "interactiveLearning": "interactifApprentissage",
-    "share": {
-      "label": "étiquette"
-    }
+    "share": { "label": "étiquette" }
   },
   "appTitle": "Arclight Yeux, oreilles, peau",
   "installPrompt": "Installez cette application pour une meilleure expérience !",
@@ -489,12 +483,8 @@
   "reviewAnswersTitle": "Revoir les réponses",
   "closeReviewButton": "Fermer la révision",
   "auto": {
-    "childhoodfundalpreparation": {
-      "preparation": "Préparation"
-    },
-    "childhoodfundalexamination": {
-      "examination": "Examen"
-    },
+    "childhoodfundalpreparation": { "preparation": "Préparation" },
+    "childhoodfundalexamination": { "examination": "Examen" },
     "childhoodfundalnewborneyesopen": {
       "newborn_eyes_open": "Nouveau-né - Yeux ouverts"
     },
@@ -562,18 +552,37 @@
       "behaviours_mcq": "QCM Comportements",
       "check_answer": "Vérifier la réponse"
     },
-    "fundalreflexpdf": {
-      "fundal_reflex": "Réflexe fundique",
-      "eyes": "Yeux"
-    },
-    "visualimpairment": {
-      "visual_impairment": "Déficience visuelle"
-    },
+    "fundalreflexpdf": { "fundal_reflex": "Réflexe fundique", "eyes": "Yeux" },
+    "visualimpairment": { "visual_impairment": "Déficience visuelle" },
     "signsvicases": {
       "signs_of_visual_impairment": "Signes de déficience visuelle"
     },
     "childhoodrefer": {
-      "refer": "Référer"
+      "refer": "Référez-vous",
+      "eye_conditions_to_refer": "Conditions oculaires à consulter",
+      "white_pupil": "Élève blanc",
+      "white_pink_pupil": "Pupille Blanche/Rose",
+      "cataract": "Cataracte",
+      "retinoblastoma": "Rétinoblastome",
+      "eyes_not_straight": "Les yeux ne sont pas droits",
+      "squint": "Loucher les yeux",
+      "eye_lid_low": "Paupière basse",
+      "ptosis": "Ptose",
+      "big_eyes": "De grands yeux",
+      "glaucoma": "Glaucome",
+      "small_eyes": "Petits yeux",
+      "cataract_corneal_scar_coloboma_glasses": "Cataracte, cicatrice cornéenne\nColobome, Lunettes",
+      "corneal_scar": "Cicatrice cornéenne",
+      "coloboma": "Colobome",
+      "red_eye": "Yeux rouges",
+      "red_eyes": "Yeux rouges",
+      "infective_conjunctivitis": "Conjonctivite infectieuse",
+      "allergic_conjunctivitis": "Conjonctivite allergique",
+      "white_patches_on_cornea": "Taches blanches sur la cornée",
+      "early_infective_ulcer": "Ulcère infectieux précoce",
+      "severe_infective_ulcer": "Ulcère infectieux grave",
+      "trauma": "Traumatisme",
+      "congenital_dermoid": "Dermoïde congénital"
     },
     "childhoodeyebrainimages": {
       "eye_brain": "Oeil et cerveau",
@@ -1505,7 +1514,5 @@
     "settings": "Paramètres",
     "edit_profile": "Modifier le profil"
   },
-  "offline": {
-    "pupils_checkbox": "Pupilles"
-  }
+  "offline": { "pupils_checkbox": "Pupilles" }
 }

@@ -336,10 +336,7 @@
     "installPrompt": "为了更好的体验，请安装此应用！",
     "maybeLaterButton": "以后再说"
   },
-  "splashscreen_mid": {
-    "logo_one_alt": "标志一",
-    "ariaLabel": "中间启动画面"
-  },
+  "splashscreen_mid": { "logo_one_alt": "标志一", "ariaLabel": "中间启动画面" },
   "splashscreen": {
     "logo_one_alt": "标志一",
     "logo_two_alt": "标志二",
@@ -347,11 +344,7 @@
   },
   "mylearning": {
     "title": "我的学习",
-    "tabs": {
-      "in_progress": "进行中",
-      "liked": "已赞",
-      "notes": "笔记"
-    },
+    "tabs": { "in_progress": "进行中", "liked": "已赞", "notes": "笔记" },
     "search_placeholder": "搜索内容",
     "filters": {
       "eyes": "眼睛",
@@ -471,9 +464,7 @@
     "menuButton": "☰",
     "cataractTitle": "白内障标题",
     "interactiveLearning": "互动学习",
-    "share": {
-      "label": "标签"
-    }
+    "share": { "label": "标签" }
   },
   "appTitle": "Arclight 眼睛、耳朵、皮肤",
   "installPrompt": "为了更好的体验，请安装此应用！",
@@ -489,27 +480,17 @@
   "reviewAnswersTitle": "复习答案",
   "closeReviewButton": "关闭复习",
   "auto": {
-    "childhoodfundalpreparation": {
-      "preparation": "准备"
-    },
-    "childhoodfundalexamination": {
-      "examination": "考试"
-    },
+    "childhoodfundalpreparation": { "preparation": "准备" },
+    "childhoodfundalexamination": { "examination": "考试" },
     "childhoodfundalnewborneyesopen": {
       "newborn_eyes_open": "新生儿 - 睁开眼睛"
     },
     "childhoodfundalnewborneyesclosed": {
       "newborn_eyes_closed": "新生儿 - 闭着眼睛"
     },
-    "childhoodfundalunclearfindings": {
-      "unclear_findings": "不清楚的发现"
-    },
-    "childhoodfundalpossiblefinding": {
-      "possible_findings": "可能的发现"
-    },
-    "childhoodfundalafterexamination": {
-      "after_examination": "检查后"
-    },
+    "childhoodfundalunclearfindings": { "unclear_findings": "不清楚的发现" },
+    "childhoodfundalpossiblefinding": { "possible_findings": "可能的发现" },
+    "childhoodfundalafterexamination": { "after_examination": "检查后" },
     "childhoodeyescreeningworkshop": {
       "eyes": "眼睛",
       "the_visual_system": "1. 视觉系统",
@@ -554,26 +535,40 @@
       "retina": "视网膜",
       "loading": "加载中..."
     },
-    "childhoodassessment": {
-      "assessment": "评估",
-      "check_answer": "检查答案"
-    },
+    "childhoodassessment": { "assessment": "评估", "check_answer": "检查答案" },
     "behavioursquiz": {
       "behaviours_mcq": "行为MCQ",
       "check_answer": "检查答案"
     },
-    "fundalreflexpdf": {
-      "fundal_reflex": "眼底反射",
-      "eyes": "眼睛"
-    },
-    "visualimpairment": {
-      "visual_impairment": "视力障碍"
-    },
-    "signsvicases": {
-      "signs_of_visual_impairment": "视力障碍的迹象"
-    },
+    "fundalreflexpdf": { "fundal_reflex": "眼底反射", "eyes": "眼睛" },
+    "visualimpairment": { "visual_impairment": "视力障碍" },
+    "signsvicases": { "signs_of_visual_impairment": "视力障碍的迹象" },
     "childhoodrefer": {
-      "refer": "参考"
+      "refer": "参考",
+      "eye_conditions_to_refer": "参考眼部状况",
+      "white_pupil": "白色瞳孔",
+      "white_pink_pupil": "白色/粉色瞳孔",
+      "cataract": "白内障",
+      "retinoblastoma": "视网膜母细胞瘤",
+      "eyes_not_straight": "眼睛不直",
+      "squint": "眯眼",
+      "eye_lid_low": "眼睑低",
+      "ptosis": "下垂",
+      "big_eyes": "大眼睛",
+      "glaucoma": "青光眼",
+      "small_eyes": "小眼睛",
+      "cataract_corneal_scar_coloboma_glasses": "白内障、角膜疤痕\n缺损, 眼镜",
+      "corneal_scar": "角膜疤痕",
+      "coloboma": "缺损",
+      "red_eye": "红眼",
+      "red_eyes": "红眼睛",
+      "infective_conjunctivitis": "感染性结膜炎",
+      "allergic_conjunctivitis": "过敏性结膜炎",
+      "white_patches_on_cornea": "角膜上有白色斑块",
+      "early_infective_ulcer": "早期感染性溃疡",
+      "severe_infective_ulcer": "严重感染性溃疡",
+      "trauma": "创伤",
+      "congenital_dermoid": "先天性皮样瘤"
     },
     "childhoodeyebrainimages": {
       "eye_brain": "眼睛与大脑",
@@ -747,10 +742,7 @@
       "on_android": "在安卓上：",
       "install_app": "安装应用程序"
     },
-    "quizzes": {
-      "quiz": "测验",
-      "check_answer": "检查答案"
-    }
+    "quizzes": { "quiz": "测验", "check_answer": "检查答案" }
   },
   "i18nLiteral": {
     "Next >": "下一页 >",
@@ -1505,7 +1497,5 @@
     "settings": "设置",
     "edit_profile": "编辑个人资料"
   },
-  "offline": {
-    "pupils_checkbox": "瞳孔"
-  }
+  "offline": { "pupils_checkbox": "瞳孔" }
 }

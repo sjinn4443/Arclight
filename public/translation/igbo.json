@@ -471,9 +471,7 @@
     "menuButton": "☰",
     "cataractTitle": "cataractTitle",
     "interactiveLearning": "internativeLearning",
-    "share": {
-      "label": "akara"
-    }
+    "share": { "label": "akara" }
   },
   "appTitle": "Arclight Anya, Ntị, Akpụkpọ anụ",
   "installPrompt": "Wụnye ngwa a maka ahụmịhe ka mma!",
@@ -489,12 +487,8 @@
   "reviewAnswersTitle": "Nyochaa azịza",
   "closeReviewButton": "Mechie nyocha",
   "auto": {
-    "childhoodfundalpreparation": {
-      "preparation": "Nkwadebe"
-    },
-    "childhoodfundalexamination": {
-      "examination": "Nyocha"
-    },
+    "childhoodfundalpreparation": { "preparation": "Nkwadebe" },
+    "childhoodfundalexamination": { "examination": "Nyocha" },
     "childhoodfundalnewborneyesopen": {
       "newborn_eyes_open": "Nwa amụrụ ọhụrụ - Anya mepere emepe"
     },
@@ -562,18 +556,37 @@
       "behaviours_mcq": "Omume MCQ",
       "check_answer": "Lelee azịza"
     },
-    "fundalreflexpdf": {
-      "fundal_reflex": "Ntugharị isi",
-      "eyes": "Anya"
-    },
-    "visualimpairment": {
-      "visual_impairment": "Mmebi Anya"
-    },
+    "fundalreflexpdf": { "fundal_reflex": "Ntugharị isi", "eyes": "Anya" },
+    "visualimpairment": { "visual_impairment": "Mmebi Anya" },
     "signsvicases": {
       "signs_of_visual_impairment": "Ihe ịrịba ama nke Mmebi Anya"
     },
     "childhoodrefer": {
-      "refer": "Tụtụ aka"
+      "refer": "ntụaka",
+      "eye_conditions_to_refer": "Ọnọdụ anya ị ga-atụ aka",
+      "white_pupil": "Nwa akwụkwọ ọcha",
+      "white_pink_pupil": "Nwa akwụkwọ ọcha / pink",
+      "cataract": "cataract",
+      "retinoblastoma": "Retinoblastoma",
+      "eyes_not_straight": "Anya anaghị eguzo ọtọ",
+      "squint": "Squint",
+      "eye_lid_low": "mkpuchi anya dị ala",
+      "ptosis": "Ptosis",
+      "big_eyes": "Nnukwu anya",
+      "glaucoma": "Glaucoma",
+      "small_eyes": "Obere Anya",
+      "cataract_corneal_scar_coloboma_glasses": "Cataract, Akpụkpọ anụ Corneal\nColoboma, iko",
+      "corneal_scar": "Corneal Scar",
+      "coloboma": "Coloboma",
+      "red_eye": "Anya uhie",
+      "red_eyes": "Anya uhie",
+      "infective_conjunctivitis": "Conjunctivitis na-efe efe",
+      "allergic_conjunctivitis": "Conjunctivitis nfụkasị ahụ",
+      "white_patches_on_cornea": "White Patches na Cornea",
+      "early_infective_ulcer": "Ọnya na-efe efe mbụ",
+      "severe_infective_ulcer": "Ọnya na-efe efe siri ike",
+      "trauma": "trauma",
+      "congenital_dermoid": "Congenital Dermoid"
     },
     "childhoodeyebrainimages": {
       "eye_brain": "Anya & Ụbụrụ",
@@ -747,10 +760,7 @@
       "on_android": "Na android:",
       "install_app": "Wụnye ngwa"
     },
-    "quizzes": {
-      "quiz": "Ajụjụ",
-      "check_answer": "Lelee azịza"
-    }
+    "quizzes": { "quiz": "Ajụjụ", "check_answer": "Lelee azịza" }
   },
   "i18nLiteral": {
     "Next >": "Ọzọ >",
@@ -1505,7 +1515,5 @@
     "settings": "Ntọala",
     "edit_profile": "Dezie profaịlụ"
   },
-  "offline": {
-    "pupils_checkbox": "Nwa anya"
-  }
+  "offline": { "pupils_checkbox": "Nwa anya" }
 }

@@ -471,9 +471,7 @@
     "menuButton": "☰",
     "cataractTitle": "cataractTitle",
     "interactiveLearning": "InteractiveLearning",
-    "share": {
-      "label": "التسمية"
-    }
+    "share": { "label": "التسمية" }
   },
   "appTitle": "Arclight العيون، الأذنين، الجلد",
   "installPrompt": "قم بتثبيت هذا التطبيق لتجربة أفضل!",
@@ -489,27 +487,19 @@
   "reviewAnswersTitle": "مراجعة الإجابات",
   "closeReviewButton": "إغلاق المراجعة",
   "auto": {
-    "childhoodfundalpreparation": {
-      "preparation": "تحضير"
-    },
-    "childhoodfundalexamination": {
-      "examination": "فحص"
-    },
+    "childhoodfundalpreparation": { "preparation": "تحضير" },
+    "childhoodfundalexamination": { "examination": "فحص" },
     "childhoodfundalnewborneyesopen": {
       "newborn_eyes_open": "الوليد - عيون مفتوحة"
     },
     "childhoodfundalnewborneyesclosed": {
       "newborn_eyes_closed": "حديث الولادة - عيون مغلقة"
     },
-    "childhoodfundalunclearfindings": {
-      "unclear_findings": "نتائج غير واضحة"
-    },
+    "childhoodfundalunclearfindings": { "unclear_findings": "نتائج غير واضحة" },
     "childhoodfundalpossiblefinding": {
       "possible_findings": "النتائج المحتملة"
     },
-    "childhoodfundalafterexamination": {
-      "after_examination": "بعد الفحص"
-    },
+    "childhoodfundalafterexamination": { "after_examination": "بعد الفحص" },
     "childhoodeyescreeningworkshop": {
       "eyes": "عيون",
       "the_visual_system": "1. النظام البصري",
@@ -562,18 +552,35 @@
       "behaviours_mcq": "السلوكيات MCQ",
       "check_answer": "تحقق من الإجابة"
     },
-    "fundalreflexpdf": {
-      "fundal_reflex": "منعكس قاعدي",
-      "eyes": "عيون"
-    },
-    "visualimpairment": {
-      "visual_impairment": "الإعاقة البصرية"
-    },
-    "signsvicases": {
-      "signs_of_visual_impairment": "علامات ضعف البصر"
-    },
+    "fundalreflexpdf": { "fundal_reflex": "منعكس قاعدي", "eyes": "عيون" },
+    "visualimpairment": { "visual_impairment": "الإعاقة البصرية" },
+    "signsvicases": { "signs_of_visual_impairment": "علامات ضعف البصر" },
     "childhoodrefer": {
-      "refer": "يشير إلى"
+      "refer": "راجع",
+      "eye_conditions_to_refer": "شروط العين للرجوع إليها",
+      "white_pupil": "التلميذ الأبيض",
+      "white_pink_pupil": "أبيض / وردي التلميذ",
+      "cataract": "إعتام عدسة العين",
+      "retinoblastoma": "ورم أرومي الشبكي",
+      "eyes_not_straight": "العيون ليست مستقيمة",
+      "squint": "الحول",
+      "eye_lid_low": "انخفاض غطاء العين",
+      "ptosis": "تدلي الجفون",
+      "big_eyes": "العيون الكبيرة",
+      "glaucoma": "الجلوكوما",
+      "small_eyes": "العيون الصغيرة",
+      "cataract_corneal_scar_coloboma_glasses": "إعتام عدسة العين، ندبة القرنية\nكولوبوما، نظارات",
+      "corneal_scar": "ندبة القرنية",
+      "coloboma": "كولوبوما",
+      "red_eye": "العين الحمراء",
+      "red_eyes": "عيون حمراء",
+      "infective_conjunctivitis": "التهاب الملتحمة المعدي",
+      "allergic_conjunctivitis": "التهاب الملتحمة التحسسي",
+      "white_patches_on_cornea": "بقع بيضاء على القرنية",
+      "early_infective_ulcer": "القرحة المعدية المبكرة",
+      "severe_infective_ulcer": "قرحة معدية شديدة",
+      "trauma": "الصدمة",
+      "congenital_dermoid": "الجلدانية الخلقية"
     },
     "childhoodeyebrainimages": {
       "eye_brain": "العين والدماغ",
@@ -747,10 +754,7 @@
       "on_android": "على أندرويد:",
       "install_app": "تثبيت التطبيق"
     },
-    "quizzes": {
-      "quiz": "لغز",
-      "check_answer": "تحقق من الإجابة"
-    }
+    "quizzes": { "quiz": "لغز", "check_answer": "تحقق من الإجابة" }
   },
   "i18nLiteral": {
     "Next >": "التالي >",
@@ -1505,7 +1509,5 @@
     "settings": "الإعدادات",
     "edit_profile": "تحرير الملف الشخصي"
   },
-  "offline": {
-    "pupils_checkbox": "بؤبؤ العين"
-  }
+  "offline": { "pupils_checkbox": "بؤبؤ العين" }
 }

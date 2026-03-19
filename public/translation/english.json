@@ -488,9 +488,7 @@
     "menuButton": "☰",
     "cataractTitle": "cataractTitle",
     "interactiveLearning": "interactiveLearning",
-    "share": {
-      "label": "label"
-    }
+    "share": { "label": "label" }
   },
   "appTitle": "Arclight Eyes, Ears, Skin",
   "installPrompt": "Install this app for a better experience!",
@@ -610,13 +608,8 @@
       "quiz": "Quiz",
       "check_answer": "Check Answer"
     },
-    "quizzes": {
-      "quiz": "Quiz",
-      "check_answer": "Check Answer"
-    },
-    "menu": {
-      "text": "×"
-    },
+    "quizzes": { "quiz": "Quiz", "check_answer": "Check Answer" },
+    "menu": { "text": "×" },
     "reports": {
       "arclight_reports": "Arclight Reports",
       "interest": "Interest",
@@ -708,18 +701,37 @@
       "behaviours_mcq": "Behaviours MCQ",
       "check_answer": "Check Answer"
     },
-    "fundalreflexpdf": {
-      "fundal_reflex": "Fundal reflex",
-      "eyes": "Eyes"
-    },
-    "visualimpairment": {
-      "visual_impairment": "Visual Impairment"
-    },
+    "fundalreflexpdf": { "fundal_reflex": "Fundal reflex", "eyes": "Eyes" },
+    "visualimpairment": { "visual_impairment": "Visual Impairment" },
     "signsvicases": {
       "signs_of_visual_impairment": "Signs of Visual Impairment"
     },
     "childhoodrefer": {
-      "refer": "Refer"
+      "refer": "Refer",
+      "eye_conditions_to_refer": "Eye Conditions to Refer",
+      "white_pupil": "White Pupil",
+      "white_pink_pupil": "White / Pink Pupil",
+      "cataract": "Cataract",
+      "retinoblastoma": "Retinoblastoma",
+      "eyes_not_straight": "Eyes Not Straight",
+      "squint": "Squint",
+      "eye_lid_low": "Eye Lid Low",
+      "ptosis": "Ptosis",
+      "big_eyes": "Big Eyes",
+      "glaucoma": "Glaucoma",
+      "small_eyes": "Small Eyes",
+      "cataract_corneal_scar_coloboma_glasses": "Cataract, Corneal Scar\nColoboma, Glasses",
+      "corneal_scar": "Corneal Scar",
+      "coloboma": "Coloboma",
+      "red_eye": "Red Eye",
+      "red_eyes": "Red Eyes",
+      "infective_conjunctivitis": "Infective Conjunctivitis",
+      "allergic_conjunctivitis": "Allergic Conjunctivitis",
+      "white_patches_on_cornea": "White Patches on Cornea",
+      "early_infective_ulcer": "Early Infective Ulcer",
+      "severe_infective_ulcer": "Severe Infective Ulcer",
+      "trauma": "Trauma",
+      "congenital_dermoid": "Congenital Dermoid"
     },
     "childhoodeyebrainimages": {
       "eye_brain": "Eyes & Brain",
@@ -727,12 +739,8 @@
       "normal_visual_development": "Normal Visual Development",
       "ask_questions_and_observe": "Ask Questions and Observe"
     },
-    "childhoodfundalpreparation": {
-      "preparation": "Preparation"
-    },
-    "childhoodfundalexamination": {
-      "examination": "Examination"
-    },
+    "childhoodfundalpreparation": { "preparation": "Preparation" },
+    "childhoodfundalexamination": { "examination": "Examination" },
     "childhoodfundalnewborneyesopen": {
       "newborn_eyes_open": "Newborn - Eyes Open"
     },

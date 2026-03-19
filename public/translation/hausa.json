@@ -471,9 +471,7 @@
     "menuButton": "☰",
     "cataractTitle": "cataractTitle",
     "interactiveLearning": "mLearning",
-    "share": {
-      "label": "lakabi"
-    }
+    "share": { "label": "lakabi" }
   },
   "appTitle": "Arclight Idanu, Kunnuwa, Fata",
   "installPrompt": "Sanya wannan App don kwarewa mafi kyau!",
@@ -489,12 +487,8 @@
   "reviewAnswersTitle": "Duba Amsoshi",
   "closeReviewButton": "Rufe Bita",
   "auto": {
-    "childhoodfundalpreparation": {
-      "preparation": "Shiri"
-    },
-    "childhoodfundalexamination": {
-      "examination": "jarrabawa"
-    },
+    "childhoodfundalpreparation": { "preparation": "Shiri" },
+    "childhoodfundalexamination": { "examination": "jarrabawa" },
     "childhoodfundalnewborneyesopen": {
       "newborn_eyes_open": "Jariri - Buɗe Ido"
     },
@@ -562,18 +556,35 @@
       "behaviours_mcq": "Halayen MCQ",
       "check_answer": "Duba Amsa"
     },
-    "fundalreflexpdf": {
-      "fundal_reflex": "Tunanin asali",
-      "eyes": "Idanu"
-    },
-    "visualimpairment": {
-      "visual_impairment": "Lalacewar gani"
-    },
-    "signsvicases": {
-      "signs_of_visual_impairment": "Alamomin Lalacewar gani"
-    },
+    "fundalreflexpdf": { "fundal_reflex": "Tunanin asali", "eyes": "Idanu" },
+    "visualimpairment": { "visual_impairment": "Lalacewar gani" },
+    "signsvicases": { "signs_of_visual_impairment": "Alamomin Lalacewar gani" },
     "childhoodrefer": {
-      "refer": "Komawa"
+      "refer": "koma",
+      "eye_conditions_to_refer": "Yanayin Ido don Magana",
+      "white_pupil": "Farin Almajiri",
+      "white_pink_pupil": "Farin Almajiri",
+      "cataract": "cataract",
+      "retinoblastoma": "retinoblastoma",
+      "eyes_not_straight": "Ido Ba Daidai ba",
+      "squint": "Squint",
+      "eye_lid_low": "Rufin Ido Ƙananan",
+      "ptosis": "Ptosis",
+      "big_eyes": "Manyan Ido",
+      "glaucoma": "Glaucoma",
+      "small_eyes": "Kananan Ido",
+      "cataract_corneal_scar_coloboma_glasses": "Cataract, tabo na Corneal\nColoboma, Gilashin",
+      "corneal_scar": "Tabon Corneal",
+      "coloboma": "Coloboma",
+      "red_eye": "Jan Ido",
+      "red_eyes": "Jajayen Ido",
+      "infective_conjunctivitis": "Ciwon ciwon ciki",
+      "allergic_conjunctivitis": "Allergic Conjunctivitis",
+      "white_patches_on_cornea": "Farin Faci akan Cornea",
+      "early_infective_ulcer": "Ciwon Ulcer na Farko",
+      "severe_infective_ulcer": "Ciwon Ulcer",
+      "trauma": "Trauma",
+      "congenital_dermoid": "Cutar cututtuka"
     },
     "childhoodeyebrainimages": {
       "eye_brain": "Ido & Kwakwalwa",
@@ -747,10 +758,7 @@
       "on_android": "Na Android:",
       "install_app": "Shigar da app"
     },
-    "quizzes": {
-      "quiz": "Tambayoyi",
-      "check_answer": "Duba Amsa"
-    }
+    "quizzes": { "quiz": "Tambayoyi", "check_answer": "Duba Amsa" }
   },
   "i18nLiteral": {
     "Next >": "Na gaba >",
@@ -1505,7 +1513,5 @@
     "settings": "Saituna",
     "edit_profile": "Shirya Bayanan martaba"
   },
-  "offline": {
-    "pupils_checkbox": "Baƙin ido"
-  }
+  "offline": { "pupils_checkbox": "Baƙin ido" }
 }

@@ -471,9 +471,7 @@
     "menuButton": "☰",
     "cataractTitle": "catarataTítulo",
     "interactiveLearning": "aprendizagem interativa",
-    "share": {
-      "label": "etiqueta"
-    }
+    "share": { "label": "etiqueta" }
   },
   "appTitle": "Arclight Olhos, Ouvidos, Pele",
   "installPrompt": "Instale este aplicativo para uma melhor experiência!",
@@ -489,12 +487,8 @@
   "reviewAnswersTitle": "Revisar Respostas",
   "closeReviewButton": "Fechar Revisão",
   "auto": {
-    "childhoodfundalpreparation": {
-      "preparation": "Preparação"
-    },
-    "childhoodfundalexamination": {
-      "examination": "Exame"
-    },
+    "childhoodfundalpreparation": { "preparation": "Preparação" },
+    "childhoodfundalexamination": { "examination": "Exame" },
     "childhoodfundalnewborneyesopen": {
       "newborn_eyes_open": "Recém-nascido - Olhos Abertos"
     },
@@ -507,9 +501,7 @@
     "childhoodfundalpossiblefinding": {
       "possible_findings": "Possíveis descobertas"
     },
-    "childhoodfundalafterexamination": {
-      "after_examination": "Após o exame"
-    },
+    "childhoodfundalafterexamination": { "after_examination": "Após o exame" },
     "childhoodeyescreeningworkshop": {
       "eyes": "Olhos",
       "the_visual_system": "1. O Sistema Visual",
@@ -566,14 +558,36 @@
       "fundal_reflex": "Reflexo fundamental",
       "eyes": "Olhos"
     },
-    "visualimpairment": {
-      "visual_impairment": "Deficiência visual"
-    },
+    "visualimpairment": { "visual_impairment": "Deficiência visual" },
     "signsvicases": {
       "signs_of_visual_impairment": "Sinais de deficiência visual"
     },
     "childhoodrefer": {
-      "refer": "Consulte"
+      "refer": "Consulte",
+      "eye_conditions_to_refer": "Condições oculares para consultar",
+      "white_pupil": "Pupila Branca",
+      "white_pink_pupil": "Pupila Branca/Rosa",
+      "cataract": "Catarata",
+      "retinoblastoma": "Retinoblastoma",
+      "eyes_not_straight": "Olhos não retos",
+      "squint": "Estrabismo",
+      "eye_lid_low": "Pálpebra Baixa",
+      "ptosis": "Ptose",
+      "big_eyes": "Olhos Grandes",
+      "glaucoma": "Glaucoma",
+      "small_eyes": "Olhos Pequenos",
+      "cataract_corneal_scar_coloboma_glasses": "Catarata, cicatriz na córnea\nColoboma, Óculos",
+      "corneal_scar": "Cicatriz da Córnea",
+      "coloboma": "Coloboma",
+      "red_eye": "Olhos Vermelhos",
+      "red_eyes": "Olhos Vermelhos",
+      "infective_conjunctivitis": "Conjuntivite Infecciosa",
+      "allergic_conjunctivitis": "Conjuntivite Alérgica",
+      "white_patches_on_cornea": "Manchas brancas na córnea",
+      "early_infective_ulcer": "Úlcera Infecciosa Precoce",
+      "severe_infective_ulcer": "Úlcera Infecciosa Grave",
+      "trauma": "Trauma",
+      "congenital_dermoid": "Dermóide Congênito"
     },
     "childhoodeyebrainimages": {
       "eye_brain": "Olho e Cérebro",
@@ -1505,7 +1519,5 @@
     "settings": "Configurações",
     "edit_profile": "Editar perfil"
   },
-  "offline": {
-    "pupils_checkbox": "Pupilas"
-  }
+  "offline": { "pupils_checkbox": "Pupilas" }
 }

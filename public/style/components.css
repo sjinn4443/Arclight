@@ -7035,6 +7035,121 @@ Glaucoma history case study: match intermediate style
   transform: translate3d(0, 0, 0);
 }
 
+#childhoodReferPage,
+#childhoodReferPage > .container.pupils-container {
+  background: #fff !important;
+}
+
+#childhoodReferPage .eyes-topbar__icons {
+  position: relative;
+  left: 0;
+}
+
+#childhoodReferPage .childhood-refer {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  padding: 10px 0 36px;
+}
+
+#childhoodReferPage .childhood-refer__heading {
+  margin: 0;
+  color: #111827;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+  text-align: center;
+}
+
+#childhoodReferPage .childhood-refer__entry,
+#childhoodReferPage .childhood-refer__group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+#childhoodReferPage .childhood-refer__context,
+#childhoodReferPage .childhood-refer__disease {
+  margin: 0;
+  text-align: center;
+}
+
+#childhoodReferPage .childhood-refer__context {
+  color: #4b5563;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+}
+
+#childhoodReferPage .childhood-refer__disease {
+  color: #111827;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+
+#childhoodReferPage .childhood-refer__disease--list,
+#childhoodReferPage .childhood-refer__disease--pair {
+  font-size: 15px;
+  line-height: 1.28;
+}
+
+#childhoodReferPage .childhood-refer__disease--list {
+  white-space: pre-line;
+}
+
+#childhoodReferPage .childhood-refer__entry--single {
+  gap: 12px;
+}
+
+#childhoodReferPage .childhood-refer__image {
+  display: block;
+  width: min(100%, 360px);
+  height: auto;
+  border-radius: 20px;
+}
+
+#childhoodReferPage .childhood-refer__pair {
+  width: min(100%, 360px);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  align-items: start;
+}
+
+#childhoodReferPage .childhood-refer__pair-item {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+#childhoodReferPage .childhood-refer__pair-item .childhood-refer__image {
+  width: 100%;
+}
+
+#childhoodReferPage .childhood-refer__pair-item--image-only {
+  gap: 0;
+}
+
+#childhoodReferPage .childhood-refer__entry--single .childhood-refer__image {
+  width: min(49%, 172px);
+}
+
+#childhoodReferPage .childhood-refer__image--coloboma {
+  width: min(52%, 180px) !important;
+}
+
+#childhoodReferPage .childhood-refer__image--congenital-2 {
+  width: 96% !important;
+}
+
 @keyframes viArrowShift {
   0% {
     color: #efefef;
@@ -7069,6 +7184,45 @@ Glaucoma history case study: match intermediate style
 }
 
 @media (max-width: 767px) {
+  #childhoodReferPage .eyes-topbar__icons {
+    left: 0 !important;
+  }
+
+  #childhoodReferPage .eyes-topbar .icon.menuBtn {
+    position: static;
+    left: auto !important;
+  }
+
+  #childhoodReferPage .childhood-refer {
+    gap: 26px;
+    padding-bottom: 24px;
+  }
+
+  #childhoodReferPage .childhood-refer__heading {
+    font-size: 20px;
+  }
+
+  #childhoodReferPage .childhood-refer__context {
+    font-size: 14px;
+  }
+
+  #childhoodReferPage .childhood-refer__disease {
+    font-size: 15px;
+  }
+
+  #childhoodReferPage .childhood-refer__disease--list,
+  #childhoodReferPage .childhood-refer__disease--pair {
+    font-size: 15px;
+  }
+
+  #childhoodReferPage .childhood-refer__pair {
+    gap: 10px;
+  }
+
+  #childhoodReferPage .childhood-refer__image {
+    border-radius: 16px;
+  }
+
   #visualImpairmentPage .eyes-topbar__icons {
     left: 0 !important;
   }

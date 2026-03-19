@@ -347,11 +347,7 @@
   },
   "mylearning": {
     "title": "የእኔ ትምህርት",
-    "tabs": {
-      "in_progress": "በሂደት ላይ",
-      "liked": "የወደዱት",
-      "notes": "ማስታወሻዎች"
-    },
+    "tabs": { "in_progress": "በሂደት ላይ", "liked": "የወደዱት", "notes": "ማስታወሻዎች" },
     "search_placeholder": "ይዘት ፈልግ",
     "filters": {
       "eyes": "አይኖች",
@@ -471,9 +467,7 @@
     "menuButton": "☰",
     "cataractTitle": "ካታራክት ርዕስ",
     "interactiveLearning": "በይነተገናኝ ትምህርት",
-    "share": {
-      "label": "መለያ"
-    }
+    "share": { "label": "መለያ" }
   },
   "appTitle": "Arclight አይኖች፣ ጆሮዎች፣ ቆዳ",
   "installPrompt": "ለተሻለ ተሞክሮ ይህን መተግበሪያ ይጫኑ!",
@@ -489,27 +483,17 @@
   "reviewAnswersTitle": "መልሶችን ይገምግሙ",
   "closeReviewButton": "ግምገማን ዝጋ",
   "auto": {
-    "childhoodfundalpreparation": {
-      "preparation": "አዘገጃጀት"
-    },
-    "childhoodfundalexamination": {
-      "examination": "ምርመራ"
-    },
+    "childhoodfundalpreparation": { "preparation": "አዘገጃጀት" },
+    "childhoodfundalexamination": { "examination": "ምርመራ" },
     "childhoodfundalnewborneyesopen": {
       "newborn_eyes_open": "አዲስ የተወለዱ - ዓይኖች ክፍት ናቸው"
     },
     "childhoodfundalnewborneyesclosed": {
       "newborn_eyes_closed": "አዲስ የተወለዱ - ዓይኖች ተዘግተዋል"
     },
-    "childhoodfundalunclearfindings": {
-      "unclear_findings": "ግልጽ ያልሆኑ ግኝቶች"
-    },
-    "childhoodfundalpossiblefinding": {
-      "possible_findings": "ሊሆኑ የሚችሉ ግኝቶች"
-    },
-    "childhoodfundalafterexamination": {
-      "after_examination": "ከፈተና በኋላ"
-    },
+    "childhoodfundalunclearfindings": { "unclear_findings": "ግልጽ ያልሆኑ ግኝቶች" },
+    "childhoodfundalpossiblefinding": { "possible_findings": "ሊሆኑ የሚችሉ ግኝቶች" },
+    "childhoodfundalafterexamination": { "after_examination": "ከፈተና በኋላ" },
     "childhoodeyescreeningworkshop": {
       "eyes": "አይኖች",
       "the_visual_system": "1. የእይታ ስርዓት",
@@ -562,18 +546,35 @@
       "behaviours_mcq": "ባህሪያት MCQ",
       "check_answer": "መልሱን ያረጋግጡ"
     },
-    "fundalreflexpdf": {
-      "fundal_reflex": "መሰረታዊ ምላሽ",
-      "eyes": "አይኖች"
-    },
-    "visualimpairment": {
-      "visual_impairment": "የእይታ እክል"
-    },
-    "signsvicases": {
-      "signs_of_visual_impairment": "የእይታ እክል ምልክቶች"
-    },
+    "fundalreflexpdf": { "fundal_reflex": "መሰረታዊ ምላሽ", "eyes": "አይኖች" },
+    "visualimpairment": { "visual_impairment": "የእይታ እክል" },
+    "signsvicases": { "signs_of_visual_impairment": "የእይታ እክል ምልክቶች" },
     "childhoodrefer": {
-      "refer": "ያጣቅሱ"
+      "refer": "ያጣቅሱ",
+      "eye_conditions_to_refer": "የአይን ሁኔታዎች ለመጥቀስ",
+      "white_pupil": "ነጭ ተማሪ",
+      "white_pink_pupil": "ነጭ / ሮዝ ተማሪ",
+      "cataract": "ካታራክት",
+      "retinoblastoma": "ሬቲኖብላስቶማ",
+      "eyes_not_straight": "አይኖች ቀጥ አይደሉም",
+      "squint": "ስኳንት።",
+      "eye_lid_low": "የአይን ክዳን ዝቅተኛ",
+      "ptosis": "Ptosis",
+      "big_eyes": "ትልልቅ አይኖች",
+      "glaucoma": "ግላኮማ",
+      "small_eyes": "ትናንሽ አይኖች",
+      "cataract_corneal_scar_coloboma_glasses": "የዓይን ሞራ ግርዶሽ፣ የኮርኒያ ጠባሳ\nኮሎቦማ, ብርጭቆዎች",
+      "corneal_scar": "የኮርኔል ጠባሳ",
+      "coloboma": "ኮሎቦማ",
+      "red_eye": "ቀይ አይን",
+      "red_eyes": "ቀይ አይኖች",
+      "infective_conjunctivitis": "ኢንፌክቲቭ ኮንኒንቲቫቲስ",
+      "allergic_conjunctivitis": "አለርጂ ኮንኒንቲቫቲስ",
+      "white_patches_on_cornea": "ነጭ ንጣፎች በኮርኒያ ላይ",
+      "early_infective_ulcer": "ቀደምት ተላላፊ ቁስለት",
+      "severe_infective_ulcer": "ከባድ ተላላፊ ቁስለት",
+      "trauma": "አሰቃቂ",
+      "congenital_dermoid": "የተወለደ Dermoid"
     },
     "childhoodeyebrainimages": {
       "eye_brain": "አይን እና አንጎል",
@@ -747,10 +748,7 @@
       "on_android": "በአንድሮይድ ላይ፡-",
       "install_app": "መተግበሪያን ጫን"
     },
-    "quizzes": {
-      "quiz": "የፈተና ጥያቄ",
-      "check_answer": "መልሱን ያረጋግጡ"
-    }
+    "quizzes": { "quiz": "የፈተና ጥያቄ", "check_answer": "መልሱን ያረጋግጡ" }
   },
   "i18nLiteral": {
     "Next >": "ቀጣይ >",
@@ -1505,7 +1503,5 @@
     "settings": "ቅንብሮች",
     "edit_profile": "መገለጫ አርትዕ"
   },
-  "offline": {
-    "pupils_checkbox": "የዓይን ብሌን"
-  }
+  "offline": { "pupils_checkbox": "የዓይን ብሌን" }
 }
