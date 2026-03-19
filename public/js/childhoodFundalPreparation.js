@@ -7301,7 +7301,20 @@ function initializeStageAutoplayMode(
   function preventPlaybackScroll(event) {
     if (!isPlaybackScrollLocked) return;
     if (!isForwardPlaybackScrollEvent(event)) return;
-    if (!hasReachedPlaybackLowerBound()) return;
+    const metrics = getScrollHostMetrics();
+    const lockedTop = getPlaybackLockedScrollTop(metrics);
+    const currentTop = Math.max(0, Number(metrics?.scrollTop) || 0);
+
+    if (event.type === "wheel") {
+      const deltaY = Number(event.deltaY);
+      if (Number.isFinite(deltaY) && deltaY > 0 && currentTop < lockedTop - 1) {
+        event.preventDefault();
+        setScrollHostTop(Math.min(lockedTop, currentTop + deltaY), metrics);
+        return;
+      }
+    }
+
+    if (!hasReachedPlaybackLowerBound(metrics)) return;
     event.preventDefault();
     syncLockedViewport();
   }

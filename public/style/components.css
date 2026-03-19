@@ -6047,6 +6047,10 @@ Glaucoma history case study: match intermediate style
   border: 0;
   border-radius: 999px;
   overflow: hidden;
+  overflow: clip;
+  isolation: isolate;
+  contain: paint;
+  clip-path: inset(0 round 999px);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -6781,6 +6785,11 @@ Glaucoma history case study: match intermediate style
   height: 118px;
   padding: 14px 10px 14px;
   border-radius: 999px;
+  overflow: hidden;
+  overflow: clip;
+  isolation: isolate;
+  contain: paint;
+  clip-path: inset(0 round 999px);
   display: flex;
   flex-direction: column;
   align-items: center;

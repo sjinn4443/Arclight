@@ -1833,6 +1833,23 @@ select.onb-input.has-value + .onb-select-caret {
   }
 }
 
+@media (max-width: 37.5em) {
+  #childhoodAskQuestionsObservePage .eyes-topbar__icons {
+    margin-right: 14px !important;
+  }
+
+  #childhoodAskQuestionsObservePage .eyes-topbar .icon.menuBtn {
+    left: -8px !important;
+    width: 36px;
+    height: 36px;
+    font-size: 25px !important;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
 #childhoodAskQuestionsObservePage .childhood-qno-story {
   position: relative;
   margin: 0 -8px;
@@ -1883,8 +1900,8 @@ select.onb-input.has-value + .onb-select-caret {
 
 #childhoodAskQuestionsObservePage .childhood-qno-stage-frame--question {
   position: relative;
-  aspect-ratio: 1169 / 1368;
-  background: #f3f2ef;
+  height: 100%;
+  background: #b8b2a7;
 }
 
 #childhoodAskQuestionsObservePage .childhood-qno-stage-bar {
@@ -1893,8 +1910,8 @@ select.onb-input.has-value + .onb-select-caret {
   left: 0;
   right: 0;
   z-index: 6;
-  min-height: 48px;
-  padding: 12px 20px;
+  min-height: 32px;
+  padding: 7px 18px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1904,7 +1921,7 @@ select.onb-input.has-value + .onb-select-caret {
 }
 
 #childhoodAskQuestionsObservePage .childhood-qno-stage-bar span {
-  font-size: clamp(15px, 4vw, 17px);
+  font-size: clamp(14px, 3.7vw, 16px);
   font-weight: 600;
   line-height: 1.15;
   letter-spacing: -0.02em;
@@ -1924,12 +1941,23 @@ select.onb-input.has-value + .onb-select-caret {
   height: auto;
 }
 
+#childhoodAskQuestionsObservePage .childhood-qno-stage-canvas--question {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  aspect-ratio: 1169 / 1368;
+}
+
 #childhoodAskQuestionsObservePage .childhood-qno-bubble {
   position: absolute;
   left: 61.8%;
-  top: 18%;
+  top: 17.5%;
   z-index: 7;
-  width: min(70%, 248px);
+  width: 54%;
+  min-width: 182px;
+  max-width: 248px;
   padding: 15px 16px;
   border-radius: 18px;
   background: rgba(255, 255, 255, 0.97);
@@ -1972,6 +2000,7 @@ select.onb-input.has-value + .onb-select-caret {
   height: 100%;
   display: flex;
   flex-direction: column;
+  background: #b8b2a7;
 }
 
 #childhoodAskQuestionsObservePage .childhood-qno-stage-bar--observe {
@@ -1982,6 +2011,7 @@ select.onb-input.has-value + .onb-select-caret {
 
 #childhoodAskQuestionsObservePage .childhood-qno-observe-copy {
   padding: 18px 20px 0;
+  background: #b8b2a7;
 }
 
 #childhoodAskQuestionsObservePage .childhood-qno-observe-kicker {
@@ -1995,14 +2025,17 @@ select.onb-input.has-value + .onb-select-caret {
 
 #childhoodAskQuestionsObservePage .childhood-qno-observe-list {
   margin: 0;
-  padding: 0 0 0 22px;
+  padding: 0;
+  list-style: none;
 }
 
 #childhoodAskQuestionsObservePage .childhood-qno-observe-item {
+  position: relative;
   max-height: 0;
   overflow: hidden;
   opacity: 0;
   transform: translate3d(0, 10px, 0);
+  padding-left: 16px;
   color: #8a94a6;
   font-size: 15px;
   font-weight: 500;
@@ -2012,6 +2045,15 @@ select.onb-input.has-value + .onb-select-caret {
     opacity 0.24s ease,
     transform 0.24s ease,
     color 0.24s ease;
+}
+
+#childhoodAskQuestionsObservePage .childhood-qno-observe-item::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-size: 16px;
+  line-height: 1.2;
 }
 
 #childhoodAskQuestionsObservePage .childhood-qno-observe-item.is-visible {
@@ -2033,7 +2075,7 @@ select.onb-input.has-value + .onb-select-caret {
   border-radius: 0;
   box-shadow: none;
   height: clamp(225px, 34vh, 290px);
-  background: #f0eeea;
+  background: #b8b2a7;
 }
 
 #childhoodAskQuestionsObservePage .childhood-qno-stage-canvas--exam {
@@ -2043,6 +2085,16 @@ select.onb-input.has-value + .onb-select-caret {
   bottom: 0;
   width: 100%;
   aspect-ratio: 1169 / 1280;
+}
+
+#childhoodAskQuestionsObservePage .childhood-qno-layer--exam-man {
+  transform: scale(0.92);
+  transform-origin: center bottom;
+}
+
+#childhoodAskQuestionsObservePage .childhood-qno-layer--exam-boy {
+  transform: scale(0.9);
+  transform-origin: center bottom;
 }
 
 #childhoodAskQuestionsObservePage .childhood-qno-steps {
@@ -2079,6 +2131,11 @@ select.onb-input.has-value + .onb-select-caret {
   height: 128px;
   padding: 14px 10px 16px;
   border-radius: 999px;
+  overflow: hidden;
+  overflow: clip;
+  isolation: isolate;
+  contain: paint;
+  clip-path: inset(0 round 999px);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -3068,6 +3125,10 @@ select.onb-input.has-value + .onb-select-caret {
   padding: 14px 10px 14px;
   border-radius: 999px;
   overflow: hidden;
+  overflow: clip;
+  isolation: isolate;
+  contain: paint;
+  clip-path: inset(0 round 999px);
   display: flex;
   flex-direction: column;
   align-items: center;
