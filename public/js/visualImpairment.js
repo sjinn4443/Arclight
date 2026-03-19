@@ -56,7 +56,7 @@ function formatNumber(value) {
 function getVideoPreviewTime(video) {
   const duration = Number(video?.duration);
   if (!Number.isFinite(duration) || duration <= 0.2) return null;
-  if (duration > 1.2) return Math.min(0.8, duration - 0.1);
+  if (duration > 1.2) return Math.min(1, duration - 0.1);
   return Math.min(Math.max(duration * 0.35, 0.18), duration - 0.08);
 }
 
@@ -87,6 +87,19 @@ function prepareVideoPoster(video) {
 
   const previewTime = getVideoPreviewTime(video);
   if (previewTime == null) return;
+
+  if ((video.readyState ?? 0) < 2) {
+    const handleLoadedData = () => {
+      video.removeEventListener("loadeddata", handleLoadedData);
+      prepareVideoPoster(video);
+    };
+
+    video.addEventListener("loadeddata", handleLoadedData, { once: true });
+    try {
+      video.load?.();
+    } catch {}
+    return;
+  }
 
   video.dataset.posterPreparing = "1";
   let phase = "preview";
@@ -161,6 +174,8 @@ function renderScene(elements, progress, prefersReducedMotion) {
   const p = prefersReducedMotion ? Math.round(progress * 16) / 16 : progress;
   const overviewShift = mix(p, 0.48, 0.66, easeInOutCubic);
   const scrollCueOut = mix(p, 0.008, 0.05, easeOutCubic);
+  const isDesktop = window.matchMedia("(min-width: 768px)").matches;
+  const finalNodeScale = isDesktop ? 1.04 : 0.73;
 
   setMotionState(elements.scrollCue, {
     opacity: 1 - scrollCueOut,
@@ -175,7 +190,7 @@ function renderScene(elements, progress, prefersReducedMotion) {
       initialTop: 27,
       finalLeft: 31,
       finalTop: 24.5,
-      finalScale: 0.73,
+      finalScale: finalNodeScale,
     },
     {
       element: elements.nodeRetina,
@@ -185,7 +200,7 @@ function renderScene(elements, progress, prefersReducedMotion) {
       initialTop: 52,
       finalLeft: 31,
       finalTop: 47.8,
-      finalScale: 0.73,
+      finalScale: finalNodeScale,
     },
     {
       element: elements.nodeBrain,
@@ -195,7 +210,7 @@ function renderScene(elements, progress, prefersReducedMotion) {
       initialTop: 78,
       finalLeft: 31,
       finalTop: 72.6,
-      finalScale: 0.73,
+      finalScale: finalNodeScale,
     },
   ];
 
@@ -404,12 +419,12 @@ export function initializeVisualImpairment() {
 
   const videos = page.querySelectorAll("video");
   videos.forEach((video) => {
-    if (video.readyState >= 1) {
+    if (video.readyState >= 2) {
       prepareVideoPoster(video);
     } else {
       listen(
         video,
-        "loadedmetadata",
+        "loadeddata",
         () => {
           prepareVideoPoster(video);
         },
