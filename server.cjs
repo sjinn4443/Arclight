@@ -1,24 +1,30 @@
 require("dotenv").config();
 const express = require("express");
 const path = require("path");
-const crypto = require("crypto");
-const cookieParser = require("cookie-parser");
-const session = require("express-session");
-const http = require("http");
-const fs = require("fs"); // Import fs for file operations
-const fsp = require("fs").promises; // Import fs.promises for async file operations
+const helmet = require("helmet");
+const fs = require("fs");
 const { execSync } = require("child_process");
+const { applyMainAppCsp, applyReportsCsp } = require("./security/csp.cjs");
+const {
+  getRequestHost,
+  isLocalHost,
+  isTelemetryWriteAllowed,
+  sanitizeTelemetryPayload,
+} = require("./security/telemetry-policy.cjs");
 
-// Bind to the dynamic port Railway gives you; fall back only if truly absent.
+const fetchImpl =
+  typeof global.fetch === "function"
+    ? global.fetch.bind(global)
+    : require("node-fetch");
+
 const HOST = process.env.HOST || "0.0.0.0";
 const prod = process.env.NODE_ENV === "production";
-// Allow serving the built/minified `dist/` assets even when NODE_ENV is not
-// production (useful for running Lighthouse against localhost).
 const serveDist =
   String(process.env.SERVE_DIST || "").toLowerCase() === "1" ||
   String(process.env.SERVE_DIST || "").toLowerCase() === "true";
 
 const app = express();
+app.disable("x-powered-by");
 
 const staticRoot = path.join(__dirname, prod || serveDist ? "dist" : "public");
 
@@ -93,7 +99,7 @@ function resolveVersionMetadataFromVersionFile() {
         best = value;
       }
     } catch {
-      // Ignore invalid/missing file and keep searching.
+      // Ignore invalid or missing version files.
     }
   }
 
@@ -135,9 +141,9 @@ function resolveAppVersionDate(versionMetadataFromFile = null) {
     if (normalized) return normalized;
   }
 
-  // Prefer build-time metadata when available so date/sequence stay consistent.
-  if (versionMetadataFromFile?.versionDate)
+  if (versionMetadataFromFile?.versionDate) {
     return versionMetadataFromFile.versionDate;
+  }
 
   try {
     const gitIso = execSync("git log -1 --format=%cI", {
@@ -148,15 +154,12 @@ function resolveAppVersionDate(versionMetadataFromFile = null) {
     const normalized = toIsoDateString(gitIso);
     if (normalized) return normalized;
   } catch {
-    // Ignore git lookup errors (e.g. .git missing in some deploys).
+    // Ignore git lookup errors.
   }
 
-  // Final fallback for environments where .git is unavailable at runtime:
-  // use the newest timestamp among shipped static assets.
   const staticDate = resolveVersionDateFromStaticFiles();
   if (staticDate) return staticDate;
 
-  // Last-resort fallback for unusual layouts.
   const packageDate = getIsoDateFromMtime(path.join(__dirname, "package.json"));
   if (packageDate) return packageDate;
 
@@ -182,7 +185,6 @@ function resolveVersionSequenceFromGit(versionDate) {
     }
     return count > 0 ? count : null;
   } catch {
-    // Ignore git lookup errors (e.g. .git missing in some deploys).
     return null;
   }
 }
@@ -224,34 +226,211 @@ function resolveCurrentAppVersion() {
   return { versionDate, versionSequence };
 }
 
-// Use the port from the environment variable.
-// In production (Railway/Docker), default to 8080 if PORT is absent.
+function isEnabled(value) {
+  return ["1", "true", "yes", "on"].includes(
+    String(value || "")
+      .trim()
+      .toLowerCase(),
+  );
+}
+
+function getClientIp(req) {
+  return req.ip || req.connection?.remoteAddress || "unknown";
+}
+
+function isPrivateIp(ip) {
+  const value = String(ip || "")
+    .trim()
+    .toLowerCase();
+  return (
+    !value ||
+    value === "::1" ||
+    value === "127.0.0.1" ||
+    value === "::ffff:127.0.0.1" ||
+    value.startsWith("10.") ||
+    value.startsWith("192.168.") ||
+    /^172\.(1[6-9]|2\d|3[0-1])\./.test(value) ||
+    value.startsWith("fc") ||
+    value.startsWith("fd")
+  );
+}
+
+function countryNameFromCode(code) {
+  const iso2 = String(code || "")
+    .trim()
+    .toUpperCase();
+  if (!iso2) return null;
+
+  try {
+    return new Intl.DisplayNames(["en"], { type: "region" }).of(iso2) || iso2;
+  } catch {
+    return iso2;
+  }
+}
+
+function parseIpInfoPayload(payload) {
+  const [rawLat, rawLon] = String(payload?.loc || "")
+    .split(",")
+    .map((value) => Number.parseFloat(value));
+  const lat = Number.isFinite(rawLat) ? rawLat : null;
+  const lon = Number.isFinite(rawLon) ? rawLon : null;
+  const countryCode = String(payload?.country || "")
+    .trim()
+    .toUpperCase();
+  const city = String(payload?.city || "").trim() || null;
+
+  return {
+    source: "ipinfo",
+    countryCode: countryCode || null,
+    countryName: countryNameFromCode(countryCode),
+    city,
+    lat,
+    lon,
+    area: city,
+  };
+}
+
+function parseBigDataCloudPayload(payload) {
+  const rawLat = Number.parseFloat(payload?.latitude);
+  const rawLon = Number.parseFloat(payload?.longitude);
+  const lat = Number.isFinite(rawLat) ? rawLat : null;
+  const lon = Number.isFinite(rawLon) ? rawLon : null;
+  const countryCode = String(payload?.countryCode || "")
+    .trim()
+    .toUpperCase();
+  const city =
+    String(
+      payload?.city ||
+        payload?.locality ||
+        payload?.principalSubdivisionLocality ||
+        "",
+    ).trim() || null;
+
+  return {
+    source: "bigdatacloud",
+    countryCode: countryCode || null,
+    countryName:
+      String(payload?.countryName || "").trim() ||
+      countryNameFromCode(countryCode),
+    city,
+    lat,
+    lon,
+    area: city,
+  };
+}
+
+async function fetchJson(url) {
+  const response = await fetchImpl(url, {
+    headers: { Accept: "application/json" },
+  });
+  if (!response.ok) {
+    throw new Error(`upstream ${response.status}`);
+  }
+  return response.json();
+}
+
+async function lookupIpLocation(ip) {
+  if (isPrivateIp(ip)) {
+    return {
+      source: "fallback",
+      countryCode: "GB",
+      countryName: "United Kingdom",
+      city: null,
+      lat: null,
+      lon: null,
+      area: null,
+    };
+  }
+
+  const encodedIp = encodeURIComponent(String(ip || "").trim());
+  const candidates = [];
+  if (process.env.IPINFO_TOKEN) {
+    candidates.push({
+      url: `https://ipinfo.io/${encodedIp}/json?token=${encodeURIComponent(process.env.IPINFO_TOKEN)}`,
+      parser: parseIpInfoPayload,
+    });
+  }
+  candidates.push({
+    url: `https://ipinfo.io/${encodedIp}/json`,
+    parser: parseIpInfoPayload,
+  });
+  candidates.push({
+    url: `https://api.bigdatacloud.net/data/ip-geolocation?ip=${encodedIp}&localityLanguage=en`,
+    parser: parseBigDataCloudPayload,
+  });
+
+  for (const candidate of candidates) {
+    try {
+      const payload = await fetchJson(candidate.url);
+      const parsed = candidate.parser(payload);
+      if (parsed.countryCode || parsed.city || parsed.lat != null) {
+        return parsed;
+      }
+    } catch {
+      // Try the next provider.
+    }
+  }
+
+  return {
+    source: "fallback",
+    countryCode: "GB",
+    countryName: "United Kingdom",
+    city: null,
+    lat: null,
+    lon: null,
+    area: null,
+  };
+}
+
+function canDeleteReports(req) {
+  if (isEnabled(process.env.REPORTS_ALLOW_DELETE)) return true;
+
+  const host = getRequestHost(req);
+  if (isLocalHost(host)) {
+    return isEnabled(process.env.REPORTS_ALLOW_LOCAL_DELETE);
+  }
+
+  return false;
+}
+
 const PORT = process.env.PORT || (prod ? 8080 : 3000);
 
-// Behind Railway → needed for secure cookies, real client IPs, rate limits
 app.set("trust proxy", 1);
 
-const storage = require("./storage/index.cjs"); // auto-picks NDJSON or PG
+const storage = require("./storage/index.cjs");
 
+app.use(
+  helmet({
+    contentSecurityPolicy: false,
+    crossOriginEmbedderPolicy: false,
+    hsts: prod
+      ? {
+          maxAge: 15552000,
+          includeSubDomains: true,
+          preload: false,
+        }
+      : false,
+  }),
+);
+app.use((req, res, next) => {
+  res.set("Referrer-Policy", "strict-origin-when-cross-origin");
+  res.set("Permissions-Policy", "geolocation=(self), camera=(), microphone=()");
+  next();
+});
+app.use(applyMainAppCsp);
+app.use(["/reports.html", "/html/reports.html", "/api/dev"], applyReportsCsp);
 app.use(express.json({ limit: "100kb" }));
 
-// Static assets that are always safe to serve without auth.
-app.use("/js", express.static(path.join(staticRoot, "js"))); // Prefer built js in prod
-app.use("/favicons", express.static(path.join(staticRoot, "favicons"))); // Prefer built assets in prod
-
-// Initialise storage (creates table locally on PG or folders for NDJSON)
-// Railway 환경에서 DB가 잠깐 늦게 뜨거나 네트워크가 순간 실패해도
-// 컨테이너가 바로 죽지 않도록 재시도한다.
-let storageReady = false;
+app.use("/js", express.static(path.join(staticRoot, "js")));
+app.use("/favicons", express.static(path.join(staticRoot, "favicons")));
 
 async function initStorageWithRetry() {
   const maxAttempts = 10;
   const baseDelayMs = 1500;
 
-  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+  for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
     try {
       await storage.init();
-      storageReady = true;
       console.log(`[storage] init ok (attempt ${attempt})`);
       return;
     } catch (err) {
@@ -260,12 +439,10 @@ async function initStorageWithRetry() {
         err,
       );
       const delay = baseDelayMs * attempt;
-      await new Promise((r) => setTimeout(r, delay));
+      await new Promise((resolve) => setTimeout(resolve, delay));
     }
   }
 
-  // 여기까지 오면 init이 계속 실패한 것.
-  // 컨테이너를 죽이지 않고, 정적 파일 서빙은 계속 가능하게 둔다.
   console.error(
     "[storage] init failed permanently; continuing without DB-backed telemetry.",
   );
@@ -273,7 +450,6 @@ async function initStorageWithRetry() {
 
 initStorageWithRetry();
 
-// --- Public app APIs ---
 app.get("/api/app/version", (req, res) => {
   const currentVersion = resolveCurrentAppVersion();
   res.set("Cache-Control", "no-store");
@@ -285,68 +461,85 @@ app.get("/api/app/version", (req, res) => {
 
 app.post("/api/app/profile", async (req, res) => {
   try {
-    await storage.saveProfile(req.body || {});
-    res.json({ ok: true });
-  } catch (e) {
-    console.error(e);
-    res.status(500).json({ error: "save failed" });
+    const payload = sanitizeTelemetryPayload(req.body || {});
+    if (!isTelemetryWriteAllowed(req)) {
+      return res.json({ ok: true, stored: false });
+    }
+
+    await storage.saveProfile(payload);
+    return res.json({ ok: true, stored: true });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "save failed" });
   }
 });
 
 app.post("/api/app/refresh", async (req, res) => {
   try {
-    await storage.bumpRefresh(req.body || {});
-    res.json({ ok: true });
-  } catch (e) {
-    console.error(e);
-    res.status(500).json({ error: "refresh failed" });
+    const payload = sanitizeTelemetryPayload(req.body || {});
+    if (!isTelemetryWriteAllowed(req)) {
+      return res.json({ ok: true, stored: false });
+    }
+
+    await storage.bumpRefresh(payload);
+    return res.json({ ok: true, stored: true });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "refresh failed" });
   }
 });
 
-// --- Dev dashboard (protected) ---
-// In-memory rate limiter for attempts against the reports dev page only.
-// Keeps a small sliding window per IP. This is intentionally simple and
-// scoped to the basic auth check for reports so normal user actions are not rate limited.
-const devDashboardAuthAttempts = new Map(); // ip -> [timestamps]
+app.get("/api/location/ip", async (req, res) => {
+  try {
+    const payload = await lookupIpLocation(getClientIp(req));
+    res.set("Cache-Control", "no-store");
+    return res.json(payload);
+  } catch (error) {
+    console.error("[location] lookup failed", error);
+    return res.status(500).json({ error: "lookup failed" });
+  }
+});
+
+const devDashboardAuthAttempts = new Map();
 function basicAuth(req, res, next) {
   const header = req.headers.authorization || "";
   const token = header.startsWith("Basic ") ? header.slice(6) : "";
-  const [user, pass] = Buffer.from(token, "base64").toString("utf8").split(":");
+  let user = "";
+  let pass = "";
 
-  // Apply rate limiting only for requests attempting to access the reports pages
-  const isReportsPath =
-    req.path === "/reports.html" || req.path === "/html/reports.html";
-  if (isReportsPath) {
-    try {
-      const ip = req.ip || req.connection?.remoteAddress || "unknown";
-      const now = Date.now();
-      const windowMs = 15 * 60 * 1000; // 15 minutes
-      const maxAttempts = 10;
-      const attempts = devDashboardAuthAttempts.get(ip) || [];
-      // keep only recent entries inside the window
-      const recent = attempts.filter((ts) => now - ts < windowMs);
-      recent.push(now);
-      devDashboardAuthAttempts.set(ip, recent);
-      if (recent.length > maxAttempts) {
-        // Too many attempts — signal client and do not disclose details
-        res.set("Retry-After", String(Math.ceil(windowMs / 1000)));
-        return res
-          .status(429)
-          .send("Too many authentication attempts. Please try again later.");
-      }
-    } catch (e) {
-      // If rate limiter fails for some reason, continue to auth check (fail-open)
-      console.error("[dev] rate limiter error", e && e.message ? e.message : e);
-    }
+  try {
+    [user, pass] = Buffer.from(token, "base64").toString("utf8").split(":");
+  } catch {
+    user = "";
+    pass = "";
   }
 
-  // Perform password check. Do NOT log the supplied password or request body anywhere.
-  if (pass && pass === process.env.DASHBOARD_PASSWORD) {
-    // On success, clear recorded attempts for this IP to avoid locking the user out
-    if (isReportsPath) {
-      const ip = req.ip || req.connection?.remoteAddress || "unknown";
-      devDashboardAuthAttempts.delete(ip);
+  try {
+    const ip = getClientIp(req);
+    const now = Date.now();
+    const windowMs = 15 * 60 * 1000;
+    const maxAttempts = 10;
+    const attempts = devDashboardAuthAttempts.get(ip) || [];
+    const recent = attempts.filter((ts) => now - ts < windowMs);
+    recent.push(now);
+    devDashboardAuthAttempts.set(ip, recent);
+    if (recent.length > maxAttempts) {
+      res.set("Retry-After", String(Math.ceil(windowMs / 1000)));
+      return res
+        .status(429)
+        .send("Too many authentication attempts. Please try again later.");
     }
+  } catch (error) {
+    console.error(
+      "[dev] rate limiter error",
+      error && error.message ? error.message : error,
+    );
+  }
+
+  if (pass && pass === process.env.DASHBOARD_PASSWORD) {
+    const ip = getClientIp(req);
+    devDashboardAuthAttempts.delete(ip);
+    req.auth = { user: user || "dashboard" };
     return next();
   }
 
@@ -354,95 +547,71 @@ function basicAuth(req, res, next) {
   return res.status(401).send("Authentication required.");
 }
 
-// Protect the reports HTML pages so they are not publicly accessible
 app.get("/reports.html", basicAuth, (req, res) => {
+  res.set("Cache-Control", "no-store");
   return res.sendFile(path.join(staticRoot, "reports.html"));
 });
 
 app.get("/html/reports.html", basicAuth, (req, res) => {
+  res.set("Cache-Control", "no-store");
   return res.sendFile(path.join(staticRoot, "html", "reports.html"));
 });
 
 app.get("/api/dev/users", basicAuth, async (req, res) => {
   try {
+    res.set("Cache-Control", "no-store");
+    res.set("X-Reports-Delete-Enabled", canDeleteReports(req) ? "1" : "0");
     const rows = await storage.getUsersForDashboard();
-    res.json(rows);
-  } catch (e) {
-    console.error(e);
-    res.status(500).json({ error: "read failed" });
+    return res.json(rows);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "read failed" });
   }
 });
 
 app.delete("/api/dev/users/:anonId", basicAuth, async (req, res) => {
   try {
+    if (!canDeleteReports(req)) {
+      return res.status(403).json({ error: "Reports delete is disabled" });
+    }
+
     const anonId = String(req.params.anonId || "").trim();
     if (!anonId) return res.status(400).json({ error: "Missing anon_id" });
 
-    const telemetryFilePath = path.join(
-      __dirname,
-      "reports",
-      "data",
-      "telemetry.ndjson",
-    );
-    let lines = [];
-    try {
-      const rawContent = await fsp.readFile(telemetryFilePath, "utf8");
-      lines = rawContent.split("\n").filter(Boolean); // Filter out empty lines
-    } catch (readErr) {
-      if (readErr.code === "ENOENT") {
-        // File does not exist, so no users to delete.
-        return res.status(404).json({ error: "User not found" });
-      }
-      throw readErr;
-    }
-
-    let userFound = false;
-    const filteredLines = lines.filter((line) => {
-      try {
-        const record = JSON.parse(line);
-        if (record.anon_id === anonId) {
-          userFound = true;
-          return false; // Exclude this record
-        }
-        return true; // Keep other records
-      } catch (parseErr) {
-        console.error("Error parsing NDJSON line:", parseErr);
-        return true; // Keep line if unparseable to avoid data loss
-      }
+    const deleted = await storage.deleteUserForDashboard(anonId, {
+      user: req.auth?.user || "dashboard",
+      ip: getClientIp(req),
+      host: getRequestHost(req),
+      environment: process.env.NODE_ENV || "development",
     });
 
-    if (!userFound) {
+    if (!deleted) {
       return res.status(404).json({ error: "User not found" });
     }
 
-    await fsp.writeFile(
-      telemetryFilePath,
-      filteredLines.join("\n") + "\n",
-      "utf8",
-    );
     return res.status(204).end();
-  } catch (err) {
-    console.error("[dev] delete user failed", err);
+  } catch (error) {
+    console.error("[dev] delete user failed", error);
     return res.status(500).json({ error: "Failed to delete user" });
   }
 });
 
-// Serve remaining static files (HTML/CSS/images/etc). Must be AFTER the protected
-// dev dashboard/report routes so Basic Auth is applied correctly.
 app.use(express.static(staticRoot));
 
 app.post("/track", async (req, res) => {
   try {
-    const ip = req.ip;
-    await storage.saveIp(ip);
-    res.status(204).send();
-  } catch (e) {
-    console.error(e);
-    res.status(500).json({ error: "save failed" });
+    if (!isTelemetryWriteAllowed(req)) {
+      return res.status(204).end();
+    }
+
+    await storage.saveIp(getClientIp(req));
+    return res.status(204).end();
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "save failed" });
   }
 });
 
-// --- Start server ---
 let server;
 if (require.main === module) {
   server = app.listen(PORT, HOST, () => {
@@ -450,4 +619,7 @@ if (require.main === module) {
   });
 }
 
-module.exports = { app, closeServer: () => server.close() };
+module.exports = {
+  app,
+  closeServer: () => server?.close(),
+};

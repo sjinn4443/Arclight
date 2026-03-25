@@ -1,143 +1,216 @@
 /**
- * @file IP Tracking Endpoint Tests
- * @description Tests for the `/track` endpoint, ensuring IP logging, geolocation enrichment, and proper response handling.
+ * @jest-environment node
  */
 const request = require("supertest");
-const fs = require("fs");
-const path = require("path");
-const os = require("os");
-const { decrypt } = require("../reports/security/encrypt.cjs"); // Import decrypt
 
-let logDir;
-let logFile;
-let app;
-let server;
+const ORIGINAL_ENV = { ...process.env };
 
-// Use require for CommonJS modules
-const jestGlobals = require("@jest/globals");
-const mockEnrichIp = jest.fn();
+function authHeader(password, user = "dev") {
+  return `Basic ${Buffer.from(`${user}:${password}`).toString("base64")}`;
+}
 
-beforeAll(async () => {
-  jest.resetModules(); // Reset module registry to ensure server.cjs is re-evaluated
-  jest.useFakeTimers({ legacyFakeTimers: true });
-  logDir = fs.mkdtempSync(path.join(os.tmpdir(), "iplogs-"));
-  logFile = path.join(logDir, "ip_logs.jsonl");
+async function loadServer(envOverrides = {}, storageOverrides = {}) {
+  jest.resetModules();
 
-  // Mock the path module to redirect LOG_FILE in server.cjs
-  jest.doMock("path", () => ({
-    ...jest.requireActual("path"),
-    join: (...args) => {
-      if (args[args.length - 1] === "telemetry.ndjson") {
-        return logFile;
-      }
-      return jest.requireActual("path").join(...args);
-    },
-  }));
+  process.env = {
+    ...ORIGINAL_ENV,
+    ...envOverrides,
+  };
 
-  // Mock the ipEnricher module for CommonJS require in server.cjs
-  jest.doMock("../utils/ipEnricher.cjs", () => ({
-    enrichIp: mockEnrichIp,
-  }));
+  const mockStorage = {
+    init: jest.fn().mockResolvedValue(undefined),
+    saveProfile: jest.fn().mockResolvedValue(undefined),
+    bumpRefresh: jest.fn().mockResolvedValue(undefined),
+    saveIp: jest.fn().mockResolvedValue(undefined),
+    getUsersForDashboard: jest.fn().mockResolvedValue([]),
+    deleteUserForDashboard: jest.fn().mockResolvedValue(false),
+    ...storageOverrides,
+  };
 
-  // Use require for CommonJS modules
-  const { app: importedApp } = require("../server.cjs");
-  app = importedApp;
-  server = app.listen(3002); // Use a different port for testing
+  jest.doMock("../storage/index.cjs", () => mockStorage);
+
+  const { app } = require("../server.cjs");
+  return { app, mockStorage };
+}
+
+afterEach(() => {
+  jest.restoreAllMocks();
+  jest.resetModules();
+  process.env = { ...ORIGINAL_ENV };
 });
 
-beforeEach(() => {
-  fs.writeFileSync(logFile, ""); // Clear the log file before each test
-  mockEnrichIp.mockClear(); // Clear calls for this mock
-  // Mock implementation for enrichIp
-  mockEnrichIp.mockImplementation((ip) => {
-    // Use mockEnrichIp directly
-    if (ip === "8.8.8.8") {
-      return {
-        source: "mock",
-        country: "US",
-        city: "Mountain View",
-        lat: 37.406,
-        lon: -122.0785,
-        timezone: "America/Los_Angeles",
-      };
-    } else {
-      // For local IPs or unknown IPs
-      return {
-        source: "mock",
-        country: null,
-        city: null,
-        lat: null,
-        lon: null,
-        timezone: null,
-      };
-    }
-  });
-});
+describe("server security hardening", () => {
+  test("does not persist telemetry outside production", async () => {
+    const { app, mockStorage } = await loadServer({
+      NODE_ENV: "development",
+      DASHBOARD_PASSWORD: "secret",
+    });
 
-afterAll((done) => {
-  fs.rmSync(logDir, { recursive: true, force: true });
-  jest.restoreAllMocks(); // Restore all mocks
-  server.close(done);
-});
+    const profileResponse = await request(app)
+      .post("/api/app/profile")
+      .send({ anon_id: "anon-1", name: "Local User" });
 
-describe("IP Tracking Endpoint", () => {
-  test("should return 204 No Content and log IP and geolocation data", async () => {
-    const response = await request(app)
+    expect(profileResponse.status).toBe(200);
+    expect(profileResponse.body).toEqual({ ok: true, stored: false });
+    expect(mockStorage.saveProfile).not.toHaveBeenCalled();
+
+    const trackResponse = await request(app)
       .post("/track")
-      .set("X-Forwarded-For", "8.8.8.8"); // Simulate a request with a known IP
+      .set("X-Forwarded-For", "8.8.8.8");
+
+    expect(trackResponse.status).toBe(204);
+    expect(mockStorage.saveIp).not.toHaveBeenCalled();
+  });
+
+  test("persists telemetry only for allowed production hosts and strips unknown fields", async () => {
+    const { app, mockStorage } = await loadServer({
+      NODE_ENV: "production",
+      TELEMETRY_ALLOWED_HOSTS: "app.example.com",
+      DASHBOARD_PASSWORD: "secret",
+    });
+
+    const blocked = await request(app)
+      .post("/api/app/profile")
+      .set("Host", "localhost:3000")
+      .send({ anon_id: "anon-1", name: "Blocked Local" });
+
+    expect(blocked.status).toBe(200);
+    expect(blocked.body).toEqual({ ok: true, stored: false });
+    expect(mockStorage.saveProfile).not.toHaveBeenCalled();
+
+    const allowed = await request(app)
+      .post("/api/app/profile")
+      .set("Host", "app.example.com")
+      .send({
+        anon_id: "anon-1",
+        name: "  Alice  ",
+        lat: 999,
+        lon: "-0.1",
+        unknown: "drop-me",
+      });
+
+    expect(allowed.status).toBe(200);
+    expect(allowed.body).toEqual({ ok: true, stored: true });
+    expect(mockStorage.saveProfile).toHaveBeenCalledTimes(1);
+    expect(mockStorage.saveProfile).toHaveBeenCalledWith(
+      expect.objectContaining({
+        anon_id: "anon-1",
+        name: "Alice",
+        lat: null,
+        lon: -0.1,
+      }),
+    );
+    expect(mockStorage.saveProfile.mock.calls[0][0].unknown).toBeUndefined();
+  });
+
+  test("rate limits repeated bad auth attempts on the reports API", async () => {
+    const { app } = await loadServer({
+      NODE_ENV: "development",
+      DASHBOARD_PASSWORD: "secret",
+    });
+
+    let response;
+    for (let i = 0; i < 11; i += 1) {
+      response = await request(app)
+        .get("/api/dev/users")
+        .set("Authorization", authHeader("wrong-password"));
+    }
+
+    expect(response.status).toBe(429);
+    expect(response.text).toMatch(/Too many authentication attempts/i);
+  });
+
+  test("keeps reports read-only locally by default", async () => {
+    const { app, mockStorage } = await loadServer(
+      {
+        NODE_ENV: "development",
+        DASHBOARD_PASSWORD: "secret",
+      },
+      {
+        getUsersForDashboard: jest
+          .fn()
+          .mockResolvedValue([{ anon_id: "anon-1" }]),
+      },
+    );
+
+    const response = await request(app)
+      .get("/api/dev/users")
+      .set("Authorization", authHeader("secret"))
+      .set("Host", "localhost:3000");
+
+    expect(response.status).toBe(200);
+    expect(response.headers["x-reports-delete-enabled"]).toBe("0");
+    expect(mockStorage.getUsersForDashboard).toHaveBeenCalledTimes(1);
+  });
+
+  test("allows local delete only when explicitly enabled", async () => {
+    const deleteSpy = jest.fn().mockResolvedValue(true);
+    const { app } = await loadServer(
+      {
+        NODE_ENV: "development",
+        DASHBOARD_PASSWORD: "secret",
+        REPORTS_ALLOW_LOCAL_DELETE: "true",
+      },
+      {
+        deleteUserForDashboard: deleteSpy,
+      },
+    );
+
+    const response = await request(app)
+      .delete("/api/dev/users/anon-1")
+      .set("Authorization", authHeader("secret"))
+      .set("Host", "localhost:3000");
 
     expect(response.status).toBe(204);
-    expect(response.body).toEqual({}); // Expect empty body for 204 No Content
+    expect(deleteSpy).toHaveBeenCalledWith(
+      "anon-1",
+      expect.objectContaining({
+        user: "dev",
+        host: "localhost",
+        environment: "development",
+      }),
+    );
+  });
 
-    // Allow any pending microtasks to complete and advance timers
-    jest.advanceTimersByTime(1000); // Advance timers by 1 second to ensure Date.now() is updated
-    await new Promise(process.nextTick);
+  test("applies baseline security headers to app routes", async () => {
+    const { app } = await loadServer({
+      NODE_ENV: "production",
+      DASHBOARD_PASSWORD: "secret",
+    });
 
-    // Read the log file and check its content
-    const logContent = fs.readFileSync(logFile, "utf8");
-    const logEntries = logContent
-      .trim()
-      .split("\n")
-      .filter(Boolean)
-      .map((line) => JSON.parse(decrypt(line))); // Decrypt and parse each line
-    expect(logEntries.length).toBe(1);
+    const response = await request(app)
+      .get("/api/app/version")
+      .set("Host", "app.example.com");
 
-    const loggedData = logEntries[0];
-    expect(loggedData.ip).toBe("8.8.8.8");
-    expect(loggedData.geo).toBeDefined();
-    expect(loggedData.geo.country).toBe("US"); // GeoIP for 8.8.8.8 is US
-    expect(loggedData.geo.city).toBe("Mountain View");
-    expect(loggedData.geo.timezone).toBe("America/Los_Angeles");
-    expect(loggedData.ts).toBeDefined(); // This assertion should now pass
-  }, 10000);
+    expect(response.status).toBe(200);
+    expect(response.headers["x-powered-by"]).toBeUndefined();
+    expect(response.headers["content-security-policy"]).toContain(
+      "default-src 'self'",
+    );
+    expect(response.headers["referrer-policy"]).toBe(
+      "strict-origin-when-cross-origin",
+    );
+    expect(response.headers["permissions-policy"]).toContain(
+      "geolocation=(self)",
+    );
+    expect(response.headers["x-content-type-options"]).toBe("nosniff");
+    expect(response.headers["strict-transport-security"]).toContain("max-age=");
+  });
 
-  test("should handle requests without X-Forwarded-For header", async () => {
-    // The middleware in server.cjs will set req.socket.remoteAddress to 127.0.0.1 in test environment
-    const response = await request(app).post("/track");
+  test("applies stricter anti-framing policy to reports routes", async () => {
+    const { app } = await loadServer({
+      NODE_ENV: "development",
+      DASHBOARD_PASSWORD: "secret",
+    });
 
-    expect(response.status).toBe(204);
-    expect(response.body).toEqual({}); // Expect empty body for 204 No Content
+    const response = await request(app)
+      .get("/api/dev/users")
+      .set("Authorization", authHeader("secret"));
 
-    // Allow any pending microtasks to complete and advance timers
-    jest.advanceTimersByTime(1000); // Advance timers by 1 second to ensure Date.now() is updated
-    await new Promise(process.nextTick);
-
-    const logContent = fs.readFileSync(logFile, "utf8");
-    const logEntries = logContent
-      .trim()
-      .split("\n")
-      .filter(Boolean)
-      .map((line) => JSON.parse(decrypt(line))); // Decrypt and parse each line
-    expect(logEntries.length).toBe(1); // Should be 1 as log file is cleared before each test
-
-    const loggedData = logEntries[0]; // Check the first (and only) entry
-    expect(loggedData.ip).toBe("::ffff:127.0.0.1"); // Should have the IPv6-mapped IPv4 address from middleware
-    expect(loggedData.geo).toBeDefined();
-    expect(loggedData.geo.country).toBeNull();
-    expect(loggedData.geo.city).toBeNull();
-    expect(loggedData.geo.timezone).toBeNull();
-    expect(loggedData.ts).toBeDefined(); // This assertion should now pass
-  }, 10000);
-
-  // Add more tests as needed, e.g., for invalid IPs, rate limiting, etc.
+    expect(response.status).toBe(200);
+    expect(response.headers["x-frame-options"]).toBe("DENY");
+    expect(response.headers["content-security-policy"]).toContain(
+      "frame-ancestors 'none'",
+    );
+  });
 });

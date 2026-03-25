@@ -1,10 +1,63 @@
 const { Pool } = require("pg");
+const { URL } = require("url");
 const { enrichIp } = require("../utils/ipEnricher.cjs");
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: process.env.DB_SSL === "disable" ? false : { rejectUnauthorized: false },
-});
+const LOCAL_DB_HOSTS = new Set(["localhost", "127.0.0.1", "::1"]);
+const poolCache = new Map();
+
+function normalizeCa(value) {
+  const raw = String(value || "");
+  return raw ? raw.replace(/\\n/g, "\n") : null;
+}
+
+function isLocalDatabase(connectionString) {
+  try {
+    const hostname = new URL(connectionString).hostname.toLowerCase();
+    return LOCAL_DB_HOSTS.has(hostname);
+  } catch {
+    return false;
+  }
+}
+
+function resolveSsl(connectionString) {
+  if (!connectionString || process.env.DB_SSL === "disable") return false;
+
+  const ca = normalizeCa(process.env.DB_CA_CERT);
+  if (ca) {
+    return {
+      rejectUnauthorized: true,
+      ca,
+    };
+  }
+
+  if (process.env.DB_SSL_ALLOW_SELF_SIGNED === "true") {
+    return { rejectUnauthorized: false };
+  }
+
+  if (isLocalDatabase(connectionString)) return false;
+
+  return { rejectUnauthorized: true };
+}
+
+function getPool(connectionString) {
+  if (!connectionString) return null;
+  if (poolCache.has(connectionString)) return poolCache.get(connectionString);
+
+  const pool = new Pool({
+    connectionString,
+    ssl: resolveSsl(connectionString),
+  });
+  poolCache.set(connectionString, pool);
+  return pool;
+}
+
+const writePool = getPool(process.env.DATABASE_URL);
+const readPool = getPool(
+  process.env.REPORTS_READ_DATABASE_URL || process.env.DATABASE_URL,
+);
+const adminPool = getPool(
+  process.env.REPORTS_ADMIN_DATABASE_URL || process.env.DATABASE_URL,
+);
 
 function toFiniteNumber(v) {
   const n = Number(v);
@@ -19,7 +72,10 @@ function pickGeoField(f, key) {
 }
 
 async function init() {
-  await pool.query(`
+  const initPool = writePool || adminPool;
+  if (!initPool) return;
+
+  await initPool.query(`
     CREATE TABLE IF NOT EXISTS app_users (
       profile_id   TEXT PRIMARY KEY,     -- user_id/email if present, else anon_id
       anon_id      TEXT,
@@ -46,6 +102,17 @@ async function init() {
       geo          JSONB
     );
 
+    CREATE TABLE IF NOT EXISTS reports_audit_log (
+      id              BIGSERIAL PRIMARY KEY,
+      action          TEXT NOT NULL,
+      anon_id         TEXT,
+      actor_user      TEXT,
+      actor_ip        TEXT,
+      actor_host      TEXT,
+      metadata        JSONB,
+      created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    );
+
     ALTER TABLE app_users ADD COLUMN IF NOT EXISTS lat DOUBLE PRECISION;
     ALTER TABLE app_users ADD COLUMN IF NOT EXISTS lon DOUBLE PRECISION;
   `);
@@ -56,6 +123,7 @@ function profileIdOf(f) {
 }
 
 async function saveProfile(f) {
+  if (!writePool) return;
   f = f || {};
   const pid = profileIdOf(f);
   if (!pid) throw new Error("identifier required");
@@ -69,7 +137,7 @@ async function saveProfile(f) {
       pickGeoField(f, "longitude"),
   );
 
-  await pool.query(
+  await writePool.query(
     `
     INSERT INTO app_users
       (profile_id, anon_id, user_id, email, name, aims, interest, experience, contact, country, area, language, lat, lon, first_seen, last_seen)
@@ -111,6 +179,7 @@ async function saveProfile(f) {
 }
 
 async function bumpRefresh(f) {
+  if (!writePool) return;
   f = f || {};
   const pid = profileIdOf(f);
   if (!pid) throw new Error("identifier required");
@@ -128,7 +197,7 @@ async function bumpRefresh(f) {
     f.area ?? pickGeoField(f, "area") ?? pickGeoField(f, "city") ?? null;
   const language = f.language ?? pickGeoField(f, "language") ?? null;
 
-  await pool.query(
+  await writePool.query(
     `
     INSERT INTO app_users (
       profile_id, anon_id, user_id, email, country, area, language, lat, lon,
@@ -162,7 +231,9 @@ async function bumpRefresh(f) {
 }
 
 async function getUsersForDashboard() {
-  const { rows } = await pool.query(`
+  if (!readPool) return [];
+
+  const { rows } = await readPool.query(`
     SELECT profile_id, anon_id, user_id, name, aims, interest, experience, contact, country, area, language, lat, lon,
            first_seen, last_seen, refresh_count
     FROM app_users
@@ -172,8 +243,9 @@ async function getUsersForDashboard() {
 }
 
 async function saveIp(ip) {
+  if (!writePool) return;
   const geo = enrichIp(ip);
-  await pool.query(
+  await writePool.query(
     `
     INSERT INTO ip_logs (ip, geo)
     VALUES ($1, $2)
@@ -182,10 +254,59 @@ async function saveIp(ip) {
   );
 }
 
+async function deleteUserForDashboard(anonId, actor = {}) {
+  if (!adminPool) throw new Error("Admin reports DB is not configured");
+
+  const client = await adminPool.connect();
+  try {
+    await client.query("BEGIN");
+    const deleted = await client.query(
+      `
+      DELETE FROM app_users
+      WHERE anon_id = $1
+      RETURNING profile_id
+    `,
+      [anonId],
+    );
+
+    if (deleted.rowCount < 1) {
+      await client.query("ROLLBACK");
+      return false;
+    }
+
+    await client.query(
+      `
+      INSERT INTO reports_audit_log (action, anon_id, actor_user, actor_ip, actor_host, metadata)
+      VALUES ($1, $2, $3, $4, $5, $6::jsonb)
+    `,
+      [
+        "delete_user",
+        anonId,
+        actor.user || null,
+        actor.ip || null,
+        actor.host || null,
+        JSON.stringify({
+          deletedProfiles: deleted.rows.map((row) => row.profile_id),
+          environment: actor.environment || null,
+        }),
+      ],
+    );
+
+    await client.query("COMMIT");
+    return true;
+  } catch (error) {
+    await client.query("ROLLBACK");
+    throw error;
+  } finally {
+    client.release();
+  }
+}
+
 module.exports = {
   init,
   saveProfile,
   bumpRefresh,
   getUsersForDashboard,
   saveIp,
+  deleteUserForDashboard,
 };

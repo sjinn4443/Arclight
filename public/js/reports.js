@@ -394,7 +394,11 @@ async function fetchUsers() {
   if (res.status === 401)
     throw new Error("401 unauthorised — enter the dev password");
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  return res.json();
+  const users = await res.json();
+  return {
+    users,
+    canDelete: res.headers.get("X-Reports-Delete-Enabled") === "1",
+  };
 }
 
 let englishDict = {};
@@ -420,7 +424,7 @@ function formatWhen(value) {
   });
 }
 
-async function renderUsers(users) {
+async function renderUsers(users, canDelete = false) {
   const sorted = [...users].sort(
     (a, b) => new Date(a.first_seen) - new Date(b.first_seen),
   );
@@ -504,17 +508,21 @@ async function renderUsers(users) {
           td.textContent = formatWhen(u.last_seen);
           break;
         case "delete": {
-          const btn = document.createElement("button");
-          btn.type = "button";
-          btn.className = "deleteBtn";
-          btn.title = "Delete user";
-          btn.setAttribute("aria-label", "Delete user");
-          btn.dataset.anonId = u.anon_id || "";
-          btn.dataset.name = u.name || "—";
-          btn.dataset.exp = expEn;
-          btn.dataset.country = u.country || "—";
-          btn.textContent = "\u{1F5D1}\uFE0F";
-          td.appendChild(btn);
+          if (canDelete) {
+            const btn = document.createElement("button");
+            btn.type = "button";
+            btn.className = "deleteBtn";
+            btn.title = "Delete user";
+            btn.setAttribute("aria-label", "Delete user");
+            btn.dataset.anonId = u.anon_id || "";
+            btn.dataset.name = u.name || "—";
+            btn.dataset.exp = expEn;
+            btn.dataset.country = u.country || "—";
+            btn.textContent = "\u{1F5D1}\uFE0F";
+            td.appendChild(btn);
+          } else {
+            td.textContent = "Read only";
+          }
           break;
         }
         default:
@@ -536,7 +544,7 @@ async function renderUsers(users) {
   await renderWorldPins(sorted);
 
   // Wire delete buttons only when the column exists.
-  if (hasDeleteCol) {
+  if (hasDeleteCol && canDelete) {
     tbody.onclick = async (e) => {
       const btn = e.target.closest(".deleteBtn");
       if (!btn) return;
@@ -582,7 +590,8 @@ async function renderUsers(users) {
 async function load() {
   const status = document.getElementById("status");
   try {
-    await renderUsers(await fetchUsers());
+    const { users, canDelete } = await fetchUsers();
+    await renderUsers(users, canDelete);
   } catch (err) {
     console.error(err);
     status.textContent = err.message;

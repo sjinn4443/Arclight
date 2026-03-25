@@ -1,10 +1,8 @@
-// Prefer a local NDJSON store outside production so local/dev/test never depend
-// on external DB connectivity.
-//
-// Production (Railway) uses Postgres when DATABASE_URL is present.
-const isPg =
-  process.env.NODE_ENV === "production" && !!process.env.DATABASE_URL;
+const hasPostgres =
+  !!process.env.DATABASE_URL ||
+  !!process.env.REPORTS_READ_DATABASE_URL ||
+  !!process.env.REPORTS_ADMIN_DATABASE_URL;
 
-module.exports = isPg
+module.exports = hasPostgres
   ? require("./pg-storage.cjs")
-  : require("./ndjson-storage.cjs");
+  : require("./disabled-storage.cjs");

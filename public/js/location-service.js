@@ -149,20 +149,21 @@ export async function initializeLocation() {
     return rawCached;
   }
 
-  // 2) If no precise location, seed from ipinfo (always fresh)
+  // 2) If no precise location, seed from the server-side IP lookup
   try {
-    const res = await fetch("https://ipinfo.io/json?token=90ea1cfb8870ee");
-    if (!res.ok) throw new Error("ipinfo failed");
-    const info = await res.json(); // { country: "GB", loc: "56.46,-2.97", city: "Dundee", ... }
+    const res = await fetch("/api/location/ip", {
+      credentials: "same-origin",
+    });
+    if (!res.ok) throw new Error("ip lookup failed");
+    const info = await res.json();
 
     const iso2 = (
-      info && info.country ? String(info.country) : "GB"
+      info && (info.countryCode || info.country)
+        ? String(info.countryCode || info.country)
+        : "GB"
     ).toUpperCase();
-    const [rawLat, rawLon] = info?.loc
-      ? info.loc.split(",").map((v) => parseFloat(v))
-      : [null, null];
-    const lat = Number.isFinite(rawLat) ? rawLat : null;
-    const lon = Number.isFinite(rawLon) ? rawLon : null;
+    const lat = Number.isFinite(Number(info?.lat)) ? Number(info.lat) : null;
+    const lon = Number.isFinite(Number(info?.lon)) ? Number(info.lon) : null;
 
     // Try to get proper country name & improved city via reverse geocode when coords exist
     let reverse = null;
@@ -184,7 +185,7 @@ export async function initializeLocation() {
       countryName = iso2; // fallback if Intl not supported
     }
 
-    // Prefer reverse-geocoded locality; fall back to ipinfo city
+    // Prefer reverse-geocoded locality; fall back to IP lookup city
     const city = normalizeCity({ city: info?.city || null }, reverse);
     const friendlyCountry = reverse?.countryName || countryName;
 

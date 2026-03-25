@@ -22,7 +22,21 @@ function getUserId() {
   return localStorage.getItem("arclight_user_id") || null;
 }
 
+function shouldSkipTelemetryInBrowser() {
+  if (typeof window === "undefined" || !window.location) return false;
+  const host = String(window.location.hostname || "").toLowerCase();
+  return (
+    window.location.protocol === "file:" ||
+    host === "localhost" ||
+    host === "127.0.0.1" ||
+    host === "::1" ||
+    host === "[::1]"
+  );
+}
+
 export async function saveProfile(fields) {
+  if (shouldSkipTelemetryInBrowser()) return { ok: true, skipped: true };
+
   const body = { anon_id: getAnonId(), user_id: getUserId(), ...fields };
 
   try {
@@ -45,6 +59,8 @@ export async function saveProfile(fields) {
 }
 
 export async function bumpRefresh(fields = {}) {
+  if (shouldSkipTelemetryInBrowser()) return { ok: true, skipped: true };
+
   const body = { anon_id: getAnonId(), user_id: getUserId(), ...fields };
 
   try {

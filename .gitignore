@@ -49,3 +49,7 @@ tmp-chromium-*.png
 tmp-webkit-*.png
 tmp_playwright_*/
 tmp-playwright-*/
+
+# Generated telemetry exports
+reports/data/*.ndjson
+reports/data/*.sql
