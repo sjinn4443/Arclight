@@ -471,7 +471,9 @@
     "menuButton": "☰ ☰",
     "cataractTitle": "cataractTitre ya miso",
     "interactiveLearning": "interactiveBoyekoli",
-    "share": { "label": "étiquette na yango" }
+    "share": {
+      "label": "étiquette na yango"
+    }
   },
   "appTitle": "Arclight Miso, Matoyi, Loposo",
   "installPrompt": "Kɔ́lɔ́kɔ́ app mpo na maláí!",
@@ -487,8 +489,12 @@
   "reviewAnswersTitle": "Kotála biyano",
   "closeReviewButton": "Kóbɛtɛla lisangá ya biyano",
   "auto": {
-    "childhoodfundalpreparation": { "preparation": "Kobongisa" },
-    "childhoodfundalexamination": { "examination": "Kosala ekzamɛ" },
+    "childhoodfundalpreparation": {
+      "preparation": "Kobongisa"
+    },
+    "childhoodfundalexamination": {
+      "examination": "Kosala ekzamɛ"
+    },
     "childhoodfundalnewborneyesopen": {
       "newborn_eyes_open": "Mwana ya sika - Miso Efungwami"
     },
@@ -587,6 +593,9 @@
       "need_glasses_illustration_alt": "Esengeli ba lunettes illustration",
       "retinoblastoma_example_alt": "Ndakisa ya rétinoblastome",
       "brain_injury_example_alt": "Ndakisa ya ba blessures ya cerveau"
+    },
+    "signsvicases": {
+      "signs_of_visual_impairment": "Signs of Visual Impairment"
     },
     "childhoodrefer": {
       "refer": "Tala",
@@ -857,7 +866,10 @@
       "on_android": "Na Android:",
       "install_app": "Installez app"
     },
-    "quizzes": { "quiz": "Mituna", "check_answer": "Vérifier Eyano" }
+    "quizzes": {
+      "quiz": "Mituna",
+      "check_answer": "Vérifier Eyano"
+    }
   },
   "i18nLiteral": {
     "Next >": "Na sima >",
@@ -1612,5 +1624,7 @@
     "settings": "Ba paramètres",
     "edit_profile": "Bobongisi Profil"
   },
-  "offline": { "pupils_checkbox": "Pupile ya liso" }
+  "offline": {
+    "pupils_checkbox": "Pupile ya liso"
+  }
 }

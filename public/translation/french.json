@@ -347,7 +347,11 @@
   },
   "mylearning": {
     "title": "Mon apprentissage",
-    "tabs": { "in_progress": "En cours", "liked": "Favoris", "notes": "Notes" },
+    "tabs": {
+      "in_progress": "En cours",
+      "liked": "Favoris",
+      "notes": "Notes"
+    },
     "search_placeholder": "Rechercher du contenu",
     "filters": {
       "eyes": "Yeux",
@@ -467,7 +471,9 @@
     "menuButton": "☰",
     "cataractTitle": "cataracteTitre",
     "interactiveLearning": "interactifApprentissage",
-    "share": { "label": "étiquette" }
+    "share": {
+      "label": "étiquette"
+    }
   },
   "appTitle": "Arclight Yeux, oreilles, peau",
   "installPrompt": "Installez cette application pour une meilleure expérience !",
@@ -483,8 +489,12 @@
   "reviewAnswersTitle": "Revoir les réponses",
   "closeReviewButton": "Fermer la révision",
   "auto": {
-    "childhoodfundalpreparation": { "preparation": "Préparation" },
-    "childhoodfundalexamination": { "examination": "Examen" },
+    "childhoodfundalpreparation": {
+      "preparation": "Préparation"
+    },
+    "childhoodfundalexamination": {
+      "examination": "Examen"
+    },
     "childhoodfundalnewborneyesopen": {
       "newborn_eyes_open": "Nouveau-né - Yeux ouverts"
     },
@@ -552,7 +562,10 @@
       "behaviours_mcq": "QCM Comportements",
       "check_answer": "Vérifier la réponse"
     },
-    "fundalreflexpdf": { "fundal_reflex": "Réflexe fundique", "eyes": "Yeux" },
+    "fundalreflexpdf": {
+      "fundal_reflex": "Réflexe fundique",
+      "eyes": "Yeux"
+    },
     "visualimpairment": {
       "visual_impairment": "Déficience visuelle",
       "causes_of_visual_impairment": "Causes de la déficience visuelle",
@@ -580,6 +593,9 @@
       "need_glasses_illustration_alt": "Besoin d'une illustration de lunettes",
       "retinoblastoma_example_alt": "Exemple de rétinoblastome",
       "brain_injury_example_alt": "Exemple de lésion cérébrale"
+    },
+    "signsvicases": {
+      "signs_of_visual_impairment": "Signs of Visual Impairment"
     },
     "childhoodrefer": {
       "refer": "Référez-vous",
@@ -1608,5 +1624,7 @@
     "settings": "Paramètres",
     "edit_profile": "Modifier le profil"
   },
-  "offline": { "pupils_checkbox": "Pupilles" }
+  "offline": {
+    "pupils_checkbox": "Pupilles"
+  }
 }

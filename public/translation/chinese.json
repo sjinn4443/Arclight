@@ -336,7 +336,10 @@
     "installPrompt": "为了更好的体验，请安装此应用！",
     "maybeLaterButton": "以后再说"
   },
-  "splashscreen_mid": { "logo_one_alt": "标志一", "ariaLabel": "中间启动画面" },
+  "splashscreen_mid": {
+    "logo_one_alt": "标志一",
+    "ariaLabel": "中间启动画面"
+  },
   "splashscreen": {
     "logo_one_alt": "标志一",
     "logo_two_alt": "标志二",
@@ -344,7 +347,11 @@
   },
   "mylearning": {
     "title": "我的学习",
-    "tabs": { "in_progress": "进行中", "liked": "已赞", "notes": "笔记" },
+    "tabs": {
+      "in_progress": "进行中",
+      "liked": "已赞",
+      "notes": "笔记"
+    },
     "search_placeholder": "搜索内容",
     "filters": {
       "eyes": "眼睛",
@@ -464,7 +471,9 @@
     "menuButton": "☰",
     "cataractTitle": "白内障标题",
     "interactiveLearning": "互动学习",
-    "share": { "label": "标签" }
+    "share": {
+      "label": "标签"
+    }
   },
   "appTitle": "Arclight 眼睛、耳朵、皮肤",
   "installPrompt": "为了更好的体验，请安装此应用！",
@@ -480,17 +489,27 @@
   "reviewAnswersTitle": "复习答案",
   "closeReviewButton": "关闭复习",
   "auto": {
-    "childhoodfundalpreparation": { "preparation": "准备" },
-    "childhoodfundalexamination": { "examination": "考试" },
+    "childhoodfundalpreparation": {
+      "preparation": "准备"
+    },
+    "childhoodfundalexamination": {
+      "examination": "考试"
+    },
     "childhoodfundalnewborneyesopen": {
       "newborn_eyes_open": "新生儿 - 睁开眼睛"
     },
     "childhoodfundalnewborneyesclosed": {
       "newborn_eyes_closed": "新生儿 - 闭着眼睛"
     },
-    "childhoodfundalunclearfindings": { "unclear_findings": "不清楚的发现" },
-    "childhoodfundalpossiblefinding": { "possible_findings": "可能的发现" },
-    "childhoodfundalafterexamination": { "after_examination": "检查后" },
+    "childhoodfundalunclearfindings": {
+      "unclear_findings": "不清楚的发现"
+    },
+    "childhoodfundalpossiblefinding": {
+      "possible_findings": "可能的发现"
+    },
+    "childhoodfundalafterexamination": {
+      "after_examination": "检查后"
+    },
     "childhoodeyescreeningworkshop": {
       "eyes": "眼睛",
       "the_visual_system": "1. 视觉系统",
@@ -535,12 +554,18 @@
       "retina": "视网膜",
       "loading": "加载中..."
     },
-    "childhoodassessment": { "assessment": "评估", "check_answer": "检查答案" },
+    "childhoodassessment": {
+      "assessment": "评估",
+      "check_answer": "检查答案"
+    },
     "behavioursquiz": {
       "behaviours_mcq": "行为MCQ",
       "check_answer": "检查答案"
     },
-    "fundalreflexpdf": { "fundal_reflex": "眼底反射", "eyes": "眼睛" },
+    "fundalreflexpdf": {
+      "fundal_reflex": "眼底反射",
+      "eyes": "眼睛"
+    },
     "visualimpairment": {
       "visual_impairment": "视力障碍",
       "causes_of_visual_impairment": "视力障碍的原因",
@@ -568,6 +593,36 @@
       "need_glasses_illustration_alt": "需要眼镜图解",
       "retinoblastoma_example_alt": "视网膜母细胞瘤示例",
       "brain_injury_example_alt": "脑损伤示例"
+    },
+    "signsvicases": {
+      "signs_of_visual_impairment": "Signs of Visual Impairment"
+    },
+    "childhoodrefer": {
+      "refer": "Refer",
+      "eye_conditions_to_refer": "Eye Conditions to Refer",
+      "white_pupil": "White Pupil",
+      "white_pink_pupil": "White / Pink Pupil",
+      "cataract": "Cataract",
+      "retinoblastoma": "Retinoblastoma",
+      "eyes_not_straight": "Eyes Not Straight",
+      "squint": "Squint",
+      "eye_lid_low": "Eye Lid Low",
+      "ptosis": "Ptosis",
+      "big_eyes": "Big Eyes",
+      "glaucoma": "Glaucoma",
+      "small_eyes": "Small Eyes",
+      "cataract_corneal_scar_coloboma_glasses": "Cataract, Corneal Scar\nColoboma, Glasses",
+      "corneal_scar": "Corneal Scar",
+      "coloboma": "Coloboma",
+      "red_eye": "Red Eye",
+      "red_eyes": "Red Eyes",
+      "infective_conjunctivitis": "Infective Conjunctivitis",
+      "allergic_conjunctivitis": "Allergic Conjunctivitis",
+      "white_patches_on_cornea": "White Patches on Cornea",
+      "early_infective_ulcer": "Early Infective Ulcer",
+      "severe_infective_ulcer": "Severe Infective Ulcer",
+      "trauma": "Trauma",
+      "congenital_dermoid": "Congenital Dermoid"
     },
     "childhoodeyebrainimages": {
       "eye_brain": "眼睛与大脑",
@@ -811,7 +866,10 @@
       "on_android": "在安卓上：",
       "install_app": "安装应用程序"
     },
-    "quizzes": { "quiz": "测验", "check_answer": "检查答案" }
+    "quizzes": {
+      "quiz": "测验",
+      "check_answer": "检查答案"
+    }
   },
   "i18nLiteral": {
     "Next >": "下一页 >",
@@ -1566,5 +1624,7 @@
     "settings": "设置",
     "edit_profile": "编辑个人资料"
   },
-  "offline": { "pupils_checkbox": "瞳孔" }
+  "offline": {
+    "pupils_checkbox": "瞳孔"
+  }
 }

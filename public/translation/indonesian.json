@@ -471,7 +471,9 @@
     "menuButton": "☰",
     "cataractTitle": "Judul katarak",
     "interactiveLearning": "Pembelajaran interaktif",
-    "share": { "label": "label" }
+    "share": {
+      "label": "label"
+    }
   },
   "appTitle": "Arclight Mata, Telinga, Kulit",
   "installPrompt": "Instal aplikasi ini untuk pengalaman yang lebih baik!",
@@ -487,8 +489,12 @@
   "reviewAnswersTitle": "Tinjau Jawaban",
   "closeReviewButton": "Tutup Tinjauan",
   "auto": {
-    "childhoodfundalpreparation": { "preparation": "Persiapan" },
-    "childhoodfundalexamination": { "examination": "Penyelidikan" },
+    "childhoodfundalpreparation": {
+      "preparation": "Persiapan"
+    },
+    "childhoodfundalexamination": {
+      "examination": "Penyelidikan"
+    },
     "childhoodfundalnewborneyesopen": {
       "newborn_eyes_open": "Baru Lahir - Mata Terbuka"
     },
@@ -556,7 +562,10 @@
       "behaviours_mcq": "Perilaku soal pilihan ganda",
       "check_answer": "Periksa Jawaban"
     },
-    "fundalreflexpdf": { "fundal_reflex": "Refleks fundus", "eyes": "Mata" },
+    "fundalreflexpdf": {
+      "fundal_reflex": "Refleks fundus",
+      "eyes": "Mata"
+    },
     "visualimpairment": {
       "visual_impairment": "Gangguan Penglihatan",
       "causes_of_visual_impairment": "Penyebab Gangguan Penglihatan",
@@ -584,6 +593,9 @@
       "need_glasses_illustration_alt": "Butuh ilustrasi kacamata",
       "retinoblastoma_example_alt": "Contoh retinoblastoma",
       "brain_injury_example_alt": "Contoh cedera otak"
+    },
+    "signsvicases": {
+      "signs_of_visual_impairment": "Signs of Visual Impairment"
     },
     "childhoodrefer": {
       "refer": "Rujuk",
@@ -854,7 +866,10 @@
       "on_android": "Di Android:",
       "install_app": "Instal aplikasi"
     },
-    "quizzes": { "quiz": "Kuis", "check_answer": "Periksa Jawaban" }
+    "quizzes": {
+      "quiz": "Kuis",
+      "check_answer": "Periksa Jawaban"
+    }
   },
   "i18nLiteral": {
     "Next >": "Selanjutnya >",
@@ -1609,5 +1624,7 @@
     "settings": "Pengaturan",
     "edit_profile": "Sunting Profil"
   },
-  "offline": { "pupils_checkbox": "Pupil mata" }
+  "offline": {
+    "pupils_checkbox": "Pupil mata"
+  }
 }

@@ -481,7 +481,9 @@
     "menuButton": "☰",
     "cataractTitle": "मोतियाबिंद शीर्षक",
     "interactiveLearning": "इंटरैक्टिव लर्निंग",
-    "share": { "label": "लेबल" }
+    "share": {
+      "label": "लेबल"
+    }
   },
   "appTitle": "Arclight आंखें, कान, त्वचा",
   "installPrompt": "बेहतर अनुभव के लिए इस ऐप को इंस्टॉल करें!",
@@ -497,8 +499,12 @@
   "reviewAnswersTitle": "उत्तरों की समीक्षा करें",
   "closeReviewButton": "समीक्षा बंद करें",
   "auto": {
-    "childhoodfundalpreparation": { "preparation": "तैयारी" },
-    "childhoodfundalexamination": { "examination": "परीक्षा" },
+    "childhoodfundalpreparation": {
+      "preparation": "तैयारी"
+    },
+    "childhoodfundalexamination": {
+      "examination": "परीक्षा"
+    },
     "childhoodfundalnewborneyesopen": {
       "newborn_eyes_open": "नवजात - आँखें खुलीं"
     },
@@ -566,7 +572,10 @@
       "behaviours_mcq": "व्यवहार एमसीक्यू",
       "check_answer": "उत्तर जांचें"
     },
-    "fundalreflexpdf": { "fundal_reflex": "मौलिक प्रतिवर्त", "eyes": "आँखें" },
+    "fundalreflexpdf": {
+      "fundal_reflex": "मौलिक प्रतिवर्त",
+      "eyes": "आँखें"
+    },
     "visualimpairment": {
       "visual_impairment": "दृश्य हानि",
       "causes_of_visual_impairment": "दृष्टि हानि के कारण",
@@ -594,6 +603,36 @@
       "need_glasses_illustration_alt": "चश्मे का चित्रण चाहिए",
       "retinoblastoma_example_alt": "रेटिनोब्लास्टोमा उदाहरण",
       "brain_injury_example_alt": "मस्तिष्क की चोट का उदाहरण"
+    },
+    "signsvicases": {
+      "signs_of_visual_impairment": "Signs of Visual Impairment"
+    },
+    "childhoodrefer": {
+      "refer": "Refer",
+      "eye_conditions_to_refer": "Eye Conditions to Refer",
+      "white_pupil": "White Pupil",
+      "white_pink_pupil": "White / Pink Pupil",
+      "cataract": "Cataract",
+      "retinoblastoma": "Retinoblastoma",
+      "eyes_not_straight": "Eyes Not Straight",
+      "squint": "Squint",
+      "eye_lid_low": "Eye Lid Low",
+      "ptosis": "Ptosis",
+      "big_eyes": "Big Eyes",
+      "glaucoma": "Glaucoma",
+      "small_eyes": "Small Eyes",
+      "cataract_corneal_scar_coloboma_glasses": "Cataract, Corneal Scar\nColoboma, Glasses",
+      "corneal_scar": "Corneal Scar",
+      "coloboma": "Coloboma",
+      "red_eye": "Red Eye",
+      "red_eyes": "Red Eyes",
+      "infective_conjunctivitis": "Infective Conjunctivitis",
+      "allergic_conjunctivitis": "Allergic Conjunctivitis",
+      "white_patches_on_cornea": "White Patches on Cornea",
+      "early_infective_ulcer": "Early Infective Ulcer",
+      "severe_infective_ulcer": "Severe Infective Ulcer",
+      "trauma": "Trauma",
+      "congenital_dermoid": "Congenital Dermoid"
     },
     "childhoodeyebrainimages": {
       "eye_brain": "आंख और मस्तिष्क",
@@ -837,7 +876,10 @@
       "on_android": "एंड्रॉइड पर:",
       "install_app": "एप्लिकेशन इंस्टॉल करो"
     },
-    "quizzes": { "quiz": "प्रश्नोत्तरी", "check_answer": "उत्तर जांचें" }
+    "quizzes": {
+      "quiz": "प्रश्नोत्तरी",
+      "check_answer": "उत्तर जांचें"
+    }
   },
   "i18nLiteral": {
     "Next >": "अगला >",
@@ -1593,5 +1635,7 @@
     "settings": "सेटिंग्स",
     "edit_profile": "प्रोफ़ाइल संपादित करें"
   },
-  "offline": { "pupils_checkbox": "पुतलियाँ" }
+  "offline": {
+    "pupils_checkbox": "पुतलियाँ"
+  }
 }

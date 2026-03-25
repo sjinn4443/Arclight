@@ -471,7 +471,9 @@
     "menuButton": "☰",
     "cataractTitle": "cataractTitle",
     "interactiveLearning": "Kwiga",
-    "share": { "label": "ikirango" }
+    "share": {
+      "label": "ikirango"
+    }
   },
   "appTitle": "Arclight Amaso, Amatwi, Uruhu",
   "installPrompt": "Shyiramo iyi porogaramu kugira ngo ugire uburambe bwiza!",
@@ -487,8 +489,12 @@
   "reviewAnswersTitle": "Subiramo Ibisubizo",
   "closeReviewButton": "Funga Gusubiramo",
   "auto": {
-    "childhoodfundalpreparation": { "preparation": "Kwitegura" },
-    "childhoodfundalexamination": { "examination": "Ikizamini" },
+    "childhoodfundalpreparation": {
+      "preparation": "Kwitegura"
+    },
+    "childhoodfundalexamination": {
+      "examination": "Ikizamini"
+    },
     "childhoodfundalnewborneyesopen": {
       "newborn_eyes_open": "Uruhinja - Amaso arakinguye"
     },
@@ -587,6 +593,9 @@
       "need_glasses_illustration_alt": "Ukeneye ishusho y'ibirahure",
       "retinoblastoma_example_alt": "Urugero rwa Retinoblastoma",
       "brain_injury_example_alt": "Urugero rwo gukomeretsa ubwonko"
+    },
+    "signsvicases": {
+      "signs_of_visual_impairment": "Signs of Visual Impairment"
     },
     "childhoodrefer": {
       "refer": "Reba",
@@ -857,7 +866,10 @@
       "on_android": "Kuri Android:",
       "install_app": "Shyiramo porogaramu"
     },
-    "quizzes": { "quiz": "Ikibazo", "check_answer": "Reba Igisubizo" }
+    "quizzes": {
+      "quiz": "Ikibazo",
+      "check_answer": "Reba Igisubizo"
+    }
   },
   "i18nLiteral": {
     "Next >": "Ibikurikira>",
@@ -1612,5 +1624,7 @@
     "settings": "Igenamiterere",
     "edit_profile": "Hindura Umwirondoro"
   },
-  "offline": { "pupils_checkbox": "umweru w'ijisho" }
+  "offline": {
+    "pupils_checkbox": "umweru w'ijisho"
+  }
 }

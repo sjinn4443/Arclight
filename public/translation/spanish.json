@@ -471,7 +471,9 @@
     "menuButton": "☰",
     "cataractTitle": "catarataTítulo",
     "interactiveLearning": "aprendizaje interactivo",
-    "share": { "label": "etiqueta" }
+    "share": {
+      "label": "etiqueta"
+    }
   },
   "appTitle": "Arclight Ojos, Oídos, Piel",
   "installPrompt": "¡Instala esta aplicación para una mejor experiencia!",
@@ -487,8 +489,12 @@
   "reviewAnswersTitle": "Revisar respuestas",
   "closeReviewButton": "Cerrar revisión",
   "auto": {
-    "childhoodfundalpreparation": { "preparation": "Preparación" },
-    "childhoodfundalexamination": { "examination": "Examen" },
+    "childhoodfundalpreparation": {
+      "preparation": "Preparación"
+    },
+    "childhoodfundalexamination": {
+      "examination": "Examen"
+    },
     "childhoodfundalnewborneyesopen": {
       "newborn_eyes_open": "Recién nacido - Ojos abiertos"
     },
@@ -587,6 +593,9 @@
       "need_glasses_illustration_alt": "Necesita ilustración de gafas",
       "retinoblastoma_example_alt": "Ejemplo de retinoblastoma",
       "brain_injury_example_alt": "Ejemplo de lesión cerebral"
+    },
+    "signsvicases": {
+      "signs_of_visual_impairment": "Signs of Visual Impairment"
     },
     "childhoodrefer": {
       "refer": "Referir",
@@ -857,7 +866,10 @@
       "on_android": "En Android:",
       "install_app": "Instalar aplicación"
     },
-    "quizzes": { "quiz": "Prueba", "check_answer": "Verificar respuesta" }
+    "quizzes": {
+      "quiz": "Prueba",
+      "check_answer": "Verificar respuesta"
+    }
   },
   "i18nLiteral": {
     "Next >": "Siguiente >",
@@ -1612,5 +1624,7 @@
     "settings": "Configuración",
     "edit_profile": "Editar perfil"
   },
-  "offline": { "pupils_checkbox": "Pupilas" }
+  "offline": {
+    "pupils_checkbox": "Pupilas"
+  }
 }

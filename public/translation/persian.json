@@ -471,7 +471,9 @@
     "menuButton": "☰",
     "cataractTitle": "عنوان آب مروارید",
     "interactiveLearning": "یادگیری تعاملی",
-    "share": { "label": "برچسب زدن" }
+    "share": {
+      "label": "برچسب زدن"
+    }
   },
   "appTitle": "Arclight چشم، گوش، پوست",
   "installPrompt": "برای تجربه بهتر این برنامه را نصب کنید!",
@@ -487,8 +489,12 @@
   "reviewAnswersTitle": "بررسی پاسخ‌ها",
   "closeReviewButton": "بستن بررسی",
   "auto": {
-    "childhoodfundalpreparation": { "preparation": "آماده سازی" },
-    "childhoodfundalexamination": { "examination": "معاینه" },
+    "childhoodfundalpreparation": {
+      "preparation": "آماده سازی"
+    },
+    "childhoodfundalexamination": {
+      "examination": "معاینه"
+    },
     "childhoodfundalnewborneyesopen": {
       "newborn_eyes_open": "نوزاد - چشمان باز"
     },
@@ -501,7 +507,9 @@
     "childhoodfundalpossiblefinding": {
       "possible_findings": "یافته های احتمالی"
     },
-    "childhoodfundalafterexamination": { "after_examination": "بعد از معاینه" },
+    "childhoodfundalafterexamination": {
+      "after_examination": "بعد از معاینه"
+    },
     "childhoodeyescreeningworkshop": {
       "eyes": "چشم",
       "the_visual_system": "1. سیستم بصری",
@@ -554,7 +562,10 @@
       "behaviours_mcq": "رفتارهای MCQ",
       "check_answer": "پاسخ را بررسی کنید"
     },
-    "fundalreflexpdf": { "fundal_reflex": "رفلکس فاندال", "eyes": "چشم" },
+    "fundalreflexpdf": {
+      "fundal_reflex": "رفلکس فاندال",
+      "eyes": "چشم"
+    },
     "visualimpairment": {
       "visual_impairment": "اختلال بینایی",
       "causes_of_visual_impairment": "علل اختلال بینایی",
@@ -582,6 +593,36 @@
       "need_glasses_illustration_alt": "نیاز به تصویر عینک",
       "retinoblastoma_example_alt": "نمونه رتینوبلاستوما",
       "brain_injury_example_alt": "مثال آسیب مغزی"
+    },
+    "signsvicases": {
+      "signs_of_visual_impairment": "Signs of Visual Impairment"
+    },
+    "childhoodrefer": {
+      "refer": "Refer",
+      "eye_conditions_to_refer": "Eye Conditions to Refer",
+      "white_pupil": "White Pupil",
+      "white_pink_pupil": "White / Pink Pupil",
+      "cataract": "Cataract",
+      "retinoblastoma": "Retinoblastoma",
+      "eyes_not_straight": "Eyes Not Straight",
+      "squint": "Squint",
+      "eye_lid_low": "Eye Lid Low",
+      "ptosis": "Ptosis",
+      "big_eyes": "Big Eyes",
+      "glaucoma": "Glaucoma",
+      "small_eyes": "Small Eyes",
+      "cataract_corneal_scar_coloboma_glasses": "Cataract, Corneal Scar\nColoboma, Glasses",
+      "corneal_scar": "Corneal Scar",
+      "coloboma": "Coloboma",
+      "red_eye": "Red Eye",
+      "red_eyes": "Red Eyes",
+      "infective_conjunctivitis": "Infective Conjunctivitis",
+      "allergic_conjunctivitis": "Allergic Conjunctivitis",
+      "white_patches_on_cornea": "White Patches on Cornea",
+      "early_infective_ulcer": "Early Infective Ulcer",
+      "severe_infective_ulcer": "Severe Infective Ulcer",
+      "trauma": "Trauma",
+      "congenital_dermoid": "Congenital Dermoid"
     },
     "childhoodeyebrainimages": {
       "eye_brain": "چشم و مغز",
@@ -825,7 +866,10 @@
       "on_android": "در اندروید:",
       "install_app": "برنامه را نصب کنید"
     },
-    "quizzes": { "quiz": "امتحان", "check_answer": "پاسخ را بررسی کنید" }
+    "quizzes": {
+      "quiz": "امتحان",
+      "check_answer": "پاسخ را بررسی کنید"
+    }
   },
   "i18nLiteral": {
     "Next >": "بعدی >",
@@ -1580,5 +1624,7 @@
     "settings": "تنظیمات",
     "edit_profile": "ویرایش نمایه"
   },
-  "offline": { "pupils_checkbox": "مردمک‌ها" }
+  "offline": {
+    "pupils_checkbox": "مردمک‌ها"
+  }
 }

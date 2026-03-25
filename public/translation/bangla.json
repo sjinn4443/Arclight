@@ -347,7 +347,11 @@
   },
   "mylearning": {
     "title": "আমার শেখা",
-    "tabs": { "in_progress": "চলমান", "liked": "পছন্দ করা", "notes": "নোট" },
+    "tabs": {
+      "in_progress": "চলমান",
+      "liked": "পছন্দ করা",
+      "notes": "নোট"
+    },
     "search_placeholder": "বিষয়বস্তু অনুসন্ধান করুন",
     "filters": {
       "eyes": "চোখ",
@@ -467,7 +471,9 @@
     "menuButton": "☰",
     "cataractTitle": "ছানি শিরোনাম",
     "interactiveLearning": "ইন্টারেক্টিভ লার্নিং",
-    "share": { "label": "লেবেল" }
+    "share": {
+      "label": "লেবেল"
+    }
   },
   "appTitle": "Arclight চোখ, কান, ত্বক",
   "installPrompt": "আরও ভাল অভিজ্ঞতার জন্য এই অ্যাপটি ইনস্টল করুন!",
@@ -483,17 +489,27 @@
   "reviewAnswersTitle": "উত্তর পর্যালোচনা করুন",
   "closeReviewButton": "পর্যালোচনা বন্ধ করুন",
   "auto": {
-    "childhoodfundalpreparation": { "preparation": "প্রস্তুতি" },
-    "childhoodfundalexamination": { "examination": "পরীক্ষা" },
+    "childhoodfundalpreparation": {
+      "preparation": "প্রস্তুতি"
+    },
+    "childhoodfundalexamination": {
+      "examination": "পরীক্ষা"
+    },
     "childhoodfundalnewborneyesopen": {
       "newborn_eyes_open": "নবজাতক - চোখ খোলা"
     },
     "childhoodfundalnewborneyesclosed": {
       "newborn_eyes_closed": "নবজাতক - চোখ বন্ধ"
     },
-    "childhoodfundalunclearfindings": { "unclear_findings": "অস্পষ্ট ফলাফল" },
-    "childhoodfundalpossiblefinding": { "possible_findings": "সম্ভাব্য ফলাফল" },
-    "childhoodfundalafterexamination": { "after_examination": "পরীক্ষার পর" },
+    "childhoodfundalunclearfindings": {
+      "unclear_findings": "অস্পষ্ট ফলাফল"
+    },
+    "childhoodfundalpossiblefinding": {
+      "possible_findings": "সম্ভাব্য ফলাফল"
+    },
+    "childhoodfundalafterexamination": {
+      "after_examination": "পরীক্ষার পর"
+    },
     "childhoodeyescreeningworkshop": {
       "eyes": "চোখ",
       "the_visual_system": "1. ভিজ্যুয়াল সিস্টেম",
@@ -546,7 +562,10 @@
       "behaviours_mcq": "আচরণ MCQ",
       "check_answer": "উত্তর চেক করুন"
     },
-    "fundalreflexpdf": { "fundal_reflex": "ফান্ডাল রিফ্লেক্স", "eyes": "চোখ" },
+    "fundalreflexpdf": {
+      "fundal_reflex": "ফান্ডাল রিফ্লেক্স",
+      "eyes": "চোখ"
+    },
     "visualimpairment": {
       "visual_impairment": "দৃষ্টি প্রতিবন্ধকতা",
       "causes_of_visual_impairment": "দৃষ্টি প্রতিবন্ধকতার কারণ",
@@ -574,6 +593,9 @@
       "need_glasses_illustration_alt": "চশমা ইলাস্ট্রেশন প্রয়োজন",
       "retinoblastoma_example_alt": "রেটিনোব্লাস্টোমার উদাহরণ",
       "brain_injury_example_alt": "মস্তিষ্কের আঘাতের উদাহরণ"
+    },
+    "signsvicases": {
+      "signs_of_visual_impairment": "Signs of Visual Impairment"
     },
     "childhoodrefer": {
       "refer": "উল্লেখ করুন",
@@ -844,7 +866,10 @@
       "on_android": "অ্যান্ড্রয়েডে:",
       "install_app": "অ্যাপ ইনস্টল করুন"
     },
-    "quizzes": { "quiz": "কুইজ", "check_answer": "উত্তর চেক করুন" }
+    "quizzes": {
+      "quiz": "কুইজ",
+      "check_answer": "উত্তর চেক করুন"
+    }
   },
   "i18nLiteral": {
     "Next >": "পরবর্তী >",
@@ -1599,5 +1624,7 @@
     "settings": "সেটিংস",
     "edit_profile": "প্রোফাইল সম্পাদনা করুন"
   },
-  "offline": { "pupils_checkbox": "চোখের মণি" }
+  "offline": {
+    "pupils_checkbox": "চোখের মণি"
+  }
 }

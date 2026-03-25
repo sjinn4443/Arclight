@@ -471,7 +471,9 @@
     "menuButton": "☰",
     "cataractTitle": "cataractTitle",
     "interactiveLearning": "interactiveLearning",
-    "share": { "label": "aami" }
+    "share": {
+      "label": "aami"
+    }
   },
   "appTitle": "Arclight Oju, Etí, Awọ",
   "installPrompt": "Fi app yìí sílẹ̀ fún ìrírí tó dára!",
@@ -487,8 +489,12 @@
   "reviewAnswersTitle": "Ṣàyẹ̀wò Àwọn Ìdáhùn",
   "closeReviewButton": "Tì Bíbáwò",
   "auto": {
-    "childhoodfundalpreparation": { "preparation": "Igbaradi" },
-    "childhoodfundalexamination": { "examination": "Ayẹwo" },
+    "childhoodfundalpreparation": {
+      "preparation": "Igbaradi"
+    },
+    "childhoodfundalexamination": {
+      "examination": "Ayẹwo"
+    },
     "childhoodfundalnewborneyesopen": {
       "newborn_eyes_open": "Omo tuntun - Oju Open"
     },
@@ -501,7 +507,9 @@
     "childhoodfundalpossiblefinding": {
       "possible_findings": "Awọn awari ti o ṣeeṣe"
     },
-    "childhoodfundalafterexamination": { "after_examination": "Lẹhin Idanwo" },
+    "childhoodfundalafterexamination": {
+      "after_examination": "Lẹhin Idanwo"
+    },
     "childhoodeyescreeningworkshop": {
       "eyes": "Oju",
       "the_visual_system": "1. The Visual System",
@@ -554,7 +562,10 @@
       "behaviours_mcq": "Awọn iwa MCQ",
       "check_answer": "Ṣayẹwo Idahun"
     },
-    "fundalreflexpdf": { "fundal_reflex": "Ifojusi ipilẹ", "eyes": "Oju" },
+    "fundalreflexpdf": {
+      "fundal_reflex": "Ifojusi ipilẹ",
+      "eyes": "Oju"
+    },
     "visualimpairment": {
       "visual_impairment": "Ibanuje wiwo",
       "causes_of_visual_impairment": "Okunfa ti Visual àìpéye",
@@ -582,6 +593,9 @@
       "need_glasses_illustration_alt": "Nilo apejuwe awọn gilaasi",
       "retinoblastoma_example_alt": "Retinoblastoma apẹẹrẹ",
       "brain_injury_example_alt": "Apẹẹrẹ ipalara ọpọlọ"
+    },
+    "signsvicases": {
+      "signs_of_visual_impairment": "Signs of Visual Impairment"
     },
     "childhoodrefer": {
       "refer": "Tọkasi",
@@ -852,7 +866,10 @@
       "on_android": "Lori Android:",
       "install_app": "Fi sori ẹrọ app"
     },
-    "quizzes": { "quiz": "Idanwo", "check_answer": "Ṣayẹwo Idahun" }
+    "quizzes": {
+      "quiz": "Idanwo",
+      "check_answer": "Ṣayẹwo Idahun"
+    }
   },
   "i18nLiteral": {
     "Next >": "Itele >",
@@ -1607,5 +1624,7 @@
     "settings": "Eto",
     "edit_profile": "Profaili Ṣatunkọ"
   },
-  "offline": { "pupils_checkbox": "Aarin oju" }
+  "offline": {
+    "pupils_checkbox": "Aarin oju"
+  }
 }

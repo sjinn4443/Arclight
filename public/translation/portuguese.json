@@ -471,7 +471,9 @@
     "menuButton": "☰",
     "cataractTitle": "catarataTítulo",
     "interactiveLearning": "aprendizagem interativa",
-    "share": { "label": "etiqueta" }
+    "share": {
+      "label": "etiqueta"
+    }
   },
   "appTitle": "Arclight Olhos, Ouvidos, Pele",
   "installPrompt": "Instale este aplicativo para uma melhor experiência!",
@@ -487,8 +489,12 @@
   "reviewAnswersTitle": "Revisar Respostas",
   "closeReviewButton": "Fechar Revisão",
   "auto": {
-    "childhoodfundalpreparation": { "preparation": "Preparação" },
-    "childhoodfundalexamination": { "examination": "Exame" },
+    "childhoodfundalpreparation": {
+      "preparation": "Preparação"
+    },
+    "childhoodfundalexamination": {
+      "examination": "Exame"
+    },
     "childhoodfundalnewborneyesopen": {
       "newborn_eyes_open": "Recém-nascido - Olhos Abertos"
     },
@@ -501,7 +507,9 @@
     "childhoodfundalpossiblefinding": {
       "possible_findings": "Possíveis descobertas"
     },
-    "childhoodfundalafterexamination": { "after_examination": "Após o exame" },
+    "childhoodfundalafterexamination": {
+      "after_examination": "Após o exame"
+    },
     "childhoodeyescreeningworkshop": {
       "eyes": "Olhos",
       "the_visual_system": "1. O Sistema Visual",
@@ -585,6 +593,9 @@
       "need_glasses_illustration_alt": "Preciso de ilustração de óculos",
       "retinoblastoma_example_alt": "Exemplo de retinoblastoma",
       "brain_injury_example_alt": "Exemplo de lesão cerebral"
+    },
+    "signsvicases": {
+      "signs_of_visual_impairment": "Signs of Visual Impairment"
     },
     "childhoodrefer": {
       "refer": "Consulte",
@@ -1613,5 +1624,7 @@
     "settings": "Configurações",
     "edit_profile": "Editar perfil"
   },
-  "offline": { "pupils_checkbox": "Pupilas" }
+  "offline": {
+    "pupils_checkbox": "Pupilas"
+  }
 }

@@ -471,7 +471,9 @@
     "menuButton": "☰",
     "cataractTitle": "Kichwa cha mtoto wa jicho",
     "interactiveLearning": "maingilianoKujifunza",
-    "share": { "label": "lebo" }
+    "share": {
+      "label": "lebo"
+    }
   },
   "appTitle": "Arclight Macho, Masikio, Ngozi",
   "installPrompt": "Sakinisha programu hii kwa uzoefu bora!",
@@ -487,8 +489,12 @@
   "reviewAnswersTitle": "Kagua Majibu",
   "closeReviewButton": "Funga Ukaguzi",
   "auto": {
-    "childhoodfundalpreparation": { "preparation": "Maandalizi" },
-    "childhoodfundalexamination": { "examination": "Uchunguzi" },
+    "childhoodfundalpreparation": {
+      "preparation": "Maandalizi"
+    },
+    "childhoodfundalexamination": {
+      "examination": "Uchunguzi"
+    },
     "childhoodfundalnewborneyesopen": {
       "newborn_eyes_open": "Mtoto mchanga - Macho wazi"
     },
@@ -556,7 +562,10 @@
       "behaviours_mcq": "Tabia za MCQ",
       "check_answer": "Angalia Jibu"
     },
-    "fundalreflexpdf": { "fundal_reflex": "Msingi reflex", "eyes": "Macho" },
+    "fundalreflexpdf": {
+      "fundal_reflex": "Msingi reflex",
+      "eyes": "Macho"
+    },
     "visualimpairment": {
       "visual_impairment": "Uharibifu wa Maono",
       "causes_of_visual_impairment": "Sababu za Uharibifu wa Maono",
@@ -584,6 +593,9 @@
       "need_glasses_illustration_alt": "Haja ya miwani mfano",
       "retinoblastoma_example_alt": "Mfano wa retinoblastoma",
       "brain_injury_example_alt": "Mfano wa kuumia kwa ubongo"
+    },
+    "signsvicases": {
+      "signs_of_visual_impairment": "Signs of Visual Impairment"
     },
     "childhoodrefer": {
       "refer": "Rejea",
@@ -854,7 +866,10 @@
       "on_android": "Kwenye Android:",
       "install_app": "Sakinisha programu"
     },
-    "quizzes": { "quiz": "Maswali", "check_answer": "Angalia Jibu" }
+    "quizzes": {
+      "quiz": "Maswali",
+      "check_answer": "Angalia Jibu"
+    }
   },
   "i18nLiteral": {
     "Next >": "Inayofuata >",
@@ -1609,5 +1624,7 @@
     "settings": "Mipangilio",
     "edit_profile": "Badilisha Wasifu"
   },
-  "offline": { "pupils_checkbox": "Mboni" }
+  "offline": {
+    "pupils_checkbox": "Mboni"
+  }
 }

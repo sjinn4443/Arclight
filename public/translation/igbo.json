@@ -471,7 +471,9 @@
     "menuButton": "☰",
     "cataractTitle": "cataractTitle",
     "interactiveLearning": "internativeLearning",
-    "share": { "label": "akara" }
+    "share": {
+      "label": "akara"
+    }
   },
   "appTitle": "Arclight Anya, Ntị, Akpụkpọ anụ",
   "installPrompt": "Wụnye ngwa a maka ahụmịhe ka mma!",
@@ -487,8 +489,12 @@
   "reviewAnswersTitle": "Nyochaa azịza",
   "closeReviewButton": "Mechie nyocha",
   "auto": {
-    "childhoodfundalpreparation": { "preparation": "Nkwadebe" },
-    "childhoodfundalexamination": { "examination": "Nyocha" },
+    "childhoodfundalpreparation": {
+      "preparation": "Nkwadebe"
+    },
+    "childhoodfundalexamination": {
+      "examination": "Nyocha"
+    },
     "childhoodfundalnewborneyesopen": {
       "newborn_eyes_open": "Nwa amụrụ ọhụrụ - Anya mepere emepe"
     },
@@ -556,7 +562,10 @@
       "behaviours_mcq": "Omume MCQ",
       "check_answer": "Lelee azịza"
     },
-    "fundalreflexpdf": { "fundal_reflex": "Ntugharị isi", "eyes": "Anya" },
+    "fundalreflexpdf": {
+      "fundal_reflex": "Ntugharị isi",
+      "eyes": "Anya"
+    },
     "visualimpairment": {
       "visual_impairment": "Mmebi Anya",
       "causes_of_visual_impairment": "Ihe na-akpata mmerụ ahụ anya",
@@ -584,6 +593,9 @@
       "need_glasses_illustration_alt": "Achọrọ ihe atụ enyo",
       "retinoblastoma_example_alt": "Ihe atụ retinoblastoma",
       "brain_injury_example_alt": "Ihe atụ mmerụ ahụ ụbụrụ"
+    },
+    "signsvicases": {
+      "signs_of_visual_impairment": "Signs of Visual Impairment"
     },
     "childhoodrefer": {
       "refer": "ntụaka",
@@ -854,7 +866,10 @@
       "on_android": "Na android:",
       "install_app": "Wụnye ngwa"
     },
-    "quizzes": { "quiz": "Ajụjụ", "check_answer": "Lelee azịza" }
+    "quizzes": {
+      "quiz": "Ajụjụ",
+      "check_answer": "Lelee azịza"
+    }
   },
   "i18nLiteral": {
     "Next >": "Ọzọ >",
@@ -1609,5 +1624,7 @@
     "settings": "Ntọala",
     "edit_profile": "Dezie profaịlụ"
   },
-  "offline": { "pupils_checkbox": "Nwa anya" }
+  "offline": {
+    "pupils_checkbox": "Nwa anya"
+  }
 }

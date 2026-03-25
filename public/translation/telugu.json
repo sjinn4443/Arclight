@@ -488,7 +488,9 @@
     "menuButton": "☰",
     "cataractTitle": "కంటిశుక్లం శీర్షిక",
     "interactiveLearning": "ఇంటరాక్టివ్ లెర్నింగ్",
-    "share": { "label": "లేబుల్" }
+    "share": {
+      "label": "లేబుల్"
+    }
   },
   "appTitle": "Arclight కళ్ళు, చెవులు, చర్మం",
   "installPrompt": "మెరుగైన అనుభవం కోసం ఈ యాప్‌ను ఇన్‌స్టాల్ చేయండి!",
@@ -608,8 +610,13 @@
       "quiz": "క్విజ్",
       "check_answer": "సమాధానాన్ని తనిఖీ చేయండి"
     },
-    "quizzes": { "quiz": "క్విజ్", "check_answer": "సమాధానాన్ని తనిఖీ చేయండి" },
-    "menu": { "text": "×" },
+    "quizzes": {
+      "quiz": "క్విజ్",
+      "check_answer": "సమాధానాన్ని తనిఖీ చేయండి"
+    },
+    "menu": {
+      "text": "×"
+    },
     "reports": {
       "arclight_reports": "ఆర్క్‌లైట్ నివేదికలు",
       "interest": "ఆసక్తి",
@@ -701,7 +708,10 @@
       "behaviours_mcq": "ప్రవర్తనలు MCQ",
       "check_answer": "సమాధానాన్ని తనిఖీ చేయండి"
     },
-    "fundalreflexpdf": { "fundal_reflex": "ఫండల్ రిఫ్లెక్స్", "eyes": "కళ్ళు" },
+    "fundalreflexpdf": {
+      "fundal_reflex": "ఫండల్ రిఫ్లెక్స్",
+      "eyes": "కళ్ళు"
+    },
     "visualimpairment": {
       "visual_impairment": "దృష్టి లోపం",
       "causes_of_visual_impairment": "దృష్టి లోపం యొక్క కారణాలు",
@@ -729,6 +739,9 @@
       "need_glasses_illustration_alt": "గ్లాసెస్ ఇలస్ట్రేషన్ కావాలి",
       "retinoblastoma_example_alt": "రెటినోబ్లాస్టోమా ఉదాహరణ",
       "brain_injury_example_alt": "మెదడు గాయం ఉదాహరణ"
+    },
+    "signsvicases": {
+      "signs_of_visual_impairment": "Signs of Visual Impairment"
     },
     "childhoodrefer": {
       "refer": "సూచించండి",
@@ -833,8 +846,12 @@
       "normal_visual_development_stage_10_paragraph_3": "దృశ్య మరియు సాధారణ అభివృద్ధి రెండింటినీ పెంచడంలో సహాయపడటానికి చికిత్స కోసం రిఫరల్‌తో వ్యాధిని ముందస్తుగా గుర్తించడం చాలా ముఖ్యం.",
       "normal_visual_development_stage_10_image_alt": "ఎనిమిదేళ్ల తర్వాత విజువల్ డెవలప్‌మెంట్ ఇలస్ట్రేషన్"
     },
-    "childhoodfundalpreparation": { "preparation": "తయారీ" },
-    "childhoodfundalexamination": { "examination": "పరీక్ష" },
+    "childhoodfundalpreparation": {
+      "preparation": "తయారీ"
+    },
+    "childhoodfundalexamination": {
+      "examination": "పరీక్ష"
+    },
     "childhoodfundalnewborneyesopen": {
       "newborn_eyes_open": "నవజాత - కళ్ళు తెరవండి"
     },
@@ -847,7 +864,9 @@
     "childhoodfundalpossiblefinding": {
       "possible_findings": "సాధ్యమైన అన్వేషణలు"
     },
-    "childhoodfundalafterexamination": { "after_examination": "పరీక్ష తర్వాత" },
+    "childhoodfundalafterexamination": {
+      "after_examination": "పరీక్ష తర్వాత"
+    },
     "glaucomaworkshop": {
       "eyes": "కళ్ళు",
       "1_introduction": "1. పరిచయం",

@@ -471,7 +471,9 @@
     "menuButton": "☰",
     "cataractTitle": "CataractTitle",
     "interactiveLearning": "interactiveLearning",
-    "share": { "label": "chizindikiro" }
+    "share": {
+      "label": "chizindikiro"
+    }
   },
   "appTitle": "Arclight Maso, Makutu, Khungu",
   "installPrompt": "Ikani pulogalamuyi kuti mupeze chidziwitso chabwino!",
@@ -487,8 +489,12 @@
   "reviewAnswersTitle": "Onani Mayankho",
   "closeReviewButton": "Tsekani Kuwunikanso",
   "auto": {
-    "childhoodfundalpreparation": { "preparation": "Kukonzekera" },
-    "childhoodfundalexamination": { "examination": "Kufufuza" },
+    "childhoodfundalpreparation": {
+      "preparation": "Kukonzekera"
+    },
+    "childhoodfundalexamination": {
+      "examination": "Kufufuza"
+    },
     "childhoodfundalnewborneyesopen": {
       "newborn_eyes_open": "Wakhanda - Maso Otseguka"
     },
@@ -556,7 +562,10 @@
       "behaviours_mcq": "Makhalidwe a MCQ",
       "check_answer": "Onani Yankho"
     },
-    "fundalreflexpdf": { "fundal_reflex": "Fundal reflex", "eyes": "Maso" },
+    "fundalreflexpdf": {
+      "fundal_reflex": "Fundal reflex",
+      "eyes": "Maso"
+    },
     "visualimpairment": {
       "visual_impairment": "Kusawoneka bwino",
       "causes_of_visual_impairment": "Zomwe Zimayambitsa Kuwonongeka kwa Maso",
@@ -584,6 +593,9 @@
       "need_glasses_illustration_alt": "Amafuna magalasi chithunzi",
       "retinoblastoma_example_alt": "Retinoblastoma chitsanzo",
       "brain_injury_example_alt": "Chitsanzo cha kuvulala kwa ubongo"
+    },
+    "signsvicases": {
+      "signs_of_visual_impairment": "Signs of Visual Impairment"
     },
     "childhoodrefer": {
       "refer": "Onani",
@@ -854,7 +866,10 @@
       "on_android": "Pa Android:",
       "install_app": "Ikani pulogalamu"
     },
-    "quizzes": { "quiz": "Mafunso", "check_answer": "Onani Yankho" }
+    "quizzes": {
+      "quiz": "Mafunso",
+      "check_answer": "Onani Yankho"
+    }
   },
   "i18nLiteral": {
     "Next >": "Kenako >",
@@ -1609,5 +1624,7 @@
     "settings": "Zokonda",
     "edit_profile": "Sinthani Mbiri"
   },
-  "offline": { "pupils_checkbox": "Mwana wa diso" }
+  "offline": {
+    "pupils_checkbox": "Mwana wa diso"
+  }
 }

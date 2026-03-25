@@ -471,7 +471,9 @@
     "menuButton": "☰",
     "cataractTitle": "i-cataractTitle",
     "interactiveLearning": "interactiveLearning",
-    "share": { "label": "ilebula" }
+    "share": {
+      "label": "ilebula"
+    }
   },
   "appTitle": "Arclight Amehlo, Izindlebe, Isikhumba",
   "installPrompt": "Faka lolu hlelo lokusebenza ukuze uthole ulwazi olungcono!",
@@ -487,8 +489,12 @@
   "reviewAnswersTitle": "Buyekeza izimpendulo",
   "closeReviewButton": "Vala ukubuyekeza",
   "auto": {
-    "childhoodfundalpreparation": { "preparation": "Ukulungiselela" },
-    "childhoodfundalexamination": { "examination": "Ukuhlola" },
+    "childhoodfundalpreparation": {
+      "preparation": "Ukulungiselela"
+    },
+    "childhoodfundalexamination": {
+      "examination": "Ukuhlola"
+    },
     "childhoodfundalnewborneyesopen": {
       "newborn_eyes_open": "Osanda kuzalwa - Amehlo Avulekile"
     },
@@ -556,7 +562,10 @@
       "behaviours_mcq": "I-MCQ yokuziphatha",
       "check_answer": "Hlola Impendulo"
     },
-    "fundalreflexpdf": { "fundal_reflex": "I-fundal reflex", "eyes": "Amehlo" },
+    "fundalreflexpdf": {
+      "fundal_reflex": "I-fundal reflex",
+      "eyes": "Amehlo"
+    },
     "visualimpairment": {
       "visual_impairment": "Ukukhubazeka Okubonwayo",
       "causes_of_visual_impairment": "Izimbangela Zokukhubazeka Okubukwayo",
@@ -584,6 +593,9 @@
       "need_glasses_illustration_alt": "Udinga umdwebo wezibuko",
       "retinoblastoma_example_alt": "Isibonelo se-retinoblastoma",
       "brain_injury_example_alt": "Isibonelo sokulimala kwengqondo"
+    },
+    "signsvicases": {
+      "signs_of_visual_impairment": "Signs of Visual Impairment"
     },
     "childhoodrefer": {
       "refer": "Bhekisela",
@@ -854,7 +866,10 @@
       "on_android": "Ku-Android:",
       "install_app": "Faka uhlelo lokusebenza"
     },
-    "quizzes": { "quiz": "Imibuzo", "check_answer": "Hlola Impendulo" }
+    "quizzes": {
+      "quiz": "Imibuzo",
+      "check_answer": "Hlola Impendulo"
+    }
   },
   "i18nLiteral": {
     "Next >": "Okulandelayo >",
@@ -1609,5 +1624,7 @@
     "settings": "Izilungiselelo",
     "edit_profile": "Hlela iphrofayela"
   },
-  "offline": { "pupils_checkbox": "Inhlamvu yeso" }
+  "offline": {
+    "pupils_checkbox": "Inhlamvu yeso"
+  }
 }
