@@ -40,6 +40,7 @@ RUN npm ci --omit=dev --no-audit --no-fund
 
 # Copy only runtime source from build stage (keeps .git out of final image)
 COPY --from=build /app/server.cjs ./server.cjs
+COPY --from=build /app/security ./security
 COPY --from=build /app/storage ./storage
 COPY --from=build /app/utils ./utils
 COPY --from=build /app/reports ./reports
