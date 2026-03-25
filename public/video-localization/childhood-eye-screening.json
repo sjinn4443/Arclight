@@ -1,0 +1,172 @@
+{
+  "assessmentVisionPage": {
+    "subtitles": {
+      "en": "/video-subtitles/childhood-eye-screening/assessmentVisionPage/en.vtt",
+      "am": "/video-subtitles/childhood-eye-screening/assessmentVisionPage/am.vtt",
+      "ar": "/video-subtitles/childhood-eye-screening/assessmentVisionPage/ar.vtt",
+      "bn": "/video-subtitles/childhood-eye-screening/assessmentVisionPage/bn.vtt",
+      "ny": "/video-subtitles/childhood-eye-screening/assessmentVisionPage/ny.vtt",
+      "zh": "/video-subtitles/childhood-eye-screening/assessmentVisionPage/zh.vtt",
+      "fr": "/video-subtitles/childhood-eye-screening/assessmentVisionPage/fr.vtt",
+      "ha": "/video-subtitles/childhood-eye-screening/assessmentVisionPage/ha.vtt",
+      "hi": "/video-subtitles/childhood-eye-screening/assessmentVisionPage/hi.vtt",
+      "ig": "/video-subtitles/childhood-eye-screening/assessmentVisionPage/ig.vtt",
+      "id": "/video-subtitles/childhood-eye-screening/assessmentVisionPage/id.vtt",
+      "rw": "/video-subtitles/childhood-eye-screening/assessmentVisionPage/rw.vtt",
+      "ko": "/video-subtitles/childhood-eye-screening/assessmentVisionPage/ko.vtt",
+      "ln": "/video-subtitles/childhood-eye-screening/assessmentVisionPage/ln.vtt",
+      "fa": "/video-subtitles/childhood-eye-screening/assessmentVisionPage/fa.vtt",
+      "pt": "/video-subtitles/childhood-eye-screening/assessmentVisionPage/pt.vtt",
+      "sn": "/video-subtitles/childhood-eye-screening/assessmentVisionPage/sn.vtt",
+      "es": "/video-subtitles/childhood-eye-screening/assessmentVisionPage/es.vtt",
+      "sw": "/video-subtitles/childhood-eye-screening/assessmentVisionPage/sw.vtt",
+      "te": "/video-subtitles/childhood-eye-screening/assessmentVisionPage/te.vtt",
+      "ur": "/video-subtitles/childhood-eye-screening/assessmentVisionPage/ur.vtt",
+      "yo": "/video-subtitles/childhood-eye-screening/assessmentVisionPage/yo.vtt",
+      "zu": "/video-subtitles/childhood-eye-screening/assessmentVisionPage/zu.vtt"
+    },
+    "audioVariants": {},
+    "defaultSubtitleLang": "en",
+    "defaultAudioLang": "en",
+    "localSources": {
+      "low": "videos/Core/VisualAcuity/VA_Assessment_220p.mp4",
+      "high": "videos/Core/VisualAcuity/VA_Assessment_720p.mp4"
+    }
+  },
+  "mumVisionPage": {
+    "subtitles": {
+      "en": "/video-subtitles/childhood-eye-screening/mumVisionPage/en.vtt",
+      "am": "/video-subtitles/childhood-eye-screening/mumVisionPage/am.vtt",
+      "ar": "/video-subtitles/childhood-eye-screening/mumVisionPage/ar.vtt",
+      "bn": "/video-subtitles/childhood-eye-screening/mumVisionPage/bn.vtt",
+      "ny": "/video-subtitles/childhood-eye-screening/mumVisionPage/ny.vtt",
+      "zh": "/video-subtitles/childhood-eye-screening/mumVisionPage/zh.vtt",
+      "fr": "/video-subtitles/childhood-eye-screening/mumVisionPage/fr.vtt",
+      "ha": "/video-subtitles/childhood-eye-screening/mumVisionPage/ha.vtt",
+      "hi": "/video-subtitles/childhood-eye-screening/mumVisionPage/hi.vtt",
+      "ig": "/video-subtitles/childhood-eye-screening/mumVisionPage/ig.vtt",
+      "id": "/video-subtitles/childhood-eye-screening/mumVisionPage/id.vtt",
+      "rw": "/video-subtitles/childhood-eye-screening/mumVisionPage/rw.vtt",
+      "ko": "/video-subtitles/childhood-eye-screening/mumVisionPage/ko.vtt",
+      "ln": "/video-subtitles/childhood-eye-screening/mumVisionPage/ln.vtt",
+      "fa": "/video-subtitles/childhood-eye-screening/mumVisionPage/fa.vtt",
+      "pt": "/video-subtitles/childhood-eye-screening/mumVisionPage/pt.vtt",
+      "sn": "/video-subtitles/childhood-eye-screening/mumVisionPage/sn.vtt",
+      "es": "/video-subtitles/childhood-eye-screening/mumVisionPage/es.vtt",
+      "sw": "/video-subtitles/childhood-eye-screening/mumVisionPage/sw.vtt",
+      "te": "/video-subtitles/childhood-eye-screening/mumVisionPage/te.vtt",
+      "ur": "/video-subtitles/childhood-eye-screening/mumVisionPage/ur.vtt",
+      "yo": "/video-subtitles/childhood-eye-screening/mumVisionPage/yo.vtt",
+      "zu": "/video-subtitles/childhood-eye-screening/mumVisionPage/zu.vtt"
+    },
+    "audioVariants": {},
+    "defaultSubtitleLang": "en",
+    "defaultAudioLang": "en",
+    "localSources": {
+      "low": "videos/Core/VisualAcuity/VA_Mum_220p.mp4",
+      "high": "videos/Core/VisualAcuity/VA_Mum_720p.mp4"
+    }
+  },
+  "usaidHowToUseArclightPage": {
+    "subtitles": {
+      "en": "/video-subtitles/childhood-eye-screening/usaidHowToUseArclightPage/en.vtt",
+      "am": "/video-subtitles/childhood-eye-screening/usaidHowToUseArclightPage/am.vtt",
+      "ar": "/video-subtitles/childhood-eye-screening/usaidHowToUseArclightPage/ar.vtt",
+      "bn": "/video-subtitles/childhood-eye-screening/usaidHowToUseArclightPage/bn.vtt",
+      "ny": "/video-subtitles/childhood-eye-screening/usaidHowToUseArclightPage/ny.vtt",
+      "zh": "/video-subtitles/childhood-eye-screening/usaidHowToUseArclightPage/zh.vtt",
+      "fr": "/video-subtitles/childhood-eye-screening/usaidHowToUseArclightPage/fr.vtt",
+      "ha": "/video-subtitles/childhood-eye-screening/usaidHowToUseArclightPage/ha.vtt",
+      "hi": "/video-subtitles/childhood-eye-screening/usaidHowToUseArclightPage/hi.vtt",
+      "ig": "/video-subtitles/childhood-eye-screening/usaidHowToUseArclightPage/ig.vtt",
+      "id": "/video-subtitles/childhood-eye-screening/usaidHowToUseArclightPage/id.vtt",
+      "rw": "/video-subtitles/childhood-eye-screening/usaidHowToUseArclightPage/rw.vtt",
+      "ko": "/video-subtitles/childhood-eye-screening/usaidHowToUseArclightPage/ko.vtt",
+      "ln": "/video-subtitles/childhood-eye-screening/usaidHowToUseArclightPage/ln.vtt",
+      "fa": "/video-subtitles/childhood-eye-screening/usaidHowToUseArclightPage/fa.vtt",
+      "pt": "/video-subtitles/childhood-eye-screening/usaidHowToUseArclightPage/pt.vtt",
+      "sn": "/video-subtitles/childhood-eye-screening/usaidHowToUseArclightPage/sn.vtt",
+      "es": "/video-subtitles/childhood-eye-screening/usaidHowToUseArclightPage/es.vtt",
+      "sw": "/video-subtitles/childhood-eye-screening/usaidHowToUseArclightPage/sw.vtt",
+      "te": "/video-subtitles/childhood-eye-screening/usaidHowToUseArclightPage/te.vtt",
+      "ur": "/video-subtitles/childhood-eye-screening/usaidHowToUseArclightPage/ur.vtt",
+      "yo": "/video-subtitles/childhood-eye-screening/usaidHowToUseArclightPage/yo.vtt",
+      "zu": "/video-subtitles/childhood-eye-screening/usaidHowToUseArclightPage/zu.vtt"
+    },
+    "audioVariants": {},
+    "defaultSubtitleLang": "en",
+    "defaultAudioLang": "en",
+    "localSources": {
+      "low": "videos/USAID Childhood eye screening/1. How to use the Arclight - ENGLISH - HD_220p.mp4",
+      "high": "videos/USAID Childhood eye screening/1. How to use the Arclight - ENGLISH - HD_720p.mp4"
+    }
+  },
+  "usaidFundalReflexExamPage": {
+    "subtitles": {
+      "en": "/video-subtitles/childhood-eye-screening/usaidFundalReflexExamPage/en.vtt",
+      "am": "/video-subtitles/childhood-eye-screening/usaidFundalReflexExamPage/am.vtt",
+      "ar": "/video-subtitles/childhood-eye-screening/usaidFundalReflexExamPage/ar.vtt",
+      "bn": "/video-subtitles/childhood-eye-screening/usaidFundalReflexExamPage/bn.vtt",
+      "ny": "/video-subtitles/childhood-eye-screening/usaidFundalReflexExamPage/ny.vtt",
+      "zh": "/video-subtitles/childhood-eye-screening/usaidFundalReflexExamPage/zh.vtt",
+      "fr": "/video-subtitles/childhood-eye-screening/usaidFundalReflexExamPage/fr.vtt",
+      "ha": "/video-subtitles/childhood-eye-screening/usaidFundalReflexExamPage/ha.vtt",
+      "hi": "/video-subtitles/childhood-eye-screening/usaidFundalReflexExamPage/hi.vtt",
+      "ig": "/video-subtitles/childhood-eye-screening/usaidFundalReflexExamPage/ig.vtt",
+      "id": "/video-subtitles/childhood-eye-screening/usaidFundalReflexExamPage/id.vtt",
+      "rw": "/video-subtitles/childhood-eye-screening/usaidFundalReflexExamPage/rw.vtt",
+      "ko": "/video-subtitles/childhood-eye-screening/usaidFundalReflexExamPage/ko.vtt",
+      "ln": "/video-subtitles/childhood-eye-screening/usaidFundalReflexExamPage/ln.vtt",
+      "fa": "/video-subtitles/childhood-eye-screening/usaidFundalReflexExamPage/fa.vtt",
+      "pt": "/video-subtitles/childhood-eye-screening/usaidFundalReflexExamPage/pt.vtt",
+      "sn": "/video-subtitles/childhood-eye-screening/usaidFundalReflexExamPage/sn.vtt",
+      "es": "/video-subtitles/childhood-eye-screening/usaidFundalReflexExamPage/es.vtt",
+      "sw": "/video-subtitles/childhood-eye-screening/usaidFundalReflexExamPage/sw.vtt",
+      "te": "/video-subtitles/childhood-eye-screening/usaidFundalReflexExamPage/te.vtt",
+      "ur": "/video-subtitles/childhood-eye-screening/usaidFundalReflexExamPage/ur.vtt",
+      "yo": "/video-subtitles/childhood-eye-screening/usaidFundalReflexExamPage/yo.vtt",
+      "zu": "/video-subtitles/childhood-eye-screening/usaidFundalReflexExamPage/zu.vtt"
+    },
+    "audioVariants": {},
+    "defaultSubtitleLang": "en",
+    "defaultAudioLang": "en",
+    "localSources": {
+      "low": "videos/USAID Childhood eye screening/FundalReflexUSAID_220p.mp4",
+      "high": "videos/USAID Childhood eye screening/FundalReflexUSAID_720p.mp4"
+    }
+  },
+  "usaidNormalAbnormalPage": {
+    "subtitles": {
+      "en": "/video-subtitles/childhood-eye-screening/usaidNormalAbnormalPage/en.vtt",
+      "am": "/video-subtitles/childhood-eye-screening/usaidNormalAbnormalPage/am.vtt",
+      "ar": "/video-subtitles/childhood-eye-screening/usaidNormalAbnormalPage/ar.vtt",
+      "bn": "/video-subtitles/childhood-eye-screening/usaidNormalAbnormalPage/bn.vtt",
+      "ny": "/video-subtitles/childhood-eye-screening/usaidNormalAbnormalPage/ny.vtt",
+      "zh": "/video-subtitles/childhood-eye-screening/usaidNormalAbnormalPage/zh.vtt",
+      "fr": "/video-subtitles/childhood-eye-screening/usaidNormalAbnormalPage/fr.vtt",
+      "ha": "/video-subtitles/childhood-eye-screening/usaidNormalAbnormalPage/ha.vtt",
+      "hi": "/video-subtitles/childhood-eye-screening/usaidNormalAbnormalPage/hi.vtt",
+      "ig": "/video-subtitles/childhood-eye-screening/usaidNormalAbnormalPage/ig.vtt",
+      "id": "/video-subtitles/childhood-eye-screening/usaidNormalAbnormalPage/id.vtt",
+      "rw": "/video-subtitles/childhood-eye-screening/usaidNormalAbnormalPage/rw.vtt",
+      "ko": "/video-subtitles/childhood-eye-screening/usaidNormalAbnormalPage/ko.vtt",
+      "ln": "/video-subtitles/childhood-eye-screening/usaidNormalAbnormalPage/ln.vtt",
+      "fa": "/video-subtitles/childhood-eye-screening/usaidNormalAbnormalPage/fa.vtt",
+      "pt": "/video-subtitles/childhood-eye-screening/usaidNormalAbnormalPage/pt.vtt",
+      "sn": "/video-subtitles/childhood-eye-screening/usaidNormalAbnormalPage/sn.vtt",
+      "es": "/video-subtitles/childhood-eye-screening/usaidNormalAbnormalPage/es.vtt",
+      "sw": "/video-subtitles/childhood-eye-screening/usaidNormalAbnormalPage/sw.vtt",
+      "te": "/video-subtitles/childhood-eye-screening/usaidNormalAbnormalPage/te.vtt",
+      "ur": "/video-subtitles/childhood-eye-screening/usaidNormalAbnormalPage/ur.vtt",
+      "yo": "/video-subtitles/childhood-eye-screening/usaidNormalAbnormalPage/yo.vtt",
+      "zu": "/video-subtitles/childhood-eye-screening/usaidNormalAbnormalPage/zu.vtt"
+    },
+    "audioVariants": {},
+    "defaultSubtitleLang": "en",
+    "defaultAudioLang": "en",
+    "localSources": {
+      "low": "videos/USAID Childhood eye screening/4. Normal and Abnormal findings - ENGLISH - HD_220p.mp4",
+      "high": "videos/USAID Childhood eye screening/4. Normal and Abnormal findings - ENGLISH - HD_720p.mp4"
+    }
+  }
+}

@@ -250,6 +250,43 @@ html {
 /* -------------------------
    Video share button + panel
 -------------------------- */
+.video-page-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  padding: 0 17px 4px;
+}
+
+.video-page-actions .tri-toggle {
+  margin: 16px 0 -8px;
+}
+
+.video-page-menu-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  height: auto;
+  margin-top: 8px;
+  padding: 0;
+  color: #111111;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.video-page-menu-btn:focus-visible {
+  outline: 2px solid rgba(228, 30, 38, 0.18);
+  outline-offset: 2px;
+}
+
+video::cue {
+  color: #ffffff;
+  background: rgba(0, 0, 0, 0.92);
+  text-shadow: none;
+}
+
 .video-share-btn {
   margin: -74px 27px 21px 297px;
   display: grid;

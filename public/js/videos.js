@@ -27,6 +27,10 @@ const FUNDAL_REFLEX_EXAMINATION_SCROLL_PAGE_ID =
   "fundalReflexExaminationScrollPage";
 const FUNDAL_REFLEX_EXAMINATION_SCROLL_ROUTE = "fundalReflexExaminationScroll";
 const FUNDAL_REFLEX_EXAMINATION_PROGRESS_CAP = 95;
+const VIDEO_PROGRESS_COMPLETION_WINDOW_MIN_SECONDS = 5;
+const VIDEO_PROGRESS_COMPLETION_WINDOW_MAX_SECONDS = 15;
+const VIDEO_PROGRESS_COMPLETION_WINDOW_RATIO = 0.1;
+const VIDEO_PROGRESS_COMPLETION_MIN_WATCH_RATIO = 0.8;
 
 // -------------------------
 // Video progress (Pupils)
@@ -61,6 +65,40 @@ function clampStoredProgressTimestamp(value) {
   const num = Number(value);
   if (!Number.isFinite(num) || num <= 0) return 0;
   return Math.round(num);
+}
+
+function getVideoProgressCompletionTargetTime(duration) {
+  const safeDuration = Number(duration);
+  if (!Number.isFinite(safeDuration) || safeDuration <= 0) return 0;
+
+  const completionWindow = Math.min(
+    VIDEO_PROGRESS_COMPLETION_WINDOW_MAX_SECONDS,
+    Math.max(
+      VIDEO_PROGRESS_COMPLETION_WINDOW_MIN_SECONDS,
+      safeDuration * VIDEO_PROGRESS_COMPLETION_WINDOW_RATIO,
+    ),
+  );
+
+  return Math.max(
+    0,
+    Math.max(
+      safeDuration - completionWindow,
+      safeDuration * VIDEO_PROGRESS_COMPLETION_MIN_WATCH_RATIO,
+    ),
+  );
+}
+
+function calculateVideoProgressPercent(maxTime, duration) {
+  const safeDuration = Number(duration);
+  if (!Number.isFinite(safeDuration) || safeDuration <= 0) return 0;
+
+  const safeMaxTime = Math.max(0, Math.min(safeDuration, Number(maxTime) || 0));
+
+  if (safeMaxTime >= getVideoProgressCompletionTargetTime(safeDuration)) {
+    return 100;
+  }
+
+  return Math.min(100, (safeMaxTime / safeDuration) * 100);
 }
 
 function normalizeProgressRecord(record) {
@@ -146,7 +184,7 @@ function wirePupilFullExamProgress() {
     writeVideoProgress(storageKey, {
       maxTime,
       duration,
-      percent: Math.min(100, (maxTime / duration) * 100),
+      percent: calculateVideoProgressPercent(maxTime, duration),
       updatedAt: Date.now(),
     });
 
@@ -328,7 +366,7 @@ function wireProgressForVideoElement(videoEl, targetPageId) {
     writeVideoProgress(storageKey, {
       maxTime,
       duration,
-      percent: Math.min(100, (maxTime / duration) * 100),
+      percent: calculateVideoProgressPercent(maxTime, duration),
       updatedAt: Date.now(),
     });
 
@@ -906,6 +944,395 @@ const VIDEO_PAGE_SOURCES = {
   },
 };
 
+const CHILDHOOD_EYE_SCREENING_SUBTITLE_CATALOG_URL =
+  "/video-localization/childhood-eye-screening.json";
+const VIDEO_PAGE_ACTION_ROW_SELECTOR = "[data-video-page-actions='true']";
+const CHILDHOOD_EYE_SCREENING_SUBTITLE_PAGE_IDS = new Set([
+  "assessmentVisionPage",
+  "mumVisionPage",
+  "usaidHowToUseArclightPage",
+  "usaidFundalReflexExamPage",
+  "usaidNormalAbnormalPage",
+]);
+const CHILDHOOD_EYE_SCREENING_SUBTITLE_LANGUAGES = {
+  en: { label: "English" },
+  am: { label: "Amharic" },
+  ar: { label: "Arabic" },
+  bn: { label: "Bangla" },
+  ny: { label: "Chichewa" },
+  zh: { label: "Chinese" },
+  fr: { label: "French" },
+  ha: { label: "Hausa" },
+  hi: { label: "Hindi" },
+  ig: { label: "Igbo" },
+  id: { label: "Indonesian" },
+  rw: { label: "Kinyarwanda" },
+  ko: { label: "Korean" },
+  ln: { label: "Lingala" },
+  fa: { label: "Persian" },
+  pt: { label: "Portuguese" },
+  sn: { label: "Shona" },
+  es: { label: "Spanish" },
+  sw: { label: "Swahili" },
+  te: { label: "Telugu" },
+  ur: { label: "Urdu" },
+  yo: { label: "Yoruba" },
+  zu: { label: "Zulu" },
+};
+
+let childhoodEyeScreeningSubtitleCatalogPromise = null;
+
+function normalizeChildhoodPilotSubtitleLanguage(lang) {
+  const normalized = String(lang || "")
+    .trim()
+    .toLowerCase();
+  return Object.prototype.hasOwnProperty.call(
+    CHILDHOOD_EYE_SCREENING_SUBTITLE_LANGUAGES,
+    normalized,
+  )
+    ? normalized
+    : "en";
+}
+
+function isChildhoodEyeScreeningSubtitlePilotPage(pageId) {
+  return CHILDHOOD_EYE_SCREENING_SUBTITLE_PAGE_IDS.has(
+    String(pageId || "").trim(),
+  );
+}
+
+function getCurrentUiLanguage() {
+  try {
+    const fromI18n = window.I18N?.getLanguage?.();
+    if (fromI18n) {
+      return normalizeChildhoodPilotSubtitleLanguage(fromI18n);
+    }
+  } catch {
+    /* ignore */
+  }
+
+  try {
+    const stored = localStorage.getItem("prefLang");
+    if (stored) {
+      return normalizeChildhoodPilotSubtitleLanguage(stored);
+    }
+  } catch {
+    /* ignore */
+  }
+
+  return normalizeChildhoodPilotSubtitleLanguage(
+    document.documentElement.getAttribute("lang") || "en",
+  );
+}
+
+function getChildhoodPilotSubtitleLabel(lang) {
+  return (
+    CHILDHOOD_EYE_SCREENING_SUBTITLE_LANGUAGES[
+      normalizeChildhoodPilotSubtitleLanguage(lang)
+    ]?.label || "English"
+  );
+}
+
+function resolveChildhoodPilotSubtitleLanguage(
+  availableLanguages,
+  { prefLang = getCurrentUiLanguage(), defaultLang = "en" } = {},
+) {
+  const available = Array.from(
+    new Set(
+      (availableLanguages || [])
+        .map((lang) => normalizeChildhoodPilotSubtitleLanguage(lang))
+        .filter(Boolean),
+    ),
+  );
+
+  if (!available.length) {
+    return normalizeChildhoodPilotSubtitleLanguage(defaultLang);
+  }
+
+  const candidates = [prefLang, defaultLang, "en"]
+    .map((lang) => {
+      const raw = String(lang || "").trim();
+      return raw ? normalizeChildhoodPilotSubtitleLanguage(raw) : "";
+    })
+    .filter(Boolean);
+
+  for (const candidate of candidates) {
+    if (available.includes(candidate)) return candidate;
+  }
+
+  return available[0];
+}
+
+function sanitizeChildhoodEyeScreeningSubtitleCatalog(rawCatalog = {}) {
+  const sanitized = {};
+
+  CHILDHOOD_EYE_SCREENING_SUBTITLE_PAGE_IDS.forEach((pageId) => {
+    const entry = rawCatalog?.[pageId];
+    if (!entry || typeof entry !== "object") return;
+
+    const subtitles = {};
+    Object.entries(entry.subtitles || {}).forEach(([lang, src]) => {
+      if (typeof src !== "string" || !src.trim()) return;
+      subtitles[normalizeChildhoodPilotSubtitleLanguage(lang)] = src;
+    });
+
+    if (!Object.keys(subtitles).length) return;
+
+    const defaultSubtitleLang = resolveChildhoodPilotSubtitleLanguage(
+      Object.keys(subtitles),
+      {
+        prefLang: normalizeChildhoodPilotSubtitleLanguage(
+          entry.defaultSubtitleLang || "en",
+        ),
+        defaultLang: "en",
+      },
+    );
+
+    sanitized[pageId] = {
+      subtitles,
+      audioVariants:
+        entry.audioVariants && typeof entry.audioVariants === "object"
+          ? entry.audioVariants
+          : {},
+      defaultSubtitleLang,
+      defaultAudioLang: normalizeChildhoodPilotSubtitleLanguage(
+        entry.defaultAudioLang || "en",
+      ),
+      localSources:
+        entry.localSources && typeof entry.localSources === "object"
+          ? entry.localSources
+          : {},
+    };
+  });
+
+  return sanitized;
+}
+
+async function loadChildhoodEyeScreeningSubtitleCatalog() {
+  if (!childhoodEyeScreeningSubtitleCatalogPromise) {
+    childhoodEyeScreeningSubtitleCatalogPromise = (async () => {
+      try {
+        const response = await fetch(
+          CHILDHOOD_EYE_SCREENING_SUBTITLE_CATALOG_URL,
+          { cache: "no-store" },
+        );
+        if (!response.ok) {
+          throw new Error(
+            `failed to load subtitle catalog: ${response.status}`,
+          );
+        }
+        const rawCatalog = await response.json();
+        return sanitizeChildhoodEyeScreeningSubtitleCatalog(rawCatalog);
+      } catch (err) {
+        console.warn("[videos] subtitle catalog unavailable", err);
+        return {};
+      }
+    })();
+  }
+
+  return childhoodEyeScreeningSubtitleCatalogPromise;
+}
+
+function getVideoPageElement(pageId) {
+  return document.getElementById(pageId);
+}
+
+function getVideoPageLocalVideoElement(pageId) {
+  const page = getVideoPageElement(pageId);
+  if (!page) return null;
+
+  const selector = VIDEO_PAGE_SOURCES[pageId]?.videoSelector;
+  return selector ? page.querySelector(selector) : page.querySelector("video");
+}
+
+function getVideoPageContainer(pageId) {
+  const page = getVideoPageElement(pageId);
+  if (!page) return null;
+
+  const selector = VIDEO_PAGE_SOURCES[pageId]?.containerSelector;
+  return selector
+    ? page.querySelector(selector)
+    : page.querySelector(".video-container");
+}
+
+function getVideoPageActionRow(page) {
+  return page?.querySelector(VIDEO_PAGE_ACTION_ROW_SELECTOR) || null;
+}
+
+function ensureVideoPageMenuButtonForPage(pageId) {
+  const page = getVideoPageElement(pageId);
+  if (!page || page.querySelector(".eyes-topbar")) return null;
+
+  const host =
+    page.querySelector(".tri-toggle") ||
+    page.querySelector(".video-header") ||
+    page.querySelector(".video-container");
+  if (!host?.parentNode) return null;
+
+  let actionRow = getVideoPageActionRow(page);
+  if (!actionRow) {
+    actionRow = document.createElement("div");
+    actionRow.className = "video-page-actions";
+    actionRow.setAttribute("data-video-page-actions", "true");
+    host.parentNode.insertBefore(actionRow, host);
+  }
+
+  const triToggle = page.querySelector(".tri-toggle");
+  if (triToggle && triToggle.parentNode !== actionRow) {
+    actionRow.appendChild(triToggle);
+  }
+
+  let menuBtn = actionRow.querySelector(".menuBtn");
+  if (!menuBtn) {
+    menuBtn = document.createElement("span");
+    menuBtn.className = "icon menuBtn video-page-menu-btn";
+    menuBtn.setAttribute("aria-label", "Menu");
+    menuBtn.setAttribute("role", "button");
+    menuBtn.setAttribute("tabindex", "0");
+    menuBtn.textContent = "\u2630";
+    actionRow.appendChild(menuBtn);
+  }
+
+  return actionRow;
+}
+
+function isVideoPageCurrentlyOnline(pageId) {
+  const container = getVideoPageContainer(pageId);
+  const iframe = container?.querySelector("iframe");
+  return Boolean(iframe && iframe.style.display !== "none");
+}
+
+function removeChildhoodPilotSubtitleTracks(video) {
+  if (!video) return;
+
+  video
+    .querySelectorAll("track[data-childhood-pilot-subtitle='true']")
+    .forEach((trackEl) => trackEl.remove());
+
+  try {
+    Array.from(video.textTracks || []).forEach((track) => {
+      track.mode = "disabled";
+    });
+  } catch {
+    /* ignore */
+  }
+}
+
+function showChildhoodPilotSubtitleTrack(video, lang) {
+  if (!video) return;
+
+  const activeLang = normalizeChildhoodPilotSubtitleLanguage(lang);
+  let matched = false;
+
+  try {
+    Array.from(video.textTracks || []).forEach((track) => {
+      const trackLang = normalizeChildhoodPilotSubtitleLanguage(
+        track.language || track.srclang || "",
+      );
+      const shouldShow = trackLang === activeLang;
+      track.mode = shouldShow ? "showing" : "disabled";
+      if (shouldShow) matched = true;
+    });
+
+    if (!matched && video.textTracks?.[0]) {
+      video.textTracks[0].mode = "showing";
+    }
+  } catch {
+    /* ignore */
+  }
+}
+
+function applyChildhoodPilotSubtitleTrack(video, { lang, src }) {
+  if (!video || !src) return;
+
+  removeChildhoodPilotSubtitleTracks(video);
+
+  const trackEl = document.createElement("track");
+  trackEl.kind = "subtitles";
+  trackEl.label = getChildhoodPilotSubtitleLabel(lang);
+  trackEl.srclang = normalizeChildhoodPilotSubtitleLanguage(lang);
+  trackEl.src = src;
+  trackEl.default = true;
+  trackEl.setAttribute("data-childhood-pilot-subtitle", "true");
+  trackEl.addEventListener(
+    "load",
+    () => {
+      showChildhoodPilotSubtitleTrack(video, lang);
+    },
+    { once: true },
+  );
+
+  video.appendChild(trackEl);
+  showChildhoodPilotSubtitleTrack(video, lang);
+  window.setTimeout(() => showChildhoodPilotSubtitleTrack(video, lang), 0);
+  window.setTimeout(() => showChildhoodPilotSubtitleTrack(video, lang), 120);
+}
+
+async function syncChildhoodPilotSubtitlesForPage(
+  pageId,
+  { preferredLang } = {},
+) {
+  if (!isChildhoodEyeScreeningSubtitlePilotPage(pageId)) return "";
+
+  const page = getVideoPageElement(pageId);
+  if (!page) return "";
+
+  const catalog = await loadChildhoodEyeScreeningSubtitleCatalog();
+  const entry = catalog?.[pageId];
+  if (!entry) return "";
+
+  const availableLanguages = Object.keys(entry.subtitles || {});
+  if (!availableLanguages.length) return "";
+
+  const resolvedLang = resolveChildhoodPilotSubtitleLanguage(
+    availableLanguages,
+    {
+      prefLang: preferredLang || getCurrentUiLanguage(),
+      defaultLang: entry.defaultSubtitleLang || "en",
+    },
+  );
+
+  const video = getVideoPageLocalVideoElement(pageId);
+  const isOnline = isVideoPageCurrentlyOnline(pageId);
+
+  if (!video || isOnline) {
+    if (video) removeChildhoodPilotSubtitleTracks(video);
+    return resolvedLang;
+  }
+
+  const trackSrc =
+    entry.subtitles[resolvedLang] ||
+    entry.subtitles[entry.defaultSubtitleLang] ||
+    entry.subtitles.en ||
+    "";
+
+  if (!trackSrc) return resolvedLang;
+
+  applyChildhoodPilotSubtitleTrack(video, {
+    lang: resolvedLang,
+    src: trackSrc,
+  });
+
+  return resolvedLang;
+}
+
+async function ensureChildhoodPilotSubtitleControlsForPage(pageId) {
+  return syncChildhoodPilotSubtitlesForPage(pageId);
+}
+
+async function refreshChildhoodPilotSubtitlesForLanguageChange() {
+  const preferredLang = getCurrentUiLanguage();
+
+  for (const pageId of CHILDHOOD_EYE_SCREENING_SUBTITLE_PAGE_IDS) {
+    const page = getVideoPageElement(pageId);
+    if (!page) continue;
+    await syncChildhoodPilotSubtitlesForPage(pageId, { preferredLang });
+  }
+}
+
+function resetChildhoodPilotSubtitleCatalogForTests() {
+  childhoodEyeScreeningSubtitleCatalogPromise = null;
+}
+
 function readGenericVideoMode(storageKey) {
   try {
     const m = localStorage.getItem(storageKey);
@@ -1011,6 +1438,7 @@ function applyVideoPageMode(pageId, mode, { preserveTime = true } = {}) {
       existingIframe.style.display = "block";
     }
 
+    void syncChildhoodPilotSubtitlesForPage(pageId);
     return;
   }
 
@@ -1036,6 +1464,8 @@ function applyVideoPageMode(pageId, mode, { preserveTime = true } = {}) {
   try {
     video.load();
   } catch {}
+
+  void syncChildhoodPilotSubtitlesForPage(pageId);
 
   const restore = () => {
     if (!preserveTime) return;
@@ -1388,6 +1818,8 @@ function show(id) {
     document.body.scrollTop = 0;
   } catch {}
 
+  ensureVideoPageMenuButtonForPage(id);
+
   // Auto-resume full pupil exam video from last watched time
   if (id === "pupilFullExamPage") {
     wireTriToggle();
@@ -1410,6 +1842,8 @@ function show(id) {
     const videoEl = page?.querySelector(cfg?.videoSelector || "");
     wireProgressForVideoElement(videoEl, id);
   }
+
+  void ensureChildhoodPilotSubtitleControlsForPage(id);
 
   // Refresh lesson progress bars when switching sections
   updateLessonProgressBars(id);
@@ -1582,6 +2016,10 @@ if (!window[__videosGlobalBoundKey]) {
     writeWorkshopProgressForTarget(target, 100, { mode: "replace" });
   });
 
+  window.addEventListener("i18n:languageChanged", () => {
+    void refreshChildhoodPilotSubtitlesForLanguageChange();
+  });
+
   window.addEventListener(
     "scroll",
     () => {
@@ -1688,6 +2126,19 @@ export function showVideosPageById(sectionId) {
   if (!sectionId) return;
   show(sectionId);
 }
+
+export {
+  calculateVideoProgressPercent,
+  ensureChildhoodPilotSubtitleControlsForPage,
+  ensureVideoPageMenuButtonForPage,
+  isChildhoodEyeScreeningSubtitlePilotPage,
+  loadChildhoodEyeScreeningSubtitleCatalog,
+  refreshChildhoodPilotSubtitlesForLanguageChange,
+  resolveChildhoodPilotSubtitleLanguage,
+  sanitizeChildhoodEyeScreeningSubtitleCatalog,
+  syncChildhoodPilotSubtitlesForPage,
+  resetChildhoodPilotSubtitleCatalogForTests,
+};
 
 // --- Direct Ophthalmoscopy toolbar wiring + nav-aware pausing ---
 function bindDirectOphthalmoscopyToolbar() {

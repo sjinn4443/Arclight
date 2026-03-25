@@ -8,8 +8,83 @@ import { setLanguage, getLanguage } from "./i18n.js";
 import { saveProfile, bumpRefresh } from "./telemetry.js"; // Import bumpRefresh
 
 const STATIC_CACHE_NAME = "arclight-static-v4";
+const CHILDHOOD_EYE_SCREENING_PILOT_PAGE_IDS = [
+  "assessmentVisionPage",
+  "mumVisionPage",
+  "usaidHowToUseArclightPage",
+  "usaidFundalReflexExamPage",
+  "usaidNormalAbnormalPage",
+];
+const CHILDHOOD_EYE_SCREENING_PILOT_VIDEO_URLS = [
+  "/videos/Core/VisualAcuity/VA_Assessment_220p.mp4",
+  "/videos/Core/VisualAcuity/VA_Assessment_720p.mp4",
+  "/videos/Core/VisualAcuity/VA_Mum_220p.mp4",
+  "/videos/Core/VisualAcuity/VA_Mum_720p.mp4",
+  "/videos/USAID Childhood eye screening/1. How to use the Arclight - ENGLISH - HD_220p.mp4",
+  "/videos/USAID Childhood eye screening/1. How to use the Arclight - ENGLISH - HD_720p.mp4",
+  "/videos/USAID Childhood eye screening/FundalReflexUSAID_220p.mp4",
+  "/videos/USAID Childhood eye screening/FundalReflexUSAID_720p.mp4",
+  "/videos/USAID Childhood eye screening/4. Normal and Abnormal findings - ENGLISH - HD_220p.mp4",
+  "/videos/USAID Childhood eye screening/4. Normal and Abnormal findings - ENGLISH - HD_720p.mp4",
+];
+const CHILDHOOD_EYE_SCREENING_SUBTITLE_LANGUAGES = new Set([
+  "en",
+  "am",
+  "ar",
+  "bn",
+  "ny",
+  "zh",
+  "fr",
+  "ha",
+  "hi",
+  "ig",
+  "id",
+  "rw",
+  "ko",
+  "ln",
+  "fa",
+  "pt",
+  "sn",
+  "es",
+  "sw",
+  "te",
+  "ur",
+  "yo",
+  "zu",
+]);
 
 initializePWA();
+
+function normalizeChildhoodPilotSubtitleCacheLanguage(lang) {
+  const normalized = String(lang || "")
+    .trim()
+    .toLowerCase();
+  return CHILDHOOD_EYE_SCREENING_SUBTITLE_LANGUAGES.has(normalized)
+    ? normalized
+    : "en";
+}
+
+export function buildChildhoodEyeScreeningPilotCacheUrls(lang = "en") {
+  const chosenLang = normalizeChildhoodPilotSubtitleCacheLanguage(lang);
+  const subtitleLangs = Array.from(new Set(["en", chosenLang]));
+  const subtitleUrls = [];
+
+  CHILDHOOD_EYE_SCREENING_PILOT_PAGE_IDS.forEach((pageId) => {
+    subtitleLangs.forEach((subtitleLang) => {
+      subtitleUrls.push(
+        `/video-subtitles/childhood-eye-screening/${pageId}/${subtitleLang}.vtt`,
+      );
+    });
+  });
+
+  return Array.from(
+    new Set([
+      "/video-localization/childhood-eye-screening.json",
+      ...CHILDHOOD_EYE_SCREENING_PILOT_VIDEO_URLS,
+      ...subtitleUrls,
+    ]),
+  );
+}
 
 /**
  * Initializes the language installation page.
@@ -145,6 +220,8 @@ export function initializeLanguageInstall() {
         // Accepted → warm cache (best-effort) then advance
         try {
           const sw = await navigator.serviceWorker.ready;
+          const chosen =
+            (langSelect && langSelect.value) || getLanguage() || "en";
 
           const pagesToCache = [
             "/index.html",
@@ -277,7 +354,15 @@ export function initializeLanguageInstall() {
             "/videos/Workshop/Glaucoma/BE_disccuppingonly_720p.mp4",
           ];
 
-          const urlsToCache = [...pagesToCache, ...glaucomaAssetsToCache];
+          const childhoodPilotAssetsToCache =
+            buildChildhoodEyeScreeningPilotCacheUrls(chosen);
+          const urlsToCache = Array.from(
+            new Set([
+              ...pagesToCache,
+              ...glaucomaAssetsToCache,
+              ...childhoodPilotAssetsToCache,
+            ]),
+          );
 
           sw.active?.postMessage({
             type: "CACHE_URLS",

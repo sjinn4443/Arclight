@@ -17,6 +17,7 @@ const CORE_ASSETS = [
   "/js/mylearning.js",
   "/js/catalog.js",
   "/js/pwa.js",
+  "/video-localization/childhood-eye-screening.json",
   "/html/interest.html", // Added for interest page
   "/js/interest.js", // Added for interest page script
   "/favicons/favicon-32x32.png", // Added favicon
