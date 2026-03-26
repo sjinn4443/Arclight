@@ -79,6 +79,13 @@ rmdir /s /q dist
 ### Content / i18n
 
 - Check translations: `npm run check-translations`
+- Translation QA rules:
+  - Correct medical mistranslations caused by homonyms and keep terminology clinically accurate.
+  - Keep tone consistent and formal where the content is instructional or clinical.
+  - Prefer natural UI actions in each language instead of literal `OK` / `Cancel` carry-overs when `Yes` / `No` or an equivalent is clearer.
+  - Keep language-picker labels in their native script where applicable.
+  - Avoid hardcoded English in JS-rendered captions, menus, search labels, and aria labels; use explicit i18n keys or the shared legacy fallback path.
+  - When legacy root alias keys exist alongside scoped keys (for example Eyes page headers), keep both aligned to avoid route/test regressions.
 - Symbol preservation rule: button/icon symbols such as `☰`, `<`, `×` must not be translated in locale JSON files. Keep these values identical across all languages.
 
 ## Environment variables

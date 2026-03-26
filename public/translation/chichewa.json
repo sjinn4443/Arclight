@@ -1586,10 +1586,10 @@
     "video_mode_low": "otsika",
     "video_mode_low_title": "Zochepa",
     "visualsystem_controls_hint": "Gudumu: lotsatira/lapita | mmwamba/pansi: lotsatira/lapita | Malo: bwerezani",
-    "visualsystem_step0": "Maso amatenga kuwala<br />kuchokera kudziko ndikutembenuza<br />this kukhala ma siginecha a ubongo<br /> kuti apange 'masomphenya'.",
+    "visualsystem_step0": "Maso amatenga kuwala<br />kuchokera kudziko ndikutembenuza<br />izi kukhala ma siginecha a ubongo<br /> kuti apange 'masomphenya'.",
     "visualsystem_step1": "Kuwala kumayang'ana pa<br /> kumbuyo kwa diso<br /> ndi cornea ndi mandala.",
     "visualsystem_step2": "Kumbuyo kwa diso<br /> ndi retina.",
-    "visualsystem_step3": "Izi zili ngati sensa kapena filimu<br />in kamera yomwe imatembenuza<br />light kukhala zizindikiro zamagetsi<br />zomwe zimaperekedwa ku ubongo<br />pansi pa mitsempha ya optic.<br /><br />Ubongo kenako umapanga<br />vision kuchokera kuzizindikirozi.",
+    "visualsystem_step3": "Izi zili ngati sensa kapena filimu<br />mu kamera yomwe imatembenuza<br />kuwala kukhala zizindikiro zamagetsi<br />zomwe zimaperekedwa ku ubongo<br />kudzera mu mitsempha ya optic.<br /><br />Ubongo kenako umapanga<br />masomphenya kuchokera kuzizindikirozi.",
     "yes": "Inde"
   },
   "myLearningTitle": "Maphunziro Anga",
@@ -1626,5 +1626,9 @@
   },
   "offline": {
     "pupils_checkbox": "Mwana wa diso"
-  }
+  },
+  "eyesCatalogTitle": "Masuliro",
+  "seeAll": "Onani Zonse >",
+  "comingSoonTitle": "Zikubwera posachedwa",
+  "comingSoonNote": "Moduliyi ikukonzekera."
 }

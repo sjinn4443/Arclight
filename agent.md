@@ -27,7 +27,13 @@
 ## Translation Rule (Persistent)
 
 - In locale JSON files, UI symbol values must be preserved and not translated.
-- Keep symbols exactly as-is across languages, including `☰`, `<`, `×`.
+- Keep symbols exactly as-is across languages, including `?`, `<`, `?`.
+- Correct mistranslations caused by homonyms and keep the wording medically precise.
+- Keep tone consistent and formal where the copy is instructional, clinical, or UI-confirmation text.
+- Standardize UI wording to natural target-language actions instead of literal `OK` / `Cancel` carry-overs when better equivalents exist.
+- Keep language names in selectors/popups in their native script where applicable.
+- Prefer explicit scoped i18n keys for new work, but keep required legacy root alias keys aligned when existing pages/tests still depend on them.
+- Check JS-rendered captions, toggles, menus, and aria labels for hardcoded English; translation QA is not limited to static HTML.
 
 ## Issue Summary
 

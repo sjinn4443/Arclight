@@ -1589,7 +1589,7 @@
     "visualsystem_step0": "Ido suna tattara haske<br /> daga duniya kuma suna juya<br /> wannan zuwa sigina don kwakwalwa<br /> don ƙirƙirar 'hangen nesa'.",
     "visualsystem_step1": "Haske yana mayar da hankali kan<br /> bayan ido<br /> ta cornea da ruwan tabarau.",
     "visualsystem_step2": "A bayan ido<br /> shine retina.",
-    "visualsystem_step3": "Wannan kamar Sensor ko fim<br />in kyamara ne wanda ke juya<br />light zuwa siginonin lantarki<br /> wanda ake wucewa zuwa kwakwalwa<br /> saukar da jijiyar gani.<br /><br /> Kwakwalwa ta haifar da<br />vision daga waɗannan sigina.",
+    "visualsystem_step3": "Wannan kamar sensor ko fim ne<br />a cikin kyamara wanda ke juya<br />haske zuwa siginonin lantarki<br />wanda ake wucewa zuwa kwakwalwa<br />ta jijiyar gani.<br /><br />Kwakwalwa sai ta haifar da<br />gani daga wa?annan sigina.",
     "yes": "Ee"
   },
   "myLearningTitle": "Koyona",
@@ -1626,5 +1626,9 @@
   },
   "offline": {
     "pupils_checkbox": "Baƙin ido"
-  }
+  },
+  "eyesCatalogTitle": "Idanu",
+  "seeAll": "Duba duk >",
+  "comingSoonTitle": "Yana zuwa nan bada jimawa ba",
+  "comingSoonNote": "Ana shirya wannan sashe."
 }

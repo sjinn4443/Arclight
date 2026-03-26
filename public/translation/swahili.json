@@ -1589,7 +1589,7 @@
     "visualsystem_step0": "Macho hukusanya nuru<br />kutoka ulimwenguni na kugeuza<br />hii kuwa ishara za ubongo<br />kuunda 'maono'.",
     "visualsystem_step1": "Mwanga umeelekezwa kwenye<br /> nyuma ya jicho<br /> na konea na lenzi.",
     "visualsystem_step2": "Nyuma ya jicho<br /> ni retina.",
-    "visualsystem_step3": "Hii ni kama kitambuzi au filamu<br />in kamera ambayo hugeuza<br />light kuwa mawimbi ya umeme<br /> ambayo hupitishwa kwenye ubongo<br /> chini ya neva ya macho.<br /><br />Ubongo kisha huunda<br />vision kutoka kwa ishara hizi.",
+    "visualsystem_step3": "Hii ni kama kihisi au filamu<br />kwenye kamera ambacho hubadilisha<br />mwanga kuwa mawimbi ya umeme<br />yanayopitishwa kwenye ubongo<br />kupitia neva ya macho.<br /><br />Ubongo kisha huunda<br />maono kutoka kwa ishara hizi.",
     "yes": "Ndiyo"
   },
   "myLearningTitle": "Kujifunza Kwangu",
@@ -1626,5 +1626,9 @@
   },
   "offline": {
     "pupils_checkbox": "Mboni"
-  }
+  },
+  "eyesCatalogTitle": "Katalogi ya Macho",
+  "seeAll": "Ona Zote >",
+  "comingSoonTitle": "Kichwa Inakuja Hivi Karibuni",
+  "comingSoonNote": "Kumbuka Inakuja Hivi Karibuni"
 }

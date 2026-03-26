@@ -1637,5 +1637,9 @@
   },
   "offline": {
     "pupils_checkbox": "पुतलियाँ"
-  }
+  },
+  "eyesCatalogTitle": "आंखें",
+  "seeAll": "सभी देखें >",
+  "comingSoonTitle": "जल्द आ रहा है",
+  "comingSoonNote": "यह मॉड्यूल जल्द ही आ रहा है।"
 }

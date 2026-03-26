@@ -8,6 +8,13 @@ Interactive Learning documentation refresh after adding new embedded modules and
 
 ## Recent Changes
 
+- translation QA sweep (2026-03-26):
+  - Replaced hardcoded English in the visual system eye/brain animation with locale-backed copy.
+  - Fixed dashboard recommendations so localized subtitles render without async errors, and quick-action routing no longer depends on English button text.
+  - Added shared legacy literal fallback coverage for common UI labels such as `Menu` and search aria labels.
+  - Restored Eyes-page legacy root alias keys and aligned locale aliases so older tests/pages still translate correctly.
+  - Recorded the standing translation QA rules: medical terminology accuracy, formal tone where appropriate, natural UI wording, native-script language names, symbol preservation, and JS/runtime text checks.
+
 - Interactive Learning external embeds (2026-03-11):
   - Added `Fundal Reflex` and `Trauma` buttons under the Primary section, and `Amsler` under Intermediate on `interactiveLearningPage`.
   - Added matching hidden subpages in `public/html/videos.html` that lazy-load external Netlify apps via `iframe[data-src]`.
@@ -58,4 +65,7 @@ Interactive Learning documentation refresh after adding new embedded modules and
 
 - When the repo mixes ESM and CJS, document the boundary and the mechanism used to keep tests stable (mocks + `moduleNameMapper`).
 - In translation JSON files, preserve icon/symbol values exactly as-is. Do not localize `☰`, `<`, `×` (and equivalent UI symbol tokens).
+- For Interactive Learning under `videos.html`, prefer the existing hidden-subpage + lazy iframe pattern over special-case navigation.
+- Translation QA must also cover runtime strings inserted by JS, not just static HTML and locale files.
+- Keep required legacy root alias keys aligned with scoped keys where older pages/tests still reference those root keys.
 - For Interactive Learning under `videos.html`, prefer the existing hidden-subpage + lazy iframe pattern over special-case navigation.

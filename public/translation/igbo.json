@@ -1589,7 +1589,7 @@
     "visualsystem_step0": "Anya na-anakọta ọkụ<br /> site na ụwa wee tụgharịa<br /> nke a ka ọ bụrụ akara maka ụbụrụ<br /> iji mepụta 'ọhụụ'.",
     "visualsystem_step1": "Ìhè na-elekwasị anya na<br /> azụ nke anya<br /> site na cornea na oghere.",
     "visualsystem_step2": "N'azụ anya<br /> bụ retina.",
-    "visualsystem_step3": "Nke a dị ka ihe mmetụta ma ọ bụ ihe nkiri<br />in igwefoto nke na-atụgharị<br />light ka ọ bụrụ akara ọkụ eletrik<br /> nke a na-ebufe na ụbụrụ<br /> na-agbada akwara optic.<br /><br /> Ụbụrụ wee mepụta<br />vision site na akara ngosi ndị a.",
+    "visualsystem_step3": "Nke a d? ka ihe mmet?ta ma ? b? ihe nkiri<br />n'ime igwefoto nke na-at?ghar?<br />?h? ka ? b?r? akara ?k? eletrik<br />a na-ebufe na ?b?r?<br />site na akwara optic.<br /><br />?b?r? wee mep?ta<br />?h?? site na akara nd? a.",
     "yes": "Ee"
   },
   "myLearningTitle": "Ọmụmụ m",
@@ -1626,5 +1626,9 @@
   },
   "offline": {
     "pupils_checkbox": "Nwa anya"
-  }
+  },
+  "eyesCatalogTitle": "Anya",
+  "seeAll": "Hụ ihe niile >",
+  "comingSoonTitle": "Na-abịa n'oge adịghị anya",
+  "comingSoonNote": "Modul a na-abịa n'oge adịghị anya."
 }

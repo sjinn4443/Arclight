@@ -17,12 +17,18 @@ const ENGLISH_DICT = {
       childhood_eye_screening: "Childhood Eye Screening",
     },
   },
+  i18nExtra: {
+    menu_aria_label: "Menu",
+  },
   i18nLiteral: {
     "Close ^": "Close ^",
   },
 };
 
 const KOREAN_DICT = {
+  i18nExtra: {
+    menu_aria_label: "메뉴",
+  },
   i18nLiteral: {
     "Close ^": "닫기 ^",
   },
@@ -45,6 +51,7 @@ describe("i18n runtime regressions", () => {
       >
         Childhood Eye Screening
       </div>
+      <button id="legacyMenuBtn" aria-label="Menu">☰</button>
       <span id="closeToggle">Close ^</span>
     `;
 
@@ -104,5 +111,21 @@ describe("i18n runtime regressions", () => {
     i18n.applyTranslations(document);
 
     expect(document.getElementById("closeToggle").textContent).toBe("닫기 ^");
+  });
+
+  it("applies common fallback translations for legacy aria labels", async () => {
+    localStorage.setItem("prefLang", "ko");
+
+    let i18n;
+    await jest.isolateModulesAsync(async () => {
+      i18n = await import("../public/js/i18n.js");
+    });
+
+    await i18n.setLanguage("ko");
+    i18n.applyTranslations(document);
+
+    expect(
+      document.getElementById("legacyMenuBtn").getAttribute("aria-label"),
+    ).toBe("메뉴");
   });
 });

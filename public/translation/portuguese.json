@@ -1626,5 +1626,9 @@
   },
   "offline": {
     "pupils_checkbox": "Pupilas"
-  }
+  },
+  "eyesCatalogTitle": "Catálogo de Olhos",
+  "seeAll": "Ver Tudo >",
+  "comingSoonTitle": "Título Em Breve",
+  "comingSoonNote": "Nota Em Breve"
 }

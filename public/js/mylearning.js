@@ -16,6 +16,18 @@ const MY_LEARNING_UNMATCHED_FALLBACK =
   "Your saved items couldn't be matched. Try liking a new item.";
 const MY_LEARNING_EMPTY_I18N_KEY = "i18nExtra.my_learning_empty";
 const MY_LEARNING_UNMATCHED_I18N_KEY = "i18nExtra.my_learning_unmatched";
+const MY_LEARNING_LABEL_I18N_OVERRIDES = Object.freeze({
+  "Eye Movements/Squint": "eyes.card_label.eye_movements/squint",
+  "WHO PEC": "eyes.card_label.who_pec",
+});
+const MY_LEARNING_TAG_I18N_KEYS = Object.freeze({
+  "Coming Soon": "eyes.tag_coming_soon",
+  Video: "eyes.tag_video",
+  "Case Study": "eyes.tag_case_study",
+  Quiz: "eyes.tag_quiz",
+  "Mini Apps": "eyes.tag_mini_apps",
+  "Mini App": "eyes.tag_mini_app",
+});
 
 /**
  * Reads liked items from localStorage for a given key and returns them as a Set.
@@ -185,6 +197,23 @@ function toKey(v) {
   return v == null ? "" : String(v).trim().toLowerCase();
 }
 
+function getEyesCardLabelI18nKey(label) {
+  const raw = String(label || "").trim();
+  if (!raw) return null;
+  if (MY_LEARNING_LABEL_I18N_OVERRIDES[raw]) {
+    return MY_LEARNING_LABEL_I18N_OVERRIDES[raw];
+  }
+
+  const slug = raw
+    .toLowerCase()
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9/]+/g, "_")
+    .replace(/^_+|_+$/g, "")
+    .replace(/_+/g, "_");
+
+  return slug ? `eyes.card_label.${slug}` : null;
+}
+
 /**
  * Extracts a normalized key from an item object, trying various common fields.
  * @param {Object} item - The item object.
@@ -336,7 +365,11 @@ function renderMyLearnings() {
     card.dataset.target = target;
 
     const titleEl = card.querySelector("h4");
-    if (titleEl) titleEl.textContent = title;
+    if (titleEl) {
+      titleEl.textContent = title;
+      const titleI18nKey = getEyesCardLabelI18nKey(title);
+      if (titleI18nKey) titleEl.setAttribute("data-i18n", titleI18nKey);
+    }
 
     const badgesWrap = card.querySelector(".ml-badges");
     if (badgesWrap) {
@@ -345,6 +378,8 @@ function renderMyLearnings() {
         const badge = document.createElement("span");
         badge.className = "ml-badge";
         badge.textContent = t;
+        const tagI18nKey = MY_LEARNING_TAG_I18N_KEYS[t];
+        if (tagI18nKey) badge.setAttribute("data-i18n", tagI18nKey);
         badgesWrap.appendChild(badge);
       });
     }

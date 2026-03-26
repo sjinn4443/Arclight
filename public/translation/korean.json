@@ -119,19 +119,19 @@
   "eyes": {
     "title": "눈",
     "core_examination_title": "핵심 검사",
-    "disease_title": "질병",
+    "disease_title": "질환",
     "primary_eye_care_procedures_title": "워크숍",
     "extended_examination_title": "확장 검사",
     "tools_title": "도구",
-    "see_all": "모두 보기 >",
+    "see_all": "전체 보기 >",
     "coming_soon_title": "준비 중",
     "coming_soon_note": "이 모듈이 준비 중입니다.",
     "eyesCatalogTitle": "눈",
-    "coreExaminationTitle": "핵심시험",
-    "seeAll": "모두 보기 >",
-    "diseaseTitle": "조건",
+    "coreExaminationTitle": "핵심 검사",
+    "seeAll": "전체 보기 >",
+    "diseaseTitle": "질환",
     "primaryEyeCareProceduresTitle": "워크숍",
-    "extendedExaminationTitle": "심화시험",
+    "extendedExaminationTitle": "확장 검사",
     "toolsTitle": "도구 및 키트",
     "comingSoonTitle": "준비 중",
     "comingSoonNote": "이 모듈이 준비 중입니다.",
@@ -357,7 +357,11 @@
   },
   "mylearning": {
     "title": "내 학습",
-    "tabs": { "in_progress": "진행 중", "liked": "좋아요", "notes": "메모" },
+    "tabs": {
+      "in_progress": "진행 중",
+      "liked": "좋아요",
+      "notes": "메모"
+    },
     "search_placeholder": "콘텐츠 검색",
     "filters": {
       "eyes": "눈",
@@ -428,7 +432,10 @@
       "behaviours_mcq": "행동 객관식 퀴즈",
       "check_answer": "정답 확인"
     },
-    "fundalreflexpdf": { "fundal_reflex": "안저 반사", "eyes": "눈" },
+    "fundalreflexpdf": {
+      "fundal_reflex": "안저 반사",
+      "eyes": "눈"
+    },
     "visualimpairment": {
       "visual_impairment": "시각장애",
       "causes_of_visual_impairment": "시각장애의 원인",
@@ -457,7 +464,9 @@
       "retinoblastoma_example_alt": "망막모세포종 예시",
       "brain_injury_example_alt": "뇌 손상 예시"
     },
-    "signsvicases": { "signs_of_visual_impairment": "시각장애의 징후" },
+    "signsvicases": {
+      "signs_of_visual_impairment": "시각장애의 징후"
+    },
     "childhoodrefer": {
       "refer": "의뢰",
       "eye_conditions_to_refer": "의뢰해야 할 안과 질환",
@@ -561,17 +570,27 @@
       "normal_visual_development_stage_10_paragraph_3": "질환을 조기에 발견하여 치료로 의뢰하는 것은 시각 발달과 전반적인 발달을 최대한 향상시키는 데 중요합니다.",
       "normal_visual_development_stage_10_image_alt": "8세 이후 시각 발달 그림"
     },
-    "childhoodfundalpreparation": { "preparation": "준비" },
-    "childhoodfundalexamination": { "examination": "검사" },
+    "childhoodfundalpreparation": {
+      "preparation": "준비"
+    },
+    "childhoodfundalexamination": {
+      "examination": "검사"
+    },
     "childhoodfundalnewborneyesopen": {
       "newborn_eyes_open": "신생아 - 눈 뜬 상태"
     },
     "childhoodfundalnewborneyesclosed": {
       "newborn_eyes_closed": "신생아 - 눈 감은 상태"
     },
-    "childhoodfundalunclearfindings": { "unclear_findings": "불분명한 소견" },
-    "childhoodfundalpossiblefinding": { "possible_findings": "가능한 소견" },
-    "childhoodfundalafterexamination": { "after_examination": "검사 후" },
+    "childhoodfundalunclearfindings": {
+      "unclear_findings": "불분명한 소견"
+    },
+    "childhoodfundalpossiblefinding": {
+      "possible_findings": "가능한 소견"
+    },
+    "childhoodfundalafterexamination": {
+      "after_examination": "검사 후"
+    },
     "glaucomaworkshop": {
       "eyes": "눈",
       "1_introduction": "1. 소개",
@@ -738,7 +757,10 @@
       "on_android": "Android에서:",
       "install_app": "앱 설치"
     },
-    "quizzes": { "quiz": "퀴즈", "check_answer": "정답 확인" }
+    "quizzes": {
+      "quiz": "퀴즈",
+      "check_answer": "정답 확인"
+    }
   },
   "i18nLiteral": {
     "Close ^": "닫기 ^",
@@ -1464,7 +1486,7 @@
     "visualsystem_step0": "눈은 세상의 빛<br />을 모아서<br />이를 뇌<br />의 신호로 바꾸어 '시각'을 만듭니다.",
     "visualsystem_step1": "빛은 각막과 수정체에 의해 눈의 뒤쪽<br /><br />에 집중됩니다.",
     "visualsystem_step2": "눈 뒤쪽<br />에는 망막이 있습니다.",
-    "visualsystem_step3": "이는<br />빛을 시신경을 통해 뇌<br />로 전달되는 전기 신호<br />로 바꾸는 카메라의 센서나 필름<br />과 같습니다.<br /><br />그러면 뇌는 이러한 신호로부터<br />vision을 생성합니다.",
+    "visualsystem_step3": "이는<br />빛을 시신경을 통해 뇌<br />로 전달되는 전기 신호<br />로 바꾸는 카메라의 센서나 필름<br />과 같습니다.<br /><br />그러면 뇌는 이러한 신호로부터<br />시각을 만들어 냅니다.",
     "yes": "예"
   },
   "videos": {
@@ -1528,7 +1550,9 @@
     "menuButton": "☰",
     "cataractTitle": "백내장제목",
     "interactiveLearning": "대화형학습",
-    "share": { "label": "라벨" }
+    "share": {
+      "label": "라벨"
+    }
   },
   "appTitle": "Arclight 눈, 귀, 피부",
   "myLearningTitle": "나의 학습",
@@ -1536,14 +1560,18 @@
   "likedTab": "좋아요를 누른",
   "notesTab": "메모",
   "searchPlaceholder": "콘텐츠 검색",
+  "eyesCatalogTitle": "눈",
+  "seeAll": "전체 보기 >",
+  "comingSoonTitle": "준비 중",
+  "comingSoonNote": "이 모듈이 준비 중입니다.",
   "eyesFilter": "눈",
   "earsFilter": "귀",
   "skinFilter": "피부",
   "howToTeachFilter": "가르치는 방법",
-  "coreExaminationTitle": "핵심시험",
-  "diseaseTitle": "조건",
+  "coreExaminationTitle": "핵심 검사",
+  "diseaseTitle": "질환",
   "primaryEyeCareProceduresTitle": "워크숍",
-  "extendedExaminationTitle": "심화시험",
+  "extendedExaminationTitle": "확장 검사",
   "toolsTitle": "도구 및 키트",
   "atomsCardTitle": "아톰스 카드",
   "closeTOCBtnTitle": "목차 닫기",
@@ -1563,6 +1591,11 @@
     "settings": "설정",
     "edit_profile": "프로필 편집"
   },
-  "offlineContent": { "checkbox_pupils": "동공", "pupils_checkbox": "동공" },
-  "offline": { "pupils_checkbox": "동공" }
+  "offlineContent": {
+    "checkbox_pupils": "동공",
+    "pupils_checkbox": "동공"
+  },
+  "offline": {
+    "pupils_checkbox": "동공"
+  }
 }

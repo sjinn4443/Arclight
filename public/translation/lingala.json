@@ -1586,10 +1586,10 @@
     "video_mode_low": "na nse",
     "video_mode_low_title": "Na nse",
     "visualsystem_controls_hint": "Roue: oyo elandi/ya liboso | likolo/na nse: elandi/ya liboso | Esika: kozongela lisano",
-    "visualsystem_step0": "Miso esangisi pole<br />uta na mokili mpe ebongoli<br />yango na bilembo mpo na bɔɔngɔ́<br />mpo na kokela 'vision'.",
+    "visualsystem_step0": "Miso esangisi pole<br />uta na mokili mpe ebongoli<br />yango na bilembo mpo na b??ng??<br />mpo na kokela 'bomoni'.",
     "visualsystem_step1": "Pole etalisami na<br />nsima ya liso<br />na nzela ya cornée mpe lentille.",
     "visualsystem_step2": "Na sima ya liso<br />ezali rétine.",
-    "visualsystem_step3": "Oyo ezali lokola capteur to film<br />na caméra oyo ebongoli<br />light na ba signaux électriques<br />oyo elekaka na cerveau<br />na se ya nerf optique.<br /><br />Na sima cerveau esala<br />vision na ba signaux wana.",
+    "visualsystem_step3": "Oyo ezali lokola capteur to film<br />na kamera oyo ebongoli<br />pole na ba signaux ?lectriques<br />oyo elekaka na b??ng??<br />na nzela ya nerf optique.<br /><br />Na sima b??ng?? esala<br />bomoni na ba signaux wana.",
     "yes": "Iyo"
   },
   "myLearningTitle": "Boyekoli na Ngai",
@@ -1626,5 +1626,9 @@
   },
   "offline": {
     "pupils_checkbox": "Pupile ya liso"
-  }
+  },
+  "eyesCatalogTitle": "Maso",
+  "seeAll": "Kotala nyóso >",
+  "comingSoonTitle": "Ekoúta kóna",
+  "comingSoonNote": "Modul oyo ezali kosalema."
 }

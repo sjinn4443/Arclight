@@ -1586,10 +1586,10 @@
     "video_mode_low": "hasi",
     "video_mode_low_title": "Hasi",
     "visualsystem_controls_hint": "Ikiziga: ibikurikira / ibanza | hejuru / hasi: ibikurikira / ibanziriza | Umwanya: gusubiramo",
-    "visualsystem_step0": "Amaso akusanya urumuri<br /> kuva kwisi hanyuma agahindura<br />this mubimenyetso byubwonko<br />to kugirango ikore 'iyerekwa'.",
-    "visualsystem_step1": "Umucyo wibanze kuri<br /> inyuma yijisho<br />by cornea na lens.",
-    "visualsystem_step2": "Inyuma yijisho<br />is retina.",
-    "visualsystem_step3": "Ibi ni nka sensor cyangwa firime<br />in kamera ihindura<br />light mubimenyetso byamashanyarazi<br />that ihabwa ubwonko<br />down nervice optique.<br /><br /> Ubwonko noneho bukora<br />vision uhereye kuri ibyo bimenyetso.",
+    "visualsystem_step0": "Amaso akusanya urumuri<br />ruvuye ku isi hanyuma agahindura<br />ibi mo ibimenyetso by'ubwonko<br />bikora 'iyerekwa'.",
+    "visualsystem_step1": "Umucyo wibanda ku<br />inyuma y'ijisho<br />unyuze muri cornea na lensi.",
+    "visualsystem_step2": "Inyuma y'ijisho<br />hari retina.",
+    "visualsystem_step3": "Ibi ni nka sensor cyangwa filimi<br />mu kamera ihindura<br />urumuri mo ibimenyetso by'amashanyarazi<br />bigezwa ku bwonko<br />binyuze mu mutsi w'ijisho wa optic.<br /><br />Ubwonko noneho bukora<br />iyerekwa bushingiye kuri ibyo bimenyetso.",
     "yes": "Yego"
   },
   "myLearningTitle": "Kwiga kwanjye",
@@ -1626,5 +1626,9 @@
   },
   "offline": {
     "pupils_checkbox": "umweru w'ijisho"
-  }
+  },
+  "eyesCatalogTitle": "Amaso",
+  "seeAll": "Reba byose >",
+  "comingSoonTitle": "Biri kuza vuba",
+  "comingSoonNote": "Iri somo riri kuza vuba."
 }

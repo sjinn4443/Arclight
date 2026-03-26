@@ -272,12 +272,12 @@ export function initializeDashboard() {
 
   // 4 & 5) Quick actions: Atoms Card + Download Contents
   root.querySelectorAll(".quick-actions .pill").forEach((pill) => {
-    const label = (pill.textContent || "").toLowerCase().trim();
-    if (label.includes("atoms")) {
+    const action = (pill.getAttribute("data-action") || "").trim();
+    if (action === "atomscard") {
       pill.addEventListener("click", () => loadPage("atomscard"), {
         once: true,
       });
-    } else if (label.includes("download")) {
+    } else if (action === "offline") {
       pill.addEventListener("click", () => loadPage("offline"), { once: true });
     }
   });

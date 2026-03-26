@@ -24,7 +24,14 @@ Arclight is primarily a static, client-side PWA served from `public/` (or `dist/
 - Event-driven UI: DOM events and listeners drive interactions.
 - Service worker caching: cache-first / asset caching to enable offline flows.
 - ESM in browser, CJS in Node: browser code under `public/js/*.js` is ESM; Node server/tests commonly use `*.cjs`.
-- i18n symbol preservation: locale files keep UI symbol values (`☰`, `<`, `×`) unchanged across languages; only translatable text is localized.
+- i18n QA policy:
+  - Locale files keep UI symbol values (`?`, `<`, `?`) unchanged across languages.
+  - Medical and clinical copy must prefer correct terminology over literal homonym-based translations.
+  - Instructional and clinical UI copy should keep a consistent formal tone where appropriate.
+  - UI actions should use natural target-language wording rather than literal `OK` / `Cancel` carry-overs when clearer equivalents exist.
+  - Language-picker labels should use native-script names where applicable.
+  - Translation checks must include JS-rendered captions, toggles, search labels, and aria labels, not only static HTML.
+  - When a route still depends on legacy root alias keys as well as scoped keys, keep both in sync to avoid regressions.
 - Videos-route subpage pattern: cards use `data-page` / `data-target` IDs that map to hidden `.page` sections in `public/html/videos.html`; `public/js/videos.js` lazy-loads any `iframe[data-src]` the first time a subpage is shown.
 - Hybrid interactive delivery: Interactive Learning can host either local `public/subapp/*` content or external iframe content inside the same page shell.
 - Cross-origin embed boundary: parent-page CSS/JS can control the Arclight wrapper (card spacing, headers, iframe size), but cannot directly alter UI inside a remote iframe.

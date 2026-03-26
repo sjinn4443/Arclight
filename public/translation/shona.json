@@ -1589,7 +1589,7 @@
     "visualsystem_step0": "Meso anounganidza mwenje<br /> kubva pasirese uye shandura<br />iyi kuita zviratidzo zvehuropi<br /> kugadzira 'chiratidzo'.",
     "visualsystem_step1": "Chiedza chinotariswa pa<br />kuseri kweziso<br /> necornea uye lens.",
     "visualsystem_step2": "Kuseri kweziso<br /> ndiyo retina.",
-    "visualsystem_step3": "Izvi zvakaita sesensor kana firimu<br />in kamera inoshandura<br />light kuita masaini emagetsi<br /> anopfuudzwa kuuropi<br /> pasi petsinga yemaziso.<br /><br />Huropi hunobva hwagadzira<br />vision kubva kumasaini aya.",
+    "visualsystem_step3": "Izvi zvakaita sesensa kana firimu<br />mukati mekamera inoshandura<br />mwenje kuita masaini emagetsi<br />anopfuudzwa kuuropi<br />kuburikidza netsinga yemaziso.<br /><br />Huropi hunobva hwagadzira<br />kuona kubva kumasaini aya.",
     "yes": "Ehe"
   },
   "myLearningTitle": "Kudzidza Kwangu",
@@ -1626,5 +1626,9 @@
   },
   "offline": {
     "pupils_checkbox": "Mboni yeziso"
-  }
+  },
+  "eyesCatalogTitle": "Meso",
+  "seeAll": "Ona zvese >",
+  "comingSoonTitle": "Zviri kuuya munguva pfupi",
+  "comingSoonNote": "Chidzidzo ichi chiri kuuya munguva pfupi."
 }

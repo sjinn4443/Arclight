@@ -1586,10 +1586,10 @@
     "video_mode_low": "kekere",
     "video_mode_low_title": "Kekere",
     "visualsystem_controls_hint": "Kẹkẹ: tókàn / ti tẹlẹ | soke/isalẹ: tókàn/t��lẹ | Aaye: tun ṣe",
-    "visualsystem_step0": "Awọn oju gba ina<br /> lati aye ati ki o tan<br />this sinu awọn ifihan agbara fun ọpọlọ<br /> lati ṣẹda 'iran'.",
+    "visualsystem_step0": "Aw?n oju gba ina<br />lati aye ati ki o yi<br />eyi pada si aw?n ifihan agbara fun ?p?l?<br />lati ??da 'iran'.",
     "visualsystem_step1": "Imọlẹ wa ni idojukọ si<br /> ẹhin oju<br /> nipasẹ cornea ati lẹnsi.",
     "visualsystem_step2": "Ni ẹhin oju<br /> jẹ retina.",
-    "visualsystem_step3": "Eyi dabi sensọ tabi fiimu<br />in kamẹra kan ti o yi<br />light sinu awọn ifihan agbara itanna<br /> ti o kọja si ọpọlọ<br /> si isalẹ nafu ara opiki.<br /><br /> ọpọlọ lẹhinna ṣẹda<br />vision lati awọn ifihan agbara wọnyi.",
+    "visualsystem_step3": "Eyi dabi sens? tabi fiimu<br />ninu kam?ra kan ti o yi<br />imole pada si aw?n ifihan agbara itanna<br />ti o l? si ?p?l?<br />nipas? nafu ara opiki.<br /><br />?p?l? l?hinna ??da<br />iran lati aw?n ifihan agbara w?nyi.",
     "yes": "Bẹẹni"
   },
   "myLearningTitle": "Ẹkọ mi",
@@ -1626,5 +1626,9 @@
   },
   "offline": {
     "pupils_checkbox": "Aarin oju"
-  }
+  },
+  "eyesCatalogTitle": "Oju",
+  "seeAll": "Wo gbogbo >",
+  "comingSoonTitle": "Yoo dé laipẹ",
+  "comingSoonNote": "A n ṣeto modulu yii."
 }

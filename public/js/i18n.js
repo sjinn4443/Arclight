@@ -45,6 +45,23 @@ const CACHE = {
 const GLOBAL_TRANSLATION_PASS_DELAYS_MS = [80, 220];
 let translationPassInFlight = false;
 let translationPassQueued = false;
+const COMMON_LITERAL_FALLBACKS = Object.freeze({
+  Menu: ["i18nExtra.menu_aria_label"],
+  Close: ["languageInstall.closeButton"],
+  Language: ["menu.language_item"],
+  Search: [
+    "menu.search_placeholder",
+    "searchPlaceholder",
+    "dashboard.search_placeholder",
+  ],
+  "Search menu contents": ["menu.search_placeholder"],
+  "Search contents": ["dashboard.search_placeholder", "searchPlaceholder"],
+  "Search for contents": ["searchPlaceholder", "dashboard.search_placeholder"],
+  "Search my learning contents": [
+    "searchPlaceholder",
+    "dashboard.search_placeholder",
+  ],
+});
 
 export function get(obj, path) {
   if (!obj || !path) return undefined;
@@ -188,7 +205,16 @@ function rebuildLiteralIndex() {
 function literalTranslate(rawText) {
   const key = normalizeLiteralText(rawText);
   if (!key) return null;
-  return CACHE.literalIndex.get(key) ?? null;
+  const direct = CACHE.literalIndex.get(key);
+  if (direct != null) return direct;
+
+  const fallbackPaths = COMMON_LITERAL_FALLBACKS[key] || [];
+  for (const path of fallbackPaths) {
+    const translated = get(CACHE.dict, path) ?? get(CACHE.fallbackDict, path);
+    if (translated != null) return String(translated);
+  }
+
+  return null;
 }
 
 function applyLiteralTranslations(root = document) {

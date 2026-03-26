@@ -238,6 +238,7 @@ export async function initializeMenu() {
     if (nameEl) {
       nameEl.textContent = name || "Your name";
     }
+    window.I18N?.applyTranslations?.(overlay);
     void renderMenuVersionDate();
 
     // 5b) Wire the "i" info button to open the info popup
@@ -325,6 +326,7 @@ export async function openMenu() {
   if (nameEl) {
     nameEl.textContent = name || "Your name";
   }
+  window.I18N?.applyTranslations?.(overlay);
 
   // D) Call renderProfileLocation at the end of openMenu() to ensure it's updated when menu opens
   renderProfileLocation();
@@ -385,6 +387,7 @@ function showInfoModal() {
   if (!modal) return;
 
   document.body.appendChild(modal);
+  window.I18N?.applyTranslations?.(modal);
 
   const close = () => {
     modal.classList.add("fade-out");

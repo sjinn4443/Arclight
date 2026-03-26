@@ -1589,7 +1589,7 @@
     "visualsystem_step0": "Amehlo aqoqa ukukhanya kwe-<br />kusuka emhlabeni futhi aguqule i-<br />lokhu kube izimpawu zobuchopho<br />ukwakha 'umbono'.",
     "visualsystem_step1": "Ukukhanya kugxile ku-<br />ngemuva kweso<br /> nge-cornea kanye nelensi.",
     "visualsystem_step2": "Ngemuva kweso<br /> yi-retina.",
-    "visualsystem_step3": "Lokhu kufana nenzwa noma ifilimu<br />in ikhamera ephendula i-<br />light ibe amasignali kagesi<br />adluliselwe ebuchosheni<br />down the optic nerve.<br /><br />Ubuchopho bese budala i-<br />vision kusukela kulawa masignali.",
+    "visualsystem_step3": "Lokhu kufana nenzwa noma ifilimu<br />ekhamerani eguqula<br />ukukhanya kube amasiginali kagesi<br />adluliselwa ebuchosheni<br />ngenzwa yokubona.<br /><br />Ubuchopho bese budala<br />umbono kulezi zimpawu.",
     "yes": "Yebo"
   },
   "myLearningTitle": "Ukufunda Kwami",
@@ -1626,5 +1626,9 @@
   },
   "offline": {
     "pupils_checkbox": "Inhlamvu yeso"
-  }
+  },
+  "eyesCatalogTitle": "Amehlo",
+  "seeAll": "Bona konke >",
+  "comingSoonTitle": "Kuyeza maduze",
+  "comingSoonNote": "Le mojula iyeza maduze."
 }

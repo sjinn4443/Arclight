@@ -603,11 +603,20 @@ export function initializeChildhoodEyeScreeningWorkshop() {
   ) {
     fundalFolderRow.dataset.wiredFolder = "1";
     const cta = fundalFolderRow.querySelector(".lesson-cta");
+    const closedCtaI18nKey = "auto.childhoodeyescreeningworkshop.see_all";
 
     const setOpenState = (open) => {
       fundalSubRows.style.display = open ? "" : "none";
       fundalFolderRow.setAttribute("aria-expanded", open ? "true" : "false");
-      if (cta) cta.textContent = open ? "Close ^" : "See all >";
+      if (cta) {
+        if (open) {
+          cta.removeAttribute("data-i18n");
+          cta.textContent = "Close ^";
+        } else {
+          cta.setAttribute("data-i18n", closedCtaI18nKey);
+          cta.textContent = "See all >";
+        }
+      }
       page.classList.toggle("fundal-reflex-open", open);
       refreshWorkshopTranslations(fundalFolderRow);
     };

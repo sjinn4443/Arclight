@@ -1626,5 +1626,9 @@
   },
   "offline": {
     "pupils_checkbox": "瞳孔"
-  }
+  },
+  "eyesCatalogTitle": "眼睛",
+  "seeAll": "查看全部 >",
+  "comingSoonTitle": "即将推出",
+  "comingSoonNote": "此模块即将推出。"
 }

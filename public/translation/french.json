@@ -1626,5 +1626,9 @@
   },
   "offline": {
     "pupils_checkbox": "Pupilles"
-  }
+  },
+  "eyesCatalogTitle": "Yeux",
+  "seeAll": "Voir tout >",
+  "comingSoonTitle": "Bientôt disponible",
+  "comingSoonNote": "Ce module est en cours de préparation."
 }
