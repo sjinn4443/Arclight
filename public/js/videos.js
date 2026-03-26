@@ -675,8 +675,8 @@ const VIDEO_PAGE_SOURCES = {
     // This page is single-video (no toggle); keep low/high identical so
     // shared progress wiring can still track it by target id.
     sources: {
-      low: "images/pdf/Workshop/Childhood/VisualDevelopment/01.mp4",
-      high: "images/pdf/Workshop/Childhood/VisualDevelopment/01.mp4",
+      low: "images/pdf/Workshop/Childhood/VisualDevelopment/01_ios.mp4",
+      high: "images/pdf/Workshop/Childhood/VisualDevelopment/01_ios.mp4",
     },
     onlineTitle: "Assessing Visual Function (online)",
     iframeClass: "videos-yt-assessing-visual-function",
@@ -1218,6 +1218,12 @@ function prepareVideoForChildhoodPilotSubtitles(video) {
   if (!video.getAttribute("crossorigin")) {
     video.setAttribute("crossorigin", "anonymous");
   }
+
+  if (shouldUseChildhoodPilotSubtitleOverlay()) {
+    video.dataset.preventAutoFullscreen = "true";
+  } else {
+    delete video.dataset.preventAutoFullscreen;
+  }
 }
 
 function shouldUseChildhoodPilotSubtitleOverlay() {
@@ -1229,6 +1235,13 @@ function shouldUseChildhoodPilotSubtitleOverlay() {
   return (
     /iP(hone|od|ad)/i.test(userAgent) ||
     (/Mac/i.test(platform) && maxTouchPoints > 1)
+  );
+}
+
+function shouldForceLowInlineChildhoodPilotVideo(pageId) {
+  return (
+    shouldUseChildhoodPilotSubtitleOverlay() &&
+    isChildhoodEyeScreeningSubtitlePilotPage(pageId)
   );
 }
 
@@ -1521,6 +1534,7 @@ function scheduleChildhoodPilotSubtitleResync(video, lang) {
 
 function primeChildhoodPilotNativeTrack(video, lang) {
   if (!video || !shouldUseChildhoodPilotSubtitleOverlay()) return;
+  if (video.dataset.preventAutoFullscreen === "true") return;
   if (!video.paused) return;
   if ((Number(video.currentTime) || 0) > 0.1) return;
 
@@ -1746,6 +1760,7 @@ function toYouTubeEmbed(url) {
 function applyVideoPageMode(pageId, mode, { preserveTime = true } = {}) {
   const cfg = VIDEO_PAGE_SOURCES[pageId];
   if (!cfg) return;
+  if (shouldForceLowInlineChildhoodPilotVideo(pageId)) mode = "low";
   if (!GENERIC_VIDEO_MODES.includes(mode)) mode = "low";
 
   const page = document.getElementById(pageId);
@@ -1865,14 +1880,20 @@ function wireVideoPageTriToggle(pageId) {
   if (!toggle || toggle.dataset.wired === "1") return;
   toggle.dataset.wired = "1";
   // ---- tri-toggle button count(2 or 3) + initial mode clamp ----
+  const forceLowInline = shouldForceLowInlineChildhoodPilotVideo(pageId);
+  const highBtn = toggle.querySelector('.tri-toggle__btn[data-mode="high"]');
   const onlineBtn = toggle.querySelector(
     '.tri-toggle__btn[data-mode="online"]',
   );
   const hasOnline = !!(cfg.sources && cfg.sources.online);
 
+  if (highBtn) {
+    highBtn.hidden = forceLowInline;
+  }
+
   if (onlineBtn) {
     // online 소스 없으면 버튼 자체를 숨김
-    onlineBtn.hidden = !hasOnline;
+    onlineBtn.hidden = forceLowInline || !hasOnline;
   }
 
   // visible 버튼 개수(2 or 3) 계산해서 CSS 변수로 전달
@@ -1884,11 +1905,16 @@ function wireVideoPageTriToggle(pageId) {
   toggle.style.setProperty("--tri-cols", String(Math.max(1, visibleCount)));
 
   // ---- initial mode ----
-  let initialMode = readGenericVideoMode(cfg.key);
+  let initialMode = forceLowInline ? "low" : readGenericVideoMode(cfg.key);
 
   // online 없는데 localStorage에 online 저장돼있으면 high로 강제
   if (initialMode === "online" && !hasOnline) {
     initialMode = "high";
+    writeGenericVideoMode(cfg.key, initialMode);
+  }
+
+  if (forceLowInline) {
+    initialMode = "low";
     writeGenericVideoMode(cfg.key, initialMode);
   }
 
@@ -1898,6 +1924,7 @@ function wireVideoPageTriToggle(pageId) {
   // ---- bind interactions (click / keyboard) ----
   const onPickMode = (mode) => {
     if (!mode) return;
+    if (forceLowInline) mode = "low";
 
     // online 버튼이 숨김이면 무시
     const btn = toggle.querySelector(`.tri-toggle__btn[data-mode="${mode}"]`);

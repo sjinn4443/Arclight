@@ -276,6 +276,7 @@ describe("childhood eye screening subtitle pilot", () => {
     expect(overlay).not.toBeNull();
     expect(overlay.hidden).toBe(false);
     expect(overlay.textContent).toContain("Fallback subtitle line");
+    expect(video.dataset.preventAutoFullscreen).toBe("true");
   });
 
   it("adds a menu button next to the video mode toggle", () => {

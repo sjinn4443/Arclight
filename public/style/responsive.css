@@ -938,4 +938,13 @@ input {
     margin: 16px 316px 16px !important;
     padding: 0 !important;
   }
+
+  /* Keep desktop video cards stable even when subtitles/metadata load early. */
+  .video-container > video {
+    display: block;
+    width: min(100%, 392px);
+    max-width: 100%;
+    aspect-ratio: 16 / 9;
+    height: auto;
+  }
 }
