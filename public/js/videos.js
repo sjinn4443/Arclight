@@ -1218,17 +1218,9 @@ function prepareVideoForChildhoodPilotSubtitles(video) {
   if (!video.getAttribute("crossorigin")) {
     video.setAttribute("crossorigin", "anonymous");
   }
-
-  if (shouldUseChildhoodPilotSubtitleOverlay()) {
-    video.dataset.preventAutoFullscreen = "true";
-    video.setAttribute("controlslist", "nofullscreen noremoteplayback");
-  } else {
-    delete video.dataset.preventAutoFullscreen;
-    if (
-      video.getAttribute("controlslist") === "nofullscreen noremoteplayback"
-    ) {
-      video.removeAttribute("controlslist");
-    }
+  delete video.dataset.preventAutoFullscreen;
+  if (video.getAttribute("controlslist") === "nofullscreen noremoteplayback") {
+    video.removeAttribute("controlslist");
   }
 }
 
@@ -1245,7 +1237,7 @@ function isIOSChildhoodPilotDevice() {
 }
 
 function shouldUseChildhoodPilotSubtitleOverlay() {
-  return isIOSChildhoodPilotDevice();
+  return false;
 }
 
 function shouldForceLowInlineChildhoodPilotVideo(pageId) {
@@ -1618,12 +1610,12 @@ function applyChildhoodPilotSubtitleTrack(video, { lang, src }) {
   removeChildhoodPilotSubtitleTracks(video);
 
   const trackEl = document.createElement("track");
-  trackEl.kind = "subtitles";
+  trackEl.kind = "captions";
   trackEl.label = getChildhoodPilotSubtitleLabel(lang);
   trackEl.srclang = normalizeChildhoodPilotSubtitleLanguage(lang);
   trackEl.src = src;
   trackEl.default = true;
-  trackEl.setAttribute("kind", "subtitles");
+  trackEl.setAttribute("kind", "captions");
   trackEl.setAttribute("default", "");
   trackEl.setAttribute("data-childhood-pilot-subtitle", "true");
   trackEl.addEventListener(
