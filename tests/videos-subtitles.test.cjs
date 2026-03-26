@@ -26,6 +26,11 @@ const PILOT_CATALOG = {
     },
   },
 };
+const IOS_OVERLAY_VTT = `WEBVTT
+
+00:00:00.000 --> 00:00:05.000
+Fallback subtitle line
+`;
 
 describe("childhood eye screening subtitle pilot", () => {
   let fetchSpy;
@@ -115,6 +120,15 @@ describe("childhood eye screening subtitle pilot", () => {
         };
       }
 
+      if (String(url).endsWith("/assessmentVisionPage/ko.vtt")) {
+        return {
+          ok: true,
+          async text() {
+            return IOS_OVERLAY_VTT;
+          },
+        };
+      }
+
       throw new Error(`Unexpected fetch in test: ${String(url)}`);
     });
 
@@ -188,6 +202,7 @@ describe("childhood eye screening subtitle pilot", () => {
     );
 
     const page = document.getElementById("assessmentVisionPage");
+    const video = page.querySelector("video");
     const trackEl = page.querySelector(
       "track[data-childhood-pilot-subtitle='true']",
     );
@@ -199,6 +214,10 @@ describe("childhood eye screening subtitle pilot", () => {
     expect(trackEl.getAttribute("src")).toBe(
       "/video-subtitles/childhood-eye-screening/assessmentVisionPage/ko.vtt",
     );
+    expect(trackEl.hasAttribute("default")).toBe(true);
+    expect(video.getAttribute("playsinline")).toBe("");
+    expect(video.getAttribute("webkit-playsinline")).toBe("");
+    expect(video.getAttribute("crossorigin")).toBe("anonymous");
   });
 
   it("updates visible subtitles when the app language changes", async () => {
@@ -219,6 +238,43 @@ describe("childhood eye screening subtitle pilot", () => {
     expect(trackEl.getAttribute("src")).toBe(
       "/video-subtitles/childhood-eye-screening/assessmentVisionPage/ko.vtt",
     );
+  });
+
+  it("renders an iOS overlay fallback when Safari does not draw native cues", async () => {
+    Object.defineProperty(window.navigator, "userAgent", {
+      configurable: true,
+      value:
+        "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1",
+    });
+    Object.defineProperty(window.navigator, "platform", {
+      configurable: true,
+      value: "iPhone",
+    });
+    Object.defineProperty(window.navigator, "maxTouchPoints", {
+      configurable: true,
+      value: 5,
+    });
+
+    localStorage.setItem("prefLang", "ko");
+
+    const page = document.getElementById("assessmentVisionPage");
+    const video = page.querySelector("video");
+    video.currentTime = 1;
+
+    await videos.ensureChildhoodPilotSubtitleControlsForPage(
+      "assessmentVisionPage",
+    );
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    video.dispatchEvent(new Event("timeupdate"));
+
+    const overlay = page.querySelector(
+      "[data-childhood-pilot-subtitle-overlay='true']",
+    );
+
+    expect(overlay).not.toBeNull();
+    expect(overlay.hidden).toBe(false);
+    expect(overlay.textContent).toContain("Fallback subtitle line");
   });
 
   it("adds a menu button next to the video mode toggle", () => {

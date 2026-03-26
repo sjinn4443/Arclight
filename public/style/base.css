@@ -281,6 +281,34 @@ html {
   outline-offset: 2px;
 }
 
+.childhood-pilot-subtitle-host {
+  position: relative;
+}
+
+.childhood-pilot-subtitle-overlay {
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: calc(52px + env(safe-area-inset-bottom, 0px));
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.childhood-pilot-subtitle-overlay__cue {
+  max-width: min(100%, 42rem);
+  padding: 8px 12px;
+  border-radius: 8px;
+  color: #ffffff;
+  background: rgba(0, 0, 0, 0.92);
+  font-size: clamp(13px, 2.6vw, 17px);
+  font-weight: 500;
+  line-height: 1.4;
+  text-align: center;
+  white-space: pre-line;
+}
+
 video::cue {
   color: #ffffff;
   background: rgba(0, 0, 0, 0.92);

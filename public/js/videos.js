@@ -981,6 +981,8 @@ const CHILDHOOD_EYE_SCREENING_SUBTITLE_LANGUAGES = {
 };
 
 let childhoodEyeScreeningSubtitleCatalogPromise = null;
+const childhoodPilotSubtitleCueCache = new Map();
+const childhoodPilotSubtitleOverlayStates = new WeakMap();
 
 function normalizeChildhoodPilotSubtitleLanguage(lang) {
   const normalized = String(lang || "")
@@ -1201,8 +1203,326 @@ function isVideoPageCurrentlyOnline(pageId) {
   return Boolean(iframe && iframe.style.display !== "none");
 }
 
+function prepareVideoForChildhoodPilotSubtitles(video) {
+  if (!video) return;
+
+  try {
+    video.playsInline = true;
+  } catch {
+    /* ignore */
+  }
+
+  video.setAttribute("playsinline", "");
+  video.setAttribute("webkit-playsinline", "");
+
+  if (!video.getAttribute("crossorigin")) {
+    video.setAttribute("crossorigin", "anonymous");
+  }
+}
+
+function shouldUseChildhoodPilotSubtitleOverlay() {
+  const nav = window.navigator;
+  const userAgent = String(nav?.userAgent || "");
+  const platform = String(nav?.platform || "");
+  const maxTouchPoints = Number(nav?.maxTouchPoints || 0);
+
+  return (
+    /iP(hone|od|ad)/i.test(userAgent) ||
+    (/Mac/i.test(platform) && maxTouchPoints > 1)
+  );
+}
+
+function getChildhoodPilotSubtitleOverlayState(video) {
+  let state = childhoodPilotSubtitleOverlayStates.get(video);
+  if (state) return state;
+
+  state = {
+    currentText: "",
+    cues: [],
+    enabled: false,
+    fullscreen: false,
+    lang: "en",
+    overlay: null,
+    requestToken: 0,
+    wired: false,
+  };
+  childhoodPilotSubtitleOverlayStates.set(video, state);
+  return state;
+}
+
+function ensureChildhoodPilotSubtitleOverlay(video) {
+  if (!video) return null;
+
+  const state = getChildhoodPilotSubtitleOverlayState(video);
+  const container = video.closest(".video-container") || video.parentElement;
+  if (!container) return null;
+
+  container.classList.add("childhood-pilot-subtitle-host");
+
+  let overlay = state.overlay;
+  if (!overlay || !overlay.isConnected) {
+    overlay = document.createElement("div");
+    overlay.className = "childhood-pilot-subtitle-overlay";
+    overlay.setAttribute("data-childhood-pilot-subtitle-overlay", "true");
+    overlay.setAttribute("aria-hidden", "true");
+    overlay.hidden = true;
+    container.appendChild(overlay);
+    state.overlay = overlay;
+  }
+
+  if (!state.wired) {
+    const render = () => renderChildhoodPilotSubtitleOverlay(video);
+    [
+      "timeupdate",
+      "seeking",
+      "seeked",
+      "loadedmetadata",
+      "play",
+      "pause",
+      "ended",
+    ].forEach((eventName) => {
+      video.addEventListener(eventName, render);
+    });
+    video.addEventListener("webkitbeginfullscreen", () => {
+      const nextState = getChildhoodPilotSubtitleOverlayState(video);
+      nextState.fullscreen = true;
+      showChildhoodPilotSubtitleTrack(video, nextState.lang);
+      renderChildhoodPilotSubtitleOverlay(video);
+    });
+    video.addEventListener("webkitendfullscreen", () => {
+      const nextState = getChildhoodPilotSubtitleOverlayState(video);
+      nextState.fullscreen = false;
+      showChildhoodPilotSubtitleTrack(video, nextState.lang);
+      renderChildhoodPilotSubtitleOverlay(video);
+    });
+    state.wired = true;
+  }
+
+  return overlay;
+}
+
+function resetChildhoodPilotSubtitleOverlay(video) {
+  if (!video) return;
+
+  const state = childhoodPilotSubtitleOverlayStates.get(video);
+  if (!state) return;
+
+  state.currentText = "";
+  state.cues = [];
+  state.enabled = false;
+  state.requestToken += 1;
+
+  if (state.overlay) {
+    state.overlay.hidden = true;
+    state.overlay.textContent = "";
+  }
+}
+
+function getChildhoodPilotSubtitleActiveTrackMode(video) {
+  const state = childhoodPilotSubtitleOverlayStates.get(video);
+  return state?.enabled && !state.fullscreen ? "hidden" : "showing";
+}
+
+function parseChildhoodPilotSubtitleTimestamp(rawValue) {
+  const value = String(rawValue || "").trim();
+  if (!value) return Number.NaN;
+
+  const parts = value.split(":");
+  if (parts.length < 2 || parts.length > 3) return Number.NaN;
+
+  const secondsParts = String(parts.pop() || "").split(".");
+  if (secondsParts.length !== 2) return Number.NaN;
+
+  const seconds = Number(secondsParts[0]);
+  const milliseconds = Number(secondsParts[1].padEnd(3, "0").slice(0, 3));
+  const minutes = Number(parts.pop() || 0);
+  const hours = Number(parts.pop() || 0);
+
+  if (
+    [hours, minutes, seconds, milliseconds].some(
+      (part) => !Number.isFinite(part),
+    )
+  ) {
+    return Number.NaN;
+  }
+
+  return hours * 3600 + minutes * 60 + seconds + milliseconds / 1000;
+}
+
+function parseChildhoodPilotSubtitleVtt(vttText) {
+  const normalized = String(vttText || "")
+    .replace(/\uFEFF/g, "")
+    .replace(/\r\n?/g, "\n")
+    .trim();
+
+  if (!normalized) return [];
+
+  const cues = [];
+
+  normalized.split(/\n{2,}/).forEach((block) => {
+    const lines = block
+      .split("\n")
+      .map((line) => line.trimEnd())
+      .filter(Boolean);
+
+    if (!lines.length) return;
+    if (/^WEBVTT\b/i.test(lines[0])) return;
+    if (/^(NOTE|STYLE|REGION)\b/i.test(lines[0])) return;
+
+    const timeLineIndex = lines.findIndex((line) => line.includes("-->"));
+    if (timeLineIndex === -1) return;
+
+    const timeLine = lines[timeLineIndex];
+    const [startRaw, endWithSettings] = timeLine.split("-->");
+    if (!startRaw || !endWithSettings) return;
+
+    const start = parseChildhoodPilotSubtitleTimestamp(startRaw);
+    const end = parseChildhoodPilotSubtitleTimestamp(
+      endWithSettings.trim().split(/\s+/)[0],
+    );
+
+    if (!Number.isFinite(start) || !Number.isFinite(end) || end <= start) {
+      return;
+    }
+
+    const text = lines
+      .slice(timeLineIndex + 1)
+      .map((line) => line.trim())
+      .filter(Boolean)
+      .join("\n");
+
+    if (!text) return;
+    cues.push({ start, end, text });
+  });
+
+  return cues;
+}
+
+async function loadChildhoodPilotSubtitleCues(src) {
+  const normalizedSrc = String(src || "").trim();
+  if (!normalizedSrc) return [];
+
+  if (!childhoodPilotSubtitleCueCache.has(normalizedSrc)) {
+    childhoodPilotSubtitleCueCache.set(
+      normalizedSrc,
+      fetch(normalizedSrc)
+        .then(async (response) => {
+          if (!response.ok) {
+            throw new Error(`failed to load subtitles: ${response.status}`);
+          }
+          return parseChildhoodPilotSubtitleVtt(await response.text());
+        })
+        .catch((err) => {
+          childhoodPilotSubtitleCueCache.delete(normalizedSrc);
+          console.warn("[videos] subtitle cue overlay unavailable", err);
+          return [];
+        }),
+    );
+  }
+
+  return childhoodPilotSubtitleCueCache.get(normalizedSrc);
+}
+
+function renderChildhoodPilotSubtitleOverlay(video) {
+  if (!video) return;
+
+  const state = childhoodPilotSubtitleOverlayStates.get(video);
+  const overlay = state?.overlay;
+  if (!state || !overlay) return;
+
+  if (
+    !state.enabled ||
+    state.fullscreen ||
+    video.style.display === "none" ||
+    !state.cues.length
+  ) {
+    state.currentText = "";
+    overlay.hidden = true;
+    overlay.textContent = "";
+    return;
+  }
+
+  const currentTime = Math.max(0, Number(video.currentTime) || 0);
+  const activeText = state.cues
+    .filter((cue) => currentTime >= cue.start && currentTime < cue.end)
+    .map((cue) => cue.text)
+    .join("\n");
+
+  if (!activeText) {
+    state.currentText = "";
+    overlay.hidden = true;
+    overlay.textContent = "";
+    return;
+  }
+
+  if (activeText === state.currentText && !overlay.hidden) return;
+
+  overlay.textContent = "";
+  const cueNode = document.createElement("span");
+  cueNode.className = "childhood-pilot-subtitle-overlay__cue";
+  cueNode.textContent = activeText;
+  overlay.appendChild(cueNode);
+  overlay.hidden = false;
+  state.currentText = activeText;
+}
+
+async function syncChildhoodPilotSubtitleOverlay(video, { lang, src }) {
+  if (!video) return;
+
+  const normalizedLang = normalizeChildhoodPilotSubtitleLanguage(lang);
+  const state = getChildhoodPilotSubtitleOverlayState(video);
+  state.lang = normalizedLang;
+
+  if (!shouldUseChildhoodPilotSubtitleOverlay()) {
+    resetChildhoodPilotSubtitleOverlay(video);
+    showChildhoodPilotSubtitleTrack(video, normalizedLang);
+    return;
+  }
+
+  const overlay = ensureChildhoodPilotSubtitleOverlay(video);
+  if (!overlay) return;
+
+  const token = state.requestToken + 1;
+  state.requestToken = token;
+
+  const cues = await loadChildhoodPilotSubtitleCues(src);
+  if (state.requestToken !== token) return;
+
+  if (!cues.length) {
+    resetChildhoodPilotSubtitleOverlay(video);
+    showChildhoodPilotSubtitleTrack(video, normalizedLang);
+    return;
+  }
+
+  state.cues = cues;
+  state.currentText = "";
+  state.enabled = true;
+  showChildhoodPilotSubtitleTrack(video, normalizedLang);
+  renderChildhoodPilotSubtitleOverlay(video);
+}
+
+function scheduleChildhoodPilotSubtitleResync(video, lang) {
+  if (!video) return;
+
+  const sync = () => {
+    showChildhoodPilotSubtitleTrack(video, lang);
+  };
+
+  [0, 120, 360, 900].forEach((delay) => {
+    window.setTimeout(sync, delay);
+  });
+
+  ["loadedmetadata", "canplay", "play", "loadeddata"].forEach((eventName) => {
+    video.addEventListener(eventName, sync, { once: true });
+  });
+
+  video.addEventListener("webkitbeginfullscreen", sync, { once: true });
+}
+
 function removeChildhoodPilotSubtitleTracks(video) {
   if (!video) return;
+
+  resetChildhoodPilotSubtitleOverlay(video);
 
   video
     .querySelectorAll("track[data-childhood-pilot-subtitle='true']")
@@ -1229,12 +1549,15 @@ function showChildhoodPilotSubtitleTrack(video, lang) {
         track.language || track.srclang || "",
       );
       const shouldShow = trackLang === activeLang;
-      track.mode = shouldShow ? "showing" : "disabled";
+      track.mode = shouldShow
+        ? getChildhoodPilotSubtitleActiveTrackMode(video)
+        : "disabled";
       if (shouldShow) matched = true;
     });
 
     if (!matched && video.textTracks?.[0]) {
-      video.textTracks[0].mode = "showing";
+      video.textTracks[0].mode =
+        getChildhoodPilotSubtitleActiveTrackMode(video);
     }
   } catch {
     /* ignore */
@@ -1244,6 +1567,7 @@ function showChildhoodPilotSubtitleTrack(video, lang) {
 function applyChildhoodPilotSubtitleTrack(video, { lang, src }) {
   if (!video || !src) return;
 
+  prepareVideoForChildhoodPilotSubtitles(video);
   removeChildhoodPilotSubtitleTracks(video);
 
   const trackEl = document.createElement("track");
@@ -1252,19 +1576,27 @@ function applyChildhoodPilotSubtitleTrack(video, { lang, src }) {
   trackEl.srclang = normalizeChildhoodPilotSubtitleLanguage(lang);
   trackEl.src = src;
   trackEl.default = true;
+  trackEl.setAttribute("default", "");
   trackEl.setAttribute("data-childhood-pilot-subtitle", "true");
   trackEl.addEventListener(
     "load",
     () => {
       showChildhoodPilotSubtitleTrack(video, lang);
+      try {
+        if (trackEl.track) {
+          trackEl.track.mode = "showing";
+        }
+      } catch {
+        /* ignore */
+      }
     },
     { once: true },
   );
 
   video.appendChild(trackEl);
   showChildhoodPilotSubtitleTrack(video, lang);
-  window.setTimeout(() => showChildhoodPilotSubtitleTrack(video, lang), 0);
-  window.setTimeout(() => showChildhoodPilotSubtitleTrack(video, lang), 120);
+  scheduleChildhoodPilotSubtitleResync(video, lang);
+  void syncChildhoodPilotSubtitleOverlay(video, { lang, src });
 }
 
 async function syncChildhoodPilotSubtitlesForPage(
@@ -1298,6 +1630,8 @@ async function syncChildhoodPilotSubtitlesForPage(
     if (video) removeChildhoodPilotSubtitleTracks(video);
     return resolvedLang;
   }
+
+  prepareVideoForChildhoodPilotSubtitles(video);
 
   const trackSrc =
     entry.subtitles[resolvedLang] ||
