@@ -309,6 +309,29 @@ html {
   white-space: pre-line;
 }
 
+.childhood-pilot-subtitle-panel {
+  min-height: 52px;
+  margin: 12px auto 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: min(100%, 392px);
+  max-width: 100%;
+}
+
+.childhood-pilot-subtitle-panel__cue {
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 8px;
+  color: #ffffff;
+  background: rgba(0, 0, 0, 0.92);
+  font-size: clamp(13px, 2.6vw, 17px);
+  font-weight: 500;
+  line-height: 1.4;
+  text-align: center;
+  white-space: pre-line;
+}
+
 video::cue {
   color: #ffffff;
   background: rgba(0, 0, 0, 0.92);

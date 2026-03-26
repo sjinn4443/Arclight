@@ -40,6 +40,39 @@ const PILOT_SUBTITLE_VTT = `WEBVTT
 00:00:00.000 --> 00:00:05.000
 Subtitle cue
 `;
+
+function setIPhoneWebKitUserAgent() {
+  Object.defineProperty(window.navigator, "userAgent", {
+    configurable: true,
+    value:
+      "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1",
+  });
+  Object.defineProperty(window.navigator, "platform", {
+    configurable: true,
+    value: "iPhone",
+  });
+  Object.defineProperty(window.navigator, "maxTouchPoints", {
+    configurable: true,
+    value: 5,
+  });
+}
+
+function setDesktopSafariUserAgent() {
+  Object.defineProperty(window.navigator, "userAgent", {
+    configurable: true,
+    value:
+      "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_0) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Safari/605.1.15",
+  });
+  Object.defineProperty(window.navigator, "platform", {
+    configurable: true,
+    value: "MacIntel",
+  });
+  Object.defineProperty(window.navigator, "maxTouchPoints", {
+    configurable: true,
+    value: 0,
+  });
+}
+
 describe("childhood eye screening subtitle pilot", () => {
   let fetchSpy;
   let videos;
@@ -215,6 +248,34 @@ describe("childhood eye screening subtitle pilot", () => {
     expect(videos.calculateVideoProgressPercent(6, 10)).toBeLessThan(100);
   });
 
+  it("renders a WebKit subtitle panel that updates cue text over time", async () => {
+    setIPhoneWebKitUserAgent();
+    localStorage.setItem("prefLang", "ko");
+
+    await videos.ensureChildhoodPilotSubtitleControlsForPage(
+      "assessmentVisionPage",
+    );
+
+    const page = document.getElementById("assessmentVisionPage");
+    const video = page.querySelector("video");
+    const panel = page.querySelector(
+      "[data-childhood-pilot-subtitle-panel='true']",
+    );
+
+    Object.defineProperty(video, "currentTime", {
+      configurable: true,
+      writable: true,
+      value: 1,
+    });
+    video.dispatchEvent(new Event("timeupdate"));
+
+    expect(
+      page.querySelector("track[data-childhood-pilot-subtitle='true']"),
+    ).toBeNull();
+    expect(panel).not.toBeNull();
+    expect(panel.textContent).toContain("Subtitle cue");
+  });
+
   it("injects an app-language subtitle track for pilot pages without a selector", async () => {
     localStorage.setItem("prefLang", "ko");
 
@@ -263,19 +324,7 @@ describe("childhood eye screening subtitle pilot", () => {
   });
 
   it("defaults iOS pilot pages to HLS online playback and hides high only", async () => {
-    Object.defineProperty(window.navigator, "userAgent", {
-      configurable: true,
-      value:
-        "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1",
-    });
-    Object.defineProperty(window.navigator, "platform", {
-      configurable: true,
-      value: "iPhone",
-    });
-    Object.defineProperty(window.navigator, "maxTouchPoints", {
-      configurable: true,
-      value: 5,
-    });
+    setIPhoneWebKitUserAgent();
 
     localStorage.setItem("prefLang", "ko");
     localStorage.setItem("videoMode:assessmentVisionPage", "high");
@@ -316,7 +365,7 @@ describe("childhood eye screening subtitle pilot", () => {
     expect(trackEl).toBeNull();
     expect(video.dataset.preventAutoFullscreen).toBeUndefined();
     expect(
-      page.querySelector("[data-childhood-pilot-subtitle-overlay='true']"),
+      page.querySelector("[data-childhood-pilot-subtitle-panel='true']"),
     ).not.toBeNull();
     expect(video.querySelector("source").getAttribute("src")).toBe(
       "/video-hls/childhood-eye-screening/assessmentVisionPage/master.m3u8",
@@ -331,19 +380,7 @@ describe("childhood eye screening subtitle pilot", () => {
   });
 
   it("falls back to low mp4 when iOS HLS playback errors", async () => {
-    Object.defineProperty(window.navigator, "userAgent", {
-      configurable: true,
-      value:
-        "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1",
-    });
-    Object.defineProperty(window.navigator, "platform", {
-      configurable: true,
-      value: "iPhone",
-    });
-    Object.defineProperty(window.navigator, "maxTouchPoints", {
-      configurable: true,
-      value: 5,
-    });
+    setIPhoneWebKitUserAgent();
     Object.defineProperty(window.navigator, "onLine", {
       configurable: true,
       value: true,
@@ -362,9 +399,26 @@ describe("childhood eye screening subtitle pilot", () => {
       "videos/Core/VisualAcuity/VA_Assessment_220p.mp4",
     );
     expect(
-      page.querySelector("[data-childhood-pilot-subtitle-overlay='true']"),
+      page.querySelector("[data-childhood-pilot-subtitle-panel='true']"),
     ).not.toBeNull();
     expect(page.dataset.currentVideoMode).toBe("low");
+  });
+
+  it("uses the subtitle panel for desktop Safari local playback", async () => {
+    setDesktopSafariUserAgent();
+
+    await videos.ensureChildhoodPilotSubtitleControlsForPage(
+      "assessmentVisionPage",
+    );
+
+    const page = document.getElementById("assessmentVisionPage");
+
+    expect(
+      page.querySelector("[data-childhood-pilot-subtitle-panel='true']"),
+    ).not.toBeNull();
+    expect(
+      page.querySelector("track[data-childhood-pilot-subtitle='true']"),
+    ).toBeNull();
   });
 
   it("adds a menu button next to the video mode toggle", () => {

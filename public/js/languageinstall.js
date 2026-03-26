@@ -7,7 +7,7 @@ import { initializePWA, canInstall, promptInstall } from "./pwa.js";
 import { setLanguage, getLanguage } from "./i18n.js";
 import { saveProfile, bumpRefresh } from "./telemetry.js"; // Import bumpRefresh
 
-const STATIC_CACHE_NAME = "arclight-static-v4";
+const STATIC_CACHE_NAME = "arclight-static-v5";
 const CHILDHOOD_EYE_SCREENING_PILOT_PAGE_IDS = [
   "assessmentVisionPage",
   "mumVisionPage",

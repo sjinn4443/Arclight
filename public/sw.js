@@ -1,5 +1,5 @@
 /* sw.js — Arclight PWA service worker */
-const CACHE_NAME = "arclight-static-v10";
+const CACHE_NAME = "arclight-static-v11";
 const CORE_ASSETS = [
   "/",
   "/index.html",

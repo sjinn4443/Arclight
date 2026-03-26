@@ -1284,8 +1284,12 @@ function isDesktopSafariBrowser() {
   );
 }
 
-function shouldUseChildhoodPilotSubtitleOverlay() {
+function shouldUseChildhoodPilotSubtitlePanel() {
   return isIOSChildhoodPilotDevice() || isDesktopSafariBrowser();
+}
+
+function shouldUseChildhoodPilotSubtitleOverlay() {
+  return false;
 }
 
 function shouldUseIOSChildhoodPilotHls(pageId, entry = null) {
@@ -1486,6 +1490,7 @@ function getChildhoodPilotSubtitleOverlayState(video) {
     fullscreen: false,
     lang: "en",
     overlay: null,
+    panel: null,
     requestToken: 0,
     wired: false,
   };
@@ -1544,6 +1549,36 @@ function ensureChildhoodPilotSubtitleOverlay(video) {
   return overlay;
 }
 
+function ensureChildhoodPilotSubtitlePanel(video) {
+  if (!video) return null;
+
+  const state = getChildhoodPilotSubtitleOverlayState(video);
+  const container = video.closest(".video-container") || video.parentElement;
+  if (!container) return null;
+
+  let panel = state.panel;
+  const needsInsert =
+    !panel ||
+    !panel.isConnected ||
+    panel.parentElement !== container ||
+    panel.previousElementSibling !== video;
+
+  if (!panel || !panel.isConnected) {
+    panel = document.createElement("div");
+    panel.className = "childhood-pilot-subtitle-panel";
+    panel.setAttribute("data-childhood-pilot-subtitle-panel", "true");
+    panel.setAttribute("aria-live", "polite");
+    panel.setAttribute("aria-atomic", "true");
+    state.panel = panel;
+  }
+
+  if (needsInsert) {
+    video.insertAdjacentElement("afterend", panel);
+  }
+
+  return panel;
+}
+
 function resetChildhoodPilotSubtitleOverlay(video) {
   if (!video) return;
 
@@ -1558,6 +1593,11 @@ function resetChildhoodPilotSubtitleOverlay(video) {
   if (state.overlay) {
     state.overlay.hidden = true;
     state.overlay.textContent = "";
+  }
+
+  if (state.panel) {
+    state.panel.hidden = true;
+    state.panel.textContent = "";
   }
 }
 
@@ -1671,17 +1711,19 @@ function renderChildhoodPilotSubtitleOverlay(video) {
 
   const state = childhoodPilotSubtitleOverlayStates.get(video);
   const overlay = state?.overlay;
-  if (!state || !overlay) return;
+  const panel = state?.panel;
+  if (!state || (!overlay && !panel)) return;
 
-  if (
-    !state.enabled ||
-    state.fullscreen ||
-    video.style.display === "none" ||
-    !state.cues.length
-  ) {
+  if (!state.enabled || video.style.display === "none" || !state.cues.length) {
     state.currentText = "";
-    overlay.hidden = true;
-    overlay.textContent = "";
+    if (overlay) {
+      overlay.hidden = true;
+      overlay.textContent = "";
+    }
+    if (panel) {
+      panel.hidden = true;
+      panel.textContent = "";
+    }
     return;
   }
 
@@ -1691,22 +1733,39 @@ function renderChildhoodPilotSubtitleOverlay(video) {
     .map((cue) => cue.text)
     .join("\n");
 
-  if (!activeText) {
-    state.currentText = "";
-    overlay.hidden = true;
-    overlay.textContent = "";
-    return;
+  state.currentText = activeText;
+
+  if (overlay) {
+    if (state.fullscreen || !activeText) {
+      overlay.hidden = true;
+      overlay.textContent = "";
+    } else {
+      overlay.textContent = "";
+      const cueNode = document.createElement("span");
+      cueNode.className = "childhood-pilot-subtitle-overlay__cue";
+      cueNode.textContent = activeText;
+      overlay.appendChild(cueNode);
+      overlay.hidden = false;
+    }
   }
 
-  if (activeText === state.currentText && !overlay.hidden) return;
+  if (panel) {
+    if (state.fullscreen) {
+      panel.hidden = true;
+      panel.textContent = "";
+      return;
+    }
 
-  overlay.textContent = "";
-  const cueNode = document.createElement("span");
-  cueNode.className = "childhood-pilot-subtitle-overlay__cue";
-  cueNode.textContent = activeText;
-  overlay.appendChild(cueNode);
-  overlay.hidden = false;
-  state.currentText = activeText;
+    panel.hidden = false;
+    panel.textContent = "";
+
+    if (activeText) {
+      const cueNode = document.createElement("span");
+      cueNode.className = "childhood-pilot-subtitle-panel__cue";
+      cueNode.textContent = activeText;
+      panel.appendChild(cueNode);
+    }
+  }
 }
 
 async function syncChildhoodPilotSubtitleOverlay(video, { lang, src }) {
@@ -1715,15 +1774,28 @@ async function syncChildhoodPilotSubtitleOverlay(video, { lang, src }) {
   const normalizedLang = normalizeChildhoodPilotSubtitleLanguage(lang);
   const state = getChildhoodPilotSubtitleOverlayState(video);
   state.lang = normalizedLang;
+  const usePanel = shouldUseChildhoodPilotSubtitlePanel();
+  const useOverlay = shouldUseChildhoodPilotSubtitleOverlay();
 
-  if (!shouldUseChildhoodPilotSubtitleOverlay()) {
+  if (!usePanel && !useOverlay) {
     resetChildhoodPilotSubtitleOverlay(video);
     showChildhoodPilotSubtitleTrack(video, normalizedLang);
     return;
   }
 
-  const overlay = ensureChildhoodPilotSubtitleOverlay(video);
-  if (!overlay) return;
+  const surface = usePanel
+    ? ensureChildhoodPilotSubtitlePanel(video)
+    : ensureChildhoodPilotSubtitleOverlay(video);
+  if (!surface) return;
+
+  if (usePanel && state.overlay) {
+    state.overlay.hidden = true;
+    state.overlay.textContent = "";
+  }
+  if (useOverlay && state.panel) {
+    state.panel.hidden = true;
+    state.panel.textContent = "";
+  }
 
   const token = state.requestToken + 1;
   state.requestToken = token;
@@ -1902,6 +1974,7 @@ async function syncChildhoodPilotSubtitlesForPage(
     "";
 
   const isOnline = isVideoPageCurrentlyOnline(pageId);
+  const useSubtitlePanel = shouldUseChildhoodPilotSubtitlePanel();
 
   if (!video) {
     return resolvedLang;
@@ -1910,7 +1983,7 @@ async function syncChildhoodPilotSubtitlesForPage(
   if (isOnline && shouldUseIOSChildhoodPilotHls(pageId, entry)) {
     removeChildhoodPilotSubtitleTracks(video);
     if (trackSrc) {
-      void syncChildhoodPilotSubtitleOverlay(video, {
+      await syncChildhoodPilotSubtitleOverlay(video, {
         lang: resolvedLang,
         src: trackSrc,
       });
@@ -1925,16 +1998,19 @@ async function syncChildhoodPilotSubtitlesForPage(
 
   if (isOnline) {
     removeChildhoodPilotSubtitleTracks(video);
+    resetChildhoodPilotSubtitleOverlay(video);
     return resolvedLang;
   }
 
-  if (isIOSChildhoodPilotDevice()) {
+  if (useSubtitlePanel) {
     removeChildhoodPilotSubtitleTracks(video);
     if (trackSrc) {
-      void syncChildhoodPilotSubtitleOverlay(video, {
+      await syncChildhoodPilotSubtitleOverlay(video, {
         lang: resolvedLang,
         src: trackSrc,
       });
+    } else {
+      resetChildhoodPilotSubtitleOverlay(video);
     }
     return resolvedLang;
   }
