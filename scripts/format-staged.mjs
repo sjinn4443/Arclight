@@ -71,12 +71,9 @@ async function mergeFormattedIntoWorkingTree({
       writeFile(theirsPath, normalizeLineEndings(workingTreeContent), "utf8"),
     ]);
 
-    const result = git(
-      ["merge-file", "-p", oursPath, basePath, theirsPath],
-      {
-        allowFailure: true,
-      },
-    );
+    const result = git(["merge-file", "-p", oursPath, basePath, theirsPath], {
+      allowFailure: true,
+    });
 
     if (result.status !== 0 && result.status !== 1) {
       const stderr = String(result.stderr || "").trim();
@@ -109,8 +106,8 @@ async function main() {
     "--name-only",
     "--cached",
     "--diff-filter=ACMR",
-  ]).stdout
-    .split(/\r?\n/)
+  ])
+    .stdout.split(/\r?\n/)
     .filter(Boolean)
     .filter((file) => TARGET_EXTENSIONS.has(path.extname(file).toLowerCase()));
 
@@ -166,8 +163,8 @@ async function main() {
       mergedWorkingTreeContent = applyLineEnding(formattedContent, lineEnding);
     }
 
-    const modeLine = git(["ls-files", "--stage", "--", relativePath]).stdout
-      .split(/\r?\n/)
+    const modeLine = git(["ls-files", "--stage", "--", relativePath])
+      .stdout.split(/\r?\n/)
       .find(Boolean);
     const mode = modeLine?.split(/\s+/)[0] || "100644";
 
