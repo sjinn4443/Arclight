@@ -10,6 +10,30 @@ describe("Media resilience proxy", () => {
       <div id="mediaError" style="display:none"></div>
       <video id="trainingVideo"></video>
     `;
+
+    window.matchMedia = jest.fn().mockImplementation(() => ({
+      matches: true,
+      media: "(pointer: coarse)",
+      addListener: jest.fn(),
+      removeListener: jest.fn(),
+      addEventListener: jest.fn(),
+      removeEventListener: jest.fn(),
+      dispatchEvent: jest.fn(),
+    }));
+
+    Object.defineProperty(window.navigator, "maxTouchPoints", {
+      configurable: true,
+      value: 5,
+    });
+
+    Object.defineProperty(window, "innerWidth", {
+      configurable: true,
+      value: 390,
+    });
+    Object.defineProperty(window, "innerHeight", {
+      configurable: true,
+      value: 844,
+    });
   });
 
   test("handles 404/codec error gracefully", async () => {
@@ -22,5 +46,18 @@ describe("Media resilience proxy", () => {
     await initializeVideoPlayers("missing.mp4");
 
     // No assertion here, as initializeVideoPlayers doesn't handle mediaError display
+  });
+
+  test("does not auto-enter fullscreen for subtitle overlay videos on mobile", async () => {
+    const video = document.getElementById("trainingVideo");
+    video.dataset.preventAutoFullscreen = "true";
+    video.webkitEnterFullscreen = jest.fn();
+    video.requestFullscreen = jest.fn();
+
+    await initializeVideoPlayers();
+    video.dispatchEvent(new Event("play"));
+
+    expect(video.webkitEnterFullscreen).not.toHaveBeenCalled();
+    expect(video.requestFullscreen).not.toHaveBeenCalled();
   });
 });

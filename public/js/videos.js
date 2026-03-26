@@ -1218,6 +1218,26 @@ function prepareVideoForChildhoodPilotSubtitles(video) {
   if (!video.getAttribute("crossorigin")) {
     video.setAttribute("crossorigin", "anonymous");
   }
+
+  if (shouldUseChildhoodPilotSubtitleOverlay()) {
+    video.dataset.preventAutoFullscreen = "true";
+
+    const existingControlsList = String(
+      video.getAttribute("controlslist") || "",
+    )
+      .split(/\s+/)
+      .filter(Boolean);
+    const nextControlsList = Array.from(
+      new Set([...existingControlsList, "nofullscreen", "noremoteplayback"]),
+    );
+    video.setAttribute("controlslist", nextControlsList.join(" "));
+
+    try {
+      video.disableRemotePlayback = true;
+    } catch {
+      /* ignore */
+    }
+  }
 }
 
 function shouldUseChildhoodPilotSubtitleOverlay() {
@@ -1608,6 +1628,11 @@ async function syncChildhoodPilotSubtitlesForPage(
   const page = getVideoPageElement(pageId);
   if (!page) return "";
 
+  const video = getVideoPageLocalVideoElement(pageId);
+  if (video) {
+    prepareVideoForChildhoodPilotSubtitles(video);
+  }
+
   const catalog = await loadChildhoodEyeScreeningSubtitleCatalog();
   const entry = catalog?.[pageId];
   if (!entry) return "";
@@ -1623,7 +1648,6 @@ async function syncChildhoodPilotSubtitlesForPage(
     },
   );
 
-  const video = getVideoPageLocalVideoElement(pageId);
   const isOnline = isVideoPageCurrentlyOnline(pageId);
 
   if (!video || isOnline) {
