@@ -41,6 +41,22 @@ const PILOT_SUBTITLE_VTT = `WEBVTT
 Subtitle cue
 `;
 
+function setDefaultChromiumUserAgent() {
+  Object.defineProperty(window.navigator, "userAgent", {
+    configurable: true,
+    value:
+      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36",
+  });
+  Object.defineProperty(window.navigator, "platform", {
+    configurable: true,
+    value: "Win32",
+  });
+  Object.defineProperty(window.navigator, "maxTouchPoints", {
+    configurable: true,
+    value: 0,
+  });
+}
+
 function setIPhoneWebKitUserAgent() {
   Object.defineProperty(window.navigator, "userAgent", {
     configurable: true,
@@ -81,6 +97,7 @@ describe("childhood eye screening subtitle pilot", () => {
     jest.resetModules();
     localStorage.clear();
     document.documentElement.lang = "en";
+    setDefaultChromiumUserAgent();
     document.body.innerHTML = `
       <div id="videos">
         <div id="assessmentVisionPage" class="page" style="display:block">
@@ -248,18 +265,19 @@ describe("childhood eye screening subtitle pilot", () => {
     expect(videos.calculateVideoProgressPercent(6, 10)).toBeLessThan(100);
   });
 
-  it("renders a WebKit subtitle panel that updates cue text over time", async () => {
+  it("renders an iPhone WebKit subtitle overlay that updates cue text over time", async () => {
     setIPhoneWebKitUserAgent();
     localStorage.setItem("prefLang", "ko");
 
     await videos.ensureChildhoodPilotSubtitleControlsForPage(
       "assessmentVisionPage",
     );
+    await new Promise((resolve) => setTimeout(resolve, 0));
 
     const page = document.getElementById("assessmentVisionPage");
     const video = page.querySelector("video");
-    const panel = page.querySelector(
-      "[data-childhood-pilot-subtitle-panel='true']",
+    const overlay = page.querySelector(
+      "[data-childhood-pilot-subtitle-overlay='true']",
     );
 
     Object.defineProperty(video, "currentTime", {
@@ -269,11 +287,8 @@ describe("childhood eye screening subtitle pilot", () => {
     });
     video.dispatchEvent(new Event("timeupdate"));
 
-    expect(
-      page.querySelector("track[data-childhood-pilot-subtitle='true']"),
-    ).toBeNull();
-    expect(panel).not.toBeNull();
-    expect(panel.textContent).toContain("Subtitle cue");
+    expect(overlay).not.toBeNull();
+    expect(overlay.textContent).toContain("Subtitle cue");
   });
 
   it("injects an app-language subtitle track for pilot pages without a selector", async () => {
@@ -353,6 +368,9 @@ describe("childhood eye screening subtitle pilot", () => {
     videos.showVideosPageById("assessmentVisionPage");
     await new Promise((resolve) => setTimeout(resolve, 0));
     await new Promise((resolve) => setTimeout(resolve, 0));
+    await videos.ensureChildhoodPilotSubtitleControlsForPage(
+      "assessmentVisionPage",
+    );
 
     const trackEl = page.querySelector(
       "track[data-childhood-pilot-subtitle='true']",
@@ -365,7 +383,7 @@ describe("childhood eye screening subtitle pilot", () => {
     expect(trackEl).toBeNull();
     expect(video.dataset.preventAutoFullscreen).toBeUndefined();
     expect(
-      page.querySelector("[data-childhood-pilot-subtitle-panel='true']"),
+      page.querySelector("[data-childhood-pilot-subtitle-overlay='true']"),
     ).not.toBeNull();
     expect(video.querySelector("source").getAttribute("src")).toBe(
       "/video-hls/childhood-eye-screening/assessmentVisionPage/master.m3u8",
@@ -394,12 +412,15 @@ describe("childhood eye screening subtitle pilot", () => {
     video.dispatchEvent(new Event("error"));
     await new Promise((resolve) => setTimeout(resolve, 0));
     await new Promise((resolve) => setTimeout(resolve, 0));
+    await videos.ensureChildhoodPilotSubtitleControlsForPage(
+      "assessmentVisionPage",
+    );
 
     expect(video.querySelector("source").getAttribute("src")).toBe(
       "videos/Core/VisualAcuity/VA_Assessment_220p.mp4",
     );
     expect(
-      page.querySelector("[data-childhood-pilot-subtitle-panel='true']"),
+      page.querySelector("[data-childhood-pilot-subtitle-overlay='true']"),
     ).not.toBeNull();
     expect(page.dataset.currentVideoMode).toBe("low");
   });

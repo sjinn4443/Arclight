@@ -1276,20 +1276,26 @@ function isIOSChildhoodPilotDevice() {
 }
 
 function isDesktopSafariBrowser() {
-  const userAgent = String(window.navigator?.userAgent || "");
+  const nav = window.navigator;
+  const userAgent = String(nav?.userAgent || "");
+  const platform = String(nav?.platform || "");
+  const maxTouchPoints = Number(nav?.maxTouchPoints || 0);
   return (
     /Safari/i.test(userAgent) &&
-    !/Chrome|Chromium|CriOS|Edg|OPR|Firefox|FxiOS|Android/i.test(userAgent) &&
-    /Macintosh|Mac OS X/i.test(userAgent)
+    !/Chrome|Chromium|CriOS|Edg|OPR|Firefox|FxiOS|Android|Mobile|iP(hone|od|ad)/i.test(
+      userAgent,
+    ) &&
+    (/Macintosh/i.test(userAgent) ||
+      (/Mac/i.test(platform) && maxTouchPoints === 0))
   );
 }
 
 function shouldUseChildhoodPilotSubtitlePanel() {
-  return isIOSChildhoodPilotDevice() || isDesktopSafariBrowser();
+  return isDesktopSafariBrowser();
 }
 
 function shouldUseChildhoodPilotSubtitleOverlay() {
-  return false;
+  return isIOSChildhoodPilotDevice();
 }
 
 function shouldUseIOSChildhoodPilotHls(pageId, entry = null) {
@@ -1975,6 +1981,7 @@ async function syncChildhoodPilotSubtitlesForPage(
 
   const isOnline = isVideoPageCurrentlyOnline(pageId);
   const useSubtitlePanel = shouldUseChildhoodPilotSubtitlePanel();
+  const useSubtitleOverlay = shouldUseChildhoodPilotSubtitleOverlay();
 
   if (!video) {
     return resolvedLang;
@@ -2012,6 +2019,21 @@ async function syncChildhoodPilotSubtitlesForPage(
     } else {
       resetChildhoodPilotSubtitleOverlay(video);
     }
+    return resolvedLang;
+  }
+
+  if (useSubtitleOverlay) {
+    prepareVideoForChildhoodPilotSubtitles(video);
+
+    if (!trackSrc) {
+      resetChildhoodPilotSubtitleOverlay(video);
+      return resolvedLang;
+    }
+
+    applyChildhoodPilotSubtitleTrack(video, {
+      lang: resolvedLang,
+      src: trackSrc,
+    });
     return resolvedLang;
   }
 
