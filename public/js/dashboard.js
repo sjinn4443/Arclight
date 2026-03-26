@@ -24,10 +24,29 @@ async function ensureDashboardI18nDictionary() {
   dashboardI18nLang = lang;
 }
 
-async function translateDashboard(path, fallback, vars = {}) {
+async function translateDashboard(
+  path,
+  fallback,
+  vars = {},
+  fallbackPaths = [],
+) {
   await ensureDashboardI18nDictionary();
   const translated = get(dashboardI18nDict, path);
-  return interpolateTemplate(translated == null ? fallback : translated, vars);
+  const fallbackTranslated = fallbackPaths
+    .map((candidate) => get(dashboardI18nDict, candidate))
+    .find((candidate) => candidate != null);
+  return interpolateTemplate(
+    translated == null ? (fallbackTranslated ?? fallback) : translated,
+    vars,
+  );
+}
+
+async function translateDashboardParts(parts = []) {
+  if (!parts.length) return "";
+  await ensureDashboardI18nDictionary();
+  return parts
+    .map(({ path, fallback }) => get(dashboardI18nDict, path) ?? fallback)
+    .join(" | ");
 }
 /**
  * Initializes the unified dashboard page.
@@ -90,9 +109,14 @@ export function initializeDashboard() {
       }
 
       if (!key) return;
-      helloEl.textContent = await translateDashboard(key, fallback, {
-        name: username,
-      });
+      helloEl.textContent = await translateDashboard(
+        key,
+        fallback,
+        {
+          name: username,
+        },
+        ["dashboard.greeting"],
+      );
     };
 
     if (count === 1) {
@@ -260,7 +284,12 @@ export function initializeDashboard() {
 
   // 6) Recommended for you (2 random)
   const host = document.getElementById("recommendedPlaceholder");
-  if (host) renderRecommendations(host);
+  if (host) {
+    void renderRecommendations(host);
+    window.addEventListener("i18n:languageChanged", () => {
+      void renderRecommendations(host);
+    });
+  }
 }
 
 /**
@@ -292,7 +321,7 @@ function openVideosSubpage(pageId) {
   loadPage("videos");
 }
 
-function renderRecommendations(host) {
+async function renderRecommendations(host) {
   const ALL = [
     {
       title: "Ophthalmoscopy",
@@ -300,7 +329,10 @@ function renderRecommendations(host) {
       page: "directOphthalmoscopy",
       img: "images/icon/eyes/core/ophth.webp",
       subtitle: "Video | Quiz",
-      subtitleI18n: "dashboard.recommended_subtitle_video_quiz",
+      subtitleParts: [
+        { path: "eyes.tag_video", fallback: "Video" },
+        { path: "eyes.tag_quiz", fallback: "Quiz" },
+      ],
       progress: 0,
     },
     {
@@ -309,7 +341,7 @@ function renderRecommendations(host) {
       page: "visualAcuityPage",
       img: "images/icon/eyes/core/visualacuity.webp",
       subtitle: "Video",
-      subtitleI18n: "dashboard.recommended_subtitle_video",
+      subtitleParts: [{ path: "eyes.tag_video", fallback: "Video" }],
       progress: 0,
     },
     {
@@ -318,7 +350,10 @@ function renderRecommendations(host) {
       page: "pupilsPage",
       img: "images/icon/eyes/core/pupils.webp",
       subtitle: "Video | Quiz",
-      subtitleI18n: "dashboard.recommended_subtitle_video_quiz",
+      subtitleParts: [
+        { path: "eyes.tag_video", fallback: "Video" },
+        { path: "eyes.tag_quiz", fallback: "Quiz" },
+      ],
       progress: 0,
     },
     {
@@ -327,7 +362,10 @@ function renderRecommendations(host) {
       page: "anteriorSegmentVideoPage",
       img: "images/icon/eyes/core/frontofeye.webp",
       subtitle: "Video | Case Study",
-      subtitleI18n: "dashboard.recommended_subtitle_video_case_study",
+      subtitleParts: [
+        { path: "eyes.tag_video", fallback: "Video" },
+        { path: "eyes.tag_case_study", fallback: "Case Study" },
+      ],
       progress: 0,
     },
     {
@@ -336,7 +374,7 @@ function renderRecommendations(host) {
       page: "interactiveLearningPage",
       img: "images/icon/eyes/core/miniapp.webp",
       subtitle: "Mini Apps",
-      subtitleI18n: "dashboard.recommended_subtitle_mini_apps",
+      subtitleParts: [{ path: "eyes.tag_mini_apps", fallback: "Mini Apps" }],
       progress: 0,
     },
   ];
@@ -349,7 +387,7 @@ function renderRecommendations(host) {
   if (!cardTemplate) return;
 
   host.textContent = "";
-  picks.forEach((m) => {
+  for (const m of picks) {
     const card = cardTemplate.content
       .querySelector(".module-card")
       .cloneNode(true);
@@ -377,8 +415,9 @@ function renderRecommendations(host) {
     const subtitle = card.querySelector(".module-subtitle");
     if (subtitle) {
       if (m.subtitle) {
-        subtitle.textContent = m.subtitle;
-        if (m.subtitleI18n) subtitle.setAttribute("data-i18n", m.subtitleI18n);
+        subtitle.textContent = m.subtitleParts?.length
+          ? await translateDashboardParts(m.subtitleParts)
+          : m.subtitle;
       } else {
         subtitle.remove();
       }
@@ -390,7 +429,7 @@ function renderRecommendations(host) {
     }
 
     host.appendChild(card);
-  });
+  }
 
   try {
     window.I18N?.applyTranslations?.(host);

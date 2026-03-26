@@ -1218,26 +1218,6 @@ function prepareVideoForChildhoodPilotSubtitles(video) {
   if (!video.getAttribute("crossorigin")) {
     video.setAttribute("crossorigin", "anonymous");
   }
-
-  if (shouldUseChildhoodPilotSubtitleOverlay()) {
-    video.dataset.preventAutoFullscreen = "true";
-
-    const existingControlsList = String(
-      video.getAttribute("controlslist") || "",
-    )
-      .split(/\s+/)
-      .filter(Boolean);
-    const nextControlsList = Array.from(
-      new Set([...existingControlsList, "nofullscreen", "noremoteplayback"]),
-    );
-    video.setAttribute("controlslist", nextControlsList.join(" "));
-
-    try {
-      video.disableRemotePlayback = true;
-    } catch {
-      /* ignore */
-    }
-  }
 }
 
 function shouldUseChildhoodPilotSubtitleOverlay() {
@@ -1539,6 +1519,29 @@ function scheduleChildhoodPilotSubtitleResync(video, lang) {
   video.addEventListener("webkitbeginfullscreen", sync, { once: true });
 }
 
+function primeChildhoodPilotNativeTrack(video, lang) {
+  if (!video || !shouldUseChildhoodPilotSubtitleOverlay()) return;
+  if (!video.paused) return;
+  if ((Number(video.currentTime) || 0) > 0.1) return;
+
+  const restoreTrack = () => {
+    delete video.dataset.childhoodPilotNativeTrackPriming;
+    showChildhoodPilotSubtitleTrack(video, lang);
+  };
+
+  if (video.dataset.childhoodPilotNativeTrackPriming === "1") return;
+  video.dataset.childhoodPilotNativeTrackPriming = "1";
+
+  video.addEventListener("loadedmetadata", restoreTrack, { once: true });
+  video.addEventListener("loadeddata", restoreTrack, { once: true });
+
+  try {
+    video.load();
+  } catch {
+    restoreTrack();
+  }
+}
+
 function removeChildhoodPilotSubtitleTracks(video) {
   if (!video) return;
 
@@ -1591,11 +1594,12 @@ function applyChildhoodPilotSubtitleTrack(video, { lang, src }) {
   removeChildhoodPilotSubtitleTracks(video);
 
   const trackEl = document.createElement("track");
-  trackEl.kind = "subtitles";
+  trackEl.kind = "captions";
   trackEl.label = getChildhoodPilotSubtitleLabel(lang);
   trackEl.srclang = normalizeChildhoodPilotSubtitleLanguage(lang);
   trackEl.src = src;
   trackEl.default = true;
+  trackEl.setAttribute("kind", "captions");
   trackEl.setAttribute("default", "");
   trackEl.setAttribute("data-childhood-pilot-subtitle", "true");
   trackEl.addEventListener(
@@ -1616,6 +1620,7 @@ function applyChildhoodPilotSubtitleTrack(video, { lang, src }) {
   video.appendChild(trackEl);
   showChildhoodPilotSubtitleTrack(video, lang);
   scheduleChildhoodPilotSubtitleResync(video, lang);
+  primeChildhoodPilotNativeTrack(video, lang);
   void syncChildhoodPilotSubtitleOverlay(video, { lang, src });
 }
 

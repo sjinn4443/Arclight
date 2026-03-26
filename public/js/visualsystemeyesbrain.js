@@ -1,3 +1,5 @@
+import { fetchDictionary, get, getLanguage } from "./i18n.js";
+
 function clamp(value, min = 0, max = 1) {
   return Math.min(max, Math.max(min, value));
 }
@@ -156,17 +158,51 @@ const INTRO_CAPTION_TEXT =
 const WORLD_CAPTION_TEXT_FOCUS =
   "Cornea and lens focus light onto the back of the eye";
 const WORLD_CAPTION_TEXT_RETINA = "At the back of the eye\nis the retina";
-const FINAL_CAPTION_TEXT_SENSOR = "The retina works like a camera sensor";
-const FINAL_CAPTION_TEXT_SIGNAL = "It changes light into electrical signals";
-const FINAL_CAPTION_TEXT_OPTIC_NERVE =
-  "These signals travel through the optic nerve to the brain";
-const FINAL_CAPTION_TEXT_VISION = "The brain creates vision from these signals";
+const FINAL_CAPTION_TEXT_SUMMARY =
+  "The retina works like a camera sensor. It changes light into electrical signals that travel through the optic nerve to the brain. The brain creates vision from these signals.";
+
+function htmlishToPlainText(value) {
+  return String(value == null ? "" : value)
+    .replace(/<br\s*\/?>/gi, "\n")
+    .replace(/&nbsp;/gi, " ")
+    .replace(/<[^>]+>/g, "")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+}
+
+function buildDefaultCaptionCopy() {
+  return {
+    intro: INTRO_CAPTION_TEXT,
+    worldFocus: WORLD_CAPTION_TEXT_FOCUS,
+    worldRetina: WORLD_CAPTION_TEXT_RETINA,
+    final: FINAL_CAPTION_TEXT_SUMMARY,
+  };
+}
+
+async function loadCaptionCopy(lang = getLanguage()) {
+  const dict = await fetchDictionary(lang);
+  return {
+    intro:
+      htmlishToPlainText(get(dict, "i18nExtra.visualsystem_step0")) ||
+      INTRO_CAPTION_TEXT,
+    worldFocus:
+      htmlishToPlainText(get(dict, "i18nExtra.visualsystem_step1")) ||
+      WORLD_CAPTION_TEXT_FOCUS,
+    worldRetina:
+      htmlishToPlainText(get(dict, "i18nExtra.visualsystem_step2")) ||
+      WORLD_CAPTION_TEXT_RETINA,
+    final:
+      htmlishToPlainText(get(dict, "i18nExtra.visualsystem_step3")) ||
+      FINAL_CAPTION_TEXT_SUMMARY,
+  };
+}
 
 function renderScene(
   elements,
   progress,
   prefersReducedMotion,
   isMobileViewport = false,
+  captionCopy = buildDefaultCaptionCopy(),
 ) {
   const mappedProgress = mapStoryProgress(progress, isMobileViewport);
   const p = prefersReducedMotion
@@ -246,7 +282,7 @@ function renderScene(
     y: 0,
   });
 
-  setTextContent(elements.introCaptionText, INTRO_CAPTION_TEXT);
+  setTextContent(elements.introCaptionText, captionCopy.intro);
   setLayerState(elements.introCaption, {
     opacity: introCaptionOpacity,
     y: lerp(0, -12, introCaptionOut),
@@ -333,7 +369,7 @@ function renderScene(
 
   setTextContent(
     elements.worldCaptionText,
-    compactP < 0.685 ? WORLD_CAPTION_TEXT_FOCUS : WORLD_CAPTION_TEXT_RETINA,
+    compactP < 0.685 ? captionCopy.worldFocus : captionCopy.worldRetina,
   );
   setLayerState(elements.worldCaption, {
     opacity: worldCaptionOpacity,
@@ -407,15 +443,7 @@ function renderScene(
     clipBottom: 100 - tractProgress * 100,
   });
 
-  let finalCaptionText = FINAL_CAPTION_TEXT_SENSOR;
-  if (tract2Progress > 0.03) {
-    finalCaptionText = FINAL_CAPTION_TEXT_VISION;
-  } else if (tractProgress > 0.03 || tractOut > 0.01) {
-    finalCaptionText = FINAL_CAPTION_TEXT_OPTIC_NERVE;
-  } else if (compactP > 0.945) {
-    finalCaptionText = FINAL_CAPTION_TEXT_SIGNAL;
-  }
-  setTextContent(elements.finalCaptionText, finalCaptionText);
+  setTextContent(elements.finalCaptionText, captionCopy.final);
   setLayerState(elements.finalCaption, {
     opacity: finalCaptionOpacity,
     y: lerp(10, 0, finalIn) + finalTailY,
@@ -486,6 +514,7 @@ function initializeVisualSystemStoryPage(page) {
   let rafId = 0;
   let lastProgress = -1;
   let detachMotionPreference = () => {};
+  let captionCopy = buildDefaultCaptionCopy();
 
   function scheduleRender() {
     if (rafId) return;
@@ -506,8 +535,18 @@ function initializeVisualSystemStoryPage(page) {
         progress,
         prefersReducedMotion.matches,
         mobileViewport.matches,
+        captionCopy,
       );
     });
+  }
+
+  async function refreshCaptionCopy() {
+    try {
+      captionCopy = await loadCaptionCopy();
+    } catch {
+      captionCopy = buildDefaultCaptionCopy();
+    }
+    scheduleRender();
   }
 
   const listen = (target, type, handler, options = {}) => {
@@ -523,6 +562,9 @@ function initializeVisualSystemStoryPage(page) {
 
   listen(window, "resize", scheduleRender, { passive: true });
   listen(window, "orientationchange", scheduleRender, { passive: true });
+  listen(document, "i18n:languageChanged", () => {
+    void refreshCaptionCopy();
+  });
 
   if (typeof prefersReducedMotion.addEventListener === "function") {
     prefersReducedMotion.addEventListener("change", scheduleRender, { signal });
@@ -552,9 +594,11 @@ function initializeVisualSystemStoryPage(page) {
     0,
     prefersReducedMotion.matches,
     mobileViewport.matches,
+    captionCopy,
   );
   scheduleRender();
   window.requestAnimationFrame(scheduleRender);
+  void refreshCaptionCopy();
 }
 
 const CHILDHOOD_QNO_QUESTIONS = [

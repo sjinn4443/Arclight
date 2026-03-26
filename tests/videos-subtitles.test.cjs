@@ -214,6 +214,7 @@ describe("childhood eye screening subtitle pilot", () => {
     expect(trackEl.getAttribute("src")).toBe(
       "/video-subtitles/childhood-eye-screening/assessmentVisionPage/ko.vtt",
     );
+    expect(trackEl.getAttribute("kind")).toBe("captions");
     expect(trackEl.hasAttribute("default")).toBe(true);
     expect(video.getAttribute("playsinline")).toBe("");
     expect(video.getAttribute("webkit-playsinline")).toBe("");
@@ -275,8 +276,6 @@ describe("childhood eye screening subtitle pilot", () => {
     expect(overlay).not.toBeNull();
     expect(overlay.hidden).toBe(false);
     expect(overlay.textContent).toContain("Fallback subtitle line");
-    expect(video.dataset.preventAutoFullscreen).toBe("true");
-    expect(video.getAttribute("controlslist")).toContain("nofullscreen");
   });
 
   it("adds a menu button next to the video mode toggle", () => {

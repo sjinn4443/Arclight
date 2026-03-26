@@ -2,17 +2,21 @@
 <div id="earsCatalogPage" class="page">
   <div class="container ears-container">
     <div class="ears-top">
-      <div class="ears-title" data-i18n="earsCatalogTitle">Ears</div>
+      <div class="ears-title" data-i18n="ears.earsCatalogTitle">Ears</div>
       <div class="icons">
-        <span class="icon menuBtn" data-i18n="menuButton" aria-label="Menu"
+        <span
+          class="icon menuBtn"
+          aria-label="Menu"
+          data-i18n="i18nExtra.menu_aria_label:aria-label"
           >☰</span
         >
       </div>
     </div>
 
     <!-- Learning Modules -->
-    <h2 class="catalog-h2" data-i18n="learningModulesTitle">
-      Learning Modules <span class="see-all" data-i18n="seeAll">See all ></span>
+    <h2 class="catalog-h2" data-i18n="ears.learningModulesTitle">
+      Learning Modules
+      <span class="see-all" data-i18n="ears.seeAll">See all ></span>
     </h2>
     <div id="earsLearningCarousel" class="ears-carousel"></div>
 
@@ -46,25 +50,25 @@
 <!-- Ears Learning Modules Page -->
 <div id="earsLearningModules" class="page hidden">
   <div class="container">
-    <h1 data-i18n="learningModulesTitle">Learning Modules</h1>
+    <h1 data-i18n="ears.learningModulesTitle">Learning Modules</h1>
     <div class="module-card" data-page="otoscopyPage" style="cursor: pointer">
       <div class="module-info">
-        <h3 data-i18n="otoscopyModuleTitle">Otoscopy</h3>
-        <p data-i18n="videoLearningPdf">Video Learning | PDF</p>
+        <h3 data-i18n="ears.otoscopyModuleTitle">Otoscopy</h3>
+        <p data-i18n="ears.videoLearningPdf">Video Learning | PDF</p>
         <div class="progress-bar">
           <div class="progress" style="width: 0%"></div>
         </div>
-        <span class="status" data-i18n="startStatus">Start!</span>
+        <span class="status" data-i18n="ears.startStatus">Start!</span>
       </div>
     </div>
     <div class="module-card" data-page="earHealthPage" style="cursor: pointer">
       <div class="module-info">
-        <h3 data-i18n="earHealthModuleTitle">Ear Health & Hearing Loss</h3>
-        <p data-i18n="visualContent">Visual Content</p>
+        <h3 data-i18n="ears.earHealthModuleTitle">Ear Health & Hearing Loss</h3>
+        <p data-i18n="ears.visualContent">Visual Content</p>
         <div class="progress-bar">
           <div class="progress" style="width: 0%"></div>
         </div>
-        <span class="status" data-i18n="startStatus">Start!</span>
+        <span class="status" data-i18n="ears.startStatus">Start!</span>
       </div>
     </div>
   </div>
@@ -73,15 +77,15 @@
 <!-- Otoscopy Page -->
 <div id="otoscopyPage" class="page hidden">
   <div class="container">
-    <h1 data-i18n="otoscopyPageTitle">Otoscopy</h1>
+    <h1 data-i18n="ears.otoscopyPageTitle">Otoscopy</h1>
     <div
       class="module-card"
       data-page="howToExamineEarPage"
       style="cursor: pointer"
     >
       <div class="module-info">
-        <h3 data-i18n="howToExamineEarTitle">How to Examine the Ear</h3>
-        <p data-i18n="videoLearning">Video Learning</p>
+        <h3 data-i18n="ears.howToExamineEarTitle">How to Examine the Ear</h3>
+        <p data-i18n="ears.videoLearning">Video Learning</p>
       </div>
     </div>
     <div
@@ -90,8 +94,8 @@
       style="cursor: pointer"
     >
       <div class="module-info">
-        <h3 data-i18n="otoscopyPosterTitle">Otoscopy Poster</h3>
-        <p data-i18n="visualContent">Visual Content</p>
+        <h3 data-i18n="ears.otoscopyPosterTitle">Otoscopy Poster</h3>
+        <p data-i18n="ears.visualContent">Visual Content</p>
       </div>
     </div>
     <div
@@ -100,10 +104,10 @@
       style="cursor: pointer"
     >
       <div class="module-info">
-        <h3 data-i18n="commonEarConditionsTitle">
+        <h3 data-i18n="ears.commonEarConditionsTitle">
           Common Ear Conditions: Flowchart
         </h3>
-        <p data-i18n="visualContent">Visual Content</p>
+        <p data-i18n="ears.visualContent">Visual Content</p>
       </div>
     </div>
   </div>
@@ -115,12 +119,12 @@
     <div class="header">
       <button
         data-page="earsLearningModules"
-        data-i18n="backButton"
-        aria-label="Back"
+        aria-label="Go back"
+        data-i18n="i18nLiteral.Go back:aria-label"
       >
         ←
       </button>
-      <h3 data-i18n="earHealthAndHearingLossTitle">
+      <h3 data-i18n="ears.earHealthAndHearingLossTitle">
         Ear Health & Hearing Loss
       </h3>
     </div>
@@ -148,15 +152,19 @@
 <div id="howToExamineEarPage" class="page hidden">
   <div class="container">
     <div class="header">
-      <button data-page="otoscopyPage" data-i18n="backButton" aria-label="Back">
+      <button
+        data-page="otoscopyPage"
+        aria-label="Go back"
+        data-i18n="i18nLiteral.Go back:aria-label"
+      >
         ←
       </button>
-      <h3 data-i18n="howToExamineEarTitle">How to Examine the Ear</h3>
+      <h3 data-i18n="ears.howToExamineEarTitle">How to Examine the Ear</h3>
     </div>
     <div class="video-container">
       <video id="howToEarVideo" controls style="width: 100%; max-width: 100%">
         <source src="videos/Otoscopy/Instructional.mp4" type="video/mp4" />
-        <span data-i18n="videoNotSupported"
+        <span data-i18n="ears.videoNotSupported"
           >Your browser does not support the video tag.</span
         >
       </video>
@@ -168,10 +176,14 @@
 <div id="earConditionsPage" class="page hidden">
   <div class="container">
     <div class="header">
-      <button data-page="otoscopyPage" data-i18n="backButton" aria-label="Back">
+      <button
+        data-page="otoscopyPage"
+        aria-label="Go back"
+        data-i18n="i18nLiteral.Go back:aria-label"
+      >
         ←
       </button>
-      <h3 data-i18n="otoscopyPosterTitle">Otoscopy Poster</h3>
+      <h3 data-i18n="ears.otoscopyPosterTitle">Otoscopy Poster</h3>
     </div>
     <div
       class="pdf-container"
@@ -197,10 +209,14 @@
 <div id="earFlowchartPage" class="page hidden">
   <div class="container">
     <div class="header">
-      <button data-page="otoscopyPage" data-i18n="backButton" aria-label="Back">
+      <button
+        data-page="otoscopyPage"
+        aria-label="Go back"
+        data-i18n="i18nLiteral.Go back:aria-label"
+      >
         ←
       </button>
-      <h3 data-i18n="commonEarConditionsTitle">
+      <h3 data-i18n="ears.commonEarConditionsTitle">
         Common Ear Conditions: Flowchart
       </h3>
     </div>
