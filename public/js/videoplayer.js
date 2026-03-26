@@ -64,6 +64,10 @@ export function initializeVideoPlayers() {
     return (coarse || touchPoints > 0) && smallScreen;
   };
 
+  const shouldSkipAutoFullscreen = (videoEl) => {
+    return videoEl?.dataset?.preventAutoFullscreen === "true";
+  };
+
   const requestLandscapeLock = async () => {
     try {
       if (screen.orientation && typeof screen.orientation.lock === "function") {
@@ -112,6 +116,7 @@ export function initializeVideoPlayers() {
 
   const enterVideoFullscreen = async (videoEl) => {
     if (!isMobileOrTablet()) return;
+    if (shouldSkipAutoFullscreen(videoEl)) return;
 
     // 이미 fullscreen이면 중복 진입 방지
     if (getFsElement()) return;
@@ -188,7 +193,9 @@ export function initializeVideoPlayers() {
       videos.forEach((other) => {
         if (other !== v) other.pause();
       });
-      enterVideoFullscreen(v);
+      if (!shouldSkipAutoFullscreen(v)) {
+        enterVideoFullscreen(v);
+      }
     });
   });
 
