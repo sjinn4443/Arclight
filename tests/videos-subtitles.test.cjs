@@ -2,6 +2,8 @@
  * @jest-environment jsdom
  */
 
+import fs from "node:fs";
+
 import {
   beforeEach,
   afterEach,
@@ -33,6 +35,11 @@ const PILOT_CATALOG = {
     },
   },
 };
+const PILOT_SUBTITLE_VTT = `WEBVTT
+
+00:00:00.000 --> 00:00:05.000
+Subtitle cue
+`;
 describe("childhood eye screening subtitle pilot", () => {
   let fetchSpy;
   let videos;
@@ -121,6 +128,19 @@ describe("childhood eye screening subtitle pilot", () => {
         };
       }
 
+      if (
+        String(url).includes(
+          "/video-subtitles/childhood-eye-screening/assessmentVisionPage/",
+        )
+      ) {
+        return {
+          ok: true,
+          async text() {
+            return PILOT_SUBTITLE_VTT;
+          },
+        };
+      }
+
       throw new Error(`Unexpected fetch in test: ${String(url)}`);
     });
 
@@ -179,6 +199,15 @@ describe("childhood eye screening subtitle pilot", () => {
   it("treats long videos as complete when only the last seconds remain", () => {
     expect(videos.calculateVideoProgressPercent(108, 120)).toBe(100);
     expect(videos.calculateVideoProgressPercent(92, 120)).toBeLessThan(100);
+  });
+
+  it("ships iOS HLS manifests with wvtt subtitle codecs", () => {
+    const masterManifest = fs.readFileSync(
+      "public/video-hls/childhood-eye-screening/assessmentVisionPage/master.m3u8",
+      "utf8",
+    );
+
+    expect(masterManifest).toContain('CODECS="avc1.42E01E,mp4a.40.2,wvtt"');
   });
 
   it("keeps short videos from completing too early", () => {
@@ -288,7 +317,7 @@ describe("childhood eye screening subtitle pilot", () => {
     expect(video.dataset.preventAutoFullscreen).toBeUndefined();
     expect(
       page.querySelector("[data-childhood-pilot-subtitle-overlay='true']"),
-    ).toBeNull();
+    ).not.toBeNull();
     expect(video.querySelector("source").getAttribute("src")).toBe(
       "/video-hls/childhood-eye-screening/assessmentVisionPage/master.m3u8",
     );
@@ -332,6 +361,9 @@ describe("childhood eye screening subtitle pilot", () => {
     expect(video.querySelector("source").getAttribute("src")).toBe(
       "videos/Core/VisualAcuity/VA_Assessment_220p.mp4",
     );
+    expect(
+      page.querySelector("[data-childhood-pilot-subtitle-overlay='true']"),
+    ).not.toBeNull();
     expect(page.dataset.currentVideoMode).toBe("low");
   });
 

@@ -93,17 +93,9 @@ self.addEventListener("fetch", (event) => {
       url.pathname.endsWith(".ts") ||
       url.pathname.endsWith(".vtt"));
 
-  // If the browser requests a byte range, serve from cache if possible,
-  // otherwise fall back to network. Do NOT cache the ranged response.
+  // Safari media playback is sensitive to malformed range responses.
+  // Let the browser handle byte-range MP4 requests directly.
   if (isMp4 && req.headers.has("range")) {
-    event.respondWith(
-      (async () => {
-        const cache = await caches.open(CACHE_NAME);
-        const cached = await cache.match(req, { ignoreSearch: true });
-        if (cached) return cached;
-        return fetch(req);
-      })(),
-    );
     return;
   }
 

@@ -99,6 +99,9 @@ function buildSubtitlePlaylist(duration, fileName = "captions.vtt") {
 }
 
 function buildMasterPlaylist({ bandwidth, averageBandwidth, resolution, languages }) {
+  const codecs = languages.length
+    ? "avc1.42E01E,mp4a.40.2,wvtt"
+    : "avc1.42E01E,mp4a.40.2";
   const lines = ["#EXTM3U", "#EXT-X-VERSION:3", ""];
   languages.forEach((lang, index) => {
     const label = languageLabels[lang] || lang.toUpperCase();
@@ -107,7 +110,7 @@ function buildMasterPlaylist({ bandwidth, averageBandwidth, resolution, language
     );
   });
   lines.push(
-    `#EXT-X-STREAM-INF:BANDWIDTH=${bandwidth},AVERAGE-BANDWIDTH=${averageBandwidth},RESOLUTION=${resolution},CODECS="avc1.42E01E,mp4a.40.2",SUBTITLES="subs",CLOSED-CAPTIONS=NONE"`,
+    `#EXT-X-STREAM-INF:BANDWIDTH=${bandwidth},AVERAGE-BANDWIDTH=${averageBandwidth},RESOLUTION=${resolution},CODECS="${codecs}",SUBTITLES="subs",CLOSED-CAPTIONS=NONE"`,
   );
   lines.push("video/index.m3u8", "");
   return lines.join("\n");

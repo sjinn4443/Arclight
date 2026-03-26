@@ -1275,8 +1275,17 @@ function isIOSChildhoodPilotDevice() {
   );
 }
 
+function isDesktopSafariBrowser() {
+  const userAgent = String(window.navigator?.userAgent || "");
+  return (
+    /Safari/i.test(userAgent) &&
+    !/Chrome|Chromium|CriOS|Edg|OPR|Firefox|FxiOS|Android/i.test(userAgent) &&
+    /Macintosh|Mac OS X/i.test(userAgent)
+  );
+}
+
 function shouldUseChildhoodPilotSubtitleOverlay() {
-  return false;
+  return isIOSChildhoodPilotDevice() || isDesktopSafariBrowser();
 }
 
 function shouldUseIOSChildhoodPilotHls(pageId, entry = null) {
@@ -1351,6 +1360,7 @@ function selectChildhoodPilotIosHlsSubtitleTrack(
 
   try {
     let matched = false;
+    const activeMode = getChildhoodPilotSubtitleActiveTrackMode(video);
     Array.from(video.textTracks || []).forEach((track) => {
       const kind = String(track.kind || "").toLowerCase();
       if (kind !== "subtitles" && kind !== "captions") return;
@@ -1358,7 +1368,7 @@ function selectChildhoodPilotIosHlsSubtitleTrack(
         track.language || track.srclang || "",
       );
       const shouldShow = trackLang === targetLang;
-      track.mode = shouldShow ? "showing" : "disabled";
+      track.mode = shouldShow ? activeMode : "disabled";
       if (shouldShow) matched = true;
     });
 
@@ -1370,7 +1380,7 @@ function selectChildhoodPilotIosHlsSubtitleTrack(
         },
       );
       if (firstSubtitleTrack) {
-        firstSubtitleTrack.mode = "showing";
+        firstSubtitleTrack.mode = activeMode;
       }
     }
   } catch {
@@ -1885,6 +1895,11 @@ async function syncChildhoodPilotSubtitlesForPage(
       defaultLang: entry.defaultSubtitleLang || "en",
     },
   );
+  const trackSrc =
+    entry.subtitles[resolvedLang] ||
+    entry.subtitles[entry.defaultSubtitleLang] ||
+    entry.subtitles.en ||
+    "";
 
   const isOnline = isVideoPageCurrentlyOnline(pageId);
 
@@ -1894,6 +1909,12 @@ async function syncChildhoodPilotSubtitlesForPage(
 
   if (isOnline && shouldUseIOSChildhoodPilotHls(pageId, entry)) {
     removeChildhoodPilotSubtitleTracks(video);
+    if (trackSrc) {
+      void syncChildhoodPilotSubtitleOverlay(video, {
+        lang: resolvedLang,
+        src: trackSrc,
+      });
+    }
     scheduleChildhoodPilotIosHlsSubtitleSelection(
       video,
       entry.iosHls?.subtitleLanguages || availableLanguages,
@@ -1909,18 +1930,21 @@ async function syncChildhoodPilotSubtitlesForPage(
 
   if (isIOSChildhoodPilotDevice()) {
     removeChildhoodPilotSubtitleTracks(video);
+    if (trackSrc) {
+      void syncChildhoodPilotSubtitleOverlay(video, {
+        lang: resolvedLang,
+        src: trackSrc,
+      });
+    }
     return resolvedLang;
   }
 
   prepareVideoForChildhoodPilotSubtitles(video);
 
-  const trackSrc =
-    entry.subtitles[resolvedLang] ||
-    entry.subtitles[entry.defaultSubtitleLang] ||
-    entry.subtitles.en ||
-    "";
-
-  if (!trackSrc) return resolvedLang;
+  if (!trackSrc) {
+    resetChildhoodPilotSubtitleOverlay(video);
+    return resolvedLang;
+  }
 
   applyChildhoodPilotSubtitleTrack(video, {
     lang: resolvedLang,
