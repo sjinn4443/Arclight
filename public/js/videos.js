@@ -979,10 +979,12 @@ const CHILDHOOD_EYE_SCREENING_SUBTITLE_LANGUAGES = {
   yo: { label: "Yoruba" },
   zu: { label: "Zulu" },
 };
+const CHILDHOOD_EYE_SCREENING_HLS_MIME_TYPE = "application/vnd.apple.mpegurl";
 
 let childhoodEyeScreeningSubtitleCatalogPromise = null;
 const childhoodPilotSubtitleCueCache = new Map();
 const childhoodPilotSubtitleOverlayStates = new WeakMap();
+const childhoodPilotIosHlsStates = new WeakMap();
 
 function normalizeChildhoodPilotSubtitleLanguage(lang) {
   const normalized = String(lang || "")
@@ -1089,6 +1091,14 @@ function sanitizeChildhoodEyeScreeningSubtitleCatalog(rawCatalog = {}) {
       },
     );
 
+    const iosHlsLanguages = Array.from(
+      new Set(
+        (entry.iosHls?.subtitleLanguages || Object.keys(subtitles))
+          .map((lang) => normalizeChildhoodPilotSubtitleLanguage(lang))
+          .filter((lang) => Boolean(subtitles[lang])),
+      ),
+    );
+
     sanitized[pageId] = {
       subtitles,
       audioVariants:
@@ -1099,6 +1109,25 @@ function sanitizeChildhoodEyeScreeningSubtitleCatalog(rawCatalog = {}) {
       defaultAudioLang: normalizeChildhoodPilotSubtitleLanguage(
         entry.defaultAudioLang || "en",
       ),
+      iosHls:
+        entry.iosHls && typeof entry.iosHls === "object"
+          ? {
+              masterManifest:
+                typeof entry.iosHls.masterManifest === "string"
+                  ? entry.iosHls.masterManifest
+                  : "",
+              preferredMode:
+                entry.iosHls.preferredMode === "online" ? "online" : "low",
+              offlineFallbackMode:
+                entry.iosHls.offlineFallbackMode === "high" ? "high" : "low",
+              subtitleLanguages: iosHlsLanguages,
+            }
+          : {
+              masterManifest: "",
+              preferredMode: "low",
+              offlineFallbackMode: "low",
+              subtitleLanguages: Object.keys(subtitles),
+            },
       localSources:
         entry.localSources && typeof entry.localSources === "object"
           ? entry.localSources
@@ -1132,6 +1161,12 @@ async function loadChildhoodEyeScreeningSubtitleCatalog() {
   }
 
   return childhoodEyeScreeningSubtitleCatalogPromise;
+}
+
+async function getChildhoodPilotCatalogEntry(pageId) {
+  if (!isChildhoodEyeScreeningSubtitlePilotPage(pageId)) return null;
+  const catalog = await loadChildhoodEyeScreeningSubtitleCatalog();
+  return catalog?.[pageId] || null;
 }
 
 function getVideoPageElement(pageId) {
@@ -1198,6 +1233,10 @@ function ensureVideoPageMenuButtonForPage(pageId) {
 }
 
 function isVideoPageCurrentlyOnline(pageId) {
+  const page = getVideoPageElement(pageId);
+  if (page?.dataset?.currentVideoMode) {
+    return page.dataset.currentVideoMode === "online";
+  }
   const container = getVideoPageContainer(pageId);
   const iframe = container?.querySelector("iframe");
   return Boolean(iframe && iframe.style.display !== "none");
@@ -1240,10 +1279,189 @@ function shouldUseChildhoodPilotSubtitleOverlay() {
   return false;
 }
 
-function shouldForceLowInlineChildhoodPilotVideo(pageId) {
+function shouldUseIOSChildhoodPilotHls(pageId, entry = null) {
+  const iosHls = entry?.iosHls || null;
+  return Boolean(
+    isIOSChildhoodPilotDevice() &&
+    isChildhoodEyeScreeningSubtitlePilotPage(pageId) &&
+    iosHls?.masterManifest,
+  );
+}
+
+function shouldPreferOnlineIOSChildhoodPilotMode(pageId) {
   return (
     isIOSChildhoodPilotDevice() &&
     isChildhoodEyeScreeningSubtitlePilotPage(pageId)
+  );
+}
+
+function isNavigatorOnline() {
+  return typeof navigator.onLine !== "boolean" ? true : navigator.onLine;
+}
+
+function getChildhoodPilotIosHlsState(video) {
+  let state = childhoodPilotIosHlsStates.get(video);
+  if (state) return state;
+  state = {
+    fallbackTimer: 0,
+    requestToken: 0,
+    trackList: null,
+    trackListHandler: null,
+  };
+  childhoodPilotIosHlsStates.set(video, state);
+  return state;
+}
+
+function clearChildhoodPilotIosHlsFallback(video) {
+  const state = childhoodPilotIosHlsStates.get(video);
+  if (!state?.fallbackTimer) return;
+  window.clearTimeout(state.fallbackTimer);
+  state.fallbackTimer = 0;
+}
+
+function detachChildhoodPilotIosHlsTrackList(video) {
+  const state = childhoodPilotIosHlsStates.get(video);
+  if (!state?.trackList || !state.trackListHandler) return;
+  try {
+    state.trackList.removeEventListener("addtrack", state.trackListHandler);
+    state.trackList.removeEventListener("change", state.trackListHandler);
+  } catch {
+    /* ignore */
+  }
+  state.trackList = null;
+  state.trackListHandler = null;
+}
+
+function resetChildhoodPilotIosHlsState(video) {
+  clearChildhoodPilotIosHlsFallback(video);
+  detachChildhoodPilotIosHlsTrackList(video);
+}
+
+function selectChildhoodPilotIosHlsSubtitleTrack(
+  video,
+  availableLanguages,
+  preferredLang = getCurrentUiLanguage(),
+) {
+  if (!video) return "";
+
+  const targetLang = resolveChildhoodPilotSubtitleLanguage(availableLanguages, {
+    prefLang: preferredLang,
+    defaultLang: "en",
+  });
+
+  try {
+    let matched = false;
+    Array.from(video.textTracks || []).forEach((track) => {
+      const kind = String(track.kind || "").toLowerCase();
+      if (kind !== "subtitles" && kind !== "captions") return;
+      const trackLang = normalizeChildhoodPilotSubtitleLanguage(
+        track.language || track.srclang || "",
+      );
+      const shouldShow = trackLang === targetLang;
+      track.mode = shouldShow ? "showing" : "disabled";
+      if (shouldShow) matched = true;
+    });
+
+    if (!matched) {
+      const firstSubtitleTrack = Array.from(video.textTracks || []).find(
+        (track) => {
+          const kind = String(track.kind || "").toLowerCase();
+          return kind === "subtitles" || kind === "captions";
+        },
+      );
+      if (firstSubtitleTrack) {
+        firstSubtitleTrack.mode = "showing";
+      }
+    }
+  } catch {
+    /* ignore */
+  }
+
+  return targetLang;
+}
+
+function scheduleChildhoodPilotIosHlsSubtitleSelection(
+  video,
+  availableLanguages,
+  preferredLang,
+) {
+  if (!video) return;
+
+  const apply = () =>
+    selectChildhoodPilotIosHlsSubtitleTrack(
+      video,
+      availableLanguages,
+      preferredLang,
+    );
+
+  [0, 120, 500, 1200, 2500].forEach((delay) => {
+    window.setTimeout(apply, delay);
+  });
+
+  const events = [
+    "loadedmetadata",
+    "loadeddata",
+    "canplay",
+    "play",
+    "playing",
+    "webkitbeginfullscreen",
+  ];
+  events.forEach((eventName) => {
+    video.addEventListener(eventName, apply, { once: true });
+  });
+
+  const state = getChildhoodPilotIosHlsState(video);
+  detachChildhoodPilotIosHlsTrackList(video);
+
+  if (
+    video.textTracks &&
+    typeof video.textTracks.addEventListener === "function"
+  ) {
+    state.trackList = video.textTracks;
+    state.trackListHandler = apply;
+    state.trackList.addEventListener("addtrack", apply);
+    state.trackList.addEventListener("change", apply);
+  }
+}
+
+function armChildhoodPilotIosHlsFallback(
+  video,
+  pageId,
+  fallbackMode,
+  requestToken,
+) {
+  if (!video) return;
+
+  const state = getChildhoodPilotIosHlsState(video);
+  clearChildhoodPilotIosHlsFallback(video);
+  state.requestToken = requestToken;
+
+  const clear = () => clearChildhoodPilotIosHlsFallback(video);
+  ["loadedmetadata", "loadeddata", "canplay", "playing"].forEach(
+    (eventName) => {
+      video.addEventListener(eventName, clear, { once: true });
+    },
+  );
+
+  state.fallbackTimer = window.setTimeout(() => {
+    const page = getVideoPageElement(pageId);
+    if (!page) return;
+    if (page.dataset.videoModeRequestToken !== requestToken) return;
+    if (page.dataset.currentVideoMode !== "online") return;
+    void applyVideoPageMode(pageId, fallbackMode, { preserveTime: true });
+  }, 8000);
+
+  video.addEventListener(
+    "error",
+    () => {
+      const page = getVideoPageElement(pageId);
+      if (!page) return;
+      if (page.dataset.videoModeRequestToken !== requestToken) return;
+      if (page.dataset.currentVideoMode !== "online") return;
+      clearChildhoodPilotIosHlsFallback(video);
+      void applyVideoPageMode(pageId, fallbackMode, { preserveTime: true });
+    },
+    { once: true },
   );
 }
 
@@ -1654,8 +1872,7 @@ async function syncChildhoodPilotSubtitlesForPage(
     prepareVideoForChildhoodPilotSubtitles(video);
   }
 
-  const catalog = await loadChildhoodEyeScreeningSubtitleCatalog();
-  const entry = catalog?.[pageId];
+  const entry = await getChildhoodPilotCatalogEntry(pageId);
   if (!entry) return "";
 
   const availableLanguages = Object.keys(entry.subtitles || {});
@@ -1671,8 +1888,27 @@ async function syncChildhoodPilotSubtitlesForPage(
 
   const isOnline = isVideoPageCurrentlyOnline(pageId);
 
-  if (!video || isOnline) {
-    if (video) removeChildhoodPilotSubtitleTracks(video);
+  if (!video) {
+    return resolvedLang;
+  }
+
+  if (isOnline && shouldUseIOSChildhoodPilotHls(pageId, entry)) {
+    removeChildhoodPilotSubtitleTracks(video);
+    scheduleChildhoodPilotIosHlsSubtitleSelection(
+      video,
+      entry.iosHls?.subtitleLanguages || availableLanguages,
+      resolvedLang,
+    );
+    return resolvedLang;
+  }
+
+  if (isOnline) {
+    removeChildhoodPilotSubtitleTracks(video);
+    return resolvedLang;
+  }
+
+  if (isIOSChildhoodPilotDevice()) {
+    removeChildhoodPilotSubtitleTracks(video);
     return resolvedLang;
   }
 
@@ -1762,15 +1998,26 @@ function toYouTubeEmbed(url) {
 async function applyVideoPageMode(pageId, mode, { preserveTime = true } = {}) {
   const cfg = VIDEO_PAGE_SOURCES[pageId];
   if (!cfg) return;
-  if (shouldForceLowInlineChildhoodPilotVideo(pageId)) mode = "low";
   if (!GENERIC_VIDEO_MODES.includes(mode)) mode = "low";
 
   const page = document.getElementById(pageId);
   if (!page) return;
+  const childhoodPilotEntry = await getChildhoodPilotCatalogEntry(pageId);
+  const canUseIosHls = shouldUseIOSChildhoodPilotHls(
+    pageId,
+    childhoodPilotEntry,
+  );
+  const iosHlsFallbackMode =
+    childhoodPilotEntry?.iosHls?.offlineFallbackMode || "low";
+  if (canUseIosHls && mode === "high") mode = iosHlsFallbackMode;
+  if (canUseIosHls && mode === "online" && !isNavigatorOnline()) {
+    mode = iosHlsFallbackMode;
+  }
   const requestToken = String(
     (Number(page.dataset.videoModeRequestToken || 0) || 0) + 1,
   );
   page.dataset.videoModeRequestToken = requestToken;
+  page.dataset.currentVideoMode = mode;
 
   const toggle = page.querySelector(".tri-toggle");
   if (toggle) setTriToggleUI(toggle, mode);
@@ -1787,14 +2034,80 @@ async function applyVideoPageMode(pageId, mode, { preserveTime = true } = {}) {
   }
 
   if (mode === "online") {
+    const iosHlsManifest = childhoodPilotEntry?.iosHls?.masterManifest || "";
+    if (canUseIosHls && iosHlsManifest) {
+      if (existingIframe) {
+        existingIframe.remove();
+      }
+
+      if (!video) return;
+      video.style.display = "block";
+      resetChildhoodPilotIosHlsState(video);
+      removeChildhoodPilotSubtitleTracks(video);
+
+      const sourceEl = video.querySelector("source");
+      if (sourceEl) {
+        sourceEl.src = iosHlsManifest;
+        sourceEl.type = CHILDHOOD_EYE_SCREENING_HLS_MIME_TYPE;
+      } else {
+        const source = document.createElement("source");
+        source.src = iosHlsManifest;
+        source.type = CHILDHOOD_EYE_SCREENING_HLS_MIME_TYPE;
+        video.prepend(source);
+      }
+
+      const resolvedLang = await syncChildhoodPilotSubtitlesForPage(pageId, {
+        preferredLang: getCurrentUiLanguage(),
+      });
+      if (page.dataset.videoModeRequestToken !== requestToken) return;
+
+      armChildhoodPilotIosHlsFallback(
+        video,
+        pageId,
+        iosHlsFallbackMode,
+        requestToken,
+      );
+
+      try {
+        video.load();
+      } catch {}
+
+      scheduleChildhoodPilotIosHlsSubtitleSelection(
+        video,
+        childhoodPilotEntry?.iosHls?.subtitleLanguages || [resolvedLang, "en"],
+        resolvedLang,
+      );
+
+      const restore = () => {
+        if (!preserveTime) return;
+        const prog = readProgressForTarget(pageId);
+        const savedTime = prog?.maxTime ?? 0;
+        const targetTime = savedTime > 0 ? savedTime : currentTime;
+        try {
+          if (video.currentTime < 0.5 && targetTime > 0) {
+            video.currentTime = Math.min(
+              targetTime,
+              Math.max(0, (video.duration || targetTime) - 1),
+            );
+          }
+        } catch {}
+      };
+
+      if (video.readyState >= 1) restore();
+      else video.addEventListener("loadedmetadata", restore, { once: true });
+      return;
+    }
+
     if (!cfg.sources?.online) {
       console.warn(`[videos] ${pageId}: no online source, falling back to low`);
       mode = "low";
+      page.dataset.currentVideoMode = mode;
       if (toggle) setTriToggleUI(toggle, mode);
     }
 
     // Pause and hide local video
     if (video) {
+      resetChildhoodPilotIosHlsState(video);
       try {
         video.pause();
       } catch {}
@@ -1833,6 +2146,7 @@ async function applyVideoPageMode(pageId, mode, { preserveTime = true } = {}) {
 
   if (!video) return;
   video.style.display = "block";
+  resetChildhoodPilotIosHlsState(video);
 
   if (isChildhoodEyeScreeningSubtitlePilotPage(pageId)) {
     prepareVideoForChildhoodPilotSubtitles(video);
@@ -1842,6 +2156,7 @@ async function applyVideoPageMode(pageId, mode, { preserveTime = true } = {}) {
   const src = cfg.sources[mode];
   if (sourceEl) {
     sourceEl.src = src;
+    sourceEl.type = "video/mp4";
   } else {
     const s = document.createElement("source");
     s.src = src;
@@ -1895,20 +2210,20 @@ function wireVideoPageTriToggle(pageId) {
   if (!toggle || toggle.dataset.wired === "1") return;
   toggle.dataset.wired = "1";
   // ---- tri-toggle button count(2 or 3) + initial mode clamp ----
-  const forceLowInline = shouldForceLowInlineChildhoodPilotVideo(pageId);
+  const preferIosHls = shouldPreferOnlineIOSChildhoodPilotMode(pageId);
   const highBtn = toggle.querySelector('.tri-toggle__btn[data-mode="high"]');
   const onlineBtn = toggle.querySelector(
     '.tri-toggle__btn[data-mode="online"]',
   );
-  const hasOnline = !!(cfg.sources && cfg.sources.online);
+  const hasOnline = !!(cfg.sources && cfg.sources.online) || preferIosHls;
 
   if (highBtn) {
-    highBtn.hidden = forceLowInline;
+    highBtn.hidden = preferIosHls;
   }
 
   if (onlineBtn) {
     // online 소스 없으면 버튼 자체를 숨김
-    onlineBtn.hidden = forceLowInline || !hasOnline;
+    onlineBtn.hidden = !hasOnline;
   }
 
   // visible 버튼 개수(2 or 3) 계산해서 CSS 변수로 전달
@@ -1920,7 +2235,11 @@ function wireVideoPageTriToggle(pageId) {
   toggle.style.setProperty("--tri-cols", String(Math.max(1, visibleCount)));
 
   // ---- initial mode ----
-  let initialMode = forceLowInline ? "low" : readGenericVideoMode(cfg.key);
+  let initialMode = preferIosHls
+    ? isNavigatorOnline()
+      ? "online"
+      : "low"
+    : readGenericVideoMode(cfg.key);
 
   // online 없는데 localStorage에 online 저장돼있으면 high로 강제
   if (initialMode === "online" && !hasOnline) {
@@ -1928,8 +2247,7 @@ function wireVideoPageTriToggle(pageId) {
     writeGenericVideoMode(cfg.key, initialMode);
   }
 
-  if (forceLowInline) {
-    initialMode = "low";
+  if (preferIosHls) {
     writeGenericVideoMode(cfg.key, initialMode);
   }
 
@@ -1939,7 +2257,7 @@ function wireVideoPageTriToggle(pageId) {
   // ---- bind interactions (click / keyboard) ----
   const onPickMode = (mode) => {
     if (!mode) return;
-    if (forceLowInline) mode = "low";
+    if (preferIosHls && mode === "high") mode = "low";
 
     // online 버튼이 숨김이면 무시
     const btn = toggle.querySelector(`.tri-toggle__btn[data-mode="${mode}"]`);

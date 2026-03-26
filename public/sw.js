@@ -1,5 +1,5 @@
 /* sw.js — Arclight PWA service worker */
-const CACHE_NAME = "arclight-static-v9";
+const CACHE_NAME = "arclight-static-v10";
 const CORE_ASSETS = [
   "/",
   "/index.html",
@@ -87,6 +87,11 @@ self.addEventListener("fetch", (event) => {
 
   // ---- MP4 handling (avoid breaking cache with Range requests) ----
   const isMp4 = url.pathname.endsWith(".mp4");
+  const isChildhoodPilotHlsAsset =
+    url.pathname.startsWith("/video-hls/childhood-eye-screening/") &&
+    (url.pathname.endsWith(".m3u8") ||
+      url.pathname.endsWith(".ts") ||
+      url.pathname.endsWith(".vtt"));
 
   // If the browser requests a byte range, serve from cache if possible,
   // otherwise fall back to network. Do NOT cache the ranged response.
@@ -113,6 +118,23 @@ self.addEventListener("fetch", (event) => {
         const fresh = await fetch(req);
         cache.put(req, fresh.clone()).catch(() => {});
         return fresh;
+      })(),
+    );
+    return;
+  }
+
+  if (isChildhoodPilotHlsAsset) {
+    event.respondWith(
+      (async () => {
+        const cache = await caches.open(CACHE_NAME);
+        try {
+          const fresh = await fetch(req, { cache: "no-store" });
+          cache.put(req, fresh.clone()).catch(() => {});
+          return fresh;
+        } catch {
+          const cached = await cache.match(req, { ignoreSearch: true });
+          return cached || Response.error();
+        }
       })(),
     );
     return;

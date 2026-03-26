@@ -20,6 +20,13 @@ const PILOT_CATALOG = {
     audioVariants: {},
     defaultSubtitleLang: "en",
     defaultAudioLang: "en",
+    iosHls: {
+      masterManifest:
+        "/video-hls/childhood-eye-screening/assessmentVisionPage/master.m3u8",
+      preferredMode: "online",
+      offlineFallbackMode: "low",
+      subtitleLanguages: ["en", "ko"],
+    },
     localSources: {
       low: "videos/Core/VisualAcuity/VA_Assessment_220p.mp4",
       high: "videos/Core/VisualAcuity/VA_Assessment_720p.mp4",
@@ -226,7 +233,7 @@ describe("childhood eye screening subtitle pilot", () => {
     );
   });
 
-  it("uses native captions and low-only playback for iOS pilot pages", async () => {
+  it("defaults iOS pilot pages to HLS online playback and hides high only", async () => {
     Object.defineProperty(window.navigator, "userAgent", {
       configurable: true,
       value:
@@ -277,26 +284,55 @@ describe("childhood eye screening subtitle pilot", () => {
       '.tri-toggle__btn[data-mode="online"]',
     );
 
-    expect(trackEl).not.toBeNull();
-    expect(trackEl.getAttribute("src")).toBe(
-      "/video-subtitles/childhood-eye-screening/assessmentVisionPage/ko.vtt",
-    );
-    expect(trackEl.getAttribute("kind")).toBe("captions");
+    expect(trackEl).toBeNull();
     expect(video.dataset.preventAutoFullscreen).toBeUndefined();
     expect(
       page.querySelector("[data-childhood-pilot-subtitle-overlay='true']"),
     ).toBeNull();
     expect(video.querySelector("source").getAttribute("src")).toBe(
-      "videos/Core/VisualAcuity/VA_Assessment_220p.mp4",
+      "/video-hls/childhood-eye-screening/assessmentVisionPage/master.m3u8",
     );
     expect(highBtn.hidden).toBe(true);
-    expect(onlineBtn.hidden).toBe(true);
+    expect(onlineBtn.hidden).toBe(false);
     expect(loadCalls[loadCalls.length - 1]).toEqual({
-      src: "videos/Core/VisualAcuity/VA_Assessment_220p.mp4",
-      trackSrc:
-        "/video-subtitles/childhood-eye-screening/assessmentVisionPage/ko.vtt",
-      trackKind: "captions",
+      src: "/video-hls/childhood-eye-screening/assessmentVisionPage/master.m3u8",
+      trackSrc: "",
+      trackKind: "",
     });
+  });
+
+  it("falls back to low mp4 when iOS HLS playback errors", async () => {
+    Object.defineProperty(window.navigator, "userAgent", {
+      configurable: true,
+      value:
+        "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1",
+    });
+    Object.defineProperty(window.navigator, "platform", {
+      configurable: true,
+      value: "iPhone",
+    });
+    Object.defineProperty(window.navigator, "maxTouchPoints", {
+      configurable: true,
+      value: 5,
+    });
+    Object.defineProperty(window.navigator, "onLine", {
+      configurable: true,
+      value: true,
+    });
+
+    const page = document.getElementById("assessmentVisionPage");
+    const video = page.querySelector("video");
+
+    videos.showVideosPageById("assessmentVisionPage");
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    video.dispatchEvent(new Event("error"));
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    expect(video.querySelector("source").getAttribute("src")).toBe(
+      "videos/Core/VisualAcuity/VA_Assessment_220p.mp4",
+    );
+    expect(page.dataset.currentVideoMode).toBe("low");
   });
 
   it("adds a menu button next to the video mode toggle", () => {

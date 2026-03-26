@@ -54,6 +54,28 @@ function git(args, options = {}) {
   return run("git", args, options);
 }
 
+function getBinaryStagedFiles() {
+  const output = git([
+    "diff",
+    "--cached",
+    "--numstat",
+    "--diff-filter=ACMR",
+  ]).stdout;
+
+  const binaryFiles = new Set();
+
+  for (const line of output.split(/\r?\n/)) {
+    if (!line) continue;
+
+    const [added, removed, ...pathParts] = line.split("\t");
+    if (added === "-" && removed === "-" && pathParts.length > 0) {
+      binaryFiles.add(pathParts.join("\t"));
+    }
+  }
+
+  return binaryFiles;
+}
+
 async function mergeFormattedIntoWorkingTree({
   formattedContent,
   stagedContent,
@@ -101,6 +123,7 @@ async function getPrettierOptions(filePath) {
 
 async function main() {
   const repoRoot = git(["rev-parse", "--show-toplevel"]).stdout.trim();
+  const binaryStagedFiles = getBinaryStagedFiles();
   const stagedFiles = git([
     "diff",
     "--name-only",
@@ -109,6 +132,7 @@ async function main() {
   ])
     .stdout.split(/\r?\n/)
     .filter(Boolean)
+    .filter((file) => !binaryStagedFiles.has(file))
     .filter((file) => TARGET_EXTENSIONS.has(path.extname(file).toLowerCase()));
 
   if (stagedFiles.length === 0) return;
