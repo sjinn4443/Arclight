@@ -26,11 +26,6 @@ const PILOT_CATALOG = {
     },
   },
 };
-const IOS_OVERLAY_VTT = `WEBVTT
-
-00:00:00.000 --> 00:00:05.000
-Fallback subtitle line
-`;
 
 describe("childhood eye screening subtitle pilot", () => {
   let fetchSpy;
@@ -116,15 +111,6 @@ describe("childhood eye screening subtitle pilot", () => {
           ok: true,
           async json() {
             return PILOT_CATALOG;
-          },
-        };
-      }
-
-      if (String(url).endsWith("/assessmentVisionPage/ko.vtt")) {
-        return {
-          ok: true,
-          async text() {
-            return IOS_OVERLAY_VTT;
           },
         };
       }
@@ -241,7 +227,7 @@ describe("childhood eye screening subtitle pilot", () => {
     );
   });
 
-  it("renders an iOS overlay fallback when Safari does not draw native cues", async () => {
+  it("uses native captions and low-only playback for iOS pilot pages", async () => {
     Object.defineProperty(window.navigator, "userAgent", {
       configurable: true,
       value:
@@ -257,26 +243,61 @@ describe("childhood eye screening subtitle pilot", () => {
     });
 
     localStorage.setItem("prefLang", "ko");
+    localStorage.setItem("videoMode:assessmentVisionPage", "high");
 
     const page = document.getElementById("assessmentVisionPage");
     const video = page.querySelector("video");
-    video.currentTime = 1;
+    const loadCalls = [];
 
-    await videos.ensureChildhoodPilotSubtitleControlsForPage(
-      "assessmentVisionPage",
-    );
+    Object.defineProperty(HTMLMediaElement.prototype, "load", {
+      configurable: true,
+      value: jest.fn(function () {
+        loadCalls.push({
+          src: this.querySelector("source")?.getAttribute("src") || "",
+          trackSrc:
+            this.querySelector(
+              "track[data-childhood-pilot-subtitle='true']",
+            )?.getAttribute("src") || "",
+          trackKind:
+            this.querySelector(
+              "track[data-childhood-pilot-subtitle='true']",
+            )?.getAttribute("kind") || "",
+        });
+      }),
+    });
+
+    videos.showVideosPageById("assessmentVisionPage");
+    await new Promise((resolve) => setTimeout(resolve, 0));
     await new Promise((resolve) => setTimeout(resolve, 0));
 
-    video.dispatchEvent(new Event("timeupdate"));
-
-    const overlay = page.querySelector(
-      "[data-childhood-pilot-subtitle-overlay='true']",
+    const trackEl = page.querySelector(
+      "track[data-childhood-pilot-subtitle='true']",
+    );
+    const highBtn = page.querySelector('.tri-toggle__btn[data-mode="high"]');
+    const onlineBtn = page.querySelector(
+      '.tri-toggle__btn[data-mode="online"]',
     );
 
-    expect(overlay).not.toBeNull();
-    expect(overlay.hidden).toBe(false);
-    expect(overlay.textContent).toContain("Fallback subtitle line");
-    expect(video.dataset.preventAutoFullscreen).toBe("true");
+    expect(trackEl).not.toBeNull();
+    expect(trackEl.getAttribute("src")).toBe(
+      "/video-subtitles/childhood-eye-screening/assessmentVisionPage/ko.vtt",
+    );
+    expect(trackEl.getAttribute("kind")).toBe("captions");
+    expect(video.dataset.preventAutoFullscreen).toBeUndefined();
+    expect(
+      page.querySelector("[data-childhood-pilot-subtitle-overlay='true']"),
+    ).toBeNull();
+    expect(video.querySelector("source").getAttribute("src")).toBe(
+      "videos/Core/VisualAcuity/VA_Assessment_220p.mp4",
+    );
+    expect(highBtn.hidden).toBe(true);
+    expect(onlineBtn.hidden).toBe(true);
+    expect(loadCalls[loadCalls.length - 1]).toEqual({
+      src: "videos/Core/VisualAcuity/VA_Assessment_220p.mp4",
+      trackSrc:
+        "/video-subtitles/childhood-eye-screening/assessmentVisionPage/ko.vtt",
+      trackKind: "captions",
+    });
   });
 
   it("adds a menu button next to the video mode toggle", () => {

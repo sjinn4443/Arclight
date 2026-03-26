@@ -1218,15 +1218,10 @@ function prepareVideoForChildhoodPilotSubtitles(video) {
   if (!video.getAttribute("crossorigin")) {
     video.setAttribute("crossorigin", "anonymous");
   }
-
-  if (shouldUseChildhoodPilotSubtitleOverlay()) {
-    video.dataset.preventAutoFullscreen = "true";
-  } else {
-    delete video.dataset.preventAutoFullscreen;
-  }
+  delete video.dataset.preventAutoFullscreen;
 }
 
-function shouldUseChildhoodPilotSubtitleOverlay() {
+function isIOSChildhoodPilotDevice() {
   const nav = window.navigator;
   const userAgent = String(nav?.userAgent || "");
   const platform = String(nav?.platform || "");
@@ -1238,9 +1233,13 @@ function shouldUseChildhoodPilotSubtitleOverlay() {
   );
 }
 
+function shouldUseChildhoodPilotSubtitleOverlay() {
+  return false;
+}
+
 function shouldForceLowInlineChildhoodPilotVideo(pageId) {
   return (
-    shouldUseChildhoodPilotSubtitleOverlay() &&
+    isIOSChildhoodPilotDevice() &&
     isChildhoodEyeScreeningSubtitlePilotPage(pageId)
   );
 }
@@ -1757,7 +1756,7 @@ function toYouTubeEmbed(url) {
   return url;
 }
 
-function applyVideoPageMode(pageId, mode, { preserveTime = true } = {}) {
+async function applyVideoPageMode(pageId, mode, { preserveTime = true } = {}) {
   const cfg = VIDEO_PAGE_SOURCES[pageId];
   if (!cfg) return;
   if (shouldForceLowInlineChildhoodPilotVideo(pageId)) mode = "low";
@@ -1765,6 +1764,10 @@ function applyVideoPageMode(pageId, mode, { preserveTime = true } = {}) {
 
   const page = document.getElementById(pageId);
   if (!page) return;
+  const requestToken = String(
+    (Number(page.dataset.videoModeRequestToken || 0) || 0) + 1,
+  );
+  page.dataset.videoModeRequestToken = requestToken;
 
   const toggle = page.querySelector(".tri-toggle");
   if (toggle) setTriToggleUI(toggle, mode);
@@ -1839,11 +1842,16 @@ function applyVideoPageMode(pageId, mode, { preserveTime = true } = {}) {
     video.prepend(s);
   }
 
+  if (isChildhoodEyeScreeningSubtitlePilotPage(pageId)) {
+    await syncChildhoodPilotSubtitlesForPage(pageId);
+    if (page.dataset.videoModeRequestToken !== requestToken) return;
+  } else {
+    removeChildhoodPilotSubtitleTracks(video);
+  }
+
   try {
     video.load();
   } catch {}
-
-  void syncChildhoodPilotSubtitlesForPage(pageId);
 
   const restore = () => {
     if (!preserveTime) return;
@@ -2233,7 +2241,9 @@ function show(id) {
     wireProgressForVideoElement(videoEl, id);
   }
 
-  void ensureChildhoodPilotSubtitleControlsForPage(id);
+  if (!Object.prototype.hasOwnProperty.call(VIDEO_PAGE_SOURCES, id)) {
+    void ensureChildhoodPilotSubtitleControlsForPage(id);
+  }
 
   // Refresh lesson progress bars when switching sections
   updateLessonProgressBars(id);
