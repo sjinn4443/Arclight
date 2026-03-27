@@ -55,6 +55,7 @@ export function seekTo(sec) {
 export function initializeVideoPlayers() {
   // === Fullscreen + orientation (mobile/tablet only) ===
   let arclightFsActive = false;
+  let lastFullscreenPageId = "";
 
   const isMobileOrTablet = () => {
     const coarse =
@@ -110,6 +111,19 @@ export function initializeVideoPlayers() {
     );
   };
 
+  const rememberFullscreenPage = (videoEl) => {
+    lastFullscreenPageId = videoEl?.closest?.(".page")?.id || "";
+  };
+
+  const notifyFullscreenExit = () => {
+    if (!lastFullscreenPageId) return;
+    window.dispatchEvent(
+      new CustomEvent("arclight:video-fullscreen-exit", {
+        detail: { pageId: lastFullscreenPageId },
+      }),
+    );
+  };
+
   const enterVideoFullscreen = async (videoEl) => {
     if (!isMobileOrTablet()) return;
 
@@ -117,6 +131,7 @@ export function initializeVideoPlayers() {
     if (getFsElement()) return;
 
     arclightFsActive = true;
+    rememberFullscreenPage(videoEl);
 
     // 1) iOS Safari: video.webkitEnterFullscreen()이 "비디오 전용 fullscreen"이라 가장 안정적
     //    (document fullscreenchange가 안 뜨는 경우가 많아서 아래에 별도 이벤트도 붙일 예정)
@@ -144,6 +159,7 @@ export function initializeVideoPlayers() {
     if (!arclightFsActive) return;
     arclightFsActive = false;
     await unlockOrientation();
+    notifyFullscreenExit();
   };
 
   const onFullscreenChange = async () => {
@@ -177,6 +193,7 @@ export function initializeVideoPlayers() {
         v.addEventListener("webkitbeginfullscreen", async () => {
           if (!isMobileOrTablet()) return;
           arclightFsActive = true;
+          rememberFullscreenPage(v);
           await requestLandscapeLock();
         });
 

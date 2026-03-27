@@ -986,6 +986,13 @@ const childhoodPilotSubtitleCueCache = new Map();
 const childhoodPilotSubtitleOverlayStates = new WeakMap();
 const childhoodPilotIosHlsStates = new WeakMap();
 
+function isVideosRootDataPageElement(element) {
+  return (
+    element?.id === "videos" &&
+    element?.getAttribute?.("data-page") === "videos"
+  );
+}
+
 function normalizeChildhoodPilotSubtitleLanguage(lang) {
   const normalized = String(lang || "")
     .trim()
@@ -1189,6 +1196,81 @@ function getVideoPageContainer(pageId) {
   return selector
     ? page.querySelector(selector)
     : page.querySelector(".video-container");
+}
+
+function getVisibleVideoPageMediaElement(page) {
+  const container = page?.querySelector(".video-container");
+  if (!container) return null;
+
+  const candidates = Array.from(container.querySelectorAll("video, iframe"));
+  return (
+    candidates.find((element) => {
+      const rect = element.getBoundingClientRect();
+      return rect.width > 0 && rect.height > 0 && element.offsetParent !== null;
+    }) ||
+    candidates[0] ||
+    null
+  );
+}
+
+function alignVideoPageShareButton(pageId) {
+  const page = getVideoPageElement(pageId);
+  if (!page || page.style.display === "none") return;
+
+  const shareButton = page.querySelector(".video-container + .video-share-btn");
+  if (!shareButton) return;
+
+  const mediaElement = getVisibleVideoPageMediaElement(page);
+  if (!mediaElement) return;
+
+  const navButtons = Array.from(
+    page.querySelectorAll(
+      ".childhood-next-btn, .glaucoma-next-btn, .childhood-prev-btn, .glaucoma-prev-btn",
+    ),
+  ).filter((element) => {
+    const rect = element.getBoundingClientRect();
+    return rect.width > 0 && rect.height > 0 && element.offsetParent !== null;
+  });
+  if (!navButtons.length) return;
+
+  if (!shareButton.dataset.baseMarginTop) {
+    shareButton.dataset.baseMarginTop = String(
+      parseFloat(getComputedStyle(shareButton).marginTop) || 0,
+    );
+  }
+
+  const baseMarginTop = parseFloat(shareButton.dataset.baseMarginTop) || 0;
+  shareButton.style.marginTop = `${baseMarginTop}px`;
+
+  const mediaRect = mediaElement.getBoundingClientRect();
+  const shareRect = shareButton.getBoundingClientRect();
+  const navTop = Math.min(
+    ...navButtons.map((element) => element.getBoundingClientRect().top),
+  );
+  const availableSpace = navTop - mediaRect.bottom - shareRect.height;
+  if (!Number.isFinite(availableSpace)) return;
+
+  const desiredGap = Math.max(0, availableSpace / 2);
+  const desiredTop = mediaRect.bottom + desiredGap;
+  const adjustedMarginTop = baseMarginTop + (desiredTop - shareRect.top);
+  shareButton.style.marginTop = `${adjustedMarginTop}px`;
+}
+
+function scheduleVideoPageShareButtonAlignment(pageId) {
+  if (!pageId) return;
+
+  const run = () => alignVideoPageShareButton(pageId);
+  run();
+  window.requestAnimationFrame(run);
+  window.setTimeout(run, 0);
+  window.setTimeout(run, 120);
+}
+
+function alignVisibleVideoPageShareButtons() {
+  document.querySelectorAll("#videos .page").forEach((page) => {
+    if (page.style.display === "none") return;
+    scheduleVideoPageShareButtonAlignment(page.id);
+  });
 }
 
 function getVideoPageActionRow(page) {
@@ -2603,6 +2685,16 @@ function show(id) {
     return;
   }
 
+  if (String(id || "").trim() === "videos") {
+    if (
+      currentPageElement &&
+      !isVideosRootDataPageElement(currentPageElement)
+    ) {
+      currentPageElement.style.display = "block";
+    }
+    return;
+  }
+
   const newPageElement = document.getElementById(id);
   if (!newPageElement) {
     console.warn(`[videos.js] Page element with ID "${id}" not found.`);
@@ -2698,6 +2790,7 @@ function show(id) {
 
   // [ADD] Re-bind video/share UI now that the target subpage is in the DOM
   initializeVideoPlayers();
+  scheduleVideoPageShareButtonAlignment(id);
 }
 
 // ----- Public initializer: called by router when 'videos' is loaded -----
@@ -2801,7 +2894,8 @@ if (!window[__videosGlobalBoundKey]) {
       const hit = e.target && e.target.closest("[data-page]");
       if (!hit) return;
       const target = hit.getAttribute("data-page");
-      if (target) show(target);
+      if (!target || isVideosRootDataPageElement(hit)) return;
+      show(target);
     },
     { passive: true },
   );
@@ -2879,9 +2973,26 @@ if (!window[__videosGlobalBoundKey]) {
     "resize",
     () => {
       scheduleFundalReflexExaminationScrollProgressSync();
+      alignVisibleVideoPageShareButtons();
     },
     { passive: true },
   );
+
+  window.addEventListener("arclight:video-fullscreen-exit", (e) => {
+    const pageId = String(e?.detail?.pageId || "").trim();
+    if (!pageId) return;
+
+    const videosRoot = document.getElementById("videos");
+    const page = document.getElementById(pageId);
+    if (!videosRoot || !page || !videosRoot.contains(page)) return;
+
+    window.requestAnimationFrame(() => {
+      if (currentPageElement?.id === pageId && page.style.display !== "none") {
+        return;
+      }
+      show(pageId);
+    });
+  });
 
   const pageContent = document.getElementById("page-content");
   pageContent?.addEventListener(

@@ -222,9 +222,11 @@ function handleNavClick(e) {
   const el = e.target.closest("[data-page]");
   if (!el) return;
 
-  e.preventDefault();
   const targetId = el.getAttribute("data-page");
   if (!targetId) return;
+  if (targetId === "videos" && el.id === "videos") return;
+
+  e.preventDefault();
 
   if (typeof window.showPage === "function") {
     window.showPage(targetId); // baseline behavior

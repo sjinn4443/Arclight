@@ -916,6 +916,76 @@ input {
   margin: 0;
 }
 
+#videos .page .video-container + .video-share-btn {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  box-sizing: border-box;
+  overflow: hidden;
+  padding-top: 2px;
+  margin: -2px 18px 21px auto;
+}
+
+#videos .page .video-container + .video-share-btn .video-share-icon {
+  width: 18px;
+  height: 18px;
+  transform: translate(-1px, 2px);
+}
+
+@media (min-width: 768px) and (max-width: 1023.98px) {
+  #videos .page [data-video-page-actions="true"] {
+    box-sizing: border-box;
+    min-height: 62px;
+    margin: 0 18px;
+    padding: 0 20px 0 56px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+    background: #fff;
+  }
+
+  #videos .page [data-video-page-actions="true"] .tri-toggle {
+    margin: 0;
+    flex: 0 0 auto;
+  }
+
+  #videos .page [data-video-page-actions="true"] .video-page-menu-btn {
+    width: 36px;
+    height: 36px;
+    margin-top: 0;
+    font-size: 20px;
+  }
+
+  #videos .page .video-container {
+    box-sizing: border-box;
+    width: auto;
+    max-width: none;
+    max-height: none;
+    margin-left: 18px;
+    margin-right: 18px;
+    padding-left: 0;
+  }
+
+  #videos .page .video-container > video,
+  #videos .page .video-container > iframe {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+  }
+
+  #videos .page .video-container + .video-share-btn {
+    margin-right: 18px;
+  }
+
+  #videos .page > .childhood-next-wrap,
+  #videos .page > .glaucoma-next-wrap {
+    left: 18px;
+    right: 18px;
+  }
+}
+
 /* Desktop final overrides (keep at end to beat earlier breakpoint collisions) */
 @media (min-width: 1024px) {
   .menu-panel {
@@ -939,12 +1009,76 @@ input {
     padding: 0 !important;
   }
 
-  /* Keep desktop video cards stable even when subtitles/metadata load early. */
-  .video-container > video {
+  #videos .page [data-video-page-actions="true"] {
+    box-sizing: border-box;
+    min-height: 62px;
+    margin: 0 calc(7vw - 4px);
+    padding: 0 20px 0 56px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+    background: #fff;
+  }
+
+  #videos .page [data-video-page-actions="true"] .tri-toggle {
+    margin: 0;
+    flex: 0 0 auto;
+  }
+
+  #videos .page [data-video-page-actions="true"] .video-page-menu-btn {
+    width: 36px;
+    height: 36px;
+    margin-top: 0;
+    font-size: 20px;
+  }
+
+  #videos .page .video-container {
+    box-sizing: border-box;
+    width: auto;
+    max-width: none;
+    max-height: none;
+    margin-left: calc(7vw - 4px + 10px);
+    margin-right: calc(7vw - 4px + 20px);
+    padding-left: 0;
+  }
+
+  #videos .page .video-container > video,
+  #videos .page .video-container > iframe {
     display: block;
-    width: min(100%, 392px);
+    width: 100%;
     max-width: 100%;
-    aspect-ratio: 16 / 9;
     height: auto;
+  }
+
+  #videos .page .video-container + .video-share-btn {
+    margin-right: calc(7vw - 4px + 20px);
+  }
+
+  #videos .page > .childhood-next-wrap,
+  #videos .page > .glaucoma-next-wrap {
+    left: calc(7vw - 4px + 10px);
+    right: calc(7vw - 4px + 20px);
+  }
+}
+
+@media (min-width: 1440px) {
+  #videos .page [data-video-page-actions="true"] {
+    margin: 0 calc(22vw - 4px);
+  }
+
+  #videos .page .video-container {
+    margin-left: calc(22vw - 4px + 10px);
+    margin-right: calc(22vw - 4px + 20px);
+  }
+
+  #videos .page .video-container + .video-share-btn {
+    margin-right: calc(22vw - 4px + 20px);
+  }
+
+  #videos .page > .childhood-next-wrap,
+  #videos .page > .glaucoma-next-wrap {
+    left: calc(22vw - 4px + 10px);
+    right: calc(22vw - 4px + 20px);
   }
 }

@@ -451,7 +451,7 @@ video::cue {
 /* SVG */
 .video-share-icon {
   display: block;
-  margin-top: -11px 2px;
+  margin: 0;
 }
 
 .video-share-menu {
