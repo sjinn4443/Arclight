@@ -72,8 +72,6 @@ jobs:
 
       - name: Run Jest tests
         run: npm run test:ci
-        env:
-          MASTER_KEY: ${{ secrets.MASTER_KEY }}
 
       - name: Run fundal E2E validation
         run: npm run test:fundal:ci

@@ -69,7 +69,7 @@ router.get("/", requireDevAuth, async (req, res) => {
   <div class="wrap">
     <h1>Developer Dashboard</h1>
     <p>Decrypted view of encrypted user data.</p>
-    <div class="hint">Password is controlled via <code>DASHBOARD_PASSWORD</code>. Encryption key via <code>MASTER_KEY</code>.</div>
+    <div class="hint">Password is controlled via <code>DASHBOARD_PASSWORD</code>. Encryption is controlled via <code>ENCRYPTION_SECRET</code>.</div>
     <table aria-label="Users">
       <thead>
         <tr>

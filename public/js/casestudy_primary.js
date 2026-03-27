@@ -912,21 +912,24 @@ export function initializeCaseStudyPrimary() {
         text: "Look at the cases and decide if the patient needs urgent referral or not.",
         target: null,
         hint: null,
-        nextLabel: ">",
+        nextLabel: "Next",
+        nextI18n: "i18nExtra.next",
       },
       {
         title: "Flip the card",
         text: "You can check diagnosis by tapping the card.",
         target: "#primaryFlashCard",
-        hint: null,
-        nextLabel: ">",
+        hint: "tap",
+        nextLabel: "Next",
+        nextI18n: "i18nExtra.next",
       },
       {
         title: "Not urgent",
         text: "Swipe the flashcard to the left or press the button.",
         target: "#primaryFlashNotUrgentBtn",
         hint: "left",
-        nextLabel: ">",
+        nextLabel: "Next",
+        nextI18n: "i18nExtra.next",
       },
       {
         title: "Urgent referral",
@@ -934,12 +937,122 @@ export function initializeCaseStudyPrimary() {
         target: "#primaryFlashUrgentBtn",
         hint: "right",
         nextLabel: "Start",
+        nextI18n: null,
       },
     ];
 
     let stepIndex = 0;
+    let tourDemoInterval = null;
+    let tourDemoTimeouts = [];
+
+    function queueTourDemoTimeout(fn, delay) {
+      const id = setTimeout(() => {
+        tourDemoTimeouts = tourDemoTimeouts.filter(
+          (timeoutId) => timeoutId !== id,
+        );
+        fn();
+      }, delay);
+      tourDemoTimeouts.push(id);
+    }
+
+    function clearTourDemoTimeouts() {
+      tourDemoTimeouts.forEach((id) => clearTimeout(id));
+      tourDemoTimeouts = [];
+    }
+
+    function restartSwipeHintAnimation() {
+      if (!tHint) return;
+      tHint.classList.remove("is-animating");
+      void tHint.offsetWidth;
+      tHint.classList.add("is-animating");
+      queueTourDemoTimeout(() => tHint.classList.remove("is-animating"), 1500);
+    }
+
+    function resetTourCardWrap() {
+      const wrapEl = flashPage.querySelector("#primaryFlashCardWrap");
+      if (!wrapEl) return;
+      wrapEl.style.transition = "";
+      wrapEl.style.transform = "translateX(0px) rotate(0deg)";
+    }
+
+    function stopTourCardDemo() {
+      if (tourDemoInterval) {
+        clearInterval(tourDemoInterval);
+        tourDemoInterval = null;
+      }
+      clearTourDemoTimeouts();
+
+      const cardEl = flashPage.querySelector("#primaryFlashCard");
+      if (cardEl) cardEl.classList.remove("is-flipped");
+      resetTourCardWrap();
+    }
+
+    function runTourCardDemoCycle() {
+      const cardEl = flashPage.querySelector("#primaryFlashCard");
+      if (!cardEl) return;
+
+      resetTourCardWrap();
+      cardEl.classList.remove("is-flipped");
+      queueTourDemoTimeout(() => cardEl.classList.add("is-flipped"), 420);
+      queueTourDemoTimeout(() => cardEl.classList.remove("is-flipped"), 1640);
+    }
+
+    function startTourCardDemo() {
+      stopTourCardDemo();
+      runTourCardDemoCycle();
+      tourDemoInterval = setInterval(runTourCardDemoCycle, 2460);
+    }
+
+    function runTourSwipeDemoCycle(direction) {
+      const wrapEl = flashPage.querySelector("#primaryFlashCardWrap");
+      const cardEl = flashPage.querySelector("#primaryFlashCard");
+      if (!wrapEl || !cardEl) return;
+
+      resetTourCardWrap();
+      cardEl.classList.remove("is-flipped");
+      restartSwipeHintAnimation();
+
+      const offset = direction * 118;
+      const rotation = direction * 8;
+
+      queueTourDemoTimeout(() => {
+        wrapEl.style.transition =
+          "transform 620ms cubic-bezier(0.22, 1, 0.36, 1)";
+        wrapEl.style.transform = `translateX(${offset}px) rotate(${rotation}deg)`;
+      }, 0);
+
+      queueTourDemoTimeout(() => {
+        wrapEl.style.transition =
+          "transform 520ms cubic-bezier(0.22, 1, 0.36, 1)";
+        wrapEl.style.transform = "translateX(0px) rotate(0deg)";
+      }, 760);
+
+      queueTourDemoTimeout(() => {
+        wrapEl.style.transition = "";
+      }, 1340);
+    }
+
+    function startTourSwipeDemo(direction) {
+      stopTourCardDemo();
+      runTourSwipeDemoCycle(direction);
+      tourDemoInterval = setInterval(
+        () => runTourSwipeDemoCycle(direction),
+        2200,
+      );
+    }
+
+    function setSpotlightMode(enabled) {
+      if (!tour) return;
+      tour.classList.toggle("has-spotlight", Boolean(enabled));
+    }
 
     function hideTour() {
+      stopTourCardDemo();
+      clearHint();
+      setTourDecisionButtonState(null);
+      hideSpotlight();
+      hideCardSpotlight();
+      setSpotlightMode(false);
       if (tour) tour.style.display = "none";
     }
 
@@ -953,7 +1066,29 @@ export function initializeCaseStudyPrimary() {
       tHint.style.left = "";
       tHint.style.top = "";
       tHint.style.width = "";
-      tHint.classList.remove("is-up", "is-left", "is-right", "is-over-card");
+      tHint.style.height = "";
+      tHint.style.transform = "";
+      tHint.classList.remove(
+        "is-up",
+        "is-left",
+        "is-right",
+        "is-animating",
+        "is-over-card",
+        "is-tap",
+      );
+    }
+
+    function setTourDecisionButtonState(targetSelector) {
+      const urgentBtn = flashPage.querySelector("#primaryFlashUrgentBtn");
+      const notUrgentBtn = flashPage.querySelector("#primaryFlashNotUrgentBtn");
+      [urgentBtn, notUrgentBtn].forEach((btn) => {
+        if (!btn) return;
+        btn.classList.remove(
+          "is-tour-muted",
+          "is-tour-active",
+          "is-tour-raised",
+        );
+      });
     }
 
     function applyHint(kind) {
@@ -962,6 +1097,9 @@ export function initializeCaseStudyPrimary() {
       if (!kind) return;
 
       tHint.style.display = "block";
+      if (kind === "tap") {
+        tHint.classList.add("is-tap", "is-over-card");
+      }
 
       // Flip 단계는 hint 자체를 안 쓰기로 했으니, 여기서는 left/right만 처리
       if (kind === "left") {
@@ -982,16 +1120,28 @@ export function initializeCaseStudyPrimary() {
 
       // Hint를 화면 기준 fixed로 card 정중앙에 두기
       tHint.style.position = "fixed";
-      tHint.style.left = `50%`;
+      tHint.style.left = `${Math.round(r.left + r.width / 2)}px`;
       tHint.style.top = `${Math.round(r.top + r.height / 2)}px`;
       tHint.style.transform = "translate(-50%, -50%)";
-      tHint.style.marginTop = "0";
+      tHint.style.zIndex = "10000";
+    }
+
+    function positionHintCenteredInViewport() {
+      if (!tHint) return;
+      if (tHint.style.display === "none") return;
+
+      tHint.style.position = "fixed";
+      tHint.style.left = "50%";
+      tHint.style.top = "50%";
+      tHint.style.transform = "translate(-50%, -50%)";
       tHint.style.zIndex = "10000";
     }
 
     function positionHintOverFlashCard() {
       if (!tHint) return;
       if (tHint.style.display === "none") return;
+      positionHintCenteredInViewport();
+      return;
 
       const cardEl = flashPage.querySelector("#primaryFlashCard");
       if (!cardEl) return;
@@ -1046,6 +1196,7 @@ export function initializeCaseStudyPrimary() {
 
     function hideCardSpotlight() {
       if (!spotCard) return;
+      spotCard.classList.remove("is-mask");
       spotCard.style.width = "0px";
       spotCard.style.height = "0px";
       spotCard.style.left = "0px";
@@ -1055,6 +1206,7 @@ export function initializeCaseStudyPrimary() {
 
     function positionCardSpotlightTo(targetEl) {
       if (!spotCard) return;
+      spotCard.classList.remove("is-mask");
       const r = targetEl.getBoundingClientRect();
 
       const pad = 10;
@@ -1109,9 +1261,8 @@ export function initializeCaseStudyPrimary() {
 
       const margin = 12;
 
-      // default: centre bottom-ish
       let x = Math.round((window.innerWidth - bubble.offsetWidth) / 2);
-      let y = Math.round(window.innerHeight - bubble.offsetHeight - 24);
+      let y = Math.round((window.innerHeight - bubble.offsetHeight) / 2);
 
       if (!targetEl) {
         bubble.style.left = `${Math.max(12, Math.min(x, window.innerWidth - bubble.offsetWidth - 12))}px`;
@@ -1138,13 +1289,32 @@ export function initializeCaseStudyPrimary() {
       bubble.style.top = `${Math.max(12, Math.min(y, window.innerHeight - bubble.offsetHeight - 12))}px`;
     }
 
+    function positionBubbleNearCardBottom(targetEl) {
+      if (!bubble || !targetEl) return;
+
+      const r = targetEl.getBoundingClientRect();
+      const x = Math.round(r.left + r.width / 2 - bubble.offsetWidth / 2);
+      const y = Math.round(r.bottom - bubble.offsetHeight + 8);
+
+      bubble.style.left = `${Math.max(12, Math.min(x, window.innerWidth - bubble.offsetWidth - 12))}px`;
+      bubble.style.top = `${Math.max(12, Math.min(y, window.innerHeight - bubble.offsetHeight - 12))}px`;
+    }
+
     function renderStep() {
       const s = steps[stepIndex];
       if (!s) return;
 
+      stopTourCardDemo();
+      clearHint();
+
       if (tTitle) tTitle.textContent = s.title;
       if (tText) tText.textContent = s.text;
       if (tNext) {
+        if (s.nextI18n) {
+          tNext.setAttribute("data-i18n", s.nextI18n);
+        } else {
+          tNext.removeAttribute("data-i18n");
+        }
         tNext.textContent = s.nextLabel;
 
         // Start 단계만 너비 60px
@@ -1157,8 +1327,9 @@ export function initializeCaseStudyPrimary() {
       if (bubble) translateNode(bubble);
 
       applyHint(s.hint);
+      setTourDecisionButtonState(s.target);
       // hint가 켜져 있는 단계면 flashcard 정중앙으로 이동
-      if (s.hint) {
+      if (s.hint === "tap") {
         requestAnimationFrame(() => positionHintCenteredOnFlashCard());
       }
 
@@ -1168,6 +1339,7 @@ export function initializeCaseStudyPrimary() {
 
       // Step 1: 설명만 (spotlight 없음)
       if (!s.target) {
+        setSpotlightMode(false);
         hideSpotlight();
         hideCardSpotlight();
         requestAnimationFrame(() => positionBubble(null));
@@ -1176,6 +1348,7 @@ export function initializeCaseStudyPrimary() {
 
       const targetEl = flashPage.querySelector(s.target);
       if (!targetEl) {
+        setSpotlightMode(false);
         hideSpotlight();
         hideCardSpotlight();
         requestAnimationFrame(() => positionBubble(null));
@@ -1183,6 +1356,27 @@ export function initializeCaseStudyPrimary() {
       }
 
       const cardEl = flashPage.querySelector("#primaryFlashCard");
+      setSpotlightMode(true);
+      if (
+        s.target === "#primaryFlashNotUrgentBtn" ||
+        s.target === "#primaryFlashUrgentBtn"
+      ) {
+        if (cardEl) {
+          positionSpotlightTo(cardEl);
+        } else {
+          positionSpotlightTo(targetEl);
+        }
+        hideCardSpotlight();
+        targetEl.classList.add("is-tour-raised");
+
+        requestAnimationFrame(() => positionBubble(targetEl));
+        if (s.hint === "left") {
+          startTourSwipeDemo(-1);
+        } else if (s.hint === "right") {
+          startTourSwipeDemo(1);
+        }
+        return;
+      }
 
       // Not urgent / Urgent referral 단계에서는 버튼 spot + 카드 spot을 동시에 표시
       if (
@@ -1196,7 +1390,16 @@ export function initializeCaseStudyPrimary() {
         hideCardSpotlight();
       }
 
-      requestAnimationFrame(() => positionBubble(targetEl));
+      requestAnimationFrame(() => {
+        if (s.hint === "tap") {
+          positionBubbleNearCardBottom(targetEl);
+        } else {
+          positionBubble(targetEl);
+        }
+      });
+      if (s.hint === "tap") {
+        startTourCardDemo();
+      }
     }
 
     function advanceTour() {
@@ -1438,7 +1641,6 @@ export function initializeCaseStudyPrimary() {
     const img = flashPage.querySelector("#primaryFlashImg");
     const dx = flashPage.querySelector("#primaryFlashDx");
     const ul = flashPage.querySelector("#primaryFlashBullets");
-    const backImg = flashPage.querySelector("#primaryFlashBackImg");
     const dxRationale = flashPage.querySelector("#primaryFlashDxRationale");
 
     if (!img || !dx || !ul) return;
@@ -1447,10 +1649,6 @@ export function initializeCaseStudyPrimary() {
     const imagePath = imgPathForCase(caseObj.caseNum);
     img.src = imagePath;
     dx.textContent = diagnosis;
-    if (backImg) {
-      backImg.src = imagePath;
-      backImg.alt = "Case image";
-    }
     if (dxRationale) {
       dxRationale.textContent = "";
       flashRationaleLinesForCase(caseObj)

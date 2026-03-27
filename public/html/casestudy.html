@@ -993,6 +993,11 @@
         class="pflash-tour__spot"
         aria-hidden="true"
       ></div>
+      <div
+        id="primaryFlashTourSpotCard"
+        class="pflash-tour__spot"
+        aria-hidden="true"
+      ></div>
 
       <!-- bubble -->
       <div
@@ -1039,6 +1044,18 @@
         <!-- 앞면 -->
         <div class="flashcard__face flashcard__face--front">
           <div id="primaryFlashCaseLabel" class="primaryFlashCaseLabel"></div>
+          <div class="primaryFlashFlipIcon" aria-hidden="true">
+            <svg
+              class="primaryFlashFlipIcon__svg"
+              viewBox="0 0 24 24"
+              focusable="false"
+            >
+              <path d="M16 3l4 4-4 4" />
+              <path d="M20 7H9a6 6 0 00-6 6" />
+              <path d="M8 21l-4-4 4-4" />
+              <path d="M4 17h11a6 6 0 006-6" />
+            </svg>
+          </div>
 
           <img
             id="primaryFlashImg"
@@ -1067,11 +1084,18 @@
           >
             Case
           </div>
-          <img
-            id="primaryFlashBackImg"
-            class="primaryFlashBackImg"
-            alt="Case image"
-          />
+          <div class="primaryFlashFlipIcon" aria-hidden="true">
+            <svg
+              class="primaryFlashFlipIcon__svg"
+              viewBox="0 0 24 24"
+              focusable="false"
+            >
+              <path d="M16 3l4 4-4 4" />
+              <path d="M20 7H9a6 6 0 00-6 6" />
+              <path d="M8 21l-4-4 4-4" />
+              <path d="M4 17h11a6 6 0 006-6" />
+            </svg>
+          </div>
           <div id="primaryFlashDx" class="primaryFlashDx"></div>
           <ul id="primaryFlashDxRationale" class="primaryFlashDxRationale"></ul>
         </div>

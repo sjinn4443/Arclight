@@ -90,7 +90,7 @@ rmdir /s /q dist
 
 ## Environment variables
 
-Arclight runs in multiple modes (dev/test/prod). For local development you can copy `.env.sample` to `.env` and adjust values.
+Arclight runs in multiple modes (dev/test/prod). A local `.env` is optional for basic app development because the default scripts already set the main runtime values. If you need reports auth, encryption, or Postgres storage, copy `.env.sample` to `.env` and uncomment only the variables you actually use.
 
 > Note: do not commit real secrets. `.env.sample` exists for documentation.
 
@@ -110,8 +110,6 @@ Arclight runs in multiple modes (dev/test/prod). For local development you can c
 Telemetry can be stored as NDJSON in dev/test and optionally encrypted at rest.
 
 - `ENCRYPTION_SECRET`: when set, telemetry NDJSON rows are encrypted at rest (AES-256-GCM via `reports/security/encrypt.cjs`). If not set, data is written as plain JSON.
-
-> Historical note: you may also see `MASTER_KEY` referenced in older/experimental code (for example `reports/routes/dev.cjs`) and test setup. Current NDJSON encryption uses `ENCRYPTION_SECRET`.
 
 ### Production DB
 
