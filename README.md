@@ -16,6 +16,7 @@ The app is primarily static (served from `public/` in dev, and `dist/` in produc
 - Tests: [`tests/README.md`](./tests/README.md)
 - Telemetry / Reports: [`reports/README.md`](./reports/README.md)
 - Security notes: [`security/README.md`](./security/README.md)
+- Emergency runbook: [`security/EMERGENCY_PLAN.md`](./security/EMERGENCY_PLAN.md)
 - Security test scripts: [`securitytest/README.md`](./securitytest/README.md)
 - VS Code launcher extension: [`vscode-alanui-launcher/README.md`](./vscode-alanui-launcher/README.md)
 
@@ -104,6 +105,12 @@ Arclight runs in multiple modes (dev/test/prod). A local `.env` is optional for 
 ### Reports / admin access
 
 - `DASHBOARD_PASSWORD`: Basic Auth password for `/reports.html` and `/html/reports.html`.
+- `ADMIN_ALLOWED_IPS`: comma-separated exact client IPs allowed to reach `/reports.html`, `/html/reports.html`, and `/api/dev/*` in production. If empty in production, admin/report routes are denied to everyone.
+
+### Emergency controls
+
+- `EMERGENCY_MODE`: `off` | `readonly` | `maintenance` | `lockdown`
+- `EMERGENCY_MESSAGE`: optional custom maintenance message used in `maintenance` and `lockdown`
 
 ### Telemetry encryption (optional)
 
@@ -152,7 +159,17 @@ Runtime expectations:
 
 - Railway sets `PORT` at runtime (Dockerfile defaults to `8080`)
 - set `DASHBOARD_PASSWORD` if you intend to access `/reports.html`
+- set `ADMIN_ALLOWED_IPS` if you intend to access reports/admin routes in production
 - set `DATABASE_URL` to enable Postgres storage
+
+## Emergency controls
+
+- `readonly`: blocks `POST /api/app/profile`, `POST /api/app/refresh`, `POST /track`, and reports delete while keeping normal public GET routes available.
+- `maintenance`: returns a server-side `503` maintenance page for public HTML requests and `503` JSON for app APIs.
+- `lockdown`: blocks all public traffic except `/healthz`, while reports/admin routes remain available only from allowlisted IPs plus valid Basic Auth.
+- `GET /healthz` always returns `{ ok: true, emergencyMode }` and can be used by uptime checks during an incident.
+
+See [`security/EMERGENCY_PLAN.md`](./security/EMERGENCY_PLAN.md) for the operator runbook and mode-selection criteria.
 
 ## Project structure (high level)
 

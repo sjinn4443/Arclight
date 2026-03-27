@@ -5,6 +5,7 @@ const helmet = require("helmet");
 const fs = require("fs");
 const { execSync } = require("child_process");
 const { applyMainAppCsp, applyReportsCsp } = require("./security/csp.cjs");
+const { sensitiveRateLimiter } = require("./security/rateLimit.cjs");
 const {
   getRequestHost,
   isLocalHost,
@@ -234,25 +235,286 @@ function isEnabled(value) {
   );
 }
 
+const EMERGENCY_MODE_OFF = "off";
+const EMERGENCY_MODE_READONLY = "readonly";
+const EMERGENCY_MODE_MAINTENANCE = "maintenance";
+const EMERGENCY_MODE_LOCKDOWN = "lockdown";
+const VALID_EMERGENCY_MODES = new Set([
+  EMERGENCY_MODE_OFF,
+  EMERGENCY_MODE_READONLY,
+  EMERGENCY_MODE_MAINTENANCE,
+  EMERGENCY_MODE_LOCKDOWN,
+]);
+const DEFAULT_EMERGENCY_MESSAGE =
+  "We\u2019re currently performing security maintenance. Some features may be unavailable.";
+
+function getEmergencyMode() {
+  const raw = String(process.env.EMERGENCY_MODE || "")
+    .trim()
+    .toLowerCase();
+  return VALID_EMERGENCY_MODES.has(raw) ? raw : EMERGENCY_MODE_OFF;
+}
+
+function getEmergencyMessage() {
+  const trimmed = String(process.env.EMERGENCY_MESSAGE || "").trim();
+  return trimmed || DEFAULT_EMERGENCY_MESSAGE;
+}
+
+function normalizeClientIp(value) {
+  const raw = String(value || "")
+    .trim()
+    .toLowerCase();
+  if (!raw) return "unknown";
+  if (raw.startsWith("::ffff:")) return raw.slice(7);
+  return raw;
+}
+
+function parseAllowedIps(value) {
+  return String(value || "")
+    .split(",")
+    .map((entry) => normalizeClientIp(entry))
+    .filter((entry) => entry && entry !== "unknown");
+}
+
 function getClientIp(req) {
-  return req.ip || req.connection?.remoteAddress || "unknown";
+  return normalizeClientIp(
+    req.ip || req.connection?.remoteAddress || "unknown",
+  );
 }
 
 function isPrivateIp(ip) {
-  const value = String(ip || "")
-    .trim()
-    .toLowerCase();
+  const value = normalizeClientIp(ip);
   return (
     !value ||
     value === "::1" ||
     value === "127.0.0.1" ||
-    value === "::ffff:127.0.0.1" ||
     value.startsWith("10.") ||
     value.startsWith("192.168.") ||
     /^172\.(1[6-9]|2\d|3[0-1])\./.test(value) ||
     value.startsWith("fc") ||
     value.startsWith("fd")
   );
+}
+
+function getAdminAllowedIps() {
+  return parseAllowedIps(process.env.ADMIN_ALLOWED_IPS);
+}
+
+function isAdminRoute(req) {
+  return (
+    req.path === "/reports.html" ||
+    req.path === "/html/reports.html" ||
+    req.path.startsWith("/api/dev")
+  );
+}
+
+function isPublicApiOrTrackRoute(req) {
+  return (
+    req.path === "/track" ||
+    (req.path.startsWith("/api/") && !req.path.startsWith("/api/dev"))
+  );
+}
+
+function isEmergencyWriteRoute(req) {
+  return (
+    (req.method === "POST" &&
+      (req.path === "/api/app/profile" ||
+        req.path === "/api/app/refresh" ||
+        req.path === "/track")) ||
+    (req.method === "DELETE" && req.path.startsWith("/api/dev/users/"))
+  );
+}
+
+function requestAcceptsHtml(req) {
+  if (req.path === "/" || req.path.endsWith(".html")) return true;
+  return req.accepts(["html", "json", "text"]) === "html";
+}
+
+function escapeHtml(value) {
+  return String(value || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function renderMaintenancePage() {
+  const message = escapeHtml(getEmergencyMessage());
+  return `<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Arclight Security Maintenance</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #f5f1ea;
+        --panel: rgba(255, 255, 255, 0.9);
+        --text: #1f2933;
+        --muted: #5b6975;
+        --accent: #8f2d1f;
+        --border: rgba(31, 41, 51, 0.12);
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: 24px;
+        background:
+          radial-gradient(circle at top, rgba(143, 45, 31, 0.16), transparent 42%),
+          linear-gradient(160deg, #f8f5ee 0%, var(--bg) 100%);
+        color: var(--text);
+        font-family: "Segoe UI", Arial, sans-serif;
+      }
+      main {
+        width: min(100%, 640px);
+        padding: 32px;
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        background: var(--panel);
+        box-shadow: 0 24px 64px rgba(31, 41, 51, 0.12);
+      }
+      h1 {
+        margin: 0 0 12px;
+        font-size: clamp(2rem, 5vw, 3rem);
+        line-height: 1.05;
+        letter-spacing: -0.03em;
+      }
+      p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 1rem;
+        line-height: 1.7;
+      }
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 18px;
+        padding: 10px 14px;
+        border-radius: 999px;
+        background: rgba(143, 45, 31, 0.1);
+        color: var(--accent);
+        font-size: 0.82rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+      .dot {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: currentColor;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="badge"><span class="dot"></span>Security Maintenance</div>
+      <h1>Arclight is temporarily unavailable.</h1>
+      <p>${message}</p>
+    </main>
+  </body>
+</html>`;
+}
+
+function logStructuredEvent(event, req, extra = {}) {
+  const payload = {
+    ts: new Date().toISOString(),
+    event,
+    mode: getEmergencyMode(),
+    method: req?.method || null,
+    path: req?.originalUrl || req?.path || null,
+    ip: req ? getClientIp(req) : null,
+    host: req ? getRequestHost(req) : null,
+    ...extra,
+  };
+  console.log(JSON.stringify(payload));
+}
+
+function sendMaintenanceHtml(req, res) {
+  res.status(503);
+  res.set("Cache-Control", "no-store");
+  res.type("html");
+  if (req.method === "HEAD") return res.end();
+  return res.send(renderMaintenancePage());
+}
+
+function sendMaintenanceJson(req, res) {
+  res.status(503);
+  res.set("Cache-Control", "no-store");
+  return res.json({
+    error: "security_maintenance",
+    message: getEmergencyMessage(),
+    emergencyMode: getEmergencyMode(),
+  });
+}
+
+function sendMaintenanceText(req, res) {
+  res.status(503);
+  res.set("Cache-Control", "no-store");
+  res.type("text/plain");
+  if (req.method === "HEAD") return res.end();
+  return res.send(getEmergencyMessage());
+}
+
+function isAdminIpAllowed(req) {
+  if (process.env.NODE_ENV !== "production") return true;
+  const allowedIps = getAdminAllowedIps();
+  if (!allowedIps.length) return false;
+  return allowedIps.includes(getClientIp(req));
+}
+
+function requireAdminIp(req, res, next) {
+  if (isAdminIpAllowed(req)) return next();
+  logStructuredEvent("admin_ip_blocked", req);
+  return res.status(403).send("Forbidden.");
+}
+
+function emergencyGate(req, res, next) {
+  const mode = getEmergencyMode();
+  if (mode === EMERGENCY_MODE_OFF || req.path === "/healthz") return next();
+
+  logStructuredEvent("emergency_mode_active", req);
+
+  if (mode === EMERGENCY_MODE_READONLY) {
+    if (isEmergencyWriteRoute(req)) {
+      logStructuredEvent("emergency_block", req, {
+        reason: "readonly_write_block",
+        responseType: "json",
+      });
+      return sendMaintenanceJson(req, res);
+    }
+    return next();
+  }
+
+  if (isAdminRoute(req)) return next();
+
+  if (isPublicApiOrTrackRoute(req)) {
+    logStructuredEvent("emergency_block", req, {
+      reason: `${mode}_api_block`,
+      responseType: "json",
+    });
+    return sendMaintenanceJson(req, res);
+  }
+
+  if (requestAcceptsHtml(req)) {
+    logStructuredEvent("emergency_block", req, {
+      reason: `${mode}_html_block`,
+      responseType: "html",
+    });
+    return sendMaintenanceHtml(req, res);
+  }
+
+  logStructuredEvent("emergency_block", req, {
+    reason: `${mode}_asset_block`,
+    responseType: "text",
+  });
+  return sendMaintenanceText(req, res);
 }
 
 function countryNameFromCode(code) {
@@ -383,6 +645,7 @@ async function lookupIpLocation(ip) {
 }
 
 function canDeleteReports(req) {
+  if (getEmergencyMode() !== EMERGENCY_MODE_OFF) return false;
   if (isEnabled(process.env.REPORTS_ALLOW_DELETE)) return true;
 
   const host = getRequestHost(req);
@@ -419,6 +682,11 @@ app.use((req, res, next) => {
 });
 app.use(applyMainAppCsp);
 app.use(["/reports.html", "/html/reports.html", "/api/dev"], applyReportsCsp);
+app.use(
+  ["/reports.html", "/html/reports.html", "/api/dev"],
+  sensitiveRateLimiter,
+);
+app.use(emergencyGate);
 app.use(express.json({ limit: "100kb" }));
 
 app.use("/js", express.static(path.join(staticRoot, "js")));
@@ -449,6 +717,11 @@ async function initStorageWithRetry() {
 }
 
 initStorageWithRetry();
+
+app.get("/healthz", (req, res) => {
+  res.set("Cache-Control", "no-store");
+  res.json({ ok: true, emergencyMode: getEmergencyMode() });
+});
 
 app.get("/api/app/version", (req, res) => {
   const currentVersion = resolveCurrentAppVersion();
@@ -525,6 +798,9 @@ function basicAuth(req, res, next) {
     devDashboardAuthAttempts.set(ip, recent);
     if (recent.length > maxAttempts) {
       res.set("Retry-After", String(Math.ceil(windowMs / 1000)));
+      logStructuredEvent("admin_auth_failed", req, {
+        reason: "rate_limited",
+      });
       return res
         .status(429)
         .send("Too many authentication attempts. Please try again later.");
@@ -543,21 +819,26 @@ function basicAuth(req, res, next) {
     return next();
   }
 
+  logStructuredEvent("admin_auth_failed", req, {
+    reason: pass ? "invalid_password" : "missing_credentials",
+  });
   res.set("WWW-Authenticate", 'Basic realm="Arclight Dev Dashboard"');
   return res.status(401).send("Authentication required.");
 }
 
-app.get("/reports.html", basicAuth, (req, res) => {
+const adminAccess = [requireAdminIp, basicAuth];
+
+app.get("/reports.html", adminAccess, (req, res) => {
   res.set("Cache-Control", "no-store");
   return res.sendFile(path.join(staticRoot, "reports.html"));
 });
 
-app.get("/html/reports.html", basicAuth, (req, res) => {
+app.get("/html/reports.html", adminAccess, (req, res) => {
   res.set("Cache-Control", "no-store");
   return res.sendFile(path.join(staticRoot, "html", "reports.html"));
 });
 
-app.get("/api/dev/users", basicAuth, async (req, res) => {
+app.get("/api/dev/users", adminAccess, async (req, res) => {
   try {
     res.set("Cache-Control", "no-store");
     res.set("X-Reports-Delete-Enabled", canDeleteReports(req) ? "1" : "0");
@@ -569,7 +850,7 @@ app.get("/api/dev/users", basicAuth, async (req, res) => {
   }
 });
 
-app.delete("/api/dev/users/:anonId", basicAuth, async (req, res) => {
+app.delete("/api/dev/users/:anonId", adminAccess, async (req, res) => {
   try {
     if (!canDeleteReports(req)) {
       return res.status(403).json({ error: "Reports delete is disabled" });

@@ -9,6 +9,19 @@ function authHeader(password, user = "dev") {
   return `Basic ${Buffer.from(`${user}:${password}`).toString("base64")}`;
 }
 
+function parseStructuredLogs(spy) {
+  return spy.mock.calls
+    .map(([message]) => {
+      if (typeof message !== "string" || !message.startsWith("{")) return null;
+      try {
+        return JSON.parse(message);
+      } catch {
+        return null;
+      }
+    })
+    .filter(Boolean);
+}
+
 async function loadServer(envOverrides = {}, storageOverrides = {}) {
   jest.resetModules();
 
@@ -117,7 +130,7 @@ describe("server security hardening", () => {
     }
 
     expect(response.status).toBe(429);
-    expect(response.text).toMatch(/Too many authentication attempts/i);
+    expect(response.text).toMatch(/Too many/i);
   });
 
   test("keeps reports read-only locally by default", async () => {
@@ -169,6 +182,202 @@ describe("server security hardening", () => {
         host: "localhost",
         environment: "development",
       }),
+    );
+  });
+
+  test("exposes healthz even when emergency mode is active", async () => {
+    const { app } = await loadServer({
+      NODE_ENV: "production",
+      DASHBOARD_PASSWORD: "secret",
+      EMERGENCY_MODE: "lockdown",
+    });
+
+    const response = await request(app).get("/healthz");
+
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual({ ok: true, emergencyMode: "lockdown" });
+  });
+
+  test("blocks write routes in readonly mode and keeps reports delete disabled", async () => {
+    const deleteSpy = jest.fn().mockResolvedValue(true);
+    const getUsersSpy = jest.fn().mockResolvedValue([{ anon_id: "anon-1" }]);
+    const { app } = await loadServer(
+      {
+        NODE_ENV: "development",
+        DASHBOARD_PASSWORD: "secret",
+        EMERGENCY_MODE: "readonly",
+        REPORTS_ALLOW_LOCAL_DELETE: "true",
+      },
+      {
+        deleteUserForDashboard: deleteSpy,
+        getUsersForDashboard: getUsersSpy,
+      },
+    );
+
+    const profileResponse = await request(app)
+      .post("/api/app/profile")
+      .send({ anon_id: "anon-1" });
+    expect(profileResponse.status).toBe(503);
+    expect(profileResponse.body).toMatchObject({
+      error: "security_maintenance",
+      emergencyMode: "readonly",
+    });
+
+    const trackResponse = await request(app).post("/track");
+    expect(trackResponse.status).toBe(503);
+    expect(trackResponse.body).toMatchObject({
+      error: "security_maintenance",
+      emergencyMode: "readonly",
+    });
+
+    const usersResponse = await request(app)
+      .get("/api/dev/users")
+      .set("Authorization", authHeader("secret"))
+      .set("Host", "localhost:3000");
+    expect(usersResponse.status).toBe(200);
+    expect(usersResponse.headers["x-reports-delete-enabled"]).toBe("0");
+    expect(getUsersSpy).toHaveBeenCalledTimes(1);
+
+    const deleteResponse = await request(app)
+      .delete("/api/dev/users/anon-1")
+      .set("Authorization", authHeader("secret"))
+      .set("Host", "localhost:3000");
+    expect(deleteResponse.status).toBe(503);
+    expect(deleteResponse.body).toMatchObject({
+      error: "security_maintenance",
+      emergencyMode: "readonly",
+    });
+    expect(deleteSpy).not.toHaveBeenCalled();
+  });
+
+  test("returns maintenance HTML and API 503 responses in maintenance mode", async () => {
+    const { app } = await loadServer({
+      NODE_ENV: "development",
+      DASHBOARD_PASSWORD: "secret",
+      EMERGENCY_MODE: "maintenance",
+    });
+
+    const homeResponse = await request(app).get("/");
+    expect(homeResponse.status).toBe(503);
+    expect(homeResponse.headers["cache-control"]).toBe("no-store");
+    expect(homeResponse.headers["content-type"]).toMatch(/html/);
+    expect(homeResponse.text).toMatch(/Security Maintenance/i);
+
+    const apiResponse = await request(app).post("/api/app/profile").send({});
+    expect(apiResponse.status).toBe(503);
+    expect(apiResponse.body).toMatchObject({
+      error: "security_maintenance",
+      emergencyMode: "maintenance",
+    });
+
+    const trackResponse = await request(app).post("/track");
+    expect(trackResponse.status).toBe(503);
+    expect(trackResponse.body).toMatchObject({
+      error: "security_maintenance",
+      emergencyMode: "maintenance",
+    });
+  });
+
+  test("blocks public traffic in lockdown mode but keeps healthz available", async () => {
+    const { app } = await loadServer({
+      NODE_ENV: "development",
+      DASHBOARD_PASSWORD: "secret",
+      EMERGENCY_MODE: "lockdown",
+    });
+
+    const homeResponse = await request(app).get("/");
+    expect(homeResponse.status).toBe(503);
+    expect(homeResponse.text).toMatch(/Arclight is temporarily unavailable/i);
+
+    const assetResponse = await request(app).get("/js/reports.js");
+    expect(assetResponse.status).toBe(503);
+    expect(assetResponse.headers["content-type"]).toMatch(/text\/plain/);
+
+    const healthResponse = await request(app).get("/healthz");
+    expect(healthResponse.status).toBe(200);
+    expect(healthResponse.body.emergencyMode).toBe("lockdown");
+  });
+
+  test("requires an allowlisted IP for admin routes in production", async () => {
+    const getUsersSpy = jest.fn().mockResolvedValue([]);
+    const { app } = await loadServer(
+      {
+        NODE_ENV: "production",
+        DASHBOARD_PASSWORD: "secret",
+        ADMIN_ALLOWED_IPS: "203.0.113.10",
+      },
+      {
+        getUsersForDashboard: getUsersSpy,
+      },
+    );
+
+    const blockedResponse = await request(app)
+      .get("/api/dev/users")
+      .set("Authorization", authHeader("secret"))
+      .set("X-Forwarded-For", "198.51.100.25");
+    expect(blockedResponse.status).toBe(403);
+
+    const allowedResponse = await request(app)
+      .get("/api/dev/users")
+      .set("Authorization", authHeader("secret"))
+      .set("X-Forwarded-For", "203.0.113.10");
+    expect(allowedResponse.status).toBe(200);
+    expect(getUsersSpy).toHaveBeenCalledTimes(1);
+  });
+
+  test("blocks all admin access in production when no admin IP allowlist is configured", async () => {
+    const { app } = await loadServer({
+      NODE_ENV: "production",
+      DASHBOARD_PASSWORD: "secret",
+    });
+
+    const response = await request(app)
+      .get("/api/dev/users")
+      .set("Authorization", authHeader("secret"))
+      .set("X-Forwarded-For", "203.0.113.10");
+
+    expect(response.status).toBe(403);
+  });
+
+  test("emits structured logs for emergency blocks, auth failures, and admin IP denials", async () => {
+    const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
+    const { app } = await loadServer({
+      NODE_ENV: "production",
+      DASHBOARD_PASSWORD: "secret",
+      EMERGENCY_MODE: "maintenance",
+      ADMIN_ALLOWED_IPS: "203.0.113.10",
+    });
+
+    await request(app).get("/");
+    await request(app)
+      .get("/api/dev/users")
+      .set("Authorization", authHeader("wrong-password"))
+      .set("X-Forwarded-For", "203.0.113.10");
+    await request(app)
+      .get("/api/dev/users")
+      .set("Authorization", authHeader("secret"))
+      .set("X-Forwarded-For", "198.51.100.25");
+
+    const logs = parseStructuredLogs(logSpy);
+
+    expect(
+      logs.some(
+        (entry) =>
+          entry.event === "emergency_block" &&
+          entry.path === "/" &&
+          entry.mode === "maintenance",
+      ),
+    ).toBe(true);
+    expect(
+      logs.some(
+        (entry) =>
+          entry.event === "admin_auth_failed" &&
+          entry.reason === "invalid_password",
+      ),
+    ).toBe(true);
+    expect(logs.some((entry) => entry.event === "admin_ip_blocked")).toBe(true);
+    expect(logs.some((entry) => entry.event === "emergency_mode_active")).toBe(
+      true,
     );
   });
 

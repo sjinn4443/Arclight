@@ -10,7 +10,7 @@ Security policy is split between reusable helpers here and route wiring in `serv
 
 - `rateLimit.cjs`
   - Reusable `express-rate-limit` presets (`generalRateLimiter`, `sensitiveRateLimiter`).
-  - **Note:** the current `server.cjs` reports auth limiter is still an in-memory, Basic-Auth-specific limiter and does not use this file.
+  - `server.cjs` applies `sensitiveRateLimiter` to reports/admin routes, and keeps an in-memory Basic-Auth-specific limiter as a second line of defense.
 
 - `requireDevAuth.cjs`
   - Helper middleware to require Basic Auth in production (used by some optional/legacy routers under `reports/routes/`).
@@ -20,6 +20,9 @@ Security policy is split between reusable helpers here and route wiring in `serv
 
 - `telemetry-policy.cjs`
   - Centralizes telemetry host gating and server-side payload allowlisting/validation.
+
+- `EMERGENCY_PLAN.md`
+  - Operator runbook for `EMERGENCY_MODE`, admin IP allowlisting, and incident recovery expectations.
 
 - `cors.cjs`, `csrf.cjs`
   - Still placeholders in the current server implementation.
@@ -34,4 +37,5 @@ Security policy is split between reusable helpers here and route wiring in `serv
 See also:
 
 - [`reports/README.md`](../reports/README.md)
+- [`EMERGENCY_PLAN.md`](./EMERGENCY_PLAN.md)
 - [`securitytest/README.md`](../securitytest/README.md)
