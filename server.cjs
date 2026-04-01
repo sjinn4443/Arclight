@@ -895,7 +895,7 @@ app.post("/track", async (req, res) => {
     return res.status(204).end();
   } catch (error) {
     logServerError("[track] save failed", error);
-    return res.status(500).json({ error: "save failed" });
+    return res.status(204).end();
   }
 });
 

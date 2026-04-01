@@ -244,7 +244,7 @@ async function getUsersForDashboard() {
 
 async function saveIp(ip) {
   if (!writePool) return;
-  const geo = enrichIp(ip);
+  const geo = await enrichIp(ip);
   await writePool.query(
     `
     INSERT INTO ip_logs (ip, geo)

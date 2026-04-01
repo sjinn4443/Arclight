@@ -75,6 +75,26 @@ describe("server security hardening", () => {
     expect(mockStorage.saveIp).not.toHaveBeenCalled();
   });
 
+  test("fails open for /track when telemetry storage throws", async () => {
+    const { app, mockStorage } = await loadServer(
+      {
+        NODE_ENV: "production",
+        DASHBOARD_PASSWORD: "secret",
+      },
+      {
+        saveIp: jest.fn().mockRejectedValue(new Error("write failed")),
+      },
+    );
+
+    const response = await request(app)
+      .post("/track")
+      .set("Host", "app.example.com")
+      .set("X-Forwarded-For", "198.51.100.25");
+
+    expect(response.status).toBe(204);
+    expect(mockStorage.saveIp).toHaveBeenCalledTimes(1);
+  });
+
   test("persists telemetry only for allowed production hosts and strips unknown fields", async () => {
     const { app, mockStorage } = await loadServer({
       NODE_ENV: "production",

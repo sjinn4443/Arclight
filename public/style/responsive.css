@@ -907,6 +907,54 @@ input {
   .see-all-toggle {
     margin-left: 12vw;
   }
+
+  #videos .page .video-header {
+    top: 0;
+    z-index: 1;
+  }
+
+  #videos .page .video-container {
+    margin-top: 12px;
+  }
+
+  #videos .page .childhood-pilot-subtitle-overlay {
+    position: static;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    margin: 8px 12px 0;
+    justify-content: stretch;
+  }
+
+  #videos .page .childhood-pilot-subtitle-overlay__cue {
+    width: 100%;
+    max-width: none;
+  }
+
+  #videos .page .video-container:fullscreen .childhood-pilot-subtitle-overlay,
+  #videos
+    .page
+    .video-container:-webkit-full-screen
+    .childhood-pilot-subtitle-overlay {
+    position: absolute;
+    left: 14px;
+    right: 14px;
+    bottom: calc(52px + env(safe-area-inset-bottom, 0px));
+    margin: 0;
+    justify-content: center;
+  }
+
+  #videos
+    .page
+    .video-container:fullscreen
+    .childhood-pilot-subtitle-overlay__cue,
+  #videos
+    .page
+    .video-container:-webkit-full-screen
+    .childhood-pilot-subtitle-overlay__cue {
+    width: auto;
+    max-width: min(100%, 42rem);
+  }
 }
 
 /* Force a fixed back icon size across breakpoints. */

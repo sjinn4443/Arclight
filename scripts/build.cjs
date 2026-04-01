@@ -374,6 +374,7 @@ const build = async () => {
         "public/js/pwa.js",
         "public/js/quiz-launcher.js",
         "public/js/reports.js",
+        "public/js/safe-console-init.js",
         "public/js/toc.js",
         "public/js/videoplayer.js",
         "public/js/videos.js",

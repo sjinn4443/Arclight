@@ -59,30 +59,33 @@
     </template>
 
     <script>
-      if (location.hostname !== "localhost") {
+      (function () {
+        if (location.hostname === "localhost") return;
+
+        var sentryDsn = String(window.__ARCLIGHT_SENTRY_DSN__ || "").trim();
+        var sentryBundleUrl = String(
+          window.__ARCLIGHT_SENTRY_BUNDLE_URL__ || "",
+        ).trim();
+
+        // Monitoring is opt-in so browsers with blocked third-party scripts
+        // do not emit noisy failed-network entries by default.
+        if (!sentryDsn || !sentryBundleUrl) return;
+
         var s = document.createElement("script");
-        s.src =
-          "https://browser.sentry-cdn.com/8.26.0/bundle.tracing.replay.min.js";
+        s.src = sentryBundleUrl;
         s.crossOrigin = "anonymous";
-        s.onerror = function () {
-          console.warn(
-            "Sentry CDN blocked or failed to load; continuing without monitoring.",
-          );
-        };
         s.onload = function () {
           try {
             Sentry.init({
-              dsn: "https://203a0d9e09961e3dc90ebc2337e81642@o4510382478196736.ingest.de.sentry.io/4510382482325584",
+              dsn: sentryDsn,
               tracesSampleRate: 1.0,
               replaysSessionSampleRate: 0.1,
               replaysOnErrorSampleRate: 1.0,
             });
-          } catch (e) {
-            console.warn("Sentry init failed:", e);
-          }
+          } catch (_) {}
         };
         document.head.appendChild(s);
-      }
+      })();
     </script>
 
     <link rel="stylesheet" href="style/base.css" />
@@ -350,22 +353,5 @@
     <script src="js/quiz-launcher.js"></script>
     <script type="module" src="js/i18n.js"></script>
     <script src="js/language-picker.js" defer></script>
-    <script>
-      // Script to send IP tracking data
-      document.addEventListener("DOMContentLoaded", () => {
-        fetch("/track", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          // No body needed for this endpoint as it only tracks the IP
-        })
-          .then((response) => {
-            if (!response.ok) return null;
-            return null;
-          })
-          .catch(() => {});
-      });
-    </script>
   </body>
 </html>
