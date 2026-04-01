@@ -19,16 +19,16 @@ import {
   initializeAtomsHandout2,
 } from "./fundalReflexPdf.js";
 import { initializeGlaucomaQuizCaseStudy } from "./glaucomaQuizCaseStudy.js";
+import { captureClientError, installSafeConsole } from "./safe-logging.js";
+
+installSafeConsole();
 
 function withSentry(fn) {
   return (...args) => {
     try {
       return fn(...args);
     } catch (err) {
-      console.error("[app] uncaught error in handler", err);
-      if (window.Sentry && Sentry.captureException) {
-        Sentry.captureException(err);
-      }
+      captureClientError("[app] uncaught error in handler", err);
       throw err; // rethrow so normal behaviour stays the same
     }
   };
@@ -298,7 +298,7 @@ window.addEventListener("load", () => {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ event: "pageview" }),
-  }).catch((e) => console.error("track error", e));
+  }).catch((e) => captureClientError("track error", e));
 });
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -370,7 +370,7 @@ document.addEventListener("DOMContentLoaded", () => {
           subPageId: initialRoute.subPageId,
         })
           .catch((err) => {
-            console.error(`Failed to load ${nextRoute} route:`, err);
+            captureClientError(`Failed to load ${nextRoute} route:`, err);
           })
           .finally(() => {
             // Reveal app content now that the route is in place
@@ -403,7 +403,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     })
     .catch((error) => {
-      console.error("Failed to load splash:", error);
+      captureClientError("Failed to load splash:", error);
       loadPage(initialRoute.routeName, {
         replace: true,
         subPageId: initialRoute.subPageId,
@@ -554,7 +554,7 @@ function initializePupilsMenu() {
         await initializeMenu(); // ensure #menuOverlay exists (fetch+append)
         openMenu(); // then show it
       } catch (err) {
-        console.error("[pupils] openMenu failed:", err);
+        captureClientError("[pupils] openMenu failed:", err);
       }
     });
     root.dataset.menuWired = "1";

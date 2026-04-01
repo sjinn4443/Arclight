@@ -126,7 +126,14 @@ export function initializeVideoPlayers() {
 
   const enterVideoFullscreen = async (videoEl) => {
     if (!isMobileOrTablet()) return;
-    if (videoEl?.dataset?.preventAutoFullscreen === "true") return;
+    const preferContainerFullscreen =
+      videoEl?.dataset?.preferContainerFullscreen === "true";
+    if (
+      videoEl?.dataset?.preventAutoFullscreen === "true" &&
+      !preferContainerFullscreen
+    ) {
+      return;
+    }
 
     // 이미 fullscreen이면 중복 진입 방지
     if (getFsElement()) return;
@@ -136,7 +143,10 @@ export function initializeVideoPlayers() {
 
     // 1) iOS Safari: video.webkitEnterFullscreen()이 "비디오 전용 fullscreen"이라 가장 안정적
     //    (document fullscreenchange가 안 뜨는 경우가 많아서 아래에 별도 이벤트도 붙일 예정)
-    if (typeof videoEl.webkitEnterFullscreen === "function") {
+    if (
+      !preferContainerFullscreen &&
+      typeof videoEl.webkitEnterFullscreen === "function"
+    ) {
       try {
         videoEl.webkitEnterFullscreen();
       } catch (_) {
@@ -146,7 +156,10 @@ export function initializeVideoPlayers() {
 
     // 2) 표준 Fullscreen API: video 자체를 fullscreen 대상으로
     if (!getFsElement()) {
-      await requestFs(videoEl);
+      const fullscreenTarget = preferContainerFullscreen
+        ? videoEl.closest(".video-container") || videoEl
+        : videoEl;
+      await requestFs(fullscreenTarget);
     }
 
     // 3) fullscreen 진입 직후에 orientation lock 시도 (일부 기기에서 타이밍 이슈가 있어 1회 재시도)

@@ -8,7 +8,9 @@ describe("Media resilience proxy", () => {
     document.body.innerHTML = `
       <div id="page-content"></div>
       <div id="mediaError" style="display:none"></div>
-      <video id="trainingVideo"></video>
+      <div class="video-container" id="trainingVideoContainer">
+        <video id="trainingVideo"></video>
+      </div>
     `;
 
     window.matchMedia = jest.fn().mockImplementation(() => ({
@@ -67,6 +69,18 @@ describe("Media resilience proxy", () => {
 
     await initializeVideoPlayers();
     video.dispatchEvent(new Event("play"));
+
+    expect(video.webkitEnterFullscreen).not.toHaveBeenCalled();
+  });
+
+  test("avoids native iOS video fullscreen when container fullscreen is preferred", async () => {
+    const video = document.getElementById("trainingVideo");
+    video.webkitEnterFullscreen = jest.fn();
+    video.dataset.preventAutoFullscreen = "true";
+    video.dataset.preferContainerFullscreen = "true";
+
+    await initializeVideoPlayers();
+    expect(() => video.dispatchEvent(new Event("play"))).not.toThrow();
 
     expect(video.webkitEnterFullscreen).not.toHaveBeenCalled();
   });

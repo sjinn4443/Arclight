@@ -1,3 +1,5 @@
+import { captureClientError } from "./safe-logging.js";
+
 function getAnonId() {
   const KEY = "arclight_anon_id";
   let id = localStorage.getItem(KEY);
@@ -47,13 +49,10 @@ export async function saveProfile(fields) {
       body: JSON.stringify(body),
     });
   } catch (err) {
-    console.error("[telemetry] saveProfile failed", err);
-    if (window.Sentry && Sentry.captureException) {
-      Sentry.captureException(err, {
-        tags: { area: "telemetry", op: "saveProfile" },
-        extra: { body },
-      });
-    }
+    captureClientError("[telemetry] saveProfile failed", err, {
+      tags: { area: "telemetry", op: "saveProfile" },
+      extra: { body },
+    });
     // optional: rethrow if you want callers to know it failed
   }
 }
@@ -71,13 +70,10 @@ export async function bumpRefresh(fields = {}) {
       body: JSON.stringify(body),
     });
   } catch (err) {
-    console.error("[telemetry] bumpRefresh failed", err);
-    if (window.Sentry && Sentry.captureException) {
-      Sentry.captureException(err, {
-        tags: { area: "telemetry", op: "bumpRefresh" },
-        extra: { body },
-      });
-    }
+    captureClientError("[telemetry] bumpRefresh failed", err, {
+      tags: { area: "telemetry", op: "bumpRefresh" },
+      extra: { body },
+    });
   }
 }
 

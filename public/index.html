@@ -345,6 +345,7 @@
         });
       }
     </script>
+    <script defer type="module" src="js/safe-console-init.js"></script>
     <script defer type="module" src="js/main.js"></script>
     <script src="js/quiz-launcher.js"></script>
     <script type="module" src="js/i18n.js"></script>
@@ -360,18 +361,10 @@
           // No body needed for this endpoint as it only tracks the IP
         })
           .then((response) => {
-            if (!response.ok) {
-              console.error(
-                "Failed to send tracking data:",
-                response.statusText,
-              );
-            } else {
-              console.log("Tracking data sent successfully.");
-            }
+            if (!response.ok) return null;
+            return null;
           })
-          .catch((error) => {
-            console.error("Error sending tracking data:", error);
-          });
+          .catch(() => {});
       });
     </script>
   </body>

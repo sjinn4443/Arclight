@@ -1023,10 +1023,12 @@ function syncChildhoodPilotInlinePlaybackPreference(video, pageId) {
 
   if (shouldKeepChildhoodPilotInlinePlayback(pageId)) {
     video.dataset.preventAutoFullscreen = "true";
+    video.dataset.preferContainerFullscreen = "true";
     return;
   }
 
   delete video.dataset.preventAutoFullscreen;
+  delete video.dataset.preferContainerFullscreen;
 }
 
 function getCurrentUiLanguage() {

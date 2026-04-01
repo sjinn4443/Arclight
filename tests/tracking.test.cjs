@@ -381,6 +381,30 @@ describe("server security hardening", () => {
     );
   });
 
+  test("redacts sensitive request details in structured logs", async () => {
+    const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
+    const { app } = await loadServer({
+      NODE_ENV: "production",
+      DASHBOARD_PASSWORD: "secret",
+      EMERGENCY_MODE: "maintenance",
+      ADMIN_ALLOWED_IPS: "203.0.113.10",
+    });
+
+    await request(app)
+      .get("/api/dev/users?token=secret")
+      .set("Authorization", authHeader("wrong-password"))
+      .set("X-Forwarded-For", "203.0.113.10");
+
+    const logs = parseStructuredLogs(logSpy);
+    const authFailure = logs.find(
+      (entry) => entry.event === "admin_auth_failed",
+    );
+
+    expect(authFailure).toBeTruthy();
+    expect(authFailure.path).toBe("/api/dev/users");
+    expect(authFailure.ip).toBe("203.0.113.x");
+  });
+
   test("applies baseline security headers to app routes", async () => {
     const { app } = await loadServer({
       NODE_ENV: "production",

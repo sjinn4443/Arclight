@@ -383,6 +383,7 @@ describe("childhood eye screening subtitle pilot", () => {
 
     expect(trackEl).toBeNull();
     expect(video.dataset.preventAutoFullscreen).toBe("true");
+    expect(video.dataset.preferContainerFullscreen).toBe("true");
     expect(
       page.querySelector("[data-childhood-pilot-subtitle-overlay='true']"),
     ).not.toBeNull();

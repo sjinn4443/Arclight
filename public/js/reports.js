@@ -5,6 +5,9 @@ import {
   applyTranslations,
   setLanguage,
 } from "./i18n.js";
+import { installSafeConsole } from "./safe-logging.js";
+
+installSafeConsole();
 
 function createEl(tag, className, text) {
   const el = document.createElement(tag);

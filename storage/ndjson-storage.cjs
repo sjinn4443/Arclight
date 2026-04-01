@@ -2,6 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const { enrichIp } = require("../utils/ipEnricher.cjs");
 const { encrypt, decrypt } = require("../reports/security/encrypt.cjs"); // Import encryption module
+const { logServerError } = require("../security/safe-logging.cjs");
 
 const dataDir = path.join(__dirname, "..", "reports", "data");
 const file = path.join(dataDir, "telemetry.ndjson");
@@ -15,7 +16,7 @@ function writeLine(obj) {
     const encryptedData = encrypt(JSON.stringify(obj)); // Encrypt the data
     fs.appendFileSync(file, encryptedData + "\n", "utf8");
   } catch (e) {
-    console.error("Failed to write to telemetry.ndjson:", e);
+    logServerError("Failed to write to telemetry.ndjson", e);
     throw e; // Re-throw to propagate the error to the caller
   }
 }
@@ -121,7 +122,7 @@ async function getUsersForDashboard() {
     try {
       decryptedLine = decrypt(encryptedLine); // Decrypt the line
     } catch (e) {
-      console.error("Failed to decrypt line:", e.message);
+      logServerError("Failed to decrypt telemetry line", e);
       continue; // Skip this line if decryption fails
     }
     let r;

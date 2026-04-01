@@ -1,4 +1,12 @@
 require("dotenv").config();
+const {
+  installSafeConsole,
+  logServerError,
+  sanitizeStructuredLogPayload,
+} = require("./security/safe-logging.cjs");
+
+installSafeConsole();
+
 const express = require("express");
 const path = require("path");
 const helmet = require("helmet");
@@ -424,16 +432,16 @@ function renderMaintenancePage() {
 }
 
 function logStructuredEvent(event, req, extra = {}) {
-  const payload = {
+  const payload = sanitizeStructuredLogPayload({
     ts: new Date().toISOString(),
     event,
     mode: getEmergencyMode(),
     method: req?.method || null,
-    path: req?.originalUrl || req?.path || null,
+    path: req?.path || req?.originalUrl || null,
     ip: req ? getClientIp(req) : null,
     host: req ? getRequestHost(req) : null,
     ...extra,
-  };
+  });
   console.log(JSON.stringify(payload));
 }
 
@@ -703,10 +711,10 @@ async function initStorageWithRetry() {
       console.log(`[storage] init ok (attempt ${attempt})`);
       return;
     } catch (err) {
-      console.error(
-        `[storage] init failed (attempt ${attempt}/${maxAttempts})`,
-        err,
-      );
+      logServerError("[storage] init failed", err, {
+        attempt,
+        maxAttempts,
+      });
       const delay = baseDelayMs * attempt;
       await new Promise((resolve) => setTimeout(resolve, delay));
     }
@@ -743,7 +751,7 @@ app.post("/api/app/profile", async (req, res) => {
     await storage.saveProfile(payload);
     return res.json({ ok: true, stored: true });
   } catch (error) {
-    console.error(error);
+    logServerError("[api/app/profile] save failed", error);
     return res.status(500).json({ error: "save failed" });
   }
 });
@@ -758,7 +766,7 @@ app.post("/api/app/refresh", async (req, res) => {
     await storage.bumpRefresh(payload);
     return res.json({ ok: true, stored: true });
   } catch (error) {
-    console.error(error);
+    logServerError("[api/app/refresh] save failed", error);
     return res.status(500).json({ error: "refresh failed" });
   }
 });
@@ -769,7 +777,7 @@ app.get("/api/location/ip", async (req, res) => {
     res.set("Cache-Control", "no-store");
     return res.json(payload);
   } catch (error) {
-    console.error("[location] lookup failed", error);
+    logServerError("[location] lookup failed", error);
     return res.status(500).json({ error: "lookup failed" });
   }
 });
@@ -807,10 +815,7 @@ function basicAuth(req, res, next) {
         .send("Too many authentication attempts. Please try again later.");
     }
   } catch (error) {
-    console.error(
-      "[dev] rate limiter error",
-      error && error.message ? error.message : error,
-    );
+    logServerError("[dev] rate limiter error", error);
   }
 
   if (pass && pass === process.env.DASHBOARD_PASSWORD) {
@@ -846,7 +851,7 @@ app.get("/api/dev/users", adminAccess, async (req, res) => {
     const rows = await storage.getUsersForDashboard();
     return res.json(rows);
   } catch (error) {
-    console.error(error);
+    logServerError("[api/dev/users] read failed", error);
     return res.status(500).json({ error: "read failed" });
   }
 });
@@ -873,7 +878,7 @@ app.delete("/api/dev/users/:anonId", adminAccess, async (req, res) => {
 
     return res.status(204).end();
   } catch (error) {
-    console.error("[dev] delete user failed", error);
+    logServerError("[dev] delete user failed", error);
     return res.status(500).json({ error: "Failed to delete user" });
   }
 });
@@ -889,7 +894,7 @@ app.post("/track", async (req, res) => {
     await storage.saveIp(getClientIp(req));
     return res.status(204).end();
   } catch (error) {
-    console.error(error);
+    logServerError("[track] save failed", error);
     return res.status(500).json({ error: "save failed" });
   }
 });
