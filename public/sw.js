@@ -1,5 +1,5 @@
 /* sw.js — Arclight PWA service worker */
-const CACHE_NAME = "arclight-static-v11";
+const CACHE_NAME = "arclight-static-v12";
 const CORE_ASSETS = [
   "/",
   "/index.html",
@@ -115,20 +115,9 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
+  // Let the browser request pilot HLS assets directly. Native HLS subtitle
+  // loading on iPhone is sensitive to service-worker interception.
   if (isChildhoodPilotHlsAsset) {
-    event.respondWith(
-      (async () => {
-        const cache = await caches.open(CACHE_NAME);
-        try {
-          const fresh = await fetch(req, { cache: "no-store" });
-          cache.put(req, fresh.clone()).catch(() => {});
-          return fresh;
-        } catch {
-          const cached = await cache.match(req, { ignoreSearch: true });
-          return cached || Response.error();
-        }
-      })(),
-    );
     return;
   }
 

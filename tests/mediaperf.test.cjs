@@ -58,4 +58,16 @@ describe("Media resilience proxy", () => {
 
     expect(video.__wiredPlayOnce).toBe(true);
   });
+
+  test("skips auto fullscreen when the video opts into inline playback", async () => {
+    const video = document.getElementById("trainingVideo");
+    video.webkitEnterFullscreen = jest.fn();
+    video.requestFullscreen = undefined;
+    video.dataset.preventAutoFullscreen = "true";
+
+    await initializeVideoPlayers();
+    video.dispatchEvent(new Event("play"));
+
+    expect(video.webkitEnterFullscreen).not.toHaveBeenCalled();
+  });
 });

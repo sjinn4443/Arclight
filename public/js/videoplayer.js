@@ -126,6 +126,7 @@ export function initializeVideoPlayers() {
 
   const enterVideoFullscreen = async (videoEl) => {
     if (!isMobileOrTablet()) return;
+    if (videoEl?.dataset?.preventAutoFullscreen === "true") return;
 
     // 이미 fullscreen이면 중복 진입 방지
     if (getFsElement()) return;

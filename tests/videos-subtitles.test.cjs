@@ -251,13 +251,14 @@ describe("childhood eye screening subtitle pilot", () => {
     expect(videos.calculateVideoProgressPercent(92, 120)).toBeLessThan(100);
   });
 
-  it("ships iOS HLS manifests with wvtt subtitle codecs", () => {
+  it("omits wvtt from iOS HLS manifest codecs for subtitle compatibility", () => {
     const masterManifest = fs.readFileSync(
       "public/video-hls/childhood-eye-screening/assessmentVisionPage/master.m3u8",
       "utf8",
     );
 
-    expect(masterManifest).toContain('CODECS="avc1.42E01E,mp4a.40.2,wvtt"');
+    expect(masterManifest).toContain('CODECS="avc1.42E01E,mp4a.40.2"');
+    expect(masterManifest).not.toContain("wvtt");
   });
 
   it("keeps short videos from completing too early", () => {
@@ -381,7 +382,7 @@ describe("childhood eye screening subtitle pilot", () => {
     );
 
     expect(trackEl).toBeNull();
-    expect(video.dataset.preventAutoFullscreen).toBeUndefined();
+    expect(video.dataset.preventAutoFullscreen).toBe("true");
     expect(
       page.querySelector("[data-childhood-pilot-subtitle-overlay='true']"),
     ).not.toBeNull();

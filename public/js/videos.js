@@ -1011,6 +1011,24 @@ function isChildhoodEyeScreeningSubtitlePilotPage(pageId) {
   );
 }
 
+function shouldKeepChildhoodPilotInlinePlayback(pageId) {
+  return (
+    isIOSChildhoodPilotDevice() &&
+    isChildhoodEyeScreeningSubtitlePilotPage(pageId)
+  );
+}
+
+function syncChildhoodPilotInlinePlaybackPreference(video, pageId) {
+  if (!video) return;
+
+  if (shouldKeepChildhoodPilotInlinePlayback(pageId)) {
+    video.dataset.preventAutoFullscreen = "true";
+    return;
+  }
+
+  delete video.dataset.preventAutoFullscreen;
+}
+
 function getCurrentUiLanguage() {
   try {
     const fromI18n = window.I18N?.getLanguage?.();
@@ -1339,7 +1357,6 @@ function prepareVideoForChildhoodPilotSubtitles(video) {
   if (!video.getAttribute("crossorigin")) {
     video.setAttribute("crossorigin", "anonymous");
   }
-  delete video.dataset.preventAutoFullscreen;
   if (video.getAttribute("controlslist") === "nofullscreen noremoteplayback") {
     video.removeAttribute("controlslist");
   }
@@ -2040,6 +2057,7 @@ async function syncChildhoodPilotSubtitlesForPage(
   const video = getVideoPageLocalVideoElement(pageId);
   if (video) {
     prepareVideoForChildhoodPilotSubtitles(video);
+    syncChildhoodPilotInlinePlaybackPreference(video, pageId);
   }
 
   const entry = await getChildhoodPilotCatalogEntry(pageId);
@@ -2231,6 +2249,7 @@ async function applyVideoPageMode(pageId, mode, { preserveTime = true } = {}) {
 
   const video = container.querySelector(cfg.videoSelector);
   const existingIframe = container.querySelector(`iframe.${cfg.iframeClass}`);
+  syncChildhoodPilotInlinePlaybackPreference(video, pageId);
 
   let currentTime = 0;
   if (preserveTime && video) {
