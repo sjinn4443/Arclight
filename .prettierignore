@@ -4,3 +4,5 @@ dist
 .next
 playwright-report
 test-results
+# HLS video segments use .ts but are binary media, not TypeScript source.
+public/video-hls

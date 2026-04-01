@@ -98,7 +98,12 @@ function buildSubtitlePlaylist(duration, fileName = "captions.vtt") {
   ].join("\n");
 }
 
-function buildMasterPlaylist({ bandwidth, averageBandwidth, resolution, languages }) {
+function buildMasterPlaylist({
+  bandwidth,
+  averageBandwidth,
+  resolution,
+  languages,
+}) {
   const codecs = languages.length
     ? "avc1.42E01E,mp4a.40.2,wvtt"
     : "avc1.42E01E,mp4a.40.2";

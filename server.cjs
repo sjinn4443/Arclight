@@ -327,6 +327,7 @@ function isEmergencyWriteRoute(req) {
 
 function requestAcceptsHtml(req) {
   if (req.path === "/" || req.path.endsWith(".html")) return true;
+  if (path.extname(req.path || "")) return false;
   return req.accepts(["html", "json", "text"]) === "html";
 }
 
