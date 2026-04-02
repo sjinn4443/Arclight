@@ -914,7 +914,7 @@ input {
   }
 
   #videos .page .video-container {
-    margin-top: 12px;
+    margin-top: 28px;
   }
 
   #videos .page .childhood-pilot-subtitle-overlay {
@@ -922,7 +922,7 @@ input {
     left: auto;
     right: auto;
     bottom: auto;
-    margin: 8px 12px 0;
+    margin: 18px 12px 0;
     justify-content: stretch;
   }
 
