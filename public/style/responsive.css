@@ -908,16 +908,20 @@ input {
     margin-left: 12vw;
   }
 
-  #videos .page .video-header {
+  #videos .page .video-header,
+  #childhoodEyeScreeningWorkshopPage .video-header {
     top: 0;
     z-index: 1;
   }
 
-  #videos .page .video-container {
-    margin-top: 28px;
+  #videos .page .video-container,
+  #childhoodEyeScreeningWorkshopPage .video-container {
+    margin-top: 49px;
+    padding-top: 21px !important;
   }
 
-  #videos .page .childhood-pilot-subtitle-overlay {
+  #videos .page .childhood-pilot-subtitle-overlay,
+  #childhoodEyeScreeningWorkshopPage .childhood-pilot-subtitle-overlay {
     position: static;
     left: auto;
     right: auto;
@@ -926,7 +930,8 @@ input {
     justify-content: stretch;
   }
 
-  #videos .page .childhood-pilot-subtitle-overlay__cue {
+  #videos .page .childhood-pilot-subtitle-overlay__cue,
+  #childhoodEyeScreeningWorkshopPage .childhood-pilot-subtitle-overlay__cue {
     width: 100%;
     max-width: none;
   }
@@ -934,6 +939,12 @@ input {
   #videos .page .video-container:fullscreen .childhood-pilot-subtitle-overlay,
   #videos
     .page
+    .video-container:-webkit-full-screen
+    .childhood-pilot-subtitle-overlay,
+  #childhoodEyeScreeningWorkshopPage
+    .video-container:fullscreen
+    .childhood-pilot-subtitle-overlay,
+  #childhoodEyeScreeningWorkshopPage
     .video-container:-webkit-full-screen
     .childhood-pilot-subtitle-overlay {
     position: absolute;
@@ -950,6 +961,12 @@ input {
     .childhood-pilot-subtitle-overlay__cue,
   #videos
     .page
+    .video-container:-webkit-full-screen
+    .childhood-pilot-subtitle-overlay__cue,
+  #childhoodEyeScreeningWorkshopPage
+    .video-container:fullscreen
+    .childhood-pilot-subtitle-overlay__cue,
+  #childhoodEyeScreeningWorkshopPage
     .video-container:-webkit-full-screen
     .childhood-pilot-subtitle-overlay__cue {
     width: auto;

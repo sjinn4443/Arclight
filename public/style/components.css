@@ -4573,6 +4573,7 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
 .video-container,
 .video-container video,
 .video-container iframe {
+  padding-top: 21px;
   padding-bottom: 48px;
 }
 
