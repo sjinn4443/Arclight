@@ -67,7 +67,7 @@ export function initializeOnboarding() {
 
     // 둘 다 선택되기 전에는 range 계산 안 함
     if (yRaw === "" || mRaw === "") {
-      if (practiceRangeHint) practiceRangeHint.style.display = "none";
+      if (practiceRangeHint) practiceRangeHint.hidden = true;
       if (practiceLevelRange) practiceLevelRange.value = "";
       return;
     }
@@ -82,7 +82,7 @@ export function initializeOnboarding() {
 
     if (practiceRangeHint) {
       practiceRangeHint.textContent = formatPracticeHint(range);
-      practiceRangeHint.style.display = "block";
+      practiceRangeHint.hidden = false;
     }
   }
 
@@ -597,13 +597,13 @@ export function initializeOnboarding() {
 
     // 1) 일단 전부 숨김
     jobSelect.querySelectorAll("optgroup").forEach((g) => {
-      g.style.display = "none";
+      g.hidden = true;
     });
 
     // 2) 선택된 interest들에 해당하는 optgroup은 모두 표시
     selected.forEach((field) => {
       const group = jobSelect.querySelector(`optgroup[data-field="${field}"]`);
-      if (group) group.style.display = "block";
+      if (group) group.hidden = false;
     });
 
     // 3) interest가 하나도 없으면 roles/experience 전부 초기화
@@ -817,13 +817,13 @@ export function initializeOnboarding() {
     function hideIntroSkipButtonOnce() {
       const immediate = document.getElementById("skipBtn");
       if (immediate) {
-        immediate.style.display = "none";
+        immediate.hidden = true;
         return;
       }
       const obs = new MutationObserver((_, o) => {
         const btn = document.getElementById("skipBtn");
         if (btn) {
-          btn.style.display = "none";
+          btn.hidden = true;
           o.disconnect();
         }
       });
@@ -887,7 +887,7 @@ export function initializeOnboarding() {
             .then((html) => {
               splashContainer.innerHTML = html;
 
-              if (pageContainer) pageContainer.style.display = "none";
+              if (pageContainer) pageContainer.hidden = true;
               splashContainer.classList.add("splash-full-screen"); // ✅ 여기 핵심
               splashContainer.classList.add("active");
 
@@ -906,7 +906,7 @@ export function initializeOnboarding() {
 
                 setTimeout(() => {
                   loadPage("dashboard").finally(() => {
-                    if (pageContainer) pageContainer.style.display = "";
+                    if (pageContainer) pageContainer.hidden = false;
                     splashContainer.classList.remove("active", "fade-out");
                     splashContainer.innerHTML = "";
                   });
@@ -930,7 +930,7 @@ export function initializeOnboarding() {
               }
             })
             .catch(() => {
-              if (pageContainer) pageContainer.style.display = "";
+              if (pageContainer) pageContainer.hidden = false;
               loadPage("dashboard");
             });
         });
@@ -960,7 +960,7 @@ export function initializeOnboarding() {
     function hideSkipContinueBtnIfReturned() {
       if (localStorage.getItem("cameFromSkipPath") === "true") {
         const btn = document.getElementById("skipContinueBtn");
-        if (btn) btn.style.display = "none";
+        if (btn) btn.hidden = true;
         localStorage.removeItem("cameFromSkipPath");
       }
     }
@@ -989,7 +989,7 @@ export function initializeOnboarding() {
         "splash-full-screen",
       );
       splashContainer.innerHTML = "";
-      if (pageContainer) pageContainer.style.display = "";
+      if (pageContainer) pageContainer.hidden = false;
 
       loadPage("intro");
       hideIntroSkipButtonOnce();

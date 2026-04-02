@@ -776,6 +776,10 @@ input:checked + .slider:before {
   border-color: #333 transparent transparent transparent;
 }
 
+.tooltip--stacked {
+  margin-top: 6px;
+}
+
 .option strong {
   font-weight: bold;
 }
@@ -1086,6 +1090,81 @@ input:checked + .slider:before {
 }
 
 /* === Language Picker Select (Black Theme) === */
+#languageInstallPage .lang-install__custom-select {
+  width: 100%;
+  min-height: 40px;
+  border-radius: 13px;
+  background: transparent;
+  color: #fff;
+  padding: 8px 40px 8px 14px;
+  border: 1px solid #fff;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  text-align: left;
+}
+
+#languageInstallPage .lang-install__custom-select-label {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+#languageInstallPage .lang-install__custom-select-label .lang-install__item-en,
+#languageInstallPage
+  .lang-install__custom-select-label
+  .lang-install__item-native {
+  color: inherit;
+  font-size: 12px;
+}
+
+#languageInstallPage .lang-install__custom-select-caret {
+  position: absolute;
+  right: 12px;
+  width: 17px;
+  font-size: 25px;
+  line-height: 1;
+  pointer-events: none;
+  transition: transform 160ms ease;
+}
+
+#languageInstallPage
+  .lang-install__custom-select.is-open
+  .lang-install__custom-select-caret {
+  transform: rotate(180deg);
+}
+
+#languageInstallPage .lang-install__dropdown {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + 6px);
+  padding: 6px 0;
+  margin: 0;
+  max-height: 210px;
+  z-index: 10000;
+  background: #fff;
+  color: #111;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+  list-style: none;
+}
+
+#languageInstallPage .lang-install__dropdown .lang-install__item,
+#languageInstallPage .lang-install__dropdown .lang-install__item-en,
+#languageInstallPage .lang-install__dropdown .lang-install__item-native {
+  color: #111;
+}
+
+#languageInstallPage .lang-install__dropdown .lang-install__item-en,
+#languageInstallPage .lang-install__dropdown .lang-install__item-native {
+  font-size: 12px;
+}
+
 #languagePickerSelect.lang-install__select {
   color: #000;
   border: 1px solid #5a5a5a;

@@ -217,6 +217,11 @@
   margin-bottom: 48px;
 }
 
+#languageInstallPage .lang-install__inline-icon {
+  vertical-align: middle;
+  margin: 0 4px;
+}
+
 .lang-install__select {
   width: 100%;
   height: 40px;
@@ -292,12 +297,26 @@
 
 /* ============================================= Onboarding Page ============================================= */
 
+#onboarding .onb-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .onb-title {
   font-size: 22px;
   font-weight: 700;
   color: #111;
   margin: 12px 0 18px 2px;
   text-align: left;
+}
+
+#onboarding .onb-title-row .onb-title {
+  margin: 0;
+}
+
+#onboarding .onb-error-tip {
+  margin-top: 6px;
 }
 
 #onboarding .card {
@@ -635,7 +654,7 @@ select.onb-input.has-value {
   overflow: hidden;
 }
 .intro-progress__fill {
-  width: 12%;
+  width: 0;
   height: 100%;
   background: #e41e26;
   border-radius: 999px;
@@ -698,11 +717,10 @@ select.onb-input.has-value {
   max-width: 560px;
   aspect-ratio: 68 / 45;
   border-radius: 18px;
-  box-sizing: content-box;
-  border: 12px solid #000;
+  border: 6px solid #000;
   overflow: hidden;
   background: #000;
-  height: 346px;
+  height: 370px;
   margin: 15px 3px 19px 0px;
 }
 
@@ -730,6 +748,7 @@ select.onb-input.has-value {
   cursor: pointer;
   color: black;
   font-weight: 750;
+  transform-origin: center;
 }
 
 .intro-arrow-left {
@@ -785,11 +804,11 @@ select.onb-input.has-value {
 }
 
 #introPage .intro-arrow.intro-arrow--pop-appear {
-  animation: introArrowPopAppear 700ms cubic-bezier(0.22, 1, 0.36, 1);
+  animation: introArrowPopAppear 1000ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 #introPage .intro-arrow.intro-arrow--pop {
-  animation: introArrowPop 600ms cubic-bezier(0.22, 1, 0.36, 1);
+  animation: introArrowPop 850ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .intro-primary {

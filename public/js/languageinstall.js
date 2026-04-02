@@ -454,7 +454,7 @@ export function initializeLanguageInstall() {
 
   if (offlineInfoBtn) {
     offlineInfoBtn.addEventListener("click", () => {
-      showLanguageHintModal("languageInstallHintOffline");
+      showLanguageHintModal(getInstallHelpTemplateId());
     });
   }
 
@@ -494,6 +494,11 @@ function showLanguageHintModal(templateId) {
   document.body.appendChild(modal);
   window.I18N?.applyTranslations?.(modal);
 
+  const titleEl = modal.querySelector(".guest-modal__title");
+  if (titleEl && !titleEl.textContent.trim()) {
+    titleEl.hidden = true;
+  }
+
   const close = () => {
     modal.classList.add("fade-out");
     setTimeout(() => modal.remove(), 250);
@@ -520,116 +525,62 @@ function buildCustomLangSelect(selectEl) {
     .querySelectorAll("[data-custom-lang-select]")
     .forEach((el) => el.remove());
 
-  // Hide native select but keep it in the DOM for accessibility
-  selectEl.style.position = "absolute";
-  selectEl.style.opacity = "0";
-  selectEl.style.pointerEvents = "none";
-  selectEl.style.width = "0";
-  selectEl.style.height = "0";
+  // Hide native select but keep it in the DOM as the source of truth.
+  selectEl.classList.add("ui-source-control");
 
   // Control (closed state)
   const ctrl = document.createElement("button");
+  ctrl.className = "lang-install__custom-select";
   ctrl.type = "button";
   ctrl.setAttribute("aria-haspopup", "listbox");
   ctrl.setAttribute("aria-expanded", "false");
   ctrl.setAttribute("data-custom-lang-select", "true");
 
-  // Match black page style
-  ctrl.style.width = "100%";
-  ctrl.style.height = "40px";
-  ctrl.style.borderRadius = "13px";
-  ctrl.style.background = "transparent";
-  ctrl.style.border = "1px solid #fff";
-  ctrl.style.color = "#fff";
-  ctrl.style.padding = "8px 40px 8px 14px";
-  ctrl.style.fontSize = "12px";
-  ctrl.style.display = "flex";
-  ctrl.style.alignItems = "center";
-  ctrl.style.justifyContent = "space-between";
-  ctrl.style.position = "relative";
-
   // Chevron
   const caret = document.createElement("span");
+  caret.className = "lang-install__custom-select-caret";
   caret.textContent = "\u25BE";
-  caret.style.position = "absolute";
-  caret.style.right = "12px";
-  caret.style.pointerEvents = "none";
-  caret.style.fontSize = "25px";
-  caret.style.width = "17px";
 
   // Label (two-column inside the "select" box)
   const label = document.createElement("div");
-  label.style.width = "100%";
-  label.style.display = "flex";
-  label.style.justifyContent = "space-between";
-  label.style.gap = "12px";
+  label.className = "lang-install__custom-select-label";
 
   // Dropdown list
   const list = document.createElement("ul");
+  list.className = "lang-install__list lang-install__dropdown";
   list.setAttribute("role", "listbox");
   list.setAttribute("data-custom-lang-select", "true");
-  list.style.position = "absolute";
-  list.style.left = "0";
-  list.style.right = "0";
-  list.style.top = "calc(100% + 6px)";
-  list.style.background = "#fff";
-  list.style.color = "#111";
-  list.style.borderRadius = "12px";
-  list.style.padding = "6px 0";
-  list.style.margin = "0";
-  list.style.listStyle = "none";
-  list.style.maxHeight = "210px";
-  list.style.overflowY = "auto";
-  list.style.boxShadow = "0 4px 10px rgba(0,0,0,0.12)";
-  list.style.zIndex = "10000";
-  list.style.display = "none";
+  list.hidden = true;
 
   // Build options (li)
   Array.from(selectEl.options).forEach((opt) => {
     const li = document.createElement("li");
+    li.className = "lang-install__item";
     li.setAttribute("role", "option");
     li.dataset.value = opt.value;
-
-    li.style.padding = "10px 12px";
-    li.style.cursor = "pointer";
-
-    const row = document.createElement("div");
-    row.style.display = "flex";
-    row.style.justifyContent = "space-between";
-    row.style.alignItems = "center";
-    row.style.gap = "12px";
-    row.style.fontSize = "12px";
 
     const english = (opt.textContent || "").replace(/\s*\(.*\)\s*/g, "").trim();
     const native = opt.getAttribute("data-native") || english;
 
+    const left = document.createElement("span");
+    left.className = "lang-install__item-en";
+    left.textContent = english;
+
     if (opt.value === "en") {
-      row.textContent = english; // only left side
+      li.appendChild(left);
     } else {
-      const left = document.createElement("span");
-      left.textContent = english;
-
       const right = document.createElement("span");
-      const rightStrong = document.createElement("strong");
-      rightStrong.textContent = native;
-      right.appendChild(rightStrong);
-
-      row.appendChild(left);
-      row.appendChild(right);
+      right.className = "lang-install__item-native";
+      right.textContent = native;
+      li.appendChild(left);
+      li.appendChild(right);
     }
 
-    li.appendChild(row);
-
-    li.addEventListener("mouseenter", () => {
-      li.style.background = "#f5f5f5";
-    });
-    li.addEventListener("mouseleave", () => {
-      li.style.background = "transparent";
-    });
     li.addEventListener("click", () => {
       selectEl.value = opt.value;
       updateLabel();
-      list.style.display = "none";
+      list.hidden = true;
+      ctrl.classList.remove("is-open");
       ctrl.setAttribute("aria-expanded", "false");
       selectEl.dispatchEvent(new Event("change", { bubbles: true }));
     });
@@ -650,28 +601,30 @@ function buildCustomLangSelect(selectEl) {
 
     label.textContent = "";
     const left = document.createElement("span");
+    left.className = "lang-install__item-en";
     left.textContent = english;
     label.appendChild(left);
 
     if (current.value !== "en") {
       const right = document.createElement("span");
-      const rightStrong = document.createElement("strong");
-      rightStrong.textContent = native;
-      right.appendChild(rightStrong);
+      right.className = "lang-install__item-native";
+      right.textContent = native;
       label.appendChild(right);
     }
   }
 
   ctrl.addEventListener("click", () => {
-    const open = list.style.display === "block";
-    list.style.display = open ? "none" : "block";
+    const open = !list.hidden;
+    list.hidden = open;
+    ctrl.classList.toggle("is-open", !open);
     ctrl.setAttribute("aria-expanded", String(!open));
   });
 
   // Click-away to close
   document.addEventListener("click", (e) => {
     if (!wrap.contains(e.target)) {
-      list.style.display = "none";
+      list.hidden = true;
+      ctrl.classList.remove("is-open");
       ctrl.setAttribute("aria-expanded", "false");
     }
   });
@@ -679,7 +632,6 @@ function buildCustomLangSelect(selectEl) {
   updateLabel();
   ctrl.appendChild(label);
   ctrl.appendChild(caret);
-  wrap.style.position = "relative"; // ensure absolute list anchors to wrapper
   wrap.appendChild(ctrl);
   wrap.appendChild(list);
 }

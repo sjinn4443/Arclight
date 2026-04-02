@@ -486,6 +486,12 @@ input {
     padding-top: 17%;
   }
 
+  .intro-hero-frame {
+    box-sizing: content-box;
+    border: 12px solid #000;
+    height: 346px;
+  }
+
   #backBtnGlobal::before {
     width: 24px;
     height: 23px;
@@ -512,7 +518,8 @@ input {
 
 /* ============================================= ≥ 360px ============================================= */
 @media (max-width: 360px) {
-  #languagePickerSelect.lang-install__select {
+  #languagePickerSelect.lang-install__select,
+  #languageInstallPage .lang-install__custom-select {
     font-size: 12px;
     padding: 8px 32px 8px 10px;
   }

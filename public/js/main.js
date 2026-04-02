@@ -343,6 +343,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const logo =
         splashContainer.querySelector(".logo-one.mid-only") ||
         splashContainer.querySelector(".logo-one");
+      const splashAnimationTarget = useMidSplash
+        ? logo
+        : splashContainer.querySelector(".logo-one-wrap") || logo;
 
       // Keep splash bounded so slower devices and shared links are not delayed.
       const MAX_MAIN_WAIT_MS = 4700 + 300;
@@ -392,9 +395,25 @@ document.addEventListener("DOMContentLoaded", () => {
           });
       }
 
-      if (logo) {
-        logo.addEventListener("animationend", (e) => {
-          if (!useMidSplash && e.animationName !== "shiftRight") return;
+      if (splashAnimationTarget) {
+        splashAnimationTarget.addEventListener("animationend", (e) => {
+          if (useMidSplash) {
+            if (
+              e.animationName !== "midHold" &&
+              e.animationName !== "spinPause"
+            ) {
+              return;
+            }
+            done();
+            return;
+          }
+
+          if (
+            e.animationName !== "shiftRight" &&
+            e.animationName !== "shiftRightDesktop"
+          ) {
+            return;
+          }
 
           done();
         });

@@ -1,13 +1,8 @@
 <!-- Onboarding Page — Guides new users through account creation, collecting their name, field of work, job role, and experience level to personalize their app experience. -->
 <div id="onboarding" class="page">
   <div class="container onboarding-container">
-    <div
-      class="onb-title-row"
-      style="display: flex; align-items: center; gap: 8px"
-    >
-      <h1 class="onb-title" data-i18n="onboarding.title" style="margin: 0">
-        Create Account
-      </h1>
+    <div class="onb-title-row">
+      <h1 class="onb-title" data-i18n="onboarding.title">Create Account</h1>
 
       <button
         type="button"
@@ -73,11 +68,10 @@
       <select
         id="interestSelect"
         name="interest"
-        class="onb-input"
+        class="onb-input ui-source-control"
         multiple
         aria-label="Interest"
         aria-required="true"
-        style="display: none"
       >
         <option
           value=""
@@ -126,8 +120,7 @@
 
       <div
         id="interestError"
-        class="tooltip hidden"
-        style="margin-top: 6px"
+        class="tooltip tooltip--stacked onb-error-tip hidden"
         data-i18n="onboarding.interest_error"
       >
         Please select at least one interest
@@ -143,11 +136,10 @@
       <select
         id="jobSelect"
         name="jobRole"
-        class="onb-input"
+        class="onb-input ui-source-control"
         multiple
         aria-label="Role"
         aria-required="true"
-        style="display: none"
       >
         <option
           value=""
@@ -447,8 +439,7 @@
 
       <div
         id="roleError"
-        class="tooltip hidden"
-        style="margin-top: 6px"
+        class="tooltip tooltip--stacked onb-error-tip hidden"
         data-i18n="onboarding.role_error"
       >
         Please select at least one role
