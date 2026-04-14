@@ -32,6 +32,7 @@ const CHILDHOOD_EYE_SCREENING_SUBTITLE_LANGUAGES = new Set([
   "am",
   "ar",
   "bn",
+  "ne",
   "ny",
   "zh",
   "fr",

@@ -6,6 +6,14 @@ function translateNode(node) {
   }
 }
 
+function isNepaliLanguage() {
+  try {
+    return window.I18N?.getLanguage?.() === "ne";
+  } catch {
+    return document.documentElement?.getAttribute?.("lang") === "ne";
+  }
+}
+
 function setCorrectAnswerLine(target, optionText) {
   if (!target) return;
   target.textContent = "";
@@ -17,6 +25,17 @@ function setCorrectAnswerLine(target, optionText) {
 function setScoreSummary(target, correct, total) {
   if (!target) return;
   target.textContent = "";
+  if (isNepaliLanguage()) {
+    const totalValue = document.createElement("b");
+    totalValue.textContent = String(total);
+    target.appendChild(totalValue);
+    target.appendChild(document.createTextNode(" मध्ये "));
+    const correctValue = document.createElement("b");
+    correctValue.textContent = String(correct);
+    target.appendChild(correctValue);
+    target.appendChild(document.createTextNode(" सही गर्नुभयो।"));
+    return;
+  }
   target.appendChild(document.createTextNode("You got"));
   target.appendChild(document.createTextNode(" "));
   const correctValue = document.createElement("b");

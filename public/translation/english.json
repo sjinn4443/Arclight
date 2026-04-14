@@ -237,6 +237,7 @@
     "chinese": "Chinese",
     "hausa": "Hausa",
     "hindi": "Hindi",
+    "nepali": "Nepali",
     "igbo": "Igbo",
     "indonesian": "Indonesian",
     "kinyarwanda": "Kinyarwanda",
@@ -488,7 +489,9 @@
     "menuButton": "☰",
     "cataractTitle": "cataractTitle",
     "interactiveLearning": "interactiveLearning",
-    "share": { "label": "label" }
+    "share": {
+      "label": "label"
+    }
   },
   "appTitle": "Arclight Eyes, Ears, Skin",
   "installPrompt": "Install this app for a better experience!",
@@ -608,8 +611,13 @@
       "quiz": "Quiz",
       "check_answer": "Check Answer"
     },
-    "quizzes": { "quiz": "Quiz", "check_answer": "Check Answer" },
-    "menu": { "text": "×" },
+    "quizzes": {
+      "quiz": "Quiz",
+      "check_answer": "Check Answer"
+    },
+    "menu": {
+      "text": "×"
+    },
     "reports": {
       "arclight_reports": "Arclight Reports",
       "interest": "Interest",
@@ -701,7 +709,10 @@
       "behaviours_mcq": "Behaviours MCQ",
       "check_answer": "Check Answer"
     },
-    "fundalreflexpdf": { "fundal_reflex": "Fundal reflex", "eyes": "Eyes" },
+    "fundalreflexpdf": {
+      "fundal_reflex": "Fundal reflex",
+      "eyes": "Eyes"
+    },
     "visualimpairment": {
       "visual_impairment": "Visual Impairment",
       "causes_of_visual_impairment": "Causes of Visual Impairment",
@@ -836,8 +847,12 @@
       "normal_visual_development_stage_10_paragraph_3": "Early identification of disease with referral for treatment is important to help maximise both visual and general development.",
       "normal_visual_development_stage_10_image_alt": "After eight years visual development illustration"
     },
-    "childhoodfundalpreparation": { "preparation": "Preparation" },
-    "childhoodfundalexamination": { "examination": "Examination" },
+    "childhoodfundalpreparation": {
+      "preparation": "Preparation"
+    },
+    "childhoodfundalexamination": {
+      "examination": "Examination"
+    },
     "childhoodfundalnewborneyesopen": {
       "newborn_eyes_open": "Newborn - Eyes Open"
     },
@@ -1086,8 +1101,6 @@
     "that suits your interests and role": "that suits your interests and role",
     "Pick Up Anytime": "Pick Up Anytime",
     "We remember what you've completed,": "We remember what you've completed,",
-    "We remember what you?ve completed,": "We remember what you've completed,",
-    "We remember what you???ve completed,": "We remember what you've completed,",
     "making it easy to continue where you left off": "making it easy to continue where you left off",
     "Strengthen Your Learning": "Strengthen Your Learning",
     "Follow each lesson with a quick quiz to review": "Follow each lesson with a quick quiz to review",

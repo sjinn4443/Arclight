@@ -1,5 +1,6 @@
 import { spawnSync } from "node:child_process";
 import fs from "node:fs/promises";
+import fsSync from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -21,6 +22,7 @@ const languageLabels = {
   am: "Amharic",
   ar: "Arabic",
   bn: "Bangla",
+  ne: "Nepali",
   ny: "Chichewa",
   zh: "Chinese",
   fr: "French",
@@ -41,6 +43,19 @@ const languageLabels = {
   yo: "Yoruba",
   zu: "Zulu",
 };
+
+function resolveBinary(explicitEnvName, defaultCommand) {
+  const fromEnv = process.env[explicitEnvName];
+  if (fromEnv) return fromEnv;
+  if (process.platform === "win32") {
+    const candidate = path.join("C:\\ffmpeg", `${defaultCommand}.exe`);
+    if (fsSync.existsSync(candidate)) return candidate;
+  }
+  return defaultCommand;
+}
+
+const FFPROBE_BIN = resolveBinary("FFPROBE_PATH", "ffprobe");
+const FFMPEG_BIN = resolveBinary("FFMPEG_PATH", "ffmpeg");
 
 function run(command, args) {
   const result = spawnSync(command, args, {
@@ -139,7 +154,7 @@ async function main() {
     await fs.mkdir(subtitleRoot, { recursive: true });
 
     const inputPath = resolvePublicPath(lowSource);
-    const ffprobeJson = run("ffprobe", [
+    const ffprobeJson = run(FFPROBE_BIN, [
       "-v",
       "error",
       "-print_format",
@@ -160,7 +175,7 @@ async function main() {
     const bandwidth = Math.ceil(averageBandwidth * 1.1);
     const resolution = `${videoStream.width || 426}x${videoStream.height || 240}`;
 
-    run("ffmpeg", [
+    run(FFMPEG_BIN, [
       "-y",
       "-i",
       inputPath,

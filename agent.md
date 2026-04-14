@@ -34,6 +34,8 @@
 - Keep language names in selectors/popups in their native script where applicable.
 - Prefer explicit scoped i18n keys for new work, but keep required legacy root alias keys aligned when existing pages/tests still depend on them.
 - Check JS-rendered captions, toggles, menus, and aria labels for hardcoded English; translation QA is not limited to static HTML.
+- Save locale JSON, VTT subtitle sources, and generated subtitle outputs as UTF-8; do not ship replacement-character damage, `???`, or mojibake.
+- After translation or subtitle edits, scan both source files and generated iOS HLS subtitle outputs for `???`, `�`, and unintended fallback English in the target language.
 
 ## Issue Summary
 

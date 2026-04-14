@@ -20,6 +20,7 @@
     fr: "Fran\u00E7ais",
     ha: "Hausa",
     hi: "\u0939\u093F\u0928\u094D\u0926\u0940",
+    ne: "\u0928\u0947\u092A\u093E\u0932\u0940",
     ig: "\u00CDgb\u00F2",
     id: "Bahasa Indonesia",
     rw: "Ikinyarwanda",

@@ -26,6 +26,48 @@ function translateNode(node) {
   }
 }
 
+function isNepaliLanguage() {
+  try {
+    return window.I18N?.getLanguage?.() === "ne";
+  } catch {
+    return document.documentElement?.getAttribute?.("lang") === "ne";
+  }
+}
+
+function appendScoreSummary(target, correct, total) {
+  if (!target) return;
+  target.textContent = "";
+
+  if (isNepaliLanguage()) {
+    const totalValue = document.createElement("b");
+    totalValue.textContent = String(total);
+    target.appendChild(totalValue);
+    target.appendChild(document.createTextNode(" मध्ये "));
+
+    const correctValue = document.createElement("b");
+    correctValue.textContent = String(correct);
+    target.appendChild(correctValue);
+    target.appendChild(document.createTextNode(" सही गर्नुभयो।"));
+    return;
+  }
+
+  target.appendChild(document.createTextNode("You got"));
+  target.appendChild(document.createTextNode(" "));
+
+  const correctValue = document.createElement("b");
+  correctValue.textContent = String(correct);
+  target.appendChild(correctValue);
+  target.appendChild(document.createTextNode(" "));
+  target.appendChild(document.createTextNode("out of"));
+  target.appendChild(document.createTextNode(" "));
+
+  const totalValue = document.createElement("b");
+  totalValue.textContent = String(total);
+  target.appendChild(totalValue);
+  target.appendChild(document.createTextNode(" "));
+  target.appendChild(document.createTextNode("correct."));
+}
+
 function correctDiagnosisForPrimary({ caseNum }) {
   if (caseNum === 1) return "Cataract";
   if (caseNum === 2) return "Retinoblastoma";
@@ -708,20 +750,7 @@ export function initializeCaseStudyPrimary() {
 
     const scoreText = modal.querySelector("#flashScoreText");
     if (scoreText) {
-      scoreText.textContent = "";
-      scoreText.appendChild(document.createTextNode("You got"));
-      scoreText.appendChild(document.createTextNode(" "));
-      const correct = document.createElement("b");
-      correct.textContent = String(flashCorrectCount);
-      scoreText.appendChild(correct);
-      scoreText.appendChild(document.createTextNode(" "));
-      scoreText.appendChild(document.createTextNode("out of"));
-      scoreText.appendChild(document.createTextNode(" "));
-      const total = document.createElement("b");
-      total.textContent = String(flashPool.length);
-      scoreText.appendChild(total);
-      scoreText.appendChild(document.createTextNode(" "));
-      scoreText.appendChild(document.createTextNode("correct."));
+      appendScoreSummary(scoreText, flashCorrectCount, flashPool.length);
     }
 
     const list = modal.querySelector("#flashWrongList");
@@ -2290,20 +2319,7 @@ export function initializeCaseStudyPrimary() {
     // 점수 텍스트 업데이트(동적으로)
     const why = modal.querySelector(".casechat-resultWhy");
     if (why) {
-      why.textContent = "";
-      why.appendChild(document.createTextNode("You got"));
-      why.appendChild(document.createTextNode(" "));
-      const correct = document.createElement("b");
-      correct.textContent = String(correctCount);
-      why.appendChild(correct);
-      why.appendChild(document.createTextNode(" "));
-      why.appendChild(document.createTextNode("out of"));
-      why.appendChild(document.createTextNode(" "));
-      const total = document.createElement("b");
-      total.textContent = String(TOTAL_CASES);
-      why.appendChild(total);
-      why.appendChild(document.createTextNode(" "));
-      why.appendChild(document.createTextNode("correct."));
+      appendScoreSummary(why, correctCount, TOTAL_CASES);
     }
     translateNode(modal);
     modal.hidden = false;

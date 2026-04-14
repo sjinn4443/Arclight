@@ -612,6 +612,41 @@ const PUPIL_VIDEO_SOURCES = {
 // 3-way toggle state (Generic video pages)
 // -------------------------
 const GENERIC_VIDEO_MODES = ["low", "high", "online"];
+const LANGUAGE_SPECIFIC_ONLINE_VIDEO_SOURCES = Object.freeze({
+  vaWhoPage: {
+    ne: "https://www.youtube.com/watch?v=xT3YChTq9Hw&list=PLGgJeAmXVYhYrF4j14zMBzhbdLmyWlHUQ&index=9",
+  },
+  vaNearVisionPage: {
+    ne: "https://youtu.be/eU6zyT-SGTg?si=B-rLyEm95eyZEP6m",
+  },
+});
+
+function getCurrentAppLanguage() {
+  try {
+    const fromI18n = window.I18N?.getLanguage?.();
+    if (fromI18n) return String(fromI18n).trim().toLowerCase();
+  } catch {
+    /* ignore */
+  }
+
+  try {
+    const fromStorage = localStorage.getItem("prefLang");
+    if (fromStorage) return String(fromStorage).trim().toLowerCase();
+  } catch {
+    /* ignore */
+  }
+
+  return String(document.documentElement.getAttribute("lang") || "en")
+    .trim()
+    .toLowerCase();
+}
+
+function resolveVideoPageOnlineSource(pageId, fallbackSource = "") {
+  const language = getCurrentAppLanguage();
+  return (
+    LANGUAGE_SPECIFIC_ONLINE_VIDEO_SOURCES[pageId]?.[language] || fallbackSource
+  );
+}
 
 // Per-page sources for toggle-driven video pages
 const VIDEO_PAGE_SOURCES = {
@@ -959,6 +994,7 @@ const CHILDHOOD_EYE_SCREENING_SUBTITLE_LANGUAGES = {
   am: { label: "Amharic" },
   ar: { label: "Arabic" },
   bn: { label: "Bangla" },
+  ne: { label: "Nepali" },
   ny: { label: "Chichewa" },
   zh: { label: "Chinese" },
   fr: { label: "French" },
@@ -1342,6 +1378,13 @@ function isVideoPageCurrentlyOnline(pageId) {
   const container = getVideoPageContainer(pageId);
   const iframe = container?.querySelector("iframe");
   return Boolean(iframe && iframe.style.display !== "none");
+}
+
+function refreshLanguageSpecificOnlineVideoSources() {
+  Object.keys(LANGUAGE_SPECIFIC_ONLINE_VIDEO_SOURCES).forEach((pageId) => {
+    if (!isVideoPageCurrentlyOnline(pageId)) return;
+    void applyVideoPageMode(pageId, "online", { preserveTime: false });
+  });
 }
 
 function prepareVideoForChildhoodPilotSubtitles(video) {
@@ -2339,7 +2382,9 @@ async function applyVideoPageMode(pageId, mode, { preserveTime = true } = {}) {
       video.style.display = "none";
     }
 
-    const embedUrl = toYouTubeEmbed(cfg.sources.online);
+    const embedUrl = toYouTubeEmbed(
+      resolveVideoPageOnlineSource(pageId, cfg.sources.online),
+    );
 
     if (!existingIframe) {
       const iframe = document.createElement("iframe");
@@ -2980,6 +3025,7 @@ if (!window[__videosGlobalBoundKey]) {
 
   window.addEventListener("i18n:languageChanged", () => {
     void refreshChildhoodPilotSubtitlesForLanguageChange();
+    refreshLanguageSpecificOnlineVideoSources();
   });
 
   window.addEventListener(

@@ -12,6 +12,14 @@ function translateNode(node) {
   }
 }
 
+function isNepaliLanguage() {
+  try {
+    return window.I18N?.getLanguage?.() === "ne";
+  } catch {
+    return document.documentElement?.getAttribute?.("lang") === "ne";
+  }
+}
+
 function setCaseLabel(target, index) {
   if (!target) return;
   target.textContent = "";
@@ -22,6 +30,17 @@ function setCaseLabel(target, index) {
 function setScoreSummary(target, correct, total) {
   if (!target) return;
   target.textContent = "";
+  if (isNepaliLanguage()) {
+    const totalValue = document.createElement("b");
+    totalValue.textContent = String(total);
+    target.appendChild(totalValue);
+    target.appendChild(document.createTextNode(" मध्ये "));
+    const correctValue = document.createElement("b");
+    correctValue.textContent = String(correct);
+    target.appendChild(correctValue);
+    target.appendChild(document.createTextNode(" सही गर्नुभयो।"));
+    return;
+  }
   target.appendChild(document.createTextNode("You got"));
   target.appendChild(document.createTextNode(" "));
   const correctValue = document.createElement("b");
@@ -40,6 +59,17 @@ function setScoreSummary(target, correct, total) {
 function setNotQuiteSummary(target, correct, total) {
   if (!target) return;
   target.textContent = "";
+  if (isNepaliLanguage()) {
+    const totalValue = document.createElement("b");
+    totalValue.textContent = String(total);
+    target.appendChild(totalValue);
+    target.appendChild(document.createTextNode(" मध्ये "));
+    const correctValue = document.createElement("b");
+    correctValue.textContent = String(correct);
+    target.appendChild(correctValue);
+    target.appendChild(document.createTextNode(" मात्रै सही भयो।"));
+    return;
+  }
   target.appendChild(document.createTextNode("Not quite:"));
   target.appendChild(document.createTextNode(" "));
   const correctValue = document.createElement("b");

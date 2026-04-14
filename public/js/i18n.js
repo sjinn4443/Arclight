@@ -17,6 +17,7 @@ const LANG_ALIAS = {
   fr: "french",
   ha: "hausa",
   hi: "hindi",
+  ne: "nepali",
   ig: "igbo",
   id: "indonesian",
   rw: "kinyarwanda",
