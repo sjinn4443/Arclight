@@ -621,24 +621,58 @@ const LANGUAGE_SPECIFIC_ONLINE_VIDEO_SOURCES = Object.freeze({
   },
 });
 
+const VIDEO_PAGE_LANGUAGE_ALIASES = Object.freeze({
+  english: "en",
+  amharic: "am",
+  arabic: "ar",
+  bangla: "bn",
+  chichewa: "ny",
+  chinese: "zh",
+  french: "fr",
+  hausa: "ha",
+  hindi: "hi",
+  nepali: "ne",
+  igbo: "ig",
+  indonesian: "id",
+  kinyarwanda: "rw",
+  korean: "ko",
+  telugu: "te",
+  lingala: "ln",
+  persian: "fa",
+  portuguese: "pt",
+  shona: "sn",
+  spanish: "es",
+  swahili: "sw",
+  urdu: "ur",
+  yoruba: "yo",
+  zulu: "zu",
+});
+
+function normalizeVideoPageLanguage(lang) {
+  const normalized = String(lang || "")
+    .trim()
+    .toLowerCase();
+  return VIDEO_PAGE_LANGUAGE_ALIASES[normalized] || normalized;
+}
+
 function getCurrentAppLanguage() {
   try {
     const fromI18n = window.I18N?.getLanguage?.();
-    if (fromI18n) return String(fromI18n).trim().toLowerCase();
+    if (fromI18n) return normalizeVideoPageLanguage(fromI18n);
   } catch {
     /* ignore */
   }
 
   try {
     const fromStorage = localStorage.getItem("prefLang");
-    if (fromStorage) return String(fromStorage).trim().toLowerCase();
+    if (fromStorage) return normalizeVideoPageLanguage(fromStorage);
   } catch {
     /* ignore */
   }
 
-  return String(document.documentElement.getAttribute("lang") || "en")
-    .trim()
-    .toLowerCase();
+  return normalizeVideoPageLanguage(
+    document.documentElement.getAttribute("lang") || "en",
+  );
 }
 
 function resolveVideoPageOnlineSource(pageId, fallbackSource = "") {
