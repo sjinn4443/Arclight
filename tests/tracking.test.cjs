@@ -282,6 +282,10 @@ describe("server security hardening", () => {
     expect(homeResponse.headers["cache-control"]).toBe("no-store");
     expect(homeResponse.headers["content-type"]).toMatch(/html/);
     expect(homeResponse.text).toMatch(/Security Maintenance/i);
+    expect(homeResponse.text).toMatch(
+      /Arclight app is temporarily unavailable/i,
+    );
+    expect(homeResponse.text).toMatch(/Please try again later/i);
 
     const apiResponse = await request(app).post("/api/app/profile").send({});
     expect(apiResponse.status).toBe(503);
@@ -307,7 +311,10 @@ describe("server security hardening", () => {
 
     const homeResponse = await request(app).get("/");
     expect(homeResponse.status).toBe(503);
-    expect(homeResponse.text).toMatch(/Arclight is temporarily unavailable/i);
+    expect(homeResponse.text).toMatch(/Security Lockdown/i);
+    expect(homeResponse.text).toMatch(
+      /Access to Arclight app is temporarily restricted/i,
+    );
 
     const assetResponse = await request(app).get("/js/reports.js");
     expect(assetResponse.status).toBe(503);

@@ -254,7 +254,7 @@ const VALID_EMERGENCY_MODES = new Set([
   EMERGENCY_MODE_LOCKDOWN,
 ]);
 const DEFAULT_EMERGENCY_MESSAGE =
-  "We\u2019re currently performing security maintenance. Some features may be unavailable.";
+  "We\u2019re currently performing security maintenance. Please try again later.";
 
 function getEmergencyMode() {
   const raw = String(process.env.EMERGENCY_MODE || "")
@@ -263,9 +263,13 @@ function getEmergencyMode() {
   return VALID_EMERGENCY_MODES.has(raw) ? raw : EMERGENCY_MODE_OFF;
 }
 
-function getEmergencyMessage() {
+function getEmergencyMessage(mode = getEmergencyMode()) {
   const trimmed = String(process.env.EMERGENCY_MESSAGE || "").trim();
-  return trimmed || DEFAULT_EMERGENCY_MESSAGE;
+  if (trimmed) return trimmed;
+  if (mode === EMERGENCY_MODE_LOCKDOWN) {
+    return "Access is temporarily restricted while we secure the service. Please try again later.";
+  }
+  return DEFAULT_EMERGENCY_MESSAGE;
 }
 
 function normalizeClientIp(value) {
@@ -348,23 +352,64 @@ function escapeHtml(value) {
     .replace(/'/g, "&#39;");
 }
 
-function renderMaintenancePage() {
-  const message = escapeHtml(getEmergencyMessage());
+function getEmergencyPageConfig(mode = getEmergencyMode()) {
+  if (mode === EMERGENCY_MODE_LOCKDOWN) {
+    return {
+      badge: "Security Lockdown",
+      title: "Arclight Security Lockdown",
+      heading: "Access to Arclight app is temporarily restricted.",
+      backgroundGlow: "rgba(28, 78, 128, 0.18)",
+      backgroundStart: "#eef4fb",
+      backgroundEnd: "#dde8f5",
+      panel: "rgba(249, 252, 255, 0.92)",
+      text: "#16263a",
+      muted: "#44566c",
+      accent: "#1c4e80",
+      border: "rgba(22, 38, 58, 0.12)",
+      shadow: "0 28px 80px rgba(22, 38, 58, 0.16)",
+      badgeBackground: "rgba(28, 78, 128, 0.1)",
+    };
+  }
+
+  return {
+    badge: "Security Maintenance",
+    title: "Arclight Security Maintenance",
+    heading: "Arclight app is temporarily unavailable.",
+    backgroundGlow: "rgba(143, 45, 31, 0.16)",
+    backgroundStart: "#f8f5ee",
+    backgroundEnd: "#f5f1ea",
+    panel: "rgba(255, 255, 255, 0.9)",
+    text: "#1f2933",
+    muted: "#5b6975",
+    accent: "#8f2d1f",
+    border: "rgba(31, 41, 51, 0.12)",
+    shadow: "0 24px 64px rgba(31, 41, 51, 0.12)",
+    badgeBackground: "rgba(143, 45, 31, 0.1)",
+  };
+}
+
+function renderEmergencyPage(mode = getEmergencyMode()) {
+  const config = getEmergencyPageConfig(mode);
+  const message = escapeHtml(getEmergencyMessage(mode));
   return `<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Arclight Security Maintenance</title>
+    <title>${config.title}</title>
     <style>
       :root {
         color-scheme: light;
-        --bg: #f5f1ea;
-        --panel: rgba(255, 255, 255, 0.9);
-        --text: #1f2933;
-        --muted: #5b6975;
-        --accent: #8f2d1f;
-        --border: rgba(31, 41, 51, 0.12);
+        --bg-start: ${config.backgroundStart};
+        --bg-end: ${config.backgroundEnd};
+        --panel: ${config.panel};
+        --text: ${config.text};
+        --muted: ${config.muted};
+        --accent: ${config.accent};
+        --border: ${config.border};
+        --shadow: ${config.shadow};
+        --glow: ${config.backgroundGlow};
+        --badge-bg: ${config.badgeBackground};
       }
       * { box-sizing: border-box; }
       body {
@@ -374,8 +419,8 @@ function renderMaintenancePage() {
         place-items: center;
         padding: 24px;
         background:
-          radial-gradient(circle at top, rgba(143, 45, 31, 0.16), transparent 42%),
-          linear-gradient(160deg, #f8f5ee 0%, var(--bg) 100%);
+          radial-gradient(circle at top, var(--glow), transparent 42%),
+          linear-gradient(160deg, var(--bg-start) 0%, var(--bg-end) 100%);
         color: var(--text);
         font-family: "Segoe UI", Arial, sans-serif;
       }
@@ -385,7 +430,7 @@ function renderMaintenancePage() {
         border: 1px solid var(--border);
         border-radius: 20px;
         background: var(--panel);
-        box-shadow: 0 24px 64px rgba(31, 41, 51, 0.12);
+        box-shadow: var(--shadow);
       }
       h1 {
         margin: 0 0 12px;
@@ -406,7 +451,7 @@ function renderMaintenancePage() {
         margin-bottom: 18px;
         padding: 10px 14px;
         border-radius: 999px;
-        background: rgba(143, 45, 31, 0.1);
+        background: var(--badge-bg);
         color: var(--accent);
         font-size: 0.82rem;
         font-weight: 700;
@@ -423,12 +468,12 @@ function renderMaintenancePage() {
   </head>
   <body>
     <main>
-      <div class="badge"><span class="dot"></span>Security Maintenance</div>
-      <h1>Arclight is temporarily unavailable.</h1>
+      <div class="badge"><span class="dot"></span>${config.badge}</div>
+      <h1>${config.heading}</h1>
       <p>${message}</p>
     </main>
   </body>
-</html>`;
+  </html>`;
 }
 
 function logStructuredEvent(event, req, extra = {}) {
@@ -445,30 +490,30 @@ function logStructuredEvent(event, req, extra = {}) {
   console.log(JSON.stringify(payload));
 }
 
-function sendMaintenanceHtml(req, res) {
+function sendEmergencyHtml(req, res, mode = getEmergencyMode()) {
   res.status(503);
   res.set("Cache-Control", "no-store");
   res.type("html");
   if (req.method === "HEAD") return res.end();
-  return res.send(renderMaintenancePage());
+  return res.send(renderEmergencyPage(mode));
 }
 
-function sendMaintenanceJson(req, res) {
+function sendEmergencyJson(req, res, mode = getEmergencyMode()) {
   res.status(503);
   res.set("Cache-Control", "no-store");
   return res.json({
     error: "security_maintenance",
-    message: getEmergencyMessage(),
-    emergencyMode: getEmergencyMode(),
+    message: getEmergencyMessage(mode),
+    emergencyMode: mode,
   });
 }
 
-function sendMaintenanceText(req, res) {
+function sendEmergencyText(req, res, mode = getEmergencyMode()) {
   res.status(503);
   res.set("Cache-Control", "no-store");
   res.type("text/plain");
   if (req.method === "HEAD") return res.end();
-  return res.send(getEmergencyMessage());
+  return res.send(getEmergencyMessage(mode));
 }
 
 function isAdminIpAllowed(req) {
@@ -496,7 +541,7 @@ function emergencyGate(req, res, next) {
         reason: "readonly_write_block",
         responseType: "json",
       });
-      return sendMaintenanceJson(req, res);
+      return sendEmergencyJson(req, res, mode);
     }
     return next();
   }
@@ -508,7 +553,7 @@ function emergencyGate(req, res, next) {
       reason: `${mode}_api_block`,
       responseType: "json",
     });
-    return sendMaintenanceJson(req, res);
+    return sendEmergencyJson(req, res, mode);
   }
 
   if (requestAcceptsHtml(req)) {
@@ -516,14 +561,14 @@ function emergencyGate(req, res, next) {
       reason: `${mode}_html_block`,
       responseType: "html",
     });
-    return sendMaintenanceHtml(req, res);
+    return sendEmergencyHtml(req, res, mode);
   }
 
   logStructuredEvent("emergency_block", req, {
     reason: `${mode}_asset_block`,
     responseType: "text",
   });
-  return sendMaintenanceText(req, res);
+  return sendEmergencyText(req, res, mode);
 }
 
 function countryNameFromCode(code) {
