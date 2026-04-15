@@ -619,6 +619,9 @@ const LANGUAGE_SPECIFIC_ONLINE_VIDEO_SOURCES = Object.freeze({
   vaNearVisionPage: {
     ne: "https://youtu.be/eU6zyT-SGTg?si=B-rLyEm95eyZEP6m",
   },
+  assessmentVisionPage: {
+    ne: "https://youtu.be/eU6zyT-SGTg?si=B-rLyEm95eyZEP6m",
+  },
 });
 
 const VIDEO_PAGE_LANGUAGE_ALIASES = Object.freeze({
@@ -2336,8 +2339,12 @@ async function applyVideoPageMode(pageId, mode, { preserveTime = true } = {}) {
   }
 
   if (mode === "online") {
+    const languageSpecificOnlineSource = resolveVideoPageOnlineSource(
+      pageId,
+      "",
+    );
     const iosHlsManifest = childhoodPilotEntry?.iosHls?.masterManifest || "";
-    if (canUseIosHls && iosHlsManifest) {
+    if (canUseIosHls && iosHlsManifest && !languageSpecificOnlineSource) {
       if (existingIframe) {
         existingIframe.remove();
       }
@@ -2417,7 +2424,7 @@ async function applyVideoPageMode(pageId, mode, { preserveTime = true } = {}) {
     }
 
     const embedUrl = toYouTubeEmbed(
-      resolveVideoPageOnlineSource(pageId, cfg.sources.online),
+      languageSpecificOnlineSource || cfg.sources.online,
     );
 
     if (!existingIframe) {
