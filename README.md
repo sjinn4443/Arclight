@@ -70,6 +70,8 @@ rmdir /s /q dist
 - Run Jest tests: `npm test`
 - CI-style tests: `npm run test:ci`
 - Accessibility checks: `npm run test:a11y`
+  - Audits static HTML for unnamed `img`, `video`, `iframe`, and icon-only buttons.
+  - Reuses the runtime helper in `public/js/mediaA11y.js` so the QA rule matches live behavior.
 - E2E tests (Playwright): `npm run test:e2e`
 - Performance E2E (Playwright): `npm run perf:e2e`
 - Lighthouse CI (LHCI): `npm run perf:lh`
@@ -80,6 +82,9 @@ rmdir /s /q dist
 ### Content / i18n
 
 - Check translations: `npm run check-translations`
+  - Audits keys currently referenced from `public/**/*.html` and `public/**/*.js`.
+  - Flags missing locale keys, damaged strings (`???` and replacement characters), and exact-English carry-overs.
+  - Use `node scripts/check-translations.cjs --strict-english` to fail on exact-English carry-overs as well.
 - Translation QA rules:
   - Correct medical mistranslations caused by homonyms and keep terminology clinically accurate.
   - Keep tone consistent and formal where the content is instructional or clinical.
@@ -87,7 +92,13 @@ rmdir /s /q dist
   - Keep language-picker labels in their native script where applicable.
   - Avoid hardcoded English in JS-rendered captions, menus, search labels, and aria labels; use explicit i18n keys or the shared legacy fallback path.
   - When legacy root alias keys exist alongside scoped keys (for example Eyes page headers), keep both aligned to avoid route/test regressions.
+- Rule source: `scripts/i18n-qa-rules.cjs` stores the standing homonym guidance and the small allowlist of acceptable English-only brand/acronym values.
 - Symbol preservation rule: button/icon symbols such as `☰`, `<`, `×` must not be translated in locale JSON files. Keep these values identical across all languages.
+
+Current QA baseline as of `2026-04-16`:
+
+- `npm run test:a11y` passes against `75` HTML files.
+- `npm run check-translations` still reports legacy translation debt in locale files. Treat missing used keys, damaged UTF-8 strings, and exact-English carry-overs as active backlog until the audit is clean.
 
 ## Environment variables
 

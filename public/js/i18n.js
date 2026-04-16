@@ -1,3 +1,5 @@
+import { applyMediaA11y } from "./mediaA11y.js";
+
 /**
  * Ultra-safe i18n:
  * - Only changes visible text/labels.
@@ -382,6 +384,7 @@ export function applyTranslations(root = document) {
   });
 
   applyLiteralTranslations(root);
+  applyMediaA11y(root);
 }
 
 async function runGlobalTranslationPass() {

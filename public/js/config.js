@@ -47,6 +47,7 @@ export const ROUTES = {
   childhoodFundalPossibleFinding: "html/childhoodFundalPossibleFinding.html",
   childhoodFundalAfterExamination: "html/childhoodFundalAfterExamination.html",
   glaucomaWorkshop: "html/glaucomaWorkshop.html",
+  diabeticRetinopathyWorkshop: "html/diabeticRetinopathyWorkshop.html",
   glaucomaQuizCaseStudy: "html/glaucomaQuizCaseStudy.html",
   glaucomaScrollImages: "html/glaucomascrollImages.html",
   glaucomaHistoryCaseStudy: "html/glaucomaHistoryCaseStudy.html",

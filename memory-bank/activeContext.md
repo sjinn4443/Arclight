@@ -4,9 +4,22 @@
 
 ## Current Work Focus
 
-Interactive Learning documentation refresh after adding new embedded modules and normalizing card spacing on the Videos route.
+Accessibility and translation QA hardening across the static app:
+
+- added a real static media audit (`scripts/test-a11y.mjs`) plus a shared runtime helper (`public/js/mediaA11y.js`)
+- reduced low-value duplicate i18n key usage by switching several pages to already-translated keys or native-script literals
+- replaced the placeholder translation checker with a used-key audit (`scripts/check-translations.cjs`) backed by persistent homonym/allowlist rules
 
 ## Recent Changes
+
+- accessibility + translation QA baseline (2026-04-16):
+  - `npm run test:a11y` now performs an actual static audit and currently passes on `75` HTML files.
+  - `npm run check-translations` now audits only keys that are actually referenced by HTML/JS.
+  - After low-risk key cleanup, the remaining translation audit still reports substantial locale debt:
+    - missing used keys: `639`
+    - damaged UTF-8 strings: `28`
+    - exact-English carry-overs: `764`
+  - Persistent medical homonym guidance now lives in `scripts/i18n-qa-rules.cjs`.
 
 - translation QA sweep (2026-03-26):
   - Replaced hardcoded English in the visual system eye/brain animation with locale-backed copy.
@@ -48,6 +61,9 @@ Interactive Learning documentation refresh after adding new embedded modules and
 
 ## Next Steps
 
+- Fill the remaining missing used keys, especially `auto.onboarding.*` privacy headings and `auto.reports.*` labels that still fall back to English in most locales.
+- Repair the remaining damaged locale strings (`�` / mojibake / `???`) before adding more translation content.
+- Use `node scripts/check-translations.cjs --strict-english` after each locale sweep to drive down fallback-English carry-overs once missing/damaged keys are under control.
 - Keep external embed URLs and their purpose documented when Interactive Learning changes again.
 - If a remote embed later blocks framing, switch that module to a local copy or an open-in-new-tab fallback.
 - Add translation keys for `Trauma` and `Amsler` if those labels need to be localized instead of staying English-only.
@@ -64,8 +80,12 @@ Interactive Learning documentation refresh after adding new embedded modules and
 ## Important Patterns and Preferences
 
 - When the repo mixes ESM and CJS, document the boundary and the mechanism used to keep tests stable (mocks + `moduleNameMapper`).
+- Media accessibility is now enforced in two layers:
+  - runtime labeling in `public/js/mediaA11y.js`
+  - static audit enforcement in `scripts/test-a11y.mjs`
 - In translation JSON files, preserve icon/symbol values exactly as-is. Do not localize `☰`, `<`, `×` (and equivalent UI symbol tokens).
 - For Interactive Learning under `videos.html`, prefer the existing hidden-subpage + lazy iframe pattern over special-case navigation.
 - Translation QA must also cover runtime strings inserted by JS, not just static HTML and locale files.
+- `scripts/check-translations.cjs` is now the canonical audit entry point for used-key coverage, damaged-string detection, and fallback-English review.
 - Keep required legacy root alias keys aligned with scoped keys where older pages/tests still reference those root keys.
 - For Interactive Learning under `videos.html`, prefer the existing hidden-subpage + lazy iframe pattern over special-case navigation.

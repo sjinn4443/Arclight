@@ -1314,6 +1314,13 @@ select.onb-input.has-value {
   color: #fff;
 }
 
+#diabeticRetinopathyWorkshopPage .pupil-card h3 {
+  margin: 8px 6px -5px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+}
+
 /* Lesson rows (white pills) */
 #pupilsPage .lesson-row,
 .pupils-like .lesson-row {
@@ -1787,6 +1794,13 @@ select.onb-input.has-value + .onb-select-caret {
 
 /* Glaucoma workshop: folder emphasis + compact lesson rows */
 #glaucomaWorkshopPage .pupil-level__cap.pupil-level__cap--glaucoma-workshop {
+  background: linear-gradient(90deg, var(--cap-from) 0%, #ff7600 105%);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+#diabeticRetinopathyWorkshopPage
+  .pupil-level__cap.pupil-level__cap--diabetic-workshop {
   background: linear-gradient(90deg, var(--cap-from) 0%, #ff7600 105%);
   font-size: 13px;
   font-weight: 600;
@@ -3063,6 +3077,129 @@ select.onb-input.has-value + .onb-select-caret {
 }
 
 /* Childhood workshop: mirror glaucoma workshop sizing/spacing */
+#diabeticRetinopathyWorkshopPage.diabetic-folder-open
+  #diabeticWorkshopFolders
+  .diabetic-folder-row {
+  opacity: 0.72;
+}
+
+#diabeticRetinopathyWorkshopPage #diabeticWorkshopFolders {
+  align-items: center;
+}
+
+#diabeticRetinopathyWorkshopPage
+  #diabeticWorkshopFolders
+  .diabetic-folder-row
+  .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/intermediate_folder.webp");
+}
+
+#diabeticRetinopathyWorkshopPage #diabeticWorkshopFolders .diabetic-folder-row {
+  position: relative;
+}
+
+#diabeticRetinopathyWorkshopPage
+  #diabeticWorkshopFolders
+  .diabetic-folder-row
+  .thumb {
+  position: relative;
+  overflow: visible;
+}
+
+#diabeticRetinopathyWorkshopPage
+  #diabeticWorkshopFolders
+  .diabetic-folder-item-count {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 999px;
+  background: #f25600;
+  color: #ffffff;
+  font-size: 10px;
+  line-height: 16px;
+  font-weight: 700;
+  text-align: center;
+  box-shadow: 0 0 0 2px #fff;
+}
+
+#diabeticRetinopathyWorkshopPage
+  #diabeticWorkshopFolders
+  .diabetic-folder-row
+  .lesson-main {
+  gap: 0;
+}
+
+#diabeticRetinopathyWorkshopPage
+  #diabeticWorkshopFolders
+  .diabetic-folder-row
+  .lesson-top {
+  width: auto;
+}
+
+#diabeticRetinopathyWorkshopPage .diabetic-section-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+#diabeticRetinopathyWorkshopPage .diabetic-section-card > h3 {
+  align-self: stretch;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+#diabeticRetinopathyWorkshopPage .pupil-card.module-card {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+#diabeticRetinopathyWorkshopPage .diabetic-section-card .lesson-row {
+  width: 80%;
+  box-sizing: border-box;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  left: -18px;
+}
+
+#diabeticRetinopathyWorkshopPage .diabetic-section-card .lesson-main {
+  min-width: 0;
+}
+
+#diabeticRetinopathyWorkshopPage .diabetic-section-card .lesson-top {
+  width: auto;
+  margin-left: 16px;
+}
+
+#diabeticRetinopathyWorkshopPage .lesson-row--scroll .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/intermediate_scroll.webp");
+}
+
+#diabeticRetinopathyWorkshopPage .lesson-row--interactive .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/intermediate_interactive.webp");
+}
+
+#diabeticRetinopathyWorkshopPage
+  .diabetic-section-card
+  .lesson-row
+  .lesson-progress {
+  width: 146px;
+  margin-left: 16px;
+}
+
+#diabeticRetinopathyWorkshopPage .lesson-row[data-lesson] .lesson-cta {
+  margin-left: -34px;
+}
+
+#diabeticRetinopathyWorkshopPage .see-all-toggle {
+  color: #f25600;
+}
+
 #childhoodEyeScreeningWorkshopPage.childhood-folder-open
   #childhoodWorkshopFolders
   .childhood-folder-row {

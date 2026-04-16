@@ -157,6 +157,13 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    if (routeName === "diabeticRetinopathyWorkshop") {
+      const { initializeDiabeticRetinopathyWorkshop } =
+        await import("./diabeticRetinopathyWorkshop.js");
+      initializeDiabeticRetinopathyWorkshop?.();
+      return;
+    }
+
     if (routeName === "glaucomaScrollImages") {
       const { initializeGlaucomaWorkshopProgressInfra } =
         await import("./glaucomaWorkshopProgress.js");

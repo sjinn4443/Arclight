@@ -550,7 +550,7 @@ export function initializeIntro() {
       const createBtn = document.createElement("button");
       createBtn.id = "createAccountBtn";
       createBtn.className = "onb-cta intro-primary";
-      createBtn.setAttribute("data-i18n", "intro.create_account_button");
+      createBtn.setAttribute("data-i18n", "onboarding.title");
       createBtn.textContent = "Create Account";
       createBtn.addEventListener("click", () => {
         // Optional: keep behaviour consistent with onboarding skip-path
@@ -562,7 +562,7 @@ export function initializeIntro() {
       const guestBtn = document.createElement("button");
       guestBtn.id = "continueAsGuestBtn";
       guestBtn.className = "btn-outline intro-outline";
-      guestBtn.setAttribute("data-i18n", "intro.continue_as_guest_button");
+      guestBtn.setAttribute("data-i18n", "onboarding.continue_as_guest_button");
       guestBtn.textContent = "Continue as Guest";
       guestBtn.addEventListener("click", onExploreClick, { passive: false });
 

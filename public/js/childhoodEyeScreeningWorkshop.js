@@ -109,6 +109,14 @@ function normalizeChildhoodWorkshopLabels(root = document) {
     const next = stripLeadingStepNumber(el.textContent);
     if (next !== el.textContent) el.textContent = next;
   });
+
+  const cap = root.querySelector(
+    "#childhoodEyeScreeningWorkshopPage .pupil-level__cap--childhood-workshop",
+  );
+  if (cap) {
+    const next = stripLeadingStepNumber(cap.textContent);
+    if (next !== cap.textContent) cap.textContent = next;
+  }
 }
 
 function countTopLevelSectionRows(sectionCard) {
@@ -246,6 +254,9 @@ function setupWorkshopFolders(page) {
     const titleEl = card.querySelector("h3");
     if (!titleEl) return;
 
+    refreshWorkshopTranslations(titleEl);
+    titleEl.textContent = stripLeadingStepNumber(titleEl.textContent);
+
     titleEl.style.display = "flex";
     titleEl.style.alignItems = "center";
     titleEl.style.width = "100%";
@@ -282,7 +293,6 @@ function setupWorkshopFolders(page) {
     });
 
     titleEl.appendChild(toggle);
-    refreshWorkshopTranslations(titleEl);
   };
 
   hideAllSectionCards();

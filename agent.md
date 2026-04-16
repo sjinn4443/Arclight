@@ -37,6 +37,12 @@
 - Save locale JSON, VTT subtitle sources, and generated subtitle outputs as UTF-8; do not ship replacement-character damage, `???`, or mojibake.
 - After translation or subtitle edits, scan both source files and generated iOS HLS subtitle outputs for `???`, `�`, and unintended fallback English in the target language.
 
+## QA Baseline
+
+- `scripts/check-translations.cjs` is the canonical audit entry point for used-key coverage, damaged-string detection, and fallback-English review.
+- `scripts/i18n-qa-rules.cjs` stores the standing medical homonym guidance; use those meanings first when a source term is ambiguous.
+- Media elements must either be explicitly decorative or have an accessible name via `alt`, `aria-label`, `aria-labelledby`, or `title`. Runtime support now lives in `public/js/mediaA11y.js`, and the static audit is `scripts/test-a11y.mjs`.
+
 ## Issue Summary
 
 - After file 2 and file 3 complete, the stage can look like a near-white blank screen with only a few elements visible.

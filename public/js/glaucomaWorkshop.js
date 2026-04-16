@@ -41,6 +41,28 @@ function refreshWorkshopTranslations(root = document) {
   window.I18N?.applyTranslations?.(root);
 }
 
+const GLAUCOMA_SECTION_NUMBERS = Object.freeze({
+  introduction: "1.",
+  history: "2.",
+  vision: "3.",
+  fieldsPupils: "4.",
+  frontOfEye: "5.",
+  backOfEye: "6.",
+  summary: "7.",
+  visualFields: "4.",
+});
+
+function stripLeadingStepNumber(text) {
+  return String(text || "").replace(/^\s*\d+\.\s*/, "");
+}
+
+function withGlaucomaSectionNumber(key, text) {
+  const prefix = GLAUCOMA_SECTION_NUMBERS[key];
+  const cleaned = stripLeadingStepNumber(text);
+  if (!prefix || !cleaned) return cleaned;
+  return `${prefix} ${cleaned}`;
+}
+
 function getTopLevelSectionRows(sectionCard) {
   if (!sectionCard) return [];
   return Array.from(sectionCard.children).filter((child) =>
@@ -227,6 +249,9 @@ function setupWorkshopFolders(page) {
     const titleEl = card.querySelector("h3");
     if (!titleEl) return;
 
+    refreshWorkshopTranslations(titleEl);
+    titleEl.textContent = withGlaucomaSectionNumber(key, titleEl.textContent);
+
     // h3를 한 줄짜리 flex 헤더로 만들고, Close를 오른쪽으로 보냄
     titleEl.style.display = "flex";
     titleEl.style.alignItems = "center";
@@ -268,7 +293,6 @@ function setupWorkshopFolders(page) {
     });
 
     titleEl.appendChild(toggle);
-    refreshWorkshopTranslations(titleEl);
   };
 
   hideAllSectionCards();
@@ -370,6 +394,12 @@ function setupVisualFieldsSubfolder(page) {
     const titleEl = card.querySelector("h3");
     if (!titleEl) return;
 
+    refreshWorkshopTranslations(titleEl);
+    titleEl.textContent = withGlaucomaSectionNumber(
+      "visualFields",
+      titleEl.textContent,
+    );
+
     titleEl.style.display = "flex";
     titleEl.style.alignItems = "center";
     titleEl.style.width = "100%";
@@ -397,7 +427,6 @@ function setupVisualFieldsSubfolder(page) {
     });
 
     titleEl.appendChild(toggle);
-    refreshWorkshopTranslations(titleEl);
   };
 
   row.addEventListener("click", openNow);

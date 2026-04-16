@@ -387,6 +387,11 @@ export function initializeEyesCatalog() {
         tags: ["Video", "Quiz"],
       },
       {
+        label: "Diabetic Retinopathy",
+        target: "diabeticRetinopathyWorkshop",
+        tags: ["Video", "Interactive"],
+      },
+      {
         label: "WHO PEC",
         target: EYES_INDEX["WHO PEC"],
         tags: ["Coming Soon"],
