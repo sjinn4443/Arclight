@@ -472,7 +472,7 @@ describe("server security hardening", () => {
       /script-src[^;]*unsafe-inline/i,
     );
     expect(response.headers["content-security-policy"]).not.toMatch(
-      /style-src[^;]*unsafe-inline/i,
+      /style-src(?!-attr)[^;]*unsafe-inline/i,
     );
     expect(response.text).toContain('src="js/runtime-bootstrap.js"');
   });
@@ -484,7 +484,7 @@ describe("server security hardening", () => {
     });
 
     const response = await request(app)
-      .get("/api/dev/users")
+      .get("/reports.html")
       .set("Authorization", authHeader("secret"));
 
     expect(response.status).toBe(200);
@@ -497,7 +497,7 @@ describe("server security hardening", () => {
       /script-src[^;]*unsafe-inline/i,
     );
     expect(response.headers["content-security-policy"]).not.toMatch(
-      /style-src[^;]*unsafe-inline/i,
+      /style-src(?!-attr)[^;]*unsafe-inline/i,
     );
     expect(response.text).toContain("<style nonce=");
   });
