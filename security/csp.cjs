@@ -1,33 +1,72 @@
+const { URL } = require("url");
+
 function uniq(values) {
   return Array.from(new Set(values.filter(Boolean)));
 }
 
 function buildPolicy(directives) {
   return Object.entries(directives)
-    .map(([name, values]) => `${name} ${uniq(values).join(" ")}`)
+    .map(([name, values]) => [name, uniq(values)])
+    .filter(([, values]) => values.length > 0)
+    .map(([name, values]) => `${name} ${values.join(" ")}`)
     .join("; ");
 }
 
-function mainAppPolicy() {
+function toOrigin(value) {
+  const raw = String(value || "").trim();
+  if (!raw) return null;
+
+  try {
+    const url = new URL(raw);
+    return url.origin;
+  } catch {
+    return null;
+  }
+}
+
+function getNonceToken(nonce) {
+  const trimmed = String(nonce || "").trim();
+  return trimmed ? `'nonce-${trimmed}'` : null;
+}
+
+function getOptionalRuntimeOrigins() {
+  return uniq([
+    toOrigin(process.env.ARCLIGHT_SENTRY_BUNDLE_URL),
+    toOrigin(process.env.SENTRY_BUNDLE_URL),
+  ]);
+}
+
+function getOptionalTelemetryOrigins() {
+  return uniq([
+    toOrigin(process.env.ARCLIGHT_SENTRY_DSN),
+    toOrigin(process.env.SENTRY_DSN),
+  ]);
+}
+
+function mainAppPolicy(nonce) {
+  const nonceToken = getNonceToken(nonce);
   return buildPolicy({
     "default-src": ["'self'"],
     "base-uri": ["'self'"],
+    "manifest-src": ["'self'"],
     "object-src": ["'none'"],
     "form-action": ["'self'"],
     "frame-ancestors": ["'self'"],
     "script-src": [
       "'self'",
-      "'unsafe-inline'",
+      nonceToken,
       "https://browser.sentry-cdn.com",
-      "https://unpkg.com",
+      "https://cdnjs.cloudflare.com",
+      ...getOptionalRuntimeOrigins(),
     ],
     "style-src": [
       "'self'",
-      "'unsafe-inline'",
-      "https://unpkg.com",
+      nonceToken,
       "https://fonts.googleapis.com",
+      "https://cdnjs.cloudflare.com",
     ],
-    "img-src": ["'self'", "data:", "blob:", "https:"],
+    "style-src-attr": ["'unsafe-inline'"],
+    "img-src": ["'self'", "data:", "blob:"],
     "font-src": [
       "'self'",
       "data:",
@@ -36,45 +75,55 @@ function mainAppPolicy() {
     ],
     "connect-src": [
       "'self'",
-      "https://browser.sentry-cdn.com",
-      "https://*.ingest.de.sentry.io",
       "https://api.bigdatacloud.net",
       "https://ipinfo.io",
       "https://restcountries.com",
+      ...getOptionalTelemetryOrigins(),
     ],
-    "media-src": ["'self'", "blob:", "data:", "https:"],
+    "media-src": ["'self'", "blob:", "data:"],
     "frame-src": [
       "'self'",
       "https://www.youtube.com",
       "https://www.youtube-nocookie.com",
-      "https://*.netlify.app",
+      "https://fundalreflex.netlify.app",
+      "https://trauma26.netlify.app",
+      "https://amsler2.netlify.app",
     ],
     "worker-src": ["'self'", "blob:"],
   });
 }
 
-function reportsPolicy() {
+function reportsPolicy(nonce) {
+  const nonceToken = getNonceToken(nonce);
   return buildPolicy({
     "default-src": ["'self'"],
     "base-uri": ["'self'"],
+    "manifest-src": ["'self'"],
     "object-src": ["'none'"],
     "form-action": ["'self'"],
     "frame-ancestors": ["'none'"],
-    "script-src": ["'self'", "'unsafe-inline'", "https://unpkg.com"],
-    "style-src": ["'self'", "'unsafe-inline'", "https://unpkg.com"],
-    "img-src": ["'self'", "data:", "https://*.tile.openstreetmap.org"],
+    "script-src": ["'self'", nonceToken, "https://unpkg.com"],
+    "style-src": ["'self'", nonceToken, "https://unpkg.com"],
+    "img-src": [
+      "'self'",
+      "data:",
+      "https://a.tile.openstreetmap.org",
+      "https://b.tile.openstreetmap.org",
+      "https://c.tile.openstreetmap.org",
+    ],
     "font-src": ["'self'", "data:"],
     "connect-src": ["'self'", "https://restcountries.com"],
+    "worker-src": ["'self'", "blob:"],
   });
 }
 
 function applyMainAppCsp(req, res, next) {
-  res.set("Content-Security-Policy", mainAppPolicy());
+  res.set("Content-Security-Policy", mainAppPolicy(res.locals?.cspNonce));
   next();
 }
 
 function applyReportsCsp(req, res, next) {
-  res.set("Content-Security-Policy", reportsPolicy());
+  res.set("Content-Security-Policy", reportsPolicy(res.locals?.cspNonce));
   res.set("X-Frame-Options", "DENY");
   next();
 }

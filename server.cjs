@@ -11,9 +11,14 @@ const express = require("express");
 const path = require("path");
 const helmet = require("helmet");
 const fs = require("fs");
+const crypto = require("crypto");
 const { execSync } = require("child_process");
 const { applyMainAppCsp, applyReportsCsp } = require("./security/csp.cjs");
 const { sensitiveRateLimiter } = require("./security/rateLimit.cjs");
+const {
+  resolveStaticHtmlFile,
+  sendHtmlFileWithNonce,
+} = require("./security/html-response.cjs");
 const {
   getRequestHost,
   isLocalHost,
@@ -36,6 +41,8 @@ const app = express();
 app.disable("x-powered-by");
 
 const staticRoot = path.join(__dirname, prod || serveDist ? "dist" : "public");
+const rootRobotsPath = path.join(__dirname, "robots.txt");
+const rootSitemapPath = path.join(__dirname, "sitemap.xml");
 
 function toIsoDateString(value) {
   const trimmed = String(value ?? "").trim();
@@ -350,6 +357,23 @@ function escapeHtml(value) {
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#39;");
+}
+
+function renderNotFoundPage() {
+  return `<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Not Found</title>
+  </head>
+  <body>
+    <main>
+      <h1>Not Found</h1>
+      <p>The requested resource could not be found.</p>
+    </main>
+  </body>
+  </html>`;
 }
 
 function getEmergencyPageConfig(mode = getEmergencyMode()) {
@@ -730,6 +754,10 @@ app.use(
   }),
 );
 app.use((req, res, next) => {
+  res.locals.cspNonce = crypto.randomBytes(16).toString("base64");
+  next();
+});
+app.use((req, res, next) => {
   res.set("Referrer-Policy", "strict-origin-when-cross-origin");
   res.set("Permissions-Policy", "geolocation=(self), camera=(), microphone=()");
   next();
@@ -745,6 +773,14 @@ app.use(express.json({ limit: "100kb" }));
 
 app.use("/js", express.static(path.join(staticRoot, "js")));
 app.use("/favicons", express.static(path.join(staticRoot, "favicons")));
+app.get("/robots.txt", (req, res, next) => {
+  if (!fs.existsSync(rootRobotsPath)) return next();
+  return res.sendFile(rootRobotsPath);
+});
+app.get("/sitemap.xml", (req, res, next) => {
+  if (!fs.existsSync(rootSitemapPath)) return next();
+  return res.sendFile(rootSitemapPath);
+});
 
 async function initStorageWithRetry() {
   const maxAttempts = 10;
@@ -881,12 +917,16 @@ const adminAccess = [requireAdminIp, basicAuth];
 
 app.get("/reports.html", adminAccess, (req, res) => {
   res.set("Cache-Control", "no-store");
-  return res.sendFile(path.join(staticRoot, "reports.html"));
+  return sendHtmlFileWithNonce(req, res, path.join(staticRoot, "reports.html"));
 });
 
 app.get("/html/reports.html", adminAccess, (req, res) => {
   res.set("Cache-Control", "no-store");
-  return res.sendFile(path.join(staticRoot, "html", "reports.html"));
+  return sendHtmlFileWithNonce(
+    req,
+    res,
+    path.join(staticRoot, "html", "reports.html"),
+  );
 });
 
 app.get("/api/dev/users", adminAccess, async (req, res) => {
@@ -928,6 +968,15 @@ app.delete("/api/dev/users/:anonId", adminAccess, async (req, res) => {
   }
 });
 
+app.use((req, res, next) => {
+  if (req.method !== "GET" && req.method !== "HEAD") return next();
+
+  const htmlFile = resolveStaticHtmlFile(staticRoot, req.path);
+  if (!htmlFile || !fs.existsSync(htmlFile)) return next();
+
+  return sendHtmlFileWithNonce(req, res, htmlFile);
+});
+
 app.use(express.static(staticRoot));
 
 app.post("/track", async (req, res) => {
@@ -942,6 +991,26 @@ app.post("/track", async (req, res) => {
     logServerError("[track] save failed", error);
     return res.status(204).end();
   }
+});
+
+app.use((req, res) => {
+  res.set("Cache-Control", "no-store");
+
+  if (req.path === "/track" || req.path.startsWith("/api/")) {
+    return res.status(404).json({ error: "Not found" });
+  }
+
+  if (requestAcceptsHtml(req)) {
+    res.status(404);
+    res.type("html");
+    if (req.method === "HEAD") return res.end();
+    return res.send(renderNotFoundPage());
+  }
+
+  res.status(404);
+  res.type("text/plain");
+  if (req.method === "HEAD") return res.end();
+  return res.send("Not found.");
 });
 
 let server;

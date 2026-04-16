@@ -40,6 +40,18 @@
         font-size: 0.9rem;
         opacity: 0.8;
       }
+      .reports-separator {
+        margin: 24px 0;
+        opacity: 0.25;
+      }
+      .reports-section-title {
+        margin: 0 0 8px;
+      }
+      .reports-map-status {
+        font-size: 12px;
+        opacity: 0.7;
+        margin-top: 6px;
+      }
     </style>
   </head>
   <body>
@@ -77,6 +89,21 @@
       <tbody></tbody>
     </table>
 
+    <hr class="reports-separator" />
+    <h3 class="reports-section-title" data-i18n="auto.reports.user_locations">
+      User locations
+    </h3>
+    <div id="worldMap"></div>
+    <p
+      id="mapStatus"
+      class="reports-map-status"
+      data-i18n="i18nExtra.loading_map"
+    >
+      Loading map...
+    </p>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script type="module" src="/js/safe-console-init.js"></script>
     <script type="module" src="/js/reports.js"></script>
   </body>
 </html>

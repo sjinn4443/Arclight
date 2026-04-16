@@ -457,6 +457,26 @@ describe("server security hardening", () => {
     expect(response.headers["strict-transport-security"]).toContain("max-age=");
   });
 
+  test("serves HTML with nonce-based CSP instead of unsafe-inline", async () => {
+    const { app } = await loadServer({
+      NODE_ENV: "production",
+      DASHBOARD_PASSWORD: "secret",
+    });
+
+    const response = await request(app).get("/").set("Host", "app.example.com");
+
+    expect(response.status).toBe(200);
+    expect(response.headers["content-security-policy"]).toContain("script-src");
+    expect(response.headers["content-security-policy"]).toContain("'nonce-");
+    expect(response.headers["content-security-policy"]).not.toMatch(
+      /script-src[^;]*unsafe-inline/i,
+    );
+    expect(response.headers["content-security-policy"]).not.toMatch(
+      /style-src[^;]*unsafe-inline/i,
+    );
+    expect(response.text).toContain('src="js/runtime-bootstrap.js"');
+  });
+
   test("applies stricter anti-framing policy to reports routes", async () => {
     const { app } = await loadServer({
       NODE_ENV: "development",
@@ -471,6 +491,33 @@ describe("server security hardening", () => {
     expect(response.headers["x-frame-options"]).toBe("DENY");
     expect(response.headers["content-security-policy"]).toContain(
       "frame-ancestors 'none'",
+    );
+    expect(response.headers["content-security-policy"]).toContain("'nonce-");
+    expect(response.headers["content-security-policy"]).not.toMatch(
+      /script-src[^;]*unsafe-inline/i,
+    );
+    expect(response.headers["content-security-policy"]).not.toMatch(
+      /style-src[^;]*unsafe-inline/i,
+    );
+    expect(response.text).toContain("<style nonce=");
+  });
+
+  test("keeps the main CSP on HTML 404 responses", async () => {
+    const { app } = await loadServer({
+      NODE_ENV: "production",
+      DASHBOARD_PASSWORD: "secret",
+    });
+
+    const response = await request(app)
+      .get("/missing-page.html")
+      .set("Host", "app.example.com");
+
+    expect(response.status).toBe(404);
+    expect(response.headers["content-security-policy"]).toContain(
+      "form-action 'self'",
+    );
+    expect(response.headers["content-security-policy"]).toContain(
+      "frame-ancestors 'self'",
     );
   });
 });
