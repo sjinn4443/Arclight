@@ -3076,6 +3076,275 @@ select.onb-input.has-value + .onb-select-caret {
   background: #f25600;
 }
 
+/* Glaucoma workshop: secondary glaucoma causes drag quiz */
+#glaucomaQuizCaseStudy #glaucomaQuizMount {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 0 14px 24px;
+}
+
+#glaucomaQuizCaseStudy .quiz-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 10px 0 14px;
+  padding: 0;
+  background: transparent;
+  text-align: left;
+  border-bottom: none;
+  position: static;
+  top: auto;
+  z-index: auto;
+}
+
+#glaucomaQuizCaseStudy .quiz-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+#glaucomaQuizCaseStudy .quiz-progress {
+  font-size: 12px;
+  opacity: 0.75;
+  white-space: nowrap;
+}
+
+#glaucomaQuizCaseStudy .quiz-card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 14px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-sizing: border-box;
+}
+
+#glaucomaQuizCaseStudy .quiz-video {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: #000;
+}
+
+#glaucomaQuizCaseStudy .options {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+#glaucomaQuizCaseStudy .opt {
+  display: grid;
+  grid-template-columns: 18px 1fr;
+  gap: 10px;
+  align-items: start;
+  padding: 8px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  background: #fafafa;
+  cursor: pointer;
+  user-select: none;
+  font-size: 14px;
+  line-height: 1.3;
+  box-sizing: border-box;
+}
+
+#glaucomaQuizCaseStudy .opt input {
+  margin: 2px 0 0;
+}
+
+#glaucomaQuizCaseStudy .opt-label {
+  display: block;
+}
+
+#glaucomaQuizCaseStudy .opt.correct {
+  border-color: #2e7d32;
+  background: #e8f5e9;
+  font-weight: 700;
+  color: #2e7d32;
+}
+
+#glaucomaQuizCaseStudy .opt.wrong {
+  border-color: #c62828;
+  background: #ffebee;
+  font-weight: 700;
+  color: #c62828;
+}
+
+#glaucomaQuizCaseStudy .quiz-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+#glaucomaQuizCaseStudy .quiz-actions .btn {
+  flex: 1 1 0;
+  width: auto;
+  margin-top: 0;
+  padding: 12px 16px;
+  height: 44px;
+  border: none;
+  border-radius: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+#glaucomaQuizCaseStudy .quiz-actions .btn.primary {
+  background: #e41e26;
+  color: #fff;
+}
+
+#glaucomaQuizCaseStudy .quiz-actions .btn.secondary {
+  background: #eee;
+  color: #111;
+}
+
+#glaucomaQuizCaseStudy .quiz-actions .btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+#glaucomaQuizCaseStudy .modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  z-index: 9999;
+}
+
+#glaucomaQuizCaseStudy .modal {
+  width: 100%;
+  max-width: 420px;
+  background: #fff;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+}
+
+#glaucomaQuizCaseStudy .modal h3 {
+  margin: 0 0 6px;
+}
+
+#glaucomaQuizCaseStudy .modal p {
+  margin: 0 0 14px;
+  opacity: 0.85;
+}
+
+@media (max-width: 767px) {
+  #glaucomaQuizCaseStudy .quiz-video {
+    max-width: 74vw;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+#glaucomaSecondaryCauseQuizPage #glaucomaSecondaryQuizMount {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 0 14px 24px;
+}
+
+#glaucomaSecondaryCauseQuizPage .gsec-prompt {
+  margin: 0 0 25px;
+  font-size: 14px;
+  line-height: 1.35;
+  opacity: 0.9;
+}
+
+#glaucomaSecondaryCauseQuizPage .gsec-zones {
+  display: grid;
+  gap: 14px;
+  margin: 10px 0 14px;
+}
+
+#glaucomaSecondaryCauseQuizPage .gsec-zone {
+  background: #fff;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+}
+
+#glaucomaSecondaryCauseQuizPage .gsec-zone__cap {
+  background: #e41e26;
+  color: #fff;
+  font-weight: 500;
+  text-align: center;
+  padding: 10px 12px;
+  font-size: 14px;
+}
+
+#glaucomaSecondaryCauseQuizPage .gsec-zone__body {
+  min-height: 120px;
+  padding: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  align-content: flex-start;
+}
+
+#glaucomaSecondaryCauseQuizPage .gsec-zone.is-over .gsec-zone__body {
+  outline: 2px dashed rgba(0, 0, 0, 0.25);
+  outline-offset: -6px;
+}
+
+#glaucomaSecondaryCauseQuizPage .gsec-bank {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+#glaucomaSecondaryCauseQuizPage button.gsec-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: auto !important;
+  margin: 0 !important;
+  padding: 10px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  background: #fff !important;
+  color: #111 !important;
+  font-size: 12px;
+  font-weight: 500;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: grab;
+  touch-action: none;
+}
+
+#glaucomaSecondaryCauseQuizPage button.gsec-chip:active {
+  cursor: grabbing;
+}
+
+#glaucomaSecondaryCauseQuizPage .gsec-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+#glaucomaSecondaryCauseQuizPage .gsec-feedback {
+  margin-top: 12px;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+#glaucomaSecondaryCauseQuizPage button.gsec-chip.is-correct {
+  border-color: #2e7d32;
+  color: #2e7d32 !important;
+}
+
+#glaucomaSecondaryCauseQuizPage button.gsec-chip.is-wrong {
+  border-color: #c62828;
+  color: #c62828 !important;
+}
+
 /* Childhood workshop: mirror glaucoma workshop sizing/spacing */
 #diabeticRetinopathyWorkshopPage.diabetic-folder-open
   #diabeticWorkshopFolders
