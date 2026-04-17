@@ -13,12 +13,13 @@ Accessibility and translation QA hardening across the static app:
 ## Recent Changes
 
 - accessibility + translation QA baseline (2026-04-16):
-  - `npm run test:a11y` now performs an actual static audit and currently passes on `75` HTML files.
+  - `npm run test:a11y` now performs an actual static audit and currently passes on `76` HTML files.
   - `npm run check-translations` now audits only keys that are actually referenced by HTML/JS.
-  - After low-risk key cleanup, the remaining translation audit still reports substantial locale debt:
-    - missing used keys: `639`
+  - After removing duplicated onboarding/privacy headings, trimming install-helper labels, and switching reports pages to locale-aware runtime wiring, the remaining translation audit still reports locale debt:
+    - missing used keys: `114`
     - damaged UTF-8 strings: `28`
     - exact-English carry-overs: `764`
+  - Remaining missing-key debt is now concentrated on `auto.reports.aims`, `auto.reports.contact`, `auto.reports.country`, and `auto.reports.area`.
   - Persistent medical homonym guidance now lives in `scripts/i18n-qa-rules.cjs`.
 
 - translation QA sweep (2026-03-26):
@@ -61,7 +62,7 @@ Accessibility and translation QA hardening across the static app:
 
 ## Next Steps
 
-- Fill the remaining missing used keys, especially `auto.onboarding.*` privacy headings and `auto.reports.*` labels that still fall back to English in most locales.
+- Fill the remaining missing used keys, now concentrated on the four `auto.reports.*` table labels.
 - Repair the remaining damaged locale strings (`�` / mojibake / `???`) before adding more translation content.
 - Use `node scripts/check-translations.cjs --strict-english` after each locale sweep to drive down fallback-English carry-overs once missing/damaged keys are under control.
 - Keep external embed URLs and their purpose documented when Interactive Learning changes again.
@@ -86,6 +87,7 @@ Accessibility and translation QA hardening across the static app:
 - In translation JSON files, preserve icon/symbol values exactly as-is. Do not localize `☰`, `<`, `×` (and equivalent UI symbol tokens).
 - For Interactive Learning under `videos.html`, prefer the existing hidden-subpage + lazy iframe pattern over special-case navigation.
 - Translation QA must also cover runtime strings inserted by JS, not just static HTML and locale files.
+- Reports/admin UI must not force English just to keep column wiring stable; use stable identifiers (`data-col`) plus locale-aware runtime strings instead.
 - `scripts/check-translations.cjs` is now the canonical audit entry point for used-key coverage, damaged-string detection, and fallback-English review.
 - Keep required legacy root alias keys aligned with scoped keys where older pages/tests still reference those root keys.
 - For Interactive Learning under `videos.html`, prefer the existing hidden-subpage + lazy iframe pattern over special-case navigation.

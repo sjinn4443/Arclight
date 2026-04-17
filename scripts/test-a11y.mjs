@@ -17,11 +17,14 @@ function walk(dir, exts, out = []) {
 }
 
 function normalizeText(value) {
-  return String(value || "").replace(/\s+/g, " ").trim();
+  return String(value || "")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
 function hasButtonName(button) {
-  if (button.getAttribute("aria-label") || button.getAttribute("title")) return true;
+  if (button.getAttribute("aria-label") || button.getAttribute("title"))
+    return true;
   if (normalizeText(button.textContent)) return true;
   const imageWithAlt = [...button.querySelectorAll("img")].some((img) =>
     normalizeText(img.getAttribute("alt")),

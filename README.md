@@ -97,8 +97,9 @@ rmdir /s /q dist
 
 Current QA baseline as of `2026-04-16`:
 
-- `npm run test:a11y` passes against `75` HTML files.
-- `npm run check-translations` still reports legacy translation debt in locale files. Treat missing used keys, damaged UTF-8 strings, and exact-English carry-overs as active backlog until the audit is clean.
+- `npm run test:a11y` passes against `76` HTML files.
+- `npm run check-translations` currently reports `114` missing used keys, `28` damaged UTF-8 strings, and `764` exact-English carry-overs.
+- The remaining missing-key debt is concentrated on four reports-table labels: `aims`, `contact`, `country`, and `area`.
 
 ## Environment variables
 

@@ -17,7 +17,7 @@
 - General application refinement: ongoing improvements and content integration across various modules, including updates to video playback, navigation, onboarding, and PWA features.
 - Menu search refactor: menu search functionality aligns with dashboard compact search patterns, including HTML structure and CSS for consistent styling and behavior.
 - Testing setup: Jest for unit, UI, and API testing, with Git hooks available for automated checks.
-- Static accessibility audit: `scripts/test-a11y.mjs` now checks media/button accessible names and currently passes on `75` HTML files.
+- Static accessibility audit: `scripts/test-a11y.mjs` now checks media/button accessible names and currently passes on `76` HTML files.
 - Translation audit baseline: `scripts/check-translations.cjs` now audits only used i18n keys, detects damaged UTF-8 strings, and reports fallback-English carry-overs with medical homonym guidance.
 - CI/CD pipeline: GitHub Actions CI/CD pipeline at `.github/workflows/ci-cd.yml` runs formatting checks, build, accessibility checks, Jest, and artifact upload.
 - Security enhancements: reports Basic Auth protection and attempt rate limiting in `server.cjs`.
@@ -33,7 +33,7 @@
 - Interactive elements: continue refining quizzes, case studies, and interactive tools for a more engaging user experience.
 - Robust error handling: improve client-side error handling for a smoother user experience across features.
 - Accessibility features: enhance ARIA attributes, keyboard navigation, and general accessibility across the application.
-- Translation debt: complete the missing used locale keys on onboarding/reports pages, repair mojibake/replacement-character damage, and reduce fallback-English carry-overs in legacy locale content.
+- Translation debt: complete the remaining four missing reports-table locale labels, repair mojibake/replacement-character damage, and reduce fallback-English carry-overs in legacy locale content.
 - Testing: continue to expand automated tests for new features, edge cases, error handling, and PWA behaviors.
 - Performance optimization: further optimize media loading and overall application performance.
 
@@ -47,7 +47,7 @@ The project is a feature-rich PWA with a strong emphasis on interactive learning
 - Some placeholder content still exists and needs to be replaced with actual educational material.
 - Some security modules under `security/` are placeholders pending re-enablement as middleware.
 - External interactive embeds depend on remote site uptime and iframe permissions, and they are not as controllable or offline-cacheable as local `public/subapp/*` content.
-- Translation audit is not yet clean: as of `2026-04-16`, used-key QA still reports `639` missing locale keys, `28` damaged strings, and `764` exact-English carry-overs.
+- Translation audit is not yet clean: as of `2026-04-16`, used-key QA now reports `114` missing locale keys, `28` damaged strings, and `764` exact-English carry-overs.
 
 ## Evolution of Project Decisions
 

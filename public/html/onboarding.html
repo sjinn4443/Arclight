@@ -1,4 +1,4 @@
-<!-- Onboarding Page — Guides new users through account creation, collecting their name, field of work, job role, and experience level to personalize their app experience. -->
+﻿<!-- Onboarding Page â€” Guides new users through account creation, collecting their name, field of work, job role, and experience level to personalize their app experience. -->
 <div id="onboarding" class="page">
   <div class="container onboarding-container">
     <div class="onb-title-row">
@@ -64,7 +64,7 @@
         >Interest(s)</label
       >
 
-      <!-- hidden real select (data source + 저장용) -->
+      <!-- hidden real select (data source + ì €ìž¥ìš©) -->
       <select
         id="interestSelect"
         name="interest"
@@ -89,7 +89,7 @@
         </option>
       </select>
 
-      <!-- dropdown UI (보이는 부분) -->
+      <!-- dropdown UI (ë³´ì´ëŠ” ë¶€ë¶„) -->
       <div class="onb-select-wrap multi-select" id="interestSelectUi">
         <button
           type="button"
@@ -132,7 +132,7 @@
         Role(s)
       </label>
 
-      <!-- ✅ hidden real select (data source + 저장용) -->
+      <!-- âœ… hidden real select (data source + ì €ìž¥ìš©) -->
       <select
         id="jobSelect"
         name="jobRole"
@@ -235,7 +235,7 @@
             Eye Care Practitioner - Other
           </option>
 
-          <!-- ✅ Teaching roles (추가) -->
+          <!-- âœ… Teaching roles (ì¶”ê°€) -->
           <option
             value="ophthalmology_lecturer"
             data-i18n="onboarding.job_ophthalmology_lecturer"
@@ -408,7 +408,7 @@
         </optgroup>
       </select>
 
-      <!-- ✅ dropdown UI (보이는 부분) -->
+      <!-- âœ… dropdown UI (ë³´ì´ëŠ” ë¶€ë¶„) -->
       <div class="onb-select-wrap multi-select" id="jobSelectUi">
         <button
           type="button"
@@ -446,7 +446,7 @@
       </div>
     </div>
 
-    <!-- ✅ Medical Student를 선택했을 때만 표시 -->
+    <!-- âœ… Medical Studentë¥¼ ì„ íƒí–ˆì„ ë•Œë§Œ í‘œì‹œ -->
     <div class="form-field hidden" id="studentYearField">
       <label for="studentYearSelect" data-i18n="onboarding.experience_label"
         >Experience</label
@@ -493,11 +493,11 @@
       </div>
     </div>
 
-    <!-- Medical Student 외 직업을 하나라도 선택하면 표시 -->
+    <!-- Medical Student ì™¸ ì§ì—…ì„ í•˜ë‚˜ë¼ë„ ì„ íƒí•˜ë©´ í‘œì‹œ -->
     <div class="form-field hidden" id="practiceLevelField">
       <label data-i18n="onboarding.practiceLevelLabel">Experience</label>
       <div id="experienceByRole">
-        <!-- ✅ KEEP (but disabled for now): old manual inputs -->
+        <!-- âœ… KEEP (but disabled for now): old manual inputs -->
         <!--
       <div class="exp-manual-inputs">
         <input id="expYears" type="number" min="0" placeholder="Years" />
@@ -564,35 +564,16 @@
     >
       &times;
     </button>
-    <h2 class="guest-modal__title" data-i18n="auto.onboarding.privacy_terms">
-      Privacy &amp; Terms
-    </h2>
-
     <div class="guest-modal__text privacyterms__text">
-      <p>
-        <strong data-i18n="auto.onboarding.information_we_collect"
-          >हामीले सङ्कलन गर्ने जानकारी</strong
-        >
-      </p>
-      <p data-i18n="auto.onboarding.we_collect_a_small_amount_of_personal_data">
-        हामी थोरै मात्र व्यक्तिगत डेटा सङ्कलन गर्छौं:
-      </p>
-      <ul>
-        <li data-i18n="auto.onboarding.name">नाम</li>
-        <li data-i18n="auto.onboarding.email_address">email address</li>
-        <li data-i18n="auto.onboarding.learning_goals">learning goals</li>
-        <li
-          data-i18n="auto.onboarding.ip_address_or_an_approximate_location_based_on_it"
-        >
-          IP ठेगाना वा त्यसका आधारमा अनुमानित स्थान
-        </li>
-      </ul>
       <p data-i18n="i18nExtra.onboarding_privacy_minimum_data">
         Only information needed to run and improve the service is collected.
       </p>
-
-      <p>
-        <strong data-i18n="auto.onboarding.how_we_use_it">How we use it</strong>
+      <p data-i18n="i18nExtra.about_location_data_text:html">
+        Location data helps us understand usage and improve Arclight App. Your
+        IP address provides an approximate country/city on first load.<br />
+        You can optionally provide more precise GPS data using the &#39;Get
+        Precise Location&#39; button. This data is handled as per our privacy
+        guidelines.
       </p>
       <p data-i18n="i18nExtra.onboarding_privacy_how_we_use_data:html">
         This data helps to tailor the app to each person&#39;s goals, understand
@@ -600,35 +581,17 @@
         to get in touch about important changes to the app or an account.<br />
         Personal data is never sold.
       </p>
-
-      <p>
-        <strong data-i18n="auto.onboarding.where_it_is_stored"
-          >Where it is stored</strong
-        >
-      </p>
       <p data-i18n="i18nExtra.onboarding_privacy_storage">
         Information is stored on a managed server and database provided by
         Railway. Railway provides the hosting and infrastructure; we control how
         data is used within the app and keep it only for as long as reasonably
         needed.
       </p>
-
-      <p>
-        <strong data-i18n="auto.onboarding.third_party_services"
-          >Third-party services</strong
-        >
-      </p>
       <p data-i18n="i18nExtra.onboarding_privacy_third_party">
         We rely on trusted third-party services, such as hosting providers, to
         run the app. These services only process data as needed to provide the
         infrastructure and do not have permission to use it for their own
         purposes.
-      </p>
-
-      <p>
-        <strong data-i18n="auto.onboarding.seeing_or_deleting_data"
-          >Seeing or deleting data</strong
-        >
       </p>
       <p data-i18n="i18nExtra.onboarding_privacy_access_request:html">
         Anyone can ask to see, update or delete the information held about
@@ -640,32 +603,16 @@
         information must be kept for legal or security reasons, this will be
         explained.
       </p>
-
-      <p>
-        <strong data-i18n="auto.onboarding.your_account">Your account</strong>
-      </p>
       <p data-i18n="i18nExtra.onboarding_privacy_account_security:html">
         If you create an account, please keep your login details secure.<br />
         You are responsible for activity on your account unless you let us know
         about misuse or a security problem.
-      </p>
-
-      <p>
-        <strong data-i18n="auto.onboarding.education_only"
-          >Education only</strong
-        >
       </p>
       <p data-i18n="i18nExtra.onboarding_privacy_education_only">
         This app is an education tool to support learning and revision. It is
         not formal academic, legal or professional advice and cannot guarantee
         exam passes, grades or any particular outcome. Study choices and
         decisions remain the user&#39;s responsibility.
-      </p>
-
-      <p>
-        <strong data-i18n="auto.onboarding.responsibility_and_limits"
-          >Responsibility and limits</strong
-        >
       </p>
       <p data-i18n="i18nExtra.onboarding_privacy_service_limits">
         The aim is to keep the app helpful and reliable, but no service is
@@ -677,12 +624,6 @@
         missed marks, lost income or opportunities that arise from using, or
         being unable to use, the app. Nothing here removes any rights provided
         by UK law.
-      </p>
-
-      <p
-        data-i18n="auto.onboarding.using_the_app_means_accepting_these_privacy_terms"
-      >
-        Using the app means accepting these Privacy &amp; Terms.
       </p>
     </div>
   </div>

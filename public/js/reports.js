@@ -25,6 +25,7 @@ function appendPopupLine(container, label, value) {
 // ---------- Map helpers ----------
 let worldMap;
 let mapMarkers = [];
+let uiDict = {};
 
 // Minimal country centroid fallback (extend as needed)
 const COUNTRY_CENTROIDS = {
@@ -83,7 +84,8 @@ function initWorldMap() {
     attribution: "&copy; OpenStreetMap contributors",
   }).addTo(worldMap);
 
-  mapStatus.textContent = "Map ready";
+  mapStatus.textContent = tl("Map ready");
+  applyTranslations(mapStatus);
 }
 
 function clearMapMarkers() {
@@ -349,6 +351,17 @@ function englishFromAny(value, englishDict) {
   return translated.join(", ");
 }
 
+function t(path, fallback = "") {
+  const translated = get(uiDict, path) ?? get(englishDict, path);
+  return translated == null ? fallback : String(translated);
+}
+
+function tl(raw, fallback = raw) {
+  const translated =
+    get(uiDict, `i18nLiteral.${raw}`) ?? get(englishDict, `i18nLiteral.${raw}`);
+  return translated == null ? fallback : String(translated);
+}
+
 function getLocalAnonId() {
   const KEY = "arclight_anon_id";
   let id = localStorage.getItem(KEY);
@@ -407,10 +420,11 @@ async function fetchUsers() {
 let englishDict = {};
 
 async function loadEnglishDictionary() {
-  // Force the language to English for the dev dashboard
-  await setLanguage("en");
+  const lang = getLocalPrefLang();
   englishDict = await fetchDictionary("en");
+  uiDict = await fetchDictionary(lang);
   await buildReverseIndex();
+  await setLanguage(lang);
   applyTranslations(document.body);
 }
 
@@ -437,11 +451,15 @@ async function renderUsers(users, canDelete = false) {
   // Render columns based on the actual table headers so /reports.html and
   // /html/reports.html can diverge safely.
   const table = document.getElementById("users");
-  const headers = [...table.querySelectorAll("thead th")].map((th) =>
-    String(th.textContent || "")
+  const headers = [...table.querySelectorAll("thead th")].map((th) => {
+    const stableKey = String(th.dataset.col || "")
       .trim()
-      .toLowerCase(),
-  );
+      .toLowerCase();
+    if (stableKey) return stableKey;
+    return String(th.textContent || "")
+      .trim()
+      .toLowerCase();
+  });
 
   const hasDeleteCol = headers.includes("delete");
 
@@ -474,6 +492,7 @@ async function renderUsers(users, canDelete = false) {
           td.textContent = u.name || "—";
           break;
         case "aims":
+        case "professional_group":
         case "professional group":
           td.textContent = aimsEn;
           break;
@@ -496,6 +515,7 @@ async function renderUsers(users, canDelete = false) {
         case "language":
           td.textContent = u.language || "—";
           break;
+        case "refresh_count":
         case "refresh count":
           td.textContent =
             typeof u.refresh_count === "number" ? String(u.refresh_count) : "0";
@@ -515,8 +535,8 @@ async function renderUsers(users, canDelete = false) {
             const btn = document.createElement("button");
             btn.type = "button";
             btn.className = "deleteBtn";
-            btn.title = "Delete user";
-            btn.setAttribute("aria-label", "Delete user");
+            btn.title = tl("Delete user");
+            btn.setAttribute("aria-label", tl("Delete user"));
             btn.dataset.anonId = u.anon_id || "";
             btn.dataset.name = u.name || "—";
             btn.dataset.exp = expEn;
@@ -524,7 +544,7 @@ async function renderUsers(users, canDelete = false) {
             btn.textContent = "\u{1F5D1}\uFE0F";
             td.appendChild(btn);
           } else {
-            td.textContent = "Read only";
+            td.textContent = "-";
           }
           break;
         }
@@ -539,9 +559,7 @@ async function renderUsers(users, canDelete = false) {
   }
 
   tbody.appendChild(frag);
-  status.textContent = `Loaded ${sorted.length} row${
-    sorted.length === 1 ? "" : "s"
-  }`;
+  status.textContent = `${sorted.length} ${tl("records")}`;
 
   // Now call renderWorldPins() after users load
   await renderWorldPins(sorted);
@@ -555,13 +573,10 @@ async function renderUsers(users, canDelete = false) {
       const anonId = btn.dataset.anonId;
       const name = btn.dataset.name;
       const exp = btn.dataset.exp;
-      const country = btn.dataset.country;
-
       const ok = window.confirm(
-        `Do you really want to delete this user data?\n\n` +
-          `Name: ${name}\n` +
-          `Experience: ${exp}\n` +
-          `Country: ${country}`,
+        `${tl("Delete user")}?\n\n` +
+          `${t("onboarding.username_label", "Name")}: ${name}\n` +
+          `${t("onboarding.experience_label", "Experience")}: ${exp}`,
       );
 
       if (!ok) return;
@@ -576,12 +591,10 @@ async function renderUsers(users, canDelete = false) {
 
         // Update status count
         const remaining = tbody.querySelectorAll("tr").length;
-        status.textContent = `Loaded ${remaining} row${
-          remaining === 1 ? "" : "s"
-        }`;
+        status.textContent = `${remaining} ${tl("records")}`;
       } catch (err) {
         console.error(err);
-        alert(`Delete failed: ${err.message}`);
+        alert(String(err.message || ""));
         btn.disabled = false;
       }
     };
@@ -644,7 +657,7 @@ function _renderList(id, entries) {
   const el = document.getElementById(id);
   if (!el) return;
   if (!entries.length) {
-    el.textContent = "No data";
+    el.textContent = tl("No data");
     return;
   }
   el.textContent = "";
@@ -743,7 +756,7 @@ function renderBarChart(
 ) {
   if (!el) return;
   if (!entries || !entries.length) {
-    el.textContent = emptyText;
+    el.textContent = emptyText === "No data" ? tl("No data") : emptyText;
     return;
   }
 
@@ -780,7 +793,7 @@ function renderBarChart(
 function renderDonut(el, entries, { maxItems = 6, title = "Total" } = {}) {
   if (!el) return;
   if (!entries || !entries.length) {
-    el.textContent = "No data";
+    el.textContent = tl("No data");
     return;
   }
 
@@ -810,7 +823,7 @@ function renderDonut(el, entries, { maxItems = 6, title = "Total" } = {}) {
   totalEl.textContent = String(total);
   centerInner.appendChild(totalEl);
   centerInner.appendChild(document.createElement("br"));
-  centerInner.appendChild(document.createTextNode(title));
+  centerInner.appendChild(document.createTextNode(tl(title, title)));
   center.appendChild(centerInner);
   donut.appendChild(center);
 

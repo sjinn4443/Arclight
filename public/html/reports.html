@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title data-i18n="auto.reports.arclight_reports">Arclight Reports</title>
+    <title data-i18n="i18nExtra.reports_arclight">Arclight</title>
     <meta name="robots" content="noindex,nofollow" />
     <link
       rel="stylesheet"
@@ -208,7 +208,9 @@
         <div id="statsExperience"></div>
       </div>
       <div class="statCard">
-        <h3 data-i18n="auto.reports.country_and_area">Country and area</h3>
+        <h3 data-i18n="i18nExtra.about_location_data_title">
+          About location data
+        </h3>
         <div id="statsCountryArea"></div>
       </div>
       <div class="statCard">
@@ -216,48 +218,51 @@
         <div id="statsLanguage"></div>
       </div>
       <div class="statCard">
-        <h3 data-i18n="auto.reports.refresh_count">Refresh count</h3>
+        <h3 data-i18n="i18nLiteral.records">records</h3>
         <div id="statsRefresh"></div>
       </div>
     </section>
   </head>
   <body>
     <div class="toolbar">
-      <button
-        id="refreshBtn"
-        type="button"
-        data-i18n="auto.reports.refresh_data"
-      >
-        Refresh data
+      <button id="refreshBtn" type="button" data-i18n="i18nExtra.restart">
+        Restart
       </button>
-      <span id="status" class="status" data-i18n="auto.reports.loaded_0_rows"
-        >Loaded 0 rows</span
-      >
+      <span id="status" class="status">0</span>
     </div>
 
     <table id="users">
       <thead>
         <tr>
-          <th data-i18n="i18nExtra.no">No.</th>
-          <th data-i18n="onboarding.username_label">Name</th>
-          <th data-i18n="auto.reports.aims">Aims</th>
-          <th data-i18n="myprofile.interest">Interest</th>
-          <th data-i18n="onboarding.experience_label">Experience</th>
-          <th data-i18n="auto.reports.contact">Contact</th>
-          <th data-i18n="auto.reports.country">Country</th>
-          <th data-i18n="auto.reports.area">Area</th>
-          <th data-i18n="menu.language_item">Language</th>
-          <th data-i18n="auto.reports.refresh_count">Refresh count</th>
-          <th data-i18n="auto.reports.when">When</th>
-          <th data-i18n="auto.reports.delete">Delete</th>
+          <th data-col="no" data-i18n="i18nExtra.no">No.</th>
+          <th data-col="name" data-i18n="onboarding.username_label">Name</th>
+          <th data-col="aims" data-i18n="auto.reports.aims">Aims</th>
+          <th data-col="interest" data-i18n="myprofile.interest">Interest</th>
+          <th data-col="experience" data-i18n="onboarding.experience_label">
+            Experience
+          </th>
+          <th data-col="contact" data-i18n="auto.reports.contact">Contact</th>
+          <th data-col="country" data-i18n="auto.reports.country">Country</th>
+          <th data-col="area" data-i18n="auto.reports.area">Area</th>
+          <th data-col="language" data-i18n="menu.language_item">Language</th>
+          <th data-col="refresh_count" data-i18n="i18nLiteral.records">
+            records
+          </th>
+          <th data-col="when" data-i18n="i18nLiteral.when">when</th>
+          <th data-col="delete" data-i18n="i18nLiteral.Delete user">
+            Delete user
+          </th>
         </tr>
       </thead>
       <tbody></tbody>
     </table>
 
     <hr class="reports-separator" />
-    <h3 class="reports-section-title" data-i18n="auto.reports.user_locations">
-      User locations
+    <h3
+      class="reports-section-title"
+      data-i18n="i18nExtra.about_location_data_title"
+    >
+      About location data
     </h3>
     <div id="worldMap"></div>
     <p

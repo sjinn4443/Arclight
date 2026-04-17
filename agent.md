@@ -42,6 +42,7 @@
 - `scripts/check-translations.cjs` is the canonical audit entry point for used-key coverage, damaged-string detection, and fallback-English review.
 - `scripts/i18n-qa-rules.cjs` stores the standing medical homonym guidance; use those meanings first when a source term is ambiguous.
 - Media elements must either be explicitly decorative or have an accessible name via `alt`, `aria-label`, `aria-labelledby`, or `title`. Runtime support now lives in `public/js/mediaA11y.js`, and the static audit is `scripts/test-a11y.mjs`.
+- Current baseline (`2026-04-16`): accessibility audit passes on `76` HTML files; translation QA is down to `114` missing used keys, `28` damaged strings, and `764` exact-English carry-overs, with missing-key debt now concentrated on four reports labels.
 
 ## Issue Summary
 
