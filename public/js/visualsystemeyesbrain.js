@@ -158,8 +158,15 @@ const INTRO_CAPTION_TEXT =
 const WORLD_CAPTION_TEXT_FOCUS =
   "Cornea and lens focus light onto the back of the eye";
 const WORLD_CAPTION_TEXT_RETINA = "At the back of the eye\nis the retina";
+const FINAL_CAPTION_TEXT_SENSOR =
+  "This is like a sensor or film in a camera which turns the light into electrical signals";
+const FINAL_CAPTION_TEXT_TRACT =
+  "They are passed to the brain down the optic nerve";
+const FINAL_CAPTION_TEXT_BRAIN =
+  "The brain then creates vision from these signals";
 const FINAL_CAPTION_TEXT_SUMMARY =
   "The retina works like a camera sensor. It changes light into electrical signals that travel through the optic nerve to the brain. The brain creates vision from these signals.";
+const VS_SCENE_BASE_WIDTH = 430;
 
 function htmlishToPlainText(value) {
   return String(value == null ? "" : value)
@@ -170,18 +177,30 @@ function htmlishToPlainText(value) {
     .trim();
 }
 
-function buildDefaultCaptionCopy() {
-  return {
+function buildDefaultCaptionCopy({ splitFinal = false } = {}) {
+  const captionCopy = {
     intro: INTRO_CAPTION_TEXT,
     worldFocus: WORLD_CAPTION_TEXT_FOCUS,
     worldRetina: WORLD_CAPTION_TEXT_RETINA,
     final: FINAL_CAPTION_TEXT_SUMMARY,
   };
+
+  if (!splitFinal) return captionCopy;
+
+  return {
+    ...captionCopy,
+    finalIntro: FINAL_CAPTION_TEXT_SENSOR,
+    finalTract: FINAL_CAPTION_TEXT_TRACT,
+    finalBrain: FINAL_CAPTION_TEXT_BRAIN,
+  };
 }
 
-async function loadCaptionCopy(lang = getLanguage()) {
+async function loadCaptionCopy(
+  lang = getLanguage(),
+  { splitFinal = false } = {},
+) {
   const dict = await fetchDictionary(lang);
-  return {
+  const captionCopy = {
     intro:
       htmlishToPlainText(get(dict, "i18nExtra.visualsystem_step0")) ||
       INTRO_CAPTION_TEXT,
@@ -195,6 +214,31 @@ async function loadCaptionCopy(lang = getLanguage()) {
       htmlishToPlainText(get(dict, "i18nExtra.visualsystem_step3")) ||
       FINAL_CAPTION_TEXT_SUMMARY,
   };
+
+  if (!splitFinal) return captionCopy;
+
+  return {
+    ...captionCopy,
+    finalIntro:
+      htmlishToPlainText(get(dict, "i18nExtra.visualsystem_step3_intro")) ||
+      FINAL_CAPTION_TEXT_SENSOR,
+    finalTract:
+      htmlishToPlainText(get(dict, "i18nExtra.visualsystem_step3_tract")) ||
+      FINAL_CAPTION_TEXT_TRACT,
+    finalBrain:
+      htmlishToPlainText(get(dict, "i18nExtra.visualsystem_step3_brain")) ||
+      FINAL_CAPTION_TEXT_BRAIN,
+  };
+}
+
+function getFinalCaptionText(
+  captionCopy,
+  { splitFinal = false, tractProgress = 0, tract2Progress = 0 } = {},
+) {
+  if (!splitFinal) return captionCopy.final;
+  if (tract2Progress > 0.001) return captionCopy.finalBrain;
+  if (tractProgress > 0.001) return captionCopy.finalTract;
+  return captionCopy.finalIntro;
 }
 
 function renderScene(
@@ -203,7 +247,19 @@ function renderScene(
   prefersReducedMotion,
   isMobileViewport = false,
   captionCopy = buildDefaultCaptionCopy(),
+  { splitFinal = false } = {},
 ) {
+  const sceneWidth = elements.scene?.getBoundingClientRect?.().width || 0;
+  const sceneScale = sceneWidth > 0 ? sceneWidth / VS_SCENE_BASE_WIDTH : 1;
+  const px = (value) => value * sceneScale;
+
+  if (elements.scene) {
+    elements.scene.style.setProperty(
+      "--vs-scene-scale",
+      formatNumber(sceneScale),
+    );
+  }
+
   const mappedProgress = mapStoryProgress(progress, isMobileViewport);
   const p = prefersReducedMotion
     ? Math.round(mappedProgress * 14) / 14
@@ -243,7 +299,7 @@ function renderScene(
   const manOpacity = clamp(manIn * (1 - manOut));
   const faceOpacity = clamp(faceIn);
   const finalOpacity = clamp(finalIn);
-  const finalTailY = lerp(0, -140, finalTail);
+  const finalTailY = lerp(0, px(-140), finalTail);
 
   const corneaIn = mix(
     compactP,
@@ -285,76 +341,76 @@ function renderScene(
   setTextContent(elements.introCaptionText, captionCopy.intro);
   setLayerState(elements.introCaption, {
     opacity: introCaptionOpacity,
-    y: lerp(0, -12, introCaptionOut),
+    y: lerp(0, px(-12), introCaptionOut),
   });
 
   setLayerState(elements.background, {
     opacity: backgroundOpacity,
-    y: lerp(-180, 0, envIn) + lerp(0, -170, bgOut),
+    y: lerp(px(-180), 0, envIn) + lerp(0, px(-170), bgOut),
   });
 
   const cloudAlpha = backgroundOpacity;
   setLayerState(elements.cloud1, {
     opacity: cloudAlpha,
-    x: lerp(-96, 0, envIn) + lerp(0, -96, bgOut),
-    y: lerp(-18, 0, envIn),
+    x: lerp(px(-96), 0, envIn) + lerp(0, px(-96), bgOut),
+    y: lerp(px(-18), 0, envIn),
     scale: 0.98,
   });
   setLayerState(elements.cloud2, {
     opacity: cloudAlpha,
-    x: lerp(-64, 0, envIn) + lerp(0, -64, bgOut),
-    y: lerp(-10, 0, envIn),
+    x: lerp(px(-64), 0, envIn) + lerp(0, px(-64), bgOut),
+    y: lerp(px(-10), 0, envIn),
     scale: 0.84,
   });
   setLayerState(elements.cloud3, {
     opacity: cloudAlpha,
-    x: lerp(72, 0, envIn) + lerp(0, 72, bgOut),
-    y: lerp(-8, 0, envIn),
+    x: lerp(px(72), 0, envIn) + lerp(0, px(72), bgOut),
+    y: lerp(px(-8), 0, envIn),
     scale: 0.86,
   });
   setLayerState(elements.cloud4, {
     opacity: cloudAlpha,
-    x: lerp(112, 0, envIn) + lerp(0, 112, bgOut),
-    y: lerp(-16, 0, envIn),
+    x: lerp(px(112), 0, envIn) + lerp(0, px(112), bgOut),
+    y: lerp(px(-16), 0, envIn),
     scale: 1.02,
   });
   setLayerState(elements.cloud5, {
     opacity: cloudAlpha,
-    x: lerp(92, 0, envIn) + lerp(0, 92, bgOut),
-    y: lerp(-10, 0, envIn),
+    x: lerp(px(92), 0, envIn) + lerp(0, px(92), bgOut),
+    y: lerp(px(-10), 0, envIn),
     scale: 1.04,
   });
 
   setLayerState(elements.sun, {
     opacity: backgroundOpacity,
-    y: lerp(-120, 0, envIn) + lerp(0, -120, bgOut),
+    y: lerp(px(-120), 0, envIn) + lerp(0, px(-120), bgOut),
     scale: lerp(0.88, 1, envIn),
   });
 
   setLayerState(elements.grass1, {
     opacity: backgroundOpacity,
-    x: lerp(-120, 0, envIn) + lerp(0, -120, bgOut),
-    y: lerp(14, 0, envIn),
+    x: lerp(px(-120), 0, envIn) + lerp(0, px(-120), bgOut),
+    y: lerp(px(14), 0, envIn),
   });
   setLayerState(elements.grass2, {
     opacity: backgroundOpacity,
-    x: lerp(-78, 0, envIn) + lerp(0, -78, bgOut),
-    y: lerp(10, 0, envIn),
+    x: lerp(px(-78), 0, envIn) + lerp(0, px(-78), bgOut),
+    y: lerp(px(10), 0, envIn),
   });
   setLayerState(elements.grass3, {
     opacity: backgroundOpacity,
-    x: lerp(86, 0, envIn) + lerp(0, 86, bgOut),
-    y: lerp(12, 0, envIn),
+    x: lerp(px(86), 0, envIn) + lerp(0, px(86), bgOut),
+    y: lerp(px(12), 0, envIn),
   });
   setLayerState(elements.grass4, {
     opacity: backgroundOpacity,
-    x: lerp(118, 0, envIn) + lerp(0, 118, bgOut),
-    y: lerp(8, 0, envIn),
+    x: lerp(px(118), 0, envIn) + lerp(0, px(118), bgOut),
+    y: lerp(px(8), 0, envIn),
   });
 
   setLayerState(elements.worldLight, {
     opacity: lightOpacity,
-    y: lerp(-12, 0, worldLightIn),
+    y: lerp(px(-12), 0, worldLightIn),
     scale: 0.8,
     clipBottom: 100 - worldLightIn * 100,
   });
@@ -373,39 +429,39 @@ function renderScene(
   );
   setLayerState(elements.worldCaption, {
     opacity: worldCaptionOpacity,
-    y: lerp(12, 0, worldCaptionIn),
+    y: lerp(px(12), 0, worldCaptionIn),
   });
 
   setLabelState(elements.corneaLabel, {
     opacity: corneaIn * labelOut,
-    x: lerp(-10, 0, corneaIn),
-    y: lerp(16, 0, corneaIn),
+    x: lerp(px(-10), 0, corneaIn),
+    y: lerp(px(16), 0, corneaIn),
   });
   setLabelState(elements.lensLabel, {
     opacity: lensIn * labelOut,
-    x: lerp(-8, 0, lensIn),
-    y: lerp(14, 0, lensIn),
+    x: lerp(px(-8), 0, lensIn),
+    y: lerp(px(14), 0, lensIn),
   });
   setLabelState(elements.retinaLabel, {
     opacity: retinaIn * labelOut,
-    x: lerp(-8, 0, retinaIn),
-    y: lerp(14, 0, retinaIn),
+    x: lerp(px(-8), 0, retinaIn),
+    y: lerp(px(14), 0, retinaIn),
   });
   setLabelState(elements.opticNerveLabel, {
     opacity: opticNerveIn * labelOut,
-    x: lerp(8, 0, opticNerveIn),
-    y: lerp(14, 0, opticNerveIn),
+    x: lerp(px(8), 0, opticNerveIn),
+    y: lerp(px(14), 0, opticNerveIn),
   });
 
   setLayerState(elements.man, {
     opacity: manOpacity,
-    y: lerp(180, 0, manIn) + lerp(0, -22, manOut),
+    y: lerp(px(180), 0, manIn) + lerp(0, px(-22), manOut),
     scale: lerp(0.92, 1, manIn),
   });
 
   setLayerState(elements.face, {
     opacity: faceOpacity,
-    y: lerp(16, 0, faceIn) + finalTailY,
+    y: lerp(px(16), 0, faceIn) + finalTailY,
     leftPercent: lerp(50, 43.5, finalIn),
     topPercent: lerp(44, 11, finalIn),
     scale: lerp(0.86, 1, faceIn),
@@ -413,27 +469,27 @@ function renderScene(
 
   setLayerState(elements.finalLight, {
     opacity: finalOpacity,
-    y: lerp(-18, 0, finalIn) + finalTailY,
+    y: lerp(px(-18), 0, finalIn) + finalTailY,
     scale: 0.8,
     clipBottom: 100 - finalIn * 100,
   });
 
   setLayerState(elements.finalEye, {
     opacity: finalOpacity,
-    y: lerp(18, 0, finalIn) + finalTailY,
+    y: lerp(px(18), 0, finalIn) + finalTailY,
     scale: lerp(0.92, 0.98, finalIn),
     rotate: 0,
   });
 
   setLayerState(elements.brain, {
     opacity: finalOpacity,
-    y: lerp(260, -820, finalIn) + finalTailY,
+    y: lerp(px(260), px(-820), finalIn) + finalTailY,
     scale: lerp(0.92, 1, finalIn),
   });
 
   setLayerState(elements.facebrain, {
     opacity: finalOpacity * facebrainIn,
-    y: lerp(18, 0, facebrainIn) + finalTailY,
+    y: lerp(px(18), 0, facebrainIn) + finalTailY,
     scale: lerp(0.92, 1, facebrainIn),
   });
 
@@ -443,10 +499,17 @@ function renderScene(
     clipBottom: 100 - tractProgress * 100,
   });
 
-  setTextContent(elements.finalCaptionText, captionCopy.final);
+  setTextContent(
+    elements.finalCaptionText,
+    getFinalCaptionText(captionCopy, {
+      splitFinal,
+      tractProgress,
+      tract2Progress,
+    }),
+  );
   setLayerState(elements.finalCaption, {
     opacity: finalCaptionOpacity,
-    y: lerp(10, 0, finalIn) + finalTailY,
+    y: lerp(px(10), 0, finalIn) + finalTailY,
   });
 
   setLayerState(elements.tract2, {
@@ -467,6 +530,7 @@ function initializeVisualSystemStoryPage(page) {
   if (!story) return;
 
   const elements = {
+    scene: page.querySelector(".vs-scene"),
     scrollCue: page.querySelector('[data-vs="scrollCue"]'),
     introCaption: page.querySelector('[data-vs="introCaption"]'),
     introCaptionText: page.querySelector(
@@ -510,11 +574,14 @@ function initializeVisualSystemStoryPage(page) {
     "(prefers-reduced-motion: reduce)",
   );
   const mobileViewport = window.matchMedia("(max-width: 767px)");
+  const splitFinalCaption = page.id === "childhoodEyeBrainImagesPage";
 
   let rafId = 0;
   let lastProgress = -1;
   let detachMotionPreference = () => {};
-  let captionCopy = buildDefaultCaptionCopy();
+  let captionCopy = buildDefaultCaptionCopy({
+    splitFinal: splitFinalCaption,
+  });
 
   function scheduleRender() {
     if (rafId) return;
@@ -536,15 +603,20 @@ function initializeVisualSystemStoryPage(page) {
         prefersReducedMotion.matches,
         mobileViewport.matches,
         captionCopy,
+        { splitFinal: splitFinalCaption },
       );
     });
   }
 
   async function refreshCaptionCopy() {
     try {
-      captionCopy = await loadCaptionCopy();
+      captionCopy = await loadCaptionCopy(getLanguage(), {
+        splitFinal: splitFinalCaption,
+      });
     } catch {
-      captionCopy = buildDefaultCaptionCopy();
+      captionCopy = buildDefaultCaptionCopy({
+        splitFinal: splitFinalCaption,
+      });
     }
     scheduleRender();
   }
@@ -595,6 +667,7 @@ function initializeVisualSystemStoryPage(page) {
     prefersReducedMotion.matches,
     mobileViewport.matches,
     captionCopy,
+    { splitFinal: splitFinalCaption },
   );
   scheduleRender();
   window.requestAnimationFrame(scheduleRender);

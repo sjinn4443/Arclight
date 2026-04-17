@@ -1687,6 +1687,9 @@
     "visualsystem_step1": "Light is focused onto <br />the back of the eye<br />by the cornea and lens.",
     "visualsystem_step2": "At the back of the eye <br />is the retina.",
     "visualsystem_step3": "This is like a sensor or film <br />in a camera which turns the <br />light into electrical signals <br />that are passed to the brain <br />down the optic nerve. <br /><br />The brain then creates <br />vision from these signals.",
+    "visualsystem_step3_intro": "This is like a sensor or film in a camera which turns the light into electrical signals",
+    "visualsystem_step3_tract": "They are passed to the brain down the optic nerve",
+    "visualsystem_step3_brain": "The brain then creates vision from these signals",
     "yes": "Yes",
     "fundal_reflex": {
       "wash_hands": "Wash hands",

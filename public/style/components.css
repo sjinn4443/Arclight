@@ -6324,6 +6324,7 @@ Glaucoma history case study: match intermediate style
 /* Visual System (Eyes & Brain) mobile scrollytelling override */
 :is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage) {
   --vs-stage-bg: #fff;
+  --vs-scene-width: min(100vw, 430px, calc((100dvh - 82px) * 43 / 76));
   background: #fff !important;
 }
 
@@ -6383,8 +6384,10 @@ Glaucoma history case study: match intermediate style
 
 :is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage) .vs-scene {
   position: relative;
-  width: min(100vw, 430px);
-  height: min(100%, 760px);
+  width: var(--vs-scene-width);
+  max-width: 430px;
+  aspect-ratio: 43 / 76;
+  height: auto;
   max-height: 760px;
   overflow: hidden;
   background: #fff;
@@ -6972,7 +6975,7 @@ Glaucoma history case study: match intermediate style
 
 :is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage) .vs-brain {
   --left: 75%;
-  --top: 1637px;
+  --top: calc(1796px * var(--vs-scene-scale, 1));
   --origin-y: -100%;
   --width: 100%;
   --transform-origin: 50% 100%;
@@ -7005,6 +7008,10 @@ Glaucoma history case study: match intermediate style
 }
 
 @media (min-width: 768px) {
+  :is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage) {
+    --vs-scene-width: min(430px, calc((100dvh - 98px) * 43 / 76));
+  }
+
   :is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage)
     .eyes-topbar__icons {
     position: absolute;
@@ -7050,10 +7057,6 @@ Glaucoma history case study: match intermediate style
     --line-d-left: 116px;
     --dot-left: 139px;
     --dot-y: 37px;
-  }
-
-  :is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage) .vs-brain {
-    --top: 1796px;
   }
 
   :is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage)
