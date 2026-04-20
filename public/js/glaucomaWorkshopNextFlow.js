@@ -6,6 +6,7 @@ const FLOW_INDEX_KEY = "glaucomaWorkshop:nextFlowIndex";
 const FLOW_ENABLED_KEY = "glaucomaWorkshop:nextFlowEnabled";
 const FLOW_EVENT = "glaucomaWorkshop:nextflow-changed";
 const PROGRESS_EVENT = "glaucomaWorkshop:progress-changed";
+const NEXT_HOST_CLASS = "glaucoma-next-host";
 
 const TARGET_ALIASES = {
   glaucomaVisualFieldExamVideo: "glaucomaVisualFieldExamVideoPage",
@@ -352,7 +353,12 @@ async function navigateToTarget(target) {
 }
 
 function removeNextButtons() {
-  document.querySelectorAll(".glaucoma-next-wrap").forEach((el) => el.remove());
+  document.querySelectorAll(".glaucoma-next-wrap").forEach((el) => {
+    try {
+      el.parentElement?.classList.remove(NEXT_HOST_CLASS);
+    } catch {}
+    el.remove();
+  });
 }
 
 function renderNextButtonForTarget(target) {
@@ -374,6 +380,7 @@ function renderNextButtonForTarget(target) {
     pageEl.querySelector(".container.pupils-container") ||
     pageEl.querySelector(".container") ||
     pageEl;
+  host.classList.add(NEXT_HOST_CLASS);
 
   const wrap = document.createElement("div");
   wrap.className = "glaucoma-next-wrap";

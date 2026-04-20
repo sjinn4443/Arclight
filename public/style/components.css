@@ -6249,9 +6249,9 @@ Glaucoma history case study: match intermediate style
   color: #000;
 }
 
-/* Glaucoma workshop flow: fixed Next button */
+/* Glaucoma workshop flow: place Next at page bottom (not fixed) */
 .glaucoma-next-wrap {
-  position: fixed;
+  position: absolute;
   left: 16px;
   right: 16px;
   bottom: calc(16px + env(safe-area-inset-bottom));
@@ -6259,6 +6259,12 @@ Glaucoma history case study: match intermediate style
   display: flex;
   justify-content: space-between;
   gap: 12px;
+}
+
+.glaucoma-next-host,
+.childhood-next-host {
+  position: relative;
+  padding-bottom: calc(72px + env(safe-area-inset-bottom));
 }
 
 /* Childhood workshop flow: place Next at page bottom (not fixed) */
@@ -6271,11 +6277,6 @@ Glaucoma history case study: match intermediate style
   display: flex;
   justify-content: space-between;
   gap: 12px;
-}
-
-.childhood-next-host {
-  position: relative;
-  padding-bottom: calc(72px + env(safe-area-inset-bottom));
 }
 
 .glaucoma-next-btn,
