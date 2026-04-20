@@ -35,6 +35,31 @@
     yo: "Yor\u00F9b\u00E1",
     zu: "isiZulu",
   };
+  const englishByCode = {
+    en: "English",
+    am: "Amharic",
+    ar: "Arabic",
+    bn: "Bangla",
+    ne: "Nepali",
+    ny: "Nyanja",
+    zh: "Chinese",
+    fr: "French",
+    ha: "Hausa",
+    hi: "Hindi",
+    ig: "Igbo",
+    id: "Indonesian",
+    rw: "Kinyarwanda",
+    ko: "Korean",
+    te: "Telugu",
+    ln: "Lingala",
+    fa: "Persian",
+    sn: "Shona",
+    es: "Spanish",
+    sw: "Swahili",
+    ur: "Urdu",
+    yo: "Yoruba",
+    zu: "Zulu",
+  };
 
   function getCurrentLanguageCode() {
     return (
@@ -189,11 +214,16 @@
     listEl.textContent = "";
     [...source.options].forEach((opt) => {
       const code = opt.value;
-      const english = (opt.textContent || "").trim();
+      const rawEnglish = (opt.textContent || "").trim();
+      const english = (englishByCode[code] || rawEnglish).trim();
       const attrNative = (opt.getAttribute("data-native") || "").trim();
+      const rawEnglishNorm = rawEnglish.toLocaleLowerCase();
       const englishNorm = english.toLocaleLowerCase();
       const nativeAttrNorm = attrNative.toLocaleLowerCase();
-      const nativeLooksFallback = !attrNative || nativeAttrNorm === englishNorm;
+      const nativeLooksFallback =
+        !attrNative ||
+        nativeAttrNorm === rawEnglishNorm ||
+        nativeAttrNorm === englishNorm;
       const native = (
         nativeLooksFallback ? nativeByCode[code] || english : attrNative
       ).trim();

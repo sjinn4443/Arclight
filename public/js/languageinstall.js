@@ -53,6 +53,31 @@ const CHILDHOOD_EYE_SCREENING_SUBTITLE_LANGUAGES = new Set([
   "yo",
   "zu",
 ]);
+const ENGLISH_LANGUAGE_LABELS = {
+  en: "English",
+  am: "Amharic",
+  ar: "Arabic",
+  bn: "Bangla",
+  ne: "Nepali",
+  ny: "Nyanja",
+  zh: "Chinese",
+  fr: "French",
+  ha: "Hausa",
+  hi: "Hindi",
+  ig: "Igbo",
+  id: "Indonesian",
+  rw: "Kinyarwanda",
+  ko: "Korean",
+  te: "Telugu",
+  ln: "Lingala",
+  fa: "Persian",
+  sn: "Shona",
+  es: "Spanish",
+  sw: "Swahili",
+  ur: "Urdu",
+  yo: "Yoruba",
+  zu: "Zulu",
+};
 
 initializePWA();
 
@@ -560,7 +585,10 @@ function buildCustomLangSelect(selectEl) {
     li.setAttribute("role", "option");
     li.dataset.value = opt.value;
 
-    const english = (opt.textContent || "").replace(/\s*\(.*\)\s*/g, "").trim();
+    const rawEnglish = (opt.textContent || "")
+      .replace(/\s*\(.*\)\s*/g, "")
+      .trim();
+    const english = ENGLISH_LANGUAGE_LABELS[opt.value] || rawEnglish;
     const native = opt.getAttribute("data-native") || english;
 
     const left = document.createElement("span");
@@ -595,9 +623,10 @@ function buildCustomLangSelect(selectEl) {
    */
   function updateLabel() {
     const current = selectEl.options[selectEl.selectedIndex];
-    const english = (current.textContent || "")
+    const rawEnglish = (current.textContent || "")
       .replace(/\s*\(.*\)\s*/g, "")
       .trim();
+    const english = ENGLISH_LANGUAGE_LABELS[current.value] || rawEnglish;
     const native = current.getAttribute("data-native") || english;
 
     label.textContent = "";
