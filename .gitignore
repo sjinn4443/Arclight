@@ -49,6 +49,7 @@ tmp-chromium-*.png
 tmp-webkit-*.png
 tmp_playwright_*/
 tmp-playwright-*/
+tmp-fundal-dist/
 
 # Generated telemetry exports
 reports/data/*.ndjson

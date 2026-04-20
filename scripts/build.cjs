@@ -24,6 +24,11 @@ function parsePositiveInt(value) {
   return parsed;
 }
 
+function resolveBuildOutputDir() {
+  const raw = String(process.env.BUILD_OUTPUT_DIR || "dist").trim();
+  return raw || "dist";
+}
+
 function resolveBuildVersionDate() {
   const envCandidates = [
     process.env.APP_VERSION_DATE,
@@ -323,16 +328,17 @@ const build = async () => {
   // Add a small delay to allow file locks to be released
   await new Promise((resolve) => setTimeout(resolve, 1000));
 
-  const distPath = path.join(__dirname, "..", "dist");
+  const buildOutputDir = resolveBuildOutputDir();
+  const distPath = path.join(__dirname, "..", buildOutputDir);
   const publicPath = path.join(__dirname, "..", "public");
   const versionDate = resolveBuildVersionDate();
   const versionSequence = await resolveBuildVersionSequence(versionDate);
 
   try {
-    // 1. Clean the 'dist' directory
+    // 1. Clean the build output directory
     await fs.emptyDir(distPath);
 
-    // 2. Copy 'public' directory contents to 'dist'
+    // 2. Copy 'public' directory contents to the build output directory
     await fs.copy(publicPath, distPath);
 
     // 2b. Write build/version metadata for runtime consumers (Railway-safe).
@@ -341,14 +347,14 @@ const build = async () => {
       versionSequence,
     });
 
-    // 3. Remove original js files from dist (esbuild will create new ones)
+    // 3. Remove original js files from the build output directory.
     // This ensures we don't have duplicate or unminified JS files from the copy step.
     const jsDistPath = path.join(distPath, "js");
     if (await fs.exists(jsDistPath)) {
       await fs.remove(jsDistPath);
     }
 
-    // 4. Minify and bundle JS assets into dist/js using esbuild
+    // 4. Minify and bundle JS assets into the build output directory using esbuild.
     await esbuild.build({
       entryPoints: [
         "public/js/atomscard.js",
@@ -381,7 +387,7 @@ const build = async () => {
       ],
       bundle: true,
       minify: true,
-      outdir: "dist/js",
+      outdir: path.join(distPath, "js"),
       sourcemap: true,
       target: "es2020",
     });
@@ -391,12 +397,12 @@ const build = async () => {
       entryPoints: ["public/sw.js"],
       bundle: true,
       minify: true,
-      outfile: path.join(distPath, "sw.js"), // Output directly to dist/sw.js
+      outfile: path.join(distPath, "sw.js"),
       sourcemap: true,
       target: "es2020",
     });
 
-    // 6. Minify CSS files in dist
+    // 6. Minify CSS files in the build output directory.
     const cssFiles = await findFiles(distPath, ".css");
     const cleanCss = new CleanCSS();
     for (const file of cssFiles) {
@@ -408,7 +414,7 @@ const build = async () => {
       }
     }
 
-    // 7. Minify HTML files in dist
+    // 7. Minify HTML files in the build output directory.
     const htmlFiles = await findFiles(distPath, ".html");
     const htmlMinifierOptions = {
       collapseWhitespace: true,

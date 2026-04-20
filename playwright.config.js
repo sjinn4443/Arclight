@@ -1,5 +1,9 @@
 import { defineConfig, devices } from "@playwright/test";
 
+const port = process.env.PLAYWRIGHT_PORT || "4173";
+const baseURL = process.env.PLAYWRIGHT_BASE_URL || `http://127.0.0.1:${port}`;
+const distDir = process.env.PLAYWRIGHT_DIST_DIR || "dist";
+
 export default defineConfig({
   testDir: "./tests-e2e",
   testMatch: /.*\.spec\.js/,
@@ -15,15 +19,15 @@ export default defineConfig({
     ["html", { open: "never", outputFolder: "playwright-report" }],
   ],
   use: {
-    baseURL: "http://localhost:4173",
+    baseURL,
     trace: "retain-on-failure",
     screenshot: "only-on-failure",
     video: "off",
     serviceWorkers: "block",
   },
   webServer: {
-    command: "npx http-server dist -p 4173 -a 127.0.0.1 -c-1 --silent",
-    url: "http://localhost:4173",
+    command: `cross-env PORT=${port} SERVE_DIST=true BUILD_OUTPUT_DIR=${distDir} node server.cjs`,
+    url: baseURL,
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,
   },

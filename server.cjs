@@ -37,10 +37,22 @@ const serveDist =
   String(process.env.SERVE_DIST || "").toLowerCase() === "1" ||
   String(process.env.SERVE_DIST || "").toLowerCase() === "true";
 
+function resolveStaticRootDir() {
+  const envCandidate = String(
+    process.env.STATIC_ROOT_DIR || process.env.BUILD_OUTPUT_DIR || "",
+  ).trim();
+  if (!envCandidate) {
+    return path.join(__dirname, prod || serveDist ? "dist" : "public");
+  }
+  return path.isAbsolute(envCandidate)
+    ? envCandidate
+    : path.join(__dirname, envCandidate);
+}
+
 const app = express();
 app.disable("x-powered-by");
 
-const staticRoot = path.join(__dirname, prod || serveDist ? "dist" : "public");
+const staticRoot = resolveStaticRootDir();
 const rootRobotsPath = path.join(__dirname, "robots.txt");
 const rootSitemapPath = path.join(__dirname, "sitemap.xml");
 
