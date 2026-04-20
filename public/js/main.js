@@ -20,6 +20,7 @@ import {
 } from "./fundalReflexPdf.js";
 import { initializeGlaucomaQuizCaseStudy } from "./glaucomaQuizCaseStudy.js";
 import { captureClientError, installSafeConsole } from "./safe-logging.js";
+import { buildTelemetryRequestHeaders } from "./telemetry.js";
 
 installSafeConsole();
 
@@ -303,7 +304,10 @@ window.addEventListener("page:loaded", async (e) => {
 window.addEventListener("load", () => {
   fetch("/track", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    credentials: "same-origin",
+    headers: buildTelemetryRequestHeaders({
+      "Content-Type": "application/json",
+    }),
     body: JSON.stringify({ event: "pageview" }),
   }).catch((e) => captureClientError("track error", e));
 });

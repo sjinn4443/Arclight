@@ -9,6 +9,26 @@ function authHeader(password, user = "dev") {
   return `Basic ${Buffer.from(`${user}:${password}`).toString("base64")}`;
 }
 
+function buildTelemetryAuth(host = "app.example.com") {
+  const {
+    TELEMETRY_SESSION_COOKIE,
+    createTelemetryToken,
+  } = require("../security/telemetry-guard.cjs");
+  const sessionId = "testTelemetrySession_0123456789";
+  return {
+    cookie: `${TELEMETRY_SESSION_COOKIE}=${sessionId}`,
+    token: createTelemetryToken(sessionId, host),
+  };
+}
+
+function withTelemetryHeaders(requestBuilder, auth, host = "app.example.com") {
+  return requestBuilder
+    .set("Host", host)
+    .set("Origin", `https://${host}`)
+    .set("Cookie", auth.cookie)
+    .set("X-Arclight-Telemetry", auth.token);
+}
+
 function parseStructuredLogs(spy) {
   return spy.mock.calls
     .map(([message]) => {
@@ -86,8 +106,12 @@ describe("server security hardening", () => {
       },
     );
 
-    const response = await request(app)
-      .post("/track")
+    const auth = buildTelemetryAuth();
+
+    const response = await withTelemetryHeaders(
+      request(app).post("/track"),
+      auth,
+    )
       .set("Host", "app.example.com")
       .set("X-Forwarded-For", "198.51.100.25");
 
@@ -111,16 +135,18 @@ describe("server security hardening", () => {
     expect(blocked.body).toEqual({ ok: true, stored: false });
     expect(mockStorage.saveProfile).not.toHaveBeenCalled();
 
-    const allowed = await request(app)
-      .post("/api/app/profile")
-      .set("Host", "app.example.com")
-      .send({
-        anon_id: "anon-1",
-        name: "  Alice  ",
-        lat: 999,
-        lon: "-0.1",
-        unknown: "drop-me",
-      });
+    const auth = buildTelemetryAuth();
+
+    const allowed = await withTelemetryHeaders(
+      request(app).post("/api/app/profile"),
+      auth,
+    ).send({
+      anon_id: "anon-1",
+      name: "  Alice  ",
+      lat: 999,
+      lon: "-0.1",
+      unknown: "drop-me",
+    });
 
     expect(allowed.status).toBe(200);
     expect(allowed.body).toEqual({ ok: true, stored: true });
@@ -134,6 +160,73 @@ describe("server security hardening", () => {
       }),
     );
     expect(mockStorage.saveProfile.mock.calls[0][0].unknown).toBeUndefined();
+  });
+
+  test("blocks production telemetry writes without a valid telemetry token", async () => {
+    const { app, mockStorage } = await loadServer({
+      NODE_ENV: "production",
+      TELEMETRY_ALLOWED_HOSTS: "app.example.com",
+      DASHBOARD_PASSWORD: "secret",
+    });
+
+    const auth = buildTelemetryAuth();
+    const missingToken = await request(app)
+      .post("/api/app/profile")
+      .set("Host", "app.example.com")
+      .set("Origin", "https://app.example.com")
+      .set("Cookie", auth.cookie)
+      .send({ anon_id: "anon-1", name: "Alice" });
+
+    expect(missingToken.status).toBe(403);
+    expect(missingToken.body).toMatchObject({
+      error: "telemetry_forbidden",
+      reason: "invalid_token",
+    });
+    expect(mockStorage.saveProfile).not.toHaveBeenCalled();
+  });
+
+  test("rate limits repeated telemetry writes on public ingestion routes", async () => {
+    const { app, mockStorage } = await loadServer({
+      NODE_ENV: "production",
+      TELEMETRY_ALLOWED_HOSTS: "app.example.com",
+      DASHBOARD_PASSWORD: "secret",
+    });
+
+    const auth = buildTelemetryAuth();
+
+    let response;
+    for (let i = 0; i < 16; i += 1) {
+      response = await withTelemetryHeaders(
+        request(app).post("/api/app/profile"),
+        auth,
+      ).send({ anon_id: `anon-${i}`, name: `User ${i}` });
+    }
+
+    expect(response.status).toBe(429);
+    expect(response.body).toMatchObject({
+      error: "rate_limited",
+    });
+    expect(mockStorage.saveProfile).toHaveBeenCalledTimes(15);
+  });
+
+  test("does not rate limit localhost telemetry requests", async () => {
+    const { app, mockStorage } = await loadServer({
+      NODE_ENV: "production",
+      TELEMETRY_ALLOWED_HOSTS: "app.example.com",
+      DASHBOARD_PASSWORD: "secret",
+    });
+
+    let response;
+    for (let i = 0; i < 20; i += 1) {
+      response = await request(app)
+        .post("/api/app/profile")
+        .set("Host", "localhost:3000")
+        .send({ anon_id: `anon-${i}`, name: `Local ${i}` });
+    }
+
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual({ ok: true, stored: false });
+    expect(mockStorage.saveProfile).not.toHaveBeenCalled();
   });
 
   test("rate limits repeated bad auth attempts on the reports API", async () => {
@@ -459,11 +552,13 @@ describe("server security hardening", () => {
 
   test("serves HTML with nonce-based CSP instead of unsafe-inline", async () => {
     const { app } = await loadServer({
-      NODE_ENV: "production",
+      NODE_ENV: "development",
       DASHBOARD_PASSWORD: "secret",
     });
 
-    const response = await request(app).get("/").set("Host", "app.example.com");
+    const response = await request(app)
+      .get("/html/onboarding.html")
+      .set("Host", "localhost:3000");
 
     expect(response.status).toBe(200);
     expect(response.headers["content-security-policy"]).toContain("script-src");
@@ -474,7 +569,7 @@ describe("server security hardening", () => {
     expect(response.headers["content-security-policy"]).not.toMatch(
       /style-src(?!-attr)[^;]*unsafe-inline/i,
     );
-    expect(response.text).toContain('src="js/runtime-bootstrap.js"');
+    expect(response.text).toContain('id="onboarding"');
   });
 
   test("applies stricter anti-framing policy to reports routes", async () => {

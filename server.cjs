@@ -14,7 +14,12 @@ const fs = require("fs");
 const crypto = require("crypto");
 const { execSync } = require("child_process");
 const { applyMainAppCsp, applyReportsCsp } = require("./security/csp.cjs");
-const { sensitiveRateLimiter } = require("./security/rateLimit.cjs");
+const {
+  sensitiveRateLimiter,
+  telemetryProfileRateLimiter,
+  telemetryRefreshRateLimiter,
+  trackingRateLimiter,
+} = require("./security/rateLimit.cjs");
 const {
   resolveStaticHtmlFile,
   sendHtmlFileWithNonce,
@@ -22,9 +27,12 @@ const {
 const {
   getRequestHost,
   isLocalHost,
-  isTelemetryWriteAllowed,
   sanitizeTelemetryPayload,
 } = require("./security/telemetry-policy.cjs");
+const {
+  ensureTelemetryState,
+  evaluateTelemetryWriteRequest,
+} = require("./security/telemetry-guard.cjs");
 
 const fetchImpl =
   typeof global.fetch === "function"
@@ -782,6 +790,7 @@ app.use(
 );
 app.use(emergencyGate);
 app.use(express.json({ limit: "100kb" }));
+app.use(ensureTelemetryState);
 
 app.use("/js", express.static(path.join(staticRoot, "js")));
 app.use("/favicons", express.static(path.join(staticRoot, "favicons")));
@@ -820,6 +829,21 @@ async function initStorageWithRetry() {
 
 initStorageWithRetry();
 
+function telemetryWriteGuard(req, res, next) {
+  const decision = evaluateTelemetryWriteRequest(req);
+  res.locals.telemetryWriteDecision = decision;
+
+  if (decision.allowed || decision.mode === "silent_skip") return next();
+
+  logStructuredEvent("telemetry_write_blocked", req, {
+    reason: decision.reason,
+  });
+  return res.status(403).json({
+    error: "telemetry_forbidden",
+    reason: decision.reason,
+  });
+}
+
 app.get("/healthz", (req, res) => {
   res.set("Cache-Control", "no-store");
   res.json({ ok: true, emergencyMode: getEmergencyMode() });
@@ -834,35 +858,45 @@ app.get("/api/app/version", (req, res) => {
   });
 });
 
-app.post("/api/app/profile", async (req, res) => {
-  try {
-    const payload = sanitizeTelemetryPayload(req.body || {});
-    if (!isTelemetryWriteAllowed(req)) {
-      return res.json({ ok: true, stored: false });
+app.post(
+  "/api/app/profile",
+  telemetryWriteGuard,
+  telemetryProfileRateLimiter,
+  async (req, res) => {
+    try {
+      const payload = sanitizeTelemetryPayload(req.body || {});
+      if (!res.locals.telemetryWriteDecision?.allowed) {
+        return res.json({ ok: true, stored: false });
+      }
+
+      await storage.saveProfile(payload);
+      return res.json({ ok: true, stored: true });
+    } catch (error) {
+      logServerError("[api/app/profile] save failed", error);
+      return res.status(500).json({ error: "save failed" });
     }
+  },
+);
 
-    await storage.saveProfile(payload);
-    return res.json({ ok: true, stored: true });
-  } catch (error) {
-    logServerError("[api/app/profile] save failed", error);
-    return res.status(500).json({ error: "save failed" });
-  }
-});
+app.post(
+  "/api/app/refresh",
+  telemetryWriteGuard,
+  telemetryRefreshRateLimiter,
+  async (req, res) => {
+    try {
+      const payload = sanitizeTelemetryPayload(req.body || {});
+      if (!res.locals.telemetryWriteDecision?.allowed) {
+        return res.json({ ok: true, stored: false });
+      }
 
-app.post("/api/app/refresh", async (req, res) => {
-  try {
-    const payload = sanitizeTelemetryPayload(req.body || {});
-    if (!isTelemetryWriteAllowed(req)) {
-      return res.json({ ok: true, stored: false });
+      await storage.bumpRefresh(payload);
+      return res.json({ ok: true, stored: true });
+    } catch (error) {
+      logServerError("[api/app/refresh] save failed", error);
+      return res.status(500).json({ error: "refresh failed" });
     }
-
-    await storage.bumpRefresh(payload);
-    return res.json({ ok: true, stored: true });
-  } catch (error) {
-    logServerError("[api/app/refresh] save failed", error);
-    return res.status(500).json({ error: "refresh failed" });
-  }
-});
+  },
+);
 
 app.get("/api/location/ip", async (req, res) => {
   try {
@@ -991,19 +1025,24 @@ app.use((req, res, next) => {
 
 app.use(express.static(staticRoot));
 
-app.post("/track", async (req, res) => {
-  try {
-    if (!isTelemetryWriteAllowed(req)) {
+app.post(
+  "/track",
+  telemetryWriteGuard,
+  trackingRateLimiter,
+  async (req, res) => {
+    try {
+      if (!res.locals.telemetryWriteDecision?.allowed) {
+        return res.status(204).end();
+      }
+
+      await storage.saveIp(getClientIp(req));
+      return res.status(204).end();
+    } catch (error) {
+      logServerError("[track] save failed", error);
       return res.status(204).end();
     }
-
-    await storage.saveIp(getClientIp(req));
-    return res.status(204).end();
-  } catch (error) {
-    logServerError("[track] save failed", error);
-    return res.status(204).end();
-  }
-});
+  },
+);
 
 app.use((req, res) => {
   res.set("Cache-Control", "no-store");

@@ -1,5 +1,7 @@
 import { captureClientError } from "./safe-logging.js";
 
+const TELEMETRY_TOKEN_META_NAME = "arclight-telemetry-token";
+
 function getAnonId() {
   const KEY = "arclight_anon_id";
   let id = localStorage.getItem(KEY);
@@ -36,6 +38,21 @@ function shouldSkipTelemetryInBrowser() {
   );
 }
 
+function getTelemetryToken() {
+  if (typeof document === "undefined") return "";
+  const meta = document.querySelector(
+    `meta[name="${TELEMETRY_TOKEN_META_NAME}"]`,
+  );
+  return String(meta?.content || "").trim();
+}
+
+export function buildTelemetryRequestHeaders(initial = {}) {
+  const headers = { ...initial };
+  const token = getTelemetryToken();
+  if (token) headers["X-Arclight-Telemetry"] = token;
+  return headers;
+}
+
 export async function saveProfile(fields) {
   if (shouldSkipTelemetryInBrowser()) return { ok: true, skipped: true };
 
@@ -44,7 +61,9 @@ export async function saveProfile(fields) {
   try {
     await fetch("/api/app/profile", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: buildTelemetryRequestHeaders({
+        "Content-Type": "application/json",
+      }),
       credentials: "same-origin",
       body: JSON.stringify(body),
     });
@@ -66,7 +85,9 @@ export async function bumpRefresh(fields = {}) {
     await fetch("/api/app/refresh", {
       method: "POST",
       credentials: "same-origin",
-      headers: { "Content-Type": "application/json" },
+      headers: buildTelemetryRequestHeaders({
+        "Content-Type": "application/json",
+      }),
       body: JSON.stringify(body),
     });
   } catch (err) {
@@ -79,6 +100,7 @@ export async function bumpRefresh(fields = {}) {
 
 // keep the global export if you use non-module scripts
 window.ARCLIGHT = Object.assign(window.ARCLIGHT || {}, {
+  buildTelemetryRequestHeaders,
   saveProfile,
   bumpRefresh,
   setUserId,

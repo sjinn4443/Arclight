@@ -21,6 +21,14 @@ Security policy is split between reusable helpers here and route wiring in `serv
 - `telemetry-policy.cjs`
   - Centralizes telemetry host gating and server-side payload allowlisting/validation.
 
+- `telemetry-guard.cjs`
+  - Issues short-lived telemetry tokens for HTML responses on allowed production hosts.
+  - Requires same-origin proof plus a valid telemetry token before accepting public telemetry writes.
+
+- Telemetry write rate limits
+  - Public telemetry writes are capped at 15 requests per 15 minutes per IP for each write route.
+  - `localhost` requests are excluded so local development and manual verification are not throttled.
+
 - `EMERGENCY_PLAN.md`
   - Operator runbook for `EMERGENCY_MODE`, admin IP allowlisting, and incident recovery expectations.
 
@@ -31,6 +39,7 @@ Security policy is split between reusable helpers here and route wiring in `serv
 
 - Set `DASHBOARD_PASSWORD` to a strong value if enabling the reports pages.
 - Keep telemetry writes restricted to production plus the configured host allowlist.
+- Set `TELEMETRY_TOKEN_SECRET` to a stable secret in production so telemetry tokens remain valid across instances.
 - Use read-only and admin DB credentials separately for local reports when possible.
 - Keep real secrets in `.env` or deployment secrets, never in tracked files or frontend code.
 
