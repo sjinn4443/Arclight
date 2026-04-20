@@ -986,6 +986,17 @@ select.onb-input.has-value {
   pointer-events: none;
 }
 
+#unifiedDashboard .dashboard-greeting__install-mark {
+  height: 28px;
+  width: auto;
+  margin-left: 2px;
+}
+
+#unifiedDashboard .category-card--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 /* title overlay (on top of image + gradient) */
 .category-card__title {
   position: absolute;

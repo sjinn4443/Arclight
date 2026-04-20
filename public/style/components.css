@@ -1489,6 +1489,18 @@ input:checked + .slider:before {
   display: none;
 }
 
+#eyesCatalogPage .eyes-carousel.is-pointer-dragging,
+#eyesCatalogPage .eyes-carousel.is-pointer-dragging .eyes-card {
+  cursor: grabbing;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+#eyesCatalogPage .eyes-carousel.is-pointer-dragging {
+  scroll-snap-type: none;
+  scroll-behavior: auto;
+}
+
 #eyesCatalogPage .eyes-carousel-divider {
   height: 2px;
   width: 100vw;
@@ -1532,19 +1544,21 @@ input:checked + .slider:before {
   pointer-events: none;
 }
 
-.eyes-card .eyes-card__title {
+#eyesCatalogPage .eyes-card .eyes-card__title {
   color: #ffffff !important;
   position: relative;
   z-index: 1;
+  pointer-events: none;
 }
 
-.eyes-card .tag-row {
+#eyesCatalogPage .eyes-card .tag-row {
   position: absolute;
   left: 18px;
   bottom: 12px;
   display: flex;
   gap: 6px;
   z-index: 1;
+  pointer-events: none;
 }
 .eyes-card .tag {
   background: #e41e26;
@@ -1554,9 +1568,10 @@ input:checked + .slider:before {
   font-size: 10px;
   font-weight: 200;
   z-index: 1;
+  pointer-events: none;
 }
 
-.eyes-card .heart-btn {
+#eyesCatalogPage .eyes-card .heart-btn {
   position: absolute;
   top: 10px;
   right: 10px;
@@ -1570,15 +1585,20 @@ input:checked + .slider:before {
   cursor: pointer;
   padding: 0;
   z-index: 1;
+  pointer-events: auto;
 }
-.eyes-card .heart-btn svg {
+#eyesCatalogPage .eyes-card .heart-btn,
+#eyesCatalogPage .eyes-card .heart-btn * {
+  pointer-events: auto;
+}
+#eyesCatalogPage .eyes-card .heart-btn svg {
   width: 18px;
   height: 18px;
   stroke: #ffffff;
   stroke-width: 2;
   fill: none;
 }
-.eyes-card.liked .heart-btn svg {
+#eyesCatalogPage .eyes-card.liked .heart-btn svg {
   fill: #e41e26;
   stroke: #e41e26;
 }

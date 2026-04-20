@@ -260,7 +260,7 @@ export function initializeEyesCatalog() {
     }
 
     const probe = document.createElement("span");
-    probe.style.display = "none";
+    probe.hidden = true;
     probe.setAttribute("data-i18n", path);
     probe.textContent = fallback;
     pageEl.appendChild(probe);
@@ -656,10 +656,172 @@ export function initializeEyesCatalog() {
   };
   // This comment is intentionally placed here to satisfy the linter for the empty block statement.
 
+  const setupMouseDragForCarousel = (carouselEl) => {
+    if (!carouselEl || carouselEl.dataset.mouseDragBound === "true") return;
+    carouselEl.dataset.mouseDragBound = "true";
+
+    let activePointerId = null;
+    let startX = 0;
+    let lastX = 0;
+    let lastTimestamp = 0;
+    let velocityX = 0;
+    let suppressClick = false;
+    let isDragging = false;
+    let inertiaRafId = null;
+
+    const cancelInertia = () => {
+      if (inertiaRafId === null) return;
+      cancelAnimationFrame(inertiaRafId);
+      inertiaRafId = null;
+    };
+
+    const finishFreeScroll = () => {
+      carouselEl.classList.remove("is-pointer-dragging");
+    };
+
+    const snapToNearestCard = () => {
+      const cards = Array.from(carouselEl.querySelectorAll(".eyes-card"));
+      if (!cards.length) {
+        finishFreeScroll();
+        return;
+      }
+
+      const idx = getCenteredCardIndex(carouselEl, cards);
+      const card = cards[idx];
+      const left =
+        card.offsetLeft - carouselEl.offsetWidth / 2 + card.offsetWidth / 2;
+
+      finishFreeScroll();
+      carouselEl.scrollTo({ left, behavior: "smooth" });
+    };
+
+    const startMomentumScroll = () => {
+      const minimumVelocity = 0.02;
+      if (Math.abs(velocityX) < minimumVelocity) {
+        snapToNearestCard();
+        return;
+      }
+
+      let momentumVelocity = velocityX;
+      let previousTimestamp = performance.now();
+
+      const step = (timestamp) => {
+        const dt = Math.max(1, Math.min(32, timestamp - previousTimestamp));
+        previousTimestamp = timestamp;
+
+        carouselEl.scrollLeft -= momentumVelocity * dt;
+        momentumVelocity *= Math.pow(0.94, dt / 16.67);
+
+        if (Math.abs(momentumVelocity) < minimumVelocity) {
+          inertiaRafId = null;
+          snapToNearestCard();
+          return;
+        }
+
+        inertiaRafId = requestAnimationFrame(step);
+      };
+
+      inertiaRafId = requestAnimationFrame(step);
+    };
+
+    const resetDragState = ({ keepFreeScroll = false } = {}) => {
+      activePointerId = null;
+      isDragging = false;
+      if (!keepFreeScroll) {
+        finishFreeScroll();
+      }
+    };
+
+    carouselEl.addEventListener("pointerdown", (_e) => {
+      if (_e.pointerType !== "mouse") return;
+      if (_e.button !== 0) return;
+      if (_e.target.closest?.(".heart-btn")) return;
+
+      cancelInertia();
+      activePointerId = _e.pointerId;
+      startX = _e.clientX;
+      lastX = _e.clientX;
+      lastTimestamp = performance.now();
+      velocityX = 0;
+      suppressClick = false;
+      isDragging = false;
+      carouselEl.classList.add("is-pointer-dragging");
+
+      try {
+        carouselEl.setPointerCapture(_e.pointerId);
+      } catch {
+        void 0;
+      }
+    });
+
+    carouselEl.addEventListener(
+      "pointermove",
+      (_e) => {
+        if (_e.pointerId !== activePointerId) return;
+
+        const totalDeltaX = _e.clientX - startX;
+        if (!isDragging && Math.abs(totalDeltaX) < 4) return;
+
+        const now = performance.now();
+        const deltaX = _e.clientX - lastX;
+        const dt = Math.max(1, now - lastTimestamp);
+        isDragging = true;
+        suppressClick = true;
+        velocityX = deltaX / dt;
+        lastX = _e.clientX;
+        lastTimestamp = now;
+        carouselEl.scrollLeft -= deltaX;
+        _e.preventDefault();
+      },
+      { passive: false },
+    );
+
+    const endDrag = (_e) => {
+      if (_e.pointerId !== activePointerId) return;
+
+      try {
+        carouselEl.releasePointerCapture(_e.pointerId);
+      } catch {
+        void 0;
+      }
+
+      const didDrag = isDragging;
+      resetDragState({ keepFreeScroll: didDrag });
+      if (didDrag) {
+        startMomentumScroll();
+      }
+    };
+
+    carouselEl.addEventListener("pointerup", endDrag);
+    carouselEl.addEventListener("pointercancel", endDrag);
+    carouselEl.addEventListener("lostpointercapture", () => {
+      if (activePointerId === null) return;
+      cancelInertia();
+      resetDragState();
+    });
+
+    carouselEl.addEventListener(
+      "click",
+      (_e) => {
+        if (!suppressClick) return;
+        suppressClick = false;
+        _e.preventDefault();
+        _e.stopPropagation();
+        if (typeof _e.stopImmediatePropagation === "function") {
+          _e.stopImmediatePropagation();
+        }
+      },
+      true,
+    );
+  };
+
   // Apply to every Eyes carousel section
   pageEl
     .querySelectorAll(".eyes-carousel, .eyes-track")
-    .forEach((carouselEl) => setupDotsForCarousel(carouselEl));
+    .forEach((carouselEl) => {
+      setupDotsForCarousel(carouselEl);
+      setupMouseDragForCarousel(carouselEl);
+    });
 
   // Persist state while users scroll so returning to Eyes restores the same position.
   pageEl
@@ -678,15 +840,6 @@ export function initializeEyesCatalog() {
         { passive: true },
       );
     });
-
-  // Enforce pointer-events on heart & its children (override any CSS without touching style.css)
-  pageEl.querySelectorAll(".heart-btn, .heart-btn *").forEach((n) => {
-    try {
-      n.style.pointerEvents = "auto";
-    } catch {
-      void 0;
-    }
-  });
 
   /**
    * Consumes an event to prevent default behavior and stop propagation.

@@ -130,9 +130,7 @@ export function initializeDashboard() {
       img.src = "images/logo/pwainstall.png";
       img.alt = "PWA install";
       img.decoding = "async";
-      img.style.height = "28px";
-      img.style.width = "auto";
-      img.style.marginLeft = "2px";
+      img.className = "dashboard-greeting__install-mark";
       helloEl.appendChild(img);
     }
 
@@ -189,8 +187,7 @@ export function initializeDashboard() {
 
     // Visual disabled state
     if (DISABLED_TARGETS.has(legacy)) {
-      card.style.opacity = "0.5";
-      card.style.cursor = "not-allowed";
+      card.classList.add("category-card--disabled");
       // defensively remove any stray routing attrs
       card.removeAttribute("data-route");
       card.removeAttribute("data-page");
@@ -453,23 +450,3 @@ async function renderRecommendations(host) {
     });
   });
 }
-
-// Disable navigation for certain category cards
-["earsLearningModules", "skinModules", "teachModules"].forEach((id) => {
-  const card = document.getElementById(id);
-  if (card) {
-    // visually indicate disabled
-    card.style.opacity = "0.5";
-    card.style.cursor = "not-allowed";
-
-    // strip navigation attributes if any
-    card.removeAttribute("data-route");
-    card.removeAttribute("data-page");
-
-    // block clicks completely
-    card.addEventListener("click", (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-    });
-  }
-});
