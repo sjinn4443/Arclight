@@ -184,6 +184,139 @@ const RETINAL_STRUCTURE_TAP_STEPS = Object.freeze([
   },
 ]);
 
+const REVIEW_VIDEO_QUIZ_OPTIONS = Object.freeze([
+  "Margin",
+  "Neuro-retinal rim",
+  "Fovea",
+  "Cup",
+  "Blood vessels (veins and arteries)",
+]);
+
+const REVIEW_VIDEO_QUIZ_STEPS = Object.freeze([
+  {
+    id: "main-parts",
+    pauseAt: 13,
+    question:
+      "Which of the following is NOT a main part of the optic nerve head?",
+    options: REVIEW_VIDEO_QUIZ_OPTIONS,
+    correctIndex: 2,
+    explanation: "Fovea belongs to the macula, not to the optic nerve head.",
+  },
+  {
+    id: "highlighted-margin",
+    pauseAt: 18,
+    question: "What is the name of the highlighted area?",
+    options: REVIEW_VIDEO_QUIZ_OPTIONS,
+    correctIndex: 0,
+    explanation: "The highlighted edge of the optic disc is the margin.",
+  },
+]);
+
+const FINDINGS_GROUP_TWO_ITEMS = Object.freeze([
+  {
+    id: "patient-a-va",
+    label: "Visual acuity: perception of light",
+    zone: "patient-a",
+  },
+  { id: "patient-a-white-pupil", label: "White pupil", zone: "patient-a" },
+  {
+    id: "patient-a-white-conjunctiva",
+    label: "White conjunctiva",
+    zone: "patient-a",
+  },
+  { id: "patient-a-clear-cornea", label: "Clear cornea", zone: "patient-a" },
+  { id: "patient-b-va", label: "Visual acuity: 6/9", zone: "patient-b" },
+  { id: "patient-b-photophobia", label: "Photophobia", zone: "patient-b" },
+  { id: "patient-b-watery", label: "Watery", zone: "patient-b" },
+  {
+    id: "patient-b-pink-conjunctiva",
+    label: "Pink conjunctiva",
+    zone: "patient-b",
+  },
+  {
+    id: "patient-b-white-spots",
+    label: "White spots on inner cornea",
+    zone: "patient-b",
+  },
+]);
+
+const CONNECT_QUIZ_GROUPS = Object.freeze([
+  {
+    id: "mature-cataract",
+    diagnosisId: "diag-mature-cataract",
+    diagnosis: "Mature Cataract",
+    findings: [
+      {
+        id: "finding-white-pupil",
+        label: "White pupil",
+      },
+      {
+        id: "finding-loss-red-reflex",
+        label: "Loss of red reflex",
+      },
+      {
+        id: "finding-dense-lens-opacity",
+        label: "Dense lens opacity",
+      },
+    ],
+    tone: "violet",
+  },
+  {
+    id: "primary-open-glaucoma",
+    diagnosisId: "diag-primary-open-glaucoma",
+    diagnosis: "Primary Open Glaucoma",
+    findings: [
+      {
+        id: "finding-cupped-disc",
+        label: "Cupped optic disc",
+      },
+      {
+        id: "finding-rim-thinning",
+        label: "Neuroretinal rim thinning",
+      },
+      {
+        id: "finding-field-defect",
+        label: "Peripheral visual field defect",
+      },
+    ],
+    tone: "gold",
+  },
+  {
+    id: "diabetic-maculopathy",
+    diagnosisId: "diag-diabetic-maculopathy",
+    diagnosis: "Diabetic Maculopathy",
+    findings: [
+      {
+        id: "finding-hard-exudate",
+        label: "Hard exudate at macula",
+      },
+      {
+        id: "finding-macular-thickening",
+        label: "Macular thickening",
+      },
+      {
+        id: "finding-microaneurysms",
+        label: "Microaneurysms near macula",
+      },
+    ],
+    tone: "teal",
+  },
+]);
+
+const CONNECT_QUIZ_FINDINGS = Object.freeze(
+  CONNECT_QUIZ_GROUPS.flatMap((group) =>
+    group.findings.map((finding) => ({
+      ...finding,
+      diagnosisId: group.diagnosisId,
+      tone: group.tone,
+    })),
+  ),
+);
+
+const CONNECT_QUIZ_FINDING_LOOKUP = new Map(
+  CONNECT_QUIZ_FINDINGS.map((finding) => [finding.id, finding]),
+);
+
 function shuffleItems(items) {
   const copy = [...items];
   for (let i = copy.length - 1; i > 0; i -= 1) {
@@ -1302,6 +1435,1017 @@ function initializeRetinalStructureTapPage() {
   resetQuiz();
 }
 
+function initializeReviewVideoQuizPage() {
+  const page = document.getElementById("diabeticReviewVideoQuizPage");
+  if (!page || page.dataset.inited === "1") return;
+
+  const video = page.querySelector("#reviewVideoQuizPlayer");
+  const progress = page.querySelector("#reviewVideoQuizProgress");
+  const progressLabel = page.querySelector("#reviewVideoQuizProgressLabel");
+  const status = page.querySelector("#reviewVideoQuizStatus");
+  const waitingCard = page.querySelector("#reviewVideoQuizWaiting");
+  const waitingLabel = page.querySelector("#reviewVideoQuizWaitingLabel");
+  const waitingTitle = page.querySelector("#reviewVideoQuizWaitingTitle");
+  const waitingCopy = page.querySelector("#reviewVideoQuizWaitingCopy");
+  const questionCard = page.querySelector("#reviewVideoQuizQuestionCard");
+  const questionLabel = page.querySelector("#reviewVideoQuizQuestionLabel");
+  const question = page.querySelector("#reviewVideoQuizQuestion");
+  const options = page.querySelector("#reviewVideoQuizOptions");
+  const feedback = page.querySelector("#reviewVideoQuizFeedback");
+  const feedbackTitle = page.querySelector("#reviewVideoQuizFeedbackTitle");
+  const feedbackCopy = page.querySelector("#reviewVideoQuizFeedbackCopy");
+  const actionButton = page.querySelector("#reviewVideoQuizAction");
+  const completeCard = page.querySelector("#reviewVideoQuizComplete");
+  const summary = page.querySelector("#reviewVideoQuizSummary");
+  const replayButton = page.querySelector("#reviewVideoQuizReplay");
+
+  if (
+    !video ||
+    !progress ||
+    !progressLabel ||
+    !status ||
+    !waitingCard ||
+    !waitingLabel ||
+    !waitingTitle ||
+    !waitingCopy ||
+    !questionCard ||
+    !questionLabel ||
+    !question ||
+    !options ||
+    !feedback ||
+    !feedbackTitle ||
+    !feedbackCopy ||
+    !actionButton ||
+    !completeCard ||
+    !summary ||
+    !replayButton
+  ) {
+    return;
+  }
+
+  page.dataset.inited = "1";
+
+  const state = {
+    nextIndex: 0,
+    activeIndex: null,
+    selectedIndex: null,
+    answers: [],
+    hasCheckedCurrent: false,
+    isComplete: false,
+  };
+
+  const getStep = (index) => REVIEW_VIDEO_QUIZ_STEPS[index] || null;
+
+  const setStatus = (text, variant = "") => {
+    status.textContent = text;
+    status.className = "review-video-quiz__status";
+    if (variant) status.classList.add(variant);
+  };
+
+  const getCorrectCount = () =>
+    state.answers.filter((answer) => answer?.correct).length;
+
+  const renderProgress = () => {
+    progress.innerHTML = "";
+
+    REVIEW_VIDEO_QUIZ_STEPS.forEach((_, index) => {
+      const stepEl = document.createElement("span");
+      stepEl.className = "review-video-quiz__progress-step";
+
+      if (state.answers[index]) {
+        stepEl.classList.add("is-complete");
+      } else if (state.activeIndex === index || state.nextIndex === index) {
+        stepEl.classList.add("is-active");
+      }
+
+      progress.appendChild(stepEl);
+    });
+
+    if (state.isComplete) {
+      progressLabel.textContent = "Review complete";
+      return;
+    }
+
+    const displayIndex =
+      state.activeIndex ??
+      Math.min(state.nextIndex, REVIEW_VIDEO_QUIZ_STEPS.length - 1);
+    progressLabel.textContent = `Question ${displayIndex + 1} of ${REVIEW_VIDEO_QUIZ_STEPS.length}`;
+  };
+
+  const renderWaitingCard = () => {
+    if (state.nextIndex === 0 && video.currentTime < 0.25) {
+      waitingLabel.textContent = "Video prompt";
+      waitingTitle.textContent = "Start the video";
+      waitingCopy.textContent =
+        "Press play to begin. The video will pause automatically for each review question.";
+      return;
+    }
+
+    waitingLabel.textContent = "Keep watching";
+    waitingTitle.textContent = "Continue to the next pause";
+    waitingCopy.textContent =
+      "The video will stop again when the next question is ready.";
+  };
+
+  const renderQuestionOptions = (step) => {
+    options.innerHTML = "";
+
+    step.options.forEach((optionText, index) => {
+      const optionId = `reviewVideoQuizOption-${step.id}-${index}`;
+
+      const label = document.createElement("label");
+      label.className = "review-video-quiz__option";
+
+      const input = document.createElement("input");
+      input.type = "radio";
+      input.name = "reviewVideoQuizAnswer";
+      input.id = optionId;
+      input.value = String(index);
+      input.checked = state.selectedIndex === index;
+      input.disabled = state.hasCheckedCurrent;
+      input.addEventListener("change", () => {
+        if (state.hasCheckedCurrent) return;
+        state.selectedIndex = index;
+        actionButton.disabled = false;
+      });
+
+      const text = document.createElement("span");
+      text.className = "review-video-quiz__option-text";
+      text.textContent = optionText;
+
+      if (state.hasCheckedCurrent && index === step.correctIndex) {
+        label.classList.add("is-correct");
+      } else if (
+        state.hasCheckedCurrent &&
+        state.selectedIndex === index &&
+        index !== step.correctIndex
+      ) {
+        label.classList.add("is-wrong");
+      }
+
+      label.appendChild(input);
+      label.appendChild(text);
+      options.appendChild(label);
+    });
+  };
+
+  const renderQuestionCard = () => {
+    const step = getStep(state.activeIndex);
+    if (!step) return;
+
+    questionLabel.textContent = `Question ${state.activeIndex + 1}`;
+    question.textContent = step.question;
+    renderQuestionOptions(step);
+
+    feedback.hidden = !state.hasCheckedCurrent;
+    feedback.className = "review-video-quiz__feedback";
+
+    if (state.hasCheckedCurrent) {
+      const answer = state.answers[state.activeIndex];
+      if (answer?.correct) {
+        feedback.classList.add("is-correct");
+        feedbackTitle.textContent = "Correct";
+        feedbackCopy.textContent = step.explanation;
+      } else {
+        feedback.classList.add("is-wrong");
+        feedbackTitle.textContent = `Correct answer: ${step.options[step.correctIndex]}`;
+        feedbackCopy.textContent = step.explanation;
+      }
+    }
+
+    actionButton.disabled =
+      !state.hasCheckedCurrent && state.selectedIndex == null;
+    actionButton.textContent = state.hasCheckedCurrent
+      ? state.activeIndex === REVIEW_VIDEO_QUIZ_STEPS.length - 1
+        ? "See results"
+        : "Next >"
+      : "Check answer";
+  };
+
+  const renderCompleteCard = () => {
+    summary.textContent = `You answered ${getCorrectCount()} out of ${REVIEW_VIDEO_QUIZ_STEPS.length} correctly.`;
+  };
+
+  const render = () => {
+    renderProgress();
+
+    waitingCard.hidden = state.activeIndex !== null || state.isComplete;
+    questionCard.hidden = state.activeIndex === null;
+    completeCard.hidden = !state.isComplete;
+
+    if (!state.isComplete && state.activeIndex === null) {
+      renderWaitingCard();
+    }
+
+    if (state.activeIndex !== null) {
+      renderQuestionCard();
+      setStatus("Video paused for a question.", "is-alert");
+      return;
+    }
+
+    if (state.isComplete) {
+      renderCompleteCard();
+      setStatus(
+        "Review complete. Replay the clip if you want to go through it again.",
+        "is-complete",
+      );
+      return;
+    }
+
+    setStatus(
+      state.nextIndex === 0 && video.currentTime < 0.25
+        ? "Press play. The video will pause when a question appears."
+        : "Continue the video to reach the next question.",
+    );
+  };
+
+  const maybePauseForQuestion = () => {
+    if (state.isComplete || state.activeIndex !== null) return;
+
+    const step = getStep(state.nextIndex);
+    if (!step || video.currentTime + 0.05 < step.pauseAt) return;
+
+    video.pause();
+    state.activeIndex = state.nextIndex;
+    state.selectedIndex = null;
+    state.hasCheckedCurrent = false;
+    render();
+  };
+
+  const resetQuiz = () => {
+    state.nextIndex = 0;
+    state.activeIndex = null;
+    state.selectedIndex = null;
+    state.answers = [];
+    state.hasCheckedCurrent = false;
+    state.isComplete = false;
+
+    try {
+      video.pause();
+    } catch {}
+
+    try {
+      video.currentTime = 0;
+    } catch {}
+
+    render();
+  };
+
+  actionButton.addEventListener("click", () => {
+    const step = getStep(state.activeIndex);
+    if (!step) return;
+
+    if (!state.hasCheckedCurrent) {
+      if (state.selectedIndex == null) return;
+
+      state.answers[state.activeIndex] = {
+        selectedIndex: state.selectedIndex,
+        correct: state.selectedIndex === step.correctIndex,
+      };
+      state.hasCheckedCurrent = true;
+      render();
+      return;
+    }
+
+    if (state.activeIndex < REVIEW_VIDEO_QUIZ_STEPS.length - 1) {
+      state.nextIndex = state.activeIndex + 1;
+      state.activeIndex = null;
+      state.selectedIndex = null;
+      state.hasCheckedCurrent = false;
+      render();
+
+      try {
+        window.scrollTo(0, 0);
+      } catch {}
+
+      const playPromise = video.play();
+      playPromise?.catch?.(() => {});
+      return;
+    }
+
+    state.nextIndex = REVIEW_VIDEO_QUIZ_STEPS.length;
+    state.activeIndex = null;
+    state.selectedIndex = null;
+    state.hasCheckedCurrent = false;
+    state.isComplete = true;
+
+    try {
+      video.pause();
+    } catch {}
+
+    render();
+  });
+
+  replayButton.addEventListener("click", () => {
+    resetQuiz();
+  });
+
+  video.addEventListener("timeupdate", maybePauseForQuestion);
+  video.addEventListener("seeked", maybePauseForQuestion);
+  video.addEventListener("play", () => {
+    if (state.activeIndex === null) return;
+
+    const pauseNow = () => {
+      try {
+        video.pause();
+      } catch {}
+    };
+
+    if (typeof window.requestAnimationFrame === "function") {
+      window.requestAnimationFrame(pauseNow);
+    } else {
+      window.setTimeout(pauseNow, 0);
+    }
+  });
+
+  if (page.dataset.shownWired !== "1") {
+    page.dataset.shownWired = "1";
+    document.addEventListener("page:shown", (event) => {
+      if (event.detail?.id !== "diabeticReviewVideoQuizPage") return;
+      resetQuiz();
+    });
+  }
+
+  resetQuiz();
+}
+
+function initializeFindingsGroupTwoPage() {
+  const page = document.getElementById("diabeticFindingsGroupTwoPage");
+  if (!page || page.dataset.inited === "1") return;
+
+  const bank = page.querySelector("#findingsGroupQuizBank");
+  const submitButton = page.querySelector("#findingsGroupQuizSubmit");
+  const feedback = page.querySelector("#findingsGroupQuizFeedback");
+  const zoneBodies = Array.from(
+    page.querySelectorAll(".findings-group-quiz__zone-body"),
+  );
+
+  if (!bank || !submitButton || !feedback || zoneBodies.length !== 2) {
+    return;
+  }
+
+  page.dataset.inited = "1";
+
+  const state = new Map();
+  const dragState = {
+    chip: null,
+    pointerId: null,
+    startX: 0,
+    startY: 0,
+    hoverZone: null,
+    cleanup: null,
+  };
+
+  const setFeedback = (text = "", variant = "") => {
+    feedback.textContent = text;
+    feedback.className = "findings-group-quiz__feedback";
+    if (variant) feedback.classList.add(variant);
+  };
+
+  const updateZoneState = () => {
+    zoneBodies.forEach((body) => {
+      const hasChip = !!body.querySelector(".findings-group-quiz__chip");
+      body.classList.toggle("is-filled", hasChip);
+    });
+  };
+
+  const clearZoneHighlights = () => {
+    page
+      .querySelectorAll(".findings-group-quiz__zone")
+      .forEach((zone) => zone.classList.remove("is-over"));
+    dragState.hoverZone = null;
+  };
+
+  const getZoneAtPoint = (clientX, clientY) => {
+    const zone = Array.from(
+      page.querySelectorAll(".findings-group-quiz__zone"),
+    ).find((zoneEl) => {
+      const body = zoneEl.querySelector(".findings-group-quiz__zone-body");
+      if (!body) return false;
+      const rect = body.getBoundingClientRect();
+      return (
+        clientX >= rect.left &&
+        clientX <= rect.right &&
+        clientY >= rect.top &&
+        clientY <= rect.bottom
+      );
+    });
+
+    return zone || null;
+  };
+
+  const updateHoveredZone = (clientX, clientY) => {
+    const zone = getZoneAtPoint(clientX, clientY);
+    if (dragState.hoverZone === zone) return zone;
+
+    clearZoneHighlights();
+    if (zone) {
+      zone.classList.add("is-over");
+      dragState.hoverZone = zone;
+    }
+
+    return zone;
+  };
+
+  const moveChipTo = (chip, destination) => {
+    const itemId = chip.getAttribute("data-item-id");
+    if (!itemId) return;
+
+    if (destination === "bank") {
+      bank.appendChild(chip);
+      state.set(itemId, "bank");
+      updateZoneState();
+      return;
+    }
+
+    const zoneBody = page.querySelector(
+      `.findings-group-quiz__zone[data-zone="${destination}"] .findings-group-quiz__zone-body`,
+    );
+    if (!zoneBody) return;
+
+    zoneBody.appendChild(chip);
+    state.set(itemId, destination);
+    updateZoneState();
+  };
+
+  const makeChip = (item) => {
+    const chip = document.createElement("button");
+    chip.type = "button";
+    chip.className = "findings-group-quiz__chip";
+    chip.textContent = item.label;
+    chip.setAttribute("data-item-id", item.id);
+    chip.setAttribute("data-correct-zone", item.zone);
+
+    chip.addEventListener("pointerdown", (event) => {
+      if (submitButton.disabled) return;
+      event.preventDefault();
+
+      dragState.chip = chip;
+      dragState.pointerId = event.pointerId;
+      dragState.startX = event.clientX;
+      dragState.startY = event.clientY;
+      chip.style.zIndex = "5";
+      chip.style.position = "relative";
+      chip.style.transform = "translate(0, 0)";
+      chip.classList.add("is-dragging");
+
+      try {
+        chip.setPointerCapture(event.pointerId);
+      } catch {}
+
+      const handlePointerMove = (moveEvent) => {
+        if (
+          dragState.pointerId !== moveEvent.pointerId ||
+          dragState.chip !== chip ||
+          submitButton.disabled
+        ) {
+          return;
+        }
+
+        const dx = moveEvent.clientX - dragState.startX;
+        const dy = moveEvent.clientY - dragState.startY;
+        chip.style.transform = `translate(${dx}px, ${dy}px)`;
+        updateHoveredZone(moveEvent.clientX, moveEvent.clientY);
+      };
+
+      const finishPointerDrag = (endEvent) => {
+        if (
+          dragState.pointerId !== endEvent.pointerId ||
+          dragState.chip !== chip
+        ) {
+          return;
+        }
+
+        chip.style.transform = "";
+        chip.style.zIndex = "";
+        chip.style.position = "";
+        chip.classList.remove("is-dragging");
+
+        const hitZone = updateHoveredZone(endEvent.clientX, endEvent.clientY);
+        if (hitZone) {
+          moveChipTo(chip, hitZone.getAttribute("data-zone"));
+        } else {
+          const bankRect = bank.getBoundingClientRect();
+          const overBank =
+            endEvent.clientX >= bankRect.left &&
+            endEvent.clientX <= bankRect.right &&
+            endEvent.clientY >= bankRect.top &&
+            endEvent.clientY <= bankRect.bottom;
+
+          if (overBank) moveChipTo(chip, "bank");
+        }
+
+        clearZoneHighlights();
+
+        try {
+          chip.releasePointerCapture(endEvent.pointerId);
+        } catch {}
+
+        dragState.cleanup?.();
+        dragState.cleanup = null;
+        dragState.chip = null;
+        dragState.pointerId = null;
+      };
+
+      const handlePointerCancel = (cancelEvent) => {
+        if (
+          dragState.pointerId !== cancelEvent.pointerId ||
+          dragState.chip !== chip
+        ) {
+          return;
+        }
+
+        chip.style.transform = "";
+        chip.style.zIndex = "";
+        chip.style.position = "";
+        chip.classList.remove("is-dragging");
+        clearZoneHighlights();
+
+        try {
+          chip.releasePointerCapture(cancelEvent.pointerId);
+        } catch {}
+
+        dragState.cleanup?.();
+        dragState.cleanup = null;
+        dragState.chip = null;
+        dragState.pointerId = null;
+      };
+
+      window.addEventListener("pointermove", handlePointerMove);
+      window.addEventListener("pointerup", finishPointerDrag);
+      window.addEventListener("pointercancel", handlePointerCancel);
+
+      dragState.cleanup = () => {
+        window.removeEventListener("pointermove", handlePointerMove);
+        window.removeEventListener("pointerup", finishPointerDrag);
+        window.removeEventListener("pointercancel", handlePointerCancel);
+      };
+    });
+
+    return chip;
+  };
+
+  const wireDropTarget = (element, destination) => {
+    element.addEventListener("dragover", (event) => {
+      if (submitButton.disabled) return;
+      event.preventDefault();
+    });
+
+    element.addEventListener("drop", (event) => {
+      if (submitButton.disabled) return;
+      event.preventDefault();
+      const itemId = event.dataTransfer?.getData("text/plain");
+      if (!itemId) return;
+      const chip = page.querySelector(
+        `.findings-group-quiz__chip[data-item-id="${itemId}"]`,
+      );
+      if (!chip) return;
+      moveChipTo(chip, destination);
+      page
+        .querySelectorAll(".findings-group-quiz__zone")
+        .forEach((zone) => zone.classList.remove("is-over"));
+    });
+  };
+
+  zoneBodies.forEach((body) => {
+    const zone = body.closest(".findings-group-quiz__zone");
+    const destination = zone?.getAttribute("data-zone");
+    if (!zone || !destination) return;
+
+    wireDropTarget(body, destination);
+
+    body.addEventListener("dragenter", () => zone.classList.add("is-over"));
+    body.addEventListener("dragleave", () => zone.classList.remove("is-over"));
+    body.addEventListener("drop", () => zone.classList.remove("is-over"));
+  });
+
+  wireDropTarget(bank, "bank");
+
+  const resetQuiz = () => {
+    dragState.cleanup?.();
+    dragState.cleanup = null;
+    dragState.chip = null;
+    dragState.pointerId = null;
+    clearZoneHighlights();
+
+    state.clear();
+    bank.innerHTML = "";
+    zoneBodies.forEach((body) => {
+      body.innerHTML =
+        '<span class="findings-group-quiz__zone-placeholder">Drag findings here</span>';
+    });
+
+    shuffleItems(FINDINGS_GROUP_TWO_ITEMS).forEach((item) => {
+      state.set(item.id, "bank");
+      bank.appendChild(makeChip(item));
+    });
+
+    submitButton.disabled = false;
+    setFeedback("");
+    updateZoneState();
+  };
+
+  submitButton.addEventListener("click", () => {
+    const unplaced = FINDINGS_GROUP_TWO_ITEMS.filter(
+      (item) => state.get(item.id) === "bank",
+    );
+
+    if (unplaced.length > 0) {
+      setFeedback("Place all findings before submitting.", "is-warning");
+      return;
+    }
+
+    let correct = 0;
+    FINDINGS_GROUP_TWO_ITEMS.forEach((item) => {
+      const chip = page.querySelector(
+        `.findings-group-quiz__chip[data-item-id="${item.id}"]`,
+      );
+      if (!chip) return;
+
+      chip.classList.remove("is-correct", "is-wrong");
+      const placedZone = state.get(item.id);
+      const isCorrect = placedZone === item.zone;
+
+      if (isCorrect) {
+        correct += 1;
+        chip.classList.add("is-correct");
+      } else {
+        chip.classList.add("is-wrong");
+      }
+    });
+
+    submitButton.disabled = true;
+
+    if (correct === FINDINGS_GROUP_TWO_ITEMS.length) {
+      setFeedback("Correct!", "is-success");
+    } else {
+      setFeedback(
+        `You got ${correct} out of ${FINDINGS_GROUP_TWO_ITEMS.length} correct.`,
+        "is-warning",
+      );
+    }
+  });
+
+  if (page.dataset.shownWired !== "1") {
+    page.dataset.shownWired = "1";
+    document.addEventListener("page:shown", (event) => {
+      if (event.detail?.id !== "diabeticFindingsGroupTwoPage") return;
+      resetQuiz();
+    });
+  }
+
+  resetQuiz();
+}
+
+function initializeConnectQuizPage() {
+  const page = document.getElementById("diabeticConnectQuizPage");
+  if (!page || page.dataset.inited === "1") return;
+
+  const hint = page.querySelector("#connectQuizHint");
+  const board = page.querySelector("#connectQuizBoard");
+  const diagnoses = page.querySelector("#connectQuizDiagnoses");
+  const answers = page.querySelector("#connectQuizAnswers");
+  const summary = page.querySelector("#connectQuizSummary");
+  const answerList = page.querySelector("#connectQuizAnswerList");
+  const submitButton = page.querySelector("#connectQuizSubmit");
+  const feedback = page.querySelector("#connectQuizFeedback");
+
+  if (
+    !hint ||
+    !board ||
+    !diagnoses ||
+    !answers ||
+    !summary ||
+    !answerList ||
+    !submitButton ||
+    !feedback
+  ) {
+    return;
+  }
+
+  page.dataset.inited = "1";
+
+  const state = {
+    findingOrder: [],
+    activeDiagnosisId: null,
+    assignments: new Map(),
+    findingOwners: new Map(),
+    submitted: false,
+  };
+
+  const setFeedback = (text = "", variant = "") => {
+    feedback.textContent = text;
+    feedback.className = "connect-quiz__feedback";
+    if (variant) feedback.classList.add(variant);
+  };
+
+  const getGroup = (diagnosisId) =>
+    CONNECT_QUIZ_GROUPS.find((group) => group.diagnosisId === diagnosisId) ||
+    null;
+
+  const getAssignedFindingIds = (diagnosisId) =>
+    state.assignments.get(diagnosisId) || [];
+
+  const removeFindingFromOwner = (findingId) => {
+    const ownerDiagnosisId = state.findingOwners.get(findingId);
+    if (!ownerDiagnosisId) return;
+
+    const updated = getAssignedFindingIds(ownerDiagnosisId).filter(
+      (id) => id !== findingId,
+    );
+    state.assignments.set(ownerDiagnosisId, updated);
+    state.findingOwners.delete(findingId);
+  };
+
+  const assignFindingToDiagnosis = (findingId, diagnosisId) => {
+    removeFindingFromOwner(findingId);
+    const updated = [...getAssignedFindingIds(diagnosisId), findingId];
+    state.assignments.set(diagnosisId, updated);
+    state.findingOwners.set(findingId, diagnosisId);
+  };
+
+  const getCorrectCount = () => {
+    return CONNECT_QUIZ_GROUPS.filter((group) => {
+      const assigned = getAssignedFindingIds(group.diagnosisId);
+      const correctSet = new Set(group.findings.map((finding) => finding.id));
+      return (
+        assigned.length === group.findings.length &&
+        assigned.every((findingId) => correctSet.has(findingId))
+      );
+    }).length;
+  };
+
+  const renderAnswers = () => {
+    answerList.innerHTML = "";
+
+    CONNECT_QUIZ_GROUPS.forEach((group) => {
+      const card = document.createElement("article");
+      card.className = `connect-quiz__answer-card connect-quiz__answer-card--${group.tone}`;
+
+      const title = document.createElement("p");
+      title.className = "connect-quiz__answer-title";
+      title.textContent = group.diagnosis;
+
+      const selectedBlock = document.createElement("div");
+      selectedBlock.className = "connect-quiz__answer-findings";
+
+      const selectedLabel = document.createElement("p");
+      selectedLabel.className = "connect-quiz__answer-kicker";
+      selectedLabel.textContent = "Your findings";
+      selectedBlock.appendChild(selectedLabel);
+
+      const assignedIds = getAssignedFindingIds(group.diagnosisId);
+      const correctSet = new Set(group.findings.map((finding) => finding.id));
+      const isCorrect =
+        assignedIds.length === group.findings.length &&
+        assignedIds.every((findingId) => correctSet.has(findingId));
+
+      assignedIds.forEach((findingId) => {
+        const finding = CONNECT_QUIZ_FINDING_LOOKUP.get(findingId);
+        if (!finding) return;
+        const line = document.createElement("p");
+        line.className = "connect-quiz__answer-line";
+        line.textContent = finding.label;
+        line.classList.add(
+          correctSet.has(findingId) ? "is-correct" : "is-wrong",
+        );
+        selectedBlock.appendChild(line);
+      });
+
+      if (!assignedIds.length) {
+        const line = document.createElement("p");
+        line.className = "connect-quiz__answer-line is-empty";
+        line.textContent = "No findings selected.";
+        selectedBlock.appendChild(line);
+      }
+
+      card.appendChild(title);
+      card.appendChild(selectedBlock);
+
+      if (!isCorrect) {
+        const correctBlock = document.createElement("div");
+        correctBlock.className = "connect-quiz__correct-block";
+
+        const correctLabel = document.createElement("p");
+        correctLabel.className = "connect-quiz__answer-kicker";
+        correctLabel.textContent = "Correct findings";
+        correctBlock.appendChild(correctLabel);
+
+        group.findings.forEach((finding) => {
+          const line = document.createElement("p");
+          line.className = "connect-quiz__correct-line";
+          line.textContent = finding.label;
+          correctBlock.appendChild(line);
+        });
+
+        card.appendChild(correctBlock);
+      }
+      answerList.appendChild(card);
+    });
+
+    summary.textContent = `You connected ${getCorrectCount()} out of ${CONNECT_QUIZ_GROUPS.length} diagnoses correctly.`;
+  };
+
+  const renderDiagnosisDock = () => {
+    diagnoses.innerHTML = "";
+
+    CONNECT_QUIZ_GROUPS.forEach((group) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = `connect-quiz__diagnosis connect-quiz__diagnosis--${group.tone}`;
+      if (state.activeDiagnosisId === group.diagnosisId && !state.submitted) {
+        button.classList.add("is-active");
+      }
+      if (
+        getAssignedFindingIds(group.diagnosisId).length ===
+        group.findings.length
+      ) {
+        button.classList.add("is-complete");
+      }
+
+      const label = document.createElement("span");
+      label.className = "connect-quiz__diagnosis-label";
+      label.textContent = group.diagnosis;
+
+      const meta = document.createElement("span");
+      meta.className = "connect-quiz__diagnosis-meta";
+      meta.textContent = `${getAssignedFindingIds(group.diagnosisId).length}/3 findings`;
+
+      button.appendChild(label);
+      button.appendChild(meta);
+
+      button.addEventListener("click", () => {
+        if (state.submitted) return;
+
+        state.activeDiagnosisId =
+          state.activeDiagnosisId === group.diagnosisId
+            ? null
+            : group.diagnosisId;
+        setFeedback(
+          state.activeDiagnosisId
+            ? `Now choosing findings for ${group.diagnosis}.`
+            : "Choose a diagnosis, then tap 3 matching findings.",
+          state.activeDiagnosisId ? "is-success" : "",
+        );
+        render();
+      });
+
+      diagnoses.appendChild(button);
+    });
+  };
+
+  const renderBoard = () => {
+    board.innerHTML = "";
+
+    state.findingOrder.forEach((findingId) => {
+      const finding = CONNECT_QUIZ_FINDING_LOOKUP.get(findingId);
+      if (!finding) return;
+
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "connect-quiz__card";
+      button.textContent = finding.label;
+
+      const ownerDiagnosisId = state.findingOwners.get(findingId) || null;
+      if (ownerDiagnosisId) {
+        const ownerGroup = getGroup(ownerDiagnosisId);
+        if (ownerGroup) {
+          button.classList.add("is-assigned", `is-tone-${ownerGroup.tone}`);
+        }
+      }
+
+      button.addEventListener("click", () => {
+        if (state.submitted) return;
+
+        if (!state.activeDiagnosisId) {
+          setFeedback("Choose a diagnosis first.", "is-warning");
+          return;
+        }
+
+        const activeGroup = getGroup(state.activeDiagnosisId);
+        if (!activeGroup) return;
+
+        const ownerDiagnosisId = state.findingOwners.get(findingId) || null;
+        const activeAssigned = getAssignedFindingIds(state.activeDiagnosisId);
+
+        if (ownerDiagnosisId === state.activeDiagnosisId) {
+          removeFindingFromOwner(findingId);
+          setFeedback(`Removed from ${activeGroup.diagnosis}.`, "is-warning");
+          render();
+          return;
+        }
+
+        if (activeAssigned.length >= activeGroup.findings.length) {
+          setFeedback(
+            `${activeGroup.diagnosis} already has 3 findings. Tap one of its colored findings to remove it first.`,
+            "is-warning",
+          );
+          return;
+        }
+
+        assignFindingToDiagnosis(findingId, state.activeDiagnosisId);
+        const updatedCount = getAssignedFindingIds(
+          state.activeDiagnosisId,
+        ).length;
+
+        if (updatedCount === activeGroup.findings.length) {
+          state.activeDiagnosisId = null;
+          setFeedback(
+            `${activeGroup.diagnosis} saved. Choose the next diagnosis.`,
+            "is-success",
+          );
+        } else {
+          setFeedback(
+            `${activeGroup.diagnosis}: ${updatedCount} of 3 findings selected.`,
+            "is-success",
+          );
+        }
+
+        render();
+      });
+
+      board.appendChild(button);
+    });
+  };
+
+  const render = () => {
+    renderDiagnosisDock();
+
+    hint.textContent = state.submitted
+      ? "Your selected findings are shown below. Red means wrong, green means correct."
+      : state.activeDiagnosisId
+        ? `Selected diagnosis: ${getGroup(state.activeDiagnosisId)?.diagnosis || ""}. Tap 3 findings.`
+        : "Tap a diagnosis below, then choose 3 matching findings.";
+
+    board.hidden = state.submitted;
+    answers.hidden = !state.submitted;
+    submitButton.textContent = state.submitted ? "Try again" : "Submit";
+
+    if (state.submitted) {
+      renderAnswers();
+      return;
+    }
+
+    renderBoard();
+  };
+
+  const resetQuiz = () => {
+    state.findingOrder = shuffleItems(
+      CONNECT_QUIZ_FINDINGS.map((finding) => finding.id),
+    );
+    state.activeDiagnosisId = null;
+    state.assignments.clear();
+    state.findingOwners.clear();
+    state.submitted = false;
+
+    CONNECT_QUIZ_GROUPS.forEach((group) => {
+      state.assignments.set(group.diagnosisId, []);
+    });
+
+    setFeedback("");
+    render();
+  };
+
+  submitButton.addEventListener("click", () => {
+    if (state.submitted) {
+      resetQuiz();
+      return;
+    }
+
+    const isComplete = CONNECT_QUIZ_GROUPS.every(
+      (group) =>
+        getAssignedFindingIds(group.diagnosisId).length ===
+        group.findings.length,
+    );
+
+    if (
+      !isComplete ||
+      state.findingOwners.size !== CONNECT_QUIZ_FINDINGS.length
+    ) {
+      setFeedback(
+        "Assign 3 findings to each diagnosis before submitting.",
+        "is-warning",
+      );
+      return;
+    }
+
+    state.activeDiagnosisId = null;
+    state.submitted = true;
+    setFeedback("");
+    render();
+  });
+
+  if (page.dataset.shownWired !== "1") {
+    page.dataset.shownWired = "1";
+    document.addEventListener("page:shown", (event) => {
+      if (event.detail?.id !== "diabeticConnectQuizPage") return;
+      resetQuiz();
+    });
+  }
+
+  resetQuiz();
+}
+
 export function initializeDiabeticRetinopathyWorkshop() {
   const page = document.getElementById("diabeticRetinopathyWorkshopPage");
   if (!page) return;
@@ -1336,4 +2480,7 @@ export function initializeDiabeticRetinopathyWorkshop() {
 
   initializeHistoryImageMatchPage(page);
   initializeRetinalStructureTapPage();
+  initializeReviewVideoQuizPage();
+  initializeFindingsGroupTwoPage();
+  initializeConnectQuizPage();
 }
