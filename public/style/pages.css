@@ -1531,7 +1531,7 @@ body,
 
 /* Keep pupils-like titles below fixed Eyes topbar (avoid being hidden by generic 30px top padding) */
 .page.pupils-like > .container.pupils-container:first-child {
-  padding-top: 59px !important;
+  padding-top: 0 !important;
 }
 
 /* Onboarding: align layout with intro/interest */
@@ -3472,12 +3472,1142 @@ select.onb-input.has-value + .onb-select-caret {
   margin-left: 16px;
 }
 
-#diabeticRetinopathyWorkshopPage .lesson-row[data-lesson] .lesson-cta {
+#diabeticRetinopathyWorkshopPage
+  .lesson-row:is([data-lesson], [data-target])
+  .lesson-cta {
   margin-left: -34px;
 }
 
 #diabeticRetinopathyWorkshopPage .see-all-toggle {
   color: #f25600;
+}
+
+#diabeticHistoryImageMatchPage {
+  background: #ededee;
+}
+
+#diabeticHistoryImageMatchPage .pupils-container {
+  min-height: 100vh;
+  padding-top: 0;
+  background: #ededee;
+}
+
+.diabetic-history-match__shell {
+  padding: 18px 18px 36px;
+}
+
+.diabetic-history-match__back {
+  border: none;
+  background: transparent;
+  padding: 0;
+  margin: 6px 0 18px;
+  color: #f25600;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.diabetic-history-match__eyebrow {
+  margin: 0 0 8px;
+  color: #1a1a1a;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.diabetic-history-match__title {
+  margin: 0;
+  color: #111111;
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.diabetic-history-match__progress-shell {
+  margin-top: 16px;
+}
+
+.diabetic-history-match__progress-label {
+  margin: 0 0 10px;
+  color: rgba(17, 17, 17, 0.58);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.diabetic-history-match__progress {
+  display: flex;
+  gap: 10px;
+}
+
+.diabetic-history-match__progress-step {
+  flex: 1 1 0;
+  height: 4px;
+  border-radius: 999px;
+  background: #dbdbde;
+}
+
+.diabetic-history-match__progress-step.is-active,
+.diabetic-history-match__progress-step.is-complete {
+  background: #e41e26;
+}
+
+.diabetic-history-match__copy {
+  margin: 10px 0 0;
+  color: rgba(17, 17, 17, 0.74);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.diabetic-history-match__hint {
+  margin: 12px 0 0;
+  color: #4f4f4f;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.diabetic-history-match__hint.is-active {
+  color: #f25600;
+}
+
+.diabetic-history-match__modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(17, 17, 17, 0.52);
+}
+
+.diabetic-history-match__modal-backdrop.is-open {
+  display: flex;
+}
+
+.diabetic-history-match__modal {
+  position: relative;
+  width: min(100%, 340px);
+  border-radius: 28px;
+  padding: 20px 20px 18px;
+  background: #ffffff;
+  box-shadow: 0 24px 42px rgba(17, 17, 17, 0.22);
+}
+
+.diabetic-history-match__modal-close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  width: auto;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: rgba(17, 17, 17, 0.72);
+  font-size: 30px;
+  font-weight: 400;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: none;
+}
+
+.diabetic-history-match__modal--results {
+  width: min(100%, 420px);
+  max-height: min(82vh, 760px);
+  display: flex;
+  flex-direction: column;
+}
+
+.diabetic-history-match__modal-eyebrow {
+  margin: 0 0 6px;
+  color: #f25600;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.diabetic-history-match__modal-title {
+  margin: 0;
+  color: #111111;
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.diabetic-history-match__modal-list {
+  margin: 16px 0 0;
+  padding-left: 18px;
+  color: #2f2f2f;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.diabetic-history-match__modal-list li + li {
+  margin-top: 8px;
+}
+
+.diabetic-history-match__modal-cta {
+  width: 100%;
+  margin-top: 16px;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 18px;
+  background: #e41e26;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.2;
+  cursor: pointer;
+  box-shadow: none;
+}
+
+.diabetic-history-match__results-summary {
+  margin: 8px 0 12px;
+  color: #333333;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.diabetic-history-match__results-list {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  padding-right: 4px;
+}
+
+.diabetic-history-match__results-section
+  + .diabetic-history-match__results-section {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(17, 17, 17, 0.08);
+}
+
+.diabetic-history-match__results-section-title {
+  margin: 0 0 10px;
+  color: rgba(17, 17, 17, 0.56);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.diabetic-history-match__result-row {
+  display: grid;
+  grid-template-columns: 74px minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+}
+
+.diabetic-history-match__result-row + .diabetic-history-match__result-row {
+  margin-top: 12px;
+}
+
+.diabetic-history-match__result-thumb {
+  width: 74px;
+  height: 74px;
+  border-radius: 16px;
+  object-fit: cover;
+  display: block;
+}
+
+.diabetic-history-match__result-body {
+  min-width: 0;
+}
+
+.diabetic-history-match__result-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.diabetic-history-match__result-title {
+  margin: 0;
+  color: #111111;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.diabetic-history-match__result-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 5px 8px;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.diabetic-history-match__result-status.is-correct {
+  background: rgba(35, 139, 69, 0.14);
+  color: #238b45;
+}
+
+.diabetic-history-match__result-status.is-wrong {
+  background: rgba(198, 40, 40, 0.13);
+  color: #c62828;
+}
+
+.diabetic-history-match__result-list {
+  margin: 8px 0 0;
+  padding-left: 18px;
+  color: #333333;
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.diabetic-history-match__result-list li + li {
+  margin-top: 4px;
+}
+
+.diabetic-history-match__board {
+  display: grid;
+  grid-template-columns: 90px minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+  margin-top: 22px;
+}
+
+.diabetic-history-match__bank,
+.diabetic-history-match__slots {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.diabetic-history-match__image-button {
+  position: relative;
+  width: 90px;
+  height: 90px;
+  border: 2px solid transparent;
+  border-radius: 20px;
+  padding: 0;
+  background: #ffffff;
+  box-shadow: 0 12px 22px rgba(17, 17, 17, 0.08);
+  overflow: hidden;
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+  -webkit-user-drag: none;
+  transition:
+    transform 120ms ease,
+    border-color 120ms ease,
+    box-shadow 120ms ease,
+    opacity 120ms ease;
+}
+
+.diabetic-history-match__image-button:active {
+  transform: translateY(1px);
+}
+
+.diabetic-history-match__image-button.is-assigned {
+  opacity: 0.74;
+}
+
+.diabetic-history-match__image-button.is-dragging {
+  opacity: 0.35;
+  cursor: grabbing;
+}
+
+.diabetic-history-match__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  pointer-events: none;
+}
+
+.diabetic-history-match__image-order {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background: rgba(17, 17, 17, 0.78);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 22px;
+  text-align: center;
+}
+
+.diabetic-history-match__image-state {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: 8px;
+  border-radius: 999px;
+  background: rgba(17, 17, 17, 0.8);
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  padding: 6px 0;
+  text-align: center;
+}
+
+.diabetic-history-match__drag-ghost {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 70;
+  width: 84px;
+  height: 84px;
+  border-radius: 20px;
+  overflow: hidden;
+  pointer-events: none;
+  box-shadow: 0 16px 28px rgba(17, 17, 17, 0.24);
+}
+
+.diabetic-history-match__drag-ghost img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.diabetic-history-match__row {
+  display: grid;
+  grid-template-columns: 90px minmax(0, 1fr);
+  gap: 0;
+}
+
+.diabetic-history-match__row.is-drop-target .diabetic-history-match__slot,
+.diabetic-history-match__row.is-drop-target .diabetic-history-match__card {
+  box-shadow: inset 0 0 0 2px rgba(242, 86, 0, 0.78);
+}
+
+.diabetic-history-match__slot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 90px;
+  background: #d7d7d8;
+  border-radius: 22px 0 0 22px;
+  overflow: hidden;
+}
+
+.diabetic-history-match__image-button--slot {
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.diabetic-history-match__slot-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.diabetic-history-match__slot-placeholder {
+  color: rgba(17, 17, 17, 0.45);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.diabetic-history-match__card {
+  min-width: 0;
+  min-height: 90px;
+  padding: 12px 14px;
+  background: #ffffff;
+  border-radius: 0 26px 26px 0;
+  box-shadow: 0 12px 22px rgba(17, 17, 17, 0.07);
+}
+
+.diabetic-history-match__card-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.diabetic-history-match__card-label {
+  color: rgba(17, 17, 17, 0.55);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.diabetic-history-match__status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 5px 9px;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.diabetic-history-match__status.is-correct {
+  background: rgba(35, 139, 69, 0.14);
+  color: #238b45;
+}
+
+.diabetic-history-match__status.is-wrong {
+  background: rgba(198, 40, 40, 0.13);
+  color: #c62828;
+}
+
+.diabetic-history-match__status.is-unanswered {
+  background: rgba(143, 102, 8, 0.12);
+  color: #8f6608;
+}
+
+.diabetic-history-match__history-list {
+  margin: 0;
+  padding-left: 18px;
+  color: #2f2f2f;
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.diabetic-history-match__history-list li + li {
+  margin-top: 4px;
+}
+
+.diabetic-history-match__row.is-correct .diabetic-history-match__slot,
+.diabetic-history-match__row.is-correct .diabetic-history-match__card {
+  box-shadow: inset 0 0 0 2px rgba(35, 139, 69, 0.55);
+}
+
+.diabetic-history-match__row.is-wrong .diabetic-history-match__slot,
+.diabetic-history-match__row.is-wrong .diabetic-history-match__card {
+  box-shadow: inset 0 0 0 2px rgba(198, 40, 40, 0.5);
+}
+
+.diabetic-history-match__row.is-unanswered .diabetic-history-match__slot,
+.diabetic-history-match__row.is-unanswered .diabetic-history-match__card {
+  box-shadow: inset 0 0 0 2px rgba(143, 102, 8, 0.42);
+}
+
+.diabetic-history-match__submit {
+  width: 100%;
+  margin-top: 22px;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 16px;
+  min-height: 44px;
+  background: #e41e26;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.2;
+  cursor: pointer;
+  box-shadow: none;
+}
+
+.diabetic-history-match__submit:active {
+  transform: translateY(1px);
+}
+
+.diabetic-history-match__feedback {
+  min-height: 22px;
+  margin: 14px 0 0;
+  color: #4f4f4f;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.diabetic-history-match__feedback.is-success {
+  color: #238b45;
+}
+
+.diabetic-history-match__feedback.is-reviewed {
+  color: #8a5b00;
+}
+
+@media (max-width: 420px) {
+  .diabetic-history-match__shell {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .diabetic-history-match__board {
+    grid-template-columns: 78px minmax(0, 1fr);
+    gap: 10px;
+  }
+
+  .diabetic-history-match__image-button {
+    width: 78px;
+    height: 78px;
+    border-radius: 18px;
+  }
+
+  .diabetic-history-match__row {
+    grid-template-columns: 78px minmax(0, 1fr);
+  }
+
+  .diabetic-history-match__slot,
+  .diabetic-history-match__card {
+    min-height: 78px;
+  }
+
+  .diabetic-history-match__card {
+    padding: 10px 12px;
+  }
+
+  .diabetic-history-match__history-list {
+    font-size: 12px;
+    line-height: 1.32;
+  }
+
+  .diabetic-history-match__result-row {
+    grid-template-columns: 64px minmax(0, 1fr);
+    gap: 10px;
+  }
+
+  .diabetic-history-match__result-thumb {
+    width: 64px;
+    height: 64px;
+    border-radius: 14px;
+  }
+
+  .diabetic-history-match__result-title {
+    font-size: 13px;
+  }
+
+  .diabetic-history-match__result-list {
+    font-size: 12px;
+    line-height: 1.32;
+  }
+}
+
+.retinal-structure-tap-page {
+  padding-top: 0;
+  background: #ededee;
+}
+
+.retinal-structure-tap__shell {
+  padding: 18px 18px 36px;
+}
+
+.retinal-structure-tap__eyebrow {
+  margin: 0 0 8px;
+  color: #1a1a1a;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.retinal-structure-tap__title {
+  margin: 0;
+  color: #111111;
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.retinal-structure-tap__progress-shell {
+  margin-top: 16px;
+}
+
+.retinal-structure-tap__progress-label {
+  margin: 0 0 10px;
+  color: rgba(17, 17, 17, 0.58);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.retinal-structure-tap__progress {
+  display: flex;
+  gap: 10px;
+}
+
+.retinal-structure-tap__progress-step {
+  flex: 1 1 0;
+  height: 4px;
+  border-radius: 999px;
+  background: #dbdbde;
+}
+
+.retinal-structure-tap__progress-step.is-active,
+.retinal-structure-tap__progress-step.is-complete {
+  background: #e41e26;
+}
+
+.retinal-structure-tap__prompt-card {
+  margin-top: 18px;
+  border-radius: 18px;
+  padding: 14px 16px;
+  background: #ffffff;
+  box-shadow: 0 12px 22px rgba(17, 17, 17, 0.07);
+}
+
+.retinal-structure-tap__prompt-card.is-answered {
+  box-shadow: 0 14px 24px rgba(17, 17, 17, 0.08);
+}
+
+.retinal-structure-tap__prompt-kicker {
+  margin: 0 0 6px;
+  color: rgba(17, 17, 17, 0.55);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.retinal-structure-tap__prompt {
+  margin: 0;
+  color: #111111;
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.retinal-structure-tap__stage {
+  position: relative;
+  width: 100%;
+  margin-top: 18px;
+  border: none;
+  border-radius: 24px;
+  padding: 0;
+  background: #111111;
+  overflow: hidden;
+  box-shadow: 0 16px 28px rgba(17, 17, 17, 0.12);
+  cursor: crosshair;
+}
+
+.retinal-structure-tap__stage:disabled {
+  cursor: default;
+  opacity: 1;
+}
+
+.retinal-structure-tap__image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.retinal-structure-tap__overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.retinal-structure-tap__target {
+  position: absolute;
+  border-radius: 999px;
+  transform: translateZ(0);
+}
+
+.retinal-structure-tap__target--correct {
+  background: rgba(37, 181, 106, 0.38);
+  box-shadow:
+    inset 0 0 0 2px rgba(37, 181, 106, 0.85),
+    0 0 0 2px rgba(255, 255, 255, 0.28);
+}
+
+.retinal-structure-tap__target--answer {
+  border: 2px solid rgba(220, 38, 38, 0.95);
+  background: rgba(220, 38, 38, 0.18);
+}
+
+.retinal-structure-tap__tap-marker {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  margin-left: -9px;
+  margin-top: -9px;
+  border-radius: 999px;
+  border: 2px solid #1fc777;
+  background: rgba(31, 199, 119, 0.2);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.72);
+}
+
+.retinal-structure-tap__tap-marker::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 4px;
+  height: 4px;
+  margin-left: -2px;
+  margin-top: -2px;
+  border-radius: 999px;
+  background: #1fc777;
+}
+
+.retinal-structure-tap__idle {
+  margin-top: 14px;
+}
+
+.retinal-structure-tap__tip-card,
+.retinal-structure-tap__explanation-card {
+  border-radius: 14px;
+  padding: 14px 14px 12px;
+  background: #f7f8fc;
+  box-shadow: inset 0 0 0 1px rgba(17, 17, 17, 0.07);
+}
+
+.retinal-structure-tap__tip-title,
+.retinal-structure-tap__explanation-kicker {
+  margin: 0 0 6px;
+  color: rgba(17, 17, 17, 0.58);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.retinal-structure-tap__tip-copy,
+.retinal-structure-tap__explanation-copy {
+  margin: 0;
+  color: #333333;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+.retinal-structure-tap__tap-copy {
+  margin: 12px 0 0;
+  color: rgba(17, 17, 17, 0.52);
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.retinal-structure-tap__result {
+  margin-top: 14px;
+}
+
+.retinal-structure-tap__banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  border-radius: 16px;
+  padding: 14px;
+}
+
+.retinal-structure-tap__banner.is-correct {
+  background: rgba(16, 185, 129, 0.13);
+  box-shadow: inset 0 0 0 1px rgba(16, 185, 129, 0.18);
+}
+
+.retinal-structure-tap__banner.is-wrong {
+  background: rgba(228, 30, 38, 0.1);
+  box-shadow: inset 0 0 0 1px rgba(228, 30, 38, 0.16);
+}
+
+.retinal-structure-tap__banner-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 28px;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.retinal-structure-tap__banner-badge.is-correct {
+  background: #1fa766;
+}
+
+.retinal-structure-tap__banner-badge.is-wrong {
+  background: #e41e26;
+}
+
+.retinal-structure-tap__banner-body {
+  min-width: 0;
+}
+
+.retinal-structure-tap__banner-title {
+  margin: 0;
+  color: #111111;
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.retinal-structure-tap__banner-copy {
+  margin: 6px 0 0;
+  color: #2f2f2f;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+.retinal-structure-tap__legend {
+  display: flex;
+  gap: 16px;
+  margin-top: 10px;
+  color: rgba(17, 17, 17, 0.62);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.retinal-structure-tap__legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.retinal-structure-tap__legend-swatch {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+}
+
+.retinal-structure-tap__legend-swatch--tap {
+  border: 2px solid #1fc777;
+  background: rgba(31, 199, 119, 0.2);
+}
+
+.retinal-structure-tap__legend-swatch--target {
+  border: 2px solid rgba(220, 38, 38, 0.95);
+  background: rgba(220, 38, 38, 0.16);
+}
+
+.retinal-structure-tap__explanation-card {
+  margin-top: 10px;
+}
+
+.retinal-structure-tap__next {
+  width: 100%;
+  margin-top: 18px;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 16px;
+  min-height: 44px;
+  background: #e41e26;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.2;
+  cursor: pointer;
+  box-shadow: none;
+}
+
+.retinal-structure-tap__next:active,
+.retinal-structure-tap__modal-cta:active {
+  transform: translateY(1px);
+}
+
+.retinal-structure-tap__modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(17, 17, 17, 0.52);
+}
+
+.retinal-structure-tap__modal-backdrop.is-open {
+  display: flex;
+}
+
+.retinal-structure-tap__modal {
+  position: relative;
+  width: min(100%, 340px);
+  border-radius: 28px;
+  padding: 20px 20px 18px;
+  background: #ffffff;
+  box-shadow: 0 24px 42px rgba(17, 17, 17, 0.22);
+}
+
+.retinal-structure-tap__modal--results {
+  width: min(100%, 420px);
+  max-height: min(82vh, 760px);
+  display: flex;
+  flex-direction: column;
+}
+
+.retinal-structure-tap__modal-close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  width: auto;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: rgba(17, 17, 17, 0.72);
+  font-size: 30px;
+  font-weight: 400;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: none;
+}
+
+.retinal-structure-tap__modal-eyebrow {
+  margin: 0 0 6px;
+  color: #f25600;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.retinal-structure-tap__modal-title {
+  margin: 0;
+  color: #111111;
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.retinal-structure-tap__modal-list {
+  margin: 16px 0 0;
+  padding-left: 18px;
+  color: #2f2f2f;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.retinal-structure-tap__modal-list li + li {
+  margin-top: 8px;
+}
+
+.retinal-structure-tap__modal-cta {
+  width: 100%;
+  margin-top: 16px;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 18px;
+  background: #e41e26;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.2;
+  cursor: pointer;
+  box-shadow: none;
+}
+
+.retinal-structure-tap__results-summary {
+  margin: 8px 0 12px;
+  color: #333333;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.retinal-structure-tap__results-list {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  padding-right: 4px;
+}
+
+.retinal-structure-tap__results-row {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: start;
+  padding: 12px 0;
+}
+
+.retinal-structure-tap__results-row + .retinal-structure-tap__results-row {
+  border-top: 1px solid rgba(17, 17, 17, 0.08);
+}
+
+.retinal-structure-tap__results-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background: rgba(17, 17, 17, 0.08);
+  color: #111111;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.retinal-structure-tap__results-body {
+  min-width: 0;
+}
+
+.retinal-structure-tap__results-title {
+  margin: 0;
+  color: #111111;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.retinal-structure-tap__results-copy {
+  margin: 6px 0 0;
+  color: #4f4f4f;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.retinal-structure-tap__results-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 5px 8px;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.retinal-structure-tap__results-status.is-correct {
+  background: rgba(35, 139, 69, 0.14);
+  color: #238b45;
+}
+
+.retinal-structure-tap__results-status.is-wrong {
+  background: rgba(198, 40, 40, 0.13);
+  color: #c62828;
+}
+
+@media (max-width: 420px) {
+  .retinal-structure-tap__shell {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .retinal-structure-tap__prompt {
+    font-size: 20px;
+  }
+
+  .retinal-structure-tap__stage {
+    border-radius: 20px;
+  }
+
+  .retinal-structure-tap__legend {
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .retinal-structure-tap__results-row {
+    grid-template-columns: 24px minmax(0, 1fr);
+  }
+
+  .retinal-structure-tap__results-status {
+    grid-column: 2;
+    justify-self: start;
+  }
 }
 
 #childhoodEyeScreeningWorkshopPage.childhood-folder-open
