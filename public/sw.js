@@ -1,5 +1,5 @@
 /* sw.js — Arclight PWA service worker */
-const CACHE_NAME = "arclight-static-v12";
+const CACHE_NAME = "arclight-static-v13";
 const CORE_ASSETS = [
   "/",
   "/index.html",
@@ -7,6 +7,7 @@ const CORE_ASSETS = [
   "/style/components.css",
   "/style/pages.css",
   "/style/responsive.css",
+  "/js/runtime-bootstrap.js",
   "/js/main.js",
   "/js/navigation.js",
   "/js/onboarding.js",
@@ -180,7 +181,9 @@ self.addEventListener("message", async (event) => {
             const res = await fetch(url, { mode: "no-cors" });
             if (res && (res.ok || res.type === "opaque"))
               await cache.put(url, res.clone());
-          } catch {}
+          } catch {
+            void 0;
+          }
         }),
       );
       ports?.[0]?.postMessage?.({ type: "CACHE_DONE" });

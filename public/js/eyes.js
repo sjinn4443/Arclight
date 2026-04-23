@@ -661,6 +661,7 @@ export function initializeEyesCatalog() {
     carouselEl.dataset.mouseDragBound = "true";
 
     let activePointerId = null;
+    let hasPointerCapture = false;
     let startX = 0;
     let lastX = 0;
     let lastTimestamp = 0;
@@ -727,6 +728,7 @@ export function initializeEyesCatalog() {
     const resetDragState = ({ keepFreeScroll = false } = {}) => {
       activePointerId = null;
       isDragging = false;
+      hasPointerCapture = false;
       if (!keepFreeScroll) {
         finishFreeScroll();
       }
@@ -745,13 +747,7 @@ export function initializeEyesCatalog() {
       velocityX = 0;
       suppressClick = false;
       isDragging = false;
-      carouselEl.classList.add("is-pointer-dragging");
-
-      try {
-        carouselEl.setPointerCapture(_e.pointerId);
-      } catch {
-        void 0;
-      }
+      hasPointerCapture = false;
     });
 
     carouselEl.addEventListener(
@@ -762,11 +758,24 @@ export function initializeEyesCatalog() {
         const totalDeltaX = _e.clientX - startX;
         if (!isDragging && Math.abs(totalDeltaX) < 4) return;
 
+        if (!isDragging) {
+          isDragging = true;
+          suppressClick = true;
+          carouselEl.classList.add("is-pointer-dragging");
+
+          // Capture only after drag intent is clear so plain clicks stay
+          // targeted on the card instead of being retargeted to the carousel.
+          try {
+            carouselEl.setPointerCapture(_e.pointerId);
+            hasPointerCapture = true;
+          } catch {
+            hasPointerCapture = false;
+          }
+        }
+
         const now = performance.now();
         const deltaX = _e.clientX - lastX;
         const dt = Math.max(1, now - lastTimestamp);
-        isDragging = true;
-        suppressClick = true;
         velocityX = deltaX / dt;
         lastX = _e.clientX;
         lastTimestamp = now;
@@ -779,10 +788,12 @@ export function initializeEyesCatalog() {
     const endDrag = (_e) => {
       if (_e.pointerId !== activePointerId) return;
 
-      try {
-        carouselEl.releasePointerCapture(_e.pointerId);
-      } catch {
-        void 0;
+      if (hasPointerCapture) {
+        try {
+          carouselEl.releasePointerCapture(_e.pointerId);
+        } catch {
+          void 0;
+        }
       }
 
       const didDrag = isDragging;
@@ -797,6 +808,7 @@ export function initializeEyesCatalog() {
     carouselEl.addEventListener("lostpointercapture", () => {
       if (activePointerId === null) return;
       cancelInertia();
+      hasPointerCapture = false;
       resetDragState();
     });
 
