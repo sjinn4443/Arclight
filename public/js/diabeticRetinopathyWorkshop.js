@@ -247,16 +247,16 @@ const CONNECT_QUIZ_GROUPS = Object.freeze([
     diagnosis: "Mature Cataract",
     findings: [
       {
+        id: "finding-all-vision",
+        label: "Painless loss of all vision",
+      },
+      {
         id: "finding-white-pupil",
-        label: "White pupil",
+        label: "White Pupil",
       },
       {
         id: "finding-loss-red-reflex",
         label: "Loss of red reflex",
-      },
-      {
-        id: "finding-dense-lens-opacity",
-        label: "Dense lens opacity",
       },
     ],
     tone: "violet",
@@ -267,16 +267,16 @@ const CONNECT_QUIZ_GROUPS = Object.freeze([
     diagnosis: "Primary Open Glaucoma",
     findings: [
       {
+        id: "finding-peripheral-vision",
+        label: "Painless loss of peripheral vision",
+      },
+      {
         id: "finding-cupped-disc",
-        label: "Cupped optic disc",
+        label: "Cupped Optic Disc",
       },
       {
         id: "finding-rim-thinning",
         label: "Neuroretinal rim thinning",
-      },
-      {
-        id: "finding-field-defect",
-        label: "Peripheral visual field defect",
       },
     ],
     tone: "gold",
@@ -287,12 +287,12 @@ const CONNECT_QUIZ_GROUPS = Object.freeze([
     diagnosis: "Diabetic Maculopathy",
     findings: [
       {
-        id: "finding-hard-exudate",
-        label: "Hard exudate at macula",
+        id: "finding-central-vision",
+        label: "Painless loss of central vision",
       },
       {
-        id: "finding-macular-thickening",
-        label: "Macular thickening",
+        id: "finding-hard-exudate",
+        label: "Hard Exudate at macula",
       },
       {
         id: "finding-microaneurysms",
@@ -2262,17 +2262,25 @@ function initializeConnectQuizPage() {
       ) {
         button.classList.add("is-complete");
       }
+      button.setAttribute(
+        "aria-pressed",
+        state.activeDiagnosisId === group.diagnosisId ? "true" : "false",
+      );
 
       const label = document.createElement("span");
       label.className = "connect-quiz__diagnosis-label";
       label.textContent = group.diagnosis;
 
-      const meta = document.createElement("span");
-      meta.className = "connect-quiz__diagnosis-meta";
-      meta.textContent = `${getAssignedFindingIds(group.diagnosisId).length}/3 findings`;
+      const toggle = document.createElement("span");
+      toggle.className = "connect-quiz__diagnosis-toggle";
+      toggle.setAttribute("aria-hidden", "true");
+
+      const toggleThumb = document.createElement("span");
+      toggleThumb.className = "connect-quiz__diagnosis-thumb";
+      toggle.appendChild(toggleThumb);
 
       button.appendChild(label);
-      button.appendChild(meta);
+      button.appendChild(toggle);
 
       button.addEventListener("click", () => {
         if (state.submitted) return;
@@ -2378,6 +2386,7 @@ function initializeConnectQuizPage() {
         : "Tap a diagnosis below, then choose 3 matching findings.";
 
     board.hidden = state.submitted;
+    diagnoses.hidden = state.submitted;
     answers.hidden = !state.submitted;
     submitButton.textContent = state.submitted ? "Try again" : "Submit";
 
