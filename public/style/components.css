@@ -6311,7 +6311,8 @@ Glaucoma history case study: match intermediate style
 }
 
 .glaucoma-next-host,
-.childhood-next-host {
+.childhood-next-host,
+.diabetic-next-host {
   position: relative;
   padding-bottom: calc(72px + env(safe-area-inset-bottom));
 }
@@ -6328,10 +6329,23 @@ Glaucoma history case study: match intermediate style
   gap: 12px;
 }
 
+.diabetic-next-wrap {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: calc(16px + env(safe-area-inset-bottom));
+  z-index: 75;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
 .glaucoma-next-btn,
 .childhood-next-btn,
+.diabetic-next-btn,
 .glaucoma-prev-btn,
-.childhood-prev-btn {
+.childhood-prev-btn,
+.diabetic-prev-btn {
   min-width: 96px;
   height: 38px;
   border: none;
@@ -6345,30 +6359,58 @@ Glaucoma history case study: match intermediate style
 }
 
 .glaucoma-prev-btn,
-.childhood-prev-btn {
+.childhood-prev-btn,
+.diabetic-prev-btn {
   background: #9ca3af;
 }
 
 .glaucoma-next-btn.is-ready,
-.childhood-next-btn.is-ready {
+.childhood-next-btn.is-ready,
+.diabetic-next-btn.is-ready {
   background: #e41e26;
 }
 
 .glaucoma-next-btn:active,
 .childhood-next-btn:active,
+.diabetic-next-btn:active,
 .glaucoma-prev-btn:active,
-.childhood-prev-btn:active {
+.childhood-prev-btn:active,
+.diabetic-prev-btn:active {
   transform: translateY(1px);
 }
 
 #videos #fundalReflexPage .childhood-next-wrap,
-#videos #fundalReflexPage .glaucoma-next-wrap {
+#videos #fundalReflexPage .glaucoma-next-wrap,
+#videos #fundalReflexPage .diabetic-next-wrap {
   display: none !important;
 }
 
 #videos #fundalReflexPage .childhood-next-host,
-#videos #fundalReflexPage .glaucoma-next-host {
+#videos #fundalReflexPage .glaucoma-next-host,
+#videos #fundalReflexPage .diabetic-next-host {
   padding-bottom: 0 !important;
+}
+
+.diabetic-restored-focus {
+  outline: 2px solid rgba(242, 86, 0, 0.55);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 4px rgba(242, 86, 0, 0.14);
+  transition:
+    box-shadow 0.2s ease,
+    outline-color 0.2s ease;
+}
+
+#videos #diabeticIntroductionToArclightVideoPage .video-container {
+  aspect-ratio: 98 / 55;
+  overflow: hidden;
+}
+
+#videos #diabeticIntroductionToArclightVideoPage .video-container > video,
+#videos #diabeticIntroductionToArclightVideoPage .video-container > iframe {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #000;
 }
 
 /* Visual System (Eyes & Brain) mobile scrollytelling override */

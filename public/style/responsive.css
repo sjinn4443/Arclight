@@ -1052,7 +1052,8 @@ input {
   }
 
   #videos .page > .childhood-next-wrap,
-  #videos .page > .glaucoma-next-wrap {
+  #videos .page > .glaucoma-next-wrap,
+  #videos .page > .diabetic-next-wrap {
     left: 18px;
     right: 18px;
   }
@@ -1128,7 +1129,8 @@ input {
   }
 
   #videos .page > .childhood-next-wrap,
-  #videos .page > .glaucoma-next-wrap {
+  #videos .page > .glaucoma-next-wrap,
+  #videos .page > .diabetic-next-wrap {
     left: calc(7vw - 4px + 10px);
     right: calc(7vw - 4px + 20px);
   }
@@ -1149,7 +1151,8 @@ input {
   }
 
   #videos .page > .childhood-next-wrap,
-  #videos .page > .glaucoma-next-wrap {
+  #videos .page > .glaucoma-next-wrap,
+  #videos .page > .diabetic-next-wrap {
     left: calc(22vw - 4px + 10px);
     right: calc(22vw - 4px + 20px);
   }

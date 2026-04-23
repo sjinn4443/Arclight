@@ -328,5 +328,18 @@
       "low": "videos/USAID Childhood eye screening/4. Normal and Abnormal findings - ENGLISH - HD_220p.mp4",
       "high": "videos/USAID Childhood eye screening/4. Normal and Abnormal findings - ENGLISH - HD_720p.mp4"
     }
+  },
+  "diabeticIntroductionToArclightVideoPage": {
+    "subtitles": {
+      "en": "/video-subtitles/diabetic-retinopathy-workshop/diabeticIntroductionToArclightVideoPage/en.vtt",
+      "ko": "/video-subtitles/diabetic-retinopathy-workshop/diabeticIntroductionToArclightVideoPage/ko.vtt"
+    },
+    "audioVariants": {},
+    "defaultSubtitleLang": "en",
+    "defaultAudioLang": "en",
+    "localSources": {
+      "low": "videos/Workshop/Diabetic/1.ArclightIntroduction_eyesOnly_220p.mp4",
+      "high": "videos/Workshop/Diabetic/1.ArclightIntroduction_eyesOnly_720p.mp4"
+    }
   }
 }

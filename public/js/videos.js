@@ -894,6 +894,16 @@ const VIDEO_PAGE_SOURCES = {
     iframeClass: "videos-yt-usaid-normal",
   },
 
+  diabeticIntroductionToArclightVideoPage: {
+    key: "videoMode:diabeticIntroductionToArclightVideoPage",
+    containerSelector: "#diabeticIntroductionToArclightVideoContainer",
+    videoSelector: "#diabeticIntroductionToArclightVideo",
+    sources: {
+      low: "videos/Workshop/Diabetic/1.ArclightIntroduction_eyesOnly_220p.mp4",
+      high: "videos/Workshop/Diabetic/1.ArclightIntroduction_eyesOnly_720p.mp4",
+    },
+  },
+
   glaucomaPupilReactionsVideoPage: {
     key: "videoMode:glaucomaPupilReactionsVideoPage",
     videoMode: "triToggle",
@@ -1020,6 +1030,14 @@ const CHILDHOOD_EYE_SCREENING_SUBTITLE_CATALOG_URL =
   "/video-localization/childhood-eye-screening.json";
 const VIDEO_PAGE_ACTION_ROW_SELECTOR = "[data-video-page-actions='true']";
 const CHILDHOOD_EYE_SCREENING_SUBTITLE_PAGE_IDS = new Set([
+  "assessmentVisionPage",
+  "mumVisionPage",
+  "usaidHowToUseArclightPage",
+  "usaidFundalReflexExamPage",
+  "usaidNormalAbnormalPage",
+  "diabeticIntroductionToArclightVideoPage",
+]);
+const IOS_HLS_PREFERRED_SUBTITLE_PAGE_IDS = new Set([
   "assessmentVisionPage",
   "mumVisionPage",
   "usaidHowToUseArclightPage",
@@ -1318,7 +1336,7 @@ function alignVideoPageShareButton(pageId) {
 
   const navButtons = Array.from(
     page.querySelectorAll(
-      ".childhood-next-btn, .glaucoma-next-btn, .childhood-prev-btn, .glaucoma-prev-btn",
+      ".childhood-next-btn, .glaucoma-next-btn, .diabetic-next-btn, .childhood-prev-btn, .glaucoma-prev-btn, .diabetic-prev-btn",
     ),
   ).filter((element) => {
     const rect = element.getBoundingClientRect();
@@ -1491,7 +1509,7 @@ function shouldUseIOSChildhoodPilotHls(pageId, entry = null) {
 function shouldPreferOnlineIOSChildhoodPilotMode(pageId) {
   return (
     isIOSChildhoodPilotDevice() &&
-    isChildhoodEyeScreeningSubtitlePilotPage(pageId)
+    IOS_HLS_PREFERRED_SUBTITLE_PAGE_IDS.has(String(pageId || "").trim())
   );
 }
 

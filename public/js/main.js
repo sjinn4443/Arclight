@@ -108,6 +108,9 @@ document.addEventListener("DOMContentLoaded", () => {
   void import("./glaucomaWorkshopNextFlow.js")
     .then((m) => m.initializeGlaucomaWorkshopNextFlowInfra?.())
     .catch(() => {});
+  void import("./diabeticWorkshopNextFlow.js")
+    .then((m) => m.initializeDiabeticWorkshopNextFlowInfra?.())
+    .catch(() => {});
 
   /**
    * Event listener for 'page:loaded' custom event.
@@ -134,6 +137,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const { initializeGlaucomaWorkshopNextFlowInfra } =
         await import("./glaucomaWorkshopNextFlow.js");
       initializeGlaucomaWorkshopNextFlowInfra?.();
+      const { initializeDiabeticWorkshopNextFlowInfra } =
+        await import("./diabeticWorkshopNextFlow.js");
+      initializeDiabeticWorkshopNextFlowInfra?.();
       const { initializeChildhoodWorkshopNextFlowInfra } =
         await import("./childhoodWorkshopNextFlow.js");
       initializeChildhoodWorkshopNextFlowInfra?.();
@@ -162,6 +168,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const { initializeDiabeticRetinopathyWorkshop } =
         await import("./diabeticRetinopathyWorkshop.js");
       initializeDiabeticRetinopathyWorkshop?.();
+      const { initializeDiabeticWorkshopNextFlowInfra } =
+        await import("./diabeticWorkshopNextFlow.js");
+      initializeDiabeticWorkshopNextFlowInfra?.();
       return;
     }
 

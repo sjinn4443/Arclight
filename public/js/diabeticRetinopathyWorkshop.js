@@ -1,5 +1,9 @@
 import { loadPage } from "./navigation.js";
 
+const DIABETIC_WORKSHOP_OPEN_FOLDER_KEY = "diabeticWorkshop:openFolderKey";
+const DIABETIC_WORKSHOP_RESTORE_OPEN_KEY = "diabeticWorkshop:restoreOpenFolder";
+const DIABETIC_WORKSHOP_FOCUS_SELECTOR_KEY = "diabeticWorkshop:focusSelector";
+
 const HISTORY_IMAGE_MATCH_CASES = Object.freeze([
   {
     id: "case1",
@@ -334,6 +338,337 @@ function chunkItems(items, size) {
   return chunks;
 }
 
+function clampWorkshopProgress(value, min = 0, max = 1) {
+  return Math.min(max, Math.max(min, value));
+}
+
+function mixWorkshopProgress(progress, start, end) {
+  if (end <= start) return progress >= end ? 1 : 0;
+  return clampWorkshopProgress((progress - start) / (end - start));
+}
+
+function holdWorkshopProgress(
+  progress,
+  fadeInStart,
+  fadeInEnd,
+  fadeOutStart,
+  fadeOutEnd,
+) {
+  return (
+    mixWorkshopProgress(progress, fadeInStart, fadeInEnd) *
+    (1 - mixWorkshopProgress(progress, fadeOutStart, fadeOutEnd))
+  );
+}
+
+function getWorkshopScrollRoot(node) {
+  let current = node?.parentElement ?? null;
+
+  while (current && current !== document.body) {
+    const style = window.getComputedStyle(current);
+    const overflowY = style.overflowY || style.overflow;
+    if (/(auto|scroll|overlay)/.test(overflowY)) {
+      return current;
+    }
+    current = current.parentElement;
+  }
+
+  return window;
+}
+
+function getWorkshopRootMetrics(scrollRoot) {
+  if (scrollRoot === window) {
+    return {
+      top: 0,
+      height: window.innerHeight || document.documentElement.clientHeight || 1,
+    };
+  }
+
+  const rect = scrollRoot.getBoundingClientRect();
+  return {
+    top: rect.top,
+    height: scrollRoot.clientHeight || rect.height || 1,
+  };
+}
+
+function formatWorkshopCssNumber(value) {
+  return Number.isFinite(value) ? value.toFixed(4) : "0";
+}
+
+function setPackageElementState(
+  element,
+  { opacity = 0, x = 0, y = 0, scale = 1 } = {},
+) {
+  if (!element) return;
+
+  const visible = opacity > 0.001;
+  element.style.setProperty(
+    "--opacity",
+    formatWorkshopCssNumber(clampWorkshopProgress(opacity)),
+  );
+  element.style.setProperty("--x", `${formatWorkshopCssNumber(x)}px`);
+  element.style.setProperty("--y", `${formatWorkshopCssNumber(y)}px`);
+  element.style.setProperty("--scale", formatWorkshopCssNumber(scale));
+  element.style.visibility = visible ? "visible" : "hidden";
+}
+
+function setPackageLabelState(element, { opacity = 0, x = 0, y = 0 } = {}) {
+  if (!element) return;
+
+  const visible = opacity > 0.001;
+  element.style.setProperty(
+    "--opacity",
+    formatWorkshopCssNumber(clampWorkshopProgress(opacity)),
+  );
+  element.style.setProperty("--x", `${formatWorkshopCssNumber(x)}px`);
+  element.style.setProperty("--y", `${formatWorkshopCssNumber(y)}px`);
+  element.style.visibility = visible ? "visible" : "hidden";
+}
+
+function renderArclightPackageScene(elements, rawProgress) {
+  const progress = clampWorkshopProgress(rawProgress);
+  const cueOpacity = 0;
+  const visualPhase = mixWorkshopProgress(progress, 0.04, 0.76);
+  const devicePhase = mixWorkshopProgress(progress, 0.8, 1);
+  const toolsOpacity = 1 - mixWorkshopProgress(progress, 0.8, 0.88);
+  const visualDistanceOnlyOpacity = holdWorkshopProgress(
+    visualPhase,
+    0.02,
+    0.16,
+    0.26,
+    0.4,
+  );
+  const visualNearOnlyOpacity = holdWorkshopProgress(
+    visualPhase,
+    0.42,
+    0.56,
+    0.66,
+    0.8,
+  );
+  const visualBothOpacity = holdWorkshopProgress(
+    visualPhase,
+    0.82,
+    0.9,
+    0.98,
+    1,
+  );
+  const distanceHighlightOpacity =
+    toolsOpacity * Math.max(visualDistanceOnlyOpacity, visualBothOpacity);
+  const nearHighlightOpacity =
+    toolsOpacity * Math.max(visualNearOnlyOpacity, visualBothOpacity);
+  const deviceOpacity = mixWorkshopProgress(progress, 0.8, 0.86);
+  const deviceLoupeOnlyOpacity = holdWorkshopProgress(
+    devicePhase,
+    0.04,
+    0.18,
+    0.28,
+    0.42,
+  );
+  const deviceOphOnlyOpacity = holdWorkshopProgress(
+    devicePhase,
+    0.46,
+    0.6,
+    0.7,
+    0.84,
+  );
+  const deviceBothOpacity = holdWorkshopProgress(
+    devicePhase,
+    0.84,
+    0.92,
+    0.98,
+    1,
+  );
+  const loupeHighlightOpacity =
+    deviceOpacity * Math.max(deviceLoupeOnlyOpacity, deviceBothOpacity);
+  const ophthalmoscopeHighlightOpacity =
+    deviceOpacity * Math.max(deviceOphOnlyOpacity, deviceBothOpacity);
+
+  setPackageElementState(elements.scrollCue, {
+    opacity: cueOpacity,
+    y: 16 * (1 - cueOpacity),
+    scale: 0.98 + cueOpacity * 0.02,
+  });
+
+  setPackageElementState(elements.toolsCopy, {
+    opacity: toolsOpacity,
+    y: 24 * (1 - toolsOpacity),
+    scale: 0.98 + toolsOpacity * 0.02,
+  });
+  setPackageElementState(elements.nearFigure, {
+    opacity: toolsOpacity,
+    y: 30 * (1 - toolsOpacity),
+    scale: 0.96 + toolsOpacity * 0.04,
+  });
+  setPackageLabelState(elements.distanceLabel, {
+    opacity: distanceHighlightOpacity,
+    x: -6 * (1 - distanceHighlightOpacity),
+    y: 10 * (1 - distanceHighlightOpacity),
+  });
+  setPackageLabelState(elements.nearLabel, {
+    opacity: nearHighlightOpacity,
+    x: 6 * (1 - nearHighlightOpacity),
+    y: 10 * (1 - nearHighlightOpacity),
+  });
+
+  setPackageElementState(elements.deviceCopy, {
+    opacity: deviceOpacity,
+    y: 24 * (1 - deviceOpacity),
+    scale: 0.98 + deviceOpacity * 0.02,
+  });
+  setPackageElementState(elements.deviceFigure, {
+    opacity: deviceOpacity,
+    y: 36 * (1 - deviceOpacity),
+    scale: 0.95 + deviceOpacity * 0.05,
+  });
+  setPackageLabelState(elements.loupeHighlight, {
+    opacity: loupeHighlightOpacity,
+    x: -4 * (1 - loupeHighlightOpacity),
+    y: 8 * (1 - loupeHighlightOpacity),
+  });
+  setPackageLabelState(elements.ophthalmoscopeHighlight, {
+    opacity: ophthalmoscopeHighlightOpacity,
+    x: 4 * (1 - ophthalmoscopeHighlightOpacity),
+    y: 8 * (1 - ophthalmoscopeHighlightOpacity),
+  });
+  setPackageLabelState(elements.loupeLabel, {
+    opacity: loupeHighlightOpacity,
+    x: -10 * (1 - loupeHighlightOpacity),
+    y: 10 * (1 - loupeHighlightOpacity),
+  });
+  setPackageLabelState(elements.ophthalmoscopeLabel, {
+    opacity: ophthalmoscopeHighlightOpacity,
+    x: 10 * (1 - ophthalmoscopeHighlightOpacity),
+    y: 10 * (1 - ophthalmoscopeHighlightOpacity),
+  });
+}
+
+let didBindArclightPackagePageShownListener = false;
+
+function bindArclightPackagePageShownListener() {
+  if (didBindArclightPackagePageShownListener) return;
+  didBindArclightPackagePageShownListener = true;
+
+  document.addEventListener("page:shown", (event) => {
+    if (event.detail?.id !== "diabeticArclightPackagePage") return;
+
+    const page = document.getElementById("diabeticArclightPackagePage");
+    const scheduleRender = page?._diabeticArclightPackageScheduleRender;
+    if (typeof scheduleRender !== "function") return;
+
+    window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(() => {
+        scheduleRender();
+      });
+    });
+  });
+}
+
+function initializeDiabeticArclightPackagePage() {
+  const page = document.getElementById("diabeticArclightPackagePage");
+  if (!page) return;
+
+  if (typeof page._diabeticArclightPackageCleanup === "function") {
+    page._diabeticArclightPackageCleanup();
+  }
+
+  const story = page.querySelector("[data-dr-package-story]");
+  if (!story) return;
+
+  const elements = {
+    scrollCue: page.querySelector('[data-dr-package="scrollCue"]'),
+    toolsCopy: page.querySelector('[data-dr-package="toolsCopy"]'),
+    nearFigure: page.querySelector('[data-dr-package="nearFigure"]'),
+    distanceLabel: page.querySelector('[data-dr-package="distanceLabel"]'),
+    nearLabel: page.querySelector('[data-dr-package="nearLabel"]'),
+    deviceCopy: page.querySelector('[data-dr-package="deviceCopy"]'),
+    deviceFigure: page.querySelector('[data-dr-package="deviceFigure"]'),
+    loupeHighlight: page.querySelector('[data-dr-package="loupeHighlight"]'),
+    ophthalmoscopeHighlight: page.querySelector(
+      '[data-dr-package="ophthalmoscopeHighlight"]',
+    ),
+    loupeLabel: page.querySelector('[data-dr-package="loupeLabel"]'),
+    ophthalmoscopeLabel: page.querySelector(
+      '[data-dr-package="ophthalmoscopeLabel"]',
+    ),
+  };
+
+  const requiredElements = [
+    elements.scrollCue,
+    elements.toolsCopy,
+    elements.nearFigure,
+    elements.distanceLabel,
+    elements.nearLabel,
+    elements.deviceCopy,
+    elements.deviceFigure,
+    elements.loupeHighlight,
+    elements.ophthalmoscopeHighlight,
+    elements.loupeLabel,
+    elements.ophthalmoscopeLabel,
+  ];
+
+  if (requiredElements.some((element) => !element)) return;
+
+  const controller = new AbortController();
+  const { signal } = controller;
+  const scrollRoot = getWorkshopScrollRoot(page);
+
+  let rafId = 0;
+  let lastProgress = -1;
+
+  const scheduleRender = () => {
+    if (rafId) return;
+    rafId = window.requestAnimationFrame(() => {
+      rafId = 0;
+
+      const rootMetrics = getWorkshopRootMetrics(scrollRoot);
+      const storyRect = story.getBoundingClientRect();
+      const travel = Math.max(storyRect.height - rootMetrics.height, 1);
+      const progress = clampWorkshopProgress(
+        (rootMetrics.top - storyRect.top) / travel,
+      );
+
+      if (Math.abs(progress - lastProgress) < 0.0005) return;
+      lastProgress = progress;
+      renderArclightPackageScene(elements, progress);
+    });
+  };
+
+  const listen = (target, type, handler, options = {}) => {
+    if (!target?.addEventListener) return;
+    target.addEventListener(type, handler, { ...options, signal });
+  };
+
+  if (scrollRoot === window) {
+    listen(window, "scroll", scheduleRender, { passive: true });
+  } else {
+    listen(scrollRoot, "scroll", scheduleRender, { passive: true });
+  }
+
+  listen(window, "resize", scheduleRender, { passive: true });
+  listen(window, "orientationchange", scheduleRender, { passive: true });
+
+  page.querySelectorAll("img").forEach((img) => {
+    if (img.complete) return;
+    listen(img, "load", scheduleRender, { once: true });
+  });
+
+  page._diabeticArclightPackageScheduleRender = () => {
+    lastProgress = -1;
+    scheduleRender();
+  };
+  page._diabeticArclightPackageCleanup = () => {
+    controller.abort();
+    if (rafId) {
+      window.cancelAnimationFrame(rafId);
+      rafId = 0;
+    }
+    delete page._diabeticArclightPackageCleanup;
+    delete page._diabeticArclightPackageScheduleRender;
+  };
+
+  renderArclightPackageScene(elements, 0);
+  bindArclightPackagePageShownListener();
+}
+
 function showPageById(id) {
   if (!id) return;
 
@@ -357,6 +692,82 @@ function showPageById(id) {
   try {
     window.scrollTo(0, 0);
   } catch {}
+}
+
+function readDiabeticWorkshopSessionValue(key) {
+  try {
+    return sessionStorage.getItem(key);
+  } catch {
+    return null;
+  }
+}
+
+function writeDiabeticWorkshopSessionValue(key, value) {
+  try {
+    sessionStorage.setItem(key, value);
+  } catch {
+    /* ignore session storage failures */
+  }
+}
+
+function removeDiabeticWorkshopSessionValue(key) {
+  try {
+    sessionStorage.removeItem(key);
+  } catch {
+    /* ignore session storage failures */
+  }
+}
+
+function restoreFocusedLesson(card) {
+  const selector = readDiabeticWorkshopSessionValue(
+    DIABETIC_WORKSHOP_FOCUS_SELECTOR_KEY,
+  );
+  if (!selector || !card) return;
+
+  const target = card.querySelector(selector);
+  removeDiabeticWorkshopSessionValue(DIABETIC_WORKSHOP_FOCUS_SELECTOR_KEY);
+  if (!target) return;
+
+  window.requestAnimationFrame(() => {
+    try {
+      target.scrollIntoView({ block: "center", behavior: "smooth" });
+    } catch {
+      target.scrollIntoView();
+    }
+
+    target.classList.add("diabetic-restored-focus");
+    window.setTimeout(() => {
+      target.classList.remove("diabetic-restored-focus");
+    }, 1800);
+
+    target.focus?.({ preventScroll: true });
+  });
+}
+
+async function openVideosSubpage(targetId) {
+  if (!targetId) return;
+
+  try {
+    window.__videosPendingTarget = targetId;
+    window.__videosSuppressFlash = true;
+    sessionStorage.setItem("gotoSubPage", targetId);
+  } catch {
+    /* ignore session storage failures */
+  }
+
+  await loadPage("videos");
+
+  try {
+    const { goToVideosSection } = await import("./videos.js");
+    if (typeof goToVideosSection === "function") {
+      goToVideosSection(targetId, { skipDefault: true });
+      return;
+    }
+  } catch {
+    /* ignore videos helper import failures */
+  }
+
+  showPageById(targetId);
 }
 
 function updateWorkshopFolderItemBadges(page) {
@@ -424,6 +835,7 @@ function setupWorkshopFolders(page) {
     });
 
     openFolderRow.style.display = "none";
+    writeDiabeticWorkshopSessionValue(DIABETIC_WORKSHOP_OPEN_FOLDER_KEY, key);
     page.classList.add("diabetic-folder-open");
     openFolderRow.insertAdjacentElement("afterend", card);
     card.style.display = "";
@@ -451,6 +863,8 @@ function setupWorkshopFolders(page) {
       card.style.display = "none";
       toggle.remove();
       openFolderRow.style.display = "";
+      removeDiabeticWorkshopSessionValue(DIABETIC_WORKSHOP_OPEN_FOLDER_KEY);
+      removeDiabeticWorkshopSessionValue(DIABETIC_WORKSHOP_RESTORE_OPEN_KEY);
       page.classList.remove("diabetic-folder-open");
     };
 
@@ -460,6 +874,7 @@ function setupWorkshopFolders(page) {
     });
 
     titleEl.appendChild(toggle);
+    restoreFocusedLesson(card);
   };
 
   page.__showSectionByKey = showSectionByKey;
@@ -470,6 +885,22 @@ function setupWorkshopFolders(page) {
   });
   foldersContainer.style.display = "";
   page.classList.remove("diabetic-folder-open");
+
+  const shouldRestore =
+    readDiabeticWorkshopSessionValue(DIABETIC_WORKSHOP_RESTORE_OPEN_KEY) ===
+    "1";
+  const savedKey = readDiabeticWorkshopSessionValue(
+    DIABETIC_WORKSHOP_OPEN_FOLDER_KEY,
+  );
+
+  if (shouldRestore && savedKey) {
+    removeDiabeticWorkshopSessionValue(DIABETIC_WORKSHOP_RESTORE_OPEN_KEY);
+    showSectionByKey(savedKey);
+  } else {
+    removeDiabeticWorkshopSessionValue(DIABETIC_WORKSHOP_OPEN_FOLDER_KEY);
+    removeDiabeticWorkshopSessionValue(DIABETIC_WORKSHOP_RESTORE_OPEN_KEY);
+    removeDiabeticWorkshopSessionValue(DIABETIC_WORKSHOP_FOCUS_SELECTOR_KEY);
+  }
 
   folders.forEach((row) => {
     if (row.dataset.wired === "1") return;
@@ -2473,6 +2904,11 @@ export function initializeDiabeticRetinopathyWorkshop() {
       if (!targetId) return;
 
       const routeName = row.getAttribute("data-route");
+      if (routeName === "videos") {
+        await openVideosSubpage(targetId);
+        return;
+      }
+
       if (routeName) {
         await loadPage(routeName);
       }
@@ -2492,4 +2928,5 @@ export function initializeDiabeticRetinopathyWorkshop() {
   initializeReviewVideoQuizPage();
   initializeFindingsGroupTwoPage();
   initializeConnectQuizPage();
+  initializeDiabeticArclightPackagePage();
 }
