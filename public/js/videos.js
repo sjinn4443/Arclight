@@ -904,6 +904,26 @@ const VIDEO_PAGE_SOURCES = {
     },
   },
 
+  diabeticCausesOfVisionLossVideoPage: {
+    key: "videoMode:diabeticCausesOfVisionLossVideoPage",
+    containerSelector: "#diabeticCausesOfVisionLossVideoContainer",
+    videoSelector: "#diabeticCausesOfVisionLossVideo",
+    sources: {
+      low: "videos/Workshop/Diabetic/3.DR_LossofVisionCause_220p.mp4",
+      high: "videos/Workshop/Diabetic/3.DR_LossofVisionCause_720p.mp4",
+    },
+  },
+
+  diabeticSimpleSafeScalableVideoPage: {
+    key: "videoMode:diabeticSimpleSafeScalableVideoPage",
+    containerSelector: "#diabeticSimpleSafeScalableVideoContainer",
+    videoSelector: "#diabeticSimpleSafeScalableVideo",
+    sources: {
+      low: "videos/Workshop/Diabetic/4.DRSinNCDClinicflow_220p.mp4",
+      high: "videos/Workshop/Diabetic/4.DRSinNCDClinicflow_720p.mp4",
+    },
+  },
+
   glaucomaPupilReactionsVideoPage: {
     key: "videoMode:glaucomaPupilReactionsVideoPage",
     videoMode: "triToggle",

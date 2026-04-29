@@ -6535,8 +6535,8 @@ select.onb-input.has-value + .onb-select-caret {
   img {
   width: auto !important;
   max-width: 100%;
-  max-height: 78%;
-  height: min(64%, 156px);
+  max-height: 100%;
+  height: min(93%, 156px);
   margin-top: 0;
   object-fit: contain;
   visibility: visible;
@@ -6553,7 +6553,7 @@ select.onb-input.has-value + .onb-select-caret {
 
 #diabeticArclightPackagePage .diabetic-package-story {
   position: relative;
-  height: 1200dvh;
+  height: 4690dvh;
 }
 
 #diabeticArclightPackagePage .diabetic-package-story__sticky {
@@ -6649,11 +6649,11 @@ select.onb-input.has-value + .onb-select-caret {
 }
 
 #diabeticArclightPackagePage .diabetic-package-copy--tools {
-  top: 10%;
+  top: 4.5%;
 }
 
 #diabeticArclightPackagePage .diabetic-package-copy--device {
-  top: 10%;
+  top: 53.5%;
 }
 
 #diabeticArclightPackagePage .diabetic-package-copy__line,
@@ -6705,14 +6705,14 @@ select.onb-input.has-value + .onb-select-caret {
 }
 
 #diabeticArclightPackagePage .diabetic-package-figure--near {
-  top: 48%;
+  top: 29.5%;
   width: 100%;
   max-width: none;
   z-index: 5;
 }
 
 #diabeticArclightPackagePage .diabetic-package-figure--device {
-  top: 58%;
+  top: 80.5%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -6730,7 +6730,7 @@ select.onb-input.has-value + .onb-select-caret {
   width: auto;
   max-width: 100%;
   max-height: 100%;
-  height: 21%;
+  height: min(93%, 156px);
   object-fit: contain;
 }
 
@@ -6795,15 +6795,15 @@ select.onb-input.has-value + .onb-select-caret {
 
 #diabeticArclightPackagePage .dr-package-label--loupe {
   left: 6%;
-  top: 43%;
+  top: 67%;
   width: 31%;
   color: #ffffff;
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.22);
 }
 
 #diabeticArclightPackagePage .dr-package-label--ophthalmoscope {
-  left: 64%;
-  top: 69%;
+  left: 67%;
+  top: 80%;
   width: 30%;
   color: #ffffff;
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.22);
@@ -6881,7 +6881,7 @@ select.onb-input.has-value + .onb-select-caret {
   }
 
   #diabeticArclightPackagePage .diabetic-package-story {
-    height: 1000dvh;
+    height: 4000dvh;
   }
 }
 
@@ -6897,12 +6897,12 @@ select.onb-input.has-value + .onb-select-caret {
 
   #diabeticArclightPackagePage .dr-package-label--loupe {
     left: 7%;
-    top: 44%;
+    top: 67%;
   }
 
   #diabeticArclightPackagePage .dr-package-label--ophthalmoscope {
-    left: 65%;
-    top: 76%;
+    left: 68%;
+    top: 80%;
   }
 
   #diabeticArclightPackagePage .dr-package-device-highlight--loupe {
@@ -6943,7 +6943,7 @@ select.onb-input.has-value + .onb-select-caret {
   }
 
   #diabeticArclightPackagePage .diabetic-package-story {
-    height: 1800dvh;
+    height: 4690dvh;
   }
 
   #diabeticArclightPackagePage .diabetic-package-scene {
@@ -6956,7 +6956,7 @@ select.onb-input.has-value + .onb-select-caret {
 
   #diabeticArclightPackagePage .diabetic-package-figure--near {
     width: 100%;
-    top: 47%;
+    top: 28.5%;
   }
 
   #diabeticArclightPackagePage .diabetic-package-figure--device {
@@ -6982,18 +6982,18 @@ select.onb-input.has-value + .onb-select-caret {
 
   #diabeticArclightPackagePage .dr-package-label--loupe {
     left: 6%;
-    top: 44%;
+    top: 67%;
     width: 34%;
   }
 
   #diabeticArclightPackagePage .dr-package-label--ophthalmoscope {
     left: 63%;
-    top: 65%;
-    width: 31%;
+    top: 82%;
+    width: 34%;
   }
 
   #diabeticArclightPackagePage .dr-package-device-highlight--loupe {
-    left: 178px;
+    left: 154px;
     top: 24px;
     width: 53px;
     height: 71px;
@@ -7001,8 +7001,8 @@ select.onb-input.has-value + .onb-select-caret {
   }
 
   #diabeticArclightPackagePage .dr-package-device-highlight--ophthalmoscope {
-    left: 178px;
-    top: 150px;
+    left: 154px;
+    top: 142px;
     width: 53px;
     height: 45px;
     transform: translate3d(var(--x, 0px), var(--y, 0px), 0);

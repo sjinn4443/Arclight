@@ -427,9 +427,9 @@ function setPackageLabelState(element, { opacity = 0, x = 0, y = 0 } = {}) {
 function renderArclightPackageScene(elements, rawProgress) {
   const progress = clampWorkshopProgress(rawProgress);
   const cueOpacity = 0;
-  const visualPhase = mixWorkshopProgress(progress, 0.04, 0.76);
-  const devicePhase = mixWorkshopProgress(progress, 0.8, 1);
-  const toolsOpacity = 1 - mixWorkshopProgress(progress, 0.8, 0.88);
+  const contentOpacity = 1;
+  const visualPhase = mixWorkshopProgress(progress, 0.04, 0.58);
+  const devicePhase = mixWorkshopProgress(progress, 0.62, 1);
   const visualDistanceOnlyOpacity = holdWorkshopProgress(
     visualPhase,
     0.02,
@@ -437,50 +437,35 @@ function renderArclightPackageScene(elements, rawProgress) {
     0.26,
     0.4,
   );
-  const visualNearOnlyOpacity = holdWorkshopProgress(
+  const visualNearPersistentOpacity = mixWorkshopProgress(
     visualPhase,
     0.42,
     0.56,
-    0.66,
-    0.8,
   );
-  const visualBothOpacity = holdWorkshopProgress(
-    visualPhase,
-    0.82,
-    0.9,
-    0.98,
-    1,
+  const visualBothOpacity = mixWorkshopProgress(visualPhase, 0.82, 0.88);
+  const distanceHighlightOpacity = Math.max(
+    visualDistanceOnlyOpacity,
+    visualBothOpacity,
   );
-  const distanceHighlightOpacity =
-    toolsOpacity * Math.max(visualDistanceOnlyOpacity, visualBothOpacity);
-  const nearHighlightOpacity =
-    toolsOpacity * Math.max(visualNearOnlyOpacity, visualBothOpacity);
-  const deviceOpacity = mixWorkshopProgress(progress, 0.8, 0.86);
+  const nearHighlightOpacity = visualNearPersistentOpacity;
   const deviceLoupeOnlyOpacity = holdWorkshopProgress(
     devicePhase,
-    0.04,
-    0.18,
-    0.28,
-    0.42,
+    0.02,
+    0.16,
+    0.3,
+    0.44,
   );
-  const deviceOphOnlyOpacity = holdWorkshopProgress(
+  const deviceOphthalmoscopeOpacity = mixWorkshopProgress(
     devicePhase,
-    0.46,
-    0.6,
-    0.7,
-    0.84,
+    0.34,
+    0.48,
   );
-  const deviceBothOpacity = holdWorkshopProgress(
-    devicePhase,
-    0.84,
-    0.92,
-    0.98,
-    1,
+  const deviceBothRevealOpacity = mixWorkshopProgress(devicePhase, 0.9, 0.99);
+  const loupeHighlightOpacity = Math.max(
+    deviceLoupeOnlyOpacity,
+    deviceBothRevealOpacity,
   );
-  const loupeHighlightOpacity =
-    deviceOpacity * Math.max(deviceLoupeOnlyOpacity, deviceBothOpacity);
-  const ophthalmoscopeHighlightOpacity =
-    deviceOpacity * Math.max(deviceOphOnlyOpacity, deviceBothOpacity);
+  const ophthalmoscopeHighlightOpacity = deviceOphthalmoscopeOpacity;
 
   setPackageElementState(elements.scrollCue, {
     opacity: cueOpacity,
@@ -489,14 +474,14 @@ function renderArclightPackageScene(elements, rawProgress) {
   });
 
   setPackageElementState(elements.toolsCopy, {
-    opacity: toolsOpacity,
-    y: 24 * (1 - toolsOpacity),
-    scale: 0.98 + toolsOpacity * 0.02,
+    opacity: contentOpacity,
+    y: 0,
+    scale: 1,
   });
   setPackageElementState(elements.nearFigure, {
-    opacity: toolsOpacity,
-    y: 30 * (1 - toolsOpacity),
-    scale: 0.96 + toolsOpacity * 0.04,
+    opacity: contentOpacity,
+    y: 0,
+    scale: 1,
   });
   setPackageLabelState(elements.distanceLabel, {
     opacity: distanceHighlightOpacity,
@@ -510,14 +495,14 @@ function renderArclightPackageScene(elements, rawProgress) {
   });
 
   setPackageElementState(elements.deviceCopy, {
-    opacity: deviceOpacity,
-    y: 24 * (1 - deviceOpacity),
-    scale: 0.98 + deviceOpacity * 0.02,
+    opacity: contentOpacity,
+    y: 0,
+    scale: 1,
   });
   setPackageElementState(elements.deviceFigure, {
-    opacity: deviceOpacity,
-    y: 36 * (1 - deviceOpacity),
-    scale: 0.95 + deviceOpacity * 0.05,
+    opacity: contentOpacity,
+    y: 0,
+    scale: 1,
   });
   setPackageLabelState(elements.loupeHighlight, {
     opacity: loupeHighlightOpacity,

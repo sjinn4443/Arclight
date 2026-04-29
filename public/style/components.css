@@ -6405,8 +6405,18 @@ Glaucoma history case study: match intermediate style
   overflow: hidden;
 }
 
+#videos #diabeticCausesOfVisionLossVideoPage .video-container,
+#videos #diabeticSimpleSafeScalableVideoPage .video-container {
+  aspect-ratio: 39 / 22;
+  overflow: hidden;
+}
+
 #videos #diabeticIntroductionToArclightVideoPage .video-container > video,
-#videos #diabeticIntroductionToArclightVideoPage .video-container > iframe {
+#videos #diabeticIntroductionToArclightVideoPage .video-container > iframe,
+#videos #diabeticCausesOfVisionLossVideoPage .video-container > video,
+#videos #diabeticCausesOfVisionLossVideoPage .video-container > iframe,
+#videos #diabeticSimpleSafeScalableVideoPage .video-container > video,
+#videos #diabeticSimpleSafeScalableVideoPage .video-container > iframe {
   width: 100%;
   height: 100%;
   object-fit: contain;
