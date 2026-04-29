@@ -26,7 +26,7 @@ export default defineConfig({
     serviceWorkers: "block",
   },
   webServer: {
-    command: `cross-env PORT=${port} SERVE_DIST=true BUILD_OUTPUT_DIR=${distDir} node server.cjs`,
+    command: `cross-env PORT=${port} SERVE_DIST=true BUILD_OUTPUT_DIR=${distDir} DISABLE_DB_STORAGE=1 node server.cjs`,
     url: baseURL,
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,
