@@ -363,11 +363,11 @@ describe("server security hardening", () => {
     expect(deleteSpy).not.toHaveBeenCalled();
   });
 
-  test("returns maintenance HTML and API 503 responses in maintenance mode", async () => {
+  test("returns maintenance HTML and API 503 responses in emergency mode", async () => {
     const { app } = await loadServer({
       NODE_ENV: "development",
       DASHBOARD_PASSWORD: "secret",
-      EMERGENCY_MODE: "maintenance",
+      EMERGENCY_MODE: "emergency",
     });
 
     const homeResponse = await request(app).get("/");
@@ -384,14 +384,36 @@ describe("server security hardening", () => {
     expect(apiResponse.status).toBe(503);
     expect(apiResponse.body).toMatchObject({
       error: "security_maintenance",
-      emergencyMode: "maintenance",
+      emergencyMode: "emergency",
     });
 
     const trackResponse = await request(app).post("/track");
     expect(trackResponse.status).toBe(503);
     expect(trackResponse.body).toMatchObject({
       error: "security_maintenance",
-      emergencyMode: "maintenance",
+      emergencyMode: "emergency",
+    });
+  });
+
+  test("accepts maintenance as a legacy alias and normalizes it to emergency", async () => {
+    const { app } = await loadServer({
+      NODE_ENV: "development",
+      DASHBOARD_PASSWORD: "secret",
+      EMERGENCY_MODE: "maintenance",
+    });
+
+    const healthResponse = await request(app).get("/healthz");
+    expect(healthResponse.status).toBe(200);
+    expect(healthResponse.body).toEqual({
+      ok: true,
+      emergencyMode: "emergency",
+    });
+
+    const apiResponse = await request(app).post("/api/app/profile").send({});
+    expect(apiResponse.status).toBe(503);
+    expect(apiResponse.body).toMatchObject({
+      error: "security_maintenance",
+      emergencyMode: "emergency",
     });
   });
 
@@ -464,7 +486,7 @@ describe("server security hardening", () => {
     const { app } = await loadServer({
       NODE_ENV: "production",
       DASHBOARD_PASSWORD: "secret",
-      EMERGENCY_MODE: "maintenance",
+      EMERGENCY_MODE: "emergency",
       ADMIN_ALLOWED_IPS: "203.0.113.10",
     });
 
@@ -485,7 +507,7 @@ describe("server security hardening", () => {
         (entry) =>
           entry.event === "emergency_block" &&
           entry.path === "/" &&
-          entry.mode === "maintenance",
+          entry.mode === "emergency",
       ),
     ).toBe(true);
     expect(
@@ -506,7 +528,7 @@ describe("server security hardening", () => {
     const { app } = await loadServer({
       NODE_ENV: "production",
       DASHBOARD_PASSWORD: "secret",
-      EMERGENCY_MODE: "maintenance",
+      EMERGENCY_MODE: "emergency",
       ADMIN_ALLOWED_IPS: "203.0.113.10",
     });
 

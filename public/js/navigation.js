@@ -213,6 +213,12 @@ window.minimalShowPage = window.minimalShowPage || minimalShowPage;
   }
 })();
 
+document.addEventListener("page:shown", (event) => {
+  const shownId = String(event.detail?.id || "");
+  if (!shownId) return;
+  recordShownSubPage(shownId);
+});
+
 /**
  * Handles click events on elements with a 'data-page' attribute,
  * triggering page navigation to the specified target ID.
@@ -251,9 +257,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
 export let currentPageName = null;
 export const historyStack = [];
+const pageHistoryStack = [];
 
 let currentRoute = null; // Add the currentRoute guard
 let isWritingRouteHash = false;
+let isApplyingBackNavigation = false;
+let lastRouteHistoryRecord = null;
 const HASH_ROUTE_PREFIX = "#/";
 
 function safeDecodeHashSegment(value) {
@@ -277,6 +286,74 @@ function normalizeRouteName(value) {
 function normalizeSubPageId(value) {
   const subPageId = String(value ?? "").trim();
   return subPageId || null;
+}
+
+function samePageHistoryEntry(a, b) {
+  return (
+    a?.routeName === b?.routeName &&
+    normalizeSubPageId(a?.subPageId) === normalizeSubPageId(b?.subPageId)
+  );
+}
+
+function updateRouteHistory(routeName, replace) {
+  if (!routeName) return;
+
+  if (replace && historyStack.length > 0) {
+    historyStack[historyStack.length - 1] = routeName;
+    return;
+  }
+
+  if (historyStack[historyStack.length - 1] !== routeName) {
+    historyStack.push(routeName);
+  }
+}
+
+function updatePageHistory(routeName, subPageId = null, replace = false) {
+  const normalizedRoute = normalizeRouteName(routeName);
+  if (!normalizedRoute) return;
+
+  const entry = {
+    routeName: normalizedRoute,
+    subPageId: normalizeSubPageId(subPageId),
+  };
+
+  if (replace && pageHistoryStack.length > 0) {
+    pageHistoryStack[pageHistoryStack.length - 1] = entry;
+    return;
+  }
+
+  if (
+    !samePageHistoryEntry(pageHistoryStack[pageHistoryStack.length - 1], entry)
+  ) {
+    pageHistoryStack.push(entry);
+  }
+}
+
+function recordShownSubPage(id) {
+  if (isApplyingBackNavigation) return;
+
+  const normalizedRoute = normalizeRouteName(currentPageName);
+  if (!normalizedRoute || !id) return;
+
+  const subPageId = normalizeSubPageId(id);
+  if (!subPageId) return;
+
+  const top = pageHistoryStack[pageHistoryStack.length - 1];
+  const nextEntry = { routeName: normalizedRoute, subPageId };
+  if (samePageHistoryEntry(top, nextEntry)) return;
+
+  const isImmediateSubPageAfterRouteLoad =
+    top?.routeName === normalizedRoute &&
+    !top.subPageId &&
+    lastRouteHistoryRecord?.routeName === normalizedRoute &&
+    Date.now() - lastRouteHistoryRecord.time < 1200;
+
+  if (isImmediateSubPageAfterRouteLoad) {
+    pageHistoryStack[pageHistoryStack.length - 1] = nextEntry;
+    return;
+  }
+
+  pageHistoryStack.push(nextEntry);
 }
 
 function buildHashFromRoute(routeName, subPageId = null) {
@@ -401,6 +478,7 @@ export function syncRouteHash(routeName, options = {}) {
 export async function loadPage(routeName, options = {}) {
   const replace = options?.replace === true;
   const force = options?.force === true;
+  const recordHistory = options?.recordHistory !== false;
   const syncHash = options?.syncHash !== false;
   const subPageId = normalizeSubPageId(options?.subPageId);
 
@@ -413,6 +491,9 @@ export async function loadPage(routeName, options = {}) {
         replace,
         subPageId,
       });
+    }
+    if (recordHistory && subPageId) {
+      updatePageHistory(routeName, subPageId, replace);
     }
     return; // Add the guard
   }
@@ -539,16 +620,13 @@ export async function loadPage(routeName, options = {}) {
     pageElement.classList.add("active"); // Apply active class to the main page element
   }
 
-  // Basic history management
-  if (!replace) {
-    historyStack.push(routeName);
-  } else {
-    // If replacing, ensure the current entry is removed before pushing the new one
-    // This is crucial for correct back navigation.
-    if (historyStack.length > 0) {
-      historyStack.pop();
-    }
-    historyStack.push(routeName);
+  if (recordHistory) {
+    updateRouteHistory(routeName, replace);
+    updatePageHistory(routeName, subPageId, replace);
+    lastRouteHistoryRecord = {
+      routeName,
+      time: Date.now(),
+    };
   }
 
   currentPageName = routeName; // Ensure currentPageName is set after successful load
@@ -596,22 +674,39 @@ export function goBack() {
       const ret = sessionStorage.getItem("fromRoute");
       if (ret) {
         sessionStorage.removeItem("fromRoute");
-        loadPage(ret, { replace: true });
+        loadPage(ret, { replace: true, recordHistory: false });
         return;
       }
     } catch (_e) {
       /* fall through */
     }
   }
+
+  const previousEntry =
+    pageHistoryStack.length > 1
+      ? (pageHistoryStack.pop(), pageHistoryStack[pageHistoryStack.length - 1])
+      : null;
+
+  if (previousEntry?.routeName) {
+    isApplyingBackNavigation = true;
+    loadPage(previousEntry.routeName, {
+      replace: true,
+      force: previousEntry.routeName === currentRoute,
+      recordHistory: false,
+      subPageId: previousEntry.subPageId,
+    }).finally(() => {
+      isApplyingBackNavigation = false;
+    });
+    return;
+  }
+
   // Default stack-based behavior
-  historyStack.pop(); // current
-  let prev = historyStack.pop(); // previous
+  if (historyStack.length > 1) {
+    historyStack.pop(); // current
+  }
+  const routeToLoad = historyStack[historyStack.length - 1] || "dashboard";
 
-  // Ensure 'prev' is a valid route name before calling loadPage
-  // If 'prev' is null/undefined, default to 'dashboard'
-  const routeToLoad = prev || "dashboard";
-
-  loadPage(routeToLoad, { replace: true });
+  loadPage(routeToLoad, { replace: true, recordHistory: false });
 }
 
 /**

@@ -3,6 +3,7 @@ import { loadPage } from "./navigation.js";
 const WORKSHOP_HOME = "__diabeticWorkshopHome__";
 const WORKSHOP_PAGE_ID = "diabeticRetinopathyWorkshopPage";
 const NEXT_HOST_CLASS = "diabetic-next-host";
+const FLOW_ENABLED_KEY = "diabeticWorkshop:nextFlowEnabled";
 const RESTORE_OPEN_KEY = "diabeticWorkshop:restoreOpenFolder";
 const OPEN_FOLDER_KEY = "diabeticWorkshop:openFolderKey";
 const FOCUS_SELECTOR_KEY = "diabeticWorkshop:focusSelector";
@@ -15,7 +16,16 @@ const INTERNAL_TARGETS = new Set([
   "diabeticTypesOfDiabetesPage",
   "diabeticWhatIsRetinopathyPage",
   "diabeticVisionLossInDiabetesPage",
+  "diabeticNcdFlowIntroductionPage",
+  "diabeticProliferativeOtherDiseasePage",
+  "diabeticSimpleSafeScalableScrollPage",
   "diabeticArclightPackagePage",
+  "diabeticProtocolOverviewPage",
+  "diabeticProtocolPhaseAPage",
+  "diabeticProtocolPhaseBPage",
+  "diabeticProtocolNcdConsultationPage",
+  "diabeticProtocolPhaseCPage",
+  "diabeticProtocolFinalDecisionsPage",
 ]);
 
 const VIDEO_TARGETS = new Set([
@@ -48,13 +58,10 @@ const DIABETIC_NAV_CONFIG = {
   },
   diabeticOtherEyeDiseasesScreeningPage: {
     previous: { type: "target", target: "diabeticNcdClinicScreeningPage" },
-    next: { type: "target", target: "diabeticWhatIsDiabetesPage" },
+    next: { type: "focus", folderKey: "introduction" },
   },
   diabeticWhatIsDiabetesPage: {
-    previous: {
-      type: "target",
-      target: "diabeticOtherEyeDiseasesScreeningPage",
-    },
+    previous: { type: "home" },
     next: { type: "target", target: "diabeticTypesOfDiabetesPage" },
   },
   diabeticTypesOfDiabetesPage: {
@@ -71,27 +78,74 @@ const DIABETIC_NAV_CONFIG = {
   },
   diabeticCausesOfVisionLossVideoPage: {
     previous: { type: "target", target: "diabeticVisionLossInDiabetesPage" },
-    next: {
-      type: "focus",
-      folderKey: "ncdClinicFlow",
-      focusSelector: '.lesson-row[data-lesson="ncd-introduction"]',
+    next: { type: "focus", folderKey: "whatIsDiabetes" },
+  },
+  diabeticNcdFlowIntroductionPage: {
+    previous: { type: "home" },
+    next: { type: "target", target: "diabeticProliferativeOtherDiseasePage" },
+  },
+  diabeticProliferativeOtherDiseasePage: {
+    previous: { type: "target", target: "diabeticNcdFlowIntroductionPage" },
+    next: { type: "target", target: "diabeticSimpleSafeScalableScrollPage" },
+  },
+  diabeticSimpleSafeScalableScrollPage: {
+    previous: {
+      type: "target",
+      target: "diabeticProliferativeOtherDiseasePage",
     },
+    next: { type: "target", target: "diabeticSimpleSafeScalableVideoPage" },
   },
   diabeticSimpleSafeScalableVideoPage: {
     previous: {
-      type: "focus",
-      folderKey: "ncdClinicFlow",
-      focusSelector: '.lesson-row[data-lesson="simple-safe-scalable-scroll"]',
+      type: "target",
+      target: "diabeticSimpleSafeScalableScrollPage",
     },
-    next: {
-      type: "focus",
-      folderKey: "protocol",
-      focusSelector: '.lesson-row[data-lesson="protocol-overview"]',
-    },
+    next: { type: "focus", folderKey: "ncdClinicFlow" },
+  },
+  diabeticProtocolOverviewPage: {
+    previous: { type: "home" },
+    next: { type: "target", target: "diabeticProtocolPhaseAPage" },
+  },
+  diabeticProtocolPhaseAPage: {
+    previous: { type: "target", target: "diabeticProtocolOverviewPage" },
+    next: { type: "target", target: "diabeticProtocolPhaseBPage" },
+  },
+  diabeticProtocolPhaseBPage: {
+    previous: { type: "target", target: "diabeticProtocolPhaseAPage" },
+    next: { type: "target", target: "diabeticProtocolNcdConsultationPage" },
+  },
+  diabeticProtocolNcdConsultationPage: {
+    previous: { type: "target", target: "diabeticProtocolPhaseBPage" },
+    next: { type: "target", target: "diabeticProtocolPhaseCPage" },
+  },
+  diabeticProtocolPhaseCPage: {
+    previous: { type: "target", target: "diabeticProtocolNcdConsultationPage" },
+    next: { type: "target", target: "diabeticProtocolFinalDecisionsPage" },
+  },
+  diabeticProtocolFinalDecisionsPage: {
+    previous: { type: "target", target: "diabeticProtocolPhaseCPage" },
+    next: { type: "focus", folderKey: "protocol" },
   },
 };
 
 let diabeticNextInfraWired = false;
+
+function isFlowEnabled() {
+  try {
+    return sessionStorage.getItem(FLOW_ENABLED_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
+
+function setFlowEnabled(enabled) {
+  try {
+    if (enabled) sessionStorage.setItem(FLOW_ENABLED_KEY, "1");
+    else sessionStorage.removeItem(FLOW_ENABLED_KEY);
+  } catch {
+    /* ignore session storage failures */
+  }
+}
 
 function resetViewportToTop() {
   try {
@@ -184,6 +238,7 @@ async function navigateToWorkshopSection(folderKey, focusSelector) {
   }
 
   removeNextButtons();
+  setFlowEnabled(false);
   await loadPage("diabeticRetinopathyWorkshop");
   resetViewportToTopSoon();
 }
@@ -234,6 +289,7 @@ async function navigateToTarget(target) {
       /* ignore session storage failures */
     }
 
+    setFlowEnabled(false);
     await loadPage("diabeticRetinopathyWorkshop");
 
     if (typeof window.showPage === "function") {
@@ -250,6 +306,7 @@ async function navigateToTarget(target) {
   }
 
   if (INTERNAL_TARGETS.has(target)) {
+    setFlowEnabled(true);
     try {
       sessionStorage.removeItem(RESTORE_OPEN_KEY);
       sessionStorage.removeItem(OPEN_FOLDER_KEY);
@@ -274,6 +331,7 @@ async function navigateToTarget(target) {
   }
 
   if (VIDEO_TARGETS.has(target)) {
+    setFlowEnabled(true);
     try {
       window.__videosPendingTarget = target;
       window.__videosSuppressFlash = true;
@@ -316,7 +374,7 @@ async function navigateByConfig(step) {
 
 function renderNextButtonForTarget(targetId) {
   const config = DIABETIC_NAV_CONFIG[targetId];
-  if (!config) {
+  if (!config || !isFlowEnabled()) {
     removeNextButtons();
     return;
   }
@@ -373,15 +431,30 @@ export function initializeDiabeticWorkshopNextFlowInfra() {
     const routeName = String(event.detail?.routeName || "");
     if (!FLOW_ROUTES.has(routeName)) {
       removeNextButtons();
+      setFlowEnabled(false);
       return;
     }
 
     requestAnimationFrame(() => {
       const visibleId = getVisiblePageId();
       if (!visibleId) return;
+      if (
+        routeName === "diabeticRetinopathyWorkshop" &&
+        DIABETIC_NAV_CONFIG[visibleId]
+      ) {
+        setFlowEnabled(true);
+      }
       renderNextButtonForTarget(visibleId);
     });
   });
 
   renderNextButtonForTarget(getVisiblePageId());
+}
+
+export function rememberDiabeticWorkshopFlowFromRow(row) {
+  if (!row) return;
+  const target = String(row.getAttribute("data-target") || "").trim();
+  if (DIABETIC_NAV_CONFIG[target]) {
+    setFlowEnabled(true);
+  }
 }

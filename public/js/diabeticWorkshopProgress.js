@@ -2,7 +2,24 @@ const WORKSHOP_PROGRESS_PREFIX = "diabeticWorkshop:progress:";
 const WORKSHOP_PROGRESS_EVENT = "diabeticWorkshop:progress-changed";
 const DIABETIC_PROGRESS_COLOR = "#f25600";
 const AUTO_COMPLETE_TARGETS = new Set(["diabeticPragmaticScreeningPage"]);
-const SCROLL_TARGETS = new Set(["diabeticArclightPackagePage"]);
+const SCROLL_TARGETS = new Set([
+  "diabeticArclightPackagePage",
+  "diabeticNcdClinicScreeningPage",
+  "diabeticOtherEyeDiseasesScreeningPage",
+  "diabeticWhatIsDiabetesPage",
+  "diabeticTypesOfDiabetesPage",
+  "diabeticWhatIsRetinopathyPage",
+  "diabeticVisionLossInDiabetesPage",
+  "diabeticNcdFlowIntroductionPage",
+  "diabeticProliferativeOtherDiseasePage",
+  "diabeticSimpleSafeScalableScrollPage",
+  "diabeticProtocolOverviewPage",
+  "diabeticProtocolPhaseAPage",
+  "diabeticProtocolPhaseBPage",
+  "diabeticProtocolNcdConsultationPage",
+  "diabeticProtocolPhaseCPage",
+  "diabeticProtocolFinalDecisionsPage",
+]);
 
 let infraWired = false;
 let activeScrollTarget = null;

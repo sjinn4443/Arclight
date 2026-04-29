@@ -7,7 +7,7 @@
 - `readonly`
   - Blocks `POST /api/app/profile`, `POST /api/app/refresh`, `POST /track`, and `DELETE /api/dev/users/:anonId`.
   - Keeps public GET routes available.
-- `maintenance`
+- `emergency`
   - Returns a server-side `503` maintenance page for public HTML requests.
   - Returns `503` JSON for public app APIs and `/track`.
   - Keeps reports/admin routes available only from allowlisted IPs plus valid Basic Auth.
@@ -19,12 +19,12 @@
 
 - Use `readonly` when the incident appears limited to write abuse or data mutation risk.
   - Typical signals: telemetry spam, suspicious write payloads, abnormal `/track` volume, or concern about data corruption while public pages and admin credentials still appear trustworthy.
-- Use `maintenance` when users may be exposed to unsafe or compromised public content.
+- Use `emergency` when users may be exposed to unsafe or compromised public content.
   - Typical signals: suspected HTML or JS tampering, suspected XSS, suspicious script injection, or any case where public browsing should stop but admin investigation still needs controlled access.
 - Use `lockdown` when the scope is unknown or admin, secrets, or infrastructure may be compromised.
   - Typical signals: suspected `DASHBOARD_PASSWORD` leakage, DB credential leakage, deploy-token leakage, suspicious admin access, or signs the attacker may still have active control.
 - If unsure, choose the stronger mode.
-  - Default escalation path: `readonly` -> `maintenance` -> `lockdown`.
+  - Default escalation path: `readonly` -> `emergency` -> `lockdown`.
 
 ## Immediate incident steps
 
@@ -47,3 +47,5 @@
   - writes are enabled only in normal mode
   - reports/admin routes require both allowlisted IPs and valid Basic Auth
   - the public app no longer serves the maintenance page
+
+Legacy note: `EMERGENCY_MODE=maintenance` is still accepted and is normalized to `emergency`.

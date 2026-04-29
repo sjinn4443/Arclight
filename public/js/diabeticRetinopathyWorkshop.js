@@ -4,6 +4,7 @@ import {
   setDiabeticLessonProgress,
   updateDiabeticWorkshopProgressBars,
 } from "./diabeticWorkshopProgress.js";
+import { rememberDiabeticWorkshopFlowFromRow } from "./diabeticWorkshopNextFlow.js";
 
 const DIABETIC_WORKSHOP_OPEN_FOLDER_KEY = "diabeticWorkshop:openFolderKey";
 const DIABETIC_WORKSHOP_RESTORE_OPEN_KEY = "diabeticWorkshop:restoreOpenFolder";
@@ -678,6 +679,34 @@ function initializeDiabeticScreeningScrollLessons() {
     const { signal } = controller;
 
     let rafId = 0;
+
+    if (cue && cue.dataset.diabeticCueUpgraded !== "1") {
+      cue.dataset.diabeticCueUpgraded = "1";
+      cue.innerHTML = `
+        <div class="diabetic-screening-scroll-cue__pill">
+          <span class="diabetic-screening-scroll-cue__label">scroll<br>down</span>
+          <div class="diabetic-screening-scroll-cue__stack">
+            <img
+              class="diabetic-screening-scroll-cue__down"
+              src="/scrolly/workshop/childhood/eyesbrain/down.png"
+              alt=""
+              loading="eager"
+              draggable="false"
+            >
+            <img
+              class="diabetic-screening-scroll-cue__hand"
+              src="/scrolly/workshop/childhood/eyesbrain/hand.png"
+              alt=""
+              loading="eager"
+              draggable="false"
+            >
+            <span class="diabetic-screening-scroll-cue__chev"></span>
+            <span class="diabetic-screening-scroll-cue__chev"></span>
+            <span class="diabetic-screening-scroll-cue__chev"></span>
+          </div>
+        </div>
+      `;
+    }
 
     const isPageShown = () => {
       let node = page;
@@ -3070,6 +3099,7 @@ export function initializeDiabeticRetinopathyWorkshop() {
 
       const targetId = row.getAttribute("data-target");
       if (!targetId) return;
+      rememberDiabeticWorkshopFlowFromRow(row);
 
       const routeName = row.getAttribute("data-route");
       if (routeName === "videos") {

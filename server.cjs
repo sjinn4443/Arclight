@@ -272,12 +272,14 @@ function isEnabled(value) {
 
 const EMERGENCY_MODE_OFF = "off";
 const EMERGENCY_MODE_READONLY = "readonly";
-const EMERGENCY_MODE_MAINTENANCE = "maintenance";
+const EMERGENCY_MODE_EMERGENCY = "emergency";
+const EMERGENCY_MODE_MAINTENANCE_ALIAS = "maintenance";
 const EMERGENCY_MODE_LOCKDOWN = "lockdown";
 const VALID_EMERGENCY_MODES = new Set([
   EMERGENCY_MODE_OFF,
   EMERGENCY_MODE_READONLY,
-  EMERGENCY_MODE_MAINTENANCE,
+  EMERGENCY_MODE_EMERGENCY,
+  EMERGENCY_MODE_MAINTENANCE_ALIAS,
   EMERGENCY_MODE_LOCKDOWN,
 ]);
 const DEFAULT_EMERGENCY_MESSAGE =
@@ -287,7 +289,9 @@ function getEmergencyMode() {
   const raw = String(process.env.EMERGENCY_MODE || "")
     .trim()
     .toLowerCase();
-  return VALID_EMERGENCY_MODES.has(raw) ? raw : EMERGENCY_MODE_OFF;
+  if (!VALID_EMERGENCY_MODES.has(raw)) return EMERGENCY_MODE_OFF;
+  if (raw === EMERGENCY_MODE_MAINTENANCE_ALIAS) return EMERGENCY_MODE_EMERGENCY;
+  return raw;
 }
 
 function getEmergencyMessage(mode = getEmergencyMode()) {

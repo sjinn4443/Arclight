@@ -121,8 +121,8 @@ Arclight runs in multiple modes (dev/test/prod). A local `.env` is optional for 
 
 ### Emergency controls
 
-- `EMERGENCY_MODE`: `off` | `readonly` | `maintenance` | `lockdown`
-- `EMERGENCY_MESSAGE`: optional custom maintenance message used in `maintenance` and `lockdown`
+- `EMERGENCY_MODE`: `off` | `readonly` | `emergency` | `lockdown` (`maintenance` is still accepted as a legacy alias)
+- `EMERGENCY_MESSAGE`: optional custom maintenance message used in `emergency` and `lockdown`
 
 ### Telemetry encryption (optional)
 
@@ -177,7 +177,7 @@ Runtime expectations:
 ## Emergency controls
 
 - `readonly`: blocks `POST /api/app/profile`, `POST /api/app/refresh`, `POST /track`, and reports delete while keeping normal public GET routes available.
-- `maintenance`: returns a server-side `503` maintenance page for public HTML requests and `503` JSON for app APIs.
+- `emergency`: returns a server-side `503` maintenance page for public HTML requests and `503` JSON for app APIs.
 - `lockdown`: blocks all public traffic except `/healthz`, while reports/admin routes remain available only from allowlisted IPs plus valid Basic Auth.
 - `GET /healthz` always returns `{ ok: true, emergencyMode }` and can be used by uptime checks during an incident.
 
