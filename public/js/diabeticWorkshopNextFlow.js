@@ -9,6 +9,12 @@ const FOCUS_SELECTOR_KEY = "diabeticWorkshop:focusSelector";
 
 const INTERNAL_TARGETS = new Set([
   "diabeticPragmaticScreeningPage",
+  "diabeticNcdClinicScreeningPage",
+  "diabeticOtherEyeDiseasesScreeningPage",
+  "diabeticWhatIsDiabetesPage",
+  "diabeticTypesOfDiabetesPage",
+  "diabeticWhatIsRetinopathyPage",
+  "diabeticVisionLossInDiabetesPage",
   "diabeticArclightPackagePage",
 ]);
 
@@ -31,18 +37,40 @@ const DIABETIC_NAV_CONFIG = {
   },
   diabeticIntroductionToArclightVideoPage: {
     previous: { type: "target", target: "diabeticArclightPackagePage" },
-    next: {
-      type: "focus",
-      folderKey: "introduction",
-      focusSelector: '.lesson-row[data-lesson="screening-in-ncd-clinics"]',
+    next: { type: "target", target: "diabeticNcdClinicScreeningPage" },
+  },
+  diabeticNcdClinicScreeningPage: {
+    previous: {
+      type: "target",
+      target: "diabeticIntroductionToArclightVideoPage",
     },
+    next: { type: "target", target: "diabeticOtherEyeDiseasesScreeningPage" },
+  },
+  diabeticOtherEyeDiseasesScreeningPage: {
+    previous: { type: "target", target: "diabeticNcdClinicScreeningPage" },
+    next: { type: "target", target: "diabeticWhatIsDiabetesPage" },
+  },
+  diabeticWhatIsDiabetesPage: {
+    previous: {
+      type: "target",
+      target: "diabeticOtherEyeDiseasesScreeningPage",
+    },
+    next: { type: "target", target: "diabeticTypesOfDiabetesPage" },
+  },
+  diabeticTypesOfDiabetesPage: {
+    previous: { type: "target", target: "diabeticWhatIsDiabetesPage" },
+    next: { type: "target", target: "diabeticWhatIsRetinopathyPage" },
+  },
+  diabeticWhatIsRetinopathyPage: {
+    previous: { type: "target", target: "diabeticTypesOfDiabetesPage" },
+    next: { type: "target", target: "diabeticVisionLossInDiabetesPage" },
+  },
+  diabeticVisionLossInDiabetesPage: {
+    previous: { type: "target", target: "diabeticWhatIsRetinopathyPage" },
+    next: { type: "target", target: "diabeticCausesOfVisionLossVideoPage" },
   },
   diabeticCausesOfVisionLossVideoPage: {
-    previous: {
-      type: "focus",
-      folderKey: "whatIsDiabetes",
-      focusSelector: '.lesson-row[data-lesson="vision-loss"]',
-    },
+    previous: { type: "target", target: "diabeticVisionLossInDiabetesPage" },
     next: {
       type: "focus",
       folderKey: "ncdClinicFlow",

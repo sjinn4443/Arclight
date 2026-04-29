@@ -1,4 +1,9 @@
 import { loadPage } from "./navigation.js";
+import {
+  initializeDiabeticWorkshopProgressInfra,
+  setDiabeticLessonProgress,
+  updateDiabeticWorkshopProgressBars,
+} from "./diabeticWorkshopProgress.js";
 
 const DIABETIC_WORKSHOP_OPEN_FOLDER_KEY = "diabeticWorkshop:openFolderKey";
 const DIABETIC_WORKSHOP_RESTORE_OPEN_KEY = "diabeticWorkshop:restoreOpenFolder";
@@ -654,6 +659,126 @@ function initializeDiabeticArclightPackagePage() {
   bindArclightPackagePageShownListener();
 }
 
+function initializeDiabeticScreeningScrollLessons() {
+  const lessons = document.querySelectorAll("[data-diabetic-scroll-lesson]");
+
+  lessons.forEach((lesson) => {
+    if (lesson.dataset.diabeticScrollInited === "1") return;
+
+    const page = lesson.closest(".page");
+    const steps = Array.from(
+      lesson.querySelectorAll("[data-diabetic-scroll-step]"),
+    );
+    if (!page || steps.length === 0) return;
+
+    lesson.dataset.diabeticScrollInited = "1";
+    const scrollRoot = getWorkshopScrollRoot(lesson);
+    const cue = lesson.querySelector("[data-diabetic-scroll-cue]");
+    const controller = new AbortController();
+    const { signal } = controller;
+
+    let rafId = 0;
+
+    const isPageShown = () => {
+      let node = page;
+      while (node) {
+        const style = window.getComputedStyle(node);
+        if (style.display === "none" || style.visibility === "hidden") {
+          return false;
+        }
+        node = node.parentElement;
+      }
+      return true;
+    };
+
+    const render = () => {
+      rafId = 0;
+      if (!isPageShown()) return;
+
+      const rootMetrics = getWorkshopRootMetrics(scrollRoot);
+      const revealTop = rootMetrics.top + rootMetrics.height * 0.12;
+      const revealBottom = rootMetrics.top + rootMetrics.height * 0.84;
+      let hasCurrent = false;
+      let currentIndex = 0;
+
+      steps.forEach((step, index) => {
+        const rect = step.getBoundingClientRect();
+        const intersects = rect.top < revealBottom && rect.bottom > revealTop;
+        const shouldReveal =
+          intersects || (index === 0 && rect.top < revealBottom);
+
+        if (shouldReveal) step.classList.add("is-visible");
+
+        if (intersects && !hasCurrent) {
+          step.classList.add("is-current");
+          hasCurrent = true;
+          currentIndex = index;
+        } else {
+          step.classList.remove("is-current");
+        }
+      });
+
+      lesson.dataset.diabeticCurrentStep = String(currentIndex);
+
+      if (cue) {
+        const lessonRect = lesson.getBoundingClientRect();
+        const travel = Math.max(lessonRect.height - rootMetrics.height, 1);
+        const progress = clampWorkshopProgress(
+          (rootMetrics.top - lessonRect.top) / travel,
+        );
+        cue.classList.toggle("is-hidden", progress > 0.035);
+      }
+
+      lesson.querySelectorAll("[data-diabetic-zoom]").forEach((zoom) => {
+        const rect = zoom.getBoundingClientRect();
+        const progress = clampWorkshopProgress(
+          (rootMetrics.height * 0.78 - rect.top + rootMetrics.top) /
+            Math.max(rect.height + rootMetrics.height * 0.28, 1),
+        );
+        zoom.style.setProperty("--zoom-progress", progress.toFixed(4));
+      });
+    };
+
+    const scheduleRender = () => {
+      if (rafId) return;
+      rafId = window.requestAnimationFrame(render);
+    };
+
+    const listen = (target, type, handler, options = {}) => {
+      if (!target?.addEventListener) return;
+      target.addEventListener(type, handler, { ...options, signal });
+    };
+
+    steps[0]?.classList.add("is-visible");
+
+    if (scrollRoot === window) {
+      listen(window, "scroll", scheduleRender, { passive: true });
+    } else {
+      listen(scrollRoot, "scroll", scheduleRender, { passive: true });
+    }
+    listen(window, "resize", scheduleRender, { passive: true });
+    listen(window, "orientationchange", scheduleRender, { passive: true });
+    listen(document, "page:shown", (event) => {
+      if (event.detail?.id !== page.id) return;
+      steps[0]?.classList.add("is-visible");
+      cue?.classList.remove("is-hidden");
+      scheduleRender();
+      window.requestAnimationFrame(scheduleRender);
+    });
+
+    page._diabeticScreeningScrollCleanup = () => {
+      controller.abort();
+      if (rafId) {
+        window.cancelAnimationFrame(rafId);
+        rafId = 0;
+      }
+      delete page._diabeticScreeningScrollCleanup;
+    };
+
+    scheduleRender();
+  });
+}
+
 function showPageById(id) {
   if (!id) return;
 
@@ -1102,6 +1227,19 @@ function initializeHistoryImageMatchPage(workshopPage) {
     progressLabel.textContent = `Set ${currentStep} of ${state.rounds.length}`;
   };
 
+  const updateLessonProgress = () => {
+    const totalItems = HISTORY_IMAGE_MATCH_CASES.length || 1;
+    const placedCount = state.rounds.reduce(
+      (sum, round) => sum + round.assignments.size,
+      0,
+    );
+    const percent = state.hasCompletedQuiz
+      ? 100
+      : (placedCount / totalItems) * 90;
+
+    setDiabeticLessonProgress("diabeticHistoryImageMatchPage", percent);
+  };
+
   const updateDropTarget = (clientX, clientY) => {
     const hit = document.elementFromPoint(clientX, clientY);
     const row = hit?.closest?.(".diabetic-history-match__row[data-prompt-id]");
@@ -1353,6 +1491,7 @@ function initializeHistoryImageMatchPage(workshopPage) {
     renderProgress();
     renderImageBank();
     renderPromptList();
+    updateLessonProgress();
     submitButton.textContent =
       state.currentRoundIndex === state.rounds.length - 1
         ? "Submit answer"
@@ -1629,6 +1768,15 @@ function initializeRetinalStructureTapPage() {
     progressLabel.textContent = `Structure ${current} of ${RETINAL_STRUCTURE_TAP_STEPS.length}`;
   };
 
+  const updateLessonProgress = () => {
+    const answeredCount = state.answers.filter(Boolean).length;
+    const percent = state.isComplete
+      ? 100
+      : (answeredCount / RETINAL_STRUCTURE_TAP_STEPS.length) * 90;
+
+    setDiabeticLessonProgress("diabeticRetinalStructureTapPage", percent);
+  };
+
   const appendTargetArea = (target, className) => {
     const area = document.createElement("span");
     area.className = `retinal-structure-tap__target ${className}`.trim();
@@ -1754,6 +1902,7 @@ function initializeRetinalStructureTapPage() {
     renderProgress();
     renderPrompt();
     renderOverlay();
+    updateLessonProgress();
 
     idle.style.display = state.hasAnsweredCurrent ? "none" : "";
     result.style.display = state.hasAnsweredCurrent ? "" : "none";
@@ -1948,6 +2097,15 @@ function initializeReviewVideoQuizPage() {
     progressLabel.textContent = `Question ${displayIndex + 1} of ${REVIEW_VIDEO_QUIZ_STEPS.length}`;
   };
 
+  const updateLessonProgress = () => {
+    const answeredCount = state.answers.filter(Boolean).length;
+    const percent = state.isComplete
+      ? 100
+      : (answeredCount / REVIEW_VIDEO_QUIZ_STEPS.length) * 90;
+
+    setDiabeticLessonProgress("diabeticReviewVideoQuizPage", percent);
+  };
+
   const renderWaitingCard = () => {
     if (state.nextIndex === 0 && video.currentTime < 0.25) {
       waitingLabel.textContent = "Video prompt";
@@ -2044,6 +2202,7 @@ function initializeReviewVideoQuizPage() {
 
   const render = () => {
     renderProgress();
+    updateLessonProgress();
 
     waitingCard.hidden = state.activeIndex !== null || state.isComplete;
     questionCard.hidden = state.activeIndex === null;
@@ -2218,11 +2377,23 @@ function initializeFindingsGroupTwoPage() {
     if (variant) feedback.classList.add(variant);
   };
 
+  const updateLessonProgress = () => {
+    const placedCount = FINDINGS_GROUP_TWO_ITEMS.filter(
+      (item) => state.get(item.id) && state.get(item.id) !== "bank",
+    ).length;
+    const percent = submitButton.disabled
+      ? 100
+      : (placedCount / FINDINGS_GROUP_TWO_ITEMS.length) * 90;
+
+    setDiabeticLessonProgress("diabeticFindingsGroupTwoPage", percent);
+  };
+
   const updateZoneState = () => {
     zoneBodies.forEach((body) => {
       const hasChip = !!body.querySelector(".findings-group-quiz__chip");
       body.classList.toggle("is-filled", hasChip);
     });
+    updateLessonProgress();
   };
 
   const clearZoneHighlights = () => {
@@ -2591,6 +2762,15 @@ function initializeConnectQuizPage() {
     }).length;
   };
 
+  const updateLessonProgress = () => {
+    const assignedCount = state.findingOwners.size;
+    const percent = state.submitted
+      ? 100
+      : (assignedCount / CONNECT_QUIZ_FINDINGS.length) * 90;
+
+    setDiabeticLessonProgress("diabeticConnectQuizPage", percent);
+  };
+
   const renderAnswers = () => {
     answerList.innerHTML = "";
 
@@ -2805,6 +2985,7 @@ function initializeConnectQuizPage() {
     diagnoses.hidden = state.submitted;
     answers.hidden = !state.submitted;
     submitButton.textContent = state.submitted ? "Try again" : "Submit";
+    updateLessonProgress();
 
     if (state.submitted) {
       renderAnswers();
@@ -2874,7 +3055,9 @@ function initializeConnectQuizPage() {
 export function initializeDiabeticRetinopathyWorkshop() {
   const page = document.getElementById("diabeticRetinopathyWorkshopPage");
   if (!page) return;
+  initializeDiabeticWorkshopProgressInfra();
   setupWorkshopFolders(page);
+  updateDiabeticWorkshopProgressBars();
 
   const rows = page.querySelectorAll(".lesson-row[data-target]");
   rows.forEach((row) => {
@@ -2914,4 +3097,5 @@ export function initializeDiabeticRetinopathyWorkshop() {
   initializeFindingsGroupTwoPage();
   initializeConnectQuizPage();
   initializeDiabeticArclightPackagePage();
+  initializeDiabeticScreeningScrollLessons();
 }

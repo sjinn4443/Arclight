@@ -21,6 +21,7 @@ const EXTERNAL_GLAUCOMA_SCROLL_TARGETS = new Set([
 let externalGlaucomaNavInFlight = false;
 const CHILDHOOD_WORKSHOP_PROGRESS_PREFIX = "childhoodWorkshop:progress:";
 const CHILDHOOD_WORKSHOP_PROGRESS_EVENT = "childhoodWorkshop:progress-changed";
+const DIABETIC_WORKSHOP_PROGRESS_EVENT = "diabeticWorkshop:progress-changed";
 const CHILDHOOD_WORKSHOP_ROUTE_COMPLETE_EVENT =
   "childhoodWorkshop:route-complete";
 const FUNDAL_REFLEX_EXAMINATION_SCROLL_PAGE_ID =
@@ -159,6 +160,11 @@ function writeWorkshopProgressForTarget(
 
 function dispatchWorkshopProgressChanged(targetPageId) {
   if (!targetPageId) return;
+  document.dispatchEvent(
+    new CustomEvent(DIABETIC_WORKSHOP_PROGRESS_EVENT, {
+      detail: { target: targetPageId },
+    }),
+  );
   document.dispatchEvent(
     new CustomEvent("glaucomaWorkshop:progress-changed", {
       detail: { target: targetPageId },

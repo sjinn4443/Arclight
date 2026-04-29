@@ -3,6 +3,7 @@ import {
   initializeGlaucomaWorkshopProgressInfra,
   setGlaucomaLessonProgress,
 } from "./glaucomaWorkshopProgress.js";
+import { setDiabeticLessonProgress } from "./diabeticWorkshopProgress.js";
 
 function translateNode(node) {
   try {
@@ -421,6 +422,10 @@ function initGlaucomaSecondaryCauseDragQuiz() {
       "glaucomaSecondaryCauseQuizPage",
       inProgressPercent,
     );
+    setDiabeticLessonProgress(
+      "glaucomaSecondaryCauseQuizPage",
+      inProgressPercent,
+    );
   }
 
   function shuffle(arr) {
@@ -569,6 +574,7 @@ function initGlaucomaSecondaryCauseDragQuiz() {
     submitBtn.disabled = true;
     updateSecondaryProgress();
     setGlaucomaLessonProgress("glaucomaSecondaryCauseQuizPage", 100);
+    setDiabeticLessonProgress("glaucomaSecondaryCauseQuizPage", 100);
 
     let correct = 0;
     ITEMS.forEach((it) => {
