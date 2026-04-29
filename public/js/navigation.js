@@ -300,6 +300,12 @@ function updateRouteHistory(routeName, replace) {
 
   if (replace && historyStack.length > 0) {
     historyStack[historyStack.length - 1] = routeName;
+    if (
+      historyStack.length > 1 &&
+      historyStack[historyStack.length - 2] === routeName
+    ) {
+      historyStack.pop();
+    }
     return;
   }
 
@@ -319,6 +325,12 @@ function updatePageHistory(routeName, subPageId = null, replace = false) {
 
   if (replace && pageHistoryStack.length > 0) {
     pageHistoryStack[pageHistoryStack.length - 1] = entry;
+    if (
+      pageHistoryStack.length > 1 &&
+      samePageHistoryEntry(pageHistoryStack[pageHistoryStack.length - 2], entry)
+    ) {
+      pageHistoryStack.pop();
+    }
     return;
   }
 
@@ -354,6 +366,17 @@ function recordShownSubPage(id) {
   }
 
   pageHistoryStack.push(nextEntry);
+}
+
+const STRUCTURAL_BACK_ROUTES = {
+  diabeticRetinopathyWorkshop: "eyes",
+  eyes: "dashboard",
+};
+
+function getStructuralBackRoute(routeName) {
+  const normalizedRoute = normalizeRouteName(routeName);
+  if (!normalizedRoute) return null;
+  return normalizeRouteName(STRUCTURAL_BACK_ROUTES[normalizedRoute]);
 }
 
 function buildHashFromRoute(routeName, subPageId = null) {
@@ -696,6 +719,15 @@ export function goBack() {
       subPageId: previousEntry.subPageId,
     }).finally(() => {
       isApplyingBackNavigation = false;
+    });
+    return;
+  }
+
+  const structuralRoute = getStructuralBackRoute(currentPageName);
+  if (structuralRoute) {
+    loadPage(structuralRoute, {
+      replace: true,
+      force: structuralRoute === currentRoute,
     });
     return;
   }

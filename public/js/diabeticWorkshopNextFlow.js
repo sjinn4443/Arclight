@@ -130,6 +130,16 @@ const DIABETIC_NAV_CONFIG = {
 
 let diabeticNextInfraWired = false;
 
+function clearWorkshopReturnFlags() {
+  try {
+    sessionStorage.removeItem(RESTORE_OPEN_KEY);
+    sessionStorage.removeItem(OPEN_FOLDER_KEY);
+    sessionStorage.removeItem(FOCUS_SELECTOR_KEY);
+  } catch {
+    /* ignore session storage failures */
+  }
+}
+
 function isFlowEnabled() {
   try {
     return sessionStorage.getItem(FLOW_ENABLED_KEY) === "1";
@@ -239,7 +249,10 @@ async function navigateToWorkshopSection(folderKey, focusSelector) {
 
   removeNextButtons();
   setFlowEnabled(false);
-  await loadPage("diabeticRetinopathyWorkshop");
+  await loadPage("diabeticRetinopathyWorkshop", {
+    force: true,
+    replace: true,
+  });
   resetViewportToTopSoon();
 }
 
@@ -281,16 +294,13 @@ async function navigateToTarget(target) {
   removeNextButtons();
 
   if (target === WORKSHOP_HOME) {
-    try {
-      sessionStorage.removeItem(RESTORE_OPEN_KEY);
-      sessionStorage.removeItem(OPEN_FOLDER_KEY);
-      sessionStorage.removeItem(FOCUS_SELECTOR_KEY);
-    } catch {
-      /* ignore session storage failures */
-    }
+    clearWorkshopReturnFlags();
 
     setFlowEnabled(false);
-    await loadPage("diabeticRetinopathyWorkshop");
+    await loadPage("diabeticRetinopathyWorkshop", {
+      force: true,
+      replace: true,
+    });
 
     if (typeof window.showPage === "function") {
       window.showPage(WORKSHOP_PAGE_ID);
@@ -307,13 +317,7 @@ async function navigateToTarget(target) {
 
   if (INTERNAL_TARGETS.has(target)) {
     setFlowEnabled(true);
-    try {
-      sessionStorage.removeItem(RESTORE_OPEN_KEY);
-      sessionStorage.removeItem(OPEN_FOLDER_KEY);
-      sessionStorage.removeItem(FOCUS_SELECTOR_KEY);
-    } catch {
-      /* ignore session storage failures */
-    }
+    clearWorkshopReturnFlags();
 
     await loadPage("diabeticRetinopathyWorkshop");
 
@@ -352,6 +356,30 @@ async function navigateToTarget(target) {
 
     resetViewportToTopSoon();
   }
+}
+
+function shouldUseDiabeticStructuralBack() {
+  const visibleId = getVisiblePageId();
+  return (
+    visibleId === WORKSHOP_PAGE_ID ||
+    INTERNAL_TARGETS.has(visibleId) ||
+    VIDEO_TARGETS.has(visibleId)
+  );
+}
+
+async function navigateBackByDiabeticStructure() {
+  const visibleId = getVisiblePageId();
+  removeNextButtons();
+  setFlowEnabled(false);
+
+  if (visibleId === WORKSHOP_PAGE_ID) {
+    clearWorkshopReturnFlags();
+    await loadPage("eyes", { replace: true, force: true });
+    resetViewportToTopSoon();
+    return;
+  }
+
+  await navigateToTarget(WORKSHOP_HOME);
 }
 
 async function navigateByConfig(step) {
@@ -420,6 +448,24 @@ function renderNextButtonForTarget(targetId) {
 export function initializeDiabeticWorkshopNextFlowInfra() {
   if (diabeticNextInfraWired) return;
   diabeticNextInfraWired = true;
+
+  document.addEventListener(
+    "click",
+    (event) => {
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+      if (!target.closest("#backBtnGlobal")) return;
+      if (!shouldUseDiabeticStructuralBack()) return;
+
+      event.preventDefault();
+      event.stopPropagation();
+      if (typeof event.stopImmediatePropagation === "function") {
+        event.stopImmediatePropagation();
+      }
+      void navigateBackByDiabeticStructure();
+    },
+    true,
+  );
 
   document.addEventListener("page:shown", (event) => {
     const shownId = String(event.detail?.id || "");
