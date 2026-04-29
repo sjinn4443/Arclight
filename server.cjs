@@ -21,6 +21,7 @@ const {
   trackingRateLimiter,
 } = require("./security/rateLimit.cjs");
 const {
+  injectNonceIntoHtml,
   resolveStaticHtmlFile,
   sendHtmlFileWithNonce,
 } = require("./security/html-response.cjs");
@@ -283,7 +284,7 @@ const VALID_EMERGENCY_MODES = new Set([
   EMERGENCY_MODE_LOCKDOWN,
 ]);
 const DEFAULT_EMERGENCY_MESSAGE =
-  "We\u2019re currently performing security maintenance. Please try again later.";
+  "We\u2019re currently performing maintenance. Some features may be unavailable.";
 
 function getEmergencyMode() {
   const raw = String(process.env.EMERGENCY_MODE || "")
@@ -298,7 +299,7 @@ function getEmergencyMessage(mode = getEmergencyMode()) {
   const trimmed = String(process.env.EMERGENCY_MESSAGE || "").trim();
   if (trimmed) return trimmed;
   if (mode === EMERGENCY_MODE_LOCKDOWN) {
-    return "Access is temporarily restricted while we secure the service. Please try again later.";
+    return "Access is temporarily restricted while maintenance is in progress. Please try again later.";
   }
   return DEFAULT_EMERGENCY_MESSAGE;
 }
@@ -403,36 +404,36 @@ function renderNotFoundPage() {
 function getEmergencyPageConfig(mode = getEmergencyMode()) {
   if (mode === EMERGENCY_MODE_LOCKDOWN) {
     return {
-      badge: "Security Lockdown",
-      title: "Arclight Security Lockdown",
+      badge: "Restricted Access",
+      title: "Arclight Restricted Access",
       heading: "Access to Arclight app is temporarily restricted.",
-      backgroundGlow: "rgba(28, 78, 128, 0.18)",
-      backgroundStart: "#eef4fb",
-      backgroundEnd: "#dde8f5",
-      panel: "rgba(249, 252, 255, 0.92)",
-      text: "#16263a",
-      muted: "#44566c",
-      accent: "#1c4e80",
-      border: "rgba(22, 38, 58, 0.12)",
-      shadow: "0 28px 80px rgba(22, 38, 58, 0.16)",
-      badgeBackground: "rgba(28, 78, 128, 0.1)",
+      backgroundGlow: "rgba(185, 28, 28, 0.12)",
+      backgroundStart: "#f6f2ed",
+      backgroundEnd: "#eee8df",
+      panel: "rgba(255, 255, 255, 0.94)",
+      text: "#172033",
+      muted: "#536072",
+      accent: "#b91c1c",
+      border: "rgba(23, 32, 51, 0.08)",
+      shadow: "0 30px 90px rgba(23, 32, 51, 0.14)",
+      badgeBackground: "rgba(185, 28, 28, 0.1)",
     };
   }
 
   return {
-    badge: "Security Maintenance",
-    title: "Arclight Security Maintenance",
-    heading: "Arclight app is temporarily unavailable.",
-    backgroundGlow: "rgba(143, 45, 31, 0.16)",
-    backgroundStart: "#f8f5ee",
-    backgroundEnd: "#f5f1ea",
-    panel: "rgba(255, 255, 255, 0.9)",
-    text: "#1f2933",
-    muted: "#5b6975",
-    accent: "#8f2d1f",
-    border: "rgba(31, 41, 51, 0.12)",
-    shadow: "0 24px 64px rgba(31, 41, 51, 0.12)",
-    badgeBackground: "rgba(143, 45, 31, 0.1)",
+    badge: "Maintenance",
+    title: "Arclight Maintenance",
+    heading: "Arclight is temporarily unavailable.",
+    backgroundGlow: "rgba(185, 28, 28, 0.11)",
+    backgroundStart: "#f7f3ee",
+    backgroundEnd: "#efebe4",
+    panel: "rgba(255, 255, 255, 0.95)",
+    text: "#142033",
+    muted: "#536174",
+    accent: "#b91c1c",
+    border: "rgba(20, 32, 51, 0.08)",
+    shadow: "0 32px 90px rgba(20, 32, 51, 0.14)",
+    badgeBackground: "rgba(185, 28, 28, 0.1)",
   };
 }
 
@@ -467,29 +468,32 @@ function renderEmergencyPage(mode = getEmergencyMode()) {
         place-items: center;
         padding: 24px;
         background:
-          radial-gradient(circle at top, var(--glow), transparent 42%),
+          radial-gradient(circle at 50% 18%, var(--glow), transparent 38%),
           linear-gradient(160deg, var(--bg-start) 0%, var(--bg-end) 100%);
         color: var(--text);
-        font-family: "Segoe UI", Arial, sans-serif;
+        font-family: Inter, "Segoe UI", Arial, sans-serif;
       }
       main {
-        width: min(100%, 640px);
-        padding: 32px;
+        width: min(100%, 638px);
+        padding: clamp(32px, 5vw, 42px);
         border: 1px solid var(--border);
-        border-radius: 20px;
+        border-radius: 8px;
         background: var(--panel);
         box-shadow: var(--shadow);
       }
       h1 {
         margin: 0 0 12px;
-        font-size: clamp(2rem, 5vw, 3rem);
+        max-width: 520px;
+        font-size: clamp(2.25rem, 5vw, 3.25rem);
+        font-weight: 800;
         line-height: 1.05;
-        letter-spacing: -0.03em;
+        letter-spacing: 0;
       }
       p {
         margin: 0;
+        max-width: 560px;
         color: var(--muted);
-        font-size: 1rem;
+        font-size: 1.02rem;
         line-height: 1.7;
       }
       .badge {
@@ -501,7 +505,7 @@ function renderEmergencyPage(mode = getEmergencyMode()) {
         border-radius: 999px;
         background: var(--badge-bg);
         color: var(--accent);
-        font-size: 0.82rem;
+        font-size: 0.8rem;
         font-weight: 700;
         letter-spacing: 0.08em;
         text-transform: uppercase;
@@ -543,7 +547,9 @@ function sendEmergencyHtml(req, res, mode = getEmergencyMode()) {
   res.set("Cache-Control", "no-store");
   res.type("html");
   if (req.method === "HEAD") return res.end();
-  return res.send(renderEmergencyPage(mode));
+  return res.send(
+    injectNonceIntoHtml(renderEmergencyPage(mode), res.locals?.cspNonce),
+  );
 }
 
 function sendEmergencyJson(req, res, mode = getEmergencyMode()) {
