@@ -432,7 +432,9 @@ function setPackageLabelState(element, { opacity = 0, x = 0, y = 0 } = {}) {
 
 function renderArclightPackageScene(elements, rawProgress) {
   const progress = clampWorkshopProgress(rawProgress);
-  const cueOpacity = 0;
+  const cueEnterOpacity = mixWorkshopProgress(rawProgress, -0.006, 0.012);
+  const cueExitOpacity = 1 - mixWorkshopProgress(progress, 0.045, 0.075);
+  const cueOpacity = cueEnterOpacity * cueExitOpacity;
   const contentOpacity = 1;
   const visualPhase = mixWorkshopProgress(progress, 0.04, 0.58);
   const devicePhase = mixWorkshopProgress(progress, 0.62, 1);
@@ -613,13 +615,12 @@ function initializeDiabeticArclightPackagePage() {
       const rootMetrics = getWorkshopRootMetrics(scrollRoot);
       const storyRect = story.getBoundingClientRect();
       const travel = Math.max(storyRect.height - rootMetrics.height, 1);
-      const progress = clampWorkshopProgress(
-        (rootMetrics.top - storyRect.top) / travel,
-      );
+      const rawProgress = (rootMetrics.top - storyRect.top) / travel;
+      const progress = clampWorkshopProgress(rawProgress);
 
-      if (Math.abs(progress - lastProgress) < 0.0005) return;
-      lastProgress = progress;
-      renderArclightPackageScene(elements, progress);
+      if (Math.abs(rawProgress - lastProgress) < 0.0005) return;
+      lastProgress = rawProgress;
+      renderArclightPackageScene(elements, rawProgress);
     });
   };
 
@@ -656,7 +657,7 @@ function initializeDiabeticArclightPackagePage() {
     delete page._diabeticArclightPackageScheduleRender;
   };
 
-  renderArclightPackageScene(elements, 0);
+  renderArclightPackageScene(elements, -1);
   bindArclightPackagePageShownListener();
 }
 
@@ -778,6 +779,67 @@ function initializeDiabeticScreeningScrollLessons() {
       target.addEventListener(type, handler, { ...options, signal });
     };
 
+    lesson.querySelectorAll("[data-diabetic-wheel-zoom]").forEach((zoom) => {
+      if (zoom.dataset.diabeticWheelZoomWired === "1") return;
+      zoom.dataset.diabeticWheelZoomWired = "1";
+      zoom.style.setProperty("--zoom-progress", "0");
+
+      listen(
+        zoom,
+        "wheel",
+        (event) => {
+          event.preventDefault();
+          const current = Number.parseFloat(
+            zoom.style.getPropertyValue("--zoom-progress") || "0",
+          );
+          const direction = event.deltaY > 0 ? 1 : -1;
+          const next = clampWorkshopProgress(current + direction * 0.08);
+          zoom.style.setProperty("--zoom-progress", next.toFixed(4));
+        },
+        { passive: false },
+      );
+    });
+
+    lesson
+      .querySelectorAll("video[data-diabetic-video-start]")
+      .forEach((video) => {
+        if (video.dataset.diabeticClipWired === "1") return;
+        video.dataset.diabeticClipWired = "1";
+
+        const start = Number.parseFloat(
+          video.dataset.diabeticVideoStart || "0",
+        );
+        const end = Number.parseFloat(video.dataset.diabeticVideoEnd || "0");
+
+        const seekToStart = () => {
+          if (!Number.isFinite(start) || start <= 0) return;
+          if (
+            video.currentTime >= start - 0.1 &&
+            (!Number.isFinite(end) || end <= 0 || video.currentTime < end)
+          ) {
+            return;
+          }
+          try {
+            video.currentTime = start;
+          } catch {
+            /* ignore media seek failures */
+          }
+        };
+
+        listen(video, "loadedmetadata", seekToStart);
+        listen(video, "play", seekToStart);
+        listen(video, "timeupdate", () => {
+          if (!Number.isFinite(end) || end <= 0) return;
+          if (video.currentTime < end) return;
+          try {
+            video.pause();
+            video.currentTime = end;
+          } catch {
+            /* ignore media pause failures */
+          }
+        });
+      });
+
     steps[0]?.classList.add("is-visible");
 
     if (scrollRoot === window) {
@@ -791,6 +853,20 @@ function initializeDiabeticScreeningScrollLessons() {
       if (event.detail?.id !== page.id) return;
       steps[0]?.classList.add("is-visible");
       cue?.classList.remove("is-hidden");
+      lesson
+        .querySelectorAll("video[data-diabetic-video-start]")
+        .forEach((video) => {
+          const start = Number.parseFloat(
+            video.dataset.diabeticVideoStart || "0",
+          );
+          if (!Number.isFinite(start) || start <= 0) return;
+          try {
+            video.pause();
+            video.currentTime = start;
+          } catch {
+            /* ignore media reset failures */
+          }
+        });
       scheduleRender();
       window.requestAnimationFrame(scheduleRender);
     });

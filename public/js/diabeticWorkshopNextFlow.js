@@ -74,10 +74,6 @@ const DIABETIC_NAV_CONFIG = {
   },
   diabeticVisionLossInDiabetesPage: {
     previous: { type: "target", target: "diabeticWhatIsRetinopathyPage" },
-    next: { type: "target", target: "diabeticCausesOfVisionLossVideoPage" },
-  },
-  diabeticCausesOfVisionLossVideoPage: {
-    previous: { type: "target", target: "diabeticVisionLossInDiabetesPage" },
     next: { type: "focus", folderKey: "whatIsDiabetes" },
   },
   diabeticNcdFlowIntroductionPage: {

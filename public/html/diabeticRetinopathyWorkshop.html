@@ -127,7 +127,8 @@
             <div class="thumb" aria-hidden="true"></div>
             <div class="lesson-main">
               <div class="lesson-top">
-                <span class="lesson-type">Pragmatic DR Screening</span
+                <span class="lesson-type"
+                  >Introduction to Pragmatic DR Screening</span
                 ><span class="lesson-meta"></span>
               </div>
               <div
@@ -330,30 +331,6 @@
               <div class="lesson-top">
                 <span class="lesson-type">Vision Loss in Diabetes</span
                 ><span class="lesson-meta"></span>
-              </div>
-              <div
-                class="lesson-progress"
-                role="progressbar"
-                aria-valuemin="0"
-                aria-valuemax="100"
-              >
-                <div class="lesson-progress__fill" style="width: 0%"></div>
-              </div>
-            </div>
-            <span class="lesson-cta">Start &gt;</span>
-          </div>
-          <div
-            class="lesson-row lesson-row--video"
-            data-target="diabeticCausesOfVisionLossVideoPage"
-            data-route="videos"
-            role="button"
-            tabindex="0"
-          >
-            <div class="thumb" aria-hidden="true"></div>
-            <div class="lesson-main">
-              <div class="lesson-top">
-                <span class="lesson-type">Causes of Loss of Vision</span
-                ><span class="lesson-meta">| 00:00</span>
               </div>
               <div
                 class="lesson-progress"
@@ -1614,7 +1591,9 @@
   class="page pupils-like has-eyes-topbar"
   style="display: none"
 >
-  <div class="container pupils-container diabetic-pragmatic-page">
+  <div
+    class="container pupils-container diabetic-screening-page diabetic-pragmatic-page"
+  >
     <div class="eyes-topbar">
       <div class="eyes-topbar__title">Eyes</div>
       <div class="eyes-topbar__icons">
@@ -1625,26 +1604,54 @@
     <h2 class="pupils-subtitle"></h2>
 
     <section
-      class="diabetic-pragmatic-story"
-      aria-label="Pragmatic diabetic retinopathy screening"
+      class="diabetic-screening-lesson diabetic-screening-lesson--compact-start"
+      data-diabetic-scroll-lesson
+      aria-label="Introduction to pragmatic diabetic retinopathy screening"
     >
-      <h2 class="diabetic-pragmatic-story__title">
-        Pragmatic Diabetic Retinopathy Screening
-      </h2>
+      <div
+        class="diabetic-screening-scroll-cue"
+        data-diabetic-scroll-cue
+        aria-hidden="true"
+      >
+        <span>scroll</span>
+        <i></i>
+        <i></i>
+        <i></i>
+      </div>
 
-      <div class="diabetic-pragmatic-story__copy">
+      <header class="diabetic-screening-hero" data-diabetic-scroll-step>
+        <p class="diabetic-screening-eyebrow">Introduction</p>
+        <h2>Introduction to Pragmatic DR Screening</h2>
         <p>
-          This is a non-traditional, pragmatic diabetic eye screening strategy
-          designed for general primary and secondary level health care settings.
+          A practical diabetic eye screening strategy for primary and secondary
+          level health care settings.
         </p>
-        <p>
-          It aims to integrate screening into general medical and
-          non-communicable disease (NCD) clinics.
-        </p>
-        <p>
-          Mid-level eye care and some general health care workers can deliver
-          this screening using the Arclight Package.
-        </p>
+      </header>
+
+      <div class="diabetic-screening-stack">
+        <article
+          class="diabetic-screening-panel diabetic-pragmatic-panel"
+          data-diabetic-scroll-step
+        >
+          <div class="diabetic-pragmatic-points">
+            <p>
+              <span class="diabetic-screening-step">01</span>
+              This is a non-traditional, pragmatic diabetic eye screening
+              strategy designed for general primary and secondary level health
+              care settings.
+            </p>
+            <p>
+              <span class="diabetic-screening-step">02</span>
+              It aims to integrate screening into general medical and
+              non-communicable disease (NCD) clinics.
+            </p>
+            <p>
+              <span class="diabetic-screening-step">03</span>
+              Mid-level eye care and some general health care workers can
+              deliver this screening using the Arclight Package.
+            </p>
+          </div>
+        </article>
       </div>
     </section>
   </div>
@@ -1682,7 +1689,7 @@
       </div>
 
       <header class="diabetic-screening-hero" data-diabetic-scroll-step>
-        <p class="diabetic-screening-eyebrow">Opportunistic screening</p>
+        <p class="diabetic-screening-eyebrow">NCD clinic eye screening</p>
         <h2>Pragmatic Diabetic Retinopathy Screening in NCD Clinics</h2>
         <p>
           Bring diabetic eye screening into the clinic where people with
@@ -1694,22 +1701,29 @@
         <article class="diabetic-screening-panel" data-diabetic-scroll-step>
           <div class="diabetic-screening-panel__text">
             <span class="diabetic-screening-step">01</span>
-            <h3>The missed eye check</h3>
+            <h3>The missed eye screening</h3>
             <p>
               People with diabetes rarely have an eye examination in their
               routine medical care.
             </p>
           </div>
-          <div class="diabetic-screening-visual">
-            <p class="diabetic-screening-visual__label">
-              Image placeholder: routine diabetes clinic visit without an eye
-              check
-            </p>
-            <div class="diabetic-screening-placeholder"></div>
-          </div>
+          <figure
+            class="diabetic-no-eye-check"
+            aria-label="Diabetes clinic visit without eye screening"
+          >
+            <img
+              src="/images/learning/Diabetic/Diabetes/1.Intro/diabetesnoeyecheck.webp"
+              alt="Diabetes clinic visit without eye screening"
+              loading="lazy"
+            />
+            <span aria-hidden="true">&times;</span>
+          </figure>
         </article>
 
-        <article class="diabetic-screening-panel" data-diabetic-scroll-step>
+        <article
+          class="diabetic-screening-panel diabetic-screening-panel--content-fit"
+          data-diabetic-scroll-step
+        >
           <div class="diabetic-screening-panel__text">
             <span class="diabetic-screening-step">02</span>
             <h3>Put screening where patients already are</h3>
@@ -1718,58 +1732,32 @@
               mid-level eye care specialist in a general medical or NCD clinic.
             </p>
           </div>
-          <div class="diabetic-screening-visual">
-            <p class="diabetic-screening-visual__label">
-              Image placeholder: trained eye care worker using Arclight in an
-              NCD clinic
-            </p>
-            <div class="diabetic-screening-placeholder"></div>
-          </div>
         </article>
 
         <article class="diabetic-screening-panel" data-diabetic-scroll-step>
           <div class="diabetic-screening-panel__text">
             <span class="diabetic-screening-step">03</span>
-            <h3>A higher-risk clinic population</h3>
+            <h3>A higher-risk</h3>
             <p>
-              Patients attending these clinics are at higher risk of all forms
-              of eye disease, including sight-threatening diabetic retinopathy.
+              The patients attending these clinics are at higher risk of having
+              all forms of eye disease including sight threatening DR.
             </p>
-          </div>
-          <div class="diabetic-screening-visual">
-            <p class="diabetic-screening-visual__label">
-              Image placeholder: NCD clinic flow with high-risk diabetic
-              patients highlighted
-            </p>
-            <div class="diabetic-screening-placeholder"></div>
-          </div>
-        </article>
-
-        <article
-          class="diabetic-screening-panel diabetic-screening-panel--callout"
-          data-diabetic-scroll-step
-        >
-          <div class="diabetic-screening-panel__text">
-            <span class="diabetic-screening-step">04</span>
-            <h3>Actively screen during routine care</h3>
             <p>
-              It therefore makes sense to actively and opportunistically screen
-              for diabetic retinopathy and other eye diseases in these clinics.
+              It makes sense therefore to actively and opportunistically screen
+              for DR as well as other eye diseases in these clinics.
             </p>
           </div>
-          <div class="diabetic-screening-flow" aria-label="Screening flow">
+          <div
+            class="diabetic-screening-flow diabetic-screening-flow--connected"
+            aria-label="Screening flow"
+          >
             <span>Medical / NCD clinic</span>
             <b></b>
-            <span>Eye screening station</span>
+            <span class="diabetic-screening-flow__station"
+              >Eye screening station</span
+            >
             <b></b>
             <span>Refer or treat earlier</span>
-          </div>
-          <div class="diabetic-screening-visual">
-            <p class="diabetic-screening-visual__label">
-              Image placeholder: simple pathway from NCD clinic to eye screening
-              and referral
-            </p>
-            <div class="diabetic-screening-placeholder"></div>
           </div>
         </article>
       </div>
@@ -1809,7 +1797,7 @@
       </div>
 
       <header class="diabetic-screening-hero" data-diabetic-scroll-step>
-        <p class="diabetic-screening-eyebrow">Whole-eye screening</p>
+        <p class="diabetic-screening-eyebrow">Eye screening</p>
         <h2>Screening Diabetic Retinopathy and Other Eye Diseases</h2>
         <p>
           Diabetic retinopathy matters, but it is not the only common cause of
@@ -1823,88 +1811,63 @@
             <span class="diabetic-screening-step">01</span>
             <h3>Look beyond diabetic retinopathy</h3>
             <p>Alongside diabetic retinopathy, these patients commonly have:</p>
-            <ul class="diabetic-screening-chip-list">
-              <li>Refractive error</li>
-              <li>Presbyopia</li>
-              <li>Cataract</li>
-              <li>Glaucoma</li>
-            </ul>
-          </div>
-          <div class="diabetic-screening-visual">
-            <p class="diabetic-screening-visual__label">
-              Image placeholders: specs, glaucoma, diabetic retinopathy
-            </p>
-            <div class="diabetic-screening-image-grid">
-              <div>
-                <p class="diabetic-screening-visual__label">
-                  Image placeholder: specs
-                </p>
-                <div class="diabetic-screening-placeholder"></div>
-              </div>
-              <div>
-                <p class="diabetic-screening-visual__label">
-                  Image placeholder: glaucoma
-                </p>
-                <div class="diabetic-screening-placeholder"></div>
-              </div>
-              <div>
-                <p class="diabetic-screening-visual__label">
-                  Image placeholder: DR retina
-                </p>
-                <div class="diabetic-screening-placeholder"></div>
-              </div>
-            </div>
-          </div>
-        </article>
-
-        <article
-          class="diabetic-screening-panel diabetic-screening-panel--warning"
-          data-diabetic-scroll-step
-        >
-          <div class="diabetic-screening-panel__text">
-            <span class="diabetic-screening-step">02</span>
-            <h3>Retina-only screening can miss treatable disease</h3>
             <p>
               If screening focuses only on retinopathy, many treatable causes of
               sight loss can be missed.
             </p>
           </div>
-          <div class="diabetic-screening-visual">
-            <p class="diabetic-screening-visual__label">
-              Image placeholder: narrow fundoscopy-only pathway missing other
-              eye disease
-            </p>
-            <div class="diabetic-screening-placeholder"></div>
-          </div>
+          <ul
+            class="diabetic-eye-disease-collage"
+            aria-label="Treatable eye disease collage"
+          >
+            <li>
+              <img
+                src="/images/learning/Diabetic/Diabetes/1.Intro/RefractiveError.webp"
+                alt="Refractive error"
+                loading="lazy"
+              />
+              <span>Refractive error</span>
+            </li>
+            <li>
+              <img
+                src="/images/learning/Diabetic/Diabetes/1.Intro/Presbyopia.webp"
+                alt="Presbyopia"
+                loading="lazy"
+              />
+              <span>Presbyopia</span>
+            </li>
+            <li>
+              <img
+                src="/images/learning/Diabetic/Diabetes/1.Intro/Cataract.webp"
+                alt="Cataract"
+                loading="lazy"
+              />
+              <span>Cataract</span>
+            </li>
+            <li>
+              <img
+                src="/images/learning/Diabetic/Diabetes/1.Intro/Glaucoma.webp"
+                alt="Glaucoma"
+                loading="lazy"
+              />
+              <span>Glaucoma</span>
+            </li>
+          </ul>
         </article>
 
         <article class="diabetic-screening-panel" data-diabetic-scroll-step>
           <div class="diabetic-screening-panel__text">
-            <span class="diabetic-screening-step">03</span>
-            <h3>Fundoscopy is essential, but not enough</h3>
+            <span class="diabetic-screening-step">02</span>
+            <h3>Fundoscopy is essential, but also...</h3>
             <p>
               Screening typically focuses on looking at the back of the eye by
               performing fundoscopy.
             </p>
             <p>
               We will use the Arclight direct ophthalmoscope to examine the
-              retina through a dilated pupil, but the screening encounter should
-              include more than this.
+              retina through a dilated pupil, but the screening should include
+              more than this. Also include:
             </p>
-          </div>
-          <div class="diabetic-screening-visual">
-            <p class="diabetic-screening-visual__label">
-              Image placeholder: Arclight direct ophthalmoscope examining the
-              dilated retina
-            </p>
-            <div class="diabetic-screening-placeholder"></div>
-          </div>
-        </article>
-
-        <article class="diabetic-screening-panel" data-diabetic-scroll-step>
-          <div class="diabetic-screening-panel__text">
-            <span class="diabetic-screening-step">04</span>
-            <h3>Build a fuller screening sequence</h3>
             <ol class="diabetic-screening-checklist">
               <li>Take a history</li>
               <li>Test visual acuity</li>
@@ -1914,26 +1877,6 @@
               <li>Then dilate the pupils for fundoscopy</li>
             </ol>
           </div>
-          <div class="diabetic-screening-mini-visuals">
-            <div>
-              <p class="diabetic-screening-visual__label">
-                Image placeholder: visual acuity test
-              </p>
-              <div class="diabetic-screening-placeholder"></div>
-            </div>
-            <div>
-              <p class="diabetic-screening-visual__label">
-                Image placeholder: front-of-eye Arclight loupe exam
-              </p>
-              <div class="diabetic-screening-placeholder"></div>
-            </div>
-            <div>
-              <p class="diabetic-screening-visual__label">
-                Image placeholder: red reflex before dilation
-              </p>
-              <div class="diabetic-screening-placeholder"></div>
-            </div>
-          </div>
         </article>
 
         <article
@@ -1941,7 +1884,7 @@
           data-diabetic-scroll-step
         >
           <div class="diabetic-screening-panel__text">
-            <span class="diabetic-screening-step">05</span>
+            <span class="diabetic-screening-step">03</span>
             <h3>Identify more treatable causes of sight loss</h3>
             <p>These additional examinations help identify patients with:</p>
             <ul class="diabetic-screening-chip-list">
@@ -1954,13 +1897,6 @@
               If screening focuses only on retinopathy, many treatable causes of
               sight loss can be missed.
             </p>
-          </div>
-          <div class="diabetic-screening-visual">
-            <p class="diabetic-screening-visual__label">
-              Image placeholder: complete eye screening finds refractive error,
-              presbyopia, cataract, glaucoma, and DR
-            </p>
-            <div class="diabetic-screening-placeholder"></div>
           </div>
         </article>
       </div>
@@ -1984,7 +1920,7 @@
     <h2 class="pupils-subtitle"></h2>
 
     <section
-      class="diabetic-screening-lesson"
+      class="diabetic-screening-lesson diabetic-screening-lesson--tight-hero"
       data-diabetic-scroll-lesson
       aria-label="What is diabetes"
     >
@@ -2002,13 +1938,14 @@
       <header class="diabetic-screening-hero" data-diabetic-scroll-step>
         <p class="diabetic-screening-eyebrow">Blood sugar and insulin</p>
         <h2>What is Diabetes?</h2>
-        <p>
-          Diabetes means the sugar level in the blood is too high for too long.
-        </p>
+        <p>Diabetes means the sugar level in the blood is too high.</p>
       </header>
 
       <div class="diabetic-screening-stack">
-        <article class="diabetic-screening-panel" data-diabetic-scroll-step>
+        <article
+          class="diabetic-screening-panel diabetic-screening-panel--content-fit"
+          data-diabetic-scroll-step
+        >
           <div class="diabetic-screening-panel__text">
             <span class="diabetic-screening-step">01</span>
             <h3>Food becomes glucose</h3>
@@ -2018,25 +1955,35 @@
             </p>
           </div>
           <div
-            class="diabetes-glucose-graphic"
-            aria-label="Food becomes glucose graphic"
+            class="diabetes-food-transform"
+            aria-label="Food breaks down and becomes glucose"
           >
-            <p class="diabetic-screening-visual__label">
-              Interactive graphic: food changing into glucose in the bloodstream
-            </p>
-            <div class="diabetes-glucose-graphic__plate">
-              <span>rice</span>
-              <span>bread</span>
-              <span>fruit</span>
-            </div>
-            <div class="diabetes-glucose-graphic__arrow"></div>
-            <div class="diabetes-glucose-graphic__blood">
-              <i></i>
-              <i></i>
-              <i></i>
-              <i></i>
-              <i></i>
-            </div>
+            <img
+              class="diabetes-food-transform__food"
+              src="/images/learning/Diabetic/Diabetes/2.DiabetesandDR/food.webp"
+              alt="Food"
+              loading="lazy"
+            />
+            <img
+              class="diabetes-food-transform__glucose"
+              src="/images/learning/Diabetic/Diabetes/2.DiabetesandDR/glucose.webp"
+              alt="Glucose"
+              loading="lazy"
+            />
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
           </div>
         </article>
 
@@ -2049,7 +1996,9 @@
               body so it can be used for energy.
             </p>
           </div>
-          <div class="diabetic-screening-flow diabetic-screening-flow--compact">
+          <div
+            class="diabetic-screening-flow diabetic-screening-flow--compact diabetic-screening-flow--cycle"
+          >
             <span>Food</span>
             <b></b>
             <span>Glucose in blood</span>
@@ -2058,29 +2007,10 @@
             <b></b>
             <span>Energy for the body</span>
           </div>
-          <div
-            class="diabetes-cell-gate"
-            aria-label="Insulin key opens cell graphic"
-          >
-            <p class="diabetic-screening-visual__label">
-              Interactive graphic: insulin acts like a key to move glucose into
-              body cells
-            </p>
-            <div class="diabetes-cell-gate__blood">
-              <span></span>
-              <span></span>
-              <span></span>
-            </div>
-            <div class="diabetes-cell-gate__key">Insulin</div>
-            <div class="diabetes-cell-gate__cell">
-              <b>cell</b>
-              <i></i>
-            </div>
-          </div>
         </article>
 
         <article
-          class="diabetic-screening-panel diabetic-screening-panel--callout"
+          class="diabetic-screening-panel diabetic-screening-panel--callout diabetic-screening-panel--content-fit"
           data-diabetic-scroll-step
         >
           <div class="diabetic-screening-panel__text">
@@ -2091,58 +2021,37 @@
               Sugar stays in the blood instead of being used by the body.
             </p>
           </div>
-          <div
-            class="diabetes-cell-gate diabetes-cell-gate--blocked"
-            aria-label="Glucose stuck in blood graphic"
-          >
-            <p class="diabetic-screening-visual__label">
-              Interactive graphic: glucose stuck in the blood because insulin is
-              low or ineffective
-            </p>
-            <div class="diabetes-cell-gate__blood">
-              <span></span>
-              <span></span>
-              <span></span>
-              <span></span>
-              <span></span>
-            </div>
-            <div class="diabetes-cell-gate__key">No signal</div>
-            <div class="diabetes-cell-gate__cell">
-              <b>cell</b>
-              <i></i>
-            </div>
-          </div>
         </article>
 
         <article class="diabetic-screening-panel" data-diabetic-scroll-step>
           <div class="diabetic-screening-panel__text">
             <span class="diabetic-screening-step">04</span>
-            <h3>High sugar damages the body</h3>
+            <h3>High sugar damages<br />the body</h3>
             <p>
               Over time, high blood sugar damages nerves and blood vessels all
               over the body, including the eyes.
             </p>
           </div>
-          <div class="diabetes-damage-map" aria-label="High sugar damage map">
-            <p class="diabetic-screening-visual__label">
-              Interactive graphic: high sugar damaging nerves and blood vessels
-              in the body and eyes
-            </p>
-            <div class="diabetes-damage-map__body">
+          <figure
+            class="diabetes-body-scan"
+            aria-label="Body blood vessels with eye glow"
+          >
+            <div class="diabetes-body-scan__viewport">
+              <img
+                src="/images/learning/Diabetic/Diabetes/2.DiabetesandDR/body.webp"
+                alt="Body blood vessels"
+                loading="lazy"
+              />
               <span
-                class="diabetes-damage-map__node diabetes-damage-map__node--eye"
-                >eye</span
-              >
+                class="diabetes-body-scan__eye-glow"
+                aria-hidden="true"
+              ></span>
               <span
-                class="diabetes-damage-map__node diabetes-damage-map__node--nerve"
-                >nerve</span
-              >
-              <span
-                class="diabetes-damage-map__node diabetes-damage-map__node--vessel"
-                >vessel</span
-              >
+                class="diabetes-body-scan__eye-glow"
+                aria-hidden="true"
+              ></span>
             </div>
-          </div>
+          </figure>
         </article>
       </div>
     </section>
@@ -2165,7 +2074,7 @@
     <h2 class="pupils-subtitle"></h2>
 
     <section
-      class="diabetic-screening-lesson"
+      class="diabetic-screening-lesson diabetic-screening-lesson--tight-hero"
       data-diabetic-scroll-lesson
       aria-label="Types of diabetes"
     >
@@ -2183,58 +2092,30 @@
       <header class="diabetic-screening-hero" data-diabetic-scroll-step>
         <p class="diabetic-screening-eyebrow">Two main types</p>
         <h2>Types of Diabetes</h2>
-        <p>
-          Both types cause high blood sugar, but the insulin problem is
-          different.
-        </p>
+        <p>Both types cause high blood sugar, but insulin acts different.</p>
       </header>
 
       <div class="diabetic-screening-stack">
-        <article class="diabetic-screening-panel" data-diabetic-scroll-step>
-          <div class="diabetic-screening-panel__text">
-            <span class="diabetic-screening-step">01</span>
-            <h3>Type 1: insulin is not being made</h3>
-            <p>
-              Type 1 diabetes usually starts earlier in life. The patient loses
-              insulin production.
-            </p>
-          </div>
-          <div class="diabetes-type-card diabetes-type-card--type1">
-            <p class="diabetic-screening-visual__label">
-              Interactive graphic: young thin person with no insulin being made
-            </p>
-            <div class="diabetes-type-card__person">
-              <span></span>
+        <article
+          class="diabetic-screening-panel diabetic-screening-panel--content-fit diabetes-type-split-panel"
+          data-diabetic-scroll-step
+        >
+          <section class="diabetes-type-split-panel__item">
+            <div class="diabetic-screening-panel__text">
+              <span class="diabetic-screening-step">01</span>
+              <h3>Type 1</h3>
+              <p>Early onset where the patient loses Insulin production.</p>
             </div>
-            <div class="diabetes-type-card__pancreas">
-              <b>Insulin</b>
-              <i>No production</i>
+          </section>
+          <section class="diabetes-type-split-panel__item">
+            <div class="diabetic-screening-panel__text">
+              <h3>Type 2</h3>
+              <p>
+                Later onset where the patient becomes resistant to the effects
+                of Insulin.
+              </p>
             </div>
-          </div>
-        </article>
-
-        <article class="diabetic-screening-panel" data-diabetic-scroll-step>
-          <div class="diabetic-screening-panel__text">
-            <span class="diabetic-screening-step">02</span>
-            <h3>Type 2: insulin is resisted</h3>
-            <p>
-              Type 2 diabetes usually starts later in life. The patient becomes
-              resistant to the effects of insulin.
-            </p>
-          </div>
-          <div class="diabetes-type-card diabetes-type-card--type2">
-            <p class="diabetic-screening-visual__label">
-              Interactive graphic: older overweight person with insulin
-              resistance sign
-            </p>
-            <div class="diabetes-type-card__person">
-              <span></span>
-            </div>
-            <div class="diabetes-type-card__pancreas">
-              <b>Insulin</b>
-              <i>Signal resisted</i>
-            </div>
-          </div>
+          </section>
         </article>
 
         <article
@@ -2242,57 +2123,60 @@
           data-diabetic-scroll-step
         >
           <div class="diabetic-screening-panel__text">
-            <span class="diabetic-screening-step">03</span>
+            <span class="diabetic-screening-step">02</span>
             <h3>Type 1 vs Type 2</h3>
             <p>
               A simple comparison image should show the difference between no
               insulin production and insulin resistance.
             </p>
           </div>
-          <div class="diabetes-type-compare">
+          <figure class="diabetic-atoms-zoom">
             <p class="diabetic-screening-visual__label">
-              Interactive graphic: side-by-side Type 1 no insulin vs Type 2
-              insulin resistance
+              *Zoom in/out for closer view
             </p>
-            <div class="diabetes-type-compare__lane">
-              <strong>Type 1</strong>
-              <span
-                class="diabetes-type-compare__meter diabetes-type-compare__meter--empty"
-              ></span>
-              <small>No insulin made</small>
-            </div>
-            <div class="diabetes-type-compare__lane">
-              <strong>Type 2</strong>
-              <span
-                class="diabetes-type-compare__meter diabetes-type-compare__meter--blocked"
-              ></span>
-              <small>Insulin present, resisted</small>
-            </div>
-          </div>
-        </article>
-
-        <article class="diabetic-screening-panel" data-diabetic-scroll-step>
-          <div class="diabetic-screening-panel__text">
-            <span class="diabetic-screening-step">04</span>
-            <h3>ATOMS reference zoom</h3>
-            <p>
-              Use the diabetic retinopathy ATOMS card as a visual reference for
-              the diabetes and eye-damage story.
-            </p>
-          </div>
-          <figure class="diabetic-atoms-zoom" data-diabetic-zoom>
-            <p class="diabetic-screening-visual__label">
-              Image reference: ATOMS diabetic retinopathy card, with zoom
-              movement on scroll
-            </p>
-            <div class="diabetic-atoms-zoom__frame">
+            <div class="diabetic-atoms-zoom__frame" data-diabetic-wheel-zoom>
               <img
-                src="/images/learning/Diabetic/Diabetes/Screenshot%202026-04-29%20152236.png"
+                src="/images/learning/Diabetic/Diabetes/2.DiabetesandDR/ATOMS.webp"
                 alt="ATOMS diabetic retinopathy card reference"
                 loading="lazy"
               />
             </div>
           </figure>
+          <div class="diabetes-type-compare">
+            <div class="diabetes-type-compare__lane">
+              <strong>
+                <span
+                  class="diabetes-type-compare__person diabetes-type-compare__person--type1"
+                  aria-hidden="true"
+                ></span>
+                Type 1
+              </strong>
+              <span
+                class="diabetes-type-compare__meter diabetes-type-compare__meter--empty"
+              >
+                <em>Insulin</em>
+              </span>
+              <small>No insulin made</small>
+            </div>
+            <div class="diabetes-type-compare__lane">
+              <strong>
+                <span
+                  class="diabetes-type-compare__person diabetes-type-compare__person--type2"
+                  aria-hidden="true"
+                ></span>
+                Type 2
+              </strong>
+              <span
+                class="diabetes-type-compare__meter diabetes-type-compare__meter--blocked"
+              >
+                <em>Insulin</em>
+              </span>
+              <small>Resistant to Insulin</small>
+              <span class="diabetes-type-compare__stamp" aria-hidden="true">
+                Resistant
+              </span>
+            </div>
+          </div>
         </article>
       </div>
     </section>
@@ -2315,7 +2199,7 @@
     <h2 class="pupils-subtitle"></h2>
 
     <section
-      class="diabetic-screening-lesson"
+      class="diabetic-screening-lesson diabetic-screening-lesson--tight-hero"
       data-diabetic-scroll-lesson
       aria-label="What is diabetic retinopathy"
     >
@@ -2349,152 +2233,132 @@
               that allows vision.
             </p>
           </div>
-          <div class="retina-vessel-graphic retina-vessel-graphic--normal">
-            <p class="diabetic-screening-visual__label">
-              Interactive graphic: retina at the back of the eye with blood
-              vessels
-            </p>
-            <svg
-              viewBox="0 0 260 220"
-              role="img"
-              aria-label="Retina and vessels"
-            >
-              <circle
-                class="retina-vessel-graphic__retina"
-                cx="130"
-                cy="110"
-                r="88"
-              />
-              <circle
-                class="retina-vessel-graphic__disc"
-                cx="88"
-                cy="106"
-                r="20"
-              />
-              <path
-                class="retina-vessel-graphic__vessel"
-                d="M88 106 C112 72 144 56 190 44"
-              />
-              <path
-                class="retina-vessel-graphic__vessel"
-                d="M88 106 C126 112 160 126 205 154"
-              />
-              <path
-                class="retina-vessel-graphic__vessel"
-                d="M88 106 C120 92 148 96 183 88"
-              />
-            </svg>
+          <div class="dr-eye-retina-graphic">
+            <img
+              src="/images/learning/Diabetic/Diabetes/2.DiabetesandDR/Eye.webp"
+              alt="Eye cross-section"
+              loading="lazy"
+            />
+            <span class="dr-eye-retina-graphic__label">Retina</span>
+            <span class="dr-eye-retina-graphic__line" aria-hidden="true"></span>
           </div>
         </article>
 
         <article class="diabetic-screening-panel" data-diabetic-scroll-step>
           <div class="diabetic-screening-panel__text">
             <span class="diabetic-screening-step">02</span>
-            <h3>High sugar damages tiny vessels</h3>
+            <h3>Diabetic retinopathy</h3>
             <p>
-              High sugar damages the tiny blood vessels in the retina. These
-              vessels can leak, bleed, or close off.
+              Diabetic retinopathy is damage to the retina caused by high sugar
+              levels in the blood. High sugar damages the tiny blood vessels in
+              the retina. These vessels can leak, bleed, or close off.
             </p>
           </div>
-          <div class="retina-vessel-graphic retina-vessel-graphic--damage">
-            <p class="diabetic-screening-visual__label">
-              Interactive graphic: high sugar damages vessels, then they leak,
-              bleed, or close off
-            </p>
-            <svg
-              viewBox="0 0 260 220"
-              role="img"
-              aria-label="Damaged retinal vessels"
-            >
-              <circle
-                class="retina-vessel-graphic__retina"
-                cx="130"
-                cy="110"
-                r="88"
-              />
-              <path
-                class="retina-vessel-graphic__vessel"
-                d="M58 118 C96 70 145 80 214 52"
-              />
-              <path
-                class="retina-vessel-graphic__vessel retina-vessel-graphic__vessel--closed"
-                d="M62 130 C100 138 156 132 210 164"
-              />
-              <circle
-                class="retina-vessel-graphic__leak"
-                cx="142"
-                cy="82"
-                r="8"
-              />
-              <circle
-                class="retina-vessel-graphic__bleed"
-                cx="174"
-                cy="64"
-                r="10"
-              />
-              <path
-                class="retina-vessel-graphic__block"
-                d="M150 137 l18 18 M168 137 l-18 18"
-              />
-            </svg>
+          <div class="dr-retina-graphic dr-retina-graphic--damage">
+            <img
+              src="/images/learning/Diabetic/Diabetes/2.DiabetesandDR/Retinaonly.webp"
+              alt="Retinal vessels"
+              loading="lazy"
+            />
+            <img
+              class="dr-retina-graphic__tiny-vessel dr-retina-graphic__tiny-vessel--one"
+              src="/images/learning/Diabetic/Diabetes/2.DiabetesandDR/newvessels.webp"
+              alt=""
+              loading="lazy"
+            />
+            <img
+              class="dr-retina-graphic__tiny-vessel dr-retina-graphic__tiny-vessel--two"
+              src="/images/learning/Diabetic/Diabetes/2.DiabetesandDR/newvessels.webp"
+              alt=""
+              loading="lazy"
+            />
+            <img
+              class="dr-retina-graphic__tiny-vessel dr-retina-graphic__tiny-vessel--three"
+              src="/images/learning/Diabetic/Diabetes/2.DiabetesandDR/newvessels.webp"
+              alt=""
+              loading="lazy"
+            />
+            <img
+              class="dr-retina-graphic__blood dr-retina-graphic__blood--one"
+              src="/images/learning/Diabetic/Diabetes/2.DiabetesandDR/blood.webp"
+              alt=""
+              loading="lazy"
+            />
+            <img
+              class="dr-retina-graphic__blood dr-retina-graphic__blood--two"
+              src="/images/learning/Diabetic/Diabetes/2.DiabetesandDR/blood.webp"
+              alt=""
+              loading="lazy"
+            />
+            <span class="dr-retina-graphic__closed" aria-hidden="true"></span>
           </div>
         </article>
 
         <article class="diabetic-screening-panel" data-diabetic-scroll-step>
           <div class="diabetic-screening-panel__text">
             <span class="diabetic-screening-step">03</span>
-            <h3>New weak vessels can grow</h3>
-            <p>
-              Later, new weak vessels can grow. They bleed easily and can block
-              the drainage of fluid in the eye.
-            </p>
+            <h3>Later, new weak vessels can grow</h3>
+            <p>They bleed easily and can cause sight-threatening damage.</p>
+            <ul
+              class="diabetic-screening-chip-list diabetic-screening-chip-list--arrows"
+            >
+              <li>
+                New weak vessels grow &gt; bleed easily causing haemorrhage
+              </li>
+              <li>Block the drainage of fluid in eye &gt; high pressure</li>
+            </ul>
           </div>
-          <div class="retina-vessel-graphic retina-vessel-graphic--new-vessels">
-            <p class="diabetic-screening-visual__label">
-              Interactive graphic: new weak vessels grow, bleed, and block
-              drainage
-            </p>
-            <svg viewBox="0 0 260 220" role="img" aria-label="New weak vessels">
-              <circle
-                class="retina-vessel-graphic__retina"
-                cx="130"
-                cy="110"
-                r="88"
-              />
-              <path
-                class="retina-vessel-graphic__vessel"
-                d="M72 116 C106 86 150 84 204 72"
-              />
-              <path
-                class="retina-vessel-graphic__new"
-                d="M132 92 c14 -24 34 -18 38 -42"
-              />
-              <path
-                class="retina-vessel-graphic__new"
-                d="M132 92 c20 -8 34 10 58 2"
-              />
-              <path
-                class="retina-vessel-graphic__new"
-                d="M132 92 c8 22 32 26 36 52"
-              />
-              <circle
-                class="retina-vessel-graphic__bleed"
-                cx="170"
-                cy="50"
-                r="11"
-              />
-              <circle
-                class="retina-vessel-graphic__pressure"
-                cx="188"
-                cy="144"
-                r="20"
-              />
-            </svg>
+          <div class="dr-retina-graphic dr-retina-graphic--new-vessels">
+            <img
+              src="/images/learning/Diabetic/Diabetes/2.DiabetesandDR/Retinaonly.webp"
+              alt="Retinal vessels with new weak vessels"
+              loading="lazy"
+            />
+            <img
+              class="dr-retina-graphic__new-vessel dr-retina-graphic__new-vessel--one"
+              src="/images/learning/Diabetic/Diabetes/2.DiabetesandDR/newvessels.webp"
+              alt=""
+              loading="lazy"
+            />
+            <img
+              class="dr-retina-graphic__new-vessel dr-retina-graphic__new-vessel--two"
+              src="/images/learning/Diabetic/Diabetes/2.DiabetesandDR/newvessels.webp"
+              alt=""
+              loading="lazy"
+            />
+            <img
+              class="dr-retina-graphic__new-vessel dr-retina-graphic__new-vessel--three"
+              src="/images/learning/Diabetic/Diabetes/2.DiabetesandDR/newvessels.webp"
+              alt=""
+              loading="lazy"
+            />
+            <img
+              class="dr-retina-graphic__new-vessel dr-retina-graphic__new-vessel--four"
+              src="/images/learning/Diabetic/Diabetes/2.DiabetesandDR/newvessels.webp"
+              alt=""
+              loading="lazy"
+            />
+            <img
+              class="dr-retina-graphic__blood dr-retina-graphic__blood--three"
+              src="/images/learning/Diabetic/Diabetes/2.DiabetesandDR/blood.webp"
+              alt=""
+              loading="lazy"
+            />
+            <img
+              class="dr-retina-graphic__blood dr-retina-graphic__blood--four"
+              src="/images/learning/Diabetic/Diabetes/2.DiabetesandDR/blood.webp"
+              alt=""
+              loading="lazy"
+            />
+            <span
+              class="dr-retina-graphic__blocked-drain"
+              aria-hidden="true"
+            ></span>
           </div>
         </article>
 
         <article
-          class="diabetic-screening-panel diabetic-screening-panel--callout"
+          class="diabetic-screening-panel diabetic-screening-panel--callout diabetic-screening-panel--content-fit"
           data-diabetic-scroll-step
         >
           <div class="diabetic-screening-panel__text">
@@ -2510,12 +2374,6 @@
               <li>Sudden painless complete loss of vision</li>
               <li>High pressure with painful red eye and vision loss</li>
             </ul>
-          </div>
-          <div class="diabetic-screening-visual">
-            <p class="diabetic-screening-visual__label">
-              Image placeholder: four symptom examples for diabetic retinopathy
-            </p>
-            <div class="diabetic-screening-placeholder"></div>
           </div>
         </article>
       </div>
@@ -2539,7 +2397,7 @@
     <h2 class="pupils-subtitle"></h2>
 
     <section
-      class="diabetic-screening-lesson"
+      class="diabetic-screening-lesson diabetic-screening-lesson--tight-hero"
       data-diabetic-scroll-lesson
       aria-label="Vision loss in diabetes"
     >
@@ -2556,7 +2414,7 @@
 
       <header class="diabetic-screening-hero" data-diabetic-scroll-step>
         <p class="diabetic-screening-eyebrow">Two main pathways</p>
-        <h2>Vision Loss in Diabetes</h2>
+        <h2>Vision Loss<br />in Diabetes</h2>
         <p>
           Vision loss mainly happens when normal vessels leak or when new
           fragile vessels grow.
@@ -2567,6 +2425,9 @@
         <p class="diabetic-screening-visual__label">
           Interactive graph: two pathways to vision loss in diabetes
         </p>
+        <h3 class="diabetes-vision-pathway__title">
+          There are two main ways that loss of vision can happen in diabetes
+        </h3>
         <div class="diabetes-vision-pathway__root">High blood sugar</div>
         <div class="diabetes-vision-pathway__branches">
           <div>
@@ -2583,117 +2444,186 @@
       </section>
 
       <div class="diabetic-screening-stack">
-        <article class="diabetic-screening-panel" data-diabetic-scroll-step>
-          <div class="diabetic-screening-panel__text">
-            <span class="diabetic-screening-step">A</span>
-            <h3>Normal blood vessels start to leak fluid</h3>
-            <p>
-              Fluid leaks into the retina, leaving yellow marks called hard
-              exudates.
-            </p>
-          </div>
-          <div class="macula-leak-graphic">
-            <p class="diabetic-screening-visual__label">
-              Interactive graphic: leaking retinal vessels with yellow hard
-              exudates
-            </p>
-            <div class="macula-leak-graphic__retina">
-              <span class="macula-leak-graphic__macula"></span>
-              <i></i>
-              <i></i>
-              <i></i>
-              <b></b>
-              <b></b>
-              <b></b>
-            </div>
-          </div>
-        </article>
-
-        <article class="diabetic-screening-panel" data-diabetic-scroll-step>
-          <div class="diabetic-screening-panel__text">
-            <span class="diabetic-screening-step">A</span>
-            <h3>Maculopathy blurs central vision</h3>
-            <p>
-              The macula is the central part of the retina. When it becomes
-              swollen and fluid-filled, central vision becomes blurry.
-            </p>
-            <p>
-              This happens painlessly over weeks and months. Damage mainly
-              affecting the macula is called maculopathy.
-            </p>
-          </div>
-          <div class="macula-blur-graphic">
-            <p class="diabetic-screening-visual__label">
-              Interactive graphic: swollen macula causing blurred central vision
-            </p>
-            <div class="macula-blur-graphic__scene">
-              <span>clear edge</span>
-              <strong>blurred centre</strong>
-              <span>clear edge</span>
-            </div>
-          </div>
-        </article>
-
         <article
-          class="diabetic-screening-panel diabetic-screening-panel--video"
+          class="diabetic-screening-panel diabetic-vision-section-panel"
           data-diabetic-scroll-step
         >
           <div class="diabetic-screening-panel__text">
             <span class="diabetic-screening-step">A</span>
-            <h3>Maculopathy on direct ophthalmoscopy</h3>
+            <h3>Normal blood vessels start to leak fluid</h3>
+            <p>
+              Fluid leaks into the retina, leaving yellow marks called
+              <strong>hard exudates</strong>.
+            </p>
+            <p>
+              The macula is the central part of the retina. When it becomes
+              swollen and fluid-filled, central vision becomes blurry.
+            </p>
+            <figure class="diabetic-maculopathy-sequence">
+              <img
+                class="diabetic-maculopathy-sequence__retina"
+                src="/images/learning/Diabetic/Diabetes/2.DiabetesandDR/Retinaonly.webp"
+                alt="Retina with macula changes"
+                loading="lazy"
+              />
+              <span class="diabetic-maculopathy-sequence__label">Macula</span>
+              <img
+                class="diabetic-maculopathy-sequence__macula"
+                src="/images/learning/Diabetic/Diabetes/2.DiabetesandDR/macula.webp"
+                alt="Macula"
+                loading="lazy"
+              />
+              <img
+                class="diabetic-maculopathy-sequence__swollen"
+                src="/images/learning/Diabetic/Diabetes/2.DiabetesandDR/swollen.webp"
+                alt="Swollen macula"
+                loading="lazy"
+              />
+              <img
+                class="diabetic-maculopathy-sequence__exudate diabetic-maculopathy-sequence__exudate--one"
+                src="/images/learning/Diabetic/Diabetes/2.DiabetesandDR/exudates.webp"
+                alt=""
+                loading="lazy"
+              />
+              <img
+                class="diabetic-maculopathy-sequence__exudate diabetic-maculopathy-sequence__exudate--two"
+                src="/images/learning/Diabetic/Diabetes/2.DiabetesandDR/exudates.webp"
+                alt=""
+                loading="lazy"
+              />
+              <img
+                class="diabetic-maculopathy-sequence__exudate diabetic-maculopathy-sequence__exudate--three"
+                src="/images/learning/Diabetic/Diabetes/2.DiabetesandDR/exudates.webp"
+                alt=""
+                loading="lazy"
+              />
+              <img
+                class="diabetic-maculopathy-sequence__exudate diabetic-maculopathy-sequence__exudate--four"
+                src="/images/learning/Diabetic/Diabetes/2.DiabetesandDR/exudates.webp"
+                alt=""
+                loading="lazy"
+              />
+              <img
+                class="diabetic-maculopathy-sequence__exudate diabetic-maculopathy-sequence__exudate--five"
+                src="/images/learning/Diabetic/Diabetes/2.DiabetesandDR/exudates.webp"
+                alt=""
+                loading="lazy"
+              />
+              <img
+                class="diabetic-maculopathy-sequence__exudate diabetic-maculopathy-sequence__exudate--six"
+                src="/images/learning/Diabetic/Diabetes/2.DiabetesandDR/exudates.webp"
+                alt=""
+                loading="lazy"
+              />
+              <img
+                class="diabetic-maculopathy-sequence__exudate diabetic-maculopathy-sequence__exudate--seven"
+                src="/images/learning/Diabetic/Diabetes/2.DiabetesandDR/exudates.webp"
+                alt=""
+                loading="lazy"
+              />
+              <img
+                class="diabetic-maculopathy-sequence__exudate diabetic-maculopathy-sequence__exudate--eight"
+                src="/images/learning/Diabetic/Diabetes/2.DiabetesandDR/exudates.webp"
+                alt=""
+                loading="lazy"
+              />
+              <img
+                class="diabetic-maculopathy-sequence__exudate diabetic-maculopathy-sequence__exudate--nine"
+                src="/images/learning/Diabetic/Diabetes/2.DiabetesandDR/exudates.webp"
+                alt=""
+                loading="lazy"
+              />
+              <img
+                class="diabetic-maculopathy-sequence__exudate diabetic-maculopathy-sequence__exudate--ten"
+                src="/images/learning/Diabetic/Diabetes/2.DiabetesandDR/exudates.webp"
+                alt=""
+                loading="lazy"
+              />
+              <img
+                class="diabetic-maculopathy-sequence__exudate diabetic-maculopathy-sequence__exudate--eleven"
+                src="/images/learning/Diabetic/Diabetes/2.DiabetesandDR/exudates.webp"
+                alt=""
+                loading="lazy"
+              />
+              <img
+                class="diabetic-maculopathy-sequence__exudate diabetic-maculopathy-sequence__exudate--twelve"
+                src="/images/learning/Diabetic/Diabetes/2.DiabetesandDR/exudates.webp"
+                alt=""
+                loading="lazy"
+              />
+              <img
+                class="diabetic-maculopathy-sequence__vision"
+                src="/images/learning/Diabetic/Diabetes/2.DiabetesandDR/vision.webp"
+                alt="Vision overlay"
+                loading="lazy"
+              />
+              <img
+                class="diabetic-maculopathy-sequence__blurry"
+                src="/images/learning/Diabetic/Diabetes/2.DiabetesandDR/blurry.webp"
+                alt="Blurry central vision overlay"
+                loading="lazy"
+              />
+            </figure>
+            <p>
+              This happens painlessly over weeks and months. Damage mainly
+              affecting the macula is called maculopathy.
+            </p>
             <p>
               This is what maculopathy looks like on direct ophthalmoscopy with
-              an Arclight. The pupils are dilated and the media is clear.
+              an Arclight. The pupils are dilated and the media is clear with no
+              cataract or bleeding in the jelly of the eye.
             </p>
           </div>
-          <div class="diabetic-video-placeholder">
+          <div class="diabetic-video-embed">
             <p class="diabetic-screening-visual__label">
-              Video placeholder: Maculopathy on Direct Ophthalmoscopy
+              Maculopathy on direct ophthalmoscopy
             </p>
-            <div class="diabetic-screening-placeholder"></div>
+            <video
+              controls
+              playsinline
+              preload="metadata"
+              data-diabetic-video-start="4"
+            >
+              <source
+                src="/videos/Workshop/Diabetic/2.DODRMaculopathy.mp4#t=4"
+                type="video/mp4"
+              />
+            </video>
           </div>
         </article>
 
-        <article class="diabetic-screening-panel" data-diabetic-scroll-step>
+        <article
+          class="diabetic-screening-panel diabetic-vision-section-panel"
+          data-diabetic-scroll-step
+        >
           <div class="diabetic-screening-panel__text">
             <span class="diabetic-screening-step">B</span>
             <h3>New fragile blood vessels grow</h3>
             <p>These new vessels damage the eye in three main ways.</p>
-            <ul class="diabetic-screening-chip-list">
+            <ul
+              class="diabetic-screening-chip-list diabetic-screening-chip-list--sequence"
+            >
               <li>Bleeding onto the retina and into the vitreous</li>
               <li>Scarring of the retina causing retinal detachment</li>
               <li>Blocking fluid drainage causing rubeotic glaucoma</li>
             </ul>
           </div>
-          <div class="diabetes-fragile-vessel-graphic">
+          <div class="diabetic-video-embed">
             <p class="diabetic-screening-visual__label">
-              Interactive graphic: bleeding, scarring, and blocked fluid drain
+              Causes of loss of vision
             </p>
-            <div class="diabetes-fragile-vessel-graphic__grid">
-              <span>bleed</span>
-              <span>scar</span>
-              <span>pressure</span>
-            </div>
-          </div>
-        </article>
-
-        <article
-          class="diabetic-screening-panel diabetic-screening-panel--video"
-          data-diabetic-scroll-step
-        >
-          <div class="diabetic-screening-panel__text">
-            <span class="diabetic-screening-step">B</span>
-            <h3>Causes of loss of vision video</h3>
-            <p>
-              Use this space for a video showing how bleeding, scarring, and
-              high pressure cause vision loss in diabetes.
-            </p>
-          </div>
-          <div class="diabetic-video-placeholder">
-            <p class="diabetic-screening-visual__label">
-              Video placeholder: Causes of Loss of Vision
-            </p>
-            <div class="diabetic-screening-placeholder"></div>
+            <video
+              controls
+              playsinline
+              preload="metadata"
+              data-diabetic-video-start="11"
+              data-diabetic-video-end="71"
+            >
+              <source
+                src="/videos/Workshop/Diabetic/3.DR_LossofVisionCause_720p.mp4#t=11,71"
+                type="video/mp4"
+              />
+            </video>
           </div>
         </article>
       </div>
@@ -3363,6 +3293,20 @@
                   class="diabetic-package-scroll-cue__stack"
                   aria-hidden="true"
                 >
+                  <img
+                    class="diabetic-package-scroll-cue__down"
+                    src="/scrolly/workshop/childhood/eyesbrain/down.png"
+                    alt=""
+                    loading="eager"
+                    draggable="false"
+                  />
+                  <img
+                    class="diabetic-package-scroll-cue__hand"
+                    src="/scrolly/workshop/childhood/eyesbrain/hand.png"
+                    alt=""
+                    loading="eager"
+                    draggable="false"
+                  />
                   <span class="diabetic-package-scroll-cue__chev"></span>
                   <span class="diabetic-package-scroll-cue__chev"></span>
                   <span class="diabetic-package-scroll-cue__chev"></span>
