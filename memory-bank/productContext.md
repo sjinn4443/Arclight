@@ -1,4 +1,4 @@
-<!-- THE CHANGES - productContext.md | 2026-03-11, Codex -->
+<!-- THE CHANGES - productContext.md | 2026-04-30, Codex -->
 
 # Product Context
 
@@ -21,6 +21,7 @@ The application should function as a self-contained educational resource. Users 
 - Interact with quizzes and receive immediate feedback.
 - View high-quality images and videos related to medical conditions.
 - Access core local content offline after initial loading.
+- Work through structured workshop pathways such as Childhood Eye Screening and Diabetic Retinopathy, with foldered lessons, progress rows, scroll pages, video lessons, protocol pages, and demo quizzes.
 
 Some Interactive Learning tools can also be embedded from externally hosted sites when that is the fastest way to deliver a usable learning experience, while still keeping the same in-app navigation shell.
 

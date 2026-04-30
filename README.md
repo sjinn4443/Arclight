@@ -19,6 +19,8 @@ The app is primarily static (served from `public/` in dev, and `dist/` in produc
 - Emergency runbook: [`security/EMERGENCY_PLAN.md`](./security/EMERGENCY_PLAN.md)
 - Security test scripts: [`securitytest/README.md`](./securitytest/README.md)
 - VS Code launcher extension: [`vscode-alanui-launcher/README.md`](./vscode-alanui-launcher/README.md)
+- Memory bank: [`memory-bank/`](./memory-bank/)
+- Agent notes: [`agent.md`](./agent.md)
 
 ## Quick start
 
@@ -54,6 +56,7 @@ Common commands (see `package.json` for the full list):
 - Build static assets to `dist/`: `npm run build`
 - Build then serve `dist/`: `npm run serve:dist`
 - Build then serve in production mode: `npm run serve:prod`
+- Generate childhood HLS outputs: `npm run build:childhood-hls`
 
 If the build fails with an `ENOTEMPTY` error while cleaning `dist/` (can happen on Windows when old files are still present), delete `dist/` and re-run:
 
@@ -73,6 +76,7 @@ rmdir /s /q dist
   - Audits static HTML for unnamed `img`, `video`, `iframe`, and icon-only buttons.
   - Reuses the runtime helper in `public/js/mediaA11y.js` so the QA rule matches live behavior.
 - E2E tests (Playwright): `npm run test:e2e`
+- Fundal route E2E regression suite: `npm run test:fundal`
 - Performance E2E (Playwright): `npm run perf:e2e`
 - Lighthouse CI (LHCI): `npm run perf:lh`
 - Lint: `npm run lint`
@@ -113,11 +117,14 @@ Arclight runs in multiple modes (dev/test/prod). A local `.env` is optional for 
 - `HOST`: bind address (default `0.0.0.0`)
 - `PORT`: server port (default `3000`)
 - `SERVE_DIST`: when `true` / `1`, serve `dist/` even if `NODE_ENV != production`
+- `DISABLE_DB_STORAGE`: when `true` / `1`, forces no-op runtime storage even when database URLs are present. Playwright uses this so local E2E runs do not touch configured databases.
 
 ### Reports / admin access
 
 - `DASHBOARD_PASSWORD`: Basic Auth password for `/reports.html` and `/html/reports.html`.
 - `ADMIN_ALLOWED_IPS`: comma-separated exact client IPs allowed to reach `/reports.html`, `/html/reports.html`, and `/api/dev/*` in production. If empty in production, admin/report routes are denied to everyone.
+- `REPORTS_ALLOW_LOCAL_DELETE`: enables report-row deletion only for local development.
+- `REPORTS_ALLOW_DELETE`: enables report-row deletion in deployed environments. Use only with intentional admin access controls.
 
 ### Emergency controls
 
@@ -126,14 +133,23 @@ Arclight runs in multiple modes (dev/test/prod). A local `.env` is optional for 
 
 ### Telemetry encryption (optional)
 
-Telemetry can be stored as NDJSON in dev/test and optionally encrypted at rest.
+Legacy NDJSON telemetry can be encrypted at rest when that storage module is used.
 
-- `ENCRYPTION_SECRET`: when set, telemetry NDJSON rows are encrypted at rest (AES-256-GCM via `reports/security/encrypt.cjs`). If not set, data is written as plain JSON.
+- `ENCRYPTION_SECRET`: when set, legacy NDJSON telemetry rows are encrypted at rest (AES-256-GCM via `reports/security/encrypt.cjs`). If not set, that module writes plain JSON.
+
+### Telemetry / geo controls
+
+- `TELEMETRY_ALLOWED_HOSTS`: optional comma-separated host allowlist for telemetry writes.
+- `IPINFO_TOKEN`: optional server-side token used by IP geolocation enrichment.
 
 ### Production DB
 
 - `DATABASE_URL`: enables Postgres storage in production.
-- `DB_SSL`: set to `disable` to disable SSL (otherwise SSL is enabled with `rejectUnauthorized: false`).
+- `REPORTS_READ_DATABASE_URL`: optional read-only Postgres URL for reports reads.
+- `REPORTS_ADMIN_DATABASE_URL`: optional admin Postgres URL for reports deletes and audit logging.
+- `DB_SSL`: set to `disable` to disable SSL.
+- `DB_CA_CERT`: optional CA certificate string for verified TLS.
+- `DB_SSL_ALLOW_SELF_SIGNED`: set to `true` to allow self-signed DB TLS certificates.
 
 ## Telemetry + reports (high level)
 
@@ -145,8 +161,10 @@ The server exposes simple app endpoints used by the client:
 
 Storage selection:
 
-- In dev/test, telemetry is stored in `reports/data/telemetry.ndjson` (via `storage/ndjson-storage.cjs`).
-- In production, if `DATABASE_URL` is present, Postgres is used (via `storage/pg-storage.cjs`).
+- Current runtime storage is selected by `storage/index.cjs`.
+- If any Postgres URL is configured and `DISABLE_DB_STORAGE` is not enabled, Postgres is used via `storage/pg-storage.cjs`.
+- If no Postgres URL is configured, or `DISABLE_DB_STORAGE=1`, storage is no-op via `storage/disabled-storage.cjs`.
+- `storage/ndjson-storage.cjs` remains in the repo as legacy/local storage support, but it is not selected by the current storage index.
 
 The password-protected reports pages are served at:
 
@@ -187,9 +205,10 @@ See [`security/EMERGENCY_PLAN.md`](./security/EMERGENCY_PLAN.md) for the operato
 
 - `public/` - the client web app (HTML/CSS/JS, images, videos, service worker)
 - `public/subapp/` - local mini-apps embedded inside the Videos route Interactive Learning pages
+- `public/html/diabeticRetinopathyWorkshop.html` - diabetic retinopathy workshop, including lesson folders, progress rows, protocol pages, and demo quizzes
 - `server.cjs` - Express server for dev/prod hosting + APIs
 - `scripts/` - build + tooling scripts (esbuild, HTML minify, CSS minify)
-- `storage/` - NDJSON storage for dev/test + Postgres storage for production
+- `storage/` - runtime storage selection, no-op storage, legacy NDJSON storage, and Postgres storage
 - `reports/` - telemetry data files and helpers
 - `security/` - security middleware/config modules (some are placeholders; see `security/README.md`)
 - `tests/` - Jest tests
@@ -202,11 +221,13 @@ See [`security/EMERGENCY_PLAN.md`](./security/EMERGENCY_PLAN.md) for the operato
 - The Interactive Learning section inside [`public/html/videos.html`](./public/html/videos.html) uses a shared Videos-route subpage pattern:
   - local modules such as `Morph` and `Mires` load from `public/subapp/*`
   - some modules now lazy-load external Netlify iframes (`Fundal Reflex`, `Trauma`, `Amsler`)
+- The Diabetic Retinopathy workshop is launched from the Eyes route and combines scroll lessons, Videos-route lessons, progress bars, folder restore behavior, structural previous/next buttons, and demo quizzes. The navigation helpers live in `public/js/diabeticWorkshopNextFlow.js` and `public/js/diabeticWorkshopProgress.js`.
 - Cross-origin iframe rule: Arclight can style the surrounding card/page shell, but it cannot directly restyle or reposition icons or UI inside an embedded external site. Those changes must be made in the remote app itself.
 - External embeds require network access and continued iframe permission from the remote host. They are not cached/offline-capable in the same way as local `public/subapp/*` content. If the remote site later sends `X-Frame-Options` or a restrictive `frame-ancestors` policy, the embed will stop working.
 
 ## Changelog (high level)
 
+- 2026-04-30: Refreshed docs for the Diabetic Retinopathy workshop flow, no-op/default storage behavior, Playwright `DISABLE_DB_STORAGE=1`, split reports DB URLs, and additional runtime env vars.
 - 2026-03-11: Added external Interactive Learning embeds for `Fundal Reflex`, `Trauma`, and `Amsler`, and documented the cross-origin iframe constraints.
 - 2025-12-15: Docs refresh + CI/Jest ESM interop notes (map browser ESM imports to CJS mocks).
 - 2025-10-04: Added security hardening modules (rate limit helpers, auth helpers).

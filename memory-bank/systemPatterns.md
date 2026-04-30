@@ -15,8 +15,10 @@ Arclight is primarily a static, client-side PWA served from `public/` (or `dist/
 - Static-first delivery: most user-facing functionality is in static HTML/CSS/JS under `public/`.
 - Minimal backend surface area: backend is intentionally small and focused on hosting + telemetry.
 - Environment-aware storage:
-  - dev/test: NDJSON store under `reports/data/telemetry.ndjson`
-  - production: Postgres when `DATABASE_URL` is present
+  - default/no DB: no-op storage through `storage/disabled-storage.cjs`
+  - DB configured: Postgres through `storage/pg-storage.cjs`
+  - E2E isolation: Playwright sets `DISABLE_DB_STORAGE=1`
+  - legacy/local NDJSON support remains in `storage/ndjson-storage.cjs` but is not selected by the current storage index
 
 ## Design Patterns in Use
 
@@ -35,6 +37,8 @@ Arclight is primarily a static, client-side PWA served from `public/` (or `dist/
 - Videos-route subpage pattern: cards use `data-page` / `data-target` IDs that map to hidden `.page` sections in `public/html/videos.html`; `public/js/videos.js` lazy-loads any `iframe[data-src]` the first time a subpage is shown.
 - Hybrid interactive delivery: Interactive Learning can host either local `public/subapp/*` content or external iframe content inside the same page shell.
 - Cross-origin embed boundary: parent-page CSS/JS can control the Arclight wrapper (card spacing, headers, iframe size), but cannot directly alter UI inside a remote iframe.
+- Workshop flow pattern: route-level lesson pages can use stable `data-target`/`data-lesson`/`data-folder` identifiers, progress bars, and `sessionStorage` restore flags to support foldered learning flows across route boundaries.
+- Diabetic workshop next-flow pattern: `public/js/diabeticWorkshopNextFlow.js` owns structural Previous/Next controls, Videos-route jumps, and folder restore on return to the workshop.
 
 ## Component Relationships
 
@@ -47,9 +51,14 @@ Arclight is primarily a static, client-side PWA served from `public/` (or `dist/
   - Reports protection: Basic Auth for `/reports.html` and `/html/reports.html`
   - Reports API: `/api/dev/users`, `DELETE /api/dev/users/:anonId`
 - Storage selection: `storage/index.cjs`
-  - `storage/ndjson-storage.cjs` (dev/test)
-  - `storage/pg-storage.cjs` (production with `DATABASE_URL`)
+  - `storage/disabled-storage.cjs` (default/no DB or `DISABLE_DB_STORAGE=1`)
+  - `storage/pg-storage.cjs` (Postgres URL configured)
+  - `storage/ndjson-storage.cjs` (legacy/local module, not selected by current index)
 - Reports encryption helper: `reports/security/encrypt.cjs`
+- Diabetic workshop flow:
+  - route shell: `public/html/diabeticRetinopathyWorkshop.html`
+  - lesson/progress logic: `public/js/diabeticRetinopathyWorkshop.js`, `public/js/diabeticWorkshopProgress.js`
+  - cross-route Previous/Next logic: `public/js/diabeticWorkshopNextFlow.js`
 
 ## Critical Implementation Paths
 
@@ -58,3 +67,4 @@ Arclight is primarily a static, client-side PWA served from `public/` (or `dist/
 - Offline capability: service worker lifecycle + cache correctness.
 - Telemetry integrity: consistent identifiers, storage selection by environment, and optional at-rest encryption.
 - Reports access control: Basic Auth + attempt rate limiting for reports pages.
+- Diabetic Retinopathy workshop: keep lesson row targets, hidden page IDs, Videos targets, and `DIABETIC_NAV_CONFIG` entries synchronized.

@@ -1,3 +1,30 @@
+# Agent Notes
+
+Last refreshed: 2026-04-30
+
+## Current repo orientation
+
+- Arclight is a static-first PWA served from `public/` in development and `dist/` after builds, with `server.cjs` providing hosting, reports/admin protection, and app/telemetry APIs.
+- Runtime storage is currently no-op by default through `storage/disabled-storage.cjs`; Postgres is selected by `storage/index.cjs` only when DB URLs are configured and `DISABLE_DB_STORAGE` is not enabled.
+- Playwright starts its local web server with `DISABLE_DB_STORAGE=1`, so E2E tests should not touch configured DBs.
+- The Eyes route includes a Diabetic Retinopathy workshop at `public/html/diabeticRetinopathyWorkshop.html`.
+- Diabetic workshop progress and cross-route lesson sequencing live in `public/js/diabeticWorkshopProgress.js` and `public/js/diabeticWorkshopNextFlow.js`.
+- The Videos route hosts both local subapps and selected external iframe lessons; cross-origin iframe internals cannot be styled or scripted from Arclight.
+
+## Current docs baseline
+
+- Root docs: `README.md`
+- Persistent project context: `memory-bank/`
+- Test docs: `tests/README.md`
+- Reports/security docs: `reports/README.md`, `security/README.md`, `security/EMERGENCY_PLAN.md`
+
+## Agent guardrails
+
+- Prefer code-referenced documentation over aspirational descriptions.
+- Keep `README.md`, `memory-bank/activeContext.md`, and `memory-bank/progress.md` aligned when features or runtime behavior change.
+- Preserve stable `data-target`, `data-lesson`, and `data-folder` values in the Diabetic Retinopathy workshop unless all dependent navigation/progress mappings are updated together.
+- For Fundal scroll work, preserve the mandatory FR06 behavior guardrails below unless the user explicitly approves a change and it is manually rechecked.
+
 # Newborn Eyes Open Scroll Notes
 
 ## 2026-03-11 Interactive Learning External Embed Notes

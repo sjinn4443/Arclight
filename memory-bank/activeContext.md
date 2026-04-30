@@ -1,16 +1,30 @@
-<!-- THE CHANGES - activeContext.md | 2026-03-11, Codex -->
+<!-- THE CHANGES - activeContext.md | 2026-04-30, Codex -->
 
 # Active Context
 
 ## Current Work Focus
 
-Accessibility and translation QA hardening across the static app:
+Diabetic Retinopathy workshop stabilization and documentation refresh:
 
-- added a real static media audit (`scripts/test-a11y.mjs`) plus a shared runtime helper (`public/js/mediaA11y.js`)
-- reduced low-value duplicate i18n key usage by switching several pages to already-translated keys or native-script literals
-- replaced the placeholder translation checker with a used-key audit (`scripts/check-translations.cjs`) backed by persistent homonym/allowlist rules
+- the Eyes route now links into a substantial Diabetic Retinopathy workshop
+- the workshop combines foldered lessons, progress rows, scroll-style pages, Videos-route lessons, protocol pages, and demo quiz pages
+- `public/js/diabeticWorkshopNextFlow.js` owns the structural previous/next buttons and the cross-route flow through Videos pages
+- runtime storage defaults to `storage/disabled-storage.cjs` unless Postgres URLs are configured; Playwright explicitly runs with `DISABLE_DB_STORAGE=1`
 
 ## Recent Changes
+
+- Diabetic Retinopathy workshop flow (2026-04-30):
+  - Added/expanded workshop lesson sections for introduction, diabetes/retinopathy basics, NCD clinic flow, protocol, and demo quizzes.
+  - Added lesson progress tracking through `public/js/diabeticWorkshopProgress.js`.
+  - Added structural Previous/Next controls that can move through workshop internal pages and Videos-route lessons, then restore the relevant workshop folder on return.
+  - Added video page integration for diabetic workshop videos in `public/js/videos.js`.
+  - Added assets for diabetic retinopathy and NCD protocol material under `public/images/learning/Diabetic/`.
+
+- Runtime storage and Playwright isolation (2026-04-30):
+  - `storage/index.cjs` now selects Postgres only when DB URLs are configured and `DISABLE_DB_STORAGE` is not enabled.
+  - No DB URL, or `DISABLE_DB_STORAGE=1`, selects `storage/disabled-storage.cjs`.
+  - `playwright.config.js` starts the local E2E web server with `DISABLE_DB_STORAGE=1`.
+  - `.env.sample` documents split write/read/admin DB URLs, DB TLS options, telemetry host allowlisting, delete gates, and IPInfo token support.
 
 - accessibility + translation QA baseline (2026-04-16):
   - `npm run test:a11y` now performs an actual static audit and currently passes on `76` HTML files.
@@ -65,6 +79,8 @@ Accessibility and translation QA hardening across the static app:
 - Fill the remaining missing used keys, now concentrated on the four `auto.reports.*` table labels.
 - Repair the remaining damaged locale strings (`�` / mojibake / `???`) before adding more translation content.
 - Use `node scripts/check-translations.cjs --strict-english` after each locale sweep to drive down fallback-English carry-overs once missing/damaged keys are under control.
+- Continue adding i18n keys for the Diabetic Retinopathy workshop, which currently contains substantial English static copy.
+- Keep diabetic workshop folder/progress state aligned when adding or moving lesson rows.
 - Keep external embed URLs and their purpose documented when Interactive Learning changes again.
 - If a remote embed later blocks framing, switch that module to a local copy or an open-in-new-tab fallback.
 - Add translation keys for `Trauma` and `Amsler` if those labels need to be localized instead of staying English-only.
@@ -77,6 +93,8 @@ Accessibility and translation QA hardening across the static app:
 - Prefer accurate, code-referenced documentation over aspirational or legacy docs.
 - Use the existing Videos-route subpage pattern (`data-page`, `data-target`, hidden `.page` blocks, `iframe[data-src]`) when adding more Interactive Learning modules.
 - Do not assume parent-page CSS/JS can control embedded external site UI across origins.
+- For the Diabetic Retinopathy workshop, use stable `data-target`, `data-lesson`, and `data-folder` values because progress, folder restore, and next-flow routing depend on them.
+- Treat no-op storage as the default local behavior unless DB URLs are intentionally configured.
 
 ## Important Patterns and Preferences
 
@@ -91,3 +109,4 @@ Accessibility and translation QA hardening across the static app:
 - `scripts/check-translations.cjs` is now the canonical audit entry point for used-key coverage, damaged-string detection, and fallback-English review.
 - Keep required legacy root alias keys aligned with scoped keys where older pages/tests still reference those root keys.
 - For Interactive Learning under `videos.html`, prefer the existing hidden-subpage + lazy iframe pattern over special-case navigation.
+- Diabetic workshop route changes should be checked for structural back behavior from both the workshop home and nested lesson pages.
