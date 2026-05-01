@@ -8994,6 +8994,11 @@ select.onb-input.has-value + .onb-select-caret {
 
 @keyframes diabeticStationBlinkTwice {
   0%,
+  8%,
+  16%,
+  73%,
+  81%,
+  93%,
   100% {
     background: #f25600;
     color: #ffffff;
@@ -9001,7 +9006,10 @@ select.onb-input.has-value + .onb-select-caret {
     box-shadow: none;
   }
 
-  50% {
+  4%,
+  12%,
+  77%,
+  89% {
     background: #ffffff;
     color: #f25600;
     border-color: #f25600;
@@ -9398,7 +9406,7 @@ select.onb-input.has-value + .onb-select-caret {
   position: absolute;
   left: 50%;
   top: 21%;
-  color: #ff0000;
+  color: #e41e26;
   font-size: clamp(340px, 42vw, 450px);
   font-weight: 350;
   line-height: 0.75;
@@ -9414,7 +9422,7 @@ select.onb-input.has-value + .onb-select-caret {
 .diabetic-eye-disease-collage {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
+  gap: 26px 10px;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -9441,7 +9449,7 @@ select.onb-input.has-value + .onb-select-caret {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: -17px;
+  bottom: -10px;
   display: block;
   margin: 0;
   padding: 8px 9px;
@@ -9454,6 +9462,11 @@ select.onb-input.has-value + .onb-select-caret {
   line-height: 1.15;
   text-align: center;
   box-shadow: none;
+}
+
+.diabetic-eye-disease-collage li:nth-child(n + 3) {
+  margin-top: 10px;
+  margin-bottom: 16px;
 }
 
 .diabetic-screening-flow--connected {
@@ -9476,7 +9489,21 @@ select.onb-input.has-value + .onb-select-caret {
   border-color: #f25600;
   background: #f25600;
   color: #ffffff;
-  animation: diabeticStationBlinkTwice 0.42s ease-in-out 0.2s 4 both;
+}
+
+#diabeticNcdClinicScreeningPage
+  .is-visible
+  .diabetic-screening-flow--connected
+  .diabetic-screening-flow__station {
+  animation: diabeticStationBlinkTwice 6s linear both;
+}
+
+:is(#diabeticNcdClinicScreeningPage, #diabeticOtherEyeDiseasesScreeningPage)
+  .diabetic-screening-panel--content-fit {
+  min-height: auto;
+  align-content: start;
+  padding-top: 18px;
+  padding-bottom: 18px;
 }
 
 :is(#diabeticNcdClinicScreeningPage, #diabeticOtherEyeDiseasesScreeningPage)
@@ -9975,7 +10002,7 @@ select.onb-input.has-value + .onb-select-caret {
   transform: translateY(-50%) rotate(-12deg) scale(1.85);
 }
 
-.is-current .diabetes-type-compare__stamp {
+.is-graph-visible .diabetes-type-compare__stamp {
   animation: diabeticResistedStamp 0.62s cubic-bezier(0.18, 1.28, 0.28, 1) 0.34s
     both;
 }
@@ -10227,7 +10254,7 @@ select.onb-input.has-value + .onb-select-caret {
 }
 
 #diabeticWhatIsDiabetesPage .diabetes-body-scan {
-  width: min(240px, 62vw);
+  width: 100%;
   margin: 0 auto;
 }
 
@@ -10309,6 +10336,11 @@ select.onb-input.has-value + .onb-select-caret {
 #diabeticTypesOfDiabetesPage .diabetes-type-compare__meter--empty {
   border-style: dashed;
   background: #ffffff;
+}
+
+#diabeticTypesOfDiabetesPage
+  .is-graph-visible
+  .diabetes-type-compare__meter--empty {
   animation: diabeticNoInsulinBlink 0.95s ease-in-out infinite alternate;
 }
 
@@ -10319,6 +10351,11 @@ select.onb-input.has-value + .onb-select-caret {
 #diabeticTypesOfDiabetesPage .diabetes-type-compare__meter--blocked::before {
   background: #9ca3af;
   transform: scaleX(0);
+}
+
+#diabeticTypesOfDiabetesPage
+  .is-graph-visible
+  .diabetes-type-compare__meter--blocked::before {
   animation: diabeticInsulinFill 8s ease-out infinite;
 }
 
@@ -10332,7 +10369,7 @@ select.onb-input.has-value + .onb-select-caret {
   opacity: 0;
 }
 
-#diabeticTypesOfDiabetesPage .is-current .diabetes-type-compare__stamp {
+#diabeticTypesOfDiabetesPage .is-graph-visible .diabetes-type-compare__stamp {
   animation: diabeticResistedStampLoop 8s cubic-bezier(0.18, 1.28, 0.28, 1)
     infinite;
 }
@@ -10441,6 +10478,13 @@ select.onb-input.has-value + .onb-select-caret {
   width: 108px;
 }
 
+.dr-retina-graphic--new-vessels img.dr-retina-graphic__new-vessel {
+  left: 50%;
+  top: 50%;
+  width: min(100%, 240px);
+  transform: translate(-50%, -50%);
+}
+
 .dr-retina-graphic img.dr-retina-graphic__blood {
   width: 28px;
 }
@@ -10482,13 +10526,28 @@ select.onb-input.has-value + .onb-select-caret {
 }
 
 .dr-retina-graphic__blood--three {
-  left: 36%;
-  top: 44%;
+  left: 24%;
+  top: 36%;
 }
 
 .dr-retina-graphic__blood--four {
-  left: 27%;
-  top: 66%;
+  left: 32%;
+  top: 58%;
+}
+
+.dr-retina-graphic__blood--five {
+  left: 19%;
+  top: 48%;
+}
+
+.dr-retina-graphic__blood--six {
+  left: 54%;
+  top: 57%;
+}
+
+.dr-retina-graphic__blood--seven {
+  left: 31%;
+  top: 48%;
 }
 
 .dr-retina-graphic__closed {
@@ -10530,9 +10589,9 @@ select.onb-input.has-value + .onb-select-caret {
 }
 
 .dr-retina-graphic__new-vessel--one {
-  left: 17%;
-  top: 20%;
-  transform: rotate(26deg) scale(0.6);
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .dr-retina-graphic__new-vessel--two {
@@ -10554,10 +10613,10 @@ select.onb-input.has-value + .onb-select-caret {
 }
 
 .dr-retina-graphic__blocked-drain {
-  left: 42%;
-  top: 55%;
-  width: 48px;
-  height: 48px;
+  left: 28%;
+  top: 48%;
+  width: 58px;
+  height: 58px;
   background:
     radial-gradient(circle at 18% 22%, #ff1d00 0 5px, transparent 6px),
     radial-gradient(circle at 66% 36%, #ff1d00 0 7px, transparent 8px),
@@ -10593,36 +10652,40 @@ select.onb-input.has-value + .onb-select-caret {
   animation: diabeticVesselClose 1s ease-out 1.1s forwards;
 }
 
-.is-current .dr-retina-graphic--new-vessels .dr-retina-graphic__new-vessel {
-  animation: diabeticNewVesselGrow 1.1s ease-out forwards;
+.is-dr-vessels-visible
+  .dr-retina-graphic--new-vessels
+  .dr-retina-graphic__new-vessel {
+  animation: diabeticNewVesselLoop 7s ease-in-out infinite;
 }
 
-.is-current
+.is-dr-vessels-visible
   .dr-retina-graphic--new-vessels
   .dr-retina-graphic__new-vessel--two {
   animation-delay: 0.22s;
 }
 
-.is-current
+.is-dr-vessels-visible
   .dr-retina-graphic--new-vessels
   .dr-retina-graphic__new-vessel--three {
   animation-delay: 0.38s;
 }
 
-.is-current
+.is-dr-vessels-visible
   .dr-retina-graphic--new-vessels
   .dr-retina-graphic__new-vessel--four {
   animation-delay: 0.54s;
 }
 
-.is-current .dr-retina-graphic--new-vessels .dr-retina-graphic__blood {
-  animation:
-    diabeticRetinaLeak 1s ease-out 1.1s forwards,
-    diabeticDamagePulse 1s ease-in-out 2s infinite alternate;
+.is-dr-vessels-visible
+  .dr-retina-graphic--new-vessels
+  .dr-retina-graphic__blood {
+  animation: diabeticRetinaBloodLoop 7s ease-in-out infinite;
 }
 
-.is-current .dr-retina-graphic--new-vessels .dr-retina-graphic__blocked-drain {
-  animation: diabeticBlockedDrain 0.72s ease-out 1.45s forwards;
+.is-dr-vessels-visible
+  .dr-retina-graphic--new-vessels
+  .dr-retina-graphic__blocked-drain {
+  animation: diabeticBlockedDrain 0.72s ease-out 2.2s forwards;
 }
 
 .diabetic-maculopathy-sequence {
@@ -10775,9 +10838,13 @@ select.onb-input.has-value + .onb-select-caret {
 
 .diabetic-maculopathy-sequence__exudate--twelve {
   --exudate-scale: 0.52;
-  left: 69%;
-  top: 25%;
+  left: 83%;
+  top: 50%;
   transform: translate(-50%, -50%) scale(0.52);
+}
+
+#diabeticWhatIsRetinopathyPage .diabetic-screening-panel__text h3 + p + h3 {
+  margin-top: 24px;
 }
 
 .diabetic-maculopathy-sequence__vision {
@@ -10994,31 +11061,41 @@ select.onb-input.has-value + .onb-select-caret {
   }
 
   25%,
-  100% {
+  88% {
     transform: scaleX(1);
+  }
+
+  100% {
+    transform: scaleX(0);
   }
 }
 
 @keyframes diabeticResistedStampLoop {
   0%,
-  62.5% {
+  47.5% {
     opacity: 0;
     transform: translateY(-50%) rotate(-12deg) scale(1.72);
   }
 
-  70% {
+  54% {
     opacity: 1;
     transform: translateY(-50%) rotate(-12deg) scale(0.88);
   }
 
-  78% {
+  62% {
     opacity: 1;
     transform: translateY(-50%) rotate(-12deg) scale(1.05);
   }
 
-  100% {
+  78% {
     opacity: 1;
     transform: translateY(-50%) rotate(-12deg) scale(1);
+  }
+
+  90%,
+  100% {
+    opacity: 0;
+    transform: translateY(-50%) rotate(-12deg) scale(1.18);
   }
 }
 
@@ -11055,6 +11132,44 @@ select.onb-input.has-value + .onb-select-caret {
   to {
     opacity: 1;
     clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes diabeticNewVesselLoop {
+  0%,
+  4% {
+    opacity: 0;
+    clip-path: inset(0 100% 100% 0);
+  }
+
+  22%,
+  82% {
+    opacity: 1;
+    clip-path: inset(0 0 0 0);
+  }
+
+  100% {
+    opacity: 0;
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes diabeticRetinaBloodLoop {
+  0%,
+  30% {
+    opacity: 0;
+    transform: scale(0.35);
+  }
+
+  44%,
+  82% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(0.92);
   }
 }
 
@@ -11263,8 +11378,8 @@ select.onb-input.has-value + .onb-select-caret {
     grid-template-columns: 1fr;
     min-height: auto;
     align-content: start;
-    padding-top: 24px;
-    padding-bottom: 24px;
+    padding-top: 18px;
+    padding-bottom: 18px;
   }
 
   #diabeticNcdClinicScreeningPage .diabetic-no-eye-check {
@@ -11276,8 +11391,8 @@ select.onb-input.has-value + .onb-select-caret {
     grid-template-columns: 1fr;
     min-height: auto;
     align-content: start;
-    padding-top: 24px;
-    padding-bottom: 24px;
+    padding-top: 18px;
+    padding-bottom: 18px;
   }
 
   #diabeticNcdClinicScreeningPage .diabetic-screening-flow {

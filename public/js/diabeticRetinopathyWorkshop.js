@@ -748,6 +748,21 @@ function initializeDiabeticScreeningScrollLessons() {
         }
       });
 
+      lesson
+        .querySelectorAll("[data-diabetic-visible-class]")
+        .forEach((trigger) => {
+          const className = trigger.dataset.diabeticVisibleClass;
+          if (!className) return;
+
+          const rect = trigger.getBoundingClientRect();
+          const target =
+            trigger.closest("[data-diabetic-scroll-step]") || trigger;
+          target.classList.toggle(
+            className,
+            rect.top < revealBottom && rect.bottom > revealTop,
+          );
+        });
+
       lesson.dataset.diabeticCurrentStep = String(currentIndex);
 
       if (cue) {
