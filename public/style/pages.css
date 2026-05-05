@@ -6868,12 +6868,33 @@ select.onb-input.has-value + .onb-select-caret {
 
 .diabetic-protocol-lesson .diabetic-protocol-link {
   display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
   margin-top: 16px;
+  padding: 12px 12px 12px 14px;
+  border: 1px solid rgba(242, 86, 0, 0.34);
+  border-radius: 999px;
+  background: #ffffff;
   color: #f25600;
   font-size: 14px;
   font-weight: 850;
   line-height: 1.35;
   text-decoration: none;
+}
+
+.diabetic-protocol-lesson .diabetic-protocol-link i {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 50%;
+  background: #f25600;
+  color: #ffffff;
+  font-style: normal;
+  font-size: 16px;
+  font-weight: 950;
 }
 
 .diabetic-protocol-phase-map,
@@ -6957,11 +6978,17 @@ select.onb-input.has-value + .onb-select-caret {
   text-transform: uppercase;
 }
 
-.diabetic-protocol-parallel b {
+.diabetic-protocol-parallel b,
+.diabetic-protocol-parallel p {
+  margin: 0;
   color: #111827;
-  font-size: 15px;
-  font-weight: 850;
+  font-size: 14px;
+  font-weight: 650;
   line-height: 1.25;
+}
+
+.diabetic-protocol-parallel__future {
+  opacity: 0.48;
 }
 
 .diabetic-protocol-parallel--large div {
@@ -7150,8 +7177,8 @@ select.onb-input.has-value + .onb-select-caret {
   box-sizing: border-box;
   width: 100%;
   margin: 0;
-  padding: 10px;
-  border: 1px solid rgba(17, 24, 39, 0.1);
+  padding: 0;
+  border: 0;
   border-radius: 22px;
   background: #ffffff;
   overflow: hidden;
@@ -7165,6 +7192,7 @@ select.onb-input.has-value + .onb-select-caret {
 }
 
 .diabetic-protocol-image-frame--do {
+  position: relative;
   background: #f9fafb;
 }
 
@@ -7283,6 +7311,249 @@ select.onb-input.has-value + .onb-select-caret {
   font-size: 12px;
   font-weight: 950;
   transform: translateY(-50%);
+}
+
+.diabetic-protocol-lesson .diabetic-screening-stack {
+  gap: 18px;
+}
+
+.diabetic-protocol-lesson .diabetic-screening-panel--content-fit {
+  min-height: auto;
+  align-content: start;
+}
+
+.diabetic-protocol-look-for {
+  margin-top: 12px !important;
+  color: #111827 !important;
+  font-size: 14px !important;
+  font-weight: 850 !important;
+  line-height: 1.25 !important;
+}
+
+.diabetic-protocol-drop-stack--chips span {
+  position: relative;
+  padding-left: 42px;
+  border-color: rgba(242, 86, 0, 0.24);
+  background: #f3f4f6;
+  color: #111827;
+}
+
+.diabetic-protocol-drop-stack--chips span::before {
+  content: counter(diabeticScreenChecklist);
+  counter-increment: diabeticScreenChecklist;
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #f25600;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 900;
+  transform: translateY(-50%);
+}
+
+.diabetic-protocol-drop-stack--chips {
+  counter-reset: diabeticScreenChecklist;
+}
+
+.diabetic-protocol-zoom {
+  margin: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.diabetic-protocol-zoom .diabetic-screening-visual__label {
+  color: #a3a9b5;
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: 0.01em;
+  text-transform: none;
+}
+
+.diabetic-protocol-zoom .diabetic-atoms-zoom__frame {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  border-radius: 18px;
+  cursor: zoom-in;
+  touch-action: none;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.diabetic-protocol-zoom .diabetic-atoms-zoom__frame img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+  transform: scale(calc(1.1 + var(--zoom-progress, 0) * 0.72));
+  transform-origin: 50% 38%;
+  transition: transform 120ms linear;
+}
+
+.diabetic-protocol-refer-line {
+  display: block;
+  margin-top: 8px;
+  color: #111827;
+  font-weight: 900;
+}
+
+.diabetic-protocol-red-reflex {
+  gap: 6px;
+  min-height: 170px;
+  padding: 8px;
+  border: 0;
+}
+
+.diabetic-protocol-red-reflex div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 0;
+}
+
+.diabetic-protocol-red-reflex div::before {
+  position: relative;
+  top: auto;
+  width: 76px;
+  height: 76px;
+  flex: 0 0 auto;
+}
+
+.diabetic-protocol-red-reflex__blocked::after {
+  top: calc(50% - 31px);
+  width: 76px;
+  height: 76px;
+}
+
+.diabetic-protocol-image-overlay {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  top: 12px;
+  z-index: 1;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: rgba(17, 24, 39, 0.78);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 750;
+  line-height: 1.35;
+}
+
+.diabetic-protocol-urgent-box {
+  display: inline-flex;
+  margin-top: 14px !important;
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: #f25600;
+  color: #ffffff !important;
+  font-size: 14px !important;
+  font-weight: 900 !important;
+  line-height: 1.2 !important;
+}
+
+.diabetic-protocol-image-grid figure {
+  position: relative;
+}
+
+.diabetic-protocol-image-grid .diabetic-protocol-image-label {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  right: auto;
+  bottom: auto;
+  padding: 7px 10px;
+  border-radius: 999px;
+  background: #f25600;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 950;
+  line-height: 1;
+}
+
+.diabetic-protocol-action-map {
+  display: grid;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.diabetic-protocol-action-map div {
+  position: relative;
+  display: grid;
+  gap: 8px;
+  padding: 14px 16px 14px 46px;
+  border-radius: 18px;
+  background: #f3f4f6;
+}
+
+.diabetic-protocol-action-map div::before {
+  content: "";
+  position: absolute;
+  left: 17px;
+  top: 20px;
+  width: 14px;
+  height: 14px;
+  border-top: 3px solid #f25600;
+  border-right: 3px solid #f25600;
+  transform: rotate(45deg);
+}
+
+.diabetic-protocol-action-map b,
+.diabetic-protocol-action-map span {
+  display: block;
+  line-height: 1.25;
+}
+
+.diabetic-protocol-action-map b {
+  color: #111827;
+  font-size: 14px;
+  font-weight: 850;
+}
+
+.diabetic-protocol-action-map span {
+  color: #c2410c;
+  font-size: 13px;
+  font-weight: 850;
+}
+
+.diabetic-screening-step--icon {
+  position: relative;
+  font-size: 0;
+  letter-spacing: 0;
+}
+
+.diabetic-screening-step--icon::before,
+.diabetic-screening-step--icon::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  display: block;
+  transform: translateY(-50%);
+}
+
+.diabetic-screening-step--icon::before {
+  left: 10px;
+  width: 11px;
+  height: 11px;
+  border: 3px solid #ffffff;
+  border-radius: 50%;
+}
+
+.diabetic-screening-step--icon::after {
+  left: 22px;
+  width: 13px;
+  height: 4px;
+  border-radius: 999px;
+  background: #ffffff;
+  box-shadow:
+    5px 4px 0 -1px #ffffff,
+    9px 4px 0 -1px #ffffff;
 }
 
 @keyframes diabeticProtocolQuestionPop {
