@@ -1,4 +1,4 @@
-﻿/*
+/*
   pages.css - Styles specific to individual pages, including splash screen, language install, onboarding, and dashboard.
 */
 
@@ -664,12 +664,12 @@ select.onb-input.has-value {
 /* Intro progress: 4 segments */
 
 .intro-progress__seg {
-  /* 기본 회색 */
+  /* ?? ?? */
   transition: background 0.25s ease;
 }
 
 .intro-progress__seg.is-active {
-  background: #e41e26; /* 활성 빨강 */
+  background: #e41e26; /* ?? ?? */
 }
 
 .intro-title {
@@ -706,10 +706,10 @@ select.onb-input.has-value {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px; /* 화살표와 프레임 간 살짝 여백 */
+  gap: 10px; /* ???? ??? ? ?? ?? */
 }
 
-/* 비디오 프레임 컨테이너 */
+/* ??? ??? ???? */
 
 .intro-hero-frame {
   position: relative;
@@ -771,7 +771,7 @@ select.onb-input.has-value {
   transition: opacity 0.3s ease;
 }
 
-/* When we want to show an arrow (JS에서 class 추가) */
+/* When we want to show an arrow (JS?? class ??) */
 #introPage .intro-arrow.intro-arrow--visible {
   opacity: 1;
   visibility: visible;
@@ -785,7 +785,7 @@ select.onb-input.has-value {
   }
   60% {
     transform: scale(1.74);
-  } /* 4.7rem / 2.7rem ≈ 1.74 */
+  } /* 4.7rem / 2.7rem ˜ 1.74 */
   100% {
     transform: scale(1);
   }
@@ -869,17 +869,17 @@ select.onb-input.has-value {
 .unified-top .icons {
   display: flex;
   align-items: center;
-  gap: 6px; /* search + ☰ 사이 간격 */
+  gap: 6px; /* search + ? ?? ?? */
 }
 
-/* 상단에 올라간 검색은 줄 간격/마진 제거 */
+/* ??? ??? ??? ? ??/?? ?? */
 .unified-top .search-wrap {
   margin: 0;
 }
 
-/* 길이 절반 정도로 줄이기 */
+/* ?? ?? ??? ??? */
 
-/* 높이도 살짝 줄여서 상단바에 맞추기 */
+/* ??? ?? ??? ???? ??? */
 .search-wrap--compact input[type="search"] {
   height: 30px;
   font-size: 11px;
@@ -1556,10 +1556,10 @@ body,
   right: 10px;
   top: 50%;
   transform: translateY(-50%);
-  width: 28px; /* 여기서 원하는 만큼 키우면 됨 */
+  width: 28px; /* ??? ??? ?? ??? ? */
   height: 25px;
   pointer-events: none;
-  color: #ccccd1; /* 기본 회색 */
+  color: #ccccd1; /* ?? ?? */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1571,7 +1571,7 @@ body,
   display: block;
 }
 
-/* select가 has-value일 때 caret도 파란색으로 */
+/* select? has-value? ? caret? ????? */
 select.onb-input.has-value + .onb-select-caret {
   color: #62a6ff;
 }
@@ -1630,7 +1630,7 @@ select.onb-input.has-value + .onb-select-caret {
   gap: 6px;
 }
 
-/* 기본은 input 숨김 */
+/* ??? input ?? */
 .search-collapsed input[type="search"] {
   width: 0;
   opacity: 0;
@@ -1640,9 +1640,9 @@ select.onb-input.has-value + .onb-select-caret {
   pointer-events: none;
 }
 
-/* 펼쳐졌을 때 */
+/* ???? ? */
 .search-expanded input[type="search"] {
-  width: 140px; /* 나타났을 때 박스 길이 */
+  width: 140px; /* ???? ? ?? ?? */
   opacity: 1;
   padding: 0 36px 0 12px;
   border: 1px solid #e5e5ea;
@@ -1651,7 +1651,7 @@ select.onb-input.has-value + .onb-select-caret {
   pointer-events: auto;
 }
 
-/* 아이콘은 항상 표시 */
+/* ???? ?? ?? */
 .search-wrap--compact .search-icon {
   cursor: pointer;
   display: flex;
@@ -1686,7 +1686,7 @@ select.onb-input.has-value + .onb-select-caret {
   font-variant-numeric: tabular-nums;
 }
 
-/* number spinner 제거 */
+/* number spinner ?? */
 .exp-input::-webkit-inner-spin-button,
 .exp-input::-webkit-outer-spin-button {
   -webkit-appearance: none;
@@ -1701,19 +1701,19 @@ select.onb-input.has-value + .onb-select-caret {
   font-size: 13px;
 }
 
-/* public/style/pages.css 마지막에 추가 */
+/* public/style/pages.css ???? ?? */
 
 .media-scroll-container {
   display: flex;
   flex-direction: column;
-  gap: 20px; /* 항목 간 간격 */
+  gap: 20px; /* ?? ? ?? */
   padding-bottom: 50px;
   width: 100%;
 }
 
 .media-item {
   width: 100%;
-  background: #000; /* 로딩 전 배경색 */
+  background: #000; /* ?? ? ??? */
   border-radius: 8px;
   overflow: hidden;
 }
@@ -1740,13 +1740,13 @@ select.onb-input.has-value + .onb-select-caret {
 .intro-progress__seg {
   flex: 1;
   height: 3px;
-  background: #e6e6e8; /* 기본 회색 트랙 */
+  background: #e6e6e8; /* ?? ?? ?? */
   border-radius: 999px;
   position: relative;
-  overflow: hidden; /* fill이 세그먼트 밖으로 안 튀게 */
+  overflow: hidden; /* fill? ???? ??? ? ?? */
 }
 
-/* is-active는 JS가 상태 표시로만 쓰고, 색은 fill이 담당 */
+/* is-active? JS? ?? ???? ??, ?? fill? ?? */
 .intro-progress__seg.is-active {
   background: #e6e6e8;
 }
@@ -1757,7 +1757,7 @@ select.onb-input.has-value + .onb-select-caret {
   width: 0%;
   height: 100%;
   display: block;
-  background: #e41e26; /* 진행 빨강 */
+  background: #e41e26; /* ?? ?? */
   border-radius: 999px;
   transition: width 120ms linear;
 }
@@ -1767,7 +1767,7 @@ select.onb-input.has-value + .onb-select-caret {
   height: 62px;
 }
 
-/* back 버튼만 크게 */
+/* back ??? ?? */
 #pupilsPage .icon.backBtn,
 .pupils-like .icon.backBtn {
   font-size: 56px;
@@ -3144,7 +3144,7 @@ select.onb-input.has-value + .onb-select-caret {
 #glaucomaQuizCaseStudy .options {
   display: grid;
   gap: 10px;
-  margin-top: 14px;
+  margin-top: 22px;
 }
 
 #glaucomaQuizCaseStudy .opt {
@@ -8082,6 +8082,7 @@ select.onb-input.has-value + .onb-select-caret {
 
 .ncd-flow-map,
 .ncd-four-checks,
+.ncd-check-collage,
 .ncd-pragmatic-scale,
 .ncd-detection-radar,
 .diabetic-disease-gallery,
@@ -8176,6 +8177,56 @@ select.onb-input.has-value + .onb-select-caret {
   animation-delay: 0.36s;
 }
 
+#diabeticNcdFlowIntroductionPage .is-current .ncd-flow-map__track span::before {
+  animation: diabeticNcdFlowDotStep 4s linear infinite;
+}
+
+#diabeticNcdFlowIntroductionPage
+  .is-current
+  .ncd-flow-map__track
+  span:nth-child(2)::before {
+  animation-delay: -3s;
+}
+
+#diabeticNcdFlowIntroductionPage
+  .is-current
+  .ncd-flow-map__track
+  span:nth-child(3)::before {
+  animation-delay: -2s;
+}
+
+#diabeticNcdFlowIntroductionPage
+  .is-current
+  .ncd-flow-map__track
+  span:nth-child(4)::before {
+  animation-delay: -1s;
+}
+
+#diabeticNcdFlowIntroductionPage .is-visible .ncd-flow-map__track span::before {
+  animation: diabeticNcdFlowDotStep 4s linear infinite;
+}
+
+#diabeticNcdFlowIntroductionPage
+  .is-visible
+  .ncd-flow-map__track
+  span:nth-child(2)::before {
+  animation-delay: -3s;
+}
+
+#diabeticNcdFlowIntroductionPage
+  .is-visible
+  .ncd-flow-map__track
+  span:nth-child(3)::before {
+  animation-delay: -2s;
+}
+
+#diabeticNcdFlowIntroductionPage
+  .is-visible
+  .ncd-flow-map__track
+  span:nth-child(4)::before {
+  animation-delay: -1s;
+}
+
 .ncd-four-checks__grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -8246,6 +8297,161 @@ select.onb-input.has-value + .onb-select-caret {
   height: 38px;
   border-radius: 50%;
   box-shadow: inset 0 0 0 8px rgba(242, 86, 0, 0.12);
+}
+
+.ncd-check-collage {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-content: start;
+  gap: 10px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.ncd-check-collage__card {
+  position: relative;
+  margin: 0;
+  overflow: hidden;
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.1);
+  transition:
+    opacity 240ms ease,
+    filter 240ms ease,
+    transform 240ms ease;
+}
+
+.ncd-check-collage__media {
+  position: relative;
+  aspect-ratio: 1.12 / 1;
+  overflow: hidden;
+  border-radius: 18px 18px 0 0;
+  background: #f8fafc;
+}
+
+.ncd-check-collage__image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.ncd-check-collage__image--base {
+  position: relative;
+}
+
+.ncd-check-collage__image--overlay {
+  opacity: 0;
+}
+
+.ncd-check-collage__card figcaption {
+  box-sizing: border-box;
+  height: 23px;
+  min-height: 23px;
+  display: grid;
+  place-items: center;
+  padding: 2px 8px;
+  border-radius: 0 0 14px 14px;
+  background: #f25600;
+  color: #ffffff;
+  font-size: 10.5px;
+  font-weight: 950;
+  line-height: 1.05;
+  text-align: center;
+  text-transform: none;
+}
+
+.ncd-check-collage__card figcaption span {
+  grid-area: 1 / 1;
+}
+
+.ncd-check-collage__card figcaption span + span {
+  opacity: 0;
+}
+
+.ncd-check-collage__image--history-diabetes,
+.ncd-check-collage__image--history-symptoms {
+  inset: 10% auto auto 7%;
+  width: 52%;
+  height: auto;
+  max-height: 46%;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 14px rgba(15, 23, 42, 0.2));
+}
+
+.ncd-check-collage__image--history-symptoms {
+  inset: auto auto 10% 7%;
+}
+
+.is-current .ncd-check-collage__card {
+  opacity: 0.32;
+  filter: grayscale(0.2);
+}
+
+.is-current .ncd-check-collage__card--history {
+  animation: ncdCheckHistoryActive 28s linear infinite;
+}
+
+.is-current .ncd-check-collage__card--vision {
+  animation: ncdCheckVisionActive 28s linear infinite;
+}
+
+.is-current .ncd-check-collage__card--loupe {
+  animation: ncdCheckLoupeActive 28s linear infinite;
+}
+
+.is-current .ncd-check-collage__card--do {
+  animation: ncdCheckDoActive 28s linear infinite;
+}
+
+.is-current .ncd-check-collage__image--history-diabetes {
+  animation: ncdCheckHistoryDiabetes 28s linear infinite;
+}
+
+.is-current .ncd-check-collage__image--history-symptoms {
+  animation: ncdCheckHistorySymptoms 28s linear infinite;
+}
+
+.is-current .ncd-check-collage__image--front-two {
+  animation: ncdCheckFrontTwo 28s linear infinite;
+}
+
+.is-current .ncd-check-collage__image--pupils-one {
+  animation: ncdCheckPupilsOne 28s linear infinite;
+}
+
+.is-current .ncd-check-collage__image--pupils-two {
+  animation: ncdCheckPupilsTwo 28s linear infinite;
+}
+
+.is-current .ncd-check-collage__image--reflex-two {
+  animation: ncdCheckReflexTwo 28s linear infinite;
+}
+
+.is-current .ncd-check-collage__image--fundus-one {
+  animation: ncdCheckFundusOne 28s linear infinite;
+}
+
+.is-current .ncd-check-collage__image--fundus-two {
+  animation: ncdCheckFundusTwo 28s linear infinite;
+}
+
+.is-current .ncd-check-collage__card--loupe figcaption span:first-child {
+  animation: ncdCheckFrontLabel 28s linear infinite;
+}
+
+.is-current .ncd-check-collage__card--loupe figcaption span + span {
+  animation: ncdCheckPupilsLabel 28s linear infinite;
+}
+
+.is-current .ncd-check-collage__card--do figcaption span:first-child {
+  animation: ncdCheckReflexLabel 28s linear infinite;
+}
+
+.is-current .ncd-check-collage__card--do figcaption span + span {
+  animation: ncdCheckFundusLabel 28s linear infinite;
 }
 
 .is-current .ncd-four-checks__grid span {
@@ -8388,12 +8594,41 @@ select.onb-input.has-value + .onb-select-caret {
   align-content: start;
 }
 
+:is(#diabeticNcdFlowIntroductionPage, #diabeticProliferativeOtherDiseasePage)
+  .diabetic-screening-stack {
+  gap: 18px;
+  margin-top: 30px;
+}
+
+#diabeticSimpleSafeScalableScrollPage .diabetic-screening-stack {
+  gap: 18px;
+  margin-top: 14px;
+}
+
+#diabeticSimpleSafeScalableScrollPage .simple-safe-decision {
+  margin-top: 30px;
+}
+
+:is(
+    #diabeticNcdFlowIntroductionPage,
+    #diabeticProliferativeOtherDiseasePage,
+    #diabeticSimpleSafeScalableScrollPage
+  )
+  .diabetic-screening-hero {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+#diabeticNcdFlowIntroductionPage .diabetic-screening-panel__text p + h3 {
+  margin-top: 22px;
+}
+
 .diabetic-disease-card,
 .diabetic-disease-sorter figure {
   position: relative;
   margin: 0;
+  overflow: visible;
   border-radius: 18px;
-  overflow: hidden;
   background: #111827;
 }
 
@@ -8403,18 +8638,19 @@ select.onb-input.has-value + .onb-select-caret {
   height: 180px;
   display: block;
   object-fit: cover;
+  border-radius: 18px;
 }
 
 .diabetic-disease-card figcaption,
 .diabetic-disease-sorter figcaption {
   position: absolute;
-  left: 10px;
-  right: 10px;
-  bottom: 10px;
+  left: 0;
+  right: 0;
+  bottom: 0;
   padding: 8px 10px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.92);
-  color: #111827;
+  border-radius: 0 0 14px 14px;
+  background: #f25600;
+  color: #ffffff;
   font-size: 11px;
   font-weight: 950;
   line-height: 1.1;
@@ -8423,16 +8659,121 @@ select.onb-input.has-value + .onb-select-caret {
 
 .diabetic-disease-card span {
   position: absolute;
-  left: 10px;
-  top: 10px;
+  left: 0;
+  top: 0;
   padding: 7px 9px;
-  border-radius: 999px;
-  background: #f25600;
-  color: #ffffff;
+  border: 1px solid #f25600;
+  border-bottom: 0;
+  border-radius: 12px 12px 0 0;
+  background: #ffffff;
+  color: #f25600;
   font-size: 10px;
   font-weight: 950;
   letter-spacing: 0.04em;
   text-transform: uppercase;
+  transform: translateY(-100%);
+}
+
+#diabeticProliferativeOtherDiseasePage .diabetic-disease-card {
+  margin-top: 24px;
+  margin-bottom: 32px;
+  background: #ffffff;
+}
+
+#diabeticProliferativeOtherDiseasePage .diabetic-disease-gallery {
+  border: 0;
+  background: transparent;
+}
+
+#diabeticProliferativeOtherDiseasePage .diabetic-disease-card img {
+  border-radius: 18px 18px 0 0;
+}
+
+#diabeticProliferativeOtherDiseasePage .diabetic-disease-card--wide {
+  grid-column: 1 / -1;
+}
+
+#diabeticProliferativeOtherDiseasePage .diabetic-disease-card--contain img {
+  height: auto;
+  max-height: 220px;
+  object-fit: contain;
+  background: #111827;
+}
+
+#diabeticProliferativeOtherDiseasePage .diabetic-disease-gallery--bleeding,
+#diabeticProliferativeOtherDiseasePage .diabetic-disease-gallery--collage {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+#diabeticProliferativeOtherDiseasePage
+  .diabetic-disease-gallery--collage
+  .diabetic-disease-card
+  img {
+  height: 148px;
+}
+
+#diabeticProliferativeOtherDiseasePage .diabetic-disease-sorter--single {
+  grid-template-columns: 1fr;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+#diabeticProliferativeOtherDiseasePage
+  .diabetic-disease-sorter--single
+  .diabetic-disease-sorter__lane {
+  min-height: 260px;
+  padding: 14px;
+  border-color: rgba(17, 24, 39, 0.16);
+  border-radius: 24px;
+}
+
+#diabeticProliferativeOtherDiseasePage .diabetic-disease-sorter figure {
+  overflow: visible;
+  margin-top: 10px;
+}
+
+#diabeticProliferativeOtherDiseasePage .diabetic-disease-card span::after {
+  content: "";
+  position: absolute;
+  left: -1px;
+  top: calc(100% - 1px);
+  width: 1px;
+  height: 28px;
+  background: #f25600;
+}
+
+#diabeticProliferativeOtherDiseasePage
+  .diabetic-screening-panel:nth-of-type(1)
+  .diabetic-disease-card
+  figcaption,
+#diabeticProliferativeOtherDiseasePage
+  .diabetic-screening-panel:nth-of-type(4)
+  .diabetic-disease-card
+  figcaption {
+  bottom: -13px;
+}
+
+#diabeticProliferativeOtherDiseasePage
+  .diabetic-disease-gallery--bleeding
+  .diabetic-disease-card:nth-of-type(-n + 2)
+  figcaption {
+  bottom: -24px;
+}
+
+#diabeticProliferativeOtherDiseasePage
+  .diabetic-disease-gallery--bleeding
+  .diabetic-disease-card:nth-of-type(3)
+  figcaption {
+  bottom: -15px;
+}
+
+#diabeticProliferativeOtherDiseasePage
+  .diabetic-disease-gallery--collage
+  .diabetic-disease-card
+  figcaption {
+  bottom: -26px;
 }
 
 .is-current .diabetic-disease-card {
@@ -8480,14 +8821,15 @@ select.onb-input.has-value + .onb-select-caret {
 .simple-safe-decision {
   width: min(88vw, 430px);
   min-height: 0;
-  margin: 0 auto 30px;
+  margin: 0 auto 18px;
 }
 
 .simple-safe-decision__root {
   padding: 16px;
   border: 2px solid #f25600;
-  border-radius: 999px;
-  color: #f25600;
+  border-radius: 18px;
+  background: #f25600;
+  color: #ffffff;
   font-size: 15px;
   font-weight: 950;
   text-align: center;
@@ -8505,8 +8847,17 @@ select.onb-input.has-value + .onb-select-caret {
   border-radius: 18px;
   color: #111827;
   font-size: 13px;
-  font-weight: 900;
+  font-weight: 400;
   line-height: 1.25;
+}
+
+.simple-safe-decision__branches strong {
+  font-weight: 950;
+}
+
+#diabeticSimpleSafeScalableScrollPage .diabetic-screening-panel--callout {
+  min-height: auto;
+  align-content: start;
 }
 
 .simple-safe-decision__branches span::before {
@@ -8670,6 +9021,7 @@ select.onb-input.has-value + .onb-select-caret {
   .diabetes-fragile-vessel-graphic,
   .ncd-flow-map,
   .ncd-four-checks,
+  .ncd-check-collage,
   .ncd-pragmatic-scale,
   .ncd-detection-radar,
   .diabetic-disease-gallery,
@@ -8724,8 +9076,17 @@ select.onb-input.has-value + .onb-select-caret {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  #diabeticProliferativeOtherDiseasePage .diabetic-disease-gallery--bleeding,
+  #diabeticProliferativeOtherDiseasePage .diabetic-disease-gallery--collage {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .diabetic-disease-sorter {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  #diabeticProliferativeOtherDiseasePage .diabetic-disease-sorter--single {
+    grid-template-columns: 1fr;
   }
 
   .diabetic-disease-sorter .diabetic-screening-visual__label {
@@ -8890,6 +9251,248 @@ select.onb-input.has-value + .onb-select-caret {
   }
 }
 
+@keyframes diabeticNcdFlowDotStep {
+  0%,
+  24.99% {
+    background: #f25600;
+    border-color: #f25600;
+  }
+
+  25%,
+  100% {
+    background: #ffffff;
+    border-color: #f25600;
+  }
+}
+
+@keyframes ncdCheckHistoryActive {
+  0%,
+  28.99%,
+  100% {
+    opacity: 1;
+    filter: none;
+    transform: scale(1.02);
+  }
+
+  29%,
+  99.99% {
+    opacity: 0.32;
+    filter: grayscale(0.2);
+    transform: scale(1);
+  }
+}
+
+@keyframes ncdCheckVisionActive {
+  0%,
+  28.99%,
+  42%,
+  100% {
+    opacity: 0.32;
+    filter: grayscale(0.2);
+    transform: scale(1);
+  }
+
+  29%,
+  41.99% {
+    opacity: 1;
+    filter: none;
+    transform: scale(1.02);
+  }
+}
+
+@keyframes ncdCheckLoupeActive {
+  0%,
+  41.99%,
+  71%,
+  100% {
+    opacity: 0.32;
+    filter: grayscale(0.2);
+    transform: scale(1);
+  }
+
+  42%,
+  70.99% {
+    opacity: 1;
+    filter: none;
+    transform: scale(1.02);
+  }
+}
+
+@keyframes ncdCheckDoActive {
+  0%,
+  70.99% {
+    opacity: 0.32;
+    filter: grayscale(0.2);
+    transform: scale(1);
+  }
+
+  71%,
+  100% {
+    opacity: 1;
+    filter: none;
+    transform: scale(1.02);
+  }
+}
+
+@keyframes ncdCheckHistoryDiabetes {
+  0%,
+  6.99%,
+  29%,
+  100% {
+    opacity: 0;
+  }
+
+  7%,
+  28.99% {
+    opacity: 1;
+  }
+}
+
+@keyframes ncdCheckHistorySymptoms {
+  0%,
+  13.99%,
+  29%,
+  100% {
+    opacity: 0;
+  }
+
+  14%,
+  28.99% {
+    opacity: 1;
+  }
+}
+
+@keyframes ncdCheckFrontTwo {
+  0%,
+  47.99%,
+  71%,
+  100% {
+    opacity: 0;
+  }
+
+  48%,
+  70.99% {
+    opacity: 1;
+  }
+}
+
+@keyframes ncdCheckPupilsOne {
+  0%,
+  55.99%,
+  71%,
+  100% {
+    opacity: 0;
+  }
+
+  56%,
+  70.99% {
+    opacity: 1;
+  }
+}
+
+@keyframes ncdCheckPupilsTwo {
+  0%,
+  61.99%,
+  71%,
+  100% {
+    opacity: 0;
+  }
+
+  62%,
+  70.99% {
+    opacity: 1;
+  }
+}
+
+@keyframes ncdCheckReflexTwo {
+  0%,
+  76.99%,
+  100% {
+    opacity: 0;
+  }
+
+  77%,
+  84.99% {
+    opacity: 1;
+  }
+}
+
+@keyframes ncdCheckFundusOne {
+  0%,
+  84.99%,
+  100% {
+    opacity: 0;
+  }
+
+  85%,
+  91.99% {
+    opacity: 1;
+  }
+}
+
+@keyframes ncdCheckFundusTwo {
+  0%,
+  91.99% {
+    opacity: 0;
+  }
+
+  92%,
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes ncdCheckFrontLabel {
+  0%,
+  55.99%,
+  100% {
+    opacity: 1;
+  }
+
+  56%,
+  70.99% {
+    opacity: 0;
+  }
+}
+
+@keyframes ncdCheckPupilsLabel {
+  0%,
+  55.99%,
+  71%,
+  100% {
+    opacity: 0;
+  }
+
+  56%,
+  70.99% {
+    opacity: 1;
+  }
+}
+
+@keyframes ncdCheckReflexLabel {
+  0%,
+  84.99% {
+    opacity: 1;
+  }
+
+  85%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes ncdCheckFundusLabel {
+  0%,
+  84.99% {
+    opacity: 0;
+  }
+
+  85%,
+  100% {
+    opacity: 1;
+  }
+}
+
 @keyframes diabeticEyeGlowPulse {
   from {
     opacity: 0.68;
@@ -8955,15 +9558,11 @@ select.onb-input.has-value + .onb-select-caret {
 @keyframes diabeticStationBlink {
   0%,
   100% {
-    background: #f25600;
-    color: #ffffff;
-    box-shadow: 0 0 0 rgba(242, 86, 0, 0);
+    transform: scale(1);
   }
 
   50% {
-    background: #ffffff;
-    color: #f25600;
-    box-shadow: 0 0 0 8px rgba(242, 86, 0, 0.12);
+    transform: scale(1.03);
   }
 }
 
@@ -8975,45 +9574,33 @@ select.onb-input.has-value + .onb-select-caret {
   84%,
   96%,
   100% {
-    background: #f25600;
-    color: #ffffff;
-    border-color: #f25600;
-    box-shadow: none;
+    transform: scale(1);
   }
 
   6%,
   18%,
   78%,
   90% {
-    background: #ffffff;
-    color: #f25600;
-    border-color: #f25600;
-    box-shadow: none;
+    transform: scale(1.03);
   }
 }
 
 @keyframes diabeticStationBlinkTwice {
   0%,
-  8%,
-  16%,
-  73%,
-  81%,
-  93%,
+  12%,
+  24%,
+  72%,
+  84%,
+  96%,
   100% {
-    background: #f25600;
-    color: #ffffff;
-    border-color: #f25600;
-    box-shadow: none;
+    transform: scale(1);
   }
 
-  4%,
-  12%,
-  77%,
-  89% {
-    background: #ffffff;
-    color: #f25600;
-    border-color: #f25600;
-    box-shadow: none;
+  6%,
+  18%,
+  78%,
+  90% {
+    transform: scale(1.04);
   }
 }
 
@@ -9095,7 +9682,7 @@ select.onb-input.has-value + .onb-select-caret {
   border-right: 2px solid currentColor;
   border-bottom: 2px solid currentColor;
   transform: rotate(45deg);
-  animation: diabeticScreenCuePulse 1.15s linear infinite;
+  animation: diabeticScreenCuePulse 1.2s linear infinite;
 }
 
 :is(#diabeticNcdClinicScreeningPage, #diabeticOtherEyeDiseasesScreeningPage)
@@ -9486,16 +10073,30 @@ select.onb-input.has-value + .onb-select-caret {
 #diabeticNcdClinicScreeningPage
   .diabetic-screening-flow--connected
   .diabetic-screening-flow__station {
-  border-color: #f25600;
-  background: #f25600;
-  color: #ffffff;
+  border-color: #f25600 !important;
+  background: #f25600 !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  box-shadow: none !important;
+  filter: none !important;
+  opacity: 1 !important;
+  transform: scale(1);
+  transform-origin: center;
 }
 
 #diabeticNcdClinicScreeningPage
-  .is-visible
+  .is-station-visible
   .diabetic-screening-flow--connected
   .diabetic-screening-flow__station {
-  animation: diabeticStationBlinkTwice 6s linear both;
+  animation: diabeticStationBlinkTwice 5.2s ease-out both;
+  background: #f25600 !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  border-color: #f25600 !important;
+  box-shadow: none !important;
+  filter: none !important;
+  opacity: 1 !important;
+  transform-origin: center;
 }
 
 :is(#diabeticNcdClinicScreeningPage, #diabeticOtherEyeDiseasesScreeningPage)
@@ -10536,7 +11137,7 @@ select.onb-input.has-value + .onb-select-caret {
 }
 
 .dr-retina-graphic__blood--five {
-  left: 19%;
+  left: 7%;
   top: 48%;
 }
 
@@ -10548,6 +11149,18 @@ select.onb-input.has-value + .onb-select-caret {
 .dr-retina-graphic__blood--seven {
   left: 31%;
   top: 48%;
+}
+
+.dr-retina-graphic__blood--eight {
+  left: 7%;
+  top: 38%;
+  width: 14px !important;
+}
+
+.dr-retina-graphic__blood--nine {
+  left: 7%;
+  top: 58%;
+  width: 14px !important;
 }
 
 .dr-retina-graphic__closed {
