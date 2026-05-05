@@ -671,6 +671,9 @@ function initializeDiabeticScreeningScrollLessons() {
     const steps = Array.from(
       lesson.querySelectorAll("[data-diabetic-scroll-step]"),
     );
+    const ncdCheckSteps = Array.from(
+      lesson.querySelectorAll("[data-ncd-check-step]"),
+    );
     if (!page || steps.length === 0) return;
 
     lesson.dataset.diabeticScrollInited = "1";
@@ -764,6 +767,45 @@ function initializeDiabeticScreeningScrollLessons() {
         });
 
       lesson.dataset.diabeticCurrentStep = String(currentIndex);
+
+      if (ncdCheckSteps.length) {
+        const focusY = rootMetrics.top + rootMetrics.height * 0.5;
+        const ncdPanel = lesson.querySelector(
+          ".diabetic-screening-panel--ncd-checks",
+        );
+        const panelRect = ncdPanel?.getBoundingClientRect();
+        const panelIsInFocus =
+          panelRect &&
+          panelRect.top < revealBottom &&
+          panelRect.bottom > revealTop;
+        let currentCheck = null;
+        let currentScore = Number.POSITIVE_INFINITY;
+
+        if (panelIsInFocus) {
+          ncdCheckSteps.forEach((check) => {
+            const rect = check.getBoundingClientRect();
+            const intersects =
+              rect.top < revealBottom && rect.bottom > revealTop;
+            if (!intersects) return;
+
+            const score = Math.abs(rect.top + rect.height * 0.5 - focusY);
+            if (score < currentScore) {
+              currentScore = score;
+              currentCheck = check;
+            }
+          });
+
+          if (!currentCheck) currentCheck = ncdCheckSteps[0];
+        }
+
+        ncdPanel?.classList.toggle("is-ncd-checking", Boolean(currentCheck));
+        ncdCheckSteps.forEach((check) => {
+          check.classList.toggle(
+            "is-ncd-check-current",
+            check === currentCheck,
+          );
+        });
+      }
 
       if (cue) {
         const lessonRect = lesson.getBoundingClientRect();

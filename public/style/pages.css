@@ -8125,6 +8125,10 @@ select.onb-input.has-value + .onb-select-caret {
   border-radius: 22px;
 }
 
+#diabeticNcdFlowIntroductionPage .ncd-flow-map {
+  border: 0;
+}
+
 .ncd-flow-map__track::before {
   content: "";
   position: absolute;
@@ -8308,6 +8312,69 @@ select.onb-input.has-value + .onb-select-caret {
   background: transparent;
 }
 
+#diabeticNcdFlowIntroductionPage .diabetic-screening-panel--ncd-checks {
+  grid-template-columns: 1fr;
+  align-content: start;
+}
+
+#diabeticNcdFlowIntroductionPage
+  .diabetic-screening-panel--ncd-checks
+  .diabetic-screening-panel__text {
+  width: 100%;
+}
+
+#diabeticNcdFlowIntroductionPage .ncd-check-list {
+  gap: 16px;
+}
+
+#diabeticNcdFlowIntroductionPage .ncd-check-list li {
+  padding: 14px;
+  display: grid;
+  gap: 10px;
+  overflow: hidden;
+  border-radius: 20px;
+  transition:
+    opacity 240ms ease,
+    filter 240ms ease,
+    transform 240ms ease;
+}
+
+#diabeticNcdFlowIntroductionPage .ncd-check-list li::before {
+  top: 14px;
+  transform: none;
+}
+
+#diabeticNcdFlowIntroductionPage .ncd-check-list li > span {
+  display: block;
+  padding-left: 32px;
+}
+
+#diabeticNcdFlowIntroductionPage
+  .diabetic-screening-panel--ncd-checks.is-ncd-checking
+  .ncd-check-list
+  li {
+  opacity: 0.3;
+  filter: grayscale(0.24);
+}
+
+#diabeticNcdFlowIntroductionPage
+  .diabetic-screening-panel--ncd-checks.is-ncd-checking
+  .ncd-check-list
+  li.is-ncd-check-current {
+  opacity: 1;
+  filter: none;
+  transform: translateY(-1px);
+}
+
+#diabeticNcdFlowIntroductionPage .ncd-check-list .ncd-check-collage__card {
+  width: 100%;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.12);
+}
+
+#diabeticNcdFlowIntroductionPage .ncd-check-list .ncd-check-collage__media {
+  aspect-ratio: 1.35 / 1;
+}
+
 .ncd-check-collage__card {
   position: relative;
   margin: 0;
@@ -8348,11 +8415,11 @@ select.onb-input.has-value + .onb-select-caret {
 
 .ncd-check-collage__card figcaption {
   box-sizing: border-box;
-  height: 23px;
-  min-height: 23px;
+  height: 28px;
+  min-height: 28px;
   display: grid;
   place-items: center;
-  padding: 2px 8px;
+  padding: 4px 8px;
   border-radius: 0 0 14px 14px;
   background: #f25600;
   color: #ffffff;
@@ -8382,76 +8449,81 @@ select.onb-input.has-value + .onb-select-caret {
 }
 
 .ncd-check-collage__image--history-symptoms {
-  inset: auto auto 10% 7%;
+  inset: auto auto 28% 7%;
 }
 
-.is-current .ncd-check-collage__card {
-  opacity: 0.32;
-  filter: grayscale(0.2);
+.is-ncd-check-current .ncd-check-collage__card {
+  opacity: 1;
+  filter: none;
+  transform: scale(1.01);
+  animation: none;
 }
 
-.is-current .ncd-check-collage__card--history {
-  animation: ncdCheckHistoryActive 28s linear infinite;
+.is-ncd-check-current .ncd-check-collage__card--history {
+  animation: none;
 }
 
-.is-current .ncd-check-collage__card--vision {
-  animation: ncdCheckVisionActive 28s linear infinite;
+.is-ncd-check-current .ncd-check-collage__card--vision {
+  animation: none;
 }
 
-.is-current .ncd-check-collage__card--loupe {
-  animation: ncdCheckLoupeActive 28s linear infinite;
+.is-ncd-check-current .ncd-check-collage__card--loupe {
+  animation: none;
 }
 
-.is-current .ncd-check-collage__card--do {
-  animation: ncdCheckDoActive 28s linear infinite;
+.is-ncd-check-current .ncd-check-collage__card--do {
+  animation: none;
 }
 
-.is-current .ncd-check-collage__image--history-diabetes {
-  animation: ncdCheckHistoryDiabetes 28s linear infinite;
+.is-ncd-check-current .ncd-check-collage__image--history-diabetes {
+  animation: ncdCheckHistoryDiabetesFocus 6s linear infinite;
 }
 
-.is-current .ncd-check-collage__image--history-symptoms {
-  animation: ncdCheckHistorySymptoms 28s linear infinite;
+.is-ncd-check-current .ncd-check-collage__image--history-symptoms {
+  animation: ncdCheckHistorySymptomsFocus 6s linear infinite;
 }
 
-.is-current .ncd-check-collage__image--front-two {
-  animation: ncdCheckFrontTwo 28s linear infinite;
+.is-ncd-check-current .ncd-check-collage__image--front-two {
+  animation: ncdCheckFrontTwoFocus 12s linear infinite;
 }
 
-.is-current .ncd-check-collage__image--pupils-one {
-  animation: ncdCheckPupilsOne 28s linear infinite;
+.is-ncd-check-current .ncd-check-collage__image--pupils-one {
+  animation: ncdCheckPupilsOneFocus 12s linear infinite;
 }
 
-.is-current .ncd-check-collage__image--pupils-two {
-  animation: ncdCheckPupilsTwo 28s linear infinite;
+.is-ncd-check-current .ncd-check-collage__image--pupils-two {
+  animation: ncdCheckPupilsTwoFocus 12s linear infinite;
 }
 
-.is-current .ncd-check-collage__image--reflex-two {
-  animation: ncdCheckReflexTwo 28s linear infinite;
+.is-ncd-check-current .ncd-check-collage__image--reflex-two {
+  animation: ncdCheckReflexTwoFocus 12s linear infinite;
 }
 
-.is-current .ncd-check-collage__image--fundus-one {
-  animation: ncdCheckFundusOne 28s linear infinite;
+.is-ncd-check-current .ncd-check-collage__image--fundus-one {
+  animation: ncdCheckFundusOneFocus 12s linear infinite;
 }
 
-.is-current .ncd-check-collage__image--fundus-two {
-  animation: ncdCheckFundusTwo 28s linear infinite;
+.is-ncd-check-current .ncd-check-collage__image--fundus-two {
+  animation: ncdCheckFundusTwoFocus 12s linear infinite;
 }
 
-.is-current .ncd-check-collage__card--loupe figcaption span:first-child {
-  animation: ncdCheckFrontLabel 28s linear infinite;
+.is-ncd-check-current
+  .ncd-check-collage__card--loupe
+  figcaption
+  span:first-child {
+  animation: ncdCheckFrontLabelFocus 12s linear infinite;
 }
 
-.is-current .ncd-check-collage__card--loupe figcaption span + span {
-  animation: ncdCheckPupilsLabel 28s linear infinite;
+.is-ncd-check-current .ncd-check-collage__card--loupe figcaption span + span {
+  animation: ncdCheckPupilsLabelFocus 12s linear infinite;
 }
 
-.is-current .ncd-check-collage__card--do figcaption span:first-child {
-  animation: ncdCheckReflexLabel 28s linear infinite;
+.is-ncd-check-current .ncd-check-collage__card--do figcaption span:first-child {
+  animation: ncdCheckReflexLabelFocus 12s linear infinite;
 }
 
-.is-current .ncd-check-collage__card--do figcaption span + span {
-  animation: ncdCheckFundusLabel 28s linear infinite;
+.is-ncd-check-current .ncd-check-collage__card--do figcaption span + span {
+  animation: ncdCheckFundusLabelFocus 12s linear infinite;
 }
 
 .is-current .ncd-four-checks__grid span {
@@ -9489,6 +9561,162 @@ select.onb-input.has-value + .onb-select-caret {
 
   85%,
   100% {
+    opacity: 1;
+  }
+}
+
+@keyframes ncdCheckHistoryDiabetesFocus {
+  0%,
+  19.99%,
+  100% {
+    opacity: 0;
+  }
+
+  28%,
+  88% {
+    opacity: 1;
+  }
+}
+
+@keyframes ncdCheckHistorySymptomsFocus {
+  0%,
+  44.99%,
+  100% {
+    opacity: 0;
+  }
+
+  53%,
+  88% {
+    opacity: 1;
+  }
+}
+
+@keyframes ncdCheckFrontTwoFocus {
+  0%,
+  19.99%,
+  100% {
+    opacity: 0;
+  }
+
+  28%,
+  88% {
+    opacity: 1;
+  }
+}
+
+@keyframes ncdCheckPupilsOneFocus {
+  0%,
+  44.99%,
+  100% {
+    opacity: 0;
+  }
+
+  53%,
+  88% {
+    opacity: 1;
+  }
+}
+
+@keyframes ncdCheckPupilsTwoFocus {
+  0%,
+  64.99%,
+  100% {
+    opacity: 0;
+  }
+
+  72%,
+  88% {
+    opacity: 1;
+  }
+}
+
+@keyframes ncdCheckReflexTwoFocus {
+  0%,
+  24.99%,
+  100% {
+    opacity: 0;
+  }
+
+  33%,
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes ncdCheckFundusOneFocus {
+  0%,
+  49.99%,
+  100% {
+    opacity: 0;
+  }
+
+  58%,
+  70% {
+    opacity: 1;
+  }
+}
+
+@keyframes ncdCheckFundusTwoFocus {
+  0%,
+  69.99%,
+  100% {
+    opacity: 0;
+  }
+
+  78%,
+  88% {
+    opacity: 1;
+  }
+}
+
+@keyframes ncdCheckFrontLabelFocus {
+  0%,
+  49.99%,
+  100% {
+    opacity: 1;
+  }
+
+  58%,
+  88% {
+    opacity: 0;
+  }
+}
+
+@keyframes ncdCheckPupilsLabelFocus {
+  0%,
+  49.99%,
+  100% {
+    opacity: 0;
+  }
+
+  58%,
+  88% {
+    opacity: 1;
+  }
+}
+
+@keyframes ncdCheckReflexLabelFocus {
+  0%,
+  49.99%,
+  100% {
+    opacity: 1;
+  }
+
+  58%,
+  88% {
+    opacity: 0;
+  }
+}
+
+@keyframes ncdCheckFundusLabelFocus {
+  0%,
+  49.99%,
+  100% {
+    opacity: 0;
+  }
+
+  58%,
+  88% {
     opacity: 1;
   }
 }

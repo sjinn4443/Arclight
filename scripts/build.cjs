@@ -1,5 +1,6 @@
 const esbuild = require("esbuild");
 const fs = require("fs-extra");
+const nodeFs = require("fs");
 const path = require("path");
 const CleanCSS = require("clean-css");
 const htmlMinifierTerser = require("html-minifier-terser");
@@ -322,6 +323,44 @@ async function findFiles(dir, extension) {
   return results;
 }
 
+async function cleanBuildOutputDir(dir) {
+  if (!(await fs.pathExists(dir))) {
+    await fs.ensureDir(dir);
+    return;
+  }
+
+  const parentDir = path.dirname(dir);
+  const outputName = path.basename(dir);
+  const cleanupDir = path.join(
+    parentDir,
+    `.build-cleanup-${outputName}-${process.pid}-${Date.now()}`,
+  );
+
+  try {
+    await nodeFs.promises.rename(dir, cleanupDir);
+  } catch (error) {
+    if (error && error.code !== "ENOENT") {
+      await nodeFs.promises.rm(dir, {
+        recursive: true,
+        force: true,
+        maxRetries: 10,
+        retryDelay: 250,
+      });
+    }
+  }
+
+  await fs.ensureDir(dir);
+}
+
+async function removePath(pathToRemove) {
+  await nodeFs.promises.rm(pathToRemove, {
+    recursive: true,
+    force: true,
+    maxRetries: 10,
+    retryDelay: 250,
+  });
+}
+
 const build = async () => {
   console.log("Running build script...");
 
@@ -336,9 +375,11 @@ const build = async () => {
 
   try {
     // 1. Clean the build output directory
-    await fs.emptyDir(distPath);
+    console.log("[build] cleaning output directory");
+    await cleanBuildOutputDir(distPath);
 
     // 2. Copy 'public' directory contents to the build output directory
+    console.log("[build] copying public assets");
     await fs.copy(publicPath, distPath);
 
     // 2b. Write build/version metadata for runtime consumers (Railway-safe).
@@ -351,10 +392,12 @@ const build = async () => {
     // This ensures we don't have duplicate or unminified JS files from the copy step.
     const jsDistPath = path.join(distPath, "js");
     if (await fs.exists(jsDistPath)) {
-      await fs.remove(jsDistPath);
+      console.log("[build] removing copied JS assets");
+      await removePath(jsDistPath);
     }
 
     // 4. Minify and bundle JS assets into the build output directory using esbuild.
+    console.log("[build] bundling JS assets");
     await esbuild.build({
       entryPoints: [
         "public/js/atomscard.js",
@@ -394,6 +437,7 @@ const build = async () => {
     });
 
     // 5. Minify sw.js using esbuild
+    console.log("[build] bundling service worker");
     await esbuild.build({
       entryPoints: ["public/sw.js"],
       bundle: true,
@@ -404,6 +448,7 @@ const build = async () => {
     });
 
     // 6. Minify CSS files in the build output directory.
+    console.log("[build] minifying CSS");
     const cssFiles = await findFiles(distPath, ".css");
     const cleanCss = new CleanCSS();
     for (const file of cssFiles) {
@@ -416,6 +461,7 @@ const build = async () => {
     }
 
     // 7. Minify HTML files in the build output directory.
+    console.log("[build] minifying HTML");
     const htmlFiles = await findFiles(distPath, ".html");
     const htmlMinifierOptions = {
       collapseWhitespace: true,
