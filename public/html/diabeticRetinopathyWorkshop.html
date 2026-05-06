@@ -817,7 +817,7 @@
 
       <div class="diabetic-screening-stack">
         <article
-          class="diabetic-screening-panel diabetic-screening-panel--callout"
+          class="diabetic-screening-panel diabetic-screening-panel--callout diabetic-screening-panel--content-fit"
           data-diabetic-scroll-step
         >
           <div class="diabetic-screening-panel__text">
@@ -831,23 +831,49 @@
           </div>
         </article>
 
-        <article class="diabetic-screening-panel" data-diabetic-scroll-step>
+        <article
+          class="diabetic-screening-panel diabetic-screening-panel--content-fit"
+          data-diabetic-scroll-step
+        >
           <div class="diabetic-screening-panel__text">
             <span class="diabetic-screening-step">B</span>
             <h3>Phase B: Steps 4-6</h3>
-            <ol class="diabetic-screening-checklist">
+            <ol
+              class="diabetic-screening-checklist diabetic-protocol-sequence-list"
+            >
               <li>Examine pupils with the light of the loupe</li>
               <li>Look at the front of the eye with the loupe</li>
               <li>Dilate pupils</li>
             </ol>
           </div>
-          <div class="diabetic-protocol-pupil-graphic" aria-hidden="true">
-            <div class="diabetic-protocol-light"></div>
-            <div class="diabetic-protocol-eye">
-              <span></span>
+          <figure class="diabetic-protocol-loupe-sequence" aria-hidden="true">
+            <div class="diabetic-protocol-loupe-sequence__grid">
+              <span class="diabetic-protocol-loupe-sequence__card">
+                <img
+                  src="/images/learning/Diabetic/Diabetes/NCD/Loupe_pupils1.webp"
+                  alt=""
+                  loading="lazy"
+                />
+                <b>Pupils</b>
+              </span>
+              <span class="diabetic-protocol-loupe-sequence__card">
+                <img
+                  src="/images/learning/Diabetic/Diabetes/NCD/Loupe_frontofeye1.webp"
+                  alt=""
+                  loading="lazy"
+                />
+                <b>Front of eye</b>
+              </span>
+              <span class="diabetic-protocol-loupe-sequence__card">
+                <img
+                  src="/images/learning/Diabetic/Diabetes/NCD/dilate.webp"
+                  alt=""
+                  loading="lazy"
+                />
+                <b>Dilate</b>
+              </span>
             </div>
-            <p>Pupils, front of eye, then dilate</p>
-          </div>
+          </figure>
         </article>
 
         <article
@@ -881,7 +907,10 @@
           </div>
         </article>
 
-        <article class="diabetic-screening-panel" data-diabetic-scroll-step>
+        <article
+          class="diabetic-screening-panel diabetic-screening-panel--content-fit"
+          data-diabetic-scroll-step
+        >
           <div class="diabetic-screening-panel__text">
             <span class="diabetic-screening-step">C</span>
             <h3>Phase C: Steps 8-10</h3>
@@ -893,7 +922,10 @@
           </div>
         </article>
 
-        <article class="diabetic-screening-panel" data-diabetic-scroll-step>
+        <article
+          class="diabetic-screening-panel diabetic-screening-panel--content-fit"
+          data-diabetic-scroll-step
+        >
           <div class="diabetic-screening-panel__text">
             <span class="diabetic-screening-step">Map</span>
             <h3>NCD clinic algorithm</h3>
@@ -963,7 +995,10 @@
       </header>
 
       <div class="diabetic-screening-stack">
-        <article class="diabetic-screening-panel" data-diabetic-scroll-step>
+        <article
+          class="diabetic-screening-panel diabetic-screening-panel--content-fit"
+          data-diabetic-scroll-step
+        >
           <div class="diabetic-screening-panel__text">
             <span class="diabetic-screening-step">01</span>
             <h3>History</h3>
@@ -979,17 +1014,31 @@
               <i aria-hidden="true">&gt;</i>
             </a>
           </div>
-          <div class="diabetic-screening-visual">
-            <p class="diabetic-screening-visual__label">
-              Image placeholder: person asking questions about duration, pain
-              and redness
-            </p>
-            <div class="diabetic-protocol-question-visual">
-              <span>Duration</span>
-              <span>Pain</span>
-              <span>Redness</span>
+          <figure
+            class="diabetic-protocol-history-sequence"
+            aria-label="History taking flow"
+          >
+            <div class="diabetic-protocol-history-sequence__media">
+              <img
+                class="diabetic-protocol-history-sequence__base"
+                src="/images/learning/Diabetic/Diabetes/NCD/History.webp"
+                alt="History taking"
+                loading="lazy"
+              />
+              <img
+                class="diabetic-protocol-history-sequence__overlay diabetic-protocol-history-sequence__overlay--diabetes"
+                src="/images/learning/Diabetic/Diabetes/NCD/HistoryDiabetes.webp"
+                alt=""
+                loading="lazy"
+              />
+              <img
+                class="diabetic-protocol-history-sequence__overlay diabetic-protocol-history-sequence__overlay--symptoms"
+                src="/images/learning/Diabetic/Diabetes/NCD/HistoryEyeSymptoms.webp"
+                alt=""
+                loading="lazy"
+              />
             </div>
-          </div>
+          </figure>
         </article>
 
         <article
@@ -1015,8 +1064,16 @@
               glaucoma or another eye disease.
             </p>
           </div>
-          <div class="diabetic-protocol-video-slot">
-            <p>Video placeholder: Visual Acuity</p>
+          <div class="diabetic-video-embed diabetic-protocol-video-embed">
+            <p class="diabetic-screening-visual__label">
+              Visual acuity near + distance
+            </p>
+            <video controls playsinline preload="metadata">
+              <source
+                src="/videos/Workshop/Diabetic/5.1%20Visual%20Acuity%20Near%20+%20Distance_220p.mp4"
+                type="video/mp4"
+              />
+            </video>
           </div>
         </article>
 
@@ -1034,8 +1091,16 @@
               <li>Give near glasses</li>
             </ol>
           </div>
-          <div class="diabetic-protocol-video-slot">
-            <p>Video placeholder: Near Visual Acuity</p>
+          <div class="diabetic-video-embed diabetic-protocol-video-embed">
+            <p class="diabetic-screening-visual__label">
+              Near visual acuity + dispense glasses
+            </p>
+            <video controls playsinline preload="metadata">
+              <source
+                src="/videos/Workshop/Diabetic/5.2%20Near%20Visual%20Acuity%20+%20Dispense%20Glasses%20-%20PEC_220p.mp4"
+                type="video/mp4"
+              />
+            </video>
           </div>
         </article>
       </div>
@@ -1083,13 +1148,18 @@
       </header>
 
       <div class="diabetic-screening-stack">
-        <article class="diabetic-screening-panel" data-diabetic-scroll-step>
+        <article
+          class="diabetic-screening-panel diabetic-screening-panel--content-fit"
+          data-diabetic-scroll-step
+        >
           <div class="diabetic-screening-panel__text">
             <span class="diabetic-screening-step">04</span>
             <h3>Pupils</h3>
             <p>Check the bright light response in both eyes.</p>
             <p class="diabetic-protocol-look-for">Look for:</p>
-            <ul class="diabetic-screening-chip-list">
+            <ul
+              class="diabetic-screening-chip-list diabetic-protocol-rapd-list"
+            >
               <li>Slow constriction</li>
               <li>Absent constriction</li>
               <li>Asymmetry between eyes</li>
@@ -1099,25 +1169,61 @@
               retinal detachment.
             </p>
           </div>
-          <div class="diabetic-protocol-pupil-graphic" aria-hidden="true">
-            <div class="diabetic-protocol-light"></div>
-            <div class="diabetic-protocol-eye diabetic-protocol-eye--slow">
-              <span></span>
+          <div class="diabetic-protocol-rapd-demo" aria-hidden="true">
+            <div class="diabetic-protocol-rapd-demo__stage">
+              <img
+                class="diabetic-protocol-rapd-demo__eyes"
+                src="/images/learning/GlaucomaRAPD/eyes.webp"
+                alt=""
+                loading="lazy"
+              />
+              <div
+                class="diabetic-protocol-rapd-demo__pupil diabetic-protocol-rapd-demo__pupil--left"
+              ></div>
+              <div
+                class="diabetic-protocol-rapd-demo__pupil diabetic-protocol-rapd-demo__pupil--right"
+              ></div>
+              <div class="diabetic-protocol-rapd-demo__beam"></div>
+              <img
+                class="diabetic-protocol-rapd-demo__flashlight"
+                src="/images/learning/GlaucomaRAPD/flashlight.webp"
+                alt=""
+                loading="lazy"
+              />
             </div>
-            <p>Poor response = danger sign</p>
           </div>
         </article>
 
-        <article class="diabetic-screening-panel" data-diabetic-scroll-step>
-          <div class="diabetic-protocol-video-slot">
-            <p>Video placeholder: Pupil Primary Eye Care</p>
+        <article
+          class="diabetic-screening-panel diabetic-screening-panel--content-fit"
+          data-diabetic-scroll-step
+        >
+          <div class="diabetic-video-embed diabetic-protocol-video-embed">
+            <p class="diabetic-screening-visual__label">Pupil exam</p>
+            <video controls playsinline preload="metadata">
+              <source
+                src="/videos/Workshop/Diabetic/6.%20Pupil%20Exam%20PEC%20080525_220p.mp4"
+                type="video/mp4"
+              />
+            </video>
           </div>
-          <div class="diabetic-protocol-video-slot">
-            <p>Video placeholder: Pupil Reactions</p>
+          <div class="diabetic-video-embed diabetic-protocol-video-embed">
+            <p class="diabetic-screening-visual__label">
+              Pupil response good to bad
+            </p>
+            <video controls playsinline preload="metadata">
+              <source
+                src="/videos/Workshop/Diabetic/7.%20Pupil%20response%20good%20to%20bad_220p.mp4"
+                type="video/mp4"
+              />
+            </video>
           </div>
         </article>
 
-        <article class="diabetic-screening-panel" data-diabetic-scroll-step>
+        <article
+          class="diabetic-screening-panel diabetic-screening-panel--content-fit"
+          data-diabetic-scroll-step
+        >
           <div class="diabetic-screening-panel__text">
             <span class="diabetic-screening-step">05</span>
             <h3>Front of eye with loupe</h3>
@@ -1131,12 +1237,29 @@
           </div>
         </article>
 
-        <article class="diabetic-screening-panel" data-diabetic-scroll-step>
-          <div class="diabetic-protocol-video-slot">
-            <p>Video placeholder: Front of Eye FULL</p>
+        <article
+          class="diabetic-screening-panel diabetic-screening-panel--content-fit"
+          data-diabetic-scroll-step
+        >
+          <div class="diabetic-video-embed diabetic-protocol-video-embed">
+            <p class="diabetic-screening-visual__label">
+              Anterior segment full exam
+            </p>
+            <video controls playsinline preload="metadata">
+              <source
+                src="/videos/Workshop/Diabetic/8.%20Anterior%20Segment%20FULL%202026%20-%20level%202%20+%20glaucoma_220p.mp4"
+                type="video/mp4"
+              />
+            </video>
           </div>
-          <div class="diabetic-protocol-video-slot">
-            <p>Video placeholder: Front of Eye diabetic retinopathy</p>
+          <div class="diabetic-video-embed diabetic-protocol-video-embed">
+            <p class="diabetic-screening-visual__label">Front of eye DR</p>
+            <video controls playsinline preload="metadata">
+              <source
+                src="/videos/Workshop/Diabetic/9.%20Front%20of%20eye%20DR_220p.mp4"
+                type="video/mp4"
+              />
+            </video>
           </div>
         </article>
 
@@ -1282,7 +1405,10 @@
       </header>
 
       <div class="diabetic-screening-stack">
-        <article class="diabetic-screening-panel" data-diabetic-scroll-step>
+        <article
+          class="diabetic-screening-panel diabetic-screening-panel--content-fit"
+          data-diabetic-scroll-step
+        >
           <div class="diabetic-screening-panel__text">
             <span class="diabetic-screening-step">08</span>
             <h3>Fundal red reflex</h3>
@@ -1307,26 +1433,32 @@
           </div>
         </article>
 
-        <article class="diabetic-screening-panel" data-diabetic-scroll-step>
-          <div class="diabetic-protocol-video-slot">
-            <p>Video placeholder: Fundal Reflex + Pathology</p>
+        <article
+          class="diabetic-screening-panel diabetic-screening-panel--content-fit"
+          data-diabetic-scroll-step
+        >
+          <div class="diabetic-video-embed diabetic-protocol-video-embed">
+            <p class="diabetic-screening-visual__label">FRT for DR</p>
+            <video controls playsinline preload="metadata">
+              <source
+                src="/videos/Workshop/Diabetic/10.%20FRT%20for%20DR%20_220p.mp4"
+                type="video/mp4"
+              />
+            </video>
           </div>
         </article>
 
-        <article class="diabetic-screening-panel" data-diabetic-scroll-step>
+        <article
+          class="diabetic-screening-panel diabetic-screening-panel--content-fit"
+          data-diabetic-scroll-step
+        >
           <div class="diabetic-screening-panel__text">
-            <span class="diabetic-screening-step">09</span>
+            <span class="diabetic-screening-step">09-a</span>
             <h3>Fundoscopy: how to perform</h3>
             <p>
               To see the fundus and the signs of diabetic retinopathy,
               fundoscopy needs to be performed.
             </p>
-          </div>
-          <div class="diabetic-screening-visual">
-            <p class="diabetic-screening-visual__label">
-              Image placeholder: clinician performing direct ophthalmoscopy
-            </p>
-            <div class="diabetic-screening-placeholder"></div>
           </div>
         </article>
 
@@ -1342,8 +1474,15 @@
             class="diabetic-protocol-image-frame diabetic-protocol-image-frame--do"
           >
             <figcaption class="diabetic-protocol-image-overlay">
-              Area A shows the direct ophthalmoscope view, B a typical slitlamp
-              view, and C a retinal camera or binocular indirect view.
+              <span class="diabetic-protocol-image-overlay__label--a"
+                >Area A shows the direct ophthalmoscope view.</span
+              >
+              <span class="diabetic-protocol-image-overlay__label--b"
+                >Area B shows a typical slitlamp view.</span
+              >
+              <span class="diabetic-protocol-image-overlay__label--c"
+                >Area C shows a retinal camera or binocular indirect view.</span
+              >
             </figcaption>
             <img
               src="/images/learning/Diabetic/Diabetes/NCD/DO.png"
@@ -1353,12 +1492,31 @@
           </figure>
         </article>
 
-        <article class="diabetic-screening-panel" data-diabetic-scroll-step>
-          <div class="diabetic-protocol-video-slot">
-            <p>Video placeholder: direct ophthalmoscopy - short</p>
+        <article
+          class="diabetic-screening-panel diabetic-screening-panel--content-fit"
+          data-diabetic-scroll-step
+        >
+          <div class="diabetic-video-embed diabetic-protocol-video-embed">
+            <p class="diabetic-screening-visual__label">
+              Direct ophthalmoscopy short
+            </p>
+            <video controls playsinline preload="metadata">
+              <source
+                src="/videos/Workshop/Diabetic/11.%20Direct%20Ophthalmoscopy%20Short%20Low%20Resolution_220p.mp4"
+                type="video/mp4"
+              />
+            </video>
           </div>
-          <div class="diabetic-protocol-video-slot">
-            <p>Video placeholder: Fundoscopy - Longer</p>
+          <div class="diabetic-video-embed diabetic-protocol-video-embed">
+            <p class="diabetic-screening-visual__label">
+              Direct ophthalmoscopy traditional + Arclight
+            </p>
+            <video controls playsinline preload="metadata">
+              <source
+                src="/videos/Workshop/Diabetic/12.%20Direct%20Ophthalmoscopy%20Traditional%20+%20Arclight%20OSCE_220p.mp4"
+                type="video/mp4"
+              />
+            </video>
           </div>
         </article>
 
@@ -1377,7 +1535,9 @@
             </ul>
             <p class="diabetic-protocol-urgent-box">Immediate referral</p>
           </div>
-          <div class="diabetic-protocol-image-grid">
+          <div
+            class="diabetic-protocol-image-grid diabetic-protocol-image-grid--labelled"
+          >
             <figure>
               <img
                 src="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/NewVesselsonDisc.png"
@@ -1403,7 +1563,9 @@
             <h3>Sight-threatening retinopathy</h3>
             <p>New vessels and bleeding. Fibrovascular retinal detachment.</p>
           </div>
-          <div class="diabetic-protocol-image-grid">
+          <div
+            class="diabetic-protocol-image-grid diabetic-protocol-image-collage"
+          >
             <figure>
               <img
                 src="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/NewVesselsonDisc.png"
@@ -1439,9 +1601,18 @@
           </div>
         </article>
 
-        <article class="diabetic-screening-panel" data-diabetic-scroll-step>
-          <div class="diabetic-protocol-video-slot">
-            <p>Video placeholder: diabetic retinopathy signs - Definite PDR</p>
+        <article
+          class="diabetic-screening-panel diabetic-screening-panel--content-fit"
+          data-diabetic-scroll-step
+        >
+          <div class="diabetic-video-embed diabetic-protocol-video-embed">
+            <p class="diabetic-screening-visual__label">DRS PDR signs</p>
+            <video controls playsinline preload="metadata">
+              <source
+                src="/videos/Workshop/Diabetic/13.%20DRS%20PDR%20Signs_220p.mp4"
+                type="video/mp4"
+              />
+            </video>
           </div>
         </article>
 
@@ -1462,14 +1633,23 @@
           </div>
         </article>
 
-        <article class="diabetic-screening-panel" data-diabetic-scroll-step>
-          <div class="diabetic-protocol-video-slot">
-            <p>Video placeholder: non PDR signs</p>
+        <article
+          class="diabetic-screening-panel diabetic-screening-panel--content-fit"
+          data-diabetic-scroll-step
+        >
+          <div class="diabetic-video-embed diabetic-protocol-video-embed">
+            <p class="diabetic-screening-visual__label">DRS non-PDR signs</p>
+            <video controls playsinline preload="metadata">
+              <source
+                src="/videos/Workshop/Diabetic/14.%20DRS%20non%20PDR%20signs_220p.mp4"
+                type="video/mp4"
+              />
+            </video>
           </div>
         </article>
 
         <article
-          class="diabetic-screening-panel diabetic-screening-panel--callout"
+          class="diabetic-screening-panel diabetic-screening-panel--callout diabetic-screening-panel--content-fit"
           data-diabetic-scroll-step
         >
           <div class="diabetic-screening-panel__text">
@@ -1483,9 +1663,18 @@
           </div>
         </article>
 
-        <article class="diabetic-screening-panel" data-diabetic-scroll-step>
-          <div class="diabetic-protocol-video-slot">
-            <p>Video placeholder: Maculopathy</p>
+        <article
+          class="diabetic-screening-panel diabetic-screening-panel--content-fit"
+          data-diabetic-scroll-step
+        >
+          <div class="diabetic-video-embed diabetic-protocol-video-embed">
+            <p class="diabetic-screening-visual__label">DO DR maculopathy</p>
+            <video controls playsinline preload="metadata">
+              <source
+                src="/videos/Workshop/Diabetic/15.%20DO%20DR%20Maculopathy%20copy_220p.mp4"
+                type="video/mp4"
+              />
+            </video>
           </div>
         </article>
       </div>
@@ -1543,13 +1732,20 @@
             <h3>Action</h3>
             <div class="diabetic-protocol-action-map">
               <div>
-                <b>If glasses or near readers help</b
-                ><span>Provide or refer</span>
+                <b>If glasses or near readers help</b>
+                <span><i aria-hidden="true">&gt;</i>Provide or refer</span>
               </div>
-              <div><b>If cataract is present</b><span>Refer</span></div>
-              <div><b>If any PDR sign is present</b><span>Refer</span></div>
               <div>
-                <b>If there is any doubt</b><span>Refer to eye clinics</span>
+                <b>If cataract is present</b
+                ><span><i aria-hidden="true">&gt;</i>Refer</span>
+              </div>
+              <div>
+                <b>If any PDR sign is present</b
+                ><span><i aria-hidden="true">&gt;</i>Refer</span>
+              </div>
+              <div>
+                <b>If there is any doubt</b
+                ><span><i aria-hidden="true">&gt;</i>Refer to eye clinics</span>
               </div>
             </div>
           </div>
@@ -1581,7 +1777,9 @@
             <span
               class="diabetic-screening-step diabetic-screening-step--icon"
               aria-label="Key"
-            ></span>
+            >
+              <img src="/images/icon/etc/key.webp" alt="" aria-hidden="true" />
+            </span>
             <h3>Key messages</h3>
             <ol class="diabetic-screening-checklist">
               <li>Integrate the eye exam into the NCD workflow</li>

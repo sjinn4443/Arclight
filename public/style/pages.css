@@ -6718,7 +6718,7 @@ select.onb-input.has-value + .onb-select-caret {
 .diabetic-screening-page .diabetic-screening-panel--callout,
 .diabetic-screening-page .diabetic-screening-panel--warning,
 .diabetic-screening-page .diabetic-screening-panel--video {
-  border-color: rgba(242, 86, 0, 0.2);
+  border-color: rgba(15, 23, 42, 0.09);
   background: #ffffff;
 }
 
@@ -6884,8 +6884,8 @@ select.onb-input.has-value + .onb-select-caret {
 }
 
 .diabetic-protocol-lesson .diabetic-protocol-link i {
-  width: 28px;
-  height: 28px;
+  width: 38px;
+  height: 38px;
   display: grid;
   flex: 0 0 auto;
   place-items: center;
@@ -6895,6 +6895,8 @@ select.onb-input.has-value + .onb-select-caret {
   font-style: normal;
   font-size: 16px;
   font-weight: 950;
+  line-height: 1;
+  transform: translateY(-2px);
 }
 
 .diabetic-protocol-phase-map,
@@ -6988,6 +6990,15 @@ select.onb-input.has-value + .onb-select-caret {
 }
 
 .diabetic-protocol-parallel__future {
+  opacity: 1;
+}
+
+.diabetic-protocol-parallel__future span,
+.diabetic-protocol-parallel__future p {
+  opacity: 0.48;
+}
+
+.diabetic-protocol-parallel__future::before {
   opacity: 0.48;
 }
 
@@ -7006,6 +7017,12 @@ select.onb-input.has-value + .onb-select-caret {
   border-color: rgba(242, 86, 0, 0.4);
   background: rgba(242, 86, 0, 0.08);
   color: #c2410c;
+}
+
+.diabetic-protocol-drop-stack--chips span:last-child {
+  border-color: rgba(17, 24, 39, 0.1);
+  background: #f3f4f6;
+  color: #111827;
 }
 
 .diabetic-protocol-question-visual {
@@ -7092,6 +7109,26 @@ select.onb-input.has-value + .onb-select-caret {
     );
 }
 
+.diabetic-screening-panel--content-fit .diabetic-protocol-video-slot {
+  min-height: 150px;
+}
+
+.diabetic-protocol-video-embed {
+  margin: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.diabetic-protocol-video-embed video {
+  width: 100%;
+  display: block;
+  aspect-ratio: 16 / 9;
+  border: 0;
+  border-radius: 18px;
+  background: #111827;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.12);
+}
+
 .diabetic-protocol-video-slot p {
   margin: 0;
   color: #4b5563;
@@ -7101,6 +7138,133 @@ select.onb-input.has-value + .onb-select-caret {
   letter-spacing: 0.03em;
   text-align: center;
   text-transform: uppercase;
+}
+
+.diabetic-protocol-sequence-list li {
+  opacity: 0.42;
+}
+
+.is-visible .diabetic-protocol-sequence-list li:nth-child(1) {
+  animation: diabeticProtocolSequenceFirst 12s linear 0.5s infinite;
+}
+
+.is-visible .diabetic-protocol-sequence-list li:nth-child(2) {
+  animation: diabeticProtocolSequenceMiddle 12s linear 0.5s infinite;
+}
+
+.is-visible .diabetic-protocol-sequence-list li:nth-child(3) {
+  animation: diabeticProtocolSequenceLast 12s linear 0.5s infinite;
+}
+
+.diabetic-protocol-loupe-sequence,
+.diabetic-protocol-history-sequence {
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0;
+  padding: 14px;
+  border: 1px solid rgba(242, 86, 0, 0.2);
+  border-radius: 22px;
+  background: #ffffff;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+}
+
+.diabetic-protocol-loupe-sequence {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.diabetic-protocol-loupe-sequence__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.diabetic-protocol-loupe-sequence__card {
+  grid-area: 1 / 1;
+  overflow: hidden;
+  border-radius: 16px;
+  background: #f8fafc;
+  opacity: 0;
+  transform: scale(0.985);
+}
+
+.is-visible .diabetic-protocol-loupe-sequence__card:nth-child(1) {
+  animation: diabeticProtocolSequenceCardFirst 12s linear 0.5s infinite;
+}
+
+.is-visible .diabetic-protocol-loupe-sequence__card:nth-child(2) {
+  animation: diabeticProtocolSequenceCardMiddle 12s linear 0.5s infinite;
+}
+
+.is-visible .diabetic-protocol-loupe-sequence__card:nth-child(3) {
+  animation: diabeticProtocolSequenceCardLast 12s linear 0.5s infinite;
+}
+
+.diabetic-protocol-loupe-sequence__card img {
+  width: 100%;
+  aspect-ratio: 1.45 / 1;
+  display: block;
+  object-fit: contain;
+  background: #f8fafc;
+  transform: scale(1.08);
+}
+
+.diabetic-protocol-loupe-sequence__card b {
+  min-height: 34px;
+  display: grid;
+  place-items: center;
+  padding: 6px 6px 4px;
+  background: #f25600;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 950;
+  line-height: 1;
+  text-align: center;
+}
+
+.diabetic-protocol-history-sequence__media {
+  position: relative;
+  overflow: hidden;
+  border-radius: 18px;
+  aspect-ratio: 1.35 / 1;
+  background: #f8fafc;
+}
+
+.diabetic-protocol-history-sequence__media img {
+  display: block;
+}
+
+.diabetic-protocol-history-sequence__base {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.diabetic-protocol-history-sequence__overlay {
+  position: absolute;
+  width: 52%;
+  height: auto;
+  max-height: 46%;
+  object-fit: contain;
+  opacity: 0;
+  filter: drop-shadow(0 8px 14px rgba(15, 23, 42, 0.2));
+}
+
+.diabetic-protocol-history-sequence__overlay--diabetes {
+  inset: 8% auto auto 7%;
+}
+
+.diabetic-protocol-history-sequence__overlay--symptoms {
+  inset: auto auto 22% 7%;
+}
+
+.is-visible .diabetic-protocol-history-sequence__overlay--diabetes {
+  animation: diabeticProtocolHistoryAppear 420ms ease 0.7s forwards;
+}
+
+.is-visible .diabetic-protocol-history-sequence__overlay--symptoms {
+  animation: diabeticProtocolHistoryAppear 420ms ease 1.2s forwards;
 }
 
 .diabetic-protocol-pupil-graphic {
@@ -7139,6 +7303,7 @@ select.onb-input.has-value + .onb-select-caret {
   background: #f9fafb;
   border: 3px solid #111827;
   transform: rotate(45deg);
+  transform-origin: center;
 }
 
 .diabetic-protocol-eye span {
@@ -7171,6 +7336,131 @@ select.onb-input.has-value + .onb-select-caret {
   font-size: 13px;
   font-weight: 850;
   text-align: center;
+}
+
+.diabetic-protocol-rapd-demo {
+  display: grid;
+  gap: 8px;
+}
+
+.diabetic-protocol-rapd-demo__hint {
+  margin: 0;
+  color: #a3a9b5;
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+  text-align: left;
+}
+
+.is-visible .diabetic-protocol-rapd-list li:nth-child(1) {
+  animation: diabeticProtocolRapdSlowChip 12s linear infinite;
+}
+
+.is-visible .diabetic-protocol-rapd-list li:nth-child(2) {
+  animation: diabeticProtocolRapdAbsentChip 12s linear infinite;
+}
+
+.diabetic-protocol-rapd-demo__stage {
+  position: relative;
+  overflow: hidden;
+  min-height: 280px;
+  height: min(420px, 82vw);
+  border-radius: 18px;
+  background: #000000;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.12);
+}
+
+.diabetic-protocol-rapd-demo__eyes {
+  position: absolute;
+  left: 16%;
+  top: 50%;
+  width: min(250%, 980px);
+  height: auto;
+  transform: translate(-50%, -50%);
+  user-select: none;
+  pointer-events: none;
+}
+
+.diabetic-protocol-rapd-demo__pupil {
+  position: absolute;
+  z-index: 3;
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  background: #0a0a0a;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.25);
+  transform: translate(-50%, -50%) scale(1.2);
+}
+
+.diabetic-protocol-rapd-demo__pupil--left {
+  display: none;
+}
+
+.diabetic-protocol-rapd-demo__pupil--right {
+  left: 51.5%;
+  top: 47%;
+}
+
+.is-visible .diabetic-protocol-rapd-demo__pupil--left {
+  animation: none;
+}
+
+.is-visible .diabetic-protocol-rapd-demo__pupil--right {
+  animation: diabeticProtocolRapdRightPupil 12s ease-in-out infinite;
+}
+
+.diabetic-protocol-rapd-demo__beam {
+  position: absolute;
+  z-index: 4;
+  left: -8%;
+  top: 45%;
+  width: 50%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at center,
+    rgb(255 255 255) 0%,
+    rgb(255 255 255 / 55%) 34%,
+    rgb(255 255 255 / 0%) 64%,
+    rgb(255 255 255 / 0%) 100%
+  );
+  filter: blur(0.35px);
+  opacity: 0.86;
+  transform: translate(-50%, -50%);
+}
+
+.is-visible .diabetic-protocol-rapd-demo__beam {
+  animation: diabeticProtocolRapdSwingBeam 12s ease-in-out infinite;
+}
+
+.diabetic-protocol-rapd-demo__flashlight {
+  position: absolute;
+  z-index: 5;
+  left: -8%;
+  top: 68%;
+  width: 34px;
+  height: auto;
+  opacity: 0.62;
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.04) 0,
+    rgba(0, 0, 0, 0.12) 38%,
+    #000 76%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.04) 0,
+    rgba(0, 0, 0, 0.12) 38%,
+    #000 76%
+  );
+  transform: translate(-50%, -50%);
+  user-select: none;
+  pointer-events: none;
+}
+
+.is-visible .diabetic-protocol-rapd-demo__flashlight {
+  animation: diabeticProtocolRapdSwingFlashlight 12s ease-in-out infinite;
 }
 
 .diabetic-protocol-image-frame {
@@ -7314,7 +7604,8 @@ select.onb-input.has-value + .onb-select-caret {
 }
 
 .diabetic-protocol-lesson .diabetic-screening-stack {
-  gap: 18px;
+  gap: 20px;
+  padding-top: 28px;
 }
 
 .diabetic-protocol-lesson .diabetic-screening-panel--content-fit {
@@ -7333,7 +7624,7 @@ select.onb-input.has-value + .onb-select-caret {
 .diabetic-protocol-drop-stack--chips span {
   position: relative;
   padding-left: 42px;
-  border-color: rgba(242, 86, 0, 0.24);
+  border-color: rgba(17, 24, 39, 0.1);
   background: #f3f4f6;
   color: #111827;
 }
@@ -7358,6 +7649,7 @@ select.onb-input.has-value + .onb-select-caret {
 
 .diabetic-protocol-drop-stack--chips {
   counter-reset: diabeticScreenChecklist;
+  margin-top: 22px;
 }
 
 .diabetic-protocol-zoom {
@@ -7376,7 +7668,8 @@ select.onb-input.has-value + .onb-select-caret {
 
 .diabetic-protocol-zoom .diabetic-atoms-zoom__frame {
   position: relative;
-  aspect-ratio: 4 / 3;
+  min-height: 0;
+  aspect-ratio: 1200 / 2650;
   border-radius: 18px;
   cursor: zoom-in;
   touch-action: none;
@@ -7389,7 +7682,8 @@ select.onb-input.has-value + .onb-select-caret {
   height: 100%;
   display: block;
   object-fit: contain;
-  transform: scale(calc(1.1 + var(--zoom-progress, 0) * 0.72));
+  object-position: center;
+  transform: scale(calc(1 + var(--zoom-progress, 0) * 0.82));
   transform-origin: 50% 38%;
   transition: transform 120ms linear;
 }
@@ -7397,7 +7691,7 @@ select.onb-input.has-value + .onb-select-caret {
 .diabetic-protocol-refer-line {
   display: block;
   margin-top: 8px;
-  color: #111827;
+  color: #f25600;
   font-weight: 900;
 }
 
@@ -7426,28 +7720,71 @@ select.onb-input.has-value + .onb-select-caret {
 }
 
 .diabetic-protocol-red-reflex__blocked::after {
-  top: calc(50% - 31px);
+  left: 50%;
+  top: 50%;
   width: 76px;
   height: 76px;
+  transform: translate(-50%, -50%) translateY(-13px);
 }
 
 .diabetic-protocol-image-overlay {
   position: absolute;
-  left: 12px;
-  right: 12px;
-  top: 12px;
+  inset: 0;
   z-index: 1;
-  padding: 10px 12px;
-  border-radius: 14px;
-  background: rgba(17, 24, 39, 0.78);
   color: #ffffff;
   font-size: 12px;
   font-weight: 750;
   line-height: 1.35;
+  pointer-events: none;
+}
+
+.diabetic-protocol-image-overlay span {
+  position: absolute;
+  display: block;
+  width: max-content;
+  max-width: min(52%, 220px);
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: rgba(17, 24, 39, 0.78);
+  opacity: 0;
+}
+
+.diabetic-protocol-image-overlay__label--a {
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.diabetic-protocol-image-overlay__label--b {
+  left: 12px;
+  top: 12px;
+}
+
+.diabetic-protocol-image-overlay__label--c {
+  left: 12px;
+  top: 50%;
+  bottom: auto;
+  transform: translateY(-50%);
+}
+
+.is-visible .diabetic-protocol-image-overlay span {
+  animation: diabeticProtocolDoOverlay 15s linear infinite;
+  animation-delay: 0.5s;
+}
+
+.is-visible .diabetic-protocol-image-overlay span:nth-child(2) {
+  animation-delay: 5.5s;
+}
+
+.is-visible .diabetic-protocol-image-overlay span:nth-child(3) {
+  animation-delay: 10.5s;
 }
 
 .diabetic-protocol-urgent-box {
-  display: inline-flex;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  box-sizing: border-box;
   margin-top: 14px !important;
   padding: 10px 14px;
   border-radius: 14px;
@@ -7462,19 +7799,73 @@ select.onb-input.has-value + .onb-select-caret {
   position: relative;
 }
 
+.diabetic-protocol-image-grid--labelled figure {
+  overflow: visible;
+  margin-bottom: 18px;
+}
+
+.diabetic-protocol-image-grid--labelled {
+  gap: 24px 18px;
+}
+
+.diabetic-protocol-image-grid--labelled img {
+  border-radius: 18px 18px 0 0;
+}
+
 .diabetic-protocol-image-grid .diabetic-protocol-image-label {
   position: absolute;
-  left: 10px;
-  top: 10px;
-  right: auto;
-  bottom: auto;
-  padding: 7px 10px;
-  border-radius: 999px;
+  left: 0;
+  right: 0;
+  bottom: -10px;
+  top: auto;
+  padding: 8px 9px;
+  border: 1px solid #f25600;
+  border-radius: 0 0 12px 12px;
   background: #f25600;
   color: #ffffff;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 950;
-  line-height: 1;
+  line-height: 1.1;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.diabetic-protocol-image-collage {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 34px 10px;
+  padding-bottom: 38px;
+}
+
+.diabetic-protocol-image-collage figure {
+  overflow: visible;
+  border: 0;
+  background: #ffffff;
+  padding-bottom: 18px;
+}
+
+.diabetic-protocol-image-collage img {
+  min-height: 132px;
+  border-radius: 18px 18px 0 0;
+}
+
+.diabetic-protocol-image-collage figcaption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -24px;
+  min-height: 32px;
+  display: grid;
+  place-items: center;
+  padding: 6px 9px;
+  border: 1px solid #f25600;
+  border-radius: 0 0 12px 12px;
+  background: #f25600;
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 950;
+  line-height: 1.15;
+  text-align: center;
+  text-transform: uppercase;
 }
 
 .diabetic-protocol-action-map {
@@ -7487,21 +7878,9 @@ select.onb-input.has-value + .onb-select-caret {
   position: relative;
   display: grid;
   gap: 8px;
-  padding: 14px 16px 14px 46px;
+  padding: 14px 16px;
   border-radius: 18px;
   background: #f3f4f6;
-}
-
-.diabetic-protocol-action-map div::before {
-  content: "";
-  position: absolute;
-  left: 17px;
-  top: 20px;
-  width: 14px;
-  height: 14px;
-  border-top: 3px solid #f25600;
-  border-right: 3px solid #f25600;
-  transform: rotate(45deg);
 }
 
 .diabetic-protocol-action-map b,
@@ -7517,43 +7896,245 @@ select.onb-input.has-value + .onb-select-caret {
 }
 
 .diabetic-protocol-action-map span {
-  color: #c2410c;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #f25600;
   font-size: 13px;
   font-weight: 850;
 }
 
+.diabetic-protocol-action-map i {
+  color: #f25600;
+  font-style: normal;
+  font-size: 17px;
+  font-weight: 950;
+  line-height: 1;
+}
+
 .diabetic-screening-step--icon {
-  position: relative;
   font-size: 0;
   letter-spacing: 0;
 }
 
-.diabetic-screening-step--icon::before,
-.diabetic-screening-step--icon::after {
-  content: "";
-  position: absolute;
-  top: 50%;
+.diabetic-screening-step--icon img {
+  width: 24px;
+  height: 24px;
   display: block;
-  transform: translateY(-50%);
+  margin: auto;
+  object-fit: contain;
 }
 
-.diabetic-screening-step--icon::before {
-  left: 10px;
-  width: 11px;
-  height: 11px;
-  border: 3px solid #ffffff;
-  border-radius: 50%;
+@keyframes diabeticProtocolSequenceFirst {
+  0%,
+  30.99% {
+    opacity: 1;
+  }
+
+  31%,
+  100% {
+    opacity: 0.42;
+  }
 }
 
-.diabetic-screening-step--icon::after {
-  left: 22px;
-  width: 13px;
-  height: 4px;
-  border-radius: 999px;
-  background: #ffffff;
-  box-shadow:
-    5px 4px 0 -1px #ffffff,
-    9px 4px 0 -1px #ffffff;
+@keyframes diabeticProtocolSequenceMiddle {
+  0%,
+  30.99% {
+    opacity: 0.42;
+  }
+
+  31%,
+  63.99% {
+    opacity: 1;
+  }
+
+  64%,
+  100% {
+    opacity: 0.42;
+  }
+}
+
+@keyframes diabeticProtocolSequenceLast {
+  0%,
+  63.99% {
+    opacity: 0.42;
+  }
+
+  64%,
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes diabeticProtocolSequenceCardFirst {
+  0%,
+  30.99% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  34%,
+  100% {
+    opacity: 0;
+    transform: scale(0.985);
+  }
+}
+
+@keyframes diabeticProtocolSequenceCardMiddle {
+  0%,
+  30.99% {
+    opacity: 0;
+    transform: scale(0.985);
+  }
+
+  34%,
+  63.99% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  67%,
+  100% {
+    opacity: 0;
+    transform: scale(0.985);
+  }
+}
+
+@keyframes diabeticProtocolSequenceCardLast {
+  0%,
+  63.99% {
+    opacity: 0;
+    transform: scale(0.985);
+  }
+
+  67%,
+  96% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(0.985);
+  }
+}
+
+@keyframes diabeticProtocolHistoryAppear {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes diabeticProtocolRapdSlowChip {
+  0%,
+  58.32% {
+    background: #f25600;
+    color: #ffffff;
+  }
+
+  58.33%,
+  100% {
+    background: #ffffff;
+    color: #f25600;
+  }
+}
+
+@keyframes diabeticProtocolRapdAbsentChip {
+  0%,
+  58.32% {
+    background: #ffffff;
+    color: #f25600;
+  }
+
+  58.33%,
+  91.66% {
+    background: #f25600;
+    color: #ffffff;
+  }
+
+  91.67%,
+  100% {
+    background: #ffffff;
+    color: #f25600;
+  }
+}
+
+@keyframes diabeticProtocolRapdSwingFlashlight {
+  0%,
+  8.32%,
+  41.66%,
+  58.32%,
+  91.66%,
+  100% {
+    left: -8%;
+    top: 68%;
+  }
+
+  16.66%,
+  33.32%,
+  66.66%,
+  83.32% {
+    left: 50%;
+    top: 68%;
+  }
+}
+
+@keyframes diabeticProtocolRapdSwingBeam {
+  0%,
+  8.32%,
+  41.66%,
+  58.32%,
+  91.66%,
+  100% {
+    left: -8%;
+    top: 45%;
+  }
+
+  16.66%,
+  33.32%,
+  66.66%,
+  83.32% {
+    left: 50%;
+    top: 45%;
+  }
+}
+
+@keyframes diabeticProtocolRapdLeftPupilNormal {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+}
+
+@keyframes diabeticProtocolRapdRightPupil {
+  0%,
+  41.66%,
+  58.32%,
+  100% {
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+
+  49.99% {
+    transform: translate(-50%, -50%) scale(0.78);
+  }
+}
+
+@keyframes diabeticProtocolDoOverlay {
+  0%,
+  31% {
+    opacity: 1;
+  }
+
+  34.5%,
+  100% {
+    opacity: 0;
+  }
 }
 
 @keyframes diabeticProtocolQuestionPop {
@@ -7620,7 +8201,7 @@ select.onb-input.has-value + .onb-select-caret {
   display: grid;
   align-content: center;
   gap: 14px;
-  border: 1px solid rgba(242, 86, 0, 0.24);
+  border: 1px solid rgba(15, 23, 42, 0.09);
   border-radius: 24px;
   background: #ffffff;
   overflow: hidden;
@@ -8369,7 +8950,7 @@ select.onb-input.has-value + .onb-select-caret {
   display: grid;
   align-content: center;
   gap: 14px;
-  border: 1px solid rgba(242, 86, 0, 0.24);
+  border: 1px solid rgba(15, 23, 42, 0.09);
   border-radius: 24px;
   background: #ffffff;
   overflow: hidden;
@@ -10458,18 +11039,18 @@ select.onb-input.has-value + .onb-select-caret {
 
 :is(#diabeticNcdClinicScreeningPage, #diabeticOtherEyeDiseasesScreeningPage)
   .diabetic-screening-panel--callout {
-  border-color: rgba(242, 86, 0, 0.18);
+  border-color: rgba(15, 23, 42, 0.09);
   background: #ffffff;
 }
 
 #diabeticOtherEyeDiseasesScreeningPage .diabetic-screening-panel--callout {
-  border-color: rgba(242, 86, 0, 0.18);
+  border-color: rgba(15, 23, 42, 0.09);
   background: #ffffff;
   min-height: auto;
 }
 
 #diabeticOtherEyeDiseasesScreeningPage .diabetic-screening-panel--warning {
-  border-color: rgba(242, 86, 0, 0.2);
+  border-color: rgba(15, 23, 42, 0.09);
   background: #ffffff;
 }
 
@@ -12437,7 +13018,7 @@ select.onb-input.has-value + .onb-select-caret {
 
 :is(#diabeticTypesOfDiabetesPage, #diabeticVisionLossInDiabetesPage)
   .diabetic-screening-panel--video {
-  border-color: rgba(242, 86, 0, 0.2);
+  border-color: rgba(15, 23, 42, 0.09);
 }
 
 @media (min-width: 48em) {
