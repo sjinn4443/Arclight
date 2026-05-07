@@ -6340,6 +6340,16 @@ Glaucoma history case study: match intermediate style
   gap: 12px;
 }
 
+@media (min-width: 48em) {
+  .diabetic-next-host {
+    padding-bottom: calc(52px + env(safe-area-inset-bottom));
+  }
+
+  .diabetic-next-wrap {
+    bottom: calc(8px + env(safe-area-inset-bottom));
+  }
+}
+
 .glaucoma-next-btn,
 .childhood-next-btn,
 .diabetic-next-btn,
