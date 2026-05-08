@@ -16,7 +16,8 @@ The project encompasses the development of:
 
 - A main landing page/dashboard with navigation to different educational modules.
 - Modules for Anterior Segment Quiz, Cataract, Mires, Morph, Squint, childhood eye screening, glaucoma, visual impairment, and diabetic retinopathy workshop content.
-- Additional Interactive Learning tools such as Fundal Reflex, Trauma, and Amsler, each with specific interactive elements and content.
+- Videos-route diabetic retinopathy lesson pages and demo quizzes that can be launched from the workshop or from Interactive Learning.
+- Additional Interactive Learning tools such as Fundal Reflex, Trauma, Amsler, and diabetic/glaucoma demo quizzes, each with specific interactive elements and content.
 - A robust image and video library to support the educational content.
 - A service worker for progressive web app (PWA) features, including offline access.
 - Basic styling and responsiveness to ensure a consistent user experience.

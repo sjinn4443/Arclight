@@ -1,6 +1,6 @@
 # Agent Notes
 
-Last refreshed: 2026-04-30
+Last refreshed: 2026-05-08
 
 ## Current repo orientation
 
@@ -8,8 +8,13 @@ Last refreshed: 2026-04-30
 - Runtime storage is currently no-op by default through `storage/disabled-storage.cjs`; Postgres is selected by `storage/index.cjs` only when DB URLs are configured and `DISABLE_DB_STORAGE` is not enabled.
 - Playwright starts its local web server with `DISABLE_DB_STORAGE=1`, so E2E tests should not touch configured DBs.
 - The Eyes route includes a Diabetic Retinopathy workshop at `public/html/diabeticRetinopathyWorkshop.html`.
-- Diabetic workshop progress and cross-route lesson sequencing live in `public/js/diabeticWorkshopProgress.js` and `public/js/diabeticWorkshopNextFlow.js`.
+- The diabetic workshop is split across routes:
+  - `public/html/diabeticRetinopathyWorkshop.html` owns the folder launcher, scroll lessons, protocol pages, and rows that jump to Videos-route lessons.
+  - `public/html/videos.html` owns the diabetic video pages and the Interactive Learning `Demo Quizzes` folder/pages.
+  - `public/js/diabeticRetinopathyWorkshop.js` initializes workshop-only behavior plus the diabetic demo quiz pages when those pages exist.
+  - `public/js/diabeticWorkshopProgress.js` and `public/js/diabeticWorkshopNextFlow.js` keep progress, previous/next flow, and return-to-folder behavior aligned across route boundaries.
 - The Videos route hosts both local subapps and selected external iframe lessons; cross-origin iframe internals cannot be styled or scripted from Arclight.
+- `scripts/build.cjs` cleans build outputs by renaming old output directories to `.build-cleanup-*`, recreating the target output directory, and falling back to retrying removal when Windows file locks block the rename.
 
 ## Current docs baseline
 
@@ -22,7 +27,9 @@ Last refreshed: 2026-04-30
 
 - Prefer code-referenced documentation over aspirational descriptions.
 - Keep `README.md`, `memory-bank/activeContext.md`, and `memory-bank/progress.md` aligned when features or runtime behavior change.
-- Preserve stable `data-target`, `data-lesson`, and `data-folder` values in the Diabetic Retinopathy workshop unless all dependent navigation/progress mappings are updated together.
+- Preserve stable `data-target`, `data-lesson`, `data-folder`, and `data-route` values in the Diabetic Retinopathy workshop and Videos-route demo/video pages unless all dependent navigation/progress/next-flow mappings are updated together.
+- When moving diabetic pages between `diabeticRetinopathyWorkshop.html` and `videos.html`, recheck `main.js` initialization, `videos.js` subpage routing, `diabeticWorkshopNextFlow.js`, and progress bar updates together.
+- Do not treat `.build-cleanup-*` directories as source artifacts; they are ignored temporary output directories left by safe build cleanup.
 - For Fundal scroll work, preserve the mandatory FR06 behavior guardrails below unless the user explicitly approves a change and it is manually rechecked.
 
 # Newborn Eyes Open Scroll Notes

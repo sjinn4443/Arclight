@@ -1,4 +1,4 @@
-<!-- THE CHANGES - techContext.md | 2026-04-30, Codex -->
+<!-- THE CHANGES - techContext.md | 2026-05-08, Codex -->
 
 # Tech Context
 
@@ -7,8 +7,8 @@
 - Core UI: HTML5, CSS3, JavaScript (ESM in browser)
 - Server: Node.js + Express (`server.cjs`)
 - PWA: Service Worker API, Web Manifest
-- Embedded interactive content: local iframe mini-apps under `public/subapp/*` plus selected external Netlify iframes inside `public/html/videos.html`
-- Workshop flows: static HTML lesson shells plus JS navigation/progress helpers, including `public/js/diabeticWorkshopNextFlow.js` and `public/js/diabeticWorkshopProgress.js`
+- Embedded interactive content: local iframe mini-apps under `public/subapp/*`, selected external Netlify iframes, Videos-route diabetic video pages, and demo quiz pages inside `public/html/videos.html`
+- Workshop flows: static HTML lesson shells plus JS navigation/progress helpers, including `public/js/diabeticWorkshopNextFlow.js`, `public/js/diabeticWorkshopProgress.js`, and diabetic quiz/scroll initializers in `public/js/diabeticRetinopathyWorkshop.js`
 - Build & Bundling: `esbuild`, `clean-css-cli`, `html-minifier-terser`
 - Testing: Jest (mix of `*.cjs` + `*.mjs`), JSDOM, Supertest
 - Quality: ESLint, Prettier, Husky + lint-staged
@@ -26,6 +26,7 @@
 - Build: `npm run build`
 - Serve built output: `npm run serve:dist`
 - Fundal regression suite: `npm run test:fundal`
+- Override build output directory: set `BUILD_OUTPUT_DIR`
 
 ### Interactive Learning integration notes
 
@@ -33,6 +34,14 @@
 - External interactive modules are embedded through hidden subpages in `public/html/videos.html` and lazy-loaded by `public/js/videos.js`.
 - Cross-origin iframe internals cannot be styled or scripted directly from Arclight.
 - Diabetic workshop previous/next flow can cross from the workshop route into Videos-route pages; the flow state is stored in `sessionStorage` and restored when returning to the workshop folders.
+- Diabetic demo quizzes live in `public/html/videos.html` but use initializers exported from `public/js/diabeticRetinopathyWorkshop.js`; `main.js` imports those initializers for the Videos route.
+- Diabetic video pages require their hidden `.page` IDs, workshop `data-target` rows, and `VIDEO_PAGE_SOURCES` entries in `public/js/videos.js` to stay in sync.
+
+### Build output behavior
+
+- `scripts/build.cjs` copies `public/` to the build output, bundles JS into the output `js/` folder, bundles `sw.js`, minifies CSS/HTML, and writes `version.json`.
+- Output cleaning is Windows-aware: existing output directories are renamed to `.build-cleanup-*` before a fresh directory is created, with retrying recursive removal as fallback.
+- `.build-cleanup-*` folders are ignored by git and are disposable after builds complete.
 
 ## Key Environment Variables
 

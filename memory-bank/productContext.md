@@ -1,4 +1,4 @@
-<!-- THE CHANGES - productContext.md | 2026-04-30, Codex -->
+<!-- THE CHANGES - productContext.md | 2026-05-08, Codex -->
 
 # Product Context
 
@@ -17,11 +17,12 @@ The Arclight project is an interactive educational platform designed to support 
 
 The application should function as a self-contained educational resource. Users should be able to:
 
-- Navigate easily between different modules (for example Anterior Segment Quiz, Cataract, Mires, Morph, Fundal Reflex, Trauma, Amsler).
+- Navigate easily between different modules (for example Anterior Segment Quiz, Cataract, Mires, Morph, Fundal Reflex, Trauma, Amsler, and Diabetic Retinopathy workshop lessons).
 - Interact with quizzes and receive immediate feedback.
 - View high-quality images and videos related to medical conditions.
 - Access core local content offline after initial loading.
 - Work through structured workshop pathways such as Childhood Eye Screening and Diabetic Retinopathy, with foldered lessons, progress rows, scroll pages, video lessons, protocol pages, and demo quizzes.
+- Move between the Diabetic Retinopathy workshop and Videos-route diabetic lessons/quizzes without losing lesson flow, folder restore state, or progress.
 
 Some Interactive Learning tools can also be embedded from externally hosted sites when that is the fastest way to deliver a usable learning experience, while still keeping the same in-app navigation shell.
 

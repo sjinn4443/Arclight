@@ -1,17 +1,31 @@
-<!-- THE CHANGES - activeContext.md | 2026-04-30, Codex -->
+<!-- THE CHANGES - activeContext.md | 2026-05-08, Codex -->
 
 # Active Context
 
 ## Current Work Focus
 
-Diabetic Retinopathy workshop stabilization and documentation refresh:
+Diabetic Retinopathy workshop and Videos-route stabilization:
 
 - the Eyes route now links into a substantial Diabetic Retinopathy workshop
 - the workshop combines foldered lessons, progress rows, scroll-style pages, Videos-route lessons, protocol pages, and demo quiz pages
+- diabetic workshop ownership is now split: the workshop route keeps the launcher/protocol/scroll content, while `public/html/videos.html` owns diabetic video subpages and the Interactive Learning `Demo Quizzes` folder/pages
 - `public/js/diabeticWorkshopNextFlow.js` owns the structural previous/next buttons and the cross-route flow through Videos pages
 - runtime storage defaults to `storage/disabled-storage.cjs` unless Postgres URLs are configured; Playwright explicitly runs with `DISABLE_DB_STORAGE=1`
 
 ## Recent Changes
+
+- Diabetic Retinopathy workshop and Videos-route split (2026-05-08):
+  - Moved diabetic demo quiz pages into `public/html/videos.html` under the Interactive Learning `Demo Quizzes` folder.
+  - Kept `public/js/diabeticRetinopathyWorkshop.js` as the initializer for the diabetic quiz interactions so `main.js` imports it for both the diabetic workshop route and the Videos route.
+  - Added/kept diabetic video pages in `public/html/videos.html` with sources registered in `public/js/videos.js`.
+  - The workshop route now jumps to Videos-route diabetic lessons using `data-route="videos"` rows for video pages.
+  - Added additional diabetic protocol video assets under `public/videos/Workshop/Diabetic/` and NCD/protocol visual assets under `public/images/learning/Diabetic/Diabetes/NCD/`.
+  - Updated the NCD algorithm SVG and protocol page styling/content in the latest `Diabetic14` pass.
+
+- Build cleanup hardening (2026-05-05):
+  - `scripts/build.cjs` now supports safer output cleaning on Windows by renaming old output directories to `.build-cleanup-*`, recreating the requested output directory, and falling back to retrying recursive removal if rename is blocked.
+  - `.gitignore` ignores `.build-cleanup-*/` and `tmp-codex-build*/`.
+  - Build version metadata is written to `version.json` with `versionDate` and `versionSequence`; sequence resolution can use env vars, git first-parent history, or GitHub API fallback.
 
 - Diabetic Retinopathy workshop flow (2026-04-30):
   - Added/expanded workshop lesson sections for introduction, diabetes/retinopathy basics, NCD clinic flow, protocol, and demo quizzes.
@@ -80,7 +94,9 @@ Diabetic Retinopathy workshop stabilization and documentation refresh:
 - Repair the remaining damaged locale strings (`�` / mojibake / `???`) before adding more translation content.
 - Use `node scripts/check-translations.cjs --strict-english` after each locale sweep to drive down fallback-English carry-overs once missing/damaged keys are under control.
 - Continue adding i18n keys for the Diabetic Retinopathy workshop, which currently contains substantial English static copy.
+- Continue adding i18n keys for the Videos-route diabetic demo quiz pages and diabetic video lesson labels.
 - Keep diabetic workshop folder/progress state aligned when adding or moving lesson rows.
+- When adding/moving diabetic content, update all route owners together: `public/html/diabeticRetinopathyWorkshop.html`, `public/html/videos.html`, `public/js/videos.js`, `public/js/diabeticRetinopathyWorkshop.js`, `public/js/diabeticWorkshopNextFlow.js`, and `public/js/diabeticWorkshopProgress.js`.
 - Keep external embed URLs and their purpose documented when Interactive Learning changes again.
 - If a remote embed later blocks framing, switch that module to a local copy or an open-in-new-tab fallback.
 - Add translation keys for `Trauma` and `Amsler` if those labels need to be localized instead of staying English-only.
@@ -94,7 +110,9 @@ Diabetic Retinopathy workshop stabilization and documentation refresh:
 - Use the existing Videos-route subpage pattern (`data-page`, `data-target`, hidden `.page` blocks, `iframe[data-src]`) when adding more Interactive Learning modules.
 - Do not assume parent-page CSS/JS can control embedded external site UI across origins.
 - For the Diabetic Retinopathy workshop, use stable `data-target`, `data-lesson`, and `data-folder` values because progress, folder restore, and next-flow routing depend on them.
+- For Videos-route diabetic pages, keep `data-target` IDs aligned with hidden `.page` IDs and `VIDEO_PAGE_SOURCES` entries in `public/js/videos.js`.
 - Treat no-op storage as the default local behavior unless DB URLs are intentionally configured.
+- Treat `.build-cleanup-*` folders as temporary build cleanup leftovers, not source directories.
 
 ## Important Patterns and Preferences
 

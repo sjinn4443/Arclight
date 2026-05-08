@@ -58,15 +58,11 @@ Common commands (see `package.json` for the full list):
 - Build then serve in production mode: `npm run serve:prod`
 - Generate childhood HLS outputs: `npm run build:childhood-hls`
 
-If the build fails with an `ENOTEMPTY` error while cleaning `dist/` (can happen on Windows when old files are still present), delete `dist/` and re-run:
+Build output notes:
 
-```bash
-# PowerShell
-Remove-Item -Recurse -Force dist
-
-# cmd.exe
-rmdir /s /q dist
-```
+- `BUILD_OUTPUT_DIR` can override the output folder. This is used by the Fundal regression suite to build into `tmp-fundal-dist`.
+- The build writes `version.json` with a `versionDate` and same-day `versionSequence`, using explicit env vars, git history, or GitHub API fallback when available.
+- On Windows, the cleaner first renames the old output directory to `.build-cleanup-*`, recreates the target directory, and falls back to retrying recursive removal if rename is blocked. Leftover `.build-cleanup-*` folders are ignored by git and can be deleted after confirming no build is running.
 
 ### Tests / quality
 
@@ -205,7 +201,8 @@ See [`security/EMERGENCY_PLAN.md`](./security/EMERGENCY_PLAN.md) for the operato
 
 - `public/` - the client web app (HTML/CSS/JS, images, videos, service worker)
 - `public/subapp/` - local mini-apps embedded inside the Videos route Interactive Learning pages
-- `public/html/diabeticRetinopathyWorkshop.html` - diabetic retinopathy workshop, including lesson folders, progress rows, protocol pages, and demo quizzes
+- `public/html/diabeticRetinopathyWorkshop.html` - diabetic retinopathy workshop launcher, lesson folders, progress rows, scroll lessons, and protocol pages
+- `public/html/videos.html` - Videos route, including Interactive Learning, diabetic workshop video pages, and diabetic/glaucoma demo quiz pages
 - `server.cjs` - Express server for dev/prod hosting + APIs
 - `scripts/` - build + tooling scripts (esbuild, HTML minify, CSS minify)
 - `storage/` - runtime storage selection, no-op storage, legacy NDJSON storage, and Postgres storage
@@ -221,12 +218,17 @@ See [`security/EMERGENCY_PLAN.md`](./security/EMERGENCY_PLAN.md) for the operato
 - The Interactive Learning section inside [`public/html/videos.html`](./public/html/videos.html) uses a shared Videos-route subpage pattern:
   - local modules such as `Morph` and `Mires` load from `public/subapp/*`
   - some modules now lazy-load external Netlify iframes (`Fundal Reflex`, `Trauma`, `Amsler`)
-- The Diabetic Retinopathy workshop is launched from the Eyes route and combines scroll lessons, Videos-route lessons, progress bars, folder restore behavior, structural previous/next buttons, and demo quizzes. The navigation helpers live in `public/js/diabeticWorkshopNextFlow.js` and `public/js/diabeticWorkshopProgress.js`.
+- The Diabetic Retinopathy workshop is launched from the Eyes route and combines workshop folders, scroll lessons, Videos-route lessons, progress bars, folder restore behavior, structural previous/next buttons, protocol pages, and demo quizzes.
+  - `public/html/diabeticRetinopathyWorkshop.html` owns the workshop shell and protocol/scroll pages.
+  - `public/html/videos.html` owns the diabetic video pages and the Interactive Learning `Demo Quizzes` folder.
+  - `public/js/diabeticRetinopathyWorkshop.js` initializes both the workshop route and the diabetic demo quiz pages when those pages are present.
+  - `public/js/diabeticWorkshopNextFlow.js` and `public/js/diabeticWorkshopProgress.js` keep cross-route sequencing and progress state aligned.
 - Cross-origin iframe rule: Arclight can style the surrounding card/page shell, but it cannot directly restyle or reposition icons or UI inside an embedded external site. Those changes must be made in the remote app itself.
 - External embeds require network access and continued iframe permission from the remote host. They are not cached/offline-capable in the same way as local `public/subapp/*` content. If the remote site later sends `X-Frame-Options` or a restrictive `frame-ancestors` policy, the embed will stop working.
 
 ## Changelog (high level)
 
+- 2026-05-08: Refreshed docs for `Diabetic14`, including the split between the diabetic workshop route and Videos-route demo/video pages, additional diabetic protocol video assets, and the Windows-safe build output cleanup.
 - 2026-04-30: Refreshed docs for the Diabetic Retinopathy workshop flow, no-op/default storage behavior, Playwright `DISABLE_DB_STORAGE=1`, split reports DB URLs, and additional runtime env vars.
 - 2026-03-11: Added external Interactive Learning embeds for `Fundal Reflex`, `Trauma`, and `Amsler`, and documented the cross-origin iframe constraints.
 - 2025-12-15: Docs refresh + CI/Jest ESM interop notes (map browser ESM imports to CJS mocks).

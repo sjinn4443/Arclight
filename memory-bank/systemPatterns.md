@@ -39,6 +39,8 @@ Arclight is primarily a static, client-side PWA served from `public/` (or `dist/
 - Cross-origin embed boundary: parent-page CSS/JS can control the Arclight wrapper (card spacing, headers, iframe size), but cannot directly alter UI inside a remote iframe.
 - Workshop flow pattern: route-level lesson pages can use stable `data-target`/`data-lesson`/`data-folder` identifiers, progress bars, and `sessionStorage` restore flags to support foldered learning flows across route boundaries.
 - Diabetic workshop next-flow pattern: `public/js/diabeticWorkshopNextFlow.js` owns structural Previous/Next controls, Videos-route jumps, and folder restore on return to the workshop.
+- Diabetic route split pattern: `public/html/diabeticRetinopathyWorkshop.html` owns the workshop launcher, scroll lessons, and protocol pages; `public/html/videos.html` owns diabetic video pages and demo quiz pages. Shared `data-target` IDs, hidden `.page` IDs, `VIDEO_PAGE_SOURCES`, progress events, and next-flow mappings are the contract between the routes.
+- Build cleanup pattern: `scripts/build.cjs` creates a fresh build output by renaming the old directory to `.build-cleanup-*`, recreating the requested output directory, then continuing the build. This avoids common Windows `ENOTEMPTY`/file-lock failures while leaving ignored cleanup folders that can be deleted later.
 
 ## Component Relationships
 
@@ -57,8 +59,10 @@ Arclight is primarily a static, client-side PWA served from `public/` (or `dist/
 - Reports encryption helper: `reports/security/encrypt.cjs`
 - Diabetic workshop flow:
   - route shell: `public/html/diabeticRetinopathyWorkshop.html`
-  - lesson/progress logic: `public/js/diabeticRetinopathyWorkshop.js`, `public/js/diabeticWorkshopProgress.js`
+  - Videos-route diabetic demo/video pages: `public/html/videos.html`
+  - lesson/progress/quiz logic: `public/js/diabeticRetinopathyWorkshop.js`, `public/js/diabeticWorkshopProgress.js`
   - cross-route Previous/Next logic: `public/js/diabeticWorkshopNextFlow.js`
+  - Videos-route video source registration and subpage display: `public/js/videos.js`
 
 ## Critical Implementation Paths
 
@@ -67,4 +71,5 @@ Arclight is primarily a static, client-side PWA served from `public/` (or `dist/
 - Offline capability: service worker lifecycle + cache correctness.
 - Telemetry integrity: consistent identifiers, storage selection by environment, and optional at-rest encryption.
 - Reports access control: Basic Auth + attempt rate limiting for reports pages.
-- Diabetic Retinopathy workshop: keep lesson row targets, hidden page IDs, Videos targets, and `DIABETIC_NAV_CONFIG` entries synchronized.
+- Diabetic Retinopathy workshop: keep lesson row targets, hidden page IDs, Videos targets, `VIDEO_PAGE_SOURCES`, progress keys, and `DIABETIC_NAV_CONFIG` entries synchronized.
+- Build output: keep generated `dist/`, `tmp-fundal-dist/`, `tmp-codex-build*/`, and `.build-cleanup-*` directories out of source changes.
