@@ -266,7 +266,7 @@ const CONNECT_QUIZ_GROUPS = Object.freeze([
       },
       {
         id: "finding-loss-red-reflex",
-        label: "Loss of red reflex",
+        label: "Loss of fundal reflex",
       },
     ],
     tone: "violet",

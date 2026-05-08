@@ -167,12 +167,12 @@
   <text x="275" y="1300" class="detail-text" text-anchor="middle">Diabetes / BP / Weight</text>
   <text x="275" y="1317" class="small-text" text-anchor="middle">(Runs in parallel)</text>
 
-  <!-- Step 8: Red Reflex -->
+  <!-- Step 8: Fundal Reflex -->
   <rect x="450" y="1325" width="300" height="75" class="step-box" rx="5"/>
-  <text x="600" y="1350" class="step-text" text-anchor="middle">8. FUNDAL 'RED' REFLEX TEST</text>
+  <text x="600" y="1350" class="step-text" text-anchor="middle">8. FUNDAL REFLEX TEST</text>
   <text x="600" y="1370" class="detail-text" text-anchor="middle">Check fundal reflex</text>
   
-  <!-- Decision: Red Reflex Reduced? -->
+  <!-- Decision: Fundal Reflex Reduced? -->
   <path d="M 600 1400 L 600 1420" class="arrow"/>
   <polygon points="600,1420 680,1455 600,1490 520,1455" class="decision-box"/>
   <text x="600" y="1450" class="decision-text" text-anchor="middle">Reduced /</text>
@@ -267,7 +267,7 @@
   <text x="100" y="2255" class="detail-text">✓ Maculopathy with reduced VA</text>
   <text x="100" y="2280" class="detail-text">✓ Abnormal pupils (poor response, RAPD)</text>
   
-  <text x="650" y="2205" class="detail-text">✓ Lost or reduced red reflex</text>
+  <text x="650" y="2205" class="detail-text">✓ Lost or reduced fundal reflex</text>
   <text x="650" y="2230" class="detail-text">✓ Iris neovascularization (rubeosis)</text>
   <text x="650" y="2255" class="detail-text">✓ Unexplained poor vision (not improving with pinhole)</text>
   <text x="650" y="2280" class="detail-text">✓ Suspected glaucoma (cupped disc, poor pupil)</text>
