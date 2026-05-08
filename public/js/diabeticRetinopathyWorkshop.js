@@ -1194,7 +1194,7 @@ function setupWorkshopFolders(page) {
   });
 }
 
-function initializeHistoryImageMatchPage(workshopPage) {
+function initializeHistoryImageMatchPage() {
   const page = document.getElementById("diabeticHistoryImageMatchPage");
   if (!page || page.dataset.inited === "1") return;
 
@@ -3214,6 +3214,15 @@ function initializeConnectQuizPage() {
   resetQuiz();
 }
 
+export function initializeDiabeticDemoQuizzes() {
+  initializeDiabeticWorkshopProgressInfra();
+  initializeHistoryImageMatchPage();
+  initializeRetinalStructureTapPage();
+  initializeReviewVideoQuizPage();
+  initializeFindingsGroupTwoPage();
+  initializeConnectQuizPage();
+}
+
 export function initializeDiabeticRetinopathyWorkshop() {
   const page = document.getElementById("diabeticRetinopathyWorkshopPage");
   if (!page) return;
@@ -3254,11 +3263,7 @@ export function initializeDiabeticRetinopathyWorkshop() {
     });
   });
 
-  initializeHistoryImageMatchPage(page);
-  initializeRetinalStructureTapPage();
-  initializeReviewVideoQuizPage();
-  initializeFindingsGroupTwoPage();
-  initializeConnectQuizPage();
+  initializeDiabeticDemoQuizzes();
   initializeDiabeticArclightPackagePage();
   initializeDiabeticScreeningScrollLessons();
 }

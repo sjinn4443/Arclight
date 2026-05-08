@@ -5577,6 +5577,125 @@ select.onb-input.has-value + .onb-select-caret {
   margin-top: 4px;
 }
 
+#interactiveLearningPage.diabetic-folder-open
+  .pupil-level--intermediate
+  > .pupil-card.module-card:not(.interactive-section-card) {
+  opacity: 0.72;
+}
+
+#interactiveLearningPage.diabetic-folder-open
+  #interactiveDemoQuizzesFolders
+  .interactive-folder-row {
+  opacity: 0.72;
+}
+
+#interactiveLearningPage #interactiveDemoQuizzesFolders {
+  align-items: center;
+}
+
+#interactiveLearningPage
+  #interactiveDemoQuizzesFolders
+  .interactive-folder-row {
+  position: relative;
+}
+
+#interactiveLearningPage
+  #interactiveDemoQuizzesFolders
+  .interactive-folder-row
+  .thumb {
+  position: relative;
+  overflow: visible;
+  background-image: url("/images/icon/eyes/moduleicons/intermediate_folder.webp");
+}
+
+#interactiveLearningPage
+  #interactiveDemoQuizzesFolders
+  .diabetic-folder-item-count {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 999px;
+  background: #f25600;
+  color: #ffffff;
+  font-size: 10px;
+  line-height: 16px;
+  font-weight: 700;
+  text-align: center;
+  box-shadow: 0 0 0 2px #fff;
+}
+
+#interactiveLearningPage
+  #interactiveDemoQuizzesFolders
+  .interactive-folder-row
+  .lesson-main {
+  gap: 0;
+}
+
+#interactiveLearningPage
+  #interactiveDemoQuizzesFolders
+  .interactive-folder-row
+  .lesson-top {
+  width: auto;
+}
+
+#interactiveLearningPage .interactive-section-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+#interactiveLearningPage .interactive-section-card > h3 {
+  align-self: stretch;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+#interactiveLearningPage .interactive-section-card .lesson-row {
+  width: 80%;
+  box-sizing: border-box;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  left: 0;
+}
+
+#interactiveLearningPage .interactive-section-card .lesson-main {
+  min-width: 0;
+}
+
+#interactiveLearningPage .interactive-section-card .lesson-top {
+  width: 171px;
+  margin-left: 25px;
+}
+
+#interactiveLearningPage
+  .interactive-section-card
+  .lesson-row
+  .lesson-progress {
+  width: 146px;
+  margin-left: 23px;
+}
+
+#interactiveLearningPage
+  .interactive-section-card
+  .lesson-row:is([data-lesson], [data-target])
+  .lesson-cta {
+  margin-left: -34px;
+}
+
+#interactiveLearningPage .pupil-level--intermediate .lesson-progress__fill {
+  background: #f25600 !important;
+}
+
+#interactiveLearningPage .see-all-toggle {
+  color: #f25600;
+}
+
 @media (min-width: 1024px) {
   #childhoodEyeScreeningWorkshopPage
     #childhoodWorkshopFolders

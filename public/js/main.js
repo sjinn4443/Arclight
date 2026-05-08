@@ -133,6 +133,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (routeName === "videos") {
       const { initializeVideos } = await import("./videos.js");
+      const { initializeDiabeticDemoQuizzes } =
+        await import("./diabeticRetinopathyWorkshop.js");
+      initializeDiabeticDemoQuizzes?.();
       initializeVideos?.();
       const { initializeGlaucomaWorkshopNextFlowInfra } =
         await import("./glaucomaWorkshopNextFlow.js");

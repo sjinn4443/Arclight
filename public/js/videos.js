@@ -20,6 +20,7 @@ const EXTERNAL_GLAUCOMA_SCROLL_TARGETS = new Set([
 ]);
 let externalGlaucomaNavInFlight = false;
 const CHILDHOOD_WORKSHOP_PROGRESS_PREFIX = "childhoodWorkshop:progress:";
+const DIABETIC_WORKSHOP_PROGRESS_PREFIX = "diabeticWorkshop:progress:";
 const CHILDHOOD_WORKSHOP_PROGRESS_EVENT = "childhoodWorkshop:progress-changed";
 const DIABETIC_WORKSHOP_PROGRESS_EVENT = "diabeticWorkshop:progress-changed";
 const CHILDHOOD_WORKSHOP_ROUTE_COMPLETE_EVENT =
@@ -125,6 +126,16 @@ function readWorkshopProgressForTarget(targetPageId) {
   );
 }
 
+function diabeticWorkshopProgressKeyForTarget(targetPageId) {
+  return `${DIABETIC_WORKSHOP_PROGRESS_PREFIX}${targetPageId}`;
+}
+
+function readDiabeticWorkshopProgressForTarget(targetPageId) {
+  return normalizeProgressRecord(
+    readVideoProgress(diabeticWorkshopProgressKeyForTarget(targetPageId)),
+  );
+}
+
 function writeWorkshopProgressForTarget(
   targetPageId,
   percent,
@@ -221,18 +232,23 @@ function progressKeyForTarget(targetPageId) {
 }
 
 function readProgressForTarget(targetPageId) {
-  const videoProgress = normalizeProgressRecord(
-    readVideoProgress(progressKeyForTarget(targetPageId)),
-  );
-  const workshopProgress = readWorkshopProgressForTarget(targetPageId);
+  const progressRecords = [
+    normalizeProgressRecord(
+      readVideoProgress(progressKeyForTarget(targetPageId)),
+    ),
+    readWorkshopProgressForTarget(targetPageId),
+    readDiabeticWorkshopProgressForTarget(targetPageId),
+  ];
 
-  if (workshopProgress.percent > videoProgress.percent) return workshopProgress;
-  if (videoProgress.percent > workshopProgress.percent) return videoProgress;
+  return progressRecords.reduce((best, current) => {
+    if (current.percent > best.percent) return current;
+    if (current.percent < best.percent) return best;
 
-  return {
-    percent: videoProgress.percent,
-    updatedAt: Math.max(videoProgress.updatedAt, workshopProgress.updatedAt),
-  };
+    return {
+      percent: best.percent,
+      updatedAt: Math.max(best.updatedAt, current.updatedAt),
+    };
+  });
 }
 
 function writeProgressForTarget(targetPageId, data) {
@@ -350,6 +366,139 @@ function updateLessonProgressBars() {
     // Colour match: Primary uses its green, Intermediate uses its orange
     const c = getLevelColourForRow(row);
     if (c) fill.style.backgroundColor = c;
+  });
+}
+
+function updateInteractiveFolderItemBadges(page) {
+  const folderRows = page.querySelectorAll(
+    "#interactiveDemoQuizzesFolders .interactive-folder-row[data-folder]",
+  );
+
+  folderRows.forEach((row) => {
+    const sectionKey = row.getAttribute("data-folder");
+    if (!sectionKey) return;
+
+    const section = page.querySelector(
+      `.interactive-section-card[data-section="${sectionKey}"]`,
+    );
+    if (!section) return;
+
+    const itemCount = section.querySelectorAll(
+      ".lesson-row[data-lesson], .lesson-row[data-target]",
+    ).length;
+    const thumb = row.querySelector(".thumb");
+    if (!thumb) return;
+
+    let badge = thumb.querySelector(".diabetic-folder-item-count");
+    if (!badge) {
+      badge = document.createElement("span");
+      badge.className = "diabetic-folder-item-count";
+      thumb.appendChild(badge);
+    }
+
+    badge.textContent = String(itemCount);
+    row.setAttribute("data-item-count", String(itemCount));
+  });
+}
+
+function setupInteractiveLearningFolders() {
+  const page = document.getElementById("interactiveLearningPage");
+  if (!page) return;
+
+  const folders = page.querySelectorAll(
+    "#interactiveDemoQuizzesFolders .interactive-folder-row",
+  );
+  const sectionCards = page.querySelectorAll(".interactive-section-card");
+  const foldersContainer = page.querySelector("#interactiveDemoQuizzesFolders");
+  if (!foldersContainer) return;
+
+  updateInteractiveFolderItemBadges(page);
+
+  const hideAllSectionCards = () => {
+    sectionCards.forEach((card) => {
+      card.style.display = "none";
+      const titleEl = card.querySelector("h3");
+      titleEl?.querySelector(".see-all-toggle")?.remove();
+    });
+  };
+
+  const showSectionByKey = (key) => {
+    const card = page.querySelector(
+      `.interactive-section-card[data-section="${key}"]`,
+    );
+    const openFolderRow = page.querySelector(
+      `#interactiveDemoQuizzesFolders .interactive-folder-row[data-folder="${key}"]`,
+    );
+    if (!card || !openFolderRow) return;
+
+    hideAllSectionCards();
+    folders.forEach((row) => {
+      row.style.display = "";
+    });
+
+    openFolderRow.style.display = "none";
+    page.classList.add("diabetic-folder-open");
+    openFolderRow.insertAdjacentElement("afterend", card);
+    card.style.display = "";
+
+    const titleEl = card.querySelector("h3");
+    if (!titleEl) return;
+
+    titleEl.style.display = "flex";
+    titleEl.style.alignItems = "center";
+    titleEl.style.width = "100%";
+
+    const toggle = document.createElement("span");
+    toggle.className = "see-all-toggle";
+    toggle.setAttribute("role", "button");
+    toggle.setAttribute("tabindex", "0");
+    toggle.setAttribute("aria-expanded", "true");
+    toggle.textContent = "Close ^";
+    toggle.style.marginLeft = "auto";
+    toggle.style.marginRight = "30px";
+    toggle.style.whiteSpace = "nowrap";
+
+    const closeNow = (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      card.style.display = "none";
+      toggle.remove();
+      openFolderRow.style.display = "";
+      page.classList.remove("diabetic-folder-open");
+    };
+
+    toggle.addEventListener("click", closeNow);
+    toggle.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") closeNow(event);
+    });
+
+    titleEl.appendChild(toggle);
+  };
+
+  hideAllSectionCards();
+  folders.forEach((row) => {
+    row.style.display = "";
+  });
+  foldersContainer.style.display = "flex";
+  page.classList.remove("diabetic-folder-open");
+
+  folders.forEach((row) => {
+    if (row.dataset.interactiveFolderWired === "1") return;
+    row.dataset.interactiveFolderWired = "1";
+
+    const key = row.getAttribute("data-folder");
+    if (!key) return;
+
+    const openNow = (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      showSectionByKey(key);
+    };
+
+    row.addEventListener("click", openNow);
+    row.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") openNow(event);
+    });
   });
 }
 
@@ -2972,6 +3121,7 @@ export function initializeVideos() {
 
   // Wire video progress tracking (safe to call even if DOM not ready yet)
   wirePupilFullExamProgress();
+  setupInteractiveLearningFolders();
 
   // Resolve the target (global → sessionStorage)
   let pending = window.__videosPendingTarget || "";
@@ -3071,6 +3221,13 @@ if (!window[__videosGlobalBoundKey]) {
     const target = row.getAttribute("data-target");
     if (!target) return;
 
+    const routeName = row.getAttribute("data-route");
+    if (routeName && routeName !== "videos") {
+      e.preventDefault();
+      void loadPage(routeName, { subPageId: target });
+      return;
+    }
+
     show(target);
   });
 
@@ -3099,6 +3256,10 @@ if (!window[__videosGlobalBoundKey]) {
   );
 
   document.addEventListener(CHILDHOOD_WORKSHOP_PROGRESS_EVENT, () => {
+    updateLessonProgressBars();
+  });
+
+  document.addEventListener(DIABETIC_WORKSHOP_PROGRESS_EVENT, () => {
     updateLessonProgressBars();
   });
 
