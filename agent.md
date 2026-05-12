@@ -1,6 +1,6 @@
 # Agent Notes
 
-Last refreshed: 2026-05-08
+Last refreshed: 2026-05-12
 
 ## Current repo orientation
 
@@ -31,6 +31,24 @@ Last refreshed: 2026-05-08
 - When moving diabetic pages between `diabeticRetinopathyWorkshop.html` and `videos.html`, recheck `main.js` initialization, `videos.js` subpage routing, `diabeticWorkshopNextFlow.js`, and progress bar updates together.
 - Do not treat `.build-cleanup-*` directories as source artifacts; they are ignored temporary output directories left by safe build cleanup.
 - For Fundal scroll work, preserve the mandatory FR06 behavior guardrails below unless the user explicitly approves a change and it is manually rechecked.
+
+## Diabetic Scrolly Format / Scroll Pages Format Style
+
+Use this when the user asks to make a Diabetic Retinopathy workshop page in the `scrolly format`, `scroll pages format style`, or similar wording. This style is based on the lesson-row scroll pages in `public/html/diabeticRetinopathyWorkshop.html`: `diabeticPragmaticScreeningPage`, `diabeticNcdClinicScreeningPage`, `diabeticOtherEyeDiseasesScreeningPage`, and `diabeticProliferativeOtherDiseasePage`. It intentionally excludes the custom animated `diabeticArclightPackagePage`.
+
+- Page shell: keep the page as `.page.pupils-like.has-eyes-topbar` with a `.container.pupils-container.diabetic-screening-page`, the standard `.eyes-topbar`, and an empty `.pupils-subtitle`.
+- Lesson wrapper: use `<section class="diabetic-screening-lesson ...">` with `data-diabetic-scroll-lesson`, an `aria-label`, a `.diabetic-screening-scroll-cue`, a `.diabetic-screening-hero[data-diabetic-scroll-step]`, then a `.diabetic-screening-stack` of `<article class="diabetic-screening-panel" data-diabetic-scroll-step>`.
+- Scroll behavior: `public/js/diabeticRetinopathyWorkshop.js` upgrades the cue and toggles `.is-visible` / `.is-current` on every `[data-diabetic-scroll-step]`. Put animations and stateful visual emphasis behind `.is-current`; use `data-diabetic-visible-class` only for a local visual that needs an extra in-view class.
+- Overall layout: full-bleed white lesson band (`width: 100vw`, centered with `calc(50% - 50vw)`), narrow mobile-first content, and vertically stacked reveal panels. Base panels are `width: min(88vw, 430px)`, `min-height: 70dvh`, centered, padded, white/translucent, `border-radius: 28px`, subtle border, blur, and soft shadow. On wider screens panels expand toward `min(76vw, 760px)` and may use two columns when the visual needs room.
+- Typography: use the diabetic screening hierarchy. Eyebrow is orange `#f25600`, uppercase, 12px, 800 weight, wide tracking. Hero `h2` is black, very bold, tight, `clamp(31px, 9vw, 46px)`, `line-height` near 1. Panel `h3` is black, bold, `clamp(24px, 7vw, 34px)`, tight line height. Body copy is gray `#374151`, semi-bold (`550`-ish), `clamp(15px, 4.1vw, 18px)`, generous `line-height: 1.65`.
+- Step markers: every panel starts with `<span class="diabetic-screening-step">01</span>` style circular orange number badge, 42px square, white text, bold.
+- Lists and chips: use `.diabetic-screening-checklist` for numbered clinical steps with gray rounded rows and orange number dots. Use `.diabetic-screening-chip-list` for compact orange-outline pills.
+- Images: use real clinical/learning images in `figure` or grid/collage containers, with meaningful `alt` text and `loading="lazy"`. Avoid decorative standalone SVGs for this format unless the existing page pattern already uses a diagram or flow.
+- Captions: image captions use high-contrast orange labels. `diabetic-disease-card figcaption` / sorter captions are absolute bottom bars with orange `#f25600`, white text, small bold type (`11px`, 950 weight), centered, usually over or just below rounded clinical images. Supporting tags like `Sight threatening` are small uppercase white/orange badges positioned above the image.
+- Disease galleries: for proliferative/other disease pages, use `.diabetic-disease-gallery`, `.diabetic-disease-card`, `.diabetic-disease-card--danger`, `--wide`, and `--contain` rather than inventing new card systems. Clinical images use rounded tops, object-fit cover by default, contain mode for full retinal photos, and animated pop-in from `.is-current .diabetic-disease-card`.
+- NCD/other disease specifics: use `.diabetic-no-eye-check` for the missed-screening image with an animated red X; `.diabetic-eye-disease-collage` for two-column disease tiles with orange bottom labels; `.diabetic-screening-flow--connected` for clinic-to-screening-to-referral flow with orange connected stations.
+- Responsive rules: check desktop and mobile. Base/mobile layout is one column: hero and panels stay around `min(86vw-88vw, 430px)`, panels use `min-height: 70dvh` unless marked content-fit, `.diabetic-screening-stack` uses tighter gaps, clinical collages stay compact two-column only when labels still fit, and captions must not overlap images or following content. At tablet/desktop widths, hero/panels expand toward `min(76vw, 760px)`, stack gaps increase to roughly `48px`-`56px`, panels may switch to two columns (`text + visual`) with `grid-template-columns`, NCD flow switches from vertical connectors to horizontal station flow, and disease sorter/gallery lanes can expand to 2 or 3 columns. Desktop-specific overrides often target exact panel positions with `nth-of-type`; mirror that only when the content needs a custom layout.
+- Motion/accessibility: preserve `prefers-reduced-motion` behavior by keeping animations tied to `.is-current` and transition classes, not required content. Keep all scroll steps readable without animation.
 
 # Newborn Eyes Open Scroll Notes
 
