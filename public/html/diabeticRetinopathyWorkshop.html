@@ -3247,7 +3247,9 @@
   class="page pupils-like has-eyes-topbar"
   style="display: none"
 >
-  <div class="container pupils-container diabetic-arclight-package-page">
+  <div
+    class="container pupils-container diabetic-arclight-package-page diabetic-screening-page"
+  >
     <div class="eyes-topbar">
       <div class="eyes-topbar__title">Eyes</div>
       <div class="eyes-topbar__icons">
@@ -3257,40 +3259,122 @@
 
     <h2 class="pupils-subtitle"></h2>
 
-    <section class="diabetic-arclight-package-intro">
-      <p class="diabetic-arclight-package-intro__lead">
-        The Arclight package includes two key tools for screening:
-      </p>
+    <section
+      class="diabetic-arclight-package-intro diabetic-screening-lesson diabetic-screening-lesson--tight-hero diabetic-screening-lesson--arclight-package"
+      data-diabetic-scroll-lesson
+      aria-label="Arclight package"
+    >
+      <div
+        class="diabetic-screening-scroll-cue"
+        data-diabetic-scroll-cue
+        aria-hidden="true"
+      >
+        <span>scroll</span>
+        <i></i>
+        <i></i>
+        <i></i>
+      </div>
 
-      <section class="diabetic-arclight-package-intro__item">
-        <h3 class="diabetic-arclight-package-intro__heading">
-          1. The visual acuity testing tools
-        </h3>
-        <figure class="diabetic-arclight-package-intro__figure">
-          <img
-            src="/images/learning/Diabetic/ArclightPackage/NearDistance.png"
-            alt="Distance and near visual acuity testing charts"
-            loading="eager"
-          />
-        </figure>
-      </section>
+      <header class="diabetic-screening-hero" data-diabetic-scroll-step>
+        <p class="diabetic-screening-eyebrow">ARCLIGHT PACKAGE</p>
+        <h2>The Arclight Package</h2>
+      </header>
 
-      <section class="diabetic-arclight-package-intro__item">
-        <h3
-          class="diabetic-arclight-package-intro__heading diabetic-arclight-package-intro__heading--device"
+      <div class="diabetic-screening-stack">
+        <section
+          class="diabetic-arclight-package-intro__item diabetic-arclight-package-intro__item--overview diabetic-screening-panel diabetic-screening-panel--content-fit"
+          data-diabetic-scroll-step
         >
-          2. The Arclight device
-        </h3>
-        <figure
-          class="diabetic-arclight-package-intro__figure diabetic-arclight-package-intro__figure--device"
+          <span class="diabetic-screening-step">01</span>
+          <h3 class="diabetic-arclight-package-intro__heading">
+            The Arclight package includes two key tools for screening:
+          </h3>
+          <div class="diabetic-package-tool-grid">
+            <figure class="diabetic-package-tool-card">
+              <img
+                src="/images/learning/Diabetic/ArclightPackage/NearDistance.png"
+                alt="Distance and near visual acuity testing charts"
+                loading="eager"
+              />
+              <figcaption>Visual acuity testing tools</figcaption>
+            </figure>
+            <figure
+              class="diabetic-package-tool-card diabetic-package-tool-card--device"
+            >
+              <img
+                src="/images/learning/Diabetic/ArclightPackage/Arclight.webp"
+                alt="Arclight device"
+                loading="eager"
+              />
+              <figcaption>Arclight device</figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <section
+          class="diabetic-arclight-package-intro__item diabetic-arclight-package-intro__item--charts diabetic-screening-panel diabetic-screening-panel--content-fit"
+          data-diabetic-scroll-step
         >
-          <img
-            src="/images/learning/Diabetic/ArclightPackage/Arclight.webp"
-            alt="Arclight device with two functional ends"
-            loading="eager"
-          />
-        </figure>
-      </section>
+          <span class="diabetic-screening-step">02</span>
+          <h3 class="diabetic-arclight-package-intro__heading">
+            The visual acuity testing tools include:
+          </h3>
+          <figure class="diabetic-package-chart-stage">
+            <img
+              src="/images/learning/Diabetic/ArclightPackage/NearDistance.png"
+              alt="Distance and near visual acuity testing charts"
+              loading="eager"
+            />
+            <span
+              class="diabetic-package-animated-label diabetic-package-animated-label--distance"
+            >
+              <strong>Distance chart</strong>
+              <span>use at 3 metres</span>
+            </span>
+            <span
+              class="diabetic-package-animated-label diabetic-package-animated-label--near"
+            >
+              <strong>Near chart</strong>
+              <span>use at 40cms</span>
+            </span>
+            <figcaption>Distance chart and near chart</figcaption>
+          </figure>
+        </section>
+
+        <section
+          class="diabetic-arclight-package-intro__item diabetic-arclight-package-intro__item--device diabetic-screening-panel diabetic-screening-panel--content-fit"
+          data-diabetic-scroll-step
+        >
+          <span class="diabetic-screening-step">03</span>
+          <h3
+            class="diabetic-arclight-package-intro__heading diabetic-arclight-package-intro__heading--device"
+          >
+            The Arclight device has two key examination tools:
+          </h3>
+          <figure class="diabetic-package-device-stage">
+            <img
+              src="/images/learning/Diabetic/ArclightPackage/Arclight.webp"
+              alt="Arclight device with anterior segment loupe and direct ophthalmoscope ends"
+              loading="eager"
+            />
+            <span
+              class="diabetic-package-animated-label diabetic-package-animated-label--loupe"
+            >
+              <strong>Anterior segment loupe</strong>
+              <span>external examination at 6cms</span>
+            </span>
+            <span
+              class="diabetic-package-animated-label diabetic-package-animated-label--ophthalmoscope"
+            >
+              <strong>Direct ophthalmoscope</strong>
+              <span>fundus examination</span>
+            </span>
+            <figcaption>
+              Anterior segment loupe and direct ophthalmoscope
+            </figcaption>
+          </figure>
+        </section>
+      </div>
     </section>
 
     <div class="diabetic-package-scroll-wrap">

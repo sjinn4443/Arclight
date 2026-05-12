@@ -223,7 +223,10 @@ document.addEventListener("DOMContentLoaded", () => {
     if (routeName === "visualImpairment") {
       const { initializeVisualImpairment } =
         await import("./visualImpairment.js");
+      const { initializeChildhoodScrollyPages } =
+        await import("./childhoodScrolly.js");
       initializeVisualImpairment();
+      initializeChildhoodScrollyPages();
     }
 
     if (routeName === "casestudy") {
@@ -249,7 +252,17 @@ document.addEventListener("DOMContentLoaded", () => {
     ) {
       const { initializeVisualSystemEyesBrain } =
         await import("./visualsystemeyesbrain.js");
+      const { initializeChildhoodScrollyPages } =
+        await import("./childhoodScrolly.js");
       initializeVisualSystemEyesBrain?.();
+      initializeChildhoodScrollyPages();
+      return;
+    }
+
+    if (routeName === "childhoodRefer") {
+      const { initializeChildhoodScrollyPages } =
+        await import("./childhoodScrolly.js");
+      initializeChildhoodScrollyPages();
       return;
     }
 

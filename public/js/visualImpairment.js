@@ -175,7 +175,7 @@ function renderScene(elements, progress, prefersReducedMotion) {
   const overviewShift = mix(p, 0.48, 0.66, easeInOutCubic);
   const scrollCueOut = mix(p, 0.008, 0.05, easeOutCubic);
   const isDesktop = window.matchMedia("(min-width: 768px)").matches;
-  const finalNodeScale = isDesktop ? 1.04 : 0.73;
+  const finalNodeScale = isDesktop ? 0.86 : 0.58;
 
   setMotionState(elements.scrollCue, {
     opacity: 1 - scrollCueOut,
@@ -188,8 +188,8 @@ function renderScene(elements, progress, prefersReducedMotion) {
       end: 0.18,
       initialLeft: 50,
       initialTop: 27,
-      finalLeft: 31,
-      finalTop: 24.5,
+      finalLeft: 30,
+      finalTop: 19.5,
       finalScale: finalNodeScale,
     },
     {
@@ -198,8 +198,8 @@ function renderScene(elements, progress, prefersReducedMotion) {
       end: 0.3,
       initialLeft: 50,
       initialTop: 52,
-      finalLeft: 31,
-      finalTop: 47.8,
+      finalLeft: 30,
+      finalTop: 47,
       finalScale: finalNodeScale,
     },
     {
@@ -208,8 +208,8 @@ function renderScene(elements, progress, prefersReducedMotion) {
       end: 0.42,
       initialLeft: 50,
       initialTop: 78,
-      finalLeft: 31,
-      finalTop: 72.6,
+      finalLeft: 30,
+      finalTop: 74.5,
       finalScale: finalNodeScale,
     },
   ];
@@ -233,10 +233,10 @@ function renderScene(elements, progress, prefersReducedMotion) {
       link: elements.linkCataract,
       start: 0.58,
       end: 0.65,
-      cardLeft: 74.8,
-      cardTop: 15.5,
-      linkLeft: 53.5,
-      linkTop: 16.1,
+      cardLeft: 72.5,
+      cardTop: 13,
+      linkLeft: 51.5,
+      linkTop: 14.4,
       linkScale: 1,
     },
     {
@@ -244,10 +244,10 @@ function renderScene(elements, progress, prefersReducedMotion) {
       link: elements.linkNeedGlasses,
       start: 0.64,
       end: 0.71,
-      cardLeft: 74.8,
-      cardTop: 24.2,
-      linkLeft: 57.8,
-      linkTop: 24,
+      cardLeft: 72.5,
+      cardTop: 24,
+      linkLeft: 54.5,
+      linkTop: 24.2,
       linkScale: 1.4,
     },
     {
@@ -255,10 +255,10 @@ function renderScene(elements, progress, prefersReducedMotion) {
       link: elements.linkCornealScar,
       start: 0.7,
       end: 0.77,
-      cardLeft: 74.8,
-      cardTop: 32.2,
-      linkLeft: 59.5,
-      linkTop: 31.8,
+      cardLeft: 72.5,
+      cardTop: 35,
+      linkLeft: 55,
+      linkTop: 34,
       linkScale: 1.2,
     },
     {
@@ -266,10 +266,10 @@ function renderScene(elements, progress, prefersReducedMotion) {
       link: elements.linkRetinoblastoma,
       start: 0.76,
       end: 0.83,
-      cardLeft: 74.8,
-      cardTop: 39.8,
-      linkLeft: 57.5,
-      linkTop: 40.8,
+      cardLeft: 72.5,
+      cardTop: 46,
+      linkLeft: 54,
+      linkTop: 46.5,
       linkScale: 1,
     },
     {
@@ -277,10 +277,10 @@ function renderScene(elements, progress, prefersReducedMotion) {
       link: elements.linkRop,
       start: 0.82,
       end: 0.89,
-      cardLeft: 74.8,
-      cardTop: 47.8,
-      linkLeft: 53.8,
-      linkTop: 48.2,
+      cardLeft: 72.5,
+      cardTop: 57,
+      linkLeft: 51.5,
+      linkTop: 56.7,
       linkScale: 1.4,
     },
     {
@@ -288,10 +288,10 @@ function renderScene(elements, progress, prefersReducedMotion) {
       link: elements.linkMalnourishment,
       start: 0.88,
       end: 0.95,
-      cardLeft: 74.8,
-      cardTop: 55.8,
-      linkLeft: 56.5,
-      linkTop: 55.5,
+      cardLeft: 72.5,
+      cardTop: 68,
+      linkLeft: 53,
+      linkTop: 67.3,
       linkScale: 1.3,
     },
     {
@@ -299,10 +299,10 @@ function renderScene(elements, progress, prefersReducedMotion) {
       link: elements.linkProblems,
       start: 0.94,
       end: 1,
-      cardLeft: 74.8,
-      cardTop: 72.8,
-      linkLeft: 56.6,
-      linkTop: 73.2,
+      cardLeft: 72.5,
+      cardTop: 83,
+      linkLeft: 53,
+      linkTop: 82.6,
       linkScale: 1,
     },
   ];
@@ -337,6 +337,7 @@ export function initializeVisualImpairment() {
 
   const story = page.querySelector(".vi-story");
   if (!story) return;
+  const useStaticGraph = page.classList.contains("childhood-scrolly-page");
 
   const elements = {
     scrollCue: page.querySelector('[data-vi="scrollCue"]'),
@@ -377,6 +378,12 @@ export function initializeVisualImpairment() {
     rafId = window.requestAnimationFrame(() => {
       rafId = 0;
 
+      if (useStaticGraph) {
+        renderScene(elements, 1, prefersReducedMotion.matches);
+        lastProgress = 1;
+        return;
+      }
+
       const rootMetrics = getRootMetrics(scrollRoot);
       const storyRect = story.getBoundingClientRect();
       const travel = Math.max(storyRect.height - rootMetrics.height, 1);
@@ -393,10 +400,12 @@ export function initializeVisualImpairment() {
     target.addEventListener(type, handler, { ...options, signal });
   };
 
-  if (scrollRoot === window) {
-    listen(window, "scroll", scheduleRender, { passive: true });
-  } else {
-    listen(scrollRoot, "scroll", scheduleRender, { passive: true });
+  if (!useStaticGraph) {
+    if (scrollRoot === window) {
+      listen(window, "scroll", scheduleRender, { passive: true });
+    } else {
+      listen(scrollRoot, "scroll", scheduleRender, { passive: true });
+    }
   }
 
   listen(window, "resize", scheduleRender, { passive: true });
@@ -487,7 +496,9 @@ export function initializeVisualImpairment() {
     delete page._viCleanup;
   };
 
-  renderScene(elements, 0, prefersReducedMotion.matches);
+  renderScene(elements, useStaticGraph ? 1 : 0, prefersReducedMotion.matches);
   scheduleRender();
-  window.requestAnimationFrame(scheduleRender);
+  if (!useStaticGraph) {
+    window.requestAnimationFrame(scheduleRender);
+  }
 }
