@@ -201,6 +201,8 @@ See [`security/EMERGENCY_PLAN.md`](./security/EMERGENCY_PLAN.md) for the operato
 
 - `public/` - the client web app (HTML/CSS/JS, images, videos, service worker)
 - `public/subapp/` - local mini-apps embedded inside the Videos route Interactive Learning pages
+- `public/html/childhoodFundal*.html` - Childhood Fundal Reflex scrollytelling route shells
+- `public/js/childhoodFundalPreparation.js` - shared Lottie stage-autoplay engine/config for the Childhood Fundal Reflex scrollytelling sequence
 - `public/html/diabeticRetinopathyWorkshop.html` - diabetic retinopathy workshop launcher, lesson folders, progress rows, scroll lessons, and protocol pages
 - `public/html/videos.html` - Videos route, including Interactive Learning, diabetic workshop video pages, and diabetic/glaucoma demo quiz pages
 - `server.cjs` - Express server for dev/prod hosting + APIs
@@ -223,11 +225,17 @@ See [`security/EMERGENCY_PLAN.md`](./security/EMERGENCY_PLAN.md) for the operato
   - `public/html/videos.html` owns the diabetic video pages and the Interactive Learning `Demo Quizzes` folder.
   - `public/js/diabeticRetinopathyWorkshop.js` initializes both the workshop route and the diabetic demo quiz pages when those pages are present.
   - `public/js/diabeticWorkshopNextFlow.js` and `public/js/diabeticWorkshopProgress.js` keep cross-route sequencing and progress state aligned.
+- Childhood Fundal Reflex scrollytelling pages use a shared Lottie stage-autoplay pattern:
+  - page shells live in `public/html/childhoodFundal*.html` with `.childhood-fundal-scroll-page` and an empty `.childhood-fundal-prep-list`
+  - `public/js/config.js` maps the route, `public/js/main.js` lazy-loads `public/js/childhoodFundalPreparation.js`, and that module owns `ROUTE_CONFIG`, `FUNDAL_PAGE_ROUTE_SEQUENCE`, stage creation, replay/down-arrow behavior, scroll locks, settle frames, and cross-page navigation
+  - styling lives in `public/style/pages.css` under `.childhood-fundal-scroll-page`
+  - when touching shared Fundal playback, run `npm run test:fundal` or manually recheck the Childhood Fundal sequence on desktop and mobile; preserve the FR06 baseline/settle guardrails recorded in `agent.md`
 - Cross-origin iframe rule: Arclight can style the surrounding card/page shell, but it cannot directly restyle or reposition icons or UI inside an embedded external site. Those changes must be made in the remote app itself.
 - External embeds require network access and continued iframe permission from the remote host. They are not cached/offline-capable in the same way as local `public/subapp/*` content. If the remote site later sends `X-Frame-Options` or a restrictive `frame-ancestors` policy, the embed will stop working.
 
 ## Changelog (high level)
 
+- 2026-05-15: Documented the Childhood Fundal Reflex scrollytelling route contract, shared Lottie stage-autoplay engine, route sequence ownership, verification path, and FR06 settle guardrails.
 - 2026-05-08: Refreshed docs for `Diabetic14`, including the split between the diabetic workshop route and Videos-route demo/video pages, additional diabetic protocol video assets, and the Windows-safe build output cleanup.
 - 2026-04-30: Refreshed docs for the Diabetic Retinopathy workshop flow, no-op/default storage behavior, Playwright `DISABLE_DB_STORAGE=1`, split reports DB URLs, and additional runtime env vars.
 - 2026-03-11: Added external Interactive Learning embeds for `Fundal Reflex`, `Trauma`, and `Amsler`, and documented the cross-origin iframe constraints.

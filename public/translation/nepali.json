@@ -1731,7 +1731,11 @@
       "repeat_hand_wash": "फेरि हात धुनुहोस्",
       "next_page": "अर्को पृष्ठ",
       "replay": "फेरि चलाउनुहोस्"
-    }
+    },
+    "video_mode": "भिडियो मोड",
+    "video_mode_online": "अनलाइन",
+    "download_pdf": "PDF डाउनलोड गर्नुहोस्",
+    "notifications": "सूचनाहरू"
   },
   "splashscreenMid": {
     "ariaLabel": "मध्य स्प्लैश स्क्रीन",

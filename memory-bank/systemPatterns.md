@@ -40,6 +40,9 @@ Arclight is primarily a static, client-side PWA served from `public/` (or `dist/
 - Workshop flow pattern: route-level lesson pages can use stable `data-target`/`data-lesson`/`data-folder` identifiers, progress bars, and `sessionStorage` restore flags to support foldered learning flows across route boundaries.
 - Diabetic workshop next-flow pattern: `public/js/diabeticWorkshopNextFlow.js` owns structural Previous/Next controls, Videos-route jumps, and folder restore on return to the workshop.
 - Diabetic route split pattern: `public/html/diabeticRetinopathyWorkshop.html` owns the workshop launcher, scroll lessons, and protocol pages; `public/html/videos.html` owns diabetic video pages and demo quiz pages. Shared `data-target` IDs, hidden `.page` IDs, `VIDEO_PAGE_SOURCES`, progress events, and next-flow mappings are the contract between the routes.
+- Childhood Fundal scrollytelling pattern: `public/html/childhoodFundal*.html` shells stay minimal and expose `.childhood-fundal-scroll-page` plus an empty `.childhood-fundal-prep-list`; `public/js/childhoodFundalPreparation.js` builds the Lottie stages, segment text, replay buttons, down-arrow/page-next controls, scroll locks, settle frames, and cross-page navigation from route config.
+- Fundal route sequence pattern: `FUNDAL_PAGE_ROUTE_SEQUENCE` is the contract for cross-page Childhood Fundal navigation. Keep it aligned with `public/js/config.js`, `public/js/main.js` `FUNDAL_REFLEX_SCROLL_ROUTES`, Childhood Workshop progress/next-flow mappings, and the actual `childhoodFundal*` HTML shells.
+- Fundal settle guardrail: FR06 is the stable baseline for shared Fundal playback/settle behavior. Prefer route-level config fixes over global engine changes, and verify shared changes with `npm run test:fundal` plus mobile/desktop manual checks when practical.
 - Build cleanup pattern: `scripts/build.cjs` creates a fresh build output by renaming the old directory to `.build-cleanup-*`, recreating the requested output directory, then continuing the build. This avoids common Windows `ENOTEMPTY`/file-lock failures while leaving ignored cleanup folders that can be deleted later.
 
 ## Component Relationships
@@ -63,6 +66,13 @@ Arclight is primarily a static, client-side PWA served from `public/` (or `dist/
   - lesson/progress/quiz logic: `public/js/diabeticRetinopathyWorkshop.js`, `public/js/diabeticWorkshopProgress.js`
   - cross-route Previous/Next logic: `public/js/diabeticWorkshopNextFlow.js`
   - Videos-route video source registration and subpage display: `public/js/videos.js`
+- Childhood Fundal Reflex flow:
+  - route shells: `public/html/childhoodFundal*.html`
+  - route map: `public/js/config.js`
+  - lazy initializer set: `public/js/main.js` `FUNDAL_REFLEX_SCROLL_ROUTES`
+  - shared engine/config/sequence: `public/js/childhoodFundalPreparation.js`
+  - workshop launch/progress/next-flow mappings: `public/js/childhoodEyeScreeningWorkshop.js`, `public/js/childhoodWorkshopProgress.js`, `public/js/childhoodWorkshopNextFlow.js`
+  - shared layout/control styling: `public/style/pages.css`
 
 ## Critical Implementation Paths
 
@@ -72,4 +82,5 @@ Arclight is primarily a static, client-side PWA served from `public/` (or `dist/
 - Telemetry integrity: consistent identifiers, storage selection by environment, and optional at-rest encryption.
 - Reports access control: Basic Auth + attempt rate limiting for reports pages.
 - Diabetic Retinopathy workshop: keep lesson row targets, hidden page IDs, Videos targets, `VIDEO_PAGE_SOURCES`, progress keys, and `DIABETIC_NAV_CONFIG` entries synchronized.
+- Childhood Fundal Reflex scrollytelling: keep route names, shell IDs, `ROUTE_CONFIG` entries, sequence arrays, Lottie asset paths, workshop mappings, and `.childhood-fundal-scroll-page` CSS synchronized.
 - Build output: keep generated `dist/`, `tmp-fundal-dist/`, `tmp-codex-build*/`, and `.build-cleanup-*` directories out of source changes.

@@ -869,6 +869,13 @@
     "quizzes": {
       "quiz": "Questionnaire",
       "check_answer": "Vérifier la réponse"
+    },
+    "reports": {
+      "arclight_reports": "Rapports Arclight",
+      "aims": "Objectifs",
+      "contact": "Contact",
+      "country": "Pays",
+      "area": "Région"
     }
   },
   "i18nLiteral": {
@@ -1092,7 +1099,7 @@
     "Painful with watering": "Douloureux avec l'arrosage",
     "Red eye": "Mon œil est rouge.",
     "Started 3 days ago": "Cela a commencé il y a trois jours.",
-    "After being hit in the face with a stick": "Après avoir ét�� frappé au visage avec un bâton",
+    "After being hit in the face with a stick": "Après avoir été frappé au visage avec un bâton",
     "Gritty, no itch": "Graveleux, pas de démangeaisons",
     "Pink eye with watering": "Mon œil est rose et larmoyant.",
     "Started 1 day ago": "Cela a commencé il y a un jour.",
@@ -1588,7 +1595,11 @@
     "visualsystem_step1": "La lumière est focalisée sur<br />l'arrière de l'œil<br />par la cornée et le cristallin.",
     "visualsystem_step2": "Au fond de l’œil<br /> se trouve la rétine.",
     "visualsystem_step3": "C'est comme un capteur ou un film<br /> dans une caméra qui transforme la lumière<br /> en signaux électriques<br /> qui sont transmis au cerveau<br /> par le nerf optique.<br /><br />Le cerveau crée alors une<br />vision à partir de ces signaux.",
-    "yes": "Oui"
+    "yes": "Oui",
+    "video_mode": "Mode vidéo",
+    "video_mode_online": "en ligne",
+    "download_pdf": "Télécharger le PDF",
+    "notifications": "Notifications"
   },
   "myLearningTitle": "Mon apprentissage",
   "inProgressTab": "En cours",

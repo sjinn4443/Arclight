@@ -869,6 +869,13 @@
     "quizzes": {
       "quiz": "Tambayoyi",
       "check_answer": "Duba Amsa"
+    },
+    "reports": {
+      "arclight_reports": "Rahotannin Arclight",
+      "aims": "Manufofi",
+      "contact": "Tuntuɓa",
+      "country": "Ƙasa",
+      "area": "Yanki"
     }
   },
   "i18nLiteral": {
@@ -1588,7 +1595,11 @@
     "visualsystem_step1": "Haske yana mayar da hankali kan<br /> bayan ido<br /> ta cornea da ruwan tabarau.",
     "visualsystem_step2": "A bayan ido<br /> shine retina.",
     "visualsystem_step3": "Wannan kamar sensor ko fim ne<br />a cikin kyamara wanda ke juya<br />haske zuwa siginonin lantarki<br />wanda ake wucewa zuwa kwakwalwa<br />ta jijiyar gani.<br /><br />Kwakwalwa sai ta haifar da<br />gani daga wa?annan sigina.",
-    "yes": "Ee"
+    "yes": "Ee",
+    "video_mode": "Yanayin bidiyo",
+    "video_mode_online": "kan layi",
+    "download_pdf": "Sauke PDF",
+    "notifications": "Sanarwa"
   },
   "myLearningTitle": "Koyona",
   "inProgressTab": "Ana ci gaba",

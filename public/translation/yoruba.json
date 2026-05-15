@@ -827,7 +827,7 @@
       "0_47_fundal_reflex": "0:47 Iṣatunṣe Ipilẹ",
       "1_07_optic_nerve": "1:07 Opitiki Nafu",
       "1_42_retinal_vessels": "1:42 Retinal ọkọ",
-      "type_your_notes_here": "Tẹ awọn akọsilẹ r�� si ibi ...",
+      "type_your_notes_here": "Tẹ awọn akọsilẹ rẹ si ibi...",
       "attached_files": "Awọn faili ti o somọ",
       "arclight_device_practice_pdf": "Arclight_Device_Practice.pdf",
       "fundal_reflex_pdf": "Fundal_Reflex.pdf",
@@ -869,6 +869,13 @@
     "quizzes": {
       "quiz": "Idanwo",
       "check_answer": "Ṣayẹwo Idahun"
+    },
+    "reports": {
+      "arclight_reports": "Àwọn ìròyìn Arclight",
+      "aims": "Àwọn ibi-afẹ́",
+      "contact": "Ìbásọ̀rọ̀",
+      "country": "Orílẹ̀-èdè",
+      "area": "Agbègbè"
     }
   },
   "i18nLiteral": {
@@ -1150,7 +1157,7 @@
     "Gradual, painless worsening vision over months in an older adult fits cataract.": "Díẹ̀díẹ̀, ìran tí ń burú sí i tí kò ní ìrora ní àwọn oṣù mélòó kan nínú àgbàlagbà àgbà kan bá cataract.",
     "A white pupil in a young child with reduced visual engagement is concerning for retinoblastoma.": "Akẹẹkọ funfun kan ninu ọmọde kekere ti o dinku adehun igbeyawo jẹ nipa fun retinoblastoma.",
     "Acute onset, pink eye, yellow discharge and worsening symptoms fit severe conjunctivitis.": "Ibẹrẹ aiṣan, oju Pink, itusilẹ ofeefee ati awọn aami aiṣan ti o buru si ni ibamu pẹlu conjunctivitis ti o lagbara.",
-    "Long-term irritation with painful gritty sensation, red eye and blurred vision fits trichiasis with scarring.": "Ibanuj��� igba pipẹ pẹlu aibalẹ irora ti o ni irora, oju pupa ati iran ti ko dara ni ibamu pẹlu trichiasis pẹlu aleebu.",
+    "Long-term irritation with painful gritty sensation, red eye and blurred vision fits trichiasis with scarring.": "Ibinu igba pipẹ pẹlu rilara irora bi iyanrin, oju pupa ati iran ti ko dara ba trichiasis pẹlu aleebu mu.",
     "Corneal trauma followed by increasing pain, redness and vision loss suggests a corneal ulcer.": "Ibanujẹ igun-ara ti o tẹle pẹlu irora ti o pọ sii, pupa ati pipadanu iranwo ni imọran ọgbẹ inu inu.",
     "Unilateral gritty watery eye with a recent lip lesion fits herpes simplex keratitis.": "Oju omi ti o ni ẹyọkan pẹlu egbo ète aipẹ kan baamu keratitis herpes simplex.",
     "Photophobia with watery eye and blurred vision suggests anterior uveitis.": "Photophobia pẹlu oju omi ati iran didan ṣe imọran uveitis iwaju.",
@@ -1558,7 +1565,7 @@
     "onboarding_privacy_minimum_data": "Alaye nikan ti o nilo lati ṣiṣẹ ati ilọsiwaju iṣẹ naa ni a gba.",
     "onboarding_privacy_service_limits": "Ero naa ni lati jẹ ki ohun elo naa ṣe iranlọwọ ati igbẹkẹle, ṣugbọn ko si iṣẹ ti o pe. Wiwa ilọsiwaju tabi ominira pipe lati awọn aṣiṣe ko le ṣe ileri, ati pe app le ma baamu gbogbo ipo.",
     "onboarding_privacy_storage": "Alaye ti wa ni ipamọ sori olupin ti a ṣakoso ati aaye data ti a pese nipasẹ Railway. Reluwe pese awọn alejo ati amayederun; a ṣakoso bi a ṣe lo data laarin ohun elo ati tọju rẹ nikan niwọn igba ti o ba nilo.",
-    "onboarding_privacy_third_party": "A gbẹkẹle awọn iṣẹ ẹnikẹta ti o gbẹkẹle, gẹgẹbi awọn olupese alejo gbigba, lati ṣiṣẹ app naa. Awọn i���ẹ wọnyi ṣe ilana data nikan bi o ṣe nilo lati pese awọn amayederun ati pe wọn ko ni igbanilaaye lati lo fun awọn idi tiwọn.",
+    "onboarding_privacy_third_party": "A gbẹkẹle awọn iṣẹ ẹnikẹta ti a gbẹkẹle, gẹgẹbi awọn olupese ibugbe, lati ṣiṣẹ app naa. Awọn iṣẹ wọnyi nṣe ilana data nikan bi o ṣe nilo lati pese amayederun ati pe wọn ko ni igbanilaaye lati lo fun awọn idi tiwọn.",
     "onboarding_privacy_uk_law_limits": "Niwọn bi ofin UK ṣe gba laaye, a ko ni iduro fun awọn adanu gẹgẹbi awọn ami ti o padanu, owo-wiwọle ti o padanu tabi awọn aye ti o dide lati lilo, tabi ailagbara lati lo, app naa. Ko si ohun ti o yọkuro eyikeyi awọn ẹtọ ti a pese nipasẹ ofin UK.",
     "not_urgent_button": "<Ko ni kiakia",
     "ok": "O DARA",
@@ -1583,12 +1590,16 @@
     "video_mode_high_title": "Ga",
     "video_mode_low": "kekere",
     "video_mode_low_title": "Kekere",
-    "visualsystem_controls_hint": "Kẹkẹ: tókàn / ti tẹlẹ | soke/isalẹ: tókàn/t��lẹ | Aaye: tun ṣe",
+    "visualsystem_controls_hint": "Kẹkẹ: tókàn / ti tẹlẹ | soke/isalẹ: tókàn/tẹlẹ | Aaye: tun ṣe",
     "visualsystem_step0": "Aw?n oju gba ina<br />lati aye ati ki o yi<br />eyi pada si aw?n ifihan agbara fun ?p?l?<br />lati ??da 'iran'.",
     "visualsystem_step1": "Imọlẹ wa ni idojukọ si<br /> ẹhin oju<br /> nipasẹ cornea ati lẹnsi.",
     "visualsystem_step2": "Ni ẹhin oju<br /> jẹ retina.",
     "visualsystem_step3": "Eyi dabi sens? tabi fiimu<br />ninu kam?ra kan ti o yi<br />imole pada si aw?n ifihan agbara itanna<br />ti o l? si ?p?l?<br />nipas? nafu ara opiki.<br /><br />?p?l? l?hinna ??da<br />iran lati aw?n ifihan agbara w?nyi.",
-    "yes": "Bẹẹni"
+    "yes": "Bẹẹni",
+    "video_mode": "Ipo fídíò",
+    "video_mode_online": "lórí ayélujára",
+    "download_pdf": "Gba PDF silẹ",
+    "notifications": "Ìfitónilétí"
   },
   "myLearningTitle": "Ẹkọ mi",
   "inProgressTab": "Ni ilọsiwaju",

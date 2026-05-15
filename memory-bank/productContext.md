@@ -1,4 +1,4 @@
-<!-- THE CHANGES - productContext.md | 2026-05-08, Codex -->
+<!-- THE CHANGES - productContext.md | 2026-05-15, Codex -->
 
 # Product Context
 
@@ -21,6 +21,7 @@ The application should function as a self-contained educational resource. Users 
 - Interact with quizzes and receive immediate feedback.
 - View high-quality images and videos related to medical conditions.
 - Access core local content offline after initial loading.
+- Follow guided Childhood Fundal Reflex scrollytelling lessons with staged animations, replay controls, caption text, and next-page navigation across the full examination sequence.
 - Work through structured workshop pathways such as Childhood Eye Screening and Diabetic Retinopathy, with foldered lessons, progress rows, scroll pages, video lessons, protocol pages, and demo quizzes.
 - Move between the Diabetic Retinopathy workshop and Videos-route diabetic lessons/quizzes without losing lesson flow, folder restore state, or progress.
 

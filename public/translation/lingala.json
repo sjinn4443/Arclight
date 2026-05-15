@@ -869,6 +869,13 @@
     "quizzes": {
       "quiz": "Mituna",
       "check_answer": "Vérifier Eyano"
+    },
+    "reports": {
+      "arclight_reports": "Balapolo ya Arclight",
+      "aims": "Mikano",
+      "contact": "Kontaki",
+      "country": "Ekólo",
+      "area": "Etúká"
     }
   },
   "i18nLiteral": {
@@ -1588,7 +1595,11 @@
     "visualsystem_step1": "Pole etalisami na<br />nsima ya liso<br />na nzela ya cornée mpe lentille.",
     "visualsystem_step2": "Na sima ya liso<br />ezali rétine.",
     "visualsystem_step3": "Oyo ezali lokola capteur to film<br />na kamera oyo ebongoli<br />pole na ba signaux ?lectriques<br />oyo elekaka na b??ng??<br />na nzela ya nerf optique.<br /><br />Na sima b??ng?? esala<br />bomoni na ba signaux wana.",
-    "yes": "Iyo"
+    "yes": "Iyo",
+    "video_mode": "Mode ya video",
+    "video_mode_online": "na internet",
+    "download_pdf": "Télécharger PDF",
+    "notifications": "Mayebisi"
   },
   "myLearningTitle": "Boyekoli na Ngai",
   "inProgressTab": "Ezali kosalama",

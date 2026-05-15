@@ -220,6 +220,24 @@ function literalTranslate(rawText) {
   return null;
 }
 
+function parseI18nSpecs(rawSpec) {
+  return String(rawSpec || "")
+    .split(";")
+    .map((entry) => entry.trim())
+    .filter(Boolean)
+    .map((entry) => {
+      const [path, rawTarget = "text"] = entry.split(":");
+      return {
+        path: String(path || "").trim(),
+        target:
+          String(rawTarget || "text")
+            .trim()
+            .toLowerCase() || "text",
+      };
+    })
+    .filter((entry) => entry.path);
+}
+
 function applyLiteralTranslations(root = document) {
   if (!root || !CACHE.literalIndex?.size) return;
 
@@ -251,10 +269,12 @@ function applyLiteralTranslations(root = document) {
   scope.querySelectorAll("*").forEach((el) => {
     if (el.closest("[data-i18n-skip]")) return;
     const spec = (el.getAttribute("data-i18n") || "").trim();
-    const target = spec.split(":")[1]?.toLowerCase() || "text";
+    const explicitTargets = new Set(
+      parseI18nSpecs(spec).map((entry) => entry.target),
+    );
 
     attrNames.forEach((attr) => {
-      if (spec && target === attr.toLowerCase()) return;
+      if (explicitTargets.has(attr.toLowerCase())) return;
       const current = el.getAttribute(attr);
       if (!current) return;
       const translated = literalTranslate(current);
@@ -295,92 +315,93 @@ export function applyTranslations(root = document) {
     // Do not translate inside regions explicitly marked to be skipped
     if (el.closest("[data-i18n-skip]")) return;
 
-    const [path, rawTarget = "text"] = spec.split(":");
-    const target = (rawTarget || "text").toLowerCase();
-    const val = getTranslationValue(path);
-    if (val == null) return;
-
     const tag = el.tagName.toUpperCase();
     const isFormContainer =
       /^(SELECT|OPTGROUP|OPTION|INPUT|TEXTAREA|BUTTON)$/i.test(tag);
 
-    switch (target) {
-      case "html": {
-        // NEVER rewrite innerHTML of any form element (keeps options intact).
-        if (isFormContainer) {
-          if (tag === "SELECT") setSelectPlaceholder(el, val); // redirect to safe placeholder text
-          // otherwise ignore :html on form controls
-        } else {
-          el.innerHTML = val;
-        }
-        break;
-      }
+    parseI18nSpecs(spec).forEach(({ path, target }) => {
+      const val = getTranslationValue(path);
+      if (val == null) return;
 
-      case "text": {
-        if (tag === "SELECT") {
-          setSelectPlaceholder(el, val);
-        } else if (tag === "OPTGROUP") {
-          // Don’t touch children; set header label only
-          el.setAttribute("label", val);
-        } else if (tag === "OPTION") {
-          // Only change visible label; never change .value
-          el.textContent = val;
-        } else {
-          el.textContent = val;
-        }
-        break;
-      }
-
-      case "placeholder": {
-        if (tag === "INPUT" || tag === "TEXTAREA") {
-          el.setAttribute("placeholder", val);
-        } else if (tag === "SELECT") {
-          setSelectPlaceholder(el, val);
-        }
-        break;
-      }
-
-      case "value": {
-        // Only safe for button-like inputs; never change user-entered values.
-        if (tag === "INPUT") {
-          const type = (el.getAttribute("type") || "").toLowerCase();
-          if (["button", "submit", "reset"].includes(type)) {
-            el.setAttribute("value", val);
+      switch (target) {
+        case "html": {
+          // NEVER rewrite innerHTML of any form element (keeps options intact).
+          if (isFormContainer) {
+            if (tag === "SELECT") setSelectPlaceholder(el, val); // redirect to safe placeholder text
+            // otherwise ignore :html on form controls
+          } else {
+            el.innerHTML = val;
           }
-        } else if (tag === "BUTTON") {
-          el.textContent = val;
-        } else if (tag === "OPTION") {
-          // Still do NOT change option.value; only text should change
-          el.textContent = val;
+          break;
         }
-        break;
-      }
 
-      case "label": {
-        // For <optgroup label="..."> etc.
-        el.setAttribute("label", val);
-        break;
-      }
+        case "text": {
+          if (tag === "SELECT") {
+            setSelectPlaceholder(el, val);
+          } else if (tag === "OPTGROUP") {
+            // Do not touch children; set header label only
+            el.setAttribute("label", val);
+          } else if (tag === "OPTION") {
+            // Only change visible label; never change .value
+            el.textContent = val;
+          } else {
+            el.textContent = val;
+          }
+          break;
+        }
 
-      case "aria-label":
-      case "title": {
-        el.setAttribute(target, val);
-        break;
-      }
+        case "placeholder": {
+          if (tag === "INPUT" || tag === "TEXTAREA") {
+            el.setAttribute("placeholder", val);
+          } else if (tag === "SELECT") {
+            setSelectPlaceholder(el, val);
+          }
+          break;
+        }
 
-      default: {
-        // Unknown target → safe text behavior
-        if (tag === "SELECT") {
-          setSelectPlaceholder(el, val);
-        } else if (tag === "OPTGROUP") {
+        case "value": {
+          // Only safe for button-like inputs; never change user-entered values.
+          if (tag === "INPUT") {
+            const type = (el.getAttribute("type") || "").toLowerCase();
+            if (["button", "submit", "reset"].includes(type)) {
+              el.setAttribute("value", val);
+            }
+          } else if (tag === "BUTTON") {
+            el.textContent = val;
+          } else if (tag === "OPTION") {
+            // Still do NOT change option.value; only text should change
+            el.textContent = val;
+          }
+          break;
+        }
+
+        case "label": {
+          // For <optgroup label="..."> etc.
           el.setAttribute("label", val);
-        } else if (tag === "OPTION") {
-          el.textContent = val;
-        } else {
-          el.textContent = val;
+          break;
+        }
+
+        case "aria-label":
+        case "title":
+        case "alt": {
+          el.setAttribute(target, val);
+          break;
+        }
+
+        default: {
+          // Unknown target -> safe text behavior
+          if (tag === "SELECT") {
+            setSelectPlaceholder(el, val);
+          } else if (tag === "OPTGROUP") {
+            el.setAttribute("label", val);
+          } else if (tag === "OPTION") {
+            el.textContent = val;
+          } else {
+            el.textContent = val;
+          }
         }
       }
-    }
+    });
   });
 
   applyLiteralTranslations(root);

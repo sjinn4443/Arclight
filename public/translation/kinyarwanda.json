@@ -869,6 +869,13 @@
     "quizzes": {
       "quiz": "Ikibazo",
       "check_answer": "Reba Igisubizo"
+    },
+    "reports": {
+      "arclight_reports": "Raporo za Arclight",
+      "aims": "Intego",
+      "contact": "Aho kubariza",
+      "country": "Igihugu",
+      "area": "Akarere"
     }
   },
   "i18nLiteral": {
@@ -1588,7 +1595,11 @@
     "visualsystem_step1": "Umucyo wibanda ku<br />inyuma y'ijisho<br />unyuze muri cornea na lensi.",
     "visualsystem_step2": "Inyuma y'ijisho<br />hari retina.",
     "visualsystem_step3": "Ibi ni nka sensor cyangwa filimi<br />mu kamera ihindura<br />urumuri mo ibimenyetso by'amashanyarazi<br />bigezwa ku bwonko<br />binyuze mu mutsi w'ijisho wa optic.<br /><br />Ubwonko noneho bukora<br />iyerekwa bushingiye kuri ibyo bimenyetso.",
-    "yes": "Yego"
+    "yes": "Yego",
+    "video_mode": "Uburyo bwa videwo",
+    "video_mode_online": "kuri interineti",
+    "download_pdf": "Kuramo PDF",
+    "notifications": "Amatangazo"
   },
   "myLearningTitle": "Kwiga kwanjye",
   "inProgressTab": "Birakomeje",

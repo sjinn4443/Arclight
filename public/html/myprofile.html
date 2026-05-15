@@ -25,13 +25,23 @@
 
         <div class="profile-topbar__icons">
           <!-- Bell -->
-          <button class="icon-btn" aria-label="Notifications">
+          <button
+            class="icon-btn"
+            aria-label="Notifications"
+            data-i18n="i18nExtra.notifications:aria-label"
+          >
             🔔
             <span class="notif-dot" aria-hidden="true"></span>
           </button>
 
           <!-- Menu -->
-          <button class="icon-btn menuBtn" aria-label="Menu">☰</button>
+          <button
+            class="icon-btn menuBtn"
+            aria-label="Menu"
+            data-i18n="i18nExtra.menu_aria_label:aria-label"
+          >
+            ☰
+          </button>
         </div>
       </div>
 
@@ -53,7 +63,11 @@
       <div class="section">
         <div class="section-title" data-i18n="myprofile.interest">Interest</div>
         <div class="interest-select">
-          <select id="interestSelect" aria-label="Interest">
+          <select
+            id="interestSelect"
+            aria-label="Interest"
+            data-i18n="myprofile.interest:aria-label"
+          >
             <option selected data-i18n="myprofile.eyes">Eyes</option>
             <option data-i18n="myprofile.ears">Ears</option>
           </select>
@@ -70,6 +84,7 @@
           class="bg-row"
           data-key="ownsArclight"
           aria-label="I own an Arclight device"
+          data-i18n="myprofile.i_own_an_arclight_device:aria-label"
         >
           <div
             class="bg-row__label"
@@ -82,6 +97,7 @@
             class="bg-chips"
             role="radiogroup"
             aria-label="Owns an Arclight device"
+            data-i18n="myprofile.i_own_an_arclight_device:aria-label"
           >
             <button
               type="button"
@@ -110,6 +126,7 @@
           class="bg-row"
           data-key="priorTraining"
           aria-label="I have received prior Arclight training"
+          data-i18n="i18nExtra.prior_arclight_training:aria-label"
         >
           <div
             class="bg-row__label"
@@ -122,6 +139,7 @@
             class="bg-chips"
             role="radiogroup"
             aria-label="Prior Arclight training"
+            data-i18n="i18nExtra.prior_arclight_training:aria-label"
           >
             <button
               type="button"
@@ -177,6 +195,7 @@
               class="menu-item-icon"
               width="24"
               height="24"
+              data-i18n="menu.language_item:alt"
             />
 
             <span data-i18n="menu.language_item">Language</span>

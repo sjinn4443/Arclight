@@ -869,6 +869,13 @@
     "quizzes": {
       "quiz": "Prueba",
       "check_answer": "Verificar respuesta"
+    },
+    "reports": {
+      "arclight_reports": "Informes de Arclight",
+      "aims": "Objetivos",
+      "contact": "Contacto",
+      "country": "País",
+      "area": "Área"
     }
   },
   "i18nLiteral": {
@@ -1588,7 +1595,11 @@
     "visualsystem_step1": "La luz se enfoca en<br />la parte posterior del ojo<br />por la córnea y el cristalino.",
     "visualsystem_step2": "En la parte posterior del ojo<br /> está la retina.",
     "visualsystem_step3": "Esto es como un sensor o película<br /> en una cámara que convierte la luz<br /> en señales eléctricas<br /> que pasan al cerebro<br /> a través del nervio óptico.<br /><br />El cerebro crea<br />visión a partir de estas señales.",
-    "yes": "Sí"
+    "yes": "Sí",
+    "video_mode": "Modo de video",
+    "video_mode_online": "en línea",
+    "download_pdf": "Descargar PDF",
+    "notifications": "Notificaciones"
   },
   "myLearningTitle": "Mi aprendizaje",
   "inProgressTab": "En progreso",

@@ -1,4 +1,4 @@
-<!-- THE CHANGES - activeContext.md | 2026-05-08, Codex -->
+<!-- THE CHANGES - activeContext.md | 2026-05-15, Codex -->
 
 # Active Context
 
@@ -12,7 +12,21 @@ Diabetic Retinopathy workshop and Videos-route stabilization:
 - `public/js/diabeticWorkshopNextFlow.js` owns the structural previous/next buttons and the cross-route flow through Videos pages
 - runtime storage defaults to `storage/disabled-storage.cjs` unless Postgres URLs are configured; Playwright explicitly runs with `DISABLE_DB_STORAGE=1`
 
+Childhood Fundal Reflex scrollytelling is also an active maintenance area:
+
+- Fundal route shells live in `public/html/childhoodFundal*.html` and use `.childhood-fundal-scroll-page` plus an empty `.childhood-fundal-prep-list`
+- `public/js/childhoodFundalPreparation.js` owns the shared Lottie stage-autoplay engine, per-route `ROUTE_CONFIG`, settle-frame behavior, stage replay/down-arrow controls, scroll locks, and `FUNDAL_PAGE_ROUTE_SEQUENCE`
+- `public/js/config.js` and `public/js/main.js` provide the route map and lazy initializer for the Fundal route set
+- `public/style/pages.css` owns the shared Fundal layout/button/text styling
+- FR06 remains the user-approved baseline for Fundal settle behavior; avoid playback/settle experiments unless explicitly requested and rechecked
+
 ## Recent Changes
+
+- Fundal scrollytelling documentation refresh (2026-05-15):
+  - Added the Childhood Fundal Reflex stage-autoplay route contract to `README.md`, `agent.md`, and the memory bank.
+  - Recorded the canonical source files: `public/html/childhoodFundal*.html`, `public/js/config.js`, `public/js/main.js`, `public/js/childhoodFundalPreparation.js`, and `public/style/pages.css`.
+  - Documented the verification path: `npm run test:fundal` for shared engine changes, plus manual mobile/desktop checks for route framing, replay, down-arrow controls, title text toggles, final next-page pill visibility, and blank-frame regressions.
+  - Re-stated the FR06 guardrail as the stable reference for Fundal route playback/settle behavior.
 
 - Diabetic Retinopathy workshop and Videos-route split (2026-05-08):
   - Moved diabetic demo quiz pages into `public/html/videos.html` under the Interactive Learning `Demo Quizzes` folder.
@@ -97,6 +111,8 @@ Diabetic Retinopathy workshop and Videos-route stabilization:
 - Continue adding i18n keys for the Videos-route diabetic demo quiz pages and diabetic video lesson labels.
 - Keep diabetic workshop folder/progress state aligned when adding or moving lesson rows.
 - When adding/moving diabetic content, update all route owners together: `public/html/diabeticRetinopathyWorkshop.html`, `public/html/videos.html`, `public/js/videos.js`, `public/js/diabeticRetinopathyWorkshop.js`, `public/js/diabeticWorkshopNextFlow.js`, and `public/js/diabeticWorkshopProgress.js`.
+- When adding or changing Fundal scrollytelling pages, update the route shell, `config.js`, `main.js` `FUNDAL_REFLEX_SCROLL_ROUTES`, `childhoodFundalPreparation.js` `ROUTE_CONFIG`/`FUNDAL_PAGE_ROUTE_SEQUENCE`, relevant Childhood Workshop mappings, and `.childhood-fundal-scroll-page` CSS together.
+- For shared Fundal engine or settle-frame changes, run `npm run test:fundal` where practical and manually recheck Preparation, Examination, Newborn Eyes Open, and the final page-next boundary on mobile and desktop.
 - Keep external embed URLs and their purpose documented when Interactive Learning changes again.
 - If a remote embed later blocks framing, switch that module to a local copy or an open-in-new-tab fallback.
 - Add translation keys for `Trauma` and `Amsler` if those labels need to be localized instead of staying English-only.
@@ -113,6 +129,8 @@ Diabetic Retinopathy workshop and Videos-route stabilization:
 - For Videos-route diabetic pages, keep `data-target` IDs aligned with hidden `.page` IDs and `VIDEO_PAGE_SOURCES` entries in `public/js/videos.js`.
 - Treat no-op storage as the default local behavior unless DB URLs are intentionally configured.
 - Treat `.build-cleanup-*` folders as temporary build cleanup leftovers, not source directories.
+- Treat the Childhood Fundal Reflex stage-autoplay engine as shared infrastructure across all `childhoodFundal*` routes; route-specific visual fixes should prefer route config before changing global playback behavior.
+- Preserve FR06 Fundal settle behavior as the baseline unless the user explicitly asks for a behavior change.
 
 ## Important Patterns and Preferences
 
@@ -128,3 +146,4 @@ Diabetic Retinopathy workshop and Videos-route stabilization:
 - Keep required legacy root alias keys aligned with scoped keys where older pages/tests still reference those root keys.
 - For Interactive Learning under `videos.html`, prefer the existing hidden-subpage + lazy iframe pattern over special-case navigation.
 - Diabetic workshop route changes should be checked for structural back behavior from both the workshop home and nested lesson pages.
+- Fundal scrollytelling page shells should stay minimal; the JS engine creates the stage DOM inside `.childhood-fundal-prep-list`.

@@ -691,7 +691,7 @@
       "still_images_of_20_real_examinations": "20가지 실기시험 스틸 이미지",
       "videos_of_real_fundal_reflex_examinations": "실제 기초반사검사 영상",
       "how_to_use_the_arclight": "Arclight 사용 방법",
-      "normal_and_abnormal_findings": "정상 및 비정상 소��",
+      "normal_and_abnormal_findings": "정상 및 비정상 소견",
       "10_questions": "| 10개의 질문",
       "advanced": "고급",
       "ophthalmoscopy": "검안경검사",
@@ -760,6 +760,13 @@
     "quizzes": {
       "quiz": "퀴즈",
       "check_answer": "정답 확인"
+    },
+    "reports": {
+      "arclight_reports": "Arclight 보고서",
+      "aims": "목표",
+      "contact": "연락처",
+      "country": "국가",
+      "area": "지역"
     }
   },
   "i18nLiteral": {
@@ -1425,7 +1432,7 @@
     "glaucoma_visual_field_exam_tba": "시야검사<br />[추가 예정]",
     "glaucoma_workshop": "녹내장 워크숍",
     "glaucomascroll_compare_eyes": "두 눈을 비교하다",
-    "glaucomascroll_drag_from": "Arclight를 드래그하여 ���을 비추세요.",
+    "glaucomascroll_drag_from": "Arclight를 드래그하여 빛을 비추세요.",
     "glaucomascroll_paradoxical_dilation": "(역설적 팽창)",
     "glaucomascroll_pick_up_swing": "Arclight를 들고 눈 사이로 빛을 휘두르세요",
     "glaucomascroll_rapd_hint": "조명<br />좌우로 흔들기",
@@ -1448,7 +1455,7 @@
     "next_case": "다음 사례",
     "no": "아니요",
     "onboarding_privacy_access_request": "누구나 자신에 대해 보유하고 있는 정보를 확인, 업데이트 또는 삭제하도록 요청할 수 있습니다.<br />이메일을 보내주세요: __",
-    "onboarding_privacy_account_security": "계정을 생성하는 경우 로그인 정보를 안전하게 유지하십시��.<br />오용이나 보안 문제에 대해 당사에 알리지 않는 한 귀하의 계정 활동에 대한 책임은 귀하에게 있습니다.",
+    "onboarding_privacy_account_security": "계정을 생성하는 경우 로그인 정보를 안전하게 보관하세요.<br />오용이나 보안 문제를 알려주지 않는 한 계정 활동에 대한 책임은 사용자에게 있습니다.",
     "onboarding_privacy_education_only": "이 앱은 학습과 복습을 지원하는 교육 도구입니다. 이는 공식적인 학문적, 법적 또는 전문적 조언이 아니며 시험 합격, 성적 또는 특정 결과를 보장할 수 없습니다. 연구 선택과 결정은 사용자의 책임입니다.",
     "onboarding_privacy_how_we_use_data": "이 데이터는 각 개인의 목표에 맞게 앱을 맞춤화하고 앱 사용 방법을 이해하며 시간이 지남에 따라 기능을 개선하는 데 도움이 됩니다. 또한 앱이나 계정의 중요한 변경 사항에 대해 연락하는 데 사용될 수도 있습니다.<br />개인 데이터는 절대 판매되지 않습니다.",
     "onboarding_privacy_identity_check": "요청이 완료되기 전에 신원을 확인해야 할 수도 있습니다. 법적 또는 보안상의 이유로 정보를 보관해야 하는 경우 이에 대해 설명합니다.",
@@ -1485,7 +1492,11 @@
     "visualsystem_step1": "빛은 각막과 수정체에 의해 눈의 뒤쪽<br /><br />에 집중됩니다.",
     "visualsystem_step2": "눈 뒤쪽<br />에는 망막이 있습니다.",
     "visualsystem_step3": "이는<br />빛을 시신경을 통해 뇌<br />로 전달되는 전기 신호<br />로 바꾸는 카메라의 센서나 필름<br />과 같습니다.<br /><br />그러면 뇌는 이러한 신호로부터<br />시각을 만들어 냅니다.",
-    "yes": "예"
+    "yes": "예",
+    "video_mode": "동영상 모드",
+    "video_mode_online": "온라인",
+    "download_pdf": "PDF 다운로드",
+    "notifications": "알림"
   },
   "videos": {
     "visualAcuityTitle": "시력",
@@ -1591,9 +1602,39 @@
   },
   "offlineContent": {
     "checkbox_pupils": "동공",
-    "pupils_checkbox": "동공"
+    "pupils_checkbox": "동공",
+    "anterior_segment_video_checkbox": "전안부 동영상",
+    "atoms_card_checkbox": "Atoms 카드",
+    "case_based_learning_checkbox": "사례 기반 학습",
+    "cataract_checkbox": "백내장",
+    "childhood_eye_screening_checkbox": "소아 눈 선별검사",
+    "direct_ophthalmoscopy_checkbox": "직접 검안경 검사",
+    "download_selected_button": "선택 항목 다운로드",
+    "front_of_eye_checkbox": "전안부",
+    "fundal_reflex_checkbox": "안저 반사",
+    "how_to_use_arclight_checkbox": "Arclight 사용법",
+    "interactive_learning_checkbox": "대화형 학습",
+    "mires_checkbox": "Mires",
+    "mobile_phone_attachment_checkbox": "휴대전화 어댑터",
+    "morph_checkbox": "Morph",
+    "rapd_test_checkbox": "RAPD 검사",
+    "squint_palsy_checkbox": "사시 / 마비",
+    "visual_acuity_checkbox": "시력",
+    "manage_offline_contents_title": "오프라인 콘텐츠 관리"
   },
   "offline": {
     "pupils_checkbox": "동공"
-  }
+  },
+  "anteriorSegmentQuizAppTitle": "전안부 퀴즈 앱",
+  "closeReviewButton": "검토 닫기",
+  "installButton": "설치",
+  "installPrompt": "더 나은 경험을 위해 이 앱을 설치하세요!",
+  "maybeLaterButton": "나중에",
+  "nextCaseButton": "다음 사례",
+  "nextQuestionButton": "다음",
+  "previousQuestionButton": "이전",
+  "quizCompleteTitle": "퀴즈 완료!",
+  "restartQuizButton": "퀴즈 다시 시작",
+  "reviewAnswersTitle": "답변 검토",
+  "reviewQuizButton": "퀴즈 검토"
 }

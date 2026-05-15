@@ -1728,7 +1728,11 @@
       "repeat_hand_wash": "Repeat hand wash",
       "next_page": "Next page",
       "replay": "Replay"
-    }
+    },
+    "video_mode": "Video mode",
+    "video_mode_online": "online",
+    "download_pdf": "Download PDF",
+    "notifications": "Notifications"
   },
   "splashscreenMid": {
     "ariaLabel": "Mid Splash Screen",

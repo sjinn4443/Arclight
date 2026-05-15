@@ -59,6 +59,17 @@ function loadJson(filePath) {
   return JSON.parse(fs.readFileSync(filePath, "utf8"));
 }
 
+function addI18nSpecKeys(spec, used) {
+  String(spec || "")
+    .split(";")
+    .map((entry) => entry.trim())
+    .filter(Boolean)
+    .forEach((entry) => {
+      const key = entry.split(":")[0]?.trim();
+      if (key) used.add(key);
+    });
+}
+
 function collectUsedI18nKeys() {
   const files = walk(PUBLIC_DIR, [".html", ".js"]);
   const used = new Set();
@@ -67,13 +78,13 @@ function collectUsedI18nKeys() {
     const src = fs.readFileSync(file, "utf8");
 
     for (const match of src.matchAll(/data-i18n\s*=\s*["']([^"']+)["']/g)) {
-      used.add(match[1].split(":")[0]);
+      addI18nSpecKeys(match[1], used);
     }
 
     for (const match of src.matchAll(
       /setAttribute\(\s*["']data-i18n["']\s*,\s*["']([^"']+)["']\s*\)/g,
     )) {
-      used.add(match[1].split(":")[0]);
+      addI18nSpecKeys(match[1], used);
     }
   }
 

@@ -869,6 +869,13 @@
     "quizzes": {
       "quiz": "Maswali",
       "check_answer": "Angalia Jibu"
+    },
+    "reports": {
+      "arclight_reports": "Ripoti za Arclight",
+      "aims": "Malengo",
+      "contact": "Mawasiliano",
+      "country": "Nchi",
+      "area": "Eneo"
     }
   },
   "i18nLiteral": {
@@ -1588,7 +1595,11 @@
     "visualsystem_step1": "Mwanga umeelekezwa kwenye<br /> nyuma ya jicho<br /> na konea na lenzi.",
     "visualsystem_step2": "Nyuma ya jicho<br /> ni retina.",
     "visualsystem_step3": "Hii ni kama kihisi au filamu<br />kwenye kamera ambacho hubadilisha<br />mwanga kuwa mawimbi ya umeme<br />yanayopitishwa kwenye ubongo<br />kupitia neva ya macho.<br /><br />Ubongo kisha huunda<br />maono kutoka kwa ishara hizi.",
-    "yes": "Ndiyo"
+    "yes": "Ndiyo",
+    "video_mode": "Hali ya video",
+    "video_mode_online": "mtandaoni",
+    "download_pdf": "Pakua PDF",
+    "notifications": "Arifa"
   },
   "myLearningTitle": "Kujifunza Kwangu",
   "inProgressTab": "Inaendelea",

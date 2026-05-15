@@ -869,6 +869,13 @@
     "quizzes": {
       "quiz": "Questionário",
       "check_answer": "Verifique a resposta"
+    },
+    "reports": {
+      "arclight_reports": "Relatórios Arclight",
+      "aims": "Objetivos",
+      "contact": "Contato",
+      "country": "País",
+      "area": "Área"
     }
   },
   "i18nLiteral": {
@@ -1588,7 +1595,11 @@
     "visualsystem_step1": "A luz é focada na<br /> parte posterior do olho<br /> pela córnea e pelo cristalino.",
     "visualsystem_step2": "Na parte de trás do olho<br />está a retina.",
     "visualsystem_step3": "Isto é como um sensor ou filme<br /> em uma câmera que transforma a luz<br /> em sinais elétricos<br /> que são transmitidos ao cérebro<br /> pelo nervo óptico.<br /><br />O cérebro então cria a visão<br /> a partir desses sinais.",
-    "yes": "Sim"
+    "yes": "Sim",
+    "video_mode": "Modo de vídeo",
+    "video_mode_online": "online",
+    "download_pdf": "Baixar PDF",
+    "notifications": "Notificações"
   },
   "myLearningTitle": "Meu aprendizado",
   "inProgressTab": "Em andamento",

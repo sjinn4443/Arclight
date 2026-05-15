@@ -34,6 +34,7 @@
             id="guestModalClose"
             class="guest-modal__close"
             aria-label="Close"
+            data-i18n="languageInstall.closeButton:aria-label"
           >
             &times;
           </button>
@@ -116,7 +117,12 @@
     <!-- Language Picker Modal (lightweight) -->
     <div id="languagePickerOverlay" class="lang-install__overlay" hidden>
       <div class="lang-install__modal">
-        <button class="close-btn" id="closeLangPickerBtn" aria-label="Close">
+        <button
+          class="close-btn"
+          id="closeLangPickerBtn"
+          aria-label="Close"
+          data-i18n="languageInstall.closeButton:aria-label"
+        >
           &times;
         </button>
         <h3 class="lang-install__title" data-i18n="languageInstall.title">

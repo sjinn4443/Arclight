@@ -18,6 +18,8 @@
 - Diabetic workshop progress/navigation: progress bars update through `public/js/diabeticWorkshopProgress.js`, while `public/js/diabeticWorkshopNextFlow.js` controls cross-route sequencing and folder restore behavior.
 - Diabetic demo quizzes: Videos-route demo quiz pages include matching history to image, findings grouping, connect, retinal-structure tapping, and review-video quiz flows initialized by `public/js/diabeticRetinopathyWorkshop.js`.
 - Diabetic protocol media: NCD/protocol visual assets and low-resolution workshop videos are present under `public/images/learning/Diabetic/Diabetes/NCD/` and `public/videos/Workshop/Diabetic/`.
+- Childhood Fundal Reflex scrollytelling: `childhoodFundal*` routes share the Lottie stage-autoplay engine in `public/js/childhoodFundalPreparation.js`, with route shells in `public/html/childhoodFundal*.html`, route wiring in `config.js`/`main.js`, and shared layout/control styling in `public/style/pages.css`.
+- Fundal route sequence/navigation: `FUNDAL_PAGE_ROUTE_SEQUENCE` controls the Preparation -> Examination -> Newborn Eyes Open/Closed -> Unclear Findings -> Possible Finding -> After Examination flow, including down-arrow/page-next behavior and boundary navigation.
 - Offline content management: a modal allows users to select and download specific assets for offline use via the service worker.
 - General application refinement: ongoing improvements and content integration across various modules, including updates to video playback, navigation, onboarding, and PWA features.
 - Menu search refactor: menu search functionality aligns with dashboard compact search patterns, including HTML structure and CSS for consistent styling and behavior.
@@ -43,12 +45,13 @@
 - Accessibility features: enhance ARIA attributes, keyboard navigation, and general accessibility across the application.
 - Translation debt: complete the remaining four missing reports-table locale labels, repair mojibake/replacement-character damage, and reduce fallback-English carry-overs in legacy locale content.
 - Diabetic Retinopathy workshop i18n debt: add locale keys for new workshop pages, protocol copy, Videos-route demo quizzes, Videos-route diabetic lesson labels, and Previous/Next labels where needed.
+- Fundal scrollytelling maintenance: preserve the FR06 playback/settle baseline and keep route shells, route maps, shared engine config, workshop mappings, and CSS synchronized when adding or changing `childhoodFundal*` pages.
 - Testing: continue to expand automated tests for new features, edge cases, error handling, and PWA behaviors.
 - Performance optimization: further optimize media loading and overall application performance.
 
 ## Current Status
 
-The project is a feature-rich PWA with a strong emphasis on interactive learning and offline capabilities. The Express server (`server.cjs`) supports local/prod hosting, telemetry/report APIs, and password-protected reports pages. Runtime storage is no-op unless Postgres URLs are configured. Jest, Playwright, and GitHub Actions CI are in place. The Interactive Learning page mixes local mini-apps, external embedded tools, and Videos-route diabetic demo quizzes. The Eyes route now includes a substantial Diabetic Retinopathy workshop flow whose video/demo content crosses into the Videos route.
+The project is a feature-rich PWA with a strong emphasis on interactive learning and offline capabilities. The Express server (`server.cjs`) supports local/prod hosting, telemetry/report APIs, and password-protected reports pages. Runtime storage is no-op unless Postgres URLs are configured. Jest, Playwright, and GitHub Actions CI are in place. The Interactive Learning page mixes local mini-apps, external embedded tools, and Videos-route diabetic demo quizzes. The Eyes route includes both a substantial Diabetic Retinopathy workshop flow whose video/demo content crosses into the Videos route and a Childhood Fundal Reflex scrollytelling sequence powered by a shared Lottie stage-autoplay engine.
 
 ## Known Issues
 
@@ -59,6 +62,8 @@ The project is a feature-rich PWA with a strong emphasis on interactive learning
 - Translation audit is not yet clean: as of `2026-04-16`, used-key QA now reports `114` missing locale keys, `28` damaged strings, and `764` exact-English carry-overs.
 - The Diabetic Retinopathy workshop contains newer English-first content that still needs full i18n coverage.
 - Diabetic workshop behavior depends on IDs being synchronized across `diabeticRetinopathyWorkshop.html`, `videos.html`, `videos.js`, `diabeticWorkshopNextFlow.js`, and progress storage keys.
+- Fundal scrollytelling behavior depends on `childhoodFundal*` route shells, `config.js`, `main.js`, `childhoodFundalPreparation.js`, Childhood Workshop mappings, Lottie data files, and `.childhood-fundal-scroll-page` CSS staying synchronized.
+- Fundal Lottie settle/playback has a history of blank-frame regressions; FR06 is the canonical stable baseline and shared-engine changes should be checked with the Fundal regression suite and manual desktop/mobile passes.
 - `.build-cleanup-*` folders can remain after builds on Windows if old output files were locked; they are ignored and can be removed once no build is running.
 - Reports telemetry will appear empty when no DB URL is configured or `DISABLE_DB_STORAGE=1` is set, because current default storage is no-op.
 
@@ -70,4 +75,6 @@ The project is a feature-rich PWA with a strong emphasis on interactive learning
 - Interactive Learning continues to use the shared Videos-route subpage pattern, even when the underlying content is hosted externally, to avoid introducing a second navigation model.
 - Workshop flows now use stable row/page identifiers plus session storage to preserve progress, folder state, and cross-route sequencing without introducing a separate router.
 - Diabetic workshop pages can be split across route fragments when it keeps large video/demo content in the Videos route, but the shared IDs and progress events are the contract.
+- Childhood Fundal scrollytelling pages keep minimal HTML shells and let the shared JS engine own stage DOM creation, replay controls, down-arrow/page-next behavior, scroll locking, and settle-frame logic.
+- FR06 remains the user-approved baseline for Fundal route playback/settle behavior.
 - Build output cleaning favors preserving build continuity on Windows over deleting locked folders synchronously; stale renamed cleanup folders are treated as disposable artifacts.

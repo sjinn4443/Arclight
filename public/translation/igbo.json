@@ -869,6 +869,13 @@
     "quizzes": {
       "quiz": "Ajụjụ",
       "check_answer": "Lelee azịza"
+    },
+    "reports": {
+      "arclight_reports": "Akụkọ Arclight",
+      "aims": "Ebumnuche",
+      "contact": "Kọntaktị",
+      "country": "Mba",
+      "area": "Mpaghara"
     }
   },
   "i18nLiteral": {
@@ -1166,7 +1173,7 @@
     "and work out the diagnosis.": "ma rụọ ọrụ nyocha.",
     "You only get 40 seconds.": "Ị ga-enweta naanị 40 sekọnd.",
     "Slow, painless vision loss over months to years with a white eye and higher risk with African background, family history, age over 40 and short sightedness fits POAG.": "Ọhụụ ọhụụ dị nwayọ, enweghị mgbu karịa ọnwa ruo afọ nwere anya ọcha yana ihe egwu dị elu na nzụlite Africa, akụkọ ezinụlọ, afọ karịrị 40 na ịhụ ụzọ dị mkpụmkpụ dabara POAG.",
-    "Fast vision loss over hours to days with a painful red eye and halos around lights with higher risk with Asian background, older age and cataract fits ACAG.": "Ọhụhụ ngwa ngwa kar���a ọtụtụ awa ruo ụbọchị na anya na-acha uhie uhie na-egbu mgbu na halos gburugburu ọkụ nwere ihe egwu dị elu na ndabere Eshia, ịka nká na cataract dabara ACAG.",
+    "Fast vision loss over hours to days with a painful red eye and halos around lights with higher risk with Asian background, older age and cataract fits ACAG.": "Ọnwụ ọhụụ ngwa ngwa n’ime awa ruo ụbọchị na anya uhie na-egbu mgbu, yana halos gburugburu ọkụ, nke nwere ihe ize ndụ ka elu n’ebe ndị nwere ndabere Eshia, afọ toro eto na cataract nọ, dabara ACAG.",
     "My vision is not as good as it used to be. It has been changing very gradually.": "Ọhụụ m adịghị mma ka ọ dị na mbụ. O ji nwayọọ nwayọọ na-agbanwe.",
     "It started a long time ago, maybe months to years.": "Ọ malitere ogologo oge gara aga, ikekwe ọnwa ruo ọtụtụ afọ.",
     "It came on slowly. There was no injury or sudden event.": "Ọ bịara jiri nwayọọ nwayọọ. Enweghị mmerụ ahụ ma ọ bụ ihe omume mberede.",
@@ -1588,7 +1595,11 @@
     "visualsystem_step1": "Ìhè na-elekwasị anya na<br /> azụ nke anya<br /> site na cornea na oghere.",
     "visualsystem_step2": "N'azụ anya<br /> bụ retina.",
     "visualsystem_step3": "Nke a d? ka ihe mmet?ta ma ? b? ihe nkiri<br />n'ime igwefoto nke na-at?ghar?<br />?h? ka ? b?r? akara ?k? eletrik<br />a na-ebufe na ?b?r?<br />site na akwara optic.<br /><br />?b?r? wee mep?ta<br />?h?? site na akara nd? a.",
-    "yes": "Ee"
+    "yes": "Ee",
+    "video_mode": "Ụdị vidiyo",
+    "video_mode_online": "n’ịntanetị",
+    "download_pdf": "Budata PDF",
+    "notifications": "Ọkwa"
   },
   "myLearningTitle": "Ọmụmụ m",
   "inProgressTab": "Na-aga n'ihu",

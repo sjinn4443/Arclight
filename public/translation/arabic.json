@@ -798,7 +798,7 @@
       "fundal_reflex_examination": "فحص المنعكس الأساسي",
       "assessing_visual_function": "تقييم الوظيفة البصرية",
       "still_images_of_20_real_examinations": "صور ثابتة لـ 20 فحصًا حقيقيًا",
-      "videos_of_real_fundal_reflex_examinations": "مقاطع فيديو لفحوصات منعكس قاع العين الح��يقي",
+      "videos_of_real_fundal_reflex_examinations": "مقاطع فيديو لفحوصات منعكس قاع العين الحقيقية",
       "how_to_use_the_arclight": "كيفية استخدام Arclight",
       "normal_and_abnormal_findings": "نتائج طبيعية وغير طبيعية",
       "10_questions": "| 10 أسئلة",
@@ -869,6 +869,13 @@
     "quizzes": {
       "quiz": "لغز",
       "check_answer": "تحقق من الإجابة"
+    },
+    "reports": {
+      "arclight_reports": "تقارير Arclight",
+      "aims": "الأهداف",
+      "contact": "التواصل",
+      "country": "البلد",
+      "area": "المنطقة"
     }
   },
   "i18nLiteral": {
@@ -880,7 +887,7 @@
     "Anterior uveitis": "التهاب القزحية الأمامي",
     "anything else": "أي شيء آخر",
     "ATOMS handout": "نشرة أتومز",
-    "Case image": "صورة القضي��",
+    "Case image": "صورة الحالة",
     "Common Ear Conditions": "حالات الأذن الشائعة",
     "Correct!": "صحيح!",
     "Deep chamber": "غرفة عميقة",
@@ -970,7 +977,7 @@
     "Uncorrected Refractive Error": "خطأ انكساري غير مصحح",
     "Glaucoma": "الجلوكوما",
     "Diabetic Retinopathy": "اعتلال الشبكية السكري",
-    "Corneal Disease": "مرض ا��قرنية",
+    "Corneal Disease": "مرض القرنية",
     "Retinopathy of Prematurity": "اعتلال الشبكية الخداجي",
     "Retinal Disease": "مرض الشبكية",
     "Optic Nerve Disease": "مرض العصب البصري",
@@ -1020,7 +1027,7 @@
     "Trachomatous trichiasis with corneal scarring": "داء الشعرة التراخومية مع تندب القرنية",
     "Bacterial / fungal corneal ulcer": "قرحة القرنية البكتيرية / الفطرية",
     "Herpes simplex keratitis": "التهاب القرنية الهربسي البسيط",
-    "Anterior Uveitis": "��لتهاب القزحية الأمامي",
+    "Anterior Uveitis": "التهاب القزحية الأمامي",
     "Corneal foreign body with early infection": "جسم غريب في القرنية مع عدوى مبكرة",
     "Traumatic hyphaema": "التحدمية المؤلمة",
     "Penetrating corneal laceration with iris prolapse": "تمزق القرنية النافذ مع هبوط القزحية",
@@ -1138,7 +1145,7 @@
     "No saved items yet. Tap the heart on any Eyes card to add it here.": "لا توجد عناصر محفوظة حتى الآن. اضغط على القلب الموجود على أي بطاقة عيون لإضافته هنا.",
     "No wrong answers.": "لا توجد إجابات خاطئة.",
     "Place all findings before submitting.": "ضع جميع النتائج قبل تقديمها.",
-    "Swipe the flashcard to the left or press the button.": "اسحب البطاقة التعليمية إلى اليسار أو اضغط عل�� الزر.",
+    "Swipe the flashcard to the left or press the button.": "اسحب البطاقة التعليمية إلى اليسار أو اضغط على الزر.",
     "Swipe the flashcard to the right or press the button.": "اسحب البطاقة التعليمية إلى اليمين أو اضغط على الزر.",
     "Time is up.": "انتهى الوقت.",
     "ver --.--.----": "النسخة --.--.----",
@@ -1588,7 +1595,11 @@
     "visualsystem_step1": "يتم تركيز الضوء على<br />الجزء الخلفي من العين<br />بواسطة القرنية والعدسة.",
     "visualsystem_step2": "في الجزء الخلفي من العين<br /> هي شبكية العين.",
     "visualsystem_step3": "وهذا يشبه المستشعر أو الفيلم<br /> في الكاميرا الذي يحول ضوء<br /> إلى إشارات كهربائية (<br />) يتم تمريرها إلى الدماغ (<br />) أسفل العصب البصري.<br /><br /> ثم يقوم الدماغ بإنشاء رؤية<br /> من هذه الإشارات.",
-    "yes": "نعم"
+    "yes": "نعم",
+    "video_mode": "وضع الفيديو",
+    "video_mode_online": "عبر الإنترنت",
+    "download_pdf": "تنزيل PDF",
+    "notifications": "الإشعارات"
   },
   "myLearningTitle": "تعلمي",
   "inProgressTab": "قيد التقدم",

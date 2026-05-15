@@ -1,6 +1,6 @@
 # Agent Notes
 
-Last refreshed: 2026-05-12
+Last refreshed: 2026-05-15
 
 ## Current repo orientation
 
@@ -14,6 +14,7 @@ Last refreshed: 2026-05-12
   - `public/js/diabeticRetinopathyWorkshop.js` initializes workshop-only behavior plus the diabetic demo quiz pages when those pages exist.
   - `public/js/diabeticWorkshopProgress.js` and `public/js/diabeticWorkshopNextFlow.js` keep progress, previous/next flow, and return-to-folder behavior aligned across route boundaries.
 - The Videos route hosts both local subapps and selected external iframe lessons; cross-origin iframe internals cannot be styled or scripted from Arclight.
+- Childhood Fundal Reflex scrollytelling routes (`childhoodFundalPreparation` through `childhoodFundalAfterExamination`) share `public/js/childhoodFundalPreparation.js` for Lottie stage autoplay, settle frames, replay/down-arrow controls, text toggles, scroll locks, and `FUNDAL_PAGE_ROUTE_SEQUENCE`; route shells stay minimal in `public/html/childhoodFundal*.html`.
 - `scripts/build.cjs` cleans build outputs by renaming old output directories to `.build-cleanup-*`, recreating the target output directory, and falling back to retrying removal when Windows file locks block the rename.
 
 ## Current docs baseline
@@ -50,6 +51,52 @@ Use this when the user asks to make a Diabetic Retinopathy workshop page in the 
 - NCD/other disease specifics: use `.diabetic-no-eye-check` for the missed-screening image with an animated red X; `.diabetic-eye-disease-collage` for two-column disease tiles with orange bottom labels; `.diabetic-screening-flow--connected` for clinic-to-screening-to-referral flow with orange connected stations.
 - Responsive rules: check desktop and mobile. Base/mobile layout is one column: hero and panels stay around `min(86vw-88vw, 430px)`, panels use `min-height: 70dvh` unless marked content-fit, `.diabetic-screening-stack` uses tighter gaps, clinical collages stay compact two-column only when labels still fit, and captions must not overlap images or following content. At tablet/desktop widths, hero/panels expand toward `min(76vw, 760px)`, stack gaps increase to roughly `48px`-`56px`, panels may switch to two columns (`text + visual`) with `grid-template-columns`, NCD flow switches from vertical connectors to horizontal station flow, and disease sorter/gallery lanes can expand to 2 or 3 columns. Desktop-specific overrides often target exact panel positions with `nth-of-type`; mirror that only when the content needs a custom layout.
 - Motion/accessibility: preserve `prefers-reduced-motion` behavior by keeping animations tied to `.is-current` and transition classes, not required content. Keep all scroll steps readable without animation.
+
+## scrollytelling
+
+Use this when the user asks to make a page like `childhoodFundalPreparationPage`, "Fundal preparation scrollytelling", or a scrollytelling page that should behave exactly like `http://localhost:3000/#/childhoodFundalPreparation`. This is the Fundal Lottie stage-autoplay scrollytelling format, not the separate `.childhood-scrolly-page` article/card format.
+
+- Canonical source files:
+  - Page shell: `public/html/childhoodFundalPreparation.html`
+  - Route map: `public/js/config.js` (`childhoodFundalPreparation: "html/childhoodFundalPreparation.html"`)
+  - Route initializer: `public/js/main.js` `FUNDAL_REFLEX_SCROLL_ROUTES`
+  - Engine/config: `public/js/childhoodFundalPreparation.js`
+  - CSS: `public/style/pages.css`, especially `.childhood-fundal-scroll-page` rules around the Fundal section
+  - Lottie/runtime assets: `/vendor/lottie.min.js`, `/scrolly/coreexam/fundalreflex/.../data.json`, `/images/icon/base/replay.webp`, `/scrolly/workshop/childhood/eyesbrain/down.png`, `/scrolly/workshop/childhood/eyesbrain/hand.png`
+
+- HTML shell: use one page root with `class="page has-eyes-topbar childhood-fundal-scroll-page"` and a stable page id such as `childhoodFundalPreparationPage`. Add `data-fundal-scroll-key` for the route, keep a standard `.container.pupils-container`, `.eyes-topbar`, `.eyes-topbar__title`, menu span `.icon.menuBtn`, empty `.pupils-subtitle`, then a single empty `.childhood-fundal-prep-list` with an accessible `aria-label`. The JS engine owns all stage DOM inside this list; do not hand-code individual animation stages in the HTML.
+
+- Route wiring: add the page to `public/js/config.js`, add the route name to `FUNDAL_REFLEX_SCROLL_ROUTES` in `public/js/main.js`, and add a matching `ROUTE_CONFIG[routeName]` entry in `public/js/childhoodFundalPreparation.js`. If the page participates in the Fundal next/previous sequence, also update `FUNDAL_PAGE_ROUTE_SEQUENCE`; if it is launched from Childhood Workshop, check `childhoodWorkshopProgress.js`, `childhoodWorkshopNextFlow.js`, and `childhoodEyeScreeningWorkshop.js` mappings.
+
+- Required route config shape: set `pageId`, `label`, `enableReplay: true`, `segmentTextToggleOnTitle: true`, `paths`, and `playMode: "stageAutoplay"`. For this exact Preparation behavior, the source values are:
+  - `paths`: prep `1` through `4` data files under `/scrolly/coreexam/fundalreflex/prep/`
+  - `playbackRateByFile: [1, 1, 1, 1.3]`
+  - `autoplayStartFrameByFile: [0, 0, 0, 90]`
+  - `autoplayEndFrameByFile: [null, null, 375, null]`
+  - `segmentTextTriggerFramesByFile: [null, null, null, [0, 196, 317, 384]]`
+  - `segmentRanges`: file 1 `[37-239]`; file 2 `[0-120], [121-205], [206-299]`; file 3 `[0-101], [102-222], [236-354], [380-539]`; file 4 `[0-164], [271-316], [317-398], [399-539]`
+  - `settleFrameOverrides`: `[239]`, `[120,205,299]`, `[101,222,354,539]`, `[164,316,398,539]`
+  - `segmentStartTexts`: `Wash hands`; then `Use brightest light setting`, `Push lenses up`, `Examine in quiet, dim room`; then `Hold Arclight close to your eye`; then `Swaddle newborn`, `Parents should hold older baby`, blank spacer, `Older children can sit alone`
+  - `segmentTextModeByFile: ["append", "append", "append", "append"]`
+  - Keep the stability flags unless intentionally changing renderer behavior: `strictFrameLockNoFallback`, `strictFrameRemountOnBlank`, `iosAggressiveSettleSegments`, `richSettleContentFiles`, and `richSettleMinAreaByFile`.
+
+- Runtime behavior: initialization cleans the prior active Fundal session, builds one `.childhood-fundal-prep-item` per Lottie file, and inserts `.childhood-fundal-prep-stage`, `.childhood-fundal-segment-text[aria-live="polite"]`, and a disabled next button. It prewarms Lottie image assets, loads `/vendor/lottie.min.js`, then creates each animation with `loop: false`, `autoplay: false`, and renderer `svg` by default; iOS/iPadOS uses canvas unless overridden. File 1 auto-starts when ready. Later files auto-start only after the previous file completed and the next stage is near viewport center. During playback, forward scroll is locked; on completion, the engine freezes on the configured settle frame, shows accumulated guidance text, shows a stage replay button, and enables the next-stage control.
+
+- Navigation behavior: the circular down-arrow button scrolls to the next stage. On the last stage, if there is a next Fundal route, the same control changes to a "Next page" pill and calls `navigateAdjacentFundalPage`. Wheel, touch, and keyboard boundary handlers also navigate across `FUNDAL_PAGE_ROUTE_SEQUENCE`, but only at the first/last boundary and after completion. Completion dispatches `childhoodWorkshop:route-complete` with `{ target: cfg.pageId }`.
+
+- Text behavior: segment text is centered below each animation, `font-size: 14px`, `line-height: 1.85`, `font-weight: 600`, color `#1f2937`, `white-space: pre-line`, and `aria-live="polite"`. In `append` mode, new segment copy accumulates instead of replacing older copy. Clicking or pressing Enter/Space on `.eyes-topbar__title.childhood-fundal-title-toggle` toggles all segment text via `.childhood-fundal-segment-text-hidden`.
+
+- Layout: `.childhood-fundal-prep-list` is a vertical flex column with `gap: 107px`, `padding-bottom: 32px`, and `margin: 0 -22px`. If the route has a next page, the list gets an empty trailing spacer of `136px` so the final next-page control can fully enter view; on mobile this spacer is `76px`. Each stage has default aspect ratio `1169 / 1280`, `width: 100%`, background `#f5f6f7`, `position: relative`, `overflow: hidden`, and no rounded card frame. On desktop (`>=1024px`), stages are centered and shrink to `width: min(66.6667%, calc(var(--fundal-stage-max-height) * var(--fundal-stage-aspect-ratio)))` with default `--fundal-stage-max-height: 68vh`. JS breakpoints are `<=768px` narrow mobile, `>=1024px` desktop, and `>=1440px` wide desktop. Desktop scroll alignment pins the stage just below the topbar plus a top gap; mobile normally centers the stage vertically.
+
+- Renderer sizing: Lottie `svg` and `canvas` are absolutely positioned with `inset: -1px`, `width/height: calc(100% + 2px) !important`, `z-index: 2`, and `clip-path: inset(0)` to avoid edge gaps. On iOS-like touch scrolling, keep the `translateZ(0)`, `will-change`, and `backface-visibility` stabilization rules.
+
+- Icon/button style: stage next is a circular button positioned below the item (`top: calc(100% + 12px)`, centered). Mobile/base size is `54px`; desktop size is `75px`. Background is `rgba(58, 58, 58, 0.46)`, no border, fully rounded, hidden by opacity until `.is-visible`, with pointer events only when visible and enabled. The icon is three CSS chevrons made from right/bottom borders, animated by `fundalArrowGrayShift` with staggered delays. Stage replay is also circular (`54px` mobile/base, `75px` desktop), same translucent gray background, anchored to the rendered animation's lower-right corner using `--fundal-replay-right` and `--fundal-replay-bottom`; the image is `/images/icon/base/replay.webp` at `37.5px x 33px` base and `49.5px x 46.5px` desktop. Do not reintroduce the old topbar `.childhood-fundal-replay-btn` unless maintaining legacy behavior; the current visible replay is stage-level.
+
+- Next-page pill: when advancing to another page, the control uses `.childhood-fundal-scroll-down-arrow--page`. The wrapper is transparent but contains `.childhood-fundal-page-next-pill` with gray translucent background `#9d9d9db3`, pill radius, label `12px` bold lowercase, and chevrons. On small mobile (`max-width: 37.5em`), the pill becomes `86px x 128px`, hides CSS chevrons, and instead displays `down.png` plus the floating `hand.png` animation.
+
+- Topbar details: keep the standard back/menu topbar. On small mobile, `.childhood-fundal-scroll-page .eyes-topbar__icons` uses the Fundal-specific offset and the hamburger is `36px x 36px`, `font-size: 25px`, flex-centered, with a small left shift. The title is `white-space: nowrap` and becomes a button-like caption toggle only when `segmentTextToggleOnTitle` is true.
+
+- Verification checklist: open `http://localhost:3000/#/<routeName>` and check at mobile (`390x844` or similar) and desktop (`1280x720` or wider). Confirm first stage starts/settles without a blank frame, text appears below the stage, replay appears inside the stage lower-right, the down button scrolls to the next animation, later animations auto-play only when centered, title toggles text, final page-next pill is fully visible, and no menu/topbar icons overlap. If touching shared Fundal engine or settle behavior, run or manually cover the Fundal regression paths noted in the guardrails below.
 
 # Newborn Eyes Open Scroll Notes
 

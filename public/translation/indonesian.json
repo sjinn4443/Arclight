@@ -869,6 +869,13 @@
     "quizzes": {
       "quiz": "Kuis",
       "check_answer": "Periksa Jawaban"
+    },
+    "reports": {
+      "arclight_reports": "Laporan Arclight",
+      "aims": "Tujuan",
+      "contact": "Kontak",
+      "country": "Negara",
+      "area": "Wilayah"
     }
   },
   "i18nLiteral": {
@@ -1588,7 +1595,11 @@
     "visualsystem_step1": "Cahaya difokuskan ke<br />bagian belakang mata<br />oleh kornea dan lensa.",
     "visualsystem_step2": "Di bagian belakang mata<br />adalah retina.",
     "visualsystem_step3": "Ini seperti sensor atau film<br /> di kamera yang mengubah cahaya<br /> menjadi sinyal listrik<br /> yang diteruskan ke otak<br /> melalui saraf optik.<br /><br />Otak kemudian menciptakan<br />visi dari sinyal-sinyal ini.",
-    "yes": "Ya"
+    "yes": "Ya",
+    "video_mode": "Mode video",
+    "video_mode_online": "online",
+    "download_pdf": "Unduh PDF",
+    "notifications": "Notifikasi"
   },
   "myLearningTitle": "Pembelajaran Saya",
   "inProgressTab": "Sedang berlangsung",

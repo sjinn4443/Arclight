@@ -869,6 +869,13 @@
     "quizzes": {
       "quiz": "Mafunso",
       "check_answer": "Onani Yankho"
+    },
+    "reports": {
+      "arclight_reports": "Malipoti a Arclight",
+      "aims": "Zolinga",
+      "contact": "Kulumikizana",
+      "country": "Dziko",
+      "area": "Dera"
     }
   },
   "i18nLiteral": {
@@ -1588,7 +1595,11 @@
     "visualsystem_step1": "Kuwala kumayang'ana pa<br /> kumbuyo kwa diso<br /> ndi cornea ndi mandala.",
     "visualsystem_step2": "Kumbuyo kwa diso<br /> ndi retina.",
     "visualsystem_step3": "Izi zili ngati sensa kapena filimu<br />mu kamera yomwe imatembenuza<br />kuwala kukhala zizindikiro zamagetsi<br />zomwe zimaperekedwa ku ubongo<br />kudzera mu mitsempha ya optic.<br /><br />Ubongo kenako umapanga<br />masomphenya kuchokera kuzizindikirozi.",
-    "yes": "Inde"
+    "yes": "Inde",
+    "video_mode": "Njira ya kanema",
+    "video_mode_online": "pa intaneti",
+    "download_pdf": "Tsitsani PDF",
+    "notifications": "Zidziwitso"
   },
   "myLearningTitle": "Maphunziro Anga",
   "inProgressTab": "Zili mkati",

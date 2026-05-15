@@ -869,6 +869,13 @@
     "quizzes": {
       "quiz": "Imibuzo",
       "check_answer": "Hlola Impendulo"
+    },
+    "reports": {
+      "arclight_reports": "Imibiko ye-Arclight",
+      "aims": "Izinhloso",
+      "contact": "Imininingwane yokuxhumana",
+      "country": "Izwe",
+      "area": "Indawo"
     }
   },
   "i18nLiteral": {
@@ -1588,7 +1595,11 @@
     "visualsystem_step1": "Ukukhanya kugxile ku-<br />ngemuva kweso<br /> nge-cornea kanye nelensi.",
     "visualsystem_step2": "Ngemuva kweso<br /> yi-retina.",
     "visualsystem_step3": "Lokhu kufana nenzwa noma ifilimu<br />ekhamerani eguqula<br />ukukhanya kube amasiginali kagesi<br />adluliselwa ebuchosheni<br />ngenzwa yokubona.<br /><br />Ubuchopho bese budala<br />umbono kulezi zimpawu.",
-    "yes": "Yebo"
+    "yes": "Yebo",
+    "video_mode": "Imodi yevidiyo",
+    "video_mode_online": "ku-inthanethi",
+    "download_pdf": "Landa i-PDF",
+    "notifications": "Izaziso"
   },
   "myLearningTitle": "Ukufunda Kwami",
   "inProgressTab": "Iyaqhubeka",

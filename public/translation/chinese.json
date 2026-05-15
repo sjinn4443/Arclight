@@ -869,6 +869,13 @@
     "quizzes": {
       "quiz": "测验",
       "check_answer": "检查答案"
+    },
+    "reports": {
+      "arclight_reports": "Arclight 报告",
+      "aims": "目标",
+      "contact": "联系方式",
+      "country": "国家",
+      "area": "地区"
     }
   },
   "i18nLiteral": {
@@ -1147,7 +1154,7 @@
     "concepts and identify areas to revisit.": "概念并确定需要重新审视的领域。",
     "No": "不",
     "A white pupil present from birth, with poor vision, fits congenital cataract.": "出生时瞳孔呈白色，视力不佳，患有先天性白内障。",
-    "Gradual, painless worsening vision over months in an older adult fits cataract.": "老年人的视力在数月内逐渐、无痛地恶化，可能患有白内��。",
+    "Gradual, painless worsening vision over months in an older adult fits cataract.": "老年人的视力在数月内逐渐、无痛地恶化，符合白内障。",
     "A white pupil in a young child with reduced visual engagement is concerning for retinoblastoma.": "视力下降的幼儿出现白色瞳孔可能与视网膜母细胞瘤有关。",
     "Acute onset, pink eye, yellow discharge and worsening symptoms fit severe conjunctivitis.": "起病急、红眼、黄色分泌物及症状加重，则符合严重结膜炎。",
     "Long-term irritation with painful gritty sensation, red eye and blurred vision fits trichiasis with scarring.": "长期刺激伴有疼痛的砂砾感、红眼和视力模糊适合有疤痕的倒睫。",
@@ -1163,12 +1170,12 @@
     "Please ask at least one question before submitting.": "提交前请至少提出一个问题。",
     "No.": "不。",
     "You have used both attempts. Moving to the next case.": "您已经使用了这两种尝试。转到下一个案例。",
-    "and work out the diagnosis.": "并做���诊断。",
+    "and work out the diagnosis.": "并作出诊断。",
     "You only get 40 seconds.": "你只有40秒的时间。",
     "Slow, painless vision loss over months to years with a white eye and higher risk with African background, family history, age over 40 and short sightedness fits POAG.": "数月至数年缓慢、无痛的视力丧失，伴有白眼，非洲背景、家族史​​、40 岁以上和近视的风险较高，适合 POAG。",
     "Fast vision loss over hours to days with a painful red eye and halos around lights with higher risk with Asian background, older age and cataract fits ACAG.": "数小时至数天内视力快速丧失，伴有疼痛的红眼和灯光周围的光晕，亚洲背景、年龄较大和白内障的风险较高，适合 ACAG。",
     "My vision is not as good as it used to be. It has been changing very gradually.": "我的视力不如以前好。它一直在逐渐改变。",
-    "It started a long time ago, maybe months to years.": "它开始��很久以前，也许是几个月到几年。",
+    "It started a long time ago, maybe months to years.": "它很久以前就开始了，也许已有数月至数年。",
     "It came on slowly. There was no injury or sudden event.": "它慢慢地发生了。没有受伤或突发事件。",
     "It feels like both eyes are affected.": "感觉两只眼睛都受影响了。",
     "No, there is no pain or itchiness.": "不，没有疼痛或瘙痒。",
@@ -1559,7 +1566,7 @@
     "onboarding_privacy_service_limits": "目的是让应用程序保持有用且可靠，但没有任何服务是完美的。无法保证持续可用性或完全没有错误，并且该应用程序可能无法适合所有情况。",
     "onboarding_privacy_storage": "信息存储在铁路提供的托管服务器和数据库上。铁路提供托管和基础设施；我们控制数据在应用程序内的使用方式，并仅在合理需要的时间内保留数据。",
     "onboarding_privacy_third_party": "我们依靠受信任的第三方服务（例如托管提供商）来运行该应用程序。这些服务仅根据需要处理数据以提供基础设施，并且无权将其用于自己的目的。",
-    "onboarding_privacy_uk_law_limits": "在英国法律允许的范围内，我们对因使用或无法使用该应用程序而产生的损失（例如漏分、收入损失或机会）不承担任何责任。这里的任何内容都不会删除���国法律规定的任何权利。",
+    "onboarding_privacy_uk_law_limits": "在英国法律允许的范围内，我们不对因使用或无法使用本应用而产生的损失（例如错失分数、收入损失或机会损失）负责。此处任何内容都不会取消英国法律赋予您的任何权利。",
     "not_urgent_button": "< 不紧急",
     "ok": "好的",
     "page1_content": "这是第 1 页的内容。",
@@ -1588,7 +1595,11 @@
     "visualsystem_step1": "光线通过角膜和晶状体聚焦到<br /> 眼睛后部<br /> 上。",
     "visualsystem_step2": "眼睛后面的<br />是视网膜。",
     "visualsystem_step3": "这就像相机中的传感器或胶片<br />，将<br /> 光转换为电信号<br />，然后沿着视神经传递到大脑<br />。<br /><br /> 大脑然后根据这些信号创建<br /> 视觉。",
-    "yes": "是的"
+    "yes": "是的",
+    "video_mode": "视频模式",
+    "video_mode_online": "在线",
+    "download_pdf": "下载 PDF",
+    "notifications": "通知"
   },
   "myLearningTitle": "我的学习",
   "inProgressTab": "进行中",

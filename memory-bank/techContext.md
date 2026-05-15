@@ -1,4 +1,4 @@
-<!-- THE CHANGES - techContext.md | 2026-05-08, Codex -->
+<!-- THE CHANGES - techContext.md | 2026-05-15, Codex -->
 
 # Tech Context
 
@@ -9,6 +9,7 @@
 - PWA: Service Worker API, Web Manifest
 - Embedded interactive content: local iframe mini-apps under `public/subapp/*`, selected external Netlify iframes, Videos-route diabetic video pages, and demo quiz pages inside `public/html/videos.html`
 - Workshop flows: static HTML lesson shells plus JS navigation/progress helpers, including `public/js/diabeticWorkshopNextFlow.js`, `public/js/diabeticWorkshopProgress.js`, and diabetic quiz/scroll initializers in `public/js/diabeticRetinopathyWorkshop.js`
+- Fundal scrollytelling: Lottie JSON animations driven by the shared stage-autoplay engine/config in `public/js/childhoodFundalPreparation.js`, with route shells under `public/html/childhoodFundal*.html`
 - Build & Bundling: `esbuild`, `clean-css-cli`, `html-minifier-terser`
 - Testing: Jest (mix of `*.cjs` + `*.mjs`), JSDOM, Supertest
 - Quality: ESLint, Prettier, Husky + lint-staged
@@ -36,6 +37,13 @@
 - Diabetic workshop previous/next flow can cross from the workshop route into Videos-route pages; the flow state is stored in `sessionStorage` and restored when returning to the workshop folders.
 - Diabetic demo quizzes live in `public/html/videos.html` but use initializers exported from `public/js/diabeticRetinopathyWorkshop.js`; `main.js` imports those initializers for the Videos route.
 - Diabetic video pages require their hidden `.page` IDs, workshop `data-target` rows, and `VIDEO_PAGE_SOURCES` entries in `public/js/videos.js` to stay in sync.
+
+### Childhood Fundal scrollytelling notes
+
+- Route shells use `.childhood-fundal-scroll-page` and an empty `.childhood-fundal-prep-list`; the JS engine creates the stage DOM at runtime.
+- Route ownership is split across `public/js/config.js`, `public/js/main.js`, `public/js/childhoodFundalPreparation.js`, Childhood Workshop mapping files, and `public/style/pages.css`.
+- `FUNDAL_PAGE_ROUTE_SEQUENCE` defines the cross-page order and page-next behavior.
+- Shared engine changes should preserve the FR06 settle/playback baseline and be checked with `npm run test:fundal` plus targeted manual desktop/mobile passes when practical.
 
 ### Build output behavior
 

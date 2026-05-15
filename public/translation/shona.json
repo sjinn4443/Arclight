@@ -869,6 +869,13 @@
     "quizzes": {
       "quiz": "Quiz",
       "check_answer": "Tarisa Mhinduro"
+    },
+    "reports": {
+      "arclight_reports": "Mishumo yeArclight",
+      "aims": "Zvinangwa",
+      "contact": "Mashoko ekutaurirana",
+      "country": "Nyika",
+      "area": "Nzvimbo"
     }
   },
   "i18nLiteral": {
@@ -1588,7 +1595,11 @@
     "visualsystem_step1": "Chiedza chinotariswa pa<br />kuseri kweziso<br /> necornea uye lens.",
     "visualsystem_step2": "Kuseri kweziso<br /> ndiyo retina.",
     "visualsystem_step3": "Izvi zvakaita sesensa kana firimu<br />mukati mekamera inoshandura<br />mwenje kuita masaini emagetsi<br />anopfuudzwa kuuropi<br />kuburikidza netsinga yemaziso.<br /><br />Huropi hunobva hwagadzira<br />kuona kubva kumasaini aya.",
-    "yes": "Ehe"
+    "yes": "Ehe",
+    "video_mode": "Maitiro evhidhiyo",
+    "video_mode_online": "paindaneti",
+    "download_pdf": "Dhawunirodha PDF",
+    "notifications": "Zviziviso"
   },
   "myLearningTitle": "Kudzidza Kwangu",
   "inProgressTab": "Zviri kuitika",
