@@ -1043,35 +1043,14 @@ async function openVideosSubpage(targetId) {
 }
 
 function updateWorkshopFolderItemBadges(page) {
-  const folderRows = page.querySelectorAll(
-    "#diabeticWorkshopFolders .diabetic-folder-row[data-folder]",
-  );
-
-  folderRows.forEach((row) => {
-    const sectionKey = row.getAttribute("data-folder");
-    if (!sectionKey) return;
-
-    const section = page.querySelector(
-      `.diabetic-section-card[data-section="${sectionKey}"]`,
-    );
-    if (!section) return;
-
-    const itemCount = section.querySelectorAll(
-      ".lesson-row[data-lesson], .lesson-row[data-target]",
-    ).length;
-    const thumb = row.querySelector(".thumb");
-    if (!thumb) return;
-
-    let badge = thumb.querySelector(".diabetic-folder-item-count");
-    if (!badge) {
-      badge = document.createElement("span");
-      badge.className = "diabetic-folder-item-count";
-      thumb.appendChild(badge);
-    }
-
-    badge.textContent = String(itemCount);
-    row.setAttribute("data-item-count", String(itemCount));
+  page.querySelectorAll(".diabetic-folder-item-count").forEach((badge) => {
+    badge.remove();
   });
+  page
+    .querySelectorAll(".diabetic-folder-row[data-item-count]")
+    .forEach((row) => {
+      row.removeAttribute("data-item-count");
+    });
 }
 
 function setupWorkshopFolders(page) {
@@ -1084,11 +1063,98 @@ function setupWorkshopFolders(page) {
 
   updateWorkshopFolderItemBadges(page);
 
+  const resetNestedFolders = (card) => {
+    if (!card) return;
+    card.classList.remove("diabetic-nested-folder-open");
+    card.querySelectorAll(".diabetic-nested-section-card").forEach((nested) => {
+      nested.style.display = "none";
+      nested.querySelector("h3")?.querySelector(".see-all-toggle")?.remove();
+    });
+    card.querySelectorAll(".diabetic-nested-folder-row").forEach((row) => {
+      row.style.display = "";
+      row.classList.remove("is-nested-sibling-dimmed");
+    });
+  };
+
+  const setupNestedFolders = () => {
+    page.querySelectorAll(".diabetic-nested-folder-row").forEach((row) => {
+      if (row.dataset.wired === "1") return;
+      row.dataset.wired = "1";
+
+      const key = row.getAttribute("data-nested-folder");
+      if (!key) return;
+
+      const openNow = (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const parentCard = row.closest(".diabetic-section-card");
+        if (!parentCard) return;
+
+        const nestedCard = parentCard.querySelector(
+          `.diabetic-nested-section-card[data-nested-section="${key}"]`,
+        );
+        if (!nestedCard) return;
+
+        resetNestedFolders(parentCard);
+        parentCard.classList.add("diabetic-nested-folder-open");
+        parentCard
+          .querySelectorAll(".diabetic-nested-folder-row")
+          .forEach((nestedRow) => {
+            if (nestedRow !== row) {
+              nestedRow.classList.add("is-nested-sibling-dimmed");
+            }
+          });
+        row.style.display = "none";
+        row.insertAdjacentElement("afterend", nestedCard);
+        nestedCard.style.display = "";
+
+        const titleEl = nestedCard.querySelector("h3");
+        if (!titleEl) return;
+
+        titleEl.style.display = "flex";
+        titleEl.style.alignItems = "center";
+        titleEl.style.width = "100%";
+
+        const toggle = document.createElement("span");
+        toggle.className = "see-all-toggle";
+        toggle.setAttribute("role", "button");
+        toggle.setAttribute("tabindex", "0");
+        toggle.setAttribute("aria-expanded", "true");
+        toggle.textContent = "Close ^";
+        toggle.style.marginLeft = "auto";
+        toggle.style.marginRight = "30px";
+        toggle.style.whiteSpace = "nowrap";
+
+        const closeNow = (closeEvent) => {
+          closeEvent.preventDefault();
+          closeEvent.stopPropagation();
+          resetNestedFolders(parentCard);
+        };
+
+        toggle.addEventListener("click", closeNow);
+        toggle.addEventListener("keydown", (closeEvent) => {
+          if (closeEvent.key === "Enter" || closeEvent.key === " ") {
+            closeNow(closeEvent);
+          }
+        });
+
+        titleEl.appendChild(toggle);
+      };
+
+      row.addEventListener("click", openNow);
+      row.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") openNow(event);
+      });
+    });
+  };
+
   const hideAllSectionCards = () => {
     sectionCards.forEach((card) => {
       card.style.display = "none";
       const titleEl = card.querySelector("h3");
       titleEl?.querySelector(".see-all-toggle")?.remove();
+      resetNestedFolders(card);
     });
   };
 
@@ -1111,6 +1177,7 @@ function setupWorkshopFolders(page) {
     page.classList.add("diabetic-folder-open");
     openFolderRow.insertAdjacentElement("afterend", card);
     card.style.display = "";
+    resetNestedFolders(card);
 
     const titleEl = card.querySelector("h3");
     if (!titleEl) return;
@@ -1150,6 +1217,7 @@ function setupWorkshopFolders(page) {
   };
 
   page.__showSectionByKey = showSectionByKey;
+  setupNestedFolders();
 
   hideAllSectionCards();
   folders.forEach((row) => {

@@ -3388,25 +3388,6 @@ select.onb-input.has-value + .onb-select-caret {
 
 #diabeticRetinopathyWorkshopPage
   #diabeticWorkshopFolders
-  .diabetic-folder-item-count {
-  position: absolute;
-  top: -8px;
-  right: -8px;
-  min-width: 16px;
-  height: 16px;
-  padding: 0 4px;
-  border-radius: 999px;
-  background: #f25600;
-  color: #ffffff;
-  font-size: 10px;
-  line-height: 16px;
-  font-weight: 700;
-  text-align: center;
-  box-shadow: 0 0 0 2px #fff;
-}
-
-#diabeticRetinopathyWorkshopPage
-  #diabeticWorkshopFolders
   .diabetic-folder-row
   .lesson-main {
   gap: 0;
@@ -3458,6 +3439,34 @@ select.onb-input.has-value + .onb-select-caret {
 
 #diabeticRetinopathyWorkshopPage .lesson-row--scroll .thumb {
   background-image: url("/images/icon/eyes/moduleicons/intermediate_scroll.webp");
+}
+
+#diabeticRetinopathyWorkshopPage .lesson-row--pdf .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/intermediate_pdf.webp");
+}
+
+#diabeticRetinopathyWorkshopPage .diabetic-nested-folder-row .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/intermediate_folder.webp");
+}
+
+#diabeticRetinopathyWorkshopPage
+  .diabetic-section-card[data-section="ophthalmoscopy"]
+  > .diabetic-nested-folder-row:first-of-type {
+  margin-top: 6px;
+}
+
+#diabeticRetinopathyWorkshopPage
+  .diabetic-nested-folder-row.is-nested-sibling-dimmed {
+  opacity: 0.72;
+}
+
+#diabeticRetinopathyWorkshopPage .diabetic-nested-section-card {
+  width: 100%;
+}
+
+#diabeticRetinopathyWorkshopPage .diabetic-nested-section-card > h3 {
+  box-sizing: border-box;
+  padding-left: 18px;
 }
 
 #diabeticRetinopathyWorkshopPage .lesson-row--interactive .thumb {
