@@ -274,6 +274,12 @@ document.addEventListener("DOMContentLoaded", () => {
       "childhoodFundalUnclearFindings",
       "childhoodFundalPossibleFinding",
       "childhoodFundalAfterExamination",
+      "diabeticObservationFundalReflex",
+      "diabeticPositioningFlightPath",
+      "diabeticHowToExamine",
+      "diabeticBioPreparation",
+      "diabeticBioFundoscopySitting",
+      "diabeticBioFundoscopyIndentation",
     ]);
     if (FUNDAL_REFLEX_SCROLL_ROUTES.has(routeName)) {
       const { initializeChildhoodFundalReflexScrollPage } =

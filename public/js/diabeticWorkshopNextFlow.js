@@ -179,6 +179,7 @@ function resetViewportToTopSoon() {
 
 function removeNextButtons() {
   document.querySelectorAll(".diabetic-next-wrap").forEach((el) => {
+    if (el.getAttribute("data-fundal-inline-nav") === "1") return;
     try {
       el.parentElement?.classList.remove(NEXT_HOST_CLASS);
     } catch {

@@ -19,6 +19,12 @@ const SCROLL_TARGETS = new Set([
   "diabeticProtocolNcdConsultationPage",
   "diabeticProtocolPhaseCPage",
   "diabeticProtocolFinalDecisionsPage",
+  "diabeticObservationFundalReflexPage",
+  "diabeticPositioningFlightPathPage",
+  "diabeticHowToExaminePage",
+  "diabeticBioPreparationPage",
+  "diabeticBioFundoscopySittingPage",
+  "diabeticBioFundoscopyIndentationPage",
 ]);
 
 let infraWired = false;
@@ -273,6 +279,12 @@ export function initializeDiabeticWorkshopProgressInfra() {
 
   document.addEventListener(WORKSHOP_PROGRESS_EVENT, () => {
     updateDiabeticWorkshopProgressBars();
+  });
+
+  document.addEventListener("childhoodWorkshop:route-complete", (event) => {
+    const target = String(event?.detail?.target || "").trim();
+    if (!SCROLL_TARGETS.has(target)) return;
+    markDiabeticLessonComplete(target);
   });
 
   window.addEventListener("scroll", maybeCompleteActiveScrollLesson, {

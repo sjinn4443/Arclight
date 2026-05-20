@@ -46,6 +46,13 @@ export const ROUTES = {
   childhoodFundalUnclearFindings: "html/childhoodFundalUnclearFindings.html",
   childhoodFundalPossibleFinding: "html/childhoodFundalPossibleFinding.html",
   childhoodFundalAfterExamination: "html/childhoodFundalAfterExamination.html",
+  diabeticObservationFundalReflex: "html/diabeticObservationFundalReflex.html",
+  diabeticPositioningFlightPath: "html/diabeticPositioningFlightPath.html",
+  diabeticHowToExamine: "html/diabeticHowToExamine.html",
+  diabeticBioPreparation: "html/diabeticBioPreparation.html",
+  diabeticBioFundoscopySitting: "html/diabeticBioFundoscopySitting.html",
+  diabeticBioFundoscopyIndentation:
+    "html/diabeticBioFundoscopyIndentation.html",
   glaucomaWorkshop: "html/glaucomaWorkshop.html",
   diabeticRetinopathyWorkshop: "html/diabeticRetinopathyWorkshop.html",
   glaucomaQuizCaseStudy: "html/glaucomaQuizCaseStudy.html",

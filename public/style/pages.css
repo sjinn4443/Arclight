@@ -5837,6 +5837,212 @@ select.onb-input.has-value + .onb-select-caret {
   padding-bottom: 24px;
 }
 
+#diabeticObservationFundalReflexPage
+  .childhood-fundal-prep-stage[data-file-index="1"]
+  + .childhood-fundal-segment-text
+  .childhood-fundal-segment-text__paragraph:nth-child(2) {
+  margin-top: 1.15em;
+}
+
+#diabeticObservationFundalReflexPage
+  .childhood-fundal-prep-stage[data-file-index="1"]
+  + .childhood-fundal-segment-text
+  .childhood-fundal-segment-text__paragraph:nth-child(3) {
+  margin: 7.05em -16px 0;
+  padding: 14px 24px;
+  background: #000;
+  color: #fff;
+  font-size: clamp(1.05rem, 0.95rem + 0.7vw, 1.45rem);
+  font-weight: 500;
+  letter-spacing: 0.03em;
+}
+
+#diabeticObservationFundalReflexPage
+  .childhood-fundal-prep-stage[data-file-index="1"]
+  + .childhood-fundal-segment-text
+  .childhood-fundal-segment-text__paragraph:nth-child(4) {
+  white-space: normal;
+}
+
+@media (max-width: 600px) {
+  #diabeticObservationFundalReflexPage
+    .childhood-fundal-prep-stage[data-file-index="1"]
+    + .childhood-fundal-segment-text
+    .childhood-fundal-segment-text__paragraph:nth-child(4) {
+    white-space: pre-line;
+  }
+}
+
+#diabeticObservationFundalReflexPage
+  .childhood-fundal-prep-stage[data-file-index="1"]
+  + .childhood-fundal-segment-text {
+  padding-bottom: 6px;
+}
+
+#diabeticObservationFundalReflexPage
+  .childhood-fundal-prep-stage[data-file-index="1"]
+  + .childhood-fundal-segment-text
+  + .childhood-fundal-scroll-down-arrow {
+  top: calc(100% - 8px);
+}
+
+#diabeticObservationFundalReflexPage
+  .childhood-fundal-prep-stage[data-file-index="4"]
+  + .childhood-fundal-segment-text {
+  margin: 0 auto;
+  max-width: min(88vw, 640px);
+  text-align: left;
+}
+
+#diabeticObservationFundalReflexPage
+  .childhood-fundal-prep-stage[data-file-index="4"]
+  + .childhood-fundal-segment-text
+  .childhood-fundal-segment-text__line {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.55em;
+  white-space: normal;
+}
+
+#diabeticObservationFundalReflexPage
+  .childhood-fundal-prep-stage[data-file-index="4"]
+  + .childhood-fundal-segment-text
+  .childhood-fundal-segment-text__line::before {
+  content: "\2022";
+  color: #111827;
+  font-weight: 800;
+}
+
+#diabeticHowToExaminePage
+  .childhood-fundal-prep-stage[data-file-index="0"]
+  + .childhood-fundal-segment-text {
+  margin: 0 auto;
+  max-width: min(88vw, 700px);
+  text-align: left;
+}
+
+#diabeticHowToExaminePage
+  .childhood-fundal-prep-stage[data-file-index="1"]
+  + .childhood-fundal-segment-text,
+#diabeticHowToExaminePage
+  .childhood-fundal-prep-stage[data-file-index="0"]
+  + .childhood-fundal-segment-text,
+#diabeticBioPreparationPage
+  .childhood-fundal-prep-stage[data-file-index="2"]
+  + .childhood-fundal-segment-text,
+#diabeticBioFundoscopySittingPage
+  .childhood-fundal-prep-stage[data-file-index="1"]
+  + .childhood-fundal-segment-text,
+#diabeticBioFundoscopySittingPage
+  .childhood-fundal-prep-stage[data-file-index="2"]
+  + .childhood-fundal-segment-text,
+#diabeticBioFundoscopyIndentationPage
+  .childhood-fundal-prep-stage[data-file-index="1"]
+  + .childhood-fundal-segment-text {
+  margin: 0 auto;
+  max-width: min(88vw, 700px);
+  text-align: left;
+}
+
+#diabeticHowToExaminePage
+  .childhood-fundal-prep-stage[data-file-index="1"]
+  + .childhood-fundal-segment-text
+  .childhood-fundal-segment-text__line,
+#diabeticHowToExaminePage
+  .childhood-fundal-prep-stage[data-file-index="0"]
+  + .childhood-fundal-segment-text
+  .childhood-fundal-segment-text__line,
+#diabeticBioPreparationPage
+  .childhood-fundal-prep-stage[data-file-index="2"]
+  + .childhood-fundal-segment-text
+  .childhood-fundal-segment-text__line,
+#diabeticBioFundoscopySittingPage
+  .childhood-fundal-prep-stage[data-file-index="1"]
+  + .childhood-fundal-segment-text
+  .childhood-fundal-segment-text__line,
+#diabeticBioFundoscopySittingPage
+  .childhood-fundal-prep-stage[data-file-index="2"]
+  + .childhood-fundal-segment-text
+  .childhood-fundal-segment-text__line,
+#diabeticBioFundoscopyIndentationPage
+  .childhood-fundal-prep-stage[data-file-index="1"]
+  + .childhood-fundal-segment-text
+  .childhood-fundal-segment-text__line {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.55em;
+  white-space: normal;
+}
+
+#diabeticHowToExaminePage
+  .childhood-fundal-prep-stage[data-file-index="1"]
+  + .childhood-fundal-segment-text
+  .childhood-fundal-segment-text__line::before,
+#diabeticHowToExaminePage
+  .childhood-fundal-prep-stage[data-file-index="0"]
+  + .childhood-fundal-segment-text
+  .childhood-fundal-segment-text__line::before,
+#diabeticBioPreparationPage
+  .childhood-fundal-prep-stage[data-file-index="2"]
+  + .childhood-fundal-segment-text
+  .childhood-fundal-segment-text__line::before,
+#diabeticBioFundoscopySittingPage
+  .childhood-fundal-prep-stage[data-file-index="1"]
+  + .childhood-fundal-segment-text
+  .childhood-fundal-segment-text__line::before,
+#diabeticBioFundoscopySittingPage
+  .childhood-fundal-prep-stage[data-file-index="2"]
+  + .childhood-fundal-segment-text
+  .childhood-fundal-segment-text__line::before,
+#diabeticBioFundoscopyIndentationPage
+  .childhood-fundal-prep-stage[data-file-index="1"]
+  + .childhood-fundal-segment-text
+  .childhood-fundal-segment-text__line::before {
+  content: "\2022";
+  color: #111827;
+  font-weight: 800;
+}
+
+#diabeticBioPreparationPage
+  .childhood-fundal-prep-stage[data-file-index="3"]
+  + .childhood-fundal-segment-text
+  .childhood-fundal-segment-text__line,
+#diabeticBioFundoscopySittingPage
+  .childhood-fundal-prep-stage[data-file-index="0"]
+  + .childhood-fundal-segment-text
+  .childhood-fundal-segment-text__line,
+#diabeticBioFundoscopySittingPage
+  .childhood-fundal-prep-stage[data-file-index="4"]
+  + .childhood-fundal-segment-text
+  .childhood-fundal-segment-text__line,
+#diabeticBioFundoscopyIndentationPage
+  .childhood-fundal-prep-stage[data-file-index="3"]
+  + .childhood-fundal-segment-text
+  .childhood-fundal-segment-text__line {
+  white-space: normal;
+}
+
+@media (max-width: 600px) {
+  #diabeticBioPreparationPage
+    .childhood-fundal-prep-stage[data-file-index="3"]
+    + .childhood-fundal-segment-text
+    .childhood-fundal-segment-text__line,
+  #diabeticBioFundoscopySittingPage
+    .childhood-fundal-prep-stage[data-file-index="0"]
+    + .childhood-fundal-segment-text
+    .childhood-fundal-segment-text__line,
+  #diabeticBioFundoscopySittingPage
+    .childhood-fundal-prep-stage[data-file-index="4"]
+    + .childhood-fundal-segment-text
+    .childhood-fundal-segment-text__line,
+  #diabeticBioFundoscopyIndentationPage
+    .childhood-fundal-prep-stage[data-file-index="3"]
+    + .childhood-fundal-segment-text
+    .childhood-fundal-segment-text__line {
+    white-space: pre-line;
+  }
+}
+
 #fundalReflexExaminationScrollPage .fundal-reflex-examination-section {
   display: flex;
   flex-direction: column;

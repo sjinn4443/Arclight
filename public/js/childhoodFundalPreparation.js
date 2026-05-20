@@ -477,6 +477,332 @@ const ROUTE_CONFIG = {
     richSettleContentFiles: [0, 1],
     richSettleMinAreaByFile: [0.1, 0.12],
   },
+  diabeticObservationFundalReflex: {
+    pageId: "diabeticObservationFundalReflexPage",
+    label: "Observation and Fundal Reflex",
+    enableReplay: true,
+    segmentTextToggleOnTitle: true,
+    paths: [
+      "/scrolly/coreexam/ophths/DO/01ObservationandFundalReflex/1/data.json",
+      "/scrolly/coreexam/ophths/DO/01ObservationandFundalReflex/2/data.json",
+      "/scrolly/coreexam/ophths/DO/01ObservationandFundalReflex/3/data.json",
+      "/scrolly/coreexam/ophths/DO/01ObservationandFundalReflex/4/data.json",
+      "/scrolly/coreexam/ophths/DO/01ObservationandFundalReflex/5/data.json",
+    ],
+    playMode: "stageAutoplay",
+    segmentRanges: [
+      [{ from: 0, to: 158 }],
+      [{ from: 0, to: 196 }],
+      [
+        { from: 0, to: 120 },
+        { from: 121, to: 205 },
+        { from: 206, to: 299 },
+      ],
+      [{ from: 0, to: 509 }],
+      [
+        { from: 0, to: 77 },
+        { from: 78, to: 329 },
+      ],
+    ],
+    settleFrameOverrides: [[158], [196], [120, 205, 299], [509], [77, 329]],
+    segmentTextTriggerFramesByFile: [null, null, null, null, [0, 78, 137]],
+    segmentPauseAfterMsByFile: [null, null, null, null, [5000]],
+    segmentStartTexts: [
+      ["Start with hand hygiene"],
+      [
+        "Take a few seconds to look at the area around the periorbita, the eyelids and the eyes themselves\n\nMention any normal or abnormal findings\n\nFundal Reflex\n\nPerform the fundal reflex test\nto assess for media opacity",
+      ],
+      [
+        "Use brightest light setting",
+        "Push lens racks up",
+        "Examine in quiet, dim room",
+      ],
+      ["Stand at arm's length and look through the sight hole"],
+      [
+        "Ask the patient to look at the light while you observe both eyes together",
+        "The light should reflect from the fundus back through the pupils, looking symmetrically bright with similar colour",
+        "Any asymmetry suggests an abnormality such as a corneal scar, cataract, blood in the vitreous or a retinal tumour",
+      ],
+    ],
+    segmentTextModeByFile: ["append", "append", "append", "append", "append"],
+    strictFrameLockNoFallback: true,
+    strictFrameRemountOnBlank: true,
+    richSettleContentFiles: [0, 1, 2, 3, 4],
+    richSettleMinAreaByFile: [0.08, 0.08, 0.08, 0.08, 0.08],
+  },
+  diabeticPositioningFlightPath: {
+    pageId: "diabeticPositioningFlightPathPage",
+    label: "Positioning and Flight Path",
+    enableReplay: true,
+    segmentTextToggleOnTitle: true,
+    paths: [
+      "/scrolly/coreexam/ophths/DO/02PositioningandFlightPath/1/data.json",
+      "/scrolly/coreexam/ophths/DO/02PositioningandFlightPath/2/data.json",
+      "/scrolly/coreexam/ophths/DO/02PositioningandFlightPath/3/data.json",
+      "/scrolly/coreexam/ophths/DO/02PositioningandFlightPath/4/data.json",
+      "/scrolly/coreexam/ophths/DO/02PositioningandFlightPath/5/data.json",
+      "/scrolly/coreexam/ophths/DO/02PositioningandFlightPath/6/data.json",
+    ],
+    playMode: "stageAutoplay",
+    segmentRanges: [
+      [{ from: 0, to: 389 }],
+      [{ from: 0, to: 389 }],
+      [
+        { from: 0, to: 0 },
+        { from: 1, to: 315 },
+      ],
+      [{ from: 0, to: 525 }],
+      [{ from: 0, to: 479 }],
+      [{ from: 0, to: 194 }],
+    ],
+    settleFrameOverrides: [[389], [389], [0, 315], [525], [479], [194]],
+    segmentTextTriggerFramesByFile: [
+      null,
+      null,
+      [0, 1],
+      null,
+      [56, 193, 330],
+      [0, 87],
+    ],
+    segmentPauseAfterMsByFile: [null, null, [3000]],
+    segmentStartTexts: [
+      ["Ask the patient to look at a target in the distance"],
+      [
+        "Use your right hand and right eye to examine the patient's right eye, and your left hand and left eye for the left eye",
+      ],
+      [
+        "Stand close to the patient with your feet together and lean back slightly",
+        "Find the fundal reflex and follow as you move in, about 10 to 15 degrees to the ear side of the pupil",
+      ],
+      [
+        "As you get closer, the optic disc should come into view. Move closer for a wider and steadier view",
+      ],
+      [
+        "Examine the edge margin of the optic disc,",
+        "the colour of the neuro-retinal rim",
+        "and the cup-to-disc ratio",
+      ],
+      ["Healthy disc", "swollen disc, pale disc and cupped disc"],
+    ],
+    segmentTextModeByFile: [
+      "append",
+      "append",
+      "append",
+      "append",
+      "append",
+      "append",
+    ],
+    strictFrameLockNoFallback: true,
+    strictFrameRemountOnBlank: true,
+    richSettleContentFiles: [0, 1, 2, 3, 4, 5],
+    richSettleMinAreaByFile: [0.08, 0.08, 0.08, 0.08, 0.08, 0.08],
+  },
+  diabeticHowToExamine: {
+    pageId: "diabeticHowToExaminePage",
+    label: "How to Examine",
+    enableReplay: true,
+    segmentTextToggleOnTitle: true,
+    paths: [
+      "/scrolly/coreexam/ophths/DO/03HowtoExamine/1/data.json",
+      "/scrolly/coreexam/ophths/DO/03HowtoExamine/2/data.json",
+    ],
+    playMode: "stageAutoplay",
+    segmentRanges: [
+      [{ from: 0, to: 224 }],
+      [
+        { from: 0, to: 80 },
+        { from: 81, to: 651 },
+        { from: 652, to: 734 },
+        { from: 735, to: 794 },
+      ],
+    ],
+    settleFrameOverrides: [[224], [80, 651, 734, 794]],
+    segmentTextTriggerFramesByFile: [
+      [0, 0],
+      [0, 150, 652, 735],
+    ],
+    segmentPauseAfterMsByFile: [null, [4000, 4000, 4000]],
+    segmentStartTexts: [
+      [
+        "Dilate the pupil before examining the fovea, as looking at the fovea in an undilated eye will make the pupil constrict",
+        "In a dilated pupil, the fovea appears as a slightly darker area with a pin-point reflection",
+      ],
+      [
+        "Start at the optic disc. Check how clear the disc margins are, the colour of the neuro-retinal rim and the cup-to-disc ratio",
+        "Follow the four main branches of the retinal vessels and look for any abnormal signs",
+        "Finally, ask the patient to look directly into the light to bring the macula and fovea into view",
+        "Repeat the examination on the other eye",
+      ],
+    ],
+    segmentTextModeByFile: ["append", "append"],
+    strictFrameLockNoFallback: true,
+    strictFrameRemountOnBlank: true,
+    richSettleContentFiles: [0, 1],
+    richSettleMinAreaByFile: [0.08, 0.08],
+  },
+  diabeticBioPreparation: {
+    pageId: "diabeticBioPreparationPage",
+    label: "Preparation",
+    enableReplay: true,
+    segmentTextToggleOnTitle: true,
+    paths: [
+      "/scrolly/coreexam/fundalreflex/prep/1/data.json",
+      "/scrolly/coreexam/ophths/BIO/01Preparation/1/data.json",
+      "/scrolly/coreexam/ophths/BIO/01Preparation/3/data.json",
+      "/scrolly/coreexam/ophths/BIO/01Preparation/2/data.json",
+    ],
+    playMode: "stageAutoplay",
+    segmentRanges: [
+      [{ from: 37, to: 239 }],
+      [{ from: 0, to: 599 }],
+      [
+        { from: 0, to: 183 },
+        { from: 184, to: 271 },
+        { from: 272, to: 340 },
+        { from: 341, to: 404 },
+      ],
+      [
+        { from: 0, to: 0 },
+        { from: 1, to: 119 },
+      ],
+    ],
+    settleFrameOverrides: [[239], [599], [183, 271, 340, 404], [0, 119]],
+    segmentTextTriggerFramesByFile: [null, [0, 393], [0, 184, 272, 341], null],
+    segmentPauseAfterMsByFile: [null, null, [3000, 3000, 3000], [2000]],
+    segmentStartTexts: [
+      ["Wash hands"],
+      [
+        "Switch the light on and select the brightness level",
+        "The device switches off automatically after 90 seconds",
+      ],
+      [
+        "Place the BIO on your head and adjust the strap so it feels secure and comfortable",
+        "Align the centre of the BIO with your nose",
+        "Check the alignment by looking at your thumb at arm's length",
+        "Close one eye and then the other to make sure your thumb stays in the centre of each view",
+      ],
+      [
+        "Eyepieces would angle outwards\nso they are at 90 degrees to your line of sight\nlooking slightly downwards",
+      ],
+    ],
+    segmentTextModeByFile: ["append", "append", "append", "append"],
+    strictFrameLockNoFallback: true,
+    strictFrameRemountOnBlank: true,
+    richSettleContentFiles: [0, 1, 2, 3],
+    richSettleMinAreaByFile: [0.08, 0.08, 0.08, 0.08],
+  },
+  diabeticBioFundoscopySitting: {
+    pageId: "diabeticBioFundoscopySittingPage",
+    label: "Fundoscopy Sitting",
+    enableReplay: true,
+    segmentTextToggleOnTitle: true,
+    paths: [
+      "/scrolly/coreexam/ophths/DO/03HowtoExamine/1/data.json",
+      "/scrolly/coreexam/ophths/BIO/02FundoscopySitting/2/data.json",
+      "/scrolly/coreexam/ophths/BIO/02FundoscopySitting/3/data.json",
+      "/scrolly/coreexam/ophths/BIO/02FundoscopySitting/4/data.json",
+      "/scrolly/coreexam/ophths/BIO/02FundoscopySitting/5/data.json",
+    ],
+    playMode: "stageAutoplay",
+    autoplayEndFrameByFile: [null, null, null, 270, null],
+    segmentRanges: [
+      [{ from: 0, to: 224 }],
+      [
+        { from: 0, to: 166 },
+        { from: 167, to: 224 },
+      ],
+      [
+        { from: 0, to: 75 },
+        { from: 76, to: 157 },
+        { from: 158, to: 224 },
+      ],
+      [{ from: 0, to: 270 }],
+      [{ from: 0, to: 164 }],
+    ],
+    settleFrameOverrides: [[224], [166, 224], [75, 157, 224], [270], [164]],
+    segmentTextTriggerFramesByFile: [
+      null,
+      [0, 167],
+      [0, 76, 158],
+      [0, 175],
+      null,
+    ],
+    segmentPauseAfterMsByFile: [null, [3000], [3000, 3000]],
+    segmentStartTexts: [
+      ["Dilate the patient's pupils\nto allow a full wider view of the fundus"],
+      [
+        "Hold the condensing lens close to the eye,\nlift the upper eyelid",
+        "and rest your other fingers gently on the patient's brow and cheek",
+      ],
+      [
+        "Keep the condensing lens at arm's length",
+        "and line it up with the light and the patient's retina",
+        "If you see shadows at the edge of the view, it means the light, lens and retina may not be properly aligned.",
+      ],
+      [
+        "To examine the edges of the retina, ask the patient to look in different directions",
+        "If needed, use a fixation target such as the patient's finger or thumb held at arm's length",
+      ],
+      ["After the macula, examine the peripheral\n4 quadrants of the fundus"],
+    ],
+    segmentTextModeByFile: ["append", "append", "append", "append", "append"],
+    strictFrameLockNoFallback: true,
+    strictFrameRemountOnBlank: true,
+    richSettleContentFiles: [0, 1, 2, 3, 4],
+    richSettleMinAreaByFile: [0.08, 0.08, 0.08, 0.08, 0.08],
+  },
+  diabeticBioFundoscopyIndentation: {
+    pageId: "diabeticBioFundoscopyIndentationPage",
+    label: "Fundoscopy with Indentation",
+    enableReplay: true,
+    segmentTextToggleOnTitle: true,
+    paths: [
+      "/scrolly/coreexam/ophths/BIO/03FundoscopywithIndentation/1/data.json",
+      "/scrolly/coreexam/ophths/BIO/03FundoscopywithIndentation/2/data.json",
+      "/scrolly/coreexam/ophths/BIO/03FundoscopywithIndentation/3/data.json",
+      "/scrolly/coreexam/ophths/BIO/03FundoscopywithIndentation/4/data.json",
+    ],
+    playMode: "stageAutoplay",
+    playbackRateByFile: [1, 1, 0.5, 1],
+    segmentRanges: [
+      [
+        { from: 0, to: 14 },
+        { from: 15, to: 104 },
+      ],
+      [
+        { from: 0, to: 0 },
+        { from: 1, to: 29 },
+        { from: 30, to: 86 },
+        { from: 87, to: 104 },
+      ],
+      [{ from: 0, to: 134 }],
+      [{ from: 0, to: 299 }],
+    ],
+    settleFrameOverrides: [[14, 104], [0, 29, 86, 104], [134], [299]],
+    segmentTextTriggerFramesByFile: [[0, 15], [0, 30, 87, 87], null, null],
+    segmentPauseAfterMsByFile: [[3000], [1500, 3000, 3000]],
+    segmentStartTexts: [
+      [
+        "If the patient is lying down, you can also perform scleral indentation",
+        "Inform the patient that this may feel uncomfortable",
+      ],
+      [
+        "Ask the patient to look in the opposite area being examined",
+        "Place the indenter on the area to be indented,",
+        "ask the patient to look towards the area being examined and apply gentle pressure",
+        "This example shows the examination of the superior retina",
+      ],
+      [
+        "Align the light, condensing lens and patient's retina to achieve a full fundus view",
+      ],
+      ["You should be able to examine\nthe far periphery of the retina"],
+    ],
+    segmentTextModeByFile: ["append", "append", "append", "append"],
+    strictFrameLockNoFallback: true,
+    strictFrameRemountOnBlank: true,
+    richSettleContentFiles: [0, 1, 2, 3],
+    richSettleMinAreaByFile: [0.08, 0.08, 0.08, 0.08],
+  },
 };
 
 const FUNDAL_REFLEX_EXAMINATION_SCROLL_ROUTE = "fundalReflexExaminationScroll";
@@ -721,23 +1047,50 @@ const FUNDAL_PAGE_ROUTE_SEQUENCE = [
   "childhoodFundalPossibleFinding",
   "childhoodFundalAfterExamination",
 ];
+const DIABETIC_DO_FUNDAL_PAGE_ROUTE_SEQUENCE = [
+  "diabeticObservationFundalReflex",
+  "diabeticPositioningFlightPath",
+  "diabeticHowToExamine",
+];
+const DIABETIC_BIO_FUNDAL_PAGE_ROUTE_SEQUENCE = [
+  "diabeticBioPreparation",
+  "diabeticBioFundoscopySitting",
+  "diabeticBioFundoscopyIndentation",
+];
+const FUNDAL_PAGE_ROUTE_SEQUENCES = [
+  FUNDAL_PAGE_ROUTE_SEQUENCE,
+  DIABETIC_DO_FUNDAL_PAGE_ROUTE_SEQUENCE,
+  DIABETIC_BIO_FUNDAL_PAGE_ROUTE_SEQUENCE,
+];
 const FUNDAL_CROSS_PAGE_BOUNDARY_LOCK_MS = 900;
 
 let pendingFundalPageEntry = null;
 let fundalPageNavigationInFlight = false;
 
+function getFundalPageRouteSequence(routeName) {
+  const normalized = String(routeName || "").trim();
+  if (!normalized) return [];
+  return (
+    FUNDAL_PAGE_ROUTE_SEQUENCES.find((sequence) =>
+      sequence.includes(normalized),
+    ) || []
+  );
+}
+
 function findFundalPageSequenceIndex(routeName) {
   const normalized = String(routeName || "").trim();
   if (!normalized) return -1;
-  return FUNDAL_PAGE_ROUTE_SEQUENCE.indexOf(normalized);
+  return getFundalPageRouteSequence(normalized).indexOf(normalized);
 }
 
 function getAdjacentFundalRoute(routeName, direction = 1) {
+  const normalized = String(routeName || "").trim();
+  const sequence = getFundalPageRouteSequence(normalized);
   const currentIndex = findFundalPageSequenceIndex(routeName);
   if (currentIndex < 0) return "";
 
   const step = direction < 0 ? -1 : 1;
-  return FUNDAL_PAGE_ROUTE_SEQUENCE[currentIndex + step] || "";
+  return sequence[currentIndex + step] || "";
 }
 
 function hasPreviousFundalRoute(routeName) {
@@ -843,6 +1196,37 @@ async function navigateAdjacentFundalPage(routeName, direction = 1) {
   } finally {
     fundalPageNavigationInFlight = false;
   }
+}
+
+async function navigateToFundalRoute(routeName) {
+  const targetRoute = String(routeName || "").trim();
+  if (!targetRoute) return false;
+
+  const targetCfg = resolveFundalRouteConfig(targetRoute);
+  if (!targetCfg?.pageId) return false;
+
+  rememberFundalWorkshopFolderRestore();
+
+  try {
+    await loadPage(targetRoute);
+    showFundalPageWithFallbackAndEvent(targetCfg.pageId);
+    return true;
+  } catch (err) {
+    console.error("[fundalScroll] failed to navigate to fundal route", err);
+    return false;
+  }
+}
+
+function wireFundalInlineNavigation(page) {
+  page?.querySelectorAll("[data-fundal-nav-route]")?.forEach((button) => {
+    if (button.dataset.fundalNavBound === "1") return;
+    button.dataset.fundalNavBound = "1";
+    button.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      void navigateToFundalRoute(button.dataset.fundalNavRoute);
+    });
+  });
 }
 
 const FUNDAL_TEXT_KEYS = new Map([
@@ -1292,6 +1676,35 @@ function resolveSegmentTextMode(cfg, fileIndex) {
   }
   // Default to append so future segment texts accumulate instead of replacing.
   return "append";
+}
+
+function resolveSegmentPauseAfterMs(cfg, fileIndex, segmentIndex) {
+  const rawFileRules = Array.isArray(cfg?.segmentPauseAfterMsByFile)
+    ? cfg.segmentPauseAfterMsByFile[fileIndex]
+    : null;
+  const raw = Array.isArray(rawFileRules)
+    ? rawFileRules[segmentIndex]
+    : segmentIndex === 0
+      ? rawFileRules
+      : null;
+  const pauseMs = Number(raw);
+  if (!Number.isFinite(pauseMs) || pauseMs <= 0) return 0;
+  return Math.max(0, Math.min(10000, Math.round(pauseMs)));
+}
+
+function hasConfiguredSegmentPause(cfg, fileIndex, segmentCount) {
+  for (let i = 0; i < Math.max(0, Number(segmentCount) || 0); i += 1) {
+    if (resolveSegmentPauseAfterMs(cfg, fileIndex, i) > 0) return true;
+  }
+  return false;
+}
+
+function waitFundalDelay(ms) {
+  const delay = Number(ms);
+  if (!Number.isFinite(delay) || delay <= 0) return Promise.resolve();
+  return new Promise((resolve) => {
+    setTimeout(resolve, delay);
+  });
 }
 
 const TIGHT_LINE_HEIGHT_SEGMENT_TEXTS = new Set([
@@ -2198,7 +2611,8 @@ function resolveAutoplayPlaybackSegments(cfg, fileIndex, anim, segments = []) {
     : lastFrame;
 
   if (
-    shouldUseLegacySegmentPlaybackForAutoplay(cfg, fileIndex) &&
+    (shouldUseLegacySegmentPlaybackForAutoplay(cfg, fileIndex) ||
+      hasConfiguredSegmentPause(cfg, fileIndex, segments.length)) &&
     Array.isArray(segments) &&
     segments.length > 0
   ) {
@@ -6702,6 +7116,23 @@ function initializeStageAutoplayMode(
     });
   }
 
+  function showStageCompletionText(state) {
+    if (!state?.segmentTextEl) return;
+    if (state.finalSummaryBulletLines.length) {
+      showStageFinalSummaryBullets(state);
+      return;
+    }
+
+    if (
+      (state.segmentTextMode === "append" ||
+        state.segmentTextMode === "appendinline") &&
+      Array.isArray(state.segmentStartTexts) &&
+      state.segmentStartTexts.length > 0
+    ) {
+      applyStageTextUpToIndex(state, state.segmentStartTexts.length - 1);
+    }
+  }
+
   function restoreTranslatedPlaybackText(state) {
     if (!state) return;
     if (state.finalSummaryBulletLines.length && state.completed) {
@@ -7568,7 +7999,7 @@ function initializeStageAutoplayMode(
     if (!state.completed) {
       state.completed = true;
     }
-    showStageFinalSummaryBullets(state);
+    showStageCompletionText(state);
     showStageControls(state);
     dispatchRouteCompleteOnce(state);
 
@@ -7654,6 +8085,148 @@ function initializeStageAutoplayMode(
     }
   }
 
+  function playStageSegmentOnce(state, pair) {
+    return new Promise((resolve) => {
+      const anim = state?.anim;
+      if (!anim) {
+        resolve(false);
+        return;
+      }
+
+      let settled = false;
+      const safeFrom = clampFrameToAnimation(state, Number(pair?.[0]));
+      const safeTo = clampFrameToAnimation(state, Number(pair?.[1]));
+      if (safeFrom === safeTo) {
+        try {
+          anim.goToAndStop(safeFrom, true);
+          forceSvgVisibleForController(state);
+          refreshVisibleFrameState(state);
+        } catch {
+          // If an exact hold frame fails, let the caller continue gracefully.
+        }
+        resolve(true);
+        return;
+      }
+
+      const frameDistance = Math.max(1, Math.abs(safeTo - safeFrom));
+      const playbackRate = Math.max(
+        0.1,
+        resolveFundalE2EPlaybackRate() ??
+          resolveConfiguredFundalPlaybackRate(cfg, state.fileIndex),
+      );
+      const timeoutMs = Math.max(
+        2500,
+        Math.min(45000, (frameDistance / 29.97 / playbackRate) * 1000 + 5000),
+      );
+
+      const finish = (value) => {
+        if (settled) return;
+        settled = true;
+        clearTimeout(timeoutId);
+        try {
+          anim.removeEventListener("complete", onComplete);
+        } catch {
+          // Ignore cleanup failures from renderer teardown.
+        }
+        resolve(value);
+      };
+
+      const onComplete = () => finish(true);
+      const timeoutId = setTimeout(() => finish(false), timeoutMs);
+
+      try {
+        anim.addEventListener("complete", onComplete);
+        anim.playSegments([safeFrom, safeTo], true);
+      } catch {
+        finish(false);
+      }
+    });
+  }
+
+  async function holdStageAtPauseFrame(state, frame) {
+    const safeFrame = clampFrameToAnimation(state, Number(frame));
+    try {
+      state.anim?.pause?.();
+      state.anim?.goToAndStop?.(safeFrame, true);
+    } catch {
+      // Continue into recovery checks if the renderer rejects an exact seek.
+    }
+
+    forceSvgVisibleForController(state);
+    updateStageTextForFrame(state, safeFrame);
+    refreshVisibleFrameState(state);
+    requestIosStageRepaintNudge(state.stage);
+
+    await waitForFundalE2ERenderStability(2);
+
+    forceSvgVisibleForController(state);
+    refreshVisibleFrameState(state);
+    if (
+      !isStageFrameBlank(state) &&
+      (state.requireRichContent !== true ||
+        hasRichVisibleContent(state, state.minContentAreaRatio))
+    ) {
+      rememberRecoverySnapshot(state, safeFrame);
+      hideRecoveryOverlayWhenStable(state, {
+        checks: 2,
+        requiredStablePasses: 1,
+      });
+      return safeFrame;
+    }
+
+    try {
+      state.anim?.goToAndStop?.(safeFrame, true);
+    } catch {
+      // Keep the previous attempt and fall through to the overlay fallback.
+    }
+    forceSvgVisibleForController(state);
+    refreshVisibleFrameState(state);
+    requestIosStageRepaintNudge(state.stage);
+
+    if (!isStageFrameBlank(state)) {
+      rememberRecoverySnapshot(state, safeFrame);
+      hideRecoveryOverlayWhenStable(state, {
+        checks: 2,
+        requiredStablePasses: 1,
+      });
+      return safeFrame;
+    }
+
+    showRecoveryOverlay(state);
+    return safeFrame;
+  }
+
+  async function playStageSegmentsWithPauses(state, playbackPairs) {
+    state.manualSegmentPlayback = true;
+    try {
+      for (let i = 0; i < playbackPairs.length; i += 1) {
+        if (!state.playing) return false;
+        const pair = playbackPairs[i];
+        updateStageTextForFrame(state, pair[0]);
+        await playStageSegmentOnce(state, pair);
+
+        const pauseMs = resolveSegmentPauseAfterMs(cfg, state.fileIndex, i);
+        if (pauseMs > 0 && i < playbackPairs.length - 1) {
+          await holdStageAtPauseFrame(state, pair[1]);
+          await waitFundalDelay(pauseMs);
+          hideRecoveryOverlayWhenStable(state, {
+            checks: 2,
+            requiredStablePasses: 1,
+          });
+        }
+      }
+    } finally {
+      state.manualSegmentPlayback = false;
+    }
+
+    const finalPair = playbackPairs[playbackPairs.length - 1] || null;
+    if (finalPair) {
+      updateStageTextForFrame(state, finalPair[1]);
+    }
+    await finishStagePlayback(state);
+    return true;
+  }
+
   async function playStage(state, { replay = false } = {}) {
     if (!state?.ready || state.failed || state.playing) return false;
     if (states.some((candidate) => candidate.playing)) return false;
@@ -7697,10 +8270,18 @@ function initializeStageAutoplayMode(
       clampFrameToAnimation(state, getSegmentEndFrame(segment)),
     ]);
 
+    const shouldPlayWithPauses = hasConfiguredSegmentPause(
+      cfg,
+      state.fileIndex,
+      playbackPairs.length,
+    );
+
     try {
       state.anim?.pause();
       state.anim?.goToAndStop(startFrame, true);
-      if (playbackPairs.length > 1) {
+      if (shouldPlayWithPauses) {
+        void playStageSegmentsWithPauses(state, playbackPairs);
+      } else if (playbackPairs.length > 1) {
         state.anim?.playSegments(playbackPairs, true);
       } else {
         state.anim?.playSegments(
@@ -7852,6 +8433,7 @@ function initializeStageAutoplayMode(
     };
 
     const onComplete = () => {
+      if (state.manualSegmentPlayback === true) return;
       void finishStagePlayback(state);
     };
 
@@ -7947,6 +8529,7 @@ function initializeStageAutoplayMode(
       minContentAreaRatio: state.minContentAreaRatio,
     });
     refreshVisibleFrameState(state);
+    updateStageTextForFrame(state, safeFrame);
     updateStageControlAnchors(state);
     requestIosStageRepaintNudge(state.stage);
 
@@ -7959,6 +8542,7 @@ function initializeStageAutoplayMode(
       minContentAreaRatio: state.minContentAreaRatio,
     });
     refreshVisibleFrameState(state);
+    updateStageTextForFrame(state, safeFrame);
     updateStageControlAnchors(state);
     requestIosStageRepaintNudge(state.stage);
 
@@ -8113,6 +8697,7 @@ export async function initializeChildhoodFundalReflexScrollPage(routeName) {
 
   const page = document.getElementById(cfg.pageId);
   if (!page) return;
+  wireFundalInlineNavigation(page);
   page.classList.toggle(
     "childhood-fundal-scroll-page--has-next-page",
     hasNextFundalRoute(routeName),

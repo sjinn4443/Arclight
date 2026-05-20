@@ -10,6 +10,8 @@ Diabetic Retinopathy workshop and Videos-route stabilization:
 - the workshop combines foldered lessons, progress rows, scroll-style pages, Videos-route lessons, protocol pages, and demo quiz pages
 - diabetic workshop ownership is now split: the workshop route keeps the launcher/protocol/scroll content, while `public/html/videos.html` owns diabetic video subpages and the Interactive Learning `Demo Quizzes` folder/pages
 - `public/js/diabeticWorkshopNextFlow.js` owns the structural previous/next buttons and the cross-route flow through Videos pages
+- the Direct Ophthalmoscopy nested folder includes `Observation and Fundal Reflex`, `Positioning and Flight Path`, and `How to Examine`, each launching a standalone Fundal-style scrollytelling route
+- the Binocular Indirect Ophthalmoscopy nested folder includes `Preparation`, `Fundoscopy Sitting`, and `Fundoscopy with Indentation`, each launching a standalone Fundal-style scrollytelling route
 - runtime storage defaults to `storage/disabled-storage.cjs` unless Postgres URLs are configured; Playwright explicitly runs with `DISABLE_DB_STORAGE=1`
 
 Childhood Fundal Reflex scrollytelling is also an active maintenance area:
@@ -21,6 +23,16 @@ Childhood Fundal Reflex scrollytelling is also an active maintenance area:
 - FR06 remains the user-approved baseline for Fundal settle behavior; avoid playback/settle experiments unless explicitly requested and rechecked
 
 ## Recent Changes
+
+- Diabetic Direct Ophthalmoscopy scrollytelling (2026-05-20):
+  - Added `public/html/diabeticObservationFundalReflex.html`, `public/html/diabeticPositioningFlightPath.html`, and `public/html/diabeticHowToExamine.html`.
+  - Reused `public/js/childhoodFundalPreparation.js` stage-autoplay config for the DO asset folders under `public/scrolly/coreexam/ophths/DO/`.
+  - Wired the Direct Ophthalmoscopy nested folder rows in the Diabetic Retinopathy workshop to the new routes and progress targets.
+
+- Diabetic Binocular Indirect Ophthalmoscopy scrollytelling (2026-05-20):
+  - Added `public/html/diabeticBioPreparation.html`, `public/html/diabeticBioFundoscopySitting.html`, and `public/html/diabeticBioFundoscopyIndentation.html`.
+  - Reused `public/js/childhoodFundalPreparation.js` stage-autoplay config for the BIO asset folders under `public/scrolly/coreexam/ophths/BIO/`.
+  - Wired the Binocular Indirect Ophthalmoscopy nested folder rows in the Diabetic Retinopathy workshop to the new routes and progress targets.
 
 - Fundal scrollytelling documentation refresh (2026-05-15):
   - Added the Childhood Fundal Reflex stage-autoplay route contract to `README.md`, `agent.md`, and the memory bank.
