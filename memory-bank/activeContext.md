@@ -21,6 +21,7 @@ Childhood Fundal Reflex scrollytelling is also an active maintenance area:
 - `public/js/config.js` and `public/js/main.js` provide the route map and lazy initializer for the Fundal route set
 - `public/style/pages.css` owns the shared Fundal layout/button/text styling
 - FR06 remains the user-approved baseline for Fundal settle behavior; avoid playback/settle experiments unless explicitly requested and rechecked
+- Diabetic Fundal-style scrollytelling now depends on hardened pause-frame locking, retained accumulated captions after completion, iOS/WebKit renderer overrides where needed, and ordinary `< Previous` / `Next >` buttons on the final page of each scrollytelling group.
 
 ## Recent Changes
 
@@ -33,6 +34,8 @@ Childhood Fundal Reflex scrollytelling is also an active maintenance area:
   - Added `public/html/diabeticBioPreparation.html`, `public/html/diabeticBioFundoscopySitting.html`, and `public/html/diabeticBioFundoscopyIndentation.html`.
   - Reused `public/js/childhoodFundalPreparation.js` stage-autoplay config for the BIO asset folders under `public/scrolly/coreexam/ophths/BIO/`.
   - Wired the Binocular Indirect Ophthalmoscopy nested folder rows in the Diabetic Retinopathy workshop to the new routes and progress targets.
+  - Hardened pause-before-frame playback so pauses hold the intended frame without white/final-frame flashes, keep bullet captions visible, and use iOS renderer/warmup overrides for BIO pages that are heavy on WebKit.
+  - Added bottom `< Previous` / `Next >` controls to the terminal Diabetic scrollytelling pages so the scroll sequence can return to the surrounding workshop flow.
 
 - Fundal scrollytelling documentation refresh (2026-05-15):
   - Added the Childhood Fundal Reflex stage-autoplay route contract to `README.md`, `agent.md`, and the memory bank.

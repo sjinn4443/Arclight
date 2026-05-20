@@ -103,6 +103,26 @@ function resolveConfiguredFundalPlaybackRate(cfg, fileIndex) {
   return playbackRate;
 }
 
+function resolveConfiguredSegmentPlaybackRate(cfg, fileIndex, segmentIndex) {
+  const rawFileRules = Array.isArray(cfg?.segmentPlaybackRateByFile)
+    ? cfg.segmentPlaybackRateByFile[fileIndex]
+    : null;
+  if (!Array.isArray(rawFileRules)) return null;
+
+  const playbackRate = Number(rawFileRules[segmentIndex]);
+  if (!Number.isFinite(playbackRate) || playbackRate <= 0) return null;
+  return playbackRate;
+}
+
+function hasConfiguredSegmentPlaybackRate(cfg, fileIndex, segmentCount) {
+  for (let i = 0; i < Math.max(0, Number(segmentCount) || 0); i += 1) {
+    if (resolveConfiguredSegmentPlaybackRate(cfg, fileIndex, i) !== null) {
+      return true;
+    }
+  }
+  return false;
+}
+
 function resolveConfiguredAutoplayStartFrame(cfg, fileIndex) {
   const raw = Array.isArray(cfg?.autoplayStartFrameByFile)
     ? cfg.autoplayStartFrameByFile[fileIndex]
@@ -506,7 +526,9 @@ const ROUTE_CONFIG = {
     ],
     settleFrameOverrides: [[158], [196], [120, 205, 299], [509], [77, 329]],
     segmentTextTriggerFramesByFile: [null, null, null, null, [0, 78, 137]],
-    segmentPauseAfterMsByFile: [null, null, null, null, [5000]],
+    segmentPauseAfterMsByFile: [null, null, null, null, [3000]],
+    centerTopBiasByFile: [0, 0, 0, 0, -96],
+    desktopTopGapByFile: [18, 18, 18, 18, -24],
     segmentStartTexts: [
       ["Start with hand hygiene"],
       [
@@ -517,7 +539,7 @@ const ROUTE_CONFIG = {
         "Push lens racks up",
         "Examine in quiet, dim room",
       ],
-      ["Stand at arm's length and look through the sight hole"],
+      ["Stand at arm's length\nand look through the sight hole"],
       [
         "Ask the patient to look at the light while you observe both eyes together",
         "The light should reflect from the fundus back through the pupils, looking symmetrically bright with similar colour",
@@ -525,6 +547,8 @@ const ROUTE_CONFIG = {
       ],
     ],
     segmentTextModeByFile: ["append", "append", "append", "append", "append"],
+    leftAlignedTextFiles: [4],
+    bulletTextFiles: [4],
     strictFrameLockNoFallback: true,
     strictFrameRemountOnBlank: true,
     richSettleContentFiles: [0, 1, 2, 3, 4],
@@ -558,7 +582,7 @@ const ROUTE_CONFIG = {
     settleFrameOverrides: [[389], [389], [0, 315], [525], [479], [194]],
     segmentTextTriggerFramesByFile: [
       null,
-      null,
+      [0, 0],
       [0, 1],
       null,
       [56, 193, 330],
@@ -568,7 +592,8 @@ const ROUTE_CONFIG = {
     segmentStartTexts: [
       ["Ask the patient to look at a target in the distance"],
       [
-        "Use your right hand and right eye to examine the patient's right eye, and your left hand and left eye for the left eye",
+        "Use right hand and right eye to examine the patient's right eye",
+        "Use your left hand and left eye for the left eye",
       ],
       [
         "Stand close to the patient with your feet together and lean back slightly",
@@ -592,6 +617,8 @@ const ROUTE_CONFIG = {
       "append",
       "append",
     ],
+    leftAlignedTextFiles: [1, 2],
+    bulletTextFiles: [1, 2],
     strictFrameLockNoFallback: true,
     strictFrameRemountOnBlank: true,
     richSettleContentFiles: [0, 1, 2, 3, 4, 5],
@@ -619,7 +646,7 @@ const ROUTE_CONFIG = {
     settleFrameOverrides: [[224], [80, 651, 734, 794]],
     segmentTextTriggerFramesByFile: [
       [0, 0],
-      [0, 150, 652, 735],
+      [0, 126, 652, 735],
     ],
     segmentPauseAfterMsByFile: [null, [4000, 4000, 4000]],
     segmentStartTexts: [
@@ -635,6 +662,8 @@ const ROUTE_CONFIG = {
       ],
     ],
     segmentTextModeByFile: ["append", "append"],
+    leftAlignedTextFiles: [0, 1],
+    bulletTextFiles: [0, 1],
     strictFrameLockNoFallback: true,
     strictFrameRemountOnBlank: true,
     richSettleContentFiles: [0, 1],
@@ -652,9 +681,14 @@ const ROUTE_CONFIG = {
       "/scrolly/coreexam/ophths/BIO/01Preparation/2/data.json",
     ],
     playMode: "stageAutoplay",
+    segmentPlaybackRateByFile: [null, [1.5, 1]],
+    iosRendererByFile: [null, "svg", null, null],
     segmentRanges: [
       [{ from: 37, to: 239 }],
-      [{ from: 0, to: 599 }],
+      [
+        { from: 0, to: 392 },
+        { from: 393, to: 599 },
+      ],
       [
         { from: 0, to: 183 },
         { from: 184, to: 271 },
@@ -686,6 +720,8 @@ const ROUTE_CONFIG = {
       ],
     ],
     segmentTextModeByFile: ["append", "append", "append", "append"],
+    leftAlignedTextFiles: [2],
+    bulletTextFiles: [2],
     strictFrameLockNoFallback: true,
     strictFrameRemountOnBlank: true,
     richSettleContentFiles: [0, 1, 2, 3],
@@ -705,6 +741,8 @@ const ROUTE_CONFIG = {
     ],
     playMode: "stageAutoplay",
     autoplayEndFrameByFile: [null, null, null, 270, null],
+    iosRendererByFile: ["svg", "svg", "svg", "svg", "svg"],
+    skipRouteImageWarmup: true,
     segmentRanges: [
       [{ from: 0, to: 224 }],
       [
@@ -746,6 +784,8 @@ const ROUTE_CONFIG = {
       ["After the macula, examine the peripheral\n4 quadrants of the fundus"],
     ],
     segmentTextModeByFile: ["append", "append", "append", "append", "append"],
+    leftAlignedTextFiles: [1, 2],
+    bulletTextFiles: [1, 2],
     strictFrameLockNoFallback: true,
     strictFrameRemountOnBlank: true,
     richSettleContentFiles: [0, 1, 2, 3, 4],
@@ -798,6 +838,8 @@ const ROUTE_CONFIG = {
       ["You should be able to examine\nthe far periphery of the retina"],
     ],
     segmentTextModeByFile: ["append", "append", "append", "append"],
+    leftAlignedTextFiles: [0, 1],
+    bulletTextFiles: [0, 1],
     strictFrameLockNoFallback: true,
     strictFrameRemountOnBlank: true,
     richSettleContentFiles: [0, 1, 2, 3],
@@ -1198,12 +1240,40 @@ async function navigateAdjacentFundalPage(routeName, direction = 1) {
   }
 }
 
-async function navigateToFundalRoute(routeName) {
+function rememberDiabeticWorkshopFolderRestore(folderKey, focusSelector = "") {
+  const normalizedFolder = String(folderKey || "").trim();
+  if (!normalizedFolder) return;
+
+  try {
+    sessionStorage.setItem("diabeticWorkshop:restoreOpenFolder", "1");
+    sessionStorage.setItem("diabeticWorkshop:openFolderKey", normalizedFolder);
+    if (focusSelector) {
+      sessionStorage.setItem(
+        "diabeticWorkshop:focusSelector",
+        String(focusSelector),
+      );
+    }
+  } catch {}
+}
+
+async function navigateToFundalRoute(routeName, options = {}) {
   const targetRoute = String(routeName || "").trim();
   if (!targetRoute) return false;
 
   const targetCfg = resolveFundalRouteConfig(targetRoute);
-  if (!targetCfg?.pageId) return false;
+  if (!targetCfg?.pageId) {
+    rememberDiabeticWorkshopFolderRestore(
+      options.diabeticFolder,
+      options.diabeticFocusSelector,
+    );
+    try {
+      await loadPage(targetRoute);
+      return true;
+    } catch (err) {
+      console.error("[fundalScroll] failed to navigate to route", err);
+      return false;
+    }
+  }
 
   rememberFundalWorkshopFolderRestore();
 
@@ -1224,7 +1294,10 @@ function wireFundalInlineNavigation(page) {
     button.addEventListener("click", (event) => {
       event.preventDefault();
       event.stopPropagation();
-      void navigateToFundalRoute(button.dataset.fundalNavRoute);
+      void navigateToFundalRoute(button.dataset.fundalNavRoute, {
+        diabeticFolder: button.dataset.fundalNavFolder,
+        diabeticFocusSelector: button.dataset.fundalNavFocusSelector,
+      });
     });
   });
 }
@@ -1578,7 +1651,7 @@ function resolveDesktopTopGap(cfg, fileIndex) {
     ? cfg.desktopTopGapByFile[fileIndex]
     : cfg?.desktopTopGap;
   const numeric = Number(raw);
-  if (Number.isFinite(numeric) && numeric >= 0) return numeric;
+  if (Number.isFinite(numeric)) return numeric;
   return 18;
 }
 
@@ -1676,6 +1749,22 @@ function resolveSegmentTextMode(cfg, fileIndex) {
   }
   // Default to append so future segment texts accumulate instead of replacing.
   return "append";
+}
+
+function isSegmentTextFileFlagged(cfg, key, fileIndex) {
+  const raw = cfg?.[key];
+  if (raw === true) return true;
+  if (!Array.isArray(raw)) return false;
+  if (raw[fileIndex] === true) return true;
+  return raw.includes(fileIndex);
+}
+
+function shouldLeftAlignSegmentText(cfg, fileIndex) {
+  return isSegmentTextFileFlagged(cfg, "leftAlignedTextFiles", fileIndex);
+}
+
+function shouldRenderSegmentTextAsBullets(cfg, fileIndex) {
+  return isSegmentTextFileFlagged(cfg, "bulletTextFiles", fileIndex);
 }
 
 function resolveSegmentPauseAfterMs(cfg, fileIndex, segmentIndex) {
@@ -2154,6 +2243,7 @@ function warmupFundalRouteAssets(cfg, options = {}) {
     .trim()
     .toLowerCase();
   const isIdleWarmup = mode === "idle";
+  const skipImageWarmup = cfg.skipRouteImageWarmup === true;
 
   if (isIdleWarmup) {
     primeFundalAsset(LOTTIE_SRC, {
@@ -2177,21 +2267,23 @@ function warmupFundalRouteAssets(cfg, options = {}) {
           fetchPriority: "high",
         },
   );
-  void primeFundalLottieImageAssets(
-    firstDataPath,
-    isIdleWarmup
-      ? {
-          rel: "prefetch",
-          warmup: false,
-        }
-      : {
-          rel: "preload",
-          fetchPriority: "high",
-          warmup: true,
-          warmCount: IS_IOS_WEBKIT ? 8 : 6,
-          awaitWarmup: false,
-        },
-  );
+  if (!skipImageWarmup) {
+    void primeFundalLottieImageAssets(
+      firstDataPath,
+      isIdleWarmup
+        ? {
+            rel: "prefetch",
+            warmup: false,
+          }
+        : {
+            rel: "preload",
+            fetchPriority: "high",
+            warmup: true,
+            warmCount: IS_IOS_WEBKIT ? 8 : 6,
+            awaitWarmup: false,
+          },
+    );
+  }
   if (!shouldSkipStagePoster(cfg, 0)) {
     primeFundalAsset(
       resolveStagePosterPath(firstDataPath),
@@ -2209,10 +2301,12 @@ function warmupFundalRouteAssets(cfg, options = {}) {
   for (let i = 1; i < Math.min(paths.length, 3); i += 1) {
     const path = paths[i];
     primeFundalAsset(path, { rel: "prefetch", as: "fetch" });
-    void primeFundalLottieImageAssets(path, {
-      rel: "prefetch",
-      warmup: false,
-    });
+    if (!skipImageWarmup) {
+      void primeFundalLottieImageAssets(path, {
+        rel: "prefetch",
+        warmup: false,
+      });
+    }
     if (!shouldSkipStagePoster(cfg, i)) {
       primeFundalAsset(resolveStagePosterPath(path), {
         rel: "prefetch",
@@ -2396,6 +2490,7 @@ function buildAnimationSlots(listEl, label, count, cfg = null) {
 
     const item = document.createElement("div");
     item.className = "childhood-fundal-prep-item";
+    item.dataset.fileIndex = String(i);
 
     const stage = document.createElement("div");
     stage.className = "childhood-fundal-prep-stage";
@@ -2403,6 +2498,10 @@ function buildAnimationSlots(listEl, label, count, cfg = null) {
     stage.setAttribute("aria-label", `${label} animation ${i + 1}`);
     stage.dataset.fileIndex = String(i);
     const customAspectRatio = resolveStageAspectRatio(cfg, i);
+    item.style.setProperty(
+      "--fundal-stage-aspect-ratio",
+      customAspectRatio || "1169 / 1280",
+    );
     if (customAspectRatio) {
       stage.style.aspectRatio = customAspectRatio;
       stage.style.setProperty("--fundal-stage-aspect-ratio", customAspectRatio);
@@ -2612,7 +2711,8 @@ function resolveAutoplayPlaybackSegments(cfg, fileIndex, anim, segments = []) {
 
   if (
     (shouldUseLegacySegmentPlaybackForAutoplay(cfg, fileIndex) ||
-      hasConfiguredSegmentPause(cfg, fileIndex, segments.length)) &&
+      hasConfiguredSegmentPause(cfg, fileIndex, segments.length) ||
+      hasConfiguredSegmentPlaybackRate(cfg, fileIndex, segments.length)) &&
     Array.isArray(segments) &&
     segments.length > 0
   ) {
@@ -6933,6 +7033,8 @@ function initializeStageAutoplayMode(
       segmentTextTriggerFrames: [],
       finalSummaryBulletLines: [],
       segmentTextMode: resolveSegmentTextMode(cfg, idx),
+      segmentTextLeftAligned: shouldLeftAlignSegmentText(cfg, idx),
+      segmentTextBullet: shouldRenderSegmentTextAsBullets(cfg, idx),
       segmentTextLines: [],
       currentTextSegmentIndex: -1,
       segments: [],
@@ -6942,6 +7044,7 @@ function initializeStageAutoplayMode(
       started: false,
       completed: false,
       playing: false,
+      activePauseFrame: null,
       lastRenderedFrame: null,
       lastVisibleFrame: null,
       lastVisibleFrameEver: null,
@@ -6952,6 +7055,11 @@ function initializeStageAutoplayMode(
       requireRichContent: shouldRequireRichSettleContent(cfg, idx),
       animationListeners: null,
     };
+
+    segmentTextEl?.classList.toggle(
+      "childhood-fundal-segment-text--left-aligned",
+      state.segmentTextLeftAligned === true,
+    );
 
     state.replayBtn = ensureStageReplayButtonElement(stage, state.replayBtn);
     setStageReplayButtonLabel(state.replayBtn, translateFundalText("Replay"));
@@ -7041,7 +7149,9 @@ function initializeStageAutoplayMode(
       state.segmentTextLines = value ? [value] : [];
     }
 
-    renderFundalTextLines(state.segmentTextEl, state.segmentTextLines);
+    renderFundalTextLines(state.segmentTextEl, state.segmentTextLines, {
+      bullet: state.segmentTextBullet === true,
+    });
   }
 
   function clearStageSegmentText(state) {
@@ -7095,6 +7205,12 @@ function initializeStageAutoplayMode(
 
     if (nextIndex < 0) return;
     if (nextIndex === state.currentTextSegmentIndex) return;
+    if (
+      state.manualSegmentPlayback === true &&
+      nextIndex < state.currentTextSegmentIndex
+    ) {
+      return;
+    }
 
     if (nextIndex < state.currentTextSegmentIndex) {
       applyStageTextUpToIndex(state, nextIndex);
@@ -8085,7 +8201,7 @@ function initializeStageAutoplayMode(
     }
   }
 
-  function playStageSegmentOnce(state, pair) {
+  function playStageSegmentOnce(state, pair, segmentIndex = 0) {
     return new Promise((resolve) => {
       const anim = state?.anim;
       if (!anim) {
@@ -8112,6 +8228,11 @@ function initializeStageAutoplayMode(
       const playbackRate = Math.max(
         0.1,
         resolveFundalE2EPlaybackRate() ??
+          resolveConfiguredSegmentPlaybackRate(
+            cfg,
+            state.fileIndex,
+            segmentIndex,
+          ) ??
           resolveConfiguredFundalPlaybackRate(cfg, state.fileIndex),
       );
       const timeoutMs = Math.max(
@@ -8135,6 +8256,9 @@ function initializeStageAutoplayMode(
       const timeoutId = setTimeout(() => finish(false), timeoutMs);
 
       try {
+        if (typeof anim.setSpeed === "function") {
+          anim.setSpeed(playbackRate);
+        }
         anim.addEventListener("complete", onComplete);
         anim.playSegments([safeFrom, safeTo], true);
       } catch {
@@ -8145,6 +8269,7 @@ function initializeStageAutoplayMode(
 
   async function holdStageAtPauseFrame(state, frame) {
     const safeFrame = clampFrameToAnimation(state, Number(frame));
+    state.activePauseFrame = safeFrame;
     try {
       state.anim?.pause?.();
       state.anim?.goToAndStop?.(safeFrame, true);
@@ -8180,6 +8305,7 @@ function initializeStageAutoplayMode(
       // Keep the previous attempt and fall through to the overlay fallback.
     }
     forceSvgVisibleForController(state);
+    updateStageTextForFrame(state, safeFrame);
     refreshVisibleFrameState(state);
     requestIosStageRepaintNudge(state.stage);
 
@@ -8203,12 +8329,14 @@ function initializeStageAutoplayMode(
         if (!state.playing) return false;
         const pair = playbackPairs[i];
         updateStageTextForFrame(state, pair[0]);
-        await playStageSegmentOnce(state, pair);
+        await playStageSegmentOnce(state, pair, i);
 
         const pauseMs = resolveSegmentPauseAfterMs(cfg, state.fileIndex, i);
         if (pauseMs > 0 && i < playbackPairs.length - 1) {
           await holdStageAtPauseFrame(state, pair[1]);
           await waitFundalDelay(pauseMs);
+          state.activePauseFrame = null;
+          updateStageTextForFrame(state, pair[1]);
           hideRecoveryOverlayWhenStable(state, {
             checks: 2,
             requiredStablePasses: 1,
@@ -8217,6 +8345,8 @@ function initializeStageAutoplayMode(
       }
     } finally {
       state.manualSegmentPlayback = false;
+      state.activePauseFrame = null;
+      applyFundalPlaybackRate(state.anim, cfg, state.fileIndex);
     }
 
     const finalPair = playbackPairs[playbackPairs.length - 1] || null;
@@ -8275,11 +8405,16 @@ function initializeStageAutoplayMode(
       state.fileIndex,
       playbackPairs.length,
     );
+    const shouldPlayWithSegmentRates = hasConfiguredSegmentPlaybackRate(
+      cfg,
+      state.fileIndex,
+      playbackPairs.length,
+    );
 
     try {
       state.anim?.pause();
       state.anim?.goToAndStop(startFrame, true);
-      if (shouldPlayWithPauses) {
+      if (shouldPlayWithPauses || shouldPlayWithSegmentRates) {
         void playStageSegmentsWithPauses(state, playbackPairs);
       } else if (playbackPairs.length > 1) {
         state.anim?.playSegments(playbackPairs, true);
@@ -8425,6 +8560,33 @@ function initializeStageAutoplayMode(
     };
 
     const onEnterFrame = () => {
+      if (
+        state.activePauseFrame != null &&
+        Number.isFinite(Number(state.activePauseFrame))
+      ) {
+        const pauseFrame = clampFrameToAnimation(
+          state,
+          Number(state.activePauseFrame),
+        );
+        const currentFrame = Number(state.anim?.currentFrame);
+        try {
+          state.anim?.pause?.();
+          if (
+            !Number.isFinite(currentFrame) ||
+            Math.abs(currentFrame - pauseFrame) > 0.75
+          ) {
+            state.anim?.goToAndStop?.(pauseFrame, true);
+          }
+        } catch {
+          // Keep the previous rendered frame if the renderer rejects the lock.
+        }
+        forceSvgVisibleForController(state);
+        refreshVisibleFrameState(state);
+        updateStageTextForFrame(state, pauseFrame);
+        updateStageControlAnchors(state);
+        return;
+      }
+
       const currentFrame = refreshVisibleFrameState(state);
       if (state.playing && Number.isFinite(currentFrame)) {
         updateStageTextForFrame(state, currentFrame);
@@ -8711,16 +8873,17 @@ export async function initializeChildhoodFundalReflexScrollPage(routeName) {
   window.I18N?.applyTranslations?.(page);
   warmupFundalRouteAssets(cfg, { mode: "route" });
   const firstDataPath = String(cfg.paths?.[0] || "").trim();
-  const firstStageImageWarmupPromise = firstDataPath
-    ? primeFundalLottieImageAssets(firstDataPath, {
-        rel: "preload",
-        fetchPriority: "high",
-        warmup: true,
-        warmCount: IS_IOS_WEBKIT ? 8 : 6,
-        awaitWarmup: true,
-        timeoutMs: IS_IOS_WEBKIT ? 1200 : 800,
-      }).catch(() => 0)
-    : Promise.resolve(0);
+  const firstStageImageWarmupPromise =
+    firstDataPath && cfg.skipRouteImageWarmup !== true
+      ? primeFundalLottieImageAssets(firstDataPath, {
+          rel: "preload",
+          fetchPriority: "high",
+          warmup: true,
+          warmCount: IS_IOS_WEBKIT ? 8 : 6,
+          awaitWarmup: true,
+          timeoutMs: IS_IOS_WEBKIT ? 1200 : 800,
+        }).catch(() => 0)
+      : Promise.resolve(0);
 
   await new Promise((resolve) => {
     if (typeof requestAnimationFrame === "function") {

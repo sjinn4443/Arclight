@@ -5838,6 +5838,11 @@ select.onb-input.has-value + .onb-select-caret {
 }
 
 #diabeticObservationFundalReflexPage
+  .childhood-fundal-prep-item[data-file-index="2"] {
+  margin-top: -74px;
+}
+
+#diabeticObservationFundalReflexPage
   .childhood-fundal-prep-stage[data-file-index="1"]
   + .childhood-fundal-segment-text
   .childhood-fundal-segment-text__paragraph:nth-child(2) {
@@ -5892,6 +5897,22 @@ select.onb-input.has-value + .onb-select-caret {
   margin: 0 auto;
   max-width: min(88vw, 640px);
   text-align: left;
+}
+
+#diabeticObservationFundalReflexPage
+  .childhood-fundal-prep-stage[data-file-index="3"]
+  + .childhood-fundal-segment-text
+  .childhood-fundal-segment-text__line {
+  white-space: normal;
+}
+
+@media (max-width: 600px) {
+  #diabeticObservationFundalReflexPage
+    .childhood-fundal-prep-stage[data-file-index="3"]
+    + .childhood-fundal-segment-text
+    .childhood-fundal-segment-text__line {
+    white-space: pre-line;
+  }
 }
 
 #diabeticObservationFundalReflexPage
@@ -6250,6 +6271,29 @@ select.onb-input.has-value + .onb-select-caret {
   letter-spacing: 0;
   text-align: center;
   white-space: pre-line;
+}
+
+.childhood-fundal-scroll-page
+  .childhood-fundal-segment-text.childhood-fundal-segment-text--left-aligned {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: min(88vw, 700px) !important;
+  text-align: left;
+}
+
+@media (min-width: 1024px) {
+  .childhood-fundal-scroll-page
+    .childhood-fundal-segment-text.childhood-fundal-segment-text--left-aligned {
+    box-sizing: border-box;
+    width: min(
+      66.6667%,
+      calc(
+        var(--fundal-stage-max-height, 68vh) *
+          (var(--fundal-stage-aspect-ratio, 1169 / 1280))
+      )
+    ) !important;
+    max-width: none !important;
+  }
 }
 
 .childhood-fundal-scroll-page .childhood-fundal-segment-text__line {

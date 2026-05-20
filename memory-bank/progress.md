@@ -18,6 +18,7 @@
 - Diabetic workshop progress/navigation: progress bars update through `public/js/diabeticWorkshopProgress.js`, while `public/js/diabeticWorkshopNextFlow.js` controls cross-route sequencing and folder restore behavior.
 - Diabetic DO scrollytelling: the Direct Ophthalmoscopy folder now launches `Observation and Fundal Reflex`, `Positioning and Flight Path`, and `How to Examine` as Fundal-style Lottie stage-autoplay pages using assets under `public/scrolly/coreexam/ophths/DO/`.
 - Diabetic BIO scrollytelling: the Binocular Indirect Ophthalmoscopy folder now launches `Preparation`, `Fundoscopy Sitting`, and `Fundoscopy with Indentation` as Fundal-style Lottie stage-autoplay pages using assets under `public/scrolly/coreexam/ophths/BIO/`.
+- Diabetic scrollytelling pause/iOS hardening: pause-before-frame playback holds the requested frame, accumulated captions survive completion, heavy BIO routes can use iOS renderer/warmup overrides, and final scrollytelling pages can expose ordinary `< Previous` / `Next >` controls.
 - Diabetic demo quizzes: Videos-route demo quiz pages include matching history to image, findings grouping, connect, retinal-structure tapping, and review-video quiz flows initialized by `public/js/diabeticRetinopathyWorkshop.js`.
 - Diabetic protocol media: NCD/protocol visual assets and low-resolution workshop videos are present under `public/images/learning/Diabetic/Diabetes/NCD/` and `public/videos/Workshop/Diabetic/`.
 - Childhood Fundal Reflex scrollytelling: `childhoodFundal*` routes share the Lottie stage-autoplay engine in `public/js/childhoodFundalPreparation.js`, with route shells in `public/html/childhoodFundal*.html`, route wiring in `config.js`/`main.js`, and shared layout/control styling in `public/style/pages.css`.
@@ -66,6 +67,7 @@ The project is a feature-rich PWA with a strong emphasis on interactive learning
 - Diabetic workshop behavior depends on IDs being synchronized across `diabeticRetinopathyWorkshop.html`, `videos.html`, `videos.js`, `diabeticWorkshopNextFlow.js`, and progress storage keys.
 - Fundal scrollytelling behavior depends on `childhoodFundal*` route shells, `config.js`, `main.js`, `childhoodFundalPreparation.js`, Childhood Workshop mappings, Lottie data files, and `.childhood-fundal-scroll-page` CSS staying synchronized.
 - Fundal Lottie settle/playback has a history of blank-frame regressions; FR06 is the canonical stable baseline and shared-engine changes should be checked with the Fundal regression suite and manual desktop/mobile passes.
+- Diabetic Fundal-style routes need iOS/WebKit checks after renderer, pause, or cache changes because Safari can expose different Lottie timing/direction and memory behavior than desktop Chromium.
 - `.build-cleanup-*` folders can remain after builds on Windows if old output files were locked; they are ignored and can be removed once no build is running.
 - Reports telemetry will appear empty when no DB URL is configured or `DISABLE_DB_STORAGE=1` is set, because current default storage is no-op.
 
