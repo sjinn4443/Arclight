@@ -4690,8 +4690,8 @@ select.onb-input.has-value + .onb-select-caret {
   display: block;
   top: 0;
   bottom: 0;
-  left: 0;
-  width: 48px;
+  right: 0;
+  width: 64px;
 }
 
 .diabetic-case-quiz__overlay-image {
@@ -4919,6 +4919,16 @@ select.onb-input.has-value + .onb-select-caret {
   box-shadow: inset 0 0 0 1px rgba(17, 17, 17, 0.08);
 }
 
+.diabetic-case-quiz__case-summary.is-correct {
+  color: #238b45;
+  box-shadow: inset 0 0 0 1px rgba(35, 139, 69, 0.22);
+}
+
+.diabetic-case-quiz__case-summary.is-wrong {
+  color: #c62828;
+  box-shadow: inset 0 0 0 1px rgba(198, 40, 40, 0.2);
+}
+
 .diabetic-case-quiz__case-summary[hidden] {
   display: none;
 }
@@ -4944,6 +4954,108 @@ select.onb-input.has-value + .onb-select-caret {
 
   .diabetic-case-quiz__option-text {
     font-size: 13px;
+  }
+}
+
+@media (min-width: 1024px) {
+  #diabeticCaseQuizPage > .container.pupils-container {
+    max-width: min(1280px, calc(100vw - 96px)) !important;
+    padding-bottom: 24px;
+  }
+
+  #diabeticCaseQuizPage .eyes-topbar {
+    left: max(48px, calc((100vw - 1280px) / 2));
+    right: max(48px, calc((100vw - 1280px) / 2));
+  }
+
+  .diabetic-case-quiz__shell {
+    display: grid;
+    grid-template-columns: minmax(420px, 1fr) minmax(340px, 0.72fr);
+    grid-template-areas:
+      "title progress"
+      "info question"
+      "stage question"
+      "overlays summary"
+      "overlays submit";
+    column-gap: 24px;
+    row-gap: 10px;
+    align-items: start;
+    padding: 14px 18px 24px;
+  }
+
+  #diabeticCaseQuizTitle {
+    grid-area: title;
+    align-self: end;
+    font-size: 23px;
+  }
+
+  #diabeticCaseQuizInfoCard {
+    grid-area: info;
+    margin-top: 0;
+    padding: 12px 14px;
+  }
+
+  #diabeticCaseQuizProgressLabel {
+    margin-bottom: 8px;
+  }
+
+  #diabeticCaseQuizStage {
+    grid-area: stage;
+    justify-self: center;
+    width: min(100%, calc(100vh - 330px), 620px);
+    margin-top: 0;
+    aspect-ratio: 1 / 1;
+  }
+
+  #diabeticCaseQuizImage {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  #diabeticCaseQuizOverlayControls {
+    grid-area: overlays;
+    margin-top: 0;
+  }
+
+  #diabeticCaseQuizPage .retinal-structure-tap__progress-shell {
+    grid-area: progress;
+    margin-top: 0;
+    align-self: end;
+  }
+
+  .diabetic-case-quiz__question-card {
+    grid-area: question;
+    margin-top: 0;
+    padding: 14px;
+  }
+
+  .diabetic-case-quiz__question {
+    font-size: 18px;
+  }
+
+  .diabetic-case-quiz__options {
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .diabetic-case-quiz__option {
+    padding: 10px 12px;
+  }
+
+  .diabetic-case-quiz__feedback,
+  .diabetic-case-quiz__nav {
+    margin-top: 12px;
+  }
+
+  #diabeticCaseQuizCaseSummary {
+    grid-area: summary;
+    margin-top: 0;
+  }
+
+  #diabeticCaseQuizSubmit {
+    grid-area: submit;
+    margin-top: 0;
   }
 }
 

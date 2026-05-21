@@ -203,18 +203,6 @@ const DIABETIC_CASE_QUIZ_OVERLAYS = Object.freeze([
   "6macula.webp",
 ]);
 
-const DIABETIC_CASE_QUIZ_ORDINALS = Object.freeze([
-  "First",
-  "Second",
-  "Third",
-  "Fourth",
-  "Fifth",
-  "Sixth",
-  "Seventh",
-  "Eighth",
-  "Ninth",
-]);
-
 const DIABETIC_CASE_QUIZ_CASES = Object.freeze([
   {
     id: "case-1",
@@ -295,7 +283,7 @@ const DIABETIC_CASE_QUIZ_CASES = Object.freeze([
         correct: ["Proliferative Diabetic Retinopathy (PDR)"],
         options: [
           "Proliferative Diabetic Retinopathy (PDR)",
-          "Vitreous Haemorrhage > Presume PDR",
+          "Viterous Haemorrhage, Presumably PDR",
           "Maculopathy – sight threatening",
           "Maculopathy - not sight threatening",
         ],
@@ -400,7 +388,7 @@ const DIABETIC_CASE_QUIZ_CASES = Object.freeze([
         correct: ["Proliferative Diabetic Retinopathy (PDR)"],
         options: [
           "Proliferative Diabetic Retinopathy (PDR)",
-          "Vitreous Haemorrhage > Presume PDR",
+          "Viterous Haemorrhage, Presumably PDR",
           "Maculopathy – sight threatening",
           "Maculopathy - not sight threatening",
         ],
@@ -450,7 +438,7 @@ const DIABETIC_CASE_QUIZ_CASES = Object.freeze([
         options: [
           "Pre-retinal haemorrhage, presumably PDR",
           "Proliferative Diabetic Retinopathy (PDR)",
-          "Vitreous Haemorrhage > Presume PDR",
+          "Viterous Haemorrhage, Presumably PDR",
           "Maculopathy – sight threatening",
         ],
       },
@@ -500,7 +488,7 @@ const DIABETIC_CASE_QUIZ_CASES = Object.freeze([
           "Pre-retinal haemorrhage, presumably PDR",
           "Proliferative Diabetic Retinopathy (PDR)",
           "Maculopathy - not sight threatening",
-          "Vitreous Haemorrhage > Presume PDR",
+          "Viterous Haemorrhage, Presumably PDR",
         ],
       },
       {
@@ -544,9 +532,9 @@ const DIABETIC_CASE_QUIZ_CASES = Object.freeze([
         type: "single",
         label: "Diagnosis",
         prompt: "Select the best diagnosis.",
-        correct: ["Vitreous Haemorrhage > Presume PDR"],
+        correct: ["Viterous Haemorrhage, Presumably PDR"],
         options: [
-          "Vitreous Haemorrhage > Presume PDR",
+          "Viterous Haemorrhage, Presumably PDR",
           "Pre-retinal haemorrhage, presumably PDR",
           "Proliferative Diabetic Retinopathy (PDR)",
           "Maculopathy – sight threatening",
@@ -652,7 +640,7 @@ const DIABETIC_CASE_QUIZ_CASES = Object.freeze([
           "Maculopathy – sight threatening",
           "Maculopathy - not sight threatening",
           "Proliferative Diabetic Retinopathy (PDR)",
-          "Vitreous Haemorrhage > Presume PDR",
+          "Viterous Haemorrhage, Presumably PDR",
         ],
       },
       {
@@ -2913,10 +2901,7 @@ function initializeDiabeticCaseQuizPage() {
   };
 
   const renderCaseHeader = () => {
-    const ordinal =
-      DIABETIC_CASE_QUIZ_ORDINALS[state.caseIndex] ||
-      `Case ${state.caseIndex + 1}`;
-    title.textContent = `${ordinal} Case (${state.caseIndex + 1}/${DIABETIC_CASE_QUIZ_CASES.length})`;
+    title.textContent = `Case (${state.caseIndex + 1}/${DIABETIC_CASE_QUIZ_CASES.length})`;
 
     renderPatientInfo();
   };
@@ -3042,9 +3027,17 @@ function initializeDiabeticCaseQuizPage() {
   const renderCaseSummary = () => {
     const result = getCurrentCaseResult();
     caseSummary.hidden = !state.submitted || !result;
-    caseSummary.textContent = result
-      ? `Case score: ${result.correctCount} of 3 correct.`
-      : "";
+    caseSummary.className = "diabetic-case-quiz__case-summary";
+
+    if (!result) {
+      caseSummary.textContent = "";
+      return;
+    }
+
+    const total = result.answers.length || getCurrentCase().questions.length;
+    const isPerfect = result.correctCount === total;
+    caseSummary.classList.add(isPerfect ? "is-correct" : "is-wrong");
+    caseSummary.textContent = `Case score: ${result.correctCount} of ${total} correct.`;
   };
 
   const render = () => {
