@@ -297,6 +297,8 @@ const ROUTE_CONFIG = {
     autoplayLegacySegmentPlaybackByFile: [false, true, false],
     preferLastVisibleCompletionFrameByFile: [false, true, false],
     forceInitialFrameHoldByFile: [0],
+    rendererByFile: [null, "canvas", null],
+    preserveCompletionSnapshotOverlayByFile: [false, true, false],
     segmentRanges: [
       [{ from: 0, to: 329 }],
       [
@@ -1594,6 +1596,22 @@ function resolveRuntimeRouteConfig(routeName, baseCfg) {
 }
 
 function resolveFundalRenderer(cfg, fileIndex) {
+  const rendererOverride = Array.isArray(cfg?.rendererByFile)
+    ? cfg.rendererByFile[fileIndex]
+    : null;
+  const normalizedOverride = String(
+    rendererOverride == null ? "" : rendererOverride,
+  )
+    .trim()
+    .toLowerCase();
+  if (
+    normalizedOverride === "svg" ||
+    normalizedOverride === "canvas" ||
+    normalizedOverride === "html"
+  ) {
+    return normalizedOverride;
+  }
+
   if (!IS_IOS_WEBKIT) return FUNDAL_LOTTIE_RENDERER;
 
   const override = Array.isArray(cfg?.iosRendererByFile)
