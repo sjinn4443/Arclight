@@ -4619,6 +4619,190 @@ select.onb-input.has-value + .onb-select-caret {
   }
 }
 
+.diabetic-case-quiz-page {
+  background: #ededee;
+}
+
+.diabetic-case-quiz__shell {
+  padding: 18px 18px 36px;
+}
+
+.diabetic-case-quiz__info-card {
+  border-radius: 8px;
+}
+
+.diabetic-case-quiz__patient-info {
+  display: grid;
+  gap: 4px;
+}
+
+.diabetic-case-quiz__patient-info p {
+  margin: 0;
+  color: #111111;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.diabetic-case-quiz__stage {
+  margin: 18px 0 0;
+  cursor: default;
+  border-radius: 8px;
+}
+
+.diabetic-case-quiz__overlay-image {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.diabetic-case-quiz__overlay-image[hidden],
+.diabetic-case-quiz__overlay-controls[hidden],
+.diabetic-case-quiz__action[hidden],
+.diabetic-case-quiz__feedback[hidden] {
+  display: none;
+}
+
+.diabetic-case-quiz__overlay-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 12px;
+}
+
+.diabetic-case-quiz__overlay-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 36px;
+  border: none;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #111111;
+  font-family: inherit;
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1;
+  box-shadow: inset 0 0 0 1px rgba(17, 17, 17, 0.12);
+  cursor: pointer;
+}
+
+.diabetic-case-quiz__overlay-button:active {
+  transform: translateY(1px);
+}
+
+.diabetic-case-quiz__overlay-label {
+  color: rgba(17, 17, 17, 0.58);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.diabetic-case-quiz__question-card {
+  margin-top: 16px;
+  border-radius: 8px;
+  padding: 16px;
+  background: #ffffff;
+  box-shadow: 0 12px 22px rgba(17, 17, 17, 0.07);
+}
+
+.diabetic-case-quiz__question {
+  margin: 0;
+  color: #111111;
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.diabetic-case-quiz__options {
+  display: grid;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.diabetic-case-quiz__option {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  border-radius: 8px;
+  padding: 12px 14px;
+  background: #ffffff;
+  box-shadow: inset 0 0 0 1px rgba(17, 17, 17, 0.12);
+  cursor: pointer;
+}
+
+.diabetic-case-quiz__option input {
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  margin: 1px 0 0;
+  accent-color: #e41e26;
+}
+
+.diabetic-case-quiz__option.is-correct {
+  background: rgba(16, 185, 129, 0.12);
+  box-shadow: inset 0 0 0 1px rgba(16, 185, 129, 0.3);
+}
+
+.diabetic-case-quiz__option.is-wrong {
+  background: rgba(228, 30, 38, 0.08);
+  box-shadow: inset 0 0 0 1px rgba(228, 30, 38, 0.22);
+}
+
+.diabetic-case-quiz__option-text {
+  color: #222222;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+.diabetic-case-quiz__feedback {
+  margin-top: 14px;
+  border-radius: 8px;
+  padding: 13px 14px;
+  color: #333333;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.diabetic-case-quiz__feedback.is-correct {
+  background: rgba(16, 185, 129, 0.13);
+  box-shadow: inset 0 0 0 1px rgba(16, 185, 129, 0.18);
+}
+
+.diabetic-case-quiz__feedback.is-wrong {
+  background: rgba(228, 30, 38, 0.1);
+  box-shadow: inset 0 0 0 1px rgba(228, 30, 38, 0.16);
+}
+
+.diabetic-case-quiz__action:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+@media (max-width: 420px) {
+  .diabetic-case-quiz__shell {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .diabetic-case-quiz__question {
+    font-size: 18px;
+  }
+
+  .diabetic-case-quiz__option-text {
+    font-size: 13px;
+  }
+}
+
 .diabetic-review-video-page {
   padding-top: 0;
   background: #ededee;

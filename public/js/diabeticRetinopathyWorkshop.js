@@ -194,6 +194,483 @@ const RETINAL_STRUCTURE_TAP_STEPS = Object.freeze([
   },
 ]);
 
+const DIABETIC_CASE_QUIZ_OVERLAYS = Object.freeze([
+  "1disc.webp",
+  "2upright.webp",
+  "3upleft.webp",
+  "4downleft.webp",
+  "5downright.webp",
+  "6macula.webp",
+]);
+
+const DIABETIC_CASE_QUIZ_ORDINALS = Object.freeze([
+  "First",
+  "Second",
+  "Third",
+  "Fourth",
+  "Fifth",
+  "Sixth",
+  "Seventh",
+  "Eighth",
+  "Ninth",
+]);
+
+const DIABETIC_CASE_QUIZ_CASES = Object.freeze([
+  {
+    id: "case-1",
+    image: "1.png",
+    disc: "Ldisc",
+    patientInfo: [
+      "Age: 47",
+      "Diabetes: 16 years",
+      "Loss of Vision: No",
+      "VA: 6/6",
+    ],
+    questions: [
+      {
+        type: "multi",
+        label: "Signs",
+        prompt: "Select the signs seen in this case.",
+        correct: ["New Vessels at Disc (NVD)", "Dot & Blot Haemorrhage"],
+        options: [
+          "New Vessels at Disc (NVD)",
+          "Dot & Blot Haemorrhage",
+          "Mild hard exudate not involving fovea",
+          "No new vessels",
+        ],
+      },
+      {
+        type: "single",
+        label: "Diagnosis",
+        prompt: "Select the best diagnosis.",
+        correct: ["Proliferative Diabetic Retinopathy (PDR)"],
+        options: [
+          "Proliferative Diabetic Retinopathy (PDR)",
+          "Pre-retinal haemorrhage > presume PDR",
+          "Maculopathy: Sight Threatening",
+          "Maculopathy - not sight threatening",
+        ],
+      },
+      {
+        type: "single",
+        label: "Outcome",
+        prompt: "Select the correct outcome.",
+        correct: ["Refer"],
+        options: [
+          "Refer",
+          "Routine review",
+          "Repeat routine screening",
+          "Reassure",
+        ],
+      },
+    ],
+  },
+  {
+    id: "case-2",
+    image: "2.png",
+    disc: "Rdisc",
+    patientInfo: [
+      "Age: 52",
+      "Diabetes: 11 years",
+      "Loss of Vision: No",
+      "VA: 6/6",
+    ],
+    questions: [
+      {
+        type: "multi",
+        label: "Signs",
+        prompt: "Select the signs seen in this case.",
+        correct: ["New vessels at disc and elsewhere (NVD & NVE)"],
+        options: [
+          "New vessels at disc and elsewhere (NVD & NVE)",
+          "Dark red patch on retina inferiorly",
+          "Microaneurysms",
+          "Mild hard exudate not involving fovea",
+        ],
+      },
+      {
+        type: "single",
+        label: "Diagnosis",
+        prompt: "Select the best diagnosis.",
+        correct: ["PDR"],
+        options: [
+          "PDR",
+          "Vitreous Haemorrhage > Presume PDR",
+          "Maculopathy: Sight Threatening",
+          "Maculopathy - not sight threatening",
+        ],
+      },
+      {
+        type: "single",
+        label: "Outcome",
+        prompt: "Select the correct outcome.",
+        correct: ["Refer"],
+        options: [
+          "Refer",
+          "Routine review",
+          "Repeat routine screening",
+          "Reassure",
+        ],
+      },
+    ],
+  },
+  {
+    id: "case-3",
+    image: "3.png",
+    disc: "Rdisc",
+    patientInfo: [
+      "Age: 31",
+      "Diabetes: 17 years",
+      "Loss of Vision: No",
+      "VA: 6/6",
+    ],
+    questions: [
+      {
+        type: "multi",
+        label: "Signs",
+        prompt: "Select the signs seen in this case.",
+        correct: [
+          "New vessels at disc and elsewhere",
+          "Mild hard exudate close to fovea",
+        ],
+        options: [
+          "New vessels at disc and elsewhere",
+          "Mild hard exudate close to fovea",
+          "Dark red patches on retina",
+          "No new vessels",
+        ],
+      },
+      {
+        type: "single",
+        label: "Diagnosis",
+        prompt: "Select the best diagnosis.",
+        correct: ["PDR"],
+        options: [
+          "PDR",
+          "Pre-retinal haemorrhage > presume PDR",
+          "Maculopathy: Sight Threatening",
+          "Maculopathy - not sight threatening",
+        ],
+      },
+      {
+        type: "single",
+        label: "Outcome",
+        prompt: "Select the correct outcome.",
+        correct: ["Refer"],
+        options: [
+          "Refer",
+          "Routine review",
+          "Repeat routine screening",
+          "Reassure",
+        ],
+      },
+    ],
+  },
+  {
+    id: "case-4",
+    image: "4.png",
+    disc: "Ldisc",
+    patientInfo: [
+      "Age: 41",
+      "Diabetes: 13 years",
+      "Loss of Vision: No",
+      "VA: 6/6",
+    ],
+    questions: [
+      {
+        type: "multi",
+        label: "Signs",
+        prompt: "Select the signs seen in this case.",
+        correct: [
+          "New vessels at disc and elsewhere",
+          "Small area of vitreous haemorrhage",
+          "Tortuous dilated veins",
+        ],
+        options: [
+          "New vessels at disc and elsewhere",
+          "Small area of vitreous haemorrhage",
+          "Tortuous dilated veins",
+          "Hard exudates close to fovea",
+        ],
+      },
+      {
+        type: "single",
+        label: "Diagnosis",
+        prompt: "Select the best diagnosis.",
+        correct: ["PDR"],
+        options: [
+          "PDR",
+          "Vitreous Haemorrhage > Presume PDR",
+          "Maculopathy: Sight Threatening",
+          "Maculopathy - not sight threatening",
+        ],
+      },
+      {
+        type: "single",
+        label: "Outcome",
+        prompt: "Select the correct outcome.",
+        correct: ["Refer"],
+        options: [
+          "Refer",
+          "Routine review",
+          "Repeat routine screening",
+          "Reassure",
+        ],
+      },
+    ],
+  },
+  {
+    id: "case-5",
+    image: "5.png",
+    disc: "Ldisc",
+    patientInfo: [
+      "Age: 57",
+      "Diabetes: 12 years",
+      "Loss of Vision: Sudden painless peripheral visual disturbance",
+      "VA: 6/6",
+    ],
+    questions: [
+      {
+        type: "multi",
+        label: "Signs",
+        prompt: "Select the signs seen in this case.",
+        correct: ["Dark red patch on retina inferiorly"],
+        options: [
+          "Dark red patch on retina inferiorly",
+          "Dot & Blot Haemorrhage",
+          "Mild hard exudate close to fovea",
+          "Tortuous dilated veins",
+        ],
+      },
+      {
+        type: "single",
+        label: "Diagnosis",
+        prompt: "Select the best diagnosis.",
+        correct: ["Pre-retinal haemorrhage > presume PDR"],
+        options: [
+          "Pre-retinal haemorrhage > presume PDR",
+          "PDR",
+          "Vitreous Haemorrhage > Presume PDR",
+          "Maculopathy: Sight Threatening",
+        ],
+      },
+      {
+        type: "single",
+        label: "Outcome",
+        prompt: "Select the correct outcome.",
+        correct: ["Refer"],
+        options: [
+          "Refer",
+          "Routine review",
+          "Repeat routine screening",
+          "Reassure",
+        ],
+      },
+    ],
+  },
+  {
+    id: "case-6",
+    image: "6.png",
+    disc: "Rdisc",
+    patientInfo: [
+      "Age: 43",
+      "Diabetes: 15 years",
+      "Loss of Vision: Sudden painless patches of vision missing",
+      "VA: 6/6",
+    ],
+    questions: [
+      {
+        type: "multi",
+        label: "Signs",
+        prompt: "Select the signs seen in this case.",
+        correct: ["Dark red patches on retina"],
+        options: [
+          "Dark red patches on retina",
+          "Dark red patch on retina inferiorly",
+          "Hard exudates close to fovea",
+          "New Vessels at Disc (NVD)",
+        ],
+      },
+      {
+        type: "single",
+        label: "Diagnosis",
+        prompt: "Select the best diagnosis.",
+        correct: ["Pre-retinal haemorrhage > presume PDR"],
+        options: [
+          "Pre-retinal haemorrhage > presume PDR",
+          "PDR",
+          "Maculopathy - not sight threatening",
+          "Proliferative Diabetic Retinopathy (PDR)",
+        ],
+      },
+      {
+        type: "single",
+        label: "Outcome",
+        prompt: "Select the correct outcome.",
+        correct: ["Refer"],
+        options: [
+          "Refer",
+          "Routine review",
+          "Repeat routine screening",
+          "Reassure",
+        ],
+      },
+    ],
+  },
+  {
+    id: "case-7",
+    image: "7.png",
+    disc: "Rdisc",
+    patientInfo: [
+      "Age: 38",
+      "Diabetes: 20 years",
+      "Loss of Vision: Yes sudden painless",
+      "VA: PL",
+    ],
+    questions: [
+      {
+        type: "multi",
+        label: "Signs",
+        prompt: "Select the signs seen in this case.",
+        correct: ["Loss of fundal reflex. No retinal detail seen."],
+        options: [
+          "Loss of fundal reflex. No retinal detail seen.",
+          "No new vessels",
+          "Microaneurysms",
+          "Mild hard exudate not involving fovea",
+        ],
+      },
+      {
+        type: "single",
+        label: "Diagnosis",
+        prompt: "Select the best diagnosis.",
+        correct: ["Vitreous Haemorrhage > Presume PDR"],
+        options: [
+          "Vitreous Haemorrhage > Presume PDR",
+          "Pre-retinal haemorrhage > presume PDR",
+          "PDR",
+          "Maculopathy: Sight Threatening",
+        ],
+      },
+      {
+        type: "single",
+        label: "Outcome",
+        prompt: "Select the correct outcome.",
+        correct: ["Refer"],
+        options: [
+          "Refer",
+          "Routine review",
+          "Repeat routine screening",
+          "Reassure",
+        ],
+      },
+    ],
+  },
+  {
+    id: "case-8",
+    image: "8.png",
+    disc: "Rdisc",
+    patientInfo: [
+      "Age: 44",
+      "Diabetes: 8 years",
+      "Loss of Vision: No",
+      "VA: 6/6",
+    ],
+    questions: [
+      {
+        type: "multi",
+        label: "Signs",
+        prompt: "Select the signs seen in this case.",
+        correct: ["Mild hard exudate not involving fovea"],
+        options: [
+          "Mild hard exudate not involving fovea",
+          "Mild hard exudate close to fovea",
+          "New vessels at disc and elsewhere",
+          "Dot & Blot Haemorrhage",
+        ],
+      },
+      {
+        type: "single",
+        label: "Diagnosis",
+        prompt: "Select the best diagnosis.",
+        correct: ["Maculopathy - not sight threatening"],
+        options: [
+          "Maculopathy - not sight threatening",
+          "Maculopathy: Sight Threatening",
+          "PDR",
+          "Pre-retinal haemorrhage > presume PDR",
+        ],
+      },
+      {
+        type: "single",
+        label: "Outcome",
+        prompt: "Select the correct outcome.",
+        correct: ["Routine review"],
+        options: [
+          "Routine review",
+          "Refer",
+          "Repeat routine screening",
+          "Reassure",
+        ],
+      },
+    ],
+  },
+  {
+    id: "case-9",
+    image: "9.png",
+    disc: "Ldisc",
+    patientInfo: [
+      "Age: 54",
+      "Diabetes: 20 years",
+      "Loss of Vision: Yes, painless and gradual over 1 year",
+      "VA: 6/36",
+    ],
+    questions: [
+      {
+        type: "multi",
+        label: "Signs",
+        prompt: "Select the signs seen in this case.",
+        correct: [
+          "Microaneurysms",
+          "Dot-blot haemorrhages",
+          "Hard exudates close to fovea",
+          "No new vessels",
+        ],
+        options: [
+          "Microaneurysms",
+          "Dot-blot haemorrhages",
+          "Hard exudates close to fovea",
+          "No new vessels",
+        ],
+      },
+      {
+        type: "single",
+        label: "Diagnosis",
+        prompt: "Select the best diagnosis.",
+        correct: ["Maculopathy: Sight Threatening"],
+        options: [
+          "Maculopathy: Sight Threatening",
+          "Maculopathy - not sight threatening",
+          "PDR",
+          "Vitreous Haemorrhage > Presume PDR",
+        ],
+      },
+      {
+        type: "single",
+        label: "Outcome",
+        prompt: "Select the correct outcome.",
+        correct: ["Refer"],
+        options: [
+          "Refer",
+          "Routine review",
+          "Repeat routine screening",
+          "Reassure",
+        ],
+      },
+    ],
+  },
+]);
+
 const REVIEW_VIDEO_QUIZ_OPTIONS = Object.freeze([
   "Margin",
   "Neuro-retinal rim",
@@ -2230,6 +2707,396 @@ function initializeRetinalStructureTapPage() {
   resetQuiz();
 }
 
+function initializeDiabeticCaseQuizPage() {
+  const page = document.getElementById("diabeticCaseQuizPage");
+  if (!page || page.dataset.inited === "1") return;
+
+  const title = page.querySelector("#diabeticCaseQuizTitle");
+  const progress = page.querySelector("#diabeticCaseQuizProgress");
+  const progressLabel = page.querySelector("#diabeticCaseQuizProgressLabel");
+  const patientInfo = page.querySelector("#diabeticCaseQuizPatientInfo");
+  const image = page.querySelector("#diabeticCaseQuizImage");
+  const overlay = page.querySelector("#diabeticCaseQuizOverlay");
+  const overlayControls = page.querySelector(
+    "#diabeticCaseQuizOverlayControls",
+  );
+  const overlayLabel = page.querySelector("#diabeticCaseQuizOverlayLabel");
+  const prevOverlay = page.querySelector("#diabeticCaseQuizPrevOverlay");
+  const nextOverlay = page.querySelector("#diabeticCaseQuizNextOverlay");
+  const questionLabel = page.querySelector("#diabeticCaseQuizQuestionLabel");
+  const question = page.querySelector("#diabeticCaseQuizQuestion");
+  const options = page.querySelector("#diabeticCaseQuizOptions");
+  const feedback = page.querySelector("#diabeticCaseQuizFeedback");
+  const submitButton = page.querySelector("#diabeticCaseQuizSubmit");
+  const nextButton = page.querySelector("#diabeticCaseQuizNext");
+  const resultsModal = page.querySelector("#diabeticCaseQuizResultsModal");
+  const resultsSummary = page.querySelector("#diabeticCaseQuizResultsSummary");
+  const resultsList = page.querySelector("#diabeticCaseQuizResultsList");
+  const resultsCloseButtons = page.querySelectorAll(
+    "[data-diabetic-case-results-close]",
+  );
+
+  if (
+    !title ||
+    !progress ||
+    !progressLabel ||
+    !patientInfo ||
+    !image ||
+    !overlay ||
+    !overlayControls ||
+    !overlayLabel ||
+    !prevOverlay ||
+    !nextOverlay ||
+    !questionLabel ||
+    !question ||
+    !options ||
+    !feedback ||
+    !submitButton ||
+    !nextButton ||
+    !resultsModal ||
+    !resultsSummary ||
+    !resultsList
+  ) {
+    return;
+  }
+
+  page.dataset.inited = "1";
+
+  const state = {
+    caseIndex: 0,
+    questionIndex: 0,
+    overlayIndex: 0,
+    selected: new Set(),
+    answers: [],
+    hasSubmitted: false,
+    isComplete: false,
+  };
+
+  const totalQuestions = DIABETIC_CASE_QUIZ_CASES.reduce(
+    (sum, caseItem) => sum + caseItem.questions.length,
+    0,
+  );
+
+  const getCurrentCase = () => DIABETIC_CASE_QUIZ_CASES[state.caseIndex];
+
+  const getCurrentQuestion = () => {
+    const caseItem = getCurrentCase();
+    return caseItem?.questions[state.questionIndex] || null;
+  };
+
+  const setModalState = (modal, isOpen) => {
+    modal.classList.toggle("is-open", isOpen);
+    modal.setAttribute("aria-hidden", isOpen ? "false" : "true");
+  };
+
+  const openResultsModal = () => setModalState(resultsModal, true);
+  const closeResultsModal = () => setModalState(resultsModal, false);
+
+  const getOverlaySrc = (caseItem) =>
+    `/images/quiz/workshop/DR/Cases/${caseItem.disc}/${
+      DIABETIC_CASE_QUIZ_OVERLAYS[state.overlayIndex]
+    }`;
+
+  const isSelectionCorrect = (quizQuestion, selectedValues) => {
+    if (selectedValues.length !== quizQuestion.correct.length) return false;
+    return quizQuestion.correct.every((answer) =>
+      selectedValues.includes(answer),
+    );
+  };
+
+  const updateSubmitState = () => {
+    submitButton.disabled = state.hasSubmitted || state.selected.size === 0;
+  };
+
+  const updateLessonProgress = () => {
+    const percent = state.isComplete
+      ? 100
+      : (state.answers.length / totalQuestions) * 90;
+
+    setDiabeticLessonProgress("diabeticCaseQuizPage", percent);
+  };
+
+  const renderProgress = () => {
+    progress.innerHTML = "";
+
+    for (let index = 0; index < 3; index += 1) {
+      const stepEl = document.createElement("span");
+      stepEl.className = "retinal-structure-tap__progress-step";
+      if (index < state.questionIndex || state.isComplete) {
+        stepEl.classList.add("is-complete");
+      } else if (index === state.questionIndex) {
+        stepEl.classList.add("is-active");
+      }
+      progress.appendChild(stepEl);
+    }
+
+    progressLabel.textContent = `Quiz ${state.questionIndex + 1} of 3`;
+  };
+
+  const renderCaseHeader = () => {
+    const caseItem = getCurrentCase();
+    const ordinal =
+      DIABETIC_CASE_QUIZ_ORDINALS[state.caseIndex] ||
+      `Case ${state.caseIndex + 1}`;
+    title.textContent = `${ordinal} Case (${state.caseIndex + 1}/${DIABETIC_CASE_QUIZ_CASES.length})`;
+
+    patientInfo.innerHTML = "";
+    caseItem.patientInfo.forEach((line) => {
+      const item = document.createElement("p");
+      item.textContent = line;
+      patientInfo.appendChild(item);
+    });
+
+    image.src = `/images/quiz/workshop/DR/Cases/${caseItem.image}`;
+    image.alt = `Diabetic retinopathy case ${state.caseIndex + 1}`;
+    overlay.src = getOverlaySrc(caseItem);
+    overlay.hidden = state.hasSubmitted;
+    overlayControls.hidden = state.hasSubmitted;
+    overlayLabel.textContent = `${state.overlayIndex + 1} / ${DIABETIC_CASE_QUIZ_OVERLAYS.length}`;
+  };
+
+  const renderOptions = () => {
+    const quizQuestion = getCurrentQuestion();
+    options.innerHTML = "";
+
+    quizQuestion.options.forEach((optionText, index) => {
+      const optionId = `diabeticCaseQuiz-${getCurrentCase().id}-${state.questionIndex}-${index}`;
+      const label = document.createElement("label");
+      label.className = "diabetic-case-quiz__option";
+
+      const input = document.createElement("input");
+      input.type = quizQuestion.type === "multi" ? "checkbox" : "radio";
+      input.name = `diabeticCaseQuiz-${getCurrentCase().id}-${state.questionIndex}`;
+      input.value = optionText;
+      input.id = optionId;
+      input.checked = state.selected.has(optionText);
+      input.disabled = state.hasSubmitted;
+
+      const text = document.createElement("span");
+      text.className = "diabetic-case-quiz__option-text";
+      text.textContent = optionText;
+
+      if (state.hasSubmitted) {
+        const isCorrectOption = quizQuestion.correct.includes(optionText);
+        const wasSelected = state.selected.has(optionText);
+        if (isCorrectOption) {
+          label.classList.add("is-correct");
+        } else if (wasSelected) {
+          label.classList.add("is-wrong");
+        }
+      }
+
+      input.addEventListener("change", () => {
+        if (quizQuestion.type === "single") {
+          state.selected = new Set([optionText]);
+        } else if (input.checked) {
+          state.selected.add(optionText);
+        } else {
+          state.selected.delete(optionText);
+        }
+        updateSubmitState();
+      });
+
+      label.setAttribute("for", optionId);
+      label.appendChild(input);
+      label.appendChild(text);
+      options.appendChild(label);
+    });
+  };
+
+  const renderQuestion = () => {
+    const quizQuestion = getCurrentQuestion();
+    questionLabel.textContent = quizQuestion.label;
+    question.textContent = quizQuestion.prompt;
+    renderOptions();
+  };
+
+  const renderFeedback = () => {
+    if (!state.hasSubmitted) {
+      feedback.hidden = true;
+      feedback.textContent = "";
+      feedback.className = "diabetic-case-quiz__feedback";
+      return;
+    }
+
+    const quizQuestion = getCurrentQuestion();
+    const selectedValues = [...state.selected];
+    const correct = isSelectionCorrect(quizQuestion, selectedValues);
+
+    feedback.hidden = false;
+    feedback.className = `diabetic-case-quiz__feedback ${
+      correct ? "is-correct" : "is-wrong"
+    }`;
+    feedback.textContent = correct
+      ? "Correct."
+      : `Correct answer: ${quizQuestion.correct.join("; ")}`;
+  };
+
+  const render = () => {
+    renderProgress();
+    renderCaseHeader();
+    renderQuestion();
+    renderFeedback();
+    updateSubmitState();
+    updateLessonProgress();
+
+    submitButton.hidden = state.hasSubmitted;
+    nextButton.hidden = !state.hasSubmitted;
+
+    if (state.hasSubmitted) {
+      const isLastCase =
+        state.caseIndex === DIABETIC_CASE_QUIZ_CASES.length - 1;
+      const isLastQuestion = state.questionIndex === 2;
+      nextButton.textContent =
+        isLastCase && isLastQuestion ? "See results" : "Next >";
+    }
+  };
+
+  const renderResultsList = () => {
+    const correctCount = state.answers.filter(
+      (answer) => answer.correct,
+    ).length;
+
+    resultsSummary.textContent = `You answered ${correctCount} out of ${totalQuestions} correctly.`;
+    resultsList.innerHTML = "";
+
+    state.answers.forEach((answer, index) => {
+      const row = document.createElement("div");
+      row.className = "retinal-structure-tap__results-row";
+
+      const number = document.createElement("span");
+      number.className = "retinal-structure-tap__results-number";
+      number.textContent = String(index + 1);
+
+      const body = document.createElement("div");
+      body.className = "retinal-structure-tap__results-body";
+
+      const titleEl = document.createElement("p");
+      titleEl.className = "retinal-structure-tap__results-title";
+      titleEl.textContent = `Case ${answer.caseNumber}: ${answer.label}`;
+
+      const copy = document.createElement("p");
+      copy.className = "retinal-structure-tap__results-copy";
+      copy.textContent = `Answer: ${answer.correctAnswers.join("; ")}`;
+
+      const status = document.createElement("span");
+      status.className = "retinal-structure-tap__results-status";
+      if (answer.correct) {
+        status.classList.add("is-correct");
+        status.textContent = "Correct";
+      } else {
+        status.classList.add("is-wrong");
+        status.textContent = "Wrong";
+      }
+
+      body.appendChild(titleEl);
+      body.appendChild(copy);
+      row.appendChild(number);
+      row.appendChild(body);
+      row.appendChild(status);
+      resultsList.appendChild(row);
+    });
+  };
+
+  const resetQuestionState = () => {
+    state.overlayIndex = 0;
+    state.selected = new Set();
+    state.hasSubmitted = false;
+  };
+
+  const resetQuiz = () => {
+    state.caseIndex = 0;
+    state.questionIndex = 0;
+    state.answers = [];
+    state.isComplete = false;
+    resetQuestionState();
+    closeResultsModal();
+    render();
+  };
+
+  prevOverlay.addEventListener("click", () => {
+    if (state.hasSubmitted) return;
+    state.overlayIndex =
+      (state.overlayIndex + DIABETIC_CASE_QUIZ_OVERLAYS.length - 1) %
+      DIABETIC_CASE_QUIZ_OVERLAYS.length;
+    renderCaseHeader();
+  });
+
+  nextOverlay.addEventListener("click", () => {
+    if (state.hasSubmitted) return;
+    state.overlayIndex =
+      (state.overlayIndex + 1) % DIABETIC_CASE_QUIZ_OVERLAYS.length;
+    renderCaseHeader();
+  });
+
+  submitButton.addEventListener("click", () => {
+    if (state.hasSubmitted || state.selected.size === 0) return;
+
+    const quizQuestion = getCurrentQuestion();
+    const selectedValues = [...state.selected];
+    const correct = isSelectionCorrect(quizQuestion, selectedValues);
+
+    state.answers.push({
+      caseNumber: state.caseIndex + 1,
+      label: quizQuestion.label,
+      selected: selectedValues,
+      correctAnswers: quizQuestion.correct,
+      correct,
+    });
+
+    state.hasSubmitted = true;
+    render();
+  });
+
+  nextButton.addEventListener("click", () => {
+    if (!state.hasSubmitted) return;
+
+    const isLastQuestion = state.questionIndex === 2;
+    const isLastCase = state.caseIndex === DIABETIC_CASE_QUIZ_CASES.length - 1;
+
+    if (isLastQuestion && isLastCase) {
+      state.isComplete = true;
+      updateLessonProgress();
+      renderResultsList();
+      openResultsModal();
+      return;
+    }
+
+    if (isLastQuestion) {
+      state.caseIndex += 1;
+      state.questionIndex = 0;
+    } else {
+      state.questionIndex += 1;
+    }
+
+    resetQuestionState();
+    render();
+    try {
+      window.scrollTo(0, 0);
+    } catch {}
+  });
+
+  resultsCloseButtons.forEach((button) => {
+    if (button.dataset.wired === "1") return;
+    button.dataset.wired = "1";
+    button.addEventListener("click", closeResultsModal);
+  });
+
+  resultsModal.addEventListener("click", (event) => {
+    if (event.target === resultsModal) closeResultsModal();
+  });
+
+  if (page.dataset.shownWired !== "1") {
+    page.dataset.shownWired = "1";
+    document.addEventListener("page:shown", (event) => {
+      if (event.detail?.id !== "diabeticCaseQuizPage") return;
+      resetQuiz();
+    });
+  }
+
+  resetQuiz();
+}
+
 function initializeReviewVideoQuizPage() {
   const page = document.getElementById("diabeticReviewVideoQuizPage");
   if (!page || page.dataset.inited === "1") return;
@@ -3286,6 +4153,7 @@ export function initializeDiabeticDemoQuizzes() {
   initializeDiabeticWorkshopProgressInfra();
   initializeHistoryImageMatchPage();
   initializeRetinalStructureTapPage();
+  initializeDiabeticCaseQuizPage();
   initializeReviewVideoQuizPage();
   initializeFindingsGroupTwoPage();
   initializeConnectQuizPage();

@@ -525,7 +525,7 @@ const ROUTE_CONFIG = {
       ],
     ],
     settleFrameOverrides: [[158], [196], [120, 205, 299], [509], [77, 329]],
-    segmentTextTriggerFramesByFile: [null, null, null, null, [0, 78, 137]],
+    segmentTextTriggerFramesByFile: [null, null, null, null, [0, 77, 137]],
     segmentPauseAfterMsByFile: [null, null, null, null, [3000]],
     centerTopBiasByFile: [0, 0, 0, 0, -96],
     desktopTopGapByFile: [18, 18, 18, 18, -24],
@@ -638,15 +638,15 @@ const ROUTE_CONFIG = {
       [{ from: 0, to: 224 }],
       [
         { from: 0, to: 80 },
-        { from: 81, to: 651 },
-        { from: 652, to: 734 },
+        { from: 81, to: 650 },
+        { from: 651, to: 734 },
         { from: 735, to: 794 },
       ],
     ],
-    settleFrameOverrides: [[224], [80, 651, 734, 794]],
+    settleFrameOverrides: [[224], [80, 650, 734, 794]],
     segmentTextTriggerFramesByFile: [
       [0, 0],
-      [0, 126, 652, 735],
+      [0, 118, 651, 735],
     ],
     segmentPauseAfterMsByFile: [null, [4000, 4000, 4000]],
     segmentStartTexts: [
@@ -683,11 +683,13 @@ const ROUTE_CONFIG = {
     playMode: "stageAutoplay",
     segmentPlaybackRateByFile: [null, [1.5, 1]],
     iosRendererByFile: [null, "svg", null, null],
+    centerTopBiasByFile: [0, 0, -96, 0],
+    desktopTopGapByFile: [18, 18, -24, 18],
     segmentRanges: [
       [{ from: 37, to: 239 }],
       [
         { from: 0, to: 392 },
-        { from: 393, to: 599 },
+        { from: 393, to: 598 },
       ],
       [
         { from: 0, to: 183 },
@@ -700,7 +702,7 @@ const ROUTE_CONFIG = {
         { from: 1, to: 119 },
       ],
     ],
-    settleFrameOverrides: [[239], [599], [183, 271, 340, 404], [0, 119]],
+    settleFrameOverrides: [[239], [598], [183, 271, 340, 404], [0, 119]],
     segmentTextTriggerFramesByFile: [null, [0, 393], [0, 184, 272, 341], null],
     segmentPauseAfterMsByFile: [null, null, [3000, 3000, 3000], [2000]],
     segmentStartTexts: [
@@ -741,8 +743,11 @@ const ROUTE_CONFIG = {
     ],
     playMode: "stageAutoplay",
     autoplayEndFrameByFile: [null, null, null, 270, null],
-    iosRendererByFile: ["svg", "svg", "svg", "svg", "svg"],
+    iosRendererByFile: ["canvas", "canvas", "canvas", "canvas", "canvas"],
     skipRouteImageWarmup: true,
+    lazyLoadStageAnimations: true,
+    centerTopBiasByFile: [0, 0, -96, 0, 0],
+    desktopTopGapByFile: [18, 18, -24, 18, 18],
     segmentRanges: [
       [{ from: 0, to: 224 }],
       [
@@ -784,8 +789,8 @@ const ROUTE_CONFIG = {
       ["After the macula, examine the peripheral\n4 quadrants of the fundus"],
     ],
     segmentTextModeByFile: ["append", "append", "append", "append", "append"],
-    leftAlignedTextFiles: [1, 2],
-    bulletTextFiles: [1, 2],
+    leftAlignedTextFiles: [1, 2, 3],
+    bulletTextFiles: [1, 2, 3],
     strictFrameLockNoFallback: true,
     strictFrameRemountOnBlank: true,
     richSettleContentFiles: [0, 1, 2, 3, 4],
@@ -804,6 +809,8 @@ const ROUTE_CONFIG = {
     ],
     playMode: "stageAutoplay",
     playbackRateByFile: [1, 1, 0.5, 1],
+    centerTopBiasByFile: [0, -96, 0, 0],
+    desktopTopGapByFile: [18, -24, 18, 18],
     segmentRanges: [
       [
         { from: 0, to: 14 },
@@ -1765,6 +1772,10 @@ function shouldLeftAlignSegmentText(cfg, fileIndex) {
 
 function shouldRenderSegmentTextAsBullets(cfg, fileIndex) {
   return isSegmentTextFileFlagged(cfg, "bulletTextFiles", fileIndex);
+}
+
+function shouldLazyLoadStageAnimations(cfg) {
+  return cfg?.lazyLoadStageAnimations === true;
 }
 
 function resolveSegmentPauseAfterMs(cfg, fileIndex, segmentIndex) {
@@ -7045,12 +7056,15 @@ function initializeStageAutoplayMode(
       completed: false,
       playing: false,
       activePauseFrame: null,
+      playingSegmentIndex: -1,
+      targetEndFrame: null,
       lastRenderedFrame: null,
       lastVisibleFrame: null,
       lastVisibleFrameEver: null,
       lastRichVisibleFrame: null,
       lastRichVisibleFrameEver: null,
       lastPinnedFrame: null,
+      loading: false,
       minContentAreaRatio: resolveRichSettleMinArea(cfg, idx),
       requireRichContent: shouldRequireRichSettleContent(cfg, idx),
       animationListeners: null,
@@ -7578,6 +7592,14 @@ function initializeStageAutoplayMode(
     centerStageForPlayback(state.stage);
   }
 
+  function alignStageForMobileAdvanceFallback(state) {
+    if (isDesktopViewport() || !state?.stage) return false;
+    const metrics = getScrollHostMetrics();
+    const absoluteTop = getAbsoluteTopForStage(state.stage, metrics);
+    setScrollHostTop(absoluteTop - getTopbarHeight() - 8, metrics);
+    return true;
+  }
+
   function scrollToNextStage(state) {
     if (
       !state ||
@@ -7590,11 +7612,32 @@ function initializeStageAutoplayMode(
     if (!nextState?.stage) return;
 
     hideStageDownArrow(state);
+    ensureStageAnimationLoaded(nextState);
     alignStageForPlayback(nextState);
-    requestAnimationFrame(() => {
+
+    const alignAndStartWhenReady = () => {
+      alignStageForPlayback(nextState);
+      let usedMobileFallback = false;
+      if (!isStateNearViewportCenter(nextState)) {
+        usedMobileFallback = alignStageForMobileAdvanceFallback(nextState);
+      }
       updateAllStageControlAnchors();
+      if (
+        nextState.ready &&
+        !nextState.started &&
+        !states.some((candidate) => candidate.playing) &&
+        isStateNearViewportCenter(nextState)
+      ) {
+        void playStage(nextState, { skipAlign: usedMobileFallback });
+        return;
+      }
       maybeStartEligibleStage();
+    };
+
+    requestAnimationFrame(() => {
+      alignAndStartWhenReady();
     });
+    window.setTimeout(alignAndStartWhenReady, 180);
   }
 
   async function handleAdvanceControlClick(state) {
@@ -7605,6 +7648,19 @@ function initializeStageAutoplayMode(
     }
     if (!shouldShowNextPageAdvanceControl(state)) return;
     await navigateAdjacentFundalPage(routeName, 1);
+  }
+
+  function handleDelegatedAdvanceControlClick(event) {
+    const button = event?.target?.closest?.("[data-fundal-stage-next-btn='1']");
+    if (!button || !page.contains(button)) return;
+    const item = button.closest(".childhood-fundal-prep-item");
+    const fileIndex = Number(item?.dataset?.fileIndex);
+    if (!Number.isInteger(fileIndex)) return;
+    const state = states[fileIndex];
+    if (!state) return;
+    event.preventDefault();
+    event.stopPropagation();
+    void handleAdvanceControlClick(state);
   }
 
   function rememberLockedScrollPosition() {
@@ -7997,6 +8053,17 @@ function initializeStageAutoplayMode(
     const terminalPlaybackSegment = Array.isArray(state?.playbackSegments)
       ? state.playbackSegments[state.playbackSegments.length - 1]
       : null;
+    const resolveCompletionFallbackFrame = (preferredFrame, options = {}) => {
+      if (terminalPlaybackSegment) {
+        return resolveVisibleFrameInsideSegment(
+          state,
+          terminalPlaybackSegment,
+          preferredFrame,
+          options,
+        );
+      }
+      return resolveAnyVisibleFrame(state, preferredFrame, options);
+    };
     const preferredVisibleFrame = resolvePreferredCompletionVisibleFrame(
       state,
       terminalPlaybackSegment,
@@ -8015,15 +8082,19 @@ function initializeStageAutoplayMode(
     }
     forceSvgVisibleForController(state);
 
+    const isExactFrameVisible = !isStageFrameBlank(state);
     const hasRichFrame =
       !state.requireRichContent ||
       hasRichVisibleContent(state, state.minContentAreaRatio);
-    if (!isStageFrameBlank(state) && hasRichFrame) {
+    if (
+      isExactFrameVisible &&
+      (hasRichFrame || shouldUseStrictFrameLockNoFallback(cfg))
+    ) {
       rememberRecoverySnapshot(state, holdFrame);
       return holdFrame;
     }
 
-    const recoveredFrame = resolveAnyVisibleFrame(state, holdFrame, {
+    const recoveredFrame = resolveCompletionFallbackFrame(holdFrame, {
       requireRichContent: state.requireRichContent === true,
       minContentAreaRatio: state.minContentAreaRatio,
     });
@@ -8039,7 +8110,7 @@ function initializeStageAutoplayMode(
       (state.requireRichContent === true &&
         !hasRichVisibleContent(state, state.minContentAreaRatio))
     ) {
-      const visibleFallbackFrame = resolveAnyVisibleFrame(state, holdFrame);
+      const visibleFallbackFrame = resolveCompletionFallbackFrame(holdFrame);
       holdFrame = clampFrameToAnimation(state, visibleFallbackFrame);
       try {
         state.anim?.goToAndStop(holdFrame, true);
@@ -8201,6 +8272,84 @@ function initializeStageAutoplayMode(
     }
   }
 
+  function clearFutureStageRecoverySnapshot(state, maxFrame, segmentIndex) {
+    if (!state) return;
+    const storedFrame = Number(state.recoverySnapshotFrame);
+    const storedSegment = Number(state.recoverySnapshotSegmentIndex);
+    if (
+      (Number.isFinite(storedFrame) && storedFrame > Number(maxFrame) + 1) ||
+      (Number.isFinite(storedSegment) && storedSegment > Number(segmentIndex))
+    ) {
+      state.recoverySnapshotMarkup = "";
+      state.recoverySnapshotCanvasDataUrl = "";
+      state.recoverySnapshotFrame = null;
+      state.recoverySnapshotSegmentIndex = -1;
+    }
+  }
+
+  function rememberStagePlaybackSnapshotNearEnd(
+    state,
+    currentFrame,
+    targetFrame,
+    segmentIndex,
+  ) {
+    const frame = Number(currentFrame);
+    const target = Number(targetFrame);
+    if (!Number.isFinite(frame) || !Number.isFinite(target)) return;
+    if (frame > target + 0.75) return;
+
+    const backoff = Math.max(3, Math.min(18, Math.floor(target * 0.04)));
+    if (frame < target - backoff) return;
+    if (isStageFrameBlank(state)) return;
+
+    state.playingSegmentIndex = segmentIndex;
+    if (rememberRecoverySnapshot(state, frame)) {
+      state.recoverySnapshotSegmentIndex = segmentIndex;
+    }
+  }
+
+  function pinStageAutoplayFrame(state, frame, options = {}) {
+    const safeFrame = clampFrameToAnimation(state, Number(frame));
+    const minContentAreaRatio = Number.isFinite(
+      Number(options.minContentAreaRatio),
+    )
+      ? Math.max(0.01, Number(options.minContentAreaRatio))
+      : state.minContentAreaRatio;
+    const attempts = Number.isFinite(Number(options.attempts))
+      ? Math.floor(Number(options.attempts))
+      : IS_IOS_WEBKIT
+        ? 6
+        : 3;
+
+    const pinned = pinExactFrameWithRecovery(state, safeFrame, {
+      attempts,
+      minContentAreaRatio,
+      allowFrameShift: false,
+    });
+    forceSvgVisibleForController(state);
+    updateStageTextForFrame(state, safeFrame);
+    refreshVisibleFrameState(state);
+
+    if (
+      !pinned.isBlank &&
+      (shouldUseStrictFrameLockNoFallback(cfg) ||
+        !isPinnedFrameUnstable(state, {
+          requireRichContent: state.requireRichContent === true,
+          minContentAreaRatio,
+        }))
+    ) {
+      rememberRecoverySnapshot(state, safeFrame);
+      hideRecoveryOverlayWhenStable(state, {
+        checks: IS_IOS_WEBKIT ? 4 : 2,
+        requiredStablePasses: 1,
+      });
+      return { frame: safeFrame, isBlank: false };
+    }
+
+    showRecoveryOverlay(state);
+    return { frame: safeFrame, isBlank: true };
+  }
+
   function playStageSegmentOnce(state, pair, segmentIndex = 0) {
     return new Promise((resolve) => {
       const anim = state?.anim;
@@ -8212,14 +8361,13 @@ function initializeStageAutoplayMode(
       let settled = false;
       const safeFrom = clampFrameToAnimation(state, Number(pair?.[0]));
       const safeTo = clampFrameToAnimation(state, Number(pair?.[1]));
+      clearFutureStageRecoverySnapshot(state, safeTo, segmentIndex);
+      state.playingSegmentIndex = segmentIndex;
+      state.targetEndFrame = safeTo;
       if (safeFrom === safeTo) {
-        try {
-          anim.goToAndStop(safeFrom, true);
-          forceSvgVisibleForController(state);
-          refreshVisibleFrameState(state);
-        } catch {
-          // If an exact hold frame fails, let the caller continue gracefully.
-        }
+        pinStageAutoplayFrame(state, safeFrom, {
+          attempts: IS_IOS_WEBKIT ? 6 : 3,
+        });
         resolve(true);
         return;
       }
@@ -8249,10 +8397,36 @@ function initializeStageAutoplayMode(
         } catch {
           // Ignore cleanup failures from renderer teardown.
         }
+        try {
+          anim.removeEventListener("enterFrame", onEnterFrame);
+        } catch {
+          // Ignore cleanup failures from renderer teardown.
+        }
+        try {
+          anim.pause?.();
+        } catch {}
+        pinStageAutoplayFrame(state, safeTo, {
+          attempts: IS_IOS_WEBKIT ? 6 : 3,
+        });
         resolve(value);
       };
 
       const onComplete = () => finish(true);
+      const onEnterFrame = () => {
+        const currentFrame = refreshVisibleFrameState(state);
+        if (Number.isFinite(Number(currentFrame))) {
+          updateStageTextForFrame(state, currentFrame);
+          rememberStagePlaybackSnapshotNearEnd(
+            state,
+            currentFrame,
+            safeTo,
+            segmentIndex,
+          );
+        }
+        if (Number(currentFrame) >= safeTo - 0.25) {
+          finish(true);
+        }
+      };
       const timeoutId = setTimeout(() => finish(false), timeoutMs);
 
       try {
@@ -8260,6 +8434,11 @@ function initializeStageAutoplayMode(
           anim.setSpeed(playbackRate);
         }
         anim.addEventListener("complete", onComplete);
+        anim.addEventListener("enterFrame", onEnterFrame);
+        anim.pause?.();
+        anim.goToAndStop(safeFrom, true);
+        forceSvgVisibleForController(state);
+        updateStageTextForFrame(state, safeFrom);
         anim.playSegments([safeFrom, safeTo], true);
       } catch {
         finish(false);
@@ -8270,43 +8449,16 @@ function initializeStageAutoplayMode(
   async function holdStageAtPauseFrame(state, frame) {
     const safeFrame = clampFrameToAnimation(state, Number(frame));
     state.activePauseFrame = safeFrame;
-    try {
-      state.anim?.pause?.();
-      state.anim?.goToAndStop?.(safeFrame, true);
-    } catch {
-      // Continue into recovery checks if the renderer rejects an exact seek.
-    }
-
-    forceSvgVisibleForController(state);
-    updateStageTextForFrame(state, safeFrame);
-    refreshVisibleFrameState(state);
+    pinStageAutoplayFrame(state, safeFrame, {
+      attempts: IS_IOS_WEBKIT ? 8 : 4,
+    });
     requestIosStageRepaintNudge(state.stage);
 
     await waitForFundalE2ERenderStability(2);
 
-    forceSvgVisibleForController(state);
-    refreshVisibleFrameState(state);
-    if (
-      !isStageFrameBlank(state) &&
-      (state.requireRichContent !== true ||
-        hasRichVisibleContent(state, state.minContentAreaRatio))
-    ) {
-      rememberRecoverySnapshot(state, safeFrame);
-      hideRecoveryOverlayWhenStable(state, {
-        checks: 2,
-        requiredStablePasses: 1,
-      });
-      return safeFrame;
-    }
-
-    try {
-      state.anim?.goToAndStop?.(safeFrame, true);
-    } catch {
-      // Keep the previous attempt and fall through to the overlay fallback.
-    }
-    forceSvgVisibleForController(state);
-    updateStageTextForFrame(state, safeFrame);
-    refreshVisibleFrameState(state);
+    pinStageAutoplayFrame(state, safeFrame, {
+      attempts: IS_IOS_WEBKIT ? 8 : 4,
+    });
     requestIosStageRepaintNudge(state.stage);
 
     if (!isStageFrameBlank(state)) {
@@ -8346,6 +8498,8 @@ function initializeStageAutoplayMode(
     } finally {
       state.manualSegmentPlayback = false;
       state.activePauseFrame = null;
+      state.playingSegmentIndex = -1;
+      state.targetEndFrame = null;
       applyFundalPlaybackRate(state.anim, cfg, state.fileIndex);
     }
 
@@ -8357,7 +8511,7 @@ function initializeStageAutoplayMode(
     return true;
   }
 
-  async function playStage(state, { replay = false } = {}) {
+  async function playStage(state, { replay = false, skipAlign = false } = {}) {
     if (!state?.ready || state.failed || state.playing) return false;
     if (states.some((candidate) => candidate.playing)) return false;
     if (!replay && state.started) return false;
@@ -8371,11 +8525,14 @@ function initializeStageAutoplayMode(
 
     state.started = true;
     state.playing = true;
+    ensureAdjacentStageAnimationLoaded(state);
     hideAllStageDownArrows();
     hideRecoveryOverlay(state, { immediate: true });
     clearStageSegmentText(state);
     hideStageControls(state);
-    alignStageForPlayback(state);
+    if (!skipAlign) {
+      alignStageForPlayback(state);
+    }
     setPlaybackScrollLocked(true);
 
     const playbackSegments =
@@ -8460,7 +8617,11 @@ function initializeStageAutoplayMode(
       return;
     }
 
-    if (!nextState.ready || !isStateNearViewportCenter(nextState)) return;
+    if (!nextState.ready) {
+      ensureStageAnimationLoaded(nextState);
+      return;
+    }
+    if (!isStateNearViewportCenter(nextState)) return;
     void playStage(nextState);
   }
 
@@ -8510,8 +8671,10 @@ function initializeStageAutoplayMode(
     });
   }
 
-  states.forEach((state) => {
+  function ensureStageAnimationLoaded(state) {
+    if (!state || state.anim || state.loading) return;
     resolveStageSummary(state);
+    state.loading = true;
 
     const anim = window.lottie.loadAnimation({
       container: state.stage,
@@ -8525,10 +8688,10 @@ function initializeStageAutoplayMode(
       },
     });
     applyFundalPlaybackRate(anim, cfg, state.fileIndex);
-
     state.anim = anim;
 
     const onReady = () => {
+      state.loading = false;
       state.segments = resolveSegmentsForFile(cfg, state.fileIndex, anim);
       state.playbackSegments = resolveAutoplayPlaybackSegments(
         cfg,
@@ -8548,10 +8711,15 @@ function initializeStageAutoplayMode(
           scrollToFirstStageStart();
           maybeStartEligibleStage();
         });
+      } else {
+        requestAnimationFrame(() => {
+          maybeStartEligibleStage();
+        });
       }
     };
 
     const onDataFailed = () => {
+      state.loading = false;
       state.failed = true;
       console.error(
         "[fundalScroll] animation data failed:",
@@ -8610,7 +8778,22 @@ function initializeStageAutoplayMode(
       onEnterFrame,
       onComplete,
     };
-  });
+  }
+
+  function ensureAdjacentStageAnimationLoaded(state) {
+    if (!shouldLazyLoadStageAnimations(cfg)) return;
+    const nextState = states[Number(state?.fileIndex) + 1];
+    if (nextState) ensureStageAnimationLoaded(nextState);
+  }
+
+  if (shouldRestoreCompletedRoute) {
+    states.forEach((state) => ensureStageAnimationLoaded(state));
+  } else if (shouldLazyLoadStageAnimations(cfg)) {
+    ensureStageAnimationLoaded(states[0]);
+    ensureStageAnimationLoaded(states[1]);
+  } else {
+    states.forEach((state) => ensureStageAnimationLoaded(state));
+  }
 
   function serializeFundalE2EStageState(state) {
     if (!state) return null;
@@ -8721,6 +8904,7 @@ function initializeStageAutoplayMode(
   });
 
   cleanupLegacyTopbarReplay(page);
+  page.addEventListener("click", handleDelegatedAdvanceControlClick);
   window.addEventListener("touchstart", rememberBoundaryTouchPoint, {
     passive: true,
   });
@@ -8786,6 +8970,7 @@ function initializeStageAutoplayMode(
       window.removeEventListener("resize", onViewportChange);
       window.removeEventListener("pageshow", onViewportChange);
       window.removeEventListener("orientationchange", onViewportChange);
+      page.removeEventListener("click", handleDelegatedAdvanceControlClick);
       states.forEach((state) => {
         cancelStagePosterHideCheck(state);
         cancelArrowEnsure(state);
