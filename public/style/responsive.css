@@ -508,6 +508,27 @@ input {
   .lang-install__body {
     margin-top: 93px;
   }
+
+  .diabetic-case-quiz__stage[data-case-image="5"]
+    .diabetic-case-quiz__overlay-image--ldisc-1disc {
+    width: 136%;
+    height: 119%;
+    margin-top: -52px;
+    margin-left: -72px;
+  }
+
+  .diabetic-case-quiz__stage[data-case-image="6"]
+    .diabetic-case-quiz__overlay-image--rdisc-1disc {
+    width: 111%;
+    height: 122%;
+    margin-top: -90px;
+    margin-left: -29px;
+  }
+
+  .diabetic-case-quiz__stage[data-case-image="9"][data-disc="Ldisc"][data-overlay="1disc"]
+    .diabetic-case-quiz__overlay-image--ldisc-1disc {
+    margin-left: -51px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
