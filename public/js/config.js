@@ -26,6 +26,8 @@ export const ROUTES = {
   casestudy: "html/casestudy.html",
   childhoodEyeScreeningWorkshop: "html/childhoodEyeScreeningWorkshop.html",
   fundalReflexPdf: "/html/fundalReflexPdf.html",
+  directOphthalmoscopyPdf: "html/fundalReflexPdf.html",
+  binocularIndirectOphthalmoscopyPdf: "html/fundalReflexPdf.html",
   visualsystemeyesbrain: "html/visualsystemeyesbrain.html",
   childhoodAssessment: "html/childhoodAssessment.html",
   behavioursquiz: "html/behavioursquiz.html",

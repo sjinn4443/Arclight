@@ -1079,6 +1079,19 @@ const VIDEO_PAGE_SOURCES = {
     },
   },
 
+  binocularIndirectOphthalmoscopyVideoPage: {
+    key: "videoMode:binocularIndirectOphthalmoscopyVideoPage",
+    containerSelector: "#binocularIndirectOphthalmoscopyVideoContainer",
+    videoSelector: "#binocularIndirectOphthalmoscopyVideo",
+    sources: {
+      low: "videos/Tools/BIOvideo_220p.mp4",
+      high: "videos/Tools/BIOvideo_720p.mp4",
+      online: "https://www.youtube.com/watch?v=XrczPv4HkwY",
+    },
+    onlineTitle: "Binocular Indirect Ophthalmoscopy (online)",
+    iframeClass: "videos-yt-bio",
+  },
+
   glaucomaPupilReactionsVideoPage: {
     key: "videoMode:glaucomaPupilReactionsVideoPage",
     videoMode: "triToggle",

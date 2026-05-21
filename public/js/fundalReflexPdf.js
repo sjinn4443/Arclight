@@ -133,6 +133,53 @@ function setupPanZoomForStage(viewerEl, stageEl, opts = {}) {
   apply();
 }
 
+function initImagePdfPage(pageId, viewerId, imgSrc) {
+  showOnlyPage(pageId);
+  const page = document.getElementById(pageId);
+  if (!page) return;
+
+  const viewer = page.querySelector(`#${viewerId}`);
+  if (!viewer) return;
+
+  if (viewer.dataset.inited !== "1") {
+    viewer.dataset.inited = "1";
+    viewer.textContent = "";
+
+    const stage = document.createElement("div");
+    stage.className = "workshop-pdf-stage";
+    stage.style.position = "absolute";
+    stage.style.left = "0";
+    stage.style.top = "0";
+    stage.style.width = "100%";
+
+    const img = document.createElement("img");
+    img.src = imgSrc;
+    img.alt = page.getAttribute("data-pdf-title") || "PDF";
+    img.draggable = false;
+    img.style.display = "block";
+    img.style.width = "100%";
+    img.style.height = "auto";
+    img.style.maxWidth = "none";
+    img.style.userSelect = "none";
+    img.style.webkitUserDrag = "none";
+    img.style.pointerEvents = "none";
+
+    stage.appendChild(img);
+    viewer.appendChild(stage);
+    setupPanZoomForStage(viewer, stage);
+  }
+
+  viewer.style.position = "relative";
+  viewer.style.left = "auto";
+  viewer.style.right = "auto";
+  viewer.style.top = "auto";
+  viewer.style.bottom = "auto";
+  viewer.style.width = "100%";
+  viewer.style.height = "calc(100vh - 62px)";
+  viewer.style.overflow = "hidden";
+  viewer.style.background = "#fff";
+}
+
 export function initializeFundalReflexPdf() {
   showOnlyPage("fundalReflexPdfPage");
   const page = document.getElementById("fundalReflexPdfPage");
@@ -312,12 +359,6 @@ export function initializeFundalReflexPdf() {
       const d = dist(pts[0], pts[1]);
       if (!pinchStartDist) return;
 
-      const rect = viewer.getBoundingClientRect();
-      const c = center(
-        { x: pts[0].x - rect.left, y: pts[0].y - rect.top },
-        { x: pts[1].x - rect.left, y: pts[1].y - rect.top },
-      );
-
       const nextScale = clampScale(pinchStartScale * (d / pinchStartDist));
       const prevScale = scale;
 
@@ -429,5 +470,21 @@ export function initializeAtomsHandout2() {
     "atomsHandout2Page",
     "atomsHandout2Viewer",
     "images/pdf/Workshop/Childhood/AtomsHandout2.png",
+  );
+}
+
+export function initializeDirectOphthalmoscopyPdf() {
+  initImagePdfPage(
+    "directOphthalmoscopyPdfPage",
+    "directOphthalmoscopyPdfViewer",
+    "images/pdf/Workshop/DO/DO.png",
+  );
+}
+
+export function initializeBinocularIndirectOphthalmoscopyPdf() {
+  initImagePdfPage(
+    "binocularIndirectOphthalmoscopyPdfPage",
+    "binocularIndirectOphthalmoscopyPdfViewer",
+    "images/pdf/Workshop/BIO/BIO.png",
   );
 }

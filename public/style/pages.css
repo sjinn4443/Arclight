@@ -4639,9 +4639,17 @@ select.onb-input.has-value + .onb-select-caret {
 .diabetic-case-quiz__patient-info p {
   margin: 0;
   color: #111111;
-  font-size: 15px;
-  font-weight: 700;
+  font-size: 14px;
+  font-weight: 400;
   line-height: 1.35;
+}
+
+.diabetic-case-quiz__patient-info strong {
+  font-weight: 800;
+}
+
+.diabetic-case-quiz__patient-info span {
+  margin-left: 4px;
 }
 
 .diabetic-case-quiz__stage {
@@ -4650,14 +4658,87 @@ select.onb-input.has-value + .onb-select-caret {
   border-radius: 8px;
 }
 
+.diabetic-case-quiz__stage::before,
+.diabetic-case-quiz__stage::after {
+  content: "";
+  position: absolute;
+  z-index: 4;
+  display: none;
+  background: #000000;
+  pointer-events: none;
+}
+
+.diabetic-case-quiz__stage[data-case-image="6"][data-disc="Rdisc"][data-overlay="1disc"]::before {
+  display: block;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 30px;
+}
+
+.diabetic-case-quiz__stage[data-case-image="6"][data-disc="Rdisc"][data-overlay="1disc"]::after {
+  display: block;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 44px;
+}
+
+.diabetic-case-quiz__stage[data-case-image="9"][data-disc="Ldisc"]:not(
+    [data-overlay="6macula"]
+  )::before {
+  display: block;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 48px;
+}
+
 .diabetic-case-quiz__overlay-image {
   position: absolute;
   inset: 0;
+  z-index: 2;
   display: block;
   width: 100%;
   height: 100%;
   object-fit: contain;
   pointer-events: none;
+}
+
+.diabetic-case-quiz__overlay-image--ldisc-4downleft {
+  width: 113%;
+  margin-left: -36px;
+}
+
+.diabetic-case-quiz__overlay-image--rdisc-2upright {
+  width: 116%;
+}
+
+.diabetic-case-quiz__overlay-image--rdisc-5downright {
+  width: 118%;
+}
+
+.diabetic-case-quiz__stage[data-case-image="5"]
+  .diabetic-case-quiz__overlay-image--ldisc-1disc {
+  width: 120%;
+  height: 110%;
+  margin-top: -25px;
+  margin-left: -46px;
+}
+
+.diabetic-case-quiz__stage[data-case-image="6"]
+  .diabetic-case-quiz__overlay-image--rdisc-1disc {
+  width: 107%;
+  height: 122%;
+  margin-top: -64px;
+  margin-left: -29px;
+}
+
+.diabetic-case-quiz__stage[data-case-image="9"][data-disc="Ldisc"]:not(
+    [data-overlay="6macula"]
+  )
+  .diabetic-case-quiz__overlay-image {
+  margin-left: -53px;
 }
 
 .diabetic-case-quiz__overlay-image[hidden],
@@ -4721,6 +4802,18 @@ select.onb-input.has-value + .onb-select-caret {
   line-height: 1.2;
 }
 
+.diabetic-case-quiz__question-hint {
+  margin: 8px 0 0;
+  color: rgba(17, 17, 17, 0.58);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.diabetic-case-quiz__question-hint[hidden] {
+  display: none;
+}
+
 .diabetic-case-quiz__options {
   display: grid;
   gap: 10px;
@@ -4781,6 +4874,57 @@ select.onb-input.has-value + .onb-select-caret {
 .diabetic-case-quiz__feedback.is-wrong {
   background: rgba(228, 30, 38, 0.1);
   box-shadow: inset 0 0 0 1px rgba(228, 30, 38, 0.16);
+}
+
+.diabetic-case-quiz__nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.diabetic-case-quiz__nav-button {
+  border: none;
+  border-radius: 8px;
+  padding: 12px 14px;
+  min-height: 44px;
+  background: #ffffff;
+  color: #111111;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.2;
+  box-shadow: inset 0 0 0 1px rgba(17, 17, 17, 0.14);
+  cursor: pointer;
+}
+
+.diabetic-case-quiz__nav-button:disabled {
+  opacity: 0.42;
+  cursor: default;
+}
+
+.diabetic-case-quiz__nav-button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.diabetic-case-quiz__case-summary {
+  margin: 12px 0 0;
+  border-radius: 8px;
+  padding: 12px 14px;
+  background: #ffffff;
+  color: #111111;
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.35;
+  box-shadow: inset 0 0 0 1px rgba(17, 17, 17, 0.08);
+}
+
+.diabetic-case-quiz__case-summary[hidden] {
+  display: none;
+}
+
+.diabetic-case-quiz__submit {
+  margin-top: 12px;
 }
 
 .diabetic-case-quiz__action:disabled {
@@ -6065,14 +6209,14 @@ select.onb-input.has-value + .onb-select-caret {
 #diabeticObservationFundalReflexPage
   .childhood-fundal-prep-stage[data-file-index="1"]
   + .childhood-fundal-segment-text {
-  padding-bottom: 6px;
+  padding-bottom: 58px;
 }
 
 #diabeticObservationFundalReflexPage
   .childhood-fundal-prep-stage[data-file-index="1"]
   + .childhood-fundal-segment-text
   + .childhood-fundal-scroll-down-arrow {
-  top: calc(100% - 8px);
+  top: calc(100% + 12px);
 }
 
 #diabeticObservationFundalReflexPage

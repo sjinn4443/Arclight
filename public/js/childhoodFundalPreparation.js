@@ -634,19 +634,21 @@ const ROUTE_CONFIG = {
       "/scrolly/coreexam/ophths/DO/03HowtoExamine/2/data.json",
     ],
     playMode: "stageAutoplay",
+    centerTopBiasByFile: [0, -170],
+    desktopTopGapByFile: [18, -24],
     segmentRanges: [
       [{ from: 0, to: 224 }],
       [
         { from: 0, to: 80 },
         { from: 81, to: 650 },
-        { from: 651, to: 734 },
-        { from: 735, to: 794 },
+        { from: 651, to: 669 },
+        { from: 750, to: 794 },
       ],
     ],
-    settleFrameOverrides: [[224], [80, 650, 734, 794]],
+    settleFrameOverrides: [[224], [80, 650, 669, 794]],
     segmentTextTriggerFramesByFile: [
       [0, 0],
-      [0, 118, 651, 735],
+      [0, 134, 651, 750],
     ],
     segmentPauseAfterMsByFile: [null, [4000, 4000, 4000]],
     segmentStartTexts: [
@@ -673,6 +675,7 @@ const ROUTE_CONFIG = {
     pageId: "diabeticBioPreparationPage",
     label: "Preparation",
     enableReplay: true,
+    persistentSettleSnapshotOverlay: true,
     segmentTextToggleOnTitle: true,
     paths: [
       "/scrolly/coreexam/fundalreflex/prep/1/data.json",
@@ -682,7 +685,14 @@ const ROUTE_CONFIG = {
     ],
     playMode: "stageAutoplay",
     segmentPlaybackRateByFile: [null, [1.5, 1]],
-    iosRendererByFile: [null, "svg", null, null],
+    iosRendererByFile: [null, "svg", "svg", null],
+    preserveCompletionSnapshotOverlayByFile: [false, true, true, false],
+    completionSnapshotImageByFile: [
+      null,
+      "/scrolly/coreexam/ophths/BIO/01Preparation/1/final_frame.png",
+      "/scrolly/coreexam/ophths/BIO/01Preparation/3/final_frame.png",
+      null,
+    ],
     centerTopBiasByFile: [0, 0, -96, 0],
     desktopTopGapByFile: [18, 18, -24, 18],
     segmentRanges: [
@@ -703,7 +713,7 @@ const ROUTE_CONFIG = {
       ],
     ],
     settleFrameOverrides: [[239], [598], [183, 271, 340, 404], [0, 119]],
-    segmentTextTriggerFramesByFile: [null, [0, 393], [0, 184, 272, 341], null],
+    segmentTextTriggerFramesByFile: [null, [0, 393], [0, 184, 301, 341], null],
     segmentPauseAfterMsByFile: [null, null, [3000, 3000, 3000], [2000]],
     segmentStartTexts: [
       ["Wash hands"],
@@ -733,6 +743,8 @@ const ROUTE_CONFIG = {
     pageId: "diabeticBioFundoscopySittingPage",
     label: "Fundoscopy Sitting",
     enableReplay: true,
+    persistentSettleSnapshotOverlay: true,
+    disableCompletedRouteRestore: true,
     segmentTextToggleOnTitle: true,
     paths: [
       "/scrolly/coreexam/ophths/DO/03HowtoExamine/1/data.json",
@@ -742,8 +754,17 @@ const ROUTE_CONFIG = {
       "/scrolly/coreexam/ophths/BIO/02FundoscopySitting/5/data.json",
     ],
     playMode: "stageAutoplay",
+    lazyInitialStageCount: 1,
     autoplayEndFrameByFile: [null, null, null, 270, null],
-    iosRendererByFile: ["canvas", "canvas", "canvas", "canvas", "canvas"],
+    iosRendererByFile: ["canvas", "canvas", "svg", "canvas", "canvas"],
+    preserveCompletionSnapshotOverlayByFile: [false, false, true, false, false],
+    completionSnapshotImageByFile: [
+      null,
+      null,
+      "/scrolly/coreexam/ophths/BIO/02FundoscopySitting/3/final_frame.png",
+      null,
+      null,
+    ],
     skipRouteImageWarmup: true,
     lazyLoadStageAnimations: true,
     centerTopBiasByFile: [0, 0, -96, 0, 0],
@@ -817,17 +838,18 @@ const ROUTE_CONFIG = {
         { from: 15, to: 104 },
       ],
       [
-        { from: 0, to: 0 },
-        { from: 1, to: 29 },
-        { from: 30, to: 86 },
+        { from: 0, to: 29 },
+        { from: 30, to: 60 },
+        { from: 61, to: 86 },
         { from: 87, to: 104 },
       ],
       [{ from: 0, to: 134 }],
       [{ from: 0, to: 299 }],
     ],
-    settleFrameOverrides: [[14, 104], [0, 29, 86, 104], [134], [299]],
-    segmentTextTriggerFramesByFile: [[0, 15], [0, 30, 87, 87], null, null],
-    segmentPauseAfterMsByFile: [[3000], [1500, 3000, 3000]],
+    settleFrameOverrides: [[14, 104], [29, 60, 86, 104], [134], [299]],
+    segmentTextTriggerFramesByFile: [[0, 15], [0, 30, 61, 87], null, null],
+    segmentPlaybackRateByFile: [null, [1, 0.8, 0.8, 0.45], null, null],
+    segmentPauseAfterMsByFile: [[3000], [1500, 2600, 2600]],
     segmentStartTexts: [
       [
         "If the patient is lying down, you can also perform scleral indentation",
@@ -835,8 +857,8 @@ const ROUTE_CONFIG = {
       ],
       [
         "Ask the patient to look in the opposite area being examined",
-        "Place the indenter on the area to be indented,",
-        "ask the patient to look towards the area being examined and apply gentle pressure",
+        "Place the indenter on the area to be indented",
+        "Ask the patient to look towards the area being examined and apply gentle pressure",
         "This example shows the examination of the superior retina",
       ],
       [
@@ -2768,6 +2790,14 @@ function shouldPreserveCompletionSnapshotOverlay(cfg, fileIndex) {
   return rule === true;
 }
 
+function resolveCompletionSnapshotImage(cfg, fileIndex) {
+  const raw = Array.isArray(cfg?.completionSnapshotImageByFile)
+    ? cfg.completionSnapshotImageByFile[fileIndex]
+    : null;
+  const value = String(raw == null ? "" : raw).trim();
+  return value || "";
+}
+
 function isStrictSegmentEndHold(cfg) {
   return cfg?.strictSegmentEndHold !== false;
 }
@@ -3556,6 +3586,7 @@ function ensureRecoveryOverlay(controller) {
 function showRecoveryOverlay(controller) {
   const overlay = ensureRecoveryOverlay(controller);
   if (!overlay) return false;
+  controller.preserveRecoveryOverlay = false;
 
   if (Number.isFinite(controller?.recoveryOverlayClearTimer)) {
     clearTimeout(controller.recoveryOverlayClearTimer);
@@ -3584,12 +3615,55 @@ function showRecoveryOverlay(controller) {
   return true;
 }
 
+function showRecoveryImageOverlay(controller, imageUrl) {
+  const safeUrl = String(imageUrl || "").trim();
+  if (!safeUrl) return false;
+
+  const overlay = ensureRecoveryOverlay(controller);
+  if (!overlay) return false;
+
+  if (Number.isFinite(controller?.recoveryOverlayClearTimer)) {
+    clearTimeout(controller.recoveryOverlayClearTimer);
+    controller.recoveryOverlayClearTimer = null;
+  }
+
+  const img = document.createElement("img");
+  img.src = safeUrl;
+  img.alt = "";
+  img.setAttribute("aria-hidden", "true");
+  img.decoding = "sync";
+  img.loading = "eager";
+  img.style.display = "block";
+  img.style.width = "100%";
+  img.style.height = "100%";
+  img.style.objectFit = "contain";
+  img.style.objectPosition = "center";
+  img.style.pointerEvents = "none";
+
+  overlay.replaceChildren(img);
+  overlay.style.visibility = "visible";
+  overlay.style.opacity = "1";
+  controller.recoveryOverlayVisible = true;
+  controller.preserveRecoveryOverlay = true;
+  return true;
+}
+
 function hideRecoveryOverlay(controller, options = {}) {
   const overlay = controller?.recoveryOverlayEl;
   if (!overlay) return;
   const immediate = options?.immediate === true;
+  if (
+    controller?.preserveRecoveryOverlay &&
+    !immediate &&
+    options?.force !== true
+  ) {
+    return;
+  }
 
   controller.recoveryOverlayVisible = false;
+  if (immediate || options?.force === true) {
+    controller.preserveRecoveryOverlay = false;
+  }
   if (Number.isFinite(controller?.recoveryOverlayClearTimer)) {
     clearTimeout(controller.recoveryOverlayClearTimer);
     controller.recoveryOverlayClearTimer = null;
@@ -6954,8 +7028,11 @@ function initializeStageAutoplayMode(
   const forceStartEntry = crossPageEntryEdge === "start";
   const forceEndEntry = crossPageEntryEdge === "end";
   const shouldRestoreCompletedRoute =
-    forceEndEntry ||
-    (!forceStartEntry && isStoredChildhoodWorkshopRouteComplete(cfg.pageId));
+    cfg.disableCompletedRouteRestore === true
+      ? false
+      : forceEndEntry ||
+        (!forceStartEntry &&
+          isStoredChildhoodWorkshopRouteComplete(cfg.pageId));
 
   let routeCompleteDispatched = false;
   let firstStageStartQueued = shouldRestoreCompletedRoute;
@@ -8159,7 +8236,15 @@ function initializeStageAutoplayMode(
       );
       rememberRecoverySnapshot(state, currentFrame);
       state.anim?.pause?.();
-      showRecoveryOverlay(state);
+      const snapshotImage = resolveCompletionSnapshotImage(
+        cfg,
+        state.fileIndex,
+      );
+      if (snapshotImage) {
+        showRecoveryImageOverlay(state, snapshotImage);
+      } else {
+        showRecoveryOverlay(state);
+      }
       state.lastPinnedFrame = currentFrame;
     } else {
       state.lastPinnedFrame = resolveCompletionHoldFrame(state);
@@ -8789,8 +8874,18 @@ function initializeStageAutoplayMode(
   if (shouldRestoreCompletedRoute) {
     states.forEach((state) => ensureStageAnimationLoaded(state));
   } else if (shouldLazyLoadStageAnimations(cfg)) {
-    ensureStageAnimationLoaded(states[0]);
-    ensureStageAnimationLoaded(states[1]);
+    const initialStageCount = Math.max(
+      1,
+      Math.min(
+        states.length,
+        Number.isFinite(Number(cfg.lazyInitialStageCount))
+          ? Math.floor(Number(cfg.lazyInitialStageCount))
+          : 2,
+      ),
+    );
+    for (let idx = 0; idx < initialStageCount; idx += 1) {
+      ensureStageAnimationLoaded(states[idx]);
+    }
   } else {
     states.forEach((state) => ensureStageAnimationLoaded(state));
   }

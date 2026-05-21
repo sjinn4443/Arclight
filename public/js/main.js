@@ -17,6 +17,8 @@ import {
   initializeFundalReflexPdf,
   initializeAtomsHandout1,
   initializeAtomsHandout2,
+  initializeDirectOphthalmoscopyPdf,
+  initializeBinocularIndirectOphthalmoscopyPdf,
 } from "./fundalReflexPdf.js";
 import { initializeGlaucomaQuizCaseStudy } from "./glaucomaQuizCaseStudy.js";
 import { captureClientError, installSafeConsole } from "./safe-logging.js";
@@ -206,6 +208,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (routeName === "fundalReflexPdf") {
       initializeFundalReflexPdf();
+      return;
+    }
+
+    if (routeName === "directOphthalmoscopyPdf") {
+      initializeDirectOphthalmoscopyPdf();
+      return;
+    }
+
+    if (routeName === "binocularIndirectOphthalmoscopyPdf") {
+      initializeBinocularIndirectOphthalmoscopyPdf();
       return;
     }
 

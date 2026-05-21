@@ -246,8 +246,8 @@ const DIABETIC_CASE_QUIZ_CASES = Object.freeze([
         correct: ["Proliferative Diabetic Retinopathy (PDR)"],
         options: [
           "Proliferative Diabetic Retinopathy (PDR)",
-          "Pre-retinal haemorrhage > presume PDR",
-          "Maculopathy: Sight Threatening",
+          "Pre-retinal haemorrhage, presumably PDR",
+          "Maculopathy – sight threatening",
           "Maculopathy - not sight threatening",
         ],
       },
@@ -292,11 +292,11 @@ const DIABETIC_CASE_QUIZ_CASES = Object.freeze([
         type: "single",
         label: "Diagnosis",
         prompt: "Select the best diagnosis.",
-        correct: ["PDR"],
+        correct: ["Proliferative Diabetic Retinopathy (PDR)"],
         options: [
-          "PDR",
+          "Proliferative Diabetic Retinopathy (PDR)",
           "Vitreous Haemorrhage > Presume PDR",
-          "Maculopathy: Sight Threatening",
+          "Maculopathy – sight threatening",
           "Maculopathy - not sight threatening",
         ],
       },
@@ -344,11 +344,11 @@ const DIABETIC_CASE_QUIZ_CASES = Object.freeze([
         type: "single",
         label: "Diagnosis",
         prompt: "Select the best diagnosis.",
-        correct: ["PDR"],
+        correct: ["Proliferative Diabetic Retinopathy (PDR)"],
         options: [
-          "PDR",
-          "Pre-retinal haemorrhage > presume PDR",
-          "Maculopathy: Sight Threatening",
+          "Proliferative Diabetic Retinopathy (PDR)",
+          "Pre-retinal haemorrhage, presumably PDR",
+          "Maculopathy – sight threatening",
           "Maculopathy - not sight threatening",
         ],
       },
@@ -397,11 +397,11 @@ const DIABETIC_CASE_QUIZ_CASES = Object.freeze([
         type: "single",
         label: "Diagnosis",
         prompt: "Select the best diagnosis.",
-        correct: ["PDR"],
+        correct: ["Proliferative Diabetic Retinopathy (PDR)"],
         options: [
-          "PDR",
+          "Proliferative Diabetic Retinopathy (PDR)",
           "Vitreous Haemorrhage > Presume PDR",
-          "Maculopathy: Sight Threatening",
+          "Maculopathy – sight threatening",
           "Maculopathy - not sight threatening",
         ],
       },
@@ -446,12 +446,12 @@ const DIABETIC_CASE_QUIZ_CASES = Object.freeze([
         type: "single",
         label: "Diagnosis",
         prompt: "Select the best diagnosis.",
-        correct: ["Pre-retinal haemorrhage > presume PDR"],
+        correct: ["Pre-retinal haemorrhage, presumably PDR"],
         options: [
-          "Pre-retinal haemorrhage > presume PDR",
-          "PDR",
+          "Pre-retinal haemorrhage, presumably PDR",
+          "Proliferative Diabetic Retinopathy (PDR)",
           "Vitreous Haemorrhage > Presume PDR",
-          "Maculopathy: Sight Threatening",
+          "Maculopathy – sight threatening",
         ],
       },
       {
@@ -495,12 +495,12 @@ const DIABETIC_CASE_QUIZ_CASES = Object.freeze([
         type: "single",
         label: "Diagnosis",
         prompt: "Select the best diagnosis.",
-        correct: ["Pre-retinal haemorrhage > presume PDR"],
+        correct: ["Pre-retinal haemorrhage, presumably PDR"],
         options: [
-          "Pre-retinal haemorrhage > presume PDR",
-          "PDR",
-          "Maculopathy - not sight threatening",
+          "Pre-retinal haemorrhage, presumably PDR",
           "Proliferative Diabetic Retinopathy (PDR)",
+          "Maculopathy - not sight threatening",
+          "Vitreous Haemorrhage > Presume PDR",
         ],
       },
       {
@@ -547,9 +547,9 @@ const DIABETIC_CASE_QUIZ_CASES = Object.freeze([
         correct: ["Vitreous Haemorrhage > Presume PDR"],
         options: [
           "Vitreous Haemorrhage > Presume PDR",
-          "Pre-retinal haemorrhage > presume PDR",
-          "PDR",
-          "Maculopathy: Sight Threatening",
+          "Pre-retinal haemorrhage, presumably PDR",
+          "Proliferative Diabetic Retinopathy (PDR)",
+          "Maculopathy – sight threatening",
         ],
       },
       {
@@ -596,9 +596,9 @@ const DIABETIC_CASE_QUIZ_CASES = Object.freeze([
         correct: ["Maculopathy - not sight threatening"],
         options: [
           "Maculopathy - not sight threatening",
-          "Maculopathy: Sight Threatening",
-          "PDR",
-          "Pre-retinal haemorrhage > presume PDR",
+          "Maculopathy – sight threatening",
+          "Proliferative Diabetic Retinopathy (PDR)",
+          "Pre-retinal haemorrhage, presumably PDR",
         ],
       },
       {
@@ -647,11 +647,11 @@ const DIABETIC_CASE_QUIZ_CASES = Object.freeze([
         type: "single",
         label: "Diagnosis",
         prompt: "Select the best diagnosis.",
-        correct: ["Maculopathy: Sight Threatening"],
+        correct: ["Maculopathy – sight threatening"],
         options: [
-          "Maculopathy: Sight Threatening",
+          "Maculopathy – sight threatening",
           "Maculopathy - not sight threatening",
-          "PDR",
+          "Proliferative Diabetic Retinopathy (PDR)",
           "Vitreous Haemorrhage > Presume PDR",
         ],
       },
@@ -2712,6 +2712,7 @@ function initializeDiabeticCaseQuizPage() {
   if (!page || page.dataset.inited === "1") return;
 
   const title = page.querySelector("#diabeticCaseQuizTitle");
+  const stage = page.querySelector("#diabeticCaseQuizStage");
   const progress = page.querySelector("#diabeticCaseQuizProgress");
   const progressLabel = page.querySelector("#diabeticCaseQuizProgressLabel");
   const patientInfo = page.querySelector("#diabeticCaseQuizPatientInfo");
@@ -2725,10 +2726,13 @@ function initializeDiabeticCaseQuizPage() {
   const nextOverlay = page.querySelector("#diabeticCaseQuizNextOverlay");
   const questionLabel = page.querySelector("#diabeticCaseQuizQuestionLabel");
   const question = page.querySelector("#diabeticCaseQuizQuestion");
+  const questionHint = page.querySelector("#diabeticCaseQuizQuestionHint");
   const options = page.querySelector("#diabeticCaseQuizOptions");
   const feedback = page.querySelector("#diabeticCaseQuizFeedback");
-  const submitButton = page.querySelector("#diabeticCaseQuizSubmit");
+  const previousButton = page.querySelector("#diabeticCaseQuizPrevious");
   const nextButton = page.querySelector("#diabeticCaseQuizNext");
+  const caseSummary = page.querySelector("#diabeticCaseQuizCaseSummary");
+  const submitButton = page.querySelector("#diabeticCaseQuizSubmit");
   const resultsModal = page.querySelector("#diabeticCaseQuizResultsModal");
   const resultsSummary = page.querySelector("#diabeticCaseQuizResultsSummary");
   const resultsList = page.querySelector("#diabeticCaseQuizResultsList");
@@ -2738,6 +2742,7 @@ function initializeDiabeticCaseQuizPage() {
 
   if (
     !title ||
+    !stage ||
     !progress ||
     !progressLabel ||
     !patientInfo ||
@@ -2749,10 +2754,13 @@ function initializeDiabeticCaseQuizPage() {
     !nextOverlay ||
     !questionLabel ||
     !question ||
+    !questionHint ||
     !options ||
     !feedback ||
-    !submitButton ||
+    !previousButton ||
     !nextButton ||
+    !caseSummary ||
+    !submitButton ||
     !resultsModal ||
     !resultsSummary ||
     !resultsList
@@ -2766,10 +2774,12 @@ function initializeDiabeticCaseQuizPage() {
     caseIndex: 0,
     questionIndex: 0,
     overlayIndex: 0,
-    selected: new Set(),
-    answers: [],
-    hasSubmitted: false,
+    selections: [],
+    caseResults: [],
+    submitted: false,
     isComplete: false,
+    renderedCaseIndex: -1,
+    renderedOverlayKey: "",
   };
 
   const totalQuestions = DIABETIC_CASE_QUIZ_CASES.reduce(
@@ -2784,6 +2794,21 @@ function initializeDiabeticCaseQuizPage() {
     return caseItem?.questions[state.questionIndex] || null;
   };
 
+  const createEmptySelections = () =>
+    getCurrentCase().questions.map(() => new Set());
+
+  const getCurrentSelection = () => {
+    if (!state.selections[state.questionIndex]) {
+      state.selections[state.questionIndex] = new Set();
+    }
+    return state.selections[state.questionIndex];
+  };
+
+  const getCurrentCaseResult = () => state.caseResults[state.caseIndex] || null;
+
+  const getCurrentQuestionResult = () =>
+    getCurrentCaseResult()?.answers[state.questionIndex] || null;
+
   const setModalState = (modal, isOpen) => {
     modal.classList.toggle("is-open", isOpen);
     modal.setAttribute("aria-hidden", isOpen ? "false" : "true");
@@ -2792,10 +2817,15 @@ function initializeDiabeticCaseQuizPage() {
   const openResultsModal = () => setModalState(resultsModal, true);
   const closeResultsModal = () => setModalState(resultsModal, false);
 
-  const getOverlaySrc = (caseItem) =>
-    `/images/quiz/workshop/DR/Cases/${caseItem.disc}/${
-      DIABETIC_CASE_QUIZ_OVERLAYS[state.overlayIndex]
-    }`;
+  const getOverlayFile = () => DIABETIC_CASE_QUIZ_OVERLAYS[state.overlayIndex];
+
+  const getOverlaySrc = (caseItem, overlayFile = getOverlayFile()) =>
+    `/images/quiz/workshop/DR/Cases/${caseItem.disc}/${overlayFile}`;
+
+  const toOverlayClassToken = (caseItem, overlayFile = getOverlayFile()) =>
+    `${caseItem.disc}-${overlayFile.replace(/\.[^.]+$/, "")}`
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-");
 
   const isSelectionCorrect = (quizQuestion, selectedValues) => {
     if (selectedValues.length !== quizQuestion.correct.length) return false;
@@ -2804,14 +2834,33 @@ function initializeDiabeticCaseQuizPage() {
     );
   };
 
+  const hasAnsweredAllCurrentCaseQuestions = () =>
+    getCurrentCase().questions.every(
+      (_, index) => state.selections[index]?.size > 0,
+    );
+
   const updateSubmitState = () => {
-    submitButton.disabled = state.hasSubmitted || state.selected.size === 0;
+    if (state.submitted) {
+      submitButton.disabled = false;
+      submitButton.textContent =
+        state.caseIndex === DIABETIC_CASE_QUIZ_CASES.length - 1
+          ? "See results"
+          : "Next case >";
+      return;
+    }
+
+    submitButton.textContent = "Submit";
+    submitButton.disabled = !hasAnsweredAllCurrentCaseQuestions();
   };
 
   const updateLessonProgress = () => {
+    const answeredCount = state.caseResults.reduce(
+      (sum, result) => sum + (result?.answers?.length || 0),
+      0,
+    );
     const percent = state.isComplete
       ? 100
-      : (state.answers.length / totalQuestions) * 90;
+      : (answeredCount / totalQuestions) * 90;
 
     setDiabeticLessonProgress("diabeticCaseQuizPage", percent);
   };
@@ -2822,9 +2871,14 @@ function initializeDiabeticCaseQuizPage() {
     for (let index = 0; index < 3; index += 1) {
       const stepEl = document.createElement("span");
       stepEl.className = "retinal-structure-tap__progress-step";
-      if (index < state.questionIndex || state.isComplete) {
+      if (
+        state.submitted ||
+        state.isComplete ||
+        state.selections[index]?.size > 0
+      ) {
         stepEl.classList.add("is-complete");
-      } else if (index === state.questionIndex) {
+      }
+      if (index === state.questionIndex) {
         stepEl.classList.add("is-active");
       }
       progress.appendChild(stepEl);
@@ -2833,30 +2887,73 @@ function initializeDiabeticCaseQuizPage() {
     progressLabel.textContent = `Quiz ${state.questionIndex + 1} of 3`;
   };
 
-  const renderCaseHeader = () => {
+  const renderPatientInfo = () => {
     const caseItem = getCurrentCase();
+    patientInfo.innerHTML = "";
+    caseItem.patientInfo.forEach((line) => {
+      const item = document.createElement("p");
+      const [label, ...rest] = line.split(":");
+      const value = rest.join(":").trim();
+
+      if (label && value) {
+        const labelEl = document.createElement("strong");
+        labelEl.textContent = `${label}:`;
+
+        const valueEl = document.createElement("span");
+        valueEl.textContent = value;
+
+        item.appendChild(labelEl);
+        item.appendChild(valueEl);
+      } else {
+        item.textContent = line;
+      }
+
+      patientInfo.appendChild(item);
+    });
+  };
+
+  const renderCaseHeader = () => {
     const ordinal =
       DIABETIC_CASE_QUIZ_ORDINALS[state.caseIndex] ||
       `Case ${state.caseIndex + 1}`;
     title.textContent = `${ordinal} Case (${state.caseIndex + 1}/${DIABETIC_CASE_QUIZ_CASES.length})`;
 
-    patientInfo.innerHTML = "";
-    caseItem.patientInfo.forEach((line) => {
-      const item = document.createElement("p");
-      item.textContent = line;
-      patientInfo.appendChild(item);
-    });
+    renderPatientInfo();
+  };
 
-    image.src = `/images/quiz/workshop/DR/Cases/${caseItem.image}`;
-    image.alt = `Diabetic retinopathy case ${state.caseIndex + 1}`;
-    overlay.src = getOverlaySrc(caseItem);
-    overlay.hidden = state.hasSubmitted;
-    overlayControls.hidden = state.hasSubmitted;
+  const renderCaseVisual = () => {
+    const caseItem = getCurrentCase();
+    const overlayFile = getOverlayFile();
+    const overlayKey = `${caseItem.id}:${caseItem.disc}:${overlayFile}`;
+
+    if (state.renderedCaseIndex !== state.caseIndex) {
+      image.src = `/images/quiz/workshop/DR/Cases/${caseItem.image}`;
+      image.alt = `Diabetic retinopathy case ${state.caseIndex + 1}`;
+      stage.dataset.caseId = caseItem.id;
+      stage.dataset.caseImage = caseItem.image.replace(/\.[^.]+$/, "");
+      state.renderedCaseIndex = state.caseIndex;
+      state.renderedOverlayKey = "";
+    }
+
+    if (state.renderedOverlayKey !== overlayKey) {
+      overlay.src = getOverlaySrc(caseItem, overlayFile);
+      overlay.className = `diabetic-case-quiz__overlay-image diabetic-case-quiz__overlay-image--${toOverlayClassToken(
+        caseItem,
+        overlayFile,
+      )}`;
+      stage.dataset.overlay = overlayFile.replace(/\.[^.]+$/, "");
+      stage.dataset.disc = caseItem.disc;
+      state.renderedOverlayKey = overlayKey;
+    }
+
+    overlay.hidden = state.submitted;
+    overlayControls.hidden = state.submitted;
     overlayLabel.textContent = `${state.overlayIndex + 1} / ${DIABETIC_CASE_QUIZ_OVERLAYS.length}`;
   };
 
   const renderOptions = () => {
     const quizQuestion = getCurrentQuestion();
+    const selection = getCurrentSelection();
     options.innerHTML = "";
 
     quizQuestion.options.forEach((optionText, index) => {
@@ -2869,16 +2966,16 @@ function initializeDiabeticCaseQuizPage() {
       input.name = `diabeticCaseQuiz-${getCurrentCase().id}-${state.questionIndex}`;
       input.value = optionText;
       input.id = optionId;
-      input.checked = state.selected.has(optionText);
-      input.disabled = state.hasSubmitted;
+      input.checked = selection.has(optionText);
+      input.disabled = state.submitted;
 
       const text = document.createElement("span");
       text.className = "diabetic-case-quiz__option-text";
       text.textContent = optionText;
 
-      if (state.hasSubmitted) {
+      if (state.submitted) {
         const isCorrectOption = quizQuestion.correct.includes(optionText);
-        const wasSelected = state.selected.has(optionText);
+        const wasSelected = selection.has(optionText);
         if (isCorrectOption) {
           label.classList.add("is-correct");
         } else if (wasSelected) {
@@ -2888,12 +2985,13 @@ function initializeDiabeticCaseQuizPage() {
 
       input.addEventListener("change", () => {
         if (quizQuestion.type === "single") {
-          state.selected = new Set([optionText]);
+          state.selections[state.questionIndex] = new Set([optionText]);
         } else if (input.checked) {
-          state.selected.add(optionText);
+          selection.add(optionText);
         } else {
-          state.selected.delete(optionText);
+          selection.delete(optionText);
         }
+        renderProgress();
         updateSubmitState();
       });
 
@@ -2908,59 +3006,69 @@ function initializeDiabeticCaseQuizPage() {
     const quizQuestion = getCurrentQuestion();
     questionLabel.textContent = quizQuestion.label;
     question.textContent = quizQuestion.prompt;
+    questionHint.textContent =
+      quizQuestion.type === "multi"
+        ? "More than one answer may be correct."
+        : "";
+    questionHint.hidden = quizQuestion.type !== "multi";
     renderOptions();
   };
 
   const renderFeedback = () => {
-    if (!state.hasSubmitted) {
+    if (!state.submitted) {
       feedback.hidden = true;
       feedback.textContent = "";
       feedback.className = "diabetic-case-quiz__feedback";
       return;
     }
 
-    const quizQuestion = getCurrentQuestion();
-    const selectedValues = [...state.selected];
-    const correct = isSelectionCorrect(quizQuestion, selectedValues);
+    const answer = getCurrentQuestionResult();
+    if (!answer) return;
 
     feedback.hidden = false;
     feedback.className = `diabetic-case-quiz__feedback ${
-      correct ? "is-correct" : "is-wrong"
+      answer.correct ? "is-correct" : "is-wrong"
     }`;
-    feedback.textContent = correct
+    feedback.textContent = answer.correct
       ? "Correct."
-      : `Correct answer: ${quizQuestion.correct.join("; ")}`;
+      : `Correct answer: ${answer.correctAnswers.join("; ")}`;
+  };
+
+  const renderQuestionNav = () => {
+    previousButton.disabled = state.questionIndex === 0;
+    nextButton.disabled = state.questionIndex === 2;
+  };
+
+  const renderCaseSummary = () => {
+    const result = getCurrentCaseResult();
+    caseSummary.hidden = !state.submitted || !result;
+    caseSummary.textContent = result
+      ? `Case score: ${result.correctCount} of 3 correct.`
+      : "";
   };
 
   const render = () => {
     renderProgress();
     renderCaseHeader();
+    renderCaseVisual();
     renderQuestion();
     renderFeedback();
+    renderQuestionNav();
+    renderCaseSummary();
     updateSubmitState();
     updateLessonProgress();
-
-    submitButton.hidden = state.hasSubmitted;
-    nextButton.hidden = !state.hasSubmitted;
-
-    if (state.hasSubmitted) {
-      const isLastCase =
-        state.caseIndex === DIABETIC_CASE_QUIZ_CASES.length - 1;
-      const isLastQuestion = state.questionIndex === 2;
-      nextButton.textContent =
-        isLastCase && isLastQuestion ? "See results" : "Next >";
-    }
   };
 
   const renderResultsList = () => {
-    const correctCount = state.answers.filter(
-      (answer) => answer.correct,
-    ).length;
+    const flatAnswers = state.caseResults.flatMap(
+      (result) => result?.answers || [],
+    );
+    const correctCount = flatAnswers.filter((answer) => answer.correct).length;
 
     resultsSummary.textContent = `You answered ${correctCount} out of ${totalQuestions} correctly.`;
     resultsList.innerHTML = "";
 
-    state.answers.forEach((answer, index) => {
+    flatAnswers.forEach((answer, index) => {
       const row = document.createElement("div");
       row.className = "retinal-structure-tap__results-row";
 
@@ -3000,61 +3108,77 @@ function initializeDiabeticCaseQuizPage() {
 
   const resetQuestionState = () => {
     state.overlayIndex = 0;
-    state.selected = new Set();
-    state.hasSubmitted = false;
+    state.selections = createEmptySelections();
+    state.submitted = false;
   };
 
   const resetQuiz = () => {
     state.caseIndex = 0;
     state.questionIndex = 0;
-    state.answers = [];
+    state.caseResults = [];
     state.isComplete = false;
+    state.renderedCaseIndex = -1;
+    state.renderedOverlayKey = "";
     resetQuestionState();
     closeResultsModal();
     render();
   };
 
   prevOverlay.addEventListener("click", () => {
-    if (state.hasSubmitted) return;
+    if (state.submitted) return;
     state.overlayIndex =
       (state.overlayIndex + DIABETIC_CASE_QUIZ_OVERLAYS.length - 1) %
       DIABETIC_CASE_QUIZ_OVERLAYS.length;
-    renderCaseHeader();
+    renderCaseVisual();
   });
 
   nextOverlay.addEventListener("click", () => {
-    if (state.hasSubmitted) return;
+    if (state.submitted) return;
     state.overlayIndex =
       (state.overlayIndex + 1) % DIABETIC_CASE_QUIZ_OVERLAYS.length;
-    renderCaseHeader();
+    renderCaseVisual();
   });
 
-  submitButton.addEventListener("click", () => {
-    if (state.hasSubmitted || state.selected.size === 0) return;
-
-    const quizQuestion = getCurrentQuestion();
-    const selectedValues = [...state.selected];
-    const correct = isSelectionCorrect(quizQuestion, selectedValues);
-
-    state.answers.push({
-      caseNumber: state.caseIndex + 1,
-      label: quizQuestion.label,
-      selected: selectedValues,
-      correctAnswers: quizQuestion.correct,
-      correct,
-    });
-
-    state.hasSubmitted = true;
+  previousButton.addEventListener("click", () => {
+    if (state.questionIndex <= 0) return;
+    state.questionIndex -= 1;
     render();
   });
 
   nextButton.addEventListener("click", () => {
-    if (!state.hasSubmitted) return;
+    if (state.questionIndex >= 2) return;
+    state.questionIndex += 1;
+    render();
+  });
 
-    const isLastQuestion = state.questionIndex === 2;
+  const submitCurrentCase = () => {
+    if (!hasAnsweredAllCurrentCaseQuestions()) return;
+
+    const caseItem = getCurrentCase();
+    const answers = caseItem.questions.map((quizQuestion, index) => {
+      const selectedValues = [...(state.selections[index] || new Set())];
+      return {
+        caseNumber: state.caseIndex + 1,
+        label: quizQuestion.label,
+        selected: selectedValues,
+        correctAnswers: quizQuestion.correct,
+        correct: isSelectionCorrect(quizQuestion, selectedValues),
+      };
+    });
+
+    state.caseResults[state.caseIndex] = {
+      caseNumber: state.caseIndex + 1,
+      answers,
+      correctCount: answers.filter((answer) => answer.correct).length,
+    };
+    state.submitted = true;
+    render();
+  };
+
+  const advanceAfterSubmittedCase = () => {
     const isLastCase = state.caseIndex === DIABETIC_CASE_QUIZ_CASES.length - 1;
 
-    if (isLastQuestion && isLastCase) {
+    if (isLastCase) {
       state.isComplete = true;
       updateLessonProgress();
       renderResultsList();
@@ -3062,18 +3186,22 @@ function initializeDiabeticCaseQuizPage() {
       return;
     }
 
-    if (isLastQuestion) {
-      state.caseIndex += 1;
-      state.questionIndex = 0;
-    } else {
-      state.questionIndex += 1;
-    }
-
+    state.caseIndex += 1;
+    state.questionIndex = 0;
     resetQuestionState();
     render();
     try {
       window.scrollTo(0, 0);
     } catch {}
+  };
+
+  submitButton.addEventListener("click", () => {
+    if (state.submitted) {
+      advanceAfterSubmittedCase();
+      return;
+    }
+
+    submitCurrentCase();
   });
 
   resultsCloseButtons.forEach((button) => {

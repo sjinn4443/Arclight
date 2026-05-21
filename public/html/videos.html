@@ -3319,19 +3319,6 @@
         <h2 id="diabeticCaseQuizTitle" class="retinal-structure-tap__title">
           First Case (1/9)
         </h2>
-        <div class="retinal-structure-tap__progress-shell">
-          <p
-            id="diabeticCaseQuizProgressLabel"
-            class="retinal-structure-tap__progress-label"
-          >
-            Quiz 1 of 3
-          </p>
-          <div
-            id="diabeticCaseQuizProgress"
-            class="retinal-structure-tap__progress"
-            aria-label="Case quiz progress"
-          ></div>
-        </div>
 
         <div
           id="diabeticCaseQuizInfoCard"
@@ -3344,7 +3331,10 @@
           ></div>
         </div>
 
-        <figure class="retinal-structure-tap__stage diabetic-case-quiz__stage">
+        <figure
+          id="diabeticCaseQuizStage"
+          class="retinal-structure-tap__stage diabetic-case-quiz__stage"
+        >
           <img
             id="diabeticCaseQuizImage"
             class="retinal-structure-tap__image"
@@ -3388,6 +3378,20 @@
           </button>
         </div>
 
+        <div class="retinal-structure-tap__progress-shell">
+          <p
+            id="diabeticCaseQuizProgressLabel"
+            class="retinal-structure-tap__progress-label"
+          >
+            Quiz 1 of 3
+          </p>
+          <div
+            id="diabeticCaseQuizProgress"
+            class="retinal-structure-tap__progress"
+            aria-label="Case quiz progress"
+          ></div>
+        </div>
+
         <div class="diabetic-case-quiz__question-card">
           <p
             id="diabeticCaseQuizQuestionLabel"
@@ -3398,6 +3402,10 @@
           <p id="diabeticCaseQuizQuestion" class="diabetic-case-quiz__question">
             Select the signs seen in this case.
           </p>
+          <p
+            id="diabeticCaseQuizQuestionHint"
+            class="diabetic-case-quiz__question-hint"
+          ></p>
           <div
             id="diabeticCaseQuizOptions"
             class="diabetic-case-quiz__options"
@@ -3409,22 +3417,37 @@
             aria-live="polite"
             hidden
           ></div>
-          <button
-            type="button"
-            id="diabeticCaseQuizSubmit"
-            class="retinal-structure-tap__next diabetic-case-quiz__action"
-          >
-            Submit
-          </button>
-          <button
-            type="button"
-            id="diabeticCaseQuizNext"
-            class="retinal-structure-tap__next diabetic-case-quiz__action"
-            hidden
-          >
-            Next &gt;
-          </button>
+          <div class="diabetic-case-quiz__nav">
+            <button
+              type="button"
+              id="diabeticCaseQuizPrevious"
+              class="diabetic-case-quiz__nav-button"
+            >
+              &lt; Previous
+            </button>
+            <button
+              type="button"
+              id="diabeticCaseQuizNext"
+              class="diabetic-case-quiz__nav-button"
+            >
+              Next &gt;
+            </button>
+          </div>
         </div>
+
+        <p
+          id="diabeticCaseQuizCaseSummary"
+          class="diabetic-case-quiz__case-summary"
+          aria-live="polite"
+          hidden
+        ></p>
+        <button
+          type="button"
+          id="diabeticCaseQuizSubmit"
+          class="retinal-structure-tap__next diabetic-case-quiz__action diabetic-case-quiz__submit"
+        >
+          Submit
+        </button>
 
         <div
           id="diabeticCaseQuizResultsModal"
@@ -4697,6 +4720,93 @@
             src="videos/Workshop/Diabetic/4.DRSinNCDClinicflow_220p.mp4"
             type="video/mp4"
           />
+          <span data-i18n="videos.videoNotSupported"
+            >Your browser does not support the video tag.</span
+          >
+        </video>
+      </div>
+
+      <button
+        class="video-share-btn"
+        type="button"
+        data-video-share-btn
+        aria-label="Share"
+        title="Share"
+        data-i18n="i18nExtra.share_video:aria-label;i18nExtra.share_video:title"
+      >
+        <svg
+          class="video-share-icon"
+          viewBox="0 0 24 24"
+          width="18"
+          height="24"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <path
+            d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.02-4.11c.54.5 1.25.81 2.07.81 1.66 0 3-1.34 3-3S19.66 2 18 2s-3 1.34-3 3c0 .24.04.47.09.7L8.07 9.81C7.53 9.31 6.82 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.82 0 1.53-.31 2.07-.81l7.11 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92S19.61 16.08 18 16.08z"
+          />
+        </svg>
+      </button>
+    </div>
+  </div>
+  <div id="binocularIndirectOphthalmoscopyVideoPage" class="page">
+    <div>
+      <div
+        class="tri-toggle"
+        role="radiogroup"
+        aria-label="Video mode"
+        data-i18n="i18nExtra.video_mode:aria-label"
+      >
+        <button
+          class="tri-toggle__btn"
+          type="button"
+          role="radio"
+          aria-checked="false"
+          data-mode="low"
+          data-i18n="i18nExtra.video_mode_low"
+        >
+          low
+        </button>
+        <button
+          class="tri-toggle__btn"
+          type="button"
+          role="radio"
+          aria-checked="false"
+          data-mode="high"
+          data-i18n="i18nExtra.video_mode_high"
+        >
+          high
+        </button>
+        <button
+          class="tri-toggle__btn tri-toggle__btn--icon"
+          type="button"
+          role="radio"
+          aria-checked="false"
+          data-mode="online"
+          aria-label="online"
+          data-i18n="i18nExtra.video_mode_online:aria-label"
+        >
+          <span class="tri-toggle__wifi" aria-hidden="true"></span>
+        </button>
+        <div class="tri-toggle__knob" aria-hidden="true"></div>
+      </div>
+
+      <div class="video-header">
+        <h3>Binocular Indirect Ophthalmoscopy</h3>
+      </div>
+
+      <div
+        class="video-container"
+        id="binocularIndirectOphthalmoscopyVideoContainer"
+      >
+        <video
+          id="binocularIndirectOphthalmoscopyVideo"
+          controls
+          playsinline
+          webkit-playsinline
+          preload="none"
+        >
+          <source src="videos/Tools/BIOvideo_220p.mp4" type="video/mp4" />
           <span data-i18n="videos.videoNotSupported"
             >Your browser does not support the video tag.</span
           >
