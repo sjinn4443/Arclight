@@ -142,6 +142,26 @@ function resolveConfiguredAutoplayEndFrame(cfg, fileIndex) {
   return Math.floor(endFrame);
 }
 
+function resolveConfiguredCompletionHoldFrame(cfg, fileIndex) {
+  const raw = Array.isArray(cfg?.completionHoldFrameByFile)
+    ? cfg.completionHoldFrameByFile[fileIndex]
+    : cfg?.completionHoldFrame;
+  if (raw == null || raw === "") return null;
+  const holdFrame = Number(raw);
+  if (!Number.isFinite(holdFrame) || holdFrame < 0) return null;
+  return Math.floor(holdFrame);
+}
+
+function resolveAdvanceArrowAnchorParagraph(cfg, fileIndex) {
+  const raw = Array.isArray(cfg?.advanceArrowAnchorParagraphByFile)
+    ? cfg.advanceArrowAnchorParagraphByFile[fileIndex]
+    : cfg?.advanceArrowAnchorParagraph;
+  if (raw == null || raw === "") return null;
+  const paragraphIndex = Number(raw);
+  if (!Number.isFinite(paragraphIndex) || paragraphIndex < 1) return null;
+  return Math.floor(paragraphIndex);
+}
+
 function applyFundalPlaybackRate(anim, cfg, fileIndex) {
   const playbackRate =
     resolveFundalE2EPlaybackRate() ??
@@ -529,6 +549,7 @@ const ROUTE_CONFIG = {
     settleFrameOverrides: [[158], [196], [120, 205, 299], [509], [77, 329]],
     segmentTextTriggerFramesByFile: [null, null, null, null, [0, 77, 137]],
     segmentPauseAfterMsByFile: [null, null, null, null, [3000]],
+    advanceArrowAnchorParagraphByFile: [null, 2],
     centerTopBiasByFile: [0, 0, 0, 0, -96],
     desktopTopGapByFile: [18, 18, 18, 18, -24],
     segmentStartTexts: [
@@ -636,8 +657,9 @@ const ROUTE_CONFIG = {
       "/scrolly/coreexam/ophths/DO/03HowtoExamine/2/data.json",
     ],
     playMode: "stageAutoplay",
-    centerTopBiasByFile: [0, -170],
-    desktopTopGapByFile: [18, -24],
+    centerTopBiasByFile: [0, -250],
+    desktopTopGapByFile: [18, -70],
+    completionHoldFrameByFile: [224, 794],
     segmentRanges: [
       [{ from: 0, to: 224 }],
       [
@@ -650,7 +672,7 @@ const ROUTE_CONFIG = {
     settleFrameOverrides: [[224], [80, 650, 669, 794]],
     segmentTextTriggerFramesByFile: [
       [0, 0],
-      [0, 134, 651, 750],
+      [0, 119, 651, 750],
     ],
     segmentPauseAfterMsByFile: [null, [4000, 4000, 4000]],
     segmentStartTexts: [
@@ -757,12 +779,13 @@ const ROUTE_CONFIG = {
     ],
     playMode: "stageAutoplay",
     lazyInitialStageCount: 1,
+    completionHoldFrameByFile: [224, 224, 224, 270, 164],
     autoplayEndFrameByFile: [null, null, null, 270, null],
-    iosRendererByFile: ["canvas", "canvas", "svg", "canvas", "canvas"],
-    preserveCompletionSnapshotOverlayByFile: [false, false, true, false, false],
+    iosRendererByFile: ["canvas", "svg", "svg", "svg", "canvas"],
+    preserveCompletionSnapshotOverlayByFile: [false, true, true, false, false],
     completionSnapshotImageByFile: [
       null,
-      null,
+      "/scrolly/coreexam/ophths/BIO/02FundoscopySitting/2/final_frame.png",
       "/scrolly/coreexam/ophths/BIO/02FundoscopySitting/3/final_frame.png",
       null,
       null,
@@ -779,17 +802,17 @@ const ROUTE_CONFIG = {
       ],
       [
         { from: 0, to: 75 },
-        { from: 76, to: 157 },
-        { from: 158, to: 224 },
+        { from: 76, to: 158 },
+        { from: 159, to: 224 },
       ],
       [{ from: 0, to: 270 }],
       [{ from: 0, to: 164 }],
     ],
-    settleFrameOverrides: [[224], [166, 224], [75, 157, 224], [270], [164]],
+    settleFrameOverrides: [[224], [166, 224], [75, 158, 224], [270], [164]],
     segmentTextTriggerFramesByFile: [
       null,
       [0, 167],
-      [0, 76, 158],
+      [0, 76, 159],
       [0, 175],
       null,
     ],
@@ -832,6 +855,14 @@ const ROUTE_CONFIG = {
     ],
     playMode: "stageAutoplay",
     playbackRateByFile: [1, 1, 0.5, 1],
+    completionHoldFrameByFile: [104, 104, 134, 299],
+    preserveCompletionSnapshotOverlayByFile: [true, false, false, false],
+    completionSnapshotImageByFile: [
+      "/scrolly/coreexam/ophths/BIO/03FundoscopywithIndentation/1/final_frame.png",
+      null,
+      null,
+      null,
+    ],
     centerTopBiasByFile: [0, -96, 0, 0],
     desktopTopGapByFile: [18, -24, 18, 18],
     segmentRanges: [
@@ -842,14 +873,14 @@ const ROUTE_CONFIG = {
       [
         { from: 0, to: 29 },
         { from: 30, to: 60 },
-        { from: 61, to: 86 },
-        { from: 87, to: 104 },
+        { from: 61, to: 104 },
+        { from: 104, to: 104 },
       ],
       [{ from: 0, to: 134 }],
       [{ from: 0, to: 299 }],
     ],
-    settleFrameOverrides: [[14, 104], [29, 60, 86, 104], [134], [299]],
-    segmentTextTriggerFramesByFile: [[0, 15], [0, 30, 61, 87], null, null],
+    settleFrameOverrides: [[14, 104], [29, 60, 104, 104], [134], [299]],
+    segmentTextTriggerFramesByFile: [[0, 15], [0, 30, 61, 105], null, null],
     segmentPlaybackRateByFile: [null, [1, 0.8, 0.8, 0.45], null, null],
     segmentPauseAfterMsByFile: [[3000], [1500, 2600, 2600]],
     segmentStartTexts: [
@@ -7441,10 +7472,37 @@ function initializeStageAutoplayMode(
     updateStageControlAnchors(state);
   }
 
+  function reinforceStageAdvanceControl(state, passes = 10) {
+    if (!state || !hasAdvanceControl(state)) return;
+    let remaining = Math.max(
+      1,
+      Math.min(
+        24,
+        Number.isFinite(Number(passes)) ? Math.floor(Number(passes)) : 10,
+      ),
+    );
+
+    const tick = () => {
+      if (!state || state.playing || !state.completed) return;
+      const arrowEl = ensureControllerDownArrow(state);
+      if (!arrowEl) return;
+      arrowEl.disabled = false;
+      arrowEl.classList.add("is-visible");
+      updateStageControlAnchors(state);
+      remaining -= 1;
+      if (remaining <= 0) return;
+      requestAnimationFrame(tick);
+    };
+
+    requestAnimationFrame(tick);
+  }
+
   function hideCompletedOffCenterDownArrows() {
     states.forEach((state) => {
       if (!state?.completed || !hasAdvanceControl(state)) return;
       if (shouldShowNextPageAdvanceControl(state)) return;
+      const nextState = states[Number(state.fileIndex) + 1];
+      if (nextState && !nextState.started) return;
       const arrowEl = ensureControllerDownArrow(state);
       if (!arrowEl?.classList?.contains("is-visible")) return;
       if (isStateNearViewportCenter(state)) return;
@@ -7461,6 +7519,32 @@ function initializeStageAutoplayMode(
     const stage = state?.stage;
 
     if (!stage) return;
+
+    const anchorParagraphIndex = resolveAdvanceArrowAnchorParagraph(
+      cfg,
+      state.fileIndex,
+    );
+    if (arrowEl && anchorParagraphIndex != null) {
+      const item = stage.parentElement;
+      const paragraphEls = item?.querySelectorAll?.(
+        ".childhood-fundal-segment-text__paragraph",
+      );
+      const anchorEl = paragraphEls?.[anchorParagraphIndex - 1];
+      const itemRect = item?.getBoundingClientRect?.();
+      const anchorRect = anchorEl?.getBoundingClientRect?.();
+      if (
+        itemRect &&
+        anchorRect &&
+        itemRect.height > 0.5 &&
+        anchorRect.height > 0.5
+      ) {
+        arrowEl.style.top = `${Math.round(anchorRect.bottom - itemRect.top + 12)}px`;
+      } else {
+        arrowEl.style.removeProperty("top");
+      }
+    } else {
+      arrowEl?.style.removeProperty("top");
+    }
 
     if (!isDesktopViewport()) {
       arrowEl?.style.removeProperty("--fundal-arrow-right");
@@ -8145,6 +8229,10 @@ function initializeStageAutoplayMode(
 
   function resolveCompletionHoldFrame(state) {
     const lastFrame = getAnimationLastFrame(state?.anim);
+    const configuredHoldFrame = resolveConfiguredCompletionHoldFrame(
+      cfg,
+      state?.fileIndex,
+    );
     const terminalPlaybackSegment = Array.isArray(state?.playbackSegments)
       ? state.playbackSegments[state.playbackSegments.length - 1]
       : null;
@@ -8165,7 +8253,8 @@ function initializeStageAutoplayMode(
     );
     let holdFrame = clampFrameToAnimation(
       state,
-      preferredVisibleFrame ??
+      configuredHoldFrame ??
+        preferredVisibleFrame ??
         (terminalPlaybackSegment
           ? getSegmentEndFrame(terminalPlaybackSegment)
           : lastFrame),
@@ -8186,6 +8275,11 @@ function initializeStageAutoplayMode(
       (hasRichFrame || shouldUseStrictFrameLockNoFallback(cfg))
     ) {
       rememberRecoverySnapshot(state, holdFrame);
+      return holdFrame;
+    }
+
+    if (configuredHoldFrame != null) {
+      showRecoveryOverlay(state);
       return holdFrame;
     }
 
@@ -8291,6 +8385,7 @@ function initializeStageAutoplayMode(
     }
     showStageCompletionText(state);
     showStageControls(state);
+    reinforceStageAdvanceControl(state, IS_IOS_WEBKIT ? 18 : 12);
     dispatchRouteCompleteOnce(state);
 
     requestAnimationFrame(() => {

@@ -34,6 +34,15 @@ const VIDEO_TARGETS = new Set([
   "diabeticSimpleSafeScalableVideoPage",
 ]);
 
+const SCROLLYTELLING_TARGETS = new Set([
+  "diabeticObservationFundalReflexPage",
+  "diabeticPositioningFlightPathPage",
+  "diabeticHowToExaminePage",
+  "diabeticBioPreparationPage",
+  "diabeticBioFundoscopySittingPage",
+  "diabeticBioFundoscopyIndentationPage",
+]);
+
 const FLOW_ROUTES = new Set(["diabeticRetinopathyWorkshop", "videos"]);
 
 const DIABETIC_NAV_CONFIG = {
@@ -360,7 +369,8 @@ function shouldUseDiabeticStructuralBack() {
   return (
     visibleId === WORKSHOP_PAGE_ID ||
     INTERNAL_TARGETS.has(visibleId) ||
-    VIDEO_TARGETS.has(visibleId)
+    VIDEO_TARGETS.has(visibleId) ||
+    SCROLLYTELLING_TARGETS.has(visibleId)
   );
 }
 
