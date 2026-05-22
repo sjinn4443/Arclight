@@ -162,16 +162,16 @@ test.describe("Diabetic fundal scrollytelling regressions", () => {
       '.childhood-fundal-prep-item[data-file-index="1"] .childhood-fundal-segment-text',
     );
 
-    await seekFundalStage(page, "diabeticHowToExamine", 1, 118);
+    await seekFundalStage(page, "diabeticHowToExamine", 1, 97);
     await expect(itemText).not.toContainText("Follow the four main branches");
 
-    await seekFundalStage(page, "diabeticHowToExamine", 1, 119);
+    await seekFundalStage(page, "diabeticHowToExamine", 1, 98);
     await expect(itemText).toContainText("Follow the four main branches");
 
-    await seekFundalStage(page, "diabeticHowToExamine", 1, 650);
+    await seekFundalStage(page, "diabeticHowToExamine", 1, 628);
     await expect(itemText).not.toContainText("Finally, ask the patient");
 
-    await seekFundalStage(page, "diabeticHowToExamine", 1, 651);
+    await seekFundalStage(page, "diabeticHowToExamine", 1, 629);
     await expect(itemText).toContainText("Finally, ask the patient");
 
     const data = JSON.parse(
@@ -254,6 +254,44 @@ test.describe("Diabetic fundal scrollytelling regressions", () => {
         '.childhood-fundal-prep-item[data-file-index="2"] .childhood-fundal-segment-text',
       ),
     ).toContainText("If you see shadows");
+
+    await page
+      .locator(
+        '.childhood-fundal-prep-item[data-file-index="2"] [data-fundal-stage-next-btn="1"]',
+      )
+      .click({ force: true });
+
+    await expect(
+      stages.nth(3).locator(".childhood-fundal-stage-replay-btn"),
+    ).toBeVisible({
+      timeout: STAGE_COMPLETE_TIMEOUT_MS,
+    });
+    await expect
+      .poll(() => getFundalStageState(page, "diabeticBioFundoscopySitting", 3))
+      .toMatchObject({
+        completed: true,
+        currentFrame: 270,
+        renderType: "svg",
+      });
+
+    await page
+      .locator(
+        '.childhood-fundal-prep-item[data-file-index="3"] [data-fundal-stage-next-btn="1"]',
+      )
+      .click({ force: true });
+
+    await expect(
+      stages.nth(4).locator(".childhood-fundal-stage-replay-btn"),
+    ).toBeVisible({
+      timeout: STAGE_COMPLETE_TIMEOUT_MS,
+    });
+    await expect
+      .poll(() => getFundalStageState(page, "diabeticBioFundoscopySitting", 4))
+      .toMatchObject({
+        completed: true,
+        currentFrame: 164,
+        renderType: "canvas",
+      });
   });
 
   test("Fundoscopy with Indentation holds final frames and pupil-up ask segment", async ({
@@ -288,6 +326,45 @@ test.describe("Diabetic fundal scrollytelling regressions", () => {
     );
 
     await waitForFundalStageReady(page, "diabeticBioFundoscopyIndentation", 1);
+    await expect
+      .poll(() =>
+        getFundalStageState(page, "diabeticBioFundoscopyIndentation", 1),
+      )
+      .toMatchObject({
+        playbackSegments: [
+          { from: 0, to: 59 },
+          { from: 60, to: 87 },
+          { from: 88, to: 104 },
+        ],
+        playbackSegmentRates: [1, 0.5, 0.5],
+      });
+
+    await page
+      .locator(
+        '.childhood-fundal-prep-item[data-file-index="0"] [data-fundal-stage-next-btn="1"]',
+      )
+      .click({ force: true });
+    await page
+      .locator('.childhood-fundal-prep-item[data-file-index="1"]')
+      .evaluate((item) => item.scrollIntoView({ block: "center" }));
+    await expect(
+      stages.nth(1).locator(".childhood-fundal-stage-replay-btn"),
+    ).toBeVisible({
+      timeout: STAGE_COMPLETE_TIMEOUT_MS,
+    });
+    await expect
+      .poll(() =>
+        getFundalStageState(page, "diabeticBioFundoscopyIndentation", 1),
+      )
+      .toMatchObject({
+        completed: true,
+        currentFrame: 104,
+        recoveryOverlayVisible: true,
+        recoveryOverlayImageSrc: expect.stringMatching(
+          /\/scrolly\/coreexam\/ophths\/BIO\/03FundoscopywithIndentation\/2\/final_frame\.png$/,
+        ),
+      });
+
     const stageText = page.locator(
       '.childhood-fundal-prep-item[data-file-index="1"] .childhood-fundal-segment-text',
     );

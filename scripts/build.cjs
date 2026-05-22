@@ -349,6 +349,35 @@ async function ensureDirWithRetry(dir) {
   throw lastError;
 }
 
+async function removeBuildCleanupDir(cleanupDir, parentDir) {
+  if (!cleanupDir) return;
+
+  const resolvedParent = path.resolve(parentDir);
+  const resolvedCleanup = path.resolve(cleanupDir);
+  if (
+    !isPathWithinOrEqual(resolvedParent, resolvedCleanup) ||
+    !path.basename(resolvedCleanup).startsWith(".build-cleanup-")
+  ) {
+    return;
+  }
+
+  try {
+    await nodeFs.promises.rm(resolvedCleanup, {
+      recursive: true,
+      force: true,
+      maxRetries: 10,
+      retryDelay: 250,
+    });
+  } catch (error) {
+    console.warn(
+      `[build] deferred cleanup remains for later removal: ${path.basename(
+        resolvedCleanup,
+      )}`,
+      error?.message || error,
+    );
+  }
+}
+
 async function cleanBuildOutputDir(dir) {
   if (!(await fs.pathExists(dir))) {
     await ensureDirWithRetry(dir);
@@ -376,6 +405,7 @@ async function cleanBuildOutputDir(dir) {
   }
 
   await ensureDirWithRetry(dir);
+  await removeBuildCleanupDir(cleanupDir, parentDir);
 }
 
 const build = async () => {

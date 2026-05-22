@@ -663,16 +663,16 @@ const ROUTE_CONFIG = {
     segmentRanges: [
       [{ from: 0, to: 224 }],
       [
-        { from: 0, to: 80 },
-        { from: 81, to: 650 },
-        { from: 651, to: 669 },
+        { from: 0, to: 98 },
+        { from: 99, to: 629 },
+        { from: 670, to: 700 },
         { from: 750, to: 794 },
       ],
     ],
-    settleFrameOverrides: [[224], [80, 650, 669, 794]],
+    settleFrameOverrides: [[224], [98, 629, 700, 794]],
     segmentTextTriggerFramesByFile: [
       [0, 0],
-      [0, 119, 651, 750],
+      [0, 98, 629, 750],
     ],
     segmentPauseAfterMsByFile: [null, [4000, 4000, 4000]],
     segmentStartTexts: [
@@ -690,6 +690,11 @@ const ROUTE_CONFIG = {
     segmentTextModeByFile: ["append", "append"],
     leftAlignedTextFiles: [0, 1],
     bulletTextFiles: [0, 1],
+    preserveCompletionSnapshotOverlayByFile: [false, true],
+    completionSnapshotImageByFile: [
+      null,
+      "/scrolly/coreexam/ophths/DO/03HowtoExamine/2/final_frame.png",
+    ],
     strictFrameLockNoFallback: true,
     strictFrameRemountOnBlank: true,
     richSettleContentFiles: [0, 1],
@@ -856,10 +861,11 @@ const ROUTE_CONFIG = {
     playMode: "stageAutoplay",
     playbackRateByFile: [1, 1, 0.5, 1],
     completionHoldFrameByFile: [104, 104, 134, 299],
-    preserveCompletionSnapshotOverlayByFile: [true, false, false, false],
+    forceExactCompletionHoldFrameByFile: [false, true, false, false],
+    preserveCompletionSnapshotOverlayByFile: [true, true, false, false],
     completionSnapshotImageByFile: [
       "/scrolly/coreexam/ophths/BIO/03FundoscopywithIndentation/1/final_frame.png",
-      null,
+      "/scrolly/coreexam/ophths/BIO/03FundoscopywithIndentation/2/final_frame.png",
       null,
       null,
     ],
@@ -871,18 +877,17 @@ const ROUTE_CONFIG = {
         { from: 15, to: 104 },
       ],
       [
-        { from: 0, to: 29 },
-        { from: 30, to: 60 },
-        { from: 61, to: 104 },
-        { from: 104, to: 104 },
+        { from: 0, to: 59 },
+        { from: 60, to: 87 },
+        { from: 88, to: 104 },
       ],
       [{ from: 0, to: 134 }],
       [{ from: 0, to: 299 }],
     ],
-    settleFrameOverrides: [[14, 104], [29, 60, 104, 104], [134], [299]],
-    segmentTextTriggerFramesByFile: [[0, 15], [0, 30, 61, 105], null, null],
-    segmentPlaybackRateByFile: [null, [1, 0.8, 0.8, 0.45], null, null],
-    segmentPauseAfterMsByFile: [[3000], [1500, 2600, 2600]],
+    settleFrameOverrides: [[14, 104], [59, 87, 104], [134], [299]],
+    segmentTextTriggerFramesByFile: [[0, 15], [0, 30, 61], null, null],
+    segmentPlaybackRateByFile: [null, [1, 0.5, 0.5], null, null],
+    segmentPauseAfterMsByFile: [[3000], null],
     segmentStartTexts: [
       [
         "If the patient is lying down, you can also perform scleral indentation",
@@ -2835,6 +2840,13 @@ function shouldPreferLastVisibleCompletionFrame(cfg, fileIndex) {
 function shouldPreserveCompletionSnapshotOverlay(cfg, fileIndex) {
   const rule = Array.isArray(cfg?.preserveCompletionSnapshotOverlayByFile)
     ? cfg.preserveCompletionSnapshotOverlayByFile[fileIndex]
+    : null;
+  return rule === true;
+}
+
+function shouldForceExactCompletionHoldFrame(cfg, fileIndex) {
+  const rule = Array.isArray(cfg?.forceExactCompletionHoldFrameByFile)
+    ? cfg.forceExactCompletionHoldFrameByFile[fileIndex]
     : null;
   return rule === true;
 }
@@ -8333,6 +8345,34 @@ function initializeStageAutoplayMode(
     );
   }
 
+  async function reinforceExactCompletionHoldFrame(state, frame) {
+    const safeFrame = clampFrameToAnimation(state, Number(frame));
+
+    for (let attempt = 0; attempt < 4; attempt += 1) {
+      hideRecoveryOverlay(state, { immediate: true });
+      try {
+        state.anim?.pause?.();
+        state.anim?.goToAndStop?.(safeFrame, true);
+      } catch {
+        // Keep retrying below; the renderer can reject a seek while settling.
+      }
+      forceSvgVisibleForController(state);
+      updateStageTextForFrame(state, safeFrame);
+      refreshVisibleFrameState(state);
+      requestIosStageRepaintNudge(state.stage);
+      await waitForFundalE2ERenderStability(1);
+
+      if (!isStageFrameBlank(state)) {
+        rememberRecoverySnapshot(state, safeFrame);
+        hideRecoveryOverlay(state, { immediate: true });
+        return safeFrame;
+      }
+    }
+
+    hideRecoveryOverlay(state, { immediate: true });
+    return safeFrame;
+  }
+
   async function finishStagePlayback(state) {
     state.playing = false;
     setPlaybackScrollLocked(false);
@@ -8360,10 +8400,24 @@ function initializeStageAutoplayMode(
       state.lastPinnedFrame = currentFrame;
     } else {
       state.lastPinnedFrame = resolveCompletionHoldFrame(state);
-      hideRecoveryOverlayWhenStable(state, {
-        checks: 2,
-        requiredStablePasses: 1,
-      });
+      const configuredHoldFrame = resolveConfiguredCompletionHoldFrame(
+        cfg,
+        state.fileIndex,
+      );
+      if (
+        configuredHoldFrame != null &&
+        shouldForceExactCompletionHoldFrame(cfg, state.fileIndex)
+      ) {
+        state.lastPinnedFrame = await reinforceExactCompletionHoldFrame(
+          state,
+          configuredHoldFrame,
+        );
+      } else {
+        hideRecoveryOverlayWhenStable(state, {
+          checks: 2,
+          requiredStablePasses: 1,
+        });
+      }
     }
     const shouldRequirePosterRichContent = IS_IOS_WEBKIT;
     const didHidePoster = maybeHideStagePoster(state, {
@@ -8548,7 +8602,7 @@ function initializeStageAutoplayMode(
     return { frame: safeFrame, isBlank: true };
   }
 
-  function playStageSegmentOnce(state, pair, segmentIndex = 0) {
+  function playStageSegmentOnce(state, pair, segmentIndex = 0, options = {}) {
     return new Promise((resolve) => {
       const anim = state?.anim;
       if (!anim) {
@@ -8557,15 +8611,23 @@ function initializeStageAutoplayMode(
       }
 
       let settled = false;
+      const shouldPinOnFinish = options?.pinOnFinish !== false;
       const safeFrom = clampFrameToAnimation(state, Number(pair?.[0]));
       const safeTo = clampFrameToAnimation(state, Number(pair?.[1]));
       clearFutureStageRecoverySnapshot(state, safeTo, segmentIndex);
       state.playingSegmentIndex = segmentIndex;
       state.targetEndFrame = safeTo;
       if (safeFrom === safeTo) {
-        pinStageAutoplayFrame(state, safeFrom, {
-          attempts: IS_IOS_WEBKIT ? 6 : 3,
-        });
+        if (shouldPinOnFinish) {
+          pinStageAutoplayFrame(state, safeFrom, {
+            attempts: IS_IOS_WEBKIT ? 6 : 3,
+          });
+        } else {
+          anim.goToAndStop?.(safeFrom, true);
+          forceSvgVisibleForController(state);
+          updateStageTextForFrame(state, safeFrom);
+          refreshVisibleFrameState(state);
+        }
         resolve(true);
         return;
       }
@@ -8603,9 +8665,20 @@ function initializeStageAutoplayMode(
         try {
           anim.pause?.();
         } catch {}
-        pinStageAutoplayFrame(state, safeTo, {
-          attempts: IS_IOS_WEBKIT ? 6 : 3,
-        });
+        if (shouldPinOnFinish) {
+          pinStageAutoplayFrame(state, safeTo, {
+            attempts: IS_IOS_WEBKIT ? 6 : 3,
+          });
+        } else {
+          try {
+            anim.goToAndStop?.(safeTo, true);
+          } catch {
+            // Keep the last rendered frame if an intermediate seek fails.
+          }
+          forceSvgVisibleForController(state);
+          updateStageTextForFrame(state, safeTo);
+          refreshVisibleFrameState(state);
+        }
         resolve(value);
       };
 
@@ -8678,11 +8751,18 @@ function initializeStageAutoplayMode(
       for (let i = 0; i < playbackPairs.length; i += 1) {
         if (!state.playing) return false;
         const pair = playbackPairs[i];
-        updateStageTextForFrame(state, pair[0]);
-        await playStageSegmentOnce(state, pair, i);
-
         const pauseMs = resolveSegmentPauseAfterMs(cfg, state.fileIndex, i);
-        if (pauseMs > 0 && i < playbackPairs.length - 1) {
+        const shouldPauseAfterSegment =
+          pauseMs > 0 && i < playbackPairs.length - 1;
+        const shouldPinOnFinish =
+          i === playbackPairs.length - 1 || shouldPauseAfterSegment;
+        hideRecoveryOverlay(state, { immediate: true });
+        updateStageTextForFrame(state, pair[0]);
+        await playStageSegmentOnce(state, pair, i, {
+          pinOnFinish: shouldPinOnFinish,
+        });
+
+        if (shouldPauseAfterSegment) {
           await holdStageAtPauseFrame(state, pair[1]);
           await waitFundalDelay(pauseMs);
           state.activePauseFrame = null;
@@ -9032,6 +9112,36 @@ function initializeStageAutoplayMode(
       renderHeight: Number.isFinite(Number(renderRect?.height))
         ? Number(renderRect.height)
         : 0,
+      playbackSegments: Array.isArray(state.playbackSegments)
+        ? state.playbackSegments.map((segment) => ({
+            from: Number(segment?.from),
+            to: getSegmentEndFrame(segment),
+          }))
+        : [],
+      playbackSegmentRates: Array.isArray(state.playbackSegments)
+        ? state.playbackSegments.map(
+            (_segment, segmentIndex) =>
+              resolveConfiguredSegmentPlaybackRate(
+                cfg,
+                state.fileIndex,
+                segmentIndex,
+              ) ?? resolveConfiguredFundalPlaybackRate(cfg, state.fileIndex),
+          )
+        : [],
+      recoveryOverlayVisible: (() => {
+        const overlay = state.stage?.querySelector(
+          ".childhood-fundal-recovery-overlay",
+        );
+        return (
+          !!overlay &&
+          overlay.style.visibility !== "hidden" &&
+          overlay.style.opacity !== "0"
+        );
+      })(),
+      recoveryOverlayImageSrc:
+        state.stage
+          ?.querySelector(".childhood-fundal-recovery-overlay img")
+          ?.getAttribute("src") || "",
       replayVisible:
         ensureStageReplayButtonElement(state.stage, state.replayBtn)?.style
           ?.display !== "none",
