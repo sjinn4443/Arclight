@@ -1128,6 +1128,8 @@
             <h3>Phase B: Steps 4-6</h3>
             <ol
               class="diabetic-screening-checklist diabetic-protocol-sequence-list"
+              start="4"
+              style="counter-reset: diabeticScreenChecklist 3"
             >
               <li>Examine pupils with the light of the loupe</li>
               <li>Look at the front of the eye with the loupe</li>
@@ -1177,19 +1179,23 @@
           </div>
           <div class="diabetic-protocol-parallel" aria-hidden="true">
             <div>
-              <span>Registration, pre-dilation exam</span>
-              <p>Pupils dilate</p>
+              <span>Phase A</span>
+              <p>History, distance VA with pinhole, near vision</p>
             </div>
             <div>
+              <span>Phase B</span>
+              <p>Pupils, front of eye, dilate pupils</p>
+            </div>
+            <div class="diabetic-protocol-parallel__consult">
               <span>NCD consultation</span>
               <p>Diabetes, BP, weight</p>
             </div>
             <div class="diabetic-protocol-parallel__future">
-              <span>Post-dilation exam</span>
-              <p>Fundoscopy and retinal signs</p>
+              <span>Phase C</span>
+              <p>Fundal reflex, fundoscopy, action based on findings</p>
             </div>
             <div class="diabetic-protocol-parallel__future">
-              <span>Final decision</span>
+              <span>Phase D</span>
               <p>Glasses, reassure, or refer</p>
             </div>
           </div>
@@ -1211,7 +1217,7 @@
         </article>
 
         <article
-          class="diabetic-screening-panel diabetic-screening-panel--content-fit"
+          class="diabetic-screening-panel diabetic-screening-panel--content-fit diabetic-protocol-map-panel"
           data-diabetic-scroll-step
         >
           <div class="diabetic-screening-panel__text">
@@ -1221,21 +1227,240 @@
               The protocol should sit inside the NCD workflow, not outside it.
             </p>
           </div>
-          <figure class="diabetic-atoms-zoom diabetic-protocol-zoom">
-            <p class="diabetic-screening-visual__label">
-              *Zoom in/out for closer view
-            </p>
-            <div
-              class="diabetic-atoms-zoom__frame diabetic-protocol-image-frame"
-              data-diabetic-wheel-zoom
-            >
-              <img
-                src="/images/learning/Diabetic/Diabetes/NCD/NCD_Algorithm.svg"
-                alt="NCD clinic diabetic retinopathy screening algorithm"
-                loading="lazy"
-              />
+          <figure
+            class="diabetic-protocol-algorithm-viewer"
+            data-diabetic-panzoom
+            aria-label="NCD clinic diabetic retinopathy screening algorithm"
+          >
+            <div class="diabetic-protocol-algorithm-controls">
+              <span aria-hidden="true"></span>
+              <button type="button" data-diabetic-zoom-in aria-label="Zoom in">
+                +
+              </button>
+              <button
+                type="button"
+                data-diabetic-zoom-out
+                aria-label="Zoom out"
+              ></button>
+            </div>
+            <div class="diabetic-protocol-algorithm-window">
+              <div class="diabetic-protocol-algorithm-map">
+                <section
+                  class="diabetic-protocol-algorithm-phase diabetic-protocol-algorithm-phase--registration"
+                >
+                  <h4>Phase A: Registration</h4>
+                  <div class="diabetic-protocol-algorithm-row">
+                    <div class="diabetic-protocol-algorithm-card">
+                      <b>History</b>
+                      <p>Duration of diabetes</p>
+                      <p>Vision loss?<br />Red/painful eye?</p>
+                      <span>Vision loss? Red/painful eye?</span>
+                      <img
+                        class="diabetic-protocol-stamp diabetic-protocol-stamp--refer diabetic-protocol-stamp--history"
+                        src="/images/learning/Diabetic/Diabetes/NCD/stamp_refer.webp"
+                        alt="Refer"
+                        loading="lazy"
+                      />
+                    </div>
+                    <div class="diabetic-protocol-algorithm-card">
+                      <b>Distance VA</b>
+                      <p>
+                        Test each eye separately<br />Always test with pinhole
+                      </p>
+                      <span>No pinhole improvement</span>
+                      <img
+                        class="diabetic-protocol-stamp diabetic-protocol-stamp--refer diabetic-protocol-stamp--pinhole-no"
+                        src="/images/learning/Diabetic/Diabetes/NCD/stamp_refer.webp"
+                        alt="Refer"
+                        loading="lazy"
+                      />
+                      <span>Pinhole improvement</span>
+                      <img
+                        class="diabetic-protocol-stamp diabetic-protocol-stamp--glasses diabetic-protocol-stamp--pinhole-yes"
+                        src="/images/learning/Diabetic/Diabetes/NCD/stamp_glasses.webp"
+                        alt="Glasses"
+                        loading="lazy"
+                      />
+                    </div>
+                    <div class="diabetic-protocol-algorithm-card">
+                      <b>Near VA</b>
+                      <p>Check reading vision</p>
+                      <span>Poor near vision</span>
+                      <img
+                        class="diabetic-protocol-stamp diabetic-protocol-stamp--glasses diabetic-protocol-stamp--near"
+                        src="/images/learning/Diabetic/Diabetes/NCD/stamp_glasses.webp"
+                        alt="Glasses"
+                        loading="lazy"
+                      />
+                    </div>
+                  </div>
+                </section>
+
+                <section
+                  class="diabetic-protocol-algorithm-phase diabetic-protocol-algorithm-phase--predilation"
+                >
+                  <h4>Phase B: Pre-dilation Exam</h4>
+                  <div
+                    class="diabetic-protocol-algorithm-row diabetic-protocol-algorithm-row--two"
+                  >
+                    <div class="diabetic-protocol-algorithm-card">
+                      <b>Direct Pupil Response</b>
+                      <p>Bright light response</p>
+                      <p>Check:<br />Slow / absent / asymmetry</p>
+                      <span>Slow / absent / asymmetry</span>
+                      <img
+                        class="diabetic-protocol-stamp diabetic-protocol-stamp--refer diabetic-protocol-stamp--pupil"
+                        src="/images/learning/Diabetic/Diabetes/NCD/stamp_refer.webp"
+                        alt="Refer"
+                        loading="lazy"
+                      />
+                    </div>
+                    <div class="diabetic-protocol-algorithm-card">
+                      <b>Front of Eye (Loupe)</b>
+                      <p>Look for iris new vessels (rubeosis)</p>
+                      <p>Check:<br />Cataract / corneal disease</p>
+                      <span>Iris new vessels / treatable disease</span>
+                      <img
+                        class="diabetic-protocol-stamp diabetic-protocol-stamp--urgent diabetic-protocol-stamp--front"
+                        src="/images/learning/Diabetic/Diabetes/NCD/stamp_urgent.webp"
+                        alt="Urgent"
+                        loading="lazy"
+                      />
+                    </div>
+                  </div>
+                </section>
+
+                <section class="diabetic-protocol-algorithm-ncd">
+                  NCD Consultation
+                </section>
+
+                <section
+                  class="diabetic-protocol-algorithm-phase diabetic-protocol-algorithm-phase--postdilation"
+                >
+                  <h4>Phase C: Post-dilation Exam</h4>
+                  <div
+                    class="diabetic-protocol-algorithm-row diabetic-protocol-algorithm-row--two"
+                  >
+                    <div class="diabetic-protocol-algorithm-card">
+                      <b>Fundal Reflex</b>
+                      <span>Reduced / absent fundal reflex</span>
+                      <img
+                        class="diabetic-protocol-stamp diabetic-protocol-stamp--refer diabetic-protocol-stamp--reflex"
+                        src="/images/learning/Diabetic/Diabetes/NCD/stamp_refer.webp"
+                        alt="Refer"
+                        loading="lazy"
+                      />
+                    </div>
+                    <div class="diabetic-protocol-algorithm-card">
+                      <b>Fundoscopy</b>
+                      <p>
+                        Examine optic disc, vessels, macula,<br />
+                        periphery and look for danger signs
+                      </p>
+                      <div class="diabetic-protocol-algorithm-fundus-groups">
+                        <div
+                          class="diabetic-protocol-algorithm-fundus-group diabetic-protocol-algorithm-fundus-group--retina"
+                        >
+                          <strong>Diabetic Retinopathy</strong>
+                          <span>1. Proliferative Retinopathy</span>
+                          <span>2. Severe NPDR</span>
+                          <img
+                            class="diabetic-protocol-stamp diabetic-protocol-stamp--refer diabetic-protocol-stamp--retina"
+                            src="/images/learning/Diabetic/Diabetes/NCD/stamp_refer.webp"
+                            alt="Refer"
+                            loading="lazy"
+                          />
+                        </div>
+                        <div
+                          class="diabetic-protocol-algorithm-fundus-group diabetic-protocol-algorithm-fundus-group--macula"
+                        >
+                          <strong>Maculopathy</strong>
+                          <span>Hard exudate<br />at/near macula</span>
+                          <img
+                            class="diabetic-protocol-stamp diabetic-protocol-stamp--refer diabetic-protocol-stamp--macula"
+                            src="/images/learning/Diabetic/Diabetes/NCD/stamp_refer.webp"
+                            alt="Refer"
+                            loading="lazy"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+
+                <section
+                  class="diabetic-protocol-algorithm-phase diabetic-protocol-algorithm-phase--decision"
+                >
+                  <h4>Phase D: Final Decision</h4>
+                  <div class="diabetic-protocol-algorithm-row">
+                    <div
+                      class="diabetic-protocol-algorithm-card diabetic-protocol-algorithm-decision diabetic-protocol-algorithm-decision--green"
+                    >
+                      <b>Reassure and Educate</b>
+                      <p>
+                        No sight-threatening<br />
+                        disease
+                      </p>
+                      <p>
+                        Routine follow-up<br />
+                        in NCD clinic
+                      </p>
+                    </div>
+                    <div
+                      class="diabetic-protocol-algorithm-card diabetic-protocol-algorithm-decision diabetic-protocol-algorithm-decision--green"
+                    >
+                      <b>Glasses or Near Readers</b>
+                      <p>
+                        Refreactive error<br />
+                        or presbyopia
+                      </p>
+                      <p>
+                        Provide locally and<br />
+                        routine follow-up
+                      </p>
+                    </div>
+                    <div
+                      class="diabetic-protocol-algorithm-card diabetic-protocol-algorithm-decision diabetic-protocol-algorithm-decision--red"
+                    >
+                      <b>Refer to Eye Services</b>
+                      <p>Sight-threatening disease</p>
+                      <p>
+                        Media opacity or<br />
+                        unexplained vision loss
+                      </p>
+                    </div>
+                  </div>
+                </section>
+              </div>
             </div>
           </figure>
+          <div class="diabetic-protocol-map-notes">
+            <div>
+              <h4>Always refer if:</h4>
+              <ul>
+                <li>Proliferative signs (NVD, NVE, VH, pre-ret bleed, TRD)</li>
+                <li>Severe NPDR (4-2-1 rule, cotton wool spots)</li>
+                <li>Maculopathy with reduced VA</li>
+                <li>Abnormal pupils (poor response, RAPD)</li>
+                <li>Lost or reduced fundal reflex</li>
+                <li>Iris neovascularization (rubeosis)</li>
+                <li>Unexplained poor vision (not improving with pinhole)</li>
+                <li>Suspected glaucoma (cupped disc, poor pupil)</li>
+              </ul>
+            </div>
+            <div>
+              <h4>Key principles:</h4>
+              <ul>
+                <li>
+                  Look for ALL causes of sight loss, not just diabetic
+                  retinopathy
+                </li>
+                <li>Pragmatic, not perfect - focus on clear danger signs</li>
+                <li>Integrate into routine NCD clinic workflow</li>
+                <li>Simple, safe, and scalable for low-resource settings</li>
+              </ul>
+            </div>
+          </div>
         </article>
       </div>
     </section>
@@ -1464,9 +1689,9 @@
             <ul
               class="diabetic-screening-chip-list diabetic-protocol-rapd-list"
             >
-              <li>Slow constriction</li>
+              <li>Good response</li>
+              <li>Reduced response</li>
               <li>Absent constriction</li>
-              <li>Asymmetry between eyes</li>
             </ul>
             <p>
               Poor response can signal serious disease, including tractional
@@ -1494,6 +1719,12 @@
                 alt=""
                 loading="lazy"
               />
+              <span class="diabetic-protocol-rapd-demo__refer">Refer</span>
+              <span class="diabetic-protocol-rapd-demo__status">
+                <i>Good response</i>
+                <i>Reduced response</i>
+                <i>Absent constriction</i>
+              </span>
             </div>
           </div>
         </article>
@@ -1583,6 +1814,12 @@
               <span>Sometimes add Phenylephrine 2.5%</span>
             </div>
           </div>
+          <iframe
+            class="diabetic-protocol-lottie-frame"
+            src="/scrolly/coreexam/ophths/DO/03HowtoExamine/1/demo/data.html"
+            title="How to examine animation"
+            loading="lazy"
+          ></iframe>
         </article>
       </div>
     </section>
@@ -1651,22 +1888,31 @@
             class="diabetic-protocol-parallel diabetic-protocol-parallel--large"
           >
             <div>
-              <span>Registration, pre-dilation exam</span>
-              <p>History taking and visual acuity</p>
+              <span>Phase A</span>
+              <p>History, distance VA with pinhole, near vision</p>
             </div>
             <div>
+              <span>Phase B</span>
+              <p>Pupils, front of eye, dilate pupils</p>
+            </div>
+            <div
+              class="diabetic-protocol-parallel__consult diabetic-protocol-parallel__consult--medical"
+            >
+              <img
+                src="/images/icon/etc/heart.webp"
+                alt=""
+                aria-hidden="true"
+                loading="lazy"
+              />
               <span>Medical consultation</span>
-              <p>
-                While dilation drops take effect, the NCD consultation can
-                review diabetes, blood pressure and weight
-              </p>
+              <p>Diabetes, BP, weight</p>
             </div>
             <div class="diabetic-protocol-parallel__future">
-              <span>Post-dilation exam</span>
-              <p>Fundoscopy and retinal signs</p>
+              <span>Phase C</span>
+              <p>Fundal reflex, fundoscopy, action based on findings</p>
             </div>
             <div class="diabetic-protocol-parallel__future">
-              <span>Final decision</span>
+              <span>Phase D</span>
               <p>Glasses, reassure, or refer</p>
             </div>
           </div>
@@ -1844,16 +2090,10 @@
           <div class="diabetic-screening-panel__text">
             <span class="diabetic-screening-step">09-c</span>
             <h3>Priority signs for sight-threatening retinopathy</h3>
-            <ul class="diabetic-screening-chip-list">
-              <li>NVD / NVE</li>
-              <li>Pre-retinal haemorrhage</li>
-              <li>Vitreous haemorrhage</li>
-              <li>Tractional RD</li>
-            </ul>
             <p class="diabetic-protocol-urgent-box">Immediate referral</p>
           </div>
           <div
-            class="diabetic-protocol-image-grid diabetic-protocol-image-grid--labelled"
+            class="diabetic-protocol-looping-gallery diabetic-protocol-looping-gallery--five"
           >
             <figure>
               <img
@@ -1861,7 +2101,7 @@
                 alt="New vessels on disc"
                 loading="lazy"
               />
-              <figcaption class="diabetic-protocol-image-label">NVD</figcaption>
+              <figcaption>NVD</figcaption>
             </figure>
             <figure>
               <img
@@ -1869,7 +2109,31 @@
                 alt="New vessels elsewhere"
                 loading="lazy"
               />
-              <figcaption class="diabetic-protocol-image-label">NVE</figcaption>
+              <figcaption>NVE</figcaption>
+            </figure>
+            <figure>
+              <img
+                src="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/BleedingonRetina.png"
+                alt="Pre-retinal haemorrhage"
+                loading="lazy"
+              />
+              <figcaption>Pre-retinal haemorrhage</figcaption>
+            </figure>
+            <figure>
+              <img
+                src="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/BleedingintoVitreous.png"
+                alt="Vitreous haemorrhage"
+                loading="lazy"
+              />
+              <figcaption>Vitreous haemorrhage</figcaption>
+            </figure>
+            <figure>
+              <img
+                src="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/FibrovascularRetinalDetachment1.png"
+                alt="Tractional retinal detachment"
+                loading="lazy"
+              />
+              <figcaption>Tractional RD</figcaption>
             </figure>
           </div>
         </article>
@@ -1878,10 +2142,10 @@
           <div class="diabetic-screening-panel__text">
             <span class="diabetic-screening-step">09-d</span>
             <h3>Sight-threatening retinopathy</h3>
-            <p>New vessels and bleeding. Fibrovascular retinal detachment.</p>
+            <p class="diabetic-protocol-urgent-box">Immediate referral</p>
           </div>
           <div
-            class="diabetic-protocol-image-grid diabetic-protocol-image-collage"
+            class="diabetic-protocol-looping-gallery diabetic-protocol-looping-gallery--four"
           >
             <figure>
               <img
@@ -2988,6 +3252,45 @@
         </div>
       </section>
 
+      <article
+        class="diabetic-screening-panel diabetic-vision-aspects-panel"
+        data-diabetic-scroll-step
+      >
+        <div class="diabetic-screening-panel__text">
+          <span class="diabetic-screening-step">Focus</span>
+          <h3>Consider two aspects</h3>
+          <p>
+            When examining the fundus in patients with diabetes, consider:<br /><br />
+            1. Retina for retinopathy<br />
+            2. Macula for maculopathy.
+          </p>
+        </div>
+        <figure
+          class="diabetic-vision-aspects-figure"
+          aria-label="Retina and macula assessment"
+        >
+          <img
+            src="/scrolly/coreexam/ophths/BIO/02FundoscopySitting/3/images/img_2.png"
+            alt="Retinal fundus photograph"
+            loading="lazy"
+          />
+          <span
+            class="diabetic-vision-aspects-label diabetic-vision-aspects-label--retina"
+          >
+            1. Retina for<br />Retinopathy
+          </span>
+          <span
+            class="diabetic-vision-aspects-circle"
+            aria-hidden="true"
+          ></span>
+          <span
+            class="diabetic-vision-aspects-label diabetic-vision-aspects-label--macula"
+          >
+            2. Macula for<br />Maculopathy
+          </span>
+        </figure>
+      </article>
+
       <div class="diabetic-screening-stack">
         <article
           class="diabetic-screening-panel diabetic-vision-section-panel"
@@ -3619,33 +3922,54 @@
           <div class="diabetic-screening-panel__text">
             <span class="diabetic-screening-step">05</span>
             <h3>Sight Threatening Diabetic Eye Disease</h3>
-            <p>Sight-threatening diabetic eye disease includes:</p>
-            <ul class="diabetic-screening-chip-list">
-              <li>New vessels and bleeding</li>
-              <li>Fibrovascular retinal detachment</li>
-              <li>Maculopathy and iris rubeosis</li>
-            </ul>
+            <p>
+              These findings need referral because they can cause permanent
+              sight loss.
+            </p>
           </div>
-          <div class="diabetic-disease-sorter diabetic-disease-sorter--single">
-            <div class="diabetic-disease-sorter__lane">
-              <h4>Refer</h4>
-              <figure>
-                <img
-                  src="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/SightThreateningNewVesselsNBleeding1.png"
-                  alt="New vessels and bleeding"
-                  loading="lazy"
-                />
-                <figcaption>New vessels + bleeding</figcaption>
-              </figure>
-              <figure>
-                <img
-                  src="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/SightThreateningIrisRubeosis.png"
-                  alt="Iris rubeosis"
-                  loading="lazy"
-                />
-                <figcaption>Iris rubeosis</figcaption>
-              </figure>
-            </div>
+          <div
+            class="diabetic-disease-gallery diabetic-disease-gallery--collage diabetic-disease-gallery--sight-threatening"
+          >
+            <figure class="diabetic-disease-card diabetic-disease-card--danger">
+              <img
+                src="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/SightThreateningNewVesselsNBleeding1.png"
+                alt="New vessels and bleeding"
+                loading="lazy"
+              />
+              <figcaption>New vessels + bleeding</figcaption>
+            </figure>
+            <figure class="diabetic-disease-card diabetic-disease-card--danger">
+              <img
+                src="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/SightThreateningNewVesselsNBleeding2.png"
+                alt="New vessels and bleeding"
+                loading="lazy"
+              />
+              <figcaption>New vessels + bleeding</figcaption>
+            </figure>
+            <figure class="diabetic-disease-card diabetic-disease-card--danger">
+              <img
+                src="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/SightThreateningMaculopathy.png"
+                alt="Sight-threatening maculopathy"
+                loading="lazy"
+              />
+              <figcaption>Maculopathy</figcaption>
+            </figure>
+            <figure class="diabetic-disease-card diabetic-disease-card--danger">
+              <img
+                src="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/SightThreateningIrisRubeosis.png"
+                alt="Iris rubeosis"
+                loading="lazy"
+              />
+              <figcaption>Iris rubeosis</figcaption>
+            </figure>
+            <figure class="diabetic-disease-card diabetic-disease-card--danger">
+              <img
+                src="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/FibrovascularRetinalDetachment1.png"
+                alt="Fibrovascular retinal detachment"
+                loading="lazy"
+              />
+              <figcaption>Fibrovascular RD</figcaption>
+            </figure>
           </div>
         </article>
 
@@ -3661,34 +3985,33 @@
               and glaucoma.
             </p>
           </div>
-          <div class="diabetic-disease-sorter diabetic-disease-sorter--single">
-            <div class="diabetic-disease-sorter__lane">
-              <h4>Other eye disease</h4>
-              <figure>
-                <img
-                  src="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/OtherDiseaseCataract1.png"
-                  alt="Cataract"
-                  loading="lazy"
-                />
-                <figcaption>Cataract</figcaption>
-              </figure>
-              <figure>
-                <img
-                  src="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/OtherDiseaseGlaucoma.png"
-                  alt="Optic nerve cupping from glaucoma"
-                  loading="lazy"
-                />
-                <figcaption>Glaucoma cupping</figcaption>
-              </figure>
-              <figure>
-                <img
-                  src="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/OtherDiseaseGlasses.png"
-                  alt="Need for glasses"
-                  loading="lazy"
-                />
-                <figcaption>Need for glasses</figcaption>
-              </figure>
-            </div>
+          <div class="diabetic-disease-gallery">
+            <figure
+              class="diabetic-disease-card diabetic-disease-card--other-cataract"
+            >
+              <img
+                src="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/OtherDiseaseCataract1.png"
+                alt="Cataract"
+                loading="lazy"
+              />
+              <figcaption>Cataract</figcaption>
+            </figure>
+            <figure class="diabetic-disease-card">
+              <img
+                src="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/OtherDiseaseGlaucoma.png"
+                alt="Optic nerve cupping from glaucoma"
+                loading="lazy"
+              />
+              <figcaption>Glaucoma cupping</figcaption>
+            </figure>
+            <figure class="diabetic-disease-card">
+              <img
+                src="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/OtherDiseaseGlasses.png"
+                alt="Need for glasses"
+                loading="lazy"
+              />
+              <figcaption>Need for glasses</figcaption>
+            </figure>
           </div>
         </article>
       </div>

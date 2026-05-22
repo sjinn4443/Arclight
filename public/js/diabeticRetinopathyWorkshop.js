@@ -1406,6 +1406,239 @@ function initializeDiabeticScreeningScrollLessons() {
   });
 }
 
+function initializeDiabeticProtocolInteractions() {
+  document.querySelectorAll("[data-diabetic-panzoom]").forEach((viewer) => {
+    if (viewer.dataset.diabeticPanzoomWired === "1") return;
+    viewer.dataset.diabeticPanzoomWired = "1";
+
+    const windowEl = viewer.querySelector(
+      ".diabetic-protocol-algorithm-window",
+    );
+    const map = viewer.querySelector(".diabetic-protocol-algorithm-map");
+    const zoomIn = viewer.querySelector("[data-diabetic-zoom-in]");
+    const zoomOut = viewer.querySelector("[data-diabetic-zoom-out]");
+    if (!windowEl || !map) return;
+
+    const state = {
+      scale: 1,
+      x: 0,
+      y: 0,
+      dragging: false,
+      startX: 0,
+      startY: 0,
+      baseX: 0,
+      baseY: 0,
+    };
+
+    const clampPan = () => {
+      const viewport = windowEl.getBoundingClientRect();
+      const width = map.offsetWidth * state.scale;
+      const height = map.offsetHeight * state.scale;
+      const minX = Math.min(viewport.width - width - 18, 18);
+      const minY = Math.min(viewport.height - height - 18, 18);
+      state.x = Math.min(18, Math.max(minX, state.x));
+      state.y = Math.min(18, Math.max(minY, state.y));
+    };
+
+    const phases = map.querySelectorAll(
+      ".diabetic-protocol-algorithm-phase, .diabetic-protocol-algorithm-ncd",
+    );
+    const updateMapPhaseVisibility = () => {
+      const viewport = windowEl.getBoundingClientRect();
+      const viewportArea = Math.max(viewport.width * viewport.height, 1);
+      phases.forEach((phase) => {
+        const rect = phase.getBoundingClientRect();
+        const overlapWidth = Math.max(
+          0,
+          Math.min(rect.right, viewport.right) -
+            Math.max(rect.left, viewport.left),
+        );
+        const overlapHeight = Math.max(
+          0,
+          Math.min(rect.bottom, viewport.bottom) -
+            Math.max(rect.top, viewport.top),
+        );
+        const overlapRatio = (overlapWidth * overlapHeight) / viewportArea;
+        phase.classList.toggle("is-map-phase-visible", overlapRatio >= 0.12);
+      });
+    };
+
+    const render = () => {
+      clampPan();
+      map.style.setProperty("--map-scale", state.scale.toFixed(2));
+      map.style.setProperty("--pan-x", `${state.x.toFixed(1)}px`);
+      map.style.setProperty("--pan-y", `${state.y.toFixed(1)}px`);
+      window.requestAnimationFrame(updateMapPhaseVisibility);
+    };
+
+    if ("IntersectionObserver" in window && phases.length) {
+      const phaseObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            entry.target.classList.toggle(
+              "is-map-phase-visible",
+              entry.isIntersecting && entry.intersectionRatio >= 0.28,
+            );
+          });
+        },
+        {
+          root: windowEl,
+          threshold: [0, 0.28, 0.45, 0.7],
+        },
+      );
+      phases.forEach((phase) => phaseObserver.observe(phase));
+    } else {
+      phases.forEach((phase) => phase.classList.add("is-map-phase-visible"));
+    }
+
+    let lastFittedWidth = 0;
+    const fitInitialScale = () => {
+      const viewportWidth = windowEl.clientWidth;
+      const mapWidth = map.offsetWidth;
+      if (viewportWidth < 80 || mapWidth < 1) return false;
+      const fittedScale = (viewportWidth - 24) / Math.max(mapWidth, 1);
+      state.scale = Math.min(1.18, Math.max(0.46, fittedScale));
+      state.x = Math.max(0, (viewportWidth - mapWidth * state.scale) / 2);
+      state.y = 0;
+      lastFittedWidth = viewportWidth;
+      return true;
+    };
+
+    const refitAndRender = () => {
+      if (!fitInitialScale()) return;
+      render();
+    };
+
+    const zoomBy = (delta) => {
+      const before = state.scale;
+      state.scale = Math.min(1.6, Math.max(0.46, state.scale + delta));
+      if (state.scale === before) return;
+      state.x -= (map.offsetWidth * (state.scale - before)) / 2;
+      state.y -= (map.offsetHeight * (state.scale - before)) / 5;
+      render();
+    };
+
+    zoomIn?.addEventListener("click", () => zoomBy(0.12));
+    zoomOut?.addEventListener("click", () => zoomBy(-0.12));
+
+    windowEl.addEventListener("pointerdown", (event) => {
+      if (event.target.closest(".diabetic-protocol-algorithm-controls")) return;
+      state.dragging = true;
+      state.startX = event.clientX;
+      state.startY = event.clientY;
+      state.baseX = state.x;
+      state.baseY = state.y;
+      windowEl.classList.add("is-dragging");
+      windowEl.setPointerCapture?.(event.pointerId);
+    });
+
+    windowEl.addEventListener("pointermove", (event) => {
+      if (!state.dragging) return;
+      state.x = state.baseX + event.clientX - state.startX;
+      state.y = state.baseY + event.clientY - state.startY;
+      render();
+    });
+
+    const endDrag = (event) => {
+      if (!state.dragging) return;
+      state.dragging = false;
+      windowEl.classList.remove("is-dragging");
+      windowEl.releasePointerCapture?.(event.pointerId);
+      render();
+    };
+
+    windowEl.addEventListener("pointerup", endDrag);
+    windowEl.addEventListener("pointercancel", endDrag);
+    window.addEventListener(
+      "resize",
+      () => {
+        refitAndRender();
+      },
+      { passive: true },
+    );
+    if ("ResizeObserver" in window) {
+      const resizeObserver = new ResizeObserver(() => {
+        const width = windowEl.clientWidth;
+        if (width > 0 && Math.abs(width - lastFittedWidth) > 2) {
+          refitAndRender();
+        }
+      });
+      resizeObserver.observe(windowEl);
+    }
+    refitAndRender();
+    window.requestAnimationFrame(refitAndRender);
+  });
+
+  if (document.body.dataset.diabeticProliferativeLightboxWired === "1") return;
+  document.body.dataset.diabeticProliferativeLightboxWired = "1";
+
+  let lightbox = null;
+  const closeLightbox = () => {
+    lightbox?.remove();
+    lightbox = null;
+    document.body.classList.remove("diabetic-proliferative-lightbox-open");
+  };
+
+  const getVisibleLoopingGalleryImage = (gallery) => {
+    if (!gallery) return null;
+
+    let selected = null;
+    let selectedOpacity = -1;
+    gallery.querySelectorAll("figure").forEach((figure) => {
+      const image = figure.querySelector("img");
+      if (!image) return;
+      const opacity = Number.parseFloat(
+        getComputedStyle(figure).opacity || "0",
+      );
+      if (opacity > selectedOpacity) {
+        selected = image;
+        selectedOpacity = opacity;
+      }
+    });
+
+    return selected;
+  };
+
+  document.addEventListener("click", (event) => {
+    let image = event.target.closest?.(
+      'img[src*="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/"]',
+    );
+    if (!image) return;
+    event.preventDefault();
+
+    image =
+      getVisibleLoopingGalleryImage(
+        image.closest(".diabetic-protocol-looping-gallery"),
+      ) || image;
+
+    closeLightbox();
+    document.body.classList.add("diabetic-proliferative-lightbox-open");
+    lightbox = document.createElement("div");
+    lightbox.className = "diabetic-proliferative-lightbox";
+    lightbox.setAttribute("role", "dialog");
+    lightbox.setAttribute("aria-modal", "true");
+    lightbox.innerHTML = `
+      <button type="button" aria-label="Close image">x</button>
+      <img src="${image.currentSrc || image.src}" alt="${image.alt || ""}">
+    `;
+    document.body.appendChild(lightbox);
+  });
+
+  document.addEventListener("click", (event) => {
+    if (!lightbox) return;
+    if (
+      event.target === lightbox ||
+      event.target.closest(".diabetic-proliferative-lightbox button")
+    ) {
+      closeLightbox();
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closeLightbox();
+  });
+}
+
 function showPageById(id) {
   if (!id) return;
 
@@ -4323,4 +4556,5 @@ export function initializeDiabeticRetinopathyWorkshop() {
   initializeDiabeticDemoQuizzes();
   initializeDiabeticArclightPackagePage();
   initializeDiabeticScreeningScrollLessons();
+  initializeDiabeticProtocolInteractions();
 }

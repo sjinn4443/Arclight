@@ -7882,6 +7882,59 @@ select.onb-input.has-value + .onb-select-caret {
   background: #ffffff;
 }
 
+.diabetic-protocol-parallel .diabetic-protocol-parallel__consult {
+  border-color: #f25600;
+  background: #f25600;
+  color: #ffffff;
+}
+
+.diabetic-protocol-parallel .diabetic-protocol-parallel__consult::before {
+  border-color: #ffffff;
+  background: #f25600;
+}
+
+.diabetic-protocol-parallel .diabetic-protocol-parallel__consult span,
+.diabetic-protocol-parallel .diabetic-protocol-parallel__consult p {
+  color: #ffffff;
+  opacity: 1;
+}
+
+.diabetic-protocol-parallel__consult--medical {
+  transform: translateY(8px);
+}
+
+.diabetic-protocol-parallel__consult--medical i {
+  position: absolute;
+  right: 14px;
+  top: 14px;
+  width: 34px;
+  height: 34px;
+  border: 2px solid #ffffff;
+  border-radius: 10px;
+  opacity: 0.95;
+}
+
+.diabetic-protocol-parallel__consult--medical i::before,
+.diabetic-protocol-parallel__consult--medical i::after {
+  content: "";
+  position: absolute;
+  background: #ffffff;
+}
+
+.diabetic-protocol-parallel__consult--medical i::before {
+  left: 9px;
+  right: 9px;
+  top: 15px;
+  height: 3px;
+}
+
+.diabetic-protocol-parallel__consult--medical i::after {
+  top: 9px;
+  bottom: 9px;
+  left: 15px;
+  width: 3px;
+}
+
 .diabetic-protocol-parallel span {
   color: #f25600;
   font-size: 12px;
@@ -8264,10 +8317,14 @@ select.onb-input.has-value + .onb-select-caret {
 }
 
 .is-visible .diabetic-protocol-rapd-list li:nth-child(1) {
-  animation: diabeticProtocolRapdSlowChip 12s linear infinite;
+  animation: diabeticProtocolRapdGoodChip 12s linear infinite;
 }
 
 .is-visible .diabetic-protocol-rapd-list li:nth-child(2) {
+  animation: diabeticProtocolRapdReducedChip 12s linear infinite;
+}
+
+.is-visible .diabetic-protocol-rapd-list li:nth-child(3) {
   animation: diabeticProtocolRapdAbsentChip 12s linear infinite;
 }
 
@@ -8318,6 +8375,60 @@ select.onb-input.has-value + .onb-select-caret {
 
 .is-visible .diabetic-protocol-rapd-demo__pupil--right {
   animation: diabeticProtocolRapdRightPupil 12s ease-in-out infinite;
+}
+
+.diabetic-protocol-rapd-demo__refer,
+.diabetic-protocol-rapd-demo__status {
+  position: absolute;
+  z-index: 7;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  font-size: 13px;
+  font-weight: 950;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.diabetic-protocol-rapd-demo__refer {
+  top: 14px;
+  right: 14px;
+  padding: 10px 14px;
+  background: #f25600;
+  color: #ffffff;
+  opacity: 0;
+}
+
+.diabetic-protocol-rapd-demo__status {
+  right: 14px;
+  bottom: 14px;
+  min-width: 152px;
+  padding: 11px 14px;
+  background: rgba(255, 255, 255, 0.94);
+  color: #111827;
+  text-align: center;
+}
+
+.diabetic-protocol-rapd-demo__status i {
+  grid-area: 1 / 1;
+  font-style: normal;
+  opacity: 0;
+}
+
+.diabetic-protocol-rapd-demo__status i:nth-child(1) {
+  animation: diabeticProtocolRapdStatusGood 12s linear infinite;
+}
+
+.diabetic-protocol-rapd-demo__status i:nth-child(2) {
+  animation: diabeticProtocolRapdStatusReduced 12s linear infinite;
+}
+
+.diabetic-protocol-rapd-demo__status i:nth-child(3) {
+  animation: diabeticProtocolRapdStatusAbsent 12s linear infinite;
+}
+
+.is-visible .diabetic-protocol-rapd-demo__refer {
+  animation: diabeticProtocolRapdReferBadge 12s linear infinite;
 }
 
 .diabetic-protocol-rapd-demo__beam {
@@ -8596,6 +8707,438 @@ select.onb-input.has-value + .onb-select-caret {
   transform: scale(calc(1 + var(--zoom-progress, 0) * 0.82));
   transform-origin: 50% 38%;
   transition: transform 120ms linear;
+}
+
+.diabetic-protocol-algorithm-viewer {
+  position: relative;
+  margin: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.diabetic-protocol-map-panel {
+  grid-template-columns: 1fr !important;
+}
+
+.diabetic-protocol-map-panel .diabetic-screening-panel__text {
+  max-width: 680px;
+}
+
+.diabetic-protocol-algorithm-window {
+  position: relative;
+  width: 100%;
+  height: min(72vh, 680px);
+  min-height: 430px;
+  overflow: hidden;
+  border: 1px solid rgba(17, 24, 39, 0.12);
+  border-radius: 18px;
+  background: #ffffff;
+  cursor: grab;
+  touch-action: none;
+}
+
+.diabetic-protocol-algorithm-window.is-dragging {
+  cursor: grabbing;
+}
+
+.diabetic-protocol-algorithm-map {
+  width: 760px;
+  min-height: 1680px;
+  padding: 22px;
+  display: grid;
+  gap: 24px;
+  background:
+    linear-gradient(
+      90deg,
+      transparent calc(50% - 1px),
+      rgba(242, 86, 0, 0.18) 50%,
+      transparent calc(50% + 1px)
+    ),
+    #ffffff;
+  transform: translate(var(--pan-x, 0px), var(--pan-y, 0px))
+    scale(var(--map-scale, 0.64));
+  transform-origin: 0 0;
+  transition: transform 120ms ease;
+}
+
+.diabetic-protocol-algorithm-window.is-dragging
+  .diabetic-protocol-algorithm-map {
+  transition: none;
+}
+
+.diabetic-protocol-algorithm-controls {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  z-index: 4;
+  display: flex;
+  gap: 6px;
+  padding: 6px;
+  border-radius: 999px;
+  background: rgba(17, 24, 39, 0.72);
+  backdrop-filter: blur(8px);
+}
+
+.diabetic-protocol-algorithm-controls span,
+.diabetic-protocol-algorithm-controls button {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: #ffffff;
+  color: #111827;
+  font-size: 19px;
+  font-weight: 950;
+  line-height: 1;
+}
+
+.diabetic-protocol-algorithm-controls span {
+  position: relative;
+  font-size: 0;
+}
+
+.diabetic-protocol-algorithm-controls span::before {
+  content: "";
+  width: 13px;
+  height: 13px;
+  border: 3px solid #111827;
+  border-radius: 50%;
+  transform: translate(-2px, -2px);
+}
+
+.diabetic-protocol-algorithm-controls span::after {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 3px;
+  border-radius: 999px;
+  background: #111827;
+  transform: translate(7px, 8px) rotate(45deg);
+}
+
+.diabetic-protocol-algorithm-controls button {
+  cursor: pointer;
+}
+
+.diabetic-protocol-algorithm-phase,
+.diabetic-protocol-algorithm-ncd {
+  position: relative;
+  padding: 22px;
+  border: 2px solid rgba(165, 165, 165, 0.65);
+  border-radius: 18px;
+  background: #ffffff;
+}
+
+.diabetic-protocol-algorithm-phase h4,
+.diabetic-protocol-map-notes h4 {
+  margin: 0 0 18px;
+  color: #111827;
+  font-size: 21px;
+  font-weight: 950;
+  line-height: 1.1;
+}
+
+.diabetic-protocol-algorithm-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.diabetic-protocol-algorithm-row--two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.diabetic-protocol-algorithm-card {
+  position: relative;
+  min-height: 210px;
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  padding: 58px 16px 16px;
+  border: 3px solid #f25600;
+  border-radius: 18px;
+  background: #ffffff;
+  color: #111827;
+}
+
+.diabetic-protocol-algorithm-card b {
+  position: absolute;
+  left: -3px;
+  right: -3px;
+  top: -3px;
+  min-height: 42px;
+  display: grid;
+  place-items: center;
+  padding: 8px;
+  border-radius: 16px 16px 0 0;
+  background: #f25600;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 950;
+  line-height: 1.15;
+  text-align: center;
+}
+
+.diabetic-protocol-algorithm-card p,
+.diabetic-protocol-algorithm-card span {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 750;
+  line-height: 1.25;
+  text-align: center;
+}
+
+.diabetic-protocol-algorithm-card span {
+  display: grid;
+  place-items: center;
+  min-height: 50px;
+  padding: 9px;
+  border-radius: 13px;
+  background: #f25600;
+  color: #ffffff;
+  font-weight: 900;
+}
+
+.diabetic-protocol-stamp {
+  position: absolute;
+  z-index: 2;
+  width: 82px;
+  height: auto;
+  opacity: 0;
+  filter: drop-shadow(0 7px 10px rgba(15, 23, 42, 0.2));
+  transform: rotate(-11deg) scale(1.22);
+}
+
+.is-visible .diabetic-protocol-stamp {
+  animation: diabeticProtocolStampIn 520ms cubic-bezier(0.2, 1.35, 0.24, 1)
+    forwards;
+}
+
+.diabetic-protocol-stamp--history,
+.diabetic-protocol-stamp--pupil,
+.diabetic-protocol-stamp--reflex {
+  left: calc(50% - 41px);
+  top: 128px;
+}
+
+.diabetic-protocol-stamp--pinhole-no {
+  right: 12px;
+  top: 118px;
+}
+
+.diabetic-protocol-stamp--pinhole-yes {
+  right: 12px;
+  bottom: 10px;
+}
+
+.diabetic-protocol-stamp--near,
+.diabetic-protocol-stamp--front,
+.diabetic-protocol-stamp--retina,
+.diabetic-protocol-stamp--macula {
+  right: 12px;
+  bottom: 14px;
+}
+
+.diabetic-protocol-stamp--front,
+.diabetic-protocol-stamp--retina {
+  top: 132px;
+  bottom: auto;
+}
+
+.diabetic-protocol-stamp--macula {
+  bottom: 10px;
+}
+
+.diabetic-protocol-stamp--history {
+  animation-delay: 0.55s !important;
+}
+
+.diabetic-protocol-stamp--pinhole-no {
+  animation-delay: 0.85s !important;
+}
+
+.diabetic-protocol-stamp--pinhole-yes,
+.diabetic-protocol-stamp--near {
+  animation-delay: 1.15s !important;
+}
+
+.diabetic-protocol-stamp--pupil,
+.diabetic-protocol-stamp--front {
+  animation-delay: 1.35s !important;
+}
+
+.diabetic-protocol-stamp--reflex,
+.diabetic-protocol-stamp--retina,
+.diabetic-protocol-stamp--macula {
+  animation-delay: 1.6s !important;
+}
+
+.diabetic-protocol-algorithm-ncd {
+  display: grid;
+  place-items: center;
+  min-height: 78px;
+  border-color: #f25600;
+  background: #f25600;
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: 950;
+}
+
+.diabetic-protocol-algorithm-phase--decision .diabetic-protocol-algorithm-card {
+  min-height: 236px;
+  border-color: #f25600;
+}
+
+.diabetic-protocol-algorithm-decision b {
+  background: #f25600;
+  animation: diabeticProtocolDecisionHeader 6s linear infinite;
+}
+
+.diabetic-protocol-algorithm-decision--green {
+  --decision-color: #16a34a;
+  animation: diabeticProtocolDecisionGreen 6s linear infinite;
+}
+
+.diabetic-protocol-algorithm-decision--red {
+  --decision-color: #dc2626;
+  animation: diabeticProtocolDecisionRed 6s linear infinite;
+}
+
+.diabetic-protocol-map-notes {
+  display: grid;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.diabetic-protocol-map-notes div {
+  padding: 16px;
+  border: 1px solid rgba(17, 24, 39, 0.1);
+  border-radius: 18px;
+  background: #ffffff;
+}
+
+.diabetic-protocol-map-notes ul {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding-left: 20px;
+}
+
+.diabetic-protocol-map-notes li {
+  color: #111827;
+  font-size: 13px;
+  font-weight: 750;
+  line-height: 1.25;
+}
+
+.diabetic-protocol-lottie-frame {
+  width: 100%;
+  min-height: 320px;
+  border: 0;
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.12);
+}
+
+.diabetic-protocol-looping-gallery {
+  position: relative;
+  min-height: 360px;
+  overflow: hidden;
+  border-radius: 20px;
+  background: #111827;
+}
+
+.diabetic-protocol-looping-gallery figure {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  opacity: 0;
+}
+
+.diabetic-protocol-looping-gallery img {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  display: block;
+  object-fit: cover;
+}
+
+.diabetic-protocol-looping-gallery figcaption {
+  padding: 12px 14px;
+  background: #f25600;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 950;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.is-visible .diabetic-protocol-looping-gallery--five figure {
+  animation: diabeticProtocolLoopFive 15s linear infinite;
+}
+
+.is-visible .diabetic-protocol-looping-gallery--four figure {
+  animation: diabeticProtocolLoopFour 12s linear infinite;
+}
+
+.diabetic-protocol-looping-gallery figure:nth-child(2) {
+  animation-delay: 3s !important;
+}
+
+.diabetic-protocol-looping-gallery figure:nth-child(3) {
+  animation-delay: 6s !important;
+}
+
+.diabetic-protocol-looping-gallery figure:nth-child(4) {
+  animation-delay: 9s !important;
+}
+
+.diabetic-protocol-looping-gallery--five figure:nth-child(5) {
+  animation-delay: 12s !important;
+}
+
+.diabetic-proliferative-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background: rgba(0, 0, 0, 0.9);
+}
+
+.diabetic-proliferative-lightbox img {
+  width: 100%;
+  height: 100%;
+  max-width: 100vw;
+  max-height: 100vh;
+  display: block;
+  object-fit: contain;
+}
+
+.diabetic-proliferative-lightbox button {
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  z-index: 1;
+  width: 42px;
+  height: 42px;
+  border: 0;
+  border-radius: 50%;
+  background: #ffffff;
+  color: #111827;
+  font-size: 20px;
+  font-weight: 950;
+  line-height: 1;
+  cursor: pointer;
+}
+
+img[src*="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/"] {
+  cursor: zoom-in;
 }
 
 .diabetic-protocol-refer-line {
@@ -8941,14 +9484,34 @@ select.onb-input.has-value + .onb-select-caret {
   }
 }
 
-@keyframes diabeticProtocolRapdSlowChip {
+@keyframes diabeticProtocolRapdGoodChip {
   0%,
-  58.32% {
+  30.99% {
     background: #f25600;
     color: #ffffff;
   }
 
-  58.33%,
+  31%,
+  100% {
+    background: #ffffff;
+    color: #f25600;
+  }
+}
+
+@keyframes diabeticProtocolRapdReducedChip {
+  0%,
+  30.99% {
+    background: #ffffff;
+    color: #f25600;
+  }
+
+  31%,
+  63.99% {
+    background: #f25600;
+    color: #ffffff;
+  }
+
+  64%,
   100% {
     background: #ffffff;
     color: #f25600;
@@ -8957,39 +9520,36 @@ select.onb-input.has-value + .onb-select-caret {
 
 @keyframes diabeticProtocolRapdAbsentChip {
   0%,
-  58.32% {
+  63.99% {
     background: #ffffff;
     color: #f25600;
   }
 
-  58.33%,
-  91.66% {
+  64%,
+  100% {
     background: #f25600;
     color: #ffffff;
-  }
-
-  91.67%,
-  100% {
-    background: #ffffff;
-    color: #f25600;
   }
 }
 
 @keyframes diabeticProtocolRapdSwingFlashlight {
   0%,
   8.32%,
+  30.99%,
   41.66%,
-  58.32%,
-  91.66%,
+  63.99%,
+  75%,
   100% {
     left: -8%;
     top: 68%;
   }
 
-  16.66%,
-  33.32%,
-  66.66%,
-  83.32% {
+  16%,
+  27%,
+  49%,
+  60%,
+  82%,
+  94% {
     left: 50%;
     top: 68%;
   }
@@ -8998,18 +9558,21 @@ select.onb-input.has-value + .onb-select-caret {
 @keyframes diabeticProtocolRapdSwingBeam {
   0%,
   8.32%,
+  30.99%,
   41.66%,
-  58.32%,
-  91.66%,
+  63.99%,
+  75%,
   100% {
     left: -8%;
     top: 45%;
   }
 
-  16.66%,
-  33.32%,
-  66.66%,
-  83.32% {
+  16%,
+  27%,
+  49%,
+  60%,
+  82%,
+  94% {
     left: 50%;
     top: 45%;
   }
@@ -9024,14 +9587,160 @@ select.onb-input.has-value + .onb-select-caret {
 
 @keyframes diabeticProtocolRapdRightPupil {
   0%,
-  41.66%,
-  58.32%,
+  30.99%,
   100% {
+    transform: translate(-50%, -50%) scale(0.7);
+  }
+
+  8%,
+  27% {
+    transform: translate(-50%, -50%) scale(0.58);
+  }
+
+  31%,
+  63.99% {
     transform: translate(-50%, -50%) scale(1.2);
   }
 
-  49.99% {
-    transform: translate(-50%, -50%) scale(0.78);
+  49%,
+  60% {
+    transform: translate(-50%, -50%) scale(0.98);
+  }
+
+  64%,
+  100% {
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+}
+
+@keyframes diabeticProtocolRapdStatusGood {
+  0%,
+  30.99% {
+    opacity: 1;
+  }
+
+  31%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes diabeticProtocolRapdStatusReduced {
+  0%,
+  30.99% {
+    opacity: 0;
+  }
+
+  31%,
+  63.99% {
+    opacity: 1;
+  }
+
+  64%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes diabeticProtocolRapdStatusAbsent {
+  0%,
+  63.99% {
+    opacity: 0;
+  }
+
+  64%,
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes diabeticProtocolRapdReferBadge {
+  0%,
+  30.99% {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+
+  31%,
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes diabeticProtocolStampIn {
+  from {
+    opacity: 0;
+    transform: rotate(-11deg) scale(1.28);
+  }
+
+  to {
+    opacity: 1;
+    transform: rotate(-11deg) scale(1);
+  }
+}
+
+@keyframes diabeticProtocolDecisionGreen {
+  0%,
+  49% {
+    border-color: #f25600;
+    background: #ffffff;
+  }
+
+  50%,
+  100% {
+    border-color: #16a34a;
+    background: rgba(22, 163, 74, 0.08);
+  }
+}
+
+@keyframes diabeticProtocolDecisionRed {
+  0%,
+  49% {
+    border-color: #f25600;
+    background: #ffffff;
+  }
+
+  50%,
+  100% {
+    border-color: #dc2626;
+    background: rgba(220, 38, 38, 0.08);
+  }
+}
+
+@keyframes diabeticProtocolDecisionHeader {
+  0%,
+  49% {
+    background: #f25600;
+  }
+
+  50%,
+  100% {
+    background: var(--decision-color, #16a34a);
+  }
+}
+
+@keyframes diabeticProtocolLoopFive {
+  0%,
+  18% {
+    opacity: 1;
+  }
+
+  21%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes diabeticProtocolLoopFour {
+  0%,
+  23% {
+    opacity: 1;
+  }
+
+  26%,
+  100% {
+    opacity: 0;
   }
 }
 
@@ -10521,6 +11230,12 @@ select.onb-input.has-value + .onb-select-caret {
 
 #diabeticProliferativeOtherDiseasePage .diabetic-disease-card img {
   border-radius: 18px 18px 0 0;
+}
+
+#diabeticProliferativeOtherDiseasePage
+  .diabetic-disease-card--other-cataract
+  img {
+  object-position: 85% center;
 }
 
 #diabeticProliferativeOtherDiseasePage .diabetic-disease-card--wide {
@@ -15274,7 +15989,7 @@ select.onb-input.has-value + .onb-select-caret {
     min-height: 32px !important;
     padding: 8px 10px !important;
     border-radius: 0 0 14px 14px !important;
-    font-size: 11px !important;
+    font-size: 12px !important;
     font-weight: 850 !important;
     line-height: 1.12 !important;
   }
@@ -15283,8 +15998,8 @@ select.onb-input.has-value + .onb-select-caret {
     .diabetic-screening-panel:nth-of-type(1)
     .diabetic-disease-card
     img {
-    height: 150px !important;
-    max-height: 150px !important;
+    height: 138px !important;
+    max-height: 138px !important;
     object-fit: cover !important;
     background: #111827 !important;
   }
@@ -15441,8 +16156,8 @@ select.onb-input.has-value + .onb-select-caret {
     .diabetic-screening-panel:nth-of-type(1)
     .diabetic-disease-card
     img {
-    height: 150px !important;
-    max-height: 150px !important;
+    height: 138px !important;
+    max-height: 138px !important;
     object-fit: cover !important;
     background: #111827 !important;
   }
@@ -16528,7 +17243,7 @@ select.onb-input.has-value + .onb-select-caret {
     min-height: 32px !important;
     padding: 8px 10px !important;
     border-radius: 0 0 14px 14px !important;
-    font-size: 11px !important;
+    font-size: 12px !important;
     font-weight: 850 !important;
     line-height: 1.12 !important;
   }
@@ -16537,8 +17252,8 @@ select.onb-input.has-value + .onb-select-caret {
     .diabetic-screening-panel:nth-of-type(1)
     .diabetic-disease-card
     img {
-    height: 150px !important;
-    max-height: 150px !important;
+    height: 138px !important;
+    max-height: 138px !important;
     object-fit: cover !important;
     background: #111827 !important;
   }
@@ -18648,4 +19363,1428 @@ select.onb-input.has-value + .onb-select-caret {
 #diabeticArclightPackagePage .diabetic-package-device-stage {
   padding-top: 20px;
   padding-bottom: 20px;
+}
+
+#diabeticProliferativeOtherDiseasePage
+  .diabetic-screening-panel:nth-of-type(5)
+  .diabetic-disease-gallery--sight-threatening {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 14px;
+  align-items: start;
+}
+
+#diabeticProliferativeOtherDiseasePage
+  .diabetic-screening-panel:nth-of-type(5)
+  .diabetic-disease-gallery--sight-threatening
+  .diabetic-disease-card {
+  margin: 0;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+#diabeticProliferativeOtherDiseasePage
+  .diabetic-screening-panel:nth-of-type(5)
+  .diabetic-disease-gallery--sight-threatening
+  .diabetic-disease-card:nth-child(5) {
+  grid-column: 1 / -1;
+  width: calc(50% - 7px);
+  justify-self: center;
+}
+
+#diabeticProliferativeOtherDiseasePage
+  .diabetic-screening-panel:nth-of-type(5)
+  .diabetic-disease-gallery--sight-threatening
+  .diabetic-disease-card
+  img {
+  height: 148px;
+  border-radius: 14px 14px 0 0 !important;
+  object-fit: cover;
+}
+
+#diabeticProliferativeOtherDiseasePage
+  .diabetic-screening-panel:nth-of-type(5)
+  .diabetic-disease-gallery--sight-threatening
+  .diabetic-disease-card
+  figcaption {
+  position: static !important;
+  min-height: 32px;
+  display: grid;
+  place-items: center;
+  padding: 7px 8px;
+  border-radius: 0 0 12px 12px !important;
+  font-size: 11px;
+  font-weight: 850;
+}
+
+#diabeticProliferativeOtherDiseasePage figcaption {
+  font-size: 12px !important;
+}
+
+#diabeticProtocolOverviewPage .diabetic-protocol-algorithm-window {
+  height: min(76vh, 760px);
+  min-height: 540px;
+}
+
+#diabeticProtocolOverviewPage .diabetic-protocol-algorithm-map {
+  width: 595px;
+  min-height: 1906px;
+  gap: 34px;
+  padding: 18px;
+  background:
+    linear-gradient(
+      90deg,
+      transparent calc(50% - 1px),
+      rgba(165, 165, 165, 0.9) 50%,
+      transparent calc(50% + 1px)
+    ),
+    #ffffff;
+}
+
+#diabeticProtocolOverviewPage .diabetic-protocol-algorithm-controls {
+  right: 14px;
+  top: 14px;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 7px;
+  background: rgba(17, 24, 39, 0.76);
+}
+
+#diabeticProtocolOverviewPage .diabetic-protocol-algorithm-controls span,
+#diabeticProtocolOverviewPage .diabetic-protocol-algorithm-controls button {
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0 !important;
+  align-self: center;
+  line-height: 1;
+}
+
+#diabeticProtocolOverviewPage .diabetic-protocol-algorithm-controls span {
+  background: transparent;
+}
+
+#diabeticProtocolOverviewPage
+  .diabetic-protocol-algorithm-controls
+  span::before {
+  border-color: #ffffff;
+}
+
+#diabeticProtocolOverviewPage
+  .diabetic-protocol-algorithm-controls
+  span::after {
+  background: #ffffff;
+}
+
+#diabeticProtocolOverviewPage .diabetic-protocol-algorithm-controls button {
+  background: #ffffff;
+  color: #111827;
+}
+
+#diabeticProtocolOverviewPage .diabetic-protocol-algorithm-phase,
+#diabeticProtocolOverviewPage .diabetic-protocol-algorithm-ncd {
+  padding: 30px 26px;
+  border: 3px solid #a5a5a5;
+  border-radius: 16px;
+}
+
+#diabeticProtocolOverviewPage .diabetic-protocol-algorithm-phase {
+  min-height: 346px;
+}
+
+#diabeticProtocolOverviewPage .diabetic-protocol-algorithm-phase h4 {
+  margin-bottom: 26px;
+  color: #f25600;
+  font-size: 17px;
+  font-weight: 850;
+  line-height: 1.18;
+}
+
+#diabeticProtocolOverviewPage .diabetic-protocol-algorithm-row {
+  gap: 14px;
+}
+
+#diabeticProtocolOverviewPage .diabetic-protocol-algorithm-row--two {
+  gap: 18px;
+}
+
+#diabeticProtocolOverviewPage .diabetic-protocol-algorithm-card {
+  min-height: 230px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 54px 10px 12px;
+  border: 3px solid #f25600;
+  border-radius: 14px;
+  overflow: visible;
+}
+
+#diabeticProtocolOverviewPage .diabetic-protocol-algorithm-card::after {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  right: -25px;
+  top: 47%;
+  width: 28px;
+  height: 56px;
+  background: linear-gradient(90deg, rgba(242, 86, 0, 0.22), #f25600);
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+  transform: translateY(-50%);
+}
+
+#diabeticProtocolOverviewPage
+  .diabetic-protocol-algorithm-row
+  .diabetic-protocol-algorithm-card:last-child::after {
+  display: none;
+}
+
+#diabeticProtocolOverviewPage
+  .diabetic-protocol-algorithm-phase--decision
+  .diabetic-protocol-algorithm-card::after {
+  display: none;
+}
+
+#diabeticProtocolOverviewPage .diabetic-protocol-algorithm-card b {
+  min-height: 42px;
+  border-radius: 10px 10px 0 0;
+  font-size: 13px;
+  font-weight: 850;
+}
+
+#diabeticProtocolOverviewPage .diabetic-protocol-algorithm-card p,
+#diabeticProtocolOverviewPage .diabetic-protocol-algorithm-card span {
+  font-size: 11px;
+  font-weight: 650;
+  line-height: 1.48;
+}
+
+#diabeticProtocolOverviewPage .diabetic-protocol-algorithm-card p {
+  margin: 0;
+}
+
+#diabeticProtocolOverviewPage .diabetic-protocol-algorithm-card span {
+  min-height: 58px;
+  border-radius: 12px;
+  font-weight: 850;
+}
+
+#diabeticProtocolOverviewPage
+  .diabetic-protocol-algorithm-card
+  span:first-of-type {
+  margin-top: auto;
+}
+
+#diabeticProtocolOverviewPage
+  .diabetic-protocol-algorithm-phase:first-child
+  .diabetic-protocol-algorithm-card:nth-child(2)
+  span:last-of-type,
+#diabeticProtocolOverviewPage
+  .diabetic-protocol-algorithm-phase:first-child
+  .diabetic-protocol-algorithm-card:nth-child(3)
+  span {
+  border: 3px solid #f25600;
+  background: #ffffff;
+  color: #f25600;
+}
+
+#diabeticProtocolOverviewPage .diabetic-protocol-stamp {
+  display: none;
+}
+
+#diabeticProtocolOverviewPage .diabetic-protocol-algorithm-ncd {
+  min-height: 78px;
+  padding: 0;
+  border-color: #f25600;
+  border-radius: 8px;
+  font-size: 17px;
+}
+
+#diabeticProtocolOverviewPage
+  .diabetic-protocol-algorithm-phase--decision
+  .diabetic-protocol-algorithm-card {
+  min-height: 230px;
+}
+
+#diabeticProtocolOverviewPage .diabetic-protocol-algorithm-decision--green {
+  border-color: #4ebc20;
+}
+
+#diabeticProtocolOverviewPage .diabetic-protocol-algorithm-decision--red {
+  border-color: #ef0000;
+}
+
+#diabeticProtocolOverviewPage .diabetic-protocol-algorithm-decision--green b {
+  background: #4ebc20;
+}
+
+#diabeticProtocolOverviewPage .diabetic-protocol-algorithm-decision--red b {
+  background: #ef0000;
+}
+
+#diabeticProtocolOverviewPage
+  :is(
+    .diabetic-protocol-algorithm-decision,
+    .diabetic-protocol-algorithm-decision b
+  ) {
+  animation: none;
+}
+
+#diabeticProtocolOverviewPage .diabetic-protocol-map-notes {
+  gap: 20px;
+  margin-top: 18px;
+}
+
+#diabeticProtocolOverviewPage .diabetic-protocol-map-notes div {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+#diabeticProtocolOverviewPage .diabetic-protocol-map-notes h4 {
+  margin: 0 0 8px;
+  color: #111827;
+  font-size: 16px;
+  font-weight: 850;
+}
+
+#diabeticProtocolOverviewPage .diabetic-protocol-map-notes li {
+  color: #374151;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+#diabeticProtocolPhaseBPage .diabetic-protocol-rapd-demo__pupil {
+  transform: translate(-50%, -50%) scale(1.2);
+}
+
+#diabeticProtocolPhaseBPage .diabetic-protocol-rapd-demo__pupil--right {
+  left: 51.8%;
+  top: 47.4%;
+}
+
+#diabeticProtocolPhaseBPage .diabetic-protocol-lottie-frame {
+  width: 100%;
+  min-height: 360px;
+  height: min(64vw, 440px);
+  border-radius: 18px;
+  background: #000000;
+}
+
+#diabeticProtocolPhaseBPage
+  .is-visible
+  :is(
+    .diabetic-protocol-rapd-list li,
+    .diabetic-protocol-rapd-demo__pupil--right,
+    .diabetic-protocol-rapd-demo__status i,
+    .diabetic-protocol-rapd-demo__refer,
+    .diabetic-protocol-rapd-demo__beam,
+    .diabetic-protocol-rapd-demo__flashlight
+  ) {
+  animation-duration: 21s;
+}
+
+#diabeticProtocolNcdConsultationPage
+  .diabetic-protocol-parallel__consult--medical {
+  transform: none;
+}
+
+#diabeticProtocolNcdConsultationPage
+  .diabetic-protocol-parallel__consult--medical
+  img {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  width: 46px;
+  height: 46px;
+  object-fit: contain;
+  filter: grayscale(1) brightness(0) invert(1);
+  opacity: 0.98;
+  transform: translateY(-50%);
+}
+
+#diabeticProtocolNcdConsultationPage
+  .diabetic-protocol-parallel__consult--medical
+  i {
+  display: none;
+}
+
+#diabeticProtocolPhaseCPage .diabetic-protocol-urgent-box {
+  display: block;
+  width: auto;
+  margin-top: 14px !important;
+  padding: 0;
+  background: transparent;
+  color: #f25600 !important;
+  font-size: 15px !important;
+  font-weight: 950 !important;
+  text-align: left;
+}
+
+#diabeticProtocolPhaseCPage
+  .diabetic-protocol-looping-gallery
+  img[src*="BleedingintoVitreous"] {
+  width: 100%;
+  margin-left: 0;
+  object-position: 88% 50%;
+  transform: none;
+}
+
+.diabetic-proliferative-lightbox-open
+  .diabetic-protocol-looping-gallery
+  figure {
+  animation-play-state: paused !important;
+}
+
+@media (min-width: 48em) {
+  #diabeticProliferativeOtherDiseasePage
+    .diabetic-screening-panel:nth-of-type(5)
+    .diabetic-disease-gallery--sight-threatening {
+    gap: 10px 12px;
+  }
+
+  #diabeticProliferativeOtherDiseasePage
+    .diabetic-screening-panel:nth-of-type(5)
+    .diabetic-disease-gallery--sight-threatening
+    .diabetic-disease-card
+    img {
+    height: 138px;
+  }
+
+  #diabeticProtocolPhaseBPage .diabetic-screening-panel:nth-of-type(5) {
+    grid-template-columns: minmax(0, 0.72fr) minmax(360px, 1.15fr) !important;
+    align-items: center;
+  }
+
+  #diabeticProtocolPhaseBPage .diabetic-protocol-lottie-frame {
+    min-height: 360px;
+    height: 360px;
+  }
+}
+
+@media (max-width: 47.98em) {
+  #diabeticProliferativeOtherDiseasePage
+    .diabetic-screening-panel:nth-of-type(5)
+    .diabetic-disease-gallery--sight-threatening
+    .diabetic-disease-card:nth-child(5) {
+    width: 100%;
+  }
+
+  #diabeticProtocolOverviewPage .diabetic-protocol-algorithm-window {
+    min-height: 480px;
+  }
+
+  #diabeticProtocolPhaseBPage .diabetic-protocol-rapd-demo__pupil--right {
+    top: 46.4%;
+  }
+}
+
+@keyframes diabeticProtocolRapdGoodChip {
+  0%,
+  33.32% {
+    background: #f25600;
+    color: #ffffff;
+  }
+
+  33.33%,
+  100% {
+    background: #ffffff;
+    color: #f25600;
+  }
+}
+
+@keyframes diabeticProtocolRapdReducedChip {
+  0%,
+  33.32% {
+    background: #ffffff;
+    color: #f25600;
+  }
+
+  33.33%,
+  66.65% {
+    background: #f25600;
+    color: #ffffff;
+  }
+
+  66.66%,
+  100% {
+    background: #ffffff;
+    color: #f25600;
+  }
+}
+
+@keyframes diabeticProtocolRapdAbsentChip {
+  0%,
+  66.65% {
+    background: #ffffff;
+    color: #f25600;
+  }
+
+  66.66%,
+  100% {
+    background: #f25600;
+    color: #ffffff;
+  }
+}
+
+@keyframes diabeticProtocolRapdSwingFlashlight {
+  0%,
+  4.75%,
+  19.05%,
+  33.32%,
+  38.09%,
+  54.76%,
+  66.65%,
+  71.42%,
+  85.72%,
+  100% {
+    left: -8%;
+    top: 68%;
+  }
+
+  4.76%,
+  19.04%,
+  38.1%,
+  54.75%,
+  71.43%,
+  85.71% {
+    left: 50%;
+    top: 68%;
+  }
+}
+
+@keyframes diabeticProtocolRapdSwingBeam {
+  0%,
+  4.75%,
+  19.05%,
+  33.32%,
+  38.09%,
+  54.76%,
+  66.65%,
+  71.42%,
+  85.72%,
+  100% {
+    left: -8%;
+    top: 45%;
+    opacity: 0;
+  }
+
+  4.76%,
+  19.04%,
+  38.1%,
+  54.75%,
+  71.43%,
+  85.71% {
+    left: 50%;
+    top: 45%;
+    opacity: 0.86;
+  }
+}
+
+@keyframes diabeticProtocolRapdRightPupil {
+  0%,
+  8.56%,
+  17.61%,
+  45.23%,
+  59.52%,
+  100% {
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+
+  8.57%,
+  15.23% {
+    transform: translate(-50%, -50%) scale(0.58);
+  }
+
+  45.24%,
+  54.76% {
+    transform: translate(-50%, -50%) scale(0.88);
+  }
+}
+
+@keyframes diabeticProtocolRapdStatusGood {
+  0%,
+  33.32% {
+    opacity: 1;
+  }
+
+  33.33%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes diabeticProtocolRapdStatusReduced {
+  0%,
+  33.32% {
+    opacity: 0;
+  }
+
+  33.33%,
+  66.65% {
+    opacity: 1;
+  }
+
+  66.66%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes diabeticProtocolRapdStatusAbsent {
+  0%,
+  66.65% {
+    opacity: 0;
+  }
+
+  66.66%,
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes diabeticProtocolRapdReferBadge {
+  0%,
+  33.32% {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+
+  33.33%,
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+#diabeticProtocolPhaseAPage .diabetic-protocol-link {
+  background: #f25600;
+  color: #ffffff;
+}
+
+#diabeticProtocolPhaseAPage .diabetic-protocol-link i {
+  background: #ffffff;
+  color: #f25600;
+}
+
+#diabeticProtocolPhaseAPage .diabetic-protocol-link__desktop-extra {
+  display: none !important;
+}
+
+#diabeticProtocolOverviewPage
+  .diabetic-protocol-algorithm-controls
+  button[data-diabetic-zoom-out] {
+  font-size: 23px;
+  transform: scaleX(1.12);
+}
+
+#diabeticProtocolOverviewPage .diabetic-protocol-algorithm-card {
+  gap: 15px;
+}
+
+#diabeticProtocolOverviewPage .diabetic-protocol-algorithm-card::after {
+  right: -31px;
+}
+
+#diabeticProtocolOverviewPage .diabetic-protocol-algorithm-card p {
+  margin-top: 6px;
+  line-height: 1.7;
+}
+
+#diabeticProtocolOverviewPage .diabetic-protocol-algorithm-card b + p {
+  margin-top: 10px;
+}
+
+#diabeticProtocolOverviewPage .diabetic-protocol-algorithm-card span {
+  line-height: 1.46;
+}
+
+#diabeticProtocolOverviewPage
+  .diabetic-protocol-algorithm-card
+  span:first-of-type {
+  margin-top: auto;
+}
+
+#diabeticProtocolOverviewPage
+  .diabetic-protocol-algorithm-phase--postdilation
+  .diabetic-protocol-algorithm-card:first-child
+  span {
+  align-self: stretch;
+  margin: auto 0;
+  display: grid;
+  place-items: center;
+  text-align: center;
+}
+
+#diabeticProtocolOverviewPage .diabetic-protocol-algorithm-ncd {
+  min-height: 78px;
+  border-color: #a5a5a5;
+  background: #f4f5f7;
+  color: #f25600;
+  font-weight: 900;
+}
+
+#diabeticProtocolOverviewPage .diabetic-protocol-algorithm-fundus-groups {
+  min-height: 132px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.82fr);
+  gap: 8px;
+  margin-top: auto;
+}
+
+#diabeticProtocolOverviewPage .diabetic-protocol-algorithm-fundus-group {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  overflow: visible;
+  border-radius: 12px;
+  background: #f25600;
+  color: #ffffff;
+  text-align: left;
+}
+
+#diabeticProtocolOverviewPage .diabetic-protocol-algorithm-fundus-group strong {
+  min-height: 38px;
+  display: grid;
+  place-items: center;
+  padding: 4px 6px;
+  border-radius: 12px 12px 0 0;
+  background: rgba(255, 255, 255, 0.35);
+  color: #ffffff;
+  font-size: 10.5px;
+  font-weight: 900;
+  line-height: 1.15;
+  text-align: center;
+}
+
+#diabeticProtocolOverviewPage .diabetic-protocol-algorithm-fundus-group span {
+  min-height: 0;
+  display: block;
+  margin: 0;
+  padding: 5px 10px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: inherit;
+  font-size: 10.5px;
+  font-weight: 750;
+  line-height: 1.35;
+  text-align: left;
+}
+
+#diabeticProtocolOverviewPage
+  .diabetic-protocol-algorithm-fundus-group
+  span:first-of-type {
+  margin-top: 0;
+}
+
+#diabeticProtocolOverviewPage
+  .diabetic-protocol-algorithm-fundus-group--macula
+  span {
+  margin: auto 0 0;
+}
+
+#diabeticProtocolOverviewPage .diabetic-protocol-stamp {
+  display: block;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-50%) rotate(-18deg) scale(0.78);
+  animation: none !important;
+}
+
+#diabeticProtocolOverviewPage .diabetic-protocol-stamp--glasses,
+#diabeticProtocolOverviewPage .diabetic-protocol-stamp--urgent {
+  width: 96px;
+}
+
+#diabeticProtocolOverviewPage .diabetic-protocol-stamp--history,
+#diabeticProtocolOverviewPage .diabetic-protocol-stamp--pinhole-no,
+#diabeticProtocolOverviewPage .diabetic-protocol-stamp--pinhole-yes,
+#diabeticProtocolOverviewPage .diabetic-protocol-stamp--near,
+#diabeticProtocolOverviewPage .diabetic-protocol-stamp--pupil,
+#diabeticProtocolOverviewPage .diabetic-protocol-stamp--front,
+#diabeticProtocolOverviewPage .diabetic-protocol-stamp--reflex {
+  left: 50%;
+  right: auto;
+  top: auto;
+  bottom: 30px;
+  transform-origin: center;
+}
+
+#diabeticProtocolOverviewPage .diabetic-protocol-stamp--history {
+  bottom: 30px;
+}
+
+#diabeticProtocolOverviewPage .diabetic-protocol-stamp--pinhole-no {
+  bottom: 100px;
+}
+
+#diabeticProtocolOverviewPage .diabetic-protocol-stamp--pinhole-yes,
+#diabeticProtocolOverviewPage .diabetic-protocol-stamp--near,
+#diabeticProtocolOverviewPage .diabetic-protocol-stamp--pupil,
+#diabeticProtocolOverviewPage .diabetic-protocol-stamp--front,
+#diabeticProtocolOverviewPage .diabetic-protocol-stamp--reflex {
+  bottom: 30px;
+}
+
+#diabeticProtocolOverviewPage
+  .diabetic-protocol-algorithm-phase.is-map-phase-visible
+  .diabetic-protocol-stamp {
+  animation: diabeticProtocolStampIn 0.48s cubic-bezier(0.2, 0.9, 0.3, 1.18) 2s
+    forwards !important;
+}
+
+#diabeticProtocolOverviewPage
+  .diabetic-protocol-algorithm-phase.is-map-phase-visible
+  .diabetic-protocol-stamp--pinhole-no,
+#diabeticProtocolOverviewPage
+  .diabetic-protocol-algorithm-phase.is-map-phase-visible
+  .diabetic-protocol-stamp--front,
+#diabeticProtocolOverviewPage
+  .diabetic-protocol-algorithm-phase.is-map-phase-visible
+  .diabetic-protocol-stamp--macula {
+  animation-delay: 2.35s !important;
+}
+
+#diabeticProtocolOverviewPage
+  .diabetic-protocol-algorithm-phase.is-map-phase-visible
+  .diabetic-protocol-stamp--pinhole-yes {
+  animation-delay: 2.7s !important;
+}
+
+#diabeticProtocolOverviewPage
+  .diabetic-protocol-algorithm-phase.is-map-phase-visible
+  .diabetic-protocol-stamp--near {
+  animation-delay: 3.05s !important;
+}
+
+#diabeticProtocolOverviewPage
+  .diabetic-protocol-algorithm-fundus-group
+  .diabetic-protocol-stamp {
+  left: 50%;
+  right: auto;
+  top: auto;
+  bottom: 12px;
+  width: 82px;
+}
+
+#diabeticProtocolOverviewPage
+  .diabetic-protocol-algorithm-fundus-group--retina
+  .diabetic-protocol-stamp {
+  top: 72px;
+  bottom: auto;
+  width: 82px;
+}
+
+#diabeticProtocolOverviewPage
+  .diabetic-protocol-algorithm-phase--decision
+  .diabetic-protocol-algorithm-card {
+  justify-content: center;
+  border-color: #f25600;
+}
+
+#diabeticProtocolOverviewPage
+  .diabetic-protocol-algorithm-phase--decision
+  .diabetic-protocol-algorithm-card
+  b {
+  background: #f25600;
+}
+
+#diabeticProtocolOverviewPage
+  .diabetic-protocol-algorithm-phase--decision
+  .diabetic-protocol-algorithm-card
+  p {
+  margin: 0;
+  line-height: 1.55;
+  text-align: center;
+}
+
+#diabeticProtocolOverviewPage
+  .diabetic-protocol-algorithm-phase--decision.is-map-phase-visible
+  .diabetic-protocol-algorithm-decision--green {
+  animation: diabeticProtocolDecisionGreen 0.55s ease 1.5s forwards;
+}
+
+#diabeticProtocolOverviewPage
+  .diabetic-protocol-algorithm-phase--decision.is-map-phase-visible
+  .diabetic-protocol-algorithm-decision--red {
+  animation: diabeticProtocolDecisionRed 0.55s ease 1.5s forwards;
+}
+
+#diabeticProtocolOverviewPage
+  .diabetic-protocol-algorithm-phase--decision.is-map-phase-visible
+  .diabetic-protocol-algorithm-decision--green
+  b {
+  animation: diabeticProtocolDecisionHeaderGreen 0.55s ease 1.5s forwards;
+}
+
+#diabeticProtocolOverviewPage
+  .diabetic-protocol-algorithm-phase--decision.is-map-phase-visible
+  .diabetic-protocol-algorithm-decision--red
+  b {
+  animation: diabeticProtocolDecisionHeaderRed 0.55s ease 1.5s forwards;
+}
+
+#diabeticProtocolOverviewPage .diabetic-protocol-algorithm-decision--green b,
+#diabeticProtocolOverviewPage .diabetic-protocol-algorithm-decision--red b {
+  background: #f25600;
+}
+
+#diabeticProtocolNcdConsultationPage
+  .diabetic-protocol-parallel__consult--medical
+  img {
+  right: -1px;
+  top: 50%;
+  width: 73px;
+  height: 67px;
+}
+
+.diabetic-vision-aspects-panel {
+  align-items: center;
+}
+
+.diabetic-vision-aspects-figure {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+  margin: 0;
+  border-radius: 18px;
+  background: #000000;
+}
+
+.diabetic-vision-aspects-figure img {
+  width: 215%;
+  height: 155%;
+  margin-left: -46px;
+  margin-top: -22px;
+  display: block;
+  object-fit: cover;
+  object-position: left center;
+}
+
+.diabetic-vision-aspects-label,
+.diabetic-vision-aspects-circle {
+  opacity: 0;
+}
+
+.diabetic-vision-aspects-label {
+  position: absolute;
+  z-index: 2;
+  color: #fff84a;
+  max-width: 72%;
+  font-size: clamp(18px, 3.6vw, 27px);
+  font-weight: 950;
+  line-height: 1.2;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.48);
+}
+
+.diabetic-vision-aspects-label--retina {
+  top: 20%;
+  right: 5%;
+}
+
+.diabetic-vision-aspects-label--macula {
+  left: 22%;
+  top: 48%;
+}
+
+.diabetic-vision-aspects-circle {
+  position: absolute;
+  z-index: 1;
+  left: 35%;
+  top: 50%;
+  width: 21%;
+  aspect-ratio: 1;
+  border: 3px solid rgba(255, 248, 74, 0.9);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.36);
+  transform: translate(-50%, -50%);
+}
+
+.diabetic-vision-aspects-panel.is-visible
+  .diabetic-vision-aspects-label--retina {
+  animation: diabeticVisionAspectsRetina 11s linear infinite;
+}
+
+.diabetic-vision-aspects-panel.is-visible
+  :is(.diabetic-vision-aspects-label--macula, .diabetic-vision-aspects-circle) {
+  animation: diabeticVisionAspectsMacula 11s linear infinite;
+}
+
+.diabetic-vision-aspects-panel.is-visible .diabetic-vision-aspects-circle {
+  animation-name: diabeticVisionAspectsMaculaCircle;
+}
+
+#diabeticProtocolPhaseBPage
+  .is-visible
+  :is(
+    .diabetic-protocol-rapd-list li,
+    .diabetic-protocol-rapd-demo__pupil--right,
+    .diabetic-protocol-rapd-demo__status i,
+    .diabetic-protocol-rapd-demo__refer,
+    .diabetic-protocol-rapd-demo__beam,
+    .diabetic-protocol-rapd-demo__flashlight
+  ) {
+  animation-timing-function: ease-in-out;
+}
+
+@media (min-width: 48em) {
+  .diabetic-vision-aspects-panel {
+    grid-template-columns: minmax(0, 0.78fr) minmax(360px, 1fr);
+  }
+
+  .diabetic-vision-aspects-panel .diabetic-screening-step {
+    width: auto;
+    min-width: 0;
+    height: auto;
+    min-height: 0;
+    padding: 8px 10px;
+    border-radius: 999px;
+    line-height: 1;
+  }
+
+  .diabetic-vision-aspects-label {
+    font-size: 17px;
+  }
+
+  #diabeticProliferativeOtherDiseasePage
+    .diabetic-screening-panel:nth-of-type(5)
+    .diabetic-disease-gallery--sight-threatening
+    .diabetic-disease-card
+    img {
+    height: auto;
+    aspect-ratio: 1 / 1;
+  }
+
+  #diabeticProliferativeOtherDiseasePage
+    .diabetic-screening-panel:nth-of-type(5)
+    .diabetic-disease-gallery--sight-threatening
+    .diabetic-disease-card
+    figcaption {
+    min-height: 28px;
+    height: 28px;
+    box-sizing: border-box;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  #diabeticProtocolPhaseBPage .diabetic-protocol-lottie-frame {
+    min-height: 436px;
+    height: 436px;
+  }
+
+  #diabeticProtocolNcdConsultationPage
+    .diabetic-protocol-parallel__consult--medical
+    img {
+    right: -1px;
+    top: 50%;
+    width: 71px;
+    height: 63px;
+  }
+}
+
+@media (max-width: 47.98em) {
+  #diabeticProtocolPhaseAPage .diabetic-protocol-link {
+    width: 100%;
+    box-sizing: border-box;
+    border-color: #f25600;
+    background: #f25600;
+    color: #ffffff;
+  }
+
+  #diabeticProtocolPhaseAPage .diabetic-protocol-link i {
+    background: #ffffff;
+    color: #f25600;
+  }
+
+  .diabetic-vision-aspects-panel {
+    gap: 18px;
+  }
+}
+
+@keyframes diabeticProtocolStampIn {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) rotate(-18deg) scale(0.72);
+  }
+
+  70% {
+    opacity: 1;
+    transform: translateX(-50%) rotate(-18deg) scale(1.08);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) rotate(-18deg) scale(1);
+  }
+}
+
+@keyframes diabeticProtocolDecisionGreen {
+  to {
+    border-color: #4ebc20;
+  }
+}
+
+@keyframes diabeticProtocolDecisionRed {
+  to {
+    border-color: #ef0000;
+  }
+}
+
+@keyframes diabeticProtocolDecisionHeaderGreen {
+  to {
+    background: #4ebc20;
+  }
+}
+
+@keyframes diabeticProtocolDecisionHeaderRed {
+  to {
+    background: #ef0000;
+  }
+}
+
+@keyframes diabeticVisionAspectsRetina {
+  0%,
+  27.2%,
+  54.6%,
+  100% {
+    opacity: 1;
+  }
+
+  27.3%,
+  54.5% {
+    opacity: 0;
+  }
+}
+
+@keyframes diabeticVisionAspectsMacula {
+  0%,
+  27.2% {
+    opacity: 0;
+  }
+
+  27.3%,
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes diabeticVisionAspectsMaculaCircle {
+  0%,
+  27.2% {
+    opacity: 0;
+    transform: translate(-50%, -50%);
+  }
+
+  27.3%,
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+@keyframes diabeticProtocolRapdSwingFlashlight {
+  0%,
+  3.8%,
+  19.1%,
+  33.32%,
+  36.9%,
+  54.8%,
+  66.65%,
+  70.2%,
+  85.8%,
+  100% {
+    left: -8%;
+    top: 68%;
+  }
+
+  5.8%,
+  18.9%,
+  39.6%,
+  54.5%,
+  73.0%,
+  85.5% {
+    left: 50%;
+    top: 68%;
+  }
+}
+
+@keyframes diabeticProtocolRapdSwingBeam {
+  0%,
+  5.7%,
+  19.05%,
+  33.32%,
+  39.5%,
+  54.76%,
+  66.65%,
+  72.9%,
+  85.72%,
+  100% {
+    left: -8%;
+    top: 45%;
+    opacity: 0;
+  }
+
+  5.8%,
+  18.9%,
+  39.6%,
+  54.5%,
+  73.0%,
+  85.5% {
+    left: 50%;
+    top: 45%;
+    opacity: 0.86;
+  }
+}
+
+@keyframes diabeticProtocolRapdRightPupil {
+  0%,
+  9.45%,
+  27.6%,
+  47.61%,
+  65.5%,
+  100% {
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+
+  13.2%,
+  23.81% {
+    transform: translate(-50%, -50%) scale(0.58);
+  }
+
+  52.0%,
+  61.9% {
+    transform: translate(-50%, -50%) scale(0.98);
+  }
+}
+
+/* Diabetic Retinopathy Workshop page-specific refinements. */
+#diabeticProliferativeOtherDiseasePage
+  :is(.diabetic-disease-card, .diabetic-disease-sorter figure)
+  figcaption {
+  position: static !important;
+  min-height: 30px;
+  box-sizing: border-box;
+  display: grid;
+  place-items: center;
+  padding: 6px 10px !important;
+  border-radius: 0 0 14px 14px !important;
+  font-size: 12px !important;
+  line-height: 1.1;
+}
+
+#diabeticProliferativeOtherDiseasePage
+  .diabetic-screening-panel
+  .diabetic-disease-card
+  figcaption,
+#diabeticProliferativeOtherDiseasePage
+  .diabetic-disease-sorter__lane
+  figure
+  figcaption {
+  font-size: 12px !important;
+}
+
+#diabeticProliferativeOtherDiseasePage#diabeticProliferativeOtherDiseasePage
+  figcaption {
+  font-size: 12px !important;
+}
+
+#diabeticProtocolOverviewPage .diabetic-protocol-algorithm-map {
+  background:
+    linear-gradient(
+      90deg,
+      transparent calc(50% - 1.5px),
+      #a5a5a5 calc(50% - 1.5px),
+      #a5a5a5 calc(50% + 1.5px),
+      transparent calc(50% + 1.5px)
+    ),
+    #ffffff;
+}
+
+#diabeticProtocolOverviewPage
+  .diabetic-protocol-algorithm-controls
+  button[data-diabetic-zoom-out] {
+  font-size: 0;
+  transform: none;
+}
+
+#diabeticProtocolOverviewPage
+  .diabetic-protocol-algorithm-controls
+  button[data-diabetic-zoom-out]::before {
+  content: "-";
+  display: block;
+  font-size: 24px;
+  font-weight: 950;
+  line-height: 1;
+  transform: translateY(-1px) scaleX(1.18);
+}
+
+#diabeticProtocolOverviewPage .diabetic-protocol-stamp--glasses {
+  width: 112px;
+}
+
+#diabeticProtocolOverviewPage .diabetic-protocol-stamp--urgent {
+  width: 164px;
+}
+
+#diabeticProtocolOverviewPage
+  .diabetic-protocol-algorithm-phase--postdilation
+  .diabetic-protocol-stamp--reflex {
+  left: 50%;
+  right: auto;
+  top: calc(50% - 2px);
+  bottom: auto;
+}
+
+#diabeticProtocolOverviewPage
+  .diabetic-protocol-algorithm-fundus-group
+  .diabetic-protocol-stamp {
+  left: 50%;
+  right: auto;
+  top: calc(50% - 10px);
+  bottom: auto;
+}
+
+#diabeticProtocolPhaseBPage .diabetic-protocol-rapd-demo__flashlight {
+  opacity: 0.88;
+}
+
+@keyframes diabeticProtocolRapdSwingFlashlight {
+  0%,
+  3.8%,
+  19.1%,
+  33.32%,
+  36.9%,
+  54.8%,
+  66.65%,
+  70.2%,
+  85.8%,
+  100% {
+    left: -8%;
+    top: 68%;
+  }
+
+  5.8%,
+  18.9%,
+  39.6%,
+  54.5%,
+  73.0%,
+  85.5% {
+    left: 50%;
+    top: 68%;
+  }
+}
+
+@keyframes diabeticProtocolRapdSwingBeam {
+  0%,
+  3.8%,
+  19.1%,
+  33.32%,
+  36.9%,
+  54.8%,
+  66.65%,
+  70.2%,
+  85.8%,
+  100% {
+    left: -8%;
+    top: 45%;
+    opacity: 0.58;
+  }
+
+  5.8%,
+  18.9%,
+  39.6%,
+  54.5%,
+  73.0%,
+  85.5% {
+    left: 50%;
+    top: 45%;
+    opacity: 0.86;
+  }
+}
+
+@media (min-width: 48em) {
+  #diabeticVisionLossInDiabetesPage .diabetic-vision-aspects-panel {
+    min-height: 39dvh;
+    grid-template-columns: minmax(0, 0.82fr) minmax(286px, 0.74fr);
+    align-content: center;
+  }
+
+  #diabeticVisionLossInDiabetesPage .diabetic-vision-aspects-figure {
+    width: min(100%, 280px);
+    justify-self: end;
+  }
+
+  #diabeticProliferativeOtherDiseasePage#diabeticProliferativeOtherDiseasePage
+    .diabetic-screening-panel {
+    grid-template-columns: 1fr !important;
+    align-content: start;
+  }
+
+  #diabeticProliferativeOtherDiseasePage .diabetic-screening-panel__text {
+    max-width: 100%;
+  }
+
+  #diabeticProliferativeOtherDiseasePage .diabetic-disease-gallery,
+  #diabeticProliferativeOtherDiseasePage .diabetic-disease-sorter {
+    width: 100%;
+    justify-self: stretch;
+  }
+
+  #diabeticProliferativeOtherDiseasePage .diabetic-disease-card,
+  #diabeticProliferativeOtherDiseasePage .diabetic-disease-sorter figure {
+    margin-top: 18px;
+    margin-bottom: 0;
+  }
+
+  #diabeticProliferativeOtherDiseasePage
+    :is(.diabetic-disease-card, .diabetic-disease-sorter figure)
+    img {
+    height: 138px !important;
+    min-height: 138px !important;
+    max-height: 138px !important;
+    object-fit: cover;
+    transform: none !important;
+  }
+
+  #diabeticProliferativeOtherDiseasePage .diabetic-disease-card--contain img {
+    object-fit: contain;
+  }
+
+  #diabeticProliferativeOtherDiseasePage
+    .diabetic-screening-panel:nth-of-type(1)
+    .diabetic-disease-gallery {
+    width: 100% !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 16px !important;
+    justify-self: stretch !important;
+  }
+
+  #diabeticProliferativeOtherDiseasePage
+    .diabetic-screening-panel:nth-of-type(2)
+    .diabetic-disease-gallery--bleeding {
+    width: 100%;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  #diabeticProliferativeOtherDiseasePage
+    .diabetic-screening-panel:nth-of-type(2)
+    .diabetic-disease-gallery--bleeding
+    .diabetic-disease-card:nth-child(3) {
+    grid-column: 1 / -1;
+    width: calc(50% - 8px);
+    justify-self: center;
+  }
+
+  #diabeticProliferativeOtherDiseasePage
+    .diabetic-screening-panel:nth-of-type(4)
+    .diabetic-disease-gallery {
+    width: 100%;
+    justify-self: stretch;
+  }
 }
