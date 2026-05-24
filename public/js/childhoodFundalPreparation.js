@@ -7,15 +7,47 @@ const FUNDAL_STAGE_POSTER_ENABLED = false;
 const FUNDAL_ASSET_PRIME_CACHE = new Set();
 const FUNDAL_LOTTIE_IMAGE_ASSET_URLS_CACHE = new Map();
 const FUNDAL_IMAGE_WARMUP_PROMISE_CACHE = new Map();
-const FUNDAL_LOTTIE_RENDERER = (() => {
-  if (typeof navigator === "undefined") return "svg";
+
+function detectFundalWebKitEnvironment() {
+  if (typeof navigator === "undefined") {
+    return {
+      iosLikeWebKit: false,
+      desktopSafariWebKit: false,
+      safariWebKit: false,
+    };
+  }
+
   const ua = navigator.userAgent || "";
-  const iOSDevice = /iPad|iPhone|iPod/.test(ua);
+  const iOSDevice = /iPad|iPhone|iPod/i.test(ua);
   const iPadOSDesktopUA =
     navigator.platform === "MacIntel" &&
     Number(navigator.maxTouchPoints || 0) > 1;
-  return iOSDevice || iPadOSDesktopUA ? "canvas" : "svg";
-})();
+  const iosLikeWebKit = iOSDevice || iPadOSDesktopUA;
+  const hasAppleWebKit = /AppleWebKit/i.test(ua);
+  const hasSafari = /Safari/i.test(ua);
+  const hasSafariVersion = /Version\//i.test(ua);
+  const hasNonSafariShell =
+    /(?:Chrome|Chromium|CriOS|FxiOS|Edg|EdgiOS|OPR|OPiOS|SamsungBrowser|DuckDuckGo)\//i.test(
+      ua,
+    );
+  const desktopSafariWebKit =
+    !iosLikeWebKit &&
+    hasAppleWebKit &&
+    hasSafari &&
+    hasSafariVersion &&
+    !hasNonSafariShell;
+
+  return {
+    iosLikeWebKit,
+    desktopSafariWebKit,
+    safariWebKit: iosLikeWebKit || desktopSafariWebKit,
+  };
+}
+
+const FUNDAL_WEBKIT_ENVIRONMENT = detectFundalWebKitEnvironment();
+const FUNDAL_LOTTIE_RENDERER = FUNDAL_WEBKIT_ENVIRONMENT.safariWebKit
+  ? "canvas"
+  : "svg";
 const FUNDAL_IOS_DEFAULT_RENDERER = "canvas";
 
 function getFundalE2ERuntime() {
@@ -1557,15 +1589,8 @@ if (!window.__fundalScrollLanguageRefreshWired) {
   });
 }
 
-const IS_IOS_WEBKIT = (() => {
-  if (typeof navigator === "undefined") return false;
-  const ua = navigator.userAgent || "";
-  const iOSDevice = /iPad|iPhone|iPod/.test(ua);
-  const iPadOSDesktopUA =
-    navigator.platform === "MacIntel" &&
-    Number(navigator.maxTouchPoints || 0) > 1;
-  return iOSDevice || iPadOSDesktopUA;
-})();
+const IS_IOS_WEBKIT = FUNDAL_WEBKIT_ENVIRONMENT.iosLikeWebKit;
+const IS_SAFARI_WEBKIT = FUNDAL_WEBKIT_ENVIRONMENT.safariWebKit;
 const IOS_REPAINT_NUDGE_PENDING = new WeakSet();
 
 const IOS_FR06_PREPARATION_SEGMENT_RANGES = [
@@ -3428,8 +3453,8 @@ function forceSvgVisibleForController(controller) {
   const renderEl = getControllerRenderElement(controller);
   if (!renderEl) return;
 
-  if (IS_IOS_WEBKIT) {
-    // Safari/iOS can drop renderer layers after rapid scroll + frame seeks.
+  if (IS_SAFARI_WEBKIT) {
+    // Safari/WebKit can drop renderer layers after rapid scroll + frame seeks.
     // Keep stage and render element on a stable compositing layer.
     if (controller?.stage) {
       controller.stage.style.willChange = "transform";
@@ -3451,7 +3476,7 @@ function forceSvgVisibleForController(controller) {
 }
 
 function requestIosStageRepaintNudge(stageEl) {
-  if (!IS_IOS_WEBKIT) return;
+  if (!IS_SAFARI_WEBKIT) return;
   if (!stageEl) return;
   if (IOS_REPAINT_NUDGE_PENDING.has(stageEl)) return;
   IOS_REPAINT_NUDGE_PENDING.add(stageEl);
