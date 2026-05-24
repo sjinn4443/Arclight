@@ -3827,11 +3827,82 @@ function syncPersistentSettleSnapshotOverlay(controller) {
   if (!controller?.persistentSettleSnapshotOverlay) return;
   if (controller.isPlaying || controller.isSnapping) return;
   if (isStageFrameBlank(controller)) {
+    if (shouldUseSnapshotlessExactFrameFallback(controller)) {
+      holdExactFrameWithoutSnapshotFallback(controller);
+      return;
+    }
     showRecoveryOverlay(controller);
     return;
   }
   rememberRecoverySnapshot(controller, controller.lastRenderedFrame);
   hideRecoveryOverlay(controller, { immediate: true });
+}
+
+function shouldUseSnapshotlessExactFrameFallback(controller) {
+  return (
+    IS_IOS_WEBKIT &&
+    controller?.preserveRecoveryOverlay !== true &&
+    isCanvasRenderElement(getControllerRenderElement(controller))
+  );
+}
+
+function resolveExactFrameFallbackTarget(controller, frame = null) {
+  const candidates = [
+    frame,
+    controller?.activePauseFrame,
+    controller?.lastPinnedFrame,
+    controller?.targetEndFrame,
+    controller?.anim?.currentFrame,
+    controller?.lastRenderedFrame,
+  ];
+
+  for (let i = 0; i < candidates.length; i += 1) {
+    const candidate = Number(candidates[i]);
+    if (!Number.isFinite(candidate)) continue;
+    return clampFrameToAnimation(controller, candidate);
+  }
+
+  return 0;
+}
+
+function holdExactFrameWithoutSnapshotFallback(
+  controller,
+  frame = null,
+  options = {},
+) {
+  if (!controller?.anim) return 0;
+  const safeFrame = resolveExactFrameFallbackTarget(controller, frame);
+  const minContentAreaRatio = Number.isFinite(
+    Number(options.minContentAreaRatio),
+  )
+    ? Math.max(0.01, Number(options.minContentAreaRatio))
+    : Number.isFinite(Number(controller.minContentAreaRatio))
+      ? Number(controller.minContentAreaRatio)
+      : 0.16;
+
+  hideRecoveryOverlay(controller, { immediate: true, force: true });
+  try {
+    controller.anim.pause?.();
+    controller.anim.goToAndStop?.(safeFrame, true);
+  } catch {}
+  forceSvgVisibleForController(controller);
+  controller.lastPinnedFrame = safeFrame;
+  requestIosStageRepaintNudge(controller.stage);
+  requestExactHoldStabilization(controller, safeFrame, {
+    passes: Number.isFinite(Number(options.passes))
+      ? Number(options.passes)
+      : IS_IOS_WEBKIT
+        ? 5
+        : 2,
+    attemptsPerPass: Number.isFinite(Number(options.attemptsPerPass))
+      ? Number(options.attemptsPerPass)
+      : IS_IOS_WEBKIT
+        ? 2
+        : 1,
+    minContentAreaRatio,
+    allowFrameShift: false,
+  });
+  return safeFrame;
 }
 
 function cancelArrowEnsure(controller) {
@@ -4077,6 +4148,12 @@ async function recoverLockedExactFrame(
   );
   let overlayShown = false;
   const ensureOverlayVisible = () => {
+    if (shouldUseSnapshotlessExactFrameFallback(controller)) {
+      holdExactFrameWithoutSnapshotFallback(controller, holdFrame, {
+        minContentAreaRatio,
+      });
+      return false;
+    }
     if (overlayShown) return true;
     overlayShown = showRecoveryOverlay(controller);
     return overlayShown;
@@ -4198,7 +4275,13 @@ function requestLockedExactFrameRecovery(
       if (!recovered?.isBlank) {
         hideRecoveryOverlayWhenStable(controller);
       } else {
-        showRecoveryOverlay(controller);
+        if (shouldUseSnapshotlessExactFrameFallback(controller)) {
+          holdExactFrameWithoutSnapshotFallback(controller, exactFrame, {
+            minContentAreaRatio: options.minContentAreaRatio,
+          });
+        } else {
+          showRecoveryOverlay(controller);
+        }
       }
       syncPersistentSettleSnapshotOverlay(controller);
     })
@@ -4767,7 +4850,11 @@ function stopAtSegmentEnd(controller, cfg) {
   if (useLockedExactFrame) {
     // Keep a fresh snapshot ready, but only show overlay if recovery actually hits a blank frame.
     rememberRecoverySnapshot(controller, controller.lastRenderedFrame);
-    if (IS_IOS_WEBKIT) {
+    if (IS_IOS_WEBKIT && shouldUseSnapshotlessExactFrameFallback(controller)) {
+      holdExactFrameWithoutSnapshotFallback(controller, holdFrame, {
+        minContentAreaRatio,
+      });
+    } else if (IS_IOS_WEBKIT) {
       showRecoveryOverlay(controller);
     } else {
       hideRecoveryOverlay(controller, { immediate: true });
@@ -6064,7 +6151,15 @@ function initializeSegmentScrollMode(cfg, page, stages) {
         minContentAreaRatio,
       });
       if (pinned.isBlank || pinnedUnstable) {
-        showRecoveryOverlay(controller);
+        if (shouldUseSnapshotlessExactFrameFallback(controller)) {
+          holdExactFrameWithoutSnapshotFallback(controller, holdFrame, {
+            minContentAreaRatio,
+            passes: 2,
+            attemptsPerPass: attemptsPerTick,
+          });
+        } else {
+          showRecoveryOverlay(controller);
+        }
       } else {
         hideRecoveryOverlayWhenStable(controller, {
           checks: 6,
@@ -6213,7 +6308,13 @@ function initializeSegmentScrollMode(cfg, page, stages) {
 
         if (IS_IOS_WEBKIT) {
           controller.strictFallbackFrameBySegment?.delete?.(segIndex);
-          showRecoveryOverlay(controller);
+          if (shouldUseSnapshotlessExactFrameFallback(controller)) {
+            holdExactFrameWithoutSnapshotFallback(controller, exactFrame, {
+              minContentAreaRatio,
+            });
+          } else {
+            showRecoveryOverlay(controller);
+          }
           requestLockedExactFrameRecovery(controller, cfg, exactFrame, {
             minContentAreaRatio,
           });
@@ -8317,7 +8418,13 @@ function initializeStageAutoplayMode(
     }
 
     if (configuredHoldFrame != null) {
-      showRecoveryOverlay(state);
+      if (shouldUseSnapshotlessExactFrameFallback(state)) {
+        holdExactFrameWithoutSnapshotFallback(state, holdFrame, {
+          minContentAreaRatio: state.minContentAreaRatio,
+        });
+      } else {
+        showRecoveryOverlay(state);
+      }
       return holdFrame;
     }
 
@@ -8421,7 +8528,13 @@ function initializeStageAutoplayMode(
       if (snapshotImage) {
         showRecoveryImageOverlay(state, snapshotImage);
       } else {
-        showRecoveryOverlay(state);
+        if (shouldUseSnapshotlessExactFrameFallback(state)) {
+          holdExactFrameWithoutSnapshotFallback(state, currentFrame, {
+            minContentAreaRatio: state.minContentAreaRatio,
+          });
+        } else {
+          showRecoveryOverlay(state);
+        }
       }
       state.lastPinnedFrame = currentFrame;
     } else {
@@ -8624,7 +8737,13 @@ function initializeStageAutoplayMode(
       return { frame: safeFrame, isBlank: false };
     }
 
-    showRecoveryOverlay(state);
+    if (shouldUseSnapshotlessExactFrameFallback(state)) {
+      holdExactFrameWithoutSnapshotFallback(state, safeFrame, {
+        minContentAreaRatio,
+      });
+    } else {
+      showRecoveryOverlay(state);
+    }
     return { frame: safeFrame, isBlank: true };
   }
 
@@ -8767,7 +8886,13 @@ function initializeStageAutoplayMode(
       return safeFrame;
     }
 
-    showRecoveryOverlay(state);
+    if (shouldUseSnapshotlessExactFrameFallback(state)) {
+      holdExactFrameWithoutSnapshotFallback(state, safeFrame, {
+        minContentAreaRatio: state.minContentAreaRatio,
+      });
+    } else {
+      showRecoveryOverlay(state);
+    }
     return safeFrame;
   }
 
