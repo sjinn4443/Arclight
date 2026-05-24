@@ -674,6 +674,7 @@ const ROUTE_CONFIG = {
     ],
     leftAlignedTextFiles: [1, 2],
     bulletTextFiles: [1, 2],
+    iosRendererByFile: [null, null, null, "svg", null, null],
     strictFrameLockNoFallback: true,
     strictFrameRemountOnBlank: true,
     richSettleContentFiles: [0, 1, 2, 3, 4, 5],
@@ -746,7 +747,7 @@ const ROUTE_CONFIG = {
     ],
     playMode: "stageAutoplay",
     segmentPlaybackRateByFile: [null, [1.5, 1]],
-    iosRendererByFile: [null, "svg", "svg", null],
+    iosRendererByFile: [null, "svg", "canvas", null],
     preserveCompletionSnapshotOverlayByFile: [false, true, true, false],
     completionSnapshotImageByFile: [
       null,
@@ -818,7 +819,7 @@ const ROUTE_CONFIG = {
     lazyInitialStageCount: 1,
     completionHoldFrameByFile: [224, 224, 224, 270, 164],
     autoplayEndFrameByFile: [null, null, null, 270, null],
-    iosRendererByFile: ["canvas", "svg", "svg", "svg", "canvas"],
+    iosRendererByFile: ["canvas", "canvas", "canvas", "canvas", "canvas"],
     preserveCompletionSnapshotOverlayByFile: [false, true, true, false, false],
     completionSnapshotImageByFile: [
       null,

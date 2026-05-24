@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import { expect, test } from "@playwright/test";
+import sharp from "sharp";
 
 const ROUTE_READY_TIMEOUT_MS = 30_000;
 const STAGE_COMPLETE_TIMEOUT_MS = 45_000;
@@ -13,18 +14,24 @@ const DIABETIC_FUNDAL_ROUTES = [
   "diabeticBioFundoscopyIndentation",
 ];
 
-async function prepareRoute(page, routeName) {
-  await page.addInitScript(() => {
-    window.__ARCLIGHT_E2E__ = {
-      ...(window.__ARCLIGHT_E2E__ || {}),
+async function prepareRoute(page, routeName, runtimeOptions = {}) {
+  await page.addInitScript(
+    (runtimeConfig) => {
+      window.__ARCLIGHT_E2E__ = {
+        ...(window.__ARCLIGHT_E2E__ || {}),
+        ...runtimeConfig,
+      };
+      try {
+        localStorage.setItem("arclight:onboarded", "1");
+      } catch {
+        // Ignore storage failures in constrained browser contexts.
+      }
+    },
+    {
       fundalPlaybackRate: 12,
-    };
-    try {
-      localStorage.setItem("arclight:onboarded", "1");
-    } catch {
-      // Ignore storage failures in constrained browser contexts.
-    }
-  });
+      ...runtimeOptions,
+    },
+  );
 
   await page.goto(`/#${routeName}`, {
     waitUntil: "domcontentloaded",
@@ -70,6 +77,70 @@ async function seekFundalStage(page, routeName, stageIndex, frame) {
       targetFrame: frame,
     },
   );
+}
+
+async function getStagePixelStats(stageLocator) {
+  const screenshot = await stageLocator.screenshot();
+  const { data, info } = await sharp(screenshot)
+    .ensureAlpha()
+    .raw()
+    .toBuffer({ resolveWithObject: true });
+  return { data, info };
+}
+
+async function getNonWhitePixelRatio(stageLocator) {
+  const { data, info } = await getStagePixelStats(stageLocator);
+  let nonWhitePixels = 0;
+  let totalPixels = 0;
+
+  for (let i = 0; i < data.length; i += info.channels) {
+    const alpha = data[i + 3] ?? 255;
+    if (alpha < 20) continue;
+    totalPixels += 1;
+
+    const red = data[i];
+    const green = data[i + 1];
+    const blue = data[i + 2];
+    if (red <= 245 || green <= 245 || blue <= 245) {
+      nonWhitePixels += 1;
+    }
+  }
+
+  return totalPixels > 0 ? nonWhitePixels / totalPixels : 0;
+}
+
+async function getRightRedPixelRatio(stageLocator) {
+  const { data, info } = await getStagePixelStats(stageLocator);
+  const startX = Math.floor(info.width * 0.62);
+  const endX = Math.floor(info.width * 0.98);
+  const startY = Math.floor(info.height * 0.38);
+  const endY = Math.floor(info.height * 0.8);
+  let redPixels = 0;
+  let totalPixels = 0;
+
+  for (let y = startY; y < endY; y += 1) {
+    for (let x = startX; x < endX; x += 1) {
+      const index = (y * info.width + x) * info.channels;
+      const alpha = data[index + 3] ?? 255;
+      if (alpha < 20) continue;
+      totalPixels += 1;
+
+      const red = data[index];
+      const green = data[index + 1];
+      const blue = data[index + 2];
+      if (
+        red > 150 &&
+        green < 135 &&
+        blue < 135 &&
+        red > green * 1.25 &&
+        red > blue * 1.25
+      ) {
+        redPixels += 1;
+      }
+    }
+  }
+
+  return totalPixels > 0 ? redPixels / totalPixels : 0;
 }
 
 test.describe("Diabetic fundal scrollytelling regressions", () => {
@@ -183,6 +254,68 @@ test.describe("Diabetic fundal scrollytelling regressions", () => {
     expect(data.layers?.[0]?.hd).not.toBe(true);
   });
 
+  test("Positioning stage 4 hides masked fundus until the late iOS WebKit reveal", async ({
+    page,
+  }, testInfo) => {
+    test.skip(
+      testInfo.project.name !== "webkit-iphone",
+      "This regression targets an iOS/WebKit canvas mask timing issue.",
+    );
+
+    await prepareRoute(page, "diabeticPositioningFlightPath", {
+      disableFundalAutoplay: true,
+    });
+    await waitForFundalStageReady(page, "diabeticPositioningFlightPath", 3);
+
+    const stage = page.locator(
+      '.childhood-fundal-prep-item[data-file-index="3"] .childhood-fundal-prep-stage',
+    );
+    await stage.scrollIntoViewIfNeeded();
+
+    await seekFundalStage(page, "diabeticPositioningFlightPath", 3, 0);
+    await page.waitForTimeout(300);
+    const earlyRedRatio = await getRightRedPixelRatio(stage);
+
+    await seekFundalStage(page, "diabeticPositioningFlightPath", 3, 525);
+    await page.waitForTimeout(300);
+    const lateRedRatio = await getRightRedPixelRatio(stage);
+
+    expect(
+      await getFundalStageState(page, "diabeticPositioningFlightPath", 3),
+    ).toMatchObject({ renderType: "svg" });
+    expect(earlyRedRatio).toBeLessThan(0.01);
+    expect(lateRedRatio).toBeGreaterThan(0.05);
+  });
+
+  test("Preparation stage 3 avoids iOS WebKit blank frames around segment pauses", async ({
+    page,
+  }, testInfo) => {
+    test.skip(
+      testInfo.project.name !== "webkit-iphone",
+      "This regression targets an iOS/WebKit SVG paint drop at pause frames.",
+    );
+
+    await prepareRoute(page, "diabeticBioPreparation", {
+      disableFundalAutoplay: true,
+    });
+    await waitForFundalStageReady(page, "diabeticBioPreparation", 2);
+
+    const stage = page.locator(
+      '.childhood-fundal-prep-item[data-file-index="2"] .childhood-fundal-prep-stage',
+    );
+    await stage.scrollIntoViewIfNeeded();
+
+    expect(
+      await getFundalStageState(page, "diabeticBioPreparation", 2),
+    ).toMatchObject({ renderType: "canvas" });
+
+    for (const frame of [183, 184, 271, 272, 340, 341, 404]) {
+      await seekFundalStage(page, "diabeticBioPreparation", 2, frame);
+      await page.waitForTimeout(120);
+      expect(await getNonWhitePixelRatio(stage)).toBeGreaterThan(0.2);
+    }
+  });
+
   test("Fundoscopy Sitting advances on iOS WebKit and holds exact final frames", async ({
     page,
   }, testInfo) => {
@@ -220,7 +353,7 @@ test.describe("Diabetic fundal scrollytelling regressions", () => {
       .toMatchObject({
         completed: true,
         currentFrame: 224,
-        renderType: "svg",
+        renderType: "canvas",
       });
     await expect(
       page.locator(
@@ -247,7 +380,7 @@ test.describe("Diabetic fundal scrollytelling regressions", () => {
       .toMatchObject({
         completed: true,
         currentFrame: 224,
-        renderType: "svg",
+        renderType: "canvas",
       });
     await expect(
       page.locator(
@@ -271,7 +404,7 @@ test.describe("Diabetic fundal scrollytelling regressions", () => {
       .toMatchObject({
         completed: true,
         currentFrame: 270,
-        renderType: "svg",
+        renderType: "canvas",
       });
 
     await page
