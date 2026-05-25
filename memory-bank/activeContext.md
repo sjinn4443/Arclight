@@ -1,4 +1,4 @@
-<!-- THE CHANGES - activeContext.md | 2026-05-15, Codex -->
+<!-- THE CHANGES - activeContext.md | 2026-05-25, Codex -->
 
 # Active Context
 
@@ -21,9 +21,15 @@ Childhood Fundal Reflex scrollytelling is also an active maintenance area:
 - `public/js/config.js` and `public/js/main.js` provide the route map and lazy initializer for the Fundal route set
 - `public/style/pages.css` owns the shared Fundal layout/button/text styling
 - FR06 remains the user-approved baseline for Fundal settle behavior; avoid playback/settle experiments unless explicitly requested and rechecked
-- Diabetic Fundal-style scrollytelling now depends on hardened pause-frame locking, retained accumulated captions after completion, iOS/WebKit renderer overrides where needed, and ordinary `< Previous` / `Next >` buttons on the final page of each scrollytelling group.
+- Diabetic Fundal-style scrollytelling now depends on hardened pause-frame locking, retained accumulated captions after completion, iOS/WebKit renderer overrides where needed, exact static snapshot recovery for fragile WebKit pause/final holds, and ordinary `< Previous` / `Next >` buttons on the final page of each scrollytelling group.
 
 ## Recent Changes
+
+- iOS/WebKit Fundal white-frame recovery documentation (2026-05-25):
+  - Recorded the reusable fix pattern in `agent.md`, `README.md`, and E2E docs.
+  - For white/blank flashes at scrollytelling pause or completion frames, generate an exact PNG from the running local app, map it with `settleSnapshotImageByFile` or `completionSnapshotImageByFile`, prewarm it, and show it immediately at the hold point.
+  - Avoid previous-frame runtime fallbacks because they mask the blank while causing visible frame regression/stutter.
+  - Keep renderer overrides (`iosRendererByFile`) for mask/direction correctness, and use static snapshots for WebKit layer/canvas drops during holds.
 
 - Diabetic Direct Ophthalmoscopy scrollytelling (2026-05-20):
   - Added `public/html/diabeticObservationFundalReflex.html`, `public/html/diabeticPositioningFlightPath.html`, and `public/html/diabeticHowToExamine.html`.
@@ -128,6 +134,7 @@ Childhood Fundal Reflex scrollytelling is also an active maintenance area:
 - When adding/moving diabetic content, update all route owners together: `public/html/diabeticRetinopathyWorkshop.html`, `public/html/videos.html`, `public/js/videos.js`, `public/js/diabeticRetinopathyWorkshop.js`, `public/js/diabeticWorkshopNextFlow.js`, and `public/js/diabeticWorkshopProgress.js`.
 - When adding or changing Fundal scrollytelling pages, update the route shell, `config.js`, `main.js` `FUNDAL_REFLEX_SCROLL_ROUTES`, `childhoodFundalPreparation.js` `ROUTE_CONFIG`/`FUNDAL_PAGE_ROUTE_SEQUENCE`, relevant Childhood Workshop mappings, and `.childhood-fundal-scroll-page` CSS together.
 - For shared Fundal engine or settle-frame changes, run `npm run test:fundal` where practical and manually recheck Preparation, Examination, Newborn Eyes Open, and the final page-next boundary on mobile and desktop.
+- For iOS/WebKit Fundal white-frame regressions, follow the static exact-frame snapshot recovery pattern before changing segment ranges or adding previous-frame fallbacks.
 - Keep external embed URLs and their purpose documented when Interactive Learning changes again.
 - If a remote embed later blocks framing, switch that module to a local copy or an open-in-new-tab fallback.
 - Add translation keys for `Trauma` and `Amsler` if those labels need to be localized instead of staying English-only.
@@ -145,6 +152,7 @@ Childhood Fundal Reflex scrollytelling is also an active maintenance area:
 - Treat no-op storage as the default local behavior unless DB URLs are intentionally configured.
 - Treat `.build-cleanup-*` folders as temporary build cleanup leftovers, not source directories.
 - Treat the Childhood Fundal Reflex stage-autoplay engine as shared infrastructure across all `childhoodFundal*` routes; route-specific visual fixes should prefer route config before changing global playback behavior.
+- Treat static exact-frame snapshots as the preferred iOS/WebKit recovery for fragile Fundal pause/final holds; previous-frame fallbacks are not acceptable because they visibly rewind the animation.
 - Preserve FR06 Fundal settle behavior as the baseline unless the user explicitly asks for a behavior change.
 
 ## Important Patterns and Preferences

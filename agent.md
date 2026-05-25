@@ -1,6 +1,6 @@
 # Agent Notes
 
-Last refreshed: 2026-05-15
+Last refreshed: 2026-05-25
 
 ## Current repo orientation
 
@@ -95,6 +95,16 @@ Use this when the user asks to make a page like `childhoodFundalPreparationPage`
 
 - Renderer sizing: Lottie `svg` and `canvas` are absolutely positioned with `inset: -1px`, `width/height: calc(100% + 2px) !important`, `z-index: 2`, and `clip-path: inset(0)` to avoid edge gaps. On iOS-like touch scrolling, keep the `translateZ(0)`, `will-change`, and `backface-visibility` stabilization rules.
 
+- iOS/WebKit white-frame glitch recovery pattern:
+  - First compare against the Childhood Fundal Reflex fixes in `public/js/childhoodFundalPreparation.js`, especially `iosRendererByFile`, `iosAggressiveSettleSegments`, `completionSnapshotImageByFile`, `preserveCompletionSnapshotOverlayByFile`, and `settleSnapshotImageByFile`.
+  - If the animation is correct but iOS flashes white/blank at a pause, settle, or completion frame, prefer an exact static snapshot for that intended frame instead of changing segment timing or falling back to the previous live-rendered frame.
+  - Generate the snapshot from the running local app/server, not a `file://` render, so Lottie image paths, fonts, CSS sizing, and canvas/SVG composition match production. Store it beside the affected Lottie folder as `pause_frame_<frame>.png` or `final_frame.png`.
+  - Add the image to the route config with `settleSnapshotImageByFile` for pause/settle frames or `completionSnapshotImageByFile` for final completion frames. Prewarm those URLs with the route asset warmup path before playback.
+  - At the hold point, seek/pin the exact target frame, then show the configured static snapshot immediately before any async settle/stability wait. The runtime canvas/SVG clone should remain only as a fallback when no configured image exists.
+  - Do not use a previous-frame fallback for iOS blank recovery. It hides the blank but creates a visible frame regression/stutter on scroll pauses.
+  - Keep renderer overrides separate from snapshot recovery: use `iosRendererByFile` when a file needs `svg` or `canvas` for mask correctness, and use static snapshots when WebKit drops a layer or canvas surface during a hold.
+  - After changing this path, add/extend WebKit iPhone Playwright coverage that asserts the exact held frame, configured snapshot image URL, non-white screenshot content, and no early reveal for masked assets.
+
 - Icon/button style: stage next is a circular button positioned below the item (`top: calc(100% + 12px)`, centered). Mobile/base size is `54px`; desktop size is `75px`. Background is `rgba(58, 58, 58, 0.46)`, no border, fully rounded, hidden by opacity until `.is-visible`, with pointer events only when visible and enabled. The icon is three CSS chevrons made from right/bottom borders, animated by `fundalArrowGrayShift` with staggered delays. Stage replay is also circular (`54px` mobile/base, `75px` desktop), same translucent gray background, anchored to the rendered animation's lower-right corner using `--fundal-replay-right` and `--fundal-replay-bottom`; the image is `/images/icon/base/replay.webp` at `37.5px x 33px` base and `49.5px x 46.5px` desktop. Do not reintroduce the old topbar `.childhood-fundal-replay-btn` unless maintaining legacy behavior; the current visible replay is stage-level.
 
 - Next-page pill: when advancing to another page, the control uses `.childhood-fundal-scroll-down-arrow--page`. The wrapper is transparent but contains `.childhood-fundal-page-next-pill` with gray translucent background `#9d9d9db3`, pill radius, label `12px` bold lowercase, and chevrons. On small mobile (`max-width: 37.5em`), the pill becomes `86px x 128px`, hides CSS chevrons, and instead displays `down.png` plus the floating `hand.png` animation.
@@ -102,7 +112,7 @@ Use this when the user asks to make a page like `childhoodFundalPreparationPage`
 - Topbar details: keep the standard back/menu topbar. On small mobile, `.childhood-fundal-scroll-page .eyes-topbar__icons` uses the Fundal-specific offset and the hamburger is `36px x 36px`, `font-size: 25px`, flex-centered, with a small left shift. The title is `white-space: nowrap` and becomes a button-like caption toggle only when `segmentTextToggleOnTitle` is true.
 
 - Verification checklist: open `http://localhost:3000/#/<routeName>` and check at mobile (`390x844` or similar) and desktop (`1280x720` or wider). Confirm first stage starts/settles without a blank frame, text appears below the stage, replay appears inside the stage lower-right, the down button scrolls to the next animation, later animations auto-play only when centered, title toggles text, final page-next pill is fully visible, and no menu/topbar icons overlap. If touching shared Fundal engine or settle behavior, run or manually cover the Fundal regression paths noted in the guardrails below.
-  - iOS/WebKit verification is mandatory for new or changed scrollytelling routes. Confirm the route loads without repeated WebKit crashes, renderer overrides still display the intended animation direction, pauses hold the correct frame, text survives pauses/completion, and the service worker cache name is bumped when cached HTML/JS/CSS behavior changes.
+  - iOS/WebKit verification is mandatory for new or changed scrollytelling routes. Confirm the route loads without repeated WebKit crashes, renderer overrides still display the intended animation direction, pauses hold the correct configured frame/snapshot, text survives pauses/completion, and the service worker cache name is bumped when cached HTML/JS/CSS behavior changes.
 
 # Newborn Eyes Open Scroll Notes
 

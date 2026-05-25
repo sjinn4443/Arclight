@@ -231,6 +231,7 @@ See [`security/EMERGENCY_PLAN.md`](./security/EMERGENCY_PLAN.md) for the operato
   - styling lives in `public/style/pages.css` under `.childhood-fundal-scroll-page`
   - the Diabetic Retinopathy workshop can also launch Fundal-style scrollytelling routes, including Direct Ophthalmoscopy routes (`diabeticObservationFundalReflex`, `diabeticPositioningFlightPath`, `diabeticHowToExamine`) and Binocular Indirect Ophthalmoscopy routes (`diabeticBioPreparation`, `diabeticBioFundoscopySitting`, `diabeticBioFundoscopyIndentation`), while reusing the same engine and layout contract
   - pause-before-frame behavior must use explicit `segmentRanges`, `segmentPauseAfterMsByFile`, and stable `settleFrameOverrides`; verify that pause holds the intended frame, does not flash white/final frames, and keeps accumulated text visible after completion
+  - for iOS/WebKit white-frame glitches at a pause or hold, follow the snapshot recovery pattern in [`agent.md`](./agent.md): generate an exact PNG from the running local app, map it with `settleSnapshotImageByFile` or `completionSnapshotImageByFile`, prewarm it, and show that exact-frame image immediately instead of falling back to a previous rendered frame
   - Diabetic scrollytelling sequences should continue page-to-page by scroll/down-arrow inside the sequence, then place ordinary `< Previous` / `Next >` buttons at the end of the final scrollytelling page to return to the surrounding workshop flow
   - iOS checks matter: WebKit may need per-file renderer overrides, reduced warmup, and cache-version bumps when Lottie assets or service-worker-cached fragments change
   - when touching shared Fundal playback, run `npm run test:fundal` or manually recheck the Childhood Fundal sequence on desktop and mobile; preserve the FR06 baseline/settle guardrails recorded in `agent.md`
@@ -239,6 +240,7 @@ See [`security/EMERGENCY_PLAN.md`](./security/EMERGENCY_PLAN.md) for the operato
 
 ## Changelog (high level)
 
+- 2026-05-25: Documented the iOS/WebKit Fundal scrollytelling white-frame recovery pattern: exact static pause/final snapshots, route-level snapshot maps, prewarming, and WebKit iPhone regression coverage.
 - 2026-05-20: Added Diabetic Retinopathy workshop Direct Ophthalmoscopy scrollytelling routes for `Observation and Fundal Reflex`, `Positioning and Flight Path`, and `How to Examine` using the shared Fundal Lottie stage-autoplay engine.
 - 2026-05-20: Added Diabetic Retinopathy workshop Binocular Indirect Ophthalmoscopy scrollytelling routes for `Preparation`, `Fundoscopy Sitting`, and `Fundoscopy with Indentation`.
 - 2026-05-20: Hardened Diabetic scrollytelling pause-frame behavior, iOS renderer/cache handling, final-page previous/next controls, and notes for future Fundal-style route work.
