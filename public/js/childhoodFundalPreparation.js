@@ -3828,7 +3828,7 @@ function syncPersistentSettleSnapshotOverlay(controller) {
   if (controller.isPlaying || controller.isSnapping) return;
   if (isStageFrameBlank(controller)) {
     if (shouldUseSnapshotlessExactFrameFallback(controller)) {
-      holdExactFrameWithoutSnapshotFallback(controller);
+      showExactFrameFallbackOverlay(controller);
       return;
     }
     showRecoveryOverlay(controller);
@@ -3865,11 +3865,73 @@ function resolveExactFrameFallbackTarget(controller, frame = null) {
   return 0;
 }
 
-function holdExactFrameWithoutSnapshotFallback(
-  controller,
-  frame = null,
-  options = {},
-) {
+function createExactFrameSnapshotNode(controller, frame, options = {}) {
+  if (!controller?.anim) return null;
+  const safeFrame = resolveExactFrameFallbackTarget(controller, frame);
+  const minContentAreaRatio = Number.isFinite(
+    Number(options.minContentAreaRatio),
+  )
+    ? Math.max(0.01, Number(options.minContentAreaRatio))
+    : Number.isFinite(Number(controller.minContentAreaRatio))
+      ? Number(controller.minContentAreaRatio)
+      : 0.16;
+
+  try {
+    controller.anim.pause?.();
+    controller.anim.goToAndStop?.(safeFrame, true);
+  } catch {}
+  forceSvgVisibleForController(controller);
+  requestIosStageRepaintNudge(controller.stage);
+
+  const renderEl = getControllerRenderElement(controller);
+  if (!renderEl) return null;
+
+  let snapshot = null;
+  if (isCanvasRenderElement(renderEl)) {
+    const metrics = sampleCanvasContentMetrics(renderEl, {
+      sampleSize: 24,
+      alphaThreshold: 16,
+      nearWhiteThreshold: 246,
+    });
+    if (!metrics || !isStageFrameBlank(controller)) {
+      snapshot = cloneCanvasSnapshotNode(renderEl);
+    } else if (
+      metrics.nonWhiteRatio > 0.02 ||
+      metrics.nonWhiteAmongVisible > 0.03
+    ) {
+      snapshot = cloneCanvasSnapshotNode(renderEl);
+    }
+  } else {
+    try {
+      snapshot = renderEl.cloneNode(true);
+    } catch {}
+  }
+
+  if (!snapshot) return null;
+  snapshot.style.display = "block";
+  snapshot.style.width = "100%";
+  snapshot.style.height = "100%";
+  controller.recoverySnapshotFrame = safeFrame;
+  const snapshotSegIndex = Number(controller?.playingSegmentIndex);
+  if (Number.isFinite(snapshotSegIndex) && snapshotSegIndex >= 0) {
+    controller.recoverySnapshotSegmentIndex = Math.floor(snapshotSegIndex);
+  }
+  if (isCanvasRenderElement(snapshot)) {
+    controller.recoverySnapshotMarkup = "";
+    try {
+      controller.recoverySnapshotCanvasDataUrl =
+        snapshot.toDataURL("image/png");
+    } catch {
+      controller.recoverySnapshotCanvasDataUrl = "";
+    }
+  } else {
+    controller.recoverySnapshotMarkup = snapshot.outerHTML || "";
+    controller.recoverySnapshotCanvasDataUrl = "";
+  }
+  return snapshot;
+}
+
+function showExactFrameFallbackOverlay(controller, frame = null, options = {}) {
   if (!controller?.anim) return 0;
   const safeFrame = resolveExactFrameFallbackTarget(controller, frame);
   const minContentAreaRatio = Number.isFinite(
@@ -3880,11 +3942,24 @@ function holdExactFrameWithoutSnapshotFallback(
       ? Number(controller.minContentAreaRatio)
       : 0.16;
 
-  hideRecoveryOverlay(controller, { immediate: true, force: true });
-  try {
-    controller.anim.pause?.();
-    controller.anim.goToAndStop?.(safeFrame, true);
-  } catch {}
+  const overlay = ensureRecoveryOverlay(controller);
+  const snapshot = createExactFrameSnapshotNode(controller, safeFrame, {
+    minContentAreaRatio,
+  });
+  if (overlay && snapshot) {
+    if (Number.isFinite(controller?.recoveryOverlayClearTimer)) {
+      clearTimeout(controller.recoveryOverlayClearTimer);
+      controller.recoveryOverlayClearTimer = null;
+    }
+    controller.preserveRecoveryOverlay = false;
+    overlay.replaceChildren(snapshot);
+    overlay.style.visibility = "visible";
+    overlay.style.opacity = "1";
+    controller.recoveryOverlayVisible = true;
+  } else {
+    hideRecoveryOverlay(controller, { immediate: true, force: true });
+  }
+
   forceSvgVisibleForController(controller);
   controller.lastPinnedFrame = safeFrame;
   requestIosStageRepaintNudge(controller.stage);
@@ -4149,7 +4224,7 @@ async function recoverLockedExactFrame(
   let overlayShown = false;
   const ensureOverlayVisible = () => {
     if (shouldUseSnapshotlessExactFrameFallback(controller)) {
-      holdExactFrameWithoutSnapshotFallback(controller, holdFrame, {
+      showExactFrameFallbackOverlay(controller, holdFrame, {
         minContentAreaRatio,
       });
       return false;
@@ -4276,7 +4351,7 @@ function requestLockedExactFrameRecovery(
         hideRecoveryOverlayWhenStable(controller);
       } else {
         if (shouldUseSnapshotlessExactFrameFallback(controller)) {
-          holdExactFrameWithoutSnapshotFallback(controller, exactFrame, {
+          showExactFrameFallbackOverlay(controller, exactFrame, {
             minContentAreaRatio: options.minContentAreaRatio,
           });
         } else {
@@ -4851,7 +4926,7 @@ function stopAtSegmentEnd(controller, cfg) {
     // Keep a fresh snapshot ready, but only show overlay if recovery actually hits a blank frame.
     rememberRecoverySnapshot(controller, controller.lastRenderedFrame);
     if (IS_IOS_WEBKIT && shouldUseSnapshotlessExactFrameFallback(controller)) {
-      holdExactFrameWithoutSnapshotFallback(controller, holdFrame, {
+      showExactFrameFallbackOverlay(controller, holdFrame, {
         minContentAreaRatio,
       });
     } else if (IS_IOS_WEBKIT) {
@@ -6152,7 +6227,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
       });
       if (pinned.isBlank || pinnedUnstable) {
         if (shouldUseSnapshotlessExactFrameFallback(controller)) {
-          holdExactFrameWithoutSnapshotFallback(controller, holdFrame, {
+          showExactFrameFallbackOverlay(controller, holdFrame, {
             minContentAreaRatio,
             passes: 2,
             attemptsPerPass: attemptsPerTick,
@@ -6309,7 +6384,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
         if (IS_IOS_WEBKIT) {
           controller.strictFallbackFrameBySegment?.delete?.(segIndex);
           if (shouldUseSnapshotlessExactFrameFallback(controller)) {
-            holdExactFrameWithoutSnapshotFallback(controller, exactFrame, {
+            showExactFrameFallbackOverlay(controller, exactFrame, {
               minContentAreaRatio,
             });
           } else {
@@ -8419,7 +8494,7 @@ function initializeStageAutoplayMode(
 
     if (configuredHoldFrame != null) {
       if (shouldUseSnapshotlessExactFrameFallback(state)) {
-        holdExactFrameWithoutSnapshotFallback(state, holdFrame, {
+        showExactFrameFallbackOverlay(state, holdFrame, {
           minContentAreaRatio: state.minContentAreaRatio,
         });
       } else {
@@ -8529,7 +8604,7 @@ function initializeStageAutoplayMode(
         showRecoveryImageOverlay(state, snapshotImage);
       } else {
         if (shouldUseSnapshotlessExactFrameFallback(state)) {
-          holdExactFrameWithoutSnapshotFallback(state, currentFrame, {
+          showExactFrameFallbackOverlay(state, currentFrame, {
             minContentAreaRatio: state.minContentAreaRatio,
           });
         } else {
@@ -8738,7 +8813,7 @@ function initializeStageAutoplayMode(
     }
 
     if (shouldUseSnapshotlessExactFrameFallback(state)) {
-      holdExactFrameWithoutSnapshotFallback(state, safeFrame, {
+      showExactFrameFallbackOverlay(state, safeFrame, {
         minContentAreaRatio,
       });
     } else {
@@ -8877,6 +8952,13 @@ function initializeStageAutoplayMode(
     });
     requestIosStageRepaintNudge(state.stage);
 
+    if (shouldUseSnapshotlessExactFrameFallback(state)) {
+      showExactFrameFallbackOverlay(state, safeFrame, {
+        minContentAreaRatio: state.minContentAreaRatio,
+      });
+      return safeFrame;
+    }
+
     if (!isStageFrameBlank(state)) {
       rememberRecoverySnapshot(state, safeFrame);
       hideRecoveryOverlayWhenStable(state, {
@@ -8886,13 +8968,7 @@ function initializeStageAutoplayMode(
       return safeFrame;
     }
 
-    if (shouldUseSnapshotlessExactFrameFallback(state)) {
-      holdExactFrameWithoutSnapshotFallback(state, safeFrame, {
-        minContentAreaRatio: state.minContentAreaRatio,
-      });
-    } else {
-      showRecoveryOverlay(state);
-    }
+    showRecoveryOverlay(state);
     return safeFrame;
   }
 
@@ -9293,6 +9369,11 @@ function initializeStageAutoplayMode(
         state.stage
           ?.querySelector(".childhood-fundal-recovery-overlay img")
           ?.getAttribute("src") || "",
+      recoverySnapshotFrame: Number.isFinite(
+        Number(state.recoverySnapshotFrame),
+      )
+        ? Number(state.recoverySnapshotFrame)
+        : null,
       replayVisible:
         ensureStageReplayButtonElement(state.stage, state.replayBtn)?.style
           ?.display !== "none",
@@ -9370,6 +9451,16 @@ function initializeStageAutoplayMode(
       serializeFundalE2EStageState(states[Number(stageIndex)]),
     seekStage: (stageIndex, frame, options) =>
       seekFundalE2EStage(stageIndex, frame, options),
+    showExactFrameFallback: (stageIndex, frame) => {
+      const state = states[Number(stageIndex)];
+      if (!state?.ready || !state.anim) return null;
+      const safeFrame = showExactFrameFallbackOverlay(state, frame, {
+        minContentAreaRatio: state.minContentAreaRatio,
+      });
+      updateStageTextForFrame(state, safeFrame);
+      updateStageControlAnchors(state);
+      return serializeFundalE2EStageState(state);
+    },
   });
 
   cleanupLegacyTopbarReplay(page);

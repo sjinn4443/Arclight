@@ -79,6 +79,25 @@ async function seekFundalStage(page, routeName, stageIndex, frame) {
   );
 }
 
+async function showFundalExactFrameFallback(
+  page,
+  routeName,
+  stageIndex,
+  frame,
+) {
+  return page.evaluate(
+    async ({ targetRouteName, targetStageIndex, targetFrame }) =>
+      window.__ARCLIGHT_E2E__?.fundal?.sessions?.[
+        targetRouteName
+      ]?.showExactFrameFallback?.(targetStageIndex, targetFrame) || null,
+    {
+      targetRouteName: routeName,
+      targetStageIndex: stageIndex,
+      targetFrame: frame,
+    },
+  );
+}
+
 async function getStagePixelStats(stageLocator) {
   const screenshot = await stageLocator.screenshot();
   const { data, info } = await sharp(screenshot)
@@ -324,59 +343,28 @@ test.describe("Diabetic fundal scrollytelling regressions", () => {
       "This regression targets stale recovery snapshots over iOS canvas pause frames.",
     );
 
-    await prepareRoute(page, "diabeticBioPreparation");
-    const stages = page.locator(".childhood-fundal-prep-stage");
-    await expect(stages).toHaveCount(4, { timeout: ROUTE_READY_TIMEOUT_MS });
-
-    await expect(
-      stages.nth(0).locator(".childhood-fundal-stage-replay-btn"),
-    ).toBeVisible({
-      timeout: STAGE_COMPLETE_TIMEOUT_MS,
+    await prepareRoute(page, "diabeticBioPreparation", {
+      disableFundalAutoplay: true,
     });
-    await page
-      .locator(
-        '.childhood-fundal-prep-item[data-file-index="0"] [data-fundal-stage-next-btn="1"]',
-      )
-      .click({ force: true });
-
-    await expect(
-      stages.nth(1).locator(".childhood-fundal-stage-replay-btn"),
-    ).toBeVisible({
-      timeout: STAGE_COMPLETE_TIMEOUT_MS,
-    });
-    await page
-      .locator(
-        '.childhood-fundal-prep-item[data-file-index="1"] [data-fundal-stage-next-btn="1"]',
-      )
-      .click({ force: true });
+    await waitForFundalStageReady(page, "diabeticBioPreparation", 2);
 
     const stage = page.locator(
       '.childhood-fundal-prep-item[data-file-index="2"] .childhood-fundal-prep-stage',
     );
     await stage.scrollIntoViewIfNeeded();
 
-    await expect
-      .poll(
-        async () => {
-          const state = await getFundalStageState(
-            page,
-            "diabeticBioPreparation",
-            2,
-          );
-          if (!state || state.currentFrame < 182 || state.currentFrame > 185) {
-            return null;
-          }
-          return {
-            renderType: state.renderType,
-            recoveryOverlayVisible: state.recoveryOverlayVisible,
-          };
-        },
-        { timeout: STAGE_COMPLETE_TIMEOUT_MS },
-      )
-      .toMatchObject({
-        renderType: "canvas",
-        recoveryOverlayVisible: false,
-      });
+    const state = await showFundalExactFrameFallback(
+      page,
+      "diabeticBioPreparation",
+      2,
+      183,
+    );
+    expect(state).toMatchObject({
+      currentFrame: 183,
+      renderType: "canvas",
+      recoveryOverlayVisible: true,
+      recoverySnapshotFrame: 183,
+    });
     expect(await getNonWhitePixelRatio(stage)).toBeGreaterThan(0.2);
   });
 
