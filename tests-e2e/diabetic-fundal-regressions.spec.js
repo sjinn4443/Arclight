@@ -363,6 +363,8 @@ test.describe("Diabetic fundal scrollytelling regressions", () => {
       currentFrame: 183,
       renderType: "canvas",
       recoveryOverlayVisible: true,
+      recoveryOverlayImageSrc:
+        "/scrolly/coreexam/ophths/BIO/01Preparation/3/pause_frame_183.png",
       recoverySnapshotFrame: 183,
     });
     expect(await getNonWhitePixelRatio(stage)).toBeGreaterThan(0.2);

@@ -755,6 +755,16 @@ const ROUTE_CONFIG = {
       "/scrolly/coreexam/ophths/BIO/01Preparation/3/final_frame.png",
       null,
     ],
+    settleSnapshotImageByFile: [
+      null,
+      null,
+      {
+        183: "/scrolly/coreexam/ophths/BIO/01Preparation/3/pause_frame_183.png",
+        271: "/scrolly/coreexam/ophths/BIO/01Preparation/3/pause_frame_271.png",
+        340: "/scrolly/coreexam/ophths/BIO/01Preparation/3/pause_frame_340.png",
+      },
+      null,
+    ],
     centerTopBiasByFile: [0, 0, -96, 0],
     desktopTopGapByFile: [18, 18, -24, 18],
     segmentRanges: [
@@ -825,6 +835,18 @@ const ROUTE_CONFIG = {
       null,
       "/scrolly/coreexam/ophths/BIO/02FundoscopySitting/2/final_frame.png",
       "/scrolly/coreexam/ophths/BIO/02FundoscopySitting/3/final_frame.png",
+      null,
+      null,
+    ],
+    settleSnapshotImageByFile: [
+      null,
+      {
+        166: "/scrolly/coreexam/ophths/BIO/02FundoscopySitting/2/pause_frame_166.png",
+      },
+      {
+        75: "/scrolly/coreexam/ophths/BIO/02FundoscopySitting/3/pause_frame_75.png",
+        158: "/scrolly/coreexam/ophths/BIO/02FundoscopySitting/3/pause_frame_158.png",
+      },
       null,
       null,
     ],
@@ -1157,6 +1179,10 @@ function createCombinedFundalRouteConfig(pageId, label, sectionDefs = []) {
     preserveCompletionSnapshotOverlayByFile: buildCombinedFundalPerFileArray(
       sectionDefs,
       "preserveCompletionSnapshotOverlayByFile",
+    ),
+    settleSnapshotImageByFile: buildCombinedFundalPerFileArray(
+      sectionDefs,
+      "settleSnapshotImageByFile",
     ),
     finalSummaryBulletsByFile: buildCombinedFundalPerFileArray(
       sectionDefs,
@@ -2411,6 +2437,17 @@ function warmupFundalRouteAssets(cfg, options = {}) {
 
   if (isIdleWarmup) return;
 
+  collectConfiguredSnapshotImageUrls(cfg).forEach((url, index) => {
+    primeFundalAsset(url, {
+      rel: index < 4 ? "preload" : "prefetch",
+      as: "image",
+      fetchPriority: index < 4 ? "high" : "",
+    });
+    void warmFundalImage(url, {
+      fetchPriority: index < 4 ? "high" : "",
+    });
+  });
+
   for (let i = 1; i < Math.min(paths.length, 3); i += 1) {
     const path = paths[i];
     primeFundalAsset(path, { rel: "prefetch", as: "fetch" });
@@ -2883,6 +2920,62 @@ function resolveCompletionSnapshotImage(cfg, fileIndex) {
     : null;
   const value = String(raw == null ? "" : raw).trim();
   return value || "";
+}
+
+function resolveSettleSnapshotImages(cfg, fileIndex) {
+  const raw = Array.isArray(cfg?.settleSnapshotImageByFile)
+    ? cfg.settleSnapshotImageByFile[fileIndex]
+    : null;
+  if (!raw || typeof raw !== "object" || Array.isArray(raw)) return {};
+
+  const result = {};
+  Object.entries(raw).forEach(([frame, url]) => {
+    const safeFrame = Math.floor(Number(frame));
+    const safeUrl = String(url == null ? "" : url).trim();
+    if (!Number.isFinite(safeFrame) || !safeUrl) return;
+    result[String(safeFrame)] = safeUrl;
+  });
+  return result;
+}
+
+function resolveConfiguredSettleSnapshotImage(controller, frame) {
+  const safeFrame = resolveExactFrameFallbackTarget(controller, frame);
+  const images = controller?.settleSnapshotImages || {};
+  const direct = String(images[String(safeFrame)] || "").trim();
+  if (direct) return direct;
+
+  for (let offset = 1; offset <= 1; offset += 1) {
+    const before = String(images[String(safeFrame - offset)] || "").trim();
+    if (before) return before;
+    const after = String(images[String(safeFrame + offset)] || "").trim();
+    if (after) return after;
+  }
+
+  return "";
+}
+
+function collectConfiguredSnapshotImageUrls(cfg) {
+  const urls = [];
+  const completionImages = Array.isArray(cfg?.completionSnapshotImageByFile)
+    ? cfg.completionSnapshotImageByFile
+    : [];
+  completionImages.forEach((url) => {
+    const value = String(url == null ? "" : url).trim();
+    if (value) urls.push(value);
+  });
+
+  const settleImages = Array.isArray(cfg?.settleSnapshotImageByFile)
+    ? cfg.settleSnapshotImageByFile
+    : [];
+  settleImages.forEach((fileImages) => {
+    if (!fileImages || typeof fileImages !== "object") return;
+    Object.values(fileImages).forEach((url) => {
+      const value = String(url == null ? "" : url).trim();
+      if (value) urls.push(value);
+    });
+  });
+
+  return Array.from(new Set(urls));
 }
 
 function isStrictSegmentEndHold(cfg) {
@@ -3714,6 +3807,21 @@ function showRecoveryImageOverlay(controller, imageUrl) {
     controller.recoveryOverlayClearTimer = null;
   }
 
+  const img = createRecoveryImageElement(safeUrl);
+  if (!img) return false;
+
+  overlay.replaceChildren(img);
+  overlay.style.visibility = "visible";
+  overlay.style.opacity = "1";
+  controller.recoveryOverlayVisible = true;
+  controller.preserveRecoveryOverlay = true;
+  return true;
+}
+
+function createRecoveryImageElement(imageUrl) {
+  const safeUrl = String(imageUrl || "").trim();
+  if (!safeUrl) return null;
+
   const img = document.createElement("img");
   img.src = safeUrl;
   img.alt = "";
@@ -3726,13 +3834,7 @@ function showRecoveryImageOverlay(controller, imageUrl) {
   img.style.objectFit = "contain";
   img.style.objectPosition = "center";
   img.style.pointerEvents = "none";
-
-  overlay.replaceChildren(img);
-  overlay.style.visibility = "visible";
-  overlay.style.opacity = "1";
-  controller.recoveryOverlayVisible = true;
-  controller.preserveRecoveryOverlay = true;
-  return true;
+  return img;
 }
 
 function hideRecoveryOverlay(controller, options = {}) {
@@ -3942,11 +4044,28 @@ function showExactFrameFallbackOverlay(controller, frame = null, options = {}) {
       ? Number(controller.minContentAreaRatio)
       : 0.16;
 
+  try {
+    controller.anim.pause?.();
+    controller.anim.goToAndStop?.(safeFrame, true);
+  } catch {}
+  forceSvgVisibleForController(controller);
+
   const overlay = ensureRecoveryOverlay(controller);
-  const snapshot = createExactFrameSnapshotNode(controller, safeFrame, {
-    minContentAreaRatio,
-  });
+  const configuredSnapshotImage = resolveConfiguredSettleSnapshotImage(
+    controller,
+    safeFrame,
+  );
+  const snapshot = configuredSnapshotImage
+    ? createRecoveryImageElement(configuredSnapshotImage)
+    : createExactFrameSnapshotNode(controller, safeFrame, {
+        minContentAreaRatio,
+      });
   if (overlay && snapshot) {
+    controller.recoverySnapshotFrame = safeFrame;
+    const snapshotSegIndex = Number(controller?.playingSegmentIndex);
+    if (Number.isFinite(snapshotSegIndex) && snapshotSegIndex >= 0) {
+      controller.recoverySnapshotSegmentIndex = Math.floor(snapshotSegIndex);
+    }
     if (Number.isFinite(controller?.recoveryOverlayClearTimer)) {
       clearTimeout(controller.recoveryOverlayClearTimer);
       controller.recoveryOverlayClearTimer = null;
@@ -5413,6 +5532,7 @@ function initializeSegmentScrollMode(cfg, page, stages) {
       segmentTextTriggerFrames: resolveSegmentTextTriggerFrames(cfg, idx),
       finalSummaryBulletLines: resolveFinalSummaryBullets(cfg, idx),
       segmentTextMode: resolveSegmentTextMode(cfg, idx),
+      settleSnapshotImages: resolveSettleSnapshotImages(cfg, idx),
       segmentTextLines: [],
       segments: [],
       ready: false,
@@ -7384,6 +7504,7 @@ function initializeStageAutoplayMode(
       segmentTextTriggerFrames: [],
       finalSummaryBulletLines: [],
       segmentTextMode: resolveSegmentTextMode(cfg, idx),
+      settleSnapshotImages: resolveSettleSnapshotImages(cfg, idx),
       segmentTextLeftAligned: shouldLeftAlignSegmentText(cfg, idx),
       segmentTextBullet: shouldRenderSegmentTextAsBullets(cfg, idx),
       segmentTextLines: [],
@@ -8945,19 +9066,19 @@ function initializeStageAutoplayMode(
     });
     requestIosStageRepaintNudge(state.stage);
 
-    await waitForFundalE2ERenderStability(2);
-
-    pinStageAutoplayFrame(state, safeFrame, {
-      attempts: IS_IOS_WEBKIT ? 8 : 4,
-    });
-    requestIosStageRepaintNudge(state.stage);
-
     if (shouldUseSnapshotlessExactFrameFallback(state)) {
       showExactFrameFallbackOverlay(state, safeFrame, {
         minContentAreaRatio: state.minContentAreaRatio,
       });
       return safeFrame;
     }
+
+    await waitForFundalE2ERenderStability(2);
+
+    pinStageAutoplayFrame(state, safeFrame, {
+      attempts: IS_IOS_WEBKIT ? 8 : 4,
+    });
+    requestIosStageRepaintNudge(state.stage);
 
     if (!isStageFrameBlank(state)) {
       rememberRecoverySnapshot(state, safeFrame);
@@ -9451,6 +9572,12 @@ function initializeStageAutoplayMode(
       serializeFundalE2EStageState(states[Number(stageIndex)]),
     seekStage: (stageIndex, frame, options) =>
       seekFundalE2EStage(stageIndex, frame, options),
+    loadStage: (stageIndex) => {
+      const state = states[Number(stageIndex)];
+      if (!state || state.failed) return serializeFundalE2EStageState(state);
+      ensureStageAnimationLoaded(state);
+      return serializeFundalE2EStageState(state);
+    },
     showExactFrameFallback: (stageIndex, frame) => {
       const state = states[Number(stageIndex)];
       if (!state?.ready || !state.anim) return null;
