@@ -21,13 +21,6 @@ function isNepaliLanguage() {
   }
 }
 
-function setCaseLabel(target, index) {
-  if (!target) return;
-  target.textContent = "";
-  target.appendChild(document.createTextNode("Case"));
-  target.appendChild(document.createTextNode(` ${index}`));
-}
-
 function setScoreSummary(target, correct, total) {
   if (!target) return;
   target.textContent = "";
@@ -223,9 +216,6 @@ export function initializeGlaucomaQuizCaseStudy() {
 
       const cardNumber = card.querySelector(".quiz-card-number");
       if (cardNumber) cardNumber.textContent = String(qi + 1).padStart(2, "0");
-
-      const cardProgress = card.querySelector(".quiz-card-progress");
-      if (cardProgress) setCaseLabel(cardProgress, qi + 1);
 
       const source = card.querySelector("source");
       if (source) source.src = q.video;

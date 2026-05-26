@@ -13,6 +13,28 @@ function translateNode(node) {
   }
 }
 
+const LEADING_QUESTION_NUMBER_RE =
+  /^\s*[\d\uff10-\uff19\u0660-\u0669\u06f0-\u06f9\u0966-\u096f\u09e6-\u09ef\u0c66-\u0c6f]+(?:[.)\u0964\u06d4\uff0e\u3001:])?\s*/;
+
+function setQuestionBadge(block, index) {
+  const badge = block?.querySelector?.(".quiz-question-badge");
+  if (badge) badge.textContent = String(index + 1).padStart(2, "0");
+}
+
+function removeQuestionNumber(target) {
+  if (!target) return;
+  target.textContent = target.textContent.replace(
+    LEADING_QUESTION_NUMBER_RE,
+    "",
+  );
+}
+
+function removeQuestionNumbers(root) {
+  root
+    ?.querySelectorAll?.(".quiz-question")
+    .forEach((question) => removeQuestionNumber(question));
+}
+
 function isNepaliLanguage() {
   try {
     return window.I18N?.getLanguage?.() === "ne";
@@ -202,6 +224,7 @@ export function initializeChildhoodAssessment() {
       .querySelector(".quiz-block")
       .cloneNode(true);
     const correctLetter = LETTERS[q.answer] || "";
+    setQuestionBadge(block, i);
 
     const question = block.querySelector(".quiz-question");
     if (question) question.textContent = q.q;
@@ -299,4 +322,5 @@ export function initializeChildhoodAssessment() {
   });
 
   translateNode(mount);
+  removeQuestionNumbers(mount);
 }

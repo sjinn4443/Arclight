@@ -6,6 +6,56 @@ function translateNode(node) {
   }
 }
 
+const LEADING_QUESTION_NUMBER_RE =
+  /^\s*[\d\uff10-\uff19\u0660-\u0669\u06f0-\u06f9\u0966-\u096f\u09e6-\u09ef\u0c66-\u0c6f]+(?:[.)\u0964\u06d4\uff0e\u3001:])?\s*/;
+
+function removeQuestionNumber(target) {
+  if (!target) return;
+  target.textContent = target.textContent.replace(
+    LEADING_QUESTION_NUMBER_RE,
+    "",
+  );
+}
+
+function removeQuestionNumbers(root) {
+  root
+    ?.querySelectorAll?.(".quiz-question")
+    .forEach((question) => removeQuestionNumber(question));
+}
+
+function ensureQuestionHeading(block) {
+  let heading = block.querySelector(".quiz-question-heading");
+  let badge = block.querySelector(".quiz-question-badge");
+  let question = block.querySelector(".quiz-question");
+
+  if (!question) {
+    question = document.createElement("p");
+    question.className = "quiz-question";
+  }
+
+  if (!heading) {
+    heading = document.createElement("div");
+    heading.className = "quiz-question-heading";
+
+    if (question.parentElement === block) {
+      block.insertBefore(heading, question);
+    } else {
+      block.prepend(heading);
+    }
+  }
+
+  if (!badge) {
+    badge = document.createElement("span");
+    badge.className = "quiz-question-badge";
+    badge.setAttribute("aria-hidden", "true");
+  }
+
+  if (!heading.contains(badge)) heading.prepend(badge);
+  if (!heading.contains(question)) heading.appendChild(question);
+
+  return { badge, question };
+}
+
 function isNepaliLanguage() {
   try {
     return window.I18N?.getLanguage?.() === "ne";
@@ -218,12 +268,8 @@ function _launchQuiz() {
       document.createElement("div");
     block.classList.add("quiz-block");
 
-    let question = block.querySelector(".quiz-question");
-    if (!question) {
-      question = document.createElement("p");
-      question.className = "quiz-question";
-      block.appendChild(question);
-    }
+    const { badge, question } = ensureQuestionHeading(block);
+    badge.textContent = String(questionIndex + 1).padStart(2, "0");
     question.textContent = questionData.q;
 
     let optionsWrap = block.querySelector(".quiz-options");
@@ -272,6 +318,7 @@ function _launchQuiz() {
 
   translateNode(quizPage);
   translateNode(quizForm);
+  removeQuestionNumbers(quizForm);
 
   quizForm.onsubmit = (event) => {
     event.preventDefault();
