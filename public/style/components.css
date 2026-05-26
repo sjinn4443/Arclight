@@ -801,6 +801,7 @@ input:checked + .slider:before {
   height: auto;
   min-height: 0;
   max-height: calc(100vh - 48px);
+  overflow-y: auto;
   padding: 24px 28px 28px;
   border-radius: 14px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
@@ -864,6 +865,96 @@ input:checked + .slider:before {
 
 #downloadAppModal .modal-content p:last-child {
   margin-bottom: 0;
+}
+
+#downloadAppModal .download-options {
+  display: grid;
+  gap: 8px;
+  margin: 14px 0;
+  padding: 0;
+  border: 0;
+}
+
+#downloadAppModal .download-option {
+  display: grid;
+  grid-template-columns: 18px 1fr;
+  align-items: start;
+  gap: 10px;
+  margin: 0;
+  padding: 10px 12px;
+  border: 1px solid #e3e3e7;
+  border-radius: 12px;
+  color: #202124;
+  background: #fafafa;
+}
+
+#downloadAppModal .download-option input {
+  width: 16px;
+  height: 16px;
+  margin: 2px 0 0;
+  accent-color: #e41e26;
+}
+
+#downloadAppModal .download-option__title,
+#downloadAppModal .download-option__description {
+  display: block;
+}
+
+#downloadAppModal .download-option__title {
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+#downloadAppModal .download-option__description {
+  margin-top: 3px;
+  color: #555;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+#downloadAppModal .download-select-panel {
+  display: grid;
+  gap: 6px;
+  margin: -2px 0 2px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: #f4f4f6;
+}
+
+#downloadAppModal .download-select-panel[hidden] {
+  display: none;
+}
+
+#downloadAppModal .download-select-panel label {
+  display: block;
+  margin: 0;
+  color: #202124;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+#downloadAppModal .download-select-panel select {
+  width: 100%;
+  min-height: 38px;
+  border: 1px solid #d6d6dc;
+  border-radius: 10px;
+  padding: 0 10px;
+  color: #111;
+  background: #fff;
+  font: inherit;
+}
+
+#downloadAppModal .download-select-panel p,
+#downloadAppModal .download-estimate {
+  margin: 0;
+  color: #555;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+#downloadAppModal .download-estimate {
+  color: #111;
+  font-weight: 700;
 }
 
 #downloadAppModal .modal-footer {

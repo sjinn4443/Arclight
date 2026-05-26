@@ -78,6 +78,76 @@ const ENGLISH_LANGUAGE_LABELS = {
   zu: "Zulu",
 };
 
+const ESTIMATED_DOWNLOAD_BYTES_PER_MINUTE = 120 * 1000 * 1000;
+const VIDEO_ASSET_EXTENSIONS = new Set([
+  ".m3u8",
+  ".m4s",
+  ".m4v",
+  ".mov",
+  ".mp4",
+  ".mpd",
+  ".srt",
+  ".ts",
+  ".vtt",
+  ".webm",
+]);
+const CONTENT_ASSET_PREFIXES = [
+  "/images/learning/",
+  "/images/pdf/",
+  "/images/quiz/",
+  "/scrolly/",
+  "/scrolls/",
+  "/subapp/",
+  "/video-hls/",
+  "/video-localization/",
+  "/video-subtitles/",
+  "/videos/",
+];
+const OFFLINE_CATALOG_OPTIONS = [
+  {
+    id: "core",
+    label: "Core Examination",
+    description: "Core eye examination videos and interactive content.",
+  },
+  {
+    id: "conditions",
+    label: "Conditions",
+    description: "Condition-focused pages, media, and mini apps.",
+  },
+  {
+    id: "workshops",
+    label: "Workshops",
+    description: "PEC workshop videos, images, quizzes, and pages.",
+  },
+  {
+    id: "extended",
+    label: "Extended Examination",
+    description: "Extended examination content and mini apps.",
+  },
+  {
+    id: "tools",
+    label: "Tools and Kits",
+    description: "Tool overview videos and related assets.",
+  },
+];
+const VIDEO_QUALITY_OPTIONS = [
+  {
+    id: "both",
+    label: "Low and high resolution",
+    description: "Downloads both versions where the app provides them.",
+  },
+  {
+    id: "low",
+    label: "Low resolution only",
+    description: "Smaller download; videos use the lower-resolution files.",
+  },
+  {
+    id: "high",
+    label: "High resolution only",
+    description: "Larger download; videos use the higher-resolution files.",
+  },
+];
+
 initializePWA();
 
 async function fetchAllOfflineAssetUrls() {
@@ -92,18 +162,281 @@ async function fetchAllOfflineAssetUrls() {
     throw new Error("Offline asset manifest is empty");
   }
 
+  const assets = Array.isArray(manifest?.assets)
+    ? manifest.assets
+        .map((asset) => ({
+          bytes: Number(asset?.bytes) || 0,
+          url: typeof asset?.url === "string" ? asset.url : "",
+        }))
+        .filter((asset) => asset.url)
+    : urls.map((url) => ({ bytes: 0, url }));
+
   return {
+    assets,
     bytes: Number(manifest.bytes) || 0,
     count: Number(manifest.count) || urls.length,
     urls,
   };
 }
 
-function showDownloadAppModal() {
+function getAssetPath(url) {
+  try {
+    return decodeURI(new URL(url, window.location.origin).pathname)
+      .split(/[?#]/)[0]
+      .toLowerCase();
+  } catch {
+    return decodeURI(String(url || ""))
+      .split(/[?#]/)[0]
+      .toLowerCase();
+  }
+}
+
+function getAssetExtension(assetPath) {
+  const lastSegment = assetPath.split("/").pop() || "";
+  const dotIndex = lastSegment.lastIndexOf(".");
+  return dotIndex >= 0 ? lastSegment.slice(dotIndex) : "";
+}
+
+function isVideoAssetUrl(url) {
+  const assetPath = getAssetPath(url);
+  return (
+    VIDEO_ASSET_EXTENSIONS.has(getAssetExtension(assetPath)) ||
+    assetPath.startsWith("/video-hls/") ||
+    assetPath.startsWith("/video-localization/") ||
+    assetPath.startsWith("/video-subtitles/")
+  );
+}
+
+function getVideoResolutionTier(url) {
+  const assetPath = getAssetPath(url);
+  const matches = Array.from(
+    assetPath.matchAll(/(?:^|[_/-])(\d{3,4})p(?=[_./-]|$)/gi),
+  );
+  const match = matches[matches.length - 1];
+  if (!match) return null;
+
+  const resolution = Number(match[1]);
+  if (!Number.isFinite(resolution)) return null;
+  return resolution <= 360 ? "low" : "high";
+}
+
+function getAlternateVideoQualityUrl(url, videoQuality) {
+  const sourcePattern =
+    videoQuality === "high" ? /_220p(?=\.mp4$)/i : /_720p(?=\.mp4$)/i;
+  const replacement = videoQuality === "high" ? "_720p" : "_220p";
+  const urlString = String(url || "");
+  return sourcePattern.test(urlString)
+    ? urlString.replace(sourcePattern, replacement)
+    : null;
+}
+
+function shouldIncludeVideoQuality(url, videoQuality, availableUrls) {
+  if (videoQuality === "both" || !isVideoAssetUrl(url)) return true;
+
+  const tier = getVideoResolutionTier(url);
+  if (!tier || tier === videoQuality) return true;
+
+  const alternateUrl = getAlternateVideoQualityUrl(url, videoQuality);
+  return !alternateUrl || !availableUrls.has(alternateUrl);
+}
+
+function isAppShellAsset(url) {
+  const assetPath = getAssetPath(url);
+  if (isVideoAssetUrl(assetPath)) return false;
+  return !CONTENT_ASSET_PREFIXES.some((prefix) => assetPath.startsWith(prefix));
+}
+
+function matchesOfflineCatalog(url, catalogId) {
+  const assetPath = getAssetPath(url);
+
+  if (catalogId === "core") {
+    return (
+      assetPath.startsWith("/videos/core/") ||
+      assetPath === "/videos/do_220p.mp4" ||
+      assetPath.startsWith("/subapp/mires/") ||
+      assetPath.startsWith("/subapp/morph/") ||
+      assetPath.startsWith("/images/icon/eyes/core/") ||
+      (assetPath.startsWith("/images/learning/") &&
+        !assetPath.startsWith("/images/learning/diabetic/") &&
+        !assetPath.startsWith("/images/learning/glaucoma"))
+    );
+  }
+
+  if (catalogId === "conditions") {
+    return (
+      assetPath.startsWith("/subapp/cataract/") ||
+      assetPath.startsWith("/videos/usaid/") ||
+      assetPath.startsWith("/videos/usaid childhood eye screening/") ||
+      assetPath.startsWith("/video-hls/childhood-eye-screening/") ||
+      assetPath.startsWith("/video-localization/childhood-eye-screening") ||
+      assetPath.startsWith("/video-subtitles/childhood-eye-screening/") ||
+      assetPath.startsWith("/images/icon/eyes/disease/") ||
+      assetPath.includes("cataract") ||
+      assetPath.includes("childhood-eye-screening")
+    );
+  }
+
+  if (catalogId === "workshops") {
+    return (
+      assetPath.startsWith("/videos/workshop/") ||
+      assetPath.startsWith("/images/pdf/workshop/") ||
+      assetPath.startsWith("/images/learning/diabetic/") ||
+      assetPath.startsWith("/images/learning/glaucoma") ||
+      assetPath.startsWith("/images/quiz/workshop/") ||
+      assetPath.startsWith("/scrolly/workshop/") ||
+      assetPath.startsWith("/scrolls/workshop/") ||
+      assetPath.startsWith("/html/glaucoma") ||
+      assetPath.startsWith("/html/diabetic") ||
+      assetPath.startsWith("/html/childhoodeyescreeningworkshop") ||
+      assetPath.startsWith("/js/glaucoma") ||
+      assetPath.startsWith("/js/diabetic") ||
+      assetPath.startsWith("/js/childhood") ||
+      assetPath.startsWith("/images/icon/eyes/workshop/")
+    );
+  }
+
+  if (catalogId === "extended") {
+    return (
+      assetPath.startsWith("/subapp/squint/") ||
+      assetPath.startsWith("/images/icon/eyes/extended/")
+    );
+  }
+
+  if (catalogId === "tools") {
+    return (
+      assetPath.startsWith("/videos/tools/") ||
+      assetPath.startsWith("/videos/arclight/") ||
+      assetPath.startsWith("/images/icon/eyes/tools/") ||
+      assetPath.includes("arclight_device")
+    );
+  }
+
+  return false;
+}
+
+function getOfflineManifestAssets(manifest) {
+  if (Array.isArray(manifest?.assets) && manifest.assets.length) {
+    return manifest.assets;
+  }
+
+  return (Array.isArray(manifest?.urls) ? manifest.urls : []).map((url) => ({
+    bytes: 0,
+    url,
+  }));
+}
+
+function dedupeOfflineAssets(assets) {
+  const seen = new Set();
+  const deduped = [];
+
+  assets.forEach((asset) => {
+    if (!asset?.url || seen.has(asset.url)) return;
+    seen.add(asset.url);
+    deduped.push(asset);
+  });
+
+  return deduped;
+}
+
+function formatDownloadSize(bytes) {
+  if (!bytes) return "size will be calculated during download";
+  if (bytes >= 1000000000) return `${(bytes / 1000000000).toFixed(1)} GB`;
+  if (bytes >= 1000000) return `${Math.ceil(bytes / 1000000)} MB`;
+  return `${Math.ceil(bytes / 1000)} KB`;
+}
+
+function formatEstimatedDownloadTime(bytes) {
+  if (!bytes) return "Estimated time: under 1 minute.";
+
+  const minutes = Math.max(
+    1,
+    Math.ceil(bytes / ESTIMATED_DOWNLOAD_BYTES_PER_MINUTE),
+  );
+  const unit = minutes === 1 ? "minute" : "minutes";
+  return `Estimated time: about ${minutes} ${unit}.`;
+}
+
+function getCatalogLabel(catalogId) {
+  return (
+    OFFLINE_CATALOG_OPTIONS.find((option) => option.id === catalogId)?.label ||
+    OFFLINE_CATALOG_OPTIONS[0].label
+  );
+}
+
+function getVideoQualityLabel(videoQuality) {
+  return (
+    VIDEO_QUALITY_OPTIONS.find((option) => option.id === videoQuality)?.label ||
+    VIDEO_QUALITY_OPTIONS[0].label
+  );
+}
+
+function getDownloadChoiceLabel(choice) {
+  if (choice?.mode === "app-only") return "App only";
+  if (choice?.mode === "select") return getCatalogLabel(choice.catalogId);
+  return "Full content";
+}
+
+function resolveOfflineDownloadSelection(manifest, choice = {}) {
+  const allAssets = getOfflineManifestAssets(manifest);
+  const availableUrls = new Set(allAssets.map((asset) => asset.url));
+  const mode = choice.mode || "full";
+  const catalogId = choice.catalogId || OFFLINE_CATALOG_OPTIONS[0].id;
+  const videoQuality = choice.videoQuality || VIDEO_QUALITY_OPTIONS[0].id;
+  let assets;
+
+  if (mode === "app-only") {
+    assets = allAssets.filter((asset) => !isVideoAssetUrl(asset.url));
+  } else if (mode === "select") {
+    assets = allAssets.filter(
+      (asset) =>
+        isAppShellAsset(asset.url) ||
+        matchesOfflineCatalog(asset.url, catalogId),
+    );
+  } else {
+    assets = allAssets;
+  }
+
+  if (mode !== "app-only") {
+    assets = assets.filter((asset) =>
+      shouldIncludeVideoQuality(asset.url, videoQuality, availableUrls),
+    );
+  }
+
+  assets = dedupeOfflineAssets(assets);
+
+  const bytes = assets.reduce(
+    (sum, asset) => sum + (Number(asset.bytes) || 0),
+    0,
+  );
+  const fallbackBytes =
+    mode === "full" && !bytes ? Number(manifest?.bytes) || 0 : 0;
+
+  return {
+    bytes: bytes || fallbackBytes,
+    count: assets.length,
+    label:
+      mode === "app-only"
+        ? getDownloadChoiceLabel({ mode, catalogId })
+        : `${getDownloadChoiceLabel({ mode, catalogId })} - ${getVideoQualityLabel(videoQuality)}`,
+    mode,
+    urls: assets.map((asset) => asset.url),
+    videoQuality,
+  };
+}
+
+function getDownloadEstimateText(selection) {
+  return `${formatEstimatedDownloadTime(selection.bytes)} Download size: ${formatDownloadSize(selection.bytes)}.`;
+}
+
+function showDownloadAppModal(manifest) {
   return new Promise((resolve) => {
     const modal = document.getElementById("downloadAppModal");
     if (!modal) {
-      resolve(true);
+      resolve({
+        catalogId: OFFLINE_CATALOG_OPTIONS[0].id,
+        mode: "full",
+        videoQuality: VIDEO_QUALITY_OPTIONS[0].id,
+      });
       return;
     }
 
@@ -117,10 +450,54 @@ function showDownloadAppModal() {
     if (content) {
       content.innerHTML = `
         <p data-i18n="languageInstall.downloadAppContent">
-          Downloads key app pages and media for offline use.
+          Choose what should be available offline.
         </p>
+        <fieldset class="download-options" aria-label="Offline download options">
+          <label class="download-option">
+            <input type="radio" name="offlineDownloadMode" value="full" checked />
+            <span>
+              <span class="download-option__title">Download full content</span>
+              <span class="download-option__description">Videos, images, animations, and app pages.</span>
+            </span>
+          </label>
+          <label class="download-option">
+            <input type="radio" name="offlineDownloadMode" value="select" />
+            <span>
+              <span class="download-option__title">Select content</span>
+              <span class="download-option__description">Download one Eyes catalog for offline use.</span>
+            </span>
+          </label>
+          <div class="download-select-panel" hidden>
+            <label for="offlineCatalogSelect">Eyes catalog</label>
+            <select id="offlineCatalogSelect">
+              ${OFFLINE_CATALOG_OPTIONS.map(
+                (option) =>
+                  `<option value="${option.id}">${option.label}</option>`,
+              ).join("")}
+            </select>
+            <p id="offlineCatalogDescription"></p>
+          </div>
+          <div class="download-select-panel download-video-quality-panel">
+            <label for="offlineVideoQualitySelect">Video quality</label>
+            <select id="offlineVideoQualitySelect">
+              ${VIDEO_QUALITY_OPTIONS.map(
+                (option) =>
+                  `<option value="${option.id}">${option.label}</option>`,
+              ).join("")}
+            </select>
+            <p id="offlineVideoQualityDescription"></p>
+          </div>
+          <label class="download-option">
+            <input type="radio" name="offlineDownloadMode" value="app-only" />
+            <span>
+              <span class="download-option__title">App only</span>
+              <span class="download-option__description">Downloads the app, text, and images. Videos are not downloaded.</span>
+            </span>
+          </label>
+        </fieldset>
+        <p id="downloadEstimateText" class="download-estimate"></p>
         <p data-i18n="languageInstall.downloadStorageNotice">
-          This app requires about 1 GB of storage.
+          Full content requires about 1 GB of storage.
         </p>
       `;
     }
@@ -148,8 +525,51 @@ function showDownloadAppModal() {
       resolve(value);
     };
 
-    const cancel = () => finish(false);
-    const confirm = () => finish(true);
+    const getChoice = () => {
+      const mode =
+        content?.querySelector('input[name="offlineDownloadMode"]:checked')
+          ?.value || "full";
+      const catalogId =
+        content?.querySelector("#offlineCatalogSelect")?.value ||
+        OFFLINE_CATALOG_OPTIONS[0].id;
+      const videoQuality =
+        content?.querySelector("#offlineVideoQualitySelect")?.value ||
+        VIDEO_QUALITY_OPTIONS[0].id;
+      return { catalogId, mode, videoQuality };
+    };
+    const updateChoiceDetails = () => {
+      const choice = getChoice();
+      const selection = resolveOfflineDownloadSelection(manifest, choice);
+      const selectPanel = content?.querySelector(".download-select-panel");
+      const videoQualityPanel = content?.querySelector(
+        ".download-video-quality-panel",
+      );
+      const description = content?.querySelector("#offlineCatalogDescription");
+      const videoQualityDescription = content?.querySelector(
+        "#offlineVideoQualityDescription",
+      );
+      const estimate = content?.querySelector("#downloadEstimateText");
+      const selectedCatalog = OFFLINE_CATALOG_OPTIONS.find(
+        (option) => option.id === choice.catalogId,
+      );
+      const selectedVideoQuality = VIDEO_QUALITY_OPTIONS.find(
+        (option) => option.id === choice.videoQuality,
+      );
+
+      if (selectPanel) selectPanel.hidden = choice.mode !== "select";
+      if (videoQualityPanel)
+        videoQualityPanel.hidden = choice.mode === "app-only";
+      if (description)
+        description.textContent = selectedCatalog?.description || "";
+      if (videoQualityDescription) {
+        videoQualityDescription.textContent =
+          selectedVideoQuality?.description || "";
+      }
+      if (estimate) estimate.textContent = getDownloadEstimateText(selection);
+    };
+
+    const cancel = () => finish(null);
+    const confirm = () => finish(getChoice());
     const onOverlayClick = (event) => {
       if (event.target === modal) cancel();
     };
@@ -158,6 +578,18 @@ function showDownloadAppModal() {
     notNowBtn?.addEventListener("click", cancel);
     downloadBtn?.addEventListener("click", confirm);
     modal.addEventListener("click", onOverlayClick);
+    content
+      ?.querySelectorAll('input[name="offlineDownloadMode"]')
+      .forEach((input) =>
+        input.addEventListener("change", updateChoiceDetails),
+      );
+    content
+      ?.querySelector("#offlineCatalogSelect")
+      ?.addEventListener("change", updateChoiceDetails);
+    content
+      ?.querySelector("#offlineVideoQualitySelect")
+      ?.addEventListener("change", updateChoiceDetails);
+    updateChoiceDetails();
     modal.classList.remove("hidden");
   });
 }
@@ -283,14 +715,22 @@ async function sendUrlsToServiceWorker(urls, onProgress) {
   });
 }
 
-async function cacheOfflineUrls(urlsToCache, totalBytes = 0) {
-  const sizeGb = totalBytes ? (totalBytes / 1000000000).toFixed(1) : "1.0";
+async function cacheOfflineUrls(downloadSelection, totalBytes = 0) {
+  const urlsToCache = Array.isArray(downloadSelection)
+    ? downloadSelection
+    : downloadSelection.urls;
+  const selectedBytes = Array.isArray(downloadSelection)
+    ? totalBytes
+    : downloadSelection.bytes;
+  const selectedLabel = Array.isArray(downloadSelection)
+    ? "Selected content"
+    : downloadSelection.label;
+  const sizeText = formatDownloadSize(selectedBytes);
 
   setDownloadModalBusy({
     title: "Downloading app content",
-    message:
-      "Downloading videos, images, animations, and app pages for offline use.",
-    detail: `Downloaded 0 of ${urlsToCache.length} files. About ${sizeGb} GB required.`,
+    message: "Please keep the app open until the download is finished.",
+    detail: `Downloaded 0 of ${urlsToCache.length} files. ${selectedLabel}: ${sizeText}.`,
   });
 
   await sendUrlsToServiceWorker(urlsToCache, ({ processed, total, failed }) => {
@@ -435,12 +875,16 @@ export function initializeLanguageInstall() {
             window.matchMedia?.("(display-mode: standalone)")?.matches ||
             window.navigator.standalone === true;
           if (isStandalone) {
-            const confirmedDownload = await showDownloadAppModal();
-            if (!confirmedDownload) return;
-
             try {
               const manifest = await fetchAllOfflineAssetUrls();
-              await cacheOfflineUrls(manifest.urls, manifest.bytes);
+              const downloadChoice = await showDownloadAppModal(manifest);
+              if (!downloadChoice) return;
+
+              const downloadSelection = resolveOfflineDownloadSelection(
+                manifest,
+                downloadChoice,
+              );
+              await cacheOfflineUrls(downloadSelection);
             } catch (err) {
               console.warn("[install] could not cache standalone app:", err);
               showDownloadErrorModal(err);
@@ -455,8 +899,24 @@ export function initializeLanguageInstall() {
           return; // stay on language page
         }
 
-        const confirmedDownload = await showDownloadAppModal();
-        if (!confirmedDownload) return;
+        let downloadSelection = null;
+        try {
+          const offlineAssetManifest = await fetchAllOfflineAssetUrls();
+          const downloadChoice =
+            await showDownloadAppModal(offlineAssetManifest);
+          if (!downloadChoice) return;
+          downloadSelection = resolveOfflineDownloadSelection(
+            offlineAssetManifest,
+            downloadChoice,
+          );
+        } catch (manifestErr) {
+          console.warn(
+            "[install] could not load offline asset manifest:",
+            manifestErr,
+          );
+          showDownloadErrorModal(manifestErr);
+          return;
+        }
 
         // Show native install prompt
         const result = await promptInstall();
@@ -480,163 +940,11 @@ export function initializeLanguageInstall() {
         // Accepted → warm cache (best-effort) then advance
         try {
           await navigator.serviceWorker.ready;
-          const chosen =
-            (langSelect && langSelect.value) || getLanguage() || "en";
-
-          const pagesToCache = [
-            "/index.html",
-            "/html/languageinstall.html",
-            "/html/onboarding.html",
-            "/html/dashboard.html",
-            "/html/eyes.html",
-            "/html/ears.html",
-            "/html/menu.html",
-            "/html/quizzes.html",
-            "/html/videos.html",
-
-            // Glaucoma workshop html pages
-            "/html/glaucomaWorkshop.html",
-            "/html/glaucomascrollImages.html",
-            "/html/glaucomaQuizCaseStudy.html",
-
-            // JS needed for glaucoma workshop + videos
-            "/js/glaucomaWorkshop.js",
-            "/js/videos.js",
-            "/js/videoplayer.js",
-          ];
-
-          // Glaucoma workshop + learning assets (explicit list)
-          const glaucomaAssetsToCache = [
-            "/images/learning/GlaucomaACD/flashlight.webp",
-            "/images/learning/GlaucomaACD/eyes.webp",
-            "/images/learning/GlaucomaACD/flashlightoff.webp",
-            "/images/learning/GlaucomaACD/normalflash.webp",
-            "/images/learning/GlaucomaACD/normalarrow.webp",
-            "/images/learning/GlaucomaACD/shallowflash.webp",
-            "/images/learning/GlaucomaACD/shallowarrow.webp",
-            "/images/learning/GlaucomaRAPD/flashlight.webp",
-            "/images/learning/GlaucomaRAPD/eyes.webp",
-
-            // Glaucoma workshop images (match glaucomaWorkshop.js exactly)
-
-            // 01 Introduction
-            "/images/pdf/Workshop/Glaucoma/01Introduction/01.jpg",
-            "/images/pdf/Workshop/Glaucoma/01Introduction/02.jpg",
-            "/images/pdf/Workshop/Glaucoma/01Introduction/03.jpg",
-            "/images/pdf/Workshop/Glaucoma/01Introduction/04.jpg",
-            "/images/pdf/Workshop/Glaucoma/01Introduction/05.jpg",
-
-            // 02 Anatomy
-            "/images/pdf/Workshop/Glaucoma/02Anatomy/01.jpg",
-            "/images/pdf/Workshop/Glaucoma/02Anatomy/02.jpg",
-            "/images/pdf/Workshop/Glaucoma/02Anatomy/03.jpg",
-            "/images/pdf/Workshop/Glaucoma/02Anatomy/04.jpg",
-            "/images/pdf/Workshop/Glaucoma/02Anatomy/05.jpg",
-            "/images/pdf/Workshop/Glaucoma/02Anatomy/06.jpg",
-            "/images/pdf/Workshop/Glaucoma/02Anatomy/07.jpg",
-
-            // 03 Diagnosis
-            "/images/pdf/Workshop/Glaucoma/03Diagnosis/01.jpg",
-            "/images/pdf/Workshop/Glaucoma/03Diagnosis/02.jpg",
-            "/images/pdf/Workshop/Glaucoma/03Diagnosis/03.jpg",
-            "/images/pdf/Workshop/Glaucoma/03Diagnosis/04.jpg",
-            "/images/pdf/Workshop/Glaucoma/03Diagnosis/05.jpg",
-            "/images/pdf/Workshop/Glaucoma/03Diagnosis/06.jpg",
-            "/images/pdf/Workshop/Glaucoma/03Diagnosis/07.jpg",
-            "/images/pdf/Workshop/Glaucoma/03Diagnosis/08.jpg",
-            "/images/pdf/Workshop/Glaucoma/03Diagnosis/09.jpg",
-            "/images/pdf/Workshop/Glaucoma/03Diagnosis/10.jpg",
-            "/images/pdf/Workshop/Glaucoma/03Diagnosis/11.jpg",
-            "/images/pdf/Workshop/Glaucoma/03Diagnosis/12.jpg",
-            "/images/pdf/Workshop/Glaucoma/03Diagnosis/13.jpg",
-            "/images/pdf/Workshop/Glaucoma/03Diagnosis/14.jpg",
-            "/images/pdf/Workshop/Glaucoma/03Diagnosis/15.jpg",
-
-            // 04 Types
-            "/images/pdf/Workshop/Glaucoma/04Types/01.jpg",
-            "/images/pdf/Workshop/Glaucoma/04Types/02.jpg",
-            "/images/pdf/Workshop/Glaucoma/04Types/03.jpg",
-            "/images/pdf/Workshop/Glaucoma/04Types/04.jpg",
-            "/images/pdf/Workshop/Glaucoma/04Types/05.jpg",
-            "/images/pdf/Workshop/Glaucoma/04Types/06.jpg",
-            "/images/pdf/Workshop/Glaucoma/04Types/07.jpg",
-            "/images/pdf/Workshop/Glaucoma/04Types/08.jpg",
-            "/images/pdf/Workshop/Glaucoma/04Types/09.jpg",
-            "/images/pdf/Workshop/Glaucoma/04Types/10.jpg",
-
-            // 05 Cupping
-            "/images/pdf/Workshop/Glaucoma/05Cupping/01.jpg",
-            "/images/pdf/Workshop/Glaucoma/05Cupping/02.jpg",
-            "/images/pdf/Workshop/Glaucoma/05Cupping/03.jpg",
-            "/images/pdf/Workshop/Glaucoma/05Cupping/04.jpg",
-            "/images/pdf/Workshop/Glaucoma/05Cupping/05.jpg",
-            "/images/pdf/Workshop/Glaucoma/05Cupping/06.jpg",
-
-            // 06 Summary
-            "/images/pdf/Workshop/Glaucoma/06Summary/01.jpg",
-            "/images/pdf/Workshop/Glaucoma/06Summary/02.jpg",
-            "/images/pdf/Workshop/Glaucoma/06Summary/03.jpg",
-            "/images/pdf/Workshop/Glaucoma/06Summary/04.jpg",
-            "/images/pdf/Workshop/Glaucoma/06Summary/05.jpg",
-            "/images/pdf/Workshop/Glaucoma/06Summary/06.jpg",
-            "/images/pdf/Workshop/Glaucoma/06Summary/07.jpg",
-            "/images/pdf/Workshop/Glaucoma/06Summary/08.jpg",
-
-            // Glaucoma workshop videos (match videos.js sources exactly)
-            "/videos/Workshop/Glaucoma/pupilreaction_220p.mp4",
-            "/videos/Workshop/Glaucoma/pupilreaction_720p.mp4",
-
-            "/videos/Workshop/Glaucoma/FRsignsglaucoma_220p.mp4",
-            "/videos/Workshop/Glaucoma/FRsignsglaucoma_720p.mp4",
-
-            "/videos/Workshop/Glaucoma/FRACD_220p.mp4",
-            "/videos/Workshop/Glaucoma/FRACD_720p.mp4",
-
-            "/videos/Workshop/Glaucoma/FRACAG_220p.mp4",
-            "/videos/Workshop/Glaucoma/FRACAG_720p.mp4",
-
-            "/videos/Workshop/Glaucoma/FRDisease_220p.mp4",
-            "/videos/Workshop/Glaucoma/FRDisease_720p.mp4",
-
-            "/videos/Workshop/Glaucoma/opticdiseases_220p.mp4",
-            "/videos/Workshop/Glaucoma/opticdiseases_720p.mp4",
-
-            "/videos/Workshop/Glaucoma/DO_discsannotated_220p.mp4",
-            "/videos/Workshop/Glaucoma/DO_discsannotated_720p.mp4",
-
-            "/videos/Workshop/Glaucoma/BE_opticdiscanatomy_220p.mp4",
-            "/videos/Workshop/Glaucoma/BE_opticdiscanatomy_720p.mp4",
-
-            "/videos/Workshop/Glaucoma/BE_Margin_220p.mp4",
-            "/videos/Workshop/Glaucoma/BE_Margin_720p.mp4",
-
-            "/videos/Workshop/Glaucoma/BE_disccuppingonly_220p.mp4",
-            "/videos/Workshop/Glaucoma/BE_disccuppingonly_720p.mp4",
-          ];
-
-          const childhoodPilotAssetsToCache =
-            buildChildhoodEyeScreeningPilotCacheUrls(chosen);
-          let urlsToCache = Array.from(
-            new Set([
-              ...pagesToCache,
-              ...glaucomaAssetsToCache,
-              ...childhoodPilotAssetsToCache,
-            ]),
+          await cacheOfflineUrls(downloadSelection);
+          console.warn(
+            "[install] cached app assets:",
+            downloadSelection.urls.length,
           );
-
-          let offlineAssetManifest = null;
-          try {
-            offlineAssetManifest = await fetchAllOfflineAssetUrls();
-            urlsToCache = offlineAssetManifest.urls;
-          } catch (manifestErr) {
-            console.warn(
-              "[install] could not load all-assets manifest; using fallback list",
-              manifestErr,
-            );
-          }
-
-          await cacheOfflineUrls(urlsToCache, offlineAssetManifest?.bytes || 0);
-          console.warn("[install] cached all app assets:", urlsToCache.length);
         } catch (err) {
           console.warn("[install] could not warm cache:", err);
           showDownloadErrorModal(err);

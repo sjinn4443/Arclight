@@ -85,6 +85,7 @@ function toStaticAssetUrl(rootDir, filePath) {
 
 function collectOfflineAssetManifest(rootDir) {
   const resolvedRoot = path.resolve(rootDir);
+  const assets = [];
   const urls = [];
   let bytes = 0;
 
@@ -109,6 +110,7 @@ function collectOfflineAssetManifest(rootDir) {
 
       const stat = fs.statSync(entryPath);
       bytes += stat.size;
+      assets.push({ bytes: stat.size, url });
       urls.push(url);
     }
   }
@@ -116,6 +118,7 @@ function collectOfflineAssetManifest(rootDir) {
   walk(resolvedRoot);
 
   return {
+    assets,
     bytes,
     count: urls.length,
     urls,

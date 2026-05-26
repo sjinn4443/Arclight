@@ -90,6 +90,36 @@ async function createRangeResponse(request, cachedResponse) {
   });
 }
 
+function getAlternateMp4Urls(requestUrl) {
+  const url = new URL(requestUrl);
+  const alternates = [];
+  const replacements = [
+    [/_720p(?=\.mp4$)/i, "_220p"],
+    [/_220p(?=\.mp4$)/i, "_720p"],
+  ];
+
+  replacements.forEach(([pattern, replacement]) => {
+    if (!pattern.test(url.pathname)) return;
+    const alternateUrl = new URL(url.href);
+    alternateUrl.pathname = alternateUrl.pathname.replace(pattern, replacement);
+    alternates.push(alternateUrl.href);
+  });
+
+  return alternates;
+}
+
+async function matchCachedMp4(cache, request) {
+  const cached = await cache.match(request, { ignoreSearch: true });
+  if (cached) return cached;
+
+  for (const alternateUrl of getAlternateMp4Urls(request.url)) {
+    const alternate = await cache.match(alternateUrl, { ignoreSearch: true });
+    if (alternate) return alternate;
+  }
+
+  return null;
+}
+
 function postCacheProgress(port, payload) {
   try {
     port?.postMessage?.(payload);
@@ -202,7 +232,7 @@ self.addEventListener("fetch", (event) => {
     event.respondWith(
       (async () => {
         const cache = await caches.open(CACHE_NAME);
-        const cached = await cache.match(req, { ignoreSearch: true });
+        const cached = await matchCachedMp4(cache, req);
         if (cached) return createRangeResponse(req, cached);
         return fetch(req);
       })(),
@@ -215,7 +245,7 @@ self.addEventListener("fetch", (event) => {
     event.respondWith(
       (async () => {
         const cache = await caches.open(CACHE_NAME);
-        const cached = await cache.match(req, { ignoreSearch: true });
+        const cached = await matchCachedMp4(cache, req);
         if (cached) return cached;
 
         const fresh = await fetch(req);
