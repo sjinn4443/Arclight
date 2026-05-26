@@ -66,6 +66,11 @@ const rootRobotsPath = path.join(__dirname, "robots.txt");
 const rootSitemapPath = path.join(__dirname, "sitemap.xml");
 
 const OFFLINE_ASSET_EXCLUDED_FILENAMES = new Set([".DS_Store", "Thumbs.db"]);
+const OFFLINE_ASSET_EXCLUDED_URLS = new Set([
+  "/reports.html",
+  "/html/reports.html",
+  "/js/reports.js",
+]);
 
 function toStaticAssetUrl(rootDir, filePath) {
   const relativePath = path.relative(rootDir, filePath);
@@ -107,6 +112,7 @@ function collectOfflineAssetManifest(rootDir) {
 
       const url = toStaticAssetUrl(resolvedRoot, entryPath);
       if (!url) continue;
+      if (OFFLINE_ASSET_EXCLUDED_URLS.has(url)) continue;
 
       const stat = fs.statSync(entryPath);
       bytes += stat.size;
