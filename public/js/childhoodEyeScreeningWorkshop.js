@@ -93,6 +93,8 @@ const NUMBERED_CHILDHOOD_LABEL_KEYS = [
   "auto.childhoodeyescreeningworkshop.childhood_eye_screening",
 ];
 
+const CHILDHOOD_FOLDER_ITEM_COUNTS_ENABLED = false;
+
 function stripLeadingStepNumber(text) {
   return String(text || "").replace(/^\s*\d+\.\s*/, "");
 }
@@ -126,7 +128,25 @@ function countTopLevelSectionRows(sectionCard) {
   ).length;
 }
 
+function clearChildhoodFolderItemBadges(page) {
+  page.querySelectorAll(".childhood-folder-item-count").forEach((badge) => {
+    badge.remove();
+  });
+  page
+    .querySelectorAll(
+      ".childhood-folder-row[data-item-count], #fundalReflexFolderRow[data-item-count]",
+    )
+    .forEach((row) => {
+      row.removeAttribute("data-item-count");
+    });
+}
+
 function updateWorkshopFolderItemBadges(page) {
+  if (!CHILDHOOD_FOLDER_ITEM_COUNTS_ENABLED) {
+    clearChildhoodFolderItemBadges(page);
+    return;
+  }
+
   const rows = page.querySelectorAll(
     "#childhoodWorkshopFolders .childhood-folder-row[data-folder]",
   );
@@ -158,6 +178,12 @@ function updateFundalReflexFolderItemBadge(page) {
   const folderRow = page.querySelector("#fundalReflexFolderRow");
   const subRowsContainer = page.querySelector("#fundalReflexSubRows");
   if (!folderRow || !subRowsContainer) return;
+
+  if (!CHILDHOOD_FOLDER_ITEM_COUNTS_ENABLED) {
+    folderRow.querySelector(".childhood-folder-item-count")?.remove();
+    folderRow.removeAttribute("data-item-count");
+    return;
+  }
 
   const itemCount = Array.from(subRowsContainer.children).filter((child) =>
     child.classList?.contains("lesson-row"),

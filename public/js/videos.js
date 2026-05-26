@@ -369,7 +369,25 @@ function updateLessonProgressBars() {
   });
 }
 
+const INTERACTIVE_FOLDER_ITEM_COUNTS_ENABLED = false;
+
+function clearInteractiveFolderItemBadges(page) {
+  page.querySelectorAll(".diabetic-folder-item-count").forEach((badge) => {
+    badge.remove();
+  });
+  page
+    .querySelectorAll(".interactive-folder-row[data-item-count]")
+    .forEach((row) => {
+      row.removeAttribute("data-item-count");
+    });
+}
+
 function updateInteractiveFolderItemBadges(page) {
+  if (!INTERACTIVE_FOLDER_ITEM_COUNTS_ENABLED) {
+    clearInteractiveFolderItemBadges(page);
+    return;
+  }
+
   const folderRows = page.querySelectorAll(
     "#interactiveDemoQuizzesFolders .interactive-folder-row[data-folder]",
   );

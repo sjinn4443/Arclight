@@ -32,6 +32,7 @@ Last refreshed: 2026-05-25
 - When moving diabetic pages between `diabeticRetinopathyWorkshop.html` and `videos.html`, recheck `main.js` initialization, `videos.js` subpage routing, `diabeticWorkshopNextFlow.js`, and progress bar updates together.
 - Do not treat `.build-cleanup-*` directories as source artifacts; they are ignored temporary output directories left by safe build cleanup.
 - For Fundal scroll work, preserve the mandatory FR06 behavior guardrails below unless the user explicitly approves a change and it is manually rechecked.
+- Folder item-count badges are intentionally disabled by feature flags, not deleted. To restore them, set `CHILDHOOD_FOLDER_ITEM_COUNTS_ENABLED` in `public/js/childhoodEyeScreeningWorkshop.js`, `GLAUCOMA_FOLDER_ITEM_COUNTS_ENABLED` in `public/js/glaucomaWorkshop.js`, and `INTERACTIVE_FOLDER_ITEM_COUNTS_ENABLED` in `public/js/videos.js` to `true`. The old render/cleanup logic and CSS classes remain in place.
 
 ## Diabetic Scrolly Format / Scroll Pages Format Style
 

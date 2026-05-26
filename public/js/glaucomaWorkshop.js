@@ -52,6 +52,8 @@ const GLAUCOMA_SECTION_NUMBERS = Object.freeze({
   visualFields: "4.",
 });
 
+const GLAUCOMA_FOLDER_ITEM_COUNTS_ENABLED = false;
+
 function stripLeadingStepNumber(text) {
   return String(text || "").replace(/^\s*\d+\.\s*/, "");
 }
@@ -126,7 +128,31 @@ function renderFolderCountBadge(level, count) {
   return badge;
 }
 
+function clearGlaucomaFolderItemBadges(page) {
+  page
+    .querySelectorAll(
+      ".glaucoma-folder-item-counts, .glaucoma-folder-item-count",
+    )
+    .forEach((badge) => {
+      badge.remove();
+    });
+  page
+    .querySelectorAll(
+      ".glaucoma-folder-row[data-item-count], .glaucoma-folder-row[data-primary-count], .glaucoma-folder-row[data-intermediate-count]",
+    )
+    .forEach((row) => {
+      row.removeAttribute("data-primary-count");
+      row.removeAttribute("data-intermediate-count");
+      row.removeAttribute("data-item-count");
+    });
+}
+
 function updateGlaucomaFolderItemBadges(page) {
+  if (!GLAUCOMA_FOLDER_ITEM_COUNTS_ENABLED) {
+    clearGlaucomaFolderItemBadges(page);
+    return;
+  }
+
   const folderRows = page.querySelectorAll(
     "#glaucomaWorkshopFolders .glaucoma-folder-row[data-folder]",
   );
