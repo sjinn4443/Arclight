@@ -3441,6 +3441,19 @@ select.onb-input.has-value + .onb-select-caret {
   background-image: url("/images/icon/eyes/moduleicons/intermediate_scroll.webp");
 }
 
+#diabeticRetinopathyWorkshopPage
+  .lesson-row--scroll:is(
+    [data-route="diabeticObservationFundalReflex"],
+    [data-route="diabeticPositioningFlightPath"],
+    [data-route="diabeticHowToExamine"],
+    [data-route="diabeticBioPreparation"],
+    [data-route="diabeticBioFundoscopySitting"],
+    [data-route="diabeticBioFundoscopyIndentation"]
+  )
+  .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/intermediate_scrollytell.webp");
+}
+
 #diabeticRetinopathyWorkshopPage .lesson-row--pdf .thumb {
   background-image: url("/images/icon/eyes/moduleicons/intermediate_pdf.webp");
 }
