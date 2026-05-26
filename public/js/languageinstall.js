@@ -7,7 +7,6 @@ import { initializePWA, canInstall, promptInstall } from "./pwa.js";
 import { setLanguage, getLanguage } from "./i18n.js";
 import { saveProfile, bumpRefresh } from "./telemetry.js"; // Import bumpRefresh
 
-const STATIC_CACHE_NAME = "arclight-static-v5";
 const CHILDHOOD_EYE_SCREENING_PILOT_PAGE_IDS = [
   "assessmentVisionPage",
   "mumVisionPage",
@@ -80,6 +79,63 @@ const ENGLISH_LANGUAGE_LABELS = {
 };
 
 initializePWA();
+
+async function fetchAllOfflineAssetUrls() {
+  const res = await fetch("/api/app/offline-assets", { cache: "no-store" });
+  if (!res.ok) {
+    throw new Error(`Offline asset manifest failed: ${res.status}`);
+  }
+
+  const manifest = await res.json();
+  const urls = Array.isArray(manifest?.urls) ? manifest.urls : [];
+  if (!urls.length) {
+    throw new Error("Offline asset manifest is empty");
+  }
+
+  return {
+    bytes: Number(manifest.bytes) || 0,
+    count: Number(manifest.count) || urls.length,
+    urls,
+  };
+}
+
+function showDownloadAppModal() {
+  return new Promise((resolve) => {
+    const modal = document.getElementById("downloadAppModal");
+    if (!modal) {
+      resolve(true);
+      return;
+    }
+
+    const closeBtn = document.getElementById("closeDownloadAppModalBtn");
+    const notNowBtn = document.getElementById("notNowBtn");
+    const downloadBtn = document.getElementById("downloadAllBtn");
+
+    let settled = false;
+    const finish = (value) => {
+      if (settled) return;
+      settled = true;
+      modal.classList.add("hidden");
+      closeBtn?.removeEventListener("click", cancel);
+      notNowBtn?.removeEventListener("click", cancel);
+      downloadBtn?.removeEventListener("click", confirm);
+      modal.removeEventListener("click", onOverlayClick);
+      resolve(value);
+    };
+
+    const cancel = () => finish(false);
+    const confirm = () => finish(true);
+    const onOverlayClick = (event) => {
+      if (event.target === modal) cancel();
+    };
+
+    closeBtn?.addEventListener("click", cancel);
+    notNowBtn?.addEventListener("click", cancel);
+    downloadBtn?.addEventListener("click", confirm);
+    modal.addEventListener("click", onOverlayClick);
+    modal.classList.remove("hidden");
+  });
+}
 
 function normalizeChildhoodPilotSubtitleCacheLanguage(lang) {
   const normalized = String(lang || "")
@@ -223,6 +279,9 @@ export function initializeLanguageInstall() {
           showLanguageHintModal(getInstallHelpTemplateId());
           return; // stay on language page
         }
+
+        const confirmedDownload = await showDownloadAppModal();
+        if (!confirmedDownload) return;
 
         // Show native install prompt
         const result = await promptInstall();
@@ -382,7 +441,7 @@ export function initializeLanguageInstall() {
 
           const childhoodPilotAssetsToCache =
             buildChildhoodEyeScreeningPilotCacheUrls(chosen);
-          const urlsToCache = Array.from(
+          let urlsToCache = Array.from(
             new Set([
               ...pagesToCache,
               ...glaucomaAssetsToCache,
@@ -390,16 +449,27 @@ export function initializeLanguageInstall() {
             ]),
           );
 
+          let offlineAssetManifest = null;
+          try {
+            offlineAssetManifest = await fetchAllOfflineAssetUrls();
+            urlsToCache = offlineAssetManifest.urls;
+          } catch (manifestErr) {
+            console.warn(
+              "[install] could not load all-assets manifest; using fallback list",
+              manifestErr,
+            );
+          }
+
           sw.active?.postMessage({
             type: "CACHE_URLS",
             payload: urlsToCache,
-            cacheName: STATIC_CACHE_NAME,
           });
-          console.warn("[install] sent CACHE_URLS to SW:", urlsToCache.length);
-
           console.warn(
-            "[install] sent CACHE_ASSETS to SW:",
-            pagesToCache.length,
+            "[install] sent assets to SW:",
+            urlsToCache.length,
+            "files",
+            offlineAssetManifest?.bytes || "fallback-size-unknown",
+            "bytes",
           );
         } catch (err) {
           console.warn("[install] could not warm cache:", err);

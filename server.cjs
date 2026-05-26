@@ -65,6 +65,63 @@ const staticRoot = resolveStaticRootDir();
 const rootRobotsPath = path.join(__dirname, "robots.txt");
 const rootSitemapPath = path.join(__dirname, "sitemap.xml");
 
+const OFFLINE_ASSET_EXCLUDED_FILENAMES = new Set([".DS_Store", "Thumbs.db"]);
+
+function toStaticAssetUrl(rootDir, filePath) {
+  const relativePath = path.relative(rootDir, filePath);
+  if (
+    !relativePath ||
+    relativePath.startsWith("..") ||
+    path.isAbsolute(relativePath)
+  ) {
+    return null;
+  }
+
+  return `/${relativePath
+    .split(path.sep)
+    .map((segment) => encodeURIComponent(segment))
+    .join("/")}`;
+}
+
+function collectOfflineAssetManifest(rootDir) {
+  const resolvedRoot = path.resolve(rootDir);
+  const urls = [];
+  let bytes = 0;
+
+  function walk(dir) {
+    const entries = fs
+      .readdirSync(dir, { withFileTypes: true })
+      .sort((a, b) => a.name.localeCompare(b.name));
+
+    for (const entry of entries) {
+      if (OFFLINE_ASSET_EXCLUDED_FILENAMES.has(entry.name)) continue;
+
+      const entryPath = path.join(dir, entry.name);
+      if (entry.isDirectory()) {
+        walk(entryPath);
+        continue;
+      }
+
+      if (!entry.isFile()) continue;
+
+      const url = toStaticAssetUrl(resolvedRoot, entryPath);
+      if (!url) continue;
+
+      const stat = fs.statSync(entryPath);
+      bytes += stat.size;
+      urls.push(url);
+    }
+  }
+
+  walk(resolvedRoot);
+
+  return {
+    bytes,
+    count: urls.length,
+    urls,
+  };
+}
+
 function toIsoDateString(value) {
   const trimmed = String(value ?? "").trim();
   if (!trimmed) return null;
@@ -801,6 +858,17 @@ app.use(
 app.use(emergencyGate);
 app.use(express.json({ limit: "100kb" }));
 app.use(ensureTelemetryState);
+
+app.get("/api/app/offline-assets", (req, res) => {
+  try {
+    const manifest = collectOfflineAssetManifest(staticRoot);
+    res.set("Cache-Control", "no-store");
+    return res.json(manifest);
+  } catch (error) {
+    logServerError("[offline-assets] failed to collect static assets", error);
+    return res.status(500).json({ error: "Failed to collect offline assets" });
+  }
+});
 
 app.use("/js", express.static(path.join(staticRoot, "js")));
 app.use("/favicons", express.static(path.join(staticRoot, "favicons")));

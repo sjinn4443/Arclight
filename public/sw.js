@@ -1,5 +1,5 @@
 /* sw.js — Arclight PWA service worker */
-const CACHE_NAME = "arclight-static-v17";
+const CACHE_NAME = "arclight-static-v18";
 const CORE_ASSETS = [
   "/",
   "/index.html",
@@ -31,6 +31,88 @@ const CORE_ASSETS = [
   "/favicons/pwa-install-narrow.png",
   "/favicons/pwa-install-wide.png",
 ];
+
+function parseRangeHeader(rangeHeader, size) {
+  const match = /^bytes=(\d*)-(\d*)$/.exec(rangeHeader || "");
+  if (!match) return null;
+
+  let start = match[1] ? Number(match[1]) : 0;
+  let end = match[2] ? Number(match[2]) : size - 1;
+
+  if (!match[1] && match[2]) {
+    const suffixLength = Number(match[2]);
+    start = Math.max(size - suffixLength, 0);
+    end = size - 1;
+  }
+
+  if (
+    !Number.isFinite(start) ||
+    !Number.isFinite(end) ||
+    start < 0 ||
+    end < start ||
+    start >= size
+  ) {
+    return null;
+  }
+
+  return {
+    start,
+    end: Math.min(end, size - 1),
+  };
+}
+
+async function createRangeResponse(request, cachedResponse) {
+  const blob = await cachedResponse.blob();
+  const range = parseRangeHeader(request.headers.get("range"), blob.size);
+
+  if (!range) {
+    return new Response(null, {
+      status: 416,
+      headers: {
+        "Content-Range": `bytes */${blob.size}`,
+      },
+    });
+  }
+
+  const chunk = blob.slice(range.start, range.end + 1);
+  const headers = new Headers(cachedResponse.headers);
+  headers.set("Accept-Ranges", "bytes");
+  headers.set("Content-Length", String(chunk.size));
+  headers.set(
+    "Content-Range",
+    `bytes ${range.start}-${range.end}/${blob.size}`,
+  );
+
+  return new Response(chunk, {
+    status: 206,
+    statusText: "Partial Content",
+    headers,
+  });
+}
+
+async function cacheUrls(urls) {
+  const cache = await caches.open(CACHE_NAME);
+  let cached = 0;
+  const failed = [];
+
+  for (const url of urls) {
+    try {
+      const requestUrl = new URL(url, self.location.origin).href;
+      const request = new Request(requestUrl, { cache: "no-store" });
+      const res = await fetch(request);
+      if (res && res.ok) {
+        await cache.put(requestUrl, res.clone());
+        cached += 1;
+      } else {
+        failed.push(url);
+      }
+    } catch {
+      failed.push(url);
+    }
+  }
+
+  return { cached, failed };
+}
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
@@ -94,9 +176,17 @@ self.addEventListener("fetch", (event) => {
       url.pathname.endsWith(".ts") ||
       url.pathname.endsWith(".vtt"));
 
-  // Safari media playback is sensitive to malformed range responses.
-  // Let the browser handle byte-range MP4 requests directly.
+  // Safari media playback is sensitive to malformed range responses, so only
+  // answer range requests when a full cached MP4 is available.
   if (isMp4 && req.headers.has("range")) {
+    event.respondWith(
+      (async () => {
+        const cache = await caches.open(CACHE_NAME);
+        const cached = await cache.match(req, { ignoreSearch: true });
+        if (cached) return createRangeResponse(req, cached);
+        return fetch(req);
+      })(),
+    );
     return;
   }
 
@@ -116,9 +206,23 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // Let the browser request pilot HLS assets directly. Native HLS subtitle
-  // loading on iPhone is sensitive to service-worker interception.
+  // Prefer direct HLS loading when online, but keep cached HLS assets usable
+  // after the all-assets install download has completed.
   if (isChildhoodPilotHlsAsset) {
+    event.respondWith(
+      (async () => {
+        try {
+          const fresh = await fetch(req, { cache: "no-store" });
+          const cache = await caches.open(CACHE_NAME);
+          cache.put(req, fresh.clone()).catch(() => {});
+          return fresh;
+        } catch {
+          const cache = await caches.open(CACHE_NAME);
+          const cached = await cache.match(req, { ignoreSearch: true });
+          return cached || Response.error();
+        }
+      })(),
+    );
     return;
   }
 
@@ -159,8 +263,7 @@ self.addEventListener("fetch", (event) => {
   );
 });
 
-/* --------- Pre-cache on demand via postMessage from the app ---------- */
-self.addEventListener("message", async (event) => {
+async function handleMessage(event) {
   const { data, ports } = event;
   if (!data || !data.type) return;
 
@@ -170,25 +273,18 @@ self.addEventListener("message", async (event) => {
     return;
   }
 
-  if (data.type === "CACHE_URLS") {
+  if (data.type === "CACHE_URLS" || data.type === "CACHE_ASSETS") {
     const urls = data.payload || [];
-    const cacheName = data.cacheName || CACHE_NAME;
     try {
-      const cache = await caches.open(cacheName);
-      await Promise.all(
-        urls.map(async (url) => {
-          try {
-            const res = await fetch(url, { mode: "no-cors" });
-            if (res && (res.ok || res.type === "opaque"))
-              await cache.put(url, res.clone());
-          } catch {
-            void 0;
-          }
-        }),
-      );
-      ports?.[0]?.postMessage?.({ type: "CACHE_DONE" });
+      const result = await cacheUrls(urls);
+      ports?.[0]?.postMessage?.({ type: "CACHE_DONE", ...result });
     } catch (err) {
       ports?.[0]?.postMessage?.({ type: "CACHE_ERROR", error: String(err) });
     }
   }
+}
+
+/* --------- Pre-cache on demand via postMessage from the app ---------- */
+self.addEventListener("message", (event) => {
+  event.waitUntil(handleMessage(event));
 });
