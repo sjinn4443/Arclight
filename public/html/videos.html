@@ -3341,42 +3341,12 @@
             src="/images/quiz/workshop/DR/Cases/1.png"
             alt="Diabetic retinopathy case"
           />
-          <img
-            id="diabeticCaseQuizOverlay"
-            class="diabetic-case-quiz__overlay-image"
-            src="/images/quiz/workshop/DR/Cases/Ldisc/1disc.webp"
-            alt=""
-            aria-hidden="true"
-          />
+          <canvas
+            id="diabeticCaseQuizSightCanvas"
+            class="diabetic-case-quiz__sight-canvas"
+            aria-label="Arclight sight hole viewer"
+          ></canvas>
         </figure>
-
-        <div
-          id="diabeticCaseQuizOverlayControls"
-          class="diabetic-case-quiz__overlay-controls"
-          aria-label="Overlay controls"
-        >
-          <button
-            type="button"
-            id="diabeticCaseQuizPrevOverlay"
-            class="diabetic-case-quiz__overlay-button"
-            aria-label="Previous overlay"
-          >
-            &lt;
-          </button>
-          <span
-            id="diabeticCaseQuizOverlayLabel"
-            class="diabetic-case-quiz__overlay-label"
-            >1 / 6</span
-          >
-          <button
-            type="button"
-            id="diabeticCaseQuizNextOverlay"
-            class="diabetic-case-quiz__overlay-button"
-            aria-label="Next overlay"
-          >
-            &gt;
-          </button>
-        </div>
 
         <div class="retinal-structure-tap__progress-shell">
           <p
@@ -3447,6 +3417,49 @@
           >
             Submit
           </button>
+        </div>
+
+        <div
+          id="diabeticCaseQuizIntroModal"
+          class="casechat-modal diabetic-case-quiz__intro-modal"
+          hidden
+          aria-hidden="true"
+        >
+          <div
+            class="casechat-modalCard"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="diabeticCaseQuizIntroTitle"
+          >
+            <div class="casechat-modalTop">
+              <div id="diabeticCaseQuizIntroTitle" class="casechat-modalTitle">
+                Quiz
+              </div>
+              <button
+                type="button"
+                class="casechat-modalClose"
+                data-diabetic-case-intro-close="true"
+                aria-label="Close instructions"
+              >
+                &times;
+              </button>
+            </div>
+
+            <div class="casechat-resultWhy diabetic-case-quiz__intro-copy">
+              Drag the sight hole to examine the case, then answer the
+              questions.
+            </div>
+
+            <div class="casechat-confirm__actions">
+              <button
+                type="button"
+                class="casechat-confirm__btn is-ok"
+                data-diabetic-case-intro-close="true"
+              >
+                Start quiz
+              </button>
+            </div>
+          </div>
         </div>
 
         <div

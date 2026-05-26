@@ -1,0 +1,93 @@
+- generic [ref=e1]:
+  - banner [ref=e2]:
+    - button "Open menu" [ref=e3] [cursor=pointer]
+    - heading "Diabetic" [level=1] [ref=e5]
+    - button "Open quick guide" [ref=e6] [cursor=pointer]: i
+  - navigation [ref=e7]:
+    - generic [ref=e8]:
+      - generic [ref=e9]:
+        - paragraph [ref=e10]: Diabetic
+        - generic [ref=e11]: 10-case retina trainer
+      - button [ref=e12] [cursor=pointer]: ×
+    - region [ref=e13]:
+      - heading [level=2] [ref=e14]: Practice
+      - button [ref=e15] [cursor=pointer]:
+        - generic [ref=e17]: 10 image cases
+      - button [ref=e18] [cursor=pointer]:
+        - generic [ref=e20]: Primary quiz
+      - button [ref=e21] [cursor=pointer]:
+        - generic [ref=e23]: Intermediate quiz
+      - button [ref=e24] [cursor=pointer]:
+        - generic [ref=e26]: Advanced quiz
+      - generic [ref=e27]:
+        - generic [ref=e28]: ★
+        - generic [ref=e30]: "Cup locked: complete Advanced quiz"
+        - button [disabled] [ref=e31]: Save
+    - region [ref=e32]:
+      - heading [level=2] [ref=e33]: Guide
+      - generic [ref=e34]:
+        - button [ref=e35] [cursor=pointer]:
+          - strong [ref=e36]: Cases
+          - generic [ref=e37]: 10 images and skin
+        - button [ref=e38] [cursor=pointer]:
+          - strong [ref=e39]: View
+          - generic [ref=e40]: DO, BIO and cataract
+        - button [ref=e41] [cursor=pointer]:
+          - strong [ref=e42]: Record
+          - generic [ref=e43]: RE and LE fields
+        - button [ref=e44] [cursor=pointer]:
+          - strong [ref=e45]: Signs
+          - generic [ref=e46]: DR and macula risk
+        - button [ref=e47] [cursor=pointer]:
+          - strong [ref=e48]: Action
+          - generic [ref=e49]: Urgency and next step
+    - region [ref=e50]:
+      - heading [level=2] [ref=e51]: About
+      - button [ref=e52] [cursor=pointer]:
+        - generic [ref=e54]: Safety and local pathways
+  - main [ref=e55]:
+    - generic [ref=e56]:
+      - generic [ref=e57]:
+        - tablist "Viewing mode" [ref=e58]:
+          - tab "Arclight (DO)" [ref=e59] [cursor=pointer]
+          - tab "Holo (BIO)" [active] [selected] [ref=e60] [cursor=pointer]
+        - generic "Viewing controls" [ref=e61]:
+          - generic [ref=e62] [cursor=pointer]:
+            - checkbox "Gaze"
+            - generic [ref=e64]: Gaze
+          - generic [ref=e65] [cursor=pointer]:
+            - checkbox "Dilated"
+            - generic [ref=e67]: Dilated
+          - region "Cataract viewing challenge" [ref=e68]:
+            - generic [ref=e69]:
+              - generic [ref=e70]: Cataract
+              - generic [ref=e72]: None
+            - slider "Cataract level" [ref=e73]: "0"
+      - generic "Skin pigmentation" [ref=e74]:
+        - generic [ref=e75]: Skin
+        - generic [ref=e76] [cursor=pointer]:
+          - checkbox "Use dark skin pigmentation"
+          - generic [ref=e78]: Light
+    - region "Diabetic image case" [ref=e79]:
+      - generic [ref=e80]:
+        - generic "Diabetic image cases":
+          - generic [ref=e81]:
+            - button "Previous case" [ref=e82] [cursor=pointer]: <
+            - generic "Case 1 of 10" [ref=e83]: 1/10
+            - button "Next case" [ref=e84] [cursor=pointer]: ">"
+          - 'button "Info: show case 1 description" [ref=e85] [cursor=pointer]':
+            - generic [ref=e86]: i
+        - generic "Eye selection" [ref=e87]:
+          - generic [ref=e88]: R
+          - generic "Switch eye" [ref=e89]:
+            - checkbox "Switch eye"
+          - generic [ref=e91]: L
+      - generic [ref=e93]:
+        - text: Undilated Dilated
+        - slider [ref=e94]: "0"
+    - region "Exam" [ref=e95]:
+      - generic [ref=e96]:
+        - generic [ref=e97]:
+          - paragraph [ref=e98]: RE / LE record
+          - heading "Exam" [level=2] [ref=e99]
+        - button "Expand Exam" [ref=e100] [cursor=pointer]: +

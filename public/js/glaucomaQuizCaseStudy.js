@@ -221,6 +221,9 @@ export function initializeGlaucomaQuizCaseStudy() {
         .cloneNode(true);
       card.dataset.qwrap = String(qi);
 
+      const cardNumber = card.querySelector(".quiz-card-number");
+      if (cardNumber) cardNumber.textContent = String(qi + 1).padStart(2, "0");
+
       const cardProgress = card.querySelector(".quiz-card-progress");
       if (cardProgress) setCaseLabel(cardProgress, qi + 1);
 

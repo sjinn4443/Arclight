@@ -3121,13 +3121,55 @@ select.onb-input.has-value + .onb-select-caret {
   white-space: nowrap;
 }
 
+#glaucomaQuizCaseStudy #gqAllQuestions {
+  display: grid;
+  gap: 18px;
+}
+
 #glaucomaQuizCaseStudy .quiz-card {
   background: #fff;
   border-radius: 14px;
-  padding: 14px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  padding: 16px 14px 14px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+  border: 1px solid rgba(242, 86, 0, 0.2);
   box-sizing: border-box;
+}
+
+#glaucomaQuizCaseStudy .quiz-card-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(242, 86, 0, 0.14);
+}
+
+#glaucomaQuizCaseStudy .quiz-card-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 42px;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #f25600;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+#glaucomaQuizCaseStudy .quiz-card-title {
+  min-width: 0;
+}
+
+#glaucomaQuizCaseStudy .quiz-card-progress {
+  color: #111111;
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1.2;
+  opacity: 1;
 }
 
 #glaucomaQuizCaseStudy .quiz-video {
@@ -4673,215 +4715,114 @@ select.onb-input.has-value + .onb-select-caret {
   margin: 18px 0 0;
   cursor: default;
   border-radius: 8px;
+  background: #030406;
 }
 
-.diabetic-case-quiz__stage::before,
-.diabetic-case-quiz__stage::after {
-  content: "";
-  position: absolute;
-  z-index: 4;
-  display: none;
-  background: #000000;
-  pointer-events: none;
-}
-
-.diabetic-case-quiz__stage[data-case-image="6"][data-disc="Rdisc"][data-overlay="1disc"]::before {
-  display: block;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  width: 30px;
-}
-
-.diabetic-case-quiz__stage[data-case-image="6"][data-disc="Rdisc"][data-overlay="1disc"]::after {
-  display: block;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  height: 44px;
-}
-
-.diabetic-case-quiz__stage[data-case-image="1"][data-disc="Ldisc"]:not(
-    [data-overlay="6macula"]
-  )::before,
-.diabetic-case-quiz__stage[data-case-image="4"][data-disc="Ldisc"]:not(
-    [data-overlay="6macula"]
-  )::before,
-.diabetic-case-quiz__stage[data-case-image="5"][data-disc="Ldisc"]:not(
-    [data-overlay="6macula"]
-  )::before {
-  display: block;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  width: max(24px, 6.5%);
-}
-
-.diabetic-case-quiz__stage[data-case-image="9"][data-disc="Ldisc"]:not(
-    [data-overlay="6macula"]
-  )::before {
-  display: block;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  width: max(18px, 4.5%);
-}
-
-.diabetic-case-quiz__stage[data-case-image="3"][data-overlay="1disc"]::after {
-  display: block;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  height: 32px;
-}
-
-.diabetic-case-quiz__stage[data-case-image="3"][data-overlay="1disc"]::before {
-  display: block;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: auto;
-  width: max(18px, 4%);
-}
-
-.diabetic-case-quiz__stage[data-case-image="4"][data-overlay="1disc"]::after {
-  display: block;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: auto;
-  width: max(24px, 4.5%);
-}
-
-.diabetic-case-quiz__stage[data-case-image="9"][data-disc="Ldisc"][data-overlay="1disc"]::after {
-  display: block;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: auto;
-  width: max(96px, 17%);
+.diabetic-case-quiz__stage .retinal-structure-tap__image {
+  width: 100%;
   height: auto;
+  object-fit: contain;
 }
 
-.diabetic-case-quiz__stage[data-case-image="9"][data-disc="Ldisc"]:not(
-    [data-overlay="6macula"]
-  )::after {
-  display: block;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: auto;
-  width: max(54px, 14.5%);
-  height: auto;
-  box-shadow: 0 8px 0 #000000;
-}
-
-.diabetic-case-quiz__overlay-image {
+.diabetic-case-quiz__sight-canvas {
   position: absolute;
   inset: 0;
   z-index: 2;
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: contain;
-  pointer-events: none;
+  cursor: crosshair;
+  touch-action: none;
 }
 
-.diabetic-case-quiz__overlay-image--ldisc-4downleft {
-  width: 113%;
-  margin-left: -36px;
-}
-
-.diabetic-case-quiz__overlay-image--rdisc-2upright {
-  width: 116%;
-}
-
-.diabetic-case-quiz__overlay-image--rdisc-5downright {
-  width: 118%;
-}
-
-.diabetic-case-quiz__stage[data-case-image="3"]
-  .diabetic-case-quiz__overlay-image--rdisc-1disc {
-  margin-top: -14px;
-  margin-left: -12px;
-}
-
-.diabetic-case-quiz__stage[data-case-image="4"]
-  .diabetic-case-quiz__overlay-image--ldisc-1disc {
-  margin-left: -24px;
-}
-
-.diabetic-case-quiz__stage[data-case-image="5"]
-  .diabetic-case-quiz__overlay-image--ldisc-1disc {
-  width: 120%;
-  height: 110%;
-  margin-top: -52px;
-  margin-left: -72px;
-}
-
-.diabetic-case-quiz__stage[data-case-image="6"]
-  .diabetic-case-quiz__overlay-image--rdisc-1disc {
-  width: 107%;
-  height: 122%;
-  margin-top: -90px;
-  margin-left: -29px;
-}
-
-.diabetic-case-quiz__stage[data-case-image="9"][data-disc="Ldisc"]:not(
-    [data-overlay="6macula"]
-  )
-  .diabetic-case-quiz__overlay-image {
-  margin-left: -53px;
-}
-
-.diabetic-case-quiz__stage[data-case-image="9"][data-disc="Ldisc"][data-overlay="1disc"]
-  .diabetic-case-quiz__overlay-image--ldisc-1disc {
-  margin-left: -78px;
-}
-
-.diabetic-case-quiz__overlay-image[hidden],
-.diabetic-case-quiz__overlay-controls[hidden],
+.diabetic-case-quiz__sight-canvas[hidden],
 .diabetic-case-quiz__action[hidden],
 .diabetic-case-quiz__feedback[hidden] {
   display: none;
 }
 
-.diabetic-case-quiz__overlay-controls {
+#diabeticCaseQuizPage .casechat-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 14px;
-  margin-top: 12px;
+  padding: 24px;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
 
-.diabetic-case-quiz__overlay-button {
+#diabeticCaseQuizPage .casechat-modal[hidden] {
+  display: none !important;
+}
+
+#diabeticCaseQuizPage .casechat-modalCard {
+  position: relative;
+  width: min(92vw, 440px);
+  border-radius: 14px;
+  padding: 18px 16px 16px;
+  background: #ffffff;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+}
+
+#diabeticCaseQuizPage .casechat-modalTop {
+  display: block;
+  padding-right: 42px;
+  margin-bottom: 10px;
+}
+
+#diabeticCaseQuizPage .casechat-modalTitle {
+  color: #111111;
+  font-size: 18px;
+  font-weight: 750;
+  line-height: 1.25;
+}
+
+#diabeticCaseQuizPage .casechat-modalClose {
+  position: absolute;
+  top: 16px;
+  right: 16px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 44px;
-  height: 36px;
-  border: none;
-  border-radius: 8px;
-  background: #ffffff;
-  color: #111111;
-  font-family: inherit;
-  font-size: 20px;
-  font-weight: 800;
+  width: 32px;
+  height: 32px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: #666666;
+  font-size: 26px;
   line-height: 1;
-  box-shadow: inset 0 0 0 1px rgba(17, 17, 17, 0.12);
   cursor: pointer;
 }
 
-.diabetic-case-quiz__overlay-button:active {
-  transform: translateY(1px);
+#diabeticCaseQuizPage .casechat-resultWhy {
+  margin: 16px 0 20px;
+  color: #333333;
+  font-size: 14px;
+  line-height: 1.45;
 }
 
-.diabetic-case-quiz__overlay-label {
-  color: rgba(17, 17, 17, 0.58);
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+#diabeticCaseQuizPage .casechat-confirm__actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+#diabeticCaseQuizPage .casechat-confirm__btn {
+  border: 0;
+  border-radius: 12px;
+  padding: 10px 16px;
+  background: #e41e26;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.2;
+  cursor: pointer;
 }
 
 .diabetic-case-quiz__question-card {
@@ -5072,8 +5013,7 @@ select.onb-input.has-value + .onb-select-caret {
     grid-template-areas:
       "title progress"
       "info question"
-      "stage question"
-      "overlays question";
+      "stage question";
     column-gap: 24px;
     row-gap: 10px;
     align-items: start;
@@ -5107,18 +5047,12 @@ select.onb-input.has-value + .onb-select-caret {
     justify-self: center;
     width: min(100%, calc(100vh - 330px), 620px);
     margin-top: 0;
-    aspect-ratio: 1 / 1;
   }
 
   #diabeticCaseQuizImage {
     width: 100%;
-    height: 100%;
+    height: auto;
     object-fit: contain;
-  }
-
-  #diabeticCaseQuizOverlayControls {
-    grid-area: overlays;
-    margin-top: 0;
   }
 
   #diabeticCaseQuizPage .retinal-structure-tap__progress-shell {

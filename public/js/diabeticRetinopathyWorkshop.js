@@ -194,14 +194,15 @@ const RETINAL_STRUCTURE_TAP_STEPS = Object.freeze([
   },
 ]);
 
-const DIABETIC_CASE_QUIZ_OVERLAYS = Object.freeze([
-  "1disc.webp",
-  "2upright.webp",
-  "3upleft.webp",
-  "4downleft.webp",
-  "5downright.webp",
-  "6macula.webp",
-]);
+const DIABETIC_CASE_QUIZ_SIGHT_REFERENCE_HEIGHT = 2834;
+const DIABETIC_CASE_QUIZ_SIGHT_INITIAL_DEGREE = 5;
+const DIABETIC_CASE_QUIZ_SIGHT_FOV_DEGREES = 8;
+const DIABETIC_CASE_QUIZ_SIGHT_INITIAL_RADIUS = 80;
+const DIABETIC_CASE_QUIZ_SIGHT_WINDOW_SCALE = 3;
+const DIABETIC_CASE_QUIZ_SIGHT_IMAGE_SCALE = 1;
+const DIABETIC_CASE_QUIZ_SIGHT_MIN_RADIUS = 38;
+const DIABETIC_CASE_QUIZ_SIGHT_MAX_RADIUS = 96;
+const DIABETIC_CASE_QUIZ_SIGHT_MOTION_INTERVAL_MS = 42;
 
 const DIABETIC_CASE_QUIZ_CASES = Object.freeze([
   {
@@ -2664,6 +2665,7 @@ function initializeRetinalStructureTapPage() {
   const getCurrentAnswer = () => state.answers[state.currentIndex] || null;
 
   const setModalState = (modal, isOpen) => {
+    modal.hidden = !isOpen;
     modal.classList.toggle("is-open", isOpen);
     modal.setAttribute("aria-hidden", isOpen ? "false" : "true");
   };
@@ -2928,6 +2930,483 @@ function initializeRetinalStructureTapPage() {
   resetQuiz();
 }
 
+function createDiabeticCaseQuizSightViewer({ page, stage, canvas }) {
+  let ctx = null;
+  try {
+    ctx = canvas.getContext("2d");
+  } catch {
+    ctx = null;
+  }
+
+  if (!ctx) {
+    return {
+      setCase() {},
+      setSubmitted(isSubmitted) {
+        canvas.hidden = Boolean(isSubmitted);
+      },
+      resetPosition() {},
+    };
+  }
+
+  const viewerImage = new Image();
+  viewerImage.decoding = "async";
+
+  const state = {
+    imageSrc: "",
+    isRightEye: true,
+    isSubmitted: false,
+    isActive: false,
+    isDragging: false,
+    activePointerId: null,
+    circleX: 0,
+    circleY: 0,
+    bgOffsetX: 0,
+    bgOffsetY: 0,
+    velocityX: 0,
+    velocityY: 0,
+    drawFrameId: null,
+    motionFrameId: null,
+    resizeObserver: null,
+    lastMotionAt: 0,
+  };
+
+  const requestFrame = (callback) => {
+    if (typeof window.requestAnimationFrame === "function") {
+      return window.requestAnimationFrame(callback);
+    }
+    return window.setTimeout(() => callback(Date.now()), 16);
+  };
+
+  const cancelFrame = (frameId) => {
+    if (typeof window.cancelAnimationFrame === "function") {
+      window.cancelAnimationFrame(frameId);
+    } else {
+      window.clearTimeout(frameId);
+    }
+  };
+
+  const clampValue = (value, min, max) => {
+    if (min > max) return (min + max) / 2;
+    return Math.max(min, Math.min(max, value));
+  };
+
+  const getCanvasMetrics = () => {
+    const rect = canvas.getBoundingClientRect();
+    const width = Math.max(0, rect.width);
+    const height = Math.max(0, rect.height);
+    if (width <= 0 || height <= 0) return null;
+
+    const dpr = Math.max(1, Math.min(2, Number(window.devicePixelRatio) || 1));
+    const pixelWidth = Math.max(1, Math.round(width * dpr));
+    const pixelHeight = Math.max(1, Math.round(height * dpr));
+
+    if (canvas.width !== pixelWidth || canvas.height !== pixelHeight) {
+      canvas.width = pixelWidth;
+      canvas.height = pixelHeight;
+    }
+
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    return { width, height };
+  };
+
+  const getSightRadius = (width, height) => {
+    const minDimension = Math.min(width, height);
+    const baseRadius =
+      (DIABETIC_CASE_QUIZ_SIGHT_FOV_DEGREES /
+        DIABETIC_CASE_QUIZ_SIGHT_INITIAL_DEGREE) *
+      DIABETIC_CASE_QUIZ_SIGHT_INITIAL_RADIUS *
+      DIABETIC_CASE_QUIZ_SIGHT_WINDOW_SCALE *
+      (minDimension / DIABETIC_CASE_QUIZ_SIGHT_REFERENCE_HEIGHT);
+
+    return clampValue(
+      baseRadius,
+      DIABETIC_CASE_QUIZ_SIGHT_MIN_RADIUS,
+      DIABETIC_CASE_QUIZ_SIGHT_MAX_RADIUS,
+    );
+  };
+
+  const clampCircleToStage = (metrics) => {
+    const radius = getSightRadius(metrics.width, metrics.height);
+    const margin = Math.max(2, radius * 0.08);
+    state.circleX = clampValue(
+      state.circleX || metrics.width / 2,
+      radius + margin,
+      metrics.width - radius - margin,
+    );
+    state.circleY = clampValue(
+      state.circleY || metrics.height / 2,
+      radius + margin,
+      metrics.height - radius - margin,
+    );
+  };
+
+  const resetPosition = () => {
+    const metrics = getCanvasMetrics();
+    if (!metrics) return;
+    state.circleX = metrics.width / 2;
+    state.circleY = metrics.height / 2;
+    state.bgOffsetX = 0;
+    state.bgOffsetY = 0;
+    state.velocityX = 0;
+    state.velocityY = 0;
+    requestDraw();
+  };
+
+  const getCoverImageRect = (metrics) => {
+    if (!viewerImage.naturalWidth || !viewerImage.naturalHeight) return null;
+
+    const scale = Math.max(
+      metrics.width / viewerImage.naturalWidth,
+      metrics.height / viewerImage.naturalHeight,
+    );
+    const drawnWidth = viewerImage.naturalWidth * scale;
+    const drawnHeight = viewerImage.naturalHeight * scale;
+
+    return {
+      scale,
+      drawnWidth,
+      drawnHeight,
+      imageX: (metrics.width - drawnWidth) / 2,
+      imageY: (metrics.height - drawnHeight) / 2,
+    };
+  };
+
+  const drawClippedFundus = (metrics, radius) => {
+    const imageRect = getCoverImageRect(metrics);
+    if (!imageRect) return;
+
+    const scaledWidth =
+      imageRect.drawnWidth * DIABETIC_CASE_QUIZ_SIGHT_IMAGE_SCALE;
+    const scaledHeight =
+      imageRect.drawnHeight * DIABETIC_CASE_QUIZ_SIGHT_IMAGE_SCALE;
+    const offsetX =
+      imageRect.imageX +
+      (imageRect.drawnWidth - scaledWidth) / 2 +
+      state.bgOffsetX;
+    const offsetY =
+      imageRect.imageY +
+      (imageRect.drawnHeight - scaledHeight) / 2 +
+      state.bgOffsetY;
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(state.circleX, state.circleY, radius, 0, 2 * Math.PI, true);
+    ctx.closePath();
+    ctx.clip();
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = "high";
+    ctx.drawImage(
+      viewerImage,
+      0,
+      0,
+      viewerImage.naturalWidth,
+      viewerImage.naturalHeight,
+      offsetX,
+      offsetY,
+      scaledWidth,
+      scaledHeight,
+    );
+    ctx.restore();
+  };
+
+  const drawCornealReflex = (radius) => {
+    const centerX = state.circleX;
+    const centerY = state.circleY + radius * 0.34;
+
+    ctx.save();
+    ctx.beginPath();
+    ctx.ellipse(
+      centerX,
+      centerY,
+      radius * 0.34,
+      radius * 0.18,
+      0,
+      0,
+      2 * Math.PI,
+    );
+    ctx.fillStyle = "rgba(255, 255, 255, 0.34)";
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.ellipse(
+      centerX,
+      centerY,
+      radius * 0.24,
+      radius * 0.12,
+      0,
+      0,
+      2 * Math.PI,
+    );
+    ctx.fillStyle = "rgba(255, 255, 255, 0.94)";
+    ctx.fill();
+    ctx.restore();
+  };
+
+  const drawWindowRing = (radius) => {
+    const lineWidth = Math.max(5, radius * 0.14);
+
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(state.circleX, state.circleY, radius, 0, 2 * Math.PI, true);
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.24)";
+    ctx.lineWidth = lineWidth * 2.2;
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.arc(state.circleX, state.circleY, radius, 0, 2 * Math.PI, true);
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.66)";
+    ctx.lineWidth = lineWidth;
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.arc(state.circleX, state.circleY, radius, 0, 2 * Math.PI, true);
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.94)";
+    ctx.lineWidth = Math.max(2, lineWidth * 0.52);
+    ctx.stroke();
+    ctx.restore();
+  };
+
+  const drawEdgeLabel = (text, x, y, rotation) => {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(rotation);
+    ctx.fillText(text, 0, 0);
+    ctx.restore();
+  };
+
+  const drawEdgeLabels = (metrics) => {
+    const sideOffset = Math.max(10, Math.min(16, metrics.width * 0.02));
+    const fontSize = Math.max(10, Math.min(13, metrics.width * 0.011));
+    const centerY = metrics.height * 0.5;
+
+    ctx.save();
+    ctx.fillStyle = "rgba(148, 163, 184, 0.82)";
+    ctx.font = `600 ${fontSize}px 'Inter', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif`;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+
+    if (state.isRightEye) {
+      drawEdgeLabel("Temporal", sideOffset, centerY, -Math.PI / 2);
+      drawEdgeLabel("Nasal", metrics.width - sideOffset, centerY, Math.PI / 2);
+    } else {
+      drawEdgeLabel("Nasal", sideOffset, centerY, -Math.PI / 2);
+      drawEdgeLabel(
+        "Temporal",
+        metrics.width - sideOffset,
+        centerY,
+        Math.PI / 2,
+      );
+    }
+
+    ctx.restore();
+  };
+
+  function draw() {
+    const metrics = getCanvasMetrics();
+    if (!metrics) return;
+
+    clampCircleToStage(metrics);
+    const radius = getSightRadius(metrics.width, metrics.height);
+
+    ctx.clearRect(0, 0, metrics.width, metrics.height);
+    ctx.fillStyle = "#030406";
+    ctx.fillRect(0, 0, metrics.width, metrics.height);
+
+    drawClippedFundus(metrics, radius);
+    drawCornealReflex(radius);
+    drawWindowRing(radius);
+    drawEdgeLabels(metrics);
+  }
+
+  function requestDraw() {
+    if (state.drawFrameId !== null) return;
+
+    state.drawFrameId = requestFrame(() => {
+      state.drawFrameId = null;
+      draw();
+    });
+  }
+
+  const constrainMotion = (radius) => {
+    const maxOffset = Math.max(8, radius * 0.24);
+    const nextX = clampValue(state.bgOffsetX, -maxOffset, maxOffset);
+    const nextY = clampValue(state.bgOffsetY, -maxOffset, maxOffset);
+
+    if (nextX !== state.bgOffsetX) {
+      state.velocityX *= -0.35;
+      state.bgOffsetX = nextX;
+    }
+
+    if (nextY !== state.bgOffsetY) {
+      state.velocityY *= -0.35;
+      state.bgOffsetY = nextY;
+    }
+  };
+
+  const animateMotion = (timestamp) => {
+    state.motionFrameId = null;
+
+    if (
+      !state.isActive ||
+      state.isSubmitted ||
+      canvas.hidden ||
+      page.offsetParent === null
+    ) {
+      return;
+    }
+
+    const now = typeof timestamp === "number" ? timestamp : Date.now();
+    if (
+      now - state.lastMotionAt >=
+      DIABETIC_CASE_QUIZ_SIGHT_MOTION_INTERVAL_MS
+    ) {
+      const metrics = getCanvasMetrics();
+      if (metrics) {
+        const radius = getSightRadius(metrics.width, metrics.height);
+        const jitterAmplitude = state.isDragging ? 0.14 : 0.46;
+        state.velocityX += (Math.random() - 0.5) * jitterAmplitude;
+        state.velocityY += (Math.random() - 0.5) * jitterAmplitude;
+        state.velocityX *= 0.86;
+        state.velocityY *= 0.86;
+        state.bgOffsetX += state.velocityX;
+        state.bgOffsetY += state.velocityY;
+        constrainMotion(radius);
+        requestDraw();
+      }
+      state.lastMotionAt = now;
+    }
+
+    state.motionFrameId = requestFrame(animateMotion);
+  };
+
+  const startMotion = () => {
+    if (state.motionFrameId !== null || state.isSubmitted) return;
+    state.isActive = true;
+    state.motionFrameId = requestFrame(animateMotion);
+  };
+
+  const stopMotion = () => {
+    state.isActive = false;
+    if (state.motionFrameId !== null) {
+      cancelFrame(state.motionFrameId);
+      state.motionFrameId = null;
+    }
+  };
+
+  const updatePositionFromPointer = (event) => {
+    const metrics = getCanvasMetrics();
+    if (!metrics) return;
+
+    const rect = canvas.getBoundingClientRect();
+    const radius = getSightRadius(metrics.width, metrics.height);
+    const pointerX = event.clientX - rect.left;
+    const pointerY = event.clientY - rect.top;
+    const extraOffset = Math.max(18, Math.min(64, radius * 0.12));
+
+    state.circleX = pointerX;
+    state.circleY = pointerY - radius - extraOffset;
+    clampCircleToStage(metrics);
+    requestDraw();
+  };
+
+  canvas.addEventListener("pointerdown", (event) => {
+    if (state.isSubmitted) return;
+    if (event.button !== undefined && event.button !== 0) return;
+
+    event.preventDefault();
+    state.isDragging = true;
+    state.activePointerId = event.pointerId;
+    state.velocityX = 0;
+    state.velocityY = 0;
+    canvas.setPointerCapture?.(event.pointerId);
+    canvas.style.cursor = "none";
+    updatePositionFromPointer(event);
+  });
+
+  canvas.addEventListener("pointermove", (event) => {
+    if (!state.isDragging || event.pointerId !== state.activePointerId) return;
+    event.preventDefault();
+    updatePositionFromPointer(event);
+  });
+
+  const stopDragging = (event) => {
+    if (!state.isDragging) return;
+    if (
+      event &&
+      typeof event.pointerId === "number" &&
+      event.pointerId !== state.activePointerId
+    ) {
+      return;
+    }
+
+    if (
+      event &&
+      typeof event.pointerId === "number" &&
+      canvas.hasPointerCapture?.(event.pointerId)
+    ) {
+      canvas.releasePointerCapture(event.pointerId);
+    }
+
+    state.isDragging = false;
+    state.activePointerId = null;
+    canvas.style.cursor = "crosshair";
+  };
+
+  canvas.addEventListener("pointerup", stopDragging);
+  canvas.addEventListener("pointercancel", stopDragging);
+  canvas.addEventListener("pointerleave", (event) => {
+    if (event.pointerType === "mouse") stopDragging(event);
+  });
+  window.addEventListener("pointerup", stopDragging);
+  window.addEventListener("resize", requestDraw);
+
+  if (typeof ResizeObserver !== "undefined") {
+    state.resizeObserver = new ResizeObserver(() => {
+      requestDraw();
+    });
+    state.resizeObserver.observe(stage);
+  }
+
+  viewerImage.addEventListener("load", () => {
+    resetPosition();
+    startMotion();
+  });
+
+  viewerImage.addEventListener("error", () => {
+    requestDraw();
+  });
+
+  return {
+    setCase({ src, isRightEye }) {
+      state.isRightEye = Boolean(isRightEye);
+      canvas.dataset.eye = state.isRightEye ? "right" : "left";
+
+      if (src && state.imageSrc !== src) {
+        state.imageSrc = src;
+        viewerImage.src = src;
+        resetPosition();
+      } else {
+        requestDraw();
+      }
+
+      if (!state.isSubmitted) {
+        canvas.hidden = false;
+        startMotion();
+      }
+    },
+    setSubmitted(isSubmitted) {
+      state.isSubmitted = Boolean(isSubmitted);
+      canvas.hidden = state.isSubmitted;
+      if (state.isSubmitted) {
+        stopMotion();
+      } else {
+        startMotion();
+        requestDraw();
+      }
+    },
+    resetPosition,
+  };
+}
+
 function initializeDiabeticCaseQuizPage() {
   const page = document.getElementById("diabeticCaseQuizPage");
   if (!page || page.dataset.inited === "1") return;
@@ -2938,13 +3417,7 @@ function initializeDiabeticCaseQuizPage() {
   const progressLabel = page.querySelector("#diabeticCaseQuizProgressLabel");
   const patientInfo = page.querySelector("#diabeticCaseQuizPatientInfo");
   const image = page.querySelector("#diabeticCaseQuizImage");
-  const overlay = page.querySelector("#diabeticCaseQuizOverlay");
-  const overlayControls = page.querySelector(
-    "#diabeticCaseQuizOverlayControls",
-  );
-  const overlayLabel = page.querySelector("#diabeticCaseQuizOverlayLabel");
-  const prevOverlay = page.querySelector("#diabeticCaseQuizPrevOverlay");
-  const nextOverlay = page.querySelector("#diabeticCaseQuizNextOverlay");
+  const sightCanvas = page.querySelector("#diabeticCaseQuizSightCanvas");
   const questionLabel = page.querySelector("#diabeticCaseQuizQuestionLabel");
   const question = page.querySelector("#diabeticCaseQuizQuestion");
   const questionHint = page.querySelector("#diabeticCaseQuizQuestionHint");
@@ -2954,9 +3427,13 @@ function initializeDiabeticCaseQuizPage() {
   const nextButton = page.querySelector("#diabeticCaseQuizNext");
   const caseSummary = page.querySelector("#diabeticCaseQuizCaseSummary");
   const submitButton = page.querySelector("#diabeticCaseQuizSubmit");
+  const introModal = page.querySelector("#diabeticCaseQuizIntroModal");
   const resultsModal = page.querySelector("#diabeticCaseQuizResultsModal");
   const resultsSummary = page.querySelector("#diabeticCaseQuizResultsSummary");
   const resultsList = page.querySelector("#diabeticCaseQuizResultsList");
+  const introCloseButtons = page.querySelectorAll(
+    "[data-diabetic-case-intro-close]",
+  );
   const resultsCloseButtons = page.querySelectorAll(
     "[data-diabetic-case-results-close]",
   );
@@ -2968,11 +3445,7 @@ function initializeDiabeticCaseQuizPage() {
     !progressLabel ||
     !patientInfo ||
     !image ||
-    !overlay ||
-    !overlayControls ||
-    !overlayLabel ||
-    !prevOverlay ||
-    !nextOverlay ||
+    !sightCanvas ||
     !questionLabel ||
     !question ||
     !questionHint ||
@@ -2982,6 +3455,7 @@ function initializeDiabeticCaseQuizPage() {
     !nextButton ||
     !caseSummary ||
     !submitButton ||
+    !introModal ||
     !resultsModal ||
     !resultsSummary ||
     !resultsList
@@ -2990,18 +3464,25 @@ function initializeDiabeticCaseQuizPage() {
   }
 
   page.dataset.inited = "1";
+  image.style.width = "100%";
+  image.style.height = "auto";
+  image.style.objectFit = "contain";
 
   const state = {
     caseIndex: 0,
     questionIndex: 0,
-    overlayIndex: 0,
     selections: [],
     caseResults: [],
     submitted: false,
     isComplete: false,
     renderedCaseIndex: -1,
-    renderedOverlayKey: "",
   };
+
+  const sightViewer = createDiabeticCaseQuizSightViewer({
+    page,
+    stage,
+    canvas: sightCanvas,
+  });
 
   const totalQuestions = DIABETIC_CASE_QUIZ_CASES.reduce(
     (sum, caseItem) => sum + caseItem.questions.length,
@@ -3031,22 +3512,15 @@ function initializeDiabeticCaseQuizPage() {
     getCurrentCaseResult()?.answers[state.questionIndex] || null;
 
   const setModalState = (modal, isOpen) => {
+    modal.hidden = !isOpen;
     modal.classList.toggle("is-open", isOpen);
     modal.setAttribute("aria-hidden", isOpen ? "false" : "true");
   };
 
   const openResultsModal = () => setModalState(resultsModal, true);
   const closeResultsModal = () => setModalState(resultsModal, false);
-
-  const getOverlayFile = () => DIABETIC_CASE_QUIZ_OVERLAYS[state.overlayIndex];
-
-  const getOverlaySrc = (caseItem, overlayFile = getOverlayFile()) =>
-    `/images/quiz/workshop/DR/Cases/${caseItem.disc}/${overlayFile}`;
-
-  const toOverlayClassToken = (caseItem, overlayFile = getOverlayFile()) =>
-    `${caseItem.disc}-${overlayFile.replace(/\.[^.]+$/, "")}`
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-");
+  const openIntroModal = () => setModalState(introModal, true);
+  const closeIntroModal = () => setModalState(introModal, false);
 
   const isSelectionCorrect = (quizQuestion, selectedValues) => {
     if (selectedValues.length !== quizQuestion.correct.length) return false;
@@ -3141,32 +3615,23 @@ function initializeDiabeticCaseQuizPage() {
 
   const renderCaseVisual = () => {
     const caseItem = getCurrentCase();
-    const overlayFile = getOverlayFile();
-    const overlayKey = `${caseItem.id}:${caseItem.disc}:${overlayFile}`;
+    const caseImageSrc = `/images/quiz/workshop/DR/Cases/${caseItem.image}`;
 
     if (state.renderedCaseIndex !== state.caseIndex) {
-      image.src = `/images/quiz/workshop/DR/Cases/${caseItem.image}`;
+      image.src = caseImageSrc;
       image.alt = `Diabetic retinopathy case ${state.caseIndex + 1}`;
       stage.dataset.caseId = caseItem.id;
       stage.dataset.caseImage = caseItem.image.replace(/\.[^.]+$/, "");
-      state.renderedCaseIndex = state.caseIndex;
-      state.renderedOverlayKey = "";
-    }
-
-    if (state.renderedOverlayKey !== overlayKey) {
-      overlay.src = getOverlaySrc(caseItem, overlayFile);
-      overlay.className = `diabetic-case-quiz__overlay-image diabetic-case-quiz__overlay-image--${toOverlayClassToken(
-        caseItem,
-        overlayFile,
-      )}`;
-      stage.dataset.overlay = overlayFile.replace(/\.[^.]+$/, "");
+      stage.dataset.overlay = "sight-hole";
       stage.dataset.disc = caseItem.disc;
-      state.renderedOverlayKey = overlayKey;
+      sightViewer.setCase({
+        src: caseImageSrc,
+        isRightEye: caseItem.disc === "Rdisc",
+      });
+      state.renderedCaseIndex = state.caseIndex;
     }
 
-    overlay.hidden = state.submitted;
-    overlayControls.hidden = state.submitted;
-    overlayLabel.textContent = `${state.overlayIndex + 1} / ${DIABETIC_CASE_QUIZ_OVERLAYS.length}`;
+    sightViewer.setSubmitted(state.submitted);
   };
 
   const renderOptions = () => {
@@ -3333,7 +3798,6 @@ function initializeDiabeticCaseQuizPage() {
   };
 
   const resetQuestionState = () => {
-    state.overlayIndex = 0;
     state.selections = createEmptySelections();
     state.submitted = false;
   };
@@ -3344,26 +3808,11 @@ function initializeDiabeticCaseQuizPage() {
     state.caseResults = [];
     state.isComplete = false;
     state.renderedCaseIndex = -1;
-    state.renderedOverlayKey = "";
     resetQuestionState();
+    closeIntroModal();
     closeResultsModal();
     render();
   };
-
-  prevOverlay.addEventListener("click", () => {
-    if (state.submitted) return;
-    state.overlayIndex =
-      (state.overlayIndex + DIABETIC_CASE_QUIZ_OVERLAYS.length - 1) %
-      DIABETIC_CASE_QUIZ_OVERLAYS.length;
-    renderCaseVisual();
-  });
-
-  nextOverlay.addEventListener("click", () => {
-    if (state.submitted) return;
-    state.overlayIndex =
-      (state.overlayIndex + 1) % DIABETIC_CASE_QUIZ_OVERLAYS.length;
-    renderCaseVisual();
-  });
 
   previousButton.addEventListener("click", () => {
     if (state.questionIndex <= 0) return;
@@ -3430,10 +3879,20 @@ function initializeDiabeticCaseQuizPage() {
     submitCurrentCase();
   });
 
+  introCloseButtons.forEach((button) => {
+    if (button.dataset.wired === "1") return;
+    button.dataset.wired = "1";
+    button.addEventListener("click", closeIntroModal);
+  });
+
   resultsCloseButtons.forEach((button) => {
     if (button.dataset.wired === "1") return;
     button.dataset.wired = "1";
     button.addEventListener("click", closeResultsModal);
+  });
+
+  introModal.addEventListener("click", (event) => {
+    if (event.target === introModal) closeIntroModal();
   });
 
   resultsModal.addEventListener("click", (event) => {
@@ -3445,10 +3904,24 @@ function initializeDiabeticCaseQuizPage() {
     document.addEventListener("page:shown", (event) => {
       if (event.detail?.id !== "diabeticCaseQuizPage") return;
       resetQuiz();
+      openIntroModal();
     });
   }
 
+  const openIntroIfVisible = () => {
+    if (window.getComputedStyle(page).display !== "none") {
+      openIntroModal();
+      return true;
+    }
+    return false;
+  };
+
   resetQuiz();
+  window.requestAnimationFrame(() => {
+    if (!openIntroIfVisible()) {
+      window.setTimeout(openIntroIfVisible, 250);
+    }
+  });
 }
 
 function initializeReviewVideoQuizPage() {

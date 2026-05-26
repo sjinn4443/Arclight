@@ -1,0 +1,112 @@
+.cup-achievement {
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: 8px;
+  padding: 10px 12px;
+  border: 1px solid rgba(86, 92, 104, 0.8);
+  border-radius: 12px;
+  background: linear-gradient(180deg, #7e8693, #666e7b);
+  color: #ccd2dc;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  text-align: left;
+  font-family: var(--font-ui, Inter, "Segoe UI", Arial, sans-serif);
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1.25;
+  box-shadow: none;
+}
+
+.cup-achievement[hidden] {
+  display: none !important;
+}
+
+.cup-achievement-icon {
+  flex: 0 0 auto;
+  color: #c2c8d2;
+  font-size: 1.1rem;
+  line-height: 1;
+  filter: grayscale(1);
+}
+
+.cup-achievement-details {
+  min-width: 0;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.cup-achievement-code {
+  color: #e0e4ea;
+  font-size: 0.66rem;
+  font-weight: 700;
+  line-height: 1.1;
+  overflow-wrap: anywhere;
+}
+
+.cup-download-button {
+  flex: 0 0 auto;
+  min-height: 30px;
+  padding: 6px 9px;
+  border: 1px solid rgba(78, 86, 99, 0.62);
+  border-radius: 8px;
+  background: linear-gradient(180deg, #b0b8c4, #929ca9);
+  color: #3d4452;
+  font: inherit;
+  font-size: 0.75rem;
+  line-height: 1.15;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: none;
+}
+
+.cup-download-button:hover {
+  filter: brightness(1.01);
+}
+
+.cup-download-button:disabled {
+  opacity: 0.46;
+  cursor: not-allowed;
+}
+
+.cup-achievement.is-locked {
+  opacity: 0.62;
+  filter: saturate(0.2) brightness(0.85);
+}
+
+.cup-achievement.is-unlocked {
+  border-color: rgba(105, 66, 8, 0.45);
+  background: linear-gradient(180deg, #ffe7a8, #f2b840);
+  color: #4f3100;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.24);
+  opacity: 1;
+  filter: none;
+  animation: cup-pop 0.22s ease-out;
+}
+
+.cup-achievement.is-unlocked .cup-achievement-icon {
+  color: #8a5300;
+  filter: grayscale(0);
+}
+
+.cup-achievement.is-unlocked .cup-achievement-code {
+  color: #6b4100;
+}
+
+.cup-achievement.is-unlocked .cup-download-button {
+  border-color: rgba(94, 56, 0, 0.5);
+  background: linear-gradient(180deg, #fff4d2, #ffd36f);
+  color: #4f3100;
+}
+
+@keyframes cup-pop {
+  from {
+    transform: scale(0.97);
+  }
+  to {
+    transform: scale(1);
+  }
+}
