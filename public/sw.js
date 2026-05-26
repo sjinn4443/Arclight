@@ -1,5 +1,5 @@
 /* sw.js — Arclight PWA service worker */
-const CACHE_NAME = "arclight-static-v18";
+const CACHE_NAME = "arclight-static-v19";
 const CORE_ASSETS = [
   "/",
   "/index.html",
@@ -90,12 +90,21 @@ async function createRangeResponse(request, cachedResponse) {
   });
 }
 
-async function cacheUrls(urls) {
+function postCacheProgress(port, payload) {
+  try {
+    port?.postMessage?.(payload);
+  } catch {
+    void 0;
+  }
+}
+
+async function cacheUrls(urls, port) {
   const cache = await caches.open(CACHE_NAME);
   let cached = 0;
   const failed = [];
+  const total = urls.length;
 
-  for (const url of urls) {
+  for (const [index, url] of urls.entries()) {
     try {
       const requestUrl = new URL(url, self.location.origin).href;
       const request = new Request(requestUrl, { cache: "no-store" });
@@ -109,9 +118,20 @@ async function cacheUrls(urls) {
     } catch {
       failed.push(url);
     }
+
+    const processed = index + 1;
+    if (processed === total || processed % 10 === 0) {
+      postCacheProgress(port, {
+        type: "CACHE_PROGRESS",
+        cached,
+        failed: failed.length,
+        processed,
+        total,
+      });
+    }
   }
 
-  return { cached, failed };
+  return { cached, failed, total };
 }
 
 self.addEventListener("install", (event) => {
@@ -275,11 +295,12 @@ async function handleMessage(event) {
 
   if (data.type === "CACHE_URLS" || data.type === "CACHE_ASSETS") {
     const urls = data.payload || [];
+    const port = ports?.[0];
     try {
-      const result = await cacheUrls(urls);
-      ports?.[0]?.postMessage?.({ type: "CACHE_DONE", ...result });
+      const result = await cacheUrls(urls, port);
+      postCacheProgress(port, { type: "CACHE_DONE", ...result });
     } catch (err) {
-      ports?.[0]?.postMessage?.({ type: "CACHE_ERROR", error: String(err) });
+      postCacheProgress(port, { type: "CACHE_ERROR", error: String(err) });
     }
   }
 }

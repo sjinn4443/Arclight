@@ -110,6 +110,31 @@ function showDownloadAppModal() {
     const closeBtn = document.getElementById("closeDownloadAppModalBtn");
     const notNowBtn = document.getElementById("notNowBtn");
     const downloadBtn = document.getElementById("downloadAllBtn");
+    const titleEl = document.getElementById("downloadAppTitle");
+    const content = modal.querySelector(".modal-content");
+
+    if (titleEl) titleEl.textContent = "Would you like to download the app?";
+    if (content) {
+      content.innerHTML = `
+        <p data-i18n="languageInstall.downloadAppContent">
+          Downloads key app pages and media for offline use.
+        </p>
+        <p data-i18n="languageInstall.downloadStorageNotice">
+          This app requires about 1 GB of storage.
+        </p>
+      `;
+    }
+
+    closeBtn?.removeAttribute("hidden");
+    notNowBtn?.removeAttribute("hidden");
+    if (closeBtn) closeBtn.onclick = null;
+    if (notNowBtn) notNowBtn.textContent = "Not Now";
+    if (downloadBtn) {
+      downloadBtn.onclick = null;
+      downloadBtn.removeAttribute("hidden");
+      downloadBtn.disabled = false;
+      downloadBtn.textContent = "Download Now";
+    }
 
     let settled = false;
     const finish = (value) => {
@@ -135,6 +160,144 @@ function showDownloadAppModal() {
     modal.addEventListener("click", onOverlayClick);
     modal.classList.remove("hidden");
   });
+}
+
+function setDownloadModalBusy({ title, message, detail }) {
+  const modal = document.getElementById("downloadAppModal");
+  const titleEl = document.getElementById("downloadAppTitle");
+  const content = modal?.querySelector(".modal-content");
+  const closeBtn = document.getElementById("closeDownloadAppModalBtn");
+  const notNowBtn = document.getElementById("notNowBtn");
+  const downloadBtn = document.getElementById("downloadAllBtn");
+
+  if (!modal || !titleEl || !content) return;
+
+  titleEl.textContent = title;
+  content.innerHTML = "";
+
+  const messageEl = document.createElement("p");
+  messageEl.textContent = message;
+  content.appendChild(messageEl);
+
+  const detailEl = document.createElement("p");
+  detailEl.id = "downloadProgressText";
+  detailEl.textContent = detail;
+  content.appendChild(detailEl);
+
+  closeBtn?.setAttribute("hidden", "");
+  notNowBtn?.setAttribute("hidden", "");
+  if (downloadBtn) {
+    downloadBtn.disabled = true;
+    downloadBtn.textContent = "Downloading...";
+  }
+
+  modal.classList.remove("hidden");
+}
+
+function updateDownloadProgress(processed, total, failed = 0) {
+  const progress = document.getElementById("downloadProgressText");
+  if (!progress) return;
+
+  const failureText = failed ? ` (${failed} failed)` : "";
+  progress.textContent = `Downloaded ${processed} of ${total} files${failureText}.`;
+}
+
+function showDownloadErrorModal(error) {
+  const modal = document.getElementById("downloadAppModal");
+  const titleEl = document.getElementById("downloadAppTitle");
+  const content = modal?.querySelector(".modal-content");
+  const closeBtn = document.getElementById("closeDownloadAppModalBtn");
+  const notNowBtn = document.getElementById("notNowBtn");
+  const downloadBtn = document.getElementById("downloadAllBtn");
+
+  if (!modal || !titleEl || !content) return;
+
+  titleEl.textContent = "Download incomplete";
+  content.innerHTML = "";
+
+  const messageEl = document.createElement("p");
+  messageEl.textContent =
+    "Some app content could not be downloaded. Please stay online and try again before using the app offline.";
+  content.appendChild(messageEl);
+
+  const detailEl = document.createElement("p");
+  detailEl.textContent = String(error?.message || error || "");
+  content.appendChild(detailEl);
+
+  closeBtn?.removeAttribute("hidden");
+  notNowBtn?.removeAttribute("hidden");
+  if (notNowBtn) {
+    notNowBtn.textContent = "Close";
+    notNowBtn.onclick = () => hideDownloadAppModal();
+  }
+  if (closeBtn) {
+    closeBtn.onclick = () => hideDownloadAppModal();
+  }
+  if (downloadBtn) {
+    downloadBtn.setAttribute("hidden", "");
+  }
+
+  modal.classList.remove("hidden");
+}
+
+function hideDownloadAppModal() {
+  document.getElementById("downloadAppModal")?.classList.add("hidden");
+}
+
+async function sendUrlsToServiceWorker(urls, onProgress) {
+  const registration = await navigator.serviceWorker.ready;
+  const worker = registration.active || navigator.serviceWorker.controller;
+  if (!worker) {
+    throw new Error("Service worker is not active yet.");
+  }
+
+  return await new Promise((resolve, reject) => {
+    const channel = new MessageChannel();
+
+    channel.port1.onmessage = (event) => {
+      const message = event.data || {};
+      if (message.type === "CACHE_PROGRESS") {
+        onProgress?.(message);
+        return;
+      }
+
+      if (message.type === "CACHE_DONE") {
+        if (message.failed?.length) {
+          reject(
+            new Error(
+              `${message.failed.length} files failed to download for offline use.`,
+            ),
+          );
+          return;
+        }
+        resolve(message);
+        return;
+      }
+
+      if (message.type === "CACHE_ERROR") {
+        reject(new Error(message.error || "Offline download failed."));
+      }
+    };
+
+    worker.postMessage({ type: "CACHE_URLS", payload: urls }, [channel.port2]);
+  });
+}
+
+async function cacheOfflineUrls(urlsToCache, totalBytes = 0) {
+  const sizeGb = totalBytes ? (totalBytes / 1000000000).toFixed(1) : "1.0";
+
+  setDownloadModalBusy({
+    title: "Downloading app content",
+    message:
+      "Downloading videos, images, animations, and app pages for offline use.",
+    detail: `Downloaded 0 of ${urlsToCache.length} files. About ${sizeGb} GB required.`,
+  });
+
+  await sendUrlsToServiceWorker(urlsToCache, ({ processed, total, failed }) => {
+    updateDownloadProgress(processed, total, failed);
+  });
+
+  hideDownloadAppModal();
 }
 
 function normalizeChildhoodPilotSubtitleCacheLanguage(lang) {
@@ -272,6 +435,18 @@ export function initializeLanguageInstall() {
             window.matchMedia?.("(display-mode: standalone)")?.matches ||
             window.navigator.standalone === true;
           if (isStandalone) {
+            const confirmedDownload = await showDownloadAppModal();
+            if (!confirmedDownload) return;
+
+            try {
+              const manifest = await fetchAllOfflineAssetUrls();
+              await cacheOfflineUrls(manifest.urls, manifest.bytes);
+            } catch (err) {
+              console.warn("[install] could not cache standalone app:", err);
+              showDownloadErrorModal(err);
+              return;
+            }
+
             loadPage("onboarding");
             return;
           }
@@ -304,7 +479,7 @@ export function initializeLanguageInstall() {
 
         // Accepted → warm cache (best-effort) then advance
         try {
-          const sw = await navigator.serviceWorker.ready;
+          await navigator.serviceWorker.ready;
           const chosen =
             (langSelect && langSelect.value) || getLanguage() || "en";
 
@@ -460,19 +635,12 @@ export function initializeLanguageInstall() {
             );
           }
 
-          sw.active?.postMessage({
-            type: "CACHE_URLS",
-            payload: urlsToCache,
-          });
-          console.warn(
-            "[install] sent assets to SW:",
-            urlsToCache.length,
-            "files",
-            offlineAssetManifest?.bytes || "fallback-size-unknown",
-            "bytes",
-          );
+          await cacheOfflineUrls(urlsToCache, offlineAssetManifest?.bytes || 0);
+          console.warn("[install] cached all app assets:", urlsToCache.length);
         } catch (err) {
           console.warn("[install] could not warm cache:", err);
+          showDownloadErrorModal(err);
+          return;
         }
 
         try {
