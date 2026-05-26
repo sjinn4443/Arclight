@@ -79,6 +79,7 @@ const ENGLISH_LANGUAGE_LABELS = {
 };
 
 const ESTIMATED_DOWNLOAD_BYTES_PER_MINUTE = 120 * 1000 * 1000;
+const MAX_FAILED_FILES_DISPLAY = 12;
 const VIDEO_ASSET_EXTENSIONS = new Set([
   ".m3u8",
   ".m4s",
@@ -188,6 +189,16 @@ function getAssetPath(url) {
     return decodeURI(String(url || ""))
       .split(/[?#]/)[0]
       .toLowerCase();
+  }
+}
+
+function getDisplayAssetPath(url) {
+  try {
+    return decodeURI(new URL(url, window.location.origin).pathname).split(
+      /[?#]/,
+    )[0];
+  } catch {
+    return decodeURI(String(url || "")).split(/[?#]/)[0];
   }
 }
 
@@ -376,6 +387,48 @@ function getDownloadChoiceLabel(choice) {
   return "Full content";
 }
 
+function getVideoQualitySummary(videoQuality) {
+  if (videoQuality === "low") return "in low resolution";
+  if (videoQuality === "high") return "in high resolution";
+  return "in low and high resolution";
+}
+
+function getSelectedContentSummary(downloadSelection) {
+  if (!downloadSelection || Array.isArray(downloadSelection)) {
+    return "selected downloaded content";
+  }
+
+  if (downloadSelection.mode === "app-only") {
+    return "app pages, text, and images";
+  }
+
+  const qualitySummary = getVideoQualitySummary(downloadSelection.videoQuality);
+  if (downloadSelection.mode === "select") {
+    const catalogSummaries = {
+      core: "core examination videos and interactive content",
+      conditions: "condition videos, images, and mini apps",
+      workshops: "workshop videos, images, quizzes, and pages",
+      extended: "extended examination content and mini apps",
+      tools: "tool overview videos and related assets",
+    };
+    return `${catalogSummaries[downloadSelection.catalogId] || "selected Eyes catalog content"} ${qualitySummary}`;
+  }
+
+  return `videos, images, animations, and app pages ${qualitySummary}`;
+}
+
+function getNormallyAvailableItems(downloadSelection) {
+  const items = ["App quizzes"];
+  const selectedContentSummary = getSelectedContentSummary(downloadSelection);
+  if (selectedContentSummary) items.push(selectedContentSummary);
+  return items;
+}
+
+function formatFailedAssetName(url) {
+  const path = getDisplayAssetPath(url).replace(/^\/+/, "");
+  return path || String(url || "Unknown file");
+}
+
 function resolveOfflineDownloadSelection(manifest, choice = {}) {
   const allAssets = getOfflineManifestAssets(manifest);
   const availableUrls = new Set(allAssets.map((asset) => asset.url));
@@ -413,6 +466,7 @@ function resolveOfflineDownloadSelection(manifest, choice = {}) {
 
   return {
     bytes: bytes || fallbackBytes,
+    catalogId,
     count: assets.length,
     label:
       mode === "app-only"
@@ -424,8 +478,18 @@ function resolveOfflineDownloadSelection(manifest, choice = {}) {
   };
 }
 
-function getDownloadEstimateText(selection) {
-  return `${formatEstimatedDownloadTime(selection.bytes)} Download size: ${formatDownloadSize(selection.bytes)}.`;
+function renderDownloadEstimate(target, selection) {
+  target.replaceChildren();
+
+  const timeEl = document.createElement("span");
+  timeEl.className = "download-estimate__highlight";
+  timeEl.textContent = formatEstimatedDownloadTime(selection.bytes);
+
+  const sizeEl = document.createElement("span");
+  sizeEl.className = "download-estimate__highlight";
+  sizeEl.textContent = `Download size: ${formatDownloadSize(selection.bytes)}.`;
+
+  target.append(timeEl, document.createTextNode(" "), sizeEl);
 }
 
 function showDownloadAppModal(manifest) {
@@ -565,7 +629,7 @@ function showDownloadAppModal(manifest) {
         videoQualityDescription.textContent =
           selectedVideoQuality?.description || "";
       }
-      if (estimate) estimate.textContent = getDownloadEstimateText(selection);
+      if (estimate) renderDownloadEstimate(estimate, selection);
     };
 
     const cancel = () => finish(null);
@@ -649,12 +713,52 @@ function showDownloadErrorModal(error) {
 
   const messageEl = document.createElement("p");
   messageEl.textContent =
-    "Some app content could not be downloaded. Please stay online and try again before using the app offline.";
+    "Some app content could not be downloaded. The items below may not work offline until you try again.";
   content.appendChild(messageEl);
 
-  const detailEl = document.createElement("p");
-  detailEl.textContent = String(error?.message || error || "");
-  content.appendChild(detailEl);
+  const failedUrls = Array.isArray(error?.failedUrls) ? error.failedUrls : [];
+  if (failedUrls.length) {
+    const failedTitle = document.createElement("p");
+    failedTitle.className = "download-failure-summary";
+    failedTitle.textContent = "Failed files:";
+    content.appendChild(failedTitle);
+
+    const failedList = document.createElement("ul");
+    failedList.className = "download-failed-list";
+    failedUrls.slice(0, MAX_FAILED_FILES_DISPLAY).forEach((url) => {
+      const item = document.createElement("li");
+      item.textContent = formatFailedAssetName(url);
+      failedList.appendChild(item);
+    });
+
+    if (failedUrls.length > MAX_FAILED_FILES_DISPLAY) {
+      const item = document.createElement("li");
+      item.textContent = `and ${failedUrls.length - MAX_FAILED_FILES_DISPLAY} more files`;
+      failedList.appendChild(item);
+    }
+
+    content.appendChild(failedList);
+  } else {
+    const detailEl = document.createElement("p");
+    detailEl.textContent = String(error?.message || error || "");
+    content.appendChild(detailEl);
+  }
+
+  if (error?.downloadSelection) {
+    const availableIntro = document.createElement("p");
+    availableIntro.textContent =
+      "Aside from those failed files, these are ready to use normally:";
+    content.appendChild(availableIntro);
+
+    const availableList = document.createElement("ul");
+    availableList.className = "download-available-list";
+    getNormallyAvailableItems(error.downloadSelection).forEach((label) => {
+      const item = document.createElement("li");
+      item.textContent = label;
+      availableList.appendChild(item);
+    });
+    content.appendChild(availableList);
+  }
 
   closeBtn?.removeAttribute("hidden");
   notNowBtn?.removeAttribute("hidden");
@@ -695,11 +799,13 @@ async function sendUrlsToServiceWorker(urls, onProgress) {
 
       if (message.type === "CACHE_DONE") {
         if (message.failed?.length) {
-          reject(
-            new Error(
-              `${message.failed.length} files failed to download for offline use.`,
-            ),
+          const downloadError = new Error(
+            `${message.failed.length} files failed to download for offline use.`,
           );
+          downloadError.cached = message.cached;
+          downloadError.failedUrls = message.failed;
+          downloadError.total = message.total;
+          reject(downloadError);
           return;
         }
         resolve(message);
@@ -733,9 +839,23 @@ async function cacheOfflineUrls(downloadSelection, totalBytes = 0) {
     detail: `Downloaded 0 of ${urlsToCache.length} files. ${selectedLabel}: ${sizeText}.`,
   });
 
-  await sendUrlsToServiceWorker(urlsToCache, ({ processed, total, failed }) => {
-    updateDownloadProgress(processed, total, failed);
-  });
+  try {
+    await sendUrlsToServiceWorker(
+      urlsToCache,
+      ({ processed, total, failed }) => {
+        updateDownloadProgress(processed, total, failed);
+      },
+    );
+  } catch (error) {
+    const downloadError =
+      error instanceof Error
+        ? error
+        : new Error(String(error || "Offline download failed."));
+    if (downloadSelection && !Array.isArray(downloadSelection)) {
+      downloadError.downloadSelection = downloadSelection;
+    }
+    throw downloadError;
+  }
 
   hideDownloadAppModal();
 }

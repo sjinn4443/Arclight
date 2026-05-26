@@ -957,6 +957,37 @@ input:checked + .slider:before {
   font-weight: 700;
 }
 
+#downloadAppModal .download-estimate__highlight,
+#downloadAppModal .download-failure-summary,
+#downloadAppModal .download-failed-list {
+  color: #d71920;
+  font-weight: 800;
+}
+
+#downloadAppModal .download-failed-list,
+#downloadAppModal .download-available-list {
+  margin: 8px 0 14px;
+  padding-left: 18px;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+#downloadAppModal .download-failed-list {
+  max-height: 120px;
+  overflow-y: auto;
+  overflow-wrap: anywhere;
+}
+
+#downloadAppModal .download-available-list {
+  color: #202124;
+  font-weight: 600;
+}
+
+#downloadAppModal .download-failed-list li + li,
+#downloadAppModal .download-available-list li + li {
+  margin-top: 4px;
+}
+
 #downloadAppModal .modal-footer {
   display: grid;
   grid-template-columns: 1fr 1fr;
