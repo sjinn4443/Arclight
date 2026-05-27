@@ -1317,7 +1317,6 @@
         position: relative;
         width: 320px;
         height: min(62vh, 520px);
-        --acd-stage-shift-y: 40px;
         background: #000;
         border-radius: 16px;
         overflow: hidden;
@@ -1329,7 +1328,7 @@
       #glaucomaACDInteractive #acdEyesImg {
         position: absolute;
         left: 50%;
-        top: calc(46% + var(--acd-stage-shift-y));
+        top: 52%;
         transform: translate(-50%, -50%);
         width: min(92%, 720px);
         height: auto;
@@ -1339,11 +1338,11 @@
 
       #glaucomaACDInteractive #acdCrescentRight {
         position: absolute;
-        left: 235px;
-        top: calc(218px + var(--acd-stage-shift-y));
+        left: 236px;
+        top: 246px;
         transform: translate(-50%, -50%) scaleX(-1);
-        width: 56px;
-        height: 35px;
+        width: 50px;
+        height: 32px;
         background: rgba(0, 0, 0, 0.62);
         border-radius: 999px;
         opacity: 0;
@@ -1368,7 +1367,7 @@
       #glaucomaACDInteractive #acdShadowImg {
         position: absolute;
         left: 214px;
-        top: calc(65px + var(--acd-stage-shift-y));
+        top: 65px;
         transform: translate(-50%, -50%);
         width: 29px;
         height: 17px;
@@ -1388,25 +1387,25 @@
         display: none;
       }
       #glaucomaACDInteractive #acdNormalFlashImg {
+        top: 46px;
         left: -31px;
-        width: 53px;
+        width: 80px;
         z-index: 999;
-        top: 78px;
       }
       #glaucomaACDInteractive #acdNormalArrowImg {
-        top: calc(60px + var(--acd-stage-shift-y));
+        top: 60px;
         left: -48px;
         width: 192px;
         transform: scaleX(-1);
       }
       #glaucomaACDInteractive #acdShallowFlashImg {
-        right: -16px;
-        width: 53px;
+        top: 47px;
+        right: -33px;
+        width: 83px;
         z-index: 999;
-        top: 78px;
       }
       #glaucomaACDInteractive #acdShallowArrowImg {
-        top: calc(65px + var(--acd-stage-shift-y));
+        top: 65px;
         right: -23px;
         width: 124px;
       }
@@ -1430,8 +1429,8 @@
       /* flashlight OFF (pickup) */
       #glaucomaACDInteractive #acdFlashlightOff {
         position: absolute;
-        top: calc(276px + var(--acd-stage-shift-y));
-        left: 312px;
+        top: 56%;
+        left: 95%;
         transform: translate(-50%, -50%);
         width: 14px;
         height: auto;
@@ -1446,7 +1445,7 @@
       /* speech bubble */
       #glaucomaACDInteractive #acdBubble {
         position: absolute;
-        top: calc(26% + var(--acd-stage-shift-y));
+        top: 26%;
         left: 72%;
         transform: translate(-50%, -50%);
         width: 40vw;
@@ -1474,7 +1473,7 @@
       /* flashlight ON (left + right), initially hidden */
       #glaucomaACDInteractive .acd-flashlight {
         position: absolute;
-        top: calc(276px + var(--acd-stage-shift-y));
+        top: 304px;
         width: 94px;
         height: auto;
         transform: translate(-50%, -50%);
@@ -1509,7 +1508,7 @@
       }
 
       #glaucomaACDInteractive .acd-label {
-        top: calc(53px + var(--acd-stage-shift-y));
+        top: 53px;
       }
 
       /* label images */

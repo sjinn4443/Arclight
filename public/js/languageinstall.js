@@ -112,6 +112,41 @@ const OFFLINE_CATALOG_OPTIONS = [
       "Includes History Taking, Visual Acuity, Pupils, Front of Eye, Fundal Reflex, Ophthalmoscopy and Interactive Learning.",
   },
   {
+    id: "core-history",
+    label: "History Taking",
+    description: "Downloads history taking case studies and related images.",
+  },
+  {
+    id: "core-visual-acuity",
+    label: "Visual Acuity",
+    description: "Downloads visual acuity videos and supporting content.",
+  },
+  {
+    id: "core-pupils",
+    label: "Pupils",
+    description: "Downloads pupil examination and RAPD content.",
+  },
+  {
+    id: "core-front-of-eye",
+    label: "Front of Eye",
+    description: "Downloads front of eye and anterior segment content.",
+  },
+  {
+    id: "core-fundal-reflex",
+    label: "Fundal Reflex",
+    description: "Downloads fundal reflex videos, images and handouts.",
+  },
+  {
+    id: "core-ophthalmoscopy",
+    label: "Ophthalmoscopy",
+    description: "Downloads direct ophthalmoscopy videos and PDF content.",
+  },
+  {
+    id: "core-interactive-learning",
+    label: "Interactive Learning",
+    description: "Downloads mini apps and interactive learning assets.",
+  },
+  {
     id: "conditions",
     label: "Conditions",
     description:
@@ -155,7 +190,7 @@ const VIDEO_QUALITY_OPTIONS = [
 
 initializePWA();
 
-async function fetchAllOfflineAssetUrls() {
+export async function fetchAllOfflineAssetUrls() {
   const res = await fetch("/api/app/offline-assets", { cache: "no-store" });
   if (!res.ok) {
     throw new Error(`Offline asset manifest failed: ${res.status}`);
@@ -263,6 +298,65 @@ function isAppShellAsset(url) {
 
 function matchesOfflineCatalog(url, catalogId) {
   const assetPath = getAssetPath(url);
+
+  if (catalogId === "core-history") {
+    return (
+      assetPath.includes("history") ||
+      assetPath.includes("casestudy") ||
+      assetPath.includes("case-study") ||
+      assetPath.includes("case_study")
+    );
+  }
+
+  if (catalogId === "core-visual-acuity") {
+    return (
+      assetPath.startsWith("/videos/core/visualacuity/") ||
+      assetPath.includes("visualacuity") ||
+      assetPath.includes("visual-acuity") ||
+      assetPath.includes("visual_acuity") ||
+      assetPath.includes("/va_")
+    );
+  }
+
+  if (catalogId === "core-pupils") {
+    return assetPath.includes("pupil") || assetPath.includes("rapd");
+  }
+
+  if (catalogId === "core-front-of-eye") {
+    return (
+      assetPath.includes("frontofeye") ||
+      assetPath.includes("front-of-eye") ||
+      assetPath.includes("front_of_eye") ||
+      assetPath.includes("anteriorsegment") ||
+      assetPath.includes("anterior-segment")
+    );
+  }
+
+  if (catalogId === "core-fundal-reflex") {
+    return (
+      assetPath.includes("fundalreflex") ||
+      assetPath.includes("fundal-reflex") ||
+      assetPath.includes("fundal_reflex") ||
+      assetPath.includes("/fundal/")
+    );
+  }
+
+  if (catalogId === "core-ophthalmoscopy") {
+    return (
+      assetPath.includes("ophthalmoscopy") ||
+      assetPath === "/videos/do_220p.mp4" ||
+      assetPath.startsWith("/images/pdf/workshop/do/") ||
+      assetPath.startsWith("/images/pdf/workshop/bio/")
+    );
+  }
+
+  if (catalogId === "core-interactive-learning") {
+    return (
+      assetPath.startsWith("/subapp/") ||
+      assetPath.includes("interactive") ||
+      assetPath.includes("miniapp")
+    );
+  }
 
   if (catalogId === "core") {
     return (
@@ -410,6 +504,13 @@ function getSelectedContentSummary(downloadSelection) {
   if (downloadSelection.mode === "select") {
     const catalogSummaries = {
       core: "core examination videos and interactive content",
+      "core-history": "history taking case studies and related content",
+      "core-visual-acuity": "visual acuity videos and related content",
+      "core-pupils": "pupils and RAPD content",
+      "core-front-of-eye": "front of eye and anterior segment content",
+      "core-fundal-reflex": "fundal reflex videos, images and handouts",
+      "core-ophthalmoscopy": "ophthalmoscopy videos and PDF content",
+      "core-interactive-learning": "interactive learning mini app content",
       conditions: "condition videos, images and mini apps",
       workshops: "workshop videos, images, quizzes and pages",
       extended: "extended examination content and mini apps",
@@ -433,7 +534,7 @@ function formatFailedAssetName(url) {
   return path || String(url || "Unknown file");
 }
 
-function resolveOfflineDownloadSelection(manifest, choice = {}) {
+export function resolveOfflineDownloadSelection(manifest, choice = {}) {
   const allAssets = getOfflineManifestAssets(manifest);
   const availableUrls = new Set(allAssets.map((asset) => asset.url));
   const mode = choice.mode || "full";
@@ -501,9 +602,46 @@ function renderDownloadEstimate(target, selection) {
   target.append(timeEl, networkNoteEl, sizeEl);
 }
 
-function showDownloadAppModal(manifest) {
+function ensureDownloadAppModal() {
+  let modal = document.getElementById("downloadAppModal");
+  if (modal) return modal;
+
+  modal = document.createElement("div");
+  modal.id = "downloadAppModal";
+  modal.className = "modal-overlay hidden";
+  modal.setAttribute("role", "dialog");
+  modal.setAttribute("aria-modal", "true");
+  modal.setAttribute("aria-labelledby", "downloadAppTitle");
+  modal.innerHTML = `
+    <div class="modal-box download-modal">
+      <div class="modal-header">
+        <span id="downloadAppTitle">Download options</span>
+        <button
+          type="button"
+          class="modal-close"
+          id="closeDownloadAppModalBtn"
+          aria-label="Close"
+        >&times;</button>
+      </div>
+      <div class="modal-content"></div>
+      <div class="modal-footer">
+        <button type="button" id="notNowBtn">Not Now</button>
+        <button type="button" id="downloadAllBtn">Download Now</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modal);
+  try {
+    window.I18N?.applyTranslations?.(modal);
+  } catch {
+    void 0;
+  }
+  return modal;
+}
+
+export function showDownloadAppModal(manifest) {
   return new Promise((resolve) => {
-    const modal = document.getElementById("downloadAppModal");
+    const modal = ensureDownloadAppModal();
     if (!modal) {
       resolve({
         catalogId: OFFLINE_CATALOG_OPTIONS[0].id,
@@ -704,8 +842,8 @@ function updateDownloadProgress(processed, total, failed = 0) {
   progress.textContent = `Downloaded ${processed} of ${total} files${failureText}.`;
 }
 
-function showDownloadErrorModal(error) {
-  const modal = document.getElementById("downloadAppModal");
+export function showDownloadErrorModal(error) {
+  const modal = ensureDownloadAppModal();
   const titleEl = document.getElementById("downloadAppTitle");
   const content = modal?.querySelector(".modal-content");
   const closeBtn = document.getElementById("closeDownloadAppModalBtn");
@@ -827,7 +965,7 @@ async function sendUrlsToServiceWorker(urls, onProgress) {
   });
 }
 
-async function cacheOfflineUrls(downloadSelection, totalBytes = 0) {
+export async function cacheOfflineUrls(downloadSelection, totalBytes = 0) {
   const urlsToCache = Array.isArray(downloadSelection)
     ? downloadSelection
     : downloadSelection.urls;

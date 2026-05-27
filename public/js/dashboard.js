@@ -48,6 +48,33 @@ async function translateDashboardParts(parts = []) {
     .map(({ path, fallback }) => get(dashboardI18nDict, path) ?? fallback)
     .join(" | ");
 }
+
+async function openDashboardDownloadModal() {
+  const {
+    cacheOfflineUrls,
+    fetchAllOfflineAssetUrls,
+    resolveOfflineDownloadSelection,
+    showDownloadAppModal,
+    showDownloadErrorModal,
+  } = await import("./languageinstall.js");
+
+  try {
+    const manifest = await fetchAllOfflineAssetUrls();
+    const downloadChoice = await showDownloadAppModal(manifest);
+    if (!downloadChoice) return;
+
+    const downloadSelection = resolveOfflineDownloadSelection(
+      manifest,
+      downloadChoice,
+    );
+    await navigator.serviceWorker.ready;
+    await cacheOfflineUrls(downloadSelection);
+  } catch (err) {
+    console.warn("[dashboard] could not download offline content:", err);
+    showDownloadErrorModal(err);
+  }
+}
+
 /**
  * Initializes the unified dashboard page.
  * Sets up user greetings, event listeners for menu button, category cards,
@@ -271,11 +298,11 @@ export function initializeDashboard() {
   root.querySelectorAll(".quick-actions .pill").forEach((pill) => {
     const action = (pill.getAttribute("data-action") || "").trim();
     if (action === "atomscard") {
-      pill.addEventListener("click", () => loadPage("atomscard"), {
-        once: true,
-      });
+      pill.addEventListener("click", () => loadPage("atomscard"));
     } else if (action === "offline") {
-      pill.addEventListener("click", () => loadPage("offline"), { once: true });
+      pill.addEventListener("click", () => {
+        void openDashboardDownloadModal();
+      });
     }
   });
 

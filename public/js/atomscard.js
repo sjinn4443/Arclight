@@ -173,6 +173,11 @@ function initializeTOC() {
     closeTOCBtn.addEventListener("click", closeTOC);
   }
 
+  const tocInlineCloseBtn = document.getElementById("tocInlineCloseBtn");
+  if (tocInlineCloseBtn) {
+    tocInlineCloseBtn.addEventListener("click", closeTOC);
+  }
+
   const eyesBtn = document.getElementById("eyesTab");
   if (eyesBtn) {
     eyesBtn.addEventListener("click", () => showTOC("eyes"));

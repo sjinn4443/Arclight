@@ -28,6 +28,31 @@ const MY_LEARNING_TAG_I18N_KEYS = Object.freeze({
   "Mini Apps": "eyes.tag_mini_apps",
   "Mini App": "eyes.tag_mini_app",
 });
+const MY_LEARNING_EYES_IMAGE_MAP = Object.freeze({
+  "History Taking": "images/icon/eyes/core/car_history.webp",
+  "Visual Acuity": "images/icon/eyes/core/car_visualacuity.webp",
+  Pupils: "images/icon/eyes/core/car_pupils.webp",
+  "Front of Eye": "images/icon/eyes/core/car_frontofeye.webp",
+  "Fundal Reflex": "images/icon/eyes/core/car_fundalreflex.webp",
+  Ophthalmoscopy: "images/icon/eyes/core/car_ophth.webp",
+  "Interactive Learning": "images/icon/eyes/core/car_miniapp.webp",
+  "Uncorrected Refractive Error": "images/icon/eyes/disease/car_uncor.webp",
+  Cataract: "images/icon/eyes/disease/car_cataract.webp",
+  Glaucoma: "images/icon/eyes/disease/car_glaucoma.webp",
+  "Diabetic Retinopathy": "images/icon/eyes/disease/car_diabetic.webp",
+  "Corneal Disease": "images/icon/eyes/disease/car_corneal.webp",
+  "Childhood Eye Screening": "images/icon/eyes/disease/car_childhood.webp",
+  "Retinopathy of Prematurity": "images/icon/eyes/disease/car_rop.webp",
+  "Retinal Disease": "images/icon/eyes/disease/car_retinal.webp",
+  "Optic Nerve Disease": "images/icon/eyes/disease/car_opticnerv.webp",
+  "WHO PEC": "images/icon/eyes/workshop/car_who.webp",
+  Ptosis: "images/icon/eyes/extended/car_ptosis.webp",
+  Proptosis: "images/icon/eyes/extended/car_proptosis.webp",
+  "Eye Movements/Squint": "images/icon/eyes/extended/car_squint.webp",
+  "Cranial Nerve Examination": "images/icon/eyes/extended/car_cranial.webp",
+  "Arclight Overview": "images/icon/eyes/tools/car_arclight.webp",
+  "Holo Overview": "images/icon/eyes/tools/car_holo.webp",
+});
 
 /**
  * Reads liked items from localStorage for a given key and returns them as a Set.
@@ -237,6 +262,14 @@ function pickSize() {
   return "size-l";
 }
 
+function getLearningCardImageSrc(item, title, target) {
+  if (item?.image) return item.image;
+  if (target === "childhoodEyeScreeningWorkshop") {
+    return "images/icon/eyes/workshop/car_childhoodscreen.webp";
+  }
+  return MY_LEARNING_EYES_IMAGE_MAP[title] || "";
+}
+
 /**
  * Ensures a container element exists within the given page for rendering liked items.
  * If no known container is found, a default one is created and appended.
@@ -363,6 +396,18 @@ function renderMyLearnings() {
     const card = cardTemplate.content.querySelector(".ml-card").cloneNode(true);
     card.classList.add(size);
     card.dataset.target = target;
+    const imageSrc = getLearningCardImageSrc(item, title, target);
+    const imageEl = card.querySelector(".ml-card-bg");
+    if (imageEl && imageSrc) {
+      card.classList.add("ml-card--image");
+      imageEl.src = imageSrc;
+      imageEl.alt = title;
+      const imageI18nKey = getEyesCardLabelI18nKey(title);
+      if (imageI18nKey)
+        imageEl.setAttribute("data-i18n", `${imageI18nKey}:alt`);
+    } else if (imageEl) {
+      imageEl.remove();
+    }
 
     const titleEl = card.querySelector("h4");
     if (titleEl) {

@@ -22,6 +22,26 @@ function translateNode(node) {
   }
 }
 
+function ensureDirectQuizTopbar(page) {
+  if (!page || page.querySelector(".direct-quiz-topbar")) return;
+  page.classList.add("has-eyes-topbar");
+
+  const topbar = document.createElement("div");
+  topbar.className = "eyes-topbar direct-quiz-topbar";
+  topbar.style.display = "none";
+  topbar.innerHTML = `
+    <div class="eyes-topbar__title" data-i18n="auto.quizzes.quiz">Quiz</div>
+    <div class="eyes-topbar__icons">
+      <span
+        class="icon menuBtn"
+        aria-label="Menu"
+        data-i18n="i18nExtra.menu_aria_label:aria-label"
+      >☰</span>
+    </div>
+  `;
+  page.prepend(topbar);
+}
+
 function isNepaliLanguage() {
   try {
     return window.I18N?.getLanguage?.() === "ne";
@@ -95,7 +115,7 @@ function _launchQuiz() {
   if (!quizPage) {
     quizPage = document.createElement("div");
     quizPage.id = quizPageId;
-    quizPage.className = "page";
+    quizPage.className = "page has-eyes-topbar";
 
     const host =
       document.getElementById("page-content") ||
@@ -162,6 +182,7 @@ function _launchQuiz() {
     }
   }
 
+  ensureDirectQuizTopbar(quizPage);
   show(quizPageId);
 
   const questions = [

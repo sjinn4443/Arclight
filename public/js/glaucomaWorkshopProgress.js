@@ -1,3 +1,5 @@
+import { syncLessonCompletionTick } from "./lessonCompletionTick.js";
+
 const WORKSHOP_PROGRESS_PREFIX = "glaucomaWorkshop:progress:";
 const WORKSHOP_PROGRESS_EVENT = "glaucomaWorkshop:progress-changed";
 const WORKSHOP_FOLDER_COMPLETED_PREFIX = "glaucomaWorkshop:folderCompletedAt:";
@@ -291,6 +293,8 @@ function setRowProgressUI(row, percent) {
   if (bar) {
     bar.setAttribute("aria-valuenow", String(rounded));
   }
+
+  syncLessonCompletionTick(row, safe);
 }
 
 function getSectionLessonTargets(page, sectionKey) {

@@ -13,6 +13,18 @@ function translateNode(node) {
   }
 }
 
+function preserveQuizTopbar(mount) {
+  const topbarShell = mount
+    .querySelector(":scope > .container.pupils-container .eyes-topbar")
+    ?.cloneNode(true);
+  topbarShell?.classList.add("quiz-desktop-topbar");
+  if (topbarShell) topbarShell.style.display = "none";
+  topbarShell
+    ?.querySelectorAll(".menuBtn")
+    .forEach((button) => (button.textContent = "\u2630"));
+  return topbarShell;
+}
+
 const LEADING_QUESTION_NUMBER_RE =
   /^\s*[\d\uff10-\uff19\u0660-\u0669\u06f0-\u06f9\u0966-\u096f\u09e6-\u09ef\u0c66-\u0c6f]+(?:[.)\u0964\u06d4\uff0e\u3001:])?\s*/;
 
@@ -183,7 +195,9 @@ export function initializeBehavioursQuiz() {
 
   if (!layoutTemplate || !blockTemplate || !optionTemplate) return;
 
+  const topbarShell = preserveQuizTopbar(mount);
   mount.textContent = "";
+  if (topbarShell) mount.appendChild(topbarShell);
   mount.appendChild(layoutTemplate.content.cloneNode(true));
 
   const form = mount.querySelector("#behavioursQuizForm");

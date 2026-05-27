@@ -6,6 +6,26 @@ function translateNode(node) {
   }
 }
 
+function ensureDirectQuizTopbar(page) {
+  if (!page || page.querySelector(".direct-quiz-topbar")) return;
+  page.classList.add("has-eyes-topbar");
+
+  const topbar = document.createElement("div");
+  topbar.className = "eyes-topbar direct-quiz-topbar";
+  topbar.style.display = "none";
+  topbar.innerHTML = `
+    <div class="eyes-topbar__title" data-i18n="auto.quizzes.quiz">Quiz</div>
+    <div class="eyes-topbar__icons">
+      <span
+        class="icon menuBtn"
+        aria-label="Menu"
+        data-i18n="i18nExtra.menu_aria_label:aria-label"
+      >☰</span>
+    </div>
+  `;
+  page.prepend(topbar);
+}
+
 const LEADING_QUESTION_NUMBER_RE =
   /^\s*[\d\uff10-\uff19\u0660-\u0669\u06f0-\u06f9\u0966-\u096f\u09e6-\u09ef\u0c66-\u0c6f]+(?:[.)\u0964\u06d4\uff0e\u3001:])?\s*/;
 
@@ -123,6 +143,7 @@ function _launchQuiz() {
   if (existing) {
     const hasQuizUI = existing.querySelector?.(".quiz-container");
     if (hasQuizUI) {
+      ensureDirectQuizTopbar(existing);
       show(quizPageId);
       translateNode(existing);
       return;
@@ -131,7 +152,7 @@ function _launchQuiz() {
 
   const quizPage = existing || document.createElement("div");
   quizPage.id = quizPageId;
-  quizPage.className = "page";
+  quizPage.className = "page has-eyes-topbar";
 
   const layoutTemplate = document.getElementById("quizLauncherLayoutTemplate");
   if (layoutTemplate) {
@@ -193,6 +214,8 @@ function _launchQuiz() {
     container.appendChild(modal);
     quizPage.replaceChildren(container);
   }
+
+  ensureDirectQuizTopbar(quizPage);
 
   if (!existing) {
     document.getElementById("appRoot")?.appendChild(quizPage);

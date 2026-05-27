@@ -50,6 +50,10 @@ input {
   font-size: clamp(0.9rem, 3.5vw, 1.1rem);
 }
 
+.quiz-desktop-topbar {
+  display: none !important;
+}
+
 /* ============================================= Breakpoints ============================================= */
 /* phone */
 @media (max-width: 37.5em) {
@@ -1155,5 +1159,573 @@ input {
   #videos .page > .diabetic-next-wrap {
     left: calc(22vw - 4px + 10px);
     right: calc(22vw - 4px + 20px);
+  }
+}
+
+/* Desktop UI alignment pass: keep mobile behaviour unchanged. */
+@media (min-width: 1024px) {
+  :root {
+    --desktop-topbar-inset: calc(7vw - 4px);
+    --desktop-topbar-title-left: calc(var(--desktop-topbar-inset) + 56px);
+    --desktop-topbar-icon-right: calc(var(--desktop-topbar-inset) + 20px);
+  }
+
+  p,
+  .guest-modal__text,
+  .download-option__description,
+  .lesson-type,
+  .lesson-meta,
+  .casechat-text,
+  .casechat-draft,
+  .quiz-card,
+  .gsec-prompt {
+    text-wrap: pretty;
+  }
+
+  .lesson-row.is-progress-complete .lesson-type {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .lesson-row.is-progress-complete .lesson-complete-tick {
+    display: inline-flex;
+  }
+
+  #eyesCatalogPage .eyes-top,
+  .page .eyes-topbar,
+  #pupilsPage .eyes-topbar {
+    left: 50% !important;
+    right: auto !important;
+    width: 100vw !important;
+    transform: translateX(-50%) !important;
+    box-sizing: border-box !important;
+    padding-left: var(--desktop-topbar-title-left) !important;
+    padding-right: var(--desktop-topbar-icon-right) !important;
+    background: #fff !important;
+  }
+
+  .page .eyes-topbar__title,
+  #pupilsPage .eyes-topbar__title {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    text-align: left;
+  }
+
+  .page .eyes-topbar,
+  #pupilsPage .eyes-topbar {
+    justify-content: flex-start !important;
+    gap: 12px !important;
+  }
+
+  .page .eyes-topbar > button.icon:not(.menuBtn),
+  #pupilsPage .eyes-topbar > button.icon:not(.menuBtn) {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 36px !important;
+    height: 36px !important;
+    flex: 0 0 36px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: transparent !important;
+    color: #111 !important;
+  }
+
+  .page .eyes-topbar__icons,
+  #pupilsPage .eyes-topbar__icons {
+    margin-left: auto !important;
+  }
+
+  .page .eyes-topbar .icon.menuBtn,
+  #pupilsPage .eyes-topbar .icon.menuBtn,
+  #videos .page .eyes-topbar .icon.menuBtn {
+    position: static !important;
+    top: auto !important;
+    right: auto !important;
+    width: 36px;
+    height: 36px;
+    margin: 0 !important;
+    flex: 0 0 36px;
+  }
+
+  #backBtnGlobal.top-back {
+    left: calc(var(--desktop-topbar-inset) + 10px) !important;
+  }
+
+  #unifiedDashboard .unified-top .icons {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end;
+    gap: 8px !important;
+  }
+
+  #unifiedDashboard .unified-top .menuBtn {
+    position: static !important;
+    top: auto !important;
+    right: auto !important;
+    width: 36px;
+    height: 36px;
+    margin: 0 !important;
+    flex: 0 0 36px;
+  }
+
+  #unifiedDashboard .search-wrap--compact {
+    flex: 0 1 auto;
+    margin: 0 !important;
+  }
+
+  .menu-panel {
+    transform: translateX(15px);
+  }
+
+  .menu-close {
+    right: 14px !important;
+  }
+
+  .guest-modal__close {
+    top: 12px !important;
+    right: 12px !important;
+    width: 34px;
+    height: 34px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    line-height: 1;
+    padding: 0;
+  }
+
+  #likedPage .ml-header {
+    position: sticky;
+    left: auto;
+    right: auto;
+    width: auto;
+    max-width: calc(
+      100vw - var(--desktop-topbar-inset) - var(--desktop-topbar-inset) - 40px
+    );
+    margin-left: auto;
+    margin-right: auto;
+    transform: none;
+    box-sizing: border-box;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  #likedPage .ml-topbar {
+    height: 42px;
+    margin: 0 0 18px;
+    display: flex;
+    align-items: center;
+  }
+
+  #likedPage .ml-title {
+    display: flex;
+    align-items: center;
+    height: 36px;
+    line-height: 1;
+    margin-left: 56px;
+  }
+
+  #likedPage .ml-tabs,
+  #likedPage .search-wrap,
+  #likedPage .ml-chip-row {
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  #likedPage .ml-chip {
+    flex: 1 1 0;
+    max-width: none;
+  }
+
+  #likedPage .ml-container {
+    width: auto;
+    max-width: calc(
+      100vw - var(--desktop-topbar-inset) - var(--desktop-topbar-inset) - 40px
+    );
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 18px;
+  }
+
+  #likedPage .ml-card {
+    overflow: hidden;
+    color: #fff;
+    background: #111;
+    border-radius: 14px;
+    padding: 16px;
+  }
+
+  #likedPage .ml-card--image .ml-card-bg {
+    display: block;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: inherit;
+    pointer-events: none;
+  }
+
+  #likedPage .ml-card--image::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.46) 0%,
+      rgba(0, 0, 0, 0.1) 45%,
+      rgba(0, 0, 0, 0.5) 100%
+    );
+    pointer-events: none;
+  }
+
+  #likedPage .ml-card-header,
+  #likedPage .ml-badges {
+    position: relative;
+    z-index: 1;
+  }
+
+  #likedPage .ml-card h4 {
+    color: #fff;
+    margin-top: 0;
+    font-size: 15px;
+    line-height: 1.18;
+  }
+
+  #likedPage .ml-heart {
+    color: #e11d48;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+  }
+
+  #likedPage .ml-badge {
+    background: rgba(0, 0, 0, 0.56);
+    color: #fff;
+  }
+
+  #myProfilePage.profile-page {
+    width: auto;
+    max-width: calc(
+      100vw - var(--desktop-topbar-inset) - var(--desktop-topbar-inset) - 40px
+    );
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 82px !important;
+  }
+
+  #myProfilePage .profile-topbar {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    right: auto;
+    width: 100vw;
+    transform: translateX(-50%);
+    z-index: 2000;
+    height: 62px;
+    box-sizing: border-box;
+    padding: 0 var(--desktop-topbar-icon-right) 0
+      var(--desktop-topbar-title-left);
+    margin: 0;
+    background: #fff;
+  }
+
+  #myProfilePage .profile-topbar__title {
+    margin-left: 0;
+  }
+
+  #myProfilePage .profile-topbar__icons .icon-btn:not(.menuBtn) {
+    display: none;
+  }
+
+  #myProfilePage .profile-topbar .menuBtn {
+    position: fixed;
+    top: 20px;
+    right: var(--desktop-topbar-icon-right);
+    width: 36px;
+    height: 36px;
+    margin: 0 !important;
+  }
+
+  #tocDropdown {
+    left: 50% !important;
+    right: auto !important;
+    width: min(75vw, 1120px) !important;
+    max-width: min(75vw, 1120px) !important;
+    transform: translate(-50%, 0) !important;
+    display: flex !important;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  #tocDropdown.active {
+    transform: translate(-50%, 0) !important;
+  }
+
+  #tocDropdown.slide-up {
+    transform: translate(-50%, -100%) !important;
+  }
+
+  #tocInlineCloseBtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: min(220px, 34%);
+    min-width: 140px;
+    height: 38px;
+    margin: 12px auto 14px;
+    border: 0;
+    border-radius: 8px;
+    background: #b4342a;
+    color: #fff;
+    font-weight: 700;
+    font-size: 14px;
+    flex: 0 0 auto;
+  }
+
+  #tocList {
+    flex: 1 1 auto;
+    overflow-y: auto;
+  }
+
+  #atomsCardPage .top-right-icons {
+    top: 72px;
+    right: var(--desktop-topbar-icon-right);
+    left: auto;
+  }
+
+  #closeTOCBtn {
+    top: 72px !important;
+    right: var(--desktop-topbar-icon-right) !important;
+    width: 40px !important;
+    height: 40px !important;
+    font-size: 0 !important;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #closeTOCBtn::before {
+    content: "\00d7";
+    font-size: 30px;
+    line-height: 1;
+  }
+
+  #tocToggleBtn {
+    top: 116px !important;
+    left: auto !important;
+    right: var(--desktop-topbar-icon-right) !important;
+  }
+
+  #videos
+    :is(
+      #visualAcuityPage,
+      #frontOfEyePage,
+      #fundalReflexPage,
+      #fundalReflexExaminationScrollPage,
+      #interactiveLearningPage,
+      #directOphthalmoscopy
+    )
+    > .container.pupils-container {
+    padding-top: 96px !important;
+  }
+
+  #fundalReflexExaminationScrollPage
+    > .container.pupils-container
+    > .pupils-subtitle,
+  #fundalReflexExaminationScrollPage
+    > .container.pupils-container
+    > h2.pupils-subtitle {
+    display: block !important;
+  }
+
+  #behavioursquizPage .quiz-container,
+  #childhoodAssessmentQuizPage .quiz-container,
+  #directOphthalmoscopyQuizPage .quiz-container,
+  #glaucomaQuizCaseStudy #glaucomaQuizMount,
+  #glaucomaSecondaryCauseQuizPage #glaucomaSecondaryQuizMount {
+    max-width: min(
+      440px,
+      calc(
+        100vw - var(--desktop-topbar-inset) - var(--desktop-topbar-inset) - 40px
+      )
+    ) !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  #directOphthalmoscopyQuizPage .direct-quiz-topbar {
+    display: flex !important;
+  }
+
+  .page .eyes-topbar.quiz-desktop-topbar {
+    display: flex !important;
+  }
+
+  #directOphthalmoscopyQuizPage .quiz-header.small {
+    display: none !important;
+  }
+
+  #directOphthalmoscopyQuizPage .quiz-container {
+    height: calc(100vh - 62px) !important;
+    margin-top: 62px !important;
+    padding-bottom: 120px !important;
+  }
+
+  #behavioursquizPage .quiz-container,
+  #childhoodAssessmentQuizPage .quiz-container {
+    padding-bottom: 120px !important;
+  }
+
+  #behavioursquizPage .quiz-footer,
+  #childhoodAssessmentQuizPage .quiz-footer,
+  #directOphthalmoscopyQuizPage .quiz-footer {
+    left: 50% !important;
+    right: auto !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    min-height: 96px;
+    transform: translateX(-50%) !important;
+    padding: 0 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    background: #f3f4f6 !important;
+  }
+
+  #behavioursquizPage .quiz-footer .start-btn,
+  #childhoodAssessmentQuizPage .quiz-footer .start-btn,
+  #directOphthalmoscopyQuizPage .quiz-footer .start-btn {
+    width: min(320px, calc(100vw - 48px)) !important;
+    margin: 0 !important;
+  }
+
+  #glaucomaSecondaryCauseQuizPage #glaucomaSecondaryQuizMount {
+    min-height: calc(100vh - 62px);
+  }
+
+  #glaucomaSecondaryCauseQuizPage .gsec-quiz {
+    min-height: calc(100vh - 116px);
+    display: flex;
+    flex-direction: column;
+  }
+
+  #glaucomaSecondaryCauseQuizPage .gsec-actions {
+    margin-top: auto;
+    padding-top: 24px;
+  }
+
+  #glaucomaSecondaryCauseQuizPage #gsecSubmit {
+    height: 42px;
+    min-height: 42px;
+    padding: 0 16px;
+    font-size: 13px !important;
+    line-height: 1.1;
+  }
+
+  #caseStudyChatPagePrimary .casechat-imgwrap {
+    width: min(220px, 58%) !important;
+  }
+
+  #caseStudyChatPagePrimary .casechat-imggrid {
+    max-width: min(420px, 58vw);
+    margin-left: auto;
+    margin-right: auto;
+    gap: 8px;
+  }
+
+  #caseStudyChatPagePrimary .casechat-imgbtn,
+  #caseStudyChatPagePrimary .casechat-imgopt {
+    border-radius: 12px;
+  }
+
+  #caseStudyFlashcardPagePrimary #primaryFlashCardWrap,
+  #caseStudyFlashcardPagePrimary #primaryFlashCardWrap + div {
+    width: min(91%, 400px) !important;
+  }
+
+  #caseStudyFlashcardPagePrimary #primaryFlashCard.flashcard {
+    height: 704px !important;
+  }
+
+  #caseStudyFlashcardPagePrimary #primaryFlashBackBtn {
+    display: none !important;
+  }
+
+  #caseStudyFlashcardPagePrimary .eyes-topbar__icons .caseTimer,
+  #caseStudyFlashcardPagePrimary .caseTimer {
+    display: inline-flex !important;
+    width: 36px;
+    height: 36px;
+    margin: 0 2px 0 0 !important;
+  }
+
+  #caseStudyFlashcardPagePrimary .caseTimer__svg {
+    width: 34px !important;
+    height: 34px !important;
+    margin-left: 0 !important;
+  }
+
+  #caseStudyFlashcardPagePrimary .eyes-topbar__title {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    text-align: left !important;
+  }
+
+  #glaucomaHistoryCaseStudy .casechat-bubble--user,
+  #caseStudyChatPage .casechat-bubble--user,
+  #caseStudyChatPagePrimary .casechat-bubble--user,
+  #caseStudyChatPageAdvanced .casechat-bubble--user {
+    transform: translateX(-90px);
+  }
+
+  #glaucomaHistoryCaseStudy .casechat-bubble--bot,
+  #caseStudyChatPage .casechat-bubble--bot,
+  #caseStudyChatPagePrimary .casechat-bubble--bot,
+  #caseStudyChatPageAdvanced .casechat-bubble--bot {
+    transform: translateX(90px);
+  }
+
+  #glaucomaHistoryCaseStudy .casechat-footer,
+  #caseStudyChatPage .casechat-footer,
+  #caseStudyChatPagePrimary .casechat-footer,
+  #caseStudyChatPageAdvanced .casechat-footer,
+  #glaucomaHistoryCaseStudy .caseChatFooter {
+    width: min(70vw, 720px) !important;
+    max-width: 720px;
+  }
+
+  #glaucomaHistoryCaseStudy #caseChatDraft,
+  #caseStudyChatPage #caseChatDraft,
+  #caseStudyChatPagePrimary #caseChatDraft,
+  #caseStudyChatPageAdvanced #caseChatDraft,
+  #caseStudyChatPage .casechat-draft,
+  #caseStudyChatPagePrimary .casechat-draft,
+  #caseStudyChatPageAdvanced .casechat-draft,
+  #glaucomaHistoryCaseStudy .casechat-draft {
+    width: auto !important;
+    flex: 1 1 auto;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  #glaucomaHistoryCaseStudy .casechat-footer.is-expanded #caseChatChoices,
+  #caseStudyChatPage .casechat-footer.is-expanded #caseChatChoices,
+  #caseStudyChatPagePrimary .casechat-footer.is-expanded #caseChatChoices,
+  #caseStudyChatPageAdvanced .casechat-footer.is-expanded #caseChatChoices {
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 54px !important;
+    width: 100% !important;
+    box-sizing: border-box;
+    margin: 0 !important;
+    padding: 14px !important;
+  }
+}
+
+@media (min-width: 1440px) {
+  :root {
+    --desktop-topbar-inset: calc(22vw - 4px);
   }
 }

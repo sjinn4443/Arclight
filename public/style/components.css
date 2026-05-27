@@ -576,6 +576,10 @@ body.quiz-mode {
     opacity 0.3s ease;
 }
 
+#tocInlineCloseBtn {
+  display: none;
+}
+
 .toc-tab {
   display: flex;
   gap: 6px;

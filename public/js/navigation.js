@@ -368,15 +368,106 @@ function recordShownSubPage(id) {
   pageHistoryStack.push(nextEntry);
 }
 
-const STRUCTURAL_BACK_ROUTES = {
-  diabeticRetinopathyWorkshop: "eyes",
-  eyes: "dashboard",
+const STRUCTURAL_BACK_TARGETS = {
+  atomscard: { routeName: "dashboard" },
+  atomsHandout1: { routeName: "childhoodEyeScreeningWorkshop" },
+  atomsHandout2: { routeName: "childhoodEyeScreeningWorkshop" },
+  behavioursquiz: { routeName: "childhoodEyeScreeningWorkshop" },
+  binocularIndirectOphthalmoscopyPdf: {
+    routeName: "diabeticRetinopathyWorkshop",
+  },
+  childhoodAskQuestionsObservePage: {
+    routeName: "childhoodEyeScreeningWorkshop",
+  },
+  childhoodEyeBrainImages: { routeName: "childhoodEyeScreeningWorkshop" },
+  childhoodEyeScreeningWorkshop: { routeName: "eyes" },
+  childhoodFundalAfterExamination: {
+    routeName: "childhoodEyeScreeningWorkshop",
+  },
+  childhoodFundalExamination: { routeName: "childhoodEyeScreeningWorkshop" },
+  childhoodFundalNewbornEyesClosed: {
+    routeName: "childhoodEyeScreeningWorkshop",
+  },
+  childhoodFundalNewbornEyesOpen: {
+    routeName: "childhoodEyeScreeningWorkshop",
+  },
+  childhoodFundalPossibleFinding: {
+    routeName: "childhoodEyeScreeningWorkshop",
+  },
+  childhoodFundalPreparation: { routeName: "childhoodEyeScreeningWorkshop" },
+  childhoodFundalUnclearFindings: {
+    routeName: "childhoodEyeScreeningWorkshop",
+  },
+  childhoodIntroVisualDevelopmentPage: {
+    routeName: "childhoodEyeScreeningWorkshop",
+  },
+  childhoodNormalVisualDevelopmentPage: {
+    routeName: "childhoodEyeScreeningWorkshop",
+  },
+  childhoodRefer: { routeName: "childhoodEyeScreeningWorkshop" },
+  diabeticRetinopathyWorkshop: { routeName: "eyes" },
+  directOphthalmoscopyPdf: { routeName: "diabeticRetinopathyWorkshop" },
+  eyes: { routeName: "dashboard" },
+  fundalReflexPdf: { routeName: "childhoodEyeScreeningWorkshop" },
+  glaucomaHistoryCaseStudy: { routeName: "glaucomaWorkshop" },
+  glaucomaQuizCaseStudy: { routeName: "glaucomaWorkshop" },
+  glaucomaScrollImages: { routeName: "glaucomaWorkshop" },
+  glaucomaWorkshop: { routeName: "eyes" },
+  signsVICases: { routeName: "childhoodEyeScreeningWorkshop" },
+  visualImpairment: { routeName: "childhoodEyeScreeningWorkshop" },
+  visualsystemeyesbrain: { routeName: "childhoodEyeScreeningWorkshop" },
 };
 
-function getStructuralBackRoute(routeName) {
+const STRUCTURAL_BACK_SUBPAGES = {
+  fundalExamPage: {
+    routeName: "videos",
+    subPageId: "fundalReflexPage",
+  },
+  fundalReflexExaminationScrollPage: {
+    routeName: "videos",
+    subPageId: "fundalReflexPage",
+  },
+  assessmentVisionPage: { routeName: "childhoodEyeScreeningWorkshop" },
+  mumVisionPage: { routeName: "childhoodEyeScreeningWorkshop" },
+  usaidHowToUseArclightPage: { routeName: "childhoodEyeScreeningWorkshop" },
+  usaidFundalReflexExamPage: { routeName: "childhoodEyeScreeningWorkshop" },
+  usaidNormalAbnormalPage: { routeName: "childhoodEyeScreeningWorkshop" },
+};
+
+function getActivePageId() {
+  const activePages = Array.from(
+    document.querySelectorAll("#page-content .page.active"),
+  );
+  const active = activePages[activePages.length - 1];
+  return normalizeSubPageId(active?.id);
+}
+
+function isDesktopViewport() {
+  return !!(
+    typeof window !== "undefined" &&
+    window.matchMedia?.("(min-width: 1024px)")?.matches
+  );
+}
+
+function normalizeStructuralBackTarget(target) {
+  if (!target) return null;
+  const routeName = normalizeRouteName(target.routeName || target);
+  if (!routeName) return null;
+  return {
+    routeName,
+    subPageId: normalizeSubPageId(target.subPageId),
+  };
+}
+
+function getStructuralBackTarget(routeName, subPageId = null) {
   const normalizedRoute = normalizeRouteName(routeName);
   if (!normalizedRoute) return null;
-  return normalizeRouteName(STRUCTURAL_BACK_ROUTES[normalizedRoute]);
+
+  const normalizedSubPage = normalizeSubPageId(subPageId);
+  return normalizeStructuralBackTarget(
+    STRUCTURAL_BACK_SUBPAGES[normalizedSubPage] ||
+      STRUCTURAL_BACK_TARGETS[normalizedRoute],
+  );
 }
 
 function buildHashFromRoute(routeName, subPageId = null) {
@@ -691,8 +782,31 @@ export async function loadPage(routeName, options = {}) {
  * If there's a previous page, it loads it; otherwise, it defaults to the dashboard.
  */
 export function goBack() {
+  const activeSubPageId = getActivePageId();
+  const structuralTarget = getStructuralBackTarget(
+    currentPageName,
+    activeSubPageId,
+  );
+  if (structuralTarget?.routeName) {
+    isApplyingBackNavigation = true;
+    loadPage(structuralTarget.routeName, {
+      replace: true,
+      force: structuralTarget.routeName === currentRoute,
+      recordHistory: false,
+      subPageId: structuralTarget.subPageId,
+    }).finally(() => {
+      isApplyingBackNavigation = false;
+    });
+    return;
+  }
+
   // Special-case: if we're on videos and pupilsPage is active, prefer explicit return route
   if (currentPageName === "videos") {
+    if (activeSubPageId === "fundalReflexPage" && isDesktopViewport()) {
+      loadPage("eyes", { replace: true, recordHistory: false });
+      return;
+    }
+
     try {
       const ret = sessionStorage.getItem("fromRoute");
       if (ret) {
@@ -719,15 +833,6 @@ export function goBack() {
       subPageId: previousEntry.subPageId,
     }).finally(() => {
       isApplyingBackNavigation = false;
-    });
-    return;
-  }
-
-  const structuralRoute = getStructuralBackRoute(currentPageName);
-  if (structuralRoute) {
-    loadPage(structuralRoute, {
-      replace: true,
-      force: structuralRoute === currentRoute,
     });
     return;
   }

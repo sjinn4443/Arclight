@@ -856,14 +856,7 @@ function initGlaucomaACDInteractive() {
 
       if (hint) hint.style.opacity = "1";
 
-      // Keep pickup flashlight position fixed horizontally.
-      const previewTopPx = parseFloat(getComputedStyle(flashlightRight).top);
-
       flashlightOff.style.display = "";
-      flashlightOff.style.left = "312px";
-      if (Number.isFinite(previewTopPx)) {
-        flashlightOff.style.top = `${previewTopPx}px`;
-      }
       bubble.style.display = "";
       return;
     }

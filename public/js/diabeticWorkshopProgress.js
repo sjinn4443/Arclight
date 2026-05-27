@@ -1,3 +1,5 @@
+import { syncLessonCompletionTick } from "./lessonCompletionTick.js";
+
 const WORKSHOP_PROGRESS_PREFIX = "diabeticWorkshop:progress:";
 const WORKSHOP_PROGRESS_EVENT = "diabeticWorkshop:progress-changed";
 const DIABETIC_PROGRESS_COLOR = "#f25600";
@@ -151,6 +153,8 @@ function setRowProgressUI(row, percent) {
   if (bar) {
     bar.setAttribute("aria-valuenow", String(rounded));
   }
+
+  syncLessonCompletionTick(row, safe, DIABETIC_PROGRESS_COLOR);
 }
 
 export function updateDiabeticWorkshopProgressBars(root = document) {

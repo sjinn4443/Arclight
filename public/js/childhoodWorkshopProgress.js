@@ -1,3 +1,5 @@
+import { syncLessonCompletionTick } from "./lessonCompletionTick.js";
+
 const WORKSHOP_PROGRESS_PREFIX = "childhoodWorkshop:progress:";
 const WORKSHOP_PROGRESS_EVENT = "childhoodWorkshop:progress-changed";
 const WORKSHOP_FOLDER_COMPLETED_PREFIX = "childhoodWorkshop:folderCompletedAt:";
@@ -330,6 +332,8 @@ function setRowProgressUI(row, percent) {
   if (bar) {
     bar.setAttribute("aria-valuenow", String(rounded));
   }
+
+  syncLessonCompletionTick(row, safe);
 }
 
 function getSectionLessonTargets(page, sectionKey) {

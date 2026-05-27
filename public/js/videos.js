@@ -5,6 +5,7 @@
 import { initializeVideoPlayers, initializeToolbar } from "./videoplayer.js";
 import { loadPage, syncRouteHash, getRouteFromHash } from "./navigation.js";
 import { showExperimentalMiniAppNoticeForPage } from "./experimentalMiniAppNotice.js";
+import { syncLessonCompletionTick } from "./lessonCompletionTick.js";
 
 // Keep track of the currently active subpage element within videos.html
 let currentPageElement = null;
@@ -366,6 +367,8 @@ function updateLessonProgressBars() {
     // Colour match: Primary uses its green, Intermediate uses its orange
     const c = getLevelColourForRow(row);
     if (c) fill.style.backgroundColor = c;
+
+    syncLessonCompletionTick(row, percent, c);
   });
 }
 
@@ -723,6 +726,13 @@ function syncFundalReflexExaminationTopbar() {
   const menuBtn = page.querySelector(".icon.menuBtn");
   if (menuBtn) {
     menuBtn.textContent = "\u2630";
+  }
+
+  const pageSubtitle = page.querySelector(
+    ":scope > .container.pupils-container > .pupils-subtitle",
+  );
+  if (pageSubtitle) {
+    pageSubtitle.style.display = "";
   }
 
   window.I18N?.applyTranslations?.(page.querySelector(".eyes-topbar"));
