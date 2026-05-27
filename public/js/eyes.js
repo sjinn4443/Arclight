@@ -429,7 +429,7 @@ export function initializeEyesCatalog() {
     ],
   };
 
-  // Make Eyes catalog available to other modules (e.g., My Learning)
+  // Make Eyes content available to other modules (e.g., My Learning)
   window.EYES_SECTIONS = sections;
   window.getAllEyesItems = () => {
     const out = [];

@@ -958,6 +958,17 @@ input:checked + .slider:before {
 }
 
 #downloadAppModal .download-estimate__highlight,
+#downloadAppModal .download-estimate__note {
+  display: block;
+}
+
+#downloadAppModal .download-estimate__note {
+  margin: 4px 0;
+  color: #555;
+  font-weight: 400;
+}
+
+#downloadAppModal .download-estimate__highlight,
 #downloadAppModal .download-failure-summary,
 #downloadAppModal .download-failed-list {
   color: #d71920;
@@ -1708,7 +1719,7 @@ input:checked + .slider:before {
   font-size: 12px;
 }
 
-/* Catalog: carousel dots (used by Eyes catalog + other carousels) */
+/* Carousel dots used by Eyes and other carousels */
 .catalog-h2 {
   position: relative;
 }

@@ -108,27 +108,31 @@ const OFFLINE_CATALOG_OPTIONS = [
   {
     id: "core",
     label: "Core Examination",
-    description: "Core eye examination videos and interactive content.",
+    description:
+      "Includes History Taking, Visual Acuity, Pupils, Front of Eye, Fundal Reflex, Ophthalmoscopy and Interactive Learning.",
   },
   {
     id: "conditions",
     label: "Conditions",
-    description: "Condition-focused pages, media, and mini apps.",
+    description:
+      "Includes Uncorrected Refractive Error, Cataract, Glaucoma, Diabetic Retinopathy, Corneal Disease, Childhood Eye Screening, Retinopathy of Prematurity, Retinal Disease and Optic Nerve Disease.",
   },
   {
     id: "workshops",
     label: "Workshops",
-    description: "PEC workshop videos, images, quizzes, and pages.",
+    description:
+      "Includes Childhood Eye Screening, Glaucoma, Diabetic Retinopathy and WHO PEC workshop content.",
   },
   {
     id: "extended",
     label: "Extended Examination",
-    description: "Extended examination content and mini apps.",
+    description:
+      "Includes Ptosis, Proptosis, Eye Movements/Squint and Cranial Nerve Examination.",
   },
   {
     id: "tools",
     label: "Tools and Kits",
-    description: "Tool overview videos and related assets.",
+    description: "Includes Arclight Overview and Holo Overview.",
   },
 ];
 const VIDEO_QUALITY_OPTIONS = [
@@ -382,7 +386,7 @@ function getVideoQualityLabel(videoQuality) {
 }
 
 function getDownloadChoiceLabel(choice) {
-  if (choice?.mode === "app-only") return "App only";
+  if (choice?.mode === "app-only") return "Exclude videos";
   if (choice?.mode === "select") return getCatalogLabel(choice.catalogId);
   return "Full content";
 }
@@ -399,22 +403,22 @@ function getSelectedContentSummary(downloadSelection) {
   }
 
   if (downloadSelection.mode === "app-only") {
-    return "app pages, text, and images";
+    return "app pages, text, images and other non-video content";
   }
 
   const qualitySummary = getVideoQualitySummary(downloadSelection.videoQuality);
   if (downloadSelection.mode === "select") {
     const catalogSummaries = {
       core: "core examination videos and interactive content",
-      conditions: "condition videos, images, and mini apps",
-      workshops: "workshop videos, images, quizzes, and pages",
+      conditions: "condition videos, images and mini apps",
+      workshops: "workshop videos, images, quizzes and pages",
       extended: "extended examination content and mini apps",
       tools: "tool overview videos and related assets",
     };
-    return `${catalogSummaries[downloadSelection.catalogId] || "selected Eyes catalog content"} ${qualitySummary}`;
+    return `${catalogSummaries[downloadSelection.catalogId] || "selected content"} ${qualitySummary}`;
   }
 
-  return `videos, images, animations, and app pages ${qualitySummary}`;
+  return `videos, images, animations and app pages ${qualitySummary}`;
 }
 
 function getNormallyAvailableItems(downloadSelection) {
@@ -485,11 +489,16 @@ function renderDownloadEstimate(target, selection) {
   timeEl.className = "download-estimate__highlight";
   timeEl.textContent = formatEstimatedDownloadTime(selection.bytes);
 
+  const networkNoteEl = document.createElement("span");
+  networkNoteEl.className = "download-estimate__note";
+  networkNoteEl.textContent =
+    "* Actual download speed may vary depending on network conditions.";
+
   const sizeEl = document.createElement("span");
   sizeEl.className = "download-estimate__highlight";
   sizeEl.textContent = `Download size: ${formatDownloadSize(selection.bytes)}.`;
 
-  target.append(timeEl, document.createTextNode(" "), sizeEl);
+  target.append(timeEl, networkNoteEl, sizeEl);
 }
 
 function showDownloadAppModal(manifest) {
@@ -510,29 +519,26 @@ function showDownloadAppModal(manifest) {
     const titleEl = document.getElementById("downloadAppTitle");
     const content = modal.querySelector(".modal-content");
 
-    if (titleEl) titleEl.textContent = "Would you like to download the app?";
+    if (titleEl) titleEl.textContent = "Download options";
     if (content) {
       content.innerHTML = `
-        <p data-i18n="languageInstall.downloadAppContent">
-          Choose what should be available offline.
-        </p>
         <fieldset class="download-options" aria-label="Offline download options">
           <label class="download-option">
             <input type="radio" name="offlineDownloadMode" value="full" checked />
             <span>
               <span class="download-option__title">Download full content</span>
-              <span class="download-option__description">Videos, images, animations, and app pages.</span>
+              <span class="download-option__description">Includes all app features, videos and images.</span>
             </span>
           </label>
           <label class="download-option">
             <input type="radio" name="offlineDownloadMode" value="select" />
             <span>
               <span class="download-option__title">Select content</span>
-              <span class="download-option__description">Download one Eyes catalog for offline use.</span>
+              <span class="download-option__description">Choose which content to download for offline use.</span>
             </span>
           </label>
           <div class="download-select-panel" hidden>
-            <label for="offlineCatalogSelect">Eyes catalog</label>
+            <label for="offlineCatalogSelect">Content section</label>
             <select id="offlineCatalogSelect">
               ${OFFLINE_CATALOG_OPTIONS.map(
                 (option) =>
@@ -554,8 +560,8 @@ function showDownloadAppModal(manifest) {
           <label class="download-option">
             <input type="radio" name="offlineDownloadMode" value="app-only" />
             <span>
-              <span class="download-option__title">App only</span>
-              <span class="download-option__description">Downloads the app, text, and images. Videos are not downloaded.</span>
+              <span class="download-option__title">Exclude videos</span>
+              <span class="download-option__description">Downloads app pages, images, quizzes and other non-video content.</span>
             </span>
           </label>
         </fieldset>

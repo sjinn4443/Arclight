@@ -1089,7 +1089,7 @@ select.onb-input.has-value {
   color: #111;
 }
 
-/* Liked grid: match Eyes catalogue layout */
+/* Liked grid: match Eyes layout */
 #likedList {
   display: grid;
   grid-template-columns: 1fr 1fr;
