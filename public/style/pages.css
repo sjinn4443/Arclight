@@ -1414,6 +1414,16 @@ select.onb-input.has-value {
   height: 100%;
 }
 
+.lesson-row.is-progress-complete .lesson-type {
+  display: inline-flex;
+  align-items: center;
+}
+
+.lesson-row.is-progress-complete .lesson-complete-tick {
+  display: inline-flex;
+  transform: translateY(-1px);
+}
+
 #pupilsPage .lesson-cta,
 .pupils-like .lesson-cta {
   font-size: 11px;
