@@ -1,5 +1,29 @@
 // FILE: public/js/casestudy_primary.js
 
+import {
+  setLessonProgress,
+  updateLessonProgressRows,
+} from "./lessonProgress.js";
+
+const PRIMARY_CASE_STUDY_PROGRESS_TARGET = "caseStudyChatPagePrimary";
+const PRIMARY_FLASHCARD_PROGRESS_TARGET = "caseStudyFlashcardPagePrimary";
+
+function updateCaseStudyProgressRows() {
+  const page = document.getElementById("casestudyPage");
+  if (!page) return;
+  updateLessonProgressRows(page);
+}
+
+function setPrimaryCaseStudyProgress(percent) {
+  setLessonProgress(PRIMARY_CASE_STUDY_PROGRESS_TARGET, percent);
+  updateCaseStudyProgressRows();
+}
+
+function setPrimaryFlashcardProgress(percent) {
+  setLessonProgress(PRIMARY_FLASHCARD_PROGRESS_TARGET, percent);
+  updateCaseStudyProgressRows();
+}
+
 // ✅ casestudy.js에 있는 case pool 로직을 그대로 가져오기 (필요 최소)
 function shuffle(arr) {
   const a = [...arr];
@@ -548,6 +572,8 @@ export function initializeCaseStudyPrimary() {
 
   if (!listPage || !chatPage || !flashPage) return;
 
+  updateCaseStudyProgressRows();
+
   const log = chatPage.querySelector("#casePrimaryChatLog");
   const timerBtn = chatPage.querySelector("#casePrimaryTimerBtn");
   const timerText = chatPage.querySelector("#casePrimaryTimerText");
@@ -558,6 +584,10 @@ export function initializeCaseStudyPrimary() {
   // ---- state ----
   const TOTAL_CASES = 12;
   const TIMER_TOTAL = 90;
+
+  function recordPrimaryCaseProgress() {
+    setPrimaryCaseStudyProgress((caseIndex / TOTAL_CASES) * 100);
+  }
 
   let casePool = buildCasePool();
   let caseIndex = 0;
@@ -616,6 +646,7 @@ export function initializeCaseStudyPrimary() {
         // 시간 끝나면 다음 케이스
         locked = true;
         setFeedbackTimeUp();
+        recordPrimaryCaseProgress();
         renderNextButton();
       }
     }, 1000);
@@ -747,6 +778,7 @@ export function initializeCaseStudyPrimary() {
 
   function showFlashCompletionModal() {
     const modal = ensureFlashCompletionModal();
+    setPrimaryFlashcardProgress(100);
 
     const scoreText = modal.querySelector("#flashScoreText");
     if (scoreText) {
@@ -1739,6 +1771,7 @@ export function initializeCaseStudyPrimary() {
     stopFlashTimer();
 
     flashIndex += 1;
+    setPrimaryFlashcardProgress((flashIndex / flashPool.length) * 100);
 
     console.log("[flash] after increment", {
       flashIndex,
@@ -2091,6 +2124,7 @@ export function initializeCaseStudyPrimary() {
 
       const dxName = correctDiagnosisForPrimary(current);
       setFeedbackCorrect(dxName);
+      recordPrimaryCaseProgress();
       renderNextButton();
       return;
     }
@@ -2114,6 +2148,7 @@ export function initializeCaseStudyPrimary() {
     stopTimer();
     clearAutoLines();
     setFeedbackIncorrectOutOfAttempts();
+    recordPrimaryCaseProgress();
     renderNextButton();
   }
 
@@ -2316,6 +2351,7 @@ export function initializeCaseStudyPrimary() {
 
   function showCompletionModal() {
     const modal = ensureCompletionModal();
+    setPrimaryCaseStudyProgress(100);
     // 점수 텍스트 업데이트(동적으로)
     const why = modal.querySelector(".casechat-resultWhy");
     if (why) {

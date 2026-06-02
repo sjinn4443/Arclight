@@ -3,11 +3,7 @@
  */
 
 import { loadPage } from "./navigation.js";
-import {
-  getCurrentCountryCode,
-  getCurrentArea,
-  updateLocationUI,
-} from "./location-service.js";
+import { getCurrentCountryCode, updateLocationUI } from "./location-service.js";
 
 let overlay, closeBtn;
 let cachedVersionInfo = null;
@@ -270,6 +266,15 @@ export async function initializeMenu() {
       if (routeEl) {
         const route = routeEl.getAttribute("data-route");
         if (!route) return;
+        const myLearningTab = routeEl.getAttribute("data-my-learning-tab");
+        if (route === "mylearning" && myLearningTab) {
+          try {
+            sessionStorage.setItem("myLearningActiveTab", myLearningTab);
+            localStorage.setItem("myLearningActiveTab", myLearningTab);
+          } catch {
+            void 0;
+          }
+        }
 
         // Always use the router for data-route items
         loadPage(route);
@@ -296,7 +301,7 @@ export async function initializeMenu() {
 // B) When pages/partials are shown (your app’s nav lifecycle).
 // If your app emits 'page:shown' with detail.pageId === 'menu' (or similar),
 // update when the menu overlay appears.
-document.addEventListener("page:shown", (e) => {
+document.addEventListener("page:shown", () => {
   // If you know the page/overlay id, check it here; otherwise just render if the node exists.
   // Example guard (adjust to your real page id if you have one):
   // if (e.detail?.pageId !== 'menu') return;

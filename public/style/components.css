@@ -136,7 +136,7 @@ textarea {
 
 .module-info h3 {
   margin: 0;
-  font-size: 16px;
+  font-size: 18px;
 }
 
 .module-info p {
@@ -2012,7 +2012,8 @@ input:checked + .slider:before {
 }
 
 .ml-chip.active {
-  background: #949494;
+  background: #e41e26;
+  border-color: #e41e26;
   color: #fff;
 }
 
@@ -2049,21 +2050,28 @@ input:checked + .slider:before {
 }
 .ml-heart {
   position: absolute;
-  right: 12px;
-  top: 12px;
+  right: 10px;
+  top: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
   font-size: 18px;
   color: #e11d48;
+  line-height: 1;
 }
 .ml-badges {
   display: flex;
   gap: 6px;
 }
 .ml-badge {
-  background: #666;
+  background: #e41e26;
   color: #fff;
-  border-radius: 9999px;
-  font-size: 11px;
-  padding: 6px 8px;
+  border-radius: 9px;
+  font-size: 10px;
+  font-weight: 500;
+  padding: 6px 15px;
 }
 
 /* My Learning: Masonry layout */
@@ -2093,6 +2101,7 @@ input:checked + .slider:before {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding-right: 32px;
 }
 
 /* Random height buckets for variety */
@@ -2115,9 +2124,19 @@ input:checked + .slider:before {
 }
 
 .ml-heart {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
   font-size: 16px;
   color: #e11d48;
-  margin-left: 6px;
+  line-height: 1;
+  margin-left: 0;
+  z-index: 2;
 }
 
 /* Badges pinned at bottom */
@@ -2129,11 +2148,111 @@ input:checked + .slider:before {
 }
 
 .ml-badge {
-  background: #666;
+  background: #e41e26;
   color: #fff;
-  border-radius: 9999px;
+  border-radius: 9px;
+  font-size: 10px;
+  font-weight: 500;
+  padding: 6px 15px;
+}
+
+.ml-progress-card {
+  gap: 10px;
+  overflow: hidden;
+}
+
+.ml-progress-card__summary {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4px 8px;
+  width: 100%;
+  padding: 0;
+  color: inherit;
+  text-align: left;
+  background: transparent;
+  border: 0;
+}
+
+.ml-progress-card__summary h4 {
+  grid-column: 1 / -1;
+  margin: 0;
+}
+
+.ml-progress-card__meta {
   font-size: 11px;
-  padding: 6px 8px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.ml-progress-card__meta {
+  color: rgba(17, 17, 17, 0.72);
+}
+
+.ml-progress-items {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.ml-progress-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 5px 8px;
+  width: 100%;
+  padding: 8px;
+  color: #111;
+  text-align: left;
+  background: rgba(255, 255, 255, 0.88);
+  border: 0;
+  border-radius: 8px;
+}
+
+.ml-progress-item__text {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.ml-progress-item__title {
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.ml-progress-item__meta {
+  overflow: hidden;
+  color: rgba(17, 17, 17, 0.62);
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ml-progress-item__percent {
+  color: #f25600;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.ml-progress-item__track {
+  grid-column: 1 / -1;
+  height: 4px;
+  overflow: hidden;
+  background: rgba(17, 17, 17, 0.16);
+  border-radius: 999px;
+}
+
+.ml-progress-item__fill {
+  display: block;
+  height: 100%;
+  background: #f25600;
+  border-radius: inherit;
 }
 
 .tl-item {
@@ -2357,7 +2476,11 @@ input:checked + .slider:before {
 }
 
 #fundalReflexPage .lesson-row--scroll .thumb {
-  background-image: url("/images/icon/eyes/moduleicons/primary_scroll.webp");
+  background-image: url("/images/icon/eyes/moduleicons/primary_scrollytell.webp");
+}
+
+:is(#pupilsPage, .pupils-like) .pupil-level--primary .lesson-row--pdf .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/primary_pdf.webp");
 }
 
 #childhoodEyeScreeningWorkshopPage .lesson-row--pdf .thumb {
@@ -2407,6 +2530,13 @@ input:checked + .slider:before {
   .lesson-row--quiz
   .thumb {
   background-image: url("/images/icon/eyes/moduleicons/intermediate_casestudy.webp");
+}
+
+:is(#pupilsPage, .pupils-like)
+  .pupil-level--intermediate
+  .lesson-row--pdf
+  .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/intermediate_pdf.webp");
 }
 
 #interactiveLearningPage
@@ -2462,6 +2592,35 @@ input:checked + .slider:before {
 #interactiveLearningPage
   .pupil-level--intermediate
   .pupil-card.module-card
+  + .pupil-card.module-card
+  .lesson-row {
+  margin-top: 0;
+}
+
+/* PDF rows added as separate buttons should visually read as one level card. */
+:is(#directOphthalmoscopy, #arclightPage, #holoOverviewPage)
+  .pupil-level
+  > .pupil-card.module-card {
+  margin-bottom: 0;
+}
+
+:is(#directOphthalmoscopy, #arclightPage, #holoOverviewPage)
+  .pupil-level
+  > .pupil-card.module-card:not(:last-of-type) {
+  padding-bottom: 0;
+}
+
+:is(#directOphthalmoscopy, #arclightPage, #holoOverviewPage)
+  .pupil-level
+  > .pupil-card.module-card
+  + .pupil-card.module-card {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+:is(#directOphthalmoscopy, #arclightPage, #holoOverviewPage)
+  .pupil-level
+  > .pupil-card.module-card
   + .pupil-card.module-card
   .lesson-row {
   margin-top: 0;

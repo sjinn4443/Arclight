@@ -107,6 +107,7 @@ const VIDEO_PAGE_IDS = new Set([
   "coreClinicalOphthalmicExamination",
   "diseasesPage",
   "arclightPage",
+  "holoOverviewPage",
   "childhoodEyeScreeningPage",
   "howToUseArclightVideoPage",
   "directOphthalmoscopy",
@@ -118,6 +119,7 @@ const VIDEO_PAGE_IDS = new Set([
   "visualAcuityPage",
   "fundalReflexPage",
   "fundalReflexExaminationScrollPage",
+  "binocularIndirectOphthalmoscopyScrollPage",
   "interactiveLearningPage",
   "assessmentVisionPage",
   "normalAbnormalPage",
@@ -318,13 +320,13 @@ export function initializeEyesCatalog() {
 
       {
         label: "Fundal Reflex",
-        target: "fundalReflexPage",
-        tags: ["Video"],
+        target: EYES_INDEX["Fundal Reflex"],
+        tags: ["Video", "PDF"],
       },
       {
         label: "Ophthalmoscopy",
         target: "directOphthalmoscopy",
-        tags: ["Video", "Quiz"],
+        tags: ["Video", "Quiz", "PDF"],
       },
       {
         label: "Interactive Learning",
@@ -419,12 +421,12 @@ export function initializeEyesCatalog() {
       {
         label: "Arclight Overview",
         target: EYES_INDEX["Arclight Overview"],
-        tags: ["Coming Soon"],
+        tags: ["Video", "PDF"],
       },
       {
         label: "Holo Overview",
         target: EYES_INDEX["Holo Overview"],
-        tags: ["Coming Soon"],
+        tags: ["Video", "Scrolly", "PDF"],
       },
     ],
   };

@@ -970,8 +970,6 @@ const ROUTE_CONFIG = {
 };
 
 const FUNDAL_REFLEX_EXAMINATION_SCROLL_ROUTE = "fundalReflexExaminationScroll";
-const FUNDAL_REFLEX_EXAMINATION_SCROLL_PAGE_ID =
-  "fundalReflexExaminationScrollPage";
 const FUNDAL_REFLEX_EXAMINATION_SECTION_SOURCES = [
   {
     routeName: "childhoodFundalPreparation",
@@ -1007,6 +1005,22 @@ const FUNDAL_REFLEX_EXAMINATION_SECTION_SOURCES = [
     routeName: "childhoodFundalAfterExamination",
     title: "After Examination",
     titleKey: "auto.childhoodeyescreeningworkshop.after_examination",
+  },
+];
+const BINOCULAR_INDIRECT_OPHTHALMOSCOPY_SCROLL_ROUTE =
+  "binocularIndirectOphthalmoscopyScroll";
+const BINOCULAR_INDIRECT_OPHTHALMOSCOPY_SECTION_SOURCES = [
+  {
+    routeName: "diabeticBioPreparation",
+    title: "Preparation",
+  },
+  {
+    routeName: "diabeticBioFundoscopySitting",
+    title: "Fundoscopy Sitting",
+  },
+  {
+    routeName: "diabeticBioFundoscopyIndentation",
+    title: "Fundoscopy with Indentation",
   },
 ];
 
@@ -1124,6 +1138,14 @@ function createCombinedFundalRouteConfig(pageId, label, sectionDefs = []) {
       sectionDefs,
       "segmentTextTriggerFramesByFile",
     ),
+    segmentPlaybackRateByFile: buildCombinedFundalPerFileArray(
+      sectionDefs,
+      "segmentPlaybackRateByFile",
+    ),
+    segmentPauseAfterMsByFile: buildCombinedFundalPerFileArray(
+      sectionDefs,
+      "segmentPauseAfterMsByFile",
+    ),
     segmentRanges: buildCombinedFundalPerFileArray(
       sectionDefs,
       "segmentRanges",
@@ -1131,6 +1153,14 @@ function createCombinedFundalRouteConfig(pageId, label, sectionDefs = []) {
     settleFrameOverrides: buildCombinedFundalPerFileArray(
       sectionDefs,
       "settleFrameOverrides",
+    ),
+    completionHoldFrameByFile: buildCombinedFundalPerFileArray(
+      sectionDefs,
+      "completionHoldFrameByFile",
+    ),
+    forceExactCompletionHoldFrameByFile: buildCombinedFundalPerFileArray(
+      sectionDefs,
+      "forceExactCompletionHoldFrameByFile",
     ),
     segmentStartTexts: buildCombinedFundalPerFileArray(
       sectionDefs,
@@ -1180,6 +1210,10 @@ function createCombinedFundalRouteConfig(pageId, label, sectionDefs = []) {
       sectionDefs,
       "preserveCompletionSnapshotOverlayByFile",
     ),
+    completionSnapshotImageByFile: buildCombinedFundalPerFileArray(
+      sectionDefs,
+      "completionSnapshotImageByFile",
+    ),
     settleSnapshotImageByFile: buildCombinedFundalPerFileArray(
       sectionDefs,
       "settleSnapshotImageByFile",
@@ -1191,6 +1225,14 @@ function createCombinedFundalRouteConfig(pageId, label, sectionDefs = []) {
     forceInitialFrameHoldByFile: buildCombinedFundalIndexedFileList(
       sectionDefs,
       "forceInitialFrameHoldByFile",
+    ),
+    leftAlignedTextFiles: buildCombinedFundalIndexedFileList(
+      sectionDefs,
+      "leftAlignedTextFiles",
+    ),
+    bulletTextFiles: buildCombinedFundalIndexedFileList(
+      sectionDefs,
+      "bulletTextFiles",
     ),
     richSettleContentFiles: buildCombinedFundalIndexedFileList(
       sectionDefs,
@@ -1205,6 +1247,17 @@ ROUTE_CONFIG[FUNDAL_REFLEX_EXAMINATION_SCROLL_ROUTE] =
     "Fundal Reflex Examination",
     FUNDAL_REFLEX_EXAMINATION_SECTION_SOURCES,
   );
+ROUTE_CONFIG[BINOCULAR_INDIRECT_OPHTHALMOSCOPY_SCROLL_ROUTE] = {
+  ...createCombinedFundalRouteConfig(
+    "binocularIndirectOphthalmoscopyScrollPage",
+    "Binocular Indirect Ophthalmoscopy",
+    BINOCULAR_INDIRECT_OPHTHALMOSCOPY_SECTION_SOURCES,
+  ),
+  disableCompletedRouteRestore: true,
+  lazyInitialStageCount: 1,
+  lazyLoadStageAnimations: true,
+  skipRouteImageWarmup: true,
+};
 
 const FUNDAL_PAGE_ROUTE_SEQUENCE = [
   "childhoodFundalPreparation",
@@ -2691,7 +2744,7 @@ function buildAnimationSlots(listEl, label, count, cfg = null) {
 
 function resolveFirstStageAnchorElement(stage, cfg) {
   if (!stage) return null;
-  if (cfg?.pageId !== FUNDAL_REFLEX_EXAMINATION_SCROLL_PAGE_ID) return stage;
+  if (!Array.isArray(cfg?.sections) || cfg.sections.length === 0) return stage;
 
   return (
     stage

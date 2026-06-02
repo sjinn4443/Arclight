@@ -1,5 +1,23 @@
 // public/js/casestudy.js
 
+import {
+  setLessonProgress,
+  updateLessonProgressRows,
+} from "./lessonProgress.js";
+
+const INTERMEDIATE_CASE_STUDY_PROGRESS_TARGET = "caseStudyChatPage";
+
+function updateCaseStudyProgressRows() {
+  const page = document.getElementById("casestudyPage");
+  if (!page) return;
+  updateLessonProgressRows(page);
+}
+
+function setIntermediateCaseStudyProgress(percent) {
+  setLessonProgress(INTERMEDIATE_CASE_STUDY_PROGRESS_TARGET, percent);
+  updateCaseStudyProgressRows();
+}
+
 // ---------- utilities ----------
 function shuffle(arr) {
   const a = [...arr];
@@ -405,6 +423,8 @@ export function initializeCaseStudy() {
   const chatPage = document.getElementById("caseStudyChatPage");
   if (!listPage || !chatPage) return;
 
+  updateCaseStudyProgressRows();
+
   // ---------- list accordion ----------
   listPage.querySelectorAll(".level-card .level-header").forEach((btn) => {
     btn.addEventListener("click", () => {
@@ -513,6 +533,7 @@ export function initializeCaseStudy() {
   }
 
   function openFinalModal() {
+    setIntermediateCaseStudyProgress(100);
     if (finalBody) {
       finalBody.innerHTML = `
       <div class="casechat-resultWhy">Final score: <b>${scoreCorrect}/${scoreTotal}</b></div>
@@ -727,6 +748,7 @@ export function initializeCaseStudy() {
     if (!caseScored) {
       scoreTotal += 1;
       caseScored = true;
+      setIntermediateCaseStudyProgress((scoreTotal / TOTAL_CASES) * 100);
     }
 
     // 안내 + Next case 버튼
@@ -1192,6 +1214,7 @@ export function initializeCaseStudy() {
       scoreCorrect += 1;
       scoreTotal += 1;
       caseScored = true;
+      setIntermediateCaseStudyProgress((scoreTotal / TOTAL_CASES) * 100);
     }
 
     // 정답

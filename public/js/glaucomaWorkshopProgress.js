@@ -1,11 +1,12 @@
-import { syncLessonCompletionTick } from "./lessonCompletionTick.js";
+import {
+  getFolderCompletionColourForRow,
+  syncLessonCompletionTick,
+} from "./lessonCompletionTick.js";
 
 const WORKSHOP_PROGRESS_PREFIX = "glaucomaWorkshop:progress:";
 const WORKSHOP_PROGRESS_EVENT = "glaucomaWorkshop:progress-changed";
 const WORKSHOP_FOLDER_COMPLETED_PREFIX = "glaucomaWorkshop:folderCompletedAt:";
-const FOLDER_COMPLETE_STAR_SVG =
-  '<svg class="glaucoma-folder-complete-star" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 2.5l2.93 5.94 6.56.95-4.74 4.62 1.12 6.53L12 17.46l-5.87 3.08 1.12-6.53L2.5 9.39l6.56-.95L12 2.5z"/></svg>';
-const FOLDER_COMPLETE_DATE_CLASS = "glaucoma-folder-complete-rank-date";
+const FOLDER_COMPLETE_COLOUR = "#15e115";
 
 const SCROLL_TARGETS = new Set([
   "glaucomaWhatIs",
@@ -132,33 +133,6 @@ function writeStoredFolderCompletion(sectionKey, { count, completedAt }) {
   });
 }
 
-function formatFolderCompletedDate(timestamp) {
-  const safeTimestamp = clampTimestamp(timestamp);
-  if (!safeTimestamp) return "";
-
-  const date = new Date(safeTimestamp);
-  if (Number.isNaN(date.getTime())) return "";
-
-  const day = String(date.getDate()).padStart(2, "0");
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const year = date.getFullYear();
-  return `${day}.${month}.${year}`;
-}
-
-function formatOrdinal(n) {
-  const num = Math.trunc(Number(n));
-  if (!Number.isFinite(num) || num <= 0) return "";
-
-  const mod100 = num % 100;
-  if (mod100 >= 11 && mod100 <= 13) return `${num}th`;
-
-  const mod10 = num % 10;
-  if (mod10 === 1) return `${num}st`;
-  if (mod10 === 2) return `${num}nd`;
-  if (mod10 === 3) return `${num}rd`;
-  return `${num}th`;
-}
-
 function clearFolderCompletionMeta(metaEl) {
   if (!metaEl) return;
   metaEl.textContent = "";
@@ -167,69 +141,22 @@ function clearFolderCompletionMeta(metaEl) {
 
 function setFolderCompletionMeta(row, isComplete) {
   const meta = row?.querySelector(".lesson-meta");
-  if (!meta) return;
-
-  if (!isComplete) {
-    clearFolderCompletionMeta(meta);
-    return;
-  }
-
-  const completionMarkup = FOLDER_COMPLETE_STAR_SVG;
-  if (meta.innerHTML !== completionMarkup) {
-    meta.innerHTML = completionMarkup;
-  }
-  meta.classList.add("glaucoma-folder-complete-meta");
-}
-
-function getFolderCompletionDateElement(row) {
-  if (!row) return null;
-  const existing = row.querySelector(`.${FOLDER_COMPLETE_DATE_CLASS}`);
-  if (existing) return existing;
-
-  const lessonMain = row.querySelector(".lesson-main");
-  if (!lessonMain) return null;
-
-  const dateEl = document.createElement("span");
-  dateEl.className = FOLDER_COMPLETE_DATE_CLASS;
-  lessonMain.appendChild(dateEl);
-  return dateEl;
+  if (meta) clearFolderCompletionMeta(meta);
+  syncLessonCompletionTick(
+    row,
+    isComplete ? 100 : 0,
+    getFolderCompletionColourForRow(row, FOLDER_COMPLETE_COLOUR),
+  );
 }
 
 function clearFolderCompletionDate(row) {
-  const dateEl = row?.querySelector(`.${FOLDER_COMPLETE_DATE_CLASS}`);
-  if (!dateEl) return;
-  dateEl.remove();
+  row
+    ?.querySelectorAll?.(".glaucoma-folder-complete-rank-date")
+    .forEach((dateEl) => dateEl.remove());
 }
 
-function setFolderCompletionDate(
-  row,
-  isComplete,
-  completedAt,
-  completionCount,
-) {
-  if (!isComplete) {
-    clearFolderCompletionDate(row);
-    return;
-  }
-
-  const ordinal = formatOrdinal(completionCount);
-  const completedDate = formatFolderCompletedDate(completedAt);
-  if (!ordinal || !completedDate) {
-    clearFolderCompletionDate(row);
-    return;
-  }
-
-  const dateEl = getFolderCompletionDateElement(row);
-  if (!dateEl) return;
-
-  const label = `${ordinal} ${completedDate}`;
-  if (dateEl.textContent !== label) {
-    dateEl.textContent = label;
-  }
-
-  const ariaLabel = `Completed ${ordinal} time on ${completedDate}`;
-  dateEl.setAttribute("aria-label", ariaLabel);
-  dateEl.title = ariaLabel;
+function setFolderCompletionDate(row) {
+  clearFolderCompletionDate(row);
 }
 
 export function getGlaucomaLessonProgress(target) {
@@ -381,20 +308,75 @@ export function updateGlaucomaWorkshopProgressBars(root = document) {
   updateGlaucomaFolderCompletionStamps(page);
 }
 
-function isWindowAtBottom(threshold = 8) {
+function getWindowScrollState() {
   const doc = document.documentElement;
   const body = document.body;
-  const scrollTop = window.scrollY ?? doc?.scrollTop ?? body?.scrollTop ?? 0;
-  const viewport = window.innerHeight ?? doc?.clientHeight ?? 0;
-  const fullHeight = Math.max(doc?.scrollHeight || 0, body?.scrollHeight || 0);
+  return {
+    scrollTop: window.scrollY ?? doc?.scrollTop ?? body?.scrollTop ?? 0,
+    viewport: window.innerHeight ?? doc?.clientHeight ?? 0,
+    fullHeight: Math.max(doc?.scrollHeight || 0, body?.scrollHeight || 0),
+  };
+}
+
+function getScrollState() {
+  const windowState = getWindowScrollState();
+  const pageContent = document.getElementById("page-content");
+  if (!pageContent) return windowState;
+
+  const pageState = {
+    scrollTop: pageContent.scrollTop || 0,
+    viewport: pageContent.clientHeight || 0,
+    fullHeight: pageContent.scrollHeight || 0,
+  };
+
+  const pageRange = Math.max(0, pageState.fullHeight - pageState.viewport);
+  const windowRange = Math.max(
+    0,
+    windowState.fullHeight - windowState.viewport,
+  );
+  const pageHasRange = pageRange > 1;
+  const windowHasRange = windowRange > 1;
+
+  if (pageHasRange && !windowHasRange) return pageState;
+  if (windowHasRange && !pageHasRange) return windowState;
+
+  if (pageState.scrollTop > 0 && windowState.scrollTop <= 0) return pageState;
+  if (windowState.scrollTop > 0 && pageState.scrollTop <= 0) return windowState;
+
+  if (!pageHasRange && !windowHasRange) return windowState;
+
+  const pageProgress = pageHasRange ? pageState.scrollTop / pageRange : 0;
+  const windowProgress = windowHasRange
+    ? windowState.scrollTop / windowRange
+    : 0;
+  return pageProgress >= windowProgress ? pageState : windowState;
+}
+
+function isWindowAtBottom(threshold = 8) {
+  const { scrollTop, viewport, fullHeight } = getScrollState();
   return scrollTop + viewport >= fullHeight - threshold;
+}
+
+function getViewedScrollPercent() {
+  const { scrollTop, viewport, fullHeight } = getScrollState();
+  if (fullHeight <= 0 || viewport <= 0) return 0;
+
+  if (fullHeight <= viewport + 1) return 100;
+  return clampPercent(((scrollTop + viewport) / fullHeight) * 100);
 }
 
 function maybeCompleteActiveScrollLesson() {
   if (!activeScrollTarget) return;
+
+  const viewedPercent = getViewedScrollPercent();
+  if (viewedPercent <= 0) return;
+
   if (isWindowAtBottom()) {
     markGlaucomaLessonComplete(activeScrollTarget);
+    return;
   }
+
+  setGlaucomaLessonProgress(activeScrollTarget, Math.min(99, viewedPercent));
 }
 
 function clearScrollFitState() {
@@ -549,4 +531,9 @@ export function initializeGlaucomaWorkshopProgressInfra() {
     },
     { passive: true },
   );
+
+  const pageContent = document.getElementById("page-content");
+  pageContent?.addEventListener("scroll", maybeCompleteActiveScrollLesson, {
+    passive: true,
+  });
 }

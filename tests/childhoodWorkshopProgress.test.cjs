@@ -77,7 +77,7 @@ describe("childhood workshop nested folder completion", () => {
     });
   });
 
-  it("shows star and completion date for nested folders once every inner lesson is complete", () => {
+  it("shows a title tick without a completion date for nested folders once every inner lesson is complete", () => {
     setProgress(
       "childhoodFundalPreparationPage",
       100,
@@ -102,13 +102,13 @@ describe("childhood workshop nested folder completion", () => {
     updateChildhoodWorkshopProgressBars();
 
     expect(folderRow.classList.contains("is-complete")).toBe(true);
-    expect(folderRow.querySelector(".lesson-meta").innerHTML).toContain(
-      "childhood-folder-complete-star",
-    );
+    expect(folderRow.querySelector(".lesson-meta").innerHTML).toBe("");
     expect(
-      folderRow.querySelector(".childhood-folder-complete-rank-date")
-        ?.textContent,
-    ).toBe("1st 13.03.2026");
+      folderRow.querySelector(".lesson-type > .lesson-complete-tick"),
+    ).not.toBeNull();
+    expect(
+      folderRow.querySelector(".childhood-folder-complete-rank-date"),
+    ).toBeNull();
 
     expect(
       JSON.parse(

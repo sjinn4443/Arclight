@@ -13,6 +13,7 @@ import { initializePWA } from "./pwa.js";
 import { initializeVideoPlayers, initializeToolbar } from "./videoplayer.js";
 import { initializeLocation } from "./location-service.js";
 import { initializeExperimentalMiniAppNotice } from "./experimentalMiniAppNotice.js";
+import { initializeLessonCompletionTickObserver } from "./lessonCompletionTick.js";
 import {
   initializeFundalReflexPdf,
   initializeAtomsHandout1,
@@ -93,6 +94,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initializeLocation().catch((e) => console.warn("[geo] init failed", e));
   initializeMenu();
   initializeExperimentalMiniAppNotice();
+  initializeLessonCompletionTickObserver();
 
   document.addEventListener("click", (e) => {
     const btn = e.target.closest(".menuBtn");

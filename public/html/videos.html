@@ -658,6 +658,40 @@
             </div>
 
             <div
+              class="lesson-row lesson-row--pdf"
+              data-target="fundalReflexPdfPage"
+              data-route="fundalReflexPdf"
+              role="button"
+              tabindex="0"
+            >
+              <div class="thumb" aria-hidden="true"></div>
+
+              <div class="lesson-main">
+                <div class="lesson-top">
+                  <span
+                    class="lesson-type"
+                    data-i18n="auto.childhoodeyescreeningworkshop.fundal_reflex_pdf"
+                    >Fundal Reflex PDF</span
+                  >
+                  <span class="lesson-meta"></span>
+                </div>
+
+                <div
+                  class="lesson-progress"
+                  role="progressbar"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                >
+                  <div class="lesson-progress__fill"></div>
+                </div>
+              </div>
+
+              <span class="lesson-cta" data-i18n="auto.videos.start"
+                >Start &gt;</span
+              >
+            </div>
+
+            <div
               class="lesson-row lesson-row--video"
               data-target="fundalStillPage"
               role="button"
@@ -1504,7 +1538,10 @@
             class="pupil-card module-card"
             data-page="rapdTestVideoPage"
           >
-            <div class="lesson-row lesson-row--quiz">
+            <div
+              class="lesson-row lesson-row--quiz"
+              data-target="rapdTestVideoPage"
+            >
               <div class="thumb" aria-hidden="true"></div>
 
               <div class="lesson-main">
@@ -1922,6 +1959,7 @@
           >
             <div
               class="lesson-row lesson-row--quiz"
+              data-target="directOphthalmoscopyQuizPage"
               data-action="take-quiz"
               data-quiz="directOphthalmoscopy"
               tabindex="0"
@@ -1954,7 +1992,47 @@
               >
             </div>
           </button>
+
+          <button type="button" class="pupil-card module-card">
+            <div
+              class="lesson-row lesson-row--pdf"
+              data-target="directOphthalmoscopyPdfPage"
+              data-route="directOphthalmoscopyPdf"
+              role="button"
+              tabindex="0"
+            >
+              <div class="thumb" aria-hidden="true"></div>
+
+              <div class="lesson-main">
+                <div class="lesson-top">
+                  <span
+                    class="lesson-type"
+                    data-i18n="auto.videos.direct_ophthalmoscopy"
+                    >Direct Ophthalmoscopy</span
+                  >
+                  <span class="lesson-meta"></span>
+                </div>
+
+                <div
+                  class="lesson-progress"
+                  role="progressbar"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                >
+                  <div class="lesson-progress__fill"></div>
+                </div>
+              </div>
+
+              <span class="lesson-cta" data-i18n="videos.startCta"
+                >Start &gt;</span
+              >
+            </div>
+          </button>
         </section>
+
+        <div class="pupils-dots" aria-hidden="true">
+          <span></span><span></span>
+        </div>
       </div>
     </div>
   </section>
@@ -3869,39 +3947,310 @@
   </div>
 
   <!-- Arclight Page -->
-  <div id="arclightPage" class="page">
-    <div class="container">
-      <h1 data-i18n="videos.arclightTitle">Arclight</h1>
-      <div
-        class="module-card"
-        id="howToUseArclightArclightCard"
-        data-page="howToUseArclightVideoPage"
-      >
-        <div class="module-info">
-          <h3 data-i18n="videos.howToUseArclightTitle">How to Use Arclight</h3>
-          <p data-i18n="videos.videoLearning">Video Learning</p>
-          <div class="progress-bar">
-            <div class="progress"></div>
-          </div>
-          <span class="status" data-i18n="videos.startStatus">Start!</span>
+  <section id="arclightPage" class="page pupils-like">
+    <div class="container pupils-container">
+      <div class="eyes-topbar">
+        <div class="eyes-topbar__title" data-i18n="auto.videos.eyes">Eyes</div>
+        <div class="eyes-topbar__icons">
+          <span
+            class="icon menuBtn"
+            aria-label="Menu"
+            data-i18n="i18nExtra.menu_aria_label:aria-label"
+            >&#9776;</span
+          >
         </div>
       </div>
-      <div
-        class="module-card"
-        id="phoneAttachmentCard"
-        data-page="phoneAttachmentVideoPage"
-      >
-        <div class="module-info">
-          <h3 data-i18n="videos.mobilePhoneAttachmentTitle">
-            Mobile Phone Attachment
-          </h3>
-          <p data-i18n="videos.videoLearning">Video Learning</p>
-          <div class="progress-bar">
-            <div class="progress"></div>
+
+      <h2 class="pupils-subtitle" data-i18n="eyes.card_label.arclight_overview">
+        Arclight Overview
+      </h2>
+
+      <div class="pupils-levels">
+        <!-- Primary -->
+        <section
+          class="pupil-level pupil-level--primary"
+          aria-label="Primary"
+          data-i18n="auto.videos.primary:aria-label"
+        >
+          <div class="pupil-level__cap" data-i18n="auto.videos.primary">
+            Primary
           </div>
-          <span class="status" data-i18n="videos.startStatus">Start!</span>
+
+          <button
+            type="button"
+            class="pupil-card module-card"
+            data-page="howToUseArclightVideoPage"
+          >
+            <div
+              class="lesson-row lesson-row--video"
+              data-target="howToUseArclightVideoPage"
+              role="button"
+              tabindex="0"
+            >
+              <div class="thumb" aria-hidden="true"></div>
+
+              <div class="lesson-main">
+                <div class="lesson-top">
+                  <span
+                    class="lesson-type"
+                    data-i18n="videos.howToUseArclightTitle"
+                    >How to Use Arclight</span
+                  >
+                  <span class="lesson-meta">| 00:00</span>
+                </div>
+
+                <div
+                  class="lesson-progress"
+                  role="progressbar"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                >
+                  <div class="lesson-progress__fill"></div>
+                </div>
+              </div>
+
+              <span class="lesson-cta" data-i18n="auto.videos.start"
+                >Start &gt;</span
+              >
+            </div>
+          </button>
+
+          <button
+            type="button"
+            class="pupil-card module-card"
+            data-page="phoneAttachmentVideoPage"
+          >
+            <div
+              class="lesson-row lesson-row--video"
+              data-target="phoneAttachmentVideoPage"
+              role="button"
+              tabindex="0"
+            >
+              <div class="thumb" aria-hidden="true"></div>
+
+              <div class="lesson-main">
+                <div class="lesson-top">
+                  <span
+                    class="lesson-type"
+                    data-i18n="videos.mobilePhoneAttachmentTitle"
+                    >Mobile Phone Attachment</span
+                  >
+                  <span class="lesson-meta">| 00:00</span>
+                </div>
+
+                <div
+                  class="lesson-progress"
+                  role="progressbar"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                >
+                  <div class="lesson-progress__fill"></div>
+                </div>
+              </div>
+
+              <span class="lesson-cta" data-i18n="auto.videos.start"
+                >Start &gt;</span
+              >
+            </div>
+          </button>
+
+          <button type="button" class="pupil-card module-card">
+            <div
+              class="lesson-row lesson-row--pdf"
+              data-target="directOphthalmoscopyPdfPage"
+              data-route="directOphthalmoscopyPdf"
+              role="button"
+              tabindex="0"
+            >
+              <div class="thumb" aria-hidden="true"></div>
+
+              <div class="lesson-main">
+                <div class="lesson-top">
+                  <span
+                    class="lesson-type"
+                    data-i18n="auto.videos.direct_ophthalmoscopy"
+                    >Direct Ophthalmoscopy</span
+                  >
+                  <span class="lesson-meta"></span>
+                </div>
+
+                <div
+                  class="lesson-progress"
+                  role="progressbar"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                >
+                  <div class="lesson-progress__fill"></div>
+                </div>
+              </div>
+
+              <span class="lesson-cta" data-i18n="auto.videos.start"
+                >Start &gt;</span
+              >
+            </div>
+          </button>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <!-- Holo Overview Page -->
+  <section id="holoOverviewPage" class="page pupils-like">
+    <div class="container pupils-container">
+      <div class="eyes-topbar">
+        <div class="eyes-topbar__title" data-i18n="auto.videos.eyes">Eyes</div>
+        <div class="eyes-topbar__icons">
+          <span
+            class="icon menuBtn"
+            aria-label="Menu"
+            data-i18n="i18nExtra.menu_aria_label:aria-label"
+            >&#9776;</span
+          >
         </div>
       </div>
+
+      <h2 class="pupils-subtitle" data-i18n="eyes.card_label.holo_overview">
+        Holo Overview
+      </h2>
+
+      <div class="pupils-levels">
+        <!-- Intermediate -->
+        <section
+          class="pupil-level pupil-level--intermediate"
+          aria-label="Intermediate"
+          data-i18n="auto.videos.intermediate:aria-label"
+        >
+          <div class="pupil-level__cap" data-i18n="auto.videos.intermediate">
+            Intermediate
+          </div>
+
+          <button type="button" class="pupil-card module-card">
+            <div
+              class="lesson-row lesson-row--video"
+              data-target="binocularIndirectOphthalmoscopyVideoPage"
+              role="button"
+              tabindex="0"
+            >
+              <div class="thumb" aria-hidden="true"></div>
+
+              <div class="lesson-main">
+                <div class="lesson-top">
+                  <span class="lesson-type"
+                    >Binocular Indirect Ophthalmoscopy</span
+                  >
+                  <span class="lesson-meta"></span>
+                </div>
+
+                <div
+                  class="lesson-progress"
+                  role="progressbar"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                >
+                  <div class="lesson-progress__fill"></div>
+                </div>
+              </div>
+
+              <span class="lesson-cta" data-i18n="auto.videos.start"
+                >Start &gt;</span
+              >
+            </div>
+          </button>
+
+          <button type="button" class="pupil-card module-card">
+            <div
+              class="lesson-row lesson-row--scroll"
+              data-target="binocularIndirectOphthalmoscopyScrollPage"
+              role="button"
+              tabindex="0"
+            >
+              <div class="thumb" aria-hidden="true"></div>
+
+              <div class="lesson-main">
+                <div class="lesson-top">
+                  <span class="lesson-type"
+                    >Binocular Indirect Ophthalmoscopy Guide</span
+                  >
+                  <span class="lesson-meta"></span>
+                </div>
+
+                <div
+                  class="lesson-progress"
+                  role="progressbar"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                >
+                  <div class="lesson-progress__fill"></div>
+                </div>
+              </div>
+
+              <span class="lesson-cta" data-i18n="auto.videos.start"
+                >Start &gt;</span
+              >
+            </div>
+          </button>
+
+          <button type="button" class="pupil-card module-card">
+            <div
+              class="lesson-row lesson-row--pdf"
+              data-target="binocularIndirectOphthalmoscopyPdfPage"
+              data-route="binocularIndirectOphthalmoscopyPdf"
+              role="button"
+              tabindex="0"
+            >
+              <div class="thumb" aria-hidden="true"></div>
+
+              <div class="lesson-main">
+                <div class="lesson-top">
+                  <span class="lesson-type"
+                    >Binocular Indirect Ophthalmoscopy</span
+                  >
+                  <span class="lesson-meta"></span>
+                </div>
+
+                <div
+                  class="lesson-progress"
+                  role="progressbar"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                >
+                  <div class="lesson-progress__fill"></div>
+                </div>
+              </div>
+
+              <span class="lesson-cta" data-i18n="auto.videos.start"
+                >Start &gt;</span
+              >
+            </div>
+          </button>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <div
+    id="binocularIndirectOphthalmoscopyScrollPage"
+    class="page pupils-like has-eyes-topbar childhood-fundal-scroll-page"
+  >
+    <div class="container pupils-container">
+      <div class="eyes-topbar">
+        <div class="eyes-topbar__title">Binocular Indirect Ophthalmoscopy</div>
+        <div class="eyes-topbar__icons">
+          <span
+            class="icon menuBtn"
+            aria-label="Menu"
+            data-i18n="i18nExtra.menu_aria_label:aria-label"
+            >&#9776;</span
+          >
+        </div>
+      </div>
+
+      <h2 class="pupils-subtitle">Binocular Indirect Ophthalmoscopy</h2>
+
+      <div
+        class="childhood-fundal-prep-list"
+        aria-label="Binocular Indirect Ophthalmoscopy guide"
+      ></div>
     </div>
   </div>
 

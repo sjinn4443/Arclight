@@ -22,13 +22,20 @@ const EXTERNAL_GLAUCOMA_SCROLL_TARGETS = new Set([
 let externalGlaucomaNavInFlight = false;
 const CHILDHOOD_WORKSHOP_PROGRESS_PREFIX = "childhoodWorkshop:progress:";
 const DIABETIC_WORKSHOP_PROGRESS_PREFIX = "diabeticWorkshop:progress:";
+const GLAUCOMA_WORKSHOP_PROGRESS_PREFIX = "glaucomaWorkshop:progress:";
+const LESSON_PROGRESS_PREFIX = "lessonProgress:";
 const CHILDHOOD_WORKSHOP_PROGRESS_EVENT = "childhoodWorkshop:progress-changed";
 const DIABETIC_WORKSHOP_PROGRESS_EVENT = "diabeticWorkshop:progress-changed";
+const LESSON_PROGRESS_EVENT = "arclight:lesson-progress-changed";
 const CHILDHOOD_WORKSHOP_ROUTE_COMPLETE_EVENT =
   "childhoodWorkshop:route-complete";
 const FUNDAL_REFLEX_EXAMINATION_SCROLL_PAGE_ID =
   "fundalReflexExaminationScrollPage";
 const FUNDAL_REFLEX_EXAMINATION_SCROLL_ROUTE = "fundalReflexExaminationScroll";
+const BINOCULAR_INDIRECT_OPHTHALMOSCOPY_SCROLL_PAGE_ID =
+  "binocularIndirectOphthalmoscopyScrollPage";
+const BINOCULAR_INDIRECT_OPHTHALMOSCOPY_SCROLL_ROUTE =
+  "binocularIndirectOphthalmoscopyScroll";
 const FUNDAL_REFLEX_EXAMINATION_PROGRESS_CAP = 95;
 const VIDEO_PROGRESS_COMPLETION_WINDOW_MIN_SECONDS = 5;
 const VIDEO_PROGRESS_COMPLETION_WINDOW_MAX_SECONDS = 15;
@@ -137,6 +144,26 @@ function readDiabeticWorkshopProgressForTarget(targetPageId) {
   );
 }
 
+function glaucomaWorkshopProgressKeyForTarget(targetPageId) {
+  return `${GLAUCOMA_WORKSHOP_PROGRESS_PREFIX}${targetPageId}`;
+}
+
+function readGlaucomaWorkshopProgressForTarget(targetPageId) {
+  return normalizeProgressRecord(
+    readVideoProgress(glaucomaWorkshopProgressKeyForTarget(targetPageId)),
+  );
+}
+
+function lessonProgressKeyForTarget(targetPageId) {
+  return `${LESSON_PROGRESS_PREFIX}${targetPageId}`;
+}
+
+function readLessonProgressForTarget(targetPageId) {
+  return normalizeProgressRecord(
+    readVideoProgress(lessonProgressKeyForTarget(targetPageId)),
+  );
+}
+
 function writeWorkshopProgressForTarget(
   targetPageId,
   percent,
@@ -163,6 +190,39 @@ function writeWorkshopProgressForTarget(
 
   document.dispatchEvent(
     new CustomEvent(CHILDHOOD_WORKSHOP_PROGRESS_EVENT, {
+      detail: { target: targetPageId, percent: finalPercent },
+    }),
+  );
+
+  return finalPercent;
+}
+
+function writeDiabeticWorkshopProgressForTarget(
+  targetPageId,
+  percent,
+  { mode = "max" } = {},
+) {
+  if (!targetPageId) return 0;
+
+  const storageKey = diabeticWorkshopProgressKeyForTarget(targetPageId);
+  const previousRaw = readVideoProgress(storageKey);
+  const previous = normalizeProgressRecord(previousRaw);
+  const next = clampStoredProgressPercent(percent);
+  const finalPercent =
+    mode === "replace" ? next : Math.max(previous.percent, next);
+
+  if (
+    finalPercent !== previous.percent ||
+    !Number.isFinite(Number(previousRaw?.percent))
+  ) {
+    writeVideoProgress(storageKey, {
+      percent: finalPercent,
+      updatedAt: Date.now(),
+    });
+  }
+
+  document.dispatchEvent(
+    new CustomEvent(DIABETIC_WORKSHOP_PROGRESS_EVENT, {
       detail: { target: targetPageId, percent: finalPercent },
     }),
   );
@@ -234,11 +294,13 @@ function progressKeyForTarget(targetPageId) {
 
 function readProgressForTarget(targetPageId) {
   const progressRecords = [
+    readLessonProgressForTarget(targetPageId),
     normalizeProgressRecord(
       readVideoProgress(progressKeyForTarget(targetPageId)),
     ),
     readWorkshopProgressForTarget(targetPageId),
     readDiabeticWorkshopProgressForTarget(targetPageId),
+    readGlaucomaWorkshopProgressForTarget(targetPageId),
   ];
 
   return progressRecords.reduce((best, current) => {
@@ -299,13 +361,11 @@ function getPreferredScrollMetrics() {
   return pageProgress >= windowProgress ? pageMetrics : windowMetrics;
 }
 
-function syncFundalReflexExaminationScrollProgress() {
-  const page = document.getElementById(
-    FUNDAL_REFLEX_EXAMINATION_SCROLL_PAGE_ID,
-  );
+function syncScrollProgressForTarget(targetPageId, writeProgressForTarget) {
+  const page = document.getElementById(targetPageId);
   if (!page) return;
   if (
-    currentPageElement?.id !== FUNDAL_REFLEX_EXAMINATION_SCROLL_PAGE_ID &&
+    currentPageElement?.id !== targetPageId &&
     page.style.display === "none"
   ) {
     return;
@@ -321,15 +381,32 @@ function syncFundalReflexExaminationScrollProgress() {
       FUNDAL_REFLEX_EXAMINATION_PROGRESS_CAP,
   );
 
-  writeWorkshopProgressForTarget(
+  writeProgressForTarget(targetPageId, percent);
+}
+
+function syncFundalReflexExaminationScrollProgress() {
+  syncScrollProgressForTarget(
     FUNDAL_REFLEX_EXAMINATION_SCROLL_PAGE_ID,
-    percent,
+    writeWorkshopProgressForTarget,
+  );
+}
+
+function syncBinocularIndirectOphthalmoscopyScrollProgress() {
+  syncScrollProgressForTarget(
+    BINOCULAR_INDIRECT_OPHTHALMOSCOPY_SCROLL_PAGE_ID,
+    writeDiabeticWorkshopProgressForTarget,
   );
 }
 
 function scheduleFundalReflexExaminationScrollProgressSync() {
   requestAnimationFrame(() => {
     syncFundalReflexExaminationScrollProgress();
+  });
+}
+
+function scheduleBinocularIndirectOphthalmoscopyScrollProgressSync() {
+  requestAnimationFrame(() => {
+    syncBinocularIndirectOphthalmoscopyScrollProgress();
   });
 }
 
@@ -658,6 +735,12 @@ function showPageFallback(id) {
     void initializeFundalReflexExaminationScrollGuide();
     scheduleFundalReflexExaminationScrollProgressSync();
   }
+
+  if (id === BINOCULAR_INDIRECT_OPHTHALMOSCOPY_SCROLL_PAGE_ID) {
+    syncBinocularIndirectOphthalmoscopyTopbar();
+    void initializeBinocularIndirectOphthalmoscopyScrollGuide();
+    scheduleBinocularIndirectOphthalmoscopyScrollProgressSync();
+  }
 }
 
 async function openExternalGlaucomaInteractive(targetId) {
@@ -750,6 +833,49 @@ async function initializeFundalReflexExaminationScrollGuide() {
   } catch (err) {
     console.error(
       "[videos] failed to initialize Fundal Reflex Examination guide",
+      err,
+    );
+  }
+}
+
+function syncBinocularIndirectOphthalmoscopyTopbar() {
+  const page = document.getElementById(
+    BINOCULAR_INDIRECT_OPHTHALMOSCOPY_SCROLL_PAGE_ID,
+  );
+  if (!page) return;
+
+  const titleEl = page.querySelector(".eyes-topbar__title");
+  if (titleEl) {
+    titleEl.textContent = "Binocular Indirect Ophthalmoscopy";
+  }
+
+  const menuBtn = page.querySelector(".icon.menuBtn");
+  if (menuBtn) {
+    menuBtn.textContent = "\u2630";
+  }
+
+  const pageSubtitle = page.querySelector(
+    ":scope > .container.pupils-container > .pupils-subtitle",
+  );
+  if (pageSubtitle) {
+    pageSubtitle.style.display = "";
+  }
+
+  window.I18N?.applyTranslations?.(page.querySelector(".eyes-topbar"));
+}
+
+async function initializeBinocularIndirectOphthalmoscopyScrollGuide() {
+  syncBinocularIndirectOphthalmoscopyTopbar();
+  try {
+    const { initializeChildhoodFundalReflexScrollPage } =
+      await import("./childhoodFundalPreparation.js");
+    await initializeChildhoodFundalReflexScrollPage?.(
+      BINOCULAR_INDIRECT_OPHTHALMOSCOPY_SCROLL_ROUTE,
+    );
+    scheduleBinocularIndirectOphthalmoscopyScrollProgressSync();
+  } catch (err) {
+    console.error(
+      "[videos] failed to initialize Binocular Indirect Ophthalmoscopy guide",
       err,
     );
   }
@@ -3089,6 +3215,12 @@ function show(id) {
     scheduleFundalReflexExaminationScrollProgressSync();
   }
 
+  if (id === BINOCULAR_INDIRECT_OPHTHALMOSCOPY_SCROLL_PAGE_ID) {
+    syncBinocularIndirectOphthalmoscopyTopbar();
+    void initializeBinocularIndirectOphthalmoscopyScrollGuide();
+    scheduleBinocularIndirectOphthalmoscopyScrollProgressSync();
+  }
+
   // ✅ ensure we start at the top when switching video subpages
   try {
     window.scrollTo(0, 0);
@@ -3304,10 +3436,20 @@ if (!window[__videosGlobalBoundKey]) {
     updateLessonProgressBars();
   });
 
+  document.addEventListener(LESSON_PROGRESS_EVENT, () => {
+    updateLessonProgressBars();
+  });
+
   document.addEventListener(CHILDHOOD_WORKSHOP_ROUTE_COMPLETE_EVENT, (e) => {
     const target = e?.detail?.target;
-    if (target !== FUNDAL_REFLEX_EXAMINATION_SCROLL_PAGE_ID) return;
-    writeWorkshopProgressForTarget(target, 100, { mode: "replace" });
+    if (target === FUNDAL_REFLEX_EXAMINATION_SCROLL_PAGE_ID) {
+      writeWorkshopProgressForTarget(target, 100, { mode: "replace" });
+      return;
+    }
+
+    if (target === BINOCULAR_INDIRECT_OPHTHALMOSCOPY_SCROLL_PAGE_ID) {
+      writeDiabeticWorkshopProgressForTarget(target, 100, { mode: "replace" });
+    }
   });
 
   window.addEventListener("i18n:languageChanged", () => {
@@ -3319,6 +3461,7 @@ if (!window[__videosGlobalBoundKey]) {
     "scroll",
     () => {
       syncFundalReflexExaminationScrollProgress();
+      syncBinocularIndirectOphthalmoscopyScrollProgress();
     },
     { passive: true },
   );
@@ -3327,6 +3470,7 @@ if (!window[__videosGlobalBoundKey]) {
     "resize",
     () => {
       scheduleFundalReflexExaminationScrollProgressSync();
+      scheduleBinocularIndirectOphthalmoscopyScrollProgressSync();
       alignVisibleVideoPageShareButtons();
     },
     { passive: true },
@@ -3353,6 +3497,7 @@ if (!window[__videosGlobalBoundKey]) {
     "scroll",
     () => {
       syncFundalReflexExaminationScrollProgress();
+      syncBinocularIndirectOphthalmoscopyScrollProgress();
     },
     { passive: true },
   );

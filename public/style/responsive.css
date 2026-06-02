@@ -1183,12 +1183,14 @@ input {
   }
 
   .lesson-row.is-progress-complete .lesson-type {
-    display: inline-flex;
-    align-items: center;
+    display: inline-block;
+    line-height: 1.25;
+    max-width: 100%;
   }
 
   .lesson-row.is-progress-complete .lesson-complete-tick {
     display: inline-flex;
+    transform: none;
   }
 
   #eyesCatalogPage .eyes-top,
@@ -1396,6 +1398,11 @@ input {
     z-index: 1;
   }
 
+  #likedPage .ml-card-header {
+    align-items: flex-start;
+    padding-right: 38px;
+  }
+
   #likedPage .ml-card h4 {
     color: #fff;
     margin-top: 0;
@@ -1404,12 +1411,24 @@ input {
   }
 
   #likedPage .ml-heart {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
     color: #e11d48;
+    font-size: 18px;
+    line-height: 1;
+    margin-left: 0;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+    z-index: 2;
   }
 
   #likedPage .ml-badge {
-    background: rgba(0, 0, 0, 0.56);
+    background: #e41e26;
     color: #fff;
   }
 
@@ -2008,23 +2027,37 @@ input {
       #frontOfEyePage,
       #fundalReflexPage,
       #fundalReflexExaminationScrollPage,
+      #binocularIndirectOphthalmoscopyScrollPage,
       #interactiveLearningPage,
-      #directOphthalmoscopy
+      #directOphthalmoscopy,
+      #arclightPage,
+      #holoOverviewPage
     )
     > .container.pupils-container {
     padding-top: 96px !important;
   }
 
-  #fundalReflexExaminationScrollPage
+  :is(
+      #fundalReflexExaminationScrollPage,
+      #binocularIndirectOphthalmoscopyScrollPage
+    )
     > .container.pupils-container
     > .pupils-subtitle,
-  #fundalReflexExaminationScrollPage
+  :is(
+      #fundalReflexExaminationScrollPage,
+      #binocularIndirectOphthalmoscopyScrollPage
+    )
     > .container.pupils-container
     > h2.pupils-subtitle {
     display: none !important;
   }
 
-  #videos #fundalReflexExaminationScrollPage > .container.pupils-container {
+  #videos
+    :is(
+      #fundalReflexExaminationScrollPage,
+      #binocularIndirectOphthalmoscopyScrollPage
+    )
+    > .container.pupils-container {
     padding-top: 0 !important;
   }
 

@@ -1,8 +1,12 @@
-import { syncLessonCompletionTick } from "./lessonCompletionTick.js";
+import {
+  getFolderCompletionColourForRow,
+  syncLessonCompletionTick,
+} from "./lessonCompletionTick.js";
 
 const WORKSHOP_PROGRESS_PREFIX = "diabeticWorkshop:progress:";
 const WORKSHOP_PROGRESS_EVENT = "diabeticWorkshop:progress-changed";
 const DIABETIC_PROGRESS_COLOR = "#f25600";
+const FOLDER_COMPLETE_COLOUR = "#15e115";
 const AUTO_COMPLETE_TARGETS = new Set(["diabeticPragmaticScreeningPage"]);
 const SCROLL_TARGETS = new Set([
   "diabeticArclightPackagePage",
@@ -157,6 +161,78 @@ function setRowProgressUI(row, percent) {
   syncLessonCompletionTick(row, safe, DIABETIC_PROGRESS_COLOR);
 }
 
+function getLessonTargets(container) {
+  if (!container) return [];
+
+  return Array.from(container.querySelectorAll(".lesson-row[data-target]"))
+    .map((row) => row.getAttribute("data-target"))
+    .filter(Boolean);
+}
+
+function getSectionLessonTargets(page, sectionKey) {
+  if (!page || !sectionKey) return [];
+  const section = page.querySelector(
+    `.diabetic-section-card[data-section="${sectionKey}"]`,
+  );
+  return getLessonTargets(section);
+}
+
+function getNestedLessonTargets(page, nestedKey) {
+  if (!page || !nestedKey) return [];
+  const section = page.querySelector(
+    `.diabetic-nested-section-card[data-nested-section="${nestedKey}"]`,
+  );
+  return getLessonTargets(section);
+}
+
+function updateDiabeticFolderCompletionTicks(page) {
+  if (!page) return;
+
+  page
+    .querySelectorAll(
+      "#diabeticWorkshopFolders .diabetic-folder-row[data-folder]",
+    )
+    .forEach((row) => {
+      const targets = getSectionLessonTargets(
+        page,
+        row.getAttribute("data-folder"),
+      );
+      const isComplete =
+        targets.length > 0 &&
+        targets.every((target) => getDiabeticLessonProgress(target) >= 100);
+
+      row.classList.toggle("is-complete", isComplete);
+      const meta = row.querySelector(".lesson-meta");
+      if (meta) meta.textContent = "";
+      syncLessonCompletionTick(
+        row,
+        isComplete ? 100 : 0,
+        getFolderCompletionColourForRow(row, FOLDER_COMPLETE_COLOUR),
+      );
+    });
+
+  page
+    .querySelectorAll(".diabetic-nested-folder-row[data-nested-folder]")
+    .forEach((row) => {
+      const targets = getNestedLessonTargets(
+        page,
+        row.getAttribute("data-nested-folder"),
+      );
+      const isComplete =
+        targets.length > 0 &&
+        targets.every((target) => getDiabeticLessonProgress(target) >= 100);
+
+      row.classList.toggle("is-complete", isComplete);
+      const meta = row.querySelector(".lesson-meta");
+      if (meta) meta.textContent = "";
+      syncLessonCompletionTick(
+        row,
+        isComplete ? 100 : 0,
+        getFolderCompletionColourForRow(row, FOLDER_COMPLETE_COLOUR),
+      );
+    });
+}
+
 export function updateDiabeticWorkshopProgressBars(root = document) {
   const page =
     root?.querySelector?.("#diabeticRetinopathyWorkshopPage") ||
@@ -168,6 +244,8 @@ export function updateDiabeticWorkshopProgressBars(root = document) {
     if (!target) return;
     setRowProgressUI(row, getDiabeticLessonProgress(target));
   });
+
+  updateDiabeticFolderCompletionTicks(page);
 }
 
 function hasDiabeticLessonRow(target) {
@@ -228,16 +306,26 @@ function isAtBottom(threshold = 8) {
   return scrollTop + viewport >= fullHeight - threshold;
 }
 
-function hasScrolledFromTop(minScroll = 24) {
-  const { scrollTop } = getScrollState();
-  return scrollTop >= minScroll;
+function getViewedScrollPercent() {
+  const { scrollTop, viewport, fullHeight } = getScrollState();
+  if (fullHeight <= 0 || viewport <= 0) return 0;
+
+  if (fullHeight <= viewport + 1) return 100;
+  return clampPercent(((scrollTop + viewport) / fullHeight) * 100);
 }
 
 function maybeCompleteActiveScrollLesson() {
   if (!activeScrollTarget) return;
-  if (!hasScrolledFromTop()) return;
-  if (!isAtBottom()) return;
-  markDiabeticLessonComplete(activeScrollTarget);
+
+  const viewedPercent = getViewedScrollPercent();
+  if (viewedPercent <= 0) return;
+
+  if (isAtBottom()) {
+    markDiabeticLessonComplete(activeScrollTarget);
+    return;
+  }
+
+  setDiabeticLessonProgress(activeScrollTarget, Math.min(99, viewedPercent));
 }
 
 export function initializeDiabeticWorkshopProgressInfra() {

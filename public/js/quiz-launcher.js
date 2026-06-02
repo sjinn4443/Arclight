@@ -6,6 +6,68 @@ function translateNode(node) {
   }
 }
 
+const DIRECT_OPHTHALMOSCOPY_QUIZ_PROGRESS_TARGET =
+  "directOphthalmoscopyQuizPage";
+const LESSON_PROGRESS_PREFIX = "lessonProgress:";
+const LESSON_PROGRESS_EVENT = "arclight:lesson-progress-changed";
+
+function clampProgressPercent(value) {
+  const n = Number(value);
+  if (!Number.isFinite(n)) return 0;
+  return Math.max(0, Math.min(100, n));
+}
+
+function readJSON(key) {
+  try {
+    return JSON.parse(localStorage.getItem(key) || "null");
+  } catch {
+    return null;
+  }
+}
+
+function writeDirectQuizProgress(percent, { mode = "max" } = {}) {
+  const target = DIRECT_OPHTHALMOSCOPY_QUIZ_PROGRESS_TARGET;
+  const key = `${LESSON_PROGRESS_PREFIX}${target}`;
+  const next = clampProgressPercent(percent);
+  const prevRaw = readJSON(key) || {};
+  const prev = clampProgressPercent(prevRaw.percent);
+  const finalPercent = mode === "replace" ? next : Math.max(prev, next);
+
+  if (
+    finalPercent !== prev ||
+    !Number.isFinite(Number(prevRaw.percent)) ||
+    finalPercent >= 100
+  ) {
+    try {
+      localStorage.setItem(
+        key,
+        JSON.stringify({
+          percent: finalPercent,
+          updatedAt: Date.now(),
+        }),
+      );
+    } catch {
+      void 0;
+    }
+  }
+
+  document.dispatchEvent(
+    new CustomEvent(LESSON_PROGRESS_EVENT, {
+      detail: { target, percent: finalPercent },
+    }),
+  );
+}
+
+function updateDirectQuizInProgress(quizForm, totalQuestions) {
+  if (!quizForm || !totalQuestions) return;
+  let answered = 0;
+  for (let i = 0; i < totalQuestions; i += 1) {
+    if (quizForm.querySelector(`input[name="q${i}"]:checked`)) answered += 1;
+  }
+
+  writeDirectQuizProgress((answered / totalQuestions) * 95);
+}
+
 function ensureDirectQuizTopbar(page) {
   if (!page || page.querySelector(".direct-quiz-topbar")) return;
   page.classList.add("has-eyes-topbar");
@@ -343,6 +405,13 @@ function _launchQuiz() {
   translateNode(quizForm);
   removeQuestionNumbers(quizForm);
 
+  if (quizForm.dataset.progressWired !== "1") {
+    quizForm.dataset.progressWired = "1";
+    quizForm.addEventListener("change", () => {
+      updateDirectQuizInProgress(quizForm, questions.length);
+    });
+  }
+
   quizForm.onsubmit = (event) => {
     event.preventDefault();
     let correct = 0;
@@ -386,6 +455,7 @@ function _launchQuiz() {
     }
 
     quizPage.querySelector("#quizModal")?.classList.remove("hidden");
+    writeDirectQuizProgress(100);
   };
 
   quizPage.querySelector("#seeWhyBtn")?.addEventListener("click", () => {

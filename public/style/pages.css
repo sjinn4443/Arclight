@@ -1189,11 +1189,44 @@ select.onb-input.has-value {
   display: none;
 }
 
+.ml-card--image {
+  overflow: hidden;
+  color: #fff;
+  background: #050505;
+}
+
+.ml-card--image .ml-card-bg {
+  display: block;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.ml-card--image::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.48) 0%,
+    rgba(0, 0, 0, 0.12) 46%,
+    rgba(0, 0, 0, 0.54) 100%
+  );
+  pointer-events: none;
+}
+
 /* Title row with heart icon */
 .ml-card-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: relative;
+  z-index: 1;
+  padding-right: 32px;
 }
 
 /* Random height buckets for variety */
@@ -1215,10 +1248,24 @@ select.onb-input.has-value {
   text-align: left;
 }
 
+.ml-card--image h4 {
+  color: #fff;
+}
+
 .ml-heart {
-  font-size: 16px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  font-size: 18px;
   color: #e11d48;
-  margin-left: 6px;
+  line-height: 1;
+  margin-left: 0;
+  z-index: 2;
 }
 
 /* Badges pinned at bottom */
@@ -1227,14 +1274,122 @@ select.onb-input.has-value {
   flex-wrap: wrap;
   gap: 6px;
   margin-top: 8px;
+  position: relative;
+  z-index: 1;
 }
 
 .ml-badge {
-  background: #666;
+  background: #e41e26;
   color: #fff;
-  border-radius: 9999px;
+  border-radius: 9px;
+  font-size: 10px;
+  font-weight: 500;
+  padding: 6px 15px;
+}
+
+.ml-card--image .ml-badge {
+  background: #e41e26;
+}
+
+.ml-progress-card {
+  cursor: pointer;
+  gap: 10px;
+  overflow: hidden;
+}
+
+.ml-progress-card__summary {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4px 8px;
+  width: 100%;
+  padding: 0;
+  color: inherit;
+  text-align: left;
+  background: transparent;
+  border: 0;
+}
+
+.ml-progress-card__summary h4 {
+  grid-column: 1 / -1;
+  margin: 0;
+}
+
+.ml-progress-card__meta {
   font-size: 11px;
-  padding: 6px 8px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.ml-progress-card__meta {
+  color: rgba(17, 17, 17, 0.72);
+}
+
+.ml-progress-items {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.ml-progress-item {
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 5px 8px;
+  width: 100%;
+  padding: 8px;
+  color: #111;
+  text-align: left;
+  background: rgba(255, 255, 255, 0.88);
+  border: 0;
+  border-radius: 8px;
+}
+
+.ml-progress-item__text {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.ml-progress-item__title {
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.ml-progress-item__meta {
+  overflow: hidden;
+  color: rgba(17, 17, 17, 0.62);
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ml-progress-item__percent {
+  color: #f25600;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.ml-progress-item__track {
+  grid-column: 1 / -1;
+  height: 4px;
+  overflow: hidden;
+  background: rgba(17, 17, 17, 0.16);
+  border-radius: 999px;
+}
+
+.ml-progress-item__fill {
+  display: block;
+  height: 100%;
+  background: #f25600;
+  border-radius: inherit;
 }
 
 /* =========================
@@ -1400,11 +1555,12 @@ select.onb-input.has-value {
   display: none;
   align-items: center;
   justify-content: center;
+  flex: 0 0 auto;
   width: 16px;
   height: 16px;
-  margin-left: 6px;
+  margin-left: var(--lesson-complete-gap, 5px);
   color: var(--lesson-complete-color, var(--accent));
-  flex: 0 0 16px;
+  line-height: 0;
   vertical-align: -3px;
 }
 
@@ -1415,13 +1571,20 @@ select.onb-input.has-value {
 }
 
 .lesson-row.is-progress-complete .lesson-type {
-  display: inline-flex;
-  align-items: center;
+  display: inline-block;
+  line-height: 1.25;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.lesson-row.is-progress-complete .lesson-complete-label {
+  display: inline;
+  min-width: 0;
 }
 
 .lesson-row.is-progress-complete .lesson-complete-tick {
   display: inline-flex;
-  transform: translateY(-1px);
+  transform: none;
 }
 
 #pupilsPage .lesson-cta,
@@ -1564,6 +1727,20 @@ body,
 /* Keep pupils-like titles below fixed Eyes topbar (avoid being hidden by generic 30px top padding) */
 .page.pupils-like > .container.pupils-container:first-child {
   padding-top: 0 !important;
+}
+
+#videos
+  :is(
+    #visualAcuityPage,
+    #frontOfEyePage,
+    #fundalReflexPage,
+    #interactiveLearningPage,
+    #directOphthalmoscopy,
+    #arclightPage,
+    #holoOverviewPage
+  )
+  > .container.pupils-container:first-child {
+  padding-top: 96px !important;
 }
 
 /* Onboarding: align layout with intro/interest */
@@ -3009,13 +3186,16 @@ select.onb-input.has-value + .onb-select-caret {
   #glaucomaWorkshopFolders
   .glaucoma-folder-row
   .lesson-main {
-  gap: 0;
+  align-self: start;
+  gap: 4px;
+  min-width: 0;
 }
 
 #glaucomaWorkshopPage
   #glaucomaWorkshopFolders
   .glaucoma-folder-row
   .lesson-top {
+  margin: 0 0 0 25px;
   width: auto;
 }
 
@@ -3043,9 +3223,7 @@ select.onb-input.has-value + .onb-select-caret {
   #glaucomaWorkshopFolders
   .glaucoma-folder-complete-rank-date {
   display: block;
-  margin-left: 26px;
-  margin-top: 18px;
-  margin-bottom: -37px;
+  margin: 0 0 0 25px;
   color: #bbb;
   font-size: 10px;
   font-weight: 500;
@@ -6242,6 +6420,24 @@ select.onb-input.has-value + .onb-select-caret {
   }
 }
 
+#childhoodEyeScreeningWorkshopPage
+  #childhoodWorkshopFolders
+  .childhood-folder-row.is-progress-complete
+  .lesson-type,
+#childhoodEyeScreeningWorkshopPage
+  .lesson-row--folder.is-progress-complete
+  .lesson-type,
+#diabeticRetinopathyWorkshopPage
+  .lesson-row--folder.is-progress-complete
+  .lesson-type,
+#glaucomaWorkshopPage
+  #glaucomaWorkshopFolders
+  .glaucoma-folder-row.is-progress-complete
+  .lesson-type {
+  display: inline-block;
+  max-width: 100%;
+}
+
 #childhoodEyeScreeningWorkshopPage .childhood-section-card {
   display: flex;
   flex-direction: column;
@@ -6331,7 +6527,11 @@ select.onb-input.has-value + .onb-select-caret {
   pointer-events: none;
 }
 
-#fundalReflexExaminationScrollPage .childhood-fundal-prep-list {
+:is(
+    #fundalReflexExaminationScrollPage,
+    #binocularIndirectOphthalmoscopyScrollPage
+  )
+  .childhood-fundal-prep-list {
   gap: 0;
   padding-bottom: 24px;
 }
@@ -6563,19 +6763,31 @@ select.onb-input.has-value + .onb-select-caret {
   }
 }
 
-#fundalReflexExaminationScrollPage .fundal-reflex-examination-section {
+:is(
+    #fundalReflexExaminationScrollPage,
+    #binocularIndirectOphthalmoscopyScrollPage
+  )
+  .fundal-reflex-examination-section {
   display: flex;
   flex-direction: column;
   gap: 0;
 }
 
-#fundalReflexExaminationScrollPage .fundal-reflex-examination-section-items {
+:is(
+    #fundalReflexExaminationScrollPage,
+    #binocularIndirectOphthalmoscopyScrollPage
+  )
+  .fundal-reflex-examination-section-items {
   display: flex;
   flex-direction: column;
   gap: 107px;
 }
 
-#fundalReflexExaminationScrollPage .fundal-reflex-section-divider {
+:is(
+    #fundalReflexExaminationScrollPage,
+    #binocularIndirectOphthalmoscopyScrollPage
+  )
+  .fundal-reflex-section-divider {
   --fundal-reflex-divider-offset: 78px;
   display: flex;
   align-items: center;
@@ -6592,13 +6804,20 @@ select.onb-input.has-value + .onb-select-caret {
   );
 }
 
-#fundalReflexExaminationScrollPage
+:is(
+    #fundalReflexExaminationScrollPage,
+    #binocularIndirectOphthalmoscopyScrollPage
+  )
   .fundal-reflex-examination-section:first-child
   .fundal-reflex-section-divider {
   margin-top: 0;
 }
 
-#fundalReflexExaminationScrollPage .fundal-reflex-section-divider__title {
+:is(
+    #fundalReflexExaminationScrollPage,
+    #binocularIndirectOphthalmoscopyScrollPage
+  )
+  .fundal-reflex-section-divider__title {
   margin: 0;
   color: #fff;
   font-size: clamp(1.05rem, 0.95rem + 0.7vw, 1.45rem);
@@ -7311,12 +7530,20 @@ select.onb-input.has-value + .onb-select-caret {
 }
 
 @media (max-width: 37.5em) {
-  #fundalReflexExaminationScrollPage .fundal-reflex-section-divider {
+  :is(
+      #fundalReflexExaminationScrollPage,
+      #binocularIndirectOphthalmoscopyScrollPage
+    )
+    .fundal-reflex-section-divider {
     min-height: 60px;
     border-radius: 0;
   }
 
-  #fundalReflexExaminationScrollPage .fundal-reflex-section-divider__title {
+  :is(
+      #fundalReflexExaminationScrollPage,
+      #binocularIndirectOphthalmoscopyScrollPage
+    )
+    .fundal-reflex-section-divider__title {
     font-size: 1rem;
     letter-spacing: 0.05em;
   }

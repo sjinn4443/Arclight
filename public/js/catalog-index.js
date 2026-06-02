@@ -13,7 +13,7 @@ export const EYES_INDEX = {
   "Visual Acuity": "visualAcuityPage",
   Pupils: "pupilsPage",
   "Front of Eye": "frontOfEyePage",
-  "Fundal Reflex": "comingSoon",
+  "Fundal Reflex": "fundalReflexPage",
   Ophthalmoscopy: "directOphthalmoscopy",
   "Interactive Learning": "interactiveLearningPage",
 
@@ -38,6 +38,6 @@ export const EYES_INDEX = {
   "Cranial Nerve Examination": "comingSoon",
 
   // Tools
-  "Arclight Overview": "comingSoon",
-  "Holo Overview": "comingSoon",
+  "Arclight Overview": "arclightPage",
+  "Holo Overview": "holoOverviewPage",
 };

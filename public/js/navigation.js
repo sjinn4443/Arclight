@@ -141,7 +141,7 @@ function applyGuestFeatureGating(root = document) {
 }
 
 // Run gating whenever a page shows
-document.addEventListener("page:shown", (e) => {
+document.addEventListener("page:shown", () => {
   applyGuestFeatureGating(document);
 });
 
@@ -258,6 +258,7 @@ document.addEventListener("DOMContentLoaded", () => {
 export let currentPageName = null;
 export const historyStack = [];
 const pageHistoryStack = [];
+const MY_LEARNING_RETURN_KEY = "myLearningReturnTarget";
 
 let currentRoute = null; // Add the currentRoute guard
 let isWritingRouteHash = false;
@@ -338,6 +339,37 @@ function updatePageHistory(routeName, subPageId = null, replace = false) {
     !samePageHistoryEntry(pageHistoryStack[pageHistoryStack.length - 1], entry)
   ) {
     pageHistoryStack.push(entry);
+  }
+}
+
+function rememberMyLearningReturnTarget(nextRouteName) {
+  if (normalizeRouteName(nextRouteName) !== "mylearning") return;
+
+  const routeName = normalizeRouteName(currentPageName || currentRoute);
+  if (!routeName || routeName === "mylearning") return;
+
+  const activeSubPageId = getActivePageId();
+  const subPageId =
+    activeSubPageId && activeSubPageId !== "likedPage" ? activeSubPageId : null;
+
+  try {
+    sessionStorage.setItem(
+      MY_LEARNING_RETURN_KEY,
+      JSON.stringify({ routeName, subPageId }),
+    );
+  } catch {
+    void 0;
+  }
+}
+
+function consumeMyLearningReturnTarget() {
+  try {
+    const raw = sessionStorage.getItem(MY_LEARNING_RETURN_KEY);
+    sessionStorage.removeItem(MY_LEARNING_RETURN_KEY);
+    const parsed = JSON.parse(raw || "null");
+    return normalizeStructuralBackTarget(parsed);
+  } catch {
+    return null;
   }
 }
 
@@ -427,12 +459,28 @@ const STRUCTURAL_BACK_SUBPAGES = {
     routeName: "videos",
     subPageId: "fundalReflexPage",
   },
+  binocularIndirectOphthalmoscopyScrollPage: {
+    routeName: "videos",
+    subPageId: "holoOverviewPage",
+  },
   assessmentVisionPage: { routeName: "childhoodEyeScreeningWorkshop" },
   mumVisionPage: { routeName: "childhoodEyeScreeningWorkshop" },
   usaidHowToUseArclightPage: { routeName: "childhoodEyeScreeningWorkshop" },
   usaidFundalReflexExamPage: { routeName: "childhoodEyeScreeningWorkshop" },
   usaidNormalAbnormalPage: { routeName: "childhoodEyeScreeningWorkshop" },
 };
+
+const HISTORY_FIRST_BACK_ROUTES = new Set([
+  "binocularIndirectOphthalmoscopyPdf",
+  "directOphthalmoscopyPdf",
+  "fundalReflexPdf",
+]);
+
+function popPreviousPageHistoryEntry() {
+  if (pageHistoryStack.length <= 1) return null;
+  pageHistoryStack.pop();
+  return pageHistoryStack[pageHistoryStack.length - 1] || null;
+}
 
 function getActivePageId() {
   const activePages = Array.from(
@@ -513,7 +561,9 @@ function primeVideosSubPage(subPageId) {
   try {
     window.__videosPendingTarget = normalizedSubPage;
     sessionStorage.setItem("gotoSubPage", normalizedSubPage);
-  } catch {}
+  } catch {
+    void 0;
+  }
 }
 
 function showSubPageIfPresent(subPageId) {
@@ -595,6 +645,10 @@ export async function loadPage(routeName, options = {}) {
   const recordHistory = options?.recordHistory !== false;
   const syncHash = options?.syncHash !== false;
   const subPageId = normalizeSubPageId(options?.subPageId);
+
+  if (recordHistory) {
+    rememberMyLearningReturnTarget(routeName);
+  }
 
   if (!replace && !force && routeName === currentRoute) {
     if (!showSubPageIfPresent(subPageId)) {
@@ -688,17 +742,23 @@ export async function loadPage(routeName, options = {}) {
   // ✅ Always reset scroll position on route change
   try {
     container.scrollTop = 0;
-  } catch {}
+  } catch {
+    void 0;
+  }
 
   try {
     window.scrollTo(0, 0);
     document.documentElement.scrollTop = 0;
     document.body.scrollTop = 0;
-  } catch {}
+  } catch {
+    void 0;
+  }
 
   try {
     closeMenu();
-  } catch {}
+  } catch {
+    void 0;
+  }
 
   // Debug (optional)
   console.warn("[router] loaded route:", routeName, "bytes=", html.length);
@@ -782,7 +842,41 @@ export async function loadPage(routeName, options = {}) {
  * If there's a previous page, it loads it; otherwise, it defaults to the dashboard.
  */
 export function goBack() {
+  if (currentPageName === "mylearning") {
+    const returnTarget = consumeMyLearningReturnTarget();
+    if (returnTarget?.routeName) {
+      isApplyingBackNavigation = true;
+      loadPage(returnTarget.routeName, {
+        replace: true,
+        force: returnTarget.routeName === currentRoute,
+        recordHistory: false,
+        subPageId: returnTarget.subPageId,
+      }).finally(() => {
+        isApplyingBackNavigation = false;
+      });
+      return;
+    }
+  }
+
   const activeSubPageId = getActivePageId();
+  const currentRouteForBack = normalizeRouteName(currentPageName);
+
+  if (HISTORY_FIRST_BACK_ROUTES.has(currentRouteForBack)) {
+    const previousEntry = popPreviousPageHistoryEntry();
+    if (previousEntry?.routeName) {
+      isApplyingBackNavigation = true;
+      loadPage(previousEntry.routeName, {
+        replace: true,
+        force: previousEntry.routeName === currentRoute,
+        recordHistory: false,
+        subPageId: previousEntry.subPageId,
+      }).finally(() => {
+        isApplyingBackNavigation = false;
+      });
+      return;
+    }
+  }
+
   const structuralTarget = getStructuralBackTarget(
     currentPageName,
     activeSubPageId,
@@ -814,15 +908,12 @@ export function goBack() {
         loadPage(ret, { replace: true, recordHistory: false });
         return;
       }
-    } catch (_e) {
+    } catch {
       /* fall through */
     }
   }
 
-  const previousEntry =
-    pageHistoryStack.length > 1
-      ? (pageHistoryStack.pop(), pageHistoryStack[pageHistoryStack.length - 1])
-      : null;
+  const previousEntry = popPreviousPageHistoryEntry();
 
   if (previousEntry?.routeName) {
     isApplyingBackNavigation = true;
@@ -873,6 +964,15 @@ export function initializePageNavigation() {
     const route = el.getAttribute("data-route");
     if (route) {
       e.preventDefault();
+      const myLearningTab = el.getAttribute("data-my-learning-tab");
+      if (route === "mylearning" && myLearningTab) {
+        try {
+          sessionStorage.setItem("myLearningActiveTab", myLearningTab);
+          localStorage.setItem("myLearningActiveTab", myLearningTab);
+        } catch {
+          void 0;
+        }
+      }
       loadPage(route);
     }
   });
