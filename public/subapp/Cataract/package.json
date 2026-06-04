@@ -1,0 +1,13 @@
+{
+  "name": "arclight-cataract",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "audit:acceptance": "node qa-cataract-acceptance.mjs",
+    "audit:combination": "node qa-cataract-combination-audit.mjs",
+    "audit:results": "node qa-cataract-result-output-audit.mjs",
+    "audit:full": "node qa-cataract-full-audit.mjs",
+    "audit:lmic": "node qa-cataract-lmic-content.mjs",
+    "audit": "npm run audit:acceptance && npm run audit:combination && npm run audit:results && npm run audit:full && npm run audit:lmic"
+  }
+}

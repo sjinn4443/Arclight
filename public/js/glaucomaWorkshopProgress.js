@@ -40,6 +40,8 @@ const INTERMEDIATE_SCROLL_TARGETS = new Set([
   "glaucomaQuadrantsFingers",
   "glaucomaQuadrantsRed",
   "glaucomaAssessRecord",
+  "glaucomaSwingRAPD",
+  "glaucomaRAPDFullSwingInteractive",
   "glaucomaACDScroll",
   "glaucomaHighIOP",
   "glaucomaOpticNerve",

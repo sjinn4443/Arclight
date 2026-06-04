@@ -1,0 +1,512 @@
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Prevent unintended zoom -->
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+    />
+    <meta
+      name="description"
+      content="Refract is a refraction tool for comparing spectacle prescription changes, spherical equivalents and clinical notes."
+    />
+    <meta name="author" content="WJW" />
+    <meta name="date" content="18/5/2026" />
+    <meta name="application-name" content="Refract" />
+    <title>Refract</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+
+    <!-- Preconnect and DNS prefetch hints for faster resource loading -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
+
+    <!-- Font Awesome for icons (including the info 'i' icon) -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+
+    <!-- Preload Google Fonts with fallback for no JavaScript -->
+    <link
+      rel="preload"
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;700&display=swap"
+      as="style"
+      onload="
+        this.onload = null;
+        this.rel = 'stylesheet';
+      "
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;700&display=swap"
+      />
+    </noscript>
+
+    <!-- Local CSS -->
+    <link rel="stylesheet" href="styles.css?v=20260518-burger" />
+    <link rel="stylesheet" href="cup-achievement.css" />
+  </head>
+  <body>
+    <header class="app-bar">
+      <button
+        id="burger-icon"
+        class="app-bar-icon"
+        type="button"
+        aria-label="Open MCQ menu"
+        aria-controls="sideMenu"
+        aria-expanded="false"
+      >
+        <span class="appbar-glyph appbar-glyph-menu" aria-hidden="true"></span>
+      </button>
+      <h1>Refract</h1>
+      <div class="app-bar-actions">
+        <button
+          id="info-icon"
+          class="app-bar-icon"
+          type="button"
+          aria-label="Open instructions"
+          aria-controls="info-popup"
+          aria-expanded="false"
+          aria-haspopup="dialog"
+        >
+          <span class="appbar-glyph appbar-glyph-info" aria-hidden="true"
+            >i</span
+          >
+        </button>
+      </div>
+    </header>
+
+    <div id="sidebar-backdrop" class="sidebar-backdrop"></div>
+    <nav
+      id="sideMenu"
+      class="side-menu"
+      aria-label="MCQ menu"
+      aria-hidden="true"
+    >
+      <div class="side-menu-title">Practice</div>
+      <p class="side-menu-copy">Choose a question level.</p>
+      <div class="mcq-level-menu">
+        <button type="button" class="mcq-level-button" data-level-index="0">
+          Primary
+        </button>
+        <button type="button" class="mcq-level-button" data-level-index="1">
+          Int
+        </button>
+        <button type="button" class="mcq-level-button" data-level-index="2">
+          Advanced
+        </button>
+      </div>
+      <section
+        id="cupAchievement"
+        class="cup-achievement is-locked"
+        hidden
+        aria-hidden="true"
+        data-cup-app="Refract"
+      >
+        <span class="cup-achievement-icon" aria-hidden="true">&#9733;</span>
+        <span class="cup-achievement-details">
+          <span id="cupAchievementLabel"
+            >Cup locked: complete Advanced MCQ</span
+          >
+          <span
+            id="cupAchievementCode"
+            class="cup-achievement-code"
+            hidden
+          ></span>
+        </span>
+        <button
+          id="downloadCupCertificateButton"
+          class="cup-download-button"
+          type="button"
+          disabled
+          data-locked="true"
+        >
+          Save
+        </button>
+      </section>
+    </nav>
+
+    <main>
+      <section class="top-section">
+        <!-- Age row + toggles (normal, horizontal) -->
+        <div class="form-row age-row">
+          <div class="control-box context-control-box">
+            <div class="context-control-grid">
+              <div class="context-age-slot">
+                <div
+                  class="spinner-container age-spinner"
+                  data-placeholder="Age"
+                >
+                  <input
+                    type="number"
+                    id="age"
+                    name="age"
+                    placeholder="Age"
+                    min="1"
+                    max="130"
+                    step="1"
+                  />
+                </div>
+              </div>
+              <div class="top-toggle-group">
+                <label class="toggle-label top-toggle">
+                  <input type="checkbox" id="toggle-health" />
+                  <span class="toggle-slider"></span>
+                  <span class="toggle-text">health?</span>
+                </label>
+                <label class="toggle-label top-toggle">
+                  <input type="checkbox" id="toggle-precise" />
+                  <span class="toggle-slider"></span>
+                  <span class="toggle-text">exact</span>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="control-box mode-control-box">
+            <div class="mode-toggle-wrap">
+              <label class="toggle-label top-toggle top-toggle-advanced">
+                <span class="toggle-text simple-toggle">Adv</span>
+                <input
+                  type="checkbox"
+                  id="toggle-simple"
+                  aria-label="Advanced mode"
+                />
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row section-title">Current</div>
+
+        <div class="rx-pair-grid rx-pair-grid-with-toggle">
+          <div class="form-row rx-row pair-top-row">
+            <div class="eye-label">RE</div>
+            <div class="spinner-container" data-placeholder="sph">
+              <input
+                type="number"
+                step="0.25"
+                id="current-re-sph"
+                placeholder="sph"
+              />
+            </div>
+            <div class="spinner-container" data-placeholder="cyl">
+              <input
+                type="number"
+                step="0.25"
+                id="current-re-cyl"
+                placeholder="cyl"
+              />
+            </div>
+            <div class="spinner-container" data-placeholder="axis">
+              <input
+                type="number"
+                step="1"
+                min="1"
+                max="180"
+                id="current-re-axis"
+                placeholder="axis"
+              />
+            </div>
+          </div>
+
+          <label class="toggle-label vertical-switch pair-side-toggle">
+            <span class="toggle-text">VA good</span>
+            <input type="checkbox" id="toggle-va-good" />
+            <span class="toggle-slider"></span>
+          </label>
+
+          <div class="form-row rx-row pair-bottom-row">
+            <div class="eye-label">LE</div>
+            <div class="spinner-container" data-placeholder="sph">
+              <input
+                type="number"
+                step="0.25"
+                id="current-le-sph"
+                placeholder="sph"
+              />
+            </div>
+            <div class="spinner-container" data-placeholder="cyl">
+              <input
+                type="number"
+                step="0.25"
+                id="current-le-cyl"
+                placeholder="cyl"
+              />
+            </div>
+            <div class="spinner-container" data-placeholder="axis">
+              <input
+                type="number"
+                step="1"
+                min="1"
+                max="180"
+                id="current-le-axis"
+                placeholder="axis"
+              />
+            </div>
+          </div>
+
+          <div class="pair-add-slot">
+            <div class="spinner-container add-offset" data-placeholder="add">
+              <input
+                type="number"
+                id="current-le-add"
+                placeholder="add"
+                min="1"
+                step="0.25"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="transpose-wrap">
+          <span class="transpose-label">transpose</span>
+          <button
+            id="transpose-btn"
+            class="transpose-button"
+            type="button"
+            aria-label="Transpose prescriptions"
+          >
+            <i class="fas fa-sync-alt" aria-hidden="true"></i>
+          </button>
+        </div>
+
+        <div class="form-row section-title">Objective</div>
+
+        <div class="rx-pair-grid rx-pair-grid-with-toggle">
+          <div class="form-row rx-row pair-top-row">
+            <div class="eye-label">RE</div>
+            <div class="spinner-container" data-placeholder="sph">
+              <input
+                type="number"
+                step="0.25"
+                id="objective-re-sph"
+                placeholder="sph"
+              />
+            </div>
+            <div class="spinner-container" data-placeholder="cyl">
+              <input
+                type="number"
+                step="0.25"
+                id="objective-re-cyl"
+                placeholder="cyl"
+              />
+            </div>
+            <div class="spinner-container" data-placeholder="axis">
+              <input
+                type="number"
+                step="1"
+                min="1"
+                max="180"
+                id="objective-re-axis"
+                placeholder="axis"
+              />
+            </div>
+          </div>
+
+          <label class="toggle-label vertical-switch pair-side-toggle">
+            <span class="toggle-text">accurate</span>
+            <input type="checkbox" id="toggle-accurate" />
+            <span class="toggle-slider"></span>
+          </label>
+
+          <div class="form-row rx-row pair-bottom-row">
+            <div class="eye-label">LE</div>
+            <div class="spinner-container" data-placeholder="sph">
+              <input
+                type="number"
+                step="0.25"
+                id="objective-le-sph"
+                placeholder="sph"
+              />
+            </div>
+            <div class="spinner-container" data-placeholder="cyl">
+              <input
+                type="number"
+                step="0.25"
+                id="objective-le-cyl"
+                placeholder="cyl"
+              />
+            </div>
+            <div class="spinner-container" data-placeholder="axis">
+              <input
+                type="number"
+                step="1"
+                min="1"
+                max="180"
+                id="objective-le-axis"
+                placeholder="axis"
+              />
+            </div>
+          </div>
+
+          <div class="pair-add-slot">
+            <div class="spinner-container add-offset" data-placeholder="add">
+              <input
+                type="number"
+                id="objective-le-add"
+                placeholder="add"
+                min="1"
+                step="0.25"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="results-section">
+        <div class="form-row section-title">Output</div>
+
+        <div class="rx-pair-grid">
+          <div class="form-row rx-row output-row pair-top-row">
+            <div class="eye-label">RE</div>
+            <div class="spinner-container" data-placeholder="sph">
+              <span class="field-sign" aria-hidden="true"></span>
+              <input
+                type="number"
+                step="0.25"
+                id="output-re-sph"
+                placeholder="sph"
+                readonly
+              />
+            </div>
+            <div class="spinner-container" data-placeholder="cyl">
+              <span class="field-sign" aria-hidden="true"></span>
+              <input
+                type="number"
+                step="0.25"
+                id="output-re-cyl"
+                placeholder="cyl"
+                readonly
+              />
+            </div>
+            <div class="spinner-container" data-placeholder="axis">
+              <input
+                type="number"
+                step="1"
+                min="1"
+                max="180"
+                id="output-re-axis"
+                placeholder="axis"
+                readonly
+              />
+            </div>
+          </div>
+
+          <div class="form-row rx-row output-row pair-bottom-row">
+            <div class="eye-label">LE</div>
+            <div class="spinner-container" data-placeholder="sph">
+              <span class="field-sign" aria-hidden="true"></span>
+              <input
+                type="number"
+                step="0.25"
+                id="output-le-sph"
+                placeholder="sph"
+                readonly
+              />
+            </div>
+            <div class="spinner-container" data-placeholder="cyl">
+              <span class="field-sign" aria-hidden="true"></span>
+              <input
+                type="number"
+                step="0.25"
+                id="output-le-cyl"
+                placeholder="cyl"
+                readonly
+              />
+            </div>
+            <div class="spinner-container" data-placeholder="axis">
+              <input
+                type="number"
+                step="1"
+                min="1"
+                max="180"
+                id="output-le-axis"
+                placeholder="axis"
+                readonly
+              />
+            </div>
+          </div>
+
+          <div class="pair-add-slot">
+            <div class="spinner-container add-offset" data-placeholder="add">
+              <span class="field-sign" aria-hidden="true"></span>
+              <input
+                type="number"
+                step="0.25"
+                id="output-le-add"
+                placeholder="add"
+                min="1"
+                readonly
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Info Popup -->
+    <div
+      id="info-popup"
+      role="dialog"
+      aria-modal="false"
+      aria-labelledby="info-popup-title"
+      aria-hidden="true"
+    >
+      <div class="info-popup-header">
+        <h2 id="info-popup-title">Quick guide</h2>
+        <button id="close-popup" type="button" aria-label="Close instructions">
+          &times;
+        </button>
+      </div>
+      <div class="info-popup-body">
+        <section class="info-popup-section" aria-labelledby="info-basics-title">
+          <p id="info-basics-title" class="info-popup-section-title">Basics</p>
+          <div class="info-basics-grid" aria-label="Core inputs">
+            <span class="info-basics-cue"
+              ><strong>Current</strong><small>glasses now</small></span
+            >
+            <span class="info-basics-cue"
+              ><strong>Objective</strong><small>AR or ret</small></span
+            >
+            <span class="info-basics-cue"
+              ><strong>Context</strong><small>tolerance</small></span
+            >
+          </div>
+        </section>
+        <section
+          class="info-popup-section info-popup-section--detail"
+          aria-labelledby="info-detail-title"
+        >
+          <p id="info-detail-title" class="info-popup-section-title">
+            More detail
+          </p>
+          <p>
+            <strong>VA good</strong> and <strong>exact</strong> keep the result
+            closer to the current Rx.
+          </p>
+          <p>
+            <strong>Accurate</strong> lets the result move further toward the
+            objective Rx.
+          </p>
+          <p>
+            <strong>Adv</strong> shows cyl and axis; transpose flips entered
+            prescriptions.
+          </p>
+        </section>
+        <p class="info-popup-note">
+          Teaching aid, not a substitute for full refraction and clinical
+          judgement.
+        </p>
+      </div>
+    </div>
+
+    <!-- App entrypoint -->
+    <script src="app.bundle.js"></script>
+    <script src="cup-achievement.js"></script>
+  </body>
+</html>

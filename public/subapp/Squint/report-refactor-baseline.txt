@@ -1,0 +1,80 @@
+Squint Refactor Baseline
+=======================
+Generated: 2026-05-12T08:25:16.663Z
+
+Preset Counts
+-------------
+- primary: 8
+- intermediate: 12
+- advanced: 48
+- total: 68
+
+MCQ Counts
+----------
+- primary: 5
+- intermediate: 7
+- advanced: 17
+- total: 29
+
+Scenario Outputs
+----------------
+- third_definite
+  rightCondition: <span style='color:red;'>definite 3rd nerve palsy</span>; sudden diplopia - <span style='color:red;'>urgent aneurysm exclusion</span>
+  leftCondition: 
+  pupilCondition: Right larger pupil - <i>possible Adie's/3rd nerve pattern</i>
+  modifierSummary: Sudden
+  modifierGuidance: Sudden onset: acute review.
+- third_pupil_sparing_hint
+  rightCondition: <span style='color:red;'>probable pupil-sparing 3rd nerve palsy</span>; acute diplopia with ptosis
+  leftCondition: 
+  pupilCondition: 
+  modifierSummary: Sudden
+  modifierGuidance: Sudden onset: acute review.
+- sixth_partial_medium_hint
+  rightCondition: <span style='color:red;'>probable partial 6th nerve palsy</span>; moderate abduction deficit
+  leftCondition: 
+  pupilCondition: 
+  modifierSummary: Sudden
+  modifierGuidance: Sudden onset: acute review.
+- fourth_pattern
+  rightCondition: probable 4th nerve palsy; vertical diplopia/head-tilt pattern
+  leftCondition: 
+  pupilCondition: 
+  modifierSummary: 
+  modifierGuidance: 
+- horner_like
+  rightCondition: definite Horner; carotid/stroke/apical lung causes; correlate clinically
+  leftCondition: 
+  pupilCondition: Right smaller pupil - <i>possible Horner/drug effect</i>
+  modifierSummary: 
+  modifierGuidance: 
+- myasthenia_hint
+  rightCondition: possible ocular myasthenia; variable ptosis/motility, pupil sparing
+  leftCondition: 
+  pupilCondition: 
+  modifierSummary: 
+  modifierGuidance: 
+- thyroid_hint
+  rightCondition: possible thyroid restrictive change; restrictive motility
+  leftCondition: 
+  pupilCondition: 
+  modifierSummary: 
+  modifierGuidance: 
+- ino_hint
+  rightCondition: possible INO; adduction deficit with pupil sparing
+  leftCondition: 
+  pupilCondition: 
+  modifierSummary: 
+  modifierGuidance: 
+- modifier_bundle
+  rightCondition: <span style='color:red;'>definite 3rd nerve palsy</span>; sudden diplopia + pain - <span style='color:red;'>urgent aneurysm exclusion</span>
+  leftCondition: 
+  pupilCondition: Right larger pupil - <i>possible Adie's/3rd nerve pattern</i>
+  modifierSummary: Sudden, Pain/HA, Trauma
+  modifierGuidance: Sudden onset: acute review. <span style='color:red;'>Pain/headache with 3rd nerve signs: urgent neurology review.</span> Recent trauma: traumatic palsy or orbital injury possible.
+- fatigable_headtilt
+  rightCondition: <span style='color:red;'>probable 3rd nerve palsy</span>; classic down-and-out pattern
+  leftCondition: 
+  pupilCondition: 
+  modifierSummary: Fatigable, Head tilt R
+  modifierGuidance: Fatigable history: consider ocular myasthenia. Head tilt suggests vertical muscle/4th nerve involvement.

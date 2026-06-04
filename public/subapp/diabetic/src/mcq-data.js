@@ -134,15 +134,15 @@ export const MCQ_BANKS = {
       topic: "mode",
     },
     {
-      question: "What does no referable signs mean?",
+      question: "What should no referable signs do when a lesion is selected?",
       options: [
-        "No referable signs seen in the view obtained",
-        "No diabetes",
-        "Full normal retina",
-        "Discharge from screening",
+        "Stay selected",
+        "Clear because findings conflict",
+        "Become urgent",
+        "Open MCQ",
       ],
-      answer: 0,
-      topic: "safety-copy",
+      answer: 1,
+      topic: "state",
     },
     {
       question: "What is the app mainly for?",
@@ -179,22 +179,22 @@ export const MCQ_BANKS = {
       topic: "safety-copy",
     },
     {
-      question: "Which sign suggests proliferative DR?",
+      question: "Where should practice live in this app?",
       options: [
-        "New vessels",
-        "Microaneurysms",
-        "Cotton-wool spots",
-        "Hard exudates",
+        "Side drawer",
+        "Main clinical tab rail",
+        "Referral note only",
+        "Dilation dropdown",
       ],
       answer: 0,
-      topic: "pdr",
+      topic: "practice",
     },
   ],
   intermediate: [
     {
       question: "An eye has MA and dot/blot haemorrhages only. Best action?",
       options: [
-        "Routine (weeks)",
+        "Routine referral when possible",
         "Urgent today",
         "No screening required",
         "Choose laser",
@@ -206,7 +206,7 @@ export const MCQ_BANKS = {
       question:
         "Hard exudates near macula with 6/36 VA should usually trigger:",
       options: [
-        "Soon (days)",
+        "Refer soon (2 weeks)",
         "Routine screening only",
         "No action",
         "Confirmed DMO treatment",
@@ -285,13 +285,9 @@ export const MCQ_BANKS = {
       topic: "pdr",
     },
     {
-      question: "A brief Arclight (DO) glimpse should usually be recorded as:",
-      options: [
-        "Limited unless disc and macula are clearly seen",
-        "Full four-quadrant view",
-        "Confirmed normal retina",
-        "Confirmed no maculopathy",
-      ],
+      question:
+        "For Holo (BIO), four-quadrant sweep should be removed when switching to:",
+      options: ["Arclight (DO)", "Practice drawer", "Referral note", "MCQ"],
       answer: 0,
       topic: "mode",
     },
@@ -307,26 +303,28 @@ export const MCQ_BANKS = {
       topic: "systemic",
     },
     {
-      question: "If CWS is seen, the safer finding is:",
+      question:
+        "If no referable signs is selected then CWS is ticked, the app should:",
       options: [
-        "Record CWS as a DR sign",
-        "Call no referable signs",
-        "Ignore the lesion",
-        "Record normal retina",
+        "Clear no referable signs",
+        "Clear CWS",
+        "Ignore CWS",
+        "Submit MCQ",
       ],
       answer: 0,
-      topic: "npdr",
+      topic: "state",
     },
     {
-      question: "If lesions are visible, no referable signs is unsafe because:",
+      question:
+        "If no referable signs is selected after lesions, the app should:",
       options: [
-        "A finding has been seen",
-        "VA is always normal",
-        "Dilation is impossible",
-        "Macula is always clear",
+        "Clear lesion findings for that eye",
+        "Keep all lesions",
+        "Mark urgent",
+        "Switch mode",
       ],
       answer: 0,
-      topic: "safety-copy",
+      topic: "state",
     },
     {
       question:
@@ -352,38 +350,43 @@ export const MCQ_BANKS = {
       topic: "referral-note",
     },
     {
-      question: "Reduced VA with hard exudates near the macula suggests:",
+      question: "Which app pattern should VA reuse?",
       options: [
-        "Macula risk needing soon referral",
-        "Confirmed PDR",
-        "No retinal concern",
-        "Systemic review only",
+        "Cataract compact select",
+        "Large text area",
+        "Slider",
+        "Freehand drawing",
       ],
       answer: 0,
-      topic: "macula",
+      topic: "ui",
     },
     {
-      question: "Which sign belongs in proliferative signs?",
-      options: ["NVE", "CWS", "Microaneurysm", "Hard exudate"],
-      answer: 0,
-      topic: "pdr",
-    },
-    {
-      question: "Which wording is safest for suspected maculopathy?",
+      question: "What is the main clinical tab rail?",
       options: [
-        "Possible maculopathy or macula risk",
-        "Confirmed DMO",
-        "No DR",
-        "Laser required",
+        "Arclight (DO) and Holo (BIO)",
+        "Primary and Advanced",
+        "Right and Left only",
+        "BP and HbA1c",
       ],
       answer: 0,
-      topic: "macula",
+      topic: "ui",
+    },
+    {
+      question: "Where should longer teaching text live?",
+      options: [
+        "Popup or drawer",
+        "Crowded main panel",
+        "Action title",
+        "VA dropdown",
+      ],
+      answer: 0,
+      topic: "ui",
     },
     {
       question:
         "What should routine DR signs without macula or proliferative signs use?",
       options: [
-        "Routine (weeks)",
+        "Routine referral when possible",
         "Urgent today",
         "No follow-up ever",
         "Anti-VEGF decision",
@@ -393,7 +396,12 @@ export const MCQ_BANKS = {
     },
     {
       question: "What should suspected foveal involvement trigger?",
-      options: ["Soon (days)", "Routine only", "Ignore", "Confirmed DMO"],
+      options: [
+        "Refer soon (2 weeks)",
+        "Routine only",
+        "Ignore",
+        "Confirmed DMO",
+      ],
       answer: 0,
       topic: "macula",
     },
@@ -409,9 +417,13 @@ export const MCQ_BANKS = {
       topic: "va",
     },
     {
-      question:
-        "Which viewing method usually needs dilation for wider assessment?",
-      options: ["Holo (BIO)", "Referral note", "VA line", "Systemic checks"],
+      question: "Which mode should visibly prompt dilation before recording?",
+      options: [
+        "Holo (BIO)",
+        "MCQ only",
+        "Practice only",
+        "Referral note only",
+      ],
       answer: 0,
       topic: "dilation",
     },
@@ -449,15 +461,15 @@ export const MCQ_BANKS = {
       topic: "scope",
     },
     {
-      question: "Which DR sign makes a routine case more concerning?",
+      question: "What should a 360 x 740 layout avoid?",
       options: [
-        "Venous beading",
-        "Normal disc colour",
-        "Clear lens",
-        "Equal pupils",
+        "Two full duplicated eye panels",
+        "Compact chips",
+        "A small popup",
+        "Short labels",
       ],
       answer: 0,
-      topic: "npdr",
+      topic: "ui",
     },
   ],
   advanced: [
@@ -510,7 +522,7 @@ export const MCQ_BANKS = {
     {
       question: "6/36 VA plus dot/blot haemorrhages should support:",
       options: [
-        "Soon (days)",
+        "Refer soon (2 weeks)",
         "No action",
         "Confirmed proliferative DR",
         "Treatment choice",
@@ -532,7 +544,7 @@ export const MCQ_BANKS = {
     {
       question: "No fix with DR signs should be treated as:",
       options: [
-        "Reduced VA supporting Soon (days)",
+        "Reduced VA supporting refer soon",
         "Normal VA",
         "Confirmed proliferative DR",
         "No test needed",
@@ -543,7 +555,7 @@ export const MCQ_BANKS = {
     {
       question: "No test VA with DR signs should:",
       options: [
-        "Prevent reassuring wording and support Soon (days)",
+        "Prevent reassuring wording and support refer soon",
         "Confirm normal vision",
         "Delete DR signs",
         "Choose laser",
@@ -581,36 +593,37 @@ export const MCQ_BANKS = {
       topic: "macula",
     },
     {
-      question: "Why is no referable signs unsafe when NVD is present?",
+      question:
+        "What should happen to no referable signs when NVD is selected?",
       options: [
-        "NVD is urgent proliferative disease",
-        "NVD is a normal vessel",
-        "NVD means routine review only",
-        "NVD confirms DMO",
+        "It clears for that eye",
+        "It stays selected",
+        "It becomes the action",
+        "It hides VA",
       ],
       answer: 0,
-      topic: "pdr",
+      topic: "state",
     },
     {
       question:
-        "If one eye has no signs and the fellow eye has NVE, overall action is:",
+        "What should happen to lesions when no referable signs is selected?",
       options: [
-        "Urgent today",
-        "Routine screening only",
-        "No referral",
-        "Medical review only",
+        "They clear for that eye",
+        "They remain active",
+        "They become systemic checks",
+        "They move to fellow eye",
       ],
       answer: 0,
-      topic: "priority",
+      topic: "state",
     },
     {
       question:
-        "Arclight (DO) cannot see the far periphery well. The key limitation is:",
+        "A user changes Holo (BIO) to Arclight (DO) after four-quadrant sweep. The app should:",
       options: [
-        "Peripheral disease may be missed",
-        "Macula is always invisible",
-        "VA cannot be recorded",
-        "Dilation is irrelevant",
+        "Reset or require new valid area for that eye",
+        "Keep four quadrants",
+        "Delete all findings",
+        "Open practice",
       ],
       answer: 0,
       topic: "mode",
@@ -650,11 +663,15 @@ export const MCQ_BANKS = {
       topic: "safety-copy",
     },
     {
-      question:
-        "Which finding is enough for same-day referral even if VA is not recorded?",
-      options: ["NVD", "Microaneurysm only", "Mild hard exudate", "No signs"],
+      question: "Which should remain in the drawer?",
+      options: [
+        "Image practice cases",
+        "Clinical equipment mode",
+        "Action panel",
+        "Right/Left eye switcher",
+      ],
       answer: 0,
-      topic: "urgent",
+      topic: "practice",
     },
     {
       question: "What does red-flags-win mean?",
@@ -668,26 +685,26 @@ export const MCQ_BANKS = {
       topic: "urgent",
     },
     {
-      question: "What should an urgent proliferative output emphasise?",
+      question: "What should an urgent output suppress?",
       options: [
-        "Same-day eye referral",
-        "Routine annual screening only",
-        "Spectacle prescription",
-        "No follow-up",
+        "Long low-yield teaching text",
+        "Reason text",
+        "Eye label",
+        "Referral note",
       ],
       answer: 0,
-      topic: "urgent",
+      topic: "ui",
     },
     {
-      question: "When R/L findings conflict, triage should use:",
+      question: "Which first-screen layout rule is safest?",
       options: [
-        "The highest-risk eye finding",
-        "The better eye only",
-        "The first completed field",
-        "VA alone",
+        "R/L VA and R/L view in the View panel",
+        "Two large eye panels stacked",
+        "Practice as main tab",
+        "Long manual text before controls",
       ],
       answer: 0,
-      topic: "priority",
+      topic: "ui",
     },
     {
       question: "Which finding group contains venous beading?",
@@ -699,7 +716,7 @@ export const MCQ_BANKS = {
       question:
         "Which category should CWS plus venous beading enter if no macula or proliferative signs?",
       options: [
-        "Routine (weeks) or Soon (days) if concerning",
+        "Routine referral when possible or soon if concerning",
         "Urgent today always",
         "Routine screening only",
         "Confirmed DMO",
@@ -730,16 +747,15 @@ export const MCQ_BANKS = {
       topic: "mode",
     },
     {
-      question:
-        "Ungradable view with suspected vitreous blood should be treated as:",
+      question: "What should pure triage tests include?",
       options: [
-        "Urgent today",
-        "Routine screening only",
-        "No DR",
-        "Confirmed DMO",
+        "Mixed-eye priority edge cases",
+        "Only colour checks",
+        "Only drawer clicks",
+        "Only image filenames",
       ],
       answer: 0,
-      topic: "urgent",
+      topic: "testing",
     },
   ],
 };

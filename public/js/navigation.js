@@ -179,6 +179,495 @@ window.addEventListener("page:loaded", (_e) => {
   updateGlobalBackVisibility(routeName);
 });
 
+function hydrateLazyIframes(root) {
+  root?.querySelectorAll?.("iframe[data-src]").forEach((iframe) => {
+    if (!iframe.getAttribute("src")) {
+      iframe.setAttribute("src", iframe.getAttribute("data-src"));
+    }
+    wireInteractiveSubappFrame(iframe);
+  });
+}
+
+function syncInteractiveSubappOpenState(target) {
+  if (!document.body) return;
+  const isInteractiveSubapp =
+    target?.classList?.contains("interactive-subapp-page") === true;
+
+  if (isInteractiveSubapp) {
+    document.body.setAttribute("data-interactive-subapp-open", "true");
+  } else {
+    document.body.removeAttribute("data-interactive-subapp-open");
+  }
+}
+
+function getInteractiveSubappChromeMetrics(iframe) {
+  const viewportWidth = window.innerWidth || 0;
+  const iframeRect = iframe?.getBoundingClientRect?.() || {
+    left: 0,
+    right: viewportWidth,
+    width: viewportWidth,
+  };
+  const pageRect = iframe?.closest?.(".page")?.getBoundingClientRect?.() || {
+    left: 0,
+  };
+  const isDesktop = viewportWidth >= 1024;
+  const desktopInset = isDesktop
+    ? (viewportWidth >= 1440 ? viewportWidth * 0.22 : viewportWidth * 0.07) - 4
+    : 0;
+  const desiredBackLeft = isDesktop ? pageRect.left + desktopInset + 10 : 12;
+  const desiredMenuRight = isDesktop
+    ? viewportWidth - (desktopInset + 20)
+    : viewportWidth - 12;
+  const leftInset = Math.max(12, desiredBackLeft - iframeRect.left);
+  const rightInset = Math.max(12, iframeRect.right - desiredMenuRight);
+  const controlSize = isDesktop ? 36 : 44;
+  const globalBackBtn = document.getElementById("backBtnGlobal");
+  const globalBackIconStyle = globalBackBtn
+    ? getComputedStyle(globalBackBtn, "::before")
+    : null;
+  const standardMenuBtn =
+    document.querySelector("#interactiveLearningPage .eyes-topbar .menuBtn") ||
+    document.querySelector("#videos .page .eyes-topbar .menuBtn") ||
+    document.querySelector(".eyes-topbar .menuBtn, .eyes-top .menuBtn");
+  const standardMenuStyle = standardMenuBtn
+    ? getComputedStyle(standardMenuBtn)
+    : null;
+
+  return {
+    topbarHeight: isDesktop ? "62px" : "58px",
+    leftInset: `${Math.round(leftInset)}px`,
+    rightInset: `${Math.round(rightInset)}px`,
+    controlSize: `${controlSize}px`,
+    backIcon: {
+      width: globalBackIconStyle?.width || (isDesktop ? "33px" : "24px"),
+      height: globalBackIconStyle?.height || (isDesktop ? "33px" : "24px"),
+      webkitMaskImage:
+        globalBackIconStyle?.webkitMaskImage &&
+        globalBackIconStyle.webkitMaskImage !== "none"
+          ? globalBackIconStyle.webkitMaskImage
+          : INTERACTIVE_SUBAPP_BACK_MASK,
+      webkitMaskPosition: globalBackIconStyle?.webkitMaskPosition || "center",
+      webkitMaskSize: globalBackIconStyle?.webkitMaskSize || "contain",
+      webkitMaskRepeat: globalBackIconStyle?.webkitMaskRepeat || "no-repeat",
+      maskImage:
+        globalBackIconStyle?.maskImage &&
+        globalBackIconStyle.maskImage !== "none"
+          ? globalBackIconStyle.maskImage
+          : INTERACTIVE_SUBAPP_BACK_MASK,
+      maskPosition: globalBackIconStyle?.maskPosition || "center",
+      maskSize: globalBackIconStyle?.maskSize || "contain",
+      maskRepeat: globalBackIconStyle?.maskRepeat || "no-repeat",
+    },
+    menuGlyph: standardMenuBtn?.textContent?.trim() || "\u2630",
+    menuFont: {
+      family: standardMenuStyle?.fontFamily || "Arial, sans-serif",
+      size: standardMenuStyle?.fontSize || (isDesktop ? "20px" : "25px"),
+      weight: standardMenuStyle?.fontWeight || "400",
+      lineHeight: standardMenuStyle?.lineHeight || "1",
+      letterSpacing: standardMenuStyle?.letterSpacing || "normal",
+    },
+    gap: "8px",
+  };
+}
+
+const INTERACTIVE_SUBAPP_BACK_MASK =
+  "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%23000' d='M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z'/></svg>\")";
+
+function injectInteractiveSubappChrome(iframe) {
+  let doc = null;
+  try {
+    doc = iframe.contentDocument;
+  } catch {
+    return;
+  }
+  if (!doc?.documentElement || !doc.body) return;
+
+  const appBar =
+    doc.querySelector(".app-bar, #appBar") ||
+    doc.getElementById("burger-icon")?.closest("header");
+  if (!appBar) return;
+
+  const applyStyles = (element, styles) => {
+    if (!element) return;
+    Object.entries(styles).forEach(([property, value]) => {
+      element.style.setProperty(property, value, "important");
+    });
+  };
+
+  doc.documentElement.classList.add("arclight-embedded-subapp");
+  doc.body.classList.add("arclight-embedded-subapp");
+
+  let style = doc.getElementById("arclightEmbeddedSubappChromeStyle");
+  if (!style) {
+    style = doc.createElement("style");
+    style.id = "arclightEmbeddedSubappChromeStyle";
+    style.textContent = `
+      html.arclight-embedded-subapp,
+      body.arclight-embedded-subapp {
+        margin: 0 !important;
+      }
+
+      .app-bar {
+        position: sticky !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+        z-index: 1000 !important;
+        display: grid !important;
+        grid-template-columns: var(--arclight-embedded-control-size, 36px) minmax(0, 1fr) auto !important;
+        grid-template-rows: 1fr !important;
+        align-items: center !important;
+        height: var(--arclight-embedded-topbar-height, 62px) !important;
+        min-height: var(--arclight-embedded-topbar-height, 62px) !important;
+        padding: 0 var(--arclight-embedded-right-inset, 20px) 0 var(--arclight-embedded-left-inset, 20px) !important;
+        box-sizing: border-box !important;
+      }
+
+      .app-bar h1 {
+        grid-column: 2 !important;
+        justify-self: center !important;
+        min-width: 0 !important;
+        margin: 0 !important;
+        text-align: center !important;
+      }
+
+      .arclight-embedded-back,
+      .app-bar .icon-button {
+        position: static !important;
+      }
+
+      .arclight-embedded-back {
+        grid-column: 1 !important;
+        grid-row: 1 !important;
+        justify-self: start !important;
+        appearance: none !important;
+        border: 0 !important;
+        background: transparent !important;
+        color: var(--arclight-embedded-control-color, currentColor) !important;
+        font: inherit !important;
+        font-size: 0 !important;
+        line-height: 0 !important;
+        cursor: pointer !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+      }
+
+      .arclight-embedded-actions {
+        grid-column: 3 !important;
+        grid-row: 1 !important;
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: flex-end !important;
+        gap: var(--arclight-embedded-action-gap, 8px) !important;
+        justify-self: end !important;
+        align-self: center !important;
+        width: auto !important;
+        height: auto !important;
+      }
+
+      .arclight-embedded-actions #info-icon {
+        order: 1 !important;
+      }
+
+      .arclight-embedded-actions [data-arclight-embedded-menu-button="true"] {
+        order: 2 !important;
+      }
+
+      .arclight-embedded-actions #info-icon,
+      .arclight-embedded-actions [data-arclight-embedded-menu-button="true"] {
+        position: static !important;
+        inset: auto !important;
+        grid-column: auto !important;
+        grid-row: auto !important;
+        justify-self: center !important;
+        align-self: center !important;
+        flex: 0 0 var(--arclight-embedded-control-size, 36px) !important;
+        width: var(--arclight-embedded-control-size, 36px) !important;
+        height: var(--arclight-embedded-control-size, 36px) !important;
+        margin: 0 !important;
+        transform: none !important;
+      }
+
+      .arclight-embedded-actions [data-arclight-embedded-menu-button="true"] {
+        appearance: none !important;
+        border: 0 !important;
+        background: transparent !important;
+        color: var(--arclight-embedded-control-color, currentColor) !important;
+        font-size: 0 !important;
+        line-height: 0 !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        overflow: hidden !important;
+      }
+
+      .arclight-embedded-actions [data-arclight-embedded-menu-button="true"] > :not(.arclight-embedded-menu-icon) {
+        display: none !important;
+      }
+    `;
+    doc.head?.appendChild(style);
+  }
+
+  let backBtn = doc.getElementById("arclightEmbeddedBackButton");
+  if (!backBtn) {
+    backBtn = doc.createElement("button");
+    backBtn.id = "arclightEmbeddedBackButton";
+    backBtn.className = "icon-button arclight-embedded-back";
+    backBtn.type = "button";
+    backBtn.textContent = "";
+    backBtn.setAttribute("aria-label", "Back to Interactive Learning");
+    backBtn.addEventListener("click", (event) => {
+      event.preventDefault();
+      if (goToStoredInteractiveLearningReturn()) return;
+      loadPage("videos", {
+        replace: true,
+        force: currentRoute === "videos",
+        recordHistory: false,
+        subPageId: "interactiveLearningPage",
+      });
+    });
+    appBar.insertBefore(backBtn, appBar.firstChild);
+  }
+
+  let backIcon = backBtn.querySelector(":scope > .arclight-embedded-back-icon");
+  if (!backIcon) {
+    backIcon = doc.createElement("span");
+    backIcon.className = "arclight-embedded-back-icon";
+    backIcon.setAttribute("aria-hidden", "true");
+    backBtn.appendChild(backIcon);
+  }
+
+  let actions = appBar.querySelector(".arclight-embedded-actions");
+  if (!actions) {
+    actions = doc.createElement("div");
+    actions.className = "arclight-embedded-actions";
+    appBar.appendChild(actions);
+  }
+
+  const infoIcon = doc.getElementById("info-icon");
+  const burgerIcon =
+    doc.getElementById("burger-icon") ||
+    doc.getElementById("sidebar-toggle") ||
+    appBar.querySelector(
+      '[aria-label="Open menu"], [aria-label="Open MCQ menu"], .appbar-button-left',
+    );
+  burgerIcon?.setAttribute("data-arclight-embedded-menu-button", "true");
+  if (infoIcon && infoIcon.parentElement !== actions) {
+    actions.appendChild(infoIcon);
+  }
+  if (burgerIcon && burgerIcon.parentElement !== actions) {
+    actions.appendChild(burgerIcon);
+  }
+
+  const metrics = getInteractiveSubappChromeMetrics(iframe);
+  let menuIcon = null;
+  if (burgerIcon) {
+    menuIcon = burgerIcon.querySelector(
+      ":scope > .arclight-embedded-menu-icon",
+    );
+    if (!menuIcon) {
+      menuIcon = doc.createElement("span");
+      menuIcon.className = "arclight-embedded-menu-icon";
+      menuIcon.setAttribute("aria-hidden", "true");
+      burgerIcon.appendChild(menuIcon);
+    }
+    menuIcon.textContent = metrics.menuGlyph;
+    Array.from(burgerIcon.children).forEach((child) => {
+      if (child !== menuIcon) {
+        child.style.setProperty("display", "none", "important");
+      }
+    });
+  }
+
+  const titleEl = appBar.querySelector("h1");
+  const controlColorSource = burgerIcon || infoIcon || appBar;
+  const controlColor =
+    doc.defaultView?.getComputedStyle?.(controlColorSource)?.color ||
+    "currentColor";
+
+  doc.documentElement.style.setProperty(
+    "--arclight-embedded-topbar-height",
+    metrics.topbarHeight,
+  );
+  doc.documentElement.style.setProperty(
+    "--arclight-embedded-left-inset",
+    metrics.leftInset,
+  );
+  doc.documentElement.style.setProperty(
+    "--arclight-embedded-right-inset",
+    metrics.rightInset,
+  );
+  doc.documentElement.style.setProperty(
+    "--arclight-embedded-control-size",
+    metrics.controlSize,
+  );
+  doc.documentElement.style.setProperty(
+    "--arclight-embedded-action-gap",
+    metrics.gap,
+  );
+  doc.documentElement.style.setProperty(
+    "--arclight-embedded-control-color",
+    controlColor,
+  );
+
+  applyStyles(doc.documentElement, {
+    margin: "0",
+    padding: "0",
+  });
+
+  applyStyles(doc.body, {
+    margin: "0",
+    padding: "0",
+    "padding-top": "0",
+  });
+
+  applyStyles(appBar, {
+    position: "sticky",
+    top: "0",
+    left: "0",
+    right: "0",
+    width: "100%",
+    "z-index": "1000",
+    display: "grid",
+    "grid-template-columns": `${metrics.controlSize} minmax(0, 1fr) auto`,
+    "grid-template-rows": "1fr",
+    "align-items": "center",
+    height: metrics.topbarHeight,
+    "min-height": metrics.topbarHeight,
+    padding: `0 ${metrics.rightInset} 0 ${metrics.leftInset}`,
+    "box-sizing": "border-box",
+  });
+
+  applyStyles(titleEl, {
+    "grid-column": "2",
+    "grid-row": "1",
+    "justify-self": "center",
+    "min-width": "0",
+    margin: "0",
+    "text-align": "center",
+  });
+
+  applyStyles(backBtn, {
+    position: "static",
+    inset: "auto",
+    "grid-column": "1",
+    "grid-row": "1",
+    "justify-self": "start",
+    appearance: "none",
+    border: "0",
+    background: "transparent",
+    color: controlColor,
+    cursor: "pointer",
+    display: "inline-flex",
+    "align-items": "center",
+    "justify-content": "center",
+    "font-size": "0",
+    "line-height": "0",
+    width: metrics.controlSize,
+    height: metrics.controlSize,
+    margin: "0",
+    padding: "0",
+    transform: "none",
+  });
+
+  applyStyles(backIcon, {
+    display: "block",
+    width: metrics.backIcon.width,
+    height: metrics.backIcon.height,
+    background: "currentColor",
+    "-webkit-mask-image": metrics.backIcon.webkitMaskImage,
+    "-webkit-mask-position": metrics.backIcon.webkitMaskPosition,
+    "-webkit-mask-size": metrics.backIcon.webkitMaskSize,
+    "-webkit-mask-repeat": metrics.backIcon.webkitMaskRepeat,
+    "mask-image": metrics.backIcon.maskImage,
+    "mask-position": metrics.backIcon.maskPosition,
+    "mask-size": metrics.backIcon.maskSize,
+    "mask-repeat": metrics.backIcon.maskRepeat,
+  });
+
+  applyStyles(actions, {
+    "grid-column": "3",
+    "grid-row": "1",
+    display: "flex",
+    "flex-direction": "row",
+    "align-items": "center",
+    "justify-content": "flex-end",
+    gap: metrics.gap,
+    "justify-self": "end",
+    "align-self": "center",
+    width: "auto",
+    height: "auto",
+  });
+
+  applyStyles(infoIcon, {
+    order: "1",
+    position: "static",
+    inset: "auto",
+    "grid-column": "auto",
+    "grid-row": "auto",
+    "justify-self": "center",
+    "align-self": "center",
+    flex: `0 0 ${metrics.controlSize}`,
+    width: metrics.controlSize,
+    height: metrics.controlSize,
+    margin: "0",
+    transform: "none",
+  });
+
+  applyStyles(burgerIcon, {
+    order: "2",
+    position: "static",
+    inset: "auto",
+    "grid-column": "auto",
+    "grid-row": "auto",
+    "justify-self": "center",
+    "align-self": "center",
+    flex: `0 0 ${metrics.controlSize}`,
+    width: metrics.controlSize,
+    height: metrics.controlSize,
+    margin: "0",
+    transform: "none",
+    appearance: "none",
+    border: "0",
+    background: "transparent",
+    color: controlColor,
+    "font-size": "0",
+    "line-height": "0",
+    overflow: "hidden",
+  });
+
+  applyStyles(menuIcon, {
+    display: "inline-block",
+    width: "auto",
+    height: "auto",
+    background: "transparent",
+    color: "currentColor",
+    "font-family": metrics.menuFont.family,
+    "font-size": metrics.menuFont.size,
+    "font-weight": metrics.menuFont.weight,
+    "line-height": metrics.menuFont.lineHeight,
+    "letter-spacing": metrics.menuFont.letterSpacing,
+    "-webkit-mask": "none",
+    mask: "none",
+  });
+}
+
+function wireInteractiveSubappFrame(iframe) {
+  if (!iframe?.closest?.(".interactive-subapp-container")) return;
+
+  if (iframe.dataset.interactiveSubappChromeWired !== "1") {
+    iframe.dataset.interactiveSubappChromeWired = "1";
+    iframe.addEventListener("load", () =>
+      injectInteractiveSubappChrome(iframe),
+    );
+  }
+
+  injectInteractiveSubappChrome(iframe);
+}
+
 /**
  * A minimal page display function that hides all elements with the class 'page'
  * and then displays the element with the given ID.
@@ -195,6 +684,8 @@ function minimalShowPage(id) {
   if (!target) return;
   target.classList.add("active");
   target.style.display = "block";
+  hydrateLazyIframes(target);
+  syncInteractiveSubappOpenState(target);
 }
 
 // Expose minimalShowPage globally for legacy/inline usage
@@ -216,6 +707,9 @@ window.minimalShowPage = window.minimalShowPage || minimalShowPage;
 document.addEventListener("page:shown", (event) => {
   const shownId = String(event.detail?.id || "");
   if (!shownId) return;
+  const target = document.getElementById(shownId);
+  hydrateLazyIframes(target);
+  syncInteractiveSubappOpenState(target);
   recordShownSubPage(shownId);
 });
 
@@ -259,6 +753,7 @@ export let currentPageName = null;
 export const historyStack = [];
 const pageHistoryStack = [];
 const MY_LEARNING_RETURN_KEY = "myLearningReturnTarget";
+const INTERACTIVE_LEARNING_RETURN_KEY = "interactiveLearning:returnTarget";
 
 let currentRoute = null; // Add the currentRoute guard
 let isWritingRouteHash = false;
@@ -371,6 +866,34 @@ function consumeMyLearningReturnTarget() {
   } catch {
     return null;
   }
+}
+
+function consumeInteractiveLearningReturnTarget() {
+  try {
+    const raw = sessionStorage.getItem(INTERACTIVE_LEARNING_RETURN_KEY);
+    sessionStorage.removeItem(INTERACTIVE_LEARNING_RETURN_KEY);
+    const parsed = JSON.parse(raw || "null");
+    return normalizeStructuralBackTarget(parsed);
+  } catch {
+    return null;
+  }
+}
+
+function goToStoredInteractiveLearningReturn() {
+  const returnTarget = consumeInteractiveLearningReturnTarget();
+  if (!returnTarget?.routeName) return false;
+
+  isApplyingBackNavigation = true;
+  loadPage(returnTarget.routeName, {
+    replace: true,
+    force: returnTarget.routeName === currentRoute,
+    recordHistory: false,
+    subPageId: returnTarget.subPageId,
+  }).finally(() => {
+    isApplyingBackNavigation = false;
+  });
+
+  return true;
 }
 
 function recordShownSubPage(id) {
@@ -860,6 +1383,17 @@ export function goBack() {
       });
       return;
     }
+  }
+
+  const currentHash = getRouteFromHash();
+  const isAlreadyAtInteractiveLearning =
+    currentHash?.routeName === "videos" &&
+    normalizeSubPageId(currentHash?.subPageId) === "interactiveLearningPage";
+  if (
+    !isAlreadyAtInteractiveLearning &&
+    goToStoredInteractiveLearningReturn()
+  ) {
+    return;
   }
 
   const activeSubPageId = getActivePageId();

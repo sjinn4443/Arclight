@@ -1,0 +1,93 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - button "Open menu" [ref=e3] [cursor=pointer]
+    - heading "Trauma" [level=1] [ref=e5]
+    - button "Open information" [ref=e6] [cursor=pointer]:
+      - generic [ref=e7]: i
+  - complementary [ref=e8]:
+    - generic [ref=e9]:
+      - heading "Menu" [level=2] [ref=e10]
+      - button "Close menu" [ref=e11] [cursor=pointer]: ×
+    - generic [ref=e12]:
+      - heading "MCQ Levels" [level=3] [ref=e13]
+      - group "MCQ levels" [ref=e14]:
+        - button "Primary Core use" [ref=e15] [cursor=pointer]:
+          - generic [ref=e16]: Primary
+          - generic [ref=e17]: Core use
+        - button "Intermediate Applied scoring" [ref=e18] [cursor=pointer]:
+          - generic [ref=e19]: Intermediate
+          - generic [ref=e20]: Applied scoring
+        - button "Advanced Boundary cases" [ref=e21] [cursor=pointer]:
+          - generic [ref=e22]: Advanced
+          - generic [ref=e23]: Boundary cases
+      - generic [ref=e24]:
+        - generic [ref=e25]: ★
+        - generic [ref=e27]: "Cup locked: complete Advanced MCQ"
+        - button "Save" [disabled] [ref=e28]
+      - paragraph [ref=e29]: Start simple, then build scoring confidence.
+  - main [ref=e30]:
+    - generic [ref=e32]:
+      - region "Presenting VA" [ref=e33]:
+        - heading "Presenting VA" [level=2] [ref=e34]
+        - generic [ref=e35]:
+          - generic [ref=e36]: Presenting VA
+          - combobox "Presenting VA" [ref=e37]:
+            - option "NPL"
+            - option "PL or HM"
+            - option "1/60 to < 6/60"
+            - option "6/60 to 6/15"
+            - option "≥ 6/12" [selected]
+      - region "Risk Factors" [ref=e38]:
+        - heading "Risk Factors" [level=2] [ref=e39]
+        - group "Risk Factors" [ref=e40]:
+          - generic [ref=e41]: Risk Factors
+          - generic [ref=e42]:
+            - generic [ref=e43]:
+              - button "Globe Rupture" [ref=e45] [cursor=pointer]:
+                - generic [ref=e47]: Globe Rupture
+              - generic [ref=e48]:
+                - checkbox "Globe Rupture"
+            - generic [ref=e50]:
+              - button "Endophthalmitis" [ref=e52] [cursor=pointer]:
+                - generic [ref=e54]: Endophthalmitis
+              - generic [ref=e55]:
+                - checkbox "Endophthalmitis"
+            - generic [ref=e57]:
+              - button "Perforating Injury" [ref=e59] [cursor=pointer]:
+                - generic [ref=e61]: Perforating Injury
+              - generic [ref=e62]:
+                - checkbox "Perforating Injury"
+            - generic [ref=e64]:
+              - button "Retinal Detachment" [ref=e66] [cursor=pointer]:
+                - generic [ref=e68]: Retinal Detachment
+              - generic [ref=e69]:
+                - checkbox "Retinal Detachment"
+            - generic [ref=e71]:
+              - button "RAPD" [ref=e73] [cursor=pointer]:
+                - generic [ref=e75]: RAPD
+              - generic [ref=e76]:
+                - checkbox "RAPD"
+    - generic [ref=e78]:
+      - paragraph [ref=e79]:
+        - generic [ref=e80]: Estimated VA at 6 months
+        - generic [ref=e81]:
+          - generic "Score 100" [ref=e82]: "100"
+          - generic "Category 5" [ref=e83]: "5"
+      - generic [ref=e84]:
+        - table [ref=e85]:
+          - row "NPL PL or HM 1/60 to <6/60 6/60 to 6/15 ≥ 6/12" [ref=e86]:
+            - columnheader "NPL" [ref=e87]
+            - columnheader "PL or HM" [ref=e88]
+            - columnheader "1/60 to <6/60" [ref=e89]
+            - columnheader "6/60 to 6/15" [ref=e90]
+            - columnheader "≥ 6/12" [ref=e91]
+          - row "0% 1% 2% 5% 92%" [ref=e92]:
+            - cell "0%" [ref=e93]
+            - cell "1%" [ref=e94]
+            - cell "2%" [ref=e95]
+            - cell "5%" [ref=e96]
+            - cell "92%" [ref=e97]
+        - region "Category guide" [ref=e98]:
+          - paragraph [ref=e99]: Good prognosis. Better functional vision is most likely.
+      - button "Show calculation +" [ref=e102] [cursor=pointer]
+      - paragraph

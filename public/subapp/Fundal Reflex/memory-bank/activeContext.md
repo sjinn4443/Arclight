@@ -1,0 +1,264 @@
+# Active Context
+
+<!-- APP-DOC-STATUS:START -->
+
+## Current Memory Status (18/5/2026)
+
+- Static packaging: open `index.html` directly; a local HTTP server is optional for testing.
+- Mobile target: `360 x 740`, with the main page kept free of required vertical scrolling.
+- Shared appbar: `54px` high; `Quicksand` `25px`/`700` title; `44 x 44` burger and info buttons set `12px` from the edges.
+- Burger glyph: shared CSS three-bar mark, `18px` wide with `2px` strokes, so no app depends on a bold font glyph.
+- Shared side menu: left drawer under the appbar; `min(76vw, 284px)` width; `16px` padding; pale `#f8fbff` surface; blue-grey border; card-style actions with small level dots.
+- Appbar content colour: red `#f03b2f` on a black appbar.
+- Favicon: current black-square app favicon with the app letter or letters centred.
+<!-- APP-DOC-STATUS:END -->
+
+_Last updated: 18/5/2026_
+
+## Current Focus
+
+Keep the current teaching flow stable:
+
+- `Cases` is now the primary selector, not a text case dropdown
+- `Learn` now carries the handout workflow: intact one-page sheet first, short English explanations second and practice links back into the app
+- the `Cases` modal now uses real stage snapshots instead of hand-drawn preview miniatures
+- the `Cases` modal should stay compact and readable with Primary open by default, Intermediate and Advanced folded, and optional reference photos available from camera icons
+- the case sequence is now level-based:
+  - Primary `1-8`, including poor-view technique cases for looking away and upper lid blocking
+  - Intermediate `9-22`, ordered from common introductory patterns toward harder patterns
+  - Advanced `23-32`, ordered from more likely introductory specialist patterns toward harder patterns
+- Baby mode filters the picker and previous/next navigation to a tighter 16-case subset; if an excluded case is active when Baby is enabled, the app falls back to `1. Normal (orange-red) R & L`
+- Baby mode now visibly reduces the inner canthus/IPD spacing as well as scaling the eyes; at `360 x 740`, the visible inner gap measured about `22px` in Baby mode versus about `40px` normally
+- extra slow/long eyelid closures are intentionally gated to `Baby` + `Gaze`; Baby mode alone keeps the normal blink model
+- `Gaze` now includes small whole-face motion and occasional larger random tilt moments for a less perfectly cooperative patient feel, while the light handle remains fixed
+- accepted motion tuning: hand-held light jitter is slower, inter-eye stagger is reduced, gaze endpoint bounce is softened and whole-face tilt is visible but not dominant
+- dynamic realism should remain representational, slightly cartoonish and focused on colour, brightness and shape rather than uncanny realism
+- nystagmus affects reflex visibility, especially in aniridia, without causing flashing when the light moves over the eye
+- the results box interprets the chosen case using only the live modifiers:
+  - `Baby`
+  - `Gradual / Sudden`
+  - `Glare / Glare on`
+- `Gaze` and `Dilated` are visible first-screen modifiers, but they are not interpretation modifiers
+- the observation guide should introduce the scan order, then get out of the way cleanly
+- Primary cases show the beginner guide `Match`, `Bright`, `Straight`; `Match` is pale white, `Bright` is red and `Straight` is blue
+- Intermediate and Advanced cases show the full grouped guide in this order: `Reflex` (`Light`, `Colour`), `Geometry` (`Shape`, `Crescent`), `Surface` (`Cornea`) and `Check` (`Compare`)
+- reopening the collapsed chevron runs a slow teaching replay using the active guide, with green target highlights for either the Primary words or the full guide words
+- observation-guide connector lines should be based on the intended target rectangles, not the animated DOM boxes, so the lines stay stable while highlights fade in
+- the `Crescent` teaching target must sit on the real crescent region: upper crescents include the actual upper pupil edge, and myopic/bottom crescents mirror to the lower pupil edge
+- the right-side `Adv` rail should stay compact and readable at mobile width
+- the Advanced panel now uses only soft colour tints and coloured labels; avoid strong rails or stripe effects
+- the `Quick guide` popup is intentionally concise, dated `v1 - 18/5/2026`, starts with a natural fundal reflex definition, says `fundal` rather than `red`, notes darker pigmentation and orange-yellow or blue-white normal reflexes, keeps the Alan25 technique sequence brief, then gives `Basics` (`Match`, `Bright`, `Straight`), a quieter `More detail` section, short usage notes and a `Learn from the handout` path
+- the side menu should share the app theme: off-white surface, blue-grey borders, light card-style actions and small coloured dot accents for levels rather than a separate dark, saturated navigation theme
+- MCQs have been re-audited: Primary stays plain and beginner-appropriate, Intermediate builds pattern-recognition detail and Advanced covers specialist/adult-skewed cases
+- the app bar info button is now a plain red `i` without the previous circled outline
+- preserve the current app-bar height, colours, Quicksand title and Inter UI font; current UI work should be a design-system discipline pass rather than a visual redesign
+- CSS now has named tokens for spacing, tap targets, radius, motion, focus rings and key surfaces; prefer these over new one-off values
+- the accepted rounding hierarchy is now explicit: soft modal shells, medium section/action bars, tighter cards and tighter image/option interiors
+- startup should avoid a black or pale flash on phones: keep the immediate page fallback light, keep the pre-ready eye-stage fallback dark and only use the normal loaded stage once `app-ready` is applied
+- the app should stay compact and readable at `360 x 740`
+- the April 30 code-quality pass is now part of the project template:
+  - no avoidable `innerHTML` / `outerHTML` / `insertAdjacentHTML`
+  - one shared state object in `src/state.js`
+  - feature controllers split out of `src/app.js`
+  - `style.css` as an ordered CSS import manifest
+  - direct `index.html` launch with optional local-server browser checks
+
+## Recent Changes
+
+- April 28 updates:
+  - added vertical light-handle movement with closer up/down hint icons because vertical sweep is intentionally smaller than horizontal sweep
+  - tuned vertical movement so fixed media/pathology overlays such as cortical spokes stay fixed while the reflex behind them changes
+  - corrected coloboma behaviour so the centred reflex is equal R/L apart from the right-eye notch
+  - during an earlier numbering pass, dull corneal reflex moved out of the Primary basics; current numbering now has dull corneal reflex as case `15`
+  - fixed aniridia/nystagmus interaction so up/down light movement does not create odd flashing
+  - tuned esotropia/optic nerve brightness behaviour so moving the light over the turned-in eye normalises the brightness
+  - shortened long toolbar labels, fixed the case-trigger width to the longest compact label and reduced the trigger font slightly
+  - folded the case picker into coloured level bars: green Primary, orange Intermediate and red Advanced
+  - tightened Primary to the basics; later numbering updates made Primary `1-8`, with poor-view technique cases at `3` and `4`, retinoblastoma at `7` and dark normal at `8`
+  - changed the blue normal variant wording to `Normal (blue) R & L`; it is currently case `2`
+  - added Baby-mode case filtering around the tighter subset; this is now 16 cases after adding the two poor-view technique cases
+  - added a very small same-direction corneal reflex response to actual light movement: `2%`, capped at `0.8px` horizontal and `0.6px` vertical
+  - added and then softened Advanced-panel colour so the accepted version is pale section tinting and coloured labels only
+  - updated the About popup to `v1 - 28/4/2026` and revised the wording to name Primary, Intermediate and Advanced reflex patterns; superseded on April 29 by the Dilated wording/date update
+  - simplified the app-bar info icon by removing the red circle and keeping the lowercase red `i`
+  - hardened startup first paint on phones with an inline light page fallback, a dark pre-ready stage fallback, an `app-ready` body class and no eye-stage fade-through-light-grey effect
+  - added a conservative design-system token layer and slightly improved tap/focus treatment while preserving the app bar height, colour palette and font
+  - expanded, audited and rebalanced the MCQ bank so Primary, Intermediate and Advanced questions match the current `Cases` sections; later April 29 updates changed the bank sizes to Primary `14`, Intermediate `26` and Advanced `26`
+- April 29 updates:
+  - added a first-screen `Dilated` switch between `Gaze` and `Baby`; it drives the real pupil geometry to a larger useful aperture
+  - removed the non-functional `Filters` control from the `Cases` modal, leaving collapsed `Similar cases`
+  - moved the refractive hypermetropia/myopia cases into Intermediate only; after the poor-view additions they are cases `9` and `10`
+  - reordered Intermediate and Advanced so each tier introduces more common cases first and leaves harder patterns toward the end
+  - updated Intermediate MCQs for the refractive cases; bank sizes are now Primary `14`, Intermediate `26` and Advanced `26`
+  - updated the About popup to `v1 - 29/4/2026` and added concise Dilated wording
+  - changed squint brightness boosting to follow live iris position, so `Gaze` can temporarily normalise or increase reflex brightness according to where the eye actually is
+  - accepted the off-gaze brightness model: voluntary horizontal gaze now brightens the reflex/pupil fill in either eye, including the normal fellow eye
+  - hardened blink and Gaze lid timers so overlapping blink/droop events restore to stable lid baselines rather than leaving upper or lower lids partly closed
+  - refined the observation-guide replay so the Light connector uses stable geometry rather than an animated highlight box
+  - corrected the Crescent teaching highlight after visual review: it targets the real crescent cap area, is enlarged enough to cover the visible crescent and is anchored to the upper pupil edge, with mirrored bottom-edge behaviour for myopia
+- April 30 updates:
+  - added two Primary poor-view technique cases from the handout lessons: `3. Poor view: looking away` and `4. Poor view: upper lid blocking`
+  - recropped those thumbnails so the eye pairs sit centred in the case cards and lowered the upper-lid mask so it visibly covers more pupil
+  - updated Baby mode to include both poor-view technique cases, making the Baby subset `16` cases
+  - added Primary MCQ questions for the poor-view repeat/adjust action, making the Primary bank `16` questions
+  - fixed case `2. Normal (blue) R & L` so it is interpreted as a normal blue-white variant with `Referral: None needed`
+  - reordered the full observation guide to pair reflex cues first: `Light`, `Colour`, then `Shape`, `Crescent`, `Cornea`, `Compare`
+  - grouped the full guide as `Reflex`, `Geometry`, `Surface` and `Check` for Intermediate and Advanced cases
+  - simplified Primary teaching to the centred `Match`, `Bright`, `Straight` guide, removing small technical labels that made the first view feel more advanced
+  - set Primary guide colours to pale white for `Match`, red for `Bright` and blue for `Straight`
+  - tightened Baby-mode eye spacing by reducing the Baby eye gap to `0px`, giving a visibly smaller inner canthus gap while keeping the eyes readable
+  - added subtle whole-face motion to `Gaze`, including occasional larger distracted tilts, without moving the light handle
+  - added slower/longer eyelid closures only when `Baby` and `Gaze` are both on
+  - tuned realism after visual review: slower off-centre hand jitter, reduced inter-eye stagger, less endpoint bounce, restored visible whole-face tilt and fixed aniridia light flashing while preserving nystagmus visibility
+  - confirmed existing dynamic cues as intended: poor-tear-film shimmer, floaters moving relative to eye movement, media opacity in front of the reflex, pupil-edge crescent clipping and beam-crossing brightness ramp
+  - removed remaining avoidable HTML-string injection from app rendering
+  - extracted Advanced context controls into `src/condition-context-controls.js`
+  - extracted observation-guide behaviour into `src/observation-guide.js`, reducing `src/app.js` from `1138` lines to `464`
+  - split the old monolithic `style.css` into ordered files under `styles/`, with `style.css` now acting as the manifest
+  - verified the refactor with `node --check`, unsafe HTML-injection search and local-server browser smoke checks
+  - simplified the About popup into `Basics` cards plus a compact `More detail` section, removing the long bullet list
+  - fully audited MCQs for bank counts, answer indexes, option shuffling, level alignment and rendered modal counts
+  - tightened Primary MCQ wording by removing `leucocoria`, advanced disease-name distractors and app-navigation distractors
+  - fixed the MCQ pass star so it renders from a character code and no longer carries corrupted source text
+  - added a compact tier marker to the main `Cases` trigger so users can see Primary / Intermediate / Advanced context without opening the modal
+  - tightened the `Cases` modal rounding hierarchy: soft outer shell, medium section bars, tighter case cards and tighter thumbnail frames
+  - matched the MCQ sidebar and question modal to the same hierarchy: edge-attached drawer stays square, tier buttons are medium-radius, MCQ modal shell is soft, question cards are medium-radius and option rows are tighter nested targets
+- May 1 updates:
+  - copied the high-resolution universal handout into `assets/handouts/` as PDF and full-sheet WebP, with seven cropped WebP panels for in-app explanation
+  - added a `Learn` entry to the burger menu and a `Learn from the handout` button inside About
+  - added a three-tab Learn modal: `Handout`, `Explain` and `Save`
+  - kept the full sheet almost word-free and intact, while `Explain` supplies plain English notes for preparation, looking away, lids blocking, normal variation, unclear findings, asking for help and abnormal referral patterns
+  - linked Learn panels back to app practice cases, including looking away, upper lid blocking, normal variants and abnormal referral examples
+  - updated the `Quick guide` popup to define fundal reflex as the pupil glow from the fundus seen with Arclight at arm's length, using `fundal` rather than `red`, noting darker pigmentation and orange-yellow or blue-white normal reflexes, and stating that bright/equal/round is reassuring while null, milky or black means the back is not being seen
+  - aligned the About and Learn copy to the Alan25 fundal reflex reference: dim light, calm or swaddled patient, arm's-length comparison, equal brightness/colour/shape, moving side to side then closer, blue-white as possible normal variation and white/dull/absent/black/unequal reflexes as repeat or referral triggers
+  - updated the Learn `Normal can vary` card to use the same wording as the `Quick guide`: in those with darker pigmentation, a normal reflex may look orange-yellow or blue-white; bright, equal and round is reassuring
+  - corrected the Learn normal-variation card so `Case 8. R normal, L dark` is no longer treated as a pigmentation variant; it now belongs with abnormal/reduced-reflex practice
+- widened the `Quick guide` popup to use the available mobile width while keeping it within the `360 x 740` review height; the version/date now sits inline after the final-diagnosis warning
+  - added classic download/share icons to the Learn Save buttons and kept them in a compact two-column layout
+  - clarified the Learn Save share icon by changing it from upload/external-link-like cues to a three-dot connected share symbol
+  - aligned Learn modal rounding to the accepted hierarchy: soft shell, medium tabs/resource actions, tighter cards and tighter media frames
+  - rethemed the side menu from a dark separate-feeling panel into a light app-matched panel with bordered action rows and small coloured dot accents for level identity
+- verified at `360 x 740` that the one-page handout fits the Learn modal, `Quick guide` fits after the inline version/date trim, Explain images load, Save shows PDF download and image share actions, Learn opened from `Quick guide` closes it first and a Learn case button selects case `3. Poor view: looking away`
+- Fixed malformed About modal markup so the header/body nesting is valid.
+- Shortened the About popup copy so it keeps the beginner `Basics` first and avoids a long instruction list.
+- Updated the About popup date to `v1 - 28/4/2026`; later updated to `v1 - 29/4/2026` with Dilated wording.
+- Refactored the `Cases` and reference-photo dialogs to use the shared modal controller for focus trapping, body locking and Escape handling.
+- Avoided two simultaneous active `aria-modal` roots when a reference photo opens from the `Cases` dialog.
+- Replaced MCQ question rendering with DOM construction and text nodes rather than `innerHTML`.
+- Softened high-risk result wording to `Possible...` where the app is presenting pattern recognition rather than a diagnosis.
+- Clarified compact case labels where abbreviations were doing too much work (`esotropia`, `exotropia`, `angle closure`, `cataract`, `vitreous haemorrhage`, `retinal detachment`).
+- Tightened retinal detachment teaching copy from `dark sector` to `fixed shadowed sector`.
+- Tuned selected case artwork after an earlier contact-sheet pass:
+  - `13` dull reflex reads darker
+  - `26` keratoconus has a slightly stronger scissors cue
+  - `14` dense cataract is duller, and the moving light now brightens rather than darkens it
+  - `23` subcapsular cataract has denser central plaques
+  - `20` subluxated lens has a sharper left-eye lens edge while the right eye stays normal
+- Follow-up fix: dense cataract now inverts its edge-opacity response so the beam weakens the dark cataract layer over the pupil, and subluxated lens uses a structural CSS lens-edge layer rather than a reflex-only cue.
+- Added small eye-engine realism refinements:
+  - irregular blink timing with occasional double blinks
+  - tiny independent micro-saccade variance between eyes
+  - non-metronomic background jitter
+  - eased pupil light response
+  - subtle corneal highlight drift tied to eye micro-motion
+- Made a subtle UI polish pass:
+  - reduced control/card rounding while keeping the stage and result panel softer
+  - softened small shadows
+  - neutralised control borders
+  - reduced the page background red/blue glow slightly
+  - increased off-toggle contrast
+  - made the movable light patch slightly brighter
+- Shortened the main visible case selector label from `Visual cases` to `Cases`.
+- Replaced the modal's custom preview drawings with generated live-stage thumbnails.
+- Regenerated all 30 case thumbnails with the centred default beam visible.
+- Tightened the `Cases` modal spacing so more cards fit on mobile without shrinking the snapshots.
+- Added 7 optional reference photos opened from red camera icons in the modal and on the main stage.
+- Added stage `Previous` and `Next` navigation around the current case trigger.
+- Added working category filters to the `Cases` modal during the earlier picker iteration; this has since been superseded by the Primary/Intermediate/Advanced fold-up structure.
+- Added an explicit CSS hidden rule for filtered case groups so inactive sections no longer stay visible.
+- Removed the unused stage reset/refresh control to keep the toolbar tighter.
+- Tuned the circular corneal light patch so beam bias now changes its size subtly:
+  - the eye under the brighter patch gets a slightly larger corneal circle
+  - the darker fellow eye gets a fractionally smaller corneal circle
+- Moved advanced controls behind a slim right-side `Adv` dock with the red `+ / -` indicator.
+- Simplified results so `Referral` is always top-most and secondary detail is under a disclosure.
+- Added observation-guide auto-collapse with a manual chevron reopen/close control.
+- Tightened the advanced panel layout:
+  - squint and iris on one line
+  - more compact nystagmus row
+- Expanded the test-mode banner for full-width readability.
+- Tightened the interpreter so:
+  - normal default gives `None needed`
+  - Baby no longer over-escalates anisometropia
+  - glare is limited to explicit cataract-style cases
+- Fixed mobile regressions from the UI pass:
+  - collapsed guide no longer leaves a wide invisible hit area
+  - guide toggle is now a usable tap target
+  - test mode now disables visible case-shaping controls such as `Baby`, `Dilated` and `iris` as intended
+- Reworked the MCQ bank so questions are about the conditions, not the app labels.
+- Reworked MCQs again so:
+  - questions and answer options shuffle
+  - answer keys are preserved after option shuffling
+  - advanced requires `6/8`
+  - intermediate/advanced wording leans more on visual pattern recognition
+- Latest MCQ audit confirmed Primary `14`, Intermediate `26` and Advanced `26` questions, with Primary wording kept beginner-facing and no technical/app-navigation distractors.
+- Added iOS/tablet hardening for modal sizing and scrolling:
+  - bottom safe-area padding
+  - `dvh` sizing where supported
+  - contained About popup scrolling
+- Converted all app-used images to WebP and deleted the old JPG/PNG source copies after verifying replacements.
+- Updated `README.md` to match the current WebP-only assets, MCQ behaviour, iOS hardening and module layout.
+- Added case-driven nystagmus for `18. Aniridia R & L`: subtle horizontal pendular movement is applied automatically for that case while preserving the manual Advanced nystagmus control, and the case interpretation/teaching comments now mention nystagmus.
+- Updated case `19. R transillumination, L normal` wording to mention peripheral iridectomy or trauma as the likely context.
+- Moved `Gradual / Sudden` and `Glare` out of the first-screen controls into an Advanced `context` section; `Baby` remains visible because it changes the eye model.
+- Added a main-row `Gaze` toggle beside `Baby`: `Baby` still only changes eye size/model, while `Gaze` adds more obvious gaze shifts/jitter for realism; baseline subtle blink/motion remains when `Gaze` is off.
+- Tuned `Gaze` so it now produces clear gaze-away events every few seconds, with the eyes returning to centre between shifts; delayed gaze-shift timers are cleared cleanly when the toggle is switched off.
+- Added occasional larger distracted down-gaze events to `Gaze`, with a brief mild upper-lid drop, so the reflex can be challenged like a less attentive real patient.
+- Reduced the amount of straight-ahead time in `Gaze`: between larger shifts the eyes now settle into a small off-centre resting gaze, and gaze-away events happen more frequently.
+- Retuned case `24. R IOL, L capsular thickening` to read more like PCO: broader sheet-like posterior capsule haze, stronger fibrotic strands and pearl-like spots instead of a central PSC-style plaque. The retinoscopy import chain must be cache-bumped when changing these render modules.
+- Restored generated thumbnails for cases `18`, `21`, `23` and `26` from the case artwork contact sheet after hand-edited thumbnail fixes proved wrong; the live renderer was left unchanged.
+- Removed the main-stage reference-photo camera button and `p` keyboard shortcut; reference photos remain available from camera icons inside the `Cases` modal.
+- Simplified the main colour slider label from stacked `Reflex / Colour` to `Colour`, because the app title already establishes that this is fundal reflex colour.
+- Latest UI polish pass: modal close buttons now use a softer focus state, the mobile Advanced panel is slightly tighter vertically, and the side menu is narrower with a small `Menu` heading so it feels less blank.
+- Cases modal now uses progressive disclosure with `Primary cases` open by default and `Intermediate cases` / `Advanced cases` folded.
+- README now documents the reusable `Fundal Reflex look`: mobile-first compact clinical UI, black/red header, white controls, dark stage, progressive disclosure, subtle radii/shadows, italic helper cues, and generated visual thumbnails.
+- Final micro-polish included lighter modal close buttons, clearer level case bars, italic Blue/Red anchors and `drag eyes` and balanced inline Advanced rows for context/pupil/lid/cataract.
+- Added a slow observation-guide replay: reopening the collapsed chevron steps through the active guide words and highlights the relevant stage area with green outlines before collapsing again.
+
+## Next Steps
+
+- Continue small visual/teaching refinements, not broad architectural change.
+- Keep the one-page handout visually simple and language-light; use the app for English explanation and practice.
+- If more UI polish is requested, keep changes subtle and preserve the current mobile-first composition.
+- Keep checking that case snapshots, live cases, reference photos and result wording stay aligned.
+- Consider whether selected photographed cases later need a side-by-side compare mode rather than photo-only viewing.
+- If another refactor is needed, keep following the controller-module and split-CSS pattern rather than adding new bulk back into `src/app.js`.
+
+## Active Decisions
+
+- Keep the app fully client-side.
+- Preserve the app bar's current height, colours, Quicksand title and Inter UI font unless the user explicitly asks for a redesign.
+- Keep the beam as a broad movable patch, not a rotatable streak; horizontal movement is larger than vertical movement.
+- Keep both eyes visible at all times.
+- Keep `Cases` as the primary case picker.
+- Keep `Cases` snapshots derived from the live renderer rather than maintaining separate miniature drawings, served as WebP assets.
+- Keep the level case ordering canonical in `src/case-catalog.js`; visible numbers should match Primary/Intermediate/Advanced order rather than old anatomical/category order, with each tier moving from common introductory cases toward harder patterns.
+- Keep real photos as optional WebP references, not replacements for the main simulation thumbnails.
+- Keep the handout PDF and full WebP intact as the shared visual reference; use cropped panels only for explanation inside `Learn`.
+- Keep the result output compact, with `Referral` visible first and `Why / Site / Likely` collapsible.
+- Keep the `Adv` control as a docked rail rather than a full-width row button.
+- Keep modifiers simple and explicit rather than introducing a bigger hidden rules engine.
+- Keep corneal reflex light movement extremely small. Diagnostic squint offset should mostly come from the eye moving relative to a stable light reflection.
+- Keep `Gaze` brightness changes tied to live horizontal off-gaze position rather than interpretation state; this should read clearly on both eyes through reflex brightness, pupil fill and slight opacity lift.
+- Keep blink and Gaze lid animations baseline-driven; never restore lids to a captured temporary blink/droop height.
+- Keep Gaze and nystagmus motion lively but restrained: movement should challenge visibility without making the app look broken or laggy.
+- Keep the loaded eye-stage background dark. Startup fixes should prevent flashes without making the finished stage lighter.
+- Keep the info button visually light: plain red `i`, no circle.
+- Keep iOS hardening lightweight: safe-area padding, `dvh` fallbacks and contained modal scrolling rather than a separate platform layout.
+- Treat the README style section as the canonical reference if a future app should copy this project's visual language.
+- Keep the observation-guide replay non-interactive and temporary; green highlights should teach the anatomy without becoming permanent stage clutter.
+- Keep the Primary guide beginner-facing: `Match`, `Bright`, `Straight`, centred and uncluttered.
+- Keep the full guide for Intermediate and Advanced: grouped `Reflex`, `Geometry`, `Surface`, `Check`.
+- Keep Crescent guide placement tied to the actual pupil edge, not a generic pupil-centre marker.
+- Keep the current radius hierarchy as a design-system rule, especially in Cases and MCQ: panel > section/action > card > inner media/option.
+- Keep `Case 8. R normal, L dark` out of normal-variation teaching; dark unilateral/reduced reflex stays in the referral/reduced-reflex pathway.

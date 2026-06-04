@@ -1,0 +1,438 @@
+@media (max-width: 760px) {
+  :root {
+    --header-height: 54px;
+  }
+
+  .top-controls {
+    margin-top: 12px;
+    min-height: 52px;
+    padding: 0 10px;
+    justify-content: flex-start;
+  }
+
+  .modifier-context-panel {
+    padding: 0;
+  }
+
+  .advanced-toolbar {
+    gap: 10px;
+  }
+
+  .advanced-toolbar-switch {
+    min-width: 94px;
+    padding: 0 10px;
+  }
+
+  .reflex-colour-control {
+    width: min(100%, 320px);
+  }
+
+  main {
+    padding: 0 8px;
+    gap: 8px;
+  }
+
+  .eyes-wrapper {
+    padding: 212px 20px 98px;
+  }
+
+  .fundal-light-probe-visual {
+    height: calc(clamp(396px, 54vw, 660px) * 1.32);
+  }
+
+  .sliders-container {
+    gap: 8px;
+    padding: 0;
+  }
+
+  .ret-eye-row {
+    margin-top: 4px;
+  }
+
+  .test-status-banner {
+    top: 8px;
+    left: 8px;
+    right: 8px;
+    width: auto;
+    padding: 9px 11px;
+  }
+
+  .test-status-title {
+    font-size: 0.74rem;
+  }
+
+  .test-countdown-value {
+    min-width: 28px;
+    font-size: 0.8rem;
+  }
+
+  .test-answer-text {
+    font-size: 0.86rem;
+  }
+
+  .test-clue-text {
+    font-size: 0.76rem;
+  }
+
+  .observation-guide {
+    top: 18px;
+    width: min(300px, calc(100% - 28px));
+  }
+
+  .observation-guide-item {
+    font-size: 10px;
+  }
+
+  .observation-guide-detail {
+    font-size: 10px;
+  }
+
+  #test-status-banner:not([hidden]) ~ .observation-guide {
+    top: 84px;
+  }
+
+  #test-status-banner:not([hidden]) ~ .ret-controls {
+    top: 126px;
+  }
+
+  .ret-controls {
+    top: 88px;
+    width: min(304px, calc(100% - 28px));
+  }
+}
+
+@media (max-width: 460px) {
+  .controls-deck {
+    width: min(calc(100% - 16px), 760px);
+    grid-template-columns: minmax(0, 1fr) 38px;
+    gap: 8px 8px;
+  }
+
+  .advanced-dock-toggle {
+    width: 38px;
+    min-height: 0;
+    padding: 6px 2px;
+    gap: 25px;
+  }
+
+  .advanced-dock-toggle__label {
+    font-size: 0.68rem;
+    letter-spacing: 0;
+  }
+
+  .advanced-dock-toggle__indicator {
+    width: 24px;
+    height: 24px;
+    border-radius: var(--radius-sm);
+  }
+
+  .top-controls {
+    gap: 8px;
+    min-height: 42px;
+    padding: 0 9px;
+  }
+
+  .toggle-reflex-color {
+    display: grid;
+    grid-template-columns: 58px minmax(0, 1fr);
+    gap: 8px;
+  }
+
+  .reflex-colour-control {
+    width: auto;
+    padding: 0 10px;
+    box-sizing: border-box;
+  }
+
+  .controls-deck .modifier-context-switch {
+    gap: 10px;
+  }
+
+  .controls-deck .modifier-context-switch .advanced-switch-track {
+    flex: 0 0 auto;
+  }
+
+  .controls-deck .advanced-toolbar-switch {
+    padding: 0 5px;
+  }
+
+  .controls-deck .advanced-toolbar-switch-text {
+    font-size: 0.74rem;
+  }
+
+  .modifier-context-panel {
+    padding: 0;
+  }
+
+  .results-panel {
+    padding: 10px 11px;
+  }
+
+  .results-referral {
+    font-size: 0.9rem;
+  }
+
+  .results-summary {
+    font-size: 0.74rem;
+  }
+
+  .results-why,
+  .results-meta-item {
+    font-size: 0.82rem;
+  }
+
+  .advanced-content {
+    gap: 4px;
+    padding: 6px 7px 7px;
+  }
+
+  .advanced-section {
+    padding: 4px 7px;
+    gap: 3px;
+    border-radius: 10px;
+  }
+
+  .advanced-section--compact-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .advanced-compact-field {
+    gap: 7px;
+    padding: 4px 7px;
+  }
+
+  .advanced-switch--compact .advanced-switch-text {
+    font-size: 0.72rem;
+  }
+
+  .advanced-select--compact {
+    min-width: 76px;
+    padding: 3px 7px;
+    font-size: 0.68rem;
+  }
+
+  .advanced-select-grid--compact {
+    gap: 4px;
+  }
+
+  .advanced-panel .dual-slider-row .slider-wrapper {
+    flex-basis: 0;
+  }
+
+  .advanced-panel .single-slider-row {
+    width: 100%;
+  }
+
+  .observation-guide {
+    width: min(332px, calc(100% - 18px));
+  }
+
+  .observation-guide-strip {
+    width: 100%;
+  }
+
+  .observation-guide-set {
+    justify-content: space-between;
+    column-gap: 3px;
+  }
+
+  .observation-guide.is-primary-guide .observation-guide-set--primary {
+    justify-content: center;
+    column-gap: 18px;
+  }
+
+  .observation-guide-item {
+    font-size: 9.5px;
+    letter-spacing: 0;
+  }
+
+  .observation-guide.is-primary-guide .observation-guide-item {
+    font-size: 13px;
+    letter-spacing: 0.01em;
+  }
+
+  .observation-guide-group-cues {
+    gap: 3px;
+  }
+
+  .observation-guide-group-label {
+    font-size: 7px;
+    letter-spacing: 0.06em;
+  }
+
+  .observation-guide-detail {
+    font-size: 10px;
+  }
+
+  .modifier-context-bar {
+    gap: 4px;
+  }
+
+  .modifier-context-switch {
+    min-height: 38px;
+  }
+
+  .modifier-context-chip {
+    padding: 3px 4px;
+    font-size: 0.6rem;
+  }
+
+  .advanced-section--context .modifier-context-switch {
+    min-height: 32px;
+  }
+
+  .advanced-section--context {
+    grid-template-columns: 72px minmax(0, 1fr);
+  }
+
+  .advanced-section--inline-control {
+    grid-template-columns: 72px minmax(0, 1fr);
+  }
+
+  .advanced-section--context .modifier-context-bar {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .advanced-section--nystagmus .advanced-toggle-row {
+    margin-bottom: 0;
+  }
+
+  .advanced-toolbar {
+    gap: 6px;
+  }
+
+  .advanced-toolbar-switch {
+    min-width: 84px;
+    min-height: 42px;
+    padding: 0 8px;
+    gap: 6px;
+  }
+
+  .advanced-toolbar-switch-text {
+    font-size: 0.82rem;
+  }
+
+  .eyes-wrapper {
+    padding: 202px 16px 88px;
+  }
+
+  .fundal-light-probe-visual {
+    height: calc(clamp(396px, 54vw, 660px) * 1.38);
+  }
+
+  .slider-title {
+    font-size: 0.7rem;
+  }
+
+  .ret-controls {
+    top: 84px;
+    width: min(318px, calc(100% - 18px));
+  }
+
+  .ret-controls-dropdown {
+    padding: 7px 8px;
+  }
+
+  .ret-case-toolbar {
+    grid-template-columns: 30px minmax(0, 1fr) 30px;
+    gap: 4px;
+  }
+
+  .refraction-trigger {
+    padding-inline: 19px 31px;
+    font-size: 0.84rem;
+  }
+
+  #refraction-state,
+  .refraction-mask-label {
+    min-height: 38px;
+    padding: 8px 34px 8px 12px;
+    font-size: 0.84rem;
+  }
+}
+
+@media (max-width: 340px) {
+  .observation-guide {
+    width: min(292px, calc(100% - 18px));
+  }
+
+  .observation-guide-strip {
+    max-height: 48px;
+  }
+
+  .observation-guide-set {
+    grid-auto-flow: row;
+    grid-template-columns: repeat(2, max-content);
+    justify-content: center;
+    gap: 5px 16px;
+  }
+
+  .observation-guide.is-primary-guide .observation-guide-set--primary {
+    justify-content: center;
+    grid-auto-flow: column;
+    grid-template-columns: none;
+    gap: 0 16px;
+  }
+
+  .observation-guide.is-primary-guide .observation-guide-item {
+    font-size: 12px;
+  }
+
+  .observation-guide-detail {
+    margin-top: 6px;
+  }
+
+  .ret-controls {
+    top: 96px;
+  }
+}
+
+.observation-guide.is-collapsed {
+  width: 28px;
+  min-width: 28px;
+  max-width: 28px;
+  min-height: 28px;
+  padding-left: 0;
+  gap: 0;
+  transform: none;
+  pointer-events: none;
+}
+
+.observation-guide.is-collapsed .observation-guide-toggle {
+  width: 28px;
+  height: 28px;
+  left: 0;
+  pointer-events: auto;
+}
+
+.observation-guide.is-collapsed .observation-guide-toggle-icon {
+  width: 7px;
+  height: 7px;
+}
+
+.observation-guide.is-collapsed .observation-guide-strip,
+.observation-guide.is-collapsed .observation-guide-detail {
+  pointer-events: none;
+}
+
+@media (pointer: coarse) {
+  .top-controls,
+  .eyes-wrapper,
+  .ret-controls,
+  .modal-content {
+    animation: none !important;
+  }
+
+  .modal {
+    backdrop-filter: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+    scroll-behavior: auto !important;
+  }
+}

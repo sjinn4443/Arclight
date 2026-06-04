@@ -1,4 +1,5 @@
 import {
+  EYE_LABELS,
   MODE_LABELS,
   SYSTEMIC_CHECKS,
   getAreaLabel,
@@ -8,52 +9,64 @@ import {
 
 function formatFindings(eye) {
   const labels = getFindingLabels(eye.findings);
-  return labels.length > 0 ? labels.join(", ") : "none";
+  return labels.length > 0 ? labels.join(", ") : "none recorded";
 }
 
 function formatSystemicChecks(state) {
-  const labelFor = {
-    bp: "BP",
-    lipids: "lipids",
-    hba1c: "HbA1c",
-  };
-  const checked = SYSTEMIC_CHECKS.filter(
-    (check) => state.systemicChecks[check.key],
-  ).map(
-    (check) => labelFor[check.key] || check.label.replace(/\s+checked$/i, ""),
-  );
-  return checked.length > 0 ? checked.join(", ") : "none recorded";
-}
-
-function formatEyeLine(label, eye, mode) {
-  const parts = [
-    `VA ${getVaLabel(eye.distanceVA)}`,
-    `view ${eye.viewQuality || "not recorded"}`,
-    `findings: ${formatFindings(eye)}`,
-  ];
-  const area = getAreaLabel(mode, eye.areaSeen);
-  if (area !== "Not recorded") {
-    parts.splice(2, 0, area);
-  }
-  return `${label}: ${parts.join("; ")}.`;
+  return SYSTEMIC_CHECKS.map((check) => {
+    const status = state.systemicChecks[check.key] ? "checked" : "not checked";
+    return `- ${check.label}: ${status}`;
+  });
 }
 
 export function buildReferralNote(state, triage) {
   const lines = [];
 
-  lines.push(`Diabetic retinal triage: ${triage.title}.`);
-  lines.push(
-    `Mode: ${MODE_LABELS[state.mode]}. Dilated: ${state.dilation || "not recorded"}.`,
-  );
-  lines.push(formatEyeLine("RE", state.eyes.right, state.mode));
-  lines.push(formatEyeLine("LE", state.eyes.left, state.mode));
-  const reasonParts = [...triage.reasons, ...triage.limitations];
-  if (reasonParts.length > 0) {
-    lines.push(`Reason: ${reasonParts.join(" ")}`);
+  lines.push("Diabetic retinal triage - Diabetic app");
+  lines.push("");
+  lines.push(`Equipment: ${MODE_LABELS[state.mode]}`);
+  lines.push(`Dilation: ${state.dilation || "not recorded"}`);
+  lines.push("");
+
+  Object.entries(state.eyes).forEach(([eyeKey, eye]) => {
+    lines.push(`${EYE_LABELS[eyeKey]}:`);
+    lines.push(`- Distance VA: ${getVaLabel(eye.distanceVA)}`);
+    lines.push(`- View quality: ${eye.viewQuality || "not recorded"}`);
+    lines.push(`- Area seen: ${getAreaLabel(state.mode, eye.areaSeen)}`);
+    lines.push(`- Findings selected: ${formatFindings(eye)}`);
+    lines.push("");
+  });
+
+  lines.push("Systemic checks:");
+  lines.push(...formatSystemicChecks(state));
+  lines.push("");
+  lines.push("Action:");
+  lines.push(triage.title);
+  lines.push("");
+  lines.push("Reason:");
+  if (triage.reasons.length > 0) {
+    triage.reasons.forEach((reason) => lines.push(`- ${reason}`));
+  } else {
+    lines.push("- none recorded");
   }
-  lines.push(`Plan: ${triage.next}`);
-  lines.push(`Systemic: ${formatSystemicChecks(state)}.`);
-  lines.push("Screening still required.");
+  if (triage.limitations.length > 0) {
+    lines.push("");
+    lines.push("Limitations:");
+    triage.limitations.forEach((note) => lines.push(`- ${note}`));
+  }
+  lines.push("");
+  lines.push("Next step:");
+  lines.push(triage.next);
+  lines.push("");
+  lines.push("Medical review:");
+  lines.push(
+    "Arrange diabetes/medical review when possible if routine diabetes care is not available.",
+  );
+  lines.push("");
+  lines.push("Comment:");
+  lines.push(
+    "No signs seen only applies to the view obtained. Routine diabetic eye screening remains required.",
+  );
 
   return lines.join("\n");
 }

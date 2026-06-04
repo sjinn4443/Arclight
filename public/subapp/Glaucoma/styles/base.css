@@ -1,0 +1,82 @@
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url("../assets/fonts/inter-latin-400-800.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Quicksand";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("../assets/fonts/quicksand-latin-700.woff2") format("woff2");
+}
+
+:root {
+  --header-height: 54px;
+  --font-title: "Quicksand", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --font-ui: "Inter", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --ui-surface: #ffffff;
+  --ui-surface-soft: #f8fbff;
+  --ui-surface-muted: #f3f7fc;
+  --ui-border: #d5dbe4;
+  --ui-border-strong: #b8c7dc;
+  --ui-shadow: 0 6px 16px rgba(18, 23, 34, 0.07);
+  --ui-shadow-panel: 0 10px 24px rgba(18, 23, 34, 0.1);
+  --ui-shadow-strong: 0 16px 32px rgba(12, 18, 31, 0.3);
+  --ui-focus: #0f6bdc;
+  --ui-focus-outline: 3px solid var(--ui-focus);
+  --ui-focus-halo: 0 0 0 5px rgba(15, 107, 220, 0.2);
+  --app-bar-bg: #000000;
+  --app-bar-accent: #f03b2f;
+  --app-bar-content: #00ff3b;
+  --app-bar-content-hover: rgba(0, 255, 59, 0.16);
+  --state-red-hover: rgba(240, 59, 47, 0.14);
+  --text-strong: #0f1625;
+  --text-body: #243149;
+  --text-muted: #5c6677;
+  --accent-blue: #2a82cf;
+  --tap-target-min: 44px;
+  --tap-target-dense: 32px;
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-control: 10px;
+  --radius-md: 12px;
+  --radius-stage: 16px;
+  --radius-panel: 18px;
+  --radius-pill: 999px;
+  --motion-standard: 0.2s ease;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: calc(var(--header-height) + env(safe-area-inset-top)) 0 0;
+  font-family: var(--font-ui);
+  background:
+    radial-gradient(
+      900px 420px at -8% -14%,
+      rgba(237, 37, 43, 0.07),
+      transparent 60%
+    ),
+    radial-gradient(
+      900px 500px at 105% -20%,
+      rgba(15, 107, 220, 0.065),
+      transparent 55%
+    ),
+    linear-gradient(180deg, #f6f7fb 0%, #f1f4f9 100%);
+  color: var(--text-strong);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}

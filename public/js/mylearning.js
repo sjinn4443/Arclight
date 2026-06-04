@@ -381,6 +381,11 @@ function go(target) {
     "amslerInteractivePage",
     "miresPage",
     "morphPage",
+    "glaucomaInteractivePage",
+    "fieldsInteractivePage",
+    "refractInteractivePage",
+    "sauronInteractivePage",
+    "swollenDiscsInteractivePage",
     "squintPalsyPage",
     "cataractPage",
   ]);

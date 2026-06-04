@@ -3,8 +3,6 @@ export function setupDrawer({ menuButton, closeButton, drawer, overlay }) {
     overlay.hidden = false;
     drawer.classList.add("is-open");
     overlay.classList.add("is-visible");
-    drawer.inert = false;
-    drawer.removeAttribute("inert");
     drawer.setAttribute("aria-hidden", "false");
     menuButton.setAttribute("aria-expanded", "true");
   }
@@ -13,8 +11,6 @@ export function setupDrawer({ menuButton, closeButton, drawer, overlay }) {
     drawer.classList.remove("is-open");
     overlay.classList.remove("is-visible");
     overlay.hidden = true;
-    drawer.inert = true;
-    drawer.setAttribute("inert", "");
     drawer.setAttribute("aria-hidden", "true");
     menuButton.setAttribute("aria-expanded", "false");
   }
@@ -58,9 +54,8 @@ export function setupInfoPopup({ button, popup, closeButton }) {
   return { open, close };
 }
 
-export function setupTabs({ tabs, panels = [], onChange }) {
+export function setupTabs({ tabs, panels, onChange }) {
   const tabList = [...tabs];
-  const panelList = [...panels];
 
   function activate(tab) {
     const targetId = tab.dataset.tabTarget;
@@ -70,7 +65,7 @@ export function setupTabs({ tabs, panels = [], onChange }) {
       button.setAttribute("aria-selected", String(selected));
       button.tabIndex = selected ? 0 : -1;
     });
-    panelList.forEach((panel) => {
+    panels.forEach((panel) => {
       const selected = panel.id === targetId;
       panel.classList.toggle("active", selected);
       panel.hidden = !selected;

@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Swollen Discs is an optic disc teaching app for papilloedema, pseudopapilloedema, grading and differential diagnosis."
+    />
+    <meta name="author" content="WJW" />
+    <meta name="date" content="18/5/2026" />
+    <meta name="application-name" content="Swollen Discs" />
+    <title>Swollen Discs</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+
+    <link rel="stylesheet" href="styles.css?v=20260518-1" />
+  </head>
+  <body>
+    <header class="app-bar">
+      <button
+        id="burger-icon"
+        class="icon-button"
+        type="button"
+        title="Menu"
+        aria-label="Open menu"
+        aria-controls="sideMenu"
+        aria-expanded="false"
+      >
+        <span class="appbar-glyph appbar-glyph-menu" aria-hidden="true"></span>
+      </button>
+
+      <div class="header-content centered-header">
+        <h1>Swollen Discs</h1>
+      </div>
+
+      <button
+        id="info-icon"
+        class="icon-button"
+        type="button"
+        title="Quick guide"
+        aria-label="Open quick guide"
+        aria-controls="infoModal"
+        aria-expanded="false"
+        onclick="
+          event.stopImmediatePropagation();
+          window.toggleInfoGuide?.();
+        "
+      >
+        <span class="appbar-glyph appbar-glyph-info" aria-hidden="true"></span>
+      </button>
+    </header>
+
+    <nav id="sideMenu" class="side-menu" aria-hidden="true" aria-label="Practice menu">
+      <section class="side-menu-section" aria-labelledby="mcqMenuTitle">
+        <h2 id="mcqMenuTitle" class="side-menu-heading">MCQ sets</h2>
+        <div class="mcq-level-menu">
+          <button class="mcq-level-button" type="button" data-level-index="0" data-level="primary">
+            Level 1: Primary
+          </button>
+          <button
+            class="mcq-level-button"
+            type="button"
+            data-level-index="1"
+            data-level="intermediate"
+          >
+            Level 2: Intermediate
+          </button>
+          <button class="mcq-level-button" type="button" data-level-index="2" data-level="advanced">
+            Level 3: Advanced
+          </button>
+        </div>
+      </section>
+
+      <section class="side-menu-section" aria-labelledby="timedMenuTitle">
+        <h2 id="timedMenuTitle" class="side-menu-heading">Timed sets</h2>
+        <div class="timed-level-menu">
+          <button
+            class="timed-level-button"
+            type="button"
+            data-level-index="0"
+            data-level="primary"
+          >
+            Level 1: Primary
+          </button>
+          <button
+            class="timed-level-button"
+            type="button"
+            data-level-index="1"
+            data-level="intermediate"
+          >
+            Level 2: Intermediate
+          </button>
+          <button
+            class="timed-level-button"
+            type="button"
+            data-level-index="2"
+            data-level="advanced"
+          >
+            Level 3: Advanced
+          </button>
+        </div>
+      </section>
+
+      <section id="cupAchievement" class="cup-achievement is-locked" hidden aria-hidden="true">
+        <span class="cup-achievement-icon" aria-hidden="true">&#9733;</span>
+        <span class="cup-achievement-details">
+          <span id="cupAchievementLabel">Cup Locked: Complete Advanced in MCQ and Timed Sets</span>
+          <span id="cupAchievementCode" class="cup-achievement-code" hidden></span>
+        </span>
+        <button
+          id="downloadCupCertificateButton"
+          class="cup-download-button"
+          type="button"
+          disabled
+          data-locked="true"
+        >
+          Save
+        </button>
+      </section>
+    </nav>
+
+    <div
+      id="infoModal"
+      class="modal"
+      role="dialog"
+      aria-modal="true"
+      aria-hidden="true"
+      aria-labelledby="infoModalTitle"
+      onclick="
+        if (event.target === this) {
+          event.stopPropagation();
+          window.toggleInfoGuide?.(false);
+        }
+      "
+    >
+      <div class="modal-content info-popup" id="infoModalContent">
+        <div class="info-popup-header">
+          <h2 id="infoModalTitle">Quick guide</h2>
+          <button
+            id="closeInfoModal"
+            class="close-button"
+            type="button"
+            aria-label="Close quick guide"
+            onclick="
+              event.stopImmediatePropagation();
+              window.toggleInfoGuide?.(false);
+            "
+          >
+            <span class="close-glyph" aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="info-popup-body">
+          <div class="info-look-guide">
+            <section class="info-look-section">
+              <p class="info-look-title">Basics</p>
+              <div class="info-basics-grid" aria-label="Basic disc checks">
+                <div class="info-basics-cue">
+                  <strong>Clear edge</strong>
+                  <small>Cup easy to see</small>
+                </div>
+                <div class="info-basics-cue">
+                  <strong>Raised edge</strong>
+                  <small>Halo or swelling</small>
+                </div>
+                <div class="info-basics-cue">
+                  <strong>Vessels hidden</strong>
+                  <small>Or haemorrhage</small>
+                </div>
+              </div>
+            </section>
+
+            <section class="info-look-section info-look-section--detail">
+              <p>
+                Start with <strong>Normal</strong>. Then compare <strong>Suspicious</strong> and
+                <strong>Swollen</strong>. Scan around the disc before deciding.
+              </p>
+            </section>
+
+            <section class="info-look-section info-look-section--detail">
+              <p>
+                If a disc looks suspicious, seek same-day advice. If vessels are hidden or there is
+                haemorrhage, treat it as urgent.
+              </p>
+            </section>
+
+            <section class="info-points">
+              <p>Use the view slider to practise normal and wide views.</p>
+              <p>Cataract makes the view harder. It is not part of the disc grade.</p>
+              <p>Use the menu for MCQ and timed practice.</p>
+              <p class="modal-version">v1 - 18/5/2026</p>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <main class="main-content">
+      <div class="button-container">
+        <section class="button-group condition-row" aria-label="Disc state">
+          <button
+            data-condition="normal"
+            data-image="assets/images/ret180.webp"
+            class="condition-button active normal-button"
+            type="button"
+            aria-pressed="true"
+          >
+            Normal
+          </button>
+          <button
+            data-condition="suspicious"
+            data-image="assets/images/ret180_2.webp"
+            class="condition-button suspicious-button"
+            type="button"
+            aria-pressed="false"
+          >
+            Suspicious
+          </button>
+          <button
+            data-condition="swollen"
+            data-image="assets/images/ret180_4.webp"
+            class="condition-button swollen-button"
+            type="button"
+            aria-pressed="false"
+          >
+            Swollen
+          </button>
+        </section>
+
+        <div class="view-controls-inline">
+          <section class="button-group dual-toggle" aria-label="Viewing controls">
+            <div class="fov-multi-toggle">
+              <div class="fov-multi-labels" aria-hidden="true">
+                <span id="fovLabelSmall" class="toggle-label">Small</span>
+                <span id="fovLabelLeft" class="toggle-label active">Norm</span>
+                <span id="fovLabelRight" class="toggle-label">Dilated</span>
+              </div>
+              <input
+                id="fovToggle"
+                class="fov-triple-slider"
+                type="range"
+                min="0"
+                max="2"
+                step="1"
+                value="1"
+                aria-label="Field of view"
+              />
+            </div>
+          </section>
+
+          <section class="cataract-control" aria-label="Cataract viewing challenge">
+            <span class="cataract-title">Cataract</span>
+            <input
+              id="cataractSlider"
+              class="cataract-slider"
+              type="range"
+              min="0"
+              max="3"
+              step="1"
+              value="0"
+              aria-label="Cataract level"
+            />
+            <div class="cataract-stops" aria-hidden="true">
+              <span class="cataract-stop active">None</span>
+              <span class="cataract-stop">Slight</span>
+              <span class="cataract-stop">Medium</span>
+              <span class="cataract-stop">Dense</span>
+            </div>
+          </section>
+        </div>
+
+        <span id="viewSummary" hidden aria-hidden="true"></span>
+
+        <section class="disc-observation-guide" aria-label="Disc observation guide">
+          <span class="disc-observation-cue disc-observation-cue--edge">
+            <strong>Edge</strong>
+            <small>crisp or raised?</small>
+          </span>
+          <span class="disc-observation-cue disc-observation-cue--cup">
+            <strong>Cup</strong>
+            <small>easy to see?</small>
+          </span>
+          <span class="disc-observation-cue disc-observation-cue--vessels">
+            <strong>Vessels</strong>
+            <small>clear crossing?</small>
+          </span>
+          <span class="disc-observation-cue disc-observation-cue--blood">
+            <strong>Blood</strong>
+            <small>haemorrhage?</small>
+          </span>
+        </section>
+
+        <section id="phonePreviewControl" class="button-group phone-preview-control" hidden>
+          <span class="phone-preview-label">Phone-size preview</span>
+          <label class="switch" aria-label="Toggle phone-size preview">
+            <input type="checkbox" id="phoneViewToggle" />
+            <span class="slider"></span>
+          </label>
+        </section>
+
+        <div class="canvas-container">
+          <div class="eye-canvas-toggle" aria-label="Eye selection">
+            <span id="eyeLabelRight" class="toggle-label canvas-eye-label active">RE</span>
+            <label class="switch eye-stage-switch" aria-label="Switch eye">
+              <input type="checkbox" id="eyeToggle" />
+              <span class="slider"></span>
+            </label>
+            <span id="eyeLabelLeft" class="toggle-label canvas-eye-label">LE</span>
+          </div>
+          <canvas id="fundusCanvas"></canvas>
+        </div>
+
+        <section class="explanation interpretation-panel" aria-live="polite">
+          <div class="interpretation-summary interpretation-summary--normal">
+            <span class="interpretation-kicker">Referral</span>
+            <strong class="interpretation-referral text-green">No urgent referral</strong>
+          </div>
+          <p class="interpretation-detail">
+            Why: crisp disc margins, visible cup and healthy vessels.
+          </p>
+          <div class="interpretation-meta">
+            <span>Likely: normal optic disc</span>
+            <span>Next: compare with suspicious and swollen</span>
+          </div>
+        </section>
+
+        <section id="timedGuessBox" class="timed-guess-box" hidden aria-live="polite">
+          <p id="timedMessage" class="timed-message"></p>
+          <div id="timedCountdown" class="timed-countdown"></div>
+          <div class="timed-options" role="radiogroup" aria-label="Timed disc answer">
+            <label class="timed-option">
+              <input type="radio" name="timedGuess" value="normal" />
+              Normal
+            </label>
+            <label class="timed-option">
+              <input type="radio" name="timedGuess" value="suspicious" />
+              Suspicious
+            </label>
+            <label class="timed-option">
+              <input type="radio" name="timedGuess" value="swollen" />
+              Swollen
+            </label>
+          </div>
+          <button id="submitTimedGuessButton" type="button">Submit</button>
+        </section>
+
+        <div id="timedTestResult" class="timed-test-result" aria-live="polite"></div>
+      </div>
+    </main>
+
+    <div
+      id="testModal"
+      class="modal"
+      role="dialog"
+      aria-modal="true"
+      aria-hidden="true"
+      aria-labelledby="testModalTitle"
+    >
+      <div class="modal-content mcq-modal-content" id="testModalContent">
+        <button
+          id="closeTestModal"
+          class="close-button close"
+          type="button"
+          aria-label="Close test"
+        >
+          <span class="close-glyph" aria-hidden="true">&times;</span>
+        </button>
+        <h2 id="testModalTitle">MCQ Test</h2>
+        <div id="mcqTimer" class="mcq-timer" hidden></div>
+        <div id="testContainer"></div>
+        <div class="test-actions">
+          <button id="submitTestButton" class="button-pass" type="button">Submit Test</button>
+          <button id="saveResultButton" class="button-pass" type="button" hidden>
+            Save Result
+          </button>
+        </div>
+        <div id="testResult" class="result-text" aria-live="polite"></div>
+      </div>
+    </div>
+
+    <script>
+      window.toggleInfoGuide = (forceOpen) => {
+        const infoIcon = document.getElementById('info-icon');
+        const infoModal = document.getElementById('infoModal');
+        const closeInfoModal = document.getElementById('closeInfoModal');
+
+        if (!infoIcon || !infoModal) {
+          return;
+        }
+
+        const isOpen =
+          typeof forceOpen === 'boolean' ? forceOpen : !infoModal.classList.contains('is-open');
+
+        infoModal.classList.toggle('is-open', isOpen);
+        infoModal.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
+        infoIcon.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        document.body.classList.toggle('modal-open', isOpen);
+
+        if (isOpen) {
+          closeInfoModal?.focus();
+        } else {
+          infoIcon.focus();
+        }
+      };
+
+      document.addEventListener('keydown', (event) => {
+        const infoModal = document.getElementById('infoModal');
+        if (event.key === 'Escape' && infoModal?.classList.contains('is-open')) {
+          window.toggleInfoGuide(false);
+        }
+      });
+    </script>
+    <script src="app.bundle.js"></script>
+  </body>
+</html>

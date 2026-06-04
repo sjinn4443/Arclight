@@ -2,26 +2,15 @@
 
 <!-- APP-DOC-STATUS:START -->
 
-## Current Status (21/5/2026)
+## Current Status (18/5/2026)
 
-- v1 app review completed on `21/5/26`.
 - Static packaging: open `index.html` directly; a local HTTP server is optional for testing.
-- Main screen: image-led diabetic case practice viewer using the Swollen Discs draggable circular viewing engine.
-- Case assets: ten expanded WebP diabetic cases in `assets/images/diabetic/`, with thumbnails plus light and dark pigmentation support.
-- Viewer controls: `<` / `>` case navigation, icon-only case information, R/L orientation, Gaze, Dilated, Skin and full-width Adv controls for cataract blur and nystagmus.
-- Arclight (DO): compact direct-view simulation.
-- Holo (BIO): wider lens-style view; corneal reflection is hidden; field is `15 deg` undilated and `25 deg` dilated, and switching to Holo does not automatically switch Dilated on.
-- Exam system: RE and LE VA, View, Findings and Action live in one separate compact Exam box below or beside the viewer.
-- Findings: paired per-eye dropdowns are both labelled `Findings` and group no referable signs, DR signs, macula risk and proliferative signs with mini explanations.
-- Action logic: outputs `Routine (weeks)`, `Soon (days)`, `Urgent (today)`, `Ungradable (repeat)` or `Record both eyes` using green, orange, red and neutral chips, with a compact `+` expander for details.
-- Quick guide, side drawer, practice cases, findings guide and referral note follow the Fundal Reflex compact UI pattern.
-- Quick guide popup shows `v1 21/5/26` at bottom right.
-- MCQs are clinically audited across Primary, Intermediate and Advanced and use the Fundal-style modal with the scrolling question list and fixed `Submit Test` button.
-- Final UI polish: equal-width VA/View selects, lighter select text and muted mid-grey Temporal/Nasal canvas labels.
-- Responsive checks completed at `360 x 740`, `768 x 1024`, `1024 x 768` and `1366 x 768`.
-- Latest Lighthouse: mobile `90 / 100 / 100 / 100`; desktop `100 / 100 / 100 / 100`.
+- Mobile target: `360 x 740`, with the main page kept free of required vertical scrolling.
 - Shared appbar: `54px` high; `Quicksand` `25px`/`700` title; `44 x 44` burger and info buttons set `12px` from the edges.
-- Favicon: black square with a centred red `D`.
+- Burger glyph: shared CSS three-bar mark, `18px` wide with `2px` strokes, so no app depends on a bold font glyph.
+- Shared side menu: left drawer under the appbar; `min(76vw, 284px)` width; `16px` padding; pale `#f8fbff` surface; blue-grey border; card-style actions with small level dots.
+- Appbar content colour: red `#f04444` on a black appbar.
+- Favicon: current black-square app favicon with the app letter or letters centred.
 <!-- APP-DOC-STATUS:END -->
 
 ## Purpose
@@ -34,7 +23,7 @@ This is not a diagnostic grading calculator. It is a structured screening aid an
 
 ## Build Status
 
-v1 review completed on 21/5/26. The app is a static HTML/CSS/JavaScript build, with the checked runtime bundled into `app.bundle.js`.
+First full static build completed on 18/5/2026.
 
 Run locally from `C:\Users\William\Desktop\Arclight App`:
 
@@ -48,26 +37,19 @@ Open:
 http://127.0.0.1:8080/Diabetic/index.html
 ```
 
-Implemented in v1:
+Implemented in this build:
 
-- Fundal Reflex-style appbar, drawer, quick guide popup and modal shells.
-- Black appbar with red `Diabetic` title and black-square red-`D` favicon.
-- Ten diabetic retinal image cases with light and dark pigmentation versions plus thumbnails.
-- Swollen Discs-style draggable circular viewing engine.
-- Arclight (DO) and Holo (BIO) mode tabs.
-- Gaze, Dilated, Skin and Adv controls, including cataract blur and nystagmus.
-- Separate Exam box for RE and LE VA, View, Findings and Action.
-- Per-eye `Findings` dropdowns with grouped signs and short explanations.
-- Action logic with green routine, orange soon and red urgent urgency chips and a compact `+` details expander.
-- Concise referral-note modal with copy and share icon buttons.
-- Image-case practice cards and Primary, Intermediate and Advanced MCQs.
-- Responsive layout checked at phone, iPad portrait, iPad landscape and laptop sizes.
-
-Latest verification on 21/5/26:
-
-- Browser console: no errors in the final interaction sweep.
-- Mobile Lighthouse: `90 / 100 / 100 / 100`.
-- Desktop Lighthouse: `100 / 100 / 100 / 100`.
+- Fundal-style appbar, side drawer, info popup and modal shell.
+- Fundal-style `54px` appbar with `44px` tap targets and a compact `21px` info glyph.
+- Local Inter and Quicksand font files copied into `assets/fonts`, with Quicksand used for the appbar title.
+- `Arclight (DO)` and `Holo (BIO)` clinical tab system.
+- Both-eye recording with compact right/left VA, view and findings dropdowns.
+- Dilation recorded with a Fundal Reflex-style `Dilated` switch.
+- Action panel with `Routine referral when possible`, `Refer soon (2 weeks)`, `Urgent (today)` and `Ungradable`.
+- Action section rolled up by default, with details and referral note opened from `More`.
+- Referral-note preview with right-eye, left-eye and systemic-check sections.
+- Drawer practice image cases using `assets/placeholders/fundus-placeholder.svg` until final images are supplied.
+- Primary, Intermediate and Advanced MCQs with `16 / 26 / 26` question banks.
 
 ## Core Principle
 
@@ -89,7 +71,7 @@ Keep in scope:
 - view quality and field coverage.
 - DR signs, macula-risk signs and proliferative signs.
 - referral urgency and referral note generation.
-- practice cases with final diabetic image cases.
+- practice cases with placeholder images.
 
 Keep out of scope:
 
@@ -189,10 +171,11 @@ Suggested popup content:
 
 Mobile-first, single column.
 
-Use two compact working systems:
+Use three compact panels:
 
-1. **Viewer**: image case, case navigation, R/L orientation and viewing controls.
-2. **Exam**: RE/LE VA, View, Findings and Action in one separate recording box.
+1. **View**
+2. **Findings**
+3. **Action**
 
 Avoid a landing page. The first screen should be the working clinical flow.
 
@@ -200,8 +183,9 @@ Expected first-screen order at `360 x 740`:
 
 1. Appbar.
 2. Mode tab rail.
-3. Viewer.
-4. Exam box, including Action without a long scroll.
+3. View panel.
+4. Findings panel.
+5. Action panel, visible or partly visible without a long scroll.
 
 Use compact clinical panels, not marketing cards.
 
@@ -215,7 +199,7 @@ Use a compact tab rail near the top of the main screen:
 
 Borrow Allan's route-tab behaviour rather than treating the mode row as plain buttons.
 
-- The mode row should be a `role="tablist"` with an accessible name such as `Viewing mode`.
+- The mode row should be a `role="tablist"` with an accessible name such as `Assessment mode`.
 - Each mode control should be a `role="tab"` button with `aria-selected`, `aria-controls`, an id and roving `tabindex`.
 - Each mode body should be a `role="tabpanel"` with `aria-labelledby`, `tabindex="0"` and `hidden` when inactive.
 - Support `ArrowLeft`, `ArrowRight`, `Home` and `End`.
@@ -234,8 +218,8 @@ State rules:
 
 Record both eyes.
 
-- Record right and left VA plus right and left view directly in the Exam box.
-- Record right and left findings through compact dropdowns in the Exam box.
+- Record right and left VA plus right and left view directly in the View panel.
+- Record right and left findings through compact dropdowns in the Findings panel.
 - Distance VA, merged view status and findings are recorded per eye.
 - The merged view dropdown maps back to stored `viewQuality` and `areaSeen` values for triage and referral notes.
 - The Action panel should show the highest-risk eye first and name the eye in the reason text.
@@ -248,7 +232,7 @@ Record both eyes.
 Use a small checklist or reminder, not a long safety lesson.
 
 - Dilated: `Yes / No`.
-- Keep dilation as a single compact switch on the main screen.
+- Keep dilation as a single compact yes/no field on the main screen.
 - If not dilated, show the limitation in the Action panel and referral note.
 - Holo (BIO) should visibly prompt dilation before the user records the view.
 - Keep detailed dilation teaching in the drawer guide, not on the main screen.
@@ -262,7 +246,7 @@ Dilated Arclight is handled as Arclight (DO) mode with the `Dilated` switch on.
 Questions:
 
 - `Dilated` Fundal Reflex-style switch.
-- Right and left distance VA dropdowns in the Exam box using the Cataract app compact select pattern.
+- Right and left distance VA dropdowns using the Cataract app compact select pattern.
 - View dropdown:
   - Disc+mac
   - Post pole
@@ -290,7 +274,7 @@ For users with Holo (BIO) or similar.
 Questions:
 
 - `Dilated` Fundal Reflex-style switch, with Holo (BIO) limitation wording when off.
-- Right and left distance VA dropdowns in the Exam box using the Cataract app compact select pattern.
+- Right and left distance VA dropdowns using the Cataract app compact select pattern.
 - View dropdown:
   - 4 quad
   - Disc+mac
@@ -311,7 +295,7 @@ Levels:
 - **Intermediate**: DR signs versus macula risk.
 - **Advanced**: proliferative signs and ungradable cases.
 
-Use both image-first cases and MCQ cases. The image-first cases use the final diabetic WebP assets.
+Use both image-first cases and MCQ cases. Use placeholder images initially.
 
 ### VA And Systemic Checks
 
@@ -363,14 +347,14 @@ Implementation notes:
 - Derive the worse-eye VA for action priority and short summary text.
 - Use reduced or untestable VA as a macula-risk clue, but do not diagnose DMO from VA alone.
 - Record both VA values in the referral note.
-- Highlight the relevant eye's VA in the Action reason when it contributes to `Soon (days)`.
+- Highlight the relevant eye's VA in the Action reason when it contributes to `Refer soon (2 weeks)`.
 
 VA action thresholds:
 
 - `6/6`: not a VA-risk trigger.
 - `6/12`: mild reduction; record and mention if useful, but do not escalate by itself.
-- `6/36`, `6/60`, `HM` and `No fix`: reduced VA triggers `Soon (days)` when DR signs or macula-risk context are present.
-- `No test`: treat as a limitation; if DR signs are present, use `Soon (days)` rather than reassuring wording.
+- `6/36`, `6/60`, `HM` and `No fix`: reduced VA triggers `Refer soon (2 weeks)` when DR signs or macula-risk context are present.
+- `No test`: treat as a limitation; if DR signs are present, use `Refer soon (2 weeks)` rather than reassuring wording.
 - `Fix/follow`: record as non-standard VA, but do not escalate by itself.
 
 Systemic checks should be tick-boxes, not only reminder text:
@@ -424,9 +408,9 @@ Modal pattern:
 - white/light shell.
 - title: `Primary MCQ`, `Intermediate MCQ` or `Advanced MCQ`.
 - intro line: `{n} questions. Pass mark {x}.`
-- compact question cards with borders clear of the question text.
+- compact question cards.
 - radio-button answer options.
-- fixed green `Submit Test` button at the bottom while the question list scrolls.
+- submit button.
 - result row hidden until submit.
 - close button using the same soft popup/modal close treatment as the other apps.
 
@@ -453,7 +437,7 @@ Intermediate should build clinical sorting:
 - hard exudates near macula.
 - reduced or untestable VA from the dropdown as a macula-risk clue.
 - Arclight (DO) versus Holo (BIO) limitations.
-- when to use `Routine (weeks)` versus `Soon (days)`.
+- when to use `Routine referral when possible` versus `Refer soon (2 weeks)`.
 
 Advanced should test triage priority:
 
@@ -530,7 +514,7 @@ Use green or neutral accenting.
 - CWS: cotton-wool spots
 - VB: venous beading
 
-Output: usually `Routine (weeks)` or `Soon (days)` if widespread or concerning.
+Output: usually `Routine referral when possible` or `Refer soon (2 weeks)` if widespread or concerning.
 
 ### Macula Risk
 
@@ -540,7 +524,7 @@ Use orange accenting.
 - suspected foveal involvement
 - reduced or untestable distance VA from the dropdown
 
-Output: `Soon (days) for possible maculopathy`.
+Output: `Refer soon (2 weeks) for possible maculopathy`.
 
 Do not diagnose diabetic macular oedema without OCT or stereoscopic assessment.
 
@@ -611,34 +595,33 @@ const state = {
 - If either eye view is `Partial`: do not allow a plain normal result. Use `No referable signs seen in the view obtained` plus a limitation note.
 - If not dilated, make the limitation visible in the Action panel and referral note.
 - If Holo (BIO) is selected without dilation, make the limited-view warning visible.
-- Reduced or untestable distance VA should contribute to `Soon (days)` when macula-risk or DR signs are present.
+- Reduced or untestable distance VA should contribute to `Refer soon (2 weeks)` when macula-risk or DR signs are present.
 - Systemic tick-boxes are advisory only and should not override retinal urgency.
 - `No referable signs seen in view obtained` is mutually exclusive with all lesion findings for that eye. Selecting any lesion should clear it; selecting it should clear all lesion findings for that eye.
 
 ### Referral Categories
 
-1. **Routine (screening)**
+1. **Routine screening still required**
    - Both eyes have adequate views and no referable signs selected.
 
-2. **Routine (weeks)**
+2. **Routine referral when possible**
    - DR signs present without urgent features.
 
-3. **Soon (days)**
+3. **Refer soon (2 weeks)**
    - possible maculopathy, reduced or untestable VA or worrying DR burden.
 
 4. **Urgent (today)**
    - NVD, NVE, preretinal haemorrhage or vitreous haemorrhage.
 
-5. **Ungradable (repeat)**
+5. **Ungradable**
    - inadequate view, cataract, media opacity or unable to assess.
 
 Default timescale wording:
 
-- `Routine (screening)`: both eyes have adequate views with no referable signs in the view obtained.
-- `Routine (weeks)`: DR signs only, without macula-risk or proliferative features.
-- `Soon (days)`: possible maculopathy, qualifying reduced or untestable VA with DR context or concerning DR signs.
+- `Routine referral when possible`: DR signs only, without macula-risk or proliferative features.
+- `Refer soon (2 weeks)`: possible maculopathy, reduced or untestable VA or concerning DR signs.
 - `Urgent (today)`: possible proliferative disease, vitreous haemorrhage or preretinal haemorrhage.
-- `Ungradable (repeat)`: repeat dilated view/photo if possible; refer according to local pathway if the view remains inadequate or repeat is not possible.
+- `Ungradable`: repeat dilated view/photo if possible; refer according to local pathway if the view remains inadequate or repeat is not possible.
 
 Keep the wording configurable later because local referral pathways may use different time windows.
 
@@ -672,10 +655,10 @@ Panel content:
 Example:
 
 ```text
-Soon (days)
+Refer soon (2 weeks)
 
 Why: hard exudates near the macula and reduced distance VA.
-Next: refer within days for retinal assessment.
+Next: diabetic retinal assessment for possible maculopathy.
 Safety: routine diabetic eye screening is still required.
 Checks: BP, lipids and HbA1c reviewed if available.
 Medical: arrange diabetes/medical review when possible if no routine diabetes care is available.
@@ -711,7 +694,7 @@ Systemic checks:
 - HbA1c checked / not checked
 
 Action:
-Routine (screening) / Routine (weeks) / Soon (days) / Urgent (today) / Ungradable (repeat)
+Routine referral when possible / Refer soon (2 weeks) / Urgent (today) / Ungradable
 
 Medical review:
 Arrange diabetes/medical review when possible if routine diabetes care is not available.
@@ -720,26 +703,34 @@ Comment:
 No signs seen only applies to the view obtained. Routine diabetic eye screening remains required.
 ```
 
-## Case Images
+## Placeholder Images
 
-The v1 app uses ten expanded diabetic retinal cases in `assets/images/diabetic/`.
+Use placeholders in the first build. Final images will be attached later.
 
-For each case, keep these files in sync:
+Suggested placeholder files:
 
-- `case-01.webp` through `case-10.webp` for light-pigmentation views.
-- `case-01_dark.webp` through `case-07_dark.webp`, `case-09_dark.webp` and `case-10_dark.webp` for dark-pigmentation views. Case 8 reuses `case-08.webp` because the haemorrhage image is unchanged.
-- `case-01_thumb.webp` through `case-10_thumb.webp` for practice cards.
+- `assets/placeholders/normal-fundus.webp`
+- `assets/placeholders/npdr-ma-db.webp`
+- `assets/placeholders/cws-vb.webp`
+- `assets/placeholders/macula-hard-exudates.webp`
+- `assets/placeholders/nvd.webp`
+- `assets/placeholders/nve.webp`
+- `assets/placeholders/preretinal-haemorrhage.webp`
+- `assets/placeholders/vitreous-haemorrhage.webp`
+- `assets/placeholders/ungradable-view.webp`
+- `assets/placeholders/arclight-do-sweep.webp`
+- `assets/placeholders/holo-bio-sweep.webp`
 
-Image rules:
+Placeholder behaviour:
 
-- Keep all main case images at the agreed expanded canvas size.
-- Keep RE orientation consistent across cases.
-- Preserve retinal pattern, vessel position and lesion position when generating pigmentation variants.
-- Update `src/viewer-config.js` if filenames or cache keys change.
+- Use neutral grey image boxes with short labels.
+- Do not use decorative stock imagery.
+- Keep aspect ratios stable so final images can replace placeholders without layout shifts.
+- Suggested card ratio: `4:3`.
 
 ## File Structure
 
-Current structure:
+Proposed MVP structure:
 
 ```text
 Diabetic/
@@ -755,7 +746,7 @@ Diabetic/
     activeContext.md
     progress.md
   assets/
-    images/diabetic/
+    placeholders/
   src/
     state.js
     findings.js
@@ -787,27 +778,53 @@ src/ui-shell.js         burger drawer, info popup and accessible clinical mode t
 
 Avoid avoidable `innerHTML`. Render selected findings, practice cases and referral text with `createElement`, `textContent` and `replaceChildren`.
 
-## Build And QA Pattern
+## Build Phases
 
-The v1 build is complete. Future changes should follow a small-change workflow:
+### Phase 1: Static Shell
 
-1. Update source modules, CSS or HTML.
-2. Rebuild `app.bundle.js` when `script.js` or `src/` changes.
-3. Update cache keys for changed CSS or bundled JavaScript.
-4. Check the browser at `360 x 740`.
-5. Spot-check `768 x 1024`, `1024 x 768` and laptop width for layout regressions.
-6. Run Lighthouse if the change affects assets, layout, accessibility or startup behaviour.
+- Build appbar, burger drawer and info popup.
+- Add Arclight (DO)/Holo (BIO) clinical mode tablist with Allan-style ARIA states and keyboard navigation.
+- Add three main panels: View, Findings and Action.
+- Add compact Right/Left eye switcher.
+- Add right and left view dropdowns directly in the View panel.
+- Add placeholder image cards.
+- Add memory-bank files before implementation so future edits have project context.
 
-Useful checks:
+### Phase 2: Clinical State
 
-- case navigation changes images.
-- Skin switches light and dark case assets without moving the retinal pattern.
-- Holo (BIO) does not auto-enable Dilated.
-- Findings dropdowns open, explain, collapse and keep No signs mutually exclusive with lesions.
-- Action labels stay green, orange, red or neutral with the current timescale wording.
-- Action details open from a compact `+` button.
-- MCQ question cards keep their borders clear of question text and keep `Submit Test` visible while questions scroll.
-- Referral note remains concise.
+- Wire per-eye merged view status and findings.
+- Add Cataract-style right and left distance VA dropdowns.
+- Add BP, lipids and HbA1c tick-boxes.
+- Handle Arclight (DO)/Holo (BIO) mode-specific `areaSeen` options safely.
+- Make dilation status prominent in the View panel, Action panel and referral note.
+- Add conservative triage logic.
+- Add action output.
+- Add referral note generation.
+- Add pure tests for `src/triage.js` and `src/referral-note.js`.
+- Keep referral timescale labels in constants so local wording can be changed later without rewiring the UI.
+
+### Phase 3: Drawer Practice
+
+- Add drawer practice image cases using placeholder images.
+- Add Primary, Intermediate and Advanced levels.
+- Keep practice separate from the clinical main screen.
+- Keep Practice out of the clinical referral state.
+- Add MCQs with the documented `16 / 26 / 26` bank targets, `5 / 6 / 8` sampled rounds and `3 / 4 / 6` pass marks.
+- Verify question counts, answer indexes, option shuffling and submit/pass/fail paths.
+
+### Phase 4: Asset Replacement
+
+- Replace placeholders with final supplied images.
+- Check crops, contrast and readability at `360 x 740`.
+- Confirm final image dimensions do not shift cards.
+
+### Phase 5: QA
+
+- Test at `360 x 740`.
+- Spot-check tablet and laptop.
+- Check side drawer, quick guide and referral note.
+- Confirm ungradable and partial views cannot output a falsely reassuring result.
+- Confirm app works offline.
 
 ## Visual Acceptance Criteria
 
@@ -817,14 +834,13 @@ Useful checks:
 - Burger drawer should feel like Fundal Reflex, not a separate design.
 - Popup should be concise and fit the phone viewport.
 - Popup should use the Fundal Reflex popover style, not a large content card.
-- Practice cards should keep stable dimensions across thumbnails and image updates.
+- Placeholder cards should not jump when images are replaced.
 - Red should mark urgency and the app identity, not dominate every panel.
 - Arclight (DO) and Holo (BIO) modes should share the same UI grammar, with only the checklist emphasis changing.
 - Mode tabs should use a shared rail, flatter inactive tabs and a raised active tab.
 - Practice should sit in the drawer and not compete with the main clinical flow.
 - Practice should use the same shell and modal style, not feel like a separate app.
 - Action should be a compact status strip by default, not a full text panel.
-- Temporal and Nasal canvas labels should remain muted mid-grey, not bright white.
 
 ## Safety Acceptance Criteria
 
@@ -869,17 +885,15 @@ Minimum checks:
 12. One adequate clear eye plus one ungradable eye does not produce routine reassuring output.
 13. Ungradable output when no higher-risk sign is present.
 14. Proliferative `Urgent (today)` output.
-15. Macula-risk `Soon (days)` output.
-16. Routine DR signs use `Routine (weeks)`.
+15. Macula-risk `Refer soon (2 weeks)` output.
+16. Routine DR signs use `Routine referral when possible`.
 17. VA thresholds behave as documented.
 18. `No referable signs seen` clears lesion findings and lesion findings clear it.
 19. BP, lipids and HbA1c tick-boxes appear in the Action panel and referral note without changing urgency.
 20. Referral note generation includes right-eye and left-eye sections.
 21. MCQ modal opens for Primary, Intermediate and Advanced from the drawer.
-22. MCQ bank counts are Primary `16`, Intermediate `26` and Advanced `26`.
-23. MCQ sampled rounds are `5`, `6` and `8` with pass marks `3`, `4` and `6`.
-24. MCQ cards do not overrun question text and the `Submit Test` button stays visible.
-25. No console errors.
+22. MCQ bank counts and answer indexes are valid.
+23. No console errors.
 
 When tests exist:
 

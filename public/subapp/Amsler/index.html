@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <!-- Metadata and document settings -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Amsler</title>
+    <meta
+      name="description"
+      content="Amsler is a grid teaching tool for mapping central distortion, scotomas and Amsler test interpretation."
+    />
+    <meta name="author" content="WJW" />
+    <meta name="date" content="18/5/2026" />
+    <meta name="application-name" content="Amsler" />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+
+    <!-- Preconnect and DNS prefetch hints for performance optimisation -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
+
+    <!-- Preload Google Fonts (Quicksand title, Inter UI) -->
+    <link
+      rel="preload"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Quicksand:wght@700&display=swap"
+      as="style"
+      onload="
+        this.onload = null;
+        this.rel = 'stylesheet';
+      "
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Quicksand:wght@700&display=swap"
+      />
+    </noscript>
+
+    <!-- External CSS library (Font Awesome for icons) -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+
+    <!-- Link to the local CSS file -->
+    <link rel="stylesheet" href="styles.css?v=20260518-burger" />
+    <link rel="stylesheet" href="cup-achievement.css" />
+
+    <!-- External JavaScript library (html2canvas) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  </head>
+  <body>
+    <!-- Header section -->
+    <header class="appbar">
+      <button
+        id="burger-icon"
+        class="icon-button appbar-left-icon"
+        title="MCQ menu"
+        aria-label="Open MCQ menu"
+      >
+        <span class="appbar-glyph-menu" aria-hidden="true"></span>
+      </button>
+      <h1>Amsler</h1>
+      <button
+        id="info-icon"
+        class="icon-button"
+        title="Click for instructions"
+        aria-label="Open instructions"
+      >
+        <i class="fas fa-info" aria-hidden="true"></i>
+      </button>
+    </header>
+
+    <div id="sideMenuBackdrop" class="side-menu-backdrop" hidden></div>
+    <nav id="sideMenu" class="side-menu" aria-label="MCQ side menu">
+      <h3>MCQ Levels</h3>
+      <p class="side-menu-subtitle">
+        Primary has simple language. Advanced is detailed.
+      </p>
+      <button
+        id="mcqPrimaryBtn"
+        class="mcq-level-button mcq-primary"
+        data-level="primary"
+      >
+        Primary MCQs
+      </button>
+      <button
+        id="mcqIntermediateBtn"
+        class="mcq-level-button mcq-intermediate"
+        data-level="intermediate"
+      >
+        Intermediate MCQs
+      </button>
+      <button
+        id="mcqAdvancedBtn"
+        class="mcq-level-button mcq-advanced"
+        data-level="advanced"
+      >
+        Advanced MCQs
+      </button>
+      <section
+        id="cupAchievement"
+        class="cup-achievement is-locked"
+        hidden
+        aria-hidden="true"
+        data-cup-app="Amsler"
+      >
+        <span class="cup-achievement-icon" aria-hidden="true">&#9733;</span>
+        <span class="cup-achievement-details">
+          <span id="cupAchievementLabel"
+            >Cup locked: complete Advanced MCQ</span
+          >
+          <span
+            id="cupAchievementCode"
+            class="cup-achievement-code"
+            hidden
+          ></span>
+        </span>
+        <button
+          id="downloadCupCertificateButton"
+          class="cup-download-button"
+          type="button"
+          disabled
+          data-locked="true"
+        >
+          Save
+        </button>
+      </section>
+    </nav>
+
+    <!-- Instructions modal for the Amsler test -->
+    <div id="infoModal" class="modal">
+      <div class="modal-content">
+        <span id="closeModal" class="close" title="Close">&times;</span>
+        <div class="info-popup-header">
+          <h2>Amsler Test</h2>
+        </div>
+
+        <div class="info-popup-body">
+          <p>
+            Use good near correction and keep fixation on the centre dot. The
+            macula is fist-sized at the usual reading distance.
+          </p>
+
+          <div class="info-basics-grid" aria-label="Amsler basics">
+            <div class="info-basics-cue">
+              <strong>Fixate</strong>
+              <small>Centre dot only</small>
+            </div>
+            <div class="info-basics-cue">
+              <strong>Corners</strong>
+              <small>Check all four</small>
+            </div>
+            <div class="info-basics-cue">
+              <strong>Draw</strong>
+              <small>Mark defects</small>
+            </div>
+          </div>
+
+          <div class="info-look-section info-look-section--detail">
+            <p class="info-look-title">More detail</p>
+            <p>
+              Use diagonals for central-loss fixation. Use red for subtle colour
+              or optic nerve change. Record wavy, dark, missing or red marks on
+              the grid.
+            </p>
+          </div>
+
+          <div class="info-popup-footer">
+            <span class="info-version">
+              <span>v1</span>
+              <time datetime="2026-05-18">18/5/2026</time>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="mcqModal" class="modal">
+      <div class="modal-content mcq-modal-content">
+        <span id="closeMcqModal" class="close" title="Close">&times;</span>
+        <h2 id="mcqTitle">MCQ Test</h2>
+        <p id="mcqProgress" class="mcq-progress"></p>
+        <div id="mcqList" class="mcq-list"></div>
+        <p id="mcqFeedback" class="mcq-feedback"></p>
+        <div class="mcq-actions">
+          <button id="mcqSubmitBtn" class="action-button">Submit</button>
+          <button id="mcqRestartBtn" class="action-button" hidden>
+            Restart
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="top-controls">
+      <!-- Tabs for right eye (RE) and left eye (LE) -->
+      <div class="tabs">
+        <button id="reTab" class="tab active">RE</button>
+        <button id="leTab" class="tab">LE</button>
+      </div>
+
+      <!-- Patient info icon triggers the patient details modal -->
+      <div class="patient-info-icon">
+        <button
+          id="patientInfoToggle"
+          class="patient-action"
+          title="Patient Information"
+          aria-label="Open patient information"
+        >
+          <i class="fas fa-user-circle" aria-hidden="true"></i>
+          <span>Patient</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Patient info modal -->
+    <div id="patientInfoModal" class="modal">
+      <div class="modal-content">
+        <span id="closePatientInfo" class="close" title="Close">&times;</span>
+        <div class="modal-field">
+          <label for="patientName">Name:</label>
+          <input type="text" id="patientName" name="patientName" />
+        </div>
+        <div class="modal-field">
+          <label for="patientDate">Date:</label>
+          <input type="date" id="patientDate" name="patientDate" />
+        </div>
+        <button id="savePatientInfo">Save</button>
+      </div>
+    </div>
+
+    <div class="control-panel">
+      <!-- Dot flash toggle button and the two new buttons -->
+      <div class="toggle-buttons">
+        <button id="flashToggle" class="mode-toggle">Flash</button>
+        <button id="redToggle" class="mode-toggle">Red</button>
+        <button id="diagToggle" class="mode-toggle">Diag</button>
+      </div>
+      <!-- Tool selectors, etc. remain unchanged -->
+      <div class="tool-selector">
+        <button id="toolPen" class="tool active" title="Pen"></button>
+        <button id="toolErase" class="tool" title="Erase"></button>
+        <button id="toolHaemorrhage" class="tool" title="Haemorrhage"></button>
+      </div>
+      <div class="stroke-settings">
+        <button
+          id="strokeSettingsToggle"
+          class="stroke-settings-toggle"
+          title="Stroke settings"
+          aria-label="Open stroke settings"
+          aria-expanded="false"
+          aria-controls="strokeSettingsPanel"
+        >
+          +
+        </button>
+        <div id="strokeSettingsPanel" class="stroke-settings-panel" hidden>
+          <label for="penWidthSlider">Pen width</label>
+          <input
+            id="penWidthSlider"
+            type="range"
+            min="1"
+            max="12"
+            step="1"
+            value="2"
+          />
+          <span id="penWidthValue">2px</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main canvas container for the Amsler grid -->
+    <div class="canvas-container">
+      <canvas id="gridCanvas"></canvas>
+    </div>
+
+    <!-- Results section -->
+    <div class="results">
+      <p>Results:</p>
+      <div class="results-actions">
+        <button id="analyzeBtn" class="action-button">Compute</button>
+        <button
+          id="reportBtn"
+          class="report-action-button"
+          title="Generate report"
+          aria-label="Generate report"
+          disabled
+        >
+          <i class="fas fa-file-medical" aria-hidden="true"></i>
+          <span>Report</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Report section -->
+    <div id="reportSection" hidden></div>
+
+    <!-- External script for additional functionalities -->
+    <script src="app.bundle.js"></script>
+    <script src="cup-achievement.js"></script>
+  </body>
+</html>

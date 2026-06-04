@@ -1,0 +1,120 @@
+.app-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2000;
+  height: var(--header-height);
+  padding: 0 12px;
+  display: grid;
+  grid-template-columns: 44px 1fr 44px;
+  align-items: center;
+  background: linear-gradient(135deg, var(--header-start), var(--header-end));
+  box-shadow: 0 6px 20px rgba(4, 31, 95, 0.28);
+}
+
+.app-bar h1 {
+  margin: 0;
+  justify-self: center;
+  font-family: var(--font-title);
+  font-size: 25px;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--header-ink);
+  letter-spacing: 0;
+}
+
+.app-bar-actions {
+  grid-column: 3;
+  justify-self: end;
+  display: flex;
+  align-items: center;
+}
+
+.app-bar-icon {
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--header-ink);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.appbar-glyph {
+  font-size: 21px;
+  line-height: 1;
+  font-weight: 700;
+}
+
+.appbar-glyph-menu {
+  position: relative;
+  width: 18px;
+  height: 2px;
+  display: block;
+  border-radius: 999px;
+  background: currentColor;
+  font-size: 0;
+  line-height: 0;
+}
+
+.appbar-glyph-menu::before,
+.appbar-glyph-menu::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 18px;
+  height: 2px;
+  border-radius: 999px;
+  background: currentColor;
+}
+
+.appbar-glyph-menu::before {
+  top: -6px;
+}
+
+.appbar-glyph-menu::after {
+  top: 6px;
+}
+
+.appbar-glyph-info {
+  width: 18px;
+  height: 18px;
+  border: 1.6px solid currentColor;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.app-bar-icon:hover {
+  background: rgba(255, 255, 255, 0.14);
+  transform: translateY(-1px);
+}
+
+#burger-icon {
+  grid-column: 1;
+  justify-self: start;
+  width: 44px;
+  height: 44px;
+  font-size: 1.1rem;
+}
+
+#info-icon {
+  position: static;
+  width: 44px;
+  height: 44px;
+  color: var(--header-ink);
+}
+
+#info-icon:hover {
+  color: var(--header-ink);
+  background: rgba(255, 255, 255, 0.14);
+}

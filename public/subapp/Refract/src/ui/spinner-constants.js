@@ -1,0 +1,10 @@
+export const AUTO_HIDE_DELAY = 1500;
+export const INITIAL_REPEAT_DELAY = 500;
+export const REPEAT_RATE = 100;
+export const MIN_AXIS = 1;
+export const MAX_AXIS = 180;
+export const MIN_AGE = 1;
+export const MAX_AGE = 130;
+export const AXIS_REPEAT_STEP = 5;
+export const AGE_REPEAT_STEP = 5;
+export const CYLINDER_CLEANUP_DELAY = 1000;

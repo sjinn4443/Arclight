@@ -1,0 +1,123 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - button "Open menu" [ref=e4] [cursor=pointer]
+    - heading "Glaucoma" [level=1] [ref=e6]
+    - button "Open app info" [ref=e7] [cursor=pointer]:
+      - generic [ref=e8]: ii
+  - navigation [ref=e9]:
+    - text: Menu
+    - button [ref=e10] [cursor=pointer]: Primary MCQ
+    - button [disabled] [ref=e11]: Intermediate MCQ
+    - button [disabled] [ref=e12]: Advanced MCQ
+    - generic [ref=e13]:
+      - generic [ref=e14]: ★
+      - generic [ref=e16]: "Cup locked: complete Advanced MCQ"
+      - button [disabled] [ref=e17]: Save
+  - text: +
+  - main [ref=e18]:
+    - generic [ref=e19]:
+      - generic [ref=e20]:
+        - group "Digital palpation" [ref=e21]:
+          - strong [ref=e23]: Palp
+          - generic [ref=e24]:
+            - button "Normal" [ref=e25] [cursor=pointer]
+            - button "Firm" [ref=e26] [cursor=pointer]
+            - button "Rock" [ref=e27] [cursor=pointer]
+        - generic [ref=e28]:
+          - strong [ref=e30]: IOP
+          - generic [ref=e32]:
+            - radio "≤20" [ref=e33]
+            - text: ≤20
+          - generic [ref=e35]:
+            - radio "20-24" [ref=e36]
+            - text: 20-24
+          - generic [ref=e38]:
+            - radio "25-29" [ref=e39]
+            - text: 25-29
+          - generic [ref=e41]:
+            - radio "≥30" [ref=e42]
+            - text: ≥30
+      - generic [ref=e44]:
+        - img "0-0.2" [ref=e46] [cursor=pointer]
+        - img "0.3-0.5" [ref=e48] [cursor=pointer]
+        - img "0.6-0.8" [ref=e50] [cursor=pointer]
+        - img "0.9-1" [ref=e52] [cursor=pointer]
+      - generic [ref=e54]:
+        - generic [ref=e55]:
+          - generic [ref=e56] [cursor=pointer]: S
+          - generic [ref=e57] [cursor=pointer]: M
+          - generic [ref=e58] [cursor=pointer]: L
+        - generic [ref=e59] [cursor=pointer]: i
+    - generic [ref=e60]:
+      - generic [ref=e62]:
+        - text: Thin rim/notch, Haem, Lam Crib, BV's?
+        - radio "Thin rim/notch, Haem, Lam Crib, BV's? i" [ref=e63]
+        - generic [ref=e64] [cursor=pointer]: i
+      - generic [ref=e65]:
+        - generic [ref=e67]:
+          - text: Susp Fields?
+          - radio "Susp Fields?" [ref=e68]
+        - generic [ref=e70]:
+          - text: Susp Pupils?
+          - radio "Susp Pupils?" [ref=e71]
+        - generic [ref=e72]:
+          - generic [ref=e73]: "VA:"
+          - combobox "VA:" [ref=e74] [cursor=pointer]:
+            - option [selected]
+            - option "6/6"
+            - option "6/12"
+            - option "6/36"
+            - option "6/60"
+            - option "HM"
+      - generic [ref=e76]:
+        - generic [ref=e77]:
+          - checkbox "Age" [ref=e78] [cursor=pointer]
+          - text: Age
+        - generic [ref=e79]:
+          - checkbox "Race" [ref=e80] [cursor=pointer]
+          - text: Race
+        - generic [ref=e81]:
+          - checkbox "Family Hist" [ref=e82] [cursor=pointer]
+          - text: Family Hist
+        - generic [ref=e83]:
+          - checkbox "Myopia" [ref=e84] [cursor=pointer]
+          - text: Myopia
+        - generic [ref=e85]:
+          - checkbox "Diabetes" [ref=e86] [cursor=pointer]
+          - text: Diabetes
+    - generic [ref=e88]:
+      - generic: IOP
+      - table [ref=e89]:
+        - rowgroup [ref=e90]:
+          - row "C/D 0-0.2 0.3-0.5 0.6-0.8 0.9-1" [ref=e91]:
+            - columnheader "C/D" [ref=e92]:
+              - generic [ref=e93]: C/D
+            - columnheader "0-0.2" [ref=e94]
+            - columnheader "0.3-0.5" [ref=e95]
+            - columnheader "0.6-0.8" [ref=e96]
+            - columnheader "0.9-1" [ref=e97]
+        - rowgroup [ref=e98]:
+          - row "≥30" [ref=e99]:
+            - cell "≥30" [ref=e100]
+            - cell [ref=e101]
+            - cell [ref=e103]
+            - cell [ref=e105]
+            - cell [ref=e107]
+          - row "25-29" [ref=e109]:
+            - cell "25-29" [ref=e110]
+            - cell [ref=e111]
+            - cell [ref=e113]
+            - cell [ref=e115]
+            - cell [ref=e117]
+          - row "20-24" [ref=e119]:
+            - cell "20-24" [ref=e120]
+            - cell [ref=e121]
+            - cell [ref=e123]
+            - cell [ref=e125]
+            - cell [ref=e127]
+          - row "≤20" [ref=e129]:
+            - cell "≤20" [ref=e130]
+            - cell [ref=e131]
+            - cell [ref=e133]
+            - cell [ref=e135]
+            - cell [ref=e137]

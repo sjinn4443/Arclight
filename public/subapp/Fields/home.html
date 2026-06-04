@@ -1,0 +1,986 @@
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Fields is a fast visual fields teaching and assessment tool for confrontation field patterns and pathway localisation."
+    />
+    <meta name="author" content="WJW" />
+    <meta name="date" content="18/5/2026" />
+    <meta name="application-name" content="Fields" />
+    <title>Fields</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="preload"
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap"
+      as="style"
+      onload="
+        this.onload = null;
+        this.rel = 'stylesheet';
+      "
+    />
+    <link
+      rel="preload"
+      href="assets/images/eye-field.webp"
+      as="image"
+      fetchpriority="high"
+      type="image/webp"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap"
+      />
+    </noscript>
+    <link rel="stylesheet" href="styles.css?v=20260518-appbar" />
+    <link rel="stylesheet" href="cup-achievement.css" />
+  </head>
+  <body>
+    <header class="app-bar">
+      <button
+        type="button"
+        id="menu-icon"
+        class="appbar-button appbar-button-left"
+        aria-label="Open MCQ menu"
+      >
+        <span class="appbar-glyph appbar-glyph-menu" aria-hidden="true"></span>
+      </button>
+      <h1 class="app-title">Fields</h1>
+      <button
+        type="button"
+        id="info-icon"
+        class="appbar-button appbar-button-right"
+        aria-label="Open app info"
+      >
+        <span class="appbar-glyph appbar-glyph-info" aria-hidden="true">i</span>
+      </button>
+    </header>
+
+    <div id="menu-backdrop" class="menu-backdrop" hidden></div>
+    <aside id="side-menu" class="side-menu" hidden>
+      <div class="side-menu-header">
+        <h2 class="side-menu-title">MCQ Sets</h2>
+        <button
+          type="button"
+          id="menu-close"
+          class="side-menu-close"
+          aria-label="Close MCQ menu"
+        >
+          x
+        </button>
+      </div>
+      <details class="side-menu-details">
+        <summary class="side-menu-summary">Question style</summary>
+        <div class="mcq-set-menu" role="group" aria-label="Select MCQ set">
+          <button
+            type="button"
+            class="mcq-set-button is-active"
+            data-set="textClassic"
+            aria-pressed="true"
+          >
+            Text MCQs (Original)
+          </button>
+          <button
+            type="button"
+            class="mcq-set-button"
+            data-set="fieldPattern"
+            aria-pressed="false"
+          >
+            Field Loss: What Is It?
+          </button>
+          <button
+            type="button"
+            class="mcq-set-button"
+            data-set="pathwayVisual"
+            aria-pressed="false"
+          >
+            Pathway Drawing: Site <-> Loss
+          </button>
+        </div>
+      </details>
+      <p class="side-menu-subtitle">Choose level</p>
+      <div class="mcq-level-menu" role="group" aria-label="Select MCQ level">
+        <button type="button" class="mcq-level-button" data-level="primary">
+          Primary
+        </button>
+        <button
+          type="button"
+          class="mcq-level-button"
+          data-level="intermediate"
+        >
+          Intermediate
+        </button>
+        <button type="button" class="mcq-level-button" data-level="advanced">
+          Advanced
+        </button>
+      </div>
+      <section
+        id="cupAchievement"
+        class="cup-achievement is-locked"
+        hidden
+        aria-hidden="true"
+        data-cup-app="Fields"
+      >
+        <span class="cup-achievement-icon" aria-hidden="true">&#9733;</span>
+        <span class="cup-achievement-details">
+          <span id="cupAchievementLabel"
+            >Cup locked: complete Advanced MCQ</span
+          >
+          <span
+            id="cupAchievementCode"
+            class="cup-achievement-code"
+            hidden
+          ></span>
+        </span>
+        <button
+          id="downloadCupCertificateButton"
+          class="cup-download-button"
+          type="button"
+          disabled
+          data-locked="true"
+        >
+          Save
+        </button>
+      </section>
+      <button
+        type="button"
+        id="teaching-toggle"
+        class="mcq-set-button teaching-toggle-button"
+        aria-expanded="false"
+        aria-controls="teaching-cases"
+      >
+        Teaching cards
+      </button>
+      <div
+        id="teaching-cases"
+        class="teaching-cases"
+        role="list"
+        aria-label="Classic 18 field defect teaching cards"
+        hidden
+      ></div>
+    </aside>
+
+    <div id="info-popup" class="info-popup" hidden>
+      <div class="info-popup-header">
+        <h2>Quick guide</h2>
+        <button
+          type="button"
+          id="info-close"
+          class="info-close"
+          aria-label="Close app info"
+        >
+          x
+        </button>
+      </div>
+      <div class="info-popup-body">
+        <div class="info-look-guide">
+          <section class="info-look-section">
+            <p class="info-look-title">Method</p>
+            <p>
+              Quick confrontation screen: sit opposite at eye level in good
+              light. Test one eye at a time. Patient covers the non-tested eye;
+              examiner closes the opposite eye.
+            </p>
+          </section>
+          <div class="info-basics-grid" aria-label="Scoring basics">
+            <div class="info-basics-cue info-basics-cue-seen">
+              <strong>✓ Seen</strong>
+              <small>central good</small>
+            </div>
+            <div class="info-basics-cue info-basics-cue-suspect">
+              <strong>? Suspect</strong>
+              <small>faded or unsure</small>
+            </div>
+            <div class="info-basics-cue info-basics-cue-absent">
+              <strong>× Absent</strong>
+              <small>not seen</small>
+            </div>
+          </div>
+          <section class="info-look-section info-look-section--detail">
+            <p class="info-look-title">Test</p>
+            <p>
+              In each quadrant ask the patient to keep looking at your nose,
+              hold your hand still, flash 1 or 2 fingers and ask them to count.
+            </p>
+            <p>
+              <strong>Central:</strong> use finger counting or a red target if
+              central loss is suspected.
+            </p>
+          </section>
+          <section class="info-look-section info-look-section--detail">
+            <p class="info-look-title">Interpret</p>
+            <p>
+              This is a 5-point bedside screen, not formal field testing.
+              Re-check any <strong>?</strong> before deciding.
+            </p>
+            <p>
+              Use the result with onset, history and RAPD; sudden onset,
+              stroke/HA or flash/curtain symptoms need urgent referral.
+            </p>
+          </section>
+        </div>
+      </div>
+      <p class="info-version">v1 - 18/5/2026</p>
+    </div>
+
+    <main class="container">
+      <section
+        class="instruction-card"
+        aria-label="How to score each field point"
+      >
+        <p class="instruction-title">Patient is facing you</p>
+        <div class="instruction-legend">
+          <div class="legend-item legend-seen">
+            <span class="legend-symbol" aria-hidden="true">
+              <i aria-hidden="true">✓</i>
+            </span>
+            <span class="legend-text">Seen / central good</span>
+          </div>
+          <div class="legend-item legend-suspect">
+            <span class="legend-symbol" aria-hidden="true">
+              <i aria-hidden="true">?</i>
+            </span>
+            <span class="legend-text">Suspect / faded</span>
+          </div>
+          <div class="legend-item legend-absent">
+            <span class="legend-symbol" aria-hidden="true">
+              <i aria-hidden="true">×</i>
+            </span>
+            <span class="legend-text">Absent / not seen</span>
+          </div>
+        </div>
+      </section>
+
+      <section
+        class="modifiers-card context-card"
+        aria-label="Clinical modifiers"
+      >
+        <details id="context-panel" class="context-details">
+          <summary class="context-summary">
+            <span class="context-summary-main">
+              <span class="context-title">Context</span>
+              <span
+                id="context-summary-text"
+                class="context-summary-text"
+                aria-live="polite"
+                >None selected</span
+              >
+            </span>
+            <span class="context-toggle" aria-hidden="true"></span>
+          </summary>
+          <div class="context-panel-body">
+            <div class="modifiers-line">
+              <div class="modifier-row modifier-row-onset">
+                <span class="modifier-label">Onset</span>
+                <div
+                  id="onset-switch"
+                  class="modifier-switch"
+                  role="group"
+                  aria-label="Onset"
+                >
+                  <button
+                    type="button"
+                    class="modifier-option"
+                    data-onset="gradual"
+                    aria-pressed="false"
+                  >
+                    Grad
+                  </button>
+                  <button
+                    type="button"
+                    class="modifier-option"
+                    data-onset="sudden"
+                    aria-pressed="false"
+                  >
+                    Sud
+                  </button>
+                </div>
+              </div>
+              <div class="modifier-row">
+                <span class="modifier-label">Stroke/Ha</span>
+                <div
+                  id="neuro-flags-switch"
+                  class="modifier-switch modifier-switch-single"
+                  role="group"
+                  aria-label="Neuro red flags"
+                >
+                  <button
+                    type="button"
+                    class="modifier-option modifier-option-radio"
+                    data-value="yes"
+                    aria-pressed="false"
+                    aria-label="Stroke/Ha yes"
+                  >
+                    <span class="modifier-radio-dot" aria-hidden="true"></span>
+                  </button>
+                </div>
+              </div>
+              <div class="modifier-row">
+                <span class="modifier-label">Flash/curt.</span>
+                <div
+                  id="flashes-curtain-switch"
+                  class="modifier-switch modifier-switch-single"
+                  role="group"
+                  aria-label="Flashes floaters curtain"
+                >
+                  <button
+                    type="button"
+                    class="modifier-option modifier-option-radio"
+                    data-value="yes"
+                    aria-pressed="false"
+                    aria-label="Flash curtain yes"
+                  >
+                    <span class="modifier-radio-dot" aria-hidden="true"></span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="modifiers-line">
+              <div class="modifier-row">
+                <span class="modifier-label">Colour fade</span>
+                <div
+                  id="colour-fade-switch"
+                  class="modifier-switch modifier-switch-single"
+                  role="group"
+                  aria-label="Colours faded"
+                >
+                  <button
+                    type="button"
+                    class="modifier-option modifier-option-radio"
+                    data-value="yes"
+                    aria-pressed="false"
+                    aria-label="Colour fade yes"
+                  >
+                    <span class="modifier-radio-dot" aria-hidden="true"></span>
+                  </button>
+                </div>
+              </div>
+              <div class="modifier-row">
+                <span class="modifier-label">Night vision</span>
+                <div
+                  id="night-vision-switch"
+                  class="modifier-switch modifier-switch-single"
+                  role="group"
+                  aria-label="Night vision poor"
+                >
+                  <button
+                    type="button"
+                    class="modifier-option modifier-option-radio"
+                    data-value="yes"
+                    aria-pressed="false"
+                    aria-label="Night vision poor yes"
+                  >
+                    <span class="modifier-radio-dot" aria-hidden="true"></span>
+                  </button>
+                </div>
+              </div>
+              <div class="modifier-row">
+                <span class="modifier-label">Old + known</span>
+                <div
+                  id="old-defect-switch"
+                  class="modifier-switch modifier-switch-single"
+                  role="group"
+                  aria-label="Known old defect"
+                >
+                  <button
+                    type="button"
+                    class="modifier-option modifier-option-radio"
+                    data-value="yes"
+                    aria-pressed="false"
+                    aria-label="Old and known yes"
+                  >
+                    <span class="modifier-radio-dot" aria-hidden="true"></span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </details>
+      </section>
+
+      <section
+        id="field-entry-panel"
+        class="eye-container lockable-panel"
+        aria-label="Visual field entry"
+      >
+        <div
+          id="patient-overlay"
+          class="patient-intro-overlay"
+          aria-hidden="true"
+          hidden
+        >
+          <img
+            id="patient-overlay-image"
+            class="patient-intro-image"
+            src="assets/images/eye-field.webp"
+            alt=""
+            width="1440"
+            height="960"
+            decoding="async"
+            loading="eager"
+            fetchpriority="high"
+          />
+        </div>
+
+        <div class="rapd-toggle" role="group" aria-label="RAPD side">
+          <span class="rapd-title">RAPD</span>
+          <div
+            id="rapd-switch"
+            class="rapd-switch"
+            data-rapd="none"
+            role="radiogroup"
+            aria-label="RAPD side switch"
+          >
+            <span class="rapd-switch-thumb" aria-hidden="true"></span>
+            <button
+              type="button"
+              class="rapd-segment"
+              data-rapd="right"
+              aria-checked="false"
+              role="radio"
+              aria-label="R RAPD right"
+            >
+              R
+            </button>
+            <button
+              type="button"
+              class="rapd-segment is-active"
+              data-rapd="none"
+              aria-checked="true"
+              role="radio"
+              aria-label="0 RAPD neutral"
+            >
+              0
+            </button>
+            <button
+              type="button"
+              class="rapd-segment"
+              data-rapd="left"
+              aria-checked="false"
+              role="radio"
+              aria-label="L RAPD left"
+            >
+              L
+            </button>
+          </div>
+        </div>
+
+        <div class="eye" id="right-eye">
+          <div class="label">Right</div>
+          <div class="quadrants">
+            <button
+              type="button"
+              class="color-button"
+              data-position="st"
+              aria-label="Right superior temporal"
+            >
+              <i class="icon" aria-hidden="true">✓</i>
+            </button>
+            <button
+              type="button"
+              class="color-button"
+              data-position="sn"
+              aria-label="Right superior nasal"
+            >
+              <i class="icon" aria-hidden="true">✓</i>
+            </button>
+            <button
+              type="button"
+              class="color-button"
+              data-position="it"
+              aria-label="Right inferior temporal"
+            >
+              <i class="icon" aria-hidden="true">✓</i>
+            </button>
+            <button
+              type="button"
+              class="color-button"
+              data-position="in"
+              aria-label="Right inferior nasal"
+            >
+              <i class="icon" aria-hidden="true">✓</i>
+            </button>
+            <div class="macula-container">
+              <div class="macula-circle"></div>
+              <button
+                type="button"
+                class="color-button center-button"
+                data-position="c"
+                aria-label="Right central"
+              >
+                <i class="icon" aria-hidden="true">✓</i>
+              </button>
+            </div>
+          </div>
+          <div class="quadrant-label ut">ST</div>
+          <div class="quadrant-label un">SN</div>
+          <div class="quadrant-label lt">IT</div>
+          <div class="quadrant-label ln">IN</div>
+        </div>
+
+        <div class="eye" id="left-eye">
+          <div class="label">Left</div>
+          <div class="quadrants">
+            <button
+              type="button"
+              class="color-button"
+              data-position="sn"
+              aria-label="Left superior nasal"
+            >
+              <i class="icon" aria-hidden="true">✓</i>
+            </button>
+            <button
+              type="button"
+              class="color-button"
+              data-position="st"
+              aria-label="Left superior temporal"
+            >
+              <i class="icon" aria-hidden="true">✓</i>
+            </button>
+            <button
+              type="button"
+              class="color-button"
+              data-position="in"
+              aria-label="Left inferior nasal"
+            >
+              <i class="icon" aria-hidden="true">✓</i>
+            </button>
+            <button
+              type="button"
+              class="color-button"
+              data-position="it"
+              aria-label="Left inferior temporal"
+            >
+              <i class="icon" aria-hidden="true">✓</i>
+            </button>
+            <div class="macula-container">
+              <div class="macula-circle"></div>
+              <button
+                type="button"
+                class="color-button center-button"
+                data-position="c"
+                aria-label="Left central"
+              >
+                <i class="icon" aria-hidden="true">✓</i>
+              </button>
+            </div>
+          </div>
+          <div class="quadrant-label ut">SN</div>
+          <div class="quadrant-label un">ST</div>
+          <div class="quadrant-label lt">IN</div>
+          <div class="quadrant-label ln">IT</div>
+        </div>
+      </section>
+
+      <section id="result-panel" class="result-panel lockable-panel">
+        <div class="result-top-row">
+          <div class="calc-control">
+            <button
+              type="button"
+              id="calc-toggle"
+              class="calc-toggle"
+              aria-expanded="false"
+              aria-controls="output"
+              aria-label="Show calculation string"
+            >
+              Calc
+            </button>
+            <p id="output" class="raw-output" hidden></p>
+          </div>
+          <div
+            class="mode-toggle"
+            role="group"
+            aria-label="Result language mode"
+          >
+            <button type="button" class="mode-toggle-label" data-mode="simple">
+              Simple
+            </button>
+            <label
+              class="mode-switch"
+              for="result-mode-toggle"
+              aria-label="Toggle simple or advanced language"
+            >
+              <input type="checkbox" id="result-mode-toggle" />
+              <span class="mode-slider" aria-hidden="true"></span>
+            </label>
+            <button
+              type="button"
+              class="mode-toggle-label"
+              data-mode="advanced"
+            >
+              Advanced
+            </button>
+          </div>
+        </div>
+        <p id="analysis-output" class="analysis-output"></p>
+        <p id="analysis-site" class="analysis-site"></p>
+      </section>
+
+      <section
+        id="pathway-panel"
+        class="pathway-panel lockable-panel"
+        aria-label="Likely visual pathway defect location"
+      >
+        <div class="pathway-header">
+          <p class="pathway-title">Visual Pathway</p>
+          <button
+            type="button"
+            id="pathway-photo-open"
+            class="pathway-photo-open"
+            aria-label="Show visual pathway reference image"
+            aria-expanded="false"
+          >
+            <span class="pathway-photo-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" focusable="false">
+                <rect x="3" y="4" width="18" height="16" rx="3" />
+                <circle cx="9" cy="10" r="2" />
+                <path d="M5.5 18 11 12.5a2 2 0 0 1 2.8 0L19 17.7" />
+              </svg>
+            </span>
+          </button>
+        </div>
+        <div class="pathway-viewport">
+          <div id="pathway-canvas" class="pathway-canvas">
+            <svg
+              id="pathway-svg"
+              class="pathway-svg"
+              viewBox="-20 0 1080 520"
+              role="img"
+              aria-label="Visual pathway diagram with highlighted likely lesion site"
+            >
+              <defs>
+                <style>
+                  .label-eye {
+                    font:
+                      700 44px Quicksand,
+                      Arial,
+                      sans-serif;
+                    fill: #0f172a;
+                  }
+                </style>
+              </defs>
+
+              <text x="176" y="166" class="label-eye">RE</text>
+              <text x="176" y="376" class="label-eye">LE</text>
+
+              <circle
+                id="part-retina-right"
+                class="pathway-part"
+                cx="102"
+                cy="70"
+                r="66"
+              />
+              <circle
+                id="part-retina-left"
+                class="pathway-part"
+                cx="102"
+                cy="450"
+                r="66"
+              />
+              <line
+                class="pathway-eye-guide"
+                x1="56"
+                y1="24"
+                x2="148"
+                y2="116"
+              />
+              <line
+                class="pathway-eye-guide"
+                x1="56"
+                y1="116"
+                x2="148"
+                y2="24"
+              />
+              <line
+                class="pathway-eye-guide"
+                x1="56"
+                y1="404"
+                x2="148"
+                y2="496"
+              />
+              <line
+                class="pathway-eye-guide"
+                x1="56"
+                y1="496"
+                x2="148"
+                y2="404"
+              />
+
+              <path
+                id="part-nerve-right"
+                class="pathway-part pathway-line pathway-nerve"
+                d="M146 70 C220 32, 332 88, 438 226.65"
+              />
+              <path
+                id="part-nerve-left"
+                class="pathway-part pathway-line pathway-nerve"
+                d="M146 450 C220 488, 332 432, 438 291.75"
+              />
+
+              <g
+                id="post-chiasm-group"
+                transform="translate(0,260) scale(1,1.6) translate(0,-260)"
+              >
+                <path
+                  id="part-tract-left"
+                  class="pathway-part pathway-line pathway-tract"
+                  d="m 99.528324,125.8633 c 0.921186,-0.92118 1.842366,-1.84236 2.736456,-2.62131 0.8941,-0.77895 1.76108,-1.41564 3.04127,-2.01171 1.28019,-0.59606 2.97348,-1.15146 4.24013,-0.74505 1.26665,0.40642 2.10653,1.77462 2.94643,3.14285"
+                  transform="matrix(15 0 0 8 -1054.92361 -780.25616)"
+                />
+                <path
+                  id="part-tract-right"
+                  class="pathway-part pathway-line pathway-tract"
+                  d="m 99.528324,125.8633 c 0.921186,-0.92118 1.842366,-1.84236 2.736456,-2.62131 0.8941,-0.77895 1.76108,-1.41564 3.04127,-2.01171 1.28019,-0.59606 2.97348,-1.15146 4.24013,-0.74505 1.26665,0.40642 2.10653,1.77462 2.94643,3.14285"
+                  transform="matrix(15 0 0 -8 -1054.92361 1298.65616)"
+                />
+              </g>
+
+              <path
+                id="part-chiasm-a"
+                class="pathway-part pathway-line pathway-chiasm"
+                d="M434 226.65 C446 246, 450 272, 462 291.75"
+              />
+              <path
+                id="part-chiasm-b"
+                class="pathway-part pathway-line pathway-chiasm"
+                d="M434 291.75 C446 272, 450 246, 462 226.65"
+              />
+              <path
+                id="part-chiasm-lateral-right"
+                class="pathway-part pathway-line pathway-lateral-chiasm"
+                d="M426 225 C416 245, 416 273, 426 293"
+              />
+              <path
+                id="part-chiasm-lateral-left"
+                class="pathway-part pathway-line pathway-lateral-chiasm"
+                d="M470 225 C480 245, 480 273, 470 293"
+              />
+              <circle
+                id="part-chiasm"
+                class="pathway-part pathway-junction"
+                cx="448"
+                cy="259.2"
+                r="11"
+              />
+
+              <g
+                id="post-chiasm-group-2"
+                transform="translate(0,260) scale(1,1.6) translate(0,-260)"
+              >
+                <circle
+                  id="part-lgn-left"
+                  class="pathway-part pathway-node pathway-heavy"
+                  cx="590"
+                  cy="184"
+                  r="23"
+                  transform="translate(590 184) scale(1 0.625) translate(-590 -184)"
+                />
+                <circle
+                  id="part-lgn-right"
+                  class="pathway-part pathway-node pathway-heavy"
+                  cx="590"
+                  cy="336"
+                  r="23"
+                  transform="translate(590 336) scale(1 0.625) translate(-590 -336)"
+                />
+
+                <path
+                  id="part-radiation-left-a"
+                  class="pathway-part pathway-line pathway-radiation"
+                  d="m 106.80295,119.64532 c -0.50552,-0.40196 -1.20777,-0.96034 -1.31725,-1.51836 -0.10949,-0.55802 0.0552,-1.36896 0.76646,-2.04503 0.71123,-0.67607 2.03014,-1.24359 3.59675,-1.57396 1.56662,-0.33038 3.49787,-0.46994 5.35984,-0.39434 1.86196,0.0756 3.67867,0.366 5.27756,0.7209 1.5989,0.3549 3.02259,0.78579 4.23755,1.77776 1.21496,0.99197 2.27449,2.56114 3.4545,3.54216 1.18001,0.98102 2.4805,1.37387 3.78099,1.76673"
+                  transform="matrix(15 0 0 8 -1054.92361 -780.25616)"
+                />
+                <path
+                  id="part-radiation-left-b"
+                  class="pathway-part pathway-line pathway-radiation"
+                  d="m 111.23276,119.60468 c 0.0487,-0.0541 0.76461,-0.8493 1.52943,-1.46655 0.76483,-0.61725 1.87324,-1.38385 3.42991,-1.55717 1.55666,-0.17333 3.5616,0.24663 5.12186,0.78426 1.56025,0.53763 2.68183,1.19645 3.53303,1.81828 0.85121,0.62184 1.44177,1.21239 2.0283,2.06987 0.58654,0.85747 1.16905,1.98185 1.75156,3.10623"
+                  transform="matrix(15 0 0 8 -1054.92361 -780.25616)"
+                />
+                <path
+                  id="part-radiation-right-a"
+                  class="pathway-part pathway-line pathway-radiation"
+                  d="m 106.80295,119.64532 c -0.50552,-0.40196 -1.20777,-0.96034 -1.31725,-1.51836 -0.10949,-0.55802 0.0552,-1.36896 0.76646,-2.04503 0.71123,-0.67607 2.03014,-1.24359 3.59675,-1.57396 1.56662,-0.33038 3.49787,-0.46994 5.35984,-0.39434 1.86196,0.0756 3.67867,0.366 5.27756,0.7209 1.5989,0.3549 3.02259,0.78579 4.23755,1.77776 1.21496,0.99197 2.27449,2.56114 3.4545,3.54216 1.18001,0.98102 2.4805,1.37387 3.78099,1.76673"
+                  transform="matrix(15 0 0 -8 -1054.92361 1298.65616)"
+                />
+                <path
+                  id="part-radiation-right-b"
+                  class="pathway-part pathway-line pathway-radiation"
+                  d="m 111.23276,119.60468 c 0.0487,-0.0541 0.76461,-0.8493 1.52943,-1.46655 0.76483,-0.61725 1.87324,-1.38385 3.42991,-1.55717 1.55666,-0.17333 3.5616,0.24663 5.12186,0.78426 1.56025,0.53763 2.68183,1.19645 3.53303,1.81828 0.85121,0.62184 1.44177,1.21239 2.0283,2.06987 0.58654,0.85747 1.16905,1.98185 1.75156,3.10623"
+                  transform="matrix(15 0 0 -8 -1054.92361 1298.65616)"
+                />
+
+                <path
+                  id="part-occipital-left"
+                  class="pathway-part pathway-lobe"
+                  d="m 126.96059,123.34359 c -0.66379,-0.35221 -1.32759,-0.70443 -1.95074,-0.94828 -0.62316,-0.24384 -1.20566,-0.3793 -1.87624,-0.18287 -0.67057,0.19644 -1.42918,0.72475 -1.7814,1.44952 -0.35221,0.72476 -0.29803,1.64592 -0.0339,2.43164 0.26417,0.78572 0.7383,1.43595 1.74077,1.91687 1.00248,0.48091 2.53324,0.79248 3.86084,0.93472 1.3276,0.14224 2.45196,0.11514 3.65764,0.0406 1.20568,-0.0745 2.4926,-0.19643 3.42734,-0.4606 0.93473,-0.26417 1.51723,-0.67056 1.92363,-1.41565 0.40641,-0.74508 0.6367,-1.8288 0.54186,-3.04125 -0.0948,-1.21246 -0.51477,-2.55356 -1.13115,-3.29186 -0.61639,-0.73831 -1.42918,-0.87377 -2.29619,-0.8399 -0.867,0.0339 -1.78817,0.23707 -2.70935,0.44027"
+                  transform="matrix(15 0 0 8 -1054.92361 -780.25616)"
+                />
+                <path
+                  id="part-occipital-right"
+                  class="pathway-part pathway-lobe"
+                  d="m 126.96059,123.34359 c -0.66379,-0.35221 -1.32759,-0.70443 -1.95074,-0.94828 -0.62316,-0.24384 -1.20566,-0.3793 -1.87624,-0.18287 -0.67057,0.19644 -1.42918,0.72475 -1.7814,1.44952 -0.35221,0.72476 -0.29803,1.64592 -0.0339,2.43164 0.26417,0.78572 0.7383,1.43595 1.74077,1.91687 1.00248,0.48091 2.53324,0.79248 3.86084,0.93472 1.3276,0.14224 2.45196,0.11514 3.65764,0.0406 1.20568,-0.0745 2.4926,-0.19643 3.42734,-0.4606 0.93473,-0.26417 1.51723,-0.67056 1.92363,-1.41565 0.40641,-0.74508 0.6367,-1.8288 0.54186,-3.04125 -0.0948,-1.21246 -0.51477,-2.55356 -1.13115,-3.29186 -0.61639,-0.73831 -1.42918,-0.87377 -2.29619,-0.8399 -0.867,0.0339 -1.78817,0.23707 -2.70935,0.44027"
+                  transform="matrix(15 0 0 -8 -1054.92361 1298.65616)"
+                />
+                <use
+                  id="part-v1-left"
+                  href="#part-occipital-left"
+                  class="pathway-part pathway-v1 pathway-subdetail"
+                  transform="translate(877 198) scale(0.64 0.64) translate(-877 -198)"
+                />
+                <use
+                  id="part-v1-right"
+                  href="#part-occipital-right"
+                  class="pathway-part pathway-v1 pathway-subdetail"
+                  transform="translate(877 322) scale(0.64 0.64) translate(-877 -322)"
+                />
+
+                <path
+                  id="part-calcarine-fissure-left"
+                  class="pathway-part pathway-line pathway-fine pathway-subdetail"
+                  d="M826 198 C862 182, 918 182, 954 198"
+                />
+                <path
+                  id="part-calcarine-fissure-right"
+                  class="pathway-part pathway-line pathway-fine pathway-subdetail"
+                  d="M826 322 C862 338, 918 338, 954 322"
+                />
+                <path
+                  id="part-calcarine-upper-left"
+                  class="pathway-part pathway-line pathway-fine pathway-subdetail"
+                  d="M828 184 C864 168, 916 168, 952 184"
+                />
+                <path
+                  id="part-calcarine-lower-left"
+                  class="pathway-part pathway-line pathway-fine pathway-subdetail"
+                  d="M828 212 C864 228, 916 228, 952 212"
+                />
+                <path
+                  id="part-calcarine-upper-right"
+                  class="pathway-part pathway-line pathway-fine pathway-subdetail"
+                  d="M828 308 C864 292, 916 292, 952 308"
+                />
+                <path
+                  id="part-calcarine-lower-right"
+                  class="pathway-part pathway-line pathway-fine pathway-subdetail"
+                  d="M828 336 C864 352, 916 352, 952 336"
+                />
+                <circle
+                  id="part-occipital-pole-left"
+                  class="pathway-part pathway-pole pathway-subdetail"
+                  cx="992"
+                  cy="198"
+                  r="10"
+                />
+                <circle
+                  id="part-occipital-pole-right"
+                  class="pathway-part pathway-pole pathway-subdetail"
+                  cx="992"
+                  cy="322"
+                  r="10"
+                />
+              </g>
+            </svg>
+          </div>
+          <div id="pathway-photo-view" class="pathway-photo-view" hidden>
+            <button
+              type="button"
+              id="pathway-photo-close"
+              class="pathway-photo-close"
+              aria-label="Close reference image"
+            >
+              x
+            </button>
+            <img
+              class="pathway-photo-image"
+              src="assets/images/JCIS-11-19-g001.webp"
+              alt="Visual pathway reference diagram"
+              decoding="async"
+              loading="lazy"
+            />
+          </div>
+        </div>
+        <p id="pathway-structures" class="pathway-structures">
+          <span class="pathway-segment" data-legend="retina">Retina</span>
+          <span class="pathway-divider">|</span>
+          <span class="pathway-segment" data-legend="nerve">Optic Nerve</span>
+          <span class="pathway-divider">|</span>
+          <span class="pathway-segment" data-legend="chiasm">Chiasm</span>
+          <span class="pathway-divider">|</span>
+          <span class="pathway-segment" data-legend="tract">Tract</span>
+          <span class="pathway-divider">|</span>
+          <span class="pathway-segment" data-legend="lgn">LGN</span>
+          <span class="pathway-divider">|</span>
+          <span class="pathway-segment" data-legend="radiations"
+            >Radiations (outer / inner)</span
+          >
+          <span class="pathway-divider">|</span>
+          <span class="pathway-segment" data-legend="cortex"
+            >Occipital Lobe (V1)</span
+          >
+        </p>
+      </section>
+    </main>
+
+    <section
+      id="mcq-modal"
+      class="mcq-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="mcq-title"
+      hidden
+    >
+      <div class="mcq-modal-content">
+        <div class="mcq-header">
+          <h2 id="mcq-title" class="mcq-title">MCQ - Primary</h2>
+          <button
+            type="button"
+            id="mcq-close"
+            class="mcq-close"
+            aria-label="Close MCQ"
+          >
+            x
+          </button>
+        </div>
+        <p id="mcq-meta" class="mcq-meta"></p>
+        <form id="mcq-form" class="mcq-form"></form>
+        <div class="mcq-actions">
+          <button type="button" id="mcq-submit" class="mcq-action-button">
+            Submit
+          </button>
+          <button
+            type="button"
+            id="mcq-restart"
+            class="mcq-action-button mcq-action-secondary"
+          >
+            New Set
+          </button>
+        </div>
+        <p id="mcq-result" class="mcq-result"></p>
+      </div>
+    </section>
+
+    <script src="src/field-core.js" defer></script>
+    <script src="src/state.js?v=context-optional-1" defer></script>
+    <script src="src/rules/helpers.js" defer></script>
+    <script src="src/rules/anterior.js" defer></script>
+    <script src="src/rules/chiasmal.js" defer></script>
+    <script src="src/rules/posterior.js" defer></script>
+    <script src="src/rules.js" defer></script>
+    <script src="src/summary.js" defer></script>
+    <script src="src/pathway.js?v=pathway-fit-1" defer></script>
+    <script src="src/output-text-rules.js" defer></script>
+    <script src="src/output-lesion-map.js" defer></script>
+    <script src="src/output.js?v=context-audit-1" defer></script>
+    <script src="src/popup.js" defer></script>
+    <script src="src/mcq-data/core.js" defer></script>
+    <script src="src/mcq-data/library.js?v=teaching-mcq-1" defer></script>
+    <script src="src/mcq-data/sets.js?v=teaching-mcq-1" defer></script>
+    <script src="src/mcq-data.js" defer></script>
+    <script src="src/mcq.js?v=mcq-fundal-2" defer></script>
+    <script src="src/main.js?v=pathway-photo-toggle-1" defer></script>
+    <script src="cup-achievement.js" defer></script>
+  </body>
+</html>

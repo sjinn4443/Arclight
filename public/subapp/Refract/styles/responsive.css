@@ -1,0 +1,104 @@
+@media (max-width: 760px) {
+  main {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .top-section,
+  .results-section {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .age-row {
+    grid-template-columns: minmax(0, 1fr) 68px;
+  }
+
+  .rx-row,
+  .rx-pair-grid {
+    width: min(100%, 760px);
+  }
+}
+
+@media (max-width: 560px) {
+  :root {
+    --rx-field-width: 56px;
+  }
+
+  body.advanced-mode {
+    --rx-field-width: 50px;
+  }
+
+  main {
+    width: 100%;
+    margin-top: 10px;
+    padding-bottom: 6px;
+  }
+
+  .age-row {
+    grid-template-columns: minmax(0, 1fr) 64px;
+  }
+
+  .context-control-grid {
+    grid-template-columns: 92px minmax(0, 1fr);
+    gap: 10px;
+  }
+
+  .top-toggle-group {
+    justify-content: flex-start;
+    padding-top: 0;
+    gap: 10px;
+  }
+
+  .rx-pair-grid {
+    grid-template-columns: max-content var(--rx-field-width);
+    column-gap: 8px;
+  }
+
+  .rx-pair-grid-with-toggle {
+    grid-template-columns: max-content var(--rx-field-width) 48px;
+  }
+
+  .rx-row,
+  .output-row {
+    gap: 8px;
+  }
+
+  body.advanced-mode .rx-pair-grid {
+    column-gap: 6px;
+  }
+
+  body.advanced-mode .rx-pair-grid-with-toggle {
+    grid-template-columns: max-content var(--rx-field-width) 44px;
+  }
+
+  body.advanced-mode .rx-row,
+  body.advanced-mode .output-row {
+    gap: 6px;
+  }
+
+  .top-toggle {
+    width: 46px;
+    min-height: 40px;
+  }
+
+  .mode-control-box .top-toggle {
+    width: 40px;
+    min-height: 36px;
+  }
+
+  body.advanced-mode .pair-side-toggle {
+    width: 44px;
+    min-height: 68px;
+  }
+
+  #info-popup {
+    left: 10px;
+    right: 10px;
+    max-width: none;
+  }
+
+  .side-menu {
+    width: min(76vw, 284px);
+  }
+}

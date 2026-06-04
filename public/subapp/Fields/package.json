@@ -1,0 +1,25 @@
+{
+  "name": "fields",
+  "version": "1.0.0",
+  "description": "Mobile-first confrontation visual-field screening app",
+  "main": "src/main.js",
+  "scripts": {
+    "lint": "eslint . --ext .js,.mjs",
+    "lint:fix": "npm run lint -- --fix",
+    "qa:fields": "node qa-fields-audit.mjs",
+    "qa:pathway": "node qa-pathway-audit.mjs",
+    "qa:output": "node qa-output-mode-audit.mjs",
+    "qa:mcq": "node qa-mcq-audit.mjs",
+    "qa:context": "node qa-context-modifier-audit.mjs",
+    "qa:all": "npm run -s qa:fields && npm run -s qa:pathway && npm run -s qa:output && npm run -s qa:mcq && npm run -s qa:context",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.0.2",
+    "globals": "^17.3.0"
+  }
+}

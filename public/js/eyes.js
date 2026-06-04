@@ -128,6 +128,11 @@ const VIDEO_PAGE_IDS = new Set([
   "amslerInteractivePage",
   "miresPage",
   "morphPage",
+  "glaucomaInteractivePage",
+  "fieldsInteractivePage",
+  "refractInteractivePage",
+  "sauronInteractivePage",
+  "swollenDiscsInteractivePage",
   "squintPalsyPage",
   "cataractPage",
 ]);

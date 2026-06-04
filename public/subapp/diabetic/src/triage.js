@@ -25,23 +25,23 @@ const ACTION_COPY = {
     tone: "neutral",
   },
   routineScreen: {
-    title: "Routine (screening)",
+    title: "Routine screening still required",
     next: "Continue local screening pathway.",
     tone: "green",
   },
   ungradable: {
-    title: "Ungradable (repeat)",
+    title: "Ungradable",
     next: "Repeat dilated view/photo; refer if still poor.",
     tone: "orange",
   },
   routineReferral: {
-    title: "Routine (weeks)",
+    title: "Routine referral when possible",
     next: "Refer routinely when possible.",
-    tone: "green",
+    tone: "blue",
   },
   referSoon: {
-    title: "Soon (days)",
-    next: "Refer within days.",
+    title: "Refer soon (2 weeks)",
+    next: "Refer within 2 weeks.",
     tone: "orange",
   },
   urgent: {
@@ -146,9 +146,7 @@ export function evaluateEye(eyeKey, eye, state) {
   if (hasMaculaRisk) {
     const reasons = formatFindings(maculaKeys);
     if (hasQualifyingVaRisk) {
-      reasons.push(
-        `${getVaLabel(eye.distanceVA)} VA${maculaKeys.length === 0 ? " with DR signs" : ""}`,
-      );
+      reasons.push(`${getVaLabel(eye.distanceVA)} VA`);
     }
     return {
       ...base,
@@ -252,16 +250,6 @@ function buildSystemicSummary(state) {
   return { checked, unchecked };
 }
 
-function buildSafety(systemic) {
-  const safety = ["Screening required. View only."];
-
-  if (systemic.unchecked.length > 0) {
-    safety.push("Medical review if possible.");
-  }
-
-  return safety;
-}
-
 export function evaluateTriage(state) {
   const eyeResults = Object.entries(state.eyes).map(([eyeKey, eye]) =>
     evaluateEye(eyeKey, eye, state),
@@ -291,20 +279,12 @@ export function evaluateTriage(state) {
         "Both eyes have adequate views and no referable signs selected.",
       );
     } else {
-      const limitedEye = eyeResults.find((result) => result.viewLimited);
+      const limitedEye = eyeResults.find(
+        (result) => result.viewLimited || result.actionKey === "incomplete",
+      );
       if (limitedEye) {
         return evaluateWithForcedUngradable(
           state,
-          eyeResults,
-          dilationNotes,
-          systemic,
-        );
-      }
-      const incompleteEye = eyeResults.find(
-        (result) => result.actionKey === "incomplete",
-      );
-      if (incompleteEye) {
-        return evaluateWithForcedIncomplete(
           eyeResults,
           dilationNotes,
           systemic,
@@ -326,19 +306,23 @@ export function evaluateTriage(state) {
 
   limitationEyes
     .filter((result) => result.priority < topEye.priority)
-    .forEach((result) => {
-      const detail =
-        result.reasons.join(", ") ||
-        result.limitations.join(", ") ||
-        "limited view";
-      limitations.push(`${result.eyeLabel}: ${detail}.`);
-    });
+    .forEach((result) =>
+      limitations.push(
+        `${result.eyeLabel}: ${result.limitations.join(", ") || "limited view"}.`,
+      ),
+    );
 
   incompleteEyes
     .filter((result) => topEye.priority > PRIORITY.incomplete)
     .forEach((result) => limitations.push(`${result.eyeLabel}: incomplete.`));
 
   dilationNotes.forEach((note) => limitations.push(note));
+
+  const safety = ["Screening required. View only."];
+
+  if (systemic.unchecked.length > 0) {
+    safety.push("Medical review if possible.");
+  }
 
   return {
     actionKey: topEye.actionKey,
@@ -348,7 +332,7 @@ export function evaluateTriage(state) {
     reasons,
     limitations,
     next: copy.next,
-    safety: buildSafety(systemic),
+    safety,
     systemic,
     eyes: eyeResults,
   };
@@ -363,7 +347,7 @@ function evaluateWithForcedUngradable(
   const copy = ACTION_COPY.ungradable;
   const limitations = [];
   eyeResults
-    .filter((result) => result.viewLimited)
+    .filter((result) => result.viewLimited || result.actionKey === "incomplete")
     .forEach((result) =>
       limitations.push(
         `${result.eyeLabel}: ${result.reasons.join(", ") || "not assessable"}.`,
@@ -382,27 +366,6 @@ function evaluateWithForcedUngradable(
       "Repeat dilated view/photo if possible.",
       "Screening still required.",
     ],
-    systemic,
-    eyes: eyeResults,
-  };
-}
-
-function evaluateWithForcedIncomplete(eyeResults, dilationNotes, systemic) {
-  const copy = ACTION_COPY.incomplete;
-  const limitations = [];
-  eyeResults
-    .filter((result) => result.actionKey === "incomplete")
-    .forEach((result) => limitations.push(`${result.eyeLabel}: incomplete.`));
-  dilationNotes.forEach((note) => limitations.push(note));
-  return {
-    actionKey: "incomplete",
-    priority: PRIORITY.incomplete,
-    title: copy.title,
-    tone: copy.tone,
-    reasons: ["R/L recording incomplete."],
-    limitations,
-    next: copy.next,
-    safety: buildSafety(systemic),
     systemic,
     eyes: eyeResults,
   };

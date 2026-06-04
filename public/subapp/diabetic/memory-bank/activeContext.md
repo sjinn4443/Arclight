@@ -2,33 +2,24 @@
 
 <!-- APP-DOC-STATUS:START -->
 
-## Current Memory Status (21/5/2026)
+## Current Memory Status (18/5/2026)
 
-- v1 app review completed on `21/5/26`.
 - Static packaging: open `index.html` directly; a local HTTP server is optional for testing.
-- Main screen: image-led diabetic case practice viewer using the Swollen Discs draggable circular viewing engine.
-- Case assets: ten expanded WebP diabetic cases in `assets/images/diabetic/`, with thumbnails plus light and dark pigmentation support.
-- Viewer controls: `<` / `>` case navigation, icon-only case information, R/L orientation, Gaze, Dilated, Skin and full-width Adv controls for cataract blur and nystagmus.
-- Arclight (DO): compact direct-view simulation.
-- Holo (BIO): wider lens-style view; corneal reflection is hidden; field is `15 deg` undilated and `25 deg` dilated, and switching to Holo does not automatically switch Dilated on.
-- Exam system: RE and LE VA, View, Findings and Action live in one separate compact Exam box below or beside the viewer.
-- Findings: paired per-eye dropdowns are both labelled `Findings` and group no referable signs, DR signs, macula risk and proliferative signs with mini explanations.
-- Action logic: outputs `Routine (weeks)`, `Soon (days)`, `Urgent (today)`, `Ungradable (repeat)` or `Record both eyes` using green, orange, red and neutral chips, with a compact `+` expander for details.
-- Quick guide, side drawer, practice cases, findings guide and referral note follow the Fundal Reflex compact UI pattern.
-- Quick guide popup shows `v1 21/5/26` at bottom right.
-- MCQs are clinically audited across Primary, Intermediate and Advanced and use the Fundal-style modal with the scrolling question list and fixed `Submit Test` button.
-- Final UI polish: equal-width VA/View selects, lighter select text and muted mid-grey Temporal/Nasal canvas labels.
-- Responsive checks completed at `360 x 740`, `768 x 1024`, `1024 x 768` and `1366 x 768`.
-- Latest Lighthouse: mobile `90 / 100 / 100 / 100`; desktop `100 / 100 / 100 / 100`.
+- Mobile target: `360 x 740`, with the main page kept free of required vertical scrolling.
 - Shared appbar: `54px` high; `Quicksand` `25px`/`700` title; `44 x 44` burger and info buttons set `12px` from the edges.
-- Favicon: black square with a centred red `D`.
+- Burger glyph: shared CSS three-bar mark, `18px` wide with `2px` strokes, so no app depends on a bold font glyph.
+- Shared side menu: left drawer under the appbar; `min(76vw, 284px)` width; `16px` padding; pale `#f8fbff` surface; blue-grey border; card-style actions with small level dots.
+- Appbar content colour: red `#f04444` on a black appbar.
+- Favicon: current black-square app favicon with the app letter or letters centred.
 <!-- APP-DOC-STATUS:END -->
 
-Last updated: 21/5/2026
+Last updated: 18/5/2026
 
 ## Current Focus
 
-The project is at v1 review state. The working app has been built, image cases are wired and the final sweep on 21/5/26 found no console errors. Current focus is now polish, clinical wording review and future local-pathway customisation rather than initial build planning.
+The project is in planning state. No app implementation exists yet.
+
+The current task is to make the Diabetic app plan build-ready and align it with the existing Arclight app family.
 
 ## Accepted Product Decisions
 
@@ -38,21 +29,20 @@ The project is at v1 review state. The working app has been built, image cases a
 - Appbar icons are red.
 - Focus is diabetic retinopathy only.
 - Use `Arclight (DO)` and `Holo (BIO)` as equipment modes.
-- Record dilation separately in the main control strip and make the prompt prominent.
+- Record dilation separately in the View panel and make the prompt prominent.
 - Record both eyes with per-eye view, VA and findings.
-- Record right and left VA plus right and left view directly in the Exam box.
+- Record right and left VA plus right and left view directly in the View panel.
 - Keep Practice in the side drawer with image cases and MCQs.
 - Implement `Arclight (DO) | Holo (BIO)` as an Allan-style tablist with ARIA state and keyboard navigation.
-- Use the ten expanded diabetic WebP case images with light and dark pigmentation support.
+- Use placeholder images until final images are supplied.
 - Keep output as referral support, not diagnosis.
 - Keep treatment choices out of the app.
-- Use concise default urgency labels: `Routine (weeks)`, `Soon (days)`, `Urgent (today)` and `Ungradable (repeat)`.
-- Use `Routine (weeks)` for routine DR signs referral wording.
+- Use explicit default referral timescales: `Refer soon (2 weeks)` and `Urgent (today)`.
+- Use `Routine referral when possible` for routine DR signs referral wording.
 - Add a concise red-flags-win line to the popup.
 - Do not duplicate mode switching in the drawer for the MVP.
 - Keep local referral wording as constants first, not a visible settings screen.
 - Use Fundal-style MCQs: Primary `16` bank / `5` round / `3` pass, Intermediate `26` / `6` / `4` and Advanced `26` / `8` / `6`.
-- Keep MCQ content clinical, not app-navigation or implementation focused.
 - Use Cataract-style compact right and left distance VA dropdowns, not a simple `VA reduced` tick.
 - Use BP, lipids and HbA1c tick-boxes as supportive checks.
 - Use explicit VA thresholds for triage.
@@ -96,7 +86,7 @@ Borrow from:
 - Glaucoma: action panel and simple output style.
 - Fields: red-flag override logic and referral note discipline.
 - Sauron/Mires: practice/sweep training may borrow moving-exam ideas later.
-- Fundal/Sauron: MCQ modal structure, level labels, sampled rounds, pass-mark display, scrolling question list and fixed submit button.
+- Fundal/Sauron: MCQ modal structure, level labels, sampled rounds and pass-mark display.
 - Allan: real route-tab semantics, arrow-key navigation, shared tab rail, flatter inactive tabs and raised active tab.
 
 Avoid:
@@ -109,9 +99,13 @@ Avoid:
 
 ## Next Build Step
 
-Next useful work:
+When implementation starts:
 
-1. Review clinical copy and local pathway wording.
-2. Tune image compression if deployment size becomes a real constraint.
-3. Re-run the final browser and Lighthouse checks after any clinical or asset changes.
-4. Keep the memory bank and README updated with dated decisions.
+1. Build static shell.
+2. Add Allan-style `Arclight (DO) | Holo (BIO)` mode tablist and panels.
+3. Add compact Right/Left eye switcher.
+4. Add placeholder assets.
+5. Add pure per-eye triage logic.
+6. Add referral note generation.
+7. Add drawer practice cases and MCQs.
+8. Verify at `360 x 740`.

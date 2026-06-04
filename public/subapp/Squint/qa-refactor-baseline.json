@@ -1,0 +1,117 @@
+{
+  "generatedAt": "2026-05-12T08:25:16.663Z",
+  "presetCounts": {
+    "primary": 8,
+    "intermediate": 12,
+    "advanced": 48
+  },
+  "presetTotal": 68,
+  "mcqCounts": {
+    "primary": 5,
+    "intermediate": 7,
+    "advanced": 17
+  },
+  "mcqTotal": 29,
+  "scenarios": [
+    {
+      "id": "third_definite",
+      "rightCondition": "<span style='color:red;'>definite 3rd nerve palsy</span>; sudden diplopia - <span style='color:red;'>urgent aneurysm exclusion</span>",
+      "leftCondition": "",
+      "pupilCondition": "Right larger pupil - <i>possible Adie's/3rd nerve pattern</i>",
+      "rightTransformed": "RE: Large Exotropia, Large Hypotropia, Large ptosis, Dilated pupil",
+      "leftTransformed": "LE: nil",
+      "modifierSummary": "Sudden",
+      "modifierGuidance": "Sudden onset: acute review."
+    },
+    {
+      "id": "third_pupil_sparing_hint",
+      "rightCondition": "<span style='color:red;'>probable pupil-sparing 3rd nerve palsy</span>; acute diplopia with ptosis",
+      "leftCondition": "",
+      "pupilCondition": "",
+      "rightTransformed": "RE: Large Exotropia, Large Hypotropia, Medium ptosis",
+      "leftTransformed": "LE: nil",
+      "modifierSummary": "Sudden",
+      "modifierGuidance": "Sudden onset: acute review."
+    },
+    {
+      "id": "sixth_partial_medium_hint",
+      "rightCondition": "<span style='color:red;'>probable partial 6th nerve palsy</span>; moderate abduction deficit",
+      "leftCondition": "",
+      "pupilCondition": "",
+      "rightTransformed": "RE: Medium Esotropia",
+      "leftTransformed": "LE: nil",
+      "modifierSummary": "Sudden",
+      "modifierGuidance": "Sudden onset: acute review."
+    },
+    {
+      "id": "fourth_pattern",
+      "rightCondition": "probable 4th nerve palsy; vertical diplopia/head-tilt pattern",
+      "leftCondition": "",
+      "pupilCondition": "",
+      "rightTransformed": "RE: Medium Exotropia, Medium Hypertropia",
+      "leftTransformed": "LE: nil",
+      "modifierSummary": "",
+      "modifierGuidance": ""
+    },
+    {
+      "id": "horner_like",
+      "rightCondition": "definite Horner; carotid/stroke/apical lung causes; correlate clinically",
+      "leftCondition": "",
+      "pupilCondition": "Right smaller pupil - <i>possible Horner/drug effect</i>",
+      "rightTransformed": "RE: Smaller pupil, Medium ptosis, Faded iris",
+      "leftTransformed": "LE: nil",
+      "modifierSummary": "",
+      "modifierGuidance": ""
+    },
+    {
+      "id": "myasthenia_hint",
+      "rightCondition": "possible ocular myasthenia; variable ptosis/motility, pupil sparing",
+      "leftCondition": "",
+      "pupilCondition": "",
+      "rightTransformed": "RE: Medium Exotropia, Medium Hypotropia, Medium ptosis",
+      "leftTransformed": "LE: nil",
+      "modifierSummary": "",
+      "modifierGuidance": ""
+    },
+    {
+      "id": "thyroid_hint",
+      "rightCondition": "possible thyroid restrictive change; restrictive motility",
+      "leftCondition": "",
+      "pupilCondition": "",
+      "rightTransformed": "RE: Medium Hypotropia",
+      "leftTransformed": "LE: nil",
+      "modifierSummary": "",
+      "modifierGuidance": ""
+    },
+    {
+      "id": "ino_hint",
+      "rightCondition": "possible INO; adduction deficit with pupil sparing",
+      "leftCondition": "",
+      "pupilCondition": "",
+      "rightTransformed": "RE: Medium Esotropia",
+      "leftTransformed": "LE: nil",
+      "modifierSummary": "",
+      "modifierGuidance": ""
+    },
+    {
+      "id": "modifier_bundle",
+      "rightCondition": "<span style='color:red;'>definite 3rd nerve palsy</span>; sudden diplopia + pain - <span style='color:red;'>urgent aneurysm exclusion</span>",
+      "leftCondition": "",
+      "pupilCondition": "Right larger pupil - <i>possible Adie's/3rd nerve pattern</i>",
+      "rightTransformed": "RE: Large Exotropia, Large Hypotropia, Large ptosis, Dilated pupil",
+      "leftTransformed": "LE: nil",
+      "modifierSummary": "Sudden, Pain/HA, Trauma",
+      "modifierGuidance": "Sudden onset: acute review. <span style='color:red;'>Pain/headache with 3rd nerve signs: urgent neurology review.</span> Recent trauma: traumatic palsy or orbital injury possible."
+    },
+    {
+      "id": "fatigable_headtilt",
+      "rightCondition": "<span style='color:red;'>probable 3rd nerve palsy</span>; classic down-and-out pattern",
+      "leftCondition": "",
+      "pupilCondition": "",
+      "rightTransformed": "RE: Medium Exotropia, Medium Hypotropia, Medium ptosis",
+      "leftTransformed": "LE: nil",
+      "modifierSummary": "Fatigable, Head tilt R",
+      "modifierGuidance": "Fatigable history: consider ocular myasthenia. Head tilt suggests vertical muscle/4th nerve involvement."
+    }
+  ]
+}

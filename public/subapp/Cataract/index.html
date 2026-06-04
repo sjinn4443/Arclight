@@ -1,274 +1,541 @@
-<!-- index.html — Interactive module for diagnosing cataracts based on patient history, fundal reflex, and back of eye examination. -->
 <!doctype html>
-<html lang="en">
+<html lang="en-GB">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Cataract is a teaching app for lens opacity, red reflex change, visual acuity context and referral decisions."
+    />
+    <meta name="author" content="WJW" />
+    <meta name="date" content="18/5/2026" />
+    <meta name="application-name" content="Cataract" />
     <title>Cataract</title>
-    <link rel="stylesheet" href="style.css" />
-    <!-- FontAwesome for info icon -->
-    <link
-      href="https://fonts.googleapis.com/css?family=Quicksand:400,700"
-      rel="stylesheet"
-    />
-
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-      integrity="sha512-..."
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="style.css?v=20260518-appbar" />
+    <link rel="stylesheet" href="mcq-ui.css?v=20260511-2" />
+    <link rel="stylesheet" href="cup-achievement.css" />
   </head>
   <body>
     <header class="app-bar">
+      <button
+        type="button"
+        id="burger-icon"
+        class="icon-button"
+        aria-label="Open menu"
+        aria-controls="sideMenu"
+        aria-expanded="false"
+      >
+        <span class="appbar-glyph appbar-glyph-menu" aria-hidden="true"></span>
+      </button>
       <h1>
         <span class="normal-text">Cataract</span>
       </h1>
+      <button
+        type="button"
+        id="info-icon"
+        class="icon-button"
+        aria-label="Open app info"
+        aria-controls="info-popup"
+        aria-expanded="false"
+        aria-haspopup="dialog"
+      >
+        <span class="appbar-glyph appbar-glyph-info" aria-hidden="true">i</span>
+      </button>
     </header>
 
-    <!-- Info icon -->
-    <button
-      type="button"
-      id="info-icon-btn"
-      class="icon-btn"
-      aria-label="Toggle information"
-      onclick="toggleInfoBox()"
+    <div
+      id="info-popup"
+      class="info-box"
+      role="dialog"
+      aria-labelledby="info-popup-title"
+      hidden
     >
-      <i class="fas fa-info-circle"></i>
-    </button>
-
-    <!-- Hidden info box -->
-    <div id="info-popup" class="info-box" style="display: none">
-      <p>
-        Identify and signpost cataracts — the most common cause of treatable
-        blindness globally — in seconds.
-      </p>
-      <br />
-      <p></p>
-      <p>
-        <li>
-          take a good history; test vision (pinhole if no glasses); check
-          pupils; look at front of eye
-        </li>
-        <li>look at fundal reflex</li>
-        <li>examine back of the eye</li>
-        <br />Exclude other disease...
-      </p>
+      <div class="info-popup-header">
+        <h2 id="info-popup-title">Quick guide</h2>
+        <button
+          type="button"
+          id="info-close"
+          class="info-close"
+          aria-label="Close app info"
+        >
+          &times;
+        </button>
+      </div>
+      <div class="info-popup-body">
+        <section
+          class="info-look-section"
+          aria-labelledby="info-cataract-title"
+        >
+          <p id="info-cataract-title" class="info-look-title">
+            Cataract triage
+          </p>
+          <p id="info-copy-intro">Quick cataract triage in seconds.</p>
+        </section>
+        <hr />
+        <div class="info-look-guide">
+          <section
+            class="info-look-section info-look-section--basics"
+            aria-labelledby="info-basics-title"
+          >
+            <p id="info-basics-title" class="info-look-title">Basics</p>
+            <div class="info-basics-grid">
+              <span class="info-basics-cue"
+                ><strong>History</strong><small>onset + VA</small></span
+              >
+              <span class="info-basics-cue"
+                ><strong>Reflex</strong><small>lens pattern?</small></span
+              >
+              <span class="info-basics-cue"
+                ><strong>Back</strong><small>other disease?</small></span
+              >
+            </div>
+          </section>
+          <section
+            class="info-look-section info-look-section--detail"
+            aria-labelledby="info-detail-title"
+          >
+            <p id="info-detail-title" class="info-look-title">More detail</p>
+            <p id="info-copy-bullet-1">
+              History + VA: onset, one or two eyes, pain, age, distance VA and
+              near VA.
+            </p>
+            <p id="info-copy-bullet-2">
+              Front: pupils, cornea/scar and RAPD or poor light direction.
+            </p>
+            <p id="info-copy-bullet-3">
+              Reflex: Normal, Dull, Patches, Spots or Dense.
+            </p>
+            <p id="info-copy-bullet-4">
+              Back: Normal, Cupped, DR/Scar, Detached or Poor view.
+            </p>
+            <p id="info-copy-bullet-5">
+              Result: cataract type, next step and short re-checks.
+            </p>
+          </section>
+        </div>
+        <hr />
+        <p id="info-copy-outro">
+          Teaching aid, not final diagnosis. Look for non-cataract disease when
+          features are atypical or urgent.
+        </p>
+        <p class="info-version">v1 - 18/5/2026</p>
+      </div>
     </div>
+
+    <nav
+      id="sideMenu"
+      class="side-menu"
+      aria-label="Main menu"
+      aria-hidden="true"
+      inert
+    >
+      <div class="mcq-level-menu">
+        <button type="button" class="mcq-level-button" data-level-index="0">
+          Primary MCQ
+        </button>
+        <button type="button" class="mcq-level-button" data-level-index="1">
+          Intermediate MCQ
+        </button>
+        <button type="button" class="mcq-level-button" data-level-index="2">
+          Advanced MCQ
+        </button>
+      </div>
+      <section
+        id="cupAchievement"
+        class="cup-achievement is-locked"
+        hidden
+        aria-hidden="true"
+        data-cup-app="Cataract"
+      >
+        <span class="cup-achievement-icon" aria-hidden="true">&#9733;</span>
+        <span class="cup-achievement-details">
+          <span id="cupAchievementLabel"
+            >Cup locked: complete Advanced MCQ</span
+          >
+          <span
+            id="cupAchievementCode"
+            class="cup-achievement-code"
+            hidden
+          ></span>
+        </span>
+        <button
+          id="downloadCupCertificateButton"
+          class="cup-download-button"
+          type="button"
+          disabled
+          data-locked="true"
+        >
+          Save
+        </button>
+      </section>
+    </nav>
 
     <main>
       <form id="cataractForm">
-        <!-- Top section: History & Questions -->
         <section id="top-section">
           <h2>History</h2>
-          <div class="question-group">
-            <span><strong>Loss:</strong></span>
-            <span
-              >Gradual <span class="small-text">(mths)</span
-              ><input
-                type="radio"
-                name="onset"
-                value="gradual"
-                id="onset-gradual"
-                aria-label="Gradual vision loss onset in months"
-            /></span>
-            <span
-              >Sudden <span class="small-text">(days)</span
-              ><input
-                type="radio"
-                name="onset"
-                value="sudden"
-                id="onset-sudden"
-                aria-label="Sudden vision loss onset in days"
-            /></span>
-          </div>
-
-          <div class="question-group">
-            <span><strong>Eyes:</strong></span>
-            <span
-              >1<input
-                type="radio"
-                name="eyes"
-                value="one"
-                id="eyes-one"
-                aria-label="One eye affected"
-            /></span>
-            <span
-              >2<input
-                type="radio"
-                name="eyes"
-                value="two"
-                id="eyes-two"
-                aria-label="Two eyes affected"
-            /></span>
-            <span id="pain-label"><strong>Pain/Redness:</strong></span>
-            <span
-              ><input
-                type="radio"
-                name="pain"
-                value="yes"
-                id="pain-yes"
-                aria-label="Pain or redness present"
-            /></span>
-          </div>
-
-          <div class="question-group">
-            <span><strong>VA:</strong></span>
-            <span>
-              <select
-                id="distanceVA"
-                name="distanceVA"
-                aria-label="Distance visual acuity"
+          <div class="history-panels">
+            <div class="history-panel history-panel--core">
+              <div
+                class="history-field history-field--vision question-group--required"
               >
-                <option value=""></option>
-                <option value="6/6">6/6</option>
-                <option value="6/12">6/12</option>
-                <option value="6/36">6/36</option>
-                <option value="6/60">6/60</option>
-                <option value="HM">HM</option>
-              </select>
-            </span>
-            <span><strong>Near VA:</strong></span>
-            <span>
-              <select id="nearVA" name="nearVA" aria-label="Near visual acuity">
-                <option value=""></option>
-                <option value="N5">N5</option>
-                <option value="N8">N8</option>
-                <option value="N12">N12</option>
-                <option value="N18">N18</option>
-                <option value="N36">N36</option>
-              </select>
-            </span>
-          </div>
+                <span class="history-field-label"
+                  ><strong>Vision Loss:</strong></span
+                >
+                <span class="history-field-control choice-cluster">
+                  <span
+                    >Gradual <span class="small-text">(mths)</span
+                    ><input
+                      type="radio"
+                      name="onset"
+                      value="gradual"
+                      id="onset-gradual"
+                      aria-label="Vision loss gradual over months"
+                  /></span>
+                  <span
+                    >Sudden <span class="small-text">(days)</span
+                    ><input
+                      type="radio"
+                      name="onset"
+                      value="sudden"
+                      id="onset-sudden"
+                      aria-label="Vision loss sudden over days"
+                  /></span>
+                </span>
+              </div>
+              <div class="history-row history-row--three">
+                <div class="history-field question-group--mixed-priority">
+                  <span class="history-field-label"
+                    ><strong>Eyes:</strong></span
+                  >
+                  <span
+                    class="history-field-control choice-cluster choice-cluster--tight"
+                  >
+                    <span
+                      >1<input
+                        type="radio"
+                        name="eyes"
+                        value="one"
+                        id="eyes-one"
+                        aria-label="One eye affected"
+                    /></span>
+                    <span
+                      >2<input
+                        type="radio"
+                        name="eyes"
+                        value="two"
+                        id="eyes-two"
+                        aria-label="Two eyes affected"
+                    /></span>
+                  </span>
+                </div>
+                <div class="history-field question-group--mixed-priority">
+                  <span class="history-field-label" id="pain-label"
+                    ><strong>Pain/Redness:</strong></span
+                  >
+                  <label
+                    class="inline-choice history-field-control"
+                    id="pain-yes-label"
+                    ><input
+                      type="radio"
+                      name="pain"
+                      value="yes"
+                      id="pain-yes"
+                      aria-label="Pain or redness"
+                  /></label>
+                </div>
+                <div
+                  class="history-field history-field--age question-group--secondary"
+                >
+                  <span class="history-field-label"><strong>Age:</strong></span>
+                  <span class="history-field-control">
+                    <select
+                      id="ageBand"
+                      name="ageBand"
+                      class="compact-status-select"
+                      aria-label="Age band"
+                    >
+                      <option value=""></option>
+                      <option value="baby">0-1</option>
+                      <option value="child">2-12</option>
+                      <option value="adolescent">13-17</option>
+                      <option value="young_adult">18-24</option>
+                      <option value="adult">25-39</option>
+                      <option value="middle_aged">40-64</option>
+                      <option value="elderly">65-84</option>
+                      <option value="very_elderly">85+</option>
+                    </select>
+                  </span>
+                </div>
+              </div>
+            </div>
 
-          <div class="question-group">
-            <span id="pupil-label"
-              ><strong>Pupils:</strong> black, round, equal |
-              <em>reacts</em></span
-            >
+            <div class="history-panel history-panel--required">
+              <div class="vision-row question-group--required">
+                <div class="history-field history-field--distance">
+                  <span class="history-field-label"
+                    ><strong
+                      >Dist VA<span class="label-detail"> (binoc)</span
+                      >:</strong
+                    ></span
+                  >
+                  <span class="history-field-control">
+                    <select
+                      id="distanceVA"
+                      name="distanceVA"
+                      class="compact-status-select"
+                      aria-label="Distance visual acuity"
+                    >
+                      <option value=""></option>
+                      <option value="6/6">6/6</option>
+                      <option value="6/12">6/12</option>
+                      <option value="6/36">6/36</option>
+                      <option value="6/60">6/60</option>
+                      <option value="HM">HM</option>
+                      <option value="unable_test" class="child-va-option">
+                        No test
+                      </option>
+                      <option value="fix_follow_good" class="child-va-option">
+                        Fix+
+                      </option>
+                      <option value="fix_follow_poor" class="child-va-option">
+                        Fix-
+                      </option>
+                    </select>
+                  </span>
+                </div>
+                <div class="history-field history-field--near">
+                  <span class="history-field-label"
+                    ><strong>Near VA:</strong></span
+                  >
+                  <span class="history-field-control">
+                    <select
+                      id="nearVA"
+                      name="nearVA"
+                      class="compact-status-select"
+                      aria-label="Near visual acuity"
+                    >
+                      <option value=""></option>
+                      <option value="N5">N5</option>
+                      <option value="N8">N8</option>
+                      <option value="N12">N12</option>
+                      <option value="N18">N18</option>
+                      <option value="N36">N36</option>
+                    </select>
+                  </span>
+                </div>
+              </div>
+            </div>
 
-            <span
-              ><input
-                type="radio"
-                name="pupil"
-                value="normal"
-                id="pupil-normal"
-                aria-label="Pupils black, round, equal, and reactive"
-            /></span>
-          </div>
-
-          <div class="question-group">
-            <span id="front-label"
-              ><strong>Front of Eye:</strong> corneal scar, distortion
-              seen</span
-            >
-            <span
-              ><input
-                type="radio"
-                name="front"
-                value="present"
-                id="front-present"
-                aria-label="Corneal scar or distortion seen at the front of the eye"
-            /></span>
-          </div>
-        </section>
-
-        <section id="fundal-section" class="disabled">
-          <h2>Fundal Reflex</h2>
-          <div class="button-group">
-            <div class="button-item">
-              <button type="button" class="fundal-btn" data-value="normal">
-                <img src="normal.png" alt="Normal" />
-              </button>
-              <div class="button-label"><em>Normal</em></div>
-            </div>
-            <div class="button-item">
-              <button type="button" class="fundal-btn" data-value="dark">
-                <img src="dark.png" alt="Dark Yellow" />
-              </button>
-              <div class="button-label">Dark</div>
-            </div>
-            <div class="button-item">
-              <button type="button" class="fundal-btn" data-value="patches">
-                <img src="patches.png" alt="Patches" />
-              </button>
-              <div class="button-label">Patches</div>
-            </div>
-            <div class="button-item">
-              <button type="button" class="fundal-btn" data-value="spots">
-                <img src="spots.png" alt="Spots" />
-              </button>
-              <div class="button-label">Spots</div>
-            </div>
-            <div class="button-item">
-              <button type="button" class="fundal-btn" data-value="white">
-                <img src="white.png" alt="White-Mature" />
-              </button>
-              <div class="button-label">Black</div>
-            </div>
-          </div>
-        </section>
-
-        <section id="back-section" class="disabled">
-          <h2>Back of Eye</h2>
-          <div class="button-group">
-            <div class="button-item">
-              <button type="button" class="back-btn" data-value="normal">
-                <img src="normal2.png" alt="Disc Cupping" />
-              </button>
-              <div class="button-label"><em>Normal</em></div>
-            </div>
-            <div class="button-item">
-              <button type="button" class="back-btn" data-value="cupping">
-                <img src="cupping.png" alt="Diabetic" />
-              </button>
-              <div class="button-label">Cupped</div>
-            </div>
-            <div class="button-item">
-              <button type="button" class="back-btn" data-value="diabetic">
-                <img src="drscar.png" alt="Scarring" />
-              </button>
-              <div class="button-label">DR/Scar</div>
-            </div>
-            <div class="button-item">
-              <button type="button" class="back-btn" data-value="detached">
-                <img src="detached.png" alt="Detached" />
-              </button>
-              <div class="button-label">Detached</div>
-            </div>
-            <div class="button-item">
-              <button type="button" class="back-btn" data-value="poor view">
-                <img src="poorview.png" alt="Poor view" />
-              </button>
-              <div class="button-label" style="font-style: italic">
-                Poor view
+            <div class="history-panel history-panel--secondary">
+              <div class="question-group">
+                <span id="pupil-label">
+                  <strong>Pupils abnormal?</strong>
+                  <span class="flag-helper"
+                    >not black, round, equal or reactive</span
+                  >
+                </span>
+                <label class="inline-choice" id="pupil-yes-label"
+                  >Yes<input
+                    type="radio"
+                    name="pupil"
+                    value="abnormal"
+                    id="pupil-abnormal"
+                /></label>
+              </div>
+              <div class="question-group">
+                <span id="front-label"
+                  ><strong>Front eye scar/distortion?</strong></span
+                >
+                <label class="inline-choice" id="front-yes-label"
+                  >Yes<input
+                    type="radio"
+                    name="front"
+                    value="present"
+                    id="front-present"
+                /></label>
+              </div>
+              <div class="question-group">
+                <span id="neuro-label"
+                  ><strong>RAPD / poor light direction?</strong></span
+                >
+                <label class="inline-choice" id="neuro-yes-label"
+                  >Yes<input
+                    type="radio"
+                    name="neuro"
+                    value="yes"
+                    id="neuro-red-yes"
+                /></label>
               </div>
             </div>
           </div>
         </section>
 
-        <!-- Result section -->
-        <section id="result-section" class="disabled">
-          <h2>Action</h2>
+        <section id="fundal-section" class="disabled" aria-disabled="true">
+          <h2>Fundal Reflex</h2>
+          <p id="fundal-lock-hint" class="section-lock-hint" aria-live="polite">
+            Complete Vision Loss and Dist VA to unlock.
+          </p>
+          <div class="button-group">
+            <div class="button-item">
+              <button
+                type="button"
+                class="fundal-btn"
+                data-value="normal"
+                aria-pressed="false"
+              >
+                <img src="assets/images/normal.webp" alt="Normal" />
+              </button>
+              <div class="button-label"><em>Normal</em></div>
+            </div>
+            <div class="button-item">
+              <button
+                type="button"
+                class="fundal-btn"
+                data-value="dark"
+                aria-pressed="false"
+              >
+                <img src="assets/images/dark.webp" alt="Dark Yellow" />
+              </button>
+              <div class="button-label">Dull</div>
+            </div>
+            <div class="button-item">
+              <button
+                type="button"
+                class="fundal-btn"
+                data-value="patches"
+                aria-pressed="false"
+              >
+                <img src="assets/images/patches.webp" alt="Patches" />
+              </button>
+              <div class="button-label">Patches</div>
+            </div>
+            <div class="button-item">
+              <button
+                type="button"
+                class="fundal-btn"
+                data-value="spots"
+                aria-pressed="false"
+              >
+                <img src="assets/images/spots.webp" alt="Spots" />
+              </button>
+              <div class="button-label">Spots</div>
+            </div>
+            <div class="button-item">
+              <button
+                type="button"
+                class="fundal-btn"
+                data-value="white"
+                aria-pressed="false"
+              >
+                <img src="assets/images/white.webp" alt="Dense" />
+              </button>
+              <div class="button-label">Dense</div>
+            </div>
+          </div>
+        </section>
+
+        <section id="back-section" class="disabled" aria-disabled="true">
+          <h2>Back of Eye</h2>
+          <p id="back-lock-hint" class="section-lock-hint" aria-live="polite">
+            Complete top details first.
+          </p>
+          <div class="button-group">
+            <div class="button-item">
+              <button
+                type="button"
+                class="back-btn"
+                data-value="normal"
+                aria-pressed="false"
+              >
+                <img
+                  src="assets/images/normal2.webp"
+                  alt="Normal back of eye"
+                />
+              </button>
+              <div class="button-label"><em>Normal</em></div>
+            </div>
+            <div class="button-item">
+              <button
+                type="button"
+                class="back-btn"
+                data-value="cupping"
+                aria-pressed="false"
+              >
+                <img src="assets/images/cupping.webp" alt="Cupped disc" />
+              </button>
+              <div class="button-label">Cupped</div>
+            </div>
+            <div class="button-item">
+              <button
+                type="button"
+                class="back-btn"
+                data-value="diabetic"
+                aria-pressed="false"
+              >
+                <img src="assets/images/drscar.webp" alt="Diabetic or scar" />
+              </button>
+              <div class="button-label">DR/Scar</div>
+            </div>
+            <div class="button-item">
+              <button
+                type="button"
+                class="back-btn"
+                data-value="detached"
+                aria-pressed="false"
+              >
+                <img src="assets/images/detached.webp" alt="Detached retina" />
+              </button>
+              <div class="button-label">Detached</div>
+            </div>
+            <div class="button-item">
+              <button
+                type="button"
+                class="back-btn"
+                data-value="poor view"
+                aria-pressed="false"
+              >
+                <img src="assets/images/poorview.webp" alt="Poor view" />
+              </button>
+              <div class="button-label"><em>Poor view</em></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="result-section" class="disabled" aria-disabled="true">
+          <h2>Result</h2>
+          <p id="result-lock-hint" class="section-lock-hint" aria-live="polite">
+            Complete required fields to show result.
+          </p>
           <div id="result"></div>
         </section>
       </form>
     </main>
 
-    <script src="script.js?v=1.0"></script>
+    <div id="mcqModal" class="modal" aria-hidden="true">
+      <div class="modal-content">
+        <button
+          id="closeMcqModal"
+          class="close-modal-button"
+          type="button"
+          aria-label="Close MCQ"
+        >
+          x
+        </button>
+        <h2 id="mcqTitle">MCQ Test</h2>
+        <div id="mcqTimer" class="mcq-timer" hidden></div>
+        <div id="mcqContainer"></div>
+        <div class="mcq-actions">
+          <button id="submitMcqButton" type="button" class="mcq-submit">
+            Submit
+          </button>
+        </div>
+        <div id="mcqResult" class="mcq-result"></div>
+      </div>
+    </div>
 
-    <!-- Inline script for the info pop-up toggle -->
-    <script>
-      function toggleInfoBox() {
-        const infoPopup = document.getElementById("info-popup");
-        // Toggle display between block and none
-        if (infoPopup.style.display === "block") {
-          infoPopup.style.display = "none";
-        } else {
-          infoPopup.style.display = "block";
-        }
-      }
-    </script>
+    <script src="app.bundle.js"></script>
+    <script src="cup-achievement.js"></script>
   </body>
 </html>

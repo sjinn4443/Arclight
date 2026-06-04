@@ -1,0 +1,63 @@
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url("../assets/fonts/inter-latin-400-800.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Quicksand";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("../assets/fonts/quicksand-latin-700.woff2") format("woff2");
+}
+
+:root {
+  --header-height: 54px;
+  --font-title: "Quicksand", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --font-ui: "Inter", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --page-bg-top: #ffffff;
+  --page-bg-bottom: #f4f7fb;
+  --card-bg: rgba(255, 255, 255, 0.9);
+  --card-border: #d9e1eb;
+  --text-strong: #152132;
+  --text-muted: #5f6b7d;
+  --header-ink: #f5f8ff;
+  --header-start: #1448a5;
+  --header-end: #002f7d;
+  --shadow-soft: 0 10px 24px rgba(18, 23, 34, 0.08);
+  --shadow-strong: 0 12px 30px rgba(16, 22, 33, 0.14);
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-control: 10px;
+  --radius-md: 12px;
+  --radius-lg: 14px;
+  --radius-stage: 16px;
+  --radius-panel: 18px;
+  --radius-pill: 999px;
+  --input-border: #b8c3d1;
+  --rx-field-width: 60px;
+  --rx-field-height: 32px;
+  --field-sign-left: 5px;
+  --field-sign-padding: 13px;
+  --track-off-top: #d1d8e2;
+  --track-off-bottom: #c0c8d3;
+  --track-on-top: #1b56c2;
+  --track-on-bottom: #003d98;
+  --track-on-border: #003684;
+  --track-alt-off-top: #dde6f7;
+  --track-alt-off-bottom: #cdd8ee;
+  --track-alt-off-border: #b6c5e4;
+  --track-alt-text: #50658e;
+  --track-alt-on-top: #164bb1;
+  --track-alt-on-bottom: #002f7f;
+  --track-alt-on-border: #002b72;
+  --output-bg: #f3dcaa;
+  --output-bg-strong: #ecd091;
+  --green-accent: #19ba5d;
+  --orange-accent: #eb9b1f;
+  --red-accent: #d92929;
+  --focus: #1d53bd;
+}

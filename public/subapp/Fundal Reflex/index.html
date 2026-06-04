@@ -1,0 +1,1130 @@
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Fundal Reflex is a teaching simulator for normal, unclear and abnormal fundal reflex findings."
+    />
+    <meta name="author" content="WJW" />
+    <meta name="date" content="18/5/2026" />
+    <meta name="application-name" content="Fundal Reflex" />
+    <title>Fundal Reflex</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link
+      rel="preload"
+      href="assets/fonts/inter-latin-400-800.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="assets/fonts/quicksand-latin-700.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    <style>
+      html {
+        background: #f6f8fc;
+        color-scheme: light;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: linear-gradient(180deg, #ffffff 0%, #f6f8fc 100%);
+        color: #0f1625;
+      }
+
+      body:not(.app-ready) .eyes-wrapper {
+        background:
+          radial-gradient(
+            ellipse 72% 58% at 50% 78%,
+            rgba(255, 249, 216, 0.16) 0%,
+            rgba(255, 238, 163, 0.06) 42%,
+            rgba(255, 238, 163, 0) 72%
+          ),
+          linear-gradient(180deg, #101514 0%, #303a38 72%, #3f473f 100%);
+      }
+    </style>
+    <link rel="stylesheet" href="style.css?v=20260502-14" />
+    <link rel="stylesheet" href="cup-achievement.css" />
+  </head>
+  <body>
+    <!-- App Bar -->
+    <header class="app-bar">
+      <button
+        id="burger-icon"
+        class="icon-button"
+        type="button"
+        title="Menu"
+        aria-label="Open menu"
+        aria-controls="sideMenu"
+        aria-expanded="false"
+      >
+        <span class="appbar-glyph appbar-glyph-menu" aria-hidden="true"></span>
+      </button>
+      <h1>Fundal Reflex</h1>
+      <button
+        id="info-icon"
+        class="icon-button"
+        type="button"
+        title="Open instructions"
+        aria-label="Open instructions"
+        aria-controls="infoModal"
+        aria-expanded="false"
+        aria-haspopup="dialog"
+      >
+        <span class="appbar-glyph appbar-glyph-info" aria-hidden="true">i</span>
+      </button>
+    </header>
+
+    <!-- Side Menu -->
+    <nav
+      id="sideMenu"
+      class="side-menu"
+      aria-label="Main menu"
+      aria-hidden="true"
+      inert
+    >
+      <div class="mcq-level-menu">
+        <button
+          type="button"
+          id="learn-menu-button"
+          class="side-menu-section-button"
+        >
+          Learn
+        </button>
+        <button type="button" class="mcq-level-button" data-level="primary">
+          Primary MCQ
+        </button>
+        <button
+          type="button"
+          class="mcq-level-button"
+          data-level="intermediate"
+        >
+          Intermediate MCQ
+        </button>
+        <button type="button" class="mcq-level-button" data-level="advanced">
+          Advanced MCQ
+        </button>
+        <section
+          id="cupAchievement"
+          class="cup-achievement is-locked"
+          hidden
+          aria-hidden="true"
+          data-cup-app="Fundal Reflex"
+        >
+          <span class="cup-achievement-icon" aria-hidden="true">&#9733;</span>
+          <span class="cup-achievement-details">
+            <span id="cupAchievementLabel"
+              >Cup locked: complete Advanced MCQ</span
+            >
+            <span
+              id="cupAchievementCode"
+              class="cup-achievement-code"
+              hidden
+            ></span>
+          </span>
+          <button
+            id="downloadCupCertificateButton"
+            class="cup-download-button"
+            type="button"
+            disabled
+            data-locked="true"
+          >
+            Save
+          </button>
+        </section>
+        <button type="button" id="test-mode-button" class="test-mode-button">
+          Test me
+        </button>
+      </div>
+    </nav>
+
+    <!-- Instructions modal -->
+    <div
+      id="infoModal"
+      class="modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="infoModalTitle"
+      aria-hidden="true"
+    >
+      <div class="modal-content" id="infoModalContent" tabindex="-1">
+        <div class="info-popup-header">
+          <h2 id="infoModalTitle">Quick guide</h2>
+          <button
+            id="closeModal"
+            class="close"
+            type="button"
+            title="Close instructions"
+            aria-label="Close instructions"
+          >
+            &times;
+          </button>
+        </div>
+        <div class="info-popup-body">
+          <section
+            class="info-reflex-definition"
+            aria-labelledby="info-reflex-title"
+          >
+            <p id="info-reflex-title" class="info-look-title">Fundal reflex</p>
+            <p>
+              The fundal reflex is the glow in the pupil from the fundus, seen
+              with Arclight at arm's length. We use <em>fundal</em> reflex
+              rather than <em>red</em> reflex. In those with darker
+              pigmentation, a normal reflex may look orange-yellow or
+              blue-white. Bright, equal and round is reassuring. Null, milky or
+              black means the back is not being seen.
+            </p>
+          </section>
+          <hr />
+          <p>
+            Dim light, calm patient. Compare both eyes for brightness, colour
+            and shape. Move side to side, then closer.
+          </p>
+          <hr />
+          <div class="info-look-guide">
+            <section
+              class="info-look-section info-look-section--basics"
+              aria-labelledby="info-basics-title"
+            >
+              <p id="info-basics-title" class="info-look-title">Basics</p>
+              <div class="info-basics-grid">
+                <span class="info-basics-cue"
+                  ><strong>Match</strong><small>same both sides?</small></span
+                >
+                <span class="info-basics-cue"
+                  ><strong>Bright</strong><small>clear reflex?</small></span
+                >
+                <span class="info-basics-cue"
+                  ><strong>Straight</strong><small>eyes aligned?</small></span
+                >
+              </div>
+            </section>
+            <section
+              class="info-look-section info-look-section--detail"
+              aria-labelledby="info-detail-title"
+            >
+              <p id="info-detail-title" class="info-look-title">More detail</p>
+              <p>
+                <strong>Light + colour:</strong> brightness, opacity, orange-red
+                or blue-white.
+              </p>
+              <p>
+                <strong>Shape + crescent:</strong> size, roundness, notches,
+                upper or lower crescent.
+              </p>
+              <p>
+                <strong>Cornea + compare:</strong> centration, sharpness and the
+                other eye.
+              </p>
+            </section>
+          </div>
+          <hr />
+          <div class="info-points">
+            <p>
+              Use <em>Cases</em> to practise. Use <em>Learn</em> for the visual
+              handout.
+            </p>
+            <p>
+              Teaching aid, not final diagnosis.
+              <span class="modal-version-inline">v1 - 18/5/2026</span>
+            </p>
+          </div>
+          <button
+            id="info-learn-button"
+            class="info-learn-button"
+            type="button"
+          >
+            Learn from the handout
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="learnModal"
+      class="modal learn-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="learnModalTitle"
+      aria-hidden="true"
+    >
+      <div
+        class="modal-content learn-modal-content"
+        id="learnModalContent"
+        tabindex="-1"
+      >
+        <div class="learn-modal-header">
+          <div>
+            <p class="learn-modal-kicker">Visual handout</p>
+            <h2 id="learnModalTitle">Learn</h2>
+          </div>
+          <button
+            id="closeLearnModal"
+            class="close"
+            type="button"
+            title="Close learn"
+            aria-label="Close learn"
+          >
+            &times;
+          </button>
+        </div>
+        <div class="learn-tabs" role="tablist" aria-label="Learn sections">
+          <button
+            type="button"
+            class="learn-tab is-active"
+            data-learn-tab="handout"
+            role="tab"
+            aria-selected="true"
+          >
+            Handout
+          </button>
+          <button
+            type="button"
+            class="learn-tab"
+            data-learn-tab="explain"
+            role="tab"
+            aria-selected="false"
+          >
+            Explain
+          </button>
+          <button
+            type="button"
+            class="learn-tab"
+            data-learn-tab="save"
+            role="tab"
+            aria-selected="false"
+          >
+            Save
+          </button>
+        </div>
+        <section
+          id="learn-panel-handout"
+          class="learn-panel is-active"
+          data-learn-panel="handout"
+        >
+          <p class="learn-panel-copy">
+            The one-page sheet is the shared visual reference. It is almost
+            word-free so it can work across languages.
+          </p>
+          <div class="learn-handout-frame">
+            <img
+              id="learnHandoutImage"
+              class="learn-handout-image"
+              data-src="assets/handouts/fundal-reflex-universal-handout.webp?v=20260501-1"
+              alt="One-page fundal reflex visual handout"
+              width="1157"
+              height="1637"
+              decoding="async"
+              loading="lazy"
+              draggable="false"
+            />
+          </div>
+        </section>
+        <section
+          id="learn-panel-explain"
+          class="learn-panel"
+          data-learn-panel="explain"
+          hidden
+        >
+          <p class="learn-panel-copy">
+            Short notes for the pictures. Use the buttons to try the same idea
+            in the app.
+          </p>
+          <div id="learnExplainList" class="learn-explain-list"></div>
+        </section>
+        <section
+          id="learn-panel-save"
+          class="learn-panel"
+          data-learn-panel="save"
+          hidden
+        >
+          <p class="learn-panel-copy">PDF for print. Image for sharing.</p>
+          <div class="learn-resource-grid">
+            <a
+              class="learn-resource-button"
+              data-resource-action="download"
+              href="assets/handouts/fundal-reflex-universal-handout.pdf"
+              download
+              >Download PDF</a
+            >
+            <button
+              type="button"
+              class="learn-resource-button"
+              data-resource-action="share"
+              data-share-resource="image"
+            >
+              Share image
+            </button>
+          </div>
+          <p id="learnShareStatus" class="learn-share-status" role="status"></p>
+        </section>
+      </div>
+    </div>
+
+    <!-- MCQ Modal -->
+    <div
+      id="mcqModal"
+      class="modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="mcqTitle"
+      aria-describedby="mcqIntro"
+      aria-hidden="true"
+    >
+      <div class="modal-content" id="mcqModalContent" tabindex="-1">
+        <button
+          id="closeMcqModal"
+          class="close"
+          type="button"
+          title="Close MCQ"
+          aria-label="Close MCQ"
+        >
+          &times;
+        </button>
+        <h2 id="mcqTitle">MCQ Test</h2>
+        <p id="mcqIntro" class="mcq-intro"></p>
+        <div id="mcqContainer"></div>
+        <button id="submitMcqButton" class="button-pass">Submit Test</button>
+        <div id="mcqResult" class="result-text"></div>
+      </div>
+    </div>
+
+    <div
+      id="visualCaseModal"
+      class="modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="visualCaseModalTitle"
+      aria-hidden="true"
+    >
+      <div
+        class="modal-content visual-case-modal-content"
+        id="visualCaseModalContent"
+        tabindex="-1"
+      >
+        <div class="visual-case-modal-header">
+          <h2 id="visualCaseModalTitle">Cases</h2>
+          <button
+            id="closeVisualCaseModal"
+            class="close"
+            type="button"
+            title="Close cases"
+            aria-label="Close cases"
+          >
+            &times;
+          </button>
+        </div>
+        <p class="visual-case-modal-copy">
+          Pick closest match. Camera icon = photo.
+        </p>
+        <div class="visual-case-tools-row">
+          <details
+            id="visual-case-similar"
+            class="visual-case-tool visual-case-similar"
+            hidden
+          >
+            <summary class="visual-case-tool-summary">Similar cases</summary>
+            <div
+              id="visual-case-similar-list"
+              class="visual-case-similar-list"
+              aria-label="Similar cases"
+            ></div>
+          </details>
+        </div>
+        <div
+          id="visual-case-modal-list"
+          class="visual-case-list visual-case-list--modal"
+          role="list"
+          aria-label="Case teaching cards"
+        ></div>
+      </div>
+    </div>
+
+    <div
+      id="visualCasePhotoModal"
+      class="modal visual-case-photo-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="visualCasePhotoTitle"
+      aria-hidden="true"
+    >
+      <div
+        class="modal-content visual-case-photo-modal-content"
+        id="visualCasePhotoModalContent"
+        tabindex="-1"
+      >
+        <div class="visual-case-photo-modal-header">
+          <div class="visual-case-photo-modal-heading">
+            <p class="visual-case-photo-modal-kicker">Reference photo</p>
+            <h2 id="visualCasePhotoTitle">Case photo</h2>
+          </div>
+          <button
+            id="closeVisualCasePhotoModal"
+            class="close"
+            type="button"
+            title="Close reference photo"
+            aria-label="Close reference photo"
+          >
+            &times;
+          </button>
+        </div>
+        <div class="visual-case-photo-frame">
+          <img
+            id="visualCasePhotoImage"
+            class="visual-case-photo-image"
+            src=""
+            alt=""
+            decoding="async"
+            draggable="false"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class="controls-deck" hidden>
+      <div class="controls-deck-main">
+        <div class="top-controls">
+          <div class="toggle-reflex-color">
+            <label class="toggle-label" for="reflex-color-slider">Colour</label>
+            <div class="reflex-colour-control">
+              <input
+                type="range"
+                id="reflex-color-slider"
+                class="slider"
+                min="0"
+                max="100"
+                value="66"
+                title="Reflex Colour"
+              />
+              <div class="reflex-colour-anchors" aria-hidden="true">
+                <span class="reflex-colour-anchor reflex-colour-anchor--blue"
+                  >Blue</span
+                >
+                <span class="reflex-colour-anchor reflex-colour-anchor--red"
+                  >Red</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modifier-context-panel">
+          <div class="modifier-context-row">
+            <label
+              class="advanced-switch advanced-toolbar-switch modifier-context-switch modifier-context-live"
+              for="live-toggle"
+            >
+              <input type="checkbox" id="live-toggle" />
+              <span class="advanced-switch-track" aria-hidden="true"></span>
+              <span class="advanced-toolbar-switch-text">Gaze</span>
+            </label>
+            <label
+              class="advanced-switch advanced-toolbar-switch modifier-context-switch modifier-context-dilated"
+              for="dilated-toggle"
+            >
+              <input type="checkbox" id="dilated-toggle" />
+              <span class="advanced-switch-track" aria-hidden="true"></span>
+              <span class="advanced-toolbar-switch-text">Dilated</span>
+            </label>
+            <label
+              class="advanced-switch advanced-toolbar-switch modifier-context-switch modifier-context-baby"
+              for="baby-toggle"
+            >
+              <input type="checkbox" id="baby-toggle" />
+              <span class="advanced-switch-track" aria-hidden="true"></span>
+              <span class="advanced-toolbar-switch-text">Baby</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <button
+        id="advanced-dock-toggle"
+        class="advanced-dock-toggle"
+        type="button"
+        aria-controls="advanced-panel"
+        aria-expanded="false"
+        aria-label="Open advanced controls"
+        title="Open advanced controls"
+      >
+        <span class="advanced-dock-toggle__label">Adv</span>
+        <span class="advanced-dock-toggle__indicator" aria-hidden="true"></span>
+      </button>
+
+      <section
+        id="advanced-panel"
+        class="advanced-panel advanced-panel--dock"
+        hidden
+      >
+        <div class="advanced-content">
+          <section class="advanced-section advanced-section--compact-grid">
+            <div class="advanced-compact-field">
+              <div class="advanced-compact-label">squint</div>
+              <label
+                class="advanced-switch advanced-switch--compact"
+                for="manual-eye-move-toggle"
+              >
+                <input type="checkbox" id="manual-eye-move-toggle" />
+                <span class="advanced-switch-track" aria-hidden="true"></span>
+                <span class="advanced-switch-text">drag eyes</span>
+              </label>
+            </div>
+            <div class="advanced-compact-field">
+              <label class="advanced-compact-label" for="iris-colour"
+                >iris</label
+              >
+              <select
+                id="iris-colour"
+                class="advanced-select advanced-select--compact"
+                aria-label="Iris colour"
+              >
+                <option value="dark-brown" selected>dark</option>
+                <option value="light-brown">brown</option>
+                <option value="green">green</option>
+                <option value="blue">blue</option>
+              </select>
+            </div>
+          </section>
+
+          <section class="advanced-section advanced-section--context">
+            <div class="slider-title">context</div>
+            <div
+              id="modifier-context-bar"
+              class="modifier-context-bar"
+              aria-live="polite"
+            ></div>
+          </section>
+
+          <section class="advanced-section advanced-section--inline-control">
+            <div class="slider-title">pupil</div>
+            <div class="sliders-container dual-slider-row">
+              <div class="slider-wrapper">
+                <input
+                  type="range"
+                  class="slider"
+                  min="10"
+                  max="55"
+                  value="32"
+                  data-eye="left"
+                  title="Pupil size (small > large)"
+                />
+              </div>
+              <div class="slider-wrapper">
+                <input
+                  type="range"
+                  class="slider"
+                  min="10"
+                  max="55"
+                  value="32"
+                  data-eye="right"
+                  title="Pupil size (small > large)"
+                />
+              </div>
+            </div>
+          </section>
+
+          <section class="advanced-section advanced-section--inline-control">
+            <div class="slider-title">lid</div>
+            <div class="sliders-container dual-slider-row">
+              <div class="slider-wrapper">
+                <input
+                  type="range"
+                  class="vertical-eye-slider"
+                  min="0"
+                  max="30"
+                  value="0"
+                  data-eye="left"
+                  title="Upper eyelid ptosis"
+                />
+              </div>
+              <div class="slider-wrapper">
+                <input
+                  type="range"
+                  class="vertical-eye-slider"
+                  min="0"
+                  max="30"
+                  value="0"
+                  data-eye="right"
+                  title="Upper eyelid ptosis"
+                />
+              </div>
+            </div>
+          </section>
+
+          <section class="advanced-section advanced-section--inline-control">
+            <div class="slider-title">cataract</div>
+            <div class="sliders-container single-slider-row">
+              <div class="slider-wrapper">
+                <input
+                  type="range"
+                  id="cataract-slider"
+                  class="slider"
+                  min="0"
+                  max="100"
+                  value="0"
+                  title="Cataract density (clear to dense)"
+                />
+              </div>
+            </div>
+          </section>
+
+          <section class="advanced-section advanced-section--nystagmus">
+            <div class="advanced-toggle-row">
+              <div class="slider-title">nystagmus</div>
+              <label
+                class="advanced-switch advanced-switch--compact"
+                for="toggle-nystagmus"
+              >
+                <input type="checkbox" id="toggle-nystagmus" />
+                <span class="advanced-switch-track" aria-hidden="true"></span>
+                <span class="advanced-switch-text">on</span>
+              </label>
+            </div>
+            <div
+              class="advanced-select-grid advanced-select-grid--triple advanced-select-grid--compact"
+            >
+              <div class="advanced-select-stack">
+                <label class="advanced-select-label" for="nyst-direction"
+                  >dir</label
+                >
+                <select
+                  id="nyst-direction"
+                  class="advanced-select advanced-select--compact"
+                  aria-label="Nystagmus direction"
+                >
+                  <option value="horizontal" selected>H</option>
+                  <option value="vertical">V</option>
+                  <option value="mixed">Mixed</option>
+                </select>
+              </div>
+              <div class="advanced-select-stack">
+                <label class="advanced-select-label" for="nyst-wave"
+                  >wave</label
+                >
+                <select
+                  id="nyst-wave"
+                  class="advanced-select advanced-select--compact"
+                  aria-label="Nystagmus wave"
+                >
+                  <option value="jerk" selected>Jerk</option>
+                  <option value="pendular">Pendular</option>
+                </select>
+              </div>
+              <div class="advanced-select-stack">
+                <label class="advanced-select-label" for="nyst-rate"
+                  >rate</label
+                >
+                <select
+                  id="nyst-rate"
+                  class="advanced-select advanced-select--compact"
+                  aria-label="Nystagmus rate"
+                >
+                  <option value="slow" selected>Slow</option>
+                  <option value="med">Med</option>
+                  <option value="fast">Fast</option>
+                </select>
+              </div>
+            </div>
+          </section>
+        </div>
+      </section>
+    </div>
+
+    <!-- Main Content -->
+    <main>
+      <!-- Eyes Wrapper -->
+      <div class="eyes-wrapper">
+        <section
+          id="test-status-banner"
+          class="test-status-banner"
+          hidden
+          aria-labelledby="test-status-title"
+        >
+          <div class="test-status-header">
+            <span id="test-status-title" class="test-status-title"
+              >Test mode</span
+            >
+            <div class="test-status-meta">
+              <span id="test-countdown-value" class="test-countdown-value"
+                >20</span
+              >
+            </div>
+          </div>
+          <div class="test-status-footer">
+            <div class="test-status-copy">
+              <p id="test-answer-text" class="test-answer-text" hidden></p>
+              <p id="test-clue-text" class="test-clue-text" hidden></p>
+            </div>
+            <button
+              type="button"
+              id="test-next-button"
+              class="test-status-button"
+              hidden
+            >
+              Next
+            </button>
+          </div>
+        </section>
+        <div class="observation-guide" aria-label="Observation guide">
+          <button
+            type="button"
+            id="observation-guide-toggle"
+            class="observation-guide-toggle"
+            aria-label="Close observation guide"
+            aria-expanded="true"
+            title="Close observation guide"
+          >
+            <span
+              class="observation-guide-toggle-icon"
+              aria-hidden="true"
+            ></span>
+          </button>
+          <div
+            class="observation-guide-strip"
+            role="toolbar"
+            aria-label="Observation guide cues"
+          >
+            <div
+              class="observation-guide-set observation-guide-set--primary"
+              data-guide-set="primary"
+            >
+              <div
+                class="observation-guide-group observation-guide-group--check"
+                role="group"
+                aria-label="Compare cue"
+              >
+                <div class="observation-guide-group-cues">
+                  <button
+                    type="button"
+                    class="observation-guide-item"
+                    data-guide-label="Match"
+                    data-guide-detail="do both eyes match?"
+                  >
+                    Match
+                  </button>
+                </div>
+              </div>
+              <div
+                class="observation-guide-group observation-guide-group--reflex"
+                role="group"
+                aria-label="Reflex cue"
+              >
+                <div class="observation-guide-group-cues">
+                  <button
+                    type="button"
+                    class="observation-guide-item"
+                    data-guide-label="Bright"
+                    data-guide-detail="dark, dull or white?"
+                  >
+                    Bright
+                  </button>
+                </div>
+              </div>
+              <div
+                class="observation-guide-group observation-guide-group--geometry"
+                role="group"
+                aria-label="Alignment cue"
+              >
+                <div class="observation-guide-group-cues">
+                  <button
+                    type="button"
+                    class="observation-guide-item"
+                    data-guide-label="Straight"
+                    data-guide-detail="are the eyes aligned?"
+                  >
+                    Straight
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div
+              class="observation-guide-set observation-guide-set--full"
+              data-guide-set="full"
+            >
+              <div
+                class="observation-guide-group observation-guide-group--reflex"
+                role="group"
+                aria-label="Reflex cues"
+              >
+                <span class="observation-guide-group-label">Reflex</span>
+                <div class="observation-guide-group-cues">
+                  <button
+                    type="button"
+                    class="observation-guide-item"
+                    data-guide-label="Light"
+                    data-guide-detail="brightness, opacities"
+                  >
+                    Light
+                  </button>
+                  <button
+                    type="button"
+                    class="observation-guide-item"
+                    data-guide-label="Colour"
+                    data-guide-detail="orange-red or blue-white"
+                  >
+                    Colour
+                  </button>
+                </div>
+              </div>
+              <div
+                class="observation-guide-group observation-guide-group--geometry"
+                role="group"
+                aria-label="Geometry cues"
+              >
+                <span class="observation-guide-group-label">Geometry</span>
+                <div class="observation-guide-group-cues">
+                  <button
+                    type="button"
+                    class="observation-guide-item"
+                    data-guide-label="Shape"
+                    data-guide-detail="size, roundness, notches"
+                  >
+                    Shape
+                  </button>
+                  <button
+                    type="button"
+                    class="observation-guide-item"
+                    data-guide-label="Crescent"
+                    data-guide-detail="position up or down, size"
+                  >
+                    Crescent
+                  </button>
+                </div>
+              </div>
+              <div
+                class="observation-guide-group observation-guide-group--surface"
+                role="group"
+                aria-label="Surface cue"
+              >
+                <span class="observation-guide-group-label">Surface</span>
+                <div class="observation-guide-group-cues">
+                  <button
+                    type="button"
+                    class="observation-guide-item"
+                    data-guide-label="Cornea"
+                    data-guide-detail="centration, sharpness"
+                  >
+                    Cornea
+                  </button>
+                </div>
+              </div>
+              <div
+                class="observation-guide-group observation-guide-group--check"
+                role="group"
+                aria-label="Check cue"
+              >
+                <span class="observation-guide-group-label">Check</span>
+                <div class="observation-guide-group-cues">
+                  <button
+                    type="button"
+                    class="observation-guide-item"
+                    data-guide-label="Compare"
+                    data-guide-detail="with the other eye"
+                  >
+                    Compare
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p
+            id="observation-guide-detail"
+            class="observation-guide-detail"
+            aria-live="polite"
+          ></p>
+        </div>
+        <div
+          id="observation-teaching-overlay"
+          class="observation-teaching-overlay"
+          aria-hidden="true"
+        >
+          <span
+            class="observation-teaching-target observation-teaching-target--primary"
+            data-guide-cue=""
+          ></span>
+          <span
+            class="observation-teaching-target observation-teaching-target--secondary"
+            data-guide-cue=""
+          ></span>
+          <span class="observation-teaching-connector"></span>
+        </div>
+        <div class="ret-controls">
+          <div class="ret-controls-dropdown">
+            <div class="ret-case-toolbar">
+              <button
+                type="button"
+                id="case-prev-button"
+                class="case-control-button"
+                aria-label="Previous case"
+                title="Previous case"
+              >
+                <span
+                  class="case-control-icon case-control-icon-chevron case-control-icon-chevron-left"
+                  aria-hidden="true"
+                ></span>
+              </button>
+              <div id="refraction-shell" class="refraction-shell">
+                <button
+                  type="button"
+                  id="visual-case-trigger"
+                  class="refraction-trigger"
+                  aria-haspopup="dialog"
+                  aria-controls="visualCaseModal"
+                  aria-expanded="false"
+                >
+                  <span
+                    id="visual-case-current-label"
+                    class="refraction-trigger-label"
+                    >1. Normal (orange-red) R & L</span
+                  >
+                </button>
+                <select
+                  id="refraction-state"
+                  hidden
+                  aria-hidden="true"
+                  tabindex="-1"
+                ></select>
+                <div
+                  id="refraction-mask-label"
+                  class="refraction-mask-label"
+                  aria-hidden="true"
+                >
+                  Case hidden
+                </div>
+              </div>
+              <button
+                type="button"
+                id="case-next-button"
+                class="case-control-button"
+                aria-label="Next case"
+                title="Next case"
+              >
+                <span
+                  class="case-control-icon case-control-icon-chevron case-control-icon-chevron-right"
+                  aria-hidden="true"
+                ></span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div
+          class="fundal-light-probe-visual"
+          id="ret-streak-visual"
+          aria-hidden="true"
+          hidden
+        ></div>
+        <div class="eyes-container">
+          <!-- Left Eye -->
+          <div class="eye" data-eye="left" id="left-eye">
+            <div class="eye-inner">
+              <div class="iris">
+                <div class="coloboma-extension" aria-hidden="true">
+                  <div class="coloboma-extension-reflex"></div>
+                </div>
+                <div class="iris-transillumination-patch" aria-hidden="true">
+                  <div class="iris-transillumination-reflex"></div>
+                </div>
+                <div class="pupil">
+                  <div class="cortical-cataract-mask"></div>
+                  <div class="central-subcortical-mask"></div>
+                  <div class="pathology-overlay"></div>
+                  <!-- Fundal reflex glow -->
+                  <div class="ret-reflex"></div>
+                </div>
+              </div>
+            </div>
+            <div class="upper-eyelid"></div>
+            <div class="lower-eyelid"></div>
+          </div>
+
+          <!-- Right Eye -->
+          <div class="eye" data-eye="right" id="right-eye">
+            <div class="eye-inner">
+              <div class="iris">
+                <div class="coloboma-extension" aria-hidden="true">
+                  <div class="coloboma-extension-reflex"></div>
+                </div>
+                <div class="iris-transillumination-patch" aria-hidden="true">
+                  <div class="iris-transillumination-reflex"></div>
+                </div>
+                <div class="pupil">
+                  <div class="cortical-cataract-mask"></div>
+                  <div class="central-subcortical-mask"></div>
+                  <div class="pathology-overlay"></div>
+                  <!-- Fundal reflex glow -->
+                  <div class="ret-reflex"></div>
+                </div>
+              </div>
+            </div>
+            <div class="upper-eyelid"></div>
+            <div class="lower-eyelid"></div>
+          </div>
+        </div>
+
+        <!-- Diffuse light patch placed outside so it is not clipped -->
+        <button
+          type="button"
+          class="fundal-light-probe"
+          id="ret-streak"
+          hidden
+          aria-label="Move light patch left, right, up or down"
+          title="Drag light patch"
+        >
+          <span class="fundal-light-probe__handle" aria-hidden="true">
+            <span
+              class="fundal-light-probe__hint fundal-light-probe__hint--up"
+              aria-hidden="true"
+            ></span>
+            <span
+              class="fundal-light-probe__hint fundal-light-probe__hint--left"
+              aria-hidden="true"
+            ></span>
+            <span class="fundal-light-probe__icon"></span>
+            <span
+              class="fundal-light-probe__hint fundal-light-probe__hint--right"
+              aria-hidden="true"
+            ></span>
+            <span
+              class="fundal-light-probe__hint fundal-light-probe__hint--down"
+              aria-hidden="true"
+            ></span>
+          </span>
+        </button>
+      </div>
+
+      <section class="results-panel" aria-label="Interpretation">
+        <details class="results-details">
+          <summary class="results-details-summary">
+            <span id="results-urgency" class="results-referral"
+              >Referral: not calculated yet</span
+            >
+            <span class="results-details-toggle" aria-hidden="true"></span>
+          </summary>
+          <div class="results-details-body">
+            <p id="results-why" class="results-why">Why: not calculated yet</p>
+            <div class="results-meta">
+              <p id="results-site" class="results-meta-item">
+                Site: not calculated yet
+              </p>
+              <p id="results-summary" class="results-meta-item results-summary">
+                Likely: select the closest case and modifiers.
+              </p>
+            </div>
+          </div>
+        </details>
+      </section>
+    </main>
+
+    <!-- Main JS -->
+    <script src="app.bundle.js" defer></script>
+    <script src="cup-achievement.js" defer></script>
+  </body>
+</html>

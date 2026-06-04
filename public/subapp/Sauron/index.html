@@ -1,0 +1,632 @@
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Sauron is a retinoscopy simulator for reflex movement, streak control, refractive patterns and media findings."
+    />
+    <meta name="author" content="WJW" />
+    <meta name="date" content="18/5/2026" />
+    <meta name="application-name" content="Sauron" />
+    <title>Sauron</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+
+    <link
+      rel="preload"
+      href="assets/fonts/inter-latin-400-800.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="assets/fonts/quicksand-latin-700.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    <!-- Static app: open index.html directly for handover builds. -->
+    <link rel="stylesheet" href="style.css?v=20260507-3" />
+    <link rel="stylesheet" href="cup-achievement.css" />
+  </head>
+  <body>
+    <!-- App Bar -->
+    <header class="app-bar">
+      <button
+        id="burger-icon"
+        class="icon-button"
+        type="button"
+        title="Menu"
+        aria-label="Open menu"
+        aria-controls="sideMenu"
+        aria-expanded="false"
+      >
+        <span class="appbar-glyph appbar-glyph-menu" aria-hidden="true"></span>
+      </button>
+      <h1>Sauron</h1>
+      <button
+        id="info-icon"
+        class="icon-button"
+        type="button"
+        title="Open instructions"
+        aria-label="Open instructions"
+        aria-controls="infoModal"
+        aria-expanded="false"
+        aria-haspopup="dialog"
+      >
+        <span class="appbar-glyph appbar-glyph-info" aria-hidden="true">i</span>
+      </button>
+    </header>
+
+    <!-- Side Menu -->
+    <nav
+      id="sideMenu"
+      class="side-menu"
+      aria-label="Main menu"
+      aria-hidden="true"
+      inert
+    >
+      <div class="mcq-level-menu">
+        <button type="button" class="mcq-level-button" data-level="primary">
+          Primary MCQ
+        </button>
+        <button
+          type="button"
+          class="mcq-level-button"
+          data-level="intermediate"
+        >
+          Intermediate MCQ
+        </button>
+        <button type="button" class="mcq-level-button" data-level="advanced">
+          Advanced MCQ
+        </button>
+        <section
+          id="cupAchievement"
+          class="cup-achievement is-locked"
+          hidden
+          aria-hidden="true"
+          data-cup-app="Sauron"
+        >
+          <span class="cup-achievement-icon" aria-hidden="true">&#9733;</span>
+          <span class="cup-achievement-details">
+            <span id="cupAchievementLabel"
+              >Cup locked: complete Advanced MCQ</span
+            >
+            <span
+              id="cupAchievementCode"
+              class="cup-achievement-code"
+              hidden
+            ></span>
+          </span>
+          <button
+            id="downloadCupCertificateButton"
+            class="cup-download-button"
+            type="button"
+            disabled
+            data-locked="true"
+          >
+            Save
+          </button>
+        </section>
+        <button type="button" id="test-mode-button" class="test-mode-button">
+          Test me
+        </button>
+      </div>
+    </nav>
+
+    <!-- Instructions modal -->
+    <div
+      id="infoModal"
+      class="modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="infoModalTitle"
+      aria-hidden="true"
+    >
+      <div class="modal-content" id="infoModalContent" tabindex="-1">
+        <button
+          id="closeModal"
+          class="close"
+          type="button"
+          title="Close instructions"
+          aria-label="Close instructions"
+        >
+          &times;
+        </button>
+        <div class="info-popup-header">
+          <h2 id="infoModalTitle">Quick guide</h2>
+        </div>
+        <div class="info-popup-body">
+          <section
+            class="info-look-section"
+            aria-labelledby="info-basics-title"
+          >
+            <p id="info-basics-title" class="info-look-title">Basics</p>
+            <div class="info-basics-grid">
+              <span class="info-basics-cue"
+                ><strong>Eye</strong><small>RE or LE</small></span
+              >
+              <span class="info-basics-cue"
+                ><strong>Sweep</strong><small>left and right</small></span
+              >
+              <span class="info-basics-cue"
+                ><strong>Rotate</strong><small>find the axis</small></span
+              >
+            </div>
+          </section>
+          <section
+            class="info-look-section info-look-section--detail"
+            aria-labelledby="info-detail-title"
+          >
+            <p id="info-detail-title" class="info-look-title">More detail</p>
+            <p>
+              <strong>Movement:</strong> watch <em>with</em> or
+              <em>against</em> movement as the streak crosses the active pupil.
+            </p>
+            <p>
+              <strong>Case:</strong> change sphere, astigmatism, irregular
+              reflex, structural pupil and media cases from the stage selector.
+            </p>
+          </section>
+          <div class="info-points">
+            <p>
+              Use <em>Advanced</em> for squint drag, pupil, lid, cataract and
+              nystagmus.
+            </p>
+            <p>
+              Teaching aid, not final refraction.
+              <span class="modal-version-inline">v1 - 18/5/2026</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MCQ Modal -->
+    <div
+      id="mcqModal"
+      class="modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="mcqTitle"
+      aria-hidden="true"
+    >
+      <div class="modal-content" id="mcqModalContent" tabindex="-1">
+        <button
+          id="closeMcqModal"
+          class="close"
+          type="button"
+          title="Close MCQ"
+          aria-label="Close MCQ"
+        >
+          &times;
+        </button>
+        <h2 id="mcqTitle">MCQ Test</h2>
+        <p id="mcqIntro" class="mcq-intro"></p>
+        <div id="mcqContainer"></div>
+        <button id="submitMcqButton" class="button-pass">Submit Test</button>
+        <div id="mcqResult" class="result-text" hidden></div>
+      </div>
+    </div>
+
+    <section class="controls-deck" aria-label="Retinoscopy controls">
+      <div class="controls-deck-main">
+        <div class="top-controls">
+          <div class="toggle-reflex-color">
+            <label class="toggle-label" for="reflex-color-slider">Colour</label>
+            <div class="reflex-colour-control">
+              <input
+                type="range"
+                id="reflex-color-slider"
+                class="slider"
+                min="0"
+                max="100"
+                value="66"
+                title="Reflex colour"
+              />
+              <div class="reflex-colour-anchors" aria-hidden="true">
+                <span class="reflex-colour-anchor reflex-colour-anchor--blue"
+                  >Blue</span
+                >
+                <span class="reflex-colour-anchor reflex-colour-anchor--red"
+                  >Red</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modifier-context-panel">
+          <div
+            class="modifier-controls modifier-context-row"
+            role="group"
+            aria-label="Eye model modifiers"
+          >
+            <label
+              class="advanced-switch advanced-toolbar-switch modifier-button modifier-context-switch"
+              for="gaze-toggle"
+            >
+              <input type="checkbox" id="gaze-toggle" />
+              <span class="advanced-switch-track" aria-hidden="true"></span>
+              <span class="advanced-toolbar-switch-text">Gaze</span>
+            </label>
+            <label
+              class="advanced-switch advanced-toolbar-switch modifier-button modifier-context-switch"
+              for="dilated-toggle"
+            >
+              <input type="checkbox" id="dilated-toggle" />
+              <span class="advanced-switch-track" aria-hidden="true"></span>
+              <span class="advanced-toolbar-switch-text">Dilated</span>
+            </label>
+            <label
+              class="advanced-switch advanced-toolbar-switch modifier-button modifier-context-switch"
+              for="baby-toggle"
+            >
+              <input type="checkbox" id="baby-toggle" />
+              <span class="advanced-switch-track" aria-hidden="true"></span>
+              <span class="advanced-toolbar-switch-text">Baby</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <details class="advanced-panel">
+        <summary class="advanced-summary">
+          <span class="advanced-title">Adv</span>
+          <span class="advanced-indicator" aria-hidden="true"></span>
+        </summary>
+        <div class="advanced-content">
+          <section class="advanced-section advanced-toggle-section">
+            <div class="advanced-toggle-row">
+              <div class="slider-title">squint</div>
+              <label class="advanced-switch" for="manual-eye-move-toggle">
+                <input type="checkbox" id="manual-eye-move-toggle" />
+                <span class="advanced-switch-track" aria-hidden="true"></span>
+                <span class="advanced-switch-text">drag eyes</span>
+              </label>
+            </div>
+          </section>
+
+          <section class="advanced-section">
+            <div class="slider-title">pupil</div>
+            <div class="sliders-container dual-slider-row">
+              <div class="slider-wrapper">
+                <input
+                  type="range"
+                  class="slider"
+                  min="10"
+                  max="55"
+                  value="32"
+                  data-eye="left"
+                  title="Pupil size (small > large)"
+                />
+              </div>
+              <div class="slider-wrapper">
+                <input
+                  type="range"
+                  class="slider"
+                  min="10"
+                  max="55"
+                  value="32"
+                  data-eye="right"
+                  title="Pupil size (small > large)"
+                />
+              </div>
+            </div>
+          </section>
+
+          <section class="advanced-section">
+            <div class="slider-title">lid</div>
+            <div class="sliders-container dual-slider-row">
+              <div class="slider-wrapper">
+                <input
+                  type="range"
+                  class="vertical-eye-slider"
+                  min="0"
+                  max="30"
+                  value="0"
+                  data-eye="left"
+                  title="Upper eyelid ptosis"
+                />
+              </div>
+              <div class="slider-wrapper">
+                <input
+                  type="range"
+                  class="vertical-eye-slider"
+                  min="0"
+                  max="30"
+                  value="0"
+                  data-eye="right"
+                  title="Upper eyelid ptosis"
+                />
+              </div>
+            </div>
+          </section>
+
+          <section class="advanced-section">
+            <div class="slider-title">cataract</div>
+            <div class="sliders-container single-slider-row">
+              <div class="slider-wrapper">
+                <input
+                  type="range"
+                  id="cataract-slider"
+                  class="slider"
+                  min="0"
+                  max="100"
+                  value="0"
+                  title="Cataract density (clear to dense)"
+                />
+              </div>
+            </div>
+          </section>
+
+          <section class="advanced-section">
+            <div class="slider-title">nystagmus</div>
+            <div class="sliders-container single-slider-row">
+              <div class="slider-wrapper">
+                <input
+                  type="range"
+                  id="nystagmus-slider"
+                  class="slider"
+                  min="0"
+                  max="100"
+                  value="0"
+                  title="Nystagmus severity"
+                />
+              </div>
+            </div>
+          </section>
+        </div>
+      </details>
+    </section>
+
+    <!-- Case picker modal -->
+    <div
+      id="caseModal"
+      class="modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="caseModalTitle"
+      aria-hidden="true"
+    >
+      <div class="modal-content" id="caseModalContent" tabindex="-1">
+        <button
+          id="closeCaseModal"
+          class="close"
+          type="button"
+          title="Close cases"
+          aria-label="Close cases"
+        >
+          &times;
+        </button>
+        <h2 id="caseModalTitle">Cases</h2>
+        <p class="case-modal-intro">Pick closest match.</p>
+        <details id="case-similar-tool" class="case-similar-tool">
+          <summary class="case-similar-summary">Similar cases</summary>
+          <div
+            id="case-similar-list"
+            class="case-similar-list"
+            aria-label="Similar cases"
+          ></div>
+        </details>
+        <div id="caseSectionsContainer" class="case-sections"></div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <main>
+      <div class="ret-eye-row">
+        <div
+          class="ret-eye-selector"
+          role="group"
+          aria-label="Retinoscopy eye selection"
+        >
+          <button
+            type="button"
+            class="ret-eye-button is-active"
+            data-ret-eye="left"
+          >
+            RE
+          </button>
+          <button type="button" class="ret-eye-button" data-ret-eye="right">
+            LE
+          </button>
+        </div>
+      </div>
+
+      <!-- Eyes Wrapper -->
+      <div class="eyes-wrapper">
+        <div
+          id="movement-status-label"
+          class="movement-status"
+          aria-live="polite"
+        >
+          Neutral (0)
+        </div>
+        <section
+          id="test-status-banner"
+          class="test-status-banner"
+          hidden
+          aria-labelledby="test-status-title"
+        >
+          <div class="test-status-header">
+            <span id="test-status-title" class="test-status-title"
+              >Test mode</span
+            >
+            <div class="test-status-meta">
+              <span id="test-countdown-value" class="test-countdown-value"
+                >20</span
+              >
+            </div>
+          </div>
+          <div class="test-status-footer">
+            <p id="test-answer-text" class="test-answer-text" hidden></p>
+            <button
+              type="button"
+              id="test-next-button"
+              class="test-status-button"
+              hidden
+            >
+              Next
+            </button>
+          </div>
+        </section>
+        <div class="ret-controls">
+          <div
+            id="case-picker"
+            class="case-picker"
+            role="group"
+            aria-label="Retinoscopy case selection"
+          >
+            <button
+              type="button"
+              id="case-previous-button"
+              class="case-nav-button"
+              aria-label="Previous case"
+              title="Previous case"
+            >
+              <span
+                class="case-nav-chevron case-nav-chevron--left"
+                aria-hidden="true"
+              ></span>
+            </button>
+            <button
+              type="button"
+              id="case-trigger-button"
+              class="case-trigger-button"
+              aria-haspopup="dialog"
+              aria-controls="caseModal"
+            >
+              <span class="case-trigger-prefix">Case</span>
+              <span
+                id="case-trigger-level"
+                class="case-trigger-level"
+                data-level="primary"
+                aria-hidden="true"
+              ></span>
+              <span id="case-trigger-label" class="case-trigger-label"
+                >Neutral (0)</span
+              >
+              <span class="case-trigger-chevron" aria-hidden="true"></span>
+              <span
+                id="case-mask-label"
+                class="case-mask-label"
+                aria-hidden="true"
+                >Condition hidden</span
+              >
+            </button>
+            <button
+              type="button"
+              id="case-next-button"
+              class="case-nav-button"
+              aria-label="Next case"
+              title="Next case"
+            >
+              <span
+                class="case-nav-chevron case-nav-chevron--right"
+                aria-hidden="true"
+              ></span>
+            </button>
+            <select
+              id="refraction-state"
+              class="visually-hidden"
+              tabindex="-1"
+              aria-hidden="true"
+            ></select>
+            <div
+              id="refraction-shell"
+              class="visually-hidden"
+              aria-hidden="true"
+            >
+              <div id="refraction-mask-label"></div>
+            </div>
+          </div>
+        </div>
+        <div class="eyes-container">
+          <!-- Left Eye -->
+          <div class="eye" data-eye="left" id="left-eye">
+            <div class="eye-inner">
+              <div class="iris">
+                <div class="coloboma-extension" aria-hidden="true">
+                  <div class="coloboma-extension-reflex"></div>
+                </div>
+                <div class="iris-transillumination-patch" aria-hidden="true">
+                  <div class="iris-transillumination-reflex"></div>
+                </div>
+                <div class="pupil">
+                  <div class="cortical-cataract-mask"></div>
+                  <div class="central-subcortical-mask"></div>
+                  <div class="pathology-overlay"></div>
+                  <!-- Retinoscopy reflex highlight -->
+                  <div class="ret-reflex"></div>
+                </div>
+              </div>
+            </div>
+            <div class="upper-eyelid"></div>
+            <div class="lower-eyelid"></div>
+          </div>
+
+          <!-- Right Eye -->
+          <div class="eye" data-eye="right" id="right-eye">
+            <div class="eye-inner">
+              <div class="iris">
+                <div class="coloboma-extension" aria-hidden="true">
+                  <div class="coloboma-extension-reflex"></div>
+                </div>
+                <div class="iris-transillumination-patch" aria-hidden="true">
+                  <div class="iris-transillumination-reflex"></div>
+                </div>
+                <div class="pupil">
+                  <div class="cortical-cataract-mask"></div>
+                  <div class="central-subcortical-mask"></div>
+                  <div class="pathology-overlay"></div>
+                  <!-- Retinoscopy reflex highlight -->
+                  <div class="ret-reflex"></div>
+                </div>
+              </div>
+            </div>
+            <div class="upper-eyelid"></div>
+            <div class="lower-eyelid"></div>
+          </div>
+        </div>
+
+        <!-- Streak placed outside so it's not clipped -->
+        <div class="ret-streak" id="ret-streak">
+          <button
+            type="button"
+            id="ret-streak-rotate-handle"
+            class="ret-streak-handle ret-streak-rotate-handle"
+            aria-label="Rotate streak"
+            title="Rotate streak"
+          >
+            <img
+              src="./assets/images/ret-rotate-cue.webp"
+              alt=""
+              draggable="false"
+            />
+          </button>
+          <button
+            type="button"
+            id="ret-streak-sweep-handle"
+            class="ret-streak-handle ret-streak-sweep-handle"
+            aria-label="Sweep streak"
+            title="Sweep streak"
+          >
+            <img
+              src="./assets/images/ret-sweep-cue.webp"
+              alt=""
+              draggable="false"
+            />
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <!-- Main JS -->
+    <script src="app.bundle.js"></script>
+    <script src="cup-achievement.js"></script>
+  </body>
+</html>

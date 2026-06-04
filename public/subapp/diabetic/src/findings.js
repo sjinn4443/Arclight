@@ -1,6 +1,6 @@
 export const EYE_LABELS = {
-  right: "RE",
-  left: "LE",
+  right: "Right eye",
+  left: "Left eye",
 };
 
 export const MODE_LABELS = {
@@ -78,8 +78,6 @@ export const FINDING_GROUPS = [
         label: "No referable signs seen in view obtained",
         shortLabel: "No signs",
         group: "clear",
-        detail:
-          "Use only when no referable signs are seen in the view obtained. It does not replace routine diabetic eye screening.",
       },
     ],
   },
@@ -93,32 +91,24 @@ export const FINDING_GROUPS = [
         label: "Microaneurysms",
         shortLabel: "MA",
         group: "npdr",
-        detail:
-          "Tiny red dots, often the earliest visible diabetic retinopathy sign. Mark when small round red lesions are seen.",
       },
       {
         key: "dotBlotHaemorrhages",
         label: "Dot/blot haemorrhages",
         shortLabel: "D/B",
         group: "npdr",
-        detail:
-          "Intraretinal haemorrhages that look like red dots or blotches. Record when clearly seen away from the disc.",
       },
       {
         key: "cottonWoolSpots",
         label: "Cotton-wool spots",
         shortLabel: "CWS",
         group: "npdr",
-        detail:
-          "Soft-edged pale white patches from nerve fibre layer ischaemia. They suggest more active retinopathy.",
       },
       {
         key: "venousBeading",
         label: "Venous beading",
         shortLabel: "VB",
         group: "npdr",
-        detail:
-          "Irregular venous calibre or beading. This is a more severe ischaemic diabetic retinopathy sign.",
       },
     ],
   },
@@ -132,16 +122,12 @@ export const FINDING_GROUPS = [
         label: "Hard exudates near macula",
         shortLabel: "Macula HE",
         group: "macula",
-        detail:
-          "Yellow hard exudates close to the macula. Circinate exudates or exudates near fixation are macula risk.",
       },
       {
         key: "fovealRisk",
         label: "Possible foveal involvement",
         shortLabel: "Fovea risk",
         group: "macula",
-        detail:
-          "Use when signs may involve the fovea, or reduced VA fits possible macular involvement. This needs prompt eye review.",
       },
     ],
   },
@@ -155,32 +141,24 @@ export const FINDING_GROUPS = [
         label: "New vessels at disc",
         shortLabel: "NVD",
         group: "pdr",
-        detail:
-          "Fine new vessels on or within one disc diameter of the disc. Treat as proliferative diabetic retinopathy.",
       },
       {
         key: "nve",
         label: "New vessels elsewhere",
         shortLabel: "NVE",
         group: "pdr",
-        detail:
-          "Fine new vessels away from the disc, often at vascular arcades or an ischaemic border. Treat as proliferative diabetic retinopathy.",
       },
       {
         key: "preretinalHaemorrhage",
         label: "Preretinal haemorrhage",
         shortLabel: "PR-H",
         group: "pdr",
-        detail:
-          "Superficial or boat-shaped blood in front of the retina. This is an urgent proliferative sign.",
       },
       {
         key: "vitreousHaemorrhage",
         label: "Vitreous haemorrhage",
         shortLabel: "Vit H",
         group: "pdr",
-        detail:
-          "Blood or dark haze in the vitreous with reduced retinal view. Treat as urgent until specialist assessment.",
       },
     ],
   },

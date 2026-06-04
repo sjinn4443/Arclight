@@ -1,0 +1,15 @@
+module.exports = {
+  root: true,
+  env: {
+    browser: true,
+    es2022: true,
+  },
+  parserOptions: {
+    ecmaVersion: 2022,
+    sourceType: "script",
+  },
+  globals: {
+    globalThis: "readonly",
+  },
+  rules: {},
+};

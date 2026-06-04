@@ -1,0 +1,8 @@
+{
+  "tag-pair": true,
+  "attr-value-double-quotes": true,
+  "id-unique": true,
+  "src-not-empty": true,
+  "spec-char-escape": true,
+  "title-require": true
+}

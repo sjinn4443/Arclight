@@ -1,0 +1,147 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - button "Open menu" [ref=e3] [cursor=pointer]
+    - heading "Cataract" [level=1] [ref=e5]
+    - button "Open app info" [ref=e6] [cursor=pointer]:
+      - generic [ref=e7]: i i
+  - navigation [ref=e8]:
+    - text: Menu
+    - generic [ref=e9]:
+      - button [ref=e10] [cursor=pointer]: Primary MCQ
+      - button [disabled] [ref=e11]: Intermediate MCQ
+      - button [disabled] [ref=e12]: Advanced MCQ
+    - generic [ref=e13]:
+      - generic [ref=e14]: ★
+      - generic [ref=e16]: "Cup locked: complete Advanced MCQ"
+      - button [disabled] [ref=e17]: Save
+  - main [ref=e18]:
+    - generic [ref=e19]:
+      - generic [ref=e20]:
+        - heading "History" [level=2] [ref=e21]
+        - generic [ref=e22]:
+          - generic [ref=e23]:
+            - generic [ref=e24]:
+              - strong [ref=e26]: "Vision Loss:"
+              - generic [ref=e27]:
+                - generic [ref=e28]:
+                  - text: Gradual (mths)
+                  - radio "Vision loss gradual over months" [ref=e29]
+                - generic [ref=e30]:
+                  - text: Sudden (days)
+                  - radio "Vision loss sudden over days" [ref=e31]
+            - generic [ref=e32]:
+              - generic [ref=e33]:
+                - strong [ref=e35]: "Eyes:"
+                - generic [ref=e36]:
+                  - generic [ref=e37]:
+                    - text: "1"
+                    - radio "One eye affected" [ref=e38]
+                  - generic [ref=e39]:
+                    - text: "2"
+                    - radio "Two eyes affected" [ref=e40]
+              - generic [ref=e41]:
+                - strong [ref=e43]: "Pain/Redness:"
+                - radio "Pain or redness" [ref=e45]
+              - generic [ref=e46]:
+                - strong [ref=e48]: "Age:"
+                - combobox "Age band" [ref=e50]:
+                  - option [selected]
+                  - option "0-1"
+                  - option "2-12"
+                  - option "13-17"
+                  - option "18-24"
+                  - option "25-39"
+                  - option "40-64"
+                  - option "65-84"
+                  - option "85+"
+          - generic [ref=e52]:
+            - generic [ref=e53]:
+              - strong [ref=e55]: "Dist VA (binoc):"
+              - combobox "Distance visual acuity" [ref=e57]:
+                - option [selected]
+                - option "6/6"
+                - option "6/12"
+                - option "6/36"
+                - option "6/60"
+                - option "HM"
+                - option "No test"
+                - option "Fix+"
+                - option "Fix-"
+            - generic [ref=e58]:
+              - strong [ref=e60]: "Near VA:"
+              - combobox "Near visual acuity" [ref=e62]:
+                - option [selected]
+                - option "N5"
+                - option "N8"
+                - option "N12"
+                - option "N18"
+                - option "N36"
+          - generic [ref=e63]:
+            - generic [ref=e64]:
+              - generic [ref=e65]:
+                - strong [ref=e66]: Pupils abnormal?
+                - generic [ref=e67]: not black, round, equal or reactive
+              - generic [ref=e68] [cursor=pointer]:
+                - text: "Yes"
+                - radio "Yes" [ref=e69]
+            - generic [ref=e70]:
+              - strong [ref=e72]: Front eye scar/distortion?
+              - generic [ref=e73] [cursor=pointer]:
+                - text: "Yes"
+                - radio "Yes" [ref=e74]
+            - generic [ref=e75]:
+              - strong [ref=e77]: RAPD / poor light direction?
+              - generic [ref=e78] [cursor=pointer]:
+                - text: "Yes"
+                - radio "Yes" [ref=e79]
+      - generic [ref=e80]:
+        - heading "Fundal Reflex" [level=2] [ref=e81]
+        - paragraph [ref=e82]: Complete Vision Loss and Dist VA to unlock.
+        - generic [ref=e83]:
+          - generic [ref=e84]:
+            - button "Normal" [disabled] [ref=e85]:
+              - img "Normal" [ref=e86]
+            - emphasis [ref=e88]: Normal
+          - generic [ref=e89]:
+            - button "Dark Yellow" [disabled] [ref=e90]:
+              - img "Dark Yellow" [ref=e91]
+            - generic [ref=e92]: Dull
+          - generic [ref=e93]:
+            - button "Patches" [disabled] [ref=e94]:
+              - img "Patches" [ref=e95]
+            - generic [ref=e96]: Patches
+          - generic [ref=e97]:
+            - button "Spots" [disabled] [ref=e98]:
+              - img "Spots" [ref=e99]
+            - generic [ref=e100]: Spots
+          - generic [ref=e101]:
+            - button "Dense" [disabled] [ref=e102]:
+              - img "Dense" [ref=e103]
+            - generic [ref=e104]: Dense
+      - generic [ref=e105]:
+        - heading "Back of Eye" [level=2] [ref=e106]
+        - paragraph [ref=e107]: Complete top details first.
+        - generic [ref=e108]:
+          - generic [ref=e109]:
+            - button "Normal back of eye" [disabled] [ref=e110]:
+              - img "Normal back of eye" [ref=e111]
+            - emphasis [ref=e113]: Normal
+          - generic [ref=e114]:
+            - button "Cupped disc" [disabled] [ref=e115]:
+              - img "Cupped disc" [ref=e116]
+            - generic [ref=e117]: Cupped
+          - generic [ref=e118]:
+            - button "Diabetic or scar" [disabled] [ref=e119]:
+              - img "Diabetic or scar" [ref=e120]
+            - generic [ref=e121]: DR/Scar
+          - generic [ref=e122]:
+            - button "Detached retina" [disabled] [ref=e123]:
+              - img "Detached retina" [ref=e124]
+            - generic [ref=e125]: Detached
+          - generic [ref=e126]:
+            - button "Poor view" [disabled] [ref=e127]:
+              - img "Poor view" [ref=e128]
+            - emphasis [ref=e130]: Poor view
+      - generic [ref=e131]:
+        - heading "Result" [level=2] [ref=e132]
+        - paragraph [ref=e133]: Complete required fields to show result.

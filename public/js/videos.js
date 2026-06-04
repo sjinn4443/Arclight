@@ -24,6 +24,7 @@ const CHILDHOOD_WORKSHOP_PROGRESS_PREFIX = "childhoodWorkshop:progress:";
 const DIABETIC_WORKSHOP_PROGRESS_PREFIX = "diabeticWorkshop:progress:";
 const GLAUCOMA_WORKSHOP_PROGRESS_PREFIX = "glaucomaWorkshop:progress:";
 const LESSON_PROGRESS_PREFIX = "lessonProgress:";
+const INTERACTIVE_LEARNING_RETURN_KEY = "interactiveLearning:returnTarget";
 const CHILDHOOD_WORKSHOP_PROGRESS_EVENT = "childhoodWorkshop:progress-changed";
 const DIABETIC_WORKSHOP_PROGRESS_EVENT = "diabeticWorkshop:progress-changed";
 const LESSON_PROGRESS_EVENT = "arclight:lesson-progress-changed";
@@ -475,6 +476,20 @@ function updateLessonProgressBars() {
 }
 
 const INTERACTIVE_FOLDER_ITEM_COUNTS_ENABLED = false;
+
+function rememberInteractiveLearningReturnTarget(row) {
+  if (!row?.closest?.("#interactiveLearningPage")) return;
+
+  try {
+    sessionStorage.setItem(
+      INTERACTIVE_LEARNING_RETURN_KEY,
+      JSON.stringify({
+        routeName: "videos",
+        subPageId: "interactiveLearningPage",
+      }),
+    );
+  } catch {}
+}
 
 function clearInteractiveFolderItemBadges(page) {
   page.querySelectorAll(".diabetic-folder-item-count").forEach((badge) => {
@@ -1825,6 +1840,7 @@ function getVideoPageActionRow(page) {
 function ensureVideoPageMenuButtonForPage(pageId) {
   const page = getVideoPageElement(pageId);
   if (!page || page.querySelector(".eyes-topbar")) return null;
+  if (page.classList?.contains("interactive-subapp-page")) return null;
 
   const host =
     page.querySelector(".tri-toggle") ||
@@ -3491,6 +3507,8 @@ if (!window[__videosGlobalBoundKey]) {
 
     const target = row.getAttribute("data-target");
     if (!target) return;
+
+    rememberInteractiveLearningReturnTarget(row);
 
     const routeName = row.getAttribute("data-route");
     if (routeName && routeName !== "videos") {

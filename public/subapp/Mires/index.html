@@ -1,141 +1,420 @@
-<!-- index.html — Interactive tool for familiarizing with Goldman split-prism mires, allowing users to adjust parameters like jitter, sudden movement, drift, and thickness, and control separation and zoom. -->
-<!doctype html>
-<html lang="en">
+﻿<!doctype html>
+<html lang="en-GB">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-    <title>Arclight Newton</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mires</title>
     <meta
       name="description"
-      content="Newton - A tool to familiarise with Goldman split-prism mires."
+      content="Mires is a Goldmann applanation simulator for split-prism alignment, mires practice and IOP estimation."
     />
+    <meta name="author" content="WJW" />
+    <meta name="date" content="18/5/2026" />
+    <meta name="application-name" content="Mires" />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Quicksand:wght@400;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="styles.css?v=20260518-burger" />
+    <link rel="stylesheet" href="cup-achievement.css" />
   </head>
   <body>
-    <!-- App Bar -->
-    <div id="appBar">
-      <h1><span>Newton </span></h1>
-    </div>
-
-    <!-- Info Container: groups Instruction Box and Toggle Button -->
-    <div
-      id="infoContainer"
-      style="
-        position: absolute;
-        top: 70px;
-        left: 20px;
-        width: 200px;
-        z-index: 1000;
-      "
-    >
-      <!-- Instruction Box -->
-      <div id="instructionBox">
-        <strong>Instructions</strong>
-        <ul>
-          <li>Arrow keys: move mires</li>
-          <li>R/F: separation</li>
-          <li>Z/X: zoom</li>
-        </ul>
-      </div>
-      <!-- Toggle Button -->
+    <header id="appBar">
       <button
-        id="toggleButton"
-        class="on"
-        style="
-          display: block;
-          margin-top: 30px;
-          padding: 8px 12px;
-          font-size: 16px;
-          cursor: pointer;
-          border: none;
-          border-radius: 15px;
-        "
+        id="burger-icon"
+        class="icon-button"
+        type="button"
+        aria-label="Open menu"
+        aria-expanded="false"
+        aria-controls="sideMenu"
       >
-        Blue light + NaFl
+        <span class="appbar-glyph-menu" aria-hidden="true"></span>
       </button>
-    </div>
+      <h1><span>Mires</span></h1>
+      <button
+        id="info-icon"
+        class="icon-button"
+        type="button"
+        aria-label="Open instructions"
+      >
+        <span class="icon-symbol info-symbol" aria-hidden="true">i</span>
+      </button>
+    </header>
 
-    <!-- Slider Container for jitter, sudden, drift and thickness -->
-    <div id="sliderContainer">
-      <div class="slider">
-        <label for="jitterSlider"
-          >Jitter: <span id="jitterValue">1.0</span></label
+    <nav id="sideMenu" class="side-menu" aria-hidden="true">
+      <button
+        id="sideMenuClose"
+        class="side-menu-close"
+        type="button"
+        aria-label="Close menu"
+      >
+        &times;
+      </button>
+      <div class="side-menu-content">
+        <h2>MCQ practice</h2>
+        <button type="button" class="mcq-level-button" data-level-index="0">
+          Level 1: Primary
+        </button>
+        <button type="button" class="mcq-level-button" data-level-index="1">
+          Level 2: Intermediate
+        </button>
+        <button type="button" class="mcq-level-button" data-level-index="2">
+          Level 3: Advanced
+        </button>
+        <section
+          id="cupAchievement"
+          class="cup-achievement is-locked"
+          hidden
+          aria-hidden="true"
+          data-cup-app="Mires"
         >
-        <input
-          type="range"
-          id="jitterSlider"
-          min="0"
-          max="3"
-          step="0.1"
-          value="1"
-        />
+          <span class="cup-achievement-icon" aria-hidden="true">&#9733;</span>
+          <span class="cup-achievement-details">
+            <span id="cupAchievementLabel"
+              >Cup locked: complete Advanced MCQ</span
+            >
+            <span
+              id="cupAchievementCode"
+              class="cup-achievement-code"
+              hidden
+            ></span>
+          </span>
+          <button
+            id="downloadCupCertificateButton"
+            class="cup-download-button"
+            type="button"
+            disabled
+            data-locked="true"
+          >
+            Save
+          </button>
+        </section>
       </div>
-      <div class="slider">
-        <label for="suddenSlider"
-          >Sudden: <span id="suddenValue">0.5</span></label
-        >
-        <input
-          type="range"
-          id="suddenSlider"
-          min="0"
-          max="3"
-          step="0.1"
-          value="0.5"
-        />
-      </div>
-      <div class="slider">
-        <label for="driftSlider">Drift: <span id="driftValue">0.5</span></label>
-        <input
-          type="range"
-          id="driftSlider"
-          min="0"
-          max="5"
-          step="0.1"
-          value="0.5"
-        />
-      </div>
-      <div class="slider">
-        <label for="thicknessSlider"
-          >Thickness: <span id="thicknessValue">10</span></label
-        >
-        <input
-          type="range"
-          id="thicknessSlider"
-          min="1"
-          max="20"
-          step="1"
-          value="10"
-        />
-      </div>
-    </div>
+    </nav>
+    <div id="menuBackdrop" class="menu-backdrop" hidden></div>
 
-    <!-- Separation Slider Container (for mobile control of 'r' and 'f' motion) -->
-    <div id="separationSliderContainer">
-      <div class="slider">
-        <label for="separationSlider"
-          >Separation: <span id="separationValue">20</span></label
+    <button
+      id="newtonPanelToggle"
+      class="newton-panel-toggle"
+      type="button"
+      aria-controls="newtonPanel"
+      aria-expanded="false"
+      aria-label="Toggle Newton IOP panel"
+    >
+      Newton IOP
+    </button>
+
+    <section id="newtonPanel" aria-label="Newton IOP panel">
+      <button
+        id="newtonPanelClose"
+        class="newton-panel-close"
+        type="button"
+        aria-label="Close Newton IOP panel"
+      >
+        ×
+      </button>
+      <p class="newton-headline">
+        <span class="newton-title-inline">Newton IOP</span>
+        <span id="newtonStatus" class="newton-status-inline"
+          >Estimate closest IOP.</span
         >
+      </p>
+      <div
+        id="newtonPointGroup"
+        class="newton-point-group"
+        role="group"
+        aria-label="Newton point"
+      >
+        <button
+          type="button"
+          class="newton-point-button is-active"
+          data-newton-point="20"
+        >
+          20
+        </button>
+        <button
+          type="button"
+          class="newton-point-button"
+          data-newton-point="25"
+        >
+          25
+        </button>
+        <button
+          type="button"
+          class="newton-point-button"
+          data-newton-point="30"
+        >
+          30
+        </button>
+      </div>
+      <div
+        id="newtonGuessGroup"
+        class="newton-guess-group"
+        role="group"
+        aria-label="IOP estimate"
+      >
+        <button
+          type="button"
+          class="newton-guess-button"
+          data-newton-guess="very_below_20"
+          title="Below 16"
+        >
+          &lt;16
+        </button>
+        <button
+          type="button"
+          class="newton-guess-button"
+          data-newton-guess="just_below_20"
+          title="16 to 19"
+        >
+          16-19
+        </button>
+        <button
+          type="button"
+          class="newton-guess-button"
+          data-newton-guess="exactly_20"
+          title="20 exactly"
+        >
+          20
+        </button>
+        <button
+          type="button"
+          class="newton-guess-button"
+          data-newton-guess="range_21_24"
+        >
+          21-24
+        </button>
+        <button
+          type="button"
+          class="newton-guess-button"
+          data-newton-guess="exactly_25"
+          title="25 exactly"
+        >
+          25
+        </button>
+        <button
+          type="button"
+          class="newton-guess-button"
+          data-newton-guess="range_26_29"
+        >
+          26-29
+        </button>
+        <button
+          type="button"
+          class="newton-guess-button"
+          data-newton-guess="exactly_30"
+          title="30 exactly"
+        >
+          30
+        </button>
+        <button
+          type="button"
+          class="newton-guess-button"
+          data-newton-guess="above_30_bit"
+          title="31 to 34"
+        >
+          31-34
+        </button>
+        <button
+          type="button"
+          class="newton-guess-button"
+          data-newton-guess="well_above"
+          title="35 or above"
+        >
+          35+
+        </button>
+      </div>
+      <div class="newton-actions">
+        <button
+          id="newtonNewCaseButton"
+          class="newton-action-button"
+          type="button"
+        >
+          New Case
+        </button>
+        <button
+          id="newtonSubmitButton"
+          class="newton-action-button"
+          type="button"
+          disabled
+        >
+          Submit
+        </button>
+      </div>
+      <p id="newtonResult" class="newton-result"></p>
+    </section>
+
+    <button
+      id="casePanelToggle"
+      class="case-panel-toggle"
+      type="button"
+      aria-controls="casePanel"
+      aria-expanded="false"
+      aria-label="Toggle Variable IOP panel"
+    >
+      Variable IOP's
+    </button>
+
+    <section id="casePanel" aria-label="Variable IOP panel">
+      <button
+        id="casePanelClose"
+        class="case-panel-close"
+        type="button"
+        aria-label="Close Variable IOP panel"
+      >
+        ×
+      </button>
+      <div class="case-row">
+        <span class="eye-icon" aria-hidden="true">◐</span>
+        <div class="case-meta">
+          <p class="case-title">Variable IOP's</p>
+          <p id="iopValue" class="case-value">IOP: Hidden</p>
+        </div>
+      </div>
+      <button id="newCaseButton" class="new-case-button" type="button">
+        New Case
+      </button>
+      <div id="caseStatus" class="case-status" aria-live="polite">
+        <span id="centerStatus" class="case-status-line">Centre: not yet</span>
+        <span id="edgeStatus" class="case-status-line"
+          >Inner edges: not touching</span
+        >
+      </div>
+      <div
+        id="caseTierGroup"
+        class="case-tier"
+        role="group"
+        aria-label="Case tier"
+        data-active-tier="primary"
+      >
+        <button
+          type="button"
+          class="case-tier-button is-active"
+          data-case-tier="primary"
+        >
+          Primary
+        </button>
+        <button
+          type="button"
+          class="case-tier-button"
+          data-case-tier="intermediate"
+        >
+          Int
+        </button>
+        <button
+          type="button"
+          class="case-tier-button"
+          data-case-tier="advanced"
+        >
+          Advanced
+        </button>
+        <p id="caseRangeHint" class="case-range-hint">10-30 mmHg</p>
+      </div>
+    </section>
+
+    <aside id="controlDock" aria-label="Simulation controls">
+      <div class="dock-header">
+        <h2>Controls</h2>
+      </div>
+      <div class="dock-actions">
+        <button id="toggleButton" class="on" type="button">
+          Blue light + NaFl
+        </button>
+        <button id="resetControlsButton" class="utility-button" type="button">
+          Reset
+        </button>
+      </div>
+      <div id="separationControlRow" class="slider-row primary-slider">
+        <label for="separationSlider">Separation</label>
         <input
           type="range"
           id="separationSlider"
-          min="-60"
+          min="0"
           max="60"
-          step="5"
-          value="0"
+          step="1"
+          value="20"
         />
       </div>
-    </div>
+      <div class="slider-row primary-slider">
+        <label for="zoomSlider">Zoom</label>
+        <input
+          type="range"
+          id="zoomSlider"
+          min="0.5"
+          max="2"
+          step="0.05"
+          value="1"
+        />
+      </div>
+      <button
+        id="advancedMotionButton"
+        class="advanced-toggle-button"
+        type="button"
+        aria-controls="advancedControls"
+        aria-expanded="false"
+      >
+        Advanced motion
+      </button>
+      <div id="advancedControls" class="advanced-controls-panel" hidden>
+        <div class="slider-row">
+          <label for="jitterSlider"
+            >Jitter <span id="jitterValue">1.0</span></label
+          >
+          <input
+            type="range"
+            id="jitterSlider"
+            min="0"
+            max="3"
+            step="0.1"
+            value="1"
+          />
+        </div>
+        <div class="slider-row">
+          <label for="suddenSlider"
+            >Sudden <span id="suddenValue">0.5</span></label
+          >
+          <input
+            type="range"
+            id="suddenSlider"
+            min="0"
+            max="3"
+            step="0.1"
+            value="0.5"
+          />
+        </div>
+        <div class="slider-row">
+          <label for="driftSlider"
+            >Drift <span id="driftValue">0.5</span></label
+          >
+          <input
+            type="range"
+            id="driftSlider"
+            min="0"
+            max="5"
+            step="0.1"
+            value="0.5"
+          />
+        </div>
+        <div class="slider-row">
+          <label for="thicknessSlider"
+            >Thickness <span id="thicknessValue">10</span></label
+          >
+          <input
+            type="range"
+            id="thicknessSlider"
+            min="1"
+            max="20"
+            step="1"
+            value="10"
+          />
+        </div>
+      </div>
+    </aside>
 
-    <!-- Main Content -->
     <div id="content">
       <div id="gameArea">
-        <!-- Blue Circle with overflow hidden to clip green parts -->
-        <div id="blueCircle" style="overflow: hidden">
-          <!-- Mires Container with SVG for precise semi‑circles -->
+        <div id="blueCircle">
           <div id="mires">
             <svg viewBox="0 0 140 140">
               <path class="semi-circle top" d="M 20 70 A 50 50 0 0 1 120 70" />
@@ -146,330 +425,89 @@
             </svg>
           </div>
         </div>
-        <!-- Crosshair Overlay -->
-        <div id="crosshair">
+        <div id="crosshair" aria-hidden="true">
           <div class="line horizontal"></div>
           <div class="line vertical"></div>
         </div>
       </div>
     </div>
 
-    <script>
-      // Utility function to detect mobile devices
-      function isMobileDevice() {
-        return "ontouchstart" in window || navigator.maxTouchPoints > 0;
-      }
+    <div id="infoModal" class="modal" aria-hidden="true">
+      <div class="modal-content">
+        <div class="info-popup-header">
+          <h2>Goldmann Quick Guide</h2>
+          <button
+            id="closeInfoModal"
+            class="close-button"
+            type="button"
+            aria-label="Close instructions"
+          >
+            &times;
+          </button>
+        </div>
+        <div class="info-popup-body">
+          <section class="info-look-section info-look-section--detail">
+            <p>Keep the endpoint simple: Centre / Touch / Steady.</p>
+          </section>
+          <hr />
+          <div class="info-points">
+            <p>
+              Goldmann estimates IOP from force needed to flatten a 3.06 mm
+              corneal area.
+            </p>
+            <p>Use topical anaesthetic plus a small amount of fluorescein.</p>
+            <p>
+              Too much NaFl: thick mires, high bias. Too little: thin mires, low
+              bias.
+            </p>
+            <p>
+              Endpoint: centre the mires, make the inner edges just touch and
+              hold steady.
+            </p>
+            <p>
+              Avoid lid/finger pressure on the globe; keep patient relaxed and
+              looking straight ahead.
+            </p>
+          </div>
+          <p class="modal-version">v1 - 18/5/2026</p>
+        </div>
+      </div>
+    </div>
 
-      // DOM Elements
-      const mires = document.getElementById("mires");
-      const blueCircle = document.getElementById("blueCircle");
-      const toggleButton = document.getElementById("toggleButton");
-      const topSemiCircle = document.querySelector(".semi-circle.top");
-      const bottomSemiCircle = document.querySelector(".semi-circle.bottom");
+    <div id="testModal" class="modal" aria-hidden="true">
+      <div class="modal-content test-modal-content">
+        <button
+          id="closeTestModal"
+          class="close-button"
+          type="button"
+          aria-label="Close test"
+        >
+          &times;
+        </button>
+        <h2 id="testModalTitle">MCQ Test</h2>
+        <p id="mcqTimer" class="mcq-timer" hidden></p>
+        <p id="mcqQuestionProgress" class="mcq-question-progress">
+          0 questions.
+        </p>
+        <div id="testContainer"></div>
+        <div class="test-actions">
+          <button id="submitTestButton" class="action-button" type="button">
+            Submit Test
+          </button>
+          <button
+            id="saveResultButton"
+            class="action-button secondary"
+            type="button"
+            hidden
+          >
+            Save Result
+          </button>
+        </div>
+        <div id="testResult" class="result-text"></div>
+      </div>
+    </div>
 
-      // Slider Elements
-      const jitterSlider = document.getElementById("jitterSlider");
-      const jitterValue = document.getElementById("jitterValue");
-      const suddenSlider = document.getElementById("suddenSlider");
-      const suddenValue = document.getElementById("suddenValue");
-      const driftSlider = document.getElementById("driftSlider");
-      const driftValue = document.getElementById("driftValue");
-      const thicknessSlider = document.getElementById("thicknessSlider");
-      const thicknessValue = document.getElementById("thicknessValue");
-      const separationSlider = document.getElementById("separationSlider");
-      const separationValue = document.getElementById("separationValue");
-
-      // Initial State Variables
-      let miresPosition = { top: 0, left: 0 };
-      let separation = 20; // initial horizontal separation
-      const minSeparation = -60;
-      const maxSeparation = 60;
-      let isBlueLightOn = true;
-      let scale = 1; // initial scale
-      let jitterFactor = parseFloat(jitterSlider.value);
-      let suddenFactor = parseFloat(suddenSlider.value);
-      let driftFactor = parseFloat(driftSlider.value);
-
-      // Update slider display values on input
-      jitterSlider.addEventListener("input", () => {
-        jitterFactor = parseFloat(jitterSlider.value);
-        jitterValue.textContent = jitterFactor.toFixed(1);
-      });
-
-      suddenSlider.addEventListener("input", () => {
-        suddenFactor = parseFloat(suddenSlider.value);
-        suddenValue.textContent = suddenFactor.toFixed(1);
-      });
-
-      driftSlider.addEventListener("input", () => {
-        driftFactor = parseFloat(driftSlider.value);
-        driftValue.textContent = driftFactor.toFixed(1);
-      });
-
-      thicknessSlider.addEventListener("input", () => {
-        const thickness = parseFloat(thicknessSlider.value);
-        thicknessValue.textContent = thickness.toFixed(0);
-        document.querySelectorAll(".semi-circle").forEach((el) => {
-          el.style.strokeWidth = thickness;
-        });
-      });
-      thicknessSlider.dispatchEvent(new Event("input"));
-
-      // Separation slider event – only used on mobile to replicate 'r'/'f' keys
-      separationSlider.addEventListener("input", () => {
-        separation = parseFloat(separationSlider.value);
-        separationValue.textContent = separation;
-        updateSeparation();
-      });
-
-      // Update mires transform
-      function updateMiresTransform() {
-        mires.style.transform = `translate(${miresPosition.left}px, ${miresPosition.top}px) scale(${scale})`;
-      }
-
-      // Update separation transform on the semi‑circles
-      function updateSeparation() {
-        topSemiCircle.setAttribute("transform", `translate(${separation}, 0)`);
-        bottomSemiCircle.setAttribute(
-          "transform",
-          `translate(${-separation}, 0)`,
-        );
-        if (!isMobileDevice()) {
-          separationSlider.value = separation;
-          separationValue.textContent = separation;
-        }
-      }
-      updateSeparation();
-
-      toggleButton.addEventListener("click", () => {
-        isBlueLightOn = !isBlueLightOn;
-        if (isBlueLightOn) {
-          blueCircle.style.backgroundColor = "blue";
-          blueCircle.style.border = "5px solid rgb(47, 255, 47)"; // restore green border
-          document.querySelectorAll(".semi-circle").forEach((el) => {
-            el.style.stroke = "rgb(3, 228, 3)";
-            el.style.fill = "rgba(3, 228, 3, 0.2)"; // faint green inner core
-            el.style.filter = "drop-shadow(0 0 10px rgb(23, 127, 19))"; // restore green blur
-          });
-          toggleButton.classList.remove("off");
-          toggleButton.classList.add("on");
-          toggleButton.textContent = "Blue light + NaFl";
-        } else {
-          blueCircle.style.backgroundColor = "white";
-          blueCircle.style.border = "none"; // remove outer green border
-          document.querySelectorAll(".semi-circle").forEach((el) => {
-            el.style.stroke = "lightgrey";
-            el.style.fill = "rgba(211, 211, 211, 0.3)";
-            el.style.filter = "none"; // remove green blur
-          });
-          toggleButton.classList.remove("on");
-          toggleButton.classList.add("off");
-          toggleButton.textContent = "Blue light + NaFl";
-        }
-      });
-
-      // Update mires position – apply automatic drift only on desktop
-      function updateMiresPosition() {
-        if (!isMobileDevice()) {
-          separation += driftFactor * 0.2;
-          if (separation > maxSeparation) separation = maxSeparation;
-          if (separation < minSeparation) separation = minSeparation;
-          updateSeparation();
-        }
-
-        const blueCircleRect = blueCircle.getBoundingClientRect();
-        const miresRect = mires.getBoundingClientRect();
-        const centreX = blueCircleRect.width / 2;
-        const centreY = blueCircleRect.height / 2;
-
-        const distanceFromCentre = Math.sqrt(
-          miresPosition.left ** 2 + miresPosition.top ** 2,
-        );
-        const maxDistance = blueCircleRect.width / 2 - miresRect.width / 2;
-        const minDriftSpeed = 5;
-        const maxDriftSpeed = 10;
-        const driftSpeed =
-          minDriftSpeed +
-          (maxDriftSpeed - minDriftSpeed) * (distanceFromCentre / maxDistance);
-
-        let offsetX = (Math.random() - 0.5) * driftSpeed * jitterFactor;
-        let offsetY = (Math.random() - 0.5) * driftSpeed * jitterFactor;
-        miresPosition.left += offsetX;
-        miresPosition.top += offsetY;
-
-        if (Math.random() < 0.1) {
-          let suddenX = (Math.random() - 0.5) * driftSpeed * suddenFactor;
-          let suddenY = (Math.random() - 0.5) * driftSpeed * suddenFactor;
-          miresPosition.left += suddenX;
-          miresPosition.top += suddenY;
-        }
-
-        if (miresPosition.top < -centreY + miresRect.height / 2)
-          miresPosition.top = -centreY + miresRect.height / 2;
-        if (miresPosition.top > centreY - miresRect.height / 2)
-          miresPosition.top = centreY - miresRect.height / 2;
-        if (miresPosition.left < -centreX + miresRect.width / 2)
-          miresPosition.left = -centreX + miresRect.width / 2;
-        if (miresPosition.left > centreX - miresRect.width / 2)
-          miresPosition.left = centreX - miresRect.width / 2;
-
-        updateMiresTransform();
-      }
-
-      // Keyboard controls (desktop)
-      function handleKeyPress(event) {
-        const key = event.key.toLowerCase();
-        const step = 20;
-
-        if (event.altKey) {
-          switch (key) {
-            case "arrowup":
-              jitterFactor += 0.1;
-              if (jitterFactor > parseFloat(jitterSlider.max))
-                jitterFactor = parseFloat(jitterSlider.max);
-              jitterSlider.value = jitterFactor;
-              jitterValue.textContent = jitterFactor.toFixed(1);
-              break;
-            case "arrowdown":
-              jitterFactor -= 0.1;
-              if (jitterFactor < parseFloat(jitterSlider.min))
-                jitterFactor = parseFloat(jitterSlider.min);
-              jitterSlider.value = jitterFactor;
-              jitterValue.textContent = jitterFactor.toFixed(1);
-              break;
-            case "arrowright":
-              suddenFactor += 0.1;
-              if (suddenFactor > parseFloat(suddenSlider.max))
-                suddenFactor = parseFloat(suddenSlider.max);
-              suddenSlider.value = suddenFactor;
-              suddenValue.textContent = suddenFactor.toFixed(1);
-              break;
-            case "arrowleft":
-              suddenFactor -= 0.1;
-              if (suddenFactor < parseFloat(suddenSlider.min))
-                suddenFactor = parseFloat(suddenSlider.min);
-              suddenSlider.value = suddenFactor;
-              suddenValue.textContent = suddenFactor.toFixed(1);
-              break;
-          }
-          return;
-        }
-
-        switch (key) {
-          case "arrowup":
-            miresPosition.top -= step;
-            break;
-          case "arrowdown":
-            miresPosition.top += step;
-            break;
-          case "arrowleft":
-            miresPosition.left -= step;
-            break;
-          case "arrowright":
-            miresPosition.left += step;
-            break;
-          case "r":
-            separation += 5;
-            if (separation > maxSeparation) separation = maxSeparation;
-            updateSeparation();
-            break;
-          case "f":
-            separation -= 5;
-            if (separation < minSeparation) separation = minSeparation;
-            updateSeparation();
-            break;
-          case "z":
-            scale += 0.1;
-            break;
-          case "x":
-            scale -= 0.1;
-            if (scale < 0.1) scale = 0.1;
-            break;
-        }
-
-        const blueCircleRect = blueCircle.getBoundingClientRect();
-        const miresRect = mires.getBoundingClientRect();
-        const centreX = blueCircleRect.width / 2;
-        const centreY = blueCircleRect.height / 2;
-
-        if (miresPosition.top < -centreY + miresRect.height / 2)
-          miresPosition.top = -centreY + miresRect.height / 2;
-        if (miresPosition.top > centreY - miresRect.height / 2)
-          miresPosition.top = centreY - miresRect.height / 2;
-        if (miresPosition.left < -centreX + miresRect.width / 2)
-          miresPosition.left = -centreX + miresRect.width / 2;
-        if (miresPosition.left > centreX - miresRect.width / 2)
-          miresPosition.left = centreX - miresRect.width / 2;
-
-        updateMiresTransform();
-      }
-
-      document.addEventListener("keydown", handleKeyPress);
-      setInterval(updateMiresPosition, 100);
-
-      // Touch: Pinch to zoom
-      let initialPinchDistance = null;
-      let initialScale = scale;
-
-      function handleTouchStart(event) {
-        if (event.touches.length === 2) {
-          initialPinchDistance = getDistance(
-            event.touches[0],
-            event.touches[1],
-          );
-          initialScale = scale;
-        }
-      }
-
-      function handleTouchMove(event) {
-        if (event.touches.length === 2 && initialPinchDistance !== null) {
-          const newPinchDistance = getDistance(
-            event.touches[0],
-            event.touches[1],
-          );
-          const pinchChange = newPinchDistance - initialPinchDistance;
-          scale = initialScale + pinchChange * 0.01;
-          if (scale < 0.1) scale = 0.1;
-          updateMiresTransform();
-        }
-      }
-
-      function getDistance(touch1, touch2) {
-        const x = touch1.pageX - touch2.pageX;
-        const y = touch1.pageY - touch2.pageY;
-        return Math.sqrt(x * x + y * y);
-      }
-
-      // Touch: Swipe to move mires
-      let touchStartX = 0;
-      let touchStartY = 0;
-
-      function handleTouchStartMove(event) {
-        if (event.touches.length === 1) {
-          touchStartX = event.touches[0].pageX;
-          touchStartY = event.touches[0].pageY;
-        }
-      }
-
-      function handleTouchMoveMove(event) {
-        if (event.touches.length === 1) {
-          const touchEndX = event.touches[0].pageX;
-          const touchEndY = event.touches[0].pageY;
-          const moveX = touchEndX - touchStartX;
-          const moveY = touchEndY - touchStartY;
-          miresPosition.left += moveX;
-          miresPosition.top += moveY;
-          touchStartX = touchEndX;
-          touchStartY = touchEndY;
-          updateMiresTransform();
-        }
-      }
-
-      // Attach touch events
-      document.addEventListener("touchstart", handleTouchStart);
-      document.addEventListener("touchmove", handleTouchMove);
-      document.addEventListener("touchstart", handleTouchStartMove);
-      document.addEventListener("touchmove", handleTouchMoveMove);
-    </script>
+    <script src="app.bundle.js"></script>
+    <script src="cup-achievement.js"></script>
   </body>
 </html>

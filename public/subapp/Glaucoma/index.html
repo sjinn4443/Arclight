@@ -1,0 +1,576 @@
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Glaucoma is a teaching tool for optic disc assessment, IOP context, risk scoring and referral decisions."
+    />
+    <meta name="author" content="WJW" />
+    <meta name="date" content="18/5/2026" />
+    <meta name="application-name" content="Glaucoma" />
+    <title>Glaucoma</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <!-- Preconnect and DNS prefetch hints -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
+    <!-- Preload Google Fonts -->
+    <link
+      rel="preload"
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;700&display=swap"
+      as="style"
+      onload="
+        this.onload = null;
+        this.rel = 'stylesheet';
+      "
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;700&display=swap"
+      />
+    </noscript>
+    <!-- Local CSS -->
+    <link rel="stylesheet" href="styles.css?v=20260518-appbar" />
+    <link rel="stylesheet" href="cup-achievement.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header class="app-bar">
+        <button
+          type="button"
+          id="burger-icon"
+          class="icon-button"
+          aria-label="Open menu"
+          aria-controls="sideMenu"
+          aria-expanded="false"
+        >
+          <span
+            class="appbar-glyph appbar-glyph-menu"
+            aria-hidden="true"
+          ></span>
+        </button>
+        <h1>Glaucoma</h1>
+        <button
+          type="button"
+          id="info-icon"
+          class="icon-button"
+          aria-label="Open app info"
+          aria-controls="info-popup"
+          aria-expanded="false"
+          aria-haspopup="dialog"
+        >
+          <span class="appbar-glyph appbar-glyph-info" aria-hidden="true"
+            >i</span
+          >
+        </button>
+      </header>
+
+      <nav
+        id="sideMenu"
+        class="side-menu"
+        aria-label="Main menu"
+        aria-hidden="true"
+        inert
+      >
+        <button type="button" class="mcq-level-button" data-level-index="0">
+          Primary MCQ
+        </button>
+        <button type="button" class="mcq-level-button" data-level-index="1">
+          Intermediate MCQ
+        </button>
+        <button type="button" class="mcq-level-button" data-level-index="2">
+          Advanced MCQ
+        </button>
+        <section
+          id="cupAchievement"
+          class="cup-achievement is-locked"
+          hidden
+          aria-hidden="true"
+          data-cup-app="Glaucoma"
+        >
+          <span class="cup-achievement-icon" aria-hidden="true">&#9733;</span>
+          <span class="cup-achievement-details">
+            <span id="cupAchievementLabel"
+              >Cup locked: complete Advanced MCQ</span
+            >
+            <span
+              id="cupAchievementCode"
+              class="cup-achievement-code"
+              hidden
+            ></span>
+          </span>
+          <button
+            id="downloadCupCertificateButton"
+            class="cup-download-button"
+            type="button"
+            disabled
+            data-locked="true"
+          >
+            Save
+          </button>
+        </section>
+      </nav>
+
+      <!-- Hidden info box -->
+      <div id="info-popup" role="dialog" aria-labelledby="info-popup-title">
+        <div class="info-popup-header">
+          <h2 id="info-popup-title">Quick guide</h2>
+          <button
+            type="button"
+            class="popup-close-button"
+            aria-label="Close popup"
+          >
+            &times;
+          </button>
+        </div>
+        <div class="info-popup-body">
+          <section
+            class="info-look-section"
+            aria-labelledby="info-glaucoma-title"
+          >
+            <p id="info-glaucoma-title" class="info-look-title">
+              Glaucoma risk
+            </p>
+            <p>Assess glaucoma vision-loss risk in seconds.</p>
+          </section>
+          <hr class="info-divider" />
+          <div class="info-look-guide">
+            <section
+              class="info-look-section info-look-section--basics"
+              aria-labelledby="info-basics-title"
+            >
+              <p id="info-basics-title" class="info-look-title">Basics</p>
+              <div class="info-basics-grid">
+                <span class="info-basics-cue"
+                  ><strong>C/D</strong><small>cup size?</small></span
+                >
+                <span class="info-basics-cue"
+                  ><strong>IOP</strong><small>pressure?</small></span
+                >
+                <span class="info-basics-cue"
+                  ><strong>Risk</strong><small>other signs?</small></span
+                >
+              </div>
+            </section>
+            <section
+              class="info-look-section info-look-section--detail"
+              aria-labelledby="info-detail-title"
+            >
+              <p id="info-detail-title" class="info-look-title">More detail</p>
+              <p>
+                <strong>C/D:</strong> match the closest optic cup/disc ratio.
+              </p>
+              <p>
+                <strong>IOP:</strong> use measured pressure when available, or
+                palpation if not.
+              </p>
+              <p>
+                <strong>Risk:</strong> rim signs, fields, pupils, VA and risk
+                factors refine the result.
+              </p>
+            </section>
+          </div>
+          <hr class="info-divider" />
+          <p class="info-teaching-note">
+            Teaching aid, not final diagnosis. Details combined are powerful.
+          </p>
+        </div>
+        <details class="info-scoring-details">
+          <summary class="info-scoring-summary">How scoring works</summary>
+          <div class="info-compact-logic">
+            <p>
+              <strong>Grid:</strong> IOP + C/D; rock palp = emergency warning.
+            </p>
+            <p>
+              <strong>IOP:</strong> &le;20 +0 | 20-24 +1 | 25-29 +2 | &ge;30 +3.
+            </p>
+            <p>
+              <strong>Add:</strong> rim +1; fields +1; pupils +0.5; VA +0.25-1;
+              risks +0.2 each.
+            </p>
+            <p>
+              <strong>Shift:</strong> add-ons &ge;2 move one row up; disc S
+              +2/right, L -2/left.
+            </p>
+          </div>
+          <ol class="info-logic-list" id="info-logic-list"></ol>
+          <p class="info-logic-version" id="info-logic-version"></p>
+        </details>
+      </div>
+
+      <main class="main questionnaire">
+        <!-- Top Content: IOP, C/D Ratio and Disc Size -->
+        <div class="top-content">
+          <!-- Left Column: Digital palpation + IOP -->
+          <div class="iop-control-group">
+            <div
+              class="palpation-options"
+              role="group"
+              aria-label="Digital palpation"
+            >
+              <label><strong>Palp</strong></label>
+              <div class="palpation-buttons">
+                <button
+                  type="button"
+                  class="palpation-button"
+                  data-palpation="normal"
+                >
+                  Normal
+                </button>
+                <button
+                  type="button"
+                  class="palpation-button"
+                  data-palpation="firm"
+                >
+                  Firm
+                </button>
+                <button
+                  type="button"
+                  class="palpation-button"
+                  data-palpation="rock"
+                >
+                  Rock
+                </button>
+              </div>
+            </div>
+
+            <div class="iop-options">
+              <label><strong>IOP</strong></label>
+              <div class="iop-radio">
+                <!-- Ensure these match JS exactly -->
+                <label
+                  ><input type="radio" name="iop" value="lte20" /> &le;20</label
+                >
+              </div>
+              <div class="iop-radio">
+                <label
+                  ><input type="radio" name="iop" value="20-24" /> 20-24</label
+                >
+              </div>
+              <div class="iop-radio">
+                <label
+                  ><input type="radio" name="iop" value="25-29" /> 25-29</label
+                >
+              </div>
+              <div class="iop-radio">
+                <label
+                  ><input type="radio" name="iop" value="gte30" /> &ge;30</label
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- Middle Column: C/D Ratio -->
+          <div class="selection-area">
+            <div class="ratio-grid" id="ratio-grid">
+              <div class="ratio-button" data-ratio="0-0.2">
+                <img
+                  src="assets/images/01.webp"
+                  alt="0-0.2"
+                  class="ratio-image"
+                />
+              </div>
+              <div class="ratio-button" data-ratio="0.3-0.5">
+                <img
+                  src="assets/images/04.webp"
+                  alt="0.3-0.5"
+                  class="ratio-image"
+                />
+              </div>
+              <div class="ratio-button" data-ratio="0.6-0.8">
+                <img
+                  src="assets/images/07.webp"
+                  alt="0.6-0.8"
+                  class="ratio-image"
+                />
+              </div>
+              <div class="ratio-button" data-ratio="0.9-1">
+                <img
+                  src="assets/images/09.webp"
+                  alt="0.9-1"
+                  class="ratio-image"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Disc Size -->
+          <div class="disc-size-selection">
+            <div class="disc-size-buttons">
+              <div class="disc-button-stack">
+                <div class="disc-button" data-size="Small">S</div>
+                <div class="disc-button selected" data-size="Medium">M</div>
+                <div class="disc-button" data-size="Large">L</div>
+              </div>
+              <div class="info-icon" data-popup-target="sizes-popup">i</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Specific Section to be Centered -->
+        <div class="questionnaire-section-container">
+          <!-- Thin Rim Question -->
+          <div class="question">
+            <label class="thin-rim-label">
+              Thin rim/notch, Haem, Lam Crib, BV's?
+              <input
+                type="radio"
+                name="thin_rims"
+                value="Yes"
+                data-toggleable="true"
+              />
+              <span class="info-icon" data-popup-target="rim-popup">i</span>
+            </label>
+          </div>
+
+          <!-- Inline Questions: Fields, Pupils, BCVA -->
+          <div class="inline-questions">
+            <div class="question">
+              <label>
+                Susp Fields?
+                <input
+                  type="radio"
+                  name="field_of_vision_problem"
+                  value="Yes"
+                  data-toggleable="true"
+                />
+              </label>
+            </div>
+            <div class="question">
+              <label>
+                Susp Pupils?
+                <input
+                  type="radio"
+                  name="suspect_pupils"
+                  value="Yes"
+                  data-toggleable="true"
+                />
+              </label>
+            </div>
+            <div class="question">
+              <label for="vision">VA:</label>
+              <select name="BCVA" id="vision">
+                <option value=""></option>
+                <option value="6/6">6/6</option>
+                <option value="6/12">6/12</option>
+                <option value="6/36">6/36</option>
+                <option value="6/60">6/60</option>
+                <option value="HM">HM</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Risk Factors -->
+          <div class="question">
+            <div class="options">
+              <label
+                ><input type="checkbox" name="other_risk_factors" value="Age" />
+                Age</label
+              >
+              <label
+                ><input
+                  type="checkbox"
+                  name="other_risk_factors"
+                  value="Race"
+                />
+                Race</label
+              >
+              <label
+                ><input
+                  type="checkbox"
+                  name="other_risk_factors"
+                  value="Family Hist"
+                />
+                Family Hist</label
+              >
+              <label
+                ><input
+                  type="checkbox"
+                  name="other_risk_factors"
+                  value="Myopia"
+                />
+                Myopia</label
+              >
+              <label
+                ><input
+                  type="checkbox"
+                  name="other_risk_factors"
+                  value="Diabetes/BP"
+                />
+                Diabetes</label
+              >
+            </div>
+          </div>
+        </div>
+
+        <!-- Risk Grid, Reasoning & Final Message -->
+        <div class="risk-grid-container">
+          <div class="risk-grid-wrapper">
+            <span class="risk-grid-iop-axis" aria-hidden="true">IOP</span>
+            <table class="risk-grid-table">
+              <thead>
+                <tr>
+                  <th class="no-border cd-axis-cell">
+                    <span class="cd-axis-label">C/D</span>
+                  </th>
+                  <th class="no-border">0-0.2</th>
+                  <th class="no-border">0.3-0.5</th>
+                  <th class="no-border">0.6-0.8</th>
+                  <th class="no-border">0.9-1</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <!-- Row 1: ≥30 -->
+                  <td class="no-border">&ge;30</td>
+                  <td class="risk-cell orange" id="cell_r1_c1">
+                    <div class="cell-content"></div>
+                  </td>
+                  <td class="risk-cell red" id="cell_r1_c2">
+                    <div class="cell-content"></div>
+                  </td>
+                  <td class="risk-cell red" id="cell_r1_c3">
+                    <div class="cell-content"></div>
+                  </td>
+                  <td class="risk-cell red" id="cell_r1_c4">
+                    <div class="cell-content"></div>
+                  </td>
+                </tr>
+                <tr>
+                  <!-- Row 2: 25-29 -->
+                  <td class="no-border">25-29</td>
+                  <td class="risk-cell orange" id="cell_r2_c1">
+                    <div class="cell-content"></div>
+                  </td>
+                  <td class="risk-cell orange" id="cell_r2_c2">
+                    <div class="cell-content"></div>
+                  </td>
+                  <td class="risk-cell red" id="cell_r2_c3">
+                    <div class="cell-content"></div>
+                  </td>
+                  <td class="risk-cell darkgrey" id="cell_r2_c4">
+                    <div class="cell-content"></div>
+                  </td>
+                </tr>
+                <tr>
+                  <!-- Row 3: 20-24 -->
+                  <td class="no-border">20-24</td>
+                  <td class="risk-cell white" id="cell_r3_c1">
+                    <div class="cell-content"></div>
+                  </td>
+                  <td class="risk-cell green" id="cell_r3_c2">
+                    <div class="cell-content"></div>
+                  </td>
+                  <td class="risk-cell orange" id="cell_r3_c3">
+                    <div class="cell-content"></div>
+                  </td>
+                  <td class="risk-cell darkgrey" id="cell_r3_c4">
+                    <div class="cell-content"></div>
+                  </td>
+                </tr>
+                <tr>
+                  <!-- Row 4: ≤20 -->
+                  <td class="no-border">&le;20</td>
+                  <td class="risk-cell white" id="cell_r4_c1">
+                    <div class="cell-content"></div>
+                  </td>
+                  <td class="risk-cell white" id="cell_r4_c2">
+                    <div class="cell-content"></div>
+                  </td>
+                  <td class="risk-cell green" id="cell_r4_c3">
+                    <div class="cell-content"></div>
+                  </td>
+                  <td class="risk-cell darkgrey" id="cell_r4_c4">
+                    <div class="cell-content"></div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="reasoning-window" id="reasoning-window"></div>
+        <div class="final-message" id="final-message"></div>
+      </main>
+    </div>
+
+    <!-- Popup Containers -->
+    <div id="sizes-popup" class="popup">
+      <button type="button" class="popup-close-button" aria-label="Close popup">
+        ×
+      </button>
+      <img
+        src="assets/images/size.webp"
+        alt="Disc Size Explanation"
+        class="popup-image"
+      />
+      <p>Gauge disc size:</p>
+      <ul>
+        <li><strong>Smaller</strong> - <em>blurred, raised, 'crowded'</em></li>
+        <li>
+          <strong>Larger</strong> -
+          <em>clear margins, crescented, pigmented</em>
+        </li>
+      </ul>
+      <p>> Larger discs are 'safer' <</p>
+    </div>
+
+    <div id="rim-popup" class="popup">
+      <button type="button" class="popup-close-button" aria-label="Close popup">
+        ×
+      </button>
+      <img
+        src="assets/images/rim.webp"
+        alt="Thin Rim Explanation"
+        class="popup-image"
+      />
+      <ul>
+        <li><strong>Thin rim/notch</strong> - advanced tissue loss</li>
+        <li><strong>Haemorrhage</strong> - nerve fibre damage</li>
+        <li><strong>Visible lamina cribrosa</strong> - deep cupping</li>
+        <li>
+          <strong>Odd or displaced vessels</strong> - structural changes or
+          abnormal branching
+        </li>
+        <li>
+          <strong>Pigment changes at disc margin</strong> - myopia or
+          chorioretinal atrophy
+        </li>
+        <li>
+          <strong>Baring of circumlinear vessels</strong> - thinning of
+          neuroretinal rim
+        </li>
+        <li><strong>Bayoneting</strong> - advanced cupping</li>
+      </ul>
+    </div>
+
+    <div id="mcqModal" class="modal" aria-hidden="true">
+      <div class="modal-content">
+        <button
+          id="closeMcqModal"
+          class="close-modal-button"
+          type="button"
+          aria-label="Close MCQ"
+        >
+          <span class="close-glyph" aria-hidden="true">×</span>
+        </button>
+        <h2 id="mcqTitle">MCQ Test</h2>
+        <div id="mcqTimer" class="mcq-timer" hidden></div>
+        <div id="mcqContainer"></div>
+        <div class="mcq-actions">
+          <button id="submitMcqButton" type="button" class="mcq-submit">
+            Submit
+          </button>
+        </div>
+        <div id="mcqResult" class="mcq-result"></div>
+      </div>
+    </div>
+
+    <!-- External Calculator Script -->
+    <script src="app.bundle.js"></script>
+    <script src="cup-achievement.js"></script>
+  </body>
+</html>

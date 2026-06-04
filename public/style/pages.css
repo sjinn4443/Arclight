@@ -6354,6 +6354,19 @@ select.onb-input.has-value + .onb-select-caret {
   align-items: center;
 }
 
+#interactiveLearningPage .pupil-level--primary .lesson-row--interactive .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/primary_interactive.webp") !important;
+  background-position: center;
+}
+
+#interactiveLearningPage
+  .pupil-level--intermediate
+  .lesson-row--interactive
+  .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/intermediate_interactive.webp") !important;
+  background-position: center;
+}
+
 #interactiveLearningPage
   #interactiveDemoQuizzesFolders
   .interactive-folder-row {
@@ -23010,5 +23023,1036 @@ img[src*="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/"] {
     grid-row: auto !important;
     align-self: auto !important;
     transform: translateY(-50%);
+  }
+}
+
+/* Childhood/glaucoma scroll workshop refinements - do not touch diabetic pages. */
+#childhoodIntroVisualDevelopmentPage,
+#childhoodNormalVisualDevelopmentPage,
+#visualImpairmentPage,
+#signsVICasesPage,
+#childhoodAskQuestionsObservePage,
+#childhoodReferPage,
+.glaucoma-scrolly-page,
+#glaucomaWorkshopPage {
+  font-family: var(--font-family, "Nunito", "Arial", sans-serif) !important;
+}
+
+#childhoodIntroVisualDevelopmentPage .childhood-scrolly-hero h2,
+#childhoodNormalVisualDevelopmentPage .childhood-scrolly-hero h2,
+#visualImpairmentPage .childhood-scrolly-hero h2,
+#signsVICasesPage .childhood-scrolly-hero h2,
+#childhoodAskQuestionsObservePage .childhood-scrolly-hero h2,
+#childhoodReferPage .childhood-scrolly-hero h2,
+.glaucoma-scrolly-hero h2 {
+  font-size: clamp(31px, 9vw, 46px) !important;
+  font-weight: 800 !important;
+  line-height: 1.02 !important;
+  letter-spacing: 0 !important;
+}
+
+#childhoodIntroVisualDevelopmentPage .childhood-scrolly-hero p:last-child,
+#childhoodNormalVisualDevelopmentPage .childhood-scrolly-hero p:last-child,
+#visualImpairmentPage .childhood-scrolly-hero p:last-child,
+#signsVICasesPage .childhood-scrolly-hero p:last-child,
+#childhoodAskQuestionsObservePage .childhood-scrolly-hero p:last-child,
+#childhoodReferPage .childhood-scrolly-hero p:last-child,
+.glaucoma-scrolly-hero p:last-child {
+  font-size: clamp(16px, 4.3vw, 20px) !important;
+  font-weight: 600 !important;
+  line-height: 1.55 !important;
+  letter-spacing: 0 !important;
+}
+
+#childhoodIntroVisualDevelopmentPage .childhood-visual-dev-copy-card p,
+#childhoodNormalVisualDevelopmentPage .childhood-normal-visual-dev-copy-card p,
+#visualImpairmentPage .vi-detail-panel__title,
+#visualImpairmentPage .vi-detail-block__label,
+#signsVICasesPage .childhood-signs-vi-caption,
+#childhoodReferPage .childhood-refer__context,
+#childhoodReferPage .childhood-refer__disease,
+.glaucoma-scrolly-copy p,
+.glaucoma-scrolly-copy li {
+  font-size: clamp(15px, 4.1vw, 18px) !important;
+  line-height: 1.55 !important;
+  letter-spacing: 0 !important;
+}
+
+#childhoodNormalVisualDevelopmentPage .childhood-normal-visual-dev-title,
+.glaucoma-scrolly-copy h3 {
+  font-size: clamp(24px, 7vw, 34px) !important;
+  font-weight: 800 !important;
+  line-height: 1.06 !important;
+  letter-spacing: 0 !important;
+}
+
+#childhoodIntroVisualDevelopmentPage
+  .childhood-visual-dev-panel--intro
+  .childhood-visual-dev-figure {
+  width: min(100%, 320px) !important;
+  max-width: 320px !important;
+  justify-self: center !important;
+}
+
+#childhoodIntroVisualDevelopmentPage
+  .childhood-visual-dev-panel--intro
+  .childhood-visual-dev-figure
+  img {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+#childhoodIntroVisualDevelopmentPage
+  .childhood-visual-dev-panel--intro
+  .childhood-visual-dev-figure--brain {
+  width: min(100%, 280px) !important;
+  max-width: 280px !important;
+  margin-top: -6px !important;
+  margin-bottom: -8px !important;
+}
+
+#childhoodIntroVisualDevelopmentPage
+  .childhood-visual-dev-panel--combined
+  .childhood-visual-dev-scene-card--qno {
+  width: min(100%, 330px) !important;
+}
+
+#childhoodIntroVisualDevelopmentPage .childhood-visual-dev-qno-bubble {
+  width: min(70%, 310px) !important;
+  min-width: 198px !important;
+  padding: 13px 15px !important;
+}
+
+#childhoodIntroVisualDevelopmentPage .childhood-visual-dev-qno-bubble__text {
+  font-size: clamp(13px, 3.4vw, 16px) !important;
+  line-height: 1.34 !important;
+}
+
+#childhoodNormalVisualDevelopmentPage
+  .childhood-normal-visual-dev-figure--generated {
+  overflow: hidden;
+  border-radius: 18px;
+}
+
+#childhoodNormalVisualDevelopmentPage
+  .childhood-normal-visual-dev-figure--generated
+  img {
+  aspect-ratio: 3 / 2 !important;
+  object-fit: cover;
+}
+
+#visualImpairmentPage .vi-scene {
+  height: 560px !important;
+  padding: 18px 0 !important;
+  background: #f4fff4 !important;
+}
+
+#visualImpairmentPage .vi-node,
+#visualImpairmentPage .vi-card,
+#visualImpairmentPage .vi-link {
+  filter: none !important;
+}
+
+#visualImpairmentPage .vi-node img,
+#visualImpairmentPage .vi-card img,
+#visualImpairmentPage .vi-link img {
+  display: none !important;
+}
+
+#visualImpairmentPage .vi-node {
+  width: 31% !important;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #15e115, #0a9f0a);
+  box-shadow: 0 14px 28px rgba(10, 159, 10, 0.16);
+}
+
+#visualImpairmentPage .vi-node--retina {
+  background: linear-gradient(145deg, #11c911, #078807);
+}
+
+#visualImpairmentPage .vi-node--brain {
+  background: linear-gradient(145deg, #0ea20e, #066c06);
+}
+
+#visualImpairmentPage .vi-node__label {
+  padding: 17% !important;
+  color: #ffffff !important;
+  font-size: clamp(12px, 2.3vw, 15px) !important;
+  font-weight: 900 !important;
+  line-height: 1.12 !important;
+  text-align: center !important;
+}
+
+#visualImpairmentPage .vi-card {
+  width: 28% !important;
+  min-height: 54px;
+  border-radius: 16px;
+  background: #15e115;
+  box-shadow: 0 12px 24px rgba(10, 159, 10, 0.14);
+}
+
+#visualImpairmentPage .vi-card--retina {
+  background: #0fae0f;
+}
+
+#visualImpairmentPage .vi-card--brain,
+#visualImpairmentPage .vi-card--problems {
+  width: 31% !important;
+  min-height: 84px;
+  background: #087c08;
+}
+
+#visualImpairmentPage .vi-card__label {
+  padding: 8px !important;
+  color: #ffffff !important;
+  font-size: clamp(10px, 2vw, 12px) !important;
+  font-weight: 900 !important;
+  line-height: 1.12 !important;
+  text-align: center !important;
+}
+
+#visualImpairmentPage .vi-card__label--stack {
+  justify-items: start !important;
+  padding: 10px 12px !important;
+  font-size: clamp(9px, 1.8vw, 11px) !important;
+}
+
+#visualImpairmentPage .vi-link {
+  width: 18% !important;
+  height: 0;
+  border-top: 4px dashed #0a9f0a;
+  z-index: 3;
+}
+
+#visualImpairmentPage .vi-link--light-top,
+#visualImpairmentPage .vi-link--retina-top {
+  transform-origin: left center;
+}
+
+#visualImpairmentPage .vi-link--light-bottom,
+#visualImpairmentPage .vi-link--retina-bottom {
+  transform-origin: left center;
+}
+
+#visualImpairmentPage .vi-link--brain {
+  width: 21% !important;
+}
+
+#visualImpairmentPage .vi-detail-block {
+  justify-items: center !important;
+  gap: 0 !important;
+  margin-bottom: clamp(54px, 12vw, 84px) !important;
+}
+
+#visualImpairmentPage .vi-media-frame,
+#visualImpairmentPage .vi-detail-block__label {
+  width: min(100%, 340px) !important;
+  max-width: 340px !important;
+}
+
+#visualImpairmentPage .vi-media-frame {
+  justify-self: center !important;
+  overflow: hidden !important;
+  border-radius: 18px 18px 0 0 !important;
+}
+
+#visualImpairmentPage .vi-detail-block__label {
+  justify-self: center !important;
+  border-radius: 0 0 18px 18px !important;
+  text-align: center !important;
+}
+
+#visualImpairmentPage .vi-media-frame img,
+#visualImpairmentPage .vi-media-frame video {
+  max-height: 250px !important;
+  object-fit: contain !important;
+  background: #111827 !important;
+}
+
+#visualImpairmentPage .vi-media-frame--split {
+  grid-template-columns: 1fr !important;
+}
+
+#visualImpairmentPage .vi-media-frame--split img,
+#visualImpairmentPage .vi-media-frame--split video {
+  border-radius: 0 !important;
+}
+
+#visualImpairmentPage .vi-media-frame--split img:first-child,
+#visualImpairmentPage .vi-media-frame--split video:first-child {
+  border-top-left-radius: 18px !important;
+  border-top-right-radius: 18px !important;
+}
+
+#signsVICasesPage .childhood-signs-vi-panel {
+  overflow: hidden !important;
+}
+
+#signsVICasesPage .childhood-signs-vi-media {
+  width: 100% !important;
+  border-radius: 20px 20px 0 0 !important;
+  background: #111111 !important;
+}
+
+#signsVICasesPage img.childhood-signs-vi-media {
+  display: block !important;
+}
+
+#signsVICasesPage .childhood-signs-vi-caption {
+  margin-top: 0 !important;
+  border-top: 0 !important;
+  border-radius: 0 0 16px 16px !important;
+}
+
+#childhoodAskQuestionsObservePage .childhood-qno-bubble {
+  top: 22% !important;
+}
+
+#childhoodAskQuestionsObservePage .childhood-qno-observe-copy {
+  z-index: 8 !important;
+}
+
+#childhoodAskQuestionsObservePage .childhood-qno-layer--exam-man {
+  z-index: 4 !important;
+}
+
+#childhoodReferPage .childhood-refer {
+  width: min(88vw, 760px) !important;
+  max-width: 760px !important;
+  margin-right: auto !important;
+  margin-left: auto !important;
+  padding: 0 !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  gap: 22px !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+#childhoodReferPage .childhood-refer__entry,
+#childhoodReferPage .childhood-refer__group {
+  box-sizing: border-box;
+  grid-column: 1 / -1 !important;
+  width: 100% !important;
+  max-width: 760px !important;
+  margin-right: auto !important;
+  margin-left: auto !important;
+  padding: 18px !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  gap: 12px !important;
+  overflow: hidden !important;
+  border: 1px solid rgba(15, 23, 42, 0.09) !important;
+  border-radius: 24px !important;
+  background: #ffffff !important;
+  box-shadow: 0 18px 44px rgba(15, 23, 42, 0.11) !important;
+}
+
+#childhoodReferPage .childhood-refer__context {
+  grid-column: 1 / -1 !important;
+  justify-self: start !important;
+  width: auto !important;
+  max-width: 100% !important;
+  margin-bottom: 12px !important;
+  border: 0 !important;
+  background: transparent !important;
+  color: #0a9f0a !important;
+  font-size: 12px !important;
+  text-align: left !important;
+}
+
+#childhoodReferPage .childhood-refer__image,
+#childhoodReferPage .childhood-refer__pair-item .childhood-refer__image {
+  border-radius: 26px 26px 0 0 !important;
+}
+
+#childhoodReferPage .childhood-refer__disease,
+#childhoodReferPage .childhood-refer__pair-item .childhood-refer__disease {
+  position: relative;
+  z-index: 2;
+  margin-top: -16px !important;
+  border-radius: 0 0 18px 18px !important;
+  background: var(--childhood-scrolly-accent) !important;
+  color: #ffffff !important;
+}
+
+#childhoodReferPage .childhood-refer__pair {
+  grid-column: 1 / -1 !important;
+  width: 100% !important;
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 14px !important;
+}
+
+#childhoodReferPage .childhood-refer__pair-item {
+  overflow: hidden !important;
+}
+
+#childhoodReferPage
+  .childhood-refer__pair-item--image-only
+  .childhood-refer__image {
+  border-radius: 26px !important;
+}
+
+.glaucoma-scrolly-hero {
+  min-height: 52dvh !important;
+  margin: 0 auto 18px !important;
+  padding: 34px 0 20px !important;
+  justify-content: center !important;
+}
+
+.glaucoma-scrolly-stack {
+  gap: 30px !important;
+  padding-top: 8px !important;
+}
+
+.glaucoma-scrolly-panel {
+  min-height: 70dvh !important;
+  align-content: center !important;
+  gap: 20px !important;
+}
+
+.glaucoma-scrolly-copy {
+  gap: 14px !important;
+}
+
+.glaucoma-scrolly-copy p,
+.glaucoma-scrolly-copy li {
+  font-weight: 550 !important;
+  line-height: 1.65 !important;
+}
+
+.glaucoma-scrolly-index {
+  margin-bottom: 0 !important;
+  background: var(--glaucoma-scrolly-accent) !important;
+  font-size: 13px !important;
+  letter-spacing: 0 !important;
+}
+
+.glaucoma-scrolly-page[data-glaucoma-level="intermediate"] {
+  --glaucoma-scrolly-accent: #f25600;
+  --glaucoma-scrolly-accent-dark: #c2410c;
+}
+
+.glaucoma-scrolly-page[data-glaucoma-level="intermediate"]
+  :is(
+    .glaucoma-eye-path__nerve,
+    .glaucoma-loss-rate__row strong,
+    .glaucoma-flow span
+  ) {
+  background: var(--glaucoma-scrolly-accent) !important;
+}
+
+.glaucoma-scrolly-page[data-glaucoma-level="intermediate"]
+  .glaucoma-checklist
+  li::before {
+  background: var(--glaucoma-scrolly-accent) !important;
+}
+
+.glaucoma-scrolly-page[data-glaucoma-level="intermediate"] .glaucoma-field-dot {
+  border-color: rgba(242, 86, 0, 0.45) !important;
+}
+
+.glaucoma-flow {
+  gap: 10px !important;
+}
+
+.glaucoma-flow--compact.glaucoma-flow--cycle span,
+.glaucoma-flow--cycle span {
+  animation: glaucomaCyclePulse 4.8s ease-in-out infinite;
+}
+
+.glaucoma-flow--compact.glaucoma-flow--cycle span:nth-of-type(2),
+.glaucoma-flow--cycle span:nth-of-type(2) {
+  animation-delay: 0.45s;
+}
+
+.glaucoma-flow--compact.glaucoma-flow--cycle span:nth-of-type(3),
+.glaucoma-flow--cycle span:nth-of-type(3) {
+  animation-delay: 0.9s;
+}
+
+#glaucomaWorkshopPage #glaucomaWorkshopFolders .glaucoma-folder-row {
+  display: grid !important;
+  grid-template-columns: 72px minmax(0, 1fr) auto;
+  align-items: center !important;
+  min-height: 104px;
+  gap: 12px;
+  padding: 12px 18px !important;
+}
+
+#glaucomaWorkshopPage
+  #glaucomaWorkshopFolders
+  .glaucoma-folder-row
+  .lesson-main {
+  align-self: center !important;
+  display: grid;
+  align-items: center;
+  gap: 0 !important;
+  min-height: 46px;
+}
+
+#glaucomaWorkshopPage
+  #glaucomaWorkshopFolders
+  .glaucoma-folder-row
+  .lesson-top {
+  margin: 0 !important;
+  align-items: center !important;
+}
+
+#glaucomaWorkshopPage
+  #glaucomaWorkshopFolders
+  .glaucoma-folder-row
+  .lesson-type {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  line-height: 1.15;
+}
+
+#glaucomaWorkshopPage
+  #glaucomaWorkshopFolders
+  .glaucoma-folder-row
+  .lesson-cta {
+  align-self: center !important;
+  margin: 0 !important;
+  white-space: nowrap;
+}
+
+@keyframes glaucomaCyclePulse {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+
+  36% {
+    transform: translateY(-2px) scale(1.04);
+  }
+}
+
+@media (min-width: 48em) {
+  #childhoodIntroVisualDevelopmentPage
+    .childhood-visual-dev-panel--intro
+    .childhood-visual-dev-copy-card {
+    grid-column: 1 !important;
+    grid-row: 1 / span 2 !important;
+    align-self: start !important;
+  }
+
+  #childhoodIntroVisualDevelopmentPage
+    .childhood-visual-dev-panel--intro
+    .childhood-visual-dev-figure--hero {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    align-self: start !important;
+    width: min(100%, 280px) !important;
+    max-width: 280px !important;
+  }
+
+  #childhoodIntroVisualDevelopmentPage
+    .childhood-visual-dev-panel--intro
+    .childhood-visual-dev-figure--brain {
+    grid-column: 2 !important;
+    grid-row: 2 !important;
+    align-self: start !important;
+    width: min(100%, 220px) !important;
+    max-width: 220px !important;
+    margin-top: -4px !important;
+  }
+
+  #childhoodNormalVisualDevelopmentPage
+    .childhood-normal-visual-dev-section:not(:first-child)
+    > .childhood-normal-visual-dev-figure--generated {
+    width: min(42%, 330px) !important;
+  }
+}
+
+@media (max-width: 47.9375em) {
+  #childhoodIntroVisualDevelopmentPage
+    .childhood-visual-dev-panel--intro
+    .childhood-visual-dev-figure {
+    width: min(100%, 270px) !important;
+    max-width: 270px !important;
+  }
+
+  #childhoodIntroVisualDevelopmentPage
+    .childhood-visual-dev-panel--intro
+    .childhood-visual-dev-figure--brain {
+    width: min(100%, 230px) !important;
+    max-width: 230px !important;
+  }
+
+  #visualImpairmentPage .vi-scene {
+    height: 500px !important;
+  }
+
+  #visualImpairmentPage .vi-node {
+    width: 37% !important;
+  }
+
+  #visualImpairmentPage .vi-card {
+    width: 31% !important;
+  }
+
+  #visualImpairmentPage .vi-card--brain,
+  #visualImpairmentPage .vi-card--problems {
+    width: 34% !important;
+  }
+
+  #visualImpairmentPage .vi-node__label {
+    font-size: clamp(10px, 3vw, 13px) !important;
+  }
+
+  #visualImpairmentPage .vi-card__label {
+    font-size: clamp(9px, 2.6vw, 11px) !important;
+  }
+
+  #childhoodReferPage .childhood-refer__entry,
+  #childhoodReferPage .childhood-refer__group {
+    padding: 14px !important;
+  }
+
+  #childhoodReferPage .childhood-refer__pair {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  #glaucomaWorkshopPage #glaucomaWorkshopFolders .glaucoma-folder-row {
+    grid-template-columns: 70px minmax(0, 1fr) auto;
+    width: min(92%, 430px) !important;
+    padding: 12px 14px !important;
+  }
+
+  .glaucoma-scrolly-panel {
+    min-height: 64dvh !important;
+  }
+}
+
+/* Childhood/glaucoma scroll follow-up refinements. Diabetic pages are not targeted. */
+#childhoodIntroVisualDevelopmentPage
+  :is(.childhood-visual-dev-copy-card p, .childhood-visual-dev-observe-copy),
+#childhoodNormalVisualDevelopmentPage .childhood-normal-visual-dev-copy-card p,
+#visualImpairmentPage :is(.vi-detail-panel__title, .vi-detail-block__label),
+#signsVICasesPage .childhood-signs-vi-caption,
+#childhoodReferPage .childhood-refer__context,
+.glaucoma-scrolly-copy :is(p, li) {
+  font-size: clamp(15px, 4.1vw, 18px) !important;
+  font-weight: 550 !important;
+  line-height: 1.65 !important;
+  letter-spacing: 0 !important;
+}
+
+#childhoodIntroVisualDevelopmentPage .childhood-visual-dev-panel--intro {
+  position: relative !important;
+  padding-top: 76px !important;
+}
+
+#childhoodIntroVisualDevelopmentPage
+  .childhood-visual-dev-panel--intro::before {
+  position: absolute !important;
+  top: 24px !important;
+  left: 20px !important;
+  z-index: 6 !important;
+}
+
+#childhoodNormalVisualDevelopmentPage
+  .childhood-normal-visual-dev-section:first-of-type
+  .childhood-normal-visual-dev-copy-card {
+  gap: 8px !important;
+}
+
+#childhoodNormalVisualDevelopmentPage
+  .childhood-normal-visual-dev-section:first-of-type
+  .childhood-normal-visual-dev-copy-card
+  p {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+#visualImpairmentPage .vi-node {
+  background: #0aa344 !important;
+  background-image: none !important;
+  box-shadow: 0 10px 22px rgba(7, 80, 40, 0.16) !important;
+}
+
+#visualImpairmentPage .vi-node--retina {
+  background: #07893b !important;
+}
+
+#visualImpairmentPage .vi-node--brain {
+  background: #056b32 !important;
+}
+
+#visualImpairmentPage .vi-link {
+  border-top: 5px dashed #0a8f3a !important;
+  opacity: 0.95 !important;
+}
+
+#visualImpairmentPage .vi-node__label {
+  font-size: clamp(14px, 2.5vw, 18px) !important;
+  font-weight: 800 !important;
+  line-height: 1.22 !important;
+  letter-spacing: 0 !important;
+}
+
+#visualImpairmentPage .vi-card {
+  background: #0aa344 !important;
+  background-image: none !important;
+  box-shadow: 0 8px 18px rgba(7, 80, 40, 0.14) !important;
+}
+
+#visualImpairmentPage .vi-card--retina,
+#visualImpairmentPage .vi-card--brain {
+  background: #07893b !important;
+}
+
+#visualImpairmentPage .vi-card--problems {
+  background: #056b32 !important;
+}
+
+#visualImpairmentPage .vi-card__label {
+  font-size: clamp(12px, 2.1vw, 15px) !important;
+  font-weight: 800 !important;
+  line-height: 1.2 !important;
+  letter-spacing: 0 !important;
+}
+
+#visualImpairmentPage .vi-card__label--stack {
+  justify-items: start !important;
+  align-content: center !important;
+  text-align: left !important;
+  line-height: 1.24 !important;
+}
+
+#visualImpairmentPage .vi-detail-block {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  justify-items: center !important;
+  gap: 0 !important;
+}
+
+#visualImpairmentPage .vi-media-frame {
+  order: 1 !important;
+  grid-column: 1 / -1 !important;
+  width: min(100%, 540px) !important;
+  max-width: 540px !important;
+  border-radius: 18px 18px 0 0 !important;
+}
+
+#visualImpairmentPage .vi-media-frame :is(img, video) {
+  width: 100% !important;
+  max-height: 360px !important;
+  object-fit: contain !important;
+  border-radius: 18px 18px 0 0 !important;
+}
+
+#visualImpairmentPage .vi-detail-block__label {
+  order: 2 !important;
+  grid-column: 1 / -1 !important;
+  width: min(100%, 540px) !important;
+  max-width: 540px !important;
+  margin: 0 !important;
+  padding: 8px 10px !important;
+  border: 0 !important;
+  border-radius: 0 0 14px 14px !important;
+  background: var(--childhood-scrolly-accent) !important;
+  color: #ffffff !important;
+  font-size: 11px !important;
+  font-weight: 950 !important;
+  line-height: 1.1 !important;
+  text-align: center !important;
+  text-transform: none !important;
+}
+
+#childhoodAskQuestionsObservePage .childhood-qno-bubble {
+  top: 18% !important;
+}
+
+#childhoodAskQuestionsObservePage .childhood-qno-observe-copy {
+  z-index: auto !important;
+}
+
+#childhoodAskQuestionsObservePage
+  .childhood-qno-observe-copy
+  :is(.childhood-qno-observe-kicker, .childhood-qno-observe-item) {
+  position: relative !important;
+  z-index: 8 !important;
+}
+
+#childhoodAskQuestionsObservePage .childhood-qno-layer--exam-man {
+  z-index: 4 !important;
+}
+
+#childhoodReferPage .childhood-refer__entry,
+#childhoodReferPage .childhood-refer__group {
+  gap: 12px !important;
+}
+
+#childhoodReferPage .childhood-refer__entry > .childhood-refer__image,
+#childhoodReferPage .childhood-refer__entry > .childhood-refer__disease {
+  width: min(100%, 540px) !important;
+  max-width: 540px !important;
+  justify-self: center !important;
+}
+
+#childhoodReferPage .childhood-refer__context {
+  order: 1 !important;
+  grid-column: 1 / -1 !important;
+}
+
+#childhoodReferPage .childhood-refer__entry > .childhood-refer__image {
+  order: 2 !important;
+  grid-column: 1 / -1 !important;
+}
+
+#childhoodReferPage .childhood-refer__entry > .childhood-refer__disease {
+  order: 3 !important;
+  grid-column: 1 / -1 !important;
+}
+
+#childhoodReferPage .childhood-refer__group > .childhood-refer__pair {
+  order: 2 !important;
+  grid-column: 1 / -1 !important;
+}
+
+#childhoodReferPage .childhood-refer__group > .childhood-refer__disease {
+  order: 3 !important;
+  grid-column: 1 / -1 !important;
+}
+
+#childhoodReferPage .childhood-refer__pair-item > .childhood-refer__image {
+  order: 1 !important;
+}
+
+#childhoodReferPage .childhood-refer__pair-item > .childhood-refer__disease {
+  order: 2 !important;
+}
+
+#childhoodReferPage .childhood-refer__image {
+  display: block !important;
+  aspect-ratio: auto !important;
+  height: auto !important;
+  border-radius: 18px 18px 0 0 !important;
+  object-fit: contain !important;
+  background: #111827 !important;
+}
+
+#childhoodReferPage .childhood-refer__disease,
+#childhoodReferPage .childhood-refer__pair-item .childhood-refer__disease {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  margin-top: -1px !important;
+  padding: 8px 10px !important;
+  border: 0 !important;
+  border-radius: 0 0 14px 14px !important;
+  background: var(--childhood-scrolly-accent) !important;
+  color: #ffffff !important;
+  font-size: 11px !important;
+  font-weight: 950 !important;
+  line-height: 1.1 !important;
+  text-align: center !important;
+  text-transform: none !important;
+}
+
+#childhoodReferPage .childhood-refer__pair {
+  max-width: 540px !important;
+  justify-self: center !important;
+}
+
+#childhoodReferPage .childhood-refer__pair-item {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  align-content: start !important;
+  overflow: visible !important;
+}
+
+#childhoodReferPage .childhood-refer__pair-item .childhood-refer__image {
+  width: 100% !important;
+  max-width: none !important;
+}
+
+#childhoodReferPage
+  .childhood-refer__pair-item--image-only
+  .childhood-refer__image {
+  border-radius: 18px 18px 0 0 !important;
+}
+
+#childhoodReferPage
+  .childhood-refer__group--white-pupil
+  .childhood-refer__pair {
+  grid-template-columns: minmax(0, 1fr) !important;
+}
+
+#childhoodReferPage
+  .childhood-refer__group--white-pupil
+  .childhood-refer__image {
+  width: 100% !important;
+  object-fit: contain !important;
+}
+
+#childhoodReferPage .childhood-refer__group--dermoid > .childhood-refer__pair {
+  order: 2 !important;
+  width: min(100%, 540px) !important;
+}
+
+#childhoodReferPage
+  .childhood-refer__group--dermoid
+  > .childhood-refer__disease {
+  order: 3 !important;
+  width: min(100%, 540px) !important;
+  max-width: 540px !important;
+  justify-self: center !important;
+}
+
+.glaucoma-scrolly-hero {
+  min-height: 46dvh !important;
+  margin: 0 auto 4px !important;
+  padding: 28px 0 12px !important;
+}
+
+.glaucoma-scrolly-stack {
+  gap: 14px !important;
+  padding-top: 0 !important;
+}
+
+.glaucoma-scrolly-panel {
+  min-height: 66dvh !important;
+}
+
+#glaucomaWorkshopPage #glaucomaWorkshopFolders .glaucoma-folder-row {
+  grid-template-columns: 64px minmax(0, 1fr) auto !important;
+  width: min(86%, 392px) !important;
+  min-height: 88px !important;
+  gap: 10px !important;
+  padding: 10px 14px !important;
+}
+
+#glaucomaWorkshopPage #glaucomaWorkshopFolders .glaucoma-folder-row .thumb {
+  width: 56px !important;
+  height: 56px !important;
+}
+
+#glaucomaWorkshopPage
+  #glaucomaWorkshopFolders
+  .glaucoma-folder-row
+  .lesson-main {
+  min-height: 0 !important;
+  align-self: center !important;
+  transform: translateY(-2px);
+}
+
+#glaucomaWorkshopPage
+  #glaucomaWorkshopFolders
+  .glaucoma-folder-row
+  .lesson-top {
+  margin: 0 !important;
+  width: auto !important;
+  min-height: 32px !important;
+}
+
+#glaucomaWorkshopPage
+  #glaucomaWorkshopFolders
+  .glaucoma-folder-row
+  .lesson-type {
+  display: inline-flex !important;
+  align-items: center !important;
+  min-height: 32px !important;
+  line-height: 1.15 !important;
+}
+
+@media (max-width: 47.9375em) {
+  #childhoodIntroVisualDevelopmentPage .childhood-visual-dev-panel--intro {
+    padding-top: 72px !important;
+  }
+
+  #childhoodIntroVisualDevelopmentPage
+    .childhood-visual-dev-panel--intro::before {
+    top: 22px !important;
+    left: 18px !important;
+  }
+
+  #visualImpairmentPage .vi-scene {
+    height: 520px !important;
+  }
+
+  #visualImpairmentPage .vi-node__label {
+    font-size: clamp(12px, 3.6vw, 15px) !important;
+  }
+
+  #visualImpairmentPage .vi-card__label {
+    font-size: clamp(10px, 3vw, 12px) !important;
+  }
+
+  #visualImpairmentPage .vi-link {
+    border-top-width: 4px !important;
+  }
+
+  #childhoodReferPage .childhood-refer__pair,
+  #childhoodReferPage
+    .childhood-refer__group--dermoid
+    > .childhood-refer__pair {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .glaucoma-scrolly-hero {
+    min-height: 44dvh !important;
+    margin-bottom: 0 !important;
+  }
+
+  .glaucoma-scrolly-panel {
+    min-height: 62dvh !important;
+  }
+
+  #glaucomaWorkshopPage #glaucomaWorkshopFolders .glaucoma-folder-row {
+    grid-template-columns: 60px minmax(0, 1fr) auto !important;
+    width: min(88%, 392px) !important;
+    min-height: 84px !important;
+    padding: 10px 12px !important;
+  }
+}
+
+@media (min-width: 48em) {
+  #childhoodNormalVisualDevelopmentPage
+    .childhood-normal-visual-dev-section:first-of-type {
+    align-items: start !important;
+    row-gap: 10px !important;
+  }
+
+  #childhoodNormalVisualDevelopmentPage
+    .childhood-normal-visual-dev-section:first-of-type
+    .childhood-normal-visual-dev-title {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+  }
+
+  #childhoodNormalVisualDevelopmentPage
+    .childhood-normal-visual-dev-section:first-of-type
+    .childhood-normal-visual-dev-copy-card:nth-of-type(1) {
+    grid-column: 1 !important;
+    grid-row: 2 !important;
+  }
+
+  #childhoodNormalVisualDevelopmentPage
+    .childhood-normal-visual-dev-section:first-of-type
+    .childhood-normal-visual-dev-copy-card:nth-of-type(2) {
+    grid-column: 1 !important;
+    grid-row: 3 !important;
+  }
+
+  #childhoodNormalVisualDevelopmentPage
+    .childhood-normal-visual-dev-section:first-of-type
+    .childhood-normal-visual-dev-figure:nth-of-type(1) {
+    grid-column: 2 !important;
+    grid-row: 1 / span 2 !important;
+    align-self: center !important;
+  }
+
+  #childhoodNormalVisualDevelopmentPage
+    .childhood-normal-visual-dev-section:first-of-type
+    .childhood-normal-visual-dev-figure:nth-of-type(2) {
+    grid-column: 2 !important;
+    grid-row: 3 !important;
+    align-self: start !important;
   }
 }

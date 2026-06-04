@@ -1,0 +1,33 @@
+{
+  "name": "swollen-discs",
+  "version": "1.0.0",
+  "description": "An interactive educational web application for ophthalmology training",
+  "type": "module",
+  "main": "index.html",
+  "scripts": {
+    "start": "serve .",
+    "smoke": "node smoke-test.mjs",
+    "test:mcq": "node mcq-unit-test.mjs",
+    "test:viewer": "node viewer-math-test.mjs",
+    "test:questions": "node questions-qa.mjs",
+    "test:integration": "node app-integration-test.mjs",
+    "lint": "eslint .",
+    "format:check": "prettier --check .",
+    "test": "npm run smoke && npm run test:mcq && npm run test:viewer && npm run test:questions && npm run test:integration"
+  },
+  "keywords": [
+    "ophthalmology",
+    "education",
+    "medical",
+    "training",
+    "retina",
+    "disc"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^9.39.1",
+    "prettier": "^3.6.2",
+    "serve": "^14.2.1"
+  }
+}

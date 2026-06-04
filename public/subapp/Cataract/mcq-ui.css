@@ -1,0 +1,306 @@
+/* MCQ drawer and modal styles */
+
+.side-menu {
+  position: fixed;
+  top: calc(var(--header-height) + env(safe-area-inset-top));
+  left: 0;
+  bottom: 0;
+  z-index: 2500;
+  width: min(76vw, 284px);
+  padding: var(--space-16);
+  border-right: 1px solid #c7d4e5;
+  background: #f8fbff;
+  color: var(--text-strong);
+  box-shadow: 8px 0 22px rgba(12, 18, 31, 0.22);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  transform: translateX(-105%);
+  transition: transform 0.24s ease;
+}
+
+.side-menu::before {
+  content: "Menu";
+  display: block;
+  margin: 0 0 var(--space-12);
+  color: #6e7c95;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.side-menu.open {
+  transform: translateX(0);
+}
+
+.mcq-level-menu {
+  margin: 0;
+  padding: 0;
+}
+
+.mcq-level-button {
+  --level-bg: #ffffff;
+  --level-border: rgba(120, 144, 174, 0.32);
+  --level-dot: #6e7c95;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  width: 100%;
+  min-height: var(--tap-target-min);
+  margin: 0 0 8px;
+  padding: 10px 12px;
+  border: 1px solid var(--level-border);
+  border-radius: var(--radius-md);
+  background: var(--level-bg);
+  color: #22314d;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: left;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(18, 23, 34, 0.06);
+  transition:
+    transform var(--motion-standard),
+    background-color var(--motion-standard),
+    border-color var(--motion-standard),
+    box-shadow var(--motion-standard),
+    opacity var(--motion-standard);
+}
+
+.mcq-level-button::before {
+  content: "";
+  flex: 0 0 9px;
+  width: 9px;
+  height: 9px;
+  border-radius: var(--radius-pill);
+  background: var(--level-dot);
+}
+
+.mcq-level-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(18, 23, 34, 0.1);
+}
+
+.mcq-level-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.mcq-level-button[data-level-index="0"] {
+  --level-bg: rgba(29, 166, 93, 0.1);
+  --level-border: rgba(29, 166, 93, 0.28);
+  --level-dot: #16a05a;
+}
+
+.mcq-level-button[data-level-index="1"] {
+  --level-bg: rgba(224, 148, 43, 0.12);
+  --level-border: rgba(209, 126, 24, 0.3);
+  --level-dot: #cf7d18;
+}
+
+.mcq-level-button[data-level-index="2"] {
+  --level-bg: rgba(220, 61, 61, 0.1);
+  --level-border: rgba(190, 52, 42, 0.3);
+  --level-dot: #d33a32;
+}
+
+.mcq-level-button[disabled] {
+  opacity: 0.72;
+  filter: saturate(0.72);
+  cursor: not-allowed;
+}
+
+.mcq-level-button.is-complete::after {
+  content: "done";
+  margin-left: auto;
+  padding: 2px 7px;
+  border-radius: var(--radius-pill);
+  background: rgba(22, 160, 90, 0.12);
+  color: #137a45;
+  font-size: 0.66rem;
+  font-weight: 800;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
+  padding: clamp(16px, 5vh, 40px) 12px max(16px, env(safe-area-inset-bottom));
+  background: rgba(11, 14, 20, 0.58);
+  backdrop-filter: blur(2px);
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.modal.open {
+  display: block;
+}
+
+.modal-content {
+  position: relative;
+  width: min(100%, 620px);
+  max-height: min(86vh, 720px);
+  margin: 0 auto;
+  padding: 16px;
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-panel);
+  background: linear-gradient(180deg, #ffffff, #f9fbff);
+  color: var(--text-strong);
+  box-shadow: var(--shadow-strong);
+  animation: modal-in 0.24s ease-out;
+  display: flex;
+  flex-direction: column;
+}
+
+@supports (height: 100dvh) {
+  .modal-content {
+    max-height: min(86dvh, 720px);
+  }
+}
+
+#mcqTitle {
+  margin: 0 42px 4px 0;
+  color: #18263d;
+  font-size: 1.08rem;
+  font-weight: 800;
+}
+
+.close-modal-button {
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-8);
+  width: var(--tap-target-min);
+  height: var(--tap-target-min);
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-control);
+  background: transparent;
+  color: var(--ink);
+  font-size: 26px;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.close-modal-button:hover {
+  background: rgba(15, 22, 37, 0.08);
+  color: #2e2e2e;
+}
+
+.mcq-timer {
+  min-height: 20px;
+  margin: 0 0 8px;
+  color: var(--text-muted);
+  font-size: 0.84rem;
+  font-weight: 800;
+}
+
+#mcqContainer {
+  flex: 1 1 auto;
+  min-height: 0;
+  margin: 0 -4px 12px 0;
+  padding-right: 4px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.mcq-question {
+  min-inline-size: 0;
+  margin: 0 0 10px;
+  padding: var(--space-12);
+  border: 1px solid rgba(204, 214, 226, 0.8);
+  border-radius: var(--radius-md);
+  background: rgba(248, 251, 255, 0.74);
+}
+
+.mcq-question legend {
+  display: block;
+  float: left;
+  width: 100%;
+  margin: 0 0 8px;
+  padding: 0;
+  color: #18263d;
+  font-size: 0.96rem;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.mcq-option {
+  clear: both;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-8);
+  min-height: var(--tap-target-dense);
+  margin: var(--space-4) 0;
+  padding: var(--space-6);
+  border-radius: var(--radius-sm);
+  color: #243149;
+  font-size: 0.92rem;
+  line-height: 1.24;
+  cursor: pointer;
+  transition: background-color var(--motion-standard);
+}
+
+.mcq-option:hover {
+  background: rgba(15, 107, 220, 0.06);
+}
+
+.mcq-option input[type="radio"] {
+  margin: 2px 0 0;
+}
+
+.mcq-actions {
+  flex: 0 0 auto;
+}
+
+.mcq-submit {
+  min-height: var(--tap-target-min);
+  width: 100%;
+  padding: var(--space-10) var(--space-16);
+  border: 0;
+  border-radius: var(--radius-md);
+  background: linear-gradient(180deg, #11c85c, #0ea84d);
+  color: var(--white);
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 5px 12px rgba(14, 168, 77, 0.3);
+  transition:
+    transform var(--motion-standard),
+    filter var(--motion-standard);
+}
+
+.mcq-submit:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.03);
+}
+
+.mcq-submit:active {
+  transform: translateY(0);
+}
+
+.mcq-submit:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.mcq-result {
+  flex: 0 0 auto;
+  min-height: 20px;
+  margin-top: 10px;
+  color: #18263d;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+@keyframes modal-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}

@@ -1,275 +1,759 @@
-<!-- index.html — Interactive simulation for visualizing and analyzing various squint and palsy conditions, allowing users to adjust pupil size, eyelid ptosis, and reflex color. -->
 <!doctype html>
-<html lang="en">
+<html lang="en-GB">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Squint is an ocular alignment simulator for cover tests, motility patterns, palsies and squint interpretation."
+    />
+    <meta name="author" content="WJW" />
+    <meta name="date" content="18/5/2026" />
+    <meta name="application-name" content="Squint" />
     <title>Squint</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Quicksand:wght@700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="style.css?v=20260518-appbar" />
+    <link rel="stylesheet" href="cup-achievement.css" />
   </head>
   <body>
-    <!-- App Bar -->
     <header class="app-bar">
-      <h1>Squint/Palsy</h1>
+      <button
+        id="sidebar-toggle"
+        class="appbar-button appbar-button-left"
+        type="button"
+        aria-label="Open menu"
+      >
+        <span class="appbar-glyph appbar-glyph-menu" aria-hidden="true"></span>
+      </button>
+      <h1
+        class="app-title"
+        style="display: block; opacity: 1; visibility: visible; color: #ffb000"
+      >
+        Squint
+      </h1>
+      <button
+        id="info-toggle"
+        class="appbar-button appbar-button-right"
+        type="button"
+        aria-label="Open information"
+      >
+        <span class="appbar-glyph appbar-glyph-info" aria-hidden="true">i</span>
+      </button>
     </header>
 
-    <!-- Sidebar Menu -->
-    <!-- Sidebar Menu -->
-    <div id="sidebar" class="sidebar">
-      <div class="sidebar-header">
-        <h2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Conditions</h2>
+    <div id="menu-backdrop" class="menu-backdrop" hidden></div>
 
-        <span id="close-sidebar" class="close-btn">&times;</span>
+    <aside id="sidebar" class="side-menu" aria-hidden="true">
+      <div class="side-menu-header">
+        <h2 class="side-menu-title">Menu</h2>
+        <button
+          id="close-sidebar"
+          class="side-menu-close"
+          type="button"
+          aria-label="Close menu"
+        >
+          &times;
+        </button>
       </div>
-      <ul class="conditions-list">
-        <li>3rd nerve palsy</li>
-        <li>4th nerve palsy</li>
-        <li>6th nerve palsy</li>
-        <li>Horner’s syndrome</li>
-        <li>Mixed squint</li>
-        <li>
-          Exotropia
-          <label><input type="radio" name="exotropia" value="small" /> S</label>
-          <label
-            ><input type="radio" name="exotropia" value="medium" /> M</label
-          >
-          <label><input type="radio" name="exotropia" value="large" /> L</label>
-        </li>
-        <li>
-          Esotropia
-          <label><input type="radio" name="esotropia" value="small" /> S</label>
-          <label
-            ><input type="radio" name="esotropia" value="medium" /> M</label
-          >
-          <label><input type="radio" name="esotropia" value="large" /> L</label>
-        </li>
-        <li>
-          Hypertropia
-          <label
-            ><input type="radio" name="hypertropia" value="small" /> S</label
-          >
-          <label
-            ><input type="radio" name="hypertropia" value="medium" /> M</label
-          >
-          <label
-            ><input type="radio" name="hypertropia" value="large" /> L</label
-          >
-        </li>
-        <li>
-          Hypotropia
-          <label
-            ><input type="radio" name="hypotropia" value="small" /> S</label
-          >
-          <label
-            ><input type="radio" name="hypotropia" value="medium" /> M</label
-          >
-          <label
-            ><input type="radio" name="hypotropia" value="large" /> L</label
-          >
-        </li>
-        <li>
-          Ptosis
-          <label
-            ><input type="radio" name="ptosis" value="slight" /> Slight</label
-          >
-          <label
-            ><input type="radio" name="ptosis" value="moderate" /> Mod</label
-          >
-          <label
-            ><input type="radio" name="ptosis" value="severe" /> Severe</label
-          >
-        </li>
-        <li>Benign anisocoria</li>
-        <li>Adie’s pupil</li>
-        <li>Unilateral dilated pupil</li>
-        <li>Bilateral dilated pupils</li>
-        <li>Unilateral constricted pupil</li>
-        <li>Bilateral constricted pupils</li>
-      </ul>
-      <div class="sidebar-footer">
-        <button id="textMeBtn">Test me!</button>
-      </div>
-    </div>
 
-    <!-- Sidebar Toggle Button -->
-    <div id="sidebar-toggle" class="sidebar-toggle">&#9776;</div>
+      <section class="menu-section">
+        <h3 class="menu-section-title">Presets</h3>
+        <details class="preset-group preset-group-shell" open>
+          <summary class="preset-group-summary">Alignment / palsy</summary>
+          <div class="preset-folders" data-preset-group="alignment">
+            <details
+              class="preset-folder"
+              data-preset-group="alignment"
+              data-preset-folder="primary"
+            >
+              <summary class="preset-folder-summary preset-folder-primary">
+                Primary
+              </summary>
+              <div id="preset-list-alignment-primary" class="preset-list"></div>
+            </details>
+            <details
+              class="preset-folder"
+              data-preset-group="alignment"
+              data-preset-folder="intermediate"
+            >
+              <summary class="preset-folder-summary preset-folder-intermediate">
+                Intermediate
+              </summary>
+              <div
+                id="preset-list-alignment-intermediate"
+                class="preset-list"
+              ></div>
+            </details>
+            <details
+              class="preset-folder"
+              data-preset-group="alignment"
+              data-preset-folder="advanced"
+            >
+              <summary class="preset-folder-summary preset-folder-advanced">
+                Advanced
+              </summary>
+              <div
+                id="preset-list-alignment-advanced"
+                class="preset-list"
+              ></div>
+            </details>
+          </div>
+        </details>
 
-    <!-- Toggle Controls -->
-    <div class="toggle-container" style="padding: 0 15px">
-      <div class="toggle-group">
-        <div class="toggle-reflex">
-          <span class="toggle-label">reflex&nbsp;&nbsp;</span>
-          <label class="switch">
-            <input
-              type="checkbox"
-              id="toggle-reflex"
-              aria-label="Toggle reflex mode"
-            />
-            <span class="toggle-slider"></span>
-          </label>
+        <details class="preset-group preset-group-shell">
+          <summary class="preset-group-summary">Pupil</summary>
+          <div class="preset-folders" data-preset-group="pupil">
+            <details
+              class="preset-folder"
+              data-preset-group="pupil"
+              data-preset-folder="primary"
+            >
+              <summary class="preset-folder-summary preset-folder-primary">
+                Primary
+              </summary>
+              <div id="preset-list-pupil-primary" class="preset-list"></div>
+            </details>
+            <details
+              class="preset-folder"
+              data-preset-group="pupil"
+              data-preset-folder="intermediate"
+            >
+              <summary class="preset-folder-summary preset-folder-intermediate">
+                Intermediate
+              </summary>
+              <div
+                id="preset-list-pupil-intermediate"
+                class="preset-list"
+              ></div>
+            </details>
+            <details
+              class="preset-folder"
+              data-preset-group="pupil"
+              data-preset-folder="advanced"
+            >
+              <summary class="preset-folder-summary preset-folder-advanced">
+                Advanced
+              </summary>
+              <div id="preset-list-pupil-advanced" class="preset-list"></div>
+            </details>
+          </div>
+        </details>
+        <button id="testMeBtn" class="menu-action-button" type="button">
+          Test Me
+        </button>
+      </section>
+
+      <section class="menu-section">
+        <h3 class="menu-section-title">MCQ</h3>
+        <div class="level-button-row" id="mcq-level-buttons">
+          <button
+            type="button"
+            class="level-button is-active"
+            data-mcq-level="primary"
+          >
+            Primary
+          </button>
+          <button
+            type="button"
+            class="level-button"
+            data-mcq-level="intermediate"
+          >
+            Intermediate
+          </button>
+          <button type="button" class="level-button" data-mcq-level="advanced">
+            Advanced
+          </button>
         </div>
-        <div class="toggle-iris">
-          <span class="toggle-label"></span>
-          <select id="iris-colour" aria-label="Iris colour">
-            <option value="dark-brown">dark</option>
-            <option value="light-brown">brown</option>
-            <option value="green" selected>green</option>
-            <option value="blue">blue</option>
-          </select>
+        <button id="open-mcq-btn" class="menu-action-button" type="button">
+          Open MCQ
+        </button>
+        <section
+          id="cupAchievement"
+          class="cup-achievement is-locked"
+          hidden
+          aria-hidden="true"
+          data-cup-app="Squint"
+        >
+          <span class="cup-achievement-icon" aria-hidden="true">&#9733;</span>
+          <span class="cup-achievement-details">
+            <span id="cupAchievementLabel"
+              >Cup locked: complete Advanced MCQ</span
+            >
+            <span
+              id="cupAchievementCode"
+              class="cup-achievement-code"
+              hidden
+            ></span>
+          </span>
+          <button
+            id="downloadCupCertificateButton"
+            class="cup-download-button"
+            type="button"
+            disabled
+            data-locked="true"
+          >
+            Save
+          </button>
+        </section>
+      </section>
+    </aside>
+
+    <section id="mcq-card" class="mcq-overlay" hidden>
+      <div class="mcq-overlay-panel card">
+        <div class="mcq-header">
+          <h2 id="mcq-title" class="mcq-title">MCQ - Primary</h2>
+          <button id="mcq-close-btn" type="button" aria-label="Close MCQ">
+            &times;
+          </button>
         </div>
-        <div class="toggle-sudden">
-          <span class="toggle-label">sudden&nbsp;</span>
-          <label class="switch">
-            <input
-              type="checkbox"
-              id="toggle-sudden"
-              aria-label="Toggle sudden onset indicator"
-            />
-            <span class="toggle-slider"></span>
-          </label>
+        <p id="mcq-meta" class="mcq-meta"></p>
+        <form id="mcq-form" class="mcq-form"></form>
+        <div class="mcq-actions">
+          <button id="mcq-submit" class="mcq-action-button" type="button">
+            Submit
+          </button>
+          <button
+            id="mcq-restart"
+            class="mcq-action-button mcq-action-secondary"
+            type="button"
+          >
+            New set
+          </button>
+        </div>
+        <p id="mcq-result" class="mcq-result"></p>
+      </div>
+    </section>
+
+    <section id="info-popup" class="info-popup" hidden>
+      <div class="info-popup-header">
+        <h2>About</h2>
+        <button id="info-close" type="button" aria-label="Close information">
+          &times;
+        </button>
+      </div>
+      <div class="info-popup-body">
+        <div class="info-look-guide">
+          <section class="info-look-section">
+            <p>Quick teaching simulator for ocular motility and pupil signs.</p>
+            <div class="info-basics-grid" aria-label="Basic scan">
+              <div class="info-basics-cue">
+                <strong>Match</strong>
+                <small>same posture?</small>
+              </div>
+              <div class="info-basics-cue">
+                <strong>Move</strong>
+                <small>full gaze?</small>
+              </div>
+              <div class="info-basics-cue">
+                <strong>Pupils</strong>
+                <small>equal response?</small>
+              </div>
+            </div>
+          </section>
+
+          <section class="info-look-section info-look-section--detail">
+            <p class="info-look-title">More detail</p>
+            <p>
+              <strong>Motility + lids:</strong> drag gaze, compare alignment and
+              look for ptosis.
+            </p>
+            <p>
+              <strong>Light + pupils:</strong> use moon/sun, reflex colour and
+              the swinging-light control.
+            </p>
+          </section>
+
+          <section class="info-look-section info-points">
+            <p>
+              Use Primary, Intermediate and Advanced presets for structured
+              practice.
+            </p>
+            <p>
+              Hold about 3 seconds per eye, swing briskly and keep timing equal.
+            </p>
+            <p>
+              Teaching support only, not final diagnosis.
+              <span class="modal-version-inline">v1 - 18/5/2026</span>
+            </p>
+          </section>
         </div>
       </div>
-    </div>
+    </section>
 
-    <!-- Reflex Colour Slider (Inline Label) -->
-    <div class="toggle-reflex-color">
-      <span class="toggle-label">reflex colour</span>
-      <div class="slider-wrapper" style="width: 150px">
-        <input
-          type="range"
-          id="reflex-color-slider"
-          class="slider"
-          aria-label="Adjust reflex colour"
-          min="0"
-          max="100"
-          value="66"
-          title="Reflex Color"
-        />
-      </div>
-    </div>
+    <main class="main-shell">
+      <section class="card controls-card">
+        <div class="modifier-grid">
+          <div class="toggle-item toggle-item-compact toggle-item-main">
+            <span class="toggle-label">Gaze</span>
+            <label class="switch">
+              <input
+                type="checkbox"
+                id="gaze-toggle"
+                aria-label="Gaze control"
+              />
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
 
-    <!-- Main Content -->
-    <main>
-      <!-- Eyes Wrapper with full-width grey background -->
-      <div class="eyes-wrapper">
+          <div class="toggle-item toggle-item-main">
+            <span class="toggle-label">Dilated</span>
+            <label class="switch">
+              <input
+                type="checkbox"
+                id="toggle-dilated"
+                aria-label="Dilated pupils"
+              />
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+
+          <div class="toggle-item toggle-item-main">
+            <span class="toggle-label">Baby</span>
+            <label class="switch">
+              <input type="checkbox" id="baby-toggle" aria-label="Baby mode" />
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <button
+          id="advanced-signs-toggle"
+          class="toggle-item advanced-pill"
+          type="button"
+          aria-expanded="false"
+          aria-controls="advanced-signs-panel"
+        >
+          <span class="toggle-label">Adv</span>
+          <span
+            id="advanced-signs-glyph"
+            class="advanced-pill-glyph"
+            aria-hidden="true"
+            >+</span
+          >
+        </button>
+
+        <div id="advanced-signs-panel" class="advanced-signs-panel" hidden>
+          <div class="advanced-extra-modifiers">
+            <div class="toggle-item toggle-item-urgency">
+              <span class="toggle-label">Pain/HA</span>
+              <label class="switch">
+                <input
+                  type="checkbox"
+                  id="toggle-pain"
+                  aria-label="Pain or headache"
+                />
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+
+            <div class="toggle-item toggle-item-urgency">
+              <span class="toggle-label" id="sudden-label">Sudden</span>
+              <label class="switch">
+                <input
+                  type="checkbox"
+                  id="toggle-sudden"
+                  aria-label="Sudden onset"
+                />
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+
+            <div class="toggle-item toggle-item-urgency">
+              <span class="toggle-label">Trauma</span>
+              <label class="switch">
+                <input type="checkbox" id="toggle-trauma" aria-label="Trauma" />
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+
+            <div class="toggle-item">
+              <span class="toggle-label">Diplopia</span>
+              <label class="switch">
+                <input
+                  type="checkbox"
+                  id="toggle-diplopia"
+                  aria-label="Diplopia"
+                />
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+
+            <div class="toggle-item toggle-item-select">
+              <span class="toggle-label">Tilt</span>
+              <select id="head-tilt" aria-label="Head tilt">
+                <option value="none" selected>none</option>
+                <option value="right">R</option>
+                <option value="left">L</option>
+              </select>
+            </div>
+
+            <div class="toggle-item">
+              <span class="toggle-label">Tired</span>
+              <label class="switch">
+                <input
+                  type="checkbox"
+                  id="toggle-fatigable"
+                  aria-label="Fatigable symptoms"
+                />
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+
+            <div class="toggle-item">
+              <span class="toggle-label">Manual</span>
+              <label class="switch">
+                <input
+                  type="checkbox"
+                  id="manual-eye-move-toggle"
+                  checked
+                  aria-label="Manual eye movement"
+                />
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+
+            <div class="toggle-item toggle-item-select">
+              <span class="toggle-label">Iris</span>
+              <select id="iris-colour" aria-label="Iris colour">
+                <option value="dark-brown">dark</option>
+                <option value="light-brown">brown</option>
+                <option value="green" selected>green</option>
+                <option value="blue">blue</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="advanced-signs-grid">
+            <div class="toggle-item">
+              <span class="toggle-label">Nystagmus</span>
+              <label class="switch">
+                <input
+                  type="checkbox"
+                  id="toggle-nystagmus"
+                  aria-label="Nystagmus"
+                />
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+
+            <div class="toggle-item toggle-item-select">
+              <span class="toggle-label">Dir</span>
+              <select id="nyst-direction" aria-label="Nystagmus direction">
+                <option value="horizontal" selected>H</option>
+                <option value="vertical">V</option>
+                <option value="mixed">Mixed</option>
+              </select>
+            </div>
+
+            <div class="toggle-item toggle-item-select">
+              <span class="toggle-label">Wave</span>
+              <select id="nyst-wave" aria-label="Nystagmus wave">
+                <option value="jerk" selected>Jerk</option>
+                <option value="pendular">Pendular</option>
+              </select>
+            </div>
+
+            <div class="toggle-item toggle-item-select">
+              <span class="toggle-label">Rate</span>
+              <select id="nyst-rate" aria-label="Nystagmus rate">
+                <option value="slow" selected>Slow</option>
+                <option value="fast">Fast</option>
+              </select>
+            </div>
+
+            <div class="toggle-item toggle-item-select">
+              <span class="toggle-label">Cyclo RE</span>
+              <select id="cyclo-re" aria-label="Cyclo RE">
+                <option value="none" selected>0</option>
+                <option value="in">In</option>
+                <option value="out">Out</option>
+              </select>
+            </div>
+
+            <div class="toggle-item toggle-item-select">
+              <span class="toggle-label">Cyclo LE</span>
+              <select id="cyclo-le" aria-label="Cyclo LE">
+                <option value="none" selected>0</option>
+                <option value="in">In</option>
+                <option value="out">Out</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="advanced-signs-sliders slider-card">
+            <div class="slider-inline-row">
+              <h3 class="card-title slider-inline-title">Pupil size</h3>
+              <div
+                class="sliders-container slider-inline-controls pupil-size-grid"
+              >
+                <div class="slider-wrapper slider-wrapper-pupil">
+                  <span class="pupil-eye-label">RE</span>
+                  <input
+                    type="range"
+                    class="slider"
+                    min="10"
+                    max="55"
+                    value="32"
+                    data-eye="left"
+                    title="Right pupil size"
+                  />
+                  <button class="fade-button" data-eye="left" type="button">
+                    fade
+                  </button>
+                </div>
+                <div class="slider-wrapper slider-wrapper-pupil">
+                  <span class="pupil-eye-label">LE</span>
+                  <input
+                    type="range"
+                    class="slider"
+                    min="10"
+                    max="55"
+                    value="32"
+                    data-eye="right"
+                    title="Left pupil size"
+                  />
+                  <button class="fade-button" data-eye="right" type="button">
+                    fade
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="slider-inline-row">
+              <h3 class="card-title slider-inline-title">Upper lid</h3>
+              <div
+                class="sliders-container slider-inline-controls upper-lid-row"
+              >
+                <div class="slider-wrapper">
+                  <input
+                    type="range"
+                    class="vertical-eye-slider"
+                    min="0"
+                    max="30"
+                    value="0"
+                    data-eye="left"
+                    title="Left upper lid ptosis"
+                  />
+                </div>
+                <div class="slider-wrapper">
+                  <input
+                    type="range"
+                    class="vertical-eye-slider"
+                    min="0"
+                    max="30"
+                    value="0"
+                    data-eye="right"
+                    title="Right upper lid ptosis"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card eyes-card">
+        <div
+          id="preset-flash-label"
+          class="preset-flash-label"
+          aria-live="polite"
+        ></div>
+        <div class="cover-controls">
+          <button
+            id="cover-re-btn"
+            class="cover-btn"
+            type="button"
+            aria-label="Cover RE"
+          >
+            RE
+          </button>
+          <div class="ambient-control" aria-label="Ambient light">
+            <span class="ambient-icon ambient-icon-moon" aria-hidden="true"
+              >Light</span
+            >
+            <label
+              class="switch ambient-switch"
+              aria-label="Ambient light toggle"
+            >
+              <input
+                id="ambient-toggle"
+                type="checkbox"
+                checked
+                aria-label="Toggle ambient light"
+                title="Ambient light"
+              />
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <button
+            id="cover-le-btn"
+            class="cover-btn"
+            type="button"
+            aria-label="Cover LE"
+          >
+            LE
+          </button>
+        </div>
+        <div
+          id="decomp-rest-countdown"
+          class="decomp-rest-countdown"
+          aria-live="polite"
+          hidden
+        ></div>
         <div class="eyes-container">
-          <!-- Left Eye -->
           <div class="eye" data-eye="left" id="left-eye">
             <div class="eye-inner">
               <div class="iris">
+                <div class="iris-cyclo-axis" aria-hidden="true">
+                  <span class="iris-cyclo-line"></span>
+                  <span class="iris-cyclo-mark iris-cyclo-mark-top"></span>
+                  <span class="iris-cyclo-mark iris-cyclo-mark-bottom"></span>
+                </div>
                 <div class="pupil"></div>
               </div>
+              <div class="upper-eyelid"></div>
+              <div class="lower-eyelid"></div>
             </div>
-            <!-- Upper eyelid overlay for ptosis and blink simulation -->
-            <div class="upper-eyelid"></div>
-            <!-- Lower eyelid overlay for blink simulation -->
-            <div class="lower-eyelid"></div>
+            <div class="torch-patch" aria-hidden="true"></div>
+            <div class="eye-occluder" aria-hidden="true"></div>
           </div>
-          <!-- Right Eye -->
+
           <div class="eye" data-eye="right" id="right-eye">
             <div class="eye-inner">
               <div class="iris">
+                <div class="iris-cyclo-axis" aria-hidden="true">
+                  <span class="iris-cyclo-line"></span>
+                  <span class="iris-cyclo-mark iris-cyclo-mark-top"></span>
+                  <span class="iris-cyclo-mark iris-cyclo-mark-bottom"></span>
+                </div>
                 <div class="pupil"></div>
               </div>
+              <div class="upper-eyelid"></div>
+              <div class="lower-eyelid"></div>
             </div>
-            <!-- Upper eyelid overlay for ptosis and blink simulation -->
-            <div class="upper-eyelid"></div>
-            <!-- Lower eyelid overlay for blink simulation -->
-            <div class="lower-eyelid"></div>
+            <div class="torch-patch" aria-hidden="true"></div>
+            <div class="eye-occluder" aria-hidden="true"></div>
           </div>
         </div>
-      </div>
+        <div class="light-controls">
+          <div
+            id="light-drag-zone"
+            class="light-drag-zone"
+            role="slider"
+            aria-label="Torch position"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-valuenow="0"
+          >
+            <button
+              id="light-pill"
+              class="light-pill"
+              type="button"
+              aria-label="Toggle and drag torch"
+            >
+              <span class="light-pill-icon" aria-hidden="true"></span>
+              <span
+                id="light-pill-arrow"
+                class="light-pill-arrow"
+                aria-hidden="true"
+                >&gt;</span
+              >
+            </button>
+          </div>
+        </div>
+      </section>
 
-      <!-- Pupil Size Sliders -->
-      <div class="slider-title">pupil size</div>
-      <div class="sliders-container">
-        <div class="slider-wrapper">
-          <input
-            type="range"
-            class="slider"
-            aria-label="Adjust left pupil size"
-            min="10"
-            max="55"
-            value="32"
-            data-eye="left"
-            title="Pupil size (small > large)"
-          />
-          <div class="slider-tick"></div>
-          <button class="fade-button" data-eye="left">faded</button>
+      <section class="card gaze-card">
+        <div class="gaze-header">
+          <h2 class="card-title gaze-title">Gaze track pad</h2>
         </div>
-        <div class="slider-wrapper">
-          <input
-            type="range"
-            class="slider"
-            aria-label="Adjust right pupil size"
-            min="10"
-            max="55"
-            value="32"
-            data-eye="right"
-            title="Pupil size (small > large)"
-          />
-          <div class="slider-tick"></div>
-          <button class="fade-button" data-eye="right">faded</button>
+        <div id="gaze-muscles" class="gaze-layout" aria-live="polite">
+          <div class="gaze-muscle-row gaze-muscle-column" data-eye="LE">
+            <span class="gaze-muscle-eye">LE</span>
+            <span class="gaze-muscle-chip" data-muscle="SR">SR</span>
+            <span class="gaze-muscle-chip" data-muscle="IR">IR</span>
+            <span class="gaze-muscle-chip" data-muscle="MR">MR</span>
+            <span class="gaze-muscle-chip" data-muscle="LR">LR</span>
+            <span class="gaze-muscle-chip" data-muscle="SO">SO</span>
+            <span class="gaze-muscle-chip" data-muscle="IO">IO</span>
+          </div>
+          <div class="gaze-trackpad-wrap">
+            <div
+              id="gaze-trackpad"
+              class="gaze-trackpad"
+              role="application"
+              aria-label="Drag to move gaze"
+            >
+              <div id="gaze-thumb" class="gaze-thumb" aria-hidden="true"></div>
+            </div>
+          </div>
+          <div class="gaze-muscle-row gaze-muscle-column" data-eye="RE">
+            <span class="gaze-muscle-eye">RE</span>
+            <span class="gaze-muscle-chip" data-muscle="SR">SR</span>
+            <span class="gaze-muscle-chip" data-muscle="IR">IR</span>
+            <span class="gaze-muscle-chip" data-muscle="MR">MR</span>
+            <span class="gaze-muscle-chip" data-muscle="LR">LR</span>
+            <span class="gaze-muscle-chip" data-muscle="SO">SO</span>
+            <span class="gaze-muscle-chip" data-muscle="IO">IO</span>
+          </div>
         </div>
-      </div>
+      </section>
 
-      <!-- Upper Eyelid Ptosis Slider -->
-      <div class="slider-title">upper lid</div>
-      <div class="sliders-container">
-        <div class="slider-wrapper">
-          <input
-            type="range"
-            class="vertical-eye-slider"
-            aria-label="Adjust left upper eyelid"
-            min="0"
-            max="30"
-            value="0"
-            data-eye="left"
-            title="Upper eyelid ptosis"
-          />
-        </div>
-        <div class="slider-wrapper">
-          <input
-            type="range"
-            class="vertical-eye-slider"
-            aria-label="Adjust right upper eyelid"
-            min="0"
-            max="30"
-            value="0"
-            data-eye="right"
-            title="Upper eyelid ptosis"
-          />
-        </div>
-      </div>
-
-      <!-- Output Display -->
-      <div class="output" style="display: none">
+      <div class="output" hidden>
         <p id="right-output">RE: neutral</p>
         <p id="left-output">LE: neutral</p>
       </div>
 
-      <!-- Analysis Display Wrapper -->
-      <div class="analysis-wrapper">
-        <div id="palsy-img-container"></div>
-
-        <!-- Analysis container (visible by default) -->
-        <div class="analysis" id="analysisContainer">
-          <p id="analysis-output">Analysis: neutral</p>
+      <section class="card result-card">
+        <div class="result-header">
+          <div class="result-summary">
+            <h2 class="card-title result-title">Results:</h2>
+            <p id="raw-output-line" class="raw-output-line"></p>
+          </div>
+          <div class="result-header-right">
+            <button id="nextTestBtn" class="next-test-btn" type="button" hidden>
+              Next &gt;
+            </button>
+          </div>
         </div>
+        <div class="analysis-wrapper">
+          <div id="palsy-img-container"></div>
 
-        <!-- Analysis placeholder (hidden by default) -->
-        <div class="analysis" id="analysisPlaceholder" style="display: none">
-          <p>Analysis hidden</p>
-          <button id="showAnswerBtn">Show</button>
+          <div class="analysis" id="analysisContainer">
+            <p id="analysis-output">Analysis: neutral</p>
+          </div>
+
+          <div class="analysis" id="analysisPlaceholder" hidden>
+            <p>Answer hidden</p>
+            <p id="testLevelLine" class="test-level-line" hidden></p>
+            <button id="showAnswerBtn" type="button">Show</button>
+          </div>
         </div>
-      </div>
+      </section>
     </main>
 
-    <script src="script.js"></script>
-    <script src="analysis.js"></script>
+    <script src="src/sim-core.js" defer></script>
+    <script src="src/preset-runner.js" defer></script>
+    <script src="src/state.js" defer></script>
+    <script src="src/output-writer.js" defer></script>
+    <script src="src/light-controller.js" defer></script>
+    <script src="src/eye-effects-controller.js" defer></script>
+    <script src="src/cover-controller.js" defer></script>
+    <script src="src/eye-controller.js" defer></script>
+    <script src="src/gaze-controller.js" defer></script>
+    <script src="src/controls-controller.js" defer></script>
+    <script src="src/ui-shell.js" defer></script>
+    <script src="script.js" defer></script>
+    <script src="src/analysis-core.js" defer></script>
+    <script src="analysis.js" defer></script>
+    <script src="src/mcq-data.js" defer></script>
+    <script src="mcq.js" defer></script>
+    <script src="cup-achievement.js" defer></script>
   </body>
 </html>

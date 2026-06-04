@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Trauma is an ocular trauma calculator for estimating visual outcome and practising injury scoring."
+    />
+    <meta name="author" content="WJW" />
+    <meta name="date" content="18/5/2026" />
+    <meta name="application-name" content="Trauma" />
+    <title>Trauma</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+
+    <link
+      rel="preload"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Quicksand:wght@700&display=swap"
+      as="style"
+      onload="
+        this.onload = null;
+        this.rel = 'stylesheet';
+      "
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Quicksand:wght@700&display=swap"
+      />
+    </noscript>
+
+    <link rel="stylesheet" href="styles.css?v=20260518-sidebar" />
+    <link rel="stylesheet" href="cup-achievement.css" />
+  </head>
+  <body>
+    <header class="app-bar">
+      <button
+        id="sidebar-toggle"
+        class="appbar-button appbar-button-left"
+        type="button"
+        aria-label="Open menu"
+      >
+        <span class="appbar-glyph appbar-glyph-menu" aria-hidden="true"></span>
+      </button>
+      <h1 class="app-title">Trauma</h1>
+      <button
+        id="info-icon"
+        class="appbar-button appbar-button-right"
+        type="button"
+        aria-label="Open information"
+      >
+        <span class="appbar-glyph appbar-glyph-info" aria-hidden="true">i</span>
+      </button>
+    </header>
+
+    <div id="menu-backdrop" class="menu-backdrop" hidden></div>
+    <aside id="sidebar" class="side-menu" inert>
+      <div class="side-menu-header">
+        <h2 class="side-menu-title">Menu</h2>
+        <button
+          id="close-sidebar"
+          class="side-menu-close"
+          type="button"
+          aria-label="Close menu"
+        >
+          &times;
+        </button>
+      </div>
+      <section class="menu-section">
+        <h3 class="menu-section-title">MCQ Levels</h3>
+        <div class="mcq-level-menu" role="group" aria-label="MCQ levels">
+          <button class="mcq-level-button" data-level-index="0" type="button">
+            <span class="mcq-level-button-text">Primary</span>
+            <span class="mcq-level-button-meta">Core use</span>
+          </button>
+          <button class="mcq-level-button" data-level-index="1" type="button">
+            <span class="mcq-level-button-text">Intermediate</span>
+            <span class="mcq-level-button-meta">Applied scoring</span>
+          </button>
+          <button class="mcq-level-button" data-level-index="2" type="button">
+            <span class="mcq-level-button-text">Advanced</span>
+            <span class="mcq-level-button-meta">Boundary cases</span>
+          </button>
+        </div>
+        <section
+          id="cupAchievement"
+          class="cup-achievement is-locked"
+          hidden
+          aria-hidden="true"
+          data-cup-app="Trauma"
+        >
+          <span class="cup-achievement-icon" aria-hidden="true">&#9733;</span>
+          <span class="cup-achievement-details">
+            <span id="cupAchievementLabel"
+              >Cup locked: complete Advanced MCQ</span
+            >
+            <span
+              id="cupAchievementCode"
+              class="cup-achievement-code"
+              hidden
+            ></span>
+          </span>
+          <button
+            id="downloadCupCertificateButton"
+            class="cup-download-button"
+            type="button"
+            disabled
+            data-locked="true"
+          >
+            Save
+          </button>
+        </section>
+        <p class="mcq-menu-note">
+          Start simple, then build scoring confidence.
+        </p>
+      </section>
+    </aside>
+
+    <main class="main-shell">
+      <section id="calculator" class="card calculator-card">
+        <form id="otsForm" class="ots-form">
+          <section class="form-section va-section" aria-labelledby="va-heading">
+            <h2 id="va-heading" class="form-section-title">Presenting VA</h2>
+            <div class="form-group acuity-group">
+              <label for="acuitySelect" class="sr-only">Presenting VA</label>
+              <select id="acuitySelect" required></select>
+            </div>
+          </section>
+
+          <section
+            class="form-section risk-section"
+            aria-labelledby="risk-heading"
+          >
+            <h2 id="risk-heading" class="form-section-title">Risk Factors</h2>
+            <fieldset class="risk-fieldset">
+              <legend class="sr-only">Risk Factors</legend>
+              <div id="optionalFields"></div>
+            </fieldset>
+          </section>
+        </form>
+      </section>
+
+      <section id="result" class="card result-card">
+        <p id="scoreDisplay">
+          <span class="result-text">Estimated VA at 6 months</span>
+          <span id="scoreValue"></span>
+        </p>
+        <div id="outcomeDetails"></div>
+        <section
+          id="calculationDetails"
+          class="calculation-panel"
+          aria-live="polite"
+        >
+          <div class="calculation-row">
+            <button
+              id="calculationToggle"
+              class="calculation-toggle"
+              type="button"
+              aria-controls="calculationContent"
+              aria-expanded="false"
+            >
+              Show calculation
+            </button>
+          </div>
+          <div id="calculationContent" class="calculation-content" hidden></div>
+          <div id="calculationActions" class="calculation-actions" hidden>
+            <div
+              class="result-actions"
+              role="group"
+              aria-label="Result actions"
+            >
+              <button
+                id="copyResultButton"
+                class="result-action-button"
+                type="button"
+                aria-label="Copy result"
+                title="Copy result"
+              >
+                <svg
+                  class="result-action-icon"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <path d="M9 9h11v11H9z"></path>
+                  <path d="M4 4h11v3h-8v8H4z"></path>
+                </svg>
+                <span class="result-action-label">Copy result</span>
+              </button>
+              <button
+                id="exportResultButton"
+                class="result-action-button"
+                type="button"
+                aria-label="Export summary"
+                title="Export summary"
+              >
+                <svg
+                  class="result-action-icon"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <path
+                    d="M12 3a1 1 0 0 1 1 1v8.59l2.3-2.3a1 1 0 1 1 1.4 1.42l-4 3.99a1 1 0 0 1-1.4 0l-4-3.99a1 1 0 1 1 1.4-1.42L11 12.6V4a1 1 0 0 1 1-1z"
+                  ></path>
+                  <path
+                    d="M4 18a1 1 0 0 1 1 1v1h14v-1a1 1 0 1 1 2 0v2a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1z"
+                  ></path>
+                </svg>
+                <span class="result-action-label">Export summary</span>
+              </button>
+            </div>
+          </div>
+        </section>
+        <p
+          id="resultActionStatus"
+          class="result-action-status"
+          aria-live="polite"
+        ></p>
+      </section>
+    </main>
+
+    <div id="mcqModal" class="modal">
+      <div class="modal-content mcq-modal-content">
+        <button
+          id="closeMcqModal"
+          class="close-button"
+          type="button"
+          aria-label="Close MCQ modal"
+        >
+          &times;
+        </button>
+        <h2 id="mcqModalTitle">MCQ Test</h2>
+        <p id="mcqModalIntro" class="mcq-modal-intro"></p>
+        <form id="mcqForm" class="mcq-form"></form>
+        <div class="mcq-actions">
+          <button id="submitMcqButton" class="mcq-action-button" type="button">
+            Submit answers
+          </button>
+          <button
+            id="newMcqButton"
+            class="mcq-action-button mcq-action-secondary"
+            type="button"
+            hidden
+          >
+            Try another set
+          </button>
+        </div>
+        <div id="mcqResult" class="mcq-result" aria-live="polite"></div>
+      </div>
+    </div>
+
+    <div id="infoModal" class="modal">
+      <div class="modal-content">
+        <button
+          id="closeModal"
+          class="close-button"
+          type="button"
+          aria-label="Close information"
+        >
+          &times;
+        </button>
+        <div class="info-popup-header">
+          <h2>Ocular Trauma Score</h2>
+        </div>
+        <div class="info-popup-body">
+          <p>
+            Health workers in LMICs must manage eye trauma as best they can.
+            Predicted 6-month visual outcomes give realism for patients and
+            families and guide complex and expensive interventions. Accurate in
+            about 80% of mechanical injuries; excludes chemical, electrical,
+            heat and major facial injuries.
+          </p>
+          <p>
+            <strong>Select VA then pick risks</strong>
+            <em> -&gt; computed score, category number and table are shown.</em>
+          </p>
+          <p>
+            Read in-depth
+            <a
+              href="https://cehjournal.org/articles/497/files/65de03ec5f8e7.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              >CEHJ article</a
+            >
+            and always use calm and methodical judgement.
+          </p>
+          <div class="modal-version">v1 - 18/5/2026</div>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js?v=20260509-symbols"></script>
+    <script>
+      const infoIcon = document.getElementById("info-icon");
+      const infoModal = document.getElementById("infoModal");
+      const closeModal = document.getElementById("closeModal");
+      const sidebarToggle = document.getElementById("sidebar-toggle");
+      const sidebar = document.getElementById("sidebar");
+      const closeSidebar = document.getElementById("close-sidebar");
+      const backdrop = document.getElementById("menu-backdrop");
+
+      function setModalState(open) {
+        infoModal.style.display = open ? "block" : "none";
+      }
+
+      function setSidebarState(open) {
+        sidebar.classList.toggle("is-open", open);
+        sidebar.inert = !open;
+        backdrop.hidden = !open;
+      }
+
+      infoIcon.addEventListener("click", () => {
+        setModalState(infoModal.style.display !== "block");
+      });
+
+      closeModal.addEventListener("click", () => setModalState(false));
+      sidebarToggle.addEventListener("click", () => setSidebarState(true));
+      closeSidebar.addEventListener("click", () => setSidebarState(false));
+      backdrop.addEventListener("click", () => setSidebarState(false));
+
+      window.addEventListener("click", (event) => {
+        if (event.target === infoModal) setModalState(false);
+      });
+
+      window.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+          setSidebarState(false);
+          setModalState(false);
+        }
+      });
+    </script>
+    <script src="cup-achievement.js"></script>
+  </body>
+</html>

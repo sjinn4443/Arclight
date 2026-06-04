@@ -8,7 +8,7 @@
       content="Diabetic is a retinopathy teaching and triage app for retinal findings, image cases and referral practice."
     />
     <meta name="author" content="WJW" />
-    <meta name="date" content="21/5/26" />
+    <meta name="date" content="18/5/2026" />
     <meta name="application-name" content="Diabetic" />
     <title>Diabetic</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
@@ -26,7 +26,7 @@
       type="font/woff2"
       crossorigin
     />
-    <link rel="stylesheet" href="styles.css?v=20260522-case-info-gap" />
+    <link rel="stylesheet" href="styles.css?v=20260518-burger" />
     <link rel="stylesheet" href="cup-achievement.css" />
   </head>
   <body>
@@ -59,13 +59,9 @@
       class="side-menu"
       aria-label="Main menu"
       aria-hidden="true"
-      inert
     >
       <div class="drawer-header">
-        <div>
-          <p>Diabetic</p>
-          <span class="drawer-subtitle">10-case retina trainer</span>
-        </div>
+        <p>Diabetic</p>
         <button
           id="closeDrawerButton"
           class="drawer-close"
@@ -79,19 +75,19 @@
         <h2 id="practiceHeading">Practice</h2>
         <button class="drawer-card" type="button" data-practice-open>
           <span class="drawer-dot dot-blue"></span>
-          <span>10 image cases</span>
+          <span>Image cases</span>
         </button>
         <button class="drawer-card" type="button" data-mcq-level="primary">
           <span class="drawer-dot dot-green"></span>
-          <span>Primary quiz</span>
+          <span>Primary MCQ</span>
         </button>
         <button class="drawer-card" type="button" data-mcq-level="intermediate">
           <span class="drawer-dot dot-orange"></span>
-          <span>Intermediate quiz</span>
+          <span>Intermediate MCQ</span>
         </button>
         <button class="drawer-card" type="button" data-mcq-level="advanced">
           <span class="drawer-dot dot-red"></span>
-          <span>Advanced quiz</span>
+          <span>Advanced MCQ</span>
         </button>
         <section
           id="cupAchievement"
@@ -103,7 +99,7 @@
           <span class="cup-achievement-icon" aria-hidden="true">&#9733;</span>
           <span class="cup-achievement-details">
             <span id="cupAchievementLabel"
-              >Cup locked: complete Advanced quiz</span
+              >Cup locked: complete Advanced MCQ</span
             >
             <span
               id="cupAchievementCode"
@@ -122,47 +118,28 @@
           </button>
         </section>
       </section>
-      <section
-        class="drawer-section drawer-guide-section"
-        aria-labelledby="guideHeading"
-      >
+      <section class="drawer-section" aria-labelledby="guideHeading">
         <h2 id="guideHeading">Guide</h2>
-        <div class="drawer-guide-grid">
-          <button class="drawer-guide-card" type="button" data-guide="cases">
-            <strong>Cases</strong>
-            <small>10 images and skin</small>
-          </button>
-          <button class="drawer-guide-card" type="button" data-guide="viewing">
-            <strong>View</strong>
-            <small>DO, BIO and cataract</small>
-          </button>
-          <button
-            class="drawer-guide-card"
-            type="button"
-            data-guide="recording"
-          >
-            <strong>Record</strong>
-            <small>RE and LE fields</small>
-          </button>
-          <button class="drawer-guide-card" type="button" data-guide="findings">
-            <strong>Signs</strong>
-            <small>DR and macula risk</small>
-          </button>
-          <button
-            class="drawer-guide-card drawer-guide-card--wide"
-            type="button"
-            data-guide="action"
-          >
-            <strong>Action</strong>
-            <small>Urgency and next step</small>
-          </button>
-        </div>
+        <button class="drawer-card" type="button" data-guide="dilation">
+          <span>Dilation</span>
+        </button>
+        <button class="drawer-card" type="button" data-guide="arclight">
+          <span>Arclight (DO) sweep</span>
+        </button>
+        <button class="drawer-card" type="button" data-guide="holo">
+          <span>Holo (BIO) sweep</span>
+        </button>
+        <button class="drawer-card" type="button" data-guide="lesions">
+          <span>Lesion guide</span>
+        </button>
+        <button class="drawer-card" type="button" data-guide="referral">
+          <span>Referral wording</span>
+        </button>
       </section>
       <section class="drawer-section" aria-labelledby="settingsHeading">
-        <h2 id="settingsHeading">About</h2>
+        <h2 id="settingsHeading">Settings</h2>
         <button class="drawer-card" type="button" data-guide="about">
-          <span class="drawer-dot dot-green"></span
-          ><span>Safety and local pathways</span>
+          <span>About local wording</span>
         </button>
       </section>
     </nav>
@@ -188,417 +165,206 @@
           &times;
         </button>
       </div>
-      <div class="info-popup-body">
-        <section
-          class="info-guide-definition"
-          aria-labelledby="info-guide-title"
-        >
-          <p id="info-guide-title" class="info-look-title">
-            Diabetic retinopathy
-          </p>
-          <p>
-            Practise with the 10 retinal image cases, then record RE and LE
-            separately. This is a teaching aid and triage prompt, not a
-            screening result.
-          </p>
-        </section>
-        <hr />
+      <div class="popup-grid">
+        <p><strong>Basics:</strong> View, findings, action.</p>
+        <p><strong>Dilate:</strong> record Yes or No.</p>
         <p>
-          Arclight (DO) is a small direct view. Holo (BIO) is a wider view. Gaze
-          simulates a patient moving their eye. Dilation increases the field of
-          view. Cataract adds slight, med or dense blur. Darker skin also gives
-          darker fundus pigmentation.
+          <strong>Signs:</strong> MA, dot/blot haemorrhage, CWS, venous beading.
         </p>
-        <hr />
-        <div class="info-look-guide">
-          <section
-            class="info-look-section info-look-section--basics"
-            aria-labelledby="info-basics-title"
-          >
-            <p id="info-basics-title" class="info-look-title">Basics</p>
-            <div class="info-basics-grid">
-              <span class="info-basics-cue"
-                ><strong>View</strong><small>quality and area</small></span
-              >
-              <span class="info-basics-cue"
-                ><strong>Signs</strong
-                ><small>DR, macula or new vessels</small></span
-              >
-              <span class="info-basics-cue"
-                ><strong>Action</strong
-                ><small>urgency and next step</small></span
-              >
-            </div>
-          </section>
-          <section
-            class="info-look-section info-look-section--detail"
-            aria-labelledby="info-detail-title"
-          >
-            <p id="info-detail-title" class="info-look-title">More detail</p>
-            <p>
-              <strong>DR signs:</strong> MA, dot/blot haemorrhage, CWS or venous
-              beading.
-            </p>
-            <p>
-              <strong>Macula risk:</strong> hard exudates near the macula,
-              foveal risk or reduced VA with DR signs.
-            </p>
-            <p>
-              <strong>Red flags:</strong> NVD, NVE, preretinal haemorrhage or
-              vitreous haemorrhage need same-day referral.
-            </p>
-            <p>
-              <strong>View only:</strong> gaze, cataract and skin controls alter
-              the simulation, not the diagnosis.
-            </p>
-          </section>
-        </div>
-        <hr />
-        <div class="info-points">
-          <p>
-            No signs means no referable signs were seen in the view obtained.
-          </p>
-          <p>Routine diabetic eye screening is still required.</p>
-        </div>
-        <p class="info-version">v1 21/5/26</p>
+        <p>
+          <strong>Urgent:</strong> NVD, NVE, preretinal haemorrhage, vitreous
+          haemorrhage.
+        </p>
+        <p>
+          <strong>Red flags win:</strong> vitreous haemorrhage, preretinal
+          haemorrhage, NVD or NVE means urgent today.
+        </p>
+        <p class="safety-line">
+          No signs seen only means no referable signs seen in the view obtained.
+          Routine diabetic eye screening is still required.
+        </p>
       </div>
     </section>
 
     <main class="app-main">
-      <div class="mode-control-area">
-        <div class="mode-control-stack">
-          <div class="mode-tabs" role="tablist" aria-label="Viewing mode">
-            <button
-              id="arclightTab"
-              class="tab-btn active"
-              type="button"
-              role="tab"
-              aria-selected="true"
-              tabindex="0"
-              data-mode="arclight-do"
-            >
-              Arclight <span>(DO)</span>
-            </button>
-            <button
-              id="holoTab"
-              class="tab-btn"
-              type="button"
-              role="tab"
-              aria-selected="false"
-              tabindex="-1"
-              data-mode="holo-bio"
-            >
-              Holo <span>(BIO)</span>
-            </button>
-          </div>
-
-          <div class="viewer-quick-controls" aria-label="Viewing controls">
-            <label
-              class="advanced-switch viewer-gaze-switch"
-              for="gazeMoveToggle"
-            >
-              <input type="checkbox" id="gazeMoveToggle" />
-              <span class="advanced-switch-track" aria-hidden="true"></span>
-              <span class="advanced-toolbar-switch-text">Gaze</span>
-            </label>
-            <label
-              class="advanced-switch viewer-dilation-switch"
-              for="viewerDilationToggle"
-            >
-              <input type="checkbox" id="viewerDilationToggle" />
-              <span class="advanced-switch-track" aria-hidden="true"></span>
-              <span class="advanced-toolbar-switch-text">Dilated</span>
-            </label>
-            <section
-              class="cataract-inline-control"
-              aria-label="Cataract viewing challenge"
-            >
-              <div class="cataract-inline-heading">
-                <span class="cataract-title">Cataract</span>
-                <div class="cataract-stops" aria-hidden="true">
-                  <span class="cataract-stop active">None</span>
-                  <span class="cataract-stop">Slight</span>
-                  <span class="cataract-stop">Med</span>
-                  <span class="cataract-stop">Dense</span>
-                </div>
-              </div>
-              <input
-                id="cataractSlider"
-                class="cataract-slider"
-                type="range"
-                min="0"
-                max="3"
-                step="1"
-                value="0"
-                aria-label="Cataract level"
-              />
-            </section>
-          </div>
-        </div>
-
-        <div class="skin-dock-control" aria-label="Skin pigmentation">
-          <span class="skin-dock-title">Skin</span>
-          <label
-            class="advanced-switch viewer-pigmentation-switch"
-            for="viewerPigmentationToggle"
-          >
-            <input
-              type="checkbox"
-              id="viewerPigmentationToggle"
-              aria-label="Use dark skin pigmentation"
-            />
-            <span class="advanced-switch-track" aria-hidden="true"></span>
-            <span
-              id="viewerPigmentationText"
-              class="advanced-toolbar-switch-text"
-              >Light</span
-            >
-          </label>
-        </div>
-      </div>
-
-      <section class="viewer-panel" aria-label="Diabetic image case">
-        <div class="canvas-container diabetic-viewer-stage">
-          <div
-            class="viewer-case-overlay canvas-case-nav"
-            aria-label="Diabetic image cases"
-          >
-            <div class="viewer-case-nav">
-              <button
-                id="previousCaseButton"
-                class="viewer-case-button"
-                type="button"
-                aria-label="Previous case"
-              >
-                &lt;
-              </button>
-              <span
-                id="viewerCaseLabel"
-                class="viewer-case-label"
-                aria-live="polite"
-                aria-label="Case 1 of 10"
-                >1/10</span
-              >
-              <button
-                id="nextCaseButton"
-                class="viewer-case-button"
-                type="button"
-                aria-label="Next case"
-              >
-                &gt;
-              </button>
-            </div>
-            <button
-              id="viewerCaseSummaryToggle"
-              class="viewer-case-summary-toggle"
-              type="button"
-              aria-label="Info: show case 1 description"
-              aria-expanded="false"
-              aria-controls="viewerCaseDescription"
-            >
-              <span id="viewerCaseShortLabel" hidden>Case information</span>
-              <span class="viewer-case-info-mark" aria-hidden="true">i</span>
-            </button>
-            <div
-              id="viewerCaseDescription"
-              class="viewer-case-description"
-              hidden
-            >
-              <p
-                id="viewerCaseDescriptionTitle"
-                class="viewer-case-description-title"
-              >
-                Case 1: Normal eye
-              </p>
-              <div
-                id="viewerCaseDescriptionBody"
-                class="viewer-case-description-body"
-              ></div>
-            </div>
-          </div>
-          <div class="eye-canvas-toggle" aria-label="Eye selection">
-            <span
-              id="eyeLabelRight"
-              class="toggle-label canvas-eye-label active"
-              >R</span
-            >
-            <label class="switch eye-stage-switch" aria-label="Switch eye">
-              <input type="checkbox" id="eyeToggle" />
-              <span class="slider"></span>
-            </label>
-            <span id="eyeLabelLeft" class="toggle-label canvas-eye-label"
-              >L</span
-            >
-          </div>
-          <canvas id="fundusCanvas"></canvas>
-        </div>
-
-        <div class="fov-control-hidden" aria-hidden="true">
-          <span id="fovLabelSmall">Small</span>
-          <span id="fovLabelLeft">Norm</span>
-          <span id="fovLabelRight">Dilated</span>
-          <input
-            id="fovToggle"
-            class="fov-triple-slider"
-            type="range"
-            min="0"
-            max="2"
-            step="1"
-            value="1"
-            tabindex="-1"
-            aria-label="Field of view"
-          />
-        </div>
-        <div id="viewerExplanation" hidden></div>
+      <section class="mode-tabs" role="tablist" aria-label="Assessment mode">
+        <button
+          id="arclightTab"
+          class="tab-btn active"
+          type="button"
+          role="tab"
+          aria-selected="true"
+          aria-controls="arclightPanel"
+          tabindex="0"
+          data-mode="arclight-do"
+          data-tab-target="arclightPanel"
+        >
+          Arclight <span>(DO)</span>
+        </button>
+        <button
+          id="holoTab"
+          class="tab-btn"
+          type="button"
+          role="tab"
+          aria-selected="false"
+          aria-controls="holoPanel"
+          tabindex="-1"
+          data-mode="holo-bio"
+          data-tab-target="holoPanel"
+        >
+          Holo <span>(BIO)</span>
+        </button>
       </section>
 
       <section
-        class="recording-system-panel is-collapsed"
-        aria-labelledby="recordingSystemHeading"
+        id="arclightPanel"
+        class="mode-panel active"
+        role="tabpanel"
+        aria-labelledby="arclightTab"
+        tabindex="0"
       >
-        <div class="recording-system-heading">
+        <p>Direct view. Record dilation, area seen and signs in each eye.</p>
+      </section>
+      <section
+        id="holoPanel"
+        class="mode-panel"
+        role="tabpanel"
+        aria-labelledby="holoTab"
+        tabindex="0"
+        hidden
+      >
+        <p>
+          Holo (BIO). Complete dilation check and record four-quadrant sweep
+          only when seen.
+        </p>
+      </section>
+
+      <section class="panel view-panel" aria-labelledby="viewHeading">
+        <div class="panel-heading">
           <div>
-            <p class="panel-kicker">RE / LE record</p>
-            <h2 id="recordingSystemHeading">Exam</h2>
+            <p class="panel-kicker">Step 1</p>
+            <h2 id="viewHeading">View</h2>
           </div>
-          <button
-            id="recordingSystemToggle"
-            class="recording-system-toggle"
-            type="button"
-            aria-controls="recordingSystemContent"
-            aria-expanded="false"
-            aria-label="Expand Exam"
+          <label
+            class="advanced-switch advanced-toolbar-switch diabetic-dilation-switch"
+            for="dilationToggle"
           >
-            +
-          </button>
+            <input type="checkbox" id="dilationToggle" />
+            <span class="advanced-switch-track" aria-hidden="true"></span>
+            <span class="advanced-toolbar-switch-text">Dilated</span>
+          </label>
         </div>
 
-        <div
-          id="recordingSystemContent"
-          class="recording-system-content"
-          aria-hidden="true"
-          hidden
-        >
-          <section
-            class="recording-section view-panel"
-            aria-label="VA and view"
-          >
-            <div class="view-cards" aria-label="VA and view">
-              <section class="view-card" aria-label="Right eye view">
-                <h3 class="view-card-title">RE</h3>
-                <label class="view-card-field">
-                  <span>VA</span>
-                  <select
-                    id="rightDistanceVA"
-                    class="compact-status-select"
-                    aria-label="Right distance VA"
-                  ></select>
-                </label>
-                <label class="view-card-field">
-                  <span>View</span>
-                  <select
-                    id="rightViewStatusSelect"
-                    class="compact-status-select compact-status-select--view-status"
-                    aria-label="Right view"
-                  ></select>
-                </label>
-              </section>
+        <div class="view-matrix" aria-label="View">
+          <div class="view-matrix-corner"></div>
+          <div class="view-matrix-eye">Right</div>
+          <div class="view-matrix-eye">Left</div>
 
-              <section class="view-card" aria-label="Left eye view">
-                <h3 class="view-card-title">LE</h3>
-                <label class="view-card-field">
-                  <span>VA</span>
-                  <select
-                    id="leftDistanceVA"
-                    class="compact-status-select"
-                    aria-label="Left distance VA"
-                  ></select>
-                </label>
-                <label class="view-card-field">
-                  <span>View</span>
-                  <select
-                    id="leftViewStatusSelect"
-                    class="compact-status-select compact-status-select--view-status"
-                    aria-label="Left view"
-                  ></select>
-                </label>
-              </section>
-            </div>
-          </section>
+          <div class="view-matrix-label">VA</div>
+          <div class="view-matrix-control">
+            <select
+              id="rightDistanceVA"
+              class="compact-status-select"
+              aria-label="Right distance VA"
+            ></select>
+          </div>
+          <div class="view-matrix-control">
+            <select
+              id="leftDistanceVA"
+              class="compact-status-select"
+              aria-label="Left distance VA"
+            ></select>
+          </div>
 
-          <section
-            class="recording-section findings-panel"
-            aria-label="Findings"
-          >
-            <div id="findingsContainer" class="findings-container"></div>
-          </section>
+          <div class="view-matrix-label">View</div>
+          <div class="view-matrix-control">
+            <select
+              id="rightViewStatusSelect"
+              class="compact-status-select compact-status-select--view-status"
+              aria-label="Right view"
+            ></select>
+          </div>
+          <div class="view-matrix-control">
+            <select
+              id="leftViewStatusSelect"
+              class="compact-status-select compact-status-select--view-status"
+              aria-label="Left view"
+            ></select>
+          </div>
+        </div>
+      </section>
 
-          <section
-            class="recording-section action-panel is-collapsed"
-            aria-labelledby="actionHeading"
+      <section class="panel findings-panel" aria-labelledby="findingsHeading">
+        <div class="panel-heading">
+          <div>
+            <p class="panel-kicker">Step 2</p>
+            <h2 id="findingsHeading">Findings</h2>
+          </div>
+        </div>
+        <div id="findingsContainer" class="findings-container"></div>
+      </section>
+
+      <section
+        class="panel action-panel is-collapsed"
+        aria-labelledby="actionHeading"
+      >
+        <div class="panel-heading">
+          <div>
+            <p class="panel-kicker">Step 3</p>
+            <h2 id="actionHeading">Action</h2>
+          </div>
+          <div class="action-heading-controls">
+            <span id="actionTone" class="action-tone">Review</span>
+            <button
+              id="actionToggle"
+              class="action-toggle"
+              type="button"
+              aria-controls="actionDetails"
+              aria-expanded="false"
+            >
+              More
+            </button>
+          </div>
+        </div>
+        <div id="actionDetails" class="action-details" hidden>
+          <div id="actionCard" class="action-card">
+            <h3 id="actionTitle">Record both eyes</h3>
+            <div id="actionReasons" class="action-list"></div>
+            <div
+              id="actionLimitations"
+              class="action-list action-list--muted"
+            ></div>
+            <p id="actionNext" class="next-step">
+              Complete right and left eye view, VA and findings.
+            </p>
+            <p id="actionSafety" class="safety-copy">
+              Routine diabetic eye screening is still required.
+            </p>
+          </div>
+          <div class="systemic-row" aria-label="Systemic checks">
+            <label class="check-line"
+              ><input type="checkbox" data-systemic="bp" /><span
+                >BP checked</span
+              ></label
+            >
+            <label class="check-line"
+              ><input type="checkbox" data-systemic="lipids" /><span
+                >Lipids checked</span
+              ></label
+            >
+            <label class="check-line"
+              ><input type="checkbox" data-systemic="hba1c" /><span
+                >HbA1c checked</span
+              ></label
+            >
+          </div>
+          <button
+            id="referralNoteButton"
+            class="secondary-action"
+            type="button"
           >
-            <div class="panel-heading">
-              <div>
-                <p class="panel-kicker">Outcome</p>
-                <h2 id="actionHeading">Action</h2>
-              </div>
-              <div class="action-heading-controls">
-                <span id="actionTone" class="action-tone tone-neutral"
-                  >Review</span
-                >
-                <button
-                  id="actionToggle"
-                  class="action-toggle"
-                  type="button"
-                  aria-controls="actionDetails"
-                  aria-expanded="false"
-                  aria-label="Show action details"
-                >
-                  +
-                </button>
-              </div>
-            </div>
-            <div id="actionDetails" class="action-details" hidden>
-              <div id="actionCard" class="action-card">
-                <h3 id="actionTitle">Record both eyes</h3>
-                <div id="actionReasons" class="action-list"></div>
-                <div
-                  id="actionLimitations"
-                  class="action-list action-list--muted"
-                ></div>
-                <p id="actionNext" class="next-step">
-                  Complete right and left eye view, VA and findings.
-                </p>
-                <p id="actionSafety" class="safety-copy">
-                  Routine diabetic eye screening is still required.
-                </p>
-              </div>
-              <div class="systemic-row" aria-label="Systemic checks">
-                <label class="check-line"
-                  ><input type="checkbox" data-systemic="bp" /><span
-                    >BP checked</span
-                  ></label
-                >
-                <label class="check-line"
-                  ><input type="checkbox" data-systemic="lipids" /><span
-                    >Lipids checked</span
-                  ></label
-                >
-                <label class="check-line"
-                  ><input type="checkbox" data-systemic="hba1c" /><span
-                    >HbA1c checked</span
-                  ></label
-                >
-              </div>
-              <button
-                id="referralNoteButton"
-                class="secondary-action"
-                type="button"
-              >
-                Referral note
-              </button>
-            </div>
-          </section>
+            Referral note
+          </button>
         </div>
       </section>
     </main>
@@ -625,22 +391,9 @@
           </button>
         </div>
         <textarea id="referralText" class="referral-text" readonly></textarea>
-        <div class="referral-actions" aria-label="Referral note actions">
-          <button
-            id="copyReferralButton"
-            class="note-icon-button"
-            type="button"
-            data-note-action="copy"
-            aria-label="Copy referral note"
-          ></button>
-          <button
-            id="shareReferralButton"
-            class="note-icon-button"
-            type="button"
-            data-note-action="share"
-            aria-label="Share referral note"
-          ></button>
-        </div>
+        <button id="copyReferralButton" class="primary-action" type="button">
+          Copy note
+        </button>
         <p id="copyStatus" class="copy-status" role="status"></p>
       </div>
     </div>
@@ -730,13 +483,13 @@
         </div>
         <div id="mcqContainer" class="mcq-container"></div>
         <button id="submitMcqButton" class="primary-action" type="button">
-          Submit Test
+          Submit
         </button>
         <div id="mcqResult" class="mcq-result" role="status"></div>
       </div>
     </div>
 
-    <script src="app.bundle.js?v=20260522-bio-rim-cached-boost"></script>
-    <script src="cup-achievement.js?v=20260520-guides"></script>
+    <script src="app.bundle.js"></script>
+    <script src="cup-achievement.js"></script>
   </body>
 </html>

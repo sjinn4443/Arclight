@@ -1,0 +1,40 @@
+import {
+  DEFAULT_BASE_REFLEX_COLOR,
+  DEFAULT_RETINOSCOPY_STATE,
+} from "./constants.js?v=20260430-6";
+
+export function createAppState() {
+  return {
+    baseReflexColor: { ...DEFAULT_BASE_REFLEX_COLOR },
+    irisColour: "dark-brown",
+    isBabyMode: false,
+    isDilatedMode: false,
+    isLiveMotionEnabled: false,
+    ...DEFAULT_RETINOSCOPY_STATE,
+    retinoscopyRafId: 0,
+    retinoscopyNeedsPosition: true,
+    lightHoldActive: false,
+    lightJitterRafId: 0,
+    lastBlinkAtMs: 0,
+    activeMcqLevel: "primary",
+    activeMcqQuestions: [],
+    corticalCataractPattern: null,
+    microSaccadeIntervalId: 0,
+    backgroundJitterIntervalId: 0,
+    blinkIntervalId: 0,
+    gazeShiftTimerId: 0,
+    nystagmusRafId: 0,
+    isManualEyeMoveEnabled: false,
+    isTestMode: false,
+    isTestRevealed: false,
+    contextGlareOn: false,
+    contextOnsetMode: "gradual",
+    testCountdown: 0,
+    testTimerId: 0,
+    testConditionValue: null,
+    testRevealLabel: "",
+    testPreviousState: null,
+    testLastRefraction: null,
+    testRoundIndex: 0,
+  };
+}
