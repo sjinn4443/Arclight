@@ -188,6 +188,269 @@ function sanitizeMenuOverlay(root) {
     ?.classList.add("menu-section--tight-top");
 }
 
+function setActiveMenuTab(root, targetId) {
+  if (!root || !targetId) return;
+
+  const target = Array.from(root.querySelectorAll(".menu-tab-content")).find(
+    (content) => content.id === targetId,
+  );
+  if (!target) return;
+
+  root
+    .querySelectorAll(".menu-tabs .tab[data-menu-tab-target]")
+    .forEach((tab) => {
+      tab.classList.toggle(
+        "active",
+        tab.getAttribute("data-menu-tab-target") === targetId,
+      );
+    });
+
+  root.querySelectorAll(".menu-tab-content").forEach((content) => {
+    content.classList.toggle("hidden", content.id !== targetId);
+  });
+}
+
+function wireMenuTabs(root) {
+  if (!root) return;
+
+  const tabs = root.querySelectorAll(".menu-tabs .tab[data-menu-tab-target]");
+  if (!tabs.length) return;
+
+  tabs.forEach((tab) => {
+    if (tab.dataset.menuTabWired === "1") return;
+    tab.dataset.menuTabWired = "1";
+    tab.addEventListener("click", () => {
+      setActiveMenuTab(root, tab.getAttribute("data-menu-tab-target"));
+    });
+  });
+
+  const activeTarget =
+    root
+      .querySelector(".menu-tabs .tab.active[data-menu-tab-target]")
+      ?.getAttribute("data-menu-tab-target") ||
+    tabs[0]?.getAttribute("data-menu-tab-target");
+  setActiveMenuTab(root, activeTarget);
+}
+
+async function openMenuDownloadOptions() {
+  closeMenu();
+
+  const {
+    cacheOfflineUrls,
+    fetchAllOfflineAssetUrls,
+    resolveOfflineDownloadSelection,
+    showDownloadAppModal,
+    showDownloadErrorModal,
+  } = await import("./languageinstall.js");
+
+  try {
+    const manifest = await fetchAllOfflineAssetUrls();
+    const choice = await showDownloadAppModal(manifest);
+    if (!choice) return;
+
+    const selection = resolveOfflineDownloadSelection(manifest, choice);
+    await navigator.serviceWorker.ready;
+    await cacheOfflineUrls(selection);
+  } catch (err) {
+    console.warn("[menu] could not download offline content:", err);
+    showDownloadErrorModal(err);
+  }
+}
+
+function ensureDownloadedContentsModal() {
+  let modal = document.getElementById("downloadedContentsModal");
+  if (modal) return modal;
+
+  modal = document.createElement("div");
+  modal.id = "downloadedContentsModal";
+  modal.className = "modal-overlay hidden";
+  modal.setAttribute("role", "dialog");
+  modal.setAttribute("aria-modal", "true");
+  modal.setAttribute("aria-labelledby", "downloadedContentsTitle");
+  modal.innerHTML = `
+    <div class="modal-box download-modal">
+      <div class="modal-header">
+        <span id="downloadedContentsTitle">Downloaded Contents</span>
+        <button
+          type="button"
+          class="modal-close"
+          id="closeDownloadedContentsModalBtn"
+          aria-label="Close"
+        >&times;</button>
+      </div>
+      <div class="modal-content"></div>
+      <div class="modal-footer">
+        <button type="button" id="downloadedContentsCloseBtn">Close</button>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+  const close = () => modal.classList.add("hidden");
+  modal
+    .querySelector("#closeDownloadedContentsModalBtn")
+    ?.addEventListener("click", close);
+  modal
+    .querySelector("#downloadedContentsCloseBtn")
+    ?.addEventListener("click", close);
+  modal.addEventListener("click", (event) => {
+    if (event.target === modal) close();
+  });
+
+  return modal;
+}
+
+function setDownloadedContentsModalContent(html) {
+  const modal = ensureDownloadedContentsModal();
+  const content = modal.querySelector(".modal-content");
+  if (content) content.innerHTML = html;
+  modal.classList.remove("hidden");
+}
+
+async function getCachedManifestUrls(assets) {
+  const cached = new Set();
+  if (!("caches" in window)) return cached;
+
+  const batchSize = 50;
+  for (let i = 0; i < assets.length; i += batchSize) {
+    const batch = assets.slice(i, i + batchSize);
+    const matches = await Promise.all(
+      batch.map(async (asset) => {
+        try {
+          const href = new URL(asset.url, window.location.origin).href;
+          const response = await caches.match(href, { ignoreSearch: true });
+          return response ? asset.url : "";
+        } catch {
+          return "";
+        }
+      }),
+    );
+
+    matches.filter(Boolean).forEach((url) => cached.add(url));
+  }
+
+  return cached;
+}
+
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+function renderDownloadedContentsSummary(groups, totalCached, totalAssets) {
+  const visibleGroups = groups.filter((group) => group.cachedCount > 0);
+  if (!visibleGroups.length) {
+    return `
+      <p>No downloaded contents found.</p>
+      <p>Downloaded files: ${totalCached} of ${totalAssets}.</p>
+    `;
+  }
+
+  const items = visibleGroups
+    .map((group) => {
+      const complete = group.cachedCount >= group.totalCount;
+      const status = complete ? "Downloaded" : "Partly downloaded";
+      return `
+        <li class="downloaded-content-item${complete ? " is-complete" : ""}">
+          <span class="downloaded-content-item__title">${escapeHtml(group.label)}</span>
+          <span class="downloaded-content-item__meta">${status} - ${group.cachedCount} of ${group.totalCount} files</span>
+        </li>
+      `;
+    })
+    .join("");
+
+  return `
+    <p>Downloaded files: ${totalCached} of ${totalAssets}.</p>
+    <ul class="downloaded-content-list">${items}</ul>
+  `;
+}
+
+async function openDownloadedContentsModal() {
+  closeMenu();
+  setDownloadedContentsModalContent("<p>Checking downloaded contents...</p>");
+
+  try {
+    const {
+      OFFLINE_CATALOG_OPTIONS,
+      fetchAllOfflineAssetUrls,
+      formatDownloadSize,
+      getOfflineManifestAssets,
+      matchesOfflineCatalog,
+    } = await import("./languageinstall.js");
+    const manifest = await fetchAllOfflineAssetUrls();
+    const assets = getOfflineManifestAssets(manifest);
+    const cachedUrls = await getCachedManifestUrls(assets);
+    const groupedUrls = new Set();
+    const groups = OFFLINE_CATALOG_OPTIONS.map((option) => {
+      const groupAssets = assets.filter((asset) =>
+        matchesOfflineCatalog(asset.url, option.id),
+      );
+      groupAssets.forEach((asset) => groupedUrls.add(asset.url));
+      return {
+        cachedCount: groupAssets.filter((asset) => cachedUrls.has(asset.url))
+          .length,
+        label: option.label,
+        totalCount: groupAssets.length,
+      };
+    }).filter((group) => group.totalCount > 0);
+
+    const sharedAssets = assets.filter((asset) => !groupedUrls.has(asset.url));
+    const sharedCachedCount = sharedAssets.filter((asset) =>
+      cachedUrls.has(asset.url),
+    ).length;
+    if (sharedAssets.length) {
+      groups.unshift({
+        cachedCount: sharedCachedCount,
+        label: "App shell and shared assets",
+        totalCount: sharedAssets.length,
+      });
+    }
+
+    const cachedBytes = assets
+      .filter((asset) => cachedUrls.has(asset.url))
+      .reduce((sum, asset) => sum + (Number(asset.bytes) || 0), 0);
+
+    const html = `${renderDownloadedContentsSummary(
+      groups,
+      cachedUrls.size,
+      assets.length,
+    )}<p class="downloaded-content-size">Approx. cached size: ${formatDownloadSize(
+      cachedBytes,
+    )}.</p>`;
+    setDownloadedContentsModalContent(html);
+  } catch (err) {
+    console.warn("[menu] could not inspect downloaded contents:", err);
+    setDownloadedContentsModalContent(
+      `<p>Could not check downloaded contents.</p><p>${escapeHtml(
+        err?.message || err,
+      )}</p>`,
+    );
+  }
+}
+
+function wireMenuContentActions(root) {
+  if (!root) return;
+
+  const startDownloadBtn = root.querySelector("#startDownloadBtn");
+  if (startDownloadBtn && startDownloadBtn.dataset.wired !== "1") {
+    startDownloadBtn.dataset.wired = "1";
+    startDownloadBtn.addEventListener("click", () => {
+      void openMenuDownloadOptions();
+    });
+  }
+
+  const downloadedContentsBtn = root.querySelector("#downloadedContentsBtn");
+  if (downloadedContentsBtn && downloadedContentsBtn.dataset.wired !== "1") {
+    downloadedContentsBtn.dataset.wired = "1";
+    downloadedContentsBtn.addEventListener("click", () => {
+      void openDownloadedContentsModal();
+    });
+  }
+}
+
 /**
  * Initializes the global overlay menu.
  * Fetches the menu HTML, appends it to the body, and sets up event listeners
@@ -219,6 +482,8 @@ export async function initializeMenu() {
     }
 
     sanitizeMenuOverlay(found);
+    wireMenuTabs(found);
+    wireMenuContentActions(found);
 
     // 3) Ensure it starts hidden & append under <body>
     found.classList.add("hidden");
@@ -325,6 +590,8 @@ export async function openMenu() {
   if (!overlay) return;
 
   sanitizeMenuOverlay(overlay);
+  wireMenuTabs(overlay);
+  wireMenuContentActions(overlay);
 
   const nameEl = overlay.querySelector("#menuUsername");
   const name = (localStorage.getItem("username") || "").trim();

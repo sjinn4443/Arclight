@@ -74,6 +74,7 @@ Arclight is primarily a static, client-side PWA served from `public/` (or `dist/
   - shared engine/config/sequence: `public/js/childhoodFundalPreparation.js`
   - workshop launch/progress/next-flow mappings: `public/js/childhoodEyeScreeningWorkshop.js`, `public/js/childhoodWorkshopProgress.js`, `public/js/childhoodWorkshopNextFlow.js`
   - shared layout/control styling: `public/style/pages.css`
+- Workshop scrolly page style: use the Diabetic Retinopathy scrolly format as the canonical hero/card/reveal pattern for Childhood `.childhood-scrolly-page` and Glaucoma `.glaucoma-scrolly-page` scroll lessons, while leaving custom Lottie/interactivity engines intact. Glaucoma scroll lessons should convert source slide text into real HTML text with supporting CSS diagrams, not embed the whole slide image as content.
 
 ## Critical Implementation Paths
 

@@ -9,6 +9,7 @@ import { fetchDictionary, get, getLanguage } from "./i18n.js";
 const wired = new WeakSet();
 let dashboardI18nDict = {};
 let dashboardI18nLang = null;
+let dashboardSearchRenderToken = 0;
 
 function interpolateTemplate(template, vars = {}) {
   return String(template || "").replace(
@@ -179,15 +180,41 @@ export function initializeDashboard() {
   // 2b) Compact search toggle (icon -> show/hide box)
   const searchWrap = root.querySelector(".search-wrap--compact");
   const toggleBtn = root.querySelector("#dashboardSearchToggle");
+  const searchInput = root.querySelector("#dashboardSearchInput");
+  const searchPanel = root.querySelector("#dashboardSearchPanel");
 
   if (searchWrap && toggleBtn) {
     toggleBtn.addEventListener("click", () => {
       if (searchWrap.classList.contains("search-collapsed")) {
         searchWrap.classList.remove("search-collapsed");
         searchWrap.classList.add("search-expanded");
+        searchInput?.focus();
+        void renderDashboardSearch(searchInput, searchPanel);
       } else {
         searchWrap.classList.remove("search-expanded");
         searchWrap.classList.add("search-collapsed");
+        if (searchPanel) searchPanel.hidden = true;
+        searchInput?.blur();
+      }
+    });
+  }
+
+  if (searchInput && searchPanel) {
+    searchInput.addEventListener("input", () => {
+      void renderDashboardSearch(searchInput, searchPanel);
+    });
+    searchInput.addEventListener("focus", () => {
+      void renderDashboardSearch(searchInput, searchPanel);
+    });
+    searchInput.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        searchPanel.hidden = true;
+        searchInput.blur();
+      }
+    });
+    root.addEventListener("click", (event) => {
+      if (!event.target.closest?.(".search-wrap--compact")) {
+        searchPanel.hidden = true;
       }
     });
   }
@@ -345,8 +372,8 @@ function openVideosSubpage(pageId) {
   loadPage("videos");
 }
 
-async function renderRecommendations(host) {
-  const ALL = [
+function getDashboardContentItems() {
+  return [
     {
       title: "Ophthalmoscopy",
       titleI18n: "eyes.card_label.ophthalmoscopy",
@@ -357,6 +384,7 @@ async function renderRecommendations(host) {
         { path: "eyes.tag_video", fallback: "Video" },
         { path: "eyes.tag_quiz", fallback: "Quiz" },
       ],
+      keywords: ["direct ophthalmoscopy", "fundoscopy", "optic disc", "do"],
       progress: 0,
     },
     {
@@ -366,6 +394,7 @@ async function renderRecommendations(host) {
       img: "images/icon/eyes/core/visualacuity.webp",
       subtitle: "Video",
       subtitleParts: [{ path: "eyes.tag_video", fallback: "Video" }],
+      keywords: ["vision", "va", "acuity", "visual"],
       progress: 0,
     },
     {
@@ -378,6 +407,7 @@ async function renderRecommendations(host) {
         { path: "eyes.tag_video", fallback: "Video" },
         { path: "eyes.tag_quiz", fallback: "Quiz" },
       ],
+      keywords: ["rapd", "pupil", "swinging flashlight"],
       progress: 0,
     },
     {
@@ -390,6 +420,16 @@ async function renderRecommendations(host) {
         { path: "eyes.tag_video", fallback: "Video" },
         { path: "eyes.tag_case_study", fallback: "Case Study" },
       ],
+      keywords: ["anterior segment", "cornea", "red eye"],
+      progress: 0,
+    },
+    {
+      title: "Fundal Reflex",
+      titleI18n: "eyes.card_label.fundal_reflex",
+      page: "fundalReflexPage",
+      img: "images/icon/eyes/core/car_fundalreflex.webp",
+      subtitle: "Video | PDF | Scrollytelling",
+      keywords: ["red reflex", "media opacity", "childhood screening"],
       progress: 0,
     },
     {
@@ -399,11 +439,236 @@ async function renderRecommendations(host) {
       img: "images/icon/eyes/core/miniapp.webp",
       subtitle: "Mini Apps",
       subtitleParts: [{ path: "eyes.tag_mini_apps", fallback: "Mini Apps" }],
+      keywords: ["mini apps", "simulation", "interactive"],
+      progress: 0,
+    },
+    {
+      title: "Arclight Overview",
+      titleI18n: "eyes.card_label.arclight_overview",
+      page: "arclightPage",
+      img: "images/icon/eyes/tools/car_arclight.webp",
+      subtitle: "Tools and kits",
+      keywords: ["how to use arclight", "phone attachment", "device"],
+      progress: 0,
+    },
+    {
+      title: "Holo Overview",
+      titleI18n: "eyes.card_label.holo_overview",
+      page: "holoOverviewPage",
+      img: "images/icon/eyes/tools/car_holo.webp",
+      subtitle: "Tools and kits",
+      keywords: ["binocular indirect ophthalmoscopy", "bio", "holo"],
+      progress: 0,
+    },
+    {
+      title: "Childhood Eye Screening",
+      route: "childhoodEyeScreeningWorkshop",
+      img: "images/icon/eyes/disease/car_childhood.webp",
+      subtitle: "Workshop",
+      keywords: ["children", "screening", "fundal reflex"],
+      progress: 0,
+    },
+    {
+      title: "Glaucoma",
+      route: "glaucomaWorkshop",
+      img: "images/icon/eyes/disease/car_glaucoma.webp",
+      subtitle: "Workshop",
+      keywords: ["optic nerve", "cup disc", "iop"],
+      progress: 0,
+    },
+    {
+      title: "Diabetic Retinopathy",
+      route: "diabeticRetinopathyWorkshop",
+      img: "images/icon/eyes/disease/car_diabetic.webp",
+      subtitle: "Workshop",
+      keywords: ["diabetes", "retina", "screening"],
+      progress: 0,
+    },
+    {
+      title: "Cataract",
+      page: "cataractPage",
+      img: "images/icon/eyes/disease/car_cataract.webp",
+      subtitle: "Mini App",
+      keywords: ["lens", "opacity", "simulation"],
+      progress: 0,
+    },
+    {
+      title: "Mires",
+      page: "miresPage",
+      img: "images/icon/eyes/core/miniapp.webp",
+      subtitle: "Mini App",
+      keywords: ["keratometry", "cornea"],
+      progress: 0,
+    },
+    {
+      title: "Morph",
+      page: "morphPage",
+      img: "images/icon/eyes/core/miniapp.webp",
+      subtitle: "Mini App",
+      keywords: ["face", "simulation"],
+      progress: 0,
+    },
+    {
+      title: "Squint / Palsy",
+      page: "squintPalsyPage",
+      img: "images/icon/eyes/extended/car_squint.webp",
+      subtitle: "Mini App",
+      keywords: ["eye movements", "palsy", "strabismus"],
       progress: 0,
     },
   ];
+}
 
-  const picks = shuffle(ALL).slice(0, 2);
+function normalizeSearchText(value) {
+  return String(value || "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+function scoreDashboardSearchItem(item, query) {
+  const normalizedQuery = normalizeSearchText(query);
+  if (!normalizedQuery) return 0;
+
+  const title = normalizeSearchText(item.title);
+  const subtitle = normalizeSearchText(item.subtitle);
+  const keywords = (item.keywords || []).map(normalizeSearchText);
+  const haystack = [title, subtitle, ...keywords].join(" ");
+
+  if (title === normalizedQuery) return 120;
+  if (title.startsWith(normalizedQuery)) return 100;
+  if (title.split(" ").some((word) => word.startsWith(normalizedQuery))) {
+    return 82;
+  }
+  if (title.includes(normalizedQuery)) return 70;
+  if (keywords.some((keyword) => keyword.startsWith(normalizedQuery))) {
+    return 62;
+  }
+  if (haystack.includes(normalizedQuery)) return 45;
+
+  return 0;
+}
+
+function getDashboardSearchMatches(query) {
+  return getDashboardContentItems()
+    .map((item) => ({ item, score: scoreDashboardSearchItem(item, query) }))
+    .filter((entry) => entry.score > 0)
+    .sort(
+      (a, b) => b.score - a.score || a.item.title.localeCompare(b.item.title),
+    )
+    .map((entry) => entry.item);
+}
+
+async function createDashboardModuleCard(cardTemplate, item) {
+  const card = cardTemplate.content
+    .querySelector(".module-card")
+    .cloneNode(true);
+
+  if (item.route) card.setAttribute("data-route", item.route);
+  if (item.page) card.setAttribute("data-page", item.page);
+
+  const img = card.querySelector("img");
+  if (img) {
+    img.src = item.img;
+    img.alt = item.title;
+    if (item.titleI18n) img.setAttribute("data-i18n", `${item.titleI18n}:alt`);
+  }
+
+  const title = card.querySelector(".module-title");
+  if (title) {
+    title.textContent = item.title;
+    if (item.titleI18n) title.setAttribute("data-i18n", item.titleI18n);
+  }
+
+  const subtitle = card.querySelector(".module-subtitle");
+  if (subtitle) {
+    if (item.subtitle) {
+      subtitle.textContent = item.subtitleParts?.length
+        ? await translateDashboardParts(item.subtitleParts)
+        : item.subtitle;
+    } else {
+      subtitle.remove();
+    }
+  }
+
+  const progress = card.querySelector(".progress");
+  if (progress) progress.style.width = `${item.progress || 0}%`;
+
+  card.addEventListener("click", () => {
+    const page = card.getAttribute("data-page");
+    const route = card.getAttribute("data-route");
+    if (page) {
+      openVideosSubpage(page);
+      return;
+    }
+    if (route) loadPage(route);
+  });
+
+  return card;
+}
+
+async function renderDashboardSearch(input, panel) {
+  if (!input || !panel) return;
+
+  const query = input.value.trim();
+  if (!query) {
+    panel.hidden = true;
+    return;
+  }
+
+  const token = ++dashboardSearchRenderToken;
+  const cardTemplate = document.getElementById(
+    "dashboardRecommendedCardTemplate",
+  );
+  if (!cardTemplate) return;
+
+  const suggestionsEl = panel.querySelector(".dashboard-search-suggestions");
+  const resultsEl = panel.querySelector(".dashboard-search-results");
+  if (!suggestionsEl || !resultsEl) return;
+
+  const matches = getDashboardSearchMatches(query);
+  suggestionsEl.replaceChildren();
+  resultsEl.replaceChildren();
+
+  matches.slice(0, 4).forEach((item) => {
+    const chip = document.createElement("button");
+    chip.type = "button";
+    chip.className = "dashboard-search-suggestion";
+    chip.textContent = item.title;
+    chip.addEventListener("click", () => {
+      input.value = item.title;
+      void renderDashboardSearch(input, panel);
+    });
+    suggestionsEl.appendChild(chip);
+  });
+
+  if (!matches.length) {
+    const empty = document.createElement("div");
+    empty.className = "dashboard-search-empty";
+    empty.textContent = "No matching content";
+    resultsEl.appendChild(empty);
+    panel.hidden = false;
+    return;
+  }
+
+  for (const item of matches.slice(0, 5)) {
+    const card = await createDashboardModuleCard(cardTemplate, item);
+    if (token !== dashboardSearchRenderToken) return;
+    card.classList.add("dashboard-search-result-card");
+    resultsEl.appendChild(card);
+  }
+
+  try {
+    window.I18N?.applyTranslations?.(panel);
+  } catch {
+    void 0;
+  }
+
+  panel.hidden = false;
+}
+
+async function renderRecommendations(host) {
+  const picks = shuffle(getDashboardContentItems()).slice(0, 2);
 
   const cardTemplate = document.getElementById(
     "dashboardRecommendedCardTemplate",
@@ -412,46 +677,7 @@ async function renderRecommendations(host) {
 
   host.textContent = "";
   for (const m of picks) {
-    const card = cardTemplate.content
-      .querySelector(".module-card")
-      .cloneNode(true);
-
-    if (m.route) {
-      card.setAttribute("data-route", m.route);
-    }
-    if (m.page) {
-      card.setAttribute("data-page", m.page);
-    }
-
-    const img = card.querySelector("img");
-    if (img) {
-      img.src = m.img;
-      img.alt = m.title;
-      if (m.titleI18n) img.setAttribute("data-i18n", `${m.titleI18n}:alt`);
-    }
-
-    const title = card.querySelector(".module-title");
-    if (title) {
-      title.textContent = m.title;
-      if (m.titleI18n) title.setAttribute("data-i18n", m.titleI18n);
-    }
-
-    const subtitle = card.querySelector(".module-subtitle");
-    if (subtitle) {
-      if (m.subtitle) {
-        subtitle.textContent = m.subtitleParts?.length
-          ? await translateDashboardParts(m.subtitleParts)
-          : m.subtitle;
-      } else {
-        subtitle.remove();
-      }
-    }
-
-    const progress = card.querySelector(".progress");
-    if (progress) {
-      progress.style.width = `${m.progress || 0}%`;
-    }
-
+    const card = await createDashboardModuleCard(cardTemplate, m);
     host.appendChild(card);
   }
 
@@ -460,20 +686,4 @@ async function renderRecommendations(host) {
   } catch {
     void 0;
   }
-
-  // Click behavior: prefer page deep-link into Videos, else use route
-  host.querySelectorAll(".module-card").forEach((card) => {
-    card.addEventListener("click", () => {
-      const page = card.getAttribute("data-page");
-      const route = card.getAttribute("data-route");
-
-      if (page) {
-        openVideosSubpage(page);
-        return;
-      }
-      if (route) {
-        loadPage(route);
-      }
-    });
-  });
 }

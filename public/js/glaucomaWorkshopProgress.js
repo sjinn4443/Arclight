@@ -35,6 +35,17 @@ const SCROLL_TARGETS = new Set([
   "glaucomaSummaryScrolly",
 ]);
 
+const INTERMEDIATE_SCROLL_TARGETS = new Set([
+  "glaucomaFieldsExam",
+  "glaucomaQuadrantsFingers",
+  "glaucomaQuadrantsRed",
+  "glaucomaAssessRecord",
+  "glaucomaACDScroll",
+  "glaucomaHighIOP",
+  "glaucomaOpticNerve",
+  "glaucomaCupping",
+]);
+
 const PDF_TARGETS = new Set([
   "glaucomaFundusSummaryAtomsPage",
   "glaucomaGlaucomaSummaryAtomsPage",
@@ -43,6 +54,137 @@ const PDF_TARGETS = new Set([
 let infraWired = false;
 let activeScrollTarget = null;
 const FIT_CLASS = "glaucoma-scroll-fit";
+
+function getScrollyScrollRoot(node) {
+  let current = node?.parentElement ?? null;
+
+  while (current && current !== document.body) {
+    const style = window.getComputedStyle(current);
+    const overflowY = style.overflowY || style.overflow;
+    if (/(auto|scroll|overlay)/.test(overflowY)) return current;
+    current = current.parentElement;
+  }
+
+  return window;
+}
+
+function getScrollyRootMetrics(scrollRoot) {
+  if (scrollRoot === window) {
+    return {
+      top: 0,
+      height: window.innerHeight || document.documentElement.clientHeight || 1,
+    };
+  }
+
+  const rect = scrollRoot.getBoundingClientRect();
+  return {
+    top: rect.top,
+    height: scrollRoot.clientHeight || rect.height || 1,
+  };
+}
+
+function isScrollyPageShown(page) {
+  let node = page;
+  while (node) {
+    const style = window.getComputedStyle(node);
+    if (style.display === "none" || style.visibility === "hidden") return false;
+    node = node.parentElement;
+  }
+  return true;
+}
+
+function applyGlaucomaScrollyLevel(page) {
+  page.dataset.glaucomaLevel = INTERMEDIATE_SCROLL_TARGETS.has(page.id)
+    ? "intermediate"
+    : "primary";
+}
+
+function initializeGlaucomaScrollyPage(page) {
+  if (!page?.classList?.contains("glaucoma-scrolly-page")) return;
+
+  applyGlaucomaScrollyLevel(page);
+
+  if (typeof page._glaucomaScrollyCleanup === "function") {
+    page._glaucomaScrollyCleanup();
+  }
+
+  const steps = Array.from(
+    page.querySelectorAll("[data-glaucoma-scroll-step]"),
+  );
+  if (!steps.length) return;
+
+  const controller = new AbortController();
+  const { signal } = controller;
+  const initialScrollRoot = getScrollyScrollRoot(page);
+  let rafId = 0;
+
+  const render = () => {
+    rafId = 0;
+    if (!isScrollyPageShown(page)) return;
+
+    const scrollRoot = getScrollyScrollRoot(page);
+    const rootMetrics = getScrollyRootMetrics(scrollRoot);
+    const revealTop = rootMetrics.top + rootMetrics.height * 0.12;
+    const revealBottom = rootMetrics.top + rootMetrics.height * 0.84;
+    let hasCurrent = false;
+
+    steps.forEach((step, index) => {
+      const rect = step.getBoundingClientRect();
+      const intersects = rect.top < revealBottom && rect.bottom > revealTop;
+      const shouldReveal =
+        intersects || (index === 0 && rect.top < revealBottom);
+
+      if (shouldReveal) step.classList.add("is-visible");
+
+      if (intersects && !hasCurrent) {
+        step.classList.add("is-current");
+        hasCurrent = true;
+      } else {
+        step.classList.remove("is-current");
+      }
+    });
+  };
+
+  const scheduleRender = () => {
+    if (rafId) return;
+    rafId = window.requestAnimationFrame(render);
+  };
+
+  const listen = (target, type, handler, options = {}) => {
+    if (!target?.addEventListener) return;
+    target.addEventListener(type, handler, { ...options, signal });
+  };
+
+  listen(window, "scroll", scheduleRender, { passive: true });
+  const pageContent = document.getElementById("page-content");
+  listen(pageContent, "scroll", scheduleRender, { passive: true });
+  if (initialScrollRoot !== window && initialScrollRoot !== pageContent) {
+    listen(initialScrollRoot, "scroll", scheduleRender, { passive: true });
+  }
+
+  listen(window, "resize", scheduleRender, { passive: true });
+  listen(window, "orientationchange", scheduleRender, { passive: true });
+
+  page.querySelectorAll("img").forEach((img) => {
+    if (img.complete) return;
+    listen(img, "load", scheduleRender, { once: true });
+    listen(img, "error", scheduleRender, { once: true });
+  });
+
+  page._glaucomaScrollyCleanup = () => {
+    controller.abort();
+    if (rafId) window.cancelAnimationFrame(rafId);
+    delete page._glaucomaScrollyCleanup;
+  };
+
+  window.requestAnimationFrame(scheduleRender);
+}
+
+export function initializeGlaucomaScrollyPages(root = document) {
+  root
+    .querySelectorAll?.(".glaucoma-scrolly-page")
+    .forEach((page) => initializeGlaucomaScrollyPage(page));
+}
 
 function clampPercent(value) {
   const n = Number(value);
@@ -491,6 +633,9 @@ export function initializeGlaucomaWorkshopProgressInfra() {
       activeScrollTarget = null;
       clearScrollFitState();
     }
+    if (routeName === "glaucomaScrollImages") {
+      initializeGlaucomaScrollyPages();
+    }
     if (routeName === "glaucomaWorkshop") {
       updateGlaucomaWorkshopProgressBars();
     }
@@ -506,6 +651,7 @@ export function initializeGlaucomaWorkshopProgressInfra() {
 
     if (SCROLL_TARGETS.has(shownId)) {
       activeScrollTarget = shownId;
+      initializeGlaucomaScrollyPage(document.getElementById(shownId));
       scheduleScrollFitEvaluation(shownId);
       wireScrollFitRecheckOnImages(shownId);
       return;

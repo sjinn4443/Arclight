@@ -11,8 +11,11 @@
         <!-- ✅ compact search next to ☰ -->
         <div class="search-wrap search-wrap--compact search-collapsed">
           <input
+            id="dashboardSearchInput"
             type="search"
             aria-label="Search contents"
+            aria-controls="dashboardSearchPanel"
+            autocomplete="off"
             placeholder="Search for contents"
             data-i18n="dashboard.search_placeholder:placeholder"
           />
@@ -35,6 +38,10 @@
               <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
             </svg>
           </span>
+          <div id="dashboardSearchPanel" class="dashboard-search-panel" hidden>
+            <div class="dashboard-search-suggestions"></div>
+            <div class="dashboard-search-results"></div>
+          </div>
         </div>
 
         <span

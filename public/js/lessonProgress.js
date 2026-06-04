@@ -112,11 +112,21 @@ export function getLevelColourForRow(row) {
   const level = row?.closest?.(".pupil-level");
   if (!level) return "";
 
+  const levelStyles = getComputedStyle(level);
+  const capFrom = levelStyles.getPropertyValue("--cap-from").trim();
+  const accent = levelStyles.getPropertyValue("--accent").trim();
+
+  if (level.classList?.contains("pupil-level--primary")) {
+    return capFrom || "#15e115";
+  }
+
   const cap = level.querySelector(".pupil-level__cap");
-  if (!cap) return "";
+  if (!cap) return accent;
 
   const bg = getComputedStyle(cap).backgroundColor;
-  if (!bg || bg === "rgba(0, 0, 0, 0)" || bg === "transparent") return "";
+  if (!bg || bg === "rgba(0, 0, 0, 0)" || bg === "transparent") {
+    return accent;
+  }
   return bg;
 }
 

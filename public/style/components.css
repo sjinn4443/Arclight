@@ -1061,6 +1061,116 @@ input:checked + .slider:before {
   z-index: 20000;
 }
 
+#downloadedContentsModal {
+  background: rgba(0, 0, 0, 0.72);
+  box-sizing: border-box;
+  padding: 20px;
+}
+
+#downloadedContentsModal .download-modal {
+  width: min(420px, calc(100vw - 40px));
+  box-sizing: border-box;
+  height: auto;
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+  padding: 24px 28px 28px;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+  animation: guestModalCardIn 0.3s ease-out;
+}
+
+#downloadedContentsModal .modal-header {
+  display: grid;
+  grid-template-columns: 1fr 34px;
+  align-items: start;
+  gap: 12px;
+  margin: 0 0 16px;
+  color: #111;
+  font-size: 18px;
+  font-weight: 750;
+  line-height: 1.2;
+}
+
+#downloadedContentsModal .modal-close {
+  align-self: start;
+  width: 34px;
+  height: 34px;
+  margin-top: -7px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  color: #666;
+  font-size: 28px;
+  line-height: 1;
+}
+
+#downloadedContentsModal .modal-content {
+  flex: 0 1 auto;
+  margin: 0 0 22px;
+  padding: 0;
+  overflow: visible;
+  color: #444;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+#downloadedContentsModal .modal-content p {
+  margin: 0 0 10px;
+}
+
+.downloaded-content-list {
+  display: grid;
+  gap: 8px;
+  margin: 14px 0;
+  padding: 0;
+  list-style: none;
+}
+
+.downloaded-content-item {
+  display: grid;
+  gap: 4px;
+  padding: 10px 12px;
+  border: 1px solid #e3e3e7;
+  border-radius: 12px;
+  color: #202124;
+  background: #fafafa;
+}
+
+.downloaded-content-item.is-complete {
+  border-color: #86efac;
+  background: #eaf7ee;
+}
+
+.downloaded-content-item__title {
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.downloaded-content-item__meta,
+.downloaded-content-size {
+  color: #555;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+#downloadedContentsModal .modal-footer {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+#downloadedContentsModal .modal-footer button {
+  width: 100%;
+  height: 42px;
+  margin: 0;
+  border-radius: 14px;
+  background: #e41e26;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
 /* ============================================= Tooltips ============================================= */
 .tooltip {
   position: absolute;
@@ -1295,7 +1405,7 @@ input:checked + .slider:before {
   font-weight: 600;
 }
 .menu-item:hover {
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 .menu-item a {
@@ -1304,9 +1414,14 @@ input:checked + .slider:before {
   padding: 4px 0;
   cursor: pointer;
   font-weight: 600;
+  text-decoration: none;
 }
 .menu-item a:hover {
-  text-decoration: underline;
+  text-decoration: none;
+}
+
+.menu-item--link-group-start {
+  margin-top: 12px;
 }
 
 .menu-version-date {
@@ -2479,6 +2594,13 @@ input:checked + .slider:before {
   background-image: url("/images/icon/eyes/moduleicons/primary_scrollytell.webp");
 }
 
+:is(#pupilsPage, .pupils-like)
+  .pupil-level--primary
+  .lesson-row--scrollytelling
+  .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/primary_scrollytell.webp");
+}
+
 :is(#pupilsPage, .pupils-like) .pupil-level--primary .lesson-row--pdf .thumb {
   background-image: url("/images/icon/eyes/moduleicons/primary_pdf.webp");
 }
@@ -2530,6 +2652,13 @@ input:checked + .slider:before {
   .lesson-row--quiz
   .thumb {
   background-image: url("/images/icon/eyes/moduleicons/intermediate_casestudy.webp");
+}
+
+:is(#pupilsPage, .pupils-like)
+  .pupil-level--intermediate
+  .lesson-row--scrollytelling
+  .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/intermediate_scrollytell.webp");
 }
 
 :is(#pupilsPage, .pupils-like)
@@ -2624,6 +2753,22 @@ input:checked + .slider:before {
   + .pupil-card.module-card
   .lesson-row {
   margin-top: 0;
+}
+
+#holoOverviewPage .lesson-progress__fill {
+  background: #f25600 !important;
+}
+
+#holoOverviewPage .lesson-row.is-progress-complete {
+  --lesson-complete-color: #f25600 !important;
+}
+
+#arclightPage .pupil-level--primary .lesson-progress__fill {
+  background: #15e115 !important;
+}
+
+#arclightPage .pupil-level--primary .lesson-row.is-progress-complete {
+  --lesson-complete-color: #15e115 !important;
 }
 
 /* ---------- Advanced ---------- */

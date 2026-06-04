@@ -455,6 +455,10 @@ const STRUCTURAL_BACK_SUBPAGES = {
     routeName: "videos",
     subPageId: "fundalReflexPage",
   },
+  directOphthalmoscopyScrollPage: {
+    routeName: "videos",
+    subPageId: "arclightPage",
+  },
   fundalReflexExaminationScrollPage: {
     routeName: "videos",
     subPageId: "fundalReflexPage",

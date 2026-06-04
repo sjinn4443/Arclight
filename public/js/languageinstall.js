@@ -104,7 +104,7 @@ const CONTENT_ASSET_PREFIXES = [
   "/video-subtitles/",
   "/videos/",
 ];
-const OFFLINE_CATALOG_OPTIONS = [
+export const OFFLINE_CATALOG_OPTIONS = [
   {
     id: "core",
     label: "Core Examination",
@@ -296,7 +296,7 @@ function isAppShellAsset(url) {
   return !CONTENT_ASSET_PREFIXES.some((prefix) => assetPath.startsWith(prefix));
 }
 
-function matchesOfflineCatalog(url, catalogId) {
+export function matchesOfflineCatalog(url, catalogId) {
   const assetPath = getAssetPath(url);
 
   if (catalogId === "core-history") {
@@ -423,7 +423,7 @@ function matchesOfflineCatalog(url, catalogId) {
   return false;
 }
 
-function getOfflineManifestAssets(manifest) {
+export function getOfflineManifestAssets(manifest) {
   if (Array.isArray(manifest?.assets) && manifest.assets.length) {
     return manifest.assets;
   }
@@ -447,7 +447,7 @@ function dedupeOfflineAssets(assets) {
   return deduped;
 }
 
-function formatDownloadSize(bytes) {
+export function formatDownloadSize(bytes) {
   if (!bytes) return "size will be calculated during download";
   if (bytes >= 1000000000) return `${(bytes / 1000000000).toFixed(1)} GB`;
   if (bytes >= 1000000) return `${Math.ceil(bytes / 1000000)} MB`;

@@ -71,13 +71,23 @@
       <!-- Menu search (collapsible like dashboard) -->
     </div>
     <div class="menu-tabs">
-      <button class="tab active" data-i18n="menu.learning_tab_title">
+      <button
+        class="tab active"
+        data-menu-tab-target="learningTab"
+        data-i18n="menu.learning_tab_title"
+      >
         Learning
       </button>
       <!--<button class="tab" data-i18n="menu.community_tab_title">
         Community
       </button>-->
-      <button class="tab" data-i18n="menu.links_tab_title">Links</button>
+      <button
+        class="tab"
+        data-menu-tab-target="linksTab"
+        data-i18n="menu.links_tab_title"
+      >
+        Links
+      </button>
 
       <!-- Compact search lives in the tab bar -->
       <div
@@ -244,7 +254,7 @@
             >Arclight Youtube</a
           >
         </div>
-        <div class="menu-item">
+        <div class="menu-item menu-item--link-group-start">
           <a
             href="https://www.who.int"
             target="_blank"
@@ -254,6 +264,9 @@
         </div>
         <div class="menu-item">
           <a href="https://cybersight.org" target="_blank">Cybersight: Orbis</a>
+        </div>
+        <div class="menu-item">
+          <a href="https://gbr.orbis.org/en" target="_blank">Orbis</a>
         </div>
         <div class="menu-item">
           <a
@@ -290,6 +303,9 @@
             data-i18n="menu.community_eye_health_journal_link"
             >Community Eye Health Journal</a
           >
+        </div>
+        <div class="menu-item">
+          <a href="https://www.raab.world/" target="_blank">RAAB</a>
         </div>
       </div>
     </div>

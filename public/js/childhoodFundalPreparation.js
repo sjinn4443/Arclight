@@ -1007,6 +1007,21 @@ const FUNDAL_REFLEX_EXAMINATION_SECTION_SOURCES = [
     titleKey: "auto.childhoodeyescreeningworkshop.after_examination",
   },
 ];
+const DIRECT_OPHTHALMOSCOPY_SCROLL_ROUTE = "directOphthalmoscopyScroll";
+const DIRECT_OPHTHALMOSCOPY_SECTION_SOURCES = [
+  {
+    routeName: "diabeticObservationFundalReflex",
+    title: "Observation and Fundal Reflex",
+  },
+  {
+    routeName: "diabeticPositioningFlightPath",
+    title: "Positioning and Flight Path",
+  },
+  {
+    routeName: "diabeticHowToExamine",
+    title: "How to Examine",
+  },
+];
 const BINOCULAR_INDIRECT_OPHTHALMOSCOPY_SCROLL_ROUTE =
   "binocularIndirectOphthalmoscopyScroll";
 const BINOCULAR_INDIRECT_OPHTHALMOSCOPY_SECTION_SOURCES = [
@@ -1247,6 +1262,17 @@ ROUTE_CONFIG[FUNDAL_REFLEX_EXAMINATION_SCROLL_ROUTE] =
     "Fundal Reflex Examination",
     FUNDAL_REFLEX_EXAMINATION_SECTION_SOURCES,
   );
+ROUTE_CONFIG[DIRECT_OPHTHALMOSCOPY_SCROLL_ROUTE] = {
+  ...createCombinedFundalRouteConfig(
+    "directOphthalmoscopyScrollPage",
+    "Direct Ophthalmoscopy",
+    DIRECT_OPHTHALMOSCOPY_SECTION_SOURCES,
+  ),
+  disableCompletedRouteRestore: true,
+  lazyInitialStageCount: 1,
+  lazyLoadStageAnimations: true,
+  skipRouteImageWarmup: true,
+};
 ROUTE_CONFIG[BINOCULAR_INDIRECT_OPHTHALMOSCOPY_SCROLL_ROUTE] = {
   ...createCombinedFundalRouteConfig(
     "binocularIndirectOphthalmoscopyScrollPage",

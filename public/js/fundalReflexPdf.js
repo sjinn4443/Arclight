@@ -2,6 +2,44 @@
 // FILE: public/js/fundalReflexPdf.js
 // ================================================
 
+const LESSON_PROGRESS_PREFIX = "lessonProgress:";
+const LESSON_PROGRESS_EVENT = "arclight:lesson-progress-changed";
+const DIABETIC_WORKSHOP_PROGRESS_PREFIX = "diabeticWorkshop:progress:";
+const DIABETIC_WORKSHOP_PROGRESS_EVENT = "diabeticWorkshop:progress-changed";
+
+function writeCompleteProgress(prefix, target) {
+  if (!prefix || !target) return;
+
+  try {
+    localStorage.setItem(
+      `${prefix}${target}`,
+      JSON.stringify({ percent: 100, updatedAt: Date.now() }),
+    );
+  } catch {
+    void 0;
+  }
+}
+
+function dispatchProgressEvent(name, target) {
+  if (!name || !target) return;
+
+  document.dispatchEvent(
+    new CustomEvent(name, {
+      detail: { target, percent: 100 },
+    }),
+  );
+}
+
+function markPdfProgressComplete(target, workshopPrefix = "") {
+  writeCompleteProgress(LESSON_PROGRESS_PREFIX, target);
+  dispatchProgressEvent(LESSON_PROGRESS_EVENT, target);
+
+  if (workshopPrefix) {
+    writeCompleteProgress(workshopPrefix, target);
+    dispatchProgressEvent(DIABETIC_WORKSHOP_PROGRESS_EVENT, target);
+  }
+}
+
 function showOnlyPage(pageId) {
   const root = document.getElementById("page-content") || document;
   const pages = root.querySelectorAll(".page");
@@ -331,6 +369,10 @@ export function initializeAtomsHandout2() {
 }
 
 export function initializeDirectOphthalmoscopyPdf() {
+  markPdfProgressComplete(
+    "directOphthalmoscopyPdfPage",
+    DIABETIC_WORKSHOP_PROGRESS_PREFIX,
+  );
   initImagePdfPage(
     "directOphthalmoscopyPdfPage",
     "directOphthalmoscopyPdfViewer",
@@ -339,6 +381,10 @@ export function initializeDirectOphthalmoscopyPdf() {
 }
 
 export function initializeBinocularIndirectOphthalmoscopyPdf() {
+  markPdfProgressComplete(
+    "binocularIndirectOphthalmoscopyPdfPage",
+    DIABETIC_WORKSHOP_PROGRESS_PREFIX,
+  );
   initImagePdfPage(
     "binocularIndirectOphthalmoscopyPdfPage",
     "binocularIndirectOphthalmoscopyPdfViewer",

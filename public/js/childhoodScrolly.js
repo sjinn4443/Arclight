@@ -44,6 +44,7 @@ function collectScrollySteps(page) {
     "#childhoodReferPage .childhood-refer",
     "#visualImpairmentPage .vi-scroll-wrap",
     "#visualImpairmentPage .vi-detail-panel",
+    "#signsVICasesPage .childhood-signs-vi-panel",
   ];
 
   return Array.from(page.querySelectorAll(selectors.join(","))).filter(

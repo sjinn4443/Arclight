@@ -1868,6 +1868,81 @@ select.onb-input.has-value + .onb-select-caret {
   pointer-events: auto !important;
 }
 
+#unifiedDashboard .dashboard-search-panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 40;
+  width: min(320px, calc(100vw - 32px));
+  max-height: min(62vh, 440px);
+  overflow-y: auto;
+  padding: 10px;
+  border: 1px solid #e5e5ea;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.16);
+}
+
+#unifiedDashboard .dashboard-search-panel[hidden] {
+  display: none;
+}
+
+#unifiedDashboard .dashboard-search-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+#unifiedDashboard .dashboard-search-suggestion {
+  min-height: 28px;
+  border: 1px solid #d9d9dd;
+  border-radius: 999px;
+  padding: 0 10px;
+  background: #f8f8fa;
+  color: #111;
+  font-size: 11px;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+#unifiedDashboard .dashboard-search-results {
+  display: grid;
+  gap: 8px;
+}
+
+#unifiedDashboard .dashboard-search-result-card.module-card {
+  margin: 0;
+  padding: 8px;
+  border: 1px solid #eeeeef;
+  box-shadow: none;
+}
+
+#unifiedDashboard .dashboard-search-result-card.module-card img {
+  width: 44px;
+  height: 44px;
+}
+
+#unifiedDashboard .dashboard-search-result-card .module-info {
+  gap: 2px;
+  margin-left: 10px;
+}
+
+#unifiedDashboard .dashboard-search-result-card .module-info h3 {
+  font-size: 12px;
+}
+
+#unifiedDashboard .dashboard-search-result-card .module-info p {
+  font-size: 11px;
+}
+
+#unifiedDashboard .dashboard-search-empty {
+  padding: 10px 4px;
+  color: #777;
+  font-size: 12px;
+  font-weight: 600;
+}
+
 /* Experience by role */
 .role-exp-block {
   margin-top: 10px;
@@ -6529,6 +6604,7 @@ select.onb-input.has-value + .onb-select-caret {
 
 :is(
     #fundalReflexExaminationScrollPage,
+    #directOphthalmoscopyScrollPage,
     #binocularIndirectOphthalmoscopyScrollPage
   )
   .childhood-fundal-prep-list {
@@ -6544,11 +6620,19 @@ select.onb-input.has-value + .onb-select-caret {
 #diabeticObservationFundalReflexPage
   .childhood-fundal-prep-stage[data-file-index="1"]
   + .childhood-fundal-segment-text
+  .childhood-fundal-segment-text__paragraph:nth-child(2),
+#directOphthalmoscopyScrollPage
+  .childhood-fundal-prep-stage[data-file-index="1"]
+  + .childhood-fundal-segment-text
   .childhood-fundal-segment-text__paragraph:nth-child(2) {
   margin-top: 1.15em;
 }
 
 #diabeticObservationFundalReflexPage
+  .childhood-fundal-prep-stage[data-file-index="1"]
+  + .childhood-fundal-segment-text
+  .childhood-fundal-segment-text__paragraph:nth-child(3),
+#directOphthalmoscopyScrollPage
   .childhood-fundal-prep-stage[data-file-index="1"]
   + .childhood-fundal-segment-text
   .childhood-fundal-segment-text__paragraph:nth-child(3) {
@@ -6564,12 +6648,20 @@ select.onb-input.has-value + .onb-select-caret {
 #diabeticObservationFundalReflexPage
   .childhood-fundal-prep-stage[data-file-index="1"]
   + .childhood-fundal-segment-text
+  .childhood-fundal-segment-text__paragraph:nth-child(4),
+#directOphthalmoscopyScrollPage
+  .childhood-fundal-prep-stage[data-file-index="1"]
+  + .childhood-fundal-segment-text
   .childhood-fundal-segment-text__paragraph:nth-child(4) {
   white-space: normal;
 }
 
 @media (max-width: 600px) {
   #diabeticObservationFundalReflexPage
+    .childhood-fundal-prep-stage[data-file-index="1"]
+    + .childhood-fundal-segment-text
+    .childhood-fundal-segment-text__paragraph:nth-child(4),
+  #directOphthalmoscopyScrollPage
     .childhood-fundal-prep-stage[data-file-index="1"]
     + .childhood-fundal-segment-text
     .childhood-fundal-segment-text__paragraph:nth-child(4) {
@@ -6579,11 +6671,18 @@ select.onb-input.has-value + .onb-select-caret {
 
 #diabeticObservationFundalReflexPage
   .childhood-fundal-prep-stage[data-file-index="1"]
+  + .childhood-fundal-segment-text,
+#directOphthalmoscopyScrollPage
+  .childhood-fundal-prep-stage[data-file-index="1"]
   + .childhood-fundal-segment-text {
   padding-bottom: 58px;
 }
 
 #diabeticObservationFundalReflexPage
+  .childhood-fundal-prep-stage[data-file-index="1"]
+  + .childhood-fundal-segment-text
+  + .childhood-fundal-scroll-down-arrow,
+#directOphthalmoscopyScrollPage
   .childhood-fundal-prep-stage[data-file-index="1"]
   + .childhood-fundal-segment-text
   + .childhood-fundal-scroll-down-arrow {
@@ -6765,6 +6864,7 @@ select.onb-input.has-value + .onb-select-caret {
 
 :is(
     #fundalReflexExaminationScrollPage,
+    #directOphthalmoscopyScrollPage,
     #binocularIndirectOphthalmoscopyScrollPage
   )
   .fundal-reflex-examination-section {
@@ -6775,6 +6875,7 @@ select.onb-input.has-value + .onb-select-caret {
 
 :is(
     #fundalReflexExaminationScrollPage,
+    #directOphthalmoscopyScrollPage,
     #binocularIndirectOphthalmoscopyScrollPage
   )
   .fundal-reflex-examination-section-items {
@@ -6785,6 +6886,7 @@ select.onb-input.has-value + .onb-select-caret {
 
 :is(
     #fundalReflexExaminationScrollPage,
+    #directOphthalmoscopyScrollPage,
     #binocularIndirectOphthalmoscopyScrollPage
   )
   .fundal-reflex-section-divider {
@@ -6796,16 +6898,12 @@ select.onb-input.has-value + .onb-select-caret {
   margin: var(--fundal-reflex-divider-offset) 0 0;
   padding: 0 24px;
   border-radius: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(255, 255, 255, 0) 0%,
-    #000 18%,
-    #000 100%
-  );
+  background: #000;
 }
 
 :is(
     #fundalReflexExaminationScrollPage,
+    #directOphthalmoscopyScrollPage,
     #binocularIndirectOphthalmoscopyScrollPage
   )
   .fundal-reflex-examination-section:first-child
@@ -6815,6 +6913,7 @@ select.onb-input.has-value + .onb-select-caret {
 
 :is(
     #fundalReflexExaminationScrollPage,
+    #directOphthalmoscopyScrollPage,
     #binocularIndirectOphthalmoscopyScrollPage
   )
   .fundal-reflex-section-divider__title {
@@ -7532,6 +7631,7 @@ select.onb-input.has-value + .onb-select-caret {
 @media (max-width: 37.5em) {
   :is(
       #fundalReflexExaminationScrollPage,
+      #directOphthalmoscopyScrollPage,
       #binocularIndirectOphthalmoscopyScrollPage
     )
     .fundal-reflex-section-divider {
@@ -7541,6 +7641,7 @@ select.onb-input.has-value + .onb-select-caret {
 
   :is(
       #fundalReflexExaminationScrollPage,
+      #directOphthalmoscopyScrollPage,
       #binocularIndirectOphthalmoscopyScrollPage
     )
     .fundal-reflex-section-divider__title {
@@ -18471,19 +18572,1131 @@ img[src*="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/"] {
   border-radius: 0 0 16px 16px;
 }
 
+/* Glaucoma and Childhood workshop image-scroll lessons in the diabetic scrolly format */
+.glaucoma-scrolly-page {
+  --glaucoma-scrolly-accent: #15e115;
+  --glaucoma-scrolly-accent-dark: #0a9f0a;
+  background: #ffffff !important;
+  color: #111111;
+}
+
+.glaucoma-scrolly-page > .container.pupils-container,
+.glaucoma-scrolly-container {
+  background: #ffffff !important;
+}
+
+.glaucoma-scrolly-hero {
+  box-sizing: border-box;
+  width: min(86vw, 430px);
+  min-height: 52dvh;
+  margin: 0 auto;
+  padding: 30px 0 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.glaucoma-scrolly-eyebrow {
+  margin: 0 0 12px;
+  color: var(--glaucoma-scrolly-accent-dark);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.glaucoma-scrolly-hero h2,
+#signsVICasesPage .childhood-scrolly-hero h2,
+#childhoodAskQuestionsObservePage .childhood-scrolly-hero h2 {
+  margin: 0;
+  color: #111111;
+  font-size: 32px;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.glaucoma-scrolly-hero p:last-child,
+#signsVICasesPage .childhood-scrolly-hero p:last-child,
+#childhoodAskQuestionsObservePage .childhood-scrolly-hero p:last-child {
+  margin: 18px 0 0;
+  color: #374151;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.55;
+  letter-spacing: 0;
+}
+
+.glaucoma-scrolly-stack,
+#signsVICasesPage .childhood-signs-vi-stack {
+  width: 100vw;
+  margin-right: calc(50% - 50vw);
+  margin-left: calc(50% - 50vw);
+  padding: 8px 0 58px;
+  display: grid;
+  gap: 18px;
+  background: #ffffff;
+}
+
+.glaucoma-scrolly-panel,
+#signsVICasesPage .childhood-signs-vi-panel {
+  box-sizing: border-box;
+  position: relative;
+  width: min(88vw, 430px);
+  min-height: auto;
+  margin: 0 auto;
+  padding: 24px 20px;
+  display: grid;
+  align-content: start;
+  gap: 16px;
+  border: 1px solid rgba(15, 23, 42, 0.09);
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 18px 44px rgba(15, 23, 42, 0.11);
+  opacity: 0.22;
+  transform: translateY(24px) scale(0.985);
+  transition:
+    opacity 360ms ease,
+    transform 360ms ease,
+    box-shadow 360ms ease;
+}
+
+.glaucoma-scrolly-hero[data-glaucoma-scroll-step] {
+  opacity: 0.22;
+  transform: translateY(24px) scale(0.985);
+  transition:
+    opacity 360ms ease,
+    transform 360ms ease;
+}
+
+.glaucoma-scrolly-panel.is-visible,
+.glaucoma-scrolly-hero.is-visible,
+#signsVICasesPage .childhood-signs-vi-panel.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.glaucoma-scrolly-panel.is-current,
+#signsVICasesPage .childhood-signs-vi-panel.is-current {
+  box-shadow: 0 24px 54px rgba(15, 23, 42, 0.17);
+}
+
+.glaucoma-scrolly-index,
+#signsVICasesPage .childhood-signs-vi-index {
+  width: 42px;
+  height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--glaucoma-scrolly-accent);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+#signsVICasesPage .childhood-signs-vi-index {
+  background: var(--childhood-scrolly-accent);
+}
+
+.glaucoma-scrolly-figure {
+  margin: 0;
+  display: grid;
+  gap: 0;
+}
+
+.glaucoma-scrolly-figure img,
+#signsVICasesPage .childhood-signs-vi-media {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 18px 18px 0 0;
+  box-shadow: none;
+}
+
+.glaucoma-scrolly-figure figcaption,
+#signsVICasesPage .childhood-signs-vi-caption {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.glaucoma-scrolly-figure figcaption {
+  padding: 10px 12px;
+  border-radius: 0 0 16px 16px;
+  background: var(--glaucoma-scrolly-accent);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1.18;
+  text-align: center;
+  letter-spacing: 0;
+}
+
+#signsVICasesPage .childhood-signs-vi-caption {
+  margin: 0;
+  border-radius: 0 0 16px 16px;
+}
+
+#signsVICasesPage video.childhood-signs-vi-media {
+  background: #111111;
+}
+
+#signsVICasesPage .childhood-signs-vi-caption {
+  padding: 14px;
+  display: grid;
+  gap: 14px;
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  border-top: 0;
+  background: #f8fff8;
+  color: #111111;
+}
+
+#signsVICasesPage .childhood-signs-vi-caption h3 {
+  margin: 0 0 8px;
+  color: #111111;
+  font-size: 15px;
+  font-weight: 900;
+  line-height: 1.08;
+  letter-spacing: 0;
+}
+
+#signsVICasesPage .childhood-signs-vi-caption dl,
+#signsVICasesPage .childhood-signs-vi-caption ul {
+  margin: 0;
+}
+
+#signsVICasesPage .childhood-signs-vi-caption dl {
+  display: grid;
+  gap: 3px;
+}
+
+#signsVICasesPage .childhood-signs-vi-caption dl::before {
+  content: "Age  Dist (m)  VA";
+  color: #334155;
+  font-size: 12px;
+  font-weight: 900;
+  white-space: pre;
+}
+
+#signsVICasesPage .childhood-signs-vi-caption dl > div {
+  display: grid;
+  grid-template-columns: 48px 70px 58px;
+  gap: 8px;
+  color: #334155;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+#signsVICasesPage .childhood-signs-vi-caption dt,
+#signsVICasesPage .childhood-signs-vi-caption dd {
+  margin: 0;
+}
+
+#signsVICasesPage .childhood-signs-vi-caption ul {
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 5px 10px;
+  list-style: none;
+}
+
+#signsVICasesPage .childhood-signs-vi-caption li {
+  color: #334155;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+@media (min-width: 48em) {
+  #signsVICasesPage .childhood-signs-vi-caption {
+    grid-template-columns: minmax(190px, 0.58fr) minmax(0, 1fr);
+    gap: 18px;
+  }
+
+  #signsVICasesPage .childhood-signs-vi-caption ul {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.glaucoma-scrolly-copy {
+  min-width: 0;
+  display: grid;
+  gap: 12px;
+}
+
+.glaucoma-scrolly-copy h3 {
+  margin: 0;
+  color: #111111;
+  font-size: 25px;
+  font-weight: 900;
+  line-height: 1.08;
+  letter-spacing: 0;
+}
+
+.glaucoma-scrolly-copy p,
+.glaucoma-scrolly-copy li {
+  margin: 0;
+  color: #334155;
+  font-size: 15px;
+  font-weight: 650;
+  line-height: 1.48;
+  letter-spacing: 0;
+}
+
+.glaucoma-scrolly-copy strong {
+  color: #111111;
+  font-weight: 900;
+}
+
+.glaucoma-scrolly-copy em {
+  color: #111111;
+  font-style: italic;
+  font-weight: 800;
+}
+
+.glaucoma-scrolly-list,
+.glaucoma-scrolly-number-list {
+  margin: 0;
+  padding-left: 20px;
+  display: grid;
+  gap: 7px;
+}
+
+.glaucoma-core-list {
+  display: grid;
+  gap: 10px;
+}
+
+.glaucoma-core-list p {
+  padding: 12px 14px;
+  border: 1px solid rgba(21, 225, 21, 0.28);
+  border-radius: 14px;
+  background: rgba(21, 225, 21, 0.06);
+}
+
+.glaucoma-diagram {
+  width: 100%;
+  min-height: 220px;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  gap: 14px;
+  padding: 18px;
+  border: 1px solid rgba(21, 225, 21, 0.22);
+  border-radius: 20px;
+  background:
+    linear-gradient(135deg, rgba(21, 225, 21, 0.08), rgba(255, 255, 255, 0.96)),
+    #ffffff;
+}
+
+.glaucoma-diagram span,
+.glaucoma-diagram strong,
+.glaucoma-diagram b,
+.glaucoma-diagram small,
+.glaucoma-diagram em,
+.glaucoma-diagram p {
+  letter-spacing: 0;
+}
+
+.glaucoma-diagram-label-row {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  color: #334155;
+  font-size: 11px;
+  font-weight: 900;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.glaucoma-diagram--eye-path {
+  grid-template-columns: 86px minmax(64px, 1fr) 92px;
+}
+
+.glaucoma-eye-path__eye,
+.glaucoma-eye-path__brain {
+  width: 78px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+}
+
+.glaucoma-eye-path__eye {
+  position: relative;
+  background:
+    radial-gradient(
+      circle at 50% 50%,
+      #111111 0 10%,
+      #9de7ff 11% 25%,
+      #ffffff 26% 54%,
+      transparent 55%
+    ),
+    radial-gradient(
+      circle at 45% 50%,
+      #f8fafc 0 60%,
+      #15e115 61% 64%,
+      #e2e8f0 65%
+    );
+  box-shadow: inset 0 0 0 2px rgba(15, 23, 42, 0.12);
+}
+
+.glaucoma-eye-path__nerve {
+  width: 100%;
+  height: 14px;
+  border-radius: 999px;
+  background: repeating-linear-gradient(
+    90deg,
+    #15e115 0 12px,
+    #91ef91 12px 18px
+  );
+}
+
+.glaucoma-eye-path__brain {
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+
+.glaucoma-eye-path__brain span {
+  position: absolute;
+  width: 50px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: rgba(21, 225, 21, 0.28);
+  border: 2px solid rgba(10, 159, 10, 0.24);
+}
+
+.glaucoma-eye-path__brain span:nth-child(1) {
+  left: 8px;
+  top: 18px;
+}
+
+.glaucoma-eye-path__brain span:nth-child(2) {
+  right: 8px;
+  top: 18px;
+}
+
+.glaucoma-eye-path__brain span:nth-child(3) {
+  left: 21px;
+  bottom: 12px;
+}
+
+.glaucoma-diagram--loss-rate {
+  align-content: center;
+  justify-items: stretch;
+}
+
+.glaucoma-loss-rate__row {
+  display: grid;
+  gap: 8px;
+}
+
+.glaucoma-loss-rate__row span {
+  color: #334155;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.glaucoma-loss-rate__row strong {
+  height: 18px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #15e115, #0a9f0a);
+}
+
+.glaucoma-loss-rate__row--slow strong {
+  width: 46%;
+}
+
+.glaucoma-loss-rate__row--fast strong {
+  width: 86%;
+}
+
+.glaucoma-diagram--loss-rate p {
+  margin: 0;
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 900;
+  text-align: right;
+  text-transform: uppercase;
+}
+
+.glaucoma-diagram--field-series {
+  grid-template-columns: repeat(4, minmax(44px, 1fr));
+  min-height: 150px;
+}
+
+.glaucoma-field-dot {
+  width: min(58px, 18vw);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 1px solid rgba(10, 159, 10, 0.45);
+  background: radial-gradient(circle, #fff8c7 0 34%, #f8d86e 35% 100%);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.11);
+}
+
+.glaucoma-field-dot--side {
+  background: radial-gradient(circle, #fff8c7 0 34%, #111111 35% 100%);
+}
+
+.glaucoma-field-dot--tunnel {
+  background: radial-gradient(circle, #fff8c7 0 16%, #111111 17% 100%);
+}
+
+.glaucoma-field-dot--blind {
+  background: #111111;
+}
+
+.glaucoma-diagram--type-grid,
+.glaucoma-diagram--chip-grid,
+.glaucoma-diagram--test-map,
+.glaucoma-diagram--drainage,
+.glaucoma-diagram--record-grid,
+.glaucoma-diagram--summary-wheel {
+  align-content: center;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.glaucoma-diagram--chip-grid,
+.glaucoma-diagram--test-map,
+.glaucoma-diagram--summary-wheel {
+  grid-template-columns: 1fr;
+}
+
+.glaucoma-diagram--type-grid span,
+.glaucoma-diagram--chip-grid span,
+.glaucoma-diagram--test-map span,
+.glaucoma-diagram--drainage span,
+.glaucoma-diagram--record-grid span,
+.glaucoma-diagram--summary-wheel span {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  border: 1px solid rgba(21, 225, 21, 0.32);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.84);
+  color: #0f172a;
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1.15;
+  text-align: center;
+}
+
+.glaucoma-diagram--compare {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
+}
+
+.glaucoma-diagram--compare > div {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 14px;
+  display: grid;
+  gap: 8px;
+  border: 1px solid rgba(21, 225, 21, 0.3);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.88);
+}
+
+.glaucoma-diagram--compare strong {
+  color: #0a9f0a;
+  font-size: 18px;
+  font-weight: 950;
+}
+
+.glaucoma-diagram--compare span {
+  color: #334155;
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.glaucoma-diagram--acuity {
+  grid-template-columns: minmax(0, 1fr) 92px;
+}
+
+.glaucoma-acuity-chart {
+  width: 100%;
+  min-height: 150px;
+  display: grid;
+  align-content: center;
+  gap: 8px;
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.08);
+  text-align: center;
+}
+
+.glaucoma-acuity-chart span {
+  color: #111111;
+  font-weight: 950;
+  line-height: 1;
+}
+
+.glaucoma-acuity-chart span:nth-child(1) {
+  font-size: 42px;
+}
+
+.glaucoma-acuity-chart span:nth-child(2) {
+  font-size: 30px;
+}
+
+.glaucoma-acuity-chart span:nth-child(3) {
+  font-size: 22px;
+}
+
+.glaucoma-acuity-chart span:nth-child(4) {
+  font-size: 16px;
+}
+
+.glaucoma-pinhole-card {
+  width: 76px;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: radial-gradient(circle, #111111 0 8%, transparent 9%), #0f172a;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.glaucoma-diagram--dual-exam,
+.glaucoma-diagram--dual-targets,
+.glaucoma-diagram--front-eye,
+.glaucoma-diagram--acd {
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+}
+
+.glaucoma-diagram--dual-targets,
+.glaucoma-diagram--acd {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.glaucoma-diagram--dual-exam > div,
+.glaucoma-diagram--dual-targets > div,
+.glaucoma-diagram--front-eye > div,
+.glaucoma-diagram--acd > div {
+  width: 100%;
+  min-height: 130px;
+  box-sizing: border-box;
+  padding: 14px;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 12px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.86);
+  box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.08);
+}
+
+.glaucoma-diagram--dual-exam > b,
+.glaucoma-diagram--front-eye > b {
+  color: #0a9f0a;
+  font-size: 32px;
+  font-weight: 950;
+}
+
+.glaucoma-diagram--dual-exam strong,
+.glaucoma-diagram--dual-targets strong,
+.glaucoma-diagram--front-eye strong,
+.glaucoma-diagram--acd strong {
+  color: #0f172a;
+  font-size: 12px;
+  font-weight: 900;
+  text-align: center;
+}
+
+.glaucoma-finger-target {
+  color: #111111;
+  font-size: 42px;
+  font-weight: 950;
+  line-height: 1;
+}
+
+.glaucoma-light-target,
+.glaucoma-red-square {
+  width: 58px;
+  aspect-ratio: 1;
+  display: block;
+  border-radius: 14px;
+  background: #f04438;
+  box-shadow: 0 0 0 8px rgba(240, 68, 56, 0.1);
+}
+
+.glaucoma-light-target {
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    #ffffff 0 18%,
+    #9de7ff 19% 42%,
+    #111111 43%
+  );
+}
+
+.glaucoma-diagram--quadrant {
+  min-height: 250px;
+  border-radius: 22px;
+  background:
+    radial-gradient(
+      ellipse at center,
+      rgba(255, 255, 255, 0.94) 0 58%,
+      transparent 59%
+    ),
+    linear-gradient(135deg, rgba(21, 225, 21, 0.08), #ffffff);
+}
+
+.glaucoma-diagram--quadrant::before {
+  content: "";
+  position: absolute;
+  inset: 28px;
+  border: 2px solid #0f172a;
+  border-radius: 50%;
+}
+
+.glaucoma-quadrant__axis {
+  position: absolute;
+  z-index: 1;
+  background: repeating-linear-gradient(
+    90deg,
+    #facc15 0 18px,
+    transparent 18px 32px
+  );
+}
+
+.glaucoma-quadrant__axis--x {
+  left: 16px;
+  right: 16px;
+  top: 50%;
+  height: 6px;
+}
+
+.glaucoma-quadrant__axis--y {
+  top: 16px;
+  bottom: 16px;
+  left: 50%;
+  width: 6px;
+  background: repeating-linear-gradient(
+    180deg,
+    #facc15 0 18px,
+    transparent 18px 32px
+  );
+}
+
+.glaucoma-quadrant__label {
+  position: absolute;
+  z-index: 2;
+  color: #111111;
+  font-size: 26px;
+  font-weight: 950;
+}
+
+.glaucoma-quadrant__label--one {
+  left: 28%;
+  top: 28%;
+}
+
+.glaucoma-quadrant__label--two {
+  right: 28%;
+  top: 28%;
+}
+
+.glaucoma-quadrant__label--three {
+  right: 28%;
+  bottom: 24%;
+}
+
+.glaucoma-quadrant__label--four {
+  left: 28%;
+  bottom: 24%;
+}
+
+.glaucoma-quadrant__face {
+  position: absolute;
+  z-index: 3;
+  left: 36%;
+  top: 39%;
+  width: 58px;
+  height: 70px;
+  border-radius: 42% 42% 48% 48%;
+  background: #b98273;
+  box-shadow: inset 0 0 0 4px rgba(15, 23, 42, 0.08);
+}
+
+.glaucoma-quadrant__target {
+  position: absolute;
+  z-index: 4;
+  left: 46%;
+  top: 45%;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: #ffffff;
+  background: #111111;
+  font-size: 20px;
+  font-weight: 950;
+}
+
+.glaucoma-quadrant__target--red {
+  background: #f04438;
+  box-shadow: 0 0 0 6px rgba(240, 68, 56, 0.14);
+}
+
+.glaucoma-diagram--quadrant small,
+.glaucoma-diagram--quadrant em {
+  position: absolute;
+  z-index: 4;
+  color: #0f172a;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 850;
+}
+
+.glaucoma-diagram--quadrant small {
+  left: 52%;
+  top: 43%;
+}
+
+.glaucoma-diagram--quadrant em {
+  right: 18%;
+  bottom: 31%;
+}
+
+.glaucoma-diagram--record-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.glaucoma-diagram--pupil-row {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.glaucoma-pupil {
+  width: 58px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, #111111 0 22%, transparent 23%), #dbeafe;
+  box-shadow: inset 0 0 0 2px rgba(15, 23, 42, 0.12);
+}
+
+.glaucoma-pupil--reduced {
+  background: radial-gradient(circle, #111111 0 34%, transparent 35%), #dbeafe;
+}
+
+.glaucoma-pupil--absent {
+  background: radial-gradient(circle, #111111 0 48%, transparent 49%), #dbeafe;
+}
+
+.glaucoma-diagram--pupil-row > div,
+.glaucoma-diagram--disc-row > div,
+.glaucoma-diagram--disc > div {
+  grid-column: 1 / -1;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  color: #334155;
+  font-size: 11px;
+  font-weight: 900;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.glaucoma-diagram--disc > div {
+  grid-template-columns: 1fr;
+}
+
+.glaucoma-diagram--swing {
+  grid-template-columns: 1fr 78px 1fr;
+}
+
+.glaucoma-swing-eye {
+  width: 72px;
+  aspect-ratio: 1.55;
+  border-radius: 50%;
+  background:
+    radial-gradient(
+      circle at 50% 52%,
+      #111111 0 12%,
+      #9de7ff 13% 28%,
+      #ffffff 29% 58%,
+      transparent 59%
+    ),
+    #e2e8f0;
+  box-shadow: inset 0 0 0 2px rgba(15, 23, 42, 0.12);
+}
+
+.glaucoma-swing-light {
+  width: 58px;
+  height: 18px;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    #facc15 34%,
+    #ffffff 50%,
+    #facc15 66%,
+    transparent
+  );
+}
+
+.glaucoma-diagram--swing strong {
+  grid-column: 1 / -1;
+  color: #0a9f0a;
+  font-size: 12px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.glaucoma-front-eye__loupe,
+.glaucoma-front-eye__beam {
+  width: 78px;
+  aspect-ratio: 1.5;
+  display: block;
+  border-radius: 50%;
+  background:
+    radial-gradient(
+      circle at 50% 52%,
+      #111111 0 9%,
+      #9de7ff 10% 24%,
+      #ffffff 25% 56%,
+      transparent 57%
+    ),
+    #e2e8f0;
+  box-shadow: inset 0 0 0 2px rgba(15, 23, 42, 0.12);
+}
+
+.glaucoma-front-eye__beam {
+  background:
+    linear-gradient(
+      90deg,
+      transparent 0 40%,
+      rgba(250, 204, 21, 0.65) 41% 53%,
+      transparent 54%
+    ),
+    radial-gradient(
+      circle at 50% 52%,
+      #111111 0 9%,
+      #9de7ff 10% 24%,
+      #ffffff 25% 56%,
+      transparent 57%
+    ),
+    #e2e8f0;
+}
+
+.glaucoma-diagram--drainage {
+  grid-template-columns: 1fr;
+}
+
+.glaucoma-acd-eye {
+  width: 88px;
+  aspect-ratio: 1.45;
+  display: block;
+  border-radius: 50%;
+  background:
+    linear-gradient(90deg, rgba(250, 204, 21, 0.62) 0 52%, transparent 53%),
+    radial-gradient(
+      circle at 38% 50%,
+      #111111 0 12%,
+      #9de7ff 13% 24%,
+      transparent 25%
+    ),
+    #e2e8f0;
+  box-shadow: inset 0 0 0 2px rgba(15, 23, 42, 0.12);
+}
+
+.glaucoma-acd-eye--shallow {
+  background:
+    linear-gradient(
+      90deg,
+      rgba(15, 23, 42, 0.2) 0 30%,
+      rgba(250, 204, 21, 0.62) 31% 48%,
+      transparent 49%
+    ),
+    radial-gradient(
+      circle at 38% 50%,
+      #111111 0 12%,
+      #9de7ff 13% 24%,
+      transparent 25%
+    ),
+    #e2e8f0;
+}
+
+.glaucoma-diagram--palpation {
+  min-height: 210px;
+}
+
+.glaucoma-palpation__lid {
+  width: 150px;
+  height: 82px;
+  border-radius: 50%;
+  background:
+    radial-gradient(
+      ellipse at 50% 58%,
+      #111111 0 12%,
+      #f5c2a8 13% 38%,
+      transparent 39%
+    ),
+    #b98273;
+  box-shadow: inset 0 0 0 2px rgba(15, 23, 42, 0.12);
+}
+
+.glaucoma-palpation__finger {
+  position: absolute;
+  top: 54px;
+  width: 34px;
+  height: 110px;
+  border-radius: 22px;
+  background: #9f6a5b;
+  transform-origin: bottom center;
+  box-shadow: inset 0 0 0 2px rgba(15, 23, 42, 0.08);
+}
+
+.glaucoma-palpation__finger--one {
+  left: calc(50% - 62px);
+  transform: rotate(19deg);
+}
+
+.glaucoma-palpation__finger--two {
+  right: calc(50% - 62px);
+  transform: rotate(-19deg);
+}
+
+.glaucoma-diagram--palpation strong {
+  align-self: end;
+  color: #0a9f0a;
+  font-size: 12px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.glaucoma-diagram--fundal {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.glaucoma-fundal__reflex,
+.glaucoma-fundal__disc,
+.glaucoma-disc {
+  width: 98px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  display: block;
+  box-shadow: 0 10px 26px rgba(15, 23, 42, 0.16);
+}
+
+.glaucoma-fundal__reflex {
+  background: radial-gradient(
+    circle,
+    #fff7ad 0 18%,
+    #f97316 19% 58%,
+    #111111 59%
+  );
+}
+
+.glaucoma-fundal__disc,
+.glaucoma-disc {
+  background:
+    radial-gradient(circle at 53% 48%, #f9f0c8 0 20%, transparent 21%),
+    radial-gradient(circle at 50% 50%, #e9765b 0 56%, #c9483f 57% 100%);
+}
+
+.glaucoma-diagram--fundal strong {
+  grid-column: 1 / -1;
+  color: #334155;
+  font-size: 12px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.glaucoma-diagram--disc,
+.glaucoma-diagram--disc-row {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.glaucoma-diagram--disc {
+  grid-template-columns: 1fr;
+}
+
+.glaucoma-disc--healthy {
+  background:
+    radial-gradient(circle at 53% 49%, #f9f0c8 0 18%, transparent 19%),
+    radial-gradient(circle at 50% 50%, #f38a68 0 62%, #c9483f 63% 100%);
+}
+
+.glaucoma-disc--early {
+  background:
+    radial-gradient(circle at 53% 49%, #f9f0c8 0 32%, transparent 33%),
+    radial-gradient(circle at 50% 50%, #f38a68 0 62%, #c9483f 63% 100%);
+}
+
+.glaucoma-disc--advanced {
+  background:
+    radial-gradient(circle at 53% 49%, #f9f0c8 0 48%, transparent 49%),
+    radial-gradient(circle at 50% 50%, #f38a68 0 62%, #c9483f 63% 100%);
+}
+
+@media (min-width: 48em) {
+  .glaucoma-scrolly-panel {
+    grid-template-columns: minmax(0, 0.95fr) minmax(260px, 0.88fr);
+    align-items: center;
+    column-gap: 32px;
+  }
+
+  .glaucoma-scrolly-index,
+  .glaucoma-scrolly-copy {
+    grid-column: 1;
+  }
+
+  .glaucoma-diagram {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    min-height: 260px;
+  }
+
+  .glaucoma-scrolly-copy h3 {
+    font-size: 29px;
+  }
+
+  .glaucoma-scrolly-copy p,
+  .glaucoma-scrolly-copy li {
+    font-size: 16px;
+  }
+
+  .glaucoma-core-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 @media (min-width: 48em) {
   #diabeticArclightPackagePage
     .diabetic-screening-lesson--arclight-package
     .diabetic-screening-hero,
-  .childhood-scrolly-hero {
+  .childhood-scrolly-hero,
+  .glaucoma-scrolly-hero {
     width: min(76vw, 760px);
     padding: 22px 0 10px !important;
+  }
+
+  .glaucoma-scrolly-hero h2,
+  #signsVICasesPage .childhood-scrolly-hero h2,
+  #childhoodAskQuestionsObservePage .childhood-scrolly-hero h2 {
+    font-size: 42px;
   }
 
   #diabeticArclightPackagePage .diabetic-screening-stack,
   #childhoodIntroVisualDevelopmentPage .childhood-visual-dev-story,
   #childhoodNormalVisualDevelopmentPage .childhood-normal-visual-dev-story,
-  #visualImpairmentPage .vi-detail-sections {
+  #visualImpairmentPage .vi-detail-sections,
+  .glaucoma-scrolly-stack,
+  #signsVICasesPage .childhood-signs-vi-stack {
     gap: 34px;
     padding-top: 14px;
   }
@@ -18493,7 +19706,9 @@ img[src*="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/"] {
   #childhoodNormalVisualDevelopmentPage .childhood-normal-visual-dev-section,
   #visualImpairmentPage .vi-scroll-wrap,
   #visualImpairmentPage .vi-detail-panel,
-  #childhoodReferPage .childhood-refer {
+  #childhoodReferPage .childhood-refer,
+  .glaucoma-scrolly-panel,
+  #signsVICasesPage .childhood-signs-vi-panel {
     width: min(76vw, 760px) !important;
     max-width: 760px !important;
     padding: 34px !important;
@@ -18573,6 +19788,7 @@ img[src*="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/"] {
 
   #diabeticArclightPackagePage .eyes-topbar,
   .childhood-scrolly-page .eyes-topbar,
+  .glaucoma-scrolly-page .eyes-topbar,
   #visualImpairmentPage .eyes-topbar,
   #childhoodReferPage .eyes-topbar {
     width: min(86vw, 430px);
@@ -19304,6 +20520,104 @@ img[src*="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/"] {
   box-sizing: border-box;
   padding-top: 10px;
   padding-bottom: 10px;
+}
+
+#visualImpairmentPage .vi-card {
+  --width: 30%;
+}
+
+#visualImpairmentPage .vi-card--problems {
+  --width: 32%;
+}
+
+#visualImpairmentPage .vi-card__label {
+  box-sizing: border-box;
+  padding: 5px 7px;
+  overflow-wrap: anywhere;
+  word-break: normal;
+  hyphens: auto;
+  font-size: clamp(9px, 2.65vw, 11px);
+  line-height: 1.08;
+}
+
+#visualImpairmentPage .vi-card__label--stack {
+  padding: 8px 9px;
+  font-size: clamp(8px, 2.45vw, 10px);
+}
+
+/* Final childhood refer alignment: keep every item as tab, image, caption. */
+#childhoodReferPage .childhood-refer__entry,
+#childhoodReferPage .childhood-refer__group {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  grid-auto-flow: row !important;
+  align-items: start !important;
+  justify-items: stretch !important;
+  gap: 0 !important;
+}
+
+#childhoodReferPage .childhood-refer__context {
+  position: static !important;
+  order: 1 !important;
+  z-index: 2;
+  max-width: 100%;
+  min-width: 0;
+  transform: translateY(1px);
+  overflow-wrap: anywhere;
+}
+
+#childhoodReferPage .childhood-refer__image {
+  order: 2 !important;
+  grid-column: 1 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  aspect-ratio: 2.55 / 1;
+  height: auto !important;
+  object-fit: cover;
+  border-radius: 0 16px 0 0 !important;
+}
+
+#childhoodReferPage .childhood-refer__disease {
+  order: 3 !important;
+  grid-column: 1 !important;
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+#childhoodReferPage .childhood-refer__pair {
+  order: 2;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 12px;
+}
+
+#childhoodReferPage .childhood-refer__pair-item {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  grid-template-rows: auto auto !important;
+  gap: 0 !important;
+  overflow: hidden !important;
+  border-radius: 16px;
+}
+
+#childhoodReferPage .childhood-refer__pair-item .childhood-refer__image {
+  order: 1 !important;
+  aspect-ratio: 1.55 / 1;
+  border-radius: 16px 16px 0 0 !important;
+}
+
+#childhoodReferPage .childhood-refer__pair-item .childhood-refer__disease {
+  order: 2 !important;
+  border-radius: 0 0 16px 16px !important;
+}
+
+@media (max-width: 47.9375em) {
+  #childhoodReferPage .childhood-refer__pair {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
 }
 
 @media (max-width: 47.9375em) {
@@ -20980,5 +22294,721 @@ img[src*="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/"] {
     .diabetic-disease-gallery {
     width: 100%;
     justify-self: stretch;
+  }
+}
+
+/* Childhood and glaucoma workshop follow-up fixes */
+#childhoodIntroVisualDevelopmentPage
+  .childhood-visual-dev-panel--intro
+  .childhood-visual-dev-figure {
+  width: 100% !important;
+  max-width: none !important;
+  justify-self: stretch;
+}
+
+#childhoodIntroVisualDevelopmentPage
+  .childhood-visual-dev-panel--intro
+  .childhood-visual-dev-figure
+  img {
+  width: 100% !important;
+  max-width: none !important;
+}
+
+#childhoodIntroVisualDevelopmentPage .childhood-visual-dev-panel--combined {
+  gap: 8px !important;
+}
+
+#childhoodIntroVisualDevelopmentPage
+  .childhood-visual-dev-panel--combined::before {
+  margin-bottom: 0 !important;
+}
+
+#childhoodIntroVisualDevelopmentPage
+  .childhood-visual-dev-panel--combined
+  .childhood-visual-dev-callout {
+  gap: 8px !important;
+  margin-top: 0 !important;
+  margin-bottom: 6px !important;
+}
+
+#childhoodIntroVisualDevelopmentPage
+  .childhood-visual-dev-panel--combined
+  .childhood-visual-dev-copy-card--compact {
+  margin-bottom: 8px !important;
+}
+
+#childhoodIntroVisualDevelopmentPage
+  .childhood-visual-dev-panel--combined
+  .childhood-visual-dev-scene-card--qno {
+  width: min(100%, 360px);
+  justify-self: center;
+}
+
+#childhoodIntroVisualDevelopmentPage
+  .childhood-visual-dev-panel--combined
+  .childhood-visual-dev-qno-stage {
+  width: 100%;
+  max-height: 56dvh;
+  aspect-ratio: 1169 / 1420;
+}
+
+#childhoodIntroVisualDevelopmentPage .childhood-visual-dev-qno-bubble {
+  width: min(76%, 360px) !important;
+  min-width: 220px !important;
+  padding: 16px 18px !important;
+}
+
+#childhoodIntroVisualDevelopmentPage .childhood-visual-dev-qno-bubble__text {
+  font-size: clamp(15px, 3.8vw, 18px) !important;
+  font-weight: 650;
+  line-height: 1.38;
+  letter-spacing: 0;
+}
+
+#childhoodNormalVisualDevelopmentPage .childhood-normal-visual-dev-section {
+  gap: 10px !important;
+  align-content: start;
+}
+
+#childhoodNormalVisualDevelopmentPage .childhood-normal-visual-dev-title {
+  margin: 0 !important;
+  letter-spacing: 0;
+}
+
+#childhoodNormalVisualDevelopmentPage .childhood-normal-visual-dev-copy-card {
+  gap: 10px !important;
+}
+
+#childhoodNormalVisualDevelopmentPage .childhood-normal-visual-dev-copy-card p {
+  letter-spacing: 0;
+}
+
+#childhoodNormalVisualDevelopmentPage .childhood-normal-visual-dev-chart {
+  position: relative;
+  display: grid;
+  gap: 12px;
+  min-height: 190px;
+  padding: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(21, 225, 21, 0.28);
+  border-radius: 18px;
+  background:
+    linear-gradient(135deg, rgba(21, 225, 21, 0.08), rgba(255, 255, 255, 0)),
+    #ffffff;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.82);
+}
+
+#childhoodNormalVisualDevelopmentPage .childhood-normal-visual-dev-chart__axis,
+#childhoodNormalVisualDevelopmentPage
+  .childhood-normal-visual-dev-chart__scale {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #0a9f0a;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+#childhoodNormalVisualDevelopmentPage
+  .childhood-normal-visual-dev-chart__scale {
+  position: relative;
+  gap: 6px;
+  padding-top: 18px;
+}
+
+#childhoodNormalVisualDevelopmentPage
+  .childhood-normal-visual-dev-chart__scale::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 7px;
+  height: 4px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #d9f8d9, #15e115);
+}
+
+#childhoodNormalVisualDevelopmentPage
+  .childhood-normal-visual-dev-chart__scale
+  strong {
+  display: grid;
+  place-items: center;
+  min-width: 52px;
+  min-height: 34px;
+  padding: 0 8px;
+  border-radius: 999px;
+  background: #15e115;
+  color: #ffffff;
+  font-size: 13px;
+}
+
+#childhoodNormalVisualDevelopmentPage .childhood-normal-visual-dev-chart__bar {
+  position: relative;
+  min-height: 38px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(21, 225, 21, 0.1);
+}
+
+#childhoodNormalVisualDevelopmentPage
+  .childhood-normal-visual-dev-chart__bar::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 70%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #15e115, #0a9f0a);
+  transform-origin: left center;
+  transform: scaleX(0.24);
+  transition: transform 700ms ease;
+}
+
+#childhoodNormalVisualDevelopmentPage
+  .is-visible
+  .childhood-normal-visual-dev-chart__bar::before {
+  transform: scaleX(1);
+}
+
+#childhoodNormalVisualDevelopmentPage
+  .childhood-normal-visual-dev-chart__bar--reach::before {
+  width: 56%;
+}
+
+#childhoodNormalVisualDevelopmentPage
+  .childhood-normal-visual-dev-chart__bar
+  span {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  min-height: 38px;
+  place-items: center;
+  padding: 0 12px;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 850;
+  line-height: 1.12;
+  text-align: center;
+}
+
+#childhoodNormalVisualDevelopmentPage .childhood-normal-visual-dev-chart__note {
+  display: grid;
+  place-items: center;
+  min-height: 42px;
+  padding: 8px 10px;
+  border-radius: 14px;
+  background: rgba(15, 23, 42, 0.06);
+  color: #1f2937;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.2;
+  text-align: center;
+}
+
+#childhoodNormalVisualDevelopmentPage
+  .childhood-normal-visual-dev-chart__milestones {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+#childhoodNormalVisualDevelopmentPage
+  .childhood-normal-visual-dev-chart__milestones
+  span {
+  display: grid;
+  place-items: center;
+  min-height: 48px;
+  padding: 6px;
+  border-radius: 14px;
+  background: rgba(21, 225, 21, 0.12);
+  color: #0f172a;
+  font-size: 11px;
+  font-weight: 850;
+  line-height: 1.12;
+  text-align: center;
+}
+
+#visualImpairmentPage .vi-scene {
+  height: 560px !important;
+  background: #fff7f7 !important;
+}
+
+#visualImpairmentPage .vi-node img,
+#visualImpairmentPage .vi-link img,
+#visualImpairmentPage .vi-card img {
+  filter: none !important;
+}
+
+#visualImpairmentPage .vi-node {
+  --width: 32% !important;
+}
+
+#visualImpairmentPage .vi-card {
+  --width: 27% !important;
+}
+
+#visualImpairmentPage .vi-card--problems {
+  --width: 30% !important;
+}
+
+#visualImpairmentPage .vi-node__label {
+  font-size: clamp(14px, 2.8vw, 19px) !important;
+  font-weight: 850 !important;
+  line-height: 1.1 !important;
+}
+
+#visualImpairmentPage .vi-card__label {
+  padding: 7px 8px !important;
+  font-size: clamp(11px, 2.1vw, 14px) !important;
+  font-weight: 800 !important;
+  line-height: 1.12 !important;
+}
+
+#visualImpairmentPage .vi-card__label--stack {
+  font-size: clamp(10px, 1.9vw, 13px) !important;
+}
+
+#visualImpairmentPage .vi-detail-block {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  gap: 0 !important;
+}
+
+#visualImpairmentPage .vi-detail-block__label {
+  order: 2;
+  grid-column: 1 / -1 !important;
+  justify-self: stretch !important;
+  width: 100% !important;
+  box-sizing: border-box;
+  margin: 0 !important;
+  padding: 11px 12px !important;
+  border: 0 !important;
+  border-radius: 0 0 18px 18px !important;
+  background: var(--childhood-scrolly-accent) !important;
+  color: #ffffff !important;
+  font-size: 12px !important;
+  font-weight: 900 !important;
+  line-height: 1.12 !important;
+  letter-spacing: 0;
+  text-align: center !important;
+  transform: none !important;
+}
+
+#visualImpairmentPage .vi-media-frame {
+  order: 1;
+  grid-column: 1 / -1 !important;
+  display: grid;
+  gap: 2px !important;
+  border-radius: 18px 18px 0 0 !important;
+  background: #ffffff !important;
+}
+
+#visualImpairmentPage .vi-media-frame img,
+#visualImpairmentPage .vi-media-frame video {
+  border-radius: 18px 18px 0 0 !important;
+}
+
+#visualImpairmentPage .vi-media-frame--split img,
+#visualImpairmentPage .vi-media-frame--split video {
+  border-radius: 0 !important;
+}
+
+#visualImpairmentPage .vi-media-frame--split img:first-child,
+#visualImpairmentPage .vi-media-frame--split video:first-child {
+  border-top-left-radius: 18px !important;
+}
+
+#visualImpairmentPage .vi-media-frame--split img:nth-child(2),
+#visualImpairmentPage .vi-media-frame--split video:nth-child(2) {
+  border-top-right-radius: 18px !important;
+}
+
+#signsVICasesPage .childhood-signs-vi-panel {
+  gap: 0 !important;
+}
+
+#signsVICasesPage .childhood-signs-vi-index {
+  margin-bottom: 16px !important;
+}
+
+#signsVICasesPage .childhood-signs-vi-media {
+  display: block;
+  margin: 0 !important;
+  border-radius: 20px 20px 0 0 !important;
+}
+
+#signsVICasesPage .childhood-signs-vi-caption {
+  margin: 0 !important;
+  border-top: 0 !important;
+  border-radius: 0 0 16px 16px !important;
+  background: #ffffff !important;
+}
+
+#childhoodAskQuestionsObservePage .childhood-qno-story {
+  min-height: 1804dvh !important;
+  padding-bottom: 80dvh !important;
+}
+
+#childhoodAskQuestionsObservePage {
+  overflow: visible !important;
+}
+
+#childhoodAskQuestionsObservePage .childhood-qno-steps {
+  padding-top: 0 !important;
+}
+
+#childhoodAskQuestionsObservePage .childhood-qno-step {
+  height: 82dvh !important;
+}
+
+#childhoodReferPage .childhood-refer__image,
+#childhoodReferPage .childhood-refer__pair-item .childhood-refer__image {
+  border-radius: 22px 22px 0 0 !important;
+}
+
+#childhoodReferPage .childhood-refer__group--white-pupil {
+  gap: 0 !important;
+}
+
+.glaucoma-scrolly-page,
+#glaucomaWorkshopPage {
+  font-family: var(--font-family, "Nunito", "Arial", sans-serif) !important;
+}
+
+.glaucoma-scrolly-page {
+  --glaucoma-scrolly-accent: #15e115;
+  --glaucoma-scrolly-accent-dark: #0a9f0a;
+}
+
+.glaucoma-scrolly-page[data-glaucoma-level="intermediate"] {
+  --glaucoma-scrolly-accent: #f97316;
+  --glaucoma-scrolly-accent-dark: #c2410c;
+}
+
+.glaucoma-scrolly-hero {
+  min-height: auto !important;
+  margin: 0 auto 8px !important;
+  padding: 12px 0 4px !important;
+  justify-content: start !important;
+}
+
+.glaucoma-scrolly-hero h2 {
+  font-family: var(--font-family, "Nunito", "Arial", sans-serif) !important;
+  font-size: clamp(31px, 9vw, 46px) !important;
+  font-weight: 800 !important;
+  line-height: 1.02 !important;
+  letter-spacing: 0 !important;
+}
+
+.glaucoma-scrolly-hero p,
+.glaucoma-scrolly-copy,
+.glaucoma-scrolly-copy p,
+.glaucoma-scrolly-copy li {
+  font-family: var(--font-family, "Nunito", "Arial", sans-serif) !important;
+  letter-spacing: 0 !important;
+}
+
+.glaucoma-scrolly-stack {
+  gap: 18px !important;
+  padding-top: 4px !important;
+}
+
+.glaucoma-scrolly-index,
+.glaucoma-scrolly-page .glaucoma-diagram span:not([class]),
+.glaucoma-scrolly-page .glaucoma-diagram strong,
+.glaucoma-scrolly-page .glaucoma-diagram b {
+  letter-spacing: 0 !important;
+}
+
+.glaucoma-scrolly-index {
+  background: var(--glaucoma-scrolly-accent) !important;
+}
+
+.glaucoma-scrolly-page .glaucoma-diagram {
+  border-color: rgba(21, 225, 21, 0.28) !important;
+}
+
+.glaucoma-scrolly-page[data-glaucoma-level="intermediate"] .glaucoma-diagram {
+  border-color: rgba(249, 115, 22, 0.3) !important;
+  background:
+    linear-gradient(135deg, rgba(249, 115, 22, 0.08), rgba(255, 255, 255, 0)),
+    #ffffff !important;
+}
+
+.glaucoma-scrolly-page[data-glaucoma-level="intermediate"]
+  :is(
+    .glaucoma-diagram--test-map span,
+    .glaucoma-diagram--chip-grid span,
+    .glaucoma-diagram--summary-wheel span,
+    .glaucoma-diagram--compare div,
+    .glaucoma-core-list p,
+    .glaucoma-pinhole-card,
+    .glaucoma-diagram strong,
+    .glaucoma-diagram b
+  ) {
+  border-color: rgba(249, 115, 22, 0.3) !important;
+  color: var(--glaucoma-scrolly-accent-dark) !important;
+}
+
+.glaucoma-scrolly-page[data-glaucoma-level="intermediate"]
+  :is(
+    .glaucoma-quadrant__target--finger,
+    .glaucoma-palpation__finger,
+    .glaucoma-fundal__disc
+  ) {
+  background: var(--glaucoma-scrolly-accent) !important;
+}
+
+.glaucoma-flow,
+.glaucoma-checklist {
+  box-sizing: border-box;
+  align-self: stretch;
+  width: 100%;
+  margin: 0;
+  padding: 16px;
+  border: 1px solid rgba(21, 225, 21, 0.28);
+  border-radius: 18px;
+  background:
+    linear-gradient(135deg, rgba(21, 225, 21, 0.08), rgba(255, 255, 255, 0)),
+    #ffffff;
+  color: #0f172a;
+}
+
+.glaucoma-scrolly-page[data-glaucoma-level="intermediate"]
+  :is(.glaucoma-flow, .glaucoma-checklist) {
+  border-color: rgba(249, 115, 22, 0.3);
+  background:
+    linear-gradient(135deg, rgba(249, 115, 22, 0.08), rgba(255, 255, 255, 0)),
+    #ffffff;
+}
+
+.glaucoma-flow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 150px;
+}
+
+.glaucoma-flow span {
+  display: grid;
+  place-items: center;
+  min-width: 86px;
+  min-height: 46px;
+  padding: 8px 10px;
+  border-radius: 999px;
+  background: var(--glaucoma-scrolly-accent);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1.12;
+  text-align: center;
+}
+
+.glaucoma-flow b {
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  color: var(--glaucoma-scrolly-accent-dark);
+  font-size: 18px;
+  font-weight: 950;
+}
+
+.glaucoma-flow b::before {
+  content: ">";
+}
+
+.glaucoma-flow--five span {
+  min-width: 72px;
+}
+
+.glaucoma-checklist {
+  display: grid;
+  gap: 10px;
+  min-height: 150px;
+  list-style: none;
+}
+
+.glaucoma-checklist li {
+  position: relative;
+  display: grid;
+  align-items: center;
+  min-height: 36px;
+  padding: 8px 10px 8px 32px;
+  border-radius: 12px;
+  background: rgba(15, 23, 42, 0.04);
+  color: #111827;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.glaucoma-checklist li::before {
+  content: "";
+  position: absolute;
+  left: 11px;
+  top: 50%;
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--glaucoma-scrolly-accent);
+  transform: translateY(-50%);
+}
+
+.glaucoma-checklist--urgent li::before {
+  background: #ef4444;
+}
+
+#glaucomaWorkshopPage .pupil-level__cap--glaucoma-workshop {
+  position: relative;
+  z-index: 3;
+  margin-bottom: 14px !important;
+}
+
+#glaucomaWorkshopPage .glaucoma-section-card,
+#glaucomaWorkshopPage .glaucoma-subsection-card {
+  gap: 12px !important;
+  padding-top: 18px !important;
+}
+
+#glaucomaWorkshopPage .glaucoma-section-card > h3,
+#glaucomaWorkshopPage .glaucoma-subsection-card > h3 {
+  order: -1;
+  align-self: stretch;
+  margin: 0 0 12px !important;
+  padding: 0 18px !important;
+}
+
+@media (min-width: 48em) {
+  #childhoodIntroVisualDevelopmentPage .childhood-visual-dev-panel--intro {
+    grid-template-columns: minmax(0, 0.72fr) minmax(260px, 1.12fr) !important;
+    gap: 14px !important;
+  }
+
+  #childhoodIntroVisualDevelopmentPage
+    .childhood-visual-dev-panel--intro
+    .childhood-visual-dev-copy-card {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  #childhoodIntroVisualDevelopmentPage
+    .childhood-visual-dev-panel--intro
+    .childhood-visual-dev-figure--hero {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    align-self: start;
+  }
+
+  #childhoodIntroVisualDevelopmentPage
+    .childhood-visual-dev-panel--intro
+    .childhood-visual-dev-figure--brain {
+    grid-column: 2;
+    grid-row: 3;
+  }
+
+  #childhoodNormalVisualDevelopmentPage .childhood-normal-visual-dev-section {
+    grid-template-columns: minmax(0, 0.78fr) minmax(230px, 0.72fr);
+    grid-auto-rows: max-content;
+    align-items: start !important;
+    align-content: start !important;
+    column-gap: 20px !important;
+    row-gap: 10px !important;
+  }
+
+  #childhoodNormalVisualDevelopmentPage .childhood-normal-visual-dev-title,
+  #childhoodNormalVisualDevelopmentPage .childhood-normal-visual-dev-copy-card {
+    grid-column: 1;
+  }
+
+  #childhoodNormalVisualDevelopmentPage .childhood-normal-visual-dev-figure,
+  #childhoodNormalVisualDevelopmentPage .childhood-normal-visual-dev-chart {
+    grid-column: 2;
+    grid-row: 1 / span 3;
+    align-self: center;
+  }
+
+  #childhoodNormalVisualDevelopmentPage .childhood-normal-visual-dev-figure {
+    grid-column: auto;
+    grid-row: auto;
+    align-self: auto;
+  }
+
+  #childhoodNormalVisualDevelopmentPage
+    .childhood-normal-visual-dev-section:not(:first-child)
+    > .childhood-normal-visual-dev-figure,
+  #childhoodNormalVisualDevelopmentPage .childhood-normal-visual-dev-chart {
+    grid-column: 2;
+    grid-row: 2 / span 2;
+    align-self: center;
+  }
+}
+
+@media (max-width: 47.9375em) {
+  #childhoodIntroVisualDevelopmentPage .childhood-visual-dev-qno-bubble {
+    width: min(82%, 320px) !important;
+    min-width: 210px !important;
+  }
+
+  #visualImpairmentPage .vi-scene {
+    height: 500px !important;
+  }
+
+  #visualImpairmentPage .vi-node {
+    --width: 44% !important;
+  }
+
+  #visualImpairmentPage .vi-card {
+    --width: 30% !important;
+  }
+
+  #visualImpairmentPage .vi-card--problems {
+    --width: 33% !important;
+  }
+
+  .glaucoma-flow,
+  .glaucoma-checklist {
+    min-height: 132px;
+    padding: 14px;
+  }
+
+  .glaucoma-flow span {
+    min-width: 76px;
+    font-size: 11px;
+  }
+}
+
+@media (min-width: 48em) {
+  #childhoodNormalVisualDevelopmentPage
+    .childhood-normal-visual-dev-section:not(:first-child) {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  #childhoodNormalVisualDevelopmentPage
+    .childhood-normal-visual-dev-section:not(:first-child)
+    > .childhood-normal-visual-dev-title,
+  #childhoodNormalVisualDevelopmentPage
+    .childhood-normal-visual-dev-section:not(:first-child)
+    > .childhood-normal-visual-dev-copy-card {
+    grid-column: auto !important;
+    max-width: 48%;
+  }
+
+  #childhoodNormalVisualDevelopmentPage
+    .childhood-normal-visual-dev-section:not(:first-child)
+    > .childhood-normal-visual-dev-figure,
+  #childhoodNormalVisualDevelopmentPage .childhood-normal-visual-dev-chart {
+    position: absolute;
+    right: 34px;
+    top: 50%;
+    width: min(40%, 300px);
+    margin: 0 !important;
+    grid-column: auto !important;
+    grid-row: auto !important;
+    align-self: auto !important;
+    transform: translateY(-50%);
   }
 }

@@ -32,6 +32,8 @@ const CHILDHOOD_WORKSHOP_ROUTE_COMPLETE_EVENT =
 const FUNDAL_REFLEX_EXAMINATION_SCROLL_PAGE_ID =
   "fundalReflexExaminationScrollPage";
 const FUNDAL_REFLEX_EXAMINATION_SCROLL_ROUTE = "fundalReflexExaminationScroll";
+const DIRECT_OPHTHALMOSCOPY_SCROLL_PAGE_ID = "directOphthalmoscopyScrollPage";
+const DIRECT_OPHTHALMOSCOPY_SCROLL_ROUTE = "directOphthalmoscopyScroll";
 const BINOCULAR_INDIRECT_OPHTHALMOSCOPY_SCROLL_PAGE_ID =
   "binocularIndirectOphthalmoscopyScrollPage";
 const BINOCULAR_INDIRECT_OPHTHALMOSCOPY_SCROLL_ROUTE =
@@ -391,6 +393,13 @@ function syncFundalReflexExaminationScrollProgress() {
   );
 }
 
+function syncDirectOphthalmoscopyScrollProgress() {
+  syncScrollProgressForTarget(
+    DIRECT_OPHTHALMOSCOPY_SCROLL_PAGE_ID,
+    writeDiabeticWorkshopProgressForTarget,
+  );
+}
+
 function syncBinocularIndirectOphthalmoscopyScrollProgress() {
   syncScrollProgressForTarget(
     BINOCULAR_INDIRECT_OPHTHALMOSCOPY_SCROLL_PAGE_ID,
@@ -401,6 +410,12 @@ function syncBinocularIndirectOphthalmoscopyScrollProgress() {
 function scheduleFundalReflexExaminationScrollProgressSync() {
   requestAnimationFrame(() => {
     syncFundalReflexExaminationScrollProgress();
+  });
+}
+
+function scheduleDirectOphthalmoscopyScrollProgressSync() {
+  requestAnimationFrame(() => {
+    syncDirectOphthalmoscopyScrollProgress();
   });
 }
 
@@ -415,12 +430,22 @@ function getLevelColourForRow(row) {
   const level = row.closest(".pupil-level");
   if (!level) return "";
 
+  const levelStyles = getComputedStyle(level);
+  const capFrom = levelStyles.getPropertyValue("--cap-from").trim();
+  const accent = levelStyles.getPropertyValue("--accent").trim();
+
+  if (level.classList?.contains("pupil-level--primary")) {
+    return capFrom || "#15e115";
+  }
+
   const cap = level.querySelector(".pupil-level__cap");
-  if (!cap) return "";
+  if (!cap) return accent;
 
   const bg = getComputedStyle(cap).backgroundColor;
   // ignore transparent
-  if (!bg || bg === "rgba(0, 0, 0, 0)" || bg === "transparent") return "";
+  if (!bg || bg === "rgba(0, 0, 0, 0)" || bg === "transparent") {
+    return accent;
+  }
   return bg;
 }
 
@@ -736,6 +761,12 @@ function showPageFallback(id) {
     scheduleFundalReflexExaminationScrollProgressSync();
   }
 
+  if (id === DIRECT_OPHTHALMOSCOPY_SCROLL_PAGE_ID) {
+    syncDirectOphthalmoscopyTopbar();
+    void initializeDirectOphthalmoscopyScrollGuide();
+    scheduleDirectOphthalmoscopyScrollProgressSync();
+  }
+
   if (id === BINOCULAR_INDIRECT_OPHTHALMOSCOPY_SCROLL_PAGE_ID) {
     syncBinocularIndirectOphthalmoscopyTopbar();
     void initializeBinocularIndirectOphthalmoscopyScrollGuide();
@@ -833,6 +864,47 @@ async function initializeFundalReflexExaminationScrollGuide() {
   } catch (err) {
     console.error(
       "[videos] failed to initialize Fundal Reflex Examination guide",
+      err,
+    );
+  }
+}
+
+function syncDirectOphthalmoscopyTopbar() {
+  const page = document.getElementById(DIRECT_OPHTHALMOSCOPY_SCROLL_PAGE_ID);
+  if (!page) return;
+
+  const titleEl = page.querySelector(".eyes-topbar__title");
+  if (titleEl) {
+    titleEl.textContent = "Direct Ophthalmoscopy";
+  }
+
+  const menuBtn = page.querySelector(".icon.menuBtn");
+  if (menuBtn) {
+    menuBtn.textContent = "\u2630";
+  }
+
+  const pageSubtitle = page.querySelector(
+    ":scope > .container.pupils-container > .pupils-subtitle",
+  );
+  if (pageSubtitle) {
+    pageSubtitle.style.display = "";
+  }
+
+  window.I18N?.applyTranslations?.(page.querySelector(".eyes-topbar"));
+}
+
+async function initializeDirectOphthalmoscopyScrollGuide() {
+  syncDirectOphthalmoscopyTopbar();
+  try {
+    const { initializeChildhoodFundalReflexScrollPage } =
+      await import("./childhoodFundalPreparation.js");
+    await initializeChildhoodFundalReflexScrollPage?.(
+      DIRECT_OPHTHALMOSCOPY_SCROLL_ROUTE,
+    );
+    scheduleDirectOphthalmoscopyScrollProgressSync();
+  } catch (err) {
+    console.error(
+      "[videos] failed to initialize Direct Ophthalmoscopy guide",
       err,
     );
   }
@@ -1163,6 +1235,26 @@ const VIDEO_PAGE_SOURCES = {
     },
     onlineTitle: "Direct Ophthalmoscopy (online)",
     iframeClass: "videos-yt-do",
+  },
+
+  howToUseArclightVideoPage: {
+    key: "videoMode:howToUseArclightVideoPage",
+    containerSelector: "#howToUseArclightVideoPage .video-container",
+    videoSelector: "#howToUseArclightVideo",
+    sources: {
+      low: "videos/USAID/HowtoArclight.mp4",
+      high: "videos/USAID/HowtoArclight.mp4",
+    },
+  },
+
+  phoneAttachmentVideoPage: {
+    key: "videoMode:phoneAttachmentVideoPage",
+    containerSelector: "#phoneAttachmentVideoPage .video-container",
+    videoSelector: "#phoneAttachmentVideo",
+    sources: {
+      low: "videos/Arclight/PhoneAttach.mp4",
+      high: "videos/Arclight/PhoneAttach.mp4",
+    },
   },
 
   usaidHowToUseArclightPage: {
@@ -3215,6 +3307,12 @@ function show(id) {
     scheduleFundalReflexExaminationScrollProgressSync();
   }
 
+  if (id === DIRECT_OPHTHALMOSCOPY_SCROLL_PAGE_ID) {
+    syncDirectOphthalmoscopyTopbar();
+    void initializeDirectOphthalmoscopyScrollGuide();
+    scheduleDirectOphthalmoscopyScrollProgressSync();
+  }
+
   if (id === BINOCULAR_INDIRECT_OPHTHALMOSCOPY_SCROLL_PAGE_ID) {
     syncBinocularIndirectOphthalmoscopyTopbar();
     void initializeBinocularIndirectOphthalmoscopyScrollGuide();
@@ -3447,6 +3545,11 @@ if (!window[__videosGlobalBoundKey]) {
       return;
     }
 
+    if (target === DIRECT_OPHTHALMOSCOPY_SCROLL_PAGE_ID) {
+      writeDiabeticWorkshopProgressForTarget(target, 100, { mode: "replace" });
+      return;
+    }
+
     if (target === BINOCULAR_INDIRECT_OPHTHALMOSCOPY_SCROLL_PAGE_ID) {
       writeDiabeticWorkshopProgressForTarget(target, 100, { mode: "replace" });
     }
@@ -3461,6 +3564,7 @@ if (!window[__videosGlobalBoundKey]) {
     "scroll",
     () => {
       syncFundalReflexExaminationScrollProgress();
+      syncDirectOphthalmoscopyScrollProgress();
       syncBinocularIndirectOphthalmoscopyScrollProgress();
     },
     { passive: true },
@@ -3470,6 +3574,7 @@ if (!window[__videosGlobalBoundKey]) {
     "resize",
     () => {
       scheduleFundalReflexExaminationScrollProgressSync();
+      scheduleDirectOphthalmoscopyScrollProgressSync();
       scheduleBinocularIndirectOphthalmoscopyScrollProgressSync();
       alignVisibleVideoPageShareButtons();
     },
@@ -3497,6 +3602,7 @@ if (!window[__videosGlobalBoundKey]) {
     "scroll",
     () => {
       syncFundalReflexExaminationScrollProgress();
+      syncDirectOphthalmoscopyScrollProgress();
       syncBinocularIndirectOphthalmoscopyScrollProgress();
     },
     { passive: true },

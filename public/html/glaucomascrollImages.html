@@ -1,14 +1,12 @@
 <!-- =========================
-     Glaucoma – Introduction scroll image pages
+     Glaucoma scroll lessons: text and diagram pages
      ========================= -->
 
-<!-- 1) What is glaucoma -->
 <div
   id="glaucomaWhatIs"
-  class="page pupils-like has-eyes-topbar"
-  style="display: none"
+  class="page pupils-like has-eyes-topbar glaucoma-scrolly-page"
 >
-  <div class="container pupils-container">
+  <div class="container pupils-container glaucoma-scrolly-container">
     <div class="eyes-topbar">
       <div
         class="eyes-topbar__title"
@@ -21,59 +19,106 @@
           class="icon menuBtn"
           aria-label="Menu"
           data-i18n="i18nExtra.menu_aria_label:aria-label"
-          >☰</span
+          >&#9776;</span
         >
       </div>
     </div>
 
-    <div style="padding-bottom: 24px">
-      <img
-        src="/images/pdf/Workshop/Glaucoma/01Introduction/What/01.jpg"
-        alt="What is glaucoma - 01"
-        loading="lazy"
-        style="
-          display: block;
-          width: 100%;
-          height: auto;
-          margin: 0 0 14px 0;
-          border-radius: 14px;
-        "
-      />
-      <img
-        src="/images/pdf/Workshop/Glaucoma/01Introduction/What/02.jpg"
-        alt="What is glaucoma - 01"
-        loading="lazy"
-        style="
-          display: block;
-          width: 100%;
-          height: auto;
-          margin: 0 0 14px 0;
-          border-radius: 14px;
-        "
-      />
-      <img
-        src="/images/pdf/Workshop/Glaucoma/01Introduction/What/03.jpg"
-        alt="What is glaucoma - 01"
-        loading="lazy"
-        style="
-          display: block;
-          width: 100%;
-          height: auto;
-          margin: 0 0 14px 0;
-          border-radius: 14px;
-        "
-      />
-    </div>
+    <h2 class="pupils-subtitle"></h2>
+
+    <header class="glaucoma-scrolly-hero" data-glaucoma-scroll-step>
+      <p class="glaucoma-scrolly-eyebrow">GLAUCOMA WORKSHOP</p>
+      <h2 data-i18n="auto.glaucomascrollimages.what_is_glaucoma">
+        What is glaucoma
+      </h2>
+      <p>
+        Glaucoma damages the optic nerve and causes progressive loss of vision.
+      </p>
+    </header>
+
+    <section class="glaucoma-scrolly-stack" aria-label="What is glaucoma">
+      <article class="glaucoma-scrolly-panel" data-glaucoma-scroll-step>
+        <span class="glaucoma-scrolly-index">01</span>
+        <div class="glaucoma-scrolly-copy">
+          <h3>The optic nerve carries vision to the brain</h3>
+          <p>Glaucoma is a disease of the optic nerve.</p>
+          <p>
+            The optic nerve is a bundle of more than one million tiny nerve
+            fibres.
+          </p>
+          <p>It carries visual signals from the eye to the brain.</p>
+        </div>
+        <div
+          class="glaucoma-diagram glaucoma-diagram--eye-path"
+          aria-hidden="true"
+        >
+          <div class="glaucoma-eye-path__eye"><span></span></div>
+          <div class="glaucoma-eye-path__nerve"></div>
+          <div class="glaucoma-eye-path__brain">
+            <span></span><span></span><span></span>
+          </div>
+          <div class="glaucoma-diagram-label-row">
+            <span>Eye</span><span>Optic nerve</span><span>Brain</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="glaucoma-scrolly-panel" data-glaucoma-scroll-step>
+        <span class="glaucoma-scrolly-index">02</span>
+        <div class="glaucoma-scrolly-copy">
+          <h3>Nerve fibres die faster than normal</h3>
+          <ul class="glaucoma-scrolly-list">
+            <li>As we get older, some of these nerve fibres slowly die.</li>
+            <li>In glaucoma, they die <strong>faster than normal</strong>.</li>
+            <li>This causes loss of vision.</li>
+          </ul>
+        </div>
+        <div
+          class="glaucoma-diagram glaucoma-diagram--loss-rate"
+          aria-hidden="true"
+        >
+          <div class="glaucoma-loss-rate__row glaucoma-loss-rate__row--slow">
+            <span>Normal ageing</span><strong></strong>
+          </div>
+          <div class="glaucoma-loss-rate__row glaucoma-loss-rate__row--fast">
+            <span>Glaucoma</span><strong></strong>
+          </div>
+          <p>nerve fibre loss</p>
+        </div>
+      </article>
+
+      <article class="glaucoma-scrolly-panel" data-glaucoma-scroll-step>
+        <span class="glaucoma-scrolly-index">03</span>
+        <div class="glaucoma-scrolly-copy">
+          <h3>Vision loss starts at the edges</h3>
+          <ul class="glaucoma-scrolly-list">
+            <li>
+              At first, vision is lost at the
+              <strong>edges (side vision)</strong>.
+            </li>
+            <li>Later, the loss moves towards the centre.</li>
+            <li>If not treated, this can lead to blindness.</li>
+          </ul>
+        </div>
+        <div
+          class="glaucoma-diagram glaucoma-diagram--field-series"
+          aria-hidden="true"
+        >
+          <span class="glaucoma-field-dot glaucoma-field-dot--clear"></span
+          ><span class="glaucoma-field-dot glaucoma-field-dot--side"></span
+          ><span class="glaucoma-field-dot glaucoma-field-dot--tunnel"></span
+          ><span class="glaucoma-field-dot glaucoma-field-dot--blind"></span>
+        </div>
+      </article>
+    </section>
   </div>
 </div>
 
-<!-- 2) Types of glaucoma -->
 <div
   id="glaucomaTypes"
-  class="page pupils-like has-eyes-topbar"
-  style="display: none"
+  class="page pupils-like has-eyes-topbar glaucoma-scrolly-page"
 >
-  <div class="container pupils-container">
+  <div class="container pupils-container glaucoma-scrolly-container">
     <div class="eyes-topbar">
       <div
         class="eyes-topbar__title"
@@ -86,47 +131,81 @@
           class="icon menuBtn"
           aria-label="Menu"
           data-i18n="i18nExtra.menu_aria_label:aria-label"
-          >☰</span
+          >&#9776;</span
         >
       </div>
     </div>
 
-    <div style="padding-bottom: 24px">
-      <img
-        src="/images/pdf/Workshop/Glaucoma/01Introduction/Types/01.jpg"
-        alt="What is glaucoma - 01"
-        loading="lazy"
-        style="
-          display: block;
-          width: 100%;
-          height: auto;
-          margin: 0 0 14px 0;
-          border-radius: 14px;
-        "
-      />
-      <img
-        src="/images/pdf/Workshop/Glaucoma/01Introduction/Types/02.jpg"
-        alt="What is glaucoma - 01"
-        loading="lazy"
-        style="
-          display: block;
-          width: 100%;
-          height: auto;
-          margin: 0 0 14px 0;
-          border-radius: 14px;
-        "
-      />
-    </div>
+    <h2 class="pupils-subtitle"></h2>
+
+    <header class="glaucoma-scrolly-hero" data-glaucoma-scroll-step>
+      <p class="glaucoma-scrolly-eyebrow">GLAUCOMA WORKSHOP</p>
+      <h2 data-i18n="auto.glaucomascrollimages.types_of_glaucoma">
+        Types of glaucoma
+      </h2>
+      <p>
+        The workshop focuses mainly on POAG and compares it with ACAG where
+        useful.
+      </p>
+    </header>
+
+    <section class="glaucoma-scrolly-stack" aria-label="Types of glaucoma">
+      <article class="glaucoma-scrolly-panel" data-glaucoma-scroll-step>
+        <span class="glaucoma-scrolly-index">01</span>
+        <div class="glaucoma-scrolly-copy">
+          <h3>There are several different types</h3>
+          <p>There are several different types of glaucoma.</p>
+          <ol class="glaucoma-scrolly-number-list">
+            <li>Primary Open Angle Glaucoma (POAG)</li>
+            <li>Acute closed angle glaucoma (ACAG)</li>
+            <li>Secondary Glaucoma</li>
+            <li>Congenital Glaucoma</li>
+          </ol>
+          <p>
+            Primary open angle glaucoma (POAG) is the most common form and is
+            the main cause of untreatable blindness globally.
+          </p>
+        </div>
+        <div
+          class="glaucoma-diagram glaucoma-diagram--type-grid"
+          aria-hidden="true"
+        >
+          <span>POAG</span><span>ACAG</span><span>Secondary</span
+          ><span>Congenital</span>
+        </div>
+      </article>
+
+      <article class="glaucoma-scrolly-panel" data-glaucoma-scroll-step>
+        <span class="glaucoma-scrolly-index">02</span>
+        <div class="glaucoma-scrolly-copy">
+          <h3>What causes POAG?</h3>
+          <p>We do not know the exact cause.</p>
+          <p>But we know who is at higher risk:</p>
+          <ul class="glaucoma-scrolly-list">
+            <li>Age over 40 years</li>
+            <li>Black African ancestry</li>
+            <li>Family history (parent or sibling with glaucoma)</li>
+            <li>High eye pressure (intra-ocular pressure, IOP)</li>
+            <li>Short sight (myopia)</li>
+          </ul>
+        </div>
+        <div
+          class="glaucoma-diagram glaucoma-diagram--chip-grid"
+          aria-hidden="true"
+        >
+          <span>Age &gt; 40</span><span>Black African ancestry</span
+          ><span>Family history</span><span>High IOP</span><span>Myopia</span>
+        </div>
+      </article>
+    </section>
   </div>
 </div>
 
-<!-- 3) Diagnosis -->
 <div
   id="glaucomaDiagnosis"
-  class="page pupils-like has-eyes-topbar"
-  style="display: none"
+  class="page pupils-like has-eyes-topbar glaucoma-scrolly-page"
 >
-  <div class="container pupils-container">
+  <div class="container pupils-container glaucoma-scrolly-container">
     <div class="eyes-topbar">
       <div
         class="eyes-topbar__title"
@@ -139,71 +218,139 @@
           class="icon menuBtn"
           aria-label="Menu"
           data-i18n="i18nExtra.menu_aria_label:aria-label"
-          >☰</span
+          >&#9776;</span
         >
       </div>
     </div>
 
-    <div style="padding-bottom: 24px">
-      <img
-        src="/images/pdf/Workshop/Glaucoma/01Introduction/Diagnosis/01.jpg"
-        alt="What is glaucoma - 01"
-        loading="lazy"
-        style="
-          display: block;
-          width: 100%;
-          height: auto;
-          margin: 0 0 14px 0;
-          border-radius: 14px;
-        "
-      />
-      <img
-        src="/images/pdf/Workshop/Glaucoma/01Introduction/Diagnosis/02.jpg"
-        alt="What is glaucoma - 01"
-        loading="lazy"
-        style="
-          display: block;
-          width: 100%;
-          height: auto;
-          margin: 0 0 14px 0;
-          border-radius: 14px;
-        "
-      />
-      <img
-        src="/images/pdf/Workshop/Glaucoma/01Introduction/Diagnosis/03.jpg"
-        alt="What is glaucoma - 01"
-        loading="lazy"
-        style="
-          display: block;
-          width: 100%;
-          height: auto;
-          margin: 0 0 14px 0;
-          border-radius: 14px;
-        "
-      />
-      <img
-        src="/images/pdf/Workshop/Glaucoma/01Introduction/Diagnosis/04.jpg"
-        alt="What is glaucoma - 01"
-        loading="lazy"
-        style="
-          display: block;
-          width: 100%;
-          height: auto;
-          margin: 0 0 14px 0;
-          border-radius: 14px;
-        "
-      />
-    </div>
+    <h2 class="pupils-subtitle"></h2>
+
+    <header class="glaucoma-scrolly-hero" data-glaucoma-scroll-step>
+      <p class="glaucoma-scrolly-eyebrow">GLAUCOMA WORKSHOP</p>
+      <h2 data-i18n="auto.glaucomascrollimages.diagnosis">Diagnosis</h2>
+      <p>
+        Screening is built around core tests that most health workers can do
+        with the Arclight package.
+      </p>
+    </header>
+
+    <section class="glaucoma-scrolly-stack" aria-label="Diagnosis">
+      <article class="glaucoma-scrolly-panel" data-glaucoma-scroll-step>
+        <span class="glaucoma-scrolly-index">01</span>
+        <div class="glaucoma-scrolly-copy">
+          <h3>How to screen for and diagnose glaucoma</h3>
+          <ul class="glaucoma-scrolly-list">
+            <li>Many tests can help detect glaucoma.</li>
+            <li>Not all tests are available in every setting.</li>
+            <li>
+              In low-resource clinics, we focus on
+              <strong>core tests</strong> that most health workers can do using
+              the Arclight package.
+            </li>
+            <li>
+              We mainly describe findings in POAG and compare with ACAG where
+              helpful.
+            </li>
+          </ul>
+        </div>
+        <div
+          class="glaucoma-diagram glaucoma-diagram--test-map"
+          aria-hidden="true"
+        >
+          <span>1 History</span><span>2 Vision</span
+          ><span>3 Fields + pupils</span><span>4 Front of eye</span
+          ><span>5 Back of eye</span>
+        </div>
+      </article>
+
+      <article class="glaucoma-scrolly-panel" data-glaucoma-scroll-step>
+        <span class="glaucoma-scrolly-index">02</span>
+        <div class="glaucoma-scrolly-copy">
+          <h3>Comprehensive tests</h3>
+          <p>
+            Comprehensive list of tests that can be used to screen for and
+            diagnose glaucoma:
+          </p>
+          <ul class="glaucoma-scrolly-list">
+            <li>History</li>
+            <li>Visual Acuity</li>
+            <li>Pupil reactions</li>
+            <li>Front of eye &amp; anterior chamber depth</li>
+            <li>Gonioscopy</li>
+            <li>Fundal Reflex</li>
+            <li>Direct Ophthalmoscopy</li>
+            <li>Optical Coherence Tomography</li>
+            <li>Intra-ocular pressure</li>
+            <li>Visual fields</li>
+          </ul>
+        </div>
+        <div
+          class="glaucoma-diagram glaucoma-diagram--summary-wheel"
+          aria-hidden="true"
+        >
+          <span>History</span><span>Vision</span><span>Fields</span
+          ><span>Pupils</span><span>Front</span><span>Back</span>
+        </div>
+      </article>
+
+      <article class="glaucoma-scrolly-panel" data-glaucoma-scroll-step>
+        <span class="glaucoma-scrolly-index">03</span>
+        <div class="glaucoma-scrolly-copy">
+          <h3>Core tests for this workshop</h3>
+          <ul class="glaucoma-checklist">
+            <li>Realistic core tests using the Arclight package</li>
+            <li>Suitable for most health workers and settings</li>
+            <li>POAG findings, with ACAG contrasts where relevant</li>
+          </ul>
+        </div>
+        <div class="glaucoma-flow glaucoma-flow--compact" aria-hidden="true">
+          <span>Available</span><b></b><span>Practical</span><b></b
+          ><span>Repeatable</span>
+        </div>
+      </article>
+
+      <article class="glaucoma-scrolly-panel" data-glaucoma-scroll-step>
+        <span class="glaucoma-scrolly-index">04</span>
+        <div class="glaucoma-scrolly-copy">
+          <h3>Core examination and tests</h3>
+          <div class="glaucoma-core-list">
+            <p>
+              <strong>1. History</strong><br />1a. Vision loss &amp;
+              symptoms/signs<br />1b. Risk factors
+            </p>
+            <p>
+              <strong>2. Vision</strong><br />2a. Distance visual acuity<br />2b.
+              Near visual acuity
+            </p>
+            <p>
+              <strong>3. Fields &amp; pupils</strong><br />3a. Visual fields by
+              confrontation<br />3b. Pupil reactions
+            </p>
+            <p>
+              <strong>4. Front of eye</strong><br />4a. External eye exam<br />4b.
+              Anterior chamber depth
+            </p>
+            <p>
+              <strong>5. Back of eye</strong><br />5a. Fundal (red) reflex<br />5b.
+              Fundoscopy (optic nerve)
+            </p>
+          </div>
+        </div>
+        <div class="glaucoma-flow glaucoma-flow--five" aria-hidden="true">
+          <span>History</span><b></b><span>Vision</span><b></b
+          ><span>Fields + pupils</span><b></b><span>Front</span><b></b
+          ><span>Back</span>
+        </div>
+      </article>
+    </section>
   </div>
 </div>
 
-<!-- 4) History – Introduction -->
 <div
   id="glaucomaIntro"
-  class="page pupils-like has-eyes-topbar"
-  style="display: none"
+  class="page pupils-like has-eyes-topbar glaucoma-scrolly-page"
 >
-  <div class="container pupils-container">
+  <div class="container pupils-container glaucoma-scrolly-container">
     <div class="eyes-topbar">
       <div
         class="eyes-topbar__title"
@@ -216,35 +363,63 @@
           class="icon menuBtn"
           aria-label="Menu"
           data-i18n="i18nExtra.menu_aria_label:aria-label"
-          >☰</span
+          >&#9776;</span
         >
       </div>
     </div>
 
-    <div style="padding-bottom: 24px">
-      <img
-        src="/images/pdf/Workshop/Glaucoma/02History/Intro/01.jpg"
-        alt="History - Introduction - 01"
-        loading="lazy"
-        style="
-          display: block;
-          width: 100%;
-          height: auto;
-          margin: 0 0 14px 0;
-          border-radius: 14px;
-        "
-      />
-    </div>
+    <h2 class="pupils-subtitle"></h2>
+
+    <header class="glaucoma-scrolly-hero" data-glaucoma-scroll-step>
+      <p class="glaucoma-scrolly-eyebrow">GLAUCOMA WORKSHOP</p>
+      <h2 data-i18n="auto.glaucomascrollimages.introduction">Introduction</h2>
+      <p>
+        The history starts with vision loss, red eye, pain and risk factors.
+      </p>
+    </header>
+
+    <section class="glaucoma-scrolly-stack" aria-label="Introduction">
+      <article class="glaucoma-scrolly-panel" data-glaucoma-scroll-step>
+        <span class="glaucoma-scrolly-index">01</span>
+        <div class="glaucoma-scrolly-copy">
+          <h3>1. History</h3>
+          <p>Ask about:</p>
+          <div class="glaucoma-core-list">
+            <p>
+              <strong>1.a</strong> Nature of any vision loss.<br />Presence of
+              red eye and pain.
+            </p>
+            <p><strong>1.B</strong> Risk factors</p>
+            <p>
+              Age over 40<br />Race: Black African heritage (POAG), some Asian
+              groups (ACAG)<br />Family history: Siblings and parents<br />Presence
+              of short sight (POAG) or long sight (ACAG)
+            </p>
+          </div>
+        </div>
+        <div
+          class="glaucoma-diagram glaucoma-diagram--compare"
+          aria-hidden="true"
+        >
+          <div>
+            <strong>POAG</strong><span>slow</span><span>white eye</span
+            ><span>usually painless</span>
+          </div>
+          <div>
+            <strong>ACAG</strong><span>fast</span><span>red painful eye</span
+            ><span>halos</span>
+          </div>
+        </div>
+      </article>
+    </section>
   </div>
 </div>
 
-<!-- 5) History – POAG and ACAG -->
 <div
   id="glaucomaPOAGACAG"
-  class="page pupils-like has-eyes-topbar"
-  style="display: none"
+  class="page pupils-like has-eyes-topbar glaucoma-scrolly-page"
 >
-  <div class="container pupils-container">
+  <div class="container pupils-container glaucoma-scrolly-container">
     <div class="eyes-topbar">
       <div
         class="eyes-topbar__title"
@@ -257,47 +432,85 @@
           class="icon menuBtn"
           aria-label="Menu"
           data-i18n="i18nExtra.menu_aria_label:aria-label"
-          >☰</span
+          >&#9776;</span
         >
       </div>
     </div>
 
-    <div style="padding-bottom: 24px">
-      <img
-        src="/images/pdf/Workshop/Glaucoma/02History/POAGandACAG/01.jpg"
-        alt="History - POAG and ACAG - 01"
-        loading="lazy"
-        style="
-          display: block;
-          width: 100%;
-          height: auto;
-          margin: 0 0 14px 0;
-          border-radius: 14px;
-        "
-      />
-      <img
-        src="/images/pdf/Workshop/Glaucoma/02History/POAGandACAG/02.jpg"
-        alt="History - POAG and ACAG - 02"
-        loading="lazy"
-        style="
-          display: block;
-          width: 100%;
-          height: auto;
-          margin: 0 0 14px 0;
-          border-radius: 14px;
-        "
-      />
-    </div>
+    <h2 class="pupils-subtitle"></h2>
+
+    <header class="glaucoma-scrolly-hero" data-glaucoma-scroll-step>
+      <p class="glaucoma-scrolly-eyebrow">GLAUCOMA WORKSHOP</p>
+      <h2 data-i18n="auto.glaucomascrollimages.poag_and_acag">POAG and ACAG</h2>
+      <p>
+        Typical history findings separate slow POAG from acute angle closure.
+      </p>
+    </header>
+
+    <section class="glaucoma-scrolly-stack" aria-label="POAG and ACAG">
+      <article class="glaucoma-scrolly-panel" data-glaucoma-scroll-step>
+        <span class="glaucoma-scrolly-index">01</span>
+        <div class="glaucoma-scrolly-copy">
+          <h3>History: Typical Findings in POAG</h3>
+          <ul class="glaucoma-scrolly-list">
+            <li>Vision loss is <strong>slow</strong> (months to years)</li>
+            <li>Usually <strong>no pain</strong></li>
+            <li>Eye looks white (not red)</li>
+            <li>Higher risk in Black African patients</li>
+            <li>Higher risk if a parent or sibling has glaucoma</li>
+            <li>More common over age 40</li>
+            <li>More common in people who are short sighted</li>
+          </ul>
+        </div>
+        <div
+          class="glaucoma-diagram glaucoma-diagram--compare"
+          aria-hidden="true"
+        >
+          <div>
+            <strong>POAG</strong><span>slow</span><span>white eye</span
+            ><span>usually painless</span>
+          </div>
+          <div>
+            <strong>ACAG</strong><span>fast</span><span>red painful eye</span
+            ><span>halos</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="glaucoma-scrolly-panel" data-glaucoma-scroll-step>
+        <span class="glaucoma-scrolly-index">02</span>
+        <div class="glaucoma-scrolly-copy">
+          <h3>History: Typical Findings in ACAG</h3>
+          <ul class="glaucoma-scrolly-list">
+            <li>Vision loss is <strong>fast</strong> (hours to days)</li>
+            <li>Eye is <strong>painful and red</strong></li>
+            <li>Patient may see <strong>halos around lights</strong></li>
+            <li>May have had similar attacks before</li>
+            <li>Often long sighted (needs glasses for far and near)</li>
+            <li>Higher risk in some Asian populations</li>
+            <li>More common in older female people</li>
+            <li>Especially with cataract</li>
+          </ul>
+        </div>
+        <ul
+          class="glaucoma-checklist glaucoma-checklist--urgent"
+          aria-hidden="true"
+        >
+          <li>Fast change</li>
+          <li>Red painful eye</li>
+          <li>Halos or previous attacks</li>
+          <li>Refer urgently</li>
+        </ul>
+      </article>
+    </section>
   </div>
 </div>
 
-<!-- 6) Vision – Intro & Vision loss -->
 <div
   id="glaucomaVisionIntro"
-  class="page pupils-like has-eyes-topbar"
-  style="display: none"
+  class="page pupils-like has-eyes-topbar glaucoma-scrolly-page"
 >
-  <div class="container pupils-container">
+  <div class="container pupils-container glaucoma-scrolly-container">
     <div class="eyes-topbar">
       <div
         class="eyes-topbar__title"
@@ -310,47 +523,79 @@
           class="icon menuBtn"
           aria-label="Menu"
           data-i18n="i18nExtra.menu_aria_label:aria-label"
-          >☰</span
+          >&#9776;</span
         >
       </div>
     </div>
 
-    <div style="padding-bottom: 24px">
-      <img
-        src="/images/pdf/Workshop/Glaucoma/03Vision/Intro/01.jpg"
-        alt="Vision - Intro - 01"
-        loading="lazy"
-        style="
-          display: block;
-          width: 100%;
-          height: auto;
-          margin: 0 0 14px 0;
-          border-radius: 14px;
-        "
-      />
-      <img
-        src="/images/pdf/Workshop/Glaucoma/03Vision/Intro/02.jpg"
-        alt="Vision - Intro - 02"
-        loading="lazy"
-        style="
-          display: block;
-          width: 100%;
-          height: auto;
-          margin: 0 0 14px 0;
-          border-radius: 14px;
-        "
-      />
-    </div>
+    <h2 class="pupils-subtitle"></h2>
+
+    <header class="glaucoma-scrolly-hero" data-glaucoma-scroll-step>
+      <p class="glaucoma-scrolly-eyebrow">GLAUCOMA WORKSHOP</p>
+      <h2 data-i18n="auto.glaucomascrollimages.intro_vision_loss">
+        Intro &amp; Vision loss
+      </h2>
+      <p>
+        Central acuity may look normal early, while side vision is already being
+        lost.
+      </p>
+    </header>
+
+    <section
+      class="glaucoma-scrolly-stack"
+      aria-label="Intro &amp; Vision loss"
+    >
+      <article class="glaucoma-scrolly-panel" data-glaucoma-scroll-step>
+        <span class="glaucoma-scrolly-index">01</span>
+        <div class="glaucoma-scrolly-copy">
+          <h3>2. Visual Acuity</h3>
+          <ul class="glaucoma-scrolly-list">
+            <li>In early glaucoma, central vision is usually normal.</li>
+            <li>Side vision is lost first.</li>
+            <li>Later, central vision is affected.</li>
+            <li>This is often when patients present late.</li>
+            <li>By then, damage is severe.</li>
+            <li>This is why <strong>active screening is essential</strong>.</li>
+          </ul>
+        </div>
+        <div
+          class="glaucoma-diagram glaucoma-diagram--field-series"
+          aria-hidden="true"
+        >
+          <span class="glaucoma-field-dot glaucoma-field-dot--clear"></span
+          ><span class="glaucoma-field-dot glaucoma-field-dot--side"></span
+          ><span class="glaucoma-field-dot glaucoma-field-dot--tunnel"></span
+          ><span class="glaucoma-field-dot glaucoma-field-dot--blind"></span>
+        </div>
+      </article>
+
+      <article class="glaucoma-scrolly-panel" data-glaucoma-scroll-step>
+        <span class="glaucoma-scrolly-index">02</span>
+        <div class="glaucoma-scrolly-copy">
+          <h3>Visual Acuity / Visual Field Loss</h3>
+          <p>
+            Peripheral visual world becomes blurry first. Central vision may
+            remain clear until late, then it can also be lost.
+          </p>
+          <p>
+            The pattern can progress from side vision loss to tunnel vision and
+            then severe overall loss.
+          </p>
+        </div>
+        <div class="glaucoma-flow glaucoma-flow--field-loss" aria-hidden="true">
+          <span>Side loss</span><b></b><span>Tunnel vision</span><b></b
+          ><span>Central loss</span>
+        </div>
+      </article>
+    </section>
   </div>
 </div>
 
-<!-- 7) Vision – Testing Visual Acuity -->
 <div
   id="glaucomaTestingVisualAcuity"
-  class="page pupils-like has-eyes-topbar"
-  style="display: none"
+  class="page pupils-like has-eyes-topbar glaucoma-scrolly-page"
 >
-  <div class="container pupils-container">
+  <div class="container pupils-container glaucoma-scrolly-container">
     <div class="eyes-topbar">
       <div
         class="eyes-topbar__title"
@@ -363,35 +608,60 @@
           class="icon menuBtn"
           aria-label="Menu"
           data-i18n="i18nExtra.menu_aria_label:aria-label"
-          >☰</span
+          >&#9776;</span
         >
       </div>
     </div>
 
-    <div style="padding-bottom: 24px">
-      <img
-        src="/images/pdf/Workshop/Glaucoma/03Vision/Test/01.jpg"
-        alt="Vision - Testing Visual Acuity - 01"
-        loading="lazy"
-        style="
-          display: block;
-          width: 100%;
-          height: auto;
-          margin: 0 0 14px 0;
-          border-radius: 14px;
-        "
-      />
-    </div>
+    <h2 class="pupils-subtitle"></h2>
+
+    <header class="glaucoma-scrolly-hero" data-glaucoma-scroll-step>
+      <p class="glaucoma-scrolly-eyebrow">GLAUCOMA WORKSHOP</p>
+      <h2 data-i18n="auto.glaucomascrollimages.testing_visual_acuity">
+        Testing Visual Acuity
+      </h2>
+      <p>Test distance first, always use a pinhole, then check near vision.</p>
+    </header>
+
+    <section class="glaucoma-scrolly-stack" aria-label="Testing Visual Acuity">
+      <article class="glaucoma-scrolly-panel" data-glaucoma-scroll-step>
+        <span class="glaucoma-scrolly-index">01</span>
+        <div class="glaucoma-scrolly-copy">
+          <h3>How to test Visual Acuity</h3>
+          <p><strong>Distance vision first</strong></p>
+          <ul class="glaucoma-scrolly-list">
+            <li>Always use a <strong>pinhole</strong></li>
+            <li>
+              If vision improves with pinhole then the patient likely needs
+              glasses.
+            </li>
+            <li>Refer if you cannot provide</li>
+          </ul>
+          <p><strong>Then test near vision.</strong></p>
+          <ul class="glaucoma-scrolly-list">
+            <li>If near vision is worse than distance vision</li>
+            <li>Give reading glasses if available.</li>
+          </ul>
+        </div>
+        <div
+          class="glaucoma-diagram glaucoma-diagram--acuity"
+          aria-hidden="true"
+        >
+          <div class="glaucoma-acuity-chart">
+            <span>E</span><span>F P</span><span>T O Z</span><span>L P E D</span>
+          </div>
+          <div class="glaucoma-pinhole-card">pinhole</div>
+        </div>
+      </article>
+    </section>
   </div>
 </div>
 
-<!-- 8) Fields – Intro -->
 <div
   id="glaucomaFieldsIntro"
-  class="page pupils-like has-eyes-topbar"
-  style="display: none"
+  class="page pupils-like has-eyes-topbar glaucoma-scrolly-page"
 >
-  <div class="container pupils-container">
+  <div class="container pupils-container glaucoma-scrolly-container">
     <div class="eyes-topbar">
       <div
         class="eyes-topbar__title"
@@ -404,47 +674,80 @@
           class="icon menuBtn"
           aria-label="Menu"
           data-i18n="i18nExtra.menu_aria_label:aria-label"
-          >☰</span
+          >&#9776;</span
         >
       </div>
     </div>
 
-    <div style="padding-bottom: 24px">
-      <img
-        src="/images/pdf/Workshop/Glaucoma/04FieldsPupils/Fields/Intro/01.jpg"
-        alt="Fields - Intro - 01"
-        loading="lazy"
-        style="
-          display: block;
-          width: 100%;
-          height: auto;
-          margin: 0 0 14px 0;
-          border-radius: 14px;
-        "
-      />
-      <img
-        src="/images/pdf/Workshop/Glaucoma/04FieldsPupils/Fields/Intro/02.jpg"
-        alt="Fields - Intro - 02"
-        loading="lazy"
-        style="
-          display: block;
-          width: 100%;
-          height: auto;
-          margin: 0 0 14px 0;
-          border-radius: 14px;
-        "
-      />
-    </div>
+    <h2 class="pupils-subtitle"></h2>
+
+    <header class="glaucoma-scrolly-hero" data-glaucoma-scroll-step>
+      <p class="glaucoma-scrolly-eyebrow">GLAUCOMA WORKSHOP</p>
+      <h2 data-i18n="auto.glaucomascrollimages.intro">Intro</h2>
+      <p>
+        Visual fields and pupil reactions can be checked together during the
+        same examination flow.
+      </p>
+    </header>
+
+    <section class="glaucoma-scrolly-stack" aria-label="Intro">
+      <article class="glaucoma-scrolly-panel" data-glaucoma-scroll-step>
+        <span class="glaucoma-scrolly-index">01</span>
+        <div class="glaucoma-scrolly-copy">
+          <h3>Visual Fields then Pupils</h3>
+          <p>These two steps can be performed together.</p>
+          <p>
+            Visual Fields to Confrontation + Pupil response to bright light.
+          </p>
+        </div>
+        <div
+          class="glaucoma-diagram glaucoma-diagram--dual-exam"
+          aria-hidden="true"
+        >
+          <div>
+            <span class="glaucoma-finger-target">1 2</span
+            ><strong>Visual fields</strong>
+          </div>
+          <b>+</b>
+          <div>
+            <span class="glaucoma-light-target"></span
+            ><strong>Pupil response</strong>
+          </div>
+        </div>
+      </article>
+
+      <article class="glaucoma-scrolly-panel" data-glaucoma-scroll-step>
+        <span class="glaucoma-scrolly-index">02</span>
+        <div class="glaucoma-scrolly-copy">
+          <h3>Visual Field testing: Two different Targets</h3>
+          <p>The confrontation test can use two simple targets.</p>
+          <div class="glaucoma-core-list">
+            <p><strong>Counting Fingers</strong></p>
+            <p><strong>Red Square</strong></p>
+          </div>
+        </div>
+        <div
+          class="glaucoma-diagram glaucoma-diagram--dual-targets"
+          aria-hidden="true"
+        >
+          <div>
+            <span class="glaucoma-finger-target">1 2</span
+            ><strong>Counting fingers</strong>
+          </div>
+          <div>
+            <span class="glaucoma-red-square"></span><strong>Red square</strong>
+          </div>
+        </div>
+      </article>
+    </section>
   </div>
 </div>
 
-<!-- 9) Fields – Examination -->
 <div
   id="glaucomaFieldsExam"
-  class="page pupils-like has-eyes-topbar"
-  style="display: none"
+  class="page pupils-like has-eyes-topbar glaucoma-scrolly-page"
 >
-  <div class="container pupils-container">
+  <div class="container pupils-container glaucoma-scrolly-container">
     <div class="eyes-topbar">
       <div
         class="eyes-topbar__title"
@@ -457,141 +760,265 @@
           class="icon menuBtn"
           aria-label="Menu"
           data-i18n="i18nExtra.menu_aria_label:aria-label"
-          >☰</span
+          >&#9776;</span
         >
       </div>
     </div>
 
-    <div style="padding-bottom: 24px">
-      <img
-        src="/images/pdf/Workshop/Glaucoma/04FieldsPupils/Fields/Exam/a/01.jpg"
-        alt="Fields - Examination - 01"
-        loading="lazy"
-        style="
-          display: block;
-          width: 100%;
-          height: auto;
-          margin: 0 0 14px 0;
-          border-radius: 14px;
-        "
-      />
-    </div>
+    <h2 class="pupils-subtitle"></h2>
+
+    <header class="glaucoma-scrolly-hero" data-glaucoma-scroll-step>
+      <p class="glaucoma-scrolly-eyebrow">GLAUCOMA WORKSHOP</p>
+      <h2 data-i18n="auto.glaucomascrollimages.examination">Examination</h2>
+      <p>Keep fixation steady and test each quadrant with one eye at a time.</p>
+    </header>
+
+    <section class="glaucoma-scrolly-stack" aria-label="Examination">
+      <article class="glaucoma-scrolly-panel" data-glaucoma-scroll-step>
+        <span class="glaucoma-scrolly-index">01</span>
+        <div class="glaucoma-scrolly-copy">
+          <h3>Visual Field Examination</h3>
+          <ul class="glaucoma-scrolly-list">
+            <li>Sit face-to-face at arm&apos;s length</li>
+            <li>Test one eye at a time</li>
+            <li>You cover one eye</li>
+            <li>
+              Patient looks at your eye that is directly opposite and uncovered
+            </li>
+            <li>They cover the other eye</li>
+            <li>Patient keeps looking at your open eye.</li>
+            <li>
+              Hold your hand or Arclight red target halfway between you and the
+              patient.
+            </li>
+            <li>
+              Always start by asking if patient can see target in central vision
+            </li>
+            <li>
+              Divide up the patients visual field into 4 quadrant centred on
+              their open eye
+            </li>
+          </ul>
+        </div>
+        <div
+          class="glaucoma-diagram glaucoma-diagram--quadrant"
+          aria-hidden="true"
+        >
+          <span
+            class="glaucoma-quadrant__axis glaucoma-quadrant__axis--x"
+          ></span
+          ><span
+            class="glaucoma-quadrant__axis glaucoma-quadrant__axis--y"
+          ></span
+          ><span class="glaucoma-quadrant__label glaucoma-quadrant__label--one"
+            >1</span
+          ><span class="glaucoma-quadrant__label glaucoma-quadrant__label--two"
+            >2</span
+          ><span
+            class="glaucoma-quadrant__label glaucoma-quadrant__label--three"
+            >3</span
+          ><span class="glaucoma-quadrant__label glaucoma-quadrant__label--four"
+            >4</span
+          ><span class="glaucoma-quadrant__face"></span
+          ><span
+            class="glaucoma-quadrant__target glaucoma-quadrant__target--finger"
+            >1</span
+          ><small>central</small><em>peripheral</em>
+        </div>
+      </article>
+    </section>
   </div>
 </div>
 
-<!-- 10) Fields – Quadrants – Fingers -->
 <div
   id="glaucomaQuadrantsFingers"
-  class="page pupils-like has-eyes-topbar"
-  style="display: none"
+  class="page pupils-like has-eyes-topbar glaucoma-scrolly-page"
 >
-  <div class="container pupils-container">
+  <div class="container pupils-container glaucoma-scrolly-container">
     <div class="eyes-topbar">
       <div
         class="eyes-topbar__title"
         data-i18n="auto.glaucomascrollimages.quadrants_fingers"
       >
-        Quadrants – Fingers
+        Quadrants - Fingers
       </div>
       <div class="eyes-topbar__icons">
         <span
           class="icon menuBtn"
           aria-label="Menu"
           data-i18n="i18nExtra.menu_aria_label:aria-label"
-          >☰</span
+          >&#9776;</span
         >
       </div>
     </div>
 
-    <div style="padding-bottom: 24px">
-      <img
-        src="/images/pdf/Workshop/Glaucoma/04FieldsPupils/Fields/Exam/b/01.jpg"
-        alt="Fields - Quadrants Fingers - 01"
-        loading="lazy"
-        style="
-          display: block;
-          width: 100%;
-          height: auto;
-          margin: 0 0 14px 0;
-          border-radius: 14px;
-        "
-      />
-      <img
-        src="/images/pdf/Workshop/Glaucoma/04FieldsPupils/Fields/Exam/b/02.jpg"
-        alt="Fields - Quadrants Fingers - 02"
-        loading="lazy"
-        style="
-          display: block;
-          width: 100%;
-          height: auto;
-          margin: 0 0 14px 0;
-          border-radius: 14px;
-        "
-      />
-    </div>
+    <h2 class="pupils-subtitle"></h2>
+
+    <header class="glaucoma-scrolly-hero" data-glaucoma-scroll-step>
+      <p class="glaucoma-scrolly-eyebrow">GLAUCOMA WORKSHOP</p>
+      <h2 data-i18n="auto.glaucomascrollimages.quadrants_fingers">
+        Quadrants - Fingers
+      </h2>
+      <p>
+        Present one or two fingers briefly in each quadrant and vary the order.
+      </p>
+    </header>
+
+    <section class="glaucoma-scrolly-stack" aria-label="Quadrants - Fingers">
+      <article class="glaucoma-scrolly-panel" data-glaucoma-scroll-step>
+        <span class="glaucoma-scrolly-index">01</span>
+        <div class="glaucoma-scrolly-copy">
+          <h3>Testing the four quadrants</h3>
+          <p><strong>Fingers</strong></p>
+          <ul class="glaucoma-scrolly-list">
+            <li>Test the four quadrants one at a time</li>
+            <li>Ask &apos;How many fingers can you see?&apos;</li>
+            <li>Present static 1 or 2 fingers for no more than 1 second</li>
+            <li>Vary the order and which quadrant is being tested</li>
+            <li>Repeat each quadrant 2-3 times</li>
+          </ul>
+        </div>
+        <div
+          class="glaucoma-diagram glaucoma-diagram--quadrant"
+          aria-hidden="true"
+        >
+          <span
+            class="glaucoma-quadrant__axis glaucoma-quadrant__axis--x"
+          ></span
+          ><span
+            class="glaucoma-quadrant__axis glaucoma-quadrant__axis--y"
+          ></span
+          ><span class="glaucoma-quadrant__label glaucoma-quadrant__label--one"
+            >1</span
+          ><span class="glaucoma-quadrant__label glaucoma-quadrant__label--two"
+            >2</span
+          ><span
+            class="glaucoma-quadrant__label glaucoma-quadrant__label--three"
+            >3</span
+          ><span class="glaucoma-quadrant__label glaucoma-quadrant__label--four"
+            >4</span
+          ><span class="glaucoma-quadrant__face"></span
+          ><span
+            class="glaucoma-quadrant__target glaucoma-quadrant__target--finger"
+            >1</span
+          ><small>central</small><em>peripheral</em>
+        </div>
+      </article>
+
+      <article class="glaucoma-scrolly-panel" data-glaucoma-scroll-step>
+        <span class="glaucoma-scrolly-index">02</span>
+        <div class="glaucoma-scrolly-copy">
+          <h3>Quadrants around the open eye</h3>
+          <p>
+            Keep the patient looking at your open eye and move the target
+            through the peripheral quadrants.
+          </p>
+          <p>The target is tested away from central fixation.</p>
+        </div>
+        <div class="glaucoma-flow glaucoma-flow--cycle" aria-hidden="true">
+          <span>Fixate</span><b></b><span>Present</span><b></b
+          ><span>Answer</span><b></b><span>Repeat</span>
+        </div>
+      </article>
+    </section>
   </div>
 </div>
 
-<!-- 11) Fields – Quadrants – Red target -->
 <div
   id="glaucomaQuadrantsRed"
-  class="page pupils-like has-eyes-topbar"
-  style="display: none"
+  class="page pupils-like has-eyes-topbar glaucoma-scrolly-page"
 >
-  <div class="container pupils-container">
+  <div class="container pupils-container glaucoma-scrolly-container">
     <div class="eyes-topbar">
       <div
         class="eyes-topbar__title"
         data-i18n="auto.glaucomascrollimages.quadrants_red_target"
       >
-        Quadrants – Red target
+        Quadrants - Red target
       </div>
       <div class="eyes-topbar__icons">
         <span
           class="icon menuBtn"
           aria-label="Menu"
           data-i18n="i18nExtra.menu_aria_label:aria-label"
-          >☰</span
+          >&#9776;</span
         >
       </div>
     </div>
 
-    <div style="padding-bottom: 24px">
-      <img
-        src="/images/pdf/Workshop/Glaucoma/04FieldsPupils/Fields/Exam/c/01.jpg"
-        alt="Fields - Quadrants Red - 01"
-        loading="lazy"
-        style="
-          display: block;
-          width: 100%;
-          height: auto;
-          margin: 0 0 14px 0;
-          border-radius: 14px;
-        "
-      />
-      <img
-        src="/images/pdf/Workshop/Glaucoma/04FieldsPupils/Fields/Exam/c/02.jpg"
-        alt="Fields - Quadrants Red - 02"
-        loading="lazy"
-        style="
-          display: block;
-          width: 100%;
-          height: auto;
-          margin: 0 0 14px 0;
-          border-radius: 14px;
-        "
-      />
-    </div>
+    <h2 class="pupils-subtitle"></h2>
+
+    <header class="glaucoma-scrolly-hero" data-glaucoma-scroll-step>
+      <p class="glaucoma-scrolly-eyebrow">GLAUCOMA WORKSHOP</p>
+      <h2 data-i18n="auto.glaucomascrollimages.quadrants_red_target">
+        Quadrants - Red target
+      </h2>
+      <p>The Arclight red target can give more precision than fingers.</p>
+    </header>
+
+    <section class="glaucoma-scrolly-stack" aria-label="Quadrants - Red target">
+      <article class="glaucoma-scrolly-panel" data-glaucoma-scroll-step>
+        <span class="glaucoma-scrolly-index">01</span>
+        <div class="glaucoma-scrolly-copy">
+          <h3>Testing the four quadrants</h3>
+          <p><strong>Red Target</strong></p>
+          <ul class="glaucoma-scrolly-list">
+            <li>Consider using the red target for more precision</li>
+            <li>Ask &apos;can you see the red target?&apos;</li>
+            <li>&apos;Does it look red or washed out and pink?&apos;</li>
+          </ul>
+        </div>
+        <div
+          class="glaucoma-diagram glaucoma-diagram--quadrant glaucoma-diagram--quadrant-red"
+          aria-hidden="true"
+        >
+          <span
+            class="glaucoma-quadrant__axis glaucoma-quadrant__axis--x"
+          ></span
+          ><span
+            class="glaucoma-quadrant__axis glaucoma-quadrant__axis--y"
+          ></span
+          ><span class="glaucoma-quadrant__label glaucoma-quadrant__label--one"
+            >1</span
+          ><span class="glaucoma-quadrant__label glaucoma-quadrant__label--two"
+            >2</span
+          ><span
+            class="glaucoma-quadrant__label glaucoma-quadrant__label--three"
+            >3</span
+          ><span class="glaucoma-quadrant__label glaucoma-quadrant__label--four"
+            >4</span
+          ><span class="glaucoma-quadrant__face"></span
+          ><span
+            class="glaucoma-quadrant__target glaucoma-quadrant__target--red"
+          ></span
+          ><small>central</small><em>peripheral</em>
+        </div>
+      </article>
+
+      <article class="glaucoma-scrolly-panel" data-glaucoma-scroll-step>
+        <span class="glaucoma-scrolly-index">02</span>
+        <div class="glaucoma-scrolly-copy">
+          <h3>Quadrants with the red target</h3>
+          <p>
+            Use the same four-quadrant pattern and compare speed, accuracy and
+            colour quality.
+          </p>
+        </div>
+        <ul class="glaucoma-checklist" aria-hidden="true">
+          <li>Same four quadrants</li>
+          <li>Check speed and accuracy</li>
+          <li>Ask if red looks washed out</li>
+        </ul>
+      </article>
+    </section>
   </div>
 </div>
 
-<!-- 12) Fields – Assess and record -->
 <div
   id="glaucomaAssessRecord"
-  class="page pupils-like has-eyes-topbar"
-  style="display: none"
+  class="page pupils-like has-eyes-topbar glaucoma-scrolly-page"
 >
-  <div class="container pupils-container">
+  <div class="container pupils-container glaucoma-scrolly-container">
     <div class="eyes-topbar">
       <div
         class="eyes-topbar__title"
@@ -604,35 +1031,55 @@
           class="icon menuBtn"
           aria-label="Menu"
           data-i18n="i18nExtra.menu_aria_label:aria-label"
-          >☰</span
+          >&#9776;</span
         >
       </div>
     </div>
 
-    <div style="padding-bottom: 24px">
-      <img
-        src="/images/pdf/Workshop/Glaucoma/04FieldsPupils/Fields/Exam/d/01.jpg"
-        alt="Fields - Assess and record - 01"
-        loading="lazy"
-        style="
-          display: block;
-          width: 100%;
-          height: auto;
-          margin: 0 0 14px 0;
-          border-radius: 14px;
-        "
-      />
-    </div>
+    <h2 class="pupils-subtitle"></h2>
+
+    <header class="glaucoma-scrolly-hero" data-glaucoma-scroll-step>
+      <p class="glaucoma-scrolly-eyebrow">GLAUCOMA WORKSHOP</p>
+      <h2 data-i18n="auto.glaucomascrollimages.assess_and_record">
+        Assess and record
+      </h2>
+      <p>Record missed, slow or inaccurate responses by quadrant.</p>
+    </header>
+
+    <section class="glaucoma-scrolly-stack" aria-label="Assess and record">
+      <article class="glaucoma-scrolly-panel" data-glaucoma-scroll-step>
+        <span class="glaucoma-scrolly-index">01</span>
+        <div class="glaucoma-scrolly-copy">
+          <h3>Assess and record</h3>
+          <ul class="glaucoma-scrolly-list">
+            <li>Assess speed of response and accuracy in each quadrant</li>
+            <li>
+              Record what quadrants are not seen or where the response is slow
+              or incorrect
+            </li>
+            <li>
+              Complete or incomplete loss of superior or inferior field points
+              to glaucoma
+            </li>
+          </ul>
+        </div>
+        <div
+          class="glaucoma-diagram glaucoma-diagram--record-grid"
+          aria-hidden="true"
+        >
+          <span>seen</span><span>slow</span><span>missed</span
+          ><span>incorrect</span>
+        </div>
+      </article>
+    </section>
   </div>
 </div>
 
-<!-- 13) Pupils – Pupil reactions -->
 <div
   id="glaucomaPupilReactions"
-  class="page pupils-like has-eyes-topbar"
-  style="display: none"
+  class="page pupils-like has-eyes-topbar glaucoma-scrolly-page"
 >
-  <div class="container pupils-container">
+  <div class="container pupils-container glaucoma-scrolly-container">
     <div class="eyes-topbar">
       <div
         class="eyes-topbar__title"
@@ -645,47 +1092,81 @@
           class="icon menuBtn"
           aria-label="Menu"
           data-i18n="i18nExtra.menu_aria_label:aria-label"
-          >☰</span
+          >&#9776;</span
         >
       </div>
     </div>
 
-    <div style="padding-bottom: 24px">
-      <img
-        src="/images/pdf/Workshop/Glaucoma/04FieldsPupils/Pupils/Reactions/01.jpg"
-        alt="Pupils - Reactions - 01"
-        loading="lazy"
-        style="
-          display: block;
-          width: 100%;
-          height: auto;
-          margin: 0 0 14px 0;
-          border-radius: 14px;
-        "
-      />
-      <img
-        src="/images/pdf/Workshop/Glaucoma/04FieldsPupils/Pupils/Reactions/02.jpg"
-        alt="Pupils - Reactions - 02"
-        loading="lazy"
-        style="
-          display: block;
-          width: 100%;
-          height: auto;
-          margin: 0 0 14px 0;
-          border-radius: 14px;
-        "
-      />
-    </div>
+    <h2 class="pupils-subtitle"></h2>
+
+    <header class="glaucoma-scrolly-hero" data-glaucoma-scroll-step>
+      <p class="glaucoma-scrolly-eyebrow">GLAUCOMA WORKSHOP</p>
+      <h2 data-i18n="auto.glaucomascrollimages.pupil_reactions">
+        Pupil reactions
+      </h2>
+      <p>
+        A reduced direct response can suggest retinal or optic nerve damage.
+      </p>
+    </header>
+
+    <section class="glaucoma-scrolly-stack" aria-label="Pupil reactions">
+      <article class="glaucoma-scrolly-panel" data-glaucoma-scroll-step>
+        <span class="glaucoma-scrolly-index">01</span>
+        <div class="glaucoma-scrolly-copy">
+          <h3>Pupils should constrict to bright light</h3>
+          <p>
+            Pupils constrict fast and fully to bright light if the retina and
+            optic nerve are both healthy.
+          </p>
+          <p>
+            If the retina or optic nerve are damaged the pupil will not
+            constrict so well.
+          </p>
+          <p>
+            The optic nerve wears out in glaucoma and so in those affected the
+            pupil may not constrict so well.
+          </p>
+        </div>
+        <div
+          class="glaucoma-diagram glaucoma-diagram--pupil-row"
+          aria-hidden="true"
+        >
+          <span class="glaucoma-pupil glaucoma-pupil--normal"></span
+          ><span class="glaucoma-pupil glaucoma-pupil--reduced"></span
+          ><span class="glaucoma-pupil glaucoma-pupil--absent"></span>
+          <div><b>normal</b><b>reduced</b><b>absent</b></div>
+        </div>
+      </article>
+
+      <article class="glaucoma-scrolly-panel" data-glaucoma-scroll-step>
+        <span class="glaucoma-scrolly-index">02</span>
+        <div class="glaucoma-scrolly-copy">
+          <h3>Classify the response</h3>
+          <p>
+            In screening for and diagnosing glaucoma it is important to be able
+            to test the pupil response to bright light correctly and interpret
+            the response. This can be broadly classified as normal, reduced or
+            absent.
+          </p>
+          <p>
+            If the response is reduced or absent then optic nerve damage from
+            glaucoma maybe present.
+          </p>
+        </div>
+        <div class="glaucoma-flow glaucoma-flow--compact" aria-hidden="true">
+          <span>Normal</span><b></b><span>Reduced</span><b></b
+          ><span>Absent</span>
+        </div>
+      </article>
+    </section>
   </div>
 </div>
 
-<!-- 14) Pupils – Full pupil swinging light test RAPD -->
 <div
   id="glaucomaSwingRAPD"
-  class="page pupils-like has-eyes-topbar"
-  style="display: none"
+  class="page pupils-like has-eyes-topbar glaucoma-scrolly-page"
 >
-  <div class="container pupils-container">
+  <div class="container pupils-container glaucoma-scrolly-container">
     <div class="eyes-topbar">
       <div
         class="eyes-topbar__title"
@@ -698,39 +1179,67 @@
           class="icon menuBtn"
           aria-label="Menu"
           data-i18n="i18nExtra.menu_aria_label:aria-label"
-          >☰</span
+          >&#9776;</span
         >
       </div>
     </div>
 
-    <div style="padding-bottom: 24px">
-      <img
-        src="/images/pdf/Workshop/Glaucoma/04FieldsPupils/Pupils/Swing/01.jpg"
-        alt="Pupils - Swing RAPD - 01"
-        loading="lazy"
-        style="
-          display: block;
-          width: 100%;
-          height: auto;
-          margin: 0 0 14px 0;
-          border-radius: 14px;
-        "
-      />
-    </div>
+    <h2 class="pupils-subtitle"></h2>
+
+    <header class="glaucoma-scrolly-hero" data-glaucoma-scroll-step>
+      <p class="glaucoma-scrolly-eyebrow">GLAUCOMA WORKSHOP</p>
+      <h2
+        data-i18n="auto.glaucomascrollimages.full_pupil_swinging_light_test_rapd"
+      >
+        Full pupil swinging light test RAPD
+      </h2>
+      <p>
+        The swinging light test helps detect small differences between the two
+        eyes.
+      </p>
+    </header>
+
+    <section
+      class="glaucoma-scrolly-stack"
+      aria-label="Full pupil swinging light test RAPD"
+    >
+      <article class="glaucoma-scrolly-panel" data-glaucoma-scroll-step>
+        <span class="glaucoma-scrolly-index">01</span>
+        <div class="glaucoma-scrolly-copy">
+          <h3>
+            The full pupil examination with the swinging light test for RAPD
+          </h3>
+          <p>
+            A more comprehensive pupil examination can be performed. This
+            includes the &apos;swinging light&apos; test for a relative
+            afference pupillary defect (RAPD).
+          </p>
+          <p>
+            The swinging light test can be helpful in picking up small
+            differences between the two eyes. See the separate section on the
+            full pupil examination.
+          </p>
+          <p>This is a skill expected of eye care specialists.</p>
+        </div>
+        <div
+          class="glaucoma-diagram glaucoma-diagram--swing"
+          aria-hidden="true"
+        >
+          <span class="glaucoma-swing-eye"></span
+          ><span class="glaucoma-swing-light"></span
+          ><span class="glaucoma-swing-eye"></span
+          ><strong>left to right</strong>
+        </div>
+      </article>
+    </section>
   </div>
 </div>
 
-<!-- =========================
-     Glaucoma – Front of eye scroll image pages
-     ========================= -->
-
-<!-- 15) Front of eye – Introduction -->
 <div
   id="frontOfEyePage"
-  class="page pupils-like has-eyes-topbar"
-  style="display: none"
+  class="page pupils-like has-eyes-topbar glaucoma-scrolly-page"
 >
-  <div class="container pupils-container">
+  <div class="container pupils-container glaucoma-scrolly-container">
     <div class="eyes-topbar">
       <div
         class="eyes-topbar__title"
@@ -743,35 +1252,57 @@
           class="icon menuBtn"
           aria-label="Menu"
           data-i18n="i18nExtra.menu_aria_label:aria-label"
-          >☰</span
+          >&#9776;</span
         >
       </div>
     </div>
 
-    <div style="padding-bottom: 24px">
-      <img
-        src="/images/pdf/Workshop/Glaucoma/05FrontofEye/Intro/01.jpg"
-        alt="Front of eye - Introduction - 01"
-        loading="lazy"
-        style="
-          display: block;
-          width: 100%;
-          height: auto;
-          margin: 0 0 14px 0;
-          border-radius: 14px;
-        "
-      />
-    </div>
+    <h2 class="pupils-subtitle"></h2>
+
+    <header class="glaucoma-scrolly-hero" data-glaucoma-scroll-step>
+      <p class="glaucoma-scrolly-eyebrow">GLAUCOMA WORKSHOP</p>
+      <h2 data-i18n="auto.glaucomascrollimages.introduction">Introduction</h2>
+      <p>
+        Examine the front of the eye and estimate anterior chamber depth as one
+        continuous step.
+      </p>
+    </header>
+
+    <section class="glaucoma-scrolly-stack" aria-label="Introduction">
+      <article class="glaucoma-scrolly-panel" data-glaucoma-scroll-step>
+        <span class="glaucoma-scrolly-index">01</span>
+        <div class="glaucoma-scrolly-copy">
+          <h3>Front of eye + Anterior chamber depth</h3>
+          <p>
+            These two steps can both be performed with the anterior segment
+            loupe end of the Arclight and combined as one continuous
+            examination.
+          </p>
+        </div>
+        <div
+          class="glaucoma-diagram glaucoma-diagram--front-eye"
+          aria-hidden="true"
+        >
+          <div>
+            <span class="glaucoma-front-eye__loupe"></span
+            ><strong>Front of eye</strong>
+          </div>
+          <b>+</b>
+          <div>
+            <span class="glaucoma-front-eye__beam"></span
+            ><strong>Anterior chamber depth</strong>
+          </div>
+        </div>
+      </article>
+    </section>
   </div>
 </div>
 
-<!-- 16) Front of eye – Findings that can lead to glaucomas -->
 <div
   id="glaucomaFrontFindings"
-  class="page pupils-like has-eyes-topbar"
-  style="display: none"
+  class="page pupils-like has-eyes-topbar glaucoma-scrolly-page"
 >
-  <div class="container pupils-container">
+  <div class="container pupils-container glaucoma-scrolly-container">
     <div class="eyes-topbar">
       <div
         class="eyes-topbar__title"
@@ -784,59 +1315,130 @@
           class="icon menuBtn"
           aria-label="Menu"
           data-i18n="i18nExtra.menu_aria_label:aria-label"
-          >☰</span
+          >&#9776;</span
         >
       </div>
     </div>
 
-    <div style="padding-bottom: 24px">
-      <img
-        src="/images/pdf/Workshop/Glaucoma/05FrontofEye/Findings/01.jpg"
-        alt="Front of eye - Findings - 01"
-        loading="lazy"
-        style="
-          display: block;
-          width: 100%;
-          height: auto;
-          margin: 0 0 14px 0;
-          border-radius: 14px;
-        "
-      />
-      <img
-        src="/images/pdf/Workshop/Glaucoma/05FrontofEye/Findings/02.jpg"
-        alt="Front of eye - Findings - 02"
-        loading="lazy"
-        style="
-          display: block;
-          width: 100%;
-          height: auto;
-          margin: 0 0 14px 0;
-          border-radius: 14px;
-        "
-      />
-      <img
-        src="/images/pdf/Workshop/Glaucoma/05FrontofEye/Findings/03.jpg"
-        alt="Front of eye - Findings - 03"
-        loading="lazy"
-        style="
-          display: block;
-          width: 100%;
-          height: auto;
-          margin: 0 0 14px 0;
-          border-radius: 14px;
-        "
-      />
-    </div>
+    <h2 class="pupils-subtitle"></h2>
+
+    <header class="glaucoma-scrolly-hero" data-glaucoma-scroll-step>
+      <p class="glaucoma-scrolly-eyebrow">GLAUCOMA WORKSHOP</p>
+      <h2
+        data-i18n="auto.glaucomascrollimages.findings_that_can_lead_to_glaucoma"
+      >
+        Findings that can lead to glaucoma
+      </h2>
+      <p>
+        Front-of-eye findings can reveal secondary glaucoma or acute angle
+        closure risk.
+      </p>
+    </header>
+
+    <section
+      class="glaucoma-scrolly-stack"
+      aria-label="Findings that can lead to glaucoma"
+    >
+      <article class="glaucoma-scrolly-panel" data-glaucoma-scroll-step>
+        <span class="glaucoma-scrolly-index">01</span>
+        <div class="glaucoma-scrolly-copy">
+          <h3>Look for signs that can lead to high pressure</h3>
+          <p>
+            It is important to examine the front of the eye to look for signs
+            that can lead to high pressure.
+          </p>
+          <p>
+            If these are present and there is high pressure then
+            &apos;secondary&apos; types of glaucoma maybe present.
+          </p>
+          <p>
+            But remember in POAG the front of the eye typically looks normal
+            with a white eye.
+          </p>
+        </div>
+        <div
+          class="glaucoma-diagram glaucoma-diagram--front-eye"
+          aria-hidden="true"
+        >
+          <div>
+            <span class="glaucoma-front-eye__loupe"></span
+            ><strong>Front of eye</strong>
+          </div>
+          <b>+</b>
+          <div>
+            <span class="glaucoma-front-eye__beam"></span
+            ><strong>Anterior chamber depth</strong>
+          </div>
+        </div>
+      </article>
+
+      <article class="glaucoma-scrolly-panel" data-glaucoma-scroll-step>
+        <span class="glaucoma-scrolly-index">02</span>
+        <div class="glaucoma-scrolly-copy">
+          <h3>Raised IOP findings</h3>
+          <p>
+            Front of eye findings associated with raised intra-ocular pressure
+            which can lead to &apos;secondary&apos; glaucoma:
+          </p>
+          <ul class="glaucoma-scrolly-list">
+            <li>
+              Shallow anterior chamber due to being long sighted, having a
+              mature cataract or posterior synechiae leading to iris bombe.
+            </li>
+            <li>
+              Material blocking the drainage of aqueous fluid such as in
+              pseudo-exfoliation, pigment, uveitis or blood from trauma
+              (hyphaema)
+            </li>
+            <li>New vessels growing on the iris and drain of the eye</li>
+            <li>
+              Dislocated crystalline or artificial lens leading to drainage
+              problems
+            </li>
+          </ul>
+        </div>
+        <div
+          class="glaucoma-diagram glaucoma-diagram--drainage"
+          aria-hidden="true"
+        >
+          <span>shallow chamber</span><span>blocked drainage</span
+          ><span>new vessels</span><span>lens problem</span>
+        </div>
+      </article>
+
+      <article class="glaucoma-scrolly-panel" data-glaucoma-scroll-step>
+        <span class="glaucoma-scrolly-index">03</span>
+        <div class="glaucoma-scrolly-copy">
+          <h3>Secondary glaucoma is one of the main types</h3>
+          <p>
+            Many of the signs seen in the video are causes of
+            <strong>secondary</strong> glaucoma.
+          </p>
+          <p>Remember there are 4 main types of glaucoma:</p>
+          <ol class="glaucoma-scrolly-number-list">
+            <li>Primary Open Angle Glaucoma (POAG)</li>
+            <li>Acute closed angle glaucoma (ACAG)</li>
+            <li><strong>Secondary</strong> Glaucoma</li>
+            <li>Congenital Glaucoma</li>
+          </ol>
+        </div>
+        <div
+          class="glaucoma-diagram glaucoma-diagram--type-grid"
+          aria-hidden="true"
+        >
+          <span>POAG</span><span>ACAG</span><span>Secondary</span
+          ><span>Congenital</span>
+        </div>
+      </article>
+    </section>
   </div>
 </div>
 
-<!-- 17) Front of eye – Anterior Chamber Depth -->
 <div
   id="glaucomaACDScroll"
-  class="page pupils-like has-eyes-topbar"
-  style="display: none"
+  class="page pupils-like has-eyes-topbar glaucoma-scrolly-page"
 >
-  <div class="container pupils-container">
+  <div class="container pupils-container glaucoma-scrolly-container">
     <div class="eyes-topbar">
       <div
         class="eyes-topbar__title"
@@ -849,128 +1451,214 @@
           class="icon menuBtn"
           aria-label="Menu"
           data-i18n="i18nExtra.menu_aria_label:aria-label"
-          >☰</span
+          >&#9776;</span
         >
       </div>
     </div>
 
-    <div style="padding-bottom: 24px">
-      <img
-        src="/images/pdf/Workshop/Glaucoma/05FrontofEye/AntChamberDepth/01.jpg"
-        alt="Front of eye - Anterior Chamber Depth - 01"
-        loading="lazy"
-        style="
-          display: block;
-          width: 100%;
-          height: auto;
-          margin: 0 0 14px 0;
-          border-radius: 14px;
-        "
-      />
-      <img
-        src="/images/pdf/Workshop/Glaucoma/05FrontofEye/AntChamberDepth/02.jpg"
-        alt="Front of eye - Anterior Chamber Depth - 02"
-        loading="lazy"
-        style="
-          display: block;
-          width: 100%;
-          height: auto;
-          margin: 0 0 14px 0;
-          border-radius: 14px;
-        "
-      />
-    </div>
+    <h2 class="pupils-subtitle"></h2>
+
+    <header class="glaucoma-scrolly-hero" data-glaucoma-scroll-step>
+      <p class="glaucoma-scrolly-eyebrow">GLAUCOMA WORKSHOP</p>
+      <h2 data-i18n="auto.glaucomascrollimages.anterior_chamber_depth">
+        Anterior Chamber Depth
+      </h2>
+      <p>
+        Check AC depth to identify eyes at risk of acute closed angle glaucoma.
+      </p>
+    </header>
+
+    <section class="glaucoma-scrolly-stack" aria-label="Anterior Chamber Depth">
+      <article class="glaucoma-scrolly-panel" data-glaucoma-scroll-step>
+        <span class="glaucoma-scrolly-index">01</span>
+        <div class="glaucoma-scrolly-copy">
+          <h3>Anterior Chamber Depth</h3>
+          <p>
+            The main reason to check AC depth is to see which eyes are at risk
+            of Acute Closed Angle Glaucoma (ACAG).
+          </p>
+        </div>
+        <div class="glaucoma-diagram glaucoma-diagram--acd" aria-hidden="true">
+          <div>
+            <span class="glaucoma-acd-eye glaucoma-acd-eye--deep"></span
+            ><strong>deep AC</strong>
+          </div>
+          <div>
+            <span class="glaucoma-acd-eye glaucoma-acd-eye--shallow"></span
+            ><strong>shallow AC</strong>
+          </div>
+        </div>
+      </article>
+
+      <article class="glaucoma-scrolly-panel" data-glaucoma-scroll-step>
+        <span class="glaucoma-scrolly-index">02</span>
+        <div class="glaucoma-scrolly-copy">
+          <h3>Acute Closed Angle Glaucoma (ACAG)</h3>
+          <p>This video shows a case of ACAG.</p>
+          <p>The patient has eye pain and feels sick.</p>
+          <p>
+            The eye is red with a fixed mid sized pupil, hazy cornea and poor
+            vision.
+          </p>
+          <p>The AC is Shallow.</p>
+          <p>The eye feels hard on palpation through the eye lids.</p>
+        </div>
+        <ul
+          class="glaucoma-checklist glaucoma-checklist--urgent"
+          aria-hidden="true"
+        >
+          <li>Red painful eye</li>
+          <li>Fixed mid-sized pupil</li>
+          <li>Hazy cornea and shallow AC</li>
+          <li>Hard eye on palpation</li>
+        </ul>
+      </article>
+    </section>
   </div>
 </div>
 
-<!-- 18) Front of eye – feeling for high IOP in ACAG -->
 <div
   id="glaucomaHighIOP"
-  class="page pupils-like has-eyes-topbar"
-  style="display: none"
+  class="page pupils-like has-eyes-topbar glaucoma-scrolly-page"
 >
-  <div class="container pupils-container">
+  <div class="container pupils-container glaucoma-scrolly-container">
     <div class="eyes-topbar">
       <div
         class="eyes-topbar__title"
         data-i18n="auto.glaucomascrollimages.feeling_for_high_iop_in_acag"
       >
-        feeling for high IOP in ACAG
+        Feeling for high IOP in ACAG
       </div>
       <div class="eyes-topbar__icons">
         <span
           class="icon menuBtn"
           aria-label="Menu"
           data-i18n="i18nExtra.menu_aria_label:aria-label"
-          >☰</span
+          >&#9776;</span
         >
       </div>
     </div>
 
-    <div style="padding-bottom: 24px">
-      <img
-        src="/images/pdf/Workshop/Glaucoma/05FrontofEye/Feeling/01.jpg"
-        alt="Front of eye - Feeling for high IOP in ACAG - 01"
-        loading="lazy"
-        style="
-          display: block;
-          width: 100%;
-          height: auto;
-          margin: 0 0 14px 0;
-          border-radius: 14px;
-        "
-      />
-      <img
-        src="/images/pdf/Workshop/Glaucoma/05FrontofEye/Feeling/02.jpg"
-        alt="Front of eye - Feeling for high IOP in ACAG - 02"
-        loading="lazy"
-        style="
-          display: block;
-          width: 100%;
-          height: auto;
-          margin: 0 0 14px 0;
-          border-radius: 14px;
-        "
-      />
-      <img
-        src="/images/pdf/Workshop/Glaucoma/05FrontofEye/Feeling/03.jpg"
-        alt="Front of eye - Feeling for high IOP in ACAG - 03"
-        loading="lazy"
-        style="
-          display: block;
-          width: 100%;
-          height: auto;
-          margin: 0 0 14px 0;
-          border-radius: 14px;
-        "
-      />
-      <img
-        src="/images/pdf/Workshop/Glaucoma/05FrontofEye/Feeling/04.jpg"
-        alt="Front of eye - Feeling for high IOP in ACAG - 04"
-        loading="lazy"
-        style="
-          display: block;
-          width: 100%;
-          height: auto;
-          margin: 0 0 14px 0;
-          border-radius: 14px;
-        "
-      />
-    </div>
+    <h2 class="pupils-subtitle"></h2>
+
+    <header class="glaucoma-scrolly-hero" data-glaucoma-scroll-step>
+      <p class="glaucoma-scrolly-eyebrow">GLAUCOMA WORKSHOP</p>
+      <h2 data-i18n="auto.glaucomascrollimages.feeling_for_high_iop_in_acag">
+        Feeling for high IOP in ACAG
+      </h2>
+      <p>Finger palpation can help detect very high IOP in suspected ACAG.</p>
+    </header>
+
+    <section
+      class="glaucoma-scrolly-stack"
+      aria-label="Feeling for high IOP in ACAG"
+    >
+      <article class="glaucoma-scrolly-panel" data-glaucoma-scroll-step>
+        <span class="glaucoma-scrolly-index">01</span>
+        <div class="glaucoma-scrolly-copy">
+          <h3>Feeling for high IOP in ACAG</h3>
+          <p>It is possible to detect high IOP using your fingertips.</p>
+          <p>
+            The accuracy is better if the examiner is familiar with this
+            examination method.
+          </p>
+          <p>
+            Take time to practice it first on yourself and then on your
+            colleagues.
+          </p>
+          <p>
+            If you do not detect anything abnormal, the eye pressure may still
+            be dangerously high.
+          </p>
+          <p>
+            If the history or symptoms suggest glaucoma you must refer them to a
+            centre where their IOP can be accurately assessed.
+          </p>
+        </div>
+        <div
+          class="glaucoma-diagram glaucoma-diagram--palpation"
+          aria-hidden="true"
+        >
+          <span class="glaucoma-palpation__lid"></span
+          ><span
+            class="glaucoma-palpation__finger glaucoma-palpation__finger--one"
+          ></span
+          ><span
+            class="glaucoma-palpation__finger glaucoma-palpation__finger--two"
+          ></span
+          ><strong>compare both eyes</strong>
+        </div>
+      </article>
+
+      <article class="glaucoma-scrolly-panel" data-glaucoma-scroll-step>
+        <span class="glaucoma-scrolly-index">02</span>
+        <div class="glaucoma-scrolly-copy">
+          <h3>Place both index fingers on the upper eyelid</h3>
+          <p>Ask the patient to close her or his eyes and look down.</p>
+          <p>
+            Place the tips of both index fingers on the closed upper eyelid.
+          </p>
+          <p>
+            Keeping both fingertips in contact with the upper eyelid, apply
+            gentle pressure through the closed eyelid.
+          </p>
+        </div>
+        <div class="glaucoma-flow glaucoma-flow--compact" aria-hidden="true">
+          <span>Close eyes</span><b></b><span>Look down</span><b></b
+          ><span>Fingers on lid</span>
+        </div>
+      </article>
+
+      <article class="glaucoma-scrolly-panel" data-glaucoma-scroll-step>
+        <span class="glaucoma-scrolly-index">03</span>
+        <div class="glaucoma-scrolly-copy">
+          <h3>Palpate through the closed eyelid</h3>
+          <p>
+            Use the tips of both index fingers to gently feel the eye through
+            the closed upper lid.
+          </p>
+          <p>
+            The test is only a rough screen for very high pressure and does not
+            replace accurate IOP measurement.
+          </p>
+        </div>
+        <ul class="glaucoma-checklist" aria-hidden="true">
+          <li>Gentle fingertip pressure</li>
+          <li>Closed upper lid only</li>
+          <li>Rough screen, not measurement</li>
+        </ul>
+      </article>
+
+      <article class="glaucoma-scrolly-panel" data-glaucoma-scroll-step>
+        <span class="glaucoma-scrolly-index">04</span>
+        <div class="glaucoma-scrolly-copy">
+          <h3>Compare firmness between the two eyes</h3>
+          <p>
+            First gently pressing on the eye with one finger then with the other
+            and repeat.
+          </p>
+          <p>
+            A normal eye should feel a bit like a tomato that is just ripe: not
+            solid, nor very soft.
+          </p>
+          <p>An eye with high IOP will feel firmer and hard.</p>
+          <p>It is important to compare the two eyes with one other.</p>
+          <p>An eye with very high IOP will feel firmer and more solid.</p>
+        </div>
+        <div class="glaucoma-flow glaucoma-flow--compact" aria-hidden="true">
+          <span>Normal</span><b></b><span>Firm</span><b></b
+          ><span>Very hard</span>
+        </div>
+      </article>
+    </section>
   </div>
 </div>
 
-<!-- =========================
-     Glaucoma – Back of eye scroll image pages
-     ========================= -->
-
-<!-- 19) Back of eye – Introduction -->
 <div
   id="fundalReflexPage"
-  class="page pupils-like has-eyes-topbar"
-  style="display: none"
+  class="page pupils-like has-eyes-topbar glaucoma-scrolly-page"
 >
-  <div class="container pupils-container">
+  <div class="container pupils-container glaucoma-scrolly-container">
     <div class="eyes-topbar">
       <div
         class="eyes-topbar__title"
@@ -983,296 +1671,553 @@
           class="icon menuBtn"
           aria-label="Menu"
           data-i18n="i18nExtra.menu_aria_label:aria-label"
-          >☰</span
+          >&#9776;</span
         >
       </div>
     </div>
 
-    <div style="padding-bottom: 24px">
-      <img
-        src="/images/pdf/Workshop/Glaucoma/06BackofEye/Intro/01.jpg"
-        alt="Back of eye - Introduction - 01"
-        loading="lazy"
-        style="
-          display: block;
-          width: 100%;
-          height: auto;
-          margin: 0 0 14px 0;
-          border-radius: 14px;
-        "
-      />
-    </div>
+    <h2 class="pupils-subtitle"></h2>
+
+    <header class="glaucoma-scrolly-hero" data-glaucoma-scroll-step>
+      <p class="glaucoma-scrolly-eyebrow">GLAUCOMA WORKSHOP</p>
+      <h2 data-i18n="auto.glaucomascrollimages.introduction">Introduction</h2>
+      <p>
+        The red reflex rules out media opacity; fundoscopy examines the optic
+        nerve.
+      </p>
+    </header>
+
+    <section class="glaucoma-scrolly-stack" aria-label="Introduction">
+      <article class="glaucoma-scrolly-panel" data-glaucoma-scroll-step>
+        <span class="glaucoma-scrolly-index">01</span>
+        <div class="glaucoma-scrolly-copy">
+          <h3>Fundal Reflex and Fundoscopy</h3>
+          <p>
+            The fundal reflex allows quick assessment of the potential other
+            causes of loss of vision.
+          </p>
+          <p>
+            If visual acuity is reduced then excluding other causes such as
+            corneal scar, cataract or bleeding into the vitreous are important.
+          </p>
+          <p>
+            If the fundal reflex looks fine with clear media yet the vision is
+            reduced then glaucoma is possible.
+          </p>
+          <p>
+            Refractive error should be excluded by testing near and distance
+            visual acuity using a pin hole.
+          </p>
+        </div>
+        <div
+          class="glaucoma-diagram glaucoma-diagram--fundal"
+          aria-hidden="true"
+        >
+          <span class="glaucoma-fundal__reflex"></span
+          ><span class="glaucoma-fundal__disc"></span
+          ><strong>red reflex + optic nerve</strong>
+        </div>
+      </article>
+    </section>
   </div>
 </div>
 
-<!-- 20) Back of eye – optic nerve -->
 <div
   id="glaucomaOpticNerve"
-  class="page pupils-like has-eyes-topbar"
-  style="display: none"
+  class="page pupils-like has-eyes-topbar glaucoma-scrolly-page"
 >
-  <div class="container pupils-container">
+  <div class="container pupils-container glaucoma-scrolly-container">
     <div class="eyes-topbar">
       <div
         class="eyes-topbar__title"
         data-i18n="auto.glaucomascrollimages.optic_nerve"
       >
-        optic nerve
+        Optic nerve
       </div>
       <div class="eyes-topbar__icons">
         <span
           class="icon menuBtn"
           aria-label="Menu"
           data-i18n="i18nExtra.menu_aria_label:aria-label"
-          >☰</span
+          >&#9776;</span
         >
       </div>
     </div>
 
-    <div style="padding-bottom: 24px">
-      <img
-        src="/images/pdf/Workshop/Glaucoma/06BackofEye/OpticNerve/01.jpg"
-        alt="Back of eye - Optic nerve - 01"
-        loading="lazy"
-        style="
-          display: block;
-          width: 100%;
-          height: auto;
-          margin: 0 0 14px 0;
-          border-radius: 14px;
-        "
-      />
-      <img
-        src="/images/pdf/Workshop/Glaucoma/06BackofEye/OpticNerve/02.jpg"
-        alt="Back of eye - Optic nerve - 02"
-        loading="lazy"
-        style="
-          display: block;
-          width: 100%;
-          height: auto;
-          margin: 0 0 14px 0;
-          border-radius: 14px;
-        "
-      />
-    </div>
+    <h2 class="pupils-subtitle"></h2>
+
+    <header class="glaucoma-scrolly-hero" data-glaucoma-scroll-step>
+      <p class="glaucoma-scrolly-eyebrow">GLAUCOMA WORKSHOP</p>
+      <h2 data-i18n="auto.glaucomascrollimages.optic_nerve">Optic nerve</h2>
+      <p>
+        The neuro-retinal rim and central cup are the key optic nerve
+        structures.
+      </p>
+    </header>
+
+    <section class="glaucoma-scrolly-stack" aria-label="Optic nerve">
+      <article class="glaucoma-scrolly-panel" data-glaucoma-scroll-step>
+        <span class="glaucoma-scrolly-index">01</span>
+        <div class="glaucoma-scrolly-copy">
+          <h3>The healthy optic nerve</h3>
+          <p>A healthy optic nerve on fundoscopy typically looks like this:</p>
+          <p>
+            The disc has a pink neuro-retinal rim and a smaller central pale
+            cup.
+          </p>
+        </div>
+        <div class="glaucoma-diagram glaucoma-diagram--disc" aria-hidden="true">
+          <span class="glaucoma-disc glaucoma-disc--healthy"></span>
+          <div><b>neuro-retinal rim</b><b>central pale cup</b></div>
+        </div>
+      </article>
+
+      <article class="glaucoma-scrolly-panel" data-glaucoma-scroll-step>
+        <span class="glaucoma-scrolly-index">02</span>
+        <div class="glaucoma-scrolly-copy">
+          <h3>Rim and cup</h3>
+          <ul class="glaucoma-scrolly-list">
+            <li>
+              <strong>The neuro-retinal rim</strong> is made up of 1 to 1.75
+              million fine nerves that run from the retina to the brain.
+            </li>
+            <li>
+              <strong
+                >The central pale area is called the &apos;cup&apos;</strong
+              >
+              because from side on it looks like a cup.
+            </li>
+          </ul>
+        </div>
+        <ul class="glaucoma-checklist" aria-hidden="true">
+          <li>Rim: nerve fibres to the brain</li>
+          <li>Cup: central pale area</li>
+          <li>Screening looks for rim loss</li>
+        </ul>
+      </article>
+    </section>
   </div>
 </div>
 
-<!-- 21) Back of eye – cupping -->
 <div
   id="glaucomaCupping"
-  class="page pupils-like has-eyes-topbar"
-  style="display: none"
+  class="page pupils-like has-eyes-topbar glaucoma-scrolly-page"
 >
-  <div class="container pupils-container">
+  <div class="container pupils-container glaucoma-scrolly-container">
     <div class="eyes-topbar">
       <div
         class="eyes-topbar__title"
         data-i18n="auto.glaucomascrollimages.cupping"
       >
-        cupping
+        Cupping
       </div>
       <div class="eyes-topbar__icons">
         <span
           class="icon menuBtn"
           aria-label="Menu"
           data-i18n="i18nExtra.menu_aria_label:aria-label"
-          >☰</span
+          >&#9776;</span
         >
       </div>
     </div>
 
-    <div style="padding-bottom: 24px">
-      <img
-        src="/images/pdf/Workshop/Glaucoma/06BackofEye/Cupping/01.jpg"
-        alt="Back of eye - Cupping - 01"
-        loading="lazy"
-        style="
-          display: block;
-          width: 100%;
-          height: auto;
-          margin: 0 0 14px 0;
-          border-radius: 14px;
-        "
-      />
-      <img
-        src="/images/pdf/Workshop/Glaucoma/06BackofEye/Cupping/02.png"
-        alt="Back of eye - Cupping - 02"
-        loading="lazy"
-        style="
-          display: block;
-          width: 100%;
-          height: auto;
-          margin: 0 0 14px 0;
-          border-radius: 14px;
-        "
-      />
-      <img
-        src="/images/pdf/Workshop/Glaucoma/06BackofEye/Cupping/03.png"
-        alt="Back of eye - Cupping - 03"
-        loading="lazy"
-        style="
-          display: block;
-          width: 100%;
-          height: auto;
-          margin: 0 0 14px 0;
-          border-radius: 14px;
-        "
-      />
-      <img
-        src="/images/pdf/Workshop/Glaucoma/06BackofEye/Cupping/04.png"
-        alt="Back of eye - Cupping - 04"
-        loading="lazy"
-        style="
-          display: block;
-          width: 100%;
-          height: auto;
-          margin: 0 0 14px 0;
-          border-radius: 14px;
-        "
-      />
-    </div>
+    <h2 class="pupils-subtitle"></h2>
+
+    <header class="glaucoma-scrolly-hero" data-glaucoma-scroll-step>
+      <p class="glaucoma-scrolly-eyebrow">GLAUCOMA WORKSHOP</p>
+      <h2 data-i18n="auto.glaucomascrollimages.cupping">Cupping</h2>
+      <p>
+        As glaucoma progresses, the neuro-retinal rim becomes thinner and the
+        cup appears larger.
+      </p>
+    </header>
+
+    <section class="glaucoma-scrolly-stack" aria-label="Cupping">
+      <article class="glaucoma-scrolly-panel" data-glaucoma-scroll-step>
+        <span class="glaucoma-scrolly-index">01</span>
+        <div class="glaucoma-scrolly-copy">
+          <h3>The optic nerve and cupping</h3>
+          <ul class="glaucoma-scrolly-list">
+            <li>
+              In glaucoma the large collection of fine nerves that make up the
+              optic nerve wear out and die early.
+            </li>
+            <li>This neuro-retinal rim is made up of these nerves.</li>
+            <li>
+              As glaucoma progresses the neuro-retinal rim becomes thinner.
+            </li>
+            <li>This makes the central pale cup look bigger.</li>
+            <li>
+              This is why when screening for glaucoma we look for
+              &apos;cupping&apos; or a &apos;cupped&apos; disc.
+            </li>
+          </ul>
+        </div>
+        <div
+          class="glaucoma-diagram glaucoma-diagram--disc-row"
+          aria-hidden="true"
+        >
+          <span class="glaucoma-disc glaucoma-disc--healthy"></span
+          ><span class="glaucoma-disc glaucoma-disc--early"></span
+          ><span class="glaucoma-disc glaucoma-disc--advanced"></span>
+          <div><b>healthy</b><b>early cupping</b><b>advanced</b></div>
+        </div>
+      </article>
+
+      <article class="glaucoma-scrolly-panel" data-glaucoma-scroll-step>
+        <span class="glaucoma-scrolly-index">02</span>
+        <div class="glaucoma-scrolly-copy">
+          <h3>Healthy disc</h3>
+          <p>The neuro-retinal rim is thick and the central cup is small.</p>
+        </div>
+        <div class="glaucoma-diagram glaucoma-diagram--disc" aria-hidden="true">
+          <span class="glaucoma-disc glaucoma-disc--healthy"></span>
+          <div><b>neuro-retinal rim</b><b>central pale cup</b></div>
+        </div>
+      </article>
+
+      <article class="glaucoma-scrolly-panel" data-glaucoma-scroll-step>
+        <span class="glaucoma-scrolly-index">03</span>
+        <div class="glaucoma-scrolly-copy">
+          <h3>Progressive cupping</h3>
+          <p>
+            As nerve fibres are lost, the rim gets thinner and the central cup
+            looks larger.
+          </p>
+        </div>
+        <div class="glaucoma-flow glaucoma-flow--field-loss" aria-hidden="true">
+          <span>Rim thins</span><b></b><span>Cup enlarges</span><b></b
+          ><span>Disc cups</span>
+        </div>
+      </article>
+
+      <article class="glaucoma-scrolly-panel" data-glaucoma-scroll-step>
+        <span class="glaucoma-scrolly-index">04</span>
+        <div class="glaucoma-scrolly-copy">
+          <h3>Advanced cupping</h3>
+          <p>
+            In advanced glaucoma the cup can occupy most of the disc and the rim
+            can be very thin or absent.
+          </p>
+        </div>
+        <div class="glaucoma-diagram glaucoma-diagram--disc" aria-hidden="true">
+          <span class="glaucoma-disc glaucoma-disc--advanced"></span>
+          <div><b>large pale cup</b><b>thin rim</b></div>
+        </div>
+      </article>
+    </section>
   </div>
 </div>
 
-<!-- =========================
-     Glaucoma – Summary scroll image pages
-     ========================= -->
-
-<!-- 22) Summary – scrolly -->
 <div
   id="glaucomaSummaryScrolly"
-  class="page pupils-like has-eyes-topbar"
-  style="display: none"
+  class="page pupils-like has-eyes-topbar glaucoma-scrolly-page"
 >
-  <div class="container pupils-container">
+  <div class="container pupils-container glaucoma-scrolly-container">
     <div class="eyes-topbar">
       <div
         class="eyes-topbar__title"
-        data-i18n="auto.glaucomascrollimages.scrolly"
+        data-i18n="auto.glaucomaworkshop.7_summary"
       >
-        scrolly
+        Summary
       </div>
       <div class="eyes-topbar__icons">
         <span
           class="icon menuBtn"
           aria-label="Menu"
           data-i18n="i18nExtra.menu_aria_label:aria-label"
-          >☰</span
+          >&#9776;</span
         >
       </div>
     </div>
 
-    <div style="padding-bottom: 24px">
-      <img
-        src="/images/pdf/Workshop/Glaucoma/07Summary/Summary/01.jpg"
-        alt="Summary - Scrolly - 01"
-        loading="lazy"
-        style="
-          display: block;
-          width: 100%;
-          height: auto;
-          margin: 0 0 14px 0;
-          border-radius: 14px;
-        "
-      />
-      <img
-        src="/images/pdf/Workshop/Glaucoma/07Summary/Summary/02.jpg"
-        alt="Summary - Scrolly - 02"
-        loading="lazy"
-        style="
-          display: block;
-          width: 100%;
-          height: auto;
-          margin: 0 0 14px 0;
-          border-radius: 14px;
-        "
-      />
-      <img
-        src="/images/pdf/Workshop/Glaucoma/07Summary/Summary/03.jpg"
-        alt="Summary - Scrolly - 03"
-        loading="lazy"
-        style="
-          display: block;
-          width: 100%;
-          height: auto;
-          margin: 0 0 14px 0;
-          border-radius: 14px;
-        "
-      />
-      <img
-        src="/images/pdf/Workshop/Glaucoma/07Summary/Summary/04.jpg"
-        alt="Summary - Scrolly - 04"
-        loading="lazy"
-        style="
-          display: block;
-          width: 100%;
-          height: auto;
-          margin: 0 0 14px 0;
-          border-radius: 14px;
-        "
-      />
-      <img
-        src="/images/pdf/Workshop/Glaucoma/07Summary/Summary/05.jpg"
-        alt="Summary - Scrolly - 05"
-        loading="lazy"
-        style="
-          display: block;
-          width: 100%;
-          height: auto;
-          margin: 0 0 14px 0;
-          border-radius: 14px;
-        "
-      />
-      <img
-        src="/images/pdf/Workshop/Glaucoma/07Summary/Summary/06.jpg"
-        alt="Summary - Scrolly - 06"
-        loading="lazy"
-        style="
-          display: block;
-          width: 100%;
-          height: auto;
-          margin: 0 0 14px 0;
-          border-radius: 14px;
-        "
-      />
-      <img
-        src="/images/pdf/Workshop/Glaucoma/07Summary/Summary/07.jpg"
-        alt="Summary - Scrolly - 07"
-        loading="lazy"
-        style="
-          display: block;
-          width: 100%;
-          height: auto;
-          margin: 0 0 14px 0;
-          border-radius: 14px;
-        "
-      />
-      <img
-        src="/images/pdf/Workshop/Glaucoma/07Summary/Summary/08.jpg"
-        alt="Summary - Scrolly - 08"
-        loading="lazy"
-        style="
-          display: block;
-          width: 100%;
-          height: auto;
-          margin: 0 0 14px 0;
-          border-radius: 14px;
-        "
-      />
-      <img
-        src="/images/pdf/Workshop/Glaucoma/07Summary/Summary/09.jpg"
-        alt="Summary - Scrolly - 09"
-        loading="lazy"
-        style="
-          display: block;
-          width: 100%;
-          height: auto;
-          margin: 0 0 14px 0;
-          border-radius: 14px;
-        "
-      />
-    </div>
+    <h2 class="pupils-subtitle"></h2>
+
+    <header class="glaucoma-scrolly-hero" data-glaucoma-scroll-step>
+      <p class="glaucoma-scrolly-eyebrow">GLAUCOMA WORKSHOP</p>
+      <h2 data-i18n="auto.glaucomaworkshop.7_summary">Summary</h2>
+      <p>
+        Bring the five core steps together to assess for glaucoma and other
+        causes of sight loss.
+      </p>
+    </header>
+
+    <section class="glaucoma-scrolly-stack" aria-label="Summary">
+      <article class="glaucoma-scrolly-panel" data-glaucoma-scroll-step>
+        <span class="glaucoma-scrolly-index">01</span>
+        <div class="glaucoma-scrolly-copy">
+          <h3>Bringing it all together</h3>
+          <ul class="glaucoma-scrolly-list">
+            <li>
+              You should now be able to bring all these skills together to
+              assess a patient for glaucoma
+            </li>
+            <li>
+              By applying the 5 steps described in this glaucoma workshop you
+              will be more able to identify those with glaucoma
+            </li>
+            <li>
+              You will also be able to identify some of the other major causes
+              of sight loss including cataract and the need for glasses
+            </li>
+          </ul>
+        </div>
+        <div
+          class="glaucoma-diagram glaucoma-diagram--summary-wheel"
+          aria-hidden="true"
+        >
+          <span>History</span><span>Vision</span><span>Fields</span
+          ><span>Pupils</span><span>Front</span><span>Back</span>
+        </div>
+      </article>
+
+      <article class="glaucoma-scrolly-panel" data-glaucoma-scroll-step>
+        <span class="glaucoma-scrolly-index">02</span>
+        <div class="glaucoma-scrolly-copy">
+          <h3>The core examination and tests</h3>
+          <div class="glaucoma-core-list">
+            <p>
+              <strong>1. History</strong><br />1a. Vision loss &amp;
+              symptoms/signs<br />1b. Risk factors
+            </p>
+            <p>
+              <strong>2. Vision</strong><br />2a. Distance visual acuity<br />2b.
+              Near visual acuity
+            </p>
+            <p>
+              <strong>3. Fields &amp; pupils</strong><br />3a. Visual fields by
+              confrontation<br />3b. Pupil reactions
+            </p>
+            <p>
+              <strong>4. Front of eye</strong><br />4a. External eye exam<br />4b.
+              Anterior chamber depth
+            </p>
+            <p>
+              <strong>5. Back of eye</strong><br />5a. Fundal (red) reflex<br />5b.
+              Fundoscopy (optic nerve)
+            </p>
+          </div>
+        </div>
+        <div
+          class="glaucoma-diagram glaucoma-diagram--test-map"
+          aria-hidden="true"
+        >
+          <span>1 History</span><span>2 Vision</span
+          ><span>3 Fields + pupils</span><span>4 Front of eye</span
+          ><span>5 Back of eye</span>
+        </div>
+      </article>
+
+      <article class="glaucoma-scrolly-panel" data-glaucoma-scroll-step>
+        <span class="glaucoma-scrolly-index">03</span>
+        <div class="glaucoma-scrolly-copy">
+          <h3>History</h3>
+          <ul class="glaucoma-scrolly-list">
+            <li>
+              <strong>Slow, painless loss of side vision</strong> over months or
+              years
+            </li>
+            <li>Bumping into objects or people, especially in low light</li>
+            <li>Difficulty walking outdoors or at night</li>
+            <li>
+              In very late stages:
+              <strong
+                >only central vision left (&quot;tunnel vision&quot;)</strong
+              >, or severe overall blur
+            </li>
+            <li>
+              May have <strong>family history of blindness or glaucoma</strong>
+            </li>
+            <li>Older age (often &gt;40), but can be younger</li>
+            <li>
+              Sometimes already functionally blind in one eye when first seen
+            </li>
+          </ul>
+        </div>
+        <div
+          class="glaucoma-diagram glaucoma-diagram--field-series"
+          aria-hidden="true"
+        >
+          <span class="glaucoma-field-dot glaucoma-field-dot--clear"></span
+          ><span class="glaucoma-field-dot glaucoma-field-dot--side"></span
+          ><span class="glaucoma-field-dot glaucoma-field-dot--tunnel"></span
+          ><span class="glaucoma-field-dot glaucoma-field-dot--blind"></span>
+        </div>
+      </article>
+
+      <article class="glaucoma-scrolly-panel" data-glaucoma-scroll-step>
+        <span class="glaucoma-scrolly-index">04</span>
+        <div class="glaucoma-scrolly-copy">
+          <h3>Visual Acuity</h3>
+          <ul class="glaucoma-scrolly-list">
+            <li>
+              <strong>Reduced distance vision</strong>, especially if disease is
+              very advanced or combined with cataract
+            </li>
+            <li>Near vision may still be reasonable early on, then worsens</li>
+            <li>
+              Marked <strong>asymmetry between eyes</strong> is common (one eye
+              much worse)
+            </li>
+            <li>
+              Visual acuity can be <strong>surprisingly good</strong> despite
+              severe field loss so
+              <em>normal acuity does NOT exclude advanced glaucoma.</em>
+            </li>
+          </ul>
+        </div>
+        <div
+          class="glaucoma-diagram glaucoma-diagram--acuity"
+          aria-hidden="true"
+        >
+          <div class="glaucoma-acuity-chart">
+            <span>E</span><span>F P</span><span>T O Z</span><span>L P E D</span>
+          </div>
+          <div class="glaucoma-pinhole-card">pinhole</div>
+        </div>
+      </article>
+
+      <article class="glaucoma-scrolly-panel" data-glaucoma-scroll-step>
+        <span class="glaucoma-scrolly-index">05</span>
+        <div class="glaucoma-scrolly-copy">
+          <h3>Visual Fields</h3>
+          <ul class="glaucoma-scrolly-list">
+            <li>
+              <strong>Large superior and/or inferior field defects</strong>
+            </li>
+            <li>Loss in both upper and lower fields</li>
+            <li>Progression to <strong>tunnel vision</strong></li>
+            <li>With confrontation test:</li>
+            <li>
+              Fingers or red target not seen in upper and/or lower quadrants
+            </li>
+            <li>Peripheral targets missed first</li>
+            <li>Central target may still be seen until very late</li>
+          </ul>
+        </div>
+        <div
+          class="glaucoma-diagram glaucoma-diagram--quadrant glaucoma-diagram--quadrant-red"
+          aria-hidden="true"
+        >
+          <span
+            class="glaucoma-quadrant__axis glaucoma-quadrant__axis--x"
+          ></span
+          ><span
+            class="glaucoma-quadrant__axis glaucoma-quadrant__axis--y"
+          ></span
+          ><span class="glaucoma-quadrant__label glaucoma-quadrant__label--one"
+            >1</span
+          ><span class="glaucoma-quadrant__label glaucoma-quadrant__label--two"
+            >2</span
+          ><span
+            class="glaucoma-quadrant__label glaucoma-quadrant__label--three"
+            >3</span
+          ><span class="glaucoma-quadrant__label glaucoma-quadrant__label--four"
+            >4</span
+          ><span class="glaucoma-quadrant__face"></span
+          ><span
+            class="glaucoma-quadrant__target glaucoma-quadrant__target--red"
+          ></span
+          ><small>central</small><em>peripheral</em>
+        </div>
+      </article>
+
+      <article class="glaucoma-scrolly-panel" data-glaucoma-scroll-step>
+        <span class="glaucoma-scrolly-index">06</span>
+        <div class="glaucoma-scrolly-copy">
+          <h3>Pupils</h3>
+          <p>Pupils usually black and round and symmetrical.</p>
+          <p>Direct pupil response to light is reduced or absent.</p>
+          <p>No pain or redness (unlike acute angle closure).</p>
+        </div>
+        <div
+          class="glaucoma-diagram glaucoma-diagram--pupil-row"
+          aria-hidden="true"
+        >
+          <span class="glaucoma-pupil glaucoma-pupil--normal"></span
+          ><span class="glaucoma-pupil glaucoma-pupil--reduced"></span
+          ><span class="glaucoma-pupil glaucoma-pupil--absent"></span>
+          <div><b>normal</b><b>reduced</b><b>absent</b></div>
+        </div>
+      </article>
+
+      <article class="glaucoma-scrolly-panel" data-glaucoma-scroll-step>
+        <span class="glaucoma-scrolly-index">07</span>
+        <div class="glaucoma-scrolly-copy">
+          <h3>Front of eye</h3>
+          <ul class="glaucoma-scrolly-list">
+            <li>Eye looks <strong>white and quiet</strong></li>
+            <li>No discharge, no redness</li>
+            <li>Lids and cornea normal</li>
+            <li>AC usually <strong>deep</strong></li>
+            <li>
+              Normal looking eye despite possible severe vision loss is typical
+              of POAG.
+            </li>
+          </ul>
+        </div>
+        <div
+          class="glaucoma-diagram glaucoma-diagram--front-eye"
+          aria-hidden="true"
+        >
+          <div>
+            <span class="glaucoma-front-eye__loupe"></span
+            ><strong>Front of eye</strong>
+          </div>
+          <b>+</b>
+          <div>
+            <span class="glaucoma-front-eye__beam"></span
+            ><strong>Anterior chamber depth</strong>
+          </div>
+        </div>
+      </article>
+
+      <article class="glaucoma-scrolly-panel" data-glaucoma-scroll-step>
+        <span class="glaucoma-scrolly-index">08</span>
+        <div class="glaucoma-scrolly-copy">
+          <h3>Fundal Reflex</h3>
+          <ul class="glaucoma-scrolly-list">
+            <li>Reflex usually present</li>
+            <li>
+              May be reduced if cataract coexists - very common in older
+              patients
+            </li>
+            <li>Red reflex alone does <strong>not</strong> detect glaucoma.</li>
+            <li>It mainly rules out media opacity.</li>
+          </ul>
+        </div>
+        <div
+          class="glaucoma-diagram glaucoma-diagram--fundal"
+          aria-hidden="true"
+        >
+          <span class="glaucoma-fundal__reflex"></span
+          ><span class="glaucoma-fundal__disc"></span
+          ><strong>red reflex + optic nerve</strong>
+        </div>
+      </article>
+
+      <article class="glaucoma-scrolly-panel" data-glaucoma-scroll-step>
+        <span class="glaucoma-scrolly-index">09</span>
+        <div class="glaucoma-scrolly-copy">
+          <h3>Fundoscopy</h3>
+          <ul class="glaucoma-scrolly-list">
+            <li>This confirms or gives the diagnosis in advanced disease:</li>
+            <li><strong>Large cup-disc ratio</strong> (often &gt;=0.8-0.9)</li>
+            <li><strong>Thin or absent neuro-retinal rim</strong></li>
+            <li>Vertical cupping</li>
+          </ul>
+        </div>
+        <div
+          class="glaucoma-diagram glaucoma-diagram--disc-row"
+          aria-hidden="true"
+        >
+          <span class="glaucoma-disc glaucoma-disc--healthy"></span
+          ><span class="glaucoma-disc glaucoma-disc--early"></span
+          ><span class="glaucoma-disc glaucoma-disc--advanced"></span>
+          <div><b>healthy</b><b>early cupping</b><b>advanced</b></div>
+        </div>
+      </article>
+    </section>
   </div>
 </div>
 

@@ -53,6 +53,15 @@ Use this when the user asks to make a Diabetic Retinopathy workshop page in the 
 - Responsive rules: check desktop and mobile. Base/mobile layout is one column: hero and panels stay around `min(86vw-88vw, 430px)`, panels use `min-height: 70dvh` unless marked content-fit, `.diabetic-screening-stack` uses tighter gaps, clinical collages stay compact two-column only when labels still fit, and captions must not overlap images or following content. At tablet/desktop widths, hero/panels expand toward `min(76vw, 760px)`, stack gaps increase to roughly `48px`-`56px`, panels may switch to two columns (`text + visual`) with `grid-template-columns`, NCD flow switches from vertical connectors to horizontal station flow, and disease sorter/gallery lanes can expand to 2 or 3 columns. Desktop-specific overrides often target exact panel positions with `nth-of-type`; mirror that only when the content needs a custom layout.
 - Motion/accessibility: preserve `prefers-reduced-motion` behavior by keeping animations tied to `.is-current` and transition classes, not required content. Keep all scroll steps readable without animation.
 
+### Workshop Scrolly Derivatives
+
+Use the Diabetic scrolly format above as the canonical visual reference when normalizing `lesson-row lesson-row--scroll` child pages in the Childhood Eye Screening and Glaucoma workshops.
+
+- Childhood article/image pages use `.childhood-scrolly-page` with the same hero, reveal panel, numbered badge, image/caption, and white-card stack pattern; keep the Childhood green accent. Current examples include `childhoodIntroVisualDevelopmentPage`, `childhoodNormalVisualDevelopmentPage`, `visualImpairmentPage`, `signsVICasesPage`, and `childhoodReferPage`.
+- Childhood custom scrollytelling pages such as Fundal Reflex Lottie routes and Eyes & Brain keep their own animation engines. If they need visual alignment, add only the shared shell/hero where it does not disturb the stage runtime.
+- Glaucoma scroll pages in `public/html/glaucomascrollImages.html` use `.glaucoma-scrolly-page`, `.glaucoma-scrolly-hero`, `.glaucoma-scrolly-stack`, and `.glaucoma-scrolly-panel`; slide text should be converted into real HTML text with `.glaucoma-scrolly-copy` plus `.glaucoma-diagram` CSS diagrams where useful, not embedded as full-slide images. The reveal classes are driven by `initializeGlaucomaScrollyPages()` in `public/js/glaucomaWorkshopProgress.js`.
+- Do not convert interactive Glaucoma mini-app pages (`glaucomaACDInteractive`, `glaucomaRAPDFullSwingInteractive`) into image panels; keep their existing interactive layout and route-specific initializers.
+
 ## scrollytelling
 
 Use this when the user asks to make a page like `childhoodFundalPreparationPage`, "Fundal preparation scrollytelling", or a scrollytelling page that should behave exactly like `http://localhost:3000/#/childhoodFundalPreparation`. This is the Fundal Lottie stage-autoplay scrollytelling format, not the separate `.childhood-scrolly-page` article/card format.

@@ -266,6 +266,10 @@ const PROGRESS_TARGET_ROUTES = Object.freeze({
     subPageId: "binocularIndirectOphthalmoscopyScrollPage",
   },
   directOphthalmoscopyPdfPage: { route: "directOphthalmoscopyPdf" },
+  directOphthalmoscopyScrollPage: {
+    route: "videos",
+    subPageId: "directOphthalmoscopyScrollPage",
+  },
   directOphthalmoscopyQuizPage: {
     route: "quizzes",
     subPageId: "directOphthalmoscopyQuizPage",
@@ -367,6 +371,7 @@ function go(target) {
     "visualAcuityPage",
     "fundalReflexPage",
     "fundalReflexExaminationScrollPage",
+    "directOphthalmoscopyScrollPage",
     "binocularIndirectOphthalmoscopyScrollPage",
     "interactiveLearningPage",
     "assessmentVisionPage",
@@ -891,6 +896,7 @@ function inferProgressSource(target, prefix, navigation) {
   if (
     target.startsWith("diabetic") ||
     target === "directOphthalmoscopyPdfPage" ||
+    target === "directOphthalmoscopyScrollPage" ||
     target === "directOphthalmoscopyQuizPage" ||
     target === "binocularIndirectOphthalmoscopyPdfPage" ||
     target === "binocularIndirectOphthalmoscopyScrollPage"

@@ -182,9 +182,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (routeName === "glaucomaScrollImages") {
-      const { initializeGlaucomaWorkshopProgressInfra } =
-        await import("./glaucomaWorkshopProgress.js");
+      const {
+        initializeGlaucomaScrollyPages,
+        initializeGlaucomaWorkshopProgressInfra,
+      } = await import("./glaucomaWorkshopProgress.js");
       initializeGlaucomaWorkshopProgressInfra?.();
+      initializeGlaucomaScrollyPages?.();
       const { initializeGlaucomaWorkshopNextFlowInfra } =
         await import("./glaucomaWorkshopNextFlow.js");
       initializeGlaucomaWorkshopNextFlowInfra?.();
@@ -274,6 +277,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (routeName === "childhoodRefer") {
+      const { initializeChildhoodScrollyPages } =
+        await import("./childhoodScrolly.js");
+      initializeChildhoodScrollyPages();
+      return;
+    }
+
+    if (routeName === "signsVICases") {
       const { initializeChildhoodScrollyPages } =
         await import("./childhoodScrolly.js");
       initializeChildhoodScrollyPages();

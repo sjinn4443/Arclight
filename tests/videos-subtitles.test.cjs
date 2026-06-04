@@ -266,6 +266,123 @@ describe("childhood eye screening subtitle pilot", () => {
     expect(videos.calculateVideoProgressPercent(6, 10)).toBeLessThan(100);
   });
 
+  it("tracks Arclight Overview video progress rows", () => {
+    document.body.innerHTML = `
+      <div id="videos">
+        <section id="arclightPage" class="page pupils-like" style="display:block">
+          <section class="pupil-level pupil-level--primary">
+            <div class="pupil-level__cap" style="background-color:#1e8d1e">Primary</div>
+            <div class="lesson-row lesson-row--video" data-target="howToUseArclightVideoPage">
+              <div class="lesson-main">
+                <div class="lesson-top"><span class="lesson-type">How to Use Arclight</span></div>
+                <div class="lesson-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                  <div class="lesson-progress__fill"></div>
+                </div>
+              </div>
+            </div>
+            <div class="lesson-row lesson-row--video" data-target="phoneAttachmentVideoPage">
+              <div class="lesson-main">
+                <div class="lesson-top"><span class="lesson-type">Mobile Phone Attachment</span></div>
+                <div class="lesson-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                  <div class="lesson-progress__fill"></div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </section>
+        <div id="howToUseArclightVideoPage" class="page" style="display:none">
+          <div class="video-container">
+            <video id="howToUseArclightVideo"><source src="videos/USAID/HowtoArclight.mp4" /></video>
+          </div>
+        </div>
+        <div id="phoneAttachmentVideoPage" class="page" style="display:none">
+          <div class="video-container">
+            <video id="phoneAttachmentVideo"><source src="videos/Arclight/PhoneAttach.mp4" /></video>
+          </div>
+        </div>
+      </div>
+    `;
+
+    const cases = [
+      {
+        pageId: "howToUseArclightVideoPage",
+        videoId: "howToUseArclightVideo",
+        currentTime: 50,
+        expectedPercent: 50,
+      },
+      {
+        pageId: "phoneAttachmentVideoPage",
+        videoId: "phoneAttachmentVideo",
+        currentTime: 25,
+        expectedPercent: 25,
+      },
+    ];
+
+    cases.forEach(({ pageId, videoId, currentTime, expectedPercent }) => {
+      videos.goToVideosSection(pageId);
+      const video = document.getElementById(videoId);
+      Object.defineProperty(video, "duration", {
+        configurable: true,
+        value: 100,
+      });
+      Object.defineProperty(video, "currentTime", {
+        configurable: true,
+        value: currentTime,
+      });
+
+      video.dispatchEvent(new Event("timeupdate"));
+
+      const stored = JSON.parse(
+        localStorage.getItem(`videoProgress:${pageId}`),
+      );
+      expect(Math.round(stored.percent)).toBe(expectedPercent);
+      expect(
+        document.querySelector(
+          `.lesson-row[data-target="${pageId}"] .lesson-progress__fill`,
+        ).style.width,
+      ).toBe(`${expectedPercent}%`);
+    });
+  });
+
+  it("uses the intermediate scrollytelling icon for the Holo guide row", () => {
+    const html = fs.readFileSync("public/html/videos.html", "utf8");
+    const css = fs.readFileSync("public/style/components.css", "utf8");
+
+    expect(html).toContain(
+      'class="lesson-row lesson-row--scroll lesson-row--scrollytelling"',
+    );
+    expect(css).toContain("lesson-row--scrollytelling");
+    expect(css).toContain("intermediate_scrollytell.webp");
+    expect(css).toContain("#holoOverviewPage .lesson-progress__fill");
+    expect(css).toContain("#holoOverviewPage .lesson-row.is-progress-complete");
+    expect(css).toContain("--lesson-complete-color: #f25600");
+  });
+
+  it("adds the merged Direct Ophthalmoscopy scrollytelling guide to Arclight Overview", () => {
+    const html = fs.readFileSync("public/html/videos.html", "utf8");
+    const videosJs = fs.readFileSync("public/js/videos.js", "utf8");
+    const scrollyJs = fs.readFileSync(
+      "public/js/childhoodFundalPreparation.js",
+      "utf8",
+    );
+    const css = fs.readFileSync("public/style/pages.css", "utf8");
+
+    expect(html).toContain('data-target="directOphthalmoscopyScrollPage"');
+    expect(html).toContain('id="directOphthalmoscopyScrollPage"');
+    expect(html).toContain("Direct Ophthalmoscopy Guide");
+    expect(videosJs).toContain(
+      'const DIRECT_OPHTHALMOSCOPY_SCROLL_PAGE_ID = "directOphthalmoscopyScrollPage"',
+    );
+    expect(scrollyJs).toContain(
+      'const DIRECT_OPHTHALMOSCOPY_SCROLL_ROUTE = "directOphthalmoscopyScroll"',
+    );
+    expect(scrollyJs).toContain('routeName: "diabeticObservationFundalReflex"');
+    expect(scrollyJs).toContain('routeName: "diabeticPositioningFlightPath"');
+    expect(scrollyJs).toContain('routeName: "diabeticHowToExamine"');
+    expect(css).toContain("#directOphthalmoscopyScrollPage");
+    expect(css).toContain("fundal-reflex-section-divider__title");
+  });
+
   it("renders an iPhone WebKit subtitle overlay that updates cue text over time", async () => {
     setIPhoneWebKitUserAgent();
     localStorage.setItem("prefLang", "ko");
