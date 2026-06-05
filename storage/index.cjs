@@ -13,7 +13,8 @@ const hasPostgres =
 
 const disableStorage = isEnabled(process.env.DISABLE_DB_STORAGE);
 
-module.exports =
-  hasPostgres && !disableStorage
+module.exports = disableStorage
+  ? require("./disabled-storage.cjs")
+  : hasPostgres
     ? require("./pg-storage.cjs")
-    : require("./disabled-storage.cjs");
+    : require("./ndjson-storage.cjs");

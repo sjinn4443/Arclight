@@ -4,11 +4,11 @@ This folder contains report-facing assets and historical telemetry export files 
 
 ## What this module does (current behavior)
 
-- Runtime telemetry storage is now Postgres-backed when a DB URL is configured.
+- Runtime telemetry storage is Postgres-backed when a DB URL is configured, otherwise it falls back to `reports/data/telemetry.ndjson`.
 - Local/dev/test requests do not persist new telemetry events.
 - The reports UI is served from the static app (`public/reports.html` and `public/html/reports.html`) and is protected by Basic Auth.
 - The server exposes a small admin API used by the reports UI:
-  - `GET /api/dev/users` - returns aggregated telemetry rows from Postgres
+  - `GET /api/dev/users` - returns aggregated telemetry rows from the selected runtime store
   - `DELETE /api/dev/users/:anonId` - deletes user rows only when delete is explicitly enabled
 
 These routes are implemented directly in [`server.cjs`](../server.cjs).
@@ -16,8 +16,7 @@ These routes are implemented directly in [`server.cjs`](../server.cjs).
 ## Folder contents
 
 - `data/`
-  - Historical/generated telemetry exports only. These files are not used as runtime storage anymore.
-  - `telemetry.ndjson` - legacy export file
+  - `telemetry.ndjson` - runtime fallback storage when Postgres is not configured, plus legacy export data
   - `telemetry.sql` - helper/export SQL
   - `users.json` - legacy/example file
 - `security/encrypt.cjs`
@@ -37,6 +36,8 @@ These routes are implemented directly in [`server.cjs`](../server.cjs).
 - `DATABASE_URL` - primary runtime Postgres connection
 - `REPORTS_READ_DATABASE_URL` - optional read-only reports connection
 - `REPORTS_ADMIN_DATABASE_URL` - optional delete-capable reports connection
+- No DB URL - uses `reports/data/telemetry.ndjson` unless `DISABLE_DB_STORAGE=true`
+- `DISABLE_DB_STORAGE=true` - forces no-op storage, used by Playwright E2E runs
 
 ### Delete controls
 
@@ -48,7 +49,8 @@ These routes are implemented directly in [`server.cjs`](../server.cjs).
 ```bash
 # PowerShell
 $env:DASHBOARD_PASSWORD="your-password"
-$env:DATABASE_URL="postgres://user:password@host:5432/database"
+# Optional. Omit DATABASE_URL to use reports/data/telemetry.ndjson.
+# $env:DATABASE_URL="postgres://user:password@host:5432/database"
 
 npm start
 # open http://localhost:3000/reports.html

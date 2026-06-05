@@ -15,10 +15,10 @@ Arclight is primarily a static, client-side PWA served from `public/` (or `dist/
 - Static-first delivery: most user-facing functionality is in static HTML/CSS/JS under `public/`.
 - Minimal backend surface area: backend is intentionally small and focused on hosting + telemetry.
 - Environment-aware storage:
-  - default/no DB: no-op storage through `storage/disabled-storage.cjs`
+  - default/no DB: file-backed NDJSON storage through `storage/ndjson-storage.cjs`
   - DB configured: Postgres through `storage/pg-storage.cjs`
   - E2E isolation: Playwright sets `DISABLE_DB_STORAGE=1`
-  - legacy/local NDJSON support remains in `storage/ndjson-storage.cjs` but is not selected by the current storage index
+  - forced off: no-op storage through `storage/disabled-storage.cjs`
 
 ## Design Patterns in Use
 
@@ -57,9 +57,9 @@ Arclight is primarily a static, client-side PWA served from `public/` (or `dist/
   - Reports protection: Basic Auth for `/reports.html` and `/html/reports.html`
   - Reports API: `/api/dev/users`, `DELETE /api/dev/users/:anonId`
 - Storage selection: `storage/index.cjs`
-  - `storage/disabled-storage.cjs` (default/no DB or `DISABLE_DB_STORAGE=1`)
+  - `storage/ndjson-storage.cjs` (default/no DB)
   - `storage/pg-storage.cjs` (Postgres URL configured)
-  - `storage/ndjson-storage.cjs` (legacy/local module, not selected by current index)
+  - `storage/disabled-storage.cjs` (`DISABLE_DB_STORAGE=1`)
 - Reports encryption helper: `reports/security/encrypt.cjs`
 - Diabetic workshop flow:
   - route shell: `public/html/diabeticRetinopathyWorkshop.html`

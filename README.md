@@ -113,7 +113,7 @@ Arclight runs in multiple modes (dev/test/prod). A local `.env` is optional for 
 - `HOST`: bind address (default `0.0.0.0`)
 - `PORT`: server port (default `3000`)
 - `SERVE_DIST`: when `true` / `1`, serve `dist/` even if `NODE_ENV != production`
-- `DISABLE_DB_STORAGE`: when `true` / `1`, forces no-op runtime storage even when database URLs are present. Playwright uses this so local E2E runs do not touch configured databases.
+- `DISABLE_DB_STORAGE`: when `true` / `1`, forces no-op runtime storage. Playwright uses this so local E2E runs do not write telemetry.
 
 ### Reports / admin access
 
@@ -159,8 +159,8 @@ Storage selection:
 
 - Current runtime storage is selected by `storage/index.cjs`.
 - If any Postgres URL is configured and `DISABLE_DB_STORAGE` is not enabled, Postgres is used via `storage/pg-storage.cjs`.
-- If no Postgres URL is configured, or `DISABLE_DB_STORAGE=1`, storage is no-op via `storage/disabled-storage.cjs`.
-- `storage/ndjson-storage.cjs` remains in the repo as legacy/local storage support, but it is not selected by the current storage index.
+- If no Postgres URL is configured and `DISABLE_DB_STORAGE` is not enabled, file-backed NDJSON storage is used via `storage/ndjson-storage.cjs`.
+- If `DISABLE_DB_STORAGE=1`, storage is no-op via `storage/disabled-storage.cjs`.
 
 The password-protected reports pages are served at:
 
@@ -186,7 +186,7 @@ Runtime expectations:
 - Railway sets `PORT` at runtime (Dockerfile defaults to `8080`)
 - set `DASHBOARD_PASSWORD` if you intend to access `/reports.html`
 - set `ADMIN_ALLOWED_IPS` if you intend to access reports/admin routes in production
-- set `DATABASE_URL` to enable Postgres storage
+- set `DATABASE_URL` to use Postgres storage instead of the default NDJSON fallback
 
 ## Emergency controls
 

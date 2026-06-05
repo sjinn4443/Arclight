@@ -893,6 +893,7 @@ app.get("/sitemap.xml", (req, res, next) => {
 async function initStorageWithRetry() {
   const maxAttempts = 10;
   const baseDelayMs = 1500;
+  let lastError = null;
 
   for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
     try {
@@ -900,6 +901,7 @@ async function initStorageWithRetry() {
       console.log(`[storage] init ok (attempt ${attempt})`);
       return;
     } catch (err) {
+      lastError = err;
       logServerError("[storage] init failed", err, {
         attempt,
         maxAttempts,
@@ -909,8 +911,11 @@ async function initStorageWithRetry() {
     }
   }
 
-  console.error(
-    "[storage] init failed permanently; continuing without DB-backed telemetry.",
+  logServerError(
+    "[storage] init failed permanently; continuing without DB-backed telemetry",
+    lastError || new Error("storage init failed permanently"),
+    { attempts: maxAttempts },
+    { includeStack: false },
   );
 }
 
@@ -920,7 +925,19 @@ function telemetryWriteGuard(req, res, next) {
   const decision = evaluateTelemetryWriteRequest(req);
   res.locals.telemetryWriteDecision = decision;
 
-  if (decision.allowed || decision.mode === "silent_skip") return next();
+  if (decision.allowed) return next();
+
+  if (decision.mode === "silent_skip") {
+    if (
+      process.env.NODE_ENV === "production" &&
+      !isLocalHost(getRequestHost(req))
+    ) {
+      logStructuredEvent("telemetry_write_skipped", req, {
+        reason: decision.reason,
+      });
+    }
+    return next();
+  }
 
   logStructuredEvent("telemetry_write_blocked", req, {
     reason: decision.reason,

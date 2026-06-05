@@ -15,9 +15,9 @@
 - Quality: ESLint, Prettier, Husky + lint-staged
 - E2E/Perf (optional): Playwright, Lighthouse CI
 - Storage:
-  - current default: no-op storage via `storage/disabled-storage.cjs` when no DB URL is configured
+  - current default: file-backed NDJSON storage via `storage/ndjson-storage.cjs` when no DB URL is configured
   - Postgres: `storage/pg-storage.cjs` when any configured Postgres URL is present and `DISABLE_DB_STORAGE` is not enabled
-  - legacy/local module: `storage/ndjson-storage.cjs` remains available in the repo but is not selected by the current storage index
+  - forced off: `storage/disabled-storage.cjs` when `DISABLE_DB_STORAGE=1`
 
 ## Development Setup
 

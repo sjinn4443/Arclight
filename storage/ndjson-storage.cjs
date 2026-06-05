@@ -112,25 +112,31 @@ function keyOf(r) {
   return r.user_id || r.email || r.anon_id;
 }
 
+function parseLine(line) {
+  let decryptedLine;
+  try {
+    decryptedLine = decrypt(line);
+  } catch (e) {
+    logServerError("Failed to decrypt telemetry line", e);
+    return null;
+  }
+
+  try {
+    return JSON.parse(decryptedLine);
+  } catch {
+    return null;
+  }
+}
+
 async function getUsersForDashboard() {
   if (!fs.existsSync(file)) return [];
   const lines = fs.readFileSync(file, "utf8").split(/\r?\n/).filter(Boolean);
 
   const map = new Map(); // key -> row
   for (const encryptedLine of lines) {
-    let decryptedLine;
-    try {
-      decryptedLine = decrypt(encryptedLine); // Decrypt the line
-    } catch (e) {
-      logServerError("Failed to decrypt telemetry line", e);
-      continue; // Skip this line if decryption fails
-    }
-    let r;
-    try {
-      r = JSON.parse(decryptedLine);
-    } catch {
-      continue;
-    }
+    const r = parseLine(encryptedLine);
+    if (!r || (r.type !== "profile" && r.type !== "refresh")) continue;
+
     const key = keyOf(r);
     if (!key) continue;
 
@@ -199,10 +205,45 @@ async function saveIp(ip) {
   });
 }
 
+async function deleteUserForDashboard(anonId, actor = {}) {
+  const target = String(anonId || "").trim();
+  if (!target || !fs.existsSync(file)) return false;
+
+  const lines = fs.readFileSync(file, "utf8").split(/\r?\n/).filter(Boolean);
+  const kept = [];
+  let deleted = false;
+
+  for (const line of lines) {
+    const parsed = parseLine(line);
+    if (parsed && String(parsed.anon_id || "") === target) {
+      deleted = true;
+      continue;
+    }
+    kept.push(line);
+  }
+
+  if (!deleted) return false;
+
+  ensureDir();
+  fs.writeFileSync(file, kept.length ? `${kept.join("\n")}\n` : "", "utf8");
+  writeLine({
+    type: "audit",
+    ts: new Date().toISOString(),
+    action: "delete_user",
+    target_anon_id: target,
+    actor_user: actor.user || null,
+    actor_host: actor.host || null,
+    environment: actor.environment || null,
+  });
+
+  return true;
+}
+
 module.exports = {
   init,
   saveProfile,
   bumpRefresh,
   getUsersForDashboard,
   saveIp,
+  deleteUserForDashboard,
 };

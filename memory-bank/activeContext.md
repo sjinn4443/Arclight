@@ -12,7 +12,7 @@ Diabetic Retinopathy workshop and Videos-route stabilization:
 - `public/js/diabeticWorkshopNextFlow.js` owns the structural previous/next buttons and the cross-route flow through Videos pages
 - the Direct Ophthalmoscopy nested folder includes `Observation and Fundal Reflex`, `Positioning and Flight Path`, and `How to Examine`, each launching a standalone Fundal-style scrollytelling route
 - the Binocular Indirect Ophthalmoscopy nested folder includes `Preparation`, `Fundoscopy Sitting`, and `Fundoscopy with Indentation`, each launching a standalone Fundal-style scrollytelling route
-- runtime storage defaults to `storage/disabled-storage.cjs` unless Postgres URLs are configured; Playwright explicitly runs with `DISABLE_DB_STORAGE=1`
+- runtime storage defaults to `storage/ndjson-storage.cjs` unless Postgres URLs are configured; Playwright explicitly runs with `DISABLE_DB_STORAGE=1`
 
 Childhood Fundal Reflex scrollytelling is also an active maintenance area:
 
@@ -69,9 +69,9 @@ Childhood Fundal Reflex scrollytelling is also an active maintenance area:
   - Added video page integration for diabetic workshop videos in `public/js/videos.js`.
   - Added assets for diabetic retinopathy and NCD protocol material under `public/images/learning/Diabetic/`.
 
-- Runtime storage and Playwright isolation (2026-04-30):
+- Runtime storage and Playwright isolation (2026-04-30; restored 2026-06-05):
   - `storage/index.cjs` now selects Postgres only when DB URLs are configured and `DISABLE_DB_STORAGE` is not enabled.
-  - No DB URL, or `DISABLE_DB_STORAGE=1`, selects `storage/disabled-storage.cjs`.
+  - No DB URL selects `storage/ndjson-storage.cjs`; `DISABLE_DB_STORAGE=1` selects `storage/disabled-storage.cjs`.
   - `playwright.config.js` starts the local E2E web server with `DISABLE_DB_STORAGE=1`.
   - `.env.sample` documents split write/read/admin DB URLs, DB TLS options, telemetry host allowlisting, delete gates, and IPInfo token support.
 

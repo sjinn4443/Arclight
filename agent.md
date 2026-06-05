@@ -5,8 +5,8 @@ Last refreshed: 2026-05-25
 ## Current repo orientation
 
 - Arclight is a static-first PWA served from `public/` in development and `dist/` after builds, with `server.cjs` providing hosting, reports/admin protection, and app/telemetry APIs.
-- Runtime storage is currently no-op by default through `storage/disabled-storage.cjs`; Postgres is selected by `storage/index.cjs` only when DB URLs are configured and `DISABLE_DB_STORAGE` is not enabled.
-- Playwright starts its local web server with `DISABLE_DB_STORAGE=1`, so E2E tests should not touch configured DBs.
+- Runtime storage uses `storage/ndjson-storage.cjs` by default when DB URLs are absent; Postgres is selected by `storage/index.cjs` when DB URLs are configured and `DISABLE_DB_STORAGE` is not enabled.
+- Playwright starts its local web server with `DISABLE_DB_STORAGE=1`, so E2E tests should not write telemetry.
 - The Eyes route includes a Diabetic Retinopathy workshop at `public/html/diabeticRetinopathyWorkshop.html`.
 - The diabetic workshop is split across routes:
   - `public/html/diabeticRetinopathyWorkshop.html` owns the folder launcher, scroll lessons, protocol pages, and rows that jump to Videos-route lessons.

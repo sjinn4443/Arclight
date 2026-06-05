@@ -31,7 +31,7 @@
 - Translation audit baseline: `scripts/check-translations.cjs` now audits only used i18n keys, detects damaged UTF-8 strings, and reports fallback-English carry-overs with medical homonym guidance.
 - CI/CD pipeline: GitHub Actions CI/CD pipeline at `.github/workflows/ci-cd.yml` runs formatting checks, build, accessibility checks, Jest, and artifact upload.
 - Security enhancements: reports Basic Auth protection and attempt rate limiting in `server.cjs`.
-- Runtime storage selection: storage now defaults to no-op when DB URLs are absent, uses Postgres when configured, and can be forced off with `DISABLE_DB_STORAGE=1`.
+- Runtime storage selection: storage now defaults to NDJSON when DB URLs are absent, uses Postgres when configured, and can be forced off with `DISABLE_DB_STORAGE=1`.
 - Playwright E2E isolation: the configured web server starts with `DISABLE_DB_STORAGE=1`.
 - Windows-safe build cleanup: `scripts/build.cjs` renames old build output directories to `.build-cleanup-*`, recreates the target output directory, and writes `version.json` metadata during builds.
 - Module system fix: resolved ES module / CommonJS conflict by renaming `server.js` to `server.cjs` and updating related `require` paths and `package.json` scripts.
@@ -54,7 +54,7 @@
 
 ## Current Status
 
-The project is a feature-rich PWA with a strong emphasis on interactive learning and offline capabilities. The Express server (`server.cjs`) supports local/prod hosting, telemetry/report APIs, and password-protected reports pages. Runtime storage is no-op unless Postgres URLs are configured. Jest, Playwright, and GitHub Actions CI are in place. The Interactive Learning page mixes local mini-apps, external embedded tools, and Videos-route diabetic demo quizzes. The Eyes route includes both a substantial Diabetic Retinopathy workshop flow whose video/demo content crosses into the Videos route and a Childhood Fundal Reflex scrollytelling sequence powered by a shared Lottie stage-autoplay engine.
+The project is a feature-rich PWA with a strong emphasis on interactive learning and offline capabilities. The Express server (`server.cjs`) supports local/prod hosting, telemetry/report APIs, and password-protected reports pages. Runtime storage uses NDJSON by default unless Postgres URLs are configured, and can be forced off with `DISABLE_DB_STORAGE=1`. Jest, Playwright, and GitHub Actions CI are in place. The Interactive Learning page mixes local mini-apps, external embedded tools, and Videos-route diabetic demo quizzes. The Eyes route includes both a substantial Diabetic Retinopathy workshop flow whose video/demo content crosses into the Videos route and a Childhood Fundal Reflex scrollytelling sequence powered by a shared Lottie stage-autoplay engine.
 
 ## Known Issues
 
@@ -69,7 +69,7 @@ The project is a feature-rich PWA with a strong emphasis on interactive learning
 - Fundal Lottie settle/playback has a history of blank-frame regressions; FR06 is the canonical stable baseline and shared-engine changes should be checked with the Fundal regression suite and manual desktop/mobile passes.
 - Diabetic Fundal-style routes need iOS/WebKit checks after renderer, pause, or cache changes because Safari can expose different Lottie timing/direction and memory behavior than desktop Chromium. If WebKit flashes white at a correct pause/final frame, generate and configure an exact static snapshot for that frame rather than falling back to the previous live frame.
 - `.build-cleanup-*` folders can remain after builds on Windows if old output files were locked; they are ignored and can be removed once no build is running.
-- Reports telemetry will appear empty when no DB URL is configured or `DISABLE_DB_STORAGE=1` is set, because current default storage is no-op.
+- Reports telemetry will appear empty when `DISABLE_DB_STORAGE=1` is set or when the selected runtime store has no collected profile/refresh rows.
 
 ## Evolution of Project Decisions
 

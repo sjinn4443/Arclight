@@ -29,6 +29,19 @@ function withTelemetryHeaders(requestBuilder, auth, host = "app.example.com") {
     .set("X-Arclight-Telemetry", auth.token);
 }
 
+function extractCookie(setCookieHeaders, cookieName) {
+  const headers = Array.isArray(setCookieHeaders) ? setCookieHeaders : [];
+  const header = headers.find((entry) => entry.startsWith(`${cookieName}=`));
+  return header ? header.split(";")[0] : "";
+}
+
+function extractTelemetryToken(html) {
+  const match = String(html || "").match(
+    /<meta\s+name=["']arclight-telemetry-token["']\s+content=["']([^"']+)["']/i,
+  );
+  return match ? match[1] : "";
+}
+
 function parseStructuredLogs(spy) {
   return spy.mock.calls
     .map(([message]) => {
@@ -160,6 +173,78 @@ describe("server security hardening", () => {
       }),
     );
     expect(mockStorage.saveProfile.mock.calls[0][0].unknown).toBeUndefined();
+  });
+
+  test("issues a telemetry token on production HTML and accepts it for profile writes", async () => {
+    const host = "app.example.com";
+    const {
+      TELEMETRY_SESSION_COOKIE,
+    } = require("../security/telemetry-guard.cjs");
+    const { app, mockStorage } = await loadServer({
+      NODE_ENV: "production",
+      STATIC_ROOT_DIR: "public",
+      TELEMETRY_ALLOWED_HOSTS: host,
+      DASHBOARD_PASSWORD: "secret",
+    });
+
+    const htmlResponse = await request(app)
+      .get("/")
+      .set("Host", host)
+      .set("Accept", "text/html");
+
+    expect(htmlResponse.status).toBe(200);
+    const sessionCookie = extractCookie(
+      htmlResponse.headers["set-cookie"],
+      TELEMETRY_SESSION_COOKIE,
+    );
+    const telemetryToken = extractTelemetryToken(htmlResponse.text);
+
+    expect(sessionCookie).toBeTruthy();
+    expect(telemetryToken).toMatch(/^v1\./);
+
+    const profileResponse = await request(app)
+      .post("/api/app/profile")
+      .set("Host", host)
+      .set("Origin", `https://${host}`)
+      .set("Cookie", sessionCookie)
+      .set("X-Arclight-Telemetry", telemetryToken)
+      .send({ anon_id: "anon-1", name: "Alice" });
+
+    expect(profileResponse.status).toBe(200);
+    expect(profileResponse.body).toEqual({ ok: true, stored: true });
+    expect(mockStorage.saveProfile).toHaveBeenCalledTimes(1);
+    expect(mockStorage.saveProfile).toHaveBeenCalledWith(
+      expect.objectContaining({ anon_id: "anon-1", name: "Alice" }),
+    );
+  });
+
+  test("logs production telemetry skips when the host allowlist does not match", async () => {
+    const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
+    const { app, mockStorage } = await loadServer({
+      NODE_ENV: "production",
+      TELEMETRY_ALLOWED_HOSTS: "app.example.com",
+      DASHBOARD_PASSWORD: "secret",
+    });
+
+    const response = await request(app)
+      .post("/api/app/profile")
+      .set("Host", "unexpected.example.com")
+      .send({ anon_id: "anon-1", name: "Blocked Host" });
+
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual({ ok: true, stored: false });
+    expect(mockStorage.saveProfile).not.toHaveBeenCalled();
+
+    const logs = parseStructuredLogs(logSpy);
+    expect(
+      logs.some(
+        (entry) =>
+          entry.event === "telemetry_write_skipped" &&
+          entry.reason === "host_not_allowed" &&
+          entry.host === "unexpected.example.com" &&
+          entry.path === "/api/app/profile",
+      ),
+    ).toBe(true);
   });
 
   test("blocks production telemetry writes without a valid telemetry token", async () => {
