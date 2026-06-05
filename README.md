@@ -145,7 +145,7 @@ Legacy NDJSON telemetry can be encrypted at rest when that storage module is use
 - `REPORTS_ADMIN_DATABASE_URL`: optional admin Postgres URL for reports deletes and audit logging.
 - `DB_SSL`: set to `disable` to disable SSL.
 - `DB_CA_CERT`: optional CA certificate string for verified TLS.
-- `DB_SSL_ALLOW_SELF_SIGNED`: set to `true` to allow self-signed DB TLS certificates.
+- `DB_SSL_ALLOW_SELF_SIGNED`: set to `true` to allow self-signed DB TLS certificates. Railway internal Postgres hosts (`*.railway.internal`) are handled automatically.
 
 ## Telemetry + reports (high level)
 

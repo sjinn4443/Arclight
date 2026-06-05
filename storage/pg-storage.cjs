@@ -19,6 +19,17 @@ function isLocalDatabase(connectionString) {
   }
 }
 
+function isRailwayInternalDatabase(connectionString) {
+  try {
+    const hostname = new URL(connectionString).hostname.toLowerCase();
+    return (
+      hostname === "railway.internal" || hostname.endsWith(".railway.internal")
+    );
+  } catch {
+    return false;
+  }
+}
+
 function resolveSsl(connectionString) {
   if (!connectionString || process.env.DB_SSL === "disable") return false;
 
@@ -35,6 +46,9 @@ function resolveSsl(connectionString) {
   }
 
   if (isLocalDatabase(connectionString)) return false;
+  if (isRailwayInternalDatabase(connectionString)) {
+    return { rejectUnauthorized: false };
+  }
 
   return { rejectUnauthorized: true };
 }
