@@ -1226,6 +1226,10 @@ export async function loadPage(routeName, options = {}) {
   // Set currentPageName early. This ensures it's always set when loadPage is called,
   // even if the route is not found or fetch fails. This helps with tests that check currentPageName.
   currentPageName = routeName;
+  if (document.body) {
+    delete document.body.dataset.route;
+    document.body.dataset.currentRoute = routeName;
+  }
 
   if (!container) {
     console.error("#page-content not found");

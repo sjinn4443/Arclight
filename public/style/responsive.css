@@ -2430,3 +2430,1022 @@ body[data-interactive-subapp-open="true"] #backBtnGlobal {
     margin: 0 0 0 calc(50% - 50vw);
   }
 }
+
+#glaucomaWorkshopPage #glaucomaWorkshopFolders .glaucoma-folder-row {
+  grid-template-columns: 62px minmax(0, 1fr) auto !important;
+  align-items: center !important;
+  gap: 12px !important;
+  width: 88% !important;
+  max-width: 392px !important;
+  min-height: 72px !important;
+  padding: 10px 12px !important;
+  box-sizing: border-box !important;
+}
+
+#glaucomaWorkshopPage #glaucomaWorkshopFolders .glaucoma-folder-row .thumb {
+  width: 62px !important;
+  height: 52px !important;
+}
+
+#glaucomaWorkshopPage
+  #glaucomaWorkshopFolders
+  .glaucoma-folder-row
+  .lesson-main {
+  align-self: center !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  transform: none !important;
+}
+
+#glaucomaWorkshopPage
+  #glaucomaWorkshopFolders
+  .glaucoma-folder-row
+  .lesson-top {
+  width: auto !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  align-items: center !important;
+}
+
+#glaucomaWorkshopPage
+  #glaucomaWorkshopFolders
+  .glaucoma-folder-row
+  .lesson-type {
+  align-items: center !important;
+  min-height: 0 !important;
+  line-height: 1.2 !important;
+}
+
+#glaucomaWorkshopPage
+  #glaucomaWorkshopFolders
+  .glaucoma-folder-row
+  .lesson-cta {
+  align-self: center !important;
+  margin: 0 !important;
+  white-space: nowrap !important;
+}
+
+/* Tablet-only UI refinements: > phone, < 1024px. */
+@media (min-width: 600.02px) and (max-width: 1023.98px) {
+  :root {
+    --tablet-topbar-left: 56px;
+    --tablet-topbar-right: 20px;
+    --tablet-content-w: min(87vw, 560px);
+  }
+
+  #hintModalOverlay .guest-modal {
+    width: min(60vw, 420px) !important;
+    max-width: calc(100vw - 48px) !important;
+    box-sizing: border-box;
+    padding: 22px 48px 28px 28px !important;
+  }
+
+  #hintModalOverlay .guest-modal__close {
+    top: 10px !important;
+    right: 10px !important;
+    left: auto !important;
+    width: 34px;
+    height: 34px;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    line-height: 1;
+  }
+
+  #hintModalOverlay .guest-modal__text {
+    margin-right: 0;
+  }
+
+  #introPage .intro-hero-frame {
+    --intro-tablet-frame-radius: 18px;
+    --intro-tablet-frame-border: 6px;
+    border-width: var(--intro-tablet-frame-border) !important;
+    border-radius: var(--intro-tablet-frame-radius) !important;
+    overflow: hidden;
+  }
+
+  #introPage .intro-hero-frame .intro-hero,
+  #introPage .intro-hero-frame video {
+    border-radius: var(--intro-tablet-frame-radius) !important;
+  }
+
+  #atomsCardPage .atoms-title-bar,
+  #atomsCardPage .top-right-icons button,
+  #atomsCardPage .toc-tab button.active,
+  #tocToggleBtn,
+  #tocInlineCloseBtn {
+    background: #e41e26 !important;
+    background-color: #e41e26 !important;
+  }
+
+  #tocDropdown {
+    border-bottom-color: #e41e26 !important;
+  }
+
+  #atomsCardPage .top-right-icons {
+    top: 72px;
+    right: var(--tablet-topbar-right);
+    left: auto;
+  }
+
+  #tocToggleBtn {
+    top: 72px !important;
+    right: var(--tablet-topbar-right) !important;
+    left: auto !important;
+  }
+
+  body[data-current-route="atomscard"] #backBtnGlobal {
+    color: #fff !important;
+  }
+
+  body[data-current-route="atomscard"] #backBtnGlobal::before {
+    width: 24px;
+    height: 24px;
+  }
+
+  #unifiedDashboard .category-carousel {
+    --tablet-dashboard-card-w: clamp(220px, 31vw, 250px);
+    box-sizing: border-box;
+    width: 100%;
+    grid-auto-columns: var(--tablet-dashboard-card-w);
+    gap: 16px;
+    margin-left: 0;
+    margin-right: 0;
+    padding-inline: 0;
+    scroll-padding-inline: 0;
+  }
+
+  #unifiedDashboard #categoryCarousel .category-card {
+    min-width: 0;
+  }
+
+  .menu-panel {
+    position: relative;
+    width: min(54vw, 260px) !important;
+    height: 72vh !important;
+    max-height: 72vh !important;
+    margin-top: 4vh !important;
+  }
+
+  .menu-close {
+    top: 10px !important;
+    right: 12px !important;
+    left: auto !important;
+    width: 34px !important;
+    height: 34px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px !important;
+    line-height: 1;
+  }
+
+  #likedPage .ml-header {
+    width: var(--tablet-content-w);
+    max-width: var(--tablet-content-w);
+    box-sizing: border-box;
+  }
+
+  #likedPage .ml-topbar {
+    width: 100vw !important;
+    height: 62px !important;
+    box-sizing: border-box;
+    margin: 0 0 28px calc(50% - 50vw) !important;
+    padding: 0 var(--tablet-topbar-right) 0 var(--tablet-topbar-left) !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+
+  #likedPage .ml-tabs,
+  #likedPage .search-wrap,
+  #likedPage .ml-chip-row {
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  #likedPage .ml-container {
+    width: var(--tablet-content-w);
+    max-width: var(--tablet-content-w);
+    margin-left: auto;
+    margin-right: auto;
+    padding: 12px 0 0 !important;
+    box-sizing: border-box;
+  }
+
+  #likedMasonry {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    column-count: 2;
+  }
+
+  #likedMasonry .ml-card {
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  #unifiedDashboard .unified-top,
+  #myProfilePage .profile-topbar {
+    width: 100vw !important;
+    height: 62px !important;
+    box-sizing: border-box;
+    margin-left: calc(50% - 50vw) !important;
+    margin-right: 0 !important;
+    padding: 0 var(--tablet-topbar-right) 0 var(--tablet-topbar-left) !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+
+  #unifiedDashboard .unified-top {
+    margin-top: 0 !important;
+    margin-bottom: 10px !important;
+  }
+
+  #myProfilePage .profile-topbar {
+    margin-top: 0 !important;
+    margin-bottom: 12px !important;
+  }
+
+  #myProfilePage .profile-topbar__title {
+    margin-left: 0 !important;
+  }
+
+  #eyesCatalogPage .eyes-top,
+  #earsCatalogPage .ears-top,
+  .page .eyes-topbar,
+  #pupilsPage .eyes-topbar {
+    left: calc(50% - 50vw) !important;
+    right: 0 !important;
+    width: 100vw !important;
+    height: 62px !important;
+    transform: none !important;
+    box-sizing: border-box !important;
+    padding: 0 var(--tablet-topbar-right) 0 var(--tablet-topbar-left) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 12px !important;
+    background: #fff !important;
+    max-width: none !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  #eyesCatalogPage .eyes-title,
+  #earsCatalogPage .ears-title,
+  .page .eyes-topbar__title,
+  #pupilsPage .eyes-topbar__title {
+    position: static !important;
+    margin: 0 !important;
+    text-align: left !important;
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    line-height: 1 !important;
+  }
+
+  #eyesCatalogPage .eyes-top .icons,
+  #earsCatalogPage .ears-top .icons,
+  .page .eyes-topbar__icons,
+  #pupilsPage .eyes-topbar__icons,
+  #visualsystemeyesbrainPage .eyes-topbar__icons,
+  #childhoodEyeBrainImagesPage .eyes-topbar__icons {
+    position: static !important;
+    top: auto !important;
+    right: auto !important;
+    left: auto !important;
+    transform: none !important;
+    margin-left: auto !important;
+    margin-right: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 10px !important;
+  }
+
+  #unifiedDashboard .unified-top .icons,
+  #likedPage .ml-icons,
+  #myProfilePage .profile-topbar__icons {
+    margin-left: auto !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+  }
+
+  #unifiedDashboard .unified-top .menuBtn,
+  #likedPage .ml-topbar .menuBtn,
+  #earsCatalogPage .ears-top .menuBtn,
+  #myProfilePage .profile-topbar .menuBtn,
+  #eyesCatalogPage .eyes-top .menuBtn,
+  .page.has-eyes-topbar .eyes-topbar .menuBtn,
+  #videos .page .eyes-topbar .menuBtn,
+  #pupilsPage .eyes-topbar .menuBtn,
+  .pupils-like .eyes-topbar .menuBtn {
+    position: static !important;
+    top: auto !important;
+    right: auto !important;
+    left: auto !important;
+    width: 36px !important;
+    height: 36px !important;
+    flex: 0 0 36px !important;
+    margin: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 21px !important;
+    font-weight: 700 !important;
+    line-height: 1 !important;
+    color: #111 !important;
+  }
+
+  #unifiedDashboard .unified-top .menuBtn {
+    transform: translateY(-2px) !important;
+  }
+
+  #unifiedDashboard .search-wrap--compact .search-icon {
+    width: 36px !important;
+    height: 36px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  #backBtnGlobal.top-back {
+    top: 9px !important;
+    left: calc(20px + 50% - 50vw) !important;
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+  }
+
+  #backBtnGlobal {
+    width: 44px !important;
+    height: 44px !important;
+  }
+
+  #backBtnGlobal::before {
+    width: 28px;
+    height: 28px;
+  }
+
+  .page .pupils-subtitle,
+  #pupilsPage .pupils-subtitle,
+  .pupils-like .pupils-subtitle {
+    width: min(100%, 420px);
+    max-width: 420px;
+    box-sizing: border-box;
+    margin: 16px auto 16px !important;
+    padding: 0 !important;
+    text-align: left !important;
+  }
+
+  #pupilsPage .lesson-row,
+  .pupils-like .lesson-row {
+    grid-template-columns: 62px minmax(0, 1fr) auto;
+    align-items: center !important;
+    gap: 12px !important;
+    min-height: 51px !important;
+  }
+
+  #pupilsPage .lesson-main,
+  .pupils-like .lesson-main {
+    min-width: 0;
+    min-height: 0 !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0 !important;
+    transform: none !important;
+  }
+
+  #pupilsPage .lesson-top,
+  .pupils-like .lesson-top {
+    width: auto !important;
+    margin: 0 0 5px !important;
+    align-items: center;
+  }
+
+  #pupilsPage .lesson-progress,
+  .pupils-like .lesson-progress {
+    width: min(100%, 260px) !important;
+    margin: 0 !important;
+  }
+
+  #pupilsPage .lesson-cta,
+  .pupils-like .lesson-cta {
+    align-self: center;
+    margin: 0 !important;
+  }
+
+  #caseStudyChatPagePrimary .casechat-imggrid {
+    width: min(315px, 60vw) !important;
+    max-width: min(315px, 60vw) !important;
+    gap: 8px !important;
+    margin: 14px auto 12px !important;
+  }
+
+  #caseStudyChatPagePrimary .casechat-imgbtn,
+  #caseStudyChatPagePrimary .casechat-imgopt {
+    border-radius: 10px !important;
+  }
+
+  #caseStudyChatPagePrimary .casechat-attemptsNote {
+    margin-left: 0 !important;
+    text-align: left !important;
+  }
+
+  #caseStudyChatPage .casechat-bubble--user {
+    transform: translateX(-48px) !important;
+  }
+
+  #caseStudyChatPage .casechat-bubble--bot {
+    transform: translateX(48px) !important;
+  }
+
+  #caseStudyChatPage .casechat-bubble--bot:has(.casechat-imgwrap) {
+    justify-content: center !important;
+    transform: none !important;
+  }
+
+  #caseStudyChatPage
+    .casechat-bubble--bot:has(.casechat-imgwrap)
+    .casechat-botstack {
+    align-items: center !important;
+    width: 100%;
+  }
+
+  #caseStudyChatPage .casechat-imgwrap {
+    align-self: center !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  #caseStudyChatPage .casechat-img,
+  #caseStudyChatPage .casechat-imgcover {
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  #caseStudyChatPage .casechat-footer,
+  #caseStudyChatPage .casechat-footer-mask {
+    width: min(78vw, 560px) !important;
+    max-width: 560px !important;
+  }
+
+  #caseStudyChatPage .casechat-footer.is-collapsed,
+  #caseStudyChatPage .casechat-footer.is-expanded {
+    width: min(74vw, 540px) !important;
+    max-width: 540px !important;
+  }
+
+  #caseStudyChatPage .casechat-composer {
+    width: 100% !important;
+    max-width: none !important;
+  }
+
+  #caseStudyChatPage .casechat-footer.is-expanded #caseChatChoices {
+    position: static !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    box-sizing: border-box;
+    margin: 0 !important;
+    padding: 14px !important;
+  }
+
+  #caseStudyChatPage #caseChatDraft,
+  #caseStudyChatPage .casechat-draft {
+    width: auto !important;
+    flex: 1 1 auto;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  #caseStudyChatPage .casechat-modal__dxHint,
+  #caseStudyChatPagePrimary .casechat-modal__dxHint,
+  #caseStudyChatPageAdvanced .casechat-modal__dxHint {
+    margin: 0 0 10px 8px !important;
+    text-align: left !important;
+  }
+
+  #caseStudyChatPage .casechat-resultimg {
+    width: 54% !important;
+    max-width: 260px;
+    margin: 10px auto;
+  }
+
+  #caseStudyChatPage .casechat-modal__content {
+    max-height: calc(100dvh - 48px) !important;
+    overflow-y: auto !important;
+  }
+
+  #caseStudyChatPage .casechat-dxlist {
+    flex: 0 0 auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  #caseStudyChatPage .casechat-resultWhy {
+    margin-bottom: 0 !important;
+  }
+
+  #caseStudyChatPage .casechat-nextcase {
+    margin-top: 16px !important;
+  }
+
+  #caseStudyFlashcardPagePrimary .casechat-modalCard {
+    height: auto !important;
+    max-height: calc(100dvh - 96px) !important;
+    overflow-y: auto;
+  }
+
+  #caseStudyFlashcardPagePrimary .flash-result-actions {
+    margin-top: 20px !important;
+    margin-bottom: 0 !important;
+  }
+
+  .quiz-scroll .quiz-block {
+    width: 75%;
+    max-width: 560px;
+    margin-left: auto;
+    margin-right: auto;
+    box-sizing: border-box;
+  }
+
+  .quiz-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  .quiz-footer .start-btn {
+    width: min(320px, 75vw) !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  #glaucomaQuizCaseStudy .quiz-header,
+  #glaucomaQuizCaseStudy #gqAllQuestions {
+    width: 75%;
+    max-width: 560px;
+    margin-left: auto;
+    margin-right: auto;
+    box-sizing: border-box;
+  }
+
+  #glaucomaQuizCaseStudy #glaucomaQuizMount > .quiz-actions {
+    justify-content: center;
+  }
+
+  #glaucomaQuizCaseStudy #glaucomaQuizMount > .quiz-actions #gqResults {
+    flex: 0 0 auto;
+    width: min(320px, 75vw) !important;
+  }
+
+  #glaucomaACDInteractive .acd-wrap,
+  #glaucomaRAPDFullSwingInteractive .rapd-wrap {
+    width: 320px;
+    max-width: calc(100vw - 48px);
+    margin: 0 auto;
+    padding: 12px 0 24px !important;
+  }
+
+  #glaucomaACDInteractive .acd-instructions,
+  #glaucomaRAPDFullSwingInteractive .rapd-instructions,
+  #glaucomaRAPDFullSwingInteractive .rapd-toggleRow {
+    width: 320px;
+    max-width: calc(100vw - 48px);
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  #glaucomaACDInteractive .acd-instructions,
+  #glaucomaRAPDFullSwingInteractive .rapd-instructions {
+    margin-bottom: 18px !important;
+  }
+
+  #glaucomaACDInteractive #acdStage,
+  #glaucomaRAPDFullSwingInteractive #rapdStage {
+    position: relative;
+    width: 320px !important;
+    max-width: calc(100vw - 48px) !important;
+    height: min(62vh, 520px) !important;
+    max-height: none !important;
+    margin: 0 auto;
+    background: #000;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    touch-action: none;
+  }
+
+  #glaucomaACDInteractive #acdEyesImg {
+    position: absolute;
+    left: 50%;
+    top: 52%;
+    transform: translate(-50%, -50%);
+    width: min(92%, 720px);
+    height: auto;
+    user-select: none;
+    pointer-events: none;
+  }
+
+  #glaucomaACDInteractive #acdCrescentRight {
+    position: absolute;
+    left: 234px;
+    top: 278px;
+    transform: translate(-50%, -50%) scaleX(-1);
+    width: 53px;
+    height: 36px;
+    background: rgba(0, 0, 0, 0.62);
+    border-radius: 999px;
+    opacity: 0;
+    pointer-events: none;
+    -webkit-mask: radial-gradient(
+      circle at 34% 50%,
+      transparent 0 56%,
+      #000 57% 100%
+    );
+    mask: radial-gradient(circle at 34% 50%, transparent 0 56%, #000 57% 100%);
+    filter: blur(0.6px);
+  }
+
+  #glaucomaACDInteractive #acdShadowImg {
+    position: absolute;
+    left: 234px;
+    top: 278px;
+    transform: translate(-50%, -50%);
+    width: 29px;
+    height: 17px;
+    pointer-events: none;
+    user-select: none;
+    z-index: 500;
+  }
+
+  #glaucomaACDInteractive .acd-shadow-linked {
+    position: absolute;
+    width: clamp(54px, 10vw, 74px);
+    height: auto;
+    pointer-events: none;
+    user-select: none;
+    z-index: 510;
+    opacity: 0;
+    display: none;
+  }
+
+  #glaucomaACDInteractive #acdNormalFlashImg {
+    top: 46px;
+    left: -31px;
+    width: 80px;
+    z-index: 999;
+  }
+
+  #glaucomaACDInteractive #acdNormalArrowImg {
+    top: 60px;
+    left: -48px;
+    width: 192px;
+    transform: scaleX(-1);
+  }
+
+  #glaucomaACDInteractive #acdShallowFlashImg {
+    top: 47px;
+    right: -33px;
+    width: 83px;
+    z-index: 999;
+  }
+
+  #glaucomaACDInteractive #acdShallowArrowImg {
+    top: 65px;
+    right: -23px;
+    width: 124px;
+  }
+
+  #glaucomaACDInteractive #acdHint {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 999px;
+    font-size: 14px;
+    opacity: 1;
+    transition: opacity 180ms ease;
+    pointer-events: none;
+    color: rgba(255, 255, 255, 0.92);
+  }
+
+  #glaucomaACDInteractive #acdFlashlightOff {
+    position: absolute;
+    top: 56%;
+    left: 95%;
+    transform: translate(-50%, -50%);
+    width: 14px;
+    height: auto;
+    user-select: none;
+    cursor: grab;
+    touch-action: none;
+  }
+
+  #glaucomaACDInteractive #acdFlashlightOff:active {
+    cursor: grabbing;
+  }
+
+  #glaucomaRAPDFullSwingInteractive #rapdEyesImg {
+    position: absolute;
+    left: 50%;
+    top: 52%;
+    transform: translate(-50%, -50%);
+    width: min(167%, 940px);
+    height: auto;
+    user-select: none;
+    pointer-events: none;
+  }
+
+  #glaucomaACDInteractive #acdBubble {
+    position: absolute;
+    top: 26%;
+    left: 72%;
+    transform: translate(-50%, -50%);
+    width: 170px !important;
+    padding: 13px 11px;
+    border-radius: 14px;
+    background: #fff;
+    color: #111;
+    font-size: 14px;
+    line-height: 1.25;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+    pointer-events: none;
+  }
+
+  #glaucomaACDInteractive #acdBubble::after {
+    content: "";
+    position: absolute;
+    right: 9px;
+    bottom: -10px;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid #fff;
+  }
+
+  #glaucomaACDInteractive .acd-flashlight {
+    position: absolute;
+    top: 335px;
+    width: 94px;
+    height: auto;
+    transform: translate(-50%, -50%);
+    user-select: none;
+    display: none;
+    cursor: grab;
+    touch-action: none;
+  }
+
+  #glaucomaACDInteractive .acd-flashlight:active {
+    cursor: grabbing;
+  }
+
+  #glaucomaACDInteractive #acdFlashlightLeft {
+    transform: translate(-50%, -50%) scaleX(-1);
+  }
+
+  #glaucomaACDInteractive #acdFlashlightRight {
+    transform: translate(-50%, -50%);
+  }
+
+  #glaucomaACDInteractive .acd-label {
+    position: absolute;
+    top: 53px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+    opacity: 1;
+    transition: opacity 180ms ease;
+    pointer-events: none;
+    white-space: nowrap;
+    text-align: center;
+  }
+
+  #glaucomaACDInteractive .acd-label-img {
+    display: block;
+    width: 108px;
+    height: auto;
+    margin: 0 auto 6px;
+    opacity: 0;
+    transition: opacity 180ms ease;
+    user-select: none;
+    pointer-events: none;
+  }
+
+  #glaucomaACDInteractive .acd-label-text {
+    display: block;
+    opacity: 0;
+    transition: opacity 180ms ease;
+  }
+
+  #glaucomaACDInteractive #acdLabelLeft {
+    left: 28%;
+    transform: translateX(-50%);
+  }
+
+  #glaucomaACDInteractive #acdLabelRight {
+    left: 72%;
+    transform: translateX(-50%);
+  }
+
+  #glaucomaRAPDFullSwingInteractive .rapd-toggleRow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 0;
+    margin-bottom: 18px;
+  }
+
+  #glaucomaRAPDFullSwingInteractive .rapd-toggleLabel {
+    font-size: 14px;
+    opacity: 0.9;
+  }
+
+  #glaucomaRAPDFullSwingInteractive .rapd-switch {
+    position: relative;
+    width: 46px;
+    height: 26px;
+    flex: 0 0 auto;
+  }
+
+  #glaucomaRAPDFullSwingInteractive .rapd-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  #glaucomaRAPDFullSwingInteractive .rapd-slider {
+    position: absolute;
+    cursor: pointer;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.18);
+    border-radius: 999px;
+    transition: 180ms ease;
+  }
+
+  #glaucomaRAPDFullSwingInteractive .rapd-slider::before {
+    content: "";
+    position: absolute;
+    height: 20px;
+    width: 20px;
+    left: 3px;
+    top: 3px;
+    background: #fff;
+    border-radius: 50%;
+    transition: 180ms ease;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+  }
+
+  #glaucomaRAPDFullSwingInteractive .rapd-switch input:checked + .rapd-slider {
+    background: #22c55e;
+  }
+
+  #glaucomaRAPDFullSwingInteractive
+    .rapd-switch
+    input:checked
+    + .rapd-slider::before {
+    transform: translateX(20px);
+  }
+
+  #glaucomaRAPDFullSwingInteractive #rapdHint {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 999px;
+    font-size: 14px;
+    opacity: 1;
+    transition: opacity 180ms ease;
+    pointer-events: none;
+    color: rgba(255, 255, 255, 0.92);
+    z-index: 9999;
+    text-align: center;
+  }
+
+  #glaucomaRAPDFullSwingInteractive #rapdFlashlightOff {
+    position: absolute;
+    top: 56%;
+    left: 95%;
+    transform: translate(-50%, -50%);
+    width: 24px;
+    height: auto;
+    user-select: none;
+    cursor: grab;
+    touch-action: none;
+  }
+
+  #glaucomaRAPDFullSwingInteractive #rapdFlashlightOff:active {
+    cursor: grabbing;
+  }
+
+  #glaucomaRAPDFullSwingInteractive #rapdBubble {
+    position: absolute;
+    top: 26%;
+    left: 72%;
+    transform: translate(-50%, -50%);
+    width: 180px !important;
+    padding: 13px 11px;
+    border-radius: 14px;
+    background: #fff;
+    color: #111;
+    font-size: 14px;
+    line-height: 1.25;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+    pointer-events: none;
+  }
+
+  #glaucomaRAPDFullSwingInteractive #rapdBubble::after {
+    content: "";
+    position: absolute;
+    right: 9px;
+    bottom: -10px;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid #fff;
+  }
+
+  #glaucomaRAPDFullSwingInteractive #rapdFlashlight {
+    position: absolute;
+    top: 304px;
+    left: 260px;
+    width: 25px;
+    height: auto;
+    transform: translate(-50%, -50%);
+    user-select: none;
+    display: none;
+    cursor: grab;
+    touch-action: none;
+    z-index: 6;
+  }
+
+  #glaucomaRAPDFullSwingInteractive #rapdFlashlight:active {
+    cursor: grabbing;
+  }
+
+  #glaucomaRAPDFullSwingInteractive #rapdBeam {
+    position: absolute;
+    width: 236px;
+    height: 236px;
+    transform-origin: 50% 50%;
+    pointer-events: none;
+    display: none;
+    z-index: 5;
+    background: radial-gradient(
+      circle at center,
+      rgb(255 255 255) 0%,
+      rgb(255 255 255 / 55%) 34%,
+      rgb(255 255 255 / 0%) 64%,
+      rgb(255 255 255 / 0%) 100%
+    );
+    border-radius: 50%;
+    filter: blur(0.35px);
+    opacity: 0.9;
+  }
+
+  #glaucomaRAPDFullSwingInteractive .rapd-pupil {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    border-radius: 999px;
+    background: #0a0a0a;
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.25);
+    transform: translate(-50%, -50%) scale(1.2);
+    transition: transform 180ms ease;
+    z-index: 4;
+    pointer-events: none;
+  }
+
+  #glaucomaRAPDFullSwingInteractive #rapdPupilLeft {
+    left: 28.5%;
+    top: 50.2%;
+  }
+
+  #glaucomaRAPDFullSwingInteractive #rapdPupilRight {
+    left: 73.8%;
+    top: 50.2%;
+  }
+}
