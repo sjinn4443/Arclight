@@ -13,14 +13,14 @@ export const EYES_INDEX = {
   "Visual Acuity": "visualAcuityPage",
   Pupils: "pupilsPage",
   "Front of Eye": "frontOfEyePage",
-  "Fundal Reflex": "fundalReflexPage",
+  "Fundal Reflex": "fundalReflexInteractivePage",
   Ophthalmoscopy: "directOphthalmoscopy",
   "Interactive Learning": "interactiveLearningPage",
 
   // Disease
   "Uncorrected Refractive Error": "comingSoon",
   Cataract: "cataractPage",
-  Glaucoma: "comingSoon",
+  Glaucoma: "glaucomaInteractivePage",
   "Diabetic Retinopathy": "comingSoon",
   "Corneal Disease": "comingSoon",
   "Childhood Eye Screening": "childhoodEyeScreeningPage",

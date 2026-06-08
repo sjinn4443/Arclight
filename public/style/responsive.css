@@ -2064,6 +2064,7 @@ input {
   #behavioursquizPage .quiz-container,
   #childhoodAssessmentQuizPage .quiz-container,
   #directOphthalmoscopyQuizPage .quiz-container,
+  .interactive-topic-quiz-page .quiz-container,
   #glaucomaQuizCaseStudy #glaucomaQuizMount,
   #glaucomaSecondaryCauseQuizPage #glaucomaSecondaryQuizMount {
     max-width: min(
@@ -2095,13 +2096,15 @@ input {
   }
 
   #behavioursquizPage .quiz-container,
-  #childhoodAssessmentQuizPage .quiz-container {
+  #childhoodAssessmentQuizPage .quiz-container,
+  .interactive-topic-quiz-page .quiz-container {
     padding-bottom: 120px !important;
   }
 
   #behavioursquizPage .quiz-footer,
   #childhoodAssessmentQuizPage .quiz-footer,
-  #directOphthalmoscopyQuizPage .quiz-footer {
+  #directOphthalmoscopyQuizPage .quiz-footer,
+  .interactive-topic-quiz-page .quiz-footer {
     left: 50% !important;
     right: auto !important;
     bottom: 0 !important;
@@ -2118,7 +2121,8 @@ input {
 
   #behavioursquizPage .quiz-footer .start-btn,
   #childhoodAssessmentQuizPage .quiz-footer .start-btn,
-  #directOphthalmoscopyQuizPage .quiz-footer .start-btn {
+  #directOphthalmoscopyQuizPage .quiz-footer .start-btn,
+  .interactive-topic-quiz-page .quiz-footer .start-btn {
     width: min(320px, calc(100vw - 48px)) !important;
     margin: 0 !important;
   }

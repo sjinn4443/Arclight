@@ -326,7 +326,7 @@ export function initializeEyesCatalog() {
       {
         label: "Fundal Reflex",
         target: EYES_INDEX["Fundal Reflex"],
-        tags: ["Video", "PDF"],
+        tags: ["Mini App", "Quiz"],
       },
       {
         label: "Ophthalmoscopy",
@@ -349,7 +349,7 @@ export function initializeEyesCatalog() {
       {
         label: "Glaucoma",
         target: EYES_INDEX["Glaucoma"],
-        tags: ["Coming Soon"],
+        tags: ["Mini App", "Quiz"],
       },
       {
         label: "Diabetic Retinopathy",

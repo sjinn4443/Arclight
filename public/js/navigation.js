@@ -837,6 +837,22 @@ function updatePageHistory(routeName, subPageId = null, replace = false) {
   }
 }
 
+function removePageHistoryEntry(entry) {
+  if (!entry?.routeName) return;
+  const normalizedEntry = {
+    routeName: normalizeRouteName(entry.routeName),
+    subPageId: normalizeSubPageId(entry.subPageId),
+  };
+  if (!normalizedEntry.routeName) return;
+
+  for (let i = pageHistoryStack.length - 1; i >= 0; i -= 1) {
+    if (samePageHistoryEntry(pageHistoryStack[i], normalizedEntry)) {
+      pageHistoryStack.splice(i, 1);
+      return;
+    }
+  }
+}
+
 function rememberMyLearningReturnTarget(nextRouteName) {
   if (normalizeRouteName(nextRouteName) !== "mylearning") return;
 
@@ -882,6 +898,12 @@ function consumeInteractiveLearningReturnTarget() {
 function goToStoredInteractiveLearningReturn() {
   const returnTarget = consumeInteractiveLearningReturnTarget();
   if (!returnTarget?.routeName) return false;
+
+  const currentHash = getRouteFromHash();
+  removePageHistoryEntry({
+    routeName: currentHash?.routeName || currentPageName,
+    subPageId: currentHash?.subPageId || getActivePageId(),
+  });
 
   isApplyingBackNavigation = true;
   loadPage(returnTarget.routeName, {

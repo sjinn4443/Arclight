@@ -4,23 +4,23 @@ const ROUTES_WITH_EXPERIMENTAL_SUBPAGES = new Set([
   "glaucomaScrollImages",
 ]);
 
-const EXPERIMENTAL_HUB_PAGE_IDS = new Set(["interactiveLearningPage"]);
+const EXPERIMENTAL_HUB_PAGE_IDS = new Set([]);
 
 const EXPERIMENTAL_MINI_APP_PAGE_IDS = new Set([
-  "fundalReflexInteractivePage",
-  "morphPage",
+  "fundalReflexSimulatorPage",
+  "morphSimulatorPage",
   "traumaInteractivePage",
   "glaucomaACDInteractive",
   "amslerInteractivePage",
   "miresPage",
-  "glaucomaInteractivePage",
+  "glaucomaSimulatorPage",
   "fieldsInteractivePage",
   "refractInteractivePage",
   "sauronInteractivePage",
   "swollenDiscsInteractivePage",
   "glaucomaRAPDFullSwingInteractive",
-  "squintPalsyPage",
-  "cataractPage",
+  "squintPalsySimulatorPage",
+  "cataractSimulatorPage",
 ]);
 
 const EXPERIMENTAL_PAGE_IDS = new Set([

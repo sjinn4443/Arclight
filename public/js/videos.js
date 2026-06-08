@@ -6,6 +6,7 @@ import { initializeVideoPlayers, initializeToolbar } from "./videoplayer.js";
 import { loadPage, syncRouteHash, getRouteFromHash } from "./navigation.js";
 import { showExperimentalMiniAppNoticeForPage } from "./experimentalMiniAppNotice.js";
 import { syncLessonCompletionTick } from "./lessonCompletionTick.js";
+import { initializeInteractiveLearningTopicQuizzes } from "./interactiveLearningTopicQuizzes.js";
 
 // Keep track of the currently active subpage element within videos.html
 let currentPageElement = null;
@@ -478,14 +479,30 @@ function updateLessonProgressBars() {
 const INTERACTIVE_FOLDER_ITEM_COUNTS_ENABLED = false;
 
 function rememberInteractiveLearningReturnTarget(row) {
-  if (!row?.closest?.("#interactiveLearningPage")) return;
+  const targetPageId = row?.getAttribute?.("data-target") || "";
+  const targetPage = targetPageId
+    ? document.getElementById(targetPageId)
+    : null;
+  const isInteractiveSubappTarget =
+    targetPage?.classList?.contains("interactive-subapp-page") === true;
+  const topicPage = row?.closest?.(".interactive-topic-page");
+  const sourcePage = row?.closest?.("#videos .page");
+  const subPageId =
+    topicPage?.id ||
+    (row?.closest?.("#interactiveLearningPage")
+      ? "interactiveLearningPage"
+      : isInteractiveSubappTarget
+        ? sourcePage?.id
+        : null);
+
+  if (!subPageId) return;
 
   try {
     sessionStorage.setItem(
       INTERACTIVE_LEARNING_RETURN_KEY,
       JSON.stringify({
         routeName: "videos",
-        subPageId: "interactiveLearningPage",
+        subPageId,
       }),
     );
   } catch {}
@@ -3409,6 +3426,7 @@ export function initializeVideos() {
   // Wire video progress tracking (safe to call even if DOM not ready yet)
   wirePupilFullExamProgress();
   setupInteractiveLearningFolders();
+  initializeInteractiveLearningTopicQuizzes({ showPage: show });
 
   // Resolve the target (global → sessionStorage)
   let pending = window.__videosPendingTarget || "";

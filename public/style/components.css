@@ -313,7 +313,8 @@ body.quiz-mode {
 :is(
     #behavioursquizPage,
     #childhoodAssessmentQuizPage,
-    #directOphthalmoscopyQuizPage
+    #directOphthalmoscopyQuizPage,
+    .interactive-topic-quiz-page
   )
   .quiz-question-heading {
   display: flex;
@@ -325,7 +326,8 @@ body.quiz-mode {
 :is(
     #behavioursquizPage,
     #childhoodAssessmentQuizPage,
-    #directOphthalmoscopyQuizPage
+    #directOphthalmoscopyQuizPage,
+    .interactive-topic-quiz-page
   )
   .quiz-question-badge {
   display: inline-flex;
@@ -343,10 +345,29 @@ body.quiz-mode {
   letter-spacing: 0;
 }
 
+#videos
+  .interactive-topic-quiz-page[data-quiz-level="primary"]
+  .quiz-question-badge {
+  background: #15e115;
+}
+
+#videos
+  .interactive-topic-quiz-page[data-quiz-level="intermediate"]
+  .quiz-question-badge {
+  background: #ff7a00;
+}
+
+#videos
+  .interactive-topic-quiz-page[data-quiz-level="advanced"]
+  .quiz-question-badge {
+  background: #ef2b2b;
+}
+
 :is(
     #behavioursquizPage,
     #childhoodAssessmentQuizPage,
-    #directOphthalmoscopyQuizPage
+    #directOphthalmoscopyQuizPage,
+    .interactive-topic-quiz-page
   )
   .quiz-question-heading
   .quiz-question {
@@ -2578,6 +2599,14 @@ input:checked + .slider:before {
   background-image: url("/images/icon/eyes/moduleicons/primary_casestudy.webp");
 }
 
+:is(#pupilsPage, .pupils-like)
+  .pupil-level--primary
+  .lesson-row--interactive
+  .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/primary_interactive.webp") !important;
+  background-position: center;
+}
+
 #casestudyPage .lesson-row[data-level="primary-flashcard"] .thumb {
   background-image: url("/images/icon/eyes/moduleicons/primary_flash.webp") !important;
 }
@@ -2652,6 +2681,14 @@ input:checked + .slider:before {
   .lesson-row--quiz
   .thumb {
   background-image: url("/images/icon/eyes/moduleicons/intermediate_casestudy.webp");
+}
+
+:is(#pupilsPage, .pupils-like)
+  .pupil-level--intermediate
+  .lesson-row--interactive
+  .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/intermediate_interactive.webp") !important;
+  background-position: center;
 }
 
 :is(#pupilsPage, .pupils-like)
@@ -2780,6 +2817,42 @@ input:checked + .slider:before {
 }
 :is(#pupilsPage, .pupils-like) .pupil-level--advanced .lesson-row--quiz .thumb {
   background-image: url("/images/icon/eyes/moduleicons/advanced_casestudy.webp");
+}
+
+:is(#pupilsPage, .pupils-like)
+  .pupil-level--advanced
+  .lesson-row--interactive
+  .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/advanced_interactive.webp") !important;
+  background-position: center;
+}
+
+.interactive-topic-page .pupil-card.module-card {
+  box-sizing: border-box;
+  cursor: default;
+  width: 100%;
+}
+
+.interactive-topic-page .lesson-row[data-target] {
+  cursor: pointer;
+}
+
+.interactive-topic-page .pupil-level--primary .lesson-row--interactive .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/primary_interactive.webp");
+  background-position: center;
+}
+
+.interactive-topic-page
+  .pupil-level--intermediate
+  .lesson-row--interactive
+  .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/intermediate_interactive.webp");
+  background-position: center;
+}
+
+.interactive-topic-page .pupil-level--advanced .lesson-row--interactive .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/advanced_interactive.webp");
+  background-position: center;
 }
 
 /* Remove any old pseudo-icons just in case */
