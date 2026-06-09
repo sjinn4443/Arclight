@@ -9,6 +9,8 @@ const ALLOWED_EXACT_ENGLISH_PATTERNS = [
   /^[<>&×☰⇐⇒()\s./:+\-|0-9]+$/,
   /\bArclight\b/i,
   /\bALAN\b/,
+  /^Alan$/,
+  /^Sujin Kang$/,
   /\bWHO\b/,
   /\bUSAID\b/,
   /\bAAPOS\b/,
@@ -25,9 +27,12 @@ const ALLOWED_EXACT_ENGLISH_PATTERNS = [
   /\bENT\b/,
   /^Logo (One|Two)$/i,
   /^\d+:\d+/,
+  /^OK$/,
+  /^[A-Z]$/,
 ];
 
 const LOCALE_SPECIFIC_ALLOWED_EXACT_ENGLISH_KEYS = {
+  spanish: [/^i18nExtra\.no$/],
   te: [
     /^menu\.(cybersight_link|retinopathy_of_prematurity_link|cvi_scotland_link)$/,
   ],

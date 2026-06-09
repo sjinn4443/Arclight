@@ -48,6 +48,8 @@ const CACHE = {
 const GLOBAL_TRANSLATION_PASS_DELAYS_MS = [80, 220];
 let translationPassInFlight = false;
 let translationPassQueued = false;
+let mutationObserverBound = false;
+let mutationTranslationTimer = null;
 const COMMON_LITERAL_FALLBACKS = Object.freeze({
   Menu: ["i18nExtra.menu_aria_label"],
   Close: ["languageInstall.closeButton"],
@@ -218,6 +220,11 @@ function literalTranslate(rawText) {
   }
 
   return null;
+}
+
+export function translateLiteral(rawText, fallback = rawText) {
+  const translated = literalTranslate(rawText);
+  return translated == null ? fallback : translated;
 }
 
 function parseI18nSpecs(rawSpec) {
@@ -443,6 +450,42 @@ function scheduleGlobalTranslationPasses() {
   });
 }
 
+function scheduleMutationTranslationPass() {
+  if (translationPassInFlight) return;
+  if (mutationTranslationTimer) {
+    window.clearTimeout(mutationTranslationTimer);
+  }
+  mutationTranslationTimer = window.setTimeout(() => {
+    mutationTranslationTimer = null;
+    void runGlobalTranslationPass();
+  }, 60);
+}
+
+function bindMutationTranslationPasses() {
+  if (mutationObserverBound || typeof MutationObserver !== "function") return;
+  const target = document.body || document.documentElement;
+  if (!target) return;
+
+  mutationObserverBound = true;
+  const observer = new MutationObserver((mutations) => {
+    if (translationPassInFlight) return;
+    const hasTextChange = mutations.some((mutation) => {
+      if (mutation.type === "characterData") return true;
+      return Array.from(mutation.addedNodes || []).some((node) => {
+        if (node.nodeType === Node.TEXT_NODE) return true;
+        return node.nodeType === Node.ELEMENT_NODE;
+      });
+    });
+    if (hasTextChange) scheduleMutationTranslationPass();
+  });
+
+  observer.observe(target, {
+    childList: true,
+    characterData: true,
+    subtree: true,
+  });
+}
+
 /** Change language and re-translate the live DOM */
 export async function setLanguage(lang) {
   const next = normalizeLanguage(lang || getLanguage());
@@ -478,6 +521,7 @@ if (!window.__arclightI18nLifecycleBound) {
 
 (async () => {
   await ensureTranslationsReady(getLanguage());
+  bindMutationTranslationPasses();
   scheduleGlobalTranslationPasses();
 })();
 
@@ -487,3 +531,4 @@ window.I18N.setLanguage = window.I18N.setLanguage || setLanguage; // your existi
 window.I18N.applyTranslations =
   window.I18N.applyTranslations || applyTranslations; // your existing function
 window.I18N.getLanguage = window.I18N.getLanguage || getLanguage;
+window.I18N.translateLiteral = window.I18N.translateLiteral || translateLiteral;
