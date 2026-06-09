@@ -332,7 +332,10 @@
       const btn = target.closest('[data-route="languageinstall"]');
       if (!btn) return;
       if (btn === document.body || btn === document.documentElement) return;
-      if (!btn.closest("#menuOverlay, #myProfilePage")) return;
+      const opensLanguagePicker =
+        btn.id === "openLanguageModal" ||
+        btn.closest("#menuOverlay, #myProfilePage");
+      if (!opensLanguagePicker) return;
       if (!overlay) return;
       e.preventDefault();
       e.stopPropagation();

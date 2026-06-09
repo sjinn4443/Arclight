@@ -2527,14 +2527,38 @@ body[data-interactive-subapp-open="true"] #backBtnGlobal {
   #introPage .intro-hero-frame {
     --intro-tablet-frame-radius: 18px;
     --intro-tablet-frame-border: 6px;
+    position: relative;
     border-width: var(--intro-tablet-frame-border) !important;
     border-radius: var(--intro-tablet-frame-radius) !important;
     overflow: hidden;
+    background: #000;
+    line-height: 0;
   }
 
   #introPage .intro-hero-frame .intro-hero,
   #introPage .intro-hero-frame video {
-    border-radius: var(--intro-tablet-frame-radius) !important;
+    position: absolute;
+    top: calc(var(--intro-tablet-frame-border) * -1);
+    left: calc(var(--intro-tablet-frame-border) * -1);
+    display: block;
+    width: calc(100% + (var(--intro-tablet-frame-border) * 2)) !important;
+    height: calc(100% + (var(--intro-tablet-frame-border) * 2)) !important;
+    max-width: none !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+    object-fit: cover;
+    z-index: 0;
+  }
+
+  #introPage .intro-hero-frame::after {
+    content: "";
+    position: absolute;
+    inset: calc(var(--intro-tablet-frame-border) * -1);
+    border: var(--intro-tablet-frame-border) solid #000;
+    border-radius: inherit;
+    box-sizing: border-box;
+    pointer-events: none;
+    z-index: 2;
   }
 
   #atomsCardPage .atoms-title-bar,
@@ -2714,6 +2738,12 @@ body[data-interactive-subapp-open="true"] #backBtnGlobal {
     line-height: 1 !important;
   }
 
+  #eyesCatalogPage .eyes-title,
+  .page .eyes-topbar__title,
+  #pupilsPage .eyes-topbar__title {
+    margin-left: 20px !important;
+  }
+
   #eyesCatalogPage .eyes-top .icons,
   #earsCatalogPage .ears-top .icons,
   .page .eyes-topbar__icons,
@@ -2788,13 +2818,13 @@ body[data-interactive-subapp-open="true"] #backBtnGlobal {
   }
 
   #backBtnGlobal {
-    width: 44px !important;
-    height: 44px !important;
+    width: 50px !important;
+    height: 50px !important;
   }
 
   #backBtnGlobal::before {
-    width: 28px;
-    height: 28px;
+    width: 32px;
+    height: 32px;
   }
 
   .page .pupils-subtitle,
@@ -2808,42 +2838,84 @@ body[data-interactive-subapp-open="true"] #backBtnGlobal {
     text-align: left !important;
   }
 
+  #pupilsPage .pupil-card,
+  .pupils-like .pupil-card {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
   #pupilsPage .lesson-row,
   .pupils-like .lesson-row {
-    grid-template-columns: 62px minmax(0, 1fr) auto;
+    width: 97% !important;
+    grid-template-columns: 62px minmax(0, 1fr) 42px !important;
     align-items: center !important;
-    gap: 12px !important;
-    min-height: 51px !important;
+    gap: 8px !important;
+    min-height: 56px !important;
+    padding: 8px 10px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    box-sizing: border-box !important;
   }
 
   #pupilsPage .lesson-main,
   .pupils-like .lesson-main {
+    align-self: center !important;
     min-width: 0;
     min-height: 0 !important;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: center !important;
+    gap: 5px !important;
     margin: 0 !important;
     transform: none !important;
   }
 
+  #pupilsPage .lesson-row:has(.lesson-progress) .lesson-main,
+  .pupils-like .lesson-row:has(.lesson-progress) .lesson-main {
+    align-self: stretch !important;
+    justify-content: flex-start !important;
+    padding-top: 5px !important;
+  }
+
   #pupilsPage .lesson-top,
   .pupils-like .lesson-top {
-    width: auto !important;
-    margin: 0 0 5px !important;
-    align-items: center;
+    width: 100% !important;
+    min-height: 13px !important;
+    margin: 0 !important;
+    align-items: center !important;
+  }
+
+  #pupilsPage .lesson-type,
+  #pupilsPage .lesson-meta,
+  .pupils-like .lesson-type,
+  .pupils-like .lesson-meta {
+    margin-top: 0 !important;
+    line-height: 1.1 !important;
   }
 
   #pupilsPage .lesson-progress,
   .pupils-like .lesson-progress {
-    width: min(100%, 260px) !important;
+    width: min(100%, 146px) !important;
     margin: 0 !important;
   }
 
   #pupilsPage .lesson-cta,
   .pupils-like .lesson-cta {
-    align-self: center;
-    margin: 0 !important;
+    justify-self: end !important;
+    align-self: end !important;
+    margin: 0 0 4px !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+  }
+
+  #glaucomaWorkshopPage
+    #glaucomaWorkshopFolders
+    .glaucoma-folder-row
+    .lesson-cta {
+    align-self: end !important;
+    margin: 0 0 4px !important;
+    white-space: nowrap !important;
   }
 
   #caseStudyChatPagePrimary .casechat-imggrid {
@@ -3033,9 +3105,17 @@ body[data-interactive-subapp-open="true"] #backBtnGlobal {
     margin-right: auto !important;
   }
 
+  #glaucomaACDInteractive .acd-wrap {
+    padding-top: 56px !important;
+  }
+
   #glaucomaACDInteractive .acd-instructions,
   #glaucomaRAPDFullSwingInteractive .rapd-instructions {
-    margin-bottom: 18px !important;
+    margin-bottom: 26px !important;
+  }
+
+  #glaucomaACDInteractive .acd-instructions {
+    margin-bottom: 42px !important;
   }
 
   #glaucomaACDInteractive #acdStage,
@@ -3086,8 +3166,8 @@ body[data-interactive-subapp-open="true"] #backBtnGlobal {
 
   #glaucomaACDInteractive #acdShadowImg {
     position: absolute;
-    left: 234px;
-    top: 278px;
+    left: 214px;
+    top: 65px;
     transform: translate(-50%, -50%);
     width: 29px;
     height: 17px;

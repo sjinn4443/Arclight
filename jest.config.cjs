@@ -22,5 +22,10 @@ module.exports = {
     "/public/html/demo/",
     "tests/renderperf.test.js",
   ], // Exclude Playwright tests, demo folder, and specific test files
+  modulePathIgnorePatterns: [
+    "<rootDir>/dist/",
+    "<rootDir>/tmp-fundal-dist/",
+    "<rootDir>/tmp-codex-build.*",
+  ],
   testTimeout: 30000, // Increase global test timeout to 30 seconds
 };

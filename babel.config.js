@@ -8,7 +8,7 @@ export default {
             targets: {
               node: "current",
             },
-            modules: "commonjs",
+            modules: false,
           },
         ],
       ],

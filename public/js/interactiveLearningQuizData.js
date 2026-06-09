@@ -1,9 +1,6 @@
-import { MCQ_LEVELS as CATARACT_MCQ_LEVELS } from "../subapp/Cataract/src/mcq-data.js";
-import { MCQ_LEVELS as GLAUCOMA_MCQ_LEVELS } from "../subapp/Glaucoma/src/mcq-data.js";
-import {
-  MCQ_BANK as FUNDAL_MCQ_BANK,
-  MCQ_LEVEL_META as FUNDAL_MCQ_LEVEL_META,
-} from "../subapp/Fundal Reflex/src/mcq-bank.js";
+import * as CATARACT_MCQ_DATA from "../subapp/Cataract/src/mcq-data.js";
+import * as GLAUCOMA_MCQ_DATA from "../subapp/Glaucoma/src/mcq-data.js";
+import * as FUNDAL_MCQ_DATA from "../subapp/Fundal Reflex/src/mcq-bank.js";
 import "../subapp/Squint/src/mcq-data.js";
 
 const LEVEL_KEYS = ["primary", "intermediate", "advanced"];
@@ -19,6 +16,20 @@ const TOPIC_TITLES = {
   fundalReflex: "Fundal Reflex",
   squint: "Squint / Palsy",
 };
+
+function getModuleExport(namespace, key, fallback) {
+  if (namespace && Object.prototype.hasOwnProperty.call(namespace, key)) {
+    return namespace[key];
+  }
+  const defaultExport = namespace?.default;
+  if (
+    defaultExport &&
+    Object.prototype.hasOwnProperty.call(defaultExport, key)
+  ) {
+    return defaultExport[key];
+  }
+  return fallback;
+}
 
 function capitalize(value) {
   const safe = String(value || "");
@@ -90,6 +101,22 @@ function normalizeBankTopic(topicKey, bank, metaByLevel = {}) {
 }
 
 const SQUINT_MCQ_BANK = globalThis.McqData?.MCQ_BANK || {};
+const CATARACT_MCQ_LEVELS = getModuleExport(
+  CATARACT_MCQ_DATA,
+  "MCQ_LEVELS",
+  [],
+);
+const GLAUCOMA_MCQ_LEVELS = getModuleExport(
+  GLAUCOMA_MCQ_DATA,
+  "MCQ_LEVELS",
+  [],
+);
+const FUNDAL_MCQ_BANK = getModuleExport(FUNDAL_MCQ_DATA, "MCQ_BANK", {});
+const FUNDAL_MCQ_LEVEL_META = getModuleExport(
+  FUNDAL_MCQ_DATA,
+  "MCQ_LEVEL_META",
+  {},
+);
 
 export const INTERACTIVE_LEARNING_QUIZZES = Object.freeze({
   ...normalizeIndexedLevelTopic("cataract", CATARACT_MCQ_LEVELS),
