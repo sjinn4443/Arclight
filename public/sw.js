@@ -12,6 +12,7 @@ const CORE_ASSETS = [
   "/js/navigation.js",
   "/js/onboarding.js",
   "/js/dashboard.js",
+  "/js/localized-search.js",
   "/js/toc.js",
   "/js/videoplayer.js",
   "/js/quiz.js",

@@ -456,6 +456,7 @@ const build = async () => {
         "public/js/languageinstall.js",
         "public/js/learningModules.js",
         "public/js/likes.js",
+        "public/js/localized-search.js",
         "public/js/main.js",
         "public/js/menu.js",
         "public/js/misc.js",

@@ -4,12 +4,19 @@
 
 import { loadPage } from "./navigation.js";
 import { getCurrentCountryCode, updateLocationUI } from "./location-service.js";
+import {
+  buildSearchText,
+  getActiveSearchDictionaries,
+  getElementLocalizedSearchValues,
+  normalizeSearchText,
+} from "./localized-search.js";
 
 let overlay, closeBtn;
 let cachedVersionInfo = null;
 let versionInfoRequest = null;
 let menuInitRequest = null;
 let menuEscapeHandlerBound = false;
+let menuSearchFilterToken = 0;
 
 function formatVersionDate(isoDate) {
   if (!isoDate || typeof isoDate !== "string") return null;
@@ -208,6 +215,167 @@ function setActiveMenuTab(root, targetId) {
   root.querySelectorAll(".menu-tab-content").forEach((content) => {
     content.classList.toggle("hidden", content.id !== targetId);
   });
+}
+
+function normalizeMenuSearchText(value) {
+  return normalizeSearchText(value);
+}
+
+function getMenuSearchText(item, sectionSearchValues = [], searchDictionaries) {
+  const link = item.querySelector("a");
+  return buildSearchText([
+    sectionSearchValues,
+    item.textContent,
+    item.getAttribute("aria-label"),
+    item.getAttribute("data-route"),
+    item.getAttribute("data-i18n"),
+    getElementLocalizedSearchValues(item, searchDictionaries),
+    link?.getAttribute("href"),
+    link?.textContent,
+  ]);
+}
+
+function getMenuSectionSearchValues(section, searchDictionaries) {
+  const title = section?.querySelector("strong");
+  return [
+    title?.textContent,
+    getElementLocalizedSearchValues(title, searchDictionaries),
+  ];
+}
+
+function getActiveMenuTabContent(root) {
+  return (
+    root?.querySelector(".menu-tab-content:not(.hidden)") ||
+    root?.querySelector(".menu-tab-content")
+  );
+}
+
+function ensureMenuSearchEmpty(tabContent) {
+  if (!tabContent) return null;
+
+  let empty = tabContent.querySelector(":scope > .menu-search-empty");
+  if (!empty) {
+    empty = document.createElement("div");
+    empty.className = "menu-search-empty";
+    empty.setAttribute("role", "status");
+    empty.setAttribute("aria-live", "polite");
+    empty.textContent = "No matching menu items";
+    tabContent.appendChild(empty);
+  }
+
+  return empty;
+}
+
+function resetMenuSearchFilter(root) {
+  if (!root) return;
+
+  menuSearchFilterToken += 1;
+  root.removeAttribute("data-menu-search-active");
+  root
+    .querySelectorAll(".menu-search-hidden")
+    .forEach((el) => el.classList.remove("menu-search-hidden"));
+  root
+    .querySelectorAll(".menu-search-empty")
+    .forEach((el) => el.classList.add("menu-search-hidden"));
+}
+
+async function applyMenuSearchFilter(root, query) {
+  if (!root) return [];
+
+  const token = ++menuSearchFilterToken;
+  const normalizedQuery = normalizeMenuSearchText(query);
+  if (!normalizedQuery) {
+    resetMenuSearchFilter(root);
+    return [];
+  }
+
+  const searchDictionaries = await getActiveSearchDictionaries();
+  if (token !== menuSearchFilterToken) return [];
+
+  root.setAttribute("data-menu-search-active", "true");
+
+  const matches = [];
+  const tabContents = Array.from(root.querySelectorAll(".menu-tab-content"));
+
+  tabContents.forEach((tabContent) => {
+    let tabHasMatches = false;
+    const sections = Array.from(tabContent.querySelectorAll(".menu-section"));
+
+    sections.forEach((section) => {
+      const sectionSearchValues = getMenuSectionSearchValues(
+        section,
+        searchDictionaries,
+      );
+      const sectionMatches =
+        buildSearchText(sectionSearchValues).includes(normalizedQuery);
+      let sectionHasMatches = false;
+      const items = Array.from(section.querySelectorAll(".menu-item"));
+
+      items.forEach((item) => {
+        const itemMatches =
+          sectionMatches ||
+          getMenuSearchText(
+            item,
+            sectionSearchValues,
+            searchDictionaries,
+          ).includes(normalizedQuery);
+
+        item.classList.toggle("menu-search-hidden", !itemMatches);
+        if (!itemMatches) return;
+
+        sectionHasMatches = true;
+        tabHasMatches = true;
+        matches.push({
+          item,
+          tabId: tabContent.id,
+        });
+      });
+
+      section.classList.toggle("menu-search-hidden", !sectionHasMatches);
+    });
+
+    const empty = ensureMenuSearchEmpty(tabContent);
+    empty?.classList.toggle("menu-search-hidden", tabHasMatches);
+  });
+
+  if (matches[0]?.tabId) {
+    setActiveMenuTab(root, matches[0].tabId);
+  } else {
+    const activeTab = getActiveMenuTabContent(root);
+    ensureMenuSearchEmpty(activeTab)?.classList.remove("menu-search-hidden");
+  }
+
+  return matches;
+}
+
+function collapseMenuSearch(root, options = {}) {
+  const searchWrap = root?.querySelector(
+    ".menu-search-wrap.search-wrap--compact",
+  );
+  const input = searchWrap?.querySelector('input[type="search"]');
+
+  if (!searchWrap) return;
+
+  searchWrap.classList.remove("search-expanded");
+  searchWrap.classList.add("search-collapsed");
+  if (options.clear !== false && input) input.value = "";
+  input?.blur();
+  resetMenuSearchFilter(root);
+}
+
+async function activateFirstMenuSearchResult(root, query) {
+  const matches = await applyMenuSearchFilter(root, query);
+  const first = matches[0]?.item;
+  if (!first) return false;
+
+  const link = first.querySelector("a");
+  if (link) {
+    link.click();
+    return true;
+  }
+
+  first.click();
+  return true;
 }
 
 function wireMenuTabs(root) {
@@ -619,6 +787,7 @@ export function closeMenu() {
   if (!overlay) return;
   document.body.removeAttribute("data-menu-open");
   overlay.classList.add("hidden");
+  collapseMenuSearch(overlay);
 }
 
 function wireMenuSearchToggle(panelRoot) {
@@ -632,17 +801,47 @@ function wireMenuSearchToggle(panelRoot) {
   toggleBtn.dataset.wired = "1";
   const input = searchWrap.querySelector('input[type="search"]');
 
-  toggleBtn.addEventListener("click", () => {
+  const expandSearch = () => {
+    searchWrap.classList.remove("search-collapsed");
+    searchWrap.classList.add("search-expanded");
+    input?.focus();
+    void applyMenuSearchFilter(panelRoot, input?.value || "");
+  };
+
+  const toggleSearch = () => {
     if (searchWrap.classList.contains("search-collapsed")) {
-      searchWrap.classList.remove("search-collapsed");
-      searchWrap.classList.add("search-expanded");
-      // optional: focus input
-      input?.focus();
+      expandSearch();
     } else {
-      searchWrap.classList.remove("search-expanded");
-      searchWrap.classList.add("search-collapsed");
-      input?.blur();
+      collapseMenuSearch(panelRoot);
     }
+  };
+
+  toggleBtn.addEventListener("click", toggleSearch);
+  toggleBtn.addEventListener("keydown", (event) => {
+    if (event.key !== "Enter" && event.key !== " ") return;
+    event.preventDefault();
+    toggleSearch();
+  });
+
+  input?.addEventListener("input", () => {
+    void applyMenuSearchFilter(panelRoot, input.value);
+  });
+
+  input?.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      collapseMenuSearch(panelRoot);
+      return;
+    }
+
+    if (event.key === "Enter") {
+      event.preventDefault();
+      void activateFirstMenuSearchResult(panelRoot, input.value);
+    }
+  });
+
+  input?.addEventListener("focus", () => {
+    void applyMenuSearchFilter(panelRoot, input.value);
   });
 }
 

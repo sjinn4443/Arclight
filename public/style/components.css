@@ -1441,6 +1441,17 @@ input:checked + .slider:before {
   text-decoration: none;
 }
 
+.menu-search-hidden {
+  display: none !important;
+}
+
+.menu-search-empty {
+  padding: 18px 10px;
+  color: #777;
+  font-size: 12px;
+  font-weight: 600;
+}
+
 .menu-item--link-group-start {
   margin-top: 12px;
 }

@@ -5,6 +5,13 @@
 import { loadPage } from "./navigation.js";
 import { openMenu } from "./menu.js";
 import { fetchDictionary, get, getLanguage } from "./i18n.js";
+import {
+  buildSearchText,
+  getActiveSearchDictionaries,
+  getLocalizedDisplayValue,
+  getLocalizedPathValues,
+  normalizeSearchText,
+} from "./localized-search.js";
 
 const wired = new WeakSet();
 let dashboardI18nDict = {};
@@ -215,6 +222,11 @@ export function initializeDashboard() {
     root.addEventListener("click", (event) => {
       if (!event.target.closest?.(".search-wrap--compact")) {
         searchPanel.hidden = true;
+      }
+    });
+    window.addEventListener("i18n:languageChanged", () => {
+      if (!searchPanel.hidden) {
+        void renderDashboardSearch(searchInput, searchPanel);
       }
     });
   }
@@ -429,6 +441,7 @@ function getDashboardContentItems() {
       page: "fundalReflexPage",
       img: "images/icon/eyes/core/car_fundalreflex.webp",
       subtitle: "Video | PDF | Scrollytelling",
+      subtitleSearchI18n: ["eyes.tag_video"],
       keywords: ["red reflex", "media opacity", "childhood screening"],
       progress: 0,
     },
@@ -448,6 +461,7 @@ function getDashboardContentItems() {
       page: "arclightPage",
       img: "images/icon/eyes/tools/car_arclight.webp",
       subtitle: "Tools and kits",
+      subtitleSearchI18n: ["eyes.tools_title"],
       keywords: ["how to use arclight", "phone attachment", "device"],
       progress: 0,
     },
@@ -457,90 +471,133 @@ function getDashboardContentItems() {
       page: "holoOverviewPage",
       img: "images/icon/eyes/tools/car_holo.webp",
       subtitle: "Tools and kits",
+      subtitleSearchI18n: ["eyes.tools_title"],
       keywords: ["binocular indirect ophthalmoscopy", "bio", "holo"],
       progress: 0,
     },
     {
       title: "Childhood Eye Screening",
+      titleI18n: "eyes.card_label.childhood_eye_screening",
       route: "childhoodEyeScreeningWorkshop",
       img: "images/icon/eyes/disease/car_childhood.webp",
       subtitle: "Workshop",
+      subtitleSearchI18n: ["eyes.primary_eye_care_procedures_title"],
       keywords: ["children", "screening", "fundal reflex"],
       progress: 0,
     },
     {
       title: "Glaucoma",
+      titleI18n: "eyes.card_label.glaucoma",
       route: "glaucomaWorkshop",
       img: "images/icon/eyes/disease/car_glaucoma.webp",
       subtitle: "Workshop",
+      subtitleSearchI18n: ["eyes.primary_eye_care_procedures_title"],
       keywords: ["optic nerve", "cup disc", "iop"],
       progress: 0,
     },
     {
       title: "Diabetic Retinopathy",
+      titleI18n: "eyes.card_label.diabetic_retinopathy",
       route: "diabeticRetinopathyWorkshop",
       img: "images/icon/eyes/disease/car_diabetic.webp",
       subtitle: "Workshop",
+      subtitleSearchI18n: ["eyes.primary_eye_care_procedures_title"],
       keywords: ["diabetes", "retina", "screening"],
       progress: 0,
     },
     {
       title: "Cataract",
+      titleI18n: "eyes.card_label.cataract",
       page: "cataractPage",
       img: "images/icon/eyes/disease/car_cataract.webp",
       subtitle: "Mini App",
+      subtitleParts: [{ path: "eyes.tag_mini_app", fallback: "Mini App" }],
       keywords: ["lens", "opacity", "simulation"],
       progress: 0,
     },
     {
       title: "Mires",
+      titleI18n: "menu.mires_checkbox",
       page: "miresPage",
       img: "images/icon/eyes/core/miniapp.webp",
       subtitle: "Mini App",
+      subtitleParts: [{ path: "eyes.tag_mini_app", fallback: "Mini App" }],
       keywords: ["keratometry", "cornea"],
       progress: 0,
     },
     {
       title: "Morph",
+      titleI18n: "menu.morph_checkbox",
       page: "morphPage",
       img: "images/icon/eyes/core/miniapp.webp",
       subtitle: "Mini App",
+      subtitleParts: [{ path: "eyes.tag_mini_app", fallback: "Mini App" }],
       keywords: ["face", "simulation"],
       progress: 0,
     },
     {
       title: "Squint / Palsy",
+      titleI18n: "eyes.card_label.eye_movements/squint",
       page: "squintPalsyPage",
       img: "images/icon/eyes/extended/car_squint.webp",
       subtitle: "Mini App",
+      subtitleParts: [{ path: "eyes.tag_mini_app", fallback: "Mini App" }],
       keywords: ["eye movements", "palsy", "strabismus"],
       progress: 0,
     },
   ];
 }
 
-function normalizeSearchText(value) {
-  return String(value || "")
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, " ")
-    .trim();
+function getDashboardItemSearchParts(item, dictionaries) {
+  const titleValues = getLocalizedPathValues(
+    item.titleI18n,
+    dictionaries,
+    item.title,
+  );
+  const subtitleValues = [
+    item.subtitle,
+    ...(item.subtitleParts || []).flatMap(({ path, fallback }) =>
+      getLocalizedPathValues(path, dictionaries, fallback),
+    ),
+    ...(item.subtitleSearchI18n || []).flatMap((path) =>
+      getLocalizedPathValues(path, dictionaries),
+    ),
+  ];
+
+  return {
+    titleValues,
+    keywordValues: item.keywords || [],
+    haystack: buildSearchText([
+      titleValues,
+      subtitleValues,
+      item.keywords || [],
+      item.page,
+      item.route,
+    ]),
+  };
 }
 
-function scoreDashboardSearchItem(item, query) {
+function scoreDashboardSearchItem(item, query, dictionaries) {
   const normalizedQuery = normalizeSearchText(query);
   if (!normalizedQuery) return 0;
 
-  const title = normalizeSearchText(item.title);
-  const subtitle = normalizeSearchText(item.subtitle);
-  const keywords = (item.keywords || []).map(normalizeSearchText);
-  const haystack = [title, subtitle, ...keywords].join(" ");
+  const { titleValues, keywordValues, haystack } = getDashboardItemSearchParts(
+    item,
+    dictionaries,
+  );
+  const titles = titleValues.map(normalizeSearchText).filter(Boolean);
+  const keywords = keywordValues.map(normalizeSearchText).filter(Boolean);
 
-  if (title === normalizedQuery) return 120;
-  if (title.startsWith(normalizedQuery)) return 100;
-  if (title.split(" ").some((word) => word.startsWith(normalizedQuery))) {
+  if (titles.some((title) => title === normalizedQuery)) return 120;
+  if (titles.some((title) => title.startsWith(normalizedQuery))) return 100;
+  if (
+    titles.some((title) =>
+      title.split(" ").some((word) => word.startsWith(normalizedQuery)),
+    )
+  ) {
     return 82;
   }
-  if (title.includes(normalizedQuery)) return 70;
+  if (titles.some((title) => title.includes(normalizedQuery))) return 70;
   if (keywords.some((keyword) => keyword.startsWith(normalizedQuery))) {
     return 62;
   }
@@ -549,9 +606,12 @@ function scoreDashboardSearchItem(item, query) {
   return 0;
 }
 
-function getDashboardSearchMatches(query) {
+function getDashboardSearchMatches(query, dictionaries) {
   return getDashboardContentItems()
-    .map((item) => ({ item, score: scoreDashboardSearchItem(item, query) }))
+    .map((item) => ({
+      item,
+      score: scoreDashboardSearchItem(item, query, dictionaries),
+    }))
     .filter((entry) => entry.score > 0)
     .sort(
       (a, b) => b.score - a.score || a.item.title.localeCompare(b.item.title),
@@ -617,6 +677,9 @@ async function renderDashboardSearch(input, panel) {
   }
 
   const token = ++dashboardSearchRenderToken;
+  const searchDictionaries = await getActiveSearchDictionaries();
+  if (token !== dashboardSearchRenderToken) return;
+
   const cardTemplate = document.getElementById(
     "dashboardRecommendedCardTemplate",
   );
@@ -626,7 +689,7 @@ async function renderDashboardSearch(input, panel) {
   const resultsEl = panel.querySelector(".dashboard-search-results");
   if (!suggestionsEl || !resultsEl) return;
 
-  const matches = getDashboardSearchMatches(query);
+  const matches = getDashboardSearchMatches(query, searchDictionaries);
   suggestionsEl.replaceChildren();
   resultsEl.replaceChildren();
 
@@ -634,9 +697,13 @@ async function renderDashboardSearch(input, panel) {
     const chip = document.createElement("button");
     chip.type = "button";
     chip.className = "dashboard-search-suggestion";
-    chip.textContent = item.title;
+    chip.textContent = getLocalizedDisplayValue(
+      item.titleI18n,
+      searchDictionaries,
+      item.title,
+    );
     chip.addEventListener("click", () => {
-      input.value = item.title;
+      input.value = chip.textContent;
       void renderDashboardSearch(input, panel);
     });
     suggestionsEl.appendChild(chip);

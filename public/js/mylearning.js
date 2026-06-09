@@ -6,6 +6,13 @@ import { ROUTES } from "./config.js";
 import { loadPage } from "./navigation.js";
 import { EYES_INDEX } from "./catalog-index.js";
 import { LESSON_PROGRESS_EVENT, readLessonProgress } from "./lessonProgress.js";
+import {
+  buildSearchText,
+  getActiveSearchDictionaries,
+  getElementLocalizedSearchValues,
+  getLocalizedPathValues,
+  normalizeSearchText,
+} from "./localized-search.js";
 
 // ---- Likes store compatibility (prefer global getters if present) ----
 // Canonical storage key (baseline-compatible) for liked items.
@@ -78,16 +85,19 @@ const MY_LEARNING_PROGRESS_SOURCES = Object.freeze([
   {
     route: "childhoodEyeScreeningWorkshop",
     title: "Childhood Eye Screening Workshop",
+    titleI18n: "eyes.card_label.childhood_eye_screening",
     image: "images/icon/eyes/workshop/car_childhoodscreen.webp",
   },
   {
     route: "diabeticRetinopathyWorkshop",
     title: "Diabetic Retinopathy Workshop",
+    titleI18n: "eyes.card_label.diabetic_retinopathy",
     image: "images/icon/eyes/disease/car_diabetic.webp",
   },
   {
     route: "glaucomaWorkshop",
     title: "Glaucoma Workshop",
+    titleI18n: "eyes.card_label.glaucoma",
     image: "images/icon/eyes/disease/car_glaucoma.webp",
   },
   {
@@ -676,6 +686,10 @@ export function initializeMyLearning() {
 
   // Same-tab refresh (requires likes.js to dispatch 'likes:changed' after writes)
   window.addEventListener("likes:changed", () => void renderMyLearnings());
+  window.addEventListener(
+    "i18n:languageChanged",
+    () => void renderMyLearnings(),
+  );
   MY_LEARNING_PROGRESS_EVENTS.forEach((eventName) => {
     document.addEventListener(eventName, () => void renderMyLearnings());
   });
@@ -726,22 +740,33 @@ function renderNote(listEl, message, i18nKey = "") {
   }
 }
 
-function createLikedCard(item, cardTemplate) {
+function createLikedCard(item, cardTemplate, searchDictionaries) {
   const title = item.label || item.name || "Untitled";
   const target = item.target || item.pageId || "comingSoon";
   const size = pickSize();
   const card = cardTemplate.content.querySelector(".ml-card").cloneNode(true);
   card.classList.add(size);
   card.dataset.target = target;
-  card.dataset.mlSearchText = `${title} ${(item.tags || []).join(" ")}`;
+  const titleI18nKey = getEyesCardLabelI18nKey(title);
+  card.dataset.mlSearchText = buildSearchText([
+    title,
+    target,
+    getLocalizedPathValues(titleI18nKey, searchDictionaries, title),
+    (item.tags || []).flatMap((tag) =>
+      getLocalizedPathValues(
+        MY_LEARNING_TAG_I18N_KEYS[tag],
+        searchDictionaries,
+        tag,
+      ),
+    ),
+  ]);
   const imageSrc = getLearningCardImageSrc(item, title, target);
   const imageEl = card.querySelector(".ml-card-bg");
   if (imageEl && imageSrc) {
     card.classList.add("ml-card--image");
     imageEl.src = imageSrc;
     imageEl.alt = title;
-    const imageI18nKey = getEyesCardLabelI18nKey(title);
-    if (imageI18nKey) imageEl.setAttribute("data-i18n", `${imageI18nKey}:alt`);
+    if (titleI18nKey) imageEl.setAttribute("data-i18n", `${titleI18nKey}:alt`);
   } else if (imageEl) {
     imageEl.remove();
   }
@@ -749,7 +774,6 @@ function createLikedCard(item, cardTemplate) {
   const titleEl = card.querySelector("h4");
   if (titleEl) {
     titleEl.textContent = title;
-    const titleI18nKey = getEyesCardLabelI18nKey(title);
     if (titleI18nKey) titleEl.setAttribute("data-i18n", titleI18nKey);
   }
 
@@ -772,7 +796,7 @@ function createLikedCard(item, cardTemplate) {
   return card;
 }
 
-function renderLikedItems(listEl) {
+function renderLikedItems(listEl, searchDictionaries) {
   const raw = getLikes();
   const likedIds = Array.isArray(raw)
     ? raw.map((v) => toKey(v))
@@ -794,7 +818,7 @@ function renderLikedItems(listEl) {
   listEl.textContent = "";
   if (likedItems.length) {
     likedItems
-      .map((item) => createLikedCard(item, cardTemplate))
+      .map((item) => createLikedCard(item, cardTemplate, searchDictionaries))
       .forEach((card) => listEl.appendChild(card));
   } else {
     renderNote(
@@ -833,6 +857,27 @@ function getRowSectionText(doc, row) {
     .filter(Boolean)
     .filter((value, index, arr) => arr.indexOf(value) === index)
     .join(" - ");
+}
+
+function getRowSectionSearchValues(doc, row, searchDictionaries) {
+  const section = row.closest("[data-section], [data-nested-section]");
+  const sectionTitleEl = section?.querySelector("h3");
+  const parentId = String(row.parentElement?.id || "").trim();
+  let folderTitleEl = null;
+
+  if (parentId) {
+    const controller = Array.from(doc.querySelectorAll("[aria-controls]")).find(
+      (candidate) => candidate.getAttribute("aria-controls") === parentId,
+    );
+    folderTitleEl = controller?.querySelector(".lesson-type") || null;
+  }
+
+  return [
+    getCleanText(sectionTitleEl),
+    getCleanText(folderTitleEl),
+    getElementLocalizedSearchValues(sectionTitleEl, searchDictionaries),
+    getElementLocalizedSearchValues(folderTitleEl, searchDictionaries),
+  ];
 }
 
 function getRowKindLabel(row) {
@@ -980,7 +1025,7 @@ function getStoredProgressTargets() {
   return targets;
 }
 
-async function getInProgressGroups() {
+async function getInProgressGroups(searchDictionaries) {
   const seenTargets = new Set();
   const targetCatalog = new Map();
   const groups = new Map();
@@ -997,6 +1042,14 @@ async function getInProgressGroups() {
       groups.set(key, {
         ...(source || getProgressSourceByRoute("videos")),
         items: [],
+        searchText: buildSearchText([
+          source?.title,
+          getLocalizedPathValues(
+            source?.titleI18n,
+            searchDictionaries,
+            source?.title,
+          ),
+        ]),
       });
     }
     return groups.get(key);
@@ -1019,16 +1072,24 @@ async function getInProgressGroups() {
         if (!target) return;
 
         const navigation = inferProgressNavigation(row, source, target);
-        const title =
-          getCleanText(row.querySelector(".lesson-type")) ||
-          humanizeProgressTarget(target);
+        const titleEl = row.querySelector(".lesson-type");
+        const title = getCleanText(titleEl) || humanizeProgressTarget(target);
         const section = getRowSectionText(doc, row);
         const kind = getRowKindLabel(row);
+        const searchText = buildSearchText([
+          target,
+          title,
+          section,
+          kind,
+          getElementLocalizedSearchValues(titleEl, searchDictionaries),
+          getRowSectionSearchValues(doc, row, searchDictionaries),
+        ]);
         const catalogEntry = {
           target,
           title,
           section,
           kind,
+          searchText,
           source,
           route: navigation.route,
           subPageId: navigation.subPageId || "",
@@ -1071,6 +1132,15 @@ async function getInProgressGroups() {
         title: catalogEntry?.title || humanizeProgressTarget(target),
         section: catalogEntry?.section || "",
         kind: catalogEntry?.kind || "Lesson",
+        searchText:
+          catalogEntry?.searchText ||
+          buildSearchText([
+            target,
+            catalogEntry?.title,
+            catalogEntry?.section,
+            catalogEntry?.kind,
+            humanizeProgressTarget(target),
+          ]),
         percent: progress,
         route: navigation.route,
         subPageId: navigation.subPageId || "",
@@ -1083,6 +1153,16 @@ async function getInProgressGroups() {
     .filter((group) => group.items.length)
     .map((group) => ({
       ...group,
+      searchText: buildSearchText([
+        group.searchText,
+        group.title,
+        getLocalizedPathValues(
+          group.titleI18n,
+          searchDictionaries,
+          group.title,
+        ),
+        group.items.map((item) => item.searchText),
+      ]),
       percent:
         group.items.reduce((total, item) => total + item.percent, 0) /
         group.items.length,
@@ -1092,10 +1172,16 @@ async function getInProgressGroups() {
 function createProgressCard(group) {
   const card = document.createElement("article");
   card.className = "ml-card ml-progress-card size-m";
-  card.dataset.mlSearchText = [
+  card.dataset.mlSearchText = buildSearchText([
+    group.searchText,
     group.title,
-    ...group.items.flatMap((item) => [item.title, item.section, item.kind]),
-  ].join(" ");
+    group.items.flatMap((item) => [
+      item.searchText,
+      item.title,
+      item.section,
+      item.kind,
+    ]),
+  ]);
 
   if (group.image) {
     card.classList.add("ml-card--image");
@@ -1178,14 +1264,18 @@ function toggleProgressCard(card) {
   if (items) items.hidden = !isOpen;
 }
 
-async function renderInProgressItems(listEl, isCurrent = () => true) {
+async function renderInProgressItems(
+  listEl,
+  isCurrent = () => true,
+  searchDictionaries,
+) {
   listEl.textContent = "";
   const loading = document.createElement("p");
   loading.className = "note";
   loading.textContent = "Loading in-progress items...";
   listEl.appendChild(loading);
 
-  const groups = await getInProgressGroups();
+  const groups = await getInProgressGroups(searchDictionaries);
   if (!isCurrent()) return;
 
   listEl.textContent = "";
@@ -1198,21 +1288,23 @@ async function renderInProgressItems(listEl, isCurrent = () => true) {
   groups.map(createProgressCard).forEach((card) => listEl.appendChild(card));
 }
 
+function applyMyLearningSearch(page, listEl) {
+  const search = page.querySelector("#mlSearch");
+  const normalizedQuery = normalizeSearchText(search?.value || "");
+
+  listEl.querySelectorAll(".ml-card, .ml-progress-card").forEach((card) => {
+    const searchText =
+      card.dataset.mlSearchText ||
+      normalizeSearchText(card.querySelector("h4")?.textContent || "");
+    card.style.display = searchText.includes(normalizedQuery) ? "" : "none";
+  });
+}
+
 function bindSearchAndChips(page, listEl) {
   const search = page.querySelector("#mlSearch");
   if (search && !search._mlBound) {
     search._mlBound = true;
-    search.addEventListener("input", () => {
-      const q = (search.value || "").toLowerCase();
-      listEl.querySelectorAll(".ml-card, .ml-progress-card").forEach((card) => {
-        const searchText = (
-          card.dataset.mlSearchText ||
-          card.querySelector("h4")?.textContent ||
-          ""
-        ).toLowerCase();
-        card.style.display = searchText.includes(q) ? "" : "none";
-      });
-    });
+    search.addEventListener("input", () => applyMyLearningSearch(page, listEl));
   }
 
   const chips = page.querySelectorAll(".ml-chip");
@@ -1238,15 +1330,22 @@ async function renderMyLearnings() {
   const token = ++myLearningRenderToken;
   const listEl = ensureContainer(page);
   const activeTab = readMyLearningTab();
+  const searchDictionaries = await getActiveSearchDictionaries();
+
+  if (token !== myLearningRenderToken) return;
 
   bindMyLearningControls(page);
   setActiveTabUI(page, activeTab);
   bindSearchAndChips(page, listEl);
 
   if (activeTab === "inProgress") {
-    await renderInProgressItems(listEl, () => token === myLearningRenderToken);
+    await renderInProgressItems(
+      listEl,
+      () => token === myLearningRenderToken,
+      searchDictionaries,
+    );
   } else if (activeTab === "liked") {
-    renderLikedItems(listEl);
+    renderLikedItems(listEl, searchDictionaries);
   } else {
     renderNote(listEl, "Notes are not available yet.");
   }
@@ -1258,6 +1357,8 @@ async function renderMyLearnings() {
   } catch {
     void 0;
   }
+
+  applyMyLearningSearch(page, listEl);
 
   listEl.onclick = (e) => {
     const progressItem = e.target.closest?.(".ml-progress-item");
