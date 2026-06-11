@@ -1495,14 +1495,9 @@ const VIDEO_PAGE_SOURCES = {
 const CHILDHOOD_EYE_SCREENING_SUBTITLE_CATALOG_URL =
   "/video-localization/childhood-eye-screening.json";
 const VIDEO_PAGE_ACTION_ROW_SELECTOR = "[data-video-page-actions='true']";
-const CHILDHOOD_EYE_SCREENING_SUBTITLE_PAGE_IDS = new Set([
-  "assessmentVisionPage",
-  "mumVisionPage",
-  "usaidHowToUseArclightPage",
-  "usaidFundalReflexExamPage",
-  "usaidNormalAbnormalPage",
-  "diabeticIntroductionToArclightVideoPage",
-]);
+const CHILDHOOD_EYE_SCREENING_SUBTITLE_PAGE_IDS = new Set(
+  Object.keys(VIDEO_PAGE_SOURCES),
+);
 const IOS_HLS_PREFERRED_SUBTITLE_PAGE_IDS = new Set([
   "assessmentVisionPage",
   "mumVisionPage",
@@ -2536,7 +2531,9 @@ function removeChildhoodPilotSubtitleTracks(video) {
   resetChildhoodPilotSubtitleOverlay(video);
 
   video
-    .querySelectorAll("track[data-childhood-pilot-subtitle='true']")
+    .querySelectorAll(
+      "track[data-childhood-pilot-subtitle='true'], track[data-localized-video-subtitle='true']",
+    )
     .forEach((trackEl) => trackEl.remove());
 
   try {

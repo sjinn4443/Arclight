@@ -204,7 +204,7 @@ describe("childhood eye screening subtitle pilot", () => {
     fetchSpy?.mockRestore();
   });
 
-  it("filters the subtitle catalog to the five audio pilot page ids", () => {
+  it("keeps subtitle catalog entries for video page sources", () => {
     const sanitized = videos.sanitizeChildhoodEyeScreeningSubtitleCatalog({
       assessmentVisionPage: PILOT_CATALOG.assessmentVisionPage,
       assessingVisualFunctionPage: {
@@ -219,15 +219,19 @@ describe("childhood eye screening subtitle pilot", () => {
       },
     });
 
-    expect(Object.keys(sanitized)).toEqual(["assessmentVisionPage"]);
+    expect(Object.keys(sanitized)).toEqual([
+      "assessmentVisionPage",
+      "assessingVisualFunctionPage",
+      "fundalExamPage",
+    ]);
     expect(
       videos.isChildhoodEyeScreeningSubtitlePilotPage(
         "assessingVisualFunctionPage",
       ),
-    ).toBe(false);
+    ).toBe(true);
     expect(
       videos.isChildhoodEyeScreeningSubtitlePilotPage("fundalExamPage"),
-    ).toBe(false);
+    ).toBe(true);
   });
 
   it("prefers the selected app language and falls back to English", () => {

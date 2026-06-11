@@ -3787,7 +3787,11 @@
             aria-labelledby="diabeticCaseQuizIntroTitle"
           >
             <div class="casechat-modalTop">
-              <div id="diabeticCaseQuizIntroTitle" class="casechat-modalTitle">
+              <div
+                id="diabeticCaseQuizIntroTitle"
+                class="casechat-modalTitle"
+                data-i18n="diabeticCaseQuiz.intro_title"
+              >
                 Quiz
               </div>
               <button
@@ -3795,12 +3799,16 @@
                 class="casechat-modalClose"
                 data-diabetic-case-intro-close="true"
                 aria-label="Close instructions"
+                data-i18n="diabeticCaseQuiz.close_instructions:aria-label"
               >
                 &times;
               </button>
             </div>
 
-            <div class="casechat-resultWhy diabetic-case-quiz__intro-copy">
+            <div
+              class="casechat-resultWhy diabetic-case-quiz__intro-copy"
+              data-i18n="diabeticCaseQuiz.intro_copy"
+            >
               Drag the sight hole to examine the case, then answer the
               questions.
             </div>
@@ -3810,6 +3818,7 @@
                 type="button"
                 class="casechat-confirm__btn is-ok"
                 data-diabetic-case-intro-close="true"
+                data-i18n="diabeticCaseQuiz.start_quiz"
               >
                 Start quiz
               </button>

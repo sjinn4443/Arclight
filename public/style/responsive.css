@@ -3529,3 +3529,45 @@ body[data-interactive-subapp-open="true"] #backBtnGlobal {
     top: 50.2%;
   }
 }
+
+/* Keep primary case-study chat feedback inside the viewport. */
+#caseStudyChatPagePrimary,
+#caseStudyChatPagePrimary .container.pupils-container {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+#caseStudyChatPagePrimary .casechat-log {
+  box-sizing: border-box;
+  width: min(720px, 100%);
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  overflow-x: hidden;
+}
+
+#caseStudyChatPagePrimary .casechat-imggrid,
+#caseStudyChatPagePrimary .casechat-imgfeedback {
+  box-sizing: border-box;
+  width: min(460px, calc(100vw - 32px)) !important;
+  max-width: calc(100vw - 32px) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+#caseStudyChatPagePrimary .casechat-tryagain {
+  margin: 8px 0 0 !important;
+  overflow: visible;
+  padding: 0 2px;
+  text-align: left;
+  white-space: normal;
+}
+
+#caseStudyChatPagePrimary .casechat-nextcase {
+  box-sizing: border-box;
+  display: block;
+  width: min(460px, calc(100vw - 32px)) !important;
+  max-width: calc(100vw - 32px) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}

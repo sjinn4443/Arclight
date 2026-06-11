@@ -7,11 +7,13 @@ const {
   ALLOWED_EXACT_ENGLISH_PATTERNS,
   LOCALE_SPECIFIC_ALLOWED_EXACT_ENGLISH_KEYS,
   MEDICAL_HOMONYM_RULES,
+  MEDICAL_HOMONYM_FORBIDDEN_TERMS,
 } = require("./i18n-qa-rules.cjs");
 
 const ROOT = process.cwd();
 const PUBLIC_DIR = path.join(ROOT, "public");
 const TRANSLATION_DIR = path.join(PUBLIC_DIR, "translation");
+const VIDEO_SUBTITLE_DIR = path.join(PUBLIC_DIR, "video-subtitles");
 const STRICT_ENGLISH = process.argv.includes("--strict-english");
 
 function walk(dir, exts, out = []) {
@@ -52,6 +54,15 @@ function get(obj, dottedPath) {
     if (!matched) return undefined;
   }
 
+  return current;
+}
+
+function getByParts(obj, parts) {
+  let current = obj;
+  for (const part of parts) {
+    if (!current || typeof current !== "object") return undefined;
+    current = current[part];
+  }
   return current;
 }
 
@@ -113,6 +124,171 @@ function findMedicalHomonymRules(sourceText) {
   return MEDICAL_HOMONYM_RULES.filter((rule) => lower.includes(rule.term));
 }
 
+function collectEnglishStringEntries(node, pathParts = [], out = []) {
+  if (typeof node === "string") {
+    out.push({
+      key: pathParts.join("."),
+      pathParts,
+      source: node,
+    });
+    return out;
+  }
+
+  if (!node || typeof node !== "object") return out;
+
+  Object.entries(node).forEach(([key, value]) => {
+    collectEnglishStringEntries(value, [...pathParts, key], out);
+  });
+  return out;
+}
+
+function findForbiddenMedicalHomonyms(
+  locale,
+  sourceText,
+  translatedText,
+  keyPath,
+  options = {},
+) {
+  const findings = [];
+  const source = String(sourceText || "");
+  const pathText = String(keyPath || "");
+  const value = String(translatedText || "");
+
+  for (const [term, rule] of Object.entries(MEDICAL_HOMONYM_FORBIDDEN_TERMS)) {
+    const sourceMatches =
+      (rule.sourcePattern && rule.sourcePattern.test(source)) ||
+      (rule.sourcePathPattern && rule.sourcePathPattern.test(pathText)) ||
+      (options.subtitle &&
+        rule.subtitleSourcePattern &&
+        rule.subtitleSourcePattern.test(source));
+
+    if (!sourceMatches) continue;
+
+    const forbiddenRules = rule.forbiddenByLocale?.[locale] || [];
+    for (const forbiddenPattern of forbiddenRules) {
+      if (forbiddenPattern.test(value)) {
+        findings.push({
+          term,
+          pattern: forbiddenPattern.toString(),
+        });
+      }
+    }
+  }
+
+  return findings;
+}
+
+function collectTranslationMedicalHomonymViolations(
+  englishDict,
+  localeDict,
+  locale,
+) {
+  const violations = [];
+  const entries = collectEnglishStringEntries(englishDict);
+
+  for (const entry of entries) {
+    const localeValue = getByParts(localeDict, entry.pathParts);
+    if (typeof localeValue !== "string") continue;
+
+    const findings = findForbiddenMedicalHomonyms(
+      locale,
+      entry.source,
+      localeValue,
+      entry.key,
+    );
+
+    findings.forEach((finding) => {
+      violations.push({
+        key: entry.key,
+        source: entry.source,
+        value: localeValue,
+        ...finding,
+      });
+    });
+  }
+
+  return violations;
+}
+
+function parseVttCues(vttText) {
+  return String(vttText || "")
+    .replace(/^\uFEFF/, "")
+    .split(/\r?\n\r?\n/)
+    .map((block) => block.split(/\r?\n/).filter(Boolean))
+    .filter((lines) => lines.some((line) => line.includes("-->")))
+    .map((lines) =>
+      lines
+        .filter((line) => !/^\d+$/.test(line) && !line.includes("-->"))
+        .join(" "),
+    );
+}
+
+function collectSubtitleMedicalHomonymViolations() {
+  if (!fs.existsSync(VIDEO_SUBTITLE_DIR)) return [];
+
+  const violations = [];
+  const subtitleFiles = walk(VIDEO_SUBTITLE_DIR, [".vtt"]);
+  const englishSubtitleFiles = subtitleFiles.filter(
+    (filePath) => path.basename(filePath) === "en.vtt",
+  );
+
+  for (const englishSubtitlePath of englishSubtitleFiles) {
+    const subtitleDir = path.dirname(englishSubtitlePath);
+    const relDir = path.relative(VIDEO_SUBTITLE_DIR, subtitleDir);
+    const sourceCues = parseVttCues(
+      fs.readFileSync(englishSubtitlePath, "utf8"),
+    );
+
+    sourceCues.forEach((cueText, cueIndex) => {
+      if (/student-duce/i.test(cueText)) {
+        violations.push({
+          file: path.relative(ROOT, englishSubtitlePath),
+          locale: "en",
+          cue: cueIndex + 1,
+          source: cueText,
+          value: cueText,
+          term: "pupil",
+          pattern: "/student-duce/i",
+        });
+      }
+    });
+
+    const localeSubtitleFiles = fs
+      .readdirSync(subtitleDir)
+      .filter((fileName) => fileName.endsWith(".vtt") && fileName !== "en.vtt");
+
+    for (const fileName of localeSubtitleFiles) {
+      const locale = fileName.replace(/\.vtt$/i, "");
+      const filePath = path.join(subtitleDir, fileName);
+      const targetCues = parseVttCues(fs.readFileSync(filePath, "utf8"));
+
+      targetCues.forEach((targetCue, cueIndex) => {
+        const sourceCue = sourceCues[cueIndex] || "";
+        const findings = findForbiddenMedicalHomonyms(
+          locale,
+          sourceCue,
+          targetCue,
+          relDir,
+          { subtitle: true },
+        );
+
+        findings.forEach((finding) => {
+          violations.push({
+            file: path.relative(ROOT, filePath),
+            locale,
+            cue: cueIndex + 1,
+            source: sourceCue,
+            value: targetCue,
+            ...finding,
+          });
+        });
+      });
+    }
+  }
+
+  return violations;
+}
+
 function main() {
   const englishPath = path.join(TRANSLATION_DIR, "english.json");
   const englishDict = loadJson(englishPath);
@@ -132,6 +308,11 @@ function main() {
     const missing = [];
     const damaged = [];
     const exactEnglish = [];
+    const medicalHomonym = collectTranslationMedicalHomonymViolations(
+      englishDict,
+      dict,
+      locale,
+    );
 
     for (const key of usedKeys) {
       const englishValue = get(englishDict, key);
@@ -160,9 +341,17 @@ function main() {
       }
     }
 
-    results.push({ fileName, locale, missing, damaged, exactEnglish });
+    results.push({
+      fileName,
+      locale,
+      missing,
+      damaged,
+      exactEnglish,
+      medicalHomonym,
+    });
   }
 
+  const subtitleMedicalHomonym = collectSubtitleMedicalHomonymViolations();
   const missingCount = results.reduce(
     (sum, item) => sum + item.missing.length,
     0,
@@ -175,12 +364,20 @@ function main() {
     (sum, item) => sum + item.exactEnglish.length,
     0,
   );
+  const medicalHomonymCount = results.reduce(
+    (sum, item) => sum + item.medicalHomonym.length,
+    0,
+  );
 
   console.log("Translation QA summary");
   console.log(`Used i18n keys scanned: ${usedKeys.length}`);
   console.log(`Missing keys: ${missingCount}`);
   console.log(`Damaged strings: ${damagedCount}`);
   console.log(`Exact English carry-overs: ${exactEnglishCount}`);
+  console.log(`Medical homonym violations: ${medicalHomonymCount}`);
+  console.log(
+    `Subtitle medical homonym violations: ${subtitleMedicalHomonym.length}`,
+  );
   console.log("");
   console.log("Medical homonym rules");
   for (const rule of MEDICAL_HOMONYM_RULES) {
@@ -191,7 +388,8 @@ function main() {
     if (
       result.missing.length === 0 &&
       result.damaged.length === 0 &&
-      result.exactEnglish.length === 0
+      result.exactEnglish.length === 0 &&
+      result.medicalHomonym.length === 0
     ) {
       continue;
     }
@@ -222,11 +420,35 @@ function main() {
         });
       });
     }
+
+    if (result.medicalHomonym.length) {
+      console.log(`Medical homonym (${result.medicalHomonym.length})`);
+      result.medicalHomonym.slice(0, 40).forEach((entry) => {
+        console.log(`- ${entry.key}: ${JSON.stringify(entry.value)}`);
+        console.log(`  source: ${JSON.stringify(entry.source)}`);
+        console.log(`  term: ${entry.term}; forbidden: ${entry.pattern}`);
+      });
+    }
+  }
+
+  if (subtitleMedicalHomonym.length) {
+    console.log("");
+    console.log("## video-subtitles");
+    console.log(`Medical homonym (${subtitleMedicalHomonym.length})`);
+    subtitleMedicalHomonym.slice(0, 80).forEach((entry) => {
+      console.log(
+        `- ${entry.file} cue ${entry.cue}: ${JSON.stringify(entry.value)}`,
+      );
+      console.log(`  source: ${JSON.stringify(entry.source)}`);
+      console.log(`  term: ${entry.term}; forbidden: ${entry.pattern}`);
+    });
   }
 
   if (
     missingCount > 0 ||
     damagedCount > 0 ||
+    medicalHomonymCount > 0 ||
+    subtitleMedicalHomonym.length > 0 ||
     (STRICT_ENGLISH && exactEnglishCount > 0)
   ) {
     process.exitCode = 1;

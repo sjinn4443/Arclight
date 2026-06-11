@@ -14,6 +14,7 @@ import { initializeVideoPlayers, initializeToolbar } from "./videoplayer.js";
 import { initializeLocation } from "./location-service.js";
 import { initializeExperimentalMiniAppNotice } from "./experimentalMiniAppNotice.js";
 import { initializeLessonCompletionTickObserver } from "./lessonCompletionTick.js";
+import { initializeLocalizedVideoSubtitles } from "./videoSubtitles.js";
 import {
   initializeFundalReflexPdf,
   initializeAtomsHandout1,
@@ -95,6 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initializeMenu();
   initializeExperimentalMiniAppNotice();
   initializeLessonCompletionTickObserver();
+  initializeLocalizedVideoSubtitles();
 
   document.addEventListener("click", (e) => {
     const btn = e.target.closest(".menuBtn");

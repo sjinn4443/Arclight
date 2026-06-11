@@ -1,4 +1,5 @@
 import { loadPage } from "./navigation.js";
+import { translateLiteral } from "./i18n.js";
 import {
   initializeDiabeticWorkshopProgressInfra,
   setDiabeticLessonProgress,
@@ -9,6 +10,10 @@ import { rememberDiabeticWorkshopFlowFromRow } from "./diabeticWorkshopNextFlow.
 const DIABETIC_WORKSHOP_OPEN_FOLDER_KEY = "diabeticWorkshop:openFolderKey";
 const DIABETIC_WORKSHOP_RESTORE_OPEN_KEY = "diabeticWorkshop:restoreOpenFolder";
 const DIABETIC_WORKSHOP_FOCUS_SELECTOR_KEY = "diabeticWorkshop:focusSelector";
+
+function t(text, fallback = text) {
+  return translateLiteral(text, fallback);
+}
 
 const HISTORY_IMAGE_MATCH_CASES = Object.freeze([
   {
@@ -3539,12 +3544,12 @@ function initializeDiabeticCaseQuizPage() {
       submitButton.disabled = false;
       submitButton.textContent =
         state.caseIndex === DIABETIC_CASE_QUIZ_CASES.length - 1
-          ? "See results"
-          : "Next case >";
+          ? t("See results")
+          : t("Next case >");
       return;
     }
 
-    submitButton.textContent = "Submit";
+    submitButton.textContent = t("Submit");
     submitButton.disabled = !hasAnsweredAllCurrentCaseQuestions();
   };
 
@@ -3579,7 +3584,9 @@ function initializeDiabeticCaseQuizPage() {
       progress.appendChild(stepEl);
     }
 
-    progressLabel.textContent = `Quiz ${state.questionIndex + 1} of 3`;
+    progressLabel.textContent = `${t("Quiz")} ${state.questionIndex + 1} ${t(
+      "of",
+    )} 3`;
   };
 
   const renderPatientInfo = () => {
@@ -3587,20 +3594,27 @@ function initializeDiabeticCaseQuizPage() {
     patientInfo.innerHTML = "";
     caseItem.patientInfo.forEach((line) => {
       const item = document.createElement("p");
+      const translatedLine = t(line);
+      if (translatedLine !== line) {
+        item.textContent = translatedLine;
+        patientInfo.appendChild(item);
+        return;
+      }
+
       const [label, ...rest] = line.split(":");
       const value = rest.join(":").trim();
 
       if (label && value) {
         const labelEl = document.createElement("strong");
-        labelEl.textContent = `${label}:`;
+        labelEl.textContent = `${t(label)}:`;
 
         const valueEl = document.createElement("span");
-        valueEl.textContent = value;
+        valueEl.textContent = t(value);
 
         item.appendChild(labelEl);
         item.appendChild(valueEl);
       } else {
-        item.textContent = line;
+        item.textContent = translatedLine;
       }
 
       patientInfo.appendChild(item);
@@ -3608,7 +3622,9 @@ function initializeDiabeticCaseQuizPage() {
   };
 
   const renderCaseHeader = () => {
-    title.textContent = `Case (${state.caseIndex + 1}/${DIABETIC_CASE_QUIZ_CASES.length})`;
+    title.textContent = `${t("Case")} (${state.caseIndex + 1}/${
+      DIABETIC_CASE_QUIZ_CASES.length
+    })`;
 
     renderPatientInfo();
   };
@@ -3619,7 +3635,7 @@ function initializeDiabeticCaseQuizPage() {
 
     if (state.renderedCaseIndex !== state.caseIndex) {
       image.src = caseImageSrc;
-      image.alt = `Diabetic retinopathy case ${state.caseIndex + 1}`;
+      image.alt = `${t("Diabetic retinopathy case")} ${state.caseIndex + 1}`;
       stage.dataset.caseId = caseItem.id;
       stage.dataset.caseImage = caseItem.image.replace(/\.[^.]+$/, "");
       stage.dataset.overlay = "sight-hole";
@@ -3654,7 +3670,7 @@ function initializeDiabeticCaseQuizPage() {
 
       const text = document.createElement("span");
       text.className = "diabetic-case-quiz__option-text";
-      text.textContent = optionText;
+      text.textContent = t(optionText);
 
       if (state.submitted) {
         const isCorrectOption = quizQuestion.correct.includes(optionText);
@@ -3687,11 +3703,11 @@ function initializeDiabeticCaseQuizPage() {
 
   const renderQuestion = () => {
     const quizQuestion = getCurrentQuestion();
-    questionLabel.textContent = quizQuestion.label;
-    question.textContent = quizQuestion.prompt;
+    questionLabel.textContent = t(quizQuestion.label);
+    question.textContent = t(quizQuestion.prompt);
     questionHint.textContent =
       quizQuestion.type === "multi"
-        ? "More than one answer may be correct."
+        ? t("More than one answer may be correct.")
         : "";
     questionHint.hidden = quizQuestion.type !== "multi";
     renderOptions();
@@ -3713,8 +3729,8 @@ function initializeDiabeticCaseQuizPage() {
       answer.correct ? "is-correct" : "is-wrong"
     }`;
     feedback.textContent = answer.correct
-      ? "Correct."
-      : `Correct answer: ${answer.correctAnswers.join("; ")}`;
+      ? t("Correct.")
+      : `${t("Correct answer:")} ${answer.correctAnswers.map((value) => t(value)).join("; ")}`;
   };
 
   const renderQuestionNav = () => {
@@ -3735,7 +3751,9 @@ function initializeDiabeticCaseQuizPage() {
     const total = result.answers.length || getCurrentCase().questions.length;
     const isPerfect = result.correctCount === total;
     caseSummary.classList.add(isPerfect ? "is-correct" : "is-wrong");
-    caseSummary.textContent = `Case score: ${result.correctCount} of ${total} correct.`;
+    caseSummary.textContent = `${t("Case score:")} ${result.correctCount} ${t(
+      "of",
+    )} ${total} ${t("correct.")}`;
   };
 
   const render = () => {
@@ -3756,7 +3774,9 @@ function initializeDiabeticCaseQuizPage() {
     );
     const correctCount = flatAnswers.filter((answer) => answer.correct).length;
 
-    resultsSummary.textContent = `You answered ${correctCount} out of ${totalQuestions} correctly.`;
+    resultsSummary.textContent = `${t("You answered")} ${correctCount} ${t(
+      "out of",
+    )} ${totalQuestions} ${t("correctly.")}`;
     resultsList.innerHTML = "";
 
     flatAnswers.forEach((answer, index) => {
@@ -3772,20 +3792,24 @@ function initializeDiabeticCaseQuizPage() {
 
       const titleEl = document.createElement("p");
       titleEl.className = "retinal-structure-tap__results-title";
-      titleEl.textContent = `Case ${answer.caseNumber}: ${answer.label}`;
+      titleEl.textContent = `${t("Case")} ${answer.caseNumber}: ${t(
+        answer.label,
+      )}`;
 
       const copy = document.createElement("p");
       copy.className = "retinal-structure-tap__results-copy";
-      copy.textContent = `Answer: ${answer.correctAnswers.join("; ")}`;
+      copy.textContent = `${t("Answer:")} ${answer.correctAnswers
+        .map((value) => t(value))
+        .join("; ")}`;
 
       const status = document.createElement("span");
       status.className = "retinal-structure-tap__results-status";
       if (answer.correct) {
         status.classList.add("is-correct");
-        status.textContent = "Correct";
+        status.textContent = t("Correct");
       } else {
         status.classList.add("is-wrong");
-        status.textContent = "Wrong";
+        status.textContent = t("Wrong");
       }
 
       body.appendChild(titleEl);

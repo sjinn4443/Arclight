@@ -342,8 +342,17 @@ export function updateLocationUI(area, from = "gps") {
     document.querySelector("#profileLocation"), // Target the menu label element
   ].filter(Boolean);
 
+  const displayArea = normaliseAreaForDisplay(area) || "Location unavailable";
+  const profileDisplay = formatProfileLocationDisplay(area);
+
   nodes.forEach((n) => {
-    n.textContent = normaliseAreaForDisplay(area) || "Location unavailable";
+    if (n.id === "profileLocation") {
+      n.removeAttribute("data-i18n");
+      n.setAttribute("data-i18n-skip", "");
+      n.textContent = profileDisplay;
+    } else {
+      n.textContent = displayArea;
+    }
     // Ensure the profile location becomes visible if the HTML hid it
     if (n.id === "profileLocation") {
       n.style.visibility = "visible";
@@ -547,9 +556,17 @@ function hydrateProfileLocationFromCache() {
       profGeo?.area ||
       profGeo?.city ||
       null;
+    const iso = (profGeo?.iso2 || profGeo?.countryCode || "").toUpperCase();
+    const region =
+      profGeo?.region ||
+      profGeo?.state ||
+      profGeo?.admin1 ||
+      profGeo?.admin ||
+      null;
+    const label = [area, region, iso].filter(Boolean).join(", ");
 
-    if (area) {
-      updateLocationUI(area, "cache"); // Use 'cache' to indicate source
+    if (label) {
+      updateLocationUI(label, "cache"); // Use 'cache' to indicate source
     }
 
     // If a precise location was already saved, hide the button
@@ -574,12 +591,23 @@ document.addEventListener("location:updated", (e) => {
   const newest = e?.detail;
   if (!newest) return;
   const area = newest.area || newest.city || null;
-  if (area) {
+  const region =
+    newest.region || newest.state || newest.admin1 || newest.admin || null;
+  const iso = (newest.iso2 || newest.countryCode || "").toUpperCase();
+  const label = [area, region, iso].filter(Boolean).join(", ");
+  if (label) {
     // Use 'event' to indicate source, or 'cache' if it's from profileGeo.isPrecise
     const source = newest.isPrecise ? "cache" : "event";
-    updateLocationUI(area, source);
+    updateLocationUI(label, source);
   }
 });
+
+function formatProfileLocationDisplay(area) {
+  const displayArea = normaliseAreaForDisplay(area);
+  if (!displayArea) return "Location unavailable";
+  if (/^Location:/i.test(displayArea)) return displayArea;
+  return `Location: ${displayArea}`;
+}
 
 function normaliseAreaForDisplay(area) {
   if (!area) return area;

@@ -134,6 +134,8 @@ function renderProfileLocation() {
     document.getElementById("profileLocation") ||
     document.querySelector(".profile-location");
   if (!el) return;
+  el.removeAttribute("data-i18n");
+  el.setAttribute("data-i18n-skip", "");
 
   // Read the caches we maintain
   let profGeo = null;

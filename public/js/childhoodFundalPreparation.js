@@ -1631,6 +1631,13 @@ let fundalI18nDict = {};
 let fundalI18nLang = null;
 const CHILDHOOD_WORKSHOP_PROGRESS_PREFIX = "childhoodWorkshop:progress:";
 
+function normalizeFundalLiteralText(value) {
+  return String(value == null ? "" : value)
+    .replace(/\r\n?/g, "\n")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 async function ensureFundalI18nDictionary() {
   const lang = getLanguage();
   if (fundalI18nLang === lang && fundalI18nDict) return;
@@ -1643,7 +1650,13 @@ function translateFundalText(rawText) {
   if (!normalized) return "";
 
   const key = FUNDAL_TEXT_KEYS.get(normalized);
-  if (!key) return normalized;
+  if (!key) {
+    const literalMap = fundalI18nDict?.i18nLiteral || {};
+    const literal =
+      literalMap[normalized] ||
+      literalMap[normalizeFundalLiteralText(normalized)];
+    return literal == null ? normalized : String(literal).trim();
+  }
 
   return String(get(fundalI18nDict, key) ?? normalized).trim();
 }

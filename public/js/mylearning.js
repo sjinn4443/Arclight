@@ -3,6 +3,7 @@
  */
 
 import { ROUTES } from "./config.js";
+import { translateLiteral } from "./i18n.js";
 import { loadPage } from "./navigation.js";
 import { EYES_INDEX } from "./catalog-index.js";
 import { LESSON_PROGRESS_EVENT, readLessonProgress } from "./lessonProgress.js";
@@ -36,6 +37,10 @@ const MY_LEARNING_PROGRESS_EVENTS = Object.freeze([
   "diabeticWorkshop:progress-changed",
   "glaucomaWorkshop:progress-changed",
 ]);
+
+function translateLearningText(text) {
+  return translateLiteral(text, text);
+}
 const MY_LEARNING_PROGRESS_PREFIXES = Object.freeze([
   "lessonProgress:",
   "videoProgress:",
@@ -85,29 +90,31 @@ const MY_LEARNING_PROGRESS_SOURCES = Object.freeze([
   {
     route: "childhoodEyeScreeningWorkshop",
     title: "Childhood Eye Screening Workshop",
-    titleI18n: "eyes.card_label.childhood_eye_screening",
+    titleI18n: "mylearning.progress_childhood_workshop",
     image: "images/icon/eyes/workshop/car_childhoodscreen.webp",
   },
   {
     route: "diabeticRetinopathyWorkshop",
     title: "Diabetic Retinopathy Workshop",
-    titleI18n: "eyes.card_label.diabetic_retinopathy",
+    titleI18n: "mylearning.progress_diabetic_workshop",
     image: "images/icon/eyes/disease/car_diabetic.webp",
   },
   {
     route: "glaucomaWorkshop",
     title: "Glaucoma Workshop",
-    titleI18n: "eyes.card_label.glaucoma",
+    titleI18n: "mylearning.progress_glaucoma_workshop",
     image: "images/icon/eyes/disease/car_glaucoma.webp",
   },
   {
     route: "casestudy",
     title: "Case Studies",
+    titleI18n: "mylearning.progress_case_studies",
     image: "images/icon/eyes/core/car_history.webp",
   },
   {
     route: "videos",
     title: "Core Examinations and Quizzes",
+    titleI18n: "mylearning.progress_core_exams_quizzes",
     image: "images/icon/eyes/core/car_pupils.webp",
   },
 ]);
@@ -1201,10 +1208,13 @@ function createProgressCard(group) {
 
   const title = document.createElement("h4");
   title.textContent = group.title;
+  if (group.titleI18n) title.setAttribute("data-i18n", group.titleI18n);
 
   const meta = document.createElement("span");
   meta.className = "ml-progress-card__meta";
-  meta.textContent = `${group.items.length} in progress`;
+  meta.textContent = `${group.items.length} ${translateLearningText(
+    "in progress",
+  )}`;
 
   summary.append(title, meta);
 

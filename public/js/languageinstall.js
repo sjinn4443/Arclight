@@ -4,27 +4,378 @@
 
 import { loadPage } from "./navigation.js";
 import { initializePWA, canInstall, promptInstall } from "./pwa.js";
-import { setLanguage, getLanguage } from "./i18n.js";
+import { setLanguage, getLanguage, translateLiteral } from "./i18n.js";
 import { saveProfile, bumpRefresh } from "./telemetry.js"; // Import bumpRefresh
 
-const CHILDHOOD_EYE_SCREENING_PILOT_PAGE_IDS = [
-  "assessmentVisionPage",
-  "mumVisionPage",
-  "usaidHowToUseArclightPage",
-  "usaidFundalReflexExamPage",
-  "usaidNormalAbnormalPage",
+const CHILDHOOD_EYE_SCREENING_PILOT_SUBTITLE_TARGETS = [
+  {
+    path: "app-videos/assessingVisualFunctionPage",
+  },
+  {
+    path: "app-videos/binocularIndirectOphthalmoscopyVideoPage",
+  },
+  {
+    path: "app-videos/diabeticCausesOfVisionLossVideoPage",
+  },
+  {
+    path: "app-videos/diabeticSimpleSafeScalableVideoPage",
+  },
+  {
+    path: "app-videos/directOphthalmoscopyVideoPage",
+  },
+  {
+    path: "app-videos/feFullAnteriorSegmentPage",
+  },
+  {
+    path: "app-videos/fePecAnteriorSegmentPage",
+  },
+  {
+    path: "app-videos/fundalExamPage",
+  },
+  {
+    path: "app-videos/fundalRealPage",
+  },
+  {
+    path: "app-videos/fundalStillPage",
+  },
+  {
+    path: "app-videos/glaucomaACAGCaseWorkshopVideoPage",
+  },
+  {
+    path: "app-videos/glaucomaAnteriorChamberDepthVideoPage",
+  },
+  {
+    path: "app-videos/glaucomaDirectOphthalmoscopyDiscsAnnotatedVideoPage",
+  },
+  {
+    path: "app-videos/glaucomaDiscCuppingVideoPage",
+  },
+  {
+    path: "app-videos/glaucomaFundalReflexDiseaseVideoPage",
+  },
+  {
+    path: "app-videos/glaucomaMarginVideoPage",
+  },
+  {
+    path: "app-videos/glaucomaOpticDiscAnatomyVideoPage",
+  },
+  {
+    path: "app-videos/glaucomaOtherOpticNerveDiseasesVideoPage",
+  },
+  {
+    path: "app-videos/glaucomaPupilReactionsVideoPage",
+  },
+  {
+    path: "app-videos/glaucomaSignsOfGlaucomaVideoPage",
+  },
+  {
+    path: "app-videos/images-pdf-workshop-childhood-causesvippts-03-cce3d3c0",
+  },
+  {
+    path: "app-videos/images-pdf-workshop-childhood-causesvippts-05-f9ebb50d",
+  },
+  {
+    path: "app-videos/images-pdf-workshop-childhood-causesvippts-07-6e064ca4",
+  },
+  {
+    path: "app-videos/images-pdf-workshop-childhood-causesvippts-09-615c3920",
+  },
+  {
+    path: "app-videos/images-pdf-workshop-childhood-signsvippts-01-2cfda65f",
+  },
+  {
+    path: "app-videos/images-pdf-workshop-childhood-signsvippts-04-5bb0c29e",
+  },
+  {
+    path: "app-videos/images-pdf-workshop-childhood-signsvippts-05-043c2e2f",
+  },
+  {
+    path: "app-videos/images-pdf-workshop-childhood-signsvippts-06-419c7e4c",
+  },
+  {
+    path: "app-videos/images-pdf-workshop-childhood-signsvippts-07-99098e9f",
+  },
+  {
+    path: "app-videos/images-pdf-workshop-childhood-signsvippts-08-64b1565e",
+  },
+  {
+    path: "app-videos/images-pdf-workshop-childhood-visualdevelopment-01-b30c649f",
+  },
+  {
+    path: "app-videos/phoneAttachmentVideoPage",
+  },
+  {
+    path: "app-videos/pupilExamPECPage",
+  },
+  {
+    path: "app-videos/rapdTestVideoPage",
+  },
+  {
+    path: "app-videos/vaNearVisionPage",
+  },
+  {
+    path: "app-videos/vaWhoPage",
+  },
+  {
+    path: "app-videos/videos-cataract-cataract-identification-pec-20mb-83b65eb3",
+  },
+  {
+    path: "app-videos/videos-core-pupils-pupils-full-ec671d76",
+  },
+  {
+    path: "app-videos/videos-intro-gifquiz-comp-11741e5d",
+  },
+  {
+    path: "app-videos/videos-intro-gifrecommended-comp-f7b8b3f3",
+  },
+  {
+    path: "app-videos/videos-intro-gifvideo-comp-51de8d7c",
+  },
+  {
+    path: "app-videos/videos-otoscopy-otoscopy-instructional-video-051124-4bc3f9e9",
+  },
+  {
+    path: "app-videos/videos-tools-mobilephoneattachment-4be1e646",
+  },
+  {
+    path: "app-videos/videos-ure-arclight-eyeglasses-3dce0666",
+  },
+  {
+    path: "app-videos/videos-ure-ure-refractive-error-groups-by-va-testing-ppp-slides-for-video-b1b87654",
+  },
+  {
+    path: "app-videos/videos-usaid-assessmentvision-c7ce5026",
+  },
+  {
+    path: "app-videos/videos-usaid-childhood-eye-screening-2-assessment-of-eyes-and-vision-english-hd-5e7af5c6",
+  },
+  {
+    path: "app-videos/videos-usaid-childhood-eye-screening-3-fundal-reflex-examination-swahili-hd-ac3cd66d",
+  },
+  {
+    path: "app-videos/videos-usaid-childhood-eye-screening-5-usaid-tz-arclight-clip-to-camera-short-607d592b",
+  },
+  {
+    path: "app-videos/videos-usaid-childhood-eye-screening-5-usaid-tz-arclight-clip-to-camera-short-720p-4867698b",
+  },
+  {
+    path: "app-videos/videos-workshop-diabetic-10-frt-for-dr-356f6098",
+  },
+  {
+    path: "app-videos/videos-workshop-diabetic-11-direct-ophthalmoscopy-short-ca98a960",
+  },
+  {
+    path: "app-videos/videos-workshop-diabetic-12-direct-ophthalmoscopy-traditional-arclight-osce-11741446",
+  },
+  {
+    path: "app-videos/videos-workshop-diabetic-13-drs-pdr-signs-64c6203c",
+  },
+  {
+    path: "app-videos/videos-workshop-diabetic-14-drs-non-pdr-signs-79d0b7ca",
+  },
+  {
+    path: "app-videos/videos-workshop-diabetic-15-do-dr-maculopathy-copy-7f98f54e",
+  },
+  {
+    path: "app-videos/videos-workshop-diabetic-2-dodrmaculopathy-4b3a4343",
+  },
+  {
+    path: "app-videos/videos-workshop-diabetic-5-1-visual-acuity-near-distance-9c02e9ae",
+  },
+  {
+    path: "app-videos/videos-workshop-diabetic-5-2-near-visual-acuity-dispense-glasses-pec-be1a72ad",
+  },
+  {
+    path: "app-videos/videos-workshop-diabetic-6-pupil-exam-pec-080525-af7ae232",
+  },
+  {
+    path: "app-videos/videos-workshop-diabetic-7-pupil-response-good-to-bad-f03f3fa4",
+  },
+  {
+    path: "app-videos/videos-workshop-diabetic-8-anterior-segment-full-2026-level-2-glaucoma-f0851d4c",
+  },
+  {
+    path: "app-videos/videos-workshop-diabetic-9-front-of-eye-dr-e648cde9",
+  },
+  {
+    path: "app-videos/videos-workshop-glaucoma-a2-videos-norm-v-abnorm-103f9d6b",
+  },
+  {
+    path: "app-videos/videos-workshop-glaucoma-normalabnormal-case1-f654edd8",
+  },
+  {
+    path: "app-videos/videos-workshop-glaucoma-normalabnormal-case10-3f2a191f",
+  },
+  {
+    path: "app-videos/videos-workshop-glaucoma-normalabnormal-case11-bb39a66c",
+  },
+  {
+    path: "app-videos/videos-workshop-glaucoma-normalabnormal-case12-093105ad",
+  },
+  {
+    path: "app-videos/videos-workshop-glaucoma-normalabnormal-case2-eac7e6fc",
+  },
+  {
+    path: "app-videos/videos-workshop-glaucoma-normalabnormal-case3-4ed80c80",
+  },
+  {
+    path: "app-videos/videos-workshop-glaucoma-normalabnormal-case4-041c9121",
+  },
+  {
+    path: "app-videos/videos-workshop-glaucoma-normalabnormal-case5-5d1031f9",
+  },
+  {
+    path: "app-videos/videos-workshop-glaucoma-normalabnormal-case6-3d049649",
+  },
+  {
+    path: "app-videos/videos-workshop-glaucoma-normalabnormal-case7-25d31f89",
+  },
+  {
+    path: "app-videos/videos-workshop-glaucoma-normalabnormal-case8-d7bc580f",
+  },
+  {
+    path: "app-videos/videos-workshop-glaucoma-normalabnormal-case9-23bfd4bb",
+  },
+  {
+    path: "childhood-eye-screening/assessmentVisionPage",
+  },
+  {
+    path: "childhood-eye-screening/mumVisionPage",
+  },
+  {
+    path: "childhood-eye-screening/usaidFundalReflexExamPage",
+  },
+  {
+    path: "childhood-eye-screening/usaidHowToUseArclightPage",
+  },
+  {
+    path: "childhood-eye-screening/usaidNormalAbnormalPage",
+  },
+  {
+    path: "diabetic-retinopathy-workshop/diabeticIntroductionToArclightVideoPage",
+  },
 ];
 const CHILDHOOD_EYE_SCREENING_PILOT_VIDEO_URLS = [
+  "/images/pdf/Workshop/Childhood/CausesVIppts/03.mp4",
+  "/images/pdf/Workshop/Childhood/CausesVIppts/05.mp4",
+  "/images/pdf/Workshop/Childhood/CausesVIppts/07.mp4",
+  "/images/pdf/Workshop/Childhood/CausesVIppts/09.mp4",
+  "/images/pdf/Workshop/Childhood/SignsVIppts/01.mp4",
+  "/images/pdf/Workshop/Childhood/SignsVIppts/04.mp4",
+  "/images/pdf/Workshop/Childhood/SignsVIppts/05.mp4",
+  "/images/pdf/Workshop/Childhood/SignsVIppts/06.mp4",
+  "/images/pdf/Workshop/Childhood/SignsVIppts/07.mp4",
+  "/images/pdf/Workshop/Childhood/SignsVIppts/08.mp4",
+  "/images/pdf/Workshop/Childhood/VisualDevelopment/01.mp4",
+  "/images/pdf/Workshop/Childhood/VisualDevelopment/01_ios.mp4",
+  "/videos/Arclight/PhoneAttach.mp4",
+  "/videos/Cataract/Cataract Identification PEC 20MB.mp4",
+  "/videos/Core/FrontofEye/FE_Full_220p.mp4",
+  "/videos/Core/FrontofEye/FE_Full_720p.mp4",
+  "/videos/Core/FrontofEye/FE_PEC_220p.mp4",
+  "/videos/Core/FrontofEye/FE_PEC_720p.mp4",
+  "/videos/Core/FundalReflex/FRT Testing Tools/FR_SREN_220p.mp4",
+  "/videos/Core/FundalReflex/FRT Testing Tools/FR_SREN_720p.mp4",
+  "/videos/Core/FundalReflex/FRT Testing Tools/FR_Stillimg_220p.mp4",
+  "/videos/Core/FundalReflex/FRT Testing Tools/FR_Stillimg_720p.mp4",
+  "/videos/Core/FundalReflex/FR_Scotland_220p.mp4",
+  "/videos/Core/FundalReflex/FR_Scotland_720p.mp4",
+  "/videos/Core/Intro/1. How to use the Arclight - ENGLISH - HD_720p.mp4",
+  "/videos/Core/Ophthalmoscopy/DirectOphth_220p.mp4",
+  "/videos/Core/Ophthalmoscopy/DirectOphth_720p.mp4",
+  "/videos/Core/Pupils/Pupils_Full_220p.mp4",
+  "/videos/Core/Pupils/Pupils_Full_720p.mp4",
+  "/videos/Core/Pupils/Pupils_PEC_220p.mp4",
+  "/videos/Core/Pupils/Pupils_PEC_720p.mp4",
+  "/videos/Core/Pupils/Pupils_RAPD24_220p.mp4",
+  "/videos/Core/Pupils/Pupils_RAPD24_720p.mp4",
   "/videos/Core/VisualAcuity/VA_Assessment_220p.mp4",
   "/videos/Core/VisualAcuity/VA_Assessment_720p.mp4",
   "/videos/Core/VisualAcuity/VA_Mum_220p.mp4",
   "/videos/Core/VisualAcuity/VA_Mum_720p.mp4",
+  "/videos/Core/VisualAcuity/VA_NearDIst_220p.mp4",
+  "/videos/Core/VisualAcuity/VA_NearDIst_720p.mp4",
+  "/videos/Core/VisualAcuity/VA_PEC1_220p.mp4",
+  "/videos/Core/VisualAcuity/VA_PEC1_720p.mp4",
+  "/videos/Intro/GIFQuiz_Comp.mp4",
+  "/videos/Intro/GIFRecommended_Comp.mp4",
+  "/videos/Intro/GIFVideo_Comp.mp4",
+  "/videos/Otoscopy/Otoscopy_Instructional_Video_051124_720p.mp4",
+  "/videos/Tools/BIOvideo_220p.mp4",
+  "/videos/Tools/BIOvideo_720p.mp4",
+  "/videos/Tools/MobilePhoneAttachment_720p.mp4",
+  "/videos/URE/Arclight & Eyeglasses_720p.mp4",
+  "/videos/URE/URE - Refractive Error Groups by VA testing PPP slides for video_720p.mp4",
   "/videos/USAID Childhood eye screening/1. How to use the Arclight - ENGLISH - HD_220p.mp4",
   "/videos/USAID Childhood eye screening/1. How to use the Arclight - ENGLISH - HD_720p.mp4",
-  "/videos/USAID Childhood eye screening/FundalReflexUSAID_220p.mp4",
-  "/videos/USAID Childhood eye screening/FundalReflexUSAID_720p.mp4",
+  "/videos/USAID Childhood eye screening/2. Assessment of eyes and vision ENGLISH - HD_220p.mp4",
+  "/videos/USAID Childhood eye screening/2. Assessment of eyes and vision ENGLISH - HD_720p.mp4",
+  "/videos/USAID Childhood eye screening/3. Fundal Reflex examination SWAHILI - HD_220p.mp4",
+  "/videos/USAID Childhood eye screening/3. Fundal Reflex examination SWAHILI - HD_720p.mp4",
+  "/videos/USAID Childhood eye screening/3. USAID FRT How to Perform Short_720p.mp4",
+  "/videos/USAID Childhood eye screening/3. USAID FRT How to Perform Short_720p_220p.mp4",
   "/videos/USAID Childhood eye screening/4. Normal and Abnormal findings - ENGLISH - HD_220p.mp4",
   "/videos/USAID Childhood eye screening/4. Normal and Abnormal findings - ENGLISH - HD_720p.mp4",
+  "/videos/USAID Childhood eye screening/5. USAID TZ Arclight clip to Camera SHORT_720p.mp4",
+  "/videos/USAID Childhood eye screening/5. USAID TZ Arclight clip to Camera SHORT_720p_220p.mp4",
+  "/videos/USAID Childhood eye screening/FundalReflexUSAID_220p.mp4",
+  "/videos/USAID Childhood eye screening/FundalReflexUSAID_720p.mp4",
+  "/videos/USAID/AssessmentVision.mp4",
+  "/videos/USAID/FundalReflexUSAID.mp4",
+  "/videos/USAID/HowtoArclight.mp4",
+  "/videos/USAID/NormalAbnormal.mp4",
+  "/videos/Workshop/Diabetic/1.ArclightIntroduction_eyesOnly_220p.mp4",
+  "/videos/Workshop/Diabetic/1.ArclightIntroduction_eyesOnly_720p.mp4",
+  "/videos/Workshop/Diabetic/10. FRT for DR _220p.mp4",
+  "/videos/Workshop/Diabetic/11. Direct Ophthalmoscopy Short Low Resolution_220p.mp4",
+  "/videos/Workshop/Diabetic/12. Direct Ophthalmoscopy Traditional + Arclight OSCE_220p.mp4",
+  "/videos/Workshop/Diabetic/13. DRS PDR Signs_220p.mp4",
+  "/videos/Workshop/Diabetic/14. DRS non PDR signs_220p.mp4",
+  "/videos/Workshop/Diabetic/15. DO DR Maculopathy copy_220p.mp4",
+  "/videos/Workshop/Diabetic/2.DODRMaculopathy.mp4",
+  "/videos/Workshop/Diabetic/3.DR_LossofVisionCause_220p.mp4",
+  "/videos/Workshop/Diabetic/3.DR_LossofVisionCause_720p.mp4",
+  "/videos/Workshop/Diabetic/4.DRSinNCDClinicflow_220p.mp4",
+  "/videos/Workshop/Diabetic/4.DRSinNCDClinicflow_720p.mp4",
+  "/videos/Workshop/Diabetic/5.1 Visual Acuity Near + Distance_220p.mp4",
+  "/videos/Workshop/Diabetic/5.2 Near Visual Acuity + Dispense Glasses - PEC_220p.mp4",
+  "/videos/Workshop/Diabetic/6. Pupil Exam PEC 080525_220p.mp4",
+  "/videos/Workshop/Diabetic/7. Pupil response good to bad_220p.mp4",
+  "/videos/Workshop/Diabetic/8. Anterior Segment FULL 2026 - level 2 + glaucoma_220p.mp4",
+  "/videos/Workshop/Diabetic/9. Front of eye DR_220p.mp4",
+  "/videos/Workshop/Glaucoma/A2 - VIDEOS - Norm v Abnorm.mp4",
+  "/videos/Workshop/Glaucoma/BE_Margin_220p.mp4",
+  "/videos/Workshop/Glaucoma/BE_Margin_720p.mp4",
+  "/videos/Workshop/Glaucoma/BE_disccuppingonly_220p.mp4",
+  "/videos/Workshop/Glaucoma/BE_disccuppingonly_720p.mp4",
+  "/videos/Workshop/Glaucoma/BE_opticdiscanatomy_220p.mp4",
+  "/videos/Workshop/Glaucoma/BE_opticdiscanatomy_720p.mp4",
+  "/videos/Workshop/Glaucoma/DO_discsannotated_220p.mp4",
+  "/videos/Workshop/Glaucoma/DO_discsannotated_720p.mp4",
+  "/videos/Workshop/Glaucoma/FRACAG_220p.mp4",
+  "/videos/Workshop/Glaucoma/FRACAG_720p.mp4",
+  "/videos/Workshop/Glaucoma/FRACD_220p.mp4",
+  "/videos/Workshop/Glaucoma/FRACD_720p.mp4",
+  "/videos/Workshop/Glaucoma/FRDisease_220p.mp4",
+  "/videos/Workshop/Glaucoma/FRDisease_720p.mp4",
+  "/videos/Workshop/Glaucoma/FRsignsglaucoma_220p.mp4",
+  "/videos/Workshop/Glaucoma/FRsignsglaucoma_720p.mp4",
+  "/videos/Workshop/Glaucoma/NormalAbnormal/case10_720p.mp4",
+  "/videos/Workshop/Glaucoma/NormalAbnormal/case11_720p.mp4",
+  "/videos/Workshop/Glaucoma/NormalAbnormal/case12_720p.mp4",
+  "/videos/Workshop/Glaucoma/NormalAbnormal/case1_720p.mp4",
+  "/videos/Workshop/Glaucoma/NormalAbnormal/case2_720p.mp4",
+  "/videos/Workshop/Glaucoma/NormalAbnormal/case3_720p.mp4",
+  "/videos/Workshop/Glaucoma/NormalAbnormal/case4_720p.mp4",
+  "/videos/Workshop/Glaucoma/NormalAbnormal/case5_720p.mp4",
+  "/videos/Workshop/Glaucoma/NormalAbnormal/case6_720p.mp4",
+  "/videos/Workshop/Glaucoma/NormalAbnormal/case7_720p.mp4",
+  "/videos/Workshop/Glaucoma/NormalAbnormal/case8_720p.mp4",
+  "/videos/Workshop/Glaucoma/NormalAbnormal/case9_720p.mp4",
+  "/videos/Workshop/Glaucoma/opticdiseases_220p.mp4",
+  "/videos/Workshop/Glaucoma/opticdiseases_720p.mp4",
+  "/videos/Workshop/Glaucoma/pupilreaction_220p.mp4",
+  "/videos/Workshop/Glaucoma/pupilreaction_720p.mp4",
 ];
 const CHILDHOOD_EYE_SCREENING_SUBTITLE_LANGUAGES = new Set([
   "en",
@@ -77,6 +428,19 @@ const ENGLISH_LANGUAGE_LABELS = {
   yo: "Yoruba",
   zu: "Zulu",
 };
+
+function t(text, fallback = text) {
+  return translateLiteral(text, fallback);
+}
+
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+}
 
 const ESTIMATED_DOWNLOAD_BYTES_PER_MINUTE = 120 * 1000 * 1000;
 const MAX_FAILED_FILES_DISPLAY = 12;
@@ -448,41 +812,41 @@ function dedupeOfflineAssets(assets) {
 }
 
 export function formatDownloadSize(bytes) {
-  if (!bytes) return "size will be calculated during download";
+  if (!bytes) return t("size will be calculated during download");
   if (bytes >= 1000000000) return `${(bytes / 1000000000).toFixed(1)} GB`;
   if (bytes >= 1000000) return `${Math.ceil(bytes / 1000000)} MB`;
   return `${Math.ceil(bytes / 1000)} KB`;
 }
 
 function formatEstimatedDownloadTime(bytes) {
-  if (!bytes) return "Estimated time: under 1 minute.";
+  if (!bytes) return t("Estimated time: under 1 minute.");
 
   const minutes = Math.max(
     1,
     Math.ceil(bytes / ESTIMATED_DOWNLOAD_BYTES_PER_MINUTE),
   );
-  const unit = minutes === 1 ? "minute" : "minutes";
-  return `Estimated time: about ${minutes} ${unit}.`;
+  const unit = t(minutes === 1 ? "minute" : "minutes");
+  return `${t("Estimated time: about")} ${minutes} ${unit}.`;
 }
 
 function getCatalogLabel(catalogId) {
-  return (
+  const label =
     OFFLINE_CATALOG_OPTIONS.find((option) => option.id === catalogId)?.label ||
-    OFFLINE_CATALOG_OPTIONS[0].label
-  );
+    OFFLINE_CATALOG_OPTIONS[0].label;
+  return t(label);
 }
 
 function getVideoQualityLabel(videoQuality) {
-  return (
+  const label =
     VIDEO_QUALITY_OPTIONS.find((option) => option.id === videoQuality)?.label ||
-    VIDEO_QUALITY_OPTIONS[0].label
-  );
+    VIDEO_QUALITY_OPTIONS[0].label;
+  return t(label);
 }
 
 function getDownloadChoiceLabel(choice) {
-  if (choice?.mode === "app-only") return "Exclude videos";
+  if (choice?.mode === "app-only") return t("Exclude videos");
   if (choice?.mode === "select") return getCatalogLabel(choice.catalogId);
-  return "Full content";
+  return t("Full content");
 }
 
 function getVideoQualitySummary(videoQuality) {
@@ -592,12 +956,15 @@ function renderDownloadEstimate(target, selection) {
 
   const networkNoteEl = document.createElement("span");
   networkNoteEl.className = "download-estimate__note";
-  networkNoteEl.textContent =
-    "* Actual download speed may vary depending on network conditions.";
+  networkNoteEl.textContent = t(
+    "* Actual download speed may vary depending on network conditions.",
+  );
 
   const sizeEl = document.createElement("span");
   sizeEl.className = "download-estimate__highlight";
-  sizeEl.textContent = `Download size: ${formatDownloadSize(selection.bytes)}.`;
+  sizeEl.textContent = `${t("Download size:")} ${formatDownloadSize(
+    selection.bytes,
+  )}.`;
 
   target.append(timeEl, networkNoteEl, sizeEl);
 }
@@ -615,18 +982,19 @@ function ensureDownloadAppModal() {
   modal.innerHTML = `
     <div class="modal-box download-modal">
       <div class="modal-header">
-        <span id="downloadAppTitle">Download options</span>
+        <span id="downloadAppTitle" data-i18n="languageInstall.download_app_title">Download options</span>
         <button
           type="button"
           class="modal-close"
           id="closeDownloadAppModalBtn"
           aria-label="Close"
+          data-i18n="languageInstall.closeButton:aria-label"
         >&times;</button>
       </div>
       <div class="modal-content"></div>
       <div class="modal-footer">
-        <button type="button" id="notNowBtn">Not Now</button>
-        <button type="button" id="downloadAllBtn">Download Now</button>
+        <button type="button" id="notNowBtn" data-i18n="languageInstall.not_now_button">Not Now</button>
+        <button type="button" id="downloadAllBtn" data-i18n="languageInstall.download_now_button">Download Now</button>
       </div>
     </div>
   `;
@@ -657,40 +1025,49 @@ export function showDownloadAppModal(manifest) {
     const titleEl = document.getElementById("downloadAppTitle");
     const content = modal.querySelector(".modal-content");
 
-    if (titleEl) titleEl.textContent = "Download options";
+    if (titleEl) {
+      titleEl.setAttribute("data-i18n", "languageInstall.download_app_title");
+      titleEl.textContent = t("Download options");
+    }
     if (content) {
       content.innerHTML = `
-        <fieldset class="download-options" aria-label="Offline download options">
+        <fieldset class="download-options" aria-label="${escapeHtml(
+          t("Offline download options"),
+        )}">
           <label class="download-option">
             <input type="radio" name="offlineDownloadMode" value="full" checked />
             <span>
-              <span class="download-option__title">Download full content</span>
-              <span class="download-option__description">Includes all app features, videos and images.</span>
+              <span class="download-option__title">${escapeHtml(t("Download full content"))}</span>
+              <span class="download-option__description">${escapeHtml(t("Includes all app features, videos and images."))}</span>
             </span>
           </label>
           <label class="download-option">
             <input type="radio" name="offlineDownloadMode" value="select" />
             <span>
-              <span class="download-option__title">Select content</span>
-              <span class="download-option__description">Choose which content to download for offline use.</span>
+              <span class="download-option__title">${escapeHtml(t("Select content"))}</span>
+              <span class="download-option__description">${escapeHtml(t("Choose which content to download for offline use."))}</span>
             </span>
           </label>
           <div class="download-select-panel" hidden>
-            <label for="offlineCatalogSelect">Content section</label>
+            <label for="offlineCatalogSelect">${escapeHtml(t("Content section"))}</label>
             <select id="offlineCatalogSelect">
               ${OFFLINE_CATALOG_OPTIONS.map(
                 (option) =>
-                  `<option value="${option.id}">${option.label}</option>`,
+                  `<option value="${escapeHtml(option.id)}">${escapeHtml(
+                    t(option.label),
+                  )}</option>`,
               ).join("")}
             </select>
             <p id="offlineCatalogDescription"></p>
           </div>
           <div class="download-select-panel download-video-quality-panel">
-            <label for="offlineVideoQualitySelect">Video quality</label>
+            <label for="offlineVideoQualitySelect">${escapeHtml(t("Video quality"))}</label>
             <select id="offlineVideoQualitySelect">
               ${VIDEO_QUALITY_OPTIONS.map(
                 (option) =>
-                  `<option value="${option.id}">${option.label}</option>`,
+                  `<option value="${escapeHtml(option.id)}">${escapeHtml(
+                    t(option.label),
+                  )}</option>`,
               ).join("")}
             </select>
             <p id="offlineVideoQualityDescription"></p>
@@ -698,8 +1075,8 @@ export function showDownloadAppModal(manifest) {
           <label class="download-option">
             <input type="radio" name="offlineDownloadMode" value="app-only" />
             <span>
-              <span class="download-option__title">Exclude videos</span>
-              <span class="download-option__description">Downloads app pages, images, quizzes and other non-video content.</span>
+              <span class="download-option__title">${escapeHtml(t("Exclude videos"))}</span>
+              <span class="download-option__description">${escapeHtml(t("Downloads app pages, images, quizzes and other non-video content."))}</span>
             </span>
           </label>
         </fieldset>
@@ -713,12 +1090,19 @@ export function showDownloadAppModal(manifest) {
     closeBtn?.removeAttribute("hidden");
     notNowBtn?.removeAttribute("hidden");
     if (closeBtn) closeBtn.onclick = null;
-    if (notNowBtn) notNowBtn.textContent = "Not Now";
+    if (notNowBtn) {
+      notNowBtn.setAttribute("data-i18n", "languageInstall.not_now_button");
+      notNowBtn.textContent = t("Not Now");
+    }
     if (downloadBtn) {
       downloadBtn.onclick = null;
       downloadBtn.removeAttribute("hidden");
       downloadBtn.disabled = false;
-      downloadBtn.textContent = "Download Now";
+      downloadBtn.setAttribute(
+        "data-i18n",
+        "languageInstall.download_now_button",
+      );
+      downloadBtn.textContent = t("Download Now");
     }
 
     let settled = false;
@@ -768,10 +1152,11 @@ export function showDownloadAppModal(manifest) {
       if (videoQualityPanel)
         videoQualityPanel.hidden = choice.mode === "app-only";
       if (description)
-        description.textContent = selectedCatalog?.description || "";
+        description.textContent = t(selectedCatalog?.description || "");
       if (videoQualityDescription) {
-        videoQualityDescription.textContent =
-          selectedVideoQuality?.description || "";
+        videoQualityDescription.textContent = t(
+          selectedVideoQuality?.description || "",
+        );
       }
       if (estimate) renderDownloadEstimate(estimate, selection);
     };
@@ -797,6 +1182,7 @@ export function showDownloadAppModal(manifest) {
     content
       ?.querySelector("#offlineVideoQualitySelect")
       ?.addEventListener("change", updateChoiceDetails);
+    window.I18N?.applyTranslations?.(modal);
     updateChoiceDetails();
     modal.classList.remove("hidden");
   });
@@ -812,11 +1198,12 @@ function setDownloadModalBusy({ title, message, detail }) {
 
   if (!modal || !titleEl || !content) return;
 
-  titleEl.textContent = title;
+  titleEl.removeAttribute("data-i18n");
+  titleEl.textContent = t(title);
   content.innerHTML = "";
 
   const messageEl = document.createElement("p");
-  messageEl.textContent = message;
+  messageEl.textContent = t(message);
   content.appendChild(messageEl);
 
   const detailEl = document.createElement("p");
@@ -828,7 +1215,8 @@ function setDownloadModalBusy({ title, message, detail }) {
   notNowBtn?.setAttribute("hidden", "");
   if (downloadBtn) {
     downloadBtn.disabled = true;
-    downloadBtn.textContent = "Downloading...";
+    downloadBtn.removeAttribute("data-i18n");
+    downloadBtn.textContent = t("Downloading...");
   }
 
   modal.classList.remove("hidden");
@@ -838,8 +1226,10 @@ function updateDownloadProgress(processed, total, failed = 0) {
   const progress = document.getElementById("downloadProgressText");
   if (!progress) return;
 
-  const failureText = failed ? ` (${failed} failed)` : "";
-  progress.textContent = `Downloaded ${processed} of ${total} files${failureText}.`;
+  const failureText = failed ? ` (${failed} ${t("failed")})` : "";
+  progress.textContent = `${t("Downloaded")} ${processed} ${t(
+    "of",
+  )} ${total} ${t("files")}${failureText}.`;
 }
 
 export function showDownloadErrorModal(error) {
@@ -852,19 +1242,21 @@ export function showDownloadErrorModal(error) {
 
   if (!modal || !titleEl || !content) return;
 
-  titleEl.textContent = "Download incomplete";
+  titleEl.removeAttribute("data-i18n");
+  titleEl.textContent = t("Download incomplete");
   content.innerHTML = "";
 
   const messageEl = document.createElement("p");
-  messageEl.textContent =
-    "Some app content could not be downloaded. The items below may not work offline until you try again.";
+  messageEl.textContent = t(
+    "Some app content could not be downloaded. The items below may not work offline until you try again.",
+  );
   content.appendChild(messageEl);
 
   const failedUrls = Array.isArray(error?.failedUrls) ? error.failedUrls : [];
   if (failedUrls.length) {
     const failedTitle = document.createElement("p");
     failedTitle.className = "download-failure-summary";
-    failedTitle.textContent = "Failed files:";
+    failedTitle.textContent = t("Failed files:");
     content.appendChild(failedTitle);
 
     const failedList = document.createElement("ul");
@@ -877,7 +1269,9 @@ export function showDownloadErrorModal(error) {
 
     if (failedUrls.length > MAX_FAILED_FILES_DISPLAY) {
       const item = document.createElement("li");
-      item.textContent = `and ${failedUrls.length - MAX_FAILED_FILES_DISPLAY} more files`;
+      item.textContent = `${t("and")} ${
+        failedUrls.length - MAX_FAILED_FILES_DISPLAY
+      } ${t("more files")}`;
       failedList.appendChild(item);
     }
 
@@ -890,8 +1284,9 @@ export function showDownloadErrorModal(error) {
 
   if (error?.downloadSelection) {
     const availableIntro = document.createElement("p");
-    availableIntro.textContent =
-      "Aside from those failed files, these are ready to use normally:";
+    availableIntro.textContent = t(
+      "Aside from those failed files, these are ready to use normally:",
+    );
     content.appendChild(availableIntro);
 
     const availableList = document.createElement("ul");
@@ -907,7 +1302,8 @@ export function showDownloadErrorModal(error) {
   closeBtn?.removeAttribute("hidden");
   notNowBtn?.removeAttribute("hidden");
   if (notNowBtn) {
-    notNowBtn.textContent = "Close";
+    notNowBtn.removeAttribute("data-i18n");
+    notNowBtn.textContent = t("Close");
     notNowBtn.onclick = () => hideDownloadAppModal();
   }
   if (closeBtn) {
@@ -980,7 +1376,9 @@ export async function cacheOfflineUrls(downloadSelection, totalBytes = 0) {
   setDownloadModalBusy({
     title: "Downloading app content",
     message: "Please keep the app open until the download is finished.",
-    detail: `Downloaded 0 of ${urlsToCache.length} files. ${selectedLabel}: ${sizeText}.`,
+    detail: `${t("Downloaded")} 0 ${t("of")} ${urlsToCache.length} ${t(
+      "files",
+    )}. ${t(selectedLabel)}: ${sizeText}.`,
   });
 
   try {
@@ -1018,17 +1416,22 @@ export function buildChildhoodEyeScreeningPilotCacheUrls(lang = "en") {
   const subtitleLangs = Array.from(new Set(["en", chosenLang]));
   const subtitleUrls = [];
 
-  CHILDHOOD_EYE_SCREENING_PILOT_PAGE_IDS.forEach((pageId) => {
-    subtitleLangs.forEach((subtitleLang) => {
-      subtitleUrls.push(
-        `/video-subtitles/childhood-eye-screening/${pageId}/${subtitleLang}.vtt`,
-      );
+  CHILDHOOD_EYE_SCREENING_PILOT_SUBTITLE_TARGETS.forEach((target) => {
+    const targetLangs = target.languages
+      ? subtitleLangs.filter((subtitleLang) =>
+          target.languages.has(subtitleLang),
+        )
+      : subtitleLangs;
+
+    targetLangs.forEach((subtitleLang) => {
+      subtitleUrls.push(`/video-subtitles/${target.path}/${subtitleLang}.vtt`);
     });
   });
 
   return Array.from(
     new Set([
       "/video-localization/childhood-eye-screening.json",
+      "/video-localization/app-video-subtitles.json",
       ...CHILDHOOD_EYE_SCREENING_PILOT_VIDEO_URLS,
       ...subtitleUrls,
     ]),

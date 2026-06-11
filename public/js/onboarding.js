@@ -202,6 +202,10 @@ export function initializeOnboarding() {
 
     const interests = getSelectedInterests();
     if (!interests.length) {
+      interestSelectText.setAttribute(
+        "data-i18n",
+        "onboarding.field_placeholder",
+      );
       interestSelectText.textContent = getSelectPlaceholderText(
         interestSelect,
         "Select",
@@ -209,6 +213,7 @@ export function initializeOnboarding() {
       return;
     }
 
+    interestSelectText.removeAttribute("data-i18n");
     const labels = interests
       .map((v) =>
         interestSelect
@@ -358,10 +363,12 @@ export function initializeOnboarding() {
     if (!jobSelectText) return;
     const roles = getSelectedRoles();
     if (!roles.length) {
+      jobSelectText.setAttribute("data-i18n", "onboarding.field_placeholder");
       jobSelectText.textContent = getSelectPlaceholderText(jobSelect, "Select");
       return;
     }
 
+    jobSelectText.removeAttribute("data-i18n");
     const labels = roles
       .map((v) =>
         jobSelect
@@ -548,6 +555,7 @@ export function initializeOnboarding() {
     };
     syncInterestClasses();
     interestSelect.addEventListener("change", syncInterestClasses);
+    interestSelect.addEventListener("change", syncInterestDisplayText);
   }
 
   // jobSelect(multiple) 전용: 선택 개수로 filled/has-value 처리 (원래 있던 그대로 유지)
@@ -561,6 +569,7 @@ export function initializeOnboarding() {
     };
     syncJobClasses();
     jobSelect.addEventListener("change", syncJobClasses);
+    jobSelect.addEventListener("change", syncJobDisplayText);
   }
 
   // experience selects의 has-value (원본 txt 유지하되 fieldSelect 제거)
