@@ -245,6 +245,13 @@ function setupWorkshopFolders(page) {
 
       const existingToggle = titleEl.querySelector(".see-all-toggle");
       if (existingToggle) existingToggle.remove();
+
+      const restoreI18nKey = titleEl.dataset.i18nRestore;
+      if (restoreI18nKey) {
+        titleEl.setAttribute("data-i18n", restoreI18nKey);
+        delete titleEl.dataset.i18nRestore;
+        titleEl.removeAttribute("data-i18n-skip");
+      }
     });
   };
 
@@ -275,8 +282,14 @@ function setupWorkshopFolders(page) {
     const titleEl = card.querySelector("h3");
     if (!titleEl) return;
 
+    const titleI18nKey = titleEl.getAttribute("data-i18n");
     refreshWorkshopTranslations(titleEl);
     titleEl.textContent = withGlaucomaSectionNumber(key, titleEl.textContent);
+    if (titleI18nKey) {
+      titleEl.dataset.i18nRestore = titleI18nKey;
+      titleEl.removeAttribute("data-i18n");
+      titleEl.setAttribute("data-i18n-skip", "true");
+    }
 
     // h3를 한 줄짜리 flex 헤더로 만들고, Close를 오른쪽으로 보냄
     titleEl.style.display = "flex";
@@ -307,6 +320,13 @@ function setupWorkshopFolders(page) {
       if (existingToggle) existingToggle.remove();
 
       // 폴더 버튼 복귀
+      const restoreI18nKey = titleEl.dataset.i18nRestore;
+      if (restoreI18nKey) {
+        titleEl.setAttribute("data-i18n", restoreI18nKey);
+        delete titleEl.dataset.i18nRestore;
+        titleEl.removeAttribute("data-i18n-skip");
+      }
+
       openFolderRow.style.display = "";
       ssRemove(SS_OPEN_KEY);
       ssRemove(SS_RESTORE_FLAG);

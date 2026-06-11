@@ -253,6 +253,13 @@ function setupWorkshopFolders(page) {
 
       const existingToggle = titleEl.querySelector(".see-all-toggle");
       if (existingToggle) existingToggle.remove();
+
+      const restoreI18nKey = titleEl.dataset.i18nRestore;
+      if (restoreI18nKey) {
+        titleEl.setAttribute("data-i18n", restoreI18nKey);
+        delete titleEl.dataset.i18nRestore;
+        titleEl.removeAttribute("data-i18n-skip");
+      }
     });
   };
 
@@ -280,8 +287,14 @@ function setupWorkshopFolders(page) {
     const titleEl = card.querySelector("h3");
     if (!titleEl) return;
 
+    const titleI18nKey = titleEl.getAttribute("data-i18n");
     refreshWorkshopTranslations(titleEl);
     titleEl.textContent = stripLeadingStepNumber(titleEl.textContent);
+    if (titleI18nKey) {
+      titleEl.dataset.i18nRestore = titleI18nKey;
+      titleEl.removeAttribute("data-i18n");
+      titleEl.setAttribute("data-i18n-skip", "true");
+    }
 
     titleEl.style.display = "flex";
     titleEl.style.alignItems = "center";
@@ -306,6 +319,13 @@ function setupWorkshopFolders(page) {
 
       const existingToggle = titleEl.querySelector(".see-all-toggle");
       if (existingToggle) existingToggle.remove();
+
+      const restoreI18nKey = titleEl.dataset.i18nRestore;
+      if (restoreI18nKey) {
+        titleEl.setAttribute("data-i18n", restoreI18nKey);
+        delete titleEl.dataset.i18nRestore;
+        titleEl.removeAttribute("data-i18n-skip");
+      }
 
       openFolderRow.style.display = "";
       ssRemove(SS_OPEN_KEY);
