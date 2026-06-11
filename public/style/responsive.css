@@ -3571,3 +3571,283 @@ body[data-interactive-subapp-open="true"] #backBtnGlobal {
   margin-left: auto !important;
   margin-right: auto !important;
 }
+
+/* Tablet-only final overrides: > phone, < 1024px. */
+@media (min-width: 600.02px) and (max-width: 1023.98px) {
+  #infoModalOverlay .guest-modal {
+    width: min(60vw, 420px) !important;
+    max-width: calc(100vw - 48px) !important;
+    box-sizing: border-box;
+    padding: 22px 48px 28px 28px !important;
+  }
+
+  #infoModalOverlay .guest-modal__close {
+    top: 10px !important;
+    right: 10px !important;
+    left: auto !important;
+    width: 34px !important;
+    height: 34px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #111 !important;
+    font-size: 28px !important;
+    line-height: 1;
+  }
+
+  #atomsCardPage #closeTOCBtn,
+  #atomsCardPage #tocInlineCloseBtn,
+  #atomsCardPage .top-right-icons button {
+    color: #fff !important;
+  }
+
+  #unifiedDashboard .unified-top .menuBtn,
+  #likedPage .ml-topbar .menuBtn,
+  #earsCatalogPage .ears-top .menuBtn,
+  #myProfilePage .profile-topbar .menuBtn,
+  #eyesCatalogPage .eyes-top .menuBtn,
+  .page.has-eyes-topbar .eyes-topbar .menuBtn,
+  #videos .page .eyes-topbar .menuBtn,
+  #pupilsPage .eyes-topbar .menuBtn,
+  .pupils-like .eyes-topbar .menuBtn {
+    width: 42px !important;
+    height: 42px !important;
+    flex: 0 0 42px !important;
+    font-size: 32px !important;
+    line-height: 1 !important;
+  }
+
+  #eyesCatalogPage .eyes-card .tag {
+    font-weight: 300;
+  }
+
+  #likedPage .ml-heart {
+    color: #e41e26;
+    text-shadow: none;
+  }
+
+  #likedPage .ml-heart svg {
+    display: block;
+    width: 18px;
+    height: 18px;
+    fill: #e41e26;
+    stroke: #e41e26;
+    stroke-width: 2;
+  }
+
+  #caseStudyFlashcardPagePrimary .eyes-topbar {
+    display: grid !important;
+    grid-template-columns: 42px minmax(0, 1fr) auto !important;
+    gap: 10px !important;
+    align-items: center !important;
+  }
+
+  #caseStudyFlashcardPagePrimary #primaryFlashBackBtn {
+    width: 42px !important;
+    height: 42px !important;
+    padding: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    justify-self: start !important;
+    margin: 0 !important;
+  }
+
+  #caseStudyFlashcardPagePrimary .eyes-topbar__title {
+    min-width: 0 !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    justify-self: start !important;
+    overflow: hidden !important;
+    text-align: left !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  #caseStudyFlashcardPagePrimary .eyes-topbar__icons {
+    min-width: 0 !important;
+    margin: 0 !important;
+    justify-self: end !important;
+    gap: 10px !important;
+  }
+
+  #caseStudyFlashcardPagePrimary .eyes-topbar__icons .caseTimer,
+  #caseStudyFlashcardPagePrimary .caseTimer {
+    width: 36px !important;
+    height: 36px !important;
+    flex: 0 0 36px !important;
+    margin: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  #caseStudyFlashcardPagePrimary .caseTimer__svg {
+    width: 34px !important;
+    height: 34px !important;
+    margin-left: 0 !important;
+  }
+
+  :is(
+      #childhoodEyeScreeningWorkshopPage,
+      #diabeticRetinopathyWorkshopPage,
+      #glaucomaWorkshopPage
+    )
+    :is(
+      #childhoodWorkshopFolders,
+      #diabeticWorkshopFolders,
+      #glaucomaWorkshopFolders,
+      .childhood-section-card,
+      .diabetic-section-card,
+      .diabetic-nested-section-card,
+      .glaucoma-section-card,
+      .glaucoma-subsection-card
+    )
+    .lesson-row {
+    width: calc(100% - 32px) !important;
+    height: 64px !important;
+    min-height: 64px !important;
+    max-width: none !important;
+    grid-template-columns: 62px minmax(0, 1fr) auto !important;
+    align-items: center !important;
+    gap: 12px !important;
+    box-sizing: border-box !important;
+    left: 0 !important;
+    margin: 14px auto !important;
+    padding: 6px 12px !important;
+  }
+
+  :is(
+      #childhoodEyeScreeningWorkshopPage,
+      #diabeticRetinopathyWorkshopPage,
+      #glaucomaWorkshopPage
+    )
+    :is(
+      #childhoodWorkshopFolders,
+      #diabeticWorkshopFolders,
+      #glaucomaWorkshopFolders
+    )
+    .lesson-row {
+    margin: 0 auto !important;
+  }
+
+  :is(
+      #childhoodEyeScreeningWorkshopPage,
+      #diabeticRetinopathyWorkshopPage,
+      #glaucomaWorkshopPage
+    )
+    .lesson-row
+    .thumb {
+    width: 62px !important;
+    height: 52px !important;
+    flex: 0 0 62px !important;
+  }
+
+  :is(
+      #childhoodEyeScreeningWorkshopPage,
+      #diabeticRetinopathyWorkshopPage,
+      #glaucomaWorkshopPage
+    )
+    .lesson-row
+    .lesson-main {
+    align-self: center !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    gap: 5px !important;
+    margin: 0 !important;
+    transform: none !important;
+  }
+
+  :is(
+      #childhoodEyeScreeningWorkshopPage,
+      #diabeticRetinopathyWorkshopPage,
+      #glaucomaWorkshopPage
+    )
+    .lesson-row
+    .lesson-top {
+    width: 100% !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    align-items: center !important;
+    gap: 6px !important;
+  }
+
+  :is(
+      #childhoodEyeScreeningWorkshopPage,
+      #diabeticRetinopathyWorkshopPage,
+      #glaucomaWorkshopPage
+    )
+    .lesson-row
+    .lesson-type {
+    min-width: 0 !important;
+    line-height: 1.2 !important;
+    white-space: normal !important;
+  }
+
+  :is(
+      #childhoodEyeScreeningWorkshopPage,
+      #diabeticRetinopathyWorkshopPage,
+      #glaucomaWorkshopPage
+    )
+    .lesson-row
+    .lesson-progress {
+    width: min(100%, 146px) !important;
+    margin: 0 !important;
+  }
+
+  :is(
+      #childhoodEyeScreeningWorkshopPage,
+      #diabeticRetinopathyWorkshopPage,
+      #glaucomaWorkshopPage
+    )
+    .lesson-row
+    .lesson-cta {
+    justify-self: end !important;
+    align-self: center !important;
+    margin: 0 !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+  }
+
+  :is(
+      #childhoodEyeScreeningWorkshopPage,
+      #diabeticRetinopathyWorkshopPage,
+      #glaucomaWorkshopPage
+    )
+    :is(
+      #childhoodWorkshopFolders,
+      #diabeticWorkshopFolders,
+      #glaucomaWorkshopFolders
+    )
+    .lesson-row {
+    width: calc(100% - 64px) !important;
+  }
+
+  :is(
+      #childhoodEyeScreeningWorkshopPage,
+      #diabeticRetinopathyWorkshopPage,
+      #glaucomaWorkshopPage
+    )
+    :is(
+      .childhood-section-card,
+      .diabetic-section-card,
+      .diabetic-nested-section-card,
+      .glaucoma-section-card,
+      .glaucoma-subsection-card
+    )
+    .lesson-row {
+    width: 80% !important;
+  }
+
+  #childhoodEyeScreeningWorkshopPage
+    .childhood-section-card[data-section="childhoodEyeScreening"]
+    .lesson-row.childhood-fundal-subrow {
+    width: 80% !important;
+  }
+}

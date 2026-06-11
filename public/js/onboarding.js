@@ -131,9 +131,38 @@ export function initializeOnboarding() {
   // ---------------------------
   function getSelectedInterests() {
     if (!interestSelect) return [];
-    return Array.from(interestSelect.selectedOptions || [])
+    return getSelectedOptionValues(interestSelect);
+  }
+
+  function getSelectedOptionValues(selectEl) {
+    if (!selectEl) return [];
+    return Array.from(selectEl.options || [])
+      .filter((o) => o.selected)
       .map((o) => o.value)
       .filter((v) => v && v !== "");
+  }
+
+  function getSelectedOptionLabels(selectEl) {
+    if (!selectEl) return [];
+    return Array.from(selectEl.options || [])
+      .filter((o) => o.selected && o.value)
+      .map((o) => (o.textContent || "").trim())
+      .filter(Boolean);
+  }
+
+  function setMultiSelectText(textEl, labels, placeholderI18nKey, placeholder) {
+    if (!textEl) return;
+
+    if (!labels.length) {
+      textEl.removeAttribute("data-i18n-skip");
+      textEl.setAttribute("data-i18n", placeholderI18nKey);
+      textEl.textContent = placeholder;
+      return;
+    }
+
+    textEl.removeAttribute("data-i18n");
+    textEl.setAttribute("data-i18n-skip", "");
+    textEl.textContent = labels.join(", ");
   }
 
   function getSelectPlaceholderText(selectEl, fallback = "Select") {
@@ -202,27 +231,21 @@ export function initializeOnboarding() {
 
     const interests = getSelectedInterests();
     if (!interests.length) {
-      interestSelectText.setAttribute(
-        "data-i18n",
+      setMultiSelectText(
+        interestSelectText,
+        [],
         "onboarding.field_placeholder",
-      );
-      interestSelectText.textContent = getSelectPlaceholderText(
-        interestSelect,
-        "Select",
+        getSelectPlaceholderText(interestSelect, "Select"),
       );
       return;
     }
 
-    interestSelectText.removeAttribute("data-i18n");
-    const labels = interests
-      .map((v) =>
-        interestSelect
-          .querySelector(`option[value="${CSS.escape(v)}"]`)
-          ?.textContent?.trim(),
-      )
-      .filter(Boolean);
-
-    interestSelectText.textContent = labels.join(", ");
+    setMultiSelectText(
+      interestSelectText,
+      getSelectedOptionLabels(interestSelect),
+      "onboarding.field_placeholder",
+      getSelectPlaceholderText(interestSelect, "Select"),
+    );
   }
 
   function openInterestPanel() {
@@ -254,9 +277,7 @@ export function initializeOnboarding() {
 
   function getSelectedRoles() {
     if (!jobSelect) return [];
-    return Array.from(jobSelect.selectedOptions || [])
-      .map((o) => o.value)
-      .filter((v) => v && v !== "");
+    return getSelectedOptionValues(jobSelect);
   }
 
   function clearJobSelection() {
@@ -363,21 +384,21 @@ export function initializeOnboarding() {
     if (!jobSelectText) return;
     const roles = getSelectedRoles();
     if (!roles.length) {
-      jobSelectText.setAttribute("data-i18n", "onboarding.field_placeholder");
-      jobSelectText.textContent = getSelectPlaceholderText(jobSelect, "Select");
+      setMultiSelectText(
+        jobSelectText,
+        [],
+        "onboarding.job_role_placeholder",
+        getSelectPlaceholderText(jobSelect, "Select"),
+      );
       return;
     }
 
-    jobSelectText.removeAttribute("data-i18n");
-    const labels = roles
-      .map((v) =>
-        jobSelect
-          ?.querySelector(`option[value="${CSS.escape(v)}"]`)
-          ?.textContent?.trim(),
-      )
-      .filter(Boolean);
-
-    jobSelectText.textContent = labels.join(", ");
+    setMultiSelectText(
+      jobSelectText,
+      getSelectedOptionLabels(jobSelect),
+      "onboarding.job_role_placeholder",
+      getSelectPlaceholderText(jobSelect, "Select"),
+    );
   }
 
   function openJobPanel() {
@@ -588,9 +609,7 @@ export function initializeOnboarding() {
   // ---------------------------
   function getSelectedInterests() {
     if (!interestSelect) return [];
-    return Array.from(interestSelect.selectedOptions || [])
-      .map((o) => o.value)
-      .filter((v) => v && v !== "");
+    return getSelectedOptionValues(interestSelect);
   }
 
   function updateJobsForInterests() {

@@ -31,6 +31,8 @@ const MY_LEARNING_DEFAULT_TAB = "liked";
 const MY_LEARNING_IN_PROGRESS_EMPTY_FALLBACK =
   "No in-progress items yet. Start any lesson and it will appear here.";
 const MY_LEARNING_TABS = Object.freeze(["inProgress", "liked", "notes"]);
+const MY_LEARNING_TABLET_UI_QUERY =
+  "(min-width: 600.02px) and (max-width: 1023.98px)";
 const MY_LEARNING_PROGRESS_EVENTS = Object.freeze([
   LESSON_PROGRESS_EVENT,
   "childhoodWorkshop:progress-changed",
@@ -643,6 +645,27 @@ function writeMyLearningTab(tab) {
   return normalized;
 }
 
+function isTabletLearningUi() {
+  return Boolean(window.matchMedia?.(MY_LEARNING_TABLET_UI_QUERY).matches);
+}
+
+function renderLikedHeartIcon(heartEl) {
+  if (!heartEl) return;
+  heartEl.setAttribute("aria-hidden", "true");
+  heartEl.textContent = "";
+
+  if (!isTabletLearningUi()) {
+    heartEl.textContent = "\u2665";
+    return;
+  }
+
+  heartEl.innerHTML = `
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 1 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z" />
+    </svg>
+  `;
+}
+
 function setActiveTabUI(page, tab) {
   page.querySelectorAll(".ml-tab").forEach((button) => {
     const buttonTab = normalizeMyLearningTab(button.dataset.mlTab);
@@ -785,7 +808,10 @@ function createLikedCard(item, cardTemplate, searchDictionaries) {
   }
 
   const heartEl = card.querySelector(".ml-heart");
-  if (heartEl) card.appendChild(heartEl);
+  if (heartEl) {
+    renderLikedHeartIcon(heartEl);
+    card.appendChild(heartEl);
+  }
 
   const badgesWrap = card.querySelector(".ml-badges");
   if (badgesWrap) {
