@@ -3603,6 +3603,17 @@ body[data-interactive-subapp-open="true"] #backBtnGlobal {
     color: #fff !important;
   }
 
+  #atomsCardPage #closeTOCBtn *,
+  #atomsCardPage #tocInlineCloseBtn *,
+  #atomsCardPage .top-right-icons button *,
+  #atomsCardPage #closeTOCBtn::before,
+  #atomsCardPage #tocInlineCloseBtn::before,
+  #atomsCardPage .top-right-icons button::before {
+    color: #fff !important;
+    fill: #fff !important;
+    stroke: #fff !important;
+  }
+
   #unifiedDashboard .unified-top .menuBtn,
   #likedPage .ml-topbar .menuBtn,
   #earsCatalogPage .ears-top .menuBtn,
@@ -3620,7 +3631,7 @@ body[data-interactive-subapp-open="true"] #backBtnGlobal {
   }
 
   #eyesCatalogPage .eyes-card .tag {
-    font-weight: 300;
+    font-weight: 400;
   }
 
   #likedPage .ml-heart {
@@ -3849,5 +3860,172 @@ body[data-interactive-subapp-open="true"] #backBtnGlobal {
     .childhood-section-card[data-section="childhoodEyeScreening"]
     .lesson-row.childhood-fundal-subrow {
     width: 80% !important;
+  }
+
+  :is(
+      #childhoodEyeScreeningWorkshopPage,
+      #diabeticRetinopathyWorkshopPage,
+      #glaucomaWorkshopPage
+    )
+    :is(
+      #childhoodWorkshopFolders,
+      #diabeticWorkshopFolders,
+      #glaucomaWorkshopFolders
+    ) {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 14px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    padding: 0 0 16px !important;
+  }
+
+  :is(
+      #childhoodEyeScreeningWorkshopPage,
+      #diabeticRetinopathyWorkshopPage,
+      #glaucomaWorkshopPage
+    )
+    :is(
+      .childhood-section-card,
+      .diabetic-section-card,
+      .diabetic-nested-section-card,
+      .glaucoma-section-card,
+      .glaucoma-subsection-card
+    ) {
+    width: 100% !important;
+    box-sizing: border-box !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 14px !important;
+    margin: 0 !important;
+    padding: 18px 0 16px !important;
+  }
+
+  :is(
+    #childhoodEyeScreeningWorkshopPage
+      #childhoodWorkshopFolders
+      > .childhood-section-card,
+    #diabeticRetinopathyWorkshopPage
+      #diabeticWorkshopFolders
+      > .diabetic-section-card,
+    #glaucomaWorkshopPage #glaucomaWorkshopFolders > .glaucoma-section-card
+  ) {
+    display: flex !important;
+  }
+
+  :is(
+      #childhoodEyeScreeningWorkshopPage,
+      #diabeticRetinopathyWorkshopPage,
+      #glaucomaWorkshopPage
+    )
+    :is(
+      .childhood-section-card,
+      .diabetic-section-card,
+      .diabetic-nested-section-card,
+      .glaucoma-section-card,
+      .glaucoma-subsection-card
+    )
+    > h3 {
+    width: calc(100% - 64px) !important;
+    max-width: 392px !important;
+    box-sizing: border-box !important;
+    align-self: center !important;
+    margin: 0 auto 2px !important;
+    padding: 0 !important;
+  }
+
+  :is(
+      #childhoodEyeScreeningWorkshopPage,
+      #diabeticRetinopathyWorkshopPage,
+      #glaucomaWorkshopPage
+    )
+    .see-all-toggle {
+    margin-right: 0 !important;
+  }
+
+  :is(
+      #childhoodEyeScreeningWorkshopPage,
+      #diabeticRetinopathyWorkshopPage,
+      #glaucomaWorkshopPage
+    )
+    :is(
+      #childhoodWorkshopFolders,
+      #diabeticWorkshopFolders,
+      #glaucomaWorkshopFolders,
+      .childhood-section-card,
+      .diabetic-section-card,
+      .diabetic-nested-section-card,
+      .glaucoma-section-card,
+      .glaucoma-subsection-card,
+      #fundalReflexSubRows
+    )
+    .lesson-row {
+    width: calc(100% - 64px) !important;
+    max-width: 392px !important;
+    height: 64px !important;
+    min-height: 64px !important;
+    margin: 0 auto !important;
+    padding: 6px 12px !important;
+    left: 0 !important;
+    display: grid !important;
+    grid-template-columns: 62px minmax(0, 1fr) auto !important;
+    align-items: center !important;
+    gap: 12px !important;
+    box-sizing: border-box !important;
+  }
+
+  :is(
+      #childhoodEyeScreeningWorkshopPage,
+      #diabeticRetinopathyWorkshopPage,
+      #glaucomaWorkshopPage
+    )
+    #fundalReflexSubRows
+    .lesson-row {
+    margin-top: 14px !important;
+  }
+
+  :is(
+      #childhoodEyeScreeningWorkshopPage,
+      #diabeticRetinopathyWorkshopPage,
+      #glaucomaWorkshopPage
+    )
+    .lesson-row:has(.lesson-progress)
+    .lesson-main {
+    align-self: center !important;
+    justify-content: center !important;
+    padding-top: 0 !important;
+  }
+
+  :is(
+      #childhoodEyeScreeningWorkshopPage,
+      #diabeticRetinopathyWorkshopPage,
+      #glaucomaWorkshopPage
+    )
+    .lesson-row
+    .lesson-top {
+    display: flex !important;
+    min-width: 0 !important;
+  }
+
+  :is(
+      #childhoodEyeScreeningWorkshopPage,
+      #diabeticRetinopathyWorkshopPage,
+      #glaucomaWorkshopPage
+    )
+    .lesson-row
+    .lesson-type {
+    min-width: 0 !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  :is(
+      #childhoodEyeScreeningWorkshopPage,
+      #diabeticRetinopathyWorkshopPage,
+      #glaucomaWorkshopPage
+    )
+    .lesson-row
+    .lesson-meta {
+    flex: 0 0 auto !important;
   }
 }
