@@ -4250,3 +4250,61 @@ body[data-interactive-subapp-open="true"] #backBtnGlobal {
     grid-template-columns: 62px minmax(0, 1fr) auto !important;
   }
 }
+
+/* Tablet-only final visibility/layout fixes for real iPad Safari. */
+@media (min-width: 600.02px) and (max-width: 1023.98px) {
+  #tocDropdown,
+  #atomsCardPage #tocDropdown {
+    left: 50% !important;
+    right: auto !important;
+    width: min(76vw, 620px) !important;
+    max-width: calc(100vw - 64px) !important;
+    height: min(42vh, 390px) !important;
+    max-height: min(42vh, 390px) !important;
+    transform: translate(-50%, 0) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: visible !important;
+  }
+
+  #tocDropdown.active,
+  #atomsCardPage #tocDropdown.active {
+    transform: translate(-50%, 0) !important;
+  }
+
+  #tocDropdown.slide-up,
+  #atomsCardPage #tocDropdown.slide-up {
+    transform: translate(-50%, -100%) !important;
+  }
+
+  #tocList,
+  #atomsCardPage #tocList {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    overflow-y: auto !important;
+  }
+
+  #childhoodEyeScreeningWorkshopPage
+    #childhoodWorkshopFolders
+    > .lesson-row[style*="display: none"],
+  #diabeticRetinopathyWorkshopPage
+    #diabeticWorkshopFolders
+    > .lesson-row[style*="display: none"],
+  #glaucomaWorkshopPage
+    #glaucomaWorkshopFolders
+    > .lesson-row[style*="display: none"],
+  #childhoodEyeScreeningWorkshopPage
+    #childhoodWorkshopFolders
+    > .childhood-section-card[style*="display: none"],
+  #diabeticRetinopathyWorkshopPage
+    #diabeticWorkshopFolders
+    > .diabetic-section-card[style*="display: none"],
+  #diabeticRetinopathyWorkshopPage
+    .diabetic-nested-section-card[style*="display: none"],
+  #glaucomaWorkshopPage
+    #glaucomaWorkshopFolders
+    > .glaucoma-section-card[style*="display: none"],
+  #glaucomaWorkshopPage .glaucoma-subsection-card[style*="display: none"] {
+    display: none !important;
+  }
+}
