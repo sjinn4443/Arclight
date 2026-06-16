@@ -7,6 +7,7 @@ The app is primarily static (served from `public/` in dev, and `dist/` in produc
 - local development serving (with/without watch)
 - serving static assets in production
 - a small set of app + telemetry APIs
+- collecting an offline asset manifest for install/download flows
 - protecting and serving the reports/admin pages
 
 ## Contents
@@ -95,11 +96,11 @@ Build output notes:
 - Rule source: `scripts/i18n-qa-rules.cjs` stores the standing homonym guidance and the small allowlist of acceptable English-only brand/acronym values.
 - Symbol preservation rule: button/icon symbols such as `☰`, `<`, `×` must not be translated in locale JSON files. Keep these values identical across all languages.
 
-Current QA baseline as of `2026-04-16`:
+Current QA baseline as of `2026-06-12`:
 
-- `npm run test:a11y` passes against `76` HTML files.
-- `npm run check-translations` currently reports `114` missing used keys, `28` damaged UTF-8 strings, and `764` exact-English carry-overs.
-- The remaining missing-key debt is concentrated on four reports-table labels: `aims`, `contact`, `country`, and `area`.
+- `npm run test:a11y` passes against `143` HTML files.
+- `npm run check-translations` reports `0` missing used keys, `0` damaged strings, `0` exact-English carry-overs, `0` medical homonym violations, and `0` subtitle medical homonym violations.
+- Keep new HTML/JS copy, locale JSON, VTT subtitles, and generated subtitle catalogs in sync so this baseline stays clean.
 
 ## Environment variables
 
@@ -153,6 +154,7 @@ The server exposes simple app endpoints used by the client:
 
 - `POST /api/app/profile`
 - `POST /api/app/refresh`
+- `GET /api/app/offline-assets`
 - `POST /track`
 
 Storage selection:
@@ -173,6 +175,25 @@ The password-protected reports pages are served at:
 - `DELETE /api/dev/users/:anonId`
 
 See [`reports/README.md`](./reports/README.md) for details.
+
+## Offline install/downloads
+
+The Language/Install route and menu download actions now use the same offline-download pipeline:
+
+- `GET /api/app/offline-assets` enumerates files under the active static root (`public/` in dev, `dist/` when serving a build) and returns `{ assets, bytes, count, urls }`.
+- `public/js/languageinstall.js` turns that manifest into download choices: full content, selected content section, or app-only/no-video content, with low/high video quality filtering where both MP4 tiers exist.
+- `public/js/menu.js` reuses the same helpers for the menu download action and the Downloaded Contents summary.
+- `public/sw.js` receives selected URL lists through `CACHE_URLS` / `CACHE_ASSETS`, reports progress, caches full MP4 files for offline playback, and serves cached MP4 range requests when the browser asks for partial content.
+- Childhood Eye Screening HLS assets and subtitle catalogs are included in the cacheable asset model so iOS HLS playback can keep working offline after a successful download.
+
+When adding new media, keep the file path discoverable under the static root, add it to the relevant Videos/catalog mapping, include matching subtitles where applicable, and bump the service worker cache name when cached behavior or required cached assets change.
+
+## Video subtitles and progress
+
+- `public/js/videoSubtitles.js` applies localized caption tracks to app videos using `public/video-localization/app-video-subtitles.json`.
+- `public/js/videos.js` also owns the Childhood Eye Screening subtitle/HLS pilot through `public/video-localization/childhood-eye-screening.json` and VTT files under `public/video-subtitles/`.
+- Local video pages use `VIDEO_PAGE_SOURCES` for low/high/online or two-state video modes; many glaucoma workshop video pages now use the same tri-toggle source pattern.
+- Shared progress helpers live in `public/js/lessonProgress.js` and `public/js/lessonCompletionTick.js`. They read/write compatible progress records from `lessonProgress:`, `videoProgress:`, `childhoodWorkshop:progress:`, `diabeticWorkshop:progress:`, and `glaucomaWorkshop:progress:` keys, dispatch `arclight:lesson-progress-changed`, and add completion ticks when rows reach completion.
 
 ## Docker / Railway
 
@@ -203,8 +224,14 @@ See [`security/EMERGENCY_PLAN.md`](./security/EMERGENCY_PLAN.md) for the operato
 - `public/subapp/` - local mini-apps embedded inside the Videos route Interactive Learning pages
 - `public/html/childhoodFundal*.html` - Childhood Fundal Reflex scrollytelling route shells
 - `public/js/childhoodFundalPreparation.js` - shared Lottie stage-autoplay engine/config for the Childhood Fundal Reflex scrollytelling sequence
+- `public/html/casestudy.html` - case-study launcher plus primary/intermediate/advanced chat and flashcard pages
+- `public/html/glaucomaHistoryCaseStudy.html` - glaucoma workshop history-taking case-study route
+- `public/js/casestudy.js`, `public/js/casestudy_primary.js`, `public/js/glaucomaHistoryCaseStudy.js` - case-study chat/flashcard engines and progress wiring
 - `public/html/diabeticRetinopathyWorkshop.html` - diabetic retinopathy workshop launcher, lesson folders, progress rows, scroll lessons, and protocol pages
 - `public/html/videos.html` - Videos route, including Interactive Learning, diabetic workshop video pages, and diabetic/glaucoma demo quiz pages
+- `public/js/lessonProgress.js`, `public/js/lessonCompletionTick.js` - shared lesson progress storage, row updates, and completion tick rendering
+- `public/js/languageinstall.js` - language selection, PWA install prompts, offline download selection, and service-worker cache requests
+- `public/js/videoSubtitles.js`, `public/video-localization/`, `public/video-subtitles/` - localized caption catalog/runtime and VTT subtitle assets
 - `server.cjs` - Express server for dev/prod hosting + APIs
 - `scripts/` - build + tooling scripts (esbuild, HTML minify, CSS minify)
 - `storage/` - runtime storage selection, no-op storage, legacy NDJSON storage, and Postgres storage
@@ -225,6 +252,11 @@ See [`security/EMERGENCY_PLAN.md`](./security/EMERGENCY_PLAN.md) for the operato
   - `public/html/videos.html` owns the diabetic video pages and the Interactive Learning `Demo Quizzes` folder.
   - `public/js/diabeticRetinopathyWorkshop.js` initializes both the workshop route and the diabetic demo quiz pages when those pages are present.
   - `public/js/diabeticWorkshopNextFlow.js` and `public/js/diabeticWorkshopProgress.js` keep cross-route sequencing and progress state aligned.
+- Case-study chat pages use a shared `casechat-*` UI vocabulary and stable page/progress IDs:
+  - `caseStudyChatPagePrimary` and `caseStudyFlashcardPagePrimary` are owned by `public/js/casestudy_primary.js`.
+  - `caseStudyChatPage` is owned by `public/js/casestudy.js`.
+  - `glaucomaHistoryCaseStudy` is owned by `public/js/glaucomaHistoryCaseStudy.js` and writes Glaucoma workshop progress.
+  - Keep `data-target` values, page IDs, progress targets, and My Learning mappings aligned when moving or adding case-study entries.
 - Childhood Fundal Reflex scrollytelling pages use a shared Lottie stage-autoplay pattern:
   - page shells live in `public/html/childhoodFundal*.html` with `.childhood-fundal-scroll-page` and an empty `.childhood-fundal-prep-list`
   - `public/js/config.js` maps the route, `public/js/main.js` lazy-loads `public/js/childhoodFundalPreparation.js`, and that module owns `ROUTE_CONFIG`, `FUNDAL_PAGE_ROUTE_SEQUENCE`, stage creation, replay/down-arrow behavior, scroll locks, settle frames, and cross-page navigation
@@ -240,6 +272,10 @@ See [`security/EMERGENCY_PLAN.md`](./security/EMERGENCY_PLAN.md) for the operato
 
 ## Changelog (high level)
 
+- 2026-06-12: Refreshed docs for the June app changes: offline asset-manifest downloads, menu Downloaded Contents summaries, cached MP4/HLS playback behavior, localized app-video subtitles, shared lesson-completion ticks, case-study chat progress, clean translation QA, and iPad/responsive layout maintenance.
+- 2026-06-11: Added broad localized subtitle coverage for app videos via `public/video-localization/app-video-subtitles.json`, VTT subtitle folders, and runtime subtitle synchronization.
+- 2026-06-02: Added shared lesson progress/completion tick infrastructure and expanded case-study chat/flashcard progress wiring.
+- 2026-05-26: Added server-backed offline asset manifest support, selectable offline download modes, service-worker cache progress reporting, cached MP4 range responses, and menu download-management actions.
 - 2026-05-25: Documented the iOS/WebKit Fundal scrollytelling white-frame recovery pattern: exact static pause/final snapshots, route-level snapshot maps, prewarming, and WebKit iPhone regression coverage.
 - 2026-05-20: Added Diabetic Retinopathy workshop Direct Ophthalmoscopy scrollytelling routes for `Observation and Fundal Reflex`, `Positioning and Flight Path`, and `How to Examine` using the shared Fundal Lottie stage-autoplay engine.
 - 2026-05-20: Added Diabetic Retinopathy workshop Binocular Indirect Ophthalmoscopy scrollytelling routes for `Preparation`, `Fundoscopy Sitting`, and `Fundoscopy with Indentation`.

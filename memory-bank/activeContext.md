@@ -1,8 +1,16 @@
-<!-- THE CHANGES - activeContext.md | 2026-05-25, Codex -->
+<!-- THE CHANGES - activeContext.md | 2026-06-12, Codex -->
 
 # Active Context
 
 ## Current Work Focus
+
+June stabilization and app-wide infrastructure:
+
+- offline install/downloads now use `GET /api/app/offline-assets`, `public/js/languageinstall.js`, `public/js/menu.js`, and `public/sw.js` as one pipeline for full/select/app-only downloads, low/high MP4 filtering, cache progress, Downloaded Contents summaries, cached MP4 range responses, and Childhood Eye Screening HLS/subtitle cache support
+- app video subtitle localization is active through `public/js/videoSubtitles.js`, `public/video-localization/app-video-subtitles.json`, `public/video-localization/childhood-eye-screening.json`, and VTT files under `public/video-subtitles/`
+- shared lesson progress and completion ticks are centralized in `public/js/lessonProgress.js` and `public/js/lessonCompletionTick.js`, then consumed by Videos, Childhood Workshop, Diabetic Workshop, Glaucoma Workshop, case studies, and My Learning rows
+- case-study chat/flashcard work spans `public/html/casestudy.html`, `public/js/casestudy.js`, `public/js/casestudy_primary.js`, `public/html/glaucomaHistoryCaseStudy.html`, `public/js/glaucomaHistoryCaseStudy.js`, and the shared `casechat-*` CSS
+- iPad/tablet layout fixes are concentrated in `public/style/responsive.css`; route-specific overrides should stay constrained and be rechecked against phone and desktop layouts
 
 Diabetic Retinopathy workshop and Videos-route stabilization:
 
@@ -24,6 +32,29 @@ Childhood Fundal Reflex scrollytelling is also an active maintenance area:
 - Diabetic Fundal-style scrollytelling now depends on hardened pause-frame locking, retained accumulated captions after completion, iOS/WebKit renderer overrides where needed, exact static snapshot recovery for fragile WebKit pause/final holds, and ordinary `< Previous` / `Next >` buttons on the final page of each scrollytelling group.
 
 ## Recent Changes
+
+- Offline download pipeline and service worker media handling (2026-05-26 to 2026-06-12):
+  - Added `GET /api/app/offline-assets` to enumerate the active static root and return file URLs plus byte sizes.
+  - Added full/select/app-only download modes, low/high video filtering, estimated size/time display, cache progress messaging, error summaries, and menu Downloaded Contents inspection.
+  - Updated `public/sw.js` so selected URLs can be cached on demand, full cached MP4 files can satisfy browser range requests, `_220p` and `_720p` alternates can be used when only one tier is cached, and Childhood Eye Screening HLS assets remain usable offline after download.
+
+- Video subtitle localization (2026-06-11):
+  - Added `public/js/videoSubtitles.js` and the app-wide subtitle catalog at `public/video-localization/app-video-subtitles.json`.
+  - Expanded VTT subtitle coverage under `public/video-subtitles/app-videos/`.
+  - Kept the Childhood Eye Screening subtitle/HLS pilot catalog in `public/video-localization/childhood-eye-screening.json` synchronized with download/cache handling.
+
+- Shared progress, case studies, and My Learning updates (2026-06-02 to 2026-06-04):
+  - Added `public/js/lessonProgress.js` and `public/js/lessonCompletionTick.js` for reusable progress storage, row rendering, completion tick rendering, and `arclight:lesson-progress-changed` events.
+  - Wired case-study rows to stable progress targets: `caseStudyChatPagePrimary`, `caseStudyFlashcardPagePrimary`, `caseStudyChatPage`, and `glaucomaHistoryCaseStudy`.
+  - Expanded case-study chat behavior for primary/intermediate cases and glaucoma history-taking cases while keeping progress reflected in launcher/My Learning rows.
+
+- Responsive/iPad stabilization (2026-05-27 to 2026-06-12):
+  - Added many route-specific responsive overrides in `public/style/responsive.css` for dashboard/menu/onboarding/My Learning, case-study chat, videos, workshops, subapps, and tablet/iPad viewport behavior.
+  - Current maintenance rule: keep tablet-only CSS targeted to page IDs/classes and recheck phone and desktop after changes.
+
+- QA baseline refresh (2026-06-12):
+  - `npm run test:a11y` passes for `143` HTML files.
+  - `npm run check-translations` reports `0` missing used keys, `0` damaged strings, `0` exact-English carry-overs, `0` medical homonym violations, and `0` subtitle medical homonym violations.
 
 - iOS/WebKit Fundal white-frame recovery documentation (2026-05-25):
   - Recorded the reusable fix pattern in `agent.md`, `README.md`, and E2E docs.
@@ -75,15 +106,11 @@ Childhood Fundal Reflex scrollytelling is also an active maintenance area:
   - `playwright.config.js` starts the local E2E web server with `DISABLE_DB_STORAGE=1`.
   - `.env.sample` documents split write/read/admin DB URLs, DB TLS options, telemetry host allowlisting, delete gates, and IPInfo token support.
 
-- accessibility + translation QA baseline (2026-04-16):
-  - `npm run test:a11y` now performs an actual static audit and currently passes on `76` HTML files.
-  - `npm run check-translations` now audits only keys that are actually referenced by HTML/JS.
-  - After removing duplicated onboarding/privacy headings, trimming install-helper labels, and switching reports pages to locale-aware runtime wiring, the remaining translation audit still reports locale debt:
-    - missing used keys: `114`
-    - damaged UTF-8 strings: `28`
-    - exact-English carry-overs: `764`
-  - Remaining missing-key debt is now concentrated on `auto.reports.aims`, `auto.reports.contact`, `auto.reports.country`, and `auto.reports.area`.
-  - Persistent medical homonym guidance now lives in `scripts/i18n-qa-rules.cjs`.
+- accessibility + translation QA baseline (refreshed 2026-06-12):
+  - `npm run test:a11y` performs a static audit and currently passes on `143` HTML files.
+  - `npm run check-translations` audits referenced HTML/JS keys, damaged strings, fallback-English carry-overs, medical homonym guidance, and subtitle homonym coverage.
+  - Current audit result is clean: `0` missing used keys, `0` damaged strings, `0` exact-English carry-overs, `0` medical homonym violations, and `0` subtitle medical homonym violations.
+  - Persistent medical homonym guidance lives in `scripts/i18n-qa-rules.cjs`.
 
 - translation QA sweep (2026-03-26):
   - Replaced hardcoded English in the visual system eye/brain animation with locale-backed copy.
@@ -125,11 +152,11 @@ Childhood Fundal Reflex scrollytelling is also an active maintenance area:
 
 ## Next Steps
 
-- Fill the remaining missing used keys, now concentrated on the four `auto.reports.*` table labels.
-- Repair the remaining damaged locale strings (`�` / mojibake / `???`) before adding more translation content.
-- Use `node scripts/check-translations.cjs --strict-english` after each locale sweep to drive down fallback-English carry-overs once missing/damaged keys are under control.
-- Continue adding i18n keys for the Diabetic Retinopathy workshop, which currently contains substantial English static copy.
-- Continue adding i18n keys for the Videos-route diabetic demo quiz pages and diabetic video lesson labels.
+- Keep the clean translation QA baseline by adding i18n keys, locale values, and VTT subtitles at the same time as new user-facing copy.
+- Use `npm run check-translations` after locale/subtitle edits and `node scripts/check-translations.cjs --strict-english` when intentionally checking for fallback-English regressions.
+- Keep app video subtitle catalogs, VTT folders, and offline-download cache selections synchronized when adding or moving videos.
+- Keep the offline asset manifest flow working across dev and dist: update static paths, catalog matching, video quality filtering, service-worker cache behavior, and menu Downloaded Contents summaries together.
+- Continue checking iPad/tablet overrides against phone and desktop layouts, especially for case-study chat, Videos pages, workshops, and subapps.
 - Keep diabetic workshop folder/progress state aligned when adding or moving lesson rows.
 - When adding/moving diabetic content, update all route owners together: `public/html/diabeticRetinopathyWorkshop.html`, `public/html/videos.html`, `public/js/videos.js`, `public/js/diabeticRetinopathyWorkshop.js`, `public/js/diabeticWorkshopNextFlow.js`, and `public/js/diabeticWorkshopProgress.js`.
 - When adding or changing Fundal scrollytelling pages, update the route shell, `config.js`, `main.js` `FUNDAL_REFLEX_SCROLL_ROUTES`, `childhoodFundalPreparation.js` `ROUTE_CONFIG`/`FUNDAL_PAGE_ROUTE_SEQUENCE`, relevant Childhood Workshop mappings, and `.childhood-fundal-scroll-page` CSS together.
@@ -145,6 +172,11 @@ Childhood Fundal Reflex scrollytelling is also an active maintenance area:
 ## Active Decisions and Considerations
 
 - Prefer accurate, code-referenced documentation over aspirational or legacy docs.
+- Offline downloads are selected from the server-provided asset manifest; do not maintain separate hand-written all-asset lists unless they are explicit route/category hints.
+- Local MP4 playback, subtitle catalogs, HLS fallback metadata, and offline cache selection are one contract for video pages.
+- Shared lesson progress should use `lessonProgress.js` and `lessonCompletionTick.js` before adding route-specific progress/tick logic.
+- Case-study progress depends on stable page IDs and `data-target` values; update launcher rows, page IDs, owning JS, My Learning mappings, and CSS together.
+- Tablet/iPad responsive patches should stay targeted to affected page IDs/classes in `public/style/responsive.css`.
 - Use the existing Videos-route subpage pattern (`data-page`, `data-target`, hidden `.page` blocks, `iframe[data-src]`) when adding more Interactive Learning modules.
 - Do not assume parent-page CSS/JS can control embedded external site UI across origins.
 - For the Diabetic Retinopathy workshop, use stable `data-target`, `data-lesson`, and `data-folder` values because progress, folder restore, and next-flow routing depend on them.
@@ -158,6 +190,10 @@ Childhood Fundal Reflex scrollytelling is also an active maintenance area:
 ## Important Patterns and Preferences
 
 - When the repo mixes ESM and CJS, document the boundary and the mechanism used to keep tests stable (mocks + `moduleNameMapper`).
+- Offline download UX should flow through `languageinstall.js` helpers even when triggered from the menu.
+- `public/sw.js` should only synthesize MP4 range responses from a complete cached MP4 response; otherwise let the network handle the range request.
+- Add or update localized video subtitles through the JSON catalogs and VTT files, then let `videoSubtitles.js`/`videos.js` attach tracks at runtime.
+- Use `setLessonProgress`, `updateLessonProgressRows`, and `arclight:lesson-progress-changed` for new row progress behavior.
 - Media accessibility is now enforced in two layers:
   - runtime labeling in `public/js/mediaA11y.js`
   - static audit enforcement in `scripts/test-a11y.mjs`

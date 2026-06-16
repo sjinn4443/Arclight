@@ -1,12 +1,16 @@
 # Agent Notes
 
-Last refreshed: 2026-05-25
+Last refreshed: 2026-06-12
 
 ## Current repo orientation
 
 - Arclight is a static-first PWA served from `public/` in development and `dist/` after builds, with `server.cjs` providing hosting, reports/admin protection, and app/telemetry APIs.
 - Runtime storage uses `storage/ndjson-storage.cjs` by default when DB URLs are absent; Postgres is selected by `storage/index.cjs` when DB URLs are configured and `DISABLE_DB_STORAGE` is not enabled.
 - Playwright starts its local web server with `DISABLE_DB_STORAGE=1`, so E2E tests should not write telemetry.
+- Offline install/downloads are server-manifest driven: `GET /api/app/offline-assets` returns files and byte sizes from the active static root, `public/js/languageinstall.js` resolves full/select/app-only and low/high video choices, `public/js/menu.js` reuses those helpers, and `public/sw.js` caches the selected URL list.
+- The service worker handles cached MP4 range requests only when a full MP4 is already cached, falls back to alternate `_220p` / `_720p` cached MP4s when needed, and keeps Childhood Eye Screening HLS assets usable offline after download.
+- App-video subtitles are synchronized by `public/js/videoSubtitles.js` from `public/video-localization/app-video-subtitles.json`; Childhood Eye Screening video pages also use `public/video-localization/childhood-eye-screening.json` and VTT files under `public/video-subtitles/`.
+- Shared lesson progress lives in `public/js/lessonProgress.js` and `public/js/lessonCompletionTick.js`; rows with progress bars are updated from compatible `lessonProgress:`, `videoProgress:`, `childhoodWorkshop:progress:`, `diabeticWorkshop:progress:`, and `glaucomaWorkshop:progress:` storage keys and receive completion ticks at completion.
 - The Eyes route includes a Diabetic Retinopathy workshop at `public/html/diabeticRetinopathyWorkshop.html`.
 - The diabetic workshop is split across routes:
   - `public/html/diabeticRetinopathyWorkshop.html` owns the folder launcher, scroll lessons, protocol pages, and rows that jump to Videos-route lessons.
@@ -14,6 +18,7 @@ Last refreshed: 2026-05-25
   - `public/js/diabeticRetinopathyWorkshop.js` initializes workshop-only behavior plus the diabetic demo quiz pages when those pages exist.
   - `public/js/diabeticWorkshopProgress.js` and `public/js/diabeticWorkshopNextFlow.js` keep progress, previous/next flow, and return-to-folder behavior aligned across route boundaries.
 - The Videos route hosts both local subapps and selected external iframe lessons; cross-origin iframe internals cannot be styled or scripted from Arclight.
+- The Case Study route (`public/html/casestudy.html`) owns primary/intermediate/advanced case-study pages. Primary chat and flashcard behavior live in `public/js/casestudy_primary.js`; intermediate chat behavior lives in `public/js/casestudy.js`. The Glaucoma history case-study route lives in `public/html/glaucomaHistoryCaseStudy.html` and `public/js/glaucomaHistoryCaseStudy.js`.
 - Childhood Fundal Reflex scrollytelling routes (`childhoodFundalPreparation` through `childhoodFundalAfterExamination`) share `public/js/childhoodFundalPreparation.js` for Lottie stage autoplay, settle frames, replay/down-arrow controls, text toggles, scroll locks, and `FUNDAL_PAGE_ROUTE_SEQUENCE`; route shells stay minimal in `public/html/childhoodFundal*.html`.
 - `scripts/build.cjs` cleans build outputs by renaming old output directories to `.build-cleanup-*`, recreating the target output directory, and falling back to retrying removal when Windows file locks block the rename.
 
@@ -28,6 +33,11 @@ Last refreshed: 2026-05-25
 
 - Prefer code-referenced documentation over aspirational descriptions.
 - Keep `README.md`, `memory-bank/activeContext.md`, and `memory-bank/progress.md` aligned when features or runtime behavior change.
+- When adding or moving downloadable content, keep the server manifest assumptions, `OFFLINE_CATALOG_OPTIONS`/`matchesOfflineCatalog`, video quality filtering, service-worker cache behavior, and menu Downloaded Contents summary aligned. Bump the service worker cache name when required cached assets or cache behavior change.
+- When adding local app videos, update `VIDEO_PAGE_SOURCES`, progress target wiring, subtitle catalogs/VTT files, and offline-download categorization together. For Childhood Eye Screening subtitle pilot pages, keep MP4, HLS manifest, fallback mode, and subtitle language metadata in sync.
+- When adding lesson rows with progress bars, prefer `setLessonProgress`/`updateLessonProgressRows` and let `lessonCompletionTick.js` render completion state. Keep `data-target` values stable because progress keys, My Learning rows, and workshop restore flows depend on them.
+- Case-study chat pages depend on stable page IDs and progress targets: `caseStudyChatPagePrimary`, `caseStudyFlashcardPagePrimary`, `caseStudyChatPage`, and `glaucomaHistoryCaseStudy`. Update `casestudy.html`, the owning JS module, progress keys, styles, and My Learning mappings together.
+- Responsive layout fixes for iPad/tablet live mainly in `public/style/responsive.css`; keep route-specific overrides constrained to the affected page IDs/classes and recheck desktop/mobile after tablet-only changes.
 - Preserve stable `data-target`, `data-lesson`, `data-folder`, and `data-route` values in the Diabetic Retinopathy workshop and Videos-route demo/video pages unless all dependent navigation/progress/next-flow mappings are updated together.
 - When moving diabetic pages between `diabeticRetinopathyWorkshop.html` and `videos.html`, recheck `main.js` initialization, `videos.js` subpage routing, `diabeticWorkshopNextFlow.js`, and progress bar updates together.
 - Do not treat `.build-cleanup-*` directories as source artifacts; they are ignored temporary output directories left by safe build cleanup.
@@ -168,7 +178,7 @@ Use this when the user asks to make a page like `childhoodFundalPreparationPage`
 - `scripts/check-translations.cjs` is the canonical audit entry point for used-key coverage, damaged-string detection, and fallback-English review.
 - `scripts/i18n-qa-rules.cjs` stores the standing medical homonym guidance; use those meanings first when a source term is ambiguous.
 - Media elements must either be explicitly decorative or have an accessible name via `alt`, `aria-label`, `aria-labelledby`, or `title`. Runtime support now lives in `public/js/mediaA11y.js`, and the static audit is `scripts/test-a11y.mjs`.
-- Current baseline (`2026-04-16`): accessibility audit passes on `76` HTML files; translation QA is down to `114` missing used keys, `28` damaged strings, and `764` exact-English carry-overs, with missing-key debt now concentrated on four reports labels.
+- Current baseline (`2026-06-12`): accessibility audit passes on `143` HTML files; translation QA reports `0` missing used keys, `0` damaged strings, `0` exact-English carry-overs, `0` medical homonym violations, and `0` subtitle medical homonym violations.
 
 ## Issue Summary
 

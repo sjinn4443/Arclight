@@ -7,6 +7,7 @@ Arclight is primarily a static, client-side PWA served from `public/` (or `dist/
 - local development serving
 - serving static assets in production
 - a small set of app/telemetry APIs
+- generating the offline asset manifest used by install/download flows
 - protecting and serving the reports/admin pages
 
 ## Key Technical Decisions
@@ -19,6 +20,8 @@ Arclight is primarily a static, client-side PWA served from `public/` (or `dist/
   - DB configured: Postgres through `storage/pg-storage.cjs`
   - E2E isolation: Playwright sets `DISABLE_DB_STORAGE=1`
   - forced off: no-op storage through `storage/disabled-storage.cjs`
+- Server-manifest offline downloads: `GET /api/app/offline-assets` enumerates the active static root and provides URLs plus byte sizes; client code filters this manifest into full, selected-section, or app-only downloads.
+- Shared progress UI: route code should use `public/js/lessonProgress.js` and `public/js/lessonCompletionTick.js` for progress rows, storage keys, progress events, and completion ticks.
 
 ## Design Patterns in Use
 
@@ -37,7 +40,12 @@ Arclight is primarily a static, client-side PWA served from `public/` (or `dist/
 - Videos-route subpage pattern: cards use `data-page` / `data-target` IDs that map to hidden `.page` sections in `public/html/videos.html`; `public/js/videos.js` lazy-loads any `iframe[data-src]` the first time a subpage is shown.
 - Hybrid interactive delivery: Interactive Learning can host either local `public/subapp/*` content or external iframe content inside the same page shell.
 - Cross-origin embed boundary: parent-page CSS/JS can control the Arclight wrapper (card spacing, headers, iframe size), but cannot directly alter UI inside a remote iframe.
+- Offline download pattern: `languageinstall.js` owns download choices, category matching, low/high media filtering, estimates, and service-worker cache requests; `menu.js` reuses those helpers for menu-initiated downloads and Downloaded Contents inspection.
+- Service-worker media pattern: `public/sw.js` caches selected URLs on demand, synthesizes MP4 range responses only from a complete cached MP4, and can fall back between cached `_220p` and `_720p` variants.
+- Localized video subtitle pattern: `public/js/videoSubtitles.js` attaches app-video caption tracks from `public/video-localization/app-video-subtitles.json`; Childhood Eye Screening pages add route-specific subtitle/HLS behavior from `public/video-localization/childhood-eye-screening.json`.
 - Workshop flow pattern: route-level lesson pages can use stable `data-target`/`data-lesson`/`data-folder` identifiers, progress bars, and `sessionStorage` restore flags to support foldered learning flows across route boundaries.
+- Lesson completion tick pattern: rows with `.lesson-progress__fill`, `.progress-fill`, or a progressbar role are scanned by `lessonCompletionTick.js`; rows at completion get a `.lesson-complete-tick` inserted into `.lesson-type`.
+- Case-study chat pattern: case-study pages use stable launcher `data-target` values, page IDs, `casechat-*` classes, timer/diagnosis modals, and shared progress targets. Primary behavior is in `casestudy_primary.js`, intermediate behavior is in `casestudy.js`, and glaucoma history behavior is in `glaucomaHistoryCaseStudy.js`.
 - Diabetic workshop next-flow pattern: `public/js/diabeticWorkshopNextFlow.js` owns structural Previous/Next controls, Videos-route jumps, and folder restore on return to the workshop.
 - Diabetic route split pattern: `public/html/diabeticRetinopathyWorkshop.html` owns the workshop launcher, scroll lessons, and protocol pages; `public/html/videos.html` owns diabetic video pages and demo quiz pages. Shared `data-target` IDs, hidden `.page` IDs, `VIDEO_PAGE_SOURCES`, progress events, and next-flow mappings are the contract between the routes.
 - Childhood Fundal scrollytelling pattern: `public/html/childhoodFundal*.html` shells stay minimal and expose `.childhood-fundal-scroll-page` plus an empty `.childhood-fundal-prep-list`; `public/js/childhoodFundalPreparation.js` builds the Lottie stages, segment text, replay buttons, down-arrow/page-next controls, scroll locks, settle frames, and cross-page navigation from route config.
@@ -54,6 +62,7 @@ Arclight is primarily a static, client-side PWA served from `public/` (or `dist/
 - Client logic: `public/js/`
 - Server: `server.cjs`
   - API endpoints: `/api/app/profile`, `/api/app/refresh`, `/track`
+  - Offline asset manifest: `/api/app/offline-assets`
   - Reports protection: Basic Auth for `/reports.html` and `/html/reports.html`
   - Reports API: `/api/dev/users`, `DELETE /api/dev/users/:anonId`
 - Storage selection: `storage/index.cjs`
@@ -61,6 +70,24 @@ Arclight is primarily a static, client-side PWA served from `public/` (or `dist/
   - `storage/pg-storage.cjs` (Postgres URL configured)
   - `storage/disabled-storage.cjs` (`DISABLE_DB_STORAGE=1`)
 - Reports encryption helper: `reports/security/encrypt.cjs`
+- Offline install/download flow:
+  - manifest endpoint: `server.cjs` `collectOfflineAssetManifest()`
+  - selection/cache UI: `public/js/languageinstall.js`
+  - menu download/actions: `public/js/menu.js`
+  - cache runtime/range handling: `public/sw.js`
+- Shared progress/completion:
+  - progress storage/events/row UI: `public/js/lessonProgress.js`
+  - completion ticks and mutation observer: `public/js/lessonCompletionTick.js`
+- Video subtitles:
+  - app-video runtime: `public/js/videoSubtitles.js`
+  - app-video catalog: `public/video-localization/app-video-subtitles.json`
+  - Childhood Eye Screening catalog/HLS metadata: `public/video-localization/childhood-eye-screening.json`
+  - subtitle files: `public/video-subtitles/`
+- Case studies:
+  - launcher/pages: `public/html/casestudy.html`
+  - primary chat/flashcards: `public/js/casestudy_primary.js`
+  - intermediate chat: `public/js/casestudy.js`
+  - glaucoma history route: `public/html/glaucomaHistoryCaseStudy.html`, `public/js/glaucomaHistoryCaseStudy.js`
 - Diabetic workshop flow:
   - route shell: `public/html/diabeticRetinopathyWorkshop.html`
   - Videos-route diabetic demo/video pages: `public/html/videos.html`
@@ -81,8 +108,13 @@ Arclight is primarily a static, client-side PWA served from `public/` (or `dist/
 - Navigation + rendering: ensure `public/html/*` pages and `public/js/*` modules stay in sync.
 - Interactive Learning embeds: keep card `data-page` / `data-target` values, hidden subpage IDs, and iframe `data-src` values aligned when adding or changing embedded modules.
 - Offline capability: service worker lifecycle + cache correctness.
+- Offline downloads: keep static asset paths, catalog matching, video quality filtering, subtitle/HLS inclusion, service-worker cache name, and Downloaded Contents summaries synchronized.
+- Video subtitles: keep source paths in video maps aligned with subtitle catalog keys and VTT folders.
+- Shared progress: keep lesson row `data-target` values stable across route pages, My Learning entries, localStorage progress keys, and completion tick rendering.
 - Telemetry integrity: consistent identifiers, storage selection by environment, and optional at-rest encryption.
 - Reports access control: Basic Auth + attempt rate limiting for reports pages.
 - Diabetic Retinopathy workshop: keep lesson row targets, hidden page IDs, Videos targets, `VIDEO_PAGE_SOURCES`, progress keys, and `DIABETIC_NAV_CONFIG` entries synchronized.
 - Childhood Fundal Reflex scrollytelling: keep route names, shell IDs, `ROUTE_CONFIG` entries, sequence arrays, Lottie asset paths, workshop mappings, and `.childhood-fundal-scroll-page` CSS synchronized.
+- Case-study chat: keep page IDs, launcher `data-target` values, owner JS modules, progress targets, `casechat-*` CSS, and My Learning mappings synchronized.
+- Responsive layout: keep iPad/tablet overrides in `public/style/responsive.css` targeted to specific pages/classes and verify phone/desktop after broad selector changes.
 - Build output: keep generated `dist/`, `tmp-fundal-dist/`, `tmp-codex-build*/`, and `.build-cleanup-*` directories out of source changes.

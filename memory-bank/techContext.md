@@ -1,4 +1,4 @@
-<!-- THE CHANGES - techContext.md | 2026-05-15, Codex -->
+<!-- THE CHANGES - techContext.md | 2026-06-12, Codex -->
 
 # Tech Context
 
@@ -7,8 +7,12 @@
 - Core UI: HTML5, CSS3, JavaScript (ESM in browser)
 - Server: Node.js + Express (`server.cjs`)
 - PWA: Service Worker API, Web Manifest
+- Offline install/downloads: server-generated static asset manifest (`/api/app/offline-assets`), service-worker on-demand caching, cached MP4 range responses, and HLS/subtitle cache support
+- Video localization: JSON subtitle catalogs in `public/video-localization/` plus VTT assets in `public/video-subtitles/`, synchronized at runtime by `public/js/videoSubtitles.js` and Videos-route subtitle helpers
 - Embedded interactive content: local iframe mini-apps under `public/subapp/*`, selected external Netlify iframes, Videos-route diabetic video pages, and demo quiz pages inside `public/html/videos.html`
 - Workshop flows: static HTML lesson shells plus JS navigation/progress helpers, including `public/js/diabeticWorkshopNextFlow.js`, `public/js/diabeticWorkshopProgress.js`, and diabetic quiz/scroll initializers in `public/js/diabeticRetinopathyWorkshop.js`
+- Shared progress UI: `public/js/lessonProgress.js` and `public/js/lessonCompletionTick.js`
+- Case-study chat: `public/html/casestudy.html`, `public/js/casestudy.js`, `public/js/casestudy_primary.js`, `public/html/glaucomaHistoryCaseStudy.html`, and `public/js/glaucomaHistoryCaseStudy.js`
 - Fundal scrollytelling: Lottie JSON animations driven by the shared stage-autoplay engine/config in `public/js/childhoodFundalPreparation.js`, with route shells under `public/html/childhoodFundal*.html`
 - Build & Bundling: `esbuild`, `clean-css-cli`, `html-minifier-terser`
 - Testing: Jest (mix of `*.cjs` + `*.mjs`), JSDOM, Supertest
@@ -26,8 +30,18 @@
 - Start server: `npm start`
 - Build: `npm run build`
 - Serve built output: `npm run serve:dist`
+- Accessibility audit: `npm run test:a11y`
+- Translation/subtitle QA: `npm run check-translations`
 - Fundal regression suite: `npm run test:fundal`
 - Override build output directory: set `BUILD_OUTPUT_DIR`
+
+### Offline install/download notes
+
+- `server.cjs` exposes `/api/app/offline-assets`, which enumerates files from the active static root and returns file URLs, byte sizes, count, and total bytes.
+- `public/js/languageinstall.js` owns download options: full content, selected content section, app-only/no-video, and video quality filtering.
+- `public/js/menu.js` reuses the same helpers for menu-started downloads and Downloaded Contents summaries.
+- `public/sw.js` caches selected URL lists via `CACHE_URLS` / `CACHE_ASSETS`, reports progress, serves cached MP4 range requests from complete cached MP4s, and keeps cached Childhood Eye Screening HLS assets usable offline.
+- When cached behavior or required precached assets change, bump the service-worker cache name.
 
 ### Interactive Learning integration notes
 
@@ -37,6 +51,22 @@
 - Diabetic workshop previous/next flow can cross from the workshop route into Videos-route pages; the flow state is stored in `sessionStorage` and restored when returning to the workshop folders.
 - Diabetic demo quizzes live in `public/html/videos.html` but use initializers exported from `public/js/diabeticRetinopathyWorkshop.js`; `main.js` imports those initializers for the Videos route.
 - Diabetic video pages require their hidden `.page` IDs, workshop `data-target` rows, and `VIDEO_PAGE_SOURCES` entries in `public/js/videos.js` to stay in sync.
+- Local video pages also require subtitle catalog entries and offline-download categorization when subtitles/offline playback should work.
+- `public/js/videoSubtitles.js` attaches app-wide subtitle tracks from `public/video-localization/app-video-subtitles.json`; the Childhood Eye Screening pilot uses `public/video-localization/childhood-eye-screening.json` plus HLS metadata and VTT files.
+
+### Shared progress notes
+
+- `setLessonProgress()` writes `lessonProgress:<target>` records and dispatches `arclight:lesson-progress-changed`.
+- `readLessonProgress()` considers compatible progress prefixes, including video and workshop prefixes, so launcher rows can reflect progress written by different route owners.
+- `lessonCompletionTick.js` observes progress rows and inserts completion ticks when rows reach completion.
+- Keep row `data-target` values stable across launcher HTML, route page IDs, My Learning mappings, and progress storage keys.
+
+### Case-study chat notes
+
+- Primary case-study chat and flashcard progress targets are `caseStudyChatPagePrimary` and `caseStudyFlashcardPagePrimary`.
+- Intermediate case-study chat progress target is `caseStudyChatPage`.
+- Glaucoma history-taking route/progress target is `glaucomaHistoryCaseStudy`.
+- Shared `casechat-*` CSS is used by case-study and glaucoma-history pages; route-specific responsive overrides live in `public/style/responsive.css`.
 
 ### Childhood Fundal scrollytelling notes
 
