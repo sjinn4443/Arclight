@@ -4253,6 +4253,24 @@ body[data-interactive-subapp-open="true"] #backBtnGlobal {
 
 /* Tablet-only final visibility/layout fixes for real iPad Safari. */
 @media (min-width: 600.02px) and (max-width: 1023.98px) {
+  #atomsCardPage #closeTOCBtn {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+
+  #atomsCardPage #closeTOCBtn::before {
+    content: none !important;
+  }
+
+  #atomsCardPage:has(#tocDropdown:not(.hidden)) #tocToggleBtn {
+    display: none !important;
+  }
+
+  #atomsCardPage:has(#tocDropdown.hidden) #tocToggleBtn {
+    display: flex !important;
+  }
+
   #tocDropdown,
   #atomsCardPage #tocDropdown {
     left: 50% !important;
@@ -4265,6 +4283,11 @@ body[data-interactive-subapp-open="true"] #backBtnGlobal {
     display: flex !important;
     flex-direction: column !important;
     overflow: visible !important;
+  }
+
+  #atomsCardPage #tocDropdown.hidden,
+  #tocDropdown.hidden {
+    display: none !important;
   }
 
   #tocDropdown.active,
@@ -4306,5 +4329,47 @@ body[data-interactive-subapp-open="true"] #backBtnGlobal {
     > .glaucoma-section-card[style*="display: none"],
   #glaucomaWorkshopPage .glaucoma-subsection-card[style*="display: none"] {
     display: none !important;
+  }
+
+  :is(
+      #childhoodEyeScreeningWorkshopPage,
+      #diabeticRetinopathyWorkshopPage,
+      #glaucomaWorkshopPage
+    )
+    :is(
+      .childhood-section-card,
+      .diabetic-section-card,
+      .diabetic-nested-section-card,
+      .glaucoma-section-card,
+      .glaucoma-subsection-card,
+      #fundalReflexSubRows
+    )
+    .lesson-row {
+    width: calc(100% - 100px) !important;
+    max-width: 348px !important;
+    height: 76px !important;
+    min-height: 76px !important;
+    padding: 8px 12px !important;
+    grid-template-columns: 66px minmax(0, 1fr) auto !important;
+  }
+
+  :is(
+      #childhoodEyeScreeningWorkshopPage,
+      #diabeticRetinopathyWorkshopPage,
+      #glaucomaWorkshopPage
+    )
+    :is(
+      .childhood-section-card,
+      .diabetic-section-card,
+      .diabetic-nested-section-card,
+      .glaucoma-section-card,
+      .glaucoma-subsection-card,
+      #fundalReflexSubRows
+    )
+    .lesson-row
+    .thumb {
+    width: 66px !important;
+    height: 56px !important;
+    flex: 0 0 66px !important;
   }
 }
