@@ -85,6 +85,21 @@ function refreshWorkshopTranslations(root = document) {
   window.I18N?.applyTranslations?.(root);
 }
 
+function moveAtomsRowsToFolderEnd(root) {
+  root
+    ?.querySelectorAll?.(".childhood-section-card, .module-card")
+    ?.forEach((section) => {
+      const atomRows = Array.from(section.children).filter((child) => {
+        if (!child.matches?.(".lesson-row[data-target]")) return false;
+        return String(child.getAttribute("data-target") || "")
+          .toLowerCase()
+          .includes("atoms");
+      });
+
+      atomRows.forEach((row) => section.appendChild(row));
+    });
+}
+
 const NUMBERED_CHILDHOOD_LABEL_KEYS = [
   "auto.childhoodeyescreeningworkshop.the_visual_system",
   "auto.childhoodeyescreeningworkshop.visual_development",
@@ -497,6 +512,7 @@ export function initializeChildhoodEyeScreeningWorkshop() {
   initializeChildhoodWorkshopProgressInfra();
   initializeChildhoodWorkshopNextFlowInfra();
   setupWorkshopFolders(page);
+  moveAtomsRowsToFolderEnd(page);
   assignChildhoodWorkshopFlowIndices(page);
   updateChildhoodWorkshopProgressBars();
   scheduleFundalRouteWarmup();

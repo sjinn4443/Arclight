@@ -108,6 +108,25 @@ export function initializeChildhoodScrollyPages() {
       target.addEventListener(type, handler, { ...options, signal });
     };
 
+    if (page.id === "signsVICasesPage") {
+      page
+        .querySelectorAll("video.childhood-signs-vi-media")
+        .forEach((video) => {
+          video.loop = true;
+          video.muted = true;
+          video.autoplay = true;
+          video.playsInline = true;
+          video.controls = false;
+
+          const playLoop = () => {
+            video.play?.().catch(() => {});
+          };
+          listen(video, "loadedmetadata", playLoop);
+          listen(video, "canplay", playLoop);
+          playLoop();
+        });
+    }
+
     if (scrollRoot === window) {
       listen(window, "scroll", scheduleRender, { passive: true });
     } else {

@@ -3,6 +3,30 @@
  */
 //
 let currentTOCType = "eyes";
+let currentAtomsZoom = 1;
+
+function clampAtomsZoom(value) {
+  return Math.max(0.6, Math.min(2.6, value));
+}
+
+function applyAtomsZoom() {
+  const container = document.getElementById("atomsImageContainer");
+  if (!container) return;
+  container.querySelectorAll(".atoms-card-image-frame").forEach((frame) => {
+    frame.style.width = `${(currentAtomsZoom * 100).toFixed(0)}%`;
+    frame.style.maxWidth = `${Math.round(currentAtomsZoom * 1200)}px`;
+  });
+}
+
+function resetAtomsZoom() {
+  currentAtomsZoom = 1;
+  applyAtomsZoom();
+}
+
+function zoomAtomsBy(delta) {
+  currentAtomsZoom = clampAtomsZoom(currentAtomsZoom + delta);
+  applyAtomsZoom();
+}
 
 function setActiveTab(type) {
   const eyesBtn = document.getElementById("eyesTab");
@@ -43,15 +67,22 @@ function closeTOC() {
 }
 
 function displayImage(src, alt, container) {
+  const frame = document.createElement("div");
+  frame.className = "atoms-card-image-frame";
+  frame.style.width = `${(currentAtomsZoom * 100).toFixed(0)}%`;
+  frame.style.maxWidth = `${Math.round(currentAtomsZoom * 1200)}px`;
+
   const img = document.createElement("img");
   img.src = src;
   img.alt = alt;
+  img.style.width = "100%";
   img.style.maxWidth = "100%";
   img.style.maxHeight = "100%";
   img.style.objectFit = "contain";
   img.style.borderRadius = "12px";
   img.style.marginBottom = "10px";
-  container.appendChild(img);
+  frame.appendChild(img);
+  container.appendChild(frame);
   return img;
 }
 
@@ -65,33 +96,38 @@ function showTOC(type = "eyes") {
 
   // Items derived from the legacy handler mapping
   const eyesItems = [
-    "Anatomy",
-    "Arclight",
-    "Front of Eye Case Test",
-    "Child",
-    "Front of Eye",
+    "Red Eye",
+    "Vision Changes",
+    "Trauma",
+    "Eyelids",
+    "How to Check for Eyeglasses",
+    "Cornea",
+    "Lens",
     "Fundal Reflex",
     "Fundus",
+    "Fundus 2",
+    "Child",
     "Glaucoma",
-    "How to Check for Eyeglasses",
-    "How to Use",
-    "Lens",
-    "Pupil",
-    "Red Eye",
-    "Summary",
-    "Vision Loss",
+    "Neurology",
+    "Squint",
+    "Tropical",
+    "Anatomy",
   ];
 
   const earsItems = [
-    "Anatomy",
-    "Childhood Hearing Development",
-    "Ear Drum",
+    "ENT",
     "External Ear: Pinna",
+    "Canal",
+    "Ear Drum",
+    "Childhood Hearing Development",
+    "Hearing Loss",
+    "Hearing Aids",
+    "Anatomy",
   ];
 
   const items = type === "ears" ? earsItems : eyesItems;
 
-  items.sort().forEach((item) => {
+  items.forEach((item) => {
     const li = document.createElement("li");
     li.dataset.topic = item;
     li.textContent = item;
@@ -106,6 +142,7 @@ function showTOC(type = "eyes") {
 
   const imgBox = document.getElementById("atomsImageContainer");
   if (imgBox) imgBox.innerHTML = "";
+  resetAtomsZoom();
 }
 
 function handleTOCItemClick(e) {
@@ -130,20 +167,32 @@ function handleTOCItemClick(e) {
       Arclight: "Arclight.webp",
       "Front of Eye Case Test": "CaseStudy.webp",
       Child: "Child.webp",
+      Cornea: "Cornea.webp",
+      Eyelids: "Eyelids.webp",
       "Front of Eye": "FrontOfEye.webp",
       "Fundal Reflex": "FundalReflex.webp",
       Fundus: "Fundus.webp",
+      "Fundus 2": "Fundus2.webp",
       Glaucoma: "Glaucoma.webp",
       "How to Check for Eyeglasses": "Refract.webp",
       "How to Use": "HowToUse.webp",
       Lens: "Lens.webp",
+      Neurology: "Neurology.webp",
       Pupil: "Pupil.webp",
       "Red Eye": "RedEye.webp",
       Summary: "Summary.webp",
+      Squint: "Squint.webp",
+      Trauma: "Trauma.webp",
+      Tropical: "Tropical.webp",
+      "Vision Changes": "VisionChanges.webp",
       "Vision Loss": "Summary.webp",
+      ENT: "EarENT.webp",
+      Canal: "EarCanal.webp",
       "Ear Drum": "Drum.webp",
       "External Ear: Pinna": "Ear.webp",
-      "Childhood Hearing Development": "EarChild.webp",
+      "Childhood Hearing Development": "EarChildDevelopment.webp",
+      "Hearing Loss": "HearingLoss.webp",
+      "Hearing Aids": "HearingAids.webp",
     };
 
     const filename = filenameMap[topic] || `${topic.replace(/\s/g, "")}.png`;
@@ -158,8 +207,25 @@ function handleTOCItemClick(e) {
     }
   }
 
-  // Keep TOC open (legacy behavior)
-  // closeTOC(); ← intentionally NOT called
+  closeTOC();
+}
+
+function initializeAtomsZoomControls() {
+  const container = document.getElementById("atomsImageContainer");
+  if (container) container.dataset.buttonZoom = "1";
+
+  const zoomOut = document.getElementById("atomsZoomOutBtn");
+  const zoomIn = document.getElementById("atomsZoomInBtn");
+
+  if (zoomOut && zoomOut.dataset.wired !== "1") {
+    zoomOut.dataset.wired = "1";
+    zoomOut.addEventListener("click", () => zoomAtomsBy(-0.18));
+  }
+
+  if (zoomIn && zoomIn.dataset.wired !== "1") {
+    zoomIn.dataset.wired = "1";
+    zoomIn.addEventListener("click", () => zoomAtomsBy(0.18));
+  }
 }
 
 function initializeTOC() {
@@ -203,6 +269,7 @@ export function initializeAtomsCard() {
   root.dataset.init = "1";
 
   initializeTOC();
+  initializeAtomsZoomControls();
 
   // Start with eyes tab and TOC visible, clear image area
   openTOC();

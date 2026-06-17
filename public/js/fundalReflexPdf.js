@@ -171,6 +171,41 @@ function setupPanZoomForStage(viewerEl, stageEl, opts = {}) {
   apply();
 }
 
+function setupAtomsButtonZoom(viewerEl, stageEl) {
+  let zoom = 1;
+
+  const controls = document.createElement("div");
+  controls.className = "workshop-atoms-zoom-controls";
+  controls.innerHTML = `
+    <span aria-hidden="true"></span>
+    <button type="button" data-atoms-zoom-out aria-label="Zoom out">-</button>
+    <button type="button" data-atoms-zoom-in aria-label="Zoom in">+</button>
+  `;
+  viewerEl.prepend(controls);
+
+  const apply = () => {
+    stageEl.style.width = `${Math.round(zoom * 100)}%`;
+    stageEl.style.maxWidth = `${Math.round(zoom * 980)}px`;
+  };
+
+  const setZoom = (next) => {
+    zoom = Math.max(0.72, Math.min(2.6, next));
+    apply();
+  };
+
+  controls
+    .querySelector("[data-atoms-zoom-out]")
+    ?.addEventListener("click", () => setZoom(zoom - 0.18));
+  controls
+    .querySelector("[data-atoms-zoom-in]")
+    ?.addEventListener("click", () => setZoom(zoom + 0.18));
+
+  stageEl.style.transform = "none";
+  stageEl.style.transformOrigin = "50% 0";
+  viewerEl.style.touchAction = "auto";
+  apply();
+}
+
 function initImagePdfPage(pageId, viewerId, imgSrc) {
   showOnlyPage(pageId);
   const page = document.getElementById(pageId);
@@ -306,13 +341,16 @@ function initAtomsHandoutPage(pageId, viewerId, imgSrc) {
   if (viewer.dataset.inited === "1") return;
   viewer.dataset.inited = "1";
 
-  // fundalReflexPdf.htmlì˜ êµ¬ì¡°ì²˜ëŸ¼ topbar ì•„ëž˜ë¥¼ í’€ìŠ¤í¬ë¦° ë·°ì–´ë¡œ ì‚¬ìš© :contentReference[oaicite:1]{index=1}
-  viewer.style.position = "fixed";
-  viewer.style.left = "0";
-  viewer.style.right = "0";
-  viewer.style.top = "62px";
-  viewer.style.bottom = "0";
-  viewer.style.overflow = "hidden";
+  viewer.style.position = "relative";
+  viewer.style.left = "auto";
+  viewer.style.right = "auto";
+  viewer.style.top = "auto";
+  viewer.style.bottom = "auto";
+  viewer.style.width = "100%";
+  viewer.style.minHeight = "calc(100vh - 62px)";
+  viewer.style.overflowX = "auto";
+  viewer.style.overflowY = "visible";
+  viewer.style.padding = "62px 0 48px";
   viewer.style.background = "#fff";
 
   viewer.textContent = "";
@@ -320,18 +358,19 @@ function initAtomsHandoutPage(pageId, viewerId, imgSrc) {
   const isDesktop = window.matchMedia?.("(min-width: 1024px)")?.matches;
   const stage = document.createElement("div");
   stage.className = "atoms-stage";
-  stage.style.position = isDesktop ? "relative" : "absolute";
-  stage.style.left = isDesktop ? "auto" : "0";
-  stage.style.top = isDesktop ? "auto" : "0";
-  stage.style.width = isDesktop ? "min(74vw, 980px)" : "auto";
-  stage.style.margin = isDesktop ? "24px auto 48px" : "0";
+  stage.style.position = "relative";
+  stage.style.left = "auto";
+  stage.style.top = "auto";
+  stage.style.width = "100%";
+  stage.style.maxWidth = isDesktop ? "980px" : "100vw";
+  stage.style.margin = "0 auto 16px";
 
   const img = document.createElement("img");
   img.src = imgSrc;
   img.alt = "ATOMS handout";
   img.draggable = false;
   img.style.display = "block";
-  img.style.width = isDesktop ? "100%" : "100vw";
+  img.style.width = "100%";
   img.style.height = "auto";
   img.style.maxWidth = "none";
   img.style.userSelect = "none";
@@ -342,12 +381,7 @@ function initAtomsHandoutPage(pageId, viewerId, imgSrc) {
   viewer.appendChild(stage);
   if (!stage) return;
 
-  if (isDesktop) {
-    viewer.style.overflow = "auto";
-  }
-  setupPanZoomForStage(viewer, stage, {
-    transformOrigin: isDesktop ? "50% 0" : "0 0",
-  });
+  setupAtomsButtonZoom(viewer, stage);
 }
 
 export function initializeAtomsHandout1() {

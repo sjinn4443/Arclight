@@ -32,6 +32,7 @@ const VIDEO_TARGETS = new Set([
   "diabeticIntroductionToArclightVideoPage",
   "diabeticCausesOfVisionLossVideoPage",
   "diabeticSimpleSafeScalableVideoPage",
+  "diabeticCaseQuizPage",
 ]);
 
 const SCROLLYTELLING_TARGETS = new Set([
@@ -83,6 +84,10 @@ const DIABETIC_NAV_CONFIG = {
   },
   diabeticVisionLossInDiabetesPage: {
     previous: { type: "target", target: "diabeticWhatIsRetinopathyPage" },
+    next: { type: "target", target: "diabeticCaseQuizPage" },
+  },
+  diabeticCaseQuizPage: {
+    previous: { type: "target", target: "diabeticVisionLossInDiabetesPage" },
     next: { type: "focus", folderKey: "whatIsDiabetes" },
   },
   diabeticNcdFlowIntroductionPage: {

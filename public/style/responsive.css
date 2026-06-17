@@ -4373,3 +4373,527 @@ body[data-interactive-subapp-open="true"] #backBtnGlobal {
     flex: 0 0 66px !important;
   }
 }
+
+/* Final Atoms card controls: keep TOC close inside the panel across breakpoints. */
+#atomsCardPage #tocDropdown {
+  overflow: hidden !important;
+  padding-bottom: 52px !important;
+}
+
+#atomsCardPage #tocInlineCloseBtn,
+#tocInlineCloseBtn {
+  position: absolute !important;
+  right: 12px !important;
+  bottom: 10px !important;
+  width: 36px !important;
+  min-width: 36px !important;
+  height: 36px !important;
+  border-radius: 999px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+  font-size: 0 !important;
+  background: #e41e26 !important;
+  z-index: 3000 !important;
+}
+
+#atomsCardPage #tocInlineCloseBtn::before,
+#tocInlineCloseBtn::before {
+  content: "\00d7" !important;
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: 26px !important;
+  font-weight: 850 !important;
+  line-height: 1 !important;
+}
+
+#atomsCardPage .atoms-card-zoom-controls {
+  top: 60px !important;
+  left: 58px !important;
+  right: auto !important;
+}
+
+@media (min-width: 600.02px) {
+  #atomsCardPage .atoms-card-zoom-controls {
+    top: 72px !important;
+    left: auto !important;
+    right: 62px !important;
+  }
+}
+
+/* Requested UI refinements */
+#atomsCardPage #tocDropdown {
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  padding-bottom: 0 !important;
+}
+
+#atomsCardPage #tocInlineCloseBtn,
+#tocInlineCloseBtn {
+  position: sticky !important;
+  right: auto !important;
+  bottom: 8px !important;
+  width: 36px !important;
+  min-width: 36px !important;
+  height: 36px !important;
+  margin: 8px 10px 10px auto !important;
+  border: 0 !important;
+  border-radius: 6px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+  font-size: 0 !important;
+  font-weight: 850 !important;
+  line-height: 1 !important;
+  background: #e41e26 !important;
+  box-shadow: 0 5px 14px rgba(17, 24, 39, 0.18) !important;
+}
+
+#atomsCardPage #tocInlineCloseBtn::before,
+#tocInlineCloseBtn::before {
+  content: "\00d7" !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: 26px !important;
+  font-weight: 850 !important;
+  line-height: 1 !important;
+}
+
+#atomsCardPage .atoms-card-zoom-controls,
+.workshop-atoms-zoom-controls {
+  position: fixed !important;
+  z-index: 4200 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  padding: 6px !important;
+  border-radius: 999px !important;
+  background: rgba(17, 24, 39, 0.72) !important;
+  backdrop-filter: blur(8px) !important;
+  box-shadow: 0 10px 24px rgba(17, 24, 39, 0.16) !important;
+}
+
+#atomsCardPage .atoms-card-zoom-controls {
+  top: 60px !important;
+  left: 58px !important;
+  right: auto !important;
+}
+
+@media (min-width: 600.02px) {
+  #atomsCardPage .atoms-card-zoom-controls {
+    top: 72px !important;
+    left: auto !important;
+    right: 62px !important;
+  }
+}
+
+#atomsCardPage .atoms-card-zoom-controls span,
+#atomsCardPage .atoms-card-zoom-controls button,
+.workshop-atoms-zoom-controls span,
+.workshop-atoms-zoom-controls button {
+  width: 34px !important;
+  height: 34px !important;
+  min-width: 34px !important;
+  flex: 0 0 34px !important;
+  display: grid !important;
+  place-items: center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 50% !important;
+  background: #ffffff !important;
+  color: #111827 !important;
+  font-size: 19px !important;
+  font-weight: 950 !important;
+  line-height: 1 !important;
+  box-sizing: border-box !important;
+}
+
+#atomsCardPage .atoms-card-zoom-controls span,
+.workshop-atoms-zoom-controls span {
+  position: relative !important;
+  font-size: 0 !important;
+}
+
+#atomsCardPage .atoms-card-zoom-controls span::before,
+.workshop-atoms-zoom-controls span::before {
+  content: "" !important;
+  width: 13px !important;
+  height: 13px !important;
+  border: 3px solid #111827 !important;
+  border-radius: 50% !important;
+  transform: translate(-2px, -2px) !important;
+}
+
+#atomsCardPage .atoms-card-zoom-controls span::after,
+.workshop-atoms-zoom-controls span::after {
+  content: "" !important;
+  position: absolute !important;
+  width: 10px !important;
+  height: 3px !important;
+  border-radius: 999px !important;
+  background: #111827 !important;
+  transform: translate(7px, 8px) rotate(45deg) !important;
+}
+
+#atomsCardPage .atoms-card-zoom-controls button,
+.workshop-atoms-zoom-controls button {
+  cursor: pointer !important;
+}
+
+#glaucomaWorkshopPage
+  #glaucomaWorkshopFolders
+  .glaucoma-folder-row
+  .lesson-main,
+#childhoodEyeScreeningWorkshopPage
+  #childhoodWorkshopFolders
+  .childhood-folder-row
+  .lesson-main {
+  align-self: center !important;
+  justify-content: center !important;
+  gap: 0 !important;
+}
+
+#glaucomaWorkshopPage #glaucomaWorkshopFolders .glaucoma-folder-row .lesson-top,
+#childhoodEyeScreeningWorkshopPage
+  #childhoodWorkshopFolders
+  .childhood-folder-row
+  .lesson-top {
+  width: auto !important;
+  margin: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+#glaucomaWorkshopPage
+  #glaucomaWorkshopFolders
+  .glaucoma-folder-row
+  .lesson-type,
+#childhoodEyeScreeningWorkshopPage
+  #childhoodWorkshopFolders
+  .childhood-folder-row
+  .lesson-type {
+  margin: 0 !important;
+  line-height: 1.15 !important;
+}
+
+.diabetic-screening-page .diabetic-screening-chip-list li,
+.diabetic-screening-chip-list--arrows li,
+.diabetic-screening-chip-list--sequence li {
+  border-radius: 12px !important;
+}
+
+html.is-apple-ui #backBtnGlobal {
+  width: 56px !important;
+  height: 56px !important;
+}
+
+html.is-apple-ui #backBtnGlobal::before {
+  width: 36px !important;
+  height: 36px !important;
+}
+
+html.is-apple-ui :is(.eyes-topbar .menuBtn, .icon.menuBtn, #tocToggleBtn) {
+  width: 48px !important;
+  min-width: 48px !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  flex: 0 0 48px !important;
+  font-size: 36px !important;
+  font-weight: 850 !important;
+  line-height: 1 !important;
+}
+
+#diabeticProtocolOverviewPage .diabetic-protocol-algorithm-viewer {
+  overflow: visible !important;
+}
+
+#diabeticProtocolOverviewPage .diabetic-protocol-algorithm-window {
+  height: var(--map-layout-height, auto) !important;
+  min-height: 0 !important;
+  overflow: visible !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  cursor: default !important;
+  touch-action: auto !important;
+}
+
+#diabeticProtocolOverviewPage .diabetic-protocol-algorithm-window.is-dragging {
+  cursor: default !important;
+}
+
+#diabeticProtocolOverviewPage .diabetic-protocol-algorithm-map {
+  transform-origin: 0 0 !important;
+}
+
+#childhoodEyeBrainImagesPage .vs-story-progress {
+  position: fixed;
+  top: 74px;
+  left: max(16px, calc(50vw - 205px));
+  z-index: 3200;
+  display: grid;
+  grid-template-columns: repeat(3, 28px);
+  align-items: center;
+  gap: 12px;
+  pointer-events: none;
+}
+
+#childhoodEyeBrainImagesPage .vs-story-progress__track {
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  top: 50%;
+  height: 2px;
+  border-radius: 999px;
+  background: #d5dce8;
+  transform: translateY(-50%);
+}
+
+#childhoodEyeBrainImagesPage .vs-story-progress__step {
+  position: relative;
+  z-index: 1;
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border: 2px solid #cbd5e1;
+  border-radius: 50%;
+  background: #ffffff;
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 850;
+  line-height: 1;
+  box-shadow: 0 5px 14px rgba(17, 24, 39, 0.12);
+}
+
+#childhoodEyeBrainImagesPage
+  .vs-story-progress__step:is(.is-active, .is-complete) {
+  border-color: #e41e26;
+  background: #e41e26;
+  color: #ffffff;
+}
+
+@media (max-width: 767px) {
+  #childhoodEyeBrainImagesPage .vs-story-progress {
+    top: 70px;
+    left: 16px;
+    transform: scale(0.92);
+    transform-origin: left top;
+  }
+}
+
+/* Final requested refinements */
+#atomsCardPage #tocDropdown {
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  padding-bottom: 0 !important;
+  position: fixed !important;
+}
+
+#atomsCardPage #tocList {
+  padding-bottom: 4px !important;
+}
+
+#atomsCardPage #tocInlineCloseBtn,
+#tocInlineCloseBtn {
+  position: absolute !important;
+  right: 10px !important;
+  bottom: 8px !important;
+  margin: 0 !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+#atomsCardPage .atoms-card-zoom-controls span,
+.workshop-atoms-zoom-controls span {
+  width: 24px !important;
+  min-width: 24px !important;
+  flex: 0 0 24px !important;
+  background: transparent !important;
+  color: #ffffff !important;
+}
+
+#atomsCardPage .atoms-card-zoom-controls span::before,
+.workshop-atoms-zoom-controls span::before {
+  border-color: #ffffff !important;
+}
+
+#atomsCardPage .atoms-card-zoom-controls span::after,
+.workshop-atoms-zoom-controls span::after {
+  background: #ffffff !important;
+}
+
+#atomsCardPage #atomsZoomOutBtn,
+.workshop-atoms-zoom-controls [data-atoms-zoom-out] {
+  position: relative !important;
+  font-size: 0 !important;
+}
+
+#atomsCardPage #atomsZoomOutBtn::before,
+.workshop-atoms-zoom-controls [data-atoms-zoom-out]::before {
+  content: "" !important;
+  display: block !important;
+  width: 11px !important;
+  height: 3px !important;
+  justify-self: center !important;
+  align-self: center !important;
+  margin: auto !important;
+  border-radius: 999px !important;
+  background: currentColor !important;
+}
+
+#childhoodEyeScreeningWorkshopPage
+  #childhoodWorkshopFolders
+  .childhood-folder-row {
+  grid-template-columns: 64px minmax(0, 1fr) auto !important;
+  align-items: center !important;
+}
+
+#childhoodEyeScreeningWorkshopPage
+  #childhoodWorkshopFolders
+  .childhood-folder-row
+  .lesson-main {
+  min-width: 0 !important;
+  align-self: center !important;
+  justify-content: center !important;
+  margin: 0 !important;
+  transform: none !important;
+}
+
+#childhoodEyeScreeningWorkshopPage
+  #childhoodWorkshopFolders
+  .childhood-folder-row
+  .lesson-top {
+  min-width: 0 !important;
+  min-height: 0 !important;
+  height: auto !important;
+  margin: 0 !important;
+  transform: none !important;
+}
+
+#childhoodEyeScreeningWorkshopPage
+  #childhoodWorkshopFolders
+  .childhood-folder-row
+  .lesson-type {
+  min-width: 0 !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+}
+
+#glaucomaWorkshopPage
+  #glaucomaWorkshopFolders
+  .glaucoma-folder-row
+  .lesson-cta {
+  align-self: end !important;
+  margin: 0 0 4px !important;
+}
+
+#diabeticProtocolOverviewPage .diabetic-protocol-algorithm-map {
+  background:
+    linear-gradient(
+      180deg,
+      #ffffff 0 34px,
+      transparent 34px calc(100% - 34px),
+      #ffffff calc(100% - 34px) 100%
+    ),
+    linear-gradient(
+      90deg,
+      transparent calc(50% - 1.5px),
+      #a5a5a5 calc(50% - 1.5px),
+      #a5a5a5 calc(50% + 1.5px),
+      transparent calc(50% + 1.5px)
+    ),
+    #ffffff !important;
+}
+
+#childhoodEyeBrainImagesPage .vs-story-progress {
+  --vs-story-progress: 0;
+  top: 86px !important;
+  left: 58px !important;
+  grid-template-columns: 28px !important;
+  grid-template-rows: repeat(3, 28px) !important;
+  gap: 28px !important;
+}
+
+#childhoodEyeBrainImagesPage .vs-story-progress__track {
+  left: 50% !important;
+  right: auto !important;
+  top: 14px !important;
+  bottom: 14px !important;
+  width: 3px !important;
+  height: auto !important;
+  background: #d1d5db !important;
+  transform: translateX(-50%) !important;
+  overflow: hidden !important;
+}
+
+#childhoodEyeBrainImagesPage .vs-story-progress__track::after {
+  content: "" !important;
+  position: absolute !important;
+  left: 0 !important;
+  top: 0 !important;
+  width: 100% !important;
+  height: calc(var(--vs-story-progress, 0) * 100%) !important;
+  border-radius: inherit !important;
+  background: #15e115 !important;
+  transition: height 80ms linear !important;
+}
+
+#childhoodEyeBrainImagesPage .vs-story-progress__step {
+  display: grid !important;
+  place-items: center !important;
+  text-align: center !important;
+  border-color: #15e115 !important;
+  color: #15e115 !important;
+  line-height: 1 !important;
+}
+
+#childhoodEyeBrainImagesPage
+  .vs-story-progress__step:is(.is-active, .is-complete) {
+  border-color: #15e115 !important;
+  background: #15e115 !important;
+  color: #ffffff !important;
+}
+
+#atomsHandout1Page .childhood-next-host,
+#atomsHandout2Page .childhood-next-host {
+  padding-bottom: calc(124px + env(safe-area-inset-bottom)) !important;
+}
+
+#atomsHandout1Page .childhood-next-wrap,
+#atomsHandout2Page .childhood-next-wrap {
+  bottom: calc(72px + env(safe-area-inset-bottom)) !important;
+}
+
+@media (min-width: 600.02px) and (max-width: 1023.98px) {
+  #childhoodEyeBrainImagesPage .vs-story-progress {
+    left: calc(var(--tablet-topbar-left, 56px) + 5px) !important;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1439.98px) {
+  #childhoodEyeBrainImagesPage .vs-story-progress {
+    left: calc(7vw - 4px + 41px) !important;
+  }
+}
+
+@media (min-width: 1440px) {
+  #childhoodEyeBrainImagesPage .vs-story-progress {
+    left: calc(22vw - 4px + 41px) !important;
+  }
+}
+
+@media (max-width: 767px) {
+  #childhoodEyeBrainImagesPage .vs-story-progress {
+    top: 74px !important;
+    transform: scale(0.92) !important;
+    transform-origin: left top !important;
+  }
+}

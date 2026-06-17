@@ -1425,6 +1425,14 @@ function initializeDiabeticProtocolInteractions() {
     const zoomOut = viewer.querySelector("[data-diabetic-zoom-out]");
     if (!windowEl || !map) return;
 
+    const isOverviewMap = Boolean(
+      viewer.closest("#diabeticProtocolOverviewPage"),
+    );
+    viewer.classList.toggle(
+      "diabetic-protocol-algorithm-viewer--full-scroll",
+      isOverviewMap,
+    );
+
     const state = {
       scale: 1,
       x: 0,
@@ -1437,6 +1445,14 @@ function initializeDiabeticProtocolInteractions() {
     };
 
     const clampPan = () => {
+      if (isOverviewMap) {
+        const viewportWidth = windowEl.clientWidth || viewer.clientWidth || 1;
+        const width = map.offsetWidth * state.scale;
+        state.x = Math.max(0, (viewportWidth - width) / 2);
+        state.y = 0;
+        return;
+      }
+
       const viewport = windowEl.getBoundingClientRect();
       const width = map.offsetWidth * state.scale;
       const height = map.offsetHeight * state.scale;
@@ -1450,7 +1466,20 @@ function initializeDiabeticProtocolInteractions() {
       ".diabetic-protocol-algorithm-phase, .diabetic-protocol-algorithm-ncd",
     );
     const updateMapPhaseVisibility = () => {
-      const viewport = windowEl.getBoundingClientRect();
+      const viewport = isOverviewMap
+        ? {
+            top: 0,
+            left: 0,
+            right:
+              window.innerWidth || document.documentElement.clientWidth || 1,
+            bottom:
+              window.innerHeight || document.documentElement.clientHeight || 1,
+            width:
+              window.innerWidth || document.documentElement.clientWidth || 1,
+            height:
+              window.innerHeight || document.documentElement.clientHeight || 1,
+          }
+        : windowEl.getBoundingClientRect();
       const viewportArea = Math.max(viewport.width * viewport.height, 1);
       phases.forEach((phase) => {
         const rect = phase.getBoundingClientRect();
@@ -1474,6 +1503,17 @@ function initializeDiabeticProtocolInteractions() {
       map.style.setProperty("--map-scale", state.scale.toFixed(2));
       map.style.setProperty("--pan-x", `${state.x.toFixed(1)}px`);
       map.style.setProperty("--pan-y", `${state.y.toFixed(1)}px`);
+      if (isOverviewMap) {
+        const layoutHeight = Math.ceil(map.offsetHeight * state.scale);
+        if (layoutHeight > 0) {
+          windowEl.style.setProperty(
+            "--map-layout-height",
+            `${layoutHeight}px`,
+          );
+        } else {
+          windowEl.style.removeProperty("--map-layout-height");
+        }
+      }
       window.requestAnimationFrame(updateMapPhaseVisibility);
     };
 
@@ -1488,7 +1528,7 @@ function initializeDiabeticProtocolInteractions() {
           });
         },
         {
-          root: windowEl,
+          root: isOverviewMap ? null : windowEl,
           threshold: [0, 0.28, 0.45, 0.7],
         },
       );
@@ -1515,46 +1555,58 @@ function initializeDiabeticProtocolInteractions() {
       render();
     };
 
+    const scheduleRefitAndRender = () => {
+      window.requestAnimationFrame(() => {
+        refitAndRender();
+        window.requestAnimationFrame(refitAndRender);
+      });
+    };
+
     const zoomBy = (delta) => {
       const before = state.scale;
       state.scale = Math.min(1.6, Math.max(0.46, state.scale + delta));
       if (state.scale === before) return;
-      state.x -= (map.offsetWidth * (state.scale - before)) / 2;
-      state.y -= (map.offsetHeight * (state.scale - before)) / 5;
+      if (!isOverviewMap) {
+        state.x -= (map.offsetWidth * (state.scale - before)) / 2;
+        state.y -= (map.offsetHeight * (state.scale - before)) / 5;
+      }
       render();
     };
 
     zoomIn?.addEventListener("click", () => zoomBy(0.12));
     zoomOut?.addEventListener("click", () => zoomBy(-0.12));
 
-    windowEl.addEventListener("pointerdown", (event) => {
-      if (event.target.closest(".diabetic-protocol-algorithm-controls")) return;
-      state.dragging = true;
-      state.startX = event.clientX;
-      state.startY = event.clientY;
-      state.baseX = state.x;
-      state.baseY = state.y;
-      windowEl.classList.add("is-dragging");
-      windowEl.setPointerCapture?.(event.pointerId);
-    });
+    if (!isOverviewMap) {
+      windowEl.addEventListener("pointerdown", (event) => {
+        if (event.target.closest(".diabetic-protocol-algorithm-controls"))
+          return;
+        state.dragging = true;
+        state.startX = event.clientX;
+        state.startY = event.clientY;
+        state.baseX = state.x;
+        state.baseY = state.y;
+        windowEl.classList.add("is-dragging");
+        windowEl.setPointerCapture?.(event.pointerId);
+      });
 
-    windowEl.addEventListener("pointermove", (event) => {
-      if (!state.dragging) return;
-      state.x = state.baseX + event.clientX - state.startX;
-      state.y = state.baseY + event.clientY - state.startY;
-      render();
-    });
+      windowEl.addEventListener("pointermove", (event) => {
+        if (!state.dragging) return;
+        state.x = state.baseX + event.clientX - state.startX;
+        state.y = state.baseY + event.clientY - state.startY;
+        render();
+      });
 
-    const endDrag = (event) => {
-      if (!state.dragging) return;
-      state.dragging = false;
-      windowEl.classList.remove("is-dragging");
-      windowEl.releasePointerCapture?.(event.pointerId);
-      render();
-    };
+      const endDrag = (event) => {
+        if (!state.dragging) return;
+        state.dragging = false;
+        windowEl.classList.remove("is-dragging");
+        windowEl.releasePointerCapture?.(event.pointerId);
+        render();
+      };
 
-    windowEl.addEventListener("pointerup", endDrag);
-    windowEl.addEventListener("pointercancel", endDrag);
+      windowEl.addEventListener("pointerup", endDrag);
+      windowEl.addEventListener("pointercancel", endDrag);
+    }
     window.addEventListener(
       "resize",
       () => {
@@ -1562,6 +1614,12 @@ function initializeDiabeticProtocolInteractions() {
       },
       { passive: true },
     );
+    if (isOverviewMap) {
+      document.addEventListener("page:shown", (event) => {
+        if (event.detail?.id !== "diabeticProtocolOverviewPage") return;
+        scheduleRefitAndRender();
+      });
+    }
     if ("ResizeObserver" in window) {
       const resizeObserver = new ResizeObserver(() => {
         const width = windowEl.clientWidth;
@@ -1572,7 +1630,7 @@ function initializeDiabeticProtocolInteractions() {
       resizeObserver.observe(windowEl);
     }
     refitAndRender();
-    window.requestAnimationFrame(refitAndRender);
+    scheduleRefitAndRender();
   });
 
   if (document.body.dataset.diabeticProliferativeLightboxWired === "1") return;

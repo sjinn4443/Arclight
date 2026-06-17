@@ -6984,6 +6984,44 @@ select.onb-input.has-value + .onb-select-caret {
   overflow: visible;
 }
 
+.childhood-fundal-scroll-page .childhood-fundal-stage-top-nav {
+  width: min(100%, 640px);
+  max-width: 100%;
+  margin: 0 auto 12px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+@media (min-width: 1024px) {
+  .childhood-fundal-scroll-page .childhood-fundal-stage-top-nav {
+    max-width: min(66.6667%, 520px);
+  }
+}
+
+.childhood-fundal-scroll-page .childhood-fundal-stage-top-nav button {
+  min-height: 38px;
+  border: 0;
+  border-radius: 12px;
+  background: #a5adba;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 750;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.childhood-fundal-scroll-page
+  .childhood-fundal-stage-top-nav.is-stage-complete
+  button:last-child {
+  background: #e41e26;
+}
+
+.childhood-fundal-scroll-page .childhood-fundal-stage-top-nav button:disabled {
+  cursor: default;
+  opacity: 0.48;
+}
+
 .childhood-fundal-scroll-page .childhood-fundal-prep-stage {
   --fundal-stage-aspect-ratio: 1169 / 1280;
   --fundal-stage-max-height: 68vh;
@@ -24675,4 +24713,28 @@ img[src*="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/"] {
     ) {
     opacity: 1;
   }
+}
+
+:is(
+    #glaucomaWorkshopPage,
+    #childhoodEyeScreeningWorkshopPage,
+    #diabeticRetinopathyWorkshopPage
+  )
+  :is(
+    .glaucoma-folder-row,
+    .glaucoma-subfolder-row,
+    .childhood-folder-row,
+    .diabetic-folder-row,
+    .diabetic-nested-folder-row,
+    .lesson-row--folder
+  )
+  > .lesson-cta {
+  color: #acacac !important;
+  font-weight: 600 !important;
+}
+
+:is(#diabeticNcdClinicScreeningPage, #diabeticOtherEyeDiseasesScreeningPage)
+  .diabetic-screening-chip-list
+  li {
+  border-radius: 12px !important;
 }

@@ -41,6 +41,21 @@ function refreshWorkshopTranslations(root = document) {
   window.I18N?.applyTranslations?.(root);
 }
 
+function moveAtomsRowsToFolderEnd(root) {
+  root
+    ?.querySelectorAll?.(".glaucoma-section-card, .module-card")
+    ?.forEach((section) => {
+      const atomRows = Array.from(section.children).filter((child) => {
+        if (!child.matches?.(".lesson-row[data-target]")) return false;
+        return String(child.getAttribute("data-target") || "")
+          .toLowerCase()
+          .includes("atoms");
+      });
+
+      atomRows.forEach((row) => section.appendChild(row));
+    });
+}
+
 const GLAUCOMA_SECTION_NUMBERS = Object.freeze({
   introduction: "1.",
   history: "2.",
@@ -588,6 +603,41 @@ function setupAtomsPanZoom(viewerEl, stageEl) {
   apply();
 }
 
+function setupGlaucomaAtomsButtonZoom(viewerEl, stageEl) {
+  let zoom = 1;
+
+  const controls = document.createElement("div");
+  controls.className = "workshop-atoms-zoom-controls";
+  controls.innerHTML = `
+    <span aria-hidden="true"></span>
+    <button type="button" data-atoms-zoom-out aria-label="Zoom out">-</button>
+    <button type="button" data-atoms-zoom-in aria-label="Zoom in">+</button>
+  `;
+  viewerEl.prepend(controls);
+
+  const apply = () => {
+    stageEl.style.width = `${Math.round(zoom * 100)}%`;
+    stageEl.style.maxWidth = `${Math.round(zoom * 980)}px`;
+  };
+
+  const setZoom = (next) => {
+    zoom = Math.max(0.72, Math.min(2.6, next));
+    apply();
+  };
+
+  controls
+    .querySelector("[data-atoms-zoom-out]")
+    ?.addEventListener("click", () => setZoom(zoom - 0.18));
+  controls
+    .querySelector("[data-atoms-zoom-in]")
+    ?.addEventListener("click", () => setZoom(zoom + 0.18));
+
+  stageEl.style.transform = "none";
+  stageEl.style.transformOrigin = "50% 0";
+  viewerEl.style.touchAction = "auto";
+  apply();
+}
+
 function initGlaucomaSummaryAtomsPage(pageId, viewerId, imgSrc) {
   const page = document.getElementById(pageId);
   const viewer = document.getElementById(viewerId);
@@ -595,29 +645,35 @@ function initGlaucomaSummaryAtomsPage(pageId, viewerId, imgSrc) {
   if (!page || !viewer) return;
   if (viewer.dataset.inited === "1") return;
 
-  viewer.style.position = "fixed";
-  viewer.style.top = "50px";
-  viewer.style.left = "0";
-  viewer.style.right = "0";
-  viewer.style.bottom = "0";
-  viewer.style.overflow = "hidden";
+  viewer.style.position = "relative";
+  viewer.style.top = "auto";
+  viewer.style.left = "auto";
+  viewer.style.right = "auto";
+  viewer.style.bottom = "auto";
+  viewer.style.width = "100%";
+  viewer.style.minHeight = "calc(100vh - 62px)";
+  viewer.style.overflowX = "auto";
+  viewer.style.overflowY = "visible";
+  viewer.style.padding = "62px 0 112px";
+  viewer.style.background = "#fff";
 
   viewer.innerHTML = `
     <div class="atoms-handout-container" style="
       width: 100%;
-      height: 100%;
-      overflow: hidden;
+      overflow: visible;
       position: relative;
-      touch-action: none;
+      touch-action: auto;
     ">
       <div class="atoms-handout-stage" style="
         width: 100%;
-        height: 100%;
-        transform-origin: 0 0;
+        max-width: 980px;
+        margin: 0 auto 48px;
+        transform-origin: 50% 0;
       ">
         <img src="${imgSrc}" alt="ATOMS handout image" style="
           display: block;
-          max-width: 100%;
+          width: 100%;
+          max-width: none;
           height: auto;
           margin: 0 auto;
         " />
@@ -628,7 +684,7 @@ function initGlaucomaSummaryAtomsPage(pageId, viewerId, imgSrc) {
   const stage = viewer.querySelector(".atoms-handout-stage");
   if (!stage) return;
 
-  setupAtomsPanZoom(viewer, stage);
+  setupGlaucomaAtomsButtonZoom(viewer, stage);
 
   viewer.dataset.inited = "1";
 }
@@ -655,6 +711,7 @@ export function initializeGlaucomaWorkshop() {
   initializeGlaucomaWorkshopNextFlowInfra();
   setupWorkshopFolders(page);
   setupVisualFieldsSubfolder(page);
+  moveAtomsRowsToFolderEnd(page);
   initGlaucomaSummaryAtomsPages();
   assignGlaucomaWorkshopFlowIndices(page);
   updateGlaucomaWorkshopProgressBars();

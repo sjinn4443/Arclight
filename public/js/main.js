@@ -85,12 +85,33 @@ function shouldSkipSplashForInitialRoute(initialRoute) {
 }
 // --- End Onboarding Persistence ---
 
+function markAppleUiPlatform() {
+  const nav = window.navigator || {};
+  const userAgent = String(nav.userAgent || "");
+  const platform = String(nav.platform || "");
+  const maxTouchPoints = Number(nav.maxTouchPoints || 0);
+  const isIosLike =
+    /iP(hone|od|ad)/i.test(userAgent) ||
+    (/Mac/i.test(platform) && maxTouchPoints > 1);
+  const isMacSafari =
+    /Safari/i.test(userAgent) &&
+    !/Chrome|Chromium|CriOS|Edg|OPR|Firefox|FxiOS|Android/i.test(userAgent) &&
+    (/Macintosh/i.test(userAgent) || /Mac/i.test(platform));
+
+  document.documentElement.classList.toggle(
+    "is-apple-ui",
+    isIosLike || isMacSafari,
+  );
+}
+
 // === App bootstrap ===
 /**
  * Initializes global systems and sets up event listeners for page loading.
  * This function runs once the DOM is fully loaded.
  */
 document.addEventListener("DOMContentLoaded", () => {
+  markAppleUiPlatform();
+
   // Init global systems once
   initializeLocation().catch((e) => console.warn("[geo] init failed", e));
   initializeMenu();

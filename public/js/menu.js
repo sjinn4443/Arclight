@@ -540,7 +540,12 @@ function renderDownloadedContentsSummary(groups, totalCached, totalAssets) {
 
 async function openDownloadedContentsModal() {
   closeMenu();
-  setDownloadedContentsModalContent("<p>Checking downloaded contents...</p>");
+  setDownloadedContentsModalContent(`
+    <div class="downloaded-content-loading" role="status" aria-live="polite">
+      <span class="downloaded-content-spinner" aria-hidden="true"></span>
+      <span>Checking downloaded contents...</span>
+    </div>
+  `);
 
   try {
     const {

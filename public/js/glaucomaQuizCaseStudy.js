@@ -92,10 +92,10 @@ export function initializeGlaucomaQuizCaseStudy() {
 
   const LABELS = [
     "Normal",
-    "Glaucoma",
-    "NVD",
+    "Cupped disc",
+    "New vessels at disc",
     "Temporal pallor",
-    "Disc oedema",
+    "Swollen disc",
     "Optic atrophy/pale disc-total",
     "Hypoplastic disc",
     "Myelinated nerve fibres",
@@ -112,19 +112,19 @@ export function initializeGlaucomaQuizCaseStudy() {
     },
     {
       video: "/videos/Workshop/Glaucoma/NormalAbnormal/case3_720p.mp4",
-      answer: "Disc oedema",
+      answer: "Swollen disc",
     },
     {
       video: "/videos/Workshop/Glaucoma/NormalAbnormal/case4_720p.mp4",
-      answer: "Glaucoma",
+      answer: "Cupped disc",
     },
     {
       video: "/videos/Workshop/Glaucoma/NormalAbnormal/case5_720p.mp4",
-      answer: "Disc oedema",
+      answer: "Swollen disc",
     },
     {
       video: "/videos/Workshop/Glaucoma/NormalAbnormal/case6_720p.mp4",
-      answer: "NVD",
+      answer: "New vessels at disc",
     },
     {
       video: "/videos/Workshop/Glaucoma/NormalAbnormal/case7_720p.mp4",
@@ -136,7 +136,7 @@ export function initializeGlaucomaQuizCaseStudy() {
     },
     {
       video: "/videos/Workshop/Glaucoma/NormalAbnormal/case9_720p.mp4",
-      answer: "Glaucoma",
+      answer: "Cupped disc",
     },
     {
       video: "/videos/Workshop/Glaucoma/NormalAbnormal/case10_720p.mp4",
@@ -190,7 +190,7 @@ export function initializeGlaucomaQuizCaseStudy() {
   function updateProgress() {
     const answered = userAnswers.filter(Boolean).length;
     progressEl.textContent = `${answered} / ${QUESTIONS.length}`;
-    resultsBtn.disabled = answered !== QUESTIONS.length;
+    resultsBtn.disabled = false;
     const inProgressPercent = (answered / QUESTIONS.length) * 90;
     setGlaucomaLessonProgress("glaucomaQuizCaseStudy", inProgressPercent);
   }
@@ -265,41 +265,17 @@ export function initializeGlaucomaQuizCaseStudy() {
     });
 
     updateProgress();
-    // --- Reverse loop playback (ping-pong loop) ---
     allWrap.querySelectorAll("video.quiz-video").forEach((video) => {
-      // 초기 상태: 정방향
-      video.dataset.direction = "forward";
+      video.loop = true;
+      video.muted = true;
+      video.autoplay = true;
+      video.playsInline = true;
+      video.controls = false;
       video.playbackRate = 1;
-
-      // 메타데이터 로드 후 duration 확보
       video.addEventListener("loadedmetadata", () => {
-        // 아주 짧은 영상에서 끝 튐 방지
-        video.currentTime = 0;
+        if (video.paused) video.play().catch(() => {});
       });
-
-      video.addEventListener("timeupdate", () => {
-        if (!video.duration || isNaN(video.duration)) return;
-
-        const epsilon = 0.05; // 경계 오차 방지용 (50ms)
-
-        // ▶ 정방향 → 끝 도달 시 역방향
-        if (
-          video.dataset.direction === "forward" &&
-          video.currentTime >= video.duration - epsilon
-        ) {
-          video.dataset.direction = "backward";
-          video.playbackRate = -1;
-        }
-
-        // ◀ 역방향 → 처음 도달 시 정방향
-        if (
-          video.dataset.direction === "backward" &&
-          video.currentTime <= epsilon
-        ) {
-          video.dataset.direction = "forward";
-          video.playbackRate = 1;
-        }
-      });
+      video.play().catch(() => {});
     });
   }
 
@@ -317,6 +293,20 @@ export function initializeGlaucomaQuizCaseStudy() {
 
   function closeModal() {
     modal.style.display = "none";
+  }
+
+  function showIncompleteSubmitPopup(firstUnansweredIndex) {
+    window.alert(
+      `Please answer all ${QUESTIONS.length} questions before submitting.`,
+    );
+
+    const firstCard = allWrap.querySelector(
+      `[data-qwrap="${firstUnansweredIndex}"]`,
+    );
+    firstCard?.scrollIntoView?.({ block: "center", behavior: "smooth" });
+    firstCard
+      ?.querySelector?.('input[type="radio"]')
+      ?.focus?.({ preventScroll: true });
   }
 
   function highlightAll() {
@@ -344,6 +334,12 @@ export function initializeGlaucomaQuizCaseStudy() {
   }
 
   resultsBtn.addEventListener("click", () => {
+    const firstUnansweredIndex = userAnswers.findIndex((answer) => !answer);
+    if (firstUnansweredIndex !== -1) {
+      showIncompleteSubmitPopup(firstUnansweredIndex);
+      return;
+    }
+
     openModal();
   });
 

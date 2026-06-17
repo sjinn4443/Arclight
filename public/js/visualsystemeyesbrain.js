@@ -241,6 +241,24 @@ function getFinalCaptionText(
   return captionCopy.finalIntro;
 }
 
+function updateStoryProgressSteps(steps, activeIndex = 0, fillProgress = 0) {
+  if (!steps?.length) return;
+  const safeActiveIndex = Math.max(
+    0,
+    Math.min(steps.length - 1, Math.floor(Number(activeIndex) || 0)),
+  );
+  const progressRoot = steps[0]?.closest?.("[data-vs-progress]");
+  progressRoot?.style.setProperty(
+    "--vs-story-progress",
+    formatNumber(clamp(fillProgress)),
+  );
+
+  steps.forEach((step, index) => {
+    step.classList.toggle("is-active", index <= safeActiveIndex);
+    step.classList.toggle("is-complete", index < safeActiveIndex);
+  });
+}
+
 function renderScene(
   elements,
   progress,
@@ -286,7 +304,7 @@ function renderScene(
   const tractRaw = mix(endPhase, 0.08, 0.48, easeInOutCubic);
   const tractOut = mix(endPhase, 0.55, 0.62, easeInOutCubic);
   const tract2Raw = mix(endPhase, 0.72, 0.97, easeInOutCubic);
-  const finalTail = mix(endPhase, 0.985, 1, easeOutCubic);
+  const finalTail = mix(endPhase, splitFinal ? 0.94 : 0.985, 1, easeOutCubic);
   const tractProgress = prefersReducedMotion
     ? Math.round(tractRaw * 28) / 28
     : stepped(tractRaw, 28);
@@ -299,7 +317,12 @@ function renderScene(
   const manOpacity = clamp(manIn * (1 - manOut));
   const faceOpacity = clamp(faceIn);
   const finalOpacity = clamp(finalIn);
-  const finalTailY = lerp(0, px(-140), finalTail);
+  const finalTailY = lerp(0, px(splitFinal ? -240 : -140), finalTail);
+  updateStoryProgressSteps(
+    elements.progressSteps,
+    finalOpacity > 0.05 ? 2 : envIn > 0.05 ? 1 : 0,
+    progress,
+  );
 
   const corneaIn = mix(
     compactP,
@@ -484,12 +507,14 @@ function renderScene(
   setLayerState(elements.brain, {
     opacity: finalOpacity,
     y: lerp(px(260), px(-820), finalIn) + finalTailY,
+    leftPercent: null,
     scale: lerp(0.92, 1, finalIn),
   });
 
   setLayerState(elements.facebrain, {
     opacity: finalOpacity * facebrainIn,
-    y: lerp(px(18), 0, facebrainIn) + finalTailY,
+    y: lerp(px(18), px(splitFinal ? -50 : 0), facebrainIn) + finalTailY,
+    leftPercent: null,
     scale: lerp(0.92, 1, facebrainIn),
   });
 
@@ -515,6 +540,7 @@ function renderScene(
   setLayerState(elements.tract2, {
     opacity: finalOpacity * (tract2Progress > 0.001 ? 1 : 0),
     y: finalTailY,
+    leftPercent: null,
     clipBottom: 100 - tract2Progress * 100,
   });
 }
@@ -565,6 +591,7 @@ function initializeVisualSystemStoryPage(page) {
     facebrain: page.querySelector('[data-vs="facebrain"]'),
     tract: page.querySelector('[data-vs="tract"]'),
     tract2: page.querySelector('[data-vs="tract2"]'),
+    progressSteps: Array.from(page.querySelectorAll("[data-vs-progress-step]")),
   };
 
   const controller = new AbortController();

@@ -598,7 +598,24 @@ body.quiz-mode {
 }
 
 #tocInlineCloseBtn {
-  display: none;
+  position: absolute;
+  right: 12px;
+  bottom: 10px;
+  width: 36px;
+  min-width: 36px;
+  height: 36px;
+  margin: 0;
+  border: 0;
+  border-radius: 999px;
+  background: #e41e26;
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1;
+  z-index: 3000;
 }
 
 .toc-tab {
@@ -622,7 +639,7 @@ body.quiz-mode {
 }
 
 #atomsImageContainer img {
-  cursor: zoom-in;
+  cursor: default;
   transition: transform 0.2s ease-in-out;
 }
 
@@ -642,6 +659,45 @@ body.quiz-mode {
   align-items: center;
   padding-top: 55px;
   gap: 20px;
+}
+
+.atoms-card-zoom-controls {
+  position: fixed;
+  top: 60px;
+  left: 58px;
+  z-index: 4000;
+  display: flex;
+  gap: 6px;
+  padding: 0;
+}
+
+.atoms-card-zoom-controls button {
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 6px;
+  background: #b4342a;
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  font-weight: 850;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.atoms-card-image-frame {
+  flex: 0 0 auto;
+  min-width: min(92vw, 320px);
+  margin: 10px auto;
+  transition:
+    width 160ms ease,
+    max-width 160ms ease;
+}
+
+#atomsCardPage #tocDropdown {
+  padding-bottom: 52px;
 }
 
 .toc-tab button {
@@ -1172,6 +1228,32 @@ input:checked + .slider:before {
   color: #555;
   font-size: 12px;
   line-height: 1.35;
+}
+
+.downloaded-content-loading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 4px 0 10px;
+  color: #374151;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.downloaded-content-spinner {
+  width: 22px;
+  height: 22px;
+  flex: 0 0 22px;
+  border: 3px solid #e5e7eb;
+  border-top-color: #e41e26;
+  border-radius: 50%;
+  animation: downloadedContentSpin 0.8s linear infinite;
+}
+
+@keyframes downloadedContentSpin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 #downloadedContentsModal .modal-footer {
@@ -2427,6 +2509,35 @@ input:checked + .slider:before {
 #atomsHandout1Page .icon.menuBtn,
 #atomsHandout2Page .icon.menuBtn {
   margin: 0 !important;
+}
+
+.workshop-atoms-zoom-controls {
+  position: fixed;
+  top: 72px;
+  right: 14px;
+  z-index: 4200;
+  display: flex;
+  gap: 6px;
+  padding: 6px;
+  border-radius: 999px;
+  background: rgba(17, 24, 39, 0.72);
+  backdrop-filter: blur(8px);
+}
+
+.workshop-atoms-zoom-controls button {
+  width: 34px;
+  height: 34px;
+  border: 0;
+  border-radius: 50%;
+  background: #ffffff;
+  color: #111827;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 950;
+  line-height: 1;
+  cursor: pointer;
 }
 
 .lesson-row {

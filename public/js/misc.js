@@ -29,6 +29,7 @@ function _initializeMiscImpl() {
   const atomsImgContainer = document.getElementById("atomsImageContainer");
   if (atomsImgContainer) {
     atomsImgContainer.addEventListener("click", (e) => {
+      if (atomsImgContainer.dataset.buttonZoom === "1") return;
       if (e.target.tagName === "IMG") {
         e.target.classList.toggle("zoomed");
       }

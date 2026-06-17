@@ -2,14 +2,28 @@
 <div id="atomsCardPage" class="page">
   <div class="atoms-title-bar" data-i18n="atomsCardTitle">Atoms Card</div>
   <div class="top-right-icons">
-    <button
-      id="closeTOCBtn"
-      aria-label="Close table of contents"
-      title="Close Table of Contents"
-      data-i18n="closeTOCBtnTitle:aria-label;closeTOCBtnTitle:title"
+    <div
+      class="atoms-card-zoom-controls diabetic-protocol-algorithm-controls"
+      aria-label="Atoms card zoom controls"
     >
-      ✖
-    </button>
+      <span aria-hidden="true"></span>
+      <button
+        id="atomsZoomOutBtn"
+        type="button"
+        aria-label="Zoom out"
+        title="Zoom out"
+      >
+        -
+      </button>
+      <button
+        id="atomsZoomInBtn"
+        type="button"
+        aria-label="Zoom in"
+        title="Zoom in"
+      >
+        +
+      </button>
+    </div>
     <button
       id="tocToggleBtn"
       aria-label="Open table of contents"
@@ -58,8 +72,8 @@
     id="atomsImageContainer"
     style="
       width: 100vw;
-      height: 100vh;
-      overflow: hidden;
+      min-height: 100vh;
+      overflow: auto;
       display: flex;
       justify-content: center;
       align-items: center;

@@ -1309,6 +1309,80 @@ const FUNDAL_PAGE_ROUTE_SEQUENCES = [
   DIABETIC_DO_FUNDAL_PAGE_ROUTE_SEQUENCE,
   DIABETIC_BIO_FUNDAL_PAGE_ROUTE_SEQUENCE,
 ];
+const FUNDAL_LESSON_NAV_CONFIG = {
+  childhoodFundalPreparation: {
+    previous: {
+      type: "route",
+      routeName: "fundalReflexPdf",
+      pageId: "fundalReflexPdfPage",
+    },
+    next: { type: "fundal", routeName: "childhoodFundalExamination" },
+  },
+  childhoodFundalExamination: {
+    previous: { type: "fundal", routeName: "childhoodFundalPreparation" },
+    next: { type: "fundal", routeName: "childhoodFundalNewbornEyesOpen" },
+  },
+  childhoodFundalNewbornEyesOpen: {
+    previous: { type: "fundal", routeName: "childhoodFundalExamination" },
+    next: { type: "fundal", routeName: "childhoodFundalNewbornEyesClosed" },
+  },
+  childhoodFundalNewbornEyesClosed: {
+    previous: { type: "fundal", routeName: "childhoodFundalNewbornEyesOpen" },
+    next: { type: "fundal", routeName: "childhoodFundalUnclearFindings" },
+  },
+  childhoodFundalUnclearFindings: {
+    previous: { type: "fundal", routeName: "childhoodFundalNewbornEyesClosed" },
+    next: { type: "fundal", routeName: "childhoodFundalPossibleFinding" },
+  },
+  childhoodFundalPossibleFinding: {
+    previous: { type: "fundal", routeName: "childhoodFundalUnclearFindings" },
+    next: { type: "fundal", routeName: "childhoodFundalAfterExamination" },
+  },
+  childhoodFundalAfterExamination: {
+    previous: { type: "fundal", routeName: "childhoodFundalPossibleFinding" },
+    next: { type: "video", target: "usaidNormalAbnormalPage" },
+  },
+  diabeticObservationFundalReflex: {
+    previous: { type: "video", target: "directOphthalmoscopyVideoPage" },
+    next: { type: "fundal", routeName: "diabeticPositioningFlightPath" },
+  },
+  diabeticPositioningFlightPath: {
+    previous: { type: "fundal", routeName: "diabeticObservationFundalReflex" },
+    next: { type: "fundal", routeName: "diabeticHowToExamine" },
+  },
+  diabeticHowToExamine: {
+    previous: { type: "fundal", routeName: "diabeticPositioningFlightPath" },
+    next: {
+      type: "route",
+      routeName: "directOphthalmoscopyPdf",
+      pageId: "directOphthalmoscopyPdfPage",
+      diabeticFolder: "directOphthalmoscopy",
+      diabeticFocusSelector: '[data-target="directOphthalmoscopyPdfPage"]',
+    },
+  },
+  diabeticBioPreparation: {
+    previous: {
+      type: "video",
+      target: "binocularIndirectOphthalmoscopyVideoPage",
+    },
+    next: { type: "fundal", routeName: "diabeticBioFundoscopySitting" },
+  },
+  diabeticBioFundoscopySitting: {
+    previous: { type: "fundal", routeName: "diabeticBioPreparation" },
+    next: { type: "fundal", routeName: "diabeticBioFundoscopyIndentation" },
+  },
+  diabeticBioFundoscopyIndentation: {
+    previous: { type: "fundal", routeName: "diabeticBioFundoscopySitting" },
+    next: {
+      type: "route",
+      routeName: "binocularIndirectOphthalmoscopyPdf",
+      pageId: "binocularIndirectOphthalmoscopyPdfPage",
+      diabeticFolder: "binocularIndirectOphthalmoscopy",
+      diabeticFocusSelector:
+        '[data-target="binocularIndirectOphthalmoscopyPdfPage"]',
+    },
+  },
+};
 const FUNDAL_CROSS_PAGE_BOUNDARY_LOCK_MS = 900;
 
 let pendingFundalPageEntry = null;
@@ -1489,6 +1563,98 @@ async function navigateToFundalRoute(routeName, options = {}) {
   } catch (err) {
     console.error("[fundalScroll] failed to navigate to fundal route", err);
     return false;
+  }
+}
+
+function getFundalLessonNavTarget(routeName, direction) {
+  const normalizedRoute = String(routeName || "").trim();
+  const key = direction < 0 ? "previous" : "next";
+  return FUNDAL_LESSON_NAV_CONFIG[normalizedRoute]?.[key] || null;
+}
+
+async function showVideoLessonTarget(pageId) {
+  const target = String(pageId || "").trim();
+  if (!target) return false;
+
+  try {
+    window.__videosPendingTarget = target;
+    window.__videosSuppressFlash = true;
+    sessionStorage.setItem("gotoSubPage", target);
+  } catch {}
+
+  try {
+    await loadPage("videos");
+  } catch (err) {
+    console.error("[fundalScroll] failed to load video lesson target", err);
+    return false;
+  }
+
+  try {
+    const { goToVideosSection, showVideosPageById } =
+      await import("./videos.js");
+    if (typeof goToVideosSection === "function") {
+      goToVideosSection(target, { skipDefault: true });
+    }
+    if (typeof showVideosPageById === "function") {
+      showVideosPageById(target);
+    }
+  } catch {
+    /* fallback below */
+  }
+
+  const targetEl = document.getElementById(target);
+  if (!targetEl) return false;
+  const videosRoot = document.getElementById("videos");
+  videosRoot?.querySelectorAll?.(".page")?.forEach((pageEl) => {
+    pageEl.style.display = "none";
+  });
+  targetEl.style.display = "block";
+  document.dispatchEvent(
+    new CustomEvent("page:shown", { detail: { id: target } }),
+  );
+  return true;
+}
+
+async function navigateFundalLessonTarget(target, direction = 1) {
+  if (!target || fundalPageNavigationInFlight) return false;
+  fundalPageNavigationInFlight = true;
+
+  try {
+    if (target.type === "fundal" && target.routeName) {
+      const edge = direction < 0 ? "end" : "start";
+      setPendingFundalPageEntry(target.routeName, edge, {
+        boundaryInputLockUntil: Date.now() + FUNDAL_CROSS_PAGE_BOUNDARY_LOCK_MS,
+      });
+      return navigateToFundalRoute(target.routeName);
+    }
+
+    if (target.type === "video" && target.target) {
+      return showVideoLessonTarget(target.target);
+    }
+
+    if (target.type === "route" && target.routeName) {
+      if (target.diabeticFolder) {
+        rememberDiabeticWorkshopFolderRestore(
+          target.diabeticFolder,
+          target.diabeticFocusSelector,
+        );
+      } else {
+        rememberFundalWorkshopFolderRestore();
+      }
+
+      await loadPage(target.routeName);
+      if (target.pageId) {
+        showFundalPageWithFallbackAndEvent(target.pageId);
+      }
+      return true;
+    }
+
+    return false;
+  } catch (err) {
+    console.error("[fundalScroll] failed to navigate lesson target", err);
+    return false;
+  } finally {
+    fundalPageNavigationInFlight = false;
   }
 }
 
@@ -2702,6 +2868,7 @@ function buildAnimationSlots(listEl, label, count, cfg = null) {
     sections.map((section) => [section.startIndex, section]),
   );
   let currentListEl = listEl;
+  const cfgRouteName = String(cfg?.routeName || "").trim();
 
   for (let i = 0; i < count; i += 1) {
     const sectionMeta = sectionStarts.get(i);
@@ -2765,12 +2932,27 @@ function buildAnimationSlots(listEl, label, count, cfg = null) {
       stage.dataset.posterHidden = "1";
     }
 
+    const topNav =
+      i === 0 && FUNDAL_LESSON_NAV_CONFIG[cfgRouteName]
+        ? document.createElement("div")
+        : null;
+    if (topNav) {
+      topNav.className = "childhood-fundal-stage-top-nav";
+      topNav.innerHTML = `
+        <button type="button" data-fundal-page-prev-btn="1">&lt; Previous</button>
+        <button type="button" data-fundal-page-next-btn="1">Next &gt;</button>
+      `;
+    }
+
     const downArrow = createDownArrowElement();
 
     const segmentText = document.createElement("div");
     segmentText.className = "childhood-fundal-segment-text";
     segmentText.setAttribute("aria-live", "polite");
 
+    if (topNav) {
+      item.appendChild(topNav);
+    }
     item.appendChild(stage);
     item.appendChild(segmentText);
     item.appendChild(downArrow);
@@ -7590,6 +7772,15 @@ function initializeStageAutoplayMode(
         stage.parentElement?.querySelector(
           ".childhood-fundal-scroll-down-arrow",
         ) || null,
+      topNavEl:
+        stage.parentElement?.querySelector(".childhood-fundal-stage-top-nav") ||
+        null,
+      topPrevBtn:
+        stage.parentElement?.querySelector("[data-fundal-page-prev-btn='1']") ||
+        null,
+      topNextBtn:
+        stage.parentElement?.querySelector("[data-fundal-page-next-btn='1']") ||
+        null,
       replayBtn: null,
       segmentTextEl,
       segmentStartTexts: [],
@@ -7671,6 +7862,21 @@ function initializeStageAutoplayMode(
 
   function hasAdvanceControl(state) {
     return hasNextStage(state) || shouldShowNextPageAdvanceControl(state);
+  }
+
+  function updateTopStageNavigation(state) {
+    if (!state?.topNavEl) return;
+    const hasPrev = !!getFundalLessonNavTarget(routeName, -1);
+    const hasNext = !!getFundalLessonNavTarget(routeName, 1);
+    const canAdvance = hasNext;
+
+    state.topPrevBtn?.toggleAttribute("disabled", !hasPrev);
+    state.topNextBtn?.toggleAttribute("disabled", !canAdvance);
+    state.topNavEl.classList.toggle("is-stage-complete", canAdvance);
+  }
+
+  function updateAllTopStageNavigation() {
+    states.forEach((state) => updateTopStageNavigation(state));
   }
 
   function areAllStagesComplete() {
@@ -7850,6 +8056,7 @@ function initializeStageAutoplayMode(
       arrowEl.classList.remove("is-visible");
       arrowEl.disabled = true;
     }
+    updateTopStageNavigation(state);
   }
 
   function hideStageDownArrow(state) {
@@ -7897,6 +8104,7 @@ function initializeStageAutoplayMode(
       arrowEl.classList.toggle("is-visible", showAdvance);
     }
     updateStageControlAnchors(state);
+    updateTopStageNavigation(state);
   }
 
   function reinforceStageAdvanceControl(state, passes = 10) {
@@ -8246,6 +8454,39 @@ function initializeStageAutoplayMode(
     window.setTimeout(alignAndStartWhenReady, 180);
   }
 
+  function scrollToPreviousStage(state) {
+    if (
+      !state ||
+      state.playing ||
+      states.some((candidate) => candidate.playing)
+    )
+      return;
+
+    const prevState =
+      Number(state.fileIndex) > 0 ? states[state.fileIndex - 1] : null;
+    if (!prevState?.stage) return;
+
+    ensureStageAnimationLoaded(prevState);
+    alignStageForPlayback(prevState);
+
+    const alignWhenReady = () => {
+      alignStageForPlayback(prevState);
+      updateAllStageControlAnchors();
+      updateAllTopStageNavigation();
+      if (
+        prevState.ready &&
+        !prevState.started &&
+        !states.some((candidate) => candidate.playing) &&
+        isStateNearViewportCenter(prevState)
+      ) {
+        void playStage(prevState);
+      }
+    };
+
+    requestAnimationFrame(alignWhenReady);
+    window.setTimeout(alignWhenReady, 180);
+  }
+
   async function handleAdvanceControlClick(state) {
     if (!state) return;
     if (hasNextStage(state)) {
@@ -8257,7 +8498,23 @@ function initializeStageAutoplayMode(
   }
 
   function handleDelegatedAdvanceControlClick(event) {
-    const button = event?.target?.closest?.("[data-fundal-stage-next-btn='1']");
+    const pageButton = event?.target?.closest?.(
+      "[data-fundal-page-next-btn='1'], [data-fundal-page-prev-btn='1']",
+    );
+    if (pageButton && page.contains(pageButton)) {
+      event.preventDefault();
+      event.stopPropagation();
+      const direction = pageButton.matches("[data-fundal-page-prev-btn='1']")
+        ? -1
+        : 1;
+      const target = getFundalLessonNavTarget(routeName, direction);
+      void navigateFundalLessonTarget(target, direction);
+      return;
+    }
+
+    const button = event?.target?.closest?.(
+      "[data-fundal-stage-next-btn='1'], [data-fundal-stage-prev-btn='1']",
+    );
     if (!button || !page.contains(button)) return;
     const item = button.closest(".childhood-fundal-prep-item");
     const fileIndex = Number(item?.dataset?.fileIndex);
@@ -8266,6 +8523,10 @@ function initializeStageAutoplayMode(
     if (!state) return;
     event.preventDefault();
     event.stopPropagation();
+    if (button.matches("[data-fundal-stage-prev-btn='1']")) {
+      scrollToPreviousStage(state);
+      return;
+    }
     void handleAdvanceControlClick(state);
   }
 
@@ -8866,6 +9127,7 @@ function initializeStageAutoplayMode(
     }
     showStageCompletionText(state);
     showStageControls(state);
+    updateAllTopStageNavigation();
     reinforceStageAdvanceControl(state, IS_IOS_WEBKIT ? 18 : 12);
     dispatchRouteCompleteOnce(state);
 
@@ -9243,6 +9505,7 @@ function initializeStageAutoplayMode(
 
     state.started = true;
     state.playing = true;
+    updateAllTopStageNavigation();
     ensureAdjacentStageAnimationLoaded(state);
     hideAllStageDownArrows();
     hideRecoveryOverlay(state, { immediate: true });
@@ -9785,7 +10048,10 @@ function initializeStageAutoplayMode(
 function resolveFundalRouteConfig(routeName) {
   const baseCfg = ROUTE_CONFIG[routeName];
   if (!baseCfg) return null;
-  return resolveRuntimeRouteConfig(routeName, baseCfg);
+  return {
+    ...resolveRuntimeRouteConfig(routeName, baseCfg),
+    routeName,
+  };
 }
 
 export function prewarmChildhoodFundalRouteAssets(
