@@ -614,6 +614,7 @@ function setupGlaucomaAtomsButtonZoom(viewerEl, stageEl) {
     <button type="button" data-atoms-zoom-in aria-label="Zoom in">+</button>
   `;
   viewerEl.prepend(controls);
+  positionGlaucomaAtomsControlsBelowMenu(viewerEl, controls);
 
   const apply = () => {
     stageEl.style.width = `${Math.round(zoom * 100)}%`;
@@ -638,6 +639,61 @@ function setupGlaucomaAtomsButtonZoom(viewerEl, stageEl) {
   apply();
 }
 
+function positionGlaucomaAtomsControlsBelowMenu(viewerEl, controls) {
+  const page = viewerEl.closest(".page");
+  const menu = page?.querySelector(".eyes-topbar .icon.menuBtn");
+  if (!menu || !controls) return;
+
+  const place = () => {
+    const menuRect = menu.getBoundingClientRect();
+    const controlRect = controls.getBoundingClientRect();
+    const width = controlRect.width || 128;
+    const left = Math.max(
+      8,
+      Math.min(
+        (window.innerWidth || document.documentElement.clientWidth || width) -
+          width -
+          8,
+        menuRect.left + menuRect.width / 2 - width / 2,
+      ),
+    );
+
+    controls.style.left = `${Math.round(left)}px`;
+    controls.style.right = "auto";
+    controls.style.top = `${Math.round(menuRect.bottom + 10)}px`;
+  };
+
+  window.requestAnimationFrame(place);
+  window.addEventListener("resize", place, { passive: true });
+  document.addEventListener("page:shown", (event) => {
+    if (event?.detail?.id === page?.id) {
+      window.requestAnimationFrame(place);
+    }
+  });
+}
+
+function lockGlaucomaAtomsViewerHeight(viewerEl, img) {
+  if (!viewerEl || !img) return;
+
+  const lock = () => {
+    if (viewerEl.dataset.heightLocked === "1") return;
+    const height = Math.ceil(viewerEl.scrollHeight);
+    if (!height) return;
+    viewerEl.style.height = `${height}px`;
+    viewerEl.style.overflowY = "auto";
+    viewerEl.dataset.heightLocked = "1";
+  };
+
+  const scheduleLock = () =>
+    window.requestAnimationFrame(() => window.requestAnimationFrame(lock));
+
+  if (img.complete) {
+    scheduleLock();
+  } else {
+    img.addEventListener("load", scheduleLock, { once: true });
+  }
+}
+
 function initGlaucomaSummaryAtomsPage(pageId, viewerId, imgSrc) {
   const page = document.getElementById(pageId);
   const viewer = document.getElementById(viewerId);
@@ -651,10 +707,10 @@ function initGlaucomaSummaryAtomsPage(pageId, viewerId, imgSrc) {
   viewer.style.right = "auto";
   viewer.style.bottom = "auto";
   viewer.style.width = "100%";
-  viewer.style.minHeight = "calc(100vh - 62px)";
+  viewer.style.minHeight = "0";
   viewer.style.overflowX = "auto";
   viewer.style.overflowY = "visible";
-  viewer.style.padding = "62px 0 112px";
+  viewer.style.padding = "62px 0 12px";
   viewer.style.background = "#fff";
 
   viewer.innerHTML = `
@@ -682,9 +738,11 @@ function initGlaucomaSummaryAtomsPage(pageId, viewerId, imgSrc) {
   `;
 
   const stage = viewer.querySelector(".atoms-handout-stage");
+  const img = viewer.querySelector(".atoms-handout-stage img");
   if (!stage) return;
 
   setupGlaucomaAtomsButtonZoom(viewer, stage);
+  lockGlaucomaAtomsViewerHeight(viewer, img);
 
   viewer.dataset.inited = "1";
 }

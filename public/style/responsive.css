@@ -4899,10 +4899,14 @@ html.is-apple-ui :is(.eyes-topbar .menuBtn, .icon.menuBtn, #tocToggleBtn) {
 }
 
 #atomsCardPage #tocList li.is-selected {
-  background: #2563eb !important;
-  border-color: #2563eb !important;
-  color: #ffffff !important;
-  font-weight: 800 !important;
+  background: #dbeafe !important;
+  border-color: #bfdbfe !important;
+  color: #2563eb !important;
+  font-weight: 400 !important;
+}
+
+#atomsCardPage .atoms-title-bar__selected {
+  font-weight: 400 !important;
 }
 
 #atomsCardPage .atoms-card-image-frame--rotated {
@@ -4946,6 +4950,20 @@ html.is-apple-ui :is(.eyes-topbar .menuBtn, .icon.menuBtn, #tocToggleBtn) {
 
 #atomsHandout1Page .childhood-next-wrap,
 #atomsHandout2Page .childhood-next-wrap {
+  position: relative !important;
+  left: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  margin: 8px 16px calc(20px + env(safe-area-inset-bottom)) !important;
+}
+
+#glaucomaFundusSummaryAtomsPage .glaucoma-next-host,
+#glaucomaGlaucomaSummaryAtomsPage .glaucoma-next-host {
+  padding-bottom: calc(28px + env(safe-area-inset-bottom)) !important;
+}
+
+#glaucomaFundusSummaryAtomsPage .glaucoma-next-wrap,
+#glaucomaGlaucomaSummaryAtomsPage .glaucoma-next-wrap {
   position: relative !important;
   left: auto !important;
   right: auto !important;

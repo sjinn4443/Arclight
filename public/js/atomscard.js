@@ -59,7 +59,19 @@ function updateAtomsTitle(topic = currentAtomsTopic) {
     title.setAttribute("data-i18n", "atomsCardTitle");
     title.removeAttribute("data-i18n-skip");
   }
-  title.textContent = topic ? `Atoms Card - ${topic}` : "Atoms Card";
+  title.textContent = "";
+
+  const base = document.createElement("span");
+  base.className = "atoms-title-bar__base";
+  base.textContent = "Atoms Card";
+  title.appendChild(base);
+
+  if (!topic) return;
+
+  const selected = document.createElement("span");
+  selected.className = "atoms-title-bar__selected";
+  selected.textContent = ` - ${topic}`;
+  title.appendChild(selected);
 }
 
 function updateTOCSelection() {

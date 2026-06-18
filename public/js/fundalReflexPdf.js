@@ -182,6 +182,7 @@ function setupAtomsButtonZoom(viewerEl, stageEl) {
     <button type="button" data-atoms-zoom-in aria-label="Zoom in">+</button>
   `;
   viewerEl.prepend(controls);
+  positionWorkshopAtomsControlsBelowMenu(viewerEl, controls);
 
   const apply = () => {
     stageEl.style.width = `${Math.round(zoom * 100)}%`;
@@ -204,6 +205,61 @@ function setupAtomsButtonZoom(viewerEl, stageEl) {
   stageEl.style.transformOrigin = "50% 0";
   viewerEl.style.touchAction = "auto";
   apply();
+}
+
+function positionWorkshopAtomsControlsBelowMenu(viewerEl, controls) {
+  const page = viewerEl.closest(".page");
+  const menu = page?.querySelector(".eyes-topbar .icon.menuBtn");
+  if (!menu || !controls) return;
+
+  const place = () => {
+    const menuRect = menu.getBoundingClientRect();
+    const controlRect = controls.getBoundingClientRect();
+    const width = controlRect.width || 128;
+    const left = Math.max(
+      8,
+      Math.min(
+        (window.innerWidth || document.documentElement.clientWidth || width) -
+          width -
+          8,
+        menuRect.left + menuRect.width / 2 - width / 2,
+      ),
+    );
+
+    controls.style.left = `${Math.round(left)}px`;
+    controls.style.right = "auto";
+    controls.style.top = `${Math.round(menuRect.bottom + 10)}px`;
+  };
+
+  window.requestAnimationFrame(place);
+  window.addEventListener("resize", place, { passive: true });
+  document.addEventListener("page:shown", (event) => {
+    if (event?.detail?.id === page?.id) {
+      window.requestAnimationFrame(place);
+    }
+  });
+}
+
+function lockAtomsViewerHeight(viewerEl, img, isDesktop) {
+  if (!isDesktop || !viewerEl || !img) return;
+
+  const lock = () => {
+    if (viewerEl.dataset.heightLocked === "1") return;
+    const height = Math.ceil(viewerEl.scrollHeight);
+    if (!height) return;
+    viewerEl.style.height = `${height}px`;
+    viewerEl.style.overflowY = "auto";
+    viewerEl.dataset.heightLocked = "1";
+  };
+
+  const scheduleLock = () =>
+    window.requestAnimationFrame(() => window.requestAnimationFrame(lock));
+
+  if (img.complete) {
+    scheduleLock();
+  } else {
+    img.addEventListener("load", scheduleLock, { once: true });
+  }
 }
 
 function initImagePdfPage(pageId, viewerId, imgSrc) {
@@ -383,6 +439,7 @@ function initAtomsHandoutPage(pageId, viewerId, imgSrc) {
   if (!stage) return;
 
   setupAtomsButtonZoom(viewer, stage);
+  lockAtomsViewerHeight(viewer, img, isDesktop);
 }
 
 export function initializeAtomsHandout1() {
