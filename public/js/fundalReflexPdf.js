@@ -341,21 +341,22 @@ function initAtomsHandoutPage(pageId, viewerId, imgSrc) {
   if (viewer.dataset.inited === "1") return;
   viewer.dataset.inited = "1";
 
+  const isDesktop = window.matchMedia?.("(min-width: 1024px)")?.matches;
+
   viewer.style.position = "relative";
   viewer.style.left = "auto";
   viewer.style.right = "auto";
   viewer.style.top = "auto";
   viewer.style.bottom = "auto";
   viewer.style.width = "100%";
-  viewer.style.minHeight = "calc(100vh - 62px)";
+  viewer.style.minHeight = isDesktop ? "0" : "calc(100vh - 62px)";
   viewer.style.overflowX = "auto";
   viewer.style.overflowY = "visible";
-  viewer.style.padding = "62px 0 48px";
+  viewer.style.padding = isDesktop ? "62px 0 12px" : "62px 0 48px";
   viewer.style.background = "#fff";
 
   viewer.textContent = "";
 
-  const isDesktop = window.matchMedia?.("(min-width: 1024px)")?.matches;
   const stage = document.createElement("div");
   stage.className = "atoms-stage";
   stage.style.position = "relative";

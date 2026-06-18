@@ -4897,3 +4897,58 @@ html.is-apple-ui :is(.eyes-topbar .menuBtn, .icon.menuBtn, #tocToggleBtn) {
     transform-origin: left top !important;
   }
 }
+
+#atomsCardPage #tocList li.is-selected {
+  background: #2563eb !important;
+  border-color: #2563eb !important;
+  color: #ffffff !important;
+  font-weight: 800 !important;
+}
+
+#atomsCardPage .atoms-card-image-frame--rotated {
+  aspect-ratio: 1 / 1 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: min(86vw, 300px) !important;
+}
+
+#atomsCardPage .atoms-card-image-frame--rotated img {
+  height: auto !important;
+  margin: 0 !important;
+  max-height: none !important;
+  transform-origin: center center !important;
+}
+
+#atomsCardPage #atomsZoomOutBtn::before,
+.workshop-atoms-zoom-controls [data-atoms-zoom-out]::before {
+  position: absolute !important;
+  left: 50% !important;
+  top: 50% !important;
+  width: 9px !important;
+  height: 2.5px !important;
+  margin: 0 !important;
+  transform: translate(-50%, -50%) !important;
+}
+
+#childhoodEyeBrainImagesPage .vs-story-progress__step {
+  align-items: center !important;
+  box-sizing: border-box !important;
+  justify-items: center !important;
+  padding: 0 !important;
+  text-align: center !important;
+}
+
+#atomsHandout1Page .childhood-next-host,
+#atomsHandout2Page .childhood-next-host {
+  padding-bottom: calc(28px + env(safe-area-inset-bottom)) !important;
+}
+
+#atomsHandout1Page .childhood-next-wrap,
+#atomsHandout2Page .childhood-next-wrap {
+  position: relative !important;
+  left: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  margin: 8px 16px calc(20px + env(safe-area-inset-bottom)) !important;
+}

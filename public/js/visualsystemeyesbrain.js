@@ -318,10 +318,16 @@ function renderScene(
   const faceOpacity = clamp(faceIn);
   const finalOpacity = clamp(finalIn);
   const finalTailY = lerp(0, px(splitFinal ? -240 : -140), finalTail);
+  const storyFillProgress = clamp(
+    mix(compactP, 0.02, 0.5, easeInOutCubic) * 0.5 +
+      mix(compactP, 0.5, 0.961, easeInOutCubic) * 0.5,
+  );
+  const storyActiveIndex =
+    storyFillProgress >= 0.995 ? 2 : storyFillProgress >= 0.5 ? 1 : 0;
   updateStoryProgressSteps(
     elements.progressSteps,
-    finalOpacity > 0.05 ? 2 : envIn > 0.05 ? 1 : 0,
-    progress,
+    storyActiveIndex,
+    storyFillProgress,
   );
 
   const corneaIn = mix(

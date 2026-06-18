@@ -4,6 +4,7 @@
 //
 let currentTOCType = "eyes";
 let currentAtomsZoom = 1;
+let currentAtomsTopic = "";
 
 function clampAtomsZoom(value) {
   return Math.max(0.6, Math.min(2.6, value));
@@ -13,8 +14,18 @@ function applyAtomsZoom() {
   const container = document.getElementById("atomsImageContainer");
   if (!container) return;
   container.querySelectorAll(".atoms-card-image-frame").forEach((frame) => {
+    const isRotated = frame.classList.contains(
+      "atoms-card-image-frame--rotated",
+    );
+    const rotatedHeightCap = Math.max(320, window.innerHeight - 126);
+    const maxWidth = isRotated
+      ? Math.min(
+          Math.round(rotatedHeightCap * currentAtomsZoom),
+          Math.round(currentAtomsZoom * 1200),
+        )
+      : Math.round(currentAtomsZoom * 1200);
     frame.style.width = `${(currentAtomsZoom * 100).toFixed(0)}%`;
-    frame.style.maxWidth = `${Math.round(currentAtomsZoom * 1200)}px`;
+    frame.style.maxWidth = `${maxWidth}px`;
   });
 }
 
@@ -35,6 +46,35 @@ function setActiveTab(type) {
     eyesBtn.classList.toggle("active", type === "eyes");
     earsBtn.classList.toggle("active", type === "ears");
   }
+}
+
+function updateAtomsTitle(topic = currentAtomsTopic) {
+  const title = document.querySelector("#atomsCardPage .atoms-title-bar");
+  if (!title) return;
+
+  if (topic) {
+    title.removeAttribute("data-i18n");
+    title.setAttribute("data-i18n-skip", "true");
+  } else {
+    title.setAttribute("data-i18n", "atomsCardTitle");
+    title.removeAttribute("data-i18n-skip");
+  }
+  title.textContent = topic ? `Atoms Card - ${topic}` : "Atoms Card";
+}
+
+function updateTOCSelection() {
+  const tocList = document.getElementById("tocList");
+  if (!tocList) return;
+
+  tocList.querySelectorAll("li").forEach((li) => {
+    li.classList.toggle("is-selected", li.dataset.topic === currentAtomsTopic);
+  });
+}
+
+function setCurrentAtomsTopic(topic = "") {
+  currentAtomsTopic = topic;
+  updateAtomsTitle(topic);
+  updateTOCSelection();
 }
 
 function openTOC() {
@@ -69,8 +109,6 @@ function closeTOC() {
 function displayImage(src, alt, container) {
   const frame = document.createElement("div");
   frame.className = "atoms-card-image-frame";
-  frame.style.width = `${(currentAtomsZoom * 100).toFixed(0)}%`;
-  frame.style.maxWidth = `${Math.round(currentAtomsZoom * 1200)}px`;
 
   const img = document.createElement("img");
   img.src = src;
@@ -83,6 +121,7 @@ function displayImage(src, alt, container) {
   img.style.marginBottom = "10px";
   frame.appendChild(img);
   container.appendChild(frame);
+  applyAtomsZoom();
   return img;
 }
 
@@ -142,6 +181,7 @@ function showTOC(type = "eyes") {
 
   const imgBox = document.getElementById("atomsImageContainer");
   if (imgBox) imgBox.innerHTML = "";
+  updateTOCSelection();
   resetAtomsZoom();
 }
 
@@ -150,6 +190,7 @@ function handleTOCItemClick(e) {
   if (!itemEl) return;
 
   const topic = itemEl.dataset.topic || itemEl.textContent.trim();
+  setCurrentAtomsTopic(topic);
   const container = document.getElementById("atomsImageContainer");
   if (!container) return;
   container.innerHTML = "";
@@ -203,7 +244,10 @@ function handleTOCItemClick(e) {
     // Rotate certain images like the legacy app
     const key = topic.replace(/\s/g, "");
     if (["CaseStudy", "FundalReflex"].includes(key)) {
+      img.parentElement?.classList.add("atoms-card-image-frame--rotated");
       img.style.transform = "rotate(90deg)";
+      img.style.marginBottom = "0";
+      applyAtomsZoom();
     }
   }
 
@@ -270,10 +314,12 @@ export function initializeAtomsCard() {
 
   initializeTOC();
   initializeAtomsZoomControls();
+  window.addEventListener("resize", applyAtomsZoom, { passive: true });
 
   // Start with eyes tab and TOC visible, clear image area
   openTOC();
   showTOC("eyes");
+  setCurrentAtomsTopic("");
   const box = document.getElementById("atomsImageContainer");
   if (box) box.innerHTML = "";
 }
@@ -287,5 +333,6 @@ export function goToAtomsCard(type = "eyes") {
   openTOC();
   const box = document.getElementById("atomsImageContainer");
   if (box) box.innerHTML = "";
+  setCurrentAtomsTopic("");
   showTOC(type);
 }
