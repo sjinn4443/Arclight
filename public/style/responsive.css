@@ -1162,6 +1162,36 @@ input {
   }
 }
 
+#videos .page.full-animation-video-page .video-container {
+  display: flex;
+  justify-content: center;
+  max-height: none;
+  overflow: visible;
+  padding-top: 12px !important;
+  padding-bottom: 12px !important;
+}
+
+#videos .page.full-animation-video-page .video-container > video {
+  display: block;
+  width: min(100%, 64dvh, 720px);
+  max-width: 100%;
+  height: auto;
+  padding: 0 !important;
+  object-fit: contain;
+}
+
+@supports not (width: 1dvh) {
+  #videos .page.full-animation-video-page .video-container > video {
+    width: min(100%, 64vh, 720px);
+  }
+}
+
+@media (max-height: 740px) {
+  #videos .page.full-animation-video-page .video-container > video {
+    width: min(100%, 58dvh, 640px);
+  }
+}
+
 /* Desktop UI alignment pass: keep mobile behaviour unchanged. */
 @media (min-width: 1024px) {
   :root {
