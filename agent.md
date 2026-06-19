@@ -1,6 +1,6 @@
 # Agent Notes
 
-Last refreshed: 2026-06-12
+Last refreshed: 2026-06-19
 
 ## Current repo orientation
 
@@ -10,6 +10,7 @@ Last refreshed: 2026-06-12
 - Offline install/downloads are server-manifest driven: `GET /api/app/offline-assets` returns files and byte sizes from the active static root, `public/js/languageinstall.js` resolves full/select/app-only and low/high video choices, `public/js/menu.js` reuses those helpers, and `public/sw.js` caches the selected URL list.
 - The service worker handles cached MP4 range requests only when a full MP4 is already cached, falls back to alternate `_220p` / `_720p` cached MP4s when needed, and keeps Childhood Eye Screening HLS assets usable offline after download.
 - App-video subtitles are synchronized by `public/js/videoSubtitles.js` from `public/video-localization/app-video-subtitles.json`; Childhood Eye Screening video pages also use `public/video-localization/childhood-eye-screening.json` and VTT files under `public/video-subtitles/`.
+- Full-animation MP4 lessons are standard local Videos-route pages, with hidden pages in `public/html/videos.html`, low/high source entries in `public/js/videos.js` `VIDEO_PAGE_SOURCES`, and media files under `public/videos/FullAnim/`. Current targets are `fundalReflexFullAnimationVideoPage`, `directOphthalmoscopyFullAnimationVideoPage`, and `binocularIndirectOphthalmoscopyFullAnimationVideoPage`.
 - Shared lesson progress lives in `public/js/lessonProgress.js` and `public/js/lessonCompletionTick.js`; rows with progress bars are updated from compatible `lessonProgress:`, `videoProgress:`, `childhoodWorkshop:progress:`, `diabeticWorkshop:progress:`, and `glaucomaWorkshop:progress:` storage keys and receive completion ticks at completion.
 - The Eyes route includes a Diabetic Retinopathy workshop at `public/html/diabeticRetinopathyWorkshop.html`.
 - The diabetic workshop is split across routes:
@@ -35,6 +36,7 @@ Last refreshed: 2026-06-12
 - Keep `README.md`, `memory-bank/activeContext.md`, and `memory-bank/progress.md` aligned when features or runtime behavior change.
 - When adding or moving downloadable content, keep the server manifest assumptions, `OFFLINE_CATALOG_OPTIONS`/`matchesOfflineCatalog`, video quality filtering, service-worker cache behavior, and menu Downloaded Contents summary aligned. Bump the service worker cache name when required cached assets or cache behavior change.
 - When adding local app videos, update `VIDEO_PAGE_SOURCES`, progress target wiring, subtitle catalogs/VTT files, and offline-download categorization together. For Childhood Eye Screening subtitle pilot pages, keep MP4, HLS manifest, fallback mode, and subtitle language metadata in sync.
+- When adding or renaming full-animation MP4 lessons, keep all launcher rows, hidden `.page` IDs, `VIDEO_PAGE_SOURCES` keys, `public/videos/FullAnim/` file names, progress targets, and Interactive Learning target tests synchronized. These pages should stay on the local video-page pattern unless the user explicitly asks for Lottie scrollytelling behavior.
 - When adding lesson rows with progress bars, prefer `setLessonProgress`/`updateLessonProgressRows` and let `lessonCompletionTick.js` render completion state. Keep `data-target` values stable because progress keys, My Learning rows, and workshop restore flows depend on them.
 - Case-study chat pages depend on stable page IDs and progress targets: `caseStudyChatPagePrimary`, `caseStudyFlashcardPagePrimary`, `caseStudyChatPage`, and `glaucomaHistoryCaseStudy`. Update `casestudy.html`, the owning JS module, progress keys, styles, and My Learning mappings together.
 - Responsive layout fixes for iPad/tablet live mainly in `public/style/responsive.css`; keep route-specific overrides constrained to the affected page IDs/classes and recheck desktop/mobile after tablet-only changes.

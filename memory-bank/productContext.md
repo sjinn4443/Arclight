@@ -27,7 +27,7 @@ The application should function as a self-contained educational resource. Users 
 - See progress bars and completion ticks update consistently across lesson rows, Videos pages, workshops, case studies, and My Learning.
 - Work through chat-style case studies that simulate history taking, diagnosis selection, timed attempts, and case completion.
 - Follow guided Childhood Fundal Reflex scrollytelling lessons with staged animations, replay controls, caption text, and next-page navigation across the full examination sequence.
-- Work through structured workshop pathways such as Childhood Eye Screening and Diabetic Retinopathy, with foldered lessons, progress rows, scroll pages, video lessons, protocol pages, and demo quizzes.
+- Work through structured workshop pathways such as Childhood Eye Screening and Diabetic Retinopathy, with foldered lessons, progress rows, scroll pages, full-animation/video lessons, protocol pages, and demo quizzes.
 - Move between the Diabetic Retinopathy workshop and Videos-route diabetic lessons/quizzes without losing lesson flow, folder restore state, or progress.
 
 Some Interactive Learning tools can also be embedded from externally hosted sites when that is the fastest way to deliver a usable learning experience, while still keeping the same in-app navigation shell.

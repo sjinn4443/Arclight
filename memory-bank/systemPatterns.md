@@ -38,6 +38,7 @@ Arclight is primarily a static, client-side PWA served from `public/` (or `dist/
   - Translation checks must include JS-rendered captions, toggles, search labels, and aria labels, not only static HTML.
   - When a route still depends on legacy root alias keys as well as scoped keys, keep both in sync to avoid regressions.
 - Videos-route subpage pattern: cards use `data-page` / `data-target` IDs that map to hidden `.page` sections in `public/html/videos.html`; `public/js/videos.js` lazy-loads any `iframe[data-src]` the first time a subpage is shown.
+- Videos-route local MP4 pattern: video lessons use hidden `.page` sections in `public/html/videos.html`, stable `data-target` launcher rows, and matching `VIDEO_PAGE_SOURCES` entries in `public/js/videos.js`; full-animation files live under `public/videos/FullAnim/`.
 - Hybrid interactive delivery: Interactive Learning can host either local `public/subapp/*` content or external iframe content inside the same page shell.
 - Cross-origin embed boundary: parent-page CSS/JS can control the Arclight wrapper (card spacing, headers, iframe size), but cannot directly alter UI inside a remote iframe.
 - Offline download pattern: `languageinstall.js` owns download choices, category matching, low/high media filtering, estimates, and service-worker cache requests; `menu.js` reuses those helpers for menu-initiated downloads and Downloaded Contents inspection.
@@ -94,6 +95,11 @@ Arclight is primarily a static, client-side PWA served from `public/` (or `dist/
   - lesson/progress/quiz logic: `public/js/diabeticRetinopathyWorkshop.js`, `public/js/diabeticWorkshopProgress.js`
   - cross-route Previous/Next logic: `public/js/diabeticWorkshopNextFlow.js`
   - Videos-route video source registration and subpage display: `public/js/videos.js`
+- Full-animation local videos:
+  - media assets: `public/videos/FullAnim/`
+  - hidden page shells and launcher cards: `public/html/videos.html`
+  - workshop launcher rows: `public/html/childhoodEyeScreeningWorkshop.html`, `public/html/diabeticRetinopathyWorkshop.html`
+  - low/high source registration: `public/js/videos.js` `VIDEO_PAGE_SOURCES`
 - Childhood Fundal Reflex flow:
   - route shells: `public/html/childhoodFundal*.html`
   - route map: `public/js/config.js`
@@ -107,6 +113,7 @@ Arclight is primarily a static, client-side PWA served from `public/` (or `dist/
 
 - Navigation + rendering: ensure `public/html/*` pages and `public/js/*` modules stay in sync.
 - Interactive Learning embeds: keep card `data-page` / `data-target` values, hidden subpage IDs, and iframe `data-src` values aligned when adding or changing embedded modules.
+- Local MP4 video pages: keep launcher row `data-target` values, hidden page IDs, video element IDs, `VIDEO_PAGE_SOURCES` keys, file paths, progress targets, and tests aligned.
 - Offline capability: service worker lifecycle + cache correctness.
 - Offline downloads: keep static asset paths, catalog matching, video quality filtering, subtitle/HLS inclusion, service-worker cache name, and Downloaded Contents summaries synchronized.
 - Video subtitles: keep source paths in video maps aligned with subtitle catalog keys and VTT folders.

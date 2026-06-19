@@ -1,4 +1,4 @@
-<!-- THE CHANGES - activeContext.md | 2026-06-12, Codex -->
+<!-- THE CHANGES - activeContext.md | 2026-06-19, Codex -->
 
 # Active Context
 
@@ -8,6 +8,7 @@ June stabilization and app-wide infrastructure:
 
 - offline install/downloads now use `GET /api/app/offline-assets`, `public/js/languageinstall.js`, `public/js/menu.js`, and `public/sw.js` as one pipeline for full/select/app-only downloads, low/high MP4 filtering, cache progress, Downloaded Contents summaries, cached MP4 range responses, and Childhood Eye Screening HLS/subtitle cache support
 - app video subtitle localization is active through `public/js/videoSubtitles.js`, `public/video-localization/app-video-subtitles.json`, `public/video-localization/childhood-eye-screening.json`, and VTT files under `public/video-subtitles/`
+- local full-animation MP4 lessons are now standard Videos-route pages using hidden `.page` blocks in `public/html/videos.html`, low/high source entries in `public/js/videos.js` `VIDEO_PAGE_SOURCES`, and media files under `public/videos/FullAnim/`
 - shared lesson progress and completion ticks are centralized in `public/js/lessonProgress.js` and `public/js/lessonCompletionTick.js`, then consumed by Videos, Childhood Workshop, Diabetic Workshop, Glaucoma Workshop, case studies, and My Learning rows
 - case-study chat/flashcard work spans `public/html/casestudy.html`, `public/js/casestudy.js`, `public/js/casestudy_primary.js`, `public/html/glaucomaHistoryCaseStudy.html`, `public/js/glaucomaHistoryCaseStudy.js`, and the shared `casechat-*` CSS
 - iPad/tablet layout fixes are concentrated in `public/style/responsive.css`; route-specific overrides should stay constrained and be rechecked against phone and desktop layouts
@@ -32,6 +33,12 @@ Childhood Fundal Reflex scrollytelling is also an active maintenance area:
 - Diabetic Fundal-style scrollytelling now depends on hardened pause-frame locking, retained accumulated captions after completion, iOS/WebKit renderer overrides where needed, exact static snapshot recovery for fragile WebKit pause/final holds, and ordinary `< Previous` / `Next >` buttons on the final page of each scrollytelling group.
 
 ## Recent Changes
+
+- Full-animation Videos-route lessons (2026-06-19):
+  - Added/wired `fundalReflexFullAnimationVideoPage`, `directOphthalmoscopyFullAnimationVideoPage`, and `binocularIndirectOphthalmoscopyFullAnimationVideoPage` in `public/html/videos.html`.
+  - Registered their low/high MP4 sources in `public/js/videos.js` using files from `public/videos/FullAnim/`.
+  - Added launcher rows from Childhood Eye Screening / Fundal Reflex and Diabetic Retinopathy workshop Ophthalmoscopy folders.
+  - Updated the Interactive Learning topic target test expectations for the new full-animation targets.
 
 - Offline download pipeline and service worker media handling (2026-05-26 to 2026-06-12):
   - Added `GET /api/app/offline-assets` to enumerate the active static root and return file URLs plus byte sizes.
@@ -155,6 +162,7 @@ Childhood Fundal Reflex scrollytelling is also an active maintenance area:
 - Keep the clean translation QA baseline by adding i18n keys, locale values, and VTT subtitles at the same time as new user-facing copy.
 - Use `npm run check-translations` after locale/subtitle edits and `node scripts/check-translations.cjs --strict-english` when intentionally checking for fallback-English regressions.
 - Keep app video subtitle catalogs, VTT folders, and offline-download cache selections synchronized when adding or moving videos.
+- Keep full-animation MP4 lesson wiring synchronized across launcher rows, hidden Videos-route page IDs, `VIDEO_PAGE_SOURCES`, `public/videos/FullAnim/` file names, progress targets, and topic-target tests.
 - Keep the offline asset manifest flow working across dev and dist: update static paths, catalog matching, video quality filtering, service-worker cache behavior, and menu Downloaded Contents summaries together.
 - Continue checking iPad/tablet overrides against phone and desktop layouts, especially for case-study chat, Videos pages, workshops, and subapps.
 - Keep diabetic workshop folder/progress state aligned when adding or moving lesson rows.
@@ -174,6 +182,7 @@ Childhood Fundal Reflex scrollytelling is also an active maintenance area:
 - Prefer accurate, code-referenced documentation over aspirational or legacy docs.
 - Offline downloads are selected from the server-provided asset manifest; do not maintain separate hand-written all-asset lists unless they are explicit route/category hints.
 - Local MP4 playback, subtitle catalogs, HLS fallback metadata, and offline cache selection are one contract for video pages.
+- Full-animation lessons should remain ordinary local MP4 video pages unless there is an explicit request to rebuild them as scrollytelling/Lottie routes.
 - Shared lesson progress should use `lessonProgress.js` and `lessonCompletionTick.js` before adding route-specific progress/tick logic.
 - Case-study progress depends on stable page IDs and `data-target` values; update launcher rows, page IDs, owning JS, My Learning mappings, and CSS together.
 - Tablet/iPad responsive patches should stay targeted to affected page IDs/classes in `public/style/responsive.css`.
@@ -193,6 +202,7 @@ Childhood Fundal Reflex scrollytelling is also an active maintenance area:
 - Offline download UX should flow through `languageinstall.js` helpers even when triggered from the menu.
 - `public/sw.js` should only synthesize MP4 range responses from a complete cached MP4 response; otherwise let the network handle the range request.
 - Add or update localized video subtitles through the JSON catalogs and VTT files, then let `videoSubtitles.js`/`videos.js` attach tracks at runtime.
+- For new local MP4 lesson pages, add the hidden `.page`, `VIDEO_PAGE_SOURCES` entry, launcher rows, progress target, offline categorization when needed, and tests in the same change.
 - Use `setLessonProgress`, `updateLessonProgressRows`, and `arclight:lesson-progress-changed` for new row progress behavior.
 - Media accessibility is now enforced in two layers:
   - runtime labeling in `public/js/mediaA11y.js`

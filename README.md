@@ -193,6 +193,7 @@ When adding new media, keep the file path discoverable under the static root, ad
 - `public/js/videoSubtitles.js` applies localized caption tracks to app videos using `public/video-localization/app-video-subtitles.json`.
 - `public/js/videos.js` also owns the Childhood Eye Screening subtitle/HLS pilot through `public/video-localization/childhood-eye-screening.json` and VTT files under `public/video-subtitles/`.
 - Local video pages use `VIDEO_PAGE_SOURCES` for low/high/online or two-state video modes; many glaucoma workshop video pages now use the same tri-toggle source pattern.
+- Full-animation MP4 lessons use the same Videos-route local video pattern: hidden pages in `public/html/videos.html`, low/high sources in `VIDEO_PAGE_SOURCES`, and files under `public/videos/FullAnim/`. Current pages are `fundalReflexFullAnimationVideoPage`, `directOphthalmoscopyFullAnimationVideoPage`, and `binocularIndirectOphthalmoscopyFullAnimationVideoPage`.
 - Shared progress helpers live in `public/js/lessonProgress.js` and `public/js/lessonCompletionTick.js`. They read/write compatible progress records from `lessonProgress:`, `videoProgress:`, `childhoodWorkshop:progress:`, `diabeticWorkshop:progress:`, and `glaucomaWorkshop:progress:` keys, dispatch `arclight:lesson-progress-changed`, and add completion ticks when rows reach completion.
 
 ## Docker / Railway
@@ -229,6 +230,7 @@ See [`security/EMERGENCY_PLAN.md`](./security/EMERGENCY_PLAN.md) for the operato
 - `public/js/casestudy.js`, `public/js/casestudy_primary.js`, `public/js/glaucomaHistoryCaseStudy.js` - case-study chat/flashcard engines and progress wiring
 - `public/html/diabeticRetinopathyWorkshop.html` - diabetic retinopathy workshop launcher, lesson folders, progress rows, scroll lessons, and protocol pages
 - `public/html/videos.html` - Videos route, including Interactive Learning, diabetic workshop video pages, and diabetic/glaucoma demo quiz pages
+- `public/videos/FullAnim/` - local full-animation MP4 lessons for Fundal Reflex, Direct Ophthalmoscopy, and Binocular Indirect Ophthalmoscopy
 - `public/js/lessonProgress.js`, `public/js/lessonCompletionTick.js` - shared lesson progress storage, row updates, and completion tick rendering
 - `public/js/languageinstall.js` - language selection, PWA install prompts, offline download selection, and service-worker cache requests
 - `public/js/videoSubtitles.js`, `public/video-localization/`, `public/video-subtitles/` - localized caption catalog/runtime and VTT subtitle assets
@@ -252,6 +254,7 @@ See [`security/EMERGENCY_PLAN.md`](./security/EMERGENCY_PLAN.md) for the operato
   - `public/html/videos.html` owns the diabetic video pages and the Interactive Learning `Demo Quizzes` folder.
   - `public/js/diabeticRetinopathyWorkshop.js` initializes both the workshop route and the diabetic demo quiz pages when those pages are present.
   - `public/js/diabeticWorkshopNextFlow.js` and `public/js/diabeticWorkshopProgress.js` keep cross-route sequencing and progress state aligned.
+- Full-animation lessons are standard local Videos-route pages, not separate scrollytelling routes. Keep launcher rows, hidden page IDs, `VIDEO_PAGE_SOURCES`, `public/videos/FullAnim/` file names, progress targets, and related Interactive Learning tests aligned when adding or renaming them.
 - Case-study chat pages use a shared `casechat-*` UI vocabulary and stable page/progress IDs:
   - `caseStudyChatPagePrimary` and `caseStudyFlashcardPagePrimary` are owned by `public/js/casestudy_primary.js`.
   - `caseStudyChatPage` is owned by `public/js/casestudy.js`.
@@ -272,6 +275,7 @@ See [`security/EMERGENCY_PLAN.md`](./security/EMERGENCY_PLAN.md) for the operato
 
 ## Changelog (high level)
 
+- 2026-06-19: Added docs for the new local full-animation MP4 lesson pages: Childhood Fundal Reflex full animation plus Diabetic Direct Ophthalmoscopy and Binocular Indirect Ophthalmoscopy full animations, all wired through Videos-route hidden pages and `VIDEO_PAGE_SOURCES`.
 - 2026-06-12: Refreshed docs for the June app changes: offline asset-manifest downloads, menu Downloaded Contents summaries, cached MP4/HLS playback behavior, localized app-video subtitles, shared lesson-completion ticks, case-study chat progress, clean translation QA, and iPad/responsive layout maintenance.
 - 2026-06-11: Added broad localized subtitle coverage for app videos via `public/video-localization/app-video-subtitles.json`, VTT subtitle folders, and runtime subtitle synchronization.
 - 2026-06-02: Added shared lesson progress/completion tick infrastructure and expanded case-study chat/flashcard progress wiring.

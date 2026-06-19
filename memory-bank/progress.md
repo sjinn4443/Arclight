@@ -12,6 +12,7 @@
 - Atoms Card with dynamic TOC: the "Atoms Card" section includes a dynamic table of contents for both Eyes and Ears, with image display and zoom capabilities.
 - Quiz system: implemented for "Direct Ophthalmoscopy" and "Anterior Segment Quiz" modules, providing interactive learning and feedback.
 - Video players with interactive toolbars: various learning modules feature video players with time-based event handling and interactive toolbars.
+- Full-animation local videos: Fundal Reflex, Direct Ophthalmoscopy, and Binocular Indirect Ophthalmoscopy now have low/high MP4 lesson pages under the Videos route, backed by `public/videos/FullAnim/` and `public/js/videos.js` `VIDEO_PAGE_SOURCES`.
 - Interactive Learning hybrid embeds: the Videos route now supports both local interactive mini-apps (`public/subapp/*`) and external iframe-based modules (`Fundal Reflex`, `Trauma`, `Amsler`) within the same wrapper flow.
 - Diabetic Retinopathy workshop: the Eyes route now launches a foldered workshop with scroll lessons, video lessons, progress rows, protocol pages, structural Previous/Next controls, and demo quizzes.
 - Diabetic/Videos split: diabetic video pages and diabetic demo quizzes now live under `public/html/videos.html`, while the diabetic workshop route owns the folder launcher, scroll lessons, and protocol pages.
@@ -53,7 +54,7 @@
 - Robust error handling: improve client-side error handling for a smoother user experience across features.
 - Accessibility features: enhance ARIA attributes, keyboard navigation, and general accessibility across the application.
 - Translation and subtitle maintenance: keep new user-facing HTML/JS copy, locale JSON, subtitle catalogs, and VTT files synchronized so the clean `npm run check-translations` baseline stays clean.
-- Offline download maintenance: keep asset paths, offline catalog matching, low/high video filtering, HLS/subtitle cache inclusion, service-worker cache behavior, and Downloaded Contents summaries aligned when adding media.
+- Offline download maintenance: keep asset paths, offline catalog matching, low/high video filtering, HLS/subtitle cache inclusion, service-worker cache behavior, and Downloaded Contents summaries aligned when adding media. For full-animation MP4 lessons, keep `public/videos/FullAnim/` file names and `VIDEO_PAGE_SOURCES` entries aligned with launcher rows and tests.
 - Progress/row maintenance: use the shared lesson progress and completion tick helpers for new rows instead of adding route-specific progress storage.
 - Case-study maintenance: keep `data-target` values, page IDs, progress targets, My Learning mappings, and `casechat-*` styles synchronized when adding or moving case-study content.
 - Fundal scrollytelling maintenance: preserve the FR06 playback/settle baseline and keep route shells, route maps, shared engine config, workshop mappings, and CSS synchronized when adding or changing `childhoodFundal*` pages. For iOS/WebKit white-frame glitches at pause/final holds, use exact static snapshot recovery before changing segment ranges or adding runtime previous-frame fallbacks.
@@ -62,7 +63,7 @@
 
 ## Current Status
 
-The project is a feature-rich PWA with a strong emphasis on interactive learning and offline capabilities. The Express server (`server.cjs`) supports local/prod hosting, telemetry/report APIs, password-protected reports pages, and the offline asset manifest endpoint. Runtime storage uses NDJSON by default unless Postgres URLs are configured, and can be forced off with `DISABLE_DB_STORAGE=1`. Jest, Playwright, accessibility checks, and translation QA are in place. The Interactive Learning page mixes local mini-apps, external embedded tools, Videos-route diabetic demo quizzes, localized videos/subtitles, case-study chat flows, and workshop-linked progress rows. The Eyes route includes both a substantial Diabetic Retinopathy workshop flow whose video/demo content crosses into the Videos route and a Childhood Fundal Reflex scrollytelling sequence powered by a shared Lottie stage-autoplay engine.
+The project is a feature-rich PWA with a strong emphasis on interactive learning and offline capabilities. The Express server (`server.cjs`) supports local/prod hosting, telemetry/report APIs, password-protected reports pages, and the offline asset manifest endpoint. Runtime storage uses NDJSON by default unless Postgres URLs are configured, and can be forced off with `DISABLE_DB_STORAGE=1`. Jest, Playwright, accessibility checks, and translation QA are in place. The Interactive Learning page mixes local mini-apps, external embedded tools, Videos-route diabetic demo quizzes, full-animation local MP4 lessons, localized videos/subtitles, case-study chat flows, and workshop-linked progress rows. The Eyes route includes both a substantial Diabetic Retinopathy workshop flow whose video/demo content crosses into the Videos route and a Childhood Fundal Reflex scrollytelling sequence powered by a shared Lottie stage-autoplay engine.
 
 ## Known Issues
 
@@ -72,6 +73,7 @@ The project is a feature-rich PWA with a strong emphasis on interactive learning
 - External interactive embeds depend on remote site uptime and iframe permissions, and they are not as controllable or offline-cacheable as local `public/subapp/*` content.
 - Translation QA is clean as of `2026-06-12`, but new copy can regress it if locale keys, VTT files, or subtitle catalogs are not updated with the feature change.
 - Offline video behavior depends on complete cached MP4s for service-worker range responses; if only online or partial media is available, playback falls back to the network.
+- Full-animation video rows depend on synchronized target IDs across `childhoodEyeScreeningWorkshop.html`, `diabeticRetinopathyWorkshop.html`, `videos.html`, `videos.js`, and topic-target tests.
 - Diabetic workshop behavior depends on IDs being synchronized across `diabeticRetinopathyWorkshop.html`, `videos.html`, `videos.js`, `diabeticWorkshopNextFlow.js`, and progress storage keys.
 - Case-study progress depends on IDs being synchronized across `casestudy.html`, `casestudy.js`, `casestudy_primary.js`, `glaucomaHistoryCaseStudy.js`, My Learning mappings, and shared progress keys.
 - Tablet/iPad CSS is now substantial and route-specific; a fix for one viewport can still disturb phone or desktop layouts if selectors are too broad.
@@ -91,6 +93,7 @@ The project is a feature-rich PWA with a strong emphasis on interactive learning
 - Lesson rows now share progress storage/event/tick helpers so completion UI stays consistent across Videos, workshops, case studies, and My Learning.
 - Offline install/download behavior now favors a generated server manifest plus client-side selection/filtering over static all-content lists.
 - Local video localization now favors JSON subtitle catalogs and VTT assets that the runtime attaches to matching video sources.
+- Full-animation MP4 lessons are treated as local Videos-route video pages rather than scrollytelling routes; low/high source mapping and launcher progress rows are the synchronization contract.
 - Diabetic workshop pages can be split across route fragments when it keeps large video/demo content in the Videos route, but the shared IDs and progress events are the contract.
 - Childhood Fundal scrollytelling pages keep minimal HTML shells and let the shared JS engine own stage DOM creation, replay controls, down-arrow/page-next behavior, scroll locking, and settle-frame logic.
 - FR06 remains the user-approved baseline for Fundal route playback/settle behavior.

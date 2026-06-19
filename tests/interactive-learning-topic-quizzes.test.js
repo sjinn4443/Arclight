@@ -140,6 +140,7 @@ describe("Interactive Learning topic quiz pages", () => {
     expect(fundalPrimaryTargets).toEqual([
       "fundalExamPage",
       "fundalReflexExaminationScrollPage",
+      "fundalReflexFullAnimationVideoPage",
       "fundalReflexPdfPage",
       "fundalStillPage",
       "fundalRealPage",
@@ -156,6 +157,8 @@ describe("Interactive Learning topic quiz pages", () => {
       "directOphthalmoscopyVideoPage",
       "directOphthalmoscopyQuizPage",
       "directOphthalmoscopyPdfPage",
+      "directOphthalmoscopyFullAnimationVideoPage",
+      "binocularIndirectOphthalmoscopyFullAnimationVideoPage",
     ]);
     const ophthalmoscopyIntermediateTargets = Array.from(
       document.querySelectorAll(

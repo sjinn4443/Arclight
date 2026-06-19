@@ -846,6 +846,81 @@
     </div>
   </div>
 
+  <!-- Fundal Reflex Full Animation Video Page -->
+  <div id="fundalReflexFullAnimationVideoPage" class="page">
+    <div>
+      <div
+        class="tri-toggle"
+        role="radiogroup"
+        aria-label="Video mode"
+        data-i18n="i18nExtra.video_mode:aria-label"
+      >
+        <button
+          class="tri-toggle__btn"
+          type="button"
+          role="radio"
+          aria-checked="false"
+          data-mode="low"
+          data-i18n="i18nExtra.video_mode_low"
+        >
+          low
+        </button>
+        <button
+          class="tri-toggle__btn"
+          type="button"
+          role="radio"
+          aria-checked="false"
+          data-mode="high"
+          data-i18n="i18nExtra.video_mode_high"
+        >
+          high
+        </button>
+        <div class="tri-toggle__knob" aria-hidden="true"></div>
+      </div>
+
+      <div class="video-header">
+        <h3>Fundal Reflex Full Animation</h3>
+      </div>
+
+      <div class="video-container" id="fundalReflexFullAnimationVideoContainer">
+        <video
+          id="fundalReflexFullAnimationVideo"
+          controls
+          playsinline
+          webkit-playsinline
+          preload="none"
+        >
+          <source src="" type="video/mp4" />
+          <span data-i18n="videos.videoNotSupported"
+            >Your browser does not support the video tag.</span
+          >
+        </video>
+      </div>
+
+      <button
+        class="video-share-btn"
+        type="button"
+        data-video-share-btn
+        aria-label="Share"
+        title="Share"
+        data-i18n="i18nExtra.share_video:aria-label;i18nExtra.share_video:title"
+      >
+        <svg
+          class="video-share-icon"
+          viewBox="0 0 24 24"
+          width="18"
+          height="24"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <path
+            d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.02-4.11c.54.5 1.25.81 2.07.81 1.66 0 3-1.34 3-3S19.66 2 18 2s-3 1.34-3 3c0 .24.04.47.09.7L8.07 9.81C7.53 9.31 6.82 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.82 0 1.53-.31 2.07-.81l7.11 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92S19.61 16.08 18 16.08z"
+          ></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+
   <div
     id="fundalReflexExaminationScrollPage"
     class="page pupils-like has-eyes-topbar childhood-fundal-scroll-page"
@@ -2028,6 +2103,68 @@
               >
             </div>
           </button>
+
+          <button type="button" class="pupil-card module-card">
+            <div
+              class="lesson-row lesson-row--video"
+              data-target="directOphthalmoscopyFullAnimationVideoPage"
+              role="button"
+              tabindex="0"
+            >
+              <div class="thumb" aria-hidden="true"></div>
+
+              <div class="lesson-main">
+                <div class="lesson-top">
+                  <span class="lesson-type">DO Full Animation</span>
+                  <span class="lesson-meta">| 00:00</span>
+                </div>
+
+                <div
+                  class="lesson-progress"
+                  role="progressbar"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                >
+                  <div class="lesson-progress__fill"></div>
+                </div>
+              </div>
+
+              <span class="lesson-cta" data-i18n="videos.startCta"
+                >Start &gt;</span
+              >
+            </div>
+          </button>
+
+          <button type="button" class="pupil-card module-card">
+            <div
+              class="lesson-row lesson-row--video"
+              data-target="binocularIndirectOphthalmoscopyFullAnimationVideoPage"
+              role="button"
+              tabindex="0"
+            >
+              <div class="thumb" aria-hidden="true"></div>
+
+              <div class="lesson-main">
+                <div class="lesson-top">
+                  <span class="lesson-type">BIO Full Animation</span>
+                  <span class="lesson-meta">| 00:00</span>
+                </div>
+
+                <div
+                  class="lesson-progress"
+                  role="progressbar"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                >
+                  <div class="lesson-progress__fill"></div>
+                </div>
+              </div>
+
+              <span class="lesson-cta" data-i18n="videos.startCta"
+                >Start &gt;</span
+              >
+            </div>
+          </button>
         </section>
 
         <div class="pupils-dots" aria-hidden="true">
@@ -2135,6 +2272,84 @@
           >
         </video>
       </div>
+    </div>
+  </div>
+
+  <!-- Direct Ophthalmoscopy Full Animation Video Page -->
+  <div id="directOphthalmoscopyFullAnimationVideoPage" class="page">
+    <div>
+      <div
+        class="tri-toggle"
+        role="radiogroup"
+        aria-label="Video mode"
+        data-i18n="i18nExtra.video_mode:aria-label"
+      >
+        <button
+          class="tri-toggle__btn"
+          type="button"
+          role="radio"
+          aria-checked="false"
+          data-mode="low"
+          data-i18n="i18nExtra.video_mode_low"
+        >
+          low
+        </button>
+        <button
+          class="tri-toggle__btn"
+          type="button"
+          role="radio"
+          aria-checked="false"
+          data-mode="high"
+          data-i18n="i18nExtra.video_mode_high"
+        >
+          high
+        </button>
+        <div class="tri-toggle__knob" aria-hidden="true"></div>
+      </div>
+
+      <div class="video-header">
+        <h3>DO Full Animation</h3>
+      </div>
+
+      <div
+        class="video-container"
+        id="directOphthalmoscopyFullAnimationVideoContainer"
+      >
+        <video
+          id="directOphthalmoscopyFullAnimationVideo"
+          controls
+          playsinline
+          webkit-playsinline
+          preload="none"
+        >
+          <source src="" type="video/mp4" />
+          <span data-i18n="videos.videoNotSupported"
+            >Your browser does not support the video tag.</span
+          >
+        </video>
+      </div>
+
+      <button
+        class="video-share-btn"
+        type="button"
+        data-video-share-btn
+        aria-label="Share"
+        title="Share"
+        data-i18n="i18nExtra.share_video:aria-label;i18nExtra.share_video:title"
+      >
+        <svg
+          class="video-share-icon"
+          viewBox="0 0 24 24"
+          width="18"
+          height="24"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <path
+            d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.02-4.11c.54.5 1.25.81 2.07.81 1.66 0 3-1.34 3-3S19.66 2 18 2s-3 1.34-3 3c0 .24.04.47.09.7L8.07 9.81C7.53 9.31 6.82 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.82 0 1.53-.31 2.07-.81l7.11 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92S19.61 16.08 18 16.08z"
+          ></path>
+        </svg>
+      </button>
     </div>
   </div>
 
@@ -3981,6 +4196,31 @@
               >
             </div>
             <div
+              class="lesson-row lesson-row--video"
+              data-target="fundalReflexFullAnimationVideoPage"
+              role="button"
+              tabindex="0"
+            >
+              <div class="thumb" aria-hidden="true"></div>
+              <div class="lesson-main">
+                <div class="lesson-top">
+                  <span class="lesson-type">Fundal Reflex Full Animation</span>
+                  <span class="lesson-meta">| 00:00</span>
+                </div>
+                <div
+                  class="lesson-progress"
+                  role="progressbar"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                >
+                  <div class="lesson-progress__fill"></div>
+                </div>
+              </div>
+              <span class="lesson-cta" data-i18n="auto.videos.start"
+                >Start &gt;</span
+              >
+            </div>
+            <div
               class="lesson-row lesson-row--pdf"
               data-target="fundalReflexPdfPage"
               data-route="fundalReflexPdf"
@@ -5333,6 +5573,37 @@
 
           <button type="button" class="pupil-card module-card">
             <div
+              class="lesson-row lesson-row--video"
+              data-target="directOphthalmoscopyFullAnimationVideoPage"
+              role="button"
+              tabindex="0"
+            >
+              <div class="thumb" aria-hidden="true"></div>
+
+              <div class="lesson-main">
+                <div class="lesson-top">
+                  <span class="lesson-type">DO Full Animation</span>
+                  <span class="lesson-meta">| 00:00</span>
+                </div>
+
+                <div
+                  class="lesson-progress"
+                  role="progressbar"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                >
+                  <div class="lesson-progress__fill"></div>
+                </div>
+              </div>
+
+              <span class="lesson-cta" data-i18n="auto.videos.start"
+                >Start &gt;</span
+              >
+            </div>
+          </button>
+
+          <button type="button" class="pupil-card module-card">
+            <div
               class="lesson-row lesson-row--pdf"
               data-target="directOphthalmoscopyPdfPage"
               data-route="directOphthalmoscopyPdf"
@@ -5475,6 +5746,37 @@
                     >Binocular Indirect Ophthalmoscopy Guide</span
                   >
                   <span class="lesson-meta"></span>
+                </div>
+
+                <div
+                  class="lesson-progress"
+                  role="progressbar"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                >
+                  <div class="lesson-progress__fill"></div>
+                </div>
+              </div>
+
+              <span class="lesson-cta" data-i18n="auto.videos.start"
+                >Start &gt;</span
+              >
+            </div>
+          </button>
+
+          <button type="button" class="pupil-card module-card">
+            <div
+              class="lesson-row lesson-row--video"
+              data-target="binocularIndirectOphthalmoscopyFullAnimationVideoPage"
+              role="button"
+              tabindex="0"
+            >
+              <div class="thumb" aria-hidden="true"></div>
+
+              <div class="lesson-main">
+                <div class="lesson-top">
+                  <span class="lesson-type">BIO Full Animation</span>
+                  <span class="lesson-meta">| 00:00</span>
                 </div>
 
                 <div
@@ -6472,6 +6774,82 @@
           preload="none"
         >
           <source src="videos/Tools/BIOvideo_220p.mp4" type="video/mp4" />
+          <span data-i18n="videos.videoNotSupported"
+            >Your browser does not support the video tag.</span
+          >
+        </video>
+      </div>
+
+      <button
+        class="video-share-btn"
+        type="button"
+        data-video-share-btn
+        aria-label="Share"
+        title="Share"
+        data-i18n="i18nExtra.share_video:aria-label;i18nExtra.share_video:title"
+      >
+        <svg
+          class="video-share-icon"
+          viewBox="0 0 24 24"
+          width="18"
+          height="24"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <path
+            d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.02-4.11c.54.5 1.25.81 2.07.81 1.66 0 3-1.34 3-3S19.66 2 18 2s-3 1.34-3 3c0 .24.04.47.09.7L8.07 9.81C7.53 9.31 6.82 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.82 0 1.53-.31 2.07-.81l7.11 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92S19.61 16.08 18 16.08z"
+          />
+        </svg>
+      </button>
+    </div>
+  </div>
+  <div id="binocularIndirectOphthalmoscopyFullAnimationVideoPage" class="page">
+    <div>
+      <div
+        class="tri-toggle"
+        role="radiogroup"
+        aria-label="Video mode"
+        data-i18n="i18nExtra.video_mode:aria-label"
+      >
+        <button
+          class="tri-toggle__btn"
+          type="button"
+          role="radio"
+          aria-checked="false"
+          data-mode="low"
+          data-i18n="i18nExtra.video_mode_low"
+        >
+          low
+        </button>
+        <button
+          class="tri-toggle__btn"
+          type="button"
+          role="radio"
+          aria-checked="false"
+          data-mode="high"
+          data-i18n="i18nExtra.video_mode_high"
+        >
+          high
+        </button>
+        <div class="tri-toggle__knob" aria-hidden="true"></div>
+      </div>
+
+      <div class="video-header">
+        <h3>BIO Full Animation</h3>
+      </div>
+
+      <div
+        class="video-container"
+        id="binocularIndirectOphthalmoscopyFullAnimationVideoContainer"
+      >
+        <video
+          id="binocularIndirectOphthalmoscopyFullAnimationVideo"
+          controls
+          playsinline
+          webkit-playsinline
+          preload="none"
+        >
+          <source src="" type="video/mp4" />
           <span data-i18n="videos.videoNotSupported"
             >Your browser does not support the video tag.</span
           >

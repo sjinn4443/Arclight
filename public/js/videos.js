@@ -1207,6 +1207,16 @@ const VIDEO_PAGE_SOURCES = {
     iframeClass: "videos-yt-fundal-exam",
   },
 
+  fundalReflexFullAnimationVideoPage: {
+    key: "videoMode:fundalReflexFullAnimationVideoPage",
+    containerSelector: "#fundalReflexFullAnimationVideoContainer",
+    videoSelector: "#fundalReflexFullAnimationVideo",
+    sources: {
+      low: "videos/FullAnim/FundalReflex_Full Animation_720p.mp4",
+      high: "videos/FullAnim/FundalReflex_Full Animation.mp4",
+    },
+  },
+
   fePecAnteriorSegmentPage: {
     key: "videoMode:fePecAnteriorSegmentPage",
     containerSelector: "#fePecAnteriorSegmentContainer",
@@ -1267,6 +1277,16 @@ const VIDEO_PAGE_SOURCES = {
     },
     onlineTitle: "Direct Ophthalmoscopy (online)",
     iframeClass: "videos-yt-do",
+  },
+
+  directOphthalmoscopyFullAnimationVideoPage: {
+    key: "videoMode:directOphthalmoscopyFullAnimationVideoPage",
+    containerSelector: "#directOphthalmoscopyFullAnimationVideoContainer",
+    videoSelector: "#directOphthalmoscopyFullAnimationVideo",
+    sources: {
+      low: "videos/FullAnim/DO_Full Animation_720p.mp4",
+      high: "videos/FullAnim/DO_Full Animation.mp4",
+    },
   },
 
   howToUseArclightVideoPage: {
@@ -1368,6 +1388,17 @@ const VIDEO_PAGE_SOURCES = {
     },
     onlineTitle: "Binocular Indirect Ophthalmoscopy (online)",
     iframeClass: "videos-yt-bio",
+  },
+
+  binocularIndirectOphthalmoscopyFullAnimationVideoPage: {
+    key: "videoMode:binocularIndirectOphthalmoscopyFullAnimationVideoPage",
+    containerSelector:
+      "#binocularIndirectOphthalmoscopyFullAnimationVideoContainer",
+    videoSelector: "#binocularIndirectOphthalmoscopyFullAnimationVideo",
+    sources: {
+      low: "videos/FullAnim/BIO_Full Animation_720p.mp4",
+      high: "videos/FullAnim/BIO_Full Animation.mp4",
+    },
   },
 
   glaucomaPupilReactionsVideoPage: {

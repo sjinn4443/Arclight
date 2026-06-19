@@ -1,4 +1,4 @@
-<!-- THE CHANGES - techContext.md | 2026-06-12, Codex -->
+<!-- THE CHANGES - techContext.md | 2026-06-19, Codex -->
 
 # Tech Context
 
@@ -9,7 +9,7 @@
 - PWA: Service Worker API, Web Manifest
 - Offline install/downloads: server-generated static asset manifest (`/api/app/offline-assets`), service-worker on-demand caching, cached MP4 range responses, and HLS/subtitle cache support
 - Video localization: JSON subtitle catalogs in `public/video-localization/` plus VTT assets in `public/video-subtitles/`, synchronized at runtime by `public/js/videoSubtitles.js` and Videos-route subtitle helpers
-- Embedded interactive content: local iframe mini-apps under `public/subapp/*`, selected external Netlify iframes, Videos-route diabetic video pages, and demo quiz pages inside `public/html/videos.html`
+- Embedded interactive content: local iframe mini-apps under `public/subapp/*`, selected external Netlify iframes, Videos-route diabetic video pages, full-animation local MP4 pages, and demo quiz pages inside `public/html/videos.html`
 - Workshop flows: static HTML lesson shells plus JS navigation/progress helpers, including `public/js/diabeticWorkshopNextFlow.js`, `public/js/diabeticWorkshopProgress.js`, and diabetic quiz/scroll initializers in `public/js/diabeticRetinopathyWorkshop.js`
 - Shared progress UI: `public/js/lessonProgress.js` and `public/js/lessonCompletionTick.js`
 - Case-study chat: `public/html/casestudy.html`, `public/js/casestudy.js`, `public/js/casestudy_primary.js`, `public/html/glaucomaHistoryCaseStudy.html`, and `public/js/glaucomaHistoryCaseStudy.js`
@@ -51,6 +51,7 @@
 - Diabetic workshop previous/next flow can cross from the workshop route into Videos-route pages; the flow state is stored in `sessionStorage` and restored when returning to the workshop folders.
 - Diabetic demo quizzes live in `public/html/videos.html` but use initializers exported from `public/js/diabeticRetinopathyWorkshop.js`; `main.js` imports those initializers for the Videos route.
 - Diabetic video pages require their hidden `.page` IDs, workshop `data-target` rows, and `VIDEO_PAGE_SOURCES` entries in `public/js/videos.js` to stay in sync.
+- Full-animation local MP4 pages currently include `fundalReflexFullAnimationVideoPage`, `directOphthalmoscopyFullAnimationVideoPage`, and `binocularIndirectOphthalmoscopyFullAnimationVideoPage`; their low/high files live in `public/videos/FullAnim/`.
 - Local video pages also require subtitle catalog entries and offline-download categorization when subtitles/offline playback should work.
 - `public/js/videoSubtitles.js` attaches app-wide subtitle tracks from `public/video-localization/app-video-subtitles.json`; the Childhood Eye Screening pilot uses `public/video-localization/childhood-eye-screening.json` plus HLS metadata and VTT files.
 
