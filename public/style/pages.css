@@ -24245,7 +24245,11 @@ img[src*="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/"] {
   .diabetic-protocol-421-layer:is(
     .diabetic-protocol-421-layer--base,
     .diabetic-protocol-421-layer--quadrants,
-    .diabetic-protocol-421-layer--mask
+    .diabetic-protocol-421-layer--mask,
+    .diabetic-protocol-421-layer--haemorrhage,
+    .diabetic-protocol-421-layer--microaneurysms,
+    .diabetic-protocol-421-layer--venous,
+    .diabetic-protocol-421-layer--irma
   ) {
   inset: 0;
   width: 100%;
@@ -24289,45 +24293,21 @@ img[src*="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/"] {
 
 #diabeticProtocolPhaseCPage .diabetic-protocol-421-layer--haemorrhage {
   z-index: 2;
-  left: 0;
-  top: 0;
-  width: 73%;
-  height: auto;
-  margin-left: 16%;
-  margin-top: 27%;
   opacity: 0;
 }
 
 #diabeticProtocolPhaseCPage .diabetic-protocol-421-layer--microaneurysms {
   z-index: 3;
-  left: 0;
-  top: 0;
-  width: 48%;
-  height: auto;
-  margin-left: 37%;
-  margin-top: 25%;
   opacity: 0;
 }
 
 #diabeticProtocolPhaseCPage .diabetic-protocol-421-layer--venous {
   z-index: 6;
-  left: 0;
-  top: 0;
-  width: 65%;
-  height: auto;
-  margin-left: 24.84375%;
-  margin-top: 39%;
   opacity: 0;
 }
 
 #diabeticProtocolPhaseCPage .diabetic-protocol-421-layer--irma {
   z-index: 6;
-  left: 0;
-  top: 0;
-  width: 40%;
-  height: auto;
-  margin-left: 19%;
-  margin-top: 17%;
   opacity: 0;
 }
 
@@ -24373,112 +24353,210 @@ img[src*="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/"] {
 }
 
 #diabeticProtocolPhaseCPage .diabetic-protocol-421-annotation--h1 {
-  left: 25.1%;
-  top: 38%;
-  --annotation-size: 22%;
+  left: 23.1%;
+  top: 29.1%;
+  --annotation-size: clamp(42px, 8.8%, 74px);
 }
 
 #diabeticProtocolPhaseCPage .diabetic-protocol-421-annotation--h2 {
-  left: 78.2%;
-  top: 35.3%;
-  --annotation-size: 23%;
+  left: 72%;
+  top: 25.4%;
+  --annotation-size: clamp(42px, 8.8%, 74px);
 }
 
 #diabeticProtocolPhaseCPage .diabetic-protocol-421-annotation--h3 {
-  left: 33.1%;
-  top: 79.4%;
-  --annotation-size: 28%;
+  left: 45.2%;
+  top: 60%;
+  --annotation-size: clamp(42px, 8.8%, 74px);
 }
 
 #diabeticProtocolPhaseCPage .diabetic-protocol-421-annotation--h4 {
-  left: 77%;
-  top: 69.2%;
-  --annotation-size: 23%;
+  left: 67%;
+  top: 74.3%;
+  --annotation-size: clamp(42px, 8.8%, 74px);
+}
+
+#diabeticProtocolPhaseCPage .diabetic-protocol-421-annotation--h5 {
+  left: 50.9%;
+  top: 80.7%;
+  --annotation-size: clamp(38px, 8%, 66px);
+}
+
+#diabeticProtocolPhaseCPage .diabetic-protocol-421-annotation--h6 {
+  left: 40.7%;
+  top: 26.9%;
+  --annotation-size: clamp(32px, 6.5%, 52px);
+}
+
+#diabeticProtocolPhaseCPage .diabetic-protocol-421-annotation--h7 {
+  left: 81.1%;
+  top: 47.9%;
+  --annotation-size: clamp(30px, 5.6%, 46px);
+}
+
+#diabeticProtocolPhaseCPage .diabetic-protocol-421-annotation--h8 {
+  left: 73.8%;
+  top: 80.1%;
+  --annotation-size: clamp(30px, 5.6%, 46px);
+}
+
+#diabeticProtocolPhaseCPage .diabetic-protocol-421-annotation--h9 {
+  left: 41.1%;
+  top: 61.5%;
+  --annotation-size: clamp(28px, 5.2%, 42px);
 }
 
 #diabeticProtocolPhaseCPage .diabetic-protocol-421-annotation--m1 {
-  left: 77.9%;
-  top: 26.1%;
+  left: 34.5%;
+  top: 71.7%;
   --annotation-size: clamp(22px, 5.4%, 38px);
 }
 
 #diabeticProtocolPhaseCPage .diabetic-protocol-421-annotation--m2 {
-  left: 46.5%;
-  top: 28.8%;
+  left: 87.3%;
+  top: 63.3%;
   --annotation-size: clamp(22px, 5.4%, 38px);
 }
 
 #diabeticProtocolPhaseCPage .diabetic-protocol-421-annotation--m3 {
-  left: 38.1%;
-  top: 43%;
+  left: 54.7%;
+  top: 73.1%;
   --annotation-size: clamp(22px, 5.4%, 38px);
 }
 
 #diabeticProtocolPhaseCPage .diabetic-protocol-421-annotation--m4 {
-  left: 83.9%;
-  top: 62.7%;
+  left: 51.4%;
+  top: 21.2%;
   --annotation-size: clamp(22px, 5.4%, 38px);
 }
 
 #diabeticProtocolPhaseCPage .diabetic-protocol-421-annotation--m5 {
-  left: 72%;
-  top: 46.2%;
+  left: 55.2%;
+  top: 27.8%;
   --annotation-size: clamp(22px, 5.4%, 38px);
 }
 
 #diabeticProtocolPhaseCPage .diabetic-protocol-421-annotation--m6 {
-  left: 53.2%;
-  top: 63.1%;
+  left: 40.2%;
+  top: 35.7%;
   --annotation-size: clamp(22px, 5.4%, 38px);
 }
 
 #diabeticProtocolPhaseCPage .diabetic-protocol-421-annotation--m7 {
-  left: 44.3%;
-  top: 83.9%;
+  left: 81.8%;
+  top: 28.1%;
   --annotation-size: clamp(22px, 5.4%, 38px);
 }
 
 #diabeticProtocolPhaseCPage .diabetic-protocol-421-annotation--m8 {
-  left: 73.3%;
-  top: 58.1%;
+  left: 30.4%;
+  top: 63.8%;
   --annotation-size: clamp(22px, 5.4%, 38px);
 }
 
 #diabeticProtocolPhaseCPage .diabetic-protocol-421-annotation--m9 {
   left: 40.6%;
-  top: 69.2%;
+  top: 46%;
   --annotation-size: clamp(22px, 5.4%, 38px);
 }
 
+#diabeticProtocolPhaseCPage .diabetic-protocol-421-annotation--m10 {
+  left: 37.1%;
+  top: 44.5%;
+  --annotation-size: clamp(18px, 4.5%, 30px);
+}
+
+#diabeticProtocolPhaseCPage .diabetic-protocol-421-annotation--m11 {
+  left: 15.6%;
+  top: 61.9%;
+  --annotation-size: clamp(18px, 4.2%, 28px);
+}
+
+#diabeticProtocolPhaseCPage .diabetic-protocol-421-annotation--m12 {
+  left: 86.3%;
+  top: 58.3%;
+  --annotation-size: clamp(16px, 3.8%, 26px);
+}
+
+#diabeticProtocolPhaseCPage .diabetic-protocol-421-annotation--m13 {
+  left: 76.8%;
+  top: 26.9%;
+  --annotation-size: clamp(16px, 3.8%, 26px);
+}
+
+#diabeticProtocolPhaseCPage .diabetic-protocol-421-annotation--m14 {
+  left: 80%;
+  top: 38.5%;
+  --annotation-size: clamp(16px, 3.8%, 26px);
+}
+
+#diabeticProtocolPhaseCPage .diabetic-protocol-421-annotation--m15 {
+  left: 77.9%;
+  top: 65.7%;
+  --annotation-size: clamp(16px, 3.8%, 26px);
+}
+
+#diabeticProtocolPhaseCPage .diabetic-protocol-421-annotation--m16 {
+  left: 84.4%;
+  top: 56.4%;
+  --annotation-size: clamp(16px, 3.8%, 26px);
+}
+
+#diabeticProtocolPhaseCPage
+  .diabetic-protocol-421-annotation:is(
+    .diabetic-protocol-421-annotation--m10,
+    .diabetic-protocol-421-annotation--m11,
+    .diabetic-protocol-421-annotation--m12,
+    .diabetic-protocol-421-annotation--m13,
+    .diabetic-protocol-421-annotation--m14,
+    .diabetic-protocol-421-annotation--m15,
+    .diabetic-protocol-421-annotation--m16
+  )
+  b {
+  display: none;
+}
+
 #diabeticProtocolPhaseCPage .diabetic-protocol-421-annotation--v1 {
-  left: 31.5%;
-  top: 41.3%;
-  --annotation-size: clamp(58px, 8.5vw, 112px);
+  left: 35.2%;
+  top: 41.6%;
+  --annotation-size: clamp(48px, 15%, 100px);
 }
 
 #diabeticProtocolPhaseCPage .diabetic-protocol-421-annotation--v2 {
-  left: 83.7%;
-  top: 59.8%;
+  left: 83.3%;
+  top: 60.3%;
   z-index: 10;
-  --annotation-size: clamp(58px, 8.5vw, 112px);
+  --annotation-size: clamp(48px, 14%, 96px);
 }
 
 #diabeticProtocolPhaseCPage .diabetic-protocol-421-annotation--v3 {
-  left: 79.6%;
-  top: 72.9%;
-  --annotation-size: clamp(54px, 7.8vw, 96px);
+  left: 78.3%;
+  top: 73.2%;
+  --annotation-size: clamp(44px, 11%, 78px);
 }
 
 #diabeticProtocolPhaseCPage .diabetic-protocol-421-annotation--i1 {
-  left: 23.4%;
-  top: 38.9%;
-  --annotation-size: 20%;
+  left: 23.6%;
+  top: 77.3%;
+  --annotation-size: clamp(42px, 11.5%, 80px);
 }
 
 #diabeticProtocolPhaseCPage .diabetic-protocol-421-annotation--i2 {
-  left: 50.5%;
-  top: 22.8%;
-  --annotation-size: 14%;
+  left: 43.1%;
+  top: 83.5%;
+  --annotation-size: clamp(42px, 12%, 82px);
+}
+
+#diabeticProtocolPhaseCPage
+  :is(
+    .diabetic-protocol-421-annotation--h9,
+    .diabetic-protocol-421-annotation--m4,
+    .diabetic-protocol-421-annotation--v1,
+    .diabetic-protocol-421-annotation--irma
+  )
+  b {
+  top: auto;
+  bottom: calc(100% + 7px);
 }
 
 #diabeticProtocolPhaseCPage
@@ -24681,16 +24759,45 @@ img[src*="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/"] {
 @media (max-width: 30em) {
   #diabeticProtocolPhaseCPage
     .diabetic-protocol-421-annotation:is(
-      .diabetic-protocol-421-annotation--h3,
-      .diabetic-protocol-421-annotation--m2,
+      .diabetic-protocol-421-annotation--h2,
+      .diabetic-protocol-421-annotation--h4,
+      .diabetic-protocol-421-annotation--h5,
+      .diabetic-protocol-421-annotation--h6,
+      .diabetic-protocol-421-annotation--h8,
+      .diabetic-protocol-421-annotation--h9,
+      .diabetic-protocol-421-annotation--m3,
       .diabetic-protocol-421-annotation--m5,
       .diabetic-protocol-421-annotation--m6,
-      .diabetic-protocol-421-annotation--m7,
       .diabetic-protocol-421-annotation--m8,
+      .diabetic-protocol-421-annotation--m9,
       .diabetic-protocol-421-annotation--v2
     )
     b {
     display: none;
+  }
+
+  #diabeticProtocolPhaseCPage
+    .diabetic-protocol-421-annotation:is(
+      .diabetic-protocol-421-annotation--h1,
+      .diabetic-protocol-421-annotation--h3,
+      .diabetic-protocol-421-annotation--h7,
+      .diabetic-protocol-421-annotation--m1,
+      .diabetic-protocol-421-annotation--m2,
+      .diabetic-protocol-421-annotation--m4,
+      .diabetic-protocol-421-annotation--m7
+    ) {
+    z-index: 14;
+  }
+
+  #diabeticProtocolPhaseCPage
+    .diabetic-protocol-421-annotation:is(
+      .diabetic-protocol-421-annotation--m2,
+      .diabetic-protocol-421-annotation--m7
+    )
+    b {
+    left: auto;
+    right: 0;
+    transform: none;
   }
 }
 
