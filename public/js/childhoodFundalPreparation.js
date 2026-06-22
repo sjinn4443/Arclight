@@ -2281,6 +2281,21 @@ function createFundalNextPagePillMarkup() {
   );
 }
 
+function createFundalPreviousPagePillMarkup(label = "previous page") {
+  return (
+    '<span class="childhood-fundal-page-next-pill childhood-fundal-page-next-pill--previous">' +
+    '<span class="childhood-fundal-page-next-pill__stack">' +
+    '<span class="childhood-fundal-page-next-pill__chev"></span>' +
+    '<span class="childhood-fundal-page-next-pill__chev"></span>' +
+    '<span class="childhood-fundal-page-next-pill__chev"></span>' +
+    "</span>" +
+    '<span class="childhood-fundal-page-next-pill__label">' +
+    label +
+    "</span>" +
+    "</span>"
+  );
+}
+
 function setStageAdvanceControlAppearance(
   buttonEl,
   mode = "stage",
@@ -2841,6 +2856,9 @@ function buildAnimationSlots(listEl, label, count, cfg = null) {
   if (!listEl) return [];
 
   listEl.innerHTML = "";
+  listEl.parentElement
+    ?.querySelector(":scope > .childhood-fundal-stage-top-nav")
+    ?.remove();
   const stages = [];
   const rawSections = Array.isArray(cfg?.sections) ? cfg.sections : [];
   const sections = rawSections
@@ -2933,15 +2951,18 @@ function buildAnimationSlots(listEl, label, count, cfg = null) {
     }
 
     const topNav =
-      i === 0 && FUNDAL_LESSON_NAV_CONFIG[cfgRouteName]
+      i === 0 && hasPreviousFundalRoute(cfgRouteName)
         ? document.createElement("div")
         : null;
     if (topNav) {
+      const previousPageLabel = "previous page";
       topNav.className = "childhood-fundal-stage-top-nav";
       topNav.innerHTML = `
-        <button type="button" data-fundal-page-prev-btn="1">&lt; Previous</button>
-        <button type="button" data-fundal-page-next-btn="1">Next &gt;</button>
+        <button type="button" class="childhood-fundal-page-prev-pill-btn" data-fundal-page-prev-btn="1" aria-label="${previousPageLabel}" title="${previousPageLabel}">
+          ${createFundalPreviousPagePillMarkup(previousPageLabel)}
+        </button>
       `;
+      listEl.parentElement?.insertBefore(topNav, listEl);
     }
 
     const downArrow = createDownArrowElement();
@@ -2950,9 +2971,6 @@ function buildAnimationSlots(listEl, label, count, cfg = null) {
     segmentText.className = "childhood-fundal-segment-text";
     segmentText.setAttribute("aria-live", "polite");
 
-    if (topNav) {
-      item.appendChild(topNav);
-    }
     item.appendChild(stage);
     item.appendChild(segmentText);
     item.appendChild(downArrow);
@@ -2965,6 +2983,11 @@ function buildAnimationSlots(listEl, label, count, cfg = null) {
 
 function resolveFirstStageAnchorElement(stage, cfg) {
   if (!stage) return null;
+  const topNav = stage
+    .closest(".childhood-fundal-scroll-page")
+    ?.querySelector(".childhood-fundal-stage-top-nav");
+  if (topNav) return topNav;
+
   if (!Array.isArray(cfg?.sections) || cfg.sections.length === 0) return stage;
 
   return (
@@ -7764,6 +7787,11 @@ function initializeStageAutoplayMode(
     const segmentTextEl =
       stage.parentElement?.querySelector(".childhood-fundal-segment-text") ||
       null;
+    const topNavEl =
+      stage.parentElement?.querySelector(".childhood-fundal-stage-top-nav") ||
+      (idx === 0
+        ? page.querySelector(".childhood-fundal-stage-top-nav")
+        : null);
     const state = {
       stage,
       anim: null,
@@ -7772,15 +7800,11 @@ function initializeStageAutoplayMode(
         stage.parentElement?.querySelector(
           ".childhood-fundal-scroll-down-arrow",
         ) || null,
-      topNavEl:
-        stage.parentElement?.querySelector(".childhood-fundal-stage-top-nav") ||
-        null,
+      topNavEl,
       topPrevBtn:
-        stage.parentElement?.querySelector("[data-fundal-page-prev-btn='1']") ||
-        null,
+        topNavEl?.querySelector("[data-fundal-page-prev-btn='1']") || null,
       topNextBtn:
-        stage.parentElement?.querySelector("[data-fundal-page-next-btn='1']") ||
-        null,
+        topNavEl?.querySelector("[data-fundal-page-next-btn='1']") || null,
       replayBtn: null,
       segmentTextEl,
       segmentStartTexts: [],
@@ -7872,6 +7896,7 @@ function initializeStageAutoplayMode(
 
     state.topPrevBtn?.toggleAttribute("disabled", !hasPrev);
     state.topNextBtn?.toggleAttribute("disabled", !canAdvance);
+    state.topNextBtn?.classList.toggle("is-ready", canAdvance);
     state.topNavEl.classList.toggle("is-stage-complete", canAdvance);
   }
 

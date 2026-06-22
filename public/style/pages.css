@@ -6985,36 +6985,29 @@ select.onb-input.has-value + .onb-select-caret {
 }
 
 .childhood-fundal-scroll-page .childhood-fundal-stage-top-nav {
-  width: min(100%, 640px);
-  max-width: 100%;
-  margin: 0 auto 12px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  margin: 0 auto 14px;
+  display: flex;
+  justify-content: center;
 }
 
 @media (min-width: 1024px) {
   .childhood-fundal-scroll-page .childhood-fundal-stage-top-nav {
-    max-width: min(66.6667%, 520px);
+    margin-bottom: 16px;
   }
 }
 
 .childhood-fundal-scroll-page .childhood-fundal-stage-top-nav button {
-  min-height: 38px;
-  border: 0;
-  border-radius: 12px;
-  background: #a5adba;
-  color: #ffffff;
-  font-size: 12px;
-  font-weight: 750;
-  line-height: 1;
+  width: 76px;
+  height: 118px;
+  border: none;
+  border-radius: 999px;
+  padding: 0;
+  background: transparent;
+  color: #fff;
   cursor: pointer;
-}
-
-.childhood-fundal-scroll-page
-  .childhood-fundal-stage-top-nav.is-stage-complete
-  button:last-child {
-  background: #e41e26;
+  line-height: 0;
+  appearance: none;
+  -webkit-appearance: none;
 }
 
 .childhood-fundal-scroll-page .childhood-fundal-stage-top-nav button:disabled {
@@ -7401,6 +7394,23 @@ select.onb-input.has-value + .onb-select-caret {
   animation: fundalArrowGrayShift 1.2s linear infinite;
 }
 
+.childhood-fundal-scroll-page .childhood-fundal-page-next-pill--previous {
+  gap: 8px;
+  padding: 14px 10px 13px;
+}
+
+.childhood-fundal-scroll-page
+  .childhood-fundal-page-next-pill--previous
+  .childhood-fundal-page-next-pill__stack {
+  transform: translateY(1px);
+}
+
+.childhood-fundal-scroll-page
+  .childhood-fundal-page-next-pill--previous
+  .childhood-fundal-page-next-pill__chev {
+  transform: rotate(225deg);
+}
+
 .childhood-fundal-scroll-page
   .childhood-fundal-page-next-pill__chev:nth-child(2) {
   animation-delay: 0.2s;
@@ -7503,6 +7513,12 @@ select.onb-input.has-value + .onb-select-caret {
 
   .childhood-fundal-scroll-page .childhood-fundal-page-next-pill__chev {
     display: none;
+  }
+
+  .childhood-fundal-scroll-page
+    .childhood-fundal-page-next-pill--previous
+    .childhood-fundal-page-next-pill__chev {
+    display: block;
   }
 
   .childhood-fundal-scroll-page .childhood-fundal-page-next-pill__down {
