@@ -14039,8 +14039,327 @@ img[src*="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/"] {
 }
 
 #diabeticTypesOfDiabetesPage .is-graph-visible .diabetes-type-compare__stamp {
-  animation: diabeticResistedStampLoop 8s cubic-bezier(0.18, 1.28, 0.28, 1)
+  animation: diabeticResistedStampLoop 16s cubic-bezier(0.18, 1.28, 0.28, 1)
     infinite;
+}
+
+#diabeticTypesOfDiabetesPage .diabetes-type-compare {
+  gap: 14px;
+  align-items: stretch;
+}
+
+#diabeticTypesOfDiabetesPage .diabetes-type-compare__lane {
+  min-height: 292px;
+  display: grid;
+  grid-template-rows: auto minmax(220px, 1fr);
+  gap: 0;
+  align-content: start;
+  padding: 14px 12px 10px;
+  background: #ffffff;
+}
+
+#diabeticTypesOfDiabetesPage .diabetes-type-compare__lane strong {
+  position: relative;
+  z-index: 10;
+  min-height: 30px;
+  line-height: 1;
+}
+
+.diabetes-type-factory {
+  position: relative;
+  width: min(100%, 360px);
+  aspect-ratio: 360 / 244;
+  margin: -3px auto 0;
+  align-self: start;
+  overflow: visible;
+}
+
+.diabetes-type-factory img,
+.diabetes-type-factory__stamp {
+  pointer-events: none;
+  user-select: none;
+}
+
+.diabetes-type-factory img {
+  position: absolute;
+  display: block;
+  max-width: none;
+  height: auto;
+}
+
+.diabetes-type-factory--type1 .diabetes-type-factory__factory {
+  left: 8%;
+  bottom: 2%;
+  z-index: 3;
+  width: 56%;
+}
+
+.diabetes-type-factory--type1 .diabetes-type-factory__trailer {
+  right: 19.5%;
+  bottom: 2.2%;
+  z-index: 5;
+  width: 45%;
+  clip-path: inset(0 0 0 0);
+}
+
+.diabetes-type-factory--type1 .diabetes-type-factory__trailer-cap {
+  right: 18.5%;
+  bottom: 2.2%;
+  z-index: 5;
+  width: 45%;
+  clip-path: inset(0 0 0 82%);
+  opacity: 0;
+}
+
+.diabetes-type-factory--type1 .diabetes-type-factory__slate {
+  left: 35%;
+  bottom: 2%;
+  z-index: 6;
+  width: 23.5%;
+  clip-path: inset(0 0 100% 0);
+  opacity: 0;
+}
+
+.diabetes-type-factory--type1 .diabetes-type-factory__panel,
+.diabetes-type-factory--type2 .diabetes-type-factory__panel {
+  left: 7%;
+  bottom: -1%;
+  z-index: 7;
+  width: 25%;
+}
+
+.diabetes-type-factory--type1 .diabetes-type-factory__panel {
+  left: 13%;
+  bottom: -4%;
+  width: 25.5%;
+}
+
+.diabetes-type-factory--type1 .diabetes-type-factory__mark--x {
+  left: 20.4%;
+  bottom: 15%;
+  z-index: 8;
+  width: 11%;
+  opacity: 0;
+}
+
+.diabetes-type-factory--type1 .diabetes-type-factory__crack {
+  z-index: 6;
+  opacity: 0;
+}
+
+.diabetes-type-factory--type1 .diabetes-type-factory__crack--one {
+  left: 47%;
+  top: 36.5%;
+  z-index: 5;
+  width: 13.5%;
+}
+
+.diabetes-type-factory--type1 .diabetes-type-factory__crack--two {
+  left: 6%;
+  top: 58%;
+  width: 19%;
+}
+
+.diabetes-type-factory--type1 .diabetes-type-factory__crack--three {
+  left: 15%;
+  top: 29%;
+  width: 20.5%;
+}
+
+.diabetes-type-factory--type2 .diabetes-type-factory__factory {
+  left: 1%;
+  bottom: 2%;
+  z-index: 3;
+  width: 72%;
+}
+
+.diabetes-type-factory--type2 .diabetes-type-factory__smoke {
+  z-index: 2;
+  width: 20%;
+  opacity: 0;
+}
+
+.diabetes-type-factory--type2 .diabetes-type-factory__smoke--one {
+  left: 5%;
+  top: 4%;
+}
+
+.diabetes-type-factory--type2 .diabetes-type-factory__smoke--two {
+  left: 19%;
+  top: -2%;
+}
+
+.diabetes-type-factory--type2 .diabetes-type-factory__mark--tick {
+  left: 14%;
+  bottom: 18%;
+  z-index: 8;
+  width: 11%;
+  opacity: 0;
+}
+
+.diabetes-type-factory--type2 .diabetes-type-factory__insulin {
+  left: 29%;
+  bottom: 15.2%;
+  z-index: 5;
+  width: 13%;
+  opacity: 0;
+}
+
+.diabetes-type-factory--type2 .diabetes-type-factory__pile {
+  right: -10%;
+  bottom: -1%;
+  z-index: 6;
+  width: 54%;
+  opacity: 0;
+  transform-origin: 50% 100%;
+}
+
+.diabetes-type-factory__stamp {
+  right: 16%;
+  top: 33%;
+  z-index: 9;
+  padding: 5px 7px;
+  border-color: #e41e26;
+  border-width: 3px;
+  border-radius: 8px;
+  color: #e41e26;
+  font-size: clamp(13px, 3.8vw, 20px);
+}
+
+#diabeticTypesOfDiabetesPage
+  .is-graph-visible
+  .diabetes-type-factory--type1
+  .diabetes-type-factory__trailer {
+  animation: diabeticType1TrailerRetreat 16s ease-in-out infinite;
+}
+
+#diabeticTypesOfDiabetesPage
+  .is-graph-visible
+  .diabetes-type-factory--type1
+  .diabetes-type-factory__trailer-cap {
+  animation: diabeticType1TrailerCapRetreat 16s ease-in-out infinite;
+}
+
+#diabeticTypesOfDiabetesPage
+  .is-graph-visible
+  .diabetes-type-factory--type1
+  .diabetes-type-factory__slate {
+  animation: diabeticType1SlateDrop 16s ease-in-out infinite;
+}
+
+#diabeticTypesOfDiabetesPage
+  .is-graph-visible
+  .diabetes-type-factory--type1
+  .diabetes-type-factory__crack--one {
+  animation: diabeticType1CrackOne 16s ease-in-out infinite;
+}
+
+#diabeticTypesOfDiabetesPage
+  .is-graph-visible
+  .diabetes-type-factory--type1
+  .diabetes-type-factory__crack--two {
+  animation: diabeticType1CrackTwo 16s ease-in-out infinite;
+}
+
+#diabeticTypesOfDiabetesPage
+  .is-graph-visible
+  .diabetes-type-factory--type1
+  .diabetes-type-factory__crack--three {
+  animation: diabeticType1CrackThree 16s ease-in-out infinite;
+}
+
+#diabeticTypesOfDiabetesPage
+  .is-graph-visible
+  .diabetes-type-factory--type1
+  .diabetes-type-factory__mark--x {
+  animation: diabeticType1PanelX 16s ease-in-out infinite;
+}
+
+#diabeticTypesOfDiabetesPage
+  .is-graph-visible
+  .diabetes-type-factory--type2
+  .diabetes-type-factory__smoke {
+  animation: diabeticType2Smoke 2.4s ease-in-out infinite;
+}
+
+#diabeticTypesOfDiabetesPage
+  .is-graph-visible
+  .diabetes-type-factory--type2
+  .diabetes-type-factory__smoke--two {
+  animation-delay: 0.8s;
+}
+
+#diabeticTypesOfDiabetesPage
+  .is-graph-visible
+  .diabetes-type-factory--type2
+  .diabetes-type-factory__insulin {
+  animation: diabeticType2InsulinBox 4.8s linear infinite;
+}
+
+#diabeticTypesOfDiabetesPage
+  .is-graph-visible
+  .diabetes-type-factory--type2
+  .diabetes-type-factory__insulin--one {
+  animation: diabeticType2InsulinBox 4.8s linear -3.2s infinite;
+}
+
+#diabeticTypesOfDiabetesPage
+  .is-graph-visible
+  .diabetes-type-factory--type2
+  .diabetes-type-factory__insulin--two {
+  animation: diabeticType2InsulinBox 4.8s linear -1.6s infinite;
+}
+
+#diabeticTypesOfDiabetesPage
+  .is-graph-visible
+  .diabetes-type-factory--type2
+  .diabetes-type-factory__insulin--three {
+  animation: diabeticType2InsulinBox 4.8s linear infinite;
+}
+
+#diabeticTypesOfDiabetesPage
+  .diabetes-type-factory--type2
+  :is(
+    .diabetes-type-factory__insulin--four,
+    .diabetes-type-factory__insulin--five
+  ) {
+  display: none;
+}
+
+#diabeticTypesOfDiabetesPage
+  .is-graph-visible
+  .diabetes-type-factory--type2
+  .diabetes-type-factory__pile {
+  animation: diabeticType2PileAppear 16s ease-in-out infinite;
+}
+
+#diabeticTypesOfDiabetesPage
+  .is-graph-visible
+  .diabetes-type-factory--type2
+  .diabetes-type-factory__mark--tick {
+  animation: diabeticType2PanelTick 16s ease-in-out infinite;
+}
+
+@media (max-width: 47.99em) {
+  #diabeticTypesOfDiabetesPage .diabetes-type-compare {
+    min-height: 0;
+  }
+
+  #diabeticTypesOfDiabetesPage .diabetes-type-compare__lane {
+    min-height: 0;
+    grid-template-rows: auto auto;
+    gap: 12px;
+    padding-bottom: 12px;
+  }
+
+  #diabeticTypesOfDiabetesPage .diabetes-type-compare__lane strong {
+    min-height: 34px;
+  }
+
+  #diabeticTypesOfDiabetesPage .diabetes-type-factory {
+    width: min(100%, 310px);
+    margin: 6px auto 0;
+  }
 }
 
 .dr-eye-retina-graphic,
@@ -14367,6 +14686,96 @@ img[src*="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/"] {
   .dr-retina-graphic--new-vessels
   .dr-retina-graphic__blocked-drain {
   animation: diabeticBlockedDrain 0.72s ease-out 2.2s forwards;
+}
+
+.dr-retina-graphic--dr-sequence {
+  isolation: isolate;
+}
+
+.dr-retina-graphic--dr-sequence .dr-retina-graphic__retina-base {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 300px);
+}
+
+.dr-retina-graphic--dr-sequence .dr-retina-graphic__sequence-layer {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 2;
+  display: block;
+  max-width: none;
+  height: auto;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, -50%);
+}
+
+.dr-retina-graphic--dr-sequence .dr-retina-graphic__sequence-layer--nvd,
+.dr-retina-graphic--dr-sequence .dr-retina-graphic__sequence-layer--leaking,
+.dr-retina-graphic--dr-sequence
+  .dr-retina-graphic__sequence-layer--hard-exudates {
+  width: min(100%, 300px);
+}
+
+.dr-retina-graphic--dr-sequence .dr-retina-graphic__sequence-layer--nvd {
+  left: 55%;
+}
+
+.dr-retina-graphic--dr-sequence .dr-retina-graphic__sequence-layer--leaking {
+  left: 56%;
+  z-index: 3;
+}
+
+.dr-retina-graphic--dr-sequence
+  .dr-retina-graphic__sequence-layer--hard-exudates {
+  left: 56%;
+  z-index: 4;
+}
+
+.dr-retina-graphic--dr-sequence .dr-retina-graphic__sequence-layer--dot-blood {
+  left: 70%;
+  top: 71%;
+  z-index: 5;
+  width: min(34%, 110px);
+  clip-path: inset(0 100% 0 0);
+}
+
+.dr-retina-graphic--dr-sequence .dr-retina-graphic__sequence-layer--detachment {
+  left: 50.5%;
+  z-index: 6;
+  width: min(90%, 270px);
+  clip-path: inset(0 0 0 100%);
+}
+
+.is-dr-vessels-visible
+  .dr-retina-graphic--dr-sequence
+  .dr-retina-graphic__sequence-layer--nvd {
+  animation: diabeticRetinaNvdSequence 11s ease-in-out infinite;
+}
+
+.is-dr-vessels-visible
+  .dr-retina-graphic--dr-sequence
+  .dr-retina-graphic__sequence-layer--leaking {
+  animation: diabeticRetinaLeakingSequence 11s ease-in-out infinite;
+}
+
+.is-dr-vessels-visible
+  .dr-retina-graphic--dr-sequence
+  .dr-retina-graphic__sequence-layer--hard-exudates {
+  animation: diabeticRetinaHardExudatesSequence 11s ease-in-out infinite;
+}
+
+.is-dr-vessels-visible
+  .dr-retina-graphic--dr-sequence
+  .dr-retina-graphic__sequence-layer--dot-blood {
+  animation: diabeticRetinaDotBloodSequence 11s ease-in-out infinite;
+}
+
+.is-dr-vessels-visible
+  .dr-retina-graphic--dr-sequence
+  .dr-retina-graphic__sequence-layer--detachment {
+  animation: diabeticRetinaDetachmentSequence 11s ease-in-out infinite;
 }
 
 .diabetic-maculopathy-sequence {
@@ -14758,17 +15167,18 @@ img[src*="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/"] {
     transform: translateY(-50%) rotate(-12deg) scale(1.72);
   }
 
-  54% {
+  50.75% {
     opacity: 1;
     transform: translateY(-50%) rotate(-12deg) scale(0.88);
   }
 
-  62% {
+  54.75% {
     opacity: 1;
     transform: translateY(-50%) rotate(-12deg) scale(1.05);
   }
 
-  78% {
+  62%,
+  89% {
     opacity: 1;
     transform: translateY(-50%) rotate(-12deg) scale(1);
   }
@@ -14777,6 +15187,322 @@ img[src*="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/"] {
   100% {
     opacity: 0;
     transform: translateY(-50%) rotate(-12deg) scale(1.18);
+  }
+}
+
+@keyframes diabeticType1TrailerRetreat {
+  0%,
+  9% {
+    opacity: 1;
+    clip-path: inset(0 0 0 0);
+  }
+
+  13% {
+    opacity: 1;
+    clip-path: inset(0 36% 0 0);
+  }
+
+  17% {
+    opacity: 1;
+    clip-path: inset(0 74% 0 0);
+  }
+
+  21%,
+  91% {
+    opacity: 1;
+    clip-path: inset(0 100% 0 0);
+  }
+
+  100% {
+    opacity: 0;
+    clip-path: inset(0 100% 0 0);
+  }
+}
+
+@keyframes diabeticType1TrailerCapRetreat {
+  0%,
+  9% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  13% {
+    opacity: 1;
+    transform: translateX(-36%);
+  }
+
+  17% {
+    opacity: 1;
+    transform: translateX(-74%);
+  }
+
+  20.9% {
+    opacity: 1;
+    transform: translateX(-82%);
+  }
+
+  21%,
+  91% {
+    opacity: 0;
+    transform: translateX(-82%);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateX(-82%);
+  }
+}
+
+@keyframes diabeticType1SlateDrop {
+  0%,
+  27% {
+    opacity: 0;
+    clip-path: inset(0 0 100% 0);
+  }
+
+  33%,
+  91% {
+    opacity: 1;
+    clip-path: inset(0 0 0 0);
+  }
+
+  100% {
+    opacity: 0;
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes diabeticType1CrackOne {
+  0%,
+  42% {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+
+  44.5%,
+  91% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1);
+  }
+}
+
+@keyframes diabeticType1CrackTwo {
+  0%,
+  42% {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+
+  44.5%,
+  91% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1);
+  }
+}
+
+@keyframes diabeticType1CrackThree {
+  0%,
+  42% {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+
+  44.5%,
+  91% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1);
+  }
+}
+
+@keyframes diabeticType1PanelX {
+  0%,
+  91% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1);
+  }
+}
+
+@keyframes diabeticType2Smoke {
+  0%,
+  100% {
+    opacity: 0.18;
+  }
+
+  45% {
+    opacity: 0.9;
+  }
+
+  70% {
+    opacity: 0.48;
+  }
+}
+
+@keyframes diabeticType2InsulinBox {
+  0% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(355%) scale(1);
+  }
+}
+
+@keyframes diabeticType2PileAppear {
+  0%,
+  18% {
+    opacity: 0;
+    transform: translateY(6px) scale(0.82);
+  }
+
+  22%,
+  91% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes diabeticType2PanelTick {
+  0%,
+  91% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1);
+  }
+}
+
+@keyframes diabeticRetinaNvdSequence {
+  0%,
+  6% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.96);
+  }
+
+  13%,
+  91% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes diabeticRetinaLeakingSequence {
+  0%,
+  17% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.96);
+  }
+
+  25%,
+  91% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes diabeticRetinaHardExudatesSequence {
+  0%,
+  29% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.96);
+  }
+
+  37%,
+  91% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes diabeticRetinaDotBloodSequence {
+  0%,
+  42% {
+    opacity: 0;
+    clip-path: inset(0 100% 0 0);
+  }
+
+  47% {
+    opacity: 1;
+    clip-path: inset(0 100% 0 0);
+  }
+
+  58%,
+  91% {
+    opacity: 1;
+    clip-path: inset(0 0 0 0);
+  }
+
+  100% {
+    opacity: 0;
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes diabeticRetinaDetachmentSequence {
+  0%,
+  57% {
+    opacity: 0;
+    clip-path: inset(0 0 0 100%);
+  }
+
+  62% {
+    opacity: 1;
+    clip-path: inset(0 0 0 100%);
+  }
+
+  74%,
+  91% {
+    opacity: 1;
+    clip-path: inset(0 0 0 0);
+  }
+
+  100% {
+    opacity: 0;
+    clip-path: inset(0 0 0 0);
   }
 }
 
@@ -15136,6 +15862,79 @@ img[src*="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/"] {
     .diabetic-screening-scroll-cue
     i {
     animation: none;
+  }
+
+  #diabeticTypesOfDiabetesPage
+    .is-graph-visible
+    .diabetes-type-factory--type1
+    .diabetes-type-factory__trailer {
+    opacity: 0;
+    clip-path: inset(0 100% 0 0);
+    transform: none;
+  }
+
+  #diabeticTypesOfDiabetesPage
+    .is-graph-visible
+    .diabetes-type-factory--type1
+    .diabetes-type-factory__trailer-cap {
+    opacity: 0;
+    transform: translateX(-82%);
+  }
+
+  #diabeticTypesOfDiabetesPage
+    .is-graph-visible
+    .diabetes-type-factory--type1
+    :is(
+      .diabetes-type-factory__slate,
+      .diabetes-type-factory__crack,
+      .diabetes-type-factory__mark--x
+    ) {
+    opacity: 1;
+    transform: none;
+  }
+
+  #diabeticTypesOfDiabetesPage
+    .is-graph-visible
+    .diabetes-type-factory--type1
+    .diabetes-type-factory__slate {
+    clip-path: inset(0 0 0 0);
+  }
+
+  #diabeticTypesOfDiabetesPage
+    .is-graph-visible
+    .diabetes-type-factory--type2
+    .diabetes-type-factory__smoke {
+    opacity: 0.72;
+  }
+
+  #diabeticTypesOfDiabetesPage
+    .is-graph-visible
+    .diabetes-type-factory--type2
+    .diabetes-type-factory__insulin {
+    opacity: 0;
+  }
+
+  #diabeticTypesOfDiabetesPage
+    .is-graph-visible
+    .diabetes-type-factory--type2
+    :is(
+      .diabetes-type-factory__pile,
+      .diabetes-type-factory__mark--tick,
+      .diabetes-type-factory__stamp
+    ) {
+    opacity: 1;
+  }
+
+  #diabeticTypesOfDiabetesPage .is-graph-visible .diabetes-type-factory__stamp {
+    transform: translateY(-50%) rotate(-12deg) scale(1);
+  }
+
+  #diabeticWhatIsRetinopathyPage
+    .is-dr-vessels-visible
+    .dr-retina-graphic--dr-sequence
+    .dr-retina-graphic__sequence-layer {
+    opacity: 1;
+    clip-path: inset(0 0 0 0);
   }
 }
 
