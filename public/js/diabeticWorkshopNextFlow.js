@@ -84,11 +84,11 @@ const DIABETIC_NAV_CONFIG = {
   },
   diabeticVisionLossInDiabetesPage: {
     previous: { type: "target", target: "diabeticWhatIsRetinopathyPage" },
-    next: { type: "target", target: "diabeticCaseQuizPage" },
+    next: { type: "focus", folderKey: "whatIsDiabetes" },
   },
   diabeticCaseQuizPage: {
-    previous: { type: "target", target: "diabeticVisionLossInDiabetesPage" },
-    next: { type: "focus", folderKey: "whatIsDiabetes" },
+    previous: { type: "focus", folderKey: "assessment" },
+    next: { type: "focus", folderKey: "assessment" },
   },
   diabeticNcdFlowIntroductionPage: {
     previous: { type: "home" },
@@ -356,12 +356,12 @@ async function navigateToTarget(target) {
     }
 
     if (!document.getElementById("videos")) {
-      await loadPage("videos");
+      await loadPage("videos", { subPageId: target });
     }
 
     await showVideosTarget(target);
     if (!isPageVisible(target)) {
-      await loadPage("videos", { replace: true });
+      await loadPage("videos", { replace: true, subPageId: target });
       await showVideosTarget(target);
     }
 

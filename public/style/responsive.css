@@ -5000,3 +5000,72 @@ html.is-apple-ui :is(.eyes-topbar .menuBtn, .icon.menuBtn, #tocToggleBtn) {
   bottom: auto !important;
   margin: 8px 16px calc(20px + env(safe-area-inset-bottom)) !important;
 }
+
+@media (max-width: 37.5em) {
+  #childhoodEyeScreeningWorkshopPage
+    .childhood-section-card
+    .lesson-row[data-target]
+    > .lesson-cta {
+    margin-left: -52px !important;
+  }
+
+  #childhoodEyeScreeningWorkshopPage
+    .childhood-section-card[data-section="childhoodEyeScreening"]
+    #fundalReflexFolderRow
+    > .lesson-cta {
+    margin-left: -63px !important;
+  }
+
+  #childhoodEyeScreeningWorkshopPage
+    .childhood-section-card[data-section="childhoodEyeScreening"]
+    .lesson-row.childhood-fundal-subrow
+    > .lesson-cta {
+    margin-left: -83px !important;
+  }
+}
+
+@media (min-width: 48em) {
+  #diabeticProtocolPhaseCPage .diabetic-protocol-421-panel {
+    grid-template-columns: 1fr !important;
+    justify-items: stretch !important;
+    width: min(88vw, 760px) !important;
+  }
+
+  #diabeticProtocolPhaseCPage
+    .diabetic-protocol-421-panel
+    .diabetic-screening-panel__text,
+  #diabeticProtocolPhaseCPage .diabetic-protocol-421-list {
+    grid-column: 1 / -1 !important;
+    width: 100% !important;
+    max-width: none !important;
+  }
+
+  #diabeticProtocolPhaseCPage .diabetic-protocol-421-list li,
+  #diabeticProtocolPhaseCPage .diabetic-protocol-421-card {
+    box-sizing: border-box !important;
+    width: 100% !important;
+  }
+
+  #diabeticSimpleSafeScalableScrollPage .simple-safe-decision__branches span {
+    display: block !important;
+    box-sizing: border-box !important;
+    min-height: 74px !important;
+    padding-top: 10px !important;
+    padding-bottom: 12px !important;
+  }
+
+  #diabeticSimpleSafeScalableScrollPage .simple-safe-decision__branches strong {
+    margin-right: 0.46em !important;
+  }
+
+  #diabeticSimpleSafeScalableScrollPage
+    .simple-safe-decision__branches
+    > span:nth-child(1)
+    .simple-safe-decision__branch-text,
+  #diabeticSimpleSafeScalableScrollPage
+    .simple-safe-decision__branches
+    > span:nth-child(3)
+    .simple-safe-decision__branch-text {
+    transform: translateY(8px) !important;
+  }
+}

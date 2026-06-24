@@ -1338,10 +1338,26 @@ export async function loadPage(routeName, options = {}) {
     );
   }
 
+  const suppressInitialVideoDefault =
+    routeName === "videos" && Boolean(subPageId);
+  if (suppressInitialVideoDefault) {
+    const videosRoot =
+      pageElement.id === "videos"
+        ? pageElement
+        : pageElement.querySelector("#videos");
+    if (videosRoot) {
+      videosRoot.style.visibility = "hidden";
+      videosRoot.querySelectorAll(".page").forEach((page) => {
+        page.classList.remove("active");
+        page.style.display = "none";
+      });
+    }
+  }
+
   // Apply the 'active' class to the first .page element found or the newly created wrapper.
   // Prioritize elements with data-default="true".
   const defaultActive = pageElement.querySelector('[data-default="true"]');
-  if (defaultActive) {
+  if (defaultActive && !suppressInitialVideoDefault) {
     defaultActive.classList.add("active");
   } else {
     pageElement.classList.add("active"); // Apply active class to the main page element

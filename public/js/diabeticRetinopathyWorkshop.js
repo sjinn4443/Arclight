@@ -1789,7 +1789,7 @@ async function openVideosSubpage(targetId) {
     /* ignore session storage failures */
   }
 
-  await loadPage("videos");
+  await loadPage("videos", { subPageId: targetId });
 
   try {
     const { goToVideosSection } = await import("./videos.js");

@@ -30,7 +30,7 @@
 
   <!-- Title -->
   <text x="600" y="40" class="title" text-anchor="middle">Arclight DR Pragmatic Screening Algorithm</text>
-  <text x="600" y="65" class="subtitle" text-anchor="middle">Integrated Eye Screening for NCD Clinics</text>
+  <text x="600" y="65" class="subtitle" text-anchor="middle">Integrated Eye Screening for medical NCD clinics</text>
 
   <!-- ============ PHASE A: REGISTRATION ============ -->
   <rect x="30" y="90" width="1140" height="580" fill="#e8f4f8" fill-opacity="0.25" stroke="#1a5490" stroke-width="3" rx="10"/>
@@ -242,7 +242,7 @@
   <rect x="100" y="2000" width="300" height="80" class="success-box" rx="5"/>
   <text x="250" y="2025" class="success-text" text-anchor="middle">REASSURE + EDUCATE</text>
   <text x="250" y="2045" class="detail-text" text-anchor="middle">No sight-threatening disease</text>
-  <text x="250" y="2062" class="detail-text" text-anchor="middle">Routine follow-up in NCD clinic</text>
+  <text x="250" y="2062" class="detail-text" text-anchor="middle">Routine follow-up in medical NCD clinic</text>
   <text x="250" y="2075" class="small-text" text-anchor="middle">(Annual or as per protocol)</text>
 
   <path d="M 600 1940 L 600 2000" class="arrow"/>
@@ -278,13 +278,13 @@
   
   <text x="100" y="2425" class="detail-text">• Look for ALL causes of sight loss, not just diabetic retinopathy</text>
   <text x="100" y="2447" class="detail-text">• Pragmatic, not perfect - focus on clear danger signs</text>
-  <text x="100" y="2469" class="detail-text">• Integrate into routine NCD clinic workflow</text>
+  <text x="100" y="2469" class="detail-text">• Integrate into routine medical NCD clinic workflow</text>
   <text x="100" y="2491" class="detail-text">• Simple, safe, and scalable for low-resource settings</text>
 
   <!-- Footer -->
   <text x="600" y="2560" class="small-text" text-anchor="middle">Tools needed: Visual acuity chart, pinhole, near vision chart, bright light/torch,</text>
   <text x="600" y="2580" class="small-text" text-anchor="middle">loupe (or phone magnifier), dilating drops, direct ophthalmoscope (Arclight recommended)</text>
   
-  <text x="600" y="2615" class="detail-text" text-anchor="middle" fill="#1a5490">For nurses, OCOs, optometrists, and clinical officers in NCD clinics</text>
+  <text x="600" y="2615" class="detail-text" text-anchor="middle" fill="#1a5490">For nurses, OCOs, optometrists, and clinical officers in medical NCD clinics</text>
 
 </svg>

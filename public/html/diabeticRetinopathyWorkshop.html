@@ -87,7 +87,7 @@
             <div class="lesson-main">
               <div class="lesson-top">
                 <span class="lesson-type"
-                  >3. Integrate into NCD Clinic Flow</span
+                  >3. Integrate into medical NCD clinic flow</span
                 ><span class="lesson-meta"></span>
               </div>
             </div>
@@ -130,6 +130,27 @@
             <div class="lesson-main">
               <div class="lesson-top">
                 <span class="lesson-type">5. DO and BIO</span
+                ><span class="lesson-meta"></span>
+              </div>
+            </div>
+            <span
+              class="lesson-cta"
+              style="color: #f25600"
+              data-i18n="auto.childhoodeyescreeningworkshop.see_all"
+              >See all &gt;</span
+            >
+          </div>
+          <div
+            class="lesson-row lesson-row--folder diabetic-folder-row"
+            data-folder="assessment"
+            role="button"
+            tabindex="0"
+            style="width: 79%"
+          >
+            <div class="thumb" aria-hidden="true"></div>
+            <div class="lesson-main">
+              <div class="lesson-top">
+                <span class="lesson-type">6. Assessment</span
                 ><span class="lesson-meta"></span>
               </div>
             </div>
@@ -236,7 +257,7 @@
             <div class="lesson-main">
               <div class="lesson-top">
                 <span class="lesson-type"
-                  >Pragmatic DR Screening in NCD Clinics</span
+                  >Pragmatic DR Screening in medical NCD clinics</span
                 ><span class="lesson-meta"></span>
               </div>
               <div
@@ -391,33 +412,6 @@
               >Start &gt;</span
             >
           </div>
-          <div
-            class="lesson-row lesson-row--quiz"
-            data-lesson="case-quiz"
-            data-target="diabeticCaseQuizPage"
-            data-route="videos"
-            role="button"
-            tabindex="0"
-          >
-            <div class="thumb" aria-hidden="true"></div>
-            <div class="lesson-main">
-              <div class="lesson-top">
-                <span class="lesson-type">Case Quiz</span
-                ><span class="lesson-meta"></span>
-              </div>
-              <div
-                class="lesson-progress"
-                role="progressbar"
-                aria-valuemin="0"
-                aria-valuemax="100"
-              >
-                <div class="lesson-progress__fill" style="width: 0%"></div>
-              </div>
-            </div>
-            <span class="lesson-cta" data-i18n="auto.videos.start"
-              >Start &gt;</span
-            >
-          </div>
         </div>
 
         <div
@@ -425,7 +419,7 @@
           data-section="ncdClinicFlow"
           style="display: none"
         >
-          <h3>3. Integrate into NCD Clinic Flow</h3>
+          <h3>3. Integrate into medical NCD clinic flow</h3>
           <div
             class="lesson-row lesson-row--scroll"
             data-lesson="ncd-introduction"
@@ -626,7 +620,7 @@
             <div class="thumb" aria-hidden="true"></div>
             <div class="lesson-main">
               <div class="lesson-top">
-                <span class="lesson-type">NCD Clinic Consultation</span
+                <span class="lesson-type">NCD medical consultation</span
                 ><span class="lesson-meta"></span>
               </div>
               <div
@@ -1107,6 +1101,41 @@
             </div>
           </div>
         </div>
+
+        <div
+          class="pupil-card module-card diabetic-section-card"
+          data-section="assessment"
+          style="display: none"
+        >
+          <h3>6. Assessment</h3>
+          <div
+            class="lesson-row lesson-row--quiz"
+            data-lesson="case-quiz"
+            data-target="diabeticCaseQuizPage"
+            data-route="videos"
+            role="button"
+            tabindex="0"
+          >
+            <div class="thumb" aria-hidden="true"></div>
+            <div class="lesson-main">
+              <div class="lesson-top">
+                <span class="lesson-type">Case Quiz</span
+                ><span class="lesson-meta"></span>
+              </div>
+              <div
+                class="lesson-progress"
+                role="progressbar"
+                aria-valuemin="0"
+                aria-valuemax="100"
+              >
+                <div class="lesson-progress__fill" style="width: 0%"></div>
+              </div>
+            </div>
+            <span class="lesson-cta" data-i18n="auto.videos.start"
+              >Start &gt;</span
+            >
+          </div>
+        </div>
       </section>
     </div>
   </div>
@@ -1153,7 +1182,7 @@
         <h2>Protocol: 10 Steps, 3 Phases</h2>
         <p>
           A practical sequence for screening diabetic retinopathy and other
-          important eye disease inside an NCD clinic.
+          important eye disease inside a medical NCD clinic.
         </p>
       </header>
 
@@ -1225,6 +1254,7 @@
           data-diabetic-scroll-step
         >
           <div class="diabetic-screening-panel__text">
+            <span class="diabetic-screening-step">07</span>
             <h3>NCD medical consultation</h3>
             <p>
               While pupils dilate, diabetes, blood pressure and weight review
@@ -1241,16 +1271,12 @@
               <p>Pupils, front of eye, dilate pupils</p>
             </div>
             <div class="diabetic-protocol-parallel__consult">
-              <span>NCD consultation</span>
+              <span>07 NCD medical consultation</span>
               <p>Diabetes, BP, weight</p>
             </div>
             <div class="diabetic-protocol-parallel__future">
               <span>Phase C</span>
               <p>Fundal reflex, fundoscopy, action based on findings</p>
-            </div>
-            <div class="diabetic-protocol-parallel__future">
-              <span>Phase D</span>
-              <p>Glasses, reassure, or refer</p>
             </div>
           </div>
         </article>
@@ -1262,7 +1288,11 @@
           <div class="diabetic-screening-panel__text">
             <span class="diabetic-screening-step">C</span>
             <h3>Phase C: Steps 8-10</h3>
-            <ol class="diabetic-screening-checklist">
+            <ol
+              class="diabetic-screening-checklist diabetic-protocol-sequence-list"
+              start="8"
+              style="counter-reset: diabeticScreenChecklist 7"
+            >
               <li>Check fundal reflex</li>
               <li>Perform fundoscopy</li>
               <li>Action based on findings</li>
@@ -1276,15 +1306,16 @@
         >
           <div class="diabetic-screening-panel__text">
             <span class="diabetic-screening-step">Map</span>
-            <h3>NCD clinic algorithm</h3>
+            <h3>medical NCD clinic algorithm</h3>
             <p>
-              The protocol should sit inside the NCD workflow, not outside it.
+              The protocol should sit inside the medical NCD clinic workflow,
+              not outside it.
             </p>
           </div>
           <figure
             class="diabetic-protocol-algorithm-viewer"
             data-diabetic-panzoom
-            aria-label="NCD clinic diabetic retinopathy screening algorithm"
+            aria-label="medical NCD clinic diabetic retinopathy screening algorithm"
           >
             <div class="diabetic-protocol-algorithm-controls">
               <span aria-hidden="true"></span>
@@ -1354,9 +1385,7 @@
                   class="diabetic-protocol-algorithm-phase diabetic-protocol-algorithm-phase--predilation"
                 >
                   <h4>Phase B: Pre-dilation Exam</h4>
-                  <div
-                    class="diabetic-protocol-algorithm-row diabetic-protocol-algorithm-row--two"
-                  >
+                  <div class="diabetic-protocol-algorithm-row">
                     <div class="diabetic-protocol-algorithm-card">
                       <b>Direct Pupil Response</b>
                       <p>Bright light response</p>
@@ -1381,20 +1410,29 @@
                         loading="lazy"
                       />
                     </div>
+                    <div class="diabetic-protocol-algorithm-card">
+                      <b>Dilate Pupil</b>
+                      <p>
+                        Use dilating drops after pupil and front-of-eye checks.
+                      </p>
+                      <p>
+                        Wait for pupils to dilate before fundal reflex and
+                        fundoscopy.
+                      </p>
+                      <span>Dilated pupil gives a clearer retinal view</span>
+                    </div>
                   </div>
                 </section>
 
                 <section class="diabetic-protocol-algorithm-ncd">
-                  NCD Consultation
+                  07 NCD medical consultation
                 </section>
 
                 <section
                   class="diabetic-protocol-algorithm-phase diabetic-protocol-algorithm-phase--postdilation"
                 >
                   <h4>Phase C: Post-dilation Exam</h4>
-                  <div
-                    class="diabetic-protocol-algorithm-row diabetic-protocol-algorithm-row--two"
-                  >
+                  <div class="diabetic-protocol-algorithm-row">
                     <div class="diabetic-protocol-algorithm-card">
                       <b>Fundal Reflex</b>
                       <span>Reduced / absent fundal reflex</span>
@@ -1428,7 +1466,7 @@
                         <div
                           class="diabetic-protocol-algorithm-fundus-group diabetic-protocol-algorithm-fundus-group--macula"
                         >
-                          <strong>Maculopathy</strong>
+                          <strong>Maculo-<br />pathy</strong>
                           <span>Hard exudate<br />at/near macula</span>
                           <img
                             class="diabetic-protocol-stamp diabetic-protocol-stamp--refer diabetic-protocol-stamp--macula"
@@ -1439,48 +1477,24 @@
                         </div>
                       </div>
                     </div>
-                  </div>
-                </section>
-
-                <section
-                  class="diabetic-protocol-algorithm-phase diabetic-protocol-algorithm-phase--decision"
-                >
-                  <h4>Phase D: Final Decision</h4>
-                  <div class="diabetic-protocol-algorithm-row">
                     <div
-                      class="diabetic-protocol-algorithm-card diabetic-protocol-algorithm-decision diabetic-protocol-algorithm-decision--green"
+                      class="diabetic-protocol-algorithm-card diabetic-protocol-algorithm-decision diabetic-protocol-algorithm-decision--orange"
                     >
-                      <b>Reassure and Educate</b>
+                      <b>Action</b>
                       <p>
-                        No sight-threatening<br />
-                        disease
+                        <strong>Reassure and Educate</strong><br />
+                        No sight-threatening disease<br />
+                        Routine follow-up in medical NCD clinic
                       </p>
                       <p>
-                        Routine follow-up<br />
-                        in NCD clinic
-                      </p>
-                    </div>
-                    <div
-                      class="diabetic-protocol-algorithm-card diabetic-protocol-algorithm-decision diabetic-protocol-algorithm-decision--green"
-                    >
-                      <b>Glasses or Near Readers</b>
-                      <p>
-                        Refreactive error<br />
-                        or presbyopia
+                        <strong>Glasses or Near Readers</strong><br />
+                        Refractive error or presbyopia<br />
+                        Provide locally and routine follow-up
                       </p>
                       <p>
-                        Provide locally and<br />
-                        routine follow-up
-                      </p>
-                    </div>
-                    <div
-                      class="diabetic-protocol-algorithm-card diabetic-protocol-algorithm-decision diabetic-protocol-algorithm-decision--red"
-                    >
-                      <b>Refer to Eye Services</b>
-                      <p>Sight-threatening disease</p>
-                      <p>
-                        Media opacity or<br />
-                        unexplained vision loss
+                        <strong>Refer to Eye Services</strong><br />
+                        Sight-threatening disease<br />
+                        Media opacity or unexplained vision loss
                       </p>
                     </div>
                   </div>
@@ -1510,7 +1524,7 @@
                   retinopathy
                 </li>
                 <li>Pragmatic, not perfect - focus on clear danger signs</li>
-                <li>Integrate into routine NCD clinic workflow</li>
+                <li>Integrate into routine medical NCD clinic workflow</li>
                 <li>Simple, safe, and scalable for low-resource settings</li>
               </ul>
             </div>
@@ -1580,7 +1594,6 @@
               <li>Vision loss?</li>
               <li>Red or painful eye?</li>
             </ul>
-            <p>Longer duration plus symptoms means higher risk.</p>
             <a class="diabetic-protocol-link" href="#/casestudy">
               <span
                 >Review history taking<span
@@ -1798,7 +1811,7 @@
           </div>
           <div class="diabetic-video-embed diabetic-protocol-video-embed">
             <p class="diabetic-screening-visual__label">
-              Pupil response good to bad
+              Healthy / abnormal pupil responses
             </p>
             <video controls playsinline preload="metadata">
               <source
@@ -1918,7 +1931,7 @@
 
       <header class="diabetic-screening-hero" data-diabetic-scroll-step>
         <p class="diabetic-screening-eyebrow">DIABETIC RETINOPATHY PROTOCOL</p>
-        <h2>NCD Clinic Consultation</h2>
+        <h2>NCD medical consultation</h2>
         <p>
           The eye pathway and medical pathway run together, saving time inside
           the clinic.
@@ -1934,8 +1947,8 @@
             <span class="diabetic-screening-step">07</span>
             <h3>Run in parallel</h3>
             <p>
-              While dilation drops take effect, the NCD consultation can review
-              diabetes, blood pressure and weight.
+              While dilation drops take effect, the NCD medical consultation can
+              review diabetes, blood pressure and weight.
             </p>
           </div>
           <div
@@ -1958,16 +1971,12 @@
                 aria-hidden="true"
                 loading="lazy"
               />
-              <span>Medical consultation</span>
+              <span>07 NCD medical consultation</span>
               <p>Diabetes, BP, weight</p>
             </div>
             <div class="diabetic-protocol-parallel__future">
               <span>Phase C</span>
               <p>Fundal reflex, fundoscopy, action based on findings</p>
-            </div>
-            <div class="diabetic-protocol-parallel__future">
-              <span>Phase D</span>
-              <p>Glasses, reassure, or refer</p>
             </div>
           </div>
         </article>
@@ -2138,100 +2147,81 @@
         </article>
 
         <article
-          class="diabetic-screening-panel diabetic-screening-panel--warning"
+          class="diabetic-screening-panel diabetic-screening-panel--warning diabetic-protocol-sight-panel"
           data-diabetic-scroll-step
         >
           <div class="diabetic-screening-panel__text">
             <span class="diabetic-screening-step">09-c</span>
-            <h3>Priority signs for sight-threatening retinopathy</h3>
+            <h3>Sight-threatening retinopathy</h3>
             <p class="diabetic-protocol-urgent-box">Immediate referral</p>
           </div>
           <div
-            class="diabetic-protocol-looping-gallery diabetic-protocol-looping-gallery--five"
+            class="diabetic-disease-gallery diabetic-disease-gallery--collage diabetic-protocol-sight-collage"
           >
-            <figure>
+            <figure class="diabetic-disease-card diabetic-disease-card--danger">
               <img
                 src="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/NewVesselsonDisc.png"
                 alt="New vessels on disc"
                 loading="lazy"
               />
-              <figcaption>NVD</figcaption>
+              <figcaption>New Vessels Disc</figcaption>
             </figure>
-            <figure>
+            <figure class="diabetic-disease-card diabetic-disease-card--danger">
               <img
                 src="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/NewVesselsElsewhere.png"
                 alt="New vessels elsewhere"
                 loading="lazy"
               />
-              <figcaption>NVE</figcaption>
+              <figcaption>New Vessels Elsewhere</figcaption>
             </figure>
-            <figure>
+            <figure class="diabetic-disease-card diabetic-disease-card--danger">
               <img
                 src="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/BleedingonRetina.png"
                 alt="Pre-retinal haemorrhage"
                 loading="lazy"
               />
-              <figcaption>Pre-retinal haemorrhage</figcaption>
+              <figcaption>Pre-retinal Bleeding</figcaption>
             </figure>
-            <figure>
+            <figure class="diabetic-disease-card diabetic-disease-card--danger">
               <img
+                class="diabetic-protocol-vitreous-dull"
                 src="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/BleedingintoVitreous.png"
                 alt="Vitreous haemorrhage"
                 loading="lazy"
               />
-              <figcaption>Vitreous haemorrhage</figcaption>
+              <figcaption>Vitreous Bleeding</figcaption>
             </figure>
-            <figure>
-              <img
-                src="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/FibrovascularRetinalDetachment1.png"
-                alt="Tractional retinal detachment"
-                loading="lazy"
-              />
-              <figcaption>Tractional RD</figcaption>
-            </figure>
-          </div>
-        </article>
-
-        <article class="diabetic-screening-panel" data-diabetic-scroll-step>
-          <div class="diabetic-screening-panel__text">
-            <span class="diabetic-screening-step">09-d</span>
-            <h3>Sight-threatening retinopathy</h3>
-            <p class="diabetic-protocol-urgent-box">Immediate referral</p>
-          </div>
-          <div
-            class="diabetic-protocol-looping-gallery diabetic-protocol-looping-gallery--four"
-          >
-            <figure>
-              <img
-                src="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/NewVesselsonDisc.png"
-                alt="Sight-threatening new vessels and bleeding"
-                loading="lazy"
-              />
-              <figcaption>New vessels and bleeding</figcaption>
-            </figure>
-            <figure>
-              <img
-                src="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/BleedingonRetina1.png"
-                alt="Bleeding on retina"
-                loading="lazy"
-              />
-              <figcaption>Bleeding on retina</figcaption>
-            </figure>
-            <figure>
+            <figure class="diabetic-disease-card diabetic-disease-card--danger">
               <img
                 src="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/FibrovascularStrandsatDisc1.png"
-                alt="Fibrovascular strands at disc"
+                alt="Fibrovascular tuft at disc"
                 loading="lazy"
               />
-              <figcaption>Fibrovascular strands</figcaption>
+              <figcaption>Fibrovascular Tuft at Disc</figcaption>
             </figure>
-            <figure>
+            <figure class="diabetic-disease-card diabetic-disease-card--danger">
               <img
-                src="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/FibrovascularRetinalDetachment2.png"
+                src="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/FibrovascularRetinalDetachment1.png"
                 alt="Fibrovascular retinal detachment"
                 loading="lazy"
               />
-              <figcaption>Fibrovascular RD</figcaption>
+              <figcaption>Fibrovascular Retinal Detachment</figcaption>
+            </figure>
+            <figure class="diabetic-disease-card diabetic-disease-card--danger">
+              <img
+                src="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/SightThreateningMaculopathy.png"
+                alt="Maculopathy"
+                loading="lazy"
+              />
+              <figcaption>Maculopathy</figcaption>
+            </figure>
+            <figure class="diabetic-disease-card diabetic-disease-card--danger">
+              <img
+                src="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/SightThreateningIrisRubeosis.png"
+                alt="Iris rubeosis"
+                loading="lazy"
+              />
+              <figcaption>Iris Rubeosis</figcaption>
             </figure>
           </div>
         </article>
@@ -2241,7 +2231,9 @@
           data-diabetic-scroll-step
         >
           <div class="diabetic-video-embed diabetic-protocol-video-embed">
-            <p class="diabetic-screening-visual__label">DRS PDR signs</p>
+            <p class="diabetic-screening-visual__label">
+              Signs of proliferative DR
+            </p>
             <video controls playsinline preload="metadata">
               <source
                 src="/videos/Workshop/Diabetic/13.%20DRS%20PDR%20Signs_220p.mp4"
@@ -2256,7 +2248,7 @@
           data-diabetic-scroll-step
         >
           <div class="diabetic-screening-panel__text">
-            <span class="diabetic-screening-step">09-e</span>
+            <span class="diabetic-screening-step">09-d</span>
             <h3>4-2-1 Rule</h3>
             <div class="diabetic-protocol-421-intro">
               <p>
@@ -2528,7 +2520,9 @@
           data-diabetic-scroll-step
         >
           <div class="diabetic-video-embed diabetic-protocol-video-embed">
-            <p class="diabetic-screening-visual__label">DRS non-PDR signs</p>
+            <p class="diabetic-screening-visual__label">
+              Non-proliferative signs of DR
+            </p>
             <video controls playsinline preload="metadata">
               <source
                 src="/videos/Workshop/Diabetic/14.%20DRS%20non%20PDR%20signs_220p.mp4"
@@ -2543,7 +2537,7 @@
           data-diabetic-scroll-step
         >
           <div class="diabetic-screening-panel__text">
-            <span class="diabetic-screening-step">09-f</span>
+            <span class="diabetic-screening-step">09-e</span>
             <h3>Maculopathy: separate decision</h3>
             <ol class="diabetic-screening-checklist">
               <li>Hard exudate at macula, especially near fovea</li>
@@ -2619,34 +2613,6 @@
 
       <div class="diabetic-screening-stack">
         <article
-          class="diabetic-screening-panel diabetic-screening-panel--content-fit"
-          data-diabetic-scroll-step
-        >
-          <div class="diabetic-screening-panel__text">
-            <span class="diabetic-screening-step">10</span>
-            <h3>Action</h3>
-            <div class="diabetic-protocol-action-map">
-              <div>
-                <b>If glasses or near readers help</b>
-                <span><i aria-hidden="true">&gt;</i>Provide or refer</span>
-              </div>
-              <div>
-                <b>If cataract is present</b
-                ><span><i aria-hidden="true">&gt;</i>Refer</span>
-              </div>
-              <div>
-                <b>If any PDR sign is present</b
-                ><span><i aria-hidden="true">&gt;</i>Refer</span>
-              </div>
-              <div>
-                <b>If there is any doubt</b
-                ><span><i aria-hidden="true">&gt;</i>Refer to eye clinics</span>
-              </div>
-            </div>
-          </div>
-        </article>
-
-        <article
           class="diabetic-screening-panel diabetic-screening-panel--warning"
           data-diabetic-scroll-step
         >
@@ -2677,7 +2643,9 @@
             </span>
             <h3>Key messages</h3>
             <ol class="diabetic-screening-checklist">
-              <li>Integrate the eye exam into the NCD workflow</li>
+              <li>
+                Integrate the eye exam into the medical NCD clinic workflow
+              </li>
               <li>Avoid silo thinking: pragmatic, scalable, safe</li>
               <li>Look for all causes of sight loss</li>
               <li>Focus on clear danger signs</li>
@@ -2789,7 +2757,7 @@
     <section
       class="diabetic-screening-lesson diabetic-screening-lesson--ncd"
       data-diabetic-scroll-lesson
-      aria-label="Pragmatic diabetic retinopathy screening in NCD clinics"
+      aria-label="Pragmatic diabetic retinopathy screening in medical NCD clinics"
     >
       <div
         class="diabetic-screening-scroll-cue"
@@ -2804,7 +2772,7 @@
 
       <header class="diabetic-screening-hero" data-diabetic-scroll-step>
         <p class="diabetic-screening-eyebrow">INTRODUCTION</p>
-        <h2>Pragmatic Diabetic Retinopathy Screening in NCD Clinics</h2>
+        <h2>Pragmatic Diabetic Retinopathy Screening in medical NCD clinics</h2>
         <p>
           Bring diabetic eye screening into the clinic where people with
           diabetes are already receiving care.
@@ -2846,7 +2814,7 @@
             <h3>Put screening where patients already are</h3>
             <p>
               This opportunistic strategy places a trained and equipped
-              mid-level eye care specialist in a general medical or NCD clinic.
+              mid-level eye care specialist in a medical NCD clinic.
             </p>
           </div>
         </article>
@@ -2871,11 +2839,10 @@
             data-diabetic-visible-class="is-station-visible"
             aria-label="Screening flow"
           >
-            <span>Medical / NCD clinic</span>
-            <b></b>
-            <span class="diabetic-screening-flow__station"
-              >Eye screening station</span
-            >
+            <span class="diabetic-screening-flow__clinic">
+              Medical NCD clinic
+              <em>Eye screening station</em>
+            </span>
             <b></b>
             <span>Refer or treat earlier</span>
           </div>
@@ -2935,7 +2902,10 @@
           <div class="diabetic-screening-panel__text">
             <span class="diabetic-screening-step">01</span>
             <h3>Look beyond diabetic retinopathy</h3>
-            <p>Alongside diabetic retinopathy, these patients commonly have:</p>
+            <p>
+              Alongside diabetic retinopathy, these patients commonly have:
+              refractive error, presbyopia, cataract, glaucoma
+            </p>
             <p>
               If screening focuses only on retinopathy, many treatable causes of
               sight loss can be missed.
@@ -2980,7 +2950,10 @@
           </ul>
         </article>
 
-        <article class="diabetic-screening-panel" data-diabetic-scroll-step>
+        <article
+          class="diabetic-screening-panel diabetic-other-eye-fundoscopy-panel"
+          data-diabetic-scroll-step
+        >
           <div class="diabetic-screening-panel__text">
             <span class="diabetic-screening-step">02</span>
             <h3>Fundoscopy is essential, but also...</h3>
@@ -2989,9 +2962,9 @@
               performing fundoscopy.
             </p>
             <p>
-              We will use the Arclight direct ophthalmoscope to examine the
-              retina through a dilated pupil, but the screening should include
-              more than this. Also include:
+              We will use the Arclight ophthalmoscope to examine the retina
+              through a dilated pupil, but the screening should include more
+              than this.
             </p>
             <ol class="diabetic-screening-checklist">
               <li>Take a history</li>
@@ -3264,23 +3237,7 @@
           <div class="diabetic-screening-panel__text">
             <span class="diabetic-screening-step">02</span>
             <h3>Type 1 vs Type 2</h3>
-            <p>
-              A simple comparison image should show the difference between no
-              insulin production and insulin resistance.
-            </p>
           </div>
-          <figure class="diabetic-atoms-zoom">
-            <p class="diabetic-screening-visual__label">
-              *Zoom in/out for closer view
-            </p>
-            <div class="diabetic-atoms-zoom__frame" data-diabetic-wheel-zoom>
-              <img
-                src="/images/learning/Diabetic/Diabetes/2.DiabetesandDR/ATOMS.webp"
-                alt="ATOMS diabetic retinopathy card reference"
-                loading="lazy"
-              />
-            </div>
-          </figure>
           <div
             class="diabetes-type-compare"
             data-diabetic-visible-class="is-graph-visible"
@@ -3382,10 +3339,17 @@
               that allows vision.
             </p>
           </div>
-          <div class="dr-eye-retina-graphic">
+          <div class="dr-eye-retina-graphic dr-eye-retina-graphic--fade-retina">
             <img
+              class="dr-eye-retina-graphic__eye"
               src="/images/learning/Diabetic/Diabetes/2.DiabetesandDR/Eye.webp"
               alt="Eye cross-section"
+              loading="lazy"
+            />
+            <img
+              class="dr-eye-retina-graphic__retina-only"
+              src="/images/learning/Diabetic/Diabetes/2.DiabetesandDR/Retinaonly.webp"
+              alt="Retina"
               loading="lazy"
             />
             <span class="dr-eye-retina-graphic__label">Retina</span>
@@ -3400,21 +3364,25 @@
             <p>
               Diabetic retinopathy is damage to the retina caused by high sugar
               levels in the blood. High sugar damages the tiny blood vessels in
-              the retina. These vessels can leak, bleed, or close off.
+              the retina. This causes them to become narrowed and blocked. The
+              retina becomes starved of oxygen which causes a hormone to be
+              released (VEGF).
             </p>
-            <h3>Later, new weak vessels can grow</h3>
-            <p>They bleed easily and can cause sight-threatening damage.</p>
-            <ul
-              class="diabetic-screening-chip-list diabetic-screening-chip-list--arrows"
-              data-diabetic-visible-class="is-dr-vessels-visible"
-            >
-              <li>
-                New weak vessels grow &gt; bleed easily causing haemorrhage
-              </li>
-              <li>Block the drainage of fluid in eye &gt; high pressure</li>
-            </ul>
+            <h3>Blood vessels leak fluid and fat</h3>
+            <p>
+              The hormone causes blood vessels to leak fluid and fat damaging
+              the central retina. This is maculopathy.
+            </p>
+            <h3>New weak blood vessels grow</h3>
+            <p>
+              The hormone also makes new weak blood vessels to grow. They bleed
+              easily and cause scarring of the retina and sight loss.
+            </p>
           </div>
-          <div class="dr-retina-graphic dr-retina-graphic--new-vessels">
+          <div
+            class="dr-retina-graphic dr-retina-graphic--new-vessels"
+            data-diabetic-visible-class="is-dr-vessels-visible"
+          >
             <img
               src="/images/learning/Diabetic/Diabetes/2.DiabetesandDR/Retinaonly.webp"
               alt="Retinal vessels with new weak vessels"
@@ -3538,7 +3506,7 @@
         <h2>Vision Loss in Diabetes</h2>
         <p>
           Vision loss mainly happens when normal vessels leak or when new
-          fragile vessels grow.
+          fragile vessels bleed.
         </p>
       </header>
 
@@ -3825,7 +3793,9 @@
       </div>
 
       <header class="diabetic-screening-hero" data-diabetic-scroll-step>
-        <p class="diabetic-screening-eyebrow">INTEGRATE INTO NCD CLINIC FLOW</p>
+        <p class="diabetic-screening-eyebrow">
+          INTEGRATE INTO MEDICAL NCD CLINIC FLOW
+        </p>
         <h2>Introduction</h2>
         <p>
           The approach deliberately looks for all major causes of avoidable
@@ -3838,13 +3808,13 @@
         <article class="diabetic-screening-panel" data-diabetic-scroll-step>
           <div class="diabetic-screening-panel__text">
             <span class="diabetic-screening-step">01</span>
-            <h3>Screen patients while they are here</h3>
+            <h3>Screen patients while they are at medical NCD clinic</h3>
             <p>
-              Screening fits into routine non-communicable disease (NCD) care
-              rather than waiting for a separate eye-clinic visit.
+              Eye screening fits into routine non-communicable disease (NCD)
+              care rather than waiting for a separate eye-clinic visit.
             </p>
           </div>
-          <div class="ncd-flow-map" aria-label="NCD clinic flow map">
+          <div class="ncd-flow-map" aria-label="medical NCD clinic flow map">
             <div class="ncd-flow-map__track">
               <span>Arrival</span>
               <span>NCD care</span>
@@ -4049,7 +4019,9 @@
       </div>
 
       <header class="diabetic-screening-hero" data-diabetic-scroll-step>
-        <p class="diabetic-screening-eyebrow">INTEGRATE INTO NCD CLINIC FLOW</p>
+        <p class="diabetic-screening-eyebrow">
+          INTEGRATE INTO MEDICAL NCD CLINIC FLOW
+        </p>
         <h2>Proliferative and Other Disease</h2>
         <p>
           These examples show sight-threatening diabetic eye disease and other
@@ -4116,7 +4088,7 @@
                 alt="Bleeding on retina"
                 loading="lazy"
               />
-              <figcaption>On retina</figcaption>
+              <figcaption>Jelly</figcaption>
               <span>Refer</span>
             </figure>
             <figure class="diabetic-disease-card diabetic-disease-card--danger">
@@ -4125,7 +4097,7 @@
                 alt="Bleeding on retina"
                 loading="lazy"
               />
-              <figcaption>On retina</figcaption>
+              <figcaption>Retina</figcaption>
               <span>Refer</span>
             </figure>
             <figure
@@ -4245,7 +4217,7 @@
                 alt="New vessels and bleeding"
                 loading="lazy"
               />
-              <figcaption>New vessels + bleeding</figcaption>
+              <figcaption>New vessels</figcaption>
             </figure>
             <figure class="diabetic-disease-card diabetic-disease-card--danger">
               <img
@@ -4253,7 +4225,40 @@
                 alt="New vessels and bleeding"
                 loading="lazy"
               />
-              <figcaption>New vessels + bleeding</figcaption>
+              <figcaption>Bleeding</figcaption>
+            </figure>
+            <figure class="diabetic-disease-card diabetic-disease-card--danger">
+              <img
+                src="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/NewVesselsElsewhere.png"
+                alt="New vessels elsewhere"
+                loading="lazy"
+              />
+              <figcaption>New Vessels Elsewhere</figcaption>
+            </figure>
+            <figure class="diabetic-disease-card diabetic-disease-card--danger">
+              <img
+                class="diabetic-protocol-vitreous-dull"
+                src="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/BleedingintoVitreous.png"
+                alt="Vitreous bleeding"
+                loading="lazy"
+              />
+              <figcaption>Vitreous Bleeding</figcaption>
+            </figure>
+            <figure class="diabetic-disease-card diabetic-disease-card--danger">
+              <img
+                src="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/FibrovascularStrandsatDisc1.png"
+                alt="Fibrovascular tuft at disc"
+                loading="lazy"
+              />
+              <figcaption>Fibrovascular Tuft at Disc</figcaption>
+            </figure>
+            <figure class="diabetic-disease-card diabetic-disease-card--danger">
+              <img
+                src="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/FibrovascularRetinalDetachment1.png"
+                alt="Fibrovascular retinal detachment"
+                loading="lazy"
+              />
+              <figcaption>Fibrovascular Retinal Detachment</figcaption>
             </figure>
             <figure class="diabetic-disease-card diabetic-disease-card--danger">
               <img
@@ -4270,14 +4275,6 @@
                 loading="lazy"
               />
               <figcaption>Iris rubeosis</figcaption>
-            </figure>
-            <figure class="diabetic-disease-card diabetic-disease-card--danger">
-              <img
-                src="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/FibrovascularRetinalDetachment1.png"
-                alt="Fibrovascular retinal detachment"
-                loading="lazy"
-              />
-              <figcaption>Fibrovascular RD</figcaption>
             </figure>
           </div>
         </article>
@@ -4365,7 +4362,9 @@
       </div>
 
       <header class="diabetic-screening-hero" data-diabetic-scroll-step>
-        <p class="diabetic-screening-eyebrow">INTEGRATE INTO NCD CLINIC FLOW</p>
+        <p class="diabetic-screening-eyebrow">
+          INTEGRATE INTO MEDICAL NCD CLINIC FLOW
+        </p>
         <h2>Simple, Safe, Scalable</h2>
       </header>
 
@@ -4373,14 +4372,23 @@
         <div class="simple-safe-decision__root">Screening result</div>
         <div class="simple-safe-decision__branches">
           <span
-            ><strong>Refer</strong> sight-threatening retinopathy /
-            maculopathy</span
+            ><em class="simple-safe-decision__branch-text"
+              ><strong>Refer</strong>&nbsp;&nbsp;sight-threatening retinopathy /
+              maculopathy</em
+            ></span
           >
           <span
-            ><strong>Refer</strong> media opacity, unexplained poor vision,
-            abnormal pupils</span
+            ><em class="simple-safe-decision__branch-text"
+              ><strong>Refer</strong>&nbsp;&nbsp;media opacity, unexplained poor
+              vision, abnormal pupils</em
+            ></span
           >
-          <span><strong>Help</strong> glasses or near readers locally</span>
+          <span
+            ><em class="simple-safe-decision__branch-text"
+              ><strong>Help</strong>&nbsp;&nbsp;glasses or near readers
+              locally</em
+            ></span
+          >
         </div>
       </div>
 
@@ -4392,9 +4400,9 @@
           <div class="diabetic-screening-panel__text">
             <h3>Simple, safe, scalable</h3>
             <p>
-              Keep the pathway clear: refer danger and uncertainty, and help
-              simple optical problems locally. This keeps screening simple,
-              safe, and scalable for low-resource settings.
+              Integrate eye care into NCD care: refer eye disease and
+              uncertainty, and help simple optical problems locally. This keeps
+              screening simple, safe, and scalable for low-resource settings.
             </p>
           </div>
         </article>
@@ -4527,7 +4535,7 @@
               class="diabetic-package-animated-label diabetic-package-animated-label--loupe"
             >
               <strong>Anterior segment loupe</strong>
-              <span>external examination at 6cms</span>
+              <span>pupils &amp; external examination at 6cms</span>
             </span>
             <span
               class="diabetic-package-animated-label diabetic-package-animated-label--ophthalmoscope"
@@ -4655,7 +4663,7 @@
             >
               <span class="dr-package-label__text">
                 <strong>Anterior Segment Loupe</strong>
-                <span>External examination<br />at 6cms</span>
+                <span>Pupils &amp; external examination<br />at 6cms</span>
               </span>
               <span
                 class="dr-package-label__line dr-package-label__line--h"
