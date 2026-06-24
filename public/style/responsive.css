@@ -95,6 +95,8 @@ input {
   #likedPage .ml-topbar .menuBtn,
   #earsCatalogPage .ears-top .menuBtn,
   #myProfilePage .profile-topbar .menuBtn,
+  #editProfilePage .profile-topbar .menuBtn,
+  #settingsPage .profile-topbar .menuBtn,
   .page.has-eyes-topbar .eyes-topbar .menuBtn,
   #videos .page .eyes-topbar .menuBtn {
     font-size: 25px !important;
@@ -236,6 +238,8 @@ input {
   #likedPage .ml-topbar .menuBtn,
   #earsCatalogPage .ears-top .menuBtn,
   #myProfilePage .profile-topbar .menuBtn,
+  #editProfilePage .profile-topbar .menuBtn,
+  #settingsPage .profile-topbar .menuBtn,
   .page.has-eyes-topbar .eyes-topbar .menuBtn,
   #videos .page .eyes-topbar .menuBtn {
     position: fixed;
@@ -746,6 +750,8 @@ input {
   #likedPage .ml-topbar .menuBtn,
   #earsCatalogPage .ears-top .menuBtn,
   #myProfilePage .profile-topbar .menuBtn,
+  #editProfilePage .profile-topbar .menuBtn,
+  #settingsPage .profile-topbar .menuBtn,
   .page.has-eyes-topbar .eyes-topbar .menuBtn,
   #videos .page .eyes-topbar .menuBtn {
     position: fixed;
@@ -1462,7 +1468,9 @@ input {
     color: #fff;
   }
 
-  #myProfilePage.profile-page {
+  #myProfilePage.profile-page,
+  #editProfilePage.profile-page,
+  #settingsPage.profile-page {
     width: auto;
     max-width: calc(
       100vw - var(--desktop-topbar-inset) - var(--desktop-topbar-inset) - 40px
@@ -1472,7 +1480,9 @@ input {
     padding-top: 82px !important;
   }
 
-  #myProfilePage .profile-topbar {
+  #myProfilePage .profile-topbar,
+  #editProfilePage .profile-topbar,
+  #settingsPage .profile-topbar {
     position: fixed;
     top: 0;
     left: 50%;
@@ -1488,21 +1498,34 @@ input {
     background: #fff;
   }
 
-  #myProfilePage .profile-topbar__title {
+  #myProfilePage .profile-topbar__title,
+  #editProfilePage .profile-topbar__title,
+  #settingsPage .profile-topbar__title {
     margin-left: 0;
   }
 
-  #myProfilePage .profile-topbar__icons .icon-btn:not(.menuBtn) {
+  #myProfilePage .profile-topbar__icons .icon-btn:not(.menuBtn),
+  #editProfilePage .profile-topbar__icons .icon-btn:not(.menuBtn),
+  #settingsPage .profile-topbar__icons .icon-btn:not(.menuBtn) {
     display: none;
   }
 
-  #myProfilePage .profile-topbar .menuBtn {
+  #myProfilePage .profile-topbar .menuBtn,
+  #editProfilePage .profile-topbar .menuBtn,
+  #settingsPage .profile-topbar .menuBtn {
     position: fixed;
     top: 20px;
     right: var(--desktop-topbar-icon-right);
     width: 36px;
     height: 36px;
     margin: 0 !important;
+  }
+
+  #myProfilePage .achievements-row {
+    grid-template-columns: repeat(3, minmax(118px, 136px));
+    justify-content: start;
+    max-width: 432px;
+    gap: 14px 8px;
   }
 
   #tocDropdown {
@@ -2710,7 +2733,9 @@ body[data-interactive-subapp-open="true"] #backBtnGlobal {
   }
 
   #unifiedDashboard .unified-top,
-  #myProfilePage .profile-topbar {
+  #myProfilePage .profile-topbar,
+  #editProfilePage .profile-topbar,
+  #settingsPage .profile-topbar {
     width: 100vw !important;
     height: 62px !important;
     box-sizing: border-box;
@@ -2726,12 +2751,16 @@ body[data-interactive-subapp-open="true"] #backBtnGlobal {
     margin-bottom: 10px !important;
   }
 
-  #myProfilePage .profile-topbar {
+  #myProfilePage .profile-topbar,
+  #editProfilePage .profile-topbar,
+  #settingsPage .profile-topbar {
     margin-top: 0 !important;
     margin-bottom: 12px !important;
   }
 
-  #myProfilePage .profile-topbar__title {
+  #myProfilePage .profile-topbar__title,
+  #editProfilePage .profile-topbar__title,
+  #settingsPage .profile-topbar__title {
     margin-left: 0 !important;
   }
 
@@ -2795,7 +2824,9 @@ body[data-interactive-subapp-open="true"] #backBtnGlobal {
 
   #unifiedDashboard .unified-top .icons,
   #likedPage .ml-icons,
-  #myProfilePage .profile-topbar__icons {
+  #myProfilePage .profile-topbar__icons,
+  #editProfilePage .profile-topbar__icons,
+  #settingsPage .profile-topbar__icons {
     margin-left: auto !important;
     display: flex !important;
     align-items: center !important;
@@ -2806,6 +2837,8 @@ body[data-interactive-subapp-open="true"] #backBtnGlobal {
   #likedPage .ml-topbar .menuBtn,
   #earsCatalogPage .ears-top .menuBtn,
   #myProfilePage .profile-topbar .menuBtn,
+  #editProfilePage .profile-topbar .menuBtn,
+  #settingsPage .profile-topbar .menuBtn,
   #eyesCatalogPage .eyes-top .menuBtn,
   .page.has-eyes-topbar .eyes-topbar .menuBtn,
   #videos .page .eyes-topbar .menuBtn,
@@ -3648,6 +3681,8 @@ body[data-interactive-subapp-open="true"] #backBtnGlobal {
   #likedPage .ml-topbar .menuBtn,
   #earsCatalogPage .ears-top .menuBtn,
   #myProfilePage .profile-topbar .menuBtn,
+  #editProfilePage .profile-topbar .menuBtn,
+  #settingsPage .profile-topbar .menuBtn,
   #eyesCatalogPage .eyes-top .menuBtn,
   .page.has-eyes-topbar .eyes-topbar .menuBtn,
   #videos .page .eyes-topbar .menuBtn,

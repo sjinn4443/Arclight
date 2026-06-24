@@ -754,6 +754,7 @@ export const historyStack = [];
 const pageHistoryStack = [];
 const MY_LEARNING_RETURN_KEY = "myLearningReturnTarget";
 const INTERACTIVE_LEARNING_RETURN_KEY = "interactiveLearning:returnTarget";
+const PROFILE_RETURN_KEY = "profileReturnTarget";
 
 let currentRoute = null; // Add the currentRoute guard
 let isWritingRouteHash = false;
@@ -873,10 +874,46 @@ function rememberMyLearningReturnTarget(nextRouteName) {
   }
 }
 
+function rememberProfileReturnTarget(nextRouteName) {
+  if (normalizeRouteName(nextRouteName) !== "myprofile") return;
+
+  const routeName = normalizeRouteName(currentPageName || currentRoute);
+  if (!routeName || PROFILE_HISTORY_BACK_ROUTES.has(routeName)) return;
+
+  const currentHash = getRouteFromHash();
+  const activeSubPageId = getActivePageId();
+  const subPageId =
+    currentHash?.routeName === routeName
+      ? currentHash.subPageId
+      : activeSubPageId && activeSubPageId !== routeName
+        ? activeSubPageId
+        : null;
+
+  try {
+    sessionStorage.setItem(
+      PROFILE_RETURN_KEY,
+      JSON.stringify({ routeName, subPageId }),
+    );
+  } catch {
+    void 0;
+  }
+}
+
 function consumeMyLearningReturnTarget() {
   try {
     const raw = sessionStorage.getItem(MY_LEARNING_RETURN_KEY);
     sessionStorage.removeItem(MY_LEARNING_RETURN_KEY);
+    const parsed = JSON.parse(raw || "null");
+    return normalizeStructuralBackTarget(parsed);
+  } catch {
+    return null;
+  }
+}
+
+function consumeProfileReturnTarget() {
+  try {
+    const raw = sessionStorage.getItem(PROFILE_RETURN_KEY);
+    sessionStorage.removeItem(PROFILE_RETURN_KEY);
     const parsed = JSON.parse(raw || "null");
     return normalizeStructuralBackTarget(parsed);
   } catch {
@@ -984,12 +1021,14 @@ const STRUCTURAL_BACK_TARGETS = {
   childhoodRefer: { routeName: "childhoodEyeScreeningWorkshop" },
   diabeticRetinopathyWorkshop: { routeName: "eyes" },
   directOphthalmoscopyPdf: { routeName: "diabeticRetinopathyWorkshop" },
+  editProfile: { routeName: "myprofile" },
   eyes: { routeName: "dashboard" },
   fundalReflexPdf: { routeName: "childhoodEyeScreeningWorkshop" },
   glaucomaHistoryCaseStudy: { routeName: "glaucomaWorkshop" },
   glaucomaQuizCaseStudy: { routeName: "glaucomaWorkshop" },
   glaucomaScrollImages: { routeName: "glaucomaWorkshop" },
   glaucomaWorkshop: { routeName: "eyes" },
+  settings: { routeName: "myprofile" },
   signsVICases: { routeName: "childhoodEyeScreeningWorkshop" },
   visualImpairment: { routeName: "childhoodEyeScreeningWorkshop" },
   visualsystemeyesbrain: { routeName: "childhoodEyeScreeningWorkshop" },
@@ -1025,10 +1064,46 @@ const HISTORY_FIRST_BACK_ROUTES = new Set([
   "fundalReflexPdf",
 ]);
 
+const PROFILE_HISTORY_BACK_ROUTES = new Set([
+  "myprofile",
+  "editProfile",
+  "settings",
+]);
+
 function popPreviousPageHistoryEntry() {
   if (pageHistoryStack.length <= 1) return null;
   pageHistoryStack.pop();
   return pageHistoryStack[pageHistoryStack.length - 1] || null;
+}
+
+function discardCurrentRouteHistoryEntries(routeName) {
+  const normalizedRoute = normalizeRouteName(routeName);
+  if (!normalizedRoute) return;
+
+  while (
+    pageHistoryStack.length &&
+    pageHistoryStack[pageHistoryStack.length - 1]?.routeName === normalizedRoute
+  ) {
+    pageHistoryStack.pop();
+  }
+}
+
+function popPreviousDistinctRouteHistoryEntry(routeName) {
+  const currentRouteName = normalizeRouteName(routeName);
+  if (!currentRouteName || pageHistoryStack.length <= 1) return null;
+
+  while (pageHistoryStack.length > 1) {
+    pageHistoryStack.pop();
+    const previousEntry = pageHistoryStack[pageHistoryStack.length - 1] || null;
+    if (
+      previousEntry?.routeName &&
+      previousEntry.routeName !== currentRouteName
+    ) {
+      return previousEntry;
+    }
+  }
+
+  return null;
 }
 
 function getActivePageId() {
@@ -1197,6 +1272,7 @@ export async function loadPage(routeName, options = {}) {
 
   if (recordHistory) {
     rememberMyLearningReturnTarget(routeName);
+    rememberProfileReturnTarget(routeName);
   }
 
   if (!replace && !force && routeName === currentRoute) {
@@ -1440,6 +1516,40 @@ export function goBack() {
 
   const activeSubPageId = getActivePageId();
   const currentRouteForBack = normalizeRouteName(currentPageName);
+
+  if (currentRouteForBack === "myprofile") {
+    const returnTarget = consumeProfileReturnTarget();
+    if (returnTarget?.routeName) {
+      discardCurrentRouteHistoryEntries(currentRouteForBack);
+      isApplyingBackNavigation = true;
+      loadPage(returnTarget.routeName, {
+        replace: true,
+        force: returnTarget.routeName === currentRoute,
+        recordHistory: false,
+        subPageId: returnTarget.subPageId,
+      }).finally(() => {
+        isApplyingBackNavigation = false;
+      });
+      return;
+    }
+  }
+
+  if (PROFILE_HISTORY_BACK_ROUTES.has(currentRouteForBack)) {
+    const previousEntry =
+      popPreviousDistinctRouteHistoryEntry(currentRouteForBack);
+    if (previousEntry?.routeName) {
+      isApplyingBackNavigation = true;
+      loadPage(previousEntry.routeName, {
+        replace: true,
+        force: previousEntry.routeName === currentRoute,
+        recordHistory: false,
+        subPageId: previousEntry.subPageId,
+      }).finally(() => {
+        isApplyingBackNavigation = false;
+      });
+      return;
+    }
+  }
 
   if (HISTORY_FIRST_BACK_ROUTES.has(currentRouteForBack)) {
     const previousEntry = popPreviousPageHistoryEntry();

@@ -10,9 +10,6 @@
     <link rel="stylesheet" href="style/components.css" />
     <link rel="stylesheet" href="style/pages.css" />
     <link rel="stylesheet" href="style/responsive.css" />
-
-    <!-- New page-specific styles -->
-    <link rel="stylesheet" href="style/myprofile.css" />
   </head>
 
   <body>
@@ -47,14 +44,28 @@
 
       <!-- Profile header -->
       <div class="profile-header">
-        <div class="profile-avatar" aria-hidden="true"></div>
+        <div class="profile-avatar-wrap">
+          <div
+            class="profile-avatar"
+            id="profileAvatar"
+            aria-label="Profile photo"
+            role="img"
+          ></div>
+          <button
+            type="button"
+            class="profile-avatar-edit"
+            id="profileAvatarEditBtn"
+            aria-label="Edit profile photo"
+          >
+            Edit
+          </button>
+          <input type="file" id="profileAvatarInput" accept="image/*" hidden />
+        </div>
 
         <div>
-          <p class="profile-name" data-i18n="myprofile.sujin_kang">
-            Sujin Kang
-          </p>
-          <p class="profile-role" data-i18n="myprofile.medical_student">
-            Medical Student
+          <p class="profile-name" id="profileName" data-i18n-skip>Your name</p>
+          <p class="profile-role" id="profileRole" data-i18n-skip>
+            Role not set
           </p>
         </div>
       </div>
@@ -67,6 +78,7 @@
             id="interestSelect"
             aria-label="Interest"
             data-i18n="myprofile.interest:aria-label"
+            data-profile-interest
           >
             <option selected data-i18n="myprofile.eyes">Eyes</option>
             <option data-i18n="myprofile.ears">Ears</option>
@@ -80,87 +92,30 @@
           Background
         </div>
 
-        <div
-          class="bg-row"
-          data-key="ownsArclight"
-          aria-label="I own an Arclight device"
-          data-i18n="myprofile.i_own_an_arclight_device:aria-label"
-        >
-          <div
-            class="bg-row__label"
-            data-i18n="myprofile.i_own_an_arclight_device"
-          >
-            I own an Arclight device
+        <div class="profile-detail-list">
+          <div class="profile-detail-row">
+            <div class="profile-detail-label" data-i18n="onboarding.job_label">
+              Role(s)
+            </div>
+            <div class="profile-detail-value" id="profileRoles" data-i18n-skip>
+              Not set
+            </div>
           </div>
 
-          <div
-            class="bg-chips"
-            role="radiogroup"
-            aria-label="Owns an Arclight device"
-            data-i18n="myprofile.i_own_an_arclight_device:aria-label"
-          >
-            <button
-              type="button"
-              class="bg-chip"
-              data-value="yes"
-              role="radio"
-              aria-checked="false"
-              data-i18n="i18nExtra.yes"
+          <div class="profile-detail-row">
+            <div
+              class="profile-detail-label"
+              data-i18n="onboarding.experience_label"
             >
-              Yes
-            </button>
-            <button
-              type="button"
-              class="bg-chip"
-              data-value="no"
-              role="radio"
-              aria-checked="false"
-              data-i18n="i18nExtra.no"
+              Experience
+            </div>
+            <div
+              class="profile-detail-value"
+              id="profileExperience"
+              data-i18n-skip
             >
-              No
-            </button>
-          </div>
-        </div>
-
-        <div
-          class="bg-row"
-          data-key="priorTraining"
-          aria-label="I have received prior Arclight training"
-          data-i18n="i18nExtra.prior_arclight_training:aria-label"
-        >
-          <div
-            class="bg-row__label"
-            data-i18n="i18nExtra.prior_arclight_training"
-          >
-            I have received prior Arclight training
-          </div>
-
-          <div
-            class="bg-chips"
-            role="radiogroup"
-            aria-label="Prior Arclight training"
-            data-i18n="i18nExtra.prior_arclight_training:aria-label"
-          >
-            <button
-              type="button"
-              class="bg-chip"
-              data-value="yes"
-              role="radio"
-              aria-checked="false"
-              data-i18n="i18nExtra.yes"
-            >
-              Yes
-            </button>
-            <button
-              type="button"
-              class="bg-chip"
-              data-value="no"
-              role="radio"
-              aria-checked="false"
-              data-i18n="i18nExtra.no"
-            >
-              No
-            </button>
+              Not set
+            </div>
           </div>
         </div>
       </div>
@@ -170,16 +125,16 @@
         <div class="section-title" data-i18n="myprofile.achievements">
           Achievements
         </div>
-        <div class="achievements-row">
+        <div class="achievements-row" id="profileAchievements">
           <div class="achievement-tile"></div>
           <div class="achievement-tile"></div>
           <div class="achievement-tile"></div>
         </div>
       </div>
 
-      <!-- Settings -->
+      <!-- Account -->
       <div class="section">
-        <div class="section-title" data-i18n="myprofile.settings">Settings</div>
+        <div class="section-title">Account</div>
         <div class="settings-list">
           <div
             class="settings-item"
@@ -200,6 +155,7 @@
 
             <span data-i18n="menu.language_item">Language</span>
           </div>
+          <div class="settings-item" data-route="settings">Settings</div>
         </div>
       </div>
     </div>

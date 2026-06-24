@@ -12,11 +12,13 @@ import {
   getLocalizedPathValues,
   normalizeSearchText,
 } from "./localized-search.js";
+import { getPrimaryInterest } from "./profileData.js";
 
 const wired = new WeakSet();
 let dashboardI18nDict = {};
 let dashboardI18nLang = null;
 let dashboardSearchRenderToken = 0;
+const DASHBOARD_CATEGORY_ORDER = ["eyes", "ears", "skin"];
 
 function interpolateTemplate(template, vars = {}) {
   return String(template || "").replace(
@@ -93,6 +95,7 @@ export function initializeDashboard() {
   const root = document.getElementById("unifiedDashboard");
   if (!root || wired.has(root)) return;
   wired.add(root);
+  orderDashboardCategories(root);
 
   // On touch devices, block long-press context menus on clickable dashboard cards.
   if (window.matchMedia?.("(pointer: coarse)")?.matches) {
@@ -351,6 +354,45 @@ export function initializeDashboard() {
     void renderRecommendations(host);
     window.addEventListener("i18n:languageChanged", () => {
       void renderRecommendations(host);
+    });
+  }
+}
+
+function orderDashboardCategories(root) {
+  const preferred = getPrimaryInterest("eyes");
+  const categoryOrder = [
+    preferred,
+    ...DASHBOARD_CATEGORY_ORDER.filter((category) => category !== preferred),
+  ].filter((category) => DASHBOARD_CATEGORY_ORDER.includes(category));
+
+  const carousel = root.querySelector("#categoryCarousel");
+  if (carousel) {
+    const cardsByCategory = new Map(
+      Array.from(carousel.querySelectorAll(".category-card")).map((card) => [
+        card.dataset.category,
+        card,
+      ]),
+    );
+    categoryOrder.forEach((category) => {
+      const card = cardsByCategory.get(category);
+      if (card) carousel.appendChild(card);
+    });
+    carousel.scrollLeft = 0;
+  }
+
+  const dotsHost = root.querySelector("#carouselDots");
+  if (dotsHost) {
+    const dotsByCategory = new Map(
+      Array.from(dotsHost.querySelectorAll(".dot")).map((dot) => [
+        dot.dataset.category,
+        dot,
+      ]),
+    );
+    categoryOrder.forEach((category, index) => {
+      const dot = dotsByCategory.get(category);
+      if (!dot) return;
+      dot.classList.toggle("active", index === 0);
+      dotsHost.appendChild(dot);
     });
   }
 }

@@ -5709,6 +5709,29 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
   padding-right: 6px;
 }
 
+#infoModalOverlay .guest-modal {
+  padding: 34px 44px 32px 28px;
+}
+
+#infoModalOverlay .guest-modal__close {
+  top: 10px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  margin: 0;
+  padding: 0;
+  border-radius: 50%;
+  background: #fff;
+  font-size: 28px;
+  line-height: 30px;
+  text-align: center;
+  z-index: 2;
+}
+
+#infoModalOverlay .privacyterms__text {
+  padding-right: 16px;
+}
+
 /* Privacy & Terms: bold section headings spacing */
 .privacyterms__text p > strong {
   display: block;
@@ -5969,8 +5992,28 @@ body[data-experimental-miniapp-notice-open="true"] {
   color: #111;
 }
 
+#editProfilePage,
+#settingsPage {
+  background: #fff;
+  min-height: 100vh;
+  padding: 31px;
+  padding-bottom: 100px;
+  box-sizing: border-box;
+  font-size: 14px;
+  color: #111;
+}
+
 /* ---- Top bar ---- */
 #myProfilePage .profile-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 0 14px;
+  margin-top: -5%;
+}
+
+#editProfilePage .profile-topbar,
+#settingsPage .profile-topbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -5985,7 +6028,22 @@ body[data-experimental-miniapp-notice-open="true"] {
   margin-left: 13%;
 }
 
+#editProfilePage .profile-topbar__title,
+#settingsPage .profile-topbar__title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #111;
+  margin-left: 13%;
+}
+
 #myProfilePage .profile-topbar__icons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#editProfilePage .profile-topbar__icons,
+#settingsPage .profile-topbar__icons {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -5993,6 +6051,21 @@ body[data-experimental-miniapp-notice-open="true"] {
 
 /* Override global button rule for icon buttons */
 #myProfilePage .icon-btn {
+  width: auto;
+  height: auto;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: none;
+  color: #111;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  position: relative;
+}
+
+#editProfilePage .icon-btn,
+#settingsPage .icon-btn {
   width: auto;
   height: auto;
   margin: 0;
@@ -6030,8 +6103,58 @@ body[data-experimental-miniapp-notice-open="true"] {
   width: 64px;
   height: 64px;
   border-radius: 50%;
-  background: #111; /* black placeholder like mock */
+  background: #111;
+  background-position: center;
+  background-size: cover;
   flex: 0 0 auto;
+}
+
+#myProfilePage .profile-avatar-wrap,
+#editProfilePage .profile-avatar-wrap {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  flex: 0 0 auto;
+}
+
+#editProfilePage .profile-avatar-wrap--large {
+  width: 88px;
+  height: 88px;
+}
+
+#editProfilePage .profile-avatar {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  background: #111;
+  background-position: center;
+  background-size: cover;
+}
+
+#myProfilePage .profile-avatar-edit,
+#editProfilePage .profile-avatar-edit {
+  position: absolute;
+  right: -4px;
+  bottom: -3px;
+  width: auto;
+  min-width: 34px;
+  height: 22px;
+  margin: 0;
+  padding: 0 7px;
+  border: 2px solid #fff;
+  border-radius: 999px;
+  background: #111;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 750;
+  line-height: 1;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.18);
+}
+
+.user-profile {
+  background-color: #111;
+  background-position: center;
+  background-size: cover;
 }
 
 #myProfilePage .profile-name {
@@ -6045,6 +6168,8 @@ body[data-experimental-miniapp-notice-open="true"] {
   font-size: 12px;
   color: #444;
   margin-top: 2px;
+  max-width: min(62vw, 320px);
+  line-height: 1.3;
 }
 
 /* ---- Sections ---- */
@@ -6074,6 +6199,12 @@ body[data-experimental-miniapp-notice-open="true"] {
   appearance: none;
 }
 
+#myProfilePage .interest-select select:disabled {
+  color: #111;
+  opacity: 1;
+  -webkit-text-fill-color: #111;
+}
+
 /* subtle caret */
 #myProfilePage .interest-select {
   position: relative;
@@ -6098,15 +6229,236 @@ body[data-experimental-miniapp-notice-open="true"] {
 /* ---- Achievements tiles ---- */
 #myProfilePage .achievements-row {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  margin-top: 6px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px 12px;
+  margin-top: 10px;
 }
 
 #myProfilePage .achievement-tile {
-  height: 72px;
+  min-height: 150px;
+  border-radius: 8px;
+  background: transparent;
+}
+
+#myProfilePage .achievement-badge {
+  --badge-accent: #e41e26;
+  --badge-ink: #111;
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 4px 6px 0;
+  border: 0;
+  color: var(--badge-accent);
+  text-align: center;
+}
+
+#myProfilePage .achievement-badge--red {
+  --badge-accent: #e41e26;
+  --badge-ink: #111;
+}
+
+#myProfilePage .achievement-badge__svg {
+  display: block;
+  width: min(136px, 100%);
+  height: auto;
+  overflow: visible;
+  color: var(--badge-accent);
+}
+
+#myProfilePage .achievement-badge__svg-scallop {
+  fill: var(--badge-accent);
+}
+
+#myProfilePage .achievement-badge__svg-disc {
+  fill: #fff;
+  stroke: var(--badge-ink);
+  stroke-width: 3;
+}
+
+#myProfilePage .achievement-badge__svg-ring {
+  fill: none;
+  stroke: var(--badge-accent);
+}
+
+#myProfilePage .achievement-badge__svg-ring--outer {
+  stroke-width: 4;
+}
+
+#myProfilePage .achievement-badge__svg-ring--middle {
+  stroke-width: 2;
+}
+
+#myProfilePage .achievement-badge__svg-ring--inner {
+  stroke: var(--badge-ink);
+  stroke-width: 2;
+}
+
+#myProfilePage .achievement-badge__svg-ring-text,
+#myProfilePage .achievement-badge__svg-number {
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 900;
+  text-anchor: middle;
+  text-transform: uppercase;
+}
+
+#myProfilePage .achievement-badge__svg-ring-text {
+  fill: var(--badge-ink);
+  font-size: 8px;
+  letter-spacing: 0.8px;
+}
+
+#myProfilePage .achievement-badge__svg-number {
+  fill: var(--badge-accent);
+  font-size: 48px;
+  dominant-baseline: middle;
+}
+
+#myProfilePage .achievements-empty {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: #555;
+  font-size: 12px;
+  font-weight: 650;
+  line-height: 1.35;
+}
+
+#myProfilePage .profile-detail-list {
+  display: grid;
+  gap: 12px;
+}
+
+#myProfilePage .profile-detail-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #f0f0f3;
+}
+
+#myProfilePage .profile-detail-label {
+  flex: 0 0 36%;
+  font-size: 0.8rem;
+  font-weight: 650;
+  line-height: 1.3;
+  color: #111;
+}
+
+#myProfilePage .profile-detail-value {
+  flex: 1;
+  color: #444;
+  font-size: 0.8rem;
+  line-height: 1.35;
+  text-align: right;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
+#editProfilePage .profile-edit-form {
+  display: grid;
+  gap: 18px;
+  margin-top: 10px;
+}
+
+#editProfilePage .profile-edit-avatar-row {
+  display: flex;
+  justify-content: center;
+  padding: 12px 0 4px;
+}
+
+#editProfilePage .profile-edit-field,
+#editProfilePage .profile-edit-fieldset {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+#editProfilePage .profile-edit-field span,
+#editProfilePage .profile-edit-fieldset legend,
+#editProfilePage .profile-edit-experience h3 {
+  color: #111;
+  font-size: 13px;
+  font-weight: 750;
+}
+
+#editProfilePage .profile-edit-field input,
+#editProfilePage .profile-edit-field select,
+#editProfilePage .profile-edit-inline-select {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  border: 1px solid #e5e5ea;
+  border-radius: 12px;
+  background: #fff;
+  color: #111;
+  font-size: 13px;
+}
+
+#editProfilePage .profile-edit-field select {
+  min-height: 176px;
+}
+
+#editProfilePage .profile-edit-chip-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+#editProfilePage .profile-edit-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 38px;
+  padding: 0 10px;
+  border: 1px solid #e5e5ea;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 650;
+}
+
+#editProfilePage .profile-edit-chip input {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--primary-color);
+}
+
+#editProfilePage .profile-edit-experience {
+  display: grid;
+  gap: 10px;
+}
+
+#editProfilePage .profile-edit-experience-row {
+  display: grid;
+  gap: 6px;
+  color: #444;
+  font-size: 12px;
+  font-weight: 650;
+}
+
+#editProfilePage .profile-edit-actions {
+  display: grid;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+#editProfilePage .profile-edit-save {
+  margin-top: 0;
+}
+
+#editProfilePage .profile-edit-cancel {
+  width: 100%;
+  margin: 0;
+  padding: 12px 16px;
+  border: 1px solid #d9d9df;
   border-radius: 14px;
-  background: #e6e6e6;
+  background: #fff;
+  color: #111;
+  font-size: 14px;
+  font-weight: 750;
 }
 
 /* ---- Settings list ---- */
@@ -6121,19 +6473,154 @@ body[data-experimental-miniapp-notice-open="true"] {
 #myProfilePage .settings-item,
 #myProfilePage .settings-list .menu-item {
   display: flex;
-  align-items: centre;
+  align-items: center;
   gap: 8px;
   font-size: 12px;
   font-weight: 600;
   color: #111;
   padding: 6px 0;
   background: transparent;
+  cursor: pointer;
 }
 
 #myProfilePage .settings-list .menu-item img {
   width: 23px;
   height: 17px;
   margin: 0;
+}
+
+#settingsPage .settings-page__content {
+  display: grid;
+  gap: 20px;
+  padding-top: 12px;
+}
+
+#settingsPage .settings-section {
+  display: grid;
+  gap: 8px;
+}
+
+#settingsPage .settings-section-title {
+  margin: 0 0 5px;
+  color: #111;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+#settingsPage .settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  min-height: 48px;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-bottom: 1px solid #f0f0f3;
+  border-radius: 0;
+  background: transparent;
+  color: #111;
+  font-size: 13px;
+  font-weight: 650;
+  line-height: 1.25;
+  text-align: left;
+  text-decoration: none;
+}
+
+#settingsPage .settings-row--link {
+  cursor: pointer;
+}
+
+#settingsPage .settings-row strong {
+  flex: 0 0 auto;
+  color: #555;
+  font-size: 12px;
+  font-weight: 750;
+  text-align: right;
+}
+
+#settingsPage .settings-inline-action {
+  width: auto;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: #555;
+  font-size: 12px;
+  font-weight: 750;
+  line-height: 1;
+}
+
+#settingsPage .settings-toggle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  width: 44px;
+  height: 26px;
+  flex: 0 0 44px;
+  margin: 0;
+  padding: 3px;
+  border: 0;
+  border-radius: 999px;
+  background: #d8d8de;
+  cursor: pointer;
+  transition: background-color 0.18s ease;
+}
+
+#settingsPage .settings-toggle.is-on {
+  background: #15e115;
+}
+
+#settingsPage .settings-toggle__thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.22);
+  transform: translateX(0);
+  transition: transform 0.18s ease;
+}
+
+#settingsPage .settings-toggle.is-on .settings-toggle__thumb {
+  transform: translateX(18px);
+}
+
+#settingsPage .settings-action {
+  width: 100%;
+  min-height: 44px;
+  margin: 0;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+#settingsPage .settings-section--actions {
+  margin-top: -4px;
+}
+
+#settingsPage .settings-action--secondary {
+  border: 1px solid #d9d9df;
+  background: #fff;
+  color: #111;
+}
+
+#settingsPage .settings-action--danger {
+  border: 1px solid #e41e26;
+  background: #e41e26;
+  color: #fff;
+}
+
+#settingsPage .settings-status {
+  min-height: 18px;
+  margin: 0;
+  color: #555;
+  font-size: 12px;
+  font-weight: 650;
 }
 
 /* Background rows */

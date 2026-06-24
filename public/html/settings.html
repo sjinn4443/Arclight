@@ -1,0 +1,105 @@
+<div class="profile-page settings-page page active" id="settingsPage">
+  <div class="profile-topbar">
+    <div class="profile-topbar__title">Settings</div>
+
+    <div class="profile-topbar__icons">
+      <button
+        class="icon-btn menuBtn"
+        aria-label="Menu"
+        data-i18n="i18nExtra.menu_aria_label:aria-label"
+      >
+        &#9776;
+      </button>
+    </div>
+  </div>
+
+  <div class="settings-page__content">
+    <section class="settings-section" aria-labelledby="settingsPreferences">
+      <h2 class="settings-section-title" id="settingsPreferences">
+        Preferences
+      </h2>
+
+      <button
+        type="button"
+        class="settings-row settings-row--link"
+        id="openLanguageModal"
+        data-route="languageinstall"
+        data-guest-free="true"
+      >
+        <span>Language</span>
+        <strong id="settingsLanguageLabel">English</strong>
+      </button>
+
+      <div class="settings-row">
+        <span>Notifications</span>
+        <button
+          type="button"
+          class="settings-toggle"
+          id="settingsNotificationsToggle"
+          aria-label="Notifications"
+          aria-pressed="true"
+        >
+          <span class="settings-toggle__thumb"></span>
+        </button>
+      </div>
+
+      <div class="settings-row">
+        <span>Privacy / data consent</span>
+        <button
+          type="button"
+          class="settings-inline-action"
+          id="settingsPrivacyBtn"
+          aria-label="Privacy and data consent"
+        >
+          View
+        </button>
+      </div>
+
+      <button
+        type="button"
+        class="settings-row settings-row--link"
+        id="settingsDownloadedContentsBtn"
+      >
+        <span>Downloaded contents</span>
+        <strong>View</strong>
+      </button>
+    </section>
+
+    <section class="settings-section" aria-labelledby="settingsAccount">
+      <h2 class="settings-section-title" id="settingsAccount">Account</h2>
+
+      <a
+        class="settings-row settings-row--link"
+        href="mailto:support@arclightproject.com"
+      >
+        <span>Help / contact</span>
+        <strong>Email</strong>
+      </a>
+
+      <div class="settings-row">
+        <span>App version</span>
+        <strong id="settingsAppVersion">ver --.--.----</strong>
+      </div>
+    </section>
+
+    <section class="settings-section settings-section--actions">
+      <button
+        type="button"
+        class="settings-action settings-action--secondary"
+        id="settingsLogoutBtn"
+      >
+        Log out
+      </button>
+
+      <button
+        type="button"
+        class="settings-action settings-action--danger"
+        id="settingsDeleteAccountBtn"
+      >
+        Delete account
+      </button>
+    </section>
+
+    <p class="settings-status" id="settingsStatus" role="status"></p>
+  </div>
+</div>

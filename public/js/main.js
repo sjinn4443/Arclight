@@ -571,6 +571,24 @@ window.addEventListener("page:loaded", async (e) => {
     return;
   }
 
+  if (page === "myprofile") {
+    const { initializeMyProfile } = await import("./myprofile.js");
+    initializeMyProfile?.();
+    return;
+  }
+
+  if (page === "editProfile") {
+    const { initializeEditProfile } = await import("./editProfile.js");
+    initializeEditProfile?.();
+    return;
+  }
+
+  if (page === "settings") {
+    const { initializeSettings } = await import("./settings.js");
+    initializeSettings?.();
+    return;
+  }
+
   if (page === "interest") {
     const { initializeInterest } = await import("./interest.js");
     initializeInterest?.();

@@ -10,6 +10,11 @@ import {
   getElementLocalizedSearchValues,
   normalizeSearchText,
 } from "./localized-search.js";
+import {
+  PROFILE_UPDATED_EVENT,
+  getProfileName,
+  renderProfileAvatar,
+} from "./profileData.js";
 
 let overlay, closeBtn;
 let cachedVersionInfo = null;
@@ -17,6 +22,15 @@ let versionInfoRequest = null;
 let menuInitRequest = null;
 let menuEscapeHandlerBound = false;
 let menuSearchFilterToken = 0;
+
+function renderMenuProfile(root = overlay) {
+  if (!root) return;
+  const nameEl = root.querySelector("#menuUsername");
+  const avatarEl = root.querySelector(".user-profile");
+  const name = getProfileName();
+  if (nameEl) nameEl.textContent = name || "Your name";
+  renderProfileAvatar(avatarEl);
+}
 
 function formatVersionDate(isoDate) {
   if (!isoDate || typeof isoDate !== "string") return null;
@@ -538,7 +552,7 @@ function renderDownloadedContentsSummary(groups, totalCached, totalAssets) {
   `;
 }
 
-async function openDownloadedContentsModal() {
+export async function openDownloadedContentsModal() {
   closeMenu();
   setDownloadedContentsModalContent(`
     <div class="downloaded-content-loading" role="status" aria-live="polite">
@@ -668,12 +682,8 @@ export async function initializeMenu() {
     overlay = found;
     closeBtn = overlay.querySelector("#closeMenuBtn");
 
-    // 5) Populate username now that overlay exists
-    const nameEl = overlay.querySelector("#menuUsername");
-    const name = (localStorage.getItem("username") || "").trim();
-    if (nameEl) {
-      nameEl.textContent = name || "Your name";
-    }
+    // 5) Populate profile now that overlay exists
+    renderMenuProfile(overlay);
     window.I18N?.applyTranslations?.(overlay);
     void renderMenuVersionDate();
 
@@ -756,6 +766,10 @@ document.addEventListener("location:updated", () => {
   renderProfileLocation();
 });
 
+document.addEventListener(PROFILE_UPDATED_EVENT, () => {
+  renderMenuProfile(overlay);
+});
+
 /**
  * Opens the global overlay menu.
  * Adds a 'data-menu-open' attribute to the body and removes the 'hidden' class from the overlay.
@@ -768,11 +782,7 @@ export async function openMenu() {
   wireMenuTabs(overlay);
   wireMenuContentActions(overlay);
 
-  const nameEl = overlay.querySelector("#menuUsername");
-  const name = (localStorage.getItem("username") || "").trim();
-  if (nameEl) {
-    nameEl.textContent = name || "Your name";
-  }
+  renderMenuProfile(overlay);
   window.I18N?.applyTranslations?.(overlay);
 
   // D) Call renderProfileLocation at the end of openMenu() to ensure it's updated when menu opens

@@ -15,6 +15,8 @@ export const ROUTES = {
   dashboard: "html/dashboard.html",
   mylearning: "html/mylearning.html",
   myprofile: "html/myprofile.html",
+  editProfile: "html/editProfile.html",
+  settings: "html/settings.html",
   eyes: "html/eyes.html",
   ears: "html/ears.html",
   videos: "html/videos.html",

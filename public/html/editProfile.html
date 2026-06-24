@@ -1,0 +1,86 @@
+<div class="profile-page profile-edit-page page active" id="editProfilePage">
+  <div class="profile-topbar">
+    <div class="profile-topbar__title" data-i18n="myprofile.edit_profile">
+      Edit Profile
+    </div>
+
+    <div class="profile-topbar__icons">
+      <button
+        class="icon-btn menuBtn"
+        aria-label="Menu"
+        data-i18n="i18nExtra.menu_aria_label:aria-label"
+      >
+        &#9776;
+      </button>
+    </div>
+  </div>
+
+  <form class="profile-edit-form" id="editProfileForm">
+    <div class="profile-edit-avatar-row">
+      <div class="profile-avatar-wrap profile-avatar-wrap--large">
+        <div
+          class="profile-avatar"
+          id="editProfileAvatar"
+          aria-label="Profile photo"
+          role="img"
+        ></div>
+        <button
+          type="button"
+          class="profile-avatar-edit"
+          id="editProfileAvatarBtn"
+          aria-label="Edit profile photo"
+        >
+          Edit
+        </button>
+        <input
+          type="file"
+          id="editProfileAvatarInput"
+          accept="image/*"
+          hidden
+        />
+      </div>
+    </div>
+
+    <label class="profile-edit-field">
+      <span data-i18n="onboarding.username_label">Name</span>
+      <input
+        type="text"
+        id="editProfileName"
+        autocomplete="name"
+        placeholder="Enter"
+        data-i18n="onboarding.username_placeholder:placeholder"
+      />
+    </label>
+
+    <fieldset class="profile-edit-fieldset">
+      <legend data-i18n="onboarding.field_label">Interest(s)</legend>
+      <div class="profile-edit-chip-grid" id="editProfileInterests"></div>
+    </fieldset>
+
+    <label class="profile-edit-field">
+      <span data-i18n="onboarding.job_label">Role(s)</span>
+      <select id="editProfileRoles" multiple size="8"></select>
+    </label>
+
+    <div class="profile-edit-experience" id="editProfileExperience"></div>
+
+    <div class="profile-edit-actions">
+      <button
+        type="submit"
+        class="onb-cta profile-edit-save"
+        id="editProfileSaveBtn"
+        data-i18n-skip
+      >
+        Save changes
+      </button>
+      <button
+        type="button"
+        class="profile-edit-cancel"
+        id="editProfileCancel"
+        data-i18n-skip
+      >
+        Cancel
+      </button>
+    </div>
+  </form>
+</div>
