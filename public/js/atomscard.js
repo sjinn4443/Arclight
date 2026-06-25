@@ -222,12 +222,7 @@ function handleTOCItemClick(e) {
     } else {
       displayImage(
         "images/atoms/Anatomy1.webp",
-        translateAtomsLabel("Eye Anatomy 1"),
-        container,
-      );
-      displayImage(
-        "images/atoms/Anatomy2.webp",
-        translateAtomsLabel("Eye Anatomy 2"),
+        translateAtomsLabel("Eye Anatomy"),
         container,
       );
     }
@@ -275,7 +270,7 @@ function handleTOCItemClick(e) {
 
     // Rotate certain images like the legacy app
     const key = topic.replace(/\s/g, "");
-    if (["CaseStudy", "FundalReflex"].includes(key)) {
+    if (key === "CaseStudy") {
       img.parentElement?.classList.add("atoms-card-image-frame--rotated");
       img.style.transform = "rotate(90deg)";
       img.style.marginBottom = "0";
