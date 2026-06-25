@@ -293,6 +293,7 @@ function main() {
   const englishPath = path.join(TRANSLATION_DIR, "english.json");
   const englishDict = loadJson(englishPath);
   const usedKeys = collectUsedI18nKeys();
+  const englishLiteralKeys = Object.keys(englishDict.i18nLiteral || {}).sort();
   const localeFiles = fs
     .readdirSync(TRANSLATION_DIR)
     .filter(
@@ -306,6 +307,7 @@ function main() {
     const locale = fileName.replace(/\.json$/i, "");
     const dict = loadJson(path.join(TRANSLATION_DIR, fileName));
     const missing = [];
+    const missingLiteral = [];
     const damaged = [];
     const exactEnglish = [];
     const medicalHomonym = collectTranslationMedicalHomonymViolations(
@@ -341,10 +343,17 @@ function main() {
       }
     }
 
+    for (const key of englishLiteralKeys) {
+      if (!Object.prototype.hasOwnProperty.call(dict.i18nLiteral || {}, key)) {
+        missingLiteral.push(key);
+      }
+    }
+
     results.push({
       fileName,
       locale,
       missing,
+      missingLiteral,
       damaged,
       exactEnglish,
       medicalHomonym,
@@ -354,6 +363,10 @@ function main() {
   const subtitleMedicalHomonym = collectSubtitleMedicalHomonymViolations();
   const missingCount = results.reduce(
     (sum, item) => sum + item.missing.length,
+    0,
+  );
+  const missingLiteralCount = results.reduce(
+    (sum, item) => sum + item.missingLiteral.length,
     0,
   );
   const damagedCount = results.reduce(
@@ -372,6 +385,7 @@ function main() {
   console.log("Translation QA summary");
   console.log(`Used i18n keys scanned: ${usedKeys.length}`);
   console.log(`Missing keys: ${missingCount}`);
+  console.log(`Missing literal keys: ${missingLiteralCount}`);
   console.log(`Damaged strings: ${damagedCount}`);
   console.log(`Exact English carry-overs: ${exactEnglishCount}`);
   console.log(`Medical homonym violations: ${medicalHomonymCount}`);
@@ -387,6 +401,7 @@ function main() {
   for (const result of results) {
     if (
       result.missing.length === 0 &&
+      result.missingLiteral.length === 0 &&
       result.damaged.length === 0 &&
       result.exactEnglish.length === 0 &&
       result.medicalHomonym.length === 0
@@ -400,6 +415,13 @@ function main() {
     if (result.missing.length) {
       console.log(`Missing (${result.missing.length})`);
       result.missing.slice(0, 40).forEach((key) => console.log(`- ${key}`));
+    }
+
+    if (result.missingLiteral.length) {
+      console.log(`Missing literal (${result.missingLiteral.length})`);
+      result.missingLiteral
+        .slice(0, 40)
+        .forEach((key) => console.log(`- i18nLiteral.${key}`));
     }
 
     if (result.damaged.length) {
@@ -446,6 +468,7 @@ function main() {
 
   if (
     missingCount > 0 ||
+    missingLiteralCount > 0 ||
     damagedCount > 0 ||
     medicalHomonymCount > 0 ||
     subtitleMedicalHomonym.length > 0 ||

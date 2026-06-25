@@ -3835,7 +3835,14 @@
     "Match history to image": "Match history to image",
     "Tap the correct structure": "Tap the correct structure",
     "Binocular Indirect Ophthalmoscopy Guide": "Binocular Indirect Ophthalmoscopy Guide",
-    "The eyes collect light from the world and turn this into signals for the brain to create ‘vision’": "The eyes collect light from the world and turn this into signals for the brain to create ‘vision’"
+    "The eyes collect light from the world and turn this into signals for the brain to create ‘vision’": "The eyes collect light from the world and turn this into signals for the brain to create ‘vision’",
+    "Answer:": "Answer:",
+    "Case score:": "Case score:",
+    "Download incomplete": "Download incomplete",
+    "Some app content could not be downloaded. The items below may not work offline until you try again.": "Some app content could not be downloaded. The items below may not work offline until you try again.",
+    "You answered": "You answered",
+    "correctly.": "correctly.",
+    "failed": "failed"
   },
   "i18nExtra": {
     "about_location_data_text": "Location data helps us understand usage and improve Arclight App. Your IP address provides an approximate country/city on first load.<br />You can optionally provide more precise GPS data using the 'Get Precise Location' button. This data is handled as per our privacy guidelines.",
