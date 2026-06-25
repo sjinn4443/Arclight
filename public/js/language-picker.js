@@ -10,6 +10,8 @@
   const listEl = document.getElementById("languagePickerList"); // dropdown list
   let pickerOptionsHydratePromise = null;
   let pickerOptionsHydrated = false;
+  currentEl?.setAttribute("data-i18n-skip", "true");
+  listEl?.setAttribute("data-i18n-skip", "true");
   const nativeByCode = {
     en: "English",
     am: "\u12A0\u121B\u122D\u129B",
@@ -28,6 +30,7 @@
     te: "\u0C24\u0C46\u0C32\u0C41\u0C17\u0C41",
     ln: "Ling\u00E1la",
     fa: "\u0641\u0627\u0631\u0633\u06CC",
+    pt: "Portugu\u00EAs",
     sn: "ChiShona",
     es: "Espa\u00F1ol",
     sw: "Kiswahili",
@@ -53,6 +56,7 @@
     te: "Telugu",
     ln: "Lingala",
     fa: "Persian",
+    pt: "Portuguese",
     sn: "Shona",
     es: "Spanish",
     sw: "Swahili",
@@ -85,9 +89,10 @@
 
   function getBarLabelForOption(opt) {
     if (!opt) return nativeByCode[DEFAULT_LANGUAGE_CODE] || "English";
-    const english = (opt.textContent || "").trim();
+    const code = String(opt.value || "").trim();
+    const english = (englishByCode[code] || opt.textContent || "").trim();
     const native = (opt.getAttribute("data-native") || "").trim();
-    return native || english || nativeByCode[opt.value] || "English";
+    return nativeByCode[code] || native || english || "English";
   }
 
   function markSelectedLanguage(code = getCurrentLanguageCode()) {
@@ -211,9 +216,10 @@
     const source = installSelect || selectEl;
     if (!source || !listEl) return;
 
+    listEl.setAttribute("data-i18n-skip", "true");
     listEl.textContent = "";
     [...source.options].forEach((opt) => {
-      const code = opt.value;
+      const code = String(opt.value || "").trim();
       const rawEnglish = (opt.textContent || "").trim();
       const english = (englishByCode[code] || rawEnglish).trim();
       const attrNative = (opt.getAttribute("data-native") || "").trim();
@@ -232,6 +238,7 @@
       li.className = "lang-install__item";
       li.setAttribute("role", "option");
       li.setAttribute("tabindex", "0");
+      li.setAttribute("data-i18n-skip", "true");
       li.setAttribute(
         "aria-selected",
         code === getCurrentLanguageCode() ? "true" : "false",
@@ -239,9 +246,11 @@
       li.dataset.code = code;
       const en = document.createElement("span");
       en.className = "lang-install__item-en";
+      en.setAttribute("data-i18n-skip", "true");
       en.textContent = english;
       const nativeEl = document.createElement("span");
       nativeEl.className = "lang-install__item-native";
+      nativeEl.setAttribute("data-i18n-skip", "true");
       nativeEl.textContent = native;
       li.appendChild(en);
       li.appendChild(nativeEl);

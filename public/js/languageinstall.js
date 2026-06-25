@@ -1786,12 +1786,14 @@ function buildCustomLangSelect(selectEl) {
   // Label (two-column inside the "select" box)
   const label = document.createElement("div");
   label.className = "lang-install__custom-select-label";
+  label.setAttribute("data-i18n-skip", "true");
 
   // Dropdown list
   const list = document.createElement("ul");
   list.className = "lang-install__list lang-install__dropdown";
   list.setAttribute("role", "listbox");
   list.setAttribute("data-custom-lang-select", "true");
+  list.setAttribute("data-i18n-skip", "true");
   list.hidden = true;
 
   // Build options (li)
@@ -1799,6 +1801,7 @@ function buildCustomLangSelect(selectEl) {
     const li = document.createElement("li");
     li.className = "lang-install__item";
     li.setAttribute("role", "option");
+    li.setAttribute("data-i18n-skip", "true");
     li.dataset.value = opt.value;
 
     const rawEnglish = (opt.textContent || "")
@@ -1811,15 +1814,11 @@ function buildCustomLangSelect(selectEl) {
     left.className = "lang-install__item-en";
     left.textContent = english;
 
-    if (opt.value === "en") {
-      li.appendChild(left);
-    } else {
-      const right = document.createElement("span");
-      right.className = "lang-install__item-native";
-      right.textContent = native;
-      li.appendChild(left);
-      li.appendChild(right);
-    }
+    const right = document.createElement("span");
+    right.className = "lang-install__item-native";
+    right.textContent = native;
+    li.appendChild(left);
+    li.appendChild(right);
 
     li.addEventListener("click", () => {
       selectEl.value = opt.value;
@@ -1851,12 +1850,10 @@ function buildCustomLangSelect(selectEl) {
     left.textContent = english;
     label.appendChild(left);
 
-    if (current.value !== "en") {
-      const right = document.createElement("span");
-      right.className = "lang-install__item-native";
-      right.textContent = native;
-      label.appendChild(right);
-    }
+    const right = document.createElement("span");
+    right.className = "lang-install__item-native";
+    right.textContent = native;
+    label.appendChild(right);
   }
 
   ctrl.addEventListener("click", () => {

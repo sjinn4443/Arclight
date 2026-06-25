@@ -252,6 +252,13 @@
               Persian
             </option>
             <option
+              value="pt"
+              data-native="Portuguese"
+              data-i18n="languageInstall.portuguese"
+            >
+              Portuguese
+            </option>
+            <option
               value="sn"
               data-native="Shona"
               data-i18n="languageInstall.shona"
@@ -305,12 +312,13 @@
             aria-haspopup="listbox"
             aria-expanded="false"
           >
-            <span id="langPickerCurrent">English</span>
+            <span id="langPickerCurrent" data-i18n-skip="true">English</span>
           </button>
 
           <ul
             id="languagePickerList"
             class="lang-install__list lang-picker__dropdown"
+            data-i18n-skip="true"
             role="listbox"
             hidden
           ></ul>
