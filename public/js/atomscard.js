@@ -63,15 +63,19 @@ function updateAtomsTitle(topic = currentAtomsTopic) {
 
   const base = document.createElement("span");
   base.className = "atoms-title-bar__base";
-  base.textContent = "Atoms Card";
+  base.textContent = translateAtomsLabel("Atoms Card");
   title.appendChild(base);
 
   if (!topic) return;
 
   const selected = document.createElement("span");
   selected.className = "atoms-title-bar__selected";
-  selected.textContent = ` - ${topic}`;
+  selected.textContent = ` - ${translateAtomsLabel(topic)}`;
   title.appendChild(selected);
+}
+
+function translateAtomsLabel(label) {
+  return window.I18N?.translateLiteral?.(label, label) || label;
 }
 
 function updateTOCSelection() {
@@ -181,7 +185,7 @@ function showTOC(type = "eyes") {
   items.forEach((item) => {
     const li = document.createElement("li");
     li.dataset.topic = item;
-    li.textContent = item;
+    li.textContent = translateAtomsLabel(item);
     tocList.appendChild(li);
   });
 
@@ -210,10 +214,22 @@ function handleTOCItemClick(e) {
   // Special handling for Anatomy (different for eyes vs ears)
   if (topic === "Anatomy") {
     if (currentTOCType === "ears") {
-      displayImage("images/atoms/EarAnatomy.webp", "Ear Anatomy", container);
+      displayImage(
+        "images/atoms/EarAnatomy.webp",
+        translateAtomsLabel("Ear Anatomy"),
+        container,
+      );
     } else {
-      displayImage("images/atoms/Anatomy1.webp", "Eye Anatomy 1", container);
-      displayImage("images/atoms/Anatomy2.webp", "Eye Anatomy 2", container);
+      displayImage(
+        "images/atoms/Anatomy1.webp",
+        translateAtomsLabel("Eye Anatomy 1"),
+        container,
+      );
+      displayImage(
+        "images/atoms/Anatomy2.webp",
+        translateAtomsLabel("Eye Anatomy 2"),
+        container,
+      );
     }
   } else {
     const filenameMap = {
@@ -251,7 +267,11 @@ function handleTOCItemClick(e) {
     const filename = filenameMap[topic] || `${topic.replace(/\s/g, "")}.png`;
 
     // Use the atoms subfolder now
-    const img = displayImage(`images/atoms/${filename}`, topic, container);
+    const img = displayImage(
+      `images/atoms/${filename}`,
+      translateAtomsLabel(topic),
+      container,
+    );
 
     // Rotate certain images like the legacy app
     const key = topic.replace(/\s/g, "");

@@ -20,6 +20,11 @@ const ROOT = process.cwd();
 const CONFIG_PATH = path.join(ROOT, "public", "js", "config.js");
 const ENGLISH_PATH = path.join(ROOT, "public", "translation", "english.json");
 const WRITE = process.argv.includes("--write");
+const DYNAMIC_TEXT_ELEMENT_IDS = new Set([
+  "profileName",
+  "settingsAppVersion",
+  "settingsLanguageLabel",
+]);
 
 function readText(p) {
   return fs.readFileSync(p, "utf8");
@@ -66,6 +71,12 @@ function slugFromText(text) {
 
 function hasLetters(text) {
   return /[A-Za-z]/.test(text || "");
+}
+
+function shouldSkipAttributes(attrs) {
+  if (/\bdata-i18n-skip\b/i.test(attrs || "")) return true;
+  const idMatch = String(attrs || "").match(/\bid\s*=\s*["']([^"']+)["']/i);
+  return Boolean(idMatch && DYNAMIC_TEXT_ELEMENT_IDS.has(idMatch[1]));
 }
 
 function decodeHtmlEntities(input) {
@@ -147,6 +158,7 @@ function processFile(filePath, englishDict) {
         /<(input|textarea)([^>]*?)\splaceholder="([^"]*?[A-Za-z][^"]*?)"([^>]*)>/gi,
         (full, tag, a, placeholder, b) => {
           if (/data-i18n\s*=/.test(full)) return full;
+          if (shouldSkipAttributes(`${a} ${b}`)) return full;
           const cleaned = decodeHtmlEntities(placeholder).trim();
           if (!hasLetters(cleaned)) return full;
           const slug = slugFromText(cleaned);
@@ -167,6 +179,7 @@ function processFile(filePath, englishDict) {
           const tagLower = String(tag).toLowerCase();
           if (["script", "style"].includes(tagLower)) return full;
           if (/data-i18n\s*=/.test(attrs)) return full;
+          if (shouldSkipAttributes(attrs)) return full;
           if (/^\s*<!--/.test(full)) return full;
           const cleaned = decodeHtmlEntities(text).replace(/\s+/g, " ").trim();
           if (!hasLetters(cleaned)) return full;

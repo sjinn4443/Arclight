@@ -49,6 +49,7 @@
             class="profile-avatar"
             id="profileAvatar"
             aria-label="Profile photo"
+            data-i18n="i18nExtra.profile_photo:aria-label"
             role="img"
           ></div>
           <button
@@ -56,6 +57,7 @@
             class="profile-avatar-edit"
             id="profileAvatarEditBtn"
             aria-label="Edit profile photo"
+            data-i18n="i18nExtra.edit; i18nExtra.edit_profile_photo:aria-label"
           >
             Edit
           </button>
@@ -134,7 +136,9 @@
 
       <!-- Account -->
       <div class="section">
-        <div class="section-title">Account</div>
+        <div class="section-title" data-i18n="auto.myprofile.account">
+          Account
+        </div>
         <div class="settings-list">
           <div
             class="settings-item"
@@ -155,7 +159,13 @@
 
             <span data-i18n="menu.language_item">Language</span>
           </div>
-          <div class="settings-item" data-route="settings">Settings</div>
+          <div
+            class="settings-item"
+            data-route="settings"
+            data-i18n="auto.myprofile.settings"
+          >
+            Settings
+          </div>
         </div>
       </div>
     </div>

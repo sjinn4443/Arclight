@@ -454,17 +454,17 @@ function ensureDownloadedContentsModal() {
   modal.innerHTML = `
     <div class="modal-box download-modal">
       <div class="modal-header">
-        <span id="downloadedContentsTitle">Downloaded Contents</span>
+        <span id="downloadedContentsTitle">${escapeHtml(t("Downloaded Contents"))}</span>
         <button
           type="button"
           class="modal-close"
           id="closeDownloadedContentsModalBtn"
-          aria-label="Close"
+          aria-label="${escapeHtml(t("Close"))}"
         >&times;</button>
       </div>
       <div class="modal-content"></div>
       <div class="modal-footer">
-        <button type="button" id="downloadedContentsCloseBtn">Close</button>
+        <button type="button" id="downloadedContentsCloseBtn">${escapeHtml(t("Close"))}</button>
       </div>
     </div>
   `;
@@ -524,30 +524,57 @@ function escapeHtml(value) {
     .replace(/"/g, "&quot;");
 }
 
+function t(rawText, fallback = rawText, replacements = {}) {
+  const translated =
+    window.I18N?.translateLiteral?.(rawText, fallback) || fallback;
+
+  return String(translated).replace(/\{\{(\w+)\}\}/g, (match, key) =>
+    Object.prototype.hasOwnProperty.call(replacements, key)
+      ? String(replacements[key])
+      : match,
+  );
+}
+
 function renderDownloadedContentsSummary(groups, totalCached, totalAssets) {
   const visibleGroups = groups.filter((group) => group.cachedCount > 0);
   if (!visibleGroups.length) {
     return `
-      <p>No downloaded contents found.</p>
-      <p>Downloaded files: ${totalCached} of ${totalAssets}.</p>
+      <p>${escapeHtml(t("No downloaded contents found."))}</p>
+      <p>${escapeHtml(
+        t("Downloaded files: {{cached}} of {{total}}.", undefined, {
+          cached: totalCached,
+          total: totalAssets,
+        }),
+      )}</p>
     `;
   }
 
   const items = visibleGroups
     .map((group) => {
       const complete = group.cachedCount >= group.totalCount;
-      const status = complete ? "Downloaded" : "Partly downloaded";
+      const status = t(complete ? "Downloaded" : "Partly downloaded");
       return `
         <li class="downloaded-content-item${complete ? " is-complete" : ""}">
           <span class="downloaded-content-item__title">${escapeHtml(group.label)}</span>
-          <span class="downloaded-content-item__meta">${status} - ${group.cachedCount} of ${group.totalCount} files</span>
+          <span class="downloaded-content-item__meta">${escapeHtml(
+            t("{{status}} - {{cached}} of {{total}} files", undefined, {
+              status,
+              cached: group.cachedCount,
+              total: group.totalCount,
+            }),
+          )}</span>
         </li>
       `;
     })
     .join("");
 
   return `
-    <p>Downloaded files: ${totalCached} of ${totalAssets}.</p>
+    <p>${escapeHtml(
+      t("Downloaded files: {{cached}} of {{total}}.", undefined, {
+        cached: totalCached,
+        total: totalAssets,
+      }),
+    )}</p>
     <ul class="downloaded-content-list">${items}</ul>
   `;
 }
@@ -557,7 +584,7 @@ export async function openDownloadedContentsModal() {
   setDownloadedContentsModalContent(`
     <div class="downloaded-content-loading" role="status" aria-live="polite">
       <span class="downloaded-content-spinner" aria-hidden="true"></span>
-      <span>Checking downloaded contents...</span>
+      <span>${escapeHtml(t("Checking downloaded contents..."))}</span>
     </div>
   `);
 
@@ -593,7 +620,7 @@ export async function openDownloadedContentsModal() {
     if (sharedAssets.length) {
       groups.unshift({
         cachedCount: sharedCachedCount,
-        label: "App shell and shared assets",
+        label: t("App shell and shared assets"),
         totalCount: sharedAssets.length,
       });
     }
@@ -606,16 +633,18 @@ export async function openDownloadedContentsModal() {
       groups,
       cachedUrls.size,
       assets.length,
-    )}<p class="downloaded-content-size">Approx. cached size: ${formatDownloadSize(
-      cachedBytes,
-    )}.</p>`;
+    )}<p class="downloaded-content-size">${escapeHtml(
+      t("Approx. cached size: {{size}}.", undefined, {
+        size: formatDownloadSize(cachedBytes),
+      }),
+    )}</p>`;
     setDownloadedContentsModalContent(html);
   } catch (err) {
     console.warn("[menu] could not inspect downloaded contents:", err);
     setDownloadedContentsModalContent(
-      `<p>Could not check downloaded contents.</p><p>${escapeHtml(
-        err?.message || err,
-      )}</p>`,
+      `<p>${escapeHtml(
+        t("Could not check downloaded contents."),
+      )}</p><p>${escapeHtml(err?.message || err)}</p>`,
     );
   }
 }

@@ -15,6 +15,11 @@ export function closeOfflineContentModal() {
   const el = document.getElementById("offlineContentModal");
   if (el) el.style.display = "none";
 }
+
+function t(rawText, fallback = rawText) {
+  return window.I18N?.translateLiteral?.(rawText, fallback) || fallback;
+}
+
 export async function downloadSelectedAssets() {
   const selected = Array.from(
     document.querySelectorAll("#offlineContentModal input:checked"),
@@ -34,17 +39,17 @@ export async function downloadSelectedAssets() {
   };
   const assetsToCache = selected.flatMap((k) => assetMap[k] || []);
   if (!assetsToCache.length) {
-    alert("No assets selected for download.");
+    alert(t("No assets selected for download."));
     return;
   }
   try {
     const sw = await navigator.serviceWorker.ready;
     sw.active?.postMessage({ type: "CACHE_ASSETS", payload: assetsToCache });
-    alert("Download started in the background.");
+    alert(t("Download started in the background."));
     closeOfflineContentModal();
   } catch (err) {
     console.error(err);
-    alert("Could not start download. Service worker not ready.");
+    alert(t("Could not start download. Service worker not ready."));
   }
 }
 

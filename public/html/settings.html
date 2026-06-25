@@ -1,6 +1,8 @@
 <div class="profile-page settings-page page active" id="settingsPage">
   <div class="profile-topbar">
-    <div class="profile-topbar__title">Settings</div>
+    <div class="profile-topbar__title" data-i18n="auto.settings.settings">
+      Settings
+    </div>
 
     <div class="profile-topbar__icons">
       <button
@@ -26,12 +28,12 @@
         data-route="languageinstall"
         data-guest-free="true"
       >
-        <span>Language</span>
+        <span data-i18n="auto.settings.language">Language</span>
         <strong id="settingsLanguageLabel">English</strong>
       </button>
 
       <div class="settings-row">
-        <span>Notifications</span>
+        <span data-i18n="auto.settings.notifications">Notifications</span>
         <button
           type="button"
           class="settings-toggle"
@@ -44,7 +46,9 @@
       </div>
 
       <div class="settings-row">
-        <span>Privacy / data consent</span>
+        <span data-i18n="auto.settings.privacy_data_consent"
+          >Privacy / data consent</span
+        >
         <button
           type="button"
           class="settings-inline-action"
@@ -60,24 +64,32 @@
         class="settings-row settings-row--link"
         id="settingsDownloadedContentsBtn"
       >
-        <span>Downloaded contents</span>
-        <strong>View</strong>
+        <span data-i18n="auto.settings.downloaded_contents"
+          >Downloaded contents</span
+        >
+        <strong data-i18n="auto.settings.view">View</strong>
       </button>
     </section>
 
     <section class="settings-section" aria-labelledby="settingsAccount">
-      <h2 class="settings-section-title" id="settingsAccount">Account</h2>
+      <h2
+        class="settings-section-title"
+        id="settingsAccount"
+        data-i18n="auto.settings.account"
+      >
+        Account
+      </h2>
 
       <a
         class="settings-row settings-row--link"
         href="mailto:support@arclightproject.com"
       >
-        <span>Help / contact</span>
-        <strong>Email</strong>
+        <span data-i18n="auto.settings.help_contact">Help / contact</span>
+        <strong data-i18n="auto.settings.email">Email</strong>
       </a>
 
       <div class="settings-row">
-        <span>App version</span>
+        <span data-i18n="auto.settings.app_version">App version</span>
         <strong id="settingsAppVersion">ver --.--.----</strong>
       </div>
     </section>

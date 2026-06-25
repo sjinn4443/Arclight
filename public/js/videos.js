@@ -7,6 +7,7 @@ import { loadPage, syncRouteHash, getRouteFromHash } from "./navigation.js";
 import { showExperimentalMiniAppNoticeForPage } from "./experimentalMiniAppNotice.js";
 import { syncLessonCompletionTick } from "./lessonCompletionTick.js";
 import { initializeInteractiveLearningTopicQuizzes } from "./interactiveLearningTopicQuizzes.js";
+import { syncLocalizedVideoSubtitles } from "./videoSubtitles.js";
 
 // Keep track of the currently active subpage element within videos.html
 let currentPageElement = null;
@@ -2998,6 +2999,7 @@ async function applyVideoPageMode(pageId, mode, { preserveTime = true } = {}) {
   try {
     video.load();
   } catch {}
+  void syncLocalizedVideoSubtitles(video);
 
   const restore = () => {
     if (!preserveTime) return;

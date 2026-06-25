@@ -1,4 +1,4 @@
-import { getLanguage } from "./i18n.js";
+import { getLanguage, translateLiteral } from "./i18n.js";
 import { loadPage } from "./navigation.js";
 import { PROFILE_STORAGE_KEYS, dispatchProfileUpdated } from "./profileData.js";
 
@@ -48,7 +48,7 @@ function writeBooleanSetting(key, value) {
 function setStatus(message) {
   const status = document.getElementById("settingsStatus");
   if (!status) return;
-  status.textContent = message;
+  status.textContent = translateLiteral(message, message);
 }
 
 function renderToggle(button, enabled) {

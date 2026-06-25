@@ -421,6 +421,7 @@ const ENGLISH_LANGUAGE_LABELS = {
   te: "Telugu",
   ln: "Lingala",
   fa: "Persian",
+  pt: "Portuguese",
   sn: "Shona",
   es: "Spanish",
   sw: "Swahili",
@@ -850,18 +851,18 @@ function getDownloadChoiceLabel(choice) {
 }
 
 function getVideoQualitySummary(videoQuality) {
-  if (videoQuality === "low") return "in low resolution";
-  if (videoQuality === "high") return "in high resolution";
-  return "in low and high resolution";
+  if (videoQuality === "low") return t("in low resolution");
+  if (videoQuality === "high") return t("in high resolution");
+  return t("in low and high resolution");
 }
 
 function getSelectedContentSummary(downloadSelection) {
   if (!downloadSelection || Array.isArray(downloadSelection)) {
-    return "selected downloaded content";
+    return t("selected downloaded content");
   }
 
   if (downloadSelection.mode === "app-only") {
-    return "app pages, text, images and other non-video content";
+    return t("app pages, text, images and other non-video content");
   }
 
   const qualitySummary = getVideoQualitySummary(downloadSelection.videoQuality);
@@ -880,14 +881,16 @@ function getSelectedContentSummary(downloadSelection) {
       extended: "extended examination content and mini apps",
       tools: "tool overview videos and related assets",
     };
-    return `${catalogSummaries[downloadSelection.catalogId] || "selected content"} ${qualitySummary}`;
+    return `${t(
+      catalogSummaries[downloadSelection.catalogId] || "selected content",
+    )} ${qualitySummary}`;
   }
 
-  return `videos, images, animations and app pages ${qualitySummary}`;
+  return `${t("videos, images, animations and app pages")} ${qualitySummary}`;
 }
 
 function getNormallyAvailableItems(downloadSelection) {
-  const items = ["App quizzes"];
+  const items = [t("App quizzes")];
   const selectedContentSummary = getSelectedContentSummary(downloadSelection);
   if (selectedContentSummary) items.push(selectedContentSummary);
   return items;
