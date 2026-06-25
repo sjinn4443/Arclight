@@ -14734,11 +14734,12 @@ img[src*="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/"] {
 }
 
 .dr-retina-graphic--dr-sequence .dr-retina-graphic__sequence-layer--dot-blood {
-  left: 70%;
-  top: 71%;
+  left: 66%;
+  top: 55%;
   z-index: 5;
   width: min(34%, 110px);
   clip-path: inset(0 100% 0 0);
+  transform: translate(-50%, -50%) rotate(20deg);
 }
 
 .dr-retina-graphic--dr-sequence .dr-retina-graphic__sequence-layer--detachment {

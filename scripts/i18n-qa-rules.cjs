@@ -29,10 +29,16 @@ const ALLOWED_EXACT_ENGLISH_PATTERNS = [
   /^\d+:\d+/,
   /^OK$/,
   /^[A-Z]$/,
+  /^\d+(?:\.\d+)?\s*m$/i,
+  /^\d+[.-][A-Za-z]$/i,
+  /^[A-Z](?:\s+[A-Z])+$/,
+  /^(Amsler|IRMA|Morph|RAAB|Sauron)$/i,
 ];
 
 const LOCALE_SPECIFIC_ALLOWED_EXACT_ENGLISH_KEYS = {
-  spanish: [/^i18nExtra\.no$/],
+  french: [/^auto\.videos\.patient_b$/],
+  portuguese: [/^auto\.glaucomascrollimages\.(central|halos|normal)$/],
+  spanish: [/^i18nExtra\.no$/, /^auto\.glaucomascrollimages\.halos$/],
   te: [
     /^menu\.(cybersight_link|retinopathy_of_prematurity_link|cvi_scotland_link)$/,
   ],
