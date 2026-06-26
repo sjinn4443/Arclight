@@ -36,6 +36,8 @@ Arclight is primarily a static, client-side PWA served from `public/` (or `dist/
   - UI actions should use natural target-language wording rather than literal `OK` / `Cancel` carry-overs when clearer equivalents exist.
   - Language-picker labels should use native-script names where applicable.
   - Translation checks must include JS-rendered captions, toggles, search labels, and aria labels, not only static HTML.
+  - Attribute copy (`aria-label`, `title`, `placeholder`, and non-decorative `alt`) must either use an explicit `data-i18n` target or a literal covered by `i18nLiteral`.
+  - JS-created DOM with translated labels should call `window.I18N?.applyTranslations?.(node)` after insertion so assistive labels are localized immediately.
   - When a route still depends on legacy root alias keys as well as scoped keys, keep both in sync to avoid regressions.
 - Videos-route subpage pattern: cards use `data-page` / `data-target` IDs that map to hidden `.page` sections in `public/html/videos.html`; `public/js/videos.js` lazy-loads any `iframe[data-src]` the first time a subpage is shown.
 - Videos-route local MP4 pattern: video lessons use hidden `.page` sections in `public/html/videos.html`, stable `data-target` launcher rows, and matching `VIDEO_PAGE_SOURCES` entries in `public/js/videos.js`; full-animation files live under `public/videos/FullAnim/`.

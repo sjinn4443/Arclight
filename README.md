@@ -92,13 +92,15 @@ Build output notes:
   - Prefer natural UI actions in each language instead of literal `OK` / `Cancel` carry-overs when `Yes` / `No` or an equivalent is clearer.
   - Keep language-picker labels in their native script where applicable.
   - Avoid hardcoded English in JS-rendered captions, menus, search labels, and aria labels; use explicit i18n keys or the shared legacy fallback path.
+  - For `aria-label`, `title`, `placeholder`, and non-decorative `alt` text, bind the attribute with a `data-i18n` target when a scoped key exists, or ensure the literal is covered by `i18nLiteral`.
+  - After injecting dynamic DOM that includes accessible labels or translated attributes, call `window.I18N?.applyTranslations?.(node)` so labels are localized immediately rather than waiting for a later global pass.
   - When legacy root alias keys exist alongside scoped keys (for example Eyes page headers), keep both aligned to avoid route/test regressions.
 - Rule source: `scripts/i18n-qa-rules.cjs` stores the standing homonym guidance and the small allowlist of acceptable English-only brand/acronym values.
 - Symbol preservation rule: button/icon symbols such as `☰`, `<`, `×` must not be translated in locale JSON files. Keep these values identical across all languages.
 
-Current QA baseline as of `2026-06-12`:
+Current QA baseline as of `2026-06-26`:
 
-- `npm run test:a11y` passes against `143` HTML files.
+- `npm run test:a11y` passes against `145` HTML files.
 - `npm run check-translations` reports `0` missing used keys, `0` damaged strings, `0` exact-English carry-overs, `0` medical homonym violations, and `0` subtitle medical homonym violations.
 - Keep new HTML/JS copy, locale JSON, VTT subtitles, and generated subtitle catalogs in sync so this baseline stays clean.
 

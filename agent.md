@@ -172,6 +172,8 @@ Use this when the user asks to make a page like `childhoodFundalPreparationPage`
 - Keep language names in selectors/popups in their native script where applicable.
 - Prefer explicit scoped i18n keys for new work, but keep required legacy root alias keys aligned when existing pages/tests still depend on them.
 - Check JS-rendered captions, toggles, menus, and aria labels for hardcoded English; translation QA is not limited to static HTML.
+- For `aria-label`, `title`, `placeholder`, and non-decorative `alt` text, use an explicit `data-i18n` attribute target when a scoped key exists; otherwise use a literal already covered by `i18nLiteral`.
+- After creating dynamic DOM with translated accessible labels, call `window.I18N?.applyTranslations?.(node)` after insertion.
 - Save locale JSON, VTT subtitle sources, and generated subtitle outputs as UTF-8; do not ship replacement-character damage, `???`, or mojibake.
 - After translation or subtitle edits, scan both source files and generated iOS HLS subtitle outputs for `???`, `�`, and unintended fallback English in the target language.
 
@@ -180,7 +182,7 @@ Use this when the user asks to make a page like `childhoodFundalPreparationPage`
 - `scripts/check-translations.cjs` is the canonical audit entry point for used-key coverage, damaged-string detection, and fallback-English review.
 - `scripts/i18n-qa-rules.cjs` stores the standing medical homonym guidance; use those meanings first when a source term is ambiguous.
 - Media elements must either be explicitly decorative or have an accessible name via `alt`, `aria-label`, `aria-labelledby`, or `title`. Runtime support now lives in `public/js/mediaA11y.js`, and the static audit is `scripts/test-a11y.mjs`.
-- Current baseline (`2026-06-12`): accessibility audit passes on `143` HTML files; translation QA reports `0` missing used keys, `0` damaged strings, `0` exact-English carry-overs, `0` medical homonym violations, and `0` subtitle medical homonym violations.
+- Current baseline (`2026-06-26`): accessibility audit passes on `145` HTML files; translation QA reports `0` missing used keys, `0` damaged strings, `0` exact-English carry-overs, `0` medical homonym violations, and `0` subtitle medical homonym violations.
 
 ## Issue Summary
 

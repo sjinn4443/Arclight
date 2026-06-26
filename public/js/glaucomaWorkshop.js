@@ -726,7 +726,7 @@ function initGlaucomaSummaryAtomsPage(pageId, viewerId, imgSrc) {
         margin: 0 auto 48px;
         transform-origin: 50% 0;
       ">
-        <img src="${imgSrc}" alt="ATOMS handout image" style="
+        <img src="${imgSrc}" alt="ATOMS handout" data-i18n="i18nLiteral.ATOMS handout:alt" style="
           display: block;
           width: 100%;
           max-width: none;
@@ -741,6 +741,7 @@ function initGlaucomaSummaryAtomsPage(pageId, viewerId, imgSrc) {
   const img = viewer.querySelector(".atoms-handout-stage img");
   if (!stage) return;
 
+  window.I18N?.applyTranslations?.(viewer);
   setupGlaucomaAtomsButtonZoom(viewer, stage);
   lockGlaucomaAtomsViewerHeight(viewer, img);
 

@@ -1790,6 +1790,7 @@ const FUNDAL_TEXT_KEYS = new Map([
   ],
   ["Repeat hand wash", "i18nExtra.fundal_reflex.repeat_hand_wash"],
   ["Next page", "i18nExtra.fundal_reflex.next_page"],
+  ["Next animation", "i18nExtra.next"],
   ["Replay", "i18nExtra.fundal_reflex.replay"],
 ]);
 
@@ -2373,6 +2374,10 @@ function createStageReplayButtonElement() {
   replayBtn.dataset.fundalStageReplayBtn = "1";
   replayBtn.setAttribute("aria-label", "Replay");
   replayBtn.title = "Replay";
+  replayBtn.setAttribute(
+    "data-i18n",
+    "i18nExtra.fundal_reflex.replay:aria-label;i18nExtra.fundal_reflex.replay:title",
+  );
   replayBtn.innerHTML =
     '<img class="childhood-fundal-stage-replay-btn__icon" src="/images/icon/base/replay.webp" alt="" aria-hidden="true" draggable="false">';
   replayBtn.style.display = "none";

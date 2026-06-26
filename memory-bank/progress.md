@@ -34,7 +34,7 @@
 - Case-study chat and flashcards: `casestudy.html` hosts primary/intermediate/advanced case-study entries, with primary chat/flashcards in `casestudy_primary.js`, intermediate chat in `casestudy.js`, and glaucoma history-taking in `glaucomaHistoryCaseStudy.js`.
 - iPad/tablet responsive fixes: route-specific responsive overrides in `public/style/responsive.css` now cover dashboard/menu/onboarding/My Learning, Videos pages, case-study chat, workshops, and subapp layouts.
 - Testing setup: Jest for unit, UI, and API testing, with Git hooks available for automated checks.
-- Static accessibility audit: `scripts/test-a11y.mjs` checks media/button accessible names and currently passes on `143` HTML files.
+- Static accessibility audit: `scripts/test-a11y.mjs` checks media/button accessible names and currently passes on `145` HTML files.
 - Translation audit baseline: `scripts/check-translations.cjs` audits used i18n keys, damaged UTF-8 strings, fallback-English carry-overs, medical homonym guidance, and subtitle homonym coverage; the current baseline is clean.
 - CI/CD pipeline: GitHub Actions CI/CD pipeline at `.github/workflows/ci-cd.yml` runs formatting checks, build, accessibility checks, Jest, and artifact upload.
 - Security enhancements: reports Basic Auth protection and attempt rate limiting in `server.cjs`.
@@ -53,7 +53,7 @@
 - Interactive elements: continue refining quizzes, case studies, and interactive tools for a more engaging user experience.
 - Robust error handling: improve client-side error handling for a smoother user experience across features.
 - Accessibility features: enhance ARIA attributes, keyboard navigation, and general accessibility across the application.
-- Translation and subtitle maintenance: keep new user-facing HTML/JS copy, locale JSON, subtitle catalogs, and VTT files synchronized so the clean `npm run check-translations` baseline stays clean.
+- Translation and subtitle maintenance: keep new user-facing HTML/JS copy, accessible label attributes, locale JSON, subtitle catalogs, and VTT files synchronized so the clean `npm run check-translations` baseline stays clean.
 - Offline download maintenance: keep asset paths, offline catalog matching, low/high video filtering, HLS/subtitle cache inclusion, service-worker cache behavior, and Downloaded Contents summaries aligned when adding media. For full-animation MP4 lessons, keep `public/videos/FullAnim/` file names and `VIDEO_PAGE_SOURCES` entries aligned with launcher rows and tests.
 - Progress/row maintenance: use the shared lesson progress and completion tick helpers for new rows instead of adding route-specific progress storage.
 - Case-study maintenance: keep `data-target` values, page IDs, progress targets, My Learning mappings, and `casechat-*` styles synchronized when adding or moving case-study content.

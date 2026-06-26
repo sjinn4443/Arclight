@@ -3888,6 +3888,7 @@ function ensureQuizPage() {
     page.innerHTML = `
       <iframe id="anteriorQuizFrame"
               title="Anterior Segment Quiz"
+              data-i18n="quizzes.anteriorSegmentQuizTitle:title"
               style="width:100%;height:100%;border:none;"></iframe>
     `;
     const host = findPagesHost();

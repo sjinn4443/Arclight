@@ -418,7 +418,8 @@ function injectInteractiveSubappChrome(iframe) {
     backBtn.className = "icon-button arclight-embedded-back";
     backBtn.type = "button";
     backBtn.textContent = "";
-    backBtn.setAttribute("aria-label", "Back to Interactive Learning");
+    backBtn.setAttribute("aria-label", "Back");
+    backBtn.setAttribute("data-i18n", "i18nLiteral.Back:aria-label");
     backBtn.addEventListener("click", (event) => {
       event.preventDefault();
       if (goToStoredInteractiveLearningReturn()) return;

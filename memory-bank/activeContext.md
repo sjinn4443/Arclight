@@ -126,6 +126,11 @@ Childhood Fundal Reflex scrollytelling is also an active maintenance area:
   - Restored Eyes-page legacy root alias keys and aligned locale aliases so older tests/pages still translate correctly.
   - Recorded the standing translation QA rules: medical terminology accuracy, formal tone where appropriate, natural UI wording, native-script language names, symbol preservation, and JS/runtime text checks.
 
+- accessibility/i18n attribute sweep (2026-06-26):
+  - Bound uncovered static and JS-created labels to existing locale-backed keys for anterior quiz images, PDF/ATOMS images, fundal replay/next controls, embedded back controls, diabetic image lightbox close controls, lesson completion ticks, and the anterior quiz iframe title.
+  - Dynamic DOM paths that create translated accessible labels now call `window.I18N?.applyTranslations?.(node)` immediately after insertion.
+  - Confirmed `npm run test:a11y` and `npm run check-translations` remain clean after the sweep.
+
 - Interactive Learning external embeds (2026-03-11):
   - Added `Fundal Reflex` and `Trauma` buttons under the Primary section, and `Amsler` under Intermediate on `interactiveLearningPage`.
   - Added matching hidden subpages in `public/html/videos.html` that lazy-load external Netlify apps via `iframe[data-src]`.

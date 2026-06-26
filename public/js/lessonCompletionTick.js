@@ -227,8 +227,13 @@ export function syncLessonCompletionTick(row, percent, colour = "") {
     tick.className = COMPLETE_TICK_CLASS;
     tick.setAttribute("aria-label", "Complete");
     tick.setAttribute("title", "Complete");
+    tick.setAttribute(
+      "data-i18n",
+      "auto.videos.complete:aria-label;auto.videos.complete:title",
+    );
     tick.innerHTML = COMPLETE_TICK_MARKUP;
     title.appendChild(tick);
+    window.I18N?.applyTranslations?.(tick);
   }
 
   resetCompletionTickPosition(title, tick);

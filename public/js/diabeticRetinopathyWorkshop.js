@@ -1682,10 +1682,11 @@ function initializeDiabeticProtocolInteractions() {
     lightbox.setAttribute("role", "dialog");
     lightbox.setAttribute("aria-modal", "true");
     lightbox.innerHTML = `
-      <button type="button" aria-label="Close image">x</button>
+      <button type="button" aria-label="Close" data-i18n="languageInstall.closeButton:aria-label">x</button>
       <img src="${image.currentSrc || image.src}" alt="${image.alt || ""}">
     `;
     document.body.appendChild(lightbox);
+    window.I18N?.applyTranslations?.(lightbox);
   });
 
   document.addEventListener("click", (event) => {

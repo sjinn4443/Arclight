@@ -341,7 +341,8 @@ export function initializeFundalReflexPdf() {
 
   const img = document.createElement("img");
   img.src = "images/pdf/Workshop/Childhood/FundalPDF.svg";
-  img.alt = "Fundal reflex PDF";
+  img.alt = "Fundal reflex PDF viewer";
+  img.setAttribute("data-i18n", "i18nLiteral.Fundal reflex PDF viewer:alt");
   img.draggable = false;
   img.style.display = "block";
   img.style.width = "100%";
@@ -353,6 +354,7 @@ export function initializeFundalReflexPdf() {
 
   stage.appendChild(img);
   viewer.appendChild(stage);
+  window.I18N?.applyTranslations?.(stage);
 
   viewer.style.position = "relative";
   viewer.style.left = "auto";
