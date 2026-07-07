@@ -36,7 +36,8 @@ These routes are implemented directly in [`server.cjs`](../server.cjs).
 - `DATABASE_URL` - primary runtime Postgres connection
 - `REPORTS_READ_DATABASE_URL` - optional read-only reports connection
 - `REPORTS_ADMIN_DATABASE_URL` - optional delete-capable reports connection
-- No DB URL - uses `reports/data/telemetry.ndjson` unless `DISABLE_DB_STORAGE=true`
+- No DB URL in non-production - uses encrypted `reports/data/telemetry.ndjson` unless `DISABLE_DB_STORAGE=true`
+- No DB URL in production - uses no-op storage unless `ENABLE_NDJSON_STORAGE=true`
 - `DISABLE_DB_STORAGE=true` - forces no-op storage, used by Playwright E2E runs
 
 ### Delete controls
@@ -49,7 +50,9 @@ These routes are implemented directly in [`server.cjs`](../server.cjs).
 ```bash
 # PowerShell
 $env:DASHBOARD_PASSWORD="your-password"
-# Optional. Omit DATABASE_URL to use reports/data/telemetry.ndjson.
+# Required if using the local NDJSON fallback.
+$env:ENCRYPTION_SECRET="replace-with-a-long-random-secret"
+# Optional. Omit DATABASE_URL to use encrypted reports/data/telemetry.ndjson locally.
 # $env:DATABASE_URL="postgres://user:password@host:5432/database"
 
 npm start

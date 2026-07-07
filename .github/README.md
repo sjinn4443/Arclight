@@ -17,7 +17,7 @@ What it does:
 3. **Quality gates**
    - Formatting: `npm run format:check`
    - Build: `npm run build`
-   - Security audit: `npm audit --audit-level=high` _(non-blocking)_
+   - Runtime security audit: `npm audit --omit=dev --audit-level=high`
 4. **Tests**
    - Accessibility: `npm run test:a11y`
    - Jest: `npm run test:ci`

@@ -56,3 +56,4 @@ tmp-codex-build*/
 # Generated telemetry exports
 reports/data/*.ndjson
 reports/data/*.sql
+reports/data/users.json

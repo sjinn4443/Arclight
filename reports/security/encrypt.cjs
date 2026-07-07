@@ -2,17 +2,23 @@ const crypto = require("crypto");
 
 const ALGO = "aes-256-gcm";
 const SECRET = process.env.ENCRYPTION_SECRET; // long random string
-if (!SECRET && process.env.NODE_ENV !== "test") {
-  console.error("ENCRYPTION_SECRET is not set.");
+
+function requireSecret() {
+  if (!SECRET) {
+    throw new Error(
+      "ENCRYPTION_SECRET is required for NDJSON telemetry writes",
+    );
+  }
 }
 
 function deriveKey(salt) {
+  requireSecret();
   // 32 bytes key for AES-256
   return crypto.scryptSync(SECRET, salt, 32);
 }
 
 function encrypt(text) {
-  if (!SECRET) return text;
+  requireSecret();
 
   const salt = crypto.randomBytes(16);
   const key = deriveKey(salt);

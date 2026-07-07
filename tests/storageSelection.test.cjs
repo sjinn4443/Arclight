@@ -33,8 +33,23 @@ afterEach(() => {
 });
 
 describe("storage selection", () => {
-  test("uses NDJSON storage when no Postgres URL is configured", () => {
+  test("uses NDJSON storage in non-production when no Postgres URL is configured", () => {
     expect(loadStorage()).toEqual({ kind: "ndjson" });
+  });
+
+  test("uses disabled storage in production when no Postgres URL is configured", () => {
+    expect(loadStorage({ NODE_ENV: "production" })).toEqual({
+      kind: "disabled",
+    });
+  });
+
+  test("allows production NDJSON storage only when explicitly enabled", () => {
+    expect(
+      loadStorage({
+        NODE_ENV: "production",
+        ENABLE_NDJSON_STORAGE: "true",
+      }),
+    ).toEqual({ kind: "ndjson" });
   });
 
   test("uses Postgres storage when a database URL is configured", () => {

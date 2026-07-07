@@ -117,6 +117,7 @@ Arclight runs in multiple modes (dev/test/prod). A local `.env` is optional for 
 - `PORT`: server port (default `3000`)
 - `SERVE_DIST`: when `true` / `1`, serve `dist/` even if `NODE_ENV != production`
 - `DISABLE_DB_STORAGE`: when `true` / `1`, forces no-op runtime storage. Playwright uses this so local E2E runs do not write telemetry.
+- `ENABLE_NDJSON_STORAGE`: allows file-backed telemetry in production when explicitly set. Keep this off unless you have a deliberate encrypted fallback plan.
 
 ### Reports / admin access
 
@@ -130,11 +131,11 @@ Arclight runs in multiple modes (dev/test/prod). A local `.env` is optional for 
 - `EMERGENCY_MODE`: `off` | `readonly` | `emergency` | `lockdown` (`maintenance` is still accepted as a legacy alias)
 - `EMERGENCY_MESSAGE`: optional custom maintenance message used in `emergency` and `lockdown`
 
-### Telemetry encryption (optional)
+### Telemetry encryption
 
 Legacy NDJSON telemetry can be encrypted at rest when that storage module is used.
 
-- `ENCRYPTION_SECRET`: when set, legacy NDJSON telemetry rows are encrypted at rest (AES-256-GCM via `reports/security/encrypt.cjs`). If not set, that module writes plain JSON.
+- `ENCRYPTION_SECRET`: required for NDJSON telemetry writes. Rows are encrypted at rest with AES-256-GCM via `reports/security/encrypt.cjs`.
 
 ### Telemetry / geo controls
 
@@ -163,7 +164,8 @@ Storage selection:
 
 - Current runtime storage is selected by `storage/index.cjs`.
 - If any Postgres URL is configured and `DISABLE_DB_STORAGE` is not enabled, Postgres is used via `storage/pg-storage.cjs`.
-- If no Postgres URL is configured and `DISABLE_DB_STORAGE` is not enabled, file-backed NDJSON storage is used via `storage/ndjson-storage.cjs`.
+- In non-production, if no Postgres URL is configured and `DISABLE_DB_STORAGE` is not enabled, file-backed NDJSON storage is used via `storage/ndjson-storage.cjs`.
+- In production, if no Postgres URL is configured, storage is no-op unless `ENABLE_NDJSON_STORAGE=true`; NDJSON writes still require `ENCRYPTION_SECRET`.
 - If `DISABLE_DB_STORAGE=1`, storage is no-op via `storage/disabled-storage.cjs`.
 
 The password-protected reports pages are served at:
@@ -210,7 +212,7 @@ Runtime expectations:
 - Railway sets `PORT` at runtime (Dockerfile defaults to `8080`)
 - set `DASHBOARD_PASSWORD` if you intend to access `/reports.html`
 - set `ADMIN_ALLOWED_IPS` if you intend to access reports/admin routes in production
-- set `DATABASE_URL` to use Postgres storage instead of the default NDJSON fallback
+- set `DATABASE_URL` to use Postgres storage; production does not use NDJSON fallback unless `ENABLE_NDJSON_STORAGE=true`
 
 ## Emergency controls
 
