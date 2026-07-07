@@ -5000,6 +5000,13 @@ html.is-apple-ui :is(.eyes-topbar .menuBtn, .icon.menuBtn, #tocToggleBtn) {
   transform: translate(-50%, -50%) !important;
 }
 
+@media (max-width: 600px) {
+  #atomsCardPage .atoms-card-zoom-controls {
+    left: auto !important;
+    right: 12px !important;
+  }
+}
+
 #childhoodEyeBrainImagesPage .vs-story-progress__step {
   align-items: center !important;
   box-sizing: border-box !important;
