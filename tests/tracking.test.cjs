@@ -89,7 +89,7 @@ describe("server security hardening", () => {
   test("does not persist telemetry outside production", async () => {
     const { app, mockStorage } = await loadServer({
       NODE_ENV: "development",
-      DASHBOARD_PASSWORD: "secret",
+      DASHBOARD_PASSWORD: "test-dashboard-password-12345",
     });
 
     const profileResponse = await request(app)
@@ -112,7 +112,8 @@ describe("server security hardening", () => {
     const { app, mockStorage } = await loadServer(
       {
         NODE_ENV: "production",
-        DASHBOARD_PASSWORD: "secret",
+        TELEMETRY_ALLOWED_HOSTS: "app.example.com",
+        DASHBOARD_PASSWORD: "test-dashboard-password-12345",
       },
       {
         saveIp: jest.fn().mockRejectedValue(new Error("write failed")),
@@ -136,7 +137,7 @@ describe("server security hardening", () => {
     const { app, mockStorage } = await loadServer({
       NODE_ENV: "production",
       TELEMETRY_ALLOWED_HOSTS: "app.example.com",
-      DASHBOARD_PASSWORD: "secret",
+      DASHBOARD_PASSWORD: "test-dashboard-password-12345",
     });
 
     const blocked = await request(app)
@@ -184,7 +185,7 @@ describe("server security hardening", () => {
       NODE_ENV: "production",
       STATIC_ROOT_DIR: "public",
       TELEMETRY_ALLOWED_HOSTS: host,
-      DASHBOARD_PASSWORD: "secret",
+      DASHBOARD_PASSWORD: "test-dashboard-password-12345",
     });
 
     const htmlResponse = await request(app)
@@ -223,7 +224,7 @@ describe("server security hardening", () => {
     const { app, mockStorage } = await loadServer({
       NODE_ENV: "production",
       TELEMETRY_ALLOWED_HOSTS: "app.example.com",
-      DASHBOARD_PASSWORD: "secret",
+      DASHBOARD_PASSWORD: "test-dashboard-password-12345",
     });
 
     const response = await request(app)
@@ -251,7 +252,7 @@ describe("server security hardening", () => {
     const { app, mockStorage } = await loadServer({
       NODE_ENV: "production",
       TELEMETRY_ALLOWED_HOSTS: "app.example.com",
-      DASHBOARD_PASSWORD: "secret",
+      DASHBOARD_PASSWORD: "test-dashboard-password-12345",
     });
 
     const auth = buildTelemetryAuth();
@@ -274,7 +275,7 @@ describe("server security hardening", () => {
     const { app, mockStorage } = await loadServer({
       NODE_ENV: "production",
       TELEMETRY_ALLOWED_HOSTS: "app.example.com",
-      DASHBOARD_PASSWORD: "secret",
+      DASHBOARD_PASSWORD: "test-dashboard-password-12345",
     });
 
     const auth = buildTelemetryAuth();
@@ -298,7 +299,7 @@ describe("server security hardening", () => {
     const { app, mockStorage } = await loadServer({
       NODE_ENV: "production",
       TELEMETRY_ALLOWED_HOSTS: "app.example.com",
-      DASHBOARD_PASSWORD: "secret",
+      DASHBOARD_PASSWORD: "test-dashboard-password-12345",
     });
 
     let response;
@@ -317,7 +318,7 @@ describe("server security hardening", () => {
   test("rate limits repeated bad auth attempts on the reports API", async () => {
     const { app } = await loadServer({
       NODE_ENV: "development",
-      DASHBOARD_PASSWORD: "secret",
+      DASHBOARD_PASSWORD: "test-dashboard-password-12345",
     });
 
     let response;
@@ -335,7 +336,7 @@ describe("server security hardening", () => {
     const { app, mockStorage } = await loadServer(
       {
         NODE_ENV: "development",
-        DASHBOARD_PASSWORD: "secret",
+        DASHBOARD_PASSWORD: "test-dashboard-password-12345",
       },
       {
         getUsersForDashboard: jest
@@ -346,7 +347,7 @@ describe("server security hardening", () => {
 
     const response = await request(app)
       .get("/api/dev/users")
-      .set("Authorization", authHeader("secret"))
+      .set("Authorization", authHeader("test-dashboard-password-12345"))
       .set("Host", "localhost:3000");
 
     expect(response.status).toBe(200);
@@ -359,7 +360,7 @@ describe("server security hardening", () => {
     const { app } = await loadServer(
       {
         NODE_ENV: "development",
-        DASHBOARD_PASSWORD: "secret",
+        DASHBOARD_PASSWORD: "test-dashboard-password-12345",
         REPORTS_ALLOW_LOCAL_DELETE: "true",
       },
       {
@@ -369,7 +370,7 @@ describe("server security hardening", () => {
 
     const response = await request(app)
       .delete("/api/dev/users/anon-1")
-      .set("Authorization", authHeader("secret"))
+      .set("Authorization", authHeader("test-dashboard-password-12345"))
       .set("Host", "localhost:3000");
 
     expect(response.status).toBe(204);
@@ -386,7 +387,7 @@ describe("server security hardening", () => {
   test("exposes healthz even when emergency mode is active", async () => {
     const { app } = await loadServer({
       NODE_ENV: "production",
-      DASHBOARD_PASSWORD: "secret",
+      DASHBOARD_PASSWORD: "test-dashboard-password-12345",
       EMERGENCY_MODE: "lockdown",
     });
 
@@ -402,7 +403,7 @@ describe("server security hardening", () => {
     const { app } = await loadServer(
       {
         NODE_ENV: "development",
-        DASHBOARD_PASSWORD: "secret",
+        DASHBOARD_PASSWORD: "test-dashboard-password-12345",
         EMERGENCY_MODE: "readonly",
         REPORTS_ALLOW_LOCAL_DELETE: "true",
       },
@@ -430,7 +431,7 @@ describe("server security hardening", () => {
 
     const usersResponse = await request(app)
       .get("/api/dev/users")
-      .set("Authorization", authHeader("secret"))
+      .set("Authorization", authHeader("test-dashboard-password-12345"))
       .set("Host", "localhost:3000");
     expect(usersResponse.status).toBe(200);
     expect(usersResponse.headers["x-reports-delete-enabled"]).toBe("0");
@@ -438,7 +439,7 @@ describe("server security hardening", () => {
 
     const deleteResponse = await request(app)
       .delete("/api/dev/users/anon-1")
-      .set("Authorization", authHeader("secret"))
+      .set("Authorization", authHeader("test-dashboard-password-12345"))
       .set("Host", "localhost:3000");
     expect(deleteResponse.status).toBe(503);
     expect(deleteResponse.body).toMatchObject({
@@ -451,7 +452,7 @@ describe("server security hardening", () => {
   test("returns maintenance HTML and API 503 responses in emergency mode", async () => {
     const { app } = await loadServer({
       NODE_ENV: "development",
-      DASHBOARD_PASSWORD: "secret",
+      DASHBOARD_PASSWORD: "test-dashboard-password-12345",
       EMERGENCY_MODE: "emergency",
     });
 
@@ -483,7 +484,7 @@ describe("server security hardening", () => {
   test("accepts maintenance as a legacy alias and normalizes it to emergency", async () => {
     const { app } = await loadServer({
       NODE_ENV: "development",
-      DASHBOARD_PASSWORD: "secret",
+      DASHBOARD_PASSWORD: "test-dashboard-password-12345",
       EMERGENCY_MODE: "maintenance",
     });
 
@@ -505,7 +506,7 @@ describe("server security hardening", () => {
   test("blocks public traffic in lockdown mode but keeps healthz available", async () => {
     const { app } = await loadServer({
       NODE_ENV: "development",
-      DASHBOARD_PASSWORD: "secret",
+      DASHBOARD_PASSWORD: "test-dashboard-password-12345",
       EMERGENCY_MODE: "lockdown",
     });
 
@@ -532,7 +533,7 @@ describe("server security hardening", () => {
     const { app } = await loadServer(
       {
         NODE_ENV: "production",
-        DASHBOARD_PASSWORD: "secret",
+        DASHBOARD_PASSWORD: "test-dashboard-password-12345",
         ADMIN_ALLOWED_IPS: "203.0.113.10",
       },
       {
@@ -542,13 +543,13 @@ describe("server security hardening", () => {
 
     const blockedResponse = await request(app)
       .get("/api/dev/users")
-      .set("Authorization", authHeader("secret"))
+      .set("Authorization", authHeader("test-dashboard-password-12345"))
       .set("X-Forwarded-For", "198.51.100.25");
     expect(blockedResponse.status).toBe(403);
 
     const allowedResponse = await request(app)
       .get("/api/dev/users")
-      .set("Authorization", authHeader("secret"))
+      .set("Authorization", authHeader("test-dashboard-password-12345"))
       .set("X-Forwarded-For", "203.0.113.10");
     expect(allowedResponse.status).toBe(200);
     expect(getUsersSpy).toHaveBeenCalledTimes(1);
@@ -557,12 +558,12 @@ describe("server security hardening", () => {
   test("blocks all admin access in production when no admin IP allowlist is configured", async () => {
     const { app } = await loadServer({
       NODE_ENV: "production",
-      DASHBOARD_PASSWORD: "secret",
+      DASHBOARD_PASSWORD: "test-dashboard-password-12345",
     });
 
     const response = await request(app)
       .get("/api/dev/users")
-      .set("Authorization", authHeader("secret"))
+      .set("Authorization", authHeader("test-dashboard-password-12345"))
       .set("X-Forwarded-For", "203.0.113.10");
 
     expect(response.status).toBe(403);
@@ -572,7 +573,7 @@ describe("server security hardening", () => {
     const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
     const { app } = await loadServer({
       NODE_ENV: "production",
-      DASHBOARD_PASSWORD: "secret",
+      DASHBOARD_PASSWORD: "test-dashboard-password-12345",
       EMERGENCY_MODE: "emergency",
       ADMIN_ALLOWED_IPS: "203.0.113.10",
     });
@@ -584,7 +585,7 @@ describe("server security hardening", () => {
       .set("X-Forwarded-For", "203.0.113.10");
     await request(app)
       .get("/api/dev/users")
-      .set("Authorization", authHeader("secret"))
+      .set("Authorization", authHeader("test-dashboard-password-12345"))
       .set("X-Forwarded-For", "198.51.100.25");
 
     const logs = parseStructuredLogs(logSpy);
@@ -614,7 +615,7 @@ describe("server security hardening", () => {
     const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
     const { app } = await loadServer({
       NODE_ENV: "production",
-      DASHBOARD_PASSWORD: "secret",
+      DASHBOARD_PASSWORD: "test-dashboard-password-12345",
       EMERGENCY_MODE: "emergency",
       ADMIN_ALLOWED_IPS: "203.0.113.10",
     });
@@ -637,7 +638,7 @@ describe("server security hardening", () => {
   test("applies baseline security headers to app routes", async () => {
     const { app } = await loadServer({
       NODE_ENV: "production",
-      DASHBOARD_PASSWORD: "secret",
+      DASHBOARD_PASSWORD: "test-dashboard-password-12345",
     });
 
     const response = await request(app)
@@ -662,7 +663,7 @@ describe("server security hardening", () => {
   test("serves HTML with nonce-based CSP instead of unsafe-inline", async () => {
     const { app } = await loadServer({
       NODE_ENV: "development",
-      DASHBOARD_PASSWORD: "secret",
+      DASHBOARD_PASSWORD: "test-dashboard-password-12345",
     });
 
     const response = await request(app)
@@ -684,12 +685,12 @@ describe("server security hardening", () => {
   test("applies stricter anti-framing policy to reports routes", async () => {
     const { app } = await loadServer({
       NODE_ENV: "development",
-      DASHBOARD_PASSWORD: "secret",
+      DASHBOARD_PASSWORD: "test-dashboard-password-12345",
     });
 
     const response = await request(app)
       .get("/reports.html")
-      .set("Authorization", authHeader("secret"));
+      .set("Authorization", authHeader("test-dashboard-password-12345"));
 
     expect(response.status).toBe(200);
     expect(response.headers["x-frame-options"]).toBe("DENY");
@@ -709,7 +710,7 @@ describe("server security hardening", () => {
   test("keeps the main CSP on HTML 404 responses", async () => {
     const { app } = await loadServer({
       NODE_ENV: "production",
-      DASHBOARD_PASSWORD: "secret",
+      DASHBOARD_PASSWORD: "test-dashboard-password-12345",
     });
 
     const response = await request(app)

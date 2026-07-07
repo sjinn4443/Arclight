@@ -1,6 +1,11 @@
 const { Pool } = require("pg");
 const { URL } = require("url");
 const { enrichIp } = require("../utils/ipEnricher.cjs");
+const {
+  anonymizeIpForStorage,
+  resolveAuditRetentionDays,
+  resolveTelemetryRetentionDays,
+} = require("../security/privacy.cjs");
 
 const LOCAL_DB_HOSTS = new Set(["localhost", "127.0.0.1", "::1"]);
 const poolCache = new Map();
@@ -130,6 +135,39 @@ async function init() {
     ALTER TABLE app_users ADD COLUMN IF NOT EXISTS lat DOUBLE PRECISION;
     ALTER TABLE app_users ADD COLUMN IF NOT EXISTS lon DOUBLE PRECISION;
   `);
+
+  await pruneExpiredTelemetry(initPool);
+}
+
+async function pruneExpiredTelemetry(pool) {
+  const telemetryRetentionDays = resolveTelemetryRetentionDays();
+  if (telemetryRetentionDays != null) {
+    await pool.query(
+      `
+      DELETE FROM app_users
+      WHERE last_seen < NOW() - ($1::int * INTERVAL '1 day')
+    `,
+      [telemetryRetentionDays],
+    );
+    await pool.query(
+      `
+      DELETE FROM ip_logs
+      WHERE ts < NOW() - ($1::int * INTERVAL '1 day')
+    `,
+      [telemetryRetentionDays],
+    );
+  }
+
+  const auditRetentionDays = resolveAuditRetentionDays();
+  if (auditRetentionDays != null) {
+    await pool.query(
+      `
+      DELETE FROM reports_audit_log
+      WHERE created_at < NOW() - ($1::int * INTERVAL '1 day')
+    `,
+      [auditRetentionDays],
+    );
+  }
 }
 
 function profileIdOf(f) {
@@ -264,7 +302,7 @@ async function saveIp(ip) {
     INSERT INTO ip_logs (ip, geo)
     VALUES ($1, $2)
   `,
-    [ip, geo],
+    [anonymizeIpForStorage(ip), geo],
   );
 }
 
@@ -323,4 +361,5 @@ module.exports = {
   getUsersForDashboard,
   saveIp,
   deleteUserForDashboard,
+  pruneExpiredTelemetry,
 };

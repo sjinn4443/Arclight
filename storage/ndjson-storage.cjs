@@ -3,6 +3,12 @@ const path = require("path");
 const { enrichIp } = require("../utils/ipEnricher.cjs");
 const { encrypt, decrypt } = require("../reports/security/encrypt.cjs"); // Import encryption module
 const { logServerError } = require("../security/safe-logging.cjs");
+const {
+  anonymizeIpForStorage,
+  isExpiredTimestamp,
+  resolveAuditRetentionDays,
+  resolveTelemetryRetentionDays,
+} = require("../security/privacy.cjs");
 
 const dataDir = path.join(__dirname, "..", "reports", "data");
 const file = path.join(dataDir, "telemetry.ndjson");
@@ -23,6 +29,7 @@ function writeLine(obj) {
 
 async function init() {
   ensureDir();
+  pruneTelemetryFile();
 }
 
 function toFiniteNumber(v) {
@@ -128,6 +135,39 @@ function parseLine(line) {
   }
 }
 
+function retentionDaysForRow(row) {
+  return row?.type === "audit"
+    ? resolveAuditRetentionDays()
+    : resolveTelemetryRetentionDays();
+}
+
+function pruneTelemetryFile(now = new Date()) {
+  if (!fs.existsSync(file)) return;
+
+  const lines = fs.readFileSync(file, "utf8").split(/\r?\n/).filter(Boolean);
+  const kept = [];
+  let changed = false;
+
+  for (const line of lines) {
+    const parsed = parseLine(line);
+    if (!parsed || !parsed.ts) {
+      kept.push(line);
+      continue;
+    }
+
+    const retentionDays = retentionDaysForRow(parsed);
+    if (isExpiredTimestamp(parsed.ts, retentionDays, now)) {
+      changed = true;
+      continue;
+    }
+
+    kept.push(line);
+  }
+
+  if (!changed) return;
+  fs.writeFileSync(file, kept.length ? `${kept.join("\n")}\n` : "", "utf8");
+}
+
 async function getUsersForDashboard() {
   if (!fs.existsSync(file)) return [];
   const lines = fs.readFileSync(file, "utf8").split(/\r?\n/).filter(Boolean);
@@ -200,7 +240,7 @@ async function saveIp(ip) {
   writeLine({
     type: "ip",
     ts: timestamp,
-    ip: ip,
+    ip: anonymizeIpForStorage(ip),
     geo: geo,
   });
 }
@@ -246,4 +286,5 @@ module.exports = {
   getUsersForDashboard,
   saveIp,
   deleteUserForDashboard,
+  pruneTelemetryFile,
 };

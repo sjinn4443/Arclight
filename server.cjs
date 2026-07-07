@@ -7,6 +7,10 @@ const {
 
 installSafeConsole();
 
+const { assertRuntimeConfig } = require("./security/runtime-config.cjs");
+
+assertRuntimeConfig();
+
 const express = require("express");
 const path = require("path");
 const helmet = require("helmet");
@@ -406,6 +410,11 @@ function isPrivateIp(ip) {
   );
 }
 
+function isExternalIpLookupEnabled() {
+  if (process.env.NODE_ENV !== "production") return true;
+  return isEnabled(process.env.ENABLE_IP_LOCATION_LOOKUP);
+}
+
 function getAdminAllowedIps() {
   return parseAllowedIps(process.env.ADMIN_ALLOWED_IPS);
 }
@@ -778,6 +787,18 @@ async function lookupIpLocation(ip) {
     };
   }
 
+  if (!isExternalIpLookupEnabled()) {
+    return {
+      source: "disabled",
+      countryCode: null,
+      countryName: null,
+      city: null,
+      lat: null,
+      lon: null,
+      area: null,
+    };
+  }
+
   const encodedIp = encodeURIComponent(String(ip || "").trim());
   const candidates = [];
   if (process.env.IPINFO_TOKEN) {
@@ -1014,6 +1035,16 @@ app.get("/api/location/ip", async (req, res) => {
 });
 
 const devDashboardAuthAttempts = new Map();
+
+function safeSecretEquals(input, expected) {
+  const left = Buffer.from(String(input || ""));
+  const right = Buffer.from(String(expected || ""));
+  if (!left.length || !right.length || left.length !== right.length) {
+    return false;
+  }
+  return crypto.timingSafeEqual(left, right);
+}
+
 function basicAuth(req, res, next) {
   const header = req.headers.authorization || "";
   const token = header.startsWith("Basic ") ? header.slice(6) : "";
@@ -1049,7 +1080,7 @@ function basicAuth(req, res, next) {
     logServerError("[dev] rate limiter error", error);
   }
 
-  if (pass && pass === process.env.DASHBOARD_PASSWORD) {
+  if (safeSecretEquals(pass, process.env.DASHBOARD_PASSWORD)) {
     const ip = getClientIp(req);
     devDashboardAuthAttempts.delete(ip);
     req.auth = { user: user || "dashboard" };

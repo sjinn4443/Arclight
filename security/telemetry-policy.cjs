@@ -75,7 +75,7 @@ function isTelemetryWriteAllowed(req) {
   if (isLocalHost(host)) return false;
 
   const allowedHosts = getTelemetryAllowedHosts();
-  if (!allowedHosts.length) return true;
+  if (!allowedHosts.length) return false;
 
   return allowedHosts.some((entry) => hostMatchesAllowed(host, entry));
 }
@@ -168,6 +168,7 @@ function sanitizeTelemetryPayload(payload) {
 
 module.exports = {
   getRequestHost,
+  getTelemetryAllowedHosts,
   isLocalHost,
   isTelemetryWriteAllowed,
   sanitizeTelemetryPayload,

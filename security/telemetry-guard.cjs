@@ -2,6 +2,7 @@ const crypto = require("crypto");
 const path = require("path");
 
 const {
+  getTelemetryAllowedHosts,
   getRequestHost,
   isTelemetryWriteAllowed,
 } = require("./telemetry-policy.cjs");
@@ -24,6 +25,15 @@ function resolveTelemetrySecret() {
   for (const candidate of candidates) {
     const trimmed = String(candidate || "").trim();
     if (trimmed) return trimmed;
+  }
+
+  if (
+    process.env.NODE_ENV === "production" &&
+    getTelemetryAllowedHosts().length
+  ) {
+    throw new Error(
+      "TELEMETRY_TOKEN_SECRET, APP_SECRET, SESSION_SECRET, ENCRYPTION_SECRET, or DASHBOARD_PASSWORD is required when production telemetry is enabled",
+    );
   }
 
   return `ephemeral:${crypto.randomBytes(32).toString("hex")}`;

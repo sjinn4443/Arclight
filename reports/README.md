@@ -4,7 +4,7 @@ This folder contains report-facing assets and historical telemetry export files 
 
 ## What this module does (current behavior)
 
-- Runtime telemetry storage is Postgres-backed when a DB URL is configured, otherwise it falls back to `reports/data/telemetry.ndjson`.
+- Runtime telemetry storage is Postgres-backed when a DB URL is configured. In production, missing DB URLs select no-op storage unless `ENABLE_NDJSON_STORAGE=true` is explicitly set.
 - Local/dev/test requests do not persist new telemetry events.
 - The reports UI is served from the static app (`public/reports.html` and `public/html/reports.html`) and is protected by Basic Auth.
 - The server exposes a small admin API used by the reports UI:
@@ -39,6 +39,8 @@ These routes are implemented directly in [`server.cjs`](../server.cjs).
 - No DB URL in non-production - uses encrypted `reports/data/telemetry.ndjson` unless `DISABLE_DB_STORAGE=true`
 - No DB URL in production - uses no-op storage unless `ENABLE_NDJSON_STORAGE=true`
 - `DISABLE_DB_STORAGE=true` - forces no-op storage, used by Playwright E2E runs
+- `TELEMETRY_RETENTION_DAYS` - profile/IP retention period, default `90`
+- `REPORTS_AUDIT_RETENTION_DAYS` - delete-audit retention period, default `365`
 
 ### Delete controls
 
@@ -69,5 +71,7 @@ By default, local reports are read-only. Set `REPORTS_ALLOW_LOCAL_DELETE=true` o
 - Repeated auth failures against the reports API are rate limited.
 - Reports routes use a stricter anti-framing CSP than the main app.
 - Delete actions are audit logged in Postgres when admin storage is configured.
+- Runtime telemetry IPs are stored in masked form rather than full raw addresses.
+- Production telemetry writes require an explicit host allowlist.
 
 See [`security/README.md`](../security/README.md).

@@ -75,7 +75,6 @@ Build output notes:
 - E2E tests (Playwright): `npm run test:e2e`
 - Fundal route E2E regression suite: `npm run test:fundal`
 - Performance E2E (Playwright): `npm run perf:e2e`
-- Lighthouse CI (LHCI): `npm run perf:lh`
 - Lint: `npm run lint`
 - Format: `npm run format` / `npm run format:check`
 - Type check: `npm run type-check`
@@ -125,6 +124,7 @@ Arclight runs in multiple modes (dev/test/prod). A local `.env` is optional for 
 - `ADMIN_ALLOWED_IPS`: comma-separated exact client IPs allowed to reach `/reports.html`, `/html/reports.html`, and `/api/dev/*` in production. If empty in production, admin/report routes are denied to everyone.
 - `REPORTS_ALLOW_LOCAL_DELETE`: enables report-row deletion only for local development.
 - `REPORTS_ALLOW_DELETE`: enables report-row deletion in deployed environments. Use only with intentional admin access controls.
+- `REPORTS_AUDIT_RETENTION_DAYS`: admin delete-audit retention period, default `365`.
 
 ### Emergency controls
 
@@ -139,8 +139,11 @@ Legacy NDJSON telemetry can be encrypted at rest when that storage module is use
 
 ### Telemetry / geo controls
 
-- `TELEMETRY_ALLOWED_HOSTS`: optional comma-separated host allowlist for telemetry writes.
+- `TELEMETRY_ALLOWED_HOSTS`: comma-separated host allowlist for production telemetry writes. If empty in production, telemetry writes are disabled.
+- `TELEMETRY_TOKEN_SECRET`: stable server-side secret for telemetry tokens. Required when production telemetry hosts are enabled unless another app secret is configured.
+- `TELEMETRY_RETENTION_DAYS`: profile/IP telemetry retention period, default `90`.
 - `IPINFO_TOKEN`: optional server-side token used by IP geolocation enrichment.
+- `ENABLE_IP_LOCATION_LOOKUP`: when `true` in production, allows the server to query external IP-location providers. Default is off.
 
 ### Production DB
 
@@ -167,6 +170,7 @@ Storage selection:
 - In non-production, if no Postgres URL is configured and `DISABLE_DB_STORAGE` is not enabled, file-backed NDJSON storage is used via `storage/ndjson-storage.cjs`.
 - In production, if no Postgres URL is configured, storage is no-op unless `ENABLE_NDJSON_STORAGE=true`; NDJSON writes still require `ENCRYPTION_SECRET`.
 - If `DISABLE_DB_STORAGE=1`, storage is no-op via `storage/disabled-storage.cjs`.
+- Stored telemetry is pruned by retention policy on storage startup. IPs are stored in masked form instead of full raw addresses.
 
 The password-protected reports pages are served at:
 
