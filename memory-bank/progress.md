@@ -36,9 +36,9 @@
 - Testing setup: Jest for unit, UI, and API testing, with Git hooks available for automated checks.
 - Static accessibility audit: `scripts/test-a11y.mjs` checks media/button accessible names and currently passes on `145` HTML files.
 - Translation audit baseline: `scripts/check-translations.cjs` audits used i18n keys, damaged UTF-8 strings, fallback-English carry-overs, medical homonym guidance, and subtitle homonym coverage; the current baseline is clean.
-- CI/CD pipeline: GitHub Actions CI/CD pipeline at `.github/workflows/ci-cd.yml` runs formatting checks, build, accessibility checks, Jest, and artifact upload.
-- Security enhancements: reports Basic Auth protection and attempt rate limiting in `server.cjs`.
-- Runtime storage selection: storage now defaults to NDJSON when DB URLs are absent, uses Postgres when configured, and can be forced off with `DISABLE_DB_STORAGE=1`.
+- CI/CD pipeline: GitHub Actions CI/CD pipeline at `.github/workflows/ci-cd.yml` runs formatting checks, build, runtime security audit, accessibility checks, Jest, and artifact upload.
+- Security enhancements: reports Basic Auth protection, attempt rate limiting, admin IP allowlisting, runtime config validation, telemetry token/host gating, masked IP storage, and retention pruning are in place.
+- Runtime storage selection: storage uses Postgres when configured, uses NDJSON fallback only for non-production or explicit encrypted production fallback, and can be forced off with `DISABLE_DB_STORAGE=1`.
 - Playwright E2E isolation: the configured web server starts with `DISABLE_DB_STORAGE=1`.
 - Windows-safe build cleanup: `scripts/build.cjs` renames old build output directories to `.build-cleanup-*`, recreates the target output directory, and writes `version.json` metadata during builds.
 - Module system fix: resolved ES module / CommonJS conflict by renaming `server.js` to `server.cjs` and updating related `require` paths and `package.json` scripts.
@@ -46,9 +46,27 @@
 - Documentation refresh: updated README files across `README.md`, `.github/`, `reports/`, `security/`, `securitytest/`, `tests/`, and `vscode-alanui-launcher/`.
 - Husky hooks enabled: `prepare` runs `husky`, Git hooksPath is `.husky/_`, and `pre-commit` runs `lint-staged`.
 
+## Security Updates (2026-06-29 to 2026-07-10)
+
+Source of truth: `security01`, `security02`, and `security03` on `main`. These security changes landed on `2026-07-07`.
+
+| Item                     | Before                                                                     | After                                                                                    | How                                                                                                                                         |
+| ------------------------ | -------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| Report data in the repo  | Telemetry/user files were tracked in Git.                                  | Report data files are no longer tracked.                                                 | Removed `reports/data/telemetry.ndjson`, `telemetry.sql`, and `users.json` from Git, then ignored generated report data.                    |
+| Production file storage  | Production could fall back to local NDJSON files when no database was set. | Production uses no-op storage unless file storage is explicitly enabled.                 | Updated storage selection so Postgres is preferred, and NDJSON needs `ENABLE_NDJSON_STORAGE=true`.                                          |
+| Telemetry encryption     | Missing encryption secret could allow unsafe local telemetry writes.       | NDJSON telemetry writes require `ENCRYPTION_SECRET`.                                     | Changed encryption helper to throw instead of writing plaintext.                                                                            |
+| Telemetry access         | Production telemetry could be too open if no host allowlist was set.       | Production telemetry is disabled until allowed hosts and a server secret are configured. | Tightened telemetry host policy and token-secret checks.                                                                                    |
+| Unsafe production config | Weak or missing production settings could be missed until runtime.         | Unsafe production settings stop server startup.                                          | Added runtime config validation for placeholder secrets, NDJSON without encryption, disabled remote DB TLS, and telemetry without a secret. |
+| IP privacy               | Full IPs could be stored and external IP lookup could run by default.      | Stored IPs are masked, and production IP lookup is opt-in.                               | Added privacy helpers, masked stored IP values, and gated external lookup behind `ENABLE_IP_LOCATION_LOOKUP`.                               |
+| Data retention           | Telemetry could remain indefinitely.                                       | Telemetry defaults to 90 days, audit logs to 365 days.                                   | Added retention pruning for Postgres and NDJSON storage.                                                                                    |
+| Admin password check     | Dashboard password used a normal string comparison.                        | Dashboard password uses safer timing-resistant comparison.                               | Switched Basic Auth password matching to `crypto.timingSafeEqual`.                                                                          |
+| Dependency risk          | Unused or vulnerable packages remained installed.                          | Full `npm audit` reports 0 vulnerabilities.                                              | Removed unused vulnerable packages and outdated dev tools; updated runtime dependencies.                                                    |
+| CI security check        | Security audit did not strictly block high runtime issues.                 | CI blocks high runtime vulnerabilities.                                                  | Changed GitHub Actions audit to `npm audit --omit=dev --audit-level=high`.                                                                  |
+| Test coverage            | New security rules were not all covered.                                   | Security behavior is covered by focused tests.                                           | Added tests for encryption, storage selection, runtime config, privacy, and telemetry policy.                                               |
+
 ## What's Left to Build
 
-- Security testing: thoroughly test all implemented security measures and ensure they are correctly configured for production environments.
+- Security operations: rotate any real secrets outside the repo, keep production env vars aligned with runtime validation, and plan any Git history rewrite separately if old sensitive files must be purged from historical commits.
 - Full content population: ensure all educational modules are fully populated with comprehensive content (text, images, videos, quizzes).
 - Interactive elements: continue refining quizzes, case studies, and interactive tools for a more engaging user experience.
 - Robust error handling: improve client-side error handling for a smoother user experience across features.
@@ -63,7 +81,7 @@
 
 ## Current Status
 
-The project is a feature-rich PWA with a strong emphasis on interactive learning and offline capabilities. The Express server (`server.cjs`) supports local/prod hosting, telemetry/report APIs, password-protected reports pages, and the offline asset manifest endpoint. Runtime storage uses NDJSON by default unless Postgres URLs are configured, and can be forced off with `DISABLE_DB_STORAGE=1`. Jest, Playwright, accessibility checks, and translation QA are in place. The Interactive Learning page mixes local mini-apps, external embedded tools, Videos-route diabetic demo quizzes, full-animation local MP4 lessons, localized videos/subtitles, case-study chat flows, and workshop-linked progress rows. The Eyes route includes both a substantial Diabetic Retinopathy workshop flow whose video/demo content crosses into the Videos route and a Childhood Fundal Reflex scrollytelling sequence powered by a shared Lottie stage-autoplay engine.
+The project is a feature-rich PWA with a strong emphasis on interactive learning and offline capabilities. The Express server (`server.cjs`) supports local/prod hosting, telemetry/report APIs, password-protected reports pages, and the offline asset manifest endpoint. Runtime storage uses Postgres when configured, non-production NDJSON fallback when appropriate, and no-op storage in production unless encrypted NDJSON fallback is explicitly enabled. Jest, Playwright, accessibility checks, translation QA, and security audit checks are in place. The Interactive Learning page mixes local mini-apps, external embedded tools, Videos-route diabetic demo quizzes, full-animation local MP4 lessons, localized videos/subtitles, case-study chat flows, and workshop-linked progress rows. The Eyes route includes both a substantial Diabetic Retinopathy workshop flow whose video/demo content crosses into the Videos route and a Childhood Fundal Reflex scrollytelling sequence powered by a shared Lottie stage-autoplay engine.
 
 ## Known Issues
 
@@ -81,7 +99,8 @@ The project is a feature-rich PWA with a strong emphasis on interactive learning
 - Fundal Lottie settle/playback has a history of blank-frame regressions; FR06 is the canonical stable baseline and shared-engine changes should be checked with the Fundal regression suite and manual desktop/mobile passes.
 - Diabetic Fundal-style routes need iOS/WebKit checks after renderer, pause, or cache changes because Safari can expose different Lottie timing/direction and memory behavior than desktop Chromium. If WebKit flashes white at a correct pause/final frame, generate and configure an exact static snapshot for that frame rather than falling back to the previous live frame.
 - `.build-cleanup-*` folders can remain after builds on Windows if old output files were locked; they are ignored and can be removed once no build is running.
-- Reports telemetry will appear empty when `DISABLE_DB_STORAGE=1` is set or when the selected runtime store has no collected profile/refresh rows.
+- Reports telemetry will appear empty when `DISABLE_DB_STORAGE=1` is set, when production has no Postgres or explicit encrypted NDJSON fallback, or when the selected runtime store has no collected profile/refresh rows.
+- Production startup can intentionally fail when security env vars are unsafe, such as placeholder secrets, `ENABLE_NDJSON_STORAGE=true` without `ENCRYPTION_SECRET`, telemetry hosts without a server secret, or disabled TLS for remote DB URLs.
 
 ## Evolution of Project Decisions
 

@@ -1,11 +1,11 @@
 # Agent Notes
 
-Last refreshed: 2026-06-19
+Last refreshed: 2026-07-10
 
 ## Current repo orientation
 
 - Arclight is a static-first PWA served from `public/` in development and `dist/` after builds, with `server.cjs` providing hosting, reports/admin protection, and app/telemetry APIs.
-- Runtime storage uses `storage/ndjson-storage.cjs` by default when DB URLs are absent; Postgres is selected by `storage/index.cjs` when DB URLs are configured and `DISABLE_DB_STORAGE` is not enabled.
+- Runtime storage uses Postgres when DB URLs are configured; non-production can use encrypted NDJSON fallback when DB URLs are absent, while production uses no-op storage unless `ENABLE_NDJSON_STORAGE=true` and `ENCRYPTION_SECRET` are set.
 - Playwright starts its local web server with `DISABLE_DB_STORAGE=1`, so E2E tests should not write telemetry.
 - Offline install/downloads are server-manifest driven: `GET /api/app/offline-assets` returns files and byte sizes from the active static root, `public/js/languageinstall.js` resolves full/select/app-only and low/high video choices, `public/js/menu.js` reuses those helpers, and `public/sw.js` caches the selected URL list.
 - The service worker handles cached MP4 range requests only when a full MP4 is already cached, falls back to alternate `_220p` / `_720p` cached MP4s when needed, and keeps Childhood Eye Screening HLS assets usable offline after download.
@@ -30,10 +30,29 @@ Last refreshed: 2026-06-19
 - Test docs: `tests/README.md`
 - Reports/security docs: `reports/README.md`, `security/README.md`, `security/EMERGENCY_PLAN.md`
 
+## Security Updates (2026-06-29 to 2026-07-10)
+
+Source of truth: `security01`, `security02`, and `security03` on `main`. These security changes landed on `2026-07-07`.
+
+| Item                     | Before                                                                     | After                                                                                    | How                                                                                                                                         |
+| ------------------------ | -------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| Report data in the repo  | Telemetry/user files were tracked in Git.                                  | Report data files are no longer tracked.                                                 | Removed `reports/data/telemetry.ndjson`, `telemetry.sql`, and `users.json` from Git, then ignored generated report data.                    |
+| Production file storage  | Production could fall back to local NDJSON files when no database was set. | Production uses no-op storage unless file storage is explicitly enabled.                 | Updated storage selection so Postgres is preferred, and NDJSON needs `ENABLE_NDJSON_STORAGE=true`.                                          |
+| Telemetry encryption     | Missing encryption secret could allow unsafe local telemetry writes.       | NDJSON telemetry writes require `ENCRYPTION_SECRET`.                                     | Changed encryption helper to throw instead of writing plaintext.                                                                            |
+| Telemetry access         | Production telemetry could be too open if no host allowlist was set.       | Production telemetry is disabled until allowed hosts and a server secret are configured. | Tightened telemetry host policy and token-secret checks.                                                                                    |
+| Unsafe production config | Weak or missing production settings could be missed until runtime.         | Unsafe production settings stop server startup.                                          | Added runtime config validation for placeholder secrets, NDJSON without encryption, disabled remote DB TLS, and telemetry without a secret. |
+| IP privacy               | Full IPs could be stored and external IP lookup could run by default.      | Stored IPs are masked, and production IP lookup is opt-in.                               | Added privacy helpers, masked stored IP values, and gated external lookup behind `ENABLE_IP_LOCATION_LOOKUP`.                               |
+| Data retention           | Telemetry could remain indefinitely.                                       | Telemetry defaults to 90 days, audit logs to 365 days.                                   | Added retention pruning for Postgres and NDJSON storage.                                                                                    |
+| Admin password check     | Dashboard password used a normal string comparison.                        | Dashboard password uses safer timing-resistant comparison.                               | Switched Basic Auth password matching to `crypto.timingSafeEqual`.                                                                          |
+| Dependency risk          | Unused or vulnerable packages remained installed.                          | Full `npm audit` reports 0 vulnerabilities.                                              | Removed unused vulnerable packages and outdated dev tools; updated runtime dependencies.                                                    |
+| CI security check        | Security audit did not strictly block high runtime issues.                 | CI blocks high runtime vulnerabilities.                                                  | Changed GitHub Actions audit to `npm audit --omit=dev --audit-level=high`.                                                                  |
+| Test coverage            | New security rules were not all covered.                                   | Security behavior is covered by focused tests.                                           | Added tests for encryption, storage selection, runtime config, privacy, and telemetry policy.                                               |
+
 ## Agent guardrails
 
 - Prefer code-referenced documentation over aspirational descriptions.
 - Keep `README.md`, `memory-bank/activeContext.md`, and `memory-bank/progress.md` aligned when features or runtime behavior change.
+- Keep telemetry/report security docs aligned with `storage/index.cjs`, `security/runtime-config.cjs`, `security/privacy.cjs`, and the GitHub Actions audit policy when security behavior changes.
 - When adding or moving downloadable content, keep the server manifest assumptions, `OFFLINE_CATALOG_OPTIONS`/`matchesOfflineCatalog`, video quality filtering, service-worker cache behavior, and menu Downloaded Contents summary aligned. Bump the service worker cache name when required cached assets or cache behavior change.
 - When adding local app videos, update `VIDEO_PAGE_SOURCES`, progress target wiring, subtitle catalogs/VTT files, and offline-download categorization together. For Childhood Eye Screening subtitle pilot pages, keep MP4, HLS manifest, fallback mode, and subtitle language metadata in sync.
 - When adding or renaming full-animation MP4 lessons, keep all launcher rows, hidden `.page` IDs, `VIDEO_PAGE_SOURCES` keys, `public/videos/FullAnim/` file names, progress targets, and Interactive Learning target tests synchronized. These pages should stay on the local video-page pattern unless the user explicitly asks for Lottie scrollytelling behavior.
