@@ -6,6 +6,11 @@
     <title data-i18n="auto.reports.arclight_reports">Arclight Reports</title>
     <meta name="robots" content="noindex,nofollow" />
     <link rel="icon" href="/favicons/favicon.ico?v=1" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <link rel="stylesheet" href="/reports-dashboard.css" />
     <style>
       body {
         font-family: system-ui, sans-serif;
@@ -61,6 +66,35 @@
       </button>
       <span id="status" class="status">0</span>
     </div>
+
+    <section class="statsGrid" aria-label="Statistics">
+      <div class="statCard">
+        <h3 data-i18n="auto.reports.aims">Aims</h3>
+        <div id="statsAims"></div>
+      </div>
+      <div class="statCard">
+        <h3 data-i18n="myprofile.interest">Interest</h3>
+        <div id="statsInterest"></div>
+      </div>
+      <div class="statCard">
+        <h3 data-i18n="onboarding.experience_label">Experience</h3>
+        <div id="statsExperience"></div>
+      </div>
+      <div class="statCard">
+        <h3 data-i18n="i18nExtra.about_location_data_title">
+          User location distribution
+        </h3>
+        <div id="statsCountryArea"></div>
+      </div>
+      <div class="statCard">
+        <h3 data-i18n="menu.language_item">Language</h3>
+        <div id="statsLanguage"></div>
+      </div>
+      <div class="statCard">
+        <h3 data-i18n="i18nLiteral.records">records</h3>
+        <div id="statsRefresh"></div>
+      </div>
+    </section>
 
     <table id="users">
       <thead>

@@ -1129,6 +1129,17 @@ app.get("/api/dev/users", adminAccess, async (req, res) => {
   }
 });
 
+app.get("/api/dev/ip-locations", adminAccess, async (req, res) => {
+  try {
+    res.set("Cache-Control", "no-store");
+    const rows = await storage.getIpLocationsForDashboard();
+    return res.json(rows);
+  } catch (error) {
+    logServerError("[api/dev/ip-locations] read failed", error);
+    return res.status(500).json({ error: "read failed" });
+  }
+});
+
 app.delete("/api/dev/users/:anonId", adminAccess, async (req, res) => {
   try {
     if (!canDeleteReports(req)) {

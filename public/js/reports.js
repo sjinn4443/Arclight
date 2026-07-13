@@ -73,16 +73,25 @@ function initWorldMap() {
   const el = document.getElementById("worldMap");
   const mapStatus = document.getElementById("mapStatus");
   if (!el || worldMap) return;
+  const leaflet = globalThis.L;
+  if (!leaflet) {
+    if (mapStatus) mapStatus.textContent = "Map unavailable";
+    return;
+  }
 
-  worldMap = L.map(el, {
-    worldCopyJump: true,
-    zoomControl: true,
-  }).setView([15, 0], 2);
+  worldMap = leaflet
+    .map(el, {
+      worldCopyJump: true,
+      zoomControl: true,
+    })
+    .setView([15, 0], 2);
 
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    maxZoom: 6,
-    attribution: "&copy; OpenStreetMap contributors",
-  }).addTo(worldMap);
+  leaflet
+    .tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom: 6,
+      attribution: "&copy; OpenStreetMap contributors",
+    })
+    .addTo(worldMap);
 
   mapStatus.textContent = tl("Map ready");
   applyTranslations(mapStatus);
@@ -217,39 +226,82 @@ async function getLatLngFromUser(u) {
   return await fetchCountryLatLng(c);
 }
 
-async function renderWorldPins(users) {
+function getLatLngFromIpLocation(location) {
+  const lat = toFiniteNumber(location?.lat ?? location?.latitude);
+  const lon = toFiniteNumber(
+    location?.lon ?? location?.lng ?? location?.longitude,
+  );
+  return lat == null || lon == null ? null : [lat, lon];
+}
+
+async function renderWorldPins(users, ipLocations = []) {
   initWorldMap();
   if (!worldMap) return;
 
   clearMapMarkers();
 
   const mapStatus = document.getElementById("mapStatus");
+  const leaflet = globalThis.L;
+  const useIpLocations = ipLocations.length > 0;
+  const records = useIpLocations ? ipLocations : users;
   let pinCount = 0;
+  const bounds = [];
 
-  const latLngList = await Promise.all(users.map((u) => getLatLngFromUser(u)));
+  const latLngList = useIpLocations
+    ? records.map(getLatLngFromIpLocation)
+    : await Promise.all(records.map((user) => getLatLngFromUser(user)));
 
-  users.forEach((u, idx) => {
+  records.forEach((record, idx) => {
     const ll = latLngList[idx];
     if (!ll) return;
 
-    const expEn = englishFromAny(u.experience, englishDict);
     const label = document.createElement("div");
     const nameRow = document.createElement("div");
     const name = document.createElement("strong");
-    name.textContent = u.name || "Anonymous";
+    name.textContent = useIpLocations
+      ? record.city || record.area || record.country || "Visitor location"
+      : record.name || "Anonymous";
     nameRow.appendChild(name);
     label.appendChild(nameRow);
-    appendPopupLine(label, "Country", u.country || "—");
-    appendPopupLine(label, "Area", u.area || "—");
-    appendPopupLine(label, "Experience", expEn || "—");
-    appendPopupLine(label, "Last seen", formatWhen(u.last_seen));
-    const marker = L.marker(ll).addTo(worldMap).bindPopup(label);
+
+    if (useIpLocations) {
+      appendPopupLine(label, "Country", record.country || "—");
+      appendPopupLine(label, "Area", record.area || record.city || "—");
+      appendPopupLine(
+        label,
+        "Source",
+        record.isPrecise ? "Precise location" : "IP location",
+      );
+      appendPopupLine(label, "IP", record.ip || "—");
+      appendPopupLine(label, "Last seen", formatWhen(record.ts));
+    } else {
+      const expEn = englishFromAny(record.experience, englishDict);
+      appendPopupLine(label, "Country", record.country || "—");
+      appendPopupLine(label, "Area", record.area || "—");
+      appendPopupLine(label, "Experience", expEn || "—");
+      appendPopupLine(label, "Last seen", formatWhen(record.last_seen));
+    }
+
+    const marker = leaflet.marker(ll).addTo(worldMap).bindPopup(label);
     mapMarkers.push(marker);
+    bounds.push(ll);
     pinCount += 1;
   });
 
+  worldMap.invalidateSize();
+  if (bounds.length === 1) {
+    worldMap.setView(bounds[0], 6);
+  } else if (bounds.length > 1) {
+    worldMap.fitBounds(leaflet.latLngBounds(bounds), {
+      padding: [24, 24],
+      maxZoom: 6,
+    });
+  }
+
   mapStatus.textContent = pinCount
-    ? `Showing ${pinCount} pinned user${pinCount === 1 ? "" : "s"}`
+    ? useIpLocations
+      ? `Showing ${pinCount} unique visitor location${pinCount === 1 ? "" : "s"}`
+      : `Showing ${pinCount} pinned user${pinCount === 1 ? "" : "s"}`
     : "No locations available to pin";
 }
 
@@ -362,22 +414,6 @@ function tl(raw, fallback = raw) {
   return translated == null ? fallback : String(translated);
 }
 
-function getLocalAnonId() {
-  const KEY = "arclight_anon_id";
-  let id = localStorage.getItem(KEY);
-  if (!id) {
-    // same algo as telemetry.js
-    id = ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) =>
-      (
-        c ^
-        (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))
-      ).toString(16),
-    );
-    localStorage.setItem(KEY, id);
-  }
-  return id;
-}
-
 async function deleteUser(anonId) {
   if (!anonId) throw new Error("Missing anon_id");
 
@@ -415,6 +451,16 @@ async function fetchUsers() {
     users,
     canDelete: res.headers.get("X-Reports-Delete-Enabled") === "1",
   };
+}
+
+async function fetchIpLocations() {
+  const res = await fetch("/api/dev/ip-locations", {
+    credentials: "same-origin",
+  });
+  if (res.status === 401)
+    throw new Error("401 unauthorised — enter the dev password");
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return await res.json();
 }
 
 let englishDict = {};
@@ -563,9 +609,6 @@ async function renderUsers(users, canDelete = false) {
   tbody.appendChild(frag);
   status.textContent = `${sorted.length} ${tl("records")}`;
 
-  // Now call renderWorldPins() after users load
-  await renderWorldPins(sorted);
-
   // Wire delete buttons only when the column exists.
   if (hasDeleteCol && canDelete) {
     tbody.onclick = async (e) => {
@@ -608,8 +651,18 @@ async function renderUsers(users, canDelete = false) {
 async function load() {
   const status = document.getElementById("status");
   try {
-    const { users, canDelete } = await fetchUsers();
+    const [{ users, canDelete }, ipLocations] = await Promise.all([
+      fetchUsers(),
+      fetchIpLocations().catch((error) => {
+        console.warn(
+          "IP locations unavailable; using profile locations",
+          error,
+        );
+        return [];
+      }),
+    ]);
     await renderUsers(users, canDelete);
+    await renderWorldPins(users, ipLocations);
   } catch (err) {
     console.error(err);
     status.textContent = err.message;
@@ -652,7 +705,20 @@ function _countTop(values, topN = 6) {
     if (!k) continue;
     m.set(k, (m.get(k) || 0) + 1);
   }
-  return [...m.entries()].sort((a, b) => b[1] - a[1]).slice(0, topN);
+  return [...m.entries()]
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+    .slice(0, topN);
+}
+
+function _metricValues(users, field) {
+  return users.flatMap((user) => {
+    const translated = englishFromAny(user[field], englishDict);
+    if (!translated || translated === "—") return [];
+    return translated
+      .split(/[;,|\n]/)
+      .map((value) => value.trim())
+      .filter(Boolean);
+  });
 }
 
 function _renderList(id, entries) {
@@ -674,56 +740,11 @@ function _renderList(id, entries) {
 }
 
 function renderStats(users) {
-  const demo =
-    users.length >= 10
-      ? []
-      : [
-          {
-            interest: "Eyes",
-            experience: "Student",
-            country: "Kenya",
-            area: "Nairobi",
-            language: "en",
-            refresh_count: 5,
-          },
-          {
-            interest: "Ears",
-            experience: "Nurse",
-            country: "India",
-            area: "Karnataka",
-            language: "hi",
-            refresh_count: 9,
-          },
-          {
-            interest: "Teach",
-            experience: "Community health worker",
-            country: "Nigeria",
-            area: "Lagos",
-            language: "yo",
-            refresh_count: 7,
-          },
-          {
-            interest: "Eyes",
-            experience: "Doctor",
-            country: "Brazil",
-            area: "Bahia",
-            language: "pt",
-            refresh_count: 4,
-          },
-        ];
-
-  const all = [...users, ...demo];
-
-  const interestTop = _countTop(
-    all.map((u) => u.interest_en || u.interest),
-    5,
-  );
-  const expTop = _countTop(
-    all.map((u) => u.experience_en || u.experience),
-    5,
-  );
+  const aimsTop = _countTop(_metricValues(users, "aims"), 5);
+  const interestTop = _countTop(_metricValues(users, "interest"), 5);
+  const expTop = _countTop(_metricValues(users, "experience"), 5);
   const countryAreaTop = _countTop(
-    all.map((u) => {
+    users.map((u) => {
       const c = _norm(u.country);
       const a = _norm(u.area);
       return a ? `${c} — ${a}` : c;
@@ -731,10 +752,13 @@ function renderStats(users) {
     8,
   );
   const langTop = _countTop(
-    all.map((u) => u.language),
+    users.map((u) => u.language),
     6,
   );
 
+  renderBarChart(document.getElementById("statsAims"), aimsTop, {
+    maxItems: 5,
+  });
   renderBarChart(document.getElementById("statsInterest"), interestTop, {
     maxItems: 5,
   });
@@ -748,7 +772,7 @@ function renderStats(users) {
     maxItems: 6,
     title: "records",
   });
-  renderRefreshKpis(document.getElementById("statsRefresh"), all);
+  renderRefreshKpis(document.getElementById("statsRefresh"), users);
 }
 
 function renderBarChart(

@@ -59,6 +59,10 @@ describe("Postgres IP storage", () => {
     expect(schemaSql).toContain("ip_logs_ts_desc_idx");
     expect(schemaSql).toContain("VIEW ip_logs_latest_first");
     expect(schemaSql).toContain("ORDER BY ts DESC");
+    expect(schemaSql).toContain("VIEW app_users_latest_first");
+    expect(schemaSql).toContain(
+      "ORDER BY last_seen DESC NULLS LAST, first_seen DESC, profile_id ASC",
+    );
 
     await storage.saveIp("203.0.113.25");
 
@@ -113,5 +117,43 @@ describe("Postgres IP storage", () => {
     expect(pool.query.mock.calls[0][0]).toContain(
       "ORDER BY last_seen DESC NULLS LAST, first_seen DESC",
     );
+  });
+
+  test("returns one masked, mappable location per latest IP", async () => {
+    const { storage, pool } = loadPgStorage();
+    pool.query.mockResolvedValueOnce({
+      rowCount: 1,
+      rows: [
+        {
+          ip: "152.233.29.4",
+          ts: "2026-07-13T14:56:03.000Z",
+          country_name: "United Kingdom",
+          geo: {
+            source: "browser_geolocation",
+            countryCode: "GB",
+            city: "Glasgow",
+            area: "Glasgow, Scotland, UK",
+            latitude: 55.8642,
+            longitude: -4.2518,
+            isPrecise: true,
+          },
+        },
+      ],
+    });
+
+    const locations = await storage.getIpLocationsForDashboard();
+
+    expect(pool.query.mock.calls[0][0]).toContain("DISTINCT ON (ip)");
+    expect(pool.query.mock.calls[0][0]).toContain("ORDER BY ts DESC");
+    expect(locations).toEqual([
+      expect.objectContaining({
+        ip: "152.233.29.x",
+        country: "United Kingdom",
+        city: "Glasgow",
+        lat: 55.8642,
+        lon: -4.2518,
+        isPrecise: true,
+      }),
+    ]);
   });
 });

@@ -70,6 +70,7 @@ async function loadServer(envOverrides = {}, storageOverrides = {}) {
     saveIp: jest.fn().mockResolvedValue(undefined),
     updateIpLocation: jest.fn().mockResolvedValue(true),
     getUsersForDashboard: jest.fn().mockResolvedValue([]),
+    getIpLocationsForDashboard: jest.fn().mockResolvedValue([]),
     deleteUserForDashboard: jest.fn().mockResolvedValue(false),
     ...storageOverrides,
   };

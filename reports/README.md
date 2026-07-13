@@ -9,7 +9,9 @@ This folder contains report-facing assets and historical telemetry export files 
 - The reports UI is served from the static app (`public/reports.html` and `public/html/reports.html`) and is protected by Basic Auth.
 - The server exposes a small admin API used by the reports UI:
   - `GET /api/dev/users` - returns aggregated telemetry rows from the selected runtime store
+  - `GET /api/dev/ip-locations` - returns the latest mappable row for each IP with the IP masked for display
   - `DELETE /api/dev/users/:anonId` - deletes user rows only when delete is explicitly enabled
+- The reports dashboard plots the latest distinct IP locations on a map and charts real `aims`, `interest`, and `experience` profile data. It does not add demo rows when data is sparse.
 
 These routes are implemented directly in [`server.cjs`](../server.cjs).
 
@@ -67,11 +69,11 @@ By default, local reports are read-only. Set `REPORTS_ALLOW_LOCAL_DELETE=true` o
 
 ## Security notes
 
-- Access to `/reports.html`, `/html/reports.html`, and `/api/dev/users` is protected with Basic Auth.
+- Access to `/reports.html`, `/html/reports.html`, `/api/dev/users`, and `/api/dev/ip-locations` is protected with Basic Auth.
 - Repeated auth failures against the reports API are rate limited.
 - Reports routes use a stricter anti-framing CSP than the main app.
 - Delete actions are audit logged in Postgres when admin storage is configured.
-- Runtime telemetry IPs are stored in masked form rather than full raw addresses.
+- Postgres keeps the full runtime IP for location enrichment and precise-location replacement; the reports API masks it before returning dashboard data. The NDJSON fallback masks IPs at rest.
 - Production telemetry writes require an explicit host allowlist.
 
 See [`security/README.md`](../security/README.md).

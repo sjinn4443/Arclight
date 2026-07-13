@@ -26,6 +26,7 @@ describe("Reports Basic Auth", () => {
       saveIp: async () => {},
       updateIpLocation: async () => {},
       getUsersForDashboard: async () => [],
+      getIpLocationsForDashboard: async () => [],
     }));
 
     const { app: importedApp } = require("../server.cjs");
@@ -70,6 +71,21 @@ describe("Reports Basic Auth", () => {
   test("GET /api/dev/users should allow with valid auth", async () => {
     const res = await request(app)
       .get("/api/dev/users")
+      .set("Authorization", `Basic ${basic("user", "test-pass")}`);
+
+    expect(res.status).toBe(200);
+    expect(Array.isArray(res.body)).toBe(true);
+  });
+
+  test("GET /api/dev/ip-locations should require auth", async () => {
+    const res = await request(app).get("/api/dev/ip-locations");
+    expect(res.status).toBe(401);
+    expect(res.headers["www-authenticate"]).toMatch(/Basic/i);
+  });
+
+  test("GET /api/dev/ip-locations should allow with valid auth", async () => {
+    const res = await request(app)
+      .get("/api/dev/ip-locations")
       .set("Authorization", `Basic ${basic("user", "test-pass")}`);
 
     expect(res.status).toBe(200);

@@ -2,6 +2,7 @@ const { Pool } = require("pg");
 const { URL } = require("url");
 const { enrichIp } = require("../utils/ipEnricher.cjs");
 const {
+  anonymizeIpForStorage,
   resolveAuditRetentionDays,
   resolveTelemetryRetentionDays,
 } = require("../security/privacy.cjs");
@@ -142,6 +143,13 @@ async function init() {
     SELECT ip, ts, geo, country_name
     FROM ip_logs
     ORDER BY ts DESC;
+
+    CREATE OR REPLACE VIEW app_users_latest_first AS
+    SELECT profile_id, anon_id, user_id, email, name, aims, interest,
+           experience, contact, country, area, language, lat, lon,
+           first_seen, last_seen, refresh_count
+    FROM app_users
+    ORDER BY last_seen DESC NULLS LAST, first_seen DESC, profile_id ASC;
   `);
 
   await pruneExpiredTelemetry(initPool);
@@ -302,6 +310,52 @@ async function getUsersForDashboard() {
   return rows;
 }
 
+async function getIpLocationsForDashboard() {
+  if (!readPool) return [];
+
+  const { rows } = await readPool.query(`
+    SELECT ip, ts, country_name, geo
+    FROM (
+      SELECT DISTINCT ON (ip) ip, ts, country_name, geo
+      FROM ip_logs
+      WHERE geo IS NOT NULL
+      ORDER BY ip, ts DESC
+    ) AS latest_by_ip
+    ORDER BY ts DESC
+  `);
+
+  return rows
+    .map((row) => {
+      const geo = row.geo && typeof row.geo === "object" ? row.geo : {};
+      const lat = toFiniteNumber(geo.latitude ?? geo.lat);
+      const lon = toFiniteNumber(geo.longitude ?? geo.lon ?? geo.lng);
+      const country = String(
+        row.country_name || geo.countryName || geo.country || "",
+      ).trim();
+      const city = String(geo.city || "").trim();
+
+      if (lat == null || lon == null) return null;
+      if (country === "Mock Country" || city === "Mock City") return null;
+
+      return {
+        ip: anonymizeIpForStorage(row.ip),
+        ts: row.ts,
+        country: country || null,
+        countryCode:
+          String(geo.countryCode || geo.iso2 || "")
+            .trim()
+            .toUpperCase() || null,
+        city: city || null,
+        area: String(geo.area || "").trim() || null,
+        lat,
+        lon,
+        source: String(geo.source || "ip_lookup").trim(),
+        isPrecise: geo.isPrecise === true,
+      };
+    })
+    .filter(Boolean);
+}
+
 async function saveIp(ip) {
   if (!writePool) return;
   const geo = await enrichIp(ip);
@@ -433,6 +487,7 @@ module.exports = {
   saveProfile,
   bumpRefresh,
   getUsersForDashboard,
+  getIpLocationsForDashboard,
   saveIp,
   updateIpLocation,
   deleteUserForDashboard,

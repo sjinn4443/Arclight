@@ -233,6 +233,53 @@ async function getUsersForDashboard() {
   );
 }
 
+async function getIpLocationsForDashboard() {
+  if (!fs.existsSync(file)) return [];
+
+  const latestByIp = new Map();
+  const lines = fs.readFileSync(file, "utf8").split(/\r?\n/).filter(Boolean);
+
+  for (const encryptedLine of lines) {
+    const row = parseLine(encryptedLine);
+    if (!row || row.type !== "ip" || !row.ip) continue;
+
+    const current = latestByIp.get(row.ip);
+    if (!current || new Date(row.ts) > new Date(current.ts)) {
+      latestByIp.set(row.ip, row);
+    }
+  }
+
+  return [...latestByIp.values()]
+    .map((row) => {
+      const geo = row.geo && typeof row.geo === "object" ? row.geo : {};
+      const lat = toFiniteNumber(geo.latitude ?? geo.lat);
+      const lon = toFiniteNumber(geo.longitude ?? geo.lon ?? geo.lng);
+      const country = String(geo.countryName || geo.country || "").trim();
+      const city = String(geo.city || "").trim();
+
+      if (lat == null || lon == null) return null;
+      if (country === "Mock Country" || city === "Mock City") return null;
+
+      return {
+        ip: anonymizeIpForStorage(row.ip),
+        ts: row.ts,
+        country: country || null,
+        countryCode:
+          String(geo.countryCode || geo.iso2 || "")
+            .trim()
+            .toUpperCase() || null,
+        city: city || null,
+        area: String(geo.area || "").trim() || null,
+        lat,
+        lon,
+        source: String(geo.source || "ip_lookup").trim(),
+        isPrecise: geo.isPrecise === true,
+      };
+    })
+    .filter(Boolean)
+    .sort((a, b) => new Date(b.ts) - new Date(a.ts));
+}
+
 async function saveIp(ip) {
   const geo = await enrichIp(ip);
   const timestamp = new Date().toISOString();
@@ -297,6 +344,7 @@ module.exports = {
   saveProfile,
   bumpRefresh,
   getUsersForDashboard,
+  getIpLocationsForDashboard,
   saveIp,
   updateIpLocation,
   deleteUserForDashboard,

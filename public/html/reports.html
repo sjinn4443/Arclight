@@ -198,7 +198,20 @@
         margin-top: 6px;
       }
     </style>
+  </head>
+  <body>
+    <div class="toolbar">
+      <button id="refreshBtn" type="button" data-i18n="i18nExtra.restart">
+        Restart
+      </button>
+      <span id="status" class="status">0</span>
+    </div>
+
     <section class="statsGrid" aria-label="Statistics">
+      <div class="statCard">
+        <h3 data-i18n="auto.reports.aims">Aims</h3>
+        <div id="statsAims"></div>
+      </div>
       <div class="statCard">
         <h3 data-i18n="myprofile.interest">Interest</h3>
         <div id="statsInterest"></div>
@@ -209,7 +222,7 @@
       </div>
       <div class="statCard">
         <h3 data-i18n="i18nExtra.about_location_data_title">
-          About location data
+          User location distribution
         </h3>
         <div id="statsCountryArea"></div>
       </div>
@@ -222,14 +235,6 @@
         <div id="statsRefresh"></div>
       </div>
     </section>
-  </head>
-  <body>
-    <div class="toolbar">
-      <button id="refreshBtn" type="button" data-i18n="i18nExtra.restart">
-        Restart
-      </button>
-      <span id="status" class="status">0</span>
-    </div>
 
     <table id="users">
       <thead>

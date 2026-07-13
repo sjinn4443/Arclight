@@ -190,7 +190,7 @@ Storage selection:
 - If `DISABLE_DB_STORAGE=1`, storage is no-op via `storage/disabled-storage.cjs`.
 - Stored telemetry is pruned by retention policy on storage startup. Postgres stores the request IP and resolved country name in `ip_logs.ip` and `ip_logs.country_name`; encrypted NDJSON fallback storage continues to mask IP addresses.
 - When a user grants precise browser location, the app replaces the matching IP-derived geo on that visit's latest `ip_logs` row (within 30 minutes), so an ISP endpoint such as London does not override a GPS-derived city such as Glasgow.
-- PostgreSQL rows can be viewed newest-first through `ip_logs_latest_first`; the reports dashboard also orders users by `last_seen` descending.
+- PostgreSQL provides `ip_logs_latest_first` (`ts DESC`) and `app_users_latest_first` (`last_seen DESC`) views for newest-first browsing; the reports dashboard uses the same newest-first user ordering.
 
 The password-protected reports pages are served at:
 

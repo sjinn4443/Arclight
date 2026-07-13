@@ -12,6 +12,10 @@ async function getUsersForDashboard() {
   return [];
 }
 
+async function getIpLocationsForDashboard() {
+  return [];
+}
+
 async function deleteUserForDashboard() {
   throw new Error("Reports delete storage is not configured");
 }
@@ -23,5 +27,6 @@ module.exports = {
   saveIp,
   updateIpLocation,
   getUsersForDashboard,
+  getIpLocationsForDashboard,
   deleteUserForDashboard,
 };
