@@ -24,6 +24,7 @@ describe("Reports Basic Auth", () => {
       saveProfile: async () => {},
       bumpRefresh: async () => {},
       saveIp: async () => {},
+      updateIpLocation: async () => {},
       getUsersForDashboard: async () => [],
     }));
 

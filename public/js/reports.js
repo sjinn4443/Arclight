@@ -443,7 +443,9 @@ function formatWhen(value) {
 
 async function renderUsers(users, canDelete = false) {
   const sorted = [...users].sort(
-    (a, b) => new Date(a.first_seen) - new Date(b.first_seen),
+    (a, b) =>
+      new Date(b.last_seen || b.first_seen) -
+      new Date(a.last_seen || a.first_seen),
   );
 
   renderStats(sorted);

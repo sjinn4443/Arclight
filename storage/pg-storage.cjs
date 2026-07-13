@@ -135,6 +135,13 @@ async function init() {
     ALTER TABLE app_users ADD COLUMN IF NOT EXISTS lat DOUBLE PRECISION;
     ALTER TABLE app_users ADD COLUMN IF NOT EXISTS lon DOUBLE PRECISION;
     ALTER TABLE ip_logs ADD COLUMN IF NOT EXISTS country_name TEXT;
+
+    CREATE INDEX IF NOT EXISTS ip_logs_ts_desc_idx ON ip_logs (ts DESC);
+
+    CREATE OR REPLACE VIEW ip_logs_latest_first AS
+    SELECT ip, ts, geo, country_name
+    FROM ip_logs
+    ORDER BY ts DESC;
   `);
 
   await pruneExpiredTelemetry(initPool);
@@ -290,7 +297,7 @@ async function getUsersForDashboard() {
     SELECT profile_id, anon_id, user_id, name, aims, interest, experience, contact, country, area, language, lat, lon,
            first_seen, last_seen, refresh_count
     FROM app_users
-    ORDER BY first_seen ASC
+    ORDER BY last_seen DESC NULLS LAST, first_seen DESC
   `);
   return rows;
 }
@@ -307,6 +314,70 @@ async function saveIp(ip) {
   `,
     [String(ip || "unknown").trim(), countryName, geo],
   );
+}
+
+function preciseGeoForStorage(geo) {
+  if (!geo || geo.isPrecise !== true) return null;
+
+  const latitude = toFiniteNumber(geo.lat ?? geo.latitude);
+  const longitude = toFiniteNumber(geo.lon ?? geo.lng ?? geo.longitude);
+  if (latitude == null || longitude == null) return null;
+
+  const countryName = String(geo.countryName || geo.country || "").trim();
+  const countryCode = String(geo.countryCode || geo.iso2 || "")
+    .trim()
+    .toUpperCase();
+
+  return {
+    source: "browser_geolocation",
+    country: countryName || null,
+    countryName: countryName || null,
+    countryCode: countryCode || null,
+    city: String(geo.city || "").trim() || null,
+    area: String(geo.area || "").trim() || null,
+    latitude,
+    longitude,
+    isPrecise: true,
+    error: null,
+  };
+}
+
+async function updateIpLocation(ip, geo) {
+  if (!writePool) return false;
+
+  const preciseGeo = preciseGeoForStorage(geo);
+  if (!preciseGeo) return false;
+
+  const storedIp = String(ip || "unknown").trim();
+  const updated = await writePool.query(
+    `
+    WITH latest AS (
+      SELECT ctid
+      FROM ip_logs
+      WHERE ip = $1
+        AND ts >= NOW() - INTERVAL '30 minutes'
+      ORDER BY ts DESC, ctid DESC
+      LIMIT 1
+    )
+    UPDATE ip_logs AS logs
+    SET country_name = $2,
+        geo = $3::jsonb
+    FROM latest
+    WHERE logs.ctid = latest.ctid
+  `,
+    [storedIp, preciseGeo.countryName, preciseGeo],
+  );
+
+  if (updated.rowCount > 0) return true;
+
+  await writePool.query(
+    `
+    INSERT INTO ip_logs (ip, country_name, geo)
+    VALUES ($1, $2, $3)
+  `,
+    [storedIp, preciseGeo.countryName, preciseGeo],
+  );
+  return true;
 }
 
 async function deleteUserForDashboard(anonId, actor = {}) {
@@ -363,6 +434,7 @@ module.exports = {
   bumpRefresh,
   getUsersForDashboard,
   saveIp,
+  updateIpLocation,
   deleteUserForDashboard,
   pruneExpiredTelemetry,
 };

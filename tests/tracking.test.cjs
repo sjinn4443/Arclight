@@ -68,6 +68,7 @@ async function loadServer(envOverrides = {}, storageOverrides = {}) {
     saveProfile: jest.fn().mockResolvedValue(undefined),
     bumpRefresh: jest.fn().mockResolvedValue(undefined),
     saveIp: jest.fn().mockResolvedValue(undefined),
+    updateIpLocation: jest.fn().mockResolvedValue(true),
     getUsersForDashboard: jest.fn().mockResolvedValue([]),
     deleteUserForDashboard: jest.fn().mockResolvedValue(false),
     ...storageOverrides,
@@ -174,6 +175,56 @@ describe("server security hardening", () => {
       }),
     );
     expect(mockStorage.saveProfile.mock.calls[0][0].unknown).toBeUndefined();
+  });
+
+  test("replaces IP-derived geo with precise browser location", async () => {
+    const { app, mockStorage } = await loadServer({
+      NODE_ENV: "production",
+      TELEMETRY_ALLOWED_HOSTS: "app.example.com",
+      DASHBOARD_PASSWORD: "test-dashboard-password-12345",
+    });
+    const auth = buildTelemetryAuth();
+
+    const response = await withTelemetryHeaders(
+      request(app).post("/api/app/refresh"),
+      auth,
+    )
+      .set("X-Forwarded-For", "152.233.29.4")
+      .send({
+        anon_id: "anon-glasgow",
+        reason: "location_precise",
+        geo: {
+          iso2: "GB",
+          country: "United Kingdom",
+          city: "Glasgow",
+          area: "Glasgow, Scotland, UK",
+          lat: 55.8642,
+          lon: -4.2518,
+          isPrecise: true,
+        },
+      });
+
+    expect(response.status).toBe(200);
+    expect(mockStorage.bumpRefresh).toHaveBeenCalledWith(
+      expect.objectContaining({
+        reason: "location_precise",
+        geo: expect.objectContaining({
+          city: "Glasgow",
+          isPrecise: true,
+        }),
+      }),
+    );
+    expect(mockStorage.updateIpLocation).toHaveBeenCalledWith(
+      "152.233.29.4",
+      expect.objectContaining({
+        country: "United Kingdom",
+        city: "Glasgow",
+        area: "Glasgow, Scotland, UK",
+        lat: 55.8642,
+        lon: -4.2518,
+        isPrecise: true,
+      }),
+    );
   });
 
   test("issues a telemetry token on production HTML and accepts it for profile writes", async () => {

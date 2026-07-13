@@ -274,6 +274,16 @@ export async function refineWithBrowserLocation() {
           area: merged.area || merged.city || null,
           lat: merged.lat ?? null,
           lon: merged.lon ?? null,
+          geo: {
+            iso2: merged.iso2 || null,
+            country: merged.country || null,
+            city: merged.city || null,
+            area: merged.area || null,
+            lat: merged.lat ?? null,
+            lon: merged.lon ?? null,
+            isPrecise: true,
+            ts: merged.ts,
+          },
         });
 
         document.dispatchEvent(
@@ -456,6 +466,16 @@ export async function handleCheckLocationClick() {
         area: precise.area || precise.city || null,
         lat: precise.lat ?? null,
         lon: precise.lon ?? null,
+        geo: {
+          iso2: precise.iso2 || null,
+          country: precise.country || null,
+          city: precise.city || null,
+          area: precise.area || null,
+          lat: precise.lat ?? null,
+          lon: precise.lon ?? null,
+          isPrecise: true,
+          ts: precise.ts,
+        },
       });
     } catch (e) {
       console.warn("saveProfile failed after precise location update:", e);

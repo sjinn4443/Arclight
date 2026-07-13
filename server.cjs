@@ -996,6 +996,9 @@ app.post(
       }
 
       await storage.saveProfile(payload);
+      if (payload.geo?.isPrecise === true) {
+        await storage.updateIpLocation(getClientIp(req), payload.geo);
+      }
       return res.json({ ok: true, stored: true });
     } catch (error) {
       logServerError("[api/app/profile] save failed", error);
@@ -1016,6 +1019,9 @@ app.post(
       }
 
       await storage.bumpRefresh(payload);
+      if (payload.geo?.isPrecise === true) {
+        await storage.updateIpLocation(getClientIp(req), payload.geo);
+      }
       return res.json({ ok: true, stored: true });
     } catch (error) {
       logServerError("[api/app/refresh] save failed", error);

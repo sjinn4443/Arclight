@@ -6,6 +6,8 @@ async function bumpRefresh() {}
 
 async function saveIp() {}
 
+async function updateIpLocation() {}
+
 async function getUsersForDashboard() {
   return [];
 }
@@ -19,6 +21,7 @@ module.exports = {
   saveProfile,
   bumpRefresh,
   saveIp,
+  updateIpLocation,
   getUsersForDashboard,
   deleteUserForDashboard,
 };

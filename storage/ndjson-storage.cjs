@@ -229,7 +229,7 @@ async function getUsersForDashboard() {
     map.set(key, cur);
   }
   return Array.from(map.values()).sort(
-    (a, b) => new Date(a.first_seen) - new Date(b.first_seen),
+    (a, b) => new Date(b.last_seen) - new Date(a.last_seen),
   );
 }
 
@@ -242,6 +242,19 @@ async function saveIp(ip) {
     ts: timestamp,
     ip: anonymizeIpForStorage(ip),
     geo: geo,
+  });
+}
+
+async function updateIpLocation(ip, geo) {
+  writeLine({
+    type: "ip",
+    ts: new Date().toISOString(),
+    ip: anonymizeIpForStorage(ip),
+    geo: {
+      ...geo,
+      source: "browser_geolocation",
+      isPrecise: true,
+    },
   });
 }
 
@@ -285,6 +298,7 @@ module.exports = {
   bumpRefresh,
   getUsersForDashboard,
   saveIp,
+  updateIpLocation,
   deleteUserForDashboard,
   pruneTelemetryFile,
 };
