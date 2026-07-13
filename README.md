@@ -23,7 +23,7 @@ The app is primarily static (served from `public/` in dev, and `dist/` in produc
 - Memory bank: [`memory-bank/`](./memory-bank/)
 - Agent notes: [`agent.md`](./agent.md)
 
-## Security Updates (2026-06-29 to 2026-07-10)
+## Security Updates (2026-06-29 to 2026-07-13)
 
 Source of truth: `security01`, `security02`, and `security03` on `main`. These security changes landed on `2026-07-07`.
 
@@ -34,7 +34,7 @@ Source of truth: `security01`, `security02`, and `security03` on `main`. These s
 | Telemetry encryption     | Missing encryption secret could allow unsafe local telemetry writes.       | NDJSON telemetry writes require `ENCRYPTION_SECRET`.                                     | Changed encryption helper to throw instead of writing plaintext.                                                                            |
 | Telemetry access         | Production telemetry could be too open if no host allowlist was set.       | Production telemetry is disabled until allowed hosts and a server secret are configured. | Tightened telemetry host policy and token-secret checks.                                                                                    |
 | Unsafe production config | Weak or missing production settings could be missed until runtime.         | Unsafe production settings stop server startup.                                          | Added runtime config validation for placeholder secrets, NDJSON without encryption, disabled remote DB TLS, and telemetry without a secret. |
-| IP privacy               | Full IPs could be stored and external IP lookup could run by default.      | Stored IPs are masked, and production IP lookup is opt-in.                               | Added privacy helpers, masked stored IP values, and gated external lookup behind `ENABLE_IP_LOCATION_LOOKUP`.                               |
+| IP telemetry             | Postgres stored only a masked IP and placeholder geo JSON.                 | Postgres stores the request IP plus `country_name`; encrypted NDJSON still masks IPs.    | Added real provider enrichment, an explicit country column, retention, and an `ENABLE_IP_LOCATION_LOOKUP=false` opt-out.                    |
 | Data retention           | Telemetry could remain indefinitely.                                       | Telemetry defaults to 90 days, audit logs to 365 days.                                   | Added retention pruning for Postgres and NDJSON storage.                                                                                    |
 | Admin password check     | Dashboard password used a normal string comparison.                        | Dashboard password uses safer timing-resistant comparison.                               | Switched Basic Auth password matching to `crypto.timingSafeEqual`.                                                                          |
 | Dependency risk          | Unused or vulnerable packages remained installed.                          | Full `npm audit` reports 0 vulnerabilities.                                              | Removed unused vulnerable packages and outdated dev tools; updated runtime dependencies.                                                    |
@@ -161,7 +161,7 @@ Legacy NDJSON telemetry can be encrypted at rest when that storage module is use
 - `TELEMETRY_TOKEN_SECRET`: stable server-side secret for telemetry tokens. Required when production telemetry hosts are enabled unless another app secret is configured.
 - `TELEMETRY_RETENTION_DAYS`: profile/IP telemetry retention period, default `90`.
 - `IPINFO_TOKEN`: optional server-side token used by IP geolocation enrichment.
-- `ENABLE_IP_LOCATION_LOOKUP`: when `true` in production, allows the server to query external IP-location providers. Default is off.
+- `ENABLE_IP_LOCATION_LOOKUP`: set to `false` to disable server-side IP-country lookups. Lookups are enabled by default so `ip_logs.country_name` can be populated.
 
 ### Production DB
 
@@ -188,7 +188,7 @@ Storage selection:
 - In non-production, if no Postgres URL is configured and `DISABLE_DB_STORAGE` is not enabled, file-backed NDJSON storage is used via `storage/ndjson-storage.cjs`.
 - In production, if no Postgres URL is configured, storage is no-op unless `ENABLE_NDJSON_STORAGE=true`; NDJSON writes still require `ENCRYPTION_SECRET`.
 - If `DISABLE_DB_STORAGE=1`, storage is no-op via `storage/disabled-storage.cjs`.
-- Stored telemetry is pruned by retention policy on storage startup. IPs are stored in masked form instead of full raw addresses.
+- Stored telemetry is pruned by retention policy on storage startup. Postgres stores the request IP and resolved country name in `ip_logs.ip` and `ip_logs.country_name`; encrypted NDJSON fallback storage continues to mask IP addresses.
 
 The password-protected reports pages are served at:
 

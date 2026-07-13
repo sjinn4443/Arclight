@@ -38,6 +38,7 @@ const {
   ensureTelemetryState,
   evaluateTelemetryWriteRequest,
 } = require("./security/telemetry-guard.cjs");
+const { isLookupEnabled } = require("./utils/ipEnricher.cjs");
 
 const fetchImpl =
   typeof global.fetch === "function"
@@ -412,7 +413,7 @@ function isPrivateIp(ip) {
 
 function isExternalIpLookupEnabled() {
   if (process.env.NODE_ENV !== "production") return true;
-  return isEnabled(process.env.ENABLE_IP_LOCATION_LOOKUP);
+  return isLookupEnabled(process.env);
 }
 
 function getAdminAllowedIps() {

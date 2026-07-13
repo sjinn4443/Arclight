@@ -107,9 +107,10 @@ async function run() {
           ],
         );
       } else if (row.type === "ip") {
+        const countryName = row.geo?.countryName || row.geo?.country || null;
         await pool.query(
-          `INSERT INTO ip_logs (ip, ts, geo) VALUES ($1, $2, $3)`,
-          [row.ip || null, row.ts || null, row.geo || null],
+          `INSERT INTO ip_logs (ip, country_name, ts, geo) VALUES ($1, $2, $3, $4)`,
+          [row.ip || null, countryName, row.ts || null, row.geo || null],
         );
       }
     }

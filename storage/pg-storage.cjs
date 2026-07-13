@@ -2,7 +2,6 @@ const { Pool } = require("pg");
 const { URL } = require("url");
 const { enrichIp } = require("../utils/ipEnricher.cjs");
 const {
-  anonymizeIpForStorage,
   resolveAuditRetentionDays,
   resolveTelemetryRetentionDays,
 } = require("../security/privacy.cjs");
@@ -117,6 +116,7 @@ async function init() {
 
     CREATE TABLE IF NOT EXISTS ip_logs (
       ip           TEXT NOT NULL,
+      country_name TEXT,
       ts           TIMESTAMPTZ NOT NULL DEFAULT NOW(),
       geo          JSONB
     );
@@ -134,6 +134,7 @@ async function init() {
 
     ALTER TABLE app_users ADD COLUMN IF NOT EXISTS lat DOUBLE PRECISION;
     ALTER TABLE app_users ADD COLUMN IF NOT EXISTS lon DOUBLE PRECISION;
+    ALTER TABLE ip_logs ADD COLUMN IF NOT EXISTS country_name TEXT;
   `);
 
   await pruneExpiredTelemetry(initPool);
@@ -297,12 +298,14 @@ async function getUsersForDashboard() {
 async function saveIp(ip) {
   if (!writePool) return;
   const geo = await enrichIp(ip);
+  const countryName =
+    String(geo?.countryName || geo?.country || "").trim() || null;
   await writePool.query(
     `
-    INSERT INTO ip_logs (ip, geo)
-    VALUES ($1, $2)
+    INSERT INTO ip_logs (ip, country_name, geo)
+    VALUES ($1, $2, $3)
   `,
-    [anonymizeIpForStorage(ip), geo],
+    [String(ip || "unknown").trim(), countryName, geo],
   );
 }
 

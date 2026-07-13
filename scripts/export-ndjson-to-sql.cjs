@@ -71,8 +71,9 @@ function esc(v) {
         `INSERT INTO app_users (profile_id, anon_id, user_id, email, refresh_count, first_seen, last_seen) VALUES (${esc(pid)}, ${esc(row.anon_id)}, ${esc(row.user_id)}, ${esc(row.email)}, 1, ${esc(row.ts)}, ${esc(row.ts)}) ON CONFLICT (profile_id) DO UPDATE SET anon_id=COALESCE(EXCLUDED.anon_id, app_users.anon_id), user_id=COALESCE(EXCLUDED.user_id, app_users.user_id), email=COALESCE(EXCLUDED.email, app_users.email), refresh_count = app_users.refresh_count + 1, last_seen = GREATEST(app_users.last_seen, EXCLUDED.last_seen);`,
       );
     } else if (row.type === "ip") {
+      const countryName = row.geo?.countryName || row.geo?.country || null;
       out.push(
-        `INSERT INTO ip_logs (ip, ts, geo) VALUES (${esc(row.ip)}, ${esc(row.ts)}, ${row.geo ? JSON.stringify(row.geo).replace(/'/g, "''") : "NULL"});`,
+        `INSERT INTO ip_logs (ip, country_name, ts, geo) VALUES (${esc(row.ip)}, ${esc(countryName)}, ${esc(row.ts)}, ${row.geo ? `'${JSON.stringify(row.geo).replace(/'/g, "''")}'` : "NULL"});`,
       );
     }
   }
