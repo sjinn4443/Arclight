@@ -2666,6 +2666,36 @@
               >
             </div>
           </button>
+
+          <button type="button" class="pupil-card module-card">
+            <div
+              class="lesson-row lesson-row--interactive"
+              data-target="eyeExaminationConnectPage"
+              role="button"
+              tabindex="0"
+            >
+              <div class="thumb" aria-hidden="true"></div>
+
+              <div class="lesson-main">
+                <div class="lesson-top">
+                  <span class="lesson-type">Connect</span>
+                </div>
+
+                <div
+                  class="lesson-progress"
+                  role="progressbar"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                >
+                  <div class="lesson-progress__fill"></div>
+                </div>
+              </div>
+
+              <span class="lesson-cta" data-i18n="auto.videos.start"
+                >Start &gt;</span
+              >
+            </div>
+          </button>
         </section>
 
         <div class="pupils-dots" aria-hidden="true">
@@ -3216,6 +3246,411 @@
             </div>
           </div>
         </section>
+      </div>
+    </div>
+  </div>
+
+  <div
+    id="eyeExaminationConnectPage"
+    class="page pupils-like has-eyes-topbar"
+    style="display: none"
+  >
+    <div class="container pupils-container exam-connect-page">
+      <div class="eyes-topbar">
+        <div class="eyes-topbar__title" data-i18n="auto.videos.eyes">Eyes</div>
+        <div class="eyes-topbar__icons">
+          <span
+            class="icon menuBtn"
+            aria-label="Menu"
+            data-i18n="i18nExtra.menu_aria_label:aria-label"
+            >&#9776;</span
+          >
+        </div>
+      </div>
+
+      <main class="exam-connect" aria-labelledby="examConnectTitle">
+        <header class="exam-connect__header">
+          <span class="exam-connect__eyebrow">Examination skills</span>
+          <h2 id="examConnectTitle">Connect</h2>
+          <p>Connect the skills in order and fill every square.</p>
+        </header>
+
+        <ol
+          id="examConnectSequence"
+          class="exam-connect__sequence"
+          aria-label="Six examination skills progress"
+        >
+          <li data-connect-step="0" aria-label="Examination skill 1">
+            <b>1</b>
+          </li>
+          <li data-connect-step="1" aria-label="Examination skill 2">
+            <b>2</b>
+          </li>
+          <li data-connect-step="2" aria-label="Examination skill 3">
+            <b>3</b>
+          </li>
+          <li data-connect-step="3" aria-label="Examination skill 4">
+            <b>4</b>
+          </li>
+          <li data-connect-step="4" aria-label="Examination skill 5">
+            <b>5</b>
+          </li>
+          <li data-connect-step="5" aria-label="Examination skill 6">
+            <b>6</b>
+          </li>
+        </ol>
+
+        <div class="exam-connect__toolbar">
+          <p
+            id="examConnectStatus"
+            class="exam-connect__status"
+            aria-live="polite"
+          >
+            Choose the first examination skill
+          </p>
+          <div class="exam-connect__toolbar-actions">
+            <button
+              id="examConnectHelp"
+              class="exam-connect__text-button"
+              type="button"
+            >
+              How to play
+            </button>
+            <button
+              id="examConnectReset"
+              class="exam-connect__text-button"
+              type="button"
+            >
+              Reset
+            </button>
+          </div>
+        </div>
+
+        <div class="exam-connect__board-shell">
+          <div
+            id="examConnectBoard"
+            class="exam-connect__board"
+            role="application"
+            tabindex="0"
+            aria-describedby="examConnectRules"
+            aria-label="7 by 7 Connect board. Choose the first examination skill."
+          >
+            <svg
+              class="exam-connect__path"
+              viewBox="0 0 700 700"
+              preserveAspectRatio="none"
+              aria-hidden="true"
+            >
+              <polyline data-connect-line="0"></polyline>
+              <polyline data-connect-line="1"></polyline>
+              <polyline data-connect-line="2"></polyline>
+              <polyline data-connect-line="3"></polyline>
+              <polyline data-connect-line="4"></polyline>
+            </svg>
+            <div class="exam-connect__cells" aria-hidden="true"></div>
+          </div>
+        </div>
+
+        <div id="examConnectRules" class="exam-connect__rules">
+          <span><b id="examConnectFilled">0</b>/49 squares filled</span>
+          <span>Move up, down, left or right</span>
+        </div>
+
+        <section id="examConnectComplete" class="exam-connect__complete" hidden>
+          <div class="exam-connect__complete-icon" aria-hidden="true">✓</div>
+          <div>
+            <h3>Examination complete!</h3>
+            <p>You connected all six skills and filled every square.</p>
+          </div>
+          <button id="examConnectPlayAgain" type="button">Play again</button>
+        </section>
+      </main>
+
+      <div
+        id="examConnectTutorial"
+        class="exam-connect-tutorial"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="examConnectTutorialTitle"
+        hidden
+      >
+        <div class="exam-connect-tutorial__card">
+          <div class="exam-connect-tutorial__progress" aria-hidden="true">
+            <span data-tutorial-dot="0"></span>
+            <span data-tutorial-dot="1"></span>
+            <span data-tutorial-dot="2"></span>
+          </div>
+
+          <section class="exam-connect-tutorial__slide" data-tutorial-slide="0">
+            <div class="exam-connect-tutorial__example">
+              <svg viewBox="0 0 210 210" aria-hidden="true">
+                <defs>
+                  <pattern
+                    id="connectTutorialGridOne"
+                    width="30"
+                    height="30"
+                    patternUnits="userSpaceOnUse"
+                  >
+                    <path
+                      d="M 30 0 L 0 0 0 30"
+                      fill="none"
+                      stroke="#a7adb5"
+                      stroke-width="1"
+                    />
+                  </pattern>
+                </defs>
+                <rect
+                  width="210"
+                  height="210"
+                  fill="url(#connectTutorialGridOne)"
+                />
+                <g class="exam-connect-tutorial__numbers">
+                  <circle
+                    class="exam-connect-tutorial__number--1"
+                    cx="75"
+                    cy="15"
+                    r="14"
+                  />
+                  <text x="75" y="20">1</text>
+                  <circle
+                    class="exam-connect-tutorial__number--2"
+                    cx="195"
+                    cy="15"
+                    r="14"
+                  />
+                  <text x="195" y="20">2</text>
+                  <circle
+                    class="exam-connect-tutorial__number--3"
+                    cx="135"
+                    cy="195"
+                    r="14"
+                  />
+                  <text x="135" y="200">3</text>
+                  <circle
+                    class="exam-connect-tutorial__number--4"
+                    cx="15"
+                    cy="195"
+                    r="14"
+                  />
+                  <text x="15" y="200">4</text>
+                  <circle
+                    class="exam-connect-tutorial__number--5"
+                    cx="45"
+                    cy="45"
+                    r="14"
+                  />
+                  <text x="45" y="50">5</text>
+                  <circle
+                    class="exam-connect-tutorial__number--6"
+                    cx="165"
+                    cy="165"
+                    r="14"
+                  />
+                  <text x="165" y="170">6</text>
+                </g>
+              </svg>
+            </div>
+            <p class="exam-connect-tutorial__step">Step 1</p>
+            <h3 id="examConnectTutorialTitle">Find the skills</h3>
+            <p>Eye examination skills are placed around the grid.</p>
+          </section>
+
+          <section
+            class="exam-connect-tutorial__slide"
+            data-tutorial-slide="1"
+            hidden
+          >
+            <div class="exam-connect-tutorial__example">
+              <svg viewBox="0 0 210 210" aria-hidden="true">
+                <defs>
+                  <pattern
+                    id="connectTutorialGridTwo"
+                    width="30"
+                    height="30"
+                    patternUnits="userSpaceOnUse"
+                  >
+                    <path
+                      d="M 30 0 L 0 0 0 30"
+                      fill="none"
+                      stroke="#a7adb5"
+                      stroke-width="1"
+                    />
+                  </pattern>
+                </defs>
+                <rect
+                  width="210"
+                  height="210"
+                  fill="url(#connectTutorialGridTwo)"
+                />
+                <polyline
+                  class="exam-connect-tutorial__demo-line exam-connect-tutorial__demo-line--segment-1"
+                  points="75,15 135,15 135,75 165,75 165,15 195,15"
+                  pathLength="1"
+                />
+                <polyline
+                  class="exam-connect-tutorial__demo-line exam-connect-tutorial__demo-line--segment-2"
+                  points="195,15 195,195 135,195"
+                  pathLength="1"
+                />
+                <g class="exam-connect-tutorial__numbers">
+                  <circle
+                    class="exam-connect-tutorial__number--1"
+                    cx="75"
+                    cy="15"
+                    r="14"
+                  />
+                  <text x="75" y="20">1</text>
+                  <circle
+                    class="exam-connect-tutorial__number--2"
+                    cx="195"
+                    cy="15"
+                    r="14"
+                  />
+                  <text x="195" y="20">2</text>
+                  <circle
+                    class="exam-connect-tutorial__number--3"
+                    cx="135"
+                    cy="195"
+                    r="14"
+                  />
+                  <text x="135" y="200">3</text>
+                  <circle
+                    class="exam-connect-tutorial__number--4"
+                    cx="15"
+                    cy="195"
+                    r="14"
+                  />
+                  <text x="15" y="200">4</text>
+                  <circle
+                    class="exam-connect-tutorial__number--5"
+                    cx="45"
+                    cy="45"
+                    r="14"
+                  />
+                  <text x="45" y="50">5</text>
+                  <circle
+                    class="exam-connect-tutorial__number--6"
+                    cx="165"
+                    cy="165"
+                    r="14"
+                  />
+                  <text x="165" y="170">6</text>
+                </g>
+              </svg>
+            </div>
+            <p class="exam-connect-tutorial__step">Step 2</p>
+            <h3>Connect in order</h3>
+            <p>Connect the examination skills in order.</p>
+          </section>
+
+          <section
+            class="exam-connect-tutorial__slide"
+            data-tutorial-slide="2"
+            hidden
+          >
+            <div class="exam-connect-tutorial__example">
+              <svg viewBox="0 0 210 210" aria-hidden="true">
+                <defs>
+                  <pattern
+                    id="connectTutorialGridThree"
+                    width="30"
+                    height="30"
+                    patternUnits="userSpaceOnUse"
+                  >
+                    <path
+                      d="M 30 0 L 0 0 0 30"
+                      fill="none"
+                      stroke="#a7adb5"
+                      stroke-width="1"
+                    />
+                  </pattern>
+                </defs>
+                <rect
+                  width="210"
+                  height="210"
+                  fill="url(#connectTutorialGridThree)"
+                />
+                <polyline
+                  class="exam-connect-tutorial__demo-line exam-connect-tutorial__demo-line--segment-1"
+                  points="75,15 135,15 135,75 165,75 165,15 195,15"
+                  pathLength="1"
+                />
+                <polyline
+                  class="exam-connect-tutorial__demo-line exam-connect-tutorial__demo-line--segment-2"
+                  points="195,15 195,195 135,195"
+                  pathLength="1"
+                />
+                <polyline
+                  class="exam-connect-tutorial__demo-line exam-connect-tutorial__demo-line--segment-3"
+                  points="135,195 15,195"
+                  pathLength="1"
+                />
+                <polyline
+                  class="exam-connect-tutorial__demo-line exam-connect-tutorial__demo-line--segment-4"
+                  points="15,195 15,15 45,15 45,45"
+                  pathLength="1"
+                />
+                <polyline
+                  class="exam-connect-tutorial__demo-line exam-connect-tutorial__demo-line--segment-5"
+                  points="45,45 45,165 75,165 75,45 105,45 105,165 135,165 135,105 165,105 165,165"
+                  pathLength="1"
+                />
+                <g class="exam-connect-tutorial__numbers">
+                  <circle
+                    class="exam-connect-tutorial__number--1"
+                    cx="75"
+                    cy="15"
+                    r="14"
+                  />
+                  <text x="75" y="20">1</text>
+                  <circle
+                    class="exam-connect-tutorial__number--2"
+                    cx="195"
+                    cy="15"
+                    r="14"
+                  />
+                  <text x="195" y="20">2</text>
+                  <circle
+                    class="exam-connect-tutorial__number--3"
+                    cx="135"
+                    cy="195"
+                    r="14"
+                  />
+                  <text x="135" y="200">3</text>
+                  <circle
+                    class="exam-connect-tutorial__number--4"
+                    cx="15"
+                    cy="195"
+                    r="14"
+                  />
+                  <text x="15" y="200">4</text>
+                  <circle
+                    class="exam-connect-tutorial__number--5"
+                    cx="45"
+                    cy="45"
+                    r="14"
+                  />
+                  <text x="45" y="50">5</text>
+                  <circle
+                    class="exam-connect-tutorial__number--6"
+                    cx="165"
+                    cy="165"
+                    r="14"
+                  />
+                  <text x="165" y="170">6</text>
+                </g>
+              </svg>
+            </div>
+            <p class="exam-connect-tutorial__step">Step 3</p>
+            <h3>Fill the whole grid</h3>
+            <p>Connect the skills in order and fill every square.</p>
+          </section>
+
+          <div class="exam-connect-tutorial__actions">
+            <button id="examConnectTutorialBack" type="button">Back</button>
+            <button id="examConnectTutorialNext" type="button">Next</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>

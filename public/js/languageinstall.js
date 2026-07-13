@@ -718,6 +718,7 @@ export function matchesOfflineCatalog(url, catalogId) {
   if (catalogId === "core-interactive-learning") {
     return (
       assetPath.startsWith("/subapp/") ||
+      assetPath.startsWith("/images/quiz/connect/") ||
       assetPath.includes("interactive") ||
       assetPath.includes("miniapp")
     );
@@ -729,6 +730,7 @@ export function matchesOfflineCatalog(url, catalogId) {
       assetPath === "/videos/do_220p.mp4" ||
       assetPath.startsWith("/subapp/mires/") ||
       assetPath.startsWith("/subapp/morph/") ||
+      assetPath.startsWith("/images/quiz/connect/") ||
       assetPath.startsWith("/images/icon/eyes/core/") ||
       (assetPath.startsWith("/images/learning/") &&
         !assetPath.startsWith("/images/learning/diabetic/") &&

@@ -1,4 +1,4 @@
-<!-- THE CHANGES - activeContext.md | 2026-07-10, Codex -->
+<!-- THE CHANGES - activeContext.md | 2026-07-13, Codex -->
 
 # Active Context
 
@@ -12,6 +12,7 @@ June stabilization and app-wide infrastructure:
 - shared lesson progress and completion ticks are centralized in `public/js/lessonProgress.js` and `public/js/lessonCompletionTick.js`, then consumed by Videos, Childhood Workshop, Diabetic Workshop, Glaucoma Workshop, case studies, and My Learning rows
 - case-study chat/flashcard work spans `public/html/casestudy.html`, `public/js/casestudy.js`, `public/js/casestudy_primary.js`, `public/html/glaucomaHistoryCaseStudy.html`, `public/js/glaucomaHistoryCaseStudy.js`, and the shared `casechat-*` CSS
 - iPad/tablet layout fixes are concentrated in `public/style/responsive.css`; route-specific overrides should stay constrained and be rechecked against phone and desktop layouts
+- Interactive Learning Primary now includes a local 7x7 eye-examination `Connect` game (`eyeExaminationConnectPage`) whose six checkpoints must be reached as History -> VA -> Front of eye -> Pupils -> Fundal reflex -> DO while filling all 49 cells; `public/js/eyeExaminationConnect.js` owns its tutorial, pointer/keyboard controls, rule validation, and shared lesson progress
 
 Diabetic Retinopathy workshop and Videos-route stabilization:
 
@@ -33,6 +34,12 @@ Childhood Fundal Reflex scrollytelling is also an active maintenance area:
 - Diabetic Fundal-style scrollytelling now depends on hardened pause-frame locking, retained accumulated captions after completion, iOS/WebKit renderer overrides where needed, exact static snapshot recovery for fragile WebKit pause/final holds, and ordinary `< Previous` / `Next >` buttons on the final page of each scrollytelling group.
 
 ## Recent Changes
+
+- Eye examination Connect game (2026-07-13):
+  - Added a Primary `Connect` row immediately below Anterior chamber depth in `interactiveLearningPage`.
+  - Added the responsive Videos-route `eyeExaminationConnectPage` using the six assets under `public/images/quiz/connect/`.
+  - Enforced orthogonal, non-overlapping paths, the clinical checkpoint order, and the all-49-cells completion rule; valid completion writes `lessonProgress:eyeExaminationConnectPage` at 100%.
+  - Added a three-step first-play tutorial, reopenable How to play control, reset/backtracking, pointer/touch dragging, keyboard arrows, completion feedback, and automated solution/DOM tests.
 
 - Security updates (2026-06-29 to 2026-07-10):
   - Source of truth: `security01`, `security02`, and `security03` on `main`. These security changes landed on `2026-07-07`.

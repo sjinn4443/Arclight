@@ -277,6 +277,7 @@ See [`security/EMERGENCY_PLAN.md`](./security/EMERGENCY_PLAN.md) for the operato
 - The Interactive Learning section inside [`public/html/videos.html`](./public/html/videos.html) uses a shared Videos-route subpage pattern:
   - local modules such as `Morph` and `Mires` load from `public/subapp/*`
   - some modules now lazy-load external Netlify iframes (`Fundal Reflex`, `Trauma`, `Amsler`)
+  - the Primary `Connect` row opens the local `eyeExaminationConnectPage`, a 7x7 eye-examination sequence game implemented by `public/js/eyeExaminationConnect.js` with assets from `public/images/quiz/connect/`, first-play instructions, keyboard/pointer input, and shared lesson-progress completion
 - The Diabetic Retinopathy workshop is launched from the Eyes route and combines workshop folders, scroll lessons, Videos-route lessons, progress bars, folder restore behavior, structural previous/next buttons, protocol pages, and demo quizzes.
   - `public/html/diabeticRetinopathyWorkshop.html` owns the workshop shell and protocol/scroll pages.
   - `public/html/videos.html` owns the diabetic video pages and the Interactive Learning `Demo Quizzes` folder.
@@ -303,6 +304,7 @@ See [`security/EMERGENCY_PLAN.md`](./security/EMERGENCY_PLAN.md) for the operato
 
 ## Changelog (high level)
 
+- 2026-07-13: Added the Interactive Learning eye-examination `Connect` game: History -> VA -> Front of eye -> Pupils -> Fundal reflex -> DO, with ordered checkpoints, full-grid completion, a three-step first-play tutorial, responsive pointer/keyboard controls, and automated path/completion tests.
 - 2026-06-19: Added docs for the new local full-animation MP4 lesson pages: Childhood Fundal Reflex full animation plus Diabetic Direct Ophthalmoscopy and Binocular Indirect Ophthalmoscopy full animations, all wired through Videos-route hidden pages and `VIDEO_PAGE_SOURCES`.
 - 2026-06-12: Refreshed docs for the June app changes: offline asset-manifest downloads, menu Downloaded Contents summaries, cached MP4/HLS playback behavior, localized app-video subtitles, shared lesson-completion ticks, case-study chat progress, clean translation QA, and iPad/responsive layout maintenance.
 - 2026-06-11: Added broad localized subtitle coverage for app videos via `public/video-localization/app-video-subtitles.json`, VTT subtitle folders, and runtime subtitle synchronization.

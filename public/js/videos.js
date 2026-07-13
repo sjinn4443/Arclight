@@ -8,6 +8,7 @@ import { showExperimentalMiniAppNoticeForPage } from "./experimentalMiniAppNotic
 import { syncLessonCompletionTick } from "./lessonCompletionTick.js";
 import { initializeInteractiveLearningTopicQuizzes } from "./interactiveLearningTopicQuizzes.js";
 import { syncLocalizedVideoSubtitles } from "./videoSubtitles.js";
+import { initializeEyeExaminationConnectGame } from "./eyeExaminationConnect.js";
 
 // Keep track of the currently active subpage element within videos.html
 let currentPageElement = null;
@@ -3457,6 +3458,7 @@ export function initializeVideos() {
   wirePupilFullExamProgress();
   setupInteractiveLearningFolders();
   initializeInteractiveLearningTopicQuizzes({ showPage: show });
+  initializeEyeExaminationConnectGame();
 
   // Resolve the target (global → sessionStorage)
   let pending = window.__videosPendingTarget || "";
