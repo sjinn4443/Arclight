@@ -30,6 +30,10 @@ const EXPERIMENTAL_PAGE_IDS = new Set([
 
 const OVERLAY_ID = "experimentalMiniAppNoticeOverlay";
 const BODY_OPEN_ATTR = "data-experimental-miniapp-notice-open";
+const RAPD_PAGE_ID = "glaucomaRAPDFullSwingInteractive";
+const RAPD_ORIENTATION_OVERLAY_ID = "rapdOrientationNoticeOverlay";
+const RAPD_MOBILE_LAYOUT_ATTR = "data-rapd-mobile-layout";
+const RAPD_ORIENTATION_OPEN_ATTR = "data-rapd-orientation-notice-open";
 
 let initialized = false;
 let currentTargetId = null;
@@ -37,6 +41,8 @@ let overlayEl = null;
 let titleEl = null;
 let bodyEl = null;
 let okBtnEl = null;
+let rapdMobileSession = false;
+let orientationOverlayEl = null;
 
 function isExperimentalPageId(id) {
   return EXPERIMENTAL_PAGE_IDS.has(String(id || "").trim());
@@ -118,6 +124,97 @@ function setOpenState(isOpen) {
   } else {
     document.body.removeAttribute(BODY_OPEN_ATTR);
   }
+}
+
+function mediaMatches(query) {
+  try {
+    return window.matchMedia?.(query)?.matches === true;
+  } catch {
+    return false;
+  }
+}
+
+function isPhoneSizedDevice() {
+  const viewportWidth = Number(window.innerWidth) || 0;
+  const screenWidth = Number(window.screen?.width) || viewportWidth;
+  const screenHeight =
+    Number(window.screen?.height) || Number(window.innerHeight);
+  const shortestScreenSide = Math.min(screenWidth, screenHeight);
+
+  return (
+    viewportWidth <= 600 ||
+    (mediaMatches("(pointer: coarse)") && shortestScreenSide <= 600)
+  );
+}
+
+function isPortraitViewport() {
+  if (mediaMatches("(orientation: portrait)")) return true;
+  return (Number(window.innerHeight) || 0) > (Number(window.innerWidth) || 0);
+}
+
+function setRapdMobileLayout(isActive) {
+  rapdMobileSession = isActive;
+  if (!document.body) return;
+  if (isActive) {
+    document.body.setAttribute(RAPD_MOBILE_LAYOUT_ATTR, "true");
+  } else {
+    document.body.removeAttribute(RAPD_MOBILE_LAYOUT_ATTR);
+  }
+}
+
+function ensureOrientationOverlay() {
+  if (orientationOverlayEl && document.body?.contains(orientationOverlayEl)) {
+    return orientationOverlayEl;
+  }
+
+  orientationOverlayEl = document.getElementById(RAPD_ORIENTATION_OVERLAY_ID);
+  if (orientationOverlayEl || !document.body) return orientationOverlayEl;
+
+  orientationOverlayEl = document.createElement("div");
+  orientationOverlayEl.id = RAPD_ORIENTATION_OVERLAY_ID;
+  orientationOverlayEl.hidden = true;
+  orientationOverlayEl.setAttribute("role", "dialog");
+  orientationOverlayEl.setAttribute("aria-modal", "true");
+  orientationOverlayEl.setAttribute(
+    "aria-label",
+    "Rotate your device to landscape",
+  );
+
+  const content = document.createElement("div");
+  content.className = "rapd-orientation-notice";
+
+  const animation = document.createElement("div");
+  animation.className = "rapd-orientation-notice__animation";
+  animation.setAttribute("aria-hidden", "true");
+
+  const phone = document.createElement("span");
+  phone.className = "rapd-orientation-notice__phone";
+
+  const arrow = document.createElement("span");
+  arrow.className = "rapd-orientation-notice__arrow";
+
+  const text = document.createElement("p");
+  text.className = "rapd-orientation-notice__text";
+  text.textContent = "Rotate your device to landscape";
+
+  animation.append(phone, arrow);
+  content.append(animation, text);
+  orientationOverlayEl.appendChild(content);
+  document.body.appendChild(orientationOverlayEl);
+  return orientationOverlayEl;
+}
+
+function openOrientationNotice() {
+  const orientationOverlay = ensureOrientationOverlay();
+  if (!orientationOverlay) return;
+  closeNotice();
+  orientationOverlay.hidden = false;
+  document.body?.setAttribute(RAPD_ORIENTATION_OPEN_ATTR, "true");
+}
+
+function closeOrientationNotice() {
+  if (orientationOverlayEl) orientationOverlayEl.hidden = true;
+  document.body?.removeAttribute(RAPD_ORIENTATION_OPEN_ATTR);
 }
 
 function ensureOverlay() {
@@ -203,8 +300,30 @@ function closeNotice() {
 
 function clearAckAndClose() {
   currentTargetId = null;
+  closeOrientationNotice();
+  setRapdMobileLayout(false);
   writeAck(false);
   closeNotice();
+}
+
+function showInteractiveNoticeIfNeeded(targetId) {
+  if (readAck()) {
+    closeNotice();
+    return;
+  }
+  openNotice(targetId);
+}
+
+function syncRapdOrientationFlow() {
+  if (currentTargetId !== RAPD_PAGE_ID || !rapdMobileSession) return;
+
+  if (isPortraitViewport()) {
+    openOrientationNotice();
+    return;
+  }
+
+  closeOrientationNotice();
+  showInteractiveNoticeIfNeeded(RAPD_PAGE_ID);
 }
 
 function processPageShown(targetId) {
@@ -215,13 +334,20 @@ function processPageShown(targetId) {
     return;
   }
 
+  if (targetId !== RAPD_PAGE_ID) {
+    closeOrientationNotice();
+    setRapdMobileLayout(false);
+  } else if (currentTargetId !== RAPD_PAGE_ID) {
+    setRapdMobileLayout(isPhoneSizedDevice());
+  }
+
   currentTargetId = targetId;
-  if (readAck()) {
-    closeNotice();
+  if (targetId === RAPD_PAGE_ID && rapdMobileSession) {
+    syncRapdOrientationFlow();
     return;
   }
 
-  openNotice(targetId);
+  showInteractiveNoticeIfNeeded(targetId);
 }
 
 function processRouteLoaded(routeName) {
@@ -243,6 +369,10 @@ function handleLanguageUpdated() {
   renderCopy(currentTargetId);
 }
 
+function handleViewportChanged() {
+  syncRapdOrientationFlow();
+}
+
 export function initializeExperimentalMiniAppNotice() {
   if (initialized) return;
   initialized = true;
@@ -250,6 +380,10 @@ export function initializeExperimentalMiniAppNotice() {
   document.addEventListener("page:shown", handlePageShown);
   window.addEventListener("page:loaded", handleRouteLoaded);
   document.addEventListener("language:updated", handleLanguageUpdated);
+  window.addEventListener("resize", handleViewportChanged, { passive: true });
+  window.addEventListener("orientationchange", handleViewportChanged, {
+    passive: true,
+  });
 }
 
 export function showExperimentalMiniAppNoticeForPage(targetId) {
@@ -264,12 +398,19 @@ export function resetExperimentalMiniAppNoticeForTests() {
   document.removeEventListener("page:shown", handlePageShown);
   window.removeEventListener("page:loaded", handleRouteLoaded);
   document.removeEventListener("language:updated", handleLanguageUpdated);
+  window.removeEventListener("resize", handleViewportChanged);
+  window.removeEventListener("orientationchange", handleViewportChanged);
   initialized = false;
   currentTargetId = null;
+  rapdMobileSession = false;
   writeAck(false);
   setOpenState(false);
+  closeOrientationNotice();
+  setRapdMobileLayout(false);
   overlayEl?.remove?.();
+  orientationOverlayEl?.remove?.();
   overlayEl = null;
+  orientationOverlayEl = null;
   titleEl = null;
   bodyEl = null;
   okBtnEl = null;

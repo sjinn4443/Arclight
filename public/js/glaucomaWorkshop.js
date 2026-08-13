@@ -1171,6 +1171,7 @@ function initGlaucomaRAPDFullSwingInteractive() {
 
   const stage = page.querySelector("#rapdStage");
   const hint = page.querySelector("#rapdHint");
+  const eyesImg = page.querySelector("#rapdEyesImg");
 
   const flashlightOff = page.querySelector("#rapdFlashlightOff");
   const flashlight = page.querySelector("#rapdFlashlight");
@@ -1189,6 +1190,7 @@ function initGlaucomaRAPDFullSwingInteractive() {
 
   if (
     !stage ||
+    !eyesImg ||
     !flashlightOff ||
     !flashlight ||
     !beam ||
@@ -1202,9 +1204,9 @@ function initGlaucomaRAPDFullSwingInteractive() {
   const LATENCY_MS = 250;
   const CONSTRICT_MIN = 0.82;
   const DILATE_MAX = 1.2;
-  const RAPD_RIGHT_PARTIAL_RATIO = 0.8;
-  const RAPD_RIGHT_PARTIAL_MIN =
-    DILATE_MAX - (DILATE_MAX - CONSTRICT_MIN) * RAPD_RIGHT_PARTIAL_RATIO;
+  const RAPD_PARTIAL_RATIO = 0.8;
+  const RAPD_PARTIAL_MIN =
+    DILATE_MAX - (DILATE_MAX - CONSTRICT_MIN) * RAPD_PARTIAL_RATIO;
   const CONSTRICT_FAST_MS = 85;
   const CONSTRICT_SLOW_MS = 620;
   const ESCAPE_HOLD_MS = 140;
@@ -1213,11 +1215,17 @@ function initGlaucomaRAPDFullSwingInteractive() {
   const ESCAPE_STABLE_AFTER_FULL_MS = 3000;
   const LIGHT_MOTION_THRESHOLD = 0.045;
   const DILATE_RAMP_MS = 520;
-  const RAPD_RIGHT_PULSE_MS = 220;
-  const RAPD_RIGHT_PULSE_WITH_LATENCY_MS = LATENCY_MS + RAPD_RIGHT_PULSE_MS;
+  const RAPD_PULSE_MS = 220;
+  const RAPD_PULSE_WITH_LATENCY_MS = LATENCY_MS + RAPD_PULSE_MS;
   const SLOW_CENTER_DWELL_MS = 160;
   const HIPPUS_AMP_LIGHT = 0.008;
   const HIPPUS_AMP_DARK = 0.016;
+  const EYE_LEFT_X_IN_ART = 670.23 / 1807;
+  const EYE_RIGHT_X_IN_ART = 1161.34 / 1807;
+  const EYE_Y_IN_ART = 1116.46 / 2283;
+  const BASE_ART_WIDTH = 320 * 1.67;
+  const BASE_PUPIL_SIZE = 15;
+  const FLASHLIGHT_VISUAL_OFFSET_Y = 36;
 
   const state = {
     pickedUp: false,
@@ -1227,7 +1235,7 @@ function initGlaucomaRAPDFullSwingInteractive() {
     ny: 0,
     flashlightOpacity: 1,
     lastSide: "centre", // "left" | "right" | "centre"
-    rapdRightPulseStart: null,
+    rapdPulseStart: null,
     centerEnteredAt: null,
     lastLightMoveAt: null,
     lastLitNx: null,
@@ -1278,12 +1286,6 @@ function initGlaucomaRAPDFullSwingInteractive() {
   state.eyes.left = createEyeState(0.61);
   state.eyes.right = createEyeState(2.14);
 
-  function getSide(nx) {
-    if (nx < -0.25) return "left";
-    if (nx > 0.25) return "right";
-    return "centre";
-  }
-
   function setPupilScale(el, s) {
     el.style.transform = `translate(-50%, -50%) scale(${s})`;
   }
@@ -1292,19 +1294,55 @@ function initGlaucomaRAPDFullSwingInteractive() {
     el.style.transition = `transform ${ms}ms cubic-bezier(0.22, 0.61, 0.36, 1)`;
   }
 
-  function updateFlashlightOpacity(rect, x, y) {
-    const leftEyeX = rect.width * 0.335;
-    const rightEyeX = rect.width * 0.684;
-    const eyeY = rect.height * 0.507;
+  function updatePupilGeometry(rect) {
+    const artRect = eyesImg.getBoundingClientRect();
+    const artLeft = artRect.left - rect.left;
+    const artTop = artRect.top - rect.top;
+    const leftEyeX = artLeft + artRect.width * EYE_LEFT_X_IN_ART;
+    const rightEyeX = artLeft + artRect.width * EYE_RIGHT_X_IN_ART;
+    const eyeY = artTop + artRect.height * EYE_Y_IN_ART;
+    const pupilSizeScale = clamp(artRect.width / BASE_ART_WIDTH, 1, 1.8);
+    const pupilSize = BASE_PUPIL_SIZE * pupilSizeScale;
+    const pupilRing = 3 * pupilSizeScale;
 
-    // Use torch head position (not image center) for opacity zones.
-    const box = flashlight.getBoundingClientRect();
-    const headOffsetY = box.height > 0 ? box.height * 0.42 : rect.height * 0.08;
+    pupilLeft.style.left = `${leftEyeX}px`;
+    pupilLeft.style.top = `${eyeY}px`;
+    pupilRight.style.left = `${rightEyeX}px`;
+    pupilRight.style.top = `${eyeY}px`;
+
+    [pupilLeft, pupilRight].forEach((pupil) => {
+      pupil.style.width = `${pupilSize}px`;
+      pupil.style.height = `${pupilSize}px`;
+      pupil.style.boxShadow = `0 0 0 ${pupilRing}px rgba(0, 0, 0, 0.25)`;
+    });
+
+    return {
+      leftEyeX,
+      rightEyeX,
+      eyeY,
+      activationRadius: clamp(artRect.width * 0.14, 58, 132),
+    };
+  }
+
+  function getLightDistances(x, y, eyeGeometry) {
+    // Match the visible beam origin near the torch head, rather than using
+    // the centre of the tall flashlight asset.
     const lightHeadX = x;
-    const lightHeadY = y - headOffsetY;
+    const lightHeadY = y - 50;
+    const dLeft = Math.hypot(
+      lightHeadX - eyeGeometry.leftEyeX,
+      lightHeadY - eyeGeometry.eyeY,
+    );
+    const dRight = Math.hypot(
+      lightHeadX - eyeGeometry.rightEyeX,
+      lightHeadY - eyeGeometry.eyeY,
+    );
 
-    const dLeft = Math.hypot(lightHeadX - leftEyeX, lightHeadY - eyeY);
-    const dRight = Math.hypot(lightHeadX - rightEyeX, lightHeadY - eyeY);
+    return { dLeft, dRight, lightHeadX, lightHeadY };
+  }
+
+  function updateFlashlightOpacity(rect, distances) {
+    const { dLeft, dRight } = distances;
     const d = Math.min(dLeft, dRight);
 
     const strongFadeDist = rect.width * 0.09;
@@ -1475,6 +1513,7 @@ function initGlaucomaRAPDFullSwingInteractive() {
   function render() {
     const now = performance.now();
     const rect = stage.getBoundingClientRect();
+    const eyeGeometry = updatePupilGeometry(rect);
 
     // before pickup: show only "off" + bubble
     if (!state.pickedUp) {
@@ -1483,7 +1522,7 @@ function initGlaucomaRAPDFullSwingInteractive() {
       flashlightOff.style.display = "";
       if (bubble) bubble.style.display = "";
       if (hint) hint.style.opacity = "1";
-      state.rapdRightPulseStart = null;
+      state.rapdPulseStart = null;
       state.centerEnteredAt = null;
       state.lastLightMoveAt = null;
       state.lastLitNx = null;
@@ -1521,11 +1560,29 @@ function initGlaucomaRAPDFullSwingInteractive() {
     );
 
     flashlight.style.left = `${xClamped}px`;
-    flashlight.style.top = `${y}px`;
+    flashlight.style.top = `${y + FLASHLIGHT_VISUAL_OFFSET_Y}px`;
 
-    // beam behavior
-    const side = getSide(state.nx);
-    const lightOn = y >= rect.height * 0.4 && y < rect.height * 0.66;
+    // Use the same image-derived eye centres for both eyes. A generous radial
+    // activation zone lets the pupil respond before the light is perfectly
+    // centred, while keeping the left/right response symmetrical.
+    const lightDistances = getLightDistances(xClamped, y, eyeGeometry);
+    const nearestDistance = Math.min(
+      lightDistances.dLeft,
+      lightDistances.dRight,
+    );
+    const eyesMidpoint = (eyeGeometry.leftEyeX + eyeGeometry.rightEyeX) / 2;
+    const eyeSeparation = eyeGeometry.rightEyeX - eyeGeometry.leftEyeX;
+    const centreNeutralHalfWidth = Math.max(18, eyeSeparation * 0.08);
+    const inCentreNeutralZone =
+      Math.abs(lightDistances.lightHeadX - eyesMidpoint) <=
+      centreNeutralHalfWidth;
+    const lightOn =
+      nearestDistance <= eyeGeometry.activationRadius && !inCentreNeutralZone;
+    const side = lightOn
+      ? lightDistances.dLeft <= lightDistances.dRight
+        ? "left"
+        : "right"
+      : "centre";
 
     if (side === "centre") {
       if (state.lastSide !== "centre" || state.centerEnteredAt === null) {
@@ -1570,9 +1627,9 @@ function initGlaucomaRAPDFullSwingInteractive() {
     const beamY = y - 50;
     beam.style.left = `${beamX}px`;
     beam.style.top = `${beamY}px`;
-    updateFlashlightOpacity(rect, xClamped, y);
+    updateFlashlightOpacity(rect, lightDistances);
 
-    const beamDiameter = rect.width * 0.42;
+    const beamDiameter = rect.width * 0.315;
     beam.style.width = `${beamDiameter}px`;
     beam.style.height = `${beamDiameter}px`;
     beam.style.transform = "translate(-50%, -50%)";
@@ -1591,22 +1648,19 @@ function initGlaucomaRAPDFullSwingInteractive() {
     let leftConstrictMin = CONSTRICT_MIN;
     let rightConstrictMin = CONSTRICT_MIN;
 
-    if (rapdOn && effectiveStimulus) {
-      if (side === "right") {
-        if (state.lastSide !== "right" || state.rapdRightPulseStart === null) {
-          state.rapdRightPulseStart = now;
-        }
-        const rapdElapsed = now - state.rapdRightPulseStart;
-        rightShouldConstrict = rapdElapsed < RAPD_RIGHT_PULSE_WITH_LATENCY_MS;
-        rightConstrictMin = RAPD_RIGHT_PARTIAL_MIN;
-      } else {
-        state.rapdRightPulseStart = null;
-        rightShouldConstrict = true;
-        rightConstrictMin = CONSTRICT_MIN;
+    if (rapdOn && effectiveStimulus && side === "right") {
+      if (state.lastSide !== "right" || state.rapdPulseStart === null) {
+        state.rapdPulseStart = now;
       }
-      leftShouldConstrict = true;
+
+      const rapdElapsed = now - state.rapdPulseStart;
+      const pulseActive = rapdElapsed < RAPD_PULSE_WITH_LATENCY_MS;
+      leftShouldConstrict = pulseActive;
+      rightShouldConstrict = pulseActive;
+      leftConstrictMin = RAPD_PARTIAL_MIN;
+      rightConstrictMin = RAPD_PARTIAL_MIN;
     } else {
-      state.rapdRightPulseStart = null;
+      state.rapdPulseStart = null;
     }
 
     updateEyeDesiredWithLatency(

@@ -137,6 +137,147 @@ input {
   }
 }
 
+/* Phones enter this state in portrait and retain it after rotating. The
+   landscape composition fills the usable viewport beneath the fixed topbar. */
+@media (orientation: landscape) {
+  body[data-rapd-mobile-layout="true"] {
+    overflow: hidden !important;
+  }
+
+  body[data-rapd-mobile-layout="true"] #glaucomaRAPDFullSwingInteractive {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 900 !important;
+    box-sizing: border-box !important;
+    width: 100vw !important;
+    height: 100dvh !important;
+    min-height: 0 !important;
+    padding: 62px 0 0 !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    overscroll-behavior: contain;
+    background: #fff !important;
+  }
+
+  body[data-rapd-mobile-layout="true"]
+    #glaucomaRAPDFullSwingInteractive
+    > .container.pupils-container {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: none !important;
+    height: auto !important;
+    min-height: calc(100dvh - 62px) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  body[data-rapd-mobile-layout="true"]
+    #glaucomaRAPDFullSwingInteractive
+    .eyes-topbar {
+    box-sizing: border-box !important;
+    height: 62px !important;
+    padding-left: max(12px, env(safe-area-inset-left)) !important;
+    padding-right: max(12px, env(safe-area-inset-right)) !important;
+  }
+
+  body[data-rapd-mobile-layout="true"]
+    #glaucomaRAPDFullSwingInteractive
+    .eyes-topbar__title {
+    margin-left: max(56px, env(safe-area-inset-left)) !important;
+  }
+
+  body[data-rapd-mobile-layout="true"]
+    #glaucomaRAPDFullSwingInteractive
+    .rapd-wrap {
+    position: relative !important;
+    inset: auto !important;
+    display: grid !important;
+    grid-template-rows: auto auto minmax(0, 1fr) !important;
+    box-sizing: border-box !important;
+    width: calc(
+      100vw - max(12px, env(safe-area-inset-left)) -
+        max(12px, env(safe-area-inset-right))
+    ) !important;
+    max-width: none !important;
+    height: auto !important;
+    margin: 6px max(12px, env(safe-area-inset-right)) 0
+      max(12px, env(safe-area-inset-left)) !important;
+    padding: 0 !important;
+    transform: none !important;
+  }
+
+  body[data-rapd-mobile-layout="true"]
+    #glaucomaRAPDFullSwingInteractive
+    .rapd-instructions {
+    width: 100% !important;
+    margin: 0 0 4px !important;
+    font-size: 14px !important;
+    line-height: 1.2 !important;
+    text-align: left !important;
+  }
+
+  body[data-rapd-mobile-layout="true"]
+    #glaucomaRAPDFullSwingInteractive
+    .rapd-toggleRow {
+    width: 100% !important;
+    margin: 0 0 6px !important;
+  }
+
+  body[data-rapd-mobile-layout="true"]
+    #glaucomaRAPDFullSwingInteractive
+    #rapdStage {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: none !important;
+    height: max(240px, calc(100dvh - 129px)) !important;
+    max-height: none !important;
+    margin: 0 !important;
+    border-radius: 14px !important;
+  }
+
+  body[data-rapd-mobile-layout="true"]
+    #glaucomaRAPDFullSwingInteractive
+    #rapdHint {
+    left: 16px !important;
+    width: min(390px, calc(55% - 24px)) !important;
+    max-width: calc(55% - 24px) !important;
+    transform: none !important;
+    box-sizing: border-box !important;
+    text-align: left !important;
+  }
+
+  body[data-rapd-mobile-layout="true"]
+    #glaucomaRAPDFullSwingInteractive
+    #rapdBubble {
+    top: 10px !important;
+    right: 16px !important;
+    left: auto !important;
+    width: min(220px, 38%) !important;
+    transform: none !important;
+  }
+
+  body[data-rapd-mobile-layout="true"]
+    #glaucomaRAPDFullSwingInteractive
+    .glaucoma-next-wrap {
+    position: relative !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    width: auto !important;
+    margin: 16px max(12px, env(safe-area-inset-right))
+      max(16px, env(safe-area-inset-bottom))
+      max(12px, env(safe-area-inset-left)) !important;
+  }
+}
+
+@supports not (height: 100dvh) {
+  @media (orientation: landscape) {
+    body[data-rapd-mobile-layout="true"] #glaucomaRAPDFullSwingInteractive {
+      height: 100vh !important;
+    }
+  }
+}
+
 @media (min-width: 56.25em) {
   .container {
     /*max-width: 76vw;*/
@@ -5110,4 +5251,59 @@ html.is-apple-ui :is(.eyes-topbar .menuBtn, .icon.menuBtn, #tocToggleBtn) {
     .simple-safe-decision__branch-text {
     transform: translateY(8px) !important;
   }
+}
+
+/* RAPD interactive: use the horizontal space between the page navigation
+   controls on tablets and desktops. These final overrides intentionally sit
+   after the legacy fixed-width RAPD rules above. */
+@media (min-width: 600.02px) and (max-width: 1023.98px) {
+  #glaucomaRAPDFullSwingInteractive .rapd-wrap {
+    position: relative !important;
+    left: 50% !important;
+    width: calc(100vw - 90px) !important;
+    max-width: none !important;
+    transform: translateX(-50%) !important;
+  }
+
+  #glaucomaRAPDFullSwingInteractive #rapdStage {
+    width: 100% !important;
+    max-width: none !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  #glaucomaRAPDFullSwingInteractive .rapd-wrap {
+    width: calc(
+      100vw - var(--desktop-topbar-icon-right) -
+        var(--desktop-topbar-icon-right) - 40px
+    ) !important;
+    max-width: none !important;
+  }
+
+  #glaucomaRAPDFullSwingInteractive #rapdStage {
+    width: 100% !important;
+    max-width: none !important;
+  }
+}
+
+@media (min-width: 600.02px) {
+  #glaucomaRAPDFullSwingInteractive .rapd-instructions,
+  #glaucomaRAPDFullSwingInteractive .rapd-toggleRow {
+    width: 100% !important;
+    max-width: none !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+}
+
+#glaucomaRAPDFullSwingInteractive #rapdHint {
+  box-sizing: border-box !important;
+  width: min(390px, calc(100% - 24px)) !important;
+  max-width: calc(100% - 24px) !important;
+}
+
+#glaucomaRAPDFullSwingInteractive #rapdFlashlightOff,
+#glaucomaRAPDFullSwingInteractive #rapdFlashlight {
+  transform: translate(-50%, -50%) scale(1.6, 1.18) !important;
+  transform-origin: center !important;
 }

@@ -9290,3 +9290,360 @@ Glaucoma history case study: match intermediate style
     gap: 14px;
   }
 }
+/* RAPD swinging-light interactive.
+ * This fragment is injected with innerHTML, so its essential layout must live
+ * in the global stylesheet rather than in a <style> element inside the
+ * fragment. Keep the 320px desktop composition and shrink it only when a
+ * phone viewport cannot accommodate it. */
+#glaucomaRAPDFullSwingInteractive .rapd-wrap {
+  box-sizing: border-box;
+  width: min(320px, calc(100vw - 24px));
+  margin: 0 auto;
+  padding: 12px 0 24px;
+}
+
+#glaucomaRAPDFullSwingInteractive .rapd-instructions {
+  font-size: 16px;
+  line-height: 1.3;
+  margin: 6px 0 20px;
+  opacity: 0.9;
+}
+
+#glaucomaRAPDFullSwingInteractive .rapd-toggleRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 10px;
+}
+
+#glaucomaRAPDFullSwingInteractive .rapd-toggleLabel {
+  min-width: 0;
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+#glaucomaRAPDFullSwingInteractive .rapd-switch {
+  position: relative;
+  width: 46px;
+  height: 26px;
+  flex: 0 0 auto;
+}
+
+#glaucomaRAPDFullSwingInteractive .rapd-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+#glaucomaRAPDFullSwingInteractive .rapd-slider {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.18);
+  border-radius: 999px;
+  transition: 180ms ease;
+}
+
+#glaucomaRAPDFullSwingInteractive .rapd-slider::before {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  left: 3px;
+  top: 3px;
+  background: #fff;
+  border-radius: 50%;
+  transition: 180ms ease;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+}
+
+#glaucomaRAPDFullSwingInteractive .rapd-switch input:checked + .rapd-slider {
+  background: #22c55e;
+}
+
+#glaucomaRAPDFullSwingInteractive
+  .rapd-switch
+  input:checked
+  + .rapd-slider::before {
+  transform: translateX(20px);
+}
+
+#glaucomaRAPDFullSwingInteractive #rapdStage {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  height: min(62vh, 520px);
+  background: #000;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  touch-action: none;
+}
+
+#glaucomaRAPDFullSwingInteractive #rapdEyesImg {
+  position: absolute;
+  left: 50%;
+  top: 52%;
+  transform: translate(-50%, -50%);
+  width: min(167%, 940px);
+  height: auto;
+  user-select: none;
+  pointer-events: none;
+}
+
+#glaucomaRAPDFullSwingInteractive #rapdHint {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 14px;
+  text-align: center;
+  opacity: 1;
+  transition: opacity 180ms ease;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+#glaucomaRAPDFullSwingInteractive #rapdFlashlightOff {
+  position: absolute;
+  top: 56%;
+  left: 95%;
+  transform: translate(-50%, -50%);
+  width: 24px;
+  height: auto;
+  user-select: none;
+  cursor: grab;
+  touch-action: none;
+}
+
+#glaucomaRAPDFullSwingInteractive #rapdFlashlightOff:active {
+  cursor: grabbing;
+}
+
+#glaucomaRAPDFullSwingInteractive #rapdBubble {
+  position: absolute;
+  top: 26%;
+  left: 72%;
+  transform: translate(-50%, -50%);
+  box-sizing: border-box;
+  width: min(180px, 58%);
+  padding: 13px 11px;
+  border-radius: 14px;
+  background: #fff;
+  color: #111;
+  font-size: 14px;
+  line-height: 1.25;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+  pointer-events: none;
+}
+
+#glaucomaRAPDFullSwingInteractive #rapdBubble::after {
+  content: "";
+  position: absolute;
+  right: 9px;
+  bottom: -10px;
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 10px solid #fff;
+}
+
+#glaucomaRAPDFullSwingInteractive #rapdFlashlight {
+  position: absolute;
+  top: 58.46%;
+  left: 81.25%;
+  transform: translate(-50%, -50%);
+  width: 25px;
+  height: auto;
+  user-select: none;
+  display: none;
+  cursor: grab;
+  touch-action: none;
+  z-index: 6;
+}
+
+#glaucomaRAPDFullSwingInteractive #rapdFlashlight:active {
+  cursor: grabbing;
+}
+
+#glaucomaRAPDFullSwingInteractive #rapdBeam {
+  position: absolute;
+  width: 73.75%;
+  aspect-ratio: 1;
+  transform-origin: 50% 50%;
+  pointer-events: none;
+  display: none;
+  z-index: 5;
+  background: radial-gradient(
+    circle at center,
+    rgb(255 255 255) 0%,
+    rgb(255 255 255 / 55%) 34%,
+    rgb(255 255 255 / 0%) 64%,
+    rgb(255 255 255 / 0%) 100%
+  );
+  border-radius: 50%;
+  filter: blur(0.35px);
+  opacity: 0.9;
+}
+
+#glaucomaRAPDFullSwingInteractive .rapd-pupil {
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  border-radius: 999px;
+  background: #0a0a0a;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.25);
+  transform: translate(-50%, -50%) scale(1.2);
+  transition: transform 180ms ease;
+  z-index: 4;
+  pointer-events: none;
+}
+
+#glaucomaRAPDFullSwingInteractive #rapdPupilLeft {
+  left: 28.5%;
+  top: 50.2%;
+}
+
+#glaucomaRAPDFullSwingInteractive #rapdPupilRight {
+  left: 73.8%;
+  top: 50.2%;
+}
+
+@media (max-width: 600px) {
+  #glaucomaRAPDFullSwingInteractive .rapd-wrap {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+body[data-rapd-orientation-notice-open="true"] {
+  overflow: hidden;
+}
+
+#rapdOrientationNoticeOverlay[hidden] {
+  display: none;
+}
+
+#rapdOrientationNoticeOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10003;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(0, 0, 0, 0.58);
+  backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
+  animation: guestModalFadeIn 0.3s ease-out;
+}
+
+.rapd-orientation-notice {
+  display: grid;
+  justify-items: center;
+  gap: 22px;
+  color: #fff;
+  text-align: center;
+}
+
+.rapd-orientation-notice__animation {
+  position: relative;
+  width: 124px;
+  height: 104px;
+}
+
+.rapd-orientation-notice__phone {
+  position: absolute;
+  left: 42px;
+  top: 8px;
+  width: 40px;
+  height: 72px;
+  box-sizing: border-box;
+  border: 4px solid currentColor;
+  border-radius: 9px;
+  transform-origin: 50% 50%;
+  animation: rapdRotatePhone 1.8s ease-in-out infinite;
+}
+
+.rapd-orientation-notice__phone::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 4px;
+  width: 10px;
+  height: 2px;
+  border-radius: 999px;
+  background: currentColor;
+  transform: translateX(-50%);
+}
+
+.rapd-orientation-notice__arrow::before {
+  content: "↻";
+  position: absolute;
+  left: 16px;
+  top: 26px;
+  font-size: 70px;
+  font-weight: 300;
+  line-height: 1;
+  opacity: 0.8;
+  animation: rapdRotateArrow 1.8s ease-in-out infinite;
+}
+
+.rapd-orientation-notice__text {
+  margin: 0;
+  color: #fff;
+  font-size: clamp(18px, 5.5vw, 23px);
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+@keyframes rapdRotatePhone {
+  0%,
+  20% {
+    transform: rotate(0deg);
+  }
+  60%,
+  100% {
+    transform: rotate(90deg);
+  }
+}
+
+@keyframes rapdRotateArrow {
+  0%,
+  18% {
+    transform: rotate(-35deg);
+    opacity: 0;
+  }
+
+  58%,
+  84% {
+    transform: rotate(45deg);
+    opacity: 1;
+  }
+
+  100% {
+    transform: rotate(45deg);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rapd-orientation-notice__phone,
+  .rapd-orientation-notice__arrow::before {
+    animation: none;
+  }
+
+  .rapd-orientation-notice__phone {
+    transform: rotate(90deg);
+  }
+
+  .rapd-orientation-notice__arrow::before {
+    opacity: 1;
+    transform: rotate(45deg);
+  }
+}

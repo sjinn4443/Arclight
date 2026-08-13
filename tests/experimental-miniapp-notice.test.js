@@ -23,6 +23,14 @@ describe("experimental mini app notice", () => {
     sessionStorage.clear();
     localStorage.clear();
     localStorage.setItem("prefLang", "en");
+    Object.defineProperty(window, "innerWidth", {
+      configurable: true,
+      value: 1024,
+    });
+    Object.defineProperty(window, "innerHeight", {
+      configurable: true,
+      value: 768,
+    });
     resetExperimentalMiniAppNoticeForTests();
     initializeExperimentalMiniAppNotice();
   });
@@ -77,5 +85,51 @@ describe("experimental mini app notice", () => {
     showPage("glaucomaACDInteractive");
 
     expect(overlay.hidden).toBe(false);
+  });
+
+  it("shows the RAPD rotate prompt before the learning notice on a portrait phone", () => {
+    Object.defineProperty(window, "innerWidth", {
+      configurable: true,
+      value: 390,
+    });
+    Object.defineProperty(window, "innerHeight", {
+      configurable: true,
+      value: 844,
+    });
+
+    showPage("glaucomaRAPDFullSwingInteractive");
+
+    const orientationOverlay = document.getElementById(
+      "rapdOrientationNoticeOverlay",
+    );
+    expect(orientationOverlay).not.toBeNull();
+    expect(orientationOverlay.hidden).toBe(false);
+    expect(orientationOverlay.textContent).toContain(
+      "Rotate your device to landscape",
+    );
+    expect(
+      document.getElementById("experimentalMiniAppNoticeOverlay"),
+    ).toBeNull();
+    expect(document.body.dataset.rapdMobileLayout).toBe("true");
+
+    Object.defineProperty(window, "innerWidth", {
+      configurable: true,
+      value: 844,
+    });
+    Object.defineProperty(window, "innerHeight", {
+      configurable: true,
+      value: 390,
+    });
+    window.dispatchEvent(new Event("resize"));
+
+    expect(orientationOverlay.hidden).toBe(true);
+    const learningOverlay = document.getElementById(
+      "experimentalMiniAppNoticeOverlay",
+    );
+    expect(learningOverlay).not.toBeNull();
+    expect(learningOverlay.hidden).toBe(false);
+    expect(learningOverlay.textContent).toContain(
+      "Interactive learning notice",
+    );
   });
 });
