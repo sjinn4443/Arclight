@@ -1,5 +1,7 @@
 public/html/demo
 public/subapp/
+# Third-party assets are copied verbatim from pinned npm dependencies.
+public/vendor/
 build
 dist
 .next
