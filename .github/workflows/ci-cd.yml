@@ -77,6 +77,26 @@ jobs:
           docker build --tag arclight-security-check .
           test "$(docker run --rm --entrypoint id arclight-security-check -u)" != "0"
 
+          container_name="arclight-runtime-check"
+          trap 'docker rm --force "$container_name" >/dev/null 2>&1 || true' EXIT
+          docker run --detach \
+            --name "$container_name" \
+            --publish 127.0.0.1:8080:8080 \
+            --env DASHBOARD_PASSWORD=ci-runtime-dashboard-password-2026 \
+            --env TELEMETRY_TOKEN_SECRET=ci-runtime-telemetry-secret-2026-value \
+            arclight-security-check
+
+          for attempt in {1..30}; do
+            if curl --fail --silent --show-error \
+              http://127.0.0.1:8080/healthz >/dev/null; then
+              exit 0
+            fi
+            sleep 1
+          done
+
+          docker logs "$container_name"
+          exit 1
+
       - name: Run accessibility tests
         run: npm run test:a11y
 
