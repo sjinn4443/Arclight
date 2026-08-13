@@ -14,7 +14,7 @@ function basic(user, pass) {
 
 describe("Reports Basic Auth", () => {
   beforeAll(async () => {
-    process.env.DASHBOARD_PASSWORD = "test-pass";
+    process.env.DASHBOARD_PASSWORD = "reports-test-password-0123456789";
 
     // This test is about auth wiring, not storage correctness.
     // Mock storage so /api/dev/users returns quickly.
@@ -47,7 +47,10 @@ describe("Reports Basic Auth", () => {
   test("GET /reports.html should allow with valid auth", async () => {
     const res = await request(app)
       .get("/reports.html")
-      .set("Authorization", `Basic ${basic("user", "test-pass")}`);
+      .set(
+        "Authorization",
+        `Basic ${basic("user", "reports-test-password-0123456789")}`,
+      );
 
     expect(res.status).toBe(200);
     expect(res.text).toMatch(/Arclight Reports/);
@@ -71,7 +74,10 @@ describe("Reports Basic Auth", () => {
   test("GET /api/dev/users should allow with valid auth", async () => {
     const res = await request(app)
       .get("/api/dev/users")
-      .set("Authorization", `Basic ${basic("user", "test-pass")}`);
+      .set(
+        "Authorization",
+        `Basic ${basic("user", "reports-test-password-0123456789")}`,
+      );
 
     expect(res.status).toBe(200);
     expect(Array.isArray(res.body)).toBe(true);
@@ -86,7 +92,10 @@ describe("Reports Basic Auth", () => {
   test("GET /api/dev/ip-locations should allow with valid auth", async () => {
     const res = await request(app)
       .get("/api/dev/ip-locations")
-      .set("Authorization", `Basic ${basic("user", "test-pass")}`);
+      .set(
+        "Authorization",
+        `Basic ${basic("user", "reports-test-password-0123456789")}`,
+      );
 
     expect(res.status).toBe(200);
     expect(Array.isArray(res.body)).toBe(true);

@@ -2,30 +2,6 @@ import { captureClientError } from "./safe-logging.js";
 
 const TELEMETRY_TOKEN_META_NAME = "arclight-telemetry-token";
 
-function getAnonId() {
-  const KEY = "arclight_anon_id";
-  let id = localStorage.getItem(KEY);
-  if (!id) {
-    id = ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) =>
-      (
-        c ^
-        (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))
-      ).toString(16),
-    );
-    localStorage.setItem(KEY, id);
-  }
-  return id;
-}
-
-// NEW: store a stable per-account id when the user signs in
-export function setUserId(id) {
-  if (!id) return;
-  localStorage.setItem("arclight_user_id", String(id));
-}
-function getUserId() {
-  return localStorage.getItem("arclight_user_id") || null;
-}
-
 function shouldSkipTelemetryInBrowser() {
   if (typeof window === "undefined" || !window.location) return false;
   const host = String(window.location.hostname || "").toLowerCase();
@@ -56,7 +32,7 @@ export function buildTelemetryRequestHeaders(initial = {}) {
 export async function saveProfile(fields) {
   if (shouldSkipTelemetryInBrowser()) return { ok: true, skipped: true };
 
-  const body = { anon_id: getAnonId(), user_id: getUserId(), ...fields };
+  const body = { ...fields };
 
   try {
     await fetch("/api/app/profile", {
@@ -70,7 +46,6 @@ export async function saveProfile(fields) {
   } catch (err) {
     captureClientError("[telemetry] saveProfile failed", err, {
       tags: { area: "telemetry", op: "saveProfile" },
-      extra: { body },
     });
     // optional: rethrow if you want callers to know it failed
   }
@@ -79,7 +54,7 @@ export async function saveProfile(fields) {
 export async function bumpRefresh(fields = {}) {
   if (shouldSkipTelemetryInBrowser()) return { ok: true, skipped: true };
 
-  const body = { anon_id: getAnonId(), user_id: getUserId(), ...fields };
+  const body = { ...fields };
 
   try {
     await fetch("/api/app/refresh", {
@@ -93,7 +68,6 @@ export async function bumpRefresh(fields = {}) {
   } catch (err) {
     captureClientError("[telemetry] bumpRefresh failed", err, {
       tags: { area: "telemetry", op: "bumpRefresh" },
-      extra: { body },
     });
   }
 }
@@ -103,5 +77,4 @@ window.ARCLIGHT = Object.assign(window.ARCLIGHT || {}, {
   buildTelemetryRequestHeaders,
   saveProfile,
   bumpRefresh,
-  setUserId,
 });

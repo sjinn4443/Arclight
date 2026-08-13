@@ -8,13 +8,9 @@ const SECRET_KEYS = [
   "APP_SECRET",
   "TELEMETRY_TOKEN_SECRET",
 ];
-const TELEMETRY_SECRET_KEYS = [
-  "TELEMETRY_TOKEN_SECRET",
-  "APP_SECRET",
-  "SESSION_SECRET",
-  "ENCRYPTION_SECRET",
-  "DASHBOARD_PASSWORD",
-];
+const MIN_DASHBOARD_PASSWORD_LENGTH = 24;
+const MIN_ENCRYPTION_SECRET_LENGTH = 32;
+const MIN_TELEMETRY_SECRET_LENGTH = 32;
 
 function isEnabled(value) {
   return ["1", "true", "yes", "on"].includes(
@@ -43,6 +39,7 @@ function isPlaceholderSecret(value) {
   return (
     raw.includes("change-this") ||
     raw.includes("replace-with") ||
+    raw.includes("generate-a-") ||
     raw.includes("your-password") ||
     raw === "password" ||
     raw === "secret" ||
@@ -59,10 +56,6 @@ function hasTelemetryHostAllowlist(env) {
   );
 }
 
-function hasTelemetrySecret(env) {
-  return TELEMETRY_SECRET_KEYS.some((key) => hasValue(env, key));
-}
-
 function isLocalDatabaseUrl(value) {
   try {
     const hostname = new URL(value).hostname.toLowerCase();
@@ -70,6 +63,32 @@ function isLocalDatabaseUrl(value) {
   } catch {
     return false;
   }
+}
+
+function parseTrustProxy(value) {
+  const raw = String(value ?? "")
+    .trim()
+    .toLowerCase();
+  if (!raw || raw === "0" || raw === "false" || raw === "off") {
+    return { valid: true, value: false };
+  }
+  if (!/^\d+$/.test(raw)) return { valid: false, value: false };
+
+  const hops = Number(raw);
+  if (!Number.isSafeInteger(hops) || hops < 1 || hops > 10) {
+    return { valid: false, value: false };
+  }
+  return { valid: true, value: hops };
+}
+
+function resolveTrustProxy(env = process.env) {
+  const parsed = parseTrustProxy(env.TRUST_PROXY);
+  if (!parsed.valid) {
+    throw new Error(
+      "TRUST_PROXY must be disabled or a trusted proxy hop count from 1 to 10",
+    );
+  }
+  return parsed.value;
 }
 
 function getDatabaseUrls(env) {
@@ -85,12 +104,54 @@ function validateRuntimeConfig(env = process.env) {
   const warnings = [];
   const production = env.NODE_ENV === "production";
 
-  if (!production) return { errors, warnings };
-
   for (const key of SECRET_KEYS) {
     if (isPlaceholderSecret(env[key])) {
       errors.push(`${key} still looks like a placeholder value`);
     }
+  }
+
+  const dashboardPassword = String(env.DASHBOARD_PASSWORD || "").trim();
+  if (dashboardPassword.length < MIN_DASHBOARD_PASSWORD_LENGTH) {
+    errors.push(
+      `DASHBOARD_PASSWORD is required and must be at least ${MIN_DASHBOARD_PASSWORD_LENGTH} characters`,
+    );
+  }
+
+  const telemetrySecret = String(env.TELEMETRY_TOKEN_SECRET || "").trim();
+  if (telemetrySecret.length < MIN_TELEMETRY_SECRET_LENGTH) {
+    errors.push(
+      `TELEMETRY_TOKEN_SECRET is required and must be at least ${MIN_TELEMETRY_SECRET_LENGTH} characters`,
+    );
+  }
+
+  const encryptionSecret = String(env.ENCRYPTION_SECRET || "").trim();
+  if (
+    encryptionSecret &&
+    encryptionSecret.length < MIN_ENCRYPTION_SECRET_LENGTH
+  ) {
+    errors.push(
+      `ENCRYPTION_SECRET must be at least ${MIN_ENCRYPTION_SECRET_LENGTH} characters when configured`,
+    );
+  }
+
+  const configuredSecrets = SECRET_KEYS.map((key) => [
+    key,
+    String(env[key] || "").trim(),
+  ]).filter(([, value]) => value);
+  for (let i = 0; i < configuredSecrets.length; i += 1) {
+    for (let j = i + 1; j < configuredSecrets.length; j += 1) {
+      const [leftKey, leftValue] = configuredSecrets[i];
+      const [rightKey, rightValue] = configuredSecrets[j];
+      if (leftValue === rightValue) {
+        errors.push(`${leftKey} must not reuse ${rightKey}`);
+      }
+    }
+  }
+
+  if (!parseTrustProxy(env.TRUST_PROXY).valid) {
+    errors.push(
+      "TRUST_PROXY must be disabled or a trusted proxy hop count from 1 to 10",
+    );
   }
 
   if (
@@ -100,12 +161,6 @@ function validateRuntimeConfig(env = process.env) {
     errors.push("ENABLE_NDJSON_STORAGE=true requires ENCRYPTION_SECRET");
   }
 
-  if (hasTelemetryHostAllowlist(env) && !hasTelemetrySecret(env)) {
-    errors.push(
-      "telemetry host allowlist requires TELEMETRY_TOKEN_SECRET or another app secret",
-    );
-  }
-
   if (
     splitCsv(env.ADMIN_ALLOWED_IPS).length &&
     !hasValue(env, "DASHBOARD_PASSWORD")
@@ -113,7 +168,7 @@ function validateRuntimeConfig(env = process.env) {
     errors.push("ADMIN_ALLOWED_IPS requires DASHBOARD_PASSWORD");
   }
 
-  if (env.DB_SSL === "disable") {
+  if (production && env.DB_SSL === "disable") {
     const remoteDatabaseUrls = getDatabaseUrls(env).filter(
       (url) => !isLocalDatabaseUrl(url),
     );
@@ -124,7 +179,7 @@ function validateRuntimeConfig(env = process.env) {
     }
   }
 
-  if (!hasTelemetryHostAllowlist(env)) {
+  if (production && !hasTelemetryHostAllowlist(env)) {
     warnings.push(
       "production telemetry writes are disabled until TELEMETRY_ALLOWED_HOSTS or PUBLIC_APP_URL is set",
     );
@@ -137,7 +192,7 @@ function assertRuntimeConfig(env = process.env) {
   const result = validateRuntimeConfig(env);
   if (result.errors.length) {
     throw new Error(
-      `Invalid production security configuration: ${result.errors.join("; ")}`,
+      `Invalid security configuration: ${result.errors.join("; ")}`,
     );
   }
   for (const warning of result.warnings) {
@@ -148,5 +203,6 @@ function assertRuntimeConfig(env = process.env) {
 
 module.exports = {
   assertRuntimeConfig,
+  resolveTrustProxy,
   validateRuntimeConfig,
 };

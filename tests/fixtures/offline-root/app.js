@@ -1,0 +1,1 @@
+globalThis.offlineFixture = true;

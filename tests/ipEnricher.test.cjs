@@ -3,10 +3,13 @@
  */
 
 const {
+  clearLookupCache,
   enrichIp,
   isLookupEnabled,
   isPrivateIp,
 } = require("../utils/ipEnricher.cjs");
+
+beforeEach(() => clearLookupCache());
 
 function jsonResponse(payload, status = 200) {
   return {
@@ -37,9 +40,6 @@ describe("IP country enrichment", () => {
       country: "United States",
       countryName: "United States",
       countryCode: "US",
-      city: "Mountain View",
-      latitude: 37.4056,
-      longitude: -122.0775,
       error: null,
     });
     expect(fetchImpl).toHaveBeenCalledTimes(1);
@@ -69,7 +69,6 @@ describe("IP country enrichment", () => {
       source: "bigdatacloud",
       countryName: "United Kingdom",
       countryCode: "GB",
-      city: "London",
     });
     expect(fetchImpl).toHaveBeenCalledTimes(2);
   });
@@ -86,7 +85,48 @@ describe("IP country enrichment", () => {
 
     expect(fetchImpl).not.toHaveBeenCalled();
     expect(isPrivateIp("::ffff:127.0.0.1")).toBe(true);
-    expect(isLookupEnabled({})).toBe(true);
+    expect(isLookupEnabled({})).toBe(false);
+    expect(isLookupEnabled({ ENABLE_IP_LOCATION_LOOKUP: "true" })).toBe(true);
     expect(isLookupEnabled({ ENABLE_IP_LOCATION_LOOKUP: "false" })).toBe(false);
+  });
+
+  test("uses the bounded lookup cache for repeated IPs", async () => {
+    const fetchImpl = jest
+      .fn()
+      .mockResolvedValue(jsonResponse({ country: "GB" }));
+
+    const first = await enrichIp("9.9.9.9", {
+      fetchImpl,
+      lookupEnabled: true,
+      timeoutMs: 100,
+    });
+    const second = await enrichIp("9.9.9.9", {
+      fetchImpl,
+      lookupEnabled: true,
+      timeoutMs: 100,
+    });
+
+    expect(first.countryName).toBe("United Kingdom");
+    expect(second).toEqual(first);
+    expect(fetchImpl).toHaveBeenCalledTimes(1);
+  });
+
+  test("applies one global timeout across provider fallbacks", async () => {
+    const fetchImpl = jest.fn(() => new Promise(() => {}));
+    const started = Date.now();
+
+    const result = await enrichIp("4.4.4.4", {
+      cache: false,
+      fetchImpl,
+      lookupEnabled: true,
+      timeoutMs: 40,
+    });
+
+    expect(result).toMatchObject({
+      source: "unavailable",
+      countryName: null,
+    });
+    expect(Date.now() - started).toBeLessThan(250);
+    expect(fetchImpl).toHaveBeenCalledTimes(1);
   });
 });

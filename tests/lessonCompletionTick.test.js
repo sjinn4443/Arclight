@@ -68,7 +68,10 @@ describe("lesson completion tick", () => {
 
       fill.style.width = "100%";
       bar.setAttribute("aria-valuenow", "100");
-      await new Promise((resolve) => setTimeout(resolve, 10));
+      for (let attempt = 0; attempt < 25; attempt += 1) {
+        if (row.classList.contains("is-progress-complete")) break;
+        await new Promise((resolve) => setTimeout(resolve, 10));
+      }
 
       expect(row.classList.contains("is-progress-complete")).toBe(true);
       expect(

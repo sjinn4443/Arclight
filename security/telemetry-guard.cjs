@@ -2,7 +2,6 @@ const crypto = require("crypto");
 const path = require("path");
 
 const {
-  getTelemetryAllowedHosts,
   getRequestHost,
   isTelemetryWriteAllowed,
 } = require("./telemetry-policy.cjs");
@@ -14,29 +13,13 @@ const SESSION_MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000;
 const TOKEN_TTL_MS = 24 * 60 * 60 * 1000;
 
 function resolveTelemetrySecret() {
-  const candidates = [
-    process.env.TELEMETRY_TOKEN_SECRET,
-    process.env.APP_SECRET,
-    process.env.SESSION_SECRET,
-    process.env.ENCRYPTION_SECRET,
-    process.env.DASHBOARD_PASSWORD,
-  ];
-
-  for (const candidate of candidates) {
-    const trimmed = String(candidate || "").trim();
-    if (trimmed) return trimmed;
-  }
-
-  if (
-    process.env.NODE_ENV === "production" &&
-    getTelemetryAllowedHosts().length
-  ) {
+  const secret = String(process.env.TELEMETRY_TOKEN_SECRET || "").trim();
+  if (secret.length < 32) {
     throw new Error(
-      "TELEMETRY_TOKEN_SECRET, APP_SECRET, SESSION_SECRET, ENCRYPTION_SECRET, or DASHBOARD_PASSWORD is required when production telemetry is enabled",
+      "TELEMETRY_TOKEN_SECRET is required and must be at least 32 characters",
     );
   }
-
-  return `ephemeral:${crypto.randomBytes(32).toString("hex")}`;
+  return secret;
 }
 
 const TELEMETRY_SECRET = resolveTelemetrySecret();
@@ -49,19 +32,27 @@ function toBase64Url(value) {
     .replace(/=+$/g, "");
 }
 
-function fromBase64Url(value) {
-  const normalized = String(value || "")
-    .replace(/-/g, "+")
-    .replace(/_/g, "/");
-  const padded = normalized.padEnd(
-    normalized.length + ((4 - (normalized.length % 4)) % 4),
-    "=",
-  );
-  return Buffer.from(padded, "base64");
-}
-
 function createRandomSessionId() {
   return toBase64Url(crypto.randomBytes(24));
+}
+
+function signTelemetrySessionId(sessionId) {
+  return toBase64Url(
+    crypto
+      .createHmac("sha256", TELEMETRY_SECRET)
+      .update(`session.${sessionId}`)
+      .digest(),
+  );
+}
+
+function createTelemetrySessionCookieValue(
+  sessionId = createRandomSessionId(),
+) {
+  const normalized = String(sessionId || "").trim();
+  if (!/^[A-Za-z0-9_-]{20,128}$/.test(normalized)) {
+    throw new Error("Invalid telemetry session identifier");
+  }
+  return `v1.${normalized}.${signTelemetrySessionId(normalized)}`;
 }
 
 function parseCookies(header) {
@@ -86,7 +77,23 @@ function parseCookies(header) {
 function readTelemetrySessionId(req) {
   const cookies = parseCookies(req?.headers?.cookie);
   const raw = String(cookies[TELEMETRY_SESSION_COOKIE] || "").trim();
-  return /^[A-Za-z0-9_-]{20,128}$/.test(raw) ? raw : null;
+  const parts = raw.split(".");
+  if (parts.length !== 3 || parts[0] !== "v1") return null;
+
+  const sessionId = parts[1];
+  if (!/^[A-Za-z0-9_-]{20,128}$/.test(sessionId)) return null;
+  const expected = signTelemetrySessionId(sessionId);
+  return safeCompare(parts[2], expected) ? sessionId : null;
+}
+
+function deriveTelemetrySubjectId(sessionId) {
+  const digest = toBase64Url(
+    crypto
+      .createHmac("sha256", TELEMETRY_SECRET)
+      .update(`subject.${sessionId}`)
+      .digest(),
+  );
+  return `session_${digest}`;
 }
 
 function signTelemetryPayload(sessionId, host, expiresAt) {
@@ -125,10 +132,36 @@ function verifyTelemetryToken(token, sessionId, host, now = Date.now()) {
   return safeCompare(parts[2], expected);
 }
 
-function originMatchesHost(value, expectedHost) {
+function normalizeAuthority(value, protocol) {
+  let authority = String(value || "")
+    .trim()
+    .toLowerCase();
+  if (protocol === "https:" && authority.endsWith(":443")) {
+    authority = authority.slice(0, -4);
+  }
+  if (protocol === "http:" && authority.endsWith(":80")) {
+    authority = authority.slice(0, -3);
+  }
+  return authority;
+}
+
+function originMatchesRequest(value, req, expectedHost) {
   try {
     const url = new URL(String(value || "").trim());
-    return url.hostname.toLowerCase() === expectedHost;
+    if (!["http:", "https:"].includes(url.protocol)) return false;
+    if (url.hostname.toLowerCase() !== expectedHost) return false;
+    if (process.env.NODE_ENV === "production" && url.protocol !== "https:") {
+      return false;
+    }
+
+    const requestAuthority = normalizeAuthority(
+      req?.headers?.host,
+      url.protocol,
+    );
+    return (
+      Boolean(requestAuthority) &&
+      normalizeAuthority(url.host, url.protocol) === requestAuthority
+    );
   } catch {
     return false;
   }
@@ -138,18 +171,15 @@ function hasSameOriginProof(req, host) {
   const secFetchSite = String(req.headers["sec-fetch-site"] || "")
     .trim()
     .toLowerCase();
-  if (
-    secFetchSite &&
-    !["same-origin", "same-site", "none"].includes(secFetchSite)
-  ) {
+  if (secFetchSite && secFetchSite !== "same-origin") {
     return false;
   }
 
   const origin = String(req.headers.origin || "").trim();
-  if (origin) return originMatchesHost(origin, host);
+  if (origin) return originMatchesRequest(origin, req, host);
 
   const referer = String(req.headers.referer || "").trim();
-  if (referer) return originMatchesHost(referer, host);
+  if (referer) return originMatchesRequest(referer, req, host);
 
   return false;
 }
@@ -177,13 +207,17 @@ function ensureTelemetryState(req, res, next) {
   let sessionId = readTelemetrySessionId(req);
   if (!sessionId) {
     sessionId = createRandomSessionId();
-    res.cookie(TELEMETRY_SESSION_COOKIE, sessionId, {
-      httpOnly: true,
-      maxAge: SESSION_MAX_AGE_MS,
-      path: "/",
-      sameSite: "Lax",
-      secure: process.env.NODE_ENV === "production",
-    });
+    res.cookie(
+      TELEMETRY_SESSION_COOKIE,
+      createTelemetrySessionCookieValue(sessionId),
+      {
+        httpOnly: true,
+        maxAge: SESSION_MAX_AGE_MS,
+        path: "/",
+        sameSite: "Strict",
+        secure: process.env.NODE_ENV === "production",
+      },
+    );
   }
 
   res.locals.telemetryToken = createTelemetryToken(sessionId, host);
@@ -238,6 +272,7 @@ function evaluateTelemetryWriteRequest(req) {
     allowed: true,
     mode: "allow",
     reason: null,
+    subjectId: deriveTelemetrySubjectId(sessionId),
   };
 }
 
@@ -245,7 +280,9 @@ module.exports = {
   TELEMETRY_HEADER,
   TELEMETRY_SESSION_COOKIE,
   TELEMETRY_META_NAME,
+  createTelemetrySessionCookieValue,
   createTelemetryToken,
+  deriveTelemetrySubjectId,
   ensureTelemetryState,
   evaluateTelemetryWriteRequest,
 };

@@ -23,23 +23,24 @@ The app is primarily static (served from `public/` in dev, and `dist/` in produc
 - Memory bank: [`memory-bank/`](./memory-bank/)
 - Agent notes: [`agent.md`](./agent.md)
 
-## Security Updates (2026-06-29 to 2026-07-13)
+## Security Updates (2026-06-29 to 2026-07-15)
 
 Source of truth: `security01`, `security02`, and `security03` on `main`. These security changes landed on `2026-07-07`.
 
-| Item                     | Before                                                                     | After                                                                                    | How                                                                                                                                         |
-| ------------------------ | -------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| Report data in the repo  | Telemetry/user files were tracked in Git.                                  | Report data files are no longer tracked.                                                 | Removed `reports/data/telemetry.ndjson`, `telemetry.sql`, and `users.json` from Git, then ignored generated report data.                    |
-| Production file storage  | Production could fall back to local NDJSON files when no database was set. | Production uses no-op storage unless file storage is explicitly enabled.                 | Updated storage selection so Postgres is preferred, and NDJSON needs `ENABLE_NDJSON_STORAGE=true`.                                          |
-| Telemetry encryption     | Missing encryption secret could allow unsafe local telemetry writes.       | NDJSON telemetry writes require `ENCRYPTION_SECRET`.                                     | Changed encryption helper to throw instead of writing plaintext.                                                                            |
-| Telemetry access         | Production telemetry could be too open if no host allowlist was set.       | Production telemetry is disabled until allowed hosts and a server secret are configured. | Tightened telemetry host policy and token-secret checks.                                                                                    |
-| Unsafe production config | Weak or missing production settings could be missed until runtime.         | Unsafe production settings stop server startup.                                          | Added runtime config validation for placeholder secrets, NDJSON without encryption, disabled remote DB TLS, and telemetry without a secret. |
-| IP telemetry             | Postgres stored only a masked IP and placeholder geo JSON.                 | Postgres stores the request IP plus `country_name`; encrypted NDJSON still masks IPs.    | Added real provider enrichment, an explicit country column, retention, and an `ENABLE_IP_LOCATION_LOOKUP=false` opt-out.                    |
-| Data retention           | Telemetry could remain indefinitely.                                       | Telemetry defaults to 90 days, audit logs to 365 days.                                   | Added retention pruning for Postgres and NDJSON storage.                                                                                    |
-| Admin password check     | Dashboard password used a normal string comparison.                        | Dashboard password uses safer timing-resistant comparison.                               | Switched Basic Auth password matching to `crypto.timingSafeEqual`.                                                                          |
-| Dependency risk          | Unused or vulnerable packages remained installed.                          | Full `npm audit` reports 0 vulnerabilities.                                              | Removed unused vulnerable packages and outdated dev tools; updated runtime dependencies.                                                    |
-| CI security check        | Security audit did not strictly block high runtime issues.                 | CI blocks high runtime vulnerabilities.                                                  | Changed GitHub Actions audit to `npm audit --omit=dev --audit-level=high`.                                                                  |
-| Test coverage            | New security rules were not all covered.                                   | Security behavior is covered by focused tests.                                           | Added tests for encryption, storage selection, runtime config, privacy, and telemetry policy.                                               |
+| Item                    | Before                                                                     | After                                                                               | How                                                                                                                      |
+| ----------------------- | -------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| Report data in the repo | Telemetry/user files were tracked in Git.                                  | Report data files are no longer tracked.                                            | Removed `reports/data/telemetry.ndjson`, `telemetry.sql`, and `users.json` from Git, then ignored generated report data. |
+| Production file storage | Production could fall back to local NDJSON files when no database was set. | Production uses no-op storage unless file storage is explicitly enabled.            | Updated storage selection so Postgres is preferred, and NDJSON needs `ENABLE_NDJSON_STORAGE=true`.                       |
+| Telemetry encryption    | Missing encryption secret could allow unsafe local telemetry writes.       | NDJSON telemetry writes require `ENCRYPTION_SECRET`.                                | Changed encryption helper to throw instead of writing plaintext.                                                         |
+| Telemetry access        | Client identifiers could select another profile.                           | A signed HttpOnly cookie supplies the server-owned profile ID.                      | Exact-origin checks and field allowlisting ignore client identity and location fields.                                   |
+| Unsafe runtime config   | Weak, reused secrets and implicit proxy trust could be missed.             | Startup rejects them in every environment.                                          | Requires independent 24+ character dashboard and 32+ character telemetry secrets; validates `TRUST_PROXY`.               |
+| Location telemetry      | Detailed geo fields could reach storage.                                   | Postgres stores only raw `ip`, resolved `country_name`, and `ts`; NDJSON masks IPs. | GPS remains local and is disclosed before direct BigDataCloud reverse geocoding. IP-country lookup is explicitly opt-in. |
+| Data retention          | Telemetry could remain indefinitely.                                       | Telemetry defaults to 90 days, audit logs to 365 days.                              | Added retention pruning for Postgres and NDJSON storage.                                                                 |
+| Admin password check    | Dashboard password used a normal string comparison.                        | Dashboard password uses safer timing-resistant comparison.                          | Switched Basic Auth password matching to `crypto.timingSafeEqual`.                                                       |
+| Dependency risk         | Unused or vulnerable packages remained installed.                          | Full `npm audit` reports 0 vulnerabilities.                                         | Removed unused vulnerable packages and outdated dev tools; updated runtime dependencies.                                 |
+| CI security check       | Runtime audits and container privilege were not fully enforced.            | CI blocks moderate runtime vulnerabilities and rejects a root container user.       | Runs `npm audit --omit=dev --audit-level=moderate` and validates the image UID.                                          |
+| Browser supply chain    | Several runtime assets loaded from public CDNs.                            | Pinned Lottie, Leaflet, html2canvas, and Font Awesome files are self-hosted.        | A deterministic vendor sync runs before builds and CSP no longer permits those CDNs.                                     |
+| Test coverage           | New security rules were not all covered.                                   | Security behavior is covered by focused tests.                                      | Added tests for encryption, storage selection, runtime config, privacy, and telemetry policy.                            |
 
 ## Quick start
 
@@ -73,6 +74,7 @@ Common commands (see `package.json` for the full list):
 ### Build / serve built output
 
 - Build static assets to `dist/`: `npm run build`
+- Re-sync pinned browser dependencies: `npm run sync:vendor`
 - Build then serve `dist/`: `npm run serve:dist`
 - Build then serve in production mode: `npm run serve:prod`
 - Generate childhood HLS outputs: `npm run build:childhood-hls`
@@ -81,6 +83,7 @@ Build output notes:
 
 - `BUILD_OUTPUT_DIR` can override the output folder. This is used by the Fundal regression suite to build into `tmp-fundal-dist`.
 - The build writes `version.json` with a `versionDate` and same-day `versionSequence`, using explicit env vars, git history, or GitHub API fallback when available.
+- The build writes `offline-assets.json` once; production serves its pre-serialized contents with ETag/cache headers instead of walking the static tree per request.
 - On Windows, the cleaner first renames the old output directory to `.build-cleanup-*`, recreates the target directory, and falls back to retrying recursive removal if rename is blocked. Leftover `.build-cleanup-*` folders are ignored by git and can be deleted after confirming no build is running.
 
 ### Tests / quality
@@ -96,6 +99,9 @@ Build output notes:
 - Lint: `npm run lint`
 - Format: `npm run format` / `npm run format:check`
 - Type check: `npm run type-check`
+- Runtime dependency audit: `npm run audit:security`
+- Rotate local dashboard/telemetry secrets: `npm run security:rotate-local-secrets`
+- Scrub legacy telemetry and migrate Postgres: `npm run security:migrate-data`
 
 ### Content / i18n
 
@@ -130,16 +136,17 @@ Arclight runs in multiple modes (dev/test/prod). A local `.env` is optional for 
 ### Core
 
 - `NODE_ENV`: `development` | `test` | `production`
-- `HOST`: bind address (default `0.0.0.0`)
+- `HOST`: bind address (defaults to `127.0.0.1` outside production and `0.0.0.0` in production)
 - `PORT`: server port (default `3000`)
+- `TRUST_PROXY`: disabled by default; use a validated hop count such as `1` only when the deployment topology has exactly one trusted proxy.
 - `SERVE_DIST`: when `true` / `1`, serve `dist/` even if `NODE_ENV != production`
 - `DISABLE_DB_STORAGE`: when `true` / `1`, forces no-op runtime storage. Playwright uses this so local E2E runs do not write telemetry.
 - `ENABLE_NDJSON_STORAGE`: allows file-backed telemetry in production when explicitly set. Keep this off unless you have a deliberate encrypted fallback plan.
 
 ### Reports / admin access
 
-- `DASHBOARD_PASSWORD`: Basic Auth password for `/reports.html` and `/html/reports.html`.
-- `ADMIN_ALLOWED_IPS`: comma-separated exact client IPs allowed to reach `/reports.html`, `/html/reports.html`, and `/api/dev/*` in production. If empty in production, admin/report routes are denied to everyone.
+- `DASHBOARD_PASSWORD`: independent Basic Auth password of at least 24 characters for `/reports.html` and `/html/reports.html`.
+- `ADMIN_ALLOWED_IPS`: comma-separated exact client IPs allowed to reach reports/admin routes from non-loopback clients in every environment.
 - `REPORTS_ALLOW_LOCAL_DELETE`: enables report-row deletion only for local development.
 - `REPORTS_ALLOW_DELETE`: enables report-row deletion in deployed environments. Use only with intentional admin access controls.
 - `REPORTS_AUDIT_RETENTION_DAYS`: admin delete-audit retention period, default `365`.
@@ -158,10 +165,10 @@ Legacy NDJSON telemetry can be encrypted at rest when that storage module is use
 ### Telemetry / geo controls
 
 - `TELEMETRY_ALLOWED_HOSTS`: comma-separated host allowlist for production telemetry writes. If empty in production, telemetry writes are disabled.
-- `TELEMETRY_TOKEN_SECRET`: stable server-side secret for telemetry tokens. Required when production telemetry hosts are enabled unless another app secret is configured.
+- `TELEMETRY_TOKEN_SECRET`: dedicated, independent server-side secret of at least 32 characters. It must not reuse any dashboard, encryption, session, or app secret.
 - `TELEMETRY_RETENTION_DAYS`: profile/IP telemetry retention period, default `90`.
 - `IPINFO_TOKEN`: optional server-side token used by IP geolocation enrichment.
-- `ENABLE_IP_LOCATION_LOOKUP`: set to `false` to disable server-side IP-country lookups. Lookups are enabled by default so `ip_logs.country_name` can be populated.
+- `ENABLE_IP_LOCATION_LOOKUP`: set exactly to `true` to enable server-side IP-country lookup. The bounded cache lasts 24 hours and all providers share a three-second timeout.
 
 ### Production DB
 
@@ -189,7 +196,8 @@ Storage selection:
 - In production, if no Postgres URL is configured, storage is no-op unless `ENABLE_NDJSON_STORAGE=true`; NDJSON writes still require `ENCRYPTION_SECRET`.
 - If `DISABLE_DB_STORAGE=1`, storage is no-op via `storage/disabled-storage.cjs`.
 - Stored telemetry is pruned by retention policy on storage startup. Postgres stores the request IP and resolved country name in `ip_logs.ip` and `ip_logs.country_name`; encrypted NDJSON fallback storage continues to mask IP addresses.
-- When a user grants precise browser location, the app replaces the matching IP-derived geo on that visit's latest `ip_logs` row (within 30 minutes), so an ISP endpoint such as London does not override a GPS-derived city such as Glasgow.
+- Client-supplied identity and location fields are ignored. Profile identity comes from a signed HttpOnly telemetry cookie.
+- When a user explicitly grants precise browser location, coordinates stay in the browser and are sent directly to BigDataCloud for reverse geocoding after disclosure; they are never sent to Arclight or stored by its backend.
 - PostgreSQL provides `ip_logs_latest_first` (`ts DESC`) and `app_users_latest_first` (`last_seen DESC`) views for newest-first browsing; the reports dashboard uses the same newest-first user ordering.
 
 The password-protected reports pages are served at:
@@ -208,10 +216,11 @@ See [`reports/README.md`](./reports/README.md) for details.
 
 The Language/Install route and menu download actions now use the same offline-download pipeline:
 
-- `GET /api/app/offline-assets` enumerates files under the active static root (`public/` in dev, `dist/` when serving a build) and returns `{ assets, bytes, count, urls }`.
+- `GET /api/app/offline-assets` serves a build-generated manifest in production and one asynchronously cached manifest in development.
 - `public/js/languageinstall.js` turns that manifest into download choices: full content, selected content section, or app-only/no-video content, with low/high video quality filtering where both MP4 tiers exist.
 - `public/js/menu.js` reuses the same helpers for the menu download action and the Downloaded Contents summary.
 - `public/sw.js` receives selected URL lists through `CACHE_URLS` / `CACHE_ASSETS`, reports progress, caches full MP4 files for offline playback, and serves cached MP4 range requests when the browser asks for partial content.
+- The service worker rejects sensitive cache-message URLs and bypasses API, tracking, reports, and health responses; it also honors `no-store` and caches only successful static responses.
 - Childhood Eye Screening HLS assets and subtitle catalogs are included in the cacheable asset model so iOS HLS playback can keep working offline after a successful download.
 
 When adding new media, keep the file path discoverable under the static root, add it to the relevant Videos/catalog mapping, include matching subtitles where applicable, and bump the service worker cache name when cached behavior or required cached assets change.
@@ -230,13 +239,16 @@ A multi-stage `Dockerfile` is included for reliable Railway builds:
 
 - Build stage: installs full deps and runs `npm run build` to produce `dist/`
 - Runtime stage: installs production deps only and runs `node server.cjs`
+- Runtime processes run as the unprivileged existing `node` user; only the optional telemetry-data directory is writable.
 
 Runtime expectations:
 
 - Railway sets `PORT` at runtime (Dockerfile defaults to `8080`)
-- set `DASHBOARD_PASSWORD` if you intend to access `/reports.html`
+- set independent strong `DASHBOARD_PASSWORD` and `TELEMETRY_TOKEN_SECRET` values
 - set `ADMIN_ALLOWED_IPS` if you intend to access reports/admin routes in production
 - set `DATABASE_URL` to use Postgres storage; production does not use NDJSON fallback unless `ENABLE_NDJSON_STORAGE=true`
+- set `TRUST_PROXY=1` for the current one-proxy Railway topology
+- set `ENABLE_IP_LOCATION_LOOKUP=true` if country collection is required
 
 ## Emergency controls
 

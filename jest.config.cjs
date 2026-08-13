@@ -23,6 +23,7 @@ module.exports = {
     "tests/renderperf.test.js",
   ], // Exclude Playwright tests, demo folder, and specific test files
   modulePathIgnorePatterns: [
+    "<rootDir>/Arclight/",
     "<rootDir>/dist/",
     "<rootDir>/tmp-fundal-dist/",
     "<rootDir>/tmp-codex-build.*",

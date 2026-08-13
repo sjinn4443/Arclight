@@ -4,29 +4,17 @@
  * It also handles caching of location data and dispatching location update events.
  */
 
-import { bumpRefresh, saveProfile } from "./telemetry.js";
-
 // ---------- Constants ----------
 const GEO_CACHE_KEY = "profileGeo"; // stores { iso2, country, city, lat, lon, area, classification, ts, isPrecise }
 const GEO_CACHE_TTL_MS = 24 * 60 * 60 * 1000; // 24 hours
 
 // LocalStorage key used by the app for user-selected location
 const LS_KEY_USER_LOCATION = "userLocation"; // { lat, lon, area, source, ts }
+const PRECISE_LOCATION_DISCLOSURE =
+  "With your permission, this device sends your precise coordinates directly to BigDataCloud to name the area. Arclight does not send or store those coordinates on its server. Continue?";
 
-// ---------- City normalizer ----------
-function normalizeCity(fromIp, fromReverse) {
-  const pick = (obj) => {
-    if (!obj || typeof obj !== "object") return null;
-    return (
-      obj.city ||
-      obj.locality ||
-      obj.town ||
-      obj.village ||
-      obj.principalSubdivisionLocality ||
-      null
-    );
-  };
-  return pick(fromReverse) || pick(fromIp) || null;
+function confirmPreciseLocationDisclosure() {
+  return window.confirm(PRECISE_LOCATION_DISCLOSURE);
 }
 
 // ---------- Classification ----------
@@ -162,40 +150,23 @@ export async function initializeLocation() {
         ? String(info.countryCode || info.country)
         : "GB"
     ).toUpperCase();
-    const lat = Number.isFinite(Number(info?.lat)) ? Number(info.lat) : null;
-    const lon = Number.isFinite(Number(info?.lon)) ? Number(info.lon) : null;
-
-    // Try to get proper country name & improved city via reverse geocode when coords exist
-    let reverse = null;
-    if (lat != null && lon != null) {
-      try {
-        reverse = await reverseGeocode(lat, lon);
-      } catch (_) {
-        /* non-fatal */
-        void 0;
-      }
-    }
-
     // Make a readable country name from ISO2 (e.g., "GB" -> "United Kingdom")
-    let countryName = null;
+    let countryName = String(info?.countryName || "").trim() || null;
     try {
-      countryName =
-        new Intl.DisplayNames(["en"], { type: "region" }).of(iso2) || iso2;
+      countryName ||= new Intl.DisplayNames(["en"], { type: "region" }).of(
+        iso2,
+      );
     } catch {
-      countryName = iso2; // fallback if Intl not supported
+      countryName ||= iso2;
     }
-
-    // Prefer reverse-geocoded locality; fall back to IP lookup city
-    const city = normalizeCity({ city: info?.city || null }, reverse);
-    const friendlyCountry = reverse?.countryName || countryName;
 
     const payload = {
       iso2, // "GB"
-      country: friendlyCountry, // "United Kingdom"
-      city: city || null, // "Dundee"
-      lat,
-      lon,
-      area: city || null, // back-compat
+      country: countryName || iso2,
+      city: null,
+      lat: null,
+      lon: null,
+      area: null,
       classification: classifyCountry(iso2),
       ts: Date.now(),
     };
@@ -203,7 +174,7 @@ export async function initializeLocation() {
     _writeCache(payload);
     dispatchLocationUpdated(payload);
     return payload; // <-- important: return the object you just saved/dispatched
-  } catch (err) {
+  } catch {
     // 3) Fallback (no IP info)
     const fallback = {
       iso2: "GB",
@@ -223,6 +194,7 @@ export async function initializeLocation() {
 
 // ---------- Precise browser geolocation path (ONE definition) ----------
 export async function refineWithBrowserLocation() {
+  if (!confirmPreciseLocationDisclosure()) return null;
   return new Promise((resolve) => {
     if (!navigator.geolocation) {
       console.warn("geolocation unsupported");
@@ -269,23 +241,6 @@ export async function refineWithBrowserLocation() {
         };
 
         localStorage.setItem("profileGeo", JSON.stringify(merged));
-        saveProfile({
-          country: merged.country || null,
-          area: merged.area || merged.city || null,
-          lat: merged.lat ?? null,
-          lon: merged.lon ?? null,
-          geo: {
-            iso2: merged.iso2 || null,
-            country: merged.country || null,
-            city: merged.city || null,
-            area: merged.area || null,
-            lat: merged.lat ?? null,
-            lon: merged.lon ?? null,
-            isPrecise: true,
-            ts: merged.ts,
-          },
-        });
-
         document.dispatchEvent(
           new CustomEvent("location:updated", { detail: merged }),
         );
@@ -403,7 +358,7 @@ function saveUserLocationToLocalStorage({ lat, lon, area, source }) {
       ts: Date.now(),
     };
     localStorage.setItem(LS_KEY_USER_LOCATION, JSON.stringify(payload));
-  } catch (_) {
+  } catch {
     void 0;
   }
 }
@@ -460,48 +415,6 @@ export async function handleCheckLocationClick() {
       new CustomEvent("location:updated", { detail: precise }),
     );
 
-    try {
-      await saveProfile({
-        country: precise.country || null,
-        area: precise.area || precise.city || null,
-        lat: precise.lat ?? null,
-        lon: precise.lon ?? null,
-        geo: {
-          iso2: precise.iso2 || null,
-          country: precise.country || null,
-          city: precise.city || null,
-          area: precise.area || null,
-          lat: precise.lat ?? null,
-          lon: precise.lon ?? null,
-          isPrecise: true,
-          ts: precise.ts,
-        },
-      });
-    } catch (e) {
-      console.warn("saveProfile failed after precise location update:", e);
-    }
-
-    // Notify backend so Dev Dashboard reflects the new location
-    try {
-      await bumpRefresh({
-        reason: "location_precise",
-        geo: {
-          iso2: precise.iso2,
-          country: precise.country,
-          city: precise.city || null,
-          lat: precise.lat,
-          lon: precise.lon,
-          area: precise.area || null,
-          isPrecise: true,
-          ts: precise.ts,
-        },
-      });
-      // Optional: let the app know telemetry finished
-      document.dispatchEvent(new CustomEvent("telemetry:refreshed"));
-    } catch (e) {
-      console.warn("bumpRefresh failed after precise location update:", e);
-    }
-
     // 5) Update the visible UI immediately
     updateLocationUI(area, "gps");
 
@@ -520,7 +433,7 @@ const LS_KEY_PRECISE_BTN_USED = "preciseLocationButtonUsed";
 function markPreciseLocationButtonUsed() {
   try {
     localStorage.setItem(LS_KEY_PRECISE_BTN_USED, "1");
-  } catch (_) {
+  } catch {
     /* noop */
   }
 
@@ -547,6 +460,9 @@ document.addEventListener("click", (e) => {
 async function requestPreciseLocation() {
   if (!("geolocation" in navigator)) {
     throw new Error("Geolocation not supported");
+  }
+  if (!confirmPreciseLocationDisclosure()) {
+    throw new Error("Precise location request cancelled");
   }
   return new Promise((resolve, reject) => {
     navigator.geolocation.getCurrentPosition(

@@ -1,5 +1,6 @@
 /* sw.js — Arclight PWA service worker */
-const CACHE_NAME = "arclight-static-v19";
+const CACHE_NAME = "arclight-static-v20";
+const MAX_MESSAGE_CACHE_URLS = 10000;
 const CORE_ASSETS = [
   "/",
   "/index.html",
@@ -32,6 +33,59 @@ const CORE_ASSETS = [
   "/favicons/pwa-install-narrow.png",
   "/favicons/pwa-install-wide.png",
 ];
+
+function isSensitivePath(pathname) {
+  return (
+    pathname.startsWith("/api/") ||
+    pathname === "/track" ||
+    pathname === "/healthz" ||
+    pathname === "/reports.html" ||
+    pathname === "/html/reports.html" ||
+    pathname === "/js/reports.js"
+  );
+}
+
+function canCacheResponse(response) {
+  if (!response?.ok) return false;
+  const cacheControl = String(response.headers?.get("cache-control") || "")
+    .trim()
+    .toLowerCase();
+  return !/(?:^|,)\s*(?:no-store|private)(?:\s|,|$)/.test(cacheControl);
+}
+
+function normalizeCacheMessageUrls(payload) {
+  const values = Array.isArray(payload)
+    ? payload.slice(0, MAX_MESSAGE_CACHE_URLS)
+    : [];
+  const safe = [];
+  const rejected = [];
+  const seen = new Set();
+
+  for (const value of values) {
+    try {
+      if (typeof value !== "string" || value.length > 2048) throw new Error();
+      const url = new URL(value, self.location.origin);
+      if (
+        url.origin !== self.location.origin ||
+        !["http:", "https:"].includes(url.protocol) ||
+        isSensitivePath(url.pathname)
+      ) {
+        throw new Error();
+      }
+      if (!seen.has(url.href)) {
+        seen.add(url.href);
+        safe.push(url.href);
+      }
+    } catch {
+      rejected.push(String(value || ""));
+    }
+  }
+
+  if (Array.isArray(payload) && payload.length > MAX_MESSAGE_CACHE_URLS) {
+    rejected.push("[cache request limit exceeded]");
+  }
+  return { rejected, safe, total: rejected.length + safe.length };
+}
 
 function parseRangeHeader(rangeHeader, size) {
   const match = /^bytes=(\d*)-(\d*)$/.exec(rangeHeader || "");
@@ -131,16 +185,17 @@ function postCacheProgress(port, payload) {
 
 async function cacheUrls(urls, port) {
   const cache = await caches.open(CACHE_NAME);
+  const normalized = normalizeCacheMessageUrls(urls);
   let cached = 0;
-  const failed = [];
-  const total = urls.length;
+  const failed = [...normalized.rejected];
+  const total = normalized.total;
 
-  for (const [index, url] of urls.entries()) {
+  for (const [index, url] of normalized.safe.entries()) {
     try {
       const requestUrl = new URL(url, self.location.origin).href;
       const request = new Request(requestUrl, { cache: "no-store" });
       const res = await fetch(request);
-      if (res && res.ok) {
+      if (canCacheResponse(res)) {
         await cache.put(requestUrl, res.clone());
         cached += 1;
       } else {
@@ -150,7 +205,7 @@ async function cacheUrls(urls, port) {
       failed.push(url);
     }
 
-    const processed = index + 1;
+    const processed = Math.min(index + 1 + normalized.rejected.length, total);
     if (processed === total || processed % 10 === 0) {
       postCacheProgress(port, {
         type: "CACHE_PROGRESS",
@@ -201,23 +256,8 @@ self.addEventListener("fetch", (event) => {
     // Bypass service worker for non-GET requests or cross-origin requests
     return;
   }
-  // Always bypass the API
-  if (
-    url.pathname.startsWith("/api/app/") ||
-    url.pathname.startsWith("/api/dev/")
-  ) {
-    return;
-  }
-
-  if (
-    url.pathname === "/track" ||
-    url.pathname === "/reports.html" ||
-    url.pathname === "/html/reports.html" ||
-    url.pathname.startsWith("/api/dev/")
-  ) {
-    // Bypass service worker for /track endpoint, reports pages, and dev API calls
-    return;
-  }
+  // Sensitive and personalized responses must never enter a shared device cache.
+  if (isSensitivePath(url.pathname)) return;
 
   // ---- MP4 handling (avoid breaking cache with Range requests) ----
   const isMp4 = url.pathname.endsWith(".mp4");
@@ -250,7 +290,9 @@ self.addEventListener("fetch", (event) => {
         if (cached) return cached;
 
         const fresh = await fetch(req);
-        cache.put(req, fresh.clone()).catch(() => {});
+        if (canCacheResponse(fresh)) {
+          cache.put(req, fresh.clone()).catch(() => {});
+        }
         return fresh;
       })(),
     );
@@ -265,7 +307,9 @@ self.addEventListener("fetch", (event) => {
         try {
           const fresh = await fetch(req, { cache: "no-store" });
           const cache = await caches.open(CACHE_NAME);
-          cache.put(req, fresh.clone()).catch(() => {});
+          if (canCacheResponse(fresh)) {
+            cache.put(req, fresh.clone()).catch(() => {});
+          }
           return fresh;
         } catch {
           const cache = await caches.open(CACHE_NAME);
@@ -284,7 +328,9 @@ self.addEventListener("fetch", (event) => {
         try {
           const fresh = await fetch(req);
           const cache = await caches.open(CACHE_NAME);
-          cache.put(req, fresh.clone()).catch(() => {});
+          if (canCacheResponse(fresh)) {
+            cache.put(req, fresh.clone()).catch(() => {});
+          }
           return fresh;
         } catch {
           const cache = await caches.open(CACHE_NAME);
@@ -304,7 +350,9 @@ self.addEventListener("fetch", (event) => {
 
       try {
         const fresh = await fetch(req, { cache: "no-store" });
-        cache.put(req, fresh.clone()).catch(() => {});
+        if (canCacheResponse(fresh)) {
+          cache.put(req, fresh.clone()).catch(() => {});
+        }
         return fresh;
       } catch {
         const cached = await cache.match(req);

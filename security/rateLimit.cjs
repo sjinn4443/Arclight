@@ -1,14 +1,4 @@
 const rateLimit = require("express-rate-limit");
-const { getRequestHost, isLocalHost } = require("./telemetry-policy.cjs");
-
-// General rate limit for all requests
-const generalRateLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // Limit each IP to 100 requests per windowMs
-  message: "Too many requests from this IP, please try again after 15 minutes",
-  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
-});
 
 // Stricter rate limit for sensitive endpoints (example, adjust as needed)
 const sensitiveRateLimiter = rateLimit({
@@ -29,7 +19,22 @@ function createTelemetryRateLimiter({
     max,
     standardHeaders: true,
     legacyHeaders: false,
-    skip: (req) => isLocalHost(getRequestHost(req)),
+    skip: (req) => req.telemetryWriteAllowed !== true,
+    handler: (req, res, next, options) => {
+      res.status(options.statusCode).json({
+        error: "rate_limited",
+        message,
+      });
+    },
+  });
+}
+
+function createApiReadRateLimiter({ max, message }) {
+  return rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max,
+    standardHeaders: true,
+    legacyHeaders: false,
     handler: (req, res, next, options) => {
       res.status(options.statusCode).json({
         error: "rate_limited",
@@ -54,8 +59,25 @@ const trackingRateLimiter = createTelemetryRateLimiter({
   message: "Too many tracking writes from this IP, please try again later.",
 });
 
+const offlineManifestRateLimiter = createApiReadRateLimiter({
+  max: 60,
+  message: "Too many offline manifest requests. Please try again later.",
+});
+
+const appVersionRateLimiter = createApiReadRateLimiter({
+  max: 120,
+  message: "Too many version requests. Please try again later.",
+});
+
+const locationLookupRateLimiter = createApiReadRateLimiter({
+  max: 30,
+  message: "Too many location requests. Please try again later.",
+});
+
 module.exports = {
-  generalRateLimiter,
+  appVersionRateLimiter,
+  locationLookupRateLimiter,
+  offlineManifestRateLimiter,
   sensitiveRateLimiter,
   telemetryProfileRateLimiter,
   telemetryRefreshRateLimiter,

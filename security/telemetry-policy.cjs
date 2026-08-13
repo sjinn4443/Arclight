@@ -63,9 +63,7 @@ function getTelemetryAllowedHosts() {
 }
 
 function getRequestHost(req) {
-  return normalizeHost(
-    req.hostname || req.headers["x-forwarded-host"] || req.headers.host || "",
-  );
+  return normalizeHost(req?.headers?.host || req?.hostname || "");
 }
 
 function isTelemetryWriteAllowed(req) {
@@ -87,82 +85,17 @@ function trimString(value, maxLength) {
   return trimmed.slice(0, maxLength);
 }
 
-function normalizeFiniteNumber(value) {
-  if (value == null || value === "") return null;
-  const numeric = Number(value);
-  return Number.isFinite(numeric) ? numeric : null;
-}
-
-function normalizeCoordinate(value, min, max) {
-  const numeric = normalizeFiniteNumber(value);
-  if (numeric == null) return null;
-  if (numeric < min || numeric > max) return null;
-  return numeric;
-}
-
-function sanitizeGeo(geo) {
-  if (!geo || typeof geo !== "object") return null;
-
-  const lat = normalizeCoordinate(geo.lat ?? geo.latitude, -90, 90);
-  const lon = normalizeCoordinate(
-    geo.lon ?? geo.lng ?? geo.longitude,
-    -180,
-    180,
-  );
-
-  return {
-    iso2: trimString(geo.iso2, 8),
-    country: trimString(geo.country, 120),
-    area: trimString(geo.area, 160),
-    city: trimString(geo.city, 160),
-    language: trimString(geo.language, 32),
-    lat,
-    lon,
-    lng: lon,
-    latitude: lat,
-    longitude: lon,
-    isPrecise: typeof geo.isPrecise === "boolean" ? geo.isPrecise : null,
-    ts: trimString(geo.ts, 64),
-  };
-}
-
 function sanitizeTelemetryPayload(payload) {
   const body = payload && typeof payload === "object" ? payload : {};
-  const lat = normalizeCoordinate(
-    body.lat ?? body.latitude ?? body.geo?.lat ?? body.geo?.latitude,
-    -90,
-    90,
-  );
-  const lon = normalizeCoordinate(
-    body.lon ??
-      body.lng ??
-      body.longitude ??
-      body.geo?.lon ??
-      body.geo?.lng ??
-      body.geo?.longitude,
-    -180,
-    180,
-  );
 
   return {
-    anon_id: trimString(body.anon_id, 80),
-    user_id: trimString(body.user_id, 120),
-    email: trimString(body.email, 254),
     name: trimString(body.name, 160),
     aims: trimString(body.aims, 500),
     interest: trimString(body.interest, 500),
     experience: trimString(body.experience, 500),
     contact: trimString(body.contact, 320),
-    country: trimString(body.country, 120),
-    area: trimString(body.area, 160),
     language: trimString(body.language, 32),
     reason: trimString(body.reason, 120),
-    lat,
-    lon,
-    latitude: lat,
-    longitude: lon,
-    lng: lon,
-    geo: sanitizeGeo(body.geo),
   };
 }
 

@@ -42,6 +42,9 @@ Arclight_App.zip
 ArclightApp.zip
 *.zip
 
+# Incomplete nested Git repository retained locally
+/Arclight/
+
 # Test artifacts
 playwright-report/
 test-results/

@@ -1,6 +1,6 @@
 # `reports/` (Telemetry + Reports)
 
-This folder contains report-facing assets and historical telemetry export files used around the password-protected reports page.
+This folder contains report-facing assets and the optional encrypted NDJSON fallback used by the password-protected reports page.
 
 ## What this module does (current behavior)
 
@@ -9,29 +9,25 @@ This folder contains report-facing assets and historical telemetry export files 
 - The reports UI is served from the static app (`public/reports.html` and `public/html/reports.html`) and is protected by Basic Auth.
 - The server exposes a small admin API used by the reports UI:
   - `GET /api/dev/users` - returns aggregated telemetry rows from the selected runtime store
-  - `GET /api/dev/ip-locations` - returns the latest mappable row for each IP with the IP masked for display
+  - `GET /api/dev/ip-locations` - returns only masked `ip`, `country`, and `ts`
   - `DELETE /api/dev/users/:anonId` - deletes user rows only when delete is explicitly enabled
-- The reports dashboard plots the latest distinct IP locations on a map and charts real `aims`, `interest`, and `experience` profile data. It does not add demo rows when data is sparse.
+- The reports dashboard plots country centroids (with Rest Countries fallback) and charts real `aims`, `interest`, and `experience` profile data. It does not expose precise coordinates or add demo rows.
 
 These routes are implemented directly in [`server.cjs`](../server.cjs).
 
 ## Folder contents
 
 - `data/`
-  - `telemetry.ndjson` - runtime fallback storage when Postgres is not configured, plus legacy export data
-  - `telemetry.sql` - helper/export SQL
-  - `users.json` - legacy/example file
+  - `telemetry.ndjson` - optional encrypted runtime fallback; IPs are masked and detailed location fields are rejected
 - `security/encrypt.cjs`
   - AES-256-GCM helper kept for legacy NDJSON compatibility.
-- `routes/`
-  - Experimental / legacy Express routers (`dev.cjs`, `api.cjs`).
-  - These are not mounted by `server.cjs`.
 
 ## Environment variables
 
 ### Reports access
 
-- `DASHBOARD_PASSWORD` - required to access reports pages
+- `DASHBOARD_PASSWORD` - independent password of at least 24 characters, required to access reports pages
+- `ADMIN_ALLOWED_IPS` - exact non-loopback client addresses allowed to reach reports/admin routes
 
 ### Runtime storage
 
@@ -53,7 +49,8 @@ These routes are implemented directly in [`server.cjs`](../server.cjs).
 
 ```bash
 # PowerShell
-$env:DASHBOARD_PASSWORD="your-password"
+$env:DASHBOARD_PASSWORD="replace-with-an-independent-24-character-random-password"
+$env:TELEMETRY_TOKEN_SECRET="replace-with-an-independent-32-character-random-secret"
 # Required if using the local NDJSON fallback.
 $env:ENCRYPTION_SECRET="replace-with-a-long-random-secret"
 # Optional. Omit DATABASE_URL to use encrypted reports/data/telemetry.ndjson locally.
@@ -73,7 +70,13 @@ By default, local reports are read-only. Set `REPORTS_ALLOW_LOCAL_DELETE=true` o
 - Repeated auth failures against the reports API are rate limited.
 - Reports routes use a stricter anti-framing CSP than the main app.
 - Delete actions are audit logged in Postgres when admin storage is configured.
-- Postgres keeps the full runtime IP for location enrichment and precise-location replacement; the reports API masks it before returning dashboard data. The NDJSON fallback masks IPs at rest.
+- Postgres intentionally keeps raw runtime IP, resolved `country_name`, and `ts` only; the reports API masks IPs. The NDJSON fallback masks IPs at rest.
+- Browser GPS is never sent to this server. After explicit disclosure it is sent directly to BigDataCloud for local reverse-geocoded display only.
+- Client identity and location fields are ignored; stored profile IDs are derived from a signed HttpOnly cookie.
 - Production telemetry writes require an explicit host allowlist.
+
+## Security migration
+
+Run `npm run security:migrate-data` with deployment secrets configured to drop legacy precise-location columns, rekey client-controlled profile IDs, scrub local NDJSON, and remove obsolete `telemetry.sql`/`users.json` exports. Back up only non-sensitive operational data before running it; precise location is intentionally destroyed.
 
 See [`security/README.md`](../security/README.md).

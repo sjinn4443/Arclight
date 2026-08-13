@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "prepare": "husky || echo '[prepare] husky not installed; skipping'",
-    "test": "cross-env NODE_ENV=test NODE_OPTIONS=--expose-gc node_modules/jest/bin/jest.js --config jest.config.cjs",
+    "test": "cross-env NODE_ENV=test \"NODE_OPTIONS=--expose-gc --experimental-vm-modules\" node_modules/jest/bin/jest.js --config jest.config.cjs",
     "dev": "cross-env NODE_ENV=development PORT=3000 nodemon server.cjs",
     "start": "node server.cjs",
     "start:prod": "NODE_ENV=production node server.cjs",
@@ -13,6 +13,8 @@
     "serve:dist": "npm run build && cross-env SERVE_DIST=true node server.cjs",
     "start:track": "cross-env PORT=3001 node server.cjs",
     "test:ci": "cross-env NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules node -r dotenv/config node_modules/jest/bin/jest.js --verbose --config jest.config.cjs",
+    "sync:vendor": "node scripts/sync-vendor-assets.cjs",
+    "prebuild": "npm run sync:vendor",
     "build": "node scripts/build.cjs",
     "build:childhood-hls": "node scripts/generate-childhood-hls.mjs",
     "check-translations": "node scripts/check-translations.cjs",
@@ -25,7 +27,10 @@
     "lint": "eslint . --ext .js,.ts",
     "type-check": "tsc --noEmit",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "audit:security": "npm audit --omit=dev --audit-level=moderate",
+    "security:rotate-local-secrets": "node scripts/rotate-local-secrets.cjs",
+    "security:migrate-data": "cross-env UV_THREADPOOL_SIZE=16 node scripts/migrate-security-data.cjs"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,cjs,css,html,json,md}": "prettier --write"
@@ -35,6 +40,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@fortawesome/fontawesome-free": "5.15.4",
     "connect-redis": "^9.0.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
@@ -43,9 +49,10 @@
     "express-rate-limit": "^8.5.2",
     "express-session": "^1.18.2",
     "helmet": "^8.1.0",
+    "html2canvas": "1.4.1",
     "http-server": "^14.1.1",
-    "lottie-web": "^5.13.0",
-    "morgan": "^1.10.1",
+    "leaflet": "1.9.4",
+    "lottie-web": "5.13.0",
     "node-fetch": "^2.7.0",
     "pg": "^8.16.3",
     "redis": "^5.9.0",

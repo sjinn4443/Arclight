@@ -6,7 +6,9 @@ async function bumpRefresh() {}
 
 async function saveIp() {}
 
-async function updateIpLocation() {}
+async function updateIpLocation() {
+  return false;
+}
 
 async function getUsersForDashboard() {
   return [];

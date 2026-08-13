@@ -7,7 +7,10 @@ const {
 
 installSafeConsole();
 
-const { assertRuntimeConfig } = require("./security/runtime-config.cjs");
+const {
+  assertRuntimeConfig,
+  resolveTrustProxy,
+} = require("./security/runtime-config.cjs");
 
 assertRuntimeConfig();
 
@@ -19,6 +22,9 @@ const crypto = require("crypto");
 const { execSync } = require("child_process");
 const { applyMainAppCsp, applyReportsCsp } = require("./security/csp.cjs");
 const {
+  appVersionRateLimiter,
+  locationLookupRateLimiter,
+  offlineManifestRateLimiter,
   sensitiveRateLimiter,
   telemetryProfileRateLimiter,
   telemetryRefreshRateLimiter,
@@ -38,15 +44,15 @@ const {
   ensureTelemetryState,
   evaluateTelemetryWriteRequest,
 } = require("./security/telemetry-guard.cjs");
-const { isLookupEnabled } = require("./utils/ipEnricher.cjs");
+const { enrichIp } = require("./utils/ipEnricher.cjs");
+const {
+  collectOfflineAssetManifest,
+  createManifestState,
+  readOfflineAssetManifest,
+} = require("./utils/offline-manifest.cjs");
 
-const fetchImpl =
-  typeof global.fetch === "function"
-    ? global.fetch.bind(global)
-    : require("node-fetch");
-
-const HOST = process.env.HOST || "0.0.0.0";
 const prod = process.env.NODE_ENV === "production";
+const HOST = process.env.HOST || (prod ? "0.0.0.0" : "127.0.0.1");
 const serveDist =
   String(process.env.SERVE_DIST || "").toLowerCase() === "1" ||
   String(process.env.SERVE_DIST || "").toLowerCase() === "true";
@@ -70,70 +76,28 @@ const staticRoot = resolveStaticRootDir();
 const rootRobotsPath = path.join(__dirname, "robots.txt");
 const rootSitemapPath = path.join(__dirname, "sitemap.xml");
 
-const OFFLINE_ASSET_EXCLUDED_FILENAMES = new Set([".DS_Store", "Thumbs.db"]);
-const OFFLINE_ASSET_EXCLUDED_URLS = new Set([
-  "/reports.html",
-  "/html/reports.html",
-  "/js/reports.js",
-]);
-
-function toStaticAssetUrl(rootDir, filePath) {
-  const relativePath = path.relative(rootDir, filePath);
-  if (
-    !relativePath ||
-    relativePath.startsWith("..") ||
-    path.isAbsolute(relativePath)
-  ) {
-    return null;
-  }
-
-  return `/${relativePath
-    .split(path.sep)
-    .map((segment) => encodeURIComponent(segment))
-    .join("/")}`;
-}
-
-function collectOfflineAssetManifest(rootDir) {
-  const resolvedRoot = path.resolve(rootDir);
-  const assets = [];
-  const urls = [];
-  let bytes = 0;
-
-  function walk(dir) {
-    const entries = fs
-      .readdirSync(dir, { withFileTypes: true })
-      .sort((a, b) => a.name.localeCompare(b.name));
-
-    for (const entry of entries) {
-      if (OFFLINE_ASSET_EXCLUDED_FILENAMES.has(entry.name)) continue;
-
-      const entryPath = path.join(dir, entry.name);
-      if (entry.isDirectory()) {
-        walk(entryPath);
-        continue;
-      }
-
-      if (!entry.isFile()) continue;
-
-      const url = toStaticAssetUrl(resolvedRoot, entryPath);
-      if (!url) continue;
-      if (OFFLINE_ASSET_EXCLUDED_URLS.has(url)) continue;
-
-      const stat = fs.statSync(entryPath);
-      bytes += stat.size;
-      assets.push({ bytes: stat.size, url });
-      urls.push(url);
+async function resolveOfflineManifestState() {
+  let manifest;
+  if (prod || serveDist) {
+    try {
+      manifest = await readOfflineAssetManifest(staticRoot);
+    } catch (error) {
+      logServerError(
+        "[offline-assets] build manifest unavailable; generating once",
+        error,
+        {},
+        { includeStack: false },
+      );
     }
   }
+  manifest = manifest || (await collectOfflineAssetManifest(staticRoot));
+  return createManifestState(manifest);
+}
 
-  walk(resolvedRoot);
-
-  return {
-    assets,
-    bytes,
-    count: urls.length,
-    urls,
-  };
+let offlineManifestStatePromise;
+function getOfflineManifestState() {
+  offlineManifestStatePromise ||= resolveOfflineManifestState();
+  return offlineManifestStatePromise;
 }
 
 function toIsoDateString(value) {
@@ -334,6 +298,8 @@ function resolveCurrentAppVersion() {
   return { versionDate, versionSequence };
 }
 
+const currentAppVersion = Object.freeze(resolveCurrentAppVersion());
+
 function isEnabled(value) {
   return ["1", "true", "yes", "on"].includes(
     String(value || "")
@@ -397,23 +363,9 @@ function getClientIp(req) {
   );
 }
 
-function isPrivateIp(ip) {
+function isLoopbackClientIp(ip) {
   const value = normalizeClientIp(ip);
-  return (
-    !value ||
-    value === "::1" ||
-    value === "127.0.0.1" ||
-    value.startsWith("10.") ||
-    value.startsWith("192.168.") ||
-    /^172\.(1[6-9]|2\d|3[0-1])\./.test(value) ||
-    value.startsWith("fc") ||
-    value.startsWith("fd")
-  );
-}
-
-function isExternalIpLookupEnabled() {
-  if (process.env.NODE_ENV !== "production") return true;
-  return isLookupEnabled(process.env);
+  return value === "::1" || value === "127.0.0.1";
 }
 
 function getAdminAllowedIps() {
@@ -647,10 +599,10 @@ function sendEmergencyText(req, res, mode = getEmergencyMode()) {
 }
 
 function isAdminIpAllowed(req) {
-  if (process.env.NODE_ENV !== "production") return true;
+  const clientIp = getClientIp(req);
+  if (isLoopbackClientIp(clientIp)) return true;
   const allowedIps = getAdminAllowedIps();
-  if (!allowedIps.length) return false;
-  return allowedIps.includes(getClientIp(req));
+  return allowedIps.includes(clientIp);
 }
 
 function requireAdminIp(req, res, next) {
@@ -701,151 +653,11 @@ function emergencyGate(req, res, next) {
   return sendEmergencyText(req, res, mode);
 }
 
-function countryNameFromCode(code) {
-  const iso2 = String(code || "")
-    .trim()
-    .toUpperCase();
-  if (!iso2) return null;
-
-  try {
-    return new Intl.DisplayNames(["en"], { type: "region" }).of(iso2) || iso2;
-  } catch {
-    return iso2;
-  }
-}
-
-function parseIpInfoPayload(payload) {
-  const [rawLat, rawLon] = String(payload?.loc || "")
-    .split(",")
-    .map((value) => Number.parseFloat(value));
-  const lat = Number.isFinite(rawLat) ? rawLat : null;
-  const lon = Number.isFinite(rawLon) ? rawLon : null;
-  const countryCode = String(payload?.country || "")
-    .trim()
-    .toUpperCase();
-  const city = String(payload?.city || "").trim() || null;
-
-  return {
-    source: "ipinfo",
-    countryCode: countryCode || null,
-    countryName: countryNameFromCode(countryCode),
-    city,
-    lat,
-    lon,
-    area: city,
-  };
-}
-
-function parseBigDataCloudPayload(payload) {
-  const rawLat = Number.parseFloat(payload?.latitude);
-  const rawLon = Number.parseFloat(payload?.longitude);
-  const lat = Number.isFinite(rawLat) ? rawLat : null;
-  const lon = Number.isFinite(rawLon) ? rawLon : null;
-  const countryCode = String(payload?.countryCode || "")
-    .trim()
-    .toUpperCase();
-  const city =
-    String(
-      payload?.city ||
-        payload?.locality ||
-        payload?.principalSubdivisionLocality ||
-        "",
-    ).trim() || null;
-
-  return {
-    source: "bigdatacloud",
-    countryCode: countryCode || null,
-    countryName:
-      String(payload?.countryName || "").trim() ||
-      countryNameFromCode(countryCode),
-    city,
-    lat,
-    lon,
-    area: city,
-  };
-}
-
-async function fetchJson(url) {
-  const response = await fetchImpl(url, {
-    headers: { Accept: "application/json" },
-  });
-  if (!response.ok) {
-    throw new Error(`upstream ${response.status}`);
-  }
-  return response.json();
-}
-
-async function lookupIpLocation(ip) {
-  if (isPrivateIp(ip)) {
-    return {
-      source: "fallback",
-      countryCode: "GB",
-      countryName: "United Kingdom",
-      city: null,
-      lat: null,
-      lon: null,
-      area: null,
-    };
-  }
-
-  if (!isExternalIpLookupEnabled()) {
-    return {
-      source: "disabled",
-      countryCode: null,
-      countryName: null,
-      city: null,
-      lat: null,
-      lon: null,
-      area: null,
-    };
-  }
-
-  const encodedIp = encodeURIComponent(String(ip || "").trim());
-  const candidates = [];
-  if (process.env.IPINFO_TOKEN) {
-    candidates.push({
-      url: `https://ipinfo.io/${encodedIp}/json?token=${encodeURIComponent(process.env.IPINFO_TOKEN)}`,
-      parser: parseIpInfoPayload,
-    });
-  }
-  candidates.push({
-    url: `https://ipinfo.io/${encodedIp}/json`,
-    parser: parseIpInfoPayload,
-  });
-  candidates.push({
-    url: `https://api.bigdatacloud.net/data/ip-geolocation?ip=${encodedIp}&localityLanguage=en`,
-    parser: parseBigDataCloudPayload,
-  });
-
-  for (const candidate of candidates) {
-    try {
-      const payload = await fetchJson(candidate.url);
-      const parsed = candidate.parser(payload);
-      if (parsed.countryCode || parsed.city || parsed.lat != null) {
-        return parsed;
-      }
-    } catch {
-      // Try the next provider.
-    }
-  }
-
-  return {
-    source: "fallback",
-    countryCode: "GB",
-    countryName: "United Kingdom",
-    city: null,
-    lat: null,
-    lon: null,
-    area: null,
-  };
-}
-
 function canDeleteReports(req) {
   if (getEmergencyMode() !== EMERGENCY_MODE_OFF) return false;
   if (isEnabled(process.env.REPORTS_ALLOW_DELETE)) return true;
 
-  const host = getRequestHost(req);
-  if (isLocalHost(host)) {
+  if (isLoopbackClientIp(getClientIp(req))) {
     return isEnabled(process.env.REPORTS_ALLOW_LOCAL_DELETE);
   }
 
@@ -854,7 +666,7 @@ function canDeleteReports(req) {
 
 const PORT = process.env.PORT || (prod ? 8080 : 3000);
 
-app.set("trust proxy", 1);
+app.set("trust proxy", resolveTrustProxy());
 
 const storage = require("./storage/index.cjs");
 
@@ -890,16 +702,27 @@ app.use(emergencyGate);
 app.use(express.json({ limit: "100kb" }));
 app.use(ensureTelemetryState);
 
-app.get("/api/app/offline-assets", (req, res) => {
-  try {
-    const manifest = collectOfflineAssetManifest(staticRoot);
-    res.set("Cache-Control", "no-store");
-    return res.json(manifest);
-  } catch (error) {
-    logServerError("[offline-assets] failed to collect static assets", error);
-    return res.status(500).json({ error: "Failed to collect offline assets" });
-  }
-});
+app.get(
+  "/api/app/offline-assets",
+  offlineManifestRateLimiter,
+  async (req, res) => {
+    try {
+      const state = await getOfflineManifestState();
+      res.set("Cache-Control", prod ? "public, max-age=300" : "no-cache");
+      res.set("ETag", state.etag);
+      if (req.headers["if-none-match"] === state.etag) {
+        return res.status(304).end();
+      }
+      res.type("application/json");
+      return res.send(state.serialized);
+    } catch (error) {
+      logServerError("[offline-assets] failed to collect static assets", error);
+      return res
+        .status(500)
+        .json({ error: "Failed to collect offline assets" });
+    }
+  },
+);
 
 app.use("/js", express.static(path.join(staticRoot, "js")));
 app.use("/favicons", express.static(path.join(staticRoot, "favicons")));
@@ -946,6 +769,7 @@ initStorageWithRetry();
 function telemetryWriteGuard(req, res, next) {
   const decision = evaluateTelemetryWriteRequest(req);
   res.locals.telemetryWriteDecision = decision;
+  req.telemetryWriteAllowed = decision.allowed === true;
 
   if (decision.allowed) return next();
 
@@ -975,12 +799,11 @@ app.get("/healthz", (req, res) => {
   res.json({ ok: true, emergencyMode: getEmergencyMode() });
 });
 
-app.get("/api/app/version", (req, res) => {
-  const currentVersion = resolveCurrentAppVersion();
-  res.set("Cache-Control", "no-store");
+app.get("/api/app/version", appVersionRateLimiter, (req, res) => {
+  res.set("Cache-Control", "public, max-age=300");
   res.json({
-    versionDate: currentVersion.versionDate,
-    versionSequence: currentVersion.versionSequence,
+    versionDate: currentAppVersion.versionDate,
+    versionSequence: currentAppVersion.versionSequence,
   });
 });
 
@@ -995,10 +818,10 @@ app.post(
         return res.json({ ok: true, stored: false });
       }
 
-      await storage.saveProfile(payload);
-      if (payload.geo?.isPrecise === true) {
-        await storage.updateIpLocation(getClientIp(req), payload.geo);
-      }
+      await storage.saveProfile({
+        ...payload,
+        profile_id: res.locals.telemetryWriteDecision.subjectId,
+      });
       return res.json({ ok: true, stored: true });
     } catch (error) {
       logServerError("[api/app/profile] save failed", error);
@@ -1018,10 +841,10 @@ app.post(
         return res.json({ ok: true, stored: false });
       }
 
-      await storage.bumpRefresh(payload);
-      if (payload.geo?.isPrecise === true) {
-        await storage.updateIpLocation(getClientIp(req), payload.geo);
-      }
+      await storage.bumpRefresh({
+        ...payload,
+        profile_id: res.locals.telemetryWriteDecision.subjectId,
+      });
       return res.json({ ok: true, stored: true });
     } catch (error) {
       logServerError("[api/app/refresh] save failed", error);
@@ -1030,9 +853,14 @@ app.post(
   },
 );
 
-app.get("/api/location/ip", async (req, res) => {
+app.get("/api/location/ip", locationLookupRateLimiter, async (req, res) => {
   try {
-    const payload = await lookupIpLocation(getClientIp(req));
+    const result = await enrichIp(getClientIp(req));
+    const payload = {
+      source: result.source,
+      countryCode: result.countryCode,
+      countryName: result.countryName,
+    };
     res.set("Cache-Control", "no-store");
     return res.json(payload);
   } catch (error) {
@@ -1042,6 +870,21 @@ app.get("/api/location/ip", async (req, res) => {
 });
 
 const devDashboardAuthAttempts = new Map();
+const MAX_TRACKED_ADMIN_AUTH_IPS = 10000;
+
+function pruneAdminAuthAttempts(now, windowMs) {
+  if (devDashboardAuthAttempts.size < MAX_TRACKED_ADMIN_AUTH_IPS) return;
+  for (const [ip, attempts] of devDashboardAuthAttempts) {
+    const recent = attempts.filter((timestamp) => now - timestamp < windowMs);
+    if (recent.length) devDashboardAuthAttempts.set(ip, recent);
+    else devDashboardAuthAttempts.delete(ip);
+  }
+  while (devDashboardAuthAttempts.size >= MAX_TRACKED_ADMIN_AUTH_IPS) {
+    devDashboardAuthAttempts.delete(
+      devDashboardAuthAttempts.keys().next().value,
+    );
+  }
+}
 
 function safeSecretEquals(input, expected) {
   const left = Buffer.from(String(input || ""));
@@ -1070,6 +913,7 @@ function basicAuth(req, res, next) {
     const now = Date.now();
     const windowMs = 15 * 60 * 1000;
     const maxAttempts = 10;
+    pruneAdminAuthAttempts(now, windowMs);
     const attempts = devDashboardAuthAttempts.get(ip) || [];
     const recent = attempts.filter((ts) => now - ts < windowMs);
     recent.push(now);

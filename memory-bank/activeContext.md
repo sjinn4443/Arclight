@@ -6,7 +6,7 @@
 
 June stabilization and app-wide infrastructure:
 
-- offline install/downloads now use `GET /api/app/offline-assets`, `public/js/languageinstall.js`, `public/js/menu.js`, and `public/sw.js` as one pipeline for full/select/app-only downloads, low/high MP4 filtering, cache progress, Downloaded Contents summaries, cached MP4 range responses, and Childhood Eye Screening HLS/subtitle cache support
+- offline install/downloads use a build-generated production manifest (one asynchronous cached copy in development), ETag/cache headers, and a service worker that bypasses API/tracking/reports/health URLs and refuses sensitive or `no-store` cache entries
 - app video subtitle localization is active through `public/js/videoSubtitles.js`, `public/video-localization/app-video-subtitles.json`, `public/video-localization/childhood-eye-screening.json`, and VTT files under `public/video-subtitles/`
 - local full-animation MP4 lessons are now standard Videos-route pages using hidden `.page` blocks in `public/html/videos.html`, low/high source entries in `public/js/videos.js` `VIDEO_PAGE_SOURCES`, and media files under `public/videos/FullAnim/`
 - shared lesson progress and completion ticks are centralized in `public/js/lessonProgress.js` and `public/js/lessonCompletionTick.js`, then consumed by Videos, Childhood Workshop, Diabetic Workshop, Glaucoma Workshop, case studies, and My Learning rows
@@ -23,6 +23,10 @@ Diabetic Retinopathy workshop and Videos-route stabilization:
 - the Direct Ophthalmoscopy nested folder includes `Observation and Fundal Reflex`, `Positioning and Flight Path`, and `How to Examine`, each launching a standalone Fundal-style scrollytelling route
 - the Binocular Indirect Ophthalmoscopy nested folder includes `Preparation`, `Fundoscopy Sitting`, and `Fundoscopy with Indentation`, each launching a standalone Fundal-style scrollytelling route
 - runtime storage uses Postgres when DB URLs are configured; non-production can use encrypted NDJSON fallback, while production uses no-op storage unless `ENABLE_NDJSON_STORAGE=true`; Playwright explicitly runs with `DISABLE_DB_STORAGE=1`
+- telemetry identity is server-derived from a signed HttpOnly cookie; client identity/location fields are ignored; PostgreSQL stores only raw IP, resolved country name, and timestamp, while GPS stays local and is disclosed before direct BigDataCloud use
+- external IP-country lookup is opt-in, globally timeout-bounded, cached for 24 hours with a fixed maximum size, and separately rate limited
+- development binds to loopback by default; `TRUST_PROXY` is disabled unless validated/configured, and non-loopback admin clients require `ADMIN_ALLOWED_IPS`
+- pinned browser libraries are self-hosted through the deterministic vendor sync; the production container runs as non-root
 
 Childhood Fundal Reflex scrollytelling is also an active maintenance area:
 
@@ -51,11 +55,11 @@ Childhood Fundal Reflex scrollytelling is also an active maintenance area:
 | Telemetry encryption     | Missing encryption secret could allow unsafe local telemetry writes.       | NDJSON telemetry writes require `ENCRYPTION_SECRET`.                                     | Changed encryption helper to throw instead of writing plaintext.                                                                            |
 | Telemetry access         | Production telemetry could be too open if no host allowlist was set.       | Production telemetry is disabled until allowed hosts and a server secret are configured. | Tightened telemetry host policy and token-secret checks.                                                                                    |
 | Unsafe production config | Weak or missing production settings could be missed until runtime.         | Unsafe production settings stop server startup.                                          | Added runtime config validation for placeholder secrets, NDJSON without encryption, disabled remote DB TLS, and telemetry without a secret. |
-| IP privacy               | Full IPs could be stored and external IP lookup could run by default.      | Stored IPs are masked, and production IP lookup is opt-in.                               | Added privacy helpers, masked stored IP values, and gated external lookup behind `ENABLE_IP_LOCATION_LOOKUP`.                               |
+| Location telemetry       | Detailed geo and client-controlled identity could reach storage.           | Postgres retains raw IP/country/timestamp only and uses a server-owned identity.         | Stripped location/identity inputs, kept GPS local, and made country lookup opt-in.                                                          |
 | Data retention           | Telemetry could remain indefinitely.                                       | Telemetry defaults to 90 days, audit logs to 365 days.                                   | Added retention pruning for Postgres and NDJSON storage.                                                                                    |
 | Admin password check     | Dashboard password used a normal string comparison.                        | Dashboard password uses safer timing-resistant comparison.                               | Switched Basic Auth password matching to `crypto.timingSafeEqual`.                                                                          |
 | Dependency risk          | Unused or vulnerable packages remained installed.                          | Full `npm audit` reports 0 vulnerabilities.                                              | Removed unused vulnerable packages and outdated dev tools; updated runtime dependencies.                                                    |
-| CI security check        | Security audit did not strictly block high runtime issues.                 | CI blocks high runtime vulnerabilities.                                                  | Changed GitHub Actions audit to `npm audit --omit=dev --audit-level=high`.                                                                  |
+| CI security check        | Runtime audits and image privilege were less strict.                       | CI blocks moderate runtime issues and root runtime images.                               | Uses `npm audit --omit=dev --audit-level=moderate` and asserts a non-root UID.                                                              |
 | Test coverage            | New security rules were not all covered.                                   | Security behavior is covered by focused tests.                                           | Added tests for encryption, storage selection, runtime config, privacy, and telemetry policy.                                               |
 
 - Full-animation Videos-route lessons (2026-06-19):

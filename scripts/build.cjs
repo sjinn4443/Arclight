@@ -5,6 +5,10 @@ const path = require("path");
 const CleanCSS = require("clean-css");
 const htmlMinifierTerser = require("html-minifier-terser");
 const { execSync } = require("child_process");
+const {
+  collectOfflineAssetManifest,
+  writeOfflineAssetManifest,
+} = require("../utils/offline-manifest.cjs");
 
 function toIsoDateString(value) {
   const trimmed = String(value ?? "").trim();
@@ -524,6 +528,11 @@ const build = async () => {
       );
       await fs.writeFile(file, minified);
     }
+
+    // 7. Generate the immutable offline manifest once from final build bytes.
+    console.log("[build] generating offline asset manifest");
+    const offlineManifest = await collectOfflineAssetManifest(distPath);
+    await writeOfflineAssetManifest(distPath, offlineManifest);
 
     console.log("Build complete!");
   } catch (error) {

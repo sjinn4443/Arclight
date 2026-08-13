@@ -12,11 +12,12 @@ function authHeader(password, user = "dev") {
 function buildTelemetryAuth(host = "app.example.com") {
   const {
     TELEMETRY_SESSION_COOKIE,
+    createTelemetrySessionCookieValue,
     createTelemetryToken,
   } = require("../security/telemetry-guard.cjs");
   const sessionId = "testTelemetrySession_0123456789";
   return {
-    cookie: `${TELEMETRY_SESSION_COOKIE}=${sessionId}`,
+    cookie: `${TELEMETRY_SESSION_COOKIE}=${createTelemetrySessionCookieValue(sessionId)}`,
     token: createTelemetryToken(sessionId, host),
   };
 }
@@ -135,7 +136,7 @@ describe("server security hardening", () => {
     expect(mockStorage.saveIp).toHaveBeenCalledTimes(1);
   });
 
-  test("persists telemetry only for allowed production hosts and strips unknown fields", async () => {
+  test("uses a server-derived profile identifier and strips forged identity and location fields", async () => {
     const { app, mockStorage } = await loadServer({
       NODE_ENV: "production",
       TELEMETRY_ALLOWED_HOSTS: "app.example.com",
@@ -158,9 +159,14 @@ describe("server security hardening", () => {
       auth,
     ).send({
       anon_id: "anon-1",
+      user_id: "victim-account",
+      email: "victim@example.com",
       name: "  Alice  ",
-      lat: 999,
+      lat: 51.5,
       lon: "-0.1",
+      country: "Forged country",
+      area: "Forged area",
+      geo: { lat: 51.5, lon: -0.1, isPrecise: true },
       unknown: "drop-me",
     });
 
@@ -169,16 +175,23 @@ describe("server security hardening", () => {
     expect(mockStorage.saveProfile).toHaveBeenCalledTimes(1);
     expect(mockStorage.saveProfile).toHaveBeenCalledWith(
       expect.objectContaining({
-        anon_id: "anon-1",
+        profile_id: expect.stringMatching(/^session_[A-Za-z0-9_-]{40,100}$/),
         name: "Alice",
-        lat: null,
-        lon: -0.1,
       }),
     );
-    expect(mockStorage.saveProfile.mock.calls[0][0].unknown).toBeUndefined();
+    const stored = mockStorage.saveProfile.mock.calls[0][0];
+    expect(stored).not.toHaveProperty("anon_id");
+    expect(stored).not.toHaveProperty("user_id");
+    expect(stored).not.toHaveProperty("email");
+    expect(stored).not.toHaveProperty("country");
+    expect(stored).not.toHaveProperty("area");
+    expect(stored).not.toHaveProperty("lat");
+    expect(stored).not.toHaveProperty("lon");
+    expect(stored).not.toHaveProperty("geo");
+    expect(stored).not.toHaveProperty("unknown");
   });
 
-  test("replaces IP-derived geo with precise browser location", async () => {
+  test("never forwards precise browser location to storage", async () => {
     const { app, mockStorage } = await loadServer({
       NODE_ENV: "production",
       TELEMETRY_ALLOWED_HOSTS: "app.example.com",
@@ -209,23 +222,46 @@ describe("server security hardening", () => {
     expect(mockStorage.bumpRefresh).toHaveBeenCalledWith(
       expect.objectContaining({
         reason: "location_precise",
-        geo: expect.objectContaining({
-          city: "Glasgow",
-          isPrecise: true,
-        }),
+        profile_id: expect.stringMatching(/^session_/),
       }),
     );
-    expect(mockStorage.updateIpLocation).toHaveBeenCalledWith(
-      "152.233.29.4",
-      expect.objectContaining({
-        country: "United Kingdom",
-        city: "Glasgow",
-        area: "Glasgow, Scotland, UK",
-        lat: 55.8642,
-        lon: -4.2518,
-        isPrecise: true,
-      }),
+    expect(mockStorage.bumpRefresh.mock.calls[0][0]).not.toHaveProperty("geo");
+    expect(mockStorage.updateIpLocation).not.toHaveBeenCalled();
+  });
+
+  test("forged client identifiers cannot select another telemetry profile", async () => {
+    const { app, mockStorage } = await loadServer({
+      NODE_ENV: "production",
+      TELEMETRY_ALLOWED_HOSTS: "app.example.com",
+      DASHBOARD_PASSWORD: "test-dashboard-password-12345",
+    });
+    const {
+      TELEMETRY_SESSION_COOKIE,
+      createTelemetrySessionCookieValue,
+      createTelemetryToken,
+    } = require("../security/telemetry-guard.cjs");
+
+    for (const sessionId of [
+      "telemetrySession_A_0123456789",
+      "telemetrySession_B_0123456789",
+    ]) {
+      await withTelemetryHeaders(request(app).post("/api/app/profile"), {
+        cookie: `${TELEMETRY_SESSION_COOKIE}=${createTelemetrySessionCookieValue(sessionId)}`,
+        token: createTelemetryToken(sessionId, "app.example.com"),
+      }).send({
+        anon_id: "shared-forged-id",
+        user_id: "victim-account",
+        email: "victim@example.com",
+        name: "Attempted overwrite",
+      });
+    }
+
+    const [first, second] = mockStorage.saveProfile.mock.calls.map(
+      ([payload]) => payload.profile_id,
     );
+    expect(first).toMatch(/^session_/);
+    expect(second).toMatch(/^session_/);
+    expect(first).not.toBe(second);
   });
 
   test("issues a telemetry token on production HTML and accepts it for profile writes", async () => {
@@ -267,7 +303,10 @@ describe("server security hardening", () => {
     expect(profileResponse.body).toEqual({ ok: true, stored: true });
     expect(mockStorage.saveProfile).toHaveBeenCalledTimes(1);
     expect(mockStorage.saveProfile).toHaveBeenCalledWith(
-      expect.objectContaining({ anon_id: "anon-1", name: "Alice" }),
+      expect.objectContaining({
+        profile_id: expect.stringMatching(/^session_/),
+        name: "Alice",
+      }),
     );
   });
 
@@ -320,6 +359,36 @@ describe("server security hardening", () => {
       error: "telemetry_forbidden",
       reason: "invalid_token",
     });
+    expect(mockStorage.saveProfile).not.toHaveBeenCalled();
+  });
+
+  test("requires an exact request origin and a valid signed session cookie", async () => {
+    const { app, mockStorage } = await loadServer({
+      NODE_ENV: "production",
+      TELEMETRY_ALLOWED_HOSTS: "app.example.com",
+      DASHBOARD_PASSWORD: "test-dashboard-password-12345",
+    });
+    const auth = buildTelemetryAuth();
+
+    const wrongPort = await request(app)
+      .post("/api/app/profile")
+      .set("Host", "app.example.com:444")
+      .set("Origin", "https://app.example.com")
+      .set("Cookie", auth.cookie)
+      .set("X-Arclight-Telemetry", auth.token)
+      .send({ name: "Alice" });
+    expect(wrongPort.status).toBe(403);
+    expect(wrongPort.body.reason).toBe("origin_mismatch");
+
+    const tamperedCookie = await request(app)
+      .post("/api/app/profile")
+      .set("Host", "app.example.com")
+      .set("Origin", "https://app.example.com")
+      .set("Cookie", `${auth.cookie}tampered`)
+      .set("X-Arclight-Telemetry", auth.token)
+      .send({ name: "Alice" });
+    expect(tamperedCookie.status).toBe(403);
+    expect(tamperedCookie.body.reason).toBe("missing_session");
     expect(mockStorage.saveProfile).not.toHaveBeenCalled();
   });
 
@@ -587,6 +656,7 @@ describe("server security hardening", () => {
         NODE_ENV: "production",
         DASHBOARD_PASSWORD: "test-dashboard-password-12345",
         ADMIN_ALLOWED_IPS: "203.0.113.10",
+        TRUST_PROXY: "1",
       },
       {
         getUsersForDashboard: getUsersSpy,
@@ -611,6 +681,7 @@ describe("server security hardening", () => {
     const { app } = await loadServer({
       NODE_ENV: "production",
       DASHBOARD_PASSWORD: "test-dashboard-password-12345",
+      TRUST_PROXY: "1",
     });
 
     const response = await request(app)
@@ -628,6 +699,7 @@ describe("server security hardening", () => {
       DASHBOARD_PASSWORD: "test-dashboard-password-12345",
       EMERGENCY_MODE: "emergency",
       ADMIN_ALLOWED_IPS: "203.0.113.10",
+      TRUST_PROXY: "1",
     });
 
     await request(app).get("/");
@@ -670,6 +742,7 @@ describe("server security hardening", () => {
       DASHBOARD_PASSWORD: "test-dashboard-password-12345",
       EMERGENCY_MODE: "emergency",
       ADMIN_ALLOWED_IPS: "203.0.113.10",
+      TRUST_PROXY: "1",
     });
 
     await request(app)
@@ -710,6 +783,58 @@ describe("server security hardening", () => {
     );
     expect(response.headers["x-content-type-options"]).toBe("nosniff");
     expect(response.headers["strict-transport-security"]).toContain("max-age=");
+  });
+
+  test("caches one asynchronous offline manifest with ETag support", async () => {
+    const { app } = await loadServer({
+      NODE_ENV: "development",
+      STATIC_ROOT_DIR: "tests/fixtures/offline-root",
+      DASHBOARD_PASSWORD: "test-dashboard-password-12345",
+    });
+
+    const first = await request(app).get("/api/app/offline-assets");
+    expect(first.status).toBe(200);
+    expect(first.headers.etag).toBeTruthy();
+    expect(first.headers["cache-control"]).toBe("no-cache");
+    expect(first.body.urls).toEqual(["/app.js", "/index.html"]);
+    expect(first.body.urls).not.toContain("/reports.html");
+    expect(first.body.urls.some((url) => /reports/i.test(url))).toBe(false);
+
+    const second = await request(app)
+      .get("/api/app/offline-assets")
+      .set("If-None-Match", first.headers.etag);
+    expect(second.status).toBe(304);
+  });
+
+  test("rate limits the IP-country lookup route", async () => {
+    const { app } = await loadServer({
+      NODE_ENV: "development",
+      DASHBOARD_PASSWORD: "test-dashboard-password-12345",
+      ENABLE_IP_LOCATION_LOOKUP: "false",
+    });
+
+    let response;
+    for (let i = 0; i < 31; i += 1) {
+      response = await request(app).get("/api/location/ip");
+    }
+    expect(response.status).toBe(429);
+    expect(response.body).toMatchObject({ error: "rate_limited" });
+  });
+
+  test("defaults proxy trust to disabled and accepts an explicit hop count", async () => {
+    const direct = await loadServer({
+      NODE_ENV: "development",
+      DASHBOARD_PASSWORD: "test-dashboard-password-12345",
+      TRUST_PROXY: "0",
+    });
+    expect(direct.app.get("trust proxy")).toBe(false);
+
+    const railway = await loadServer({
+      NODE_ENV: "development",
+      DASHBOARD_PASSWORD: "test-dashboard-password-12345",
+      TRUST_PROXY: "1",
+    });
+    expect(railway.app.get("trust proxy")).toBe(1);
   });
 
   test("serves HTML with nonce-based CSP instead of unsafe-inline", async () => {
@@ -755,6 +880,12 @@ describe("server security hardening", () => {
     );
     expect(response.headers["content-security-policy"]).not.toMatch(
       /style-src(?!-attr)[^;]*unsafe-inline/i,
+    );
+    expect(response.headers["content-security-policy"]).not.toContain(
+      "unpkg.com",
+    );
+    expect(response.headers["content-security-policy"]).not.toContain(
+      "cdnjs.cloudflare.com",
     );
     expect(response.text).toContain("<style nonce=");
   });

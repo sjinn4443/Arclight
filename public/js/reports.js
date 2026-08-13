@@ -64,11 +64,6 @@ const COUNTRY_CODE_TO_NAME = {
   TZ: "Tanzania",
 };
 
-function toFiniteNumber(v) {
-  const n = Number(v);
-  return Number.isFinite(n) ? n : null;
-}
-
 function initWorldMap() {
   const el = document.getElementById("worldMap");
   const mapStatus = document.getElementById("mapStatus");
@@ -205,33 +200,10 @@ async function fetchCountryLatLng(countryRaw) {
   return null;
 }
 
-async function getLatLngFromUser(u) {
-  const latRaw = u.lat ?? u.latitude ?? u.location?.lat ?? u.location?.latitude;
-  const lngRaw =
-    u.lng ??
-    u.lon ??
-    u.longitude ??
-    u.location?.lng ??
-    u.location?.lon ??
-    u.location?.longitude;
-  const lat = toFiniteNumber(latRaw);
-  const lng = toFiniteNumber(lngRaw);
-
-  if (lat != null && lng != null) {
-    return [lat, lng];
-  }
-
-  const c = (u.country || "").trim();
+async function getCountryLatLng(record) {
+  const c = (record?.country || "").trim();
   if (!c) return null;
   return await fetchCountryLatLng(c);
-}
-
-function getLatLngFromIpLocation(location) {
-  const lat = toFiniteNumber(location?.lat ?? location?.latitude);
-  const lon = toFiniteNumber(
-    location?.lon ?? location?.lng ?? location?.longitude,
-  );
-  return lat == null || lon == null ? null : [lat, lon];
 }
 
 async function renderWorldPins(users, ipLocations = []) {
@@ -247,9 +219,7 @@ async function renderWorldPins(users, ipLocations = []) {
   let pinCount = 0;
   const bounds = [];
 
-  const latLngList = useIpLocations
-    ? records.map(getLatLngFromIpLocation)
-    : await Promise.all(records.map((user) => getLatLngFromUser(user)));
+  const latLngList = await Promise.all(records.map(getCountryLatLng));
 
   records.forEach((record, idx) => {
     const ll = latLngList[idx];
@@ -259,19 +229,13 @@ async function renderWorldPins(users, ipLocations = []) {
     const nameRow = document.createElement("div");
     const name = document.createElement("strong");
     name.textContent = useIpLocations
-      ? record.city || record.area || record.country || "Visitor location"
+      ? record.country || "Visitor country"
       : record.name || "Anonymous";
     nameRow.appendChild(name);
     label.appendChild(nameRow);
 
     if (useIpLocations) {
       appendPopupLine(label, "Country", record.country || "—");
-      appendPopupLine(label, "Area", record.area || record.city || "—");
-      appendPopupLine(
-        label,
-        "Source",
-        record.isPrecise ? "Precise location" : "IP location",
-      );
       appendPopupLine(label, "IP", record.ip || "—");
       appendPopupLine(label, "Last seen", formatWhen(record.ts));
     } else {
@@ -487,14 +451,14 @@ function formatWhen(value) {
   });
 }
 
-async function renderUsers(users, canDelete = false) {
+async function renderUsers(users, canDelete = false, ipLocations = []) {
   const sorted = [...users].sort(
     (a, b) =>
       new Date(b.last_seen || b.first_seen) -
       new Date(a.last_seen || a.first_seen),
   );
 
-  renderStats(sorted);
+  renderStats(sorted, ipLocations);
 
   // Render columns based on the actual table headers so /reports.html and
   // /html/reports.html can diverge safely.
@@ -661,7 +625,7 @@ async function load() {
         return [];
       }),
     ]);
-    await renderUsers(users, canDelete);
+    await renderUsers(users, canDelete, ipLocations);
     await renderWorldPins(users, ipLocations);
   } catch (err) {
     console.error(err);
@@ -739,16 +703,12 @@ function _renderList(id, entries) {
   el.appendChild(frag);
 }
 
-function renderStats(users) {
+function renderStats(users, ipLocations = []) {
   const aimsTop = _countTop(_metricValues(users, "aims"), 5);
   const interestTop = _countTop(_metricValues(users, "interest"), 5);
   const expTop = _countTop(_metricValues(users, "experience"), 5);
   const countryAreaTop = _countTop(
-    users.map((u) => {
-      const c = _norm(u.country);
-      const a = _norm(u.area);
-      return a ? `${c} — ${a}` : c;
-    }),
+    (ipLocations.length ? ipLocations : users).map((row) => row.country),
     8,
   );
   const langTop = _countTop(

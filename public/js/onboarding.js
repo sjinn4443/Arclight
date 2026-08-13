@@ -5,7 +5,6 @@
  */
 import { loadPage } from "./navigation.js";
 import { saveProfile } from "./telemetry.js";
-import { getCurrentCountryName, getCurrentArea } from "./location-service.js";
 
 export function initializeOnboarding() {
   const nameInput = document.getElementById("username");
@@ -784,14 +783,14 @@ export function initializeOnboarding() {
         interest: interestsString || null,
         experience: rolesString || null,
         contact: null,
-        country: getCurrentCountryName(),
-        area: getCurrentArea(),
         language:
           document.documentElement.getAttribute("lang") ||
           localStorage.getItem("prefLang") ||
           "en",
       });
-    } catch {}
+    } catch {
+      void 0;
+    }
 
     const name = nameInput?.value?.trim();
     if (name) localStorage.setItem("username", name);

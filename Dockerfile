@@ -39,15 +39,20 @@ COPY package.json package-lock.json ./
 RUN npm ci --omit=dev --no-audit --no-fund
 
 # Copy only runtime source from build stage (keeps .git out of final image)
-COPY --from=build /app/server.cjs ./server.cjs
-COPY --from=build /app/security ./security
-COPY --from=build /app/storage ./storage
-COPY --from=build /app/utils ./utils
-COPY --from=build /app/reports ./reports
-COPY --from=build /app/dist ./dist
+COPY --chown=node:node --from=build /app/server.cjs ./server.cjs
+COPY --chown=node:node --from=build /app/security ./security
+COPY --chown=node:node --from=build /app/storage ./storage
+COPY --chown=node:node --from=build /app/utils ./utils
+COPY --chown=node:node --from=build /app/reports ./reports
+COPY --chown=node:node --from=build /app/dist ./dist
+
+# NDJSON remains opt-in; when enabled, only this directory needs write access.
+RUN mkdir -p /app/reports/data && chown node:node /app/reports/data
 
 # Expose default port; Railway sets PORT env var at runtime
 EXPOSE 8080
 ENV PORT=8080
+
+USER node
 
 CMD ["node", "server.cjs"]

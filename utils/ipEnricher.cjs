@@ -1,7 +1,11 @@
+const crypto = require("crypto");
 const net = require("net");
 
 const DEFAULT_LOOKUP_TIMEOUT_MS = 3000;
-const DISABLED_VALUES = new Set(["0", "false", "off", "no"]);
+const DEFAULT_CACHE_TTL_MS = 24 * 60 * 60 * 1000;
+const DEFAULT_CACHE_MAX_ENTRIES = 1000;
+const ENABLED_VALUES = new Set(["1", "true", "yes", "on"]);
+const lookupCache = new Map();
 
 function normalizeIp(value) {
   const raw = String(value || "")
@@ -27,10 +31,11 @@ function isPrivateIp(value) {
 }
 
 function isLookupEnabled(env = process.env) {
-  const configured = String(env.ENABLE_IP_LOCATION_LOOKUP || "")
-    .trim()
-    .toLowerCase();
-  return !DISABLED_VALUES.has(configured);
+  return ENABLED_VALUES.has(
+    String(env.ENABLE_IP_LOCATION_LOOKUP || "")
+      .trim()
+      .toLowerCase(),
+  );
 }
 
 function countryNameFromCode(code) {
@@ -47,9 +52,6 @@ function countryNameFromCode(code) {
 }
 
 function parseIpInfoPayload(payload) {
-  const [rawLatitude, rawLongitude] = String(payload?.loc || "")
-    .split(",")
-    .map((value) => Number.parseFloat(value));
   const countryCode = String(payload?.country || "")
     .trim()
     .toUpperCase();
@@ -60,9 +62,6 @@ function parseIpInfoPayload(payload) {
     country: countryName,
     countryName,
     countryCode: countryCode || null,
-    city: String(payload?.city || "").trim() || null,
-    latitude: Number.isFinite(rawLatitude) ? rawLatitude : null,
-    longitude: Number.isFinite(rawLongitude) ? rawLongitude : null,
     error: null,
   };
 }
@@ -74,23 +73,12 @@ function parseBigDataCloudPayload(payload) {
   const countryName =
     String(payload?.countryName || "").trim() ||
     countryNameFromCode(countryCode);
-  const rawLatitude = Number.parseFloat(payload?.latitude);
-  const rawLongitude = Number.parseFloat(payload?.longitude);
 
   return {
     source: "bigdatacloud",
     country: countryName || null,
     countryName: countryName || null,
     countryCode: countryCode || null,
-    city:
-      String(
-        payload?.city ||
-          payload?.locality ||
-          payload?.principalSubdivisionLocality ||
-          "",
-      ).trim() || null,
-    latitude: Number.isFinite(rawLatitude) ? rawLatitude : null,
-    longitude: Number.isFinite(rawLongitude) ? rawLongitude : null,
     error: null,
   };
 }
@@ -101,27 +89,43 @@ function emptyResult(source, error) {
     country: null,
     countryName: null,
     countryCode: null,
-    city: null,
-    latitude: null,
-    longitude: null,
     error,
   };
 }
 
-async function fetchJson(fetchImpl, url, timeoutMs) {
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), timeoutMs);
+function cacheKeyForIp(ip) {
+  return crypto.createHash("sha256").update(ip).digest("hex");
+}
 
-  try {
-    const response = await fetchImpl(url, {
-      headers: { Accept: "application/json" },
-      signal: controller.signal,
-    });
-    if (!response.ok) throw new Error(`upstream ${response.status}`);
-    return await response.json();
-  } finally {
-    clearTimeout(timer);
+function readCachedResult(key, now) {
+  const cached = lookupCache.get(key);
+  if (!cached) return null;
+  if (cached.expiresAt <= now) {
+    lookupCache.delete(key);
+    return null;
   }
+  return { ...cached.result };
+}
+
+function writeCachedResult(key, result, now, ttlMs, maxEntries) {
+  if (lookupCache.has(key)) lookupCache.delete(key);
+  lookupCache.set(key, {
+    expiresAt: now + ttlMs,
+    result: { ...result },
+  });
+  while (lookupCache.size > maxEntries) {
+    const oldestKey = lookupCache.keys().next().value;
+    lookupCache.delete(oldestKey);
+  }
+}
+
+async function fetchJson(fetchImpl, url, signal) {
+  const response = await fetchImpl(url, {
+    headers: { Accept: "application/json" },
+    signal,
+  });
+  if (!response.ok) throw new Error(`upstream ${response.status}`);
+  return await response.json();
 }
 
 async function enrichIp(ip, options = {}) {
@@ -134,6 +138,14 @@ async function enrichIp(ip, options = {}) {
       : Boolean(options.lookupEnabled);
   if (!lookupEnabled) return emptyResult("disabled", "lookup_disabled");
 
+  const now = Number.isFinite(options.now) ? options.now : Date.now();
+  const cacheEnabled = options.cache !== false;
+  const cacheKey = cacheKeyForIp(normalizedIp);
+  if (cacheEnabled) {
+    const cached = readCachedResult(cacheKey, now);
+    if (cached) return cached;
+  }
+
   const fetchImpl =
     options.fetchImpl ||
     (typeof global.fetch === "function"
@@ -143,6 +155,14 @@ async function enrichIp(ip, options = {}) {
     Number.isFinite(options.timeoutMs) && options.timeoutMs > 0
       ? options.timeoutMs
       : DEFAULT_LOOKUP_TIMEOUT_MS;
+  const cacheTtlMs =
+    Number.isFinite(options.cacheTtlMs) && options.cacheTtlMs > 0
+      ? options.cacheTtlMs
+      : DEFAULT_CACHE_TTL_MS;
+  const cacheMaxEntries =
+    Number.isSafeInteger(options.cacheMaxEntries) && options.cacheMaxEntries > 0
+      ? options.cacheMaxEntries
+      : DEFAULT_CACHE_MAX_ENTRIES;
   const token = String(
     options.ipinfoToken ?? process.env.IPINFO_TOKEN ?? "",
   ).trim();
@@ -166,21 +186,49 @@ async function enrichIp(ip, options = {}) {
     },
   );
 
-  for (const candidate of candidates) {
-    try {
-      const payload = await fetchJson(fetchImpl, candidate.url, timeoutMs);
-      const result = candidate.parser(payload);
-      if (result.countryName || result.countryCode || result.city)
-        return result;
-    } catch {
-      // Try the next provider without logging the IP or upstream URL.
+  const controller = new AbortController();
+  let timer;
+  const timeoutPromise = new Promise((resolve, reject) => {
+    timer = setTimeout(() => {
+      controller.abort();
+      reject(new Error("lookup timeout"));
+    }, timeoutMs);
+  });
+
+  let result = null;
+  try {
+    for (const candidate of candidates) {
+      try {
+        const payload = await Promise.race([
+          fetchJson(fetchImpl, candidate.url, controller.signal),
+          timeoutPromise,
+        ]);
+        const parsed = candidate.parser(payload);
+        if (parsed.countryName || parsed.countryCode) {
+          result = parsed;
+          break;
+        }
+      } catch {
+        if (controller.signal.aborted) break;
+      }
     }
+  } finally {
+    clearTimeout(timer);
   }
 
-  return emptyResult("unavailable", "lookup_failed");
+  result = result || emptyResult("unavailable", "lookup_failed");
+  if (cacheEnabled) {
+    writeCachedResult(cacheKey, result, now, cacheTtlMs, cacheMaxEntries);
+  }
+  return { ...result };
+}
+
+function clearLookupCache() {
+  lookupCache.clear();
 }
 
 module.exports = {
+  clearLookupCache,
   countryNameFromCode,
   enrichIp,
   isLookupEnabled,

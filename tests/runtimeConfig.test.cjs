@@ -32,13 +32,42 @@ describe("runtime security config", () => {
     );
   });
 
-  test("requires a server secret when production telemetry hosts are enabled", () => {
+  test("requires a dedicated strong telemetry secret in every environment", () => {
     const result = validateRuntimeConfig(
       prodEnv({ TELEMETRY_ALLOWED_HOSTS: "app.example.com" }),
     );
 
     expect(result.errors).toContain(
-      "telemetry host allowlist requires TELEMETRY_TOKEN_SECRET or another app secret",
+      "TELEMETRY_TOKEN_SECRET is required and must be at least 32 characters",
+    );
+  });
+
+  test("rejects weak dashboard passwords outside production", () => {
+    const result = validateRuntimeConfig({
+      NODE_ENV: "development",
+      DASHBOARD_PASSWORD: "short",
+      TELEMETRY_TOKEN_SECRET: "telemetry-secret-0123456789-abcdef",
+    });
+
+    expect(result.errors).toContain(
+      "DASHBOARD_PASSWORD is required and must be at least 24 characters",
+    );
+  });
+
+  test("rejects reused secrets and invalid proxy trust", () => {
+    const reused = "independent-secret-required-0123456789";
+    const result = validateRuntimeConfig({
+      NODE_ENV: "development",
+      DASHBOARD_PASSWORD: reused,
+      TELEMETRY_TOKEN_SECRET: reused,
+      TRUST_PROXY: "true",
+    });
+
+    expect(result.errors).toContain(
+      "DASHBOARD_PASSWORD must not reuse TELEMETRY_TOKEN_SECRET",
+    );
+    expect(result.errors).toContain(
+      "TRUST_PROXY must be disabled or a trusted proxy hop count from 1 to 10",
     );
   });
 

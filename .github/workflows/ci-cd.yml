@@ -68,7 +68,14 @@ jobs:
         run: npm run build
 
       - name: Security audit
-        run: npm audit --omit=dev --audit-level=high
+        run: npm audit --omit=dev --audit-level=moderate
+
+      - name: Verify non-root production container
+        shell: bash
+        run: |
+          set -euo pipefail
+          docker build --tag arclight-security-check .
+          test "$(docker run --rm --entrypoint id arclight-security-check -u)" != "0"
 
       - name: Run accessibility tests
         run: npm run test:a11y
