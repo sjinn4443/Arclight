@@ -15,7 +15,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           lfs: true
           fetch-depth: 0
@@ -47,7 +47,7 @@ jobs:
           fi
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: "20.x"
           cache: "npm"
@@ -85,10 +85,13 @@ jobs:
 
       - name: Run fundal E2E validation
         run: npm run test:fundal:ci
+        env:
+          DASHBOARD_PASSWORD: ci-fundal-dashboard-password-2026
+          TELEMETRY_TOKEN_SECRET: ci-fundal-telemetry-secret-2026-value
 
       - name: Upload Playwright artifacts
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: playwright-report
           path: |
@@ -96,7 +99,7 @@ jobs:
             test-results/
 
       - name: Upload production artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: dist
           path: dist/
