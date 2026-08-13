@@ -10,6 +10,16 @@ import {
   initializeGlaucomaWorkshopNextFlowInfra,
   rememberGlaucomaWorkshopFlowFromRow,
 } from "./glaucomaWorkshopNextFlow.js";
+import {
+  buildRapdTestQuestions,
+  caseFromPatientSelection,
+  formatRapdTestAnswer,
+  getRapdDilationTarget,
+  pickRandomRapdCase,
+  internalSideToPatientSide,
+  rapdCasesMatch,
+  scoreRapdAnswers,
+} from "./rapdCases.js";
 
 // videos.html 내 섹션 id로 정규화 (childhood workshop 방식 참고) :contentReference[oaicite:4]{index=4}
 function normaliseVideosSubpageId(raw) {
@@ -1181,12 +1191,44 @@ function initGlaucomaRAPDFullSwingInteractive() {
   const pupilLeft = page.querySelector("#rapdPupilLeft");
   const pupilRight = page.querySelector("#rapdPupilRight");
 
-  const toggle = page.querySelector("#rapdModeToggle");
-  const toggleLabel = page.querySelector("#rapdModeLabel");
+  const pageTitle = page.querySelector("#rapdPageTitle");
+  const severityButtons = Array.from(
+    page.querySelectorAll("[data-rapd-severity]"),
+  );
+  const sideButtons = Array.from(
+    page.querySelectorAll("[data-rapd-patient-side]"),
+  );
+  const applyRandomButton = page.querySelector("#rapdApplyRandom");
+  const revealPanel = page.querySelector("#rapdRevealPanel");
+  const revealButton = page.querySelector("#rapdReveal");
+  const randomNextButton = page.querySelector("#rapdRandomNext");
+  const randomPanel = page.querySelector(".rapd-randomPanel");
+  const testControls = page.querySelector("#rapdTestControls");
+  const testProgress = page.querySelector("#rapdTestProgress");
+  const submitAnswerButton = page.querySelector("#rapdSubmitAnswer");
+  const previousQuestionButton = page.querySelector("#rapdTestPrevious");
+  const nextQuestionButton = page.querySelector("#rapdTestNext");
+  const answerDialog = page.querySelector("#rapdAnswerDialog");
+  const answerFeedback = page.querySelector("#rapdAnswerFeedback");
+  const answerCloseButton = page.querySelector("#rapdAnswerClose");
+  const scoreDialog = page.querySelector("#rapdScoreDialog");
+  const scoreResult = page.querySelector("#rapdScoreResult");
+  const scoreCloseButton = page.querySelector("#rapdScoreClose");
 
-  // default entry is Normal (= RAPD OFF)
-  if (toggle) toggle.checked = false;
-  if (toggleLabel) toggleLabel.textContent = "RAPD mode OFF";
+  let launchMode = "practice";
+  try {
+    launchMode =
+      sessionStorage.getItem("rapdExperience:launchMode") === "test"
+        ? "test"
+        : "practice";
+  } catch {
+    launchMode = "practice";
+  }
+  const isTestMode = launchMode === "test";
+  page.dataset.rapdExperienceMode = launchMode;
+  if (pageTitle) pageTitle.textContent = isTestMode ? "Test" : "Practice";
+  if (randomPanel) randomPanel.hidden = isTestMode;
+  if (testControls) testControls.hidden = !isTestMode;
 
   if (
     !stage ||
@@ -1236,6 +1278,20 @@ function initGlaucomaRAPDFullSwingInteractive() {
     flashlightOpacity: 1,
     lastSide: "centre", // "left" | "right" | "centre"
     rapdPulseStart: null,
+    manualSide: "right",
+    manualSeverity: 3,
+    manualEnabled: false,
+    randomCase: null,
+    test: isTestMode
+      ? {
+          questions: buildRapdTestQuestions(),
+          answers: Array(10).fill(null),
+          selections: Array(10).fill(null),
+          index: 0,
+          scoreShown: false,
+          reviewMode: false,
+        }
+      : null,
     centerEnteredAt: null,
     lastLightMoveAt: null,
     lastLitNx: null,
@@ -1276,6 +1332,7 @@ function initGlaucomaRAPDFullSwingInteractive() {
       dilateStartScale: DILATE_MAX,
       constrictMinTarget: CONSTRICT_MIN,
       constrictMinActive: CONSTRICT_MIN,
+      dilateTarget: DILATE_MAX,
       escapeStartedAt: null,
       hippusSeedA: seed,
       hippusSeedB: seed + 1.73,
@@ -1382,6 +1439,7 @@ function initGlaucomaRAPDFullSwingInteractive() {
     eye.dilateStartScale = DILATE_MAX;
     eye.constrictMinTarget = CONSTRICT_MIN;
     eye.constrictMinActive = CONSTRICT_MIN;
+    eye.dilateTarget = DILATE_MAX;
     eye.escapeStartedAt = null;
   }
 
@@ -1418,14 +1476,14 @@ function initGlaucomaRAPDFullSwingInteractive() {
   }
 
   function getDilatedScale(eye, now) {
-    if (eye.effectiveConstricted) return DILATE_MAX;
-    if (eye.dilateStartedAt === null) return DILATE_MAX;
+    if (eye.effectiveConstricted) return eye.dilateTarget;
+    if (eye.dilateStartedAt === null) return eye.dilateTarget;
 
     const elapsed = Math.max(0, now - eye.dilateStartedAt);
-    if (elapsed >= DILATE_RAMP_MS) return DILATE_MAX;
+    if (elapsed >= DILATE_RAMP_MS) return eye.dilateTarget;
 
     const p = easeInOutSine(elapsed / DILATE_RAMP_MS);
-    return lerp(eye.dilateStartScale, DILATE_MAX, p);
+    return lerp(eye.dilateStartScale, eye.dilateTarget, p);
   }
 
   function updateEyeDesiredWithLatency(
@@ -1433,7 +1491,21 @@ function initGlaucomaRAPDFullSwingInteractive() {
     shouldConstrict,
     now,
     constrictMin,
+    dilateTarget = DILATE_MAX,
   ) {
+    const previousDilateTarget = eye.dilateTarget;
+    const currentDilatedScale = eye.effectiveConstricted
+      ? null
+      : getDilatedScale(eye, now);
+    eye.dilateTarget = dilateTarget;
+    if (
+      currentDilatedScale !== null &&
+      Math.abs(previousDilateTarget - dilateTarget) > 0.001
+    ) {
+      eye.dilateStartScale = currentDilatedScale;
+      eye.dilateStartedAt = now;
+    }
+
     eye.constrictMinTarget = constrictMin;
     eye.constrictMinActive = lerp(
       eye.constrictMinActive,
@@ -1520,7 +1592,7 @@ function initGlaucomaRAPDFullSwingInteractive() {
       flashlight.style.display = "none";
       beam.style.display = "none";
       flashlightOff.style.display = "";
-      if (bubble) bubble.style.display = "";
+      if (bubble) bubble.style.display = isTestMode ? "none" : "";
       if (hint) hint.style.opacity = "1";
       state.rapdPulseStart = null;
       state.centerEnteredAt = null;
@@ -1635,10 +1707,12 @@ function initGlaucomaRAPDFullSwingInteractive() {
     beam.style.transform = "translate(-50%, -50%)";
     beam.style.opacity = side === "centre" ? "0.85" : "0.9";
 
-    const rapdOn = !!(toggle && toggle.checked);
-    if (toggleLabel) {
-      toggleLabel.textContent = rapdOn ? "RAPD mode ON" : "RAPD mode OFF";
-    }
+    const activeCase = isTestMode
+      ? state.test.questions[state.test.index]
+      : state.randomCase || {
+          side: state.manualEnabled ? state.manualSide : null,
+          severity: state.manualSeverity,
+        };
 
     setPupilTransitionMs(pupilLeft, 90);
     setPupilTransitionMs(pupilRight, 90);
@@ -1648,8 +1722,11 @@ function initGlaucomaRAPDFullSwingInteractive() {
     let leftConstrictMin = CONSTRICT_MIN;
     let rightConstrictMin = CONSTRICT_MIN;
 
-    if (rapdOn && effectiveStimulus && side === "right") {
-      if (state.lastSide !== "right" || state.rapdPulseStart === null) {
+    let leftDilateTarget = DILATE_MAX;
+    let rightDilateTarget = DILATE_MAX;
+
+    if (activeCase.side && effectiveStimulus && side === activeCase.side) {
+      if (state.lastSide !== activeCase.side || state.rapdPulseStart === null) {
         state.rapdPulseStart = now;
       }
 
@@ -1659,6 +1736,11 @@ function initGlaucomaRAPDFullSwingInteractive() {
       rightShouldConstrict = pulseActive;
       leftConstrictMin = RAPD_PARTIAL_MIN;
       rightConstrictMin = RAPD_PARTIAL_MIN;
+      if (!pulseActive) {
+        const rapdDilationTarget = getRapdDilationTarget(activeCase.severity);
+        leftDilateTarget = rapdDilationTarget;
+        rightDilateTarget = rapdDilationTarget;
+      }
     } else {
       state.rapdPulseStart = null;
     }
@@ -1668,12 +1750,14 @@ function initGlaucomaRAPDFullSwingInteractive() {
       leftShouldConstrict,
       now,
       leftConstrictMin,
+      leftDilateTarget,
     );
     updateEyeDesiredWithLatency(
       state.eyes.right,
       rightShouldConstrict,
       now,
       rightConstrictMin,
+      rightDilateTarget,
     );
 
     updateEyeEscapeState(
@@ -1764,8 +1848,334 @@ function initGlaucomaRAPDFullSwingInteractive() {
     el.addEventListener("pointercancel", onUp);
   });
 
-  if (toggle) {
-    toggle.addEventListener("change", render);
+  function updateSeveritySelection(selectedSeverity, showSelection = true) {
+    severityButtons.forEach((button) => {
+      const isSelected =
+        showSelection &&
+        Number(button.dataset.rapdSeverity) === selectedSeverity;
+      button.setAttribute("aria-pressed", String(isSelected));
+    });
+  }
+
+  function updateSideSelection(selectedSide, showSelection = true) {
+    const patientSide = selectedSide
+      ? internalSideToPatientSide(selectedSide)
+      : "none";
+    sideButtons.forEach((button) => {
+      button.setAttribute(
+        "aria-pressed",
+        String(showSelection && button.dataset.rapdPatientSide === patientSide),
+      );
+    });
+  }
+
+  function updateDiagnosisSelection(rapdCase, showSelection = true) {
+    updateSideSelection(rapdCase?.side || null, showSelection);
+    updateSeveritySelection(
+      rapdCase?.severity,
+      showSelection && Boolean(rapdCase?.side),
+    );
+  }
+
+  const reviewClasses = [
+    "is-review-user",
+    "is-review-correct",
+    "is-review-correct-missed",
+  ];
+
+  function getCaseControlButtons(rapdCase) {
+    const patientSide = rapdCase?.side
+      ? internalSideToPatientSide(rapdCase.side)
+      : "none";
+    const controls = sideButtons.filter(
+      (button) => button.dataset.rapdPatientSide === patientSide,
+    );
+    if (rapdCase?.side) {
+      controls.push(
+        ...severityButtons.filter(
+          (button) => Number(button.dataset.rapdSeverity) === rapdCase.severity,
+        ),
+      );
+    }
+    return controls;
+  }
+
+  function clearReviewStyles() {
+    [...sideButtons, ...severityButtons].forEach((button) => {
+      button.classList.remove(...reviewClasses, "is-reveal-flash");
+    });
+  }
+
+  function markCaseControls(rapdCase, className) {
+    getCaseControlButtons(rapdCase).forEach((button) => {
+      button.classList.add(className);
+    });
+  }
+
+  function showReviewAnswer(answer, correctAnswer) {
+    clearReviewStyles();
+    updateDiagnosisSelection(null, false);
+    if (rapdCasesMatch(answer, correctAnswer)) {
+      markCaseControls(correctAnswer, "is-review-correct");
+      return;
+    }
+    markCaseControls(answer, "is-review-user");
+    markCaseControls(correctAnswer, "is-review-correct-missed");
+  }
+
+  function clearRandomCase() {
+    state.randomCase = null;
+    state.rapdPulseStart = null;
+    if (revealPanel) revealPanel.hidden = true;
+    if (randomNextButton) randomNextButton.hidden = true;
+  }
+
+  function resetQuestionInteraction() {
+    const now = performance.now();
+    state.pickedUp = false;
+    state.dragging = false;
+    state.pointerId = null;
+    state.nx = 0;
+    state.ny = 0;
+    state.rapdPulseStart = null;
+    state.lastSide = "centre";
+    resetEyeState(state.eyes.left, now);
+    resetEyeState(state.eyes.right, now);
+  }
+
+  function getTestScore() {
+    return scoreRapdAnswers(state.test.questions, state.test.answers);
+  }
+
+  function updateTestUi() {
+    if (!state.test) return;
+    const answered = state.test.answers[state.test.index];
+    const selection = state.test.selections[state.test.index];
+    const correctAnswer = state.test.questions[state.test.index];
+    if (testProgress) {
+      testProgress.textContent = `Question ${state.test.index + 1} of ${state.test.questions.length}`;
+      if (answered) {
+        const isCorrect = rapdCasesMatch(answered, correctAnswer);
+        const status = document.createElement("span");
+        status.className = `rapd-testProgress__status ${
+          isCorrect ? "is-correct" : "is-incorrect"
+        }`;
+        status.setAttribute(
+          "aria-label",
+          isCorrect ? "Correct answer" : "Incorrect answer",
+        );
+        status.textContent = isCorrect ? "✓" : "×";
+        testProgress.appendChild(status);
+      }
+    }
+    if (previousQuestionButton) {
+      previousQuestionButton.disabled = state.test.index === 0;
+    }
+    if (nextQuestionButton) {
+      nextQuestionButton.disabled =
+        state.test.index === state.test.questions.length - 1;
+    }
+    if (submitAnswerButton) {
+      submitAnswerButton.hidden = state.test.reviewMode;
+      submitAnswerButton.textContent = answered
+        ? "View result"
+        : "Submit answer";
+      const selectionComplete =
+        selection &&
+        (!selection.side || [1, 2, 3].includes(selection.severity));
+      submitAnswerButton.disabled = !answered && !selectionComplete;
+    }
+    if (state.test.reviewMode && answered) {
+      showReviewAnswer(answered, correctAnswer);
+    } else {
+      clearReviewStyles();
+      updateDiagnosisSelection(
+        answered || selection,
+        Boolean(answered || selection),
+      );
+    }
+  }
+
+  function closeAnswerDialog() {
+    if (answerDialog) answerDialog.hidden = true;
+  }
+
+  function showFinalScoreIfComplete() {
+    if (!state.test || state.test.answers.some((answer) => answer === null)) {
+      return;
+    }
+    if (scoreResult) {
+      scoreResult.textContent = `You scored ${getTestScore()} out of ${state.test.questions.length}.`;
+    }
+    if (scoreDialog) scoreDialog.hidden = false;
+    state.test.scoreShown = true;
+  }
+
+  function renderAnswerDialog() {
+    if (!state.test || !answerFeedback || !answerDialog) return;
+    const currentAnswer = state.test.answers[state.test.index];
+    const correctAnswer = state.test.questions[state.test.index];
+    if (currentAnswer) {
+      const isCorrect = rapdCasesMatch(currentAnswer, correctAnswer);
+      answerFeedback.textContent = isCorrect
+        ? `Correct. The answer is ${formatRapdTestAnswer(correctAnswer)}.`
+        : `Incorrect. The correct answer is ${formatRapdTestAnswer(correctAnswer)}.`;
+      answerFeedback.className = `rapd-answerFeedback ${
+        isCorrect ? "is-correct" : "is-incorrect"
+      }`;
+      answerFeedback.hidden = false;
+    } else {
+      return;
+    }
+    if (answerCloseButton) {
+      answerCloseButton.disabled = false;
+      answerCloseButton.textContent = "Next";
+    }
+    answerDialog.hidden = false;
+  }
+
+  function goToTestQuestion(nextIndex) {
+    if (!state.test) return;
+    state.test.index = clamp(nextIndex, 0, state.test.questions.length - 1);
+    closeAnswerDialog();
+    resetQuestionInteraction();
+    updateTestUi();
+    render();
+  }
+
+  sideButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const patientSide = button.dataset.rapdPatientSide;
+      if (isTestMode) {
+        if (state.test.answers[state.test.index]) return;
+        const existing = state.test.selections[state.test.index];
+        state.test.selections[state.test.index] =
+          patientSide === "none"
+            ? { side: null, severity: null }
+            : caseFromPatientSelection(patientSide, existing?.severity || null);
+        updateTestUi();
+        return;
+      }
+      clearRandomCase();
+      if (patientSide === "none") {
+        state.manualEnabled = false;
+        updateDiagnosisSelection({ side: null, severity: null });
+      } else {
+        state.manualSide = caseFromPatientSelection(
+          patientSide,
+          state.manualSeverity,
+        ).side;
+        state.manualEnabled = true;
+        updateDiagnosisSelection({
+          side: state.manualSide,
+          severity: state.manualSeverity,
+        });
+      }
+      render();
+    });
+  });
+
+  severityButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const severity = Number(button.dataset.rapdSeverity);
+      if (![1, 2, 3].includes(severity)) return;
+      if (isTestMode) {
+        if (state.test.answers[state.test.index]) return;
+        const existing = state.test.selections[state.test.index];
+        if (!existing?.side) return;
+        state.test.selections[state.test.index] = {
+          side: existing.side,
+          severity,
+        };
+        updateTestUi();
+        return;
+      }
+      clearRandomCase();
+      state.manualSeverity = severity;
+      if (!state.manualSide) state.manualSide = "right";
+      state.manualEnabled = true;
+      updateDiagnosisSelection({ side: state.manualSide, severity });
+      render();
+    });
+  });
+
+  function applyRandomCase() {
+    state.randomCase = pickRandomRapdCase();
+    state.rapdPulseStart = null;
+    updateSeveritySelection(state.manualSeverity, false);
+    updateSideSelection(null, false);
+    if (revealPanel) revealPanel.hidden = false;
+    if (randomNextButton) randomNextButton.hidden = true;
+    render();
+  }
+
+  applyRandomButton?.addEventListener("click", applyRandomCase);
+
+  revealButton?.addEventListener("click", () => {
+    if (!state.randomCase) return;
+    updateDiagnosisSelection(state.randomCase);
+    const answerControls = getCaseControlButtons(state.randomCase);
+    answerControls.forEach((button) =>
+      button.classList.remove("is-reveal-flash"),
+    );
+    window.requestAnimationFrame(() => {
+      answerControls.forEach((button) =>
+        button.classList.add("is-reveal-flash"),
+      );
+    });
+    window.setTimeout(() => {
+      answerControls.forEach((button) =>
+        button.classList.remove("is-reveal-flash"),
+      );
+    }, 1450);
+    if (randomNextButton) randomNextButton.hidden = false;
+  });
+
+  randomNextButton?.addEventListener("click", applyRandomCase);
+
+  if (isTestMode) {
+    submitAnswerButton?.addEventListener("click", () => {
+      const existing = state.test.answers[state.test.index];
+      if (!existing) {
+        const selection = state.test.selections[state.test.index];
+        if (!selection) return;
+        state.test.answers[state.test.index] = { ...selection };
+        updateTestUi();
+      }
+      renderAnswerDialog();
+    });
+    answerCloseButton?.addEventListener("click", () => {
+      if (!state.test?.answers[state.test.index]) return;
+      if (state.test.index < state.test.questions.length - 1) {
+        goToTestQuestion(state.test.index + 1);
+        return;
+      }
+
+      const firstUnanswered = state.test.answers.findIndex(
+        (answer) => answer === null,
+      );
+      if (firstUnanswered >= 0) {
+        goToTestQuestion(firstUnanswered);
+        return;
+      }
+
+      closeAnswerDialog();
+      showFinalScoreIfComplete();
+    });
+    scoreCloseButton?.addEventListener("click", () => {
+      if (scoreDialog) scoreDialog.hidden = true;
+      state.test.reviewMode = true;
+      goToTestQuestion(0);
+    });
+    previousQuestionButton?.addEventListener("click", () => {
+      goToTestQuestion(state.test.index - 1);
+    });
+    nextQuestionButton?.addEventListener("click", () => {
+      goToTestQuestion(state.test.index + 1);
+    });
+    updateTestUi();
+  } else {
+    updateDiagnosisSelection({ side: null, severity: null }, true);
   }
 
   window.addEventListener("resize", render);

@@ -152,11 +152,11 @@ input {
     width: 100vw !important;
     height: 100dvh !important;
     min-height: 0 !important;
-    padding: 62px 0 0 !important;
+    padding: 0 !important;
     overflow-x: hidden !important;
     overflow-y: auto !important;
     overscroll-behavior: contain;
-    background: #fff !important;
+    background: #000 !important;
   }
 
   body[data-rapd-mobile-layout="true"]
@@ -166,7 +166,7 @@ input {
     width: 100% !important;
     max-width: none !important;
     height: auto !important;
-    min-height: calc(100dvh - 62px) !important;
+    min-height: 100dvh !important;
     margin: 0 !important;
     padding: 0 !important;
   }
@@ -174,16 +174,37 @@ input {
   body[data-rapd-mobile-layout="true"]
     #glaucomaRAPDFullSwingInteractive
     .eyes-topbar {
+    position: fixed !important;
+    inset: 0 0 auto !important;
+    z-index: 11000 !important;
     box-sizing: border-box !important;
     height: 62px !important;
     padding-left: max(12px, env(safe-area-inset-left)) !important;
     padding-right: max(12px, env(safe-area-inset-right)) !important;
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    pointer-events: none !important;
   }
 
   body[data-rapd-mobile-layout="true"]
     #glaucomaRAPDFullSwingInteractive
     .eyes-topbar__title {
-    margin-left: max(56px, env(safe-area-inset-left)) !important;
+    display: none !important;
+  }
+
+  body[data-rapd-mobile-layout="true"]
+    #glaucomaRAPDFullSwingInteractive
+    .eyes-topbar__icons {
+    color: #fff !important;
+    pointer-events: auto !important;
+  }
+
+  body[data-rapd-mobile-layout="true"]
+    #glaucomaRAPDFullSwingInteractive
+    .icon.menuBtn {
+    color: #fff !important;
+    font-size: 25px !important;
   }
 
   body[data-rapd-mobile-layout="true"]
@@ -192,16 +213,12 @@ input {
     position: relative !important;
     inset: auto !important;
     display: grid !important;
-    grid-template-rows: auto auto minmax(0, 1fr) !important;
+    grid-template-rows: minmax(0, 1fr) !important;
     box-sizing: border-box !important;
-    width: calc(
-      100vw - max(12px, env(safe-area-inset-left)) -
-        max(12px, env(safe-area-inset-right))
-    ) !important;
+    width: 100vw !important;
     max-width: none !important;
     height: auto !important;
-    margin: 6px max(12px, env(safe-area-inset-right)) 0
-      max(12px, env(safe-area-inset-left)) !important;
+    margin: 0 !important;
     padding: 0 !important;
     transform: none !important;
   }
@@ -219,20 +236,234 @@ input {
   body[data-rapd-mobile-layout="true"]
     #glaucomaRAPDFullSwingInteractive
     .rapd-toggleRow {
-    width: 100% !important;
-    margin: 0 0 6px !important;
+    position: absolute !important;
+    left: 16px !important;
+    right: 16px !important;
+    bottom: 16px !important;
+    z-index: 10001 !important;
+    width: auto !important;
+    min-height: 34px !important;
+    margin: 0 !important;
+    color: #fff !important;
+    pointer-events: none;
+  }
+
+  body[data-rapd-mobile-layout="true"]
+    #glaucomaRAPDFullSwingInteractive
+    .rapd-toggleRow
+    :is(label, button) {
+    pointer-events: auto;
+  }
+
+  body[data-rapd-mobile-layout="true"]
+    #glaucomaRAPDFullSwingInteractive
+    .rapd-slider {
+    background: rgba(255, 255, 255, 0.38) !important;
+  }
+
+  body[data-rapd-mobile-layout="true"]
+    #glaucomaRAPDFullSwingInteractive
+    .rapd-switch
+    input:checked
+    + .rapd-slider {
+    background: #22c55e !important;
+  }
+
+  body[data-rapd-mobile-layout="true"]
+    #glaucomaRAPDFullSwingInteractive
+    .rapd-toggleLabel {
+    display: none !important;
+  }
+
+  body[data-rapd-mobile-layout="true"]
+    #glaucomaRAPDFullSwingInteractive
+    .rapd-severityControl {
+    position: absolute !important;
+    right: 0 !important;
+    gap: 6px !important;
+    margin-left: 0 !important;
+    color: #fff !important;
+    font-size: 11px !important;
+  }
+
+  body[data-rapd-mobile-layout="true"]
+    #glaucomaRAPDFullSwingInteractive
+    .rapd-diagnosisControls {
+    top: 34px !important;
+    right: max(68px, env(safe-area-inset-right)) !important;
+    left: max(68px, env(safe-area-inset-left)) !important;
+  }
+
+  body[data-rapd-mobile-layout="true"]
+    #glaucomaRAPDFullSwingInteractive
+    .rapd-sideControl
+    button {
+    min-height: 28px !important;
+    padding: 4px 9px !important;
+    font-size: 11px !important;
+  }
+
+  body[data-rapd-mobile-layout="true"]
+    #glaucomaRAPDFullSwingInteractive
+    .rapd-severityControl__steps {
+    gap: 10px !important;
+  }
+
+  body[data-rapd-mobile-layout="true"]
+    #glaucomaRAPDFullSwingInteractive
+    .rapd-severityButton {
+    width: 24px !important;
+    height: 24px !important;
+    font-size: 11px !important;
+  }
+
+  body[data-rapd-mobile-layout="true"]
+    #glaucomaRAPDFullSwingInteractive
+    .rapd-randomPanel {
+    position: absolute !important;
+    top: 15px !important;
+    left: max(90px, env(safe-area-inset-left)) !important;
+    z-index: 10000 !important;
+    margin: 0 !important;
+    transform: none !important;
+  }
+
+  body[data-rapd-mobile-layout="true"]
+    #glaucomaRAPDFullSwingInteractive
+    .rapd-randomButton,
+  body[data-rapd-mobile-layout="true"]
+    #glaucomaRAPDFullSwingInteractive
+    .rapd-revealButton,
+  body[data-rapd-mobile-layout="true"]
+    #glaucomaRAPDFullSwingInteractive
+    .rapd-randomNextButton,
+  body[data-rapd-mobile-layout="true"]
+    #glaucomaRAPDFullSwingInteractive
+    .rapd-revealResult {
+    min-height: 32px !important;
+    padding: 6px 12px !important;
+    border: 1px solid rgba(255, 255, 255, 0.16) !important;
+    font-size: 12px !important;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
+
+  body[data-rapd-mobile-layout="true"]
+    #glaucomaRAPDFullSwingInteractive
+    .rapd-randomButton {
+    border-color: #e41e26 !important;
+    background: #e41e26 !important;
+    color: #fff !important;
+  }
+
+  body[data-rapd-mobile-layout="true"]
+    #glaucomaRAPDFullSwingInteractive
+    .rapd-revealPanel {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+
+  body[data-rapd-mobile-layout="true"]
+    #glaucomaRAPDFullSwingInteractive
+    .rapd-answerDialog__card {
+    width: min(720px, calc(100% - 24px)) !important;
+    max-height: calc(100% - 16px) !important;
+    overflow: hidden !important;
+    padding: 10px 12px !important;
+  }
+
+  body[data-rapd-mobile-layout="true"]
+    #glaucomaRAPDFullSwingInteractive
+    #rapdAnswerDialog
+    .rapd-answerDialog__card {
+    width: min(380px, 52vw) !important;
+  }
+
+  body[data-rapd-mobile-layout="true"]
+    #glaucomaRAPDFullSwingInteractive
+    .rapd-answerDialog__card
+    h2 {
+    margin-bottom: 4px !important;
+    font-size: 20px !important;
+  }
+
+  body[data-rapd-mobile-layout="true"]
+    #glaucomaRAPDFullSwingInteractive
+    .rapd-answerDialog__card
+    p {
+    margin-bottom: 7px !important;
+    font-size: 13px !important;
+  }
+
+  body[data-rapd-mobile-layout="true"]
+    #glaucomaRAPDFullSwingInteractive
+    .rapd-answerOptions {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 6px !important;
+  }
+
+  body[data-rapd-mobile-layout="true"]
+    #glaucomaRAPDFullSwingInteractive
+    .rapd-answerOption {
+    min-height: 36px !important;
+    padding: 5px 6px !important;
+    font-size: 11px !important;
+  }
+
+  body[data-rapd-mobile-layout="true"]
+    #glaucomaRAPDFullSwingInteractive
+    .rapd-answerFeedback {
+    margin-top: 7px !important;
+    padding: 6px 8px !important;
+    font-size: 12px !important;
+  }
+
+  body[data-rapd-mobile-layout="true"]
+    #glaucomaRAPDFullSwingInteractive
+    .rapd-answerClose {
+    min-height: 32px !important;
+    margin-top: 7px !important;
+    padding: 5px 12px !important;
   }
 
   body[data-rapd-mobile-layout="true"]
     #glaucomaRAPDFullSwingInteractive
     #rapdStage {
+    grid-row: 1 !important;
     box-sizing: border-box !important;
     width: 100% !important;
     max-width: none !important;
-    height: max(240px, calc(100dvh - 129px)) !important;
+    height: max(300px, 100dvh) !important;
     max-height: none !important;
     margin: 0 !important;
-    border-radius: 14px !important;
+    border-radius: 0 !important;
+    overflow: clip !important;
+  }
+
+  body[data-rapd-mobile-layout="true"]
+    #glaucomaRAPDFullSwingInteractive
+    #rapdEyesImg {
+    top: 59% !important;
+  }
+
+  body[data-rapd-mobile-layout="true"]
+    #glaucomaRAPDFullSwingInteractive
+    .rapd-testProgress {
+    top: 15px !important;
+    left: max(90px, env(safe-area-inset-left)) !important;
+    transform: none !important;
+  }
+
+  body[data-rapd-mobile-layout="true"] #backBtnGlobal.top-back {
+    top: 13px !important;
+    left: max(18px, env(safe-area-inset-left)) !important;
+    z-index: 12000 !important;
+    background: transparent !important;
+    color: #fff !important;
+  }
+
+  body[data-rapd-mobile-layout="true"] #backBtnGlobal:hover {
+    background: rgba(255, 255, 255, 0.12) !important;
   }
 
   body[data-rapd-mobile-layout="true"]
@@ -4236,6 +4467,24 @@ body[data-interactive-subapp-open="true"] #backBtnGlobal {
   }
 }
 
+/* Compact landscape: keep the Pupil App folder aligned and indent its children. */
+@media (max-width: 1023.98px) and (max-height: 600px) and (orientation: landscape) {
+  #interactiveLearningPage #interactivePupilAppFolders .interactive-folder-row {
+    width: 90% !important;
+    max-width: none !important;
+  }
+
+  #interactiveLearningPage
+    .interactive-section-card[data-section="pupilApp"]
+    > h3,
+  #interactiveLearningPage
+    .interactive-section-card[data-section="pupilApp"]
+    .lesson-row {
+    width: 82% !important;
+    max-width: none !important;
+  }
+}
+
 /* Tablet-only follow-up overrides for iPad Safari: > phone, < 1024px. */
 @media (min-width: 600.02px) and (max-width: 1023.98px) {
   #tocInlineCloseBtn,
@@ -5306,4 +5555,33 @@ html.is-apple-ui :is(.eyes-topbar .menuBtn, .icon.menuBtn, #tocToggleBtn) {
 #glaucomaRAPDFullSwingInteractive #rapdFlashlight {
   transform: translate(-50%, -50%) scale(1.6, 1.18) !important;
   transform-origin: center !important;
+}
+
+/* Keep the phone landscape composition edge-to-edge even though the legacy
+   tablet/desktop RAPD rules above also match wide phone viewports. */
+@media (orientation: landscape) {
+  body[data-rapd-mobile-layout="true"] #glaucomaRAPDFullSwingInteractive,
+  body[data-rapd-mobile-layout="true"]
+    #glaucomaRAPDFullSwingInteractive
+    > .container.pupils-container,
+  body[data-rapd-mobile-layout="true"]
+    #glaucomaRAPDFullSwingInteractive
+    .rapd-wrap,
+  body[data-rapd-mobile-layout="true"]
+    #glaucomaRAPDFullSwingInteractive
+    #rapdStage {
+    left: 0 !important;
+    width: 100vw !important;
+    max-width: none !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    transform: none !important;
+  }
+
+  body[data-rapd-mobile-layout="true"]
+    #glaucomaRAPDFullSwingInteractive
+    #rapdStage {
+    height: 100dvh !important;
+    border-radius: 0 !important;
+  }
 }

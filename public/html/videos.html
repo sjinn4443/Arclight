@@ -2748,15 +2748,14 @@
             </div>
           </button>
 
-          <button type="button" class="pupil-card module-card">
+          <div id="interactivePupilAppFolders" class="interactive-folders">
             <div
-              class="lesson-row lesson-row--interactive"
-              data-target="glaucomaRAPDFullSwingInteractive"
+              class="lesson-row lesson-row--folder diabetic-folder-row interactive-folder-row"
+              data-folder="pupilApp"
               role="button"
               tabindex="0"
             >
               <div class="thumb" aria-hidden="true"></div>
-
               <div class="lesson-main">
                 <div class="lesson-top">
                   <span
@@ -2764,8 +2763,34 @@
                     data-i18n="auto.videos.pupil_swinging_light_rapd"
                     >Pupil App</span
                   >
+                  <span class="lesson-meta"></span>
                 </div>
+              </div>
+              <span class="lesson-cta interactive-folder-cta"
+                >See all &gt;</span
+              >
+            </div>
+          </div>
 
+          <div
+            id="interactivePupilAppInline"
+            class="pupil-card module-card diabetic-section-card interactive-section-card"
+            data-section="pupilApp"
+            style="display: none"
+          >
+            <h3>Pupil App</h3>
+            <div
+              class="lesson-row lesson-row--interactive"
+              data-target="glaucomaRAPDFullSwingInteractive"
+              data-rapd-launch-mode="practice"
+              role="button"
+              tabindex="0"
+            >
+              <div class="thumb" aria-hidden="true"></div>
+              <div class="lesson-main">
+                <div class="lesson-top">
+                  <span class="lesson-type">Practice</span>
+                </div>
                 <div
                   class="lesson-progress"
                   role="progressbar"
@@ -2775,12 +2800,37 @@
                   <div class="lesson-progress__fill"></div>
                 </div>
               </div>
-
               <span class="lesson-cta" data-i18n="auto.videos.start"
                 >Start &gt;</span
               >
             </div>
-          </button>
+
+            <div
+              class="lesson-row lesson-row--interactive"
+              data-target="glaucomaRAPDFullSwingInteractive"
+              data-rapd-launch-mode="test"
+              role="button"
+              tabindex="0"
+            >
+              <div class="thumb" aria-hidden="true"></div>
+              <div class="lesson-main">
+                <div class="lesson-top">
+                  <span class="lesson-type">Test</span>
+                </div>
+                <div
+                  class="lesson-progress"
+                  role="progressbar"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                >
+                  <div class="lesson-progress__fill"></div>
+                </div>
+              </div>
+              <span class="lesson-cta" data-i18n="auto.videos.start"
+                >Start &gt;</span
+              >
+            </div>
+          </div>
 
           <button
             type="button"

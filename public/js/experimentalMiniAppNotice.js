@@ -40,6 +40,7 @@ let currentTargetId = null;
 let overlayEl = null;
 let titleEl = null;
 let bodyEl = null;
+let demoEl = null;
 let okBtnEl = null;
 let rapdMobileSession = false;
 let orientationOverlayEl = null;
@@ -89,6 +90,23 @@ function getCopy(targetId) {
   const lang = resolveLanguage();
   const korean = lang === "ko" || lang === "korean";
   const hubPage = isHubPageId(targetId);
+  let rapdTest = false;
+  if (targetId === RAPD_PAGE_ID) {
+    try {
+      rapdTest = sessionStorage.getItem("rapdExperience:launchMode") === "test";
+    } catch {
+      rapdTest = false;
+    }
+  }
+
+  if (rapdTest) {
+    return {
+      title: "Pupil App Test",
+      body: "Perform the 'swinging light' test to look for an RAPD.\n\nChoose No RAPD or the patient's Left/Right side, select the severity, then press Submit answer.",
+      button: "Start test",
+      demo: true,
+    };
+  }
 
   if (korean) {
     return hubPage
@@ -224,6 +242,7 @@ function ensureOverlay() {
   if (overlayEl) {
     titleEl = overlayEl.querySelector("[data-experimental-miniapp-title]");
     bodyEl = overlayEl.querySelector("[data-experimental-miniapp-body]");
+    demoEl = overlayEl.querySelector("[data-rapd-test-notice-demo]");
     okBtnEl = overlayEl.querySelector("[data-experimental-miniapp-ok]");
     return overlayEl;
   }
@@ -251,6 +270,27 @@ function ensureOverlay() {
   bodyEl.className = "guest-modal__text experimental-miniapp-modal__text";
   bodyEl.setAttribute("data-experimental-miniapp-body", "");
 
+  demoEl = document.createElement("div");
+  demoEl.className = "rapd-test-notice-demo";
+  demoEl.setAttribute("data-rapd-test-notice-demo", "");
+  demoEl.setAttribute("aria-hidden", "true");
+  demoEl.innerHTML = `
+    <div class="rapd-test-notice-demo__stage">
+      <strong>Question 1 of 10</strong>
+      <div class="rapd-test-notice-demo__side">
+        <span>No RAPD</span><span>Left</span><span>Right</span>
+      </div>
+      <div class="rapd-test-notice-demo__severity">
+        <small>Mild</small><span>1</span><span>2</span><span>3</span><small>Severe</small>
+      </div>
+      <div class="rapd-test-notice-demo__scene" aria-hidden="true">
+        <img class="rapd-test-notice-demo__eyes" src="/images/learning/GlaucomaRAPD/eyes.webp" alt="" />
+        <img class="rapd-test-notice-demo__torch" src="/images/learning/GlaucomaRAPD/flashlight.webp" alt="" />
+      </div>
+      <button type="button" tabindex="-1">Submit answer</button>
+      <i class="rapd-test-notice-demo__pointer"></i>
+    </div>`;
+
   okBtnEl = document.createElement("button");
   okBtnEl.type = "button";
   okBtnEl.className =
@@ -263,6 +303,7 @@ function ensureOverlay() {
 
   modal.appendChild(titleEl);
   modal.appendChild(bodyEl);
+  modal.appendChild(demoEl);
   modal.appendChild(okBtnEl);
   overlayEl.appendChild(modal);
   document.body.appendChild(overlayEl);
@@ -277,6 +318,7 @@ function renderCopy(targetId) {
   const copy = getCopy(targetId);
   titleEl.textContent = copy.title;
   bodyEl.textContent = copy.body;
+  if (demoEl) demoEl.hidden = copy.demo !== true;
   okBtnEl.textContent = copy.button;
 }
 
@@ -307,6 +349,16 @@ function clearAckAndClose() {
 }
 
 function showInteractiveNoticeIfNeeded(targetId) {
+  if (targetId === RAPD_PAGE_ID) {
+    try {
+      if (sessionStorage.getItem("rapdExperience:launchMode") === "test") {
+        openNotice(targetId);
+        return;
+      }
+    } catch {
+      void 0;
+    }
+  }
   if (readAck()) {
     closeNotice();
     return;
@@ -413,5 +465,6 @@ export function resetExperimentalMiniAppNoticeForTests() {
   orientationOverlayEl = null;
   titleEl = null;
   bodyEl = null;
+  demoEl = null;
   okBtnEl = null;
 }

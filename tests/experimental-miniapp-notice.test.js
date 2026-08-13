@@ -132,4 +132,24 @@ describe("experimental mini app notice", () => {
       "Interactive learning notice",
     );
   });
+
+  it("uses the test instructions instead of the generic learning notice", () => {
+    sessionStorage.setItem("rapdExperience:launchMode", "test");
+    Object.defineProperty(window, "innerWidth", {
+      configurable: true,
+      value: 1024,
+    });
+
+    showPage("glaucomaRAPDFullSwingInteractive");
+
+    expect(
+      document.querySelector("[data-experimental-miniapp-title]")?.textContent,
+    ).toBe("Pupil App Test");
+    expect(
+      document.querySelector("[data-experimental-miniapp-body]")?.textContent,
+    ).toContain("press Submit answer");
+    expect(
+      document.querySelector("[data-experimental-miniapp-ok]")?.textContent,
+    ).toBe("Start test");
+  });
 });

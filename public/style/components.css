@@ -5986,6 +5986,249 @@ body[data-experimental-miniapp-notice-open="true"] {
   min-height: 44px;
 }
 
+.rapd-test-notice-demo[hidden] {
+  display: none;
+}
+
+.rapd-test-notice-demo {
+  position: relative;
+  margin: -5px 0 18px;
+  padding: 0;
+  border-radius: 14px;
+  background: #101010;
+  color: #fff;
+  overflow: hidden;
+  height: 136px;
+}
+
+.rapd-test-notice-demo__stage {
+  position: relative;
+  width: 760px;
+  min-height: 260px;
+  padding: 12px;
+  transform: scale(0.52);
+  transform-origin: left top;
+}
+
+.rapd-test-notice-demo__stage > strong {
+  position: absolute;
+  left: 12px;
+  top: 12px;
+  padding: 5px 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  font-size: 9px;
+}
+
+.rapd-test-notice-demo__side,
+.rapd-test-notice-demo__severity {
+  position: absolute;
+  top: 11px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.rapd-test-notice-demo__side {
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.rapd-test-notice-demo__severity {
+  right: 10px;
+  top: 11px;
+}
+
+.rapd-test-notice-demo
+  :is(.rapd-test-notice-demo__side, .rapd-test-notice-demo__severity)
+  span {
+  display: grid;
+  min-width: 23px;
+  min-height: 23px;
+  place-items: center;
+  padding: 0 6px;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 999px;
+  font-size: 8px;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.rapd-test-notice-demo__severity small {
+  font-size: 8px;
+  font-weight: 700;
+}
+
+.rapd-test-notice-demo__scene {
+  position: absolute;
+  left: 50%;
+  top: 56%;
+  width: 270px;
+  height: 116px;
+  transform: translate(-50%, -50%);
+  overflow: hidden;
+}
+
+.rapd-test-notice-demo__eyes {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 270px;
+  height: auto;
+  transform: translate(-50%, -50%);
+}
+
+.rapd-test-notice-demo__torch {
+  position: absolute;
+  right: 24px;
+  top: 28px;
+  width: 13px;
+  height: auto;
+  transform: scale(0.88, 1.08);
+  transform-origin: center top;
+  animation: rapdNoticeTorchSwing 7.2s ease-in-out infinite;
+}
+
+.rapd-test-notice-demo__stage > button {
+  position: absolute;
+  right: 10px;
+  top: 218px;
+  bottom: auto;
+  left: auto;
+  width: 150px !important;
+  max-width: 150px;
+  min-height: 25px;
+  padding: 4px 11px;
+  border: 0;
+  border-radius: 999px;
+  background: #e41e26;
+  color: #fff;
+  font-size: 9px;
+  font-weight: 700;
+}
+
+.rapd-test-notice-demo__side span:nth-child(2) {
+  animation: rapdNoticeSideClick 7.2s ease-in-out infinite;
+}
+
+.rapd-test-notice-demo__severity span:nth-of-type(2) {
+  animation: rapdNoticeSeverityClick 7.2s ease-in-out infinite;
+}
+
+.rapd-test-notice-demo__stage > button {
+  animation: rapdNoticeSubmitClick 7.2s ease-in-out infinite;
+}
+
+.rapd-test-notice-demo__pointer {
+  position: absolute;
+  left: 50%;
+  top: 24px;
+  width: 13px;
+  height: 18px;
+  border: 2px solid #fff;
+  border-radius: 12px 12px 8px 8px;
+  transform: translate(-8px, 0) rotate(-12deg);
+  animation: rapdNoticePointer 7.2s ease-in-out infinite;
+  z-index: 5;
+}
+
+@keyframes rapdNoticePointer {
+  0%,
+  34% {
+    opacity: 0;
+    transform: translate(-8px, 7px) rotate(-12deg);
+  }
+  40%,
+  52% {
+    opacity: 1;
+    transform: translate(-8px, 0) rotate(-12deg);
+  }
+  59%,
+  72% {
+    opacity: 1;
+    transform: translate(278px, 0) rotate(-12deg);
+  }
+  80%,
+  93% {
+    opacity: 1;
+    transform: translate(342px, 205px) rotate(-12deg);
+  }
+  97%,
+  100% {
+    opacity: 0;
+    transform: translate(342px, 205px) rotate(-12deg);
+  }
+}
+
+@keyframes rapdNoticeSideClick {
+  0%,
+  39%,
+  55%,
+  100% {
+    border-color: rgba(255, 255, 255, 0.55);
+    background: transparent;
+  }
+  44%,
+  51% {
+    border-color: #f25600;
+    background: #f25600;
+  }
+}
+
+@keyframes rapdNoticeSeverityClick {
+  0%,
+  58%,
+  76%,
+  100% {
+    background: transparent;
+  }
+  63%,
+  72% {
+    background: #f25600;
+  }
+}
+
+@keyframes rapdNoticeSubmitClick {
+  0%,
+  79%,
+  96%,
+  100% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  84%,
+  92% {
+    transform: scale(0.95);
+    filter: brightness(1.35);
+  }
+}
+
+@keyframes rapdNoticeTorchSwing {
+  0%,
+  3%,
+  34%,
+  100% {
+    right: 24px;
+  }
+  13%,
+  21% {
+    right: 215px;
+  }
+  30%,
+  34% {
+    right: 24px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rapd-test-notice-demo__pointer,
+  .rapd-test-notice-demo span,
+  .rapd-test-notice-demo button,
+  .rapd-test-notice-demo__torch {
+    animation: none !important;
+  }
+}
+
 /* === Location Button Animations === */
 .check-location-btn.checking-location {
   background-color: #e41e26 !important; /* Use !important to override existing styles */
@@ -9316,6 +9559,12 @@ Glaucoma history case study: match intermediate style
   margin: 0 0 10px;
 }
 
+#glaucomaRAPDFullSwingInteractive .rapd-toggleRow[hidden],
+#glaucomaRAPDFullSwingInteractive .rapd-randomPanel[hidden],
+#glaucomaRAPDFullSwingInteractive .rapd-testControls[hidden] {
+  display: none;
+}
+
 #glaucomaRAPDFullSwingInteractive .rapd-toggleLabel {
   min-width: 0;
   font-size: 14px;
@@ -9439,6 +9688,7 @@ Glaucoma history case study: match intermediate style
   line-height: 1.25;
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
   pointer-events: none;
+  z-index: 11500;
 }
 
 #glaucomaRAPDFullSwingInteractive #rapdBubble::after {
@@ -9646,4 +9896,413 @@ body[data-rapd-orientation-notice-open="true"] {
     opacity: 1;
     transform: rotate(45deg);
   }
+}
+
+/* RAPD case controls */
+#glaucomaRAPDFullSwingInteractive .rapd-toggleRow {
+  flex-wrap: nowrap;
+  min-height: 34px;
+}
+
+#glaucomaRAPDFullSwingInteractive .rapd-severityControl {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+#glaucomaRAPDFullSwingInteractive .rapd-diagnosisControls {
+  position: absolute;
+  inset: 14px 16px auto;
+  z-index: 10002;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  pointer-events: none;
+}
+
+#glaucomaRAPDFullSwingInteractive .rapd-diagnosisControls button {
+  pointer-events: auto;
+}
+
+#glaucomaRAPDFullSwingInteractive .rapd-sideControl {
+  position: absolute;
+  left: 50%;
+  display: flex;
+  gap: 5px;
+  transform: translateX(-50%);
+}
+
+#glaucomaRAPDFullSwingInteractive .rapd-sideControl button {
+  min-height: 30px;
+  padding: 5px 11px;
+  border: 1px solid rgba(255, 255, 255, 0.48);
+  border-radius: 999px;
+  background: rgba(17, 17, 17, 0.7);
+  color: #fff;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+#glaucomaRAPDFullSwingInteractive
+  :is(.rapd-sideControl button, .rapd-severityButton).is-reveal-flash {
+  animation: rapdRevealFlash 1.35s ease-in-out 1;
+}
+
+@keyframes rapdRevealFlash {
+  0%,
+  12%,
+  42%,
+  72%,
+  100% {
+    filter: brightness(1);
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(242, 86, 0, 0);
+  }
+  26%,
+  58% {
+    filter: brightness(1.9);
+    transform: scale(1.16);
+    box-shadow: 0 0 0 5px rgba(242, 86, 0, 0.38);
+  }
+}
+
+#glaucomaRAPDFullSwingInteractive
+  .rapd-sideControl
+  button[aria-pressed="true"] {
+  border-color: #f25600;
+  background: #f25600;
+  box-shadow: 0 0 0 3px rgba(242, 86, 0, 0.22);
+}
+
+#glaucomaRAPDFullSwingInteractive .rapd-severityControl__steps {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+#glaucomaRAPDFullSwingInteractive .rapd-severityControl__steps::before {
+  content: "";
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  top: 50%;
+  height: 2px;
+  background: #f25600;
+  transform: translateY(-50%);
+}
+
+#glaucomaRAPDFullSwingInteractive .rapd-severityButton {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  width: 26px;
+  height: 26px;
+  place-items: center;
+  padding: 0;
+  border: 2px solid #f25600;
+  border-radius: 50%;
+  background: rgba(17, 17, 17, 0.7);
+  color: #fff;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+#glaucomaRAPDFullSwingInteractive .rapd-severityButton[aria-pressed="true"] {
+  background: #f25600;
+  color: #fff;
+}
+
+#glaucomaRAPDFullSwingInteractive
+  :is(.rapd-sideControl button, .rapd-severityButton).is-review-user {
+  border-color: #f25600;
+  background: #f25600;
+  color: #fff;
+}
+
+#glaucomaRAPDFullSwingInteractive
+  :is(.rapd-sideControl button, .rapd-severityButton).is-review-correct {
+  border-color: #15e115;
+  background: #15e115;
+  color: #fff;
+  box-shadow: 0 0 0 3px rgba(21, 225, 21, 0.24);
+}
+
+#glaucomaRAPDFullSwingInteractive
+  :is(.rapd-sideControl button, .rapd-severityButton).is-review-correct-missed {
+  border-color: #dc2626;
+  background: #dc2626;
+  color: #fff;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.24);
+}
+
+#glaucomaRAPDFullSwingInteractive .rapd-severityButton:focus-visible,
+#glaucomaRAPDFullSwingInteractive .rapd-randomButton:focus-visible,
+#glaucomaRAPDFullSwingInteractive .rapd-revealButton:focus-visible,
+#glaucomaRAPDFullSwingInteractive .rapd-randomNextButton:focus-visible {
+  outline: 3px solid rgba(228, 30, 38, 0.32);
+  outline-offset: 2px;
+}
+
+#glaucomaRAPDFullSwingInteractive .rapd-randomPanel {
+  position: absolute;
+  top: 2px;
+  left: 16px;
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 0;
+  transform: translateY(9px);
+}
+
+#glaucomaRAPDFullSwingInteractive .rapd-randomButton,
+#glaucomaRAPDFullSwingInteractive .rapd-revealButton,
+#glaucomaRAPDFullSwingInteractive .rapd-randomNextButton {
+  min-height: 34px;
+  padding: 7px 16px;
+  border: 0;
+  border-radius: 999px;
+  background: #e41e26;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+#glaucomaRAPDFullSwingInteractive .rapd-revealButton {
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(17, 17, 17, 0.84);
+}
+
+#glaucomaRAPDFullSwingInteractive .rapd-randomNextButton {
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(17, 17, 17, 0.84);
+}
+
+#glaucomaRAPDFullSwingInteractive .rapd-revealPanel {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+#glaucomaRAPDFullSwingInteractive .rapd-revealPanel[hidden],
+#glaucomaRAPDFullSwingInteractive .rapd-revealResult[hidden],
+#glaucomaRAPDFullSwingInteractive .rapd-randomNextButton[hidden] {
+  display: none;
+}
+
+#glaucomaRAPDFullSwingInteractive .rapd-revealResult {
+  display: inline-flex;
+  min-height: 34px;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 6px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+  background: rgba(17, 17, 17, 0.84);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.interactive-folders {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+#interactiveLearningPage .interactive-folder-cta {
+  color: #f25600;
+}
+
+#interactiveLearningPage
+  .interactive-section-card[data-section="pupilApp"]
+  .lesson-row {
+  margin-bottom: 12px;
+}
+
+#glaucomaRAPDFullSwingInteractive .rapd-testControls[hidden],
+#glaucomaRAPDFullSwingInteractive .rapd-answerDialog[hidden] {
+  display: none;
+}
+
+#glaucomaRAPDFullSwingInteractive .rapd-testProgress {
+  position: absolute;
+  top: 2px;
+  left: 16px;
+  z-index: 10000;
+  padding: 7px 13px;
+  border-radius: 999px;
+  background: rgba(17, 17, 17, 0.82);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  transform: translateY(17px);
+}
+
+#glaucomaRAPDFullSwingInteractive .rapd-testProgress__status {
+  display: inline-grid;
+  width: 18px;
+  height: 18px;
+  margin-left: 7px;
+  place-items: center;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 900;
+  line-height: 1;
+  vertical-align: -2px;
+}
+
+#glaucomaRAPDFullSwingInteractive .rapd-testProgress__status.is-correct {
+  background: #15e115;
+}
+
+#glaucomaRAPDFullSwingInteractive .rapd-testProgress__status.is-incorrect {
+  background: #dc2626;
+}
+
+#glaucomaRAPDFullSwingInteractive .rapd-submitAnswer[hidden] {
+  display: none;
+}
+
+#glaucomaRAPDFullSwingInteractive .rapd-submitAnswer,
+#glaucomaRAPDFullSwingInteractive .rapd-testNavigation button,
+#glaucomaRAPDFullSwingInteractive .rapd-answerClose {
+  min-height: 36px;
+  padding: 8px 15px;
+  border: 0;
+  border-radius: 999px;
+  background: #e41e26;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+#glaucomaRAPDFullSwingInteractive .rapd-submitAnswer {
+  position: absolute;
+  left: auto;
+  right: 16px;
+  bottom: 16px;
+  width: auto;
+  min-width: 150px;
+  z-index: 10000;
+}
+
+#glaucomaRAPDFullSwingInteractive .rapd-testNavigation {
+  position: absolute;
+  left: 16px;
+  bottom: 16px;
+  z-index: 10000;
+  display: flex;
+  gap: 8px;
+}
+
+#glaucomaRAPDFullSwingInteractive .rapd-testNavigation button {
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(17, 17, 17, 0.84);
+  min-width: 112px;
+  white-space: nowrap;
+}
+
+#glaucomaRAPDFullSwingInteractive .rapd-testNavigation button:disabled {
+  opacity: 0.42;
+  cursor: default;
+}
+
+#glaucomaRAPDFullSwingInteractive .rapd-answerDialog {
+  position: absolute;
+  inset: 0;
+  z-index: 12000;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background: rgba(0, 0, 0, 0.58);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+#glaucomaRAPDFullSwingInteractive .rapd-answerDialog__card {
+  width: min(520px, 92%);
+  max-height: calc(100% - 24px);
+  overflow-y: auto;
+  box-sizing: border-box;
+  padding: 20px;
+  border-radius: 18px;
+  background: #fff;
+  color: #111;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.38);
+}
+
+#glaucomaRAPDFullSwingInteractive .rapd-answerDialog__card h2,
+#glaucomaRAPDFullSwingInteractive .rapd-answerDialog__card p {
+  margin: 0 0 12px;
+}
+
+#glaucomaRAPDFullSwingInteractive .rapd-answerOptions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+#glaucomaRAPDFullSwingInteractive .rapd-answerOption {
+  min-height: 42px;
+  padding: 8px;
+  border: 2px solid #f25600;
+  border-radius: 12px;
+  background: #fff;
+  color: #111;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+#glaucomaRAPDFullSwingInteractive .rapd-answerOption.is-correct {
+  border-color: #159447;
+  background: #dff8e8;
+}
+
+#glaucomaRAPDFullSwingInteractive .rapd-answerOption.is-incorrect {
+  border-color: #c81e1e;
+  background: #fee2e2;
+}
+
+#glaucomaRAPDFullSwingInteractive .rapd-answerFeedback {
+  margin-top: 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-weight: 700;
+}
+
+#glaucomaRAPDFullSwingInteractive .rapd-answerFeedback.is-correct {
+  background: #dff8e8;
+  color: #136c37;
+}
+
+#glaucomaRAPDFullSwingInteractive .rapd-answerFeedback.is-incorrect {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+#glaucomaRAPDFullSwingInteractive .rapd-answerClose {
+  width: 100%;
+  margin-top: 14px;
+}
+
+#glaucomaRAPDFullSwingInteractive .rapd-answerClose:disabled {
+  opacity: 0.42;
+  cursor: default;
 }

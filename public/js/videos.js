@@ -528,7 +528,7 @@ function updateInteractiveFolderItemBadges(page) {
   }
 
   const folderRows = page.querySelectorAll(
-    "#interactiveDemoQuizzesFolders .interactive-folder-row[data-folder]",
+    ".interactive-folder-row[data-folder]",
   );
 
   folderRows.forEach((row) => {
@@ -562,12 +562,12 @@ function setupInteractiveLearningFolders() {
   const page = document.getElementById("interactiveLearningPage");
   if (!page) return;
 
-  const folders = page.querySelectorAll(
-    "#interactiveDemoQuizzesFolders .interactive-folder-row",
-  );
+  const folders = page.querySelectorAll(".interactive-folder-row");
   const sectionCards = page.querySelectorAll(".interactive-section-card");
-  const foldersContainer = page.querySelector("#interactiveDemoQuizzesFolders");
-  if (!foldersContainer) return;
+  const foldersContainers = page.querySelectorAll(
+    ".interactive-folders, #interactiveDemoQuizzesFolders",
+  );
+  if (!folders.length || !foldersContainers.length) return;
 
   updateInteractiveFolderItemBadges(page);
 
@@ -584,7 +584,7 @@ function setupInteractiveLearningFolders() {
       `.interactive-section-card[data-section="${key}"]`,
     );
     const openFolderRow = page.querySelector(
-      `#interactiveDemoQuizzesFolders .interactive-folder-row[data-folder="${key}"]`,
+      `.interactive-folder-row[data-folder="${key}"]`,
     );
     if (!card || !openFolderRow) return;
 
@@ -603,7 +603,6 @@ function setupInteractiveLearningFolders() {
 
     titleEl.style.display = "flex";
     titleEl.style.alignItems = "center";
-    titleEl.style.width = "100%";
 
     const toggle = document.createElement("span");
     toggle.className = "see-all-toggle";
@@ -611,8 +610,6 @@ function setupInteractiveLearningFolders() {
     toggle.setAttribute("tabindex", "0");
     toggle.setAttribute("aria-expanded", "true");
     toggle.textContent = "Close ^";
-    toggle.style.marginLeft = "auto";
-    toggle.style.marginRight = "30px";
     toggle.style.whiteSpace = "nowrap";
 
     const closeNow = (event) => {
@@ -636,7 +633,9 @@ function setupInteractiveLearningFolders() {
   folders.forEach((row) => {
     row.style.display = "";
   });
-  foldersContainer.style.display = "flex";
+  foldersContainers.forEach((container) => {
+    container.style.display = "flex";
+  });
   page.classList.remove("diabetic-folder-open");
 
   folders.forEach((row) => {
@@ -3557,6 +3556,13 @@ if (!window[__videosGlobalBoundKey]) {
 
     const target = row.getAttribute("data-target");
     if (!target) return;
+
+    const rapdLaunchMode = row.getAttribute("data-rapd-launch-mode");
+    if (rapdLaunchMode) {
+      try {
+        sessionStorage.setItem("rapdExperience:launchMode", rapdLaunchMode);
+      } catch {}
+    }
 
     rememberInteractiveLearningReturnTarget(row);
 

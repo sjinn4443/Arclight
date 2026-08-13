@@ -3635,10 +3635,7 @@
 >
   <div class="container pupils-container">
     <div class="eyes-topbar">
-      <div
-        class="eyes-topbar__title"
-        data-i18n="auto.glaucomascrollimages.pupil_swinging_light_test_rapd"
-      >
+      <div id="rapdPageTitle" class="eyes-topbar__title">
         Pupil swinging light test RAPD
       </div>
       <div class="eyes-topbar__icons">
@@ -3873,36 +3870,131 @@
 
     <div class="rapd-wrap">
       <div
-        class="rapd-instructions"
-        data-i18n="i18nExtra.glaucomascroll_swing_instruction"
+        id="rapdStage"
+        aria-label="RAPD swinging light interactive"
+        data-guest-free="true"
       >
-        Swing the light between the eyes and observe the pupil reaction
-      </div>
-
-      <div class="rapd-toggleRow" aria-label="RAPD mode toggle">
-        <label class="rapd-switch">
-          <input
-            id="rapdModeToggle"
-            type="checkbox"
-            aria-label="Toggle RAPD mode"
-          />
-          <span class="rapd-slider" aria-hidden="true"></span>
-        </label>
-        <div class="rapd-toggleLabel">
-          <b
-            id="rapdModeLabel"
-            data-i18n="auto.glaucomascrollimages.rapd_mode_off"
-            >RAPD mode OFF</b
+        <div class="rapd-diagnosisControls" aria-label="RAPD answer controls">
+          <div class="rapd-sideControl" role="group" aria-label="Patient side">
+            <button
+              type="button"
+              data-rapd-patient-side="none"
+              aria-pressed="false"
+            >
+              No RAPD
+            </button>
+            <button
+              type="button"
+              data-rapd-patient-side="left"
+              aria-pressed="false"
+            >
+              Left
+            </button>
+            <button
+              type="button"
+              data-rapd-patient-side="right"
+              aria-pressed="false"
+            >
+              Right
+            </button>
+          </div>
+          <div
+            class="rapd-severityControl"
+            role="group"
+            aria-label="RAPD severity"
           >
-          <span data-i18n="i18nExtra.glaucomascroll_paradoxical_dilation"
-            >(paradoxical dilation)</span
-          >
+            <span class="rapd-severityControl__edge">Mild</span>
+            <div class="rapd-severityControl__steps" aria-hidden="false">
+              <button
+                class="rapd-severityButton"
+                type="button"
+                data-rapd-severity="1"
+                aria-label="Mild RAPD"
+                aria-pressed="false"
+              >
+                1
+              </button>
+              <button
+                class="rapd-severityButton"
+                type="button"
+                data-rapd-severity="2"
+                aria-label="Moderate RAPD"
+                aria-pressed="false"
+              >
+                2
+              </button>
+              <button
+                class="rapd-severityButton"
+                type="button"
+                data-rapd-severity="3"
+                aria-label="Severe RAPD"
+                aria-pressed="false"
+              >
+                3
+              </button>
+            </div>
+            <span class="rapd-severityControl__edge">Severe</span>
+          </div>
         </div>
-      </div>
+        <div class="rapd-randomPanel">
+          <button id="rapdApplyRandom" class="rapd-randomButton" type="button">
+            Mock Test
+          </button>
+          <div id="rapdRevealPanel" class="rapd-revealPanel" hidden>
+            <button
+              id="rapdReveal"
+              class="rapd-revealButton"
+              type="button"
+              data-i18n="i18nExtra.glaucomascroll_reveal"
+            >
+              Reveal
+            </button>
+            <button
+              id="rapdRandomNext"
+              class="rapd-randomNextButton"
+              type="button"
+              hidden
+            >
+              Next
+            </button>
+          </div>
+        </div>
 
-      <div id="rapdStage" aria-label="RAPD swinging light interactive">
-        <div id="rapdHint" data-i18n="i18nExtra.glaucomascroll_rapd_hint:html">
-          Perform the 'swinging light' test to look for an RAPD
+        <div id="rapdTestControls" class="rapd-testControls" hidden>
+          <div id="rapdTestProgress" class="rapd-testProgress">
+            Question 1 of 10
+          </div>
+          <button id="rapdSubmitAnswer" class="rapd-submitAnswer" type="button">
+            Submit answer
+          </button>
+          <div class="rapd-testNavigation">
+            <button id="rapdTestPrevious" type="button">&lt; Previous</button>
+            <button id="rapdTestNext" type="button">Next &gt;</button>
+          </div>
+        </div>
+
+        <div id="rapdAnswerDialog" class="rapd-answerDialog" hidden>
+          <div class="rapd-answerDialog__card" role="dialog" aria-modal="true">
+            <h2>Result</h2>
+            <div
+              id="rapdAnswerFeedback"
+              class="rapd-answerFeedback"
+              hidden
+            ></div>
+            <button id="rapdAnswerClose" class="rapd-answerClose" type="button">
+              Next
+            </button>
+          </div>
+        </div>
+
+        <div id="rapdScoreDialog" class="rapd-answerDialog" hidden>
+          <div class="rapd-answerDialog__card" role="dialog" aria-modal="true">
+            <h2>Test complete</h2>
+            <p id="rapdScoreResult"></p>
+            <button id="rapdScoreClose" class="rapd-answerClose" type="button">
+              Review answers
+            </button>
+          </div>
         </div>
 
         <img

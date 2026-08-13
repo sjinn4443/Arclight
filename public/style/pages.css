@@ -6354,6 +6354,38 @@ select.onb-input.has-value + .onb-select-caret {
   align-items: center;
 }
 
+#interactiveLearningPage #interactivePupilAppFolders {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0;
+}
+
+#interactiveLearningPage #interactivePupilAppFolders .interactive-folder-row {
+  position: relative;
+  top: -8px;
+  left: -2px;
+  box-sizing: border-box;
+  width: 87%;
+  margin: 8px auto;
+}
+
+#interactiveLearningPage
+  #interactivePupilAppFolders
+  .interactive-folder-row
+  .thumb {
+  position: relative;
+  overflow: visible;
+  background-image: url("/images/icon/eyes/moduleicons/intermediate_folder.webp");
+  background-position: center;
+}
+
+#interactiveLearningPage
+  #interactivePupilAppFolders
+  .interactive-folder-row
+  .lesson-main {
+  gap: 0;
+}
+
 #interactiveLearningPage .pupil-level--primary .lesson-row--interactive .thumb {
   background-image: url("/images/icon/eyes/moduleicons/primary_interactive.webp") !important;
   background-position: center;
@@ -6427,6 +6459,27 @@ select.onb-input.has-value + .onb-select-caret {
   align-self: stretch;
   padding-left: 0;
   padding-right: 0;
+}
+
+#interactiveLearningPage
+  .interactive-section-card[data-section="pupilApp"]
+  > h3 {
+  align-self: center;
+  box-sizing: border-box;
+  width: 80%;
+  margin: 8px auto 2px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+#interactiveLearningPage
+  .interactive-section-card[data-section="pupilApp"]
+  > h3
+  .see-all-toggle {
+  margin-left: auto !important;
+  margin-right: 0 !important;
+  position: static !important;
 }
 
 #interactiveLearningPage .interactive-section-card .lesson-row {
