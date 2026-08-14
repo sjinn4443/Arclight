@@ -21,6 +21,10 @@ import {
   initializeAtomsHandout2,
   initializeDirectOphthalmoscopyPdf,
   initializeBinocularIndirectOphthalmoscopyPdf,
+  initializeVisualAcuityPdf,
+  initializePupilsPecPdf,
+  initializePupilsAdvancedPdf,
+  initializeFrontOfEyePdf,
 } from "./fundalReflexPdf.js";
 import { initializeGlaucomaQuizCaseStudy } from "./glaucomaQuizCaseStudy.js";
 import { captureClientError, installSafeConsole } from "./safe-logging.js";
@@ -187,6 +191,13 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    if (routeName === "medicalStudentsWorkshop") {
+      const { initializeMedicalStudentsWorkshop } =
+        await import("./medicalStudentsWorkshop.js");
+      initializeMedicalStudentsWorkshop?.();
+      return;
+    }
+
     if (routeName === "glaucomaWorkshop") {
       const { initializeGlaucomaWorkshop } =
         await import("./glaucomaWorkshop.js");
@@ -246,6 +257,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (routeName === "binocularIndirectOphthalmoscopyPdf") {
       initializeBinocularIndirectOphthalmoscopyPdf();
+      return;
+    }
+
+    if (routeName === "visualAcuityPdf") {
+      initializeVisualAcuityPdf();
+      return;
+    }
+
+    if (routeName === "pupilsPecPdf") {
+      initializePupilsPecPdf();
+      return;
+    }
+
+    if (routeName === "pupilsAdvancedPdf") {
+      initializePupilsAdvancedPdf();
+      return;
+    }
+
+    if (routeName === "frontOfEyePdf") {
+      initializeFrontOfEyePdf();
       return;
     }
 

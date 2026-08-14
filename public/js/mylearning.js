@@ -285,6 +285,10 @@ const PROGRESS_TARGET_ROUTES = Object.freeze({
     subPageId: "binocularIndirectOphthalmoscopyScrollPage",
   },
   directOphthalmoscopyPdfPage: { route: "directOphthalmoscopyPdf" },
+  visualAcuityPdfPage: { route: "visualAcuityPdf" },
+  pupilsPecPdfPage: { route: "pupilsPecPdf" },
+  pupilsAdvancedPdfPage: { route: "pupilsAdvancedPdf" },
+  frontOfEyePdfPage: { route: "frontOfEyePdf" },
   directOphthalmoscopyScrollPage: {
     route: "videos",
     subPageId: "directOphthalmoscopyScrollPage",

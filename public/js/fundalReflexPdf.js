@@ -262,7 +262,7 @@ function lockAtomsViewerHeight(viewerEl, img, isDesktop) {
   }
 }
 
-function initImagePdfPage(pageId, viewerId, imgSrc) {
+function initImagePdfPage(pageId, viewerId, imgSrc, options = {}) {
   showOnlyPage(pageId);
   const page = document.getElementById(pageId);
   if (!page) return;
@@ -280,22 +280,28 @@ function initImagePdfPage(pageId, viewerId, imgSrc) {
     stage.style.position = isDesktop ? "relative" : "absolute";
     stage.style.left = isDesktop ? "auto" : "0";
     stage.style.top = isDesktop ? "auto" : "0";
-    stage.style.width = isDesktop ? "min(74vw, 980px)" : "100%";
+    stage.style.width = isDesktop
+      ? options.desktopWidth || "min(74vw, 980px)"
+      : "100%";
     stage.style.margin = isDesktop ? "0 auto 32px" : "0";
 
-    const img = document.createElement("img");
-    img.src = imgSrc;
-    img.alt = page.getAttribute("data-pdf-title") || "PDF";
-    img.draggable = false;
-    img.style.display = "block";
-    img.style.width = "100%";
-    img.style.height = "auto";
-    img.style.maxWidth = "none";
-    img.style.userSelect = "none";
-    img.style.webkitUserDrag = "none";
-    img.style.pointerEvents = "none";
+    const imgSources = Array.isArray(imgSrc) ? imgSrc : [imgSrc];
+    const title = page.getAttribute("data-pdf-title") || "PDF";
+    imgSources.forEach((src, index) => {
+      const img = document.createElement("img");
+      img.src = src;
+      img.alt = imgSources.length > 1 ? `${title}, page ${index + 1}` : title;
+      img.draggable = false;
+      img.style.display = "block";
+      img.style.width = "100%";
+      img.style.height = "auto";
+      img.style.maxWidth = "none";
+      img.style.userSelect = "none";
+      img.style.webkitUserDrag = "none";
+      img.style.pointerEvents = "none";
+      stage.appendChild(img);
+    });
 
-    stage.appendChild(img);
     viewer.appendChild(stage);
     setupPanZoomForStage(viewer, stage, {
       transformOrigin: isDesktop ? "50% 0" : "0 0",
@@ -484,4 +490,41 @@ export function initializeBinocularIndirectOphthalmoscopyPdf() {
     "binocularIndirectOphthalmoscopyPdfViewer",
     "images/pdf/Workshop/BIO/BIO.png",
   );
+}
+
+function initCoreExaminationPdfPage(pageId, viewerId, imageSources) {
+  markPdfProgressComplete(pageId);
+  initImagePdfPage(pageId, viewerId, imageSources, {
+    desktopWidth: "min(58vw, 760px)",
+  });
+}
+
+export function initializeVisualAcuityPdf() {
+  initCoreExaminationPdfPage("visualAcuityPdfPage", "visualAcuityPdfViewer", [
+    "images/pdf/Workshop/CoreExamination/rendered/VisualAcuity-1.png",
+    "images/pdf/Workshop/CoreExamination/rendered/VisualAcuity-2.png",
+  ]);
+}
+
+export function initializePupilsPecPdf() {
+  initCoreExaminationPdfPage("pupilsPecPdfPage", "pupilsPecPdfViewer", [
+    "images/pdf/Workshop/CoreExamination/rendered/PupilsPEC-1.png",
+  ]);
+}
+
+export function initializePupilsAdvancedPdf() {
+  initCoreExaminationPdfPage(
+    "pupilsAdvancedPdfPage",
+    "pupilsAdvancedPdfViewer",
+    [
+      "images/pdf/Workshop/CoreExamination/rendered/PupilsAdvanced-1.png",
+      "images/pdf/Workshop/CoreExamination/rendered/PupilsAdvanced-2.png",
+    ],
+  );
+}
+
+export function initializeFrontOfEyePdf() {
+  initCoreExaminationPdfPage("frontOfEyePdfPage", "frontOfEyePdfViewer", [
+    "images/pdf/Workshop/CoreExamination/rendered/FrontofEye-1.png",
+  ]);
 }

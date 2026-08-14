@@ -755,6 +755,7 @@ export const historyStack = [];
 const pageHistoryStack = [];
 const MY_LEARNING_RETURN_KEY = "myLearningReturnTarget";
 const INTERACTIVE_LEARNING_RETURN_KEY = "interactiveLearning:returnTarget";
+const MEDICAL_STUDENTS_RAPD_RETURN_KEY = "medicalStudentsWorkshop:rapdReturn";
 const PROFILE_RETURN_KEY = "profileReturnTarget";
 
 let currentRoute = null; // Add the currentRoute guard
@@ -933,6 +934,20 @@ function consumeInteractiveLearningReturnTarget() {
   }
 }
 
+function consumeMedicalStudentsRapdReturn() {
+  const pageMarkedForReturn =
+    document.getElementById("glaucomaRAPDFullSwingInteractive")?.dataset
+      .medicalStudentsReturn === "true";
+  try {
+    const shouldReturn =
+      sessionStorage.getItem(MEDICAL_STUDENTS_RAPD_RETURN_KEY) === "1";
+    sessionStorage.removeItem(MEDICAL_STUDENTS_RAPD_RETURN_KEY);
+    return pageMarkedForReturn || shouldReturn;
+  } catch {
+    return pageMarkedForReturn;
+  }
+}
+
 function goToStoredInteractiveLearningReturn() {
   const returnTarget = consumeInteractiveLearningReturnTarget();
   if (!returnTarget?.routeName) return false;
@@ -991,6 +1006,10 @@ const STRUCTURAL_BACK_TARGETS = {
   binocularIndirectOphthalmoscopyPdf: {
     routeName: "diabeticRetinopathyWorkshop",
   },
+  visualAcuityPdf: { routeName: "videos", subPageId: "visualAcuityPage" },
+  pupilsPecPdf: { routeName: "videos", subPageId: "pupilsPage" },
+  pupilsAdvancedPdf: { routeName: "videos", subPageId: "pupilsPage" },
+  frontOfEyePdf: { routeName: "videos", subPageId: "frontOfEyePage" },
   childhoodAskQuestionsObservePage: {
     routeName: "childhoodEyeScreeningWorkshop",
   },
@@ -1029,6 +1048,7 @@ const STRUCTURAL_BACK_TARGETS = {
   glaucomaQuizCaseStudy: { routeName: "glaucomaWorkshop" },
   glaucomaScrollImages: { routeName: "glaucomaWorkshop" },
   glaucomaWorkshop: { routeName: "eyes" },
+  medicalStudentsWorkshop: { routeName: "eyes" },
   settings: { routeName: "myprofile" },
   signsVICases: { routeName: "childhoodEyeScreeningWorkshop" },
   visualImpairment: { routeName: "childhoodEyeScreeningWorkshop" },
@@ -1036,6 +1056,9 @@ const STRUCTURAL_BACK_TARGETS = {
 };
 
 const STRUCTURAL_BACK_SUBPAGES = {
+  visualAcuityPage: { routeName: "eyes" },
+  pupilsPage: { routeName: "eyes" },
+  frontOfEyePage: { routeName: "eyes" },
   fundalExamPage: {
     routeName: "videos",
     subPageId: "fundalReflexPage",
@@ -1141,6 +1164,22 @@ function getStructuralBackTarget(routeName, subPageId = null) {
     STRUCTURAL_BACK_SUBPAGES[normalizedSubPage] ||
       STRUCTURAL_BACK_TARGETS[normalizedRoute],
   );
+}
+
+function replaceHistoryWithStructuralTarget(target) {
+  const structuralTarget = normalizeStructuralBackTarget(target);
+  if (!structuralTarget?.routeName) return;
+
+  updateRouteHistory(structuralTarget.routeName, true);
+  updatePageHistory(
+    structuralTarget.routeName,
+    structuralTarget.subPageId,
+    true,
+  );
+  lastRouteHistoryRecord = {
+    routeName: structuralTarget.routeName,
+    time: Date.now(),
+  };
 }
 
 function buildHashFromRoute(routeName, subPageId = null) {
@@ -1504,6 +1543,25 @@ export function goBack() {
     }
   }
 
+  const activeSubPageId = getActivePageId();
+  const currentRouteForBack = normalizeRouteName(currentPageName);
+
+  if (
+    currentRouteForBack === "glaucomaScrollImages" &&
+    activeSubPageId === "glaucomaRAPDFullSwingInteractive" &&
+    consumeMedicalStudentsRapdReturn()
+  ) {
+    discardCurrentRouteHistoryEntries(currentRouteForBack);
+    isApplyingBackNavigation = true;
+    loadPage("medicalStudentsWorkshop", {
+      replace: true,
+      recordHistory: false,
+    }).finally(() => {
+      isApplyingBackNavigation = false;
+    });
+    return;
+  }
+
   const currentHash = getRouteFromHash();
   const isAlreadyAtInteractiveLearning =
     currentHash?.routeName === "videos" &&
@@ -1514,9 +1572,6 @@ export function goBack() {
   ) {
     return;
   }
-
-  const activeSubPageId = getActivePageId();
-  const currentRouteForBack = normalizeRouteName(currentPageName);
 
   if (currentRouteForBack === "myprofile") {
     const returnTarget = consumeProfileReturnTarget();
@@ -1573,6 +1628,7 @@ export function goBack() {
     activeSubPageId,
   );
   if (structuralTarget?.routeName) {
+    replaceHistoryWithStructuralTarget(structuralTarget);
     isApplyingBackNavigation = true;
     loadPage(structuralTarget.routeName, {
       replace: true,

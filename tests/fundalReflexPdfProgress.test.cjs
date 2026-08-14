@@ -23,6 +23,18 @@ function buildPdfDom() {
       >
         <div id="binocularIndirectOphthalmoscopyPdfViewer"></div>
       </div>
+      <div id="visualAcuityPdfPage" class="page" data-pdf-title="Visual Acuity">
+        <div id="visualAcuityPdfViewer"></div>
+      </div>
+      <div id="pupilsPecPdfPage" class="page" data-pdf-title="Pupils PEC">
+        <div id="pupilsPecPdfViewer"></div>
+      </div>
+      <div id="pupilsAdvancedPdfPage" class="page" data-pdf-title="Pupils Advanced">
+        <div id="pupilsAdvancedPdfViewer"></div>
+      </div>
+      <div id="frontOfEyePdfPage" class="page" data-pdf-title="Front of Eye">
+        <div id="frontOfEyePdfViewer"></div>
+      </div>
     </div>
   `;
 }
@@ -84,4 +96,37 @@ describe("fundal reflex PDF progress", () => {
       ).percent,
     ).toBe(100);
   });
+
+  it.each([
+    [
+      "initializeVisualAcuityPdf",
+      "visualAcuityPdfPage",
+      ["VisualAcuity-1.png", "VisualAcuity-2.png"],
+    ],
+    ["initializePupilsPecPdf", "pupilsPecPdfPage", ["PupilsPEC-1.png"]],
+    [
+      "initializePupilsAdvancedPdf",
+      "pupilsAdvancedPdfPage",
+      ["PupilsAdvanced-1.png", "PupilsAdvanced-2.png"],
+    ],
+    ["initializeFrontOfEyePdf", "frontOfEyePdfPage", ["FrontofEye-1.png"]],
+  ])(
+    "initializes %s with the Fundal-style image viewer",
+    (initializer, pageId, fileNames) => {
+      pdfModule[initializer]();
+
+      expect(
+        JSON.parse(localStorage.getItem(`lessonProgress:${pageId}`)).percent,
+      ).toBe(100);
+      expect(document.querySelector(`#${pageId} iframe`)).toBeNull();
+      expect(
+        Array.from(document.querySelectorAll(`#${pageId} img`)).map(
+          (image) => image.src,
+        ),
+      ).toEqual(fileNames.map((fileName) => expect.stringContaining(fileName)));
+      expect(
+        document.getElementById(pageId)?.classList.contains("active"),
+      ).toBe(true);
+    },
+  );
 });

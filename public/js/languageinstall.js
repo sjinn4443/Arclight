@@ -732,6 +732,7 @@ export function matchesOfflineCatalog(url, catalogId) {
       assetPath.startsWith("/subapp/morph/") ||
       assetPath.startsWith("/images/quiz/connect/") ||
       assetPath.startsWith("/images/icon/eyes/core/") ||
+      assetPath.startsWith("/images/pdf/workshop/coreexamination/") ||
       (assetPath.startsWith("/images/learning/") &&
         !assetPath.startsWith("/images/learning/diabetic/") &&
         !assetPath.startsWith("/images/learning/glaucoma"))

@@ -384,6 +384,11 @@ export function initializeEyesCatalog() {
     ],
     pecCarousel: [
       {
+        label: "Medical Students",
+        target: "medicalStudentsWorkshop",
+        tags: ["Interactive", "Quiz", "PDF"],
+      },
+      {
         label: "Childhood Eye Screening",
         target: "childhoodEyeScreeningWorkshop",
         tags: ["Video", "Quiz"],
@@ -482,6 +487,10 @@ export function initializeEyesCatalog() {
 
       card.classList.toggle("is-disabled", disabled);
       card.classList.toggle("liked", likes.has(i.label));
+      card.classList.toggle(
+        "eyes-card--blank-black",
+        i.label === "Medical Students",
+      );
       card.dataset.target = i.target;
       card.dataset.label = i.label;
 

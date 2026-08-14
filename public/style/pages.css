@@ -3819,6 +3819,186 @@ select.onb-input.has-value + .onb-select-caret {
   color: #f25600;
 }
 
+/* Medical Students workshop mirrors the Diabetic Retinopathy folder layout. */
+#medicalStudentsWorkshopPage .medical-workshop-folders {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  min-height: 368px;
+}
+
+#eyesCatalogPage .eyes-card.eyes-card--blank-black {
+  background: #000;
+}
+
+#medicalStudentsWorkshopPage .medical-workshop-folders > .lesson-row {
+  width: 79%;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+#medicalStudentsWorkshopPage.medical-folder-open
+  #medicalStudentsWorkshopFolders
+  .medical-folder-row:not([hidden]) {
+  opacity: 0.72;
+}
+
+#medicalStudentsWorkshopPage .medical-section-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+#medicalStudentsWorkshopPage .pupil-card.module-card {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+#medicalStudentsWorkshopPage .medical-section-card[hidden],
+#medicalStudentsWorkshopPage .medical-nested-section-card[hidden],
+#medicalStudentsWorkshopPage .lesson-row[hidden] {
+  display: none !important;
+}
+
+#medicalStudentsWorkshopPage .medical-section-card > h3,
+#medicalStudentsWorkshopPage .medical-nested-section-card > h3 {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+#medicalStudentsWorkshopPage .medical-section-card .lesson-row {
+  position: relative;
+  left: 0;
+  box-sizing: border-box;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#medicalStudentsWorkshopPage .medical-section-card .lesson-main {
+  min-width: 0;
+}
+
+#medicalStudentsWorkshopPage .medical-section-card .lesson-top {
+  width: 171px;
+  margin-left: 25px;
+}
+
+#medicalStudentsWorkshopPage .medical-nested-section-card {
+  width: 100%;
+}
+
+#medicalStudentsWorkshopPage .lesson-row--folder .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/intermediate_folder.webp");
+}
+
+#medicalStudentsWorkshopPage .lesson-row--scroll .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/intermediate_scroll.webp");
+}
+
+#medicalStudentsWorkshopPage .lesson-row--pdf .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/intermediate_pdf.webp");
+}
+
+#medicalStudentsWorkshopPage .lesson-row--interactive .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/intermediate_interactive.webp");
+}
+
+#medicalStudentsWorkshopPage .lesson-row--quiz .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/intermediate_casestudy.webp");
+}
+
+#medicalStudentsWorkshopPage .lesson-cta,
+#medicalStudentsWorkshopPage .see-all-toggle {
+  color: #f25600;
+}
+
+#medicalStudentsWorkshopPage .see-all-toggle {
+  margin-left: auto;
+  margin-right: 30px;
+  white-space: nowrap;
+}
+
+@media (min-width: 600.02px) and (max-width: 1023.98px) {
+  #medicalStudentsWorkshopPage .medical-workshop-folders {
+    padding: 22px 0 !important;
+    gap: 16px !important;
+    min-height: 368px;
+  }
+
+  #medicalStudentsWorkshopPage
+    :is(.medical-section-card, .medical-nested-section-card) {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 14px !important;
+    padding: 22px 0 18px !important;
+  }
+
+  #medicalStudentsWorkshopPage
+    :is(
+      .medical-workshop-folders,
+      .medical-section-card,
+      .medical-nested-section-card
+    )
+    .lesson-row {
+    left: 0 !important;
+    display: grid !important;
+    grid-template-columns: 62px minmax(0, 1fr) auto !important;
+    align-items: center !important;
+    gap: 12px !important;
+    box-sizing: border-box !important;
+    height: 76px !important;
+    min-height: 76px !important;
+    margin: 0 auto !important;
+    padding: 8px 12px !important;
+  }
+
+  #medicalStudentsWorkshopPage .medical-workshop-folders > .lesson-row {
+    width: calc(100% - 64px) !important;
+    max-width: 392px !important;
+  }
+
+  #medicalStudentsWorkshopPage
+    :is(.medical-section-card, .medical-nested-section-card)
+    .lesson-row {
+    width: calc(100% - 100px) !important;
+    max-width: 348px !important;
+  }
+
+  #medicalStudentsWorkshopPage .lesson-row .thumb {
+    width: 66px !important;
+    height: 56px !important;
+    flex: 0 0 66px !important;
+  }
+
+  #medicalStudentsWorkshopPage .lesson-row .lesson-main {
+    min-width: 0 !important;
+    margin: 0 !important;
+  }
+
+  #medicalStudentsWorkshopPage .lesson-row .lesson-top {
+    width: 100% !important;
+    margin: 0 !important;
+  }
+
+  #medicalStudentsWorkshopPage .lesson-row .lesson-type {
+    overflow-wrap: anywhere !important;
+    white-space: normal !important;
+  }
+
+  #medicalStudentsWorkshopPage .lesson-row .lesson-cta {
+    margin: 0 !important;
+    white-space: nowrap !important;
+  }
+}
+
 #diabeticHistoryImageMatchPage {
   background: #ededee;
 }

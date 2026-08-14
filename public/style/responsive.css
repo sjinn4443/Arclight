@@ -5585,3 +5585,14 @@ html.is-apple-ui :is(.eyes-topbar .menuBtn, .icon.menuBtn, #tocToggleBtn) {
     border-radius: 0 !important;
   }
 }
+
+/* Keep Medical Students' JS-collapsed rows hidden after all breakpoint rules. */
+#medicalStudentsWorkshopPage
+  :is(
+    .medical-folder-row,
+    .medical-section-card,
+    .medical-nested-folder-row,
+    .medical-nested-section-card
+  )[hidden] {
+  display: none !important;
+}

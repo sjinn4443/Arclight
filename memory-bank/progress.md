@@ -113,6 +113,8 @@ The project is a feature-rich PWA with a strong emphasis on interactive learning
 - Interactive Learning continues to use the shared Videos-route subpage pattern, even when the underlying content is hosted externally, to avoid introducing a second navigation model.
 - Workshop flows now use stable row/page identifiers plus session storage to preserve progress, folder state, and cross-route sequencing without introducing a separate router.
 - Lesson rows now share progress storage/event/tick helpers so completion UI stays consistent across Videos, workshops, case studies, and My Learning.
+- Added view/download routes and lesson rows for the Visual Acuity, Pupils PEC, Pupils Advanced, and Front of Eye Core Examination PDFs, including Fundal-style rendered-image viewing, section-specific back navigation, My Learning, and offline-catalog wiring.
+- Fixed structural Back history replacement so `lesson -> PDF -> lesson -> Eyes` cannot loop back into the PDF.
 - Offline install/download behavior now favors a generated server manifest plus client-side selection/filtering over static all-content lists.
 - Local video localization now favors JSON subtitle catalogs and VTT assets that the runtime attaches to matching video sources.
 - Full-animation MP4 lessons are treated as local Videos-route video pages rather than scrollytelling routes; low/high source mapping and launcher progress rows are the synchronization contract.

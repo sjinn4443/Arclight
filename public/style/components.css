@@ -2588,6 +2588,40 @@ input:checked + .slider:before {
   cursor: pointer;
 }
 
+.core-examination-pdf-page .eyes-topbar__icons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.core-examination-pdf-page .icon.menuBtn {
+  margin: 0 !important;
+}
+
+.core-examination-pdf-download {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  color: currentColor;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+.core-examination-pdf-download svg {
+  fill: currentColor;
+}
+
+.core-examination-pdf-viewer {
+  width: 100%;
+  height: auto;
+  min-height: 520px;
+  background: #fff;
+}
+
 .lesson-row {
   display: grid;
   grid-template-columns: 52px 1fr auto;
@@ -2994,6 +3028,11 @@ input:checked + .slider:before {
   .lesson-row--interactive
   .thumb {
   background-image: url("/images/icon/eyes/moduleicons/advanced_interactive.webp") !important;
+  background-position: center;
+}
+
+#pupilsPage .pupil-level--advanced .lesson-row--pdf .thumb.thumb--advanced-pdf {
+  background-image: url("/images/icon/eyes/moduleicons/advanced_pdf.webp");
   background-position: center;
 }
 

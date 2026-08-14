@@ -228,6 +228,8 @@ Childhood Fundal Reflex scrollytelling is also an active maintenance area:
 - Treat the Childhood Fundal Reflex stage-autoplay engine as shared infrastructure across all `childhoodFundal*` routes; route-specific visual fixes should prefer route config before changing global playback behavior.
 - Treat static exact-frame snapshots as the preferred iOS/WebKit recovery for fragile Fundal pause/final holds; previous-frame fallbacks are not acceptable because they visibly rewind the animation.
 - Preserve FR06 Fundal settle behavior as the baseline unless the user explicitly asks for a behavior change.
+- Core Examination PDF lessons use dedicated routes backed by `fundalReflexPdf.html` and `fundalReflexPdf.js`; they use Fundal-style rendered-image viewers rather than browser PDF embeds. Visual Acuity and Front of Eye launch from Primary, while Pupils PEC launches from Primary and Pupils Advanced from Advanced.
+- Structural Back navigation replaces the current route/page history entry with its declared parent; Core Examination PDF pages return to their owning lesson page, and Visual Acuity, Pupils, and Front of Eye return to Eyes without revisiting the PDF.
 
 ## Important Patterns and Preferences
 
