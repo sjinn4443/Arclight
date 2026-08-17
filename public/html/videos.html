@@ -4680,26 +4680,12 @@
           ></canvas>
         </figure>
 
-        <div class="retinal-structure-tap__progress-shell">
-          <p
-            id="diabeticCaseQuizProgressLabel"
-            class="retinal-structure-tap__progress-label"
-          >
-            Quiz 1 of 3
-          </p>
-          <div
-            id="diabeticCaseQuizProgress"
-            class="retinal-structure-tap__progress"
-            aria-label="Case quiz progress"
-          ></div>
-        </div>
-
         <div class="diabetic-case-quiz__question-card">
           <p
-            id="diabeticCaseQuizQuestionLabel"
+            id="diabeticCaseQuizProgressLabel"
             class="retinal-structure-tap__prompt-kicker"
           >
-            Signs
+            Quiz 1 of 3
           </p>
           <p id="diabeticCaseQuizQuestion" class="diabetic-case-quiz__question">
             Select the signs seen in this case.
@@ -4722,17 +4708,27 @@
           <div class="diabetic-case-quiz__nav">
             <button
               type="button"
-              id="diabeticCaseQuizPrevious"
               class="diabetic-case-quiz__nav-button"
+              data-diabetic-case-question="0"
+              aria-label="Case 1, quiz A"
             >
-              &lt; Previous
+              1A
             </button>
             <button
               type="button"
-              id="diabeticCaseQuizNext"
               class="diabetic-case-quiz__nav-button"
+              data-diabetic-case-question="1"
+              aria-label="Case 1, quiz B"
             >
-              Next &gt;
+              1B
+            </button>
+            <button
+              type="button"
+              class="diabetic-case-quiz__nav-button"
+              data-diabetic-case-question="2"
+              aria-label="Case 1, quiz C"
+            >
+              1C
             </button>
           </div>
 

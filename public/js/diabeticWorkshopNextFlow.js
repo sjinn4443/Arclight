@@ -371,6 +371,10 @@ async function navigateToTarget(target) {
 
 function shouldUseDiabeticStructuralBack() {
   const visibleId = getVisiblePageId();
+  // The case quiz is launched from more than one workshop. Let the shared
+  // navigation history return to the page that actually opened it.
+  if (visibleId === "diabeticCaseQuizPage") return false;
+
   return (
     visibleId === WORKSHOP_PAGE_ID ||
     INTERNAL_TARGETS.has(visibleId) ||

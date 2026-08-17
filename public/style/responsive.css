@@ -111,6 +111,22 @@ input {
     font-size: 21px;
   }
 
+  /* Keep the Eyes menu control at its original viewport-right position even
+     when the wider Arclight logo changes the topbar's flex geometry. */
+  #eyesCatalogPage .eyes-top .menuBtn {
+    position: fixed !important;
+    top: 13px !important;
+    right: max(20px, env(safe-area-inset-right)) !important;
+    left: auto !important;
+    width: 36px !important;
+    height: 36px !important;
+    margin: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    z-index: 2001;
+  }
+
   .lang-install__body {
     margin-top: 93px;
   }

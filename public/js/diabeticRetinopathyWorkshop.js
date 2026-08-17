@@ -3477,18 +3477,17 @@ function initializeDiabeticCaseQuizPage() {
 
   const title = page.querySelector("#diabeticCaseQuizTitle");
   const stage = page.querySelector("#diabeticCaseQuizStage");
-  const progress = page.querySelector("#diabeticCaseQuizProgress");
   const progressLabel = page.querySelector("#diabeticCaseQuizProgressLabel");
   const patientInfo = page.querySelector("#diabeticCaseQuizPatientInfo");
   const image = page.querySelector("#diabeticCaseQuizImage");
   const sightCanvas = page.querySelector("#diabeticCaseQuizSightCanvas");
-  const questionLabel = page.querySelector("#diabeticCaseQuizQuestionLabel");
   const question = page.querySelector("#diabeticCaseQuizQuestion");
   const questionHint = page.querySelector("#diabeticCaseQuizQuestionHint");
   const options = page.querySelector("#diabeticCaseQuizOptions");
   const feedback = page.querySelector("#diabeticCaseQuizFeedback");
-  const previousButton = page.querySelector("#diabeticCaseQuizPrevious");
-  const nextButton = page.querySelector("#diabeticCaseQuizNext");
+  const questionNavButtons = Array.from(
+    page.querySelectorAll("[data-diabetic-case-question]"),
+  );
   const caseSummary = page.querySelector("#diabeticCaseQuizCaseSummary");
   const submitButton = page.querySelector("#diabeticCaseQuizSubmit");
   const introModal = page.querySelector("#diabeticCaseQuizIntroModal");
@@ -3505,18 +3504,15 @@ function initializeDiabeticCaseQuizPage() {
   if (
     !title ||
     !stage ||
-    !progress ||
     !progressLabel ||
     !patientInfo ||
     !image ||
     !sightCanvas ||
-    !questionLabel ||
     !question ||
     !questionHint ||
     !options ||
     !feedback ||
-    !previousButton ||
-    !nextButton ||
+    questionNavButtons.length !== 3 ||
     !caseSummary ||
     !submitButton ||
     !introModal ||
@@ -3625,24 +3621,6 @@ function initializeDiabeticCaseQuizPage() {
   };
 
   const renderProgress = () => {
-    progress.innerHTML = "";
-
-    for (let index = 0; index < 3; index += 1) {
-      const stepEl = document.createElement("span");
-      stepEl.className = "retinal-structure-tap__progress-step";
-      if (
-        state.submitted ||
-        state.isComplete ||
-        state.selections[index]?.size > 0
-      ) {
-        stepEl.classList.add("is-complete");
-      }
-      if (index === state.questionIndex) {
-        stepEl.classList.add("is-active");
-      }
-      progress.appendChild(stepEl);
-    }
-
     progressLabel.textContent = `${t("Quiz")} ${state.questionIndex + 1} ${t(
       "of",
     )} 3`;
@@ -3762,7 +3740,6 @@ function initializeDiabeticCaseQuizPage() {
 
   const renderQuestion = () => {
     const quizQuestion = getCurrentQuestion();
-    questionLabel.textContent = t(quizQuestion.label);
     question.textContent = t(quizQuestion.prompt);
     questionHint.textContent =
       quizQuestion.type === "multi"
@@ -3793,8 +3770,19 @@ function initializeDiabeticCaseQuizPage() {
   };
 
   const renderQuestionNav = () => {
-    previousButton.disabled = state.questionIndex === 0;
-    nextButton.disabled = state.questionIndex === 2;
+    questionNavButtons.forEach((button, index) => {
+      const questionLetter = String.fromCharCode(65 + index);
+      const label = `${state.caseIndex + 1}${questionLetter}`;
+      const isActive = index === state.questionIndex;
+
+      button.textContent = label;
+      button.setAttribute(
+        "aria-label",
+        `${t("Case")} ${state.caseIndex + 1}, ${t("Quiz")} ${questionLetter}`,
+      );
+      button.setAttribute("aria-pressed", isActive ? "true" : "false");
+      button.classList.toggle("is-active", isActive);
+    });
   };
 
   const renderCaseSummary = () => {
@@ -3897,16 +3885,12 @@ function initializeDiabeticCaseQuizPage() {
     render();
   };
 
-  previousButton.addEventListener("click", () => {
-    if (state.questionIndex <= 0) return;
-    state.questionIndex -= 1;
-    render();
-  });
-
-  nextButton.addEventListener("click", () => {
-    if (state.questionIndex >= 2) return;
-    state.questionIndex += 1;
-    render();
+  questionNavButtons.forEach((button, index) => {
+    button.addEventListener("click", () => {
+      if (state.questionIndex === index) return;
+      state.questionIndex = index;
+      render();
+    });
   });
 
   const submitCurrentCase = () => {

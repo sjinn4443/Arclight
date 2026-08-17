@@ -5541,6 +5541,26 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
   margin-left: 46px;
 }
 
+.topbar-home-logo {
+  display: inline-flex;
+  align-items: center;
+  height: 28px;
+  border-radius: 6px;
+  text-decoration: none;
+}
+
+.topbar-home-logo__image {
+  display: block;
+  width: auto;
+  height: 28px;
+  object-fit: contain;
+}
+
+.topbar-home-logo:focus-visible {
+  outline: 2px solid #111;
+  outline-offset: 2px;
+}
+
 #caseStudyFlashcardPagePrimary .eyes-topbar__title {
   font-size: 14px;
   font-weight: 600;

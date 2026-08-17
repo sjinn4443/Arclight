@@ -15,6 +15,7 @@ import { initializeLocation } from "./location-service.js";
 import { initializeExperimentalMiniAppNotice } from "./experimentalMiniAppNotice.js";
 import { initializeLessonCompletionTickObserver } from "./lessonCompletionTick.js";
 import { initializeLocalizedVideoSubtitles } from "./videoSubtitles.js";
+import { initializeTopbarLogos } from "./topbar-logo.js";
 import {
   initializeFundalReflexPdf,
   initializeAtomsHandout1,
@@ -31,6 +32,7 @@ import { captureClientError, installSafeConsole } from "./safe-logging.js";
 import { buildTelemetryRequestHeaders } from "./telemetry.js";
 
 installSafeConsole();
+initializeTopbarLogos();
 
 function withSentry(fn) {
   return (...args) => {
