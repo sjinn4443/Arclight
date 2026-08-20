@@ -1484,7 +1484,8 @@ select.onb-input.has-value {
   color: #fff;
 }
 
-#diabeticRetinopathyWorkshopPage .pupil-card h3 {
+#diabeticRetinopathyWorkshopPage .pupil-card h3,
+#medicalStudentsWorkshopPage .pupil-card h3 {
   margin: 8px 6px -5px;
   font-size: 14px;
   font-weight: 700;
@@ -3845,6 +3846,12 @@ select.onb-input.has-value + .onb-select-caret {
   opacity: 0.72;
 }
 
+#medicalStudentsWorkshopPage
+  .medical-section-card.medical-nested-folder-open
+  > .lesson-row:not([hidden]) {
+  opacity: 0.72;
+}
+
 #medicalStudentsWorkshopPage .medical-section-card {
   display: flex;
   flex-direction: column;
@@ -3894,6 +3901,17 @@ select.onb-input.has-value + .onb-select-caret {
   width: 100%;
 }
 
+#medicalStudentsWorkshopPage .medical-nested-section-card > h3 {
+  padding-left: 24px;
+}
+
+#medicalStudentsWorkshopPage
+  .medical-section-card
+  .medical-nested-section-card
+  > .lesson-row {
+  width: 72%;
+}
+
 #medicalStudentsWorkshopPage .lesson-row--folder .thumb {
   background-image: url("/images/icon/eyes/moduleicons/intermediate_folder.webp");
 }
@@ -3923,6 +3941,23 @@ select.onb-input.has-value + .onb-select-caret {
   margin-left: auto;
   margin-right: 30px;
   white-space: nowrap;
+}
+
+.medical-anterior-segment-page .medical-anterior-segment-viewer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-height: calc(100dvh - 92px);
+  padding: clamp(18px, 4vw, 44px);
+}
+
+.medical-anterior-segment-page .medical-anterior-segment-viewer img {
+  display: block;
+  width: min(100%, 920px);
+  height: auto;
+  max-height: calc(100dvh - 140px);
+  object-fit: contain;
 }
 
 @media (min-width: 600.02px) and (max-width: 1023.98px) {
@@ -3970,6 +4005,14 @@ select.onb-input.has-value + .onb-select-caret {
     .lesson-row {
     width: calc(100% - 100px) !important;
     max-width: 348px !important;
+  }
+
+  #medicalStudentsWorkshopPage
+    .medical-section-card
+    .medical-nested-section-card
+    > .lesson-row {
+    width: calc(100% - 132px) !important;
+    max-width: 316px !important;
   }
 
   #medicalStudentsWorkshopPage .lesson-row .thumb {
@@ -22393,6 +22436,1550 @@ img[src*="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/"] {
 
   #diabeticProtocolPhaseBPage .diabetic-protocol-rapd-demo__pupil--right {
     top: 46.4%;
+  }
+}
+
+/* Medical Students · Introduction scrolly lessons */
+#medicalStudentsWorkshopPage .lesson-row--video .thumb {
+  background-color: #f25600;
+  background-image:
+    linear-gradient(135deg, transparent 50%, rgba(255, 255, 255, 0.18) 50%),
+    url("/images/icon/eyes/moduleicons/intermediate_video.webp");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover, 48%;
+}
+
+.medical-students-screening-page {
+  --medical-orange: #f25600;
+  --medical-orange-dark: #c2410c;
+  --medical-orange-soft: #fff3eb;
+  --medical-ink: #111827;
+  --medical-muted: #4b5563;
+}
+
+.medical-students-screening-page .diabetic-screening-panel {
+  min-height: auto;
+  overflow: hidden;
+}
+
+.medical-overview-list,
+.medical-symptom-list,
+.medical-history-grid,
+.medical-vision-loss-groups,
+.medical-history-columns,
+.medical-communication-chips,
+.medical-blindness-legend,
+.medical-diagnosis-flow,
+.medical-socrates {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.medical-overview-list {
+  display: grid;
+  gap: 10px;
+  counter-reset: medicalOverview;
+}
+
+.medical-overview-list li {
+  position: relative;
+  min-height: 48px;
+  box-sizing: border-box;
+  padding: 14px 16px 14px 46px;
+  border: 1px solid rgba(242, 86, 0, 0.22);
+  border-radius: 16px;
+  background: var(--medical-orange-soft);
+  color: var(--medical-ink);
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.medical-overview-list li::before {
+  content: "";
+  position: absolute;
+  left: 17px;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  border: 3px solid var(--medical-orange);
+  border-radius: 50%;
+  background: #ffffff;
+  transform: translateY(-50%);
+}
+
+.medical-overview-list--numbered li::before {
+  counter-increment: medicalOverview;
+  content: counter(medicalOverview);
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  background: var(--medical-orange);
+  color: #ffffff;
+  font-size: 11px;
+}
+
+.medical-workshop-arc,
+.medical-flow {
+  display: grid;
+  gap: 8px;
+}
+
+.medical-workshop-arc span,
+.medical-flow span {
+  display: grid;
+  min-height: 50px;
+  padding: 10px 16px;
+  place-items: center;
+  border: 1px solid rgba(242, 86, 0, 0.3);
+  border-radius: 16px;
+  background: #ffffff;
+  color: var(--medical-ink);
+  font-size: 14px;
+  font-weight: 850;
+  line-height: 1.25;
+  text-align: center;
+}
+
+.medical-workshop-arc b,
+.medical-flow b {
+  position: relative;
+  width: 3px;
+  height: 18px;
+  margin: 0 auto;
+  border-radius: 999px;
+  background: var(--medical-orange);
+}
+
+.medical-workshop-arc b::after,
+.medical-flow b::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -1px;
+  width: 8px;
+  height: 8px;
+  border-right: 3px solid var(--medical-orange);
+  border-bottom: 3px solid var(--medical-orange);
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.medical-workshop-arc span:last-child,
+.medical-flow span:last-child {
+  border-color: var(--medical-orange);
+  background: var(--medical-orange);
+  color: #ffffff;
+}
+
+.medical-workshop-arc span:last-child,
+.medical-flow--journey span:last-child {
+  border-color: rgba(242, 86, 0, 0.3);
+  background: #ffffff;
+  color: var(--medical-ink);
+}
+
+.medical-workshop-arc__stage {
+  animation: medical-workshop-stage 8s linear infinite;
+}
+
+.medical-workshop-arc__stage:nth-of-type(2) {
+  animation-delay: -6s;
+}
+
+.medical-workshop-arc__stage:nth-of-type(3) {
+  animation-delay: -4s;
+}
+
+.medical-workshop-arc__stage:nth-of-type(4) {
+  animation-delay: -2s;
+}
+
+@keyframes medical-workshop-stage {
+  0%,
+  21% {
+    border-color: var(--medical-orange);
+    background: var(--medical-orange);
+    color: #ffffff;
+    box-shadow: 0 9px 20px rgba(242, 86, 0, 0.2);
+  }
+
+  26%,
+  100% {
+    border-color: rgba(242, 86, 0, 0.3);
+    background: #ffffff;
+    color: var(--medical-ink);
+    box-shadow: none;
+  }
+}
+
+.medical-flow--journey span.is-active {
+  border-color: var(--medical-orange);
+  background: var(--medical-orange);
+  color: #ffffff;
+  box-shadow: 0 9px 20px rgba(242, 86, 0, 0.18);
+}
+
+.medical-timetable {
+  display: grid;
+  gap: 7px;
+  margin: 0;
+}
+
+.medical-timetable > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 11px 13px;
+  border-radius: 13px;
+  background: #f3f4f6;
+}
+
+.medical-timetable > div.is-break {
+  background: var(--medical-orange-soft);
+  color: var(--medical-orange-dark);
+}
+
+.medical-timetable dt,
+.medical-timetable dd {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.medical-timetable dd {
+  flex: 0 0 auto;
+  color: var(--medical-orange-dark);
+}
+
+.medical-content-groups {
+  display: grid;
+  gap: 12px;
+}
+
+.medical-content-groups section {
+  padding: 16px;
+  border: 1px solid rgba(15, 23, 42, 0.09);
+  border-radius: 18px;
+  background: #f9fafb;
+}
+
+.medical-content-groups strong {
+  color: var(--medical-orange-dark);
+  font-size: 14px;
+}
+
+.medical-content-groups ul {
+  display: grid;
+  gap: 7px;
+  margin: 12px 0 0;
+  padding-left: 18px;
+  color: var(--medical-muted);
+  font-size: 13px;
+  font-weight: 650;
+  line-height: 1.4;
+}
+
+.medical-treatment-target {
+  width: min(72vw, 250px);
+  aspect-ratio: 1;
+  display: grid;
+  margin: 0 auto;
+  place-items: center;
+  border: 18px solid rgba(242, 86, 0, 0.13);
+  border-radius: 50%;
+  background: var(--medical-orange);
+  color: #ffffff;
+  font-size: 23px;
+  font-weight: 900;
+  box-shadow:
+    0 0 0 15px #ffffff,
+    0 0 0 18px rgba(242, 86, 0, 0.28);
+}
+
+.medical-barrier-pair,
+.medical-barrier-grid,
+.medical-diagnosis-flow,
+.medical-arclight-kit-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.medical-barrier-pair > span,
+.medical-barrier-grid > span,
+.medical-diagnosis-flow > li,
+.medical-arclight-kit-grid > span {
+  min-height: 48px;
+  box-sizing: border-box;
+  display: grid;
+  place-items: center;
+  padding: 12px 14px;
+  border: 1px solid rgba(242, 86, 0, 0.28);
+  border-radius: 16px;
+  background: var(--medical-orange-soft);
+  color: var(--medical-ink);
+  font-size: 13px;
+  font-weight: 850;
+  line-height: 1.25;
+  text-align: center;
+}
+
+.medical-barrier-pair > span {
+  min-height: 112px;
+  align-content: center;
+  gap: 7px;
+}
+
+.medical-barrier-pair strong {
+  color: var(--medical-orange-dark);
+  font-size: 22px;
+}
+
+.medical-barrier-pair span {
+  color: var(--medical-muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.medical-barrier-grid--green > span {
+  border-color: rgba(21, 128, 61, 0.25);
+  background: #ecfdf3;
+  color: #166534;
+}
+
+.medical-diagnosis-flow {
+  counter-reset: medicalDiagnosis;
+}
+
+.medical-diagnosis-flow > li {
+  position: relative;
+  padding-left: 48px;
+  background: #ffffff;
+  text-align: left;
+}
+
+.medical-diagnosis-flow > li::before {
+  counter-increment: medicalDiagnosis;
+  content: counter(medicalDiagnosis);
+  position: absolute;
+  left: 13px;
+  width: 25px;
+  height: 25px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--medical-orange);
+  color: #ffffff;
+  font-size: 11px;
+}
+
+.medical-clinical-image,
+.medical-learning-image,
+.medical-slide-crop {
+  position: relative;
+  width: 100%;
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid rgba(15, 23, 42, 0.09);
+  border-radius: 22px;
+  background: #f3f4f6;
+  box-shadow: 0 13px 28px rgba(15, 23, 42, 0.11);
+}
+
+.medical-clinical-image img,
+.medical-learning-image img,
+.medical-slide-crop img {
+  display: block;
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+}
+
+.medical-clinical-image--fundus img {
+  object-position: center;
+}
+
+.medical-learning-image--contain img,
+.medical-learning-image--reference img {
+  height: auto;
+  max-height: 360px;
+  padding: 12px;
+  box-sizing: border-box;
+  object-fit: contain;
+  background: #ffffff;
+}
+
+.medical-clinical-image figcaption,
+.medical-learning-image figcaption {
+  padding: 10px 13px 11px;
+  background: #ffffff;
+  color: var(--medical-muted);
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.3;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.medical-blindness-chart-wrap {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+  gap: 18px;
+}
+
+.medical-blindness-chart {
+  width: min(38vw, 180px);
+  aspect-ratio: 1;
+  margin: 0 auto;
+  border: 10px solid #ffffff;
+  border-radius: 50%;
+  background: conic-gradient(
+    #f25600 0 31%,
+    #fb7a31 31% 58%,
+    #f59e0b 58% 70%,
+    #facc15 70% 80%,
+    #a3e635 80% 88%,
+    #22c55e 88% 95%,
+    #15803d 95% 100%
+  );
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.13);
+}
+
+.medical-blindness-legend {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 7px;
+}
+
+.medical-blindness-legend li {
+  display: grid;
+  grid-template-columns: 12px minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+  color: var(--medical-muted);
+  font-size: 11px;
+  font-weight: 750;
+  line-height: 1.25;
+}
+
+.medical-blindness-legend i {
+  width: 12px;
+  height: 12px;
+  border-radius: 4px;
+  background: #f25600;
+}
+
+.medical-blindness-legend li:nth-child(2) i {
+  background: #fb7a31;
+}
+.medical-blindness-legend li:nth-child(3) i {
+  background: #f59e0b;
+}
+.medical-blindness-legend li:nth-child(4) i {
+  background: #facc15;
+}
+.medical-blindness-legend li:nth-child(5) i {
+  background: #a3e635;
+}
+.medical-blindness-legend li:nth-child(6) i {
+  background: #22c55e;
+}
+.medical-blindness-legend li:nth-child(7) i {
+  background: #15803d;
+}
+
+.medical-cause-pie {
+  --medical-cause-1: #cbd5e1;
+  --medical-cause-2: #e5e7eb;
+  --medical-cause-3: #b8c0cc;
+  --medical-cause-4: #d7dce3;
+  --medical-cause-5: #aeb7c4;
+  --medical-cause-6: #e9ecf0;
+  --medical-cause-7: #c2c9d2;
+  width: min(38vw, 150px);
+  aspect-ratio: 1;
+  justify-self: center;
+  border: 8px solid #ffffff;
+  border-radius: 50%;
+  background: conic-gradient(
+    var(--medical-cause-1) 0 31%,
+    var(--medical-cause-2) 31% 58%,
+    var(--medical-cause-3) 58% 70%,
+    var(--medical-cause-4) 70% 80%,
+    var(--medical-cause-5) 80% 88%,
+    var(--medical-cause-6) 88% 95%,
+    var(--medical-cause-7) 95% 100%
+  );
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.13);
+}
+
+.medical-cause-pie--refractive {
+  --medical-cause-1: #f25600;
+}
+
+.medical-cause-pie--cataract {
+  --medical-cause-2: #fb7a31;
+}
+
+.medical-cause-pie--glaucoma {
+  --medical-cause-3: #f59e0b;
+}
+
+.medical-cause-pie--diabetic {
+  --medical-cause-4: #facc15;
+}
+
+.medical-cause-pie--trachoma {
+  --medical-cause-5: #84cc16;
+}
+
+.medical-cause-pie--trauma {
+  --medical-cause-6: #22c55e;
+}
+
+.medical-cause-pie--other {
+  --medical-cause-7: #15803d;
+}
+
+.medical-growth-diagram {
+  position: relative;
+  min-height: 270px;
+  overflow: hidden;
+  border: 1px solid rgba(242, 86, 0, 0.24);
+  border-radius: 22px;
+  background:
+    linear-gradient(to top, rgba(242, 86, 0, 0.04), transparent 70%),
+    repeating-linear-gradient(
+      to top,
+      transparent 0 43px,
+      rgba(15, 23, 42, 0.06) 44px
+    ),
+    #ffffff;
+}
+
+.medical-growth-diagram__line {
+  --medical-growth-angle: -10deg;
+  position: absolute;
+  left: 12%;
+  bottom: 44px;
+  width: 76%;
+  height: 8px;
+  border-radius: 999px;
+  transform-origin: left center;
+  transform: rotate(var(--medical-growth-angle)) scaleX(0);
+}
+
+.medical-growth-diagram__line--services {
+  --medical-growth-angle: -10deg;
+  width: 54%;
+  background: var(--medical-orange);
+}
+
+.medical-growth-diagram__line--population {
+  --medical-growth-angle: -20deg;
+  width: 65%;
+  background: #111827;
+}
+
+.medical-growth-diagram__line--blindness {
+  --medical-growth-angle: -30deg;
+  width: 76%;
+  background: #b91c1c;
+}
+
+.is-current .medical-growth-diagram__line--services,
+.is-visible .medical-growth-diagram__line--services {
+  animation: medical-growth-service-line 5s cubic-bezier(0.2, 0.75, 0.25, 1) 1s
+    infinite;
+}
+
+.is-current .medical-growth-diagram__line--population,
+.is-visible .medical-growth-diagram__line--population {
+  animation: medical-growth-population-line 5s cubic-bezier(0.2, 0.75, 0.25, 1)
+    1s infinite;
+}
+
+.is-current .medical-growth-diagram__line--blindness,
+.is-visible .medical-growth-diagram__line--blindness {
+  animation: medical-growth-blindness-line 5s cubic-bezier(0.2, 0.75, 0.25, 1)
+    1s infinite;
+}
+
+@keyframes medical-growth-service-line {
+  0%,
+  100% {
+    transform: rotate(var(--medical-growth-angle)) scaleX(0);
+  }
+
+  8%,
+  90% {
+    transform: rotate(var(--medical-growth-angle)) scaleX(1);
+  }
+  91% {
+    transform: rotate(var(--medical-growth-angle)) scaleX(0);
+  }
+}
+
+@keyframes medical-growth-population-line {
+  0%,
+  12%,
+  100% {
+    transform: rotate(var(--medical-growth-angle)) scaleX(0);
+  }
+
+  20%,
+  90% {
+    transform: rotate(var(--medical-growth-angle)) scaleX(1);
+  }
+  91% {
+    transform: rotate(var(--medical-growth-angle)) scaleX(0);
+  }
+}
+
+@keyframes medical-growth-blindness-line {
+  0%,
+  24%,
+  100% {
+    transform: rotate(var(--medical-growth-angle)) scaleX(0);
+  }
+
+  32%,
+  90% {
+    transform: rotate(var(--medical-growth-angle)) scaleX(1);
+  }
+  91% {
+    transform: rotate(var(--medical-growth-angle)) scaleX(0);
+  }
+}
+
+.medical-growth-diagram__population,
+.medical-growth-diagram__services,
+.medical-growth-diagram__blindness {
+  position: absolute;
+  z-index: 2;
+  padding: 7px 10px;
+  border-radius: 999px;
+  background: #ffffff;
+  font-size: 11px;
+  font-weight: 850;
+  opacity: 0;
+  transform: translateY(6px);
+  box-shadow: 0 5px 14px rgba(15, 23, 42, 0.12);
+}
+
+.is-current .medical-growth-diagram__services,
+.is-visible .medical-growth-diagram__services {
+  animation: medical-growth-service-label 5s ease 1s infinite;
+}
+
+.is-current .medical-growth-diagram__population,
+.is-visible .medical-growth-diagram__population {
+  animation: medical-growth-population-label 5s ease 1s infinite;
+}
+
+.is-current .medical-growth-diagram__blindness,
+.is-visible .medical-growth-diagram__blindness {
+  animation: medical-growth-blindness-label 5s ease 1s infinite;
+}
+
+@keyframes medical-growth-service-label {
+  0%,
+  100% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  8%,
+  90% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  91% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+@keyframes medical-growth-population-label {
+  0%,
+  12%,
+  100% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  20%,
+  90% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  91% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+@keyframes medical-growth-blindness-label {
+  0%,
+  24%,
+  100% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  32%,
+  90% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  91% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+.medical-growth-diagram__population {
+  right: 8%;
+  top: 82px;
+  color: #111827;
+}
+
+.medical-growth-diagram__services {
+  right: 8%;
+  top: 134px;
+  color: var(--medical-orange-dark);
+}
+
+.medical-growth-diagram__blindness {
+  right: 8%;
+  top: 30px;
+  color: #ffffff;
+  background: #b91c1c;
+}
+
+.medical-inverse-care-layout {
+  display: grid;
+  gap: 16px;
+}
+
+.medical-inverse-care-chart {
+  position: relative;
+  min-height: 220px;
+  border-left: 3px solid #111827;
+  border-bottom: 3px solid #111827;
+  background: linear-gradient(135deg, rgba(242, 86, 0, 0.07), transparent);
+}
+
+.medical-inverse-care-chart::before,
+.medical-inverse-care-chart::after {
+  content: "";
+  position: absolute;
+  left: 8%;
+  width: 84%;
+  height: 8px;
+  border-radius: 999px;
+  transform-origin: left center;
+}
+
+.medical-inverse-care-chart::before {
+  bottom: 34px;
+  background: var(--medical-orange);
+  transform: rotate(-40deg);
+}
+
+.medical-inverse-care-chart::after {
+  top: 35px;
+  background: #111827;
+  transform: rotate(40deg);
+}
+
+.medical-inverse-care-chart__need,
+.medical-inverse-care-chart__availability,
+.medical-inverse-care-chart__gap {
+  position: absolute;
+  z-index: 2;
+  padding: 6px 9px;
+  border-radius: 999px;
+  background: #ffffff;
+  font-size: 10px;
+  font-weight: 900;
+}
+
+.medical-inverse-care-chart__need {
+  right: 7%;
+  top: 26px;
+}
+.medical-inverse-care-chart__availability {
+  right: 7%;
+  bottom: 27px;
+  color: var(--medical-orange-dark);
+}
+.medical-inverse-care-chart__gap {
+  left: 50%;
+  top: 50%;
+  color: #ffffff;
+  background: var(--medical-orange);
+  transform: translate(-50%, -50%);
+}
+
+.medical-slide-crop--maps {
+  height: 220px;
+}
+
+.medical-slide-crop--maps img {
+  width: 205%;
+  height: 100%;
+  max-width: none;
+  object-position: right center;
+}
+
+.medical-development-image-pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.medical-development-image-pair img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 18px;
+  background: #f3f4f6;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.11);
+}
+
+.medical-powerpoint-full-image,
+.medical-learning-video {
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0;
+  border: 0;
+  border-radius: 22px;
+  background: #ffffff;
+  box-shadow: 0 13px 28px rgba(15, 23, 42, 0.11);
+}
+
+.medical-powerpoint-full-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: inherit;
+  object-fit: contain;
+}
+
+.medical-visual-reference-panel {
+  border-color: rgba(242, 86, 0, 0.34) !important;
+  background: linear-gradient(
+    145deg,
+    var(--medical-orange-soft),
+    #ffffff
+  ) !important;
+}
+
+.medical-history-callout,
+.medical-red-flag,
+.medical-panel-note {
+  padding: 15px 16px;
+  border-left: 5px solid var(--medical-orange);
+  border-radius: 4px 16px 16px 4px;
+  background: var(--medical-orange-soft);
+  color: var(--medical-ink);
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.45;
+}
+
+.medical-history-grid,
+.medical-socrates {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.medical-history-grid > li,
+.medical-socrates > div {
+  min-height: 86px;
+  box-sizing: border-box;
+  display: grid;
+  align-content: center;
+  gap: 6px;
+  padding: 13px;
+  border: 1px solid rgba(15, 23, 42, 0.09);
+  border-radius: 16px;
+  background: #f9fafb;
+}
+
+.medical-socrates strong {
+  color: var(--medical-orange-dark);
+  font-size: 13px;
+}
+
+.medical-socrates dd {
+  display: grid;
+  gap: 3px;
+  margin: 0;
+  color: var(--medical-muted);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+#medicalHistoryTakingPage .medical-history-grid > li::before {
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+#medicalHistoryTakingPage .medical-socrates {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: repeat(4, auto);
+  grid-auto-flow: column;
+  column-gap: 59px;
+}
+
+#medicalHistoryTakingPage .medical-socrates > div {
+  grid-template-columns: 28px minmax(0, 1fr);
+  align-items: start;
+  column-gap: 8px;
+}
+
+#medicalHistoryTakingPage .medical-socrates strong {
+  min-height: 28px;
+  display: flex;
+  align-items: center;
+}
+
+#medicalHistoryTakingPage .medical-panel-note {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+#medicalVisualSystemPage
+  .diabetic-screening-panel:first-child
+  .medical-learning-image {
+  aspect-ratio: 72 / 41;
+}
+
+#medicalVisualSystemPage
+  .diabetic-screening-panel:first-child
+  .medical-learning-image
+  img {
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+}
+
+.medical-red-flag {
+  border-left-color: #b91c1c;
+  background: #fef2f2;
+  color: #991b1b;
+}
+
+.medical-red-flag p {
+  margin-top: 7px !important;
+  color: inherit !important;
+  font-size: 13px !important;
+  line-height: 1.45 !important;
+}
+
+.medical-symptom-list,
+.medical-vision-loss-groups,
+.medical-history-columns {
+  display: grid;
+  gap: 10px;
+}
+
+.medical-symptom-list > div,
+.medical-vision-loss-groups > section,
+.medical-history-columns > section,
+.medical-history-grid > li,
+.medical-history-columns li {
+  position: relative;
+  padding: 11px 13px 11px 35px;
+  border-radius: 14px;
+  background: #f3f4f6;
+  color: var(--medical-ink);
+  font-size: 13px;
+  font-weight: 750;
+  line-height: 1.35;
+}
+
+.medical-symptom-list > div::before,
+.medical-history-grid > li::before,
+.medical-history-columns li::before {
+  content: "";
+  position: absolute;
+  left: 14px;
+  top: 16px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--medical-orange);
+}
+
+.medical-symptom-list dt,
+.medical-vision-loss-groups strong,
+.medical-history-columns > section > strong {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--medical-orange-dark);
+  font-size: 13px;
+  font-weight: 850;
+}
+
+.medical-symptom-list dd,
+.medical-vision-loss-groups p {
+  margin: 0 !important;
+  color: var(--medical-muted) !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  line-height: 1.4 !important;
+}
+
+.medical-vision-loss-groups > section,
+.medical-history-columns > section {
+  padding-left: 14px;
+}
+
+.medical-history-columns ul {
+  display: grid;
+  gap: 7px;
+  margin: 9px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.medical-history-columns li {
+  padding: 8px 10px 8px 29px;
+  background: #ffffff;
+  font-size: 12px;
+}
+
+.medical-history-columns li::before {
+  left: 11px;
+  top: 13px;
+  width: 7px;
+  height: 7px;
+}
+
+.medical-socrates dt {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--medical-orange);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.medical-communication-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.medical-communication-chips li {
+  padding: 9px 12px;
+  border: 1px solid rgba(242, 86, 0, 0.28);
+  border-radius: 999px;
+  background: #ffffff;
+  color: var(--medical-orange-dark);
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.medical-next-host {
+  padding-bottom: max(34px, env(safe-area-inset-bottom));
+}
+
+.medical-next-wrap {
+  width: min(88vw, 760px);
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  margin: 32px auto 0;
+  padding-top: 18px;
+  border-top: 1px solid rgba(15, 23, 42, 0.1);
+}
+
+.medical-prev-btn,
+.medical-next-btn {
+  min-width: 122px;
+  min-height: 48px;
+  padding: 11px 18px;
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 850;
+}
+
+.medical-prev-btn {
+  border: 1px solid rgba(242, 86, 0, 0.42);
+  background: #ffffff;
+  color: var(--medical-orange-dark);
+}
+
+.medical-next-btn {
+  background: var(--medical-orange, #f25600);
+  color: #ffffff;
+  box-shadow: 0 10px 22px rgba(242, 86, 0, 0.22);
+}
+
+.medical-next-btn.is-ready:not(:disabled) {
+  background: var(--medical-orange, #f25600);
+  color: #ffffff;
+}
+
+.medical-next-btn:disabled,
+.medical-next-btn:not(.is-ready) {
+  cursor: not-allowed;
+  background: #d1d5db;
+  color: #6b7280;
+  box-shadow: none;
+}
+
+#medicalObjectivesPage .diabetic-screening-panel,
+#medicalTimetableContentPage .diabetic-screening-panel:nth-child(n + 2),
+#medicalPatientJourneyPage .diabetic-screening-panel,
+#medicalBarriersPage .diabetic-screening-panel,
+#medicalDiagnosisEyeDiseasePage .diabetic-screening-panel:first-child,
+#medicalBlindnessPage .diabetic-screening-panel:first-child,
+#medicalBlindnessPage .diabetic-screening-panel:nth-child(n + 9),
+#medicalVisualSystemPage .diabetic-screening-panel,
+#medicalVisualDevelopmentScrollPage .diabetic-screening-panel,
+#medicalHistoryTakingPage .diabetic-screening-panel,
+#medicalArclightScrollPage .diabetic-screening-panel {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+#medicalObjectivesPage .diabetic-screening-panel__text,
+#medicalTimetableContentPage .diabetic-screening-panel__text,
+#medicalPatientJourneyPage .diabetic-screening-panel__text,
+#medicalBarriersPage .diabetic-screening-panel__text,
+#medicalDiagnosisEyeDiseasePage
+  .diabetic-screening-panel:first-child
+  .diabetic-screening-panel__text,
+#medicalVisualSystemPage .diabetic-screening-panel__text,
+#medicalVisualDevelopmentScrollPage .diabetic-screening-panel__text,
+#medicalHistoryTakingPage .diabetic-screening-panel__text,
+#medicalArclightScrollPage .diabetic-screening-panel__text {
+  width: 100%;
+  max-width: none;
+}
+
+#medicalVisualSystemPage :is(.medical-learning-image, .medical-learning-video),
+#medicalArclightScrollPage
+  :is(.medical-learning-image, .medical-arclight-kit-grid) {
+  width: 100%;
+  min-width: 0;
+  justify-self: stretch;
+}
+
+#medicalVisualSystemPage .medical-learning-image,
+#medicalArclightScrollPage .medical-learning-image {
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+#medicalVisualSystemPage .medical-learning-image img,
+#medicalArclightScrollPage .medical-learning-image img {
+  width: 100%;
+  height: auto;
+  max-height: none;
+  padding: 0;
+  object-fit: contain;
+}
+
+#medicalVisualSystemPage figcaption,
+#medicalVisualDevelopmentScrollPage figcaption,
+#medicalArclightScrollPage figcaption {
+  display: none;
+}
+
+#medicalVisualSystemPage .medical-full-media-panel,
+#medicalVisualDevelopmentScrollPage .medical-full-media-panel {
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+#medicalVisualDevelopmentScrollPage .medical-learning-image {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+#medicalVisualDevelopmentScrollPage .medical-learning-image img,
+#medicalVisualDevelopmentScrollPage .medical-development-image-pair img {
+  width: 100%;
+  height: auto;
+  max-height: none;
+  aspect-ratio: auto;
+  padding: 0;
+  object-fit: contain;
+}
+
+#medicalVisualDevelopmentScrollPage .medical-development-image-pair {
+  width: 100%;
+  min-width: 0;
+}
+
+#medicalVisualDevelopmentScrollPage
+  .medical-visual-reference-panel
+  .medical-learning-image--reference {
+  border-radius: 22px;
+  box-shadow: 0 13px 28px rgba(15, 23, 42, 0.11);
+}
+
+#medicalHistoryTakingPage
+  :is(
+    .medical-history-grid,
+    .medical-vision-loss-groups,
+    .medical-socrates,
+    .medical-history-columns,
+    .diabetic-screening-checklist,
+    .medical-communication-chips,
+    .medical-red-flag,
+    .medical-panel-note,
+    .medical-history-callout
+  ) {
+  width: 100%;
+  max-width: none;
+  box-sizing: border-box;
+}
+
+#medicalArclightScrollPage .medical-arclight-kit-grid {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.medical-prev-btn:focus-visible,
+.medical-next-btn:focus-visible {
+  outline: 3px solid rgba(242, 86, 0, 0.32);
+  outline-offset: 3px;
+}
+
+@media (min-width: 48em) {
+  .medical-students-screening-page .diabetic-screening-panel {
+    min-height: auto;
+  }
+
+  #medicalBlindnessPage .medical-blindness-chart-wrap {
+    grid-template-columns: minmax(170px, 0.8fr) minmax(0, 1.2fr);
+  }
+
+  #medicalBlindnessPage .medical-blindness-legend {
+    grid-template-columns: 1fr;
+  }
+
+  #medicalBlindnessPage .medical-cause-pie {
+    grid-column: 1;
+    grid-row: 2;
+    justify-self: start;
+  }
+
+  #medicalBlindnessPage .diabetic-screening-panel:has(.medical-cause-pie) {
+    grid-template-columns: minmax(0, 1fr) minmax(300px, 0.9fr);
+    grid-template-rows: auto auto;
+    align-content: start;
+    align-items: start;
+  }
+
+  #medicalBlindnessPage
+    .diabetic-screening-panel:has(.medical-cause-pie)
+    .diabetic-screening-panel__text {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  #medicalBlindnessPage
+    .diabetic-screening-panel:has(.medical-cause-pie)
+    .medical-clinical-image {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    align-self: start;
+  }
+
+  #medicalBlindnessPage .medical-growth-diagram {
+    min-height: 340px;
+  }
+
+  .medical-overview-list,
+  .medical-workshop-arc,
+  .medical-flow,
+  .medical-barrier-pair,
+  .medical-barrier-grid,
+  .medical-diagnosis-flow,
+  .medical-content-groups,
+  .medical-arclight-kit-grid {
+    min-width: 290px;
+  }
+
+  .medical-workshop-arc,
+  .medical-flow--journey {
+    grid-template-columns: repeat(7, auto);
+    align-items: center;
+  }
+
+  .medical-flow--journey {
+    grid-template-columns:
+      minmax(0, 1fr) 22px minmax(0, 1fr) 22px minmax(0, 1fr) 22px
+      minmax(0, 1fr) 22px minmax(0, 1fr) 22px minmax(0, 1fr);
+    width: 100%;
+  }
+
+  .medical-flow--journey span {
+    min-width: 0;
+    padding-inline: 8px;
+    font-size: 11px;
+  }
+
+  .medical-workshop-arc b,
+  .medical-flow--journey b {
+    width: 24px;
+    height: 3px;
+  }
+
+  .medical-workshop-arc b::after,
+  .medical-flow--journey b::after {
+    left: auto;
+    right: -1px;
+    bottom: 50%;
+    transform: translateY(50%) rotate(-45deg);
+  }
+
+  .medical-barrier-pair,
+  .medical-barrier-grid,
+  .medical-content-groups,
+  .medical-arclight-kit-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .medical-diagnosis-flow {
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    width: 100%;
+  }
+
+  .medical-diagnosis-flow > li {
+    min-width: 0;
+    padding: 44px 8px 12px;
+    text-align: center;
+  }
+
+  .medical-diagnosis-flow > li::before {
+    left: 50%;
+    top: 10px;
+    transform: translateX(-50%);
+  }
+
+  .medical-clinical-image,
+  .medical-learning-image,
+  .medical-slide-crop,
+  .medical-growth-diagram,
+  .medical-inverse-care-layout {
+    min-width: 300px;
+  }
+
+  .medical-clinical-image img,
+  .medical-learning-image img {
+    height: 330px;
+  }
+
+  .medical-learning-image--contain img,
+  .medical-learning-image--reference img {
+    height: 330px;
+  }
+
+  .medical-inverse-care-layout {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 47.98em) {
+  #medicalHistoryTakingPage .medical-socrates {
+    grid-template-rows: none;
+    grid-auto-flow: row;
+    column-gap: 8px;
+  }
+
+  .medical-students-screening-page
+    .diabetic-screening-panel:has(.medical-history-grid),
+  .medical-students-screening-page
+    .diabetic-screening-panel:has(.medical-socrates),
+  .medical-students-screening-page
+    .diabetic-screening-panel:has(.medical-content-groups) {
+    min-height: auto;
+    padding-top: 34px;
+    padding-bottom: 34px;
+  }
+
+  .medical-blindness-chart-wrap {
+    grid-template-columns: 1fr;
+  }
+
+  #medicalBlindnessPage
+    .diabetic-screening-panel:has(.medical-cause-pie)
+    .diabetic-screening-panel__text {
+    order: 1;
+  }
+
+  #medicalBlindnessPage
+    .diabetic-screening-panel:has(.medical-cause-pie)
+    .medical-cause-pie {
+    order: 2;
+  }
+
+  #medicalBlindnessPage
+    .diabetic-screening-panel:has(.medical-cause-pie)
+    .medical-clinical-image {
+    order: 3;
+  }
+
+  .medical-blindness-legend {
+    grid-template-columns: 1fr;
+  }
+
+  .medical-development-image-pair {
+    grid-template-columns: 1fr;
+  }
+
+  .medical-blindness-chart {
+    width: min(58vw, 210px);
+  }
+
+  .medical-next-wrap {
+    width: min(88vw, 430px);
+  }
+
+  .medical-prev-btn,
+  .medical-next-btn {
+    min-width: 0;
+    flex: 1 1 0;
+    padding-inline: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .medical-students-screening-page [data-diabetic-scroll-step] {
+    transition: none;
+  }
+
+  .medical-workshop-arc__stage,
+  .is-current .medical-growth-diagram__line,
+  .is-visible .medical-growth-diagram__line,
+  .is-current .medical-growth-diagram__services,
+  .is-current .medical-growth-diagram__population,
+  .is-current .medical-growth-diagram__blindness,
+  .is-visible .medical-growth-diagram__services,
+  .is-visible .medical-growth-diagram__population,
+  .is-visible .medical-growth-diagram__blindness {
+    animation: none;
+  }
+
+  .medical-workshop-arc__stage:first-of-type {
+    border-color: var(--medical-orange);
+    background: var(--medical-orange);
+    color: #ffffff;
+  }
+
+  .medical-growth-diagram__line {
+    transform: rotate(var(--medical-growth-angle)) scaleX(1);
+  }
+
+  .medical-growth-diagram__services,
+  .medical-growth-diagram__population,
+  .medical-growth-diagram__blindness {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Medical Students: Examine each Other practice pages use the diabetic scrolly format. */
+.medical-practice-page .medical-practice-lesson {
+  padding-bottom: 72px;
+}
+
+.medical-practice-page .diabetic-screening-stack {
+  gap: 34px;
+}
+
+.medical-practice-page .diabetic-screening-panel--content-fit {
+  grid-template-columns: 1fr;
+  min-height: auto;
+  align-content: start;
+}
+
+.medical-practice-poster {
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  border-radius: 20px;
+  background: #ffffff;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.1);
+}
+
+.medical-practice-poster img {
+  display: block;
+  width: 100%;
+  max-height: 430px;
+  object-fit: contain;
+  background: #ffffff;
+}
+
+.medical-practice-poster--detail img {
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  object-position: center 58%;
+}
+
+.medical-practice-poster--wide img {
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  object-position: center top;
+}
+
+.medical-practice-poster figcaption {
+  box-sizing: border-box;
+  min-height: 34px;
+  padding: 8px 10px;
+  background: #f25600;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1.35;
+  letter-spacing: 0.045em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+@media (min-width: 48em) {
+  .medical-practice-page .diabetic-screening-stack {
+    gap: 52px;
+  }
+
+  .medical-practice-page .diabetic-screening-panel--content-fit {
+    width: min(76vw, 760px);
+    min-height: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .medical-practice-page [data-diabetic-scroll-step] {
+    transition: none !important;
   }
 }
 

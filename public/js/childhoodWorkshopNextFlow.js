@@ -184,6 +184,16 @@ function isFlowEnabled() {
   }
 }
 
+function isMedicalStudentsFlowEnabled() {
+  try {
+    return (
+      sessionStorage.getItem("medicalStudentsWorkshop:nextFlowEnabled") === "1"
+    );
+  } catch {
+    return false;
+  }
+}
+
 function setFlowEnabled(enabled) {
   try {
     if (enabled) sessionStorage.setItem(FLOW_ENABLED_KEY, "1");
@@ -259,6 +269,7 @@ function clearWorkshopReturnFlags() {
 }
 
 function shouldForceBackToWorkshopHome() {
+  if (isMedicalStudentsFlowEnabled()) return false;
   if (!isFlowEnabled()) return false;
   const visibleId = getVisiblePageId();
   if (!visibleId) return false;
@@ -400,6 +411,10 @@ function removeNextButtons() {
 }
 
 function renderNextButtonForTarget(target) {
+  if (isMedicalStudentsFlowEnabled()) {
+    removeNextButtons();
+    return;
+  }
   const idx = resolveFlowIndexForCurrentTarget(target);
   if (idx == null) {
     removeNextButtons();

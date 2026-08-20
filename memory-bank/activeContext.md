@@ -13,6 +13,7 @@ June stabilization and app-wide infrastructure:
 - case-study chat/flashcard work spans `public/html/casestudy.html`, `public/js/casestudy.js`, `public/js/casestudy_primary.js`, `public/html/glaucomaHistoryCaseStudy.html`, `public/js/glaucomaHistoryCaseStudy.js`, and the shared `casechat-*` CSS
 - iPad/tablet layout fixes are concentrated in `public/style/responsive.css`; route-specific overrides should stay constrained and be rechecked against phone and desktop layouts
 - Interactive Learning Primary now includes a local 7x7 eye-examination `Connect` game (`eyeExaminationConnectPage`) whose six checkpoints must be reached as History -> VA -> Front of eye -> Pupils -> Fundal reflex -> DO while filling all 49 cells; `public/js/eyeExaminationConnect.js` owns its tutorial, pointer/keyboard controls, rule validation, and shared lesson progress
+- Medical Students Workshop now has a fully populated, foldered Introduction curriculum using the orange Diabetic scrolly format. It includes deck-derived overview/objectives/timetable, patient journey/barriers/diagnosis/blindness, visual system/development, history taking, and Arclight lessons; local Previous/Next flow crosses into the shared Mum Vision and How to Use Arclight video pages and restores the originating nested folder. Nested folders dim sibling rows and render indented/narrower child content. Training keeps RAPD inside the Medical Students flow, opens `fundalReflexSimulatorPage` from Fundal Reflex App, and opens `morphSimulatorPage` from Back of the Eye; route loads also clear stale interactive-subapp state so the Eyes back button reappears.
 
 Diabetic Retinopathy workshop and Videos-route stabilization:
 
@@ -38,6 +39,13 @@ Childhood Fundal Reflex scrollytelling is also an active maintenance area:
 - Diabetic Fundal-style scrollytelling now depends on hardened pause-frame locking, retained accumulated captions after completion, iOS/WebKit renderer overrides where needed, exact static snapshot recovery for fragile WebKit pause/final holds, and ordinary `< Previous` / `Next >` buttons on the final page of each scrollytelling group.
 
 ## Recent Changes
+
+- Medical Students Introduction curriculum (2026-08-20):
+  - Replaced the four placeholder Introduction rows with Introduction, Eye Disease & Blindness, Anatomy & Physiology Vision, and Examination Tools folders while retaining History Taking as a standalone scroll lesson.
+  - Converted slide text and speaker notes into accessible HTML scrolly panels; recreated blindness/growth/inverse-care diagrams in CSS and retained the source clinical/reference images.
+  - Reused the Childhood Normal Visual Development content with the intermediate orange accent and appended the slide 39 reference card.
+  - Added Medical Students Previous/Next navigation across local and Videos-route pages, with folder restore and conflict avoidance for the Childhood Mum Vision flow.
+  - Renamed Train on Sim Tools to Training, added nested Pupil App Practice/Test and Disc App launchers, linked the Fundal Reflex app, added the centered Anterior Segment reference page, and reduced Test to the Pupils row.
 
 - Eye examination Connect game (2026-07-13):
   - Added a Primary `Connect` row immediately below Anterior chamber depth in `interactiveLearningPage`.

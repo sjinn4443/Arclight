@@ -362,6 +362,15 @@ function removeNextButtons() {
 }
 
 function renderNextButtonForTarget(target) {
+  const targetId = canonicalTarget(target);
+  const pageEl =
+    document.getElementById(targetId) || document.getElementById(target);
+  if (!pageEl) return;
+  if (pageEl.dataset.medicalStudentsReturn === "true") {
+    removeNextButtons();
+    return;
+  }
+
   const idx = resolveFlowIndexForCurrentTarget(target);
   if (idx == null) {
     removeNextButtons();
@@ -369,10 +378,6 @@ function renderNextButtonForTarget(target) {
   }
 
   const current = FLOW[idx];
-  const targetId = canonicalTarget(target);
-  const pageEl =
-    document.getElementById(targetId) || document.getElementById(target);
-  if (!pageEl) return;
 
   removeNextButtons();
 

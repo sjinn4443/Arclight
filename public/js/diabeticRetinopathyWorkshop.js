@@ -1132,7 +1132,7 @@ function initializeDiabeticArclightPackagePage() {
   bindArclightPackagePageShownListener();
 }
 
-function initializeDiabeticScreeningScrollLessons() {
+export function initializeDiabeticScreeningScrollLessons() {
   const lessons = document.querySelectorAll("[data-diabetic-scroll-lesson]");
 
   lessons.forEach((lesson) => {

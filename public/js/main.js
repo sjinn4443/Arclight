@@ -144,6 +144,9 @@ document.addEventListener("DOMContentLoaded", () => {
   void import("./diabeticWorkshopNextFlow.js")
     .then((m) => m.initializeDiabeticWorkshopNextFlowInfra?.())
     .catch(() => {});
+  void import("./medicalStudentsWorkshop.js")
+    .then((m) => m.initializeMedicalStudentsWorkshopFlowInfra?.())
+    .catch(() => {});
 
   /**
    * Event listener for 'page:loaded' custom event.

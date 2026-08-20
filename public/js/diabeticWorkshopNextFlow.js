@@ -158,6 +158,16 @@ function isFlowEnabled() {
   }
 }
 
+function isMedicalStudentsFlowEnabled() {
+  try {
+    return (
+      sessionStorage.getItem("medicalStudentsWorkshop:nextFlowEnabled") === "1"
+    );
+  } catch {
+    return false;
+  }
+}
+
 function setFlowEnabled(enabled) {
   try {
     if (enabled) sessionStorage.setItem(FLOW_ENABLED_KEY, "1");
@@ -370,6 +380,7 @@ async function navigateToTarget(target) {
 }
 
 function shouldUseDiabeticStructuralBack() {
+  if (isMedicalStudentsFlowEnabled()) return false;
   const visibleId = getVisiblePageId();
   // The case quiz is launched from more than one workshop. Let the shared
   // navigation history return to the page that actually opened it.
@@ -417,6 +428,10 @@ async function navigateByConfig(step) {
 }
 
 function renderNextButtonForTarget(targetId) {
+  if (isMedicalStudentsFlowEnabled()) {
+    removeNextButtons();
+    return;
+  }
   const config = DIABETIC_NAV_CONFIG[targetId];
   if (!config || !isFlowEnabled()) {
     removeNextButtons();

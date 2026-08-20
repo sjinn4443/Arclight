@@ -176,6 +176,7 @@ function updateGlobalBackVisibility(routeName) {
 // Keep the back button visible only on allowed routes
 window.addEventListener("page:loaded", (_e) => {
   const routeName = _e?.detail?.routeName;
+  document.body?.removeAttribute("data-interactive-subapp-open");
   updateGlobalBackVisibility(routeName);
 });
 

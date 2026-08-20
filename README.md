@@ -23,6 +23,23 @@ The app is primarily static (served from `public/` in dev, and `dist/` in produc
 - Memory bank: [`memory-bank/`](./memory-bank/)
 - Agent notes: [`agent.md`](./agent.md)
 
+## Medical Students workshop
+
+The Medical Students route (`#/medicalStudentsWorkshop`) contains a foldered
+Introduction curriculum sourced from the workshop slide deck. Its HTML lives in
+`public/html/medicalStudentsWorkshop.html`; `public/js/medicalStudentsWorkshop.js`
+owns nested-folder restore and Previous/Next flow, including hand-offs to the
+shared `mumVisionPage` and `howToUseArclightVideoPage` pages. Introduction images
+are under `public/images/learning/MedicalStudents/Introduction/`, while the
+orange scrolly layouts and CSS-rendered teaching diagrams are in
+`public/style/pages.css`. The Training section reuses the Pupil App in Practice
+and Test modes with Medical Students-specific Previous/Next return paths. Its
+Fundal Reflex App opens `fundalReflexSimulatorPage`, while Disc App opens
+`morphSimulatorPage` for Back of the Eye and `swollenDiscsInteractivePage` for
+Swollen Discs. Nested folders dim their sibling rows and use a narrower,
+indented child layout. The section also presents the Anterior Segment image from
+`public/images/learning/MedicalStudents/Training/` in the shared PDF-page shell.
+
 ## Security Updates (2026-06-29 to 2026-07-15)
 
 Source of truth: `security01`, `security02`, and `security03` on `main`. These security changes landed on `2026-07-07`.
