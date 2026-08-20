@@ -218,6 +218,7 @@ describe("Medical Students workshop", () => {
     const journey = document.getElementById("medicalPatientJourneyPage");
     const barriers = document.getElementById("medicalBarriersPage");
     const blindness = document.getElementById("medicalBlindnessPage");
+    const diagnosis = document.getElementById("medicalDiagnosisEyeDiseasePage");
     const visualSystem = document.getElementById("medicalVisualSystemPage");
     const visualDevelopment = document.getElementById(
       "medicalVisualDevelopmentScrollPage",
@@ -249,6 +250,8 @@ describe("Medical Students workshop", () => {
     expect(barriers.querySelector(".medical-barrier-grid")).toBeNull();
     expect(barriers.querySelector(".medical-barrier-pair")).toBeNull();
     expect(blindness.querySelectorAll(".medical-cause-pie")).toHaveLength(7);
+    expect(blindness.querySelectorAll("figcaption")).toHaveLength(0);
+    expect(diagnosis.querySelectorAll("figcaption")).toHaveLength(0);
     blindness.querySelectorAll(".medical-cause-pie").forEach((pie) => {
       expect(pie.textContent.trim()).toBe("");
     });
