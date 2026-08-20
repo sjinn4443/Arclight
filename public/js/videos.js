@@ -1295,8 +1295,8 @@ const VIDEO_PAGE_SOURCES = {
     containerSelector: "#howToUseArclightVideoPage .video-container",
     videoSelector: "#howToUseArclightVideo",
     sources: {
-      low: "videos/USAID/HowtoArclight.mp4",
-      high: "videos/USAID/HowtoArclight.mp4",
+      low: "videos/USAID Childhood eye screening/1. How to use the Arclight - ENGLISH - HD_220p.mp4",
+      high: "videos/USAID Childhood eye screening/1. How to use the Arclight - ENGLISH - HD_220p.mp4",
     },
   },
 

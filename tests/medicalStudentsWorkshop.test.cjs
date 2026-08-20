@@ -190,6 +190,30 @@ describe("Medical Students workshop", () => {
     );
   });
 
+  test("uses iPhone-compatible H.264 sources for How to Use Arclight", () => {
+    const videosHtml = fs.readFileSync(
+      path.join(repoRoot, "public/html/videos.html"),
+      "utf8",
+    );
+    const videosSource = fs.readFileSync(
+      path.join(repoRoot, "public/js/videos.js"),
+      "utf8",
+    );
+    const lowSource =
+      "videos/USAID Childhood eye screening/1. How to use the Arclight - ENGLISH - HD_220p.mp4";
+    const lowVideo = fs.readFileSync(path.join(repoRoot, "public", lowSource));
+
+    expect(videosHtml).toMatch(
+      /id="howToUseArclightVideoPage"[\s\S]*?USAID Childhood eye screening\/1\. How to use the Arclight - ENGLISH - HD_220p\.mp4/,
+    );
+    const sourceConfig = videosSource.match(
+      /howToUseArclightVideoPage:[\s\S]*?phoneAttachmentVideoPage:/,
+    )?.[0];
+    expect(sourceConfig?.split(lowSource)).toHaveLength(3);
+    expect(lowVideo.includes(Buffer.from("avc1"))).toBe(true);
+    expect(lowVideo.includes(Buffer.from("hev1"))).toBe(false);
+  });
+
   test("uses orange ready navigation and the requested responsive chart layouts", () => {
     const styles = fs.readFileSync(
       path.join(repoRoot, "public/style/pages.css"),
