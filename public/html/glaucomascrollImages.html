@@ -3764,7 +3764,7 @@
         top: 56%;
         left: 95%;
         transform: translate(-50%, -50%);
-        width: 24px;
+        width: 45px;
         height: auto;
         user-select: none;
         cursor: grab;
@@ -3777,10 +3777,10 @@
       /* bubble */
       #glaucomaRAPDFullSwingInteractive #rapdBubble {
         position: absolute;
-        top: 26%;
-        left: 72%;
-        transform: translate(-50%, -50%);
-        width: 42vw;
+        top: calc(56% - 145px);
+        left: calc(95% + 19px);
+        transform: translate(-100%, -50%);
+        width: min(190px, 65%);
         padding: 13px 11px;
         border-radius: 14px;
         background: #ffffff;
@@ -3789,6 +3789,7 @@
         line-height: 1.25;
         box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
         pointer-events: none;
+        z-index: 7;
       }
       #glaucomaRAPDFullSwingInteractive #rapdBubble::after {
         content: "";
@@ -3807,7 +3808,7 @@
         position: absolute;
         top: 304px;
         left: 260px;
-        width: 25px;
+        width: 45px;
         height: auto;
         transform: translate(-50%, -50%);
         user-select: none;
@@ -4010,7 +4011,7 @@
 
         <img
           id="rapdFlashlightOff"
-          src="/images/learning/GlaucomaRAPD/flashlight.webp"
+          src="/images/learning/GlaucomaRAPD/arclight.webp"
           alt="Pick up flashlight"
           draggable="false"
         />
@@ -4022,7 +4023,7 @@
         <div id="rapdBeam" aria-hidden="true"></div>
         <img
           id="rapdFlashlight"
-          src="/images/learning/GlaucomaRAPD/flashlight.webp"
+          src="/images/learning/GlaucomaRAPD/arclight.webp"
           alt="Flashlight"
           draggable="false"
         />

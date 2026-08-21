@@ -9721,7 +9721,7 @@ Glaucoma history case study: match intermediate style
   top: 56%;
   left: 95%;
   transform: translate(-50%, -50%);
-  width: 24px;
+  width: 45px;
   height: auto;
   user-select: none;
   cursor: grab;
@@ -9734,11 +9734,11 @@ Glaucoma history case study: match intermediate style
 
 #glaucomaRAPDFullSwingInteractive #rapdBubble {
   position: absolute;
-  top: 26%;
-  left: 72%;
-  transform: translate(-50%, -50%);
+  top: calc(56% - 145px);
+  left: calc(95% + 19px);
+  transform: translate(-100%, -50%);
   box-sizing: border-box;
-  width: min(180px, 58%);
+  width: min(190px, 65%);
   padding: 13px 11px;
   border-radius: 14px;
   background: #fff;
@@ -9747,7 +9747,7 @@ Glaucoma history case study: match intermediate style
   line-height: 1.25;
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
   pointer-events: none;
-  z-index: 11500;
+  z-index: 7;
 }
 
 #glaucomaRAPDFullSwingInteractive #rapdBubble::after {
@@ -9767,7 +9767,7 @@ Glaucoma history case study: match intermediate style
   top: 58.46%;
   left: 81.25%;
   transform: translate(-50%, -50%);
-  width: 25px;
+  width: 45px;
   height: auto;
   user-select: none;
   display: none;

@@ -285,7 +285,7 @@ function ensureOverlay() {
       </div>
       <div class="rapd-test-notice-demo__scene" aria-hidden="true">
         <img class="rapd-test-notice-demo__eyes" src="/images/learning/GlaucomaRAPD/eyes.webp" alt="" />
-        <img class="rapd-test-notice-demo__torch" src="/images/learning/GlaucomaRAPD/flashlight.webp" alt="" />
+        <img class="rapd-test-notice-demo__torch" src="/images/learning/GlaucomaRAPD/arclight.webp" alt="" />
       </div>
       <button type="button" tabindex="-1">Submit answer</button>
       <i class="rapd-test-notice-demo__pointer"></i>

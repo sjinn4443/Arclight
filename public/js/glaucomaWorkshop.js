@@ -1592,7 +1592,7 @@ function initGlaucomaRAPDFullSwingInteractive() {
       flashlight.style.display = "none";
       beam.style.display = "none";
       flashlightOff.style.display = "";
-      if (bubble) bubble.style.display = isTestMode ? "none" : "";
+      if (bubble) bubble.style.display = "";
       if (hint) hint.style.opacity = "1";
       state.rapdPulseStart = null;
       state.centerEnteredAt = null;

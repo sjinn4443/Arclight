@@ -5569,7 +5569,9 @@ html.is-apple-ui :is(.eyes-topbar .menuBtn, .icon.menuBtn, #tocToggleBtn) {
 
 #glaucomaRAPDFullSwingInteractive #rapdFlashlightOff,
 #glaucomaRAPDFullSwingInteractive #rapdFlashlight {
-  transform: translate(-50%, -50%) scale(1.6, 1.18) !important;
+  width: clamp(44px, 4.5vw, 54px) !important;
+  height: auto !important;
+  transform: translate(-50%, -50%) !important;
   transform-origin: center !important;
 }
 
@@ -5611,4 +5613,24 @@ html.is-apple-ui :is(.eyes-topbar .menuBtn, .icon.menuBtn, #tocToggleBtn) {
     .medical-nested-section-card
   )[hidden] {
   display: none !important;
+}
+
+/* Keep the pickup instruction anchored to the Arclight at every breakpoint. */
+#glaucomaRAPDFullSwingInteractive #rapdBubble {
+  top: calc(56% - 145px) !important;
+  right: auto !important;
+  left: calc(95% + 19px) !important;
+  width: min(190px, 65%) !important;
+  transform: translate(-100%, -50%) !important;
+  z-index: 7 !important;
+}
+
+@media (max-width: 600px) {
+  #glaucomaRAPDFullSwingInteractive #rapdFlashlightOff {
+    left: 92% !important;
+  }
+
+  #glaucomaRAPDFullSwingInteractive #rapdBubble {
+    left: calc(92% + 19px) !important;
+  }
 }

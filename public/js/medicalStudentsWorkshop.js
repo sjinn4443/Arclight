@@ -1,6 +1,7 @@
 import { loadPage } from "./navigation.js";
 import { openMenu } from "./menu.js";
 import { initializeDiabeticScreeningScrollLessons } from "./diabeticRetinopathyWorkshop.js";
+import { initializeMedicalAnteriorSegmentCaseStudy } from "./medicalAnteriorSegmentCaseStudy.js";
 
 const PAGE_ID = "medicalStudentsWorkshopPage";
 const RAPD_RETURN_KEY = "medicalStudentsWorkshop:rapdReturn";
@@ -53,20 +54,6 @@ const VIDEO_TARGETS = new Set(
     .filter(([, route]) => route === "videos")
     .map(([target]) => target),
 );
-const PDF_TARGETS = new Set(
-  Object.entries(MEDICAL_TARGET_ROUTES)
-    .filter(([, route]) => route.toLowerCase().includes("pdf"))
-    .map(([target]) => target),
-);
-const VIDEO_GATED_TARGETS = new Set([
-  "medicalVisualSystemPage",
-  "mumVisionPage",
-  "howToUseArclightVideoPage",
-  "pupilFullExamPage",
-  "feFullAnteriorSegmentPage",
-  "fundalExamPage",
-  "directOphthalmoscopyVideoPage",
-]);
 const FLOW_ROUTES = new Set([
   "medicalStudentsWorkshop",
   "glaucomaScrollImages",
@@ -401,25 +388,8 @@ function removeMedicalNextButtons() {
   });
 }
 
-function readMedicalVideoProgress(targetId) {
-  try {
-    const record = JSON.parse(
-      localStorage.getItem(`videoProgress:${targetId}`) || "null",
-    );
-    const percent = Number(record?.percent || 0);
-    return Number.isFinite(percent) ? Math.max(0, Math.min(100, percent)) : 0;
-  } catch {
-    return 0;
-  }
-}
-
-function isMedicalNextReady(targetId) {
-  if (PDF_TARGETS.has(targetId)) return true;
-  const requiredPercent = targetId === "medicalVisualSystemPage" ? 60 : 100;
-  return (
-    !VIDEO_GATED_TARGETS.has(targetId) ||
-    readMedicalVideoProgress(targetId) >= requiredPercent
-  );
+function isMedicalNextReady() {
+  return true;
 }
 
 function syncMedicalNextReady(targetId) {
@@ -805,6 +775,7 @@ export function initializeMedicalStudentsWorkshop() {
   page.dataset.inited = "1";
   initializeMedicalStudentsWorkshopFlowInfra();
   initializeDiabeticScreeningScrollLessons();
+  initializeMedicalAnteriorSegmentCaseStudy();
   wireMedicalEmbeddedVideoProgress();
 
   document
@@ -836,6 +807,9 @@ export function initializeMedicalStudentsWorkshop() {
   };
 
   const showSection = (folder) => {
+    if (!folder || folder.getAttribute("aria-disabled") === "true") {
+      return null;
+    }
     const section = page.querySelector(
       `.medical-section-card[data-section="${folder?.dataset.folder}"]`,
     );
@@ -899,6 +873,7 @@ export function initializeMedicalStudentsWorkshop() {
   };
 
   folders.forEach((folder) => {
+    if (folder.getAttribute("aria-disabled") === "true") return;
     activateOnKeyboard(folder, (event) => {
       event.preventDefault();
       showSection(folder);

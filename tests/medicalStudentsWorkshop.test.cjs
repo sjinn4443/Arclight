@@ -21,8 +21,17 @@ describe("Medical Students workshop", () => {
       "1. Introduction",
       "2. Examine each Other",
       "3. Training",
-      "4. Test",
+      "4. Test (to be added)",
     ]);
+
+    const testFolder = document.querySelector(
+      '#medicalStudentsWorkshopFolders [data-folder="test"]',
+    );
+    expect(testFolder?.getAttribute("aria-disabled")).toBe("true");
+    expect(testFolder?.getAttribute("tabindex")).toBe("-1");
+    expect(testFolder?.querySelector(".lesson-cta")?.textContent.trim()).toBe(
+      "Coming soon",
+    );
   });
 
   test("uses the requested lesson-row types", () => {
@@ -164,7 +173,7 @@ describe("Medical Students workshop", () => {
     ).not.toBeNull();
   });
 
-  test("wires Previous and Next navigation for scroll and reused video pages", () => {
+  test("keeps Previous and Next active for scroll and reused video pages", () => {
     const workshopSource = fs.readFileSync(
       path.join(repoRoot, "public/js/medicalStudentsWorkshop.js"),
       "utf8",
@@ -180,14 +189,12 @@ describe("Medical Students workshop", () => {
     expect(workshopSource).toContain("howToUseArclightVideoPage: {");
     expect(childhoodFlowSource).toContain("isMedicalStudentsFlowEnabled()");
     expect(workshopSource).toContain("video.currentTime = 13");
-    expect(workshopSource).toContain("VIDEO_GATED_TARGETS");
-    expect(workshopSource).toContain(
-      'targetId === "medicalVisualSystemPage" ? 60 : 100',
+    expect(workshopSource).toContain("function isMedicalNextReady() {");
+    expect(workshopSource).toMatch(
+      /function isMedicalNextReady\(\) \{\s*return true;\s*\}/,
     );
-    expect(workshopSource).toContain("const PDF_TARGETS = new Set(");
-    expect(workshopSource).toContain(
-      "if (PDF_TARGETS.has(targetId)) return true;",
-    );
+    expect(workshopSource).not.toContain("VIDEO_GATED_TARGETS");
+    expect(workshopSource).not.toContain("readMedicalVideoProgress");
   });
 
   test("uses iPhone-compatible H.264 sources for How to Use Arclight", () => {
@@ -228,6 +235,13 @@ describe("Medical Students workshop", () => {
     expect(styles).toContain("@keyframes medical-growth-service-line");
     expect(styles).toContain("@keyframes medical-growth-population-line");
     expect(styles).toContain("@keyframes medical-growth-blindness-line");
+    expect(styles).toContain(".medical-growth-diagram__series--services");
+    expect(styles).toContain("left: 100%");
+    expect(styles).toContain("--medical-growth-angle: -38deg");
+    expect(styles).toContain("width: 84%");
+    expect(styles).toMatch(
+      /#medicalBlindnessPage \.medical-inverse-care-links \{[\s\S]*?grid-template-columns: repeat\(2, minmax\(0, 1fr\)\)/,
+    );
     expect(styles).toMatch(
       /#medicalHistoryTakingPage \.medical-socrates \{[\s\S]*?column-gap: 59px;/,
     );
@@ -274,7 +288,10 @@ describe("Medical Students workshop", () => {
     expect(barriers.querySelector(".medical-barrier-grid")).toBeNull();
     expect(barriers.querySelector(".medical-barrier-pair")).toBeNull();
     expect(blindness.querySelectorAll(".medical-cause-pie")).toHaveLength(7);
-    expect(blindness.querySelectorAll("figcaption")).toHaveLength(0);
+    expect(blindness.querySelectorAll("figcaption")).toHaveLength(1);
+    expect(blindness.querySelector("figcaption")?.textContent.trim()).toBe(
+      "Julian Tudor-Harts’s original model from Lancet in 1971",
+    );
     expect(diagnosis.querySelectorAll("figcaption")).toHaveLength(0);
     blindness.querySelectorAll(".medical-cause-pie").forEach((pie) => {
       expect(pie.textContent.trim()).toBe("");
@@ -282,6 +299,43 @@ describe("Medical Students workshop", () => {
     expect(
       blindness.querySelectorAll(".medical-growth-diagram__line"),
     ).toHaveLength(3);
+    blindness
+      .querySelectorAll(".medical-growth-diagram__series")
+      .forEach((series) => {
+        expect(
+          series.querySelector(".medical-growth-diagram__line"),
+        ).not.toBeNull();
+        expect(
+          series.querySelector(
+            ".medical-growth-diagram__services, .medical-growth-diagram__population, .medical-growth-diagram__blindness",
+          ),
+        ).not.toBeNull();
+      });
+
+    const journeyPanels = journey.querySelectorAll(".diabetic-screening-panel");
+    expect(
+      Array.from(
+        journeyPanels[1].querySelectorAll(".medical-flow span.is-active"),
+        (step) => step.textContent.trim(),
+      ),
+    ).toEqual(["Accessing healthcare", "Diagnosis"]);
+    expect(
+      Array.from(
+        journeyPanels[2].querySelectorAll(".medical-flow span.is-active"),
+        (step) => step.textContent.trim(),
+      ),
+    ).toEqual(["Referral", "Treatment"]);
+
+    const inverseLinks = Array.from(
+      blindness.querySelectorAll(".medical-inverse-care-links a"),
+    );
+    expect(inverseLinks).toHaveLength(2);
+    expect(inverseLinks[0].href).toBe(
+      "https://www.thelancet.com/journals/lancet/article/PIIS0140-6736%2821%2900505-5/fulltext",
+    );
+    expect(inverseLinks[1].href).toBe(
+      "https://www.viewsoftheworld.net/?p=4616",
+    );
     expect(
       visualSystem.querySelector('source[src$="Media1.mp4"]'),
     ).not.toBeNull();
@@ -442,6 +496,40 @@ describe("Medical Students workshop", () => {
         ?.getAttribute("src"),
     ).toBe("/images/pdf/Workshop/Childhood/FundalPDF.svg");
 
+    const distanceDemo = document.querySelector(
+      "#medicalVisualAcuityPracticePage .medical-distance-demo",
+    );
+    expect(
+      distanceDemo?.querySelector(".medical-distance-demo__image--3m")?.src,
+    ).toContain("/images/learning/MedicalStudents/Training/3m.webp");
+    expect(
+      distanceDemo?.querySelector(".medical-distance-demo__image--6m")?.src,
+    ).toContain("/images/learning/MedicalStudents/Training/6m.webp");
+    expect(
+      distanceDemo?.querySelector(".medical-distance-demo__badge--3m")
+        ?.textContent,
+    ).toBe("3m");
+    expect(
+      distanceDemo?.querySelector(".medical-distance-demo__badge--6m")
+        ?.textContent,
+    ).toBe("6m");
+
+    const styles = fs.readFileSync(
+      path.join(repoRoot, "public/style/pages.css"),
+      "utf8",
+    );
+    expect(styles).toMatch(
+      /\.is-current \.medical-distance-demo__image--6m[\s\S]*?medical-distance-demo-6m 16s linear infinite/,
+    );
+    expect(styles).toMatch(
+      /\.medical-distance-demo__badge \{[\s\S]*?width: 48px;[\s\S]*?border-radius: 12px;[\s\S]*?background: #f25600;[\s\S]*?color: #ffffff;/,
+    );
+    expect(styles).toMatch(
+      /@media \(max-width: 47\.98em\) \{[\s\S]*?\.medical-distance-demo__badge \{[\s\S]*?top: auto;[\s\S]*?bottom: 10px;[\s\S]*?width: 32px;[\s\S]*?font-size: 11px;/,
+    );
+    expect(styles).toContain("@keyframes medical-distance-demo-3m");
+    expect(styles).toContain("@keyframes medical-distance-demo-6m");
+
     const workshopSource = fs.readFileSync(
       path.join(repoRoot, "public/js/medicalStudentsWorkshop.js"),
       "utf8",
@@ -519,22 +607,51 @@ describe("Medical Students workshop", () => {
     expect(html).not.toContain("Direct Ophthalmoscopy Macula SIM Eyes");
   });
 
-  test("shows the supplied Anterior Segment image in a PDF-style page", () => {
+  test("uses the Anterior Segment case-chat layout without timers or inputs", () => {
     const anteriorPage = document.getElementById("medicalAnteriorSegmentPage");
-    const image = anteriorPage?.querySelector(
-      ".core-examination-pdf-viewer img",
-    );
-
     expect(anteriorPage?.classList.contains("core-examination-pdf-page")).toBe(
-      true,
+      false,
     );
-    expect(image?.getAttribute("src")).toBe(
-      "/images/learning/MedicalStudents/Training/anterior-segment-reference.png",
+    expect(
+      anteriorPage?.querySelector("#medicalAnteriorCaseChatLog.casechat-log"),
+    ).not.toBeNull();
+    expect(
+      anteriorPage
+        ?.querySelector("#medicalAnteriorAnswerBtn")
+        ?.textContent.trim(),
+    ).toBe("See all");
+    expect(
+      Array.from(
+        anteriorPage?.querySelectorAll("[data-medical-answer-section]") || [],
+        ({ textContent }) => textContent.trim(),
+      ),
+    ).toEqual(["Signs", "Diagnosis", "Action"]);
+    expect(
+      anteriorPage?.querySelector(
+        ".caseTimer, #caseChatChoices, #caseChatDraft, .casechat-composer",
+      ),
+    ).toBeNull();
+
+    const caseStudySource = fs.readFileSync(
+      path.join(repoRoot, "public/js/medicalAnteriorSegmentCaseStudy.js"),
+      "utf8",
     );
+    expect(caseStudySource).toContain(
+      'prompt.textContent = "look for signs, diagnosis and action"',
+    );
+    expect(caseStudySource).toContain(
+      "`/images/casestudy/case${caseData.id}_eye.webp`",
+    );
+    expect(caseStudySource).not.toContain("Math.random");
+    expect(caseStudySource).not.toContain("setInterval");
+    expect(caseStudySource).not.toContain("setTimeout");
 
     const workshopSource = fs.readFileSync(
       path.join(repoRoot, "public/js/medicalStudentsWorkshop.js"),
       "utf8",
+    );
+    expect(workshopSource).toContain(
+      "initializeMedicalAnteriorSegmentCaseStudy();",
     );
     [
       "medicalAnteriorSegmentPage",
@@ -601,12 +718,52 @@ describe("Medical Students workshop", () => {
     );
   });
 
-  test("keeps only the Pupils row in Test", () => {
+  test("keeps the unfinished Test folder non-interactive", () => {
     const testLabels = Array.from(
       document.querySelectorAll('[data-section="test"] .lesson-type'),
       (element) => element.textContent.trim(),
     );
     expect(testLabels).toEqual(["Pupils"]);
+
+    const workshopSource = fs.readFileSync(
+      path.join(repoRoot, "public/js/medicalStudentsWorkshop.js"),
+      "utf8",
+    );
+    expect(workshopSource).toContain(
+      'if (folder.getAttribute("aria-disabled") === "true") return;',
+    );
+  });
+
+  test("anchors the pickup bubble to the Arclight and shows it in Test mode", () => {
+    const rapdHtml = fs.readFileSync(
+      path.join(repoRoot, "public/html/glaucomascrollImages.html"),
+      "utf8",
+    );
+    const glaucomaSource = fs.readFileSync(
+      path.join(repoRoot, "public/js/glaucomaWorkshop.js"),
+      "utf8",
+    );
+    const responsiveStyles = fs.readFileSync(
+      path.join(repoRoot, "public/style/responsive.css"),
+      "utf8",
+    );
+
+    expect(rapdHtml.match(/GlaucomaRAPD\/arclight\.webp/g)).toHaveLength(2);
+    expect(rapdHtml).not.toContain("GlaucomaRAPD/flashlight.webp");
+    expect(glaucomaSource).toContain('if (bubble) bubble.style.display = "";');
+    expect(glaucomaSource).not.toContain(
+      'bubble.style.display = isTestMode ? "none" : ""',
+    );
+    expect(responsiveStyles).toMatch(
+      /#glaucomaRAPDFullSwingInteractive #rapdBubble \{[\s\S]*?left: calc\(95% \+ 19px\) !important;[\s\S]*?translate\(-100%, -50%\)[\s\S]*?z-index: 7 !important/,
+    );
+    expect(responsiveStyles).toContain(
+      "width: clamp(44px, 4.5vw, 54px) !important;",
+    );
+    expect(responsiveStyles).toContain(
+      "transform: translate(-50%, -50%) !important;",
+    );
+    expect(responsiveStyles).not.toContain("scale(1.6, 1.18)");
   });
 
   test("uses a blank black Eyes card and preserves the RAPD return origin", () => {

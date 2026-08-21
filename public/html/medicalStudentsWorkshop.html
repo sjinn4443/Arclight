@@ -66,18 +66,19 @@
             <span class="lesson-cta">See all &gt;</span>
           </div>
           <div
-            class="lesson-row lesson-row--folder medical-folder-row"
+            class="lesson-row lesson-row--folder medical-folder-row is-disabled"
             data-folder="test"
+            aria-disabled="true"
             role="button"
-            tabindex="0"
+            tabindex="-1"
           >
             <div class="thumb" aria-hidden="true"></div>
             <div class="lesson-main">
               <div class="lesson-top">
-                <span class="lesson-type">4. Test</span>
+                <span class="lesson-type">4. Test (to be added)</span>
               </div>
             </div>
-            <span class="lesson-cta">See all &gt;</span>
+            <span class="lesson-cta">Coming soon</span>
           </div>
         </div>
 
@@ -819,10 +820,10 @@
   </div>
 </div>
 
-<!-- Medical Students: Anterior Segment reference image -->
+<!-- Medical Students: Anterior Segment case study -->
 <div
   id="medicalAnteriorSegmentPage"
-  class="page has-eyes-topbar core-examination-pdf-page medical-students-scroll-page medical-anterior-segment-page"
+  class="page has-eyes-topbar medical-students-scroll-page medical-anterior-segment-page"
   style="display: none"
 >
   <div class="container pupils-container">
@@ -832,14 +833,45 @@
         <span class="icon menuBtn" aria-label="Menu">&#9776;</span>
       </div>
     </div>
+
     <div
-      class="core-examination-pdf-viewer medical-anterior-segment-viewer"
-      aria-label="Anterior Segment reference image"
-    >
-      <img
-        src="/images/learning/MedicalStudents/Training/anterior-segment-reference.png"
-        alt="Anterior segment examination findings numbered 1 to 12"
-      />
+      id="medicalAnteriorCaseChatLog"
+      class="casechat-log"
+      aria-live="polite"
+      aria-label="Anterior segment case study"
+    ></div>
+
+    <div class="casechat-footer" aria-label="Case answer controls">
+      <div class="medical-anterior-section-controls" role="group">
+        <button
+          class="medical-anterior-section-btn"
+          type="button"
+          data-medical-answer-section="signs"
+        >
+          Signs
+        </button>
+        <button
+          class="medical-anterior-section-btn"
+          type="button"
+          data-medical-answer-section="diagnosis"
+        >
+          Diagnosis
+        </button>
+        <button
+          class="medical-anterior-section-btn"
+          type="button"
+          data-medical-answer-section="action"
+        >
+          Action
+        </button>
+      </div>
+      <button
+        id="medicalAnteriorAnswerBtn"
+        class="casechat-submitpill"
+        type="button"
+      >
+        See all
+      </button>
     </div>
   </div>
 </div>
@@ -938,6 +970,33 @@
               seen.
             </p>
           </div>
+          <figure
+            class="medical-distance-demo"
+            aria-label="Visual acuity testing alternating between three metres and six metres every eight seconds"
+          >
+            <img
+              class="medical-distance-demo__image medical-distance-demo__image--3m"
+              src="/images/learning/MedicalStudents/Training/3m.webp"
+              alt="Visual acuity testing and Snellen documentation at 3 metres"
+              loading="lazy"
+            />
+            <img
+              class="medical-distance-demo__image medical-distance-demo__image--6m"
+              src="/images/learning/MedicalStudents/Training/6m.webp"
+              alt="Visual acuity testing and Snellen documentation at 6 metres"
+              loading="lazy"
+            />
+            <span
+              class="medical-distance-demo__badge medical-distance-demo__badge--3m"
+              aria-hidden="true"
+              >3m</span
+            >
+            <span
+              class="medical-distance-demo__badge medical-distance-demo__badge--6m"
+              aria-hidden="true"
+              >6m</span
+            >
+          </figure>
         </article>
         <article
           class="diabetic-screening-panel diabetic-screening-panel--callout diabetic-screening-panel--content-fit"
@@ -1207,13 +1266,13 @@
           </div>
           <div
             class="medical-flow medical-flow--journey"
-            aria-label="Patient journey with accessing healthcare, diagnosis and referral highlighted"
+            aria-label="Patient journey with accessing healthcare and diagnosis highlighted"
           >
             <span>Recognising the problem</span><b aria-hidden="true"></b>
             <span>Deciding to seek care</span><b aria-hidden="true"></b>
             <span class="is-active">Accessing healthcare</span
             ><b aria-hidden="true"></b> <span class="is-active">Diagnosis</span
-            ><b aria-hidden="true"></b> <span class="is-active">Referral</span
+            ><b aria-hidden="true"></b> <span>Referral</span
             ><b aria-hidden="true"></b>
             <span>Treatment</span>
           </div>
@@ -1232,13 +1291,13 @@
           </div>
           <div
             class="medical-flow medical-flow--journey"
-            aria-label="Patient journey with treatment highlighted"
+            aria-label="Patient journey with referral and treatment highlighted"
           >
             <span>Recognising the problem</span><b aria-hidden="true"></b>
             <span>Deciding to seek care</span><b aria-hidden="true"></b>
             <span>Accessing healthcare</span><b aria-hidden="true"></b>
             <span>Diagnosis</span><b aria-hidden="true"></b>
-            <span>Referral</span><b aria-hidden="true"></b>
+            <span class="is-active">Referral</span><b aria-hidden="true"></b>
             <span class="is-active">Treatment</span>
           </div>
         </article>
@@ -1486,18 +1545,33 @@
             role="img"
             aria-label="Population growth exceeds service growth, increasing blindness"
           >
-            <i
-              class="medical-growth-diagram__line medical-growth-diagram__line--services"
-            ></i>
-            <i
-              class="medical-growth-diagram__line medical-growth-diagram__line--population"
-            ></i>
-            <i
-              class="medical-growth-diagram__line medical-growth-diagram__line--blindness"
-            ></i>
-            <span class="medical-growth-diagram__services">Services</span>
-            <span class="medical-growth-diagram__population">Population</span>
-            <span class="medical-growth-diagram__blindness">Blindness</span>
+            <div
+              class="medical-growth-diagram__series medical-growth-diagram__series--services"
+            >
+              <i
+                class="medical-growth-diagram__line medical-growth-diagram__line--services"
+                aria-hidden="true"
+              ></i>
+              <span class="medical-growth-diagram__services">Services</span>
+            </div>
+            <div
+              class="medical-growth-diagram__series medical-growth-diagram__series--population"
+            >
+              <i
+                class="medical-growth-diagram__line medical-growth-diagram__line--population"
+                aria-hidden="true"
+              ></i>
+              <span class="medical-growth-diagram__population">Population</span>
+            </div>
+            <div
+              class="medical-growth-diagram__series medical-growth-diagram__series--blindness"
+            >
+              <i
+                class="medical-growth-diagram__line medical-growth-diagram__line--blindness"
+                aria-hidden="true"
+              ></i>
+              <span class="medical-growth-diagram__blindness">Blindness</span>
+            </div>
           </div>
         </article>
         <article class="diabetic-screening-panel" data-diabetic-scroll-step>
@@ -1510,13 +1584,43 @@
               even within high-resource countries.
             </p>
           </div>
-          <figure class="medical-powerpoint-full-image">
-            <img
-              src="/images/learning/MedicalStudents/Introduction/inverse-care-and-maps.png"
-              alt="PowerPoint images illustrating the inverse care law and world cartograms contrasting glaucoma blindness with ophthalmologist availability"
-              loading="lazy"
-            />
-          </figure>
+          <div class="medical-inverse-care-media">
+            <figure
+              class="medical-powerpoint-full-image medical-powerpoint-full-image--plain"
+            >
+              <img
+                src="/images/learning/MedicalStudents/Introduction/inverse-care-and-maps.png"
+                alt="PowerPoint images illustrating the inverse care law and world cartograms contrasting glaucoma blindness with ophthalmologist availability"
+                loading="lazy"
+              />
+              <figcaption>
+                Julian Tudor-Harts’s original model from Lancet in 1971
+              </figcaption>
+            </figure>
+            <div class="medical-inverse-care-links">
+              <a
+                class="diabetic-protocol-link"
+                href="https://www.thelancet.com/journals/lancet/article/PIIS0140-6736%2821%2900505-5/fulltext"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <span>50 years of the inverse care law</span>
+                <i aria-hidden="true">&gt;</i>
+              </a>
+              <a
+                class="diabetic-protocol-link"
+                href="https://www.viewsoftheworld.net/?p=4616"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <span
+                  >The global inverse care law: a distorted map of
+                  blindness</span
+                >
+                <i aria-hidden="true">&gt;</i>
+              </a>
+            </div>
+          </div>
         </article>
       </div>
     </section>
