@@ -636,9 +636,11 @@ describe("Medical Students workshop", () => {
       path.join(repoRoot, "public/js/medicalAnteriorSegmentCaseStudy.js"),
       "utf8",
     );
+    expect(caseStudySource).toContain('prefix: "SIGNS: Look for "');
     expect(caseStudySource).toContain(
-      'prompt.textContent = "look for signs, diagnosis and action"',
+      'prefix: "DIAGNOSIS: Make a differential "',
     );
+    expect(caseStudySource).toContain('prefix: "ACTION: Decide on an "');
     expect(caseStudySource).toContain(
       "`/images/casestudy/case${caseData.id}_eye.webp`",
     );

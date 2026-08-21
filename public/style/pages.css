@@ -4037,6 +4037,19 @@ select.onb-input.has-value + .onb-select-caret {
 
 #medicalAnteriorSegmentPage .casechat-learning-prompt {
   margin-top: 5px;
+  color: rgba(0, 0, 0, 0.75);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.45;
+  text-align: left;
+}
+
+#medicalAnteriorSegmentPage .medical-anterior-prompt-line {
+  display: block;
+}
+
+#medicalAnteriorSegmentPage .medical-anterior-prompt-line strong {
+  font-weight: 800;
 }
 
 #medicalAnteriorSegmentPage .casechat-botstack {

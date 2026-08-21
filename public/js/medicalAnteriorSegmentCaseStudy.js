@@ -177,8 +177,29 @@ function appendSystemMessage(log, caseNumber) {
   caseIndex.appendChild(caseCount);
 
   const prompt = document.createElement("div");
-  prompt.className = "casechat-caseindex casechat-learning-prompt";
-  prompt.textContent = "look for signs, diagnosis and action";
+  prompt.className = "casechat-learning-prompt";
+  [
+    { prefix: "SIGNS: Look for ", emphasis: "signs" },
+    {
+      prefix: "DIAGNOSIS: Make a differential ",
+      emphasis: "diagnosis",
+    },
+    {
+      prefix: "ACTION: Decide on an ",
+      emphasis: "action",
+      suffix: " plan",
+    },
+  ].forEach(({ prefix, emphasis, suffix = "" }) => {
+    const line = document.createElement("span");
+    line.className = "medical-anterior-prompt-line";
+    line.appendChild(document.createTextNode(prefix));
+
+    const strong = document.createElement("strong");
+    strong.textContent = emphasis;
+    line.appendChild(strong);
+    line.appendChild(document.createTextNode(suffix));
+    prompt.appendChild(line);
+  });
 
   system.append(caseIndex, prompt);
   bubble.appendChild(system);

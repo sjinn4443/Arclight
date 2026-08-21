@@ -81,9 +81,22 @@ describe("Medical Students anterior segment case study", () => {
       "medicalAnteriorCaseChatLog",
     );
     expect(page.dataset.currentCase).toBe("1");
-    expect(log.querySelector(".casechat-learning-prompt")?.textContent).toBe(
-      "look for signs, diagnosis and action",
-    );
+    const prompt = log.querySelector(".casechat-learning-prompt");
+    expect(
+      Array.from(
+        prompt.querySelectorAll(".medical-anterior-prompt-line"),
+        ({ textContent }) => textContent,
+      ),
+    ).toEqual([
+      "SIGNS: Look for signs",
+      "DIAGNOSIS: Make a differential diagnosis",
+      "ACTION: Decide on an action plan",
+    ]);
+    expect(
+      Array.from(prompt.querySelectorAll("strong"), ({ textContent }) =>
+        textContent.trim(),
+      ),
+    ).toEqual(["signs", "diagnosis", "action"]);
     expect(log.querySelector(".casechat-img")?.getAttribute("src")).toBe(
       "/images/casestudy/case1_eye.webp",
     );
