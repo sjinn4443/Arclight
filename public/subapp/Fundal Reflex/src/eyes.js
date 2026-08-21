@@ -16,7 +16,7 @@ import {
   getIrisColourValue,
   syncDeviationDrivenReflexBoost,
   updateIrisTransform,
-} from "./eyes-layout.js?v=20260430-1";
+} from "./eyes-layout.js?v=20260821-1";
 import { REFRACTION_VALUES } from "./retinoscopy-case-metadata.js?v=20260430-3";
 
 export function createEyesController({ state, dom, onEyeGeometryChange }) {

@@ -39,13 +39,6 @@ export function getBrightenedReflexFillValue({
   return `rgb(${brightColor.r}, ${brightColor.g}, ${brightColor.b})`;
 }
 
-export function getIrisHalfSize(iris) {
-  return {
-    halfWidthPx: (iris.offsetWidth || 80) / 2,
-    halfHeightPx: (iris.offsetHeight || 80) / 2,
-  };
-}
-
 export function getDeviationBoostFactor(iris) {
   if (!iris) {
     return 1;
@@ -77,10 +70,14 @@ export function applyIrisLayoutPosition(iris) {
 
   const caseOffset = iris.caseOffset || { x: 0, y: 0 };
   const manualOffset = iris.manualOffset || { x: 0, y: 0 };
-  const { halfWidthPx, halfHeightPx } = getIrisHalfSize(iris);
-
-  iris.style.left = `calc(50% - ${halfWidthPx}px + ${caseOffset.x + manualOffset.x}px)`;
-  iris.style.top = `calc(50% - ${halfHeightPx}px + ${caseOffset.y + manualOffset.y}px)`;
+  iris.style.setProperty(
+    "--iris-layout-x",
+    `${caseOffset.x + manualOffset.x}px`,
+  );
+  iris.style.setProperty(
+    "--iris-layout-y",
+    `${caseOffset.y + manualOffset.y}px`,
+  );
 }
 
 export function setManualDragReflexBoost(iris, factor) {

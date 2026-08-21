@@ -1,4 +1,4 @@
-import { initApp } from "./src/app.js?v=20260502-1";
+import { initApp } from "./src/app.js?v=20260821-1";
 
 function startApp() {
   initApp();

@@ -123,12 +123,14 @@ body:not(.app-ready) .eyes-wrapper {
 
 .iris {
   --light-pupil-scale: 1;
+  --iris-layout-x: 0px;
+  --iris-layout-y: 0px;
   position: absolute;
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  left: calc(50% - 40px);
-  top: calc(50% - 40px);
+  left: calc(50% - 40px + var(--iris-layout-x));
+  top: calc(50% - 40px + var(--iris-layout-y));
   background: #000000;
   transition:
     background 0.3s ease,

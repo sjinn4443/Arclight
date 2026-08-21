@@ -2727,7 +2727,7 @@
     return getCaseFlags(currentRefraction);
   }
 
-  // src/eyes-layout.js?v=20260430-1
+  // src/eyes-layout.js?v=20260821-1
   function getEffectiveBaseReflexColor(currentRefraction, baseReflexColor) {
     if (currentRefraction === REFRACTION_VALUES.BILATERAL_BLUE_NORMAL) {
       return BLUE_END_REFLEX_COLOR;
@@ -2751,12 +2751,6 @@
       factor,
     );
     return `rgb(${brightColor.r}, ${brightColor.g}, ${brightColor.b})`;
-  }
-  function getIrisHalfSize(iris) {
-    return {
-      halfWidthPx: (iris.offsetWidth || 80) / 2,
-      halfHeightPx: (iris.offsetHeight || 80) / 2,
-    };
   }
   function getDeviationBoostFactor(iris) {
     if (!iris) {
@@ -2785,9 +2779,14 @@
     }
     const caseOffset = iris.caseOffset || { x: 0, y: 0 };
     const manualOffset = iris.manualOffset || { x: 0, y: 0 };
-    const { halfWidthPx, halfHeightPx } = getIrisHalfSize(iris);
-    iris.style.left = `calc(50% - ${halfWidthPx}px + ${caseOffset.x + manualOffset.x}px)`;
-    iris.style.top = `calc(50% - ${halfHeightPx}px + ${caseOffset.y + manualOffset.y}px)`;
+    iris.style.setProperty(
+      "--iris-layout-x",
+      `${caseOffset.x + manualOffset.x}px`,
+    );
+    iris.style.setProperty(
+      "--iris-layout-y",
+      `${caseOffset.y + manualOffset.y}px`,
+    );
   }
   function setManualDragReflexBoost(iris, factor) {
     const eye = iris == null ? void 0 : iris.closest(".eye");
@@ -2930,7 +2929,7 @@
     }
   }
 
-  // src/eyes.js?v=20260430-9
+  // src/eyes.js?v=20260821-1
   function createEyesController({ state, dom, onEyeGeometryChange }) {
     const NORMAL_PUPIL_SIZE = 32;
     const DILATED_PUPIL_SIZE = 46;
@@ -10067,7 +10066,7 @@
     };
   }
 
-  // src/app.js?v=20260502-1
+  // src/app.js?v=20260821-1
   var CASE_NYSTAGMUS_SETTINGS = {
     "bilateral-aniridia": {
       direction: "horizontal",
