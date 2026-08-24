@@ -15,6 +15,13 @@ END
 $role$;
 
 GRANT CONNECT ON DATABASE railway TO arclight_reporting_readonly;
+REVOKE CREATE ON DATABASE railway FROM arclight_reporting_readonly;
+REVOKE CREATE ON SCHEMA public FROM arclight_reporting_readonly;
+REVOKE ALL PRIVILEGES ON ALL TABLES IN SCHEMA public
+FROM arclight_reporting_readonly;
+REVOKE ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public
+FROM arclight_reporting_readonly;
+
 GRANT USAGE ON SCHEMA public TO arclight_reporting_readonly;
 GRANT SELECT ON TABLE
   public.app_users,
