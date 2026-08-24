@@ -9688,6 +9688,10 @@ Glaucoma history case study: match intermediate style
   touch-action: none;
 }
 
+#glaucomaRAPDFullSwingInteractive .eyes-topbar .menuBtn {
+  display: none !important;
+}
+
 #glaucomaRAPDFullSwingInteractive #rapdEyesImg {
   position: absolute;
   left: 50%;
@@ -9747,7 +9751,7 @@ Glaucoma history case study: match intermediate style
   line-height: 1.25;
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
   pointer-events: none;
-  z-index: 7;
+  z-index: 10001;
 }
 
 #glaucomaRAPDFullSwingInteractive #rapdBubble::after {
@@ -9976,7 +9980,7 @@ body[data-rapd-orientation-notice-open="true"] {
 #glaucomaRAPDFullSwingInteractive .rapd-diagnosisControls {
   position: absolute;
   inset: 14px 16px auto;
-  z-index: 10002;
+  z-index: 10000;
   display: flex;
   align-items: center;
   justify-content: flex-end;

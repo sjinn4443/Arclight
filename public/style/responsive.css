@@ -5615,6 +5615,29 @@ html.is-apple-ui :is(.eyes-topbar .menuBtn, .icon.menuBtn, #tocToggleBtn) {
   display: none !important;
 }
 
+@media (max-width: 37.5em) {
+  #medicalStudentsWorkshopPage .lesson-row .lesson-main {
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+
+  #medicalStudentsWorkshopPage .lesson-row .lesson-top {
+    min-width: 0 !important;
+    width: calc(100% - 25px) !important;
+    max-width: calc(100% - 25px) !important;
+  }
+
+  #medicalStudentsWorkshopPage .lesson-row .lesson-type {
+    display: block !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    overflow-wrap: break-word !important;
+    word-break: normal !important;
+    white-space: normal !important;
+    text-wrap: pretty;
+  }
+}
+
 /* Keep the pickup instruction anchored to the Arclight at every breakpoint. */
 #glaucomaRAPDFullSwingInteractive #rapdBubble {
   top: calc(56% - 145px) !important;
@@ -5622,7 +5645,7 @@ html.is-apple-ui :is(.eyes-topbar .menuBtn, .icon.menuBtn, #tocToggleBtn) {
   left: calc(95% + 19px) !important;
   width: min(190px, 65%) !important;
   transform: translate(-100%, -50%) !important;
-  z-index: 7 !important;
+  z-index: 10001 !important;
 }
 
 @media (max-width: 600px) {

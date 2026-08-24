@@ -23829,6 +23829,10 @@ img[src*="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/"] {
   text-align: left;
 }
 
+#medicalBlindnessPage .medical-inverse-care-crop {
+  display: none;
+}
+
 #medicalBlindnessPage .diabetic-protocol-link {
   box-sizing: border-box;
   width: 100%;
@@ -23848,6 +23852,84 @@ img[src*="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/"] {
   background: #ffffff;
   color: #f25600;
   font-size: 13px;
+}
+
+.medical-external-link-dialog[hidden] {
+  display: none;
+}
+
+.medical-external-link-dialog {
+  position: fixed;
+  z-index: 13000;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  padding: 20px;
+  background: rgba(15, 23, 42, 0.62);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+.medical-external-link-dialog__card {
+  box-sizing: border-box;
+  width: min(92vw, 390px);
+  padding: 24px;
+  border-radius: 22px;
+  background: #ffffff;
+  color: #111827;
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.32);
+}
+
+.medical-external-link-dialog__card h2 {
+  margin: 0 0 10px;
+  font-size: 21px;
+  line-height: 1.2;
+}
+
+.medical-external-link-dialog__card p {
+  margin: 0;
+  color: #475569;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.medical-external-link-dialog__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.medical-external-link-dialog__actions :is(button, a) {
+  display: inline-flex;
+  min-height: 42px;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 9px 17px;
+  border: 0;
+  border-radius: 999px;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 750;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.medical-external-link-dialog__actions button {
+  background: #e2e8f0;
+  color: #334155;
+}
+
+.medical-external-link-dialog__actions a {
+  background: #f25600;
+  color: #ffffff;
+}
+
+.medical-external-link-dialog__actions :is(button, a):focus-visible {
+  outline: 3px solid rgba(242, 86, 0, 0.32);
+  outline-offset: 3px;
 }
 
 .medical-visual-reference-panel {
@@ -24126,7 +24208,7 @@ img[src*="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/"] {
 }
 
 #medicalObjectivesPage .diabetic-screening-panel,
-#medicalTimetableContentPage .diabetic-screening-panel:nth-child(n + 2),
+#medicalOverviewPage .diabetic-screening-panel:nth-child(n + 4),
 #medicalPatientJourneyPage .diabetic-screening-panel,
 #medicalBarriersPage .diabetic-screening-panel,
 #medicalDiagnosisEyeDiseasePage .diabetic-screening-panel:first-child,
@@ -24140,7 +24222,9 @@ img[src*="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/"] {
 }
 
 #medicalObjectivesPage .diabetic-screening-panel__text,
-#medicalTimetableContentPage .diabetic-screening-panel__text,
+#medicalOverviewPage
+  .diabetic-screening-panel:nth-child(n + 3)
+  .diabetic-screening-panel__text,
 #medicalPatientJourneyPage .diabetic-screening-panel__text,
 #medicalBarriersPage .diabetic-screening-panel__text,
 #medicalDiagnosisEyeDiseasePage
@@ -24404,6 +24488,31 @@ img[src*="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/"] {
 }
 
 @media (max-width: 47.98em) {
+  #medicalBlindnessPage .medical-inverse-care-combined-image {
+    display: none;
+  }
+
+  #medicalBlindnessPage .medical-inverse-care-crop {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1;
+    overflow: hidden;
+    border-radius: 18px;
+    background: #ffffff;
+  }
+
+  #medicalBlindnessPage .medical-inverse-care-crop img {
+    display: block;
+    width: 200%;
+    max-width: none;
+    height: auto;
+    border-radius: 0;
+  }
+
+  #medicalBlindnessPage .medical-inverse-care-crop--maps img {
+    transform: translateX(-50%);
+  }
+
   #medicalHistoryTakingPage .medical-socrates {
     grid-template-rows: none;
     grid-auto-flow: row;

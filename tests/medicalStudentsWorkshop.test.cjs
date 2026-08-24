@@ -39,7 +39,7 @@ describe("Medical Students workshop", () => {
       document.querySelectorAll(
         '[data-section="introduction"] .lesson-row--scroll',
       ),
-    ).toHaveLength(11);
+    ).toHaveLength(10);
     expect(
       document.querySelectorAll(
         '[data-section="examineEachOther"] .medical-nested-folder-row',
@@ -106,7 +106,7 @@ describe("Medical Students workshop", () => {
     );
 
     expect(nestedFolderLabels).toEqual([
-      "Introduction",
+      "Getting Started",
       "Eye Disease & Blindness: High v Low Resource Settings",
       "Anatomy & Physiology Vision",
       "Examination Tools",
@@ -130,7 +130,6 @@ describe("Medical Students workshop", () => {
     expect(labelsFor("introductionOverview")).toEqual([
       "Overview",
       "Objectives",
-      "Timetable and Content",
     ]);
     expect(labelsFor("eyeDiseaseBlindness")).toEqual([
       "Patient Journey",
@@ -158,7 +157,6 @@ describe("Medical Students workshop", () => {
     const pageIds = [
       "medicalOverviewPage",
       "medicalObjectivesPage",
-      "medicalTimetableContentPage",
       "medicalPatientJourneyPage",
       "medicalBarriersPage",
       "medicalDiagnosisEyeDiseasePage",
@@ -288,7 +286,6 @@ describe("Medical Students workshop", () => {
 
   test("applies the requested Introduction page refinements", () => {
     const overview = document.getElementById("medicalOverviewPage");
-    const timetable = document.getElementById("medicalTimetableContentPage");
     const journey = document.getElementById("medicalPatientJourneyPage");
     const barriers = document.getElementById("medicalBarriersPage");
     const blindness = document.getElementById("medicalBlindnessPage");
@@ -300,22 +297,22 @@ describe("Medical Students workshop", () => {
     const arclight = document.getElementById("medicalArclightScrollPage");
 
     expect(overview.querySelectorAll(".diabetic-screening-panel")).toHaveLength(
-      2,
+      5,
     );
     expect(
       Array.from(
         overview.querySelectorAll(".diabetic-screening-step"),
         (step) => step.textContent.trim(),
       ),
-    ).toEqual(["01", "02"]);
+    ).toEqual(["01", "02", "03", "04", "05"]);
     expect(overview.textContent).not.toContain("Follow the patient");
     expect(overview.textContent).toContain("The day combines");
     expect(
       overview.querySelectorAll(".medical-workshop-arc__stage"),
     ).toHaveLength(4);
-    expect(timetable.textContent).not.toContain("A structured day");
-    expect(timetable.textContent).toContain("Morning session");
-    expect(timetable.textContent).toContain("Afternoon session");
+    expect(overview.textContent).not.toContain("A structured day");
+    expect(overview.textContent).toContain("Morning session");
+    expect(overview.textContent).toContain("Afternoon session");
     expect(journey.querySelectorAll(".medical-flow--journey")).toHaveLength(3);
     journey.querySelectorAll(".medical-flow--journey").forEach((flow) => {
       expect(flow.querySelectorAll("span")).toHaveLength(6);
@@ -372,9 +369,37 @@ describe("Medical Students workshop", () => {
     expect(inverseLinks[1].href).toBe(
       "https://www.viewsoftheworld.net/?p=4616",
     );
+    inverseLinks.forEach((link) => {
+      expect(link.hasAttribute("data-medical-external-link")).toBe(true);
+    });
+    expect(blindness.textContent).toContain(
+      "Each pages build this chart one cause at a time.",
+    );
+    expect(blindness.textContent).toContain(
+      "Routine fundal reflex examination",
+    );
+    expect(blindness.textContent).not.toContain("fundal red reflex");
+    expect(
+      blindness.querySelectorAll(".medical-inverse-care-crop"),
+    ).toHaveLength(2);
+    expect(
+      blindness.querySelector("#medicalExternalLinkDialog"),
+    ).not.toBeNull();
     expect(
       visualSystem.querySelector('source[src$="Media1.mp4"]'),
     ).not.toBeNull();
+    expect(
+      visualSystem.querySelector('source[src$="visualfieldloss.mp4"]'),
+    ).not.toBeNull();
+    expect(
+      visualSystem.querySelector('img[src$="visual-fields.png"]'),
+    ).toBeNull();
+    expect(
+      Array.from(
+        visualSystem.querySelectorAll(".diabetic-screening-step"),
+        (step) => step.textContent.trim(),
+      ),
+    ).toEqual(["01", "02", "03", "04"]);
     expect(visualSystem.querySelectorAll("figcaption")).toHaveLength(0);
     expect(
       visualDevelopment
@@ -397,6 +422,7 @@ describe("Medical Students workshop", () => {
     );
     const linkedTargets = [
       "visualAcuityPdfPage",
+      "vaWhoPage",
       "pupilsPecPdfPage",
       "pupilFullExamPage",
       "pupilsAdvancedPdfPage",
@@ -444,8 +470,16 @@ describe("Medical Students workshop", () => {
 
     expect(labelsFor("visualAcuity")).toEqual([
       "Visual Acuity PDF",
+      "Visual Acuity",
       "Practice",
     ]);
+    const visualAcuityVideo = document.querySelector(
+      '[data-nested-section="visualAcuity"] [data-target="vaWhoPage"]',
+    );
+    expect(visualAcuityVideo?.dataset.route).toBe("videos");
+    expect(visualAcuityVideo?.classList.contains("lesson-row--video")).toBe(
+      true,
+    );
     expect(labelsFor("pupilsAnterior")).toEqual([
       "Pupils PEC PDF",
       "Pupils Examination",
@@ -716,6 +750,10 @@ describe("Medical Students workshop", () => {
       path.join(repoRoot, "public/style/pages.css"),
       "utf8",
     );
+    const responsiveStyles = fs.readFileSync(
+      path.join(repoRoot, "public/style/responsive.css"),
+      "utf8",
+    );
 
     expect(workshopSource).toContain(
       'section.classList.add("medical-nested-folder-open")',
@@ -727,6 +765,12 @@ describe("Medical Students workshop", () => {
       "#medicalStudentsWorkshopPage .medical-nested-section-card > h3",
     );
     expect(styles).toContain("width: 72%");
+    expect(responsiveStyles).not.toMatch(
+      /#medicalStudentsWorkshopPage\s+:is\(\s*\.medical-workshop-folders,[\s\S]*?\)\s+\.lesson-row\s*\{/,
+    );
+    expect(responsiveStyles).toMatch(
+      /#medicalStudentsWorkshopPage \.lesson-row \.lesson-main \{[\s\S]*?min-width: 0 !important;/,
+    );
   });
 
   test("uses Medical Students RAPD navigation and restores the global back button", () => {
@@ -773,7 +817,7 @@ describe("Medical Students workshop", () => {
     expect(workshopSource).toContain("home: FOCUS.test");
   });
 
-  test("anchors the pickup bubble to the Arclight and shows it in Test mode", () => {
+  test("keeps the Pupil App pickup UI above controls and at the pointer", () => {
     const rapdHtml = fs.readFileSync(
       path.join(repoRoot, "public/html/glaucomascrollImages.html"),
       "utf8",
@@ -786,6 +830,10 @@ describe("Medical Students workshop", () => {
       path.join(repoRoot, "public/style/responsive.css"),
       "utf8",
     );
+    const componentStyles = fs.readFileSync(
+      path.join(repoRoot, "public/style/components.css"),
+      "utf8",
+    );
 
     expect(rapdHtml.match(/GlaucomaRAPD\/arclight\.webp/g)).toHaveLength(2);
     expect(rapdHtml).not.toContain("GlaucomaRAPD/flashlight.webp");
@@ -793,8 +841,17 @@ describe("Medical Students workshop", () => {
     expect(glaucomaSource).not.toContain(
       'bubble.style.display = isTestMode ? "none" : ""',
     );
+    expect(glaucomaSource).toContain("function pickUpFlashlight(e)");
+    expect(glaucomaSource).toContain("state.nx = pointer.nx;");
+    expect(glaucomaSource).toContain("state.ny = pointer.ny;");
+    expect(componentStyles).toMatch(
+      /#glaucomaRAPDFullSwingInteractive \.eyes-topbar \.menuBtn \{\s*display: none !important;/,
+    );
+    expect(componentStyles).toMatch(
+      /#glaucomaRAPDFullSwingInteractive \.rapd-diagnosisControls \{[\s\S]*?z-index: 10000;/,
+    );
     expect(responsiveStyles).toMatch(
-      /#glaucomaRAPDFullSwingInteractive #rapdBubble \{[\s\S]*?left: calc\(95% \+ 19px\) !important;[\s\S]*?translate\(-100%, -50%\)[\s\S]*?z-index: 7 !important/,
+      /#glaucomaRAPDFullSwingInteractive #rapdBubble \{[\s\S]*?left: calc\(95% \+ 19px\) !important;[\s\S]*?translate\(-100%, -50%\)[\s\S]*?z-index: 10001 !important/,
     );
     expect(responsiveStyles).toContain(
       "width: clamp(44px, 4.5vw, 54px) !important;",

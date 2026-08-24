@@ -29,20 +29,31 @@ The Medical Students route (`#/medicalStudentsWorkshop`) contains a foldered
 Introduction curriculum sourced from the workshop slide deck. Its HTML lives in
 `public/html/medicalStudentsWorkshop.html`; `public/js/medicalStudentsWorkshop.js`
 owns nested-folder restore and Previous/Next flow, including hand-offs to the
-shared `mumVisionPage` and `howToUseArclightVideoPage` pages. Introduction images
-are under `public/images/learning/MedicalStudents/Introduction/`, while the
+shared `mumVisionPage`, `howToUseArclightVideoPage`, and `vaWhoPage` pages. The
+Getting Started folder keeps Overview and Objectives as its two rows, with the
+former Timetable and Content panels appended to Overview. Introduction images are
+under `public/images/learning/MedicalStudents/Introduction/`, while the
 orange scrolly layouts and CSS-rendered teaching diagrams are in
 `public/style/pages.css`. The Training section reuses the Pupil App in Practice
 and Test modes with Medical Students-specific Previous/Next return paths. Its
+Pupil App hides the global menu control, keeps the pickup hint above the page
+controls, places the active Arclight at the pickup pointer immediately, and uses
+a weaker direct response with quieter hippus for severe left/right RAPD.
 Fundal Reflex App opens `fundalReflexSimulatorPage`, while Disc App opens
 `morphSimulatorPage` for Back of the Eye and `swollenDiscsInteractivePage` for
-Swollen Discs. Nested folders dim their sibling rows and use a narrower,
-indented child layout. The section also presents the Anterior Segment image from
+Swollen Discs. Nested folders dim their sibling rows and preserve the narrower,
+indented mobile child hierarchy while wrapping long labels inside their text
+area. The section also presents the Anterior Segment image from
 the workshop source deck. The clickable `4. Test` folder contains text-only
 Visual Acuity, Pupils, and Fundal Reflex quizzes in the Glaucoma case-study quiz
 format; `public/js/medicalStudentsTestQuiz.js` owns their shared scoring, review,
 restart, speaker-note answer explanations, and progress behavior. Result review
 is labelled `Review` for a perfect score and `See why` when any answer is wrong.
+`Submit Answers` opens the result modal immediately, then becomes `See Results`
+so the submitted result can be reopened.
+The Blindness inverse-care panel splits its combined source image into stacked
+graph/map crops on mobile and confirms before opening either external source.
+The Visual System lesson finishes with a numbered visual-field-loss video panel.
 The Anterior Segment source image lives under
 `public/images/learning/MedicalStudents/Training/` in the shared PDF-page shell.
 

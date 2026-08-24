@@ -15,6 +15,8 @@ import {
   caseFromPatientSelection,
   formatRapdTestAnswer,
   getRapdDilationTarget,
+  getRapdDirectResponseRatio,
+  getRapdHippusScale,
   pickRandomRapdCase,
   internalSideToPatientSide,
   rapdCasesMatch,
@@ -1246,9 +1248,6 @@ function initGlaucomaRAPDFullSwingInteractive() {
   const LATENCY_MS = 250;
   const CONSTRICT_MIN = 0.82;
   const DILATE_MAX = 1.2;
-  const RAPD_PARTIAL_RATIO = 0.8;
-  const RAPD_PARTIAL_MIN =
-    DILATE_MAX - (DILATE_MAX - CONSTRICT_MIN) * RAPD_PARTIAL_RATIO;
   const CONSTRICT_FAST_MS = 85;
   const CONSTRICT_SLOW_MS = 620;
   const ESCAPE_HOLD_MS = 140;
@@ -1558,7 +1557,7 @@ function initGlaucomaRAPDFullSwingInteractive() {
     }
   }
 
-  function getHippusOffset(eye, now) {
+  function getHippusOffset(eye, now, amplitudeScale = 1) {
     const t = now / 1000;
     const mixed =
       0.62 * Math.sin(2 * Math.PI * 0.87 * t + eye.hippusSeedA) +
@@ -1566,14 +1565,14 @@ function initGlaucomaRAPDFullSwingInteractive() {
     const wander =
       0.7 + 0.3 * Math.sin(2 * Math.PI * 0.12 * t + eye.hippusSeedC);
     const amp = eye.effectiveConstricted ? HIPPUS_AMP_LIGHT : HIPPUS_AMP_DARK;
-    return amp * mixed * wander;
+    return amp * amplitudeScale * mixed * wander;
   }
 
-  function applyEyeScale(el, eye, now) {
+  function applyEyeScale(el, eye, now, hippusScale = 1) {
     const base = eye.effectiveConstricted
       ? getConstrictedScale(eye, now)
       : getDilatedScale(eye, now);
-    const hippus = getHippusOffset(eye, now);
+    const hippus = getHippusOffset(eye, now, hippusScale);
     const scaled = clamp(
       base + hippus,
       CONSTRICT_MIN,
@@ -1713,6 +1712,9 @@ function initGlaucomaRAPDFullSwingInteractive() {
           side: state.manualEnabled ? state.manualSide : null,
           severity: state.manualSeverity,
         };
+    const hippusScale = activeCase.side
+      ? getRapdHippusScale(activeCase.severity)
+      : 1;
 
     setPupilTransitionMs(pupilLeft, 90);
     setPupilTransitionMs(pupilRight, 90);
@@ -1734,8 +1736,13 @@ function initGlaucomaRAPDFullSwingInteractive() {
       const pulseActive = rapdElapsed < RAPD_PULSE_WITH_LATENCY_MS;
       leftShouldConstrict = pulseActive;
       rightShouldConstrict = pulseActive;
-      leftConstrictMin = RAPD_PARTIAL_MIN;
-      rightConstrictMin = RAPD_PARTIAL_MIN;
+      const directResponseRatio = getRapdDirectResponseRatio(
+        activeCase.severity,
+      );
+      const rapdConstrictMin =
+        DILATE_MAX - (DILATE_MAX - CONSTRICT_MIN) * directResponseRatio;
+      leftConstrictMin = rapdConstrictMin;
+      rightConstrictMin = rapdConstrictMin;
       if (!pulseActive) {
         const rapdDilationTarget = getRapdDilationTarget(activeCase.severity);
         leftDilateTarget = rapdDilationTarget;
@@ -1773,8 +1780,8 @@ function initGlaucomaRAPDFullSwingInteractive() {
       state.lastLightMoveAt,
     );
 
-    applyEyeScale(pupilLeft, state.eyes.left, now);
-    applyEyeScale(pupilRight, state.eyes.right, now);
+    applyEyeScale(pupilLeft, state.eyes.left, now, hippusScale);
+    applyEyeScale(pupilRight, state.eyes.right, now, hippusScale);
 
     state.lastSide = side;
   }
@@ -1782,20 +1789,23 @@ function initGlaucomaRAPDFullSwingInteractive() {
   function pointerToNormalised(e) {
     const r = stage.getBoundingClientRect();
 
-    const cx = r.left + r.width / 2;
-    const nx = clamp((e.clientX - cx) / (r.width * 0.45), -1, 1);
-
-    // reference around eyes image center; lower drag gives positive ny
-    const cy = r.top + r.height * 0.54;
-    const ny = clamp((e.clientY - cy) / (r.height * 0.35), -1, 1);
+    const baseX = r.left + r.width / 2;
+    const baseY = r.top + r.height * 0.54;
+    const nx = clamp((e.clientX - baseX) / (r.width * 0.38), -1, 1);
+    const ny = clamp(
+      (e.clientY - FLASHLIGHT_VISUAL_OFFSET_Y - baseY) / (r.height * 0.22),
+      -1,
+      1,
+    );
 
     return { nx, ny };
   }
 
-  function pickUpFlashlight() {
+  function pickUpFlashlight(e) {
     if (state.pickedUp) return;
-    state.nx = 0;
-    state.ny = 0;
+    const pointer = pointerToNormalised(e);
+    state.nx = pointer.nx;
+    state.ny = pointer.ny;
     state.pickedUp = true;
     render();
   }
@@ -1803,7 +1813,7 @@ function initGlaucomaRAPDFullSwingInteractive() {
   function onDown(e) {
     if (!state.pickedUp) {
       if (e.target === flashlightOff) {
-        pickUpFlashlight();
+        pickUpFlashlight(e);
         state.dragging = true;
         state.pointerId = e.pointerId;
         e.target.setPointerCapture(e.pointerId);

@@ -4,6 +4,8 @@ import {
   formatRapdCase,
   formatRapdTestAnswer,
   getRapdDilationTarget,
+  getRapdDirectResponseRatio,
+  getRapdHippusScale,
   internalSideToPatientSide,
   pickRandomRapdCase,
   RAPD_RANDOM_CASES,
@@ -90,6 +92,20 @@ describe("RAPD cases", () => {
   it("increases dilation with RAPD severity", () => {
     expect(getRapdDilationTarget(1)).toBeLessThan(getRapdDilationTarget(2));
     expect(getRapdDilationTarget(2)).toBeLessThan(getRapdDilationTarget(3));
+  });
+
+  it("softens the direct response and hippus for severe RAPD on either side", () => {
+    expect(getRapdDirectResponseRatio(3)).toBeLessThan(
+      getRapdDirectResponseRatio(2),
+    );
+    expect(getRapdHippusScale(3)).toBeLessThan(getRapdHippusScale(2));
+    expect(getRapdDirectResponseRatio(null)).toBe(0.8);
+    expect(getRapdHippusScale(null)).toBe(1);
+    ["left", "right"].forEach((side) => {
+      const severeCase = { side, severity: 3 };
+      expect(getRapdDirectResponseRatio(severeCase.severity)).toBe(0.5);
+      expect(getRapdHippusScale(severeCase.severity)).toBe(0.5);
+    });
   });
 
   it("scores all ten submitted answers", () => {

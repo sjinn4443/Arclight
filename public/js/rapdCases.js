@@ -1,7 +1,25 @@
 export const RAPD_SEVERITY_LEVELS = Object.freeze({
-  1: Object.freeze({ key: "mild", label: "Mild", dilationTarget: 1 }),
-  2: Object.freeze({ key: "moderate", label: "Moderate", dilationTarget: 1.1 }),
-  3: Object.freeze({ key: "severe", label: "Severe", dilationTarget: 1.2 }),
+  1: Object.freeze({
+    key: "mild",
+    label: "Mild",
+    dilationTarget: 1,
+    directResponseRatio: 0.8,
+    hippusScale: 1,
+  }),
+  2: Object.freeze({
+    key: "moderate",
+    label: "Moderate",
+    dilationTarget: 1.1,
+    directResponseRatio: 0.8,
+    hippusScale: 1,
+  }),
+  3: Object.freeze({
+    key: "severe",
+    label: "Severe",
+    dilationTarget: 1.2,
+    directResponseRatio: 0.5,
+    hippusScale: 0.5,
+  }),
 });
 
 export const RAPD_RANDOM_CASES = Object.freeze([
@@ -61,6 +79,20 @@ export function getRapdDilationTarget(severity) {
   return (
     RAPD_SEVERITY_LEVELS[severity]?.dilationTarget ||
     RAPD_SEVERITY_LEVELS[3].dilationTarget
+  );
+}
+
+export function getRapdDirectResponseRatio(severity) {
+  return (
+    RAPD_SEVERITY_LEVELS[severity]?.directResponseRatio ??
+    RAPD_SEVERITY_LEVELS[1].directResponseRatio
+  );
+}
+
+export function getRapdHippusScale(severity) {
+  return (
+    RAPD_SEVERITY_LEVELS[severity]?.hippusScale ??
+    RAPD_SEVERITY_LEVELS[1].hippusScale
   );
 }
 

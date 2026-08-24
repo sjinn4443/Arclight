@@ -84,6 +84,7 @@ describe("Medical Students test quizzes", () => {
 
     const page = testDocument.getElementById("medicalVisualAcuityTestPage");
     const results = page.querySelector(".medical-test-quiz-results");
+    expect(results.textContent.trim()).toBe("Submit Answers");
     results.click();
     expect(testWindow.alert).toHaveBeenCalledWith(
       "Please answer all 5 questions before submitting.",
@@ -102,6 +103,10 @@ describe("Medical Students test quizzes", () => {
       "5 / 5",
     );
     results.click();
+    expect(results.textContent.trim()).toBe("See Results");
+    expect(page.querySelectorAll('input[type="radio"]:disabled')).toHaveLength(
+      20,
+    );
     expect(page.querySelector(".medical-test-quiz-modal")?.style.display).toBe(
       "flex",
     );
@@ -132,6 +137,10 @@ describe("Medical Students test quizzes", () => {
     );
     expect(page.querySelectorAll(".opt.correct, .opt.wrong")).toHaveLength(0);
     expect(page.querySelectorAll(".quiz-explanation[hidden]")).toHaveLength(5);
+    expect(results.textContent.trim()).toBe("Submit Answers");
+    expect(page.querySelectorAll('input[type="radio"]:disabled')).toHaveLength(
+      0,
+    );
   });
 
   test("uses See why when any answer is wrong and reveals the notes explanations", () => {
@@ -152,7 +161,9 @@ describe("Medical Students test quizzes", () => {
       input.dispatchEvent(new Event("change", { bubbles: true }));
     });
 
-    page.querySelector(".medical-test-quiz-results").click();
+    const results = page.querySelector(".medical-test-quiz-results");
+    results.click();
+    expect(results.textContent.trim()).toBe("See Results");
     expect(page.querySelector(".medical-test-quiz-score")?.textContent).toBe(
       "You got 4 out of 5 correct.",
     );

@@ -17,7 +17,6 @@ const MEDICAL_PROGRESS_EVENT = "medicalStudentsWorkshop:progress-changed";
 const INTERNAL_TARGETS = new Set([
   "medicalOverviewPage",
   "medicalObjectivesPage",
-  "medicalTimetableContentPage",
   "medicalPatientJourneyPage",
   "medicalBarriersPage",
   "medicalDiagnosisEyeDiseasePage",
@@ -39,6 +38,7 @@ const MEDICAL_TARGET_ROUTES = Object.freeze({
   mumVisionPage: "videos",
   howToUseArclightVideoPage: "videos",
   visualAcuityPdfPage: "visualAcuityPdf",
+  vaWhoPage: "videos",
   pupilsPecPdfPage: "pupilsPecPdf",
   pupilFullExamPage: "videos",
   pupilsAdvancedPdfPage: "pupilsAdvancedPdf",
@@ -147,11 +147,6 @@ const MEDICAL_NAV_CONFIG = {
   },
   medicalObjectivesPage: {
     previous: { type: "target", target: "medicalOverviewPage" },
-    next: { type: "target", target: "medicalTimetableContentPage" },
-    home: FOCUS.introductionOverview,
-  },
-  medicalTimetableContentPage: {
-    previous: { type: "target", target: "medicalObjectivesPage" },
     next: FOCUS.introductionOverview,
     home: FOCUS.introductionOverview,
   },
@@ -210,11 +205,16 @@ const MEDICAL_NAV_CONFIG = {
   },
   visualAcuityPdfPage: {
     previous: FOCUS.visualAcuity,
+    next: { type: "target", target: "vaWhoPage" },
+    home: FOCUS.visualAcuity,
+  },
+  vaWhoPage: {
+    previous: { type: "target", target: "visualAcuityPdfPage" },
     next: { type: "target", target: "medicalVisualAcuityPracticePage" },
     home: FOCUS.visualAcuity,
   },
   medicalVisualAcuityPracticePage: {
-    previous: { type: "target", target: "visualAcuityPdfPage" },
+    previous: { type: "target", target: "vaWhoPage" },
     next: FOCUS.visualAcuity,
     home: FOCUS.visualAcuity,
   },
@@ -761,6 +761,50 @@ export function initializeMedicalStudentsWorkshopFlowInfra() {
   });
 }
 
+export function initializeMedicalExternalLinkDialog() {
+  const page = document.getElementById("medicalBlindnessPage");
+  const dialog = page?.querySelector("#medicalExternalLinkDialog");
+  const continueLink = dialog?.querySelector(
+    "[data-medical-external-continue]",
+  );
+  const cancelButton = dialog?.querySelector("[data-medical-external-cancel]");
+  if (!page || !dialog || !continueLink || dialog.dataset.wired === "1") {
+    return;
+  }
+  dialog.dataset.wired = "1";
+
+  let activeTrigger = null;
+
+  const closeDialog = ({ resetLink = true } = {}) => {
+    dialog.hidden = true;
+    if (resetLink) continueLink.setAttribute("href", "#");
+    activeTrigger?.focus?.();
+    activeTrigger = null;
+  };
+
+  page.querySelectorAll("[data-medical-external-link]").forEach((link) => {
+    link.addEventListener("click", (event) => {
+      event.preventDefault();
+      activeTrigger = link;
+      continueLink.setAttribute("href", link.href);
+      dialog.hidden = false;
+      continueLink.focus();
+    });
+  });
+
+  cancelButton?.addEventListener("click", () => closeDialog());
+  continueLink.addEventListener("click", () => {
+    closeDialog({ resetLink: false });
+    window.requestAnimationFrame(() => continueLink.setAttribute("href", "#"));
+  });
+  dialog.addEventListener("click", (event) => {
+    if (event.target === dialog) closeDialog();
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && !dialog.hidden) closeDialog();
+  });
+}
+
 async function openRapdExperience(targetId, mode, folderKey, nestedKey) {
   setFlowEnabled(true);
   try {
@@ -800,6 +844,7 @@ export function initializeMedicalStudentsWorkshop() {
   initializeDiabeticScreeningScrollLessons();
   initializeMedicalAnteriorSegmentCaseStudy();
   initializeMedicalStudentsTestQuizzes();
+  initializeMedicalExternalLinkDialog();
   wireMedicalEmbeddedVideoProgress();
 
   document

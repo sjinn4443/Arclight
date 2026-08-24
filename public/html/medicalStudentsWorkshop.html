@@ -96,7 +96,7 @@
             <div class="thumb" aria-hidden="true"></div>
             <div class="lesson-main">
               <div class="lesson-top">
-                <span class="lesson-type">Introduction</span>
+                <span class="lesson-type">Getting Started</span>
               </div>
             </div>
             <span class="lesson-cta">See all &gt;</span>
@@ -106,7 +106,7 @@
             data-nested-section="introductionOverview"
             hidden
           >
-            <h3>Introduction</h3>
+            <h3>Getting Started</h3>
             <div
               class="lesson-row lesson-row--scroll"
               data-lesson="medical-overview"
@@ -133,21 +133,6 @@
               <div class="lesson-main">
                 <div class="lesson-top">
                   <span class="lesson-type">Objectives</span>
-                </div>
-              </div>
-              <span class="lesson-cta">Start &gt;</span>
-            </div>
-            <div
-              class="lesson-row lesson-row--scroll"
-              data-lesson="medical-timetable-content"
-              data-target="medicalTimetableContentPage"
-              role="button"
-              tabindex="0"
-            >
-              <div class="thumb" aria-hidden="true"></div>
-              <div class="lesson-main">
-                <div class="lesson-top">
-                  <span class="lesson-type">Timetable and Content</span>
                 </div>
               </div>
               <span class="lesson-cta">Start &gt;</span>
@@ -416,6 +401,22 @@
               <div class="lesson-main">
                 <div class="lesson-top">
                   <span class="lesson-type">Visual Acuity PDF</span>
+                </div>
+              </div>
+              <span class="lesson-cta">Start &gt;</span>
+            </div>
+            <div
+              class="lesson-row lesson-row--video"
+              data-lesson="medical-visual-acuity-video"
+              data-target="vaWhoPage"
+              data-route="videos"
+              role="button"
+              tabindex="0"
+            >
+              <div class="thumb" aria-hidden="true"></div>
+              <div class="lesson-main">
+                <div class="lesson-top">
+                  <span class="lesson-type">Visual Acuity</span>
                 </div>
               </div>
               <span class="lesson-cta">Start &gt;</span>
@@ -921,7 +922,7 @@
       type="button"
       disabled
     >
-      See results
+      Submit Answers
     </button>
   </div>
 
@@ -1490,7 +1491,7 @@
             <span class="diabetic-screening-step">01</span>
             <h3>Major causes can be acted on</h3>
             <p>
-              The source slides build this chart one cause at a time. It is a
+              Each pages build this chart one cause at a time. It is a
               conceptual view rather than a table of exact percentages.
             </p>
           </div>
@@ -1656,7 +1657,7 @@
             <span class="diabetic-screening-step">08</span>
             <h3>Retinoblastoma</h3>
             <p>
-              Routine fundal red reflex examination gives a rare but dangerous
+              Routine fundal reflex examination gives a rare but dangerous
               childhood cancer a chance to be found early.
             </p>
           </div>
@@ -1732,10 +1733,20 @@
               class="medical-powerpoint-full-image medical-powerpoint-full-image--plain"
             >
               <img
+                class="medical-inverse-care-combined-image"
                 src="/images/learning/MedicalStudents/Introduction/inverse-care-and-maps.png"
                 alt="PowerPoint images illustrating the inverse care law and world cartograms contrasting glaucoma blindness with ophthalmologist availability"
                 loading="lazy"
               />
+              <div
+                class="medical-inverse-care-crop medical-inverse-care-crop--graph"
+              >
+                <img
+                  src="/images/learning/MedicalStudents/Introduction/inverse-care-and-maps.png"
+                  alt="Graph showing the inverse care law"
+                  loading="lazy"
+                />
+              </div>
               <figcaption>
                 Julian Tudor-Harts’s original model from Lancet in 1971
               </figcaption>
@@ -1746,15 +1757,26 @@
                 href="https://www.thelancet.com/journals/lancet/article/PIIS0140-6736%2821%2900505-5/fulltext"
                 target="_blank"
                 rel="noopener noreferrer"
+                data-medical-external-link
               >
                 <span>50 years of the inverse care law</span>
                 <i aria-hidden="true">&gt;</i>
               </a>
+              <div
+                class="medical-inverse-care-crop medical-inverse-care-crop--maps"
+              >
+                <img
+                  src="/images/learning/MedicalStudents/Introduction/inverse-care-and-maps.png"
+                  alt="World maps comparing blindness prevalence with ophthalmologist availability"
+                  loading="lazy"
+                />
+              </div>
               <a
                 class="diabetic-protocol-link"
                 href="https://www.viewsoftheworld.net/?p=4616"
                 target="_blank"
                 rel="noopener noreferrer"
+                data-medical-external-link
               >
                 <span
                   >The global inverse care law: a distorted map of
@@ -1767,6 +1789,34 @@
         </article>
       </div>
     </section>
+    <div
+      id="medicalExternalLinkDialog"
+      class="medical-external-link-dialog"
+      hidden
+    >
+      <div
+        class="medical-external-link-dialog__card"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="medicalExternalLinkDialogTitle"
+        aria-describedby="medicalExternalLinkDialogText"
+      >
+        <h2 id="medicalExternalLinkDialogTitle">Links to external source</h2>
+        <p id="medicalExternalLinkDialogText">
+          This link opens an external source. Continue?
+        </p>
+        <div class="medical-external-link-dialog__actions">
+          <button type="button" data-medical-external-cancel>Cancel</button>
+          <a
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer"
+            data-medical-external-continue
+            >Continue</a
+          >
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -1866,20 +1916,24 @@
             Your browser does not support the video element.
           </video>
         </article>
-        <article
-          class="diabetic-screening-panel medical-full-media-panel"
-          data-diabetic-scroll-step
-          aria-label="Visual field pathway diagram"
-        >
-          <figure
-            class="medical-learning-image medical-learning-image--contain"
+        <article class="diabetic-screening-panel" data-diabetic-scroll-step>
+          <div class="diabetic-screening-panel__text">
+            <span class="diabetic-screening-step">04</span>
+            <h3>Visual field loss</h3>
+          </div>
+          <video
+            class="medical-learning-video"
+            controls
+            playsinline
+            preload="metadata"
+            aria-label="Visual field loss teaching video"
           >
-            <img
-              src="/images/learning/MedicalStudents/Introduction/visual-fields.png"
-              alt="Crossed optic pathways with left and right visual field diagrams"
-              loading="lazy"
+            <source
+              src="/videos/Workshop/MedStudents/visualfieldloss.mp4"
+              type="video/mp4"
             />
-          </figure>
+            Your browser does not support the video element.
+          </video>
         </article>
       </div>
     </section>
@@ -2996,6 +3050,98 @@
             <span class="medical-workshop-arc__stage">Test and discuss</span>
           </div>
         </article>
+        <article class="diabetic-screening-panel" data-diabetic-scroll-step>
+          <div class="diabetic-screening-panel__text">
+            <span class="diabetic-screening-step">03</span>
+            <h3>Timetable</h3>
+            <p>
+              Meet at 09:15. Teaching starts at 09:30 and finishes at 16:00.
+            </p>
+          </div>
+          <dl class="medical-timetable">
+            <div>
+              <dt>Meet</dt>
+              <dd>09:15</dd>
+            </div>
+            <div>
+              <dt>Morning session 1</dt>
+              <dd>09:30–11:00</dd>
+            </div>
+            <div class="is-break">
+              <dt>Break</dt>
+              <dd>11:00–11:15</dd>
+            </div>
+            <div>
+              <dt>Morning session 2</dt>
+              <dd>11:15–12:45</dd>
+            </div>
+            <div class="is-break">
+              <dt>Lunch</dt>
+              <dd>12:45–13:30</dd>
+            </div>
+            <div>
+              <dt>Afternoon session 1</dt>
+              <dd>13:30–14:45</dd>
+            </div>
+            <div class="is-break">
+              <dt>Break</dt>
+              <dd>14:45–15:00</dd>
+            </div>
+            <div>
+              <dt>Afternoon session 2</dt>
+              <dd>15:00–16:00</dd>
+            </div>
+          </dl>
+        </article>
+        <article class="diabetic-screening-panel" data-diabetic-scroll-step>
+          <div class="diabetic-screening-panel__text">
+            <span class="diabetic-screening-step">04</span>
+            <h3>Morning session</h3>
+          </div>
+          <div class="medical-content-groups">
+            <section>
+              <strong>1. Introduction</strong>
+              <ul>
+                <li>Eye disease and blindness: high v low resource settings</li>
+                <li>Anatomy and physiology of vision</li>
+                <li>History taking: vision loss and red eye</li>
+                <li>Examination tools</li>
+              </ul>
+            </section>
+            <section>
+              <strong>2. Examine each other</strong>
+              <ul>
+                <li>Visual acuity</li>
+                <li>Pupils and anterior segment</li>
+                <li>Fundal reflex and direct ophthalmoscopy</li>
+              </ul>
+            </section>
+          </div>
+        </article>
+        <article class="diabetic-screening-panel" data-diabetic-scroll-step>
+          <div class="diabetic-screening-panel__text">
+            <span class="diabetic-screening-step">05</span>
+            <h3>Afternoon session</h3>
+          </div>
+          <div class="medical-content-groups">
+            <section>
+              <strong>3. Train on SIM tools</strong>
+              <ul>
+                <li>Pupils app</li>
+                <li>Anterior segment handout</li>
+                <li>Fundal reflex and direct ophthalmoscopy SIM eyes</li>
+              </ul>
+            </section>
+            <section>
+              <strong>4. Test</strong>
+              <ul>
+                <li>Photo MCQs</li>
+                <li>Simulation OSCE</li>
+                <li>Review and discuss</li>
+              </ul>
+            </section>
+          </div>
+        </article>
       </div>
     </section>
   </div>
@@ -3132,135 +3278,6 @@
               cell carcinoma, herpes zoster ophthalmicus, subconjunctival
               haemorrhage, choroidal naevus and melanoma.
             </p>
-          </div>
-        </article>
-      </div>
-    </section>
-  </div>
-</div>
-
-<div
-  id="medicalTimetableContentPage"
-  class="page pupils-like has-eyes-topbar medical-students-scroll-page"
-  style="display: none"
->
-  <div
-    class="container pupils-container diabetic-screening-page medical-students-screening-page"
-  >
-    <div class="eyes-topbar">
-      <div class="eyes-topbar__title">Medical Students</div>
-      <div class="eyes-topbar__icons">
-        <span class="icon menuBtn" aria-label="Menu">&#9776;</span>
-      </div>
-    </div>
-    <h2 class="pupils-subtitle"></h2>
-    <section
-      class="diabetic-screening-lesson diabetic-screening-lesson--tight-hero"
-      data-diabetic-scroll-lesson
-      aria-label="Workshop timetable and content"
-    >
-      <div
-        class="diabetic-screening-scroll-cue"
-        data-diabetic-scroll-cue
-        aria-hidden="true"
-      ></div>
-      <header class="diabetic-screening-hero" data-diabetic-scroll-step>
-        <p class="diabetic-screening-eyebrow">
-          MEDICAL STUDENTS WORKSHOP · INTRODUCTION
-        </p>
-        <h2>Timetable and Content</h2>
-      </header>
-      <div class="diabetic-screening-stack">
-        <article class="diabetic-screening-panel" data-diabetic-scroll-step>
-          <div class="diabetic-screening-panel__text">
-            <span class="diabetic-screening-step">01</span>
-            <h3>Timetable</h3>
-            <p>
-              Meet at 09:15. Teaching starts at 09:30 and finishes at 16:00.
-            </p>
-          </div>
-          <dl class="medical-timetable">
-            <div>
-              <dt>Meet</dt>
-              <dd>09:15</dd>
-            </div>
-            <div>
-              <dt>Morning session 1</dt>
-              <dd>09:30–11:00</dd>
-            </div>
-            <div class="is-break">
-              <dt>Break</dt>
-              <dd>11:00–11:15</dd>
-            </div>
-            <div>
-              <dt>Morning session 2</dt>
-              <dd>11:15–12:45</dd>
-            </div>
-            <div class="is-break">
-              <dt>Lunch</dt>
-              <dd>12:45–13:30</dd>
-            </div>
-            <div>
-              <dt>Afternoon session 1</dt>
-              <dd>13:30–14:45</dd>
-            </div>
-            <div class="is-break">
-              <dt>Break</dt>
-              <dd>14:45–15:00</dd>
-            </div>
-            <div>
-              <dt>Afternoon session 2</dt>
-              <dd>15:00–16:00</dd>
-            </div>
-          </dl>
-        </article>
-        <article class="diabetic-screening-panel" data-diabetic-scroll-step>
-          <div class="diabetic-screening-panel__text">
-            <span class="diabetic-screening-step">02</span>
-            <h3>Morning session</h3>
-          </div>
-          <div class="medical-content-groups">
-            <section>
-              <strong>1. Introduction</strong>
-              <ul>
-                <li>Eye disease and blindness: high v low resource settings</li>
-                <li>Anatomy and physiology of vision</li>
-                <li>History taking: vision loss and red eye</li>
-                <li>Examination tools</li>
-              </ul>
-            </section>
-            <section>
-              <strong>2. Examine each other</strong>
-              <ul>
-                <li>Visual acuity</li>
-                <li>Pupils and anterior segment</li>
-                <li>Fundal reflex and direct ophthalmoscopy</li>
-              </ul>
-            </section>
-          </div>
-        </article>
-        <article class="diabetic-screening-panel" data-diabetic-scroll-step>
-          <div class="diabetic-screening-panel__text">
-            <span class="diabetic-screening-step">03</span>
-            <h3>Afternoon session</h3>
-          </div>
-          <div class="medical-content-groups">
-            <section>
-              <strong>3. Train on SIM tools</strong>
-              <ul>
-                <li>Pupils app</li>
-                <li>Anterior segment handout</li>
-                <li>Fundal reflex and direct ophthalmoscopy SIM eyes</li>
-              </ul>
-            </section>
-            <section>
-              <strong>4. Test</strong>
-              <ul>
-                <li>Photo MCQs</li>
-                <li>Simulation OSCE</li>
-                <li>Review and discuss</li>
-              </ul>
-            </section>
           </div>
         </article>
       </div>

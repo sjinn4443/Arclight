@@ -156,7 +156,7 @@ export const MEDICAL_STUDENTS_TEST_QUIZZES = Object.freeze({
       },
       {
         prompt:
-          "A 9-month-old baby born at 36 weeks’ gestation presents with poor visual development and absent red reflexes in both eyes. What is the most likely cause of these findings?",
+          "A 9-month-old baby born at 36 weeks’ gestation presents with poor visual development and absent fundal reflexes in both eyes. What is the most likely cause of these findings?",
         options: [
           "Occipital lobe stroke",
           "Retinoblastoma",
@@ -272,6 +272,7 @@ function initializeQuizPage(page, quiz) {
 
   const questions = quiz.questions;
   const userAnswers = new Array(questions.length).fill(null);
+  let submitted = false;
 
   mount.textContent = "";
   mount.appendChild(layoutTemplate.content.cloneNode(true));
@@ -305,6 +306,7 @@ function initializeQuizPage(page, quiz) {
 
   function renderAll() {
     allQuestions.textContent = "";
+    resultsButton.textContent = submitted ? "See Results" : "Submit Answers";
 
     questions.forEach((question, questionIndex) => {
       const card = cardTemplate.content
@@ -402,6 +404,15 @@ function initializeQuizPage(page, quiz) {
     setQuizProgress(page.id, 100);
   }
 
+  function submitAnswers() {
+    submitted = true;
+    allQuestions.querySelectorAll('input[type="radio"]').forEach((input) => {
+      input.disabled = true;
+    });
+    resultsButton.textContent = "See Results";
+    setQuizProgress(page.id, 100);
+  }
+
   function highlightAll() {
     questions.forEach((question, questionIndex) => {
       const chosen = userAnswers[questionIndex];
@@ -424,6 +435,11 @@ function initializeQuizPage(page, quiz) {
   }
 
   resultsButton.addEventListener("click", () => {
+    if (submitted) {
+      openModal();
+      return;
+    }
+
     const firstUnansweredIndex = userAnswers.findIndex(
       (answer) => answer === null,
     );
@@ -431,12 +447,14 @@ function initializeQuizPage(page, quiz) {
       showIncompleteSubmitPopup(firstUnansweredIndex);
       return;
     }
+    submitAnswers();
     openModal();
   });
 
   reviewButton.addEventListener("click", highlightAll);
   restartButton.addEventListener("click", () => {
     userAnswers.fill(null);
+    submitted = false;
     closeModal();
     renderAll();
   });
