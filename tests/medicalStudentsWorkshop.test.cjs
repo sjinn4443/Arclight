@@ -21,16 +21,16 @@ describe("Medical Students workshop", () => {
       "1. Introduction",
       "2. Examine each Other",
       "3. Training",
-      "4. Test (to be added)",
+      "4. Test",
     ]);
 
     const testFolder = document.querySelector(
       '#medicalStudentsWorkshopFolders [data-folder="test"]',
     );
-    expect(testFolder?.getAttribute("aria-disabled")).toBe("true");
-    expect(testFolder?.getAttribute("tabindex")).toBe("-1");
+    expect(testFolder?.hasAttribute("aria-disabled")).toBe(false);
+    expect(testFolder?.getAttribute("tabindex")).toBe("0");
     expect(testFolder?.querySelector(".lesson-cta")?.textContent.trim()).toBe(
-      "Coming soon",
+      "See all >",
     );
   });
 
@@ -57,7 +57,43 @@ describe("Medical Students workshop", () => {
     ).toHaveLength(2);
     expect(
       document.querySelectorAll('[data-section="test"] .lesson-row--quiz'),
-    ).toHaveLength(1);
+    ).toHaveLength(3);
+  });
+
+  test("adds the three clickable test lessons with quiz thumbnails", () => {
+    const rows = Array.from(
+      document.querySelectorAll('[data-section="test"] .lesson-row--quiz'),
+    );
+
+    expect(
+      rows.map((row) => row.querySelector(".lesson-type")?.textContent.trim()),
+    ).toEqual(["Visual Acuity", "Pupils", "Fundal Reflex"]);
+    expect(rows.map((row) => row.dataset.target)).toEqual([
+      "medicalVisualAcuityTestPage",
+      "medicalPupilsTestPage",
+      "medicalFundalReflexTestPage",
+    ]);
+    rows.forEach((row) => {
+      expect(row.getAttribute("role")).toBe("button");
+      expect(row.getAttribute("tabindex")).toBe("0");
+      expect(row.querySelector(".thumb")).not.toBeNull();
+    });
+  });
+
+  test("provides one text-only quiz page for each test lesson", () => {
+    [
+      "medicalVisualAcuityTestPage",
+      "medicalPupilsTestPage",
+      "medicalFundalReflexTestPage",
+    ].forEach((pageId) => {
+      const quizPage = document.getElementById(pageId);
+      expect(quizPage).not.toBeNull();
+      expect(quizPage?.classList.contains("medical-test-quiz-page")).toBe(true);
+      expect(quizPage?.querySelector("img, video, picture, source")).toBeNull();
+      expect(
+        quizPage?.querySelector(".medical-test-quiz-mount"),
+      ).not.toBeNull();
+    });
   });
 
   test("groups the Introduction lessons and keeps history taking as a scroll row", () => {
@@ -720,20 +756,21 @@ describe("Medical Students workshop", () => {
     );
   });
 
-  test("keeps the unfinished Test folder non-interactive", () => {
+  test("keeps the completed Test folder interactive", () => {
     const testLabels = Array.from(
       document.querySelectorAll('[data-section="test"] .lesson-type'),
       (element) => element.textContent.trim(),
     );
-    expect(testLabels).toEqual(["Pupils"]);
+    expect(testLabels).toEqual(["Visual Acuity", "Pupils", "Fundal Reflex"]);
 
     const workshopSource = fs.readFileSync(
       path.join(repoRoot, "public/js/medicalStudentsWorkshop.js"),
       "utf8",
     );
-    expect(workshopSource).toContain(
-      'if (folder.getAttribute("aria-disabled") === "true") return;',
-    );
+    expect(workshopSource).toContain('"medicalVisualAcuityTestPage"');
+    expect(workshopSource).toContain('"medicalPupilsTestPage"');
+    expect(workshopSource).toContain('"medicalFundalReflexTestPage"');
+    expect(workshopSource).toContain("home: FOCUS.test");
   });
 
   test("anchors the pickup bubble to the Arclight and shows it in Test mode", () => {

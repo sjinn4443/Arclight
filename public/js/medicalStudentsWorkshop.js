@@ -2,6 +2,7 @@ import { loadPage } from "./navigation.js";
 import { openMenu } from "./menu.js";
 import { initializeDiabeticScreeningScrollLessons } from "./diabeticRetinopathyWorkshop.js";
 import { initializeMedicalAnteriorSegmentCaseStudy } from "./medicalAnteriorSegmentCaseStudy.js";
+import { initializeMedicalStudentsTestQuizzes } from "./medicalStudentsTestQuiz.js";
 
 const PAGE_ID = "medicalStudentsWorkshopPage";
 const RAPD_RETURN_KEY = "medicalStudentsWorkshop:rapdReturn";
@@ -29,6 +30,9 @@ const INTERNAL_TARGETS = new Set([
   "medicalPupilsAnteriorPracticePage",
   "medicalFundalDirectPracticePage",
   "medicalAnteriorSegmentPage",
+  "medicalVisualAcuityTestPage",
+  "medicalPupilsTestPage",
+  "medicalFundalReflexTestPage",
 ]);
 
 const MEDICAL_TARGET_ROUTES = Object.freeze({
@@ -114,6 +118,10 @@ const FOCUS = {
     type: "focus",
     section: "trainOnSimTools",
     nested: "discApp",
+  },
+  test: {
+    type: "focus",
+    section: "test",
   },
 };
 
@@ -284,6 +292,21 @@ const MEDICAL_NAV_CONFIG = {
     previous: { type: "target", target: "morphSimulatorPage" },
     next: FOCUS.discApp,
     home: FOCUS.discApp,
+  },
+  medicalVisualAcuityTestPage: {
+    previous: FOCUS.test,
+    next: { type: "target", target: "medicalPupilsTestPage" },
+    home: FOCUS.test,
+  },
+  medicalPupilsTestPage: {
+    previous: { type: "target", target: "medicalVisualAcuityTestPage" },
+    next: { type: "target", target: "medicalFundalReflexTestPage" },
+    home: FOCUS.test,
+  },
+  medicalFundalReflexTestPage: {
+    previous: { type: "target", target: "medicalPupilsTestPage" },
+    next: FOCUS.test,
+    home: FOCUS.test,
   },
 };
 
@@ -776,6 +799,7 @@ export function initializeMedicalStudentsWorkshop() {
   initializeMedicalStudentsWorkshopFlowInfra();
   initializeDiabeticScreeningScrollLessons();
   initializeMedicalAnteriorSegmentCaseStudy();
+  initializeMedicalStudentsTestQuizzes();
   wireMedicalEmbeddedVideoProgress();
 
   document

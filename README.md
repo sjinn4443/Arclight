@@ -38,6 +38,12 @@ Fundal Reflex App opens `fundalReflexSimulatorPage`, while Disc App opens
 `morphSimulatorPage` for Back of the Eye and `swollenDiscsInteractivePage` for
 Swollen Discs. Nested folders dim their sibling rows and use a narrower,
 indented child layout. The section also presents the Anterior Segment image from
+the workshop source deck. The clickable `4. Test` folder contains text-only
+Visual Acuity, Pupils, and Fundal Reflex quizzes in the Glaucoma case-study quiz
+format; `public/js/medicalStudentsTestQuiz.js` owns their shared scoring, review,
+restart, speaker-note answer explanations, and progress behavior. Result review
+is labelled `Review` for a perfect score and `See why` when any answer is wrong.
+The Anterior Segment source image lives under
 `public/images/learning/MedicalStudents/Training/` in the shared PDF-page shell.
 
 ## Security Updates (2026-06-29 to 2026-07-15)

@@ -3944,6 +3944,207 @@ select.onb-input.has-value + .onb-select-caret {
   background-image: url("/images/icon/eyes/moduleicons/intermediate_casestudy.webp");
 }
 
+.medical-test-quiz-page .medical-test-quiz-mount {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 10px 14px 24px;
+}
+
+.medical-test-quiz-page .quiz-header {
+  display: flex;
+  position: static;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 10px 0 14px;
+  padding: 0;
+  border-bottom: 0;
+  background: transparent;
+  text-align: left;
+}
+
+.medical-test-quiz-page .quiz-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.medical-test-quiz-page .quiz-progress {
+  flex: 0 0 auto;
+  font-size: 12px;
+  opacity: 0.75;
+  white-space: nowrap;
+}
+
+.medical-test-quiz-page .medical-test-quiz-questions {
+  display: grid;
+  gap: 18px;
+}
+
+.medical-test-quiz-page .quiz-card {
+  box-sizing: border-box;
+  padding: 16px 14px 14px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+}
+
+.medical-test-quiz-page .quiz-card-heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.medical-test-quiz-page .quiz-card-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 42px;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #f25600;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.medical-test-quiz-page .quiz-question {
+  min-width: 0;
+  margin: 0;
+  color: #111;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.medical-test-quiz-page .options {
+  display: grid;
+  gap: 10px;
+}
+
+.medical-test-quiz-page .opt {
+  display: grid;
+  grid-template-columns: 18px 22px minmax(0, 1fr);
+  align-items: start;
+  gap: 8px;
+  box-sizing: border-box;
+  padding: 9px 12px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 12px;
+  background: #fafafa;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1.35;
+  user-select: none;
+}
+
+.medical-test-quiz-page .opt input {
+  margin: 2px 0 0;
+}
+
+.medical-test-quiz-page .opt-prefix {
+  font-weight: 800;
+}
+
+.medical-test-quiz-page .opt.correct {
+  border-color: #2e7d32;
+  background: #e8f5e9;
+  color: #2e7d32;
+  font-weight: 700;
+}
+
+.medical-test-quiz-page .opt.wrong {
+  border-color: #c62828;
+  background: #ffebee;
+  color: #c62828;
+  font-weight: 700;
+}
+
+.medical-test-quiz-page .quiz-explanation {
+  margin-top: 14px;
+  padding: 12px 14px;
+  border-left: 4px solid #f25600;
+  border-radius: 0 10px 10px 0;
+  background: #fff4ec;
+  color: #374151;
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.medical-test-quiz-page .quiz-explanation strong {
+  display: block;
+  margin-bottom: 4px;
+  color: #b73f00;
+}
+
+.medical-test-quiz-page .quiz-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.medical-test-quiz-page .quiz-actions .btn {
+  flex: 1 1 0;
+  width: auto;
+  height: 44px;
+  margin-top: 0;
+  padding: 12px 16px;
+  border: 0;
+  border-radius: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.medical-test-quiz-page .quiz-actions .btn.primary {
+  background: #e41e26;
+  color: #fff;
+}
+
+.medical-test-quiz-page .quiz-actions .btn.secondary {
+  background: #eee;
+  color: #111;
+}
+
+.medical-test-quiz-page .quiz-actions .btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.medical-test-quiz-page .modal-backdrop {
+  position: fixed;
+  z-index: 9999;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.medical-test-quiz-page .modal {
+  width: 100%;
+  max-width: 420px;
+  padding: 16px;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+}
+
+.medical-test-quiz-page .modal h3 {
+  margin: 0 0 6px;
+}
+
+.medical-test-quiz-page .modal p {
+  margin: 0 0 14px;
+  opacity: 0.85;
+}
+
 #medicalStudentsWorkshopPage .lesson-cta,
 #medicalStudentsWorkshopPage .see-all-toggle {
   color: #f25600;

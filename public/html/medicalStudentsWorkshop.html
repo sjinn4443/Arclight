@@ -66,19 +66,18 @@
             <span class="lesson-cta">See all &gt;</span>
           </div>
           <div
-            class="lesson-row lesson-row--folder medical-folder-row is-disabled"
+            class="lesson-row lesson-row--folder medical-folder-row"
             data-folder="test"
-            aria-disabled="true"
             role="button"
-            tabindex="-1"
+            tabindex="0"
           >
             <div class="thumb" aria-hidden="true"></div>
             <div class="lesson-main">
               <div class="lesson-top">
-                <span class="lesson-type">4. Test (to be added)</span>
+                <span class="lesson-type">4. Test</span>
               </div>
             </div>
-            <span class="lesson-cta">Coming soon</span>
+            <span class="lesson-cta">See all &gt;</span>
           </div>
         </div>
 
@@ -805,11 +804,47 @@
           hidden
         >
           <h3>4. Test</h3>
-          <div class="lesson-row lesson-row--quiz">
+          <div
+            class="lesson-row lesson-row--quiz"
+            data-lesson="medical-visual-acuity-test"
+            data-target="medicalVisualAcuityTestPage"
+            role="button"
+            tabindex="0"
+          >
+            <div class="thumb" aria-hidden="true"></div>
+            <div class="lesson-main">
+              <div class="lesson-top">
+                <span class="lesson-type">Visual Acuity</span>
+              </div>
+            </div>
+            <span class="lesson-cta">Start &gt;</span>
+          </div>
+          <div
+            class="lesson-row lesson-row--quiz"
+            data-lesson="medical-pupils-test"
+            data-target="medicalPupilsTestPage"
+            role="button"
+            tabindex="0"
+          >
             <div class="thumb" aria-hidden="true"></div>
             <div class="lesson-main">
               <div class="lesson-top">
                 <span class="lesson-type">Pupils</span>
+              </div>
+            </div>
+            <span class="lesson-cta">Start &gt;</span>
+          </div>
+          <div
+            class="lesson-row lesson-row--quiz"
+            data-lesson="medical-fundal-reflex-test"
+            data-target="medicalFundalReflexTestPage"
+            role="button"
+            tabindex="0"
+          >
+            <div class="thumb" aria-hidden="true"></div>
+            <div class="lesson-main">
+              <div class="lesson-top">
+                <span class="lesson-type">Fundal Reflex</span>
               </div>
             </div>
             <span class="lesson-cta">Start &gt;</span>
@@ -819,6 +854,114 @@
     </div>
   </div>
 </div>
+
+<!-- Medical Students: test quizzes -->
+<div
+  id="medicalVisualAcuityTestPage"
+  class="page pupils-like has-eyes-topbar medical-students-scroll-page medical-test-quiz-page"
+  data-medical-test-topic="visualAcuity"
+  style="display: none"
+>
+  <div class="container pupils-container">
+    <div class="eyes-topbar">
+      <div class="eyes-topbar__title">Visual Acuity</div>
+      <div class="eyes-topbar__icons">
+        <span class="icon menuBtn" aria-label="Menu">&#9776;</span>
+      </div>
+    </div>
+    <div class="medical-test-quiz-mount"></div>
+  </div>
+</div>
+
+<div
+  id="medicalPupilsTestPage"
+  class="page pupils-like has-eyes-topbar medical-students-scroll-page medical-test-quiz-page"
+  data-medical-test-topic="pupils"
+  style="display: none"
+>
+  <div class="container pupils-container">
+    <div class="eyes-topbar">
+      <div class="eyes-topbar__title">Pupils</div>
+      <div class="eyes-topbar__icons">
+        <span class="icon menuBtn" aria-label="Menu">&#9776;</span>
+      </div>
+    </div>
+    <div class="medical-test-quiz-mount"></div>
+  </div>
+</div>
+
+<div
+  id="medicalFundalReflexTestPage"
+  class="page pupils-like has-eyes-topbar medical-students-scroll-page medical-test-quiz-page"
+  data-medical-test-topic="fundalReflex"
+  style="display: none"
+>
+  <div class="container pupils-container">
+    <div class="eyes-topbar">
+      <div class="eyes-topbar__title">Fundal Reflex</div>
+      <div class="eyes-topbar__icons">
+        <span class="icon menuBtn" aria-label="Menu">&#9776;</span>
+      </div>
+    </div>
+    <div class="medical-test-quiz-mount"></div>
+  </div>
+</div>
+
+<template id="medicalTestQuizLayoutTemplate">
+  <div class="quiz-header">
+    <h3>Choose the correct answer</h3>
+    <div class="quiz-progress medical-test-quiz-progress">0 / 0</div>
+  </div>
+
+  <div class="medical-test-quiz-questions"></div>
+
+  <div class="quiz-actions medical-test-quiz-submit-wrap">
+    <button
+      class="btn primary medical-test-quiz-results"
+      type="button"
+      disabled
+    >
+      See results
+    </button>
+  </div>
+
+  <div class="modal-backdrop medical-test-quiz-modal">
+    <div class="modal" role="dialog" aria-modal="true" aria-label="Results">
+      <h3>Results</h3>
+      <p class="medical-test-quiz-score" aria-live="polite"></p>
+      <div class="quiz-actions">
+        <button class="btn secondary medical-test-quiz-review" type="button">
+          Review
+        </button>
+        <button class="btn primary medical-test-quiz-restart" type="button">
+          Restart
+        </button>
+      </div>
+    </div>
+  </div>
+</template>
+
+<template id="medicalTestQuizCardTemplate">
+  <div class="quiz-card">
+    <div class="quiz-card-heading">
+      <span class="quiz-card-number" aria-hidden="true"></span>
+      <p class="quiz-question"></p>
+    </div>
+    <div class="options"></div>
+    <div class="quiz-explanation" hidden>
+      <strong class="quiz-explanation-answer"></strong>
+      <span class="quiz-explanation-text"></span>
+    </div>
+  </div>
+</template>
+
+<template id="medicalTestQuizOptionTemplate">
+  <label class="opt">
+    <input type="radio" />
+    <span class="opt-prefix" aria-hidden="true"></span>
+    <span class="opt-label"></span>
+  </label>
+</template>
 
 <!-- Medical Students: Anterior Segment case study -->
 <div
