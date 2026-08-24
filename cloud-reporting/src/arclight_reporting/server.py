@@ -6,7 +6,7 @@ from typing import Any
 import anyio
 from mcp.server import MCPServer
 from mcp.server.transport_security import TransportSecuritySettings
-from mcp_types import CallToolResult, ResourceLink, TextContent, ToolAnnotations
+from mcp_types import Annotations, CallToolResult, ResourceLink, TextContent, ToolAnnotations
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 
@@ -127,7 +127,7 @@ async def generate_postgres_docx() -> CallToolResult:
         artifact = await anyio.to_thread.run_sync(create_artifact)
     except Exception:
         return CallToolResult(
-            isError=True,
+            is_error=True,
             content=[
                 TextContent(
                     text=json.dumps(
@@ -157,10 +157,11 @@ async def generate_postgres_docx() -> CallToolResult:
                 description=(
                     "Private PostgreSQL report. Download without reproducing personal data in chat."
                 ),
-                mimeType=(
+                mime_type=(
                     "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                 ),
                 size=artifact.size,
+                annotations=Annotations(audience=["user"], priority=1.0),
             ),
         ]
     )
