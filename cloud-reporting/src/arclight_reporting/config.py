@@ -4,6 +4,8 @@ import os
 from dataclasses import dataclass
 from pathlib import Path
 
+from psycopg.conninfo import make_conninfo
+
 
 def _positive_int(name: str, default: int, minimum: int = 1) -> int:
     try:
@@ -17,6 +19,27 @@ def _csv(name: str, default: tuple[str, ...]) -> tuple[str, ...]:
     raw = os.getenv(name, "")
     values = tuple(value.strip() for value in raw.split(",") if value.strip())
     return values or default
+
+
+def _database_conninfo() -> str:
+    direct_url = os.getenv("REPORTS_READ_DATABASE_URL", "").strip()
+    if direct_url:
+        return direct_url
+
+    components = {
+        "host": os.getenv("REPORTS_DB_HOST", "").strip(),
+        "port": os.getenv("REPORTS_DB_PORT", "").strip(),
+        "dbname": os.getenv("REPORTS_DB_NAME", "").strip(),
+        "user": os.getenv("REPORTS_DB_USER", "").strip(),
+        "password": os.getenv("REPORTS_DB_PASSWORD", ""),
+    }
+    if not all(components.values()):
+        return ""
+
+    sslmode = os.getenv("REPORTS_DB_SSLMODE", "").strip()
+    if sslmode:
+        components["sslmode"] = sslmode
+    return make_conninfo(**components)
 
 
 @dataclass(frozen=True, slots=True)
@@ -48,7 +71,7 @@ class Settings:
             default_hosts.extend((private_domain, f"{private_domain}:*"))
 
         return cls(
-            database_url=os.getenv("REPORTS_READ_DATABASE_URL", "").strip(),
+            database_url=_database_conninfo(),
             report_output_dir=Path(os.getenv("REPORT_OUTPUT_DIR", "/data/reports")),
             report_retention_hours=_positive_int("REPORT_RETENTION_HOURS", 168),
             max_users=_positive_int("REPORT_MAX_USERS", 20_000),
