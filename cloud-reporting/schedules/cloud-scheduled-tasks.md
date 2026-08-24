@@ -71,4 +71,3 @@ Create four independent tasks at 04:00 on the first Monday, first Tuesday, first
 ## Cutover gate
 
 Before disabling `arclight-overnight-pulse`, manually run all task types while the desktop app is closed. Confirm Scheduled run records, matching GitHub and deployed SHAs, green CI, read-only database checks, backup freshness, aggregate-only MCP text, a downloadable rendered DOCX, scrubbed metadata and no credentials, private hostnames or personal rows in task or server logs. Also test dates on both sides of the Europe/London DST transition.
-
