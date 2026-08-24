@@ -211,10 +211,20 @@ class DatabaseClient:
                        r.rolreplication OR r.rolbypassrls) AS least_privilege_role,
                   has_table_privilege(current_user, 'public.app_users', 'SELECT') AS can_read_users,
                   has_table_privilege(current_user, 'public.ip_logs', 'SELECT') AS can_read_ips,
+                  has_table_privilege(
+                    current_user, 'public.app_users_latest_first', 'SELECT'
+                  ) AS can_read_user_view,
+                  has_table_privilege(
+                    current_user, 'public.ip_logs_latest_first', 'SELECT'
+                  ) AS can_read_ip_view,
                   NOT has_table_privilege(current_user, 'public.app_users', 'INSERT,UPDATE,DELETE')
                     AS cannot_write_users,
                   NOT has_table_privilege(current_user, 'public.ip_logs', 'INSERT,UPDATE,DELETE')
-                    AS cannot_write_ips
+                    AS cannot_write_ips,
+                  NOT has_schema_privilege(current_user, 'public', 'CREATE')
+                    AS cannot_create_in_public,
+                  NOT has_database_privilege(current_user, current_database(), 'CREATE')
+                    AS cannot_create_database_objects
                 FROM pg_roles r
                 WHERE r.rolname = current_user
                 """
