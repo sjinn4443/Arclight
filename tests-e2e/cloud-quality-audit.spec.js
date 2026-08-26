@@ -21,17 +21,25 @@ function routeFromHtml(file) {
   return `/${relative}`;
 }
 
-const routes = [...new Set(listHtmlFiles(distDir)
-  .filter((file) => file.endsWith(".html"))
-  .map(routeFromHtml))]
-  .sort();
+const routes = [
+  ...new Set(
+    listHtmlFiles(distDir)
+      .filter((file) => file.endsWith(".html"))
+      .map(routeFromHtml),
+  ),
+].sort();
 
 test.beforeAll(() => {
-  expect(routes.length, "The production build must contain at least one HTML route").toBeGreaterThan(0);
+  expect(
+    routes.length,
+    "The production build must contain at least one HTML route",
+  ).toBeGreaterThan(0);
 });
 
 for (const route of routes) {
-  test(`route ${route} has a usable responsive and accessible shell`, async ({ page }) => {
+  test(`route ${route} has a usable responsive and accessible shell`, async ({
+    page,
+  }) => {
     const pageErrors = [];
     page.on("pageerror", (error) => pageErrors.push(error.message));
 
@@ -47,7 +55,10 @@ for (const route of routes) {
         const ids = (element.getAttribute("aria-labelledby") || "")
           .split(/\s+/)
           .filter(Boolean);
-        return ids.map((id) => document.getElementById(id)?.textContent || "").join(" ").trim();
+        return ids
+          .map((id) => document.getElementById(id)?.textContent || "")
+          .join(" ")
+          .trim();
       };
 
       const interactive = [
@@ -75,8 +86,12 @@ for (const route of routes) {
         })
         .map((element) => element.outerHTML.slice(0, 240));
 
-      const ids = [...document.querySelectorAll("[id]")].map((element) => element.id);
-      const duplicateIds = [...new Set(ids.filter((id, index) => ids.indexOf(id) !== index))];
+      const ids = [...document.querySelectorAll("[id]")].map(
+        (element) => element.id,
+      );
+      const duplicateIds = [
+        ...new Set(ids.filter((id, index) => ids.indexOf(id) !== index)),
+      ];
 
       return {
         horizontalOverflow:
@@ -89,8 +104,14 @@ for (const route of routes) {
     });
 
     expect(audit.bodyText, `Empty document body for ${route}`).not.toBe("");
-    expect(audit.horizontalOverflow, `Horizontal overflow for ${route}`).toBeFalsy();
-    expect(audit.missingNames, `Unlabelled interactive elements for ${route}`).toEqual([]);
+    expect(
+      audit.horizontalOverflow,
+      `Horizontal overflow for ${route}`,
+    ).toBeFalsy();
+    expect(
+      audit.missingNames,
+      `Unlabelled interactive elements for ${route}`,
+    ).toEqual([]);
     expect(audit.duplicateIds, `Duplicate IDs for ${route}`).toEqual([]);
     expect(pageErrors, `Uncaught page errors for ${route}`).toEqual([]);
   });
@@ -105,17 +126,27 @@ test("the production shell remains available offline through its service worker"
 
   const serviceWorkerReady = await page.evaluate(async () => {
     if (!("serviceWorker" in navigator)) return false;
-    const timeout = new Promise((resolve) => setTimeout(() => resolve(null), 10_000));
-    const registration = await Promise.race([navigator.serviceWorker.ready, timeout]);
+    const timeout = new Promise((resolve) =>
+      setTimeout(() => resolve(null), 10_000),
+    );
+    const registration = await Promise.race([
+      navigator.serviceWorker.ready,
+      timeout,
+    ]);
     return Boolean(
       registration &&
-        (registration.active || registration.waiting || registration.installing),
+      (registration.active || registration.waiting || registration.installing),
     );
   });
-  expect(serviceWorkerReady, "No active production service worker").toBeTruthy();
+  expect(
+    serviceWorkerReady,
+    "No active production service worker",
+  ).toBeTruthy();
 
   await context.setOffline(true);
-  await page.reload({ waitUntil: "domcontentloaded", timeout: 20_000 }).catch(() => undefined);
+  await page
+    .reload({ waitUntil: "domcontentloaded", timeout: 20_000 })
+    .catch(() => undefined);
   const offlineBody = (await page.locator("body").innerText()).trim();
   expect(offlineBody, "The offline shell rendered no content").not.toBe("");
   await context.setOffline(false);
