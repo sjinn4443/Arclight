@@ -263,18 +263,19 @@ jobs:
           print("\n".join(sorted(routes)))
           PY
 
-          PORT=4173 SERVE_DIST=true BUILD_OUTPUT_DIR=dist DISABLE_DB_STORAGE=1 \
-            node server.cjs > evidence/server.log 2>&1 &
+          lighthouse_port=4175
+          npx http-server dist -p "${lighthouse_port}" -a 127.0.0.1 -c-1 \
+            > evidence/server.log 2>&1 &
           server_pid="$!"
           trap 'kill "${server_pid}" >/dev/null 2>&1 || true' EXIT
 
           for attempt in {1..60}; do
-            if curl --fail --silent http://127.0.0.1:4173/ >/dev/null; then
+            if curl --fail --silent "http://127.0.0.1:${lighthouse_port}/" >/dev/null; then
               break
             fi
             sleep 1
           done
-          curl --fail --silent http://127.0.0.1:4173/ >/dev/null
+          curl --fail --silent "http://127.0.0.1:${lighthouse_port}/" >/dev/null
 
           npx --yes lighthouse@latest --version > evidence/lighthouse-version.txt
 
@@ -283,7 +284,7 @@ jobs:
             output="evidence/lighthouse/$(printf '%03d' "${index}").json"
             set +e
             npx --yes lighthouse@latest \
-              "http://127.0.0.1:4173${route}" \
+              "http://127.0.0.1:${lighthouse_port}${route}" \
               --quiet \
               --chrome-flags="--headless --no-sandbox" \
               --output=json \
