@@ -16,9 +16,9 @@ function routeFromHtml(file) {
   const relative = path.relative(distDir, file).split(path.sep).join("/");
   if (relative === "index.html") return "/";
   if (relative.endsWith("/index.html")) {
-    return \`/${relative.slice(0, -"/index.html".length)}/\`;
+    return `/${relative.slice(0, -"/index.html".length)}/`;
   }
-  return \`/${relative}\`;
+  return `/${relative}`;
 }
 
 const routes = [...new Set(listHtmlFiles(distDir)
@@ -31,13 +31,13 @@ test.beforeAll(() => {
 });
 
 for (const route of routes) {
-  test(\`route ${route} has a usable responsive and accessible shell\`, async ({ page }) => {
+  test(`route ${route} has a usable responsive and accessible shell`, async ({ page }) => {
     const pageErrors = [];
     page.on("pageerror", (error) => pageErrors.push(error.message));
 
     const response = await page.goto(route, { waitUntil: "domcontentloaded" });
-    expect(response, \`No response for ${route}\`).not.toBeNull();
-    expect(response.ok(), \`HTTP failure for ${route}\`).toBeTruthy();
+    expect(response, `No response for ${route}`).not.toBeNull();
+    expect(response.ok(), `HTTP failure for ${route}`).toBeTruthy();
 
     await page.waitForLoadState("networkidle").catch(() => undefined);
     await page.evaluate(() => document.fonts?.ready).catch(() => undefined);
@@ -88,11 +88,11 @@ for (const route of routes) {
       };
     });
 
-    expect(audit.bodyText, \`Empty document body for ${route}\`).not.toBe("");
-    expect(audit.horizontalOverflow, \`Horizontal overflow for ${route}\`).toBeFalsy();
-    expect(audit.missingNames, \`Unlabelled interactive elements for ${route}\`).toEqual([]);
-    expect(audit.duplicateIds, \`Duplicate IDs for ${route}\`).toEqual([]);
-    expect(pageErrors, \`Uncaught page errors for ${route}\`).toEqual([]);
+    expect(audit.bodyText, `Empty document body for ${route}`).not.toBe("");
+    expect(audit.horizontalOverflow, `Horizontal overflow for ${route}`).toBeFalsy();
+    expect(audit.missingNames, `Unlabelled interactive elements for ${route}`).toEqual([]);
+    expect(audit.duplicateIds, `Duplicate IDs for ${route}`).toEqual([]);
+    expect(pageErrors, `Uncaught page errors for ${route}`).toEqual([]);
   });
 }
 
