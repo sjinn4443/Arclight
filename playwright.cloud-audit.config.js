@@ -1,7 +1,7 @@
 import { defineConfig } from "@playwright/test";
 
 const port = process.env.PLAYWRIGHT_PORT || "4173";
-const baseURL = process.env.PLAYWRIGHT_BASE_URL || \`http://127.0.0.1:${port}\`;
+const baseURL = process.env.PLAYWRIGHT_BASE_URL || `http://127.0.0.1:${port}`;
 const distDir = process.env.PLAYWRIGHT_DIST_DIR || "dist";
 
 const viewports = [
@@ -16,11 +16,11 @@ const viewports = [
 
 const projects = viewports.flatMap(([label, width, height]) => [
   {
-    name: \`chromium-${label}\`,
+    name: `chromium-${label}`,
     use: { browserName: "chromium", viewport: { width, height } },
   },
   {
-    name: \`webkit-${label}\`,
+    name: `webkit-${label}`,
     use: { browserName: "webkit", viewport: { width, height } },
   },
 ]);
@@ -45,7 +45,7 @@ export default defineConfig({
     serviceWorkers: "allow",
   },
   webServer: {
-    command: \`cross-env PORT=${port} SERVE_DIST=true BUILD_OUTPUT_DIR=${distDir} DISABLE_DB_STORAGE=1 node server.cjs\`,
+    command: `cross-env PORT=${port} SERVE_DIST=true BUILD_OUTPUT_DIR=${distDir} DISABLE_DB_STORAGE=1 node server.cjs`,
     url: baseURL,
     reuseExistingServer: false,
     timeout: 120_000,
