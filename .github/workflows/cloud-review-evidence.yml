@@ -1,0 +1,399 @@
+name: Cloud Review Evidence
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/cloud-review-evidence.yml"
+      - "playwright.cloud-audit.config.js"
+      - "tests-e2e/cloud-quality-audit.spec.js"
+      - "package.json"
+      - "package-lock.json"
+      - "scripts/**"
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Evidence branch to run
+        required: true
+        default: all
+        type: choice
+        options:
+          - all
+          - snapshot
+          - product
+          - security
+          - translations
+          - hygiene
+  schedule:
+    # GitHub cron is UTC. The gate below admits only 04:00 Europe/London,
+    # so one of these runs is a cheap DST no-op.
+    - cron: "0 3 * * *"
+    - cron: "0 4 * * *"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cloud-review-evidence-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      snapshot: ${{ steps.calendar.outputs.snapshot }}
+      product: ${{ steps.calendar.outputs.product }}
+      security: ${{ steps.calendar.outputs.security }}
+      translations: ${{ steps.calendar.outputs.translations }}
+      hygiene: ${{ steps.calendar.outputs.hygiene }}
+    steps:
+      - name: Resolve Europe/London branch
+        id: calendar
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          MODE: ${{ inputs.mode || 'auto' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          snapshot=false
+          product=false
+          security=false
+          translations=false
+          hygiene=false
+
+          local_hour="$(TZ=Europe/London date +%H)"
+          local_day="$(TZ=Europe/London date +%u)"
+          local_date="$(TZ=Europe/London date +%d)"
+          local_date="$((10#${local_date}))"
+
+          if [[ "${EVENT_NAME}" == "pull_request" ]]; then
+            snapshot=true
+            product=true
+            security=true
+          elif [[ "${EVENT_NAME}" == "workflow_dispatch" ]]; then
+            case "${MODE}" in
+              all)
+                snapshot=true
+                product=true
+                security=true
+                translations=true
+                hygiene=true
+                ;;
+              snapshot|product|security|translations|hygiene)
+                printf -v "${MODE}" '%s' true
+                ;;
+              *)
+                echo "Unsupported mode: ${MODE}" >&2
+                exit 1
+                ;;
+            esac
+          elif [[ "${EVENT_NAME}" == "schedule" && "${local_hour}" == "04" ]]; then
+            snapshot=true
+            [[ "${local_day}" == "3" ]] && product=true
+            [[ "${local_day}" == "5" ]] && security=true
+            if (( local_date <= 7 && local_day >= 1 && local_day <= 4 )); then
+              translations=true
+            fi
+            if (( local_date >= 8 && local_date <= 14 && local_day == 1 )); then
+              hygiene=true
+            fi
+          fi
+
+          {
+            echo "snapshot=${snapshot}"
+            echo "product=${product}"
+            echo "security=${security}"
+            echo "translations=${translations}"
+            echo "hygiene=${hygiene}"
+          } >> "${GITHUB_OUTPUT}"
+
+          echo "event=${EVENT_NAME} local_hour=${local_hour} local_day=${local_day} local_date=${local_date}"
+
+  snapshot:
+    needs: gate
+    if: needs.gate.outputs.snapshot == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout current main
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          lfs: false
+
+      - name: Capture deterministic GitHub evidence
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+
+          latest_run="$(gh api \
+            "repos/${GITHUB_REPOSITORY}/actions/workflows/ci-cd.yml/runs?branch=main&per_page=1" \
+            --jq '.workflow_runs[0] | {id, head_sha, status, conclusion, created_at, updated_at, html_url}')"
+
+          jq -n \
+            --arg captured_at "$(TZ=Europe/London date --iso-8601=seconds)" \
+            --arg repository "${GITHUB_REPOSITORY}" \
+            --arg main_sha "$(git rev-parse HEAD)" \
+            --argjson ci "${latest_run:-null}" \
+            '{
+              captured_at: $captured_at,
+              timezone: "Europe/London",
+              repository: $repository,
+              main_sha: $main_sha,
+              ci: $ci,
+              deployment: {status: "requires authorised reporting connector"},
+              database: {status: "requires authorised reporting connector"},
+              backup: {status: "requires authorised reporting connector"}
+            }' > evidence/cloud-snapshot.json
+
+          cat evidence/cloud-snapshot.json >> "${GITHUB_STEP_SUMMARY}"
+
+      - name: Upload snapshot evidence
+        uses: actions/upload-artifact@v6
+        with:
+          name: cloud-snapshot-${{ github.run_id }}
+          path: evidence/cloud-snapshot.json
+          retention-days: 30
+
+  product-quality:
+    needs: gate
+    if: needs.gate.outputs.product == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          lfs: true
+
+      - name: Pull Git LFS files
+        run: |
+          set -euo pipefail
+          git lfs install
+          git lfs pull
+          git lfs checkout
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: "20.x"
+          cache: npm
+
+      - name: Install dependencies and browsers
+        run: |
+          set -euo pipefail
+          npm ci
+          npx playwright install-deps chromium webkit
+          npx playwright install chromium webkit
+
+      - name: Formatting, types, translations and production build
+        run: |
+          set -euo pipefail
+          npm run format:check
+          npm run type-check
+          npm run check-translations
+          npm run build
+          npm run test:a11y
+
+      - name: Audit all routes, exact viewports and WebKit
+        run: npx playwright test --config=playwright.cloud-audit.config.js
+
+      - name: Run all available Lighthouse categories on every built route
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/lighthouse
+
+          python3 - <<'PY' > evidence/routes.txt
+          from pathlib import Path
+          routes = set()
+          for file in sorted(Path("dist").rglob("*.html")):
+              rel = file.relative_to("dist").as_posix()
+              if rel == "index.html":
+                  routes.add("/")
+              elif rel.endswith("/index.html"):
+                  routes.add("/" + rel[:-len("index.html")])
+              else:
+                  routes.add("/" + rel)
+          if not routes:
+              raise SystemExit("No built HTML routes found")
+          print("\n".join(sorted(routes)))
+          PY
+
+          PORT=4173 SERVE_DIST=true BUILD_OUTPUT_DIR=dist DISABLE_DB_STORAGE=1 \
+            node server.cjs > evidence/server.log 2>&1 &
+          server_pid="$!"
+          trap 'kill "${server_pid}" >/dev/null 2>&1 || true' EXIT
+
+          for attempt in {1..60}; do
+            if curl --fail --silent http://127.0.0.1:4173/ >/dev/null; then
+              break
+            fi
+            sleep 1
+          done
+          curl --fail --silent http://127.0.0.1:4173/ >/dev/null
+
+          npx --yes lighthouse@latest --version > evidence/lighthouse-version.txt
+
+          index=0
+          while IFS= read -r route; do
+            output="evidence/lighthouse/$(printf '%03d' "${index}").json"
+            npx --yes lighthouse@latest \
+              "http://127.0.0.1:4173${route}" \
+              --quiet \
+              --chrome-flags="--headless --no-sandbox" \
+              --output=json \
+              --output-path="${output}"
+            jq -n --arg route "${route}" --arg report "${output}" \
+              '{route: $route, report: $report}' >> evidence/lighthouse-index.jsonl
+            index="$((index + 1))"
+          done < evidence/routes.txt
+
+          find dist -type f -printf '%s\t%p\n' | sort -nr > evidence/bundle-sizes.tsv
+
+      - name: Upload product-quality evidence
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: product-quality-${{ github.run_id }}
+          path: |
+            evidence/
+            cloud-playwright-report/
+            test-results/
+          retention-days: 30
+
+  security-code-health:
+    needs: gate
+    if: needs.gate.outputs.security == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          lfs: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: "20.x"
+          cache: npm
+
+      - name: Capture changed-code and dependency evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          npm ci
+
+          git log --since="7 days ago" \
+            --date=iso-strict \
+            --pretty=format:'%H%x09%ad%x09%an%x09%s' \
+            > evidence/commits-seven-days.tsv
+
+          base="$(git rev-list -1 --before='7 days ago' HEAD || true)"
+          if [[ -z "${base}" ]]; then
+            base="$(git rev-list --max-parents=0 HEAD | tail -n 1)"
+          fi
+          git diff --name-status "${base}..HEAD" > evidence/changed-files-seven-days.tsv
+
+          set +e
+          npm audit --omit=dev --audit-level=moderate --json > evidence/npm-audit.json
+          audit_status="$?"
+          set -e
+          echo "${audit_status}" > evidence/npm-audit-exit-code.txt
+
+          npm run lint
+          npm run type-check
+
+          {
+            echo "### Security evidence"
+            echo
+            echo "- Main SHA: \`$(git rev-parse HEAD)\`"
+            echo "- Seven-day changed files: \`$(wc -l < evidence/changed-files-seven-days.tsv)\`"
+            echo "- npm audit exit code: \`${audit_status}\`"
+          } >> "${GITHUB_STEP_SUMMARY}"
+
+      - name: Upload security evidence
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: security-code-health-${{ github.run_id }}
+          path: evidence/
+          retention-days: 30
+
+  translation-structure:
+    needs: gate
+    if: needs.gate.outputs.translations == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          lfs: false
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "20.x"
+          cache: npm
+
+      - name: Run deterministic translation checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          npm ci
+          npm run check-translations 2>&1 | tee evidence/translation-structure.txt
+
+      - name: Upload translation evidence
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: translation-structure-${{ github.run_id }}
+          path: evidence/
+          retention-days: 30
+
+  hygiene-candidates:
+    needs: gate
+    if: needs.gate.outputs.hygiene == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          lfs: false
+
+      - name: Record candidate inventory without deleting
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          git ls-files -z | python3 -c '
+          import sys
+          paths = sorted(p.decode("utf-8", "surrogateescape") for p in sys.stdin.buffer.read().split(b"\0") if p)
+          for path in paths:
+              lower = path.lower()
+              root = path.split("/", 1)[0]
+              if (
+                  root.startswith("tmp")
+                  or lower.startswith("tmp/")
+                  or lower.startswith("tmp-playwright/")
+                  or lower.endswith(".bak")
+              ):
+                  print(path)
+          ' > evidence/hygiene-candidates.txt
+          echo "Candidate count: $(wc -l < evidence/hygiene-candidates.txt)" >> "${GITHUB_STEP_SUMMARY}"
+
+      - name: Upload hygiene inventory
+        uses: actions/upload-artifact@v6
+        with:
+          name: hygiene-candidates-${{ github.run_id }}
+          path: evidence/
+          retention-days: 30
