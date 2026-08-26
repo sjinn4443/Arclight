@@ -192,16 +192,54 @@ jobs:
           npx playwright install chromium webkit
 
       - name: Formatting, types, translations and production build
+        shell: bash
         run: |
-          set -euo pipefail
-          npm run format:check
-          npm run type-check
-          npm run check-translations
-          npm run build
-          npm run test:a11y
+          set -u -o pipefail
+          mkdir -p evidence/health
+
+          set +e
+          npm run format:check > evidence/health/format.txt 2>&1
+          format_status="$?"
+          npm run type-check > evidence/health/type-check.txt 2>&1
+          type_status="$?"
+          npm run check-translations > evidence/health/translations.txt 2>&1
+          translation_status="$?"
+          npm run build > evidence/health/build.txt 2>&1
+          build_status="$?"
+          npm run test:a11y > evidence/health/accessibility.txt 2>&1
+          accessibility_status="$?"
+          set -e
+
+          printf '%s\n' "${format_status}" > evidence/health/format-exit-code.txt
+          printf '%s\n' "${type_status}" > evidence/health/type-check-exit-code.txt
+          printf '%s\n' "${translation_status}" > evidence/health/translations-exit-code.txt
+          printf '%s\n' "${build_status}" > evidence/health/build-exit-code.txt
+          printf '%s\n' "${accessibility_status}" > evidence/health/accessibility-exit-code.txt
+
+          {
+            echo "### Product health evidence"
+            echo
+            echo "- format exit code: \`${format_status}\`"
+            echo "- type-check exit code: \`${type_status}\`"
+            echo "- translation structure exit code: \`${translation_status}\`"
+            echo "- production build exit code: \`${build_status}\`"
+            echo "- deterministic accessibility exit code: \`${accessibility_status}\`"
+          } >> "${GITHUB_STEP_SUMMARY}"
+
+          if [[ "${build_status}" -ne 0 ]]; then
+            echo "Production build failed; browser audits cannot run." >&2
+            exit "${build_status}"
+          fi
 
       - name: Audit all routes, exact viewports and WebKit
-        run: npx playwright test --config=playwright.cloud-audit.config.js
+        shell: bash
+        run: |
+          set +e
+          npx playwright test --config=playwright.cloud-audit.config.js             > evidence/health/playwright.txt 2>&1
+          playwright_status="$?"
+          set -e
+          printf '%s\n' "${playwright_status}"             > evidence/health/playwright-exit-code.txt
+          echo "- Playwright responsive/WebKit exit code: \`${playwright_status}\`"             >> "${GITHUB_STEP_SUMMARY}"
 
       - name: Run all available Lighthouse categories on every built route
         shell: bash
@@ -243,14 +281,22 @@ jobs:
           index=0
           while IFS= read -r route; do
             output="evidence/lighthouse/$(printf '%03d' "${index}").json"
+            set +e
             npx --yes lighthouse@latest \
               "http://127.0.0.1:4173${route}" \
               --quiet \
               --chrome-flags="--headless --no-sandbox" \
               --output=json \
-              --output-path="${output}"
-            jq -n --arg route "${route}" --arg report "${output}" \
-              '{route: $route, report: $report}' >> evidence/lighthouse-index.jsonl
+              --output-path="${output}" \
+              > "evidence/lighthouse/$(printf '%03d' "${index}").log" 2>&1
+            lighthouse_status="$?"
+            set -e
+            jq -n \
+              --arg route "${route}" \
+              --arg report "${output}" \
+              --argjson exit_code "${lighthouse_status}" \
+              '{route: $route, report: $report, exit_code: $exit_code}' \
+              >> evidence/lighthouse-index.jsonl
             index="$((index + 1))"
           done < evidence/routes.txt
 
