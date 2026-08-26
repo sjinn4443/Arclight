@@ -34,7 +34,7 @@ permissions:
 
 concurrency:
   group: cloud-review-evidence-${{ github.ref }}
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   gate:
