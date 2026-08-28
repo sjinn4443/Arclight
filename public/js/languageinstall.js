@@ -402,6 +402,7 @@ const CHILDHOOD_EYE_SCREENING_SUBTITLE_LANGUAGES = new Set([
   "ur",
   "yo",
   "zu",
+  "lo",
 ]);
 const ENGLISH_LANGUAGE_LABELS = {
   en: "English",
@@ -418,6 +419,7 @@ const ENGLISH_LANGUAGE_LABELS = {
   id: "Indonesian",
   rw: "Kinyarwanda",
   ko: "Korean",
+  lo: "Lao",
   te: "Telugu",
   ln: "Lingala",
   fa: "Persian",

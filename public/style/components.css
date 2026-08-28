@@ -5951,6 +5951,44 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
   animation: guestModalFadeOut 0.25s ease-in forwards; /* reuse existing keyframes */
 }
 
+#preciseLocationConsentOverlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  z-index: 10003;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  animation: guestModalFadeIn 0.3s ease-out;
+}
+
+.precise-location-consent.guest-modal {
+  width: min(90vw, 440px);
+  padding: 24px;
+}
+
+.precise-location-consent__actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.precise-location-consent__cancel,
+.precise-location-consent__continue {
+  min-height: 44px;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.precise-location-consent__cancel {
+  border: 1px solid #777;
+  background: #fff;
+  color: #333;
+}
+
 /* Language Install: hint + info icon row */
 .lang-install__hint-row {
   display: flex;

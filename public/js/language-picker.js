@@ -37,6 +37,7 @@
     ur: "\u0627\u0631\u062F\u0648",
     yo: "Yor\u00F9b\u00E1",
     zu: "isiZulu",
+    lo: "ລາວ",
   };
   const englishByCode = {
     en: "English",
@@ -63,6 +64,7 @@
     ur: "Urdu",
     yo: "Yoruba",
     zu: "Zulu",
+    lo: "Lao",
   };
 
   function getCurrentLanguageCode() {

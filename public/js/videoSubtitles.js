@@ -26,6 +26,7 @@ const APP_VIDEO_SUBTITLE_LANGUAGES = {
   ur: { label: "Urdu" },
   yo: { label: "Yoruba" },
   zu: { label: "Zulu" },
+  lo: { label: "Lao" },
 };
 
 const APP_VIDEO_LANGUAGE_ALIASES = Object.freeze({
@@ -53,6 +54,7 @@ const APP_VIDEO_LANGUAGE_ALIASES = Object.freeze({
   urdu: "ur",
   yoruba: "yo",
   zulu: "zu",
+  lao: "lo",
 });
 
 let appVideoSubtitleCatalogPromise = null;

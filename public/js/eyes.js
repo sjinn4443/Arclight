@@ -80,6 +80,7 @@ const EYES_LABEL_I18N_KEYS = Object.freeze({
   "Cranial Nerve Examination": "eyes.card_label.cranial_nerve_examination",
   "Arclight Overview": "eyes.card_label.arclight_overview",
   "Holo Overview": "eyes.card_label.holo_overview",
+  "Medical Students": "eyes.card_label.medical_students",
 });
 
 const EYES_TAG_I18N_KEYS = Object.freeze({
@@ -89,6 +90,9 @@ const EYES_TAG_I18N_KEYS = Object.freeze({
   Quiz: "eyes.tag_quiz",
   "Mini Apps": "eyes.tag_mini_apps",
   "Mini App": "eyes.tag_mini_app",
+  Interactive: "eyes.tag_interactive",
+  PDF: "eyes.tag_pdf",
+  Scrolly: "i18nLiteral.Scrollytelling",
 });
 
 const EYES_EXTRA_I18N_KEYS = Object.freeze({

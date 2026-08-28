@@ -327,6 +327,7 @@ function addCloseToggle(title, close) {
   toggle.setAttribute("role", "button");
   toggle.setAttribute("tabindex", "0");
   toggle.textContent = "Close ^";
+  toggle.setAttribute("data-i18n", "i18nLiteral.Close ^");
   activateOnKeyboard(toggle, (event) => {
     event.preventDefault();
     event.stopPropagation();

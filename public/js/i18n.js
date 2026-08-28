@@ -24,6 +24,7 @@ const LANG_ALIAS = {
   id: "indonesian",
   rw: "kinyarwanda",
   ko: "korean",
+  lo: "lao",
   te: "telugu",
   ln: "lingala",
   fa: "persian",
@@ -66,6 +67,14 @@ const COMMON_LITERAL_FALLBACKS = Object.freeze({
     "searchPlaceholder",
     "dashboard.search_placeholder",
   ],
+  "Core Examination": ["eyes.core_examination_title"],
+  Conditions: ["eyes.disease_title"],
+  Workshops: ["eyes.primary_eye_care_procedures_title"],
+  "Extended Examination": ["eyes.extended_examination_title"],
+  "Tools and Kits": ["eyes.tools_title"],
+  "Medical Students": ["eyes.card_label.medical_students"],
+  Interactive: ["eyes.tag_interactive"],
+  PDF: ["eyes.tag_pdf"],
 });
 
 export function get(obj, path) {
@@ -225,6 +234,17 @@ function literalTranslate(rawText) {
 export function translateLiteral(rawText, fallback = rawText) {
   const translated = literalTranslate(rawText);
   return translated == null ? fallback : translated;
+}
+
+function interpolate(value, variables = {}) {
+  return String(value).replace(/\{\{\s*([a-zA-Z0-9_]+)\s*\}\}/g, (_, key) =>
+    String(variables[key] ?? ""),
+  );
+}
+
+export function translate(path, fallback = path, variables = {}) {
+  const value = get(CACHE.dict, path) ?? get(CACHE.fallbackDict, path);
+  return interpolate(value == null ? fallback : value, variables);
 }
 
 function parseI18nSpecs(rawSpec) {
@@ -532,3 +552,4 @@ window.I18N.applyTranslations =
   window.I18N.applyTranslations || applyTranslations; // your existing function
 window.I18N.getLanguage = window.I18N.getLanguage || getLanguage;
 window.I18N.translateLiteral = window.I18N.translateLiteral || translateLiteral;
+window.I18N.t = window.I18N.t || translate;

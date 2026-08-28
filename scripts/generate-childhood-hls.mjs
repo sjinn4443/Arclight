@@ -42,6 +42,7 @@ const languageLabels = {
   ur: "Urdu",
   yo: "Yoruba",
   zu: "Zulu",
+  lo: "Lao",
 };
 
 function resolveBinary(explicitEnvName, defaultCommand) {

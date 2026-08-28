@@ -155,6 +155,7 @@ function findForbiddenMedicalHomonyms(
   const value = String(translatedText || "");
 
   for (const [term, rule] of Object.entries(MEDICAL_HOMONYM_FORBIDDEN_TERMS)) {
+    if (rule.sourceExclusionPattern?.test(source)) continue;
     const sourceMatches =
       (rule.sourcePattern && rule.sourcePattern.test(source)) ||
       (rule.sourcePathPattern && rule.sourcePathPattern.test(pathText)) ||

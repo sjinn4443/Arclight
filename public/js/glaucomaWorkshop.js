@@ -13,7 +13,6 @@ import {
 import {
   buildRapdTestQuestions,
   caseFromPatientSelection,
-  formatRapdTestAnswer,
   getRapdDilationTarget,
   getRapdDirectResponseRatio,
   getRapdHippusScale,
@@ -51,6 +50,29 @@ function normaliseVideosSubpageId(raw) {
 
 function refreshWorkshopTranslations(root = document) {
   window.I18N?.applyTranslations?.(root);
+}
+
+function workshopText(path, fallback, variables = {}) {
+  return window.I18N?.t?.(path, fallback, variables) ?? fallback;
+}
+
+function formatRapdAnswerForUi(rapdCase) {
+  if (!rapdCase?.side) {
+    return workshopText("i18nExtra.interactive_notice_no_rapd", "No RAPD");
+  }
+
+  const patientSide = internalSideToPatientSide(rapdCase.side);
+  const side =
+    patientSide === "left"
+      ? workshopText("i18nExtra.interactive_notice_left", "Left")
+      : workshopText("i18nExtra.interactive_notice_right", "Right");
+  const severity = {
+    1: workshopText("i18nExtra.interactive_notice_mild", "Mild"),
+    2: workshopText("i18nLiteral.Moderate", "Moderate"),
+    3: workshopText("i18nExtra.interactive_notice_severe", "Severe"),
+  }[rapdCase.severity];
+
+  return severity ? `${side} ${severity} RAPD` : `${side} RAPD`;
 }
 
 function moveAtomsRowsToFolderEnd(root) {
@@ -1228,7 +1250,11 @@ function initGlaucomaRAPDFullSwingInteractive() {
   }
   const isTestMode = launchMode === "test";
   page.dataset.rapdExperienceMode = launchMode;
-  if (pageTitle) pageTitle.textContent = isTestMode ? "Test" : "Practice";
+  if (pageTitle) {
+    pageTitle.textContent = isTestMode
+      ? workshopText("medicalStudentsWorkshop.content.test", "Test")
+      : workshopText("medicalStudentsWorkshop.content.practice", "Practice");
+  }
   if (randomPanel) randomPanel.hidden = isTestMode;
   if (testControls) testControls.hidden = !isTestMode;
 
@@ -1296,6 +1322,7 @@ function initGlaucomaRAPDFullSwingInteractive() {
     lastLitNx: null,
     lastLitNy: null,
     renderTicker: null,
+    geometryObserver: null,
     eyes: {
       left: null,
       right: null,
@@ -1963,7 +1990,14 @@ function initGlaucomaRAPDFullSwingInteractive() {
     const selection = state.test.selections[state.test.index];
     const correctAnswer = state.test.questions[state.test.index];
     if (testProgress) {
-      testProgress.textContent = `Question ${state.test.index + 1} of ${state.test.questions.length}`;
+      testProgress.textContent = workshopText(
+        "i18nLiteral.Question {{current}} of {{total}}",
+        `Question ${state.test.index + 1} of ${state.test.questions.length}`,
+        {
+          current: state.test.index + 1,
+          total: state.test.questions.length,
+        },
+      );
       if (answered) {
         const isCorrect = rapdCasesMatch(answered, correctAnswer);
         const status = document.createElement("span");
@@ -1972,7 +2006,9 @@ function initGlaucomaRAPDFullSwingInteractive() {
         }`;
         status.setAttribute(
           "aria-label",
-          isCorrect ? "Correct answer" : "Incorrect answer",
+          isCorrect
+            ? workshopText("i18nLiteral.Correct answer", "Correct answer")
+            : workshopText("i18nLiteral.Incorrect answer", "Incorrect answer"),
         );
         status.textContent = isCorrect ? "✓" : "×";
         testProgress.appendChild(status);
@@ -1988,8 +2024,8 @@ function initGlaucomaRAPDFullSwingInteractive() {
     if (submitAnswerButton) {
       submitAnswerButton.hidden = state.test.reviewMode;
       submitAnswerButton.textContent = answered
-        ? "View result"
-        : "Submit answer";
+        ? workshopText("i18nLiteral.View result", "View result")
+        : workshopText("i18nLiteral.Submit answer", "Submit answer");
       const selectionComplete =
         selection &&
         (!selection.side || [1, 2, 3].includes(selection.severity));
@@ -2015,7 +2051,14 @@ function initGlaucomaRAPDFullSwingInteractive() {
       return;
     }
     if (scoreResult) {
-      scoreResult.textContent = `You scored ${getTestScore()} out of ${state.test.questions.length}.`;
+      scoreResult.textContent = workshopText(
+        "i18nLiteral.You scored {{score}} out of {{total}}.",
+        `You scored ${getTestScore()} out of ${state.test.questions.length}.`,
+        {
+          score: getTestScore(),
+          total: state.test.questions.length,
+        },
+      );
     }
     if (scoreDialog) scoreDialog.hidden = false;
     state.test.scoreShown = true;
@@ -2028,8 +2071,16 @@ function initGlaucomaRAPDFullSwingInteractive() {
     if (currentAnswer) {
       const isCorrect = rapdCasesMatch(currentAnswer, correctAnswer);
       answerFeedback.textContent = isCorrect
-        ? `Correct. The answer is ${formatRapdTestAnswer(correctAnswer)}.`
-        : `Incorrect. The correct answer is ${formatRapdTestAnswer(correctAnswer)}.`;
+        ? workshopText(
+            "i18nLiteral.Correct. The answer is {{answer}}.",
+            `Correct. The answer is ${formatRapdAnswerForUi(correctAnswer)}.`,
+            { answer: formatRapdAnswerForUi(correctAnswer) },
+          )
+        : workshopText(
+            "i18nLiteral.Incorrect. The correct answer is {{answer}}.",
+            `Incorrect. The correct answer is ${formatRapdAnswerForUi(correctAnswer)}.`,
+            { answer: formatRapdAnswerForUi(correctAnswer) },
+          );
       answerFeedback.className = `rapd-answerFeedback ${
         isCorrect ? "is-correct" : "is-incorrect"
       }`;
@@ -2039,7 +2090,7 @@ function initGlaucomaRAPDFullSwingInteractive() {
     }
     if (answerCloseButton) {
       answerCloseButton.disabled = false;
-      answerCloseButton.textContent = "Next";
+      answerCloseButton.textContent = workshopText("i18nLiteral.Next", "Next");
     }
     answerDialog.hidden = false;
   }
@@ -2188,7 +2239,22 @@ function initGlaucomaRAPDFullSwingInteractive() {
     updateDiagnosisSelection({ side: null, severity: null }, true);
   }
 
-  window.addEventListener("resize", render);
+  const refreshGeometry = () => {
+    if (getComputedStyle(page).display === "none") return;
+    window.requestAnimationFrame(render);
+  };
+
+  window.addEventListener("resize", refreshGeometry);
+  if (eyesImg.complete) {
+    refreshGeometry();
+  } else {
+    eyesImg.addEventListener("load", refreshGeometry, { once: true });
+  }
+  if (typeof ResizeObserver === "function") {
+    state.geometryObserver = new ResizeObserver(refreshGeometry);
+    state.geometryObserver.observe(stage);
+    state.geometryObserver.observe(eyesImg);
+  }
 
   state.renderTicker = window.setInterval(() => {
     if (!document.body.contains(page)) {
@@ -2196,6 +2262,8 @@ function initGlaucomaRAPDFullSwingInteractive() {
         clearInterval(state.renderTicker);
         state.renderTicker = null;
       }
+      state.geometryObserver?.disconnect();
+      window.removeEventListener("resize", refreshGeometry);
       return;
     }
     if (getComputedStyle(page).display === "none") return;

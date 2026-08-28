@@ -5,7 +5,15 @@ export const EYE_EXAMINATION_CONNECT_GRID_SIZE = 7;
 
 const TOTAL_CELLS =
   EYE_EXAMINATION_CONNECT_GRID_SIZE * EYE_EXAMINATION_CONNECT_GRID_SIZE;
-const TUTORIAL_STORAGE_KEY = "eyeExaminationConnect:tutorialSeen:v4";
+const TUTORIAL_STORAGE_KEY = "eyeExaminationConnect:tutorialSeen:v5";
+
+function connectText(source, variables = {}) {
+  let translated = window.I18N?.translateLiteral?.(source, source) ?? source;
+  Object.entries(variables).forEach(([key, value]) => {
+    translated = translated.replaceAll(`{{${key}}}`, String(value));
+  });
+  return translated;
+}
 
 export const EYE_EXAMINATION_CONNECT_STEPS = [
   {
@@ -227,8 +235,8 @@ function createCellElements(cellsHost) {
       image.alt = "";
       image.draggable = false;
       label.className = "exam-connect__marker-label";
-      label.textContent = step.label;
-      marker.title = step.longLabel || step.label;
+      label.textContent = connectText(step.label);
+      marker.title = connectText(step.longLabel || step.label);
       marker.append(image, label);
       cell.appendChild(marker);
     }
@@ -349,20 +357,27 @@ function createController(page) {
 
   const updateStatusForPath = (expectedCheckpoint) => {
     if (state.complete) {
-      setStatus("Complete · 49/49 squares filled");
+      setStatus(connectText("Complete · 49/49 squares filled"));
       return;
     }
     if (state.path.length === 0) {
-      setStatus("Choose the first examination skill");
+      setStatus(connectText("Choose the first examination skill"));
       return;
     }
     if (expectedCheckpoint === EYE_EXAMINATION_CONNECT_STEPS.length - 1) {
       setStatus(
-        `${state.path.length}/49 · Fill every square, then finish with the last skill`,
+        connectText(
+          "{{count}}/49 · Fill every square, then finish with the last skill",
+          { count: state.path.length },
+        ),
       );
       return;
     }
-    setStatus(`${state.path.length}/49 · Find the next examination skill`);
+    setStatus(
+      connectText("{{count}}/49 · Find the next examination skill", {
+        count: state.path.length,
+      }),
+    );
   };
 
   const render = () => {
@@ -404,8 +419,12 @@ function createController(page) {
     board.setAttribute(
       "aria-label",
       state.complete
-        ? "Completed 7 by 7 Connect board. All 49 squares are filled."
-        : `7 by 7 Connect board. ${state.path.length} of 49 squares filled.`,
+        ? connectText(
+            "Completed 7 by 7 Connect board. All 49 squares are filled.",
+          )
+        : connectText("7 by 7 Connect board. {{count}} of 49 squares filled.", {
+            count: state.path.length,
+          }),
     );
     completePanel.hidden = !state.complete;
     updatePathLines();
@@ -455,7 +474,9 @@ function createController(page) {
     if (state.path.length === 0) {
       if (cell !== start) {
         setStatus(
-          "That is not the first examination skill. Try another one.",
+          connectText(
+            "That is not the first examination skill. Try another one.",
+          ),
           true,
         );
         flashInvalidCheckpoint(CHECKPOINT_INDEX_BY_CELL.get(cell));
@@ -481,7 +502,9 @@ function createController(page) {
 
     if (state.path.includes(cell)) {
       setStatus(
-        "That square is already filled. Move back one square to undo.",
+        connectText(
+          "That square is already filled. Move back one square to undo.",
+        ),
         true,
       );
       return false;
@@ -494,7 +517,9 @@ function createController(page) {
       checkpointIndex !== expectedCheckpoint
     ) {
       setStatus(
-        "That is not the next examination skill. Try another route.",
+        connectText(
+          "That is not the next examination skill. Try another route.",
+        ),
         true,
       );
       flashInvalidCheckpoint(checkpointIndex);
@@ -505,7 +530,9 @@ function createController(page) {
       checkpointIndex === EYE_EXAMINATION_CONNECT_STEPS.length - 1;
     if (isFinalCheckpoint && state.path.length !== TOTAL_CELLS - 1) {
       setStatus(
-        "Keep going · Every square must be filled before the final skill",
+        connectText(
+          "Keep going · Every square must be filled before the final skill",
+        ),
         true,
       );
       flashInvalidCheckpoint(checkpointIndex);
@@ -650,7 +677,7 @@ function createController(page) {
       row >= EYE_EXAMINATION_CONNECT_GRID_SIZE ||
       col >= EYE_EXAMINATION_CONNECT_GRID_SIZE
     ) {
-      setStatus("Stay inside the grid", true);
+      setStatus(connectText("Stay inside the grid"), true);
       return;
     }
     tryCell(toCellIndex(row, col));
@@ -664,8 +691,9 @@ function createController(page) {
       dot.classList.toggle("is-active", index === state.tutorialIndex);
     });
     tutorialBack.disabled = state.tutorialIndex === 0;
-    tutorialNext.textContent =
-      state.tutorialIndex === tutorialSlides.length - 1 ? "Start game" : "Next";
+    tutorialNext.textContent = connectText(
+      state.tutorialIndex === tutorialSlides.length - 1 ? "Start game" : "Next",
+    );
   };
 
   const closeTutorial = () => {

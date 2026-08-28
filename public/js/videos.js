@@ -610,6 +610,7 @@ function setupInteractiveLearningFolders() {
     toggle.setAttribute("tabindex", "0");
     toggle.setAttribute("aria-expanded", "true");
     toggle.textContent = "Close ^";
+    toggle.setAttribute("data-i18n", "i18nLiteral.Close ^");
     toggle.style.whiteSpace = "nowrap";
 
     const closeNow = (event) => {
@@ -627,6 +628,7 @@ function setupInteractiveLearningFolders() {
     });
 
     titleEl.appendChild(toggle);
+    window.I18N?.applyTranslations?.(toggle);
   };
 
   hideAllSectionCards();
@@ -1063,6 +1065,7 @@ const VIDEO_PAGE_LANGUAGE_ALIASES = Object.freeze({
   urdu: "ur",
   yoruba: "yo",
   zulu: "zu",
+  lao: "lo",
 });
 
 function normalizeVideoPageLanguage(lang) {
@@ -1562,6 +1565,7 @@ const CHILDHOOD_EYE_SCREENING_SUBTITLE_LANGUAGES = {
   ur: { label: "Urdu" },
   yo: { label: "Yoruba" },
   zu: { label: "Zulu" },
+  lo: { label: "Lao" },
 };
 const CHILDHOOD_EYE_SCREENING_HLS_MIME_TYPE = "application/vnd.apple.mpegurl";
 

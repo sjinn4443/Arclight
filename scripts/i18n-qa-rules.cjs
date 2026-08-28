@@ -36,7 +36,10 @@ const ALLOWED_EXACT_ENGLISH_PATTERNS = [
 ];
 
 const LOCALE_SPECIFIC_ALLOWED_EXACT_ENGLISH_KEYS = {
-  french: [/^auto\.videos\.patient_b$/],
+  french: [
+    /^auto\.videos\.patient_b$/,
+    /^medicalStudentsWorkshop\.content\.(allergies|associations|population|simulation_osce|site)$/,
+  ],
   portuguese: [/^auto\.glaucomascrollimages\.(central|halos|normal)$/],
   spanish: [/^i18nExtra\.no$/, /^auto\.glaucomascrollimages\.halos$/],
   te: [
@@ -105,6 +108,8 @@ const MEDICAL_HOMONYM_FORBIDDEN_TERMS = {
     sourcePattern: /\bpupil(s|lary)?\b|\bdilat(e|es|ed|ing|ation)\b/i,
     sourcePathPattern: /pupil/i,
     subtitleSourcePattern: /\bpupil(s|lary)?\b|student-duce/i,
+    sourceExclusionPattern:
+      /^Two students demonstrate pupil exam on each other/i,
     forbiddenByLocale: {
       amharic: [/\u1270\u121b\u122a/],
       am: [/\u1270\u121b\u122a/],
@@ -160,6 +165,8 @@ const MEDICAL_HOMONYM_FORBIDDEN_TERMS = {
       ur: [/\u0637\u0627\u0644\u0628/],
       zulu: [/umfundi/i, /abafundi/i],
       zu: [/umfundi/i, /abafundi/i],
+      lao: [/ນັກຮຽນ/, /ນັກສຶກສາ/],
+      lo: [/ນັກຮຽນ/, /ນັກສຶກສາ/],
     },
   },
 };

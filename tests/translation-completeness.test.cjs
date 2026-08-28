@@ -17,6 +17,10 @@ const REQUIRED_PATHS = [
   "auto.glaucomaquizcasestudy",
   "auto.glaucomascrollimages",
   "auto.glaucomahistorycasestudy",
+  "medicalStudentsWorkshop.content",
+  "medicalStudentsWorkshop.quiz",
+  "i18nExtra.interactive_notice_title",
+  "i18nExtra.location_precise_disclosure",
 ];
 
 function getByPath(object, dottedPath) {
@@ -49,5 +53,53 @@ describe("translation completeness", () => {
     }
 
     expect(missing).toEqual([]);
+  });
+
+  it("registers Lao and keeps a timing-identical Lao VTT beside every English VTT", () => {
+    const languageInstall = fs.readFileSync(
+      path.join(process.cwd(), "public", "html", "languageinstall.html"),
+      "utf8",
+    );
+    expect(languageInstall).toContain('value="lo"');
+    expect(languageInstall).toContain('data-native="ລາວ"');
+
+    const subtitleRoot = path.join(process.cwd(), "public", "video-subtitles");
+    const englishVtts = [];
+    const visit = (directory) => {
+      for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
+        const absolute = path.join(directory, entry.name);
+        if (entry.isDirectory()) visit(absolute);
+        else if (entry.name === "en.vtt") englishVtts.push(absolute);
+      }
+    };
+    visit(subtitleRoot);
+
+    expect(englishVtts.length).toBeGreaterThan(0);
+    for (const englishPath of englishVtts) {
+      const laoPath = path.join(path.dirname(englishPath), "lo.vtt");
+      expect(fs.existsSync(laoPath)).toBe(true);
+      const timings = (filePath) =>
+        fs
+          .readFileSync(filePath, "utf8")
+          .replace(/\r/g, "")
+          .split("\n")
+          .filter((line) => line.includes("-->"));
+      expect(timings(laoPath)).toEqual(timings(englishPath));
+    }
+
+    for (const catalogName of [
+      "app-video-subtitles.json",
+      "childhood-eye-screening.json",
+    ]) {
+      const catalog = JSON.parse(
+        fs.readFileSync(
+          path.join(process.cwd(), "public", "video-localization", catalogName),
+          "utf8",
+        ),
+      );
+      for (const entry of Object.values(catalog)) {
+        if (entry.subtitles?.en) expect(entry.subtitles.lo).toBeDefined();
+      }
+    }
   });
 });

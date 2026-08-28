@@ -303,6 +303,7 @@ const LANGS = [
   "ur",
   "yo",
   "zu",
+  "lo",
 ];
 
 async function buildReverseIndex() {

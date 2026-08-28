@@ -10,11 +10,70 @@ const GEO_CACHE_TTL_MS = 24 * 60 * 60 * 1000; // 24 hours
 
 // LocalStorage key used by the app for user-selected location
 const LS_KEY_USER_LOCATION = "userLocation"; // { lat, lon, area, source, ts }
-const PRECISE_LOCATION_DISCLOSURE =
-  "With your permission, this device sends your precise coordinates directly to BigDataCloud to name the area. Arclight does not send or store those coordinates on its server. Continue?";
+function locationText(key, fallback) {
+  return window.I18N?.t?.(`i18nExtra.${key}`, fallback) || fallback;
+}
 
 function confirmPreciseLocationDisclosure() {
-  return window.confirm(PRECISE_LOCATION_DISCLOSURE);
+  const existing = document.getElementById("preciseLocationConsentOverlay");
+  existing?.remove();
+
+  return new Promise((resolve) => {
+    const overlay = document.createElement("div");
+    overlay.id = "preciseLocationConsentOverlay";
+    overlay.setAttribute("role", "dialog");
+    overlay.setAttribute("aria-modal", "true");
+    overlay.setAttribute("aria-labelledby", "preciseLocationConsentTitle");
+    overlay.setAttribute("aria-describedby", "preciseLocationConsentText");
+
+    const modal = document.createElement("div");
+    modal.className = "guest-modal precise-location-consent";
+
+    const title = document.createElement("h2");
+    title.id = "preciseLocationConsentTitle";
+    title.className = "guest-modal__title";
+    title.textContent = locationText(
+      "location_precise_title",
+      "Share precise location?",
+    );
+
+    const body = document.createElement("p");
+    body.id = "preciseLocationConsentText";
+    body.className = "guest-modal__text";
+    body.textContent = locationText(
+      "location_precise_disclosure",
+      "With your permission, this device sends your precise coordinates directly to BigDataCloud to name the area. Arclight does not send or store those coordinates on its server.",
+    );
+
+    const actions = document.createElement("div");
+    actions.className = "precise-location-consent__actions";
+    const cancel = document.createElement("button");
+    cancel.type = "button";
+    cancel.className = "precise-location-consent__cancel";
+    cancel.textContent = locationText("location_precise_cancel", "Cancel");
+    const accept = document.createElement("button");
+    accept.type = "button";
+    accept.className =
+      "guest-modal__cta btn-primary precise-location-consent__continue";
+    accept.textContent = locationText("location_precise_continue", "Continue");
+    actions.append(cancel, accept);
+    modal.append(title, body, actions);
+    overlay.appendChild(modal);
+    document.body.appendChild(overlay);
+
+    const finish = (accepted) => {
+      document.removeEventListener("keydown", onKeydown);
+      overlay.remove();
+      resolve(accepted);
+    };
+    const onKeydown = (event) => {
+      if (event.key === "Escape") finish(false);
+    };
+    cancel.addEventListener("click", () => finish(false), { once: true });
+    accept.addEventListener("click", () => finish(true), { once: true });
+    document.addEventListener("keydown", onKeydown);
+    accept.focus();
+  });
 }
 
 // ---------- Classification ----------
@@ -194,7 +253,7 @@ export async function initializeLocation() {
 
 // ---------- Precise browser geolocation path (ONE definition) ----------
 export async function refineWithBrowserLocation() {
-  if (!confirmPreciseLocationDisclosure()) return null;
+  if (!(await confirmPreciseLocationDisclosure())) return null;
   return new Promise((resolve) => {
     if (!navigator.geolocation) {
       console.warn("geolocation unsupported");
@@ -370,6 +429,7 @@ export async function handleCheckLocationClick() {
 
     // 1) Get precise GPS
     const coords = await requestPreciseLocation();
+    if (!coords) return;
 
     // 2) Reverse-geocode to a readable area
     const { area, countryCode, countryName, city } = await reverseGeocode(
@@ -461,9 +521,7 @@ async function requestPreciseLocation() {
   if (!("geolocation" in navigator)) {
     throw new Error("Geolocation not supported");
   }
-  if (!confirmPreciseLocationDisclosure()) {
-    throw new Error("Precise location request cancelled");
-  }
+  if (!(await confirmPreciseLocationDisclosure())) return null;
   return new Promise((resolve, reject) => {
     navigator.geolocation.getCurrentPosition(
       (pos) => resolve(pos.coords),
@@ -540,9 +598,20 @@ document.addEventListener("location:updated", (e) => {
 
 function formatProfileLocationDisplay(area) {
   const displayArea = normaliseAreaForDisplay(area);
-  if (!displayArea) return "Location unavailable";
-  if (/^Location:/i.test(displayArea)) return displayArea;
-  return `Location: ${displayArea}`;
+  if (!displayArea) {
+    return (
+      window.I18N?.t?.(
+        "i18nLiteral.Location unavailable",
+        "Location unavailable",
+      ) || "Location unavailable"
+    );
+  }
+  const areaOnly = displayArea.replace(/^Location:\s*/i, "");
+  const template =
+    window.I18N?.t?.("i18nLiteral.Location: …", "Location: …") || "Location: …";
+  return /…|\.\.\./.test(template)
+    ? template.replace(/…|\.\.\./, areaOnly)
+    : `${template} ${areaOnly}`;
 }
 
 function normaliseAreaForDisplay(area) {

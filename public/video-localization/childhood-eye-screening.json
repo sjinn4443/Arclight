@@ -24,7 +24,8 @@
       "te": "/video-subtitles/app-videos/vaWhoPage/te.vtt",
       "ur": "/video-subtitles/app-videos/vaWhoPage/ur.vtt",
       "yo": "/video-subtitles/app-videos/vaWhoPage/yo.vtt",
-      "zu": "/video-subtitles/app-videos/vaWhoPage/zu.vtt"
+      "zu": "/video-subtitles/app-videos/vaWhoPage/zu.vtt",
+      "lo": "/video-subtitles/app-videos/vaWhoPage/lo.vtt"
     },
     "audioVariants": {},
     "defaultSubtitleLang": "en",
@@ -57,7 +58,8 @@
         "te",
         "ur",
         "yo",
-        "zu"
+        "zu",
+        "lo"
       ]
     },
     "localSources": {
@@ -90,7 +92,8 @@
       "te": "/video-subtitles/app-videos/vaNearVisionPage/te.vtt",
       "ur": "/video-subtitles/app-videos/vaNearVisionPage/ur.vtt",
       "yo": "/video-subtitles/app-videos/vaNearVisionPage/yo.vtt",
-      "zu": "/video-subtitles/app-videos/vaNearVisionPage/zu.vtt"
+      "zu": "/video-subtitles/app-videos/vaNearVisionPage/zu.vtt",
+      "lo": "/video-subtitles/app-videos/vaNearVisionPage/lo.vtt"
     },
     "audioVariants": {},
     "defaultSubtitleLang": "en",
@@ -123,7 +126,8 @@
         "te",
         "ur",
         "yo",
-        "zu"
+        "zu",
+        "lo"
       ]
     },
     "localSources": {
@@ -156,7 +160,8 @@
       "te": "/video-subtitles/childhood-eye-screening/assessmentVisionPage/te.vtt",
       "ur": "/video-subtitles/childhood-eye-screening/assessmentVisionPage/ur.vtt",
       "yo": "/video-subtitles/childhood-eye-screening/assessmentVisionPage/yo.vtt",
-      "zu": "/video-subtitles/childhood-eye-screening/assessmentVisionPage/zu.vtt"
+      "zu": "/video-subtitles/childhood-eye-screening/assessmentVisionPage/zu.vtt",
+      "lo": "/video-subtitles/childhood-eye-screening/assessmentVisionPage/lo.vtt"
     },
     "audioVariants": {},
     "defaultSubtitleLang": "en",
@@ -189,7 +194,8 @@
         "te",
         "ur",
         "yo",
-        "zu"
+        "zu",
+        "lo"
       ]
     },
     "localSources": {
@@ -222,7 +228,8 @@
       "te": "/video-subtitles/childhood-eye-screening/mumVisionPage/te.vtt",
       "ur": "/video-subtitles/childhood-eye-screening/mumVisionPage/ur.vtt",
       "yo": "/video-subtitles/childhood-eye-screening/mumVisionPage/yo.vtt",
-      "zu": "/video-subtitles/childhood-eye-screening/mumVisionPage/zu.vtt"
+      "zu": "/video-subtitles/childhood-eye-screening/mumVisionPage/zu.vtt",
+      "lo": "/video-subtitles/childhood-eye-screening/mumVisionPage/lo.vtt"
     },
     "audioVariants": {},
     "defaultSubtitleLang": "en",
@@ -255,7 +262,8 @@
         "te",
         "ur",
         "yo",
-        "zu"
+        "zu",
+        "lo"
       ]
     },
     "localSources": {
@@ -288,7 +296,8 @@
       "te": "/video-subtitles/app-videos/assessingVisualFunctionPage/te.vtt",
       "ur": "/video-subtitles/app-videos/assessingVisualFunctionPage/ur.vtt",
       "yo": "/video-subtitles/app-videos/assessingVisualFunctionPage/yo.vtt",
-      "zu": "/video-subtitles/app-videos/assessingVisualFunctionPage/zu.vtt"
+      "zu": "/video-subtitles/app-videos/assessingVisualFunctionPage/zu.vtt",
+      "lo": "/video-subtitles/app-videos/assessingVisualFunctionPage/lo.vtt"
     },
     "audioVariants": {},
     "defaultSubtitleLang": "en",
@@ -321,7 +330,8 @@
         "te",
         "ur",
         "yo",
-        "zu"
+        "zu",
+        "lo"
       ]
     },
     "localSources": {
@@ -354,7 +364,8 @@
       "te": "/video-subtitles/app-videos/pupilExamPECPage/te.vtt",
       "ur": "/video-subtitles/app-videos/pupilExamPECPage/ur.vtt",
       "yo": "/video-subtitles/app-videos/pupilExamPECPage/yo.vtt",
-      "zu": "/video-subtitles/app-videos/pupilExamPECPage/zu.vtt"
+      "zu": "/video-subtitles/app-videos/pupilExamPECPage/zu.vtt",
+      "lo": "/video-subtitles/app-videos/pupilExamPECPage/lo.vtt"
     },
     "audioVariants": {},
     "defaultSubtitleLang": "en",
@@ -387,7 +398,8 @@
         "te",
         "ur",
         "yo",
-        "zu"
+        "zu",
+        "lo"
       ]
     },
     "localSources": {
@@ -420,7 +432,8 @@
       "te": "/video-subtitles/app-videos/rapdTestVideoPage/te.vtt",
       "ur": "/video-subtitles/app-videos/rapdTestVideoPage/ur.vtt",
       "yo": "/video-subtitles/app-videos/rapdTestVideoPage/yo.vtt",
-      "zu": "/video-subtitles/app-videos/rapdTestVideoPage/zu.vtt"
+      "zu": "/video-subtitles/app-videos/rapdTestVideoPage/zu.vtt",
+      "lo": "/video-subtitles/app-videos/rapdTestVideoPage/lo.vtt"
     },
     "audioVariants": {},
     "defaultSubtitleLang": "en",
@@ -453,7 +466,8 @@
         "te",
         "ur",
         "yo",
-        "zu"
+        "zu",
+        "lo"
       ]
     },
     "localSources": {
@@ -486,7 +500,8 @@
       "te": "/video-subtitles/app-videos/fundalExamPage/te.vtt",
       "ur": "/video-subtitles/app-videos/fundalExamPage/ur.vtt",
       "yo": "/video-subtitles/app-videos/fundalExamPage/yo.vtt",
-      "zu": "/video-subtitles/app-videos/fundalExamPage/zu.vtt"
+      "zu": "/video-subtitles/app-videos/fundalExamPage/zu.vtt",
+      "lo": "/video-subtitles/app-videos/fundalExamPage/lo.vtt"
     },
     "audioVariants": {},
     "defaultSubtitleLang": "en",
@@ -519,7 +534,8 @@
         "te",
         "ur",
         "yo",
-        "zu"
+        "zu",
+        "lo"
       ]
     },
     "localSources": {
@@ -552,7 +568,8 @@
       "te": "/video-subtitles/app-videos/fePecAnteriorSegmentPage/te.vtt",
       "ur": "/video-subtitles/app-videos/fePecAnteriorSegmentPage/ur.vtt",
       "yo": "/video-subtitles/app-videos/fePecAnteriorSegmentPage/yo.vtt",
-      "zu": "/video-subtitles/app-videos/fePecAnteriorSegmentPage/zu.vtt"
+      "zu": "/video-subtitles/app-videos/fePecAnteriorSegmentPage/zu.vtt",
+      "lo": "/video-subtitles/app-videos/fePecAnteriorSegmentPage/lo.vtt"
     },
     "audioVariants": {},
     "defaultSubtitleLang": "en",
@@ -585,7 +602,8 @@
         "te",
         "ur",
         "yo",
-        "zu"
+        "zu",
+        "lo"
       ]
     },
     "localSources": {
@@ -618,7 +636,8 @@
       "te": "/video-subtitles/app-videos/feFullAnteriorSegmentPage/te.vtt",
       "ur": "/video-subtitles/app-videos/feFullAnteriorSegmentPage/ur.vtt",
       "yo": "/video-subtitles/app-videos/feFullAnteriorSegmentPage/yo.vtt",
-      "zu": "/video-subtitles/app-videos/feFullAnteriorSegmentPage/zu.vtt"
+      "zu": "/video-subtitles/app-videos/feFullAnteriorSegmentPage/zu.vtt",
+      "lo": "/video-subtitles/app-videos/feFullAnteriorSegmentPage/lo.vtt"
     },
     "audioVariants": {},
     "defaultSubtitleLang": "en",
@@ -651,7 +670,8 @@
         "te",
         "ur",
         "yo",
-        "zu"
+        "zu",
+        "lo"
       ]
     },
     "localSources": {
@@ -684,7 +704,8 @@
       "te": "/video-subtitles/app-videos/fundalStillPage/te.vtt",
       "ur": "/video-subtitles/app-videos/fundalStillPage/ur.vtt",
       "yo": "/video-subtitles/app-videos/fundalStillPage/yo.vtt",
-      "zu": "/video-subtitles/app-videos/fundalStillPage/zu.vtt"
+      "zu": "/video-subtitles/app-videos/fundalStillPage/zu.vtt",
+      "lo": "/video-subtitles/app-videos/fundalStillPage/lo.vtt"
     },
     "audioVariants": {},
     "defaultSubtitleLang": "en",
@@ -717,7 +738,8 @@
         "te",
         "ur",
         "yo",
-        "zu"
+        "zu",
+        "lo"
       ]
     },
     "localSources": {
@@ -750,7 +772,8 @@
       "te": "/video-subtitles/app-videos/fundalRealPage/te.vtt",
       "ur": "/video-subtitles/app-videos/fundalRealPage/ur.vtt",
       "yo": "/video-subtitles/app-videos/fundalRealPage/yo.vtt",
-      "zu": "/video-subtitles/app-videos/fundalRealPage/zu.vtt"
+      "zu": "/video-subtitles/app-videos/fundalRealPage/zu.vtt",
+      "lo": "/video-subtitles/app-videos/fundalRealPage/lo.vtt"
     },
     "audioVariants": {},
     "defaultSubtitleLang": "en",
@@ -783,7 +806,8 @@
         "te",
         "ur",
         "yo",
-        "zu"
+        "zu",
+        "lo"
       ]
     },
     "localSources": {
@@ -816,7 +840,8 @@
       "te": "/video-subtitles/app-videos/directOphthalmoscopyVideoPage/te.vtt",
       "ur": "/video-subtitles/app-videos/directOphthalmoscopyVideoPage/ur.vtt",
       "yo": "/video-subtitles/app-videos/directOphthalmoscopyVideoPage/yo.vtt",
-      "zu": "/video-subtitles/app-videos/directOphthalmoscopyVideoPage/zu.vtt"
+      "zu": "/video-subtitles/app-videos/directOphthalmoscopyVideoPage/zu.vtt",
+      "lo": "/video-subtitles/app-videos/directOphthalmoscopyVideoPage/lo.vtt"
     },
     "audioVariants": {},
     "defaultSubtitleLang": "en",
@@ -849,7 +874,8 @@
         "te",
         "ur",
         "yo",
-        "zu"
+        "zu",
+        "lo"
       ]
     },
     "localSources": {
@@ -882,7 +908,8 @@
       "te": "/video-subtitles/childhood-eye-screening/usaidHowToUseArclightPage/te.vtt",
       "ur": "/video-subtitles/childhood-eye-screening/usaidHowToUseArclightPage/ur.vtt",
       "yo": "/video-subtitles/childhood-eye-screening/usaidHowToUseArclightPage/yo.vtt",
-      "zu": "/video-subtitles/childhood-eye-screening/usaidHowToUseArclightPage/zu.vtt"
+      "zu": "/video-subtitles/childhood-eye-screening/usaidHowToUseArclightPage/zu.vtt",
+      "lo": "/video-subtitles/childhood-eye-screening/usaidHowToUseArclightPage/lo.vtt"
     },
     "audioVariants": {},
     "defaultSubtitleLang": "en",
@@ -915,7 +942,8 @@
         "te",
         "ur",
         "yo",
-        "zu"
+        "zu",
+        "lo"
       ]
     },
     "localSources": {
@@ -948,7 +976,8 @@
       "te": "/video-subtitles/app-videos/phoneAttachmentVideoPage/te.vtt",
       "ur": "/video-subtitles/app-videos/phoneAttachmentVideoPage/ur.vtt",
       "yo": "/video-subtitles/app-videos/phoneAttachmentVideoPage/yo.vtt",
-      "zu": "/video-subtitles/app-videos/phoneAttachmentVideoPage/zu.vtt"
+      "zu": "/video-subtitles/app-videos/phoneAttachmentVideoPage/zu.vtt",
+      "lo": "/video-subtitles/app-videos/phoneAttachmentVideoPage/lo.vtt"
     },
     "audioVariants": {},
     "defaultSubtitleLang": "en",
@@ -981,7 +1010,8 @@
         "te",
         "ur",
         "yo",
-        "zu"
+        "zu",
+        "lo"
       ]
     },
     "localSources": {
@@ -1014,7 +1044,8 @@
       "te": "/video-subtitles/childhood-eye-screening/usaidHowToUseArclightPage/te.vtt",
       "ur": "/video-subtitles/childhood-eye-screening/usaidHowToUseArclightPage/ur.vtt",
       "yo": "/video-subtitles/childhood-eye-screening/usaidHowToUseArclightPage/yo.vtt",
-      "zu": "/video-subtitles/childhood-eye-screening/usaidHowToUseArclightPage/zu.vtt"
+      "zu": "/video-subtitles/childhood-eye-screening/usaidHowToUseArclightPage/zu.vtt",
+      "lo": "/video-subtitles/childhood-eye-screening/usaidHowToUseArclightPage/lo.vtt"
     },
     "audioVariants": {},
     "defaultSubtitleLang": "en",
@@ -1047,7 +1078,8 @@
         "te",
         "ur",
         "yo",
-        "zu"
+        "zu",
+        "lo"
       ]
     },
     "localSources": {
@@ -1080,7 +1112,8 @@
       "te": "/video-subtitles/childhood-eye-screening/usaidFundalReflexExamPage/te.vtt",
       "ur": "/video-subtitles/childhood-eye-screening/usaidFundalReflexExamPage/ur.vtt",
       "yo": "/video-subtitles/childhood-eye-screening/usaidFundalReflexExamPage/yo.vtt",
-      "zu": "/video-subtitles/childhood-eye-screening/usaidFundalReflexExamPage/zu.vtt"
+      "zu": "/video-subtitles/childhood-eye-screening/usaidFundalReflexExamPage/zu.vtt",
+      "lo": "/video-subtitles/childhood-eye-screening/usaidFundalReflexExamPage/lo.vtt"
     },
     "audioVariants": {},
     "defaultSubtitleLang": "en",
@@ -1113,7 +1146,8 @@
         "te",
         "ur",
         "yo",
-        "zu"
+        "zu",
+        "lo"
       ]
     },
     "localSources": {
@@ -1146,7 +1180,8 @@
       "te": "/video-subtitles/childhood-eye-screening/usaidNormalAbnormalPage/te.vtt",
       "ur": "/video-subtitles/childhood-eye-screening/usaidNormalAbnormalPage/ur.vtt",
       "yo": "/video-subtitles/childhood-eye-screening/usaidNormalAbnormalPage/yo.vtt",
-      "zu": "/video-subtitles/childhood-eye-screening/usaidNormalAbnormalPage/zu.vtt"
+      "zu": "/video-subtitles/childhood-eye-screening/usaidNormalAbnormalPage/zu.vtt",
+      "lo": "/video-subtitles/childhood-eye-screening/usaidNormalAbnormalPage/lo.vtt"
     },
     "audioVariants": {},
     "defaultSubtitleLang": "en",
@@ -1179,7 +1214,8 @@
         "te",
         "ur",
         "yo",
-        "zu"
+        "zu",
+        "lo"
       ]
     },
     "localSources": {
@@ -1212,7 +1248,8 @@
       "te": "/video-subtitles/diabetic-retinopathy-workshop/diabeticIntroductionToArclightVideoPage/te.vtt",
       "ur": "/video-subtitles/diabetic-retinopathy-workshop/diabeticIntroductionToArclightVideoPage/ur.vtt",
       "yo": "/video-subtitles/diabetic-retinopathy-workshop/diabeticIntroductionToArclightVideoPage/yo.vtt",
-      "zu": "/video-subtitles/diabetic-retinopathy-workshop/diabeticIntroductionToArclightVideoPage/zu.vtt"
+      "zu": "/video-subtitles/diabetic-retinopathy-workshop/diabeticIntroductionToArclightVideoPage/zu.vtt",
+      "lo": "/video-subtitles/diabetic-retinopathy-workshop/diabeticIntroductionToArclightVideoPage/lo.vtt"
     },
     "audioVariants": {},
     "defaultSubtitleLang": "en",
@@ -1245,7 +1282,8 @@
         "te",
         "ur",
         "yo",
-        "zu"
+        "zu",
+        "lo"
       ]
     },
     "localSources": {
@@ -1278,7 +1316,8 @@
       "te": "/video-subtitles/app-videos/diabeticCausesOfVisionLossVideoPage/te.vtt",
       "ur": "/video-subtitles/app-videos/diabeticCausesOfVisionLossVideoPage/ur.vtt",
       "yo": "/video-subtitles/app-videos/diabeticCausesOfVisionLossVideoPage/yo.vtt",
-      "zu": "/video-subtitles/app-videos/diabeticCausesOfVisionLossVideoPage/zu.vtt"
+      "zu": "/video-subtitles/app-videos/diabeticCausesOfVisionLossVideoPage/zu.vtt",
+      "lo": "/video-subtitles/app-videos/diabeticCausesOfVisionLossVideoPage/lo.vtt"
     },
     "audioVariants": {},
     "defaultSubtitleLang": "en",
@@ -1311,7 +1350,8 @@
         "te",
         "ur",
         "yo",
-        "zu"
+        "zu",
+        "lo"
       ]
     },
     "localSources": {
@@ -1344,7 +1384,8 @@
       "te": "/video-subtitles/app-videos/diabeticSimpleSafeScalableVideoPage/te.vtt",
       "ur": "/video-subtitles/app-videos/diabeticSimpleSafeScalableVideoPage/ur.vtt",
       "yo": "/video-subtitles/app-videos/diabeticSimpleSafeScalableVideoPage/yo.vtt",
-      "zu": "/video-subtitles/app-videos/diabeticSimpleSafeScalableVideoPage/zu.vtt"
+      "zu": "/video-subtitles/app-videos/diabeticSimpleSafeScalableVideoPage/zu.vtt",
+      "lo": "/video-subtitles/app-videos/diabeticSimpleSafeScalableVideoPage/lo.vtt"
     },
     "audioVariants": {},
     "defaultSubtitleLang": "en",
@@ -1377,7 +1418,8 @@
         "te",
         "ur",
         "yo",
-        "zu"
+        "zu",
+        "lo"
       ]
     },
     "localSources": {
@@ -1410,7 +1452,8 @@
       "te": "/video-subtitles/app-videos/binocularIndirectOphthalmoscopyVideoPage/te.vtt",
       "ur": "/video-subtitles/app-videos/binocularIndirectOphthalmoscopyVideoPage/ur.vtt",
       "yo": "/video-subtitles/app-videos/binocularIndirectOphthalmoscopyVideoPage/yo.vtt",
-      "zu": "/video-subtitles/app-videos/binocularIndirectOphthalmoscopyVideoPage/zu.vtt"
+      "zu": "/video-subtitles/app-videos/binocularIndirectOphthalmoscopyVideoPage/zu.vtt",
+      "lo": "/video-subtitles/app-videos/binocularIndirectOphthalmoscopyVideoPage/lo.vtt"
     },
     "audioVariants": {},
     "defaultSubtitleLang": "en",
@@ -1443,7 +1486,8 @@
         "te",
         "ur",
         "yo",
-        "zu"
+        "zu",
+        "lo"
       ]
     },
     "localSources": {
@@ -1476,7 +1520,8 @@
       "te": "/video-subtitles/app-videos/glaucomaPupilReactionsVideoPage/te.vtt",
       "ur": "/video-subtitles/app-videos/glaucomaPupilReactionsVideoPage/ur.vtt",
       "yo": "/video-subtitles/app-videos/glaucomaPupilReactionsVideoPage/yo.vtt",
-      "zu": "/video-subtitles/app-videos/glaucomaPupilReactionsVideoPage/zu.vtt"
+      "zu": "/video-subtitles/app-videos/glaucomaPupilReactionsVideoPage/zu.vtt",
+      "lo": "/video-subtitles/app-videos/glaucomaPupilReactionsVideoPage/lo.vtt"
     },
     "audioVariants": {},
     "defaultSubtitleLang": "en",
@@ -1509,7 +1554,8 @@
         "te",
         "ur",
         "yo",
-        "zu"
+        "zu",
+        "lo"
       ]
     },
     "localSources": {
@@ -1542,7 +1588,8 @@
       "te": "/video-subtitles/app-videos/glaucomaSignsOfGlaucomaVideoPage/te.vtt",
       "ur": "/video-subtitles/app-videos/glaucomaSignsOfGlaucomaVideoPage/ur.vtt",
       "yo": "/video-subtitles/app-videos/glaucomaSignsOfGlaucomaVideoPage/yo.vtt",
-      "zu": "/video-subtitles/app-videos/glaucomaSignsOfGlaucomaVideoPage/zu.vtt"
+      "zu": "/video-subtitles/app-videos/glaucomaSignsOfGlaucomaVideoPage/zu.vtt",
+      "lo": "/video-subtitles/app-videos/glaucomaSignsOfGlaucomaVideoPage/lo.vtt"
     },
     "audioVariants": {},
     "defaultSubtitleLang": "en",
@@ -1575,7 +1622,8 @@
         "te",
         "ur",
         "yo",
-        "zu"
+        "zu",
+        "lo"
       ]
     },
     "localSources": {
@@ -1608,7 +1656,8 @@
       "te": "/video-subtitles/app-videos/glaucomaAnteriorChamberDepthVideoPage/te.vtt",
       "ur": "/video-subtitles/app-videos/glaucomaAnteriorChamberDepthVideoPage/ur.vtt",
       "yo": "/video-subtitles/app-videos/glaucomaAnteriorChamberDepthVideoPage/yo.vtt",
-      "zu": "/video-subtitles/app-videos/glaucomaAnteriorChamberDepthVideoPage/zu.vtt"
+      "zu": "/video-subtitles/app-videos/glaucomaAnteriorChamberDepthVideoPage/zu.vtt",
+      "lo": "/video-subtitles/app-videos/glaucomaAnteriorChamberDepthVideoPage/lo.vtt"
     },
     "audioVariants": {},
     "defaultSubtitleLang": "en",
@@ -1641,7 +1690,8 @@
         "te",
         "ur",
         "yo",
-        "zu"
+        "zu",
+        "lo"
       ]
     },
     "localSources": {
@@ -1674,7 +1724,8 @@
       "te": "/video-subtitles/app-videos/glaucomaACAGCaseWorkshopVideoPage/te.vtt",
       "ur": "/video-subtitles/app-videos/glaucomaACAGCaseWorkshopVideoPage/ur.vtt",
       "yo": "/video-subtitles/app-videos/glaucomaACAGCaseWorkshopVideoPage/yo.vtt",
-      "zu": "/video-subtitles/app-videos/glaucomaACAGCaseWorkshopVideoPage/zu.vtt"
+      "zu": "/video-subtitles/app-videos/glaucomaACAGCaseWorkshopVideoPage/zu.vtt",
+      "lo": "/video-subtitles/app-videos/glaucomaACAGCaseWorkshopVideoPage/lo.vtt"
     },
     "audioVariants": {},
     "defaultSubtitleLang": "en",
@@ -1707,7 +1758,8 @@
         "te",
         "ur",
         "yo",
-        "zu"
+        "zu",
+        "lo"
       ]
     },
     "localSources": {
@@ -1740,7 +1792,8 @@
       "te": "/video-subtitles/app-videos/glaucomaFundalReflexDiseaseVideoPage/te.vtt",
       "ur": "/video-subtitles/app-videos/glaucomaFundalReflexDiseaseVideoPage/ur.vtt",
       "yo": "/video-subtitles/app-videos/glaucomaFundalReflexDiseaseVideoPage/yo.vtt",
-      "zu": "/video-subtitles/app-videos/glaucomaFundalReflexDiseaseVideoPage/zu.vtt"
+      "zu": "/video-subtitles/app-videos/glaucomaFundalReflexDiseaseVideoPage/zu.vtt",
+      "lo": "/video-subtitles/app-videos/glaucomaFundalReflexDiseaseVideoPage/lo.vtt"
     },
     "audioVariants": {},
     "defaultSubtitleLang": "en",
@@ -1773,7 +1826,8 @@
         "te",
         "ur",
         "yo",
-        "zu"
+        "zu",
+        "lo"
       ]
     },
     "localSources": {
@@ -1806,7 +1860,8 @@
       "te": "/video-subtitles/app-videos/glaucomaOtherOpticNerveDiseasesVideoPage/te.vtt",
       "ur": "/video-subtitles/app-videos/glaucomaOtherOpticNerveDiseasesVideoPage/ur.vtt",
       "yo": "/video-subtitles/app-videos/glaucomaOtherOpticNerveDiseasesVideoPage/yo.vtt",
-      "zu": "/video-subtitles/app-videos/glaucomaOtherOpticNerveDiseasesVideoPage/zu.vtt"
+      "zu": "/video-subtitles/app-videos/glaucomaOtherOpticNerveDiseasesVideoPage/zu.vtt",
+      "lo": "/video-subtitles/app-videos/glaucomaOtherOpticNerveDiseasesVideoPage/lo.vtt"
     },
     "audioVariants": {},
     "defaultSubtitleLang": "en",
@@ -1839,7 +1894,8 @@
         "te",
         "ur",
         "yo",
-        "zu"
+        "zu",
+        "lo"
       ]
     },
     "localSources": {
@@ -1872,7 +1928,8 @@
       "te": "/video-subtitles/app-videos/glaucomaOtherOpticNerveDiseasesVideoPage/te.vtt",
       "ur": "/video-subtitles/app-videos/glaucomaOtherOpticNerveDiseasesVideoPage/ur.vtt",
       "yo": "/video-subtitles/app-videos/glaucomaOtherOpticNerveDiseasesVideoPage/yo.vtt",
-      "zu": "/video-subtitles/app-videos/glaucomaOtherOpticNerveDiseasesVideoPage/zu.vtt"
+      "zu": "/video-subtitles/app-videos/glaucomaOtherOpticNerveDiseasesVideoPage/zu.vtt",
+      "lo": "/video-subtitles/app-videos/glaucomaOtherOpticNerveDiseasesVideoPage/lo.vtt"
     },
     "audioVariants": {},
     "defaultSubtitleLang": "en",
@@ -1905,7 +1962,8 @@
         "te",
         "ur",
         "yo",
-        "zu"
+        "zu",
+        "lo"
       ]
     },
     "localSources": {
@@ -1938,7 +1996,8 @@
       "te": "/video-subtitles/app-videos/glaucomaDirectOphthalmoscopyDiscsAnnotatedVideoPage/te.vtt",
       "ur": "/video-subtitles/app-videos/glaucomaDirectOphthalmoscopyDiscsAnnotatedVideoPage/ur.vtt",
       "yo": "/video-subtitles/app-videos/glaucomaDirectOphthalmoscopyDiscsAnnotatedVideoPage/yo.vtt",
-      "zu": "/video-subtitles/app-videos/glaucomaDirectOphthalmoscopyDiscsAnnotatedVideoPage/zu.vtt"
+      "zu": "/video-subtitles/app-videos/glaucomaDirectOphthalmoscopyDiscsAnnotatedVideoPage/zu.vtt",
+      "lo": "/video-subtitles/app-videos/glaucomaDirectOphthalmoscopyDiscsAnnotatedVideoPage/lo.vtt"
     },
     "audioVariants": {},
     "defaultSubtitleLang": "en",
@@ -1971,7 +2030,8 @@
         "te",
         "ur",
         "yo",
-        "zu"
+        "zu",
+        "lo"
       ]
     },
     "localSources": {
@@ -2004,7 +2064,8 @@
       "te": "/video-subtitles/app-videos/glaucomaOpticDiscAnatomyVideoPage/te.vtt",
       "ur": "/video-subtitles/app-videos/glaucomaOpticDiscAnatomyVideoPage/ur.vtt",
       "yo": "/video-subtitles/app-videos/glaucomaOpticDiscAnatomyVideoPage/yo.vtt",
-      "zu": "/video-subtitles/app-videos/glaucomaOpticDiscAnatomyVideoPage/zu.vtt"
+      "zu": "/video-subtitles/app-videos/glaucomaOpticDiscAnatomyVideoPage/zu.vtt",
+      "lo": "/video-subtitles/app-videos/glaucomaOpticDiscAnatomyVideoPage/lo.vtt"
     },
     "audioVariants": {},
     "defaultSubtitleLang": "en",
@@ -2037,7 +2098,8 @@
         "te",
         "ur",
         "yo",
-        "zu"
+        "zu",
+        "lo"
       ]
     },
     "localSources": {
@@ -2070,7 +2132,8 @@
       "te": "/video-subtitles/app-videos/glaucomaMarginVideoPage/te.vtt",
       "ur": "/video-subtitles/app-videos/glaucomaMarginVideoPage/ur.vtt",
       "yo": "/video-subtitles/app-videos/glaucomaMarginVideoPage/yo.vtt",
-      "zu": "/video-subtitles/app-videos/glaucomaMarginVideoPage/zu.vtt"
+      "zu": "/video-subtitles/app-videos/glaucomaMarginVideoPage/zu.vtt",
+      "lo": "/video-subtitles/app-videos/glaucomaMarginVideoPage/lo.vtt"
     },
     "audioVariants": {},
     "defaultSubtitleLang": "en",
@@ -2103,7 +2166,8 @@
         "te",
         "ur",
         "yo",
-        "zu"
+        "zu",
+        "lo"
       ]
     },
     "localSources": {
@@ -2136,7 +2200,8 @@
       "te": "/video-subtitles/app-videos/glaucomaDiscCuppingVideoPage/te.vtt",
       "ur": "/video-subtitles/app-videos/glaucomaDiscCuppingVideoPage/ur.vtt",
       "yo": "/video-subtitles/app-videos/glaucomaDiscCuppingVideoPage/yo.vtt",
-      "zu": "/video-subtitles/app-videos/glaucomaDiscCuppingVideoPage/zu.vtt"
+      "zu": "/video-subtitles/app-videos/glaucomaDiscCuppingVideoPage/zu.vtt",
+      "lo": "/video-subtitles/app-videos/glaucomaDiscCuppingVideoPage/lo.vtt"
     },
     "audioVariants": {},
     "defaultSubtitleLang": "en",
@@ -2169,7 +2234,8 @@
         "te",
         "ur",
         "yo",
-        "zu"
+        "zu",
+        "lo"
       ]
     },
     "localSources": {

@@ -205,39 +205,34 @@ function translateNode(node) {
   }
 }
 
-function isNepaliLanguage() {
+function translate(path, fallback, variables = {}) {
   try {
-    return window.I18N?.getLanguage?.() === "ne";
+    const translated = window.I18N?.t?.(path, fallback, variables) ?? fallback;
+    return String(translated).replace(
+      /\{\{\s*([a-zA-Z0-9_]+)\s*\}\}/g,
+      (_, key) => String(variables[key] ?? ""),
+    );
   } catch {
-    return document.documentElement?.getAttribute?.("lang") === "ne";
+    return String(fallback).replace(
+      /\{\{\s*([a-zA-Z0-9_]+)\s*\}\}/g,
+      (_, key) => String(variables[key] ?? ""),
+    );
   }
+}
+
+function setTranslatedText(element, path, fallback) {
+  if (!element) return;
+  element.setAttribute("data-i18n", path);
+  element.textContent = translate(path, fallback);
 }
 
 function setScoreSummary(target, correct, total) {
   if (!target) return;
-  target.textContent = "";
-
-  if (isNepaliLanguage()) {
-    const totalValue = document.createElement("b");
-    totalValue.textContent = String(total);
-    target.appendChild(totalValue);
-    target.appendChild(document.createTextNode(" मध्ये "));
-    const correctValue = document.createElement("b");
-    correctValue.textContent = String(correct);
-    target.appendChild(correctValue);
-    target.appendChild(document.createTextNode(" सही गर्नुभयो।"));
-    return;
-  }
-
-  target.appendChild(document.createTextNode("You got "));
-  const correctValue = document.createElement("b");
-  correctValue.textContent = String(correct);
-  target.appendChild(correctValue);
-  target.appendChild(document.createTextNode(" out of "));
-  const totalValue = document.createElement("b");
-  totalValue.textContent = String(total);
-  target.appendChild(totalValue);
-  target.appendChild(document.createTextNode(" correct."));
+  target.textContent = translate(
+    "medicalStudentsWorkshop.quizUi.scoreTemplate",
+    "You got {{correct}} out of {{total}} correct.",
+    { correct, total },
+  );
 }
 
 function updateWorkshopProgressRows() {
@@ -306,9 +301,16 @@ function initializeQuizPage(page, quiz) {
 
   function renderAll() {
     allQuestions.textContent = "";
-    resultsButton.textContent = submitted ? "See Results" : "Submit Answers";
+    setTranslatedText(
+      resultsButton,
+      submitted
+        ? "medicalStudentsWorkshop.quizUi.seeResults"
+        : "medicalStudentsWorkshop.quizUi.submitAnswers",
+      submitted ? "See Results" : "Submit Answers",
+    );
 
     questions.forEach((question, questionIndex) => {
+      const questionKey = `medicalStudentsWorkshop.quiz.${page.dataset.medicalTestTopic}.questions.${questionIndex}`;
       const card = cardTemplate.content
         .querySelector(".quiz-card")
         .cloneNode(true);
@@ -322,13 +324,17 @@ function initializeQuizPage(page, quiz) {
 
       if (number)
         number.textContent = String(questionIndex + 1).padStart(2, "0");
-      if (prompt) prompt.textContent = question.prompt;
+      setTranslatedText(prompt, `${questionKey}.prompt`, question.prompt);
       if (explanationAnswer) {
         explanationAnswer.textContent = `${String.fromCharCode(
           65 + question.answerIndex,
         )}. ${question.options[question.answerIndex]}`;
       }
-      if (explanation) explanation.textContent = question.explanation;
+      setTranslatedText(
+        explanation,
+        `${questionKey}.explanation`,
+        question.explanation,
+      );
 
       question.options.forEach((optionLabel, optionIndex) => {
         const option = optionTemplate.content
@@ -350,7 +356,11 @@ function initializeQuizPage(page, quiz) {
         }
         if (prefix)
           prefix.textContent = `${String.fromCharCode(65 + optionIndex)}.`;
-        if (label) label.textContent = optionLabel;
+        setTranslatedText(
+          label,
+          `${questionKey}.options.${optionIndex}`,
+          optionLabel,
+        );
 
         options?.appendChild(option);
       });
@@ -379,7 +389,11 @@ function initializeQuizPage(page, quiz) {
 
   function showIncompleteSubmitPopup(firstUnansweredIndex) {
     window.alert(
-      `Please answer all ${questions.length} questions before submitting.`,
+      translate(
+        "medicalStudentsWorkshop.quizUi.incomplete",
+        "Please answer all {{count}} questions before submitting.",
+        { count: questions.length },
+      ),
     );
     const firstCard = allQuestions.querySelector(
       `[data-question-index="${firstUnansweredIndex}"]`,
@@ -397,8 +411,13 @@ function initializeQuizPage(page, quiz) {
       0,
     );
     setScoreSummary(score, correct, questions.length);
-    reviewButton.textContent =
-      correct === questions.length ? "Review" : "See why";
+    setTranslatedText(
+      reviewButton,
+      correct === questions.length
+        ? "medicalStudentsWorkshop.quizUi.review"
+        : "medicalStudentsWorkshop.quizUi.seeWhy",
+      correct === questions.length ? "Review" : "See why",
+    );
     translateNode(score);
     modal.style.display = "flex";
     setQuizProgress(page.id, 100);
@@ -409,7 +428,11 @@ function initializeQuizPage(page, quiz) {
     allQuestions.querySelectorAll('input[type="radio"]').forEach((input) => {
       input.disabled = true;
     });
-    resultsButton.textContent = "See Results";
+    setTranslatedText(
+      resultsButton,
+      "medicalStudentsWorkshop.quizUi.seeResults",
+      "See Results",
+    );
     setQuizProgress(page.id, 100);
   }
 

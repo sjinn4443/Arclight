@@ -86,6 +86,10 @@ function resolveLanguage() {
   return fromHtml.toLowerCase() || "en";
 }
 
+function noticeText(key, fallback) {
+  return window.I18N?.t?.(`i18nExtra.${key}`, fallback) || fallback;
+}
+
 function getCopy(targetId) {
   const lang = resolveLanguage();
   const korean = lang === "ko" || lang === "korean";
@@ -101,9 +105,12 @@ function getCopy(targetId) {
 
   if (rapdTest) {
     return {
-      title: "Pupil App Test",
-      body: "Perform the 'swinging light' test to look for an RAPD.\n\nChoose No RAPD or the patient's Left/Right side, select the severity, then press Submit answer.",
-      button: "Start test",
+      title: noticeText("interactive_notice_rapd_title", "Pupil App Test"),
+      body: noticeText(
+        "interactive_notice_rapd_body",
+        "Perform the 'swinging light' test to look for an RAPD.\n\nChoose No RAPD or the patient's Left/Right side, select the severity, then press Submit answer.",
+      ),
+      button: noticeText("interactive_notice_start_test", "Start test"),
       demo: true,
     };
   }
@@ -122,17 +129,22 @@ function getCopy(targetId) {
         };
   }
 
-  return hubPage
-    ? {
-        title: "Interactive learning notice",
-        body: "I understand these interactive mini apps are experimental and for learning only.\n\nThey must not be used to make or confirm a diagnosis.",
-        button: "Understood",
-      }
-    : {
-        title: "Interactive learning notice",
-        body: "I understand this interactive mini app is experimental and for learning only.\n\nIt must not be used to make or confirm a diagnosis.",
-        button: "Understood",
-      };
+  return {
+    title: noticeText(
+      "interactive_notice_title",
+      "Interactive learning notice",
+    ),
+    body: hubPage
+      ? noticeText(
+          "interactive_notice_plural_body",
+          "I understand these interactive mini apps are experimental and for learning only.\n\nThey must not be used to make or confirm a diagnosis.",
+        )
+      : noticeText(
+          "interactive_notice_single_body",
+          "I understand this interactive mini app is experimental and for learning only.\n\nIt must not be used to make or confirm a diagnosis.",
+        ),
+    button: noticeText("interactive_notice_understood", "Understood"),
+  };
 }
 
 function setOpenState(isOpen) {
@@ -193,10 +205,7 @@ function ensureOrientationOverlay() {
   orientationOverlayEl.hidden = true;
   orientationOverlayEl.setAttribute("role", "dialog");
   orientationOverlayEl.setAttribute("aria-modal", "true");
-  orientationOverlayEl.setAttribute(
-    "aria-label",
-    "Rotate your device to landscape",
-  );
+  orientationOverlayEl.setAttribute("aria-label", "");
 
   const content = document.createElement("div");
   content.className = "rapd-orientation-notice";
@@ -213,7 +222,7 @@ function ensureOrientationOverlay() {
 
   const text = document.createElement("p");
   text.className = "rapd-orientation-notice__text";
-  text.textContent = "Rotate your device to landscape";
+  text.textContent = "";
 
   animation.append(phone, arrow);
   content.append(animation, text);
@@ -225,6 +234,15 @@ function ensureOrientationOverlay() {
 function openOrientationNotice() {
   const orientationOverlay = ensureOrientationOverlay();
   if (!orientationOverlay) return;
+  const message = noticeText(
+    "interactive_notice_rotate_landscape",
+    "Rotate your device to landscape",
+  );
+  orientationOverlay.setAttribute("aria-label", message);
+  const text = orientationOverlay.querySelector(
+    ".rapd-orientation-notice__text",
+  );
+  if (text) text.textContent = message;
   closeNotice();
   orientationOverlay.hidden = false;
   document.body?.setAttribute(RAPD_ORIENTATION_OPEN_ATTR, "true");
@@ -278,16 +296,16 @@ function ensureOverlay() {
     <div class="rapd-test-notice-demo__stage">
       <strong>Question 1 of 10</strong>
       <div class="rapd-test-notice-demo__side">
-        <span>No RAPD</span><span>Left</span><span>Right</span>
+        <span data-rapd-demo="no-rapd">No RAPD</span><span data-rapd-demo="left">Left</span><span data-rapd-demo="right">Right</span>
       </div>
       <div class="rapd-test-notice-demo__severity">
-        <small>Mild</small><span>1</span><span>2</span><span>3</span><small>Severe</small>
+        <small data-rapd-demo="mild">Mild</small><span>1</span><span>2</span><span>3</span><small data-rapd-demo="severe">Severe</small>
       </div>
       <div class="rapd-test-notice-demo__scene" aria-hidden="true">
         <img class="rapd-test-notice-demo__eyes" src="/images/learning/GlaucomaRAPD/eyes.webp" alt="" />
         <img class="rapd-test-notice-demo__torch" src="/images/learning/GlaucomaRAPD/arclight.webp" alt="" />
       </div>
-      <button type="button" tabindex="-1">Submit answer</button>
+      <button type="button" tabindex="-1" data-rapd-demo="submit">Submit answer</button>
       <i class="rapd-test-notice-demo__pointer"></i>
     </div>`;
 
@@ -320,6 +338,27 @@ function renderCopy(targetId) {
   bodyEl.textContent = copy.body;
   if (demoEl) demoEl.hidden = copy.demo !== true;
   okBtnEl.textContent = copy.button;
+  if (demoEl && copy.demo === true) {
+    const labels = {
+      "no-rapd": noticeText("interactive_notice_no_rapd", "No RAPD"),
+      left: noticeText("interactive_notice_left", "Left"),
+      right: noticeText("interactive_notice_right", "Right"),
+      mild: noticeText("interactive_notice_mild", "Mild"),
+      severe: noticeText("interactive_notice_severe", "Severe"),
+      submit: noticeText("interactive_notice_submit_answer", "Submit answer"),
+    };
+    Object.entries(labels).forEach(([name, value]) => {
+      const element = demoEl.querySelector(`[data-rapd-demo="${name}"]`);
+      if (element) element.textContent = value;
+    });
+    const question = demoEl.querySelector("strong");
+    if (question) {
+      question.textContent = noticeText(
+        "interactive_notice_question_progress",
+        "Question 1 of 10",
+      );
+    }
+  }
 }
 
 function openNotice(targetId) {

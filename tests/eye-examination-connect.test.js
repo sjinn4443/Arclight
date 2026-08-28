@@ -129,7 +129,7 @@ describe("Eye examination Connect game", () => {
     expect(next.textContent).toBe("Start game");
     next.click();
     expect(tutorial.hidden).toBe(true);
-    expect(localStorage.getItem("eyeExaminationConnect:tutorialSeen:v4")).toBe(
+    expect(localStorage.getItem("eyeExaminationConnect:tutorialSeen:v5")).toBe(
       "1",
     );
 

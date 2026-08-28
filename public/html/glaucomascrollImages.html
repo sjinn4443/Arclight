@@ -3881,6 +3881,7 @@
               type="button"
               data-rapd-patient-side="none"
               aria-pressed="false"
+              data-i18n="i18nExtra.interactive_notice_no_rapd"
             >
               No RAPD
             </button>
@@ -3888,6 +3889,7 @@
               type="button"
               data-rapd-patient-side="left"
               aria-pressed="false"
+              data-i18n="i18nExtra.interactive_notice_left"
             >
               Left
             </button>
@@ -3895,6 +3897,7 @@
               type="button"
               data-rapd-patient-side="right"
               aria-pressed="false"
+              data-i18n="i18nExtra.interactive_notice_right"
             >
               Right
             </button>
@@ -3904,7 +3907,11 @@
             role="group"
             aria-label="RAPD severity"
           >
-            <span class="rapd-severityControl__edge">Mild</span>
+            <span
+              class="rapd-severityControl__edge"
+              data-i18n="i18nExtra.interactive_notice_mild"
+              >Mild</span
+            >
             <div class="rapd-severityControl__steps" aria-hidden="false">
               <button
                 class="rapd-severityButton"
@@ -3934,7 +3941,11 @@
                 3
               </button>
             </div>
-            <span class="rapd-severityControl__edge">Severe</span>
+            <span
+              class="rapd-severityControl__edge"
+              data-i18n="i18nExtra.interactive_notice_severe"
+              >Severe</span
+            >
           </div>
         </div>
         <div class="rapd-randomPanel">
@@ -3954,6 +3965,7 @@
               id="rapdRandomNext"
               class="rapd-randomNextButton"
               type="button"
+              data-i18n="i18nLiteral.Next"
               hidden
             >
               Next
@@ -3965,24 +3977,46 @@
           <div id="rapdTestProgress" class="rapd-testProgress">
             Question 1 of 10
           </div>
-          <button id="rapdSubmitAnswer" class="rapd-submitAnswer" type="button">
+          <button
+            id="rapdSubmitAnswer"
+            class="rapd-submitAnswer"
+            type="button"
+            data-i18n="i18nLiteral.Submit answer"
+          >
             Submit answer
           </button>
           <div class="rapd-testNavigation">
-            <button id="rapdTestPrevious" type="button">&lt; Previous</button>
-            <button id="rapdTestNext" type="button">Next &gt;</button>
+            <button
+              id="rapdTestPrevious"
+              type="button"
+              data-i18n="i18nLiteral.< Previous"
+            >
+              &lt; Previous
+            </button>
+            <button
+              id="rapdTestNext"
+              type="button"
+              data-i18n="i18nLiteral.Next >"
+            >
+              Next &gt;
+            </button>
           </div>
         </div>
 
         <div id="rapdAnswerDialog" class="rapd-answerDialog" hidden>
           <div class="rapd-answerDialog__card" role="dialog" aria-modal="true">
-            <h2>Result</h2>
+            <h2 data-i18n="i18nLiteral.Result">Result</h2>
             <div
               id="rapdAnswerFeedback"
               class="rapd-answerFeedback"
               hidden
             ></div>
-            <button id="rapdAnswerClose" class="rapd-answerClose" type="button">
+            <button
+              id="rapdAnswerClose"
+              class="rapd-answerClose"
+              type="button"
+              data-i18n="i18nLiteral.Next"
+            >
               Next
             </button>
           </div>

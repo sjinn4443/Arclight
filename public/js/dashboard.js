@@ -483,6 +483,11 @@ function getDashboardContentItems() {
       page: "fundalReflexPage",
       img: "images/icon/eyes/core/car_fundalreflex.webp",
       subtitle: "Video | PDF | Scrollytelling",
+      subtitleParts: [
+        { path: "eyes.tag_video", fallback: "Video" },
+        { path: "eyes.tag_pdf", fallback: "PDF" },
+        { path: "i18nLiteral.Scrollytelling", fallback: "Scrollytelling" },
+      ],
       subtitleSearchI18n: ["eyes.tag_video"],
       keywords: ["red reflex", "media opacity", "childhood screening"],
       progress: 0,
@@ -503,6 +508,7 @@ function getDashboardContentItems() {
       page: "arclightPage",
       img: "images/icon/eyes/tools/car_arclight.webp",
       subtitle: "Tools and kits",
+      subtitleParts: [{ path: "eyes.tools_title", fallback: "Tools and Kits" }],
       subtitleSearchI18n: ["eyes.tools_title"],
       keywords: ["how to use arclight", "phone attachment", "device"],
       progress: 0,
@@ -513,6 +519,7 @@ function getDashboardContentItems() {
       page: "holoOverviewPage",
       img: "images/icon/eyes/tools/car_holo.webp",
       subtitle: "Tools and kits",
+      subtitleParts: [{ path: "eyes.tools_title", fallback: "Tools and Kits" }],
       subtitleSearchI18n: ["eyes.tools_title"],
       keywords: ["binocular indirect ophthalmoscopy", "bio", "holo"],
       progress: 0,
@@ -523,6 +530,12 @@ function getDashboardContentItems() {
       route: "childhoodEyeScreeningWorkshop",
       img: "images/icon/eyes/disease/car_childhood.webp",
       subtitle: "Workshop",
+      subtitleParts: [
+        {
+          path: "eyes.primary_eye_care_procedures_title",
+          fallback: "Workshops",
+        },
+      ],
       subtitleSearchI18n: ["eyes.primary_eye_care_procedures_title"],
       keywords: ["children", "screening", "fundal reflex"],
       progress: 0,
@@ -533,6 +546,12 @@ function getDashboardContentItems() {
       route: "glaucomaWorkshop",
       img: "images/icon/eyes/disease/car_glaucoma.webp",
       subtitle: "Workshop",
+      subtitleParts: [
+        {
+          path: "eyes.primary_eye_care_procedures_title",
+          fallback: "Workshops",
+        },
+      ],
       subtitleSearchI18n: ["eyes.primary_eye_care_procedures_title"],
       keywords: ["optic nerve", "cup disc", "iop"],
       progress: 0,
@@ -543,6 +562,12 @@ function getDashboardContentItems() {
       route: "diabeticRetinopathyWorkshop",
       img: "images/icon/eyes/disease/car_diabetic.webp",
       subtitle: "Workshop",
+      subtitleParts: [
+        {
+          path: "eyes.primary_eye_care_procedures_title",
+          fallback: "Workshops",
+        },
+      ],
       subtitleSearchI18n: ["eyes.primary_eye_care_procedures_title"],
       keywords: ["diabetes", "retina", "screening"],
       progress: 0,
