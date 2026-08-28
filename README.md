@@ -57,6 +57,24 @@ The Visual System lesson finishes with a numbered visual-field-loss video panel.
 The Anterior Segment source image lives under
 `public/images/learning/MedicalStudents/Training/` in the shared PDF-page shell.
 
+## Lao localization
+
+Lao (`lo`) is now a supported application language. The rollout includes the
+main locale dictionary in `public/translation/lao.json`, shared mini-app copy in
+`public/subapp/i18n-lo.js`, Fundal Reflex-specific copy in
+`public/subapp/Fundal Reflex/i18n-lo.js`, and Lao VTT/HLS subtitle assets for
+supported app and Childhood Eye Screening videos. Language selection, install
+copy, dynamic notices, quiz feedback, My Learning cards, settings confirmation
+dialogs, case studies, and accessible labels all participate in the same i18n
+flow. `public/js/i18n.js` also applies a small Lao clinical-term cleanup layer to
+legacy literal translations where embedded English terminology would otherwise
+remain.
+
+When changing localized content, keep the locale JSON, mini-app dictionaries,
+subtitle catalogs, source VTT files, and generated Childhood HLS subtitle files
+aligned. Run `npm run check-translations`; the translation completeness tests
+also enforce Lao coverage for the current key set.
+
 ## Security Updates (2026-06-29 to 2026-07-15)
 
 Source of truth: `security01`, `security02`, and `security03` on `main`. These security changes landed on `2026-07-07`.
@@ -155,9 +173,9 @@ Build output notes:
 - Rule source: `scripts/i18n-qa-rules.cjs` stores the standing homonym guidance and the small allowlist of acceptable English-only brand/acronym values.
 - Symbol preservation rule: button/icon symbols such as `☰`, `<`, `×` must not be translated in locale JSON files. Keep these values identical across all languages.
 
-Current QA baseline as of `2026-06-26`:
+Current QA baseline as of `2026-08-28`:
 
-- `npm run test:a11y` passes against `145` HTML files.
+- `npm run test:a11y` passes against `146` HTML files.
 - `npm run check-translations` reports `0` missing used keys, `0` damaged strings, `0` exact-English carry-overs, `0` medical homonym violations, and `0` subtitle medical homonym violations.
 - Keep new HTML/JS copy, locale JSON, VTT subtitles, and generated subtitle catalogs in sync so this baseline stays clean.
 
@@ -350,6 +368,8 @@ See [`security/EMERGENCY_PLAN.md`](./security/EMERGENCY_PLAN.md) for the operato
 
 ## Changelog (high level)
 
+- 2026-08-28: Added Lao application localization across the main UI, Medical Students workshop, local mini-apps, accessible/dynamic copy, and supported video subtitle catalogs/VTT/HLS outputs; expanded translation completeness and terminology QA accordingly.
+- 2026-08-28: Refined localized settings, My Learning, case-study, and Fundal Reflex behavior; added intermediate case Previous/Next history, desktop pointer swipes for primary flashcards, launch-context-aware Back navigation for shared Visual Acuity videos, and bumped the static cache to `arclight-static-v31`.
 - 2026-07-13: Added the Interactive Learning eye-examination `Connect` game: History -> VA -> Front of eye -> Pupils -> Fundal reflex -> DO, with ordered checkpoints, full-grid completion, a three-step first-play tutorial, responsive pointer/keyboard controls, and automated path/completion tests.
 - 2026-06-19: Added docs for the new local full-animation MP4 lesson pages: Childhood Fundal Reflex full animation plus Diabetic Direct Ophthalmoscopy and Binocular Indirect Ophthalmoscopy full animations, all wired through Videos-route hidden pages and `VIDEO_PAGE_SOURCES`.
 - 2026-06-12: Refreshed docs for the June app changes: offline asset-manifest downloads, menu Downloaded Contents summaries, cached MP4/HLS playback behavior, localized app-video subtitles, shared lesson-completion ticks, case-study chat progress, clean translation QA, and iPad/responsive layout maintenance.

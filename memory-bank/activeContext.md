@@ -1,10 +1,13 @@
-<!-- THE CHANGES - activeContext.md | 2026-07-13, Codex -->
+<!-- THE CHANGES - activeContext.md | 2026-08-28, Codex -->
 
 # Active Context
 
 ## Current Work Focus
 
-June stabilization and app-wide infrastructure:
+August localization and app-wide stabilization:
+
+- Lao (`lo`) localization now spans `public/translation/lao.json`, shared local mini-app copy, the Fundal Reflex subapp, Medical Students workshop content, dynamic UI/accessibility copy, and supported app/Childhood video subtitle VTT/HLS outputs. Translation completeness and terminology QA cover the expanded locale.
+- Follow-up UI work localizes settings confirmation dialogs and My Learning metadata, cleans embedded English clinical terms from Lao literal translations, adds Previous/Next case history without double-scoring, enables desktop pointer swipes for primary flashcards, and preserves the actual Visual Acuity launcher when backing out of shared Videos pages.
 
 - offline install/downloads use a build-generated production manifest (one asynchronous cached copy in development), ETag/cache headers, and a service worker that bypasses API/tracking/reports/health URLs and refuses sensitive or `no-store` cache entries
 - app video subtitle localization is active through `public/js/videoSubtitles.js`, `public/video-localization/app-video-subtitles.json`, `public/video-localization/childhood-eye-screening.json`, and VTT files under `public/video-subtitles/`
@@ -14,7 +17,7 @@ June stabilization and app-wide infrastructure:
 - iPad/tablet layout fixes are concentrated in `public/style/responsive.css`; route-specific overrides should stay constrained and be rechecked against phone and desktop layouts
 - Interactive Learning Primary now includes a local 7x7 eye-examination `Connect` game (`eyeExaminationConnectPage`) whose six checkpoints must be reached as History -> VA -> Front of eye -> Pupils -> Fundal reflex -> DO while filling all 49 cells; `public/js/eyeExaminationConnect.js` owns its tutorial, pointer/keyboard controls, rule validation, and shared lesson progress
 - Medical Students Workshop now has a fully populated, foldered Introduction curriculum using the orange Diabetic scrolly format. The first nested folder is `Getting Started`; its former Timetable and Content lesson is merged into the end of Overview. It also includes objectives, patient journey/barriers/diagnosis/blindness, visual system/development, history taking, and Arclight lessons. Local Previous/Next flow crosses into shared video pages, including the Visual Acuity `vaWhoPage`, and restores the originating nested folder. Blindness stacks separate graph/map crops on mobile and confirms before opening either external inverse-care source; Visual System ends with the local visual-field-loss video. Mobile folders retain their original outer/nested/lesson width hierarchy and spacing while long labels wrap inside the text area. Training keeps RAPD inside the Medical Students flow, hides its menu icon, layers the pickup hint above controls but below dialogs, initializes the active Arclight at the pickup pointer, and halves direct-response strength and hippus amplitude for severe left/right RAPD; it opens `fundalReflexSimulatorPage` from Fundal Reflex App and `morphSimulatorPage` from Back of the Eye. The active `4. Test` folder contains text-only Visual Acuity, Pupils, and Fundal Reflex MCQs driven by `public/js/medicalStudentsTestQuiz.js`, including PowerPoint Notes-based review explanations and score-dependent `Review` / `See why` labels; route loads also clear stale interactive-subapp state so the Eyes back button reappears.
-- The PWA static cache is now `arclight-static-v25`, forcing previously installed/cached clients to discard the pre-Medical-Students-update HTML/CSS/JS and reload the current workshop layout and labels.
+- The PWA static cache is now `arclight-static-v31`, forcing installed clients to discard pre-Lao-rollout HTML/CSS/JS and reload the current locale, navigation, and subapp behavior.
 
 Diabetic Retinopathy workshop and Videos-route stabilization:
 
@@ -151,10 +154,10 @@ Childhood Fundal Reflex scrollytelling is also an active maintenance area:
   - `playwright.config.js` starts the local E2E web server with `DISABLE_DB_STORAGE=1`.
   - `.env.sample` documents split write/read/admin DB URLs, DB TLS options, telemetry host allowlisting, delete gates, and IPInfo token support.
 
-- accessibility + translation QA baseline (refreshed 2026-06-12):
-  - `npm run test:a11y` performs a static audit and currently passes on `143` HTML files.
+- accessibility + translation QA baseline (refreshed 2026-08-28):
+  - `npm run test:a11y` performs a static audit and currently passes on `146` HTML files.
   - `npm run check-translations` audits referenced HTML/JS keys, damaged strings, fallback-English carry-overs, medical homonym guidance, and subtitle homonym coverage.
-  - Current audit result is clean: `0` missing used keys, `0` damaged strings, `0` exact-English carry-overs, `0` medical homonym violations, and `0` subtitle medical homonym violations.
+  - Current audit result is clean: `0` missing used keys, `0` missing literal keys, `0` damaged strings, `0` exact-English carry-overs, `0` medical homonym violations, and `0` subtitle medical homonym violations.
   - Persistent medical homonym guidance lives in `scripts/i18n-qa-rules.cjs`.
 
 - translation QA sweep (2026-03-26):

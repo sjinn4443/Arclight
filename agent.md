@@ -1,6 +1,6 @@
 # Agent Notes
 
-Last refreshed: 2026-07-15
+Last refreshed: 2026-08-28
 
 ## Current repo orientation
 
@@ -13,6 +13,7 @@ Last refreshed: 2026-07-15
 - PostgreSQL intentionally stores raw client IP, resolved `country_name`, and `ts` only. GPS remains browser-local and, after disclosure, is sent directly to BigDataCloud for reverse geocoding rather than Arclight.
 - Pinned Lottie, Leaflet, html2canvas, and Font Awesome assets are self-hosted and synchronized by `scripts/sync-vendor-assets.cjs` before builds.
 - App-video subtitles are synchronized by `public/js/videoSubtitles.js` from `public/video-localization/app-video-subtitles.json`; Childhood Eye Screening video pages also use `public/video-localization/childhood-eye-screening.json` and VTT files under `public/video-subtitles/`.
+- Lao (`lo`) is a first-class locale across the main dictionary, shared subapps, Fundal Reflex, and supported app/Childhood video subtitles. The runtime also translates dynamically created labels/cards/dialogs and applies targeted Lao clinical-term cleanup for legacy literal strings.
 - Full-animation MP4 lessons are standard local Videos-route pages, with hidden pages in `public/html/videos.html`, low/high source entries in `public/js/videos.js` `VIDEO_PAGE_SOURCES`, and media files under `public/videos/FullAnim/`. Current targets are `fundalReflexFullAnimationVideoPage`, `directOphthalmoscopyFullAnimationVideoPage`, and `binocularIndirectOphthalmoscopyFullAnimationVideoPage`.
 - Shared lesson progress lives in `public/js/lessonProgress.js` and `public/js/lessonCompletionTick.js`; rows with progress bars are updated from compatible `lessonProgress:`, `videoProgress:`, `childhoodWorkshop:progress:`, `diabeticWorkshop:progress:`, and `glaucomaWorkshop:progress:` storage keys and receive completion ticks at completion.
 - The Eyes route includes a Diabetic Retinopathy workshop at `public/html/diabeticRetinopathyWorkshop.html`.
@@ -57,12 +58,15 @@ Source of truth: `security01`, `security02`, and `security03` on `main`. These s
 
 - Prefer code-referenced documentation over aspirational descriptions.
 - Keep `README.md`, `memory-bank/activeContext.md`, and `memory-bank/progress.md` aligned when features or runtime behavior change.
+- For Lao/i18n changes, keep `public/translation/lao.json`, `public/subapp/i18n-lo.js`, `public/subapp/Fundal Reflex/i18n-lo.js`, subtitle catalogs, source VTT files, and generated Childhood HLS subtitle outputs synchronized. Dynamic DOM must retain its `data-i18n` metadata or call `window.I18N?.applyTranslations?.(node)` after insertion; run `npm run check-translations` and the relevant translation tests.
 - Keep telemetry/report security docs aligned with `storage/index.cjs`, `security/runtime-config.cjs`, `security/telemetry-guard.cjs`, `security/privacy.cjs`, and the GitHub Actions audit policy when security behavior changes. PostgreSQL raw IP retention is intentional; coordinates and detailed geo are prohibited.
 - When adding or moving downloadable content, keep the server manifest assumptions, `OFFLINE_CATALOG_OPTIONS`/`matchesOfflineCatalog`, video quality filtering, service-worker cache behavior, and menu Downloaded Contents summary aligned. Bump the service worker cache name when required cached assets or cache behavior change.
 - When adding local app videos, update `VIDEO_PAGE_SOURCES`, progress target wiring, subtitle catalogs/VTT files, and offline-download categorization together. For Childhood Eye Screening subtitle pilot pages, keep MP4, HLS manifest, fallback mode, and subtitle language metadata in sync.
 - When adding or renaming full-animation MP4 lessons, keep all launcher rows, hidden `.page` IDs, `VIDEO_PAGE_SOURCES` keys, `public/videos/FullAnim/` file names, progress targets, and Interactive Learning target tests synchronized. These pages should stay on the local video-page pattern unless the user explicitly asks for Lottie scrollytelling behavior.
 - When adding lesson rows with progress bars, prefer `setLessonProgress`/`updateLessonProgressRows` and let `lessonCompletionTick.js` render completion state. Keep `data-target` values stable because progress keys, My Learning rows, and workshop restore flows depend on them.
 - Case-study chat pages depend on stable page IDs and progress targets: `caseStudyChatPagePrimary`, `caseStudyFlashcardPagePrimary`, `caseStudyChatPage`, and `glaucomaHistoryCaseStudy`. Update `casestudy.html`, the owning JS module, progress keys, styles, and My Learning mappings together.
+- Intermediate case Previous/Next navigation is history-backed and each case contributes to progress only once; primary flashcards support touch and non-touch pointer swipes. Preserve both input paths and scoring semantics when changing case navigation.
+- Shared Videos pages can store `videos:contextualReturn:v1` so Back returns to the launcher that actually opened the lesson (currently used by Visual Acuity). Do not replace this with a hard-coded structural destination when a page has multiple launch contexts.
 - Responsive layout fixes for iPad/tablet live mainly in `public/style/responsive.css`; keep route-specific overrides constrained to the affected page IDs/classes and recheck desktop/mobile after tablet-only changes.
 - Preserve stable `data-target`, `data-lesson`, `data-folder`, and `data-route` values in the Diabetic Retinopathy workshop and Videos-route demo/video pages unless all dependent navigation/progress/next-flow mappings are updated together.
 - When moving diabetic pages between `diabeticRetinopathyWorkshop.html` and `videos.html`, recheck `main.js` initialization, `videos.js` subpage routing, `diabeticWorkshopNextFlow.js`, and progress bar updates together.
@@ -206,7 +210,7 @@ Use this when the user asks to make a page like `childhoodFundalPreparationPage`
 - `scripts/check-translations.cjs` is the canonical audit entry point for used-key coverage, damaged-string detection, and fallback-English review.
 - `scripts/i18n-qa-rules.cjs` stores the standing medical homonym guidance; use those meanings first when a source term is ambiguous.
 - Media elements must either be explicitly decorative or have an accessible name via `alt`, `aria-label`, `aria-labelledby`, or `title`. Runtime support now lives in `public/js/mediaA11y.js`, and the static audit is `scripts/test-a11y.mjs`.
-- Current baseline (`2026-06-26`): accessibility audit passes on `145` HTML files; translation QA reports `0` missing used keys, `0` damaged strings, `0` exact-English carry-overs, `0` medical homonym violations, and `0` subtitle medical homonym violations.
+- Current baseline (`2026-08-28`): accessibility audit passes on `146` HTML files; translation QA reports `0` missing used keys, `0` missing literal keys, `0` damaged strings, `0` exact-English carry-overs, `0` medical homonym violations, and `0` subtitle medical homonym violations.
 
 ## Issue Summary
 
