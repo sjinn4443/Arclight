@@ -77,14 +77,61 @@
 
   const translations = new Map(Object.entries(fallbackTranslations));
   const translatedAttributes = ["aria-label", "title", "placeholder", "alt"];
+  const embeddedClinicalTerms = [
+    ["Pain/Redness:", "ອາການເຈັບ/ແດງ:"],
+    ["DR/Scar", "ເບົາຫວານຂຶ້ນຈໍຕາ/ຮອຍແປ້ວ"],
+    ["Conditions", "ພະຍາດ"],
+    ["Condition", "ພະຍາດ"],
+    ["Eyes", "ຕາ"],
+    ["Cataract:", "ຕໍ້ກະຈົກ:"],
+    ["cataract", "ຕໍ້ກະຈົກ"],
+    ["Cupped", "ຂົ້ວປະສາດຕາບຸ໋ມ"],
+    ["Detached", "ຈໍຕາຫຼຸດລອກ"],
+    ["refractive", "ການຫັກແສງ"],
+    ["pupils", "ຮູມ່ານຕາ"],
+    ["pupil", "ຮູມ່ານຕາ"],
+    ["fundus", "ກົ້ນຕາ"],
+    ["Reflex", "ການສະທ້ອນ"],
+    ["Field:", "ລານສາຍຕາ:"],
+    ["Child:", "ເດັກ:"],
+    ["Eyes:", "ຕາ:"],
+    ["Age:", "ອາຍຸ:"],
+    ["mths", "ເດືອນ"],
+    ["days", "ມື້"],
+    ["deg", "ອົງສາ"],
+  ];
   let translating = false;
+
+  function translateEmbeddedClinicalTerms(value) {
+    let result = value;
+    embeddedClinicalTerms.forEach(([english, lao]) => {
+      result = result.replaceAll(english, lao);
+    });
+    return result;
+  }
 
   function translateValue(value) {
     const original = String(value || "");
     const normalized = original.replace(/\s+/g, " ").trim();
     if (!normalized) return original;
-    const translated = translations.get(normalized);
-    if (!translated) return original;
+    let translated = translations.get(normalized);
+    if (!translated) {
+      const numbered = normalized.match(/^(\d+\.\s*)(.+)$/);
+      const translatedQuestion = numbered
+        ? translations.get(numbered[2])
+        : null;
+      if (translatedQuestion)
+        translated = `${numbered[1]}${translatedQuestion}`;
+    }
+    if (!translated) {
+      const score = normalized.match(/^(\d+) questions?\. Pass mark (\d+)\.$/i);
+      if (score) translated = `${score[1]} ຄຳຖາມ. ຄະແນນຜ່ານ ${score[2]}.`;
+    }
+    if (!translated) {
+      const embedded = translateEmbeddedClinicalTerms(original);
+      return embedded === original ? original : embedded;
+    }
+    translated = translateEmbeddedClinicalTerms(translated);
     const leading = original.match(/^\s*/)?.[0] || "";
     const trailing = original.match(/\s*$/)?.[0] || "";
     return `${leading}${translated}${trailing}`;
@@ -92,6 +139,7 @@
 
   function translateElement(element) {
     if (!(element instanceof Element)) return;
+    if (element.closest("[data-i18n-skip]")) return;
     translatedAttributes.forEach((attribute) => {
       const current = element.getAttribute(attribute);
       if (!current) return;
@@ -102,6 +150,7 @@
 
   function translateTree(root) {
     if (root.nodeType === Node.TEXT_NODE) {
+      if (root.parentElement?.closest("[data-i18n-skip]")) return;
       const translated = translateValue(root.textContent);
       if (translated !== root.textContent) root.textContent = translated;
       return;
@@ -115,6 +164,10 @@
     let node = walker.nextNode();
     while (node) {
       if (node.nodeType === Node.TEXT_NODE) {
+        if (node.parentElement?.closest("[data-i18n-skip]")) {
+          node = walker.nextNode();
+          continue;
+        }
         const translated = translateValue(node.textContent);
         if (translated !== node.textContent) node.textContent = translated;
       } else {

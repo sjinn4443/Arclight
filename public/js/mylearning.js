@@ -896,6 +896,27 @@ function getRowSectionText(doc, row) {
     .join(" - ");
 }
 
+function getRowSectionParts(doc, row) {
+  const section = row.closest("[data-section], [data-nested-section]");
+  const sectionTitleEl = section?.querySelector("h3") || null;
+  const parentId = String(row.parentElement?.id || "").trim();
+  let folderTitleEl = null;
+  if (parentId) {
+    const controller = Array.from(doc.querySelectorAll("[aria-controls]")).find(
+      (candidate) => candidate.getAttribute("aria-controls") === parentId,
+    );
+    folderTitleEl = controller?.querySelector(".lesson-type") || null;
+  }
+  const seen = new Set();
+  return [sectionTitleEl, folderTitleEl]
+    .filter(Boolean)
+    .map((element) => ({
+      text: getCleanText(element),
+      i18n: String(element.getAttribute("data-i18n") || "").trim(),
+    }))
+    .filter((part) => part.text && !seen.has(part.text) && seen.add(part.text));
+}
+
 function getRowSectionSearchValues(doc, row, searchDictionaries) {
   const section = row.closest("[data-section], [data-nested-section]");
   const sectionTitleEl = section?.querySelector("h3");
@@ -1111,7 +1132,8 @@ async function getInProgressGroups(searchDictionaries) {
         const navigation = inferProgressNavigation(row, source, target);
         const titleEl = row.querySelector(".lesson-type");
         const title = getCleanText(titleEl) || humanizeProgressTarget(target);
-        const section = getRowSectionText(doc, row);
+        const sectionParts = getRowSectionParts(doc, row);
+        const section = sectionParts.map((part) => part.text).join(" - ");
         const kind = getRowKindLabel(row);
         const searchText = buildSearchText([
           target,
@@ -1124,7 +1146,9 @@ async function getInProgressGroups(searchDictionaries) {
         const catalogEntry = {
           target,
           title,
+          titleI18n: String(titleEl?.getAttribute("data-i18n") || "").trim(),
           section,
+          sectionParts,
           kind,
           searchText,
           source,
@@ -1265,12 +1289,21 @@ function createProgressCard(group) {
     const itemTitle = document.createElement("span");
     itemTitle.className = "ml-progress-item__title";
     itemTitle.textContent = item.title;
+    if (item.titleI18n) itemTitle.setAttribute("data-i18n", item.titleI18n);
 
     const itemMeta = document.createElement("span");
     itemMeta.className = "ml-progress-item__meta";
-    itemMeta.textContent = [item.section, item.kind]
-      .filter(Boolean)
-      .join(" - ");
+    const metaParts = (item.sectionParts || []).map((part) => ({ ...part }));
+    metaParts.push({ text: item.kind, i18n: `i18nLiteral.${item.kind}` });
+    metaParts
+      .filter((part) => part.text)
+      .forEach((part, index) => {
+        if (index) itemMeta.appendChild(document.createTextNode(" - "));
+        const span = document.createElement("span");
+        span.textContent = part.text;
+        if (part.i18n) span.setAttribute("data-i18n", part.i18n);
+        itemMeta.appendChild(span);
+      });
 
     textWrap.append(itemTitle, itemMeta);
 

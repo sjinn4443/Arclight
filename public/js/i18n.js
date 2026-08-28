@@ -201,6 +201,39 @@ function normalizeLiteralText(value) {
     .trim();
 }
 
+const LAO_EMBEDDED_CLINICAL_TERMS = [
+  ["Pain/Redness:", "ອາການເຈັບ/ແດງ:"],
+  ["DR/Scar", "ເບົາຫວານຂຶ້ນຈໍຕາ/ຮອຍແປ້ວ"],
+  ["swinging light", "ແສງແກວ່ງ"],
+  ["direct ophthalmoscope", "ເຄື່ອງສ່ອງກົ້ນຕາໂດຍກົງ"],
+  ["Conditions", "ພະຍາດ"],
+  ["Condition", "ພະຍາດ"],
+  ["Eyes", "ຕາ"],
+  ["Cataract", "ພະຍາດຕໍ້ກະຈົກ"],
+  ["cataract", "ພະຍາດຕໍ້ກະຈົກ"],
+  ["Cupped", "ຂົ້ວປະສາດຕາບຸ໋ມ"],
+  ["Detached", "ຈໍຕາຫຼຸດລອກ"],
+  ["pupillary", "ຂອງຮູມ່ານຕາ"],
+  ["pupils", "ຮູມ່ານຕາ"],
+  ["pupil", "ຮູມ່ານຕາ"],
+  ["fundus", "ກົ້ນຕາ"],
+  ["retina", "ຈໍຕາ"],
+  ["refractive", "ການຫັກແສງ"],
+  ["Reflex", "ການສະທ້ອນ"],
+  ["mths", "ເດືອນ"],
+  ["days", "ມື້"],
+  ["deg", "ອົງສາ"],
+];
+
+function cleanupLaoLiteral(value) {
+  if (normalizeLanguage(CACHE.lang) !== "lo") return value;
+  let result = String(value);
+  LAO_EMBEDDED_CLINICAL_TERMS.forEach(([english, lao]) => {
+    result = result.replaceAll(english, lao);
+  });
+  return result;
+}
+
 function rebuildLiteralIndex() {
   CACHE.literalIndex = new Map();
   const mergeLiteralEntries = (source) => {
@@ -220,12 +253,12 @@ function literalTranslate(rawText) {
   const key = normalizeLiteralText(rawText);
   if (!key) return null;
   const direct = CACHE.literalIndex.get(key);
-  if (direct != null) return direct;
+  if (direct != null) return cleanupLaoLiteral(direct);
 
   const fallbackPaths = COMMON_LITERAL_FALLBACKS[key] || [];
   for (const path of fallbackPaths) {
     const translated = get(CACHE.dict, path) ?? get(CACHE.fallbackDict, path);
-    if (translated != null) return String(translated);
+    if (translated != null) return cleanupLaoLiteral(String(translated));
   }
 
   return null;
@@ -278,9 +311,15 @@ function applyLiteralTranslations(root = document) {
   let textNode = textWalker.nextNode();
   while (textNode) {
     const parent = textNode.parentElement;
+    const explicitOwner = parent?.closest("[data-i18n]");
+    const isInsideExplicitTextTranslation = explicitOwner
+      ? parseI18nSpecs(explicitOwner.getAttribute("data-i18n") || "").some(
+          ({ target }) => ["text", "html", "value"].includes(target),
+        )
+      : false;
     if (
       parent &&
-      !parent.closest("[data-i18n]") &&
+      !isInsideExplicitTextTranslation &&
       !parent.closest("[data-i18n-skip]") &&
       !/^(SCRIPT|STYLE|NOSCRIPT|TEMPLATE)$/i.test(parent.tagName || "")
     ) {

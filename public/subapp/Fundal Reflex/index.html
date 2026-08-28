@@ -40,6 +40,11 @@
         color: #0f1625;
       }
 
+      html[lang="lo"] .lang-en,
+      html:not([lang="lo"]) .lang-lo {
+        display: none !important;
+      }
+
       body:not(.app-ready) .eyes-wrapper {
         background:
           radial-gradient(
@@ -174,13 +179,24 @@
             aria-labelledby="info-reflex-title"
           >
             <p id="info-reflex-title" class="info-look-title">Fundal reflex</p>
-            <p>
-              The fundal reflex is the glow in the pupil from the fundus, seen
-              with Arclight at arm's length. We use <em>fundal</em> reflex
-              rather than <em>red</em> reflex. In those with darker
-              pigmentation, a normal reflex may look orange-yellow or
-              blue-white. Bright, equal and round is reassuring. Null, milky or
-              black means the back is not being seen.
+            <p data-i18n-skip>
+              <span class="lang-en"
+                >The fundal reflex is the glow in the pupil from the fundus,
+                seen with Arclight at arm's length. We use
+                <em>fundal</em> reflex rather than <em>red</em> reflex. In those
+                with darker pigmentation, a normal reflex may look orange-yellow
+                or blue-white. Bright, equal and round is reassuring. Null,
+                milky or black means the back is not being seen.</span
+              >
+              <span class="lang-lo" lang="lo"
+                >ການສະທ້ອນແສງຈາກກົ້ນຕາແມ່ນແສງທີ່ສ່ອງອອກຈາກກົ້ນຕາຜ່ານຮູມ່ານຕາ
+                ເມື່ອໃຊ້ Arclight ກວດໃນໄລຍະແຂນ.
+                ພວກເຮົາໃຊ້ຄຳວ່າການສະທ້ອນແສງຈາກກົ້ນຕາ ແທນການສະທ້ອນສີແດງ.
+                ໃນຜູ້ທີ່ມີເມັດສີເຂັ້ມ ການສະທ້ອນປົກກະຕິອາດເປັນສີສົ້ມ-ເຫຼືອງ ຫຼື
+                ຟ້າ-ຂາວ. ການສະທ້ອນທີ່ສະຫວ່າງ, ເທົ່າກັນ ແລະ ກົມເປັນສັນຍານທີ່ດີ.
+                ຖ້າບໍ່ມີແສງ, ຂາວຂຸ່ນ ຫຼື ດຳ
+                ໝາຍເຖິງມອງບໍ່ເຫັນສ່ວນຫຼັງຂອງຕາ.</span
+              >
             </p>
           </section>
           <hr />
@@ -1126,7 +1142,7 @@
     <!-- Main JS -->
     <script src="app.bundle.js?v=20260821-1" defer></script>
     <script src="cup-achievement.js" defer></script>
-    <script src="../i18n-lo.js?v=20260827-4" defer></script>
-    <script src="i18n-lo.js?v=20260827-3" defer></script>
+    <script src="../i18n-lo.js?v=20260828-7" defer></script>
+    <script src="i18n-lo.js?v=20260828-6" defer></script>
   </body>
 </html>

@@ -783,5 +783,11 @@ export function initializeEyeExaminationConnectGame() {
     });
   }
 
+  // The module is often initialized after the router has already emitted the
+  // page:shown event. Open the first-run tutorial immediately in that case.
+  if (page.classList.contains("active")) {
+    activeController.openForPage();
+  }
+
   return activeController;
 }

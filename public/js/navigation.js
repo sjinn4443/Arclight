@@ -1083,6 +1083,19 @@ const STRUCTURAL_BACK_SUBPAGES = {
   usaidNormalAbnormalPage: { routeName: "childhoodEyeScreeningWorkshop" },
 };
 
+function consumeContextualVideosReturn(activeSubPageId) {
+  if (!activeSubPageId) return null;
+  try {
+    const key = "videos:contextualReturn:v1";
+    const value = JSON.parse(sessionStorage.getItem(key) || "null");
+    if (normalizeSubPageId(value?.target) !== activeSubPageId) return null;
+    sessionStorage.removeItem(key);
+    return normalizeSubPageId(value?.from) || null;
+  } catch {
+    return null;
+  }
+}
+
 const HISTORY_FIRST_BACK_ROUTES = new Set([
   "binocularIndirectOphthalmoscopyPdf",
   "directOphthalmoscopyPdf",
@@ -1546,6 +1559,22 @@ export function goBack() {
 
   const activeSubPageId = getActivePageId();
   const currentRouteForBack = normalizeRouteName(currentPageName);
+
+  if (currentRouteForBack === "videos") {
+    const contextualReturn = consumeContextualVideosReturn(activeSubPageId);
+    if (contextualReturn) {
+      isApplyingBackNavigation = true;
+      loadPage("videos", {
+        replace: true,
+        force: true,
+        recordHistory: false,
+        subPageId: contextualReturn,
+      }).finally(() => {
+        isApplyingBackNavigation = false;
+      });
+      return;
+    }
+  }
 
   if (
     currentRouteForBack === "glaucomaScrollImages" &&

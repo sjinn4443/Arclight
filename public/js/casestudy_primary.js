@@ -1899,6 +1899,54 @@ export function initializeCaseStudyPrimary() {
       resetCard();
     });
 
+    // Desktop users need the same gesture with a mouse or pen. Touch remains
+    // on the established handlers above to avoid processing one gesture twice.
+    let pointerId = null;
+    card.addEventListener("pointerdown", (event) => {
+      if (event.pointerType === "touch" || event.button !== 0) return;
+      pointerId = event.pointerId;
+      tracking = true;
+      startX = event.clientX;
+      startY = event.clientY;
+      dxLive = 0;
+      dyLive = 0;
+      suppressClick = false;
+      wrap.style.transition = "";
+      card.setPointerCapture?.(pointerId);
+    });
+
+    card.addEventListener("pointermove", (event) => {
+      if (!tracking || event.pointerId !== pointerId) return;
+      dxLive = event.clientX - startX;
+      dyLive = event.clientY - startY;
+      if (Math.abs(dxLive) > 8 || Math.abs(dyLive) > 8) suppressClick = true;
+      if (Math.abs(dxLive) >= Math.abs(dyLive)) {
+        event.preventDefault();
+        const rot = Math.max(-12, Math.min(12, dxLive / 18));
+        wrap.style.transform = `translateX(${dxLive}px) rotate(${rot}deg)`;
+      }
+    });
+
+    const finishPointerSwipe = (event) => {
+      if (!tracking || event.pointerId !== pointerId) return;
+      tracking = false;
+      card.releasePointerCapture?.(pointerId);
+      pointerId = null;
+      setTimeout(() => (suppressClick = false), 250);
+      if (dyLive < -90) {
+        card.classList.toggle("is-flipped");
+        resetCard();
+      } else if (dxLive > 90) {
+        flyOut(1, () => submitFlashAnswer(true));
+      } else if (dxLive < -90) {
+        flyOut(-1, () => submitFlashAnswer(false));
+      } else {
+        resetCard();
+      }
+    };
+    card.addEventListener("pointerup", finishPointerSwipe);
+    card.addEventListener("pointercancel", finishPointerSwipe);
+
     flashSwipeBound = true;
   }
 

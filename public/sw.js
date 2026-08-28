@@ -1,5 +1,5 @@
 /* sw.js — Arclight PWA service worker */
-const CACHE_NAME = "arclight-static-v30";
+const CACHE_NAME = "arclight-static-v31";
 const MAX_MESSAGE_CACHE_URLS = 10000;
 const CORE_ASSETS = [
   "/",

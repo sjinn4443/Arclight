@@ -36,6 +36,7 @@ function run(command, args, options = {}) {
     cwd: options.cwd,
     encoding: options.encoding ?? "utf8",
     input: options.input,
+    maxBuffer: 64 * 1024 * 1024,
   });
 
   if (result.status !== 0 && options.allowFailure !== true) {

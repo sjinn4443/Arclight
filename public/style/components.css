@@ -4748,13 +4748,33 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
 }
 
 .casechat-nextcase {
-  margin-top: 63px;
+  margin-top: 16px;
   width: 100%;
   padding: 12px 14px;
   border-radius: 12px;
   border: none;
   color: #fff;
   font-weight: 600;
+}
+
+.casechat-case-navigation {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.casechat-case-navigation .casechat-nextcase {
+  margin-top: 0;
+}
+
+.casechat-case-navigation .casechat-previouscase {
+  background: #777;
+}
+
+.casechat-case-navigation .casechat-nextcase:disabled {
+  opacity: 0.42;
+  cursor: not-allowed;
 }
 
 /* ===== Case Study modal (MATCHES casestudy.html: __content/__top/__title/__close) ===== */
@@ -5332,6 +5352,26 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
 #caseStudyFlashcardPagePrimary,
 #caseStudyFlashcardPagePrimary > .container.pupils-container {
   background: #ecebf2 !important;
+  min-height: 100dvh;
+  overflow-y: auto;
+  padding-bottom: 96px;
+}
+
+/* This page contains a short source clip, but it should use the same stage as
+   the other workshop video pages instead of its intrinsic 180px width. */
+#videos #assessingVisualFunctionPage .video-container {
+  width: auto;
+  max-width: none;
+}
+
+#videos #assessingVisualFunctionPage .video-container > video {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  min-height: min(58vw, 560px);
+  object-fit: contain;
+  background: #000;
 }
 
 /* Flashcard flip (Primary) */
@@ -5807,6 +5847,38 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
   font-size: 14px;
   border-radius: 12px;
   cursor: pointer;
+}
+
+#settingsConfirmOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 20000;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.58);
+}
+
+.settings-confirm-modal {
+  width: min(100%, 480px);
+}
+
+.settings-confirm-modal__message {
+  margin: 12px 0 24px;
+}
+
+.settings-confirm-modal__actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.settings-confirm-modal__actions .guest-modal__cta {
+  margin: 0;
+}
+
+.settings-confirm-modal__cancel {
+  background: #777;
 }
 
 /* Privacy & Terms modal: long content should scroll */

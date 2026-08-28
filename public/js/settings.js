@@ -240,6 +240,51 @@ function clearProfileAndProgress() {
   dispatchProfileUpdated({ source: "settings:delete-account" });
 }
 
+function settingsCopy(english, lao) {
+  const translated = translateLiteral(english, english);
+  if (translated !== english) return translated;
+  return getLanguage() === "lo" ? lao : english;
+}
+
+function confirmSettingsAction(message, laoMessage) {
+  return new Promise((resolve) => {
+    document.getElementById("settingsConfirmOverlay")?.remove();
+    const overlay = document.createElement("div");
+    overlay.id = "settingsConfirmOverlay";
+    overlay.setAttribute("role", "dialog");
+    overlay.setAttribute("aria-modal", "true");
+    overlay.innerHTML = `
+      <div class="guest-modal settings-confirm-modal">
+        <p class="guest-modal__text settings-confirm-modal__message"></p>
+        <div class="settings-confirm-modal__actions">
+          <button type="button" class="guest-modal__cta settings-confirm-modal__cancel" data-confirm="cancel"></button>
+          <button type="button" class="guest-modal__cta" data-confirm="ok"></button>
+        </div>
+      </div>`;
+    overlay.querySelector(".settings-confirm-modal__message").textContent =
+      settingsCopy(message, laoMessage);
+    overlay.querySelector('[data-confirm="cancel"]').textContent = settingsCopy(
+      "Cancel",
+      "ຍົກເລີກ",
+    );
+    overlay.querySelector('[data-confirm="ok"]').textContent = settingsCopy(
+      "OK",
+      "ຕົກລົງ",
+    );
+    const finish = (answer) => {
+      overlay.remove();
+      resolve(answer);
+    };
+    overlay.addEventListener("click", (event) => {
+      const action = event.target.closest("[data-confirm]")?.dataset.confirm;
+      if (action) finish(action === "ok");
+      else if (event.target === overlay) finish(false);
+    });
+    document.body.appendChild(overlay);
+    overlay.querySelector('[data-confirm="cancel"]')?.focus();
+  });
+}
+
 function wireAccountActions() {
   document
     .getElementById("settingsPrivacyBtn")
@@ -255,8 +300,11 @@ function wireAccountActions() {
 
   document
     .getElementById("settingsLogoutBtn")
-    ?.addEventListener("click", () => {
-      const ok = window.confirm("Log out and return to the start screen?");
+    ?.addEventListener("click", async () => {
+      const ok = await confirmSettingsAction(
+        "Log out and return to the start screen?",
+        "ອອກຈາກລະບົບ ແລະ ກັບໄປໜ້າເລີ່ມຕົ້ນບໍ?",
+      );
       if (!ok) return;
       localStorage.setItem("guestMode", "true");
       localStorage.removeItem("guestClicks");
@@ -265,9 +313,10 @@ function wireAccountActions() {
 
   document
     .getElementById("settingsDeleteAccountBtn")
-    ?.addEventListener("click", () => {
-      const ok = window.confirm(
+    ?.addEventListener("click", async () => {
+      const ok = await confirmSettingsAction(
         "Delete this local account profile and learning progress?",
+        "ລຶບໂປຣໄຟລ໌ບັນຊີໃນອຸປະກອນນີ້ ແລະ ຄວາມຄືບໜ້າການຮຽນບໍ?",
       );
       if (!ok) return;
       clearProfileAndProgress();

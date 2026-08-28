@@ -309,7 +309,60 @@
     }
   }
 
+  function translateHelpContent() {
+    const setText = (selector, value) => {
+      const element = document.querySelector(selector);
+      if (
+        element &&
+        value &&
+        element.textContent.replace(/\s+/g, " ").trim() !== value
+      )
+        element.textContent = value;
+    };
+
+    // These paragraphs contain inline emphasis nodes. Translating each text
+    // fragment independently leaves clinical words behind, so replace the
+    // complete visible sentence with its reviewed Lao version.
+    setText(
+      ".info-reflex-definition p:nth-of-type(2)",
+      translations.get(
+        "The fundal reflex is the glow in the pupil from the fundus, seen with Arclight at arm's length. We use fundal reflex rather than red reflex. In those with darker pigmentation, a normal reflex may look orange-yellow or blue-white. Bright, equal and round is reassuring. Null, milky or black means the back is not being seen.",
+      ),
+    );
+    const details = document.querySelectorAll(
+      ".info-look-section--detail > p:not(.info-look-title)",
+    );
+    const detailText = [
+      "ແສງ + ສີ: ຄວາມສະຫວ່າງ, ຄວາມຂຸ່ນ, ສົ້ມ-ແດງ ຫຼື ຟ້າ-ຂາວ.",
+      "ຮູບຮ່າງ + ຮູບຈັນສ້ຽວ: ຂະໜາດ, ຄວາມກົມ, ຮອຍບາກ, ຮູບຈັນສ້ຽວດ້ານເທິງ ຫຼື ດ້ານລຸ່ມ.",
+      "ກະຈົກຕາ + ປຽບທຽບ: ຕຳແໜ່ງກາງ, ຄວາມຄົມຊັດ ແລະ ຕາອີກຂ້າງ.",
+    ];
+    details.forEach((element, index) => {
+      if (detailText[index]) element.textContent = detailText[index];
+    });
+    setText(
+      ".info-points p:first-child",
+      translations.get(
+        "Use Cases to practise. Use Learn for the visual handout.",
+      ),
+    );
+    setText("nav .menu-title, nav .side-menu-title", "ເມນູ");
+  }
+
+  translateHelpContent();
   translateTree(document);
+  [0, 250, 1000].forEach((delay) => {
+    window.setTimeout(() => {
+      translateHelpContent();
+      translateTree(document);
+    }, delay);
+  });
+  document.getElementById("infoIcon")?.addEventListener("click", () => {
+    window.requestAnimationFrame(() => {
+      translateHelpContent();
+      translateTree(document);
+    });
+  });
 
   let translating = false;
   const observer = new MutationObserver((records) => {

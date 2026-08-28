@@ -17,7 +17,7 @@ function loadServiceWorker(fetchImpl) {
     delete: jest.fn().mockResolvedValue(true),
     keys: jest
       .fn()
-      .mockResolvedValue(["arclight-static-v24", "arclight-static-v25"]),
+      .mockResolvedValue(["arclight-static-v30", "arclight-static-v31"]),
     open: jest.fn().mockResolvedValue(cache),
   };
   const location = new URL("https://app.example.com/sw.js");
@@ -119,8 +119,8 @@ describe("service worker sensitive-cache policy", () => {
     });
     await work;
 
-    expect(caches.delete).toHaveBeenCalledWith("arclight-static-v24");
-    expect(caches.delete).not.toHaveBeenCalledWith("arclight-static-v25");
+    expect(caches.delete).toHaveBeenCalledWith("arclight-static-v30");
+    expect(caches.delete).not.toHaveBeenCalledWith("arclight-static-v31");
     expect(self.clients.claim).toHaveBeenCalledTimes(1);
   });
 });

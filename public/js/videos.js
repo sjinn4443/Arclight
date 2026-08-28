@@ -460,6 +460,22 @@ function updateLessonProgressBars() {
     const target = row.getAttribute("data-target");
     if (!target) return;
 
+    // Preserve the actual launch context. Several of these videos also appear
+    // in workshop lists, so a hard-coded Back destination is incorrect when
+    // the user opened them from Eyes > Visual Acuity.
+    if (
+      document.getElementById("visualAcuityPage")?.classList.contains("active")
+    ) {
+      try {
+        sessionStorage.setItem(
+          "videos:contextualReturn:v1",
+          JSON.stringify({ from: "visualAcuityPage", target }),
+        );
+      } catch {
+        /* navigation still works with the structural fallback */
+      }
+    }
+
     const fill = row.querySelector(".lesson-progress__fill");
     if (!fill) return;
 

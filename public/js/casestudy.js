@@ -609,6 +609,9 @@ export function initializeCaseStudy() {
   let scoreTotal = 0; // how many cases have been scored
 
   let casePool = buildCasePool();
+  const caseHistory = [];
+  let caseHistoryIndex = -1;
+  const scoredCaseNumbers = new Set();
   // ---------- intro modal (intermediate) ----------
   let introModalEl = null;
   let introSeen = false;
@@ -748,6 +751,7 @@ export function initializeCaseStudy() {
     if (!caseScored) {
       scoreTotal += 1;
       caseScored = true;
+      scoredCaseNumbers.add(state.current?.caseNum);
       setIntermediateCaseStudyProgress((scoreTotal / TOTAL_CASES) * 100);
     }
 
@@ -760,15 +764,7 @@ export function initializeCaseStudy() {
       msg.innerHTML = reasonText;
       dxCard.appendChild(msg);
 
-      const next = document.createElement("button");
-      next.type = "button";
-      next.className = "casechat-nextcase";
-      next.textContent = "Next case";
-      next.addEventListener("click", () => {
-        closeDxModal();
-        startNewCase();
-      });
-      dxCard.appendChild(next);
+      appendCaseNavigation(dxCard);
       translateNode(dxCard);
     }
   }
@@ -1038,10 +1034,27 @@ export function initializeCaseStudy() {
     stopTimer();
   }
 
-  function startNewCase() {
+  function startNewCase(direction = "next") {
     forceCloseModals();
 
-    if (casePool.length === 0) {
+    let nextCase = null;
+    if (direction === "previous" && caseHistoryIndex > 0) {
+      caseHistoryIndex -= 1;
+      nextCase = caseHistory[caseHistoryIndex];
+    } else if (
+      direction === "next" &&
+      caseHistoryIndex >= 0 &&
+      caseHistoryIndex < caseHistory.length - 1
+    ) {
+      caseHistoryIndex += 1;
+      nextCase = caseHistory[caseHistoryIndex];
+    } else if (direction === "next" && casePool.length) {
+      nextCase = casePool.shift();
+      caseHistory.push(nextCase);
+      caseHistoryIndex = caseHistory.length - 1;
+    }
+
+    if (!nextCase) {
       // 1) 화면 내용 전부 제거 (기존 채팅, img 포함)
       log.innerHTML = "";
 
@@ -1074,15 +1087,15 @@ export function initializeCaseStudy() {
       return;
     }
 
-    state.current = casePool.shift();
+    state.current = nextCase;
 
     state.answeredImageShown = false;
     state.asked = new Set();
 
-    caseScored = false;
+    caseScored = scoredCaseNumbers.has(state.current.caseNum);
 
     log.innerHTML = "";
-    caseIndex += 1;
+    caseIndex = caseHistoryIndex + 1;
 
     const ageIntro = ageIntroForCase(state.current);
 
@@ -1214,6 +1227,7 @@ export function initializeCaseStudy() {
       scoreCorrect += 1;
       scoreTotal += 1;
       caseScored = true;
+      scoredCaseNumbers.add(state.current?.caseNum);
       setIntermediateCaseStudyProgress((scoreTotal / TOTAL_CASES) * 100);
     }
 
@@ -1244,16 +1258,35 @@ export function initializeCaseStudy() {
 
     dxCard.appendChild(msg);
 
+    appendCaseNavigation(dxCard);
+    translateNode(dxCard);
+  }
+
+  function appendCaseNavigation(container) {
+    const nav = document.createElement("div");
+    nav.className = "casechat-case-navigation";
+
+    const previous = document.createElement("button");
+    previous.type = "button";
+    previous.className = "casechat-nextcase casechat-previouscase";
+    previous.textContent = "Previous case";
+    previous.disabled = caseHistoryIndex <= 0;
+    previous.addEventListener("click", () => {
+      closeDxModal();
+      startNewCase("previous");
+    });
+
     const next = document.createElement("button");
     next.type = "button";
     next.className = "casechat-nextcase";
     next.textContent = "Next case";
     next.addEventListener("click", () => {
       closeDxModal();
-      startNewCase(); // 이미 파일 안에 있는 함수
+      startNewCase("next");
     });
-    dxCard.appendChild(next);
-    translateNode(dxCard);
+
+    nav.append(previous, next);
+    container.appendChild(nav);
   }
 
   function showList() {

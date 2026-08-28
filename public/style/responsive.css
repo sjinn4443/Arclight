@@ -2613,7 +2613,7 @@ input {
   }
 
   #caseStudyFlashcardPagePrimary #primaryFlashCard.flashcard {
-    height: 704px !important;
+    height: clamp(480px, calc(100dvh - 190px), 620px) !important;
   }
 
   #caseStudyFlashcardPagePrimary #primaryFlashBackBtn {
