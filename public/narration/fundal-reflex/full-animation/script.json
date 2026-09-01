@@ -1,0 +1,293 @@
+{
+  "schemaVersion": 1,
+  "title": "Fundal Reflex Full Animation narration",
+  "timingSource": "FundalReflex_Full Animation.mp4 scene boundaries",
+  "sourceVideo": "/videos/FullAnim/FundalReflex_Full Animation.mp4",
+  "durationSeconds": 244.906667,
+  "defaultLanguage": "en",
+  "languages": {
+    "en": {
+      "label": "English",
+      "locale": "en-GB",
+      "voice": "en-GB-SoniaNeural",
+      "style": "Calm, friendly adult medical educator; slightly slow; neutral rather than promotional"
+    },
+    "es-419": {
+      "label": "Español (Latinoamérica)",
+      "locale": "es-419",
+      "voice": "es-MX-DaliaNeural",
+      "style": "Educadora médica adulta, tranquila y cordial; ritmo ligeramente pausado; tono neutro"
+    }
+  },
+  "pronunciationGuide": [
+    {
+      "term": "Arclight",
+      "en": "ARK-light (IPA: /ˈɑːk.laɪt/)",
+      "es-419": "ARK-lait; conservar el nombre de la marca en inglés"
+    },
+    {
+      "term": "fundal reflex",
+      "en": "FUN-dəl REE-fleks (IPA: /ˈfʌn.dəl ˈriː.fleks/)",
+      "es-419": "reflejo del fondo de ojo; en contextos clínicos también se usa reflejo rojo"
+    },
+    {
+      "term": "retinoblastoma",
+      "en": "ret-ih-no-blas-TOH-muh",
+      "es-419": "reh-tee-noh-blahs-TOH-mah"
+    }
+  ],
+  "cues": [
+    {
+      "id": "preparation-01",
+      "section": "Preparation",
+      "start": 0.25,
+      "end": 5.05,
+      "screenText": "Wash hands",
+      "en": "Begin by washing and drying your hands.",
+      "es-419": "Empiece lavándose y secándose las manos.",
+      "notes": "Calm opening; leave a short pause before the next instruction."
+    },
+    {
+      "id": "preparation-02",
+      "section": "Preparation",
+      "start": 5.45,
+      "end": 15.15,
+      "screenText": "Use brightest light setting; push lenses up; quiet, dim room",
+      "en": "Set the Arclight to its brightest light, push both lens racks fully up, and use a quiet, dim room.",
+      "es-419": "Ponga la luz del Arclight al máximo, suba ambos soportes de lentes y use una habitación tranquila y con poca luz.",
+      "ttsText": {
+        "en": "Set the Arc-light to its brightest light, push both lens racks fully up, and use a quiet, dim room.",
+        "es-419": "Ponga la luz del Arc-lait al máximo, suba ambos soportes de lentes y use una habitación tranquila y con poca luz."
+      },
+      "notes": "Arclight: ARK-light / ARK-lait. Give the three preparations equal weight."
+    },
+    {
+      "id": "preparation-03",
+      "section": "Preparation",
+      "start": 15.7,
+      "end": 31.5,
+      "screenText": "Hold Arclight close to your eye",
+      "en": "Hold the Arclight close to your own eye, with the light just below your line of sight. This lets you look directly along the beam.",
+      "es-419": "Sostenga el Arclight cerca de su propio ojo, con la luz justo debajo de la línea de visión. Así podrá mirar directamente a lo largo del haz.",
+      "ttsText": {
+        "en": "Hold the Arc-light close to your own eye, with the light just below your line of sight. This lets you look directly along the beam.",
+        "es-419": "Sostenga el Arc-lait cerca de su propio ojo, con la luz justo debajo de la línea de visión. Así podrá mirar directamente a lo largo del haz."
+      },
+      "notes": "Stress ‘your own eye’ and ‘just below’; do not sound corrective or severe."
+    },
+    {
+      "id": "preparation-04",
+      "section": "Preparation",
+      "start": 32.1,
+      "end": 48.0,
+      "screenText": "Swaddle newborn; parent holds older baby; older child may sit alone",
+      "en": "A newborn should be securely swaddled. Ask a parent to hold an older baby, while a child who can sit steadily may sit on their own.",
+      "es-419": "Envuelva bien al recién nacido. Pida a uno de los padres que sostenga al bebé mayor; un niño que ya se sienta con estabilidad puede sentarse solo.",
+      "notes": "Warm, practical instruction. ‘Parent’ is rendered naturally for neutral Latin American Spanish."
+    },
+    {
+      "id": "examination-01",
+      "section": "Examination",
+      "start": 48.55,
+      "end": 52.95,
+      "screenText": "Observe reflex at arm's length",
+      "en": "Start at about arm's length.",
+      "es-419": "Comience a una distancia aproximada de un brazo.",
+      "notes": "Brief, clear instruction."
+    },
+    {
+      "id": "examination-02",
+      "section": "Examination",
+      "start": 53.3,
+      "end": 63.85,
+      "screenText": "Move side to side; get closer if needed",
+      "en": "Move gently from side to side, and come a little closer only if you need a clearer view.",
+      "es-419": "Muévase suavemente de lado a lado y acérquese un poco solo si necesita ver con mayor claridad.",
+      "notes": "A slight pause after ‘side to side’ helps match the movement on screen."
+    },
+    {
+      "id": "examination-03",
+      "section": "Examination",
+      "start": 64.35,
+      "end": 79.85,
+      "screenText": "Examine both eyes together; compare brightness and colour",
+      "en": "Keep both eyes in view together. The fundal reflexes should be similar in brightness and colour.",
+      "es-419": "Mantenga ambos ojos a la vista al mismo tiempo. Los reflejos del fondo de ojo deben tener un brillo y un color similares.",
+      "notes": "fundal reflex: FUN-dəl REE-fleks. Spanish uses the clinically natural ‘reflejo del fondo de ojo’."
+    },
+    {
+      "id": "examination-04",
+      "section": "Examination",
+      "start": 80.15,
+      "end": 84.95,
+      "screenText": "Normal reflex colour varies",
+      "en": "Normal reflex colour varies with retinal pigmentation.",
+      "es-419": "El color normal del reflejo varía con la pigmentación retinal.",
+      "notes": "UK spelling: colour. The narration avoids presenting race as a biological diagnostic category."
+    },
+    {
+      "id": "examination-05",
+      "section": "Examination",
+      "start": 85.05,
+      "end": 91.9,
+      "screenText": "Examples: yellow-white-blue; orange-red; orange-yellow",
+      "en": "It may appear yellow-white or bluish, orange-red, or orange-yellow.",
+      "es-419": "Puede ser amarillo, blanco, azulado, naranja rojizo o naranja amarillento.",
+      "notes": "Present these as normal examples, not fixed racial rules."
+    },
+    {
+      "id": "eyes-open-01",
+      "section": "Newborn — eyes open",
+      "start": 92.45,
+      "end": 106.65,
+      "screenText": "Parent holds baby securely swaddled, arms tucked",
+      "en": "Ask the parent to hold the newborn securely, swaddled with the arms tucked in.",
+      "es-419": "Pida a uno de los padres que sostenga al recién nacido de forma segura, envuelto y con los brazos recogidos.",
+      "notes": "Reassuring rather than commanding."
+    },
+    {
+      "id": "eyes-open-02",
+      "section": "Newborn — eyes open",
+      "start": 107.15,
+      "end": 117.6,
+      "screenText": "Observe both eyes together",
+      "en": "When the eyes are open, observe both reflexes together.",
+      "es-419": "Cuando los ojos estén abiertos, observe ambos reflejos al mismo tiempo.",
+      "notes": "Light emphasis on ‘together’ / ‘al mismo tiempo’."
+    },
+    {
+      "id": "eyes-open-03",
+      "section": "Newborn — eyes open",
+      "start": 118.15,
+      "end": 133.6,
+      "screenText": "Observe without touching",
+      "en": "Do not touch the baby's face or eyelids to obtain the view.",
+      "es-419": "No toque la cara ni los párpados del bebé para obtener la vista.",
+      "notes": "Clear safety instruction, spoken without alarm."
+    },
+    {
+      "id": "eyes-closed-01",
+      "section": "Newborn — eyes closed",
+      "start": 134.15,
+      "end": 141.2,
+      "screenText": "Baby asleep",
+      "en": "If the baby is asleep, there is no need to wake them.",
+      "es-419": "Si el bebé está dormido, no es necesario despertarlo.",
+      "notes": "Gentle and reassuring."
+    },
+    {
+      "id": "eyes-closed-02",
+      "section": "Newborn — eyes closed",
+      "start": 141.75,
+      "end": 155.15,
+      "screenText": "Gently open one eye at a time",
+      "en": "Gently open and examine one eye at a time.",
+      "es-419": "Abra con cuidado y examine un ojo a la vez.",
+      "notes": "Pause slightly before ‘one eye at a time’."
+    },
+    {
+      "id": "possible-findings-01",
+      "section": "Possible findings",
+      "start": 155.7,
+      "end": 167.7,
+      "screenText": "Occasional short-lasting squints are common in month one and usually disappear by month three",
+      "en": "Brief, occasional squints are common in the first month and usually disappear by three months.",
+      "es-419": "Los estrabismos breves y ocasionales son frecuentes durante el primer mes y suelen desaparecer a los tres meses.",
+      "notes": "Do not imply that a persistent or constant squint is normal."
+    },
+    {
+      "id": "unclear-findings-01",
+      "section": "Unclear findings",
+      "start": 168.25,
+      "end": 176.6,
+      "screenText": "If findings are unclear, follow three steps",
+      "en": "If the finding is unclear, follow these three steps.",
+      "es-419": "Si el hallazgo no está claro, siga estos tres pasos.",
+      "notes": "Use a signposting tone."
+    },
+    {
+      "id": "unclear-findings-02",
+      "section": "Unclear findings",
+      "start": 177.1,
+      "end": 186.6,
+      "screenText": "Compare with parent's reflex",
+      "en": "First, compare the baby's reflex with the parent's. They should look similar.",
+      "es-419": "Primero, compare el reflejo del bebé con el de uno de sus padres. Deberían verse similares.",
+      "notes": "‘Similar’ refers to expected pigmentation-related appearance, not exact identity."
+    },
+    {
+      "id": "unclear-findings-03",
+      "section": "Unclear findings",
+      "start": 187.1,
+      "end": 193.6,
+      "screenText": "Seek a colleague's opinion",
+      "en": "If you are still unsure, ask a colleague for a second opinion.",
+      "es-419": "Si aún tiene dudas, pida una segunda opinión a un colega.",
+      "notes": "Collegial and matter-of-fact."
+    },
+    {
+      "id": "unclear-findings-04",
+      "section": "Unclear findings",
+      "start": 194.1,
+      "end": 203.3,
+      "screenText": "If alone, gain consent and record video",
+      "en": "If no colleague is available, obtain consent to make a short video.",
+      "es-419": "Si no hay un colega disponible, obtenga consentimiento para grabar un video corto.",
+      "notes": "Make ‘obtain consent’ distinct and unhurried."
+    },
+    {
+      "id": "unclear-findings-05",
+      "section": "Unclear findings",
+      "start": 203.75,
+      "end": 216.65,
+      "screenText": "Attach Arclight to phone; share securely for second opinion",
+      "en": "Attach the Arclight to the phone camera, record the reflex, and share the video securely for a second opinion.",
+      "es-419": "Conecte el Arclight a la cámara del teléfono, grabe el reflejo y comparta el video de forma segura para obtener una segunda opinión.",
+      "ttsText": {
+        "en": "Attach the Arc-light to the phone camera, record the reflex, and share the video securely for a second opinion.",
+        "es-419": "Conecte el Arc-lait a la cámara del teléfono, grabe el reflejo y comparta el video de forma segura para obtener una segunda opinión."
+      },
+      "notes": "Stress ‘securely’; avoid a casual social-sharing tone."
+    },
+    {
+      "id": "possible-findings-02",
+      "section": "Possible findings",
+      "start": 217.2,
+      "end": 224.6,
+      "screenText": "Similar colour and brightness is normal",
+      "en": "Similar colour and brightness in both eyes are reassuring.",
+      "es-419": "Un color y un brillo similares en ambos ojos son tranquilizadores.",
+      "notes": "UK spelling: colour. ‘Reassuring’ avoids treating one sign as a complete diagnosis."
+    },
+    {
+      "id": "possible-findings-03",
+      "section": "Possible findings",
+      "start": 225.0,
+      "end": 234.4,
+      "screenText": "Colour difference or partial/complete loss of reflex is abnormal",
+      "en": "A colour difference, or partial or complete loss of a reflex, is abnormal and needs further assessment.",
+      "es-419": "Una diferencia de color, o la pérdida parcial o total de un reflejo, es anormal y requiere evaluación.",
+      "notes": "Firm clinical emphasis on ‘abnormal’ and ‘further assessment’, without sounding alarming."
+    },
+    {
+      "id": "after-examination-01",
+      "section": "After examination",
+      "start": 234.85,
+      "end": 239.45,
+      "screenText": "Thank parent; explain findings and next steps",
+      "en": "Thank the parent and explain the findings and next steps.",
+      "es-419": "Agradezca y explique los hallazgos y los siguientes pasos.",
+      "notes": "Warm closing; keep concise to fit the scene."
+    },
+    {
+      "id": "after-examination-02",
+      "section": "After examination",
+      "start": 239.85,
+      "end": 244.55,
+      "screenText": "Wash hands",
+      "en": "Finally, wash and dry your hands again.",
+      "es-419": "Por último, vuelva a lavarse y secarse las manos.",
+      "notes": "Short, settled finish."
+    }
+  ]
+}

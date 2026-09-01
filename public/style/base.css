@@ -281,6 +281,49 @@ html {
   margin: 16px 0 -8px;
 }
 
+.video-narration-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 32px;
+  max-width: 148px;
+  margin-top: 8px;
+  padding: 5px 10px;
+  overflow: hidden;
+  border: 1px solid rgba(228, 30, 38, 0.35);
+  border-radius: 999px;
+  color: #7c1015;
+  background: #fff4f4;
+  font: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.15;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.video-narration-toggle::before {
+  content: "🔊";
+  flex: 0 0 auto;
+  margin-right: 5px;
+}
+
+.video-narration-toggle.is-off {
+  color: #555;
+  border-color: #c8c8c8;
+  background: #f4f4f4;
+}
+
+.video-narration-toggle.is-off::before {
+  content: "🔇";
+}
+
+.video-narration-toggle:focus-visible {
+  outline: 2px solid rgba(228, 30, 38, 0.24);
+  outline-offset: 2px;
+}
+
 .video-page-menu-btn {
   display: inline-flex;
   align-items: center;

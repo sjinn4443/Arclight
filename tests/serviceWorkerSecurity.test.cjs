@@ -17,7 +17,7 @@ function loadServiceWorker(fetchImpl) {
     delete: jest.fn().mockResolvedValue(true),
     keys: jest
       .fn()
-      .mockResolvedValue(["arclight-static-v30", "arclight-static-v31"]),
+      .mockResolvedValue(["arclight-static-v31", "arclight-static-v32"]),
     open: jest.fn().mockResolvedValue(cache),
   };
   const location = new URL("https://app.example.com/sw.js");
@@ -119,8 +119,35 @@ describe("service worker sensitive-cache policy", () => {
     });
     await work;
 
-    expect(caches.delete).toHaveBeenCalledWith("arclight-static-v30");
-    expect(caches.delete).not.toHaveBeenCalledWith("arclight-static-v31");
+    expect(caches.delete).toHaveBeenCalledWith("arclight-static-v31");
+    expect(caches.delete).not.toHaveBeenCalledWith("arclight-static-v32");
     expect(self.clients.claim).toHaveBeenCalledTimes(1);
+  });
+
+  test("serves byte ranges from a cached M4A narration track", async () => {
+    const fetchImpl = jest.fn();
+    const { cache, handlers } = loadServiceWorker(fetchImpl);
+    cache.match.mockResolvedValue(
+      new Response("0123456789", {
+        status: 200,
+        headers: { "Content-Type": "audio/mp4" },
+      }),
+    );
+    let responsePromise;
+    handlers.fetch({
+      request: new Request(
+        "https://app.example.com/narration/fundal-reflex/full-animation/en.m4a",
+        { headers: { Range: "bytes=2-5" } },
+      ),
+      respondWith: (promise) => {
+        responsePromise = promise;
+      },
+    });
+
+    const response = await responsePromise;
+    expect(response.status).toBe(206);
+    expect(response.headers.get("Content-Range")).toBe("bytes 2-5/10");
+    expect(await response.text()).toBe("2345");
+    expect(fetchImpl).not.toHaveBeenCalled();
   });
 });

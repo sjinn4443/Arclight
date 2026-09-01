@@ -1584,11 +1584,14 @@ const CHILDHOOD_EYE_SCREENING_SUBTITLE_LANGUAGES = {
   lo: { label: "Lao" },
 };
 const CHILDHOOD_EYE_SCREENING_HLS_MIME_TYPE = "application/vnd.apple.mpegurl";
+const VIDEO_NARRATION_SYNC_TOLERANCE_SECONDS = 0.2;
+const VIDEO_NARRATION_STORAGE_PREFIX = "videoNarration:";
 
 let childhoodEyeScreeningSubtitleCatalogPromise = null;
 const childhoodPilotSubtitleCueCache = new Map();
 const childhoodPilotSubtitleOverlayStates = new WeakMap();
 const childhoodPilotIosHlsStates = new WeakMap();
+const videoNarrationStates = new WeakMap();
 
 function isVideosRootDataPageElement(element) {
   return (
@@ -1601,12 +1604,52 @@ function normalizeChildhoodPilotSubtitleLanguage(lang) {
   const normalized = String(lang || "")
     .trim()
     .toLowerCase();
+  const base = normalized.split("-")[0];
   return Object.prototype.hasOwnProperty.call(
     CHILDHOOD_EYE_SCREENING_SUBTITLE_LANGUAGES,
     normalized,
   )
     ? normalized
-    : "en";
+    : Object.prototype.hasOwnProperty.call(
+          CHILDHOOD_EYE_SCREENING_SUBTITLE_LANGUAGES,
+          base,
+        )
+      ? base
+      : "en";
+}
+
+function normalizeVideoNarrationLanguageTag(lang) {
+  return String(lang || "")
+    .trim()
+    .toLowerCase()
+    .replaceAll("_", "-");
+}
+
+function resolveVideoNarrationLanguage(
+  availableLanguages,
+  { prefLang = getCurrentUiLanguage(), defaultLang = "en" } = {},
+) {
+  const available = Array.from(
+    new Set(
+      (availableLanguages || [])
+        .map((lang) => normalizeVideoNarrationLanguageTag(lang))
+        .filter(Boolean),
+    ),
+  );
+  if (!available.length) return "";
+
+  const candidates = [prefLang, defaultLang, "en"]
+    .map((lang) => normalizeVideoNarrationLanguageTag(lang))
+    .filter(Boolean);
+
+  for (const candidate of candidates) {
+    if (available.includes(candidate)) return candidate;
+    const base = candidate.split("-")[0];
+    const regionalMatch = available.find((lang) => lang.split("-")[0] === base);
+    if (regionalMatch) return regionalMatch;
+  }
+
+  return available[0];
 }
 
 function isChildhoodEyeScreeningSubtitlePilotPage(pageId) {
@@ -1710,7 +1753,32 @@ function sanitizeChildhoodEyeScreeningSubtitleCatalog(rawCatalog = {}) {
       subtitles[normalizeChildhoodPilotSubtitleLanguage(lang)] = src;
     });
 
-    if (!Object.keys(subtitles).length) return;
+    const audioVariants = {};
+    Object.entries(entry.audioVariants || {}).forEach(([lang, variant]) => {
+      const normalizedLang = normalizeVideoNarrationLanguageTag(lang);
+      const normalizedVariant =
+        typeof variant === "string" ? { src: variant } : variant;
+      if (
+        !normalizedLang ||
+        !normalizedVariant ||
+        typeof normalizedVariant !== "object" ||
+        typeof normalizedVariant.src !== "string" ||
+        !normalizedVariant.src.trim()
+      ) {
+        return;
+      }
+      audioVariants[normalizedLang] = {
+        label:
+          typeof normalizedVariant.label === "string"
+            ? normalizedVariant.label
+            : "",
+        src: normalizedVariant.src,
+      };
+    });
+
+    if (!Object.keys(subtitles).length && !Object.keys(audioVariants).length) {
+      return;
+    }
 
     const defaultSubtitleLang = resolveChildhoodPilotSubtitleLanguage(
       Object.keys(subtitles),
@@ -1732,12 +1800,9 @@ function sanitizeChildhoodEyeScreeningSubtitleCatalog(rawCatalog = {}) {
 
     sanitized[pageId] = {
       subtitles,
-      audioVariants:
-        entry.audioVariants && typeof entry.audioVariants === "object"
-          ? entry.audioVariants
-          : {},
+      audioVariants,
       defaultSubtitleLang,
-      defaultAudioLang: normalizeChildhoodPilotSubtitleLanguage(
+      defaultAudioLang: normalizeVideoNarrationLanguageTag(
         entry.defaultAudioLang || "en",
       ),
       iosHls:
@@ -2661,6 +2726,237 @@ function applyChildhoodPilotSubtitleTrack(video, { lang, src }) {
   void syncChildhoodPilotSubtitleOverlay(video, { lang, src });
 }
 
+function getVideoNarrationStorageKey(pageId) {
+  return `${VIDEO_NARRATION_STORAGE_PREFIX}${String(pageId || "").trim()}`;
+}
+
+function readVideoNarrationEnabled(pageId) {
+  try {
+    return localStorage.getItem(getVideoNarrationStorageKey(pageId)) !== "off";
+  } catch {
+    return true;
+  }
+}
+
+function writeVideoNarrationEnabled(pageId, enabled) {
+  try {
+    localStorage.setItem(
+      getVideoNarrationStorageKey(pageId),
+      enabled ? "on" : "off",
+    );
+  } catch {
+    /* ignore */
+  }
+}
+
+function getVideoNarrationVariant(
+  audioVariants,
+  { prefLang = getCurrentUiLanguage(), defaultLang = "en" } = {},
+) {
+  if (!audioVariants || typeof audioVariants !== "object") return null;
+  const language = resolveVideoNarrationLanguage(Object.keys(audioVariants), {
+    prefLang,
+    defaultLang,
+  });
+  if (!language) return null;
+
+  const rawVariant = audioVariants[language];
+  const variant =
+    typeof rawVariant === "string" ? { src: rawVariant } : rawVariant;
+  if (!variant || typeof variant.src !== "string" || !variant.src.trim()) {
+    return null;
+  }
+
+  return {
+    label:
+      typeof variant.label === "string" && variant.label.trim()
+        ? variant.label.trim()
+        : language,
+    language,
+    src: variant.src.trim(),
+  };
+}
+
+function setVideoNarrationAudioTime(video, audio, { force = false } = {}) {
+  if (!video || !audio) return;
+  const videoTime = Number(video.currentTime || 0);
+  const audioTime = Number(audio.currentTime || 0);
+  if (!Number.isFinite(videoTime) || !Number.isFinite(audioTime)) return;
+  if (
+    !force &&
+    Math.abs(videoTime - audioTime) <= VIDEO_NARRATION_SYNC_TOLERANCE_SECONDS
+  ) {
+    return;
+  }
+  try {
+    audio.currentTime = Math.max(0, videoTime);
+  } catch {
+    /* Media metadata may not be ready yet. */
+  }
+}
+
+function playVideoNarrationState(state, { forceSync = false } = {}) {
+  if (!state?.enabled || !state.audio?.src || state.video?.paused) return;
+  setVideoNarrationAudioTime(state.video, state.audio, { force: forceSync });
+  state.audio.playbackRate = state.video.playbackRate || 1;
+  state.audio.volume = state.video.volume;
+  state.audio.muted = state.video.muted;
+  try {
+    const playResult = state.audio.play();
+    if (playResult && typeof playResult.catch === "function") {
+      playResult.catch(() => {
+        state.button?.setAttribute("data-narration-playback-blocked", "true");
+      });
+    }
+  } catch {
+    state.button?.setAttribute("data-narration-playback-blocked", "true");
+  }
+}
+
+function updateVideoNarrationButton(
+  state,
+  uiLanguage = getCurrentUiLanguage(),
+) {
+  const button = state?.button;
+  if (!button) return;
+  const isSpanish =
+    normalizeVideoNarrationLanguageTag(uiLanguage).split("-")[0] === "es";
+  const activeText = isSpanish ? "Narración" : "Narration";
+  const offText = isSpanish ? "Narración desactivada" : "Narration off";
+  const label = state.enabled
+    ? `${activeText} · ${state.variant?.label || state.variant?.language || ""}`
+    : offText;
+
+  button.textContent = label;
+  button.title = label;
+  button.setAttribute("aria-label", label);
+  button.setAttribute("aria-pressed", state.enabled ? "true" : "false");
+  button.dataset.narrationLanguage = state.variant?.language || "";
+  button.classList.toggle("is-off", !state.enabled);
+}
+
+function ensureVideoNarrationState(pageId, video) {
+  if (!video) return null;
+  let state = videoNarrationStates.get(video);
+  if (state) return state;
+
+  const page = getVideoPageElement(pageId);
+  if (!page) return null;
+  const actionRow =
+    getVideoPageActionRow(page) || ensureVideoPageMenuButtonForPage(pageId);
+  if (!actionRow) return null;
+
+  const audio = document.createElement("audio");
+  audio.hidden = true;
+  audio.preload = "metadata";
+  audio.setAttribute("aria-hidden", "true");
+  audio.setAttribute("data-video-narration-audio", "true");
+  page.appendChild(audio);
+
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "video-narration-toggle";
+  button.setAttribute("data-video-narration-toggle", "true");
+  const menuButton = actionRow.querySelector(".video-page-menu-btn");
+  actionRow.insertBefore(button, menuButton || null);
+
+  state = {
+    audio,
+    button,
+    enabled: readVideoNarrationEnabled(pageId),
+    pageId,
+    variant: null,
+    video,
+  };
+  videoNarrationStates.set(video, state);
+
+  video.addEventListener("play", () =>
+    playVideoNarrationState(state, { forceSync: true }),
+  );
+  video.addEventListener("playing", () =>
+    playVideoNarrationState(state, { forceSync: true }),
+  );
+  video.addEventListener("pause", () => audio.pause());
+  video.addEventListener("waiting", () => audio.pause());
+  video.addEventListener("ended", () => audio.pause());
+  video.addEventListener("seeking", () => {
+    audio.pause();
+    setVideoNarrationAudioTime(video, audio, { force: true });
+  });
+  video.addEventListener("seeked", () =>
+    playVideoNarrationState(state, { forceSync: true }),
+  );
+  video.addEventListener("timeupdate", () => {
+    if (!state.enabled || video.paused) return;
+    setVideoNarrationAudioTime(video, audio);
+    if (audio.paused) playVideoNarrationState(state);
+  });
+  video.addEventListener("ratechange", () => {
+    audio.playbackRate = video.playbackRate || 1;
+  });
+  video.addEventListener("volumechange", () => {
+    audio.volume = video.volume;
+    audio.muted = video.muted;
+  });
+
+  button.addEventListener("click", () => {
+    state.enabled = !state.enabled;
+    writeVideoNarrationEnabled(pageId, state.enabled);
+    delete button.dataset.narrationPlaybackBlocked;
+    updateVideoNarrationButton(state);
+    if (state.enabled) {
+      playVideoNarrationState(state, { forceSync: true });
+    } else {
+      audio.pause();
+    }
+  });
+
+  return state;
+}
+
+function syncVideoNarrationForPage(
+  pageId,
+  entry,
+  { preferredLang = getCurrentUiLanguage() } = {},
+) {
+  const video = getVideoPageLocalVideoElement(pageId);
+  if (!video) return "";
+  const variant = getVideoNarrationVariant(entry?.audioVariants, {
+    prefLang: preferredLang,
+    defaultLang: entry?.defaultAudioLang || "en",
+  });
+  const existingState = videoNarrationStates.get(video);
+  if (!variant) {
+    if (existingState) {
+      existingState.audio.pause();
+      existingState.button.hidden = true;
+    }
+    return "";
+  }
+
+  const state = existingState || ensureVideoNarrationState(pageId, video);
+  if (!state) return "";
+  state.button.hidden = false;
+  state.variant = variant;
+
+  const currentSource = state.audio.getAttribute("src") || "";
+  if (currentSource !== variant.src) {
+    state.audio.pause();
+    state.audio.setAttribute("src", variant.src);
+    state.audio.setAttribute("lang", variant.language);
+    try {
+      state.audio.load();
+    } catch {
+      /* ignore */
+    }
+  }
+
+  state.video.dataset.narrationLanguage = variant.language;
+  updateVideoNarrationButton(state, preferredLang);
+  playVideoNarrationState(state, { forceSync: true });
+  return variant.language;
+}
+
 async function syncChildhoodPilotSubtitlesForPage(
   pageId,
   { preferredLang } = {},
@@ -2678,6 +2974,10 @@ async function syncChildhoodPilotSubtitlesForPage(
 
   const entry = await getChildhoodPilotCatalogEntry(pageId);
   if (!entry) return "";
+
+  syncVideoNarrationForPage(pageId, entry, {
+    preferredLang: preferredLang || getCurrentUiLanguage(),
+  });
 
   const availableLanguages = Object.keys(entry.subtitles || {});
   if (!availableLanguages.length) return "";
@@ -3788,12 +4088,16 @@ export {
   calculateVideoProgressPercent,
   ensureChildhoodPilotSubtitleControlsForPage,
   ensureVideoPageMenuButtonForPage,
+  getVideoNarrationVariant,
   isChildhoodEyeScreeningSubtitlePilotPage,
   loadChildhoodEyeScreeningSubtitleCatalog,
   refreshChildhoodPilotSubtitlesForLanguageChange,
   resolveChildhoodPilotSubtitleLanguage,
+  resolveVideoNarrationLanguage,
   sanitizeChildhoodEyeScreeningSubtitleCatalog,
+  setVideoNarrationAudioTime,
   syncChildhoodPilotSubtitlesForPage,
+  syncVideoNarrationForPage,
   resetChildhoodPilotSubtitleCatalogForTests,
 };
 

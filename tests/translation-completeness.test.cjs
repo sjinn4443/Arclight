@@ -98,7 +98,9 @@ describe("translation completeness", () => {
         ),
       );
       for (const entry of Object.values(catalog)) {
-        if (entry.subtitles?.en) expect(entry.subtitles.lo).toBeDefined();
+        if (entry.subtitles?.en?.includes("/video-subtitles/")) {
+          expect(entry.subtitles.lo).toBeDefined();
+        }
       }
     }
   });

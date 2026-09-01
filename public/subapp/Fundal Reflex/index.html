@@ -40,9 +40,16 @@
         color: #0f1625;
       }
 
+      .lang-lo,
+      .lang-es,
       html[lang="lo"] .lang-en,
-      html:not([lang="lo"]) .lang-lo {
+      html[lang="es"] .lang-en {
         display: none !important;
+      }
+
+      html[lang="lo"] .lang-lo,
+      html[lang="es"] .lang-es {
+        display: inline !important;
       }
 
       body:not(.app-ready) .eyes-wrapper {
@@ -196,6 +203,16 @@
                 ຟ້າ-ຂາວ. ການສະທ້ອນທີ່ສະຫວ່າງ, ເທົ່າກັນ ແລະ ກົມເປັນສັນຍານທີ່ດີ.
                 ຖ້າບໍ່ມີແສງ, ຂາວຂຸ່ນ ຫຼື ດຳ
                 ໝາຍເຖິງມອງບໍ່ເຫັນສ່ວນຫຼັງຂອງຕາ.</span
+              >
+              <span class="lang-es" lang="es"
+                >El reflejo de fondo es el brillo que se observa en la pupila
+                procedente del fondo de ojo con Arclight a la distancia de un
+                brazo. Usamos el término <em>reflejo de fondo</em> en vez de
+                <em>reflejo rojo</em>. En personas con pigmentación más oscura,
+                un reflejo normal puede verse amarillo anaranjado o blanco
+                azulado. Un reflejo brillante, igual y redondo es
+                tranquilizador. Si es ausente, lechoso o negro, significa que no
+                se está viendo la parte posterior del ojo.</span
               >
             </p>
           </section>
@@ -1142,7 +1159,7 @@
     <!-- Main JS -->
     <script src="app.bundle.js?v=20260821-1" defer></script>
     <script src="cup-achievement.js" defer></script>
-    <script src="../i18n-lo.js?v=20260828-7" defer></script>
+    <script src="../i18n-lo.js?v=20260901-2" defer></script>
     <script src="i18n-lo.js?v=20260828-6" defer></script>
   </body>
 </html>

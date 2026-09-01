@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "durationSeconds": 244.906667,
+  "script": "script.json",
+  "tracks": {
+    "en": {
+      "src": "en.m4a",
+      "captions": "en.vtt",
+      "bytes": 814292,
+      "sha256": "06bad496da1ee5d9f077f7de4fcd116ef0835532aa76b24e047427aa7d9a837d"
+    },
+    "es-419": {
+      "src": "es-419.m4a",
+      "captions": "es-419.vtt",
+      "bytes": 876519,
+      "sha256": "b82258c81b82d6f1700a6ec72d382d286feb4a698cb49c228479cc8b1db71d16"
+    }
+  }
+}

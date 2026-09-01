@@ -2242,5 +2242,33 @@
       "low": "videos/Workshop/Glaucoma/BE_disccuppingonly_220p.mp4",
       "high": "videos/Workshop/Glaucoma/BE_disccuppingonly_720p.mp4"
     }
+  },
+  "fundalReflexFullAnimationVideoPage": {
+    "subtitles": {
+      "en": "/narration/fundal-reflex/full-animation/en.vtt",
+      "es": "/narration/fundal-reflex/full-animation/es-419.vtt"
+    },
+    "audioVariants": {
+      "en": {
+        "label": "English",
+        "src": "/narration/fundal-reflex/full-animation/en.m4a"
+      },
+      "es-419": {
+        "label": "Español (Latinoamérica)",
+        "src": "/narration/fundal-reflex/full-animation/es-419.m4a"
+      }
+    },
+    "defaultSubtitleLang": "en",
+    "defaultAudioLang": "en",
+    "iosHls": {
+      "masterManifest": "",
+      "preferredMode": "low",
+      "offlineFallbackMode": "low",
+      "subtitleLanguages": ["en", "es"]
+    },
+    "localSources": {
+      "low": "videos/FullAnim/FundalReflex_Full Animation_720p.mp4",
+      "high": "videos/FullAnim/FundalReflex_Full Animation.mp4"
+    }
   }
 }

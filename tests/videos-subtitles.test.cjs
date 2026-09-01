@@ -34,6 +34,34 @@ const PILOT_CATALOG = {
       high: "videos/Core/VisualAcuity/VA_Assessment_720p.mp4",
     },
   },
+  fundalReflexFullAnimationVideoPage: {
+    subtitles: {
+      en: "/narration/fundal-reflex/full-animation/en.vtt",
+      es: "/narration/fundal-reflex/full-animation/es-419.vtt",
+    },
+    audioVariants: {
+      en: {
+        label: "English",
+        src: "/narration/fundal-reflex/full-animation/en.m4a",
+      },
+      "es-419": {
+        label: "Español (Latinoamérica)",
+        src: "/narration/fundal-reflex/full-animation/es-419.m4a",
+      },
+    },
+    defaultSubtitleLang: "en",
+    defaultAudioLang: "en",
+    iosHls: {
+      masterManifest: "",
+      preferredMode: "low",
+      offlineFallbackMode: "low",
+      subtitleLanguages: ["en", "es"],
+    },
+    localSources: {
+      low: "videos/FullAnim/FundalReflex_Full Animation_720p.mp4",
+      high: "videos/FullAnim/FundalReflex_Full Animation.mp4",
+    },
+  },
 };
 const PILOT_SUBTITLE_VTT = `WEBVTT
 
@@ -147,6 +175,17 @@ describe("childhood eye screening subtitle pilot", () => {
             </video>
           </div>
         </div>
+        <div id="fundalReflexFullAnimationVideoPage" class="page" style="display:block">
+          <div class="tri-toggle" role="radiogroup" aria-label="Video mode">
+            <button class="tri-toggle__btn" data-mode="low">low</button>
+            <button class="tri-toggle__btn" data-mode="high">high</button>
+          </div>
+          <div class="video-container" id="fundalReflexFullAnimationVideoContainer">
+            <video id="fundalReflexFullAnimationVideo" controls>
+              <source src="videos/FullAnim/FundalReflex_Full Animation_720p.mp4" type="video/mp4" />
+            </video>
+          </div>
+        </div>
       </div>
     `;
 
@@ -164,6 +203,10 @@ describe("childhood eye screening subtitle pilot", () => {
     Object.defineProperty(HTMLMediaElement.prototype, "pause", {
       configurable: true,
       value: jest.fn(),
+    });
+    Object.defineProperty(HTMLMediaElement.prototype, "play", {
+      configurable: true,
+      value: jest.fn(() => Promise.resolve()),
     });
 
     fetchSpy = jest.spyOn(global, "fetch").mockImplementation(async (url) => {
@@ -248,6 +291,70 @@ describe("childhood eye screening subtitle pilot", () => {
         defaultLang: "en",
       }),
     ).toBe("en");
+  });
+
+  it("maps the Spanish app language to the neutral Latin American narration", () => {
+    expect(
+      videos.resolveVideoNarrationLanguage(["en", "es-419"], {
+        prefLang: "es",
+        defaultLang: "en",
+      }),
+    ).toBe("es-419");
+
+    expect(
+      videos.resolveVideoNarrationLanguage(["en", "es-419"], {
+        prefLang: "ko",
+        defaultLang: "en",
+      }),
+    ).toBe("en");
+  });
+
+  it("attaches the selected narration as a separate synchronised audio track", () => {
+    localStorage.setItem("prefLang", "es");
+
+    const language = videos.syncVideoNarrationForPage(
+      "fundalReflexFullAnimationVideoPage",
+      PILOT_CATALOG.fundalReflexFullAnimationVideoPage,
+      { preferredLang: "es" },
+    );
+    const page = document.getElementById("fundalReflexFullAnimationVideoPage");
+    const audio = page.querySelector("[data-video-narration-audio='true']");
+    const toggle = page.querySelector("[data-video-narration-toggle='true']");
+
+    expect(language).toBe("es-419");
+    expect(audio.getAttribute("src")).toBe(
+      "/narration/fundal-reflex/full-animation/es-419.m4a",
+    );
+    expect(toggle.textContent).toContain("Narración");
+    expect(toggle.getAttribute("aria-pressed")).toBe("true");
+
+    toggle.click();
+    expect(toggle.getAttribute("aria-pressed")).toBe("false");
+    expect(
+      localStorage.getItem("videoNarration:fundalReflexFullAnimationVideoPage"),
+    ).toBe("off");
+  });
+
+  it("corrects narration drift above 200 milliseconds", () => {
+    const video = document.createElement("video");
+    const audio = document.createElement("audio");
+    Object.defineProperty(video, "currentTime", {
+      configurable: true,
+      writable: true,
+      value: 12,
+    });
+    Object.defineProperty(audio, "currentTime", {
+      configurable: true,
+      writable: true,
+      value: 11.7,
+    });
+
+    videos.setVideoNarrationAudioTime(video, audio);
+    expect(audio.currentTime).toBe(12);
+
+    audio.currentTime = 11.85;
+    videos.setVideoNarrationAudioTime(video, audio);
+    expect(audio.currentTime).toBe(11.85);
   });
 
   it("treats long videos as complete when only the last seconds remain", () => {

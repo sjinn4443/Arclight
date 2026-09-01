@@ -1,5 +1,5 @@
 /* sw.js — Arclight PWA service worker */
-const CACHE_NAME = "arclight-static-v31";
+const CACHE_NAME = "arclight-static-v32";
 const MAX_MESSAGE_CACHE_URLS = 10000;
 const CORE_ASSETS = [
   "/",
@@ -163,7 +163,7 @@ function getAlternateMp4Urls(requestUrl) {
   return alternates;
 }
 
-async function matchCachedMp4(cache, request) {
+async function matchCachedMedia(cache, request) {
   const cached = await cache.match(request, { ignoreSearch: true });
   if (cached) return cached;
 
@@ -259,8 +259,9 @@ self.addEventListener("fetch", (event) => {
   // Sensitive and personalized responses must never enter a shared device cache.
   if (isSensitivePath(url.pathname)) return;
 
-  // ---- MP4 handling (avoid breaking cache with Range requests) ----
-  const isMp4 = url.pathname.endsWith(".mp4");
+  // ---- MP4/M4A handling (avoid breaking cache with Range requests) ----
+  const isRangeMedia =
+    url.pathname.endsWith(".mp4") || url.pathname.endsWith(".m4a");
   const isChildhoodPilotHlsAsset =
     url.pathname.startsWith("/video-hls/childhood-eye-screening/") &&
     (url.pathname.endsWith(".m3u8") ||
@@ -268,12 +269,12 @@ self.addEventListener("fetch", (event) => {
       url.pathname.endsWith(".vtt"));
 
   // Safari media playback is sensitive to malformed range responses, so only
-  // answer range requests when a full cached MP4 is available.
-  if (isMp4 && req.headers.has("range")) {
+  // answer range requests when a full cached media file is available.
+  if (isRangeMedia && req.headers.has("range")) {
     event.respondWith(
       (async () => {
         const cache = await caches.open(CACHE_NAME);
-        const cached = await matchCachedMp4(cache, req);
+        const cached = await matchCachedMedia(cache, req);
         if (cached) return createRangeResponse(req, cached);
         return fetch(req);
       })(),
@@ -281,12 +282,12 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // For full MP4 requests, prefer cache first (offline stability)
-  if (isMp4) {
+  // For full MP4/M4A requests, prefer cache first (offline stability)
+  if (isRangeMedia) {
     event.respondWith(
       (async () => {
         const cache = await caches.open(CACHE_NAME);
-        const cached = await matchCachedMp4(cache, req);
+        const cached = await matchCachedMedia(cache, req);
         if (cached) return cached;
 
         const fresh = await fetch(req);

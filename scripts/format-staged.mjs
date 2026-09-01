@@ -27,7 +27,7 @@ function detectLineEnding(content) {
 
 function applyLineEnding(content, lineEnding) {
   return lineEnding === "\r\n"
-    ? content.replace(/\n/g, "\r\n")
+    ? normalizeLineEndings(content).replace(/\n/g, "\r\n")
     : normalizeLineEndings(content);
 }
 
@@ -147,9 +147,11 @@ async function main() {
     if (!prettierOptions) continue;
 
     const stagedContent = git(["show", `:${relativePath}`]).stdout;
-    const formattedContent = await prettier.format(
-      normalizeLineEndings(stagedContent),
-      prettierOptions,
+    const formattedContent = normalizeLineEndings(
+      await prettier.format(
+        normalizeLineEndings(stagedContent),
+        prettierOptions,
+      ),
     );
 
     if (formattedContent === stagedContent) continue;

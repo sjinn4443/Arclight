@@ -1,12 +1,15 @@
-(function initializeSubappLao() {
+(function initializeSubappLocale() {
   const language = String(localStorage.getItem("prefLang") || "")
     .trim()
     .toLowerCase();
-  if (language !== "lo" && language !== "lao") return;
+  const isLao = language === "lo" || language === "lao";
+  const isSpanish = language === "es" || language === "spanish";
+  if (!isLao && !isSpanish) return;
 
-  document.documentElement.lang = "lo";
+  const localeName = isLao ? "lao" : "spanish";
+  document.documentElement.lang = isLao ? "lo" : "es";
 
-  const fallbackTranslations = {
+  const laoFallbackTranslations = {
     Menu: "ເມນູ",
     Learn: "ຮຽນຮູ້",
     Save: "ບັນທຶກ",
@@ -75,9 +78,11 @@
     Report: "ລາຍງານ",
   };
 
+  const fallbackTranslations = isLao ? laoFallbackTranslations : {};
+
   const translations = new Map(Object.entries(fallbackTranslations));
   const translatedAttributes = ["aria-label", "title", "placeholder", "alt"];
-  const embeddedClinicalTerms = [
+  const laoEmbeddedClinicalTerms = [
     ["Pain/Redness:", "ອາການເຈັບ/ແດງ:"],
     ["DR/Scar", "ເບົາຫວານຂຶ້ນຈໍຕາ/ຮອຍແປ້ວ"],
     ["Conditions", "ພະຍາດ"],
@@ -100,12 +105,45 @@
     ["days", "ມື້"],
     ["deg", "ອົງສາ"],
   ];
+  const spanishEmbeddedClinicalTerms = [
+    ["Pain/Redness:", "Dolor/enrojecimiento:"],
+    ["DR/Scar", "RD/cicatriz"],
+    ["Conditions", "Enfermedades"],
+    ["Condition", "Enfermedad"],
+    ["Eyes", "Ojos"],
+    ["Cataract:", "Catarata:"],
+    ["cataract", "catarata"],
+    ["Cupped", "Excavado"],
+    ["Detached", "Desprendida"],
+    ["refractive", "refractivo"],
+    ["pupil", "pupila"],
+    ["pupils", "pupilas"],
+    ["fundus", "fondo de ojo"],
+    ["Reflex", "Reflejo"],
+    ["Field:", "Campo visual:"],
+    ["Child:", "Niño:"],
+    ["Eyes:", "Ojos:"],
+    ["Age:", "Edad:"],
+    ["mths", "meses"],
+    ["days", "días"],
+    ["deg", "grados"],
+  ];
+  const embeddedClinicalTerms = isLao
+    ? laoEmbeddedClinicalTerms
+    : spanishEmbeddedClinicalTerms;
   let translating = false;
 
   function translateEmbeddedClinicalTerms(value) {
     let result = value;
-    embeddedClinicalTerms.forEach(([english, lao]) => {
-      result = result.replaceAll(english, lao);
+    embeddedClinicalTerms.forEach(([english, translated]) => {
+      const escaped = english.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      const startsWithWord = /^[A-Za-z0-9_]/.test(english);
+      const endsWithWord = /[A-Za-z0-9_]$/.test(english);
+      const pattern = new RegExp(
+        `${startsWithWord ? "\\b" : ""}${escaped}${endsWithWord ? "\\b" : ""}`,
+        "g",
+      );
+      result = result.replace(pattern, translated);
     });
     return result;
   }
@@ -125,7 +163,11 @@
     }
     if (!translated) {
       const score = normalized.match(/^(\d+) questions?\. Pass mark (\d+)\.$/i);
-      if (score) translated = `${score[1]} ຄຳຖາມ. ຄະແນນຜ່ານ ${score[2]}.`;
+      if (score) {
+        translated = isLao
+          ? `${score[1]} ຄຳຖາມ. ຄະແນນຜ່ານ ${score[2]}.`
+          : `${score[1]} preguntas. Nota mínima ${score[2]}.`;
+      }
     }
     if (!translated) {
       const embedded = translateEmbeddedClinicalTerms(original);
@@ -203,17 +245,21 @@
     subtree: true,
   });
 
-  fetch("/translation/lao.json")
+  fetch(`/translation/${localeName}.json`)
     .then((response) => {
       if (!response.ok)
-        throw new Error(`Lao locale request failed: ${response.status}`);
+        throw new Error(
+          `${localeName} locale request failed: ${response.status}`,
+        );
       return response.json();
     })
     .then((locale) => {
-      Object.entries(locale?.i18nLiteral || {}).forEach(([english, lao]) => {
-        if (typeof lao === "string" && lao.trim())
-          translations.set(english, lao);
-      });
+      Object.entries(locale?.i18nLiteral || {}).forEach(
+        ([english, translated]) => {
+          if (typeof translated === "string" && translated.trim())
+            translations.set(english, translated);
+        },
+      );
       translateTree(document);
     })
     .catch(() => {

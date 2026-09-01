@@ -219,7 +219,9 @@ function appendPatientBubbles(log, caseData) {
   image.src = `/images/casestudy/case${caseData.id}_eye.webp`;
   image.alt = isLaoLanguage()
     ? `ຮູບກໍລະນີສ່ວນໜ້າຂອງຕາ ${caseData.id}`
-    : `Anterior segment case ${caseData.id}`;
+    : isSpanishLanguage()
+      ? `Caso de segmento anterior ${caseData.id}`
+      : `Anterior segment case ${caseData.id}`;
   image.decoding = "async";
   imageWrap.appendChild(image);
   stack.appendChild(imageWrap);
@@ -275,6 +277,15 @@ function isLaoLanguage() {
     document.documentElement.lang || localStorage.getItem("prefLang") || "",
   ).toLowerCase();
   return language === "lo" || language.startsWith("lo-") || language === "lao";
+}
+
+function isSpanishLanguage() {
+  const language = String(
+    document.documentElement.lang || localStorage.getItem("prefLang") || "",
+  ).toLowerCase();
+  return (
+    language === "es" || language.startsWith("es-") || language === "spanish"
+  );
 }
 
 function appendAnswerBubble(log, caseData, sectionIds) {
@@ -358,10 +369,14 @@ export function initializeMedicalAnteriorSegmentCaseStudy() {
       caseIndex === TOTAL_CASES - 1
         ? isLaoLanguage()
           ? "ສິ້ນສຸດກໍລະນີສຶກສາ"
-          : "Finish case study"
+          : isSpanishLanguage()
+            ? "Finalizar el estudio de casos"
+            : "Finish case study"
         : isLaoLanguage()
           ? `ໄປຫາກໍລະນີ ${caseData.id + 1}`
-          : `Go to case ${caseData.id + 1}`,
+          : isSpanishLanguage()
+            ? `Ir al caso ${caseData.id + 1}`
+            : `Go to case ${caseData.id + 1}`,
     );
   }
 
@@ -409,7 +424,9 @@ export function initializeMedicalAnteriorSegmentCaseStudy() {
       "see-all",
       isLaoLanguage()
         ? `ສະແດງຄຳຕອບທັງໝົດຂອງກໍລະນີ ${caseData.id}`
-        : `Show all answers for case ${caseData.id}`,
+        : isSpanishLanguage()
+          ? `Mostrar todas las respuestas del caso ${caseData.id}`
+          : `Show all answers for case ${caseData.id}`,
     );
   }
 

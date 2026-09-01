@@ -448,12 +448,15 @@ function escapeHtml(value) {
 const ESTIMATED_DOWNLOAD_BYTES_PER_MINUTE = 120 * 1000 * 1000;
 const MAX_FAILED_FILES_DISPLAY = 12;
 const VIDEO_ASSET_EXTENSIONS = new Set([
+  ".aac",
   ".m3u8",
   ".m4s",
   ".m4v",
+  ".m4a",
   ".mov",
   ".mp4",
   ".mpd",
+  ".mp3",
   ".srt",
   ".ts",
   ".vtt",
@@ -463,6 +466,7 @@ const CONTENT_ASSET_PREFIXES = [
   "/images/learning/",
   "/images/pdf/",
   "/images/quiz/",
+  "/narration/",
   "/scrolly/",
   "/scrolls/",
   "/subapp/",
@@ -618,10 +622,33 @@ function isVideoAssetUrl(url) {
   const assetPath = getAssetPath(url);
   return (
     VIDEO_ASSET_EXTENSIONS.has(getAssetExtension(assetPath)) ||
+    assetPath.startsWith("/narration/") ||
     assetPath.startsWith("/video-hls/") ||
     assetPath.startsWith("/video-localization/") ||
     assetPath.startsWith("/video-subtitles/")
   );
+}
+
+function getNarrationAssetLanguage(url) {
+  const assetPath = getAssetPath(url);
+  if (!assetPath.startsWith("/narration/")) return "";
+  const match = assetPath.match(
+    /\/([a-z]{2,3}(?:-[a-z0-9]+)*)\.(?:aac|m4a|mp3|vtt)$/i,
+  );
+  return match ? match[1].toLowerCase() : "";
+}
+
+function resolveNarrationDownloadLanguage(language) {
+  const normalized = String(language || "en")
+    .trim()
+    .toLowerCase()
+    .replaceAll("_", "-");
+  return normalized.split("-")[0] === "es" ? "es-419" : "en";
+}
+
+function shouldIncludeNarrationLanguage(url, narrationLanguage) {
+  const assetLanguage = getNarrationAssetLanguage(url);
+  return !assetLanguage || assetLanguage === narrationLanguage;
 }
 
 function getVideoResolutionTier(url) {
@@ -912,6 +939,9 @@ export function resolveOfflineDownloadSelection(manifest, choice = {}) {
   const mode = choice.mode || "full";
   const catalogId = choice.catalogId || OFFLINE_CATALOG_OPTIONS[0].id;
   const videoQuality = choice.videoQuality || VIDEO_QUALITY_OPTIONS[0].id;
+  const narrationLanguage = resolveNarrationDownloadLanguage(
+    choice.language || getLanguage() || "en",
+  );
   let assets;
 
   if (mode === "app-only") {
@@ -929,6 +959,9 @@ export function resolveOfflineDownloadSelection(manifest, choice = {}) {
   if (mode !== "app-only") {
     assets = assets.filter((asset) =>
       shouldIncludeVideoQuality(asset.url, videoQuality, availableUrls),
+    );
+    assets = assets.filter((asset) =>
+      shouldIncludeNarrationLanguage(asset.url, narrationLanguage),
     );
   }
 
@@ -950,6 +983,7 @@ export function resolveOfflineDownloadSelection(manifest, choice = {}) {
         ? getDownloadChoiceLabel({ mode, catalogId })
         : `${getDownloadChoiceLabel({ mode, catalogId })} - ${getVideoQualityLabel(videoQuality)}`,
     mode,
+    narrationLanguage,
     urls: assets.map((asset) => asset.url),
     videoQuality,
   };
