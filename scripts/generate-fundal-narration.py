@@ -26,6 +26,7 @@ DEFAULT_ARTIFACTS = ROOT / ".codex-artifacts/fundal-reflex-narration"
 DEFAULT_PUBLIC = ROOT / "public/narration/fundal-reflex/full-animation"
 MAX_PLAYBACK_SPEED = 1.08
 SYNC_TOLERANCE_SECONDS = 0.25
+NARRATION_LANGUAGES = ("en", "es-419", "ko")
 
 
 def parse_args() -> argparse.Namespace:
@@ -102,7 +103,8 @@ def write_vtt(script: dict, language: str, destination: Path) -> None:
                 "",
             ]
         )
-    destination.write_text("\n".join(lines), encoding="utf-8")
+    with destination.open("w", encoding="utf-8", newline="\n") as handle:
+        handle.write("\n".join(lines))
 
 
 def sha256(path: Path) -> str:
@@ -282,7 +284,7 @@ def make_review_mp4(
     language: str,
     duration: float,
 ) -> None:
-    language_code = "eng" if language == "en" else "spa"
+    language_code = {"en": "eng", "es-419": "spa", "ko": "kor"}[language]
     run(
         [
             str(ffmpeg),
@@ -342,7 +344,7 @@ def main() -> None:
         "tracks": {},
     }
 
-    for language in ("en", "es-419"):
+    for language in NARRATION_LANGUAGES:
         cue_dir = work_dir / "cues" / language
         cue_dir.mkdir(parents=True, exist_ok=True)
         if not args.skip_tts:
@@ -407,7 +409,8 @@ def main() -> None:
         )
 
     qa_path = artifacts_dir / "qa-report.json"
-    qa_path.write_text(json.dumps(qa, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    with qa_path.open("w", encoding="utf-8", newline="\n") as handle:
+        handle.write(json.dumps(qa, ensure_ascii=False, indent=2) + "\n")
 
     public_manifest = {
         "schemaVersion": 1,
@@ -420,13 +423,13 @@ def main() -> None:
                 "bytes": qa["tracks"][language]["delivery"]["bytes"],
                 "sha256": qa["tracks"][language]["delivery"]["sha256"],
             }
-            for language in ("en", "es-419")
+            for language in NARRATION_LANGUAGES
         },
     }
-    (public_dir / "manifest.json").write_text(
-        json.dumps(public_manifest, ensure_ascii=False, indent=2) + "\n",
-        encoding="utf-8",
-    )
+    with (public_dir / "manifest.json").open(
+        "w", encoding="utf-8", newline="\n"
+    ) as handle:
+        handle.write(json.dumps(public_manifest, ensure_ascii=False, indent=2) + "\n")
     print(f"QA report: {qa_path}", flush=True)
 
 

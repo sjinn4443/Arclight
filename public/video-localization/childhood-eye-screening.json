@@ -2246,7 +2246,8 @@
   "fundalReflexFullAnimationVideoPage": {
     "subtitles": {
       "en": "/narration/fundal-reflex/full-animation/en.vtt",
-      "es": "/narration/fundal-reflex/full-animation/es-419.vtt"
+      "es": "/narration/fundal-reflex/full-animation/es-419.vtt",
+      "ko": "/narration/fundal-reflex/full-animation/ko.vtt"
     },
     "audioVariants": {
       "en": {
@@ -2256,6 +2257,10 @@
       "es-419": {
         "label": "Español (Latinoamérica)",
         "src": "/narration/fundal-reflex/full-animation/es-419.m4a"
+      },
+      "ko": {
+        "label": "한국어",
+        "src": "/narration/fundal-reflex/full-animation/ko.m4a"
       }
     },
     "defaultSubtitleLang": "en",
@@ -2264,7 +2269,7 @@
       "masterManifest": "",
       "preferredMode": "low",
       "offlineFallbackMode": "low",
-      "subtitleLanguages": ["en", "es"]
+      "subtitleLanguages": ["en", "es", "ko"]
     },
     "localSources": {
       "low": "videos/FullAnim/FundalReflex_Full Animation_720p.mp4",

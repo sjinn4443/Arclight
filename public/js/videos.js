@@ -1549,6 +1549,9 @@ const VIDEO_PAGE_ACTION_ROW_SELECTOR = "[data-video-page-actions='true']";
 const CHILDHOOD_EYE_SCREENING_SUBTITLE_PAGE_IDS = new Set(
   Object.keys(VIDEO_PAGE_SOURCES),
 );
+const DEDICATED_SUBTITLE_PANEL_PAGE_IDS = new Set([
+  "fundalReflexFullAnimationVideoPage",
+]);
 const IOS_HLS_PREFERRED_SUBTITLE_PAGE_IDS = new Set([
   "assessmentVisionPage",
   "mumVisionPage",
@@ -1586,6 +1589,7 @@ const CHILDHOOD_EYE_SCREENING_SUBTITLE_LANGUAGES = {
 const CHILDHOOD_EYE_SCREENING_HLS_MIME_TYPE = "application/vnd.apple.mpegurl";
 const VIDEO_NARRATION_SYNC_TOLERANCE_SECONDS = 0.2;
 const VIDEO_NARRATION_STORAGE_PREFIX = "videoNarration:";
+const VIDEO_NARRATION_LANGUAGE_STORAGE_PREFIX = "videoNarrationLanguage:";
 
 let childhoodEyeScreeningSubtitleCatalogPromise = null;
 const childhoodPilotSubtitleCueCache = new Map();
@@ -2068,8 +2072,12 @@ function isDesktopSafariBrowser() {
   );
 }
 
-function shouldUseChildhoodPilotSubtitlePanel() {
-  return isDesktopSafariBrowser();
+function shouldUseDedicatedSubtitlePanel(pageId) {
+  return DEDICATED_SUBTITLE_PANEL_PAGE_IDS.has(String(pageId || "").trim());
+}
+
+function shouldUseChildhoodPilotSubtitlePanel(pageId = "") {
+  return shouldUseDedicatedSubtitlePanel(pageId) || isDesktopSafariBrowser();
 }
 
 function shouldUseChildhoodPilotSubtitleOverlay() {
@@ -2282,6 +2290,53 @@ function getChildhoodPilotSubtitleOverlayState(video) {
   return state;
 }
 
+function wireChildhoodPilotSubtitleSurface(video, container) {
+  const state = getChildhoodPilotSubtitleOverlayState(video);
+  if (state.wired) return;
+
+  const render = () => renderChildhoodPilotSubtitleOverlay(video);
+  const syncFullscreenState = () => {
+    const fullscreenElement =
+      document.fullscreenElement || document.webkitFullscreenElement || null;
+    const nextState = getChildhoodPilotSubtitleOverlayState(video);
+    nextState.fullscreen = Boolean(
+      fullscreenElement &&
+      (fullscreenElement === video ||
+        fullscreenElement === container ||
+        container.contains(fullscreenElement)),
+    );
+    showChildhoodPilotSubtitleTrack(video, nextState.lang);
+    renderChildhoodPilotSubtitleOverlay(video);
+  };
+
+  [
+    "timeupdate",
+    "seeking",
+    "seeked",
+    "loadedmetadata",
+    "play",
+    "pause",
+    "ended",
+  ].forEach((eventName) => {
+    video.addEventListener(eventName, render);
+  });
+  document.addEventListener("fullscreenchange", syncFullscreenState);
+  document.addEventListener("webkitfullscreenchange", syncFullscreenState);
+  video.addEventListener("webkitbeginfullscreen", () => {
+    const nextState = getChildhoodPilotSubtitleOverlayState(video);
+    nextState.fullscreen = true;
+    showChildhoodPilotSubtitleTrack(video, nextState.lang);
+    renderChildhoodPilotSubtitleOverlay(video);
+  });
+  video.addEventListener("webkitendfullscreen", () => {
+    const nextState = getChildhoodPilotSubtitleOverlayState(video);
+    nextState.fullscreen = false;
+    showChildhoodPilotSubtitleTrack(video, nextState.lang);
+    renderChildhoodPilotSubtitleOverlay(video);
+  });
+  state.wired = true;
+}
+
 function ensureChildhoodPilotSubtitleOverlay(video) {
   if (!video) return null;
 
@@ -2302,33 +2357,7 @@ function ensureChildhoodPilotSubtitleOverlay(video) {
     state.overlay = overlay;
   }
 
-  if (!state.wired) {
-    const render = () => renderChildhoodPilotSubtitleOverlay(video);
-    [
-      "timeupdate",
-      "seeking",
-      "seeked",
-      "loadedmetadata",
-      "play",
-      "pause",
-      "ended",
-    ].forEach((eventName) => {
-      video.addEventListener(eventName, render);
-    });
-    video.addEventListener("webkitbeginfullscreen", () => {
-      const nextState = getChildhoodPilotSubtitleOverlayState(video);
-      nextState.fullscreen = true;
-      showChildhoodPilotSubtitleTrack(video, nextState.lang);
-      renderChildhoodPilotSubtitleOverlay(video);
-    });
-    video.addEventListener("webkitendfullscreen", () => {
-      const nextState = getChildhoodPilotSubtitleOverlayState(video);
-      nextState.fullscreen = false;
-      showChildhoodPilotSubtitleTrack(video, nextState.lang);
-      renderChildhoodPilotSubtitleOverlay(video);
-    });
-    state.wired = true;
-  }
+  wireChildhoodPilotSubtitleSurface(video, container);
 
   return overlay;
 }
@@ -2359,6 +2388,8 @@ function ensureChildhoodPilotSubtitlePanel(video) {
   if (needsInsert) {
     video.insertAdjacentElement("afterend", panel);
   }
+
+  wireChildhoodPilotSubtitleSurface(video, container);
 
   return panel;
 }
@@ -2558,7 +2589,8 @@ async function syncChildhoodPilotSubtitleOverlay(video, { lang, src }) {
   const normalizedLang = normalizeChildhoodPilotSubtitleLanguage(lang);
   const state = getChildhoodPilotSubtitleOverlayState(video);
   state.lang = normalizedLang;
-  const usePanel = shouldUseChildhoodPilotSubtitlePanel();
+  const pageId = video.closest(".page")?.id || "";
+  const usePanel = shouldUseChildhoodPilotSubtitlePanel(pageId);
   const useOverlay = shouldUseChildhoodPilotSubtitleOverlay();
 
   if (!usePanel && !useOverlay) {
@@ -2710,7 +2742,7 @@ function applyChildhoodPilotSubtitleTrack(video, { lang, src }) {
       showChildhoodPilotSubtitleTrack(video, lang);
       try {
         if (trackEl.track) {
-          trackEl.track.mode = "showing";
+          trackEl.track.mode = getChildhoodPilotSubtitleActiveTrackMode(video);
         }
       } catch {
         /* ignore */
@@ -2723,27 +2755,46 @@ function applyChildhoodPilotSubtitleTrack(video, { lang, src }) {
   showChildhoodPilotSubtitleTrack(video, lang);
   scheduleChildhoodPilotSubtitleResync(video, lang);
   primeChildhoodPilotNativeTrack(video, lang);
-  void syncChildhoodPilotSubtitleOverlay(video, { lang, src });
+  return syncChildhoodPilotSubtitleOverlay(video, { lang, src });
 }
 
 function getVideoNarrationStorageKey(pageId) {
   return `${VIDEO_NARRATION_STORAGE_PREFIX}${String(pageId || "").trim()}`;
 }
 
-function readVideoNarrationEnabled(pageId) {
+function getVideoNarrationLanguageStorageKey(pageId) {
+  return `${VIDEO_NARRATION_LANGUAGE_STORAGE_PREFIX}${String(pageId || "").trim()}`;
+}
+
+function readVideoNarrationSelection(pageId) {
   try {
-    return localStorage.getItem(getVideoNarrationStorageKey(pageId)) !== "off";
+    const stored = normalizeVideoNarrationLanguageTag(
+      localStorage.getItem(getVideoNarrationLanguageStorageKey(pageId)),
+    );
+    if (stored === "off" || stored === "auto" || stored) return stored;
+    return localStorage.getItem(getVideoNarrationStorageKey(pageId)) === "off"
+      ? "off"
+      : "auto";
   } catch {
-    return true;
+    return "auto";
   }
 }
 
-function writeVideoNarrationEnabled(pageId, enabled) {
+function writeVideoNarrationSelection(pageId, selection) {
+  const normalized = normalizeVideoNarrationLanguageTag(selection) || "auto";
   try {
     localStorage.setItem(
       getVideoNarrationStorageKey(pageId),
-      enabled ? "on" : "off",
+      normalized === "off" ? "off" : "on",
     );
+    if (normalized === "auto") {
+      localStorage.removeItem(getVideoNarrationLanguageStorageKey(pageId));
+    } else {
+      localStorage.setItem(
+        getVideoNarrationLanguageStorageKey(pageId),
+        normalized,
+      );
+    }
   } catch {
     /* ignore */
   }
@@ -2819,20 +2870,96 @@ function updateVideoNarrationButton(
 ) {
   const button = state?.button;
   if (!button) return;
-  const isSpanish =
-    normalizeVideoNarrationLanguageTag(uiLanguage).split("-")[0] === "es";
-  const activeText = isSpanish ? "Narración" : "Narration";
-  const offText = isSpanish ? "Narración desactivada" : "Narration off";
+  const uiBase = normalizeVideoNarrationLanguageTag(uiLanguage).split("-")[0];
+  const copy =
+    uiBase === "es"
+      ? {
+          active: "Narración",
+          auto: "Usar idioma de la app",
+          off: "Narración desactivada",
+        }
+      : uiBase === "ko"
+        ? {
+            active: "내레이션",
+            auto: "앱 언어 사용",
+            off: "내레이션 끄기",
+          }
+        : {
+            active: "Narration",
+            auto: "Use app language",
+            off: "Narration off",
+          };
   const label = state.enabled
-    ? `${activeText} · ${state.variant?.label || state.variant?.language || ""}`
-    : offText;
+    ? `${copy.active} · ${state.variant?.label || state.variant?.language || ""}`
+    : copy.off;
 
   button.textContent = label;
   button.title = label;
   button.setAttribute("aria-label", label);
-  button.setAttribute("aria-pressed", state.enabled ? "true" : "false");
   button.dataset.narrationLanguage = state.variant?.language || "";
   button.classList.toggle("is-off", !state.enabled);
+
+  const menu = state.menu;
+  if (!menu || !state.entry) return;
+  menu.setAttribute("aria-label", copy.active);
+  menu.replaceChildren();
+
+  const appLanguageVariant = getVideoNarrationVariant(
+    state.entry.audioVariants,
+    {
+      prefLang: uiLanguage,
+      defaultLang: state.entry.defaultAudioLang || "en",
+    },
+  );
+  const options = [
+    {
+      label: `${copy.auto} · ${appLanguageVariant?.label || "English"}`,
+      value: "auto",
+    },
+    ...Object.entries(state.entry.audioVariants || {}).map(
+      ([language, variant]) => ({
+        label:
+          typeof variant?.label === "string" && variant.label.trim()
+            ? variant.label.trim()
+            : language,
+        value: normalizeVideoNarrationLanguageTag(language),
+      }),
+    ),
+    { label: copy.off, value: "off" },
+  ];
+
+  options.forEach((option) => {
+    const item = document.createElement("button");
+    item.type = "button";
+    item.className = "video-narration-menu__item";
+    item.setAttribute("role", "menuitemradio");
+    item.setAttribute(
+      "aria-checked",
+      state.selection === option.value ? "true" : "false",
+    );
+    item.dataset.narrationSelection = option.value;
+    item.textContent = option.label;
+    item.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      writeVideoNarrationSelection(state.pageId, option.value);
+      state.selection = option.value;
+      state.menu.hidden = true;
+      state.button.setAttribute("aria-expanded", "false");
+      delete state.button.dataset.narrationPlaybackBlocked;
+      syncVideoNarrationForPage(state.pageId, state.entry, {
+        preferredLang: getCurrentUiLanguage(),
+      });
+      void syncChildhoodPilotSubtitlesForPage(state.pageId, {
+        preferredLang: getCurrentUiLanguage(),
+        subtitlePreferredLang:
+          option.value === "auto" || option.value === "off"
+            ? getCurrentUiLanguage()
+            : option.value,
+      });
+    });
+    menu.appendChild(item);
+  });
 }
 
 function ensureVideoNarrationState(pageId, video) {
@@ -2857,14 +2984,26 @@ function ensureVideoNarrationState(pageId, video) {
   button.type = "button";
   button.className = "video-narration-toggle";
   button.setAttribute("data-video-narration-toggle", "true");
+  button.setAttribute("aria-haspopup", "menu");
+  button.setAttribute("aria-expanded", "false");
   const menuButton = actionRow.querySelector(".video-page-menu-btn");
   actionRow.insertBefore(button, menuButton || null);
+
+  const menu = document.createElement("div");
+  menu.className = "video-narration-menu";
+  menu.hidden = true;
+  menu.setAttribute("role", "menu");
+  menu.setAttribute("data-video-narration-menu", "true");
+  actionRow.appendChild(menu);
 
   state = {
     audio,
     button,
-    enabled: readVideoNarrationEnabled(pageId),
+    enabled: true,
+    entry: null,
+    menu,
     pageId,
+    selection: readVideoNarrationSelection(pageId),
     variant: null,
     video,
   };
@@ -2899,16 +3038,31 @@ function ensureVideoNarrationState(pageId, video) {
     audio.muted = video.muted;
   });
 
-  button.addEventListener("click", () => {
-    state.enabled = !state.enabled;
-    writeVideoNarrationEnabled(pageId, state.enabled);
-    delete button.dataset.narrationPlaybackBlocked;
-    updateVideoNarrationButton(state);
-    if (state.enabled) {
-      playVideoNarrationState(state, { forceSync: true });
-    } else {
-      audio.pause();
+  button.addEventListener("click", (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    const open = menu.hidden;
+    menu.hidden = !open;
+    button.setAttribute("aria-expanded", open ? "true" : "false");
+    if (open) {
+      menu
+        .querySelector('[aria-checked="true"]')
+        ?.focus({ preventScroll: true });
     }
+  });
+
+  menu.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape") return;
+    event.preventDefault();
+    menu.hidden = true;
+    button.setAttribute("aria-expanded", "false");
+    button.focus({ preventScroll: true });
+  });
+
+  document.addEventListener("click", (event) => {
+    if (menu.hidden || actionRow.contains(event.target)) return;
+    menu.hidden = true;
+    button.setAttribute("aria-expanded", "false");
   });
 
   return state;
@@ -2921,8 +3075,11 @@ function syncVideoNarrationForPage(
 ) {
   const video = getVideoPageLocalVideoElement(pageId);
   if (!video) return "";
+  const selection = readVideoNarrationSelection(pageId);
+  const requestedLanguage =
+    selection === "auto" || selection === "off" ? preferredLang : selection;
   const variant = getVideoNarrationVariant(entry?.audioVariants, {
-    prefLang: preferredLang,
+    prefLang: requestedLanguage,
     defaultLang: entry?.defaultAudioLang || "en",
   });
   const existingState = videoNarrationStates.get(video);
@@ -2937,6 +3094,9 @@ function syncVideoNarrationForPage(
   const state = existingState || ensureVideoNarrationState(pageId, video);
   if (!state) return "";
   state.button.hidden = false;
+  state.enabled = selection !== "off";
+  state.entry = entry;
+  state.selection = selection;
   state.variant = variant;
 
   const currentSource = state.audio.getAttribute("src") || "";
@@ -2952,14 +3112,19 @@ function syncVideoNarrationForPage(
   }
 
   state.video.dataset.narrationLanguage = variant.language;
+  state.video.dataset.narrationSelection = selection;
   updateVideoNarrationButton(state, preferredLang);
-  playVideoNarrationState(state, { forceSync: true });
-  return variant.language;
+  if (state.enabled) {
+    playVideoNarrationState(state, { forceSync: true });
+    return variant.language;
+  }
+  state.audio.pause();
+  return "";
 }
 
 async function syncChildhoodPilotSubtitlesForPage(
   pageId,
-  { preferredLang } = {},
+  { preferredLang, subtitlePreferredLang } = {},
 ) {
   if (!isChildhoodEyeScreeningSubtitlePilotPage(pageId)) return "";
 
@@ -2975,7 +3140,7 @@ async function syncChildhoodPilotSubtitlesForPage(
   const entry = await getChildhoodPilotCatalogEntry(pageId);
   if (!entry) return "";
 
-  syncVideoNarrationForPage(pageId, entry, {
+  const narrationLanguage = syncVideoNarrationForPage(pageId, entry, {
     preferredLang: preferredLang || getCurrentUiLanguage(),
   });
 
@@ -2985,7 +3150,11 @@ async function syncChildhoodPilotSubtitlesForPage(
   const resolvedLang = resolveChildhoodPilotSubtitleLanguage(
     availableLanguages,
     {
-      prefLang: preferredLang || getCurrentUiLanguage(),
+      prefLang:
+        subtitlePreferredLang ||
+        narrationLanguage ||
+        preferredLang ||
+        getCurrentUiLanguage(),
       defaultLang: entry.defaultSubtitleLang || "en",
     },
   );
@@ -2996,7 +3165,7 @@ async function syncChildhoodPilotSubtitlesForPage(
     "";
 
   const isOnline = isVideoPageCurrentlyOnline(pageId);
-  const useSubtitlePanel = shouldUseChildhoodPilotSubtitlePanel();
+  const useSubtitlePanel = shouldUseChildhoodPilotSubtitlePanel(pageId);
   const useSubtitleOverlay = shouldUseChildhoodPilotSubtitleOverlay();
 
   if (!video) {
@@ -3026,6 +3195,14 @@ async function syncChildhoodPilotSubtitlesForPage(
   }
 
   if (useSubtitlePanel) {
+    if (shouldUseDedicatedSubtitlePanel(pageId) && trackSrc) {
+      await applyChildhoodPilotSubtitleTrack(video, {
+        lang: resolvedLang,
+        src: trackSrc,
+      });
+      return resolvedLang;
+    }
+
     removeChildhoodPilotSubtitleTracks(video);
     if (trackSrc) {
       await syncChildhoodPilotSubtitleOverlay(video, {
@@ -3046,7 +3223,7 @@ async function syncChildhoodPilotSubtitlesForPage(
       return resolvedLang;
     }
 
-    applyChildhoodPilotSubtitleTrack(video, {
+    await applyChildhoodPilotSubtitleTrack(video, {
       lang: resolvedLang,
       src: trackSrc,
     });
@@ -3060,7 +3237,7 @@ async function syncChildhoodPilotSubtitlesForPage(
     return resolvedLang;
   }
 
-  applyChildhoodPilotSubtitleTrack(video, {
+  await applyChildhoodPilotSubtitleTrack(video, {
     lang: resolvedLang,
     src: trackSrc,
   });

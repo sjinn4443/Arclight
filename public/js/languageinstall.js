@@ -643,7 +643,10 @@ function resolveNarrationDownloadLanguage(language) {
     .trim()
     .toLowerCase()
     .replaceAll("_", "-");
-  return normalized.split("-")[0] === "es" ? "es-419" : "en";
+  const base = normalized.split("-")[0];
+  if (base === "es") return "es-419";
+  if (base === "ko") return "ko";
+  return "en";
 }
 
 function shouldIncludeNarrationLanguage(url, narrationLanguage) {

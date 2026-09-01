@@ -28,11 +28,13 @@ describe("language-specific offline narration", () => {
         bytes: 880000,
         url: "/narration/fundal-reflex/full-animation/es-419.m4a",
       },
+      { bytes: 890000, url: "/narration/fundal-reflex/full-animation/ko.m4a" },
       { bytes: 4000, url: "/narration/fundal-reflex/full-animation/en.vtt" },
       {
         bytes: 4500,
         url: "/narration/fundal-reflex/full-animation/es-419.vtt",
       },
+      { bytes: 3500, url: "/narration/fundal-reflex/full-animation/ko.vtt" },
       {
         bytes: 1300000,
         url: "/videos/FullAnim/FundalReflex_Full Animation_720p.mp4",
@@ -71,7 +73,7 @@ describe("language-specific offline narration", () => {
     const selection = languageInstall.resolveOfflineDownloadSelection(
       manifest,
       {
-        language: "ko",
+        language: "fr",
         mode: "full",
         videoQuality: "low",
       },
@@ -79,6 +81,29 @@ describe("language-specific offline narration", () => {
 
     expect(selection.narrationLanguage).toBe("en");
     expect(selection.urls).toContain(
+      "/narration/fundal-reflex/full-animation/en.m4a",
+    );
+    expect(selection.urls).not.toContain(
+      "/narration/fundal-reflex/full-animation/es-419.m4a",
+    );
+  });
+
+  it("downloads the Korean narration when Korean is selected", () => {
+    const selection = languageInstall.resolveOfflineDownloadSelection(
+      manifest,
+      {
+        language: "ko",
+        mode: "select",
+        catalogId: "core-fundal-reflex",
+        videoQuality: "low",
+      },
+    );
+
+    expect(selection.narrationLanguage).toBe("ko");
+    expect(selection.urls).toContain(
+      "/narration/fundal-reflex/full-animation/ko.m4a",
+    );
+    expect(selection.urls).not.toContain(
       "/narration/fundal-reflex/full-animation/en.m4a",
     );
     expect(selection.urls).not.toContain(

@@ -38,6 +38,7 @@ const PILOT_CATALOG = {
     subtitles: {
       en: "/narration/fundal-reflex/full-animation/en.vtt",
       es: "/narration/fundal-reflex/full-animation/es-419.vtt",
+      ko: "/narration/fundal-reflex/full-animation/ko.vtt",
     },
     audioVariants: {
       en: {
@@ -48,6 +49,10 @@ const PILOT_CATALOG = {
         label: "Español (Latinoamérica)",
         src: "/narration/fundal-reflex/full-animation/es-419.m4a",
       },
+      ko: {
+        label: "한국어",
+        src: "/narration/fundal-reflex/full-animation/ko.m4a",
+      },
     },
     defaultSubtitleLang: "en",
     defaultAudioLang: "en",
@@ -55,7 +60,7 @@ const PILOT_CATALOG = {
       masterManifest: "",
       preferredMode: "low",
       offlineFallbackMode: "low",
-      subtitleLanguages: ["en", "es"],
+      subtitleLanguages: ["en", "es", "ko"],
     },
     localSources: {
       low: "videos/FullAnim/FundalReflex_Full Animation_720p.mp4",
@@ -65,7 +70,7 @@ const PILOT_CATALOG = {
 };
 const PILOT_SUBTITLE_VTT = `WEBVTT
 
-00:00:00.000 --> 00:00:05.000
+00:00:00.500 --> 00:00:05.000
 Subtitle cue
 `;
 
@@ -234,6 +239,18 @@ describe("childhood eye screening subtitle pilot", () => {
         };
       }
 
+      if (
+        String(url).includes("/narration/fundal-reflex/full-animation/") &&
+        String(url).endsWith(".vtt")
+      ) {
+        return {
+          ok: true,
+          async text() {
+            return PILOT_SUBTITLE_VTT;
+          },
+        };
+      }
+
       throw new Error(`Unexpected fetch in test: ${String(url)}`);
     });
 
@@ -309,7 +326,7 @@ describe("childhood eye screening subtitle pilot", () => {
     ).toBe("en");
   });
 
-  it("attaches the selected narration as a separate synchronised audio track", () => {
+  it("uses the app language by default and lets the learner choose another narration", () => {
     localStorage.setItem("prefLang", "es");
 
     const language = videos.syncVideoNarrationForPage(
@@ -326,10 +343,26 @@ describe("childhood eye screening subtitle pilot", () => {
       "/narration/fundal-reflex/full-animation/es-419.m4a",
     );
     expect(toggle.textContent).toContain("Narración");
-    expect(toggle.getAttribute("aria-pressed")).toBe("true");
+    expect(toggle.getAttribute("aria-expanded")).toBe("false");
 
     toggle.click();
-    expect(toggle.getAttribute("aria-pressed")).toBe("false");
+    const menu = page.querySelector("[data-video-narration-menu='true']");
+    expect(menu.hidden).toBe(false);
+    menu.querySelector('[data-narration-selection="ko"]').click();
+
+    expect(audio.getAttribute("src")).toBe(
+      "/narration/fundal-reflex/full-animation/ko.m4a",
+    );
+    expect(toggle.textContent).toContain("한국어");
+    expect(
+      localStorage.getItem(
+        "videoNarrationLanguage:fundalReflexFullAnimationVideoPage",
+      ),
+    ).toBe("ko");
+
+    toggle.click();
+    menu.querySelector('[data-narration-selection="off"]').click();
+    expect(toggle.textContent).toContain("desactivada");
     expect(
       localStorage.getItem("videoNarration:fundalReflexFullAnimationVideoPage"),
     ).toBe("off");
@@ -670,6 +703,36 @@ describe("childhood eye screening subtitle pilot", () => {
     expect(
       page.querySelector("track[data-childhood-pilot-subtitle='true']"),
     ).toBeNull();
+  });
+
+  it("keeps Fundal Reflex full-animation captions in a dedicated panel below the video", async () => {
+    await videos.ensureChildhoodPilotSubtitleControlsForPage(
+      "fundalReflexFullAnimationVideoPage",
+    );
+
+    const page = document.getElementById("fundalReflexFullAnimationVideoPage");
+    const video = page.querySelector("video");
+    const panel = page.querySelector(
+      "[data-childhood-pilot-subtitle-panel='true']",
+    );
+
+    Object.defineProperty(video, "currentTime", {
+      configurable: true,
+      writable: true,
+      value: 1,
+    });
+    video.dispatchEvent(new Event("timeupdate"));
+
+    expect(panel).not.toBeNull();
+    expect(panel.parentElement).toBe(video.parentElement);
+    expect(panel.previousElementSibling).toBe(video);
+    expect(panel.textContent).toContain("Subtitle cue");
+    expect(
+      page.querySelector("[data-childhood-pilot-subtitle-overlay='true']"),
+    ).toBeNull();
+    expect(
+      page.querySelector("track[data-childhood-pilot-subtitle='true']"),
+    ).not.toBeNull();
   });
 
   it("adds a menu button next to the video mode toggle", () => {
