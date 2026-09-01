@@ -213,6 +213,10 @@ describe("childhood eye screening subtitle pilot", () => {
       configurable: true,
       value: jest.fn(() => Promise.resolve()),
     });
+    Object.defineProperty(document, "fullscreenElement", {
+      configurable: true,
+      value: null,
+    });
 
     fetchSpy = jest.spyOn(global, "fetch").mockImplementation(async (url) => {
       if (
@@ -715,6 +719,9 @@ describe("childhood eye screening subtitle pilot", () => {
     const panel = page.querySelector(
       "[data-childhood-pilot-subtitle-panel='true']",
     );
+    const controls = page.querySelector(
+      "[data-dedicated-video-controls='true']",
+    );
 
     Object.defineProperty(video, "currentTime", {
       configurable: true,
@@ -726,6 +733,7 @@ describe("childhood eye screening subtitle pilot", () => {
     expect(panel).not.toBeNull();
     expect(panel.parentElement).toBe(video.parentElement);
     expect(panel.previousElementSibling).toBe(video);
+    expect(panel.nextElementSibling).toBe(controls);
     expect(panel.textContent).toContain("Subtitle cue");
     expect(
       page.querySelector("[data-childhood-pilot-subtitle-overlay='true']"),
@@ -733,6 +741,106 @@ describe("childhood eye screening subtitle pilot", () => {
     expect(
       page.querySelector("track[data-childhood-pilot-subtitle='true']"),
     ).not.toBeNull();
+    expect(video.hasAttribute("controls")).toBe(false);
+    expect(controls).not.toBeNull();
+    expect(
+      page.querySelector("[data-video-fullscreen-toggle='true']"),
+    ).not.toBeNull();
+    expect(
+      page
+        .querySelector("[data-video-fullscreen-toggle='true']")
+        .closest("[data-dedicated-video-controls='true']"),
+    ).toBe(controls);
+    expect(
+      page.querySelector("[data-video-fullscreen-exit='true']"),
+    ).toBeNull();
+
+    Object.defineProperty(document, "fullscreenElement", {
+      configurable: true,
+      value: video.parentElement,
+    });
+    document.dispatchEvent(new Event("fullscreenchange"));
+
+    expect(panel.hidden).toBe(false);
+    expect(panel.textContent).toContain("Subtitle cue");
+    expect(
+      page
+        .querySelector("[data-video-fullscreen-toggle='true']")
+        .getAttribute("aria-pressed"),
+    ).toBe("true");
+  });
+
+  it("uses a viewport-filling fallback that keeps the caption panel in the layout", async () => {
+    await videos.ensureChildhoodPilotSubtitleControlsForPage(
+      "fundalReflexFullAnimationVideoPage",
+    );
+
+    const page = document.getElementById("fundalReflexFullAnimationVideoPage");
+    const container = page.querySelector(".video-container");
+    const enterButton = page.querySelector(
+      "[data-video-fullscreen-toggle='true']",
+    );
+
+    enterButton.click();
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    expect(container.classList.contains("is-app-fullscreen")).toBe(true);
+    expect(
+      document.body.classList.contains("dedicated-video-fullscreen-active"),
+    ).toBe(true);
+
+    enterButton.click();
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    expect(container.classList.contains("is-app-fullscreen")).toBe(false);
+    expect(
+      document.body.classList.contains("dedicated-video-fullscreen-active"),
+    ).toBe(false);
+  });
+
+  it("keeps playback, seeking, sound, and full screen controls in the player bar", async () => {
+    await videos.ensureChildhoodPilotSubtitleControlsForPage(
+      "fundalReflexFullAnimationVideoPage",
+    );
+
+    const page = document.getElementById("fundalReflexFullAnimationVideoPage");
+    const video = page.querySelector("video");
+    const controls = page.querySelector(
+      "[data-dedicated-video-controls='true']",
+    );
+    const playButton = controls.querySelector(
+      "[data-video-play-toggle='true']",
+    );
+    const muteButton = controls.querySelector(
+      "[data-video-mute-toggle='true']",
+    );
+    const timeline = controls.querySelector("input[type='range']");
+
+    Object.defineProperty(video, "duration", {
+      configurable: true,
+      value: 244,
+    });
+    Object.defineProperty(video, "currentTime", {
+      configurable: true,
+      writable: true,
+      value: 73,
+    });
+    video.dispatchEvent(new Event("loadedmetadata"));
+    video.dispatchEvent(new Event("timeupdate"));
+
+    expect(controls.textContent).toContain("1:13 / 4:04");
+    expect(timeline.value).toBe("73");
+
+    timeline.value = "95";
+    timeline.dispatchEvent(new Event("input"));
+    expect(video.currentTime).toBe(95);
+
+    playButton.click();
+    expect(video.play).toHaveBeenCalled();
+
+    expect(video.muted).toBe(false);
+    muteButton.click();
+    expect(video.muted).toBe(true);
   });
 
   it("adds a menu button next to the video mode toggle", () => {

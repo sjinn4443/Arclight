@@ -1552,6 +1552,8 @@ const CHILDHOOD_EYE_SCREENING_SUBTITLE_PAGE_IDS = new Set(
 const DEDICATED_SUBTITLE_PANEL_PAGE_IDS = new Set([
   "fundalReflexFullAnimationVideoPage",
 ]);
+const DEDICATED_VIDEO_FULLSCREEN_BODY_CLASS =
+  "dedicated-video-fullscreen-active";
 const IOS_HLS_PREFERRED_SUBTITLE_PAGE_IDS = new Set([
   "assessmentVisionPage",
   "mumVisionPage",
@@ -1596,6 +1598,7 @@ const childhoodPilotSubtitleCueCache = new Map();
 const childhoodPilotSubtitleOverlayStates = new WeakMap();
 const childhoodPilotIosHlsStates = new WeakMap();
 const videoNarrationStates = new WeakMap();
+const dedicatedVideoFullscreenStates = new WeakMap();
 
 function isVideosRootDataPageElement(element) {
   return (
@@ -1672,7 +1675,10 @@ function shouldKeepChildhoodPilotInlinePlayback(pageId) {
 function syncChildhoodPilotInlinePlaybackPreference(video, pageId) {
   if (!video) return;
 
-  if (shouldKeepChildhoodPilotInlinePlayback(pageId)) {
+  if (
+    shouldUseDedicatedSubtitlePanel(pageId) ||
+    shouldKeepChildhoodPilotInlinePlayback(pageId)
+  ) {
     video.dataset.preventAutoFullscreen = "true";
     video.dataset.preferContainerFullscreen = "true";
     return;
@@ -2080,6 +2086,360 @@ function shouldUseChildhoodPilotSubtitlePanel(pageId = "") {
   return shouldUseDedicatedSubtitlePanel(pageId) || isDesktopSafariBrowser();
 }
 
+function getDocumentFullscreenElement() {
+  return (
+    document.fullscreenElement ||
+    document.webkitFullscreenElement ||
+    document.msFullscreenElement ||
+    null
+  );
+}
+
+function isDedicatedVideoContainerFullscreen(video) {
+  if (!video) return false;
+  const pageId = video.closest(".page")?.id || "";
+  if (!shouldUseDedicatedSubtitlePanel(pageId)) return false;
+  const container = video.closest(".video-container");
+  if (!container) return false;
+  return (
+    getDocumentFullscreenElement() === container ||
+    container.classList.contains("is-app-fullscreen")
+  );
+}
+
+function getDedicatedVideoFullscreenCopy(language = getCurrentUiLanguage()) {
+  const base = normalizeVideoNarrationLanguageTag(language).split("-")[0];
+  if (base === "es") {
+    return {
+      controls: "Controles de vídeo",
+      enter: "Pantalla completa",
+      exit: "Salir de pantalla completa",
+      mute: "Silenciar",
+      pause: "Pausar",
+      play: "Reproducir",
+      seek: "Posición del vídeo",
+      unmute: "Activar sonido",
+    };
+  }
+  if (base === "ko") {
+    return {
+      controls: "동영상 재생 컨트롤",
+      enter: "전체 화면",
+      exit: "전체 화면 종료",
+      mute: "음소거",
+      pause: "일시정지",
+      play: "재생",
+      seek: "동영상 재생 위치",
+      unmute: "음소거 해제",
+    };
+  }
+  return {
+    controls: "Video controls",
+    enter: "Full screen",
+    exit: "Exit full screen",
+    mute: "Mute",
+    pause: "Pause",
+    play: "Play",
+    seek: "Video position",
+    unmute: "Unmute",
+  };
+}
+
+function formatDedicatedVideoTime(seconds) {
+  const safeSeconds = Math.max(0, Number(seconds) || 0);
+  const wholeSeconds = Math.floor(safeSeconds);
+  const hours = Math.floor(wholeSeconds / 3600);
+  const minutes = Math.floor((wholeSeconds % 3600) / 60);
+  const remainingSeconds = wholeSeconds % 60;
+  const mmss = `${String(minutes).padStart(hours ? 2 : 1, "0")}:${String(
+    remainingSeconds,
+  ).padStart(2, "0")}`;
+  return hours ? `${hours}:${mmss}` : mmss;
+}
+
+function updateDedicatedVideoPlaybackUi(video) {
+  const state = dedicatedVideoFullscreenStates.get(video);
+  if (!state) return;
+
+  const copy = getDedicatedVideoFullscreenCopy();
+  const duration = Number.isFinite(video.duration) ? video.duration : 0;
+  const currentTime = Math.min(
+    Math.max(0, Number(video.currentTime) || 0),
+    duration || Number.MAX_SAFE_INTEGER,
+  );
+  const isPaused = video.paused || video.ended;
+
+  state.controls.setAttribute("aria-label", copy.controls);
+  state.playButton.textContent = isPaused ? "▶" : "❚❚";
+  state.playButton.setAttribute(
+    "aria-label",
+    isPaused ? copy.play : copy.pause,
+  );
+  state.playButton.title = isPaused ? copy.play : copy.pause;
+  state.timeLabel.textContent = `${formatDedicatedVideoTime(
+    currentTime,
+  )} / ${formatDedicatedVideoTime(duration)}`;
+  state.timeline.max = String(duration || 0);
+  state.timeline.value = String(currentTime);
+  state.timeline.setAttribute("aria-label", copy.seek);
+  state.timeline.setAttribute(
+    "aria-valuetext",
+    `${formatDedicatedVideoTime(currentTime)} / ${formatDedicatedVideoTime(
+      duration,
+    )}`,
+  );
+  state.muteButton.textContent =
+    video.muted || video.volume === 0 ? "🔇" : "🔊";
+  state.muteButton.setAttribute(
+    "aria-label",
+    video.muted || video.volume === 0 ? copy.unmute : copy.mute,
+  );
+  state.muteButton.title =
+    video.muted || video.volume === 0 ? copy.unmute : copy.mute;
+}
+
+function updateDedicatedVideoFullscreenUi(video) {
+  const state = dedicatedVideoFullscreenStates.get(video);
+  if (!state) return;
+
+  const active = isDedicatedVideoContainerFullscreen(video);
+  const copy = getDedicatedVideoFullscreenCopy();
+  state.fullscreenButton.setAttribute(
+    "aria-pressed",
+    active ? "true" : "false",
+  );
+  state.fullscreenButton.setAttribute(
+    "aria-label",
+    active ? copy.exit : copy.enter,
+  );
+  state.fullscreenButton.title = active ? copy.exit : copy.enter;
+
+  showChildhoodPilotSubtitleTrack(
+    video,
+    getChildhoodPilotSubtitleOverlayState(video).lang,
+  );
+  renderChildhoodPilotSubtitleOverlay(video);
+  updateDedicatedVideoPlaybackUi(video);
+}
+
+function setDedicatedVideoFallbackFullscreen(video, enabled) {
+  const container = video?.closest(".video-container");
+  if (!container) return;
+  container.classList.toggle("is-app-fullscreen", enabled);
+  document.body?.classList.toggle(
+    DEDICATED_VIDEO_FULLSCREEN_BODY_CLASS,
+    enabled,
+  );
+  updateDedicatedVideoFullscreenUi(video);
+}
+
+async function enterDedicatedVideoFullscreen(video) {
+  const container = video?.closest(".video-container");
+  if (!container || isDedicatedVideoContainerFullscreen(video)) return;
+
+  const requestFullscreen =
+    container.requestFullscreen ||
+    container.webkitRequestFullscreen ||
+    container.msRequestFullscreen;
+
+  if (typeof requestFullscreen === "function") {
+    try {
+      await requestFullscreen.call(container);
+      if (getDocumentFullscreenElement() === container) {
+        updateDedicatedVideoFullscreenUi(video);
+        return;
+      }
+    } catch {
+      /* Fall back to a fixed, viewport-filling player below. */
+    }
+  }
+
+  setDedicatedVideoFallbackFullscreen(video, true);
+}
+
+async function exitDedicatedVideoFullscreen(video) {
+  const container = video?.closest(".video-container");
+  if (!container) return;
+
+  if (container.classList.contains("is-app-fullscreen")) {
+    setDedicatedVideoFallbackFullscreen(video, false);
+    return;
+  }
+
+  if (getDocumentFullscreenElement() !== container) return;
+  const exitFullscreen =
+    document.exitFullscreen ||
+    document.webkitExitFullscreen ||
+    document.msExitFullscreen;
+  if (typeof exitFullscreen === "function") {
+    try {
+      await exitFullscreen.call(document);
+    } catch {
+      /* The browser may already be leaving full screen. */
+    }
+  }
+}
+
+function ensureDedicatedVideoFullscreenControl(pageId, video) {
+  if (!video || !shouldUseDedicatedSubtitlePanel(pageId)) return null;
+
+  const existingState = dedicatedVideoFullscreenStates.get(video);
+  if (existingState) {
+    updateDedicatedVideoFullscreenUi(video);
+    return existingState;
+  }
+
+  const container = video.closest(".video-container");
+  if (!container) return null;
+
+  video.controls = false;
+  video.removeAttribute("controls");
+  video.setAttribute("tabindex", "0");
+  container.classList.add("dedicated-video-player");
+
+  const controls = document.createElement("div");
+  controls.className = "dedicated-video-controls";
+  controls.setAttribute("role", "group");
+  controls.setAttribute("data-dedicated-video-controls", "true");
+
+  const timeline = document.createElement("input");
+  timeline.type = "range";
+  timeline.className = "dedicated-video-controls__timeline";
+  timeline.min = "0";
+  timeline.max = "0";
+  timeline.step = "0.01";
+  timeline.value = "0";
+  controls.appendChild(timeline);
+
+  const controlRow = document.createElement("div");
+  controlRow.className = "dedicated-video-controls__row";
+  controls.appendChild(controlRow);
+
+  const playButton = document.createElement("button");
+  playButton.type = "button";
+  playButton.className =
+    "dedicated-video-controls__button dedicated-video-controls__play";
+  playButton.setAttribute("data-video-play-toggle", "true");
+  controlRow.appendChild(playButton);
+
+  const timeLabel = document.createElement("span");
+  timeLabel.className = "dedicated-video-controls__time";
+  timeLabel.setAttribute("aria-live", "off");
+  controlRow.appendChild(timeLabel);
+
+  const controlSpacer = document.createElement("span");
+  controlSpacer.className = "dedicated-video-controls__spacer";
+  controlSpacer.setAttribute("aria-hidden", "true");
+  controlRow.appendChild(controlSpacer);
+
+  const muteButton = document.createElement("button");
+  muteButton.type = "button";
+  muteButton.className =
+    "dedicated-video-controls__button dedicated-video-controls__mute";
+  muteButton.setAttribute("data-video-mute-toggle", "true");
+  controlRow.appendChild(muteButton);
+
+  const fullscreenButton = document.createElement("button");
+  fullscreenButton.type = "button";
+  fullscreenButton.className =
+    "dedicated-video-controls__button dedicated-video-controls__fullscreen";
+  fullscreenButton.setAttribute("data-video-fullscreen-toggle", "true");
+  fullscreenButton.setAttribute("aria-pressed", "false");
+  fullscreenButton.textContent = "⛶";
+  controlRow.appendChild(fullscreenButton);
+  container.appendChild(controls);
+
+  const state = {
+    container,
+    controls,
+    fullscreenButton,
+    muteButton,
+    playButton,
+    timeLabel,
+    timeline,
+  };
+  dedicatedVideoFullscreenStates.set(video, state);
+
+  const togglePlayback = () => {
+    if (video.paused || video.ended) {
+      if (video.ended) video.currentTime = 0;
+      try {
+        const playPromise = video.play();
+        playPromise?.catch?.(() => {});
+      } catch {
+        /* Playback can be blocked until the next user gesture. */
+      }
+      return;
+    }
+    video.pause();
+  };
+
+  playButton.addEventListener("click", togglePlayback);
+  video.addEventListener("click", togglePlayback);
+  video.addEventListener("keydown", (event) => {
+    if (event.key !== " " && event.key.toLowerCase() !== "k") return;
+    event.preventDefault();
+    togglePlayback();
+  });
+  timeline.addEventListener("input", () => {
+    const nextTime = Number(timeline.value);
+    if (Number.isFinite(nextTime)) video.currentTime = nextTime;
+    updateDedicatedVideoPlaybackUi(video);
+  });
+  muteButton.addEventListener("click", () => {
+    video.muted = !video.muted;
+    updateDedicatedVideoPlaybackUi(video);
+  });
+  fullscreenButton.addEventListener("click", () => {
+    if (isDedicatedVideoContainerFullscreen(video)) {
+      void exitDedicatedVideoFullscreen(video);
+    } else {
+      void enterDedicatedVideoFullscreen(video);
+    }
+  });
+  video.addEventListener("dblclick", () => {
+    if (isDedicatedVideoContainerFullscreen(video)) {
+      void exitDedicatedVideoFullscreen(video);
+    } else {
+      void enterDedicatedVideoFullscreen(video);
+    }
+  });
+  [
+    "durationchange",
+    "ended",
+    "loadedmetadata",
+    "pause",
+    "play",
+    "playing",
+    "ratechange",
+    "seeked",
+    "timeupdate",
+    "volumechange",
+  ].forEach((eventName) => {
+    video.addEventListener(eventName, () =>
+      updateDedicatedVideoPlaybackUi(video),
+    );
+  });
+  document.addEventListener("fullscreenchange", () =>
+    updateDedicatedVideoFullscreenUi(video),
+  );
+  document.addEventListener("webkitfullscreenchange", () =>
+    updateDedicatedVideoFullscreenUi(video),
+  );
+  document.addEventListener("keydown", (event) => {
+    if (
+      event.key === "Escape" &&
+      container.classList.contains("is-app-fullscreen")
+    ) {
+      setDedicatedVideoFallbackFullscreen(video, false);
+    }
+  });
+
+  updateDedicatedVideoPlaybackUi(video);
+  updateDedicatedVideoFullscreenUi(video);
+  return state;
+}
+
 function shouldUseChildhoodPilotSubtitleOverlay() {
   return isIOSChildhoodPilotDevice();
 }
@@ -2307,6 +2667,7 @@ function wireChildhoodPilotSubtitleSurface(video, container) {
     );
     showChildhoodPilotSubtitleTrack(video, nextState.lang);
     renderChildhoodPilotSubtitleOverlay(video);
+    updateDedicatedVideoFullscreenUi(video);
   };
 
   [
@@ -2418,7 +2779,10 @@ function resetChildhoodPilotSubtitleOverlay(video) {
 
 function getChildhoodPilotSubtitleActiveTrackMode(video) {
   const state = childhoodPilotSubtitleOverlayStates.get(video);
-  return state?.enabled && !state.fullscreen ? "hidden" : "showing";
+  const panelOwnsFullscreen = isDedicatedVideoContainerFullscreen(video);
+  return state?.enabled && (!state.fullscreen || panelOwnsFullscreen)
+    ? "hidden"
+    : "showing";
 }
 
 function parseChildhoodPilotSubtitleTimestamp(rawValue) {
@@ -2565,7 +2929,7 @@ function renderChildhoodPilotSubtitleOverlay(video) {
   }
 
   if (panel) {
-    if (state.fullscreen) {
+    if (state.fullscreen && !isDedicatedVideoContainerFullscreen(video)) {
       panel.hidden = true;
       panel.textContent = "";
       return;
@@ -3135,6 +3499,7 @@ async function syncChildhoodPilotSubtitlesForPage(
   if (video) {
     prepareVideoForChildhoodPilotSubtitles(video);
     syncChildhoodPilotInlinePlaybackPreference(video, pageId);
+    ensureDedicatedVideoFullscreenControl(pageId, video);
   }
 
   const entry = await getChildhoodPilotCatalogEntry(pageId);
