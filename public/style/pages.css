@@ -8368,6 +8368,81 @@ select.onb-input.has-value + .onb-select-caret {
   width: max-content;
 }
 
+#fundalReflexExaminationScrollPage .fundal-scroll-narration-controls {
+  position: relative;
+  z-index: 1003;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+#fundalReflexExaminationScrollPage .fundal-scroll-narration-controls__language {
+  width: 132px;
+  height: 32px;
+  padding: 0 24px 0 9px;
+  border: 1px solid #d6d6d8;
+  border-radius: 16px;
+  color: #222;
+  background: #fff;
+  font: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+}
+
+#fundalReflexExaminationScrollPage .fundal-scroll-narration-controls__toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid rgba(228, 30, 38, 0.3);
+  border-radius: 50%;
+  background: #fff4f4;
+  font: inherit;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+#fundalReflexExaminationScrollPage
+  .fundal-scroll-narration-controls__toggle.is-off {
+  border-color: #c8c8c8;
+  background: #f3f3f3;
+}
+
+#fundalReflexExaminationScrollPage
+  .fundal-scroll-narration-controls__toggle.is-playback-blocked {
+  box-shadow: 0 0 0 3px rgba(228, 30, 38, 0.14);
+}
+
+#fundalReflexExaminationScrollPage
+  :is(
+    .fundal-scroll-narration-controls__language,
+    .fundal-scroll-narration-controls__toggle
+  ):focus-visible {
+  outline: 2px solid rgba(228, 30, 38, 0.35);
+  outline-offset: 2px;
+}
+
+@media (max-width: 37.5em) {
+  #fundalReflexExaminationScrollPage .eyes-topbar__title {
+    max-width: calc(100vw - 238px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  #fundalReflexExaminationScrollPage
+    .fundal-scroll-narration-controls__language {
+    width: 92px;
+    padding-right: 18px;
+    padding-left: 8px;
+    font-size: 10px;
+  }
+}
+
 .childhood-fundal-scroll-page
   .eyes-topbar__title.childhood-fundal-title-toggle {
   cursor: pointer;

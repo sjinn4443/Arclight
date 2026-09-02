@@ -8,6 +8,109 @@ const FUNDAL_ASSET_PRIME_CACHE = new Set();
 const FUNDAL_LOTTIE_IMAGE_ASSET_URLS_CACHE = new Map();
 const FUNDAL_IMAGE_WARMUP_PROMISE_CACHE = new Map();
 
+const FUNDAL_REFLEX_SCROLL_NARRATION_STORAGE_PREFIX = "videoNarration:";
+const FUNDAL_REFLEX_SCROLL_NARRATION_LANGUAGE_STORAGE_PREFIX =
+  "videoNarrationLanguage:";
+
+export const FUNDAL_REFLEX_EXAMINATION_SCROLL_NARRATION_TRACKS = Object.freeze({
+  en: Object.freeze({
+    label: "English",
+    src: "/narration/fundal-reflex/full-animation/en.m4a",
+  }),
+  "es-419": Object.freeze({
+    label: "Español (Latinoamérica)",
+    src: "/narration/fundal-reflex/full-animation/es-419.m4a",
+  }),
+  ko: Object.freeze({
+    label: "한국어",
+    src: "/narration/fundal-reflex/full-animation/ko.m4a",
+  }),
+});
+
+// Each entry reuses the matching spoken interval from the full-animation
+// narration track. Grouped intervals intentionally continue over the held
+// final Lottie frame when the spoken guidance is longer than the motion.
+export const FUNDAL_REFLEX_EXAMINATION_SCROLL_NARRATION_CLIPS = Object.freeze([
+  Object.freeze({ start: 4.2, end: 9.2, cueIds: ["preparation-01"] }),
+  Object.freeze({ start: 9.2, end: 19.2, cueIds: ["preparation-02"] }),
+  Object.freeze({
+    start: 19.2,
+    end: 35.2,
+    cueIds: ["preparation-03a", "preparation-03b"],
+  }),
+  Object.freeze({
+    start: 36.2,
+    end: 52.2,
+    cueIds: ["preparation-04a", "preparation-04b", "preparation-04c"],
+  }),
+  Object.freeze({ start: 55.8, end: 59.8, cueIds: ["examination-01"] }),
+  Object.freeze({ start: 60.4, end: 71.4, cueIds: ["examination-02"] }),
+  Object.freeze({ start: 71.4, end: 87.4, cueIds: ["examination-03"] }),
+  Object.freeze({ start: 87.4, end: 99.4, cueIds: ["examination-04"] }),
+  Object.freeze({
+    start: 99.4,
+    end: 114.35,
+    cueIds: ["examination-05a", "examination-05b"],
+  }),
+  Object.freeze({ start: 118.4, end: 129.4, cueIds: ["eyes-open-01"] }),
+  Object.freeze({ start: 129.4, end: 144.4, cueIds: ["eyes-open-02"] }),
+  Object.freeze({
+    start: 180,
+    end: 192,
+    cueIds: ["possible-findings-01"],
+  }),
+  Object.freeze({
+    start: 150,
+    end: 158.2,
+    cueIds: ["eyes-closed-01", "eyes-closed-02"],
+  }),
+  Object.freeze({ start: 158.2, end: 170.4, cueIds: ["eyes-closed-03"] }),
+  Object.freeze({
+    start: 211.35,
+    end: 220.35,
+    cueIds: ["unclear-findings-01"],
+  }),
+  Object.freeze({
+    start: 220.35,
+    end: 230.35,
+    cueIds: ["unclear-findings-02"],
+  }),
+  Object.freeze({
+    start: 230.35,
+    end: 237.35,
+    cueIds: ["unclear-findings-03"],
+  }),
+  Object.freeze({
+    start: 237.35,
+    end: 260.35,
+    cueIds: [
+      "unclear-findings-04",
+      "unclear-findings-05a",
+      "unclear-findings-05b",
+    ],
+  }),
+  Object.freeze({
+    start: 175.2,
+    end: 180,
+    cueIds: ["possible-findings-02"],
+  }),
+  Object.freeze({
+    start: 180,
+    end: 207,
+    cueIds: ["possible-findings-01", "possible-findings-03"],
+  }),
+  Object.freeze({
+    start: 264.3,
+    end: 268.3,
+    cueIds: ["after-examination-01"],
+  }),
+  Object.freeze({
+    start: 268.3,
+    end: 274.27,
+    cueIds: ["after-examination-02"],
+  }),
+]);
+
 function detectFundalWebKitEnvironment() {
   if (typeof navigator === "undefined") {
     return {
@@ -1262,6 +1365,10 @@ ROUTE_CONFIG[FUNDAL_REFLEX_EXAMINATION_SCROLL_ROUTE] =
     "Fundal Reflex Examination",
     FUNDAL_REFLEX_EXAMINATION_SECTION_SOURCES,
   );
+ROUTE_CONFIG[FUNDAL_REFLEX_EXAMINATION_SCROLL_ROUTE].narrationTracks =
+  FUNDAL_REFLEX_EXAMINATION_SCROLL_NARRATION_TRACKS;
+ROUTE_CONFIG[FUNDAL_REFLEX_EXAMINATION_SCROLL_ROUTE].narrationClipsByFile =
+  FUNDAL_REFLEX_EXAMINATION_SCROLL_NARRATION_CLIPS;
 ROUTE_CONFIG[DIRECT_OPHTHALMOSCOPY_SCROLL_ROUTE] = {
   ...createCombinedFundalRouteConfig(
     "directOphthalmoscopyScrollPage",
@@ -1284,6 +1391,427 @@ ROUTE_CONFIG[BINOCULAR_INDIRECT_OPHTHALMOSCOPY_SCROLL_ROUTE] = {
   lazyLoadStageAnimations: true,
   skipRouteImageWarmup: true,
 };
+
+function normalizeFundalNarrationLanguage(language) {
+  const normalized = String(language || "")
+    .trim()
+    .replace(/_/g, "-")
+    .toLowerCase();
+  if (normalized === "ko" || normalized.startsWith("ko-")) return "ko";
+  if (normalized === "es" || normalized.startsWith("es-")) return "es-419";
+  return "en";
+}
+
+function readFundalNarrationPreference(pageId) {
+  try {
+    const storedLanguage = String(
+      localStorage.getItem(
+        `${FUNDAL_REFLEX_SCROLL_NARRATION_LANGUAGE_STORAGE_PREFIX}${pageId}`,
+      ) || "auto",
+    )
+      .trim()
+      .toLowerCase();
+    const storedEnabled =
+      localStorage.getItem(
+        `${FUNDAL_REFLEX_SCROLL_NARRATION_STORAGE_PREFIX}${pageId}`,
+      ) !== "off";
+    const language = ["auto", "en", "es-419", "ko"].includes(storedLanguage)
+      ? storedLanguage
+      : "auto";
+    return {
+      enabled: storedLanguage !== "off" && storedEnabled,
+      language,
+    };
+  } catch {
+    return { enabled: true, language: "auto" };
+  }
+}
+
+function writeFundalNarrationPreference(pageId, { enabled, language }) {
+  try {
+    localStorage.setItem(
+      `${FUNDAL_REFLEX_SCROLL_NARRATION_STORAGE_PREFIX}${pageId}`,
+      enabled ? "on" : "off",
+    );
+    if (language === "auto") {
+      localStorage.removeItem(
+        `${FUNDAL_REFLEX_SCROLL_NARRATION_LANGUAGE_STORAGE_PREFIX}${pageId}`,
+      );
+    } else {
+      localStorage.setItem(
+        `${FUNDAL_REFLEX_SCROLL_NARRATION_LANGUAGE_STORAGE_PREFIX}${pageId}`,
+        language,
+      );
+    }
+  } catch {
+    // Storage can be unavailable in private browsing; the active session still works.
+  }
+}
+
+function getFundalNarrationControlCopy(language = getLanguage()) {
+  const normalized = normalizeFundalNarrationLanguage(language);
+  if (normalized === "ko") {
+    return {
+      auto: "자동",
+      language: "내레이션 언어",
+      on: "내레이션 켜기",
+      off: "내레이션 끄기",
+      blocked: "내레이션을 재생하려면 누르세요",
+    };
+  }
+  if (normalized === "es-419") {
+    return {
+      auto: "Automático",
+      language: "Idioma de narración",
+      on: "Activar narración",
+      off: "Desactivar narración",
+      blocked: "Toca para reproducir la narración",
+    };
+  }
+  return {
+    auto: "Auto",
+    language: "Narration language",
+    on: "Turn narration on",
+    off: "Turn narration off",
+    blocked: "Tap to play narration",
+  };
+}
+
+export function initializeFundalStageNarration(routeName, cfg, page) {
+  if (routeName !== FUNDAL_REFLEX_EXAMINATION_SCROLL_ROUTE) return null;
+
+  const tracks = cfg?.narrationTracks;
+  const clips = cfg?.narrationClipsByFile;
+  const controls = page.querySelector(
+    "[data-fundal-scroll-narration-controls]",
+  );
+  const toggleButton = controls?.querySelector(
+    "[data-fundal-scroll-narration-toggle]",
+  );
+  const languageSelect = controls?.querySelector(
+    "[data-fundal-scroll-narration-language]",
+  );
+  if (
+    !tracks ||
+    !Array.isArray(clips) ||
+    !clips.length ||
+    !controls ||
+    !toggleButton ||
+    !languageSelect
+  ) {
+    return null;
+  }
+
+  const preference = readFundalNarrationPreference(cfg.pageId);
+  const audio = document.createElement("audio");
+  audio.hidden = true;
+  audio.preload = "auto";
+  audio.setAttribute("aria-hidden", "true");
+  audio.setAttribute("data-fundal-scroll-narration-audio", "true");
+  page.appendChild(audio);
+
+  let enabled = preference.enabled;
+  let selectedLanguage = preference.language;
+  let activeLanguage = "";
+  let activeClip = null;
+  let clipActive = false;
+  let pendingStartTime = null;
+  let stopTimerId = null;
+  let playbackBlocked = false;
+
+  const resolveSelectedLanguage = () =>
+    selectedLanguage === "auto"
+      ? normalizeFundalNarrationLanguage(getLanguage())
+      : normalizeFundalNarrationLanguage(selectedLanguage);
+
+  const clearStopTimer = () => {
+    if (stopTimerId == null) return;
+    clearTimeout(stopTimerId);
+    stopTimerId = null;
+  };
+
+  const stopAtClipEnd = () => {
+    clearStopTimer();
+    clipActive = false;
+    playbackBlocked = false;
+    try {
+      audio.pause();
+    } catch {
+      // Ignore media teardown failures.
+    }
+    if (activeClip) {
+      try {
+        audio.currentTime = Number(activeClip.end);
+      } catch {
+        // Metadata may no longer be available during teardown.
+      }
+    }
+    updateControls();
+  };
+
+  const scheduleStop = () => {
+    clearStopTimer();
+    if (!enabled || !clipActive || !activeClip || audio.paused) return;
+    const remainingSeconds = Math.max(
+      0,
+      Number(activeClip.end) - Number(audio.currentTime || activeClip.start),
+    );
+    stopTimerId = setTimeout(
+      stopAtClipEnd,
+      Math.max(50, Math.ceil((remainingSeconds + 0.08) * 1000)),
+    );
+  };
+
+  function updateControls() {
+    const copy = getFundalNarrationControlCopy();
+    const resolvedLanguage = resolveSelectedLanguage();
+    const resolvedLabel = tracks[resolvedLanguage]?.label || resolvedLanguage;
+    const resolvedCode =
+      resolvedLanguage === "es-419" ? "ES" : resolvedLanguage.toUpperCase();
+    const toggleLabel = !enabled
+      ? copy.on
+      : playbackBlocked
+        ? copy.blocked
+        : copy.off;
+
+    toggleButton.textContent = enabled ? "🔊" : "🔇";
+    toggleButton.title = toggleLabel;
+    toggleButton.setAttribute("aria-label", toggleLabel);
+    toggleButton.setAttribute("aria-pressed", enabled ? "true" : "false");
+    toggleButton.classList.toggle("is-off", !enabled);
+    toggleButton.classList.toggle("is-playback-blocked", playbackBlocked);
+    controls.dataset.narrationLanguage = resolvedLanguage;
+    controls.dataset.narrationEnabled = enabled ? "true" : "false";
+
+    languageSelect.setAttribute("aria-label", copy.language);
+    languageSelect.title = `${copy.language}: ${resolvedLabel}`;
+    languageSelect.replaceChildren();
+    const autoOption = document.createElement("option");
+    autoOption.value = "auto";
+    autoOption.textContent = `${copy.auto} · ${resolvedCode}`;
+    languageSelect.appendChild(autoOption);
+    Object.entries(tracks).forEach(([language, track]) => {
+      const option = document.createElement("option");
+      option.value = language;
+      option.textContent = track.label || language;
+      languageSelect.appendChild(option);
+    });
+    languageSelect.value = selectedLanguage;
+  }
+
+  const setTrackSource = (language, resumeTime = null) => {
+    const normalizedLanguage = normalizeFundalNarrationLanguage(language);
+    const track = tracks[normalizedLanguage] || tracks.en;
+    if (!track?.src) return false;
+
+    const currentSource = audio.getAttribute("src") || "";
+    activeLanguage = normalizedLanguage;
+    audio.setAttribute("lang", normalizedLanguage);
+    if (currentSource === track.src) {
+      if (Number.isFinite(Number(resumeTime))) {
+        pendingStartTime = Number(resumeTime);
+      }
+      return true;
+    }
+
+    clearStopTimer();
+    try {
+      audio.pause();
+    } catch {
+      // Continue switching tracks if the old source cannot be paused.
+    }
+    pendingStartTime = Number.isFinite(Number(resumeTime))
+      ? Number(resumeTime)
+      : null;
+    audio.setAttribute("src", track.src);
+    try {
+      audio.load();
+    } catch {
+      // The loadedmetadata path will remain dormant when media is unavailable.
+    }
+    return true;
+  };
+
+  const beginPlayback = (startTime = null) => {
+    if (!enabled || !clipActive || !activeClip) return;
+    const targetTime = Number.isFinite(Number(startTime))
+      ? Number(startTime)
+      : Number(activeClip.start);
+    pendingStartTime = null;
+    try {
+      audio.currentTime = Math.max(
+        Number(activeClip.start),
+        Math.min(Number(activeClip.end) - 0.02, targetTime),
+      );
+    } catch {
+      pendingStartTime = targetTime;
+      return;
+    }
+
+    playbackBlocked = false;
+    let playResult;
+    try {
+      playResult = audio.play();
+    } catch {
+      playbackBlocked = true;
+      updateControls();
+      return;
+    }
+    if (playResult && typeof playResult.then === "function") {
+      playResult
+        .then(() => {
+          playbackBlocked = false;
+          scheduleStop();
+          updateControls();
+        })
+        .catch(() => {
+          clearStopTimer();
+          playbackBlocked = true;
+          updateControls();
+        });
+    } else {
+      scheduleStop();
+    }
+  };
+
+  const playForStage = (fileIndex) => {
+    const clip = clips[Number(fileIndex)];
+    if (!clip) return;
+    clearStopTimer();
+    try {
+      audio.pause();
+    } catch {
+      // A fresh seek below still replaces any prior stage clip.
+    }
+    activeClip = clip;
+    clipActive = true;
+    playbackBlocked = false;
+    const language = resolveSelectedLanguage();
+    setTrackSource(language, clip.start);
+    if (!enabled) {
+      updateControls();
+      return;
+    }
+    if (audio.readyState >= 1) {
+      beginPlayback(clip.start);
+    }
+  };
+
+  const onLoadedMetadata = () => {
+    if (!enabled || !clipActive || pendingStartTime == null) return;
+    beginPlayback(pendingStartTime);
+  };
+
+  const onTimeUpdate = () => {
+    if (!clipActive || !activeClip) return;
+    if (Number(audio.currentTime) >= Number(activeClip.end) - 0.03) {
+      stopAtClipEnd();
+    }
+  };
+
+  const onToggle = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    if (enabled && playbackBlocked) {
+      playbackBlocked = false;
+      beginPlayback(audio.currentTime || activeClip?.start);
+      return;
+    }
+    enabled = !enabled;
+    writeFundalNarrationPreference(cfg.pageId, {
+      enabled,
+      language: selectedLanguage,
+    });
+    if (!enabled) {
+      clearStopTimer();
+      try {
+        audio.pause();
+      } catch {
+        // The persisted off state still prevents later playback attempts.
+      }
+    } else if (clipActive && activeClip) {
+      const currentTime = Number(audio.currentTime);
+      beginPlayback(
+        Number.isFinite(currentTime) && currentTime >= activeClip.start
+          ? currentTime
+          : activeClip.start,
+      );
+    }
+    updateControls();
+  };
+
+  const onLanguageChange = () => {
+    const nextSelection = String(languageSelect.value || "auto");
+    const elapsed = activeClip
+      ? Math.max(
+          0,
+          Number(audio.currentTime || activeClip.start) - activeClip.start,
+        )
+      : 0;
+    selectedLanguage = nextSelection;
+    writeFundalNarrationPreference(cfg.pageId, {
+      enabled,
+      language: selectedLanguage,
+    });
+    const nextLanguage = resolveSelectedLanguage();
+    const resumeTime = activeClip
+      ? Math.min(activeClip.end - 0.02, activeClip.start + elapsed)
+      : null;
+    setTrackSource(nextLanguage, resumeTime);
+    if (enabled && clipActive && activeClip && audio.readyState >= 1) {
+      beginPlayback(resumeTime);
+    }
+    updateControls();
+  };
+
+  const onPageInteraction = (event) => {
+    if (controls.contains(event.target)) return;
+    if (!enabled || !clipActive || !playbackBlocked) return;
+    playbackBlocked = false;
+    beginPlayback(audio.currentTime || activeClip?.start);
+  };
+
+  toggleButton.addEventListener("click", onToggle);
+  languageSelect.addEventListener("change", onLanguageChange);
+  audio.addEventListener("loadedmetadata", onLoadedMetadata);
+  audio.addEventListener("timeupdate", onTimeUpdate);
+  audio.addEventListener("ended", stopAtClipEnd);
+  page.addEventListener("pointerdown", onPageInteraction, true);
+
+  setTrackSource(resolveSelectedLanguage());
+  updateControls();
+
+  return {
+    playForStage,
+    refreshLanguage: () => {
+      const nextLanguage = resolveSelectedLanguage();
+      if (selectedLanguage === "auto" && nextLanguage !== activeLanguage) {
+        const resumeTime = clipActive ? Number(audio.currentTime) : null;
+        setTrackSource(nextLanguage, resumeTime);
+        if (enabled && clipActive && audio.readyState >= 1) {
+          beginPlayback(resumeTime);
+        }
+      }
+      updateControls();
+    },
+    destroy: () => {
+      clearStopTimer();
+      clipActive = false;
+      try {
+        audio.pause();
+      } catch {
+        // Route cleanup should continue even if the media element is detached.
+      }
+      toggleButton.removeEventListener("click", onToggle);
+      languageSelect.removeEventListener("change", onLanguageChange);
+      audio.removeEventListener("loadedmetadata", onLoadedMetadata);
+      audio.removeEventListener("timeupdate", onTimeUpdate);
+      audio.removeEventListener("ended", stopAtClipEnd);
+      page.removeEventListener("pointerdown", onPageInteraction, true);
+      audio.remove();
+    },
+  };
+}
 
 const FUNDAL_PAGE_ROUTE_SEQUENCE = [
   "childhoodFundalPreparation",
@@ -7870,6 +8398,7 @@ function initializeStageAutoplayMode(
 
     return state;
   });
+  const stageNarration = initializeFundalStageNarration(routeName, cfg, page);
 
   let lastViewportScrollTop = null;
 
@@ -9535,6 +10064,7 @@ function initializeStageAutoplayMode(
 
     state.started = true;
     state.playing = true;
+    stageNarration?.playForStage(state.fileIndex);
     updateAllTopStageNavigation();
     ensureAdjacentStageAnimationLoaded(state);
     hideAllStageDownArrows();
@@ -9680,6 +10210,7 @@ function initializeStageAutoplayMode(
       }
       restoreTranslatedPlaybackText(state);
     });
+    stageNarration?.refreshLanguage();
   }
 
   function ensureStageAnimationLoaded(state) {
@@ -10021,6 +10552,7 @@ function initializeStageAutoplayMode(
     animations: states.map((state) => state.anim).filter((anim) => !!anim),
     observer: null,
     removeInputListeners: () => {
+      stageNarration?.destroy();
       setPlaybackScrollLocked(false);
       clearBoundaryTouchPoint();
       window.removeEventListener("touchstart", rememberBoundaryTouchPoint);

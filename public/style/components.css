@@ -2823,7 +2823,12 @@ input:checked + .slider:before {
   background-image: url("/images/icon/eyes/moduleicons/primary_scrollytell.webp");
 }
 
-#fundalReflexPage .lesson-row--scroll .thumb {
+#fundalReflexPage
+  .lesson-row[data-target="fundalReflexExaminationScrollPage"]
+  .thumb,
+#fundalReflexInteractivePage
+  .lesson-row[data-target="fundalReflexExaminationScrollPage"]
+  .thumb {
   background-image: url("/images/icon/eyes/moduleicons/primary_scrollytell.webp");
 }
 

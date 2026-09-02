@@ -356,6 +356,7 @@ See [`security/EMERGENCY_PLAN.md`](./security/EMERGENCY_PLAN.md) for the operato
 - Childhood Fundal Reflex scrollytelling pages use a shared Lottie stage-autoplay pattern:
   - page shells live in `public/html/childhoodFundal*.html` with `.childhood-fundal-scroll-page` and an empty `.childhood-fundal-prep-list`
   - `public/js/config.js` maps the route, `public/js/main.js` lazy-loads `public/js/childhoodFundalPreparation.js`, and that module owns `ROUTE_CONFIG`, `FUNDAL_PAGE_ROUTE_SEQUENCE`, stage creation, replay/down-arrow behavior, scroll locks, settle frames, and cross-page navigation
+  - the combined `fundalReflexExaminationScrollPage` reuses the Fundal Reflex full-animation `en` / `es-419` / `ko` narration tracks as stage-matched clips; its Eyes topbar provides an independent language selector and narration on/off control while the existing short stage text remains unchanged
   - styling lives in `public/style/pages.css` under `.childhood-fundal-scroll-page`
   - the Diabetic Retinopathy workshop can also launch Fundal-style scrollytelling routes, including Direct Ophthalmoscopy routes (`diabeticObservationFundalReflex`, `diabeticPositioningFlightPath`, `diabeticHowToExamine`) and Binocular Indirect Ophthalmoscopy routes (`diabeticBioPreparation`, `diabeticBioFundoscopySitting`, `diabeticBioFundoscopyIndentation`), while reusing the same engine and layout contract
   - pause-before-frame behavior must use explicit `segmentRanges`, `segmentPauseAfterMsByFile`, and stable `settleFrameOverrides`; verify that pause holds the intended frame, does not flash white/final frames, and keeps accumulated text visible after completion
@@ -368,6 +369,7 @@ See [`security/EMERGENCY_PLAN.md`](./security/EMERGENCY_PLAN.md) for the operato
 
 ## Changelog (high level)
 
+- 2026-09-02: Added stage-matched multilingual narration controls to the combined Fundal Reflex examination scroll page, standardized its launcher thumbnail on `primary_scrollytell.webp`, and bumped the static cache to `arclight-static-v34`.
 - 2026-08-28: Added Lao application localization across the main UI, Medical Students workshop, local mini-apps, accessible/dynamic copy, and supported video subtitle catalogs/VTT/HLS outputs; expanded translation completeness and terminology QA accordingly.
 - 2026-08-28: Refined localized settings, My Learning, case-study, and Fundal Reflex behavior; added intermediate case Previous/Next history, desktop pointer swipes for primary flashcards, launch-context-aware Back navigation for shared Visual Acuity videos, and bumped the static cache to `arclight-static-v31`.
 - 2026-07-13: Added the Interactive Learning eye-examination `Connect` game: History -> VA -> Front of eye -> Pupils -> Fundal reflex -> DO, with ordered checkpoints, full-grid completion, a three-step first-play tutorial, responsive pointer/keyboard controls, and automated path/completion tests.
