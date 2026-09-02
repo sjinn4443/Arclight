@@ -3427,7 +3427,9 @@ function ensureVideoNarrationState(pageId, video) {
 
   const audio = document.createElement("audio");
   audio.hidden = true;
-  audio.preload = "metadata";
+  // The narration file is small, and loading it ahead avoids iOS WebKit
+  // starving the secondary media element while the much larger video loads.
+  audio.preload = "auto";
   audio.setAttribute("aria-hidden", "true");
   audio.setAttribute("data-video-narration-audio", "true");
   page.appendChild(audio);
@@ -3464,9 +3466,13 @@ function ensureVideoNarrationState(pageId, video) {
   video.addEventListener("play", () =>
     playVideoNarrationState(state, { forceSync: true }),
   );
-  video.addEventListener("playing", () =>
-    playVideoNarrationState(state, { forceSync: true }),
-  );
+  video.addEventListener("playing", () => {
+    // `play` already starts and aligns the narration in the user-initiated
+    // playback path. Avoid a second immediate seek on iOS once audio is live.
+    if (audio.paused) {
+      playVideoNarrationState(state, { forceSync: true });
+    }
+  });
   video.addEventListener("pause", () => audio.pause());
   video.addEventListener("waiting", () => audio.pause());
   video.addEventListener("ended", () => audio.pause());
@@ -3479,7 +3485,14 @@ function ensureVideoNarrationState(pageId, video) {
   );
   video.addEventListener("timeupdate", () => {
     if (!state.enabled || video.paused) return;
-    setVideoNarrationAudioTime(video, audio);
+    // Reassigning currentTime performs a media seek. iPhone WebKit can report
+    // small clock differences between separate video/audio elements, so the
+    // old 200 ms correction repeatedly sought the narration and sounded like
+    // drop-outs. Both tracks still receive hard syncs on play, seek and after
+    // buffering; only continuous corrective seeks are skipped on iOS.
+    if (!isIOSChildhoodPilotDevice()) {
+      setVideoNarrationAudioTime(video, audio);
+    }
     if (audio.paused) playVideoNarrationState(state);
   });
   video.addEventListener("ratechange", () => {

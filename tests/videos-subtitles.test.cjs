@@ -346,6 +346,7 @@ describe("childhood eye screening subtitle pilot", () => {
     expect(audio.getAttribute("src")).toBe(
       "/narration/fundal-reflex/full-animation/es-419.m4a",
     );
+    expect(audio.preload).toBe("auto");
     expect(toggle.textContent).toContain("Narración");
     expect(toggle.getAttribute("aria-expanded")).toBe("false");
 
@@ -392,6 +393,41 @@ describe("childhood eye screening subtitle pilot", () => {
     audio.currentTime = 11.85;
     videos.setVideoNarrationAudioTime(video, audio);
     expect(audio.currentTime).toBe(11.85);
+  });
+
+  it("does not repeatedly seek live narration during iPhone playback", () => {
+    setIPhoneWebKitUserAgent();
+    videos.syncVideoNarrationForPage(
+      "fundalReflexFullAnimationVideoPage",
+      PILOT_CATALOG.fundalReflexFullAnimationVideoPage,
+      { preferredLang: "en" },
+    );
+
+    const page = document.getElementById("fundalReflexFullAnimationVideoPage");
+    const video = page.querySelector("video");
+    const audio = page.querySelector("[data-video-narration-audio='true']");
+    Object.defineProperty(video, "paused", {
+      configurable: true,
+      value: false,
+    });
+    Object.defineProperty(video, "currentTime", {
+      configurable: true,
+      writable: true,
+      value: 12,
+    });
+    Object.defineProperty(audio, "paused", {
+      configurable: true,
+      value: false,
+    });
+    Object.defineProperty(audio, "currentTime", {
+      configurable: true,
+      writable: true,
+      value: 11.6,
+    });
+
+    video.dispatchEvent(new Event("timeupdate"));
+
+    expect(audio.currentTime).toBe(11.6);
   });
 
   it("treats long videos as complete when only the last seconds remain", () => {
