@@ -728,6 +728,7 @@ function wireTimedPlaybackHolds(videoEl, targetPageId, holds = []) {
   const completedHolds = new Set();
   let lastTime = Number(videoEl.currentTime || 0);
   let resumeTimer = null;
+  let snappingToHold = false;
 
   const clearResumeTimer = () => {
     if (resumeTimer === null) return;
@@ -736,6 +737,10 @@ function wireTimedPlaybackHolds(videoEl, targetPageId, holds = []) {
   };
 
   videoEl.addEventListener("seeking", () => {
+    if (snappingToHold) {
+      lastTime = Number(videoEl.currentTime || 0);
+      return;
+    }
     clearResumeTimer();
     lastTime = Number(videoEl.currentTime || 0);
     holds.forEach((hold) => {
@@ -763,6 +768,11 @@ function wireTimedPlaybackHolds(videoEl, targetPageId, holds = []) {
 
     completedHolds.add(hold.at);
     videoEl.pause();
+    const holdAt = Number(hold.at);
+    if (Math.abs(currentTime - holdAt) > 0.01) {
+      snappingToHold = true;
+      videoEl.currentTime = holdAt;
+    }
     resumeTimer = window.setTimeout(
       () => {
         resumeTimer = null;
@@ -777,10 +787,15 @@ function wireTimedPlaybackHolds(videoEl, targetPageId, holds = []) {
     );
   });
 
+  videoEl.addEventListener("seeked", () => {
+    snappingToHold = false;
+  });
+
   videoEl.addEventListener("ended", () => {
     clearResumeTimer();
     completedHolds.clear();
     lastTime = 0;
+    snappingToHold = false;
   });
 }
 
@@ -1298,10 +1313,16 @@ const VIDEO_PAGE_SOURCES = {
     containerSelector: "#fundalReflexFullAnimationVideoContainer",
     videoSelector: "#fundalReflexFullAnimationVideo",
     sources: {
-      low: "videos/FullAnim/FundalReflex_Full Animation_720p.mp4",
-      high: "videos/FullAnim/FundalReflex_Full Animation.mp4",
+      low: "videos/FullAnim/New_FundalReflexFullAnim.mp4",
+      high: "videos/FullAnim/New_FundalReflexFullAnim.mp4",
     },
-    playbackHolds: [{ at: 224.75, durationMs: 2000 }],
+    playbackHolds: [
+      { at: 19.19, durationMs: 1000 },
+      { at: 52.12, durationMs: 2000 },
+      { at: 99.39, durationMs: 1000 },
+      { at: 114.34, durationMs: 1000 },
+      { at: 179, durationMs: 2000 },
+    ],
   },
 
   fePecAnteriorSegmentPage: {

@@ -2272,8 +2272,8 @@
       "subtitleLanguages": ["en", "es", "ko"]
     },
     "localSources": {
-      "low": "videos/FullAnim/FundalReflex_Full Animation_720p.mp4",
-      "high": "videos/FullAnim/FundalReflex_Full Animation.mp4"
+      "low": "videos/FullAnim/New_FundalReflexFullAnim.mp4",
+      "high": "videos/FullAnim/New_FundalReflexFullAnim.mp4"
     }
   }
 }

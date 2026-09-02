@@ -18,7 +18,7 @@ const manifest = JSON.parse(
 
 describe("Fundal Reflex narration assets", () => {
   it("keeps every language on the same ordered cue timeline", () => {
-    expect(script.durationSeconds).toBeCloseTo(244.906667, 3);
+    expect(script.durationSeconds).toBeCloseTo(274.273333, 3);
     expect(script.cues).toHaveLength(24);
 
     script.cues.forEach((cue, index) => {
@@ -36,11 +36,11 @@ describe("Fundal Reflex narration assets", () => {
     const cueAt = (seconds) =>
       script.cues.find((cue) => seconds >= cue.start && seconds < cue.end);
 
-    expect(cueAt(95)?.id).toBe("examination-05");
-    expect(cueAt(95)?.screenText).toContain("pigmentation");
-    expect(cueAt(110)?.id).toBe("eyes-open-01");
-    expect(cueAt(120)?.id).toBe("eyes-open-02");
-    expect(cueAt(138)?.id).toBe("eyes-closed-01");
+    expect(cueAt(105)?.id).toBe("examination-05");
+    expect(cueAt(105)?.screenText).toContain("pigmentation");
+    expect(cueAt(122)?.id).toBe("eyes-open-01");
+    expect(cueAt(132)?.id).toBe("eyes-open-02");
+    expect(cueAt(152)?.id).toBe("eyes-closed-01");
   });
 
   it.each(languages)(

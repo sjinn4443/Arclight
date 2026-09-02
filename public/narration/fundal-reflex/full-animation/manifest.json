@@ -1,25 +1,25 @@
 {
   "schemaVersion": 1,
-  "durationSeconds": 244.906667,
+  "durationSeconds": 274.273333,
   "script": "script.json",
   "tracks": {
     "en": {
       "src": "en.m4a",
       "captions": "en.vtt",
-      "bytes": 999059,
-      "sha256": "0656a59d337d9963d0eb43f09731052867d79ddff843778577768c787dbb0fb4"
+      "bytes": 1017783,
+      "sha256": "1a1e78e5b9a917a3f7f30bbe2b8649095d11c0f8648bd46edbf7131e1aadbc53"
     },
     "es-419": {
       "src": "es-419.m4a",
       "captions": "es-419.vtt",
-      "bytes": 985278,
-      "sha256": "d41626dd7c91db7355e8943229c5e7dd37e1697636935ccbb47d76c14123ef59"
+      "bytes": 1017551,
+      "sha256": "86c192552237bfb257a943e85f6cb38aec10706a9a43fcb366bc83a4ba583d1c"
     },
     "ko": {
       "src": "ko.m4a",
       "captions": "ko.vtt",
-      "bytes": 1004207,
-      "sha256": "f207f88693ab1b7bc37518bc6dfc1422d7f1cdad56be814c24bb26396882bac6"
+      "bytes": 1014182,
+      "sha256": "133c12e57e74ae9c5c9d224b31f2511670b3f4637836e4ea575ae3235e8465b2"
     }
   }
 }
