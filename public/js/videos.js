@@ -718,6 +718,72 @@ function wireProgressForVideoElement(videoEl, targetPageId) {
   });
 }
 
+function wireTimedPlaybackHolds(videoEl, targetPageId, holds = []) {
+  if (!videoEl || !Array.isArray(holds) || !holds.length) return;
+
+  const wiredKey = `timedHoldsWired_${String(targetPageId).replace(/[^a-zA-Z0-9_-]/g, "_")}`;
+  if (videoEl.dataset[wiredKey] === "1") return;
+  videoEl.dataset[wiredKey] = "1";
+
+  const completedHolds = new Set();
+  let lastTime = Number(videoEl.currentTime || 0);
+  let resumeTimer = null;
+
+  const clearResumeTimer = () => {
+    if (resumeTimer === null) return;
+    window.clearTimeout(resumeTimer);
+    resumeTimer = null;
+  };
+
+  videoEl.addEventListener("seeking", () => {
+    clearResumeTimer();
+    lastTime = Number(videoEl.currentTime || 0);
+    holds.forEach((hold) => {
+      if (lastTime < Number(hold?.at || 0) - 0.5) {
+        completedHolds.delete(hold.at);
+      }
+    });
+  });
+
+  videoEl.addEventListener("timeupdate", () => {
+    const currentTime = Number(videoEl.currentTime || 0);
+    if (!Number.isFinite(currentTime)) return;
+
+    const hold = holds.find((candidate) => {
+      const holdAt = Number(candidate?.at);
+      return (
+        Number.isFinite(holdAt) &&
+        !completedHolds.has(candidate.at) &&
+        lastTime < holdAt &&
+        currentTime >= holdAt
+      );
+    });
+    lastTime = currentTime;
+    if (!hold) return;
+
+    completedHolds.add(hold.at);
+    videoEl.pause();
+    resumeTimer = window.setTimeout(
+      () => {
+        resumeTimer = null;
+        const page = document.getElementById(targetPageId);
+        if (!page || page.style.display === "none" || videoEl.ended) return;
+        const playResult = videoEl.play();
+        if (playResult && typeof playResult.catch === "function") {
+          playResult.catch(() => {});
+        }
+      },
+      Math.max(0, Number(hold.durationMs) || 0),
+    );
+  });
+
+  videoEl.addEventListener("ended", () => {
+    clearResumeTimer();
+    completedHolds.clear();
+    lastTime = 0;
+  });
+}
+
 // -------------------------
 // Lesson durations (Auto-fill | 00:00)
 // -------------------------
@@ -1235,6 +1301,7 @@ const VIDEO_PAGE_SOURCES = {
       low: "videos/FullAnim/FundalReflex_Full Animation_720p.mp4",
       high: "videos/FullAnim/FundalReflex_Full Animation.mp4",
     },
+    playbackHolds: [{ at: 224.75, durationMs: 2000 }],
   },
 
   fePecAnteriorSegmentPage: {
@@ -4274,6 +4341,7 @@ function show(id) {
     const page = document.getElementById(id);
     const videoEl = page?.querySelector(cfg?.videoSelector || "");
     wireProgressForVideoElement(videoEl, id);
+    wireTimedPlaybackHolds(videoEl, id, cfg?.playbackHolds);
   }
 
   if (!Object.prototype.hasOwnProperty.call(VIDEO_PAGE_SOURCES, id)) {

@@ -6,20 +6,20 @@
     "en": {
       "src": "en.m4a",
       "captions": "en.vtt",
-      "bytes": 834639,
-      "sha256": "8e62e5c93d4c39a256ba66a54d6ff34edb4fa0df8f11c346dce4423fdf1474a1"
+      "bytes": 999059,
+      "sha256": "0656a59d337d9963d0eb43f09731052867d79ddff843778577768c787dbb0fb4"
     },
     "es-419": {
       "src": "es-419.m4a",
       "captions": "es-419.vtt",
-      "bytes": 891998,
-      "sha256": "f234bcb5e1af8ae5b1c2083d0690bcfd0a968a780e4a687f3b2feb4d396356df"
+      "bytes": 985278,
+      "sha256": "d41626dd7c91db7355e8943229c5e7dd37e1697636935ccbb47d76c14123ef59"
     },
     "ko": {
       "src": "ko.m4a",
       "captions": "ko.vtt",
-      "bytes": 908921,
-      "sha256": "1985622280f2eb8927e9ead4c5fefe67409ec2f7b9c81cde7feb832fbbff6adb"
+      "bytes": 1004207,
+      "sha256": "f207f88693ab1b7bc37518bc6dfc1422d7f1cdad56be814c24bb26396882bac6"
     }
   }
 }

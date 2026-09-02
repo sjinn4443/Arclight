@@ -52,7 +52,7 @@ describe("Fundal Reflex narration assets", () => {
 
       expect(fs.statSync(audioPath).size).toBeLessThan(2_000_000);
       expect(vtt.startsWith("WEBVTT\n")).toBe(true);
-      expect(vtt.match(/-->/g)).toHaveLength(script.cues.length);
+      expect(vtt.match(/-->/g)).toHaveLength(script.timedCues[language].length);
       expect(manifest.tracks[language].src).toBe(`${language}.m4a`);
       expect(manifest.tracks[language].captions).toBe(`${language}.vtt`);
     },

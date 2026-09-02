@@ -39,6 +39,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--ffmpeg", type=Path)
     parser.add_argument("--skip-tts", action="store_true")
     parser.add_argument("--skip-review-video", action="store_true")
+    parser.add_argument(
+        "--languages",
+        nargs="+",
+        choices=NARRATION_LANGUAGES,
+        help="Only rebuild the selected language tracks (defaults to all languages).",
+    )
     return parser.parse_args()
 
 
@@ -92,14 +98,42 @@ def format_vtt_time(seconds: float) -> str:
     return f"{hours:02d}:{minutes:02d}:{secs:02d}.{milliseconds:03d}"
 
 
-def write_vtt(script: dict, language: str, destination: Path) -> None:
+def resolve_language_cues(
+    script: dict, language: str, timed_cue_key: str = "timedCues"
+) -> list[dict]:
+    timed_cues = script.get(timed_cue_key, {}).get(language)
+    if timed_cues:
+        return [
+            {
+                "id": cue["id"],
+                "start": cue["start"],
+                "end": cue["end"],
+                "text": cue["text"],
+                "ttsText": cue.get("ttsText", cue["text"]),
+            }
+            for cue in timed_cues
+        ]
+
+    return [
+        {
+            "id": cue["id"],
+            "start": cue["start"],
+            "end": cue["end"],
+            "text": cue[language],
+            "ttsText": cue.get("ttsText", {}).get(language) or cue[language],
+        }
+        for cue in script["cues"]
+    ]
+
+
+def write_vtt(cues: list[dict], destination: Path) -> None:
     lines = ["WEBVTT", ""]
-    for cue in script["cues"]:
+    for cue in cues:
         lines.extend(
             [
                 cue["id"],
                 f"{format_vtt_time(cue['start'])} --> {format_vtt_time(cue['end'])}",
-                cue[language],
+                cue["text"],
                 "",
             ]
         )
@@ -115,7 +149,9 @@ def sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
-async def generate_tts_cues(script: dict, language: str, cue_dir: Path) -> None:
+async def generate_tts_cues(
+    script: dict, language: str, cues: list[dict], cue_dir: Path
+) -> None:
     import edge_tts
 
     voice = script["languages"][language]["voice"]
@@ -124,7 +160,7 @@ async def generate_tts_cues(script: dict, language: str, cue_dir: Path) -> None:
     async def generate(cue: dict) -> None:
         destination = cue_dir / f"{cue['id']}.mp3"
         signature_path = cue_dir / f"{cue['id']}.sha256"
-        text = cue.get("ttsText", {}).get(language) or cue[language]
+        text = cue["ttsText"]
         signature = hashlib.sha256(
             json.dumps(
                 {
@@ -159,13 +195,14 @@ async def generate_tts_cues(script: dict, language: str, cue_dir: Path) -> None:
             signature_path.write_text(signature + "\n", encoding="ascii")
         print(f"[{language}] generated {cue['id']}", flush=True)
 
-    await asyncio.gather(*(generate(cue) for cue in script["cues"]))
+    await asyncio.gather(*(generate(cue) for cue in cues))
 
 
 def mix_language(
     ffmpeg: Path,
     script: dict,
     language: str,
+    cues: list[dict],
     cue_dir: Path,
     wav_path: Path,
 ) -> list[dict]:
@@ -187,7 +224,7 @@ def mix_language(
     filters: list[str] = []
     mix_inputs = ["[0:a]"]
 
-    for index, cue in enumerate(script["cues"], start=1):
+    for index, cue in enumerate(cues, start=1):
         cue_path = cue_dir / f"{cue['id']}.mp3"
         if not cue_path.exists():
             raise FileNotFoundError(f"Missing TTS cue: {cue_path}")
@@ -344,20 +381,25 @@ def main() -> None:
         "tracks": {},
     }
 
-    for language in NARRATION_LANGUAGES:
+    selected_languages = tuple(args.languages or NARRATION_LANGUAGES)
+    for language in selected_languages:
+        caption_cues = resolve_language_cues(script, language)
+        audio_cues = resolve_language_cues(script, language, "timedAudioCues")
         cue_dir = work_dir / "cues" / language
         cue_dir.mkdir(parents=True, exist_ok=True)
         if not args.skip_tts:
-            asyncio.run(generate_tts_cues(script, language, cue_dir))
+            asyncio.run(generate_tts_cues(script, language, audio_cues, cue_dir))
 
         wav_path = artifacts_dir / f"fundal-reflex-full-animation.{language}.master.wav"
         m4a_path = public_dir / f"{language}.m4a"
         vtt_path = public_dir / f"{language}.vtt"
         review_path = artifacts_dir / f"fundal-reflex-full-animation.{language}.review.mp4"
 
-        cue_qa = mix_language(ffmpeg, script, language, cue_dir, wav_path)
+        cue_qa = mix_language(
+            ffmpeg, script, language, audio_cues, cue_dir, wav_path
+        )
         encode_m4a(ffmpeg, wav_path, m4a_path)
-        write_vtt(script, language, vtt_path)
+        write_vtt(caption_cues, vtt_path)
         if not args.skip_review_video:
             make_review_mp4(
                 ffmpeg,
@@ -412,23 +454,31 @@ def main() -> None:
     with qa_path.open("w", encoding="utf-8", newline="\n") as handle:
         handle.write(json.dumps(qa, ensure_ascii=False, indent=2) + "\n")
 
-    public_manifest = {
-        "schemaVersion": 1,
-        "durationSeconds": script["durationSeconds"],
-        "script": "script.json",
-        "tracks": {
+    manifest_path = public_dir / "manifest.json"
+    previous_manifest = (
+        json.loads(manifest_path.read_text(encoding="utf-8"))
+        if manifest_path.exists()
+        else {"tracks": {}}
+    )
+    manifest_tracks = dict(previous_manifest.get("tracks", {}))
+    manifest_tracks.update(
+        {
             language: {
                 "src": f"{language}.m4a",
                 "captions": f"{language}.vtt",
                 "bytes": qa["tracks"][language]["delivery"]["bytes"],
                 "sha256": qa["tracks"][language]["delivery"]["sha256"],
             }
-            for language in NARRATION_LANGUAGES
-        },
+            for language in selected_languages
+        }
+    )
+    public_manifest = {
+        "schemaVersion": 1,
+        "durationSeconds": script["durationSeconds"],
+        "script": "script.json",
+        "tracks": manifest_tracks,
     }
-    with (public_dir / "manifest.json").open(
-        "w", encoding="utf-8", newline="\n"
-    ) as handle:
+    with manifest_path.open("w", encoding="utf-8", newline="\n") as handle:
         handle.write(json.dumps(public_manifest, ensure_ascii=False, indent=2) + "\n")
     print(f"QA report: {qa_path}", flush=True)
 
