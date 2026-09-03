@@ -729,6 +729,32 @@ function wireTimedPlaybackHolds(videoEl, targetPageId, holds = []) {
   let lastTime = Number(videoEl.currentTime || 0);
   let resumeTimer = null;
   let snappingToHold = false;
+  let resumingFromHold = false;
+  let narrationCatchUpAt = null;
+  let narrationWaitingForVideo = false;
+
+  const setNarrationHoldActive = (active) => {
+    if (active) {
+      videoEl.dataset.timedNarrationHoldActive = "1";
+      return;
+    }
+    delete videoEl.dataset.timedNarrationHoldActive;
+  };
+
+  const pauseNarration = () => {
+    videoNarrationStates.get(videoEl)?.audio?.pause();
+  };
+
+  const setNarrationLeadActive = (active) => {
+    if (active) {
+      videoEl.dataset.timedNarrationLeadActive = "1";
+      return;
+    }
+    delete videoEl.dataset.timedNarrationLeadActive;
+    delete videoEl.dataset.timedNarrationCatchupActive;
+    narrationCatchUpAt = null;
+    narrationWaitingForVideo = false;
+  };
 
   const clearResumeTimer = () => {
     if (resumeTimer === null) return;
@@ -742,6 +768,9 @@ function wireTimedPlaybackHolds(videoEl, targetPageId, holds = []) {
       return;
     }
     clearResumeTimer();
+    setNarrationHoldActive(false);
+    setNarrationLeadActive(false);
+    pauseNarration();
     lastTime = Number(videoEl.currentTime || 0);
     holds.forEach((hold) => {
       if (lastTime < Number(hold?.at || 0) - 0.5) {
@@ -753,6 +782,40 @@ function wireTimedPlaybackHolds(videoEl, targetPageId, holds = []) {
   videoEl.addEventListener("timeupdate", () => {
     const currentTime = Number(videoEl.currentTime || 0);
     if (!Number.isFinite(currentTime)) return;
+
+    if (
+      videoEl.dataset.timedNarrationLeadActive === "1" &&
+      Number.isFinite(narrationCatchUpAt)
+    ) {
+      const narrationState = videoNarrationStates.get(videoEl);
+      const audio = narrationState?.audio;
+      const audioTime = Number(audio?.currentTime || 0);
+      if (
+        audio &&
+        !narrationWaitingForVideo &&
+        audioTime >= narrationCatchUpAt
+      ) {
+        narrationWaitingForVideo = true;
+        videoEl.dataset.timedNarrationCatchupActive = "1";
+        audio.pause();
+        try {
+          audio.currentTime = narrationCatchUpAt;
+        } catch {
+          /* Media metadata may not be ready yet. */
+        }
+      }
+      if (
+        audio &&
+        narrationWaitingForVideo &&
+        currentTime >= narrationCatchUpAt
+      ) {
+        setNarrationLeadActive(false);
+        setVideoNarrationAudioTime(videoEl, audio, { force: true });
+        if (!videoEl.paused && narrationState.enabled) {
+          playVideoNarrationState(narrationState);
+        }
+      }
+    }
 
     const hold = holds.find((candidate) => {
       const holdAt = Number(candidate?.at);
@@ -767,28 +830,121 @@ function wireTimedPlaybackHolds(videoEl, targetPageId, holds = []) {
     if (!hold) return;
 
     completedHolds.add(hold.at);
+    const continueNarration = hold.continueNarration === true;
+    setNarrationHoldActive(continueNarration);
     videoEl.pause();
     const holdAt = Number(hold.at);
     if (Math.abs(currentTime - holdAt) > 0.01) {
       snappingToHold = true;
       videoEl.currentTime = holdAt;
     }
-    resumeTimer = window.setTimeout(
-      () => {
-        resumeTimer = null;
-        const page = document.getElementById(targetPageId);
-        if (!page || page.style.display === "none" || videoEl.ended) return;
-        const playResult = videoEl.play();
-        if (playResult && typeof playResult.catch === "function") {
-          playResult.catch(() => {});
+    if (continueNarration) {
+      const narrationState = videoNarrationStates.get(videoEl);
+      const narrationIsWaitingForVideo =
+        videoEl.dataset.timedNarrationCatchupActive === "1";
+      if (
+        narrationState?.enabled &&
+        narrationState.audio?.src &&
+        !(hold.respectNarrationCatchup === true && narrationIsWaitingForVideo)
+      ) {
+        setVideoNarrationAudioTime(videoEl, narrationState.audio, {
+          force: true,
+        });
+        narrationState.audio.playbackRate = videoEl.playbackRate || 1;
+        narrationState.audio.volume = videoEl.volume;
+        narrationState.audio.muted = videoEl.muted;
+        const narrationPlayResult = narrationState.audio.play();
+        if (
+          narrationPlayResult &&
+          typeof narrationPlayResult.catch === "function"
+        ) {
+          narrationPlayResult.catch(() => {});
         }
-      },
-      Math.max(0, Number(hold.durationMs) || 0),
-    );
+      }
+    }
+    const durationMs = Math.max(0, Number(hold.durationMs) || 0);
+    const resumePlayback = () => {
+      const page = document.getElementById(targetPageId);
+      if (!page || page.style.display === "none" || videoEl.ended) {
+        setNarrationHoldActive(false);
+        pauseNarration();
+        return;
+      }
+      if (continueNarration) {
+        if (
+          hold.preserveMediaPosition === true ||
+          hold.preserveNarrationProgress === true
+        ) {
+          setNarrationHoldActive(false);
+          const configuredCatchUpAt = Number(hold.narrationCatchUpAt);
+          if (Number.isFinite(configuredCatchUpAt)) {
+            narrationCatchUpAt = configuredCatchUpAt;
+            narrationWaitingForVideo = false;
+            videoEl.dataset.timedNarrationLeadActive = "1";
+            delete videoEl.dataset.timedNarrationCatchupActive;
+          }
+          const configuredResumeAt = Number(hold.resumeAt);
+          if (
+            hold.preserveMediaPosition !== true &&
+            Number.isFinite(configuredResumeAt)
+          ) {
+            snappingToHold = true;
+            videoEl.currentTime = Math.min(
+              configuredResumeAt,
+              Number.isFinite(videoEl.duration)
+                ? videoEl.duration
+                : configuredResumeAt,
+            );
+          }
+        } else {
+          const configuredResumeAt = Number(hold.resumeAt);
+          const resumeAt = Number.isFinite(configuredResumeAt)
+            ? configuredResumeAt
+            : holdAt + durationMs / 1000;
+          resumingFromHold = true;
+          snappingToHold = true;
+          videoEl.currentTime = Math.min(
+            resumeAt,
+            Number.isFinite(videoEl.duration) ? videoEl.duration : resumeAt,
+          );
+        }
+      } else {
+        setNarrationHoldActive(false);
+      }
+      const playResult = videoEl.play();
+      if (playResult && typeof playResult.catch === "function") {
+        playResult.catch(() => {});
+      }
+    };
+    const narrationResumeAt = Number(hold.narrationResumeAt);
+    const waitStartedAt = Date.now();
+    const resumeWhenNarrationIsReady = () => {
+      resumeTimer = null;
+      const audio = videoNarrationStates.get(videoEl)?.audio;
+      if (
+        continueNarration &&
+        Number.isFinite(narrationResumeAt) &&
+        audio &&
+        Number(audio.currentTime || 0) < narrationResumeAt &&
+        Date.now() - waitStartedAt < durationMs + 3000
+      ) {
+        resumeTimer = window.setTimeout(resumeWhenNarrationIsReady, 50);
+        return;
+      }
+      resumePlayback();
+    };
+    resumeTimer = window.setTimeout(resumeWhenNarrationIsReady, durationMs);
   });
 
   videoEl.addEventListener("seeked", () => {
     snappingToHold = false;
+    if (!resumingFromHold) return;
+    resumingFromHold = false;
+    setNarrationHoldActive(false);
+    const narrationState = videoNarrationStates.get(videoEl);
+    if (!videoEl.paused && narrationState) {
+      playVideoNarrationState(narrationState, { forceSync: true });
+    }
   });
 
   videoEl.addEventListener("ended", () => {
@@ -796,6 +952,9 @@ function wireTimedPlaybackHolds(videoEl, targetPageId, holds = []) {
     completedHolds.clear();
     lastTime = 0;
     snappingToHold = false;
+    resumingFromHold = false;
+    setNarrationHoldActive(false);
+    setNarrationLeadActive(false);
   });
 }
 
@@ -1392,9 +1551,34 @@ const VIDEO_PAGE_SOURCES = {
     containerSelector: "#directOphthalmoscopyFullAnimationVideoContainer",
     videoSelector: "#directOphthalmoscopyFullAnimationVideo",
     sources: {
-      low: "videos/FullAnim/DO_Full Animation_720p.mp4",
-      high: "videos/FullAnim/DO_Full Animation.mp4",
+      low: "videos/FullAnim/New_DOFullAnim.mp4",
+      high: "videos/FullAnim/New_DOFullAnim.mp4",
     },
+    playbackHolds: [
+      {
+        at: 46,
+        continueNarration: true,
+        durationMs: 3000,
+        preserveMediaPosition: true,
+        narrationResumeAt: 49.1,
+        narrationCatchUpAt: 55.2,
+      },
+      {
+        at: 52.2,
+        continueNarration: true,
+        durationMs: 5000,
+        preserveMediaPosition: true,
+        respectNarrationCatchup: true,
+      },
+      {
+        at: 141,
+        continueNarration: true,
+        durationMs: 4000,
+        preserveNarrationProgress: true,
+        resumeAt: 142,
+        narrationCatchUpAt: 144.95,
+      },
+    ],
   },
 
   howToUseArclightVideoPage: {
@@ -1639,6 +1823,7 @@ const CHILDHOOD_EYE_SCREENING_SUBTITLE_PAGE_IDS = new Set(
 );
 const DEDICATED_SUBTITLE_PANEL_PAGE_IDS = new Set([
   "fundalReflexFullAnimationVideoPage",
+  "directOphthalmoscopyFullAnimationVideoPage",
 ]);
 const DEDICATED_VIDEO_FULLSCREEN_BODY_CLASS =
   "dedicated-video-fullscreen-active";
@@ -2994,7 +3179,17 @@ function renderChildhoodPilotSubtitleOverlay(video) {
     return;
   }
 
-  const currentTime = Math.max(0, Number(video.currentTime) || 0);
+  const narrationState = videoNarrationStates.get(video);
+  const useNarrationTime =
+    narrationState?.enabled &&
+    (video.dataset.timedNarrationHoldActive === "1" ||
+      video.dataset.timedNarrationLeadActive === "1");
+  const currentTime = Math.max(
+    0,
+    Number(
+      useNarrationTime ? narrationState.audio?.currentTime : video.currentTime,
+    ) || 0,
+  );
   const activeText = state.cues
     .filter((cue) => currentTime >= cue.start && currentTime < cue.end)
     .map((cue) => cue.text)
@@ -3282,6 +3477,7 @@ function getVideoNarrationVariant(
 
 function setVideoNarrationAudioTime(video, audio, { force = false } = {}) {
   if (!video || !audio) return;
+  if (video.dataset.timedNarrationLeadActive === "1") return;
   const videoTime = Number(video.currentTime || 0);
   const audioTime = Number(audio.currentTime || 0);
   if (!Number.isFinite(videoTime) || !Number.isFinite(audioTime)) return;
@@ -3300,6 +3496,7 @@ function setVideoNarrationAudioTime(video, audio, { force = false } = {}) {
 
 function playVideoNarrationState(state, { forceSync = false } = {}) {
   if (!state?.enabled || !state.audio?.src || state.video?.paused) return;
+  if (state.video.dataset.timedNarrationCatchupActive === "1") return;
   setVideoNarrationAudioTime(state.video, state.audio, { force: forceSync });
   state.audio.playbackRate = state.video.playbackRate || 1;
   state.audio.volume = state.video.volume;
@@ -3473,16 +3670,31 @@ function ensureVideoNarrationState(pageId, video) {
       playVideoNarrationState(state, { forceSync: true });
     }
   });
-  video.addEventListener("pause", () => audio.pause());
+  video.addEventListener("pause", () => {
+    if (video.dataset.timedNarrationHoldActive === "1") return;
+    audio.pause();
+  });
   video.addEventListener("waiting", () => audio.pause());
   video.addEventListener("ended", () => audio.pause());
   video.addEventListener("seeking", () => {
+    if (
+      video.dataset.timedNarrationHoldActive === "1" ||
+      video.dataset.timedNarrationLeadActive === "1"
+    ) {
+      return;
+    }
     audio.pause();
     setVideoNarrationAudioTime(video, audio, { force: true });
   });
-  video.addEventListener("seeked", () =>
-    playVideoNarrationState(state, { forceSync: true }),
-  );
+  video.addEventListener("seeked", () => {
+    if (
+      video.dataset.timedNarrationHoldActive === "1" ||
+      video.dataset.timedNarrationLeadActive === "1"
+    ) {
+      return;
+    }
+    playVideoNarrationState(state, { forceSync: true });
+  });
   video.addEventListener("timeupdate", () => {
     if (!state.enabled || video.paused) return;
     // Reassigning currentTime performs a media seek. iPhone WebKit can report
@@ -3501,6 +3713,14 @@ function ensureVideoNarrationState(pageId, video) {
   video.addEventListener("volumechange", () => {
     audio.volume = video.volume;
     audio.muted = video.muted;
+  });
+  audio.addEventListener("timeupdate", () => {
+    if (
+      video.dataset.timedNarrationHoldActive === "1" ||
+      video.dataset.timedNarrationLeadActive === "1"
+    ) {
+      renderChildhoodPilotSubtitleOverlay(video);
+    }
   });
 
   button.addEventListener("click", (event) => {
@@ -4742,6 +4962,7 @@ export {
   setVideoNarrationAudioTime,
   syncChildhoodPilotSubtitlesForPage,
   syncVideoNarrationForPage,
+  wireTimedPlaybackHolds,
   resetChildhoodPilotSubtitleCatalogForTests,
 };
 

@@ -1566,8 +1566,8 @@ input {
 }
 
 #videos
-  #fundalReflexFullAnimationVideoPage
-  #fundalReflexFullAnimationVideoContainer {
+  .page.full-animation-video-page
+  .video-container.dedicated-video-player {
   flex-direction: column;
   align-items: center;
 }
@@ -1581,13 +1581,22 @@ input {
   object-fit: contain;
 }
 
-#videos #fundalReflexFullAnimationVideoPage .childhood-pilot-subtitle-panel,
-#videos #fundalReflexFullAnimationVideoPage .dedicated-video-controls {
+#videos
+  .page.full-animation-video-page
+  .dedicated-video-player
+  > .childhood-pilot-subtitle-panel,
+#videos
+  .page.full-animation-video-page
+  .dedicated-video-player
+  > .dedicated-video-controls {
   box-sizing: border-box;
   width: min(100%, 64dvh, 720px);
 }
 
-#videos #fundalReflexFullAnimationVideoPage .childhood-pilot-subtitle-panel {
+#videos
+  .page.full-animation-video-page
+  .dedicated-video-player
+  > .childhood-pilot-subtitle-panel {
   min-height: 64px;
   margin: 0 auto;
   padding: 9px 14px;
@@ -1598,16 +1607,23 @@ input {
 }
 
 #videos
-  #fundalReflexFullAnimationVideoPage
+  .page.full-animation-video-page
+  .dedicated-video-player
   .childhood-pilot-subtitle-panel__cue {
   padding: 0;
   color: inherit;
   background: transparent;
 }
 
-#fundalReflexFullAnimationVideoContainer:fullscreen,
-#fundalReflexFullAnimationVideoContainer:-webkit-full-screen,
-#fundalReflexFullAnimationVideoContainer.is-app-fullscreen {
+#videos
+  .page.full-animation-video-page
+  .video-container.dedicated-video-player:fullscreen,
+#videos
+  .page.full-animation-video-page
+  .video-container.dedicated-video-player:-webkit-full-screen,
+#videos
+  .page.full-animation-video-page
+  .video-container.dedicated-video-player.is-app-fullscreen {
   box-sizing: border-box;
   width: 100vw !important;
   height: 100vh !important;
@@ -1622,18 +1638,26 @@ input {
   background: #000000;
 }
 
-#fundalReflexFullAnimationVideoContainer.is-app-fullscreen {
+#videos
+  .page.full-animation-video-page
+  .video-container.dedicated-video-player.is-app-fullscreen {
   position: fixed;
   inset: 0;
   z-index: 10000;
 }
 
-#fundalReflexFullAnimationVideoContainer:fullscreen
-  > #fundalReflexFullAnimationVideo,
-#fundalReflexFullAnimationVideoContainer:-webkit-full-screen
-  > #fundalReflexFullAnimationVideo,
-#fundalReflexFullAnimationVideoContainer.is-app-fullscreen
-  > #fundalReflexFullAnimationVideo {
+#videos
+  .page.full-animation-video-page
+  .video-container.dedicated-video-player:fullscreen
+  > video,
+#videos
+  .page.full-animation-video-page
+  .video-container.dedicated-video-player:-webkit-full-screen
+  > video,
+#videos
+  .page.full-animation-video-page
+  .video-container.dedicated-video-player.is-app-fullscreen
+  > video {
   flex: 1 1 0;
   width: 100% !important;
   min-height: 0;
@@ -1642,13 +1666,16 @@ input {
 }
 
 #videos
-  #fundalReflexFullAnimationVideoContainer:fullscreen
+  .page.full-animation-video-page
+  .video-container.dedicated-video-player:fullscreen
   > .childhood-pilot-subtitle-panel,
 #videos
-  #fundalReflexFullAnimationVideoContainer:-webkit-full-screen
+  .page.full-animation-video-page
+  .video-container.dedicated-video-player:-webkit-full-screen
   > .childhood-pilot-subtitle-panel,
 #videos
-  #fundalReflexFullAnimationVideoContainer.is-app-fullscreen
+  .page.full-animation-video-page
+  .video-container.dedicated-video-player.is-app-fullscreen
   > .childhood-pilot-subtitle-panel {
   flex: 0 0 auto;
   width: min(100%, 72rem) !important;
@@ -1663,25 +1690,31 @@ input {
 }
 
 #videos
-  #fundalReflexFullAnimationVideoContainer:fullscreen
+  .page.full-animation-video-page
+  .video-container.dedicated-video-player:fullscreen
   .childhood-pilot-subtitle-panel__cue,
 #videos
-  #fundalReflexFullAnimationVideoContainer:-webkit-full-screen
+  .page.full-animation-video-page
+  .video-container.dedicated-video-player:-webkit-full-screen
   .childhood-pilot-subtitle-panel__cue,
 #videos
-  #fundalReflexFullAnimationVideoContainer.is-app-fullscreen
+  .page.full-animation-video-page
+  .video-container.dedicated-video-player.is-app-fullscreen
   .childhood-pilot-subtitle-panel__cue {
   font-size: clamp(16px, 2.2vw, 28px);
 }
 
 #videos
-  #fundalReflexFullAnimationVideoContainer:fullscreen
+  .page.full-animation-video-page
+  .video-container.dedicated-video-player:fullscreen
   > .dedicated-video-controls,
 #videos
-  #fundalReflexFullAnimationVideoContainer:-webkit-full-screen
+  .page.full-animation-video-page
+  .video-container.dedicated-video-player:-webkit-full-screen
   > .dedicated-video-controls,
 #videos
-  #fundalReflexFullAnimationVideoContainer.is-app-fullscreen
+  .page.full-animation-video-page
+  .video-container.dedicated-video-player.is-app-fullscreen
   > .dedicated-video-controls {
   flex: 0 0 auto;
   width: min(100%, 72rem) !important;
@@ -1694,8 +1727,14 @@ input {
     width: min(100%, 64vh, 720px);
   }
 
-  #videos #fundalReflexFullAnimationVideoPage .childhood-pilot-subtitle-panel,
-  #videos #fundalReflexFullAnimationVideoPage .dedicated-video-controls {
+  #videos
+    .page.full-animation-video-page
+    .dedicated-video-player
+    > .childhood-pilot-subtitle-panel,
+  #videos
+    .page.full-animation-video-page
+    .dedicated-video-player
+    > .dedicated-video-controls {
     width: min(100%, 64vh, 720px);
   }
 }
@@ -1705,8 +1744,14 @@ input {
     width: min(100%, 58dvh, 640px);
   }
 
-  #videos #fundalReflexFullAnimationVideoPage .childhood-pilot-subtitle-panel,
-  #videos #fundalReflexFullAnimationVideoPage .dedicated-video-controls {
+  #videos
+    .page.full-animation-video-page
+    .dedicated-video-player
+    > .childhood-pilot-subtitle-panel,
+  #videos
+    .page.full-animation-video-page
+    .dedicated-video-player
+    > .dedicated-video-controls {
     width: min(100%, 58dvh, 640px);
   }
 }

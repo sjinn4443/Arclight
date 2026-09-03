@@ -36,6 +36,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--work-dir", type=Path, default=DEFAULT_WORK)
     parser.add_argument("--artifacts-dir", type=Path, default=DEFAULT_ARTIFACTS)
     parser.add_argument("--public-dir", type=Path, default=DEFAULT_PUBLIC)
+    parser.add_argument(
+        "--asset-stem",
+        default="fundal-reflex-full-animation",
+        help="Filename stem for WAV masters and review MP4s.",
+    )
     parser.add_argument("--ffmpeg", type=Path)
     parser.add_argument("--skip-tts", action="store_true")
     parser.add_argument("--skip-review-video", action="store_true")
@@ -354,6 +359,9 @@ def make_review_mp4(
 
 def main() -> None:
     args = parse_args()
+    asset_stem = str(args.asset_stem).strip()
+    if not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", asset_stem):
+        raise ValueError("--asset-stem must be a lowercase hyphenated filename stem")
     args.tools_dir = args.tools_dir.resolve()
     sys.path.insert(0, str(args.tools_dir))
 
@@ -390,10 +398,10 @@ def main() -> None:
         if not args.skip_tts:
             asyncio.run(generate_tts_cues(script, language, audio_cues, cue_dir))
 
-        wav_path = artifacts_dir / f"fundal-reflex-full-animation.{language}.master.wav"
+        wav_path = artifacts_dir / f"{asset_stem}.{language}.master.wav"
         m4a_path = public_dir / f"{language}.m4a"
         vtt_path = public_dir / f"{language}.vtt"
-        review_path = artifacts_dir / f"fundal-reflex-full-animation.{language}.review.mp4"
+        review_path = artifacts_dir / f"{asset_stem}.{language}.review.mp4"
 
         cue_qa = mix_language(
             ffmpeg, script, language, audio_cues, cue_dir, wav_path

@@ -67,6 +67,29 @@ const PILOT_CATALOG = {
       high: "videos/FullAnim/FundalReflex_Full Animation.mp4",
     },
   },
+  directOphthalmoscopyFullAnimationVideoPage: {
+    subtitles: {
+      en: "/narration/direct-ophthalmoscopy/full-animation/en.vtt",
+    },
+    audioVariants: {
+      en: {
+        label: "English",
+        src: "/narration/direct-ophthalmoscopy/full-animation/en.m4a",
+      },
+    },
+    defaultSubtitleLang: "en",
+    defaultAudioLang: "en",
+    iosHls: {
+      masterManifest: "",
+      preferredMode: "low",
+      offlineFallbackMode: "low",
+      subtitleLanguages: ["en"],
+    },
+    localSources: {
+      low: "videos/FullAnim/New_DOFullAnim.mp4",
+      high: "videos/FullAnim/New_DOFullAnim.mp4",
+    },
+  },
 };
 const PILOT_SUBTITLE_VTT = `WEBVTT
 
@@ -191,6 +214,17 @@ describe("childhood eye screening subtitle pilot", () => {
             </video>
           </div>
         </div>
+        <div id="directOphthalmoscopyFullAnimationVideoPage" class="page" style="display:block">
+          <div class="tri-toggle" role="radiogroup" aria-label="Video mode">
+            <button class="tri-toggle__btn" data-mode="low">low</button>
+            <button class="tri-toggle__btn" data-mode="high">high</button>
+          </div>
+          <div class="video-container" id="directOphthalmoscopyFullAnimationVideoContainer">
+            <video id="directOphthalmoscopyFullAnimationVideo" controls>
+              <source src="videos/FullAnim/New_DOFullAnim.mp4" type="video/mp4" />
+            </video>
+          </div>
+        </div>
       </div>
     `;
 
@@ -244,7 +278,10 @@ describe("childhood eye screening subtitle pilot", () => {
       }
 
       if (
-        String(url).includes("/narration/fundal-reflex/full-animation/") &&
+        (String(url).includes("/narration/fundal-reflex/full-animation/") ||
+          String(url).includes(
+            "/narration/direct-ophthalmoscopy/full-animation/",
+          )) &&
         String(url).endsWith(".vtt")
       ) {
         return {
@@ -265,6 +302,7 @@ describe("childhood eye screening subtitle pilot", () => {
   });
 
   afterEach(() => {
+    jest.useRealTimers();
     fetchSpy?.mockRestore();
   });
 
@@ -804,6 +842,114 @@ describe("childhood eye screening subtitle pilot", () => {
         .querySelector("[data-video-fullscreen-toggle='true']")
         .getAttribute("aria-pressed"),
     ).toBe("true");
+  });
+
+  it("adds English narration and a dedicated caption panel to Direct Ophthalmoscopy", async () => {
+    const language = await videos.ensureChildhoodPilotSubtitleControlsForPage(
+      "directOphthalmoscopyFullAnimationVideoPage",
+    );
+
+    const page = document.getElementById(
+      "directOphthalmoscopyFullAnimationVideoPage",
+    );
+    const video = page.querySelector("video");
+    const audio = page.querySelector("[data-video-narration-audio='true']");
+    const panel = page.querySelector(
+      "[data-childhood-pilot-subtitle-panel='true']",
+    );
+
+    Object.defineProperty(video, "currentTime", {
+      configurable: true,
+      writable: true,
+      value: 1,
+    });
+    video.dispatchEvent(new Event("timeupdate"));
+
+    expect(language).toBe("en");
+    expect(audio.getAttribute("src")).toBe(
+      "/narration/direct-ophthalmoscopy/full-animation/en.m4a",
+    );
+    expect(panel).not.toBeNull();
+    expect(panel.parentElement).toBe(video.parentElement);
+    expect(panel.textContent).toContain("Subtitle cue");
+    expect(video.hasAttribute("controls")).toBe(false);
+    expect(
+      page.querySelector("[data-dedicated-video-controls='true']"),
+    ).not.toBeNull();
+  });
+
+  it("holds the Direct Ophthalmoscopy frame while narration continues", async () => {
+    jest.useFakeTimers();
+    await videos.ensureChildhoodPilotSubtitleControlsForPage(
+      "directOphthalmoscopyFullAnimationVideoPage",
+    );
+
+    const page = document.getElementById(
+      "directOphthalmoscopyFullAnimationVideoPage",
+    );
+    const video = page.querySelector("video");
+    const audio = page.querySelector("[data-video-narration-audio='true']");
+    let paused = false;
+
+    Object.defineProperty(video, "duration", {
+      configurable: true,
+      value: 183.08,
+    });
+    Object.defineProperty(video, "currentTime", {
+      configurable: true,
+      writable: true,
+      value: 45.9,
+    });
+    Object.defineProperty(video, "paused", {
+      configurable: true,
+      get: () => paused,
+    });
+    Object.defineProperty(audio, "currentTime", {
+      configurable: true,
+      writable: true,
+      value: 45.9,
+    });
+    video.pause = jest.fn(() => {
+      paused = true;
+      video.dispatchEvent(new Event("pause"));
+    });
+    video.play = jest.fn(() => {
+      paused = false;
+      video.dispatchEvent(new Event("play"));
+      return Promise.resolve();
+    });
+    audio.pause = jest.fn();
+    audio.play = jest.fn(() => Promise.resolve());
+
+    videos.wireTimedPlaybackHolds(
+      video,
+      "directOphthalmoscopyFullAnimationVideoPage",
+      [
+        {
+          at: 46,
+          continueNarration: true,
+          durationMs: 3000,
+          preserveMediaPosition: true,
+          narrationResumeAt: 49.1,
+          narrationCatchUpAt: 55.2,
+        },
+      ],
+    );
+
+    video.currentTime = 46.1;
+    video.dispatchEvent(new Event("timeupdate"));
+
+    expect(video.pause).toHaveBeenCalledTimes(1);
+    expect(video.currentTime).toBe(46);
+    expect(audio.pause).not.toHaveBeenCalled();
+    expect(audio.play).toHaveBeenCalled();
+
+    audio.currentTime = 49.1;
+    jest.advanceTimersByTime(3000);
+
+    expect(video.currentTime).toBe(46);
+    expect(video.dataset.timedNarrationLeadActive).toBe("1");
+    expect(video.play).toHaveBeenCalledTimes(1);
   });
 
   it("uses a viewport-filling fallback that keeps the caption panel in the layout", async () => {

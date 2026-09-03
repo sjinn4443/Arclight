@@ -2275,5 +2275,28 @@
       "low": "videos/FullAnim/New_FundalReflexFullAnim.mp4",
       "high": "videos/FullAnim/New_FundalReflexFullAnim.mp4"
     }
+  },
+  "directOphthalmoscopyFullAnimationVideoPage": {
+    "subtitles": {
+      "en": "/narration/direct-ophthalmoscopy/full-animation/en.vtt"
+    },
+    "audioVariants": {
+      "en": {
+        "label": "English",
+        "src": "/narration/direct-ophthalmoscopy/full-animation/en.m4a"
+      }
+    },
+    "defaultSubtitleLang": "en",
+    "defaultAudioLang": "en",
+    "iosHls": {
+      "masterManifest": "",
+      "preferredMode": "low",
+      "offlineFallbackMode": "low",
+      "subtitleLanguages": ["en"]
+    },
+    "localSources": {
+      "low": "videos/FullAnim/New_DOFullAnim.mp4",
+      "high": "videos/FullAnim/New_DOFullAnim.mp4"
+    }
   }
 }

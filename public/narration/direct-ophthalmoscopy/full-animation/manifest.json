@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "durationSeconds": 183.083333,
+  "script": "script.json",
+  "tracks": {
+    "en": {
+      "src": "en.m4a",
+      "captions": "en.vtt",
+      "bytes": 816716,
+      "sha256": "092037dc20f4b9e02593a09be0b027d5f9f9d8e25d4a48abe2edbacfd7623a21"
+    }
+  }
+}

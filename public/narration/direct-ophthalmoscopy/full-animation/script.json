@@ -1,0 +1,214 @@
+{
+  "schemaVersion": 1,
+  "title": "Direct Ophthalmoscopy Full Animation narration",
+  "timingSource": "Timed against New_DOFullAnim.mp4, using the Direct Ophthalmoscopy scrolly-page copy and the supplied Direct Ophthalmoscopy reference document.",
+  "sourceVideo": "/videos/FullAnim/New_DOFullAnim.mp4",
+  "durationSeconds": 183.083333,
+  "defaultLanguage": "en",
+  "languages": {
+    "en": {
+      "label": "English",
+      "locale": "en-GB",
+      "voice": "en-GB-SoniaNeural",
+      "style": "Calm, clear adult medical educator; slightly slow; neutral rather than promotional"
+    }
+  },
+  "pronunciationGuide": {
+    "Arclight": "ARK-light",
+    "fundal reflex": "FUN-dul REE-fleks",
+    "periorbita": "pair-ee-OR-bit-uh",
+    "neuroretinal": "NYUR-oh-RET-in-ul",
+    "fovea": "FOH-vee-uh"
+  },
+  "cues": [
+    {
+      "id": "observation-01",
+      "section": "Observation and Fundal Reflex",
+      "start": 3.2,
+      "end": 7.2,
+      "screenText": "Hand hygiene",
+      "en": "Start with hand hygiene.",
+      "notes": "Begins as the hand-washing animation becomes fully visible."
+    },
+    {
+      "id": "observation-02",
+      "section": "Observation and Fundal Reflex",
+      "start": 7.2,
+      "end": 14.0,
+      "screenText": "Observe the periorbital area, eyelids and eyes",
+      "en": "Observe the periorbital area, eyelids and eyes, noting any abnormalities.",
+      "notes": "Matches the normal-versus-abnormal eye examples."
+    },
+    {
+      "id": "observation-03",
+      "section": "Observation and Fundal Reflex",
+      "start": 14.0,
+      "end": 24.4,
+      "screenText": "Brightest light; lenses up; quiet, dim room",
+      "en": "Prepare the Arclight by selecting the brightest light setting and pushing both lens racks fully up. Use a quiet, dim room.",
+      "ttsText": {
+        "en": "Prepare the Arc-light by selecting the brightest light setting and pushing both lens racks fully up. Use a quiet, dim room."
+      },
+      "notes": "The device controls and environment icons appear in this order."
+    },
+    {
+      "id": "observation-04a",
+      "section": "Observation and Fundal Reflex",
+      "start": 25.0,
+      "end": 33.0,
+      "screenText": "Sight hole close to the examiner's eye",
+      "en": "Position the sight hole close to your eye.",
+      "notes": "Ends as the light-at-own-eye warning appears."
+    },
+    {
+      "id": "observation-04b",
+      "section": "Observation and Fundal Reflex",
+      "start": 33.0,
+      "end": 37.0,
+      "screenText": "Do not shine the light into your own eye",
+      "en": "Do not shine the light into your own eye.",
+      "notes": "Matches the incorrect light-at-own-eye example."
+    },
+    {
+      "id": "observation-04c",
+      "section": "Observation and Fundal Reflex",
+      "start": 37.0,
+      "end": 40.5,
+      "screenText": "Do not hold the Arclight sideways",
+      "en": "Do not hold the Arclight sideways.",
+      "ttsText": {
+        "en": "Do not hold the Arc-light sideways."
+      },
+      "notes": "Begins as the sideways-position warning appears."
+    },
+    {
+      "id": "observation-05",
+      "section": "Observation and Fundal Reflex",
+      "start": 43.8,
+      "end": 49.1,
+      "screenText": "Observe both eyes together at arm's length",
+      "en": "At arm's length, ask the patient to look at the light and observe both eyes together.",
+      "notes": "The narration and caption continue while the visual frame is held at 46 seconds until the first narration ends."
+    },
+    {
+      "id": "observation-06",
+      "section": "Observation and Fundal Reflex",
+      "start": 49.1,
+      "end": 55.2,
+      "screenText": "Compare brightness and colour",
+      "en": "The reflexes should be equally bright and similar in colour; asymmetry is abnormal.",
+      "notes": "The video resumes from 46 seconds with this narration and caption, then pauses at 52.2 seconds for five seconds. The caption ends with the narration at 55.2 seconds, and the narration clock waits so the next cue returns to its original video position."
+    },
+    {
+      "id": "positioning-01",
+      "section": "Positioning and Flight Path",
+      "start": 57.0,
+      "end": 68.3,
+      "screenText": "Fix on a distant target, not the examiner or light",
+      "en": "Ask the patient to fix on a distant target. Make sure they are not looking at you or at the light itself.",
+      "notes": "Matches the distant-fixation target and incorrect fixation examples."
+    },
+    {
+      "id": "positioning-02",
+      "section": "Positioning and Flight Path",
+      "start": 71.0,
+      "end": 81.2,
+      "screenText": "Right with right; left with left",
+      "en": "Use your right hand and right eye for the patient's right eye and your left hand and left eye for the left eye.",
+      "notes": "The green and red outlines reinforce same-side technique."
+    },
+    {
+      "id": "positioning-03",
+      "section": "Positioning and Flight Path",
+      "start": 82.0,
+      "end": 94.4,
+      "screenText": "Follow the reflex on a 10 to 15 degree temporal path",
+      "en": "Start with your feet close to the patient and lean back. Identify the fundal reflex, then follow it in along a horizontal path 10 to 15 degrees temporal to the pupil.",
+      "notes": "Temporal is described visually as the ear side of the pupil."
+    },
+    {
+      "id": "positioning-04",
+      "section": "Positioning and Flight Path",
+      "start": 94.6,
+      "end": 103.4,
+      "screenText": "Move closer for a wider, steadier view",
+      "en": "As you get close, the optic disc should come into view. Move closer for a wider, steadier view.",
+      "notes": "Matches the transition from the reflex to a stable optic-disc view."
+    },
+    {
+      "id": "positioning-05",
+      "section": "Positioning and Flight Path",
+      "start": 103.8,
+      "end": 113.2,
+      "screenText": "Keep the Arclight aligned; follow a major branch back to the disc",
+      "en": "Keep the Arclight aligned with the patient's eye and do not move it up or down. If you lose the disc, follow a major branch back to it.",
+      "ttsText": {
+        "en": "Keep the Arc-light aligned with the patient's eye and do not move it up or down. If you lose the disc, follow a major branch back to it."
+      },
+      "notes": "Explains how to maintain alignment and recover the optic-disc view."
+    },
+    {
+      "id": "features-01",
+      "section": "Features to Assess",
+      "start": 118.0,
+      "end": 125.0,
+      "screenText": "Optic-disc margin",
+      "en": "At the optic disc, comment on how distinct its margin is.",
+      "notes": "The turquoise ring and margin label appear in this interval."
+    },
+    {
+      "id": "features-02",
+      "section": "Features to Assess",
+      "start": 125.0,
+      "end": 133.5,
+      "screenText": "Neuroretinal rim colour and cup-to-disc ratio",
+      "en": "Comment on the colour of the neuroretinal rim and the cup-to-disc ratio.",
+      "notes": "The rim and cup are highlighted separately, then together."
+    },
+    {
+      "id": "features-03",
+      "section": "Features to Assess",
+      "start": 135.6,
+      "end": 144.62,
+      "screenText": "Healthy and abnormal optic-disc examples",
+      "en": "A healthy disc has clear margins and a rim. Patients with any swelling, pale colour or increased cupping should be referred.",
+      "notes": "Uses British English and omits the Oxford comma. The caption ends with the narration at 144.62 seconds during the four-second hold; playback resumes at 142 seconds and realigns before How to Examine."
+    },
+    {
+      "id": "examine-01",
+      "section": "How to Examine",
+      "start": 145.0,
+      "end": 153.7,
+      "screenText": "Dilate before examining the fovea",
+      "en": "Before examining the fovea, dilate the pupil. Otherwise, fixation on the light constricts it and obscures the view.",
+      "notes": "Timed to the dilating-drop and enlarging-pupil animation."
+    },
+    {
+      "id": "examine-02",
+      "section": "How to Examine",
+      "start": 154.0,
+      "end": 158.0,
+      "screenText": "Begin at the optic disc",
+      "en": "Start at the optic disc.",
+      "notes": "The disc is highlighted before the vessel arrows begin."
+    },
+    {
+      "id": "examine-03",
+      "section": "How to Examine",
+      "start": 158.0,
+      "end": 176.4,
+      "screenText": "Follow the four main retinal vessel branches",
+      "en": "Follow each of the four main retinal vessel branches. Start at the optic disc, follow one branch, return to the optic disc and then follow the next branch. Repeat this for all four branches.",
+      "notes": "Covers the sequential out-and-back vessel-following arrows."
+    },
+    {
+      "id": "examine-04",
+      "section": "How to Examine",
+      "start": 176.6,
+      "end": 183.05,
+      "screenText": "Finish at the macula and fovea; repeat in the other eye",
+      "en": "Finish at the macula and fovea, then repeat the examination in the other eye.",
+      "notes": "Ends with the macular highlight and whole-retina summary arrows."
+    }
+  ]
+}
