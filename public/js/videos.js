@@ -1508,6 +1508,39 @@ const VIDEO_PAGE_SOURCES = {
     iframeClass: "videos-yt-fe-full",
   },
 
+  frontOfEyeFullAnimationVideoPage: {
+    key: "videoMode:frontOfEyeFullAnimationVideoPage",
+    containerSelector: "#frontOfEyeFullAnimationVideoContainer",
+    videoSelector: "#frontOfEyeFullAnimationVideo",
+    sources: {
+      low: "videos/FullAnim/New_FrontofEyeFullAnim.mp4",
+      high: "videos/FullAnim/New_FrontofEyeFullAnim.mp4",
+    },
+    playbackHolds: [
+      {
+        at: 6,
+        continueNarration: true,
+        durationMs: 4000,
+        preserveMediaPosition: true,
+        narrationCatchUpAt: 138.26,
+      },
+      {
+        at: 77,
+        continueNarration: true,
+        durationMs: 4000,
+        preserveMediaPosition: true,
+        narrationCatchUpAt: 138.26,
+      },
+      {
+        at: 121,
+        continueNarration: true,
+        durationMs: 3000,
+        preserveMediaPosition: true,
+        narrationCatchUpAt: 138.26,
+      },
+    ],
+  },
+
   fundalStillPage: {
     key: "videoMode:fundalStillPage",
     containerSelector: "#fundalStillContainer",
@@ -1688,9 +1721,25 @@ const VIDEO_PAGE_SOURCES = {
       "#binocularIndirectOphthalmoscopyFullAnimationVideoContainer",
     videoSelector: "#binocularIndirectOphthalmoscopyFullAnimationVideo",
     sources: {
-      low: "videos/FullAnim/BIO_Full Animation_720p.mp4",
-      high: "videos/FullAnim/BIO_Full Animation.mp4",
+      low: "videos/FullAnim/New_BIOFullAnim.mp4",
+      high: "videos/FullAnim/New_BIOFullAnim.mp4",
     },
+    playbackHolds: [
+      {
+        at: 43.7,
+        continueNarration: true,
+        durationMs: 4000,
+        preserveMediaPosition: true,
+        narrationCatchUpAt: 130.68,
+      },
+      {
+        at: 103.6,
+        continueNarration: true,
+        durationMs: 7000,
+        preserveMediaPosition: true,
+        narrationCatchUpAt: 130.68,
+      },
+    ],
   },
 
   glaucomaPupilReactionsVideoPage: {
@@ -1824,6 +1873,8 @@ const CHILDHOOD_EYE_SCREENING_SUBTITLE_PAGE_IDS = new Set(
 const DEDICATED_SUBTITLE_PANEL_PAGE_IDS = new Set([
   "fundalReflexFullAnimationVideoPage",
   "directOphthalmoscopyFullAnimationVideoPage",
+  "binocularIndirectOphthalmoscopyFullAnimationVideoPage",
+  "frontOfEyeFullAnimationVideoPage",
 ]);
 const DEDICATED_VIDEO_FULLSCREEN_BODY_CLASS =
   "dedicated-video-fullscreen-active";

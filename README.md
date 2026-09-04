@@ -282,7 +282,7 @@ When adding new media, keep the file path discoverable under the static root, ad
 - `public/js/videoSubtitles.js` applies localized caption tracks to app videos using `public/video-localization/app-video-subtitles.json`.
 - `public/js/videos.js` also owns the Childhood Eye Screening subtitle/HLS pilot through `public/video-localization/childhood-eye-screening.json` and VTT files under `public/video-subtitles/`.
 - Local video pages use `VIDEO_PAGE_SOURCES` for low/high/online or two-state video modes; many glaucoma workshop video pages now use the same tri-toggle source pattern.
-- Full-animation MP4 lessons use the same Videos-route local video pattern: hidden pages in `public/html/videos.html`, low/high sources in `VIDEO_PAGE_SOURCES`, and files under `public/videos/FullAnim/`. Current pages are `fundalReflexFullAnimationVideoPage`, `directOphthalmoscopyFullAnimationVideoPage`, and `binocularIndirectOphthalmoscopyFullAnimationVideoPage`.
+- Full-animation MP4 lessons use the same Videos-route local video pattern: hidden pages in `public/html/videos.html`, low/high sources in `VIDEO_PAGE_SOURCES`, and files under `public/videos/FullAnim/`. Current pages are `fundalReflexFullAnimationVideoPage`, `directOphthalmoscopyFullAnimationVideoPage`, `binocularIndirectOphthalmoscopyFullAnimationVideoPage`, and `frontOfEyeFullAnimationVideoPage`; all four expose synchronized captions and separate narration audio through the shared dedicated player controls.
 - Shared progress helpers live in `public/js/lessonProgress.js` and `public/js/lessonCompletionTick.js`. They read/write compatible progress records from `lessonProgress:`, `videoProgress:`, `childhoodWorkshop:progress:`, `diabeticWorkshop:progress:`, and `glaucomaWorkshop:progress:` keys, dispatch `arclight:lesson-progress-changed`, and add completion ticks when rows reach completion.
 
 ## Docker / Railway
@@ -322,7 +322,7 @@ See [`security/EMERGENCY_PLAN.md`](./security/EMERGENCY_PLAN.md) for the operato
 - `public/js/casestudy.js`, `public/js/casestudy_primary.js`, `public/js/glaucomaHistoryCaseStudy.js` - case-study chat/flashcard engines and progress wiring
 - `public/html/diabeticRetinopathyWorkshop.html` - diabetic retinopathy workshop launcher, lesson folders, progress rows, scroll lessons, and protocol pages
 - `public/html/videos.html` - Videos route, including Interactive Learning, diabetic workshop video pages, and diabetic/glaucoma demo quiz pages
-- `public/videos/FullAnim/` - local full-animation MP4 lessons for Fundal Reflex, Direct Ophthalmoscopy, and Binocular Indirect Ophthalmoscopy
+- `public/videos/FullAnim/` - local full-animation MP4 lessons for Fundal Reflex, Direct Ophthalmoscopy, Binocular Indirect Ophthalmoscopy, and Front of Eye examination
 - `public/js/lessonProgress.js`, `public/js/lessonCompletionTick.js` - shared lesson progress storage, row updates, and completion tick rendering
 - `public/js/languageinstall.js` - language selection, PWA install prompts, offline download selection, and service-worker cache requests
 - `public/js/videoSubtitles.js`, `public/video-localization/`, `public/video-subtitles/` - localized caption catalog/runtime and VTT subtitle assets
@@ -369,7 +369,8 @@ See [`security/EMERGENCY_PLAN.md`](./security/EMERGENCY_PLAN.md) for the operato
 
 ## Changelog (high level)
 
-- 2026-09-02: Added stage-matched multilingual narration controls to the combined Fundal Reflex examination scroll page, standardized its launcher thumbnail on `primary_scrollytell.webp`, and bumped the static cache to `arclight-static-v34`.
+- 2026-09-04: Replaced the BIO full-animation source with `New_BIOFullAnim.mp4`; added the Front of Eye `Full Animation` lesson and `New_FrontofEyeFullAnim.mp4` page; added timed English captions, narration, and dedicated accessible player controls for both; refined both scripts; added narration-continuing BIO holds of four and seven seconds plus Front of Eye holds of four, four and three seconds; tightened cue endings and resynchronized post-hold narration; and bumped the static cache to `arclight-static-v52`.
+- 2026-09-02: Added stage-matched multilingual narration controls to the combined Fundal Reflex examination scroll page and standardized its launcher thumbnail on `primary_scrollytell.webp`.
 - 2026-08-28: Added Lao application localization across the main UI, Medical Students workshop, local mini-apps, accessible/dynamic copy, and supported video subtitle catalogs/VTT/HLS outputs; expanded translation completeness and terminology QA accordingly.
 - 2026-08-28: Refined localized settings, My Learning, case-study, and Fundal Reflex behavior; added intermediate case Previous/Next history, desktop pointer swipes for primary flashcards, launch-context-aware Back navigation for shared Visual Acuity videos, and bumped the static cache to `arclight-static-v31`.
 - 2026-07-13: Added the Interactive Learning eye-examination `Connect` game: History -> VA -> Front of eye -> Pupils -> Fundal reflex -> DO, with ordered checkpoints, full-grid completion, a three-step first-play tutorial, responsive pointer/keyboard controls, and automated path/completion tests.

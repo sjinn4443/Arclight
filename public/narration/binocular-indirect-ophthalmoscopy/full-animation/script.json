@@ -1,0 +1,193 @@
+{
+  "schemaVersion": 1,
+  "title": "Binocular Indirect Ophthalmoscopy Full Animation narration",
+  "timingSource": "Timed against New_BIOFullAnim.mp4, using the Binocular Indirect Ophthalmoscopy scrolly-page copy already shipped in the Diabetic Retinopathy workshop. The narration clock includes a four-second visual hold at 43.7 seconds and a seven-second visual hold at 103.6 seconds.",
+  "sourceVideo": "/videos/FullAnim/New_BIOFullAnim.mp4",
+  "durationSeconds": 130.68,
+  "defaultLanguage": "en",
+  "languages": {
+    "en": {
+      "label": "English",
+      "locale": "en-GB",
+      "voice": "en-GB-SoniaNeural",
+      "style": "Calm, clear adult medical educator; slightly slow; neutral rather than promotional"
+    }
+  },
+  "pronunciationGuide": {
+    "BIO": "B-I-O",
+    "fundoscopy": "fun-DOSS-kuh-pee",
+    "fundus": "FUN-dus",
+    "scleral": "SKLEER-ul",
+    "periphery": "puh-RIFF-uh-ree"
+  },
+  "cues": [
+    {
+      "id": "preparation-01",
+      "section": "Preparation",
+      "start": 2.5,
+      "end": 6.1,
+      "screenText": "Wash hands",
+      "en": "Begin by washing and drying your hands.",
+      "notes": "Begins when the hand-hygiene animation appears."
+    },
+    {
+      "id": "preparation-02",
+      "section": "Preparation",
+      "start": 6.5,
+      "end": 14.5,
+      "screenText": "Select the brightest BIO light setting",
+      "en": "Switch on the BIO light and press the button five times to select the brightest light setting.",
+      "ttsText": {
+        "en": "Switch on the B-I-O light and press the button five times to select the brightest light setting."
+      },
+      "notes": "Matches the power and brightness controls on the headset."
+    },
+    {
+      "id": "preparation-03",
+      "section": "Preparation",
+      "start": 19.0,
+      "end": 25.5,
+      "screenText": "Automatic switch-off after 90 seconds",
+      "en": "The device switches off automatically after ninety seconds.",
+      "notes": "Timed to the ninety-second timer graphic."
+    },
+    {
+      "id": "preparation-04",
+      "section": "Preparation",
+      "start": 26.0,
+      "end": 32.0,
+      "screenText": "Fit and adjust the BIO headset",
+      "en": "Place the BIO on your head and adjust the strap until it feels secure and comfortable.",
+      "ttsText": {
+        "en": "Place the B-I-O on your head and adjust the strap until it feels secure and comfortable."
+      },
+      "notes": "Begins when the headset is placed and tightened."
+    },
+    {
+      "id": "preparation-05",
+      "section": "Preparation",
+      "start": 32.0,
+      "end": 39.7,
+      "screenText": "Centre the BIO and check alignment with a thumb",
+      "en": "Align the centre with your nose. Check the alignment using your thumb at arm's length, viewing with one eye at a time.",
+      "notes": "Covers the central alignment guide and the correct-versus-blurred thumb views."
+    },
+    {
+      "id": "preparation-06",
+      "section": "Preparation",
+      "start": 39.95,
+      "end": 47.1,
+      "screenText": "Eyepieces at 90 degrees to the line of sight",
+      "en": "Eyepieces should angle outwards so they are at ninety degrees to your line of sight when looking slightly downwards.",
+      "notes": "Matches the side-view ninety-degree alignment graphic. The video holds at 43.7 seconds for four seconds while narration and captions continue, and the caption clears when the spoken line ends."
+    },
+    {
+      "id": "sitting-01",
+      "section": "Fundoscopy Sitting",
+      "start": 51.0,
+      "end": 59.9,
+      "screenText": "Dilate the pupils",
+      "en": "Dilate the patient's pupils to obtain a full, wider view of the fundus.",
+      "notes": "Begins after the silent Fundoscopy Sitting title card."
+    },
+    {
+      "id": "sitting-02",
+      "section": "Fundoscopy Sitting",
+      "start": 60.2,
+      "end": 68.5,
+      "screenText": "Hold the lens close and support the eyelids",
+      "en": "Hold the condensing lens close to the eye, lift the upper lid and rest your other fingers gently on the brow and cheek.",
+      "notes": "Timed to the close-up of the lens hand and supporting fingers."
+    },
+    {
+      "id": "sitting-03",
+      "section": "Fundoscopy Sitting",
+      "start": 68.7,
+      "end": 76.3,
+      "screenText": "Align the light, condensing lens and retina",
+      "en": "Hold the lens at arm's length, aligned with the light and retina. Edge shadows mean poor alignment.",
+      "notes": "Matches the optical path followed by the clear-versus-shadowed retinal view."
+    },
+    {
+      "id": "sitting-04",
+      "section": "Fundoscopy Sitting",
+      "start": 76.5,
+      "end": 82.0,
+      "screenText": "Direct the patient's gaze",
+      "en": "To examine the retinal edges, ask the patient to look in different directions.",
+      "notes": "The gaze arrows begin moving around the eye."
+    },
+    {
+      "id": "sitting-05",
+      "section": "Fundoscopy Sitting",
+      "start": 82.0,
+      "end": 87.7,
+      "screenText": "Use a fixation target if needed",
+      "en": "If needed, use the patient's finger or thumb at arm's length as a fixation target.",
+      "notes": "Matches the patient raising a hand to guide fixation."
+    },
+    {
+      "id": "sitting-06",
+      "section": "Fundoscopy Sitting",
+      "start": 88.0,
+      "end": 93.2,
+      "screenText": "Examine the peripheral four quadrants",
+      "en": "After the macula, examine all four quadrants of the peripheral fundus.",
+      "notes": "Timed to the expanding retinal examination pattern."
+    },
+    {
+      "id": "indentation-01",
+      "section": "Fundoscopy with Indentation",
+      "start": 97.8,
+      "end": 102.0,
+      "screenText": "Explain scleral indentation to the patient",
+      "en": "First inform the patient that this may feel uncomfortable.",
+      "notes": "Begins at video time 93.8 seconds, after the silent Fundoscopy with Indentation title card; the narration clock is four seconds ahead after the first hold."
+    },
+    {
+      "id": "indentation-02",
+      "section": "Fundoscopy with Indentation",
+      "start": 102.0,
+      "end": 108.5,
+      "screenText": "Look away and position the indenter",
+      "en": "Ask the patient to look away from the area being examined, then position the indenter over that area.",
+      "notes": "Matches the initial eye movement and placement of the indenter."
+    },
+    {
+      "id": "indentation-03",
+      "section": "Fundoscopy with Indentation",
+      "start": 108.5,
+      "end": 114.0,
+      "screenText": "Look towards the area and apply gentle pressure",
+      "en": "Ask the patient to look towards the area being examined, then apply gentle pressure.",
+      "notes": "The seven-second visual hold begins at video time 103.6 seconds while narration and captions continue."
+    },
+    {
+      "id": "indentation-04",
+      "section": "Fundoscopy with Indentation",
+      "start": 114.0,
+      "end": 117.8,
+      "screenText": "Superior retina example",
+      "en": "This is an example of examining the superior retina.",
+      "notes": "Continues over the seven-second visual hold."
+    },
+    {
+      "id": "indentation-05",
+      "section": "Fundoscopy with Indentation",
+      "start": 117.8,
+      "end": 122.2,
+      "screenText": "Maintain optical alignment",
+      "en": "Maintain alignment of the light, condensing lens and retina.",
+      "notes": "Follows the superior-retina explanation while the video remains in the indentation sequence."
+    },
+    {
+      "id": "indentation-06",
+      "section": "Fundoscopy with Indentation",
+      "start": 122.2,
+      "end": 130.6,
+      "screenText": "Examine the far retinal periphery",
+      "en": "You should be able to examine the far periphery of the retina.",
+      "notes": "Ends with the completed peripheral retinal examination pattern."
+    }
+  ]
+}

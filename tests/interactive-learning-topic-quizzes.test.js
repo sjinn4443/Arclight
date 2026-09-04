@@ -148,6 +148,23 @@ describe("Interactive Learning topic quiz pages", () => {
       "fundalReflexPrimaryQuizPage",
     ]);
 
+    const frontOfEyeIntermediateTargets = Array.from(
+      document.querySelectorAll(
+        "#frontOfEyePage .pupil-level--intermediate .lesson-row",
+      ),
+    ).map((row) => row.getAttribute("data-target"));
+    expect(frontOfEyeIntermediateTargets).toEqual([
+      "feFullAnteriorSegmentPage",
+      "frontOfEyeFullAnimationVideoPage",
+    ]);
+    expect(
+      document
+        .querySelector(
+          '#frontOfEyePage .lesson-row[data-target="frontOfEyeFullAnimationVideoPage"] .lesson-type',
+        )
+        .textContent.trim(),
+    ).toBe("Full Animation");
+
     const ophthalmoscopyPrimaryTargets = Array.from(
       document.querySelectorAll(
         "#directOphthalmoscopy .pupil-level--primary .lesson-row",
