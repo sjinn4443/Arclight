@@ -46,6 +46,9 @@ ArclightApp.zip
 /Arclight/
 
 # Test artifacts
+/tmp/
+/tmp_*
+/tmp-*
 playwright-report/
 test-results/
 blob-report/

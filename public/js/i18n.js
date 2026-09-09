@@ -324,7 +324,7 @@ function applyLiteralTranslations(root = document) {
       !/^(SCRIPT|STYLE|NOSCRIPT|TEMPLATE)$/i.test(parent.tagName || "")
     ) {
       const translated = literalTranslate(textNode.textContent);
-      if (translated != null) {
+      if (translated != null && textNode.textContent !== translated) {
         textNode.textContent = translated;
       }
     }
@@ -344,11 +344,36 @@ function applyLiteralTranslations(root = document) {
       const current = el.getAttribute(attr);
       if (!current) return;
       const translated = literalTranslate(current);
-      if (translated != null) {
+      if (translated != null && current !== translated) {
         el.setAttribute(attr, translated);
       }
     });
   });
+}
+
+function setTranslatedText(el, value) {
+  // Replacing identical text still emits mutations and refreshes native select
+  // popups. Keep translation passes idle once the displayed text is correct.
+  const text = String(value);
+  if (el.textContent !== text) el.textContent = text;
+}
+
+function setTranslatedAttribute(el, name, value) {
+  const text = String(value);
+  if (el.getAttribute(name) !== text) el.setAttribute(name, text);
+}
+
+// innerHTML serializes entities/markup differently from translation JSON.
+// Remember the browser-normalized result so equivalent HTML also stays idle.
+const translatedHtml = new WeakMap();
+function setTranslatedHtml(el, value) {
+  const text = String(value);
+  const previous = translatedHtml.get(el);
+  const current = el.innerHTML;
+  if (current === text) return;
+  if (previous?.text === text && previous.html === current) return;
+  el.innerHTML = text;
+  translatedHtml.set(el, { text, html: el.innerHTML });
 }
 
 /** SELECT placeholder helper: first empty/disabled option’s text */
@@ -357,7 +382,7 @@ function setSelectPlaceholder(selectEl, text) {
     selectEl.querySelector('option[value=""]') ||
     selectEl.querySelector("option[disabled]") ||
     selectEl.options?.[0];
-  if (opt) opt.textContent = text;
+  if (opt) setTranslatedText(opt, text);
 }
 
 /** Main translator (ULTRA SAFE) */
@@ -396,7 +421,7 @@ export function applyTranslations(root = document) {
             if (tag === "SELECT") setSelectPlaceholder(el, val); // redirect to safe placeholder text
             // otherwise ignore :html on form controls
           } else {
-            el.innerHTML = val;
+            setTranslatedHtml(el, val);
           }
           break;
         }
@@ -406,19 +431,19 @@ export function applyTranslations(root = document) {
             setSelectPlaceholder(el, val);
           } else if (tag === "OPTGROUP") {
             // Do not touch children; set header label only
-            el.setAttribute("label", val);
+            setTranslatedAttribute(el, "label", val);
           } else if (tag === "OPTION") {
             // Only change visible label; never change .value
-            el.textContent = val;
+            setTranslatedText(el, val);
           } else {
-            el.textContent = val;
+            setTranslatedText(el, val);
           }
           break;
         }
 
         case "placeholder": {
           if (tag === "INPUT" || tag === "TEXTAREA") {
-            el.setAttribute("placeholder", val);
+            setTranslatedAttribute(el, "placeholder", val);
           } else if (tag === "SELECT") {
             setSelectPlaceholder(el, val);
           }
@@ -430,27 +455,27 @@ export function applyTranslations(root = document) {
           if (tag === "INPUT") {
             const type = (el.getAttribute("type") || "").toLowerCase();
             if (["button", "submit", "reset"].includes(type)) {
-              el.setAttribute("value", val);
+              setTranslatedAttribute(el, "value", val);
             }
           } else if (tag === "BUTTON") {
-            el.textContent = val;
+            setTranslatedText(el, val);
           } else if (tag === "OPTION") {
             // Still do NOT change option.value; only text should change
-            el.textContent = val;
+            setTranslatedText(el, val);
           }
           break;
         }
 
         case "label": {
           // For <optgroup label="..."> etc.
-          el.setAttribute("label", val);
+          setTranslatedAttribute(el, "label", val);
           break;
         }
 
         case "aria-label":
         case "title":
         case "alt": {
-          el.setAttribute(target, val);
+          setTranslatedAttribute(el, target, val);
           break;
         }
 
@@ -459,11 +484,11 @@ export function applyTranslations(root = document) {
           if (tag === "SELECT") {
             setSelectPlaceholder(el, val);
           } else if (tag === "OPTGROUP") {
-            el.setAttribute("label", val);
+            setTranslatedAttribute(el, "label", val);
           } else if (tag === "OPTION") {
-            el.textContent = val;
+            setTranslatedText(el, val);
           } else {
-            el.textContent = val;
+            setTranslatedText(el, val);
           }
         }
       }
