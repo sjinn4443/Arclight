@@ -1313,6 +1313,7 @@ const VIDEO_PAGE_LANGUAGE_ALIASES = Object.freeze({
   korean: "ko",
   telugu: "te",
   lingala: "ln",
+  luganda: "lg",
   persian: "fa",
   portuguese: "pt",
   shona: "sn",
@@ -1901,6 +1902,7 @@ const CHILDHOOD_EYE_SCREENING_SUBTITLE_LANGUAGES = {
   rw: { label: "Kinyarwanda" },
   ko: { label: "Korean" },
   ln: { label: "Lingala" },
+  lg: { label: "Luganda" },
   fa: { label: "Persian" },
   pt: { label: "Portuguese" },
   sn: { label: "Shona" },
@@ -3571,8 +3573,26 @@ function updateVideoNarrationButton(
   const button = state?.button;
   if (!button) return;
   const uiBase = normalizeVideoNarrationLanguageTag(uiLanguage).split("-")[0];
+  const localizedCopy = {
+    ne: {
+      active: "वाचन",
+      auto: "एपको भाषा प्रयोग गर्नुहोस्",
+      off: "वाचन बन्द",
+    },
+    fr: {
+      active: "Narration",
+      auto: "Utiliser la langue de l’application",
+      off: "Narration désactivée",
+    },
+    lg: {
+      active: "Eddoboozi",
+      auto: "Kozesa olulimi lwa pulogulaamu",
+      off: "Eddoboozi lizikiddwa",
+    },
+  };
   const copy =
-    uiBase === "es"
+    localizedCopy[uiBase] ||
+    (uiBase === "es"
       ? {
           active: "Narración",
           auto: "Usar idioma de la app",
@@ -3588,7 +3608,7 @@ function updateVideoNarrationButton(
             active: "Narration",
             auto: "Use app language",
             off: "Narration off",
-          };
+          });
   const label = state.enabled
     ? `${copy.active} · ${state.variant?.label || state.variant?.language || ""}`
     : copy.off;
@@ -3652,10 +3672,6 @@ function updateVideoNarrationButton(
       });
       void syncChildhoodPilotSubtitlesForPage(state.pageId, {
         preferredLang: getCurrentUiLanguage(),
-        subtitlePreferredLang:
-          option.value === "auto" || option.value === "off"
-            ? getCurrentUiLanguage()
-            : option.value,
       });
     });
     menu.appendChild(item);
@@ -3877,7 +3893,7 @@ async function syncChildhoodPilotSubtitlesForPage(
   const entry = await getChildhoodPilotCatalogEntry(pageId);
   if (!entry) return "";
 
-  const narrationLanguage = syncVideoNarrationForPage(pageId, entry, {
+  syncVideoNarrationForPage(pageId, entry, {
     preferredLang: preferredLang || getCurrentUiLanguage(),
   });
 
@@ -3888,10 +3904,7 @@ async function syncChildhoodPilotSubtitlesForPage(
     availableLanguages,
     {
       prefLang:
-        subtitlePreferredLang ||
-        narrationLanguage ||
-        preferredLang ||
-        getCurrentUiLanguage(),
+        subtitlePreferredLang || preferredLang || getCurrentUiLanguage(),
       defaultLang: entry.defaultSubtitleLang || "en",
     },
   );
@@ -3990,6 +4003,10 @@ async function refreshChildhoodPilotSubtitlesForLanguageChange() {
   const preferredLang = getCurrentUiLanguage();
 
   for (const pageId of CHILDHOOD_EYE_SCREENING_SUBTITLE_PAGE_IDS) {
+    // A previous manual voice choice must not pin a newly selected app language.
+    if (readVideoNarrationSelection(pageId) !== "off") {
+      writeVideoNarrationSelection(pageId, "auto");
+    }
     const page = getVideoPageElement(pageId);
     if (!page) continue;
     await syncChildhoodPilotSubtitlesForPage(pageId, { preferredLang });

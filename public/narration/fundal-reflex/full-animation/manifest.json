@@ -20,6 +20,24 @@
       "captions": "ko.vtt",
       "bytes": 1014182,
       "sha256": "133c12e57e74ae9c5c9d224b31f2511670b3f4637836e4ea575ae3235e8465b2"
+    },
+    "ne": {
+      "src": "ne.m4a",
+      "captions": "ne.vtt",
+      "bytes": 996779,
+      "sha256": "ef8fe8ecd620bac306c1d4eb51e69276e1a636370f32bfb2050953e0136f4c17"
+    },
+    "fr": {
+      "src": "fr.m4a",
+      "captions": "fr.vtt",
+      "bytes": 911703,
+      "sha256": "79cd20e542c3ce2e95259569ded44f0f870638058780f9cb6a20af8776453948"
+    },
+    "lg": {
+      "src": "lg.m4a",
+      "captions": "lg.vtt",
+      "bytes": 1228922,
+      "sha256": "095b97ccfae627466822142a05e4ab866b010fee99610477af750111b7556c54"
     }
   }
 }

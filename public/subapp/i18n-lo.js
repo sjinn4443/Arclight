@@ -4,10 +4,22 @@
     .toLowerCase();
   const isLao = language === "lo" || language === "lao";
   const isSpanish = language === "es" || language === "spanish";
-  if (!isLao && !isSpanish) return;
+  const additionalLocales = { ne: "nepali", fr: "french", lg: "luganda" };
+  const additionalCode = Object.keys(additionalLocales).find(
+    (code) => language === code || language === additionalLocales[code],
+  );
+  if (!isLao && !isSpanish && !additionalCode) return;
 
-  const localeName = isLao ? "lao" : "spanish";
-  document.documentElement.lang = isLao ? "lo" : "es";
+  const localeName = isLao
+    ? "lao"
+    : isSpanish
+      ? "spanish"
+      : additionalLocales[additionalCode];
+  document.documentElement.lang = isLao
+    ? "lo"
+    : isSpanish
+      ? "es"
+      : additionalCode;
 
   const laoFallbackTranslations = {
     Menu: "ເມນູ",
@@ -130,7 +142,9 @@
   ];
   const embeddedClinicalTerms = isLao
     ? laoEmbeddedClinicalTerms
-    : spanishEmbeddedClinicalTerms;
+    : isSpanish
+      ? spanishEmbeddedClinicalTerms
+      : [];
   let translating = false;
 
   function translateEmbeddedClinicalTerms(value) {
@@ -166,7 +180,13 @@
       if (score) {
         translated = isLao
           ? `${score[1]} ຄຳຖາມ. ຄະແນນຜ່ານ ${score[2]}.`
-          : `${score[1]} preguntas. Nota mínima ${score[2]}.`;
+          : isSpanish
+            ? `${score[1]} preguntas. Nota mínima ${score[2]}.`
+            : additionalCode === "fr"
+              ? `${score[1]} questions. Seuil de réussite ${score[2]}.`
+              : additionalCode === "ne"
+                ? `${score[1]} प्रश्नहरू। उत्तीर्णाङ्क ${score[2]}।`
+                : `${score[1]} ebibuuzo. Obubonero obw'okuyita ${score[2]}.`;
       }
     }
     if (!translated) {

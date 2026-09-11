@@ -13,6 +13,7 @@
   currentEl?.setAttribute("data-i18n-skip", "true");
   listEl?.setAttribute("data-i18n-skip", "true");
   const nativeByCode = {
+    lg: "Luganda",
     en: "English",
     am: "\u12A0\u121B\u122D\u129B",
     ar: "\u0627\u0644\u0639\u0631\u0628\u064A\u0629",
@@ -40,6 +41,7 @@
     lo: "ລາວ",
   };
   const englishByCode = {
+    lg: "Luganda",
     en: "English",
     am: "Amharic",
     ar: "Arabic",

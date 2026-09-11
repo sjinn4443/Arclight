@@ -268,7 +268,8 @@
     "download_video_quality_label": "Calidad de vídeo",
     "download_exclude_videos_title": "Excluir vídeos",
     "download_exclude_videos_description": "Descarga páginas de aplicaciones, imágenes, cuestionarios y otro contenido que no sea vídeo.",
-    "lao": "ລາວ"
+    "lao": "ລາວ",
+    "luganda": "Luganda"
   },
   "menu": {
     "my_profile_link": "Mi perfil >",

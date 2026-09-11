@@ -1,5 +1,37 @@
 # Fundal Reflex full-animation narration
 
+## Nepali, French and Luganda update (2026-09-11)
+
+`ne`, `fr` and `lg` now have complete narration and WebVTT tracks. Each is
+274.270 seconds long, within 0.004 seconds of the source. Delivery sizes are
+996,779, 911,703 and 1,228,922 bytes respectively. All spoken cues fit their
+scene windows at no more than 1.055× playback speed. The seven Spanish
+section-title captions are translated too; these title cards remain silent.
+
+Nepali uses `ne-NP-HemkalaNeural`; French uses `fr-FR-DeniseNeural`.
+Luganda uses Meta's [facebook/mms-tts-lug](https://huggingface.co/facebook/mms-tts-lug)
+model, revision `7da897bc70b025a01bbbc5a7651b8b5e1325239d`, with seed 42.
+These are synthetic voices. **The MMS model is licensed CC-BY-NC-4.0
+(noncommercial)**; review its terms before commercial use. Model weights and
+intermediate audio are kept in `tmp`, outside the public app package.
+
+The Luganda runtime dependencies are `torch>=2.6`, `transformers<5`, and
+`scipy` installed into `tmp/luganda-tts-tools`. The standard generator tools
+(`edge-tts`, `imageio-ffmpeg`) go in `tmp/fundal-narration-tools`.
+Regenerate selected tracks with:
+
+```sh
+python scripts/generate-fundal-narration.py --languages ne fr lg --skip-review-video
+node scripts/connect-parity-locales.cjs
+```
+
+The new text and subtitles were machine translated, with a separate clinical
+wording and timing pass on the narration. Native clinical review, especially
+of Luganda terminology and pronunciation, remains advisable; automated checks
+verify coverage, integrity and timing, not clinical translation accuracy.
+
+The original English/Spanish/Korean production notes follow.
+
 This is the review script for the 4:34.273 `New_FundalReflexFullAnim.mp4` animation. English is the timing and tone reference; Spanish is neutral Latin American Spanish (`es-419`) and Korean is standard Korean (`ko-KR`), each adapted to carry the same clinical meaning inside the scene. Display captions follow the requested sentence boundaries while the per-language `timedAudioCues` control exact voice entry points. The seven section title cards are silent; their translated titles appear only in the Spanish and Korean subtitle tracks.
 
 | Section              |                Time | Screen wording/action                         | English narration                                                                                                                                                                                       | Spanish narration                                                                                                                                                                                          | Tone and pronunciation note                                  |

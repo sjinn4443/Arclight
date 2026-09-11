@@ -255,7 +255,8 @@
     "download_video_quality_label": "کیفیت ویدیو",
     "download_exclude_videos_title": "ویدئوها را حذف کنید",
     "download_exclude_videos_description": "صفحات برنامه، تصاویر، آزمون‌ها و سایر محتوای غیر ویدئویی را دانلود می‌کند.",
-    "lao": "ລາວ"
+    "lao": "ລາວ",
+    "luganda": "Luganda"
   },
   "menu": {
     "my_profile_link": "پروفایل من >",

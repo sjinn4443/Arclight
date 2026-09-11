@@ -422,6 +422,7 @@ const ENGLISH_LANGUAGE_LABELS = {
   lo: "Lao",
   te: "Telugu",
   ln: "Lingala",
+  lg: "Luganda",
   fa: "Persian",
   pt: "Portuguese",
   sn: "Shona",
@@ -646,12 +647,18 @@ function resolveNarrationDownloadLanguage(language) {
   const base = normalized.split("-")[0];
   if (base === "es") return "es-419";
   if (base === "ko") return "ko";
+  if (["ne", "fr", "lg"].includes(base)) return base;
   return "en";
 }
 
-function shouldIncludeNarrationLanguage(url, narrationLanguage) {
+function shouldIncludeNarrationLanguage(url, narrationLanguage, availableUrls) {
   const assetLanguage = getNarrationAssetLanguage(url);
-  return !assetLanguage || assetLanguage === narrationLanguage;
+  if (!assetLanguage) return true;
+  const directory = String(url).slice(0, String(url).lastIndexOf("/") + 1);
+  const hasSelectedAudio = ["m4a", "mp3", "aac"].some((extension) =>
+    availableUrls.has(`${directory}${narrationLanguage}.${extension}`),
+  );
+  return assetLanguage === (hasSelectedAudio ? narrationLanguage : "en");
 }
 
 function getVideoResolutionTier(url) {
@@ -942,9 +949,16 @@ export function resolveOfflineDownloadSelection(manifest, choice = {}) {
   const mode = choice.mode || "full";
   const catalogId = choice.catalogId || OFFLINE_CATALOG_OPTIONS[0].id;
   const videoQuality = choice.videoQuality || VIDEO_QUALITY_OPTIONS[0].id;
-  const narrationLanguage = resolveNarrationDownloadLanguage(
+  const preferredNarrationLanguage = resolveNarrationDownloadLanguage(
     choice.language || getLanguage() || "en",
   );
+  const narrationLanguage = allAssets.some(
+    (asset) =>
+      getNarrationAssetLanguage(asset.url) === preferredNarrationLanguage &&
+      /\.(m4a|mp3|aac)$/i.test(asset.url),
+  )
+    ? preferredNarrationLanguage
+    : "en";
   let assets;
 
   if (mode === "app-only") {
@@ -964,7 +978,11 @@ export function resolveOfflineDownloadSelection(manifest, choice = {}) {
       shouldIncludeVideoQuality(asset.url, videoQuality, availableUrls),
     );
     assets = assets.filter((asset) =>
-      shouldIncludeNarrationLanguage(asset.url, narrationLanguage),
+      shouldIncludeNarrationLanguage(
+        asset.url,
+        narrationLanguage,
+        availableUrls,
+      ),
     );
   }
 

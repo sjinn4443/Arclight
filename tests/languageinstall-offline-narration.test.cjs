@@ -88,6 +88,41 @@ describe("language-specific offline narration", () => {
     );
   });
 
+  it.each(["ne", "fr", "lg"])(
+    "downloads %s with English fallback for untranslated videos",
+    (language) => {
+      const added = ["ne", "fr", "lg"].flatMap((code) =>
+        ["m4a", "vtt"].map((ext) => ({
+          bytes: 1000,
+          url: `/narration/fundal-reflex/full-animation/${code}.${ext}`,
+        })),
+      );
+      const englishOnly =
+        "/narration/direct-ophthalmoscopy/full-animation/en.m4a";
+      const selection = languageInstall.resolveOfflineDownloadSelection(
+        {
+          assets: [
+            ...manifest.assets,
+            ...added,
+            { bytes: 1000, url: englishOnly },
+          ],
+        },
+        { language, mode: "full", videoQuality: "low" },
+      );
+      expect(selection.narrationLanguage).toBe(language);
+      expect(selection.urls).toContain(
+        `/narration/fundal-reflex/full-animation/${language}.m4a`,
+      );
+      expect(selection.urls).toContain(
+        `/narration/fundal-reflex/full-animation/${language}.vtt`,
+      );
+      expect(selection.urls).toContain(englishOnly);
+      expect(selection.urls).not.toContain(
+        "/narration/fundal-reflex/full-animation/en.m4a",
+      );
+    },
+  );
+
   it("downloads the Korean narration when Korean is selected", () => {
     const selection = languageInstall.resolveOfflineDownloadSelection(
       manifest,

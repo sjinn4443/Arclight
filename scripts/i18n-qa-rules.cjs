@@ -1,6 +1,7 @@
 const IGNORED_DATA_I18N_KEYS = new Set(["${key}"]);
 
 const ALLOWED_EXACT_ENGLISH_KEYS = [
+  /^languageInstall\.luganda$/,
   /^menu\.(cybersight_link|retinopathy_of_prematurity_link|cvi_scotland_link)$/,
   /^videos\.(miresTitle|morphTitle|fundalReflexTitle)$/,
 ];
@@ -36,6 +37,10 @@ const ALLOWED_EXACT_ENGLISH_PATTERNS = [
 ];
 
 const LOCALE_SPECIFIC_ALLOWED_EXACT_ENGLISH_KEYS = {
+  luganda: [
+    /^(auto\.videos\.mires|menu\.mires_checkbox|offlineContent\.mires_checkbox)$/,
+    /^languageInstall\.(chichewa|kinyarwanda|lao|shona)$/,
+  ],
   french: [
     /^auto\.videos\.patient_b$/,
     /^medicalStudentsWorkshop\.content\.(allergies|associations|population|simulation_osce|site)$/,

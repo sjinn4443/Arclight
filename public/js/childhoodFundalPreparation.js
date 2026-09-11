@@ -13,6 +13,18 @@ const FUNDAL_REFLEX_SCROLL_NARRATION_LANGUAGE_STORAGE_PREFIX =
   "videoNarrationLanguage:";
 
 export const FUNDAL_REFLEX_EXAMINATION_SCROLL_NARRATION_TRACKS = Object.freeze({
+  ne: Object.freeze({
+    label: "नेपाली",
+    src: "/narration/fundal-reflex/full-animation/ne.m4a",
+  }),
+  fr: Object.freeze({
+    label: "Français",
+    src: "/narration/fundal-reflex/full-animation/fr.m4a",
+  }),
+  lg: Object.freeze({
+    label: "Luganda",
+    src: "/narration/fundal-reflex/full-animation/lg.m4a",
+  }),
   en: Object.freeze({
     label: "English",
     src: "/narration/fundal-reflex/full-animation/en.m4a",
@@ -1399,6 +1411,8 @@ function normalizeFundalNarrationLanguage(language) {
     .toLowerCase();
   if (normalized === "ko" || normalized.startsWith("ko-")) return "ko";
   if (normalized === "es" || normalized.startsWith("es-")) return "es-419";
+  const base = normalized.split("-")[0];
+  if (["ne", "fr", "lg"].includes(base)) return base;
   return "en";
 }
 
@@ -1415,7 +1429,9 @@ function readFundalNarrationPreference(pageId) {
       localStorage.getItem(
         `${FUNDAL_REFLEX_SCROLL_NARRATION_STORAGE_PREFIX}${pageId}`,
       ) !== "off";
-    const language = ["auto", "en", "es-419", "ko"].includes(storedLanguage)
+    const language = ["auto", "en", "es-419", "ko", "ne", "fr", "lg"].includes(
+      storedLanguage,
+    )
       ? storedLanguage
       : "auto";
     return {
@@ -1450,6 +1466,30 @@ function writeFundalNarrationPreference(pageId, { enabled, language }) {
 
 function getFundalNarrationControlCopy(language = getLanguage()) {
   const normalized = normalizeFundalNarrationLanguage(language);
+  const addedCopy = {
+    ne: {
+      auto: "स्वचालित",
+      language: "वाचनको भाषा",
+      on: "वाचन खोल्नुहोस्",
+      off: "वाचन बन्द गर्नुहोस्",
+      blocked: "वाचन सुन्न थिच्नुहोस्",
+    },
+    fr: {
+      auto: "Automatique",
+      language: "Langue de narration",
+      on: "Activer la narration",
+      off: "Désactiver la narration",
+      blocked: "Appuyez pour écouter la narration",
+    },
+    lg: {
+      auto: "Kyokka",
+      language: "Olulimi lw'okunyonyola",
+      on: "Tandika eddoboozi",
+      off: "Zikiza eddoboozi",
+      blocked: "Nyiga okuwuliriza",
+    },
+  };
+  if (addedCopy[normalized]) return addedCopy[normalized];
   if (normalized === "ko") {
     return {
       auto: "자동",
@@ -1512,6 +1552,7 @@ export function initializeFundalStageNarration(routeName, cfg, page) {
 
   let enabled = preference.enabled;
   let selectedLanguage = preference.language;
+  let lastAppLanguage = getLanguage();
   let activeLanguage = "";
   let activeClip = null;
   let clipActive = false;
@@ -1784,6 +1825,15 @@ export function initializeFundalStageNarration(routeName, cfg, page) {
   return {
     playForStage,
     refreshLanguage: () => {
+      const appLanguage = getLanguage();
+      if (appLanguage !== lastAppLanguage) {
+        lastAppLanguage = appLanguage;
+        selectedLanguage = "auto";
+        writeFundalNarrationPreference(cfg.pageId, {
+          enabled,
+          language: "auto",
+        });
+      }
       const nextLanguage = resolveSelectedLanguage();
       if (selectedLanguage === "auto" && nextLanguage !== activeLanguage) {
         const resumeTime = clipActive ? Number(audio.currentTime) : null;
@@ -2399,6 +2449,13 @@ async function refreshActiveFundalLanguageSession() {
 if (!window.__fundalScrollLanguageRefreshWired) {
   window.__fundalScrollLanguageRefreshWired = true;
   window.addEventListener("i18n:languageChanged", () => {
+    try {
+      localStorage.removeItem(
+        `${FUNDAL_REFLEX_SCROLL_NARRATION_LANGUAGE_STORAGE_PREFIX}fundalReflexExaminationScrollPage`,
+      );
+    } catch {
+      /* Storage may be unavailable. */
+    }
     void refreshActiveFundalLanguageSession();
   });
 }

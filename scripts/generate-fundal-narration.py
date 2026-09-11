@@ -26,7 +26,7 @@ DEFAULT_ARTIFACTS = ROOT / ".codex-artifacts/fundal-reflex-narration"
 DEFAULT_PUBLIC = ROOT / "public/narration/fundal-reflex/full-animation"
 MAX_PLAYBACK_SPEED = 1.08
 SYNC_TOLERANCE_SECONDS = 0.25
-NARRATION_LANGUAGES = ("en", "es-419", "ko")
+NARRATION_LANGUAGES = ("en", "es-419", "ko", "ne", "fr", "lg")
 
 
 def parse_args() -> argparse.Namespace:
@@ -157,6 +157,9 @@ def sha256(path: Path) -> str:
 async def generate_tts_cues(
     script: dict, language: str, cues: list[dict], cue_dir: Path
 ) -> None:
+    if script["languages"][language].get("provider") == "Meta MMS (local)":
+        generate_mms_cues(script, language, cues, cue_dir)
+        return
     import edge_tts
 
     voice = script["languages"][language]["voice"]
@@ -201,6 +204,41 @@ async def generate_tts_cues(
         print(f"[{language}] generated {cue['id']}", flush=True)
 
     await asyncio.gather(*(generate(cue) for cue in cues))
+
+
+def generate_mms_cues(script: dict, language: str, cues: list[dict], cue_dir: Path) -> None:
+    """Use the Luganda-specific MMS model; do not substitute another language's voice.
+
+    Install torch>=2.6, transformers<5 and scipy in tmp/luganda-tts-tools.
+    Model weights stay in tmp. See the delivery README for model attribution.
+    """
+    sys.path.insert(0, str(ROOT / "tmp/luganda-tts-tools"))
+    import torch
+    import scipy.io.wavfile
+    from transformers import VitsModel, AutoTokenizer, set_seed
+
+    voice = script["languages"][language]["voice"]
+    model_cache = str(ROOT / "tmp/luganda-tts-model")
+    model = VitsModel.from_pretrained(voice, cache_dir=model_cache)
+    tokenizer = AutoTokenizer.from_pretrained(voice, cache_dir=model_cache)
+    torch.set_num_threads(4)
+    model.eval()
+    for cue in cues:
+        destination = cue_dir / f"{cue['id']}.mp3"
+        signature_path = cue_dir / f"{cue['id']}.sha256"
+        text = cue["ttsText"].replace("’", "'")
+        signature = hashlib.sha256((voice + "|seed=42|" + text).encode("utf-8")).hexdigest()
+        if destination.exists() and signature_path.exists() and signature_path.read_text().strip() == signature:
+            print(f"[{language}] reuse {cue['id']}", flush=True)
+            continue
+        set_seed(42)
+        inputs = tokenizer(text, return_tensors="pt")
+        with torch.no_grad():
+            waveform = model(**inputs).waveform.squeeze().cpu().numpy()
+        # WAV content is intentional: ffmpeg probes the header when mixing.
+        scipy.io.wavfile.write(str(destination), model.config.sampling_rate, waveform)
+        signature_path.write_text(signature + "\n", encoding="ascii")
+        print(f"[{language}] generated {cue['id']} (MMS)", flush=True)
 
 
 def mix_language(
@@ -326,7 +364,7 @@ def make_review_mp4(
     language: str,
     duration: float,
 ) -> None:
-    language_code = {"en": "eng", "es-419": "spa", "ko": "kor"}[language]
+    language_code = {"en": "eng", "es-419": "spa", "ko": "kor", "ne": "nep", "fr": "fra", "lg": "lug"}[language]
     run(
         [
             str(ffmpeg),
@@ -389,7 +427,7 @@ def main() -> None:
         "tracks": {},
     }
 
-    selected_languages = tuple(args.languages or NARRATION_LANGUAGES)
+    selected_languages = tuple(args.languages or script["languages"])
     for language in selected_languages:
         caption_cues = resolve_language_cues(script, language)
         audio_cues = resolve_language_cues(script, language, "timedAudioCues")
@@ -459,6 +497,10 @@ def main() -> None:
         )
 
     qa_path = artifacts_dir / "qa-report.json"
+    if qa_path.exists():
+        previous_qa = json.loads(qa_path.read_text(encoding="utf-8"))
+        if previous_qa.get("sourceVideo") == qa["sourceVideo"]:
+            qa["tracks"] = {**previous_qa.get("tracks", {}), **qa["tracks"]}
     with qa_path.open("w", encoding="utf-8", newline="\n") as handle:
         handle.write(json.dumps(qa, ensure_ascii=False, indent=2) + "\n")
 

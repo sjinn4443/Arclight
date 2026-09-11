@@ -1,3 +1,32 @@
+function addedLocaleCopy(key, number) {
+  const code = String(
+    document.documentElement.lang || localStorage.getItem("prefLang") || "",
+  )
+    .toLowerCase()
+    .split("-")[0];
+  const copy = {
+    ne: {
+      image: `आँखाको अगाडिको भागको केस ${number}`,
+      finish: "केस अध्ययन समाप्त गर्नुहोस्",
+      next: `केस ${number} मा जानुहोस्`,
+      answers: `केस ${number} का सबै उत्तर देखाउनुहोस्`,
+    },
+    fr: {
+      image: `Cas du segment antérieur ${number}`,
+      finish: "Terminer l’étude de cas",
+      next: `Passer au cas ${number}`,
+      answers: `Afficher toutes les réponses du cas ${number}`,
+    },
+    lg: {
+      image: `Ensonga y’ekitundu ky’eriiso eky’omu maaso ${number}`,
+      finish: "Maliriza okusoma ensonga",
+      next: `Genda ku nsonga ${number}`,
+      answers: `Laga eby’okuddamu byonna eby’ensonga ${number}`,
+    },
+  };
+  return copy[code]?.[key];
+}
+
 export const MEDICAL_ANTERIOR_CASES = Object.freeze([
   {
     id: 1,
@@ -221,7 +250,8 @@ function appendPatientBubbles(log, caseData) {
     ? `ຮູບກໍລະນີສ່ວນໜ້າຂອງຕາ ${caseData.id}`
     : isSpanishLanguage()
       ? `Caso de segmento anterior ${caseData.id}`
-      : `Anterior segment case ${caseData.id}`;
+      : addedLocaleCopy("image", caseData.id) ||
+        `Anterior segment case ${caseData.id}`;
   image.decoding = "async";
   imageWrap.appendChild(image);
   stack.appendChild(imageWrap);
@@ -371,12 +401,13 @@ export function initializeMedicalAnteriorSegmentCaseStudy() {
           ? "ສິ້ນສຸດກໍລະນີສຶກສາ"
           : isSpanishLanguage()
             ? "Finalizar el estudio de casos"
-            : "Finish case study"
+            : addedLocaleCopy("finish") || "Finish case study"
         : isLaoLanguage()
           ? `ໄປຫາກໍລະນີ ${caseData.id + 1}`
           : isSpanishLanguage()
             ? `Ir al caso ${caseData.id + 1}`
-            : `Go to case ${caseData.id + 1}`,
+            : addedLocaleCopy("next", caseData.id + 1) ||
+              `Go to case ${caseData.id + 1}`,
     );
   }
 
@@ -426,7 +457,8 @@ export function initializeMedicalAnteriorSegmentCaseStudy() {
         ? `ສະແດງຄຳຕອບທັງໝົດຂອງກໍລະນີ ${caseData.id}`
         : isSpanishLanguage()
           ? `Mostrar todas las respuestas del caso ${caseData.id}`
-          : `Show all answers for case ${caseData.id}`,
+          : addedLocaleCopy("answers", caseData.id) ||
+            `Show all answers for case ${caseData.id}`,
     );
   }
 

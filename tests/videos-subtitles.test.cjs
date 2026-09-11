@@ -750,6 +750,59 @@ describe("childhood eye screening subtitle pilot", () => {
     );
   });
 
+  it.each(["ne", "fr", "lg"])(
+    "follows the %s app language for animation audio and captions",
+    async (language) => {
+      const pageId = "fundalReflexFullAnimationVideoPage";
+      const entry = PILOT_CATALOG[pageId];
+      const realEntry = JSON.parse(
+        fs.readFileSync(
+          "public/video-localization/childhood-eye-screening.json",
+          "utf8",
+        ),
+      )[pageId];
+      entry.subtitles[language] = realEntry.subtitles[language];
+      entry.audioVariants[language] = realEntry.audioVariants[language];
+      localStorage.setItem("prefLang", "en");
+      localStorage.setItem(`videoNarrationLanguage:${pageId}`, "ko");
+      await videos.ensureChildhoodPilotSubtitleControlsForPage(pageId);
+      localStorage.setItem("prefLang", language);
+      await videos.refreshChildhoodPilotSubtitlesForLanguageChange();
+      const page = document.getElementById(pageId);
+      expect(
+        page
+          .querySelector("[data-video-narration-audio='true']")
+          .getAttribute("src"),
+      ).toBe(realEntry.audioVariants[language].src);
+      expect(
+        page
+          .querySelector("track[data-childhood-pilot-subtitle='true']")
+          .getAttribute("src"),
+      ).toBe(realEntry.subtitles[language]);
+      expect(
+        localStorage.getItem(`videoNarrationLanguage:${pageId}`),
+      ).toBeNull();
+      if (language === "ne")
+        expect(
+          page.querySelector("[data-video-narration-toggle='true']")
+            .textContent,
+        ).toContain("वाचन");
+      // A manual voice override must not silently change the app-language captions.
+      page.querySelector('[data-narration-selection="ko"]').click();
+      await new Promise((resolve) => setTimeout(resolve, 0));
+      expect(
+        page
+          .querySelector("[data-video-narration-audio='true']")
+          .getAttribute("src"),
+      ).toBe(entry.audioVariants.ko.src);
+      expect(
+        page
+          .querySelector("track[data-childhood-pilot-subtitle='true']")
+          .getAttribute("src"),
+      ).toBe(realEntry.subtitles[language]);
+    },
+  );
+
   it("defaults iOS pilot pages to HLS online playback and hides high only", async () => {
     setIPhoneWebKitUserAgent();
 

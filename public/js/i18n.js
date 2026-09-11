@@ -27,6 +27,7 @@ const LANG_ALIAS = {
   lo: "lao",
   te: "telugu",
   ln: "lingala",
+  lg: "luganda",
   fa: "persian",
   pt: "portuguese",
   sn: "shona",

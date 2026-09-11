@@ -265,7 +265,8 @@
     "download_video_quality_label": "वीडियो गुणवत्ता",
     "download_exclude_videos_title": "वीडियो बाहर निकालें",
     "download_exclude_videos_description": "ऐप पेज, चित्र, क्विज़ और अन्य गैर-वीडियो सामग्री डाउनलोड करता है।",
-    "lao": "ລາວ"
+    "lao": "ລາວ",
+    "luganda": "Luganda"
   },
   "menu": {
     "my_profile_link": "मेरी प्रोफ़ाइल >",

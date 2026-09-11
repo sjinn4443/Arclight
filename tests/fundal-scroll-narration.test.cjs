@@ -150,6 +150,13 @@ describe("Fundal Reflex examination scroll narration", () => {
       ),
     ).toBe("es-419");
 
+    localStorage.setItem("prefLang", "ne");
+    controller.refreshLanguage();
+    expect(audio.getAttribute("src")).toBe(
+      "/narration/fundal-reflex/full-animation/ne.m4a",
+    );
+    expect(select.value).toBe("auto");
+
     toggle.click();
     expect(toggle.getAttribute("aria-pressed")).toBe("false");
     expect(

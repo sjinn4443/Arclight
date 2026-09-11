@@ -255,7 +255,8 @@
     "download_video_quality_label": "Qualidade do vídeo",
     "download_exclude_videos_title": "Excluir vídeos",
     "download_exclude_videos_description": "Baixa páginas do aplicativo, imagens, questionários e outros conteúdos que não são vídeos.",
-    "lao": "ລາວ"
+    "lao": "ລາວ",
+    "luganda": "Luganda"
   },
   "menu": {
     "my_profile_link": "Meu Perfil >",
