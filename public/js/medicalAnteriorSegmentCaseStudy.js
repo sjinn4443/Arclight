@@ -5,6 +5,24 @@ function addedLocaleCopy(key, number) {
     .toLowerCase()
     .split("-")[0];
   const copy = {
+    ha: {
+      image: `Misalin gaban ido ${number}`,
+      finish: "Kammala nazarin misali",
+      next: `Je zuwa misali ${number}`,
+      answers: `Nuna duk amsoshin misali ${number}`,
+    },
+    yo: {
+      image: `Àpẹẹrẹ apá iwájú ojú ${number}`,
+      finish: "Parí ìwádìí àpẹẹrẹ",
+      next: `Lọ sí àpẹẹrẹ ${number}`,
+      answers: `Fi gbogbo ìdáhùn àpẹẹrẹ ${number} hàn`,
+    },
+    ig: {
+      image: `Ihe atụ akụkụ ihu anya ${number}`,
+      finish: "Mechaa ọmụmụ ihe atụ",
+      next: `Gaa na ihe atụ ${number}`,
+      answers: `Gosi azịza niile nke ihe atụ ${number}`,
+    },
     ne: {
       image: `आँखाको अगाडिको भागको केस ${number}`,
       finish: "केस अध्ययन समाप्त गर्नुहोस्",

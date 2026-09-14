@@ -2316,7 +2316,10 @@
       "ko": "/narration/fundal-reflex/full-animation/ko.vtt",
       "ne": "/narration/fundal-reflex/full-animation/ne.vtt",
       "fr": "/narration/fundal-reflex/full-animation/fr.vtt",
-      "lg": "/narration/fundal-reflex/full-animation/lg.vtt"
+      "lg": "/narration/fundal-reflex/full-animation/lg.vtt",
+      "ha": "/narration/fundal-reflex/full-animation/ha.vtt",
+      "yo": "/narration/fundal-reflex/full-animation/yo.vtt",
+      "ig": "/narration/fundal-reflex/full-animation/ig.vtt"
     },
     "audioVariants": {
       "en": {
@@ -2342,6 +2345,18 @@
       "lg": {
         "label": "Luganda",
         "src": "/narration/fundal-reflex/full-animation/lg.m4a"
+      },
+      "ha": {
+        "label": "Hausa",
+        "src": "/narration/fundal-reflex/full-animation/ha.m4a"
+      },
+      "yo": {
+        "label": "Yorùbá",
+        "src": "/narration/fundal-reflex/full-animation/yo.m4a"
+      },
+      "ig": {
+        "label": "Igbo",
+        "src": "/narration/fundal-reflex/full-animation/ig.m4a"
       }
     },
     "defaultSubtitleLang": "en",
@@ -2350,7 +2365,17 @@
       "masterManifest": "",
       "preferredMode": "low",
       "offlineFallbackMode": "low",
-      "subtitleLanguages": ["en", "es", "ko", "ne", "fr", "lg"]
+      "subtitleLanguages": [
+        "en",
+        "es",
+        "ko",
+        "ne",
+        "fr",
+        "lg",
+        "ha",
+        "yo",
+        "ig"
+      ]
     },
     "localSources": {
       "low": "videos/FullAnim/New_FundalReflexFullAnim.mp4",

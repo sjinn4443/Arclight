@@ -3574,6 +3574,13 @@ function updateVideoNarrationButton(
   if (!button) return;
   const uiBase = normalizeVideoNarrationLanguageTag(uiLanguage).split("-")[0];
   const localizedCopy = {
+    ha: {
+      active: "Bayani",
+      auto: "Yi amfani da harshen manhaja",
+      off: "An kashe bayani",
+    },
+    yo: { active: "Ohùn", auto: "Lo èdè ìṣàfilọ́lẹ̀", off: "Ohùn ti pa" },
+    ig: { active: "Nkọwa", auto: "Jiri asụsụ ngwa", off: "Agbanyụrụ nkọwa" },
     ne: {
       active: "वाचन",
       auto: "एपको भाषा प्रयोग गर्नुहोस्",
@@ -3893,9 +3900,14 @@ async function syncChildhoodPilotSubtitlesForPage(
   const entry = await getChildhoodPilotCatalogEntry(pageId);
   if (!entry) return "";
 
-  syncVideoNarrationForPage(pageId, entry, {
+  const narrationLanguage = syncVideoNarrationForPage(pageId, entry, {
     preferredLang: preferredLang || getCurrentUiLanguage(),
   });
+  const narrationSelection = readVideoNarrationSelection(pageId);
+  const selectedSubtitleLanguage =
+    narrationSelection !== "auto" && narrationSelection !== "off"
+      ? narrationLanguage
+      : "";
 
   const availableLanguages = Object.keys(entry.subtitles || {});
   if (!availableLanguages.length) return "";
@@ -3904,7 +3916,10 @@ async function syncChildhoodPilotSubtitlesForPage(
     availableLanguages,
     {
       prefLang:
-        subtitlePreferredLang || preferredLang || getCurrentUiLanguage(),
+        subtitlePreferredLang ||
+        selectedSubtitleLanguage ||
+        preferredLang ||
+        getCurrentUiLanguage(),
       defaultLang: entry.defaultSubtitleLang || "en",
     },
   );

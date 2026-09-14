@@ -39,7 +39,9 @@ function terms(o) {
     }
   }
 }
-for (const name of ["nepali", "french", "luganda"]) {
+for (const name of process.argv.slice(2).length
+  ? process.argv.slice(2)
+  : ["nepali", "french", "luganda"]) {
   const p = `public/translation/${name}.json`;
   const d = repair(source, read(p));
   if (name === "nepali") {
@@ -54,5 +56,30 @@ for (const name of ["nepali", "french", "luganda"]) {
     localizeFundal(d);
   }
   if (name === "luganda") terms(d);
+  const fundalTerms = {
+    hausa: "jan hasken da ke dawowa daga cikin ido",
+    yoruba: "ìtànṣán pupa láti inú ojú",
+    igbo: "ìhè uhie na-alọghachi site n'ime anya",
+  };
+  if (fundalTerms[name]) {
+    const localize = (o) => {
+      for (const [key, value] of Object.entries(o)) {
+        if (value && typeof value === "object") localize(value);
+        else if (typeof value === "string")
+          o[key] = value.replace(
+            /\bfundal reflex(?:es)?\b/gi,
+            fundalTerms[name],
+          );
+      }
+    };
+    localize(d);
+    const animationTitles = {
+      hausa: "Jan hasken ido — cikakken bidiyon motsi",
+      yoruba: "Ìtànṣán pupa ojú — àwòrán oníṣipopada kíkún",
+      igbo: "Ìhè uhie anya — ihe nkiri eserese zuru ezu",
+    };
+    d.auto.videos.fundal_reflex_full_animation = animationTitles[name];
+    d.i18nLiteral["Fundal Reflex Full Animation"] = animationTitles[name];
+  }
   fs.writeFileSync(p, JSON.stringify(d, null, 2) + "\n");
 }

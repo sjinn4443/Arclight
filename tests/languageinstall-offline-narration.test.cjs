@@ -88,10 +88,10 @@ describe("language-specific offline narration", () => {
     );
   });
 
-  it.each(["ne", "fr", "lg"])(
+  it.each(["ne", "fr", "lg", "ha", "yo", "ig"])(
     "downloads %s with English fallback for untranslated videos",
     (language) => {
-      const added = ["ne", "fr", "lg"].flatMap((code) =>
+      const added = ["ne", "fr", "lg", "ha", "yo", "ig"].flatMap((code) =>
         ["m4a", "vtt"].map((ext) => ({
           bytes: 1000,
           url: `/narration/fundal-reflex/full-animation/${code}.${ext}`,

@@ -13,6 +13,9 @@ test.each([
   ["ne", "nepali", "सुरु गर्नुहोस्"],
   ["fr", "french", "Commencer"],
   ["lg", "luganda", "Tandika"],
+  ["ha", "hausa", "Fara"],
+  ["yo", "yoruba", "Bẹ̀rẹ̀"],
+  ["ig", "igbo", "Malite"],
 ])(
   "the shared subapp runtime loads %s without Spanish fallbacks",
   async (code, name, translation) => {

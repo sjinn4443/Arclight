@@ -2,7 +2,14 @@
 // where available to avoid compounding errors through a pivot translation.
 const fs = require("node:fs");
 const path = require("node:path");
-const locales = { ne: "nepali", fr: "french", lg: "luganda" };
+const locales = {
+  ne: "nepali",
+  fr: "french",
+  lg: "luganda",
+  ha: "hausa",
+  yo: "yoruba",
+  ig: "igbo",
+};
 const cacheDir = "tmp/locale-parity";
 fs.mkdirSync(cacheDir, { recursive: true });
 const read = (p) => JSON.parse(fs.readFileSync(p, "utf8"));
@@ -29,6 +36,30 @@ const walk = (p) =>
 const en = read("public/translation/english.json");
 const es = read("public/translation/spanish.json");
 const glossary = {
+  ha: {
+    pupils: "ƙwayoyin baƙin ido",
+    pupil: "ƙwayar baƙin ido",
+    pupillary: "na ƙwayar baƙin ido",
+    "fundal reflex": "jan hasken da ke dawowa daga cikin ido",
+    "red reflex": "jan hasken da ke dawowa daga cikin ido",
+    "visual acuity": "kaifin gani",
+  },
+  yo: {
+    pupils: "àwọn ihò dúdú ojú",
+    pupil: "ihò dúdú ojú",
+    pupillary: "tó jẹ mọ́ ihò dúdú ojú",
+    "fundal reflex": "ìtànṣán pupa láti inú ojú",
+    "red reflex": "ìtànṣán pupa láti inú ojú",
+    "visual acuity": "ìdájú ìríran",
+  },
+  ig: {
+    pupils: "oghere ojii anya",
+    pupil: "oghere ojii anya",
+    pupillary: "nke oghere ojii anya",
+    "fundal reflex": "ìhè uhie na-alọghachi site n'ime anya",
+    "red reflex": "ìhè uhie na-alọghachi site n'ime anya",
+    "visual acuity": "ịdị nkọ nke ịhụ ụzọ",
+  },
   ne: {
     pupils: "नानीहरू",
     pupil: "नानी",
@@ -241,8 +272,22 @@ async function main(code) {
     (c) => (c[code] = baseCues.find((b) => b.id === c.id).text),
   );
   latest.languages[code] = {
-    label: { ne: "नेपाली", fr: "Français", lg: "Luganda" }[code],
-    locale: { ne: "ne-NP", fr: "fr-FR", lg: "lg-UG" }[code],
+    label: {
+      ne: "नेपाली",
+      fr: "Français",
+      lg: "Luganda",
+      ha: "Hausa",
+      yo: "Yorùbá",
+      ig: "Igbo",
+    }[code],
+    locale: {
+      ne: "ne-NP",
+      fr: "fr-FR",
+      lg: "lg-UG",
+      ha: "ha-NG",
+      yo: "yo-NG",
+      ig: "ig-NG",
+    }[code],
     voice: { ne: "ne-NP-HemkalaNeural", fr: "fr-FR-DeniseNeural", lg: null }[
       code
     ],

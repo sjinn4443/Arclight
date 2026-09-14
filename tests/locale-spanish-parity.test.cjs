@@ -14,6 +14,15 @@ test("Nepali animation titles contain no English Fundal Reflex text", () => {
     "फन्डल रिफ्लेक्स पूर्ण एनिमेसन",
   );
 });
+test.each(["hausa", "yoruba", "igbo"])(
+  "%s animation title is localized consistently",
+  (name) => {
+    const locale = read(`public/translation/${name}.json`);
+    const title = locale.auto.videos.fundal_reflex_full_animation;
+    expect(title).toBe(locale.i18nLiteral["Fundal Reflex Full Animation"]);
+    expect(title).not.toMatch(/Fundal|Full Animation/i);
+  },
+);
 const walk = (p) =>
   fs
     .readdirSync(p, { withFileTypes: true })
@@ -21,7 +30,7 @@ const walk = (p) =>
       e.isDirectory() ? walk(path.join(p, e.name)) : [path.join(p, e.name)],
     );
 
-test.each(["nepali", "french", "luganda"])(
+test.each(["nepali", "french", "luganda", "hausa", "yoruba", "igbo"])(
   "%s matches Spanish dictionary coverage and quiz array shapes",
   (name) => {
     const target = read(`public/translation/${name}.json`),
@@ -59,7 +68,7 @@ test.each(["nepali", "french", "luganda"])(
   },
 );
 
-test.each(["ne", "fr", "lg"])(
+test.each(["ne", "fr", "lg", "ha", "yo", "ig"])(
   "%s ships every Spanish subtitle with identical cue timing",
   (code) => {
     const failures = [];
@@ -83,7 +92,7 @@ test.each(["ne", "fr", "lg"])(
   },
 );
 
-test.each(["ne", "fr", "lg"])(
+test.each(["ne", "fr", "lg", "ha", "yo", "ig"])(
   "%s narration is connected, intact and includes silent section titles",
   (code) => {
     const root = "public/narration/fundal-reflex/full-animation";

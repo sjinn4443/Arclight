@@ -169,4 +169,35 @@ describe("Fundal Reflex examination scroll narration", () => {
       page.querySelector("[data-fundal-scroll-narration-audio]"),
     ).toBeNull();
   });
+
+  it.each(["ha", "yo", "ig"])(
+    "uses %s app language for scrolly narration",
+    (language) => {
+      localStorage.setItem("prefLang", language);
+      const page = document.getElementById("fundalReflexExaminationScrollPage");
+      const controller = initializeFundalStageNarration(
+        "fundalReflexExaminationScroll",
+        {
+          pageId: "fundalReflexExaminationScrollPage",
+          narrationTracks: FUNDAL_REFLEX_EXAMINATION_SCROLL_NARRATION_TRACKS,
+          narrationClipsByFile:
+            FUNDAL_REFLEX_EXAMINATION_SCROLL_NARRATION_CLIPS,
+        },
+        page,
+      );
+      const audio = page.querySelector("[data-fundal-scroll-narration-audio]");
+      expect(audio.getAttribute("src")).toBe(
+        `/narration/fundal-reflex/full-animation/${language}.m4a`,
+      );
+      expect(
+        page.querySelector("[data-fundal-scroll-narration-language]").value,
+      ).toBe("auto");
+      localStorage.setItem("prefLang", "ne");
+      controller.refreshLanguage();
+      expect(audio.getAttribute("src")).toBe(
+        "/narration/fundal-reflex/full-animation/ne.m4a",
+      );
+      controller.destroy();
+    },
+  );
 });

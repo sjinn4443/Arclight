@@ -647,7 +647,7 @@ function resolveNarrationDownloadLanguage(language) {
   const base = normalized.split("-")[0];
   if (base === "es") return "es-419";
   if (base === "ko") return "ko";
-  if (["ne", "fr", "lg"].includes(base)) return base;
+  if (["ne", "fr", "lg", "ha", "yo", "ig"].includes(base)) return base;
   return "en";
 }
 

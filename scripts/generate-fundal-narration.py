@@ -26,7 +26,7 @@ DEFAULT_ARTIFACTS = ROOT / ".codex-artifacts/fundal-reflex-narration"
 DEFAULT_PUBLIC = ROOT / "public/narration/fundal-reflex/full-animation"
 MAX_PLAYBACK_SPEED = 1.08
 SYNC_TOLERANCE_SECONDS = 0.25
-NARRATION_LANGUAGES = ("en", "es-419", "ko", "ne", "fr", "lg")
+NARRATION_LANGUAGES = ("en", "es-419", "ko", "ne", "fr", "lg", "ha", "yo", "ig")
 
 
 def parse_args() -> argparse.Namespace:
@@ -43,6 +43,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--ffmpeg", type=Path)
     parser.add_argument("--skip-tts", action="store_true")
+    parser.add_argument("--tts-only", action="store_true", help="Generate cue masters and report timing overruns without publishing tracks.")
     parser.add_argument("--skip-review-video", action="store_true")
     parser.add_argument(
         "--languages",
@@ -207,17 +208,19 @@ async def generate_tts_cues(
 
 
 def generate_mms_cues(script: dict, language: str, cues: list[dict], cue_dir: Path) -> None:
-    """Use the Luganda-specific MMS model; do not substitute another language's voice.
+    """Use a language-specific MMS/VITS model, including an Igbo-trained checkpoint.
 
     Install torch>=2.6, transformers<5 and scipy in tmp/luganda-tts-tools.
     Model weights stay in tmp. See the delivery README for model attribution.
     """
     sys.path.insert(0, str(ROOT / "tmp/luganda-tts-tools"))
     import torch
+    import numpy as np
     import scipy.io.wavfile
     from transformers import VitsModel, AutoTokenizer, set_seed
 
     voice = script["languages"][language]["voice"]
+    trim_db = script["languages"][language].get("trimEdgeSilenceDb")
     model_cache = str(ROOT / "tmp/luganda-tts-model")
     model = VitsModel.from_pretrained(voice, cache_dir=model_cache)
     tokenizer = AutoTokenizer.from_pretrained(voice, cache_dir=model_cache)
@@ -227,7 +230,8 @@ def generate_mms_cues(script: dict, language: str, cues: list[dict], cue_dir: Pa
         destination = cue_dir / f"{cue['id']}.mp3"
         signature_path = cue_dir / f"{cue['id']}.sha256"
         text = cue["ttsText"].replace("’", "'")
-        signature = hashlib.sha256((voice + "|seed=42|" + text).encode("utf-8")).hexdigest()
+        trim_signature = "" if trim_db is None else f"|trim={trim_db},padding=0.15|"
+        signature = hashlib.sha256((voice + "|seed=42|" + trim_signature + text).encode("utf-8")).hexdigest()
         if destination.exists() and signature_path.exists() and signature_path.read_text().strip() == signature:
             print(f"[{language}] reuse {cue['id']}", flush=True)
             continue
@@ -235,6 +239,19 @@ def generate_mms_cues(script: dict, language: str, cues: list[dict], cue_dir: Pa
         inputs = tokenizer(text, return_tensors="pt")
         with torch.no_grad():
             waveform = model(**inputs).waveform.squeeze().cpu().numpy()
+        if trim_db is not None:
+            # Some fine-tunes generate several seconds of silence at both ends.
+            # Detect voiced frames and keep 150 ms padding; preserve internal pauses.
+            rate = model.config.sampling_rate
+            frame = round(rate * 0.02)
+            padded = np.pad(waveform, (0, (-len(waveform)) % frame))
+            rms = np.sqrt(np.mean(padded.reshape(-1, frame) ** 2, axis=1))
+            active = np.flatnonzero(rms >= 10 ** (float(trim_db) / 20))
+            if not len(active):
+                raise RuntimeError(f"{language} cue {cue['id']} contains no audible speech")
+            start = max(0, int(active[0]) * frame - round(rate * 0.15))
+            end = min(len(waveform), (int(active[-1]) + 1) * frame + round(rate * 0.15))
+            waveform = waveform[start:end]
         # WAV content is intentional: ffmpeg probes the header when mixing.
         scipy.io.wavfile.write(str(destination), model.config.sampling_rate, waveform)
         signature_path.write_text(signature + "\n", encoding="ascii")
@@ -364,7 +381,7 @@ def make_review_mp4(
     language: str,
     duration: float,
 ) -> None:
-    language_code = {"en": "eng", "es-419": "spa", "ko": "kor", "ne": "nep", "fr": "fra", "lg": "lug"}[language]
+    language_code = {"en": "eng", "es-419": "spa", "ko": "kor", "ne": "nep", "fr": "fra", "lg": "lug", "ha": "hau", "yo": "yor", "ig": "ibo"}[language]
     run(
         [
             str(ffmpeg),
@@ -436,6 +453,14 @@ def main() -> None:
         if not args.skip_tts:
             asyncio.run(generate_tts_cues(script, language, audio_cues, cue_dir))
 
+        if args.tts_only:
+            for cue in audio_cues:
+                duration = probe_duration(ffmpeg, cue_dir / f"{cue['id']}.mp3")
+                slot = float(cue["end"]) - float(cue["start"])
+                if duration / slot > MAX_PLAYBACK_SPEED:
+                    print(f"[{language}] OVERRUN {cue['id']}: {duration:.3f}s / {slot:.3f}s", flush=True)
+            continue
+
         wav_path = artifacts_dir / f"{asset_stem}.{language}.master.wav"
         m4a_path = public_dir / f"{language}.m4a"
         vtt_path = public_dir / f"{language}.vtt"
@@ -495,6 +520,9 @@ def main() -> None:
             f"duration={track_duration:.3f}s",
             flush=True,
         )
+
+    if args.tts_only:
+        return
 
     qa_path = artifacts_dir / "qa-report.json"
     if qa_path.exists():

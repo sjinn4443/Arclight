@@ -8,7 +8,7 @@ import path from "node:path";
 import { describe, expect, it } from "@jest/globals";
 
 const root = path.resolve("public/narration/fundal-reflex/full-animation");
-const languages = ["en", "es-419", "ko", "ne", "fr", "lg"];
+const languages = ["en", "es-419", "ko", "ne", "fr", "lg", "ha", "yo", "ig"];
 const script = JSON.parse(
   fs.readFileSync(path.join(root, "script.json"), "utf8"),
 );

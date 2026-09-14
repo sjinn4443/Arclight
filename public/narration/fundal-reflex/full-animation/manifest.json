@@ -38,6 +38,24 @@
       "captions": "lg.vtt",
       "bytes": 1228922,
       "sha256": "095b97ccfae627466822142a05e4ab866b010fee99610477af750111b7556c54"
+    },
+    "ha": {
+      "src": "ha.m4a",
+      "captions": "ha.vtt",
+      "bytes": 1146420,
+      "sha256": "8781fb122d21973f5b324b220749cc5969aae06018816c388d20a4c81c0a457d"
+    },
+    "yo": {
+      "src": "yo.m4a",
+      "captions": "yo.vtt",
+      "bytes": 863623,
+      "sha256": "79581600ac1bb4162b99e63378cb808e8d945179ae7d64b0c59876edc954419f"
+    },
+    "ig": {
+      "src": "ig.m4a",
+      "captions": "ig.vtt",
+      "bytes": 1124955,
+      "sha256": "279c106fe3433a405d5bdff5672363b4fc39554eee535df5f7b2ef67d3fde898"
     }
   }
 }

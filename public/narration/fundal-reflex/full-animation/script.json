@@ -43,6 +43,31 @@
       "style": "Calm medical educator; slightly slow",
       "provider": "Meta MMS (local)",
       "modelLicense": "CC-BY-NC-4.0"
+    },
+    "ha": {
+      "label": "Hausa",
+      "locale": "ha-NG",
+      "voice": "facebook/mms-tts-hau",
+      "provider": "Meta MMS (local)",
+      "modelLicense": "CC-BY-NC-4.0",
+      "style": "Calm medical educator"
+    },
+    "yo": {
+      "label": "Yorùbá",
+      "locale": "yo-NG",
+      "voice": "facebook/mms-tts-yor",
+      "provider": "Meta MMS (local)",
+      "modelLicense": "CC-BY-NC-4.0",
+      "style": "Calm medical educator"
+    },
+    "ig": {
+      "label": "Igbo",
+      "locale": "ig-NG",
+      "voice": "Shinzmann/soro-tts-ibo",
+      "provider": "Meta MMS (local)",
+      "modelLicense": "CC-BY-NC-4.0",
+      "style": "Calm medical educator",
+      "trimEdgeSilenceDb": -50
     }
   },
   "pronunciationGuide": [
@@ -1333,6 +1358,660 @@
         "end": 274.27,
         "text": "Ddamu okunaaba mu ngalo. Okukebera ekitangaala ekidda mu liiso kuwedde."
       }
+    ],
+    "ha": [
+      {
+        "id": "section-preparation",
+        "start": 0,
+        "end": 4.17,
+        "text": "Shiri"
+      },
+      {
+        "id": "preparation-01",
+        "start": 4.2,
+        "end": 9.2,
+        "text": "Wanke hannuwanka, ka sa kayan kariya."
+      },
+      {
+        "id": "preparation-02",
+        "start": 9.2,
+        "end": 19.2,
+        "text": "A ɗaki mai shiru da duhu, zaɓi haske mafi ƙarfi na Arclight. Tura maƙallan ruwan tabarau biyu sama gaba ɗaya."
+      },
+      {
+        "id": "preparation-03a",
+        "start": 19.2,
+        "end": 28.2,
+        "text": "Kawo ramin dubawa kusa da idonka."
+      },
+      {
+        "id": "preparation-03b",
+        "start": 28.2,
+        "end": 35.2,
+        "text": "Kada ka haska idonka, ko ka riƙe na’urar a kwance."
+      },
+      {
+        "id": "preparation-04a",
+        "start": 36.2,
+        "end": 44.2,
+        "text": "A naɗe jariri cikin zane lafiya."
+      },
+      {
+        "id": "preparation-04b",
+        "start": 44.2,
+        "end": 48.2,
+        "text": "Iyaye su riƙe jariri mai ɗan girma."
+      },
+      {
+        "id": "preparation-04c",
+        "start": 48.2,
+        "end": 52.2,
+        "text": "Yaron da ke iya zama da kyau zai iya zama shi kaɗai."
+      },
+      {
+        "id": "section-examination",
+        "start": 52.29,
+        "end": 55.79,
+        "text": "Bincike"
+      },
+      {
+        "id": "examination-01",
+        "start": 55.8,
+        "end": 59.8,
+        "text": "Fara daga nisan tsawon hannu."
+      },
+      {
+        "id": "examination-02",
+        "start": 60.4,
+        "end": 71.4,
+        "text": "Matsa kaɗan daga gefe zuwa gefe. Matso kusa idan kana buƙatar gani dalla-dalla."
+      },
+      {
+        "id": "examination-03",
+        "start": 71.4,
+        "end": 87.4,
+        "text": "Daga nisan hannu, ka sa yaron ya dube ka. Duba idanu biyu tare. Yanayin hasken zai bambanta da nisa da kuma inda yaron yake kallo."
+      },
+      {
+        "id": "examination-04",
+        "start": 87.4,
+        "end": 99.4,
+        "text": "Launi da ƙarfin hasken da ke dawowa daga idanu biyu su zama iri ɗaya. Bambanci ko rashin hasken ba al’ada ba ne. Tura yaron don ƙarin bincike."
+      },
+      {
+        "id": "examination-05a",
+        "start": 99.4,
+        "end": 109.1,
+        "text": "Launin haske ya danganta da launin retina. Yana iya zama fari-rawaya, shuɗi, ja-lemo, ko rawaya-lemo."
+      },
+      {
+        "id": "examination-05b",
+        "start": 109.1,
+        "end": 114.35,
+        "text": "Waɗannan duk yanayi ne na lafiya ga yaran nan."
+      },
+      {
+        "id": "section-newborn-eyes-open",
+        "start": 114.38,
+        "end": 118.32,
+        "text": "Jariri — idanu a buɗe"
+      },
+      {
+        "id": "eyes-open-01",
+        "start": 118.4,
+        "end": 129.4,
+        "text": "Iyaye su riƙe jaririn da aka naɗe lafiya, hannuwansa suna cikin zane."
+      },
+      {
+        "id": "eyes-open-02",
+        "start": 129.4,
+        "end": 144.4,
+        "text": "Idan idanu suna buɗe, duba hasken da ke dawowa daga idanu biyu tare, ba tare da taɓa jaririn ba."
+      },
+      {
+        "id": "section-newborn-eyes-closed",
+        "start": 145.25,
+        "end": 149.12,
+        "text": "Jariri — idanu a rufe"
+      },
+      {
+        "id": "eyes-closed-01",
+        "start": 150,
+        "end": 154.5,
+        "text": "Idan jariri yana barci, kada ka tashe shi."
+      },
+      {
+        "id": "eyes-closed-02",
+        "start": 154.5,
+        "end": 158.2,
+        "text": "Naɗe shi, hannuwansa a ciki."
+      },
+      {
+        "id": "eyes-closed-03",
+        "start": 158.2,
+        "end": 170.4,
+        "text": "Buɗe ido ɗaya a hankali ka duba, sannan ɗayan. Ka yi hakan cikin natsuwa, tausasawa da haƙuri."
+      },
+      {
+        "id": "section-possible-findings",
+        "start": 170.84,
+        "end": 175.19,
+        "text": "Abubuwan da za a iya gani"
+      },
+      {
+        "id": "possible-findings-02",
+        "start": 175.2,
+        "end": 180,
+        "text": "Launi da haske iri ɗaya alama ce mai kyau."
+      },
+      {
+        "id": "possible-findings-01",
+        "start": 180,
+        "end": 192,
+        "text": "Ɗan karkacewar ido na lokaci-lokaci yakan faru a watan farko, ya daina kafin wata uku. Idan ya ci gaba bayan wata uku, tura yaron ga ƙwararre."
+      },
+      {
+        "id": "possible-findings-03",
+        "start": 192,
+        "end": 207,
+        "text": "Bambancin launi ko rashin wani ɓangare na hasken, ko dukansa, ba al’ada ba ne. Ana buƙatar ƙarin bincike."
+      },
+      {
+        "id": "section-unclear-findings",
+        "start": 207.47,
+        "end": 211.34,
+        "text": "Sakamako marar tabbas"
+      },
+      {
+        "id": "unclear-findings-01",
+        "start": 211.35,
+        "end": 220.35,
+        "text": "Idan sakamakon bai bayyana ba, bi matakai uku nan."
+      },
+      {
+        "id": "unclear-findings-02",
+        "start": 220.35,
+        "end": 230.35,
+        "text": "Da farko, kwatanta hasken jariri da na iyayensa. Ya kamata su yi kama."
+      },
+      {
+        "id": "unclear-findings-03",
+        "start": 230.35,
+        "end": 237.35,
+        "text": "Idan kana shakka, nemi ra’ayin abokin aiki."
+      },
+      {
+        "id": "unclear-findings-04",
+        "start": 237.35,
+        "end": 246.35,
+        "text": "Idan babu abokin aiki, nemi yardar iyaye."
+      },
+      {
+        "id": "unclear-findings-05a",
+        "start": 246.35,
+        "end": 254.35,
+        "text": "Haɗa Arclight da kyamarar waya, ka ɗauki bidiyon hasken ido."
+      },
+      {
+        "id": "unclear-findings-05b",
+        "start": 254.35,
+        "end": 260.35,
+        "text": "Aika bidiyon cikin tsaro don neman wani ra’ayi."
+      },
+      {
+        "id": "section-after-examination",
+        "start": 260.36,
+        "end": 264.2,
+        "text": "Bayan bincike"
+      },
+      {
+        "id": "after-examination-01",
+        "start": 264.3,
+        "end": 268.3,
+        "text": "Gode wa iyaye. Bayyana sakamako da mataki na gaba."
+      },
+      {
+        "id": "after-examination-02",
+        "start": 268.3,
+        "end": 274.27,
+        "text": "Sake wanke hannu. An gama gwajin jan hasken ido."
+      }
+    ],
+    "yo": [
+      {
+        "id": "section-preparation",
+        "start": 0,
+        "end": 4.17,
+        "text": "Ìmúrasílẹ̀"
+      },
+      {
+        "id": "preparation-01",
+        "start": 4.2,
+        "end": 9.2,
+        "text": "Fọ ọwọ́ rẹ, kí o sì wọ ohun èlò ààbò."
+      },
+      {
+        "id": "preparation-02",
+        "start": 9.2,
+        "end": 19.2,
+        "text": "Mú Arclight sílẹ̀ ní yàrá tó dákẹ́, tí ìmọ́lẹ̀ rẹ̀ kéré. Yan ìmọ́lẹ̀ tó lágbára jù, kí o sì gbé àwọn àgbékalẹ̀ lẹ́ńsì méjèèjì sókè pátápátá."
+      },
+      {
+        "id": "preparation-03a",
+        "start": 19.2,
+        "end": 28.2,
+        "text": "Mú ihò ìwòran sún mọ́ ojú rẹ."
+      },
+      {
+        "id": "preparation-03b",
+        "start": 28.2,
+        "end": 35.2,
+        "text": "Má tan ìmọ́lẹ̀ sí ojú ara rẹ. Má sì di ẹ̀rọ náà ní ẹ̀gbẹ́."
+      },
+      {
+        "id": "preparation-04a",
+        "start": 36.2,
+        "end": 44.2,
+        "text": "Fi aṣọ di ọmọ tuntun ní àìléwu."
+      },
+      {
+        "id": "preparation-04b",
+        "start": 44.2,
+        "end": 48.2,
+        "text": "Jẹ́ kí òbí gbé ọmọ tó ti dàgbà díẹ̀."
+      },
+      {
+        "id": "preparation-04c",
+        "start": 48.2,
+        "end": 52.2,
+        "text": "Ọmọ tó lè jókòó dáadáa lè jókòó fúnra rẹ̀."
+      },
+      {
+        "id": "section-examination",
+        "start": 52.29,
+        "end": 55.79,
+        "text": "Àyẹ̀wò"
+      },
+      {
+        "id": "examination-01",
+        "start": 55.8,
+        "end": 59.8,
+        "text": "Bẹ̀rẹ̀ láti ìjìnnà gígùn apá."
+      },
+      {
+        "id": "examination-02",
+        "start": 60.4,
+        "end": 71.4,
+        "text": "Rìn díẹ̀ sí ẹ̀gbẹ́ méjèèjì. Sún mọ́ ọn bí o bá nílò láti rí dáadáa sí i."
+      },
+      {
+        "id": "examination-03",
+        "start": 71.4,
+        "end": 87.4,
+        "text": "Ní ìjìnnà gígùn apá, sọ fún ọmọ láti wò ọ́. Ṣàyẹ̀wò ojú méjèèjì lẹ́ẹ̀kan náà. Ìrísí yóò yàtọ̀ gẹ́gẹ́ bí ìjìnnà àti ibi tí ọmọ ń wò."
+      },
+      {
+        "id": "examination-04",
+        "start": 87.4,
+        "end": 99.4,
+        "text": "Àwọ̀ àti ìmọ́lẹ̀ ìtànṣán láti ojú méjèèjì gbọ́dọ̀ jọra. Ìyàtọ̀ tàbí àìsí ìtànṣán kò bójú mu. Rán ọmọ lọ fún àyẹ̀wò síwájú."
+      },
+      {
+        "id": "examination-05a",
+        "start": 99.4,
+        "end": 109.1,
+        "text": "Àwọ̀ ìtànṣán déédéé sinmi lórí àwọ̀ retina. Ó lè jẹ́ ofeefee-funfun, búlúù, ọsàn-pupa, tàbí ọsàn-ofeefee."
+      },
+      {
+        "id": "examination-05b",
+        "start": 109.1,
+        "end": 114.35,
+        "text": "Gbogbo ìrísí wọ̀nyí dára fún àwọn ọmọ wọ̀nyí."
+      },
+      {
+        "id": "section-newborn-eyes-open",
+        "start": 114.38,
+        "end": 118.32,
+        "text": "Ọmọ tuntun — ojú ṣí"
+      },
+      {
+        "id": "eyes-open-01",
+        "start": 118.4,
+        "end": 129.4,
+        "text": "Sọ fún òbí kí ó gbé ọmọ tuntun dáadáa, pẹ̀lú aṣọ yí i ká àti apá méjèèjì nínú rẹ̀."
+      },
+      {
+        "id": "eyes-open-02",
+        "start": 129.4,
+        "end": 144.4,
+        "text": "Bí ojú bá ṣí, wo ìtànṣán láti ojú méjèèjì lẹ́ẹ̀kan náà láìfọwọ́ kan ọmọ."
+      },
+      {
+        "id": "section-newborn-eyes-closed",
+        "start": 145.25,
+        "end": 149.12,
+        "text": "Ọmọ tuntun — ojú pa"
+      },
+      {
+        "id": "eyes-closed-01",
+        "start": 150,
+        "end": 154.5,
+        "text": "Bí ọmọ bá ń sùn, má jí i."
+      },
+      {
+        "id": "eyes-closed-02",
+        "start": 154.5,
+        "end": 158.2,
+        "text": "Fi aṣọ yí i ká, kí apá wà nínú rẹ̀."
+      },
+      {
+        "id": "eyes-closed-03",
+        "start": 158.2,
+        "end": 170.4,
+        "text": "Ṣí ojú kan díẹ̀díẹ̀ kí o ṣàyẹ̀wò rẹ̀, lẹ́yìn náà èkejì. Ṣe é pẹ̀lẹ́pẹ̀lẹ́, pẹ̀lú ìfarabalẹ̀ àti sùúrù."
+      },
+      {
+        "id": "section-possible-findings",
+        "start": 170.84,
+        "end": 175.19,
+        "text": "Àwọn àbájáde tó ṣeé rí"
+      },
+      {
+        "id": "possible-findings-02",
+        "start": 175.2,
+        "end": 180,
+        "text": "Àwọ̀ àti ìmọ́lẹ̀ tó jọra ń fúnni ní ìdánilójú."
+      },
+      {
+        "id": "possible-findings-01",
+        "start": 180,
+        "end": 192,
+        "text": "Ojú lè yí padà fún ìgbà díẹ̀ ní oṣù àkọ́kọ́. Ó sábà máa ń dáwọ́ dúró kí oṣù mẹ́ta tó pé. Bí ó bá tẹ̀síwájú, rán ọmọ lọ sí ọ̀dọ̀ onímọ̀."
+      },
+      {
+        "id": "possible-findings-03",
+        "start": 192,
+        "end": 207,
+        "text": "Ìyàtọ̀ àwọ̀, tàbí àìsí apá kan tàbí gbogbo ìtànṣán, kò bójú mu. Ó nílò àyẹ̀wò síwájú."
+      },
+      {
+        "id": "section-unclear-findings",
+        "start": 207.47,
+        "end": 211.34,
+        "text": "Àbájáde tí kò ṣe kedere"
+      },
+      {
+        "id": "unclear-findings-01",
+        "start": 211.35,
+        "end": 220.35,
+        "text": "Bí àbájáde kò bá ṣe kedere, tẹ̀lé ìgbésẹ̀ mẹ́ta yìí."
+      },
+      {
+        "id": "unclear-findings-02",
+        "start": 220.35,
+        "end": 230.35,
+        "text": "Àkọ́kọ́, fi ìtànṣán ọmọ wé ti òbí. Wọ́n gbọ́dọ̀ jọra."
+      },
+      {
+        "id": "unclear-findings-03",
+        "start": 230.35,
+        "end": 237.35,
+        "text": "Bí o bá ṣì ń ṣiyèméjì, béèrè èrò ẹlẹgbẹ́ rẹ."
+      },
+      {
+        "id": "unclear-findings-04",
+        "start": 237.35,
+        "end": 246.35,
+        "text": "Bí ẹlẹgbẹ́ kò bá sí, gba ìyọ̀ǹda òbí."
+      },
+      {
+        "id": "unclear-findings-05a",
+        "start": 246.35,
+        "end": 254.35,
+        "text": "So Arclight mọ́ kámẹ́rà fóònù, kí o ya fídíò ìtànṣán ojú."
+      },
+      {
+        "id": "unclear-findings-05b",
+        "start": 254.35,
+        "end": 260.35,
+        "text": "Fi fídíò ránṣẹ́ ní ààbò láti gba èrò kejì."
+      },
+      {
+        "id": "section-after-examination",
+        "start": 260.36,
+        "end": 264.2,
+        "text": "Lẹ́yìn àyẹ̀wò"
+      },
+      {
+        "id": "after-examination-01",
+        "start": 264.3,
+        "end": 268.3,
+        "text": "Dúpẹ́ lọ́wọ́ òbí. Ṣàlàyé àbájáde àti ìgbésẹ̀ tó kàn."
+      },
+      {
+        "id": "after-examination-02",
+        "start": 268.3,
+        "end": 274.27,
+        "text": "Fọ ọwọ́ lẹ́ẹ̀kan sí i. Àyẹ̀wò ìtànṣán pupa ti parí."
+      }
+    ],
+    "ig": [
+      {
+        "id": "section-preparation",
+        "start": 0,
+        "end": 4.17,
+        "text": "Nkwadebe"
+      },
+      {
+        "id": "preparation-01",
+        "start": 4.2,
+        "end": 9.2,
+        "text": "Saa aka gị, yirikwa ngwa nchebe."
+      },
+      {
+        "id": "preparation-02",
+        "start": 9.2,
+        "end": 19.2,
+        "text": "Kwadebe Arclight n’ụlọ dị jụụ, ìhè ya pere mpe. Họrọ ìhè kacha ike, bugokwa ihe njide lens abụọ elu kpamkpam."
+      },
+      {
+        "id": "preparation-03a",
+        "start": 19.2,
+        "end": 28.2,
+        "text": "Weta oghere nlele nso anya gị."
+      },
+      {
+        "id": "preparation-03b",
+        "start": 28.2,
+        "end": 35.2,
+        "text": "Atụnyela ìhè n’anya gị. Ejikwala ngwaọrụ ahụ n’akụkụ."
+      },
+      {
+        "id": "preparation-04a",
+        "start": 36.2,
+        "end": 44.2,
+        "text": "Kechie nwa amụrụ ọhụrụ n’ákwà n’enweghị nsogbu."
+      },
+      {
+        "id": "preparation-04b",
+        "start": 44.2,
+        "end": 48.2,
+        "text": "Gwa nne ma ọ bụ nna ka o jide nwa toro ntakịrị."
+      },
+      {
+        "id": "preparation-04c",
+        "start": 48.2,
+        "end": 52.2,
+        "text": "Nwa nwere ike ịnọdụ nke ọma nwere ike ịnọdụ naanị ya."
+      },
+      {
+        "id": "section-examination",
+        "start": 52.29,
+        "end": 55.79,
+        "text": "Nyocha"
+      },
+      {
+        "id": "examination-01",
+        "start": 55.8,
+        "end": 59.8,
+        "text": "Malite n’ebe dị ka ogologo aka."
+      },
+      {
+        "id": "examination-02",
+        "start": 60.4,
+        "end": 71.4,
+        "text": "Gaa ntakịrị n’akụkụ abụọ. Bịaruo nso ma ọ bụrụ na ị chọrọ ịhụ nke ọma."
+      },
+      {
+        "id": "examination-03",
+        "start": 71.4,
+        "end": 87.4,
+        "text": "N’ebe dị ka ogologo aka, gwa nwa ka o lee gị anya. Nyochaa anya abụọ ọnụ. Ihe ị na-ahụ na-agbanwe dabere n’ebe ị nọ na ebe nwa na-ele."
+      },
+      {
+        "id": "examination-04",
+        "start": 87.4,
+        "end": 99.4,
+        "text": "Agba na ike ìhè na-alọghachi n’anya abụọ kwesịrị ịdị otu. Ọdịiche ma ọ bụ enweghị ìhè abụghị ihe nkịtị. Ziga nwa maka nyocha ọzọ."
+      },
+      {
+        "id": "examination-05a",
+        "start": 99.4,
+        "end": 109.1,
+        "text": "Agba ìhè nkịtị dabere n’agba retina. Ọ nwere ike ịbụ odo-ọcha, anụnụ anụnụ, oroma-uhie, ma ọ bụ oroma-odo."
+      },
+      {
+        "id": "examination-05b",
+        "start": 109.1,
+        "end": 114.35,
+        "text": "Ihe ndị a niile bụ ihe nkịtị n’ụmụaka ndị a."
+      },
+      {
+        "id": "section-newborn-eyes-open",
+        "start": 114.38,
+        "end": 118.32,
+        "text": "Nwa ọhụrụ — anya mepere emepe"
+      },
+      {
+        "id": "eyes-open-01",
+        "start": 118.4,
+        "end": 129.4,
+        "text": "Gwa nne ma ọ bụ nna ka o jide nwa ọhụrụ nke ọma, kechie ya n’ákwà ka aka ya dị n’ime."
+      },
+      {
+        "id": "eyes-open-02",
+        "start": 129.4,
+        "end": 144.4,
+        "text": "Ọ bụrụ na anya mepere emepe, lee ìhè na-alọghachi n’anya abụọ ọnụ, emetụghị nwa ahụ aka."
+      },
+      {
+        "id": "section-newborn-eyes-closed",
+        "start": 145.25,
+        "end": 149.12,
+        "text": "Nwa ọhụrụ — anya mechiri emechi"
+      },
+      {
+        "id": "eyes-closed-01",
+        "start": 150,
+        "end": 154.5,
+        "text": "Ọ bụrụ na nwa na-ehi ụra, akpọtela ya."
+      },
+      {
+        "id": "eyes-closed-02",
+        "start": 154.5,
+        "end": 158.2,
+        "text": "Kechie ya, ka aka ya dị n’ime."
+      },
+      {
+        "id": "eyes-closed-03",
+        "start": 158.2,
+        "end": 170.4,
+        "text": "Mepee otu anya nwayọọ ka ị nyochaa ya, mesịa nke ọzọ. Dị nwayọọ, nwee ndidi na obi jụụ."
+      },
+      {
+        "id": "section-possible-findings",
+        "start": 170.84,
+        "end": 175.19,
+        "text": "Ihe a pụrụ ịhụ"
+      },
+      {
+        "id": "possible-findings-02",
+        "start": 175.2,
+        "end": 180,
+        "text": "Agba na ike ìhè yiri ibe ha bụ ihe na-enye obi ike."
+      },
+      {
+        "id": "possible-findings-01",
+        "start": 180,
+        "end": 192,
+        "text": "Anya nwere ike ịgbagọ obere oge n’ọnwa mbụ. Nke a na-akwụsịkarị tupu ọnwa atọ. Ọ bụrụ na ọ gara n’ihu mgbe ọnwa atọ gasịrị, ziga nwa n’aka ọkachamara."
+      },
+      {
+        "id": "possible-findings-03",
+        "start": 192,
+        "end": 207,
+        "text": "Ọdịiche agba ma ọ bụ enweghị akụkụ ìhè, ma ọ bụ ìhè niile, abụghị ihe nkịtị. Ọ chọrọ nyocha ọzọ."
+      },
+      {
+        "id": "section-unclear-findings",
+        "start": 207.47,
+        "end": 211.34,
+        "text": "Ihe edoghị anya"
+      },
+      {
+        "id": "unclear-findings-01",
+        "start": 211.35,
+        "end": 220.35,
+        "text": "Ọ bụrụ na ihe ị hụrụ edoghị anya, soro usoro atọ ndị a."
+      },
+      {
+        "id": "unclear-findings-02",
+        "start": 220.35,
+        "end": 230.35,
+        "text": "Mbụ, tụnyere ìhè anya nwa na nke nne ma ọ bụ nna. Ha kwesịrị ịdị ka ibe ha."
+      },
+      {
+        "id": "unclear-findings-03",
+        "start": 230.35,
+        "end": 237.35,
+        "text": "Ọ bụrụ na ị ka na-enwe obi abụọ, jụọ onye ọrụ ibe gị."
+      },
+      {
+        "id": "unclear-findings-04",
+        "start": 237.35,
+        "end": 246.35,
+        "text": "Ọ bụrụ na onye ọrụ ibe gị anọghị, nweta nkwenye nne ma ọ bụ nna."
+      },
+      {
+        "id": "unclear-findings-05a",
+        "start": 246.35,
+        "end": 254.35,
+        "text": "Tinye Arclight na igwefoto ekwentị, dekọọ ìhè anya na vidio."
+      },
+      {
+        "id": "unclear-findings-05b",
+        "start": 254.35,
+        "end": 260.35,
+        "text": "Ziga vidio ahụ n’enweghị nsogbu ka ị nweta echiche ọzọ."
+      },
+      {
+        "id": "section-after-examination",
+        "start": 260.36,
+        "end": 264.2,
+        "text": "Mgbe nyocha gasịrị"
+      },
+      {
+        "id": "after-examination-01",
+        "start": 264.3,
+        "end": 268.3,
+        "text": "Kelee nne ma ọ bụ nna. Kọwaa ihe ị hụrụ na ihe ọzọ a ga-eme."
+      },
+      {
+        "id": "after-examination-02",
+        "start": 268.3,
+        "end": 274.27,
+        "text": "Saa aka ọzọ. Nyocha ìhè uhie anya agwụla."
+      }
     ]
   },
   "timedAudioCues": {
@@ -2511,6 +3190,504 @@
         "end": 274.27,
         "text": "Weebaze omuzadde. Nnyonnyola ebizuuliddwa n’ekiddako. Ddamu okunaaba mu ngalo. Okukebera ekitangaala ekidda mu liiso kuwedde."
       }
+    ],
+    "ha": [
+      {
+        "id": "preparation-01",
+        "start": 4.2,
+        "end": 9.2,
+        "text": "Wanke hannuwanka, ka sa kayan kariya."
+      },
+      {
+        "id": "preparation-02",
+        "start": 9.2,
+        "end": 19.2,
+        "text": "A ɗaki mai shiru da duhu, zaɓi haske mafi ƙarfi na Arclight. Tura maƙallan ruwan tabarau biyu sama gaba ɗaya."
+      },
+      {
+        "id": "preparation-03a",
+        "start": 19.2,
+        "end": 28.2,
+        "text": "Kawo ramin dubawa kusa da idonka."
+      },
+      {
+        "id": "preparation-03b",
+        "start": 28.2,
+        "end": 35.2,
+        "text": "Kada ka haska idonka, ko ka riƙe na’urar a kwance."
+      },
+      {
+        "id": "preparation-04a",
+        "start": 36.2,
+        "end": 44.2,
+        "text": "A naɗe jariri cikin zane lafiya."
+      },
+      {
+        "id": "preparation-04b",
+        "start": 44.2,
+        "end": 48.2,
+        "text": "Iyaye su riƙe jariri mai ɗan girma."
+      },
+      {
+        "id": "preparation-04c",
+        "start": 48.2,
+        "end": 52.2,
+        "text": "Yaron da ke iya zama da kyau zai iya zama shi kaɗai."
+      },
+      {
+        "id": "examination-01",
+        "start": 55.8,
+        "end": 59.8,
+        "text": "Fara daga nisan tsawon hannu."
+      },
+      {
+        "id": "examination-02",
+        "start": 60.4,
+        "end": 71.4,
+        "text": "Matsa kaɗan daga gefe zuwa gefe. Matso kusa idan kana buƙatar gani dalla-dalla."
+      },
+      {
+        "id": "examination-03",
+        "start": 71.4,
+        "end": 87.4,
+        "text": "Daga nisan hannu, ka sa yaron ya dube ka. Duba idanu biyu tare. Yanayin hasken zai bambanta da nisa da kuma inda yaron yake kallo."
+      },
+      {
+        "id": "examination-04",
+        "start": 87.4,
+        "end": 99.4,
+        "text": "Launi da ƙarfin hasken da ke dawowa daga idanu biyu su zama iri ɗaya. Bambanci ko rashin hasken ba al’ada ba ne. Tura yaron don ƙarin bincike."
+      },
+      {
+        "id": "examination-05a",
+        "start": 99.4,
+        "end": 109.1,
+        "text": "Launin haske ya danganta da launin retina. Yana iya zama fari-rawaya, shuɗi, ja-lemo, ko rawaya-lemo."
+      },
+      {
+        "id": "examination-05b",
+        "start": 109.1,
+        "end": 114.35,
+        "text": "Waɗannan duk yanayi ne na lafiya ga yaran nan."
+      },
+      {
+        "id": "eyes-open-01",
+        "start": 118.4,
+        "end": 129.4,
+        "text": "Iyaye su riƙe jaririn da aka naɗe lafiya, hannuwansa suna cikin zane."
+      },
+      {
+        "id": "eyes-open-02",
+        "start": 129.4,
+        "end": 144.4,
+        "text": "Idan idanu suna buɗe, duba hasken da ke dawowa daga idanu biyu tare, ba tare da taɓa jaririn ba."
+      },
+      {
+        "id": "eyes-closed-01",
+        "start": 150,
+        "end": 154.5,
+        "text": "Idan jariri yana barci, kada ka tashe shi."
+      },
+      {
+        "id": "eyes-closed-02",
+        "start": 154.5,
+        "end": 158.2,
+        "text": "Naɗe shi, hannuwansa a ciki."
+      },
+      {
+        "id": "eyes-closed-03",
+        "start": 158.2,
+        "end": 170.4,
+        "text": "Buɗe ido ɗaya a hankali ka duba, sannan ɗayan. Ka yi hakan cikin natsuwa, tausasawa da haƙuri."
+      },
+      {
+        "id": "possible-findings-02",
+        "start": 175.2,
+        "end": 180,
+        "text": "Launi da haske iri ɗaya alama ce mai kyau."
+      },
+      {
+        "id": "possible-findings-01",
+        "start": 180,
+        "end": 192,
+        "text": "Ɗan karkacewar ido na lokaci-lokaci yakan faru a watan farko, ya daina kafin wata uku. Idan ya ci gaba bayan wata uku, tura yaron ga ƙwararre."
+      },
+      {
+        "id": "possible-findings-03",
+        "start": 192,
+        "end": 207,
+        "text": "Bambancin launi ko rashin wani ɓangare na hasken, ko dukansa, ba al’ada ba ne. Ana buƙatar ƙarin bincike."
+      },
+      {
+        "id": "unclear-findings-01",
+        "start": 211.35,
+        "end": 220.35,
+        "text": "Idan sakamakon bai bayyana ba, bi matakai uku nan."
+      },
+      {
+        "id": "unclear-findings-02",
+        "start": 220.35,
+        "end": 230.35,
+        "text": "Da farko, kwatanta hasken jariri da na iyayensa. Ya kamata su yi kama."
+      },
+      {
+        "id": "unclear-findings-03",
+        "start": 230.35,
+        "end": 237.35,
+        "text": "Idan kana shakka, nemi ra’ayin abokin aiki."
+      },
+      {
+        "id": "unclear-findings-04",
+        "start": 237.35,
+        "end": 246.35,
+        "text": "Idan babu abokin aiki, nemi yardar iyaye."
+      },
+      {
+        "id": "unclear-findings-05a",
+        "start": 246.35,
+        "end": 254.35,
+        "text": "Haɗa Arclight da kyamarar waya, ka ɗauki bidiyon hasken ido."
+      },
+      {
+        "id": "unclear-findings-05b",
+        "start": 254.35,
+        "end": 260.35,
+        "text": "Aika bidiyon cikin tsaro don neman wani ra’ayi."
+      },
+      {
+        "id": "after-examination",
+        "start": 264.3,
+        "end": 274.27,
+        "text": "Gode wa iyaye. Bayyana sakamako da mataki na gaba. Sake wanke hannu. An gama gwajin jan hasken ido."
+      }
+    ],
+    "yo": [
+      {
+        "id": "preparation-01",
+        "start": 4.2,
+        "end": 9.2,
+        "text": "Fọ ọwọ́ rẹ, kí o sì wọ ohun èlò ààbò."
+      },
+      {
+        "id": "preparation-02",
+        "start": 9.2,
+        "end": 19.2,
+        "text": "Mú Arclight sílẹ̀ ní yàrá tó dákẹ́, tí ìmọ́lẹ̀ rẹ̀ kéré. Yan ìmọ́lẹ̀ tó lágbára jù, kí o sì gbé àwọn àgbékalẹ̀ lẹ́ńsì méjèèjì sókè pátápátá."
+      },
+      {
+        "id": "preparation-03a",
+        "start": 19.2,
+        "end": 28.2,
+        "text": "Mú ihò ìwòran sún mọ́ ojú rẹ."
+      },
+      {
+        "id": "preparation-03b",
+        "start": 28.2,
+        "end": 35.2,
+        "text": "Má tan ìmọ́lẹ̀ sí ojú ara rẹ. Má sì di ẹ̀rọ náà ní ẹ̀gbẹ́."
+      },
+      {
+        "id": "preparation-04a",
+        "start": 36.2,
+        "end": 44.2,
+        "text": "Fi aṣọ di ọmọ tuntun ní àìléwu."
+      },
+      {
+        "id": "preparation-04b",
+        "start": 44.2,
+        "end": 48.2,
+        "text": "Jẹ́ kí òbí gbé ọmọ tó ti dàgbà díẹ̀."
+      },
+      {
+        "id": "preparation-04c",
+        "start": 48.2,
+        "end": 52.2,
+        "text": "Ọmọ tó lè jókòó dáadáa lè jókòó fúnra rẹ̀."
+      },
+      {
+        "id": "examination-01",
+        "start": 55.8,
+        "end": 59.8,
+        "text": "Bẹ̀rẹ̀ láti ìjìnnà gígùn apá."
+      },
+      {
+        "id": "examination-02",
+        "start": 60.4,
+        "end": 71.4,
+        "text": "Rìn díẹ̀ sí ẹ̀gbẹ́ méjèèjì. Sún mọ́ ọn bí o bá nílò láti rí dáadáa sí i."
+      },
+      {
+        "id": "examination-03",
+        "start": 71.4,
+        "end": 87.4,
+        "text": "Ní ìjìnnà gígùn apá, sọ fún ọmọ láti wò ọ́. Ṣàyẹ̀wò ojú méjèèjì lẹ́ẹ̀kan náà. Ìrísí yóò yàtọ̀ gẹ́gẹ́ bí ìjìnnà àti ibi tí ọmọ ń wò."
+      },
+      {
+        "id": "examination-04",
+        "start": 87.4,
+        "end": 99.4,
+        "text": "Àwọ̀ àti ìmọ́lẹ̀ ìtànṣán láti ojú méjèèjì gbọ́dọ̀ jọra. Ìyàtọ̀ tàbí àìsí ìtànṣán kò bójú mu. Rán ọmọ lọ fún àyẹ̀wò síwájú."
+      },
+      {
+        "id": "examination-05a",
+        "start": 99.4,
+        "end": 109.1,
+        "text": "Àwọ̀ ìtànṣán déédéé sinmi lórí àwọ̀ retina. Ó lè jẹ́ ofeefee-funfun, búlúù, ọsàn-pupa, tàbí ọsàn-ofeefee."
+      },
+      {
+        "id": "examination-05b",
+        "start": 109.1,
+        "end": 114.35,
+        "text": "Gbogbo ìrísí wọ̀nyí dára fún àwọn ọmọ wọ̀nyí."
+      },
+      {
+        "id": "eyes-open-01",
+        "start": 118.4,
+        "end": 129.4,
+        "text": "Sọ fún òbí kí ó gbé ọmọ tuntun dáadáa, pẹ̀lú aṣọ yí i ká àti apá méjèèjì nínú rẹ̀."
+      },
+      {
+        "id": "eyes-open-02",
+        "start": 129.4,
+        "end": 144.4,
+        "text": "Bí ojú bá ṣí, wo ìtànṣán láti ojú méjèèjì lẹ́ẹ̀kan náà láìfọwọ́ kan ọmọ."
+      },
+      {
+        "id": "eyes-closed-01",
+        "start": 150,
+        "end": 154.5,
+        "text": "Bí ọmọ bá ń sùn, má jí i."
+      },
+      {
+        "id": "eyes-closed-02",
+        "start": 154.5,
+        "end": 158.2,
+        "text": "Fi aṣọ yí i ká, kí apá wà nínú rẹ̀."
+      },
+      {
+        "id": "eyes-closed-03",
+        "start": 158.2,
+        "end": 170.4,
+        "text": "Ṣí ojú kan díẹ̀díẹ̀ kí o ṣàyẹ̀wò rẹ̀, lẹ́yìn náà èkejì. Ṣe é pẹ̀lẹ́pẹ̀lẹ́, pẹ̀lú ìfarabalẹ̀ àti sùúrù."
+      },
+      {
+        "id": "possible-findings-02",
+        "start": 175.2,
+        "end": 180,
+        "text": "Àwọ̀ àti ìmọ́lẹ̀ tó jọra ń fúnni ní ìdánilójú."
+      },
+      {
+        "id": "possible-findings-01",
+        "start": 180,
+        "end": 192,
+        "text": "Ojú lè yí padà fún ìgbà díẹ̀ ní oṣù àkọ́kọ́. Ó sábà máa ń dáwọ́ dúró kí oṣù mẹ́ta tó pé. Bí ó bá tẹ̀síwájú, rán ọmọ lọ sí ọ̀dọ̀ onímọ̀."
+      },
+      {
+        "id": "possible-findings-03",
+        "start": 192,
+        "end": 207,
+        "text": "Ìyàtọ̀ àwọ̀, tàbí àìsí apá kan tàbí gbogbo ìtànṣán, kò bójú mu. Ó nílò àyẹ̀wò síwájú."
+      },
+      {
+        "id": "unclear-findings-01",
+        "start": 211.35,
+        "end": 220.35,
+        "text": "Bí àbájáde kò bá ṣe kedere, tẹ̀lé ìgbésẹ̀ mẹ́ta yìí."
+      },
+      {
+        "id": "unclear-findings-02",
+        "start": 220.35,
+        "end": 230.35,
+        "text": "Àkọ́kọ́, fi ìtànṣán ọmọ wé ti òbí. Wọ́n gbọ́dọ̀ jọra."
+      },
+      {
+        "id": "unclear-findings-03",
+        "start": 230.35,
+        "end": 237.35,
+        "text": "Bí o bá ṣì ń ṣiyèméjì, béèrè èrò ẹlẹgbẹ́ rẹ."
+      },
+      {
+        "id": "unclear-findings-04",
+        "start": 237.35,
+        "end": 246.35,
+        "text": "Bí ẹlẹgbẹ́ kò bá sí, gba ìyọ̀ǹda òbí."
+      },
+      {
+        "id": "unclear-findings-05a",
+        "start": 246.35,
+        "end": 254.35,
+        "text": "So Arclight mọ́ kámẹ́rà fóònù, kí o ya fídíò ìtànṣán ojú."
+      },
+      {
+        "id": "unclear-findings-05b",
+        "start": 254.35,
+        "end": 260.35,
+        "text": "Fi fídíò ránṣẹ́ ní ààbò láti gba èrò kejì."
+      },
+      {
+        "id": "after-examination",
+        "start": 264.3,
+        "end": 274.27,
+        "text": "Dúpẹ́ lọ́wọ́ òbí. Ṣàlàyé àbájáde àti ìgbésẹ̀ tó kàn. Fọ ọwọ́ lẹ́ẹ̀kan sí i. Àyẹ̀wò ìtànṣán pupa ti parí."
+      }
+    ],
+    "ig": [
+      {
+        "id": "preparation-01",
+        "start": 4.2,
+        "end": 9.2,
+        "text": "Saa aka gị, yirikwa ngwa nchebe."
+      },
+      {
+        "id": "preparation-02",
+        "start": 9.2,
+        "end": 19.2,
+        "text": "Kwadebe Arclight n’ụlọ dị jụụ, ìhè ya pere mpe. Họrọ ìhè kacha ike, bugokwa ihe njide lens abụọ elu kpamkpam."
+      },
+      {
+        "id": "preparation-03a",
+        "start": 19.2,
+        "end": 28.2,
+        "text": "Weta oghere nlele nso anya gị."
+      },
+      {
+        "id": "preparation-03b",
+        "start": 28.2,
+        "end": 35.2,
+        "text": "Atụnyela ìhè n’anya gị. Ejikwala ngwaọrụ ahụ n’akụkụ."
+      },
+      {
+        "id": "preparation-04",
+        "start": 36.2,
+        "end": 52.2,
+        "text": "Kechie nwa amụrụ ọhụrụ n’ákwà n’enweghị nsogbu. Gwa nne ma ọ bụ nna ka o jide nwa toro ntakịrị. Nwa nwere ike ịnọdụ nke ọma nwere ike ịnọdụ naanị ya."
+      },
+      {
+        "id": "examination-01",
+        "start": 55.8,
+        "end": 59.8,
+        "text": "Malite n’ebe dị ka ogologo aka."
+      },
+      {
+        "id": "examination-02",
+        "start": 60.4,
+        "end": 71.4,
+        "text": "Gaa ntakịrị n’akụkụ abụọ. Bịaruo nso ma ọ bụrụ na ị chọrọ ịhụ nke ọma."
+      },
+      {
+        "id": "examination-03",
+        "start": 71.4,
+        "end": 87.4,
+        "text": "N’ebe dị ka ogologo aka, gwa nwa ka o lee gị anya. Nyochaa anya abụọ ọnụ. Ihe ị na-ahụ na-agbanwe dabere n’ebe ị nọ na ebe nwa na-ele."
+      },
+      {
+        "id": "examination-04",
+        "start": 87.4,
+        "end": 99.4,
+        "text": "Agba na ike ìhè na-alọghachi n’anya abụọ kwesịrị ịdị otu. Ọdịiche ma ọ bụ enweghị ìhè abụghị ihe nkịtị. Ziga nwa maka nyocha ọzọ."
+      },
+      {
+        "id": "examination-05a",
+        "start": 99.4,
+        "end": 109.1,
+        "text": "Agba ìhè nkịtị dabere n’agba retina. Ọ nwere ike ịbụ odo-ọcha, anụnụ anụnụ, oroma-uhie, ma ọ bụ oroma-odo."
+      },
+      {
+        "id": "examination-05b",
+        "start": 109.1,
+        "end": 114.35,
+        "text": "Ihe ndị a niile bụ ihe nkịtị n’ụmụaka ndị a."
+      },
+      {
+        "id": "eyes-open-01",
+        "start": 118.4,
+        "end": 129.4,
+        "text": "Gwa nne ma ọ bụ nna ka o jide nwa ọhụrụ nke ọma, kechie ya n’ákwà ka aka ya dị n’ime."
+      },
+      {
+        "id": "eyes-open-02",
+        "start": 129.4,
+        "end": 144.4,
+        "text": "Ọ bụrụ na anya mepere emepe, lee ìhè na-alọghachi n’anya abụọ ọnụ, emetụghị nwa ahụ aka."
+      },
+      {
+        "id": "eyes-closed-01",
+        "start": 150,
+        "end": 154.5,
+        "text": "Ọ bụrụ na nwa na-ehi ụra, akpọtela ya."
+      },
+      {
+        "id": "eyes-closed-02",
+        "start": 154.5,
+        "end": 158.2,
+        "text": "Kechie ya, ka aka ya dị n’ime."
+      },
+      {
+        "id": "eyes-closed-03",
+        "start": 158.2,
+        "end": 170.4,
+        "text": "Mepee otu anya nwayọọ ka ị nyochaa ya, mesịa nke ọzọ. Dị nwayọọ, nwee ndidi na obi jụụ."
+      },
+      {
+        "id": "possible-findings-02",
+        "start": 175.2,
+        "end": 180,
+        "text": "Agba na ike ìhè yiri ibe ha bụ ihe na-enye obi ike."
+      },
+      {
+        "id": "possible-findings-01",
+        "start": 180,
+        "end": 192,
+        "text": "Anya nwere ike ịgbagọ obere oge n’ọnwa mbụ. Nke a na-akwụsịkarị tupu ọnwa atọ. Ọ bụrụ na ọ gara n’ihu mgbe ọnwa atọ gasịrị, ziga nwa n’aka ọkachamara."
+      },
+      {
+        "id": "possible-findings-03",
+        "start": 192,
+        "end": 207,
+        "text": "Ọdịiche agba ma ọ bụ enweghị akụkụ ìhè, ma ọ bụ ìhè niile, abụghị ihe nkịtị. Ọ chọrọ nyocha ọzọ."
+      },
+      {
+        "id": "unclear-findings-01",
+        "start": 211.35,
+        "end": 220.35,
+        "text": "Ọ bụrụ na ihe ị hụrụ edoghị anya, soro usoro atọ ndị a."
+      },
+      {
+        "id": "unclear-findings-02",
+        "start": 220.35,
+        "end": 230.35,
+        "text": "Mbụ, tụnyere ìhè anya nwa na nke nne ma ọ bụ nna. Ha kwesịrị ịdị ka ibe ha."
+      },
+      {
+        "id": "unclear-findings-03",
+        "start": 230.35,
+        "end": 237.35,
+        "text": "Ọ bụrụ na ị ka na-enwe obi abụọ, jụọ onye ọrụ ibe gị."
+      },
+      {
+        "id": "unclear-findings-04",
+        "start": 237.35,
+        "end": 246.35,
+        "text": "Ọ bụrụ na onye ọrụ ibe gị anọghị, nweta nkwenye nne ma ọ bụ nna."
+      },
+      {
+        "id": "unclear-findings-05a",
+        "start": 246.35,
+        "end": 254.35,
+        "text": "Tinye Arclight na igwefoto ekwentị, dekọọ ìhè anya na vidio."
+      },
+      {
+        "id": "unclear-findings-05b",
+        "start": 254.35,
+        "end": 260.35,
+        "text": "Ziga vidio ahụ n’enweghị nsogbu ka ị nweta echiche ọzọ."
+      },
+      {
+        "id": "after-examination",
+        "start": 264.3,
+        "end": 274.27,
+        "text": "Kelee nne ma ọ bụ nna. Kọwaa ihe ị hụrụ na ihe ọzọ a ga-eme. Saa aka ọzọ. Nyocha ìhè uhie anya agwụla."
+      }
     ]
   },
   "cues": [
@@ -2526,7 +3703,10 @@
       "notes": "Calm opening; leave a short pause before the next instruction.",
       "ne": "हात धुनुहोस् र व्यक्तिगत सुरक्षा सामग्री लगाउनुहोस्।",
       "fr": "Lavez-vous les mains et mettez votre équipement de protection.",
-      "lg": "Naaba mu ngalo, oyambale eby’okwekuuma."
+      "lg": "Naaba mu ngalo, oyambale eby’okwekuuma.",
+      "ha": "Wanke hannuwanka, ka sa kayan kariya.",
+      "yo": "Fọ ọwọ́ rẹ, kí o sì wọ ohun èlò ààbò.",
+      "ig": "Saa aka gị, yirikwa ngwa nchebe."
     },
     {
       "id": "preparation-02",
@@ -2545,7 +3725,10 @@
       "notes": "Arclight: ARK-light / ARK-lait. Give the three preparations equal weight.",
       "ne": "शान्त, मधुरो कोठामा आर्कलाइट तयार गर्नुहोस्। सबैभन्दा चहकिलो बत्ती छान्नुहोस् र दुवै लेन्स र्‍याक पूरै माथि सार्नुहोस्।",
       "fr": "Dans une pièce calme et sombre, réglez l’Arclight au plus fort et remontez les deux supports de lentilles.",
-      "lg": "Mu kisenge ekisirifu ekirimu ekitangaala ekitono, tegeka Arclight. Teeka ettaala ku maanyi agasinga, osindike lenzi zombi waggulu."
+      "lg": "Mu kisenge ekisirifu ekirimu ekitangaala ekitono, tegeka Arclight. Teeka ettaala ku maanyi agasinga, osindike lenzi zombi waggulu.",
+      "ha": "A ɗaki mai shiru da duhu, zaɓi haske mafi ƙarfi na Arclight. Tura maƙallan ruwan tabarau biyu sama gaba ɗaya.",
+      "yo": "Mú Arclight sílẹ̀ ní yàrá tó dákẹ́, tí ìmọ́lẹ̀ rẹ̀ kéré. Yan ìmọ́lẹ̀ tó lágbára jù, kí o sì gbé àwọn àgbékalẹ̀ lẹ́ńsì méjèèjì sókè pátápátá.",
+      "ig": "Kwadebe Arclight n’ụlọ dị jụụ, ìhè ya pere mpe. Họrọ ìhè kacha ike, bugokwa ihe njide lens abụọ elu kpamkpam."
     },
     {
       "id": "preparation-03",
@@ -2564,7 +3747,10 @@
       "notes": "Display and narration split after the sight-hole instruction; the safety sentence follows as its own cue.",
       "ne": "हेर्ने प्वाल आफ्नो आँखानजिक ल्याउनुहोस्। आफ्नै आँखामा बत्ती नपार्नुहोस्। उपकरण तेर्सो नसमात्नुहोस्।",
       "fr": "Rapprochez le trou de visée de votre œil. Ne dirigez pas la lumière vers votre œil et ne tenez pas l’appareil de côté.",
-      "lg": "Leeta akatuli k’okutunuliramu okumpi n’eriiso lyo. Totunuza ttaala mu liiso lyo. Tokwata Arclight nga yeesulise ku bbali."
+      "lg": "Leeta akatuli k’okutunuliramu okumpi n’eriiso lyo. Totunuza ttaala mu liiso lyo. Tokwata Arclight nga yeesulise ku bbali.",
+      "ha": "Kawo ramin dubawa kusa da idonka. Kada ka haska idonka, ko ka riƙe na’urar a kwance.",
+      "yo": "Mú ihò ìwòran sún mọ́ ojú rẹ. Má tan ìmọ́lẹ̀ sí ojú ara rẹ. Má sì di ẹ̀rọ náà ní ẹ̀gbẹ́.",
+      "ig": "Weta oghere nlele nso anya gị. Atụnyela ìhè n’anya gị. Ejikwala ngwaọrụ ahụ n’akụkụ."
     },
     {
       "id": "preparation-04",
@@ -2578,7 +3764,10 @@
       "notes": "Warm, practical instruction. ‘Parent’ is rendered naturally for neutral Latin American Spanish.",
       "ne": "नवजात शिशुलाई सुरक्षित रूपमा कपडामा बेर्नुहोस्। अलि ठूलो शिशुलाई अभिभावकले समातून्। राम्ररी बस्न सक्ने बच्चा एक्लै बस्न सक्छ।",
       "fr": "Emmaillotez le nouveau-né en toute sécurité. Faites tenir le bébé plus âgé par un parent. Un enfant assis sans aide peut rester seul.",
-      "lg": "Zinga omwana omuwere mu lugoye mu ngeri ey’obukuumi. Saba omuzadde akwatirire omwana akuzeeko. Omwana atuula obulungi ayinza okutuula yekka."
+      "lg": "Zinga omwana omuwere mu lugoye mu ngeri ey’obukuumi. Saba omuzadde akwatirire omwana akuzeeko. Omwana atuula obulungi ayinza okutuula yekka.",
+      "ha": "A naɗe jariri cikin zane lafiya. Iyaye su riƙe jariri mai ɗan girma. Yaron da ke iya zama da kyau zai iya zama shi kaɗai.",
+      "yo": "Fi aṣọ di ọmọ tuntun ní àìléwu. Jẹ́ kí òbí gbé ọmọ tó ti dàgbà díẹ̀. Ọmọ tó lè jókòó dáadáa lè jókòó fúnra rẹ̀.",
+      "ig": "Kechie nwa amụrụ ọhụrụ n’ákwà n’enweghị nsogbu. Gwa nne ma ọ bụ nna ka o jide nwa toro ntakịrị. Nwa nwere ike ịnọdụ nke ọma nwere ike ịnọdụ naanị ya."
     },
     {
       "id": "examination-01",
@@ -2592,7 +3781,10 @@
       "notes": "Brief, clear instruction.",
       "ne": "एक हात जति दूरीबाट सुरु गर्नुहोस्।",
       "fr": "Commencez à une longueur de bras.",
-      "lg": "Tandikira ku bbanga ly’omukono ogugoloddwa."
+      "lg": "Tandikira ku bbanga ly’omukono ogugoloddwa.",
+      "ha": "Fara daga nisan tsawon hannu.",
+      "yo": "Bẹ̀rẹ̀ láti ìjìnnà gígùn apá.",
+      "ig": "Malite n’ebe dị ka ogologo aka."
     },
     {
       "id": "examination-02",
@@ -2606,7 +3798,10 @@
       "notes": "A slight pause after ‘side to side’ helps match the movement on screen.",
       "ne": "अलिकति दायाँबायाँ सर्नुहोस्। थप स्पष्ट हेर्नुपरे नजिक जानुहोस्।",
       "fr": "Déplacez-vous légèrement de côté. Rapprochez-vous pour voir plus de détails.",
-      "lg": "Senguka katono ku ludda n’olulala. Semberera bw’oba weetaaga okulaba obulungi."
+      "lg": "Senguka katono ku ludda n’olulala. Semberera bw’oba weetaaga okulaba obulungi.",
+      "ha": "Matsa kaɗan daga gefe zuwa gefe. Matso kusa idan kana buƙatar gani dalla-dalla.",
+      "yo": "Rìn díẹ̀ sí ẹ̀gbẹ́ méjèèjì. Sún mọ́ ọn bí o bá nílò láti rí dáadáa sí i.",
+      "ig": "Gaa ntakịrị n’akụkụ abụọ. Bịaruo nso ma ọ bụrụ na ị chọrọ ịhụ nke ọma."
     },
     {
       "id": "examination-03",
@@ -2620,7 +3815,10 @@
       "notes": "Matches the paired-eye examination graphic before brightness and colour are assessed.",
       "ne": "एक हातको दूरीबाट बच्चालाई आफूतिर हेर्न भन्नुहोस्। दुवै आँखा एकैसाथ जाँच्नुहोस्। दूरी र बच्चाले हेरेको दिशाअनुसार प्रतिबिम्बको रूप फरक हुन्छ।",
       "fr": "À une longueur de bras, demandez à l’enfant de vous regarder. Examinez les deux yeux ensemble. L’aspect varie avec la distance et la direction du regard.",
-      "lg": "Ku bbanga ly’omukono, saba omwana akutunuulire. Kebera amaaso gombi wamu. Endabika ekyuka okusinziira ku bbanga n’omwana gy’atunudde."
+      "lg": "Ku bbanga ly’omukono, saba omwana akutunuulire. Kebera amaaso gombi wamu. Endabika ekyuka okusinziira ku bbanga n’omwana gy’atunudde.",
+      "ha": "Daga nisan hannu, ka sa yaron ya dube ka. Duba idanu biyu tare. Yanayin hasken zai bambanta da nisa da kuma inda yaron yake kallo.",
+      "yo": "Ní ìjìnnà gígùn apá, sọ fún ọmọ láti wò ọ́. Ṣàyẹ̀wò ojú méjèèjì lẹ́ẹ̀kan náà. Ìrísí yóò yàtọ̀ gẹ́gẹ́ bí ìjìnnà àti ibi tí ọmọ ń wò.",
+      "ig": "N’ebe dị ka ogologo aka, gwa nwa ka o lee gị anya. Nyochaa anya abụọ ọnụ. Ihe ị na-ahụ na-agbanwe dabere n’ebe ị nọ na ebe nwa na-ele."
     },
     {
       "id": "examination-04",
@@ -2634,7 +3832,10 @@
       "notes": "fundal reflex: FUN-dəl REE-fleks. This cue now follows the normal-versus-abnormal comparison graphic.",
       "ne": "दुवै आँखाको रातो प्रतिबिम्बको रङ र चमक समान हुनुपर्छ। रङ वा चमक फरक भए वा प्रतिबिम्ब नदेखिए, थप जाँचका लागि पठाउनुहोस्।",
       "fr": "Les deux reflets doivent avoir la même couleur et luminosité. Une différence ou un reflet absent est anormal et nécessite une orientation.",
-      "lg": "Langi n’amaanyi g’ekitangaala ekidda mu maaso gombi birina okufaanagana. Bwe byawukana oba nga tekirabika, sindika omwana eri omukugu."
+      "lg": "Langi n’amaanyi g’ekitangaala ekidda mu maaso gombi birina okufaanagana. Bwe byawukana oba nga tekirabika, sindika omwana eri omukugu.",
+      "ha": "Launi da ƙarfin hasken da ke dawowa daga idanu biyu su zama iri ɗaya. Bambanci ko rashin hasken ba al’ada ba ne. Tura yaron don ƙarin bincike.",
+      "yo": "Àwọ̀ àti ìmọ́lẹ̀ ìtànṣán láti ojú méjèèjì gbọ́dọ̀ jọra. Ìyàtọ̀ tàbí àìsí ìtànṣán kò bójú mu. Rán ọmọ lọ fún àyẹ̀wò síwájú.",
+      "ig": "Agba na ike ìhè na-alọghachi n’anya abụọ kwesịrị ịdị otu. Ọdịiche ma ọ bụ enweghị ìhè abụghị ihe nkịtị. Ziga nwa maka nyocha ọzọ."
     },
     {
       "id": "examination-05",
@@ -2648,7 +3849,10 @@
       "notes": "Narrate all listed colours as one sentence, then show the healthy-and-normal statement as the following caption.",
       "ne": "रेटिनाको वर्णकअनुसार सामान्य प्रतिबिम्ब पहेँलो-सेतो, नीलो, सुन्तला-रातो वा सुन्तला-पहेँलो हुन सक्छ। यी सबै यी बच्चाहरूका सामान्य, स्वस्थ रूप हुन्।",
       "fr": "Selon la pigmentation rétinienne, le reflet normal peut être blanc-jaune, bleuté, rouge-orangé ou jaune-orangé. Ces aspects sont tous normaux chez ces enfants.",
-      "lg": "Okusinziira ku langi ya retina, ekitangaala kiyinza okuba ekyenvu-ekyeru, bbululu, kakyungwa-akamyufu, oba kakyungwa-akyenvu. Endabika zino zonna za bulijjo."
+      "lg": "Okusinziira ku langi ya retina, ekitangaala kiyinza okuba ekyenvu-ekyeru, bbululu, kakyungwa-akamyufu, oba kakyungwa-akyenvu. Endabika zino zonna za bulijjo.",
+      "ha": "Launin haske ya danganta da launin retina. Yana iya zama fari-rawaya, shuɗi, ja-lemo, ko rawaya-lemo. Waɗannan duk yanayi ne na lafiya ga yaran nan.",
+      "yo": "Àwọ̀ ìtànṣán déédéé sinmi lórí àwọ̀ retina. Ó lè jẹ́ ofeefee-funfun, búlúù, ọsàn-pupa, tàbí ọsàn-ofeefee. Gbogbo ìrísí wọ̀nyí dára fún àwọn ọmọ wọ̀nyí.",
+      "ig": "Agba ìhè nkịtị dabere n’agba retina. Ọ nwere ike ịbụ odo-ọcha, anụnụ anụnụ, oroma-uhie, ma ọ bụ oroma-odo. Ihe ndị a niile bụ ihe nkịtị n’ụmụaka ndị a."
     },
     {
       "id": "eyes-open-01",
@@ -2662,7 +3866,10 @@
       "notes": "Reassuring rather than commanding.",
       "ne": "शिशुको हात भित्र राखेर कपडामा बेर्नुहोस् र अभिभावकलाई सुरक्षित समात्न भन्नुहोस्।",
       "fr": "Demandez au parent de tenir le nouveau-né en sécurité, emmailloté avec les bras à l’intérieur.",
-      "lg": "Saba omuzadde akwatirire omuwere azingiddwa mu lugoye, ng’emikono giri munda."
+      "lg": "Saba omuzadde akwatirire omuwere azingiddwa mu lugoye, ng’emikono giri munda.",
+      "ha": "Iyaye su riƙe jaririn da aka naɗe lafiya, hannuwansa suna cikin zane.",
+      "yo": "Sọ fún òbí kí ó gbé ọmọ tuntun dáadáa, pẹ̀lú aṣọ yí i ká àti apá méjèèjì nínú rẹ̀.",
+      "ig": "Gwa nne ma ọ bụ nna ka o jide nwa ọhụrụ nke ọma, kechie ya n’ákwà ka aka ya dị n’ime."
     },
     {
       "id": "eyes-open-02",
@@ -2676,7 +3883,10 @@
       "notes": "Matches the scrolly instruction and the start of the no-touch examples.",
       "ne": "आँखा खुला भए, शिशुलाई नछोई दुवै आँखाको प्रतिबिम्ब एकैसाथ हेर्नुहोस्।",
       "fr": "Si les yeux sont ouverts, observez les deux reflets ensemble, sans toucher le bébé.",
-      "lg": "Amaaso bwe gaba maggule, tunuulira ekitangaala ekidda mu maaso gombi wamu nga tokwata ku mwana."
+      "lg": "Amaaso bwe gaba maggule, tunuulira ekitangaala ekidda mu maaso gombi wamu nga tokwata ku mwana.",
+      "ha": "Idan idanu suna buɗe, duba hasken da ke dawowa daga idanu biyu tare, ba tare da taɓa jaririn ba.",
+      "yo": "Bí ojú bá ṣí, wo ìtànṣán láti ojú méjèèjì lẹ́ẹ̀kan náà láìfọwọ́ kan ọmọ.",
+      "ig": "Ọ bụrụ na anya mepere emepe, lee ìhè na-alọghachi n’anya abụọ ọnụ, emetụghị nwa ahụ aka."
     },
     {
       "id": "eyes-open-03",
@@ -2690,7 +3900,10 @@
       "notes": "Clear safety instruction, spoken without alarm.",
       "ne": "बच्चालाई छुनु बिना।",
       "fr": "sans toucher le bébé.",
-      "lg": "nga takwata ku mwana."
+      "lg": "nga takwata ku mwana.",
+      "ha": "ba tare da taba jaririn ba.\nSaukewa:",
+      "yo": "lai kan omo.",
+      "ig": "na-emetụghị nwa ọhụrụ aka."
     },
     {
       "id": "eyes-closed-01",
@@ -2704,7 +3917,10 @@
       "notes": "Gentle and reassuring.",
       "ne": "शिशु सुतेको छ भने नब्युँझाउनुहोस्।",
       "fr": "Si le bébé dort, évitez de le réveiller.",
-      "lg": "Omwana bw’aba yeebase, tosomooza tulo twe."
+      "lg": "Omwana bw’aba yeebase, tosomooza tulo twe.",
+      "ha": "Idan jariri yana barci, kada ka tashe shi.",
+      "yo": "Bí ọmọ bá ń sùn, má jí i.",
+      "ig": "Ọ bụrụ na nwa na-ehi ụra, akpọtela ya."
     },
     {
       "id": "eyes-closed-02",
@@ -2718,7 +3934,10 @@
       "notes": "Pause slightly before ‘one eye at a time’.",
       "ne": "हात भित्र राखेर कपडामा बेर्नुहोस्।",
       "fr": "Emmaillotez-le, les bras à l’intérieur.",
-      "lg": "Muzinge, emikono ng’eri munda."
+      "lg": "Muzinge, emikono ng’eri munda.",
+      "ha": "Naɗe shi, hannuwansa a ciki.",
+      "yo": "Fi aṣọ yí i ká, kí apá wà nínú rẹ̀.",
+      "ig": "Kechie ya, ka aka ya dị n’ime."
     },
     {
       "id": "possible-findings-02",
@@ -2732,7 +3951,10 @@
       "notes": "UK spelling: colour. ‘Reassuring’ avoids treating one sign as a complete diagnosis.",
       "ne": "समान रङ र चमक आश्वस्त पार्ने संकेत हुन्।",
       "fr": "Une couleur et une luminosité semblables rassurent.",
-      "lg": "Langi n’amaanyi ebifaanagana bigumya."
+      "lg": "Langi n’amaanyi ebifaanagana bigumya.",
+      "ha": "Launi da haske iri ɗaya alama ce mai kyau.",
+      "yo": "Àwọ̀ àti ìmọ́lẹ̀ tó jọra ń fúnni ní ìdánilójú.",
+      "ig": "Agba na ike ìhè yiri ibe ha bụ ihe na-enye obi ike."
     },
     {
       "id": "possible-findings-01",
@@ -2746,7 +3968,10 @@
       "notes": "Do not imply that a persistent or constant squint is normal.",
       "ne": "पहिलो महिनामा कहिलेकाहीँ केहीबेर आँखा बाङ्गिन सक्छ। प्रायः तीन महिनाभित्र हट्छ। त्यसपछि पनि रहे थप जाँचका लागि पठाउनुहोस्।",
       "fr": "Un bref strabisme intermittent est fréquent le premier mois et disparaît souvent avant trois mois. Au-delà, adressez l’enfant à un spécialiste.",
-      "lg": "Mu mwezi ogusooka, amaaso gayinza okukyama akaseera katono. Kino kitera okuggwaawo mu myezi esatu. Bwe kisigala, sindika omwana eri omukugu."
+      "lg": "Mu mwezi ogusooka, amaaso gayinza okukyama akaseera katono. Kino kitera okuggwaawo mu myezi esatu. Bwe kisigala, sindika omwana eri omukugu.",
+      "ha": "Ɗan karkacewar ido na lokaci-lokaci yakan faru a watan farko, ya daina kafin wata uku. Idan ya ci gaba bayan wata uku, tura yaron ga ƙwararre.",
+      "yo": "Ojú lè yí padà fún ìgbà díẹ̀ ní oṣù àkọ́kọ́. Ó sábà máa ń dáwọ́ dúró kí oṣù mẹ́ta tó pé. Bí ó bá tẹ̀síwájú, rán ọmọ lọ sí ọ̀dọ̀ onímọ̀.",
+      "ig": "Anya nwere ike ịgbagọ obere oge n’ọnwa mbụ. Nke a na-akwụsịkarị tupu ọnwa atọ. Ọ bụrụ na ọ gara n’ihu mgbe ọnwa atọ gasịrị, ziga nwa n’aka ọkachamara."
     },
     {
       "id": "possible-findings-03",
@@ -2760,7 +3985,10 @@
       "notes": "Firm clinical emphasis on ‘abnormal’ and ‘further assessment’, without sounding alarming.",
       "ne": "रङ फरक हुनु वा प्रतिबिम्ब आंशिक वा पूरै नदेखिनु असामान्य हो। थप मूल्याङ्कन चाहिन्छ।",
       "fr": "Une différence de couleur ou un reflet partiellement ou totalement absent est anormal et nécessite un examen complémentaire.",
-      "lg": "Enjawulo mu langi, oba ekitangaala ekibulawo ekitundu oba kyonna, si kya bulijjo. Kyetaaga okwongera okwekebejjebwa."
+      "lg": "Enjawulo mu langi, oba ekitangaala ekibulawo ekitundu oba kyonna, si kya bulijjo. Kyetaaga okwongera okwekebejjebwa.",
+      "ha": "Bambancin launi ko rashin wani ɓangare na hasken, ko dukansa, ba al’ada ba ne. Ana buƙatar ƙarin bincike.",
+      "yo": "Ìyàtọ̀ àwọ̀, tàbí àìsí apá kan tàbí gbogbo ìtànṣán, kò bójú mu. Ó nílò àyẹ̀wò síwájú.",
+      "ig": "Ọdịiche agba ma ọ bụ enweghị akụkụ ìhè, ma ọ bụ ìhè niile, abụghị ihe nkịtị. Ọ chọrọ nyocha ọzọ."
     },
     {
       "id": "unclear-findings-01",
@@ -2774,7 +4002,10 @@
       "notes": "Use a signposting tone.",
       "ne": "नतिजा स्पष्ट नभए यी तीन चरण अपनाउनुहोस्।",
       "fr": "Si le résultat reste incertain, suivez ces trois étapes.",
-      "lg": "Bw’oba totegedde bulungi, goberera emitendera gino esatu."
+      "lg": "Bw’oba totegedde bulungi, goberera emitendera gino esatu.",
+      "ha": "Idan sakamakon bai bayyana ba, bi matakai uku nan.",
+      "yo": "Bí àbájáde kò bá ṣe kedere, tẹ̀lé ìgbésẹ̀ mẹ́ta yìí.",
+      "ig": "Ọ bụrụ na ihe ị hụrụ edoghị anya, soro usoro atọ ndị a."
     },
     {
       "id": "unclear-findings-02",
@@ -2788,7 +4019,10 @@
       "notes": "‘Similar’ refers to expected pigmentation-related appearance, not exact identity.",
       "ne": "पहिले शिशु र अभिभावकको प्रतिबिम्ब तुलना गर्नुहोस्। ती उस्तै देखिनुपर्छ।",
       "fr": "D’abord, comparez le reflet du bébé à celui du parent. Ils devraient se ressembler.",
-      "lg": "Sooka ogeraageranye ekitangaala ekidda mu liiso ly’omwana n’ery’omuzadde. Birina okufaanagana."
+      "lg": "Sooka ogeraageranye ekitangaala ekidda mu liiso ly’omwana n’ery’omuzadde. Birina okufaanagana.",
+      "ha": "Da farko, kwatanta hasken jariri da na iyayensa. Ya kamata su yi kama.",
+      "yo": "Àkọ́kọ́, fi ìtànṣán ọmọ wé ti òbí. Wọ́n gbọ́dọ̀ jọra.",
+      "ig": "Mbụ, tụnyere ìhè anya nwa na nke nne ma ọ bụ nna. Ha kwesịrị ịdị ka ibe ha."
     },
     {
       "id": "unclear-findings-03",
@@ -2802,7 +4036,10 @@
       "notes": "Collegial and matter-of-fact.",
       "ne": "अझै शंका भए सहकर्मीको राय लिनुहोस्।",
       "fr": "En cas de doute, demandez l’avis d’un collègue.",
-      "lg": "Bw’oba okyabuusabuusa, saba munno endowooza."
+      "lg": "Bw’oba okyabuusabuusa, saba munno endowooza.",
+      "ha": "Idan kana shakka, nemi ra’ayin abokin aiki.",
+      "yo": "Bí o bá ṣì ń ṣiyèméjì, béèrè èrò ẹlẹgbẹ́ rẹ.",
+      "ig": "Ọ bụrụ na ị ka na-enwe obi abụọ, jụọ onye ọrụ ibe gị."
     },
     {
       "id": "unclear-findings-04",
@@ -2816,7 +4053,10 @@
       "notes": "Make ‘obtain consent’ distinct and unhurried.",
       "ne": "सहकर्मी उपलब्ध नभए अभिभावकको सहमति लिनुहोस्।",
       "fr": "Sans collègue disponible, obtenez le consentement du parent.",
-      "lg": "Munno bw’aba taliiwo, saba omuzadde akukkirize."
+      "lg": "Munno bw’aba taliiwo, saba omuzadde akukkirize.",
+      "ha": "Idan babu abokin aiki, nemi yardar iyaye.",
+      "yo": "Bí ẹlẹgbẹ́ kò bá sí, gba ìyọ̀ǹda òbí.",
+      "ig": "Ọ bụrụ na onye ọrụ ibe gị anọghị, nweta nkwenye nne ma ọ bụ nna."
     },
     {
       "id": "unclear-findings-05",
@@ -2835,7 +4075,10 @@
       "notes": "Stress ‘securely’; avoid a casual social-sharing tone.",
       "ne": "आर्कलाइट फोनको क्यामेरामा जोडेर प्रतिबिम्बको भिडियो खिच्नुहोस्। अर्को राय लिन भिडियो सुरक्षित रूपमा पठाउनुहोस्।",
       "fr": "Fixez l’Arclight à la caméra du téléphone et filmez le reflet. Partagez la vidéo de façon sécurisée pour un second avis.",
-      "lg": "Teeka Arclight ku kkamera y’essimu, okwate ekitangaala ekidda mu liiso ku katambi. Weereza akatambi mu bukuumi okufuna endowooza endala."
+      "lg": "Teeka Arclight ku kkamera y’essimu, okwate ekitangaala ekidda mu liiso ku katambi. Weereza akatambi mu bukuumi okufuna endowooza endala.",
+      "ha": "Haɗa Arclight da kyamarar waya, ka ɗauki bidiyon hasken ido. Aika bidiyon cikin tsaro don neman wani ra’ayi.",
+      "yo": "So Arclight mọ́ kámẹ́rà fóònù, kí o ya fídíò ìtànṣán ojú. Fi fídíò ránṣẹ́ ní ààbò láti gba èrò kejì.",
+      "ig": "Tinye Arclight na igwefoto ekwentị, dekọọ ìhè anya na vidio. Ziga vidio ahụ n’enweghị nsogbu ka ị nweta echiche ọzọ."
     },
     {
       "id": "after-examination-01",
@@ -2849,7 +4092,10 @@
       "notes": "Warm closing; keep concise to fit the scene.",
       "ne": "धन्यवाद दिनुहोस्, नतिजा र अर्को कदम बताउनुहोस्।",
       "fr": "Remerciez le parent. Expliquez le résultat et la suite.",
-      "lg": "Weebaze omuzadde. Nnyonnyola ebizuuliddwa n’ekiddako."
+      "lg": "Weebaze omuzadde. Nnyonnyola ebizuuliddwa n’ekiddako.",
+      "ha": "Gode wa iyaye. Bayyana sakamako da mataki na gaba.",
+      "yo": "Dúpẹ́ lọ́wọ́ òbí. Ṣàlàyé àbájáde àti ìgbésẹ̀ tó kàn.",
+      "ig": "Kelee nne ma ọ bụ nna. Kọwaa ihe ị hụrụ na ihe ọzọ a ga-eme."
     },
     {
       "id": "after-examination-02",
@@ -2863,7 +4109,10 @@
       "notes": "Short, settled finish.",
       "ne": "फेरि हात धुनुहोस्। रातो प्रतिबिम्बको जाँच सकियो।",
       "fr": "Lavez-vous les mains. L’examen du reflet rouge est terminé.",
-      "lg": "Ddamu okunaaba mu ngalo. Okukebera ekitangaala ekidda mu liiso kuwedde."
+      "lg": "Ddamu okunaaba mu ngalo. Okukebera ekitangaala ekidda mu liiso kuwedde.",
+      "ha": "Sake wanke hannu. An gama gwajin jan hasken ido.",
+      "yo": "Fọ ọwọ́ lẹ́ẹ̀kan sí i. Àyẹ̀wò ìtànṣán pupa ti parí.",
+      "ig": "Saa aka ọzọ. Nyocha ìhè uhie anya agwụla."
     }
   ]
 }

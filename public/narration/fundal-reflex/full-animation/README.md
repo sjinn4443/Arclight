@@ -1,5 +1,42 @@
 # Fundal Reflex full-animation narration
 
+## Hausa, Yoruba and Igbo update (2026-09-11)
+
+`ha`, `yo` and `ig` use the same 274.273333-second scene timeline, with
+36 captions per language including the seven silent section-title cards.
+The new synthetic voices use these language-specific models:
+
+| Language | Model                                                                   | Downloaded revision                        |
+| -------- | ----------------------------------------------------------------------- | ------------------------------------------ |
+| Hausa    | [facebook/mms-tts-hau](https://huggingface.co/facebook/mms-tts-hau)     | `f0eb02aa37f7259f35349da63cafe0556cf93e3d` |
+| Yoruba   | [facebook/mms-tts-yor](https://huggingface.co/facebook/mms-tts-yor)     | `d359e06b481cb5402e2e4215475b90c07a3f12e2` |
+| Igbo     | [Shinzmann/soro-tts-ibo](https://huggingface.co/Shinzmann/soro-tts-ibo) | `0ac08cc8a8745224fa22d8c40bbd4ec000950b37` |
+
+All three models are **CC-BY-NC-4.0 (noncommercial)**. The Igbo model is an
+Igbo-trained fine-tune; it is not an unmodified Yoruba substitute. Its author
+reports an ASR-based character error rate of 44.84% on 20 evaluation utterances.
+That is a limited, self-reported proxy, not a clinical intelligibility assessment.
+Native clinical review of the translations and pronunciation is still needed,
+particularly for Igbo. These generated tracks have not received that review.
+
+The Igbo model generates roughly three seconds of leading and trailing silence
+per cue. Only those outer quiet regions are removed, using 20 ms RMS windows
+at -50 dBFS with 150 ms padding; internal pauses are retained. No speech is
+intentionally truncated. The usual 1.08× maximum playback-speed and 0.25-second
+sync limits still apply. Exact delivery hashes and sizes are in `manifest.json`;
+the generated QA report records the per-cue durations and playback speeds.
+
+```sh
+node scripts/refine-ha-yo-ig-narration.cjs
+python scripts/generate-fundal-narration.py --languages ha yo ig --tts-only
+python scripts/generate-fundal-narration.py --languages ha yo ig --skip-tts --skip-review-video
+node scripts/connect-parity-locales.cjs ha yo ig
+```
+
+The `--tts-only` pass only prepares intermediate cues and reports overruns.
+It does not publish tracks or update manifests. Dependencies are the same as
+the Luganda setup below, and model weights remain outside the public package.
+
 ## Nepali, French and Luganda update (2026-09-11)
 
 `ne`, `fr` and `lg` now have complete narration and WebVTT tracks. Each is

@@ -13,6 +13,18 @@ const FUNDAL_REFLEX_SCROLL_NARRATION_LANGUAGE_STORAGE_PREFIX =
   "videoNarrationLanguage:";
 
 export const FUNDAL_REFLEX_EXAMINATION_SCROLL_NARRATION_TRACKS = Object.freeze({
+  ha: Object.freeze({
+    label: "Hausa",
+    src: "/narration/fundal-reflex/full-animation/ha.m4a",
+  }),
+  yo: Object.freeze({
+    label: "Yorùbá",
+    src: "/narration/fundal-reflex/full-animation/yo.m4a",
+  }),
+  ig: Object.freeze({
+    label: "Igbo",
+    src: "/narration/fundal-reflex/full-animation/ig.m4a",
+  }),
   ne: Object.freeze({
     label: "नेपाली",
     src: "/narration/fundal-reflex/full-animation/ne.m4a",
@@ -1412,7 +1424,7 @@ function normalizeFundalNarrationLanguage(language) {
   if (normalized === "ko" || normalized.startsWith("ko-")) return "ko";
   if (normalized === "es" || normalized.startsWith("es-")) return "es-419";
   const base = normalized.split("-")[0];
-  if (["ne", "fr", "lg"].includes(base)) return base;
+  if (["ne", "fr", "lg", "ha", "yo", "ig"].includes(base)) return base;
   return "en";
 }
 
@@ -1429,9 +1441,18 @@ function readFundalNarrationPreference(pageId) {
       localStorage.getItem(
         `${FUNDAL_REFLEX_SCROLL_NARRATION_STORAGE_PREFIX}${pageId}`,
       ) !== "off";
-    const language = ["auto", "en", "es-419", "ko", "ne", "fr", "lg"].includes(
-      storedLanguage,
-    )
+    const language = [
+      "auto",
+      "en",
+      "es-419",
+      "ko",
+      "ne",
+      "fr",
+      "lg",
+      "ha",
+      "yo",
+      "ig",
+    ].includes(storedLanguage)
       ? storedLanguage
       : "auto";
     return {
@@ -1467,6 +1488,27 @@ function writeFundalNarrationPreference(pageId, { enabled, language }) {
 function getFundalNarrationControlCopy(language = getLanguage()) {
   const normalized = normalizeFundalNarrationLanguage(language);
   const addedCopy = {
+    ha: {
+      auto: "Ta atomatik",
+      language: "Harshen bayani",
+      on: "Kunna bayani",
+      off: "Kashe bayani",
+      blocked: "Taɓa don sauraron bayani",
+    },
+    yo: {
+      auto: "Láìfọwọ́yí",
+      language: "Èdè ìtúmọ̀ ohùn",
+      on: "Tan ohùn",
+      off: "Pa ohùn",
+      blocked: "Tẹ̀ láti gbọ́ ohùn",
+    },
+    ig: {
+      auto: "Na-akpaghị aka",
+      language: "Asụsụ nkọwa",
+      on: "Gbanye nkọwa",
+      off: "Gbanyụọ nkọwa",
+      blocked: "Pịa ka ị nụ nkọwa",
+    },
     ne: {
       auto: "स्वचालित",
       language: "वाचनको भाषा",
