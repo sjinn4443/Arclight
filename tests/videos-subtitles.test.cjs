@@ -132,8 +132,8 @@ const PILOT_CATALOG = {
       subtitleLanguages: ["en"],
     },
     localSources: {
-      low: "videos/FullAnim/New_FrontofEyeFullAnim.mp4",
-      high: "videos/FullAnim/New_FrontofEyeFullAnim.mp4",
+      low: "videos/FullAnim/New_FrontofEyeFullAnim_timed.mp4",
+      high: "videos/FullAnim/New_FrontofEyeFullAnim_timed.mp4",
     },
   },
 };
@@ -289,7 +289,7 @@ describe("childhood eye screening subtitle pilot", () => {
           </div>
           <div class="video-container" id="frontOfEyeFullAnimationVideoContainer">
             <video id="frontOfEyeFullAnimationVideo" controls>
-              <source src="videos/FullAnim/New_FrontofEyeFullAnim.mp4" type="video/mp4" />
+              <source src="videos/FullAnim/New_FrontofEyeFullAnim_timed.mp4" type="video/mp4" />
             </video>
           </div>
         </div>
@@ -1043,6 +1043,63 @@ describe("childhood eye screening subtitle pilot", () => {
     ).not.toBeNull();
   });
 
+  it.each(["en", "es-419", "ko", "ne", "fr", "lg", "ha", "yo", "ig"])(
+    "selects Direct Ophthalmoscopy %s audio and visible captions together",
+    async (language) => {
+      const pageId = "directOphthalmoscopyFullAnimationVideoPage";
+      const entry = JSON.parse(
+        fs.readFileSync(
+          "public/video-localization/childhood-eye-screening.json",
+          "utf8",
+        ),
+      )[pageId];
+      PILOT_CATALOG[pageId] = entry;
+      const originalFetch = fetchSpy.getMockImplementation();
+      fetchSpy.mockImplementation(async (url) => {
+        if (
+          String(url).startsWith("/narration/direct-ophthalmoscopy/") &&
+          String(url).endsWith(".vtt")
+        ) {
+          return {
+            ok: true,
+            text: async () => fs.readFileSync(`public${url}`, "utf8"),
+          };
+        }
+        return originalFetch(url);
+      });
+      localStorage.setItem("prefLang", "ha");
+      await videos.ensureChildhoodPilotSubtitleControlsForPage(pageId);
+      const page = document.getElementById(pageId);
+      page.querySelector(`[data-narration-selection="${language}"]`).click();
+      await new Promise((resolve) => setTimeout(resolve, 0));
+      const audio = page.querySelector("[data-video-narration-audio='true']");
+      expect(audio.getAttribute("src")).toBe(entry.audioVariants[language].src);
+      const video = page.querySelector("video");
+      Object.defineProperty(video, "currentTime", {
+        configurable: true,
+        writable: true,
+        value: 4,
+      });
+      Object.defineProperty(audio, "currentTime", {
+        configurable: true,
+        writable: true,
+        value: 4,
+      });
+      video.dispatchEvent(new Event("timeupdate"));
+      audio.dispatchEvent(new Event("timeupdate"));
+      const script = JSON.parse(
+        fs.readFileSync(
+          "public/narration/direct-ophthalmoscopy/full-animation/script.json",
+          "utf8",
+        ),
+      );
+      expect(
+        page.querySelector("[data-childhood-pilot-subtitle-panel='true']")
+          .textContent,
+      ).toContain(script.cues[0][language]);
+    },
+  );
+
   it("adds English narration and a dedicated caption panel to Binocular Indirect Ophthalmoscopy", async () => {
     const language = await videos.ensureChildhoodPilotSubtitleControlsForPage(
       "binocularIndirectOphthalmoscopyFullAnimationVideoPage",
@@ -1269,103 +1326,88 @@ describe("childhood eye screening subtitle pilot", () => {
     expect(video.dataset.timedNarrationLeadActive).toBe("1");
   });
 
-  it("keeps Front of Eye narration running through the two four-second and one three-second video holds", async () => {
-    jest.useFakeTimers();
-    await videos.ensureChildhoodPilotSubtitleControlsForPage(
-      "frontOfEyeFullAnimationVideoPage",
-    );
-
-    const page = document.getElementById("frontOfEyeFullAnimationVideoPage");
-    const video = page.querySelector("video");
-    const audio = page.querySelector("[data-video-narration-audio='true']");
-    let paused = false;
-
-    Object.defineProperty(video, "duration", {
-      configurable: true,
-      value: 127.26,
-    });
-    Object.defineProperty(video, "currentTime", {
-      configurable: true,
-      writable: true,
-      value: 5.9,
-    });
-    Object.defineProperty(video, "paused", {
-      configurable: true,
-      get: () => paused,
-    });
-    Object.defineProperty(audio, "currentTime", {
-      configurable: true,
-      writable: true,
-      value: 5.9,
-    });
-    video.pause = jest.fn(() => {
-      paused = true;
-      video.dispatchEvent(new Event("pause"));
-    });
-    video.play = jest.fn(() => {
+  it.each([
+    [0, 20, 24.6, 26.99, 27, 30.5, 37.99, 38, 49.99, 50, 55, 122],
+    [122, 50, 27, 20, 0, 38, 27],
+    [27, 27, 38, 38, 0, 27],
+  ])(
+    "keeps Front of Eye captions and audio on the same clock for seek sequence %j",
+    async (...times) => {
+      const originalFetch = fetchSpy.getMockImplementation();
+      const vtt = fs.readFileSync(
+        "public/narration/front-of-eye/full-animation/en.vtt",
+        "utf8",
+      );
+      fetchSpy.mockImplementation((url, ...args) =>
+        String(url).includes("/narration/front-of-eye/") &&
+        String(url).endsWith(".vtt")
+          ? Promise.resolve({ ok: true, text: async () => vtt })
+          : originalFetch(url, ...args),
+      );
+      await videos.ensureChildhoodPilotSubtitleControlsForPage(
+        "frontOfEyeFullAnimationVideoPage",
+      );
+      const page = document.getElementById("frontOfEyeFullAnimationVideoPage");
+      const video = page.querySelector("video");
+      const audio = page.querySelector("[data-video-narration-audio='true']");
+      const panel = page.querySelector(
+        "[data-childhood-pilot-subtitle-panel='true']",
+      );
+      const script = JSON.parse(
+        fs.readFileSync(
+          "public/narration/front-of-eye/full-animation/script.json",
+          "utf8",
+        ),
+      );
+      let paused = true;
+      Object.defineProperty(video, "paused", {
+        configurable: true,
+        get: () => paused,
+      });
+      Object.defineProperty(video, "currentTime", {
+        configurable: true,
+        writable: true,
+        value: 0,
+      });
+      Object.defineProperty(audio, "currentTime", {
+        configurable: true,
+        writable: true,
+        value: 0,
+      });
+      audio.play = jest.fn(() => Promise.resolve());
+      audio.pause = jest.fn();
+      for (const time of times) {
+        video.currentTime = time;
+        audio.currentTime = 1; // Deliberately stale audio from a different scene.
+        video.dispatchEvent(new Event("seeking"));
+        video.dispatchEvent(new Event("seeked"));
+        video.dispatchEvent(new Event("timeupdate"));
+        expect(audio.currentTime).toBe(time);
+        const expected = script.cues
+          .filter((cue) => time >= cue.start && time < cue.end)
+          .map((cue) => cue.en)
+          .join("\n");
+        expect(panel.textContent).toBe(expected);
+        paused = false;
+        video.dispatchEvent(new Event("play"));
+        expect(audio.currentTime).toBe(time);
+        expect(audio.play).toHaveBeenCalled();
+        paused = true;
+        video.dispatchEvent(new Event("pause"));
+        expect(audio.pause).toHaveBeenCalled();
+        expect(video.dataset.timedNarrationLeadActive).toBeUndefined();
+        expect(video.dataset.timedNarrationHoldActive).toBeUndefined();
+      }
+      video.playbackRate = 1.5;
+      video.dispatchEvent(new Event("ratechange"));
+      expect(audio.playbackRate).toBe(1.5);
       paused = false;
-      video.dispatchEvent(new Event("play"));
-      return Promise.resolve();
-    });
-    audio.pause = jest.fn();
-    audio.play = jest.fn(() => Promise.resolve());
-
-    videos.wireTimedPlaybackHolds(video, "frontOfEyeFullAnimationVideoPage", [
-      {
-        at: 6,
-        continueNarration: true,
-        durationMs: 4000,
-        preserveMediaPosition: true,
-        narrationCatchUpAt: 138.26,
-      },
-      {
-        at: 77,
-        continueNarration: true,
-        durationMs: 4000,
-        preserveMediaPosition: true,
-        narrationCatchUpAt: 138.26,
-      },
-      {
-        at: 121,
-        continueNarration: true,
-        durationMs: 3000,
-        preserveMediaPosition: true,
-        narrationCatchUpAt: 138.26,
-      },
-    ]);
-
-    video.currentTime = 6.1;
-    video.dispatchEvent(new Event("timeupdate"));
-    expect(video.currentTime).toBe(6);
-    expect(audio.pause).not.toHaveBeenCalled();
-
-    audio.currentTime = 10;
-    jest.advanceTimersByTime(4000);
-    expect(video.play).toHaveBeenCalledTimes(1);
-    expect(video.dataset.timedNarrationLeadActive).toBe("1");
-
-    video.currentTime = 77.1;
-    audio.currentTime = 81.1;
-    video.dispatchEvent(new Event("timeupdate"));
-    expect(video.currentTime).toBe(77);
-    expect(audio.pause).not.toHaveBeenCalled();
-
-    audio.currentTime = 85.1;
-    jest.advanceTimersByTime(4000);
-    expect(video.play).toHaveBeenCalledTimes(2);
-    expect(video.dataset.timedNarrationLeadActive).toBe("1");
-
-    video.currentTime = 121.1;
-    audio.currentTime = 129.1;
-    video.dispatchEvent(new Event("timeupdate"));
-    expect(video.currentTime).toBe(121);
-    expect(audio.pause).not.toHaveBeenCalled();
-
-    audio.currentTime = 132.1;
-    jest.advanceTimersByTime(3000);
-    expect(video.play).toHaveBeenCalledTimes(3);
-    expect(video.dataset.timedNarrationLeadActive).toBe("1");
-  });
+      audio.currentTime = 0;
+      video.dispatchEvent(new Event("waiting"));
+      video.dispatchEvent(new Event("playing"));
+      expect(audio.currentTime).toBe(video.currentTime);
+    },
+  );
 
   it("uses a viewport-filling fallback that keeps the caption panel in the layout", async () => {
     await videos.ensureChildhoodPilotSubtitleControlsForPage(

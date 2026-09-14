@@ -475,10 +475,21 @@ const build = async () => {
         "public/js/safe-console-init.js",
         "public/js/toc.js",
         "public/js/videoplayer.js",
-        "public/js/videos.js",
       ],
       bundle: true,
       minify: true,
+      outdir: path.join(distPath, "js"),
+      sourcemap: true,
+      target: "es2020",
+    });
+
+    // videos.js is also imported directly by browser-level validation and other
+    // runtime consumers, so keep its named exports in the standalone bundle.
+    await esbuild.build({
+      entryPoints: ["public/js/videos.js"],
+      bundle: true,
+      minify: true,
+      format: "esm",
       outdir: path.join(distPath, "js"),
       sourcemap: true,
       target: "es2020",

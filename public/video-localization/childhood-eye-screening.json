@@ -2384,12 +2384,52 @@
   },
   "directOphthalmoscopyFullAnimationVideoPage": {
     "subtitles": {
-      "en": "/narration/direct-ophthalmoscopy/full-animation/en.vtt"
+      "en": "/narration/direct-ophthalmoscopy/full-animation/en.vtt",
+      "es": "/narration/direct-ophthalmoscopy/full-animation/es-419.vtt",
+      "ko": "/narration/direct-ophthalmoscopy/full-animation/ko.vtt",
+      "ne": "/narration/direct-ophthalmoscopy/full-animation/ne.vtt",
+      "fr": "/narration/direct-ophthalmoscopy/full-animation/fr.vtt",
+      "lg": "/narration/direct-ophthalmoscopy/full-animation/lg.vtt",
+      "ha": "/narration/direct-ophthalmoscopy/full-animation/ha.vtt",
+      "yo": "/narration/direct-ophthalmoscopy/full-animation/yo.vtt",
+      "ig": "/narration/direct-ophthalmoscopy/full-animation/ig.vtt"
     },
     "audioVariants": {
       "en": {
         "label": "English",
         "src": "/narration/direct-ophthalmoscopy/full-animation/en.m4a"
+      },
+      "es-419": {
+        "label": "Español (Latinoamérica)",
+        "src": "/narration/direct-ophthalmoscopy/full-animation/es-419.m4a"
+      },
+      "ko": {
+        "label": "한국어",
+        "src": "/narration/direct-ophthalmoscopy/full-animation/ko.m4a"
+      },
+      "ne": {
+        "label": "नेपाली",
+        "src": "/narration/direct-ophthalmoscopy/full-animation/ne.m4a"
+      },
+      "fr": {
+        "label": "Français",
+        "src": "/narration/direct-ophthalmoscopy/full-animation/fr.m4a"
+      },
+      "lg": {
+        "label": "Luganda",
+        "src": "/narration/direct-ophthalmoscopy/full-animation/lg.m4a"
+      },
+      "ha": {
+        "label": "Hausa",
+        "src": "/narration/direct-ophthalmoscopy/full-animation/ha.m4a"
+      },
+      "yo": {
+        "label": "Yorùbá",
+        "src": "/narration/direct-ophthalmoscopy/full-animation/yo.m4a"
+      },
+      "ig": {
+        "label": "Igbo",
+        "src": "/narration/direct-ophthalmoscopy/full-animation/ig.m4a"
       }
     },
     "defaultSubtitleLang": "en",
@@ -2398,7 +2438,17 @@
       "masterManifest": "",
       "preferredMode": "low",
       "offlineFallbackMode": "low",
-      "subtitleLanguages": ["en"]
+      "subtitleLanguages": [
+        "en",
+        "es",
+        "ko",
+        "ne",
+        "fr",
+        "lg",
+        "ha",
+        "yo",
+        "ig"
+      ]
     },
     "localSources": {
       "low": "videos/FullAnim/New_DOFullAnim.mp4",
@@ -2447,8 +2497,8 @@
       "subtitleLanguages": ["en"]
     },
     "localSources": {
-      "low": "videos/FullAnim/New_FrontofEyeFullAnim.mp4",
-      "high": "videos/FullAnim/New_FrontofEyeFullAnim.mp4"
+      "low": "videos/FullAnim/New_FrontofEyeFullAnim_timed.mp4",
+      "high": "videos/FullAnim/New_FrontofEyeFullAnim_timed.mp4"
     }
   }
 }

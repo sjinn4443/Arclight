@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "title": "Front of Eye Full Animation narration",
-  "timingSource": "Timed against New_FrontofEyeFullAnim.mp4 and aligned with the examination sequence demonstrated in FE_Full_720p.mp4. The narration clock includes four-second visual holds at 6 and 77 seconds and a three-second visual hold at 121 seconds.",
-  "sourceVideo": "/videos/FullAnim/New_FrontofEyeFullAnim.mp4",
-  "durationSeconds": 138.26,
+  "timingSource": "Single media timeline: visual holds are encoded into New_FrontofEyeFullAnim_timed.mp4 by scripts/build-front-of-eye-timed-video.cjs. Original-video holds: 6s/4s, 16s/5.5s, 40.5s/5s, 72.5s/7s, 77s/4s, 83.5s/4s, 87.5s/3.1s, 103.4s/7.5s, 113.9s/1.1s, 121s/3s. Captions, narration and seek bar all use this timed video's clock.",
+  "sourceVideo": "/videos/FullAnim/New_FrontofEyeFullAnim_timed.mp4",
+  "durationSeconds": 171.46,
   "defaultLanguage": "en",
   "languages": {
     "en": {
@@ -33,8 +33,8 @@
     {
       "id": "observation-02",
       "section": "Observation and magnified examination",
-      "start": 10.0,
-      "end": 17.0,
+      "start": 10,
+      "end": 17,
       "screenText": "Prepare for magnified examination",
       "en": "Then perform a magnified examination. Prepare the Arclight by selecting the brightest light setting.",
       "ttsText": {
@@ -45,44 +45,44 @@
     {
       "id": "observation-03",
       "section": "Observation and magnified examination",
-      "start": 17.0,
+      "start": 17,
       "end": 24.5,
       "screenText": "Approach the right eye until focused",
       "en": "Hold the device close to your eye. Slowly approach the patient's right eye first until it is in focus.",
-      "notes": "Follows the requested thirteen-second video action without overlapping the preceding narration."
+      "notes": "Source video 16s holds from media time 20–25.5s; this narration ends at 24.5s."
     },
     {
       "id": "observation-04",
       "section": "Observation and magnified examination",
-      "start": 24.5,
-      "end": 28.0,
+      "start": 27,
+      "end": 30.5,
       "screenText": "Look right, then left",
       "en": "Ask the patient to look right, then left.",
-      "notes": "Timed within the horizontal gaze sequence that begins at 17.4 seconds."
+      "notes": "Starts at playback time 27s without an additional visual hold."
     },
     {
       "id": "observation-05",
       "section": "Observation and magnified examination",
-      "start": 28.0,
-      "end": 36.8,
+      "start": 38,
+      "end": 46.8,
       "screenText": "Look up and down and group the structures",
       "en": "Then ask them to look up and down while gently holding their eyelids. Note the different structures seen, thinking of them in groups.",
-      "notes": "Matches vertical gaze and gentle lid handling before the grouped anatomy sequence."
+      "notes": "Starts at playback time 38s and finishes before the first structure group."
     },
     {
       "id": "structures-01",
       "section": "Observation and magnified examination",
-      "start": 42.4,
-      "end": 47.5,
+      "start": 50,
+      "end": 55,
       "screenText": "Eyelashes and lid margins",
       "en": "The first group includes the upper and lower eyelashes and lid margins.",
-      "notes": "Matches the first highlighted group."
+      "notes": "Source video 40.5s: encoded hold at playback time 50–55s while this sentence plays and clears."
     },
     {
       "id": "structures-02",
       "section": "Observation and magnified examination",
-      "start": 48.0,
-      "end": 51.95,
+      "start": 58.5,
+      "end": 62.45,
       "screenText": "Conjunctiva and sclera",
       "en": "The second includes the conjunctiva and sclera,",
       "notes": "Continues into the lower-fornix cue."
@@ -90,8 +90,8 @@
     {
       "id": "structures-03",
       "section": "Observation and magnified examination",
-      "start": 54.0,
-      "end": 56.6,
+      "start": 64.5,
+      "end": 67.1,
       "screenText": "Lower fornix",
       "en": "including the lower fornix.",
       "notes": "Corrects the supplied term 'forenax' to the anatomical term 'fornix'."
@@ -99,8 +99,8 @@
     {
       "id": "structures-04",
       "section": "Observation and magnified examination",
-      "start": 60.0,
-      "end": 62.4,
+      "start": 70.5,
+      "end": 72.9,
       "screenText": "Cornea",
       "en": "The third group is the cornea,",
       "notes": "Begins the third highlighted structure group."
@@ -108,8 +108,8 @@
     {
       "id": "structures-05",
       "section": "Observation and magnified examination",
-      "start": 65.0,
-      "end": 68.9,
+      "start": 75.5,
+      "end": 79.4,
       "screenText": "Limbus",
       "en": "and its junction with the sclera, called the limbus,",
       "notes": "Corrects the supplied term 'limbis' to 'limbus'."
@@ -117,62 +117,92 @@
     {
       "id": "structures-06",
       "section": "Observation and magnified examination",
-      "start": 71.0,
-      "end": 75.2,
+      "start": 81.5,
+      "end": 85.7,
       "screenText": "Pupil and iris",
       "en": "as well as the pupil, which is surrounded by the iris.",
       "notes": "Completes the grouped anterior-eye anatomy."
     },
     {
+      "id": "conditions-01",
+      "section": "Examples of eye conditions",
+      "start": 87,
+      "end": 94,
+      "screenText": "Examine different conditions",
+      "en": "These are pictures of different conditions. Take time to examine with your Arclight.",
+      "ttsText": {
+        "en": "These are pictures of different conditions. Take time to examine with your Arc-light."
+      },
+      "notes": "Source 72.5s is held at playback 87–94s until narration and captions finish."
+    },
+    {
       "id": "chamber-depth-01",
       "section": "Anterior chamber depth",
-      "start": 81.0,
-      "end": 85.85,
+      "start": 102,
+      "end": 106.85,
       "screenText": "Define the anterior chamber",
       "en": "The anterior chamber is the space between the cornea and the iris.",
-      "notes": "The video holds at 77 seconds for four seconds while narration and captions continue."
+      "notes": "Follows the conditions cue without overlapping narration."
     },
     {
       "id": "chamber-depth-02",
       "section": "Anterior chamber depth",
-      "start": 87.8,
-      "end": 94.0,
+      "start": 106.85,
+      "end": 113,
       "screenText": "Assess anterior chamber depth",
       "en": "By shining the light from the temporal side, the depth of the anterior chamber can be assessed.",
-      "notes": "Corresponds to video time 79.8 seconds after the four-second hold."
+      "notes": "Finishes during the encoded temporal-light frame hold at playback time 109–113s (source 83.5s)."
     },
     {
       "id": "chamber-depth-03",
       "section": "Anterior chamber depth",
-      "start": 94.0,
-      "end": 98.6,
+      "start": 115.5,
+      "end": 120.1,
       "screenText": "Look for a nasal shadow",
       "en": "A nasal shadow can suggest a shallow chamber. Refer.",
-      "notes": "Follows the requested 84.5-second video action without overlapping the preceding narration."
+      "notes": "Source 87.5s holds at playback 117–120.1s until the nasal-shadow narration finishes."
+    },
+    {
+      "id": "fluorescein-application",
+      "section": "Fluorescein corneal staining",
+      "start": 124,
+      "end": 129.6,
+      "screenText": "Apply fluorescein",
+      "en": "Use a fluorescein strip or a Minims dropper to apply fluorescein to the eye.",
+      "notes": "Starts at playback 124s; existing 5.59s narration finishes before blue-light inspection."
     },
     {
       "id": "fluorescein-01",
       "section": "Fluorescein corneal staining",
-      "start": 106.0,
-      "end": 109.4,
+      "start": 130.6,
+      "end": 134,
       "screenText": "Select the blue light",
       "en": "Select the blue light and inspect the cornea.",
-      "notes": "Corresponds to video time 98 seconds after the four-second hold."
+      "notes": "Corresponds to video time 98 seconds after 32.6 seconds of accumulated holds."
     },
     {
       "id": "fluorescein-02",
       "section": "Fluorescein corneal staining",
-      "start": 111.0,
-      "end": 118.5,
+      "start": 136,
+      "end": 143.5,
       "screenText": "Record highlighted epithelial loss",
       "en": "Areas of epithelial loss and disease will be highlighted. Record the site and size of these areas.",
-      "notes": "Corresponds to video time 103 seconds after the four-second hold."
+      "notes": "Source 103.4s shows stained corneal examples; held at playback 136–143.5s until narration and captions finish."
+    },
+    {
+      "id": "lid-eversion-grip",
+      "section": "Upper eyelid eversion",
+      "start": 151,
+      "end": 156.7,
+      "screenText": "Gently hold the upper eyelashes",
+      "en": "Gently pinch and hold the eyelashes of the upper lid with your thumb and index finger.",
+      "notes": "Starts at playback time 151s; source 113.9s holds at 154–155.1s, allowing this 5.66-second sentence to finish before the cotton-bud narration."
     },
     {
       "id": "lid-eversion-01",
       "section": "Upper eyelid eversion",
-      "start": 123.5,
-      "end": 129.0,
+      "start": 156.7,
+      "end": 162.2,
       "screenText": "Evert the upper lid over a cotton bud",
       "en": "Place a cotton bud on the upper eyelid, use it as a fulcrum and turn the lid upwards.",
       "notes": "Begins early enough to remain active at the requested 116.5-second video action."
@@ -180,8 +210,8 @@
     {
       "id": "lid-eversion-02",
       "section": "Upper eyelid eversion",
-      "start": 129.0,
-      "end": 134.5,
+      "start": 162.2,
+      "end": 167.7,
       "screenText": "Inspect first with the naked eye",
       "en": "Hold the lid everted and inspect its inner surface, first with the naked eye,",
       "notes": "The video holds at 121 seconds for three seconds while narration and captions continue."
@@ -189,14 +219,15 @@
     {
       "id": "lid-eversion-03",
       "section": "Upper eyelid eversion",
-      "start": 134.5,
-      "end": 138.2,
+      "start": 167.7,
+      "end": 171.4,
       "screenText": "Inspect with magnification",
       "en": "then bring in the Arclight for a magnified view.",
       "ttsText": {
         "en": "Then bring in the Arc-light for a magnified view."
       },
-      "notes": "Corresponds closely to video time 124 seconds after the accumulated seven seconds of holds."
+      "notes": "Corresponds closely to video time 124 seconds after the accumulated 44.2 seconds of holds."
     }
-  ]
+  ],
+  "originalSourceVideo": "/videos/FullAnim/New_FrontofEyeFullAnim.mp4"
 }

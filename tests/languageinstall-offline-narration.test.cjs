@@ -3,6 +3,7 @@
  */
 
 import { beforeEach, describe, expect, it, jest } from "@jest/globals";
+import fs from "node:fs";
 
 describe("language-specific offline narration", () => {
   let languageInstall;
@@ -42,6 +43,42 @@ describe("language-specific offline narration", () => {
       { bytes: 1000, url: "/js/main.js" },
     ],
   };
+
+  it.each(["en", "es-419", "ko", "ne", "fr", "lg", "ha", "yo", "ig"])(
+    "includes only the selected Direct Ophthalmoscopy %s audio and captions offline",
+    (language) => {
+      const root = "public/narration/direct-ophthalmoscopy/full-animation";
+      const tracks = JSON.parse(
+        fs.readFileSync(`${root}/manifest.json`, "utf8"),
+      ).tracks;
+      const assets = Object.entries(tracks).flatMap(([code, track]) =>
+        [track.src, track.captions].map((file) => ({
+          url: `/narration/direct-ophthalmoscopy/full-animation/${file}`,
+          bytes: fs.statSync(`${root}/${file}`).size,
+        })),
+      );
+      const selection = languageInstall.resolveOfflineDownloadSelection(
+        { assets },
+        {
+          language: language === "es-419" ? "es" : language,
+          mode: "full",
+          videoQuality: "low",
+        },
+      );
+      expect(
+        selection.urls
+          .filter((url) => url.includes("/direct-ophthalmoscopy/"))
+          .sort(),
+      ).toEqual(
+        ["m4a", "vtt"]
+          .map(
+            (ext) =>
+              `/narration/direct-ophthalmoscopy/full-animation/${language}.${ext}`,
+          )
+          .sort(),
+      );
+    },
+  );
 
   it("downloads only the Spanish narration when Spanish is selected", () => {
     const selection = languageInstall.resolveOfflineDownloadSelection(

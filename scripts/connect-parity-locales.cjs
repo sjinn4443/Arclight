@@ -34,7 +34,10 @@ for (const p of [
         if (fs.existsSync("public" + target)) entry.subtitles[code] = target;
       }
       if (entry.audioVariants?.["es-419"]) {
-        const src = "/narration/fundal-reflex/full-animation/" + code + ".m4a";
+        const src = entry.audioVariants["es-419"].src.replace(
+          /\/es-419\.m4a$/,
+          "/" + code + ".m4a",
+        );
         if (fs.existsSync("public" + src))
           entry.audioVariants[code] = {
             label: {

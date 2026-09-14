@@ -1,49 +1,53 @@
 # Front of Eye full-animation narration
 
-This folder contains the app-ready narration and caption assets for
-`frontOfEyeFullAnimationVideoPage`.
+The player uses `New_FrontofEyeFullAnim_timed.mp4`. Its visual holds are encoded
+into the video rather than scheduled by runtime timers. Video, captions and
+narration use one absolute media timeline, including after seek, replay or reload.
+The original `New_FrontofEyeFullAnim.mp4` is retained as the editing source.
 
-The English script is timed to `New_FrontofEyeFullAnim.mp4` and follows the
-clinical sequence shown in the existing `FE_Full_720p.mp4` lesson. The video
-holds at 00:06.000 and 01:17.000 for four seconds each, then at 02:01.000 for
-three seconds, while the narration and captions continue. Consequently, cue
-times after each hold use the narration clock and are offset from the
-underlying video clock.
+| Original video | Hold length | Timed video freeze  |
+| -------------- | ----------- | ------------------- |
+| 00:06          | 4 seconds   | 00:06–00:10         |
+| 00:16          | 5.5 seconds | 00:20–00:25.500     |
+| 00:40.500      | 5 seconds   | 00:50–00:55         |
+| 01:12.500      | 7 seconds   | 01:27–01:34         |
+| 01:17          | 4 seconds   | 01:38.500–01:42.500 |
+| 01:23.500      | 4 seconds   | 01:49–01:53         |
+| 01:27.500      | 3.1 seconds | 01:57–02:00.100     |
+| 01:43.400      | 7.5 seconds | 02:16–02:23.500     |
+| 01:53.900      | 1.1 seconds | 02:34–02:35.100     |
+| 02:01          | 3 seconds   | 02:42.200–02:45.200 |
 
-## Timed English outline
+The right/left gaze cue plays at 00:27–00:30.500 without an additional hold.
+The up/down cue plays at 00:38–00:46.800. The first structure group plays
+at 00:50–00:55 while the video holds, clearing before motion resumes.
+The conditions cue plays during the 01:27–01:34 photo hold. The anterior chamber definition follows
+at 01:42, then temporal-light narration at 01:46.850–01:53. The matching
+frame holds at 01:49–01:53. Subsequent cues include the additional seven-second photo hold.
+The nasal-shadow frame holds at 01:57–02:00.100 until its narration clears.
+Fluorescein application narration starts at 02:04; subsequent inspection cues
+move 3.1 seconds with the added shadow hold.
+The stained-cornea examples hold at 02:16–02:23.500 throughout the epithelial-loss
+explanation. Later lid-eversion cues move 7.5 seconds with this additional hold.
+The eyelash-grip cue starts at 02:31 and ends at 02:36.700. A 1.1-second
+hold at 02:34 prevents overlap with the cotton-bud narration; later cues
+move together by 1.1 seconds.
+The single-dose dropper terminology follows the [Minims fluorescein product information](https://www.medicines.org.uk/emc/product/1178/smpc).
 
-|      Narration time | Section                               | Narration focus                                                                         |
-| ------------------: | ------------------------------------- | --------------------------------------------------------------------------------------- |
-| 00:03.700-01:15.200 | Observation and magnified examination | Periorbital observation, gaze directions, lid handling, and grouped anterior structures |
-| 01:21.000-01:38.600 | Anterior chamber depth                | Chamber definition, temporal illumination, and recognition of a nasal shadow            |
-| 01:46.000-01:58.500 | Corneal inspection                    | Blue-light inspection and recording highlighted epithelial loss                         |
-| 02:03.500-02:18.200 | Upper eyelid eversion                 | Cotton-bud fulcrum, eversion, naked-eye inspection, and magnified inspection            |
+## Rebuild
 
-`script.json` is the source of truth for future language adaptations.
+Run `node scripts/build-front-of-eye-timed-video.cjs` first. It uses
+`FFMPEG_PATH` or the temporary imageio-ffmpeg installation under
+`tmp/fundal-narration-tools`. It retains original resolution, produces
+30 fps H.264 with one-second keyframes, and excludes the original soundtrack.
 
-## Clinical references
-
-- Community Eye Health Journal, [How to examine the front of the eye](https://cehjournal.org/articles/10.56920/cehj.84)
-- American Academy of Ophthalmology EyeWiki, [Slit Lamp Examination](https://eyewiki.aao.org/Slit_Lamp_Examination)
-- World Health Organization, [Eye care competency framework](https://www.who.int/publications/i/item/9789240048416)
-
-## Rebuilding the English media
-
-From the repository root, install the temporary speech and FFmpeg tooling, then
-run the shared generator with the Front of Eye paths:
+Then run the shared narration generator:
 
 ```powershell
-python -m pip install --target tmp\fundal-narration-tools edge-tts imageio-ffmpeg
-python scripts\generate-fundal-narration.py `
-  --script public\narration\front-of-eye\full-animation\script.json `
-  --work-dir tmp\front-of-eye-narration `
-  --artifacts-dir .codex-artifacts\front-of-eye-narration `
-  --public-dir public\narration\front-of-eye\full-animation `
-  --asset-stem front-of-eye-full-animation `
-  --languages en
+python scripts/generate-fundal-narration.py --script public/narration/front-of-eye/full-animation/script.json --work-dir tmp/front-of-eye-narration --artifacts-dir .codex-artifacts/front-of-eye-narration --public-dir public/narration/front-of-eye/full-animation --asset-stem front-of-eye-full-animation --languages en
 ```
 
-The generator writes the delivery M4A/VTT files here and keeps the WAV master,
-review MP4 and QA report under `.codex-artifacts/front-of-eye-narration/`. The
-AI-voice draft should receive clinical and native-speaker approval before
-publication.
+`script.json` is the caption and speech source of truth; `en.m4a` and
+`en.vtt` are delivery assets. The audio is 171.46 seconds; the 30 fps video
+rounds that duration by less than one frame. Review assets remain outside
+`public`.

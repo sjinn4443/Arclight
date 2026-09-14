@@ -8,6 +8,54 @@
       "captions": "en.vtt",
       "bytes": 816716,
       "sha256": "092037dc20f4b9e02593a09be0b027d5f9f9d8e25d4a48abe2edbacfd7623a21"
+    },
+    "es-419": {
+      "src": "es-419.m4a",
+      "captions": "es-419.vtt",
+      "bytes": 749037,
+      "sha256": "f26a22f3183d8d73a2acc00da44bdfa5fd8ae718000fe50ab889bc53e6b2aaab"
+    },
+    "ko": {
+      "src": "ko.m4a",
+      "captions": "ko.vtt",
+      "bytes": 760493,
+      "sha256": "899c26340bff6150b3d6951df6ba0429420941b8edb110a251a7fe80343598bc"
+    },
+    "ne": {
+      "src": "ne.m4a",
+      "captions": "ne.vtt",
+      "bytes": 766811,
+      "sha256": "22db904867f5ed76eeb83e7555b15296d477387adcfd64adf7b1860a6f659c13"
+    },
+    "fr": {
+      "src": "fr.m4a",
+      "captions": "fr.vtt",
+      "bytes": 686204,
+      "sha256": "eee0ef0995675661fd5eb847a3afb6acfc8a5c7e738e7da50dc28e55fe265d3f"
+    },
+    "lg": {
+      "src": "lg.m4a",
+      "captions": "lg.vtt",
+      "bytes": 916574,
+      "sha256": "86abd03f2601f974b8a68db0975461400bfb60362d0b3dd36d88663393874de9"
+    },
+    "ha": {
+      "src": "ha.m4a",
+      "captions": "ha.vtt",
+      "bytes": 883971,
+      "sha256": "f3a46dff5c22d6c8cb5067fc1380692680140893dcc62afafd1927e2ea99e5b3"
+    },
+    "yo": {
+      "src": "yo.m4a",
+      "captions": "yo.vtt",
+      "bytes": 691956,
+      "sha256": "0adda6720b36bba311c7f8d3c30eef03e8ea7d2c2812a4bcdb2673712932aadc"
+    },
+    "ig": {
+      "src": "ig.m4a",
+      "captions": "ig.vtt",
+      "bytes": 816967,
+      "sha256": "f664e0afbd736f7de159d52d3e6bc856388c1d2f1bff185cac4ba94c14df29a8"
     }
   }
 }

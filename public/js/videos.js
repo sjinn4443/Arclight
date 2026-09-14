@@ -1514,32 +1514,10 @@ const VIDEO_PAGE_SOURCES = {
     containerSelector: "#frontOfEyeFullAnimationVideoContainer",
     videoSelector: "#frontOfEyeFullAnimationVideo",
     sources: {
-      low: "videos/FullAnim/New_FrontofEyeFullAnim.mp4",
-      high: "videos/FullAnim/New_FrontofEyeFullAnim.mp4",
+      low: "videos/FullAnim/New_FrontofEyeFullAnim_timed.mp4",
+      high: "videos/FullAnim/New_FrontofEyeFullAnim_timed.mp4",
     },
-    playbackHolds: [
-      {
-        at: 6,
-        continueNarration: true,
-        durationMs: 4000,
-        preserveMediaPosition: true,
-        narrationCatchUpAt: 138.26,
-      },
-      {
-        at: 77,
-        continueNarration: true,
-        durationMs: 4000,
-        preserveMediaPosition: true,
-        narrationCatchUpAt: 138.26,
-      },
-      {
-        at: 121,
-        continueNarration: true,
-        durationMs: 3000,
-        preserveMediaPosition: true,
-        narrationCatchUpAt: 138.26,
-      },
-    ],
+    // Holds are encoded into the MP4 so seeking never depends on timer history.
   },
 
   fundalStillPage: {

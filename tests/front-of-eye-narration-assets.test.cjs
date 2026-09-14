@@ -32,10 +32,10 @@ const videosSource = fs.readFileSync(
 describe("Front of Eye narration assets", () => {
   it("keeps the English cues ordered on the new animation timeline", () => {
     expect(script.sourceVideo).toBe(
-      "/videos/FullAnim/New_FrontofEyeFullAnim.mp4",
+      "/videos/FullAnim/New_FrontofEyeFullAnim_timed.mp4",
     );
-    expect(script.durationSeconds).toBeCloseTo(138.26, 2);
-    expect(script.cues).toHaveLength(19);
+    expect(script.durationSeconds).toBeCloseTo(171.46, 2);
+    expect(script.cues).toHaveLength(22);
 
     script.cues.forEach((cue, index) => {
       expect(cue.en.trim().length).toBeGreaterThan(0);
@@ -57,6 +57,33 @@ describe("Front of Eye narration assets", () => {
     expect(manifest.tracks.en.captions).toBe("en.vtt");
   });
 
+  it("finishes the held explanations before advancing to the matching scenes", () => {
+    const cue = (id) => script.cues.find((entry) => entry.id === id);
+    // At video 16s, the earlier 4s hold puts narration at 20s.
+    expect(cue("observation-03").end).toBeLessThanOrEqual(25.5);
+    expect(cue("observation-04").start).toBe(27);
+    expect(cue("observation-05").start).toBe(38);
+    expect(cue("observation-04").end).toBeLessThanOrEqual(30.5);
+    // At source video 40.5s, the earlier 9.5s of holds puts narration at 50s.
+    expect(cue("structures-01").start).toBe(50);
+    expect(cue("structures-01").end).toBeLessThanOrEqual(55);
+    expect(cue("structures-02").start - 14.5).toBe(44);
+    expect(cue("conditions-01").start).toBe(87);
+    expect(cue("conditions-01").end).toBeLessThanOrEqual(
+      cue("chamber-depth-01").start,
+    );
+    expect(cue("chamber-depth-02").start).toBeLessThan(109);
+    expect(cue("chamber-depth-02").end).toBe(113);
+    expect(cue("chamber-depth-03").end).toBe(120.1);
+    expect(cue("fluorescein-application").start).toBe(124);
+    expect(cue("fluorescein-02").start).toBe(136);
+    expect(cue("fluorescein-02").end).toBe(143.5);
+    expect(cue("lid-eversion-grip").start).toBe(151);
+    expect(cue("lid-eversion-grip").end).toBeLessThanOrEqual(
+      cue("lid-eversion-01").start,
+    );
+  });
+
   it("wires the lesson row, page, playback source and localization", () => {
     const page = catalog.frontOfEyeFullAnimationVideoPage;
 
@@ -66,8 +93,8 @@ describe("Front of Eye narration assets", () => {
     expect(videosHtml).toContain('id="frontOfEyeFullAnimationVideoPage"');
     expect(videosHtml).toContain('id="frontOfEyeFullAnimationVideo"');
     expect(page.localSources).toEqual({
-      low: "videos/FullAnim/New_FrontofEyeFullAnim.mp4",
-      high: "videos/FullAnim/New_FrontofEyeFullAnim.mp4",
+      low: "videos/FullAnim/New_FrontofEyeFullAnim_timed.mp4",
+      high: "videos/FullAnim/New_FrontofEyeFullAnim_timed.mp4",
     });
     expect(page.subtitles.en).toBe(
       "/narration/front-of-eye/full-animation/en.vtt",
@@ -76,13 +103,17 @@ describe("Front of Eye narration assets", () => {
       "/narration/front-of-eye/full-animation/en.m4a",
     );
     expect(videosSource).toContain(
-      'low: "videos/FullAnim/New_FrontofEyeFullAnim.mp4"',
+      'low: "videos/FullAnim/New_FrontofEyeFullAnim_timed.mp4"',
     );
-    expect(videosSource).toContain("at: 6");
-    expect(videosSource).toContain("at: 77");
-    expect(videosSource).toContain("durationMs: 4000");
-    expect(videosSource).toContain("at: 121");
-    expect(videosSource).toContain("durationMs: 3000");
+    const config = videosSource
+      .split("  frontOfEyeFullAnimationVideoPage: {")[1]
+      .split("  fundalStillPage:")[0];
+    expect(config).not.toContain("playbackHolds");
+    expect(
+      fs.existsSync(
+        path.resolve("public/videos/FullAnim/New_FrontofEyeFullAnim_timed.mp4"),
+      ),
+    ).toBe(true);
   });
 
   it("keeps generated review media out of the public app package", () => {
