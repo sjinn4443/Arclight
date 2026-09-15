@@ -3158,7 +3158,9 @@ function parseChildhoodPilotSubtitleVtt(vttText) {
       .join("\n");
 
     if (!text) return;
-    cues.push({ start, end, text });
+    const videoTitle =
+      timeLineIndex > 0 && /^video-title-/.test(lines[timeLineIndex - 1]);
+    cues.push({ start, end, text, videoTitle });
   });
 
   return cues;
@@ -3221,10 +3223,18 @@ function renderChildhoodPilotSubtitleOverlay(video) {
       useNarrationTime ? narrationState.audio?.currentTime : video.currentTime,
     ) || 0,
   );
-  const activeText = state.cues
-    .filter((cue) => currentTime >= cue.start && currentTime < cue.end)
-    .map((cue) => cue.text)
-    .join("\n");
+  // Silent title cards follow the picture even during an audio lead or a seek.
+  const videoTime = Math.max(0, Number(video.currentTime) || 0);
+  const activeTitles = state.cues.filter(
+    (cue) => cue.videoTitle && videoTime >= cue.start && videoTime < cue.end,
+  );
+  const activeCues = activeTitles.length
+    ? activeTitles
+    : state.cues.filter(
+        (cue) =>
+          !cue.videoTitle && currentTime >= cue.start && currentTime < cue.end,
+      );
+  const activeText = activeCues.map((cue) => cue.text).join("\n");
 
   state.currentText = activeText;
 

@@ -22,6 +22,7 @@ The app is primarily static (served from `public/` in dev, and `dist/` in produc
 - VS Code launcher extension: [`vscode-alanui-launcher/README.md`](./vscode-alanui-launcher/README.md)
 - Memory bank: [`memory-bank/`](./memory-bank/)
 - Agent notes: [`agent.md`](./agent.md)
+- Narration and captions: [overview](#narration-and-captions-for-examination-lessons) and [production record](./memory-bank/narration-and-subtitles.md)
 
 ## Medical Students workshop
 
@@ -285,6 +286,116 @@ When adding new media, keep the file path discoverable under the static root, ad
 - Full-animation MP4 lessons use the same Videos-route local video pattern: hidden pages in `public/html/videos.html`, low/high sources in `VIDEO_PAGE_SOURCES`, and files under `public/videos/FullAnim/`. Current pages are `fundalReflexFullAnimationVideoPage`, `directOphthalmoscopyFullAnimationVideoPage`, `binocularIndirectOphthalmoscopyFullAnimationVideoPage`, and `frontOfEyeFullAnimationVideoPage`; all four expose synchronized captions and separate narration audio through the shared dedicated player controls.
 - Shared progress helpers live in `public/js/lessonProgress.js` and `public/js/lessonCompletionTick.js`. They read/write compatible progress records from `lessonProgress:`, `videoProgress:`, `childhoodWorkshop:progress:`, `diabeticWorkshop:progress:`, and `glaucomaWorkshop:progress:` keys, dispatch `arclight:lesson-progress-changed`, and add completion ticks when rows reach completion.
 
+## Narration and captions for examination lessons
+
+Checked against the source code and delivery files on 15 September 2026.
+These lessons use prepared speech files and timed captions. Speech generation
+and translation happen during content production. The browser plays local
+media and selects an existing language track.
+
+### Pages and languages
+
+The nine-language set is English (`en`), Latin American Spanish (`es-419`),
+Korean (`ko`), Nepali (`ne`), French (`fr`), Luganda (`lg`), Hausa (`ha`),
+Yoruba (`yo`) and Igbo (`ig`). English speech uses a British voice.
+
+| Page ID                                                 | Narration                                   | Captions or stage text                                     | Media folder under `public/narration/`              |
+| ------------------------------------------------------- | ------------------------------------------- | ---------------------------------------------------------- | --------------------------------------------------- |
+| `frontOfEyeFullAnimationVideoPage`                      | Nine languages                              | Matching WebVTT in all nine                                | `front-of-eye/full-animation/`                      |
+| `directOphthalmoscopyFullAnimationVideoPage`            | Nine languages                              | Matching WebVTT in all nine                                | `direct-ophthalmoscopy/full-animation/`             |
+| `binocularIndirectOphthalmoscopyFullAnimationVideoPage` | Nine languages                              | Matching WebVTT in all nine                                | `binocular-indirect-ophthalmoscopy/full-animation/` |
+| `fundalReflexExaminationScrollPage`                     | Nine languages, reusing Fundal Reflex audio | Short stage guidance translated through the app dictionary | Reuses `fundal-reflex/full-animation/`              |
+| `fundalReflexFullAnimationVideoPage`                    | Nine languages                              | Matching WebVTT in all nine                                | `fundal-reflex/full-animation/`                     |
+
+The scroll page plays 22 selected intervals from the Fundal Reflex tracks.
+Its on-screen guidance remains separate from the full spoken transcript and
+follows the app language. Changing its narration selector changes the voice.
+
+### How the work was produced
+
+1. Match the demonstrated steps to the animation. Fundal Reflex uses the
+   animation's scene boundaries. Direct Ophthalmoscopy also draws on its
+   scrolly lessons and the supplied reference document. BIO draws on the
+   existing Diabetic Retinopathy scrolly lessons. Front of Eye uses a revised
+   video with the required frame holds built into it.
+2. Keep the script in each media folder's `script.json`. Cue IDs identify
+   sentences or groups of sentences. Start and end times are in seconds.
+   English sets the timing and tone. Adapt translated wording to fit each
+   scene while retaining the demonstrated meaning.
+3. Generate individual speech cues with `scripts/generate-fundal-narration.py`.
+   English uses `en-GB-SoniaNeural` through `edge-tts`. Spanish, Korean,
+   Nepali and French also use Edge voices. Luganda, Hausa, Yoruba and Igbo
+   use local speech models. The production record lists every voice and model.
+4. Measure each cue. Shorten wording if it would need more than 1.08 times
+   normal playback speed. FFmpeg places each cue on a silent timeline and
+   produces mono AAC audio in an M4A file at 48 kHz and 48 kbps. The generator
+   writes UTF-8 WebVTT captions and a manifest with audio sizes and SHA-256 hashes.
+5. Register completed tracks in
+   `public/video-localization/childhood-eye-screening.json`. The four video
+   pages use `public/js/videos.js` for language selection, audio synchronisation
+   and the caption panel. The scroll page uses
+   `public/js/childhoodFundalPreparation.js` for its stage clips.
+6. Check cue order, timing, file integrity, playback and offline selection.
+   Keep WAV masters, review MP4s and `qa-report.json` in `.codex-artifacts/`.
+   Temporary tools, model weights and individual speech cues stay in `tmp/`.
+
+Fundal Reflex keeps separate `timedCues` for captions and `timedAudioCues`
+for speech. It has 29 English captions and 36 captions in each other language,
+including seven translated section titles. Those title cards remain silent.
+Direct Ophthalmoscopy has 20 spoken cues per language, BIO has 18 and Front of Eye
+has 22. Non-English subtitles also translate their silent title cards: four
+for Direct Ophthalmoscopy, three for BIO and four for Front of Eye. Title captions
+follow the video clock and take priority while the title is on screen; narration
+and English captions are unchanged. BIO and Front of Eye translations are maintained in
+`scripts/full-animation-translations.json`; apply them with
+`node scripts/localize-full-animation-narration.cjs`, generate the selected
+audio tracks, then rerun the helper with `--connect` to register delivery files.
+
+### Playback and timing rules
+
+The four full animations are local MP4 pages in `public/html/videos.html`.
+Their low and high modes currently point to the same file per lesson.
+The shared player provides play/pause, seeking, mute and full screen with a
+caption panel. The narration menu provides Auto, Off and available languages.
+Auto follows the app language with an English fallback. A manual language
+choice changes both speech and captions. Off stops narration while captions
+continue in the app language.
+
+| Lesson                | Current video and timing rule                                                                                                                                             |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Front of Eye          | `New_FrontofEyeFullAnim_timed.mp4`; ten frame holds are encoded in the video. Video, captions and narration share a 171.46-second timeline.                               |
+| Direct Ophthalmoscopy | `New_DOFullAnim.mp4`; runtime holds at 46, 52.2 and 141 seconds last 3, 5 and 4 seconds. Audio lead and catch-up rules preserve the existing cue timeline.                |
+| BIO                   | `New_BIOFullAnim.mp4`; runtime holds at 43.7 and 103.6 seconds last 4 and 7 seconds. Narration and captions continue through the holds on a 130.68-second audio timeline. |
+| Fundal Reflex         | `New_FundalReflexFullAnim.mp4`; a 274.273333-second scene timeline with silent title cards.                                                                               |
+
+Front of Eye's original `New_FrontofEyeFullAnim.mp4` is the editing source.
+Rebuild its timed video with `node scripts/build-front-of-eye-timed-video.cjs`
+before regenerating narration. Its former runtime hold description is obsolete.
+The [production record](./memory-bank/narration-and-subtitles.md) gives all ten
+holds, the Direct Ophthalmoscopy catch-up settings and the scroll clip map.
+
+`videoNarration:<pageId>` and `videoNarrationLanguage:<pageId>` store narration
+preferences separately for each page. Spanish uses the `es` subtitle catalogue
+key but the audio tag and delivery filenames use `es-419`.
+Offline downloads use the chosen download language or the app language.
+They include that language's audio and captions where available, with English
+fallback per lesson. A manual player selection does not download another track.
+
+### Rebuild and review references
+
+- [Production record and commands](./memory-bank/narration-and-subtitles.md)
+- [Agent maintenance rules](./agent.md#narration-and-caption-maintenance)
+- [Fundal Reflex asset notes](./public/narration/fundal-reflex/full-animation/README.md)
+- [Direct Ophthalmoscopy asset notes](./public/narration/direct-ophthalmoscopy/full-animation/README.md)
+- [BIO asset notes](./public/narration/binocular-indirect-ophthalmoscopy/full-animation/README.md)
+- [Front of Eye asset notes](./public/narration/front-of-eye/full-animation/README.md)
+
+The generator checks a 2,000,000-byte audio limit and a 0.25-second tolerance
+against the script's target duration. These checks establish file and timing
+consistency. The existing asset notes still record native clinical review as
+outstanding for the translated synthetic tracks, particularly Igbo. They also
+record CC-BY-NC-4.0 licences for the four local models.
+
 ## Docker / Railway
 
 A multi-stage `Dockerfile` is included for reliable Railway builds:
@@ -356,7 +467,7 @@ See [`security/EMERGENCY_PLAN.md`](./security/EMERGENCY_PLAN.md) for the operato
 - Childhood Fundal Reflex scrollytelling pages use a shared Lottie stage-autoplay pattern:
   - page shells live in `public/html/childhoodFundal*.html` with `.childhood-fundal-scroll-page` and an empty `.childhood-fundal-prep-list`
   - `public/js/config.js` maps the route, `public/js/main.js` lazy-loads `public/js/childhoodFundalPreparation.js`, and that module owns `ROUTE_CONFIG`, `FUNDAL_PAGE_ROUTE_SEQUENCE`, stage creation, replay/down-arrow behavior, scroll locks, settle frames, and cross-page navigation
-  - the combined `fundalReflexExaminationScrollPage` reuses the Fundal Reflex full-animation `en` / `es-419` / `ko` narration tracks as stage-matched clips; its Eyes topbar provides an independent language selector and narration on/off control while the existing short stage text remains unchanged
+  - the combined `fundalReflexExaminationScrollPage` reuses all nine Fundal Reflex narration tracks as 22 stage clips; its Eyes topbar provides a language selector and narration on/off control while the short stage guidance follows the app dictionary. See [the production record](./memory-bank/narration-and-subtitles.md).
   - styling lives in `public/style/pages.css` under `.childhood-fundal-scroll-page`
   - the Diabetic Retinopathy workshop can also launch Fundal-style scrollytelling routes, including Direct Ophthalmoscopy routes (`diabeticObservationFundalReflex`, `diabeticPositioningFlightPath`, `diabeticHowToExamine`) and Binocular Indirect Ophthalmoscopy routes (`diabeticBioPreparation`, `diabeticBioFundoscopySitting`, `diabeticBioFundoscopyIndentation`), while reusing the same engine and layout contract
   - pause-before-frame behavior must use explicit `segmentRanges`, `segmentPauseAfterMsByFile`, and stable `settleFrameOverrides`; verify that pause holds the intended frame, does not flash white/final frames, and keeps accumulated text visible after completion
@@ -369,6 +480,7 @@ See [`security/EMERGENCY_PLAN.md`](./security/EMERGENCY_PLAN.md) for the operato
 
 ## Changelog (high level)
 
+- 2026-09-15: Documented the five examination pages' narration and caption workflow, nine-language coverage, speech tools, timing rules, scroll reuse and regeneration checks. Corrected the current Front of Eye source to the video with ten encoded holds. This entry records documentation work only.
 - 2026-09-04: Replaced the BIO full-animation source with `New_BIOFullAnim.mp4`; added the Front of Eye `Full Animation` lesson and `New_FrontofEyeFullAnim.mp4` page; added timed English captions, narration, and dedicated accessible player controls for both; refined both scripts; added narration-continuing BIO holds of four and seven seconds plus Front of Eye holds of four, four and three seconds; tightened cue endings and resynchronized post-hold narration; and bumped the static cache to `arclight-static-v52`.
 - 2026-09-02: Added stage-matched multilingual narration controls to the combined Fundal Reflex examination scroll page and standardized its launcher thumbnail on `primary_scrollytell.webp`.
 - 2026-08-28: Added Lao application localization across the main UI, Medical Students workshop, local mini-apps, accessible/dynamic copy, and supported video subtitle catalogs/VTT/HLS outputs; expanded translation completeness and terminology QA accordingly.

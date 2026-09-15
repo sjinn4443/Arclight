@@ -1,8 +1,33 @@
-<!-- THE CHANGES - activeContext.md | 2026-09-04, Codex -->
+<!-- THE CHANGES - activeContext.md | 2026-09-15, Codex -->
 
 # Active Context
 
 ## Current Work Focus
+
+The three full animations now translate their silent title cards in the eight
+non-English languages. Front of Eye and Direct Ophthalmoscopy have four cards
+each; BIO has three. Titles follow video time even when narration runs ahead.
+Audio, English captions and existing holds are unchanged.
+
+Examination narration and caption documentation was checked on 15 September 2026. The [production record](./narration-and-subtitles.md) now covers all five
+requested pages, source scripts, translation work, voices, exact timing,
+regeneration commands and verification. README and `agent.md` link to it.
+The earlier documentation update did not change media. The subsequent
+localisation adds eight narration and caption languages to BIO and Front of Eye
+using the same voices as Fundal Reflex. Direct Ophthalmoscopy already had them.
+
+- All four full-animation lessons have audio and
+  captions in English, Latin American Spanish, Korean, Nepali, French,
+  Luganda, Hausa, Yoruba and Igbo.
+- `script.json` is the source of truth. The shared Python generator creates
+  M4A/VTT files and manifests. The video catalogue and scroll track map are
+  maintained separately. Fundal Reflex also separates caption timing from
+  speech timing.
+- Front of Eye now uses an MP4 with ten encoded holds and one absolute media
+  clock. Direct Ophthalmoscopy and BIO retain their runtime holds.
+- The translated synthetic tracks still have outstanding native clinical
+  review recorded in their asset notes. Automated timing and file checks
+  establish a different part of quality assurance.
 
 August localization and app-wide stabilization:
 
@@ -13,13 +38,13 @@ August localization and app-wide stabilization:
 - app video subtitle localization is active through `public/js/videoSubtitles.js`, `public/video-localization/app-video-subtitles.json`, `public/video-localization/childhood-eye-screening.json`, and VTT files under `public/video-subtitles/`
 - local full-animation MP4 lessons are now standard Videos-route pages using hidden `.page` blocks in `public/html/videos.html`, low/high source entries in `public/js/videos.js` `VIDEO_PAGE_SOURCES`, and media files under `public/videos/FullAnim/`
 - `binocularIndirectOphthalmoscopyFullAnimationVideoPage` now uses `New_BIOFullAnim.mp4` for both local modes and has a timed English M4A narration track plus VTT captions in `public/narration/binocular-indirect-ophthalmoscopy/full-animation/`; the video holds at 43.7 seconds for four seconds and 103.6 seconds for seven seconds while narration/captions continue, and it shares the dedicated caption/player UI used by the Fundal Reflex and Direct Ophthalmoscopy full animations
-- `frontOfEyePage` now includes an Intermediate `Full Animation` row opening `frontOfEyeFullAnimationVideoPage`; the page plays `New_FrontofEyeFullAnim.mp4` in both local modes and uses timed English M4A narration plus VTT captions from `public/narration/front-of-eye/full-animation/` in the same dedicated caption/player UI. The video holds at 6 and 77 seconds for four seconds each and at 121 seconds for three seconds while narration/captions continue; post-hold cue times are mapped to the accumulated narration lead.
+- `frontOfEyePage` includes an Intermediate `Full Animation` row opening `frontOfEyeFullAnimationVideoPage`. Both local modes use `New_FrontofEyeFullAnim_timed.mp4` with ten encoded holds and a 171.46-second script. English audio and captions use that same clock. The original MP4 is retained for editing. See [the timing table](./narration-and-subtitles.md#front-of-eye).
 - shared lesson progress and completion ticks are centralized in `public/js/lessonProgress.js` and `public/js/lessonCompletionTick.js`, then consumed by Videos, Childhood Workshop, Diabetic Workshop, Glaucoma Workshop, case studies, and My Learning rows
 - case-study chat/flashcard work spans `public/html/casestudy.html`, `public/js/casestudy.js`, `public/js/casestudy_primary.js`, `public/html/glaucomaHistoryCaseStudy.html`, `public/js/glaucomaHistoryCaseStudy.js`, and the shared `casechat-*` CSS
 - iPad/tablet layout fixes are concentrated in `public/style/responsive.css`; route-specific overrides should stay constrained and be rechecked against phone and desktop layouts
 - Interactive Learning Primary now includes a local 7x7 eye-examination `Connect` game (`eyeExaminationConnectPage`) whose six checkpoints must be reached as History -> VA -> Front of eye -> Pupils -> Fundal reflex -> DO while filling all 49 cells; `public/js/eyeExaminationConnect.js` owns its tutorial, pointer/keyboard controls, rule validation, and shared lesson progress
 - Medical Students Workshop now has a fully populated, foldered Introduction curriculum using the orange Diabetic scrolly format. The first nested folder is `Getting Started`; its former Timetable and Content lesson is merged into the end of Overview. It also includes objectives, patient journey/barriers/diagnosis/blindness, visual system/development, history taking, and Arclight lessons. Local Previous/Next flow crosses into shared video pages, including the Visual Acuity `vaWhoPage`, and restores the originating nested folder. Blindness stacks separate graph/map crops on mobile and confirms before opening either external inverse-care source; Visual System ends with the local visual-field-loss video. Mobile folders retain their original outer/nested/lesson width hierarchy and spacing while long labels wrap inside the text area. Training keeps RAPD inside the Medical Students flow, hides its menu icon, layers the pickup hint above controls but below dialogs, initializes the active Arclight at the pickup pointer, and halves direct-response strength and hippus amplitude for severe left/right RAPD; it opens `fundalReflexSimulatorPage` from Fundal Reflex App and `morphSimulatorPage` from Back of the Eye. The active `4. Test` folder contains text-only Visual Acuity, Pupils, and Fundal Reflex MCQs driven by `public/js/medicalStudentsTestQuiz.js`, including PowerPoint Notes-based review explanations and score-dependent `Review` / `See why` labels; route loads also clear stale interactive-subapp state so the Eyes back button reappears.
-- The PWA static cache is now `arclight-static-v52`, forcing installed clients to reload the refined BIO and Front of Eye narration/playback holds, resynchronized cues, animation assets, narration catalog and current HTML/CSS/JS behavior.
+- The PWA static cache is `arclight-static-v65` for the translated title captions. Read `public/sw.js` for the current value; the older `v52` notes describe the 4 September media update.
 
 Diabetic Retinopathy workshop and Videos-route stabilization:
 
@@ -41,7 +66,7 @@ Childhood Fundal Reflex scrollytelling is also an active maintenance area:
 - `public/js/childhoodFundalPreparation.js` owns the shared Lottie stage-autoplay engine, per-route `ROUTE_CONFIG`, settle-frame behavior, stage replay/down-arrow controls, scroll locks, and `FUNDAL_PAGE_ROUTE_SEQUENCE`
 - `public/js/config.js` and `public/js/main.js` provide the route map and lazy initializer for the Fundal route set
 - `public/style/pages.css` owns the shared Fundal layout/button/text styling
-- The combined Videos-route `fundalReflexExaminationScrollPage` keeps the existing concise stage text but now plays stage-matched intervals from the full-animation English, Latin American Spanish, or Korean narration track. Its Eyes topbar owns a language selector plus a persistent narration on/off control.
+- The combined Videos-route `fundalReflexExaminationScrollPage` plays 22 stage intervals from any of the nine Fundal Reflex narration tracks. Its Eyes topbar owns a language selector and a persistent narration on/off control. Short stage guidance is translated through the app dictionary and follows the app language independently of a manual narration choice. Global app-language changes return narration to Auto.
 - FR06 remains the user-approved baseline for Fundal settle behavior; avoid playback/settle experiments unless explicitly requested and rechecked
 - Diabetic Fundal-style scrollytelling now depends on hardened pause-frame locking, retained accumulated captions after completion, iOS/WebKit renderer overrides where needed, exact static snapshot recovery for fragile WebKit pause/final holds, and ordinary `< Previous` / `Next >` buttons on the final page of each scrollytelling group.
 

@@ -11,6 +11,63 @@
       "locale": "en-GB",
       "voice": "en-GB-SoniaNeural",
       "style": "Calm, clear adult medical educator; slightly slow; neutral rather than promotional"
+    },
+    "es-419": {
+      "label": "Español (Latinoamérica)",
+      "locale": "es-419",
+      "voice": "es-MX-DaliaNeural",
+      "style": "Educadora médica adulta, tranquila y cordial; ritmo ligeramente pausado; tono neutro"
+    },
+    "ko": {
+      "label": "한국어",
+      "locale": "ko-KR",
+      "voice": "ko-KR-SunHiNeural",
+      "style": "차분하고 친절한 성인 의료교육자; 약간 느린 교육용 속도; 과장 없는 중립적 말투"
+    },
+    "ne": {
+      "label": "नेपाली",
+      "locale": "ne-NP",
+      "voice": "ne-NP-HemkalaNeural",
+      "style": "Calm medical educator; slightly slow"
+    },
+    "fr": {
+      "label": "Français",
+      "locale": "fr-FR",
+      "voice": "fr-FR-DeniseNeural",
+      "style": "Calm medical educator; slightly slow"
+    },
+    "lg": {
+      "label": "Luganda",
+      "locale": "lg-UG",
+      "voice": "facebook/mms-tts-lug",
+      "style": "Calm medical educator; slightly slow",
+      "provider": "Meta MMS (local)",
+      "modelLicense": "CC-BY-NC-4.0"
+    },
+    "ha": {
+      "label": "Hausa",
+      "locale": "ha-NG",
+      "voice": "facebook/mms-tts-hau",
+      "provider": "Meta MMS (local)",
+      "modelLicense": "CC-BY-NC-4.0",
+      "style": "Calm medical educator"
+    },
+    "yo": {
+      "label": "Yorùbá",
+      "locale": "yo-NG",
+      "voice": "facebook/mms-tts-yor",
+      "provider": "Meta MMS (local)",
+      "modelLicense": "CC-BY-NC-4.0",
+      "style": "Calm medical educator"
+    },
+    "ig": {
+      "label": "Igbo",
+      "locale": "ig-NG",
+      "voice": "Shinzmann/soro-tts-ibo",
+      "provider": "Meta MMS (local)",
+      "modelLicense": "CC-BY-NC-4.0",
+      "style": "Calm medical educator",
+      "trimEdgeSilenceDb": -50
     }
   },
   "pronunciationGuide": {
@@ -28,7 +85,15 @@
       "end": 9.7,
       "screenText": "Observe the periorbital area, eyelids and eyes",
       "en": "Observe the periorbital area, eyelids and eyes, noting any abnormalities.",
-      "notes": "Begins when the general observation sequence appears."
+      "notes": "Begins when the general observation sequence appears.",
+      "es-419": "Busque anomalías en los ojos, los párpados y su contorno.",
+      "ko": "눈 주위와 눈꺼풀, 눈을 관찰하고 이상 소견을 확인합니다.",
+      "ne": "आँखा वरिपरि, पलक र आँखामा असामान्यता हेर्नुहोस्।",
+      "fr": "Cherchez des anomalies des yeux, des paupières et du pourtour.",
+      "lg": "Kebera amaaso, ebikowe n'okwetooloola. Noonya ekitali kya bulijjo.",
+      "ha": "Duba kewayen idanu, fatar idanu da idanu. Nemi abin da ba daidai ba.",
+      "yo": "Wo àyíká ojú, ìpéǹpéjú àti ojú. Ṣàyẹ̀wò ohun tí kò bójú mu.",
+      "ig": "Lelee gburugburu anya, mkpuchi anya na anya. Chọọ ihe na-adịghị mma."
     },
     {
       "id": "observation-02",
@@ -40,7 +105,15 @@
       "ttsText": {
         "en": "Then perform a magnified examination. Prepare the Arc-light by selecting the brightest light setting."
       },
-      "notes": "Timed to preparation of the Arclight and magnifying loupe."
+      "notes": "Timed to preparation of the Arclight and magnifying loupe.",
+      "es-419": "Examine con aumento. Seleccione la luz más intensa del Arclight.",
+      "ko": "이어서 확대 검사를 합니다. 아크라이트 밝기를 최대로 맞춥니다.",
+      "ne": "अब ठूलो बनाएर जाँच्नुहोस्। आर्कलाइटको उज्यालो अधिकतम राख्नुहोस्।",
+      "fr": "Examinez ensuite à la loupe. Réglez l'Arclight au maximum de luminosité.",
+      "lg": "Ddamu okebere ng'ozimbulukusa. Teeka ekitangaala kya Arclight ku maanyi agasinga.",
+      "ha": "Sai a duba da ƙarin girma. Saita hasken Arclight zuwa mafi ƙarfi.",
+      "yo": "Lẹ́yìn náà, fi ẹ̀rọ wo ojú ní títóbi. Yan ìmọ́lẹ̀ Arclight tó lágbára jù.",
+      "ig": "Jiri nlele na-ebuwanye ihe. Tọọ Arclight ka ìhè ya sie ike karịa."
     },
     {
       "id": "observation-03",
@@ -49,7 +122,15 @@
       "end": 24.5,
       "screenText": "Approach the right eye until focused",
       "en": "Hold the device close to your eye. Slowly approach the patient's right eye first until it is in focus.",
-      "notes": "Source video 16s holds from media time 20–25.5s; this narration ends at 24.5s."
+      "notes": "Source video 16s holds from media time 20–25.5s; this narration ends at 24.5s.",
+      "es-419": "Con el dispositivo junto a su ojo, acérquese despacio al ojo derecho del paciente hasta enfocar.",
+      "ko": "기기를 눈 가까이 대고 환자 오른눈에 천천히 접근해 초점을 맞춥니다.",
+      "ne": "उपकरण आफ्नै आँखानजिक राखी बिरामीको दायाँ आँखातिर बिस्तारै गएर फोकस मिलाउनुहोस्।",
+      "fr": "Gardez l'appareil près de votre œil. Approchez lentement l'œil droit du patient jusqu'à voir net.",
+      "lg": "Ekyuma ku liiso lyo. Semberera erya ddyo ery'omulwadde mpola okulaba obulungi.",
+      "ha": "Na'ura kusa da idonka; kusanci idon daman mara lafiya a hankali har gani ya fito.",
+      "yo": "Di ẹ̀rọ mú lẹ́gbẹ̀ẹ́ ojú rẹ. Sún mọ́ ojú ọ̀tún aláìsàn díẹ̀díẹ̀ títí yóò fi hàn kedere.",
+      "ig": "Debe ngwaọrụ nso anya gị. Bịaruo anya nri onye ọrịa nwayọọ ruo mgbe ọ doro anya."
     },
     {
       "id": "observation-04",
@@ -58,7 +139,15 @@
       "end": 30.5,
       "screenText": "Look right, then left",
       "en": "Ask the patient to look right, then left.",
-      "notes": "Starts at playback time 27s without an additional visual hold."
+      "notes": "Starts at playback time 27s without an additional visual hold.",
+      "es-419": "Pida mirar a la derecha y luego a la izquierda.",
+      "ko": "오른쪽, 왼쪽을 보게 합니다.",
+      "ne": "दायाँ, अनि बायाँ हेर्न लगाउनुहोस्।",
+      "fr": "Faites regarder à droite, puis à gauche.",
+      "lg": "Mugambe atunuule ku ddyo, ate ku kkono.",
+      "ha": "Ka ce ya kalli dama, sannan hagu.",
+      "yo": "Kí ó wo ọ̀tún, lẹ́yìn náà òsì.",
+      "ig": "Gwa ya ka o lee aka nri, mesịa aka ekpe."
     },
     {
       "id": "observation-05",
@@ -67,7 +156,15 @@
       "end": 46.8,
       "screenText": "Look up and down and group the structures",
       "en": "Then ask them to look up and down while gently holding their eyelids. Note the different structures seen, thinking of them in groups.",
-      "notes": "Starts at playback time 38s and finishes before the first structure group."
+      "notes": "Starts at playback time 38s and finishes before the first structure group.",
+      "es-419": "Sujete suavemente los párpados y pida mirar arriba y abajo. Observe las estructuras y agrúpelas.",
+      "ko": "눈꺼풀을 부드럽게 잡고 위아래를 보게 합니다. 보이는 구조물을 무리별로 나누어 관찰합니다.",
+      "ne": "पलक बिस्तारै समाती माथि र तल हेर्न लगाउनुहोस्। देखिएका संरचना समूहमा छुट्याएर हेर्नुहोस्।",
+      "fr": "Tenez doucement les paupières et faites regarder en haut puis en bas. Observez les structures par groupes.",
+      "lg": "Kwata ebikowe mpola, omugambe atunuule waggulu ne wansi. Kebera ebitundu by'olaba mu bibinja.",
+      "ha": "Riƙe fatar idanu a hankali, ya kalli sama da ƙasa. Duba sassan da ka gani a rukuni-rukuni.",
+      "yo": "Di ìpéǹpéjú mú rọra, kí ó wo òkè àti ìsàlẹ̀. Wo àwọn ẹ̀yà náà ní àwùjọ.",
+      "ig": "Jide mkpuchi anya nwayọọ. Gwa ya ka o lee elu na ala. Lelee akụkụ ndị ị na-ahụ n'ìgwè."
     },
     {
       "id": "structures-01",
@@ -76,7 +173,15 @@
       "end": 55,
       "screenText": "Eyelashes and lid margins",
       "en": "The first group includes the upper and lower eyelashes and lid margins.",
-      "notes": "Source video 40.5s: encoded hold at playback time 50–55s while this sentence plays and clears."
+      "notes": "Source video 40.5s: encoded hold at playback time 50–55s while this sentence plays and clears.",
+      "es-419": "Primero: pestañas y bordes de ambos párpados.",
+      "ko": "첫째는 위아래 속눈썹과 눈꺼풀 가장자리입니다.",
+      "ne": "पहिलो समूह: माथि र तलका परेला र पलकका किनारा।",
+      "fr": "Premier groupe : cils et bords des paupières supérieures et inférieures.",
+      "lg": "Ekisooka: obukoowekoowe n'empenda z'ebikowe byombi.",
+      "ha": "Na farko: gashi da gefen fatar ido, sama da ƙasa.",
+      "yo": "Àkọ́kọ́: irun àti etí ìpéǹpéjú òkè àti ìsàlẹ̀.",
+      "ig": "Nke mbụ: nku anya na oke mkpuchi anya elu na ala."
     },
     {
       "id": "structures-02",
@@ -85,7 +190,15 @@
       "end": 62.45,
       "screenText": "Conjunctiva and sclera",
       "en": "The second includes the conjunctiva and sclera,",
-      "notes": "Continues into the lower-fornix cue."
+      "notes": "Continues into the lower-fornix cue.",
+      "es-419": "Segundo grupo: conjuntiva y esclerótica,",
+      "ko": "둘째는 결막과 공막이며,",
+      "ne": "दोस्रो: कन्जङ्क्टाइभा र स्क्लेरा,",
+      "fr": "Deuxième groupe : conjonctive et sclère,",
+      "lg": "Ekyokubiri: conjunctiva ne sclera,",
+      "ha": "Na biyu: conjunctiva da sclera,",
+      "yo": "Ìkejì: conjunctiva àti sclera,",
+      "ig": "Nke abụọ: conjunctiva na sclera,"
     },
     {
       "id": "structures-03",
@@ -94,7 +207,15 @@
       "end": 67.1,
       "screenText": "Lower fornix",
       "en": "including the lower fornix.",
-      "notes": "Corrects the supplied term 'forenax' to the anatomical term 'fornix'."
+      "notes": "Corrects the supplied term 'forenax' to the anatomical term 'fornix'.",
+      "es-419": "y el fórnix inferior.",
+      "ko": "아래 결막낭까지.",
+      "ne": "तल्लो फोर्निक्ससहित।",
+      "fr": "et le fornix inférieur.",
+      "lg": "n'ensawo eya wansi.",
+      "ha": "har da aljihun ƙasa.",
+      "yo": "pẹ̀lú àpò ìsàlẹ̀.",
+      "ig": "tinyere akpa dị n'okpuru."
     },
     {
       "id": "structures-04",
@@ -103,7 +224,15 @@
       "end": 72.9,
       "screenText": "Cornea",
       "en": "The third group is the cornea,",
-      "notes": "Begins the third highlighted structure group."
+      "notes": "Begins the third highlighted structure group.",
+      "es-419": "Tercero: córnea,",
+      "ko": "셋째, 각막,",
+      "ne": "तेस्रो: कोर्निया,",
+      "fr": "Troisième : cornée,",
+      "lg": "Ekyokusatu: cornea,",
+      "ha": "Na uku: cornea,",
+      "yo": "Ìkẹta: cornea,",
+      "ig": "Nke atọ: cornea,"
     },
     {
       "id": "structures-05",
@@ -112,7 +241,15 @@
       "end": 79.4,
       "screenText": "Limbus",
       "en": "and its junction with the sclera, called the limbus,",
-      "notes": "Corrects the supplied term 'limbis' to 'limbus'."
+      "notes": "Corrects the supplied term 'limbis' to 'limbus'.",
+      "es-419": "y su unión con la esclerótica, el limbo,",
+      "ko": "각막과 공막의 경계인 윤부,",
+      "ne": "र स्क्लेरासँग जोडिने लिम्बस,",
+      "fr": "et sa jonction avec la sclère, le limbe,",
+      "lg": "n'egattiro lyayo ne sclera, limbus,",
+      "ha": "da iyakarta da sclera, wato limbus,",
+      "yo": "àti ààlà rẹ̀ pẹ̀lú sclera, limbus,",
+      "ig": "na njikọ ya na sclera, limbus,"
     },
     {
       "id": "structures-06",
@@ -121,7 +258,15 @@
       "end": 85.7,
       "screenText": "Pupil and iris",
       "en": "as well as the pupil, which is surrounded by the iris.",
-      "notes": "Completes the grouped anterior-eye anatomy."
+      "notes": "Completes the grouped anterior-eye anatomy.",
+      "es-419": "y la pupila, rodeada por el iris.",
+      "ko": "홍채로 둘러싸인 동공입니다.",
+      "ne": "अनि आइरिसले घेरिएको नानी।",
+      "fr": "ainsi que la pupille entourée par l'iris.",
+      "lg": "n'emmunye eyeetooloddwa iris.",
+      "ha": "da baƙin tsakiyar ido da iris ya kewaye.",
+      "yo": "àti ihò dúdú tí iris yí ká.",
+      "ig": "na oghere ojii anya nke iris gbara gburugburu."
     },
     {
       "id": "conditions-01",
@@ -133,7 +278,15 @@
       "ttsText": {
         "en": "These are pictures of different conditions. Take time to examine with your Arc-light."
       },
-      "notes": "Source 72.5s is held at playback 87–94s until narration and captions finish."
+      "notes": "Source 72.5s is held at playback 87–94s until narration and captions finish.",
+      "es-419": "Estas imágenes muestran distintas enfermedades. Examine con calma usando el Arclight.",
+      "ko": "다양한 질환의 사진입니다. 시간을 충분히 들여 아크라이트로 검사합니다.",
+      "ne": "यी विभिन्न रोगका तस्बिर हुन्। समय लिएर आर्कलाइटले जाँच्नुहोस्।",
+      "fr": "Ces images montrent diverses maladies. Prenez le temps d'examiner avec l'Arclight.",
+      "lg": "Bino bifaananyi by'endwadde ez'enjawulo. Kebera mpola ne Arclight.",
+      "ha": "Waɗannan hotunan cututtuka ne daban-daban. Ka ɗauki lokaci ka duba da Arclight.",
+      "yo": "Àwòrán àwọn àìsàn oríṣiríṣi nìyí. Fi àkókò ṣe àyẹ̀wò pẹ̀lú Arclight.",
+      "ig": "Ndị a bụ foto ọrịa dị iche iche. Wepụta oge jiri Arclight nyochaa."
     },
     {
       "id": "chamber-depth-01",
@@ -142,7 +295,15 @@
       "end": 106.85,
       "screenText": "Define the anterior chamber",
       "en": "The anterior chamber is the space between the cornea and the iris.",
-      "notes": "Follows the conditions cue without overlapping narration."
+      "notes": "Follows the conditions cue without overlapping narration.",
+      "es-419": "La cámara anterior está entre la córnea y el iris.",
+      "ko": "전방은 각막과 홍채 사이의 공간입니다.",
+      "ne": "अग्र कक्ष कोर्निया र आइरिसबीचको ठाउँ हो।",
+      "fr": "La chambre antérieure est entre la cornée et l'iris.",
+      "lg": "Ekisenge eky'omu maaso kiri wakati wa cornea ne iris.",
+      "ha": "Ɗakin gaba yana tsakanin cornea da iris.",
+      "yo": "Iyẹ̀wù iwájú wà láàárín cornea àti iris.",
+      "ig": "Ime ụlọ ihu anya dị n'etiti cornea na iris."
     },
     {
       "id": "chamber-depth-02",
@@ -151,7 +312,15 @@
       "end": 113,
       "screenText": "Assess anterior chamber depth",
       "en": "By shining the light from the temporal side, the depth of the anterior chamber can be assessed.",
-      "notes": "Finishes during the encoded temporal-light frame hold at playback time 109–113s (source 83.5s)."
+      "notes": "Finishes during the encoded temporal-light frame hold at playback time 109–113s (source 83.5s).",
+      "es-419": "Ilumine desde el lado temporal para evaluar la profundidad de la cámara anterior.",
+      "ko": "귀 쪽에서 빛을 비추면 전방의 깊이를 평가할 수 있습니다.",
+      "ne": "कानपट्टिबाट प्रकाश पारेर अग्र कक्षको गहिराइ हेर्नुहोस्।",
+      "fr": "Éclairez du côté temporal pour évaluer la profondeur de la chambre antérieure.",
+      "lg": "Yaka okuva ku ludda lw'okutu okukebera obuziba bw'ekisenge eky'omu maaso.",
+      "ha": "Haske daga gefen kunne yana nuna zurfin ɗakin gaba.",
+      "yo": "Tan ìmọ́lẹ̀ láti ẹ̀gbẹ́ etí láti mọ ìjìnlẹ̀ iyẹ̀wù iwájú.",
+      "ig": "Tinye ìhè site n'akụkụ ntị iji lelee omimi ime ụlọ ihu anya."
     },
     {
       "id": "chamber-depth-03",
@@ -160,7 +329,15 @@
       "end": 120.1,
       "screenText": "Look for a nasal shadow",
       "en": "A nasal shadow can suggest a shallow chamber. Refer.",
-      "notes": "Source 87.5s holds at playback 117–120.1s until the nasal-shadow narration finishes."
+      "notes": "Source 87.5s holds at playback 117–120.1s until the nasal-shadow narration finishes.",
+      "es-419": "Sombra nasal, quizá poco profunda; derive.",
+      "ko": "코 쪽 그림자면 얕을 수 있어 의뢰합니다.",
+      "ne": "नाकतिर छाया भए उथलो होला, रेफर गर्नुस्।",
+      "fr": "Ombre nasale, peut-être peu profond ; orientez.",
+      "lg": "Ekisiikirize ku nnyindo: obuziba buyinza obutamala. Sindika.",
+      "ha": "Inuwa a gefen hanci na iya nuna rashin zurfi. Tura shi.",
+      "yo": "Òjìji lẹ́gbẹ̀ẹ́ imú lè túmọ̀ sí àìjìnlẹ̀. Darí rẹ̀ sí amọ̀ja.",
+      "ig": "Onyinyo n'akụkụ imi: omimi nwere ike ịdị nta. Ziga."
     },
     {
       "id": "fluorescein-application",
@@ -169,7 +346,15 @@
       "end": 129.6,
       "screenText": "Apply fluorescein",
       "en": "Use a fluorescein strip or a Minims dropper to apply fluorescein to the eye.",
-      "notes": "Starts at playback 124s; existing 5.59s narration finishes before blue-light inspection."
+      "notes": "Starts at playback 124s; existing 5.59s narration finishes before blue-light inspection.",
+      "es-419": "Aplique fluoresceína con una tira o un gotero Minims.",
+      "ko": "검사지를 대거나 미님스 점안기로 플루오레세인을 넣습니다.",
+      "ne": "स्ट्रिप वा मिनिम्स ड्रपरबाट फ्लोरेसिन हाल्नुहोस्।",
+      "fr": "Appliquez la fluorescéine avec une bandelette ou une unidose Minims.",
+      "lg": "Teekamu fluorescein n'akakonge oba ettodde lya Minims.",
+      "ha": "Saka fluorescein da tsiri ko ɗigon Minims.",
+      "yo": "Fi fluorescein sínú ojú pẹ̀lú bébà rẹ̀ tàbí Minims.",
+      "ig": "Tinye fluorescein n'anya na mpempe ya ma ọ bụ Minims."
     },
     {
       "id": "fluorescein-01",
@@ -178,7 +363,15 @@
       "end": 134,
       "screenText": "Select the blue light",
       "en": "Select the blue light and inspect the cornea.",
-      "notes": "Corresponds to video time 98 seconds after 32.6 seconds of accumulated holds."
+      "notes": "Corresponds to video time 98 seconds after 32.6 seconds of accumulated holds.",
+      "es-419": "Use la luz azul y examine la córnea.",
+      "ko": "청색광으로 각막을 관찰합니다.",
+      "ne": "नीलो प्रकाशमा कोर्निया हेर्नुहोस्।",
+      "fr": "En lumière bleue, examinez la cornée.",
+      "lg": "Kebera cornea n'ekitangaala kya bbululu.",
+      "ha": "Duba cornea da haske shuɗi.",
+      "yo": "Fi ìmọ́lẹ̀ búlúù wo cornea.",
+      "ig": "Jiri ìhè anụnụ anụnụ lelee cornea."
     },
     {
       "id": "fluorescein-02",
@@ -187,7 +380,15 @@
       "end": 143.5,
       "screenText": "Record highlighted epithelial loss",
       "en": "Areas of epithelial loss and disease will be highlighted. Record the site and size of these areas.",
-      "notes": "Source 103.4s shows stained corneal examples; held at playback 136–143.5s until narration and captions finish."
+      "notes": "Source 103.4s shows stained corneal examples; held at playback 136–143.5s until narration and captions finish.",
+      "es-419": "Se resaltan las zonas de pérdida epitelial y enfermedad. Registre su ubicación y tamaño.",
+      "ko": "상피 결손과 병변이 뚜렷해집니다. 위치와 크기를 기록합니다.",
+      "ne": "इपिथेलियम खुइलिएको र रोग लागेको भाग देखिन्छ। स्थान र आकार टिप्नुहोस्।",
+      "fr": "Les pertes d'épithélium et les lésions ressortent. Notez leur emplacement et leur taille.",
+      "lg": "Awavudde olususu olw'okungulu n'awalwadde wajja kweyoleka. Wandiika ekifo n'obunene.",
+      "ha": "Wuraren da saman ya bare ko yake da cuta za su bayyana. Rubuta wurinsu da girmansu.",
+      "yo": "Ibi tí awọ òkè ti bó àti ibi àìsàn yóò hàn. Kọ ibi àti bí wọ́n ṣe tó sílẹ̀.",
+      "ig": "Ebe elu akpụkpọ furu efu na ebe ọrịa ga-apụta. Dee ebe ha nọ na nha ha."
     },
     {
       "id": "lid-eversion-grip",
@@ -196,7 +397,15 @@
       "end": 156.7,
       "screenText": "Gently hold the upper eyelashes",
       "en": "Gently pinch and hold the eyelashes of the upper lid with your thumb and index finger.",
-      "notes": "Starts at playback time 151s; source 113.9s holds at 154–155.1s, allowing this 5.66-second sentence to finish before the cotton-bud narration."
+      "notes": "Starts at playback time 151s; source 113.9s holds at 154–155.1s, allowing this 5.66-second sentence to finish before the cotton-bud narration.",
+      "es-419": "Sujete suavemente las pestañas superiores entre el pulgar y el índice.",
+      "ko": "엄지와 검지로 위쪽 속눈썹을 부드럽게 잡습니다.",
+      "ne": "बूढीऔँला र चोरऔँलाले माथिका परेला बिस्तारै समात्नुहोस्।",
+      "fr": "Tenez doucement les cils supérieurs entre le pouce et l'index.",
+      "lg": "Kwata mpola obukoowekoowe bwa waggulu n'ensajja n'esonga.",
+      "ha": "Riƙe gashin fatar ido ta sama a hankali da babban yatsa da manuniya.",
+      "yo": "Fi àtàǹpàkò àti ìka atọ́ka di irun ìpéǹpéjú òkè mú rọra.",
+      "ig": "Jiri mkpịsị aka ukwu na nke na-esote ya jide nku anya elu nwayọọ."
     },
     {
       "id": "lid-eversion-01",
@@ -205,7 +414,15 @@
       "end": 162.2,
       "screenText": "Evert the upper lid over a cotton bud",
       "en": "Place a cotton bud on the upper eyelid, use it as a fulcrum and turn the lid upwards.",
-      "notes": "Begins early enough to remain active at the requested 116.5-second video action."
+      "notes": "Begins early enough to remain active at the requested 116.5-second video action.",
+      "es-419": "Apoye un hisopo sobre el párpado superior y úselo de pivote para voltearlo.",
+      "ko": "위눈꺼풀에 면봉을 대고 받침점으로 삼아 위로 뒤집습니다.",
+      "ne": "माथिल्लो पलकमा कपासको डन्डी अड्याएर पलक माथि फर्काउनुहोस्।",
+      "fr": "Posez un coton-tige sur la paupière supérieure comme pivot et retournez-la.",
+      "lg": "Teeka akati ka ppamba ku kikowe waggulu. Kakyesigamize okukikyusa.",
+      "ha": "Da sandar auduga a fatar sama, tallafa ka juya fatar sama.",
+      "yo": "Fi igi òwú sí ìpéǹpéjú òkè, lò ó gẹ́gẹ́ bí ìtìlẹ́yìn láti yí i sókè.",
+      "ig": "Tinye osisi owu n'elu mkpuchi anya, jiri ya kwado ya ka ị tụgharịa ya elu."
     },
     {
       "id": "lid-eversion-02",
@@ -214,7 +431,15 @@
       "end": 167.7,
       "screenText": "Inspect first with the naked eye",
       "en": "Hold the lid everted and inspect its inner surface, first with the naked eye,",
-      "notes": "The video holds at 121 seconds for three seconds while narration and captions continue."
+      "notes": "The video holds at 121 seconds for three seconds while narration and captions continue.",
+      "es-419": "Mantenga el párpado volteado y examine su cara interna a simple vista.",
+      "ko": "뒤집은 상태로 유지하며 안쪽 면을 먼저 맨눈으로 관찰합니다.",
+      "ne": "पलक उल्टै राखी भित्री सतह पहिले नाङ्गो आँखाले हेर्नुहोस्।",
+      "fr": "Gardez la paupière retournée et inspectez sa face interne à l'œil nu.",
+      "lg": "Kikuume nga kikyuse, osooke okebere munda n'eriiso lyokka.",
+      "ha": "Riƙe fatar a juye, ka fara duba cikinta da ido kawai.",
+      "yo": "Di ìpéǹpéjú tí a yí mú. Kọ́kọ́ wo inú rẹ̀ pẹ̀lú ojú lásán.",
+      "ig": "Jide mkpuchi ka ọ tụgharịrị. Lelee ime ya na anya nkịtị."
     },
     {
       "id": "lid-eversion-03",
@@ -226,8 +451,82 @@
       "ttsText": {
         "en": "Then bring in the Arc-light for a magnified view."
       },
-      "notes": "Corresponds closely to video time 124 seconds after the accumulated 44.2 seconds of holds."
+      "notes": "Corresponds closely to video time 124 seconds after the accumulated 44.2 seconds of holds.",
+      "es-419": "Luego acerque el Arclight para verla con aumento.",
+      "ko": "아크라이트를 대고 확대해 봅니다.",
+      "ne": "आर्कलाइटले नजिकबाट ठूलो पारी हेर्नुहोस्।",
+      "fr": "Puis approchez l'Arclight pour une vue agrandie.",
+      "lg": "Sembereza Arclight okuzimbulukusa.",
+      "ha": "Kusanto da Arclight don gani da girma.",
+      "yo": "Lẹ́yìn náà, mú Arclight sún mọ́ ọn láti rí i tóbi.",
+      "ig": "Weta Arclight nso ka i lee ya ibu."
     }
   ],
-  "originalSourceVideo": "/videos/FullAnim/New_FrontofEyeFullAnim.mp4"
+  "originalSourceVideo": "/videos/FullAnim/New_FrontofEyeFullAnim.mp4",
+  "videoTitleCues": [
+    {
+      "id": "video-title-observation",
+      "start": 0,
+      "end": 3.5,
+      "sourceText": "Observation and Magnified Examination",
+      "translations": {
+        "es-419": "Observación y examen con aumento",
+        "ko": "관찰 및 확대 검사",
+        "ne": "अवलोकन र ठूलो पारेर जाँच",
+        "fr": "Observation et examen à la loupe",
+        "lg": "Okutunuulira n'okukebera nga kizimbulukuse",
+        "ha": "Dubawa da bincike da ƙarin girma",
+        "yo": "Wíwo àti àyẹ̀wò ní títóbi",
+        "ig": "Nlele na nyocha na-ebuwanye ihe"
+      }
+    },
+    {
+      "id": "video-title-chamber-depth",
+      "start": 98.433,
+      "end": 105.8,
+      "sourceText": "Anterior Chamber Depth",
+      "translations": {
+        "es-419": "Profundidad de la cámara anterior",
+        "ko": "전방 깊이",
+        "ne": "अग्र कक्षको गहिराइ",
+        "fr": "Profondeur de la chambre antérieure",
+        "lg": "Obuziba bw'ekisenge eky'omu maaso",
+        "ha": "Zurfin ɗakin gaba na ido",
+        "yo": "Ìjìnlẹ̀ iyẹ̀wù iwájú ojú",
+        "ig": "Omimi ime ụlọ ihu anya"
+      }
+    },
+    {
+      "id": "video-title-fluorescein",
+      "start": 120.9,
+      "end": 124.1,
+      "sourceText": "Fluorescein Corneal Staining",
+      "translations": {
+        "es-419": "Tinción corneal con fluoresceína",
+        "ko": "플루오레세인 각막 염색",
+        "ne": "फ्लोरेसिनले कोर्नियाको रङ्गाइ",
+        "fr": "Coloration cornéenne à la fluorescéine",
+        "lg": "Okusiiga cornea ne fluorescein",
+        "ha": "Rina cornea da fluorescein",
+        "yo": "Fífi fluorescein kun cornea",
+        "ig": "Iji fluorescein tee cornea agba"
+      }
+    },
+    {
+      "id": "video-title-lid-eversion",
+      "start": 147.133,
+      "end": 150.367,
+      "sourceText": "Upper Eyelid Eversion",
+      "translations": {
+        "es-419": "Eversión del párpado superior",
+        "ko": "위눈꺼풀 뒤집기",
+        "ne": "माथिल्लो पलक उल्ट्याउने",
+        "fr": "Éversion de la paupière supérieure",
+        "lg": "Okukyusa ekikowe ekya waggulu",
+        "ha": "Juya fatar ido ta sama",
+        "yo": "Yíyí ìpéǹpéjú òkè padà",
+        "ig": "Ịtụgharị mkpuchi anya elu"
+      }
+    }
+  ]
 }

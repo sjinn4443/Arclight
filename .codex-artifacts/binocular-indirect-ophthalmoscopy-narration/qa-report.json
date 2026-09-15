@@ -1,0 +1,1643 @@
+{
+  "schemaVersion": 1,
+  "sourceVideo": "public/videos/FullAnim/New_BIOFullAnim.mp4",
+  "sourceVideoDuration": 119.69,
+  "targetDuration": 130.68,
+  "syncToleranceSeconds": 0.25,
+  "maxPlaybackSpeed": 1.08,
+  "tracks": {
+    "en": {
+      "voice": "en-GB-SoniaNeural",
+      "delivery": {
+        "path": "public/narration/binocular-indirect-ophthalmoscopy/full-animation/en.m4a",
+        "bytes": 621886,
+        "duration": 130.68,
+        "sha256": "0e7ec8083cafe81c9aae695578cf92f44eac8f6311acd4e414d71295cb08cda1",
+        "format": "mono AAC in M4A, 48 kbps, 48 kHz"
+      },
+      "master": {
+        "path": ".codex-artifacts/binocular-indirect-ophthalmoscopy-narration/binocular-indirect-ophthalmoscopy-full-animation.en.master.wav",
+        "bytes": 12545358,
+        "duration": 130.68,
+        "format": "mono PCM WAV, 16-bit, 48 kHz"
+      },
+      "reviewVideo": {
+        "path": ".codex-artifacts/binocular-indirect-ophthalmoscopy-narration/binocular-indirect-ophthalmoscopy-full-animation.en.review.mp4",
+        "bytes": 19880311,
+        "duration": 130.68
+      },
+      "cues": [
+        {
+          "id": "preparation-01",
+          "slotStart": 2.5,
+          "slotEnd": 6.1,
+          "sourceDuration": 3.19,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 5.69,
+          "endMargin": 0.41
+        },
+        {
+          "id": "preparation-02",
+          "slotStart": 6.5,
+          "slotEnd": 14.5,
+          "sourceDuration": 6.19,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 12.69,
+          "endMargin": 1.81
+        },
+        {
+          "id": "preparation-03",
+          "slotStart": 19.0,
+          "slotEnd": 25.5,
+          "sourceDuration": 4.44,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 23.44,
+          "endMargin": 2.06
+        },
+        {
+          "id": "preparation-04",
+          "slotStart": 26.0,
+          "slotEnd": 32.0,
+          "sourceDuration": 5.95,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 31.95,
+          "endMargin": 0.05
+        },
+        {
+          "id": "preparation-05",
+          "slotStart": 32.0,
+          "slotEnd": 39.7,
+          "sourceDuration": 8.02,
+          "playbackSpeed": 1.041558,
+          "renderedEnd": 39.7,
+          "endMargin": 0.0
+        },
+        {
+          "id": "preparation-06",
+          "slotStart": 39.95,
+          "slotEnd": 47.1,
+          "sourceDuration": 7.15,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 47.1,
+          "endMargin": 0.0
+        },
+        {
+          "id": "sitting-01",
+          "slotStart": 51.0,
+          "slotEnd": 59.9,
+          "sourceDuration": 5.35,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 56.35,
+          "endMargin": 3.55
+        },
+        {
+          "id": "sitting-02",
+          "slotStart": 60.2,
+          "slotEnd": 68.5,
+          "sourceDuration": 7.51,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 67.71,
+          "endMargin": 0.79
+        },
+        {
+          "id": "sitting-03",
+          "slotStart": 68.7,
+          "slotEnd": 76.3,
+          "sourceDuration": 7.27,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 75.97,
+          "endMargin": 0.33
+        },
+        {
+          "id": "sitting-04",
+          "slotStart": 76.5,
+          "slotEnd": 82.0,
+          "sourceDuration": 5.54,
+          "playbackSpeed": 1.007273,
+          "renderedEnd": 82.0,
+          "endMargin": 0.0
+        },
+        {
+          "id": "sitting-05",
+          "slotStart": 82.0,
+          "slotEnd": 87.7,
+          "sourceDuration": 6.02,
+          "playbackSpeed": 1.05614,
+          "renderedEnd": 87.7,
+          "endMargin": 0.0
+        },
+        {
+          "id": "sitting-06",
+          "slotStart": 88.0,
+          "slotEnd": 93.2,
+          "sourceDuration": 5.28,
+          "playbackSpeed": 1.015385,
+          "renderedEnd": 93.2,
+          "endMargin": 0.0
+        },
+        {
+          "id": "indentation-01",
+          "slotStart": 97.8,
+          "slotEnd": 102.0,
+          "sourceDuration": 4.15,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 101.95,
+          "endMargin": 0.05
+        },
+        {
+          "id": "indentation-02",
+          "slotStart": 102.0,
+          "slotEnd": 108.5,
+          "sourceDuration": 6.89,
+          "playbackSpeed": 1.06,
+          "renderedEnd": 108.5,
+          "endMargin": 0.0
+        },
+        {
+          "id": "indentation-03",
+          "slotStart": 108.5,
+          "slotEnd": 114.0,
+          "sourceDuration": 5.81,
+          "playbackSpeed": 1.056364,
+          "renderedEnd": 114.0,
+          "endMargin": 0.0
+        },
+        {
+          "id": "indentation-04",
+          "slotStart": 114.0,
+          "slotEnd": 117.8,
+          "sourceDuration": 4.08,
+          "playbackSpeed": 1.073684,
+          "renderedEnd": 117.8,
+          "endMargin": 0.0
+        },
+        {
+          "id": "indentation-05",
+          "slotStart": 117.8,
+          "slotEnd": 122.2,
+          "sourceDuration": 4.73,
+          "playbackSpeed": 1.075,
+          "renderedEnd": 122.2,
+          "endMargin": 0.0
+        },
+        {
+          "id": "indentation-06",
+          "slotStart": 122.2,
+          "slotEnd": 130.6,
+          "sourceDuration": 4.15,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 126.35,
+          "endMargin": 4.25
+        }
+      ]
+    },
+    "es-419": {
+      "voice": "es-MX-DaliaNeural",
+      "delivery": {
+        "path": "public/narration/binocular-indirect-ophthalmoscopy/full-animation/es-419.m4a",
+        "bytes": 563963,
+        "duration": 130.68,
+        "sha256": "1d569d93212c3754a48ae8a08876b12689272d089b80eea0ed280e446479c9db",
+        "format": "mono AAC in M4A, 48 kbps, 48 kHz"
+      },
+      "master": {
+        "path": ".codex-artifacts/binocular-indirect-ophthalmoscopy-narration/binocular-indirect-ophthalmoscopy-full-animation.es-419.master.wav",
+        "bytes": 12545358,
+        "duration": 130.68,
+        "format": "mono PCM WAV, 16-bit, 48 kHz"
+      },
+      "reviewVideo": null,
+      "cues": [
+        {
+          "id": "preparation-01",
+          "slotStart": 2.5,
+          "slotEnd": 6.1,
+          "sourceDuration": 3.05,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 5.55,
+          "endMargin": 0.55
+        },
+        {
+          "id": "preparation-02",
+          "slotStart": 6.5,
+          "slotEnd": 14.5,
+          "sourceDuration": 7.13,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 13.63,
+          "endMargin": 0.87
+        },
+        {
+          "id": "preparation-03",
+          "slotStart": 19,
+          "slotEnd": 25.5,
+          "sourceDuration": 5.02,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 24.02,
+          "endMargin": 1.48
+        },
+        {
+          "id": "preparation-04",
+          "slotStart": 26,
+          "slotEnd": 32,
+          "sourceDuration": 5.54,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 31.54,
+          "endMargin": 0.46
+        },
+        {
+          "id": "preparation-05",
+          "slotStart": 32,
+          "slotEnd": 39.7,
+          "sourceDuration": 8.16,
+          "playbackSpeed": 1.05974,
+          "renderedEnd": 39.7,
+          "endMargin": 0.0
+        },
+        {
+          "id": "preparation-06",
+          "slotStart": 39.95,
+          "slotEnd": 47.1,
+          "sourceDuration": 7.32,
+          "playbackSpeed": 1.023776,
+          "renderedEnd": 47.1,
+          "endMargin": 0.0
+        },
+        {
+          "id": "sitting-01",
+          "slotStart": 51,
+          "slotEnd": 59.9,
+          "sourceDuration": 6.24,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 57.24,
+          "endMargin": 2.66
+        },
+        {
+          "id": "sitting-02",
+          "slotStart": 60.2,
+          "slotEnd": 68.5,
+          "sourceDuration": 8.95,
+          "playbackSpeed": 1.078313,
+          "renderedEnd": 68.5,
+          "endMargin": 0.0
+        },
+        {
+          "id": "sitting-03",
+          "slotStart": 68.7,
+          "slotEnd": 76.3,
+          "sourceDuration": 7.75,
+          "playbackSpeed": 1.019737,
+          "renderedEnd": 76.3,
+          "endMargin": 0.0
+        },
+        {
+          "id": "sitting-04",
+          "slotStart": 76.5,
+          "slotEnd": 82,
+          "sourceDuration": 5.74,
+          "playbackSpeed": 1.043636,
+          "renderedEnd": 82.0,
+          "endMargin": 0.0
+        },
+        {
+          "id": "sitting-05",
+          "slotStart": 82,
+          "slotEnd": 87.7,
+          "sourceDuration": 5.06,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 87.06,
+          "endMargin": 0.64
+        },
+        {
+          "id": "sitting-06",
+          "slotStart": 88,
+          "slotEnd": 93.2,
+          "sourceDuration": 5.33,
+          "playbackSpeed": 1.025,
+          "renderedEnd": 93.2,
+          "endMargin": 0.0
+        },
+        {
+          "id": "indentation-01",
+          "slotStart": 97.8,
+          "slotEnd": 102,
+          "sourceDuration": 3.86,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 101.66,
+          "endMargin": 0.34
+        },
+        {
+          "id": "indentation-02",
+          "slotStart": 102,
+          "slotEnd": 108.5,
+          "sourceDuration": 6.29,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 108.29,
+          "endMargin": 0.21
+        },
+        {
+          "id": "indentation-03",
+          "slotStart": 108.5,
+          "slotEnd": 114,
+          "sourceDuration": 4.8,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 113.3,
+          "endMargin": 0.7
+        },
+        {
+          "id": "indentation-04",
+          "slotStart": 114,
+          "slotEnd": 117.8,
+          "sourceDuration": 3.41,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 117.41,
+          "endMargin": 0.39
+        },
+        {
+          "id": "indentation-05",
+          "slotStart": 117.8,
+          "slotEnd": 122.2,
+          "sourceDuration": 4.42,
+          "playbackSpeed": 1.004545,
+          "renderedEnd": 122.2,
+          "endMargin": 0.0
+        },
+        {
+          "id": "indentation-06",
+          "slotStart": 122.2,
+          "slotEnd": 130.6,
+          "sourceDuration": 4.51,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 126.71,
+          "endMargin": 3.89
+        }
+      ]
+    },
+    "ko": {
+      "voice": "ko-KR-SunHiNeural",
+      "delivery": {
+        "path": "public/narration/binocular-indirect-ophthalmoscopy/full-animation/ko.m4a",
+        "bytes": 539565,
+        "duration": 130.68,
+        "sha256": "68bea9098a7254a2bd6284c0c3df24ae7f70c7d1891741d0fb9dfeec90dc09c5",
+        "format": "mono AAC in M4A, 48 kbps, 48 kHz"
+      },
+      "master": {
+        "path": ".codex-artifacts/binocular-indirect-ophthalmoscopy-narration/binocular-indirect-ophthalmoscopy-full-animation.ko.master.wav",
+        "bytes": 12545358,
+        "duration": 130.68,
+        "format": "mono PCM WAV, 16-bit, 48 kHz"
+      },
+      "reviewVideo": null,
+      "cues": [
+        {
+          "id": "preparation-01",
+          "slotStart": 2.5,
+          "slotEnd": 6.1,
+          "sourceDuration": 3.17,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 5.67,
+          "endMargin": 0.43
+        },
+        {
+          "id": "preparation-02",
+          "slotStart": 6.5,
+          "slotEnd": 14.5,
+          "sourceDuration": 6.05,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 12.55,
+          "endMargin": 1.95
+        },
+        {
+          "id": "preparation-03",
+          "slotStart": 19,
+          "slotEnd": 25.5,
+          "sourceDuration": 3.94,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 22.94,
+          "endMargin": 2.56
+        },
+        {
+          "id": "preparation-04",
+          "slotStart": 26,
+          "slotEnd": 32,
+          "sourceDuration": 5.52,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 31.52,
+          "endMargin": 0.48
+        },
+        {
+          "id": "preparation-05",
+          "slotStart": 32,
+          "slotEnd": 39.7,
+          "sourceDuration": 8.02,
+          "playbackSpeed": 1.041558,
+          "renderedEnd": 39.7,
+          "endMargin": 0.0
+        },
+        {
+          "id": "preparation-06",
+          "slotStart": 39.95,
+          "slotEnd": 47.1,
+          "sourceDuration": 6.7,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 46.65,
+          "endMargin": 0.45
+        },
+        {
+          "id": "sitting-01",
+          "slotStart": 51,
+          "slotEnd": 59.9,
+          "sourceDuration": 5.54,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 56.54,
+          "endMargin": 3.36
+        },
+        {
+          "id": "sitting-02",
+          "slotStart": 60.2,
+          "slotEnd": 68.5,
+          "sourceDuration": 8.81,
+          "playbackSpeed": 1.061446,
+          "renderedEnd": 68.5,
+          "endMargin": 0.0
+        },
+        {
+          "id": "sitting-03",
+          "slotStart": 68.7,
+          "slotEnd": 76.3,
+          "sourceDuration": 7.7,
+          "playbackSpeed": 1.013158,
+          "renderedEnd": 76.3,
+          "endMargin": 0.0
+        },
+        {
+          "id": "sitting-04",
+          "slotStart": 76.5,
+          "slotEnd": 82,
+          "sourceDuration": 4.8,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 81.3,
+          "endMargin": 0.7
+        },
+        {
+          "id": "sitting-05",
+          "slotStart": 82,
+          "slotEnd": 87.7,
+          "sourceDuration": 5.57,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 87.57,
+          "endMargin": 0.13
+        },
+        {
+          "id": "sitting-06",
+          "slotStart": 88,
+          "slotEnd": 93.2,
+          "sourceDuration": 4.97,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 92.97,
+          "endMargin": 0.23
+        },
+        {
+          "id": "indentation-01",
+          "slotStart": 97.8,
+          "slotEnd": 102,
+          "sourceDuration": 3.7,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 101.5,
+          "endMargin": 0.5
+        },
+        {
+          "id": "indentation-02",
+          "slotStart": 102,
+          "slotEnd": 108.5,
+          "sourceDuration": 5.71,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 107.71,
+          "endMargin": 0.79
+        },
+        {
+          "id": "indentation-03",
+          "slotStart": 108.5,
+          "slotEnd": 114,
+          "sourceDuration": 4.87,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 113.37,
+          "endMargin": 0.63
+        },
+        {
+          "id": "indentation-04",
+          "slotStart": 114,
+          "slotEnd": 117.8,
+          "sourceDuration": 3.5,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 117.5,
+          "endMargin": 0.3
+        },
+        {
+          "id": "indentation-05",
+          "slotStart": 117.8,
+          "slotEnd": 122.2,
+          "sourceDuration": 4.73,
+          "playbackSpeed": 1.075,
+          "renderedEnd": 122.2,
+          "endMargin": 0.0
+        },
+        {
+          "id": "indentation-06",
+          "slotStart": 122.2,
+          "slotEnd": 130.6,
+          "sourceDuration": 5.04,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 127.24,
+          "endMargin": 3.36
+        }
+      ]
+    },
+    "ne": {
+      "voice": "ne-NP-HemkalaNeural",
+      "delivery": {
+        "path": "public/narration/binocular-indirect-ophthalmoscopy/full-animation/ne.m4a",
+        "bytes": 548190,
+        "duration": 130.68,
+        "sha256": "a39c7c007b669dee2490229cba0066a124ec99094e9e7036354a453cf5dd0b4d",
+        "format": "mono AAC in M4A, 48 kbps, 48 kHz"
+      },
+      "master": {
+        "path": ".codex-artifacts/binocular-indirect-ophthalmoscopy-narration/binocular-indirect-ophthalmoscopy-full-animation.ne.master.wav",
+        "bytes": 12545358,
+        "duration": 130.68,
+        "format": "mono PCM WAV, 16-bit, 48 kHz"
+      },
+      "reviewVideo": null,
+      "cues": [
+        {
+          "id": "preparation-01",
+          "slotStart": 2.5,
+          "slotEnd": 6.1,
+          "sourceDuration": 2.98,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 5.48,
+          "endMargin": 0.62
+        },
+        {
+          "id": "preparation-02",
+          "slotStart": 6.5,
+          "slotEnd": 14.5,
+          "sourceDuration": 7.25,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 13.75,
+          "endMargin": 0.75
+        },
+        {
+          "id": "preparation-03",
+          "slotStart": 19,
+          "slotEnd": 25.5,
+          "sourceDuration": 4.06,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 23.06,
+          "endMargin": 2.44
+        },
+        {
+          "id": "preparation-04",
+          "slotStart": 26,
+          "slotEnd": 32,
+          "sourceDuration": 5.93,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 31.93,
+          "endMargin": 0.07
+        },
+        {
+          "id": "preparation-05",
+          "slotStart": 32,
+          "slotEnd": 39.7,
+          "sourceDuration": 8.3,
+          "playbackSpeed": 1.077922,
+          "renderedEnd": 39.7,
+          "endMargin": 0.0
+        },
+        {
+          "id": "preparation-06",
+          "slotStart": 39.95,
+          "slotEnd": 47.1,
+          "sourceDuration": 6.67,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 46.62,
+          "endMargin": 0.48
+        },
+        {
+          "id": "sitting-01",
+          "slotStart": 51,
+          "slotEnd": 59.9,
+          "sourceDuration": 5.95,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 56.95,
+          "endMargin": 2.95
+        },
+        {
+          "id": "sitting-02",
+          "slotStart": 60.2,
+          "slotEnd": 68.5,
+          "sourceDuration": 8.35,
+          "playbackSpeed": 1.006024,
+          "renderedEnd": 68.5,
+          "endMargin": 0.0
+        },
+        {
+          "id": "sitting-03",
+          "slotStart": 68.7,
+          "slotEnd": 76.3,
+          "sourceDuration": 7.63,
+          "playbackSpeed": 1.003947,
+          "renderedEnd": 76.3,
+          "endMargin": 0.0
+        },
+        {
+          "id": "sitting-04",
+          "slotStart": 76.5,
+          "slotEnd": 82,
+          "sourceDuration": 5.04,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 81.54,
+          "endMargin": 0.46
+        },
+        {
+          "id": "sitting-05",
+          "slotStart": 82,
+          "slotEnd": 87.7,
+          "sourceDuration": 5.38,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 87.38,
+          "endMargin": 0.32
+        },
+        {
+          "id": "sitting-06",
+          "slotStart": 88,
+          "slotEnd": 93.2,
+          "sourceDuration": 4.7,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 92.7,
+          "endMargin": 0.5
+        },
+        {
+          "id": "indentation-01",
+          "slotStart": 97.8,
+          "slotEnd": 102,
+          "sourceDuration": 3.79,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 101.59,
+          "endMargin": 0.41
+        },
+        {
+          "id": "indentation-02",
+          "slotStart": 102,
+          "slotEnd": 108.5,
+          "sourceDuration": 5.78,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 107.78,
+          "endMargin": 0.72
+        },
+        {
+          "id": "indentation-03",
+          "slotStart": 108.5,
+          "slotEnd": 114,
+          "sourceDuration": 4.46,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 112.96,
+          "endMargin": 1.04
+        },
+        {
+          "id": "indentation-04",
+          "slotStart": 114,
+          "slotEnd": 117.8,
+          "sourceDuration": 3.72,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 117.72,
+          "endMargin": 0.08
+        },
+        {
+          "id": "indentation-05",
+          "slotStart": 117.8,
+          "slotEnd": 122.2,
+          "sourceDuration": 3.72,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 121.52,
+          "endMargin": 0.68
+        },
+        {
+          "id": "indentation-06",
+          "slotStart": 122.2,
+          "slotEnd": 130.6,
+          "sourceDuration": 5.11,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 127.31,
+          "endMargin": 3.29
+        }
+      ]
+    },
+    "fr": {
+      "voice": "fr-FR-DeniseNeural",
+      "delivery": {
+        "path": "public/narration/binocular-indirect-ophthalmoscopy/full-animation/fr.m4a",
+        "bytes": 542822,
+        "duration": 130.68,
+        "sha256": "3f4c085c38fc855026bfa01541343fa50312ea67efd8940cba8927435bafa03c",
+        "format": "mono AAC in M4A, 48 kbps, 48 kHz"
+      },
+      "master": {
+        "path": ".codex-artifacts/binocular-indirect-ophthalmoscopy-narration/binocular-indirect-ophthalmoscopy-full-animation.fr.master.wav",
+        "bytes": 12545358,
+        "duration": 130.68,
+        "format": "mono PCM WAV, 16-bit, 48 kHz"
+      },
+      "reviewVideo": null,
+      "cues": [
+        {
+          "id": "preparation-01",
+          "slotStart": 2.5,
+          "slotEnd": 6.1,
+          "sourceDuration": 2.5,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 5.0,
+          "endMargin": 1.1
+        },
+        {
+          "id": "preparation-02",
+          "slotStart": 6.5,
+          "slotEnd": 14.5,
+          "sourceDuration": 6.79,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 13.29,
+          "endMargin": 1.21
+        },
+        {
+          "id": "preparation-03",
+          "slotStart": 19,
+          "slotEnd": 25.5,
+          "sourceDuration": 4.82,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 23.82,
+          "endMargin": 1.68
+        },
+        {
+          "id": "preparation-04",
+          "slotStart": 26,
+          "slotEnd": 32,
+          "sourceDuration": 5.59,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 31.59,
+          "endMargin": 0.41
+        },
+        {
+          "id": "preparation-05",
+          "slotStart": 32,
+          "slotEnd": 39.7,
+          "sourceDuration": 7.73,
+          "playbackSpeed": 1.003896,
+          "renderedEnd": 39.7,
+          "endMargin": 0.0
+        },
+        {
+          "id": "preparation-06",
+          "slotStart": 39.95,
+          "slotEnd": 47.1,
+          "sourceDuration": 7.3,
+          "playbackSpeed": 1.020979,
+          "renderedEnd": 47.1,
+          "endMargin": 0.0
+        },
+        {
+          "id": "sitting-01",
+          "slotStart": 51,
+          "slotEnd": 59.9,
+          "sourceDuration": 4.97,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 55.97,
+          "endMargin": 3.93
+        },
+        {
+          "id": "sitting-02",
+          "slotStart": 60.2,
+          "slotEnd": 68.5,
+          "sourceDuration": 7.49,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 67.69,
+          "endMargin": 0.81
+        },
+        {
+          "id": "sitting-03",
+          "slotStart": 68.7,
+          "slotEnd": 76.3,
+          "sourceDuration": 7.85,
+          "playbackSpeed": 1.032895,
+          "renderedEnd": 76.3,
+          "endMargin": 0.0
+        },
+        {
+          "id": "sitting-04",
+          "slotStart": 76.5,
+          "slotEnd": 82,
+          "sourceDuration": 5.18,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 81.68,
+          "endMargin": 0.32
+        },
+        {
+          "id": "sitting-05",
+          "slotStart": 82,
+          "slotEnd": 87.7,
+          "sourceDuration": 5.62,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 87.62,
+          "endMargin": 0.08
+        },
+        {
+          "id": "sitting-06",
+          "slotStart": 88,
+          "slotEnd": 93.2,
+          "sourceDuration": 5.14,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 93.14,
+          "endMargin": 0.06
+        },
+        {
+          "id": "indentation-01",
+          "slotStart": 97.8,
+          "slotEnd": 102,
+          "sourceDuration": 3.53,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 101.33,
+          "endMargin": 0.67
+        },
+        {
+          "id": "indentation-02",
+          "slotStart": 102,
+          "slotEnd": 108.5,
+          "sourceDuration": 6.1,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 108.1,
+          "endMargin": 0.4
+        },
+        {
+          "id": "indentation-03",
+          "slotStart": 108.5,
+          "slotEnd": 114,
+          "sourceDuration": 5.11,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 113.61,
+          "endMargin": 0.39
+        },
+        {
+          "id": "indentation-04",
+          "slotStart": 114,
+          "slotEnd": 117.8,
+          "sourceDuration": 3.43,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 117.43,
+          "endMargin": 0.37
+        },
+        {
+          "id": "indentation-05",
+          "slotStart": 117.8,
+          "slotEnd": 122.2,
+          "sourceDuration": 3.91,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 121.71,
+          "endMargin": 0.49
+        },
+        {
+          "id": "indentation-06",
+          "slotStart": 122.2,
+          "slotEnd": 130.6,
+          "sourceDuration": 4.54,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 126.74,
+          "endMargin": 3.86
+        }
+      ]
+    },
+    "lg": {
+      "voice": "facebook/mms-tts-lug",
+      "delivery": {
+        "path": "public/narration/binocular-indirect-ophthalmoscopy/full-animation/lg.m4a",
+        "bytes": 679981,
+        "duration": 130.68,
+        "sha256": "8c15827b72787b4a2a230f55dc0ec79897b6e610a1702e47456d27161331c287",
+        "format": "mono AAC in M4A, 48 kbps, 48 kHz"
+      },
+      "master": {
+        "path": ".codex-artifacts/binocular-indirect-ophthalmoscopy-narration/binocular-indirect-ophthalmoscopy-full-animation.lg.master.wav",
+        "bytes": 12545358,
+        "duration": 130.68,
+        "format": "mono PCM WAV, 16-bit, 48 kHz"
+      },
+      "reviewVideo": null,
+      "cues": [
+        {
+          "id": "preparation-01",
+          "slotStart": 2.5,
+          "slotEnd": 6.1,
+          "sourceDuration": 2.85,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 5.35,
+          "endMargin": 0.75
+        },
+        {
+          "id": "preparation-02",
+          "slotStart": 6.5,
+          "slotEnd": 14.5,
+          "sourceDuration": 7.58,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 14.08,
+          "endMargin": 0.42
+        },
+        {
+          "id": "preparation-03",
+          "slotStart": 19,
+          "slotEnd": 25.5,
+          "sourceDuration": 5.98,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 24.98,
+          "endMargin": 0.52
+        },
+        {
+          "id": "preparation-04",
+          "slotStart": 26,
+          "slotEnd": 32,
+          "sourceDuration": 4.86,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 30.86,
+          "endMargin": 1.14
+        },
+        {
+          "id": "preparation-05",
+          "slotStart": 32,
+          "slotEnd": 39.7,
+          "sourceDuration": 8.08,
+          "playbackSpeed": 1.049351,
+          "renderedEnd": 39.7,
+          "endMargin": 0.0
+        },
+        {
+          "id": "preparation-06",
+          "slotStart": 39.95,
+          "slotEnd": 47.1,
+          "sourceDuration": 6.51,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 46.46,
+          "endMargin": 0.64
+        },
+        {
+          "id": "sitting-01",
+          "slotStart": 51,
+          "slotEnd": 59.9,
+          "sourceDuration": 7.28,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 58.28,
+          "endMargin": 1.62
+        },
+        {
+          "id": "sitting-02",
+          "slotStart": 60.2,
+          "slotEnd": 68.5,
+          "sourceDuration": 8.69,
+          "playbackSpeed": 1.046988,
+          "renderedEnd": 68.5,
+          "endMargin": 0.0
+        },
+        {
+          "id": "sitting-03",
+          "slotStart": 68.7,
+          "slotEnd": 76.3,
+          "sourceDuration": 7.46,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 76.16,
+          "endMargin": 0.14
+        },
+        {
+          "id": "sitting-04",
+          "slotStart": 76.5,
+          "slotEnd": 82,
+          "sourceDuration": 5.66,
+          "playbackSpeed": 1.029091,
+          "renderedEnd": 82.0,
+          "endMargin": 0.0
+        },
+        {
+          "id": "sitting-05",
+          "slotStart": 82,
+          "slotEnd": 87.7,
+          "sourceDuration": 5.04,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 87.04,
+          "endMargin": 0.66
+        },
+        {
+          "id": "sitting-06",
+          "slotStart": 88,
+          "slotEnd": 93.2,
+          "sourceDuration": 5.12,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 93.12,
+          "endMargin": 0.08
+        },
+        {
+          "id": "indentation-01",
+          "slotStart": 97.8,
+          "slotEnd": 102,
+          "sourceDuration": 3.81,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 101.61,
+          "endMargin": 0.39
+        },
+        {
+          "id": "indentation-02",
+          "slotStart": 102,
+          "slotEnd": 108.5,
+          "sourceDuration": 6.5,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 108.5,
+          "endMargin": 0.0
+        },
+        {
+          "id": "indentation-03",
+          "slotStart": 108.5,
+          "slotEnd": 114,
+          "sourceDuration": 5.07,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 113.57,
+          "endMargin": 0.43
+        },
+        {
+          "id": "indentation-04",
+          "slotStart": 114,
+          "slotEnd": 117.8,
+          "sourceDuration": 4.08,
+          "playbackSpeed": 1.073684,
+          "renderedEnd": 117.8,
+          "endMargin": 0.0
+        },
+        {
+          "id": "indentation-05",
+          "slotStart": 117.8,
+          "slotEnd": 122.2,
+          "sourceDuration": 4.13,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 121.93,
+          "endMargin": 0.27
+        },
+        {
+          "id": "indentation-06",
+          "slotStart": 122.2,
+          "slotEnd": 130.6,
+          "sourceDuration": 6.13,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 128.33,
+          "endMargin": 2.27
+        }
+      ]
+    },
+    "ha": {
+      "voice": "facebook/mms-tts-hau",
+      "delivery": {
+        "path": "public/narration/binocular-indirect-ophthalmoscopy/full-animation/ha.m4a",
+        "bytes": 636357,
+        "duration": 130.68,
+        "sha256": "e3b3fca9916ce0798271df58d85adb402fa6ada8e830bce8cbf30731e80b02aa",
+        "format": "mono AAC in M4A, 48 kbps, 48 kHz"
+      },
+      "master": {
+        "path": ".codex-artifacts/binocular-indirect-ophthalmoscopy-narration/binocular-indirect-ophthalmoscopy-full-animation.ha.master.wav",
+        "bytes": 12545358,
+        "duration": 130.68,
+        "format": "mono PCM WAV, 16-bit, 48 kHz"
+      },
+      "reviewVideo": null,
+      "cues": [
+        {
+          "id": "preparation-01",
+          "slotStart": 2.5,
+          "slotEnd": 6.1,
+          "sourceDuration": 2.64,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 5.14,
+          "endMargin": 0.96
+        },
+        {
+          "id": "preparation-02",
+          "slotStart": 6.5,
+          "slotEnd": 14.5,
+          "sourceDuration": 7.12,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 13.62,
+          "endMargin": 0.88
+        },
+        {
+          "id": "preparation-03",
+          "slotStart": 19,
+          "slotEnd": 25.5,
+          "sourceDuration": 4.05,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 23.05,
+          "endMargin": 2.45
+        },
+        {
+          "id": "preparation-04",
+          "slotStart": 26,
+          "slotEnd": 32,
+          "sourceDuration": 5.38,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 31.38,
+          "endMargin": 0.62
+        },
+        {
+          "id": "preparation-05",
+          "slotStart": 32,
+          "slotEnd": 39.7,
+          "sourceDuration": 7.55,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 39.55,
+          "endMargin": 0.15
+        },
+        {
+          "id": "preparation-06",
+          "slotStart": 39.95,
+          "slotEnd": 47.1,
+          "sourceDuration": 6.8,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 46.75,
+          "endMargin": 0.35
+        },
+        {
+          "id": "sitting-01",
+          "slotStart": 51,
+          "slotEnd": 59.9,
+          "sourceDuration": 7.22,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 58.22,
+          "endMargin": 1.68
+        },
+        {
+          "id": "sitting-02",
+          "slotStart": 60.2,
+          "slotEnd": 68.5,
+          "sourceDuration": 8.48,
+          "playbackSpeed": 1.021687,
+          "renderedEnd": 68.5,
+          "endMargin": 0.0
+        },
+        {
+          "id": "sitting-03",
+          "slotStart": 68.7,
+          "slotEnd": 76.3,
+          "sourceDuration": 7.68,
+          "playbackSpeed": 1.010526,
+          "renderedEnd": 76.3,
+          "endMargin": 0.0
+        },
+        {
+          "id": "sitting-04",
+          "slotStart": 76.5,
+          "slotEnd": 82,
+          "sourceDuration": 5.55,
+          "playbackSpeed": 1.009091,
+          "renderedEnd": 82.0,
+          "endMargin": 0.0
+        },
+        {
+          "id": "sitting-05",
+          "slotStart": 82,
+          "slotEnd": 87.7,
+          "sourceDuration": 4.53,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 86.53,
+          "endMargin": 1.17
+        },
+        {
+          "id": "sitting-06",
+          "slotStart": 88,
+          "slotEnd": 93.2,
+          "sourceDuration": 4.14,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 92.14,
+          "endMargin": 1.06
+        },
+        {
+          "id": "indentation-01",
+          "slotStart": 97.8,
+          "slotEnd": 102,
+          "sourceDuration": 2.75,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 100.55,
+          "endMargin": 1.45
+        },
+        {
+          "id": "indentation-02",
+          "slotStart": 102,
+          "slotEnd": 108.5,
+          "sourceDuration": 5.62,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 107.62,
+          "endMargin": 0.88
+        },
+        {
+          "id": "indentation-03",
+          "slotStart": 108.5,
+          "slotEnd": 114,
+          "sourceDuration": 5.52,
+          "playbackSpeed": 1.003636,
+          "renderedEnd": 114.0,
+          "endMargin": 0.0
+        },
+        {
+          "id": "indentation-04",
+          "slotStart": 114,
+          "slotEnd": 117.8,
+          "sourceDuration": 3.33,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 117.33,
+          "endMargin": 0.47
+        },
+        {
+          "id": "indentation-05",
+          "slotStart": 117.8,
+          "slotEnd": 122.2,
+          "sourceDuration": 4.24,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 122.04,
+          "endMargin": 0.16
+        },
+        {
+          "id": "indentation-06",
+          "slotStart": 122.2,
+          "slotEnd": 130.6,
+          "sourceDuration": 4.93,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 127.13,
+          "endMargin": 3.47
+        }
+      ]
+    },
+    "yo": {
+      "voice": "facebook/mms-tts-yor",
+      "delivery": {
+        "path": "public/narration/binocular-indirect-ophthalmoscopy/full-animation/yo.m4a",
+        "bytes": 527625,
+        "duration": 130.68,
+        "sha256": "47e7707d7393f604afaf1f7be0a2c5b29b95879d06e03a83ae35a70f444bbb0b",
+        "format": "mono AAC in M4A, 48 kbps, 48 kHz"
+      },
+      "master": {
+        "path": ".codex-artifacts/binocular-indirect-ophthalmoscopy-narration/binocular-indirect-ophthalmoscopy-full-animation.yo.master.wav",
+        "bytes": 12545358,
+        "duration": 130.68,
+        "format": "mono PCM WAV, 16-bit, 48 kHz"
+      },
+      "reviewVideo": null,
+      "cues": [
+        {
+          "id": "preparation-01",
+          "slotStart": 2.5,
+          "slotEnd": 6.1,
+          "sourceDuration": 2.11,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 4.61,
+          "endMargin": 1.49
+        },
+        {
+          "id": "preparation-02",
+          "slotStart": 6.5,
+          "slotEnd": 14.5,
+          "sourceDuration": 4.69,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 11.19,
+          "endMargin": 3.31
+        },
+        {
+          "id": "preparation-03",
+          "slotStart": 19,
+          "slotEnd": 25.5,
+          "sourceDuration": 3.57,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 22.57,
+          "endMargin": 2.93
+        },
+        {
+          "id": "preparation-04",
+          "slotStart": 26,
+          "slotEnd": 32,
+          "sourceDuration": 4.3,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 30.3,
+          "endMargin": 1.7
+        },
+        {
+          "id": "preparation-05",
+          "slotStart": 32,
+          "slotEnd": 39.7,
+          "sourceDuration": 8.3,
+          "playbackSpeed": 1.077922,
+          "renderedEnd": 39.7,
+          "endMargin": 0.0
+        },
+        {
+          "id": "preparation-06",
+          "slotStart": 39.95,
+          "slotEnd": 47.1,
+          "sourceDuration": 7.36,
+          "playbackSpeed": 1.029371,
+          "renderedEnd": 47.1,
+          "endMargin": 0.0
+        },
+        {
+          "id": "sitting-01",
+          "slotStart": 51,
+          "slotEnd": 59.9,
+          "sourceDuration": 5.3,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 56.3,
+          "endMargin": 3.6
+        },
+        {
+          "id": "sitting-02",
+          "slotStart": 60.2,
+          "slotEnd": 68.5,
+          "sourceDuration": 7.54,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 67.74,
+          "endMargin": 0.76
+        },
+        {
+          "id": "sitting-03",
+          "slotStart": 68.7,
+          "slotEnd": 76.3,
+          "sourceDuration": 7.55,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 76.25,
+          "endMargin": 0.05
+        },
+        {
+          "id": "sitting-04",
+          "slotStart": 76.5,
+          "slotEnd": 82,
+          "sourceDuration": 5.23,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 81.73,
+          "endMargin": 0.27
+        },
+        {
+          "id": "sitting-05",
+          "slotStart": 82,
+          "slotEnd": 87.7,
+          "sourceDuration": 5.14,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 87.14,
+          "endMargin": 0.56
+        },
+        {
+          "id": "sitting-06",
+          "slotStart": 88,
+          "slotEnd": 93.2,
+          "sourceDuration": 3.98,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 91.98,
+          "endMargin": 1.22
+        },
+        {
+          "id": "indentation-01",
+          "slotStart": 97.8,
+          "slotEnd": 102,
+          "sourceDuration": 3.02,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 100.82,
+          "endMargin": 1.18
+        },
+        {
+          "id": "indentation-02",
+          "slotStart": 102,
+          "slotEnd": 108.5,
+          "sourceDuration": 3.73,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 105.73,
+          "endMargin": 2.77
+        },
+        {
+          "id": "indentation-03",
+          "slotStart": 108.5,
+          "slotEnd": 114,
+          "sourceDuration": 3.06,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 111.56,
+          "endMargin": 2.44
+        },
+        {
+          "id": "indentation-04",
+          "slotStart": 114,
+          "slotEnd": 117.8,
+          "sourceDuration": 2.05,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 116.05,
+          "endMargin": 1.75
+        },
+        {
+          "id": "indentation-05",
+          "slotStart": 117.8,
+          "slotEnd": 122.2,
+          "sourceDuration": 3.36,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 121.16,
+          "endMargin": 1.04
+        },
+        {
+          "id": "indentation-06",
+          "slotStart": 122.2,
+          "slotEnd": 130.6,
+          "sourceDuration": 3.26,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 125.46,
+          "endMargin": 5.14
+        }
+      ]
+    },
+    "ig": {
+      "voice": "Shinzmann/soro-tts-ibo",
+      "delivery": {
+        "path": "public/narration/binocular-indirect-ophthalmoscopy/full-animation/ig.m4a",
+        "bytes": 636216,
+        "duration": 130.68,
+        "sha256": "bc449b4f7158ce14cd3b5409863ee0297b0ae9c1ba5e217ff24e4901ddcff3a7",
+        "format": "mono AAC in M4A, 48 kbps, 48 kHz"
+      },
+      "master": {
+        "path": ".codex-artifacts/binocular-indirect-ophthalmoscopy-narration/binocular-indirect-ophthalmoscopy-full-animation.ig.master.wav",
+        "bytes": 12545358,
+        "duration": 130.68,
+        "format": "mono PCM WAV, 16-bit, 48 kHz"
+      },
+      "reviewVideo": null,
+      "cues": [
+        {
+          "id": "preparation-01",
+          "slotStart": 2.5,
+          "slotEnd": 6.1,
+          "sourceDuration": 3.6,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 6.1,
+          "endMargin": 0.0
+        },
+        {
+          "id": "preparation-02",
+          "slotStart": 6.5,
+          "slotEnd": 14.5,
+          "sourceDuration": 5.66,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 12.16,
+          "endMargin": 2.34
+        },
+        {
+          "id": "preparation-03",
+          "slotStart": 19,
+          "slotEnd": 25.5,
+          "sourceDuration": 4.52,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 23.52,
+          "endMargin": 1.98
+        },
+        {
+          "id": "preparation-04",
+          "slotStart": 26,
+          "slotEnd": 32,
+          "sourceDuration": 5.58,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 31.58,
+          "endMargin": 0.42
+        },
+        {
+          "id": "preparation-05",
+          "slotStart": 32,
+          "slotEnd": 39.7,
+          "sourceDuration": 8.06,
+          "playbackSpeed": 1.046753,
+          "renderedEnd": 39.7,
+          "endMargin": -0.0
+        },
+        {
+          "id": "preparation-06",
+          "slotStart": 39.95,
+          "slotEnd": 47.1,
+          "sourceDuration": 7.08,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 47.03,
+          "endMargin": 0.07
+        },
+        {
+          "id": "sitting-01",
+          "slotStart": 51,
+          "slotEnd": 59.9,
+          "sourceDuration": 8.4,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 59.4,
+          "endMargin": 0.5
+        },
+        {
+          "id": "sitting-02",
+          "slotStart": 60.2,
+          "slotEnd": 68.5,
+          "sourceDuration": 7.36,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 67.56,
+          "endMargin": 0.94
+        },
+        {
+          "id": "sitting-03",
+          "slotStart": 68.7,
+          "slotEnd": 76.3,
+          "sourceDuration": 8.14,
+          "playbackSpeed": 1.071053,
+          "renderedEnd": 76.3,
+          "endMargin": -0.0
+        },
+        {
+          "id": "sitting-04",
+          "slotStart": 76.5,
+          "slotEnd": 82,
+          "sourceDuration": 4.96,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 81.46,
+          "endMargin": 0.54
+        },
+        {
+          "id": "sitting-05",
+          "slotStart": 82,
+          "slotEnd": 87.7,
+          "sourceDuration": 5.14,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 87.14,
+          "endMargin": 0.56
+        },
+        {
+          "id": "sitting-06",
+          "slotStart": 88,
+          "slotEnd": 93.2,
+          "sourceDuration": 4.98,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 92.98,
+          "endMargin": 0.22
+        },
+        {
+          "id": "indentation-01",
+          "slotStart": 97.8,
+          "slotEnd": 102,
+          "sourceDuration": 3.42,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 101.22,
+          "endMargin": 0.78
+        },
+        {
+          "id": "indentation-02",
+          "slotStart": 102,
+          "slotEnd": 108.5,
+          "sourceDuration": 5.54,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 107.54,
+          "endMargin": 0.96
+        },
+        {
+          "id": "indentation-03",
+          "slotStart": 108.5,
+          "slotEnd": 114,
+          "sourceDuration": 4.62,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 113.12,
+          "endMargin": 0.88
+        },
+        {
+          "id": "indentation-04",
+          "slotStart": 114,
+          "slotEnd": 117.8,
+          "sourceDuration": 3.18,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 117.18,
+          "endMargin": 0.62
+        },
+        {
+          "id": "indentation-05",
+          "slotStart": 117.8,
+          "slotEnd": 122.2,
+          "sourceDuration": 3.72,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 121.52,
+          "endMargin": 0.68
+        },
+        {
+          "id": "indentation-06",
+          "slotStart": 122.2,
+          "slotEnd": 130.6,
+          "sourceDuration": 3.98,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 126.18,
+          "endMargin": 4.42
+        }
+      ]
+    }
+  }
+}

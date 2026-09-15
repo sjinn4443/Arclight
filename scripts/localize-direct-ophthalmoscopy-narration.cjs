@@ -196,6 +196,10 @@ for (const [language, lines] of Object.entries(translations)) {
     cue[language] = lines[index];
   });
 }
+require("./full-animation-title-captions.cjs").applyVideoTitleCaptions(
+  script,
+  "direct-ophthalmoscopy",
+);
 fs.writeFileSync(source, JSON.stringify(script, null, 2) + "\n");
 console.log(
   `Updated ${script.cues.length} cues in ${Object.keys(translations).length} languages.`,

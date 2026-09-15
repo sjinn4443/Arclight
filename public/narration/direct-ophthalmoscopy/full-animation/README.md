@@ -17,9 +17,11 @@ content that is not shown in the video is not forced into the narration.
 | 01:58.000-02:25.000 | Features to Assess            | Disc margin, neuroretinal rim colour, cup-to-disc ratio and abnormal examples                                               |
 | 02:25.000-03:03.050 | How to Examine                | Dilation, optic-disc review, four vessel branches, macula and fovea, and the other eye                                      |
 
-The four on-screen section titles remain silent. `script.json` contains the
-twenty caption and narration cues for all nine languages. The existing English
-timeline, including the player’s frame holds, is retained.
+The four on-screen section titles remain silent. `script.json` contains twenty
+spoken cues for all nine languages and four `videoTitleCues` for the eight
+non-English languages. English has 20 captions and the other tracks have 24.
+Title translations use the actual video clock, even when narration runs ahead.
+The existing English timeline, including the player’s frame holds, is retained.
 
 ## Nine-language update (2026-09-14)
 

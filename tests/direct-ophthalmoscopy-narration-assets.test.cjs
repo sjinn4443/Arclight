@@ -81,7 +81,10 @@ describe("Direct Ophthalmoscopy multilingual narration", () => {
       expect(track.sha256).toBe(
         crypto.createHash("sha256").update(bytes).digest("hex"),
       );
-      expect(vtt.match(/-->/g)).toHaveLength(script.cues.length);
+      expect(vtt.match(/-->/g)).toHaveLength(
+        script.cues.length +
+          (language === "en" ? 0 : script.videoTitleCues.length),
+      );
       for (const cue of script.cues) {
         expect(cue[language].trim().length).toBeGreaterThan(0);
         if (language !== "en") expect(cue[language]).not.toBe(cue.en);

@@ -1,0 +1,184 @@
+{
+  "front-of-eye": [
+    {
+      "id": "video-title-observation",
+      "start": 0,
+      "end": 3.5,
+      "sourceText": "Observation and Magnified Examination",
+      "translations": {
+        "es-419": "Observación y examen con aumento",
+        "ko": "관찰 및 확대 검사",
+        "ne": "अवलोकन र ठूलो पारेर जाँच",
+        "fr": "Observation et examen à la loupe",
+        "lg": "Okutunuulira n'okukebera nga kizimbulukuse",
+        "ha": "Dubawa da bincike da ƙarin girma",
+        "yo": "Wíwo àti àyẹ̀wò ní títóbi",
+        "ig": "Nlele na nyocha na-ebuwanye ihe"
+      }
+    },
+    {
+      "id": "video-title-chamber-depth",
+      "start": 98.433,
+      "end": 105.8,
+      "sourceText": "Anterior Chamber Depth",
+      "translations": {
+        "es-419": "Profundidad de la cámara anterior",
+        "ko": "전방 깊이",
+        "ne": "अग्र कक्षको गहिराइ",
+        "fr": "Profondeur de la chambre antérieure",
+        "lg": "Obuziba bw'ekisenge eky'omu maaso",
+        "ha": "Zurfin ɗakin gaba na ido",
+        "yo": "Ìjìnlẹ̀ iyẹ̀wù iwájú ojú",
+        "ig": "Omimi ime ụlọ ihu anya"
+      }
+    },
+    {
+      "id": "video-title-fluorescein",
+      "start": 120.9,
+      "end": 124.1,
+      "sourceText": "Fluorescein Corneal Staining",
+      "translations": {
+        "es-419": "Tinción corneal con fluoresceína",
+        "ko": "플루오레세인 각막 염색",
+        "ne": "फ्लोरेसिनले कोर्नियाको रङ्गाइ",
+        "fr": "Coloration cornéenne à la fluorescéine",
+        "lg": "Okusiiga cornea ne fluorescein",
+        "ha": "Rina cornea da fluorescein",
+        "yo": "Fífi fluorescein kun cornea",
+        "ig": "Iji fluorescein tee cornea agba"
+      }
+    },
+    {
+      "id": "video-title-lid-eversion",
+      "start": 147.133,
+      "end": 150.367,
+      "sourceText": "Upper Eyelid Eversion",
+      "translations": {
+        "es-419": "Eversión del párpado superior",
+        "ko": "위눈꺼풀 뒤집기",
+        "ne": "माथिल्लो पलक उल्ट्याउने",
+        "fr": "Éversion de la paupière supérieure",
+        "lg": "Okukyusa ekikowe ekya waggulu",
+        "ha": "Juya fatar ido ta sama",
+        "yo": "Yíyí ìpéǹpéjú òkè padà",
+        "ig": "Ịtụgharị mkpuchi anya elu"
+      }
+    }
+  ],
+  "direct-ophthalmoscopy": [
+    {
+      "id": "video-title-observation-reflex",
+      "start": 0,
+      "end": 2.87,
+      "sourceText": "Observation and Fundal Reflex",
+      "translations": {
+        "es-419": "Observación y reflejo del fondo de ojo",
+        "ko": "관찰 및 안저 반사",
+        "ne": "अवलोकन र आँखाको रातो प्रतिबिम्ब",
+        "fr": "Observation et reflet du fond d'œil",
+        "lg": "Okutunuulira n'ekitangaala ekidda mu liiso",
+        "ha": "Dubawa da hasken da ke dawowa daga cikin ido",
+        "yo": "Wíwo àti ìmọ́lẹ̀ tó ń padà láti inú ojú",
+        "ig": "Nlele na ìhè na-alọghachi site n'ime anya"
+      }
+    },
+    {
+      "id": "video-title-positioning",
+      "start": 53.353,
+      "end": 56.857,
+      "sourceText": "Positioning and Flight Path",
+      "translations": {
+        "es-419": "Posición y trayectoria de acercamiento",
+        "ko": "검사 자세와 접근 경로",
+        "ne": "स्थिति र नजिकिने मार्ग",
+        "fr": "Positionnement et trajectoire d'approche",
+        "lg": "Enteekateeka y'omubiri n'ekkubo ly'okusembereramu",
+        "ha": "Matsayi da hanyar kusantar ido",
+        "yo": "Ipò àti ọ̀nà sísún mọ́ ojú",
+        "ig": "Ọnọdụ na ụzọ ịbịaru nso anya"
+      }
+    },
+    {
+      "id": "video-title-features",
+      "start": 114.848,
+      "end": 118.685,
+      "sourceText": "Features to Assess",
+      "translations": {
+        "es-419": "Características que se deben evaluar",
+        "ko": "평가할 소견",
+        "ne": "मूल्याङ्कन गर्नुपर्ने विशेषताहरू",
+        "fr": "Éléments à évaluer",
+        "lg": "Ebintu eby'okukebera",
+        "ha": "Abubuwan da za a tantance",
+        "yo": "Àwọn ohun tí a ó ṣe àyẹ̀wò",
+        "ig": "Ihe ndị a ga-enyocha"
+      }
+    },
+    {
+      "id": "video-title-examination",
+      "start": 141.174,
+      "end": 145.078,
+      "sourceText": "How to Examine",
+      "translations": {
+        "es-419": "Cómo realizar el examen",
+        "ko": "검사 방법",
+        "ne": "जाँच गर्ने तरिका",
+        "fr": "Comment réaliser l'examen",
+        "lg": "Engeri y'okukebera",
+        "ha": "Yadda ake binciken ido",
+        "yo": "Bí a ṣe ń ṣe àyẹ̀wò",
+        "ig": "Otu e si enyocha"
+      }
+    }
+  ],
+  "binocular-indirect-ophthalmoscopy": [
+    {
+      "id": "video-title-preparation",
+      "start": 0,
+      "end": 2.202,
+      "sourceText": "Preparation",
+      "translations": {
+        "es-419": "Preparación",
+        "ko": "검사 준비",
+        "ne": "तयारी",
+        "fr": "Préparation",
+        "lg": "Okwetegeka",
+        "ha": "Shiri",
+        "yo": "Ìmúrasílẹ̀",
+        "ig": "Nkwadebe"
+      }
+    },
+    {
+      "id": "video-title-fundoscopy-sitting",
+      "start": 43.944,
+      "end": 48.081,
+      "sourceText": "Fundoscopy Sitting",
+      "translations": {
+        "es-419": "Examen del fondo de ojo en posición sentada",
+        "ko": "앉은 자세에서 안저 검사",
+        "ne": "बसेको अवस्थामा आँखाको भित्री भागको जाँच",
+        "fr": "Examen du fond d'œil en position assise",
+        "lg": "Okukebera munda w'eriiso ng'omulwadde atudde",
+        "ha": "Binciken cikin ido a zaune",
+        "yo": "Àyẹ̀wò inú ẹ̀yìn ojú ní ìjókòó",
+        "ig": "Nnyocha ime azụ anya mgbe onye ọrịa nọ ọdụ"
+      }
+    },
+    {
+      "id": "video-title-fundoscopy-indentation",
+      "start": 89.423,
+      "end": 93.727,
+      "sourceText": "Fundoscopy with Indentation",
+      "translations": {
+        "es-419": "Examen del fondo de ojo con indentación",
+        "ko": "공막 압박을 이용한 안저 검사",
+        "ne": "दबाब दिएर आँखाको भित्री भागको जाँच",
+        "fr": "Examen du fond d'œil avec indentation",
+        "lg": "Okukebera munda w'eriiso nga onyiga",
+        "ha": "Binciken cikin ido tare da dannawa",
+        "yo": "Àyẹ̀wò inú ẹ̀yìn ojú pẹ̀lú títẹ̀",
+        "ig": "Nnyocha ime azụ anya site na ịpị"
+      }
+    }
+  ]
+}

@@ -1,5 +1,61 @@
 # Progress
 
+## Silent title captions - 15 September 2026
+
+- Added 88 translated title captions across the eight non-English tracks for
+  Front of Eye (four titles), Direct Ophthalmoscopy (four) and BIO (three).
+- Title cues use video time and take priority while the matching card is visible,
+  independently of narration lead. Speech captions retain their narration clock.
+- `--captions-only` rebuilds VTT without TTS, audio or manifest changes.
+  The original 27 audio files and all three English captions are preserved.
+- Static cache version: `arclight-static-v65`.
+- Validation: six focused suites passed (171 tests), followed by all 64 player
+  tests after adding narration-Off and English-switch coverage. SHA-256 checks
+  confirmed all 27 M4A files, three English VTT files and three manifests were
+  unchanged. Generator checks found 88 title captions and zero title speech cues.
+- The production build passed in `tmp-codex-build-title-captions` after a Windows
+  lock prevented cleaning the old output. All 24 translated VTT files and their
+  sizes match the built offline manifest. Windows access errors prevented a
+  complete copy into `dist`; the verified complete build remains in the new
+  output folder. Translation QA and formatting checks passed.
+
+## BIO and Front of Eye language parity - 15 September 2026
+
+- Added Spanish, Korean, Nepali, French, Luganda, Hausa, Yoruba and Igbo
+  narration and captions to both lessons. Direct Ophthalmoscopy already had
+  all eight additions and remains covered by regression checks.
+- Kept the English cues, media sources and existing hold timings. The maintained
+  translation source is `scripts/full-animation-translations.json`.
+- Connected language menus and offline delivery through the shared catalogue.
+  Static cache version: `arclight-static-v64`.
+- Synthetic speech and translated clinical wording still require native review.
+- Validation: nine focused Jest suites passed (180 tests). All 320 new speech
+  cues match the current text and voice fingerprints. The 16 new M4A tracks
+  match their lesson durations within 0.25 seconds, stay below 2 MB and use
+  no cue speed adjustment above 1.08. Original English media and cue timing
+  were checked against Git and are unchanged.
+- After the final Luganda terminology correction, all 121 tests in the three
+  affected delivery/player/offline suites passed again. The production build
+  passed and its offline manifest includes all 32 added media files with the
+  correct sizes. Translation QA and formatting checks passed.
+
+## Narration documentation update - 15 September 2026
+
+- Recorded the five examination pages' complete production and maintenance
+  workflow in [narration-and-subtitles.md](./narration-and-subtitles.md), with
+  matching README and `agent.md` sections.
+- Confirmed nine audio/caption languages for Fundal Reflex and Direct
+  Ophthalmoscopy, English-only BIO and Front of Eye and nine-language audio
+  reuse across 22 Fundal scroll stages.
+- Replaced current Front of Eye notes about three runtime holds with its
+  ten encoded holds on `New_FrontofEyeFullAnim_timed.mp4`.
+- Recorded cue formats, voice settings, translation helpers, rebuild commands,
+  timing limits, offline fallback and the outstanding native clinical review.
+  This documentation update did not change runtime code or delivery media.
+- Validation: seven focused Jest suites passed with 102 tests. Separate
+  read-only checks confirmed 20 audio manifests, caption counts and 55 local
+  documentation links. Formatting and diff whitespace checks passed.
+
 ## What Works
 
 - Core application structure: the main `index.html` and module directories are in place, supporting a comprehensive PWA.
@@ -12,12 +68,12 @@
 - Atoms Card with dynamic TOC: the "Atoms Card" section includes a dynamic table of contents for both Eyes and Ears, with image display and zoom capabilities.
 - Quiz system: implemented for "Direct Ophthalmoscopy" and "Anterior Segment Quiz" modules, providing interactive learning and feedback.
 - Video players with interactive toolbars: various learning modules feature video players with time-based event handling and interactive toolbars.
-- Full-animation local videos: Fundal Reflex, Direct Ophthalmoscopy, Binocular Indirect Ophthalmoscopy, and Front of Eye now have low/high MP4 lesson pages under the Videos route, backed by `public/videos/FullAnim/` and `public/js/videos.js` `VIDEO_PAGE_SOURCES`. The BIO page uses `New_BIOFullAnim.mp4`, with refined English copy, a cue that clears with its narration, and narration-continuing four- and seven-second video holds; the Front of Eye launcher includes a `Full Animation` row using `New_FrontofEyeFullAnim.mp4`, refined English copy, and narration-continuing four-, four-, and three-second holds with post-hold cues remapped to their source scenes. Both include synchronized English captions and narration in the dedicated player.
+- Full-animation local videos: Fundal Reflex, Direct Ophthalmoscopy, BIO and Front of Eye use the shared dedicated player and have nine narration/caption languages. BIO has two runtime holds. Front of Eye uses `New_FrontofEyeFullAnim_timed.mp4` with ten encoded holds. All four have local MP4 source mappings, M4A narration and WebVTT captions. See [the production record](./narration-and-subtitles.md).
 - Interactive Learning hybrid embeds: the Videos route now supports both local interactive mini-apps (`public/subapp/*`) and external iframe-based modules (`Fundal Reflex`, `Trauma`, `Amsler`) within the same wrapper flow.
 - Interactive Learning eye-examination Connect game: the Primary launcher opens a local 7x7 path puzzle with six image checkpoints in the required History -> VA -> Front of eye -> Pupils -> Fundal reflex -> DO order, all-cell completion validation, a first-play visual tutorial, pointer/touch and keyboard controls, and shared progress/completion ticks.
 - Diabetic Retinopathy workshop: the Eyes route now launches a foldered workshop with scroll lessons, video lessons, progress rows, protocol pages, structural Previous/Next controls, and demo quizzes.
 - Medical Students workshop curriculum: the route now exposes four nested Introduction groups plus standalone History Taking, with deck-derived orange scrolly lessons, source clinical images, CSS teaching diagrams, exact Childhood Normal Visual Development copy plus the slide 39 card, and Previous/Next navigation that hands off safely to shared video pages. The first nested folder is `Getting Started`; Timetable and Content is merged into the end of Overview, and Visual Acuity now sequences PDF -> shared `vaWhoPage` video -> Practice inside the Medical Students return flow. The Blindness inverse-care source remains whole on desktop, becomes ordered graph/map crops on mobile, and gates its two external links behind a confirmation dialog; Visual System box 04 uses `visualfieldloss.mp4`. Nested folders dim siblings, retain the original mobile width/indent/gap hierarchy, and wrap long labels inside their text area. Training adds Pupil App Practice/Test with Medical Students-owned RAPD navigation, no menu icon, a pickup hint above controls/below dialogs, pointer-stable initial Arclight pickup, and reduced direct response/hippus for severe left and right RAPD; Fundal Reflex App -> `fundalReflexSimulatorPage`, Disc App Back of the Eye -> `morphSimulatorPage`, Swollen Discs -> `swollenDiscsInteractivePage`, and the centered Anterior Segment reference image. The clickable Test folder now contains text-only Visual Acuity, Pupils, and Fundal Reflex MCQs with shared scoring, restart, lesson progress, PowerPoint Notes-based explanations, and score-dependent `Review` / `See why` review labels. Route transitions clear stale interactive-subapp state so the Eyes back button remains available after returning.
-- Bumped the service-worker static cache to `arclight-static-v52` so installed clients receive the refined BIO and Front of Eye narration/playback holds, resynchronized cues, animation assets, narration catalog and current HTML/CSS/JS fragments.
+- The 4 September media update used `arclight-static-v52`. The checked-in service worker is at `arclight-static-v63` on 15 September 2026; documentation work did not change that version.
 - Diabetic/Videos split: diabetic video pages and diabetic demo quizzes now live under `public/html/videos.html`, while the diabetic workshop route owns the folder launcher, scroll lessons, and protocol pages.
 - Diabetic workshop progress/navigation: progress bars update through `public/js/diabeticWorkshopProgress.js`, while `public/js/diabeticWorkshopNextFlow.js` controls cross-route sequencing and folder restore behavior.
 - Diabetic DO scrollytelling: the Direct Ophthalmoscopy folder now launches `Observation and Fundal Reflex`, `Positioning and Flight Path`, and `How to Examine` as Fundal-style Lottie stage-autoplay pages using assets under `public/scrolly/coreexam/ophths/DO/`.
@@ -26,7 +82,7 @@
 - Diabetic demo quizzes: Videos-route demo quiz pages include matching history to image, findings grouping, connect, retinal-structure tapping, and review-video quiz flows initialized by `public/js/diabeticRetinopathyWorkshop.js`.
 - Diabetic protocol media: NCD/protocol visual assets and low-resolution workshop videos are present under `public/images/learning/Diabetic/Diabetes/NCD/` and `public/videos/Workshop/Diabetic/`.
 - Childhood Fundal Reflex scrollytelling: `childhoodFundal*` routes share the Lottie stage-autoplay engine in `public/js/childhoodFundalPreparation.js`, with route shells in `public/html/childhoodFundal*.html`, route wiring in `config.js`/`main.js`, and shared layout/control styling in `public/style/pages.css`.
-- Combined Fundal Reflex examination narration: `fundalReflexExaminationScrollPage` reuses the full-animation `en` / `es-419` / `ko` audio as per-stage clips, exposes language and on/off controls in the Eyes topbar, preserves the concise scrolly text, and uses the Primary scrollytell launcher icon.
+- Combined Fundal Reflex examination narration: `fundalReflexExaminationScrollPage` reuses all nine full-animation tracks through 22 stage intervals. It has language and on/off controls in the Eyes topbar. Short stage guidance follows the app dictionary independently of a manual voice choice. Replay and route cleanup manage the shared audio element.
 - Fundal route sequence/navigation: `FUNDAL_PAGE_ROUTE_SEQUENCE` controls the Preparation -> Examination -> Newborn Eyes Open/Closed -> Unclear Findings -> Possible Finding -> After Examination flow, including down-arrow/page-next behavior and boundary navigation.
 - Offline content management: a modal uses a build-generated/cached manifest to select assets; sensitive, API, report, health, failed, and `no-store` responses are excluded from service-worker caches.
 - Server-backed offline downloads: `GET /api/app/offline-assets` provides a static asset manifest with byte sizes, and `languageinstall.js`/`menu.js` use it for full/select/app-only downloads, low/high MP4 filtering, estimates, progress, and Downloaded Contents summaries.

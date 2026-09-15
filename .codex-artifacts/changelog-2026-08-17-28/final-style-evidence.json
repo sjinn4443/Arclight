@@ -1,0 +1,76 @@
+{
+  "input": "D:\\Arclight\\Arclight_App_NewApp_ChatRefact\\Arclight_App\\17 - 28 August.docx",
+  "fonts_by_char_count": {},
+  "direct_run_formatting_runs": 7,
+  "direct_paragraph_formatting_paragraphs": 0,
+  "heading_like_paragraphs_not_heading_style": [
+    {
+      "para_index": 1,
+      "text": "Weekly Update (17 - 28 August)",
+      "style": "Normal"
+    },
+    {
+      "para_index": 3,
+      "text": "Medical Students Workshop",
+      "style": "Normal"
+    },
+    {
+      "para_index": 10,
+      "text": "Navigation / App Use",
+      "style": "Normal"
+    },
+    {
+      "para_index": 16,
+      "text": "Fundal Reflex Mini App",
+      "style": "Normal"
+    },
+    {
+      "para_index": 19,
+      "text": "Lao Language Support",
+      "style": "Normal"
+    },
+    {
+      "para_index": 25,
+      "text": "Private Reporting / Reliability",
+      "style": "Normal"
+    },
+    {
+      "para_index": 31,
+      "text": "Development",
+      "style": "Normal"
+    }
+  ],
+  "examples": {
+    "direct_run_formatting": [
+      {
+        "para_index": 1,
+        "run_text": "Weekly Update (17 - 28 August)",
+        "style": "Normal"
+      },
+      {
+        "para_index": 3,
+        "run_text": "Medical Students Workshop",
+        "style": "Normal"
+      },
+      {
+        "para_index": 10,
+        "run_text": "Navigation / App Use",
+        "style": "Normal"
+      },
+      {
+        "para_index": 16,
+        "run_text": "Fundal Reflex Mini App",
+        "style": "Normal"
+      },
+      {
+        "para_index": 19,
+        "run_text": "Lao Language Support",
+        "style": "Normal"
+      }
+    ]
+  },
+  "notes": [
+    "Direct formatting is not always wrong, but it often causes inconsistent output when templates change.",
+    "Heading-like paragraphs not using Heading styles can break TOC and accessibility."
+  ]
+}

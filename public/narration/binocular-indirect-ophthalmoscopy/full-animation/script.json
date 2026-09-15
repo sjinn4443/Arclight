@@ -11,6 +11,63 @@
       "locale": "en-GB",
       "voice": "en-GB-SoniaNeural",
       "style": "Calm, clear adult medical educator; slightly slow; neutral rather than promotional"
+    },
+    "es-419": {
+      "label": "Español (Latinoamérica)",
+      "locale": "es-419",
+      "voice": "es-MX-DaliaNeural",
+      "style": "Educadora médica adulta, tranquila y cordial; ritmo ligeramente pausado; tono neutro"
+    },
+    "ko": {
+      "label": "한국어",
+      "locale": "ko-KR",
+      "voice": "ko-KR-SunHiNeural",
+      "style": "차분하고 친절한 성인 의료교육자; 약간 느린 교육용 속도; 과장 없는 중립적 말투"
+    },
+    "ne": {
+      "label": "नेपाली",
+      "locale": "ne-NP",
+      "voice": "ne-NP-HemkalaNeural",
+      "style": "Calm medical educator; slightly slow"
+    },
+    "fr": {
+      "label": "Français",
+      "locale": "fr-FR",
+      "voice": "fr-FR-DeniseNeural",
+      "style": "Calm medical educator; slightly slow"
+    },
+    "lg": {
+      "label": "Luganda",
+      "locale": "lg-UG",
+      "voice": "facebook/mms-tts-lug",
+      "style": "Calm medical educator; slightly slow",
+      "provider": "Meta MMS (local)",
+      "modelLicense": "CC-BY-NC-4.0"
+    },
+    "ha": {
+      "label": "Hausa",
+      "locale": "ha-NG",
+      "voice": "facebook/mms-tts-hau",
+      "provider": "Meta MMS (local)",
+      "modelLicense": "CC-BY-NC-4.0",
+      "style": "Calm medical educator"
+    },
+    "yo": {
+      "label": "Yorùbá",
+      "locale": "yo-NG",
+      "voice": "facebook/mms-tts-yor",
+      "provider": "Meta MMS (local)",
+      "modelLicense": "CC-BY-NC-4.0",
+      "style": "Calm medical educator"
+    },
+    "ig": {
+      "label": "Igbo",
+      "locale": "ig-NG",
+      "voice": "Shinzmann/soro-tts-ibo",
+      "provider": "Meta MMS (local)",
+      "modelLicense": "CC-BY-NC-4.0",
+      "style": "Calm medical educator",
+      "trimEdgeSilenceDb": -50
     }
   },
   "pronunciationGuide": {
@@ -28,7 +85,15 @@
       "end": 6.1,
       "screenText": "Wash hands",
       "en": "Begin by washing and drying your hands.",
-      "notes": "Begins when the hand-hygiene animation appears."
+      "notes": "Begins when the hand-hygiene animation appears.",
+      "es-419": "Lávese y séquese las manos.",
+      "ko": "먼저 손을 씻고 말립니다.",
+      "ne": "पहिले हात धोएर सुकाउनुहोस्।",
+      "fr": "Lavez et séchez vos mains.",
+      "lg": "Sooka onaabe engalo ozikaze.",
+      "ha": "Fara da wanke hannuwa, ka busar.",
+      "yo": "Kọ́kọ́ fọ ọwọ́ rẹ, kí o sì gbẹ wọ́n.",
+      "ig": "Buru ụzọ saa aka ma hichaa ha."
     },
     {
       "id": "preparation-02",
@@ -40,37 +105,69 @@
       "ttsText": {
         "en": "Switch on the B-I-O light and press the button five times to select the brightest light setting."
       },
-      "notes": "Matches the power and brightness controls on the headset."
+      "notes": "Matches the power and brightness controls on the headset.",
+      "es-419": "Encienda la luz del BIO. Pulse el botón cinco veces para seleccionar el brillo máximo.",
+      "ko": "비아이오 조명을 켜고 버튼을 다섯 번 눌러 밝기를 최대로 맞춥니다.",
+      "ne": "बीआईओ बत्ती बाल्नुहोस्। अधिकतम उज्यालोका लागि बटन पाँच पटक थिच्नुहोस्।",
+      "fr": "Allumez le BIO. Appuyez cinq fois sur le bouton pour la luminosité maximale.",
+      "lg": "Yaka ekitangaala kya BIO. Nyiga eppeesa emirundi etaano okufuna ekitangaala ekisinga amaanyi.",
+      "ha": "Kunna hasken BIO. Danna maɓallin sau biyar don samun haske mafi ƙarfi.",
+      "yo": "Tan ìmọ́lẹ̀ BIO. Tẹ bọ́tìnì lẹ́ẹ̀márùn-ún fún ìmọ́lẹ̀ tó lágbára jù.",
+      "ig": "Gbanye ìhè BIO. Pịa bọtịnụ ugboro ise ka ìhè sie ike karịa."
     },
     {
       "id": "preparation-03",
       "section": "Preparation",
-      "start": 19.0,
+      "start": 19,
       "end": 25.5,
       "screenText": "Automatic switch-off after 90 seconds",
       "en": "The device switches off automatically after ninety seconds.",
-      "notes": "Timed to the ninety-second timer graphic."
+      "notes": "Timed to the ninety-second timer graphic.",
+      "es-419": "El dispositivo se apaga automáticamente a los noventa segundos.",
+      "ko": "기기는 구십 초 후 자동으로 꺼집니다.",
+      "ne": "उपकरण नब्बे सेकेन्डपछि आफैँ बन्द हुन्छ।",
+      "fr": "L'appareil s'éteint automatiquement après quatre-vingt-dix secondes.",
+      "lg": "Ekyuma kizikira kyokka oluvannyuma lwa sikonda kyenda.",
+      "ha": "Na'urar tana kashe kanta bayan daƙiƙa casa'in.",
+      "yo": "Ẹ̀rọ yóò pa ara rẹ̀ lẹ́yìn ìṣẹ́jú àáyá àádọ́rùn-ún.",
+      "ig": "Ngwaọrụ ahụ na-agbanyụ onwe ya mgbe sekọnd iri itoolu gasịrị."
     },
     {
       "id": "preparation-04",
       "section": "Preparation",
-      "start": 26.0,
-      "end": 32.0,
+      "start": 26,
+      "end": 32,
       "screenText": "Fit and adjust the BIO headset",
       "en": "Place the BIO on your head and adjust the strap until it feels secure and comfortable.",
       "ttsText": {
         "en": "Place the B-I-O on your head and adjust the strap until it feels secure and comfortable."
       },
-      "notes": "Begins when the headset is placed and tightened."
+      "notes": "Begins when the headset is placed and tightened.",
+      "es-419": "Coloque el BIO en la cabeza y ajuste la correa hasta que esté firme y cómodo.",
+      "ko": "비아이오를 머리에 쓰고 편안하고 안정되게 끈을 조절합니다.",
+      "ne": "बीआईओ टाउकोमा लगाई पट्टा सुरक्षित र आरामदायी हुने गरी मिलाउनुहोस्।",
+      "fr": "Mettez le BIO sur la tête et réglez la sangle pour un maintien sûr et confortable.",
+      "lg": "Yambala BIO ku mutwe, otereeze olukoba enywere era enyume.",
+      "ha": "Sanya BIO a kai. Daidaita madaurin ya zauna lafiya cikin jin daɗi.",
+      "yo": "Gbé BIO sórí. Ṣàtúnṣe okùn rẹ̀ kí ó dúró dáadáa, kí ó sì rọrùn.",
+      "ig": "Yiri BIO n'isi. Hazie eriri ka ọ kwụsie ike ma dị mma n'isi."
     },
     {
       "id": "preparation-05",
       "section": "Preparation",
-      "start": 32.0,
+      "start": 32,
       "end": 39.7,
       "screenText": "Centre the BIO and check alignment with a thumb",
       "en": "Align the centre with your nose. Check the alignment using your thumb at arm's length, viewing with one eye at a time.",
-      "notes": "Covers the central alignment guide and the correct-versus-blurred thumb views."
+      "notes": "Covers the central alignment guide and the correct-versus-blurred thumb views.",
+      "es-419": "Céntrelo en la nariz. Mire su pulgar a un brazo de distancia, un ojo a la vez, para alinearlo.",
+      "ko": "중심을 코에 맞춥니다. 팔을 뻗어 엄지를 보고 한 눈씩 번갈아 정렬을 확인합니다.",
+      "ne": "बीचमा नाकसँग मिलाउनुहोस्। हात फैलाएर बूढीऔँला एकएक आँखाले हेरी सीधापन जाँच्नुहोस्।",
+      "fr": "Centrez-le sur le nez. Vérifiez l'alignement en regardant votre pouce à bout de bras, un œil à la fois.",
+      "lg": "Teeka wakati ku nnyindo. Kebera n'engalo ensajja ku mukono omugolole, ng'otunuula n'eriiso limu limu.",
+      "ha": "Tsakiya a hanci. Duba babban yatsa a nisan hannu da ido ɗaya-ɗaya.",
+      "yo": "Mú àárín rẹ̀ bá imú mu. Wo àtàǹpàkò rẹ ní gígùn apá, pẹ̀lú ojú kọ̀ọ̀kan, láti ṣàyẹ̀wò ìlà.",
+      "ig": "Debe etiti ya n'ahịrị imi. Gbatịa aka lee mkpịsị aka ukwu na anya otu otu iji chọpụta nhazi."
     },
     {
       "id": "preparation-06",
@@ -79,16 +176,32 @@
       "end": 47.1,
       "screenText": "Eyepieces at 90 degrees to the line of sight",
       "en": "Eyepieces should angle outwards so they are at ninety degrees to your line of sight when looking slightly downwards.",
-      "notes": "Matches the side-view ninety-degree alignment graphic. The video holds at 43.7 seconds for four seconds while narration and captions continue, and the caption clears when the spoken line ends."
+      "notes": "Matches the side-view ninety-degree alignment graphic. The video holds at 43.7 seconds for four seconds while narration and captions continue, and the caption clears when the spoken line ends.",
+      "es-419": "Oriente los oculares hacia fuera, a noventa grados de la línea de visión al mirar ligeramente hacia abajo.",
+      "ko": "약간 아래를 볼 때 접안부가 시선과 구십 도가 되도록 바깥쪽으로 기울입니다.",
+      "ne": "अलि तल हेर्दा दृष्टिरेखासँग नब्बे डिग्री हुने गरी आइपिस बाहिर ढल्काउनुहोस्।",
+      "fr": "Inclinez les oculaires vers l'extérieur, à angle droit de la ligne de visée quand vous regardez légèrement vers le bas.",
+      "lg": "Tunuula wansi katono; eby'amaaso ebweru ku diguli kyenda n'olunyiriri lw'olaba.",
+      "ha": "Maduban su karkata waje, digiri casa'in da layin gani idan ka kalli ƙasa kaɗan.",
+      "yo": "Tẹ àwọn ojú ẹ̀rọ síta kí wọ́n wà ní igun àádọ́rùn-ún sí ìlà ìwòran nígbà tí o bá wo ìsàlẹ̀ díẹ̀.",
+      "ig": "Tụgharịa ebe nlele anya n'èzí ka ha bụrụ ogo iri itoolu n'ahịrị nlele mgbe i lere ntakịrị ala."
     },
     {
       "id": "sitting-01",
       "section": "Fundoscopy Sitting",
-      "start": 51.0,
+      "start": 51,
       "end": 59.9,
       "screenText": "Dilate the pupils",
       "en": "Dilate the patient's pupils to obtain a full, wider view of the fundus.",
-      "notes": "Begins after the silent Fundoscopy Sitting title card."
+      "notes": "Begins after the silent Fundoscopy Sitting title card.",
+      "es-419": "Dilate las pupilas del paciente para obtener una vista completa y amplia del fondo de ojo.",
+      "ko": "안저를 넓고 충분하게 보기 위해 환자의 동공을 산동합니다.",
+      "ne": "आँखाको भित्री भाग पूरै र फराकिलो हेर्न बिरामीको नानी फैलाउनुहोस्।",
+      "fr": "Dilatez les pupilles du patient pour une vue complète et élargie du fond d'œil.",
+      "lg": "Gaziya emmunye z'amaaso g'omulwadde okulaba munda w'eriiso mu bujjuvu era nga wagazi.",
+      "ha": "Faɗaɗa baƙin tsakiyar idanun mara lafiya don ganin cikin ido gaba ɗaya a faɗe.",
+      "yo": "Fẹ ihò dúdú ojú aláìsàn kí o lè rí inú ẹ̀yìn ojú ní kíkún àti ní fífẹ̀.",
+      "ig": "Meghee oghere ojii anya onye ọrịa ka ị hụ ime azụ anya nke ọma na nke sara mbara."
     },
     {
       "id": "sitting-02",
@@ -97,7 +210,15 @@
       "end": 68.5,
       "screenText": "Hold the lens close and support the eyelids",
       "en": "Hold the condensing lens close to the eye, lift the upper lid and rest your other fingers gently on the brow and cheek.",
-      "notes": "Timed to the close-up of the lens hand and supporting fingers."
+      "notes": "Timed to the close-up of the lens hand and supporting fingers.",
+      "es-419": "Sostenga la lente condensadora cerca del ojo, eleve el párpado superior y apoye los otros dedos suavemente en la ceja y la mejilla.",
+      "ko": "렌즈를 눈 가까이 들고 위눈꺼풀을 올립니다. 다른 손가락은 눈썹과 뺨에 살짝 댑니다.",
+      "ne": "लेन्स आँखानजिक राखी माथिल्लो पलक उठाउनुहोस्। अरू औँला आँखीभौँ र गालामा हल्का अड्याउनुहोस्।",
+      "fr": "Tenez la lentille près de l'œil, soulevez la paupière supérieure et posez doucement les autres doigts sur le sourcil et la joue.",
+      "lg": "Lenzi kumpi n'eriiso, yimusa ekikowe. Engalo endala ziwummule mpola ku kisige n'ettama.",
+      "ha": "Lens kusa da ido. Ɗaga fatar sama, sauran yatsu su kwanta a gira da kumatu a hankali.",
+      "yo": "Di lẹ́ńsì tó ń kó ìmọ́lẹ̀ jọ mú lẹ́gbẹ̀ẹ́ ojú. Gbé ìpéǹpéjú òkè, kí àwọn ìka yòókù sinmi rọra lórí ojú ìrun àti ẹ̀rẹ̀kẹ́.",
+      "ig": "Jide lens nso anya. Welie mkpuchi elu, tụkwasị mkpịsị aka ndị ọzọ nwayọọ n'elu nkuanya na ntì."
     },
     {
       "id": "sitting-03",
@@ -106,70 +227,134 @@
       "end": 76.3,
       "screenText": "Align the light, condensing lens and retina",
       "en": "Hold the lens at arm's length, aligned with the light and retina. Edge shadows mean poor alignment.",
-      "notes": "Matches the optical path followed by the clear-versus-shadowed retinal view."
+      "notes": "Matches the optical path followed by the clear-versus-shadowed retinal view.",
+      "es-419": "Lente a un brazo, alineada con luz y retina. Sombras al borde: mala alineación.",
+      "ko": "팔 길이의 렌즈를 빛, 망막과 맞춥니다. 테두리 그림자는 정렬 불량입니다.",
+      "ne": "लेन्स हातको दूरीमा प्रकाश र रेटिनासँग मिलाउनुहोस्। किनारामा छाया: बाङ्गो छ।",
+      "fr": "Lentille à bout de bras, alignée avec lumière et rétine. Des ombres aux bords signalent un mauvais alignement.",
+      "lg": "Lenzi ku mukono omugolole, n'ekitangaala ne retina bitereere. Ebisiikirize ku mbiriizi: tebiteredde.",
+      "ha": "Lens a nisan hannu, da haske da retina a layi. Inuwar gefe: ba daidai ba.",
+      "yo": "Di lẹ́ńsì mú ní gígùn apá, ní ìlà kan pẹ̀lú ìmọ́lẹ̀ àti retina. Òjìji lẹ́gbẹ̀ẹ́ túmọ̀ sí àìbámu ìlà.",
+      "ig": "Jide lens n'ogologo aka, n'ahịrị ìhè na retina. Onyinyo n'ọnụ ya na-egosi nhazi na-adịghị mma."
     },
     {
       "id": "sitting-04",
       "section": "Fundoscopy Sitting",
       "start": 76.5,
-      "end": 82.0,
+      "end": 82,
       "screenText": "Direct the patient's gaze",
       "en": "To examine the retinal edges, ask the patient to look in different directions.",
-      "notes": "The gaze arrows begin moving around the eye."
+      "notes": "The gaze arrows begin moving around the eye.",
+      "es-419": "Para examinar los bordes de la retina, pida mirar en distintas direcciones.",
+      "ko": "망막 가장자리를 보려면 여러 방향을 보게 합니다.",
+      "ne": "रेटिनाको किनारा हेर्न विभिन्न दिशामा हेर्न लगाउनुहोस्।",
+      "fr": "Pour voir les bords de la rétine, faites regarder dans plusieurs directions.",
+      "lg": "Okukebera embiriizi za retina, mugambe atunuule mu njuyi ez'enjawulo.",
+      "ha": "Don gefen retina, ya kalli wurare dabam.",
+      "yo": "Láti wo etí retina, kí aláìsàn wo àwọn ọ̀nà tó yàtọ̀.",
+      "ig": "Iji lelee ọnụ retina, gwa onye ọrịa ka o lee n'akụkụ dị iche iche."
     },
     {
       "id": "sitting-05",
       "section": "Fundoscopy Sitting",
-      "start": 82.0,
+      "start": 82,
       "end": 87.7,
       "screenText": "Use a fixation target if needed",
       "en": "If needed, use the patient's finger or thumb at arm's length as a fixation target.",
-      "notes": "Matches the patient raising a hand to guide fixation."
+      "notes": "Matches the patient raising a hand to guide fixation.",
+      "es-419": "Si hace falta, que fije un dedo suyo a un brazo de distancia.",
+      "ko": "필요하면 환자의 손가락을 팔 길이에 두어 주시점으로 삼습니다.",
+      "ne": "चाहिएमा बिरामीकै औँला हातको दूरीमा राखी हेर्न लगाउनुहोस्।",
+      "fr": "Au besoin, utilisez un doigt du patient à bout de bras comme cible de fixation.",
+      "lg": "Bwe kiba kyetaagisa, atunuulire engalo ye ku buwanvu bw'omukono.",
+      "ha": "Idan ya zama dole, ya kalli yatsansa a nisan hannu.",
+      "yo": "Tí ó bá yẹ, lo ìka aláìsàn ní gígùn apá gẹ́gẹ́ bí ohun tí yóò tẹjú mọ́.",
+      "ig": "Ọ dị mkpa? Ka o lekwasị mkpịsị aka ya anya n'ogologo aka."
     },
     {
       "id": "sitting-06",
       "section": "Fundoscopy Sitting",
-      "start": 88.0,
+      "start": 88,
       "end": 93.2,
       "screenText": "Examine the peripheral four quadrants",
       "en": "After the macula, examine all four quadrants of the peripheral fundus.",
-      "notes": "Timed to the expanding retinal examination pattern."
+      "notes": "Timed to the expanding retinal examination pattern.",
+      "es-419": "Tras la mácula, examine los cuatro cuadrantes del fondo periférico.",
+      "ko": "황반 다음에는 주변부 안저의 네 사분면을 봅니다.",
+      "ne": "म्याकुलापछि बाहिरी फन्डसका चारै भाग जाँच्नुहोस्।",
+      "fr": "Après la macula, examinez les quatre quadrants du fond périphérique.",
+      "lg": "Oluvannyuma lwa macula, kebera ebitundu bina eby'ebbali w'eriiso munda.",
+      "ha": "Bayan macula, duba gefe huɗu na fundus.",
+      "yo": "Lẹ́yìn macula, wo gbogbo apá mẹ́rin inú ẹ̀yìn ojú tó wà lẹ́gbẹ̀ẹ́.",
+      "ig": "Mgbe macula gasịrị, lelee akụkụ anọ nke fundus dị n'akụkụ."
     },
     {
       "id": "indentation-01",
       "section": "Fundoscopy with Indentation",
       "start": 97.8,
-      "end": 102.0,
+      "end": 102,
       "screenText": "Explain scleral indentation to the patient",
       "en": "First inform the patient that this may feel uncomfortable.",
-      "notes": "Begins at video time 93.8 seconds, after the silent Fundoscopy with Indentation title card; the narration clock is four seconds ahead after the first hold."
+      "notes": "Begins at video time 93.8 seconds, after the silent Fundoscopy with Indentation title card; the narration clock is four seconds ahead after the first hold.",
+      "es-419": "Avise al paciente que puede resultar incómodo.",
+      "ko": "먼저 불편할 수 있다고 설명합니다.",
+      "ne": "पहिले असजिलो हुन सक्छ भनी बताउनुहोस्।",
+      "fr": "Prévenez le patient d'un possible inconfort.",
+      "lg": "Sooka omutegeeze nti kiyinza obutanyuma.",
+      "ha": "Ka sanar: yana iya jin rashin daɗi.",
+      "yo": "Kọ́kọ́ sọ fún un pé ó lè mú àìrọrùn wá.",
+      "ig": "Buru ụzọ gwa ya: ọ nwere ike inye nsogbu."
     },
     {
       "id": "indentation-02",
       "section": "Fundoscopy with Indentation",
-      "start": 102.0,
+      "start": 102,
       "end": 108.5,
       "screenText": "Look away and position the indenter",
       "en": "Ask the patient to look away from the area being examined, then position the indenter over that area.",
-      "notes": "Matches the initial eye movement and placement of the indenter."
+      "notes": "Matches the initial eye movement and placement of the indenter.",
+      "es-419": "Pida mirar en dirección opuesta a la zona de examen y coloque el indentador sobre esa zona.",
+      "ko": "검사 부위의 반대쪽을 보게 한 뒤 그 부위에 압박기를 놓습니다.",
+      "ne": "जाँच्ने भागको उल्टो दिशा हेर्न लगाई त्यस भागमा इन्डेन्टर राख्नुहोस्।",
+      "fr": "Faites regarder à l'opposé de la zone examinée, puis placez l'indentateur sur cette zone.",
+      "lg": "Atunuule okuva ku kitundu ky'okebera. Teeka ekyuma ekinyiga ku kitundu ekyo.",
+      "ha": "Ya kalli kishiyar wurin dubawa; sa abin dannawa kan wurin.",
+      "yo": "Kí ó wo kúrò ní agbègbè àyẹ̀wò. Gbé ẹ̀rọ títẹ̀ sí agbègbè náà.",
+      "ig": "Gwa ya ka o lee n'akụkụ ọzọ. Debe ihe na-apị n'elu ebe a na-enyocha."
     },
     {
       "id": "indentation-03",
       "section": "Fundoscopy with Indentation",
       "start": 108.5,
-      "end": 114.0,
+      "end": 114,
       "screenText": "Look towards the area and apply gentle pressure",
       "en": "Ask the patient to look towards the area being examined, then apply gentle pressure.",
-      "notes": "The seven-second visual hold begins at video time 103.6 seconds while narration and captions continue."
+      "notes": "The seven-second visual hold begins at video time 103.6 seconds while narration and captions continue.",
+      "es-419": "Pida mirar hacia la zona de examen y aplique una presión suave.",
+      "ko": "검사 부위를 향해 보게 하고 부드럽게 압박합니다.",
+      "ne": "जाँच्ने भागतिर हेर्न लगाई हल्का दबाब दिनुहोस्।",
+      "fr": "Faites regarder vers la zone examinée, puis exercez une pression douce.",
+      "lg": "Mugambe atunuule ku kitundu ekikeberwa, onyige mpola.",
+      "ha": "Ya kalli wurin da ake dubawa, sannan ka danna a hankali.",
+      "yo": "Kí ó wo agbègbè àyẹ̀wò, kí o sì tẹ̀ rọra.",
+      "ig": "Gwa ya ka o lee ebe a na-enyocha, wee pịa nwayọọ."
     },
     {
       "id": "indentation-04",
       "section": "Fundoscopy with Indentation",
-      "start": 114.0,
+      "start": 114,
       "end": 117.8,
       "screenText": "Superior retina example",
       "en": "This is an example of examining the superior retina.",
-      "notes": "Continues over the seven-second visual hold."
+      "notes": "Continues over the seven-second visual hold.",
+      "es-419": "Aquí se examina la retina superior.",
+      "ko": "위쪽 망막을 검사하는 예입니다.",
+      "ne": "यो माथिल्लो रेटिना जाँच्ने उदाहरण हो।",
+      "fr": "Voici l'examen de la rétine supérieure.",
+      "lg": "Kino kiraga okukebera retina eya waggulu.",
+      "ha": "Ga misalin duba retina ta sama.",
+      "yo": "Àpẹẹrẹ àyẹ̀wò retina òkè nìyí.",
+      "ig": "Nke a bụ nlele retina dị n'elu."
     },
     {
       "id": "indentation-05",
@@ -178,7 +363,15 @@
       "end": 122.2,
       "screenText": "Maintain optical alignment",
       "en": "Maintain alignment of the light, condensing lens and retina.",
-      "notes": "Follows the superior-retina explanation while the video remains in the indentation sequence."
+      "notes": "Follows the superior-retina explanation while the video remains in the indentation sequence.",
+      "es-419": "Mantenga alineadas la luz, la lente y la retina.",
+      "ko": "빛, 렌즈, 망막을 일직선으로 둡니다.",
+      "ne": "प्रकाश, लेन्स र रेटिना सीधा राख्नुहोस्।",
+      "fr": "Gardez lumière, lentille et rétine alignées.",
+      "lg": "Kuuma ekitangaala, lenzi ne retina mu lunyiriri.",
+      "ha": "Riƙe haske, ruwan tabarau da retina a layi.",
+      "yo": "Mú ìmọ́lẹ̀, lẹ́ńsì àti retina wà ní ìlà kan.",
+      "ig": "Debe ìhè, lens na retina n'ahịrị otu."
     },
     {
       "id": "indentation-06",
@@ -187,7 +380,65 @@
       "end": 130.6,
       "screenText": "Examine the far retinal periphery",
       "en": "You should be able to examine the far periphery of the retina.",
-      "notes": "Ends with the completed peripheral retinal examination pattern."
+      "notes": "Ends with the completed peripheral retinal examination pattern.",
+      "es-419": "Así podrá examinar la periferia más lejana de la retina.",
+      "ko": "이렇게 망막의 가장 먼 주변부까지 검사할 수 있습니다.",
+      "ne": "यसरी रेटिनाको सबैभन्दा बाहिरी भागसम्म जाँच्न सकिन्छ।",
+      "fr": "Vous pourrez ainsi examiner l'extrême périphérie de la rétine.",
+      "lg": "Ojja kusobola okukebera embiriizi ezeesudde ennyo eza retina.",
+      "ha": "Haka za ka iya duba ƙarshen gefen retina mai nisa.",
+      "yo": "Ó yẹ kí o lè ṣàyẹ̀wò etí retina tó jìnnà jù lọ.",
+      "ig": "Ị ga-enwe ike inyocha ọnụ retina dị anya nke ukwuu."
+    }
+  ],
+  "videoTitleCues": [
+    {
+      "id": "video-title-preparation",
+      "start": 0,
+      "end": 2.202,
+      "sourceText": "Preparation",
+      "translations": {
+        "es-419": "Preparación",
+        "ko": "검사 준비",
+        "ne": "तयारी",
+        "fr": "Préparation",
+        "lg": "Okwetegeka",
+        "ha": "Shiri",
+        "yo": "Ìmúrasílẹ̀",
+        "ig": "Nkwadebe"
+      }
+    },
+    {
+      "id": "video-title-fundoscopy-sitting",
+      "start": 43.944,
+      "end": 48.081,
+      "sourceText": "Fundoscopy Sitting",
+      "translations": {
+        "es-419": "Examen del fondo de ojo en posición sentada",
+        "ko": "앉은 자세에서 안저 검사",
+        "ne": "बसेको अवस्थामा आँखाको भित्री भागको जाँच",
+        "fr": "Examen du fond d'œil en position assise",
+        "lg": "Okukebera munda w'eriiso ng'omulwadde atudde",
+        "ha": "Binciken cikin ido a zaune",
+        "yo": "Àyẹ̀wò inú ẹ̀yìn ojú ní ìjókòó",
+        "ig": "Nnyocha ime azụ anya mgbe onye ọrịa nọ ọdụ"
+      }
+    },
+    {
+      "id": "video-title-fundoscopy-indentation",
+      "start": 89.423,
+      "end": 93.727,
+      "sourceText": "Fundoscopy with Indentation",
+      "translations": {
+        "es-419": "Examen del fondo de ojo con indentación",
+        "ko": "공막 압박을 이용한 안저 검사",
+        "ne": "दबाब दिएर आँखाको भित्री भागको जाँच",
+        "fr": "Examen du fond d'œil avec indentation",
+        "lg": "Okukebera munda w'eriiso nga onyiga",
+        "ha": "Binciken cikin ido tare da dannawa",
+        "yo": "Àyẹ̀wò inú ẹ̀yìn ojú pẹ̀lú títẹ̀",
+        "ig": "Nnyocha ime azụ anya site na ịpị"
+      }
     }
   ]
 }

@@ -44,6 +44,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--ffmpeg", type=Path)
     parser.add_argument("--skip-tts", action="store_true")
     parser.add_argument("--tts-only", action="store_true", help="Generate cue masters and report timing overruns without publishing tracks.")
+    parser.add_argument("--captions-only", action="store_true", help="Write WebVTT only; never generate or change audio, manifests or QA masters.")
     parser.add_argument("--skip-review-video", action="store_true")
     parser.add_argument(
         "--languages",
@@ -120,7 +121,7 @@ def resolve_language_cues(
             for cue in timed_cues
         ]
 
-    return [
+    cues = [
         {
             "id": cue["id"],
             "start": cue["start"],
@@ -130,6 +131,20 @@ def resolve_language_cues(
         }
         for cue in script["cues"]
     ]
+    if timed_cue_key == "timedCues":
+        # Video-clock title cards are caption-only and deliberately omit English.
+        cues.extend(
+            {
+                "id": cue["id"],
+                "start": cue["start"],
+                "end": cue["end"],
+                "text": cue["translations"][language],
+            }
+            for cue in script.get("videoTitleCues", [])
+            if language in cue["translations"]
+        )
+        cues.sort(key=lambda cue: cue["start"])
+    return cues
 
 
 def write_vtt(cues: list[dict], destination: Path) -> None:
@@ -422,6 +437,15 @@ def main() -> None:
 
     script_path = args.script.resolve()
     script = json.loads(script_path.read_text(encoding="utf-8"))
+    if args.captions_only:
+        if args.tts_only:
+            raise ValueError("--captions-only cannot be combined with --tts-only")
+        args.public_dir.mkdir(parents=True, exist_ok=True)
+        for language in args.languages or script["languages"]:
+            cues = resolve_language_cues(script, language)
+            write_vtt(cues, args.public_dir / f"{language}.vtt")
+            print(f"[{language}] wrote {len(cues)} captions; audio unchanged", flush=True)
+        return
     ffmpeg = find_ffmpeg(args.ffmpeg, args.tools_dir)
     work_dir = args.work_dir.resolve()
     artifacts_dir = args.artifacts_dir.resolve()

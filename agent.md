@@ -1,6 +1,6 @@
 # Agent Notes
 
-Last refreshed: 2026-09-04
+Last refreshed: 2026-09-15
 
 ## Current repo orientation
 
@@ -14,7 +14,7 @@ Last refreshed: 2026-09-04
 - Pinned Lottie, Leaflet, html2canvas, and Font Awesome assets are self-hosted and synchronized by `scripts/sync-vendor-assets.cjs` before builds.
 - App-video subtitles are synchronized by `public/js/videoSubtitles.js` from `public/video-localization/app-video-subtitles.json`; Childhood Eye Screening video pages also use `public/video-localization/childhood-eye-screening.json` and VTT files under `public/video-subtitles/`.
 - Lao (`lo`) is a first-class locale across the main dictionary, shared subapps, Fundal Reflex, and supported app/Childhood video subtitles. The runtime also translates dynamically created labels/cards/dialogs and applies targeted Lao clinical-term cleanup for legacy literal strings.
-- Full-animation MP4 lessons are standard local Videos-route pages, with hidden pages in `public/html/videos.html`, low/high source entries in `public/js/videos.js` `VIDEO_PAGE_SOURCES`, and media files under `public/videos/FullAnim/`. Current targets are `fundalReflexFullAnimationVideoPage`, `directOphthalmoscopyFullAnimationVideoPage`, `binocularIndirectOphthalmoscopyFullAnimationVideoPage`, and `frontOfEyeFullAnimationVideoPage`; all four use the dedicated caption/player UI. BIO is timed to `New_BIOFullAnim.mp4` and holds the video at 43.7 seconds for four seconds and at 103.6 seconds for seven seconds while narration/captions continue. Front of Eye is timed to `New_FrontofEyeFullAnim.mp4` and holds the video at 6 and 77 seconds for four seconds each and at 121 seconds for three seconds while narration/captions continue. Their English narration assets live under matching folders in `public/narration/`.
+- Full-animation MP4 lessons use hidden pages in `public/html/videos.html`, `VIDEO_PAGE_SOURCES` in `public/js/videos.js` and media under `public/videos/FullAnim/`. All four lessons have narration and captions in nine languages. Front of Eye uses `New_FrontofEyeFullAnim_timed.mp4` with ten encoded holds; BIO and Direct Ophthalmoscopy use runtime holds. The combined `fundalReflexExaminationScrollPage` reuses the nine Fundal Reflex tracks as 22 stage clips. See [Narration and caption maintenance](#narration-and-caption-maintenance).
 - Shared lesson progress lives in `public/js/lessonProgress.js` and `public/js/lessonCompletionTick.js`; rows with progress bars are updated from compatible `lessonProgress:`, `videoProgress:`, `childhoodWorkshop:progress:`, `diabeticWorkshop:progress:`, and `glaucomaWorkshop:progress:` storage keys and receive completion ticks at completion.
 - The Eyes route includes a Diabetic Retinopathy workshop at `public/html/diabeticRetinopathyWorkshop.html`.
 - The Medical Students workshop Introduction is a foldered orange Diabetic-style scrolly curriculum in `public/html/medicalStudentsWorkshop.html`. Its Training section contains nested Pupil App and Disc App launchers plus the PDF-style Anterior Segment reference page. Pupil RAPD uses Medical Students-owned Previous/Next navigation; Fundal Reflex launches `fundalReflexSimulatorPage`, and Disc App launches `morphSimulatorPage` / `swollenDiscsInteractivePage`. Its active Test folder contains text-only Visual Acuity, Pupils, and Fundal Reflex MCQs rendered by `public/js/medicalStudentsTestQuiz.js`. `public/js/medicalStudentsWorkshop.js` owns nested-folder restore, mini-app return paths, and Previous/Next navigation across local lessons plus the shared `mumVisionPage` and `howToUseArclightVideoPage` video targets; source-slide images live under `public/images/learning/MedicalStudents/Introduction/` and `public/images/learning/MedicalStudents/Training/`.
@@ -73,6 +73,92 @@ Source of truth: `security01`, `security02`, and `security03` on `main`. These s
 - Do not treat `.build-cleanup-*` directories as source artifacts; they are ignored temporary output directories left by safe build cleanup.
 - For Fundal scroll work, preserve the mandatory FR06 behavior guardrails below unless the user explicitly approves a change and it is manually rechecked.
 - Folder item-count badges are intentionally disabled by feature flags, not deleted. To restore them, set `CHILDHOOD_FOLDER_ITEM_COUNTS_ENABLED` in `public/js/childhoodEyeScreeningWorkshop.js`, `GLAUCOMA_FOLDER_ITEM_COUNTS_ENABLED` in `public/js/glaucomaWorkshop.js`, and `INTERACTIVE_FOLDER_ITEM_COUNTS_ENABLED` in `public/js/videos.js` to `true`. The old render/cleanup logic and CSS classes remain in place.
+
+## Narration and caption maintenance
+
+Read the [production record](./memory-bank/narration-and-subtitles.md) before
+changing these lessons. It contains the source map, voice table, exact hold
+times, scroll intervals, rebuild commands and verification steps. Keep it
+aligned with the [README overview](./README.md#narration-and-captions-for-examination-lessons),
+`memory-bank/activeContext.md` and `memory-bank/progress.md`.
+
+### Scope and sources
+
+- `frontOfEyeFullAnimationVideoPage`: nine narration and caption languages from
+  `public/narration/front-of-eye/full-animation/`.
+- `directOphthalmoscopyFullAnimationVideoPage`: nine languages from
+  `public/narration/direct-ophthalmoscopy/full-animation/`.
+- `binocularIndirectOphthalmoscopyFullAnimationVideoPage`: nine languages from
+  `public/narration/binocular-indirect-ophthalmoscopy/full-animation/`.
+- `fundalReflexFullAnimationVideoPage`: nine languages from
+  `public/narration/fundal-reflex/full-animation/`.
+- `fundalReflexExaminationScrollPage`: the same nine Fundal Reflex M4A files,
+  selected by `FUNDAL_REFLEX_EXAMINATION_SCROLL_NARRATION_TRACKS` and cut into
+  playback intervals by `FUNDAL_REFLEX_EXAMINATION_SCROLL_NARRATION_CLIPS` in
+  `public/js/childhoodFundalPreparation.js`.
+- The nine language tags are `en`, `es-419`, `ko`, `ne`, `fr`, `lg`, `ha`, `yo`
+  and `ig`. The subtitle catalogue uses `es` for the `es-419.vtt` file.
+
+### Production rules
+
+- Edit `script.json` as the source of truth. Regenerate M4A and VTT outputs
+  with `scripts/generate-fundal-narration.py`, then update their manifest and
+  the `childhood-eye-screening.json` catalogue together. Audio and translations
+  are prepared ahead of time; the browser does not generate them.
+- Preserve cue IDs and scene boundaries. Fundal Reflex captions use
+  `timedCues`; its speech uses `timedAudioCues`. Their counts can differ.
+  Keep translated title cards in captions only. Use `ttsText` for pronunciation
+  changes without putting phonetic spellings into the visible captions.
+- Maintain translated source arrays in `localize-direct-ophthalmoscopy-narration.cjs`,
+  `refine-parity-narration.cjs` or `refine-ha-yo-ig-narration.cjs` when changing
+  the languages they own. These scripts can overwrite later manual edits.
+- BIO and Front of Eye use `scripts/full-animation-translations.json` and
+  `scripts/localize-full-animation-narration.cjs`. Update their maintained
+  translations together with `script.json`, then regenerate only changed voices.
+- The three lessons' non-English title cards use `videoTitleCues`, maintained in
+  `scripts/full-animation-title-captions.json`. The localisers copy these into
+  `script.json`. Generate title changes with `--captions-only`; never add them
+  to speech cues. `video-title-` WebVTT IDs use video time and take priority over
+  narration captions in `videos.js`, including during holds and seeking.
+- Rebuild only the requested languages. Use `--tts-only` to inspect timing
+  overruns. Use `--skip-tts` only with cues generated from the current text
+  and voice. Shorten speech that exceeds the 1.08 speed limit. Keep each
+  delivery track within 2,000,000 bytes and 0.25 seconds of the script duration.
+- Keep British English narration clear and calm. Write new documentation in
+  simple British English without an Oxford comma. Retain native language labels,
+  UTF-8 text and the intended clinical meaning in translations.
+- Keep speech tools, model weights and cue caches in `tmp/`. Keep WAV masters,
+  review MP4s and QA reports in `.codex-artifacts/`. Retain the recorded voice
+  models, model revisions and licence notes. Automated checks do not establish
+  native clinical review or pronunciation quality.
+
+### Playback rules
+
+- Rebuild Front of Eye with `scripts/build-front-of-eye-timed-video.cjs` before
+  regenerating its audio. Its 171.46-second timeline already includes all ten
+  holds. Keep the original MP4 as an editing source and avoid adding runtime
+  holds to the timed version.
+- Preserve Direct Ophthalmoscopy's runtime holds at 46, 52.2 and 141 seconds
+  and their resume/catch-up settings. Preserve BIO's holds at 43.7 and 103.6
+  seconds. Captions follow the narration clock during an active audio lead.
+  A review MP4 made by the generator does not reproduce runtime holds.
+- Keep the dedicated caption panel inside the full-screen container. Preserve
+  hard audio synchronisation on play, seek and buffering recovery. Retain the
+  iOS rule that skips repeated small corrective seeks during normal playback.
+- Keep Auto, Off and explicit language choices working. Preserve the separate
+  page keys `videoNarration:<pageId>` and `videoNarrationLanguage:<pageId>`.
+- Scroll narration follows the existing stage order and may continue over a
+  settled frame. Stage guidance comes from the app dictionary, independently
+  of the narration selector. Preserve replay, blocked-audio recovery and route
+  cleanup. Keep the FR06 behaviour guardrails below.
+- Register new video languages in the catalogue. Also update scroll track
+  maps and language normalisers when extending scroll support. Keep
+  `languageinstall.js` download selection and its per-lesson English fallback
+  aligned. Confirm completed downloads contain the intended audio and VTT.
+- Use the focused asset, player, scroll and offline tests listed in the
+  production record. Run the Front of Eye timeline test for timing changes
+  and Fundal/WebKit checks for shared scroll changes. Bump the service worker
+  cache for shipped asset or runtime changes, not for documentation alone.
 
 ## Diabetic Scrolly Format / Scroll Pages Format Style
 

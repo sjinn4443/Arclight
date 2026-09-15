@@ -1043,10 +1043,22 @@ describe("childhood eye screening subtitle pilot", () => {
     ).not.toBeNull();
   });
 
-  it.each(["en", "es-419", "ko", "ne", "fr", "lg", "ha", "yo", "ig"])(
-    "selects Direct Ophthalmoscopy %s audio and visible captions together",
-    async (language) => {
-      const pageId = "directOphthalmoscopyFullAnimationVideoPage";
+  it.each(
+    [
+      ["direct-ophthalmoscopy", "directOphthalmoscopyFullAnimationVideoPage"],
+      ["front-of-eye", "frontOfEyeFullAnimationVideoPage"],
+      [
+        "binocular-indirect-ophthalmoscopy",
+        "binocularIndirectOphthalmoscopyFullAnimationVideoPage",
+      ],
+    ].flatMap(([lesson, pageId]) =>
+      ["en", "es-419", "ko", "ne", "fr", "lg", "ha", "yo", "ig"].map(
+        (language) => [lesson, pageId, language],
+      ),
+    ),
+  )(
+    "selects %s (%s) %s audio and visible captions together",
+    async (lesson, pageId, language) => {
       const entry = JSON.parse(
         fs.readFileSync(
           "public/video-localization/childhood-eye-screening.json",
@@ -1057,7 +1069,7 @@ describe("childhood eye screening subtitle pilot", () => {
       const originalFetch = fetchSpy.getMockImplementation();
       fetchSpy.mockImplementation(async (url) => {
         if (
-          String(url).startsWith("/narration/direct-ophthalmoscopy/") &&
+          String(url).startsWith(`/narration/${lesson}/`) &&
           String(url).endsWith(".vtt")
         ) {
           return {
@@ -1089,7 +1101,7 @@ describe("childhood eye screening subtitle pilot", () => {
       audio.dispatchEvent(new Event("timeupdate"));
       const script = JSON.parse(
         fs.readFileSync(
-          "public/narration/direct-ophthalmoscopy/full-animation/script.json",
+          `public/narration/${lesson}/full-animation/script.json`,
           "utf8",
         ),
       );
@@ -1097,6 +1109,38 @@ describe("childhood eye screening subtitle pilot", () => {
         page.querySelector("[data-childhood-pilot-subtitle-panel='true']")
           .textContent,
       ).toContain(script.cues[0][language]);
+      if (language !== "en") {
+        const panel = page.querySelector(
+          "[data-childhood-pilot-subtitle-panel='true']",
+        );
+        for (const title of script.videoTitleCues) {
+          // Seeking or an audio lead must not move a title away from its picture.
+          video.currentTime = (title.start + title.end) / 2;
+          audio.currentTime = title.end + 10;
+          video.dataset.timedNarrationLeadActive = "1";
+          audio.dispatchEvent(new Event("timeupdate"));
+          video.dispatchEvent(new Event("timeupdate"));
+          expect(panel.textContent).toBe(title.translations[language]);
+
+          // A title must not reappear later just because the audio clock enters it.
+          video.currentTime = title.end + 0.1;
+          audio.currentTime = (title.start + title.end) / 2;
+          video.dispatchEvent(new Event("timeupdate"));
+          expect(panel.textContent).not.toContain(title.translations[language]);
+        }
+        delete video.dataset.timedNarrationLeadActive;
+        page.querySelector('[data-narration-selection="off"]').click();
+        await new Promise((resolve) => setTimeout(resolve, 0));
+        const firstTitle = script.videoTitleCues[0];
+        video.currentTime = (firstTitle.start + firstTitle.end) / 2;
+        video.dispatchEvent(new Event("timeupdate"));
+        // Off keeps the existing subtitle policy: return to the app language.
+        expect(panel.textContent).toBe(firstTitle.translations.ha);
+        page.querySelector('[data-narration-selection="en"]').click();
+        await new Promise((resolve) => setTimeout(resolve, 0));
+        video.dispatchEvent(new Event("timeupdate"));
+        expect(panel.textContent).toBe("");
+      }
     },
   );
 

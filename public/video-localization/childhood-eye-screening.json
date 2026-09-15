@@ -2457,12 +2457,52 @@
   },
   "binocularIndirectOphthalmoscopyFullAnimationVideoPage": {
     "subtitles": {
-      "en": "/narration/binocular-indirect-ophthalmoscopy/full-animation/en.vtt"
+      "en": "/narration/binocular-indirect-ophthalmoscopy/full-animation/en.vtt",
+      "es": "/narration/binocular-indirect-ophthalmoscopy/full-animation/es-419.vtt",
+      "ko": "/narration/binocular-indirect-ophthalmoscopy/full-animation/ko.vtt",
+      "ne": "/narration/binocular-indirect-ophthalmoscopy/full-animation/ne.vtt",
+      "fr": "/narration/binocular-indirect-ophthalmoscopy/full-animation/fr.vtt",
+      "lg": "/narration/binocular-indirect-ophthalmoscopy/full-animation/lg.vtt",
+      "ha": "/narration/binocular-indirect-ophthalmoscopy/full-animation/ha.vtt",
+      "yo": "/narration/binocular-indirect-ophthalmoscopy/full-animation/yo.vtt",
+      "ig": "/narration/binocular-indirect-ophthalmoscopy/full-animation/ig.vtt"
     },
     "audioVariants": {
       "en": {
         "label": "English",
         "src": "/narration/binocular-indirect-ophthalmoscopy/full-animation/en.m4a"
+      },
+      "es-419": {
+        "label": "Español (Latinoamérica)",
+        "src": "/narration/binocular-indirect-ophthalmoscopy/full-animation/es-419.m4a"
+      },
+      "ko": {
+        "label": "한국어",
+        "src": "/narration/binocular-indirect-ophthalmoscopy/full-animation/ko.m4a"
+      },
+      "ne": {
+        "label": "नेपाली",
+        "src": "/narration/binocular-indirect-ophthalmoscopy/full-animation/ne.m4a"
+      },
+      "fr": {
+        "label": "Français",
+        "src": "/narration/binocular-indirect-ophthalmoscopy/full-animation/fr.m4a"
+      },
+      "lg": {
+        "label": "Luganda",
+        "src": "/narration/binocular-indirect-ophthalmoscopy/full-animation/lg.m4a"
+      },
+      "ha": {
+        "label": "Hausa",
+        "src": "/narration/binocular-indirect-ophthalmoscopy/full-animation/ha.m4a"
+      },
+      "yo": {
+        "label": "Yorùbá",
+        "src": "/narration/binocular-indirect-ophthalmoscopy/full-animation/yo.m4a"
+      },
+      "ig": {
+        "label": "Igbo",
+        "src": "/narration/binocular-indirect-ophthalmoscopy/full-animation/ig.m4a"
       }
     },
     "defaultSubtitleLang": "en",
@@ -2471,7 +2511,17 @@
       "masterManifest": "",
       "preferredMode": "low",
       "offlineFallbackMode": "low",
-      "subtitleLanguages": ["en"]
+      "subtitleLanguages": [
+        "en",
+        "es",
+        "ko",
+        "ne",
+        "fr",
+        "lg",
+        "ha",
+        "yo",
+        "ig"
+      ]
     },
     "localSources": {
       "low": "videos/FullAnim/New_BIOFullAnim.mp4",
@@ -2480,12 +2530,52 @@
   },
   "frontOfEyeFullAnimationVideoPage": {
     "subtitles": {
-      "en": "/narration/front-of-eye/full-animation/en.vtt"
+      "en": "/narration/front-of-eye/full-animation/en.vtt",
+      "es": "/narration/front-of-eye/full-animation/es-419.vtt",
+      "ko": "/narration/front-of-eye/full-animation/ko.vtt",
+      "ne": "/narration/front-of-eye/full-animation/ne.vtt",
+      "fr": "/narration/front-of-eye/full-animation/fr.vtt",
+      "lg": "/narration/front-of-eye/full-animation/lg.vtt",
+      "ha": "/narration/front-of-eye/full-animation/ha.vtt",
+      "yo": "/narration/front-of-eye/full-animation/yo.vtt",
+      "ig": "/narration/front-of-eye/full-animation/ig.vtt"
     },
     "audioVariants": {
       "en": {
         "label": "English",
         "src": "/narration/front-of-eye/full-animation/en.m4a"
+      },
+      "es-419": {
+        "label": "Español (Latinoamérica)",
+        "src": "/narration/front-of-eye/full-animation/es-419.m4a"
+      },
+      "ko": {
+        "label": "한국어",
+        "src": "/narration/front-of-eye/full-animation/ko.m4a"
+      },
+      "ne": {
+        "label": "नेपाली",
+        "src": "/narration/front-of-eye/full-animation/ne.m4a"
+      },
+      "fr": {
+        "label": "Français",
+        "src": "/narration/front-of-eye/full-animation/fr.m4a"
+      },
+      "lg": {
+        "label": "Luganda",
+        "src": "/narration/front-of-eye/full-animation/lg.m4a"
+      },
+      "ha": {
+        "label": "Hausa",
+        "src": "/narration/front-of-eye/full-animation/ha.m4a"
+      },
+      "yo": {
+        "label": "Yorùbá",
+        "src": "/narration/front-of-eye/full-animation/yo.m4a"
+      },
+      "ig": {
+        "label": "Igbo",
+        "src": "/narration/front-of-eye/full-animation/ig.m4a"
       }
     },
     "defaultSubtitleLang": "en",
@@ -2494,7 +2584,17 @@
       "masterManifest": "",
       "preferredMode": "low",
       "offlineFallbackMode": "low",
-      "subtitleLanguages": ["en"]
+      "subtitleLanguages": [
+        "en",
+        "es",
+        "ko",
+        "ne",
+        "fr",
+        "lg",
+        "ha",
+        "yo",
+        "ig"
+      ]
     },
     "localSources": {
       "low": "videos/FullAnim/New_FrontofEyeFullAnim_timed.mp4",

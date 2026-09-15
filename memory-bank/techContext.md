@@ -1,4 +1,4 @@
-<!-- THE CHANGES - techContext.md | 2026-06-19, Codex -->
+<!-- THE CHANGES - techContext.md | 2026-09-15, Codex -->
 
 # Tech Context
 
@@ -51,9 +51,30 @@
 - Diabetic workshop previous/next flow can cross from the workshop route into Videos-route pages; the flow state is stored in `sessionStorage` and restored when returning to the workshop folders.
 - Diabetic demo quizzes live in `public/html/videos.html` but use initializers exported from `public/js/diabeticRetinopathyWorkshop.js`; `main.js` imports those initializers for the Videos route.
 - Diabetic video pages require their hidden `.page` IDs, workshop `data-target` rows, and `VIDEO_PAGE_SOURCES` entries in `public/js/videos.js` to stay in sync.
-- Full-animation local MP4 pages currently include `fundalReflexFullAnimationVideoPage`, `directOphthalmoscopyFullAnimationVideoPage`, and `binocularIndirectOphthalmoscopyFullAnimationVideoPage`; their low/high files live in `public/videos/FullAnim/`.
+- Full-animation local MP4 pages include `fundalReflexFullAnimationVideoPage`, `directOphthalmoscopyFullAnimationVideoPage`, `binocularIndirectOphthalmoscopyFullAnimationVideoPage` and `frontOfEyeFullAnimationVideoPage`. Each currently maps both local modes to the same file under `public/videos/FullAnim/`. Front of Eye uses `New_FrontofEyeFullAnim_timed.mp4`.
 - Local video pages also require subtitle catalog entries and offline-download categorization when subtitles/offline playback should work.
 - `public/js/videoSubtitles.js` attaches app-wide subtitle tracks from `public/video-localization/app-video-subtitles.json`; the Childhood Eye Screening pilot uses `public/video-localization/childhood-eye-screening.json` plus HLS metadata and VTT files.
+
+### Examination narration and captions
+
+- [The production record](./narration-and-subtitles.md) contains the full
+  source map, tools, timing tables and reproducible commands for all five pages.
+- `scripts/generate-fundal-narration.py` uses Edge TTS or local MMS/VITS models
+  with FFmpeg. It reads `script.json` and writes 48 kHz mono M4A audio at
+  48 kbps, UTF-8 VTT and a manifest. The audio limit is 2,000,000 bytes, the
+  duration tolerance is 0.25 seconds and the maximum cue speed adjustment is 1.08.
+- All four full animations use `en`, `es-419`, `ko`, `ne`, `fr`,
+  `lg`, `ha`, `yo` and `ig`. Subtitle
+  catalogue keys use `es` for Spanish while delivery filenames use `es-419`.
+- `public/video-localization/childhood-eye-screening.json` owns all four
+  full-animation entries. `videos.js` owns their audio synchronisation and
+  dedicated caption panel. The combined scroll page reuses Fundal Reflex
+  audio with a separate track map and 22 intervals in `childhoodFundalPreparation.js`.
+- Front of Eye has ten encoded holds and a shared absolute video/audio clock.
+  Direct Ophthalmoscopy and BIO retain runtime holds with narration lead.
+- Tool packages and cue caches stay in `tmp/`; WAV masters, review MP4s and
+  QA reports stay in `.codex-artifacts/`. Language-aware offline selection
+  uses a per-lesson English fallback when a requested audio track is absent.
 
 ### Shared progress notes
 

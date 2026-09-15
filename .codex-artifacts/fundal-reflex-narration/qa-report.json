@@ -1,0 +1,1609 @@
+{
+  "schemaVersion": 1,
+  "sourceVideo": "public/videos/FullAnim/New_FundalReflexFullAnim.mp4",
+  "sourceVideoDuration": 274.27,
+  "targetDuration": 274.273333,
+  "syncToleranceSeconds": 0.25,
+  "maxPlaybackSpeed": 1.08,
+  "tracks": {
+    "ne": {
+      "voice": "ne-NP-HemkalaNeural",
+      "delivery": {
+        "path": "public/narration/fundal-reflex/full-animation/ne.m4a",
+        "bytes": 996779,
+        "duration": 274.27,
+        "sha256": "ef8fe8ecd620bac306c1d4eb51e69276e1a636370f32bfb2050953e0136f4c17",
+        "format": "mono AAC in M4A, 48 kbps, 48 kHz"
+      },
+      "master": {
+        "path": ".codex-artifacts/fundal-reflex-narration/fundal-reflex-full-animation.ne.master.wav",
+        "bytes": 26330318,
+        "duration": 274.27,
+        "format": "mono PCM WAV, 16-bit, 48 kHz"
+      },
+      "reviewVideo": null,
+      "cues": [
+        {
+          "id": "preparation-01",
+          "slotStart": 4.2,
+          "slotEnd": 9.2,
+          "sourceDuration": 4.73,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 8.93,
+          "endMargin": 0.27
+        },
+        {
+          "id": "preparation-02",
+          "slotStart": 9.2,
+          "slotEnd": 19.2,
+          "sourceDuration": 10.44,
+          "playbackSpeed": 1.044,
+          "renderedEnd": 19.2,
+          "endMargin": 0.0
+        },
+        {
+          "id": "preparation-03a",
+          "slotStart": 19.2,
+          "slotEnd": 28.2,
+          "sourceDuration": 3.6,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 22.8,
+          "endMargin": 5.4
+        },
+        {
+          "id": "preparation-03b",
+          "slotStart": 28.2,
+          "slotEnd": 35.2,
+          "sourceDuration": 6.17,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 34.37,
+          "endMargin": 0.83
+        },
+        {
+          "id": "preparation-04a",
+          "slotStart": 36.2,
+          "slotEnd": 44.2,
+          "sourceDuration": 4.61,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 40.81,
+          "endMargin": 3.39
+        },
+        {
+          "id": "preparation-04b",
+          "slotStart": 44.2,
+          "slotEnd": 48.2,
+          "sourceDuration": 3.74,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 47.94,
+          "endMargin": 0.26
+        },
+        {
+          "id": "preparation-04c",
+          "slotStart": 48.2,
+          "slotEnd": 52.2,
+          "sourceDuration": 4.01,
+          "playbackSpeed": 1.0025,
+          "renderedEnd": 52.2,
+          "endMargin": 0.0
+        },
+        {
+          "id": "examination-01",
+          "slotStart": 55.8,
+          "slotEnd": 59.8,
+          "sourceDuration": 3.53,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 59.33,
+          "endMargin": 0.47
+        },
+        {
+          "id": "examination-02",
+          "slotStart": 60.4,
+          "slotEnd": 71.4,
+          "sourceDuration": 6.46,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 66.86,
+          "endMargin": 4.54
+        },
+        {
+          "id": "examination-03",
+          "slotStart": 71.4,
+          "slotEnd": 87.4,
+          "sourceDuration": 13.22,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 84.62,
+          "endMargin": 2.78
+        },
+        {
+          "id": "examination-04",
+          "slotStart": 87.4,
+          "slotEnd": 99.4,
+          "sourceDuration": 11.3,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 98.7,
+          "endMargin": 0.7
+        },
+        {
+          "id": "examination-05a",
+          "slotStart": 99.4,
+          "slotEnd": 109.1,
+          "sourceDuration": 8.93,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 108.33,
+          "endMargin": 0.77
+        },
+        {
+          "id": "examination-05b",
+          "slotStart": 109.1,
+          "slotEnd": 114.35,
+          "sourceDuration": 4.34,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 113.44,
+          "endMargin": 0.91
+        },
+        {
+          "id": "eyes-open-01",
+          "slotStart": 118.4,
+          "slotEnd": 129.4,
+          "sourceDuration": 7.13,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 125.53,
+          "endMargin": 3.87
+        },
+        {
+          "id": "eyes-open-02",
+          "slotStart": 129.4,
+          "slotEnd": 144.4,
+          "sourceDuration": 6.26,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 135.66,
+          "endMargin": 8.74
+        },
+        {
+          "id": "eyes-closed-01",
+          "slotStart": 150,
+          "slotEnd": 154.5,
+          "sourceDuration": 3.6,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 153.6,
+          "endMargin": 0.9
+        },
+        {
+          "id": "eyes-closed-02",
+          "slotStart": 154.5,
+          "slotEnd": 158.2,
+          "sourceDuration": 3.58,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 158.08,
+          "endMargin": 0.12
+        },
+        {
+          "id": "eyes-closed-03",
+          "slotStart": 158.2,
+          "slotEnd": 170.4,
+          "sourceDuration": 7.68,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 165.88,
+          "endMargin": 4.52
+        },
+        {
+          "id": "possible-findings-02",
+          "slotStart": 175.2,
+          "slotEnd": 180,
+          "sourceDuration": 4.1,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 179.3,
+          "endMargin": 0.7
+        },
+        {
+          "id": "possible-findings-01",
+          "slotStart": 180,
+          "slotEnd": 192,
+          "sourceDuration": 11.54,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 191.54,
+          "endMargin": 0.46
+        },
+        {
+          "id": "possible-findings-03",
+          "slotStart": 192,
+          "slotEnd": 207,
+          "sourceDuration": 8.14,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 200.14,
+          "endMargin": 6.86
+        },
+        {
+          "id": "unclear-findings-01",
+          "slotStart": 211.35,
+          "slotEnd": 220.35,
+          "sourceDuration": 4.15,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 215.5,
+          "endMargin": 4.85
+        },
+        {
+          "id": "unclear-findings-02",
+          "slotStart": 220.35,
+          "slotEnd": 230.35,
+          "sourceDuration": 7.42,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 227.77,
+          "endMargin": 2.58
+        },
+        {
+          "id": "unclear-findings-03",
+          "slotStart": 230.35,
+          "slotEnd": 237.35,
+          "sourceDuration": 3.77,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 234.12,
+          "endMargin": 3.23
+        },
+        {
+          "id": "unclear-findings-04",
+          "slotStart": 237.35,
+          "slotEnd": 246.35,
+          "sourceDuration": 4.7,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 242.05,
+          "endMargin": 4.3
+        },
+        {
+          "id": "unclear-findings-05a",
+          "slotStart": 246.35,
+          "slotEnd": 254.35,
+          "sourceDuration": 5.62,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 251.97,
+          "endMargin": 2.38
+        },
+        {
+          "id": "unclear-findings-05b",
+          "slotStart": 254.35,
+          "slotEnd": 260.35,
+          "sourceDuration": 4.34,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 258.69,
+          "endMargin": 1.66
+        },
+        {
+          "id": "after-examination",
+          "slotStart": 264.3,
+          "slotEnd": 274.27,
+          "sourceDuration": 9.96,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 274.26,
+          "endMargin": 0.01
+        }
+      ]
+    },
+    "fr": {
+      "voice": "fr-FR-DeniseNeural",
+      "delivery": {
+        "path": "public/narration/fundal-reflex/full-animation/fr.m4a",
+        "bytes": 911703,
+        "duration": 274.27,
+        "sha256": "79cd20e542c3ce2e95259569ded44f0f870638058780f9cb6a20af8776453948",
+        "format": "mono AAC in M4A, 48 kbps, 48 kHz"
+      },
+      "master": {
+        "path": ".codex-artifacts/fundal-reflex-narration/fundal-reflex-full-animation.fr.master.wav",
+        "bytes": 26330318,
+        "duration": 274.27,
+        "format": "mono PCM WAV, 16-bit, 48 kHz"
+      },
+      "reviewVideo": null,
+      "cues": [
+        {
+          "id": "preparation-01",
+          "slotStart": 4.2,
+          "slotEnd": 9.2,
+          "sourceDuration": 4.03,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 8.23,
+          "endMargin": 0.97
+        },
+        {
+          "id": "preparation-02",
+          "slotStart": 9.2,
+          "slotEnd": 19.2,
+          "sourceDuration": 6.58,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 15.78,
+          "endMargin": 3.42
+        },
+        {
+          "id": "preparation-03a",
+          "slotStart": 19.2,
+          "slotEnd": 28.2,
+          "sourceDuration": 3.24,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 22.44,
+          "endMargin": 5.76
+        },
+        {
+          "id": "preparation-03b",
+          "slotStart": 28.2,
+          "slotEnd": 35.2,
+          "sourceDuration": 5.02,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 33.22,
+          "endMargin": 1.98
+        },
+        {
+          "id": "preparation-04a",
+          "slotStart": 36.2,
+          "slotEnd": 44.2,
+          "sourceDuration": 3.62,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 39.82,
+          "endMargin": 4.38
+        },
+        {
+          "id": "preparation-04b",
+          "slotStart": 44.2,
+          "slotEnd": 48.2,
+          "sourceDuration": 3.5,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 47.7,
+          "endMargin": 0.5
+        },
+        {
+          "id": "preparation-04c",
+          "slotStart": 48.2,
+          "slotEnd": 52.2,
+          "sourceDuration": 3.58,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 51.78,
+          "endMargin": 0.42
+        },
+        {
+          "id": "examination-01",
+          "slotStart": 55.8,
+          "slotEnd": 59.8,
+          "sourceDuration": 2.9,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 58.7,
+          "endMargin": 1.1
+        },
+        {
+          "id": "examination-02",
+          "slotStart": 60.4,
+          "slotEnd": 71.4,
+          "sourceDuration": 6.38,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 66.78,
+          "endMargin": 4.62
+        },
+        {
+          "id": "examination-03",
+          "slotStart": 71.4,
+          "slotEnd": 87.4,
+          "sourceDuration": 11.54,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 82.94,
+          "endMargin": 4.46
+        },
+        {
+          "id": "examination-04",
+          "slotStart": 87.4,
+          "slotEnd": 99.4,
+          "sourceDuration": 9.58,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 96.98,
+          "endMargin": 2.42
+        },
+        {
+          "id": "examination-05a",
+          "slotStart": 99.4,
+          "slotEnd": 109.1,
+          "sourceDuration": 8.52,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 107.92,
+          "endMargin": 1.18
+        },
+        {
+          "id": "examination-05b",
+          "slotStart": 109.1,
+          "slotEnd": 114.35,
+          "sourceDuration": 3.38,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 112.48,
+          "endMargin": 1.87
+        },
+        {
+          "id": "eyes-open-01",
+          "slotStart": 118.4,
+          "slotEnd": 129.4,
+          "sourceDuration": 6.55,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 124.95,
+          "endMargin": 4.45
+        },
+        {
+          "id": "eyes-open-02",
+          "slotStart": 129.4,
+          "slotEnd": 144.4,
+          "sourceDuration": 5.88,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 135.28,
+          "endMargin": 9.12
+        },
+        {
+          "id": "eyes-closed-01",
+          "slotStart": 150,
+          "slotEnd": 154.5,
+          "sourceDuration": 3.7,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 153.7,
+          "endMargin": 0.8
+        },
+        {
+          "id": "eyes-closed-02",
+          "slotStart": 154.5,
+          "slotEnd": 158.2,
+          "sourceDuration": 3.58,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 158.08,
+          "endMargin": 0.12
+        },
+        {
+          "id": "eyes-closed-03",
+          "slotStart": 158.2,
+          "slotEnd": 170.4,
+          "sourceDuration": 7.56,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 165.76,
+          "endMargin": 4.64
+        },
+        {
+          "id": "possible-findings-02",
+          "slotStart": 175.2,
+          "slotEnd": 180,
+          "sourceDuration": 3.79,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 178.99,
+          "endMargin": 1.01
+        },
+        {
+          "id": "possible-findings-01",
+          "slotStart": 180,
+          "slotEnd": 192,
+          "sourceDuration": 10.01,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 190.01,
+          "endMargin": 1.99
+        },
+        {
+          "id": "possible-findings-03",
+          "slotStart": 192,
+          "slotEnd": 207,
+          "sourceDuration": 7.78,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 199.78,
+          "endMargin": 7.22
+        },
+        {
+          "id": "unclear-findings-01",
+          "slotStart": 211.35,
+          "slotEnd": 220.35,
+          "sourceDuration": 4.46,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 215.81,
+          "endMargin": 4.54
+        },
+        {
+          "id": "unclear-findings-02",
+          "slotStart": 220.35,
+          "slotEnd": 230.35,
+          "sourceDuration": 6.79,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 227.14,
+          "endMargin": 3.21
+        },
+        {
+          "id": "unclear-findings-03",
+          "slotStart": 230.35,
+          "slotEnd": 237.35,
+          "sourceDuration": 3.77,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 234.12,
+          "endMargin": 3.23
+        },
+        {
+          "id": "unclear-findings-04",
+          "slotStart": 237.35,
+          "slotEnd": 246.35,
+          "sourceDuration": 4.66,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 242.01,
+          "endMargin": 4.34
+        },
+        {
+          "id": "unclear-findings-05a",
+          "slotStart": 246.35,
+          "slotEnd": 254.35,
+          "sourceDuration": 4.61,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 250.96,
+          "endMargin": 3.39
+        },
+        {
+          "id": "unclear-findings-05b",
+          "slotStart": 254.35,
+          "slotEnd": 260.35,
+          "sourceDuration": 4.56,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 258.91,
+          "endMargin": 1.44
+        },
+        {
+          "id": "after-examination",
+          "slotStart": 264.3,
+          "slotEnd": 274.27,
+          "sourceDuration": 10.42,
+          "playbackSpeed": 1.045135,
+          "renderedEnd": 274.27,
+          "endMargin": 0.0
+        }
+      ]
+    },
+    "lg": {
+      "voice": "facebook/mms-tts-lug",
+      "delivery": {
+        "path": "public/narration/fundal-reflex/full-animation/lg.m4a",
+        "bytes": 1228922,
+        "duration": 274.27,
+        "sha256": "095b97ccfae627466822142a05e4ab866b010fee99610477af750111b7556c54",
+        "format": "mono AAC in M4A, 48 kbps, 48 kHz"
+      },
+      "master": {
+        "path": ".codex-artifacts/fundal-reflex-narration/fundal-reflex-full-animation.lg.master.wav",
+        "bytes": 26330318,
+        "duration": 274.27,
+        "format": "mono PCM WAV, 16-bit, 48 kHz"
+      },
+      "reviewVideo": null,
+      "cues": [
+        {
+          "id": "preparation-01",
+          "slotStart": 4.2,
+          "slotEnd": 9.2,
+          "sourceDuration": 3.36,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 7.56,
+          "endMargin": 1.64
+        },
+        {
+          "id": "preparation-02",
+          "slotStart": 9.2,
+          "slotEnd": 19.2,
+          "sourceDuration": 9.87,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 19.07,
+          "endMargin": 0.13
+        },
+        {
+          "id": "preparation-03a",
+          "slotStart": 19.2,
+          "slotEnd": 28.2,
+          "sourceDuration": 4.14,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 23.34,
+          "endMargin": 4.86
+        },
+        {
+          "id": "preparation-03b",
+          "slotStart": 28.2,
+          "slotEnd": 35.2,
+          "sourceDuration": 5.28,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 33.48,
+          "endMargin": 1.72
+        },
+        {
+          "id": "preparation-04a",
+          "slotStart": 36.2,
+          "slotEnd": 44.2,
+          "sourceDuration": 4.94,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 41.14,
+          "endMargin": 3.06
+        },
+        {
+          "id": "preparation-04b",
+          "slotStart": 44.2,
+          "slotEnd": 48.2,
+          "sourceDuration": 4.08,
+          "playbackSpeed": 1.02,
+          "renderedEnd": 48.2,
+          "endMargin": 0.0
+        },
+        {
+          "id": "preparation-04c",
+          "slotStart": 48.2,
+          "slotEnd": 52.2,
+          "sourceDuration": 4.22,
+          "playbackSpeed": 1.055,
+          "renderedEnd": 52.2,
+          "endMargin": 0.0
+        },
+        {
+          "id": "examination-01",
+          "slotStart": 55.8,
+          "slotEnd": 59.8,
+          "sourceDuration": 3.84,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 59.64,
+          "endMargin": 0.16
+        },
+        {
+          "id": "examination-02",
+          "slotStart": 60.4,
+          "slotEnd": 71.4,
+          "sourceDuration": 7.98,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 68.38,
+          "endMargin": 3.02
+        },
+        {
+          "id": "examination-03",
+          "slotStart": 71.4,
+          "slotEnd": 87.4,
+          "sourceDuration": 10.94,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 82.34,
+          "endMargin": 5.06
+        },
+        {
+          "id": "examination-04",
+          "slotStart": 87.4,
+          "slotEnd": 99.4,
+          "sourceDuration": 11.94,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 99.34,
+          "endMargin": 0.06
+        },
+        {
+          "id": "examination-05",
+          "slotStart": 99.4,
+          "slotEnd": 114.35,
+          "sourceDuration": 14.72,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 114.12,
+          "endMargin": 0.23
+        },
+        {
+          "id": "eyes-open-01",
+          "slotStart": 118.4,
+          "slotEnd": 129.4,
+          "sourceDuration": 7.89,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 126.29,
+          "endMargin": 3.11
+        },
+        {
+          "id": "eyes-open-02",
+          "slotStart": 129.4,
+          "slotEnd": 144.4,
+          "sourceDuration": 8.16,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 137.56,
+          "endMargin": 6.84
+        },
+        {
+          "id": "eyes-closed-01",
+          "slotStart": 150,
+          "slotEnd": 154.5,
+          "sourceDuration": 4.61,
+          "playbackSpeed": 1.024444,
+          "renderedEnd": 154.5,
+          "endMargin": 0.0
+        },
+        {
+          "id": "eyes-closed-02",
+          "slotStart": 154.5,
+          "slotEnd": 158.2,
+          "sourceDuration": 2.86,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 157.36,
+          "endMargin": 0.84
+        },
+        {
+          "id": "eyes-closed-03",
+          "slotStart": 158.2,
+          "slotEnd": 170.4,
+          "sourceDuration": 9.2,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 167.4,
+          "endMargin": 3.0
+        },
+        {
+          "id": "possible-findings-02",
+          "slotStart": 175.2,
+          "slotEnd": 180,
+          "sourceDuration": 3.02,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 178.22,
+          "endMargin": 1.78
+        },
+        {
+          "id": "possible-findings-01",
+          "slotStart": 180,
+          "slotEnd": 192,
+          "sourceDuration": 11.25,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 191.25,
+          "endMargin": 0.75
+        },
+        {
+          "id": "possible-findings-03",
+          "slotStart": 192,
+          "slotEnd": 207,
+          "sourceDuration": 9.28,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 201.28,
+          "endMargin": 5.72
+        },
+        {
+          "id": "unclear-findings-01",
+          "slotStart": 211.35,
+          "slotEnd": 220.35,
+          "sourceDuration": 5.04,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 216.39,
+          "endMargin": 3.96
+        },
+        {
+          "id": "unclear-findings-02",
+          "slotStart": 220.35,
+          "slotEnd": 230.35,
+          "sourceDuration": 8.3,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 228.65,
+          "endMargin": 1.7
+        },
+        {
+          "id": "unclear-findings-03",
+          "slotStart": 230.35,
+          "slotEnd": 237.35,
+          "sourceDuration": 3.84,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 234.19,
+          "endMargin": 3.16
+        },
+        {
+          "id": "unclear-findings-04",
+          "slotStart": 237.35,
+          "slotEnd": 246.35,
+          "sourceDuration": 4.29,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 241.64,
+          "endMargin": 4.71
+        },
+        {
+          "id": "unclear-findings-05a",
+          "slotStart": 246.35,
+          "slotEnd": 254.35,
+          "sourceDuration": 7.15,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 253.5,
+          "endMargin": 0.85
+        },
+        {
+          "id": "unclear-findings-05b",
+          "slotStart": 254.35,
+          "slotEnd": 260.35,
+          "sourceDuration": 4.94,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 259.29,
+          "endMargin": 1.06
+        },
+        {
+          "id": "after-examination",
+          "slotStart": 264.3,
+          "slotEnd": 274.27,
+          "sourceDuration": 10.38,
+          "playbackSpeed": 1.041123,
+          "renderedEnd": 274.27,
+          "endMargin": 0.0
+        }
+      ]
+    },
+    "ha": {
+      "voice": "facebook/mms-tts-hau",
+      "delivery": {
+        "path": "public/narration/fundal-reflex/full-animation/ha.m4a",
+        "bytes": 1146420,
+        "duration": 274.27,
+        "sha256": "8781fb122d21973f5b324b220749cc5969aae06018816c388d20a4c81c0a457d",
+        "format": "mono AAC in M4A, 48 kbps, 48 kHz"
+      },
+      "master": {
+        "path": ".codex-artifacts/fundal-reflex-narration/fundal-reflex-full-animation.ha.master.wav",
+        "bytes": 26330318,
+        "duration": 274.27,
+        "format": "mono PCM WAV, 16-bit, 48 kHz"
+      },
+      "reviewVideo": null,
+      "cues": [
+        {
+          "id": "preparation-01",
+          "slotStart": 4.2,
+          "slotEnd": 9.2,
+          "sourceDuration": 3.07,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 7.27,
+          "endMargin": 1.93
+        },
+        {
+          "id": "preparation-02",
+          "slotStart": 9.2,
+          "slotEnd": 19.2,
+          "sourceDuration": 10.38,
+          "playbackSpeed": 1.038,
+          "renderedEnd": 19.2,
+          "endMargin": 0.0
+        },
+        {
+          "id": "preparation-03a",
+          "slotStart": 19.2,
+          "slotEnd": 28.2,
+          "sourceDuration": 2.8,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 22.0,
+          "endMargin": 6.2
+        },
+        {
+          "id": "preparation-03b",
+          "slotStart": 28.2,
+          "slotEnd": 35.2,
+          "sourceDuration": 4.67,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 32.87,
+          "endMargin": 2.33
+        },
+        {
+          "id": "preparation-04a",
+          "slotStart": 36.2,
+          "slotEnd": 44.2,
+          "sourceDuration": 3.17,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 39.37,
+          "endMargin": 4.83
+        },
+        {
+          "id": "preparation-04b",
+          "slotStart": 44.2,
+          "slotEnd": 48.2,
+          "sourceDuration": 3.01,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 47.21,
+          "endMargin": 0.99
+        },
+        {
+          "id": "preparation-04c",
+          "slotStart": 48.2,
+          "slotEnd": 52.2,
+          "sourceDuration": 3.73,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 51.93,
+          "endMargin": 0.27
+        },
+        {
+          "id": "examination-01",
+          "slotStart": 55.8,
+          "slotEnd": 59.8,
+          "sourceDuration": 2.38,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 58.18,
+          "endMargin": 1.62
+        },
+        {
+          "id": "examination-02",
+          "slotStart": 60.4,
+          "slotEnd": 71.4,
+          "sourceDuration": 6.58,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 66.98,
+          "endMargin": 4.42
+        },
+        {
+          "id": "examination-03",
+          "slotStart": 71.4,
+          "slotEnd": 87.4,
+          "sourceDuration": 11.71,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 83.11,
+          "endMargin": 4.29
+        },
+        {
+          "id": "examination-04",
+          "slotStart": 87.4,
+          "slotEnd": 99.4,
+          "sourceDuration": 11.76,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 99.16,
+          "endMargin": 0.24
+        },
+        {
+          "id": "examination-05a",
+          "slotStart": 99.4,
+          "slotEnd": 109.1,
+          "sourceDuration": 9.97,
+          "playbackSpeed": 1.027835,
+          "renderedEnd": 109.1,
+          "endMargin": 0.0
+        },
+        {
+          "id": "examination-05b",
+          "slotStart": 109.1,
+          "slotEnd": 114.35,
+          "sourceDuration": 4.18,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 113.28,
+          "endMargin": 1.07
+        },
+        {
+          "id": "eyes-open-01",
+          "slotStart": 118.4,
+          "slotEnd": 129.4,
+          "sourceDuration": 6.7,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 125.1,
+          "endMargin": 4.3
+        },
+        {
+          "id": "eyes-open-02",
+          "slotStart": 129.4,
+          "slotEnd": 144.4,
+          "sourceDuration": 9.82,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 139.22,
+          "endMargin": 5.18
+        },
+        {
+          "id": "eyes-closed-01",
+          "slotStart": 150,
+          "slotEnd": 154.5,
+          "sourceDuration": 4.46,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 154.46,
+          "endMargin": 0.04
+        },
+        {
+          "id": "eyes-closed-02",
+          "slotStart": 154.5,
+          "slotEnd": 158.2,
+          "sourceDuration": 2.85,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 157.35,
+          "endMargin": 0.85
+        },
+        {
+          "id": "eyes-closed-03",
+          "slotStart": 158.2,
+          "slotEnd": 170.4,
+          "sourceDuration": 9.38,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 167.58,
+          "endMargin": 2.82
+        },
+        {
+          "id": "possible-findings-02",
+          "slotStart": 175.2,
+          "slotEnd": 180,
+          "sourceDuration": 4.4,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 179.6,
+          "endMargin": 0.4
+        },
+        {
+          "id": "possible-findings-01",
+          "slotStart": 180,
+          "slotEnd": 192,
+          "sourceDuration": 12.22,
+          "playbackSpeed": 1.018333,
+          "renderedEnd": 192.0,
+          "endMargin": 0.0
+        },
+        {
+          "id": "possible-findings-03",
+          "slotStart": 192,
+          "slotEnd": 207,
+          "sourceDuration": 9.28,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 201.28,
+          "endMargin": 5.72
+        },
+        {
+          "id": "unclear-findings-01",
+          "slotStart": 211.35,
+          "slotEnd": 220.35,
+          "sourceDuration": 3.95,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 215.3,
+          "endMargin": 5.05
+        },
+        {
+          "id": "unclear-findings-02",
+          "slotStart": 220.35,
+          "slotEnd": 230.35,
+          "sourceDuration": 7.09,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 227.44,
+          "endMargin": 2.91
+        },
+        {
+          "id": "unclear-findings-03",
+          "slotStart": 230.35,
+          "slotEnd": 237.35,
+          "sourceDuration": 3.28,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 233.63,
+          "endMargin": 3.72
+        },
+        {
+          "id": "unclear-findings-04",
+          "slotStart": 237.35,
+          "slotEnd": 246.35,
+          "sourceDuration": 3.82,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 241.17,
+          "endMargin": 5.18
+        },
+        {
+          "id": "unclear-findings-05a",
+          "slotStart": 246.35,
+          "slotEnd": 254.35,
+          "sourceDuration": 5.57,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 251.92,
+          "endMargin": 2.43
+        },
+        {
+          "id": "unclear-findings-05b",
+          "slotStart": 254.35,
+          "slotEnd": 260.35,
+          "sourceDuration": 4.5,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 258.85,
+          "endMargin": 1.5
+        },
+        {
+          "id": "after-examination",
+          "slotStart": 264.3,
+          "slotEnd": 274.27,
+          "sourceDuration": 8.38,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 272.68,
+          "endMargin": 1.59
+        }
+      ]
+    },
+    "yo": {
+      "voice": "facebook/mms-tts-yor",
+      "delivery": {
+        "path": "public/narration/fundal-reflex/full-animation/yo.m4a",
+        "bytes": 863623,
+        "duration": 274.27,
+        "sha256": "79581600ac1bb4162b99e63378cb808e8d945179ae7d64b0c59876edc954419f",
+        "format": "mono AAC in M4A, 48 kbps, 48 kHz"
+      },
+      "master": {
+        "path": ".codex-artifacts/fundal-reflex-narration/fundal-reflex-full-animation.yo.master.wav",
+        "bytes": 26330318,
+        "duration": 274.27,
+        "format": "mono PCM WAV, 16-bit, 48 kHz"
+      },
+      "reviewVideo": null,
+      "cues": [
+        {
+          "id": "preparation-01",
+          "slotStart": 4.2,
+          "slotEnd": 9.2,
+          "sourceDuration": 2.45,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 6.65,
+          "endMargin": 2.55
+        },
+        {
+          "id": "preparation-02",
+          "slotStart": 9.2,
+          "slotEnd": 19.2,
+          "sourceDuration": 9.46,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 18.66,
+          "endMargin": 0.54
+        },
+        {
+          "id": "preparation-03a",
+          "slotStart": 19.2,
+          "slotEnd": 28.2,
+          "sourceDuration": 1.98,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 21.18,
+          "endMargin": 7.02
+        },
+        {
+          "id": "preparation-03b",
+          "slotStart": 28.2,
+          "slotEnd": 35.2,
+          "sourceDuration": 3.46,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 31.66,
+          "endMargin": 3.54
+        },
+        {
+          "id": "preparation-04a",
+          "slotStart": 36.2,
+          "slotEnd": 44.2,
+          "sourceDuration": 2.4,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 38.6,
+          "endMargin": 5.6
+        },
+        {
+          "id": "preparation-04b",
+          "slotStart": 44.2,
+          "slotEnd": 48.2,
+          "sourceDuration": 2.48,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 46.68,
+          "endMargin": 1.52
+        },
+        {
+          "id": "preparation-04c",
+          "slotStart": 48.2,
+          "slotEnd": 52.2,
+          "sourceDuration": 2.35,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 50.55,
+          "endMargin": 1.65
+        },
+        {
+          "id": "examination-01",
+          "slotStart": 55.8,
+          "slotEnd": 59.8,
+          "sourceDuration": 1.95,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 57.75,
+          "endMargin": 2.05
+        },
+        {
+          "id": "examination-02",
+          "slotStart": 60.4,
+          "slotEnd": 71.4,
+          "sourceDuration": 4.91,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 65.31,
+          "endMargin": 6.09
+        },
+        {
+          "id": "examination-03",
+          "slotStart": 71.4,
+          "slotEnd": 87.4,
+          "sourceDuration": 10.0,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 81.4,
+          "endMargin": 6.0
+        },
+        {
+          "id": "examination-04",
+          "slotStart": 87.4,
+          "slotEnd": 99.4,
+          "sourceDuration": 9.58,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 96.98,
+          "endMargin": 2.42
+        },
+        {
+          "id": "examination-05a",
+          "slotStart": 99.4,
+          "slotEnd": 109.1,
+          "sourceDuration": 7.65,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 107.05,
+          "endMargin": 2.05
+        },
+        {
+          "id": "examination-05b",
+          "slotStart": 109.1,
+          "slotEnd": 114.35,
+          "sourceDuration": 2.59,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 111.69,
+          "endMargin": 2.66
+        },
+        {
+          "id": "eyes-open-01",
+          "slotStart": 118.4,
+          "slotEnd": 129.4,
+          "sourceDuration": 5.7,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 124.1,
+          "endMargin": 5.3
+        },
+        {
+          "id": "eyes-open-02",
+          "slotStart": 129.4,
+          "slotEnd": 144.4,
+          "sourceDuration": 5.7,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 135.1,
+          "endMargin": 9.3
+        },
+        {
+          "id": "eyes-closed-01",
+          "slotStart": 150,
+          "slotEnd": 154.5,
+          "sourceDuration": 1.66,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 151.66,
+          "endMargin": 2.84
+        },
+        {
+          "id": "eyes-closed-02",
+          "slotStart": 154.5,
+          "slotEnd": 158.2,
+          "sourceDuration": 2.67,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 157.17,
+          "endMargin": 1.03
+        },
+        {
+          "id": "eyes-closed-03",
+          "slotStart": 158.2,
+          "slotEnd": 170.4,
+          "sourceDuration": 7.33,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 165.53,
+          "endMargin": 4.87
+        },
+        {
+          "id": "possible-findings-02",
+          "slotStart": 175.2,
+          "slotEnd": 180,
+          "sourceDuration": 3.14,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 178.34,
+          "endMargin": 1.66
+        },
+        {
+          "id": "possible-findings-01",
+          "slotStart": 180,
+          "slotEnd": 192,
+          "sourceDuration": 10.05,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 190.05,
+          "endMargin": 1.95
+        },
+        {
+          "id": "possible-findings-03",
+          "slotStart": 192,
+          "slotEnd": 207,
+          "sourceDuration": 6.67,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 198.67,
+          "endMargin": 8.33
+        },
+        {
+          "id": "unclear-findings-01",
+          "slotStart": 211.35,
+          "slotEnd": 220.35,
+          "sourceDuration": 3.54,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 214.89,
+          "endMargin": 5.46
+        },
+        {
+          "id": "unclear-findings-02",
+          "slotStart": 220.35,
+          "slotEnd": 230.35,
+          "sourceDuration": 3.15,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 223.5,
+          "endMargin": 6.85
+        },
+        {
+          "id": "unclear-findings-03",
+          "slotStart": 230.35,
+          "slotEnd": 237.35,
+          "sourceDuration": 2.83,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 233.18,
+          "endMargin": 4.17
+        },
+        {
+          "id": "unclear-findings-04",
+          "slotStart": 237.35,
+          "slotEnd": 246.35,
+          "sourceDuration": 2.7,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 240.05,
+          "endMargin": 6.3
+        },
+        {
+          "id": "unclear-findings-05a",
+          "slotStart": 246.35,
+          "slotEnd": 254.35,
+          "sourceDuration": 4.19,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 250.54,
+          "endMargin": 3.81
+        },
+        {
+          "id": "unclear-findings-05b",
+          "slotStart": 254.35,
+          "slotEnd": 260.35,
+          "sourceDuration": 2.78,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 257.13,
+          "endMargin": 3.22
+        },
+        {
+          "id": "after-examination",
+          "slotStart": 264.3,
+          "slotEnd": 274.27,
+          "sourceDuration": 6.78,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 271.08,
+          "endMargin": 3.19
+        }
+      ]
+    },
+    "ig": {
+      "voice": "Shinzmann/soro-tts-ibo",
+      "delivery": {
+        "path": "public/narration/fundal-reflex/full-animation/ig.m4a",
+        "bytes": 1124955,
+        "duration": 274.27,
+        "sha256": "279c106fe3433a405d5bdff5672363b4fc39554eee535df5f7b2ef67d3fde898",
+        "format": "mono AAC in M4A, 48 kbps, 48 kHz"
+      },
+      "master": {
+        "path": ".codex-artifacts/fundal-reflex-narration/fundal-reflex-full-animation.ig.master.wav",
+        "bytes": 26330318,
+        "duration": 274.27,
+        "format": "mono PCM WAV, 16-bit, 48 kHz"
+      },
+      "reviewVideo": null,
+      "cues": [
+        {
+          "id": "preparation-01",
+          "slotStart": 4.2,
+          "slotEnd": 9.2,
+          "sourceDuration": 3.16,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 7.36,
+          "endMargin": 1.84
+        },
+        {
+          "id": "preparation-02",
+          "slotStart": 9.2,
+          "slotEnd": 19.2,
+          "sourceDuration": 9.66,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 18.86,
+          "endMargin": 0.34
+        },
+        {
+          "id": "preparation-03a",
+          "slotStart": 19.2,
+          "slotEnd": 28.2,
+          "sourceDuration": 2.42,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 21.62,
+          "endMargin": 6.58
+        },
+        {
+          "id": "preparation-03b",
+          "slotStart": 28.2,
+          "slotEnd": 35.2,
+          "sourceDuration": 6.36,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 34.56,
+          "endMargin": 0.64
+        },
+        {
+          "id": "preparation-04",
+          "slotStart": 36.2,
+          "slotEnd": 52.2,
+          "sourceDuration": 10.62,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 46.82,
+          "endMargin": 5.38
+        },
+        {
+          "id": "examination-01",
+          "slotStart": 55.8,
+          "slotEnd": 59.8,
+          "sourceDuration": 3.98,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 59.78,
+          "endMargin": 0.02
+        },
+        {
+          "id": "examination-02",
+          "slotStart": 60.4,
+          "slotEnd": 71.4,
+          "sourceDuration": 5.72,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 66.12,
+          "endMargin": 5.28
+        },
+        {
+          "id": "examination-03",
+          "slotStart": 71.4,
+          "slotEnd": 87.4,
+          "sourceDuration": 10.72,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 82.12,
+          "endMargin": 5.28
+        },
+        {
+          "id": "examination-04",
+          "slotStart": 87.4,
+          "slotEnd": 99.4,
+          "sourceDuration": 10.56,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 97.96,
+          "endMargin": 1.44
+        },
+        {
+          "id": "examination-05a",
+          "slotStart": 99.4,
+          "slotEnd": 109.1,
+          "sourceDuration": 9.58,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 108.98,
+          "endMargin": 0.12
+        },
+        {
+          "id": "examination-05b",
+          "slotStart": 109.1,
+          "slotEnd": 114.35,
+          "sourceDuration": 3.1,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 112.2,
+          "endMargin": 2.15
+        },
+        {
+          "id": "eyes-open-01",
+          "slotStart": 118.4,
+          "slotEnd": 129.4,
+          "sourceDuration": 7.68,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 126.08,
+          "endMargin": 3.32
+        },
+        {
+          "id": "eyes-open-02",
+          "slotStart": 129.4,
+          "slotEnd": 144.4,
+          "sourceDuration": 7.22,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 136.62,
+          "endMargin": 7.78
+        },
+        {
+          "id": "eyes-closed-01",
+          "slotStart": 150,
+          "slotEnd": 154.5,
+          "sourceDuration": 2.82,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 152.82,
+          "endMargin": 1.68
+        },
+        {
+          "id": "eyes-closed-02",
+          "slotStart": 154.5,
+          "slotEnd": 158.2,
+          "sourceDuration": 2.4,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 156.9,
+          "endMargin": 1.3
+        },
+        {
+          "id": "eyes-closed-03",
+          "slotStart": 158.2,
+          "slotEnd": 170.4,
+          "sourceDuration": 8.0,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 166.2,
+          "endMargin": 4.2
+        },
+        {
+          "id": "possible-findings-02",
+          "slotStart": 175.2,
+          "slotEnd": 180,
+          "sourceDuration": 4.06,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 179.26,
+          "endMargin": 0.74
+        },
+        {
+          "id": "possible-findings-01",
+          "slotStart": 180,
+          "slotEnd": 192,
+          "sourceDuration": 11.86,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 191.86,
+          "endMargin": 0.14
+        },
+        {
+          "id": "possible-findings-03",
+          "slotStart": 192,
+          "slotEnd": 207,
+          "sourceDuration": 7.92,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 199.92,
+          "endMargin": 7.08
+        },
+        {
+          "id": "unclear-findings-01",
+          "slotStart": 211.35,
+          "slotEnd": 220.35,
+          "sourceDuration": 4.98,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 216.33,
+          "endMargin": 4.02
+        },
+        {
+          "id": "unclear-findings-02",
+          "slotStart": 220.35,
+          "slotEnd": 230.35,
+          "sourceDuration": 6.9,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 227.25,
+          "endMargin": 3.1
+        },
+        {
+          "id": "unclear-findings-03",
+          "slotStart": 230.35,
+          "slotEnd": 237.35,
+          "sourceDuration": 5.1,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 235.45,
+          "endMargin": 1.9
+        },
+        {
+          "id": "unclear-findings-04",
+          "slotStart": 237.35,
+          "slotEnd": 246.35,
+          "sourceDuration": 6.96,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 244.31,
+          "endMargin": 2.04
+        },
+        {
+          "id": "unclear-findings-05a",
+          "slotStart": 246.35,
+          "slotEnd": 254.35,
+          "sourceDuration": 4.84,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 251.19,
+          "endMargin": 3.16
+        },
+        {
+          "id": "unclear-findings-05b",
+          "slotStart": 254.35,
+          "slotEnd": 260.35,
+          "sourceDuration": 4.3,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 258.65,
+          "endMargin": 1.7
+        },
+        {
+          "id": "after-examination",
+          "slotStart": 264.3,
+          "slotEnd": 274.27,
+          "sourceDuration": 8.8,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 273.1,
+          "endMargin": 1.17
+        }
+      ]
+    }
+  }
+}

@@ -1,5 +1,30 @@
 # Front of Eye full-animation narration
 
+## Language coverage
+
+English, Latin American Spanish, Korean, Nepali, French, Luganda, Hausa,
+Yoruba and Igbo each have a separate M4A track with 22 spoken cues. English has
+22 captions; the other languages have 26, including four silent title cards.
+The eight additions use the same voices as Fundal Reflex and keep the English
+scene boundaries. The original English delivery files are unchanged.
+
+Maintained translations live in `scripts/full-animation-translations.json`.
+Run `node scripts/localize-full-animation-narration.cjs`, generate the changed
+languages with the shared generator, then run the helper with `--connect`.
+See the [production record](../../../../memory-bank/narration-and-subtitles.md)
+for commands and the voice table. WAV masters and timing QA are in
+`.codex-artifacts/front-of-eye-narration/`.
+
+Luganda, Hausa, Yoruba and Igbo reuse the cached model revisions recorded in
+the [Fundal Reflex asset notes](../../fundal-reflex/full-animation/README.md).
+Those models use CC-BY-NC-4.0 licences. Synthetic pronunciation and translated
+clinical wording still need native review; automated timing checks do not
+establish clinical intelligibility.
+
+The Luganda eyelash term follows the Language Commission's
+[medical terminology glossary](https://www.lugandalusogalugwerecommission.com/files/ebigambo_2Bebyekikugu_2Bacalan.pdf),
+page 35. The pupil term follows the [English–Luganda dictionary](https://lugandaproz.wordpress.com/english-luganda-dictionary/).
+
 The player uses `New_FrontofEyeFullAnim_timed.mp4`. Its visual holds are encoded
 into the video rather than scheduled by runtime timers. Video, captions and
 narration use one absolute media timeline, including after seek, replay or reload.

@@ -44,16 +44,26 @@ describe("language-specific offline narration", () => {
     ],
   };
 
-  it.each(["en", "es-419", "ko", "ne", "fr", "lg", "ha", "yo", "ig"])(
-    "includes only the selected Direct Ophthalmoscopy %s audio and captions offline",
-    (language) => {
-      const root = "public/narration/direct-ophthalmoscopy/full-animation";
+  it.each(
+    [
+      "direct-ophthalmoscopy",
+      "front-of-eye",
+      "binocular-indirect-ophthalmoscopy",
+    ].flatMap((lesson) =>
+      ["en", "es-419", "ko", "ne", "fr", "lg", "ha", "yo", "ig"].map(
+        (language) => [lesson, language],
+      ),
+    ),
+  )(
+    "includes only the selected %s %s audio and captions offline",
+    (lesson, language) => {
+      const root = `public/narration/${lesson}/full-animation`;
       const tracks = JSON.parse(
         fs.readFileSync(`${root}/manifest.json`, "utf8"),
       ).tracks;
       const assets = Object.entries(tracks).flatMap(([code, track]) =>
         [track.src, track.captions].map((file) => ({
-          url: `/narration/direct-ophthalmoscopy/full-animation/${file}`,
+          url: `/narration/${lesson}/full-animation/${file}`,
           bytes: fs.statSync(`${root}/${file}`).size,
         })),
       );
@@ -67,13 +77,12 @@ describe("language-specific offline narration", () => {
       );
       expect(
         selection.urls
-          .filter((url) => url.includes("/direct-ophthalmoscopy/"))
+          .filter((url) => url.includes(`/narration/${lesson}/`))
           .sort(),
       ).toEqual(
         ["m4a", "vtt"]
           .map(
-            (ext) =>
-              `/narration/direct-ophthalmoscopy/full-animation/${language}.${ext}`,
+            (ext) => `/narration/${lesson}/full-animation/${language}.${ext}`,
           )
           .sort(),
       );

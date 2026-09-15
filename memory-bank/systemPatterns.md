@@ -59,6 +59,30 @@ Arclight is primarily a static, client-side PWA served from `public/` (or `dist/
 
 ## Component Relationships
 
+### Examination narration production and playback
+
+The [production record](./narration-and-subtitles.md) gives the detailed
+contract for the four full animations and the combined Fundal scroll page.
+
+- Prepared media: source scripts and translations produce separate M4A and
+  VTT files before deployment. Runtime code selects an existing track.
+- Separate sources: `script.json` owns content and timing, the per-folder
+  manifest records delivery metadata and `childhood-eye-screening.json`
+  connects full-animation pages to media URLs.
+- Two timing approaches: Front of Eye encodes its holds in the MP4 and uses
+  one absolute clock. DO and BIO pause through runtime hold state, allowing
+  captions to follow narration while audio is ahead.
+- Stage reuse: the Fundal scroll page maps 22 Lottie stages to intervals in
+  the existing full-animation audio. Short stage text remains dictionary-based
+  and independent of the manual narration choice.
+- Language choice: all four full animations have nine languages.
+  Page preferences and offline download language
+  selection are separate. Offline media falls back to English per lesson.
+- Verification has separate parts: file and timing checks, browser behaviour,
+  listening and native clinical review. Passing one does not establish another.
+
+### Wider app relationships
+
 - Client entry points:
   - `public/index.html`
   - pages under `public/html/`

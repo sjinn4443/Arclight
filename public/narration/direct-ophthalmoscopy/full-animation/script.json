@@ -427,5 +427,71 @@
       "yo": "Parí ní macula àti fovea, kí o sì tún àyẹ̀wò ṣe ní ojú kejì.",
       "ig": "Mechie na macula na fovea. Tinyegharịa nyocha n’anya nke ọzọ."
     }
+  ],
+  "videoTitleCues": [
+    {
+      "id": "video-title-observation-reflex",
+      "start": 0,
+      "end": 2.87,
+      "sourceText": "Observation and Fundal Reflex",
+      "translations": {
+        "es-419": "Observación y reflejo del fondo de ojo",
+        "ko": "관찰 및 안저 반사",
+        "ne": "अवलोकन र आँखाको रातो प्रतिबिम्ब",
+        "fr": "Observation et reflet du fond d'œil",
+        "lg": "Okutunuulira n'ekitangaala ekidda mu liiso",
+        "ha": "Dubawa da hasken da ke dawowa daga cikin ido",
+        "yo": "Wíwo àti ìmọ́lẹ̀ tó ń padà láti inú ojú",
+        "ig": "Nlele na ìhè na-alọghachi site n'ime anya"
+      }
+    },
+    {
+      "id": "video-title-positioning",
+      "start": 53.353,
+      "end": 56.857,
+      "sourceText": "Positioning and Flight Path",
+      "translations": {
+        "es-419": "Posición y trayectoria de acercamiento",
+        "ko": "검사 자세와 접근 경로",
+        "ne": "स्थिति र नजिकिने मार्ग",
+        "fr": "Positionnement et trajectoire d'approche",
+        "lg": "Enteekateeka y'omubiri n'ekkubo ly'okusembereramu",
+        "ha": "Matsayi da hanyar kusantar ido",
+        "yo": "Ipò àti ọ̀nà sísún mọ́ ojú",
+        "ig": "Ọnọdụ na ụzọ ịbịaru nso anya"
+      }
+    },
+    {
+      "id": "video-title-features",
+      "start": 114.848,
+      "end": 118.685,
+      "sourceText": "Features to Assess",
+      "translations": {
+        "es-419": "Características que se deben evaluar",
+        "ko": "평가할 소견",
+        "ne": "मूल्याङ्कन गर्नुपर्ने विशेषताहरू",
+        "fr": "Éléments à évaluer",
+        "lg": "Ebintu eby'okukebera",
+        "ha": "Abubuwan da za a tantance",
+        "yo": "Àwọn ohun tí a ó ṣe àyẹ̀wò",
+        "ig": "Ihe ndị a ga-enyocha"
+      }
+    },
+    {
+      "id": "video-title-examination",
+      "start": 141.174,
+      "end": 145.078,
+      "sourceText": "How to Examine",
+      "translations": {
+        "es-419": "Cómo realizar el examen",
+        "ko": "검사 방법",
+        "ne": "जाँच गर्ने तरिका",
+        "fr": "Comment réaliser l'examen",
+        "lg": "Engeri y'okukebera",
+        "ha": "Yadda ake binciken ido",
+        "yo": "Bí a ṣe ń ṣe àyẹ̀wò",
+        "ig": "Otu e si enyocha"
+      }
+    }
   ]
 }

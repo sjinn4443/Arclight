@@ -1,0 +1,118 @@
+{
+  "front-of-eye": {
+    "es-419": {
+      "cues": 22,
+      "duration": 171.46,
+      "bytes": 586901,
+      "maxCueSpeed": 1.062857,
+      "currentTextAndVoiceVerified": true
+    },
+    "ko": {
+      "cues": 22,
+      "duration": 171.46,
+      "bytes": 591157,
+      "maxCueSpeed": 1.055714,
+      "currentTextAndVoiceVerified": true
+    },
+    "ne": {
+      "cues": 22,
+      "duration": 171.46,
+      "bytes": 576363,
+      "maxCueSpeed": 1.064865,
+      "currentTextAndVoiceVerified": true
+    },
+    "fr": {
+      "cues": 22,
+      "duration": 171.46,
+      "bytes": 563061,
+      "maxCueSpeed": 1.079167,
+      "currentTextAndVoiceVerified": true
+    },
+    "lg": {
+      "cues": 22,
+      "duration": 171.46,
+      "bytes": 694785,
+      "maxCueSpeed": 1.067391,
+      "currentTextAndVoiceVerified": true
+    },
+    "ha": {
+      "cues": 22,
+      "duration": 171.46,
+      "bytes": 694252,
+      "maxCueSpeed": 1.070667,
+      "currentTextAndVoiceVerified": true
+    },
+    "yo": {
+      "cues": 22,
+      "duration": 171.46,
+      "bytes": 551233,
+      "maxCueSpeed": 1.0,
+      "currentTextAndVoiceVerified": true
+    },
+    "ig": {
+      "cues": 22,
+      "duration": 171.46,
+      "bytes": 645272,
+      "maxCueSpeed": 1.050667,
+      "currentTextAndVoiceVerified": true
+    }
+  },
+  "binocular-indirect-ophthalmoscopy": {
+    "es-419": {
+      "cues": 18,
+      "duration": 130.68,
+      "bytes": 563963,
+      "maxCueSpeed": 1.078313,
+      "currentTextAndVoiceVerified": true
+    },
+    "ko": {
+      "cues": 18,
+      "duration": 130.68,
+      "bytes": 539565,
+      "maxCueSpeed": 1.075,
+      "currentTextAndVoiceVerified": true
+    },
+    "ne": {
+      "cues": 18,
+      "duration": 130.68,
+      "bytes": 548190,
+      "maxCueSpeed": 1.077922,
+      "currentTextAndVoiceVerified": true
+    },
+    "fr": {
+      "cues": 18,
+      "duration": 130.68,
+      "bytes": 542822,
+      "maxCueSpeed": 1.032895,
+      "currentTextAndVoiceVerified": true
+    },
+    "lg": {
+      "cues": 18,
+      "duration": 130.68,
+      "bytes": 679981,
+      "maxCueSpeed": 1.073684,
+      "currentTextAndVoiceVerified": true
+    },
+    "ha": {
+      "cues": 18,
+      "duration": 130.68,
+      "bytes": 636357,
+      "maxCueSpeed": 1.021687,
+      "currentTextAndVoiceVerified": true
+    },
+    "yo": {
+      "cues": 18,
+      "duration": 130.68,
+      "bytes": 527625,
+      "maxCueSpeed": 1.077922,
+      "currentTextAndVoiceVerified": true
+    },
+    "ig": {
+      "cues": 18,
+      "duration": 130.68,
+      "bytes": 636216,
+      "maxCueSpeed": 1.071053,
+      "currentTextAndVoiceVerified": true
+    }
+  }
+}

@@ -1,0 +1,150 @@
+{
+  "input": "D:\\Arclight\\Arclight_App_NewApp_ChatRefact\\Arclight_App\\31 August - 4 September.docx",
+  "fonts_by_char_count": {
+    "Aptos": 3400
+  },
+  "direct_run_formatting_runs": 67,
+  "direct_paragraph_formatting_paragraphs": 67,
+  "heading_like_paragraphs_not_heading_style": [
+    {
+      "para_index": 1,
+      "text": "Weekly Update 31 August to 4 September",
+      "style": "Title"
+    },
+    {
+      "para_index": 21,
+      "text": "Area",
+      "style": "Normal"
+    },
+    {
+      "para_index": 22,
+      "text": "Before",
+      "style": "Normal"
+    },
+    {
+      "para_index": 23,
+      "text": "Now",
+      "style": "Normal"
+    },
+    {
+      "para_index": 24,
+      "text": "Practical benefit",
+      "style": "Normal"
+    },
+    {
+      "para_index": 25,
+      "text": "Total scheduled runs",
+      "style": "Normal"
+    },
+    {
+      "para_index": 29,
+      "text": "Operations monitoring",
+      "style": "Normal"
+    },
+    {
+      "para_index": 33,
+      "text": "Detecting new updates",
+      "style": "Normal"
+    },
+    {
+      "para_index": 37,
+      "text": "Product and UI review",
+      "style": "Normal"
+    },
+    {
+      "para_index": 41,
+      "text": "Full translation review",
+      "style": "Normal"
+    },
+    {
+      "para_index": 45,
+      "text": "Security and housekeeping",
+      "style": "Normal"
+    },
+    {
+      "para_index": 49,
+      "text": "Usage control",
+      "style": "Normal"
+    },
+    {
+      "para_index": 53,
+      "text": "Report format",
+      "style": "Normal"
+    },
+    {
+      "para_index": 57,
+      "text": "PostgreSQL DOCX",
+      "style": "Normal"
+    },
+    {
+      "para_index": 61,
+      "text": "Safety",
+      "style": "Normal"
+    },
+    {
+      "para_index": 65,
+      "text": "Agent names",
+      "style": "Normal"
+    }
+  ],
+  "examples": {
+    "direct_paragraph_formatting": [
+      {
+        "para_index": 1,
+        "text": "Weekly Update 31 August to 4 September",
+        "style": "Title"
+      },
+      {
+        "para_index": 2,
+        "text": "The main changes added multilingual narration to Fundal Reflex, improved video and subtitle controls and reduced schedul",
+        "style": "Normal"
+      },
+      {
+        "para_index": 3,
+        "text": "Narration and Video Learning",
+        "style": "Heading 1"
+      },
+      {
+        "para_index": 4,
+        "text": "Added English, Latin American Spanish and Korean narration with matching subtitles to the Fundal Reflex full animation.",
+        "style": "List Paragraph"
+      },
+      {
+        "para_index": 5,
+        "text": "Added an accessible menu to choose the narration language, follow the app language or turn narration off.",
+        "style": "List Paragraph"
+      }
+    ],
+    "direct_run_formatting": [
+      {
+        "para_index": 1,
+        "run_text": "Weekly Update 31 August to 4 September",
+        "style": "Title"
+      },
+      {
+        "para_index": 2,
+        "run_text": "The main changes added multilingual narration to Fundal Reflex, improved video a",
+        "style": "Normal"
+      },
+      {
+        "para_index": 3,
+        "run_text": "Narration and Video Learning",
+        "style": "Heading 1"
+      },
+      {
+        "para_index": 4,
+        "run_text": "Added English, Latin American Spanish and Korean narration with matching subtitl",
+        "style": "List Paragraph"
+      },
+      {
+        "para_index": 5,
+        "run_text": "Added an accessible menu to choose the narration language, follow the app langua",
+        "style": "List Paragraph"
+      }
+    ]
+  },
+  "notes": [
+    "Direct formatting is not always wrong, but it often causes inconsistent output when templates change.",
+    "Heading-like paragraphs not using Heading styles can break TOC and accessibility."
+  ]
+}
