@@ -45,4 +45,3 @@
 - A4 page geometry, margins, section properties, theme, styles and numbering must remain unchanged
 - The final document must contain only the requested title, headings and concise bullets
 - No Oxford comma, technical jargon without a plain explanation or internal citation tokens
-

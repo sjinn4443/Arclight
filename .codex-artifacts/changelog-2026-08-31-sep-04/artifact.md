@@ -60,4 +60,3 @@
 - The table must be A4 landscape, use fixed column widths and repeat its header
 - No Oxford comma, unexplained jargon, placeholder text or internal citation tokens
 - The in-progress narration statement must remain clearly marked as unfinished work
-
