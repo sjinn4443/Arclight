@@ -3,6 +3,13 @@ const path = require("path");
 
 const repoRoot = path.join(__dirname, "..");
 const vendorRoot = path.join(repoRoot, "public", "vendor");
+// Windows can briefly lock vendor files during indexing or virus scanning.
+const removeOptions = {
+  recursive: true,
+  force: true,
+  maxRetries: 5,
+  retryDelay: 200,
+};
 
 function packageVersion(packageName) {
   return require(
@@ -16,13 +23,25 @@ function copyFile(source, target) {
 }
 
 function copyDirectory(source, target) {
-  fs.rmSync(target, { recursive: true, force: true });
+  const entries = fs.readdirSync(source, { withFileTypes: true });
   fs.mkdirSync(target, { recursive: true });
-  for (const entry of fs.readdirSync(source, { withFileTypes: true })) {
+  for (const entry of entries) {
     const sourcePath = path.join(source, entry.name);
     const targetPath = path.join(target, entry.name);
     if (entry.isDirectory()) copyDirectory(sourcePath, targetPath);
     else if (entry.isFile()) copyFile(sourcePath, targetPath);
+  }
+  removeStaleEntries(
+    target,
+    entries.map((entry) => entry.name),
+  );
+}
+
+function removeStaleEntries(target, names) {
+  // Keep existing directories intact so Windows file watchers can retain handles.
+  const expected = new Set(names);
+  for (const name of fs.readdirSync(target)) {
+    if (!expected.has(name)) fs.rmSync(path.join(target, name), removeOptions);
   }
 }
 
@@ -40,7 +59,6 @@ copyFile(
 );
 
 const leafletTarget = path.join(vendorRoot, "leaflet");
-fs.rmSync(leafletTarget, { recursive: true, force: true });
 copyFile(
   path.join(repoRoot, "node_modules", "leaflet", "dist", "leaflet.css"),
   path.join(leafletTarget, "leaflet.css"),
@@ -53,6 +71,7 @@ copyDirectory(
   path.join(repoRoot, "node_modules", "leaflet", "dist", "images"),
   path.join(leafletTarget, "images"),
 );
+removeStaleEntries(leafletTarget, ["leaflet.css", "leaflet.js", "images"]);
 
 copyFile(
   path.join(
