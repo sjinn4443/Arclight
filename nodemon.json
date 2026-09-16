@@ -1,0 +1,12 @@
+{
+  "ignore": [
+    "**/public/vendor/**",
+    "**/dist/**",
+    "**/tmp-*{,/**}",
+    "**/tmp_*{,/**}",
+    "**/.build-cleanup-*{,/**}",
+    "**/playwright-report/**",
+    "**/test-results/**",
+    "**/blob-report/**"
+  ]
+}
