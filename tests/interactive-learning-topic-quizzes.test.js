@@ -174,6 +174,8 @@ describe("Interactive Learning topic quiz pages", () => {
       "directOphthalmoscopyVideoPage",
       "directOphthalmoscopyQuizPage",
       "directOphthalmoscopyPdfPage",
+      "directOphthalmoscopyScrollPage",
+      "binocularIndirectOphthalmoscopyScrollPage",
       "directOphthalmoscopyFullAnimationVideoPage",
       "binocularIndirectOphthalmoscopyFullAnimationVideoPage",
     ]);
