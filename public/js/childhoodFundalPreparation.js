@@ -135,6 +135,77 @@ export const FUNDAL_REFLEX_EXAMINATION_SCROLL_NARRATION_CLIPS = Object.freeze([
   }),
 ]);
 
+function createOphthalmoscopyNarrationTracks(folder) {
+  return Object.freeze(
+    Object.fromEntries(
+      Object.entries(FUNDAL_REFLEX_EXAMINATION_SCROLL_NARRATION_TRACKS).map(
+        ([language, track]) => [
+          language,
+          Object.freeze({
+            label: track.label,
+            src: `/narration/${folder}/full-animation/${language}.m4a`,
+          }),
+        ],
+      ),
+    ),
+  );
+}
+
+export const DIRECT_OPHTHALMOSCOPY_SCROLL_NARRATION_TRACKS =
+  createOphthalmoscopyNarrationTracks("direct-ophthalmoscopy");
+export const BINOCULAR_INDIRECT_OPHTHALMOSCOPY_SCROLL_NARRATION_TRACKS =
+  createOphthalmoscopyNarrationTracks("binocular-indirect-ophthalmoscopy");
+
+// One spoken interval per animation, in combined section order.
+export const DIRECT_OPHTHALMOSCOPY_SCROLL_NARRATION_CLIPS = Object.freeze(
+  [
+    { start: 3.2, end: 7.2, cueIds: ["observation-01"] },
+    { start: 7.2, end: 14, cueIds: ["observation-02"] },
+    { start: 14, end: 24.4, cueIds: ["observation-03"] },
+    {
+      start: 25,
+      end: 40.5,
+      cueIds: ["observation-04a", "observation-04b", "observation-04c"],
+    },
+    { start: 43.8, end: 55.2, cueIds: ["observation-05", "observation-06"] },
+    { start: 57, end: 68.3, cueIds: ["positioning-01"] },
+    { start: 71, end: 81.2, cueIds: ["positioning-02"] },
+    { start: 82, end: 94.4, cueIds: ["positioning-03"] },
+    { start: 94.6, end: 113.2, cueIds: ["positioning-04", "positioning-05"] },
+    { start: 118, end: 133.5, cueIds: ["features-01", "features-02"] },
+    { start: 135.6, end: 144.62, cueIds: ["features-03"] },
+    { start: 145, end: 153.7, cueIds: ["examine-01"] },
+    {
+      start: 154,
+      end: 183.05,
+      cueIds: ["examine-02", "examine-03", "examine-04"],
+    },
+  ].map(Object.freeze),
+);
+
+export const BINOCULAR_INDIRECT_OPHTHALMOSCOPY_SCROLL_NARRATION_CLIPS =
+  Object.freeze(
+    [
+      { start: 2.5, end: 6.1, cueIds: ["preparation-01"] },
+      { start: 6.5, end: 25.5, cueIds: ["preparation-02", "preparation-03"] },
+      { start: 26, end: 39.7, cueIds: ["preparation-04", "preparation-05"] },
+      { start: 39.95, end: 47.1, cueIds: ["preparation-06"] },
+      { start: 51, end: 59.9, cueIds: ["sitting-01"] },
+      { start: 60.2, end: 68.5, cueIds: ["sitting-02"] },
+      { start: 68.7, end: 76.3, cueIds: ["sitting-03"] },
+      { start: 76.5, end: 87.7, cueIds: ["sitting-04", "sitting-05"] },
+      { start: 88, end: 93.2, cueIds: ["sitting-06"] },
+      { start: 97.8, end: 102, cueIds: ["indentation-01"] },
+      {
+        start: 102,
+        end: 117.8,
+        cueIds: ["indentation-02", "indentation-03", "indentation-04"],
+      },
+      { start: 117.8, end: 122.2, cueIds: ["indentation-05"] },
+      { start: 122.2, end: 130.6, cueIds: ["indentation-06"] },
+    ].map(Object.freeze),
+  );
+
 function detectFundalWebKitEnvironment() {
   if (typeof navigator === "undefined") {
     return {
@@ -1394,6 +1465,8 @@ ROUTE_CONFIG[FUNDAL_REFLEX_EXAMINATION_SCROLL_ROUTE].narrationTracks =
 ROUTE_CONFIG[FUNDAL_REFLEX_EXAMINATION_SCROLL_ROUTE].narrationClipsByFile =
   FUNDAL_REFLEX_EXAMINATION_SCROLL_NARRATION_CLIPS;
 ROUTE_CONFIG[DIRECT_OPHTHALMOSCOPY_SCROLL_ROUTE] = {
+  narrationTracks: DIRECT_OPHTHALMOSCOPY_SCROLL_NARRATION_TRACKS,
+  narrationClipsByFile: DIRECT_OPHTHALMOSCOPY_SCROLL_NARRATION_CLIPS,
   ...createCombinedFundalRouteConfig(
     "directOphthalmoscopyScrollPage",
     "Direct Ophthalmoscopy",
@@ -1405,6 +1478,9 @@ ROUTE_CONFIG[DIRECT_OPHTHALMOSCOPY_SCROLL_ROUTE] = {
   skipRouteImageWarmup: true,
 };
 ROUTE_CONFIG[BINOCULAR_INDIRECT_OPHTHALMOSCOPY_SCROLL_ROUTE] = {
+  narrationTracks: BINOCULAR_INDIRECT_OPHTHALMOSCOPY_SCROLL_NARRATION_TRACKS,
+  narrationClipsByFile:
+    BINOCULAR_INDIRECT_OPHTHALMOSCOPY_SCROLL_NARRATION_CLIPS,
   ...createCombinedFundalRouteConfig(
     "binocularIndirectOphthalmoscopyScrollPage",
     "Binocular Indirect Ophthalmoscopy",
@@ -1559,9 +1635,12 @@ function getFundalNarrationControlCopy(language = getLanguage()) {
   };
 }
 
-export function initializeFundalStageNarration(routeName, cfg, page) {
-  if (routeName !== FUNDAL_REFLEX_EXAMINATION_SCROLL_ROUTE) return null;
-
+export function initializeFundalStageNarration(
+  routeName,
+  cfg,
+  page,
+  onTextLanguageChange = null,
+) {
   const tracks = cfg?.narrationTracks;
   const clips = cfg?.narrationClipsByFile;
   const controls = page.querySelector(
@@ -1845,6 +1924,9 @@ export function initializeFundalStageNarration(routeName, cfg, page) {
       beginPlayback(resumeTime);
     }
     updateControls();
+    void Promise.resolve(onTextLanguageChange?.()).catch((err) => {
+      console.error("[fundalScroll] text language refresh failed", err);
+    });
   };
 
   const onPageInteraction = (event) => {
@@ -1866,6 +1948,7 @@ export function initializeFundalStageNarration(routeName, cfg, page) {
 
   return {
     playForStage,
+    getLanguage: resolveSelectedLanguage,
     refreshLanguage: () => {
       const appLanguage = getLanguage();
       if (appLanguage !== lastAppLanguage) {
@@ -2425,10 +2508,24 @@ function normalizeFundalLiteralText(value) {
     .trim();
 }
 
-async function ensureFundalI18nDictionary() {
-  const lang = getLanguage();
+let fundalDictionaryRequest = 0;
+
+function getFundalTextLanguage(cfg) {
+  if (!cfg?.narrationTracks) return getLanguage();
+  const { language } = readFundalNarrationPreference(cfg.pageId);
+  return normalizeFundalNarrationLanguage(
+    language === "auto" ? getLanguage() : language,
+  );
+}
+
+async function ensureFundalI18nDictionary(language = getLanguage()) {
+  // The audio uses Latin American Spanish; the text dictionary uses `es`.
+  const lang = language === "es-419" ? "es" : language;
+  const request = ++fundalDictionaryRequest;
   if (fundalI18nLang === lang && fundalI18nDict) return;
-  fundalI18nDict = await fetchDictionary(lang);
+  const dictionary = await fetchDictionary(lang);
+  if (request !== fundalDictionaryRequest) return;
+  fundalI18nDict = dictionary;
   fundalI18nLang = lang;
 }
 
@@ -2492,9 +2589,13 @@ if (!window.__fundalScrollLanguageRefreshWired) {
   window.__fundalScrollLanguageRefreshWired = true;
   window.addEventListener("i18n:languageChanged", () => {
     try {
-      localStorage.removeItem(
-        `${FUNDAL_REFLEX_SCROLL_NARRATION_LANGUAGE_STORAGE_PREFIX}fundalReflexExaminationScrollPage`,
-      );
+      for (const cfg of Object.values(ROUTE_CONFIG)) {
+        if (cfg.narrationTracks) {
+          localStorage.removeItem(
+            `${FUNDAL_REFLEX_SCROLL_NARRATION_LANGUAGE_STORAGE_PREFIX}${cfg.pageId}`,
+          );
+        }
+      }
     } catch {
       /* Storage may be unavailable. */
     }
@@ -8497,7 +8598,14 @@ function initializeStageAutoplayMode(
 
     return state;
   });
-  const stageNarration = initializeFundalStageNarration(routeName, cfg, page);
+  let languageRefreshVersion = 0;
+  let sessionDisposed = false;
+  const stageNarration = initializeFundalStageNarration(
+    routeName,
+    cfg,
+    page,
+    refreshLanguage,
+  );
 
   let lastViewportScrollTop = null;
 
@@ -10281,7 +10389,12 @@ function initializeStageAutoplayMode(
   }
 
   async function refreshLanguage() {
-    await ensureFundalI18nDictionary();
+    const version = ++languageRefreshVersion;
+    stageNarration?.refreshLanguage();
+    await ensureFundalI18nDictionary(
+      stageNarration?.getLanguage() || getLanguage(),
+    );
+    if (sessionDisposed || version !== languageRefreshVersion) return;
     states.forEach((state) => {
       resolveStageSummary(state);
       const replayBtn = ensureStageReplayButtonElement(
@@ -10309,7 +10422,6 @@ function initializeStageAutoplayMode(
       }
       restoreTranslatedPlaybackText(state);
     });
-    stageNarration?.refreshLanguage();
   }
 
   function ensureStageAnimationLoaded(state) {
@@ -10651,6 +10763,7 @@ function initializeStageAutoplayMode(
     animations: states.map((state) => state.anim).filter((anim) => !!anim),
     observer: null,
     removeInputListeners: () => {
+      sessionDisposed = true;
       stageNarration?.destroy();
       setPlaybackScrollLocked(false);
       clearBoundaryTouchPoint();
@@ -10784,7 +10897,9 @@ export async function initializeChildhoodFundalReflexScrollPage(routeName) {
     setTimeout(resolve, 0);
   });
 
-  const i18nReadyPromise = ensureFundalI18nDictionary().catch((err) => {
+  const i18nReadyPromise = ensureFundalI18nDictionary(
+    getFundalTextLanguage(cfg),
+  ).catch((err) => {
     console.error("[fundalScroll] dictionary preload failed", err);
   });
   const lottieReadyPromise = ensureLottie();

@@ -32,6 +32,8 @@ function loadServiceWorker(fetchImpl) {
         "arclight-static-v54",
         "arclight-static-v62",
         "arclight-static-v63",
+        "arclight-static-v65",
+        "arclight-static-v66",
       ]),
     open: jest.fn().mockResolvedValue(cache),
   };
@@ -147,7 +149,9 @@ describe("service worker sensitive-cache policy", () => {
     expect(caches.delete).toHaveBeenCalledWith("arclight-static-v53");
     expect(caches.delete).toHaveBeenCalledWith("arclight-static-v54");
     expect(caches.delete).toHaveBeenCalledWith("arclight-static-v62");
-    expect(caches.delete).not.toHaveBeenCalledWith("arclight-static-v63");
+    expect(caches.delete).toHaveBeenCalledWith("arclight-static-v63");
+    expect(caches.delete).toHaveBeenCalledWith("arclight-static-v65");
+    expect(caches.delete).not.toHaveBeenCalledWith("arclight-static-v66");
     expect(self.clients.claim).toHaveBeenCalledTimes(1);
   });
 

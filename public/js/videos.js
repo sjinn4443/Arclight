@@ -4601,6 +4601,27 @@ function show(id) {
   });
 
   // Hide the currently active page, if any
+  if (
+    [
+      DIRECT_OPHTHALMOSCOPY_SCROLL_PAGE_ID,
+      BINOCULAR_INDIRECT_OPHTHALMOSCOPY_SCROLL_PAGE_ID,
+    ].includes(id) &&
+    ["directOphthalmoscopy", "arclightPage", "holoOverviewPage"].includes(
+      currentPageElement?.id,
+    )
+  ) {
+    try {
+      sessionStorage.setItem(
+        "videos:contextualReturn:v1",
+        JSON.stringify({
+          from: currentPageElement.id,
+          target: id,
+        }),
+      );
+    } catch {
+      // Structural navigation remains available when storage is unavailable.
+    }
+  }
   if (currentPageElement && currentPageElement !== newPageElement) {
     currentPageElement.style.display = "none";
   }

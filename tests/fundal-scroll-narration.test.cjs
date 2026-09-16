@@ -27,6 +27,7 @@ describe("Fundal Reflex examination scroll narration", () => {
   let FUNDAL_REFLEX_EXAMINATION_SCROLL_NARRATION_CLIPS;
   let FUNDAL_REFLEX_EXAMINATION_SCROLL_NARRATION_TRACKS;
   let initializeFundalStageNarration;
+  let narrationModule;
   let loadSpy;
   let pauseSpy;
   let playSpy;
@@ -38,11 +39,13 @@ describe("Fundal Reflex examination scroll narration", () => {
       ok: true,
       json: async () => ({}),
     }));
+    narrationModule =
+      await import("../public/js/childhoodFundalPreparation.js");
     ({
       FUNDAL_REFLEX_EXAMINATION_SCROLL_NARRATION_CLIPS,
       FUNDAL_REFLEX_EXAMINATION_SCROLL_NARRATION_TRACKS,
       initializeFundalStageNarration,
-    } = await import("../public/js/childhoodFundalPreparation.js"));
+    } = narrationModule);
   });
 
   afterAll(() => {
@@ -114,6 +117,7 @@ describe("Fundal Reflex examination scroll narration", () => {
 
   it("plays the matching clip, changes language, and persists on/off", async () => {
     const page = document.getElementById("fundalReflexExaminationScrollPage");
+    const refreshText = jest.fn();
     const controller = initializeFundalStageNarration(
       "fundalReflexExaminationScroll",
       {
@@ -122,6 +126,7 @@ describe("Fundal Reflex examination scroll narration", () => {
         narrationClipsByFile: FUNDAL_REFLEX_EXAMINATION_SCROLL_NARRATION_CLIPS,
       },
       page,
+      refreshText,
     );
     const audio = page.querySelector("[data-fundal-scroll-narration-audio]");
     const select = page.querySelector(
@@ -133,6 +138,7 @@ describe("Fundal Reflex examination scroll narration", () => {
       "/narration/fundal-reflex/full-animation/ko.m4a",
     );
     expect(select.value).toBe("auto");
+    expect(controller.getLanguage()).toBe("ko");
 
     controller.playForStage(4);
     await Promise.resolve();
@@ -141,6 +147,8 @@ describe("Fundal Reflex examination scroll narration", () => {
 
     select.value = "es-419";
     select.dispatchEvent(new Event("change", { bubbles: true }));
+    expect(refreshText).toHaveBeenCalledTimes(1);
+    expect(controller.getLanguage()).toBe("es-419");
     expect(audio.getAttribute("src")).toBe(
       "/narration/fundal-reflex/full-animation/es-419.m4a",
     );
@@ -169,6 +177,71 @@ describe("Fundal Reflex examination scroll narration", () => {
       page.querySelector("[data-fundal-scroll-narration-audio]"),
     ).toBeNull();
   });
+
+  it.each([
+    [
+      "DIRECT_OPHTHALMOSCOPY",
+      "direct-ophthalmoscopy",
+      "directOphthalmoscopyScroll",
+    ],
+    [
+      "BINOCULAR_INDIRECT_OPHTHALMOSCOPY",
+      "binocular-indirect-ophthalmoscopy",
+      "binocularIndirectOphthalmoscopyScroll",
+    ],
+  ])(
+    "maps and plays all 13 %s stages using existing localized tracks",
+    (prefix, folder, route) => {
+      const tracks = narrationModule[`${prefix}_SCROLL_NARRATION_TRACKS`];
+      const clips = narrationModule[`${prefix}_SCROLL_NARRATION_CLIPS`];
+      const script = JSON.parse(
+        fs.readFileSync(
+          path.resolve(`public/narration/${folder}/full-animation/script.json`),
+          "utf8",
+        ),
+      );
+      expect(clips).toHaveLength(13);
+      for (const [language, track] of Object.entries(tracks)) {
+        expect(fs.existsSync(path.resolve(`public${track.src}`))).toBe(true);
+        const cues = new Map(script.cues.map((cue) => [cue.id, cue]));
+        for (const clip of clips) {
+          const matched = clip.cueIds.map((id) => cues.get(id));
+          expect(matched.every(Boolean)).toBe(true);
+          expect(clip.start).toBeCloseTo(
+            Math.min(...matched.map((cue) => cue.start)),
+            3,
+          );
+          expect(clip.end).toBeCloseTo(
+            Math.max(...matched.map((cue) => cue.end)),
+            3,
+          );
+        }
+      }
+      const page = document.getElementById("fundalReflexExaminationScrollPage");
+      page.id = `${route}Page`;
+      const controller = initializeFundalStageNarration(
+        route,
+        {
+          pageId: page.id,
+          narrationTracks: tracks,
+          narrationClipsByFile: clips,
+        },
+        page,
+      );
+      expect(controller).not.toBeNull();
+      const audio = page.querySelector("audio");
+      expect(audio.getAttribute("src")).toBe(tracks.ko.src);
+      for (let index = 0; index < clips.length; index++) {
+        controller.playForStage(index);
+        expect(audio.currentTime).toBeCloseTo(clips[index].start, 3);
+        audio.currentTime = clips[index].end;
+        audio.dispatchEvent(new Event("timeupdate"));
+        expect(pauseSpy).toHaveBeenCalled();
+      }
+      controller.destroy();
+      expect(page.querySelector("audio")).toBeNull();
+    },
+  );
 
   it.each(["ha", "yo", "ig"])(
     "uses %s app language for scrolly narration",
