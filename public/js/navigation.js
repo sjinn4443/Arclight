@@ -1068,6 +1068,10 @@ const STRUCTURAL_BACK_SUBPAGES = {
     routeName: "videos",
     subPageId: "arclightPage",
   },
+  frontOfEyeExaminationScrollPage: {
+    routeName: "videos",
+    subPageId: "frontOfEyePage",
+  },
   fundalReflexExaminationScrollPage: {
     routeName: "videos",
     subPageId: "fundalReflexPage",

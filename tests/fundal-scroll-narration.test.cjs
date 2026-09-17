@@ -273,4 +273,95 @@ describe("Fundal Reflex examination scroll narration", () => {
       controller.destroy();
     },
   );
+
+  it("holds synchronized completion during stalled audio and resumes muted playback at the same position", async () => {
+    const page = document.getElementById("fundalReflexExaminationScrollPage");
+    page.id = "frontOfEyeExaminationScrollPage";
+    let now = 0;
+    const clock = jest.spyOn(performance, "now").mockImplementation(() => now);
+    const controller = initializeFundalStageNarration(
+      "frontOfEyeExaminationScroll",
+      {
+        pageId: page.id,
+        narrationTimeline: [
+          [
+            [3, 0],
+            [6, 90],
+            [12, 90],
+          ],
+        ],
+        narrationTracks: FUNDAL_REFLEX_EXAMINATION_SCROLL_NARRATION_TRACKS,
+        narrationClipsByFile: [{ start: 3, end: 12 }],
+      },
+      page,
+    );
+    const audio = page.querySelector("audio");
+    const toggle = page.querySelector("button");
+    controller.playForStage(0);
+    await Promise.resolve();
+    audio.currentTime = 6;
+    expect(controller.getPosition()).toMatchObject({
+      time: 6,
+      finished: false,
+    });
+    now = 60_000;
+    expect(controller.getPosition()).toMatchObject({
+      time: 6,
+      finished: false,
+    });
+    toggle.click();
+    expect(toggle.getAttribute("aria-pressed")).toBe("false");
+    now += 1000;
+    expect(controller.getPosition()).toMatchObject({
+      time: 7,
+      finished: false,
+    });
+    toggle.click();
+    expect(audio.currentTime).toBe(7);
+    audio.currentTime = 11.99;
+    audio.dispatchEvent(new Event("timeupdate"));
+    expect(controller.getPosition().finished).toBe(false);
+    audio.currentTime = 12;
+    expect(controller.getPosition().finished).toBe(true);
+    controller.playForStage(0);
+    expect(controller.getPosition()).toMatchObject({
+      time: 3,
+      finished: false,
+    });
+    controller.destroy();
+    clock.mockRestore();
+  });
+
+  it("the first synchronized sound-button click mutes even when autoplay was blocked", async () => {
+    const page = document.getElementById("fundalReflexExaminationScrollPage");
+    page.id = "frontOfEyeExaminationScrollPage";
+    playSpy.mockRejectedValue(
+      new DOMException("gesture required", "NotAllowedError"),
+    );
+    const controller = initializeFundalStageNarration(
+      "frontOfEyeExaminationScroll",
+      {
+        pageId: page.id,
+        narrationTimeline: [
+          [
+            [3, 0],
+            [12, 90],
+          ],
+        ],
+        narrationTracks: FUNDAL_REFLEX_EXAMINATION_SCROLL_NARRATION_TRACKS,
+        narrationClipsByFile: [{ start: 3, end: 12 }],
+      },
+      page,
+    );
+    controller.playForStage(0);
+    await Promise.resolve();
+    await Promise.resolve();
+    const toggle = page.querySelector("button");
+    expect(toggle.getAttribute("aria-pressed")).toBe("true");
+    expect(controller.getPosition().finished).toBe(false);
+    toggle.click();
+    expect(toggle.getAttribute("aria-pressed")).toBe("false");
+    expect(playSpy).toHaveBeenCalledTimes(1);
+    controller.destroy();
+  });
 });

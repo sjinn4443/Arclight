@@ -1,6 +1,44 @@
 # Examination narration and subtitles
 
-Last checked: 15 September 2026.
+Last checked: 17 September 2026.
+
+### Combined scroll timing update — 17 September 2026
+
+`frontOfEyeExaminationScrollPage`, `directOphthalmoscopyScrollPage` and
+`binocularIndirectOphthalmoscopyScrollPage` use `examinationScrollTiming.js`.
+Its per-stage checkpoints map absolute narration seconds to local Lottie frames;
+repeated frames create teaching holds. The narration element's actual time drives
+both frame selection and script cue text. Buffering freezes both. Replay, the down
+arrow and forward-scroll unlock wait for the clip end, including final-frame holds.
+Muted playback uses a monotonic clock of the same duration; unmuting seeks audio
+to that position. Replay resets all three. Language changes preserve elapsed time.
+
+All three guides now take text directly from their Full Animation `script.json`
+cues. The DO Positioning stage four endpoint changes from 525 to 645 to include
+the branch-return graphic described by `positioning-05`; original standalone
+workshop settings are unchanged. The shared renderer overrides and exact static
+pause/completion images still apply, including BIO canvas stages.
+
+The DO Positioning third scene reveals the green angle at "ten" (90.88 s),
+keeps it visible through "degrees" (91.76 s), and shows the check at 92.2 s.
+The fourth scene loses the disc at 109.09 s and changes to the green return
+arrow between "follow" (110.23 s) and "back" (111.59 s). These word positions
+were measured locally against the existing English track. BIO Preparation
+scene three plays frames 0–183 over 26–32 s (approximately its original 30 fps),
+preserving every later checkpoint. Headings use `videoTitleCues` translations
+from each guide's script and follow the narration selector, including Auto.
+
+The lesson-row click primes an audio element before async page loading, and the
+controller adopts that same element. New preferences default to narration on;
+a saved mute is respected. Clicking the sound icon always toggles mute on these
+guides, even if autoplay was blocked. A direct link without prior user activation
+can still require a page interaction under browser autoplay policy.
+
+Tests: `examination-scroll-sync.spec.js` checks all 37 stages, cue boundaries,
+stalled audio, final-frame completion and mute/resume. Chromium uses real AAC.
+This Windows WebKit host rejects both AAC and PCM, so its media clock is mocked;
+Lottie rendering, controls and navigation run in real WebKit. These checks do not
+replace physical iPhone audible-autoplay verification.
 
 This is the production and maintenance record for the five examination pages.
 It records what the repository contains, how the media was made and how to
@@ -303,6 +341,27 @@ audio track. It does not reproduce JavaScript holds for DO or BIO. Use the
 running app to review those holds. Front of Eye's review uses the timed source.
 
 ## Fundal Reflex scroll narration
+
+### Front of Eye scroll lesson
+
+`frontOfEyeExaminationScrollPage` also uses the shared stage-autoplay engine.
+Its configuration is in `public/js/frontOfEyeExaminationScroll.js`. It contains
+eleven ordered Lottie paths and eleven audio intervals from the existing timed
+Front of Eye M4A tracks. It loads `front-of-eye/full-animation/script.json` once
+for translated stage guidance, selected by each interval's `cueIds`. Guidance
+follows the resolved narration language, including Auto, with English fallback.
+The four section headings use the supplied English folder titles.
+
+Stage intervals are 3.7–9.7, 10–24.5, 27–46.8, 50–85.7, 87–94, 102–113,
+115.5–120.1, 124–129.6, 130.6–134, 136–143.5 and 151–171.4 seconds.
+These are audio times; caption triggers and exact final holds use local Lottie
+frames. Speech can continue over a held final frame. Retiming the audio requires
+reviewing these intervals. The full-animation audio files are reused unchanged.
+
+Run `tests-e2e/front-of-eye-scroll.spec.js` on both Playwright projects to check
+all eleven stage holds, frame screenshots, language switching, replay and cleanup.
+
+### Fundal Reflex combined lesson
 
 `fundalReflexExaminationScrollPage` is the combined Videos-route Lottie lesson.
 `initializeFundalStageNarration()` enables audio only for that combined route.

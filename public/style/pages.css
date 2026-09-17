@@ -7415,6 +7415,7 @@ select.onb-input.has-value + .onb-select-caret {
 }
 
 :is(
+    #frontOfEyeExaminationScrollPage,
     #fundalReflexExaminationScrollPage,
     #directOphthalmoscopyScrollPage,
     #binocularIndirectOphthalmoscopyScrollPage
@@ -7675,6 +7676,7 @@ select.onb-input.has-value + .onb-select-caret {
 }
 
 :is(
+    #frontOfEyeExaminationScrollPage,
     #fundalReflexExaminationScrollPage,
     #directOphthalmoscopyScrollPage,
     #binocularIndirectOphthalmoscopyScrollPage
@@ -7686,6 +7688,7 @@ select.onb-input.has-value + .onb-select-caret {
 }
 
 :is(
+    #frontOfEyeExaminationScrollPage,
     #fundalReflexExaminationScrollPage,
     #directOphthalmoscopyScrollPage,
     #binocularIndirectOphthalmoscopyScrollPage
@@ -7697,12 +7700,14 @@ select.onb-input.has-value + .onb-select-caret {
 }
 
 :is(
+    #frontOfEyeExaminationScrollPage,
     #fundalReflexExaminationScrollPage,
     #directOphthalmoscopyScrollPage,
     #binocularIndirectOphthalmoscopyScrollPage
   )
   .fundal-reflex-section-divider {
-  --fundal-reflex-divider-offset: 78px;
+  /* Clear the anchored arrow, including its desktop size and entry transition. */
+  --fundal-reflex-divider-offset: 120px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -7714,6 +7719,7 @@ select.onb-input.has-value + .onb-select-caret {
 }
 
 :is(
+    #frontOfEyeExaminationScrollPage,
     #fundalReflexExaminationScrollPage,
     #directOphthalmoscopyScrollPage,
     #binocularIndirectOphthalmoscopyScrollPage
@@ -7724,6 +7730,7 @@ select.onb-input.has-value + .onb-select-caret {
 }
 
 :is(
+    #frontOfEyeExaminationScrollPage,
     #fundalReflexExaminationScrollPage,
     #directOphthalmoscopyScrollPage,
     #binocularIndirectOphthalmoscopyScrollPage
@@ -8540,14 +8547,16 @@ select.onb-input.has-value + .onb-select-caret {
   }
 }
 
-#fundalReflexExaminationScrollPage .fundal-reflex-inline-nav {
+:is(#frontOfEyeExaminationScrollPage, #fundalReflexExaminationScrollPage)
+  .fundal-reflex-inline-nav {
   display: flex;
   justify-content: space-between;
   gap: 12px;
   padding: 8px 0 calc(24px + env(safe-area-inset-bottom));
 }
 
-#fundalReflexExaminationScrollPage .fundal-reflex-inline-nav__btn {
+:is(#frontOfEyeExaminationScrollPage, #fundalReflexExaminationScrollPage)
+  .fundal-reflex-inline-nav__btn {
   flex: 1;
   min-height: 38px;
   border: none;
@@ -8560,16 +8569,19 @@ select.onb-input.has-value + .onb-select-caret {
   line-height: 1;
 }
 
-#fundalReflexExaminationScrollPage .fundal-reflex-inline-nav__btn--next {
+:is(#frontOfEyeExaminationScrollPage, #fundalReflexExaminationScrollPage)
+  .fundal-reflex-inline-nav__btn--next {
   background: #e41e26;
 }
 
-#fundalReflexExaminationScrollPage .fundal-reflex-inline-nav__btn:active {
+:is(#frontOfEyeExaminationScrollPage, #fundalReflexExaminationScrollPage)
+  .fundal-reflex-inline-nav__btn:active {
   transform: translateY(1px);
 }
 
 @media (max-width: 37.5em) {
   :is(
+      #frontOfEyeExaminationScrollPage,
       #fundalReflexExaminationScrollPage,
       #directOphthalmoscopyScrollPage,
       #binocularIndirectOphthalmoscopyScrollPage
@@ -8580,6 +8592,7 @@ select.onb-input.has-value + .onb-select-caret {
   }
 
   :is(
+      #frontOfEyeExaminationScrollPage,
       #fundalReflexExaminationScrollPage,
       #directOphthalmoscopyScrollPage,
       #binocularIndirectOphthalmoscopyScrollPage

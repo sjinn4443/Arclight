@@ -295,6 +295,23 @@ media and selects an existing language track.
 
 ### Pages and languages
 
+`frontOfEyePage` now opens **Front of Eye Examination** above Full Animation.
+The Front of Eye, Direct Ophthalmoscopy and BIO scroll guides use the narration
+media clock for Lottie scenes and the Full Animation script's caption cues.
+Teaching holds and final frames remain visible until speech finishes; Replay
+and Next appear only after the complete stage. Muting uses the same timeline
+without audio. Launcher activation primes the narration element before async
+loading so sound is enabled by default while respecting a saved mute choice.
+Section headings follow the selected narration language using the existing Full
+Animation title translations. Section spacing keeps the next heading below the
+completed stage's down arrow on desktop and mobile.
+The `frontOfEyeExaminationScrollPage` lesson uses the shared Fundal scroll layout
+for eleven animations in four numbered sections under `scrolly/coreexam/frontofeye/`.
+It reuses all nine Front of Eye audio tracks and their translated script cues as
+stage guidance. Stage playback, replay, scroll locks and WebKit recovery use
+`childhoodFundalPreparation.js`; the page-specific order, frame holds and audio
+intervals are in `frontOfEyeExaminationScroll.js`.
+
 The nine-language set is English (`en`), Latin American Spanish (`es-419`),
 Korean (`ko`), Nepali (`ne`), French (`fr`), Luganda (`lg`), Hausa (`ha`),
 Yoruba (`yo`) and Igbo (`ig`). English speech uses a British voice.

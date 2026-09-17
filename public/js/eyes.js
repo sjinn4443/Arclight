@@ -122,6 +122,7 @@ const VIDEO_PAGE_IDS = new Set([
   "phoneAttachmentVideoPage",
   "visualAcuityPage",
   "fundalReflexPage",
+  "frontOfEyeExaminationScrollPage",
   "fundalReflexExaminationScrollPage",
   "binocularIndirectOphthalmoscopyScrollPage",
   "interactiveLearningPage",

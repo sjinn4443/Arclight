@@ -155,6 +155,7 @@ describe("Interactive Learning topic quiz pages", () => {
     ).map((row) => row.getAttribute("data-target"));
     expect(frontOfEyeIntermediateTargets).toEqual([
       "feFullAnteriorSegmentPage",
+      "frontOfEyeExaminationScrollPage",
       "frontOfEyeFullAnimationVideoPage",
     ]);
     expect(

@@ -1,3 +1,9 @@
+import { FRONT_OF_EYE_EXAMINATION_SCROLL_CONFIG } from "./frontOfEyeExaminationScroll.js";
+import {
+  configureExaminationTiming,
+  frameAtNarrationTime,
+  takePrimedExaminationAudio,
+} from "./examinationScrollTiming.js";
 import { loadPage } from "./navigation.js";
 import { fetchDictionary, get, getLanguage } from "./i18n.js";
 
@@ -1472,7 +1478,8 @@ ROUTE_CONFIG[DIRECT_OPHTHALMOSCOPY_SCROLL_ROUTE] = {
     "Direct Ophthalmoscopy",
     DIRECT_OPHTHALMOSCOPY_SECTION_SOURCES,
   ),
-  disableCompletedRouteRestore: true,
+  disableCompletedRouteRestore: false,
+  progressStoragePrefix: "diabeticWorkshop:progress:",
   lazyInitialStageCount: 1,
   lazyLoadStageAnimations: true,
   skipRouteImageWarmup: true,
@@ -1486,11 +1493,19 @@ ROUTE_CONFIG[BINOCULAR_INDIRECT_OPHTHALMOSCOPY_SCROLL_ROUTE] = {
     "Binocular Indirect Ophthalmoscopy",
     BINOCULAR_INDIRECT_OPHTHALMOSCOPY_SECTION_SOURCES,
   ),
-  disableCompletedRouteRestore: true,
+  disableCompletedRouteRestore: false,
+  progressStoragePrefix: "diabeticWorkshop:progress:",
   lazyInitialStageCount: 1,
   lazyLoadStageAnimations: true,
   skipRouteImageWarmup: true,
 };
+
+ROUTE_CONFIG.frontOfEyeExaminationScroll = {
+  ...FRONT_OF_EYE_EXAMINATION_SCROLL_CONFIG,
+  narrationTracks: createOphthalmoscopyNarrationTracks("front-of-eye"),
+};
+
+Object.values(ROUTE_CONFIG).forEach(configureExaminationTiming);
 
 function normalizeFundalNarrationLanguage(language) {
   const normalized = String(language || "")
@@ -1664,7 +1679,10 @@ export function initializeFundalStageNarration(
   }
 
   const preference = readFundalNarrationPreference(cfg.pageId);
-  const audio = document.createElement("audio");
+  const synchronized = !!cfg.narrationTimeline;
+  const audio =
+    (synchronized && takePrimedExaminationAudio(cfg.pageId)) ||
+    document.createElement("audio");
   audio.hidden = true;
   audio.preload = "auto";
   audio.setAttribute("aria-hidden", "true");
@@ -1680,6 +1698,39 @@ export function initializeFundalStageNarration(
   let pendingStartTime = null;
   let stopTimerId = null;
   let playbackBlocked = false;
+  let elapsed = 0;
+  let clockUpdatedAt = performance.now();
+  let playAttempt = 0;
+  let disposed = false;
+  const clockRate = synchronized
+    ? Math.max(
+        1,
+        Math.min(16, Number(getFundalE2ERuntime()?.fundalPlaybackRate) || 1),
+      )
+    : 1;
+  if (synchronized) audio.playbackRate = clockRate;
+
+  const getPosition = () => {
+    const now = performance.now();
+    if (activeClip && clipActive) {
+      if (!enabled)
+        elapsed += (Math.max(0, now - clockUpdatedAt) * clockRate) / 1000;
+      else if (pendingStartTime == null && audio.readyState >= 1) {
+        elapsed = Math.max(
+          elapsed,
+          Number(audio.currentTime) - activeClip.start,
+        );
+      }
+      elapsed = Math.min(activeClip.end - activeClip.start, elapsed);
+      if (elapsed >= activeClip.end - activeClip.start) stopAtClipEnd();
+    }
+    clockUpdatedAt = now;
+    return {
+      time: (activeClip?.start || 0) + elapsed,
+      elapsed,
+      finished: !!activeClip && !clipActive,
+    };
+  };
 
   const resolveSelectedLanguage = () =>
     selectedLanguage === "auto"
@@ -1694,6 +1745,8 @@ export function initializeFundalStageNarration(
 
   const stopAtClipEnd = () => {
     clearStopTimer();
+    playAttempt += 1;
+    if (activeClip) elapsed = activeClip.end - activeClip.start;
     clipActive = false;
     playbackBlocked = false;
     try {
@@ -1713,6 +1766,8 @@ export function initializeFundalStageNarration(
 
   const scheduleStop = () => {
     clearStopTimer();
+    // Synchronized stages use the actual media clock, including buffering.
+    if (synchronized) return;
     if (!enabled || !clipActive || !activeClip || audio.paused) return;
     const remainingSeconds = Math.max(
       0,
@@ -1732,7 +1787,7 @@ export function initializeFundalStageNarration(
       resolvedLanguage === "es-419" ? "ES" : resolvedLanguage.toUpperCase();
     const toggleLabel = !enabled
       ? copy.on
-      : playbackBlocked
+      : playbackBlocked && !synchronized
         ? copy.blocked
         : copy.off;
 
@@ -1762,6 +1817,7 @@ export function initializeFundalStageNarration(
   }
 
   const setTrackSource = (language, resumeTime = null) => {
+    playAttempt += 1;
     const normalizedLanguage = normalizeFundalNarrationLanguage(language);
     const track = tracks[normalizedLanguage] || tracks.en;
     if (!track?.src) return false;
@@ -1811,6 +1867,7 @@ export function initializeFundalStageNarration(
     }
 
     playbackBlocked = false;
+    const attempt = ++playAttempt;
     let playResult;
     try {
       playResult = audio.play();
@@ -1822,11 +1879,13 @@ export function initializeFundalStageNarration(
     if (playResult && typeof playResult.then === "function") {
       playResult
         .then(() => {
+          if (disposed || attempt !== playAttempt) return;
           playbackBlocked = false;
           scheduleStop();
           updateControls();
         })
         .catch(() => {
+          if (disposed || attempt !== playAttempt) return;
           clearStopTimer();
           playbackBlocked = true;
           updateControls();
@@ -1846,6 +1905,8 @@ export function initializeFundalStageNarration(
       // A fresh seek below still replaces any prior stage clip.
     }
     activeClip = clip;
+    elapsed = 0;
+    clockUpdatedAt = performance.now();
     clipActive = true;
     playbackBlocked = false;
     const language = resolveSelectedLanguage();
@@ -1866,7 +1927,11 @@ export function initializeFundalStageNarration(
 
   const onTimeUpdate = () => {
     if (!clipActive || !activeClip) return;
-    if (Number(audio.currentTime) >= Number(activeClip.end) - 0.03) {
+    if (synchronized && pendingStartTime != null) return;
+    if (
+      Number(audio.currentTime) >=
+      Number(activeClip.end) - (synchronized ? 0 : 0.03)
+    ) {
       stopAtClipEnd();
     }
   };
@@ -1874,12 +1939,14 @@ export function initializeFundalStageNarration(
   const onToggle = (event) => {
     event.preventDefault();
     event.stopPropagation();
-    if (enabled && playbackBlocked) {
+    if (enabled && playbackBlocked && !synchronized) {
       playbackBlocked = false;
       beginPlayback(audio.currentTime || activeClip?.start);
       return;
     }
+    if (synchronized) getPosition();
     enabled = !enabled;
+    playAttempt += 1;
     writeFundalNarrationPreference(cfg.pageId, {
       enabled,
       language: selectedLanguage,
@@ -1892,7 +1959,9 @@ export function initializeFundalStageNarration(
         // The persisted off state still prevents later playback attempts.
       }
     } else if (clipActive && activeClip) {
-      const currentTime = Number(audio.currentTime);
+      const currentTime = synchronized
+        ? activeClip.start + elapsed
+        : Number(audio.currentTime);
       beginPlayback(
         Number.isFinite(currentTime) && currentTime >= activeClip.start
           ? currentTime
@@ -1904,12 +1973,14 @@ export function initializeFundalStageNarration(
 
   const onLanguageChange = () => {
     const nextSelection = String(languageSelect.value || "auto");
-    const elapsed = activeClip
-      ? Math.max(
-          0,
-          Number(audio.currentTime || activeClip.start) - activeClip.start,
-        )
-      : 0;
+    const clipElapsed = synchronized
+      ? getPosition().elapsed
+      : activeClip
+        ? Math.max(
+            0,
+            Number(audio.currentTime || activeClip.start) - activeClip.start,
+          )
+        : 0;
     selectedLanguage = nextSelection;
     writeFundalNarrationPreference(cfg.pageId, {
       enabled,
@@ -1917,7 +1988,7 @@ export function initializeFundalStageNarration(
     });
     const nextLanguage = resolveSelectedLanguage();
     const resumeTime = activeClip
-      ? Math.min(activeClip.end - 0.02, activeClip.start + elapsed)
+      ? Math.min(activeClip.end - 0.02, activeClip.start + clipElapsed)
       : null;
     setTrackSource(nextLanguage, resumeTime);
     if (enabled && clipActive && activeClip && audio.readyState >= 1) {
@@ -1931,7 +2002,7 @@ export function initializeFundalStageNarration(
 
   const onPageInteraction = (event) => {
     if (controls.contains(event.target)) return;
-    if (!enabled || !clipActive || !playbackBlocked) return;
+    if (!enabled || !clipActive || (!playbackBlocked && !audio.paused)) return;
     playbackBlocked = false;
     beginPlayback(audio.currentTime || activeClip?.start);
   };
@@ -1948,6 +2019,7 @@ export function initializeFundalStageNarration(
 
   return {
     playForStage,
+    getPosition,
     getLanguage: resolveSelectedLanguage,
     refreshLanguage: () => {
       const appLanguage = getLanguage();
@@ -1961,7 +2033,11 @@ export function initializeFundalStageNarration(
       }
       const nextLanguage = resolveSelectedLanguage();
       if (selectedLanguage === "auto" && nextLanguage !== activeLanguage) {
-        const resumeTime = clipActive ? Number(audio.currentTime) : null;
+        const resumeTime = clipActive
+          ? synchronized
+            ? getPosition().time
+            : Number(audio.currentTime)
+          : null;
         setTrackSource(nextLanguage, resumeTime);
         if (enabled && clipActive && audio.readyState >= 1) {
           beginPlayback(resumeTime);
@@ -1970,6 +2046,8 @@ export function initializeFundalStageNarration(
       updateControls();
     },
     destroy: () => {
+      disposed = true;
+      playAttempt += 1;
       clearStopTimer();
       clipActive = false;
       try {
@@ -2547,13 +2625,15 @@ function translateFundalText(rawText) {
 
 let activeSession = null;
 
-function readStoredChildhoodWorkshopProgress(target) {
+function readStoredChildhoodWorkshopProgress(
+  target,
+  prefix = CHILDHOOD_WORKSHOP_PROGRESS_PREFIX,
+) {
   if (!target) return { percent: 0, updatedAt: 0 };
 
   try {
     const raw = JSON.parse(
-      localStorage.getItem(`${CHILDHOOD_WORKSHOP_PROGRESS_PREFIX}${target}`) ||
-        "null",
+      localStorage.getItem(`${prefix}${target}`) || "null",
     );
     const percent = Number(raw?.percent);
     const updatedAt = Number(raw?.updatedAt);
@@ -2570,8 +2650,8 @@ function readStoredChildhoodWorkshopProgress(target) {
   }
 }
 
-function isStoredChildhoodWorkshopRouteComplete(target) {
-  return readStoredChildhoodWorkshopProgress(target).percent >= 100;
+function isStoredChildhoodWorkshopRouteComplete(target, prefix) {
+  return readStoredChildhoodWorkshopProgress(target, prefix).percent >= 100;
 }
 
 async function refreshActiveFundalLanguageSession() {
@@ -2821,6 +2901,11 @@ function shouldUseMobileStageTopAlignedMode(cfg) {
 }
 
 function resolveSegmentStartTexts(cfg, fileIndex) {
+  const localized = cfg?.getSegmentStartTexts?.(
+    fileIndex,
+    getFundalTextLanguage(cfg),
+  );
+  if (Array.isArray(localized)) return localized;
   const raw = Array.isArray(cfg?.segmentStartTexts)
     ? cfg.segmentStartTexts[fileIndex]
     : null;
@@ -3632,8 +3717,11 @@ function buildAnimationSlots(listEl, label, count, cfg = null) {
 
       const titleEl = document.createElement("h3");
       titleEl.className = "fundal-reflex-section-divider__title";
-      titleEl.textContent = sectionMeta.title;
-      if (sectionMeta.titleKey) {
+      titleEl.dataset.sectionTitle = sectionMeta.title;
+      titleEl.textContent =
+        cfg?.getSectionTitle?.(sectionMeta.title, getFundalTextLanguage(cfg)) ||
+        sectionMeta.title;
+      if (sectionMeta.titleKey && !cfg?.getSectionTitle) {
         titleEl.setAttribute("data-i18n", sectionMeta.titleKey);
       }
 
@@ -8445,7 +8533,10 @@ function initializeStageAutoplayMode(
       ? false
       : forceEndEntry ||
         (!forceStartEntry &&
-          isStoredChildhoodWorkshopRouteComplete(cfg.pageId));
+          isStoredChildhoodWorkshopRouteComplete(
+            cfg.pageId,
+            cfg.progressStoragePrefix,
+          ));
 
   let routeCompleteDispatched = false;
   let firstStageStartQueued = shouldRestoreCompletedRoute;
@@ -8658,9 +8749,10 @@ function initializeStageAutoplayMode(
       cfg,
       state.fileIndex,
     );
-    state.finalSummaryBulletLines = resolveFinalSummaryBullets(
-      cfg,
-      state.fileIndex,
+    state.finalSummaryBulletLines = (
+      cfg.narrationTimeline
+        ? []
+        : resolveFinalSummaryBullets(cfg, state.fileIndex)
     )
       .map((line) => normaliseSegmentTextLine(line))
       .filter((line) => !!line);
@@ -8723,7 +8815,13 @@ function initializeStageAutoplayMode(
     }
 
     let nextIndex = -1;
-    if (Array.isArray(state.segmentTextTriggerFrames)) {
+    const narrationCues = cfg.getNarrationCues?.(state.fileIndex);
+    if (cfg.narrationTimeline && narrationCues?.length) {
+      narrationCues.forEach((cue, idx) => {
+        if (Number(state.timelineTime) >= cue.start) nextIndex = idx;
+      });
+      if (nextIndex < 0) return;
+    } else if (Array.isArray(state.segmentTextTriggerFrames)) {
       state.segmentTextTriggerFrames.forEach((triggerFrame, idx) => {
         if (
           Number.isFinite(triggerFrame) &&
@@ -8840,6 +8938,7 @@ function initializeStageAutoplayMode(
 
   function showStageControls(state) {
     if (!state) return;
+    if (cfg.narrationTimeline && state.playing) return;
     const replayBtn = ensureStageReplayButtonElement(
       state.stage,
       state.replayBtn,
@@ -9027,9 +9126,7 @@ function initializeStageAutoplayMode(
 
     const holdFrame = resolveCompletionHoldFrame(state);
     updateStageTextForFrame(state, holdFrame);
-    if (state.finalSummaryBulletLines.length) {
-      showStageFinalSummaryBullets(state);
-    }
+    showStageCompletionText(state);
 
     const shouldRequirePosterRichContent = IS_IOS_WEBKIT;
     const didHidePoster = maybeHideStagePoster(state, {
@@ -9190,12 +9287,15 @@ function initializeStageAutoplayMode(
 
     const nextState = hasNextStage(state) ? states[state.fileIndex + 1] : null;
     if (!nextState?.stage) return;
+    if (cfg.narrationTimeline) nextState.requestedPlayback = true;
 
     hideStageDownArrow(state);
     ensureStageAnimationLoaded(nextState);
     alignStageForPlayback(nextState);
 
     const alignAndStartWhenReady = () => {
+      if (sessionDisposed || (cfg.narrationTimeline && nextState.started))
+        return;
       alignStageForPlayback(nextState);
       let usedMobileFallback = false;
       if (!isStateNearViewportCenter(nextState)) {
@@ -9206,7 +9306,7 @@ function initializeStageAutoplayMode(
         nextState.ready &&
         !nextState.started &&
         !states.some((candidate) => candidate.playing) &&
-        isStateNearViewportCenter(nextState)
+        (cfg.narrationTimeline || isStateNearViewportCenter(nextState))
       ) {
         void playStage(nextState, { skipAlign: usedMobileFallback });
         return;
@@ -9822,6 +9922,7 @@ function initializeStageAutoplayMode(
   }
 
   async function finishStagePlayback(state) {
+    if (sessionDisposed) return;
     state.playing = false;
     setPlaybackScrollLocked(false);
 
@@ -9887,6 +9988,7 @@ function initializeStageAutoplayMode(
       });
     }
 
+    if (sessionDisposed) return;
     requestIosStageRepaintNudge(state.stage);
     if (!state.completed) {
       state.completed = true;
@@ -10257,6 +10359,54 @@ function initializeStageAutoplayMode(
     return true;
   }
 
+  function playStageWithNarrationClock(state) {
+    const points = cfg.narrationTimeline[state.fileIndex];
+    state.manualSegmentPlayback = true;
+    state.timelineTime = points[0][0];
+    let renderedFrame = null;
+    let narrationFinishedAt = null;
+    const visualEnd = points[points.length - 1][0];
+    const tick = () => {
+      if (sessionDisposed || !state.playing) return;
+      const position = stageNarration.getPosition();
+      // Let a normal-speed animation finish in silence when its narration is
+      // shorter. Never play into the next stage's speech to fill this tail.
+      if (position.finished && narrationFinishedAt == null) {
+        narrationFinishedAt = performance.now();
+      }
+      const visualTime = position.finished
+        ? Math.min(
+            visualEnd,
+            position.time + (performance.now() - narrationFinishedAt) / 1000,
+          )
+        : position.time;
+      state.timelineTime = visualTime;
+      const frame = clampFrameToAnimation(
+        state,
+        frameAtNarrationTime(points, visualTime),
+      );
+      if (frame !== renderedFrame) {
+        state.activePauseFrame = null;
+        hideRecoveryOverlay(state, { immediate: true });
+        state.anim.goToAndStop(frame, true);
+        forceSvgVisibleForController(state);
+        const snapshot = resolveConfiguredSettleSnapshotImage(state, frame);
+        if (snapshot) showRecoveryImageOverlay(state, snapshot);
+        renderedFrame = frame;
+      }
+      updateStageTextForFrame(state, frame);
+      if (position.finished && visualTime >= visualEnd) {
+        state.timelineRaf = null;
+        state.manualSegmentPlayback = false;
+        state.lastPinnedFrame = frame;
+        void finishStagePlayback(state);
+        return;
+      }
+      state.timelineRaf = requestAnimationFrame(tick);
+    };
+    tick();
+  }
+
   async function playStage(state, { replay = false, skipAlign = false } = {}) {
     if (!state?.ready || state.failed || state.playing) return false;
     if (states.some((candidate) => candidate.playing)) return false;
@@ -10271,6 +10421,7 @@ function initializeStageAutoplayMode(
 
     state.started = true;
     state.playing = true;
+    if (cfg.narrationTimeline) state.completed = false;
     stageNarration?.playForStage(state.fileIndex);
     updateAllTopStageNavigation();
     ensureAdjacentStageAnimationLoaded(state);
@@ -10282,6 +10433,12 @@ function initializeStageAutoplayMode(
       alignStageForPlayback(state);
     }
     setPlaybackScrollLocked(true);
+
+    if (cfg.narrationTimeline && stageNarration) {
+      playStageWithNarrationClock(state);
+      updateStageControlAnchors(state);
+      return true;
+    }
 
     const playbackSegments =
       Array.isArray(state.playbackSegments) && state.playbackSegments.length > 0
@@ -10395,6 +10552,16 @@ function initializeStageAutoplayMode(
       stageNarration?.getLanguage() || getLanguage(),
     );
     if (sessionDisposed || version !== languageRefreshVersion) return;
+    if (cfg.getSectionTitle) {
+      const language =
+        stageNarration?.getLanguage() || getFundalTextLanguage(cfg);
+      page.querySelectorAll("[data-section-title]").forEach((title) => {
+        title.textContent = cfg.getSectionTitle(
+          title.dataset.sectionTitle,
+          language,
+        );
+      });
+    }
     states.forEach((state) => {
       resolveStageSummary(state);
       const replayBtn = ensureStageReplayButtonElement(
@@ -10455,6 +10622,14 @@ function initializeStageAutoplayMode(
       state.ready = true;
       prepareInitialFrame(state);
       updateStageControlAnchors(state);
+      if (
+        cfg.narrationTimeline &&
+        state.requestedPlayback &&
+        !sessionDisposed
+      ) {
+        void playStage(state);
+        return;
+      }
       if (shouldRestoreCompletedRoute) {
         maybeRestoreCompletedRouteState();
         return;
@@ -10788,6 +10963,7 @@ function initializeStageAutoplayMode(
       window.removeEventListener("orientationchange", onViewportChange);
       page.removeEventListener("click", handleDelegatedAdvanceControlClick);
       states.forEach((state) => {
+        if (state.timelineRaf != null) cancelAnimationFrame(state.timelineRaf);
         cancelStagePosterHideCheck(state);
         cancelArrowEnsure(state);
         hideRecoveryOverlay(state, { immediate: true });
@@ -10859,6 +11035,12 @@ export function prewarmChildhoodFundalRouteAssets(
 export async function initializeChildhoodFundalReflexScrollPage(routeName) {
   const cfg = resolveFundalRouteConfig(routeName);
   if (!cfg) return;
+  if (cfg.loadText) {
+    await cfg.loadText();
+    // A slow guidance request must not initialise a lesson the user has left.
+    const targetPage = document.getElementById(cfg.pageId);
+    if (!targetPage?.isConnected || targetPage.style.display === "none") return;
+  }
   const pendingEntry = consumePendingFundalPageEntry(routeName);
 
   const page = document.getElementById(cfg.pageId);

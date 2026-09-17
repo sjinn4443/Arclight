@@ -1,5 +1,61 @@
 # Progress
 
+## Examination scroll refinements - 17 September 2026
+
+- Increased section-divider clearance to prevent completed-stage arrows from
+  overlapping the following heading on desktop and mobile.
+- Aligned DO Positioning scene three's green 10–15° display to the measured
+  English phrase, and scene four's red-to-green return arrow to "follow … back".
+- Restored BIO Preparation scene three's initial strap movement to approximately
+  the original 30 fps, keeping its later alignment/thumb checkpoints unchanged.
+- Connected all three guides' section headings to their existing nine-language
+  Full Animation title translations and narration-language selection.
+- Bumped the static cache to v69.
+- Validation: production build and translation QA passed; all 14 related Jest
+  tests passed. All 12 Chromium/WebKit checks passed, covering 37 stages,
+  scene landmarks, completion controls, section-arrow clearance, all nine title
+  languages, persisted selection and Auto. WebKit uses the mocked narration
+  clock described below; the rendered DO landmarks were visually inspected.
+
+## Examination scroll synchronization - 17 September 2026
+
+- Added narration-clock timelines for all 37 Front of Eye, DO and BIO stages.
+- Matched captions to the corresponding Full Animation script cues and languages.
+- Hold scenes while speech continues; buffering cannot prematurely expose
+  Replay/Next or release forward scrolling. Muting retains timeline progress.
+- Prime the reusable audio element on lesson launch for default narration;
+  the first sound-button click mutes, including after blocked autoplay.
+- Included the missing DO branch-back-to-disc sequence through frame 645.
+- Preserved the WebKit renderer overrides and exact pause/final snapshots.
+- Windows Playwright WebKit cannot decode AAC or PCM on this host. Its narration
+  clock is mocked in UI tests; Chromium tests use real delivery audio. Physical
+  iPhone/Safari audio policy still needs device verification.
+- Bumped the static cache to v68.
+- Validation: production build, translation QA and three Jest suites (14 tests)
+  passed. All 37 scenes passed cue/clock/completion checks in Chromium and
+  WebKit (mocked narration on the latter); production WebKit also passed the
+  complete BIO sequence and the Front of Eye mute/resume check. Front of Eye
+  replay, language, progress restoration and exits passed in both browsers.
+  Production mute/resume passed in Chromium and WebKit; the existing desktop
+  Fundal forward-scroll lock passed (its wheel-only test skips iPhone).
+
+## Front of Eye scroll examination - 17 September 2026
+
+- Added the Front of Eye Examination scrollytelling row above Full Animation.
+- Added eleven animations in four numbered sections using the supplied assets.
+- Reused the Fundal layout, stage autoplay, replay, input locks and WebKit recovery.
+- Connected nine narration tracks and translated guidance from the existing
+  Front of Eye script, with persistent audio preferences and route cleanup.
+- Added generic lesson progress, completed-route restore and Back/My Learning
+  routing. Static cache version is `arclight-static-v67`.
+- Added desktop and iPhone WebKit coverage for all stages, final frame content,
+  translated guidance, narration controls, replay, progress restore and exit.
+- Validation: production build and translation QA passed. Three Jest suites
+  passed (12 tests). Browser checks passed 13 tests with one desktop-only wheel
+  test skipped on iPhone; two additional production-build smoke tests passed.
+  All eleven desktop and iPhone final-frame screenshots were checked. The build
+  manifest includes the animations, guidance script and bundled route config.
+
 ## Silent title captions - 15 September 2026
 
 - Added 88 translated title captions across the eight non-English tracks for

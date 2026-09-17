@@ -2,6 +2,8 @@
  * @fileoverview This file contains videos related functions and logic.
  */
 
+import { setLessonProgress } from "./lessonProgress.js";
+import { primeExaminationNarration } from "./examinationScrollTiming.js";
 import { initializeVideoPlayers, initializeToolbar } from "./videoplayer.js";
 import { loadPage, syncRouteHash, getRouteFromHash } from "./navigation.js";
 import { showExperimentalMiniAppNoticeForPage } from "./experimentalMiniAppNotice.js";
@@ -33,6 +35,8 @@ const DIABETIC_WORKSHOP_PROGRESS_EVENT = "diabeticWorkshop:progress-changed";
 const LESSON_PROGRESS_EVENT = "arclight:lesson-progress-changed";
 const CHILDHOOD_WORKSHOP_ROUTE_COMPLETE_EVENT =
   "childhoodWorkshop:route-complete";
+const FRONT_OF_EYE_EXAMINATION_SCROLL_PAGE_ID =
+  "frontOfEyeExaminationScrollPage";
 const FUNDAL_REFLEX_EXAMINATION_SCROLL_PAGE_ID =
   "fundalReflexExaminationScrollPage";
 const FUNDAL_REFLEX_EXAMINATION_SCROLL_ROUTE = "fundalReflexExaminationScroll";
@@ -388,6 +392,13 @@ function syncScrollProgressForTarget(targetPageId, writeProgressForTarget) {
   );
 
   writeProgressForTarget(targetPageId, percent);
+}
+
+function syncFrontOfEyeExaminationScrollProgress() {
+  syncScrollProgressForTarget(
+    FRONT_OF_EYE_EXAMINATION_SCROLL_PAGE_ID,
+    setLessonProgress,
+  );
 }
 
 function syncFundalReflexExaminationScrollProgress() {
@@ -1046,6 +1057,10 @@ function showPageFallback(id) {
     window.setTimeout(() => removeFundalReflexListFlowButtons(), 0);
   }
 
+  if (id === FRONT_OF_EYE_EXAMINATION_SCROLL_PAGE_ID) {
+    void initializeFrontOfEyeExaminationScrollGuide();
+  }
+
   if (id === FUNDAL_REFLEX_EXAMINATION_SCROLL_PAGE_ID) {
     syncFundalReflexExaminationTopbar();
     void initializeFundalReflexExaminationScrollGuide();
@@ -1114,6 +1129,22 @@ function removeFundalReflexListFlowButtons() {
     .forEach((el) => {
       el.classList.remove("childhood-next-host", "glaucoma-next-host");
     });
+}
+
+async function initializeFrontOfEyeExaminationScrollGuide() {
+  try {
+    const { initializeChildhoodFundalReflexScrollPage } =
+      await import("./childhoodFundalPreparation.js");
+    await initializeChildhoodFundalReflexScrollPage(
+      "frontOfEyeExaminationScroll",
+    );
+    requestAnimationFrame(syncFrontOfEyeExaminationScrollProgress);
+  } catch (err) {
+    console.error(
+      "[videos] failed to initialize Front of Eye Examination guide",
+      err,
+    );
+  }
 }
 
 function syncFundalReflexExaminationTopbar() {
@@ -4639,6 +4670,10 @@ function show(id) {
     window.setTimeout(() => removeFundalReflexListFlowButtons(), 0);
   }
 
+  if (id === FRONT_OF_EYE_EXAMINATION_SCROLL_PAGE_ID) {
+    void initializeFrontOfEyeExaminationScrollGuide();
+  }
+
   if (id === FUNDAL_REFLEX_EXAMINATION_SCROLL_PAGE_ID) {
     syncFundalReflexExaminationTopbar();
     void initializeFundalReflexExaminationScrollGuide();
@@ -4808,6 +4843,12 @@ if (!window[__videosGlobalBoundKey]) {
       if (!hit) return;
       const target = hit.getAttribute("data-page");
       if (!target || isVideosRootDataPageElement(hit)) return;
+      primeExaminationNarration(
+        target,
+        window.I18N?.getLanguage?.() ||
+          localStorage.getItem("prefLang") ||
+          "en",
+      );
       show(target);
     },
     { passive: true },
@@ -4832,6 +4873,11 @@ if (!window[__videosGlobalBoundKey]) {
 
     const target = row.getAttribute("data-target");
     if (!target) return;
+
+    primeExaminationNarration(
+      target,
+      window.I18N?.getLanguage?.() || localStorage.getItem("prefLang") || "en",
+    );
 
     const rapdLaunchMode = row.getAttribute("data-rapd-launch-mode");
     if (rapdLaunchMode) {
@@ -4890,6 +4936,10 @@ if (!window[__videosGlobalBoundKey]) {
 
   document.addEventListener(CHILDHOOD_WORKSHOP_ROUTE_COMPLETE_EVENT, (e) => {
     const target = e?.detail?.target;
+    if (target === FRONT_OF_EYE_EXAMINATION_SCROLL_PAGE_ID) {
+      setLessonProgress(target, 100, { mode: "replace" });
+      return;
+    }
     if (target === FUNDAL_REFLEX_EXAMINATION_SCROLL_PAGE_ID) {
       writeWorkshopProgressForTarget(target, 100, { mode: "replace" });
       return;
@@ -4913,6 +4963,7 @@ if (!window[__videosGlobalBoundKey]) {
   window.addEventListener(
     "scroll",
     () => {
+      syncFrontOfEyeExaminationScrollProgress();
       syncFundalReflexExaminationScrollProgress();
       syncDirectOphthalmoscopyScrollProgress();
       syncBinocularIndirectOphthalmoscopyScrollProgress();
@@ -4923,6 +4974,7 @@ if (!window[__videosGlobalBoundKey]) {
   window.addEventListener(
     "resize",
     () => {
+      requestAnimationFrame(syncFrontOfEyeExaminationScrollProgress);
       scheduleFundalReflexExaminationScrollProgressSync();
       scheduleDirectOphthalmoscopyScrollProgressSync();
       scheduleBinocularIndirectOphthalmoscopyScrollProgressSync();
@@ -4951,6 +5003,7 @@ if (!window[__videosGlobalBoundKey]) {
   pageContent?.addEventListener(
     "scroll",
     () => {
+      syncFrontOfEyeExaminationScrollProgress();
       syncFundalReflexExaminationScrollProgress();
       syncDirectOphthalmoscopyScrollProgress();
       syncBinocularIndirectOphthalmoscopyScrollProgress();

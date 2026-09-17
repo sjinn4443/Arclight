@@ -4,6 +4,29 @@
 
 ## Current Work Focus
 
+Front of Eye, DO and BIO combined scroll guides now synchronize scenes and
+captions to the full-animation narration clock. `examinationScrollTiming.js`
+maps absolute cue times to Lottie frames, including teaching holds. Completion
+controls and forward scrolling wait for the narration interval to end. Muted
+stages use a monotonic virtual clock and unmute resumes at its current position.
+Launcher clicks prime/reuse the audio element before asynchronous initialization.
+DO Positioning stage four now includes frames 583–645, the branch-back-to-disc
+scene previously cut at frame 525. Other workshops and Fundal keep their engine
+playback path. Static cache version is `arclight-static-v69`.
+
+The DO angle display and branch-return color change now follow measured English
+word timings. BIO strap adjustment uses its original approximately 30 fps through
+32 seconds; later checkpoints stay unchanged. Section headings follow the chosen
+narration language in all three guides, with additional clearance below arrows.
+
+Front of Eye Examination is available above Full Animation on `frontOfEyePage`.
+Its eleven Lottie files follow the supplied folder order: Observation and
+Magnified Examination (five), Anterior Chamber Depth (two), Fluorescein Corneal
+Staining (three) and Upper Eyelid Eversion (one). The shared Fundal stage-autoplay
+engine provides layout, replay, scroll locks, narration controls and WebKit
+recovery. The existing Front of Eye script supplies nine-language guidance and
+audio intervals; `lessonProgress:frontOfEyeExaminationScrollPage` stores progress.
+
 The three full animations now translate their silent title cards in the eight
 non-English languages. Front of Eye and Direct Ophthalmoscopy have four cards
 each; BIO has three. Titles follow video time even when narration runs ahead.
