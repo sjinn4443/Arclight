@@ -171,13 +171,21 @@ for (const [pageId, timing] of Object.entries(EXAMINATION_SCROLL_TIMING)) {
     await page.reload();
     for (const [index, points] of timing.stages.entries()) {
       const stage = guide.locator(".childhood-fundal-prep-stage").nth(index);
-      await expect(stage.locator(".childhood-fundal-stage-replay-btn")).toBeVisible();
+      await expect(
+        stage.locator(".childhood-fundal-stage-replay-btn"),
+      ).toBeVisible();
       const cues = script.cues.filter(
-        (cue) => cue.start >= points[0][0] - 0.01 && cue.end <= points.at(-1)[0] + 0.01,
+        (cue) =>
+          cue.start >= points[0][0] - 0.01 &&
+          cue.end <= points.at(-1)[0] + 0.01,
       );
-      await expect(stage.locator("..").locator(
-        ".childhood-fundal-segment-text__line, .childhood-fundal-segment-text__bullet-item",
-      )).toHaveText(cues.map((cue) => cue.en));
+      await expect(
+        stage
+          .locator("..")
+          .locator(
+            ".childhood-fundal-segment-text__line, .childhood-fundal-segment-text__bullet-item",
+          ),
+      ).toHaveText(cues.map((cue) => cue.en));
     }
     expect(errors).toEqual([]);
   });
