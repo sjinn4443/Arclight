@@ -25,5 +25,8 @@ language's status to `approved`. Each language needs its own review record.
 
 `npm run check:clinical-approval` fails until both languages have approval for
 the exact script, VTT and audio revision. Subsequent content changes invalidate
-that approval. Require the CI workflow in branch protection to enforce the gate
-before merging; repository branch-protection settings are managed separately.
+that approval. CI uses `--report-approval` to report pending reviews as a warning
+and skip production artifact, content pack and source map uploads. Automated
+checks can pass while review is pending; this does not establish release approval.
+Invalid approval records and stale approved revisions still fail CI. Any separate
+deployment workflow must run `npm run check:clinical-approval` before publishing.

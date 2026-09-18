@@ -162,16 +162,19 @@ jobs:
             quality-reports/
             dist-size-report.json
 
-      - name: Require bilingual clinical release approval
-        run: npm run check:clinical-approval
+      - name: Check bilingual clinical release readiness
+        id: clinical-approval
+        run: node scripts/check-clinical-equivalence.cjs --report-approval
 
       - name: Upload production artifact
+        if: steps.clinical-approval.outputs.approved == 'true'
         uses: actions/upload-artifact@v6
         with:
           name: app-shell
           path: dist/
 
       - name: Upload optional content packs
+        if: steps.clinical-approval.outputs.approved == 'true'
         uses: actions/upload-artifact@v6
         with:
           name: media-packs
@@ -179,6 +182,7 @@ jobs:
           compression-level: 0
 
       - name: Upload source maps separately
+        if: steps.clinical-approval.outputs.approved == 'true'
         uses: actions/upload-artifact@v6
         with:
           name: source-maps

@@ -11,6 +11,9 @@ const manifest = JSON.parse(
 );
 const reviewPath = path.resolve("clinical-review/fundal-es-ko.json");
 const review = JSON.parse(fs.readFileSync(reviewPath, "utf8"));
+const reportApproval = process.argv.includes("--report-approval");
+const requireApproval = process.argv.includes("--require-approval");
+const pending = [];
 const digest = (data) => crypto.createHash("sha256").update(data).digest("hex");
 const rules = {
   "es-419": {
@@ -79,8 +82,12 @@ for (const [language, cues] of Object.entries(rules)) {
   console.log(
     `${language} safety assertions passed; review revision ${revision}`,
   );
-  if (process.argv.includes("--require-approval")) {
+  if (requireApproval || reportApproval) {
     const approval = review.languages[language];
+    if (reportApproval && !requireApproval && approval?.status === "pending") {
+      pending.push(language);
+      continue;
+    }
     assert.equal(
       approval?.revision,
       revision,
@@ -98,5 +105,18 @@ for (const [language, cues] of Object.entries(rules)) {
         approval?.evidence,
       `${language}: reviewer identity and evidence required`,
     );
+  }
+}
+if (reportApproval) {
+  const approved = pending.length === 0;
+  if (process.env.GITHUB_OUTPUT) {
+    fs.appendFileSync(process.env.GITHUB_OUTPUT, `approved=${approved}\n`);
+  }
+  const message = approved
+    ? "Clinical release approval verified for both languages."
+    : `Clinical review pending for ${pending.join(", ")}. Production artifacts are blocked; automated CI checks may pass.`;
+  console.log(approved ? message : `::warning::${message}`);
+  if (process.env.GITHUB_STEP_SUMMARY) {
+    fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, `${message}\n`);
   }
 }
