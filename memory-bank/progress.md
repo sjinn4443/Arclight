@@ -1,5 +1,17 @@
 # Progress
 
+## Documentation and ARIA refresh - 18 September 2026
+
+- Aligned README and agent notes with the combined examination scroll guides,
+  narration clock ownership, nine-language headings and WebKit test limits.
+- Named the seven examination launcher progress bars in `videos.html` using
+  unique references to their visible lesson titles, including repeated launchers.
+- Bumped the static cache to v70 for the updated HTML.
+- Validation: all 14 tests passed across the Front of Eye scroll, Fundal scroll
+  narration and Interactive Learning topic suites. A DOM check confirmed seven
+  unique, non-empty progress labels; `git diff --check` passed. Browser playback
+  was not rechecked for this documentation and markup update.
+
 ## Examination scroll refinements - 17 September 2026
 
 - Increased section-divider clearance to prevent completed-stage arrows from

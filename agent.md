@@ -1,6 +1,6 @@
 # Agent Notes
 
-Last refreshed: 2026-09-15
+Last refreshed: 2026-09-18
 
 ## Current repo orientation
 
@@ -27,6 +27,15 @@ Last refreshed: 2026-09-15
 - The Case Study route (`public/html/casestudy.html`) owns primary/intermediate/advanced case-study pages. Primary chat and flashcard behavior live in `public/js/casestudy_primary.js`; intermediate chat behavior lives in `public/js/casestudy.js`. The Glaucoma history case-study route lives in `public/html/glaucomaHistoryCaseStudy.html` and `public/js/glaucomaHistoryCaseStudy.js`.
 - Childhood Fundal Reflex scrollytelling routes (`childhoodFundalPreparation` through `childhoodFundalAfterExamination`) share `public/js/childhoodFundalPreparation.js` for Lottie stage autoplay, settle frames, replay/down-arrow controls, text toggles, scroll locks, and `FUNDAL_PAGE_ROUTE_SEQUENCE`; route shells stay minimal in `public/html/childhoodFundal*.html`.
 - `scripts/build.cjs` cleans build outputs by renaming old output directories to `.build-cleanup-*`, recreating the target output directory, and falling back to retrying removal when Windows file locks block the rename.
+
+## Combined examination scroll guides
+
+- The Videos route owns `frontOfEyeExaminationScrollPage`, `directOphthalmoscopyScrollPage`, `binocularIndirectOphthalmoscopyScrollPage` and `fundalReflexExaminationScrollPage`. Keep launcher targets, My Learning and progress keys aligned.
+- Front of Eye uses eleven Lottie files across four sections. Its order, frame holds and audio intervals live in `public/js/frontOfEyeExaminationScroll.js`; the shared runtime is `public/js/childhoodFundalPreparation.js`.
+- Front of Eye, DO and BIO use `public/js/examinationScrollTiming.js` to map narration time to scene frames and teaching holds. Muted playback uses a monotonic virtual clock. Preserve launcher audio priming, saved mute choices and completion gating until narration ends. Fundal retains its existing playback path.
+- Section headings follow the narration language and reuse Full Animation title translations. Preserve all nine languages and section clearance below completed-stage arrows.
+- Examination launcher progress bars use unique `aria-labelledby` references to their visible lesson titles, so translated titles also name the bars. Retain accessible names and pressed state on narration controls; avoid hard-coded English labels that override translated visible text.
+- For timing or layout changes, run the focused Jest tests and the Front of Eye, examination scroll sync and examination scroll headings Playwright specs. WebKit sync tests use a mocked narration clock; they do not establish real-device audio quality.
 
 ## Current docs baseline
 

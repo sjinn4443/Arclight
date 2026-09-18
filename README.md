@@ -288,7 +288,7 @@ When adding new media, keep the file path discoverable under the static root, ad
 
 ## Narration and captions for examination lessons
 
-Checked against the source code and delivery files on 15 September 2026.
+Documentation refreshed against the source code on 18 September 2026.
 These lessons use prepared speech files and timed captions. Speech generation
 and translation happen during content production. The browser plays local
 media and selects an existing language track.
@@ -310,7 +310,15 @@ for eleven animations in four numbered sections under `scrolly/coreexam/frontofe
 It reuses all nine Front of Eye audio tracks and their translated script cues as
 stage guidance. Stage playback, replay, scroll locks and WebKit recovery use
 `childhoodFundalPreparation.js`; the page-specific order, frame holds and audio
-intervals are in `frontOfEyeExaminationScroll.js`.
+intervals are in `frontOfEyeExaminationScroll.js`. Shared narration-to-frame
+mapping lives in `examinationScrollTiming.js`; Fundal retains its existing
+playback path.
+
+The four examination guides' launcher progress bars are named by their visible
+lesson titles through unique `aria-labelledby` references. This keeps their
+accessible names aligned with translated titles. Narration controls retain
+their language label and on/off pressed state. Static cache v70 delivers the
+updated launcher markup to installed clients.
 
 The nine-language set is English (`en`), Latin American Spanish (`es-419`),
 Korean (`ko`), Nepali (`ne`), French (`fr`), Luganda (`lg`), Hausa (`ha`),

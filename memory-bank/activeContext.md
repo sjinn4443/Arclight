@@ -1,8 +1,15 @@
-<!-- THE CHANGES - activeContext.md | 2026-09-15, Codex -->
+<!-- THE CHANGES - activeContext.md | 2026-09-18, Codex -->
 
 # Active Context
 
 ## Current Work Focus
+
+Documentation and accessibility refresh (18 September 2026): README and
+`agent.md` now describe the combined examination guides and shared timing
+ownership. All seven launcher instances for Front of Eye, Fundal Reflex, DO
+and BIO in `videos.html` name their progress bars through unique
+`aria-labelledby` references to visible lesson titles, preserving translated
+names. Static cache v70 includes this markup update.
 
 Front of Eye, DO and BIO combined scroll guides now synchronize scenes and
 captions to the full-animation narration clock. `examinationScrollTiming.js`
@@ -12,7 +19,7 @@ stages use a monotonic virtual clock and unmute resumes at its current position.
 Launcher clicks prime/reuse the audio element before asynchronous initialization.
 DO Positioning stage four now includes frames 583–645, the branch-back-to-disc
 scene previously cut at frame 525. Other workshops and Fundal keep their engine
-playback path. Static cache version is `arclight-static-v69`.
+playback path. Static cache version is `arclight-static-v70`.
 
 The DO angle display and branch-return color change now follow measured English
 word timings. BIO strap adjustment uses its original approximately 30 fps through
