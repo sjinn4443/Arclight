@@ -1,38 +1,33 @@
 /* sw.js — Arclight PWA service worker */
-const CACHE_NAME = "arclight-static-v70";
+const CACHE_NAME =
+  typeof __BUILD_CACHE_NAME__ === "undefined"
+    ? "arclight-static-v71"
+    : __BUILD_CACHE_NAME__;
 const MAX_MESSAGE_CACHE_URLS = 10000;
-const CORE_ASSETS = [
-  "/",
-  "/index.html",
-  "/style/base.css",
-  "/style/components.css",
-  "/style/pages.css",
-  "/style/responsive.css",
-  "/js/runtime-bootstrap.js",
-  "/js/main.js",
-  "/js/navigation.js",
-  "/js/onboarding.js",
-  "/js/dashboard.js",
-  "/js/localized-search.js",
-  "/js/toc.js",
-  "/js/videoplayer.js",
-  "/js/quiz.js",
-  "/js/mylearning.js",
-  "/js/catalog.js",
-  "/js/pwa.js",
-  "/video-localization/childhood-eye-screening.json",
-  "/html/interest.html", // Added for interest page
-  "/js/interest.js", // Added for interest page script
-  "/favicons/favicon-32x32.png", // Added favicon
-  "/favicons/favicon-16x16.png", // Added favicon
-  "/favicons/site.webmanifest", // Added manifest
-  "/favicons/apple-touch-icon.png", // Added favicon
-  "/favicons/android-chrome-192x192.png", // Added favicon
-  "/favicons/android-chrome-512x512.png", // Added favicon
-  "/favicons/favicon.ico", // Added favicon
-  "/favicons/pwa-install-narrow.png",
-  "/favicons/pwa-install-wide.png",
-];
+const SHELL_MANIFEST = "/shell-assets.json";
+const PACK_CACHE = "arclight-packs-v1";
+let revisionsPromise;
+async function packRevisions() {
+  if (!revisionsPromise)
+    revisionsPromise = (async () => {
+      const shell = await caches.open(CACHE_NAME);
+      const response = await shell.match(SHELL_MANIFEST);
+      return response ? (await response.json()).revisions || {} : {};
+    })().catch(() => ({}));
+  return revisionsPromise;
+}
+async function matchPack(cache, request) {
+  const response = await cache.match(request, { ignoreSearch: true });
+  if (!response) return null;
+  const url = new URL(
+    typeof request === "string" ? request : request.url,
+    self.location.origin,
+  );
+  const expected = (await packRevisions())[url.pathname];
+  return !expected || response.headers.get("X-Arclight-Revision") === expected
+    ? response
+    : null;
+}
 
 function isSensitivePath(pathname) {
   return (
@@ -164,11 +159,16 @@ function getAlternateMp4Urls(requestUrl) {
 }
 
 async function matchCachedMedia(cache, request) {
-  const cached = await cache.match(request, { ignoreSearch: true });
+  const packs = await caches.open(PACK_CACHE);
+  const cached =
+    (await matchPack(packs, request)) ||
+    (await cache.match(request, { ignoreSearch: true }));
   if (cached) return cached;
 
   for (const alternateUrl of getAlternateMp4Urls(request.url)) {
-    const alternate = await cache.match(alternateUrl, { ignoreSearch: true });
+    const alternate =
+      (await matchPack(packs, alternateUrl)) ||
+      (await cache.match(alternateUrl, { ignoreSearch: true }));
     if (alternate) return alternate;
   }
 
@@ -184,7 +184,9 @@ function postCacheProgress(port, payload) {
 }
 
 async function cacheUrls(urls, port) {
-  const cache = await caches.open(CACHE_NAME);
+  const cache = await caches.open(PACK_CACHE);
+  const shellCache = await caches.open(CACHE_NAME);
+  const revisions = await packRevisions();
   const normalized = normalizeCacheMessageUrls(urls);
   let cached = 0;
   const failed = [...normalized.rejected];
@@ -194,9 +196,23 @@ async function cacheUrls(urls, port) {
     try {
       const requestUrl = new URL(url, self.location.origin).href;
       const request = new Request(requestUrl, { cache: "no-store" });
-      const res = await fetch(request);
+      const revision = revisions[new URL(requestUrl).pathname];
+      const targetCache = revision ? cache : shellCache;
+      const existing = await matchPack(targetCache, requestUrl);
+      const res = existing || (await fetch(request));
       if (canCacheResponse(res)) {
-        await cache.put(requestUrl, res.clone());
+        if (!existing) {
+          const headers = new Headers(res.headers);
+          if (revision) headers.set("X-Arclight-Revision", revision);
+          await targetCache.put(
+            requestUrl,
+            new Response(res.body, {
+              status: res.status,
+              statusText: res.statusText,
+              headers,
+            }),
+          );
+        }
         cached += 1;
       } else {
         failed.push(url);
@@ -206,7 +222,7 @@ async function cacheUrls(urls, port) {
     }
 
     const processed = Math.min(index + 1 + normalized.rejected.length, total);
-    if (processed === total || processed % 10 === 0) {
+    if (processed > 0) {
       postCacheProgress(port, {
         type: "CACHE_PROGRESS",
         cached,
@@ -222,12 +238,34 @@ async function cacheUrls(urls, port) {
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches
-      .open(CACHE_NAME)
-      .then((cache) => cache.addAll(CORE_ASSETS))
-      .catch(() => {}),
+    (async () => {
+      const response = await fetch(SHELL_MANIFEST, { cache: "no-store" });
+      if (!response.ok)
+        throw new Error("Offline shell manifest could not be loaded");
+      const manifest = await response.json();
+      if (
+        !Array.isArray(manifest.urls) ||
+        !manifest.urls.includes("/index.html")
+      )
+        throw new Error("Invalid shell manifest");
+      const normalized = normalizeCacheMessageUrls(manifest.urls);
+      if (normalized.rejected.length) throw new Error("Unsafe shell manifest");
+      const cache = await caches.open(CACHE_NAME);
+      try {
+        await cache.addAll(normalized.safe);
+        await cache.put(
+          SHELL_MANIFEST,
+          new Response(JSON.stringify(manifest), {
+            headers: { "Content-Type": "application/json" },
+          }),
+        );
+      } catch (error) {
+        await caches.delete(CACHE_NAME);
+        throw error;
+      }
+      await self.skipWaiting();
+    })(),
   );
-  self.skipWaiting();
 });
 
 self.addEventListener("activate", (event) => {
@@ -235,7 +273,9 @@ self.addEventListener("activate", (event) => {
     (async () => {
       const keys = await caches.keys();
       await Promise.all(
-        keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k)),
+        keys
+          .filter((k) => k.startsWith("arclight-static-") && k !== CACHE_NAME)
+          .map((k) => caches.delete(k)),
       );
       await self.clients.claim();
     })(),
@@ -291,9 +331,6 @@ self.addEventListener("fetch", (event) => {
         if (cached) return cached;
 
         const fresh = await fetch(req);
-        if (canCacheResponse(fresh)) {
-          cache.put(req, fresh.clone()).catch(() => {});
-        }
         return fresh;
       })(),
     );
@@ -314,7 +351,10 @@ self.addEventListener("fetch", (event) => {
           return fresh;
         } catch {
           const cache = await caches.open(CACHE_NAME);
-          const cached = await cache.match(req, { ignoreSearch: true });
+          const packs = await caches.open(PACK_CACHE);
+          const cached =
+            (await matchPack(packs, req)) ||
+            (await cache.match(req, { ignoreSearch: true }));
           return cached || Response.error();
         }
       })(),
@@ -335,8 +375,11 @@ self.addEventListener("fetch", (event) => {
           return fresh;
         } catch {
           const cache = await caches.open(CACHE_NAME);
+          const packs = await caches.open(PACK_CACHE);
           const cached =
-            (await cache.match(req)) || (await cache.match("/index.html"));
+            (await cache.match(req)) ||
+            (await matchPack(packs, req)) ||
+            (await cache.match("/index.html"));
           return cached || Response.error();
         }
       })(),
@@ -356,7 +399,9 @@ self.addEventListener("fetch", (event) => {
         }
         return fresh;
       } catch {
-        const cached = await cache.match(req);
+        const packs = await caches.open(PACK_CACHE);
+        const cached =
+          (await cache.match(req)) || (await matchPack(packs, req));
         return cached || Response.error();
       }
     })(),

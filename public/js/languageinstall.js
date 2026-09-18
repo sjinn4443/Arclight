@@ -1271,6 +1271,8 @@ function setDownloadModalBusy({ title, message, detail }) {
 
   const detailEl = document.createElement("p");
   detailEl.id = "downloadProgressText";
+  detailEl.setAttribute("role", "status");
+  detailEl.setAttribute("aria-live", "polite");
   detailEl.textContent = detail;
   content.appendChild(detailEl);
 
@@ -1308,6 +1310,7 @@ export function showDownloadErrorModal(error) {
   titleEl.removeAttribute("data-i18n");
   titleEl.textContent = t("Download incomplete");
   content.innerHTML = "";
+  content.setAttribute("role", "alert");
 
   const messageEl = document.createElement("p");
   messageEl.textContent = t(
@@ -1384,7 +1387,22 @@ function hideDownloadAppModal() {
 }
 
 async function sendUrlsToServiceWorker(urls, onProgress) {
-  const registration = await navigator.serviceWorker.ready;
+  const registration = await new Promise((resolve, reject) => {
+    const timer = setTimeout(
+      () => reject(new Error("Offline setup timed out. Reconnect and reload.")),
+      30000,
+    );
+    navigator.serviceWorker.ready.then(
+      (value) => {
+        clearTimeout(timer);
+        resolve(value);
+      },
+      (error) => {
+        clearTimeout(timer);
+        reject(error);
+      },
+    );
+  });
   const worker = registration.active || navigator.serviceWorker.controller;
   if (!worker) {
     throw new Error("Service worker is not active yet.");
@@ -1392,15 +1410,27 @@ async function sendUrlsToServiceWorker(urls, onProgress) {
 
   return await new Promise((resolve, reject) => {
     const channel = new MessageChannel();
+    let timer;
+    const resetTimeout = () => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        channel.port1.close();
+        reject(new Error("Download interrupted. Try again to resume."));
+      }, 300000);
+    };
+    resetTimeout();
 
     channel.port1.onmessage = (event) => {
       const message = event.data || {};
       if (message.type === "CACHE_PROGRESS") {
+        resetTimeout();
         onProgress?.(message);
         return;
       }
 
       if (message.type === "CACHE_DONE") {
+        clearTimeout(timer);
+        channel.port1.close();
         if (message.failed?.length) {
           const downloadError = new Error(
             `${message.failed.length} files failed to download for offline use.`,
@@ -1416,6 +1446,8 @@ async function sendUrlsToServiceWorker(urls, onProgress) {
       }
 
       if (message.type === "CACHE_ERROR") {
+        clearTimeout(timer);
+        channel.port1.close();
         reject(new Error(message.error || "Offline download failed."));
       }
     };

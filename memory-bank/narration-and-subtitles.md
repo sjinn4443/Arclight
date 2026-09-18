@@ -633,3 +633,14 @@ part of this documentation update.
 Related documents: [README overview](../README.md#narration-and-captions-for-examination-lessons),
 [agent rules](../agent.md#narration-and-caption-maintenance),
 [active context](./activeContext.md) and [progress](./progress.md).
+
+### Safety equivalence validation — 18 September 2026
+
+Spanish/Korean `timedCues` and `timedAudioCues` already included PPE, avoiding the
+examiner's eye/sideways orientation and referral for squint persisting after
+three months. The legacy broad `cues` translations still omitted these and
+were synchronized. Both delivery M4A tracks were regenerated with the existing
+voice generator; VTT wording/timing was retained, and manifest/QA hashes updated.
+Run `npm run check:clinical` for semantic invariants. The exact content revisions
+in `clinical-review/fundal-es-ko.json` remain pending native bilingual clinical
+listening and approval. CI requires that approval before releasing artifacts.

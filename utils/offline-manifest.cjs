@@ -7,9 +7,12 @@ const EXCLUDED_FILENAMES = new Set([
   ".DS_Store",
   "Thumbs.db",
   OFFLINE_MANIFEST_FILENAME,
+  "shell-assets.json",
 ]);
 const EXCLUDED_DIRECTORIES = new Set(["audit-reports"]);
 
+/** @typedef {{assets: {bytes: number, url: string}[], bytes: number, count: number, urls: string[]}} OfflineManifest */
+/** @param {string} rawUrl */
 function isSensitiveManifestUrl(rawUrl) {
   const url = String(rawUrl || "").toLowerCase();
   return (
@@ -22,6 +25,7 @@ function isSensitiveManifestUrl(rawUrl) {
   );
 }
 
+/** @param {string} rootDir @param {string} filePath */
 function toStaticAssetUrl(rootDir, filePath) {
   const relativePath = path.relative(rootDir, filePath);
   if (
@@ -38,19 +42,28 @@ function toStaticAssetUrl(rootDir, filePath) {
     .join("/")}`;
 }
 
+/** @param {string} rootDir @returns {Promise<OfflineManifest>} */
 async function collectOfflineAssetManifest(rootDir) {
   const resolvedRoot = path.resolve(rootDir);
+  /** @type {OfflineManifest['assets']} */
   const assets = [];
+  /** @type {string[]} */
   const urls = [];
   let bytes = 0;
 
+  /** @param {string} dir */
   async function walk(dir) {
     const entries = (
       await fs.promises.readdir(dir, { withFileTypes: true })
     ).sort((a, b) => a.name.localeCompare(b.name));
 
     for (const entry of entries) {
-      if (EXCLUDED_FILENAMES.has(entry.name)) continue;
+      if (
+        EXCLUDED_FILENAMES.has(entry.name) ||
+        entry.name.startsWith("._") ||
+        /\.(?:map|md|py|bak)$/i.test(entry.name)
+      )
+        continue;
 
       const entryPath = path.join(dir, entry.name);
       if (entry.isDirectory()) {
@@ -74,16 +87,52 @@ async function collectOfflineAssetManifest(rootDir) {
   return { assets, bytes, count: urls.length, urls };
 }
 
+/** @param {unknown} value @returns {OfflineManifest | null} */
 function validateManifest(value) {
   if (!value || typeof value !== "object") return null;
+  if (
+    !("assets" in value) ||
+    !("urls" in value) ||
+    !("count" in value) ||
+    !("bytes" in value)
+  )
+    return null;
   if (!Array.isArray(value.assets) || !Array.isArray(value.urls)) return null;
+  if (typeof value.count !== "number" || typeof value.bytes !== "number")
+    return null;
+  if (
+    !value.urls.every(
+      (url) =>
+        typeof url === "string" &&
+        url.startsWith("/") &&
+        !isSensitiveManifestUrl(url),
+    )
+  )
+    return null;
+  if (
+    !value.assets.every(
+      (asset) =>
+        asset &&
+        typeof asset.url === "string" &&
+        Number.isSafeInteger(asset.bytes) &&
+        asset.bytes >= 0,
+    )
+  )
+    return null;
+  const urls = value.urls;
+  if (
+    value.assets.length !== urls.length ||
+    value.assets.some((asset, index) => asset.url !== urls[index])
+  )
+    return null;
   if (!Number.isSafeInteger(value.count) || value.count !== value.urls.length) {
     return null;
   }
   if (!Number.isSafeInteger(value.bytes) || value.bytes < 0) return null;
-  return value;
+  return /** @type {OfflineManifest} */ (value);
 }
 
+/** @param {string} rootDir */
 async function readOfflineAssetManifest(rootDir) {
   const manifestPath = path.join(rootDir, OFFLINE_MANIFEST_FILENAME);
   const payload = JSON.parse(await fs.promises.readFile(manifestPath, "utf8"));
@@ -92,6 +141,7 @@ async function readOfflineAssetManifest(rootDir) {
   return validated;
 }
 
+/** @param {string} rootDir @param {OfflineManifest} manifest */
 async function writeOfflineAssetManifest(rootDir, manifest) {
   const validated = validateManifest(manifest);
   if (!validated) throw new Error("Invalid offline asset manifest");
@@ -100,6 +150,7 @@ async function writeOfflineAssetManifest(rootDir, manifest) {
   return manifestPath;
 }
 
+/** @param {OfflineManifest} manifest */
 function createManifestState(manifest) {
   const serialized = JSON.stringify(manifest);
   const digest = crypto

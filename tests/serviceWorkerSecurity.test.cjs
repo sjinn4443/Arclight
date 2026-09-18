@@ -15,26 +15,7 @@ function loadServiceWorker(fetchImpl) {
   };
   const caches = {
     delete: jest.fn().mockResolvedValue(true),
-    keys: jest
-      .fn()
-      .mockResolvedValue([
-        "arclight-static-v32",
-        "arclight-static-v33",
-        "arclight-static-v34",
-        "arclight-static-v46",
-        "arclight-static-v47",
-        "arclight-static-v48",
-        "arclight-static-v49",
-        "arclight-static-v50",
-        "arclight-static-v51",
-        "arclight-static-v52",
-        "arclight-static-v53",
-        "arclight-static-v54",
-        "arclight-static-v62",
-        "arclight-static-v63",
-        "arclight-static-v65",
-        "arclight-static-v66",
-      ]),
+    keys: jest.fn().mockResolvedValue([]),
     open: jest.fn().mockResolvedValue(cache),
   };
   const location = new URL("https://app.example.com/sw.js");
@@ -64,7 +45,12 @@ function loadServiceWorker(fetchImpl) {
     "utf8",
   );
   vm.runInContext(source, context, { filename: "sw.js" });
-  return { cache, caches, handlers, self };
+  // sw.js is the single source of truth; version bumps need no test edits.
+  const { cacheName, packCacheName } = vm.runInContext(
+    "({ cacheName: CACHE_NAME, packCacheName: PACK_CACHE })",
+    context,
+  );
+  return { cache, cacheName, caches, handlers, packCacheName, self };
 }
 
 describe("service worker sensitive-cache policy", () => {
@@ -126,8 +112,61 @@ describe("service worker sensitive-cache policy", () => {
     expect(messages.at(-1).failed).toHaveLength(3);
   });
 
-  test("removes the previous cache version during activation", async () => {
-    const { caches, handlers, self } = loadServiceWorker(jest.fn());
+  test("installs the shell into the current cache", async () => {
+    const fetchImpl = jest.fn().mockResolvedValue(
+      new Response(JSON.stringify({ urls: ["/index.html"] }), {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      }),
+    );
+    const { cache, cacheName, caches, handlers, self } =
+      loadServiceWorker(fetchImpl);
+    let work;
+    handlers.install({
+      waitUntil: (promise) => {
+        work = promise;
+      },
+    });
+    await work;
+
+    expect(caches.open).toHaveBeenCalledWith(cacheName);
+    expect(cache.addAll).toHaveBeenCalledWith([
+      "https://app.example.com/index.html",
+    ]);
+    expect(self.skipWaiting).toHaveBeenCalledTimes(1);
+  });
+
+  test("rejects an incomplete shell installation and cleans its partial cache", async () => {
+    const { cache, cacheName, caches, handlers, self } = loadServiceWorker(
+      jest
+        .fn()
+        .mockResolvedValue(
+          new Response(JSON.stringify({ urls: ["/index.html"] })),
+        ),
+    );
+    cache.addAll.mockRejectedValue(new Error("Missing route asset"));
+    let work;
+    handlers.install({
+      waitUntil: (promise) => {
+        work = promise;
+      },
+    });
+    await expect(work).rejects.toThrow("Missing route asset");
+    expect(caches.delete).toHaveBeenCalledWith(cacheName);
+    expect(self.skipWaiting).not.toHaveBeenCalled();
+  });
+
+  test("removes old shell caches but preserves the current cache, packs and unrelated caches", async () => {
+    const { cacheName, caches, handlers, packCacheName, self } =
+      loadServiceWorker(jest.fn());
+    const oldCacheNames = ["arclight-static-v0", "arclight-static-v66"];
+    const unrelatedCacheName = "another-app-v1";
+    caches.keys.mockResolvedValue([
+      ...oldCacheNames,
+      cacheName,
+      packCacheName,
+      unrelatedCacheName,
+    ]);
     let work;
     handlers.activate({
       waitUntil: (promise) => {
@@ -136,33 +175,28 @@ describe("service worker sensitive-cache policy", () => {
     });
     await work;
 
-    expect(caches.delete).toHaveBeenCalledWith("arclight-static-v32");
-    expect(caches.delete).toHaveBeenCalledWith("arclight-static-v33");
-    expect(caches.delete).toHaveBeenCalledWith("arclight-static-v34");
-    expect(caches.delete).toHaveBeenCalledWith("arclight-static-v46");
-    expect(caches.delete).toHaveBeenCalledWith("arclight-static-v47");
-    expect(caches.delete).toHaveBeenCalledWith("arclight-static-v48");
-    expect(caches.delete).toHaveBeenCalledWith("arclight-static-v49");
-    expect(caches.delete).toHaveBeenCalledWith("arclight-static-v50");
-    expect(caches.delete).toHaveBeenCalledWith("arclight-static-v51");
-    expect(caches.delete).toHaveBeenCalledWith("arclight-static-v52");
-    expect(caches.delete).toHaveBeenCalledWith("arclight-static-v53");
-    expect(caches.delete).toHaveBeenCalledWith("arclight-static-v54");
-    expect(caches.delete).toHaveBeenCalledWith("arclight-static-v62");
-    expect(caches.delete).toHaveBeenCalledWith("arclight-static-v63");
-    expect(caches.delete).toHaveBeenCalledWith("arclight-static-v65");
-    expect(caches.delete).not.toHaveBeenCalledWith("arclight-static-v66");
+    expect(caches.delete).toHaveBeenCalledTimes(oldCacheNames.length);
+    for (const oldCacheName of oldCacheNames) {
+      expect(caches.delete).toHaveBeenCalledWith(oldCacheName);
+    }
+    expect(caches.delete).not.toHaveBeenCalledWith(cacheName);
+    expect(caches.delete).not.toHaveBeenCalledWith(packCacheName);
+    expect(caches.delete).not.toHaveBeenCalledWith(unrelatedCacheName);
     expect(self.clients.claim).toHaveBeenCalledTimes(1);
   });
 
   test("serves byte ranges from a cached M4A narration track", async () => {
     const fetchImpl = jest.fn();
     const { cache, handlers } = loadServiceWorker(fetchImpl);
-    cache.match.mockResolvedValue(
-      new Response("0123456789", {
-        status: 200,
-        headers: { "Content-Type": "audio/mp4" },
-      }),
+    cache.match.mockImplementation((request) =>
+      request === "/shell-assets.json"
+        ? Promise.resolve(undefined)
+        : Promise.resolve(
+            new Response("0123456789", {
+              status: 200,
+              headers: { "Content-Type": "audio/mp4" },
+            }),
+          ),
     );
     let responsePromise;
     handlers.fetch({
@@ -180,5 +214,81 @@ describe("service worker sensitive-cache policy", () => {
     expect(response.headers.get("Content-Range")).toBe("bytes 2-5/10");
     expect(await response.text()).toBe("2345");
     expect(fetchImpl).not.toHaveBeenCalled();
+  });
+
+  test.each(["current", "old"])(
+    "resumes %s media by revision without reusing changed content",
+    async (revision) => {
+      const fetchImpl = jest.fn().mockResolvedValue(new Response("new media"));
+      const { cache, handlers } = loadServiceWorker(fetchImpl);
+      cache.match.mockImplementation(async (request) =>
+        request === "/shell-assets.json"
+          ? new Response(
+              JSON.stringify({ revisions: { "/clip.m4a": "current" } }),
+            )
+          : new Response("stored media", {
+              headers: { "X-Arclight-Revision": revision },
+            }),
+      );
+      const messages = [];
+      let work;
+      handlers.message({
+        data: { type: "CACHE_URLS", payload: ["/clip.m4a"] },
+        ports: [{ postMessage: (value) => messages.push(value) }],
+        waitUntil: (promise) => {
+          work = promise;
+        },
+      });
+      await work;
+      expect(messages.at(-1)).toMatchObject({
+        type: "CACHE_DONE",
+        cached: 1,
+        failed: [],
+      });
+      expect(fetchImpl).toHaveBeenCalledTimes(revision === "current" ? 0 : 1);
+      if (revision === "old")
+        expect(
+          cache.put.mock.calls[0][1].headers.get("X-Arclight-Revision"),
+        ).toBe("current");
+    },
+  );
+
+  test("offline subapp navigation returns its downloaded document", async () => {
+    const { caches, handlers, packCacheName } = loadServiceWorker(
+      jest.fn().mockRejectedValue(new Error("offline")),
+    );
+    const url = "https://app.example.com/subapp/lesson/index.html";
+    const shell = {
+      match: jest.fn(async (key) =>
+        key === "/shell-assets.json"
+          ? new Response(
+              JSON.stringify({
+                revisions: { "/subapp/lesson/index.html": "current" },
+              }),
+            )
+          : key === "/index.html"
+            ? new Response("app shell")
+            : undefined,
+      ),
+    };
+    const packs = {
+      match: jest.fn(
+        async () =>
+          new Response("downloaded lesson", {
+            headers: { "X-Arclight-Revision": "current" },
+          }),
+      ),
+    };
+    caches.open.mockImplementation(async (name) =>
+      name === packCacheName ? packs : shell,
+    );
+    let response;
+    handlers.fetch({
+      request: { url, method: "GET", mode: "navigate", headers: new Headers() },
+      respondWith: (promise) => {
+        response = promise;
+      },
+    });
+    expect(await (await response).text()).toBe("downloaded lesson");
   });
 });

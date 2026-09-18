@@ -5,10 +5,6 @@ const path = require("path");
 const CleanCSS = require("clean-css");
 const htmlMinifierTerser = require("html-minifier-terser");
 const { execSync } = require("child_process");
-const {
-  collectOfflineAssetManifest,
-  writeOfflineAssetManifest,
-} = require("../utils/offline-manifest.cjs");
 
 function toIsoDateString(value) {
   const trimmed = String(value ?? "").trim();
@@ -434,7 +430,16 @@ const build = async () => {
     console.log("[build] copying public assets");
     const publicJsPath = path.join(publicPath, "js");
     await fs.copy(publicPath, distPath, {
-      filter: (src) => !isPathWithinOrEqual(publicJsPath, src),
+      filter: (src) =>
+        !isPathWithinOrEqual(publicJsPath, src) &&
+        !src
+          .split(path.sep)
+          .some(
+            (part) =>
+              part === "audit-reports" ||
+              part.startsWith("._") ||
+              part === ".DS_Store",
+          ),
     });
 
     // 2b. Write build/version metadata for runtime consumers (Railway-safe).
@@ -479,7 +484,7 @@ const build = async () => {
       bundle: true,
       minify: true,
       outdir: path.join(distPath, "js"),
-      sourcemap: true,
+      sourcemap: "external",
       target: "es2020",
     });
 
@@ -491,7 +496,7 @@ const build = async () => {
       minify: true,
       format: "esm",
       outdir: path.join(distPath, "js"),
-      sourcemap: true,
+      sourcemap: "external",
       target: "es2020",
     });
 
@@ -502,7 +507,12 @@ const build = async () => {
       bundle: true,
       minify: true,
       outfile: path.join(distPath, "sw.js"),
-      sourcemap: true,
+      define: {
+        __BUILD_CACHE_NAME__: JSON.stringify(
+          `arclight-static-v71-${Date.now().toString(36)}`,
+        ),
+      },
+      sourcemap: "external",
       target: "es2020",
     });
 
@@ -542,8 +552,7 @@ const build = async () => {
 
     // 7. Generate the immutable offline manifest once from final build bytes.
     console.log("[build] generating offline asset manifest");
-    const offlineManifest = await collectOfflineAssetManifest(distPath);
-    await writeOfflineAssetManifest(distPath, offlineManifest);
+    await require("./package-distribution.cjs").packageDistribution(distPath);
 
     console.log("Build complete!");
   } catch (error) {

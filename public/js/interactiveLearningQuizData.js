@@ -7,6 +7,7 @@ const LEVEL_KEYS = ["primary", "intermediate", "advanced"];
 const LEVEL_LABELS = {
   primary: "Primary",
   intermediate: "Intermediate",
+
   advanced: "Advanced",
 };
 

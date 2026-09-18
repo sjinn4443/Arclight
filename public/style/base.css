@@ -307,7 +307,7 @@ html {
 .video-narration-toggle::before {
   content: "🔊";
   flex: 0 0 auto;
-  margin-right: 5px;
+  margin-inline-end: 5px;
 }
 
 .video-narration-toggle.is-off {
@@ -361,7 +361,7 @@ body.dedicated-video-fullscreen-active {
   font: inherit;
   font-size: 13px;
   line-height: 1.25;
-  text-align: left;
+  text-align: start;
   cursor: pointer;
 }
 
@@ -701,7 +701,7 @@ video::cue {
   border-radius: 0;
   margin: 0; /* components.css의 margin-top 제거 */
   width: 100%; /* 풀폭은 유지, 대신 카드 안에서만 */
-  text-align: left;
+  text-align: start;
   padding: 12px 14px;
   font-size: 14px;
   cursor: pointer;

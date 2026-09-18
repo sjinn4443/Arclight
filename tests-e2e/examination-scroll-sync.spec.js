@@ -6,12 +6,22 @@ import {
   frameAtNarrationTime,
 } from "../public/js/examinationScrollTiming.js";
 
+// This suite isolates the speech clock. Scrolling an offscreen arrow into view
+// can legitimately start the following lesson before a pointer click arrives.
+// Exercise keyboard activation without introducing that separate scroll journey.
+async function advanceWithKeyboard(page, arrow) {
+  await expect(arrow).toBeEnabled();
+  await expect(arrow).toHaveClass(/is-visible/);
+  await arrow.evaluate((el) => el.focus({ preventScroll: true }));
+  await page.keyboard.press("Enter");
+}
+
 for (const [pageId, timing] of Object.entries(EXAMINATION_SCROLL_TIMING)) {
   test(`${pageId}: speech clock controls scenes, captions and completion`, async ({
     page,
     browserName,
   }, testInfo) => {
-    test.setTimeout(180_000);
+    test.setTimeout(240_000);
     const route = pageId.replace(/Page$/, "");
     const hub = pageId.startsWith("front")
       ? "frontOfEyePage"
@@ -113,7 +123,7 @@ for (const [pageId, timing] of Object.entries(EXAMINATION_SCROLL_TIMING)) {
           cues.filter((cue) => cue.start <= time).map((entry) => entry.en),
         );
         if (landmarks.includes(sampleTime))
-          await stage.screenshot({
+          await page.screenshot({
             path: testInfo.outputPath(`landmark-${index}-${sampleTime}.png`),
           });
       }
@@ -127,7 +137,7 @@ for (const [pageId, timing] of Object.entries(EXAMINATION_SCROLL_TIMING)) {
       await expect(replay).toBeHidden();
       await expect(arrow).not.toHaveClass(/is-visible/);
       expect((await state()).completed).toBe(false);
-      await stage.screenshot({
+      await page.screenshot({
         path: testInfo.outputPath(`scene-${index + 1}.png`),
       });
       await audio.evaluate((el, time) => {
@@ -143,6 +153,8 @@ for (const [pageId, timing] of Object.entries(EXAMINATION_SCROLL_TIMING)) {
       await expect
         .poll(async () => (await state())?.currentFrame)
         .toBe(points.at(-1)[1]);
+      if (index < timing.stages.length - 1)
+        await expect(arrow).toHaveCSS("opacity", "1");
       const sectionGap = await slot.evaluate((item) => {
         const section = item.closest(".fundal-reflex-examination-section");
         if (
@@ -165,10 +177,24 @@ for (const [pageId, timing] of Object.entries(EXAMINATION_SCROLL_TIMING)) {
           sectionGap,
           "The next section must clear the down arrow",
         ).toBeGreaterThanOrEqual(16);
-      if (index < timing.stages.length - 1) await arrow.click();
+      if (index < timing.stages.length - 1)
+        await advanceWithKeyboard(page, arrow);
     }
     // A completed revisit must restore every stage's captions without replay.
     await page.reload();
+    // Restoration waits for all scene assets, including cold WebKit renderers.
+    await expect
+      .poll(
+        () =>
+          page.evaluate(
+            (route) =>
+              window.__ARCLIGHT_E2E__?.fundal?.getStageState(route, 0)
+                ?.completed,
+            route,
+          ),
+        { timeout: 60_000 },
+      )
+      .toBe(true);
     for (const [index, points] of timing.stages.entries()) {
       const stage = guide.locator(".childhood-fundal-prep-stage").nth(index);
       await expect(
@@ -221,7 +247,10 @@ test("Front of Eye first sound click mutes, resumes at the same clock, and clean
   await expect(
     guide.locator(".childhood-fundal-stage-replay-btn").first(),
   ).toBeVisible();
-  await guide.locator(".childhood-fundal-scroll-down-arrow").first().click();
+  await advanceWithKeyboard(
+    page,
+    guide.locator(".childhood-fundal-scroll-down-arrow").first(),
+  );
   await expect
     .poll(() => audio.evaluate((el) => el.currentTime))
     .toBeGreaterThanOrEqual(10);

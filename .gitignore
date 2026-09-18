@@ -52,6 +52,11 @@ ArclightApp.zip
 playwright-report/
 test-results/
 blob-report/
+dist-media/
+dist-sourcemaps/
+dist-size-report.json
+quality-reports/
+.lighthouseci/
 tmp-chromium-*.png
 tmp-webkit-*.png
 tmp_playwright_*/
@@ -63,3 +68,4 @@ tmp-codex-build*/
 reports/data/*.ndjson
 reports/data/*.sql
 reports/data/users.json
+test-results-*/

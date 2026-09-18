@@ -724,6 +724,21 @@ app.get(
   },
 );
 
+app.get("/shell-assets.json", async (req, res, next) => {
+  if (prod || serveDist) return next();
+  try {
+    const { manifest } = await getOfflineManifestState();
+    const { isPackAsset } = require("./scripts/package-distribution.cjs");
+    res.json({
+      urls: manifest.urls.filter(
+        (url) => !isPackAsset(url) && url !== "/sw.js",
+      ),
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
 app.use("/js", express.static(path.join(staticRoot, "js")));
 app.use("/favicons", express.static(path.join(staticRoot, "favicons")));
 app.get("/robots.txt", (req, res, next) => {
@@ -1021,6 +1036,7 @@ app.use((req, res, next) => {
 });
 
 app.use(express.static(staticRoot));
+if (prod || serveDist) app.use(express.static(`${staticRoot}-media`));
 
 app.post(
   "/track",

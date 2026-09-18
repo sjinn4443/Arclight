@@ -5831,3 +5831,38 @@ html.is-apple-ui :is(.eyes-topbar .menuBtn, .icon.menuBtn, #tocToggleBtn) {
     left: calc(92% + 19px) !important;
   }
 }
+/* Comfortable hit targets retain the small visual carousel dots. */
+.carousel-dots .dot,
+.catalog-h2 .carousel-dots .dot {
+  flex: 0 0 24px;
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  padding: 0;
+  margin: 0;
+  background: radial-gradient(circle, #8a8a94 0 3px, transparent 3.5px);
+}
+.carousel-dots .dot.active,
+.catalog-h2 .carousel-dots .dot.active {
+  background: radial-gradient(circle, #c41820 0 3px, transparent 3.5px);
+}
+.catalog-h2 {
+  padding-block-start: 28px;
+}
+.catalog-h2 .carousel-dots {
+  right: auto;
+  inset-inline-end: 0;
+  top: 0;
+  gap: 2px;
+  max-inline-size: 100%;
+  margin: 0;
+}
+#unifiedDashboard .module-subtitle {
+  color: #6b6b6b;
+}
+/* Match the mobile container padding without creating WebKit overflow. */
+@media (max-width: 600px) {
+  .childhood-fundal-scroll-page .childhood-fundal-prep-list {
+    margin-inline: -20px;
+  }
+}

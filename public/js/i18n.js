@@ -1,3 +1,4 @@
+import { applyLocaleDirection } from "./locale-direction.js";
 import { applyMediaA11y } from "./mediaA11y.js";
 
 /**
@@ -170,7 +171,7 @@ async function loadTranslations(lang) {
     CACHE.fallbackDict = fallbackDict || {};
     CACHE.dict = dict || {};
     CACHE.lang = next;
-    document.documentElement.setAttribute("lang", next);
+    applyLocaleDirection(next);
     rebuildLiteralIndex();
     return CACHE.dict;
   })().finally(() => {
@@ -578,7 +579,7 @@ export async function setLanguage(lang) {
   localStorage.setItem("prefLang", next);
   await loadTranslations(next);
   applyTranslations(document);
-  document.documentElement.setAttribute("lang", next);
+  applyLocaleDirection(next);
 
   if (previous !== next) {
     const detail = { lang: next, previousLang: previous };

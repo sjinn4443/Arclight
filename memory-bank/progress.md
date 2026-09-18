@@ -253,3 +253,19 @@ The project is a feature-rich PWA with a strong emphasis on interactive learning
 - FR06 remains the user-approved baseline for Fundal route playback/settle behavior.
 - iOS/WebKit Fundal white-frame recovery should prefer exact static snapshots configured through route-level snapshot maps, with WebKit iPhone E2E coverage for held frame, snapshot URL, overlay visibility, and non-white pixels.
 - Build output cleaning favors preserving build continuity on Windows over deleting locked folders synchronously; stale renamed cleanup folders are treated as disposable artifacts.
+
+### 18 September 2026 — Product audit implementation
+
+Added generated shell/pack manifests, split deployment outputs, download resume
+and revision checks, RTL direction/layout, browser quality matrix and Lighthouse
+and incremental type gates. Kept existing corrected Spanish/Korean timed copy,
+synchronized broad cues and regenerated their audio. Release approval remains
+pending a real bilingual clinician; automated semantic checks do not approve it.
+See README Product quality gates for commands, artifact deployment and limits.
+
+Validation: 448 Jest tests, all 43 quality-matrix cases and 18 examination
+journeys passed including targeted final rechecks. The existing Fundal browser
+suite passed 20 tests with six browser-specific skips. Lighthouse median gates
+passed for dashboard and Eyes. Complete shell: 19,174,231 bytes, summed gzip
+9,845,022 bytes. Detailed evidence and limitations are recorded in
+`docs/product-quality-2026-09-18.md`; human clinical approval remains pending.

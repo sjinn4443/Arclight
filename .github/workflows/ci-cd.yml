@@ -11,7 +11,10 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 60
+    env:
+      DASHBOARD_PASSWORD: ci-quality-dashboard-password-2026
+      TELEMETRY_TOKEN_SECRET: ci-quality-telemetry-secret-2026-value
 
     steps:
       - name: Checkout repository
@@ -49,14 +52,14 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v5
         with:
-          node-version: "20.x"
+          node-version: "22.x"
           cache: "npm"
 
       - name: Install dependencies
         run: npm ci
 
       - name: Install Playwright system dependencies
-        run: npx playwright install-deps webkit
+        run: npx playwright install-deps chromium webkit
 
       - name: Install Playwright browsers
         run: npx playwright install chromium webkit
@@ -66,6 +69,11 @@ jobs:
 
       - name: Run build
         run: npm run build
+
+      - name: Check types and clinical safety assertions
+        run: |
+          npm run type-check
+          npm run check:clinical
 
       - name: Security audit
         run: npm audit --omit=dev --audit-level=moderate
@@ -118,8 +126,60 @@ jobs:
             playwright-report/
             test-results/
 
+      - name: Responsive Chromium and WebKit matrix, accessibility and offline playback
+        run: npm run test:quality
+
+      - name: Upload responsive and offline evidence
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: quality-browser-matrix
+          path: |
+            playwright-report/
+            test-results/
+
+      - name: Changed examination animation journeys
+        run: npm run test:animations
+
+      - name: Upload examination animation evidence
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: examination-animation-report
+          path: |
+            playwright-report/
+            test-results/
+
+      - name: Lighthouse quality gates
+        run: npm run test:lighthouse
+
+      - name: Upload quality reports
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: quality-reports
+          path: |
+            quality-reports/
+            dist-size-report.json
+
+      - name: Require bilingual clinical release approval
+        run: npm run check:clinical-approval
+
       - name: Upload production artifact
         uses: actions/upload-artifact@v6
         with:
-          name: dist
+          name: app-shell
           path: dist/
+
+      - name: Upload optional content packs
+        uses: actions/upload-artifact@v6
+        with:
+          name: media-packs
+          path: dist-media/
+          compression-level: 0
+
+      - name: Upload source maps separately
+        uses: actions/upload-artifact@v6
+        with:
+          name: source-maps
+          path: dist-sourcemaps/

@@ -168,11 +168,13 @@ function writeEyesCarouselState(state) {
 }
 
 function getCenteredCardIndex(carouselEl, cards) {
-  const mid = carouselEl.scrollLeft + carouselEl.offsetWidth / 2;
+  const bounds = carouselEl.getBoundingClientRect();
+  const mid = bounds.left + bounds.width / 2;
   let bestIndex = 0;
   let bestDistance = Infinity;
   cards.forEach((card, idx) => {
-    const center = card.offsetLeft + card.offsetWidth / 2;
+    const bounds = card.getBoundingClientRect();
+    const center = bounds.left + bounds.width / 2;
     const distance = Math.abs(center - mid);
     if (distance < bestDistance) {
       bestDistance = distance;
@@ -498,13 +500,18 @@ export function initializeEyesCatalog() {
       );
       card.dataset.target = i.target;
       card.dataset.label = i.label;
+      const openButton = card.querySelector(".eyes-card__open");
+      openButton.disabled = disabled;
+      openButton.setAttribute("aria-label", i.label);
+      if (labelI18nKey)
+        openButton.setAttribute("data-i18n", `${labelI18nKey}:aria-label`);
 
       if (disabled) {
         card.setAttribute("aria-disabled", "true");
         card.setAttribute("tabindex", "-1");
         card.setAttribute("data-disabled", "true");
       } else {
-        card.setAttribute("tabindex", "0");
+        card.removeAttribute("tabindex");
       }
 
       const heartBtn = card.querySelector(".heart-btn");
@@ -623,7 +630,11 @@ export function initializeEyesCatalog() {
       const clamped = Math.max(0, Math.min(i, cards.length - 1));
       const card = cards[clamped];
       const left =
-        card.offsetLeft - carouselEl.offsetWidth / 2 + card.offsetWidth / 2;
+        carouselEl.scrollLeft +
+        card.getBoundingClientRect().left -
+        carouselEl.getBoundingClientRect().left -
+        carouselEl.clientWidth / 2 +
+        card.offsetWidth / 2;
       carouselEl.scrollTo({ left, behavior });
     };
 
@@ -711,7 +722,11 @@ export function initializeEyesCatalog() {
       const idx = getCenteredCardIndex(carouselEl, cards);
       const card = cards[idx];
       const left =
-        card.offsetLeft - carouselEl.offsetWidth / 2 + card.offsetWidth / 2;
+        carouselEl.scrollLeft +
+        card.getBoundingClientRect().left -
+        carouselEl.getBoundingClientRect().left -
+        carouselEl.clientWidth / 2 +
+        card.offsetWidth / 2;
 
       finishFreeScroll();
       carouselEl.scrollTo({ left, behavior: "smooth" });

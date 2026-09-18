@@ -3,8 +3,24 @@
  */
 
 let deferredPrompt = null;
+let initialized = false;
+function showOfflineFailure() {
+  let notice = document.getElementById("pwa-install-error");
+  if (!notice) {
+    notice = document.createElement("p");
+    notice.id = "pwa-install-error";
+    notice.setAttribute("role", "alert");
+    // Keep the alert in document flow so it cannot cover lesson controls.
+    document.body.prepend(notice);
+  }
+  const message = "Offline setup failed. Reconnect and reload to try again.";
+  notice.textContent =
+    window.I18N?.translateLiteral?.(message, message) || message;
+}
 
 export function initializePWA() {
+  if (initialized) return;
+  initialized = true;
   // 1) Capture beforeinstallprompt so we can trigger later
   window.addEventListener("beforeinstallprompt", (e) => {
     e.preventDefault();
@@ -16,12 +32,25 @@ export function initializePWA() {
   // 2) Register Service Worker (required for install prompt on Chrome)
   if (
     "serviceWorker" in navigator &&
-    (location.protocol === "https:" || location.hostname === "localhost")
+    (location.protocol === "https:" ||
+      location.hostname === "localhost" ||
+      location.hostname === "127.0.0.1")
   ) {
     navigator.serviceWorker
       .register("sw.js")
       .then(async (reg) => {
         console.warn("[pwa] SW registered", reg.scope);
+        const watch = (worker) => {
+          if (!worker) return;
+          let activated = worker.state === "activated";
+          worker.addEventListener("statechange", () => {
+            if (worker.state === "activated") activated = true;
+            if (worker.state === "redundant" && !activated)
+              showOfflineFailure();
+          });
+        };
+        watch(reg.installing);
+        reg.addEventListener("updatefound", () => watch(reg.installing));
 
         // 1) 페이지 로드 시점에 즉시 업데이트 체크
         try {
@@ -59,7 +88,10 @@ export function initializePWA() {
           });
         });
       })
-      .catch((err) => console.warn("[pwa] SW register failed", err));
+      .catch((err) => {
+        console.warn("[pwa] SW register failed", err);
+        showOfflineFailure();
+      });
   }
 }
 

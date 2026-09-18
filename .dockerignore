@@ -27,3 +27,9 @@ Thumbs.db
 # Others
 *.swp
 *.swo
+dist-media
+dist-sourcemaps
+dist-size-report.json
+quality-reports
+.lighthouseci
+test-results-*

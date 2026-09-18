@@ -1,0 +1,21 @@
+{
+  "instructions": "A bilingual clinical reviewer must listen to the audio, inspect captions against English and record the exact revision printed by npm run check:clinical. Automated assertions are not clinical approval.",
+  "languages": {
+    "es-419": {
+      "status": "pending",
+      "revision": "ad06f6472da82d2242baeacb832ca7c3b81d162e1547685454b938819bef2298",
+      "reviewer": "",
+      "qualifications": "",
+      "reviewedAt": "",
+      "evidence": ""
+    },
+    "ko": {
+      "status": "pending",
+      "revision": "62e2edd13a053c876e683264de365df783701bf44877d225ff1b3137ca8f4ef9",
+      "reviewer": "",
+      "qualifications": "",
+      "reviewedAt": "",
+      "evidence": ""
+    }
+  }
+}

@@ -9,3 +9,9 @@ playwright-report
 test-results
 # HLS video segments use .ts but are binary media, not TypeScript source.
 public/video-hls
+dist-media/
+dist-sourcemaps/
+dist-size-report.json
+quality-reports/
+.lighthouseci/
+test-results-*/

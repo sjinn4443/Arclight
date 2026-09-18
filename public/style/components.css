@@ -2,6 +2,35 @@
   components.css - Styles for reusable UI components such as buttons, inputs, cards, and progress bars.
 */
 
+#eyesCatalogPage .eyes-card__open {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border-radius: inherit;
+  z-index: 3;
+}
+#eyesCatalogPage .eyes-card__open:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: -4px;
+}
+#eyesCatalogPage .eyes-card .heart-btn {
+  z-index: 4;
+}
+[dir="rtl"] #backBtnGlobal svg {
+  transform: scaleX(-1);
+}
+#pwa-install-error {
+  margin: 1rem;
+  padding: 1rem;
+  background: #fff;
+  color: #9b1c1c;
+  border: 2px solid currentColor;
+}
+
 /* ============================================= Buttons ============================================= */
 button {
   background-color: #e41e26;
@@ -217,7 +246,7 @@ p.note {
   background: white;
   padding: 10px;
   margin: 5px;
-  margin-left: 20px;
+  margin-inline-start: 20px;
   border-radius: 5px;
   font-size: 14px;
   width: 300px;
@@ -385,7 +414,7 @@ body.quiz-mode {
   background: #f9f9f9;
   border-radius: 8px;
   font-size: 14px;
-  text-align: left;
+  text-align: start;
   color: #333;
   transition: background-color 0.2s;
   cursor: pointer;
@@ -433,7 +462,7 @@ body.quiz-mode {
   padding: 12px;
   width: 100%;
   max-width: 320px;
-  margin-left: 6px;
+  margin-inline-start: 6px;
   display: block;
   border: none;
 }
@@ -546,7 +575,7 @@ body.quiz-mode {
   gap: 8px;
   z-index: 2000;
   margin-top: 260px;
-  margin-left: 300px;
+  margin-inline-start: 300px;
 }
 
 .top-right-icons button {
@@ -785,7 +814,7 @@ body.quiz-mode {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-left: 10px;
+  padding-inline-start: 10px;
   border-top: 1px solid #ccc;
   z-index: 9999;
 }
@@ -797,7 +826,7 @@ body.quiz-mode {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 70px;
+  margin-inline-end: 70px;
 }
 
 /* ============================================= Slide Toggle Switch ============================================= */
@@ -902,8 +931,8 @@ input:checked + .slider:before {
 .modal-content {
   overflow-y: auto;
   flex-grow: 1;
-  padding-right: 8px;
-  text-align: left;
+  padding-inline-end: 8px;
+  text-align: start;
 }
 
 .modal-content label {
@@ -1103,7 +1132,7 @@ input:checked + .slider:before {
 #downloadAppModal .download-failed-list,
 #downloadAppModal .download-available-list {
   margin: 8px 0 14px;
-  padding-left: 18px;
+  padding-inline-start: 18px;
   font-size: 12px;
   line-height: 1.4;
 }
@@ -1178,7 +1207,7 @@ input:checked + .slider:before {
 
 #offlineContentModal label {
   justify-content: flex-start;
-  text-align: left;
+  text-align: start;
   z-index: 20000;
 }
 
@@ -1440,7 +1469,7 @@ input:checked + .slider:before {
   border: 0;
   background: transparent;
   justify-self: start;
-  text-align: left;
+  text-align: start;
 }
 
 .menu-tabs {
@@ -1456,7 +1485,7 @@ input:checked + .slider:before {
 }
 
 .menu-tabs .menu-search-wrap {
-  margin-left: auto;
+  margin-inline-start: auto;
 }
 
 .menu-tabs .menu-search-wrap.search-collapsed input[type="search"] {
@@ -1474,7 +1503,7 @@ input:checked + .slider:before {
   right: 0;
   top: 0;
   z-index: 5;
-  margin-left: 0;
+  margin-inline-start: 0;
 }
 
 .menu-tabs .menu-search-wrap.search-expanded input[type="search"] {
@@ -1507,7 +1536,7 @@ input:checked + .slider:before {
   align-items: center;
   justify-content: center;
   padding: 0;
-  margin-left: auto;
+  margin-inline-start: auto;
   flex: 0 0 auto;
 }
 
@@ -1585,7 +1614,7 @@ input:checked + .slider:before {
 .menu-version-date {
   margin-top: auto;
   align-self: flex-start;
-  margin-left: 2px;
+  margin-inline-start: 2px;
   margin-bottom: calc(env(safe-area-inset-bottom, 0px) + 2px);
   font-size: 11px;
   color: #6b7280;
@@ -1600,7 +1629,7 @@ input:checked + .slider:before {
 .menu-item img {
   width: 24px;
   height: auto;
-  margin-right: 6px;
+  margin-inline-end: 6px;
   vertical-align: text-bottom;
   aspect-ratio: auto;
 }
@@ -1698,7 +1727,7 @@ input:checked + .slider:before {
   align-items: center;
   justify-content: space-between;
   position: relative;
-  text-align: left;
+  text-align: start;
 }
 
 #languageInstallPage .lang-install__custom-select-label {
@@ -1819,14 +1848,14 @@ input:checked + .slider:before {
   min-width: 0;
   font-weight: 600;
   font-size: 14px;
-  text-align: right;
+  text-align: end;
   overflow-wrap: anywhere;
 }
 
 /* Collapsed bar (pic 1) */
 .lang-picker__toggle {
   width: 100%;
-  text-align: left;
+  text-align: start;
   background: var(--bg-color);
   color: #000;
   border: 1px solid #5a5a5a;
@@ -1934,7 +1963,7 @@ input:checked + .slider:before {
   min-width: 0;
   font-weight: 600;
   font-size: 14px;
-  text-align: right;
+  text-align: end;
   overflow-wrap: anywhere;
 }
 
@@ -1961,7 +1990,7 @@ input:checked + .slider:before {
   border-radius: 16px;
   min-height: 120px;
   padding: 12px;
-  text-align: left;
+  text-align: start;
   position: relative;
   box-shadow: none;
 }
@@ -2049,7 +2078,7 @@ input:checked + .slider:before {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  margin-left: 12px;
+  margin-inline-start: 12px;
 }
 
 /* ============================================= Eyes page components ============================================= */
@@ -2071,7 +2100,7 @@ input:checked + .slider:before {
 }
 
 #eyesCatalogPage .eyes-title {
-  margin-left: 0;
+  margin-inline-start: 0;
   font-size: 15px;
   font-weight: 600;
   color: #000;
@@ -2129,6 +2158,7 @@ input:checked + .slider:before {
 }
 
 .eyes-card {
+  box-sizing: border-box;
   scroll-snap-align: center;
   background: #fff;
   border-radius: 18px;
@@ -2139,7 +2169,7 @@ input:checked + .slider:before {
   padding: 25px 18px;
   font-size: 13px;
   font-weight: 500;
-  text-align: left;
+  text-align: start;
   color: #ffffff;
   border: none;
   box-shadow: none;
@@ -2163,13 +2193,13 @@ input:checked + .slider:before {
   position: relative;
   z-index: 1;
   pointer-events: none;
-  text-align: left !important;
+  text-align: start !important;
   white-space: normal;
 }
 
 #eyesCatalogPage .eyes-card .tag-row {
   position: absolute;
-  left: 18px;
+  inset-inline-start: 18px;
   bottom: 12px;
   display: flex;
   gap: 6px;
@@ -2191,7 +2221,7 @@ input:checked + .slider:before {
 #eyesCatalogPage .eyes-card .heart-btn {
   position: absolute;
   top: 10px;
-  right: 10px;
+  inset-inline-end: 10px;
   width: 28px;
   height: 28px;
   border: none;
@@ -2201,7 +2231,7 @@ input:checked + .slider:before {
   justify-content: center;
   cursor: pointer;
   padding: 0;
-  z-index: 1;
+  z-index: 4;
   pointer-events: auto;
 }
 #eyesCatalogPage .eyes-card .heart-btn,
@@ -2243,7 +2273,7 @@ input:checked + .slider:before {
   font-size: 14px;
   font-weight: 600;
   color: #111;
-  margin-left: 28px;
+  margin-inline-start: 28px;
 }
 .ml-tabs {
   display: flex;
@@ -2378,7 +2408,7 @@ input:checked + .slider:before {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-right: 32px;
+  padding-inline-end: 32px;
 }
 
 /* Random height buckets for variety */
@@ -2397,7 +2427,7 @@ input:checked + .slider:before {
   font-size: 13px;
   line-height: 1.25;
   font-weight: 600;
-  text-align: left;
+  text-align: start;
 }
 
 .ml-heart {
@@ -2412,7 +2442,7 @@ input:checked + .slider:before {
   font-size: 16px;
   color: #e11d48;
   line-height: 1;
-  margin-left: 0;
+  margin-inline-start: 0;
   z-index: 2;
 }
 
@@ -2447,7 +2477,7 @@ input:checked + .slider:before {
   width: 100%;
   padding: 0;
   color: inherit;
-  text-align: left;
+  text-align: start;
   background: transparent;
   border: 0;
 }
@@ -2482,7 +2512,7 @@ input:checked + .slider:before {
   width: 100%;
   padding: 8px;
   color: #111;
-  text-align: left;
+  text-align: start;
   background: rgba(255, 255, 255, 0.88);
   border: 0;
   border-radius: 8px;
@@ -2547,7 +2577,7 @@ input:checked + .slider:before {
 /* ATOMS handout pages: topbar 아이콘은 fundalReflexPdf처럼 오른쪽 정렬 */
 #atomsHandout1Page .eyes-topbar__icons,
 #atomsHandout2Page .eyes-topbar__icons {
-  margin-left: 280px;
+  margin-inline-start: 280px;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -2728,7 +2758,7 @@ input:checked + .slider:before {
   border: 0;
   background: transparent;
   padding: 11px 16px 6px;
-  text-align: left;
+  text-align: start;
   cursor: pointer;
 }
 
@@ -3158,7 +3188,7 @@ input:checked + .slider:before {
   border: 0;
   background: transparent;
   padding: 14px 16px 18px;
-  text-align: left;
+  text-align: start;
   cursor: pointer;
 }
 #casestudyPage .pupil-card.module-card:active {
@@ -3227,7 +3257,7 @@ input:checked + .slider:before {
   font-size: 11px;
   color: #777;
   margin-top: -11%;
-  margin-left: 20px;
+  margin-inline-start: 20px;
 }
 #casestudyPage .lesson-type {
   font-weight: 650;
@@ -3243,7 +3273,7 @@ input:checked + .slider:before {
   border-radius: 999px;
   background: #dedede;
   overflow: hidden;
-  margin-left: 22px;
+  margin-inline-start: 22px;
 }
 #casestudyPage .lesson-progress__fill {
   height: 100%;
@@ -3304,7 +3334,7 @@ input:checked + .slider:before {
   color: #fff;
   font-size: 22px;
   line-height: 1;
-  margin-right: 6px;
+  margin-inline-end: 6px;
   cursor: pointer;
 }
 
@@ -3717,7 +3747,7 @@ input:checked + .slider:before {
   font-size: 16px;
   color: #111;
   padding: 8px;
-  margin-left: 0px;
+  margin-inline-start: 0px;
   white-space: nowrap;
 }
 
@@ -3753,13 +3783,13 @@ input:checked + .slider:before {
   flex: 1 1 auto;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  padding-right: 4px;
+  padding-inline-end: 4px;
 }
 
 #caseStudyChatPage .casechat-dxitem,
 #caseStudyChatPagePrimary .casechat-dxitem,
 #caseStudyChatPageAdvanced .casechat-dxitem {
-  text-align: left;
+  text-align: start;
   border: 1px solid rgba(0, 0, 0, 0.12);
   background: #fff;
   border-radius: 12px;
@@ -3793,7 +3823,7 @@ input:checked + .slider:before {
   font-size: 14px;
   line-height: 1.4;
   margin-bottom: 28px;
-  margin-left: 8px;
+  margin-inline-start: 8px;
 }
 
 #caseStudyChatPage .casechat-next,
@@ -3821,7 +3851,7 @@ input:checked + .slider:before {
 /* Try again feedback + shake */
 #caseStudyChatPageAdvanced .casechat-tryagain {
   margin-top: 16px;
-  margin-left: 14px;
+  margin-inline-start: 14px;
   font-size: 14px;
   font-weight: 650;
   color: #e41e26;
@@ -3869,8 +3899,8 @@ input:checked + .slider:before {
 
 /* ===== Case study chat: overall page polish ===== */
 #caseStudyChatPageAdvanced .container.pupils-container {
-  padding-left: 14px;
-  padding-right: 14px;
+  padding-inline-start: 14px;
+  padding-inline-end: 14px;
   padding-bottom: 42px;
   box-sizing: border-box;
   background: transparent !important;
@@ -4117,7 +4147,7 @@ input:checked + .slider:before {
 
 .submit-answer-btn .chev {
   font-weight: 700;
-  margin-left: 4px;
+  margin-inline-start: 4px;
 }
 
 .submit-answer-btn:disabled {
@@ -4150,7 +4180,7 @@ input:checked + .slider:before {
   width: 34px;
   height: 34px;
   display: block;
-  margin-left: -38px;
+  margin-inline-start: -38px;
 }
 
 .caseTimer__bg {
@@ -4319,7 +4349,7 @@ input:checked + .slider:before {
 #caseStudyChatPage .casechat-quizheader__submit .chev,
 #caseStudyChatPagePrimary .casechat-quizheader__submit .chev,
 #caseStudyChatPageAdvanced .casechat-quizheader__submit .chev {
-  margin-left: 4px;
+  margin-inline-start: 4px;
 }
 
 /* ----- Chat log spacing so it doesn't hide behind the bottom sheet ----- */
@@ -4465,7 +4495,7 @@ subtle */ #caseStudyChatPageAdvanced .casechat-bubble--system {
 #caseStudyChatPage #caseChatSubmitBtn .chev,
 #caseStudyChatPagePrimary #caseChatSubmitBtn .chev,
 #caseStudyChatPageAdvanced #caseChatSubmitBtn .chev {
-  margin-left: 6px;
+  margin-inline-start: 6px;
 }
 
 /* Chips container sits inside bottom sheet */
@@ -4630,7 +4660,7 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
   display: flex;
   align-items: center;
   padding: 0 52px 0 49px;
-  margin-left: 0px;
+  margin-inline-start: 0px;
   background: #fff;
   border: 1px solid #e5e5ea;
   border-radius: 14px;
@@ -4692,7 +4722,7 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
 
 .casechat-dxitem {
   width: 100%;
-  text-align: left;
+  text-align: start;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -4840,7 +4870,7 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
 #caseStudyChatPage .casechat-modal__dxHint,
 #caseStudyChatPagePrimary .casechat-modal__dxHint,
 #caseStudyChatPageAdvanced .casechat-modal__dxHint {
-  text-align: right;
+  text-align: end;
 }
 
 #glaucomaHistoryCaseStudy .casechat-modal__icons,
@@ -4893,7 +4923,7 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
   font-weight: 750;
   font-size: 14px;
   color: #111;
-  margin-left: 7px;
+  margin-inline-start: 7px;
 }
 
 /* ✅ 이게 지금 스크린샷의 ‘빨간 막대 X’ 문제를 직접 잡는 부분 */
@@ -5007,7 +5037,7 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
   border: 1px solid #e5e7eb;
   background: #ffffff;
 
-  text-align: left;
+  text-align: start;
 }
 
 #caseStudyChatPage .casechat-radio,
@@ -5245,10 +5275,10 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
   display: block;
   font-size: 11px;
   font-weight: 600;
-  text-align: right;
+  text-align: end;
   color: rgba(0, 0, 0, 0.55);
   margin-top: 12px;
-  margin-left: 154px;
+  margin-inline-start: 154px;
 }
 
 /* Modals (Flashcard Primary) */
@@ -5418,7 +5448,7 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
 #caseStudyFlashcardPagePrimary .primaryFlashDx {
   font-weight: 700;
   font-size: 18px;
-  text-align: left;
+  text-align: start;
   color: #fff;
   font-style: italic;
   line-height: 1.35;
@@ -5427,7 +5457,7 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
 
 #caseStudyFlashcardPagePrimary .primaryFlashDxRationale {
   margin: 19px 0 21px;
-  padding-left: 18px;
+  padding-inline-start: 18px;
   color: rgba(255, 255, 255, 0.92);
   font-size: 15px;
   line-height: 26px;
@@ -5460,7 +5490,7 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
 }
 
 #caseStudyFlashcardPagePrimary .primaryFlashCaseLabel {
-  padding-right: 42px;
+  padding-inline-end: 42px;
 }
 
 #caseStudyFlashcardPagePrimary .primaryFlashFlipIcon {
@@ -5583,7 +5613,7 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
   font-weight: 600;
   color: #111;
   line-height: 1;
-  margin-left: 46px;
+  margin-inline-start: 46px;
 }
 
 .topbar-home-logo {
@@ -5611,7 +5641,7 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
   font-weight: 600;
   color: #111;
   line-height: 1;
-  margin-right: 131px;
+  margin-inline-end: 131px;
   white-space: nowrap;
 }
 
@@ -5626,8 +5656,8 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
   #caseStudyFlashcardPagePrimary #primaryFlashCardWrap,
   #caseStudyFlashcardPagePrimary #primaryFlashCardWrap + div {
     width: min(100%, 420px);
-    margin-left: auto !important;
-    margin-right: auto !important;
+    margin-inline-start: auto !important;
+    margin-inline-end: auto !important;
   }
 
   #caseStudyFlashcardPagePrimary #primaryFlashCard.flashcard {
@@ -5655,7 +5685,7 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
 
 /* Keep right-side menu icon visible on all pages using Eyes topbar. */
 .page.has-eyes-topbar .eyes-topbar__icons {
-  margin-left: auto;
+  margin-inline-start: auto;
   align-items: center;
 }
 
@@ -5800,7 +5830,7 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
   padding: 24px 28px 32px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
   position: relative;
-  text-align: left;
+  text-align: start;
   font-family: system-ui, sans-serif;
   animation: guestModalCardIn 0.3s ease-out;
 }
@@ -5890,7 +5920,7 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
 .privacyterms__text {
   max-height: 55vh;
   overflow-y: auto;
-  padding-right: 6px;
+  padding-inline-end: 6px;
 }
 
 #infoModalOverlay .guest-modal {
@@ -5913,7 +5943,7 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
 }
 
 #infoModalOverlay .privacyterms__text {
-  padding-right: 16px;
+  padding-inline-end: 16px;
 }
 
 /* Privacy & Terms: bold section headings spacing */
@@ -6490,7 +6520,7 @@ body[data-experimental-miniapp-notice-open="true"] {
   font-size: 14px;
   font-weight: 600;
   color: #111;
-  margin-left: 13%;
+  margin-inline-start: 13%;
 }
 
 #editProfilePage .profile-topbar__title,
@@ -6498,7 +6528,7 @@ body[data-experimental-miniapp-notice-open="true"] {
   font-size: 14px;
   font-weight: 600;
   color: #111;
-  margin-left: 13%;
+  margin-inline-start: 13%;
 }
 
 #myProfilePage .profile-topbar__icons {
@@ -6816,7 +6846,7 @@ body[data-experimental-miniapp-notice-open="true"] {
   color: #444;
   font-size: 0.8rem;
   line-height: 1.35;
-  text-align: right;
+  text-align: end;
   white-space: pre-line;
   overflow-wrap: anywhere;
 }
@@ -6991,7 +7021,7 @@ body[data-experimental-miniapp-notice-open="true"] {
   font-size: 13px;
   font-weight: 650;
   line-height: 1.25;
-  text-align: left;
+  text-align: start;
   text-decoration: none;
 }
 
@@ -7004,7 +7034,7 @@ body[data-experimental-miniapp-notice-open="true"] {
   color: #555;
   font-size: 12px;
   font-weight: 750;
-  text-align: right;
+  text-align: end;
 }
 
 #settingsPage .settings-inline-action {
@@ -7489,7 +7519,7 @@ body[data-experimental-miniapp-notice-open="true"] {
 }
 
 .see-all-toggle {
-  margin-left: 35vw;
+  margin-inline-start: 35vw;
   cursor: pointer;
   user-select: none;
   font-weight: 600;
@@ -7874,8 +7904,8 @@ Glaucoma history case study: match intermediate style
   background: #f2f2f7 !important;
 }
 #glaucomaHistoryCaseStudy .container.pupils-container {
-  padding-left: 14px;
-  padding-right: 14px;
+  padding-inline-start: 14px;
+  padding-inline-end: 14px;
   padding-bottom: 42px;
   box-sizing: border-box;
   background: transparent !important;
@@ -7968,7 +7998,7 @@ Glaucoma history case study: match intermediate style
   border-radius: 12px;
   border: 1px solid #e5e7eb;
   background: #ffffff;
-  text-align: left;
+  text-align: start;
 }
 #glaucomaHistoryCaseStudy .casechat-radio {
   width: 18px;
@@ -8244,8 +8274,8 @@ Glaucoma history case study: match intermediate style
   position: relative;
   width: 100vw;
   height: auto;
-  margin-left: calc(50% - 50vw);
-  margin-right: calc(50% - 50vw);
+  margin-inline-start: calc(50% - 50vw);
+  margin-inline-end: calc(50% - 50vw);
   display: block;
   background: #fff;
   overflow: visible;
@@ -8460,7 +8490,7 @@ Glaucoma history case study: match intermediate style
   background: rgba(255, 255, 255, 0.96);
   box-shadow: 0 16px 36px rgb(24 33 46 / 20%);
   z-index: 17;
-  text-align: left;
+  text-align: start;
 }
 
 :is(#visualsystemeyesbrainPage, #childhoodEyeBrainImagesPage)
@@ -8822,7 +8852,7 @@ Glaucoma history case study: match intermediate style
   .vs-label--optic-nerve
   .vs-label__text {
   top: var(--text-top, 0px);
-  text-align: left;
+  text-align: start;
   text-transform: capitalize;
   white-space: nowrap;
 }
@@ -8904,7 +8934,7 @@ Glaucoma history case study: match intermediate style
     top: 50%;
     right: calc(22vw - 4px + 20px);
     left: auto;
-    margin-left: 0;
+    margin-inline-start: 0;
     transform: translateY(-50%);
   }
 
@@ -8974,8 +9004,8 @@ Glaucoma history case study: match intermediate style
 #visualImpairmentPage .vi-scroll-wrap {
   position: relative;
   width: 100vw;
-  margin-left: calc(50% - 50vw);
-  margin-right: calc(50% - 50vw);
+  margin-inline-start: calc(50% - 50vw);
+  margin-inline-end: calc(50% - 50vw);
   background: #fff;
   overflow: visible;
 }
@@ -9207,14 +9237,14 @@ Glaucoma history case study: match intermediate style
   font-size: 16px;
   font-weight: 400;
   line-height: 1.18;
-  text-align: left;
+  text-align: start;
 }
 
 #visualImpairmentPage .vi-detail-sections {
   position: relative;
   width: 100vw;
-  margin-left: calc(50% - 50vw);
-  margin-right: calc(50% - 50vw);
+  margin-inline-start: calc(50% - 50vw);
+  margin-inline-end: calc(50% - 50vw);
   padding: clamp(92px, 7vw, 40px) 0 clamp(78px, 9vw, 64px);
   color: #fff;
   background: linear-gradient(
@@ -9569,7 +9599,7 @@ Glaucoma history case study: match intermediate style
     padding: 12px 12px 12px 14px;
     font-size: 13px;
     line-height: 1.15;
-    text-align: left;
+    text-align: start;
   }
 
   #visualImpairmentPage .vi-card--problems {
@@ -9625,7 +9655,7 @@ Glaucoma history case study: match intermediate style
     top: 50%;
     right: calc(22vw - 4px + 52px);
     left: auto;
-    margin-left: 0;
+    margin-inline-start: 0;
     transform: translateY(-50%);
   }
 
@@ -10334,7 +10364,7 @@ body[data-rapd-orientation-notice-open="true"] {
   display: inline-grid;
   width: 18px;
   height: 18px;
-  margin-left: 7px;
+  margin-inline-start: 7px;
   place-items: center;
   border-radius: 50%;
   color: #fff;

@@ -527,3 +527,39 @@ See [`security/EMERGENCY_PLAN.md`](./security/EMERGENCY_PLAN.md) for the operato
 - 2025-12-15: Docs refresh + CI/Jest ESM interop notes (map browser ESM imports to CJS mocks).
 - 2025-10-04: Added security hardening modules (rate limit helpers, auth helpers).
 - 2025-09-29: Added GitHub Actions CI pipeline.
+
+## Product quality gates (18 September 2026)
+
+The production build now emits `dist/` (app shell), `dist-media/` (optional
+content at the same URL paths), `dist-sourcemaps/` and `dist-size-report.json`.
+Deploy both the shell and media trees; the Express host and Dockerfile serve
+both without changing lesson URLs. Source maps are a separate CI artifact.
+The shell budgets are 20 MB raw and 12 MB summed gzip; content has a 2 GB budget.
+`offline-assets.json` and `shell-assets.json` are generated from final output.
+Media pack retries reuse completed files; an interrupted file restarts. SHA-256
+revisions prevent reusing changed pack files. Media stays opt-in and is retained
+across shell cache upgrades. A media host/CDN can be introduced later; the
+current deployment continues to serve both trees from Express.
+
+`npm run type-check` strictly checks the distribution/manifest modules and
+locale-direction module with `checkJs`; it is an incremental baseline, not a
+claim that every legacy browser module is typed. `npm run test:quality` checks
+seven viewports in Chromium and WebKit, rendered WCAG issues, RTL round trips,
+screenshot dimensions/content and a Chromium service-worker offline project.
+`npm run test:animations` runs the existing examination animation regression
+journeys. `npm run test:lighthouse` requires Node >=22.19 and produces three
+mobile runs each for dashboard and Eyes, with median gates of 80 performance,
+95 accessibility, 95 best practices and 90 SEO. Reports remain local/CI artifacts.
+
+Fundal Spanish and Korean timed captions/speech already contained the reported
+safety instructions. The stale broad cue outline is now synchronized and the
+audio was regenerated from those existing corrected cues. `npm run check:clinical`
+asserts PPE, examiner-eye/sideways warnings and referral after three months in
+both source representations and VTT, and verifies audio hashes. A bilingual
+clinical reviewer must fill `clinical-review/fundal-es-ko.json` after listening
+and comparing the material. `npm run check:clinical-approval` blocks release
+artifacts while approval is pending or its content revision is stale. This
+workflow check must also be required by the repository's branch protection.
+
+Recorded results and coverage limits are in
+[the 18 September implementation report](docs/product-quality-2026-09-18.md).

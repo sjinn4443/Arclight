@@ -322,3 +322,16 @@ Childhood Fundal Reflex scrollytelling is also an active maintenance area:
 - For Interactive Learning under `videos.html`, prefer the existing hidden-subpage + lazy iframe pattern over special-case navigation.
 - Diabetic workshop route changes should be checked for structural back behavior from both the workshop home and nested lesson pages.
 - Fundal scrollytelling page shells should stay minimal; the JS engine creates the stage DOM inside `.childhood-fundal-prep-list`.
+
+### Product quality implementation — 18 September 2026
+
+- Build: separate shell, optional media and source maps with generated manifests,
+  raw/gzip size budgets, preserved URL paths and revision-aware pack retries.
+- i18n: Arabic, Persian and Urdu set RTL; English restores LTR. Shared spacing
+  uses logical properties and Eyes carousel centering works in either direction.
+- Validation: strict incremental JavaScript type checks; seven-size Chromium and
+  WebKit matrix, rendered axe checks, offline audio/video project; Lighthouse
+  mobile reports and CI gates. Existing animation journeys are now wired into CI.
+- Clinical: Spanish/Korean timed safety wording was already corrected. Aligned
+  stale broad cues and regenerated matching narration. Human bilingual clinical
+  review is explicitly pending in `clinical-review/fundal-es-ko.json`.

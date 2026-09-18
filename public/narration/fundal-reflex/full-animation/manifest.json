@@ -12,14 +12,14 @@
     "es-419": {
       "src": "es-419.m4a",
       "captions": "es-419.vtt",
-      "bytes": 1017551,
-      "sha256": "86c192552237bfb257a943e85f6cb38aec10706a9a43fcb366bc83a4ba583d1c"
+      "bytes": 1010288,
+      "sha256": "6b8551099cdd9905176fff424144fd504d87b299cd135b007eb35dc34afe67fa"
     },
     "ko": {
       "src": "ko.m4a",
       "captions": "ko.vtt",
-      "bytes": 1014182,
-      "sha256": "133c12e57e74ae9c5c9d224b31f2511670b3f4637836e4ea575ae3235e8465b2"
+      "bytes": 1009116,
+      "sha256": "e213032610483cd25d81da1767a99841d0f45b1a7687d76b0941807a324344f0"
     },
     "ne": {
       "src": "ne.m4a",

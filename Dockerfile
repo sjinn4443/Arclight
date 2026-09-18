@@ -45,6 +45,7 @@ COPY --chown=node:node --from=build /app/storage ./storage
 COPY --chown=node:node --from=build /app/utils ./utils
 COPY --chown=node:node --from=build /app/reports ./reports
 COPY --chown=node:node --from=build /app/dist ./dist
+COPY --chown=node:node --from=build /app/dist-media ./dist-media
 
 # NDJSON remains opt-in; when enabled, only this directory needs write access.
 RUN mkdir -p /app/reports/data && chown node:node /app/reports/data
