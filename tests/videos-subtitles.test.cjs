@@ -63,8 +63,8 @@ const PILOT_CATALOG = {
       subtitleLanguages: ["en", "es", "ko"],
     },
     localSources: {
-      low: "videos/FullAnim/FundalReflex_Full Animation_720p.mp4",
-      high: "videos/FullAnim/FundalReflex_Full Animation.mp4",
+      low: "videos/FullAnim/FundalReflexFullAnim_220p.mp4",
+      high: "videos/FullAnim/FundalReflexFullAnim_720p.mp4",
     },
   },
   directOphthalmoscopyFullAnimationVideoPage: {
@@ -86,8 +86,8 @@ const PILOT_CATALOG = {
       subtitleLanguages: ["en"],
     },
     localSources: {
-      low: "videos/FullAnim/New_DOFullAnim.mp4",
-      high: "videos/FullAnim/New_DOFullAnim.mp4",
+      low: "videos/FullAnim/DOFullAnim_220p.mp4",
+      high: "videos/FullAnim/DOFullAnim_720p.mp4",
     },
   },
   binocularIndirectOphthalmoscopyFullAnimationVideoPage: {
@@ -109,8 +109,8 @@ const PILOT_CATALOG = {
       subtitleLanguages: ["en"],
     },
     localSources: {
-      low: "videos/FullAnim/New_BIOFullAnim.mp4",
-      high: "videos/FullAnim/New_BIOFullAnim.mp4",
+      low: "videos/FullAnim/BIOFullAnim_220p.mp4",
+      high: "videos/FullAnim/BIOFullAnim_720p.mp4",
     },
   },
   frontOfEyeFullAnimationVideoPage: {
@@ -132,8 +132,8 @@ const PILOT_CATALOG = {
       subtitleLanguages: ["en"],
     },
     localSources: {
-      low: "videos/FullAnim/New_FrontofEyeFullAnim_timed.mp4",
-      high: "videos/FullAnim/New_FrontofEyeFullAnim_timed.mp4",
+      low: "videos/FullAnim/FrontofEyeFullAnim_timed_220p.mp4",
+      high: "videos/FullAnim/FrontofEyeFullAnim_timed_720p.mp4",
     },
   },
 };
@@ -256,7 +256,7 @@ describe("childhood eye screening subtitle pilot", () => {
           </div>
           <div class="video-container" id="fundalReflexFullAnimationVideoContainer">
             <video id="fundalReflexFullAnimationVideo" controls>
-              <source src="videos/FullAnim/FundalReflex_Full Animation_720p.mp4" type="video/mp4" />
+              <source src="videos/FullAnim/FundalReflexFullAnim_220p.mp4" type="video/mp4" />
             </video>
           </div>
         </div>
@@ -267,7 +267,7 @@ describe("childhood eye screening subtitle pilot", () => {
           </div>
           <div class="video-container" id="directOphthalmoscopyFullAnimationVideoContainer">
             <video id="directOphthalmoscopyFullAnimationVideo" controls>
-              <source src="videos/FullAnim/New_DOFullAnim.mp4" type="video/mp4" />
+              <source src="videos/FullAnim/DOFullAnim_220p.mp4" type="video/mp4" />
             </video>
           </div>
         </div>
@@ -278,7 +278,7 @@ describe("childhood eye screening subtitle pilot", () => {
           </div>
           <div class="video-container" id="binocularIndirectOphthalmoscopyFullAnimationVideoContainer">
             <video id="binocularIndirectOphthalmoscopyFullAnimationVideo" controls>
-              <source src="videos/FullAnim/New_BIOFullAnim.mp4" type="video/mp4" />
+              <source src="videos/FullAnim/BIOFullAnim_220p.mp4" type="video/mp4" />
             </video>
           </div>
         </div>
@@ -289,7 +289,7 @@ describe("childhood eye screening subtitle pilot", () => {
           </div>
           <div class="video-container" id="frontOfEyeFullAnimationVideoContainer">
             <video id="frontOfEyeFullAnimationVideo" controls>
-              <source src="videos/FullAnim/New_FrontofEyeFullAnim_timed.mp4" type="video/mp4" />
+              <source src="videos/FullAnim/FrontofEyeFullAnim_timed_220p.mp4" type="video/mp4" />
             </video>
           </div>
         </div>

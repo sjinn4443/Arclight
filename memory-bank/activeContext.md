@@ -4,6 +4,12 @@
 
 ## Current Work Focus
 
+Full Animation quality update (23 September 2026): all four existing pages
+use `_220p.mp4` for low and `_720p.mp4` for high. Both the player configuration
+and localisation catalogue point directly into `public/videos/FullAnim/`.
+Moved all ten supplied files out of `out_dual` and removed the old videos.
+Narration timing is unchanged. Static cache v72 ships the updated paths.
+
 Documentation and accessibility refresh (18 September 2026): README and
 `agent.md` now describe the combined examination guides and shared timing
 ownership. All seven launcher instances for Front of Eye, Fundal Reflex, DO

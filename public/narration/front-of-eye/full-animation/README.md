@@ -25,10 +25,13 @@ The Luganda eyelash term follows the Language Commission's
 [medical terminology glossary](https://www.lugandalusogalugwerecommission.com/files/ebigambo_2Bebyekikugu_2Bacalan.pdf),
 page 35. The pupil term follows the [English–Luganda dictionary](https://lugandaproz.wordpress.com/english-luganda-dictionary/).
 
-The player uses `New_FrontofEyeFullAnim_timed.mp4`. Its visual holds are encoded
+The player uses `FrontofEyeFullAnim_timed_220p.mp4` for low quality and
+`FrontofEyeFullAnim_timed_720p.mp4` for high quality. Its visual holds are encoded
 into the video rather than scheduled by runtime timers. Video, captions and
 narration use one absolute media timeline, including after seek, replay or reload.
-The original `New_FrontofEyeFullAnim.mp4` is retained as the editing source.
+The original `New_FrontofEyeFullAnim.mp4` is no longer shipped. Rebuilding with
+`scripts/build-front-of-eye-timed-video.cjs` requires restoring that editing source
+separately, then encoding the timed output at both delivery resolutions.
 
 | Original video | Hold length | Timed video freeze  |
 | -------------- | ----------- | ------------------- |

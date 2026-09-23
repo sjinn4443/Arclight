@@ -509,7 +509,7 @@ const build = async () => {
       outfile: path.join(distPath, "sw.js"),
       define: {
         __BUILD_CACHE_NAME__: JSON.stringify(
-          `arclight-static-v71-${Date.now().toString(36)}`,
+          `arclight-static-v72-${Date.now().toString(36)}`,
         ),
       },
       sourcemap: "external",

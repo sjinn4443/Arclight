@@ -51,7 +51,7 @@
 - Diabetic workshop previous/next flow can cross from the workshop route into Videos-route pages; the flow state is stored in `sessionStorage` and restored when returning to the workshop folders.
 - Diabetic demo quizzes live in `public/html/videos.html` but use initializers exported from `public/js/diabeticRetinopathyWorkshop.js`; `main.js` imports those initializers for the Videos route.
 - Diabetic video pages require their hidden `.page` IDs, workshop `data-target` rows, and `VIDEO_PAGE_SOURCES` entries in `public/js/videos.js` to stay in sync.
-- Full-animation local MP4 pages include `fundalReflexFullAnimationVideoPage`, `directOphthalmoscopyFullAnimationVideoPage`, `binocularIndirectOphthalmoscopyFullAnimationVideoPage` and `frontOfEyeFullAnimationVideoPage`. Each currently maps both local modes to the same file under `public/videos/FullAnim/`. Front of Eye uses `New_FrontofEyeFullAnim_timed.mp4`.
+- Full-animation local MP4 pages include `fundalReflexFullAnimationVideoPage`, `directOphthalmoscopyFullAnimationVideoPage`, `binocularIndirectOphthalmoscopyFullAnimationVideoPage` and `frontOfEyeFullAnimationVideoPage`. Each maps low to `_220p.mp4` and high to `_720p.mp4` under `public/videos/FullAnim/`. Front of Eye uses the `FrontofEyeFullAnim_timed` pair.
 - Local video pages also require subtitle catalog entries and offline-download categorization when subtitles/offline playback should work.
 - `public/js/videoSubtitles.js` attaches app-wide subtitle tracks from `public/video-localization/app-video-subtitles.json`; the Childhood Eye Screening pilot uses `public/video-localization/childhood-eye-screening.json` plus HLS metadata and VTT files.
 

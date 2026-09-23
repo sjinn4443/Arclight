@@ -14,7 +14,7 @@ Last refreshed: 2026-09-18
 - Pinned Lottie, Leaflet, html2canvas, and Font Awesome assets are self-hosted and synchronized by `scripts/sync-vendor-assets.cjs` before builds.
 - App-video subtitles are synchronized by `public/js/videoSubtitles.js` from `public/video-localization/app-video-subtitles.json`; Childhood Eye Screening video pages also use `public/video-localization/childhood-eye-screening.json` and VTT files under `public/video-subtitles/`.
 - Lao (`lo`) is a first-class locale across the main dictionary, shared subapps, Fundal Reflex, and supported app/Childhood video subtitles. The runtime also translates dynamically created labels/cards/dialogs and applies targeted Lao clinical-term cleanup for legacy literal strings.
-- Full-animation MP4 lessons use hidden pages in `public/html/videos.html`, `VIDEO_PAGE_SOURCES` in `public/js/videos.js` and media under `public/videos/FullAnim/`. All four lessons have narration and captions in nine languages. Front of Eye uses `New_FrontofEyeFullAnim_timed.mp4` with ten encoded holds; BIO and Direct Ophthalmoscopy use runtime holds. The combined `fundalReflexExaminationScrollPage` reuses the nine Fundal Reflex tracks as 22 stage clips. See [Narration and caption maintenance](#narration-and-caption-maintenance).
+- Full-animation MP4 lessons use hidden pages in `public/html/videos.html`, `VIDEO_PAGE_SOURCES` in `public/js/videos.js` and media under `public/videos/FullAnim/`. All four lessons have narration and captions in nine languages. Full Animation pages use `_220p.mp4` for low and `_720p.mp4` for high. Front of Eye uses the `FrontofEyeFullAnim_timed` pair with ten encoded holds; BIO and Direct Ophthalmoscopy use runtime holds. The combined `fundalReflexExaminationScrollPage` reuses the nine Fundal Reflex tracks as 22 stage clips. See [Narration and caption maintenance](#narration-and-caption-maintenance).
 - Shared lesson progress lives in `public/js/lessonProgress.js` and `public/js/lessonCompletionTick.js`; rows with progress bars are updated from compatible `lessonProgress:`, `videoProgress:`, `childhoodWorkshop:progress:`, `diabeticWorkshop:progress:`, and `glaucomaWorkshop:progress:` storage keys and receive completion ticks at completion.
 - The Eyes route includes a Diabetic Retinopathy workshop at `public/html/diabeticRetinopathyWorkshop.html`.
 - The Medical Students workshop Introduction is a foldered orange Diabetic-style scrolly curriculum in `public/html/medicalStudentsWorkshop.html`. Its Training section contains nested Pupil App and Disc App launchers plus the PDF-style Anterior Segment reference page. Pupil RAPD uses Medical Students-owned Previous/Next navigation; Fundal Reflex launches `fundalReflexSimulatorPage`, and Disc App launches `morphSimulatorPage` / `swollenDiscsInteractivePage`. Its active Test folder contains text-only Visual Acuity, Pupils, and Fundal Reflex MCQs rendered by `public/js/medicalStudentsTestQuiz.js`. `public/js/medicalStudentsWorkshop.js` owns nested-folder restore, mini-app return paths, and Previous/Next navigation across local lessons plus the shared `mumVisionPage` and `howToUseArclightVideoPage` video targets; source-slide images live under `public/images/learning/MedicalStudents/Introduction/` and `public/images/learning/MedicalStudents/Training/`.
@@ -145,8 +145,9 @@ aligned with the [README overview](./README.md#narration-and-captions-for-examin
 
 - Rebuild Front of Eye with `scripts/build-front-of-eye-timed-video.cjs` before
   regenerating its audio. Its 171.46-second timeline already includes all ten
-  holds. Keep the original MP4 as an editing source and avoid adding runtime
-  holds to the timed version.
+  holds. The original editing MP4 is no longer shipped in `public/`; restore it
+  separately for rebuilds. Encode the timed output as 220p and 720p delivery
+  files and avoid adding runtime holds to the timed version.
 - Preserve Direct Ophthalmoscopy's runtime holds at 46, 52.2 and 141 seconds
   and their resume/catch-up settings. Preserve BIO's holds at 43.7 and 103.6
   seconds. Captions follow the narration clock during an active audio lead.

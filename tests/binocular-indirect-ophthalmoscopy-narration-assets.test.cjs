@@ -29,7 +29,7 @@ const videosSource = fs.readFileSync(
 
 describe("Binocular Indirect Ophthalmoscopy narration assets", () => {
   it("keeps the English cues ordered on the new animation timeline", () => {
-    expect(script.sourceVideo).toBe("/videos/FullAnim/New_BIOFullAnim.mp4");
+    expect(script.sourceVideo).toBe("/videos/FullAnim/BIOFullAnim_720p.mp4");
     expect(script.durationSeconds).toBeCloseTo(130.68, 2);
     expect(script.cues).toHaveLength(18);
 
@@ -59,8 +59,8 @@ describe("Binocular Indirect Ophthalmoscopy narration assets", () => {
     const page = catalog.binocularIndirectOphthalmoscopyFullAnimationVideoPage;
 
     expect(page.localSources).toEqual({
-      low: "videos/FullAnim/New_BIOFullAnim.mp4",
-      high: "videos/FullAnim/New_BIOFullAnim.mp4",
+      low: "videos/FullAnim/BIOFullAnim_220p.mp4",
+      high: "videos/FullAnim/BIOFullAnim_720p.mp4",
     });
     expect(page.subtitles.en).toBe(
       "/narration/binocular-indirect-ophthalmoscopy/full-animation/en.vtt",
@@ -69,7 +69,7 @@ describe("Binocular Indirect Ophthalmoscopy narration assets", () => {
       "/narration/binocular-indirect-ophthalmoscopy/full-animation/en.m4a",
     );
     expect(videosSource).toContain(
-      'low: "videos/FullAnim/New_BIOFullAnim.mp4"',
+      'low: "videos/FullAnim/BIOFullAnim_220p.mp4"',
     );
     expect(videosSource).not.toContain(
       'low: "videos/FullAnim/BIO_Full Animation_720p.mp4"',

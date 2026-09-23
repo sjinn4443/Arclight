@@ -38,7 +38,7 @@ describe("language-specific offline narration", () => {
       { bytes: 3500, url: "/narration/fundal-reflex/full-animation/ko.vtt" },
       {
         bytes: 1300000,
-        url: "/videos/FullAnim/FundalReflex_Full Animation_720p.mp4",
+        url: "/videos/FullAnim/FundalReflexFullAnim_220p.mp4",
       },
       { bytes: 1000, url: "/js/main.js" },
     ],

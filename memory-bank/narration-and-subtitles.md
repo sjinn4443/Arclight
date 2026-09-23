@@ -236,13 +236,19 @@ automatic normalisation and applies a limiter at 0.95. Output is a 16-bit
 
 ## Page timing contracts
 
-All source paths below are under `public/videos/FullAnim/`. Low and high mode
-currently use the same MP4 for each lesson.
+All source paths below are under `public/videos/FullAnim/`. Low mode uses the
+`_220p.mp4` file and high mode uses the matching `_720p.mp4` file. The four
+stems are `FundalReflexFullAnim`, `DOFullAnim`, `BIOFullAnim` and
+`FrontofEyeFullAnim_timed`. Narration scripts reference the 720p delivery file.
+The old `New_*.mp4` files are no longer shipped. Visual Acuity's two delivery
+files are also stored here, but there is no Full Animation page for them yet.
 
 ### Front of Eye
 
-The original source is `New_FrontofEyeFullAnim.mp4`. The player uses
-`New_FrontofEyeFullAnim_timed.mp4`. Ten holds are encoded into the video so
+The original editing source was `New_FrontofEyeFullAnim.mp4`; restore it
+separately before running the timed-video build script. The player uses
+`FrontofEyeFullAnim_timed_220p.mp4` or `FrontofEyeFullAnim_timed_720p.mp4`.
+Ten holds are encoded into the video so
 seek, replay and reload use the same absolute clock for visuals and speech.
 The script target is 171.46 seconds; the 30 fps video rounds by less than a frame.
 
@@ -467,7 +473,9 @@ For another lesson, set `$narrationLesson` before constructing `$narrationArgs`:
 | `direct-ophthalmoscopy`             | `en es-419 ko ne fr lg ha yo ig` |
 | `fundal-reflex`                     | `en es-419 ko ne fr lg ha yo ig` |
 
-Run the timed-video builder only for Front of Eye. Change
+Run the timed-video builder only for Front of Eye after restoring the original
+editing source. Encode its output into both delivery resolutions before
+regenerating narration; the script now references the 720p file. Change
 `$narrationLanguages` to the tracks that actually need rebuilding. With no
 `--languages` argument the generator processes all languages in the script.
 
@@ -562,7 +570,7 @@ npm run test:e2e -- tests-e2e/front-of-eye-timeline.spec.js
 
 The Playwright configuration serves the built output and covers desktop
 Chromium and iPhone WebKit. Its WebKit case skips when the host cannot decode
-even the original MP4; record that skip and use a capable device for the
+the 220p delivery MP4; record that skip and use a capable device for the
 remaining check. For shared Fundal scroll changes, use `npm run test:fundal`
 and the manual FR06 checks in `agent.md`.
 

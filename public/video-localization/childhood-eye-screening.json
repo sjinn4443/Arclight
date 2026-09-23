@@ -2378,8 +2378,8 @@
       ]
     },
     "localSources": {
-      "low": "videos/FullAnim/New_FundalReflexFullAnim.mp4",
-      "high": "videos/FullAnim/New_FundalReflexFullAnim.mp4"
+      "low": "videos/FullAnim/FundalReflexFullAnim_220p.mp4",
+      "high": "videos/FullAnim/FundalReflexFullAnim_720p.mp4"
     }
   },
   "directOphthalmoscopyFullAnimationVideoPage": {
@@ -2451,8 +2451,8 @@
       ]
     },
     "localSources": {
-      "low": "videos/FullAnim/New_DOFullAnim.mp4",
-      "high": "videos/FullAnim/New_DOFullAnim.mp4"
+      "low": "videos/FullAnim/DOFullAnim_220p.mp4",
+      "high": "videos/FullAnim/DOFullAnim_720p.mp4"
     }
   },
   "binocularIndirectOphthalmoscopyFullAnimationVideoPage": {
@@ -2524,8 +2524,8 @@
       ]
     },
     "localSources": {
-      "low": "videos/FullAnim/New_BIOFullAnim.mp4",
-      "high": "videos/FullAnim/New_BIOFullAnim.mp4"
+      "low": "videos/FullAnim/BIOFullAnim_220p.mp4",
+      "high": "videos/FullAnim/BIOFullAnim_720p.mp4"
     }
   },
   "frontOfEyeFullAnimationVideoPage": {
@@ -2597,8 +2597,8 @@
       ]
     },
     "localSources": {
-      "low": "videos/FullAnim/New_FrontofEyeFullAnim_timed.mp4",
-      "high": "videos/FullAnim/New_FrontofEyeFullAnim_timed.mp4"
+      "low": "videos/FullAnim/FrontofEyeFullAnim_timed_220p.mp4",
+      "high": "videos/FullAnim/FrontofEyeFullAnim_timed_720p.mp4"
     }
   }
 }

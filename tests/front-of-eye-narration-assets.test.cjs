@@ -32,7 +32,7 @@ const videosSource = fs.readFileSync(
 describe("Front of Eye narration assets", () => {
   it("keeps the English cues ordered on the new animation timeline", () => {
     expect(script.sourceVideo).toBe(
-      "/videos/FullAnim/New_FrontofEyeFullAnim_timed.mp4",
+      "/videos/FullAnim/FrontofEyeFullAnim_timed_720p.mp4",
     );
     expect(script.durationSeconds).toBeCloseTo(171.46, 2);
     expect(script.cues).toHaveLength(22);
@@ -93,8 +93,8 @@ describe("Front of Eye narration assets", () => {
     expect(videosHtml).toContain('id="frontOfEyeFullAnimationVideoPage"');
     expect(videosHtml).toContain('id="frontOfEyeFullAnimationVideo"');
     expect(page.localSources).toEqual({
-      low: "videos/FullAnim/New_FrontofEyeFullAnim_timed.mp4",
-      high: "videos/FullAnim/New_FrontofEyeFullAnim_timed.mp4",
+      low: "videos/FullAnim/FrontofEyeFullAnim_timed_220p.mp4",
+      high: "videos/FullAnim/FrontofEyeFullAnim_timed_720p.mp4",
     });
     expect(page.subtitles.en).toBe(
       "/narration/front-of-eye/full-animation/en.vtt",
@@ -103,7 +103,7 @@ describe("Front of Eye narration assets", () => {
       "/narration/front-of-eye/full-animation/en.m4a",
     );
     expect(videosSource).toContain(
-      'low: "videos/FullAnim/New_FrontofEyeFullAnim_timed.mp4"',
+      'low: "videos/FullAnim/FrontofEyeFullAnim_timed_220p.mp4"',
     );
     const config = videosSource
       .split("  frontOfEyeFullAnimationVideoPage: {")[1]
@@ -111,7 +111,9 @@ describe("Front of Eye narration assets", () => {
     expect(config).not.toContain("playbackHolds");
     expect(
       fs.existsSync(
-        path.resolve("public/videos/FullAnim/New_FrontofEyeFullAnim_timed.mp4"),
+        path.resolve(
+          "public/videos/FullAnim/FrontofEyeFullAnim_timed_720p.mp4",
+        ),
       ),
     ).toBe(true);
   });

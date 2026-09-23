@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "title": "Direct Ophthalmoscopy Full Animation narration",
   "timingSource": "Timed against New_DOFullAnim.mp4, using the Direct Ophthalmoscopy scrolly-page copy and the supplied Direct Ophthalmoscopy reference document.",
-  "sourceVideo": "/videos/FullAnim/New_DOFullAnim.mp4",
+  "sourceVideo": "/videos/FullAnim/DOFullAnim_720p.mp4",
   "durationSeconds": 183.083333,
   "defaultLanguage": "en",
   "languages": {

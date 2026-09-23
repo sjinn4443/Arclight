@@ -1,5 +1,21 @@
 # Progress
 
+## Full Animation video quality - 23 September 2026
+
+- Connected all four existing Full Animation pages to separate 220p and 720p
+  files through the shared low/high toggle and localisation catalogue.
+- Moved the ten supplied delivery videos into `public/videos/FullAnim/`,
+  verified their SHA-256 hashes after moving and removed the old videos.
+- Validation: seven focused Jest suites passed (144 tests). FFprobe confirmed
+  220px/720px heights and source duration differences of at most one frame.
+- The isolated build passed and its offline manifest contains exactly ten
+  replacement videos. The default build encountered an existing output-folder
+  deletion error, so validation used `tmp-codex-build-fullanim-quality`.
+- Front of Eye Chromium timeline playback passed; WebKit skipped because this
+  host could not decode the MP4. `git diff --check` passed.
+- Updated narration source metadata and existing test fixtures. Preserved
+  narration, captions and playback holds. Bumped the static cache to v72.
+
 ## Documentation and ARIA refresh - 18 September 2026
 
 - Aligned README and agent notes with the combined examination scroll guides,

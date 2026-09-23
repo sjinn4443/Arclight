@@ -56,7 +56,7 @@ describe("Direct Ophthalmoscopy multilingual narration", () => {
     }
   });
   it("preserves the existing twenty-cue animation timeline", () => {
-    expect(script.sourceVideo).toBe("/videos/FullAnim/New_DOFullAnim.mp4");
+    expect(script.sourceVideo).toBe("/videos/FullAnim/DOFullAnim_720p.mp4");
     expect(script.durationSeconds).toBeCloseTo(183.083333, 5);
     expect(script.cues).toHaveLength(20);
     expect(Object.keys(script.languages).sort()).toEqual([...languages].sort());

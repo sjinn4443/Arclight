@@ -1504,8 +1504,8 @@ const VIDEO_PAGE_SOURCES = {
     containerSelector: "#fundalReflexFullAnimationVideoContainer",
     videoSelector: "#fundalReflexFullAnimationVideo",
     sources: {
-      low: "videos/FullAnim/New_FundalReflexFullAnim.mp4",
-      high: "videos/FullAnim/New_FundalReflexFullAnim.mp4",
+      low: "videos/FullAnim/FundalReflexFullAnim_220p.mp4",
+      high: "videos/FullAnim/FundalReflexFullAnim_720p.mp4",
     },
     playbackHolds: [
       { at: 19.19, durationMs: 1000 },
@@ -1545,8 +1545,8 @@ const VIDEO_PAGE_SOURCES = {
     containerSelector: "#frontOfEyeFullAnimationVideoContainer",
     videoSelector: "#frontOfEyeFullAnimationVideo",
     sources: {
-      low: "videos/FullAnim/New_FrontofEyeFullAnim_timed.mp4",
-      high: "videos/FullAnim/New_FrontofEyeFullAnim_timed.mp4",
+      low: "videos/FullAnim/FrontofEyeFullAnim_timed_220p.mp4",
+      high: "videos/FullAnim/FrontofEyeFullAnim_timed_720p.mp4",
     },
     // Holds are encoded into the MP4 so seeking never depends on timer history.
   },
@@ -1594,8 +1594,8 @@ const VIDEO_PAGE_SOURCES = {
     containerSelector: "#directOphthalmoscopyFullAnimationVideoContainer",
     videoSelector: "#directOphthalmoscopyFullAnimationVideo",
     sources: {
-      low: "videos/FullAnim/New_DOFullAnim.mp4",
-      high: "videos/FullAnim/New_DOFullAnim.mp4",
+      low: "videos/FullAnim/DOFullAnim_220p.mp4",
+      high: "videos/FullAnim/DOFullAnim_720p.mp4",
     },
     playbackHolds: [
       {
@@ -1731,8 +1731,8 @@ const VIDEO_PAGE_SOURCES = {
       "#binocularIndirectOphthalmoscopyFullAnimationVideoContainer",
     videoSelector: "#binocularIndirectOphthalmoscopyFullAnimationVideo",
     sources: {
-      low: "videos/FullAnim/New_BIOFullAnim.mp4",
-      high: "videos/FullAnim/New_BIOFullAnim.mp4",
+      low: "videos/FullAnim/BIOFullAnim_220p.mp4",
+      high: "videos/FullAnim/BIOFullAnim_720p.mp4",
     },
     playbackHolds: [
       {

@@ -13,7 +13,7 @@ test("Front of Eye has repeatable frames, captions and narration after seeking a
   );
   if (browserName === "webkit") {
     await page.goto("/__front-eye-timeline");
-    const originalUnsupported = await page.evaluate(async () => {
+    const videoUnsupported = await page.evaluate(async () => {
       const video = document.createElement("video");
       video.muted = true;
       video.playsInline = true;
@@ -27,13 +27,13 @@ test("Front of Eye has repeatable frames, captions and narration after seeking a
           () => resolve(video.error?.code === 4),
           { once: true },
         );
-        video.src = "/videos/FullAnim/New_FrontofEyeFullAnim.mp4";
+        video.src = "/videos/FullAnim/FrontofEyeFullAnim_timed_220p.mp4";
         video.load();
       });
     });
     test.skip(
-      originalUnsupported,
-      "This WebKit host cannot decode even the unchanged original MP4.",
+      videoUnsupported,
+      "This WebKit host cannot decode the 220p Full Animation MP4.",
     );
   }
   async function setup() {
@@ -87,7 +87,7 @@ test("Front of Eye has repeatable frames, captions and narration after seeking a
   }
   await setup();
   const baseline = await sample(27.5);
-  expect(baseline.source).toContain("New_FrontofEyeFullAnim_timed.mp4");
+  expect(baseline.source).toContain("FrontofEyeFullAnim_timed_220p.mp4");
   expect(baseline.text).toContain("Ask the patient to look right, then left.");
   expect(baseline.audioTime).toBeCloseTo(27.5, 1);
   expect(baseline.lead).toBeUndefined();
