@@ -682,3 +682,9 @@ The practice hold now uses source frame 126 (8.4 seconds), matching the supplied
 | va-13 | 99.400             | 0.133         |
 | va-14 | 110.400            | 3.867         |
 | va-21 | 173.933            | 1.000         |
+
+### Visual Acuity scroll lesson — 23 September 2026
+
+`visualAcuityExaminationScrollPage` uses the existing English `visual-acuity/full-animation/en.m4a` and `script.json`. Fifteen Lottie stages map to cue groups 01, 02, 03, 04, 05, 06, 07–10, 11, 12, 13, 14–17, 18, 19–20, 21–22 and 23–24. `visualAcuityExaminationScroll.js` records clip bounds and local-frame checkpoints, retaining encoded speech holds and the visual tail after the practice cue. The shared examination clock gates text and completion; other app languages use English audio rather than requesting absent tracks.
+
+Visual Acuity review adjustments: caption blocks are constrained to the animation width on this scroll page only. The Low Vision hold uses local frame 151, before the woman/chart crossfade begins at 152. Near Vision stage 3 no longer holds at frame 170. Cue va-24 now reads "If the vision improves, it means they need glasses" in the shared script, scroll fallback copy, English VTT and regenerated English narration; audio duration and all cue times remain unchanged.

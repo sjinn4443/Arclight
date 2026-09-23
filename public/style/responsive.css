@@ -2638,6 +2638,7 @@ input {
       #frontOfEyePage,
       #fundalReflexPage,
       #frontOfEyeExaminationScrollPage,
+      #visualAcuityExaminationScrollPage,
       #fundalReflexExaminationScrollPage,
       #binocularIndirectOphthalmoscopyScrollPage,
       #interactiveLearningPage,
@@ -2651,6 +2652,7 @@ input {
 
   :is(
       #frontOfEyeExaminationScrollPage,
+      #visualAcuityExaminationScrollPage,
       #fundalReflexExaminationScrollPage,
       #binocularIndirectOphthalmoscopyScrollPage
     )
@@ -2658,6 +2660,7 @@ input {
     > .pupils-subtitle,
   :is(
       #frontOfEyeExaminationScrollPage,
+      #visualAcuityExaminationScrollPage,
       #fundalReflexExaminationScrollPage,
       #binocularIndirectOphthalmoscopyScrollPage
     )
@@ -2669,6 +2672,7 @@ input {
   #videos
     :is(
       #frontOfEyeExaminationScrollPage,
+      #visualAcuityExaminationScrollPage,
       #fundalReflexExaminationScrollPage,
       #binocularIndirectOphthalmoscopyScrollPage
     )

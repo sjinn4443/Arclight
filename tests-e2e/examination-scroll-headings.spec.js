@@ -26,6 +26,17 @@ for (const [pageId, timing] of Object.entries(EXAMINATION_SCROLL_TIMING)) {
     const sourceTitles = await headings.evaluateAll((els) =>
       els.map((el) => el.dataset.sectionTitle),
     );
+    if (timing.languages?.length === 1) {
+      await select.selectOption("en");
+      await page.evaluate(() => {
+        localStorage.setItem("prefLang", "ko");
+        window.dispatchEvent(new CustomEvent("i18n:languageChanged"));
+      });
+      await expect(select).toHaveValue("auto");
+      await expect(select.locator('option[value="auto"]')).toContainText("EN");
+      await expect(headings).toHaveText(sourceTitles);
+      return;
+    }
     const cues = sourceTitles.map((title) =>
       script.videoTitleCues.find((cue) => cue.sourceText === title),
     );

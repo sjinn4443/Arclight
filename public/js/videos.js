@@ -35,6 +35,8 @@ const DIABETIC_WORKSHOP_PROGRESS_EVENT = "diabeticWorkshop:progress-changed";
 const LESSON_PROGRESS_EVENT = "arclight:lesson-progress-changed";
 const CHILDHOOD_WORKSHOP_ROUTE_COMPLETE_EVENT =
   "childhoodWorkshop:route-complete";
+const VISUAL_ACUITY_EXAMINATION_SCROLL_PAGE_ID =
+  "visualAcuityExaminationScrollPage";
 const FRONT_OF_EYE_EXAMINATION_SCROLL_PAGE_ID =
   "frontOfEyeExaminationScrollPage";
 const FUNDAL_REFLEX_EXAMINATION_SCROLL_PAGE_ID =
@@ -1057,6 +1059,10 @@ function showPageFallback(id) {
     window.setTimeout(() => removeFundalReflexListFlowButtons(), 0);
   }
 
+  if (id === VISUAL_ACUITY_EXAMINATION_SCROLL_PAGE_ID) {
+    void initializeVisualAcuityExaminationScrollGuide();
+  }
+
   if (id === FRONT_OF_EYE_EXAMINATION_SCROLL_PAGE_ID) {
     void initializeFrontOfEyeExaminationScrollGuide();
   }
@@ -1129,6 +1135,26 @@ function removeFundalReflexListFlowButtons() {
     .forEach((el) => {
       el.classList.remove("childhood-next-host", "glaucoma-next-host");
     });
+}
+
+function syncVisualAcuityExaminationScrollProgress() {
+  syncScrollProgressForTarget(
+    VISUAL_ACUITY_EXAMINATION_SCROLL_PAGE_ID,
+    setLessonProgress,
+  );
+}
+
+async function initializeVisualAcuityExaminationScrollGuide() {
+  try {
+    const { initializeChildhoodFundalReflexScrollPage } =
+      await import("./childhoodFundalPreparation.js");
+    await initializeChildhoodFundalReflexScrollPage(
+      "visualAcuityExaminationScroll",
+    );
+    requestAnimationFrame(syncVisualAcuityExaminationScrollProgress);
+  } catch (err) {
+    console.error("[videos] failed to initialize Visual Acuity guide", err);
+  }
 }
 
 async function initializeFrontOfEyeExaminationScrollGuide() {
@@ -4681,6 +4707,10 @@ function show(id) {
     window.setTimeout(() => removeFundalReflexListFlowButtons(), 0);
   }
 
+  if (id === VISUAL_ACUITY_EXAMINATION_SCROLL_PAGE_ID) {
+    void initializeVisualAcuityExaminationScrollGuide();
+  }
+
   if (id === FRONT_OF_EYE_EXAMINATION_SCROLL_PAGE_ID) {
     void initializeFrontOfEyeExaminationScrollGuide();
   }
@@ -4947,6 +4977,10 @@ if (!window[__videosGlobalBoundKey]) {
 
   document.addEventListener(CHILDHOOD_WORKSHOP_ROUTE_COMPLETE_EVENT, (e) => {
     const target = e?.detail?.target;
+    if (target === VISUAL_ACUITY_EXAMINATION_SCROLL_PAGE_ID) {
+      setLessonProgress(target, 100, { mode: "replace" });
+      return;
+    }
     if (target === FRONT_OF_EYE_EXAMINATION_SCROLL_PAGE_ID) {
       setLessonProgress(target, 100, { mode: "replace" });
       return;
@@ -4974,6 +5008,7 @@ if (!window[__videosGlobalBoundKey]) {
   window.addEventListener(
     "scroll",
     () => {
+      syncVisualAcuityExaminationScrollProgress();
       syncFrontOfEyeExaminationScrollProgress();
       syncFundalReflexExaminationScrollProgress();
       syncDirectOphthalmoscopyScrollProgress();
@@ -4985,6 +5020,7 @@ if (!window[__videosGlobalBoundKey]) {
   window.addEventListener(
     "resize",
     () => {
+      requestAnimationFrame(syncVisualAcuityExaminationScrollProgress);
       requestAnimationFrame(syncFrontOfEyeExaminationScrollProgress);
       scheduleFundalReflexExaminationScrollProgressSync();
       scheduleDirectOphthalmoscopyScrollProgressSync();
@@ -5014,6 +5050,7 @@ if (!window[__videosGlobalBoundKey]) {
   pageContent?.addEventListener(
     "scroll",
     () => {
+      syncVisualAcuityExaminationScrollProgress();
       syncFrontOfEyeExaminationScrollProgress();
       syncFundalReflexExaminationScrollProgress();
       syncDirectOphthalmoscopyScrollProgress();

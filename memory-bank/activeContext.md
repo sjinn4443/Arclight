@@ -2,6 +2,10 @@
 
 # Active Context
 
+- Visual Acuity scroll captions use balanced wrapping and a sentence break for
+  lighting. Its opt-in caption-aware alignment lifts overflowing scenes only,
+  reserving accumulated text height before playback starts.
+
 ## Current Work Focus
 
 Full Animation quality update (23 September 2026): all four existing pages
@@ -343,3 +347,9 @@ Childhood Fundal Reflex scrollytelling is also an active maintenance area:
   review is explicitly pending in `clinical-review/fundal-es-ko.json`.
 
 - Visual Acuity now has a Full Animation video row directly after its PDF. `visualAcuityFullAnimationVideoPage` uses the supplied 220p/720p pair, the shared dedicated player and English-only narration/captions. The 24 English cues include the user’s revised copy and original scene start times. Nine encoded holds extend playback to 222.93 seconds; mapped captions and narration share that clock without runtime holds. Offline language selection falls back to English for this lesson. The practice graphic holds on the supplied reference scene from 13.0 to 18.6 seconds; later cue times are unchanged.
+
+### Visual Acuity scroll lesson — 23 September 2026
+
+Added `visualAcuityExaminationScrollPage` above Full Animation in Visual Acuity. The shared Fundal stage engine renders 15 numbered Lotties in five sections (4/3/3/1/4); Low Vision uses its root `data.json`. Existing English Full Animation audio/cues drive text and playback; Auto falls back to English. Shared responsive/iOS rendering, replay, forward scroll gating, completion restore, lesson progress, structural Back and core offline assets are included. Source assets remain under `public/scrolly/coreexam/visualacuity/`.
+
+Visual Acuity review adjustments: caption blocks are constrained to the animation width on this scroll page only. The Low Vision hold uses local frame 151, before the woman/chart crossfade begins at 152. Near Vision stage 3 no longer holds at frame 170. Cue va-24 now reads "If the vision improves, it means they need glasses" in the shared script, scroll fallback copy, English VTT and regenerated English narration; audio duration and all cue times remain unchanged.

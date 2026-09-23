@@ -1,3 +1,4 @@
+import { VISUAL_ACUITY_EXAMINATION_SCROLL_CONFIG } from "./visualAcuityExaminationScroll.js";
 import { FRONT_OF_EYE_EXAMINATION_SCROLL_CONFIG } from "./frontOfEyeExaminationScroll.js";
 import {
   configureExaminationTiming,
@@ -1505,6 +1506,10 @@ ROUTE_CONFIG.frontOfEyeExaminationScroll = {
   narrationTracks: createOphthalmoscopyNarrationTracks("front-of-eye"),
 };
 
+ROUTE_CONFIG.visualAcuityExaminationScroll = {
+  ...VISUAL_ACUITY_EXAMINATION_SCROLL_CONFIG,
+};
+
 Object.values(ROUTE_CONFIG).forEach(configureExaminationTiming);
 
 function normalizeFundalNarrationLanguage(language) {
@@ -1732,10 +1737,12 @@ export function initializeFundalStageNarration(
     };
   };
 
-  const resolveSelectedLanguage = () =>
-    selectedLanguage === "auto"
-      ? normalizeFundalNarrationLanguage(getLanguage())
-      : normalizeFundalNarrationLanguage(selectedLanguage);
+  const resolveSelectedLanguage = () => {
+    const requested = normalizeFundalNarrationLanguage(
+      selectedLanguage === "auto" ? getLanguage() : selectedLanguage,
+    );
+    return tracks[requested] ? requested : "en";
+  };
 
   const clearStopTimer = () => {
     if (stopTimerId == null) return;
@@ -3718,6 +3725,9 @@ function buildAnimationSlots(listEl, label, count, cfg = null) {
       const titleEl = document.createElement("h3");
       titleEl.className = "fundal-reflex-section-divider__title";
       titleEl.dataset.sectionTitle = sectionMeta.title;
+      // Script-managed headings follow the narration language, including its
+      // English fallback, rather than the app's automatic literal translation.
+      if (cfg?.getSectionTitle) titleEl.dataset.i18nSkip = "true";
       titleEl.textContent =
         cfg?.getSectionTitle?.(sectionMeta.title, getFundalTextLanguage(cfg)) ||
         sectionMeta.title;
@@ -8780,9 +8790,13 @@ function initializeStageAutoplayMode(
       state.segmentTextLines = value ? [value] : [];
     }
 
-    renderFundalTextLines(state.segmentTextEl, state.segmentTextLines, {
-      bullet: state.segmentTextBullet === true,
-    });
+    renderFundalTextLines(
+      state.segmentTextEl,
+      state.segmentTextLines.map((line) => cfg.formatCaption?.(line) ?? line),
+      {
+        bullet: state.segmentTextBullet === true,
+      },
+    );
   }
 
   function clearStageSegmentText(state) {
@@ -9172,7 +9186,7 @@ function initializeStageAutoplayMode(
     });
   }
 
-  function getCenteredScrollTopForStage(
+  function getBaseCenteredScrollTopForStage(
     stage,
     metrics = getScrollHostMetrics(),
   ) {
@@ -9223,6 +9237,50 @@ function initializeStageAutoplayMode(
       0,
       stageCenterAbs - effectiveViewportCenter - centerTopBias,
     );
+  }
+
+  function getCenteredScrollTopForStage(
+    stage,
+    metrics = getScrollHostMetrics(),
+  ) {
+    const baseTop = getBaseCenteredScrollTopForStage(stage, metrics);
+    if (!cfg.fitCaptionsInViewport) return baseTop;
+    const state = states[Number(stage.dataset.fileIndex)];
+    const caption = state?.segmentTextEl;
+    if (
+      !caption ||
+      page.classList.contains("childhood-fundal-segment-text-hidden")
+    )
+      return baseTop;
+
+    // Reserve the final accumulated caption before playback, so new cues do not
+    // move the scene. Measure at its real responsive width without changing layout.
+    const measure = caption.cloneNode(false);
+    measure.removeAttribute("aria-live");
+    measure.setAttribute("aria-hidden", "true");
+    Object.assign(measure.style, {
+      position: "absolute",
+      visibility: "hidden",
+      pointerEvents: "none",
+      width: `${caption.getBoundingClientRect().width}px`,
+    });
+    renderFundalTextLines(
+      measure,
+      (state.segmentStartTexts || []).map(
+        (line) => cfg.formatCaption?.(line) ?? line,
+      ),
+    );
+    caption.parentElement.appendChild(measure);
+    const captionHeight = measure.getBoundingClientRect().height;
+    measure.remove();
+    const gap = parseFloat(getComputedStyle(caption).marginTop) || 0;
+    const bottom =
+      getAbsoluteTopForStage(stage, metrics) -
+      baseTop +
+      stage.getBoundingClientRect().height +
+      gap +
+      captionHeight;
+    return baseTop + Math.max(0, bottom - metrics.viewportHeight + 16);
   }
 
   function centerStageForPlayback(stage) {

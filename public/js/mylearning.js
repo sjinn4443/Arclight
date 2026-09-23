@@ -297,6 +297,10 @@ const PROGRESS_TARGET_ROUTES = Object.freeze({
     route: "quizzes",
     subPageId: "directOphthalmoscopyQuizPage",
   },
+  visualAcuityExaminationScrollPage: {
+    route: "videos",
+    subPageId: "visualAcuityExaminationScrollPage",
+  },
   frontOfEyeExaminationScrollPage: {
     route: "videos",
     subPageId: "frontOfEyeExaminationScrollPage",
@@ -397,6 +401,7 @@ function go(target) {
     "phoneAttachmentVideoPage",
     "visualAcuityPage",
     "fundalReflexPage",
+    "visualAcuityExaminationScrollPage",
     "frontOfEyeExaminationScrollPage",
     "fundalReflexExaminationScrollPage",
     "directOphthalmoscopyScrollPage",

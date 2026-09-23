@@ -1,5 +1,24 @@
 # Progress
 
+## Visual Acuity requested scene adjustments - 23 September 2026
+
+- Caption lines use balanced wrapping, with an explicit sentence break in the
+  lighting explanation. Playback alignment reserves the full caption height and
+  lifts only scenes whose captions would overflow the viewport.
+- Caption fitting passed in Chromium and WebKit at 1158x920, 1024x768 and
+  390x844, including replay of the accumulated Distance Vision explanation.
+  The focused Jest run stalled before reporting results and was stopped.
+- All 11 Chromium shared-guide regression cases passed, along with seven
+  WebKit cases. The remaining broad WebKit cases were interrupted after host
+  command responsiveness degraded; the two targeted caption-fitting cases passed.
+- Verified caption bounds at desktop, tablet and phone widths and the earlier
+  Low Vision hold in Chromium and WebKit. Near Vision's transition has no hold.
+- Regenerated the final English narration cue and caption for both scroll and
+  Full Animation: "If the vision improves, it means they need glasses".
+- Full Animation low/high caption and audio synchronisation passed in Chromium.
+  WebKit reached the player but timed out waiting for video data; Full Animation
+  playback remains unverified there. Targeted lint and `git diff --check` passed.
+
 ## Full Animation video quality - 23 September 2026
 
 - Connected all four existing Full Animation pages to separate 220p and 720p
@@ -287,3 +306,11 @@ passed for dashboard and Eyes. Complete shell: 19,174,231 bytes, summed gzip
 `docs/product-quality-2026-09-18.md`; human clinical approval remains pending.
 
 - Added Visual Acuity Full Animation below Visual Acuity PDF, with low/high local sources and a dedicated video page. Generated 24 English narration/caption cues using en-GB-SoniaNeural, then applied the user’s timing/copy revisions including N12 and eye-specific chart instructions. Nine encoded holds preserve full speech at normal speed and keep subsequent scenes aligned on a 222.93-second delivery clock. Source script, delivery audio, WebVTT and manifest live in `public/narration/visual-acuity/full-animation/`. The practice graphic holds on the supplied reference scene from 13.0 to 18.6 seconds; later cue times are unchanged.
+
+### Visual Acuity scroll lesson — 23 September 2026
+
+Added `visualAcuityExaminationScrollPage` above Full Animation in Visual Acuity. The shared Fundal stage engine renders 15 numbered Lotties in five sections (4/3/3/1/4); Low Vision uses its root `data.json`. Existing English Full Animation audio/cues drive text and playback; Auto falls back to English. Shared responsive/iOS rendering, replay, forward scroll gating, completion restore, lesson progress, structural Back and core offline assets are included. Source assets remain under `public/scrolly/coreexam/visualacuity/`.
+
+Validation: 26 focused Playwright cases passed across Chromium desktop and iPhone WebKit (new Visual Acuity playback/sync/responsive checks plus existing Front of Eye/DO/BIO and heading regressions); 10 shared narration/revisit Jest tests passed. Production build and asset manifest succeeded. WebKit uses the existing mocked audio clock on this Windows host; physical iOS audio is not established by these tests. New-file lint is clean; shared-file lint findings match the pre-change baseline.
+
+Visual Acuity review adjustments: caption blocks are constrained to the animation width on this scroll page only. The Low Vision hold uses local frame 151, before the woman/chart crossfade begins at 152. Near Vision stage 3 no longer holds at frame 170. Cue va-24 now reads "If the vision improves, it means they need glasses" in the shared script, scroll fallback copy, English VTT and regenerated English narration; audio duration and all cue times remain unchanged.

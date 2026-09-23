@@ -23,9 +23,11 @@ for (const [pageId, timing] of Object.entries(EXAMINATION_SCROLL_TIMING)) {
   }, testInfo) => {
     test.setTimeout(240_000);
     const route = pageId.replace(/Page$/, "");
-    const hub = pageId.startsWith("front")
-      ? "frontOfEyePage"
-      : "directOphthalmoscopy";
+    const hub = pageId.startsWith("visualAcuity")
+      ? "visualAcuityPage"
+      : pageId.startsWith("front")
+        ? "frontOfEyePage"
+        : "directOphthalmoscopy";
     const script = JSON.parse(
       fs.readFileSync(
         `public/narration/${timing.folder}/full-animation/script.json`,
@@ -74,7 +76,11 @@ for (const [pageId, timing] of Object.entries(EXAMINATION_SCROLL_TIMING)) {
       const start = points[0][0];
       const end = points.at(-1)[0];
       const speechEnd =
-        pageId === "directOphthalmoscopyScrollPage" && index === 7 ? 94.4 : end;
+        pageId === "directOphthalmoscopyScrollPage" && index === 7
+          ? 94.4
+          : pageId === "visualAcuityExaminationScrollPage" && index === 1
+            ? 18.6
+            : end;
       const stage = guide.locator(".childhood-fundal-prep-stage").nth(index);
       const slot = stage.locator("..");
       const replay = stage.locator(".childhood-fundal-stage-replay-btn");

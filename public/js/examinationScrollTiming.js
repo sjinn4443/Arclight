@@ -1,7 +1,10 @@
+import { VISUAL_ACUITY_SCROLL_TIMING } from "./visualAcuityExaminationScroll.js";
+
 // Absolute narration times -> local Lottie frames. Repeated frames are teaching
 // holds, matching the scenes/cues in the corresponding Full Animation lesson.
 // Keep the final frames and the WebKit renderer/snapshot settings in the engine.
 export const EXAMINATION_SCROLL_TIMING = {
+  visualAcuityExaminationScrollPage: VISUAL_ACUITY_SCROLL_TIMING,
   frontOfEyeExaminationScrollPage: {
     folder: "front-of-eye",
     stages: [
@@ -345,6 +348,8 @@ export function primeExaminationNarration(pageId, language = "en") {
       selection,
     )
   )
+    selection = "en";
+  if (timing.languages && !timing.languages.includes(selection))
     selection = "en";
   const old = window.__arclightPrimedScrollAudio;
   if (old) {

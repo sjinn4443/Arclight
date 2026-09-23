@@ -10,9 +10,9 @@
       "voice": "en-GB-SoniaNeural",
       "delivery": {
         "path": "public/narration/visual-acuity/full-animation/en.m4a",
-        "bytes": 979036,
+        "bytes": 968097,
         "duration": 222.93,
-        "sha256": "ea15c549f1ac9e18f8e37119b04f3e657d37c9a3ec3c36a2fe8b10a34ab70ca5",
+        "sha256": "9c2d964faec33594c51d256386ac25001335184e959499dac530289b20aea905",
         "format": "mono AAC in M4A, 48 kbps, 48 kHz"
       },
       "master": {
@@ -21,11 +21,7 @@
         "duration": 222.93,
         "format": "mono PCM WAV, 16-bit, 48 kHz"
       },
-      "reviewVideo": {
-        "path": ".codex-artifacts/visual-acuity-narration/visual-acuity-full-animation.en.review.mp4",
-        "bytes": 7828089,
-        "duration": 222.93
-      },
+      "reviewVideo": null,
       "cues": [
         {
           "id": "va-01",
@@ -238,10 +234,10 @@
           "id": "va-24",
           "slotStart": 214.4,
           "slotEnd": 222.4,
-          "sourceDuration": 5.74,
+          "sourceDuration": 3.84,
           "playbackSpeed": 1.0,
-          "renderedEnd": 220.14,
-          "endMargin": 2.26
+          "renderedEnd": 218.24,
+          "endMargin": 4.16
         }
       ]
     }

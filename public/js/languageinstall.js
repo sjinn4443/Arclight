@@ -766,6 +766,8 @@ export function matchesOfflineCatalog(url, catalogId) {
   if (catalogId === "core") {
     return (
       assetPath.startsWith("/videos/core/") ||
+      assetPath.startsWith("/scrolly/coreexam/visualacuity/") ||
+      assetPath.startsWith("/narration/visual-acuity/") ||
       assetPath === "/videos/do_220p.mp4" ||
       assetPath.startsWith("/subapp/mires/") ||
       assetPath.startsWith("/subapp/morph/") ||

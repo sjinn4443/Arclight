@@ -10,7 +10,7 @@ const script = JSON.parse(
   ),
 );
 
-test("Visual Acuity Full Animation opens below PDF and synchronises English media in both qualities", async ({
+test("Visual Acuity Full Animation opens below the scroll lesson and synchronises English media in both qualities", async ({
   page,
 }) => {
   await page.addInitScript(() => {
@@ -18,13 +18,16 @@ test("Visual Acuity Full Animation opens below PDF and synchronises English medi
     localStorage.setItem("prefLang", "en");
   });
   await page.goto("/#/videos/visualAcuityPage");
+  await page.waitForFunction(
+    () => document.getElementById("videos")?.style.visibility === "visible",
+  );
   const row = page.locator(
     '#visualAcuityPage [data-target="visualAcuityFullAnimationVideoPage"]',
   );
   await expect(row).toBeVisible();
   expect(
     await row.evaluate((el) => el.previousElementSibling.dataset.target),
-  ).toBe("visualAcuityPdfPage");
+  ).toBe("visualAcuityExaminationScrollPage");
   await expect(row.locator(".lesson-type")).toHaveText("Full Animation");
   await row.click();
   const player = page.locator("#visualAcuityFullAnimationVideoPage");
@@ -41,6 +44,9 @@ test("Visual Acuity Full Animation opens below PDF and synchronises English medi
   );
   expect(script.cues.find((cue) => cue.id === "va-17").en).toMatch(
     /^Test light perception/,
+  );
+  expect(script.cues.find((cue) => cue.id === "va-24").en).toBe(
+    "If the vision improves, it means they need glasses",
   );
   await expect(player).toBeVisible();
   await expect
