@@ -652,3 +652,33 @@ voice generator; VTT wording/timing was retained, and manifest/QA hashes updated
 Run `npm run check:clinical` for semantic invariants. The exact content revisions
 in `clinical-review/fundal-es-ko.json` remain pending native bilingual clinical
 listening and approval. CI requires that approval before releasing artifacts.
+
+## Visual Acuity Full Animation
+
+`visualAcuityFullAnimationVideoPage` uses `VisualAcuityFullAnim_220p.mp4` and `VisualAcuityFullAnim_720p.mp4` under `public/videos/FullAnim/`. It has English narration and captions only. Its 24 cues adapt the existing `vaWhoPage` teaching content, correcting transcription errors and matching the new sequence: preparation, distance acuity, pinhole/glasses, low vision and near acuity. The original animation is 198.57 seconds. User-revised English copy and starts are stored in `script.json`; `sourceStart` and `sourceEnd` retain the original scene clock. Nine encoded holds extend the delivery clock to 222.93 seconds. Video, narration and captions use this same clock with no runtime holds, so seeking and later cues do not depend on playback history.
+
+Source and delivery files are in `public/narration/visual-acuity/full-animation/`. English uses `en-GB-SoniaNeural` through the existing generator. Cue masters are in `tmp/visual-acuity-narration`; review video, WAV and timing QA are in `.codex-artifacts/visual-acuity-narration`. All revised cues play at normal speed, with at least 0.35 seconds of room after speech. Original 220p/720p videos are retained in `.codex-artifacts/visual-acuity-narration/source/`; the public filenames remain unchanged. Offline downloads include English as the per-lesson fallback.
+
+Rebuild in this order (the preserved original videos must be present):
+
+```powershell
+python scripts/generate-fundal-narration.py --script public/narration/visual-acuity/full-animation/script.json --public-dir public/narration/visual-acuity/full-animation --work-dir tmp/visual-acuity-narration --artifacts-dir .codex-artifacts/visual-acuity-narration --asset-stem visual-acuity-full-animation --languages en --tts-only
+node scripts/build-visual-acuity-timed-video.cjs
+python scripts/generate-fundal-narration.py --script public/narration/visual-acuity/full-animation/script.json --public-dir public/narration/visual-acuity/full-animation --work-dir tmp/visual-acuity-narration --artifacts-dir .codex-artifacts/visual-acuity-narration --asset-stem visual-acuity-full-animation --languages en --skip-tts
+```
+
+Validation: `tests-e2e/visual-acuity-full-animation.spec.js` checks launch order, both video qualities, all 24 cue starts, frozen frames, seeking and English audio/caption synchronisation. `tests/languageinstall-offline-narration.test.cjs` covers the English offline fallback and quality selection.
+
+The practice hold now uses source frame 126 (8.4 seconds), matching the supplied reference image with complete green/right and red/left arrows and pointing hands before the check/cross overlays. It holds from delivery 13.0 to 18.6 seconds. Speech still ends at 17.24 seconds and the caption ends at 18.6, before motion resumes. The 5.6-second hold duration and every subsequent cue time remain unchanged. The previous 0:16 lighting scene is source 11.4 seconds and now starts its narration at 21.6 seconds. The original lighting hold is retained. The pinhole result explains improvement with glasses; the hand-movement and light-perception cues omit their conditional introductions. Other wording and existing holds are unchanged.
+
+| Cue   | Original hold time | Added seconds |
+| ----- | ------------------ | ------------- |
+| va-01 | 4.400              | 4.600         |
+| va-02 | 8.400              | 5.600         |
+| va-03 | 14.933             | 4.667         |
+| va-08 | 58.400             | 2.733         |
+| va-11 | 87.933             | 1.733         |
+| va-12 | 93.933             | 0.067         |
+| va-13 | 99.400             | 0.133         |
+| va-14 | 110.400            | 3.867         |
+| va-21 | 173.933            | 1.000         |

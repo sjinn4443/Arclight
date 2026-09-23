@@ -1,0 +1,282 @@
+{
+  "schemaVersion": 1,
+  "title": "Visual Acuity Full Animation narration",
+  "timingSource": "Original scene anchors use the 198.57-second source. The practice hold uses source frame 126 at 8.4s, matching the supplied image with complete green/right and red/left arrows and pointing hands, before the check/cross overlays. This holds from delivery 13s to 18.6s. The previous 16s lighting scene remains mapped to delivery 21.6s. All later cue starts and the total duration are unchanged. The builder maps video, narration and captions onto one delivery clock.",
+  "sourceVideo": "/videos/FullAnim/VisualAcuityFullAnim_720p.mp4",
+  "durationSeconds": 222.933333,
+  "defaultLanguage": "en",
+  "languages": {
+    "en": {
+      "label": "English",
+      "locale": "en-GB",
+      "voice": "en-GB-SoniaNeural",
+      "style": "Calm, clear British English medical educator"
+    }
+  },
+  "cues": [
+    {
+      "id": "va-01",
+      "start": 3,
+      "end": 9.1,
+      "en": "Prepare the charts, measuring tape, pen and a safety pin to make pinholes.",
+      "sourceStart": 3,
+      "sourceEnd": 4.5
+    },
+    {
+      "id": "va-02",
+      "start": 9.1,
+      "end": 18.6,
+      "en": "Practise the tumbling E optotype before the actual test. Ask the patient to point in the direction of the E.",
+      "sourceStart": 4.5,
+      "sourceEnd": 11.4,
+      "manualHold": {
+        "at": 8.4,
+        "minimumSeconds": 5.6,
+        "finishCueAtHoldEnd": true
+      }
+    },
+    {
+      "id": "va-03",
+      "start": 21.6,
+      "end": 29.866667,
+      "en": "Light should fall onto the chart. Make sure the light is not coming from behind the chart.",
+      "sourceStart": 11.4,
+      "sourceEnd": 15,
+      "minimumHoldFrames": 70
+    },
+    {
+      "id": "va-04",
+      "start": 29.866667,
+      "end": 38.366667,
+      "en": "Make sure the distance from the patient’s eyes to the chart is three metres.",
+      "sourceStart": 15,
+      "sourceEnd": 23.5
+    },
+    {
+      "id": "va-05",
+      "start": 40.866667,
+      "end": 45.866667,
+      "en": "Cover one eye with the palm, not the fingers.",
+      "sourceStart": 26,
+      "sourceEnd": 31
+    },
+    {
+      "id": "va-06",
+      "start": 45.866667,
+      "end": 52.866667,
+      "en": "Start with the largest letters and work down the chart.",
+      "sourceStart": 31,
+      "sourceEnd": 38
+    },
+    {
+      "id": "va-07",
+      "start": 52.866667,
+      "end": 60.866667,
+      "en": "Record the test distance as the top number of the Snellen fraction. Here, it is three metres.",
+      "sourceStart": 38,
+      "sourceEnd": 46
+    },
+    {
+      "id": "va-08",
+      "start": 60.866667,
+      "end": 76.1,
+      "en": "Ask the patient to show the direction of each E. For the left eye, use the letters on the left of the chart, from largest to smallest. For the right eye, use the letters on the right, from largest to smallest.",
+      "sourceStart": 46,
+      "sourceEnd": 58.5
+    },
+    {
+      "id": "va-09",
+      "start": 76.6,
+      "end": 88.1,
+      "en": "Continue until the patient can no longer correctly identify the letters, or has completed the chart.",
+      "sourceStart": 59,
+      "sourceEnd": 70.5
+    },
+    {
+      "id": "va-10",
+      "start": 88.6,
+      "end": 97.1,
+      "en": "Record the last complete line seen correctly. In this example, the acuity is three over nineteen.",
+      "sourceStart": 71,
+      "sourceEnd": 79.5
+    },
+    {
+      "id": "va-11",
+      "start": 100.6,
+      "end": 107.333333,
+      "en": "If vision is reduced to less than three over three, repeat the test with a pinhole or glasses.",
+      "sourceStart": 83,
+      "sourceEnd": 88
+    },
+    {
+      "id": "va-12",
+      "start": 107.333333,
+      "end": 113.4,
+      "en": "You can make a set of pinholes by pushing a pin through the near card where the black dots are.",
+      "sourceStart": 88,
+      "sourceEnd": 94
+    },
+    {
+      "id": "va-13",
+      "start": 113.4,
+      "end": 119.033333,
+      "en": "If vision improves with pinholes or glasses, it means they need glasses.",
+      "sourceStart": 94,
+      "sourceEnd": 99.5
+    },
+    {
+      "id": "va-14",
+      "start": 124.533333,
+      "end": 133.9,
+      "en": "If the largest E cannot be seen at three metres, try one and a half metres. If still unseen, test counting fingers.",
+      "sourceStart": 105,
+      "sourceEnd": 110.5
+    },
+    {
+      "id": "va-15",
+      "start": 133.9,
+      "end": 142.4,
+      "en": "Ask how many fingers are held up. Record counting fingers and the distance at which they are seen.",
+      "sourceStart": 110.5,
+      "sourceEnd": 119
+    },
+    {
+      "id": "va-16",
+      "start": 142.4,
+      "end": 153.4,
+      "en": "Move your hand and ask whether movement is visible. Record hand movements and the distance.",
+      "sourceStart": 119,
+      "sourceEnd": 130
+    },
+    {
+      "id": "va-17",
+      "start": 154.4,
+      "end": 164.9,
+      "en": "Test light perception. Record whether the patient can see the light, or has no light perception.",
+      "sourceStart": 131,
+      "sourceEnd": 141.5
+    },
+    {
+      "id": "va-18",
+      "start": 170.4,
+      "end": 177.4,
+      "en": "For near vision, hold the reading chart forty centimetres away, with both eyes open.",
+      "sourceStart": 147,
+      "sourceEnd": 154
+    },
+    {
+      "id": "va-19",
+      "start": 177.4,
+      "end": 183.4,
+      "en": "Ask them to read aloud, starting with the largest print.",
+      "sourceStart": 154,
+      "sourceEnd": 160
+    },
+    {
+      "id": "va-20",
+      "start": 183.4,
+      "end": 190.4,
+      "en": "Record the smallest line read comfortably and the test distance.",
+      "sourceStart": 160,
+      "sourceEnd": 167
+    },
+    {
+      "id": "va-21",
+      "start": 192.4,
+      "end": 198.4,
+      "en": "If reading is difficult, ask them to identify letters or match their shapes.",
+      "sourceStart": 169,
+      "sourceEnd": 174
+    },
+    {
+      "id": "va-22",
+      "start": 198.4,
+      "end": 206.4,
+      "en": "They can point in the direction of the E, as in distance acuity testing, or copy its shape in the air with a finger.",
+      "sourceStart": 174,
+      "sourceEnd": 182
+    },
+    {
+      "id": "va-23",
+      "start": 207.4,
+      "end": 214.4,
+      "en": "If near vision is worse than N12, repeat with reading glasses of different powers.",
+      "sourceStart": 183,
+      "sourceEnd": 190
+    },
+    {
+      "id": "va-24",
+      "start": 214.4,
+      "end": 222.4,
+      "en": "Record the smallest print seen clearly, the reading distance and the glasses used.",
+      "sourceStart": 190,
+      "sourceEnd": 198
+    }
+  ],
+  "sourceDurationSeconds": 198.57,
+  "encodedHolds": [
+    {
+      "cueId": "va-01",
+      "atFrame": 66,
+      "frames": 69,
+      "at": 4.4,
+      "seconds": 4.6
+    },
+    {
+      "cueId": "va-02",
+      "atFrame": 126,
+      "frames": 84,
+      "at": 8.4,
+      "seconds": 5.6
+    },
+    {
+      "cueId": "va-03",
+      "atFrame": 224,
+      "frames": 70,
+      "at": 14.933333,
+      "seconds": 4.666667
+    },
+    {
+      "cueId": "va-08",
+      "atFrame": 876,
+      "frames": 41,
+      "at": 58.4,
+      "seconds": 2.733333
+    },
+    {
+      "cueId": "va-11",
+      "atFrame": 1319,
+      "frames": 26,
+      "at": 87.933333,
+      "seconds": 1.733333
+    },
+    {
+      "cueId": "va-12",
+      "atFrame": 1409,
+      "frames": 1,
+      "at": 93.933333,
+      "seconds": 0.066667
+    },
+    {
+      "cueId": "va-13",
+      "atFrame": 1491,
+      "frames": 2,
+      "at": 99.4,
+      "seconds": 0.133333
+    },
+    {
+      "cueId": "va-14",
+      "atFrame": 1656,
+      "frames": 58,
+      "at": 110.4,
+      "seconds": 3.866667
+    },
+    {
+      "cueId": "va-21",
+      "atFrame": 2609,
+      "frames": 15,
+      "at": 173.933333,
+      "seconds": 1
+    }
+  ]
+}

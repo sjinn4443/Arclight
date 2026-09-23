@@ -341,3 +341,5 @@ Childhood Fundal Reflex scrollytelling is also an active maintenance area:
 - Clinical: Spanish/Korean timed safety wording was already corrected. Aligned
   stale broad cues and regenerated matching narration. Human bilingual clinical
   review is explicitly pending in `clinical-review/fundal-es-ko.json`.
+
+- Visual Acuity now has a Full Animation video row directly after its PDF. `visualAcuityFullAnimationVideoPage` uses the supplied 220p/720p pair, the shared dedicated player and English-only narration/captions. The 24 English cues include the user’s revised copy and original scene start times. Nine encoded holds extend playback to 222.93 seconds; mapped captions and narration share that clock without runtime holds. Offline language selection falls back to English for this lesson. The practice graphic holds on the supplied reference scene from 13.0 to 18.6 seconds; later cue times are unchanged.

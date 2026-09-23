@@ -1499,6 +1499,16 @@ const VIDEO_PAGE_SOURCES = {
     iframeClass: "videos-yt-fundal-exam",
   },
 
+  visualAcuityFullAnimationVideoPage: {
+    key: "videoMode:visualAcuityFullAnimationVideoPage",
+    containerSelector: "#visualAcuityFullAnimationVideoContainer",
+    videoSelector: "#visualAcuityFullAnimationVideo",
+    sources: {
+      low: "videos/FullAnim/VisualAcuityFullAnim_220p.mp4",
+      high: "videos/FullAnim/VisualAcuityFullAnim_720p.mp4",
+    },
+  },
+
   fundalReflexFullAnimationVideoPage: {
     key: "videoMode:fundalReflexFullAnimationVideoPage",
     containerSelector: "#fundalReflexFullAnimationVideoContainer",
@@ -1881,6 +1891,7 @@ const CHILDHOOD_EYE_SCREENING_SUBTITLE_PAGE_IDS = new Set(
   Object.keys(VIDEO_PAGE_SOURCES),
 );
 const DEDICATED_SUBTITLE_PANEL_PAGE_IDS = new Set([
+  "visualAcuityFullAnimationVideoPage",
   "fundalReflexFullAnimationVideoPage",
   "directOphthalmoscopyFullAnimationVideoPage",
   "binocularIndirectOphthalmoscopyFullAnimationVideoPage",

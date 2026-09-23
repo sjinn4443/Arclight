@@ -285,3 +285,5 @@ suite passed 20 tests with six browser-specific skips. Lighthouse median gates
 passed for dashboard and Eyes. Complete shell: 19,174,231 bytes, summed gzip
 9,845,022 bytes. Detailed evidence and limitations are recorded in
 `docs/product-quality-2026-09-18.md`; human clinical approval remains pending.
+
+- Added Visual Acuity Full Animation below Visual Acuity PDF, with low/high local sources and a dedicated video page. Generated 24 English narration/caption cues using en-GB-SoniaNeural, then applied the user’s timing/copy revisions including N12 and eye-specific chart instructions. Nine encoded holds preserve full speech at normal speed and keep subsequent scenes aligned on a 222.93-second delivery clock. Source script, delivery audio, WebVTT and manifest live in `public/narration/visual-acuity/full-animation/`. The practice graphic holds on the supplied reference scene from 13.0 to 18.6 seconds; later cue times are unchanged.

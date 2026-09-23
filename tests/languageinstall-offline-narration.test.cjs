@@ -44,6 +44,39 @@ describe("language-specific offline narration", () => {
     ],
   };
 
+  it.each(["low", "high"])(
+    "includes Visual Acuity English fallback with %s video",
+    (videoQuality) => {
+      const base = "/narration/visual-acuity/full-animation/";
+      const media = "/videos/FullAnim/VisualAcuityFullAnim_";
+      const urls = [
+        base + "en.m4a",
+        base + "en.vtt",
+        media + "220p.mp4",
+        media + "720p.mp4",
+      ];
+      const selection = languageInstall.resolveOfflineDownloadSelection(
+        { assets: urls.map((url) => ({ url, bytes: 1000 })) },
+        {
+          language: "ko",
+          mode: "select",
+          catalogId: "core-visual-acuity",
+          videoQuality,
+        },
+      );
+      expect(selection.urls).toEqual(
+        expect.arrayContaining([
+          base + "en.m4a",
+          base + "en.vtt",
+          media + (videoQuality === "low" ? "220p.mp4" : "720p.mp4"),
+        ]),
+      );
+      expect(selection.urls).not.toContain(
+        media + (videoQuality === "low" ? "720p.mp4" : "220p.mp4"),
+      );
+    },
+  );
+
   it.each(
     [
       "direct-ophthalmoscopy",

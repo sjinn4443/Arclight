@@ -2600,5 +2600,28 @@
       "low": "videos/FullAnim/FrontofEyeFullAnim_timed_220p.mp4",
       "high": "videos/FullAnim/FrontofEyeFullAnim_timed_720p.mp4"
     }
+  },
+  "visualAcuityFullAnimationVideoPage": {
+    "subtitles": {
+      "en": "/narration/visual-acuity/full-animation/en.vtt"
+    },
+    "audioVariants": {
+      "en": {
+        "label": "English",
+        "src": "/narration/visual-acuity/full-animation/en.m4a"
+      }
+    },
+    "defaultSubtitleLang": "en",
+    "defaultAudioLang": "en",
+    "iosHls": {
+      "masterManifest": "",
+      "preferredMode": "low",
+      "offlineFallbackMode": "low",
+      "subtitleLanguages": ["en"]
+    },
+    "localSources": {
+      "low": "videos/FullAnim/VisualAcuityFullAnim_220p.mp4",
+      "high": "videos/FullAnim/VisualAcuityFullAnim_720p.mp4"
+    }
   }
 }
