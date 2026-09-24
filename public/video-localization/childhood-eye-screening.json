@@ -2603,12 +2603,52 @@
   },
   "visualAcuityFullAnimationVideoPage": {
     "subtitles": {
-      "en": "/narration/visual-acuity/full-animation/en.vtt"
+      "en": "/narration/visual-acuity/full-animation/en.vtt",
+      "es": "/narration/visual-acuity/full-animation/es-419.vtt",
+      "ko": "/narration/visual-acuity/full-animation/ko.vtt",
+      "fr": "/narration/visual-acuity/full-animation/fr.vtt",
+      "ne": "/narration/visual-acuity/full-animation/ne.vtt",
+      "lg": "/narration/visual-acuity/full-animation/lg.vtt",
+      "ha": "/narration/visual-acuity/full-animation/ha.vtt",
+      "yo": "/narration/visual-acuity/full-animation/yo.vtt",
+      "ig": "/narration/visual-acuity/full-animation/ig.vtt"
     },
     "audioVariants": {
       "en": {
         "label": "English",
         "src": "/narration/visual-acuity/full-animation/en.m4a"
+      },
+      "es-419": {
+        "label": "Español (Latinoamérica)",
+        "src": "/narration/visual-acuity/full-animation/es-419.m4a"
+      },
+      "ko": {
+        "label": "한국어",
+        "src": "/narration/visual-acuity/full-animation/ko.m4a"
+      },
+      "fr": {
+        "label": "Français",
+        "src": "/narration/visual-acuity/full-animation/fr.m4a"
+      },
+      "ne": {
+        "label": "नेपाली",
+        "src": "/narration/visual-acuity/full-animation/ne.m4a"
+      },
+      "lg": {
+        "label": "Luganda",
+        "src": "/narration/visual-acuity/full-animation/lg.m4a"
+      },
+      "ha": {
+        "label": "Hausa",
+        "src": "/narration/visual-acuity/full-animation/ha.m4a"
+      },
+      "yo": {
+        "label": "Yorùbá",
+        "src": "/narration/visual-acuity/full-animation/yo.m4a"
+      },
+      "ig": {
+        "label": "Igbo",
+        "src": "/narration/visual-acuity/full-animation/ig.m4a"
       }
     },
     "defaultSubtitleLang": "en",
@@ -2617,7 +2657,17 @@
       "masterManifest": "",
       "preferredMode": "low",
       "offlineFallbackMode": "low",
-      "subtitleLanguages": ["en"]
+      "subtitleLanguages": [
+        "en",
+        "es",
+        "ko",
+        "fr",
+        "ne",
+        "lg",
+        "ha",
+        "yo",
+        "ig"
+      ]
     },
     "localSources": {
       "low": "videos/FullAnim/VisualAcuityFullAnim_220p.mp4",

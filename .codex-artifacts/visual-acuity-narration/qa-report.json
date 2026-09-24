@@ -244,6 +244,1886 @@
           "endMargin": 4.16
         }
       ]
+    },
+    "lg": {
+      "voice": "facebook/mms-tts-lug",
+      "delivery": {
+        "path": "public/narration/visual-acuity/full-animation/lg.m4a",
+        "bytes": 1006304,
+        "duration": 222.93,
+        "sha256": "1862b56d35cb45e3f9314a9487231f3f404a47654cb0f285506b4427301c39ff",
+        "format": "mono AAC in M4A, 48 kbps, 48 kHz"
+      },
+      "master": {
+        "path": ".codex-artifacts/visual-acuity-narration/visual-acuity-full-animation.lg.master.wav",
+        "bytes": 21401678,
+        "duration": 222.93,
+        "format": "mono PCM WAV, 16-bit, 48 kHz"
+      },
+      "reviewVideo": null,
+      "cues": [
+        {
+          "id": "va-01",
+          "slotStart": 3,
+          "slotEnd": 9.1,
+          "sourceDuration": 4.32,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 7.32,
+          "endMargin": 1.78
+        },
+        {
+          "id": "va-02",
+          "slotStart": 9.1,
+          "slotEnd": 18.6,
+          "sourceDuration": 7.23,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 16.33,
+          "endMargin": 2.27
+        },
+        {
+          "id": "va-03",
+          "slotStart": 21.6,
+          "slotEnd": 29.866667,
+          "sourceDuration": 5.79,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 27.39,
+          "endMargin": 2.477
+        },
+        {
+          "id": "va-04",
+          "slotStart": 29.866667,
+          "slotEnd": 38.366667,
+          "sourceDuration": 3.89,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 33.757,
+          "endMargin": 4.61
+        },
+        {
+          "id": "va-05",
+          "slotStart": 40.866667,
+          "slotEnd": 45.866667,
+          "sourceDuration": 4.08,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 44.947,
+          "endMargin": 0.92
+        },
+        {
+          "id": "va-06",
+          "slotStart": 45.866667,
+          "slotEnd": 52.866667,
+          "sourceDuration": 4.19,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 50.057,
+          "endMargin": 2.81
+        },
+        {
+          "id": "va-07",
+          "slotStart": 52.866667,
+          "slotEnd": 60.866667,
+          "sourceDuration": 4.78,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 57.647,
+          "endMargin": 3.22
+        },
+        {
+          "id": "va-08",
+          "slotStart": 60.866667,
+          "slotEnd": 76.1,
+          "sourceDuration": 12.18,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 73.047,
+          "endMargin": 3.053
+        },
+        {
+          "id": "va-09",
+          "slotStart": 76.6,
+          "slotEnd": 88.1,
+          "sourceDuration": 6.98,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 83.58,
+          "endMargin": 4.52
+        },
+        {
+          "id": "va-10",
+          "slotStart": 88.6,
+          "slotEnd": 97.1,
+          "sourceDuration": 7.1,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 95.7,
+          "endMargin": 1.4
+        },
+        {
+          "id": "va-11",
+          "slotStart": 100.6,
+          "slotEnd": 107.333333,
+          "sourceDuration": 6.7,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 107.3,
+          "endMargin": 0.033
+        },
+        {
+          "id": "va-12",
+          "slotStart": 107.333333,
+          "slotEnd": 113.4,
+          "sourceDuration": 4.62,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 111.953,
+          "endMargin": 1.447
+        },
+        {
+          "id": "va-13",
+          "slotStart": 113.4,
+          "slotEnd": 119.033333,
+          "sourceDuration": 5.87,
+          "playbackSpeed": 1.042012,
+          "renderedEnd": 119.033,
+          "endMargin": 0.0
+        },
+        {
+          "id": "va-14",
+          "slotStart": 124.533333,
+          "slotEnd": 133.9,
+          "sourceDuration": 7.92,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 132.453,
+          "endMargin": 1.447
+        },
+        {
+          "id": "va-15",
+          "slotStart": 133.9,
+          "slotEnd": 142.4,
+          "sourceDuration": 7.47,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 141.37,
+          "endMargin": 1.03
+        },
+        {
+          "id": "va-16",
+          "slotStart": 142.4,
+          "slotEnd": 153.4,
+          "sourceDuration": 10.66,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 153.06,
+          "endMargin": 0.34
+        },
+        {
+          "id": "va-17",
+          "slotStart": 154.4,
+          "slotEnd": 164.9,
+          "sourceDuration": 7.06,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 161.46,
+          "endMargin": 3.44
+        },
+        {
+          "id": "va-18",
+          "slotStart": 170.4,
+          "slotEnd": 177.4,
+          "sourceDuration": 6.18,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 176.58,
+          "endMargin": 0.82
+        },
+        {
+          "id": "va-19",
+          "slotStart": 177.4,
+          "slotEnd": 183.4,
+          "sourceDuration": 4.62,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 182.02,
+          "endMargin": 1.38
+        },
+        {
+          "id": "va-20",
+          "slotStart": 183.4,
+          "slotEnd": 190.4,
+          "sourceDuration": 5.34,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 188.74,
+          "endMargin": 1.66
+        },
+        {
+          "id": "va-21",
+          "slotStart": 192.4,
+          "slotEnd": 198.4,
+          "sourceDuration": 5.54,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 197.94,
+          "endMargin": 0.46
+        },
+        {
+          "id": "va-22",
+          "slotStart": 198.4,
+          "slotEnd": 206.4,
+          "sourceDuration": 6.11,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 204.51,
+          "endMargin": 1.89
+        },
+        {
+          "id": "va-23",
+          "slotStart": 207.4,
+          "slotEnd": 214.4,
+          "sourceDuration": 7.55,
+          "playbackSpeed": 1.078571,
+          "renderedEnd": 214.4,
+          "endMargin": 0.0
+        },
+        {
+          "id": "va-24",
+          "slotStart": 214.4,
+          "slotEnd": 222.4,
+          "sourceDuration": 5.22,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 219.62,
+          "endMargin": 2.78
+        }
+      ]
+    },
+    "ha": {
+      "voice": "facebook/mms-tts-hau",
+      "delivery": {
+        "path": "public/narration/visual-acuity/full-animation/ha.m4a",
+        "bytes": 1049856,
+        "duration": 222.93,
+        "sha256": "cd469f00d160aa92cc5807909f8312ec66ac6dfaae07dc0f08bbe5f6603e38db",
+        "format": "mono AAC in M4A, 48 kbps, 48 kHz"
+      },
+      "master": {
+        "path": ".codex-artifacts/visual-acuity-narration/visual-acuity-full-animation.ha.master.wav",
+        "bytes": 21401678,
+        "duration": 222.93,
+        "format": "mono PCM WAV, 16-bit, 48 kHz"
+      },
+      "reviewVideo": null,
+      "cues": [
+        {
+          "id": "va-01",
+          "slotStart": 3,
+          "slotEnd": 9.1,
+          "sourceDuration": 5.73,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 8.73,
+          "endMargin": 0.37
+        },
+        {
+          "id": "va-02",
+          "slotStart": 9.1,
+          "slotEnd": 18.6,
+          "sourceDuration": 8.91,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 18.01,
+          "endMargin": 0.59
+        },
+        {
+          "id": "va-03",
+          "slotStart": 21.6,
+          "slotEnd": 29.866667,
+          "sourceDuration": 4.94,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 26.54,
+          "endMargin": 3.327
+        },
+        {
+          "id": "va-04",
+          "slotStart": 29.866667,
+          "slotEnd": 38.366667,
+          "sourceDuration": 7.92,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 37.787,
+          "endMargin": 0.58
+        },
+        {
+          "id": "va-05",
+          "slotStart": 40.866667,
+          "slotEnd": 45.866667,
+          "sourceDuration": 3.95,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 44.817,
+          "endMargin": 1.05
+        },
+        {
+          "id": "va-06",
+          "slotStart": 45.866667,
+          "slotEnd": 52.866667,
+          "sourceDuration": 3.86,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 49.727,
+          "endMargin": 3.14
+        },
+        {
+          "id": "va-07",
+          "slotStart": 52.866667,
+          "slotEnd": 60.866667,
+          "sourceDuration": 5.2,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 58.067,
+          "endMargin": 2.8
+        },
+        {
+          "id": "va-08",
+          "slotStart": 60.866667,
+          "slotEnd": 76.1,
+          "sourceDuration": 11.31,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 72.177,
+          "endMargin": 3.923
+        },
+        {
+          "id": "va-09",
+          "slotStart": 76.6,
+          "slotEnd": 88.1,
+          "sourceDuration": 8.38,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 84.98,
+          "endMargin": 3.12
+        },
+        {
+          "id": "va-10",
+          "slotStart": 88.6,
+          "slotEnd": 97.1,
+          "sourceDuration": 8.3,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 96.9,
+          "endMargin": 0.2
+        },
+        {
+          "id": "va-11",
+          "slotStart": 100.6,
+          "slotEnd": 107.333333,
+          "sourceDuration": 6.14,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 106.74,
+          "endMargin": 0.593
+        },
+        {
+          "id": "va-12",
+          "slotStart": 107.333333,
+          "slotEnd": 113.4,
+          "sourceDuration": 3.62,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 110.953,
+          "endMargin": 2.447
+        },
+        {
+          "id": "va-13",
+          "slotStart": 113.4,
+          "slotEnd": 119.033333,
+          "sourceDuration": 5.33,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 118.73,
+          "endMargin": 0.303
+        },
+        {
+          "id": "va-14",
+          "slotStart": 124.533333,
+          "slotEnd": 133.9,
+          "sourceDuration": 8.93,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 133.463,
+          "endMargin": 0.437
+        },
+        {
+          "id": "va-15",
+          "slotStart": 133.9,
+          "slotEnd": 142.4,
+          "sourceDuration": 8.45,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 142.35,
+          "endMargin": 0.05
+        },
+        {
+          "id": "va-16",
+          "slotStart": 142.4,
+          "slotEnd": 153.4,
+          "sourceDuration": 8.54,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 150.94,
+          "endMargin": 2.46
+        },
+        {
+          "id": "va-17",
+          "slotStart": 154.4,
+          "slotEnd": 164.9,
+          "sourceDuration": 7.33,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 161.73,
+          "endMargin": 3.17
+        },
+        {
+          "id": "va-18",
+          "slotStart": 170.4,
+          "slotEnd": 177.4,
+          "sourceDuration": 7.55,
+          "playbackSpeed": 1.078571,
+          "renderedEnd": 177.4,
+          "endMargin": 0.0
+        },
+        {
+          "id": "va-19",
+          "slotStart": 177.4,
+          "slotEnd": 183.4,
+          "sourceDuration": 5.07,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 182.47,
+          "endMargin": 0.93
+        },
+        {
+          "id": "va-20",
+          "slotStart": 183.4,
+          "slotEnd": 190.4,
+          "sourceDuration": 5.41,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 188.81,
+          "endMargin": 1.59
+        },
+        {
+          "id": "va-21",
+          "slotStart": 192.4,
+          "slotEnd": 198.4,
+          "sourceDuration": 5.82,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 198.22,
+          "endMargin": 0.18
+        },
+        {
+          "id": "va-22",
+          "slotStart": 198.4,
+          "slotEnd": 206.4,
+          "sourceDuration": 8.61,
+          "playbackSpeed": 1.07625,
+          "renderedEnd": 206.4,
+          "endMargin": 0.0
+        },
+        {
+          "id": "va-23",
+          "slotStart": 207.4,
+          "slotEnd": 214.4,
+          "sourceDuration": 6.66,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 214.06,
+          "endMargin": 0.34
+        },
+        {
+          "id": "va-24",
+          "slotStart": 214.4,
+          "slotEnd": 222.4,
+          "sourceDuration": 5.09,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 219.49,
+          "endMargin": 2.91
+        }
+      ]
+    },
+    "yo": {
+      "voice": "facebook/mms-tts-yor",
+      "delivery": {
+        "path": "public/narration/visual-acuity/full-animation/yo.m4a",
+        "bytes": 782106,
+        "duration": 222.93,
+        "sha256": "1e01a2572b78297c3c8ddb7618a4887fbdb9352d0251c8f1b76a8a11d656cd7f",
+        "format": "mono AAC in M4A, 48 kbps, 48 kHz"
+      },
+      "master": {
+        "path": ".codex-artifacts/visual-acuity-narration/visual-acuity-full-animation.yo.master.wav",
+        "bytes": 21401678,
+        "duration": 222.93,
+        "format": "mono PCM WAV, 16-bit, 48 kHz"
+      },
+      "reviewVideo": null,
+      "cues": [
+        {
+          "id": "va-01",
+          "slotStart": 3,
+          "slotEnd": 9.1,
+          "sourceDuration": 4.66,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 7.66,
+          "endMargin": 1.44
+        },
+        {
+          "id": "va-02",
+          "slotStart": 9.1,
+          "slotEnd": 18.6,
+          "sourceDuration": 6.32,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 15.42,
+          "endMargin": 3.18
+        },
+        {
+          "id": "va-03",
+          "slotStart": 21.6,
+          "slotEnd": 29.866667,
+          "sourceDuration": 3.22,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 24.82,
+          "endMargin": 5.047
+        },
+        {
+          "id": "va-04",
+          "slotStart": 29.866667,
+          "slotEnd": 38.366667,
+          "sourceDuration": 3.44,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 33.307,
+          "endMargin": 5.06
+        },
+        {
+          "id": "va-05",
+          "slotStart": 40.866667,
+          "slotEnd": 45.866667,
+          "sourceDuration": 2.29,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 43.157,
+          "endMargin": 2.71
+        },
+        {
+          "id": "va-06",
+          "slotStart": 45.866667,
+          "slotEnd": 52.866667,
+          "sourceDuration": 3.3,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 49.167,
+          "endMargin": 3.7
+        },
+        {
+          "id": "va-07",
+          "slotStart": 52.866667,
+          "slotEnd": 60.866667,
+          "sourceDuration": 3.23,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 56.097,
+          "endMargin": 4.77
+        },
+        {
+          "id": "va-08",
+          "slotStart": 60.866667,
+          "slotEnd": 76.1,
+          "sourceDuration": 12.53,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 73.397,
+          "endMargin": 2.703
+        },
+        {
+          "id": "va-09",
+          "slotStart": 76.6,
+          "slotEnd": 88.1,
+          "sourceDuration": 5.68,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 82.28,
+          "endMargin": 5.82
+        },
+        {
+          "id": "va-10",
+          "slotStart": 88.6,
+          "slotEnd": 97.1,
+          "sourceDuration": 5.47,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 94.07,
+          "endMargin": 3.03
+        },
+        {
+          "id": "va-11",
+          "slotStart": 100.6,
+          "slotEnd": 107.333333,
+          "sourceDuration": 4.94,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 105.54,
+          "endMargin": 1.793
+        },
+        {
+          "id": "va-12",
+          "slotStart": 107.333333,
+          "slotEnd": 113.4,
+          "sourceDuration": 4.02,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 111.353,
+          "endMargin": 2.047
+        },
+        {
+          "id": "va-13",
+          "slotStart": 113.4,
+          "slotEnd": 119.033333,
+          "sourceDuration": 3.76,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 117.16,
+          "endMargin": 1.873
+        },
+        {
+          "id": "va-14",
+          "slotStart": 124.533333,
+          "slotEnd": 133.9,
+          "sourceDuration": 6.53,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 131.063,
+          "endMargin": 2.837
+        },
+        {
+          "id": "va-15",
+          "slotStart": 133.9,
+          "slotEnd": 142.4,
+          "sourceDuration": 5.39,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 139.29,
+          "endMargin": 3.11
+        },
+        {
+          "id": "va-16",
+          "slotStart": 142.4,
+          "slotEnd": 153.4,
+          "sourceDuration": 6.24,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 148.64,
+          "endMargin": 4.76
+        },
+        {
+          "id": "va-17",
+          "slotStart": 154.4,
+          "slotEnd": 164.9,
+          "sourceDuration": 5.76,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 160.16,
+          "endMargin": 4.74
+        },
+        {
+          "id": "va-18",
+          "slotStart": 170.4,
+          "slotEnd": 177.4,
+          "sourceDuration": 5.18,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 175.58,
+          "endMargin": 1.82
+        },
+        {
+          "id": "va-19",
+          "slotStart": 177.4,
+          "slotEnd": 183.4,
+          "sourceDuration": 2.64,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 180.04,
+          "endMargin": 3.36
+        },
+        {
+          "id": "va-20",
+          "slotStart": 183.4,
+          "slotEnd": 190.4,
+          "sourceDuration": 3.39,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 186.79,
+          "endMargin": 3.61
+        },
+        {
+          "id": "va-21",
+          "slotStart": 192.4,
+          "slotEnd": 198.4,
+          "sourceDuration": 5.02,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 197.42,
+          "endMargin": 0.98
+        },
+        {
+          "id": "va-22",
+          "slotStart": 198.4,
+          "slotEnd": 206.4,
+          "sourceDuration": 6.91,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 205.31,
+          "endMargin": 1.09
+        },
+        {
+          "id": "va-23",
+          "slotStart": 207.4,
+          "slotEnd": 214.4,
+          "sourceDuration": 4.9,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 212.3,
+          "endMargin": 2.1
+        },
+        {
+          "id": "va-24",
+          "slotStart": 214.4,
+          "slotEnd": 222.4,
+          "sourceDuration": 3.95,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 218.35,
+          "endMargin": 4.05
+        }
+      ]
+    },
+    "ig": {
+      "voice": "Shinzmann/soro-tts-ibo",
+      "delivery": {
+        "path": "public/narration/visual-acuity/full-animation/ig.m4a",
+        "bytes": 996749,
+        "duration": 222.93,
+        "sha256": "243d4b7a3147399897cb439a3d097e458a20e161da2ed829e8da1bea08d4139c",
+        "format": "mono AAC in M4A, 48 kbps, 48 kHz"
+      },
+      "master": {
+        "path": ".codex-artifacts/visual-acuity-narration/visual-acuity-full-animation.ig.master.wav",
+        "bytes": 21401678,
+        "duration": 222.93,
+        "format": "mono PCM WAV, 16-bit, 48 kHz"
+      },
+      "reviewVideo": null,
+      "cues": [
+        {
+          "id": "va-01",
+          "slotStart": 3,
+          "slotEnd": 9.1,
+          "sourceDuration": 5.66,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 8.66,
+          "endMargin": 0.44
+        },
+        {
+          "id": "va-02",
+          "slotStart": 9.1,
+          "slotEnd": 18.6,
+          "sourceDuration": 4.84,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 13.94,
+          "endMargin": 4.66
+        },
+        {
+          "id": "va-03",
+          "slotStart": 21.6,
+          "slotEnd": 29.866667,
+          "sourceDuration": 4.96,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 26.56,
+          "endMargin": 3.307
+        },
+        {
+          "id": "va-04",
+          "slotStart": 29.866667,
+          "slotEnd": 38.366667,
+          "sourceDuration": 3.88,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 33.747,
+          "endMargin": 4.62
+        },
+        {
+          "id": "va-05",
+          "slotStart": 40.866667,
+          "slotEnd": 45.866667,
+          "sourceDuration": 5.06,
+          "playbackSpeed": 1.012,
+          "renderedEnd": 45.867,
+          "endMargin": 0.0
+        },
+        {
+          "id": "va-06",
+          "slotStart": 45.866667,
+          "slotEnd": 52.866667,
+          "sourceDuration": 4.4,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 50.267,
+          "endMargin": 2.6
+        },
+        {
+          "id": "va-07",
+          "slotStart": 52.866667,
+          "slotEnd": 60.866667,
+          "sourceDuration": 6.58,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 59.447,
+          "endMargin": 1.42
+        },
+        {
+          "id": "va-08",
+          "slotStart": 60.866667,
+          "slotEnd": 76.1,
+          "sourceDuration": 12.66,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 73.527,
+          "endMargin": 2.573
+        },
+        {
+          "id": "va-09",
+          "slotStart": 76.6,
+          "slotEnd": 88.1,
+          "sourceDuration": 8.92,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 85.52,
+          "endMargin": 2.58
+        },
+        {
+          "id": "va-10",
+          "slotStart": 88.6,
+          "slotEnd": 97.1,
+          "sourceDuration": 8.0,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 96.6,
+          "endMargin": 0.5
+        },
+        {
+          "id": "va-11",
+          "slotStart": 100.6,
+          "slotEnd": 107.333333,
+          "sourceDuration": 5.56,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 106.16,
+          "endMargin": 1.173
+        },
+        {
+          "id": "va-12",
+          "slotStart": 107.333333,
+          "slotEnd": 113.4,
+          "sourceDuration": 3.68,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 111.013,
+          "endMargin": 2.387
+        },
+        {
+          "id": "va-13",
+          "slotStart": 113.4,
+          "slotEnd": 119.033333,
+          "sourceDuration": 4.2,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 117.6,
+          "endMargin": 1.433
+        },
+        {
+          "id": "va-14",
+          "slotStart": 124.533333,
+          "slotEnd": 133.9,
+          "sourceDuration": 8.22,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 132.753,
+          "endMargin": 1.147
+        },
+        {
+          "id": "va-15",
+          "slotStart": 133.9,
+          "slotEnd": 142.4,
+          "sourceDuration": 6.94,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 140.84,
+          "endMargin": 1.56
+        },
+        {
+          "id": "va-16",
+          "slotStart": 142.4,
+          "slotEnd": 153.4,
+          "sourceDuration": 9.88,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 152.28,
+          "endMargin": 1.12
+        },
+        {
+          "id": "va-17",
+          "slotStart": 154.4,
+          "slotEnd": 164.9,
+          "sourceDuration": 6.86,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 161.26,
+          "endMargin": 3.64
+        },
+        {
+          "id": "va-18",
+          "slotStart": 170.4,
+          "slotEnd": 177.4,
+          "sourceDuration": 6.48,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 176.88,
+          "endMargin": 0.52
+        },
+        {
+          "id": "va-19",
+          "slotStart": 177.4,
+          "slotEnd": 183.4,
+          "sourceDuration": 5.42,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 182.82,
+          "endMargin": 0.58
+        },
+        {
+          "id": "va-20",
+          "slotStart": 183.4,
+          "slotEnd": 190.4,
+          "sourceDuration": 4.86,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 188.26,
+          "endMargin": 2.14
+        },
+        {
+          "id": "va-21",
+          "slotStart": 192.4,
+          "slotEnd": 198.4,
+          "sourceDuration": 5.78,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 198.18,
+          "endMargin": 0.22
+        },
+        {
+          "id": "va-22",
+          "slotStart": 198.4,
+          "slotEnd": 206.4,
+          "sourceDuration": 7.38,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 205.78,
+          "endMargin": 0.62
+        },
+        {
+          "id": "va-23",
+          "slotStart": 207.4,
+          "slotEnd": 214.4,
+          "sourceDuration": 6.56,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 213.96,
+          "endMargin": 0.44
+        },
+        {
+          "id": "va-24",
+          "slotStart": 214.4,
+          "slotEnd": 222.4,
+          "sourceDuration": 4.88,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 219.28,
+          "endMargin": 3.12
+        }
+      ]
+    },
+    "es-419": {
+      "voice": "es-MX-DaliaNeural",
+      "delivery": {
+        "path": "public/narration/visual-acuity/full-animation/es-419.m4a",
+        "bytes": 887434,
+        "duration": 222.93,
+        "sha256": "17ef3f832bca5e871dcd1906db4a5501b803164018324c80cbbdc5d74f97a484",
+        "format": "mono AAC in M4A, 48 kbps, 48 kHz"
+      },
+      "master": {
+        "path": ".codex-artifacts/visual-acuity-narration/visual-acuity-full-animation.es-419.master.wav",
+        "bytes": 21401678,
+        "duration": 222.93,
+        "format": "mono PCM WAV, 16-bit, 48 kHz"
+      },
+      "reviewVideo": null,
+      "cues": [
+        {
+          "id": "va-01",
+          "slotStart": 3,
+          "slotEnd": 9.1,
+          "sourceDuration": 6.5,
+          "playbackSpeed": 1.065574,
+          "renderedEnd": 9.1,
+          "endMargin": 0.0
+        },
+        {
+          "id": "va-02",
+          "slotStart": 9.1,
+          "slotEnd": 18.6,
+          "sourceDuration": 7.61,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 16.71,
+          "endMargin": 1.89
+        },
+        {
+          "id": "va-03",
+          "slotStart": 21.6,
+          "slotEnd": 29.866667,
+          "sourceDuration": 5.06,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 26.66,
+          "endMargin": 3.207
+        },
+        {
+          "id": "va-04",
+          "slotStart": 29.866667,
+          "slotEnd": 38.366667,
+          "sourceDuration": 5.47,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 35.337,
+          "endMargin": 3.03
+        },
+        {
+          "id": "va-05",
+          "slotStart": 40.866667,
+          "slotEnd": 45.866667,
+          "sourceDuration": 4.01,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 44.877,
+          "endMargin": 0.99
+        },
+        {
+          "id": "va-06",
+          "slotStart": 45.866667,
+          "slotEnd": 52.866667,
+          "sourceDuration": 4.54,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 50.407,
+          "endMargin": 2.46
+        },
+        {
+          "id": "va-07",
+          "slotStart": 52.866667,
+          "slotEnd": 60.866667,
+          "sourceDuration": 6.96,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 59.827,
+          "endMargin": 1.04
+        },
+        {
+          "id": "va-08",
+          "slotStart": 60.866667,
+          "slotEnd": 76.1,
+          "sourceDuration": 13.66,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 74.527,
+          "endMargin": 1.573
+        },
+        {
+          "id": "va-09",
+          "slotStart": 76.6,
+          "slotEnd": 88.1,
+          "sourceDuration": 5.86,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 82.46,
+          "endMargin": 5.64
+        },
+        {
+          "id": "va-10",
+          "slotStart": 88.6,
+          "slotEnd": 97.1,
+          "sourceDuration": 7.94,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 96.54,
+          "endMargin": 0.56
+        },
+        {
+          "id": "va-11",
+          "slotStart": 100.6,
+          "slotEnd": 107.333333,
+          "sourceDuration": 6.26,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 106.86,
+          "endMargin": 0.473
+        },
+        {
+          "id": "va-12",
+          "slotStart": 107.333333,
+          "slotEnd": 113.4,
+          "sourceDuration": 4.8,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 112.133,
+          "endMargin": 1.267
+        },
+        {
+          "id": "va-13",
+          "slotStart": 113.4,
+          "slotEnd": 119.033333,
+          "sourceDuration": 5.02,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 118.42,
+          "endMargin": 0.613
+        },
+        {
+          "id": "va-14",
+          "slotStart": 124.533333,
+          "slotEnd": 133.9,
+          "sourceDuration": 8.74,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 133.273,
+          "endMargin": 0.627
+        },
+        {
+          "id": "va-15",
+          "slotStart": 133.9,
+          "slotEnd": 142.4,
+          "sourceDuration": 6.84,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 140.74,
+          "endMargin": 1.66
+        },
+        {
+          "id": "va-16",
+          "slotStart": 142.4,
+          "slotEnd": 153.4,
+          "sourceDuration": 8.9,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 151.3,
+          "endMargin": 2.1
+        },
+        {
+          "id": "va-17",
+          "slotStart": 154.4,
+          "slotEnd": 164.9,
+          "sourceDuration": 8.78,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 163.18,
+          "endMargin": 1.72
+        },
+        {
+          "id": "va-18",
+          "slotStart": 170.4,
+          "slotEnd": 177.4,
+          "sourceDuration": 6.96,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 177.36,
+          "endMargin": 0.04
+        },
+        {
+          "id": "va-19",
+          "slotStart": 177.4,
+          "slotEnd": 183.4,
+          "sourceDuration": 4.92,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 182.32,
+          "endMargin": 1.08
+        },
+        {
+          "id": "va-20",
+          "slotStart": 183.4,
+          "slotEnd": 190.4,
+          "sourceDuration": 4.87,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 188.27,
+          "endMargin": 2.13
+        },
+        {
+          "id": "va-21",
+          "slotStart": 192.4,
+          "slotEnd": 198.4,
+          "sourceDuration": 5.59,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 197.99,
+          "endMargin": 0.41
+        },
+        {
+          "id": "va-22",
+          "slotStart": 198.4,
+          "slotEnd": 206.4,
+          "sourceDuration": 7.42,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 205.82,
+          "endMargin": 0.58
+        },
+        {
+          "id": "va-23",
+          "slotStart": 207.4,
+          "slotEnd": 214.4,
+          "sourceDuration": 7.08,
+          "playbackSpeed": 1.011429,
+          "renderedEnd": 214.4,
+          "endMargin": -0.0
+        },
+        {
+          "id": "va-24",
+          "slotStart": 214.4,
+          "slotEnd": 222.4,
+          "sourceDuration": 4.75,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 219.15,
+          "endMargin": 3.25
+        }
+      ]
+    },
+    "ko": {
+      "voice": "ko-KR-SunHiNeural",
+      "delivery": {
+        "path": "public/narration/visual-acuity/full-animation/ko.m4a",
+        "bytes": 946622,
+        "duration": 222.93,
+        "sha256": "3c752385342f6162604cd7bd0cf57ef777e4402b6b2354819cf3de9d53fc4bc6",
+        "format": "mono AAC in M4A, 48 kbps, 48 kHz"
+      },
+      "master": {
+        "path": ".codex-artifacts/visual-acuity-narration/visual-acuity-full-animation.ko.master.wav",
+        "bytes": 21401678,
+        "duration": 222.93,
+        "format": "mono PCM WAV, 16-bit, 48 kHz"
+      },
+      "reviewVideo": null,
+      "cues": [
+        {
+          "id": "va-01",
+          "slotStart": 3,
+          "slotEnd": 9.1,
+          "sourceDuration": 5.98,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 8.98,
+          "endMargin": 0.12
+        },
+        {
+          "id": "va-02",
+          "slotStart": 9.1,
+          "slotEnd": 18.6,
+          "sourceDuration": 8.57,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 17.67,
+          "endMargin": 0.93
+        },
+        {
+          "id": "va-03",
+          "slotStart": 21.6,
+          "slotEnd": 29.866667,
+          "sourceDuration": 7.37,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 28.97,
+          "endMargin": 0.897
+        },
+        {
+          "id": "va-04",
+          "slotStart": 29.866667,
+          "slotEnd": 38.366667,
+          "sourceDuration": 5.28,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 35.147,
+          "endMargin": 3.22
+        },
+        {
+          "id": "va-05",
+          "slotStart": 40.866667,
+          "slotEnd": 45.866667,
+          "sourceDuration": 4.63,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 45.497,
+          "endMargin": 0.37
+        },
+        {
+          "id": "va-06",
+          "slotStart": 45.866667,
+          "slotEnd": 52.866667,
+          "sourceDuration": 4.39,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 50.257,
+          "endMargin": 2.61
+        },
+        {
+          "id": "va-07",
+          "slotStart": 52.866667,
+          "slotEnd": 60.866667,
+          "sourceDuration": 7.37,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 60.237,
+          "endMargin": 0.63
+        },
+        {
+          "id": "va-08",
+          "slotStart": 60.866667,
+          "slotEnd": 76.1,
+          "sourceDuration": 14.93,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 75.797,
+          "endMargin": 0.303
+        },
+        {
+          "id": "va-09",
+          "slotStart": 76.6,
+          "slotEnd": 88.1,
+          "sourceDuration": 7.3,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 83.9,
+          "endMargin": 4.2
+        },
+        {
+          "id": "va-10",
+          "slotStart": 88.6,
+          "slotEnd": 97.1,
+          "sourceDuration": 8.33,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 96.93,
+          "endMargin": 0.17
+        },
+        {
+          "id": "va-11",
+          "slotStart": 100.6,
+          "slotEnd": 107.333333,
+          "sourceDuration": 6.31,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 106.91,
+          "endMargin": 0.423
+        },
+        {
+          "id": "va-12",
+          "slotStart": 107.333333,
+          "slotEnd": 113.4,
+          "sourceDuration": 5.09,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 112.423,
+          "endMargin": 0.977
+        },
+        {
+          "id": "va-13",
+          "slotStart": 113.4,
+          "slotEnd": 119.033333,
+          "sourceDuration": 4.82,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 118.22,
+          "endMargin": 0.813
+        },
+        {
+          "id": "va-14",
+          "slotStart": 124.533333,
+          "slotEnd": 133.9,
+          "sourceDuration": 9.79,
+          "playbackSpeed": 1.045196,
+          "renderedEnd": 133.9,
+          "endMargin": 0.0
+        },
+        {
+          "id": "va-15",
+          "slotStart": 133.9,
+          "slotEnd": 142.4,
+          "sourceDuration": 8.3,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 142.2,
+          "endMargin": 0.2
+        },
+        {
+          "id": "va-16",
+          "slotStart": 142.4,
+          "slotEnd": 153.4,
+          "sourceDuration": 10.46,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 152.86,
+          "endMargin": 0.54
+        },
+        {
+          "id": "va-17",
+          "slotStart": 154.4,
+          "slotEnd": 164.9,
+          "sourceDuration": 8.95,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 163.35,
+          "endMargin": 1.55
+        },
+        {
+          "id": "va-18",
+          "slotStart": 170.4,
+          "slotEnd": 177.4,
+          "sourceDuration": 6.05,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 176.45,
+          "endMargin": 0.95
+        },
+        {
+          "id": "va-19",
+          "slotStart": 177.4,
+          "slotEnd": 183.4,
+          "sourceDuration": 4.13,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 181.53,
+          "endMargin": 1.87
+        },
+        {
+          "id": "va-20",
+          "slotStart": 183.4,
+          "slotEnd": 190.4,
+          "sourceDuration": 5.06,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 188.46,
+          "endMargin": 1.94
+        },
+        {
+          "id": "va-21",
+          "slotStart": 192.4,
+          "slotEnd": 198.4,
+          "sourceDuration": 5.45,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 197.85,
+          "endMargin": 0.55
+        },
+        {
+          "id": "va-22",
+          "slotStart": 198.4,
+          "slotEnd": 206.4,
+          "sourceDuration": 7.01,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 205.41,
+          "endMargin": 0.99
+        },
+        {
+          "id": "va-23",
+          "slotStart": 207.4,
+          "slotEnd": 214.4,
+          "sourceDuration": 6.6,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 214.0,
+          "endMargin": 0.4
+        },
+        {
+          "id": "va-24",
+          "slotStart": 214.4,
+          "slotEnd": 222.4,
+          "sourceDuration": 4.22,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 218.62,
+          "endMargin": 3.78
+        }
+      ]
+    },
+    "ne": {
+      "voice": "ne-NP-HemkalaNeural",
+      "delivery": {
+        "path": "public/narration/visual-acuity/full-animation/ne.m4a",
+        "bytes": 893157,
+        "duration": 222.93,
+        "sha256": "b1759101846995f70a0181431dcd92c7fedeb6d305c038e77da9829a7e8aa354",
+        "format": "mono AAC in M4A, 48 kbps, 48 kHz"
+      },
+      "master": {
+        "path": ".codex-artifacts/visual-acuity-narration/visual-acuity-full-animation.ne.master.wav",
+        "bytes": 21401678,
+        "duration": 222.93,
+        "format": "mono PCM WAV, 16-bit, 48 kHz"
+      },
+      "reviewVideo": null,
+      "cues": [
+        {
+          "id": "va-01",
+          "slotStart": 3,
+          "slotEnd": 9.1,
+          "sourceDuration": 6.02,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 9.02,
+          "endMargin": 0.08
+        },
+        {
+          "id": "va-02",
+          "slotStart": 9.1,
+          "slotEnd": 18.6,
+          "sourceDuration": 9.26,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 18.36,
+          "endMargin": 0.24
+        },
+        {
+          "id": "va-03",
+          "slotStart": 21.6,
+          "slotEnd": 29.866667,
+          "sourceDuration": 6.19,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 27.79,
+          "endMargin": 2.077
+        },
+        {
+          "id": "va-04",
+          "slotStart": 29.866667,
+          "slotEnd": 38.366667,
+          "sourceDuration": 4.94,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 34.807,
+          "endMargin": 3.56
+        },
+        {
+          "id": "va-05",
+          "slotStart": 40.866667,
+          "slotEnd": 45.866667,
+          "sourceDuration": 4.2,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 45.067,
+          "endMargin": 0.8
+        },
+        {
+          "id": "va-06",
+          "slotStart": 45.866667,
+          "slotEnd": 52.866667,
+          "sourceDuration": 4.75,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 50.617,
+          "endMargin": 2.25
+        },
+        {
+          "id": "va-07",
+          "slotStart": 52.866667,
+          "slotEnd": 60.866667,
+          "sourceDuration": 6.48,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 59.347,
+          "endMargin": 1.52
+        },
+        {
+          "id": "va-08",
+          "slotStart": 60.866667,
+          "slotEnd": 76.1,
+          "sourceDuration": 14.69,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 75.557,
+          "endMargin": 0.543
+        },
+        {
+          "id": "va-09",
+          "slotStart": 76.6,
+          "slotEnd": 88.1,
+          "sourceDuration": 5.76,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 82.36,
+          "endMargin": 5.74
+        },
+        {
+          "id": "va-10",
+          "slotStart": 88.6,
+          "slotEnd": 97.1,
+          "sourceDuration": 6.6,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 95.2,
+          "endMargin": 1.9
+        },
+        {
+          "id": "va-11",
+          "slotStart": 100.6,
+          "slotEnd": 107.333333,
+          "sourceDuration": 6.05,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 106.65,
+          "endMargin": 0.683
+        },
+        {
+          "id": "va-12",
+          "slotStart": 107.333333,
+          "slotEnd": 113.4,
+          "sourceDuration": 5.14,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 112.473,
+          "endMargin": 0.927
+        },
+        {
+          "id": "va-13",
+          "slotStart": 113.4,
+          "slotEnd": 119.033333,
+          "sourceDuration": 4.58,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 117.98,
+          "endMargin": 1.053
+        },
+        {
+          "id": "va-14",
+          "slotStart": 124.533333,
+          "slotEnd": 133.9,
+          "sourceDuration": 8.59,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 133.123,
+          "endMargin": 0.777
+        },
+        {
+          "id": "va-15",
+          "slotStart": 133.9,
+          "slotEnd": 142.4,
+          "sourceDuration": 7.06,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 140.96,
+          "endMargin": 1.44
+        },
+        {
+          "id": "va-16",
+          "slotStart": 142.4,
+          "slotEnd": 153.4,
+          "sourceDuration": 8.54,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 150.94,
+          "endMargin": 2.46
+        },
+        {
+          "id": "va-17",
+          "slotStart": 154.4,
+          "slotEnd": 164.9,
+          "sourceDuration": 8.86,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 163.26,
+          "endMargin": 1.64
+        },
+        {
+          "id": "va-18",
+          "slotStart": 170.4,
+          "slotEnd": 177.4,
+          "sourceDuration": 6.94,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 177.34,
+          "endMargin": 0.06
+        },
+        {
+          "id": "va-19",
+          "slotStart": 177.4,
+          "slotEnd": 183.4,
+          "sourceDuration": 4.7,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 182.1,
+          "endMargin": 1.3
+        },
+        {
+          "id": "va-20",
+          "slotStart": 183.4,
+          "slotEnd": 190.4,
+          "sourceDuration": 4.63,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 188.03,
+          "endMargin": 2.37
+        },
+        {
+          "id": "va-21",
+          "slotStart": 192.4,
+          "slotEnd": 198.4,
+          "sourceDuration": 5.26,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 197.66,
+          "endMargin": 0.74
+        },
+        {
+          "id": "va-22",
+          "slotStart": 198.4,
+          "slotEnd": 206.4,
+          "sourceDuration": 7.03,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 205.43,
+          "endMargin": 0.97
+        },
+        {
+          "id": "va-23",
+          "slotStart": 207.4,
+          "slotEnd": 214.4,
+          "sourceDuration": 6.79,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 214.19,
+          "endMargin": 0.21
+        },
+        {
+          "id": "va-24",
+          "slotStart": 214.4,
+          "slotEnd": 222.4,
+          "sourceDuration": 4.08,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 218.48,
+          "endMargin": 3.92
+        }
+      ]
+    },
+    "fr": {
+      "voice": "fr-FR-DeniseNeural",
+      "delivery": {
+        "path": "public/narration/visual-acuity/full-animation/fr.m4a",
+        "bytes": 829620,
+        "duration": 222.93,
+        "sha256": "2f4a971560443d9804515477bf215d43c5faa50d42618e69ae56bd338ddc1014",
+        "format": "mono AAC in M4A, 48 kbps, 48 kHz"
+      },
+      "master": {
+        "path": ".codex-artifacts/visual-acuity-narration/visual-acuity-full-animation.fr.master.wav",
+        "bytes": 21401678,
+        "duration": 222.93,
+        "format": "mono PCM WAV, 16-bit, 48 kHz"
+      },
+      "reviewVideo": null,
+      "cues": [
+        {
+          "id": "va-01",
+          "slotStart": 3,
+          "slotEnd": 9.1,
+          "sourceDuration": 5.38,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 8.38,
+          "endMargin": 0.72
+        },
+        {
+          "id": "va-02",
+          "slotStart": 9.1,
+          "slotEnd": 18.6,
+          "sourceDuration": 7.58,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 16.68,
+          "endMargin": 1.92
+        },
+        {
+          "id": "va-03",
+          "slotStart": 21.6,
+          "slotEnd": 29.866667,
+          "sourceDuration": 4.63,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 26.23,
+          "endMargin": 3.637
+        },
+        {
+          "id": "va-04",
+          "slotStart": 29.866667,
+          "slotEnd": 38.366667,
+          "sourceDuration": 4.37,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 34.237,
+          "endMargin": 4.13
+        },
+        {
+          "id": "va-05",
+          "slotStart": 40.866667,
+          "slotEnd": 45.866667,
+          "sourceDuration": 3.67,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 44.537,
+          "endMargin": 1.33
+        },
+        {
+          "id": "va-06",
+          "slotStart": 45.866667,
+          "slotEnd": 52.866667,
+          "sourceDuration": 3.53,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 49.397,
+          "endMargin": 3.47
+        },
+        {
+          "id": "va-07",
+          "slotStart": 52.866667,
+          "slotEnd": 60.866667,
+          "sourceDuration": 6.89,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 59.757,
+          "endMargin": 1.11
+        },
+        {
+          "id": "va-08",
+          "slotStart": 60.866667,
+          "slotEnd": 76.1,
+          "sourceDuration": 12.82,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 73.687,
+          "endMargin": 2.413
+        },
+        {
+          "id": "va-09",
+          "slotStart": 76.6,
+          "slotEnd": 88.1,
+          "sourceDuration": 4.58,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 81.18,
+          "endMargin": 6.92
+        },
+        {
+          "id": "va-10",
+          "slotStart": 88.6,
+          "slotEnd": 97.1,
+          "sourceDuration": 7.42,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 96.02,
+          "endMargin": 1.08
+        },
+        {
+          "id": "va-11",
+          "slotStart": 100.6,
+          "slotEnd": 107.333333,
+          "sourceDuration": 6.55,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 107.15,
+          "endMargin": 0.183
+        },
+        {
+          "id": "va-12",
+          "slotStart": 107.333333,
+          "slotEnd": 113.4,
+          "sourceDuration": 4.25,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 111.583,
+          "endMargin": 1.817
+        },
+        {
+          "id": "va-13",
+          "slotStart": 113.4,
+          "slotEnd": 119.033333,
+          "sourceDuration": 5.28,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 118.68,
+          "endMargin": 0.353
+        },
+        {
+          "id": "va-14",
+          "slotStart": 124.533333,
+          "slotEnd": 133.9,
+          "sourceDuration": 8.57,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 133.103,
+          "endMargin": 0.797
+        },
+        {
+          "id": "va-15",
+          "slotStart": 133.9,
+          "slotEnd": 142.4,
+          "sourceDuration": 6.12,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 140.02,
+          "endMargin": 2.38
+        },
+        {
+          "id": "va-16",
+          "slotStart": 142.4,
+          "slotEnd": 153.4,
+          "sourceDuration": 8.83,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 151.23,
+          "endMargin": 2.17
+        },
+        {
+          "id": "va-17",
+          "slotStart": 154.4,
+          "slotEnd": 164.9,
+          "sourceDuration": 8.28,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 162.68,
+          "endMargin": 2.22
+        },
+        {
+          "id": "va-18",
+          "slotStart": 170.4,
+          "slotEnd": 177.4,
+          "sourceDuration": 5.86,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 176.26,
+          "endMargin": 1.14
+        },
+        {
+          "id": "va-19",
+          "slotStart": 177.4,
+          "slotEnd": 183.4,
+          "sourceDuration": 4.63,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 182.03,
+          "endMargin": 1.37
+        },
+        {
+          "id": "va-20",
+          "slotStart": 183.4,
+          "slotEnd": 190.4,
+          "sourceDuration": 4.13,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 187.53,
+          "endMargin": 2.87
+        },
+        {
+          "id": "va-21",
+          "slotStart": 192.4,
+          "slotEnd": 198.4,
+          "sourceDuration": 5.38,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 197.78,
+          "endMargin": 0.62
+        },
+        {
+          "id": "va-22",
+          "slotStart": 198.4,
+          "slotEnd": 206.4,
+          "sourceDuration": 7.27,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 205.67,
+          "endMargin": 0.73
+        },
+        {
+          "id": "va-23",
+          "slotStart": 207.4,
+          "slotEnd": 214.4,
+          "sourceDuration": 6.48,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 213.88,
+          "endMargin": 0.52
+        },
+        {
+          "id": "va-24",
+          "slotStart": 214.4,
+          "slotEnd": 222.4,
+          "sourceDuration": 4.46,
+          "playbackSpeed": 1.0,
+          "renderedEnd": 218.86,
+          "endMargin": 3.54
+        }
+      ]
     }
   }
 }

@@ -1,5 +1,7 @@
+import { VISUAL_ACUITY_NARRATION_TRACKS } from "./visualAcuityNarrationTracks.js";
+
 // Numeric folder order from scrolly/coreexam/visualacuity. Low Vision has a root data.json.
-// Reuse the existing English Full Animation narration and script; no speech is generated at runtime.
+// Share packaged Full Animation narration and translated cues; no runtime speech synthesis.
 export const VISUAL_ACUITY_EXAMINATION_SCROLL_CONFIG = {
   pageId: "visualAcuityExaminationScrollPage",
   label: "Visual Acuity",
@@ -212,12 +214,7 @@ export const VISUAL_ACUITY_EXAMINATION_SCROLL_CONFIG = {
       "If the vision improves, it means they need glasses",
     ],
   ],
-  narrationTracks: {
-    en: {
-      label: "English",
-      src: "/narration/visual-acuity/full-animation/en.m4a",
-    },
-  },
+  narrationTracks: VISUAL_ACUITY_NARRATION_TRACKS,
   narrationClipsByFile: [
     {
       start: 3,
@@ -300,7 +297,7 @@ export const VISUAL_ACUITY_EXAMINATION_SCROLL_CONFIG = {
 // Absolute audio time to local scene frames, including the existing speech holds.
 export const VISUAL_ACUITY_SCROLL_TIMING = {
   folder: "visual-acuity",
-  languages: ["en"],
+  languages: Object.keys(VISUAL_ACUITY_NARRATION_TRACKS),
   stages: [
     [
       [3, 0],

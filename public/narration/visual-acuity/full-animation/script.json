@@ -11,6 +11,63 @@
       "locale": "en-GB",
       "voice": "en-GB-SoniaNeural",
       "style": "Calm, clear British English medical educator"
+    },
+    "es-419": {
+      "label": "Español (Latinoamérica)",
+      "locale": "es-419",
+      "voice": "es-MX-DaliaNeural",
+      "style": "Educadora médica adulta, tranquila y cordial; ritmo ligeramente pausado; tono neutro"
+    },
+    "ko": {
+      "label": "한국어",
+      "locale": "ko-KR",
+      "voice": "ko-KR-SunHiNeural",
+      "style": "차분하고 친절한 성인 의료교육자; 약간 느린 교육용 속도; 과장 없는 중립적 말투"
+    },
+    "fr": {
+      "label": "Français",
+      "locale": "fr-FR",
+      "voice": "fr-FR-DeniseNeural",
+      "style": "Calm medical educator; slightly slow"
+    },
+    "ne": {
+      "label": "नेपाली",
+      "locale": "ne-NP",
+      "voice": "ne-NP-HemkalaNeural",
+      "style": "Calm medical educator; slightly slow"
+    },
+    "lg": {
+      "label": "Luganda",
+      "locale": "lg-UG",
+      "voice": "facebook/mms-tts-lug",
+      "style": "Calm medical educator; slightly slow",
+      "provider": "Meta MMS (local)",
+      "modelLicense": "CC-BY-NC-4.0"
+    },
+    "ha": {
+      "label": "Hausa",
+      "locale": "ha-NG",
+      "voice": "facebook/mms-tts-hau",
+      "provider": "Meta MMS (local)",
+      "modelLicense": "CC-BY-NC-4.0",
+      "style": "Calm medical educator"
+    },
+    "yo": {
+      "label": "Yorùbá",
+      "locale": "yo-NG",
+      "voice": "facebook/mms-tts-yor",
+      "provider": "Meta MMS (local)",
+      "modelLicense": "CC-BY-NC-4.0",
+      "style": "Calm medical educator"
+    },
+    "ig": {
+      "label": "Igbo",
+      "locale": "ig-NG",
+      "voice": "Shinzmann/soro-tts-ibo",
+      "provider": "Meta MMS (local)",
+      "modelLicense": "CC-BY-NC-4.0",
+      "style": "Calm medical educator",
+      "trimEdgeSilenceDb": -50
     }
   },
   "cues": [
@@ -20,7 +77,15 @@
       "end": 9.1,
       "en": "Prepare the charts, measuring tape, pen and a safety pin to make pinholes.",
       "sourceStart": 3,
-      "sourceEnd": 4.5
+      "sourceEnd": 4.5,
+      "es-419": "Prepare cartillas, cinta métrica, bolígrafo y un alfiler para hacer agujeros.",
+      "ko": "시력표, 줄자, 펜과 핀홀을 만들 안전핀을 준비합니다.",
+      "fr": "Préparez les échelles, un mètre, un stylo et une épingle pour les trous.",
+      "ne": "चार्ट, नाप्ने टेप, कलम र साना प्वाल बनाउन सेफ्टी पिन तयार गर्नुहोस्।",
+      "lg": "Tegeka ebipande, ekipima, ekkalaamu n'epini okukola obutuli.",
+      "ha": "Shirya jadawali, tef na awo, biro da fil don yin ƙananan ramuka.",
+      "yo": "Pèsè pátákó, téèpù ìwọ̀n, bírò àti abẹ́rẹ́ fún ihò kéékèèké.",
+      "ig": "Weta chaatị, teepu, biro na ntụtụ ịpu oghere."
     },
     {
       "id": "va-02",
@@ -33,7 +98,15 @@
         "at": 8.4,
         "minimumSeconds": 5.6,
         "finishCueAtHoldEnd": true
-      }
+      },
+      "es-419": "Practique la E direccional antes de la prueba. Pida al paciente que señale hacia dónde apunta la E.",
+      "ko": "검사 전에 방향이 바뀌는 E 시표를 연습합니다. 환자에게 E가 향하는 방향을 가리키게 합니다.",
+      "fr": "Entraînez le patient avec le E directionnel avant le test. Demandez-lui d'indiquer la direction du E.",
+      "ne": "जाँचअघि विभिन्न दिशाका ई अक्षर चिन्ने अभ्यास गराउनुहोस्। बिरामीलाई ई फर्केको दिशा देखाउन भन्नुहोस्।",
+      "lg": "Sooka omuyigirize akabonero E. Musabe asonge E gy'etunudde nga tonnatandika kukebera.",
+      "ha": "A fara koyon alamar E kafin gwaji. Nemi mara lafiya ya nuna inda E ya dosa.",
+      "yo": "Kọ́ aláìsàn ní àmì E ṣáájú àyẹ̀wò. Ní kó tọ́ka sí ibi tí E kọjú sí.",
+      "ig": "Mụta akara E tupu ule. Gwa onye ọrịa ka ọ tụọ aka ebe E chere ihu."
     },
     {
       "id": "va-03",
@@ -42,7 +115,15 @@
       "en": "Light should fall onto the chart. Make sure the light is not coming from behind the chart.",
       "sourceStart": 11.4,
       "sourceEnd": 15,
-      "minimumHoldFrames": 70
+      "minimumHoldFrames": 70,
+      "es-419": "La luz debe iluminar la cartilla, no venir desde detrás de ella.",
+      "ko": "빛이 시력표를 비추도록 합니다. 시력표 뒤에서 빛이 들어오지 않게 합니다.",
+      "fr": "La lumière doit éclairer l'échelle, sans venir de derrière.",
+      "ne": "उज्यालो चार्टमा पर्नुपर्छ। चार्टको पछाडिबाट उज्यालो नआओस्।",
+      "lg": "Ekitangaala kyake ku kipande. Tekiva mabega wa kipande.",
+      "ha": "Haske ya haskaka jadawalin. Kada hasken ya fito daga bayansa.",
+      "yo": "Ìmọ́lẹ̀ gbọ́dọ̀ tàn sí pátákó. Kò gbọdọ̀ wá láti ẹ̀yìn rẹ̀.",
+      "ig": "Ìhè kwesịrị ịda na chaatị. Ìhè esikwala n'azụ chaatị abịa."
     },
     {
       "id": "va-04",
@@ -50,7 +131,15 @@
       "end": 38.366667,
       "en": "Make sure the distance from the patient’s eyes to the chart is three metres.",
       "sourceStart": 15,
-      "sourceEnd": 23.5
+      "sourceEnd": 23.5,
+      "es-419": "La distancia entre los ojos del paciente y la cartilla debe ser de tres metros.",
+      "ko": "환자의 눈과 시력표 사이 거리가 삼 미터인지 확인합니다.",
+      "fr": "Vérifiez que les yeux du patient sont à trois mètres de l'échelle.",
+      "ne": "बिरामीको आँखादेखि चार्टसम्म तीन मिटर दूरी राख्नुहोस्।",
+      "lg": "Amaaso g'omulwadde gabe mita ssatu okuva ku kipande.",
+      "ha": "Tabbatar akwai mita uku tsakanin idanun mara lafiya da jadawalin.",
+      "yo": "Rí i pé mítà mẹ́ta wà láàárín ojú aláìsàn àti pátákó.",
+      "ig": "Hụ na anya onye ọrịa dị mita atọ site na chaatị."
     },
     {
       "id": "va-05",
@@ -58,7 +147,15 @@
       "end": 45.866667,
       "en": "Cover one eye with the palm, not the fingers.",
       "sourceStart": 26,
-      "sourceEnd": 31
+      "sourceEnd": 31,
+      "es-419": "Cubra un ojo con la palma, no con los dedos.",
+      "ko": "손가락이 아닌 손바닥으로 한쪽 눈을 가립니다.",
+      "fr": "Couvrez un œil avec la paume, pas les doigts.",
+      "ne": "औँलाले होइन, हत्केलाले एउटा आँखा छोप्नुहोस्।",
+      "lg": "Bikka eriiso limu n'ekibatu, so si engalo.",
+      "ha": "Rufe ido ɗaya da tafin hannu, ba yatsu ba.",
+      "yo": "Fi àtẹ́lẹwọ́ bo ojú kan, má fi ìka bò ó.",
+      "ig": "Jiri ọbụ aka, ọ bụghị mkpịsị, kpuchie otu anya."
     },
     {
       "id": "va-06",
@@ -66,7 +163,15 @@
       "end": 52.866667,
       "en": "Start with the largest letters and work down the chart.",
       "sourceStart": 31,
-      "sourceEnd": 38
+      "sourceEnd": 38,
+      "es-419": "Empiece con las letras más grandes y continúe hacia abajo.",
+      "ko": "가장 큰 글자부터 시작해 아래로 내려갑니다.",
+      "fr": "Commencez par les plus grandes lettres et descendez.",
+      "ne": "सबैभन्दा ठूला अक्षरबाट सुरु गरी तलतिर जानुहोस्।",
+      "lg": "Tandika n'ennukuta ennene okke wansi ku kipande.",
+      "ha": "Fara da manyan haruffa, ka gangara ƙasa.",
+      "yo": "Bẹ̀rẹ̀ pẹ̀lú lẹ́tà tó tóbi jù, kí o sì sọ̀kalẹ̀.",
+      "ig": "Malite na mkpụrụedemede kacha ibu, gbadaa n'ala."
     },
     {
       "id": "va-07",
@@ -74,7 +179,15 @@
       "end": 60.866667,
       "en": "Record the test distance as the top number of the Snellen fraction. Here, it is three metres.",
       "sourceStart": 38,
-      "sourceEnd": 46
+      "sourceEnd": 46,
+      "es-419": "Anote la distancia como numerador de la fracción de Snellen. Aquí son tres metros.",
+      "ko": "검사 거리를 스넬렌 분수의 분자로 기록합니다. 여기서는 삼 미터입니다.",
+      "fr": "Notez la distance au numérateur de la fraction de Snellen. Ici, trois mètres.",
+      "ne": "स्नेलन भिन्नको अंशमा जाँचको दूरी लेख्नुहोस्। यहाँ तीन मिटर हो।",
+      "lg": "Wandiika ebanga waggulu mu mugabo gwa Snellen. Wano mita ssatu.",
+      "ha": "Rubuta nisan gwaji a saman kason Snellen. A nan mita uku ne.",
+      "yo": "Kọ ijìnnà àyẹ̀wò sí òkè ìdá Snellen. Mítà mẹ́ta ni níbí.",
+      "ig": "Dee anya ule n'elu nkebi Snellen. Ebe a, ọ bụ mita atọ."
     },
     {
       "id": "va-08",
@@ -82,7 +195,15 @@
       "end": 76.1,
       "en": "Ask the patient to show the direction of each E. For the left eye, use the letters on the left of the chart, from largest to smallest. For the right eye, use the letters on the right, from largest to smallest.",
       "sourceStart": 46,
-      "sourceEnd": 58.5
+      "sourceEnd": 58.5,
+      "es-419": "Pida que indique la dirección de cada E. Para el ojo izquierdo, use las letras de la izquierda, de mayor a menor. Para el derecho, use las de la derecha, también de mayor a menor.",
+      "ko": "각 E의 방향을 가리키게 합니다. 왼쪽 눈은 시력표 왼쪽 글자를 큰 것부터 작은 순서로 검사합니다. 오른쪽 눈은 오른쪽 글자를 같은 순서로 검사합니다.",
+      "fr": "Demandez la direction de chaque E. Pour l'œil gauche, utilisez les lettres à gauche, des plus grandes aux plus petites. Pour l'œil droit, utilisez celles de droite dans le même ordre.",
+      "ne": "हरेक ईको दिशा देखाउन भन्नुहोस्। बायाँ आँखाका लागि चार्टको बायाँका अक्षर ठूलोदेखि सानो क्रममा देखाउनुहोस्। दायाँ आँखाका लागि दायाँका अक्षर त्यसै क्रममा देखाउनुहोस्।",
+      "lg": "Musabe alage buli E gy'etunudde. Ku liiso lya kkono, kozesa ennukuta ez'oku kkono okuva ku nnene okutuuka ku ntono. Ku lya ddyo, kozesa ez'oku ddyo mu ngeri y'emu.",
+      "ha": "Nemi ya nuna inda kowane E ya dosa. Ga idon hagu, yi amfani da haruffan hagu daga babba zuwa ƙarami. Ga idon dama, yi amfani da na dama daga babba zuwa ƙarami.",
+      "yo": "Ní kó tọ́ka sí ibi tí E kọ̀ọ̀kan kọjú sí. Fún ojú òsì, lo lẹ́tà òsì láti ńlá sí kékeré. Fún ojú ọ̀tún, lo lẹ́tà ọ̀tún láti ńlá sí kékeré.",
+      "ig": "Gwa ya ka ọ gosi ebe E ọ bụla chere ihu. Maka anya aka ekpe, jiri mkpụrụedemede aka ekpe site n'ibu ruo n'obere. Maka anya aka nri, jiri nke aka nri otu ahụ."
     },
     {
       "id": "va-09",
@@ -90,7 +211,15 @@
       "end": 88.1,
       "en": "Continue until the patient can no longer correctly identify the letters, or has completed the chart.",
       "sourceStart": 59,
-      "sourceEnd": 70.5
+      "sourceEnd": 70.5,
+      "es-419": "Continúe hasta que ya no identifique las letras correctamente o complete la cartilla.",
+      "ko": "글자를 더 이상 정확하게 구별하지 못하거나 시력표를 끝까지 읽을 때까지 진행합니다.",
+      "fr": "Continuez jusqu'à ce que le patient se trompe ou termine l'échelle.",
+      "ne": "अक्षर सही चिन्न नसक्दासम्म वा चार्ट पूरा नहुँदासम्म जाँच्नुहोस्।",
+      "lg": "Weeyongere okutuusa lw'atasobola kwawula nnukuta bulungi oba lw'amala ekipande.",
+      "ha": "Ci gaba har sai ya kasa gane haruffa daidai ko ya kammala jadawalin.",
+      "yo": "Tẹ̀síwájú títí tí kò fi lè dá lẹ́tà mọ̀ dáadáa mọ́ tàbí tí ó parí pátákó.",
+      "ig": "Gaa n'ihu ruo mgbe ọ na-enweghị ike ịmata mkpụrụedemede nke ọma, ma ọ bụ ruo mgbe ọ gwụchara chaatị."
     },
     {
       "id": "va-10",
@@ -98,7 +227,15 @@
       "end": 97.1,
       "en": "Record the last complete line seen correctly. In this example, the acuity is three over nineteen.",
       "sourceStart": 71,
-      "sourceEnd": 79.5
+      "sourceEnd": 79.5,
+      "es-419": "Anote la última línea completa leída correctamente. Aquí la agudeza es tres sobre diecinueve.",
+      "ko": "한 줄을 모두 정확히 읽은 마지막 줄을 기록합니다. 이 예의 시력은 십구 분의 삼입니다.",
+      "fr": "Notez la dernière ligne entièrement lue correctement. Ici, l'acuité est de trois sur dix-neuf.",
+      "ne": "पूरै सही पढेको अन्तिम हरफ लेख्नुहोस्। यहाँ दृष्टि उन्नाइसमा तीन हो।",
+      "lg": "Wandiika olunyiriri olusembayo lw'asomye lwonna bulungi. Wano okulaba kuli ssatu ku kkumi na mwenda.",
+      "ha": "Rubuta layin ƙarshe da ya gani duka daidai. A nan ƙarfin gani uku bisa goma sha tara ne.",
+      "yo": "Kọ ìlà ìkẹyìn tí ó rí gbogbo rẹ̀ dáadáa. Ní àpẹẹrẹ yìí, ìríran jẹ́ mẹ́ta lórí mọ́kàndínlógún.",
+      "ig": "Dee ahịrị ikpeazụ ọ hụrụ niile nke ọma. N'ebe a, ike ịhụ ụzọ bụ atọ n'elu iri na itoolu."
     },
     {
       "id": "va-11",
@@ -106,7 +243,15 @@
       "end": 107.333333,
       "en": "If vision is reduced to less than three over three, repeat the test with a pinhole or glasses.",
       "sourceStart": 83,
-      "sourceEnd": 88
+      "sourceEnd": 88,
+      "es-419": "Si la visión es menor de tres sobre tres, repita con agujero estenopeico o lentes.",
+      "ko": "시력이 삼 분의 삼보다 낮으면 핀홀이나 안경으로 다시 검사합니다.",
+      "fr": "Si l'acuité est inférieure à trois sur trois, répétez avec un trou sténopéique ou des lunettes.",
+      "ne": "दृष्टि तीनमा तीनभन्दा कम भए पिनहोल वा चस्मासहित फेरि जाँच्नुहोस्।",
+      "lg": "Bw'alaba wansi wa ssatu ku ssatu, ddamu n'akatuli oba gaalubindi.",
+      "ha": "Idan gani ya gaza uku bisa uku, maimaita da ƙaramin rami ko tabarau.",
+      "yo": "Tí ìríran bá kéré ju mẹ́ta lórí mẹ́ta, tún ṣe pẹ̀lú ihò kékeré tàbí dígí.",
+      "ig": "Ịhụ ụzọ erughị atọ n'elu atọ? Nwalee oghere ma ọ bụ ugogbe."
     },
     {
       "id": "va-12",
@@ -114,7 +259,15 @@
       "end": 113.4,
       "en": "You can make a set of pinholes by pushing a pin through the near card where the black dots are.",
       "sourceStart": 88,
-      "sourceEnd": 94
+      "sourceEnd": 94,
+      "es-419": "Perfore los puntos negros de la cartilla de cerca con un alfiler.",
+      "ko": "근거리 시력표의 검은 점을 핀으로 뚫어 핀홀을 만듭니다.",
+      "fr": "Percez les points noirs de la carte de près avec une épingle.",
+      "ne": "नजिकको चार्टका काला थोप्लामा पिनले साना प्वाल बनाउनुहोस्।",
+      "lg": "Fumita ennyenyeera enzirugavu ku kipande eky'okumpi n'epini.",
+      "ha": "Yi ramuka da fil a ɗigon baƙi na katin kusa.",
+      "yo": "Fi abẹ́rẹ́ lu àwọn àmì dúdú lórí káàdì ìríran nítòsí.",
+      "ig": "Jiri ntụtụ puo oghere n'akara ojii dị na kaadị nso."
     },
     {
       "id": "va-13",
@@ -122,7 +275,15 @@
       "end": 119.033333,
       "en": "If vision improves with pinholes or glasses, it means they need glasses.",
       "sourceStart": 94,
-      "sourceEnd": 99.5
+      "sourceEnd": 99.5,
+      "es-419": "Si mejora con el agujero o con lentes, necesita lentes.",
+      "ko": "핀홀이나 안경으로 시력이 좋아지면 안경이 필요합니다.",
+      "fr": "Si le trou ou les lunettes améliorent la vision, des lunettes sont nécessaires.",
+      "ne": "पिनहोल वा चस्माले दृष्टि सुध्रे चस्मा आवश्यक हुन्छ।",
+      "lg": "Bw'asinga okulaba n'akatuli oba gaalubindi, azeetaaga.",
+      "ha": "Gani ya inganta da rami ko tabarau? Ana buƙatar tabarau.",
+      "yo": "Tí ihò tàbí dígí bá mú ìríran dára, ó nílò dígí.",
+      "ig": "Oghere ma ọ bụ ugogbe meziwanye ịhụ ụzọ? Ọ chọrọ ugogbe."
     },
     {
       "id": "va-14",
@@ -130,7 +291,15 @@
       "end": 133.9,
       "en": "If the largest E cannot be seen at three metres, try one and a half metres. If still unseen, test counting fingers.",
       "sourceStart": 105,
-      "sourceEnd": 110.5
+      "sourceEnd": 110.5,
+      "es-419": "Si no ve la E más grande a tres metros, pruebe a metro y medio. Si aún no la ve, pruebe contar dedos.",
+      "ko": "삼 미터에서 가장 큰 E가 안 보이면 일 점 오 미터에서 봅니다. 그래도 안 보이면 손가락 수를 세게 합니다.",
+      "fr": "Si le plus grand E est invisible à trois mètres, essayez à un mètre cinquante. Sinon, testez le compte des doigts.",
+      "ne": "तीन मिटरमा सबैभन्दा ठूलो ई नदेखे डेढ मिटरमा जाँच्नुहोस्। अझै नदेखे औँला गन्न लगाउनुहोस्।",
+      "lg": "Bw'atalaba E ennene ku mita ssatu, gezaako ku mita emu n'ekitundu. Bw'atasobola, musabe abale engalo.",
+      "ha": "Idan bai ga babban E a mita uku ba, gwada mita ɗaya da rabi. Idan bai gani ba, gwada ƙirga yatsu.",
+      "yo": "Tí kò bá rí E tó tóbi jù ní mítà mẹ́ta, gbìyànjú mítà kan ààbọ̀. Tí kò bá rí i, dán kíkà ìka wò.",
+      "ig": "Ọ hụghị E kachasị na mita atọ? Nwalee mita otu na ọkara. Ọ hụghị ya? Nwalee ịgụ mkpịsị aka."
     },
     {
       "id": "va-15",
@@ -138,7 +307,15 @@
       "end": 142.4,
       "en": "Ask how many fingers are held up. Record counting fingers and the distance at which they are seen.",
       "sourceStart": 110.5,
-      "sourceEnd": 119
+      "sourceEnd": 119,
+      "es-419": "Pregunte cuántos dedos muestra. Anote cuenta dedos y la distancia a la que los ve.",
+      "ko": "펼친 손가락이 몇 개인지 묻습니다. 손가락 수를 셀 수 있음과 그 거리를 기록합니다.",
+      "fr": "Demandez combien de doigts sont levés. Notez compte les doigts et la distance.",
+      "ne": "कति औँला देखाएको छ सोध्नुहोस्। औँला गन्न सकेको र देखेको दूरी लेख्नुहोस्।",
+      "lg": "Mubuuze engalo mmeka z'olaze. Wandiika nti abala engalo n'ebanga ly'azirabirako.",
+      "ha": "Tambayi yatsu nawa aka ɗaga. Rubuta ƙirga yatsu da nisan da ya gan su.",
+      "yo": "Béèrè iye ìka tí o gbé sókè. Kọ kíkà ìka àti ijìnnà tí ó ti rí wọn.",
+      "ig": "Jụọ mkpịsị aka ole e weliri. Dee ịgụ mkpịsị aka na anya ebe ọ hụrụ ha."
     },
     {
       "id": "va-16",
@@ -146,7 +323,15 @@
       "end": 153.4,
       "en": "If fingers cannot be counted, move your hand and ask whether movement is visible. Record hand movements and the distance.",
       "sourceStart": 119,
-      "sourceEnd": 130
+      "sourceEnd": 130,
+      "es-419": "Si no puede contar dedos, mueva la mano y pregunte si ve el movimiento. Anote movimiento de manos y la distancia.",
+      "ko": "손가락 수를 세지 못하면 손을 움직여 움직임이 보이는지 묻습니다. 손의 움직임을 볼 수 있음과 거리를 기록합니다.",
+      "fr": "Si le patient ne peut compter les doigts, bougez la main et demandez s'il voit le mouvement. Notez mouvements de la main et la distance.",
+      "ne": "औँला गन्न नसके हात हल्लाएर चाल देखिन्छ कि सोध्नुहोस्। हातको चाल देखेको र दूरी लेख्नुहोस्।",
+      "lg": "Bw'atasobola kubala ngalo, tambuza omukono omubuuze oba alaba nga gutambula. Wandiika okutambula kw'omukono n'ebanga.",
+      "ha": "Idan bai ƙirga yatsu ba, motsa hannu ka tambaya ko yana ganin motsin. Rubuta motsin hannu da nisa.",
+      "yo": "Tí kò bá lè ka ìka, mi ọwọ́ rẹ kí o béèrè bóyá ó rí ìṣípò. Kọ ìṣípò ọwọ́ àti ijìnnà.",
+      "ig": "Ọ bụrụ na ọ gụghị mkpịsị aka, fegharịa aka gị, jụọ ma ọ na-ahụ ngagharị. Dee ngagharị aka na anya ebe ọ hụrụ ya."
     },
     {
       "id": "va-17",
@@ -154,7 +339,15 @@
       "end": 164.9,
       "en": "If movement cannot be seen, test light perception. Record whether the patient can see the light, or has no light perception.",
       "sourceStart": 131,
-      "sourceEnd": 141.5
+      "sourceEnd": 141.5,
+      "es-419": "Si no ve movimiento, pruebe la percepción de luz. Anote si percibe la luz o si no tiene percepción luminosa.",
+      "ko": "움직임도 안 보이면 광각을 검사합니다. 빛을 느낄 수 있는지, 광각이 없는지 기록합니다.",
+      "fr": "Si le mouvement est invisible, testez la perception lumineuse. Notez si le patient perçoit la lumière ou non.",
+      "ne": "चाल नदेखे प्रकाशको अनुभूति जाँच्नुहोस्। प्रकाश देख्छ वा प्रकाशको अनुभूति छैन भनेर लेख्नुहोस्।",
+      "lg": "Bw'atalaba kutambula, kebera okulaba ekitangaala. Wandiika oba alaba ekitangaala oba takiraba.",
+      "ha": "Idan bai ga motsi ba, gwada ganin haske. Rubuta ko yana ganin haske ko ba ya ganin haske.",
+      "yo": "Tí kò bá rí ìṣípò, dán rírí ìmọ́lẹ̀ wò. Kọ bóyá ó rí ìmọ́lẹ̀ tàbí kò rí ìmọ́lẹ̀.",
+      "ig": "Ọ bụrụ na ọ hụghị ngagharị, nwalee ịhụ ìhè. Dee ma ọ na-ahụ ìhè ma ọ bụ na ọ naghị ahụ ìhè."
     },
     {
       "id": "va-18",
@@ -162,7 +355,15 @@
       "end": 177.4,
       "en": "For near vision, hold the reading chart forty centimetres away, with both eyes open.",
       "sourceStart": 147,
-      "sourceEnd": 154
+      "sourceEnd": 154,
+      "es-419": "Para visión cercana, sostenga la cartilla a cuarenta centímetros, con ambos ojos abiertos.",
+      "ko": "근거리 시력은 두 눈을 뜨고 사십 센티미터 거리에서 검사합니다.",
+      "fr": "Pour la vision de près, tenez l'échelle à quarante centimètres, les deux yeux ouverts.",
+      "ne": "नजिकको दृष्टिका लागि दुवै आँखा खुला राखी चार्ट चालीस सेन्टिमिटर टाढा राख्नुहोस्।",
+      "lg": "Ku kulaba okumpi, ekipande kibe sentimita amakumi ana, amaaso gombi maggule.",
+      "ha": "Don gani na kusa, riƙe jadawalin a santimita arba'in, idanun biyu a buɗe.",
+      "yo": "Fún ìríran nítòsí, di pátákó mú ní sẹ̀ǹtímítà ogójì, kí ojú méjèèjì ṣí.",
+      "ig": "Maka ịhụ nso, chaatị dị sentimita iri anọ, anya abụọ mepere."
     },
     {
       "id": "va-19",
@@ -170,7 +371,15 @@
       "end": 183.4,
       "en": "Ask them to read aloud, starting with the largest print.",
       "sourceStart": 154,
-      "sourceEnd": 160
+      "sourceEnd": 160,
+      "es-419": "Pida que lea en voz alta, empezando por la letra más grande.",
+      "ko": "가장 큰 글자부터 소리 내어 읽게 합니다.",
+      "fr": "Faites lire à voix haute, en commençant par les gros caractères.",
+      "ne": "ठूला अक्षरबाट सुरु गरी ठूलो स्वरमा पढ्न भन्नुहोस्।",
+      "lg": "Musabe asome mu ddoboozi, ng'atandika n'ennukuta ennene.",
+      "ha": "Nemi ya karanta da murya, ya fara da manyan haruffa.",
+      "yo": "Ní kó kà sókè, láti lẹ́tà tó tóbi jù.",
+      "ig": "Gwa ya ka ọ gụọ n'olu, malite na mkpụrụedemede kacha ibu."
     },
     {
       "id": "va-20",
@@ -178,7 +387,15 @@
       "end": 190.4,
       "en": "Record the smallest line read comfortably and the test distance.",
       "sourceStart": 160,
-      "sourceEnd": 167
+      "sourceEnd": 167,
+      "es-419": "Anote la línea más pequeña que lee cómodamente y la distancia.",
+      "ko": "편하게 읽는 가장 작은 줄과 검사 거리를 기록합니다.",
+      "fr": "Notez la plus petite ligne lue aisément et la distance.",
+      "ne": "सजिलै पढेको सबैभन्दा सानो हरफ र दूरी लेख्नुहोस्।",
+      "lg": "Wandiika olunyiriri olutono lw'asoma awatali buzibu n'ebanga.",
+      "ha": "Rubuta ƙaramin layin da ya karanta cikin sauƙi da nisan gwaji.",
+      "yo": "Kọ ìlà kékeré jù tí ó kà láìsí ìṣòro àti ijìnnà.",
+      "ig": "Dee ahịrị kacha nta ọ gụrụ n'enweghị nsogbu na anya ule."
     },
     {
       "id": "va-21",
@@ -186,7 +403,15 @@
       "end": 198.4,
       "en": "If reading is difficult, ask them to identify letters or match their shapes.",
       "sourceStart": 169,
-      "sourceEnd": 174
+      "sourceEnd": 174,
+      "es-419": "Si le cuesta leer, pida que identifique letras o empareje sus formas.",
+      "ko": "읽기 어려우면 글자를 알아보거나 같은 모양을 찾게 합니다.",
+      "fr": "Si lire est difficile, faites reconnaître les lettres ou associer leurs formes.",
+      "ne": "पढ्न गाह्रो भए अक्षर चिन्न वा उस्तै आकार मिलाउन भन्नुहोस्।",
+      "lg": "Bw'azibuwalirwa okusoma, alage ennukuta oba afaananye enkula zazo.",
+      "ha": "Idan karatu ya gagara, ya gane haruffa ko ya haɗa siffofi.",
+      "yo": "Tí kíkà bá ṣòro, ní kó dá lẹ́tà mọ̀ tàbí kó mú àwọn ìrísí tó jọra pọ̀.",
+      "ig": "Ịgụ siri ike? Ọ mata mkpụrụedemede ma ọ bụ jikọọ ụdị ha."
     },
     {
       "id": "va-22",
@@ -194,7 +419,15 @@
       "end": 206.4,
       "en": "They can point in the direction of the E, as in distance acuity testing, or copy its shape in the air with a finger.",
       "sourceStart": 174,
-      "sourceEnd": 182
+      "sourceEnd": 182,
+      "es-419": "Puede señalar la dirección de la E, como en la prueba de lejos, o dibujar su forma en el aire con un dedo.",
+      "ko": "원거리 검사처럼 E의 방향을 가리키거나 손가락으로 허공에 그 모양을 그리게 합니다.",
+      "fr": "Le patient peut indiquer la direction du E, comme pour la vision de loin, ou tracer sa forme en l'air avec un doigt.",
+      "ne": "टाढाको जाँचमा जस्तै ईको दिशा देखाउन वा औँलाले हावामा त्यसको आकार बनाउन सक्छन्।",
+      "lg": "Asonge E gy'etunudde nga mu kulaba ewala, oba agikube mu bbanga n'olugalo.",
+      "ha": "Zai iya nuna inda E ya dosa kamar gwajin gani na nesa, ko ya zana siffarsa a iska da yatsa.",
+      "yo": "Ó lè tọ́ka sí ibi tí E kọjú sí bí nínú àyẹ̀wò jíjìn, tàbí fi ìka ya ìrísí rẹ̀ sínú afẹ́fẹ́.",
+      "ig": "Ọ tụọ ebe E chere ihu dịka ule dị anya, ma ọ bụ see ya n'ikuku na mkpịsị."
     },
     {
       "id": "va-23",
@@ -202,7 +435,15 @@
       "end": 214.4,
       "en": "If near vision is worse than N12, repeat with reading glasses of different powers.",
       "sourceStart": 183,
-      "sourceEnd": 190
+      "sourceEnd": 190,
+      "es-419": "Si la visión cercana es peor que N12, repita con lentes de lectura de distintas potencias.",
+      "ko": "근거리 시력이 엔 십이보다 나쁘면 도수가 다른 돋보기로 다시 검사합니다.",
+      "fr": "Si la vision de près est moins bonne que N12, essayez différentes puissances de lunettes de lecture.",
+      "ne": "नजिकको दृष्टि एन बाह्रभन्दा कमजोर भए फरक शक्तिका पढ्ने चस्माले जाँच्नुहोस्।",
+      "lg": "Okulaba okumpi bwe kuba wansi wa N12, ddamu ne gaalubindi ez'okusoma ez'amaanyi ag'enjawulo.",
+      "ha": "Ganin kusa ya gaza N12? Gwada tabarau na karatu masu ƙarfi dabam.",
+      "yo": "Tí ìríran nítòsí bá burú ju N12, tún ṣe pẹ̀lú dígí kíkà tó ní agbára ọ̀tọ̀ọ̀tọ̀.",
+      "ig": "Ọ bụrụ na ịhụ ụzọ nso dị njọ karịa N12, nwalee ugogbe ịgụ ihe ndị nwere ike dị iche iche."
     },
     {
       "id": "va-24",
@@ -210,7 +451,15 @@
       "end": 222.4,
       "en": "If the vision improves, it means they need glasses",
       "sourceStart": 190,
-      "sourceEnd": 198
+      "sourceEnd": 198,
+      "es-419": "Si la visión mejora, significa que necesita lentes.",
+      "ko": "시력이 좋아지면 안경이 필요하다는 뜻입니다.",
+      "fr": "Si la vision s'améliore, des lunettes sont nécessaires.",
+      "ne": "दृष्टि सुध्रे चस्मा आवश्यक छ भन्ने बुझिन्छ।",
+      "lg": "Okulaba bwe kulongooka, kitegeeza nti yeetaaga gaalubindi.",
+      "ha": "Idan gani ya inganta, yana buƙatar tabarau.",
+      "yo": "Tí ìríran bá dára sí i, ó túmọ̀ sí pé ó nílò dígí.",
+      "ig": "Ọ bụrụ na ịhụ ụzọ kawanye mma, ọ pụtara na ọ chọrọ ugogbe anya."
     }
   ],
   "sourceDurationSeconds": 198.57,
@@ -277,6 +526,88 @@
       "frames": 15,
       "at": 173.933333,
       "seconds": 1
+    }
+  ],
+  "videoTitleCues": [
+    {
+      "id": "video-title-va-1",
+      "start": 0,
+      "end": 3,
+      "sourceText": "Preparation",
+      "translations": {
+        "es-419": "Preparación",
+        "ko": "준비",
+        "ne": "तयारी",
+        "fr": "Préparation",
+        "lg": "Okutegeka",
+        "ha": "Shiri",
+        "yo": "Ìmúrasílẹ̀",
+        "ig": "Nkwadebe"
+      }
+    },
+    {
+      "id": "video-title-va-2",
+      "start": 38.366667,
+      "end": 40.866667,
+      "sourceText": "Distance Vision",
+      "translations": {
+        "es-419": "Visión de lejos",
+        "ko": "원거리 시력",
+        "ne": "टाढाको दृष्टि",
+        "fr": "Vision de loin",
+        "lg": "Okulaba ewala",
+        "ha": "Gani na nesa",
+        "yo": "Ìríran jíjìn",
+        "ig": "Ịhụ ụzọ dị anya"
+      }
+    },
+    {
+      "id": "video-title-va-3",
+      "start": 97.1,
+      "end": 100.6,
+      "sourceText": "Test with Pinhole or glasses",
+      "translations": {
+        "es-419": "Prueba con agujero estenopeico o lentes",
+        "ko": "핀홀 또는 안경을 이용한 검사",
+        "ne": "पिनहोल वा चस्मासहित जाँच",
+        "fr": "Test avec trou sténopéique ou lunettes",
+        "lg": "Okukebera n'akatuli oba gaalubindi",
+        "ha": "Gwaji da ƙaramin rami ko tabarau",
+        "yo": "Àyẹ̀wò pẹ̀lú ihò kékeré tàbí dígí",
+        "ig": "Ule obere oghere ma ọ bụ ugogbe anya"
+      }
+    },
+    {
+      "id": "video-title-va-4",
+      "start": 119.033333,
+      "end": 124.533333,
+      "sourceText": "Low Vision CF-HM-LP",
+      "translations": {
+        "es-419": "Baja visión: cuenta dedos, movimiento de manos, percepción de luz",
+        "ko": "저시력: 안전수지·안전수동·광각",
+        "ne": "न्यून दृष्टि: औँला गन्ने, हातको चाल, प्रकाशको अनुभूति",
+        "fr": "Basse vision : compte les doigts, mouvements de la main, perception lumineuse",
+        "lg": "Okulaba okutono: okubala engalo, okutambula kw'omukono, okulaba ekitangaala",
+        "ha": "Raunin gani: ƙirga yatsu, motsin hannu, ganin haske",
+        "yo": "Ìríran kéré: kíkà ìka, ìṣípò ọwọ́, rírí ìmọ́lẹ̀",
+        "ig": "Ịhụ ụzọ na-adịghị ike: ịgụ mkpịsị aka, ngagharị aka, ịhụ ìhè"
+      }
+    },
+    {
+      "id": "video-title-va-5",
+      "start": 164.9,
+      "end": 170.4,
+      "sourceText": "Near Vision",
+      "translations": {
+        "es-419": "Visión de cerca",
+        "ko": "근거리 시력",
+        "ne": "नजिकको दृष्टि",
+        "fr": "Vision de près",
+        "lg": "Okulaba okumpi",
+        "ha": "Gani na kusa",
+        "yo": "Ìríran nítòsí",
+        "ig": "Ịhụ ụzọ nso"
+      }
     }
   ]
 }
