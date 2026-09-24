@@ -4,11 +4,18 @@ export const VISUAL_ACUITY_EXAMINATION_SCROLL_CONFIG = {
   pageId: "visualAcuityExaminationScrollPage",
   label: "Visual Acuity",
   fitCaptionsInViewport: true,
+  // Give each sentence its own balanced paragraph; keep its last two words
+  // together even on browsers without balanced wrapping.
   formatCaption: (text) =>
-    text.replace(
-      "Light should fall onto the chart. ",
-      "Light should fall onto the chart.\n",
-    ),
+    text
+      .replace(/([.!?])\s+(?=[A-Z])/g, "$1\n\n")
+      .replace(
+        "Record the test distance as the top number of the Snellen fraction.\n\nHere, it is three metres.",
+        "Record the test distance as the top number of the Snellen fraction. Here, it is three metres.",
+      )
+      .split(/\n{2,}/)
+      .map((sentence) => sentence.trim().replace(/\s+(\S+)$/, "\u00a0$1"))
+      .join("\n\n"),
   enableReplay: true,
   segmentTextToggleOnTitle: true,
   persistentSettleSnapshotOverlay: true,
@@ -186,8 +193,8 @@ export const VISUAL_ACUITY_EXAMINATION_SCROLL_CONFIG = {
     [
       "If the largest E cannot be seen at three metres, try one and a half metres. If still unseen, test counting fingers.",
       "Ask how many fingers are held up. Record counting fingers and the distance at which they are seen.",
-      "Move your hand and ask whether movement is visible. Record hand movements and the distance.",
-      "Test light perception. Record whether the patient can see the light, or has no light perception.",
+      "If fingers cannot be counted, move your hand and ask whether movement is visible. Record hand movements and the distance.",
+      "If movement cannot be seen, test light perception. Record whether the patient can see the light, or has no light perception.",
     ],
     [
       "For near vision, hold the reading chart forty centimetres away, with both eyes open.",

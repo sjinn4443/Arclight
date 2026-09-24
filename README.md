@@ -291,7 +291,7 @@ Visual Acuity scrollytelling (`visualAcuityExaminationScrollPage`) is launched a
 
 - Shared progress helpers live in `public/js/lessonProgress.js` and `public/js/lessonCompletionTick.js`. They read/write compatible progress records from `lessonProgress:`, `videoProgress:`, `childhoodWorkshop:progress:`, `diabeticWorkshop:progress:`, and `glaucomaWorkshop:progress:` keys, dispatch `arclight:lesson-progress-changed`, and add completion ticks when rows reach completion.
 
-Visual Acuity captions use balanced wrapping and a sentence break for the lighting explanation. Playback alignment reserves the full accumulated caption height and lifts only scenes whose text would extend below the viewport.
+Visual Acuity captions use balanced sentence paragraphs and keep the last two words together. The test-distance explanation and "Here, it is three metres." share one paragraph. Desktop captions may extend 48px past either side of the animation. Playback alignment reserves the full accumulated caption height and lifts only scenes whose text would extend below the viewport.
 
 ## Narration and captions for examination lessons
 
@@ -570,3 +570,5 @@ workflow check must also be required by the repository's branch protection.
 
 Recorded results and coverage limits are in
 [the 18 September implementation report](docs/product-quality-2026-09-18.md).
+
+Visual Acuity Full Animation and its scroll lesson share the restored English conditional introductions for hand movements and light perception. Cue times remain unchanged.

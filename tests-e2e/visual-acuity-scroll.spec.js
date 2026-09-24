@@ -15,6 +15,35 @@ test.beforeEach(async ({ page, browserName }) => {
   });
 });
 
+test("Visual Acuity restores the low-vision conditional captions", async ({
+  page,
+}) => {
+  await page.addInitScript((id) => {
+    localStorage.setItem(
+      `lessonProgress:${id}`,
+      JSON.stringify({ percent: 100 }),
+    );
+    localStorage.setItem(`videoNarration:${id}`, "off");
+  }, pageId);
+  await page.goto(`/#/videos/${pageId}`);
+  const guide = page.locator(`#${pageId}`);
+  const text = guide
+    .locator(".childhood-fundal-prep-item")
+    .nth(10)
+    .locator(".childhood-fundal-segment-text");
+  await expect(text).toContainText(
+    "If fingers cannot be counted, move your hand",
+    { timeout: 60000 },
+  );
+  await expect(text).toContainText(
+    "If movement cannot be seen, test light perception",
+  );
+  await expect(guide.locator("audio")).toHaveAttribute(
+    "src",
+    "/narration/visual-acuity/full-animation/en.m4a",
+  );
+});
+
 test("Visual Acuity opens in order, holds every final frame and restores completion", async ({
   page,
 }, testInfo) => {
@@ -229,9 +258,9 @@ test("Visual Acuity captions fit their scene and transition holds avoid overlaps
         }),
       );
     for (const b of bounds) {
-      expect(b.text).toBeLessThanOrEqual(b.scene + 1);
-      expect(b.left).toBeGreaterThanOrEqual(-1);
-      expect(b.right).toBeGreaterThanOrEqual(-1);
+      expect(b.text).toBeLessThanOrEqual(b.scene + 97);
+      expect(b.left).toBeGreaterThanOrEqual(-49);
+      expect(b.right).toBeGreaterThanOrEqual(-49);
     }
   }
   await page.evaluate(
@@ -252,10 +281,19 @@ test("Visual Acuity captions fit their scene and transition holds avoid overlaps
   ).toContainText("If the vision improves, it means they need glasses");
   const items = guide.locator(".childhood-fundal-prep-item");
   await expect(
-    items.nth(2).locator(".childhood-fundal-segment-text"),
-  ).toContainText("Light should fall onto the chart.\nMake sure", {
-    useInnerText: true,
-  });
+    items.nth(2).locator(".childhood-fundal-segment-text__paragraph"),
+  ).toHaveCount(2);
+  for (const index of [6, 10]) {
+    const sentences = await items
+      .nth(index)
+      .locator(".childhood-fundal-segment-text__paragraph")
+      .allTextContents();
+    expect(sentences.length).toBeGreaterThan(1);
+    for (const sentence of sentences) {
+      expect(sentence).not.toMatch(/[.!?]\s+[A-Z]/);
+      expect(sentence).toMatch(/\S+\u00a0\S+$/);
+    }
+  }
   for (const size of [
     { width: 1158, height: 920 },
     { width: 1024, height: 768 },
@@ -270,5 +308,9 @@ test("Visual Acuity captions fit their scene and transition holds avoid overlaps
       .locator(".childhood-fundal-segment-text")
       .evaluate((el) => el.getBoundingClientRect().bottom);
     expect(bottom).toBeLessThanOrEqual(size.height - 10);
+    await items
+      .nth(6)
+      .locator(".childhood-fundal-segment-text")
+      .screenshot({ path: testInfo.outputPath(`sentences-${size.width}.png`) });
   }
 });

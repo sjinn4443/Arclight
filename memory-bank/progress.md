@@ -1,5 +1,15 @@
 # Progress
 
+## Visual Acuity sentence wrapping - 24 September 2026
+
+- User-requested exception: keep "Record the test distance ... Snellen fraction."
+  and "Here, it is three metres." together in one paragraph.
+- Every caption sentence starts a separate balanced paragraph, with the final
+  two words kept together to avoid isolated sentence endings. Desktop captions
+  may extend up to 48px on each side of the animation, within the content width.
+- Full-caption height measurement uses the same formatting for viewport fitting.
+  Narration, Full Animation captions and animation timing are unchanged.
+
 ## Visual Acuity requested scene adjustments - 23 September 2026
 
 - Caption lines use balanced wrapping, with an explicit sentence break in the
@@ -314,3 +324,5 @@ Added `visualAcuityExaminationScrollPage` above Full Animation in Visual Acuity.
 Validation: 26 focused Playwright cases passed across Chromium desktop and iPhone WebKit (new Visual Acuity playback/sync/responsive checks plus existing Front of Eye/DO/BIO and heading regressions); 10 shared narration/revisit Jest tests passed. Production build and asset manifest succeeded. WebKit uses the existing mocked audio clock on this Windows host; physical iOS audio is not established by these tests. New-file lint is clean; shared-file lint findings match the pre-change baseline.
 
 Visual Acuity review adjustments: caption blocks are constrained to the animation width on this scroll page only. The Low Vision hold uses local frame 151, before the woman/chart crossfade begins at 152. Near Vision stage 3 no longer holds at frame 170. Cue va-24 now reads "If the vision improves, it means they need glasses" in the shared script, scroll fallback copy, English VTT and regenerated English narration; audio duration and all cue times remain unchanged.
+
+- 24 September 2026: Restored “If fingers cannot be counted,” and “If movement cannot be seen,” in the shared English Full Animation script, narration and captions and in the Visual Acuity scroll fallback text. Cue boundaries and the 222.93-second video timeline are unchanged.

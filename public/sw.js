@@ -1,7 +1,7 @@
 /* sw.js — Arclight PWA service worker */
 const CACHE_NAME =
   typeof __BUILD_CACHE_NAME__ === "undefined"
-    ? "arclight-static-v79"
+    ? "arclight-static-v81"
     : __BUILD_CACHE_NAME__;
 const MAX_MESSAGE_CACHE_URLS = 10000;
 const SHELL_MANIFEST = "/shell-assets.json";

@@ -7969,21 +7969,26 @@ select.onb-input.has-value + .onb-select-caret {
   }
 }
 
-/* Visual Acuity captions stay inside the same width as their animation. */
+/* Allow a little more reading width than the Visual Acuity animation. */
 #visualAcuityExaminationScrollPage .childhood-fundal-segment-text {
   box-sizing: border-box;
   width: 100%;
   margin-inline: auto;
-  overflow-wrap: anywhere;
+  overflow-wrap: normal;
 }
 
-#visualAcuityExaminationScrollPage .childhood-fundal-segment-text__line {
+#visualAcuityExaminationScrollPage .childhood-fundal-segment-text__line,
+#visualAcuityExaminationScrollPage .childhood-fundal-segment-text__paragraph {
   text-wrap: balance;
+}
+
+#visualAcuityExaminationScrollPage .childhood-fundal-segment-text__paragraph {
+  margin-top: 0;
 }
 
 @media (min-width: 1024px) {
   #visualAcuityExaminationScrollPage .childhood-fundal-segment-text {
-    width: min(66.6667%, calc(68vh * (1169 / 1280)));
+    width: min(100%, calc(66.6667% + 96px), calc(68vh * (1169 / 1280) + 96px));
   }
 }
 

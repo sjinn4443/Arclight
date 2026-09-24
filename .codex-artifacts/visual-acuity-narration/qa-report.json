@@ -10,9 +10,9 @@
       "voice": "en-GB-SoniaNeural",
       "delivery": {
         "path": "public/narration/visual-acuity/full-animation/en.m4a",
-        "bytes": 968097,
+        "bytes": 992194,
         "duration": 222.93,
-        "sha256": "9c2d964faec33594c51d256386ac25001335184e959499dac530289b20aea905",
+        "sha256": "e5b4b47a2078730a91b178b9947507b7e186a35ed844cc21121c662cb6a4e281",
         "format": "mono AAC in M4A, 48 kbps, 48 kHz"
       },
       "master": {
@@ -21,7 +21,11 @@
         "duration": 222.93,
         "format": "mono PCM WAV, 16-bit, 48 kHz"
       },
-      "reviewVideo": null,
+      "reviewVideo": {
+        "path": ".codex-artifacts/visual-acuity-narration/visual-acuity-full-animation.en.review.mp4",
+        "bytes": 7841247,
+        "duration": 222.93
+      },
       "cues": [
         {
           "id": "va-01",
@@ -162,19 +166,19 @@
           "id": "va-16",
           "slotStart": 142.4,
           "slotEnd": 153.4,
-          "sourceDuration": 6.7,
+          "sourceDuration": 8.66,
           "playbackSpeed": 1.0,
-          "renderedEnd": 149.1,
-          "endMargin": 4.3
+          "renderedEnd": 151.06,
+          "endMargin": 2.34
         },
         {
           "id": "va-17",
           "slotStart": 154.4,
           "slotEnd": 164.9,
-          "sourceDuration": 6.96,
+          "sourceDuration": 9.0,
           "playbackSpeed": 1.0,
-          "renderedEnd": 161.36,
-          "endMargin": 3.54
+          "renderedEnd": 163.4,
+          "endMargin": 1.5
         },
         {
           "id": "va-18",

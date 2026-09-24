@@ -2,8 +2,9 @@
 
 # Active Context
 
-- Visual Acuity scroll captions use balanced wrapping and a sentence break for
-  lighting. Its opt-in caption-aware alignment lifts overflowing scenes only,
+- Visual Acuity scroll captions separate sentences (except the paired test-distance explanation), balance each paragraph,
+  and keep its final two words together. Desktop text has up to 48px extra width
+  on either side of the animation. Its caption-aware alignment lifts overflowing scenes only,
   reserving accumulated text height before playback starts.
 
 ## Current Work Focus
@@ -353,3 +354,5 @@ Childhood Fundal Reflex scrollytelling is also an active maintenance area:
 Added `visualAcuityExaminationScrollPage` above Full Animation in Visual Acuity. The shared Fundal stage engine renders 15 numbered Lotties in five sections (4/3/3/1/4); Low Vision uses its root `data.json`. Existing English Full Animation audio/cues drive text and playback; Auto falls back to English. Shared responsive/iOS rendering, replay, forward scroll gating, completion restore, lesson progress, structural Back and core offline assets are included. Source assets remain under `public/scrolly/coreexam/visualacuity/`.
 
 Visual Acuity review adjustments: caption blocks are constrained to the animation width on this scroll page only. The Low Vision hold uses local frame 151, before the woman/chart crossfade begins at 152. Near Vision stage 3 no longer holds at frame 170. Cue va-24 now reads "If the vision improves, it means they need glasses" in the shared script, scroll fallback copy, English VTT and regenerated English narration; audio duration and all cue times remain unchanged.
+
+- 24 September 2026: Restored “If fingers cannot be counted,” and “If movement cannot be seen,” in the shared English Full Animation script, narration and captions and in the Visual Acuity scroll fallback text. Cue boundaries and the 222.93-second video timeline are unchanged.

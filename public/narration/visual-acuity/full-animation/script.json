@@ -144,7 +144,7 @@
       "id": "va-16",
       "start": 142.4,
       "end": 153.4,
-      "en": "Move your hand and ask whether movement is visible. Record hand movements and the distance.",
+      "en": "If fingers cannot be counted, move your hand and ask whether movement is visible. Record hand movements and the distance.",
       "sourceStart": 119,
       "sourceEnd": 130
     },
@@ -152,7 +152,7 @@
       "id": "va-17",
       "start": 154.4,
       "end": 164.9,
-      "en": "Test light perception. Record whether the patient can see the light, or has no light perception.",
+      "en": "If movement cannot be seen, test light perception. Record whether the patient can see the light, or has no light perception.",
       "sourceStart": 131,
       "sourceEnd": 141.5
     },

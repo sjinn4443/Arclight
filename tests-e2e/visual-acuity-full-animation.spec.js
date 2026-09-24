@@ -40,10 +40,10 @@ test("Visual Acuity Full Animation opens below the scroll lesson and synchronise
     "If vision improves with pinholes or glasses, it means they need glasses.",
   );
   expect(script.cues.find((cue) => cue.id === "va-16").en).toMatch(
-    /^Move your hand/,
+    /^If fingers cannot be counted, move your hand/,
   );
   expect(script.cues.find((cue) => cue.id === "va-17").en).toMatch(
-    /^Test light perception/,
+    /^If movement cannot be seen, test light perception/,
   );
   expect(script.cues.find((cue) => cue.id === "va-24").en).toBe(
     "If the vision improves, it means they need glasses",
