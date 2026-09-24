@@ -3068,6 +3068,8 @@ function renderSegmentTextLine(lineEl, text) {
     const paragraphEl = document.createElement("div");
     paragraphEl.className = "childhood-fundal-segment-text__paragraph";
     if (idx > 0) {
+      // Preserve the word boundary when paragraph text is read as textContent.
+      lineEl.appendChild(document.createTextNode("\n\n"));
       paragraphEl.classList.add(
         "childhood-fundal-segment-text__paragraph--half-gap",
       );
