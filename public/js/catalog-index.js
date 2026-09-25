@@ -16,6 +16,8 @@ export const EYES_INDEX = {
   "Fundal Reflex": "fundalReflexInteractivePage",
   Ophthalmoscopy: "directOphthalmoscopy",
   "Interactive Learning": "interactiveLearningPage",
+  "Tools and Kits": "arclightPage",
+  Extended: "extendedExaminationPage",
 
   // Disease
   "Uncorrected Refractive Error": "comingSoon",
@@ -29,7 +31,7 @@ export const EYES_INDEX = {
   "Optic Nerve Disease": "comingSoon",
 
   // Primary Eye Care procedures
-  "WHO PEC": "comingSoon",
+  PEC: "comingSoon",
 
   // Extended examination
   Ptosis: "comingSoon",

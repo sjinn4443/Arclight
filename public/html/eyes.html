@@ -1,4 +1,4 @@
-<!-- Eyes Page — Displays a catalog of eye-related content, categorized into core examination, diseases, primary eye care procedures, extended examination, and tools. -->
+<!-- Eyes Page — Four catalog rows: examination, eye care procedures, conditions, and workshops. -->
 <div id="eyesCatalogPage" class="page">
   <div class="container eyes-container">
     <!-- Top bar (title + icons) -->
@@ -37,12 +37,20 @@
       </div>
     </template>
 
-    <!-- Core Examination -->
+    <!-- Examination -->
     <h2 class="catalog-h2">
-      <span data-i18n="coreExaminationTitle">Core Examination</span>
+      <span data-i18n="examinationTitle">Examination</span>
       <span class="see-all" data-i18n="seeAll">See all ></span>
     </h2>
     <div id="coreCarousel" class="eyes-carousel"></div>
+    <div class="eyes-carousel-divider" aria-hidden="true"></div>
+
+    <!-- Eye Care Procedure -->
+    <h2 class="catalog-h2">
+      <span data-i18n="eyeCareProcedureTitle">Eye Care Procedure</span>
+      <span class="see-all" data-i18n="seeAll">See all ></span>
+    </h2>
+    <div id="procedureCarousel" class="eyes-carousel"></div>
     <div class="eyes-carousel-divider" aria-hidden="true"></div>
 
     <!-- Conditions -->
@@ -53,28 +61,12 @@
     <div id="diseaseCarousel" class="eyes-carousel"></div>
     <div class="eyes-carousel-divider" aria-hidden="true"></div>
 
-    <!-- Primary Eye Care Procedures -->
+    <!-- Workshops -->
     <h2 class="catalog-h2">
       <span data-i18n="primaryEyeCareProceduresTitle">Workshops</span>
       <span class="see-all" data-i18n="seeAll">See all ></span>
     </h2>
     <div id="pecCarousel" class="eyes-carousel"></div>
-    <div class="eyes-carousel-divider" aria-hidden="true"></div>
-
-    <!-- Extended Examination -->
-    <h2 class="catalog-h2">
-      <span data-i18n="extendedExaminationTitle">Extended Examination</span>
-      <span class="see-all" data-i18n="seeAll">See all ></span>
-    </h2>
-    <div id="extendedCarousel" class="eyes-carousel"></div>
-    <div class="eyes-carousel-divider" aria-hidden="true"></div>
-
-    <!-- Tools -->
-    <h2 class="catalog-h2">
-      <span data-i18n="toolsTitle">Tools and Kits</span>
-      <span class="see-all" data-i18n="seeAll">See all ></span>
-    </h2>
-    <div id="toolsCarousel" class="eyes-carousel"></div>
     <div class="eyes-carousel-divider" aria-hidden="true"></div>
   </div>
 </div>

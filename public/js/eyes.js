@@ -42,7 +42,7 @@ const EYES_IMAGE_MAP = {
 
   // Primary Eye Care (PEC)
   // Primary Eye Care (PEC)
-  "WHO PEC": "images/icon/eyes/workshop/car_who.webp",
+  PEC: "images/icon/eyes/workshop/car_who.webp",
 
   // Extended examination
   Ptosis: "images/icon/eyes/extended/car_ptosis.webp",
@@ -53,6 +53,7 @@ const EYES_IMAGE_MAP = {
   // Tools and Kits
   "Arclight Overview": "images/icon/eyes/tools/car_arclight.webp",
   "Holo Overview": "images/icon/eyes/tools/car_holo.webp",
+  "Tools and Kits": "images/icon/eyes/tools/car_arclight.webp",
 };
 
 const EYES_LABEL_I18N_KEYS = Object.freeze({
@@ -73,13 +74,22 @@ const EYES_LABEL_I18N_KEYS = Object.freeze({
   "Retinopathy of Prematurity": "eyes.card_label.retinopathy_of_prematurity",
   "Retinal Disease": "eyes.card_label.retinal_disease",
   "Optic Nerve Disease": "eyes.card_label.optic_nerve_disease",
-  "WHO PEC": "eyes.card_label.who_pec",
+  PEC: "eyes.card_label.pec",
   Ptosis: "eyes.card_label.ptosis",
   Proptosis: "eyes.card_label.proptosis",
   "Eye Movements/Squint": "eyes.card_label.eye_movements/squint",
   "Cranial Nerve Examination": "eyes.card_label.cranial_nerve_examination",
   "Arclight Overview": "eyes.card_label.arclight_overview",
   "Holo Overview": "eyes.card_label.holo_overview",
+  "Tools and Kits": "eyes.card_label.tools_and_kits",
+  Extended: "eyes.card_label.extended",
+  "Warm Compress": "eyes.card_label.warm_compress",
+  "Eye Irrigation": "eyes.card_label.eye_irrigation",
+  "Eyelash Removal": "eyes.card_label.eyelash_removal",
+  "Foreign Body Removal": "eyes.card_label.foreign_body_removal",
+  "Drops & Ointment": "eyes.card_label.drops_ointment",
+  "Eye Pad / Shield": "eyes.card_label.eye_pad_shield",
+  "Sight Loss Guidance": "eyes.card_label.sight_loss_guidance",
   "Medical Students": "eyes.card_label.medical_students",
 });
 
@@ -112,6 +122,7 @@ const VIDEO_PAGE_IDS = new Set([
   "diseasesPage",
   "arclightPage",
   "holoOverviewPage",
+  "extendedExaminationPage",
   "childhoodEyeScreeningPage",
   "howToUseArclightVideoPage",
   "directOphthalmoscopy",
@@ -169,7 +180,20 @@ function writeEyesCarouselState(state) {
 }
 
 function getCenteredCardIndex(carouselEl, cards) {
+  if (!cards.length) return 0;
   const bounds = carouselEl.getBoundingClientRect();
+  const first = cards[0].getBoundingClientRect();
+  const last = cards[cards.length - 1].getBoundingClientRect();
+  const rtl = getComputedStyle(carouselEl).direction === "rtl";
+  const tolerance = 2;
+  const firstAtStart = rtl
+    ? first.right <= bounds.right + tolerance
+    : first.left >= bounds.left - tolerance;
+  const lastAtEnd = rtl
+    ? last.left >= bounds.left - tolerance
+    : last.right <= bounds.right + tolerance;
+  if (firstAtStart) return 0;
+  if (lastAtEnd) return cards.length - 1;
   const mid = bounds.left + bounds.width / 2;
   let bestIndex = 0;
   let bestDistance = Infinity;
@@ -315,6 +339,11 @@ export function initializeEyesCatalog() {
   const sections = {
     coreCarousel: [
       {
+        label: "Tools and Kits",
+        target: "arclightPage",
+        tags: ["Video", "PDF"],
+      },
+      {
         label: "History Taking",
         target: EYES_INDEX["History Taking"],
         tags: ["Quiz"],
@@ -346,7 +375,22 @@ export function initializeEyesCatalog() {
         target: EYES_INDEX["Interactive Learning"],
         tags: ["Mini Apps"],
       },
+      {
+        label: "Extended",
+        target: "extendedExaminationPage",
+        tags: ["Interactive", "Quiz"],
+        blank: true,
+      },
     ],
+    procedureCarousel: [
+      "Warm Compress",
+      "Eye Irrigation",
+      "Eyelash Removal",
+      "Foreign Body Removal",
+      "Drops & Ointment",
+      "Eye Pad / Shield",
+      "Sight Loss Guidance",
+    ].map((label) => ({ label, target: "comingSoon", tags: [], blank: true })),
     diseaseCarousel: [
       {
         label: "Uncorrected Refractive Error",
@@ -412,39 +456,9 @@ export function initializeEyesCatalog() {
         tags: ["Video", "Interactive"],
       },
       {
-        label: "WHO PEC",
-        target: EYES_INDEX["WHO PEC"],
+        label: "PEC",
+        target: EYES_INDEX.PEC,
         tags: ["Coming Soon"],
-      },
-    ],
-    extendedCarousel: [
-      { label: "Ptosis", target: EYES_INDEX["Ptosis"], tags: ["Coming Soon"] },
-      {
-        label: "Proptosis",
-        target: EYES_INDEX["Proptosis"],
-        tags: ["Coming Soon"],
-      },
-      {
-        label: "Eye Movements/Squint",
-        target: EYES_INDEX["Eye Movements/Squint"],
-        tags: ["Mini App"],
-      },
-      {
-        label: "Cranial Nerve Examination",
-        target: EYES_INDEX["Cranial Nerve Examination"],
-        tags: ["Coming Soon"],
-      },
-    ],
-    toolsCarousel: [
-      {
-        label: "Arclight Overview",
-        target: EYES_INDEX["Arclight Overview"],
-        tags: ["Video", "PDF"],
-      },
-      {
-        label: "Holo Overview",
-        target: EYES_INDEX["Holo Overview"],
-        tags: ["Video", "Scrolly", "PDF"],
       },
     ],
   };
@@ -497,7 +511,7 @@ export function initializeEyesCatalog() {
       card.classList.toggle("liked", likes.has(i.label));
       card.classList.toggle(
         "eyes-card--blank-black",
-        i.label === "Medical Students",
+        i.blank || i.label === "Medical Students",
       );
       card.dataset.target = i.target;
       card.dataset.label = i.label;
@@ -620,7 +634,7 @@ export function initializeEyesCatalog() {
     const dots = Array.from(dotsWrap.querySelectorAll(".dot"));
     const carouselId = carouselEl.id;
 
-    // Helpers to compute which card is centered, paint dots, and center a card
+    // At the scroll limits, the first and last cards own the edge dots.
     const getActiveIndex = () => getCenteredCardIndex(carouselEl, cards);
 
     const paintDots = (i) => {
@@ -629,6 +643,19 @@ export function initializeEyesCatalog() {
 
     const centerCardByIndex = (i, behavior = "smooth") => {
       const clamped = Math.max(0, Math.min(i, cards.length - 1));
+      const rtl = getComputedStyle(carouselEl).direction === "rtl";
+      const maxScroll = Math.max(
+        0,
+        carouselEl.scrollWidth - carouselEl.clientWidth,
+      );
+      if (clamped === 0 || clamped === cards.length - 1) {
+        const end = clamped === cards.length - 1;
+        carouselEl.scrollTo({
+          left: rtl ? (end ? -maxScroll : 0) : end ? maxScroll : 0,
+          behavior,
+        });
+        return;
+      }
       const card = cards[clamped];
       const left =
         carouselEl.scrollLeft +
@@ -655,31 +682,35 @@ export function initializeEyesCatalog() {
     };
     carouselEl.addEventListener("scroll", onScroll, { passive: true });
 
-    // Initial sync: restore prior state when available.
-    // Use activeIndex first because it is resilient to responsive width changes.
+    // Restore the actual scroll position first; older saved indices may be offset
+    // from the first or last card by the previous center-only dot calculation.
     requestAnimationFrame(() => {
       const savedState = carouselId
         ? readEyesCarouselState()[carouselId]
         : null;
-      const savedLeft = Number(savedState?.scrollLeft);
-      const savedIndex = Number(savedState?.activeIndex);
-
-      if (Number.isFinite(savedIndex)) {
-        const idx = clampNumber(savedIndex, 0, cards.length - 1);
-        centerCardByIndex(idx, "auto");
-        paintDots(idx);
-        return;
-      }
+      const savedLeft = savedState ? Number(savedState.scrollLeft) : NaN;
+      const savedIndex = savedState ? Number(savedState.activeIndex) : NaN;
 
       if (Number.isFinite(savedLeft)) {
         const maxScroll = Math.max(
           0,
           carouselEl.scrollWidth - carouselEl.clientWidth,
         );
+        const rtl = getComputedStyle(carouselEl).direction === "rtl";
         carouselEl.scrollTo({
-          left: clampNumber(savedLeft, 0, maxScroll),
+          left: clampNumber(
+            savedLeft,
+            rtl ? -maxScroll : 0,
+            rtl ? 0 : maxScroll,
+          ),
           behavior: "auto",
         });
+        paintDots(getActiveIndex());
+        return;
+      }
+
+      if (Number.isFinite(savedIndex)) {
+        centerCardByIndex(savedIndex, "auto");
         paintDots(getActiveIndex());
         return;
       }

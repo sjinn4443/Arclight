@@ -5864,9 +5864,154 @@ html.is-apple-ui :is(.eyes-topbar .menuBtn, .icon.menuBtn, #tocToggleBtn) {
 #unifiedDashboard .module-subtitle {
   color: #6b6b6b;
 }
+/* Restore the compact Eyes headings and indicators shown with the catalog cards. */
+#eyesCatalogPage .catalog-h2 {
+  padding-block-start: 0;
+  margin-bottom: 14px;
+}
+#eyesCatalogPage .catalog-h2:first-of-type {
+  margin-top: 70px;
+}
+#eyesCatalogPage .catalog-h2 .carousel-dots {
+  top: -6px;
+  gap: 2px;
+}
+#eyesCatalogPage .catalog-h2 .carousel-dots .dot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 10px;
+  width: 10px;
+  min-width: 10px;
+  background: none;
+  appearance: none;
+}
+#eyesCatalogPage .catalog-h2 .carousel-dots .dot::before {
+  content: "";
+  display: block;
+  flex: 0 0 5px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #cfcfd6;
+}
+#eyesCatalogPage .catalog-h2 .carousel-dots .dot.active::before {
+  background: #e41e26;
+}
 /* Match the mobile container padding without creating WebKit overflow. */
 @media (max-width: 600px) {
   .childhood-fundal-scroll-page .childhood-fundal-prep-list {
     margin-inline: -20px;
   }
+}
+
+/* Extended examination uses Pupils-style lesson rows as topic folders. */
+#extendedExaminationPage .extended-folders {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 26px 0;
+}
+#extendedExaminationPage .lesson-row--folder {
+  box-sizing: border-box;
+  cursor: pointer;
+  grid-template-columns: 62px minmax(0, 1fr) auto;
+  min-height: 51px;
+  width: calc(100% - 52px);
+  margin: 0;
+}
+#extendedExaminationPage .lesson-row--folder.is-unavailable {
+  cursor: default;
+  opacity: 0.68;
+}
+#extendedExaminationPage .lesson-row--folder .thumb {
+  width: 62px;
+  height: 52px;
+  display: block;
+  background: #0a0a0a;
+}
+#extendedExaminationPage .lesson-row--folder .thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+#extendedExaminationPage .lesson-row--folder .lesson-main {
+  min-width: 0;
+  margin: 0;
+  gap: 3px;
+}
+#extendedExaminationPage .lesson-row--folder .lesson-type,
+#extendedExaminationPage .lesson-row--folder .lesson-meta {
+  display: block;
+  margin: 0;
+  white-space: normal;
+}
+#extendedExaminationPage .lesson-row--folder .lesson-cta {
+  margin: 0;
+  white-space: nowrap;
+}
+#extendedExaminationPage .extended-section-card {
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0;
+}
+#extendedExaminationPage .extended-section-card .lesson-row {
+  box-sizing: border-box;
+  width: calc(100% - 52px);
+  max-width: 348px;
+  margin-inline: auto;
+}
+#extendedExaminationPage .extended-section-card h3 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: calc(100% - 12px);
+  box-sizing: border-box;
+  margin: 8px 6px 2px;
+  white-space: nowrap;
+  font-size: 14px;
+  font-weight: 700;
+}
+#extendedExaminationPage .extended-folder-close {
+  flex: 0 0 auto;
+  margin-left: auto;
+  width: auto;
+  min-width: 0;
+  height: auto;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #15e115;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: normal;
+  cursor: pointer;
+}
+#extendedExaminationPage
+  .extended-section-card
+  [data-source-level="intermediate"]
+  .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/intermediate_casestudy.webp");
+}
+#extendedExaminationPage
+  .extended-section-card
+  [data-source-level="advanced"]
+  .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/advanced_casestudy.webp");
+}
+#extendedExaminationPage
+  .extended-section-card
+  [data-source-level="intermediate"]
+  .lesson-progress__fill {
+  background-color: #f25600 !important;
+}
+#extendedExaminationPage
+  .extended-section-card
+  [data-source-level="advanced"]
+  .lesson-progress__fill {
+  background-color: #e41e26 !important;
 }

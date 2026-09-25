@@ -52,7 +52,16 @@ const MY_LEARNING_PROGRESS_PREFIXES = Object.freeze([
 ]);
 const MY_LEARNING_LABEL_I18N_OVERRIDES = Object.freeze({
   "Eye Movements/Squint": "eyes.card_label.eye_movements/squint",
-  "WHO PEC": "eyes.card_label.who_pec",
+  PEC: "eyes.card_label.pec",
+  "Tools and Kits": "eyes.card_label.tools_and_kits",
+  Extended: "eyes.card_label.extended",
+  "Warm Compress": "eyes.card_label.warm_compress",
+  "Eye Irrigation": "eyes.card_label.eye_irrigation",
+  "Eyelash Removal": "eyes.card_label.eyelash_removal",
+  "Foreign Body Removal": "eyes.card_label.foreign_body_removal",
+  "Drops & Ointment": "eyes.card_label.drops_ointment",
+  "Eye Pad / Shield": "eyes.card_label.eye_pad_shield",
+  "Sight Loss Guidance": "eyes.card_label.sight_loss_guidance",
 });
 const MY_LEARNING_TAG_I18N_KEYS = Object.freeze({
   "Coming Soon": "eyes.tag_coming_soon",
@@ -79,13 +88,14 @@ const MY_LEARNING_EYES_IMAGE_MAP = Object.freeze({
   "Retinopathy of Prematurity": "images/icon/eyes/disease/car_rop.webp",
   "Retinal Disease": "images/icon/eyes/disease/car_retinal.webp",
   "Optic Nerve Disease": "images/icon/eyes/disease/car_opticnerv.webp",
-  "WHO PEC": "images/icon/eyes/workshop/car_who.webp",
+  PEC: "images/icon/eyes/workshop/car_who.webp",
   Ptosis: "images/icon/eyes/extended/car_ptosis.webp",
   Proptosis: "images/icon/eyes/extended/car_proptosis.webp",
   "Eye Movements/Squint": "images/icon/eyes/extended/car_squint.webp",
   "Cranial Nerve Examination": "images/icon/eyes/extended/car_cranial.webp",
   "Arclight Overview": "images/icon/eyes/tools/car_arclight.webp",
   "Holo Overview": "images/icon/eyes/tools/car_holo.webp",
+  "Tools and Kits": "images/icon/eyes/tools/car_arclight.webp",
 });
 
 const MY_LEARNING_PROGRESS_SOURCES = Object.freeze([
@@ -391,6 +401,7 @@ function go(target) {
     "diseasesPage",
     "arclightPage",
     "holoOverviewPage",
+    "extendedExaminationPage",
     "childhoodEyeScreeningPage",
     "howToUseArclightVideoPage",
     "directOphthalmoscopy",

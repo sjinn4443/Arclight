@@ -14,7 +14,7 @@ import { readFileSync } from "fs";
 import path from "path";
 
 const ENGLISH_DICT = {
-  coreExaminationTitle: "Core Examination",
+  examinationTitle: "Examination",
   diseaseTitle: "Conditions",
   primaryEyeCareProceduresTitle: "Workshops",
   extendedExaminationTitle: "Extended Examination",
@@ -23,7 +23,7 @@ const ENGLISH_DICT = {
 };
 
 const KOREAN_DICT = {
-  coreExaminationTitle: "핵심 검사",
+  examinationTitle: "검사",
   diseaseTitle: "질환",
   primaryEyeCareProceduresTitle: "워크숍",
   extendedExaminationTitle: "확장 검사",
@@ -91,13 +91,11 @@ describe("Eyes carousel header i18n", () => {
     i18n.applyTranslations(document);
 
     const firstHeader = document.querySelector("#eyesCatalogPage .catalog-h2");
-    const title = firstHeader.querySelector(
-      "[data-i18n='coreExaminationTitle']",
-    );
+    const title = firstHeader.querySelector("[data-i18n='examinationTitle']");
     const seeAll = firstHeader.querySelector(".see-all");
     const dots = firstHeader.querySelector(".carousel-dots");
 
-    expect(title?.textContent).toBe("핵심 검사");
+    expect(title?.textContent).toBe("검사");
     expect(seeAll?.textContent).toBe("전체 보기 >");
     expect(dots).not.toBeNull();
     expect(dots?.querySelector(".dot.active")).not.toBeNull();

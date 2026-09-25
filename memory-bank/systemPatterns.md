@@ -22,6 +22,7 @@ Arclight is primarily a static, client-side PWA served from `public/` (or `dist/
   - forced off: no-op storage through `storage/disabled-storage.cjs`
 - Server-manifest offline downloads: `GET /api/app/offline-assets` enumerates the active static root and provides URLs plus byte sizes; client code filters this manifest into full, selected-section, or app-only downloads.
 - Shared progress UI: route code should use `public/js/lessonProgress.js` and `public/js/lessonCompletionTick.js` for progress rows, storage keys, progress events, and completion ticks.
+- Eyes expanded lesson folders: copy the `extendedExaminationPage` Eye Movements/Squint pattern (`#extendedSquintLessons` in `public/html/videos.html`). Keep the single-line flex heading and non-stretching close button inside the panel, with centred lesson rows sized `calc(100% - 52px)` and capped at `348px`. `public/js/videos.js` opens the panel in place and restores launcher focus on close; `public/style/responsive.css` owns the page-scoped proportions. See [Eyes expanded folder layout](../README.md#eyes-expanded-folder-layout) and `tests-e2e/eyes-examination-layout.spec.js` before changing or adding a folder.
 
 ## Design Patterns in Use
 

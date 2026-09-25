@@ -1057,6 +1057,11 @@ const STRUCTURAL_BACK_TARGETS = {
 };
 
 const STRUCTURAL_BACK_SUBPAGES = {
+  extendedExaminationPage: { routeName: "eyes" },
+  squintPalsyPage: {
+    routeName: "videos",
+    subPageId: "extendedExaminationPage",
+  },
   visualAcuityPage: { routeName: "eyes" },
   pupilsPage: { routeName: "eyes" },
   frontOfEyePage: { routeName: "eyes" },

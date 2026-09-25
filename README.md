@@ -24,6 +24,45 @@ The app is primarily static (served from `public/` in dev, and `dist/` in produc
 - Agent notes: [`agent.md`](./agent.md)
 - Narration and captions: [overview](#narration-and-captions-for-examination-lessons) and [production record](./memory-bank/narration-and-subtitles.md)
 
+## Eyes lesson row spacing
+
+In `arclightPage`, the Primary and Intermediate lesson cards are direct children
+of their `.pupil-level` sections. Keep this structure when adding lessons: the
+adjacent-card rules in `public/style/components.css` under “PDF rows added as
+separate buttons” remove the extra card margin and padding and reset the next
+`.lesson-row` top margin. An extra wrapper around Intermediate cards prevents
+those rules from matching and creates much larger vertical gaps. The Holo
+lessons copied into Arclight by `initializeVideos()` in `public/js/videos.js`
+must therefore be appended directly to the Intermediate `.pupil-level`.
+
+## Eyes expanded folder layout
+
+Use the expanded `Eye Movements/Squint` folder on `extendedExaminationPage` as
+the reference when adding or changing an Eyes lesson folder. It matches the
+expanded Childhood Eye Screening folder: a single-line title and `Close ^`
+control across the black panel, followed by centred white lesson rows at a
+consistent inset. The markup is `#extendedSquintLessons` in
+`public/html/videos.html`; it is a `.pupil-card.module-card.extended-section-card`
+inside the 420px `.pupil-level`. The folder launcher is a separate
+`.lesson-row--folder` with `aria-expanded` and `aria-controls`.
+
+The page-specific rules at the end of `public/style/responsive.css` set the
+expanded lesson rows to `width: calc(100% - 52px)` with `max-width: 348px` and
+auto inline margins. The heading is a flex row with `width: calc(100% - 12px)`,
+`margin: 8px 6px 2px`, `white-space: nowrap`, a 14px bold title and a 12px
+`Close ^` control. Keep the close button's width and height `auto`, its minimum
+sizes and padding at zero, and `margin-left: auto`; shared button rules otherwise
+stretch it across the heading and wrap the title. Preserve the narrower row
+width and heading inset when adding another expanded folder.
+
+`initializeVideos()` in `public/js/videos.js` clones the four lesson rows from
+`#squintPalsyPage` into this panel, opens them in place after the folder row,
+then restores the launcher and focus on close. Add future folder content inside
+its expanded panel using the same open/close pattern, rather than navigating to
+the source page. `tests-e2e/eyes-examination-layout.spec.js` checks the row
+count, single-line heading, close-button bounds and lesson-row proportion on
+desktop Chromium and iPhone WebKit.
+
 ## Medical Students workshop
 
 The Medical Students route (`#/medicalStudentsWorkshop`) contains a foldered

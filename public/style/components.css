@@ -2097,6 +2097,7 @@ input:checked + .slider:before {
   height: 62px;
   padding: 0 20px 0 56px;
   margin: 0;
+  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.16);
 }
 
 #eyesCatalogPage .eyes-title {

@@ -4782,6 +4782,79 @@ function show(id) {
 // ----- Public initializer: called by router when 'videos' is loaded -----
 // videos.js
 export function initializeVideos() {
+  const holoLessons = document.querySelector(
+    "#holoOverviewPage .pupil-level--intermediate",
+  );
+  const arclightHoloLevel = document.querySelector(
+    "#arclightPage .pupil-level--intermediate",
+  );
+  if (
+    holoLessons &&
+    arclightHoloLevel &&
+    !arclightHoloLevel.querySelector(".pupil-card")
+  ) {
+    holoLessons.querySelectorAll(".pupil-card").forEach((card) => {
+      const copy = card.cloneNode(true);
+      copy.querySelectorAll("[id]").forEach((element) => {
+        const originalId = element.id;
+        element.id = `arclight-${originalId}`;
+        copy
+          .querySelectorAll(`[aria-labelledby="${originalId}"]`)
+          .forEach((labelled) => {
+            labelled.setAttribute("aria-labelledby", element.id);
+          });
+      });
+      arclightHoloLevel.appendChild(copy);
+    });
+  }
+
+  const extendedFolder = document.querySelector(
+    '#extendedExaminationPage .lesson-row--folder[data-folder="squint"]',
+  );
+  const extendedLessons = document.getElementById("extendedSquintLessons");
+  if (extendedFolder && extendedLessons) {
+    if (!extendedLessons.querySelector(".lesson-row")) {
+      document
+        .querySelectorAll("#squintPalsyPage .lesson-row[data-target]")
+        .forEach((row) => {
+          const copy = row.cloneNode(true);
+          const sourceLevel = row.closest(".pupil-level");
+          copy.dataset.sourceLevel = sourceLevel?.classList.contains(
+            "pupil-level--advanced",
+          )
+            ? "advanced"
+            : sourceLevel?.classList.contains("pupil-level--intermediate")
+              ? "intermediate"
+              : "primary";
+          extendedLessons.appendChild(copy);
+        });
+    }
+    if (extendedFolder.dataset.wired !== "1") {
+      extendedFolder.dataset.wired = "1";
+      const openFolder = (event) => {
+        event.preventDefault();
+        extendedFolder.style.display = "none";
+        extendedFolder.setAttribute("aria-expanded", "true");
+        extendedFolder.insertAdjacentElement("afterend", extendedLessons);
+        extendedLessons.style.display = "block";
+      };
+      const closeFolder = (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        extendedLessons.style.display = "none";
+        extendedFolder.style.display = "";
+        extendedFolder.setAttribute("aria-expanded", "false");
+        extendedFolder.focus();
+      };
+      extendedFolder.addEventListener("click", openFolder);
+      extendedFolder.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") openFolder(event);
+      });
+      extendedLessons
+        .querySelector(".extended-folder-close")
+        ?.addEventListener("click", closeFolder);
+    }
+  }
   // Root of the Videos route
   const root =
     document.getElementById("videos") ||
@@ -4914,6 +4987,15 @@ if (!window[__videosGlobalBoundKey]) {
 
     const target = row.getAttribute("data-target");
     if (!target) return;
+
+    if (row.closest("#extendedExaminationPage")) {
+      try {
+        sessionStorage.setItem(
+          "videos:contextualReturn:v1",
+          JSON.stringify({ from: "extendedExaminationPage", target }),
+        );
+      } catch {}
+    }
 
     primeExaminationNarration(
       target,
