@@ -6015,3 +6015,77 @@ html.is-apple-ui :is(.eyes-topbar .menuBtn, .icon.menuBtn, #tocToggleBtn) {
   .lesson-progress__fill {
   background-color: #e41e26 !important;
 }
+
+/* Eyes catalog spacing and card proportions on phones only. */
+@media (max-width: 600px) {
+  #eyesCatalogPage .catalog-h2 {
+    margin-top: 4px;
+    margin-bottom: 6px;
+  }
+
+  #eyesCatalogPage .catalog-h2:first-of-type {
+    margin-top: 56px;
+  }
+
+  #eyesCatalogPage .eyes-carousel {
+    grid-auto-columns: 65%;
+    gap: 12px;
+    padding-bottom: 0;
+    margin: 0 0 13px;
+  }
+
+  #eyesCatalogPage #procedureCarousel {
+    margin-bottom: 13px;
+  }
+
+  #eyesCatalogPage .eyes-carousel-divider {
+    margin-bottom: 23px;
+  }
+
+  #eyesCatalogPage #pecCarousel + .eyes-carousel-divider {
+    display: none;
+  }
+
+  #eyesCatalogPage .eyes-card {
+    height: auto;
+    aspect-ratio: 245 / 148;
+    padding: 16px 12px;
+    border-radius: 14px;
+  }
+
+  #eyesCatalogPage .eyes-card .eyes-card__title {
+    max-width: calc(100% - 24px);
+  }
+
+  #eyesCatalogPage .eyes-card .tag-row {
+    inset-inline-start: 12px;
+    bottom: 9px;
+    gap: 4px;
+  }
+
+  #eyesCatalogPage .eyes-card .tag {
+    padding: 4px 7px;
+    border-radius: 7px;
+    font-size: 10.5px;
+  }
+
+  #eyesCatalogPage .eyes-card .heart-btn {
+    top: 5px;
+    inset-inline-end: 5px;
+  }
+}
+
+@media (max-width: 600px) and (max-height: 720px) {
+  #eyesCatalogPage .eyes-card {
+    padding: 12px 10px;
+  }
+
+  #eyesCatalogPage .eyes-card .tag-row {
+    inset-inline-start: 10px;
+    bottom: 7px;
+  }
+
+  #eyesCatalogPage .eyes-card .tag {
+    padding-inline: 6px;
+  }
+}

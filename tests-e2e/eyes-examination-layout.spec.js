@@ -126,3 +126,90 @@ test("Eyes carousel edge cards activate their edge dots", async ({ page }) => {
   );
   await expect(dots.last()).toHaveClass(/active/);
 });
+
+test("Eyes phone cards use 65 percent width and consistent row margins", async ({
+  page,
+}, testInfo) => {
+  const phone = testInfo.project.name === "webkit-iphone";
+  if (phone) await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/#/eyes");
+  await expect(page.locator("#pecCarousel .eyes-card").first()).toBeVisible();
+  // A blocked service worker can add an unrelated in-flow notice in E2E.
+  await page.evaluate(() =>
+    document.getElementById("pwa-install-error")?.remove(),
+  );
+
+  const layout = await page.evaluate(() => {
+    const bounds = (selector) =>
+      document.querySelector(selector).getBoundingClientRect();
+    const topbar = bounds("#eyesCatalogPage .eyes-top");
+    const heading = bounds("#eyesCatalogPage .catalog-h2");
+    const first = bounds("#coreCarousel .eyes-card");
+    const last = bounds("#pecCarousel .eyes-card");
+    const divider = bounds("#coreCarousel + .eyes-carousel-divider");
+    const nextHeading = bounds("#eyesCatalogPage .catalog-h2:nth-of-type(2)");
+    return {
+      viewportHeight: innerHeight,
+      headingGap: heading.top - topbar.bottom,
+      firstWidth: first.width,
+      firstHeight: first.height,
+      lastBottom: last.bottom,
+      cardToDivider: divider.top - first.bottom,
+      dividerToHeading: nextHeading.top - divider.bottom,
+      dividerMargin: getComputedStyle(
+        document.querySelector("#coreCarousel + .eyes-carousel-divider"),
+      ).marginBottom,
+      procedureMargin: getComputedStyle(
+        document.querySelector("#procedureCarousel"),
+      ).marginBottom,
+      carouselMargins: [
+        ...document.querySelectorAll("#eyesCatalogPage .eyes-carousel"),
+      ].map((carousel) => getComputedStyle(carousel).marginBottom),
+      headingMargins: [
+        ...document.querySelectorAll("#eyesCatalogPage .catalog-h2"),
+      ].map((heading) => getComputedStyle(heading).marginTop),
+      tagRadius: getComputedStyle(
+        document.querySelector("#coreCarousel .tag-row .tag"),
+      ).borderRadius,
+      tagSize: getComputedStyle(
+        document.querySelector("#coreCarousel .tag-row .tag"),
+      ).fontSize,
+      finalDividerDisplay: getComputedStyle(
+        document.querySelector("#pecCarousel + .eyes-carousel-divider"),
+      ).display,
+      titleSize: getComputedStyle(
+        document.querySelector("#coreCarousel .eyes-card__title"),
+      ).fontSize,
+    };
+  });
+
+  if (phone) {
+    expect(layout.headingGap).toBeGreaterThanOrEqual(22);
+    expect(layout.headingGap).toBeLessThanOrEqual(26);
+    expect(layout.lastBottom).toBeLessThan(layout.viewportHeight);
+    expect(layout.firstWidth).toBeCloseTo(227.5, 1);
+    expect(layout.firstWidth / layout.firstHeight).toBeCloseTo(245 / 148, 1);
+    expect(layout.cardToDivider).toBe(13);
+    expect(layout.dividerToHeading).toBe(23);
+    expect(layout.dividerMargin).toBe("23px");
+    expect(layout.procedureMargin).toBe("13px");
+    expect(layout.carouselMargins).toEqual(["13px", "13px", "13px", "13px"]);
+    expect(layout.headingMargins).toEqual(["56px", "4px", "4px", "4px"]);
+    expect(layout.tagRadius).toBe("7px");
+    expect(layout.tagSize).toBe("10.5px");
+    expect(layout.finalDividerDisplay).toBe("none");
+    expect(layout.titleSize).toBe("13px");
+
+    await page.setViewportSize({ width: 390, height: 664 });
+    const compactWidth = await page
+      .locator("#pecCarousel .eyes-card")
+      .first()
+      .evaluate((card) => card.getBoundingClientRect().width);
+    expect(compactWidth).toBeCloseTo(227.5, 1);
+  } else {
+    expect(layout.headingGap).toBeGreaterThanOrEqual(30);
+    expect(layout.firstHeight).toBe(148);
+    expect(layout.firstWidth).toBe(224);
+    expect(layout.finalDividerDisplay).toBe("block");
+  }
+});
