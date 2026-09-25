@@ -155,6 +155,8 @@ const VIDEO_PAGE_IDS = new Set([
 ]);
 
 const EYES_CAROUSEL_STATE_KEY = "arclight:eyes:carousel-state:v1";
+const EYES_CAROUSEL_GUIDE_KEY = "arclight:eyes:carousel-guide-seen:v2";
+let eyesCarouselGuideSeenInMemory = false;
 
 function clampNumber(value, min, max) {
   return Math.min(max, Math.max(min, value));
@@ -227,6 +229,196 @@ function saveEyesCarouselState(pageEl) {
   writeEyesCarouselState(nextState);
 }
 
+function hasSeenEyesCarouselGuide() {
+  if (eyesCarouselGuideSeenInMemory) return true;
+  try {
+    return localStorage.getItem(EYES_CAROUSEL_GUIDE_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
+
+function markEyesCarouselGuideSeen() {
+  eyesCarouselGuideSeenInMemory = true;
+  try {
+    localStorage.setItem(EYES_CAROUSEL_GUIDE_KEY, "1");
+  } catch {
+    // The in-memory flag still prevents repeats during this page lifetime.
+  }
+}
+
+function showEyesCarouselGuide(pageEl) {
+  if (!pageEl?.isConnected || hasSeenEyesCarouselGuide()) return;
+
+  const carousel = pageEl.querySelector("#coreCarousel");
+  const firstCard = carousel?.querySelector(".eyes-card");
+  if (!firstCard || carousel.querySelectorAll(".eyes-card").length < 2) return;
+
+  const maxScroll = Math.max(0, carousel.scrollWidth - carousel.clientWidth);
+  if (maxScroll < 20) return;
+
+  // A restored position means this visitor has already explored the row.
+  if (Math.abs(carousel.scrollLeft) > 2) {
+    markEyesCarouselGuideSeen();
+    return;
+  }
+
+  const carouselRect = carousel.getBoundingClientRect();
+  if (carouselRect.width < 1 || carouselRect.height < 1) return;
+
+  const rtl = getComputedStyle(carousel).direction === "rtl";
+  const reducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).matches;
+  const startLeft = carousel.scrollLeft;
+  const distance = Math.min(maxScroll, firstCard.offsetWidth * 0.55, 140);
+  const targetLeft = startLeft + (rtl ? -distance : distance);
+  const spotlight = document.createElement("div");
+  spotlight.className = "eyes-carousel-guide-spotlight";
+  spotlight.style.left = `${carouselRect.left}px`;
+  spotlight.style.top = `${carouselRect.top}px`;
+  spotlight.style.width = `${carouselRect.width}px`;
+  spotlight.style.height = `${carouselRect.height}px`;
+  spotlight.setAttribute("aria-hidden", "true");
+  const guide = document.createElement("div");
+  guide.className = "eyes-carousel-guide";
+  guide.dataset.direction = rtl ? "rtl" : "ltr";
+  guide.setAttribute("role", "status");
+  guide.innerHTML =
+    '<div class="eyes-carousel-guide__pill">' +
+    '<span class="eyes-carousel-guide__label eyes-carousel-guide__label--touch" data-i18n="i18nExtra.eyes_swipe_to_see_more">Swipe to see more</span>' +
+    '<span class="eyes-carousel-guide__label eyes-carousel-guide__label--mouse" data-i18n="i18nExtra.eyes_drag_to_see_more">Drag to see more</span>' +
+    '<div class="eyes-carousel-guide__gesture" aria-hidden="true">' +
+    '<span class="eyes-carousel-guide__arrows eyes-carousel-guide__arrows--left"><span class="eyes-carousel-guide__chev"></span><span class="eyes-carousel-guide__chev"></span><span class="eyes-carousel-guide__chev"></span></span>' +
+    '<img class="eyes-carousel-guide__hand" src="/scrolly/workshop/childhood/eyesbrain/hand.png" alt="" aria-hidden="true" />' +
+    '<span class="eyes-carousel-guide__arrows eyes-carousel-guide__arrows--right"><span class="eyes-carousel-guide__chev"></span><span class="eyes-carousel-guide__chev"></span><span class="eyes-carousel-guide__chev"></span></span>' +
+    "</div>" +
+    "</div>";
+  let fixedOffsetX = 0;
+  let fixedOffsetY = 0;
+  const alignGuide = () => {
+    const rect = carousel.getBoundingClientRect();
+    for (const layer of [spotlight, guide]) {
+      layer.style.left = `${rect.left - fixedOffsetX}px`;
+      layer.style.top = `${rect.top - fixedOffsetY}px`;
+      layer.style.width = `${rect.width}px`;
+      layer.style.height = `${rect.height}px`;
+    }
+  };
+  document.body.append(spotlight, guide);
+  alignGuide();
+  const placedGuideRect = guide.getBoundingClientRect();
+  fixedOffsetX = placedGuideRect.left - carouselRect.left;
+  fixedOffsetY = placedGuideRect.top - carouselRect.top;
+  alignGuide();
+  try {
+    window.I18N?.applyTranslations?.(guide);
+  } catch {
+    // Keep the English fallback copy if translations are not ready yet.
+  }
+  markEyesCarouselGuideSeen();
+
+  const controller = new AbortController();
+  const { signal } = controller;
+  let frameId = 0;
+  let removalTimeout = 0;
+  let finished = false;
+  const startedAt = performance.now();
+  const ease = (value) => value * value * (3 - 2 * value);
+
+  const stop = () => {
+    if (finished) return;
+    finished = true;
+    controller.abort();
+    cancelAnimationFrame(frameId);
+    clearTimeout(removalTimeout);
+    carousel.classList.remove("is-demo-scrolling");
+    spotlight.remove();
+    guide.remove();
+    if (pageEl._eyesGuideCleanup === stop) delete pageEl._eyesGuideCleanup;
+    saveEyesCarouselState(pageEl);
+  };
+  pageEl._eyesGuideCleanup = stop;
+
+  const complete = () => {
+    carousel.scrollLeft = startLeft;
+    carousel.classList.remove("is-demo-scrolling");
+    saveEyesCarouselState(pageEl);
+    guide.classList.add("is-fading");
+    spotlight.classList.add("is-fading");
+    removalTimeout = window.setTimeout(stop, 250);
+  };
+
+  window.addEventListener("pointerdown", stop, { capture: true, signal });
+  window.addEventListener("touchstart", stop, {
+    capture: true,
+    passive: true,
+    signal,
+  });
+  window.addEventListener("wheel", stop, {
+    capture: true,
+    passive: true,
+    signal,
+  });
+  window.addEventListener("keydown", stop, { capture: true, signal });
+  window.addEventListener("resize", stop, { signal });
+  window.addEventListener(
+    "page:loaded",
+    (event) => {
+      if (event.detail?.routeName !== "eyes") stop();
+    },
+    { signal },
+  );
+  document.addEventListener(
+    "visibilitychange",
+    () => {
+      if (document.hidden) stop();
+    },
+    { signal },
+  );
+
+  if (reducedMotion) {
+    const trackPosition = () => {
+      if (finished) return;
+      if (!pageEl.isConnected) {
+        stop();
+        return;
+      }
+      alignGuide();
+      frameId = requestAnimationFrame(trackPosition);
+    };
+    frameId = requestAnimationFrame(trackPosition);
+    removalTimeout = window.setTimeout(stop, 6500);
+    return;
+  }
+
+  carousel.classList.add("is-demo-scrolling");
+  const cycleDuration = 2100;
+  const repeatCount = 3;
+  const animate = (now) => {
+    if (finished) return;
+    if (!pageEl.isConnected) {
+      stop();
+      return;
+    }
+    alignGuide();
+    const elapsed = now - startedAt - 350;
+    let fraction = 0;
+    if (elapsed >= cycleDuration * repeatCount) {
+      complete();
+      return;
+    } else if (elapsed >= 0) {
+      const cycle = elapsed % cycleDuration;
+      if (cycle < 650) fraction = ease(cycle / 650);
+      else if (cycle < 950) fraction = 1;
+      else if (cycle < 1600) fraction = 1 - ease((cycle - 950) / 650);
+    }
+    carousel.scrollLeft = startLeft + (targetLeft - startLeft) * fraction;
+    frameId = requestAnimationFrame(animate);
+  };
+  frameId = requestAnimationFrame(animate);
+}
+
 /* ---- PUBLIC: called by router on page 'eyes' ---- */
 /**
  * Initializes the main "Eyes" page, primarily by calling `initializeEyesCatalog`.
@@ -292,6 +484,7 @@ export function initializeEyes() {
 export function initializeEyesCatalog() {
   const pageEl = document.getElementById("eyesCatalogPage");
   if (!pageEl) return;
+  pageEl._eyesGuideCleanup?.();
 
   const resolveI18nText = (path, fallback) => {
     if (!path || typeof window.I18N?.applyTranslations !== "function") {
@@ -914,12 +1107,18 @@ export function initializeEyesCatalog() {
           if (rafId) return;
           rafId = requestAnimationFrame(() => {
             rafId = null;
+            if (carouselEl.classList.contains("is-demo-scrolling")) return;
             saveEyesCarouselState(pageEl);
           });
         },
         { passive: true },
       );
     });
+
+  // Dot setup restores saved positions in the next frame. Start only afterward.
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => showEyesCarouselGuide(pageEl));
+  });
 
   /**
    * Consumes an event to prevent default behavior and stop propagation.

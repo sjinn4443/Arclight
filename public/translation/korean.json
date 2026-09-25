@@ -3800,6 +3800,8 @@
     "edit_profile_photo": "프로필 사진 수정",
     "save_changes": "변경사항 저장",
     "scroll_down_html": "아래로<br />스크롤",
+    "eyes_swipe_to_see_more": "옆으로 밀어 더 보기",
+    "eyes_drag_to_see_more": "옆으로 드래그해 더 보기",
     "glaucomascroll_reveal": "공개",
     "location_precise_title": "정확한 위치를 공유하시겠습니까?",
     "location_precise_disclosure": "사용자의 허가가 있으면, 이 장치는 영역 이름을 지정하기 위해 사용자의 정확한 좌표를 BigDataCloud로 직접 전송합니다. Arclight는 해당 좌표를 서버에 전송하거나 저장하지 않습니다.",

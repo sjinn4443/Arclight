@@ -4036,7 +4036,9 @@
     "profile_photo": "Profile photo",
     "edit_profile_photo": "Edit profile photo",
     "save_changes": "Save changes",
-    "scroll_down_html": "scroll<br />down"
+    "scroll_down_html": "scroll<br />down",
+    "eyes_swipe_to_see_more": "Swipe to see more",
+    "eyes_drag_to_see_more": "Drag to see more"
   },
   "splashscreenMid": {
     "ariaLabel": "Mid Splash Screen",
