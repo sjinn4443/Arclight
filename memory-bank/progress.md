@@ -1,5 +1,15 @@
 # Progress
 
+## Lesson progress ARIA labels - 25 September 2026
+
+- Named 184 previously unnamed progress bars across five lesson HTML files by
+  referencing each row's visible title, including repeated launchers. Existing
+  named bars retain their labels.
+- Extended the static accessibility audit to reject progress bars whose label
+  reference is absent or empty. Bumped the static cache to v82 for the HTML.
+- Validation: `npm run test:a11y` passed on 167 HTML files and `git diff --check`
+  passed.
+
 ## Visual Acuity sentence wrapping - 24 September 2026
 
 - User-requested exception: keep "Record the test distance ... Snellen fraction."
@@ -210,7 +220,7 @@
 - Case-study chat and flashcards: `casestudy.html` hosts primary/intermediate/advanced case-study entries, with primary chat/flashcards in `casestudy_primary.js`, intermediate chat in `casestudy.js`, and glaucoma history-taking in `glaucomaHistoryCaseStudy.js`.
 - iPad/tablet responsive fixes: route-specific responsive overrides in `public/style/responsive.css` now cover dashboard/menu/onboarding/My Learning, Videos pages, case-study chat, workshops, and subapp layouts.
 - Testing setup: Jest for unit, UI, and API testing, with Git hooks available for automated checks.
-- Static accessibility audit: `scripts/test-a11y.mjs` checks media/button accessible names and currently passes on `146` HTML files.
+- Static accessibility audit: `scripts/test-a11y.mjs` checks media, button and progress-bar accessible names and passes on `167` HTML files as of 25 September 2026.
 - Translation audit baseline: `scripts/check-translations.cjs` audits used i18n keys, damaged UTF-8 strings, fallback-English carry-overs, medical homonym guidance, and subtitle homonym coverage; the current baseline is clean.
 - CI/CD pipeline: GitHub Actions CI/CD pipeline at `.github/workflows/ci-cd.yml` runs formatting checks, build, runtime security audit, accessibility checks, Jest, and artifact upload.
 - Security enhancements: reports Basic Auth, bounded attempt limiting, admin IP allowlisting, strict secrets/proxy validation, signed-cookie telemetry identity, exact-origin checks, route limits, data minimization, and retention pruning are in place.

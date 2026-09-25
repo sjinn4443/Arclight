@@ -24,6 +24,15 @@ The app is primarily static (served from `public/` in dev, and `dist/` in produc
 - Agent notes: [`agent.md`](./agent.md)
 - Narration and captions: [overview](#narration-and-captions-for-examination-lessons) and [production record](./memory-bank/narration-and-subtitles.md)
 
+## Lesson progress accessibility
+
+Lesson progress bars in the Videos, Childhood Eye Screening, Diabetic Retinopathy,
+Glaucoma and case-study pages use `aria-labelledby` to reference the visible
+`.lesson-type` title in the same row. Give each title a unique ID when adding a
+row, including repeated launchers. This lets the translated title name the
+progress bar without a separate English-only label. Run `npm run test:a11y` to
+check progress-bar names alongside button and media names.
+
 ## Eyes lesson row spacing
 
 In `arclightPage`, the Primary and Intermediate lesson cards are direct children

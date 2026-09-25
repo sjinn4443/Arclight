@@ -103,6 +103,24 @@ for (const file of htmlFiles) {
       snippet: button.outerHTML.slice(0, 160),
     });
   });
+
+  doc.querySelectorAll('[role="progressbar"]').forEach((bar) => {
+    const label = normalizeText(bar.getAttribute("aria-label"));
+    const ids = normalizeText(bar.getAttribute("aria-labelledby"))
+      .split(/\s+/)
+      .filter(Boolean);
+    if (
+      label ||
+      (ids.length &&
+        ids.every((id) => normalizeText(doc.getElementById(id)?.textContent)))
+    )
+      return;
+    findings.push({
+      file,
+      type: "progressbar-missing-name",
+      snippet: bar.outerHTML.slice(0, 160),
+    });
+  });
 }
 
 if (findings.length) {

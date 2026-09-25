@@ -1,6 +1,6 @@
 # Agent Notes
 
-Last refreshed: 2026-09-18
+Last refreshed: 2026-09-25
 
 ## Current repo orientation
 
@@ -35,7 +35,7 @@ Last refreshed: 2026-09-18
 - Front of Eye uses eleven Lottie files across four sections. Its order, frame holds and audio intervals live in `public/js/frontOfEyeExaminationScroll.js`; the shared runtime is `public/js/childhoodFundalPreparation.js`.
 - Front of Eye, DO and BIO use `public/js/examinationScrollTiming.js` to map narration time to scene frames and teaching holds. Muted playback uses a monotonic virtual clock. Preserve launcher audio priming, saved mute choices and completion gating until narration ends. Fundal retains its existing playback path.
 - Section headings follow the narration language and reuse Full Animation title translations. Preserve all nine languages and section clearance below completed-stage arrows.
-- Examination launcher progress bars use unique `aria-labelledby` references to their visible lesson titles, so translated titles also name the bars. Retain accessible names and pressed state on narration controls; avoid hard-coded English labels that override translated visible text.
+- All lesson progress bars use unique `aria-labelledby` references to their visible `.lesson-type` titles, so translated titles also name the bars. Give repeated launchers separate title IDs and run `npm run test:a11y` after adding rows. Retain accessible names and pressed state on narration controls; avoid hard-coded English labels that override translated visible text.
 - For timing or layout changes, run the focused Jest tests and the Front of Eye, examination scroll sync and examination scroll headings Playwright specs. WebKit sync tests use a mocked narration clock; they do not establish real-device audio quality.
 
 ## Current docs baseline
@@ -307,7 +307,7 @@ Use this when the user asks to make a page like `childhoodFundalPreparationPage`
 - `scripts/check-translations.cjs` is the canonical audit entry point for used-key coverage, damaged-string detection, and fallback-English review.
 - `scripts/i18n-qa-rules.cjs` stores the standing medical homonym guidance; use those meanings first when a source term is ambiguous.
 - Media elements must either be explicitly decorative or have an accessible name via `alt`, `aria-label`, `aria-labelledby`, or `title`. Runtime support now lives in `public/js/mediaA11y.js`, and the static audit is `scripts/test-a11y.mjs`.
-- Current baseline (`2026-08-28`): accessibility audit passes on `146` HTML files; translation QA reports `0` missing used keys, `0` missing literal keys, `0` damaged strings, `0` exact-English carry-overs, `0` medical homonym violations, and `0` subtitle medical homonym violations.
+- Accessibility baseline (`2026-09-25`): `npm run test:a11y` passes on `167` HTML files, including progress-bar name checks. The translation QA figures recorded on `2026-08-28` were `0` missing used keys, `0` missing literal keys, `0` damaged strings, `0` exact-English carry-overs, `0` medical homonym violations, and `0` subtitle medical homonym violations.
 
 ## Issue Summary
 

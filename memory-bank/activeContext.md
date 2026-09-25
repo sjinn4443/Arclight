@@ -1,6 +1,12 @@
-<!-- THE CHANGES - activeContext.md | 2026-09-18, Codex -->
+<!-- THE CHANGES - activeContext.md | 2026-09-25, Codex -->
 
 # Active Context
+
+- Lesson progress bars across Videos, Childhood Eye Screening, Diabetic
+  Retinopathy, Glaucoma and case-study HTML now reference unique visible title
+  IDs with `aria-labelledby`. The static accessibility audit checks that each
+  progress bar has a resolvable, non-empty name. Static cache v82 ships the
+  markup change.
 
 - Visual Acuity scroll captions separate sentences (except the paired test-distance explanation), balance each paragraph,
   and keep its final two words together. Desktop text has up to 48px extra width

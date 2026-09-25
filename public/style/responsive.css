@@ -1014,6 +1014,12 @@ input {
   }
 }
 
+@media (min-width: 1024px) {
+  #eyesCatalogPage .eyes-carousel {
+    gap: 24px;
+  }
+}
+
 /* ============================================= XL desktop: no-crop mode (full image visible) ============================================= */
 @media (min-width: 1440px) {
   #categoryCarousel .category-card {
@@ -1099,8 +1105,9 @@ input {
     max-width: 55vw;
   }
 
-  .eyes-carousel {
-    gap: 8vw;
+  #eyesCatalogPage .eyes-carousel {
+    /* Account for the 16% grid track and fixed 224px card width. */
+    gap: calc(4vw + 107px - 8%);
   }
 
   .lang-install__modal {
@@ -6040,10 +6047,6 @@ html.is-apple-ui :is(.eyes-topbar .menuBtn, .icon.menuBtn, #tocToggleBtn) {
 
   #eyesCatalogPage .eyes-carousel-divider {
     margin-bottom: 23px;
-  }
-
-  #eyesCatalogPage #pecCarousel + .eyes-carousel-divider {
-    display: none;
   }
 
   #eyesCatalogPage .eyes-card {
