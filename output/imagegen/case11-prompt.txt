@@ -1,0 +1,6 @@
+Mode: built-in image_gen edit
+Source: C:/Users/kangy/Downloads/11.png
+Final asset: public/images/casestudy/case11_eyes.webp
+Post-processing requested by user: lossless crop of generated 1455x1081 image, left=265, top=230, width=850, height=574, to match the iris scale of the other cases. No resampling.
+
+Edit this exact supplied clinical eye photograph for Case 11 of an educational app. Conservative AI image quality enhancement only: gently improve clarity and reduce compression noise while preserving EXACT composition, crop, proportions, colours, pupil shape, iris structure, blood vessels, wound appearance, corneal opacity, reflections and all visible pathological findings. Do not add, remove, reconstruct, beautify, heal, reinterpret or invent any anatomical or diagnostic detail. Preserve the dark irregular mark at the lower-left of the pupil and the cloudy region within the pupil exactly. Keep the same rectangular photograph, no borders, no rounded corners, no text. Output a high-quality image at least the input resolution. Where detail is uncertain, preserve the original softness rather than inventing texture.

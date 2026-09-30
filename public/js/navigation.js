@@ -1050,6 +1050,7 @@ const STRUCTURAL_BACK_TARGETS = {
   glaucomaScrollImages: { routeName: "glaucomaWorkshop" },
   glaucomaWorkshop: { routeName: "eyes" },
   medicalStudentsWorkshop: { routeName: "eyes" },
+  pecWorkshop: { routeName: "eyes" },
   settings: { routeName: "myprofile" },
   signsVICases: { routeName: "childhoodEyeScreeningWorkshop" },
   visualImpairment: { routeName: "childhoodEyeScreeningWorkshop" },
@@ -1572,6 +1573,23 @@ export function goBack() {
 
   const activeSubPageId = getActivePageId();
   const currentRouteForBack = normalizeRouteName(currentPageName);
+
+  try {
+    const pecExternal = JSON.parse(
+      sessionStorage.getItem("pecWorkshop:externalReuse") || "null",
+    );
+    if (
+      pecExternal?.route === currentRouteForBack &&
+      pecExternal.target === activeSubPageId
+    ) {
+      sessionStorage.removeItem("pecWorkshop:externalReuse");
+      sessionStorage.removeItem("pecWorkshop:activeEntry");
+      loadPage("pecWorkshop", { replace: true, recordHistory: false });
+      return;
+    }
+  } catch {
+    /* use standard back navigation */
+  }
 
   if (currentRouteForBack === "videos") {
     const contextualReturn = consumeContextualVideosReturn(activeSubPageId);

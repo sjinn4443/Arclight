@@ -19,7 +19,7 @@ const HISTORY_IMAGE_MATCH_CASES = Object.freeze([
   {
     id: "case1",
     label: "Cataract",
-    imageSrc: "/images/casestudy/case1_eye.webp",
+    imageSrc: "/images/casestudy/case1_eyes.webp",
     historyLines: ["Slow vision loss over months", "No pain, only shadows"],
     answerLines: [
       "Vision worsened slowly without pain.",
@@ -29,7 +29,7 @@ const HISTORY_IMAGE_MATCH_CASES = Object.freeze([
   {
     id: "case2",
     label: "Retinoblastoma",
-    imageSrc: "/images/casestudy/case2_eye.webp",
+    imageSrc: "/images/casestudy/case2_eyes.webp",
     historyLines: ["White pupil in a baby", "Poor visual attention"],
     answerLines: [
       "A white pupil in a baby is a danger sign.",
@@ -39,7 +39,7 @@ const HISTORY_IMAGE_MATCH_CASES = Object.freeze([
   {
     id: "case3",
     label: "Gonococcal/Chlamydial conjunctivitis",
-    imageSrc: "/images/casestudy/case3_eye.webp",
+    imageSrc: "/images/casestudy/case3_eyes.webp",
     historyLines: [
       "Pink sticky eyes, yellow discharge",
       "Started in one eye, then both",
@@ -52,7 +52,7 @@ const HISTORY_IMAGE_MATCH_CASES = Object.freeze([
   {
     id: "case4",
     label: "Trachomatous trichiasis with corneal scarring",
-    imageSrc: "/images/casestudy/case4_eye.webp",
+    imageSrc: "/images/casestudy/case4_eyes.webp",
     historyLines: ["Long gritty painful eyes", "Blur + chronic surface damage"],
     answerLines: [
       "Long gritty pain suggests chronic surface damage.",
@@ -62,7 +62,7 @@ const HISTORY_IMAGE_MATCH_CASES = Object.freeze([
   {
     id: "case5",
     label: "Bacterial / fungal corneal ulcer",
-    imageSrc: "/images/casestudy/case5_eye.webp",
+    imageSrc: "/images/casestudy/case5_eyes.webp",
     historyLines: ["Bush scratch before pain", "Sticky red eye, only shadows"],
     answerLines: [
       "Severe pain after bush trauma suggests corneal ulcer.",
@@ -72,7 +72,7 @@ const HISTORY_IMAGE_MATCH_CASES = Object.freeze([
   {
     id: "case6",
     label: "Herpes simplex keratitis",
-    imageSrc: "/images/casestudy/case6_eye.webp",
+    imageSrc: "/images/casestudy/case6_eyes.webp",
     historyLines: ["Painful photophobic red eye", "Recent lip sores"],
     answerLines: [
       "One painful light-sensitive eye suggests keratitis.",
@@ -82,7 +82,7 @@ const HISTORY_IMAGE_MATCH_CASES = Object.freeze([
   {
     id: "case7",
     label: "Anterior Uveitis",
-    imageSrc: "/images/casestudy/case7_eye.webp",
+    imageSrc: "/images/casestudy/case7_eyes.webp",
     historyLines: [
       "One painful photophobic eye",
       "Blur, similar episodes before",
@@ -95,7 +95,7 @@ const HISTORY_IMAGE_MATCH_CASES = Object.freeze([
   {
     id: "case8",
     label: "Pterygium",
-    imageSrc: "/images/casestudy/case8_eye.webp",
+    imageSrc: "/images/casestudy/case8_eyes.webp",
     historyLines: ["Slow pink growth on eye", "Outdoor UV exposure"],
     answerLines: [
       "A slow-growing pink patch suggests pterygium.",
@@ -105,7 +105,7 @@ const HISTORY_IMAGE_MATCH_CASES = Object.freeze([
   {
     id: "case9",
     label: "Corneal foreign body with early infection",
-    imageSrc: "/images/casestudy/case9_eye.webp",
+    imageSrc: "/images/casestudy/case9_eyes.webp",
     historyLines: [
       "Metal work before symptoms",
       "Photophobia, blur, infection",
@@ -118,7 +118,7 @@ const HISTORY_IMAGE_MATCH_CASES = Object.freeze([
   {
     id: "case10",
     label: "Traumatic hyphaema",
-    imageSrc: "/images/casestudy/case10_eye.webp",
+    imageSrc: "/images/casestudy/case10_eyes.webp",
     historyLines: ["Blunt trauma, sudden blur", "Red eye, shadow vision"],
     answerLines: [
       "Sudden blur after blunt trauma suggests hyphaema.",
@@ -128,7 +128,7 @@ const HISTORY_IMAGE_MATCH_CASES = Object.freeze([
   {
     id: "case11",
     label: "Penetrating corneal laceration with iris prolapse",
-    imageSrc: "/images/casestudy/case11_eye.webp",
+    imageSrc: "/images/casestudy/case11_eyes.webp",
     historyLines: [
       "Stick injury, worsening pain",
       "Open globe / iris prolapse",
@@ -141,7 +141,7 @@ const HISTORY_IMAGE_MATCH_CASES = Object.freeze([
   {
     id: "case12",
     label: "Penetrating injury causing traumatic cataract",
-    imageSrc: "/images/casestudy/case12_eye.webp",
+    imageSrc: "/images/casestudy/case12_eyes.webp",
     historyLines: ["Recent stick injury", "Painful red eye, fast vision loss"],
     answerLines: [
       "Severe vision loss after stick trauma suggests penetration.",

@@ -28,7 +28,7 @@ function shuffle(arr) {
   return a;
 }
 
-function buildCasePool() {
+function buildCasePool(ordered = false) {
   const pool = [
     { caseNum: 1, variant: "elderly" },
 
@@ -59,11 +59,10 @@ function buildCasePool() {
     grouped[c.caseNum].push(c);
   });
 
-  return shuffle(
-    Object.values(grouped).map(
-      (arr) => arr[Math.floor(Math.random() * arr.length)],
-    ),
+  const cases = Object.values(grouped).map(
+    (arr) => arr[Math.floor(Math.random() * arr.length)],
   );
+  return ordered ? cases : shuffle(cases);
 }
 
 function ageIntroForCase({ caseNum, variant }) {
@@ -102,7 +101,7 @@ function pickRandomCase() {
 }
 
 function imgPathForCase(caseNum) {
-  return `/images/casestudy/case${caseNum}_eye.webp`;
+  return `/images/casestudy/case${caseNum}_eyes.webp`;
 }
 
 // ---------- data ----------
@@ -422,6 +421,19 @@ export function initializeCaseStudy() {
   const listPage = document.getElementById("casestudyPage");
   const chatPage = document.getElementById("caseStudyChatPage");
   if (!listPage || !chatPage) return;
+  const pecUnlimited = (() => {
+    try {
+      return (
+        JSON.parse(sessionStorage.getItem("pecWorkshop:activeEntry") || "null")
+          ?.caseStudy === "intermediate"
+      );
+    } catch {
+      return false;
+    }
+  })();
+  chatPage.classList.toggle("pec-case-study-unlimited", pecUnlimited);
+  if (listPage.dataset.intermediateInited === "1") return;
+  listPage.dataset.intermediateInited = "1";
 
   updateCaseStudyProgressRows();
 
@@ -459,6 +471,16 @@ export function initializeCaseStudy() {
   const sendBtn = chatPage.querySelector("#caseChatSendBtn");
   const toggleBtn = chatPage.querySelector("#caseChatToggleBtn");
   const footer = chatPage.querySelector(".casechat-footer");
+  const composer = footer?.querySelector(".casechat-composer");
+  let questionPanel = footer?.querySelector(".casechat-question-panel");
+  if (pecUnlimited && footer && choices && composer && !questionPanel) {
+    questionPanel = document.createElement("div");
+    questionPanel.className = "casechat-question-panel";
+    footer.insertBefore(questionPanel, choices);
+    questionPanel.append(choices, composer);
+  } else if (!pecUnlimited && questionPanel) {
+    questionPanel.replaceWith(...questionPanel.childNodes);
+  }
 
   const dxModal = chatPage.querySelector("#caseDxModal");
   const dxCard = chatPage.querySelector("#caseDxCard");
@@ -492,6 +514,7 @@ export function initializeCaseStudy() {
   let revealTimeout = null;
 
   function hideCaseImage() {
+    if (pecUnlimited) return;
     const wrap = log.querySelector(".casechat-imgwrap");
     if (!wrap) return;
     wrap.classList.remove("is-revealed");
@@ -608,7 +631,7 @@ export function initializeCaseStudy() {
   let scoreCorrect = 0; // initial answer correct count
   let scoreTotal = 0; // how many cases have been scored
 
-  let casePool = buildCasePool();
+  let casePool = buildCasePool(pecUnlimited);
   const caseHistory = [];
   let caseHistoryIndex = -1;
   const scoredCaseNumbers = new Set();
@@ -771,6 +794,7 @@ export function initializeCaseStudy() {
 
   function startDxTimer() {
     stopDxTimer();
+    if (pecUnlimited) return;
     dxTimerLeft = DX_TIMER_TOTAL;
     dxTimerFg?.closest(".caseTimer")?.classList.remove("is-danger");
 
@@ -822,6 +846,7 @@ export function initializeCaseStudy() {
 
   function startTimer() {
     stopTimer();
+    if (pecUnlimited) return;
     timerLeft = TIMER_TOTAL;
     timerLeft = TIMER_TOTAL;
     if (timerBtn) timerBtn.classList.remove("is-danger");
@@ -892,11 +917,15 @@ export function initializeCaseStudy() {
 
     if (maybeImgSrc) {
       html += `
-    <div class="casechat-imgwrap" data-imgsrc="${maybeImgSrc}">
+    <div class="casechat-imgwrap${pecUnlimited ? " is-revealed" : ""}" data-imgsrc="${maybeImgSrc}">
       <img class="casechat-img" src="${maybeImgSrc}" alt="Case image" />
-      <button type="button" class="casechat-imgcover" aria-label="View case image for 2 seconds">
+      ${
+        pecUnlimited
+          ? ""
+          : `<button type="button" class="casechat-imgcover" aria-label="View case image for 2 seconds">
         <div class="casechat-imgcover__text">Tap to view the case image<br />for 3 seconds</div>
-      </button>
+      </button>`
+      }
     </div>
   `;
     }
@@ -1149,11 +1178,29 @@ export function initializeCaseStudy() {
 
     // 3) 답변 길이에 따라 typing 표시 시간 결정
     const delay = calcTypingDelay(reply);
+    const askedCase = state.current;
+    const reopenChoices = () => {
+      if (!pecUnlimited) return;
+      setTimeout(() => {
+        if (
+          state.current !== askedCase ||
+          chatPage.style.display === "none" ||
+          !dxModal?.hidden
+        )
+          return;
+        choices.hidden = false;
+        footer?.classList.remove("is-collapsed");
+        footer?.classList.add("is-expanded");
+        chatPage.style.setProperty("--casechat-log-pad", "280px");
+        if (toggleBtn) toggleBtn.textContent = "-";
+      }, 800);
+    };
 
     // 4) delay 후에 typingBubble을 실제 답변으로 교체
     setTimeout(() => {
       if (!typingBubble) {
         appendBot(reply);
+        reopenChoices();
         return;
       }
 
@@ -1165,6 +1212,7 @@ export function initializeCaseStudy() {
       translateNode(typingBubble);
 
       requestAnimationFrame(keepLastMessageVisible);
+      reopenChoices();
     }, delay);
   }
 
@@ -1310,7 +1358,7 @@ export function initializeCaseStudy() {
 
     // ✅ 입장 시 인트로 모달 먼저
     forceCloseModals();
-    if (!introSeen) {
+    if (!introSeen && !pecUnlimited) {
       showIntroModal();
       return;
     }

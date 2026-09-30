@@ -429,9 +429,18 @@ const build = async () => {
     // JS is bundled from source by esbuild below, so skip copied source files.
     console.log("[build] copying public assets");
     const publicJsPath = path.join(publicPath, "js");
+    // PEC's original masters are kept locally; the app serves their 220p/720p exports.
+    const pecSourceMastersPath = path.join(
+      publicPath,
+      "videos",
+      "Workshop",
+      "PEC",
+      "New folder",
+    );
     await fs.copy(publicPath, distPath, {
       filter: (src) =>
         !isPathWithinOrEqual(publicJsPath, src) &&
+        !isPathWithinOrEqual(pecSourceMastersPath, src) &&
         !src
           .split(path.sep)
           .some(

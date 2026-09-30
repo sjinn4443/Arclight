@@ -155,6 +155,15 @@ document.addEventListener("DOMContentLoaded", () => {
    */
   window.addEventListener("page:loaded", async (e) => {
     const routeName = e?.detail?.routeName;
+    try {
+      if (sessionStorage.getItem("pecWorkshop:activeEntry")) {
+        void import("./pecWorkshop.js").then((module) =>
+          module.restorePecNavigation?.(),
+        );
+      }
+    } catch {
+      /* storage may be unavailable */
+    }
     if (routeName === "eyes") {
       const { initializeEyes } = await import("./eyes.js");
       initializeEyes?.(); // calls initializeEyesCatalog()
@@ -200,6 +209,12 @@ document.addEventListener("DOMContentLoaded", () => {
       const { initializeMedicalStudentsWorkshop } =
         await import("./medicalStudentsWorkshop.js");
       initializeMedicalStudentsWorkshop?.();
+      return;
+    }
+
+    if (routeName === "pecWorkshop") {
+      const { initializePecWorkshop } = await import("./pecWorkshop.js");
+      initializePecWorkshop?.();
       return;
     }
 

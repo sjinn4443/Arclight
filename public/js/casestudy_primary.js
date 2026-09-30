@@ -204,7 +204,7 @@ function flashRationaleLinesForCase({ caseNum, variant }) {
   ];
 }
 
-function buildCasePool() {
+function buildCasePool(ordered = false) {
   const pool = [
     { caseNum: 1, variant: "default" },
     { caseNum: 2, variant: Math.random() < 0.5 ? "progressive" : "congenital" },
@@ -220,7 +220,7 @@ function buildCasePool() {
     { caseNum: 12, variant: "default" },
   ];
 
-  return shuffle(pool);
+  return ordered ? pool : shuffle(pool);
 }
 
 function buildTourPreviewCase(excludeCaseNum) {
@@ -240,7 +240,7 @@ function buildTourPreviewCase(excludeCaseNum) {
 
 // ✅ 이미지 경로는 기존과 동일하게 사용
 function imgPathForCase(caseNum) {
-  return `/images/casestudy/case${caseNum}_eye.webp`;
+  return `/images/casestudy/case${caseNum}_eyes.webp`;
 }
 
 /**
@@ -571,6 +571,18 @@ export function initializeCaseStudyPrimary() {
   const flashPage = document.getElementById("caseStudyFlashcardPagePrimary");
 
   if (!listPage || !chatPage || !flashPage) return;
+  if (listPage.dataset.primaryInited === "1") return;
+  listPage.dataset.primaryInited = "1";
+  const pecPrimary = (() => {
+    try {
+      return (
+        JSON.parse(sessionStorage.getItem("pecWorkshop:activeEntry") || "null")
+          ?.caseStudy === "primary"
+      );
+    } catch {
+      return false;
+    }
+  })();
 
   updateCaseStudyProgressRows();
 
@@ -589,7 +601,7 @@ export function initializeCaseStudyPrimary() {
     setPrimaryCaseStudyProgress((caseIndex / TOTAL_CASES) * 100);
   }
 
-  let casePool = buildCasePool();
+  let casePool = buildCasePool(pecPrimary);
   let caseIndex = 0;
 
   let timerLeft = TIMER_TOTAL;
@@ -1984,7 +1996,11 @@ export function initializeCaseStudyPrimary() {
     div.appendChild(inner);
     log.appendChild(div);
     translateNode(div);
-    div.scrollIntoView({ block: "end", behavior: "smooth" });
+    if (pecPrimary) {
+      log.scrollTo({ top: log.scrollHeight, behavior: "smooth" });
+    } else {
+      div.scrollIntoView({ block: "end", behavior: "smooth" });
+    }
   }
   function renderImageGrid(correctCaseNum) {
     const PENETRATING_CASES = [11, 12];
@@ -2220,6 +2236,7 @@ export function initializeCaseStudyPrimary() {
   }
 
   function showList() {
+    if (pecPrimary) listPage.classList.remove("pec-primary-chat-open");
     chatPage.classList.remove("active");
     listPage.classList.add("active");
     chatPage.style.display = "none";
@@ -2229,6 +2246,7 @@ export function initializeCaseStudyPrimary() {
   }
 
   function showChat() {
+    if (pecPrimary) listPage.classList.add("pec-primary-chat-open");
     listPage.classList.remove("active");
     chatPage.classList.add("active");
     listPage.style.display = "none";
@@ -2237,7 +2255,7 @@ export function initializeCaseStudyPrimary() {
     caseIndex = 0;
     correctCount = 0;
 
-    casePool = buildCasePool();
+    casePool = buildCasePool(pecPrimary);
 
     resetLog();
     if (!introSeen) {
@@ -2378,7 +2396,7 @@ export function initializeCaseStudyPrimary() {
         // restart
         caseIndex = 0;
         correctCount = 0;
-        casePool = buildCasePool();
+        casePool = buildCasePool(pecPrimary);
         startNewCase();
         return;
       }

@@ -31,7 +31,7 @@ export const EYES_INDEX = {
   "Optic Nerve Disease": "comingSoon",
 
   // Primary Eye Care procedures
-  PEC: "comingSoon",
+  PEC: "pecWorkshop",
 
   // Extended examination
   Ptosis: "comingSoon",

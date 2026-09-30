@@ -92,7 +92,7 @@ function pickRandomCase() {
 }
 
 function imgPathForCase(caseNum) {
-  return `/images/casestudy/case${caseNum}_eye.webp`;
+  return `/images/casestudy/case${caseNum}_eyes.webp`;
 }
 
 // ---------- data ----------

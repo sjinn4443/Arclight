@@ -55,7 +55,7 @@ const MY_LEARNING_LABEL_I18N_OVERRIDES = Object.freeze({
   PEC: "eyes.card_label.pec",
   "Tools and Kits": "eyes.card_label.tools_and_kits",
   Extended: "eyes.card_label.extended",
-  "Warm Compress": "eyes.card_label.warm_compress",
+  "Lid Hygeine": "eyes.card_label.lid_hygiene",
   "Eye Irrigation": "eyes.card_label.eye_irrigation",
   "Eyelash Removal": "eyes.card_label.eyelash_removal",
   "Foreign Body Removal": "eyes.card_label.foreign_body_removal",

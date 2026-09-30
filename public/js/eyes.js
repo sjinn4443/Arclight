@@ -83,7 +83,7 @@ const EYES_LABEL_I18N_KEYS = Object.freeze({
   "Holo Overview": "eyes.card_label.holo_overview",
   "Tools and Kits": "eyes.card_label.tools_and_kits",
   Extended: "eyes.card_label.extended",
-  "Warm Compress": "eyes.card_label.warm_compress",
+  "Lid Hygeine": "eyes.card_label.lid_hygiene",
   "Eye Irrigation": "eyes.card_label.eye_irrigation",
   "Eyelash Removal": "eyes.card_label.eyelash_removal",
   "Foreign Body Removal": "eyes.card_label.foreign_body_removal",
@@ -102,6 +102,7 @@ const EYES_TAG_I18N_KEYS = Object.freeze({
   "Mini App": "eyes.tag_mini_app",
   Interactive: "eyes.tag_interactive",
   PDF: "eyes.tag_pdf",
+  Scroll: "eyes.tag_scroll",
   Scrolly: "i18nLiteral.Scrollytelling",
 });
 
@@ -576,7 +577,7 @@ export function initializeEyesCatalog() {
       },
     ],
     procedureCarousel: [
-      "Warm Compress",
+      "Lid Hygeine",
       "Eye Irrigation",
       "Eyelash Removal",
       "Foreign Body Removal",
@@ -629,6 +630,11 @@ export function initializeEyesCatalog() {
     ],
     pecCarousel: [
       {
+        label: "PEC",
+        target: EYES_INDEX.PEC,
+        tags: ["Scroll"],
+      },
+      {
         label: "Medical Students",
         target: "medicalStudentsWorkshop",
         tags: ["Interactive", "Quiz", "PDF"],
@@ -647,11 +653,6 @@ export function initializeEyesCatalog() {
         label: "Diabetic Retinopathy",
         target: "diabeticRetinopathyWorkshop",
         tags: ["Video", "Interactive"],
-      },
-      {
-        label: "PEC",
-        target: EYES_INDEX.PEC,
-        tags: ["Coming Soon"],
       },
     ],
   };

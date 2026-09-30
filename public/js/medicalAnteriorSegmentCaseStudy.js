@@ -263,7 +263,7 @@ function appendPatientBubbles(log, caseData) {
   imageWrap.className = "casechat-imgwrap is-revealed";
   const image = document.createElement("img");
   image.className = "casechat-img";
-  image.src = `/images/casestudy/case${caseData.id}_eye.webp`;
+  image.src = `/images/casestudy/case${caseData.id}_eyes.webp`;
   image.alt = isLaoLanguage()
     ? `ຮູບກໍລະນີສ່ວນໜ້າຂອງຕາ ${caseData.id}`
     : isSpanishLanguage()

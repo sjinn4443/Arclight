@@ -1730,6 +1730,14 @@ body,
   padding-top: 0 !important;
 }
 
+/* Folder catalogs without a subtitle still need breathing room below the topbar. */
+.page.pupils-like
+  > .container.pupils-container
+  > .eyes-topbar
+  + .pupils-levels {
+  margin-top: 48px;
+}
+
 #videos
   :is(
     #visualAcuityPage,
@@ -4152,8 +4160,14 @@ select.onb-input.has-value + .onb-select-caret {
 }
 
 #medicalStudentsWorkshopPage .see-all-toggle {
+  width: auto;
+  flex: 0 0 auto;
   margin-left: auto;
-  margin-right: 30px;
+  margin-right: 15px;
+  border: 0;
+  padding: 6px;
+  background: transparent;
+  font: inherit;
   white-space: nowrap;
 }
 
@@ -23090,6 +23104,976 @@ img[src*="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/"] {
 
   #diabeticProtocolPhaseBPage .diabetic-protocol-rapd-demo__pupil--right {
     top: 46.4%;
+  }
+}
+
+/* PEC-specific history and case study presentation. */
+#medicalHistoryTakingPage.pec-reused-medical-page
+  .medical-history-grid
+  > li::before,
+#medicalHistoryTakingPage.pec-reused-medical-page
+  .medical-history-columns
+  li::before,
+#medicalHistoryTakingPage.pec-reused-medical-page
+  .medical-symptom-list
+  > div::before {
+  background: #00d900;
+}
+
+#medicalHistoryTakingPage.pec-reused-medical-page
+  .medical-overview-list
+  li::before {
+  border-color: #00d900;
+}
+
+#medicalHistoryTakingPage.pec-reused-medical-page
+  .medical-overview-list--numbered
+  li::before {
+  background: #00d900;
+  color: #fff;
+}
+
+#medicalHistoryTakingPage.pec-reused-medical-page
+  .diabetic-screening-checklist
+  li::before {
+  background: #00d900;
+  color: #fff;
+}
+
+#medicalBlindnessPage .medical-external-link-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+  min-width: 0;
+}
+
+#medicalBlindnessPage .medical-external-link-copy small {
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 11px;
+  font-weight: 550;
+}
+
+#medicalBlindnessPage .medical-external-link-copy > span {
+  font-weight: 750;
+}
+
+#caseStudyChatPage.pec-case-study-unlimited .caseTimer {
+  display: none !important;
+}
+
+#caseStudyChatPage.pec-case-study-unlimited .casechat-imgwrap .casechat-img {
+  filter: none !important;
+  opacity: 1 !important;
+}
+
+#caseStudyChatPage.pec-case-study-unlimited,
+#caseStudyChatPage.pec-case-study-unlimited .container.pupils-container,
+#caseStudyChatPage.pec-case-study-unlimited .casechat-log {
+  box-sizing: border-box;
+  max-width: 100%;
+  overflow-x: hidden !important;
+}
+
+#caseStudyChatPage.pec-case-study-unlimited .casechat-log {
+  width: min(100%, 720px);
+  margin-inline: auto;
+  scrollbar-width: none;
+}
+
+#caseStudyChatPage.pec-case-study-unlimited .casechat-log::-webkit-scrollbar {
+  display: none;
+}
+
+#caseStudyChatPage.pec-case-study-unlimited .casechat-bubble--user,
+#caseStudyChatPage.pec-case-study-unlimited .casechat-bubble--bot {
+  transform: none !important;
+}
+
+#caseStudyChatPage.pec-case-study-unlimited .casechat-footer,
+#caseStudyChatPage.pec-case-study-unlimited .casechat-footer.is-collapsed,
+#caseStudyChatPage.pec-case-study-unlimited .casechat-footer.is-expanded {
+  box-sizing: border-box;
+  width: min(92vw, 360px) !important;
+  max-width: calc(100vw - 20px) !important;
+  bottom: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0;
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+#caseStudyChatPage.pec-case-study-unlimited .casechat-composer {
+  box-sizing: border-box;
+  width: 100%;
+  padding-bottom: 0 !important;
+  grid-column: 1 / -1;
+  grid-row: 2;
+  margin: 0 !important;
+  max-width: none;
+}
+
+#caseStudyChatPage.pec-case-study-unlimited .casechat-question-panel {
+  grid-column: 1 / -1;
+  grid-row: 1 / 3;
+  display: flex;
+  flex-direction: column;
+  border-radius: 22px 22px 14px 14px;
+  overflow: hidden;
+}
+
+#caseStudyChatPage.pec-case-study-unlimited
+  .casechat-footer.is-expanded
+  .casechat-question-panel {
+  background: #909395;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
+}
+
+#caseStudyChatPage.pec-case-study-unlimited .casechat-draft {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+#caseStudyChatPage.pec-case-study-unlimited .pec-flow-nav {
+  position: static;
+  grid-column: 1;
+  grid-row: 3;
+  width: min(225px, 100%);
+  margin: 0;
+  padding: 0;
+  gap: 6px;
+  border: 0;
+  margin-top: 32px;
+  align-self: center;
+}
+
+#caseStudyChatPage.pec-case-study-unlimited .pec-flow-nav button {
+  box-sizing: border-box;
+  min-width: 0;
+  min-height: 36px;
+  width: 50%;
+  padding: 6px;
+  font-size: 11px;
+}
+
+#caseStudyChatPage.pec-case-study-unlimited #caseChatSubmitBtn {
+  position: static !important;
+  transform: none !important;
+  grid-column: 2;
+  grid-row: 3;
+  right: 0;
+  bottom: 0;
+  min-height: 35px;
+  padding: 12px 16px;
+  font-size: 13px;
+  margin: 32px 0 0;
+  align-self: end;
+  border-radius: 18px 18px 0 0 !important;
+}
+
+#caseStudyChatPage.pec-case-study-unlimited
+  .casechat-footer.is-expanded
+  #caseChatChoices {
+  position: static !important;
+  grid-column: 1 / -1;
+  grid-row: 1;
+  box-sizing: border-box;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: calc(100% + 8px) !important;
+  width: 100%;
+  height: auto !important;
+  margin: 0 !important;
+  max-height: 38dvh;
+  overflow-y: auto;
+  padding: 10px !important;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+@media (max-width: 1023.98px) {
+  #caseStudyChatPage.pec-case-study-unlimited .pec-flow-nav {
+    margin-bottom: 10px;
+    align-self: end;
+  }
+  #caseStudyChatPage.pec-case-study-unlimited .pec-flow-nav button {
+    margin: 0;
+  }
+  #caseStudyChatPage.pec-case-study-unlimited #caseChatSubmitBtn {
+    height: auto;
+    min-height: 46px;
+    align-self: stretch;
+  }
+}
+
+@media (min-width: 1024px) {
+  #caseStudyChatPage.pec-case-study-unlimited .casechat-footer.is-collapsed,
+  #caseStudyChatPage.pec-case-study-unlimited .casechat-footer.is-expanded {
+    width: min(70vw, 820px) !important;
+  }
+}
+
+:is(#caseStudyChatPage, #caseStudyChatPageAdvanced)
+  .casechat-bubble--bot:has(.casechat-imgwrap) {
+  justify-content: center !important;
+}
+
+:is(#caseStudyChatPage, #caseStudyChatPageAdvanced)
+  .casechat-botstack:has(.casechat-imgwrap) {
+  width: 100%;
+  align-items: center !important;
+}
+
+:is(#caseStudyChatPage, #caseStudyChatPagePrimary, #caseStudyChatPageAdvanced)
+  img[src^="/images/casestudy/"] {
+  aspect-ratio: 779 / 540;
+  object-fit: cover;
+  border: 0;
+}
+
+:is(#caseStudyChatPage, #caseStudyChatPageAdvanced) .casechat-imgwrap {
+  background: transparent;
+  border: 0;
+  padding: 0;
+}
+
+:is(#caseStudyChatPage, #caseStudyChatPageAdvanced) .casechat-img {
+  border-radius: 23px;
+}
+
+#caseStudyChatPagePrimary.pec-case-study-primary .container.pupils-container {
+  height: auto;
+  min-height: 100dvh;
+  justify-content: flex-start;
+  margin-top: 0;
+  padding-top: 18px !important;
+}
+
+#casestudyPage.pec-primary-chat-open {
+  display: none !important;
+}
+
+#caseStudyChatPagePrimary.pec-case-study-primary .casechat-log {
+  flex: 0 1 auto;
+  margin-top: 0;
+  padding-top: 12px;
+  scrollbar-gutter: stable;
+}
+
+#caseStudyChatPagePrimary.pec-case-study-primary .casechat-bubble {
+  transform: none !important;
+}
+
+/* PEC uses the existing Medical Students lessons with the primary palette. */
+.pec-reused-medical-page .medical-students-screening-page {
+  --medical-orange: #00d900;
+  --medical-orange-dark: #087d08;
+  --medical-orange-soft: #ecffec;
+}
+
+.pec-reused-medical-page .medical-overview-list li,
+.pec-reused-medical-page .medical-flow span,
+.pec-reused-medical-page .medical-workshop-arc span,
+.pec-reused-medical-page .medical-communication-chips li {
+  border-color: rgba(0, 185, 0, 0.28);
+}
+
+.pec-reused-medical-page .medical-prev-btn {
+  border-color: rgba(0, 185, 0, 0.42);
+}
+
+.pec-reused-medical-page .medical-flow--journey span:last-child {
+  border-color: rgba(0, 185, 0, 0.3);
+}
+
+.pec-reused-medical-page .diabetic-screening-eyebrow {
+  color: #087d08;
+}
+
+.pec-reused-medical-page .diabetic-screening-step {
+  background: #00d900;
+  color: #071b07;
+}
+
+.pec-reused-medical-page .medical-blindness-chart {
+  background: conic-gradient(
+    #008b20 0 31%,
+    #00af32 31% 58%,
+    #00d900 58% 70%,
+    #56df15 70% 80%,
+    #95e44a 80% 88%,
+    #b3e981 88% 95%,
+    #d5f5b8 95% 100%
+  );
+}
+
+.pec-reused-medical-page .medical-blindness-legend li:nth-child(1) i {
+  background: #008b20;
+}
+.pec-reused-medical-page .medical-blindness-legend li:nth-child(2) i {
+  background: #00af32;
+}
+.pec-reused-medical-page .medical-blindness-legend li:nth-child(3) i {
+  background: #00d900;
+}
+.pec-reused-medical-page .medical-blindness-legend li:nth-child(4) i {
+  background: #56df15;
+}
+.pec-reused-medical-page .medical-blindness-legend li:nth-child(5) i {
+  background: #95e44a;
+}
+.pec-reused-medical-page .medical-blindness-legend li:nth-child(6) i {
+  background: #b3e981;
+}
+.pec-reused-medical-page .medical-blindness-legend li:nth-child(7) i {
+  background: #d5f5b8;
+}
+
+.pec-reused-medical-page .medical-cause-pie--refractive {
+  --medical-cause-1: #008b20;
+}
+.pec-reused-medical-page .medical-cause-pie--cataract {
+  --medical-cause-2: #00af32;
+}
+.pec-reused-medical-page .medical-cause-pie--glaucoma {
+  --medical-cause-3: #00d900;
+}
+.pec-reused-medical-page .medical-cause-pie--diabetic {
+  --medical-cause-4: #56df15;
+}
+.pec-reused-medical-page .medical-cause-pie--trachoma {
+  --medical-cause-5: #95e44a;
+}
+.pec-reused-medical-page .medical-cause-pie--trauma {
+  --medical-cause-6: #b3e981;
+}
+.pec-reused-medical-page .medical-cause-pie--other {
+  --medical-cause-7: #d5f5b8;
+}
+
+#medicalAnteriorSegmentPage.pec-reused-medical-page
+  #medicalAnteriorAnswerBtn.casechat-submitpill {
+  background: #00d900 !important;
+  color: #071b07 !important;
+}
+
+.pec-eye-lesson-page .pec-eye-lesson-content {
+  width: min(88vw, 760px);
+  margin: 48px auto 80px;
+  color: #111827;
+}
+
+.pec-eye-lesson-hero {
+  padding: 28px 30px;
+  border-radius: 24px;
+  background: #080808;
+  color: #ffffff;
+}
+
+.pec-eye-lesson-hero p {
+  margin: 0 0 8px;
+  color: #15e115;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.pec-eye-lesson-hero h1 {
+  margin: 0;
+  font-size: clamp(25px, 4vw, 36px);
+}
+
+.pec-eye-lesson-panel {
+  margin-top: 18px;
+  padding: 25px 30px;
+  border: 1px solid #dcefdc;
+  border-radius: 22px;
+  background: #ffffff;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.06);
+}
+
+.pec-eye-lesson-panel h2 {
+  margin: 0 0 16px;
+  color: #087d08;
+  font-size: 20px;
+}
+
+.pec-eye-lesson-panel ul {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding-left: 21px;
+  line-height: 1.5;
+}
+
+.pec-eye-lesson-panel li::marker {
+  color: #00c900;
+}
+
+@media (max-width: 600px) {
+  .pec-eye-lesson-page .pec-eye-lesson-content {
+    margin-top: 26px;
+  }
+  .pec-eye-lesson-hero,
+  .pec-eye-lesson-panel {
+    padding: 22px;
+  }
+}
+
+/* PEC workshop follows the Medical Students folder layout with the primary theme. */
+#pecWorkshopPage .pec-workshop-folders {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 16px;
+  box-sizing: border-box;
+  padding-bottom: 35px;
+  padding-top: 35px;
+}
+
+#pecWorkshopPage:not(.pec-folder-open) .pec-workshop-folders {
+  padding-top: 35px;
+}
+
+#pecWorkshopPage .pec-workshop-folders > .lesson-row {
+  width: 79%;
+  margin: 0;
+}
+
+#pecWorkshopPage :is(.pec-section-card, .pec-nested-section-card) {
+  width: 100%;
+}
+
+#pecWorkshopPage .pec-section-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 11px 0 0;
+  background: transparent;
+  border-radius: 0;
+}
+
+#pecWorkshopPage
+  :is(
+    .pec-folder-row,
+    .pec-section-card,
+    .pec-nested-folder-row,
+    .pec-nested-section-card
+  )[hidden] {
+  display: none !important;
+}
+
+#pecWorkshopPage :is(.pec-section-card, .pec-nested-section-card) > h3 {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  width: 100%;
+  margin: 8px 0 -5px;
+  padding: 0 8px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+#pecWorkshopPage .pec-nested-section-card > h3 {
+  padding-left: 24px;
+}
+
+/* Introduction starts at the same inset as its collapsed folder. */
+#pecWorkshopPage [data-section="introduction"] {
+  padding-top: 0;
+}
+
+#pecWorkshopPage [data-section="introduction"] > h3 {
+  margin-top: 0;
+}
+
+#pecWorkshopPage [data-section="introduction"] > h3 .see-all-toggle {
+  margin-block: 0;
+  padding-block: 0;
+}
+
+#pecWorkshopPage .pec-section-card .lesson-row {
+  box-sizing: border-box;
+  width: 80%;
+  margin: 8px auto;
+}
+
+#pecWorkshopPage .pec-nested-section-card > .lesson-row {
+  width: 72%;
+}
+
+#pecWorkshopPage .pec-nested-section-card > .lesson-row + .lesson-row {
+  margin-top: 18px;
+}
+
+#pecWorkshopPage .lesson-row .lesson-main {
+  min-width: 0;
+}
+
+#pecWorkshopPage .lesson-row .lesson-top {
+  width: auto;
+  min-width: 0;
+  margin-left: 25px;
+}
+
+#pecWorkshopPage .lesson-row .lesson-type {
+  display: block;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+#pecWorkshopPage .lesson-row--folder .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/primary_folder.webp");
+}
+
+#pecWorkshopPage .lesson-row--scroll .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/primary_scroll.webp");
+}
+
+#pecWorkshopPage .lesson-row--pdf .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/primary_pdf.webp");
+}
+
+#pecWorkshopPage .lesson-row--video .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/primary_video.webp");
+}
+
+#pecWorkshopPage .lesson-row--interactive .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/primary_interactive.webp");
+}
+
+#pecWorkshopPage .lesson-row[data-pec-case-study="primary"] .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/primary_casestudy.webp");
+}
+
+#pecWorkshopPage
+  .pupil-level--primary
+  .lesson-row--interactive[data-pec-case-study="intermediate"]
+  .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/intermediate_interactive.webp") !important;
+}
+
+#pecWorkshopPage .pec-case-study-level {
+  color: #858585;
+  font-size: 11px;
+  font-weight: 500;
+  position: static !important;
+  margin: 0 !important;
+  line-height: 1.2;
+}
+
+#pecWorkshopPage .pec-case-study-label {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+#pecWorkshopPage .lesson-row[data-pec-case-study] .lesson-top {
+  margin: 0 0 0 25px !important;
+  position: static;
+  align-items: flex-start !important;
+}
+
+#pecWorkshopPage .pec-case-study-label .lesson-meta {
+  margin: 0;
+}
+
+#pecWorkshopPage .pec-case-study-label .lesson-type {
+  margin: 0 !important;
+  line-height: 1.2;
+}
+
+#pecWorkshopPage .pec-folder-complete {
+  flex: 0 0 auto;
+  margin-left: 6px;
+  color: #15e115;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+#pecWorkshopPage .lesson-cta,
+#pecWorkshopPage .see-all-toggle {
+  color: #15e115;
+}
+
+#pecWorkshopPage .see-all-toggle {
+  width: auto;
+  flex: 0 0 auto;
+  margin-left: auto;
+  margin-right: 15px;
+  border: 0;
+  padding: 6px;
+  background: transparent;
+  font: inherit;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+#pecWorkshopPage .lesson-row[role="button"] {
+  cursor: pointer;
+}
+
+#pecWorkshopPage .lesson-row[aria-disabled="true"] {
+  cursor: default;
+}
+
+#pecWorkshopPage.pec-folder-open
+  .pec-workshop-folders
+  > .pec-folder-row:not([hidden]),
+#pecWorkshopPage
+  .pec-nested-folder-open
+  > .pec-nested-folder-row:not([hidden]) {
+  opacity: 0.72;
+}
+
+#pecWorkshopPage .pec-procedure-rows {
+  width: 100%;
+}
+
+#pecWorkshopPage
+  [data-section="procedures"].pec-nested-folder-open
+  > .pec-procedure-rows {
+  opacity: 0.72;
+}
+
+#pecProcedureVideoPage .pec-procedure-video-content {
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#pecProcedureVideoPage .tri-toggle {
+  --tri-cols: 2;
+  margin: 0;
+  box-sizing: border-box;
+  flex: 0 0 128px;
+  width: 128px;
+  min-width: 128px;
+  height: 36px;
+}
+
+#pecProcedureVideoPage .tri-toggle__btn {
+  margin: 0;
+  height: 28px;
+}
+
+#pecProcedureVideoPage .tri-toggle__knob {
+  background: #00d900;
+}
+
+#pecProcedureVideoPage .video-header h3 {
+  text-align: center;
+}
+
+#pecProcedureVideoPage .video-container {
+  box-sizing: border-box;
+  width: calc(100% - 36px);
+  max-width: none;
+  max-height: none;
+  margin: 49px auto 0;
+  padding: 21px 0 0 !important;
+}
+
+#pecProcedureVideoPage > .container.pupils-container {
+  max-width: none;
+  min-height: 0;
+  padding: 0 0 40px !important;
+}
+
+#pecProcedureVideoPage .video-header {
+  position: static;
+  padding: 23px 0 26px;
+}
+
+#pecProcedureVideoPage .pec-flow-nav {
+  width: calc(100% - 36px);
+  margin: 70px auto 28px;
+  padding: 0;
+  border: 0;
+}
+
+@media (min-width: 1024px) {
+  #pecProcedureVideoPage :is(.video-container, .pec-flow-nav) {
+    width: calc(86vw - 22px);
+  }
+}
+
+@media (min-width: 1440px) {
+  #pecProcedureVideoPage :is(.video-container, .pec-flow-nav) {
+    width: calc(56vw - 22px);
+  }
+}
+
+#pecProcedureVideoPage video {
+  width: 100%;
+  height: auto;
+}
+
+#pecWorkshopPage .pec-procedure-rows > .lesson-row {
+  box-sizing: border-box;
+  width: 80%;
+  margin: 8px auto;
+}
+
+#pecWorkshopPage .pec-procedure-rows > .lesson-row + .lesson-row {
+  margin-top: 18px;
+}
+
+#pecWorkshopPage .pec-ear-care-link {
+  box-sizing: border-box;
+  width: min(100%, 420px);
+  min-height: 61px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin: 22px auto 60px;
+  padding: 11px 13px 11px 21px;
+  border-radius: 22px;
+  background: #000000;
+  color: #fff;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 650;
+}
+
+#pecWorkshopPage .pec-ear-care-link i {
+  width: 38px;
+  height: 38px;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #15e115;
+  color: #ffffff;
+  font-style: normal;
+  font-size: 18px;
+}
+
+#pecWorkshopPage .pec-ear-care-link__copy {
+  display: grid;
+  gap: 3px;
+}
+
+#pecWorkshopPage .pec-ear-care-link__copy strong {
+  font-size: 12px;
+  font-weight: 650;
+}
+
+#pecWorkshopPage .pec-ear-care-link__copy small {
+  color: #c8c8c8;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.pec-flow-nav {
+  box-sizing: border-box;
+  width: min(88vw, 760px);
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  margin: 32px auto 48px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(15, 23, 42, 0.1);
+}
+
+.pec-flow-nav button {
+  min-width: 122px;
+  min-height: 48px;
+  padding: 11px 18px;
+  border-radius: 999px;
+  cursor: pointer;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 850;
+}
+
+.pec-flow-prev {
+  border: 1px solid rgba(0, 185, 0, 0.42);
+  background: #fff;
+  color: #087d08;
+}
+
+.pec-flow-next {
+  border: 0;
+  background: #00d900;
+  color: #fff;
+  box-shadow: 0 10px 22px rgba(0, 185, 0, 0.22);
+}
+
+@media (max-width: 600px) {
+  .pec-flow-nav button {
+    min-width: 0;
+    flex: 1 1 0;
+    padding-inline: 12px;
+  }
+}
+
+.pec-flow-target
+  :is(
+    .medical-next-wrap,
+    .childhood-next-wrap,
+    .glaucoma-next-wrap,
+    .diabetic-next-wrap
+  ) {
+  display: none !important;
+}
+
+/* PEC's native lessons use the same scroll cards as Medical Students. */
+#pecEyeLessonPage .medical-students-screening-page {
+  --medical-orange: #00d900;
+  --medical-orange-dark: #087d08;
+  --medical-orange-soft: #ecffec;
+}
+
+#pecEyeLessonPage .pec-eye-lesson-content {
+  margin-top: 0;
+  width: 100%;
+}
+
+#pecEyeLessonPage .diabetic-screening-step,
+.pec-reused-medical-page .diabetic-screening-step {
+  background: #00d900;
+  color: #fff;
+}
+
+#pecEyeLessonPage .diabetic-screening-eyebrow {
+  color: #087d08;
+}
+
+#pecEyeLessonPage .medical-overview-list li {
+  border-color: rgba(0, 185, 0, 0.28);
+}
+
+#pecEyeLessonPage .medical-prev-btn {
+  border-color: rgba(0, 185, 0, 0.42);
+}
+
+#pecEyeLessonPage .medical-next-btn,
+.pec-reused-medical-page .medical-next-btn {
+  box-shadow: 0 10px 22px rgba(0, 185, 0, 0.22);
+}
+
+#pecEyeLessonPage .pec-real-case-panel {
+  min-height: auto;
+  padding: 16px;
+}
+
+.pec-reused-medical-page .medical-practice-poster figcaption {
+  background: #00d900;
+}
+
+.pec-reused-medical-page .medical-learning-image figcaption,
+.pec-reused-medical-page .medical-treatment-target {
+  background: #00d900;
+}
+
+.pec-reused-medical-page .medical-treatment-target {
+  border-color: rgba(0, 185, 0, 0.13);
+  box-shadow:
+    0 0 0 15px #fff,
+    0 0 0 18px rgba(0, 185, 0, 0.28);
+}
+
+#medicalBlindnessPage.pec-reused-medical-page .diabetic-protocol-link {
+  background: #00d900;
+}
+
+#medicalBlindnessPage.pec-reused-medical-page .diabetic-protocol-link i {
+  color: #00b900;
+}
+
+.pec-reused-medical-page .medical-visual-reference-panel {
+  border-color: rgba(0, 185, 0, 0.34) !important;
+}
+
+.pec-reused-medical-page .diabetic-screening-chip-list li {
+  border-color: rgba(0, 185, 0, 0.38);
+  color: #087d08;
+}
+
+.pec-reused-medical-page .medical-diagnosis-flow > li {
+  border-color: rgba(0, 185, 0, 0.28);
+}
+
+.pec-reused-medical-page .medical-growth-diagram {
+  border-color: rgba(0, 185, 0, 0.24);
+  background:
+    linear-gradient(to top, rgba(0, 185, 0, 0.04), transparent 70%),
+    repeating-linear-gradient(
+      to top,
+      transparent 0 43px,
+      rgba(15, 23, 42, 0.06) 44px
+    ),
+    #fff;
+}
+
+#medicalBlindnessPage.pec-reused-medical-page .diabetic-protocol-link {
+  border-color: rgba(0, 185, 0, 0.34);
+}
+
+.pec-reused-medical-page .medical-flow--journey span.is-active {
+  box-shadow: 0 9px 20px rgba(0, 185, 0, 0.22);
+}
+
+.pec-reused-medical-page .medical-workshop-arc__stage {
+  animation-name: pec-workshop-stage;
+}
+
+#pecEyeLessonPage .medical-workshop-arc__stage {
+  animation-name: pec-workshop-stage;
+}
+
+@keyframes pec-workshop-stage {
+  0%,
+  21% {
+    border-color: #00d900;
+    background: #00d900;
+    color: #fff;
+    box-shadow: 0 9px 20px rgba(0, 185, 0, 0.22);
+  }
+  26%,
+  100% {
+    border-color: rgba(0, 185, 0, 0.3);
+    background: #fff;
+    color: #111827;
+    box-shadow: none;
+  }
+}
+
+.pec-practice-closeup__images {
+  display: grid;
+  gap: 16px;
+}
+
+.pec-practice-closeup__images img {
+  width: 100%;
+  max-height: 430px;
+  object-fit: contain;
+}
+
+@media (min-width: 600.02px) and (max-width: 1023.98px) {
+  #pecWorkshopPage .pec-workshop-folders > .lesson-row {
+    width: calc(100% - 64px);
+    max-width: 392px;
+  }
+
+  #pecWorkshopPage .pec-section-card > .lesson-row {
+    width: calc(100% - 100px);
+    max-width: 348px;
+  }
+
+  #pecWorkshopPage .pec-nested-section-card > .lesson-row {
+    width: calc(100% - 132px);
+    max-width: 316px;
   }
 }
 

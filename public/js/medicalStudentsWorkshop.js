@@ -13,6 +13,50 @@ const FLOW_ENABLED_KEY = "medicalStudentsWorkshop:nextFlowEnabled";
 const INTERACTIVE_LEARNING_RETURN_KEY = "interactiveLearning:returnTarget";
 const NEXT_HOST_CLASS = "medical-next-host";
 const MEDICAL_PROGRESS_EVENT = "medicalStudentsWorkshop:progress-changed";
+const PEC_MEDICAL_REUSE_KEY = "pecWorkshop:medicalReuse";
+
+function getPecMedicalReuse() {
+  try {
+    return JSON.parse(sessionStorage.getItem(PEC_MEDICAL_REUSE_KEY) || "null");
+  } catch {
+    return null;
+  }
+}
+
+function applyPecMedicalReuseTheme() {
+  const target = getPecMedicalReuse()?.target;
+  if (!target) return;
+  const page = document.getElementById(target);
+  page?.classList.add("pec-reused-medical-page");
+  if (target === "medicalArclightScrollPage") {
+    const controls = page?.querySelector(
+      '[data-i18n="medicalStudentsWorkshop.content.identify_the_loupe_and_otoscope_end_ophthalmoscope_aperture_light_switch"]',
+    );
+    if (controls) {
+      controls.dataset.i18n = "pecWorkshop.arclight_eye_controls";
+      controls.textContent = window.I18N?.t?.(
+        "pecWorkshop.arclight_eye_controls",
+        "Identify the loupe, ophthalmoscope aperture, light switch, colour strip, lenses, pupil gauge, ruler, fixation targets, solar panel and USB-C charging point before examining a patient.",
+      );
+      window.I18N?.applyTranslations?.(controls);
+    }
+  }
+  if (
+    target === "medicalPupilsAnteriorPracticePage" &&
+    !page?.querySelector(".pec-practice-closeup")
+  ) {
+    const stack = page?.querySelector(".diabetic-screening-stack");
+    const anchor = stack?.children[1];
+    if (stack && anchor) {
+      const article = document.createElement("article");
+      article.className = "diabetic-screening-panel pec-practice-closeup";
+      article.dataset.diabeticScrollStep = "";
+      article.innerHTML = `<div class="diabetic-screening-panel__text"><span class="diabetic-screening-step">03</span><h3 data-i18n="pecWorkshop.closeup_title">Examine each structure in turn</h3></div><div class="pec-practice-closeup__images"><figure class="medical-practice-poster"><img src="/images/learning/PEC/image30.png" alt="Systematic examination of the front of the eye" loading="lazy"><figcaption data-i18n="pecWorkshop.closeup_guide">Front of eye examination</figcaption></figure><figure class="medical-practice-poster"><img src="/images/learning/PEC/image31.png" alt="Close-up illustration of eye structures" loading="lazy"><figcaption data-i18n="pecWorkshop.closeup_illustration">Close-up view</figcaption></figure><figure class="medical-practice-poster"><img src="/images/learning/PEC/image32.png" alt="Twelve close-up photographs of front of eye findings" loading="lazy"><figcaption data-i18n="pecWorkshop.closeup_cases">Front of eye examples</figcaption></figure></div>`;
+      anchor.insertAdjacentElement("afterend", article);
+      window.I18N?.applyTranslations?.(article);
+    }
+  }
+}
 
 const INTERNAL_TARGETS = new Set([
   "medicalOverviewPage",
@@ -322,18 +366,27 @@ function activateOnKeyboard(element, callback) {
 function addCloseToggle(title, close) {
   if (!title) return;
   title.querySelector(".see-all-toggle")?.remove();
-  const toggle = document.createElement("span");
+  const titleI18nKey = title.getAttribute("data-i18n");
+  if (titleI18nKey) {
+    const label = document.createElement("span");
+    label.className = "medical-section-heading-text";
+    label.textContent = title.textContent.trim();
+    label.setAttribute("data-i18n", titleI18nKey);
+    title.removeAttribute("data-i18n");
+    title.replaceChildren(label);
+  }
+  const toggle = document.createElement("button");
+  toggle.type = "button";
   toggle.className = "see-all-toggle";
-  toggle.setAttribute("role", "button");
-  toggle.setAttribute("tabindex", "0");
   toggle.textContent = "Close ^";
   toggle.setAttribute("data-i18n", "i18nLiteral.Close ^");
-  activateOnKeyboard(toggle, (event) => {
+  toggle.addEventListener("click", (event) => {
     event.preventDefault();
     event.stopPropagation();
     close();
   });
   title.appendChild(toggle);
+  window.I18N?.applyTranslations?.(title);
 }
 
 function isFlowEnabled() {
@@ -407,6 +460,7 @@ function showPageFallback(id) {
 
 function removeMedicalNextButtons() {
   document.querySelectorAll(".medical-next-wrap").forEach((wrap) => {
+    if (wrap.closest("#pecEyeLessonPage")) return;
     wrap.parentElement?.classList.remove(NEXT_HOST_CLASS);
     wrap.remove();
   });
@@ -716,6 +770,25 @@ export function initializeMedicalStudentsWorkshopFlowInfra() {
       const target = event.target;
       if (!(target instanceof Element)) return;
       if (!target.closest("#backBtnGlobal")) return;
+      const pecReuse = getPecMedicalReuse();
+      if (pecReuse?.target === getVisiblePageId()) {
+        event.preventDefault();
+        event.stopPropagation();
+        event.stopImmediatePropagation?.();
+        try {
+          sessionStorage.removeItem(PEC_MEDICAL_REUSE_KEY);
+        } catch {
+          /* storage may be unavailable */
+        }
+        try {
+          sessionStorage.removeItem("pecWorkshop:activeEntry");
+        } catch {
+          /* storage may be unavailable */
+        }
+        setFlowEnabled(false);
+        void loadPage("pecWorkshop", { force: true, replace: true });
+        return;
+      }
       if (!isFlowEnabled()) return;
       const visibleId = getVisiblePageId();
       const config = MEDICAL_NAV_CONFIG[visibleId];
@@ -733,7 +806,11 @@ export function initializeMedicalStudentsWorkshopFlowInfra() {
     const shownId = String(event.detail?.id || "");
     if (shownId) {
       startMedicalVisualDevelopmentVideoAtRequestedOffset(shownId);
-      renderMedicalNavigation(shownId);
+      if (getPecMedicalReuse()?.target === shownId) {
+        applyPecMedicalReuseTheme();
+        removeMedicalNextButtons();
+        setFlowEnabled(false);
+      } else renderMedicalNavigation(shownId);
     }
   });
 
@@ -750,7 +827,17 @@ export function initializeMedicalStudentsWorkshopFlowInfra() {
 
   window.addEventListener("page:loaded", (event) => {
     const routeName = String(event.detail?.routeName || "");
+    if (routeName === "medicalStudentsWorkshop" && getPecMedicalReuse()) {
+      removeMedicalNextButtons();
+      setFlowEnabled(false);
+      return;
+    }
     if (!FLOW_ROUTES.has(routeName)) {
+      try {
+        sessionStorage.removeItem(PEC_MEDICAL_REUSE_KEY);
+      } catch {
+        /* storage may be unavailable */
+      }
       removeMedicalNextButtons();
       setFlowEnabled(false);
       return;
@@ -841,6 +928,7 @@ export function initializeMedicalStudentsWorkshop() {
   const page = document.getElementById(PAGE_ID);
   if (!page || page.dataset.inited === "1") return;
   page.dataset.inited = "1";
+  applyPecMedicalReuseTheme();
   initializeMedicalStudentsWorkshopFlowInfra();
   initializeDiabeticScreeningScrollLessons();
   initializeMedicalAnteriorSegmentCaseStudy();
@@ -1006,7 +1094,10 @@ export function initializeMedicalStudentsWorkshop() {
   }
 
   const visibleId = getVisiblePageId();
-  if (MEDICAL_NAV_CONFIG[visibleId]) {
+  if (
+    MEDICAL_NAV_CONFIG[visibleId] &&
+    getPecMedicalReuse()?.target !== visibleId
+  ) {
     setFlowEnabled(true);
     renderMedicalNavigation(visibleId);
   }

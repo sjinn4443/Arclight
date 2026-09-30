@@ -45,6 +45,9 @@ ArclightApp.zip
 # Incomplete nested Git repository retained locally
 /Arclight/
 
+# PEC source video masters stay local; publish the 220p/720p exports.
+/public/videos/Workshop/PEC/New folder/
+
 # Test artifacts
 /tmp/
 /tmp_*

@@ -43,4 +43,30 @@ test.describe("Eyes carousel desktop click", () => {
       timeout: NAVIGATION_TIMEOUT_MS,
     });
   });
+
+  test("opens the active PEC workshop card", async ({ page }, testInfo) => {
+    test.skip(
+      testInfo.project.name !== "chromium-desktop",
+      "This check covers the desktop Eyes carousel.",
+    );
+
+    await page.addInitScript(() => {
+      localStorage.setItem("arclight:onboarded", "1");
+    });
+    await page.goto("/#eyes", {
+      waitUntil: "domcontentloaded",
+      timeout: ROUTE_READY_TIMEOUT_MS,
+    });
+
+    const pecCard = page.locator('#pecCarousel .eyes-card[data-label="PEC"]');
+    await expect(pecCard).toBeVisible({ timeout: ROUTE_READY_TIMEOUT_MS });
+    await expect(pecCard).toHaveAttribute("data-target", "pecWorkshop");
+    await expect(pecCard).not.toHaveAttribute("aria-disabled", "true");
+    await expect(pecCard.locator(".eyes-card__open")).toBeEnabled();
+
+    await pecCard.click();
+    await expect(page.locator("#pecWorkshopPage")).toBeVisible({
+      timeout: NAVIGATION_TIMEOUT_MS,
+    });
+  });
 });

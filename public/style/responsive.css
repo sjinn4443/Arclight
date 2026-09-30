@@ -4199,6 +4199,11 @@ body[data-interactive-subapp-open="true"] #backBtnGlobal {
   white-space: normal;
 }
 
+/* The final bubble must not pull the next-case button into its content. */
+#caseStudyChatPagePrimary .casechat-bubble:has(+ .casechat-nextcase) {
+  margin-bottom: 0;
+}
+
 #caseStudyChatPagePrimary .casechat-nextcase {
   box-sizing: border-box;
   display: block;

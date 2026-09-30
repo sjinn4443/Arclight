@@ -1,5 +1,8 @@
 (function () {
-  if (location.hostname === "localhost" && "serviceWorker" in navigator) {
+  const isLocalDevelopment =
+    location.hostname === "localhost" || location.hostname === "127.0.0.1";
+
+  if (isLocalDevelopment && "serviceWorker" in navigator) {
     navigator.serviceWorker
       .getRegistrations()
       .then((registrations) => {
@@ -8,7 +11,7 @@
       .catch(() => {});
   }
 
-  if (location.hostname === "localhost") return;
+  if (isLocalDevelopment) return;
 
   var sentryDsn = String(window.__ARCLIGHT_SENTRY_DSN__ || "").trim();
   var sentryBundleUrl = String(

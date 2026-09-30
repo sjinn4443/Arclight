@@ -17,7 +17,9 @@ function createTopbarLogoLink() {
 
   const image = document.createElement("img");
   image.className = "topbar-home-logo__image";
-  image.src = "images/logo/pwainstall.png";
+  // Keep the logo anchored to the app root. A relative URL can be resolved
+  // against a previously restored route when an old tab is reopened.
+  image.src = "/images/logo/pwainstall.png";
   image.alt = "Arclight Project";
   image.decoding = "async";
 
