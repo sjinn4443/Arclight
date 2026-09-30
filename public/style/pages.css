@@ -23459,7 +23459,7 @@ img[src*="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/"] {
 #medicalAnteriorSegmentPage.pec-reused-medical-page
   #medicalAnteriorAnswerBtn.casechat-submitpill {
   background: #00d900 !important;
-  color: #071b07 !important;
+  color: #ffffff !important;
 }
 
 .pec-eye-lesson-page .pec-eye-lesson-content {
@@ -23525,7 +23525,7 @@ img[src*="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/"] {
 }
 
 /* PEC workshop follows the Medical Students folder layout with the primary theme. */
-#pecWorkshopPage .pec-workshop-folders {
+:is(#pecWorkshopPage, #primaryEarCareWorkshopPage) .pec-workshop-folders {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -23536,20 +23536,24 @@ img[src*="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/"] {
   padding-top: 35px;
 }
 
-#pecWorkshopPage:not(.pec-folder-open) .pec-workshop-folders {
+:is(#pecWorkshopPage, #primaryEarCareWorkshopPage):not(.pec-folder-open)
+  .pec-workshop-folders {
   padding-top: 35px;
 }
 
-#pecWorkshopPage .pec-workshop-folders > .lesson-row {
+:is(#pecWorkshopPage, #primaryEarCareWorkshopPage)
+  .pec-workshop-folders
+  > .lesson-row {
   width: 79%;
   margin: 0;
 }
 
-#pecWorkshopPage :is(.pec-section-card, .pec-nested-section-card) {
+:is(#pecWorkshopPage, #primaryEarCareWorkshopPage)
+  :is(.pec-section-card, .pec-nested-section-card) {
   width: 100%;
 }
 
-#pecWorkshopPage .pec-section-card {
+:is(#pecWorkshopPage, #primaryEarCareWorkshopPage) .pec-section-card {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -23558,7 +23562,7 @@ img[src*="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/"] {
   border-radius: 0;
 }
 
-#pecWorkshopPage
+:is(#pecWorkshopPage, #primaryEarCareWorkshopPage)
   :is(
     .pec-folder-row,
     .pec-section-card,
@@ -23568,7 +23572,9 @@ img[src*="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/"] {
   display: none !important;
 }
 
-#pecWorkshopPage :is(.pec-section-card, .pec-nested-section-card) > h3 {
+:is(#pecWorkshopPage, #primaryEarCareWorkshopPage)
+  :is(.pec-section-card, .pec-nested-section-card)
+  > h3 {
   display: flex;
   align-items: center;
   box-sizing: border-box;
@@ -23580,86 +23586,105 @@ img[src*="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/"] {
   font-weight: 700;
 }
 
-#pecWorkshopPage .pec-nested-section-card > h3 {
+:is(#pecWorkshopPage, #primaryEarCareWorkshopPage)
+  .pec-nested-section-card
+  > h3 {
   padding-left: 24px;
 }
 
 /* Introduction starts at the same inset as its collapsed folder. */
-#pecWorkshopPage [data-section="introduction"] {
+:is(#pecWorkshopPage, #primaryEarCareWorkshopPage)
+  [data-section="introduction"] {
   padding-top: 0;
 }
 
-#pecWorkshopPage [data-section="introduction"] > h3 {
+:is(#pecWorkshopPage, #primaryEarCareWorkshopPage)
+  [data-section="introduction"]
+  > h3 {
   margin-top: 0;
 }
 
-#pecWorkshopPage [data-section="introduction"] > h3 .see-all-toggle {
+:is(#pecWorkshopPage, #primaryEarCareWorkshopPage)
+  [data-section="introduction"]
+  > h3
+  .see-all-toggle {
   margin-block: 0;
   padding-block: 0;
 }
 
-#pecWorkshopPage .pec-section-card .lesson-row {
+:is(#pecWorkshopPage, #primaryEarCareWorkshopPage)
+  .pec-section-card
+  .lesson-row {
   box-sizing: border-box;
   width: 80%;
   margin: 8px auto;
 }
 
-#pecWorkshopPage .pec-nested-section-card > .lesson-row {
+:is(#pecWorkshopPage, #primaryEarCareWorkshopPage)
+  .pec-nested-section-card
+  > .lesson-row {
   width: 72%;
 }
 
-#pecWorkshopPage .pec-nested-section-card > .lesson-row + .lesson-row {
+:is(#pecWorkshopPage, #primaryEarCareWorkshopPage)
+  .pec-nested-section-card
+  > .lesson-row
+  + .lesson-row {
   margin-top: 18px;
 }
 
-#pecWorkshopPage .lesson-row .lesson-main {
+:is(#pecWorkshopPage, #primaryEarCareWorkshopPage) .lesson-row .lesson-main {
   min-width: 0;
 }
 
-#pecWorkshopPage .lesson-row .lesson-top {
+:is(#pecWorkshopPage, #primaryEarCareWorkshopPage) .lesson-row .lesson-top {
   width: auto;
   min-width: 0;
   margin-left: 25px;
 }
 
-#pecWorkshopPage .lesson-row .lesson-type {
+:is(#pecWorkshopPage, #primaryEarCareWorkshopPage) .lesson-row .lesson-type {
   display: block;
   overflow-wrap: anywhere;
   white-space: normal;
 }
 
-#pecWorkshopPage .lesson-row--folder .thumb {
+:is(#pecWorkshopPage, #primaryEarCareWorkshopPage) .lesson-row--folder .thumb {
   background-image: url("/images/icon/eyes/moduleicons/primary_folder.webp");
 }
 
-#pecWorkshopPage .lesson-row--scroll .thumb {
+:is(#pecWorkshopPage, #primaryEarCareWorkshopPage) .lesson-row--scroll .thumb {
   background-image: url("/images/icon/eyes/moduleicons/primary_scroll.webp");
 }
 
-#pecWorkshopPage .lesson-row--pdf .thumb {
+:is(#pecWorkshopPage, #primaryEarCareWorkshopPage) .lesson-row--pdf .thumb {
   background-image: url("/images/icon/eyes/moduleicons/primary_pdf.webp");
 }
 
-#pecWorkshopPage .lesson-row--video .thumb {
+:is(#pecWorkshopPage, #primaryEarCareWorkshopPage) .lesson-row--video .thumb {
   background-image: url("/images/icon/eyes/moduleicons/primary_video.webp");
 }
 
-#pecWorkshopPage .lesson-row--interactive .thumb {
+:is(#pecWorkshopPage, #primaryEarCareWorkshopPage)
+  .lesson-row--interactive
+  .thumb {
   background-image: url("/images/icon/eyes/moduleicons/primary_interactive.webp");
 }
 
-#pecWorkshopPage .lesson-row[data-pec-case-study="primary"] .thumb {
+:is(#pecWorkshopPage, #primaryEarCareWorkshopPage)
+  .lesson-row[data-pec-case-study="primary"]
+  .thumb {
   background-image: url("/images/icon/eyes/moduleicons/primary_casestudy.webp");
 }
 
-#pecWorkshopPage
+:is(#pecWorkshopPage, #primaryEarCareWorkshopPage)
   .pupil-level--primary
   .lesson-row--interactive[data-pec-case-study="intermediate"]
   .thumb {
   background-image: url("/images/icon/eyes/moduleicons/intermediate_interactive.webp") !important;
 }
 
-#pecWorkshopPage .pec-case-study-level {
+:is(#pecWorkshopPage, #primaryEarCareWorkshopPage) .pec-case-study-level {
   color: #858585;
   font-size: 11px;
   font-weight: 500;
@@ -23668,29 +23693,35 @@ img[src*="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/"] {
   line-height: 1.2;
 }
 
-#pecWorkshopPage .pec-case-study-label {
+:is(#pecWorkshopPage, #primaryEarCareWorkshopPage) .pec-case-study-label {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 2px;
 }
 
-#pecWorkshopPage .lesson-row[data-pec-case-study] .lesson-top {
+:is(#pecWorkshopPage, #primaryEarCareWorkshopPage)
+  .lesson-row[data-pec-case-study]
+  .lesson-top {
   margin: 0 0 0 25px !important;
   position: static;
   align-items: flex-start !important;
 }
 
-#pecWorkshopPage .pec-case-study-label .lesson-meta {
+:is(#pecWorkshopPage, #primaryEarCareWorkshopPage)
+  .pec-case-study-label
+  .lesson-meta {
   margin: 0;
 }
 
-#pecWorkshopPage .pec-case-study-label .lesson-type {
+:is(#pecWorkshopPage, #primaryEarCareWorkshopPage)
+  .pec-case-study-label
+  .lesson-type {
   margin: 0 !important;
   line-height: 1.2;
 }
 
-#pecWorkshopPage .pec-folder-complete {
+:is(#pecWorkshopPage, #primaryEarCareWorkshopPage) .pec-folder-complete {
   flex: 0 0 auto;
   margin-left: 6px;
   color: #15e115;
@@ -23698,12 +23729,12 @@ img[src*="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/"] {
   font-weight: 800;
 }
 
-#pecWorkshopPage .lesson-cta,
-#pecWorkshopPage .see-all-toggle {
+:is(#pecWorkshopPage, #primaryEarCareWorkshopPage) .lesson-cta,
+:is(#pecWorkshopPage, #primaryEarCareWorkshopPage) .see-all-toggle {
   color: #15e115;
 }
 
-#pecWorkshopPage .see-all-toggle {
+:is(#pecWorkshopPage, #primaryEarCareWorkshopPage) .see-all-toggle {
   width: auto;
   flex: 0 0 auto;
   margin-left: auto;
@@ -23716,28 +23747,29 @@ img[src*="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/"] {
   cursor: pointer;
 }
 
-#pecWorkshopPage .lesson-row[role="button"] {
+:is(#pecWorkshopPage, #primaryEarCareWorkshopPage) .lesson-row[role="button"] {
   cursor: pointer;
 }
 
-#pecWorkshopPage .lesson-row[aria-disabled="true"] {
+:is(#pecWorkshopPage, #primaryEarCareWorkshopPage)
+  .lesson-row[aria-disabled="true"] {
   cursor: default;
 }
 
-#pecWorkshopPage.pec-folder-open
+:is(#pecWorkshopPage, #primaryEarCareWorkshopPage).pec-folder-open
   .pec-workshop-folders
   > .pec-folder-row:not([hidden]),
-#pecWorkshopPage
+:is(#pecWorkshopPage, #primaryEarCareWorkshopPage)
   .pec-nested-folder-open
   > .pec-nested-folder-row:not([hidden]) {
   opacity: 0.72;
 }
 
-#pecWorkshopPage .pec-procedure-rows {
+:is(#pecWorkshopPage, #primaryEarCareWorkshopPage) .pec-procedure-rows {
   width: 100%;
 }
 
-#pecWorkshopPage
+:is(#pecWorkshopPage, #primaryEarCareWorkshopPage)
   [data-section="procedures"].pec-nested-folder-open
   > .pec-procedure-rows {
   opacity: 0.72;
@@ -23817,17 +23849,22 @@ img[src*="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/"] {
   height: auto;
 }
 
-#pecWorkshopPage .pec-procedure-rows > .lesson-row {
+:is(#pecWorkshopPage, #primaryEarCareWorkshopPage)
+  .pec-procedure-rows
+  > .lesson-row {
   box-sizing: border-box;
   width: 80%;
   margin: 8px auto;
 }
 
-#pecWorkshopPage .pec-procedure-rows > .lesson-row + .lesson-row {
+:is(#pecWorkshopPage, #primaryEarCareWorkshopPage)
+  .pec-procedure-rows
+  > .lesson-row
+  + .lesson-row {
   margin-top: 18px;
 }
 
-#pecWorkshopPage .pec-ear-care-link {
+:is(#pecWorkshopPage, #primaryEarCareWorkshopPage) .pec-ear-care-link {
   box-sizing: border-box;
   width: min(100%, 420px);
   min-height: 61px;
@@ -23845,7 +23882,7 @@ img[src*="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/"] {
   font-weight: 650;
 }
 
-#pecWorkshopPage .pec-ear-care-link i {
+:is(#pecWorkshopPage, #primaryEarCareWorkshopPage) .pec-ear-care-link i {
   width: 38px;
   height: 38px;
   flex: 0 0 auto;
@@ -23858,17 +23895,21 @@ img[src*="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/"] {
   font-size: 18px;
 }
 
-#pecWorkshopPage .pec-ear-care-link__copy {
+:is(#pecWorkshopPage, #primaryEarCareWorkshopPage) .pec-ear-care-link__copy {
   display: grid;
   gap: 3px;
 }
 
-#pecWorkshopPage .pec-ear-care-link__copy strong {
+:is(#pecWorkshopPage, #primaryEarCareWorkshopPage)
+  .pec-ear-care-link__copy
+  strong {
   font-size: 12px;
   font-weight: 650;
 }
 
-#pecWorkshopPage .pec-ear-care-link__copy small {
+:is(#pecWorkshopPage, #primaryEarCareWorkshopPage)
+  .pec-ear-care-link__copy
+  small {
   color: #c8c8c8;
   font-size: 11px;
   font-weight: 500;
@@ -23928,41 +23969,42 @@ img[src*="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/"] {
 }
 
 /* PEC's native lessons use the same scroll cards as Medical Students. */
-#pecEyeLessonPage .medical-students-screening-page {
+:is(#pecEyeLessonPage, #primaryEarCareLessonPage)
+  .medical-students-screening-page {
   --medical-orange: #00d900;
   --medical-orange-dark: #087d08;
   --medical-orange-soft: #ecffec;
 }
 
-#pecEyeLessonPage .pec-eye-lesson-content {
+:is(#pecEyeLessonPage, #primaryEarCareLessonPage) .pec-eye-lesson-content {
   margin-top: 0;
   width: 100%;
 }
 
-#pecEyeLessonPage .diabetic-screening-step,
+:is(#pecEyeLessonPage, #primaryEarCareLessonPage) .diabetic-screening-step,
 .pec-reused-medical-page .diabetic-screening-step {
   background: #00d900;
   color: #fff;
 }
 
-#pecEyeLessonPage .diabetic-screening-eyebrow {
+:is(#pecEyeLessonPage, #primaryEarCareLessonPage) .diabetic-screening-eyebrow {
   color: #087d08;
 }
 
-#pecEyeLessonPage .medical-overview-list li {
+:is(#pecEyeLessonPage, #primaryEarCareLessonPage) .medical-overview-list li {
   border-color: rgba(0, 185, 0, 0.28);
 }
 
-#pecEyeLessonPage .medical-prev-btn {
+:is(#pecEyeLessonPage, #primaryEarCareLessonPage) .medical-prev-btn {
   border-color: rgba(0, 185, 0, 0.42);
 }
 
-#pecEyeLessonPage .medical-next-btn,
+:is(#pecEyeLessonPage, #primaryEarCareLessonPage) .medical-next-btn,
 .pec-reused-medical-page .medical-next-btn {
   box-shadow: 0 10px 22px rgba(0, 185, 0, 0.22);
 }
 
-#pecEyeLessonPage .pec-real-case-panel {
+:is(#pecEyeLessonPage, #primaryEarCareLessonPage) .pec-real-case-panel {
   min-height: auto;
   padding: 16px;
 }
@@ -24028,7 +24070,7 @@ img[src*="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/"] {
   animation-name: pec-workshop-stage;
 }
 
-#pecEyeLessonPage .medical-workshop-arc__stage {
+:is(#pecEyeLessonPage, #primaryEarCareLessonPage) .medical-workshop-arc__stage {
   animation-name: pec-workshop-stage;
 }
 
@@ -24061,17 +24103,23 @@ img[src*="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/"] {
 }
 
 @media (min-width: 600.02px) and (max-width: 1023.98px) {
-  #pecWorkshopPage .pec-workshop-folders > .lesson-row {
+  :is(#pecWorkshopPage, #primaryEarCareWorkshopPage)
+    .pec-workshop-folders
+    > .lesson-row {
     width: calc(100% - 64px);
     max-width: 392px;
   }
 
-  #pecWorkshopPage .pec-section-card > .lesson-row {
+  :is(#pecWorkshopPage, #primaryEarCareWorkshopPage)
+    .pec-section-card
+    > .lesson-row {
     width: calc(100% - 100px);
     max-width: 348px;
   }
 
-  #pecWorkshopPage .pec-nested-section-card > .lesson-row {
+  :is(#pecWorkshopPage, #primaryEarCareWorkshopPage)
+    .pec-nested-section-card
+    > .lesson-row {
     width: calc(100% - 132px);
     max-width: 316px;
   }
@@ -31232,4 +31280,250 @@ img[src*="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/"] {
     padding-top: 5px;
     padding-bottom: 5px;
   }
+}
+
+/* Silent front-of-eye practice: animation below the heading, guidance to its right. */
+#medicalPupilsAnteriorPracticePage .medical-front-of-eye-panel {
+  display: block;
+  min-height: 0;
+}
+.medical-front-of-eye-stages {
+  width: 100%;
+  margin-top: 22px;
+}
+.medical-front-of-eye-stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: 20px;
+  align-items: center;
+  padding: 20px 0;
+  border-top: 1px solid #d7e2df;
+}
+.medical-front-of-eye-visual,
+.medical-front-of-eye-copy {
+  min-width: 0;
+}
+.medical-front-of-eye-animation {
+  width: 100%;
+  aspect-ratio: 1169 / 1280;
+  overflow: hidden;
+  background: #fff;
+  border-radius: 14px;
+}
+.medical-front-of-eye-animation svg {
+  width: 100%;
+  height: 100%;
+}
+.medical-front-of-eye-copy p {
+  padding: 7px 10px;
+  margin: 0 0 8px;
+  border-left: 3px solid transparent;
+  line-height: 1.6;
+}
+.medical-front-of-eye-copy p.is-current {
+  border-color: #00b900;
+  background: #effbf1;
+}
+.medical-front-of-eye-toggle {
+  padding: 9px 12px;
+  margin-top: 10px;
+  border: 1px solid #c1d4c6;
+  border-radius: 10px;
+  background: #f3fbf4;
+  color: #173323;
+  cursor: pointer;
+  font: inherit;
+  font-size: 12px;
+}
+@media (max-width: 600px) {
+  .medical-front-of-eye-stage {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 10px;
+    align-items: start;
+  }
+  .medical-front-of-eye-copy p {
+    font-size: 12px;
+    padding: 5px;
+    line-height: 1.5;
+  }
+}
+.workshop-source-figure {
+  margin: 0;
+  width: 100%;
+}
+.workshop-source-figure img {
+  display: block;
+  max-width: 100%;
+  max-height: 85vh;
+  width: auto;
+  height: auto;
+  margin: auto;
+  object-fit: contain;
+  border-radius: 12px;
+}
+.workshop-source-figure figcaption {
+  margin-top: 12px;
+  font-size: 14px;
+  font-weight: 650;
+  text-align: center;
+}
+.pec-response-form {
+  width: 100%;
+  overflow-x: auto;
+}
+.pec-response-form table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 420px;
+}
+.pec-response-form th,
+.pec-response-form td {
+  padding: 8px;
+  border: 1px solid #cdded3;
+}
+.pec-response-form input {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 90px;
+  padding: 10px;
+  border: 1px solid #cdded3;
+  border-radius: 8px;
+  font: inherit;
+}
+.primary-ear-lesson-page .diabetic-screening-panel {
+  gap: 20px;
+}
+.primary-ear-lesson-page .medical-learning-video {
+  width: 100%;
+  border-radius: 16px;
+}
+
+#earsCatalogPage .ear-workshop-entry {
+  display: flex;
+  width: min(90%, 440px);
+  margin: 28px auto;
+  color: inherit;
+  text-decoration: none;
+}
+#earsCatalogPage .ear-workshop-entry .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/primary_folder.webp");
+}
+#primaryEarCareLessonPage .diabetic-screening-step {
+  background: #00c900;
+  color: #fff;
+}
+
+.pec-eye-lesson-page .diabetic-screening-panel--content-fit,
+:is(#pecEyeLessonPage, #primaryEarCareLessonPage) .pec-real-case-panel {
+  display: block;
+  min-height: 0;
+}
+#medicalPupilsAnteriorPracticePage
+  .medical-front-of-eye-panel
+  .diabetic-screening-panel__text {
+  width: 100%;
+}
+
+#medicalPupilsAnteriorPracticePage .medical-front-of-eye-copy p {
+  font-size: 14px;
+  line-height: 1.55;
+}
+@media (max-width: 600px) {
+  #medicalPupilsAnteriorPracticePage .medical-front-of-eye-copy p {
+    font-size: 12px;
+    line-height: 1.5;
+  }
+}
+
+/* Portrait interpretation sheet and explicit browser save. */
+.workshop-source-portrait {
+  position: relative;
+  width: min(100%, 420px);
+  aspect-ratio: 336 / 668;
+  margin: auto;
+}
+.workshop-source-portrait img {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 198.81%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+.pec-response-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.pec-response-save {
+  padding: 10px 18px;
+  border: 1px solid #abd0b4;
+  border-radius: 10px;
+  background: #e9f8ed;
+  color: #173323;
+  cursor: pointer;
+  font: inherit;
+}
+/* Match the scrolly arrow's circular control, centred below its image. */
+.medical-front-of-eye-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 54px;
+  height: 54px;
+  padding: 0;
+  margin: 12px auto 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(58, 58, 58, 0.46);
+  color: #fff;
+  line-height: 0;
+  appearance: none;
+  -webkit-appearance: none;
+}
+.medical-front-of-eye-toggle svg {
+  width: 28px;
+  height: 28px;
+  fill: currentColor;
+}
+.medical-front-of-eye-toggle .medical-animation-play-icon,
+.medical-front-of-eye-toggle[aria-pressed="true"]
+  .medical-animation-pause-icon {
+  display: none;
+}
+.medical-front-of-eye-toggle[aria-pressed="true"] .medical-animation-play-icon {
+  display: block;
+}
+.medical-front-of-eye-toggle:focus-visible {
+  outline: 2px solid #173323;
+  outline-offset: 3px;
+}
+@media (min-width: 1024px) {
+  .medical-front-of-eye-toggle {
+    width: 75px;
+    height: 75px;
+  }
+  .medical-front-of-eye-toggle svg {
+    width: 39px;
+    height: 39px;
+  }
+}
+@media (max-width: 600px) {
+  .medical-front-of-eye-stage {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+  }
+}
+/* Primary colour is scoped to the PEC entry into the shared quiz. */
+#glaucomaQuizCaseStudy.pec-primary-quiz .quiz-card-number,
+#glaucomaQuizCaseStudy.pec-primary-quiz .quiz-actions .btn.primary {
+  background: #00c900;
+  color: #fff;
+}
+#glaucomaQuizCaseStudy.pec-primary-quiz .opt input {
+  accent-color: #00c900;
 }

@@ -405,14 +405,19 @@ export function initializeMedicalAnteriorSegmentCaseStudy() {
   let revealedSections = new Set();
 
   function configureButton(label, action, ariaLabel = label) {
+    answerButton.dataset.i18n =
+      action === "see-all"
+        ? "medicalStudentsWorkshop.content.see_all_2941c5ce"
+        : `i18nLiteral.${label}`;
     answerButton.textContent = label;
+    window.I18N?.applyTranslations?.(answerButton);
     answerButton.dataset.action = action;
     answerButton.setAttribute("aria-label", ariaLabel);
   }
 
   function configureAdvanceButton(caseData) {
     configureButton(
-      caseIndex === TOTAL_CASES - 1 ? "Finish" : "Next case >",
+      caseIndex === TOTAL_CASES - 1 ? "Finish" : "Next >",
       caseIndex === TOTAL_CASES - 1 ? "finish" : "next",
       caseIndex === TOTAL_CASES - 1
         ? isLaoLanguage()

@@ -212,6 +212,13 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    if (routeName === "primaryEarCareWorkshop") {
+      const { initializePrimaryEarCareWorkshop } =
+        await import("./primaryEarCareWorkshop.js");
+      initializePrimaryEarCareWorkshop();
+      return;
+    }
+
     if (routeName === "pecWorkshop") {
       const { initializePecWorkshop } = await import("./pecWorkshop.js");
       initializePecWorkshop?.();

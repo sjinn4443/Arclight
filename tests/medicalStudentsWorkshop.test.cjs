@@ -712,7 +712,7 @@ describe("Medical Students workshop", () => {
     );
     expect(caseStudySource).toContain('prefix: "ACTION: Decide on an "');
     expect(caseStudySource).toContain(
-      "`/images/casestudy/case${caseData.id}_eye.webp`",
+      "`/images/casestudy/case${caseData.id}_eyes.webp`",
     );
     expect(caseStudySource).not.toContain("Math.random");
     expect(caseStudySource).not.toContain("setInterval");

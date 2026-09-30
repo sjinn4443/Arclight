@@ -2,6 +2,11 @@ import { loadPage } from "./navigation.js";
 import { openMenu } from "./menu.js";
 import { initializeDiabeticScreeningScrollLessons } from "./diabeticRetinopathyWorkshop.js";
 
+import {
+  appendWorkshopImages,
+  appendInterpretationWorksheet,
+} from "./workshopLessonMedia.js";
+
 const RESTORE_KEY = "pecWorkshop:restore";
 const MEDICAL_REUSE_KEY = "pecWorkshop:medicalReuse";
 const EXTERNAL_REUSE_KEY = "pecWorkshop:externalReuse";
@@ -11,6 +16,17 @@ const ACTIVE_ENTRY_KEY = "pecWorkshop:activeEntry";
 const COMPLETED_FOLDERS_KEY = "pecWorkshop:completedFolders";
 const PROCEDURE_VIDEO_KEY = "pecWorkshop:procedureVideo";
 const PROCEDURE_VIDEO_FILES = Object.freeze({
+  pupil_presentation_video: "PupilExaminationPresentation",
+  front_presentation_video: "FrontOfEyePresentation",
+  fundal_interpretation_video: "FundalReflexInterpretation",
+  fundal_demonstration_video: "FundalReflexDemonstration",
+  fundal_simulation_video: "FundalReflexSimulation",
+  live_fundoscopy_video: "LiveFundoscopy",
+  optic_disc_cases_video: "OpticDiscCases",
+  cup_to_disc_video: "CupToDiscAssessment",
+  optic_disc_appearances_video: "OpticDiscAppearances",
+  simulation_stations_video: "/videos/Workshop/Shared/SimulationStations",
+  simulation_findings_video: "/videos/Workshop/Shared/SimulationFindings",
   clean_eye: "1.Cleananeye",
   warm_compress: "2.Warmcompress",
   irrigate_eye: "3.Irrigateaneye",
@@ -47,6 +63,9 @@ function readStoredJson(key) {
 }
 
 function clearActiveEntry() {
+  document
+    .getElementById("glaucomaQuizCaseStudy")
+    ?.classList.remove("pec-primary-quiz");
   try {
     sessionStorage.removeItem(ACTIVE_ENTRY_KEY);
   } catch {
@@ -168,6 +187,16 @@ function installExternalBackHandler() {
 const EXAMINATION_ROWS = Object.freeze({
   pupilsAnterior: [
     {
+      label: "pupil_presentation_video",
+      video: "pupil_presentation_video",
+      type: "video",
+    },
+    {
+      label: "front_presentation_video",
+      video: "front_presentation_video",
+      type: "video",
+    },
+    {
       label: "front_of_eye_video",
       target: "feFullAnteriorSegmentPage",
       route: "videos",
@@ -250,6 +279,33 @@ const EXAMINATION_ROWS = Object.freeze({
   ],
   fundalReflex: [
     {
+      label: "fundal_reflex_animation",
+      target: "fundalReflexExaminationScrollPage",
+      route: "videos",
+      type: "scroll",
+    },
+    {
+      label: "fundal_source_guide",
+      lesson: "fundalSourceGuide",
+      type: "scroll",
+    },
+    { label: "real_cases", lesson: "realCases", type: "video" },
+    {
+      label: "fundal_interpretation_test",
+      lesson: "fundalInterpretation",
+      type: "quiz",
+    },
+    {
+      label: "fundal_demonstration_video",
+      video: "fundal_demonstration_video",
+      type: "video",
+    },
+    {
+      label: "fundal_simulation_video",
+      video: "fundal_simulation_video",
+      type: "video",
+    },
+    {
       label: "fundal_reflex_video",
       target: "fundalExamPage",
       route: "videos",
@@ -292,7 +348,38 @@ const EXAMINATION_ROWS = Object.freeze({
       target: "medicalFundalDirectPracticePage",
       type: "scroll",
     },
-    { label: "real_cases", lesson: "realCases", type: "video" },
+    {
+      label: "live_fundoscopy_video",
+      video: "live_fundoscopy_video",
+      type: "video",
+    },
+    {
+      label: "optic_nerve_quiz",
+      target: "glaucomaQuizCaseStudy",
+      route: "glaucomaQuizCaseStudy",
+      type: "quiz",
+    },
+    { label: "cup_to_disc_video", video: "cup_to_disc_video", type: "video" },
+    {
+      label: "optic_disc_appearances_video",
+      video: "optic_disc_appearances_video",
+      type: "video",
+    },
+    {
+      label: "simulation_stations_video",
+      video: "simulation_stations_video",
+      type: "video",
+    },
+    {
+      label: "simulation_findings_video",
+      video: "simulation_findings_video",
+      type: "video",
+    },
+    {
+      label: "cataract_identification_video",
+      lesson: "cataractIdentification",
+      type: "video",
+    },
   ],
   lidHygiene: ["clean_eye", "warm_compress"].map((key) => ({
     label: key,
@@ -400,7 +487,48 @@ const EYE_LESSONS = Object.freeze({
       ],
     ],
   },
-  realCases: { title: "real_cases", videos: ["Realcase1", "Realcase2"] },
+  realCases: {
+    title: "real_cases",
+    videos: ["Realcase1", "Realcase2", "Realcase3"],
+  },
+  fundalSourceGuide: {
+    title: "fundal_source_guide",
+    images: [
+      {
+        src: "/images/learning/PEC/image57.png",
+        caption: "fundal_source_guide",
+      },
+      {
+        src: "/images/learning/PEC/image67.png",
+        caption: "fundal_test_images",
+      },
+      {
+        src: "/images/learning/PEC/image68.png",
+        caption: "fundal_test_images",
+      },
+      {
+        src: "/images/learning/PEC/image69.png",
+        caption: "fundal_test_images",
+      },
+    ],
+  },
+  fundalInterpretation: {
+    title: "fundal_interpretation_test",
+    videos: ["FundalReflexInterpretationQuestions_220p"],
+    trailingVideos: ["FundalReflexInterpretationAnswers_220p"],
+    images: [
+      {
+        src: "/images/learning/PEC/image64.png",
+        caption: "fundal_test_images",
+        rotate: true,
+      },
+    ],
+    worksheet: true,
+  },
+  cataractIdentification: {
+    title: "cataract_identification_video",
+    videos: ["/videos/Cataract/Cataract Identification PEC 20MB.mp4"],
+  },
 });
 
 function translated(key) {
@@ -465,6 +593,8 @@ function ensurePecNavigation() {
     return;
   const page = document.getElementById(active.target);
   if (!page || getComputedStyle(page).display === "none") return;
+  if (active.target === "glaucomaQuizCaseStudy")
+    page.classList.add("pec-primary-quiz");
   if (active.caseStudy === "primary")
     page.classList.add("pec-case-study-primary");
   const host =
@@ -697,7 +827,9 @@ function renderProcedureVideo(key) {
   }
   const selectMode = (mode, preserveTime = true) => {
     if (mode !== "low" && mode !== "high") return;
-    const nextSrc = `/videos/Workshop/PEC/${PROCEDURE_VIDEO_FILES[page.dataset.pecRenderedVideo]}_${mode === "low" ? "220p" : "720p"}.mp4`;
+    const file = PROCEDURE_VIDEO_FILES[page.dataset.pecRenderedVideo];
+    const base = file.startsWith("/") ? file : `/videos/Workshop/PEC/${file}`;
+    const nextSrc = `${base}_${mode === "low" ? "220p" : "720p"}.mp4`;
     const previousTime = preserveTime ? video.currentTime || 0 : 0;
     const wasPlaying = preserveTime && !video.paused;
     toggle.dataset.active = mode;
@@ -794,7 +926,7 @@ function renderEyeLesson(key) {
     visual.append(stages);
     stack.append(visual);
   }
-  (lesson.videos || []).forEach((name, index) => {
+  const appendVideo = (name, index) => {
     const panel = document.createElement("article");
     panel.className = "diabetic-screening-panel pec-real-case-panel";
     panel.dataset.diabeticScrollStep = "";
@@ -808,12 +940,18 @@ function renderEyeLesson(key) {
       `${translated("real_cases")} ${index + 1}`,
     );
     const source = document.createElement("source");
-    source.src = `/videos/Workshop/PEC/${name}.mp4`;
+    source.src = name.startsWith("/")
+      ? name
+      : `/videos/Workshop/PEC/${name}.mp4`;
     source.type = "video/mp4";
     video.append(source);
     panel.append(video);
     stack.append(panel);
-  });
+  };
+  (lesson.videos || []).forEach(appendVideo);
+  appendWorkshopImages(stack, lesson.images || [], translated);
+  if (lesson.worksheet) appendInterpretationWorksheet(stack, key, translated);
+  (lesson.trailingVideos || []).forEach(appendVideo);
   section.append(stack);
   content.append(section);
   page.dataset.pecRenderedLesson = key;
@@ -961,7 +1099,6 @@ export function initializePecWorkshop() {
 
   try {
     const restore = JSON.parse(sessionStorage.getItem(RESTORE_KEY) || "null");
-    sessionStorage.removeItem(RESTORE_KEY);
     if (restore?.section) {
       page.querySelector(`[data-folder="${restore.section}"]`)?.click();
       if (restore.nested) {

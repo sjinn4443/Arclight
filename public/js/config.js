@@ -29,6 +29,7 @@ export const ROUTES = {
   childhoodEyeScreeningWorkshop: "html/childhoodEyeScreeningWorkshop.html",
   medicalStudentsWorkshop: "html/medicalStudentsWorkshop.html",
   pecWorkshop: "html/pecWorkshop.html",
+  primaryEarCareWorkshop: "html/primaryEarCareWorkshop.html",
   fundalReflexPdf: "/html/fundalReflexPdf.html",
   fundalReflexQuiz: "/html/fundalReflexQuiz.html",
   directOphthalmoscopyPdf: "html/fundalReflexPdf.html",

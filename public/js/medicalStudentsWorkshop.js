@@ -4,6 +4,8 @@ import { initializeDiabeticScreeningScrollLessons } from "./diabeticRetinopathyW
 import { initializeMedicalAnteriorSegmentCaseStudy } from "./medicalAnteriorSegmentCaseStudy.js";
 import { initializeMedicalStudentsTestQuizzes } from "./medicalStudentsTestQuiz.js";
 
+import { initializeMedicalFrontOfEyePractice } from "./medicalFrontOfEyePractice.js";
+
 const PAGE_ID = "medicalStudentsWorkshopPage";
 const RAPD_RETURN_KEY = "medicalStudentsWorkshop:rapdReturn";
 const RESTORE_FOLDER_KEY = "medicalStudentsWorkshop:restoreFolder";
@@ -39,21 +41,6 @@ function applyPecMedicalReuseTheme() {
         "Identify the loupe, ophthalmoscope aperture, light switch, colour strip, lenses, pupil gauge, ruler, fixation targets, solar panel and USB-C charging point before examining a patient.",
       );
       window.I18N?.applyTranslations?.(controls);
-    }
-  }
-  if (
-    target === "medicalPupilsAnteriorPracticePage" &&
-    !page?.querySelector(".pec-practice-closeup")
-  ) {
-    const stack = page?.querySelector(".diabetic-screening-stack");
-    const anchor = stack?.children[1];
-    if (stack && anchor) {
-      const article = document.createElement("article");
-      article.className = "diabetic-screening-panel pec-practice-closeup";
-      article.dataset.diabeticScrollStep = "";
-      article.innerHTML = `<div class="diabetic-screening-panel__text"><span class="diabetic-screening-step">03</span><h3 data-i18n="pecWorkshop.closeup_title">Examine each structure in turn</h3></div><div class="pec-practice-closeup__images"><figure class="medical-practice-poster"><img src="/images/learning/PEC/image30.png" alt="Systematic examination of the front of the eye" loading="lazy"><figcaption data-i18n="pecWorkshop.closeup_guide">Front of eye examination</figcaption></figure><figure class="medical-practice-poster"><img src="/images/learning/PEC/image31.png" alt="Close-up illustration of eye structures" loading="lazy"><figcaption data-i18n="pecWorkshop.closeup_illustration">Close-up view</figcaption></figure><figure class="medical-practice-poster"><img src="/images/learning/PEC/image32.png" alt="Twelve close-up photographs of front of eye findings" loading="lazy"><figcaption data-i18n="pecWorkshop.closeup_cases">Front of eye examples</figcaption></figure></div>`;
-      anchor.insertAdjacentElement("afterend", article);
-      window.I18N?.applyTranslations?.(article);
     }
   }
 }
@@ -929,6 +916,7 @@ export function initializeMedicalStudentsWorkshop() {
   if (!page || page.dataset.inited === "1") return;
   page.dataset.inited = "1";
   applyPecMedicalReuseTheme();
+  initializeMedicalFrontOfEyePractice();
   initializeMedicalStudentsWorkshopFlowInfra();
   initializeDiabeticScreeningScrollLessons();
   initializeMedicalAnteriorSegmentCaseStudy();

@@ -364,7 +364,7 @@ test("PEC eye examination folders contain relevant lessons and front of eye case
     .locator('[data-medical-target="medicalPupilsAnteriorPracticePage"]')
     .click();
   const practice = page.locator("#medicalPupilsAnteriorPracticePage");
-  await expect(practice.locator(".pec-practice-closeup img")).toHaveCount(3);
+  await expect(practice.locator(".medical-front-of-eye-stage")).toHaveCount(5);
   await expect(
     practice.locator(".medical-practice-poster figcaption").first(),
   ).toHaveCSS("background-color", "rgb(0, 217, 0)");
@@ -412,7 +412,7 @@ test("PEC procedure rows, video lessons and ear link are available", async ({
   const workshop = page.locator("#pecWorkshopPage");
   await expect(workshop.locator(".pec-ear-care-link")).toHaveAttribute(
     "href",
-    "#/ears",
+    "#/primaryEarCareWorkshop",
   );
   await expect(workshop.locator(".pec-ear-care-link__copy small")).toHaveText(
     "Direct to",
@@ -493,9 +493,9 @@ test("PEC procedure rows, video lessons and ear link are available", async ({
 
   await procedures.locator("[data-close-section]").click();
   await workshop.locator('[data-folder="eyeExamination"]').click();
-  await workshop.locator('[data-nested-folder="fundoscopy"]').click();
+  await workshop.locator('[data-nested-folder="fundalReflex"]').click();
   await workshop.locator('[data-pec-lesson="realCases"]').click();
-  await expect(page.locator("#pecEyeLessonPage video")).toHaveCount(2);
+  await expect(page.locator("#pecEyeLessonPage video")).toHaveCount(3);
   await expect(
     page.locator("#pecEyeLessonPage video source").first(),
   ).toHaveAttribute("src", /Realcase1\.mp4$/);
