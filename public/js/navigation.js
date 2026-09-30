@@ -1045,6 +1045,7 @@ const STRUCTURAL_BACK_TARGETS = {
   editProfile: { routeName: "myprofile" },
   eyes: { routeName: "dashboard" },
   fundalReflexPdf: { routeName: "childhoodEyeScreeningWorkshop" },
+  fundalReflexQuiz: { routeName: "pecWorkshop" },
   glaucomaHistoryCaseStudy: { routeName: "glaucomaWorkshop" },
   glaucomaQuizCaseStudy: { routeName: "glaucomaWorkshop" },
   glaucomaScrollImages: { routeName: "glaucomaWorkshop" },

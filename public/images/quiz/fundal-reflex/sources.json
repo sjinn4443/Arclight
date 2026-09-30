@@ -1,0 +1,40 @@
+{
+  "presentation": "PEEC for App 230926.pptx",
+  "imageSlide": 98,
+  "imagePart": "ppt/media/image64.png",
+  "videoSlide": 100,
+  "videoPart": "ppt/media/media8.mp4",
+  "notes": "Original orientation preserved for each source. The video mirrors some card images. Cases 3 and 5 both show asymmetry. Case 2 accepts both synonymous normal signs.",
+  "cases": [
+    {
+      "id": 1,
+      "crop": [25, 56, 312, 149],
+      "startSeconds": 163.1,
+      "endSeconds": 167.7
+    },
+    {
+      "id": 2,
+      "crop": [25, 171, 312, 264],
+      "startSeconds": 136.1,
+      "endSeconds": 140.6
+    },
+    {
+      "id": 3,
+      "crop": [25, 287, 312, 380],
+      "startSeconds": 200.1,
+      "endSeconds": 204.7
+    },
+    {
+      "id": 4,
+      "crop": [25, 402, 312, 495],
+      "startSeconds": 189.6,
+      "endSeconds": 194.0
+    },
+    {
+      "id": 5,
+      "crop": [26, 515, 313, 606],
+      "startSeconds": 206.1,
+      "endSeconds": 209.78
+    }
+  ]
+}

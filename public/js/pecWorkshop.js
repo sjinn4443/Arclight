@@ -266,6 +266,12 @@ const EXAMINATION_ROWS = Object.freeze({
       target: "medicalFundalDirectPracticePage",
       type: "scroll",
     },
+    {
+      label: "Test",
+      target: "fundalReflexQuizPage",
+      route: "fundalReflexQuiz",
+      type: "quiz",
+    },
   ],
   fundoscopy: [
     {

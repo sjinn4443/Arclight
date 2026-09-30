@@ -30,6 +30,7 @@ export const ROUTES = {
   medicalStudentsWorkshop: "html/medicalStudentsWorkshop.html",
   pecWorkshop: "html/pecWorkshop.html",
   fundalReflexPdf: "/html/fundalReflexPdf.html",
+  fundalReflexQuiz: "/html/fundalReflexQuiz.html",
   directOphthalmoscopyPdf: "html/fundalReflexPdf.html",
   binocularIndirectOphthalmoscopyPdf: "html/fundalReflexPdf.html",
   visualAcuityPdf: "html/fundalReflexPdf.html",

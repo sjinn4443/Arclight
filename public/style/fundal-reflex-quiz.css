@@ -1,0 +1,318 @@
+#fundalReflexQuizPage .frq-title {
+  font-size: 18px;
+  margin: 24px 0 0;
+  color: #f25600;
+  white-space: normal;
+}
+#fundalReflexQuizPage .menuBtn {
+  border: 0;
+  background: transparent;
+  color: inherit;
+}
+#fundalReflexQuizPage .frq-mount {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 10px 14px 24px;
+  box-sizing: border-box;
+}
+#fundalReflexQuizPage .frq-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+#fundalReflexQuizPage .frq-heading h2 {
+  font-size: 18px;
+  margin: 8px 0;
+}
+#fundalReflexQuizPage #frqProgress {
+  font-size: 13px;
+  color: #505964;
+}
+#fundalReflexQuizPage .frq-instructions,
+#fundalReflexQuizPage .frq-status {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #505964;
+}
+#fundalReflexQuizPage .frq-instructions {
+  margin-bottom: 28px;
+}
+#fundalReflexQuizPage #frqQuestions {
+  display: grid;
+  gap: 18px;
+  scroll-margin-top: 84px;
+}
+#fundalReflexQuizPage .frq-card {
+  scroll-margin-top: 84px;
+  background: #fff;
+  color: #222;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 16px 14px 14px;
+  box-shadow: 0 2px 10px #0000000f;
+  min-width: 0;
+}
+#fundalReflexQuizPage .frq-card-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 15px;
+}
+#fundalReflexQuizPage .frq-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #f25600;
+  color: #fff;
+  font-size: 13px;
+  flex: 0 0 42px;
+}
+#fundalReflexQuizPage .frq-media {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 16 / 9;
+  border-radius: 12px;
+  background: #000;
+  overflow: hidden;
+  margin: 0 auto 16px;
+}
+#fundalReflexQuizPage .frq-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+#fundalReflexQuizPage .frq-image:not(.is-explanation) {
+  height: auto;
+  /* Clip the pink card surround; the media's black background fills it. */
+  clip-path: inset(2% 0.5% round 7% / 22%);
+}
+#fundalReflexQuizPage
+  .frq-card[data-index="3"]
+  .frq-image:not(.is-explanation) {
+  /* This card's original crop includes a thicker pink strip at the bottom. */
+  clip-path: inset(2% 0.5% 7% round 7% / 22%);
+}
+#fundalReflexQuizPage .frq-chart {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid #adb5bd;
+  border-radius: 12px;
+  overflow: hidden;
+  table-layout: fixed;
+  margin: 0;
+}
+#fundalReflexQuizPage .frq-normal-column {
+  width: 32%;
+}
+#fundalReflexQuizPage .frq-chart th,
+#fundalReflexQuizPage .frq-chart td {
+  border: 0;
+  border-right: 1px solid #adb5bd;
+  border-bottom: 1px solid #adb5bd;
+  padding: 8px;
+  vertical-align: top;
+  text-align: left;
+}
+#fundalReflexQuizPage .frq-chart tr > :last-child {
+  border-right: 0;
+}
+#fundalReflexQuizPage .frq-chart tbody tr:last-child > td {
+  border-bottom: 0;
+}
+#fundalReflexQuizPage .frq-chart th {
+  background: #f3f5f7;
+  font-size: 14px;
+}
+#fundalReflexQuizPage .frq-zone {
+  min-height: 84px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed #acb6c2;
+  border-radius: 8px;
+  padding: 6px;
+  box-sizing: border-box;
+}
+#fundalReflexQuizPage .frq-zone.is-over {
+  background: #fff2e8;
+  outline: 2px solid #f25600;
+}
+#fundalReflexQuizPage .frq-placeholder {
+  font-size: 12px;
+  color: #626c77;
+  text-align: center;
+}
+#fundalReflexQuizPage .frq-banks {
+  display: grid;
+  grid-template-columns: 32% minmax(0, 1fr);
+  margin-top: 12px;
+}
+#fundalReflexQuizPage .frq-bank {
+  min-height: 42px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+  padding: 0 8px;
+}
+#fundalReflexQuizPage .frq-bank:first-child {
+  padding-left: 0;
+}
+#fundalReflexQuizPage .frq-bank:last-child {
+  padding-right: 0;
+}
+#fundalReflexQuizPage .frq-chip {
+  font: inherit;
+  font-size: 13px;
+  line-height: 1.4;
+  text-align: left;
+  color: #273444;
+  background: #f5f7fa;
+  border: 1px solid #c7d0dc;
+  border-radius: 8px;
+  padding: 9px 10px;
+  cursor: grab;
+  touch-action: none;
+  overflow-wrap: anywhere;
+  max-width: 100%;
+  user-select: none;
+}
+#fundalReflexQuizPage .frq-chip:focus-visible,
+#fundalReflexQuizPage .frq-button:focus-visible {
+  outline: 3px solid #245eb5;
+  outline-offset: 3px;
+}
+#fundalReflexQuizPage .frq-chip:disabled {
+  opacity: 1;
+  cursor: default;
+}
+#fundalReflexQuizPage .frq-chip.is-correct {
+  background: #e3f5e8;
+  border-color: #228344;
+  color: #145b2d;
+}
+#fundalReflexQuizPage .frq-chip.is-incorrect {
+  background: #fde7e7;
+  border-color: #bc3434;
+  color: #8b2222;
+}
+#fundalReflexQuizPage .frq-ghost {
+  position: fixed;
+  z-index: 10000;
+  pointer-events: none;
+  opacity: 0.88;
+  box-shadow: 0 6px 18px #0003;
+}
+#fundalReflexQuizPage .frq-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+#fundalReflexQuizPage .frq-button {
+  padding: 12px 18px;
+  border: 1px solid #c4cbd4;
+  border-radius: 10px;
+  background: #fff;
+  color: #222;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+#fundalReflexQuizPage .frq-primary {
+  background: #f25600;
+  color: white;
+  border-color: #f25600;
+}
+#fundalReflexQuizPage #frqSubmit {
+  border-radius: 14px;
+}
+#fundalReflexQuizPage #frqScore,
+#fundalReflexQuizPage #frqPoints {
+  font-weight: 700;
+}
+#fundalReflexQuizPage #frqScore .is-correct,
+#fundalReflexQuizPage .frq-answer-value.is-correct,
+#fundalReflexQuizPage .frq-result.is-correct,
+#fundalReflexQuizPage .frq-explanation strong.is-correct {
+  color: #228344;
+}
+#fundalReflexQuizPage #frqScore .is-incorrect,
+#fundalReflexQuizPage .frq-answer-value.is-incorrect,
+#fundalReflexQuizPage .frq-result.is-incorrect,
+#fundalReflexQuizPage .frq-explanation strong.is-incorrect {
+  color: #bc3434;
+}
+#fundalReflexQuizPage #frqScore .is-partial,
+#fundalReflexQuizPage .frq-result.is-partial,
+#fundalReflexQuizPage .frq-explanation strong.is-partial,
+#fundalReflexQuizPage .frq-answer-value.is-partial {
+  color: #f25600;
+}
+#fundalReflexQuizPage .frq-answer-label {
+  color: #000;
+}
+#fundalReflexQuizPage .frq-button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+#fundalReflexQuizPage .frq-explanation {
+  margin-top: 14px;
+  padding: 12px;
+  background: #f3f5f7;
+  border-radius: 8px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+#fundalReflexQuizPage .frq-explanation p {
+  margin: 0 0 8px;
+}
+#fundalReflexQuizPage .frq-explanation p:last-child {
+  margin: 0;
+}
+#fundalReflexQuizPage dialog {
+  width: min(420px, calc(100vw - 48px));
+  box-sizing: border-box;
+  border: 0;
+  border-radius: 16px;
+  padding: 24px;
+  color: #222;
+  box-shadow: 0 16px 60px #0004;
+}
+#fundalReflexQuizPage dialog::backdrop {
+  background: #0008;
+}
+#fundalReflexQuizPage dialog h2 {
+  margin-top: 0;
+}
+#fundalReflexQuizPage dialog p {
+  line-height: 1.5;
+}
+#fundalReflexQuizPage [hidden] {
+  display: none !important;
+}
+#fundalReflexQuizPage .frq-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+@media (max-width: 767px) {
+  #fundalReflexQuizPage .frq-media {
+    max-width: 74vw;
+  }
+  #fundalReflexQuizPage .eyes-topbar__title {
+    font-size: 16px;
+  }
+}

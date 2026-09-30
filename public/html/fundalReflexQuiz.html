@@ -1,0 +1,104 @@
+<link rel="stylesheet" href="/style/fundal-reflex-quiz.css" />
+<div id="fundalReflexQuizPage" class="page pupils-like has-eyes-topbar">
+  <div class="container pupils-container">
+    <div class="eyes-topbar">
+      <div class="eyes-topbar__title">Test</div>
+      <div class="eyes-topbar__icons">
+        <button class="icon menuBtn" type="button" aria-label="Menu">☰</button>
+      </div>
+    </div>
+    <div class="frq-mount">
+      <h1 class="frq-title">Fundal 'Red' Reflex Image Interpretation</h1>
+      <div class="frq-heading">
+        <h2>Test</h2>
+        <span id="frqProgress" role="status">0 / 5 answered</span>
+      </div>
+      <p class="frq-instructions">
+        For each image, choose Yes or No and drag one or more clinical signs
+        into the chart. Drag a chip out of the chart to return it, or tap a chip
+        to place or remove it. Answers can be used in more than one question.
+      </p>
+      <div id="frqQuestions"></div>
+      <div class="frq-actions">
+        <button
+          id="frqSubmit"
+          class="frq-button frq-primary"
+          type="button"
+          disabled
+        >
+          Submit answers
+        </button>
+        <button id="frqRestart" class="frq-button" type="button" hidden>
+          Try again
+        </button>
+      </div>
+      <p id="frqStatus" role="status" class="frq-status">
+        Answer both columns in all five questions to submit.
+      </p>
+    </div>
+  </div>
+  <dialog
+    id="frqResults"
+    aria-labelledby="frqResultsTitle"
+    aria-describedby="frqScore"
+  >
+    <h2 id="frqResultsTitle">Results</h2>
+    <p id="frqScore"></p>
+    <p id="frqPoints"></p>
+    <button id="frqSeeWhy" class="frq-button frq-primary" type="button">
+      See why?
+    </button>
+  </dialog>
+  <template id="frqCardTemplate">
+    <section class="frq-card">
+      <h3 class="frq-card-heading">
+        <span class="frq-number"></span><span class="frq-result"></span>
+      </h3>
+      <div class="frq-media">
+        <img class="frq-image" width="640" height="360" />
+      </div>
+      <table class="frq-chart">
+        <caption class="frq-sr-only"></caption>
+        <colgroup>
+          <col class="frq-normal-column" />
+          <col />
+        </colgroup>
+        <thead>
+          <tr>
+            <th scope="col">Normal?</th>
+            <th scope="col">Clinical Sign</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <div class="frq-zone" data-field="normal">
+                <span class="frq-placeholder">Drop Yes or No here</span>
+              </div>
+            </td>
+            <td>
+              <div class="frq-zone" data-field="sign">
+                <span class="frq-placeholder">Drop clinical signs here</span>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="frq-banks">
+        <div
+          class="frq-bank"
+          data-field="normal"
+          role="group"
+          aria-label="Normal? choices"
+        ></div>
+        <div
+          class="frq-bank"
+          data-field="sign"
+          role="group"
+          aria-label="Clinical Sign choices"
+        ></div>
+      </div>
+      <div class="frq-explanation" hidden></div>
+    </section>
+  </template>
+</div>

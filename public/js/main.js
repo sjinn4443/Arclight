@@ -270,6 +270,13 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    if (routeName === "fundalReflexQuiz") {
+      const { initializeFundalReflexQuiz } =
+        await import("./fundalReflexQuiz.js");
+      initializeFundalReflexQuiz();
+      return;
+    }
+
     if (routeName === "directOphthalmoscopyPdf") {
       initializeDirectOphthalmoscopyPdf();
       return;
