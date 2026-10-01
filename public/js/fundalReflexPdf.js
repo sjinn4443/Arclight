@@ -528,3 +528,14 @@ export function initializeFrontOfEyePdf() {
     "images/pdf/Workshop/CoreExamination/rendered/FrontofEye-1.png",
   ]);
 }
+
+export function initializePrimaryEarCareOtoscopePdf() {
+  initCoreExaminationPdfPage(
+    "primaryEarCareLessonPage",
+    "primaryEarCarePdfViewer",
+    [
+      "/images/pdf/Workshop/ENT/Otoscope/Otoscope-1.png",
+      "/images/pdf/Workshop/ENT/Otoscope/Otoscope-2.png",
+    ],
+  );
+}

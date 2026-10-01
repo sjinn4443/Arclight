@@ -237,18 +237,14 @@ export function initializeDashboard() {
   // 3) Category cards
   const LEGACY_TO_ROUTE = {
     eyesModules: "eyes",
-    earsModules: "ears",
+    earsModules: "primaryEarCareWorkshop",
     skinModules: "videos",
     teachModules: "videos",
     eyesCatalogPage: "eyes",
-    earsLearningModules: "ears",
+    earsLearningModules: "primaryEarCareWorkshop",
   };
 
-  const DISABLED_TARGETS = new Set([
-    "earsLearningModules",
-    "skinModules",
-    "teachModules",
-  ]);
+  const DISABLED_TARGETS = new Set(["skinModules", "teachModules"]);
 
   // Wire category cards
   root.querySelectorAll(".category-card").forEach((card) => {

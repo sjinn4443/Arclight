@@ -31527,3 +31527,17 @@ img[src*="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/"] {
 #glaucomaQuizCaseStudy.pec-primary-quiz .opt input {
   accent-color: #00c900;
 }
+
+.primary-ear-pdf-download[hidden] {
+  display: none;
+}
+
+:is(#pecWorkshopPage, #primaryEarCareWorkshopPage)
+  .lesson-row
+  .lesson-progress {
+  margin-left: 25px;
+  width: calc(100% - 25px);
+}
+:is(#pecWorkshopPage, #primaryEarCareWorkshopPage) .lesson-progress__fill {
+  background: #15e115;
+}

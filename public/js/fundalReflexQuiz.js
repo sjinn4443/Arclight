@@ -1,3 +1,4 @@
+import { setLessonProgress } from "./lessonProgress.js";
 const SIGNS = [
   "symmetrical brightness in colour",
   "asymmetrical. difference in colours and the brightness",
@@ -324,6 +325,7 @@ export function initializeFundalReflexQuiz() {
     if (submitted || answers.some((a) => a.normal === null || !a.signs.length))
       return;
     submitted = true;
+    setLessonProgress("fundalReflexQuizPage", 100);
     submit.disabled = true;
     const scores = CASES.map((_, i) => correctness(i).score);
     const summary = page.querySelector("#frqScore");

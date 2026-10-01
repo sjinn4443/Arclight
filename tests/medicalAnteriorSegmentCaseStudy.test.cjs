@@ -98,7 +98,7 @@ describe("Medical Students anterior segment case study", () => {
       ),
     ).toEqual(["signs", "diagnosis", "action"]);
     expect(log.querySelector(".casechat-img")?.getAttribute("src")).toBe(
-      "/images/casestudy/case1_eye.webp",
+      "/images/casestudy/case1_eyes.webp",
     );
     expect(log.querySelector(".casechat-imgwrap")?.classList).toContain(
       "is-revealed",
@@ -168,13 +168,13 @@ describe("Medical Students anterior segment case study", () => {
     expect(answer.textContent).toContain("White Pupil");
     expect(answer.textContent).toContain("Cataract");
     expect(answer.textContent).toContain("Refer Investigations and Surgery");
-    expect(button.textContent).toBe("Next case >");
+    expect(button.textContent).toBe("Next >");
 
     button.click();
 
     expect(page.dataset.currentCase).toBe("2");
     expect(log.querySelector(".casechat-img")?.getAttribute("src")).toBe(
-      "/images/casestudy/case2_eye.webp",
+      "/images/casestudy/case2_eyes.webp",
     );
     expect(button.textContent).toBe("See all");
     expect(log.querySelector(".casechat-bubble--user")).toBeNull();

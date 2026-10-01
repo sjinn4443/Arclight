@@ -1,3 +1,9 @@
+import {
+  beginPrimaryWorkshopLesson,
+  initializePrimaryWorkshopProgress,
+  updateActivePrimaryWorkshopLesson,
+} from "./primaryWorkshopProgress.js";
+import { initializePrimaryEarCareOtoscopePdf } from "./fundalReflexPdf.js";
 import { loadPage } from "./navigation.js";
 import { openMenu } from "./menu.js";
 import { initializeDiabeticScreeningScrollLessons } from "./diabeticRetinopathyWorkshop.js";
@@ -73,12 +79,7 @@ const LESSONS = {
   otoscopyVideo: {
     videos: ["/videos/Otoscopy/Otoscopy_Instructional_Video_051124_720p.mp4"],
   },
-  otoscopyGuide: {
-    images: [
-      { src: "/images/Ears/OtoscopyENT.jpg", caption: "otoscopy_guide" },
-      image("image108", "tympanic_membrane"),
-    ],
-  },
+  otoscopyGuide: { pdf: true },
   earConditions: {
     images: [
       { src: "/images/Ears/TeachingPoster.jpg", caption: "ear_conditions" },
@@ -184,9 +185,9 @@ const GROUPS = [
         "otoscopy",
         "otoscopy",
         [
+          ["otoscopyGuide", "otoscope_pdf", "pdf"],
           ["examination", "examination"],
           ["otoscopyVideo", "otoscopy_video", "video"],
-          ["otoscopyGuide", "otoscopy_guide", "pdf"],
           ["earConditions", "ear_conditions", "pdf"],
           ["otoscopyPractice", "otoscopy_practice"],
           ["simulation", "simulation_stations", "video"],
@@ -306,6 +307,16 @@ async function returnToWorkshop() {
   if (page) restoreFolders(page);
 }
 async function openLesson(key, section, nested) {
+  const entry = GROUPS.find((g) => g[0] === section)?.[2]
+    .find((g) => g[0] === nested)?.[2]
+    .find((entry) => entry[0] === key);
+  beginPrimaryWorkshopLesson({
+    workshop: ROUTE,
+    key: `ear-${key}`,
+    route: ROUTE,
+    target: "primaryEarCareLessonPage",
+    type: entry?.[2] || "scroll",
+  });
   write(LESSON_KEY, key);
   write(RESTORE_KEY, { section, nested });
   document
@@ -314,6 +325,7 @@ async function openLesson(key, section, nested) {
   await loadPage(ROUTE, { subPageId: "primaryEarCareLessonPage" });
   renderLesson(key);
   window.scrollTo(0, 0);
+  updateActivePrimaryWorkshopLesson();
 }
 function renderLesson(key) {
   const lesson = LESSONS[key];
@@ -321,6 +333,19 @@ function renderLesson(key) {
   const content = page?.querySelector(".primary-ear-lesson-content");
   if (!lesson || !content) return;
   content.replaceChildren();
+  const isPdf = Boolean(lesson.pdf);
+  page.classList.toggle("core-examination-pdf-page", isPdf);
+  page.classList.toggle("pec-eye-lesson-page", !isPdf);
+  page.classList.toggle("primary-ear-lesson-page", !isPdf);
+  content.classList.toggle("pec-eye-lesson-content", !isPdf);
+  const container = page.querySelector(".container.pupils-container");
+  container.classList.toggle("diabetic-screening-page", !isPdf);
+  container.classList.toggle("medical-students-screening-page", !isPdf);
+  page.querySelector(".primary-ear-pdf-download").hidden = !isPdf;
+  const title = page.querySelector(".eyes-topbar__title");
+  title.dataset.i18n = `primaryEarCareWorkshop.${isPdf ? "otoscope_pdf" : "title"}`;
+  title.textContent = t(isPdf ? "otoscope_pdf" : "title");
+  if (isPdf) page.dataset.pdfTitle = t("otoscope_pdf");
   const section = document.createElement("section");
   section.className =
     "diabetic-screening-lesson diabetic-screening-lesson--tight-hero";
@@ -377,7 +402,14 @@ function renderLesson(key) {
     stack.append(panel);
   });
   section.append(header, stack);
-  content.append(section);
+  if (isPdf) {
+    const viewer = document.createElement("div");
+    viewer.id = "primaryEarCarePdfViewer";
+    viewer.className = "core-examination-pdf-viewer";
+    viewer.setAttribute("aria-label", t("otoscope_pdf"));
+    content.append(viewer);
+    initializePrimaryEarCareOtoscopePdf();
+  } else content.append(section);
   const restore = read(RESTORE_KEY, {});
   const entries =
     GROUPS.find((g) => g[0] === restore.section)?.[2].find(
@@ -420,11 +452,15 @@ function renderLesson(key) {
   });
   content.append(nav);
   window.I18N?.applyTranslations?.(page);
-  initializeDiabeticScreeningScrollLessons();
+  if (!isPdf) initializeDiabeticScreeningScrollLessons();
 }
 export function initializePrimaryEarCareWorkshop() {
   const page = document.getElementById("primaryEarCareWorkshopPage");
-  if (!page || page.dataset.inited === "1") return;
+  if (!page) return;
+  if (page.dataset.inited === "1") {
+    initializePrimaryWorkshopProgress(ROUTE);
+    return;
+  }
   page.dataset.inited = "1";
   const folders = page.querySelector(".pec-workshop-folders");
   const closeAll = () => {
@@ -540,7 +576,14 @@ export function initializePrimaryEarCareWorkshop() {
     });
   }
   const saved = read(LESSON_KEY, null);
-  if (saved) renderLesson(saved);
+  if (
+    saved &&
+    (!LESSONS[saved]?.pdf ||
+      getComputedStyle(document.getElementById("primaryEarCareLessonPage"))
+        .display !== "none")
+  )
+    renderLesson(saved);
   restoreFolders(page);
   window.I18N?.applyTranslations?.(page);
+  initializePrimaryWorkshopProgress(ROUTE);
 }

@@ -53,6 +53,17 @@ export function appendInterpretationWorksheet(stack, key, translate) {
         sessionStorage.setItem(storageKey, input.value);
       });
       status.textContent = translate("saved");
+      document.dispatchEvent(
+        new CustomEvent("primaryWorkshop:worksheet-saved", {
+          detail: {
+            key,
+            percent:
+              (fields.filter(({ input }) => input.value.trim()).length /
+                fields.length) *
+              100,
+          },
+        }),
+      );
     } catch {
       status.textContent = translate("save_failed");
     }

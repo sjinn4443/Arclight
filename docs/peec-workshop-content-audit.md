@@ -124,3 +124,15 @@ Windows Playwright WebKit advertises MP4 support but does not decode these H.264
 - Further practice refinements: playback activates only when the image intersects the viewport centre line; still frames can preload earlier. Controls use SVG pause/play icons in centred grey circles, matching scrolly arrow sizes (75px desktop, 54px otherwise). Mobile uses animation then text in one column.
 - The shared Optic Nerve quiz uses primary green numbers, primary action buttons and radio accents only when entered through PEC, including reload. Returning clears the theme; ordinary glaucoma entry stays unchanged.
 - Anterior case See all/Next buttons retain white text in both Medical Students and PEC.
+
+## Dashboard and Otoscope PDF follow-up
+
+The dashboard Ears card now opens Primary Ear Care Workshop. Under Ear Examination / Otoscopy, the Otoscopy poster and guide row is replaced by the PDF row Otoscope, using both pages of public/images/pdf/Workshop/ENT/Otoscope/Otoscope.pdf. The existing primaryEarCareWorkshop/primaryEarCareLessonPage route reuses the Visual Acuity PDF viewer's pan/zoom behaviour, with an original-PDF download link and the existing workshop navigation. The Direct to PEC Workshop button uses >, matching the opposite workshop link.
+
+## Workshop progress and folder follow-up
+
+- PEC and Primary Ear Care preserve opened folders while navigating within their lessons. Leaving for another app route clears their folder state, including cached workshop returns.
+- Lesson rows use the shared progress-bar and lesson-complete-tick UI in primary bright green (#15e115). Progress persists locally: videos use playback position and actual ended events; scroll lessons complete at the bottom after images load; PDF rows complete on opening, matching the existing PDF convention. Existing quiz progress is reused, anterior case answers record progress, and saved worksheet responses record the proportion filled. Folder ticks require all contained lessons to complete.
+- The Otoscope PDF row is now **How to Use the Arclight Otoscope**, first in Ear Examination / Otoscopy. Next opens Examination: Observe, palpate and otoscopy.
+- Source browser checks: 21 passed across Chromium desktop and WebKit with an iPhone viewport; one actual MP4-decoding check was skipped in Windows WebKit. These cover internal/external folder navigation, persisted PDF and quiz progress, scroll and folder completion, and actual Chromium video progress/completion.
+- The production build passed its distribution budgets, and all six targeted production-browser checks passed. The three Medical Students unit suites passed (30 checks total after updating stale filename/button-label expectations).

@@ -1,3 +1,4 @@
+import { setLessonProgress } from "./lessonProgress.js";
 function addedLocaleCopy(key, number) {
   const code = String(
     document.documentElement.lang || localStorage.getItem("prefLang") || "",
@@ -457,6 +458,12 @@ export function initializeMedicalAnteriorSegmentCaseStudy() {
     button.disabled = true;
     button.setAttribute("aria-pressed", "true");
 
+    setLessonProgress(
+      "medicalAnteriorSegmentPage",
+      ((caseIndex + revealedSections.size / ANSWER_SECTION_ORDER.length) /
+        TOTAL_CASES) *
+        99,
+    );
     if (revealedSections.size === ANSWER_SECTION_ORDER.length) {
       configureAdvanceButton(caseData);
     }
@@ -470,6 +477,10 @@ export function initializeMedicalAnteriorSegmentCaseStudy() {
     log.replaceChildren();
     page.dataset.currentCase = String(caseData.id);
     page.dataset.caseComplete = "false";
+    setLessonProgress(
+      "medicalAnteriorSegmentPage",
+      (caseIndex / TOTAL_CASES) * 100,
+    );
     appendSystemMessage(log, caseData.id);
     appendPatientBubbles(log, caseData);
     resetSectionButtons();
@@ -505,6 +516,10 @@ export function initializeMedicalAnteriorSegmentCaseStudy() {
         button.disabled = true;
         button.setAttribute("aria-pressed", "true");
       });
+      setLessonProgress(
+        "medicalAnteriorSegmentPage",
+        ((caseIndex + 1) / TOTAL_CASES) * 99,
+      );
       configureAdvanceButton(caseData);
       scrollToLatestMessage(log);
       return;
@@ -519,6 +534,7 @@ export function initializeMedicalAnteriorSegmentCaseStudy() {
 
     if (action === "finish") {
       page.dataset.caseComplete = "true";
+      setLessonProgress("medicalAnteriorSegmentPage", 100);
       appendCompletionMessage(log);
       sectionButtons.forEach((button) => {
         button.disabled = true;

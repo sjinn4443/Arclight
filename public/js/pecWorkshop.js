@@ -1,3 +1,8 @@
+import {
+  beginPrimaryWorkshopLesson,
+  initializePrimaryWorkshopProgress,
+  updateActivePrimaryWorkshopLesson,
+} from "./primaryWorkshopProgress.js";
 import { loadPage } from "./navigation.js";
 import { openMenu } from "./menu.js";
 import { initializeDiabeticScreeningScrollLessons } from "./diabeticRetinopathyWorkshop.js";
@@ -552,7 +557,19 @@ function captureLessonSequence(page) {
   );
   pecSequence = rows.map((row, index) => {
     row.dataset.pecIndex = String(index);
+    const externalTarget =
+      row.dataset.pecLesson || row.dataset.pecVideo
+        ? null
+        : row.dataset.pecCaseStudy === "primary"
+          ? "caseStudyChatPagePrimary"
+          : row.dataset.pecCaseStudy === "intermediate"
+            ? "caseStudyChatPage"
+            : row.dataset.pecTarget || row.dataset.medicalTarget;
+    if (externalTarget) row.dataset.primaryProgressTarget = externalTarget;
     return {
+      key: row.dataset.lesson,
+      type: /lesson-row--(\w+)/.exec(row.className)?.[1] || "scroll",
+      externalTarget,
       lesson: row.dataset.pecLesson || null,
       video: row.dataset.pecVideo || null,
       route:
@@ -676,6 +693,14 @@ async function navigateToPecIndex(index) {
     await returnToWorkshop();
     return;
   }
+  beginPrimaryWorkshopLesson({
+    workshop: "pecWorkshop",
+    key: entry.key,
+    route: entry.route,
+    target: entry.target,
+    type: entry.type,
+    externalTarget: entry.externalTarget,
+  });
   const active = {
     index,
     route: entry.route,
@@ -757,6 +782,7 @@ async function navigateToPecIndex(index) {
     ensurePecNavigation();
   }
   window.scrollTo(0, 0);
+  updateActivePrimaryWorkshopLesson();
 }
 
 function populateExaminationRows(page) {
@@ -971,7 +997,11 @@ function activateOnKeyboard(element, callback) {
 
 export function initializePecWorkshop() {
   const page = document.getElementById("pecWorkshopPage");
-  if (!page || page.dataset.inited === "1") return;
+  if (!page) return;
+  if (page.dataset.inited === "1") {
+    initializePrimaryWorkshopProgress("pecWorkshop");
+    return;
+  }
   page.dataset.inited = "1";
   installExternalBackHandler();
 
@@ -1108,4 +1138,5 @@ export function initializePecWorkshop() {
   } catch {
     /* storage may be unavailable */
   }
+  initializePrimaryWorkshopProgress("pecWorkshop");
 }

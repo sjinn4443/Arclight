@@ -396,3 +396,288 @@ test("anterior cases change See all to Next after either reveal path", async ({
   await expect(button).toHaveText("Next >");
   await expect(button).toHaveCSS("color", "rgb(255, 255, 255)");
 });
+
+test("dashboard Ears opens the workshop and Otoscope uses the shared PDF viewer", async ({
+  page,
+  request,
+}, testInfo) => {
+  await page.goto("/#dashboard");
+  const ears = page.locator('.category-card[data-category="ears"]');
+  await expect(ears).not.toHaveClass(/category-card--disabled/);
+  await ears.click();
+  const workshop = page.locator("#primaryEarCareWorkshopPage");
+  await expect(workshop).toBeVisible();
+  await expect(workshop.locator(".pec-ear-care-link i")).toHaveText(">");
+  await workshop.locator('[data-folder="earExamination"]').click();
+  await workshop.locator('[data-nested-folder="otoscopy"]').click();
+  const row = workshop.locator('[data-ear-lesson="otoscopyGuide"]');
+  await expect(row).toHaveClass(/lesson-row--pdf/);
+  await expect(
+    workshop
+      .locator('[data-nested-section="otoscopy"] [data-ear-lesson]')
+      .first(),
+  ).toHaveAttribute("data-ear-lesson", "otoscopyGuide");
+  await expect(row.locator(".lesson-type")).toHaveText(
+    "How to Use the Arclight Otoscope",
+  );
+  await row.click();
+  const lesson = page.locator("#primaryEarCareLessonPage");
+  await expect(lesson).toHaveClass(/core-examination-pdf-page/);
+  const images = lesson.locator("#primaryEarCarePdfViewer img");
+  await expect(images).toHaveCount(2);
+  await expect
+    .poll(() =>
+      images.first().evaluate((n) => n.complete && n.naturalWidth > 0),
+    )
+    .toBe(true);
+  await expect
+    .poll(() => images.last().evaluate((n) => n.complete && n.naturalWidth > 0))
+    .toBe(true);
+  const download = lesson.locator(".primary-ear-pdf-download");
+  await expect(download).toBeVisible();
+  await expect(download).toHaveAttribute(
+    "href",
+    "/images/pdf/Workshop/ENT/Otoscope/Otoscope.pdf",
+  );
+  expect((await request.head(await download.getAttribute("href"))).ok()).toBe(
+    true,
+  );
+  const stage = lesson.locator(".workshop-pdf-stage");
+  const before = await stage.evaluate((n) => n.style.transform);
+  await images
+    .first()
+    .dispatchEvent("wheel", { deltaY: -100, clientX: 200, clientY: 300 });
+  await expect
+    .poll(() => stage.evaluate((n) => n.style.transform))
+    .not.toBe(before);
+  await page.screenshot({ path: testInfo.outputPath("otoscope-pdf.png") });
+  await page.reload();
+  await expect(lesson.locator("#primaryEarCarePdfViewer img")).toHaveCount(2);
+  await page.locator("#backBtnGlobal").click();
+  await expect(workshop).toBeVisible();
+  await expect(
+    workshop.locator('[data-nested-section="otoscopy"]'),
+  ).toBeVisible();
+  await row.click();
+  await lesson.locator(".pec-flow-next").click();
+  await expect(lesson).not.toHaveClass(/core-examination-pdf-page/);
+  await expect(lesson.locator(".primary-ear-pdf-download")).toBeHidden();
+  await expect(lesson.locator("h2")).toHaveText(
+    "Examination: Observe, palpate and otoscopy",
+  );
+});
+
+test("primary workshop folders restore internally and close after external navigation", async ({
+  page,
+}) => {
+  for (const [route, folder, nested, row] of [
+    [
+      "pecWorkshop",
+      "eyeExamination",
+      "fundalReflex",
+      '[data-pec-lesson="fundalSourceGuide"]',
+    ],
+    [
+      "primaryEarCareWorkshop",
+      "earExamination",
+      "otoscopy",
+      '[data-ear-lesson="otoscopyGuide"]',
+    ],
+  ]) {
+    await page.goto(`/#${route}`);
+    const workshop = page.locator(
+      route === "pecWorkshop"
+        ? "#pecWorkshopPage"
+        : "#primaryEarCareWorkshopPage",
+    );
+    await expect(workshop).toHaveAttribute("data-inited", "1");
+    await workshop.locator(`[data-folder="${folder}"]`).click();
+    await workshop.locator(`[data-nested-folder="${nested}"]`).click();
+    await workshop.locator(row).click();
+    await page.locator("#backBtnGlobal").click();
+    await expect(
+      workshop.locator(`[data-nested-section="${nested}"]`),
+    ).toBeVisible();
+    // Navigate without a hard reload, so the cached workshop DOM is covered too.
+    await page.evaluate(async () => {
+      const { loadPage } = await import("/js/navigation.js");
+      await loadPage("dashboard");
+    });
+    await expect(page.locator(".category-card").first()).toBeVisible();
+    await page.evaluate(async (route) => {
+      const { loadPage } = await import("/js/navigation.js");
+      await loadPage(route);
+    }, route);
+    await expect(workshop).toBeVisible();
+    await expect(workshop.locator(".pec-folder-row").first()).toBeVisible();
+    await expect(
+      workshop.locator(".pec-section-card:not([hidden])"),
+    ).toHaveCount(0);
+    await expect(
+      workshop.locator(".pec-nested-section-card:not([hidden])"),
+    ).toHaveCount(0);
+  }
+});
+
+test("primary progress bars persist PDF completion and reuse quiz progress", async ({
+  page,
+}) => {
+  await page.goto("/#primaryEarCareWorkshop");
+  const ear = page.locator("#primaryEarCareWorkshopPage");
+  await expect(ear).toHaveAttribute("data-inited", "1");
+  await expect(
+    ear.locator('[data-ear-lesson] [role="progressbar"]'),
+  ).toHaveCount(17);
+  await ear.locator('[data-folder="earExamination"]').click();
+  await ear.locator('[data-nested-folder="otoscopy"]').click();
+  const pdf = ear.locator('[data-ear-lesson="otoscopyGuide"]');
+  await pdf.click();
+  await expect(page.locator("#primaryEarCarePdfViewer img")).toHaveCount(2);
+  await page.locator("#backBtnGlobal").click();
+  await expect(pdf.locator('[role="progressbar"]')).toHaveAttribute(
+    "aria-valuenow",
+    "100",
+  );
+  await expect(pdf.locator(".lesson-complete-tick")).toHaveCount(1);
+  await expect(pdf.locator(".lesson-progress__fill")).toHaveCSS(
+    "background-color",
+    "rgb(21, 225, 21)",
+  );
+  await page.reload();
+  await expect(pdf.locator('[role="progressbar"]')).toHaveAttribute(
+    "aria-valuenow",
+    "100",
+  );
+  await page.goto("/#pecWorkshop");
+  const pec = page.locator("#pecWorkshopPage");
+  await expect(pec).toHaveAttribute("data-inited", "1");
+  const leaves = pec.locator(".lesson-row[data-lesson]");
+  expect(await leaves.count()).toBeGreaterThan(30);
+  await expect(
+    pec.locator('.lesson-row[data-lesson] [role="progressbar"]'),
+  ).toHaveCount(await leaves.count());
+  await pec.locator('[data-folder="eyeExamination"]').click();
+  await pec.locator('[data-nested-folder="fundoscopy"]').click();
+  const quiz = pec.locator('[data-pec-route="glaucomaQuizCaseStudy"]');
+  await quiz.click();
+  await page.evaluate(async () => {
+    const { setGlaucomaLessonProgress } =
+      await import("/js/glaucomaWorkshopProgress.js");
+    setGlaucomaLessonProgress("glaucomaQuizCaseStudy", 45);
+  });
+  await page.locator("#backBtnGlobal").click();
+  await expect(quiz.locator('[role="progressbar"]')).toHaveAttribute(
+    "aria-valuenow",
+    "45",
+  );
+  await expect(quiz.locator(".lesson-complete-tick")).toHaveCount(0);
+  await quiz.click();
+  await page.evaluate(async () => {
+    const { setGlaucomaLessonProgress } =
+      await import("/js/glaucomaWorkshopProgress.js");
+    setGlaucomaLessonProgress("glaucomaQuizCaseStudy", 100);
+  });
+  await page.locator("#backBtnGlobal").click();
+  await expect(quiz.locator('[role="progressbar"]')).toHaveAttribute(
+    "aria-valuenow",
+    "100",
+  );
+  await expect(quiz.locator(".lesson-complete-tick")).toHaveCount(1);
+});
+
+test("primary scroll completion completes its folder and survives closing it", async ({
+  page,
+}) => {
+  await page.goto("/#primaryEarCareWorkshop");
+  const workshop = page.locator("#primaryEarCareWorkshopPage");
+  await expect(workshop).toHaveAttribute("data-inited", "1");
+  await workshop.locator('[data-folder="earExamination"]').click();
+  await workshop.locator('[data-nested-folder="history"]').click();
+  const row = workshop.locator('[data-ear-lesson="history"]');
+  await row.click();
+  const lesson = page.locator("#primaryEarCareLessonPage");
+  await expect
+    .poll(() =>
+      lesson
+        .locator("img")
+        .evaluateAll((nodes) =>
+          nodes.every((n) => n.complete && n.naturalWidth > 0),
+        ),
+    )
+    .toBe(true);
+  await page.evaluate(() =>
+    window.scrollTo({
+      top: document.documentElement.scrollHeight,
+      behavior: "instant",
+    }),
+  );
+  await page.locator("#backBtnGlobal").click();
+  await expect(row.locator('[role="progressbar"]')).toHaveAttribute(
+    "aria-valuenow",
+    "100",
+  );
+  await expect(row.locator(".lesson-complete-tick")).toHaveCount(1);
+  await workshop.locator('[data-nested-section="history"] > h3 button').click();
+  await expect(
+    workshop.locator('[data-nested-folder="history"] .lesson-complete-tick'),
+  ).toHaveCount(1);
+});
+
+test("PEC source video records partial viewing and completion", async ({
+  page,
+  browserName,
+}) => {
+  test.skip(
+    browserName === "webkit",
+    "Windows WebKit does not decode these H.264 files.",
+  );
+  await page.goto("/#pecWorkshop");
+  const workshop = page.locator("#pecWorkshopPage");
+  await expect(workshop).toHaveAttribute("data-inited", "1");
+  await workshop.locator('[data-folder="eyeExamination"]').click();
+  await workshop.locator('[data-nested-folder="fundalReflex"]').click();
+  const row = workshop.locator('[data-pec-video="fundal_demonstration_video"]');
+  await row.click();
+  const video = page.locator("#pecProcedureVideoPage video");
+  await expect.poll(() => video.evaluate((v) => v.duration)).toBeGreaterThan(0);
+  await video.evaluate((v) => {
+    v.currentTime = v.duration / 2;
+    v.dispatchEvent(new Event("timeupdate"));
+  });
+  await expect
+    .poll(() =>
+      page.evaluate(
+        () =>
+          JSON.parse(
+            localStorage.getItem(
+              "primaryWorkshop:progress:pecWorkshop:pec-fundal-demonstration-video",
+            ) || "{}",
+          ).percent || 0,
+      ),
+    )
+    .toBeGreaterThan(40);
+  await page.locator("#backBtnGlobal").click();
+  await expect(row.locator('[role="progressbar"]')).toHaveAttribute(
+    "aria-valuenow",
+    "50",
+  );
+  await expect(row.locator(".lesson-complete-tick")).toHaveCount(0);
+  await row.click();
+  await expect.poll(() => video.evaluate((v) => v.duration)).toBeGreaterThan(0);
+  await video.evaluate(async (v) => {
+    v.currentTime = v.duration - 0.15;
+    await v.play();
+  });
+  await expect.poll(() => video.evaluate((v) => v.ended)).toBe(true);
+  await page.locator("#backBtnGlobal").click();
+  await expect(row.locator('[role="progressbar"]')).toHaveAttribute(
+    "aria-valuenow",
+    "100",
+  );
+  await expect(row.locator(".lesson-complete-tick")).toHaveCount(1);
+  await page.reload();
+  await expect(row.locator('[role="progressbar"]')).toHaveAttribute(
+    "aria-valuenow",
+    "100",
+  );
+});
