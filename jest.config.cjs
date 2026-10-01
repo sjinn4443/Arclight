@@ -25,8 +25,9 @@ module.exports = {
   modulePathIgnorePatterns: [
     "<rootDir>/Arclight/",
     "<rootDir>/dist/",
-    "<rootDir>/tmp-fundal-dist/",
-    "<rootDir>/tmp-codex-build.*",
+    "<rootDir>/dist-media/",
+    "<rootDir>/dist-sourcemaps/",
+    "<rootDir>/tmp-.*",
   ],
   testTimeout: 30000, // Increase global test timeout to 30 seconds
 };

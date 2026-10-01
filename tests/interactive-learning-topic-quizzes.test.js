@@ -176,16 +176,18 @@ describe("Interactive Learning topic quiz pages", () => {
       "directOphthalmoscopyQuizPage",
       "directOphthalmoscopyPdfPage",
       "directOphthalmoscopyScrollPage",
-      "binocularIndirectOphthalmoscopyScrollPage",
       "directOphthalmoscopyFullAnimationVideoPage",
-      "binocularIndirectOphthalmoscopyFullAnimationVideoPage",
     ]);
     const ophthalmoscopyIntermediateTargets = Array.from(
       document.querySelectorAll(
         "#directOphthalmoscopy .pupil-level--intermediate .lesson-row",
       ),
     ).map((row) => row.getAttribute("data-target"));
-    expect(ophthalmoscopyIntermediateTargets).toEqual(["morphSimulatorPage"]);
+    expect(ophthalmoscopyIntermediateTargets).toEqual([
+      "binocularIndirectOphthalmoscopyScrollPage",
+      "binocularIndirectOphthalmoscopyFullAnimationVideoPage",
+      "morphSimulatorPage",
+    ]);
     expect(
       document
         .querySelector(
