@@ -26,24 +26,24 @@ async function fillAnswers(page, { normalSign = 0, wrong = false } = {}) {
   }
 }
 
-test("PEC Test row follows Fundal Reflex Practice and returns to that folder", async ({
+test("PEC Test row follows interpretation and returns to that folder", async ({
   page,
 }) => {
   await page.goto("/#pecWorkshop", { waitUntil: "domcontentloaded" });
   const workshop = page.locator("#pecWorkshopPage");
+  await expect(workshop).toHaveAttribute("data-inited", "1");
   await workshop.locator('[data-folder="eyeExamination"]').click();
   await workshop.locator('[data-nested-folder="fundalReflex"]').click();
   const rows = workshop.locator(
     '[data-nested-section="fundalReflex"] .lesson-row',
   );
-  await expect(rows).toHaveCount(4);
-  await expect(rows.nth(2)).toHaveAttribute(
-    "data-medical-target",
-    "medicalFundalDirectPracticePage",
+  await expect(rows).toHaveCount(10);
+  const testRow = workshop.locator(
+    '[data-pec-lesson="fundalInterpretation"] + .lesson-row',
   );
-  await expect(rows.nth(3)).toHaveClass(/lesson-row--quiz/);
-  await expect(rows.nth(3).locator(".lesson-type")).toHaveText("Test");
-  await rows.nth(3).click();
+  await expect(testRow).toHaveClass(/lesson-row--quiz/);
+  await expect(testRow.locator(".lesson-type")).toHaveText("Test");
+  await testRow.click();
   await expect(page.locator("#fundalReflexQuizPage")).toBeVisible();
   await expect(page.locator("#fundalReflexQuizPage .pec-flow-prev")).toHaveCSS(
     "color",

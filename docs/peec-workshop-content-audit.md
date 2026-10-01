@@ -136,3 +136,13 @@ The dashboard Ears card now opens Primary Ear Care Workshop. Under Ear Examinati
 - The Otoscope PDF row is now **How to Use the Arclight Otoscope**, first in Ear Examination / Otoscopy. Next opens Examination: Observe, palpate and otoscopy.
 - Source browser checks: 21 passed across Chromium desktop and WebKit with an iPhone viewport; one actual MP4-decoding check was skipped in Windows WebKit. These cover internal/external folder navigation, persisted PDF and quiz progress, scroll and folder completion, and actual Chromium video progress/completion.
 - The production build passed its distribution budgets, and all six targeted production-browser checks passed. The three Medical Students unit suites passed (30 checks total after updating stale filename/button-label expectations).
+
+## Fundal interpretation choice follow-up
+
+- The Fundal Reflex folder's Test row now follows Fundal reflex interpretation: Video and worksheet directly.
+- The interpretation lesson replaces the composite slide image and free-text worksheet with five numbered case photographs, reusing /images/quiz/fundal-reflex/case-1.webp through case-5.webp and the existing Test's Normal/Abnormal answer key. Each case has two selection buttons; submitting all five reveals each correct answer and whether the selection matched. Try again resets the choices; responses and submitted results persist in the browser. Submission completes this lesson's progress.
+- The question video above and answer video below are retained with their existing 119-second split.
+- PEC and Primary Ear Care lesson Start/Watch labels align to the grid's bottom padding, matching Diabetic Workshop's 10px bottom inset. Their separate grid column keeps fully filled progress bars clear of the labels, verified at 320px, 390px and desktop widths in Chromium and WebKit.
+- Validation: 26 relevant source-browser checks passed after updating the old Test-order expectation and waiting for workshop initialization. All four targeted production-browser checks passed, and the production build stayed within its distribution budgets.
+- Interpretation styling now clips the pink photo corners using the existing Fundal Reflex Quiz crops (with the deeper bottom crop for case 4), uses the same panel width as the videos, white question numbers and grey selected choices. Submit/retry reuse the quiz's button styles and container dimensions; Submit keeps primary green. The external Test row uses the intermediate quiz/case-study thumbnail.
+- The Fundal Reflex Test row's progress fill, completion tick and Start > now use intermediate orange (#f25600), matching its thumbnail. The neighbouring PEC rows remain primary green; desktop Chromium and mobile WebKit checks covered incomplete, completed and reloaded states.

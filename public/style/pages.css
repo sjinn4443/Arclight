@@ -31541,3 +31541,99 @@ img[src*="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/"] {
 :is(#pecWorkshopPage, #primaryEarCareWorkshopPage) .lesson-progress__fill {
   background: #15e115;
 }
+
+:is(#pecWorkshopPage, #primaryEarCareWorkshopPage)
+  .lesson-row[data-lesson]
+  > .lesson-cta {
+  margin-left: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+  align-self: end;
+  font-size: 11px;
+  line-height: normal;
+  white-space: nowrap;
+}
+
+#pecEyeLessonPage .pec-interpretation-card {
+  margin-inline: auto;
+  box-sizing: border-box;
+  padding: 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  background: #fff;
+  color: #222;
+}
+#pecEyeLessonPage .pec-interpretation-number {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  margin: 0 0 14px;
+  border-radius: 50%;
+  background: #15e115;
+  color: #fff;
+  font-size: 16px;
+}
+#pecEyeLessonPage .pec-interpretation-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  clip-path: inset(2% 0.5% round 7% / 22%);
+}
+#pecEyeLessonPage
+  .pec-interpretation-card[data-question="4"]
+  .pec-interpretation-image {
+  clip-path: inset(2% 0.5% 7% round 7% / 22%);
+}
+#pecEyeLessonPage .pec-interpretation-choices {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+}
+#pecEyeLessonPage .pec-interpretation-choice {
+  min-height: 44px;
+  padding: 10px 18px;
+  border: 1px solid #ccd2ce;
+  border-radius: 9px;
+  background: #fff;
+  color: #222;
+  font: inherit;
+  cursor: pointer;
+}
+#pecEyeLessonPage .pec-interpretation-choice {
+  flex: 1;
+}
+#pecEyeLessonPage .pec-interpretation-choice[aria-pressed="true"] {
+  background: #e5e7eb;
+  border-color: #9ca3af;
+}
+#pecEyeLessonPage .pec-interpretation-submit.frq-primary {
+  background: #15e115;
+  border-color: #15e115;
+}
+#pecEyeLessonPage .pec-interpretation-result {
+  margin: 16px 0 0;
+  font-weight: 600;
+}
+#pecEyeLessonPage .pec-interpretation-result.is-correct {
+  color: #147529;
+}
+#pecEyeLessonPage .pec-interpretation-result.is-incorrect {
+  color: #b3261e;
+}
+#pecEyeLessonPage .pec-interpretation-actions.frq-mount {
+  /* Match the quiz container's gutters on the full-width PEC route. */
+  width: calc(var(--pec-quiz-container-width, 100vw) - 40px);
+}
+#pecWorkshopPage
+  .pupil-level--primary
+  .lesson-row--quiz[data-pec-target="fundalReflexQuizPage"]
+  .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/intermediate_casestudy.webp");
+}
+#pecWorkshopPage
+  .lesson-row--quiz[data-pec-target="fundalReflexQuizPage"]
+  .lesson-cta {
+  color: #f25600;
+}

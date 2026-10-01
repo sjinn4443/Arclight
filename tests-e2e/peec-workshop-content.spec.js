@@ -26,7 +26,7 @@ test.beforeEach(async ({ page }) => {
   });
 });
 
-test("PEC includes the third real case, source guide and interpretation worksheet", async ({
+test("PEC includes real cases, source guide and numbered interpretation questions", async ({
   page,
   request,
   browserName,
@@ -49,23 +49,23 @@ test("PEC includes the third real case, source guide and interpretation workshee
   await workshop.locator('[data-pec-lesson="fundalSourceGuide"]').click();
   await expect(lesson.locator('img[src$="image57.png"]')).toBeVisible();
   await page.locator("#backBtnGlobal").click();
+  await expect(
+    workshop.locator('[data-pec-lesson="fundalInterpretation"] + .lesson-row'),
+  ).toHaveAttribute("data-pec-target", "fundalReflexQuizPage");
   await workshop.locator('[data-pec-lesson="fundalInterpretation"]').click();
-  await expect(lesson.locator(".pec-response-form input")).toHaveCount(15);
-  const first = lesson.locator(".pec-response-form input").first();
+  await expect(lesson.locator(".pec-response-form")).toHaveCount(0);
+  await expect(lesson.locator('img[src$="image64.png"]')).toHaveCount(0);
+  const cards = lesson.locator(".pec-interpretation-card");
+  await expect(cards).toHaveCount(5);
   await expect(lesson.locator("video")).toHaveCount(2);
   await expect(lesson.locator('img[src$="image65.png"]')).toHaveCount(0);
   await expect(lesson).not.toContainText(
     "Fundal red reflex image interpretation",
   );
-  await expect(lesson.locator(".workshop-source-portrait")).toHaveCount(1);
-  await lesson.locator(".workshop-source-portrait").scrollIntoViewIfNeeded();
+  await cards.first().scrollIntoViewIfNeeded();
   await page.screenshot({
-    path: testInfo.outputPath("portrait-interpretation.png"),
+    path: testInfo.outputPath("numbered-interpretation.png"),
   });
-  const portrait = await lesson
-    .locator(".workshop-source-portrait img")
-    .boundingBox();
-  expect(portrait.height).toBeGreaterThan(portrait.width);
   const firstVideo = lesson.locator("video").first();
   const lastVideo = lesson.locator("video").last();
   await checkVideo(firstVideo, request, browserName);
@@ -81,19 +81,63 @@ test("PEC includes the third real case, source guide and interpretation workshee
         (node) => node.lastElementChild.querySelector("video") !== null,
       ),
   ).toBe(true);
-  await first.fill("Dull reflex");
-  await lesson.getByRole("button", { name: "Save", exact: true }).click();
-  await expect(lesson.getByRole("status")).toHaveText("Saved");
-  await page.evaluate(() => {
-    Object.keys(sessionStorage)
-      .filter((k) => k.startsWith("pecWorkshop:worksheet:"))
-      .forEach((k) => sessionStorage.removeItem(k));
+  const submit = lesson.getByRole("button", {
+    name: "Submit answers",
+    exact: true,
   });
-  await page.reload();
-  await expect(lesson.locator(".pec-response-form input").first()).toHaveValue(
-    "Dull reflex",
+  await expect(submit).toBeDisabled();
+  for (let index = 0; index < 5; index++) {
+    await expect(
+      cards.nth(index).locator(".pec-interpretation-number"),
+    ).toHaveText(String(index + 1));
+    await expect(cards.nth(index).locator("img")).toHaveAttribute(
+      "src",
+      `/images/quiz/fundal-reflex/case-${index + 1}.webp`,
+    );
+    await expect(
+      cards.nth(index).locator(".pec-interpretation-result"),
+    ).toBeHidden();
+    await cards
+      .nth(index)
+      .getByRole("button", { name: "Normal", exact: true })
+      .click();
+  }
+  await expect(submit).toBeEnabled();
+  await submit.click();
+  await expect(cards.nth(0).locator(".pec-interpretation-result")).toHaveText(
+    "✕ Incorrect · Correct answer: Abnormal",
   );
+  await expect(cards.nth(1).locator(".pec-interpretation-result")).toHaveText(
+    "✓ Correct · Correct answer: Normal",
+  );
+  await expect(
+    lesson.locator(".pec-interpretation-result.is-incorrect"),
+  ).toHaveCount(4);
+  await page.reload();
+  await expect(
+    cards.first().locator(".pec-interpretation-result"),
+  ).toBeVisible();
+  await lesson.getByRole("button", { name: "Try again", exact: true }).click();
+  await expect(submit).toBeDisabled();
+  for (let index = 0; index < 5; index++) {
+    await cards
+      .nth(index)
+      .getByRole("button", {
+        name: index === 1 ? "Normal" : "Abnormal",
+        exact: true,
+      })
+      .click();
+  }
+  await submit.click();
+  await expect(
+    lesson.locator(".pec-interpretation-result.is-correct"),
+  ).toHaveCount(5);
   await page.locator("#backBtnGlobal").click();
+  await expect(
+    workshop.locator(
+      '[data-pec-lesson="fundalInterpretation"] [role="progressbar"]',
+    ),
+  ).toHaveAttribute("aria-valuenow", "100");
   await expect(
     workshop.locator('[data-nested-section="fundalReflex"]'),
   ).toBeVisible();

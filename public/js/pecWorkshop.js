@@ -7,10 +7,8 @@ import { loadPage } from "./navigation.js";
 import { openMenu } from "./menu.js";
 import { initializeDiabeticScreeningScrollLessons } from "./diabeticRetinopathyWorkshop.js";
 
-import {
-  appendWorkshopImages,
-  appendInterpretationWorksheet,
-} from "./workshopLessonMedia.js";
+import { appendWorkshopImages } from "./workshopLessonMedia.js";
+import { appendFundalInterpretationQuiz } from "./pecFundalInterpretation.js";
 
 const RESTORE_KEY = "pecWorkshop:restore";
 const MEDICAL_REUSE_KEY = "pecWorkshop:medicalReuse";
@@ -301,6 +299,12 @@ const EXAMINATION_ROWS = Object.freeze({
       type: "quiz",
     },
     {
+      label: "Test",
+      target: "fundalReflexQuizPage",
+      route: "fundalReflexQuiz",
+      type: "quiz",
+    },
+    {
       label: "fundal_demonstration_video",
       video: "fundal_demonstration_video",
       type: "video",
@@ -326,12 +330,6 @@ const EXAMINATION_ROWS = Object.freeze({
       label: "fundal_reflex_practice",
       target: "medicalFundalDirectPracticePage",
       type: "scroll",
-    },
-    {
-      label: "Test",
-      target: "fundalReflexQuizPage",
-      route: "fundalReflexQuiz",
-      type: "quiz",
     },
   ],
   fundoscopy: [
@@ -521,14 +519,7 @@ const EYE_LESSONS = Object.freeze({
     title: "fundal_interpretation_test",
     videos: ["FundalReflexInterpretationQuestions_220p"],
     trailingVideos: ["FundalReflexInterpretationAnswers_220p"],
-    images: [
-      {
-        src: "/images/learning/PEC/image64.png",
-        caption: "fundal_test_images",
-        rotate: true,
-      },
-    ],
-    worksheet: true,
+    interpretationQuiz: true,
   },
   cataractIdentification: {
     title: "cataract_identification_video",
@@ -976,7 +967,8 @@ function renderEyeLesson(key) {
   };
   (lesson.videos || []).forEach(appendVideo);
   appendWorkshopImages(stack, lesson.images || [], translated);
-  if (lesson.worksheet) appendInterpretationWorksheet(stack, key, translated);
+  if (lesson.interpretationQuiz)
+    appendFundalInterpretationQuiz(stack, translated);
   (lesson.trailingVideos || []).forEach(appendVideo);
   section.append(stack);
   content.append(section);

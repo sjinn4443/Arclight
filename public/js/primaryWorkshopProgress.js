@@ -2,6 +2,7 @@ import { readLessonProgress } from "./lessonProgress.js";
 import { syncLessonCompletionTick } from "./lessonCompletionTick.js";
 
 const COLOUR = "#15e115";
+const INTERMEDIATE_COLOUR = "#f25600";
 const ACTIVE_KEY = "primaryWorkshop:activeLesson";
 const WORKSHOPS = {
   pecWorkshop: "pecWorkshopPage",
@@ -26,6 +27,13 @@ const write = (storage, key, value) => {
 const keyFor = (workshop, key) => `primaryWorkshop:progress:${workshop}:${key}`;
 const percent = (value) => Math.max(0, Math.min(100, Number(value) || 0));
 let active = read(sessionStorage, ACTIVE_KEY);
+
+function rowColour(workshop, row) {
+  return workshop === "pecWorkshop" &&
+    row.dataset.pecTarget === "fundalReflexQuizPage"
+    ? INTERMEDIATE_COLOUR
+    : COLOUR;
+}
 
 function setProgress(context, value) {
   const key = keyFor(context.workshop, context.key);
@@ -56,12 +64,15 @@ export function refreshPrimaryWorkshopProgress() {
     if (!page) return;
     page.querySelectorAll(".lesson-row[data-lesson]").forEach((row) => {
       const value = rowPercent(workshop, row);
+      const colour = rowColour(workshop, row);
       const bar = row.querySelector(".lesson-progress");
       if (bar) {
         bar.setAttribute("aria-valuenow", String(Math.round(value)));
-        bar.querySelector(".lesson-progress__fill").style.width = `${value}%`;
+        const fill = bar.querySelector(".lesson-progress__fill");
+        fill.style.width = `${value}%`;
+        fill.style.backgroundColor = colour;
       }
-      syncLessonCompletionTick(row, value, COLOUR);
+      syncLessonCompletionTick(row, value, colour);
     });
     page
       .querySelectorAll(".pec-folder-row, .pec-nested-folder-row")
@@ -111,7 +122,7 @@ export function initializePrimaryWorkshopProgress(workshop) {
     bar.setAttribute("aria-valuemax", "100");
     const fill = document.createElement("div");
     fill.className = "lesson-progress__fill";
-    fill.style.backgroundColor = COLOUR;
+    fill.style.backgroundColor = rowColour(workshop, row);
     bar.append(fill);
     row.querySelector(".lesson-main")?.append(bar);
   });

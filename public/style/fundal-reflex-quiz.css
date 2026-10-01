@@ -9,7 +9,7 @@
   background: transparent;
   color: inherit;
 }
-#fundalReflexQuizPage .frq-mount {
+:is(#fundalReflexQuizPage, #pecEyeLessonPage) .frq-mount {
   max-width: 520px;
   margin: 0 auto;
   padding: 10px 14px 24px;
@@ -189,7 +189,7 @@
   user-select: none;
 }
 #fundalReflexQuizPage .frq-chip:focus-visible,
-#fundalReflexQuizPage .frq-button:focus-visible {
+:is(#fundalReflexQuizPage, #pecEyeLessonPage) .frq-button:focus-visible {
   outline: 3px solid #245eb5;
   outline-offset: 3px;
 }
@@ -214,12 +214,12 @@
   opacity: 0.88;
   box-shadow: 0 6px 18px #0003;
 }
-#fundalReflexQuizPage .frq-actions {
+:is(#fundalReflexQuizPage, #pecEyeLessonPage) .frq-actions {
   display: flex;
   gap: 10px;
   margin-top: 20px;
 }
-#fundalReflexQuizPage .frq-button {
+:is(#fundalReflexQuizPage, #pecEyeLessonPage) .frq-button {
   padding: 12px 18px;
   border: 1px solid #c4cbd4;
   border-radius: 10px;
@@ -229,12 +229,13 @@
   font-weight: 600;
   cursor: pointer;
 }
-#fundalReflexQuizPage .frq-primary {
+:is(#fundalReflexQuizPage, #pecEyeLessonPage) .frq-primary {
   background: #f25600;
   color: white;
   border-color: #f25600;
 }
-#fundalReflexQuizPage #frqSubmit {
+#fundalReflexQuizPage #frqSubmit,
+#pecEyeLessonPage .pec-interpretation-submit {
   border-radius: 14px;
 }
 #fundalReflexQuizPage #frqScore,
@@ -262,7 +263,7 @@
 #fundalReflexQuizPage .frq-answer-label {
   color: #000;
 }
-#fundalReflexQuizPage .frq-button:disabled {
+:is(#fundalReflexQuizPage, #pecEyeLessonPage) .frq-button:disabled {
   opacity: 0.45;
   cursor: not-allowed;
 }

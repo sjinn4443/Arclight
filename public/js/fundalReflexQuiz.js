@@ -44,6 +44,8 @@ const CASES = [
   },
 ];
 
+export { CASES as FUNDAL_REFLEX_CASES };
+
 export function initializeFundalReflexQuiz() {
   const page = document.getElementById("fundalReflexQuizPage");
   if (!page || page.dataset.wired === "1") return;
