@@ -25,7 +25,6 @@ const CASES = [
     description: [
       "Retinoblastoma is a malignant tumour arising from immature retinal cells. As it grows, a pale mass covers the normal red retinal background.",
       "Light reflects from the tumour instead of the normal retina, producing a white or yellow pupil reflex.",
-      "Calcium deposits commonly form within the tumour as tumour cells die.",
     ],
     reflex: true,
   },
@@ -39,11 +38,17 @@ function copy(tag, key, fallback) {
   return element;
 }
 
-function panel(stack, title, key) {
+function panel(stack, title, key, index) {
   const article = document.createElement("article");
   article.className = "diabetic-screening-panel pec-reflex-panel";
   article.dataset.diabeticScrollStep = "";
-  article.append(copy("h3", key, title));
+  const heading = document.createElement("div");
+  heading.className = "diabetic-screening-panel__text";
+  const number = document.createElement("span");
+  number.className = "diabetic-screening-step";
+  number.textContent = String(index + 1).padStart(2, "0");
+  heading.append(number, copy("h3", key, title));
+  article.append(heading);
   stack.append(article);
   return article;
 }
@@ -59,13 +64,87 @@ function layer(stage, filename, role, x, y, width, height) {
   return img;
 }
 
-function replayButton(article, signal, replay) {
-  const button = copy("button", "reflex_replay", "Replay animation");
+function playbackControl(host, signal, player, reducedMotion) {
+  const button = document.createElement("button");
   button.type = "button";
-  button.className = "pec-reflex-replay";
-  button.addEventListener("click", replay, { signal });
-  article.append(button);
-  return button;
+  button.className = "childhood-fundal-stage-replay-btn pec-reflex-control";
+  button.disabled = true;
+  const icons = {
+    replay:
+      '<img class="childhood-fundal-stage-replay-btn__icon" src="/images/icon/base/replay.webp" alt="" aria-hidden="true" draggable="false">',
+    pause:
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>',
+    play: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5l11 7-11 7z"/></svg>',
+  };
+  let ready = false;
+  let visible = false;
+  let userPaused = false;
+  let completed = false;
+  let manual = false;
+  const show = (state) => {
+    if (button.dataset.playback === state) return;
+    button.dataset.playback = state;
+    button.innerHTML = icons[state];
+    const key = `pecWorkshop.reflex_${state}`;
+    const label =
+      window.I18N?.t?.(
+        key,
+        `${state[0].toUpperCase()}${state.slice(1)} animation`,
+      ) || state;
+    button.dataset.i18n = `${key}:aria-label;${key}:title`;
+    button.setAttribute("aria-label", label);
+    button.title = label;
+  };
+  const sync = () => {
+    if (!ready) return;
+    if (completed || !visible || userPaused) {
+      player.pause();
+      show(completed ? "replay" : "play");
+    } else if (reducedMotion && !manual) {
+      completed = true;
+      player.finish();
+      show("replay");
+    } else {
+      player.play();
+      show("pause");
+    }
+  };
+  button.addEventListener(
+    "click",
+    () => {
+      manual = true;
+      if (button.dataset.playback === "pause") userPaused = true;
+      else {
+        userPaused = false;
+        if (completed) {
+          completed = false;
+          player.restart();
+        }
+      }
+      sync();
+    },
+    { signal },
+  );
+  show("play");
+  host.append(button);
+  return {
+    setVisible(value) {
+      visible = value;
+      sync();
+    },
+    ready() {
+      ready = true;
+      button.disabled = false;
+      sync();
+    },
+    complete() {
+      completed = true;
+      sync();
+    },
+    destroy() {
+      player.destroy();
+    },
+  };
 }
 
 // Clip the stationary artwork to reveal/wipe it in the direction of light travel.
@@ -100,12 +179,12 @@ export function appendPecFundalReflexGuide(stack) {
     { threshold: [0, 0.35] },
   );
 
-  for (const item of CASES) {
-    const article = panel(stack, item.name, `reflex_${item.key}_title`);
+  for (const [index, item] of CASES.entries()) {
+    const article = panel(stack, item.name, `reflex_${item.key}_title`, index);
     article.dataset.reflexCase = item.key;
     const stage = document.createElement("div");
     stage.className = "pec-reflex-stage";
-    stage.setAttribute("role", "img");
+    stage.setAttribute("role", "group");
     stage.setAttribute(
       "aria-label",
       `${item.name}: light travelling from the Arclight into the eye and reflecting back`,
@@ -114,15 +193,11 @@ export function appendPecFundalReflexGuide(stack) {
     // All coordinates share the supplied 2382 × 1700 background canvas.
     layer(stage, `${item.name}Background`, "background", 0, 0, WIDTH, HEIGHT);
     const cataract = item.key === "cataract";
-    // The reference also shows a faint cone beyond the cloudy lens.
-    const cone = cataract
-      ? layer(stage, "NormalandRetinoblastomaLight", "cone", 194, 770, 900, 154)
-      : null;
     const light = layer(
       stage,
       cataract ? "CataractLight" : "NormalandRetinoblastomaLight",
       "light",
-      194,
+      cataract ? 170 : 110,
       770,
       cataract ? 491 : 993,
       154,
@@ -183,15 +258,6 @@ export function appendPecFundalReflexGuide(stack) {
         [DURATION, shown],
       ]),
     ];
-    if (cone)
-      animations.push(
-        track(cone, [
-          [0, hiddenRight],
-          [500, hiddenRight],
-          [1300, shown],
-          [DURATION, shown],
-        ]),
-      );
     if (reflex)
       animations.push(
         track(reflex, [
@@ -201,29 +267,22 @@ export function appendPecFundalReflexGuide(stack) {
           [DURATION, shown, 1],
         ]),
       );
-    let visible = false;
-    let ready = false;
-    const controller = {
-      setVisible(value) {
-        visible = value;
-        animations.forEach((animation) => {
-          if (!ready || !visible) animation.pause();
-          else if (reducedMotion) animation.finish();
-          else if (animation.playState !== "finished") animation.play();
-        });
+    const controller = playbackControl(
+      stage,
+      signal,
+      {
+        play: () => animations.forEach((animation) => animation.play()),
+        pause: () => animations.forEach((animation) => animation.pause()),
+        restart: () => animations.forEach((animation) => animation.cancel()),
+        finish: () => animations.forEach((animation) => animation.finish()),
+        destroy: () => animations.forEach((animation) => animation.cancel()),
       },
-      destroy() {
-        animations.forEach((animation) => animation.cancel());
-      },
-    };
-    controllers.set(stage, controller);
-    const button = replayButton(article, signal, () => {
-      animations.forEach((animation) => {
-        animation.cancel();
-        animation.play();
-      });
+      reducedMotion,
+    );
+    animations[0].addEventListener("finish", () => controller.complete(), {
+      signal,
     });
-    button.disabled = true;
+    controllers.set(stage, controller);
     item.description.forEach((text, index) =>
       article.append(
         copy("p", `reflex_${item.key}_description_${index + 1}`, text),
@@ -234,10 +293,8 @@ export function appendPecFundalReflexGuide(stack) {
     )
       .then(() => {
         if (signal.aborted) return;
-        ready = true;
-        button.disabled = false;
+        controller.ready();
         observer.observe(stage);
-        controller.setVisible(visible);
       })
       .catch(() => {
         if (!signal.aborted)
@@ -250,7 +307,7 @@ export function appendPecFundalReflexGuide(stack) {
           );
       });
     if (item.key === "normal")
-      appendVariations(stack, controllers, observer, signal, reducedMotion);
+      appendVariations(article, controllers, observer, signal, reducedMotion);
   }
 
   const cleanup = () => {
@@ -269,8 +326,18 @@ export function appendPecFundalReflexGuide(stack) {
   return cleanup;
 }
 
-function appendVariations(stack, controllers, observer, signal, reducedMotion) {
-  const article = panel(stack, "Normal reflex colours", "reflex_colours_title");
+function appendVariations(
+  article,
+  controllers,
+  observer,
+  signal,
+  reducedMotion,
+) {
+  const heading = copy("h3", "reflex_colours_title", "Normal reflex colours");
+  heading.className = "pec-reflex-colours-heading";
+  article.append(heading);
+  const visual = document.createElement("div");
+  visual.className = "pec-reflex-variations-frame";
   const stage = document.createElement("div");
   stage.className = "pec-reflex-variations";
   stage.setAttribute("role", "img");
@@ -278,12 +345,22 @@ function appendVariations(stack, controllers, observer, signal, reducedMotion) {
     "aria-label",
     "Normal fundal reflex colours with different pigmentation",
   );
-  article.append(stage);
+  visual.append(stage);
+  article.append(visual);
   let animation;
-  const button = replayButton(article, signal, () =>
-    animation?.goToAndPlay(0, true),
+  const controller = playbackControl(
+    visual,
+    signal,
+    {
+      play: () => animation?.play(),
+      pause: () => animation?.pause(),
+      restart: () => animation?.goToAndStop(0, true),
+      finish: () => animation?.goToAndStop(animation.totalFrames - 1, true),
+      destroy: () => animation?.destroy(),
+    },
+    reducedMotion,
   );
-  button.disabled = true;
+  controllers.set(stage, controller);
   article.append(
     copy(
       "p",
@@ -292,7 +369,7 @@ function appendVariations(stack, controllers, observer, signal, reducedMotion) {
     ),
   );
   const list = document.createElement("ul");
-  list.className = "medical-overview-list";
+  list.className = "pec-reflex-colour-list";
   [
     "Black: yellow / white / blue reflex",
     "White: orange / red reflex",
@@ -316,21 +393,10 @@ function appendVariations(stack, controllers, observer, signal, reducedMotion) {
           hideOnTransparent: false,
         },
       });
-      controllers.set(stage, {
-        setVisible(visible) {
-          if (!visible) animation.pause();
-          else if (reducedMotion)
-            animation.goToAndStop(animation.totalFrames - 1, true);
-          else if (animation.currentFrame < animation.totalFrames - 1)
-            animation.play();
-        },
-        destroy() {
-          animation.destroy();
-        },
-      });
+      animation.addEventListener("complete", () => controller.complete());
       animation.addEventListener("DOMLoaded", () => {
         if (signal.aborted) return;
-        button.disabled = false;
+        controller.ready();
         observer.observe(stage);
       });
       animation.addEventListener("data_failed", () => {
